@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Touch extends AbstractJsonModel {
+	public static final String JSON_COLLECTION_NAME = "touches";
 
 	private int id;
 	private String transactionId;

@@ -394,27 +394,7 @@
 						<ProductSelection>BLANK</ProductSelection>
 						<AccountIgnored>true</AccountIgnored>
 						<BenefitPaymentMethod>Chq</BenefitPaymentMethod>
-						<xsl:variable name="crsState">
-							<xsl:choose>
-								<xsl:when test="$state='QLD'">Q</xsl:when>
-								<xsl:when test="$state='NSW'">N</xsl:when>
-								<xsl:when test="$state='ACT'">A</xsl:when>
-								<xsl:when test="$state='NT'">X</xsl:when>
-								<xsl:when test="$state='WA'">W</xsl:when>
-								<xsl:when test="$state='SA'">S</xsl:when>
-								<xsl:when test="$state='VIC'">V</xsl:when>
-								<xsl:when test="$state='TAS'">T</xsl:when>
-							</xsl:choose>
-						</xsl:variable>
-						<xsl:variable name="crsCvr">
-							<xsl:choose>
-								<xsl:when test="situation/healthCvr = 'S'">S</xsl:when>
-								<xsl:when test="situation/healthCvr = 'C'">C</xsl:when>
-								<xsl:when test="situation/healthCvr = 'SPF'">P</xsl:when>
-								<xsl:otherwise>F</xsl:otherwise>
-							</xsl:choose>
-						</xsl:variable>
-						<CoverRateSelection><xsl:value-of select="fundData/fundCode" /><xsl:value-of select="$crsCvr" />/<xsl:value-of select="$crsState" /></CoverRateSelection>
+						<CoverRateSelection><xsl:value-of select="fundData/fundCode" /></CoverRateSelection>
 						<Account>
 							<AccountType>credit</AccountType>
 							<DebitCreditID>Bank</DebitCreditID>

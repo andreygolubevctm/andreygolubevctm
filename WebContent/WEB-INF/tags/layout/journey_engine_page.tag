@@ -123,6 +123,8 @@
 
 						<core_new:journey_tracking />
 
+						<core_new:tracking_key />
+
 						<div id="journeyEngineSlidesContainer">
 							<jsp:doBody />
 						</div>
@@ -136,7 +138,7 @@
 						/>
 
 						<jsp:invoke fragment="form_bottom" />
-						
+
 						<c:if test="${pageSettings.hasSetting('sendBestPriceSplitTestingEnabled')}">
 							<c:if test="${pageSettings.getSetting('sendBestPriceSplitTestingEnabled') eq 'Y' && not empty param.splitEmail }">
 								<field:hidden xpath="${verticalCode}/bestPriceSplitTest" defaultValue="${param.splitEmail eq 2 ? 2 : 1 }" />

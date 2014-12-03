@@ -7,7 +7,7 @@
 <div class="simples-search-modal">
 	<div id="simples-search-modal-header" class="row">
 		<div class="col-xs-4">
-			<h4>Search quotes</h4>
+			<h2>Search quotes</h2>
 		</div>
 		<div class="col-xs-8 text-right">
 			<form class="simples-search form-inline" role="search">
@@ -87,9 +87,9 @@
 							{{ if (result.editable === 'C') { }}
 								<%-- Confirmed, can no longer edit --%>
 							{{ } else { }}
-								<a class="btn btn-sm btn-save needs-loadsafe needs-baseurl" data-action="amend" href="simples/loadQuote.jsp?brandId={{= result.quoteBrandId }}&verticalCode={{= result.quoteType }}&transactionId={{= result.id }}&action=amend">Amend quote</a>
+								<a class="btn btn-sm btn-save btn-cta needs-loadsafe needs-baseurl" data-action="amend" href="simples/loadQuote.jsp?brandId={{= result.quoteBrandId }}&verticalCode={{= result.quoteType }}&transactionId={{= result.id }}&action=amend">Amend quote <span class="icon icon-arrow-right"></span></a>
 							{{ } }}
-							<button class="btn btn-sm btn-cancel" data-action="moreinfo">More info</button>
+							<button class="btn btn-sm btn-cancel" data-action="moreinfo">More details</button>
 							<%-- <button class="btn btn-sm btn-cancel" data-action="comments">Comments</button> --%>
 						</div>
 					</div>

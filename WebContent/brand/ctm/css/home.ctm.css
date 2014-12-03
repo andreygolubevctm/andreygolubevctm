@@ -85,21 +85,6 @@ body > div > header a.bottombar .btn-call:hover {
   border-width: 1px;
   border-style: solid;
 }
-.sidebar .btn-call {
-  background-color: #999999;
-  color: #ffffff;
-}
-.sidebar .btn-call:hover,
-.sidebar .btn-call:focus {
-  background-color: #7a7a7a;
-  color: #ffffff;
-  outline: 0;
-}
-.sidebar .btn-call:active,
-.sidebar .btn-call.active {
-  background-color: #999999;
-  color: #1c3e93;
-}
 .bottombar .btn-call {
   background-color: #0db14b;
   color: #ffffff;
@@ -1031,15 +1016,13 @@ So it's going to be done progressively. Include this file in your framework.buil
     margin-left: 70px;
   }
 }
-.nav > li > a.btn-hollow {
+#navbar-filter .excess-update .updateExcess {
   padding: 4px;
   margin-top: 7px;
   font-size: 10px;
   padding-left: 10px;
   padding-right: 10px;
-}
-#navbar-filter li > a.btn-hollow {
-  border-color: #fff;
+  border-color: #ffffff;
 }
 .quoteSummary {
   padding-left: 15px;

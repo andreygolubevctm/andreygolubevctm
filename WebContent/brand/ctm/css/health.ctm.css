@@ -85,21 +85,6 @@ body > div > header a.bottombar .btn-call:hover {
   border-width: 1px;
   border-style: solid;
 }
-.sidebar .btn-call {
-  background-color: #0db14b;
-  color: #ffffff;
-}
-.sidebar .btn-call:hover,
-.sidebar .btn-call:focus {
-  background-color: #097833;
-  color: #ffffff;
-  outline: 0;
-}
-.sidebar .btn-call:active,
-.sidebar .btn-call.active {
-  background-color: #1c3e93;
-  color: #ffffff;
-}
 .bottombar .btn-call {
   background-color: #0db14b;
   color: #ffffff;
@@ -1339,7 +1324,7 @@ body > div > header a.bottombar .btn-call:hover {
     margin-top: 0;
   }
   .more-info-content .moreInfoMainDetails .phone:hover {
-    background-color: #0db14b;
+    background-color: #ffffff;
   }
 }
 .more-info-content .transactionID {

@@ -61,9 +61,13 @@
 				});
 
 				// Subscribe to the messageId changing
-				meerkat.messaging.subscribe(meerkat.modules.events.simplesMessage.MESSAGE_CHANGE, function idChange(obj) {
+				meerkat.messaging.subscribe(meerkat.modules.events.simplesMessage.MESSAGE_CHANGE, function messageChange(obj) {
 					// Store the ID
 					currentMessage = obj || false;
+
+					if (currentMessage.hasOwnProperty('transactionId')) {
+						currentTransactionId = currentMessage.transactionId;
+					}
 
 					updateMenu();
 				});
@@ -80,25 +84,6 @@
 				}
 
 			}
-
-			//
-			// Simples home page
-			//
-			var $checkSimplesHome = $('.simples-home');
-			if ($checkSimplesHome.length > 0) {
-				$('.message-getnext').on('click', function clickNext(event) {
-					event.preventDefault();
-
-					// Try to call the function from the parent so the modal overlays whole viewport (plus has access to different scope)
-					if (window.top.meerkat && window.top.meerkat.modules.simplesMessage) {
-						window.top.meerkat.modules.simplesMessage.getNextMessage();
-					}
-					else {
-						meerkat.modules.simplesMessage.getNextMessage();
-					}
-				});
-			}
-
 		});
 	}
 
@@ -224,18 +209,18 @@
 
 	function actionPostpone() {
 		meerkat.modules.dialogs.show({
-			title: 'Postpone message',
+			title: ' ',
 			buttons: [{
 				label: 'Cancel',
 				className: 'btn-cancel',
 				closeWindow: true
 			},
 			{
-				label: 'OK',
-				className: 'btn-save message-savebutton',
+				label: 'Postpone',
+				className: 'btn-save btn-cta message-savebutton',
 				closeWindow: false
 			}],
-			onOpen: function(id) {
+			onOpen: function postponeModalOpen(id) {
 				modalId = id;
 
 				var $modal = $('#'+modalId);
@@ -250,53 +235,75 @@
 					url: 'simples/ajax/message_statuses.json.jsp?parentStatusId=4',
 					dataType: 'json',
 					cache: true,
-					errorLevel: 'silent',
-					onSuccess: function onSuccess(json) {
-						updateModal(json, templatePostpone);
-					},
-					onError: function onError(obj, txt, errorThrown) {
-						updateModal(null, templatePostpone);
-					},
-					onComplete: function onComplete() {
-						// Enable button
-						$button.prop('disabled', false);
+					errorLevel: 'silent'
+				})
+				.done(function onSuccess(json) {
+					updateModal(json, templatePostpone);
+				})
+				.fail(function onError(obj, txt, errorThrown) {
+					updateModal(null, templatePostpone);
+				})
+				.always(function onComplete() {
+					// Enable button
+					$button.prop('disabled', false);
 
-						// Set up datepicker
-						var $picker = $modal.find('#postponedate');
-						$picker.datepicker({
-							clearBtn: false,
-							format: 'dd/mm/yyyy'
-						});
-						$picker.siblings('.input-group-addon').on('click', function(){
-							$picker.datepicker('show');
-						});
+					// Default values
+					$('#postponehour').val('04');
 
-						// Hook up save button
-						$button.on('click', function loadClick() {
-							$button.prop('disabled', true);
-							meerkat.modules.loadingAnimation.showInside($button, true);
+					// Set up datepicker
+					var $picker = $modal.find('#postponedate_calendar');
+					$picker.datepicker({
+						startDate: "+0d", // today
+						endDate: "+6m",   // 6 months
+						clearBtn: false,
+						format: 'yyyy-mm-dd'
+					})
+					.find('table').addClass('table');
 
-							var data = {
-								postponeDate: $modal.find('#postponedate').val(),
-								postponeTime: $modal.find('#postponetime').val(),
-								reasonStatusId: $modal.find('select').val(),
-								comment: $modal.find('textarea').val(),
-								assignToUser: $modal.find('#assigntome').is(':checked')
-							};
+					// Put datepicker value into field
+					$modal.on('changeDate', $picker, function picker(e) {
+						$modal.find('#postponedate').val( e.format('yyyy-mm-dd') );
+					});
 
-							meerkat.modules.simplesMessage.performFinish('postpone', data, function performCallback() {
-								// Click the nav bar home button
-								if ($homeButton.length > 0) $homeButton[0].click();
+					// Hook up save button
+					$button.on('click', function saveClick() {
+						$button.prop('disabled', true);
+						meerkat.modules.loadingAnimation.showInside($button, true);
 
-								// Clean up
-								meerkat.modules.dialogs.close(modalId);
-							},
-							function callbackError() {
-								$button.prop('disabled', false);
-								meerkat.modules.loadingAnimation.hide($button);
+						var data = {
+							postponeDate: $modal.find('#postponedate').val(),
+							postponeTime: $modal.find('#postponehour').val() + ':' + $modal.find('#postponeminute').val(),
+							postponeAMPM: $modal.find('input[name="postponeampm"]:checked').val(),
+							reasonStatusId: $modal.find('select[name="reason"]').val(),
+							comment: $modal.find('textarea').val(),
+							assignToUser: $modal.find('#assigntome').is(':checked')
+						};
+
+						// Validation checks
+						if ((!_.isString(data.postponeDate) || data.postponeDate.length === 0) || (!_.isString(data.postponeAMPM) || data.postponeAMPM.length === 0)) {
+							meerkat.modules.dialogs.show({
+								title: ' ',
+								htmlContent: 'Please check fields: date, time and AM/PM.',
+								buttons: [{ label: 'OK', className: 'btn-cta', closeWindow: true }]
 							});
+
+							$button.prop('disabled', false);
+							meerkat.modules.loadingAnimation.hide($button);
+							return;
+						}
+
+						meerkat.modules.simplesMessage.performFinish('postpone', data, function performCallback() {
+							// Click the nav bar home button
+							if ($homeButton.length > 0) $homeButton[0].click();
+
+							// Clean up
+							meerkat.modules.dialogs.close(modalId);
+						},
+						function callbackError() {
+							$button.prop('disabled', false);
+							meerkat.modules.loadingAnimation.hide($button);
 						});
-					}
+					});
 				});
 			}
 		});

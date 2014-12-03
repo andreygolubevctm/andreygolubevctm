@@ -44,10 +44,10 @@
 						<c:forTokens delims="," items="${item.getResultPath()}" var="splitPath">
 							{{ var pathValue = Object.byString( obj, '${splitPath}' ) }}
 							{{ if( pathValue ){ }}
-								{{= Features.parseFeatureValue( pathValue ) }}
+								<div>{{= Features.parseFeatureValue( pathValue ) }}</div>
+							{{ } else { }}
+								{{= "&nbsp;" }}
 							{{ } }}
-							<c:set var="separator"><br/></c:set>
-							${separator}
 						</c:forTokens>
 					</c:when>
 					<c:otherwise>

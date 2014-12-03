@@ -71,7 +71,10 @@
 	.productName {
 		margin:	20px 0;
 		@media(@xs-only) {
-			margin-top: 0;
+			margin-top: 25px;
+		}
+		@media(max-width: 480px) {
+			margin-top: 15px !important;
 		}
 	}
 
@@ -191,7 +194,7 @@
 		margin-top:10px;
 	}
 	.border-top {
-		border-top: 1px solid @theme-default;
+		border-top: 1px solid @car-call-modal-border-top;
 	}
 	.prefer-callback-text {
 		.text-right;

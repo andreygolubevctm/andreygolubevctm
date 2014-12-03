@@ -560,33 +560,31 @@
 @btn-hollow-red-active-bg-color: @btn-hollow-red-bg-color;
 @btn-hollow-red-active-border-color: @btn-hollow-red-active-color;
 
-//(Hollow, with background contrast inverse mode parent select check)
-//** Hollow button variant btn-hollow is set on the above to undo the removal of border
-// - border & text colour set from background colour and background set to transparent.
-@btn-call-color: @theme-secondary;
-@btn-call-bg-color: transparent;
-@btn-call-border-color: @btn-call-color;
+// Call button on the sidebar.
+@btn-call-color: #FFF;
+@btn-call-bg-color: @theme-secondary;
+@btn-call-border-color: @btn-call-bg-color;
 
-@btn-call-hover-color: darken(@btn-call-color, 12%);
-@btn-call-hover-bg-color: @btn-call-bg-color;
-@btn-call-hover-border-color: @btn-call-hover-color;
+@btn-call-hover-color: @btn-call-color;
+@btn-call-hover-bg-color: darken(@btn-call-bg-color, 12%);
+@btn-call-hover-border-color: @btn-call-hover-bg-color;
 
-@btn-call-active-color: @theme-tertiary;
+@btn-call-active-color: @btn-call-color;
 @btn-call-active-bg-color: @btn-call-bg-color;
-@btn-call-active-border-color: @btn-call-active-color;
+@btn-call-active-border-color: @btn-call-active-bg-color;
 
-//Turns out that we actually need a solid one too because - why not? - KV
-@btn-call-inverse-bg-color: @theme-secondary;
-@btn-call-inverse-color: contrast(@btn-call-inverse-bg-color);
-@btn-call-inverse-border-color: @btn-call-inverse-bg-color;
+// Transparent button.
+@btn-call-inverse-color: @theme-secondary;
+@btn-call-inverse-bg-color: transparent;
+@btn-call-inverse-border-color: @btn-call-inverse-color;
 
-@btn-call-inverse-hover-bg-color: darken(@btn-call-inverse-bg-color, 12%);
-@btn-call-inverse-hover-color: contrast(@btn-call-inverse-hover-bg-color);
-@btn-call-inverse-hover-border-color: @btn-call-inverse-hover-bg-color;
+@btn-call-inverse-hover-color: darken(@btn-call-inverse-color, 12%);
+@btn-call-inverse-hover-bg-color: @btn-call-inverse-bg-color;
+@btn-call-inverse-hover-border-color: @btn-call-inverse-hover-color;
 
-@btn-call-inverse-active-bg-color: @theme-tertiary;
-@btn-call-inverse-active-color: contrast(@btn-call-inverse-active-bg-color);
-@btn-call-inverse-active-border-color: @btn-call-inverse-active-bg-color;
+@btn-call-inverse-active-color: @theme-tertiary;
+@btn-call-inverse-active-bg-color: transparent;
+@btn-call-inverse-active-border-color: @btn-call-inverse-active-color;
 
 
 
@@ -904,18 +902,18 @@
 // Reset inverted navbar basics
 @navbar-inverse-color:                      #fff;
 @navbar-inverse-bg:                         @theme-secondary;
-@navbar-inverse-border:                     #097d35;
+@navbar-inverse-border:                     @theme-secondary;
 
 // Inverted navbar links
 @navbar-inverse-link-color:                 #fff;
 
 @navbar-inverse-link-hover-color:           #fff;
-@navbar-inverse-link-hover-bg:              #097d35;
+@navbar-inverse-link-hover-bg:              darken(@theme-secondary, 12%);
 
 @navbar-inverse-link-active-color:          @navbar-inverse-link-hover-color;
 @navbar-inverse-link-active-bg:             @navbar-inverse-link-hover-bg;
 
-@navbar-inverse-link-disabled-color:        #097d35;
+@navbar-inverse-link-disabled-color:        darken(@theme-secondary, 12%);
 @navbar-inverse-link-disabled-bg:           transparent;
 
 // Inverted navbar brand label
@@ -942,7 +940,7 @@
 // note: the name *additional* was literally decided on a coin toss.
 @navbar-additional-color:                      #fff;
 @navbar-additional-bg:                         @theme-tertiary;
-@navbar-additional-border:                     #097d35;
+@navbar-additional-border:                     @theme-secondary;
 
 // Inverted navbar links
 @navbar-additional-link-color:                 #fff;
@@ -1432,9 +1430,10 @@
 @well-text-help:              @text-color;
 @well-header-help:            @well-text-help;
 
-//** Info messaging
+//** Info / Reassurance messaging
 @well-bg-info:                @theme-secondary;
 @well-text-info:              @label-color;
+@well-header-info:            @label-color;
 
 //** Chatty (aka inline messaging)
 @well-bg-chatty:              @theme-tertiary;
@@ -1821,16 +1820,22 @@
 // Snapshot specific
 @snapshot-icon: @headings-color;
 
+// Travel specidic
+@travel-navbar-inverse-border: #097d35;
+
 // Car specific
-@car-quote-number: @brand-success;
-@car-call-number: @brand-success;
+@car-quote-number: @theme-secondary;
+@car-call-number: @theme-secondary;
 @car-results-minor-text: @gray-light;
 @car-results-no-quote-text: @theme-tertiary;
+@car-call-modal-border-top: @theme-default;
 
 // Home & Contents
 @hnc-results-no-quote-text: @theme-tertiary;
 @home-quote-number: @gray-light;
 @home-call-number: @theme-tertiary;
+@home-call-modal-border-top: @theme-default;
+@home-update-btn-border: #fff;
 
 // ctm has no iframe up top
 @page-offset-xs : 0px;

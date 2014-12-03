@@ -85,21 +85,6 @@ body > div > header a.bottombar .btn-call:hover {
   border-width: 1px;
   border-style: solid;
 }
-.sidebar .btn-call {
-  background-color: #417fd0;
-  color: #ffffff;
-}
-.sidebar .btn-call:hover,
-.sidebar .btn-call:focus {
-  background-color: #2a61aa;
-  color: #ffffff;
-  outline: 0;
-}
-.sidebar .btn-call:active,
-.sidebar .btn-call.active {
-  background-color: #1d4a82;
-  color: #ffffff;
-}
 .bottombar .btn-call {
   background-color: #417fd0;
   color: #ffffff;
@@ -312,10 +297,11 @@ body > div > header a.bottombar .btn-call:hover {
 .result small {
   font-style: italic;
 }
-.modal-header .heading,
-.modal-body .heading {
+.offer-terms-modal .modal-header .heading,
+.offer-terms-modal .modal-body .heading {
   margin-left: 105px;
   margin-top: 5px;
+  margin-bottom: 5px;
 }
 .frequencyAmount {
   color: #417fd0;
@@ -369,10 +355,10 @@ body > div > header a.bottombar .btn-call:hover {
   .result .btn-more-info {
     margin-top: 10px;
   }
-  .modal-header .heading,
-  .modal-body .heading,
-  .modal-header h2,
-  .modal-body h2 {
+  .offer-terms-modal .modal-header .heading,
+  .offer-terms-modal .modal-body .heading,
+  .offer-terms-modal .modal-header h2,
+  .offer-terms-modal .modal-body h2 {
     margin-left: 105px;
     margin-top: 5px;
   }
@@ -419,13 +405,20 @@ body > div > header a.bottombar .btn-call:hover {
   .priceMode .priceMode .specialConditions {
     margin-left: 0;
   }
-  .modal-header .heading,
-  .modal-body .heading,
-  .modal-header h2,
-  .modal-body h2 {
+  .offer-terms-modal .modal-header .heading,
+  .offer-terms-modal .modal-body .heading,
+  .offer-terms-modal .modal-header h2,
+  .offer-terms-modal .modal-body h2 {
     margin-left: 105px;
-    margin-top: 35px;
+    margin-top: 25px;
     margin-bottom: 40px;
+  }
+}
+@media (max-width: 480px) {
+  .offer-terms-modal .modal-header h2,
+  .offer-terms-modal .modal-body h2 {
+    margin-top: 15px !important;
+    margin-bottom: 30px !important;
   }
 }
 .featuresMode {
@@ -780,7 +773,13 @@ body > div > header a.bottombar .btn-call:hover {
 @media (max-width: 767px) {
   .more-info-content .productName,
   .call-modal .productName {
-    margin-top: 0;
+    margin-top: 25px;
+  }
+}
+@media (max-width: 480px) {
+  .more-info-content .productName,
+  .call-modal .productName {
+    margin-top: 15px !important;
   }
 }
 .more-info-content .paragraphedContent,
@@ -1080,28 +1079,14 @@ body > div > header a.bottombar .btn-call:hover {
   background-repeat: no-repeat;
   padding: 0;
   display: block;
-  width: 301px;
-  height: 127px;
-  background-image: url("../competition/Fuel-Promo-August-2014.png");
+  width: 300px;
+  height: 160px;
+  background-image: url("../competition/car-$1000-offer.png");
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
   .car .carPromoImage {
-    background-image: url("../competition/Fuel-Promo-August-2014@2x.png");
-    background-size: 301px 127px;
-  }
-}
-.car .carPromoImageCashOctober {
-  background-repeat: no-repeat;
-  padding: 0;
-  display: block;
-  width: 302px;
-  height: 170px;
-  background-image: url("../competition/Car-Cash-Promo-October-2014.png");
-}
-@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
-  .car .carPromoImageCashOctober {
-    background-image: url("../competition/Car-Cash-Promo-October-2014@2x.png");
-    background-size: 302px 170px;
+    background-image: url("../competition/car-$1000-offer@2x.png");
+    background-size: 300px 160px;
   }
 }
 .car .input-group-addon {

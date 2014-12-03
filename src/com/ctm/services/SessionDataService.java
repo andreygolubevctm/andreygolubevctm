@@ -42,7 +42,7 @@ public class SessionDataService {
 	 *
 	 * @param session
 	 */
-	public static AuthenticatedData getAuthenticatedSessionData(HttpServletRequest request) {
+	public AuthenticatedData getAuthenticatedSessionData(HttpServletRequest request) {
 		SessionData sessionData = getSessionDataFromSession(request);
 		return sessionData.getAuthenticatedSessionData();
 	}
@@ -52,7 +52,7 @@ public class SessionDataService {
 	 *
 	 * @param session
 	 */
-	public static SessionData getSessionDataFromSession(HttpServletRequest request) {
+	public SessionData getSessionDataFromSession(HttpServletRequest request) {
 		return getSessionDataFromSession(request, true);
 	}
 
@@ -62,7 +62,7 @@ public class SessionDataService {
 	 * @param session
 	 * @param touchSession
 	 */
-	public static SessionData getSessionDataFromSession(HttpServletRequest request, boolean touchSession) {
+	public SessionData getSessionDataFromSession(HttpServletRequest request, boolean touchSession) {
 		HttpSession session = request.getSession();
 
 		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
@@ -79,7 +79,7 @@ public class SessionDataService {
 	 *
 	 * @param session
 	 */
-	public static void setSessionDataToNewSession(HttpServletRequest request) {
+	public void setSessionDataToNewSession(HttpServletRequest request) {
 		request.getSession().setAttribute("sessionData", new SessionData());
 	}
 
@@ -90,7 +90,7 @@ public class SessionDataService {
 	 * @param request
 	 * @return newSession
 	 */
-	public static Data addNewTransactionDataToSession(HttpServletRequest request) throws DaoException {
+	public Data addNewTransactionDataToSession(HttpServletRequest request) throws DaoException {
 
 		SessionData sessionData = getSessionDataFromSession(request);
 
@@ -130,7 +130,7 @@ public class SessionDataService {
 	 * @param searchPreviousIds
 	 * @throws SessionException
 	 */
-	public static Data getDataForTransactionId(HttpServletRequest request, String transactionId, boolean searchPreviousIds) throws DaoException, SessionException {
+	public Data getDataForTransactionId(HttpServletRequest request, String transactionId, boolean searchPreviousIds) throws DaoException, SessionException {
 
 		SessionData sessionData = getSessionDataFromSession(request);
 		if (sessionData == null ) {
@@ -188,7 +188,7 @@ public class SessionDataService {
 	 * @param session
 	 * @param transactionId
 	 */
-	public static void removeSessionForTransactionId(HttpServletRequest request, String transactionId) {
+	public void removeSessionForTransactionId(HttpServletRequest request, String transactionId) {
 		SessionData sessionData = getSessionDataFromSession(request);
 		Data data = sessionData.getSessionDataForTransactionId(transactionId);
 		if(data != null) sessionData.getTransactionSessionData().remove(data);
@@ -199,7 +199,7 @@ public class SessionDataService {
 	 *
 	 * @param sessionData
 	 */
-	public static void cleanUpSessions(SessionData sessionData) {
+	public void cleanUpSessions(SessionData sessionData) {
 		ArrayList<Data> transactionSessions = sessionData.getTransactionSessionData();
 
 		Collections.sort(transactionSessions);
@@ -233,7 +233,7 @@ public class SessionDataService {
 	 * @param transactionId
 	 * @return Date
 	 */
-	public static long getLastSessionTouchTimestamp(HttpServletRequest request) {
+	public long getLastSessionTouchTimestamp(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if(session == null || session.isNew()) return -1;
 		
@@ -249,7 +249,7 @@ public class SessionDataService {
 	 * @param request
 	 * @return
 	 */
-	public static Date getLastSessionTouch(HttpServletRequest request) throws NullPointerException {
+	public Date getLastSessionTouch(HttpServletRequest request) throws NullPointerException {
 		SessionData sessionData = getSessionDataFromSession(request, false);
 		return sessionData.getLastSessionTouch();
 	}
@@ -258,7 +258,7 @@ public class SessionDataService {
 	 * Touch the session
 	 * @param request
 	 */
-	public static void touchSession(HttpServletRequest request){
+	public void touchSession(HttpServletRequest request){
 		getSessionDataFromSession(request);
 	}
 
@@ -266,7 +266,7 @@ public class SessionDataService {
 	 * Get the client's next expected timeout (for JS timeout)
 	 * @param request
 	 */
-	public static long getClientSessionTimeout(HttpServletRequest request) {
+	public long getClientSessionTimeout(HttpServletRequest request) {
 		SessionData sessionData = getSessionDataFromSession(request, false);
 
 		long now = new Date().getTime();
@@ -284,7 +284,7 @@ public class SessionDataService {
 	 * @param cookieName
 	 * @return cookie value
 	 */
-	public static String getCookieByName(HttpServletRequest request, String cookieName) {
+	public String getCookieByName(HttpServletRequest request, String cookieName) {
 		Cookie[] cookies = request.getCookies();
 		if(cookies != null) {
 			for(Cookie cookie : cookies) {
@@ -302,11 +302,11 @@ public class SessionDataService {
 	 * @param request
 	 * @param shouldEnd
 	 */
-	public static long getClientDefaultExpiryTimeout(HttpServletRequest request) {
+	public long getClientDefaultExpiryTimeout(HttpServletRequest request) {
 		return ((request.getSession(false).getMaxInactiveInterval() / 60) - SESSION_EXPIRY_DIFFERENCE) * 60 * 1000;
 	}
 
-	public static void setShouldEndSession(HttpServletRequest request, boolean shouldEnd) {
+	public void setShouldEndSession(HttpServletRequest request, boolean shouldEnd) {
 		SessionData sessionData = getSessionDataFromSession(request, false);
 		sessionData.setShouldEndSession(shouldEnd);
 	}

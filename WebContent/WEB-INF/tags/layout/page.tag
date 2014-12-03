@@ -124,7 +124,7 @@
 
 			<div class="dynamicTopHeaderContent">
 				<content:get key="topHeaderContent" />
-					<c:if test="${userAgentSniffer.isSupportedBrowser(pageContext.getRequest()) eq false}">
+					<c:if test="${userAgentSniffer.isSupportedBrowser(pageContext.getRequest(), 'minimumSupportedBrowsers') eq false}">
 						<div class="top-bar">
 							<a href="http://browsehappy.com/" target="_blank" class="hidden-xs">
 								Please be aware that any issues you experience on our site could be due to the browser you are using. You may be able to fix these issues by updating your browser.
@@ -260,9 +260,9 @@
 						<%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
 						urls:{
 							base: '${fn:toLowerCase(pageSettings.getBaseUrl())}',
-							exit: '${fn:toLowerCase(pageSettings.getSetting("exitUrl"))}'
+							exit: '${fn:toLowerCase(pageSettings.getSetting("exitUrl"))}',
+							context: '/${fn:toLowerCase(pageSettings.getContextFolder())}'
 						},
-						userTrackingEnabled: ${isUserTrackingEnabled},
 						watchedFields: '<content:get key="watchedFields"/>',
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'
@@ -271,7 +271,8 @@
 						tracking:{
 							brandCode: '${pageSettings.getBrandCode()}',
 							superTagEnabled: ${superTagEnabled},
-							DTMEnabled: ${DTMEnabled}
+							DTMEnabled: ${DTMEnabled},
+							userTrackingEnabled: ${isUserTrackingEnabled}
 						},
 						leavePageWarning: {
 							enabled: ${pageSettings.getSetting("leavePageWarningEnabled")},

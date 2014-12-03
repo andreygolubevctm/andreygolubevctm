@@ -68,7 +68,7 @@ $.validator.addMethod("validateSuburbPostcodeState",
 <%-- NOTE: situation and goal values need to be kept in sync with com.ctm.model.homeloan.HomeLoanProductSearchRequest
 
 TODO F=Looking to Re-enter the Market to be added post relaunch
- --%>
+--%>
 <form_new:fieldset legend="Your Situation" >
 	<form_new:row label="I am">
 
@@ -92,12 +92,12 @@ TODO F=Looking to Re-enter the Market to be added post relaunch
 		</form_new:row>
 		<div id="${name}_currentLoanToggleArea" class="${name}_currentLoanToggleArea show_${displayCurrentLoan}">
 			<form_new:row label="How much do you have owing on your existing home loan(s)?">
-				<field_new:currency xpath="${xpath}/amountOwing" decimal="${false}" defaultValue="" title="Existing home loan" required="true" maxValue="1000000000" />
+				<field_new:currency xpath="${xpath}/amountOwing" decimal="${false}" defaultValue="" title="Existing home loan" required="true" maxValue="1000000000" pattern="[0-9]*" />
 			</form_new:row>
 		</div>
 
 		<form_new:row label="What is the current value of your existing property(ies)?">
-			<field_new:currency xpath="${xpath}/assetAmount" title="Current property value" decimal="${false}" defaultValue="" required="true" maxValue="1000000000" />
+			<field_new:currency xpath="${xpath}/assetAmount" title="Current property value" decimal="${false}" defaultValue="" required="true" maxValue="1000000000" pattern="[0-9]*" />
 		</form_new:row>
 	</div>
 

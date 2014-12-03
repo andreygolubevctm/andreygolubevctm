@@ -9,18 +9,24 @@ BEGIN
 -- NOTE: Please ensure that any changes to this procedure are recorded via SVN.
 -- -----------------------------
 
+	DECLARE bDone INT;
+	DECLARE count INT;
+	DECLARE insertedCount INT;
+
 	DECLARE _tranId INT UNSIGNED;
 	DECLARE _sourceId INT;
+	DECLARE _sourceName VARCHAR(45);
 	DECLARE _phoneNumber1 VARCHAR(15);
 	DECLARE _phoneNumber2 VARCHAR(15);
 	DECLARE _contactName VARCHAR(255);
 	DECLARE _state VARCHAR(3);
 
-	DECLARE bDone INT;
-	DECLARE count INT;
-	DECLARE insertedCount INT;
-	DECLARE TransactionsCursor CURSOR FOR
+	DECLARE SourcesCursor CURSOR FOR
+		SELECT id, `name` FROM simples.message_source
+		WHERE active = 1
+		ORDER BY priority ASC;
 
+	DECLARE TransactionsCursor CURSOR FOR
 	SELECT MAX(transactionId) AS transactionId, sourceId, phoneNumber1, phoneNumber2, contactName, state
 	FROM (
 		-- Put any filtering rules here
@@ -79,13 +85,28 @@ BEGIN
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET bDone = 1;
 
 -- -----------------------------
--- This procedure is scheduled to execute the following fetches:
+-- Populate a temp table using any active sources.
 -- -----------------------------
 
-	CALL simples.fetch_hlt_wday_shown;
-	CALL simples.fetch_hlt_wday_noapp;
-	CALL simples.fetch_hlt_wday_noresults;
+	OPEN SourcesCursor;
+	SET bDone = 0;
+	REPEAT
+		-- Fetch the row's columns into variables
+		FETCH SourcesCursor INTO _sourceId, _sourceName;
 
+		IF bDone = 0 THEN
+			-- Execute the source's stored procedure
+			SET @sql := concat('CALL simples.', _sourceName, '(', _sourceId, ');');
+			PREPARE stmt FROM @sql;
+			EXECUTE stmt;
+			DEALLOCATE PREPARE stmt;
+		END IF;
+	UNTIL bDone
+	END REPEAT;
+	CLOSE SourcesCursor;
+
+-- -----------------------------
+-- Iterate the temp table and create messages.
 -- -----------------------------
 
 	OPEN TransactionsCursor;

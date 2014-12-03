@@ -5,7 +5,7 @@
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}/filter/loanDetails" />
 
 <%-- HTML --%>
-<div class="homeloan-filter-fees">
+<div class="homeloan-filter-loan-type">
 	<field_new:checkbox xpath="${xpath}/productFixed" value="Fixed"
 				title="Fixed"
 				required="false"

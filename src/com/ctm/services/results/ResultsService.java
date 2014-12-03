@@ -152,7 +152,7 @@ public class ResultsService {
 
 	public String getResultItemsAsJsonString(String vertical, String type) throws SQLException {
 		List<ResultsSimpleItem> list = getResultItemsAsList(vertical, type);
-		System.out.println(JSONArray.toJSONString(list));
+		logger.debug(JSONArray.toJSONString(list));
 		return JSONArray.toJSONString(list);
 	}
 

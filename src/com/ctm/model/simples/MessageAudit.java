@@ -12,6 +12,8 @@ import com.ctm.model.AbstractJsonModel;
  *
  */
 public class MessageAudit extends AbstractJsonModel {
+	public static final String JSON_COLLECTION_NAME = "messageaudits";
+
 	private int id;
 	private int messageId;
 	private int userId;

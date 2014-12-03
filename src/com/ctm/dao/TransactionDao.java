@@ -30,16 +30,18 @@ public class TransactionDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT th.rootId, LOWER(th.ProductType) AS vertical, th.styleCodeId, styleCodeName,  EmailAddress " +
+				"SELECT th.rootId, LOWER(th.ProductType) AS vertical, th.styleCodeId, styleCodeName,  th.EmailAddress, MAX(th2.transactionId) AS newestTransactionId " +
 				"FROM aggregator.transaction_header th " +
 				"LEFT JOIN ctm.stylecodes style ON style.styleCodeId = th.styleCodeId " +
-				"WHERE TransactionId = ?"
+				"LEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId " +
+				"WHERE th.TransactionId = ?"
 			);
 			stmt.setLong(1, transaction.getTransactionId());
 
 			ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
+				transaction.setNewestTransactionId(results.getLong("newestTransactionId"));
 				transaction.setRootId(results.getLong("rootId"));
 				transaction.setVerticalCode(results.getString("vertical"));
 				transaction.setStyleCodeId(results.getInt("styleCodeId"));

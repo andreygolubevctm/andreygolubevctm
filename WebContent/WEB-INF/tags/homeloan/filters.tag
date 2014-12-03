@@ -31,7 +31,7 @@
 						<div><label>Loan Amount</label></div>
 					</div>
 					<div id="filter-loan-amount" data-filter-type="text" data-filter-serverside="true" class="col-sm-3">
-						<field_new:currency xpath="${xpath}/filter/loanDetails/loanAmount" title="Loan Amount" decimal="${false}" required="false" />
+						<field_new:currency xpath="${xpath}/filter/loanDetails/loanAmount" title="Loan Amount" decimal="${false}" required="false"  pattern="[0-9]*" />
 					</div>
 
 					<div class="filter-label col-sm-2">
@@ -60,12 +60,10 @@
 			<div class="col-md-6 filter">
 				<div class="row">
 					<div class="filter-label col-sm-3">
-						<div><label>Repayment Options</label></div>
+						<div><label>Repayment Options*</label></div>
 					</div>
 					<div id="filter-repaymentFrequency" data-filter-type="radio" data-filter-serverside="true" class="col-sm-9">
 						<field_new:array_radio xpath="${xpath}/filter/results/repaymentFrequency" title="Repayments" items="weekly=Weekly,fortnightly=Fortnightly,monthly=Monthly" required="false" />
-						<%-- TO BE REMOVED ONCE SERVICE RETURNS PROPER REPAYMENT AMOUNTS. ALSO REMOVE disclaimer-negative-margin and CSS in filters.less --%>
-						<br /><p class="small"><content:get key="repaymentFrequencyDisclaimer"/></p>
 					</div>
 				</div>
 			</div>
@@ -105,12 +103,20 @@
 					</div>
 				</div>
 			</div>
+		<%-- TO BE REMOVED ONCE SERVICE RETURNS PROPER REPAYMENT AMOUNTS. --%>
+		<div class="col-xs-12 col-md-6">
 
+		</div>
 		</div><%-- /scrollable --%>
 
-		<div class="footer">
-			<button type="button" class="btn btn-cancel popover-mode">Cancel</button>
-			<button type="button" class="btn btn-save popover-mode">Save changes</button>
+		<div class="footer row">
+			<div class="col-xs-12 col-sm-8">
+				<p class="small">* <content:get key="repaymentFrequencyDisclaimer"/></p>
+			</div>
+			<div class="col-xs-4">
+				<button type="button" class="btn btn-cancel popover-mode">Cancel</button>
+				<button type="button" class="btn btn-save popover-mode">Save changes</button>
+			</div>
 		</div>
 
 	</form>

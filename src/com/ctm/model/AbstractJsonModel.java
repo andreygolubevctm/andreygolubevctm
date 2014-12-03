@@ -2,6 +2,7 @@ package com.ctm.model;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +10,7 @@ import org.json.JSONObject;
 import com.ctm.model.formatter.JsonFormatter;
 import com.ctm.model.formatter.JsonUtils;
 
+@JsonIgnoreProperties({"errors"})
 public abstract class AbstractJsonModel implements JsonFormatter {
 
 	private static Logger logger = Logger.getLogger(AbstractJsonModel.class.getName());

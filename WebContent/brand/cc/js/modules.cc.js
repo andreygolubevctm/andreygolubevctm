@@ -6822,70 +6822,34 @@ meerkat.logging.init = function() {
             }
         });
     }
-    function recordDTM(method, object) {
-        var value;
+    function recordDTM(method, value) {
         try {
             if (typeof _satellite === "undefined") {
                 throw "_satellite is undefined";
             }
-            if (typeof object === "function") {
-                value = object();
-            } else {
-                value = object;
-            }
-            value = updateObjectData(value);
-            var deferred = $.Deferred().resolve().promise();
-            if (value.email !== null && value.email !== "" && value.emailID === null) {
-                deferred = getEmailId(value.email, value.marketOptIn, value.okToCall).done(function(result) {
-                    if (typeof result.emailId !== "undefined") {
-                        value.emailID = result.emailId;
-                        value.email = null;
-                    }
-                });
-            }
-            deferred.always(function() {
-                for (var key in value) {
-                    if (value.hasOwnProperty(key) && typeof value[key] !== "function") {
-                        if (value[key] !== null) {
-                            var setVarValue = typeof value[key] === "string" ? value[key].toLowerCase() : value[key];
-                            _satellite.setVar(key, setVarValue);
-                        } else {
-                            _satellite.setVar(key, "");
-                        }
+            for (var key in value) {
+                if (value.hasOwnProperty(key) && typeof value[key] !== "function") {
+                    if (value[key] !== null) {
+                        var setVarValue = typeof value[key] === "string" ? value[key].toLowerCase() : value[key];
+                        _satellite.setVar(key, setVarValue);
+                    } else {
+                        _satellite.setVar(key, "");
                     }
                 }
-                meerkat.logging.info("DTM", method, value);
-                _satellite.track(method);
-            });
+            }
+            meerkat.logging.info("DTM", method, value);
+            _satellite.track(method);
         } catch (e) {
             meerkat.logging.info("_satellite catch", method, value, e);
         }
     }
-    function recordSupertag(method, object) {
-        var value;
+    function recordSupertag(method, value) {
         try {
             if (typeof superT === "undefined") {
                 throw "Supertag is undefined";
             }
-            if (typeof object === "function") {
-                value = object();
-            } else {
-                value = object;
-            }
-            value = updateObjectData(value);
-            var deferred = $.Deferred().resolve().promise();
-            if (value.email !== null && value.email !== "" && value.emailID === null) {
-                deferred = getEmailId(value.email, value.marketOptIn, value.okToCall).done(function(result) {
-                    if (typeof result.emailId !== "undefined") {
-                        value.emailID = result.emailId;
-                        value.email = null;
-                    }
-                });
-            }
-            deferred.always(function(result) {
-                superT[method](value);
-                meerkat.logging.info("Supertag", method, value);
-            });
+            superT[method](value);
+            meerkat.logging.info("Supertag", method, value);
         } catch (e) {
             meerkat.logging.info("Supertag catch", method, value, e);
         }
@@ -6899,6 +6863,7 @@ meerkat.logging.init = function() {
                 m: marketing,
                 o: oktocall
             },
+            cache: true,
             errorLevel: "silent"
         });
     }
@@ -6948,17 +6913,41 @@ meerkat.logging.init = function() {
         meerkat.messaging.subscribe(moduleEvents.EXTERNAL, function(eventObject) {
             if (typeof eventObject === "undefined") return;
             if (typeof meerkat.site.tracking !== "object") meerkat.site.tracking = {};
-            if (meerkat.site.tracking.superTagEnabled === true) {
-                recordSupertag(eventObject.method, eventObject.object);
+            var values, object = eventObject.object;
+            if (meerkat.site.tracking.superTagEnabled === true || meerkat.site.tracking.DTMEnabled === true) {
+                if (typeof object === "function") {
+                    values = object();
+                    values = updateObjectData(values);
+                } else {
+                    values = updateObjectData(object);
+                }
+            } else {
+                values = updateObjectData(object);
             }
-            if (meerkat.site.tracking.DTMEnabled === true) {
-                recordDTM(eventObject.method, eventObject.object);
+            var deferred = $.Deferred().resolve().promise();
+            if (typeof values === "object") {
+                if (values.email !== null && values.email !== "" && values.emailID === null) {
+                    deferred = getEmailId(values.email, values.marketOptIn, values.okToCall).done(function(result) {
+                        if (typeof result.emailId !== "undefined") {
+                            values.emailID = result.emailId;
+                            values.email = null;
+                        }
+                    });
+                }
             }
+            deferred.always(function() {
+                if (meerkat.site.tracking.superTagEnabled === true) {
+                    recordSupertag(eventObject.method, values);
+                }
+                if (meerkat.site.tracking.DTMEnabled === true) {
+                    recordDTM(eventObject.method, values);
+                }
+            });
         });
         $(document).ready(function() {
             setCurrentJourney();
             initLastFieldTracking();
-            if (meerkat.site.userTrackingEnabled === true) {
+            if (typeof meerkat !== "undefined" && typeof meerkat.site !== "undefined" && typeof meerkat.site.tracking !== "undefined" && meerkat.site.tracking.userTrackingEnabled === true) {
                 meerkat.modules.utilities.pluginReady("sessionCamRecorder").done(function() {
                     initUserTracking();
                 });
@@ -6988,6 +6977,7 @@ meerkat.logging.init = function() {
         if (typeof object.currentJourney === "undefined") {
             object.currentJourney = getCurrentJourney();
         }
+        object.trackingKey = meerkat.modules.trackingKey.get();
         object.lastFieldTouch = lastFieldTouch;
         return object;
     }
@@ -7006,6 +6996,25 @@ meerkat.logging.init = function() {
             value: meerkat.modules.transactionId.get()
         };
         window.sessioncamConfiguration.customDataObjects.push(item);
+        item = {
+            key: "brandCode",
+            value: meerkat.site.tracking.brandCode
+        };
+        item = {
+            key: "vertical",
+            value: meerkat.site.vertical
+        };
+        window.sessioncamConfiguration.customDataObjects.push(item);
+        item = {
+            key: "rootID",
+            value: meerkat.modules.transactionId.getRootId()
+        };
+        window.sessioncamConfiguration.customDataObjects.push(item);
+        item = {
+            key: "currentJourney",
+            value: getCurrentJourney
+        };
+        window.sessioncamConfiguration.customDataObjects.push(item);
     }
     meerkat.modules.register("tracking", {
         init: initTracking,
@@ -7015,6 +7024,48 @@ meerkat.logging.init = function() {
         updateLastFieldTouch: updateLastFieldTouch,
         applyLastFieldTouchListener: applyLastFieldTouchListener,
         getCurrentJourney: getCurrentJourney
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, trackingKey = null, $trackingKeyFld = null;
+    function init() {
+        $(document).ready(function() {
+            if (typeof ResultsModel != "undefined") {
+                var prefix = meerkat.site.vertical == "car" ? "quote" : meerkat.site.vertical;
+                var name = prefix + "_trackingKey";
+                $trackingKeyFld = $("#" + name);
+                if (!$trackingKeyFld.length) {
+                    $("#mainform").append($("<input />", {
+                        id: name,
+                        name: name,
+                        value: trackingKey
+                    }).attr("type", "hidden").attr("data-autosave", "true"));
+                } else {
+                    var key = $trackingKeyFld.val();
+                    if (!_.isEmpty(key)) {
+                        set(key);
+                    }
+                }
+                meerkat.messaging.subscribe(ResultsModel.moduleEvents.RESULTS_UPDATED_INFO_RECEIVED, update);
+            }
+        });
+    }
+    function update(data) {
+        if (data.hasOwnProperty("trackingKey")) {
+            set(data.trackingKey);
+        }
+    }
+    function set(key) {
+        trackingKey = key;
+        $trackingKeyFld.val(trackingKey);
+    }
+    function get() {
+        return trackingKey;
+    }
+    meerkat.modules.register("trackingKey", {
+        init: init,
+        get: get
     });
 })(jQuery);
 

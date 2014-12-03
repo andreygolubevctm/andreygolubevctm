@@ -85,21 +85,6 @@ body > div > header a.bottombar .btn-call:hover {
   border-width: 1px;
   border-style: solid;
 }
-.sidebar .btn-call {
-  background-color: #999999;
-  color: #ffffff;
-}
-.sidebar .btn-call:hover,
-.sidebar .btn-call:focus {
-  background-color: #7a7a7a;
-  color: #ffffff;
-  outline: 0;
-}
-.sidebar .btn-call:active,
-.sidebar .btn-call.active {
-  background-color: #999999;
-  color: #1c3e93;
-}
 .bottombar .btn-call {
   background-color: #0db14b;
   color: #ffffff;
@@ -860,10 +845,8 @@ div[class*="ToggleArea"].show_Y {
   text-transform: lowercase;
   color: #1c3e93;
 }
-@media (min-width: 768px) {
-  .homeloan .filters-component .disclaimer-negative-margin {
-    margin-top: -30px;
-  }
+.homeloan .filters-component .footer .small {
+  text-align: left;
 }
 .homeloan .filters-component .checkbox {
   margin-bottom: 0;

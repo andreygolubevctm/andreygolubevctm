@@ -18,7 +18,7 @@
 	<form_new:fieldset legend="Your New Home Loan">
 
 		<form_new:row label="How much can you contribute to the purchase of the new property?">
-			<field_new:currency xpath="${xpath}/contribution" title="your contribution amount" required="" maxValue="1000000000" />
+			<field_new:currency xpath="${xpath}/contribution" title="your contribution amount" required="" maxValue="1000000000" pattern="[0-9]*" />
 		</form_new:row>
 
 		<form_new:row label="Have you found a property?">

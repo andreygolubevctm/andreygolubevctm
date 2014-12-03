@@ -335,15 +335,14 @@
 						</ownProperty>
 						<xsl:choose>
 							<xsl:when test="occupancy/principalResidence='Y'">
-								<moveInDate>
 									<xsl:choose>
 										<xsl:when test="occupancy/whenMovedIn/year='NotAtThisAddress'"></xsl:when>
 										<xsl:otherwise>
-											<xsl:value-of select="occupancy/whenMovedIn/year" />
-											<xsl:if test="occupancy/whenMovedIn/month">-<xsl:value-of select="format-number(occupancy/whenMovedIn/month, '00')" /></xsl:if>
+								<moveInDate>
+											<xsl:value-of select="occupancy/whenMovedIn/year" /><xsl:if test="occupancy/whenMovedIn/month">-<xsl:value-of select="format-number(occupancy/whenMovedIn/month, '00')" /></xsl:if>
+								</moveInDate>
 										</xsl:otherwise>
 									</xsl:choose>
-								</moveInDate>
 							</xsl:when>
 							<xsl:otherwise>
 								<residenceUse>

@@ -38,7 +38,7 @@
 		</c:if>
 	</c:when>
 	<c:otherwise>
-		<c:redirect url="${pageSettings.getBaseUrl()}${redirectUrl}"/>
+		<c:redirect url="/${redirectUrl}"/>
 	</c:otherwise>
 </c:choose>
 

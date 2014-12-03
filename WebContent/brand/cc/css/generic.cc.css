@@ -98,21 +98,6 @@ body > div > header a.bottombar .btn-call:hover {
   border-width: 1px;
   border-style: solid;
 }
-.sidebar .btn-call {
-  background-color: #417fd0;
-  color: #ffffff;
-}
-.sidebar .btn-call:hover,
-.sidebar .btn-call:focus {
-  background-color: #2a61aa;
-  color: #ffffff;
-  outline: 0;
-}
-.sidebar .btn-call:active,
-.sidebar .btn-call.active {
-  background-color: #1d4a82;
-  color: #ffffff;
-}
 .bottombar .btn-call {
   background-color: #417fd0;
   color: #ffffff;

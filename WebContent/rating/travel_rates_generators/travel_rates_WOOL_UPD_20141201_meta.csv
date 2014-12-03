@@ -1,0 +1,6 @@
+CtM,provide_id,provider_name,provider_short_name,,,
+provider,80,Woolworths Travel Insurance,Woolworths Travel Insurance,,,
+products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?
+product,188,Basic,1,0,0,1
+product,189,Comprehensive,1,0,0,1
+product,190,Woolworths Travel Insurance AMT (30 Days),1,0,0,1

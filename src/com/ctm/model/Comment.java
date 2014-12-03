@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Comment extends AbstractJsonModel {
+	public static final String JSON_COLLECTION_NAME = "comments";
 
 	private int id;
 	private long transactionId;

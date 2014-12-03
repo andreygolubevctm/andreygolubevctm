@@ -85,21 +85,6 @@ body > div > header a.bottombar .btn-call:hover {
   border-width: 1px;
   border-style: solid;
 }
-.sidebar .btn-call {
-  background-color: #0db14b;
-  color: #ffffff;
-}
-.sidebar .btn-call:hover,
-.sidebar .btn-call:focus {
-  background-color: #097833;
-  color: #ffffff;
-  outline: 0;
-}
-.sidebar .btn-call:active,
-.sidebar .btn-call.active {
-  background-color: #1c3e93;
-  color: #ffffff;
-}
 .bottombar .btn-call {
   background-color: #0db14b;
   color: #ffffff;
@@ -115,8 +100,59 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #1c3e93;
   color: #ffffff;
 }
+/*
+
+This theme override is related to AGG-2135.
+It should be done globally to the CTM theme i.e. @btn-cta-xxx in ctm.variables.less but there are many tweaks to make at a vertical level.
+
+So it's going to be done progressively. Include this file in your framework.build.xxx.ctm.less to change the CTA button from orange to green.
+
+*/
+.btn-cta {
+  background-color: #0db14b;
+  color: #ffffff;
+  border-color: #0db14b;
+  border-width: 1px;
+  border-style: solid;
+}
+.btn-cta:hover,
+.btn-cta:focus {
+  background-color: #097833;
+  color: #ffffff;
+  outline: 0;
+  border-color: #097833;
+}
+.btn-cta:active,
+.btn-cta.active {
+  background-color: #1c3e93;
+  color: #ffffff;
+  border-color: #91aaea;
+}
+.btn-call {
+  background-color: #999999;
+  color: #ffffff;
+  border-color: #4d4d4d;
+  border-width: 1px;
+  border-style: solid;
+}
+.btn-call:hover,
+.btn-call:focus {
+  background-color: #7a7a7a;
+  color: #ffffff;
+  outline: 0;
+  border-color: #2e2e2e;
+}
+.btn-call:active,
+.btn-call.active {
+  background-color: #999999;
+  color: #1c3e93;
+  border-color: #1c3e93;
+}
 body.simples header {
   display: none;
+}
+body.simples .navbar-brand {
+  height: 40px;
 }
 body.simples .navbar-inverse {
   background-color: #002;
@@ -132,21 +168,32 @@ body.simples .dropdown-header {
   color: #1c3e93;
   font-weight: bold;
 }
+body.simples .dropdown-menu {
+  color: #4a4f51;
+}
+body.simples .dropdown-menu > .disabled > a {
+  color: #b2b2b2;
+}
 body.simples .dropdown-menu > li > a:hover,
-body.simples .dropdown-menu > li > a:focus {
+body.simples .dropdown-menu .dropdown-menu > li > a:focus {
   background-color: #f1f1f1;
 }
 body.simples .fieldset {
   margin-top: 20px;
 }
-body.simples .simples-home {
-  width: 100%;
-  text-align: center;
-  padding: 40px 0 20px;
+body.simples .table > tbody > tr > td,
+body.simples .table > tbody > tr > th {
+  border-top: 0;
 }
-body.simples .btn.btn-xlarge {
-  font-size: 1.3em;
-  margin-right: 10px;
+body.simples .simples-home {
+  padding: 20px 0;
+}
+body.simples .simples-home .simples-home-buttons {
+  text-align: center;
+  padding: 20px;
+}
+body.simples .simples-home .message-getnext + .message-inbound {
+  margin-left: 10px;
 }
 body.simples .messagedetail-container .comment-title-tranid,
 body.simples .messagedetail-container .comment-hideshow {
@@ -156,12 +203,31 @@ body.simples .messagedetail-container .comment-container,
 body.simples .messagedetail-container .touch-container {
   margin-top: 30px;
 }
-body.simples.modal-open .datepicker {
-  z-index: 1151 !important;
+body.simples .messagedetail-container .messagedetail-loadbutton {
+  margin-left: 30px;
+}
+body.simples .postpone-container .row + .row {
+  margin-top: 20px;
+}
+body.simples .postpone-container h5 {
+  font-size: 14px;
+}
+body.simples .postpone-container .datepicker.datepicker-inline {
+  border: none;
+}
+body.simples .postpone-container table.table > * > tr > td,
+body.simples .postpone-container table.table > * > tr > th {
+  padding: 5px;
+}
+body.simples .postpone-container table.table > * > tr:nth-child(odd) > td.active {
+  background-color: #0db14b;
 }
 @media (min-width: 768px) {
   body.simples .modal-header {
-    padding: 7.5px 15px;
+    padding: 15px 15px 7px;
+  }
+  body.simples .modal-title {
+    padding: 0;
   }
   body.simples .modal-body {
     padding: 0 15px 15px;
@@ -171,8 +237,17 @@ body.simples.modal-open .datepicker {
     width: 200px;
   }
 }
+body.simples table.table td {
+  word-break: break-word;
+}
+.modal h2 {
+  margin-top: 0;
+}
 .modal .search-quotes-result-row {
   margin-bottom: 2px;
+}
+.modal .search-quotes-result-row.bg-success {
+  background-color: #f1f1f1;
 }
 .modal .search-quotes-result-row > div {
   padding: 7.5px;
@@ -183,6 +258,7 @@ body.simples.modal-open .datepicker {
 .modal .search-quotes-results .label.pull-left {
   margin-right: 7.5px;
 }
+.modal .search-quotes-results h2,
 .modal .search-quotes-results h3 {
   font-size: 18px;
 }
@@ -207,4 +283,51 @@ body.simples.modal-open .datepicker {
 .modal table.table > * > tr:nth-child(odd) > td,
 .modal table.table > * > tr:nth-child(odd) > th {
   background-color: transparent;
+}
+.simples-postpone-queue {
+  padding: 20px 0;
+}
+.simples-postponed-message {
+  color: #4a4f51;
+  border: 1px solid #d4d4d4;
+  margin-bottom: 12px;
+  position: relative;
+}
+.simples-postponed-message.upcoming-reminder .reminder {
+  color: #a90000;
+}
+.simples-postponed-message.in-the-past {
+  background-color: #ffdcdc;
+  border-color: #a90000;
+  color: #a90000;
+}
+.simples-postponed-message:hover,
+.simples-postponed-message.disabled {
+  text-decoration: none;
+  color: #1c3e93;
+  border-color: #1c3e93;
+}
+.simples-postponed-message.active,
+.simples-postponed-message.active:hover {
+  background-color: #0db14b;
+  border-color: #0db14b;
+  color: #fff;
+}
+.simples-postponed-message.active .reminder,
+.simples-postponed-message.active:hover .reminder {
+  color: #fff;
+}
+.simples-postponed-message.disabled,
+.simples-postponed-message.active {
+  cursor: default;
+}
+.simples-postponed-message ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.simples-postponed-message .spinner {
+  position: absolute;
+  top: 0;
+  right: 8px;
 }

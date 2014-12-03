@@ -19,12 +19,7 @@
 	function init() {
 		$(document).ready(function() {
 
-			//
-			// Get the base URL from the siteConfig if defined
-			//
-			if (meerkat.site && typeof meerkat.site.urls !== 'undefined' && typeof meerkat.site.urls.base !== 'undefined') {
-				baseUrl = meerkat.site.urls.base;
-			}
+			baseUrl = meerkat.modules.simples.getBaseUrl();
 
 			//
 			// Capture links

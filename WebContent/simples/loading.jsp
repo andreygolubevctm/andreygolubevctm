@@ -15,7 +15,7 @@
 --%>
 <c:set var="url" value="${param.url}" />
 
-<a id="simples-nexturl" href="<c:out value="${url}" />"></a>
+<a id="simples-nexturl" href="<c:out value="${url}" />">...</a>
 
 <script>
 window.onload = function() {

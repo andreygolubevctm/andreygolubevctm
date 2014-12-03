@@ -20,7 +20,7 @@
 //XS modes:
 //-----------------------------------------------------------------------
 
-//NOTE: The extra optional text doesn't fit so it's nuked and then enabled only for the right breakpoints. 
+//NOTE: The extra optional text doesn't fit so it's nuked and then enabled only for the right breakpoints.
 //TODO: We could have used the visible-lg classes for example but these set block and we need inline blocks - and only bootstrap 3.2 has that and we're on 3.1. We'll upgrade and update this soon.
 .sortbar-children {
 	.navbar-brand span {
@@ -72,14 +72,13 @@
 				padding-left: 0;
 				padding-right: 0;
 				text-shadow: 0px 1px 0px @navbar-inverse-link-active-bg;
-				//border-right: 1px solid @navbar-inverse-border; //Move to ctm.variables.less
 				a {
-					padding-left: 10px;
-					padding-right: 10px;
+					padding-left: 9px;
+					padding-right: 9px;
 					font-size: 12px;
-					//border: 0 solid;
 					text-align: center;
 					text-transform: uppercase;
+					border-color: @travel-navbar-inverse-border;
 				}
 				.navbar-brand {
 					display: block;
@@ -91,13 +90,28 @@
 					}
 				}
 				&:first-child {
-					border-right: 1px solid @navbar-inverse-border;
+					border-right: 1px solid @travel-navbar-inverse-border;
+				}
+			}
+			&.navbar-inverse {
+				> li {
+					> a,
+					&.open > a,
+					a.active,
+					a:focus,
+					a:active,
+					&.open > a:focus {
+						border-right: 1px solid @travel-navbar-inverse-border;
+						&:hover {
+							border-color: @travel-navbar-inverse-border;
+						}
+					}
 				}
 			}
 		}
 
 		.active {
-			[data-sort-dir='asc']:before {	
+			[data-sort-dir='asc']:before {
 				position: absolute;
 				width: 0;
 				height: 0;
@@ -105,10 +119,7 @@
 				left: 50%;
 				content: '';
 				margin-left: -@sortbar-arrow-width;
-				border-color: transparent;
-				border-style: solid;
-				border-width: 0 @sortbar-arrow-width @sortbar-arrow-width;
-				border-bottom-color: @sortbar-arrow-asc-color;
+				border-color: @travel-navbar-inverse-border;
 			}
 			[data-sort-dir='desc']:before {
 				position: absolute;
@@ -118,10 +129,7 @@
 				left: 50%;
 				content: '';
 				margin-left: -@sortbar-arrow-width;
-				border-color: transparent;
-				border-style: solid;
-				border-width: @sortbar-arrow-width @sortbar-arrow-width 0;
-				border-top-color: @sortbar-arrow-desc-color;
+				border-color: @travel-navbar-inverse-border;
 			}
 		}
 	}

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
-<jsp:useBean id="simplesService" class="com.ctm.services.SimplesService" scope="page" />
+<jsp:useBean id="simplesService" class="com.ctm.services.simples.SimplesBlacklistService" scope="page" />
 <settings:setVertical verticalCode="SIMPLES" />
 <session:getAuthenticated />
 

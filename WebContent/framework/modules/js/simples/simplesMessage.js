@@ -13,14 +13,17 @@
 		},
 		moduleEvents = events.simplesMessage;
 
-	var modalId = false,
-		templateMessageDetail = false,
-		currentMessage = false;
+	var templateMessageDetail = false,
+		currentMessage = false,
+		$messageDetailsContainer,
+		baseUrl = '';
 
 
 
 	function init() {
 		$(document).ready(function() {
+
+			baseUrl = meerkat.modules.simples.getBaseUrl();
 
 			//
 			// Set up templates
@@ -31,28 +34,73 @@
 			}
 
 			//
-			// Message detail modal
+			// Navbar button (when this module is run by the main page)
 			//
-			$('#dynamic_dom').on('click', '.messagedetail-loadbutton', function(event) {
-				event.preventDefault();
-				loadMessage();
+			$('.simples-menubar .simples-homebutton').on('click.simplesMessage', function clickHome(event) {
+				// Clear message
+				setCurrentMessage(false);
+
+				// Clear tranId
+				meerkat.messaging.publish(meerkat.modules.events.simplesInterface.TRANSACTION_ID_CHANGE, false);
 			});
+
+			//
+			// Simples home page
+			//
+			var $checkSimplesHome = $('.simples-home');
+			if ($checkSimplesHome.length > 0) {
+				$('.message-getnext').on('click.simplesMessage', function clickNext(event) {
+					event.preventDefault();
+
+					var $button = $(event.target);
+					if ($button.prop('disabled') === true) {
+						return;
+					}
+
+					$button.prop('disabled', true).addClass('disabled');
+					$messageDetailsContainer.empty();
+					meerkat.modules.loadingAnimation.showInside($messageDetailsContainer);
+
+					getNextMessage(function nextComplete() {
+						$button.prop('disabled', false).removeClass('disabled');
+					});
+				});
+			}
+
+			//
+			// Message details
+			//
+			$messageDetailsContainer = $('.simples-message-details-container');
+			if ($messageDetailsContainer.length > 0) {
+				// Render
+				renderMessageDetails(false, $messageDetailsContainer);
+
+				// Subscribe to changes (be mindful this is only within the scope of the owner frame)
+				meerkat.messaging.subscribe(meerkat.modules.events.simplesMessage.MESSAGE_CHANGE, function messageChange(obj) {
+					renderMessageDetails(obj, $messageDetailsContainer);
+				});
+
+				// Amend quote button
+				$messageDetailsContainer.on('click', '.messagedetail-loadbutton', loadMessage);
+			}
 		});
 	}
 
-	function loadMessage() {
+	function loadMessage(event) {
+		event.preventDefault();
+
 		if (currentMessage === false || !currentMessage.hasOwnProperty('messageId')) {
 			alert('Message details have not been stored correctly - can not load.');
 			return;
 		}
 
-		var $button = $('#'+modalId).find('.messagedetail-loadbutton');
-		$button.prop('disabled', true);
-		meerkat.modules.loadingAnimation.showInside($button, true);
+		var $button = $(event.target);
+		$button.prop('disabled', true).addClass('disabled');
+		meerkat.modules.loadingAnimation.showAfter($button);
 
-		// 1. Set message status to in progress
+		// Set message status to in progress
 		meerkat.modules.comms.post({
-			url: 'simples/ajax/message_set_inprogress.jsp',
+			url: baseUrl + 'simples/ajax/message_set_inprogress.jsp',
 			dataType: 'json',
 			cache: false,
 			errorLevel: 'silent',
@@ -62,76 +110,46 @@
 			onSuccess: function onSuccess(json) {
 				if (json.hasOwnProperty('errors') && json.errors.length > 0) {
 					alert('Could not set message to In Progress...\n' + json.errors[0].message);
-					$button.prop('disabled', false);
+					$button.prop('disabled', false).removeClass('disabled');
 					meerkat.modules.loadingAnimation.hide($button);
 					return;
 				}
 
-				// 2. Make call
-
-				// 3. Load the quote
-				var url = 'simples/loadQuote.jsp?brandId=' + currentMessage.styleCodeId + '&verticalCode=' + currentMessage.vertical + '&transactionId=' + currentMessage.transactionId + '&action=amend';
+				// Load the quote
+				var url = 'simples/loadQuote.jsp?brandId=' + currentMessage.styleCodeId + '&verticalCode=' + currentMessage.vertical + '&transactionId=' + encodeURI(currentMessage.newestTransactionId) + '&action=amend';
+				log(url);
 				meerkat.modules.simplesLoadsafe.loadsafe(url, true);
-
-				// Publish the new message
-				meerkat.messaging.publish(moduleEvents.MESSAGE_CHANGE, currentMessage);
-
-				// Clean up
-				meerkat.modules.dialogs.close(modalId);
 			},
 			onError: function onError(obj, txt, errorThrown) {
 				alert('Could not set message to In Progress...\n' + txt + ': ' + errorThrown);
-				$button.prop('disabled', false);
+				$button.prop('disabled', false).removeClass('disabled');
 				meerkat.modules.loadingAnimation.hide($button);
 			}
 		});
 	}
 
-	function getNextMessage() {
-		modalId = meerkat.modules.dialogs.show({
-			title: 'Message assigned to you:',
-			buttons: [{
-				label: 'Cancel',
-				className: 'btn-cancel',
-				closeWindow: true
+	function getNextMessage(callbackComplete) {
+		meerkat.modules.comms.get({
+			url: baseUrl + 'simples/messages/next.json',
+			cache: false,
+			errorLevel: 'silent',
+			onSuccess: function onSuccess(json) {
+				if (json.messageId === 0) {
+					$messageDetailsContainer.html( templateMessageDetail(json) );
+				}
+				else {
+					// Store the data and publish
+					setCurrentMessage(json);
+				}
 			},
-			{
-				label: 'Load',
-				className: 'btn-save messagedetail-loadbutton',
-				closeWindow: false
-			}],
-			onOpen: function(id) {
-				modalId = id;
-
-				// Hide the close button
-				$('#'+modalId).find('.modal-closebar').addClass('hidden');
-
-				meerkat.modules.dialogs.changeContent(modalId, meerkat.modules.loadingAnimation.getTemplate());
-				$('#'+modalId).find('.messagedetail-loadbutton').prop('disabled', true);
-
-				meerkat.modules.comms.get({
-					url: 'simples/messages/next.json',
-					cache: false,
-					errorLevel: 'silent',
-					onSuccess: function onSuccess(json) {
-						updateModal(json, templateMessageDetail);
-
-						// Store the data
-						currentMessage = json;
-
-						// If no errors, enable the Load button
-						if (json.hasOwnProperty('errors') === false || json.errors.length === 0) {
-							// Is the ID ok?
-							if (currentMessage.messageId > 0) {
-								$('#'+modalId).find('.messagedetail-loadbutton').prop('disabled', false);
-							}
-						}
-					},
-					onError: function onError(obj, txt, errorThrown) {
-						var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
-						updateModal(json, templateMessageDetail);
-					}
-				});
+			onError: function onError(obj, txt, errorThrown) {
+				var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
+				$messageDetailsContainer.html( templateMessageDetail(json) );
+			},
+			onComplete: function onComplete() {
+				if (typeof callbackComplete === 'function') {
+					callbackComplete();
+				}
 			}
 		});
 	}
@@ -155,7 +173,7 @@
 		data.messageId = currentMessage.messageId;
 
 		meerkat.modules.comms.post({
-			url: 'simples/ajax/message_set_' + type + '.jsp',
+			url: baseUrl + 'simples/ajax/message_set_' + type + '.jsp',
 			dataType: 'json',
 			cache: false,
 			errorLevel: 'silent',
@@ -168,8 +186,7 @@
 				}
 
 				// Clear message
-				meerkat.messaging.publish(moduleEvents.MESSAGE_CHANGE, false);
-				currentMessage = false;
+				setCurrentMessage(false);
 
 				// Callback
 				if (typeof callbackSuccess === 'function') callbackSuccess();
@@ -183,18 +200,32 @@
 		});
 	}
 
-	function updateModal(data, template) {
-		var htmlContent = 'No template found.';
-		data = data || {};
+	function getCurrentMessage() {
+		return currentMessage;
+	}
 
-		if (typeof template === 'function') {
-			// Run the template
-			htmlContent = template(data);
+	function setCurrentMessage(message) {
+		// Publish to the top frame if necessary
+		if (window.self !== window.top) {
+			window.top.meerkat.modules.simplesMessage.setCurrentMessage(message);
 		}
 
-		// Replace modal with updated contents
-		meerkat.modules.dialogs.changeContent(modalId, htmlContent);
+		currentMessage = message;
+		meerkat.messaging.publish(moduleEvents.MESSAGE_CHANGE, currentMessage);
+	}
 
+	function renderMessageDetails(message, $destination) {
+		$destination = $destination || false;
+		if ($destination === false || $destination.length === 0) return;
+
+		if (message === false) {
+			$('.simples-home-buttons, .simples-notice-board').removeClass('hidden');
+		}
+		else {
+			$('.simples-home-buttons, .simples-notice-board').addClass('hidden');
+		}
+
+		$destination.html( templateMessageDetail(message) );
 	}
 
 
@@ -203,7 +234,10 @@
 		init: init,
 		events: events,
 		getNextMessage: getNextMessage,
-		performFinish: performFinish
+		getCurrentMessage: getCurrentMessage,
+		setCurrentMessage: setCurrentMessage,
+		performFinish: performFinish,
+		renderMessageDetails: renderMessageDetails
 	});
 
 })(jQuery);

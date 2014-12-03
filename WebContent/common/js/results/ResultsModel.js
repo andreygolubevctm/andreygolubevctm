@@ -18,7 +18,8 @@ ResultsModel = {
 		WEBAPP_LOCK: 'WEBAPP_LOCK',
 		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK',
 		RESULTS_DATA_READY: 'RESULTS_DATA_READY',
-		RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW: 'RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW'
+		RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW: 'RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW',
+		RESULTS_UPDATED_INFO_RECEIVED: 'RESULTS_UPDATED_INFO_RECEIVED'
 	},
 
 	/* url and data are optional */
@@ -93,6 +94,14 @@ ResultsModel = {
 			success: function(jsonResult){
 
 				Results.model.updateTransactionIdFromResult(jsonResult);
+
+				if( typeof meerkat != 'undefined') {
+					if (jsonResult.hasOwnProperty('results')) {
+						if(jsonResult.results.hasOwnProperty('info')) {
+							meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_UPDATED_INFO_RECEIVED, jsonResult.results.info);
+						}
+					}
+				}
 
 				try{
 					if(jsonResult && jsonResult.messages && jsonResult.messages.length > 0){

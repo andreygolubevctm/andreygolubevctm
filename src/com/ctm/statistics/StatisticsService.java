@@ -73,38 +73,54 @@ public class StatisticsService {
 
 
 			if (statisticDetailsResults != null) {
-				for(StatisticDetail statisticDetail : statisticDetailsResults) {
+				PreparedStatement stmtDetails = null;
+				PreparedStatement stmtDescription = null;
 
-					stmt = conn.prepareStatement(
+				stmtDetails = conn.prepareStatement(
 						"INSERT INTO aggregator.statistic_details (TransactionId,CalcSequence,ServiceId,ProductId,ResponseTime,ResponseMessage) " +
 						"VALUES (?,?,?,?,?,?)"
-						, java.sql.Statement.RETURN_GENERATED_KEYS
 					);
 
-					stmt.setInt(1, tranId);
-					stmt.setInt(2, calcSequence);
-					stmt.setString(3, statisticDetail.getServiceId());
-					stmt.setString(4, statisticDetail.getProductId());
-					stmt.setString(5, statisticDetail.getResponseTime());
-					stmt.setString(6, statisticDetail.getResponseMessage());
-					stmt.executeUpdate();
+				for(StatisticDetail statisticDetail : statisticDetailsResults) {
+
+					stmtDetails.setInt(1, tranId);
+					stmtDetails.setInt(2, calcSequence);
+					stmtDetails.setString(3, statisticDetail.getServiceId());
+					stmtDetails.setString(4, statisticDetail.getProductId());
+					stmtDetails.setString(5, statisticDetail.getResponseTime());
+					stmtDetails.setString(6, statisticDetail.getResponseMessage());
+
+					// build up the batch insert
+					stmtDetails.addBatch();
 
 					if (statisticDetail.getStatisticDescription() != null) {
 						StatisticDescription statisticDescription = statisticDetail.getStatisticDescription();
-						stmt = conn.prepareStatement(
-								"INSERT INTO aggregator.statistic_description (TransactionId,CalcSequence,ServiceId,ErrorType, ErrorMessage, ErrorDetail) " +
-								"VALUES (?,?,?,?,?,?)"
-								, java.sql.Statement.RETURN_GENERATED_KEYS
-						);
 
-						stmt.setInt(1, tranId);
-						stmt.setInt(2, calcSequence);
-						stmt.setString(3, statisticDetail.getServiceId());
-						stmt.setString(4, statisticDescription.getErrorType());
-						stmt.setString(5, statisticDescription.getErrorMessage());
-						stmt.setString(6, statisticDescription.getErrorDetail());
-						stmt.executeUpdate();
+						if (stmtDescription == null)
+						{
+							stmtDescription = conn.prepareStatement(
+									"INSERT INTO aggregator.statistic_description (TransactionId,CalcSequence,ServiceId,ErrorType, ErrorMessage, ErrorDetail) " +
+									"VALUES (?,?,?,?,?,?)"
+							);
+						}
+
+						stmtDescription.setInt(1, tranId);
+						stmtDescription.setInt(2, calcSequence);
+						stmtDescription.setString(3, statisticDetail.getServiceId());
+						stmtDescription.setString(4, statisticDescription.getErrorType());
+						stmtDescription.setString(5, statisticDescription.getErrorMessage());
+						stmtDescription.setString(6, statisticDescription.getErrorDetail());
+
+						// build up the batch insert
+						stmtDescription.addBatch();
 					}
+				}
+
+				stmtDetails.executeBatch();
+
+				if (stmtDescription != null)
+				{
+					stmtDescription.executeBatch();
 				}
 			}
 		} finally {

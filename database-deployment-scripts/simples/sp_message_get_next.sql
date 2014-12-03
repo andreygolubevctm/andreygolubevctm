@@ -8,7 +8,7 @@ CREATE DEFINER=`server`@`%` PROCEDURE `message_get_next`(
 )
 BEGIN
 
-	SELECT id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, canPostpone
+	SELECT id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, canPostpone, whenToAction
 	FROM simples.message_queue_ordered
 
 	WHERE

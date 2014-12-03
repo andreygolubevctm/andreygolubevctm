@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="This is the login procedure, which adds the user to the data bucket"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<jsp:useBean id="simplesService" class="com.ctm.services.SimplesService" scope="application" />
+<jsp:useBean id="simplesUserService" class="com.ctm.services.simples.SimplesUserService" scope="application" />
 <jsp:useBean id="phoneService" class="com.ctm.services.PhoneService" scope="page" />
 
 
@@ -103,7 +103,7 @@
 
 				<%-- Register the user into our database; fetch the database UID --%>
 				<c:if test="${callCentre == 'Y'}">
-					<c:set var="simplesUid" value="${ simplesService.loginUser(sessionScope.userDetails['uid'], extension, sessionScope.userDetails['displayName'])  }" />
+					<c:set var="simplesUid" value="${ simplesUserService.loginUser(sessionScope.userDetails['uid'], extension, sessionScope.userDetails['displayName'])  }" />
 					<go:setData dataVar="authenticatedData" xpath="login/user/simplesUid" value="${simplesUid}" />
 				</c:if>
 
@@ -113,7 +113,7 @@
 			<c:when test="${ not empty authenticatedData.login.user and not empty authenticatedData.login.user.uid and authenticatedData.login.user.uid != userId }">
 				<%-- Session and current user mismatch for some reason (suspicious activity?); enforce logout --%>
 				<c:remove var="authenticatedData"/>
-				<c:redirect url="${pageSettings.getBaseUrl()}security/simples_logout.jsp" />
+				<c:redirect url="/security/simples_logout.jsp" />
 			</c:when>
 
 			<c:otherwise>

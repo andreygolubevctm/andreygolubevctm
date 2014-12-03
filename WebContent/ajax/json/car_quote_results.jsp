@@ -261,6 +261,9 @@
 
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
 
+		<%-- !!IMPORTANT!! - ensure the trackingKey is passed back with results --%>
+		<go:setData dataVar="soapdata" xpath="soap-response/results/info/trackingKey" value="${data.quote.trackingKey}" />
+
 		<c:if test="${not empty commencementDateUpdated}">
 			<go:setData dataVar="soapdata" xpath="soap-response/results/events/COMMENCEMENT_DATE_UPDATED" value="${data.quote.options.commencementDate}" />
 		</c:if>

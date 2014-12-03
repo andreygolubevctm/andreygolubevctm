@@ -65,10 +65,13 @@
 		font-style: italic;
 	}
 }
-.modal-header, .modal-body {
+.offer-terms-modal {
+	.modal-header, .modal-body {
 	.heading {
 		margin-left: 105px;
 		margin-top: 5px;
+		margin-bottom: 5px;
+	}
 	}
 }
 
@@ -142,12 +145,14 @@
 			margin-top: 10px;
 		}
 	}
+	.offer-terms-modal {
 	.modal-header, .modal-body {
 		.heading,
 		h2 {
 			margin-left: 105px;
 			margin-top: 5px;
 		}
+	}
 	}
 }//media sm
 
@@ -207,12 +212,25 @@
 			margin-left: 0;
 		}
 		}
-	.modal-header, .modal-body {
-		.heading,
-		h2 {
-			margin-left: 105px;
-			margin-top: 35px;
-			margin-bottom: 40px;
+	.offer-terms-modal {
+		.modal-header, .modal-body {
+			.heading,
+			h2 {
+				margin-left: 105px;
+				margin-top: 25px;
+				margin-bottom: 40px;
+			}
+		}
+	}
+}
+
+@media(max-width: 480px) {
+	.offer-terms-modal {
+		.modal-header, .modal-body {
+			h2 {
+				margin-top: 15px !important;
+				margin-bottom: 30px !important;
+			}
 		}
 	}
 }

@@ -19,7 +19,7 @@
 
 <simples:template_consultantstatus />
 
-<h1>Consultant Call Status</h1>
+<h2>Consultant Call Status</h2>
 
 <div data-provide="simples-consultant-status">
 	<%--

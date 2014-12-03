@@ -48,7 +48,7 @@
 
 	<form_new:row label="OK to email" className="">
 		<field_new:array_radio xpath="quote/contact/marketing"
-			required="true"
+			required="false"
 			items="Y=Yes,N=No"
 			title="if OK to email" />
 
@@ -57,7 +57,7 @@
 
 	<form_new:row label="OK to call" className="">
 		<field_new:array_radio xpath="quote/contact/oktocall"
-			required="true"
+			required="false"
 			items="Y=Yes,N=No"
 			title="if OK to call" />
 
@@ -82,8 +82,30 @@ $.validator.addMethod('validateOkToEmail', function(value, element) {
 	}
 	return true;
 });
+
+$.validator.addMethod('validateOkToCallRadio', function(value, element) {
+	var $optin	= $("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked");
+	var noOptin = $optin.length == 0;
+	var phone = $('#quote_contact_phone').val();
+	if(!_.isEmpty(phone) && noOptin == true) {
+		return false;
+	}
+	return true;
+});
+
+$.validator.addMethod('validateOkToEmailRadio', function(value, element) {
+	var $optin = $("#quote_contactFieldSet input[name='quote_contact_marketing']:checked");
+	var noOptin = $optin.length == 0;
+	var email = $('#quote_contact_email').val();
+	if(!_.isEmpty(email) && noOptin == true) {
+		return false;
+	}
+	return true;
+});
 </go:script>
 
+<go:validate selector="quote_contact_oktocall" rule="validateOkToCallRadio" parm="true" message="Please choose if OK to call" />
+<go:validate selector="quote_contact_marketing" rule="validateOkToEmailRadio" parm="true" message="Please choose if OK to email" />
 
 
 	<%-- COMPETITION START --%>

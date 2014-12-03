@@ -16,15 +16,49 @@
 			oktocall:		"#quote_contactFieldSet input[name='quote_contact_oktocall']",
 			privacy:		"#quote_privacyoptin",
 			terms:			"#quote_terms",
-			phone:			"#quote_contact_phone",
+			phone:			"#quote_contact_phoneinput",
 			phoneRow:		"#contactNoRow",
-			emailRow:		"#contactEmailRow"
+			emailRow:		"#contactEmailRow",
+			email:			"#quote_contact_email"
 	};
+
+	function validateOptins() {
+		if(meerkat.modules.tracking.getCurrentJourney() === '1') {
+			$mkt = $(elements.marketing);
+			$otc = $(elements.oktocall);
+			if(!$mkt.is(':checked')) {
+				$mkt.filter("input[value=N]").prop("checked",true).change();
+			}
+			if(!$otc.is(':checked')) {
+				$otc.filter("input[value=N]").prop("checked",true).change();
+			}
+		}
+	}
+
+	function toggleValidation() {
+		var standard = meerkat.modules.tracking.getCurrentJourney() === '1';
+		if(!standard) {
+			$(elements.marketing).rules('remove', 'validateOkToEmailRadio');
+			$(elements.marketing).rules('add', 'required');
+			$(elements.oktocall).rules('remove', 'validateOkToCallRadio');
+			$(elements.oktocall).rules('add', 'required');
+		}
+	}
 
 	function addChangeListeners() {
 		$(elements.oktocall).on('change', onOkToCallChanged);
 		$(elements.marketing).on('change', onOkToEmailChanged);
 		$(elements.privacy).on('change', onTermsOptinChanged);
+		$(elements.phone).on('change', onPhoneChanged);
+		$(elements.email).on('change', onEmailChanged);
+	}
+
+	function onPhoneChanged(){
+		if($(elements.oktocall).closest('.row-content').hasClass('has-error')) {
+			_.defer(function(){
+				$(elements.oktocall).valid();
+			});
+		}
 	}
 
 	function onOkToCallChanged(){
@@ -32,6 +66,14 @@
 			$row = $(elements.phoneRow);
 			$row.find(".has-error").removeClass('has-error');
 			$row.find(".error-field").empty().hide();
+		}
+	}
+
+	function onEmailChanged(){
+		if($(elements.marketing).closest('.row-content').hasClass('has-error')) {
+			_.defer(function(){
+				$(elements.marketing).valid();
+			});
 		}
 	}
 
@@ -73,11 +115,13 @@
 
 		$(document).ready(function() {
 
-			// Only init if health... obviously...
+			// Only init if purple, monkey dishwasher... obviously...
 			if (meerkat.site.vertical !== "car")
 				return false;
 
 			addChangeListeners();
+
+			toggleValidation();
 
 			dump();
 		});
@@ -87,6 +131,7 @@
 	meerkat.modules.register("carContactOptins", {
 		init : initCarContactOptins,
 		events : moduleEvents,
+		validateOptins : validateOptins,
 		dump: dump
 	});
 

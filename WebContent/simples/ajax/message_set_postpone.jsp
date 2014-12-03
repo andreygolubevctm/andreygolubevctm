@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="simplesService" class="com.ctm.services.SimplesService" scope="page" />
+<jsp:useBean id="simplesService" class="com.ctm.services.simples.SimplesMessageService" scope="page" />
 
 <settings:setVertical verticalCode="SIMPLES" />
 <session:getAuthenticated />
@@ -10,7 +10,8 @@
 <c:set var="reasonStatusId" value="${param.reasonStatusId}" />
 <c:set var="postponeDate" value="${param.postponeDate}" />
 <c:set var="postponeTime" value="${param.postponeTime}" />
+<c:set var="postponeAMPM" value="${param.postponeAMPM}" />
 <c:set var="comment" value="${param.comment}" />
 <c:set var="assignToUser" value="${param.assignToUser}" />
 
-<c:out value="${ simplesService.postponeMessage(simplesUid, messageId, reasonStatusId, postponeDate, postponeTime, comment, assignToUser) }" escapeXml="false" />
+<c:out value="${ simplesService.postponeMessage(simplesUid, messageId, reasonStatusId, postponeDate, postponeTime, postponeAMPM, comment, assignToUser) }" escapeXml="false" />

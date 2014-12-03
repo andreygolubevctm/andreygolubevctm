@@ -44,10 +44,13 @@
 	function init() {
 		// Make the iframe fit the space remaining after the header
 		$(document).ready(resizeIframe);
-		// TODO: User debounce resize event
-		window.onresize = resizeIframe;
 
-		window.addEventListener('message', receiveMessage, false);
+		$(window).resize(_.debounce(resizeIframe));
+
+		// Listen for messages from journey in iframe
+		if (window.addEventListener) {
+			window.addEventListener('message', receiveMessage, false);
+		}
 	}
 
 

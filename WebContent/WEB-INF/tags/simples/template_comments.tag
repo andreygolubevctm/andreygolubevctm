@@ -17,7 +17,7 @@
 	<%-- COMMENTS --%>
 	<button class="comment-hideshow btn btn-default btn-sm" style="float:right">Add comment</button>
 
-	<h5>Comments<span class="comment-title-tranid"> for ID '{{= obj.transactionId }}'</span>:</h5>
+	<h2>Comments<span class="comment-title-tranid"> for ID '{{= obj.transactionId }}'</span></h2>
 
 	<div class="comment-inputfields text-right" style="display:none">
 		<textarea class="form-control" placeholder="Write comment here..."></textarea>

@@ -221,6 +221,14 @@
 	</c:choose>
 </c:set>
 
+<%-- If RESULTS touch then ensure trackingKey is generated and added to session --%>
+<c:if test="${touch eq 'R'}">
+	<jsp:useBean id="trackingKeyService" class="com.ctm.services.tracking.TrackingKeyService" scope="request" />
+	<c:catch var="trackingKeyError">
+		<go:log source="core:transaction">trackingKey: ${trackingKeyService.generate(pageContext.getRequest(), data.current.transactionId)}</go:log>
+	</c:catch>
+</c:if>
+
 <c:choose>
 	<c:when test="${write_quote == 'Y'}">
 

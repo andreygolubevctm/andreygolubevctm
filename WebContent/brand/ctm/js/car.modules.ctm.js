@@ -178,47 +178,51 @@
                 includeFormData: true
             },
             onInitialise: function(event) {
-                var driversFirstName = $("#quote_drivers_regular_firstname");
-                var driversLastName = $("#quote_drivers_regular_surname");
-                var driversPhoneNumber = $("#quote_contact_phoneinput");
-                var driversContactEmail = $("#quote_contact_email");
-                $("#quote_contact_competition_optin").on("change", function() {
-                    if ($(this).is(":checked")) {
-                        driversFirstName.rules("add", {
-                            required: true,
-                            messages: {
-                                required: "Please enter your First Name to be eligible for the competition"
-                            }
-                        });
-                        driversLastName.rules("add", {
-                            required: true,
-                            messages: {
-                                required: "Please enter your Last Name to be eligible for the competition"
-                            }
-                        });
-                        driversPhoneNumber.rules("add", {
-                            required: true,
-                            messages: {
-                                required: "Please enter your Contact Number to be eligible for the competition"
-                            }
-                        });
-                        driversContactEmail.rules("add", {
-                            required: true,
-                            messages: {
-                                required: "Please enter your Email Address to be eligible for the competition"
-                            }
-                        });
-                    } else {
-                        driversFirstName.rules("remove", "required");
-                        driversLastName.rules("remove", "required");
-                        driversPhoneNumber.rules("remove", "required");
-                        driversContactEmail.rules("remove", "required");
-                        driversFirstName.valid();
-                        driversLastName.valid();
-                        driversPhoneNumber.valid();
-                        driversContactEmail.valid();
-                    }
-                });
+                var $driversFirstName = $("#quote_drivers_regular_firstname");
+                var $driversLastName = $("#quote_drivers_regular_surname");
+                var $driversPhoneNumber = $("#quote_contact_phoneinput");
+                var $driversContactEmail = $("#quote_contact_email");
+                var $competitionOptin = $("#quote_contact_competition_optin");
+                var nonStdJourney = meerkat.modules.tracking.getCurrentJourney() != 1;
+                if ($competitionOptin.length && nonStdJourney) {
+                    $competitionOptin.on("change", function() {
+                        if ($(this).is(":checked")) {
+                            $driversFirstName.rules("add", {
+                                required: true,
+                                messages: {
+                                    required: "Please enter your First Name to be eligible for the competition"
+                                }
+                            });
+                            $driversLastName.rules("add", {
+                                required: true,
+                                messages: {
+                                    required: "Please enter your Last Name to be eligible for the competition"
+                                }
+                            });
+                            $driversPhoneNumber.rules("add", {
+                                required: true,
+                                messages: {
+                                    required: "Please enter your Contact Number to be eligible for the competition"
+                                }
+                            });
+                            $driversContactEmail.rules("add", {
+                                required: true,
+                                messages: {
+                                    required: "Please enter your Email Address to be eligible for the competition"
+                                }
+                            });
+                        } else {
+                            $driversFirstName.rules("remove", "required");
+                            $driversLastName.rules("remove", "required");
+                            $driversPhoneNumber.rules("remove", "required");
+                            $driversContactEmail.rules("remove", "required");
+                            $driversFirstName.valid();
+                            $driversLastName.valid();
+                            $driversPhoneNumber.valid();
+                            $driversContactEmail.valid();
+                        }
+                    });
+                }
             },
             onAfterEnter: function(event) {
                 meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(3) .snapshot");
@@ -551,20 +555,58 @@
         oktocall: "#quote_contactFieldSet input[name='quote_contact_oktocall']",
         privacy: "#quote_privacyoptin",
         terms: "#quote_terms",
-        phone: "#quote_contact_phone",
+        phone: "#quote_contact_phoneinput",
         phoneRow: "#contactNoRow",
-        emailRow: "#contactEmailRow"
+        emailRow: "#contactEmailRow",
+        email: "#quote_contact_email"
     };
+    function validateOptins() {
+        if (meerkat.modules.tracking.getCurrentJourney() === "1") {
+            $mkt = $(elements.marketing);
+            $otc = $(elements.oktocall);
+            if (!$mkt.is(":checked")) {
+                $mkt.filter("input[value=N]").prop("checked", true).change();
+            }
+            if (!$otc.is(":checked")) {
+                $otc.filter("input[value=N]").prop("checked", true).change();
+            }
+        }
+    }
+    function toggleValidation() {
+        var standard = meerkat.modules.tracking.getCurrentJourney() === "1";
+        if (!standard) {
+            $(elements.marketing).rules("remove", "validateOkToEmailRadio");
+            $(elements.marketing).rules("add", "required");
+            $(elements.oktocall).rules("remove", "validateOkToCallRadio");
+            $(elements.oktocall).rules("add", "required");
+        }
+    }
     function addChangeListeners() {
         $(elements.oktocall).on("change", onOkToCallChanged);
         $(elements.marketing).on("change", onOkToEmailChanged);
         $(elements.privacy).on("change", onTermsOptinChanged);
+        $(elements.phone).on("change", onPhoneChanged);
+        $(elements.email).on("change", onEmailChanged);
+    }
+    function onPhoneChanged() {
+        if ($(elements.oktocall).closest(".row-content").hasClass("has-error")) {
+            _.defer(function() {
+                $(elements.oktocall).valid();
+            });
+        }
     }
     function onOkToCallChanged() {
         if (getValue(elements.oktocall) !== "Y") {
             $row = $(elements.phoneRow);
             $row.find(".has-error").removeClass("has-error");
             $row.find(".error-field").empty().hide();
+        }
+    }
+    function onEmailChanged() {
+        if ($(elements.marketing).closest(".row-content").hasClass("has-error")) {
+            _.defer(function() {
+                $(elements.marketing).valid();
+            });
         }
     }
     function onOkToEmailChanged() {
@@ -599,12 +641,14 @@
         $(document).ready(function() {
             if (meerkat.site.vertical !== "car") return false;
             addChangeListeners();
+            toggleValidation();
             dump();
         });
     }
     meerkat.modules.register("carContactOptins", {
         init: initCarContactOptins,
         events: moduleEvents,
+        validateOptins: validateOptins,
         dump: dump
     });
 })(jQuery);
@@ -1757,6 +1801,7 @@
         previousBreakpoint = meerkat.modules.deviceMediaState.get();
     }
     function get() {
+        meerkat.modules.carContactOptins.validateOptins();
         Results.get();
     }
     function onResultsLoaded() {
@@ -1819,6 +1864,7 @@
         meerkat.modules.dialogs.show({
             title: $logo.clone().wrap("<p>").addClass("hidden-xs").parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Offer terms</div>",
             hashId: "offer-terms",
+            className: "offer-terms-modal",
             openOnHashChange: false,
             closeOnHashChange: true,
             htmlContent: $logo.clone().wrap("<p>").removeClass("hidden-xs").addClass("hidden-sm hidden-md hidden-lg").parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" + $termsContent.html()

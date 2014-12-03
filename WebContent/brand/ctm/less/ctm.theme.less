@@ -269,7 +269,7 @@ ul.themed {
 	.btn-styles(@btn-call-inverse-bg-color, @btn-call-inverse-color,
 	@btn-call-inverse-active-bg-color, @btn-call-inverse-active-color,
 	@btn-call-inverse-hover-bg-color, @btn-call-inverse-hover-color,
-	@btn-call-inverse-border-color, @btn-call-inverse-active-border-color, @btn-call-inverse-hover-border-color); }
+	@btn-call-inverse-border-color, @btn-call-inverse-active-border-color, @btn-call-inverse-hover-border-color, true); }
 
 //** Between pages, the journey nav button should have custom padding on XS.
 @media (@xs-only){
@@ -404,6 +404,7 @@ a{
 				}
 				&:active, &.active {
 					background-color: @btn-pagination-active-bg-color;
+					color: contrast(@btn-pagination-active-bg-color, @theme-dark, #FFF);
 				}
 			}
 			&.btn-cta {
@@ -480,7 +481,7 @@ a{
 @media (max-width: @screen-xs-max) {
 	.productSummary-affix.visible-xs {
 		.fixedInPlace;
-		z-index: (@zindex-dropdown-interactive-base - 80);
+		z-index: (@zindex-dropdown-interactive-base - 180);
 	}
 }
 
@@ -596,10 +597,11 @@ a{
 
 //Special bar for results only on mobile.
 // It's been used for other things though so really should be renamed..
-.xs-results-pagination{
-	.container{
-		margin: 0;
-		padding:0;
+.xs-results-pagination {
+	border-bottom: solid 1px #fff;
+	.container {
+		margin:  0;
+		padding: 0;
 	}
 	.navbar-nav{
 	  margin: 0;
@@ -659,6 +661,7 @@ a{
 // Generic additional navbar styles
 #navbar-filter,
 #navbar-compare {
+	border-top: solid 1px #fff;
 	.navbar-nav {
 		// Remove default navbar border
 		border: 0;
@@ -706,7 +709,6 @@ a{
 		}
 
 	.filter-label {
-		color: darken(@navbar-inverse-link-active-bg, 11%);
 		margin-left: @navbar-padding-horizontal;
 		margin-right: (@navbar-padding-horizontal / 3);
 
@@ -718,6 +720,7 @@ a{
 
 // Compare bar styles
 #navbar-compare {
+	border-top: solid 1px #fff;
 
 	li {
 		> a {
@@ -890,7 +893,7 @@ a{
 .well-info {
 	.well-variant(@well-bg-info, @well-text-info);
 	h1, h2, h3, h4, h5, h6 {
-		color: @label-color;
+		color: @well-header-info;
 		margin-top: 0;
 	}
 	* {

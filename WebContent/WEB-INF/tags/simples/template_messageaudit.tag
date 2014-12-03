@@ -7,7 +7,7 @@
 <div class="audit-container">
 
 	<%-- AUDITS --%>
-	<h5>Message audit:</h5>
+	<h2>Message Audit</h2>
 
 	{{ if (typeof messageaudits !== 'undefined' && messageaudits.length > 0) { }}
 		<table class="table table-condensed table-hover">

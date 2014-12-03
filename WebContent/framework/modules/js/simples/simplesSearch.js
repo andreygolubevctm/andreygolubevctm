@@ -113,7 +113,7 @@
 			else {
 				$resultRow.addClass('open');
 				$button.attr('data-originaltext', $button.text());
-				$button.text('Close');
+				$button.text('Less details');
 
 				// Remove row highlight from any previously open result
 				$resultRow.parent().children().not('.open').removeClass('bg-success');

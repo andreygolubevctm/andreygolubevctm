@@ -7,7 +7,7 @@
 <div class="simples-search-modal">
 	<div id="simples-search-modal-header" class="row">
 		<div class="col-xs-4">
-			<h4>Quote details</h4>
+			<h2>Quote details</h2>
 		</div>
 		<div class="col-xs-8 text-right">
 			<form class="simples-search-quotedetails form-inline" role="search">

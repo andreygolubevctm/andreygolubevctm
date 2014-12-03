@@ -3,15 +3,15 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
+<%@ attribute name="xpath" required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
 <%-- VARIABLES --%>
 <c:set var="purchasePrice" value="${data[purchasePrice]}" />
 <c:if test="${purchasePrice != ''}">
-<c:set var="displayPurchasePrice"><c:out value="yes" escapeXml="true"/></c:set>
+	<c:set var="displayPurchasePrice"><c:out value="Y" escapeXml="true"/></c:set>
 </c:if>
 
-<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+<c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 
 
@@ -28,11 +28,11 @@
 		<form_new:fieldset legend="Your New Home Loan" >
 			<div id="${name}_purchasePriceToggleArea" class="${name}_purchasePriceToggleArea show_${displayPurchasePrice}">
 			<form_new:row label="What is the purchase price of the new property?">
-				<field_new:currency xpath="${xpath}/purchasePrice" title="Purchase price" decimal="${false}" required="true" maxValue="1000000000" />
+				<field_new:currency xpath="${xpath}/purchasePrice" title="Purchase price" decimal="${false}" required="true" maxValue="1000000000" pattern="[0-9]*" />
 			</form_new:row>
 			</div>
 			<form_new:row label="How much would you like to borrow?">
-				<field_new:currency xpath="${xpath}/loanAmount" title="Amount to borrow" decimal="${false}" required="true" maxValue="1000000000" />
+				<field_new:currency xpath="${xpath}/loanAmount" title="Amount to borrow" decimal="${false}" required="true" maxValue="1000000000" pattern="[0-9]*" />
 			</form_new:row>
 			<form_new:row label="Product type">
 				<field_new:checkbox xpath="${xpath}/productVariable" value="Y" title="Variable" required="false" label="true"/>

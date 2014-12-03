@@ -9,8 +9,9 @@
 	</jsp:attribute>
 
 	<jsp:body>
-		<p>Sorry, you aren't authorised to view this page.</p>
-		<p><a id="next-step" href="${pageSettings.getBaseUrl()}security/simples_logout.jsp" class="btn btn-cta">Log Out</a></p>
+		<h2>Sorry, you aren't authorised to view this page.</h2>
+		<p>Please see your Call Centre Lead or CTM IT for getting access.</p>
+		<p><a id="next-step" href="/${pageSettings.getContextFolder()}security/simples_logout.jsp" class="btn btn-cta">Log Out</a></p>
 	</jsp:body>
 
 </layout:simples_page>

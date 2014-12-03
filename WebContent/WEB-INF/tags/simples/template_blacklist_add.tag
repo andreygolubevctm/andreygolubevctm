@@ -6,7 +6,7 @@
 
 <div class="simples-blacklist-modal">
 	<div class="simples-blacklist-modal-header">
-		<h4>Add to Blacklist</h4>
+		<h2>Add to Blacklist</h2>
 	</div>
 	<div class="simples-blacklist-modal-body">
 		{{ if (typeof successMessage !== 'undefined' && successMessage.length > 0) { }}

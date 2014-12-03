@@ -2,9 +2,10 @@ package com.ctm.model;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.ctm.model.formatter.JsonUtils;
 
 /**
  * TransactionProperties model kind of glues {@link Transaction} to other related tables such as ctm.touches and ctm.quote_comments
@@ -38,21 +39,12 @@ public class TransactionProperties extends Transaction {
 	@Override
 	protected JSONObject getJsonObject() throws JSONException {
 		JSONObject json = super.getJsonObject();
-		JSONArray array = null;
 
 		// Add all the comments
-		array = new JSONArray();
-		for (Comment comment : getComments()) {
-			array.put(comment.toJsonObject());
-		}
-		json.put("comments", array);
+		JsonUtils.addListToJsonObject(json, Comment.JSON_COLLECTION_NAME, getComments());
 
 		// Add all the touches
-		array = new JSONArray();
-		for (Touch touch : getTouches()) {
-			array.put(touch.toJsonObject());
-		}
-		json.put("touches", array);
+		JsonUtils.addListToJsonObject(json, Touch.JSON_COLLECTION_NAME, getTouches());
 
 		return json;
 	}

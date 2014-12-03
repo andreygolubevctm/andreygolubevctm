@@ -7,7 +7,7 @@
 <div class="touch-container">
 
 	<%-- TOUCHES --%>
-	<h5>Latest touches:</h5>
+	<h2>Latest Touches</h2>
 
 	{{ if (typeof touches !== 'undefined' && touches.length > 0) { }}
 		<table class="table table-condensed table-hover">

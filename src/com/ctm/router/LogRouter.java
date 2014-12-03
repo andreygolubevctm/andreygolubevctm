@@ -33,6 +33,8 @@ public class LogRouter extends HttpServlet {
 	private static Logger logger = Logger.getLogger(LogRouter.class.getName());
 	private static final long serialVersionUID = 71L;
 
+	private final SessionDataService sessionDataService = new SessionDataService();
+
 	/**
 	 * Captures the URL and calls the appropriate service.
 	 *
@@ -66,7 +68,7 @@ public class LogRouter extends HttpServlet {
 		@SuppressWarnings("unused")
 		Data dataBucket = null;
 		try {
-			dataBucket = SessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
+			dataBucket = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
 
 			/**
 			 * Route the requests.

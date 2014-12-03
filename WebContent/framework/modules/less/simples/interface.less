@@ -4,6 +4,10 @@ body.simples {
 		display: none;
 	}
 
+	.navbar-brand {
+		height: 40px;
+	}
+
 	.navbar-inverse {
 		background-color: #002;
 	}
@@ -21,24 +25,45 @@ body.simples {
 		color: @theme-tertiary;
 		font-weight: bold;
 	}
-	.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
-		background-color: @theme-light;
+
+	.dropdown-menu {
+		color: @theme-dark;
+
+		> .disabled > a {
+			color: @theme-default;
+		}
+
+		> li > a:hover, .dropdown-menu > li > a:focus {
+			background-color: @theme-light;
+		}
 	}
 
 	.fieldset {
 		margin-top: 20px;
 	}
 
-	.simples-home {
-		width: 100%;
-		text-align: center;
-		padding: 40px 0 20px;
+	.table > tbody > tr {
+		> td, > th {
+			border-top: 0;
+		}
 	}
 
-	.btn.btn-xlarge {
-		font-size: 1.3em;
-		margin-right: 10px;
+
+
+	.simples-home {
+		padding: 20px 0;
+
+		.simples-home-buttons {
+			text-align: center;
+			padding: 20px;
+		}
+
+		.message-getnext + .message-inbound {
+			margin-left: 10px;
+		}
 	}
+
+
 
 	.messagedetail-container {
 		//Hide some elements
@@ -51,11 +76,42 @@ body.simples {
 		.touch-container {
 			margin-top: 30px;
 		}
+
+		.messagedetail-loadbutton {
+			margin-left: 30px;
+		}
 	}
 
-	// Make datepicker show above modals
-	&.modal-open .datepicker {
-		z-index: 1151 !important;
+
+
+	.postpone-container {
+		.row + .row {
+			margin-top: 20px;
+		}
+
+		h5 {
+			font-size: @font-size-base;
+		}
+
+		.datepicker.datepicker-inline {
+			border: none;
+		}
+
+		// Correct styles from search.less
+		table.table {
+			> * {
+				> tr {
+					> td, > th {
+						padding: 5px;
+					}
+				}
+				> tr:nth-child(odd) {
+					> td.active {
+						background-color: @theme-secondary;
+					}
+				}
+			}
+		}
 	}
 
 }//body.simples

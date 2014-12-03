@@ -21,7 +21,7 @@
 				<span class="icon-bar"></span>
 			</button>
 
-			<a class="simples-homebutton navbar-brand" target="simplesiframe" href="simples/home.jsp" title="Go to home page">Simples v2.0</a>
+			<a class="simples-homebutton navbar-brand" target="simplesiframe" href="simples/home.jsp" title="Go to home page">Home</a>
 </div>
 
 		<div class="collapse navbar-collapse" id="simples-navbar-collapse-1">
@@ -39,35 +39,24 @@
 				<%-- Only show the Config pages if user is a supervisor role --%>
 				<c:if test="${isRoleSupervisor}">
 					<li class="dropdown">
-						<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Reports <b class="caret"></b></a>
+						<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 						<ul class="dropdown-menu">
+							<li class="dropdown-header">Reports</li>
 							<li><a target="simplesiframe" href="simples/report_callstatus.jsp">Consultant call status</a></li>
-							<li><a target="simplesiframe" href="simples/report_messageoverview.jsp">Message centre overview</a></li>
+							<li><a target="simplesiframe" href="simples/report_messageoverview.jsp">Message queue overview</a></li>
 							<%-- DISABLED UNTIL CAN BE WORKED ON
 							<li><a target="simplesiframe" href="simples/report_managerOpEnq.jsp">Manager - Operator enquires</a></li>
 							--%>
-						</ul>
-					</li>
+
 					<%-- DISABLED UNTIL CAN BE WORKED ON
+							<li class="divider"></li>
+
+							<li class="dropdown-header">Configuration</li>
 					<li><a target="simplesiframe" href="simples/message_dashboard.jsp">Configuration</a></li>
 					--%>
+						</ul>
+					</li>
 				</c:if>
-
-				<%-- Action menu hidden by default; a module will hide/show it --%>
-				<li class="dropdown hidden" data-provide="simples-quote-actions">
-					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Actions <b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li class="dropdown-header">Message ID: <span class="simples-show-messageid"></span></li>
-						<li><a class="action-complete" href="javascript:void(0);">Complete</a></li>
-						<li><a class="action-postpone" href="javascript:void(0);">Postpone</a></li>
-						<li><a class="action-unsuccessful" href="javascript:void(0);">Unsuccessful</a></li>
-
-						<li class="divider"></li>
-
-						<li class="dropdown-header">Tran ID: <span class="simples-show-transactionid"></span></li>
-						<li><a class="action-comment" href="javascript:void(0);">Comments</a></li>
-			</ul>
-				</li>
 
 				<li data-provide="dropdown">
 					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Blacklist <b class="caret"></b></a>
@@ -76,6 +65,22 @@
 						<c:if test="${isRoleSupervisor}">
 							<li data-provide="simples-blacklist-action"><a href="javascript:void(0);" data-action="delete">Remove</a></li>
 						</c:if>
+					</ul>
+				</li>
+
+				<%-- Action menu hidden by default; a module will hide/show it --%>
+				<li class="dropdown hidden" data-provide="simples-quote-actions">
+					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Actions <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li class="dropdown-header hidden">Message ID: <span class="simples-show-messageid"></span></li>
+						<li><a class="action-complete" href="javascript:void(0);">Complete</a></li>
+						<li><a class="action-postpone" href="javascript:void(0);">Postpone</a></li>
+						<li><a class="action-unsuccessful" href="javascript:void(0);">Unsuccessful</a></li>
+
+						<li class="divider"></li>
+
+						<li class="dropdown-header hidden">Tran ID: <span class="simples-show-transactionid"></span></li>
+						<li><a class="action-comment" href="javascript:void(0);">Comments</a></li>
 			</ul>
 				</li>
 			</ul>

@@ -34,6 +34,8 @@ public class QuoteRouter extends HttpServlet {
 	private static Logger logger = Logger.getLogger(QuoteRouter.class.getName());
 	private static final long serialVersionUID = 69L;
 
+	private final SessionDataService sessionDataService = new SessionDataService();
+
 	/**
 	 * Captures the (e.g. /quote/write.json) URL and calls the service.
 	 *
@@ -68,7 +70,7 @@ public class QuoteRouter extends HttpServlet {
 		 */
 		Data dataBucket = null;
 		try {
-			SessionData sessionData = SessionDataService.getSessionDataFromSession(request);
+			SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
 			if (sessionData == null ) {
 				throw new SessionException("session has expired");
 			}
@@ -82,7 +84,7 @@ public class QuoteRouter extends HttpServlet {
 			// Future functionality to replace write_quote.tag.
 			if (uri.endsWith("/quote/write.json")) {
 				if (dataBucket == null) {
-					dataBucket = SessionDataService.addNewTransactionDataToSession(request);
+					dataBucket = sessionDataService.addNewTransactionDataToSession(request);
 				}
 				writer.print(quoteService.write(request, transactionId, dataBucket));
 			}

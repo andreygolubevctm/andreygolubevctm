@@ -401,6 +401,7 @@
 
 	// Wrapper around results component, load results data
 	function get() {
+		meerkat.modules.carContactOptins.validateOptins();
 		Results.get();
 	}
 
@@ -478,6 +479,7 @@
 		meerkat.modules.dialogs.show({
 			title: $logo.clone().wrap('<p>').addClass('hidden-xs').parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Offer terms</div>",
 			hashId: 'offer-terms',
+			className: 'offer-terms-modal',
 			openOnHashChange: false,
 			closeOnHashChange: true,
 			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" +  $termsContent.html()

@@ -1,9 +1,12 @@
 package com.ctm.model.simples;
 
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ctm.model.AbstractJsonModel;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * "Message" relates to the Call Centre message centre. This model represents the simples.message database table.
@@ -19,11 +22,12 @@ public class Message extends AbstractJsonModel {
 	private String phoneNumber1;
 	private String phoneNumber2;
 	private String state;
+	@JsonSerialize(using = CustomDateSerializer.class)
+	private Date whenToAction;
 	private boolean canPostpone;
 
-	//
-	// Accessors
-	//
+
+
 
 	public int getMessageId() {
 		return messageId;
@@ -95,7 +99,12 @@ public class Message extends AbstractJsonModel {
 		this.canPostpone = canPostpone;
 	}
 
-
+	public Date getWhenToAction() {
+		return whenToAction;
+	}
+	public void setWhenToAction(final Date whenToAction) {
+		this.whenToAction = whenToAction;
+	}
 
 	@Override
 	protected JSONObject getJsonObject() throws JSONException {
@@ -114,4 +123,45 @@ public class Message extends AbstractJsonModel {
 
 		return json;
 	}
+
+	@Override
+	@SuppressWarnings("SimplifiableIfStatement")
+	public boolean equals(final Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		final Message message = (Message) o;
+
+		if (canPostpone != message.canPostpone) return false;
+		if (messageId != message.messageId) return false;
+		if (statusId != message.statusId) return false;
+		if (transactionId != message.transactionId) return false;
+		if (userId != message.userId) return false;
+		if (contactName != null ? !contactName.equals(message.contactName) : message.contactName != null) return false;
+		if (phoneNumber1 != null ? !phoneNumber1.equals(message.phoneNumber1) : message.phoneNumber1 != null)
+			return false;
+		if (phoneNumber2 != null ? !phoneNumber2.equals(message.phoneNumber2) : message.phoneNumber2 != null)
+			return false;
+		if (state != null ? !state.equals(message.state) : message.state != null) return false;
+		if (status != null ? !status.equals(message.status) : message.status != null) return false;
+		return !(whenToAction != null ? !whenToAction.equals(message.whenToAction) : message.whenToAction != null);
+
+	}
+
+	@Override
+	public int hashCode() {
+		int result = messageId;
+		result = 31 * result + (int) (transactionId ^ (transactionId >>> 32));
+		result = 31 * result + userId;
+		result = 31 * result + statusId;
+		result = 31 * result + (status != null ? status.hashCode() : 0);
+		result = 31 * result + (contactName != null ? contactName.hashCode() : 0);
+		result = 31 * result + (phoneNumber1 != null ? phoneNumber1.hashCode() : 0);
+		result = 31 * result + (phoneNumber2 != null ? phoneNumber2.hashCode() : 0);
+		result = 31 * result + (state != null ? state.hashCode() : 0);
+		result = 31 * result + (whenToAction != null ? whenToAction.hashCode() : 0);
+		result = 31 * result + (canPostpone ? 1 : 0);
+		return result;
+	}
+
 }

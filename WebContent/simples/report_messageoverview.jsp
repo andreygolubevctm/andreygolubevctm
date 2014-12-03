@@ -18,7 +18,7 @@
 			</c:when>
 			<c:otherwise>
 
-<h1>Message Centre Overview</h1>
+<h2>Message Queue Overview</h2>
 
 <c:set var="overview" value="${ messageOverviewDao.getMessageOverview() }" />
 

@@ -69,7 +69,7 @@ public class SimpleSocketConnection {
 				e.printStackTrace();
 			}
 
-			System.out.println("Socket Disconnected: " + socket);
+			logger.debug("Socket Disconnected: " + socket);
 		}
 
 		return response;

@@ -13,7 +13,7 @@
 	<c:set var="pageTitle" value="Log in" />
 </c:if>
 
-<c:set var="baseUrl" value="${pageSettings.getBaseUrl()}" />
+<c:set var="baseUrl" value="/${pageSettings.getContextFolder()}" />
 
 <script>
 window.onload = function() {

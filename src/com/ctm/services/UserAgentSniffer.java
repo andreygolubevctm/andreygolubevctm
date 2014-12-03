@@ -56,29 +56,60 @@ public class UserAgentSniffer {
 		return deviceType;
 	}
 	/**
-	 * Determine if the user agent is supported.
+	 * Determine if the user agent is supported from > browser version
+	 * contentValue should take the format: {"FIREFOX": 33,"SAFARI": 8,"IE": 11,"CHROME": 37}
 	 * @param request
+	 * @param contentKey e.g. minimumSupportedBrowsers, userTrackingBrowserRules
 	 * @return
 	 */
-	public static Boolean isSupportedBrowser(HttpServletRequest request) {
-		String minBrowserSupport = "";
+	public static Boolean isSupportedBrowser(HttpServletRequest request, String contentKey) {
+		String contentValue = "";
 		try {
-			minBrowserSupport = ContentService.getContentValue(request, "minimumSupportedBrowsers");
+			contentValue = ContentService.getContentValue(request, contentKey);
 		} catch (Exception e1) {
 		}
 
-		if(minBrowserSupport == "")
+		if(contentValue == "")
 			return true;
 
 		try {
 			String userAgent = request.getHeader("user-agent");
-			JSONObject json = new JSONObject(minBrowserSupport);
+			JSONObject json = new JSONObject(contentValue);
 			String browserName = UserAgentSniffer.getBrowserName(userAgent);
 			if(json.has(browserName)) {
 				int browserVersion = UserAgentSniffer.getBrowserVersion(userAgent);
 				if(browserVersion < json.getInt(browserName)) {
 					return false;
 				}
+			}
+		} catch (Exception e) {
+		}
+
+		return true;
+	}
+
+	/**
+	 * Determine if the device, COMPUTER, MOBILE, TABLET is supported
+	 * contentValue should take the format: {"COMPUTER": true,"TABLET": false,"MOBILE": false}
+	 * @param request
+	 * @return
+	 */
+	public static Boolean isSupportedDevice(HttpServletRequest request, String contentKey) {
+		String contentValue = "";
+		try {
+			contentValue = ContentService.getContentValue(request, contentKey);
+		} catch (Exception e1) {
+		}
+
+		if(contentValue == "")
+			return true;
+
+		try {
+			String userAgent = request.getHeader("user-agent");
+			JSONObject json = new JSONObject(contentValue);
+			String deviceType = UserAgentSniffer.getDeviceType(userAgent);
+			if(json.has(deviceType) && json.getBoolean(deviceType) == true) {
+				return true;
 			}
 		} catch (Exception e) {
 		}

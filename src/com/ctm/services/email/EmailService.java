@@ -23,11 +23,10 @@ import com.disc_au.web.go.Data;
 
 public class EmailService {
 
-	private static Logger logger = Logger.getLogger(EmailService.class.getName());
+	private static final Logger logger = Logger.getLogger(EmailService.class.getName());
 
-	SessionDataService sessionDataService;
+	private final SessionDataService sessionDataService = new SessionDataService();
 	protected TransactionDao transactionDao;
-	private EmailServiceHandler emailService;
 
 	/**
 	 * Sends a email based on the EmailMode.
@@ -73,7 +72,7 @@ public class EmailService {
 				try {
 					if(transactionId > 0) {
 						try {
-							data = SessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
+							data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
 						} catch (SessionException e) {
 							logger.warn(e.getMessage());
 						}
@@ -93,7 +92,7 @@ public class EmailService {
 				} catch (DaoException | ConfigSettingException  e) {
 					throw new SendEmailException("failed to get settings", e);
 				}
-				emailService = EmailServiceFactory.newInstance(pageSettings, mode, data);
+			EmailServiceHandler emailService = EmailServiceFactory.newInstance(pageSettings, mode, data);
 				emailService.send(request, emailAddress, transactionId);
 		} else {
 			throw new SendEmailException(transactionId + ": invalid email recieved emailAddress:" +  emailAddress);

@@ -136,7 +136,7 @@
 			Would you prefer to call direct?
 		</div>
 		<div class="col-xs-12 col-sm-6">
-			<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
+			<a class="btn btn-call-inverse btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
 		</div>
 	</div>
 </core:js_template>
@@ -173,7 +173,7 @@
 				Would you prefer to have the insurer call you?
 			</div>
 			<div class="col-xs-12 col-sm-6">
-				<a class="btn btn-call btn-block btn-call-actions btn-callback" href="javascript:;" data-callback-toggle="callback">Get a Call Back</a>
+				<a class="btn btn-call-inverse btn-block btn-call-actions btn-callback" href="javascript:;" data-callback-toggle="callback">Get a Call Back</a>
 			</div>
 		</div>
 	{{ } }}

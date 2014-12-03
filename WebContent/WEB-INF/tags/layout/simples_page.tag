@@ -25,7 +25,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
-		<script src="${pageSettings.getBaseUrl()}framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>
+		<script src="/${pageSettings.getContextFolder()}framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>
 	</jsp:attribute>
 
 	<jsp:body>

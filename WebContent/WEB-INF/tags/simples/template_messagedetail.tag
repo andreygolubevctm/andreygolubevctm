@@ -10,13 +10,19 @@
 
 		{{ _.each(errors, function(error) { }}
 			<div class="alert alert-danger">{{= error.message }}</div>
-
-			{{ if (error.message.indexOf('No message available.') > -1) { }}
-				<p>There are either no active messages in the queue, or current time is outside call centre hours.</p>
-			{{ } }}
 		{{ }) }}
 
+	{{ } else if (obj.messageId === 0) { }}
+
+		<p>There are either no active messages in the queue, or current time is outside call centre hours.</p>
+
+	{{ } else if (obj === false) { }}
+
+		<p><!-- No current message. --></p>
+
 	{{ } else { }}
+
+		<h2>Current Message</h2>
 
 		<table class="table table-condensed table-hover">
 			<tbody>
@@ -38,9 +44,12 @@
 				</tr>
 				<tr>
 					<th>Numbers to call</th>
-					<td>{{= obj.phoneNumber1 }}
-						{{ if (obj.phoneNumber1 && obj.phoneNumber1 != '') { }}<br>{{ } }}
-						{{= obj.phoneNumber2 }}</td>
+					<td>
+						{{ if (obj.phoneNumber1 && obj.phoneNumber1 != '') { }}<button class="btn btn-default">{{= obj.phoneNumber1 }}</button>{{ } }}
+						{{ if (obj.phoneNumber2 && obj.phoneNumber2 != '') { }}<button class="btn btn-default">{{= obj.phoneNumber2 }}</button>{{ } }}
+
+						<button class="btn btn-tertiary messagedetail-loadbutton">Amend quote <span class="icon icon-arrow-right"></span></button>
+					</td>
 				</tr>
 			</tbody>
 		</table>

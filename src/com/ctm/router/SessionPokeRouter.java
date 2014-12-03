@@ -24,6 +24,8 @@ public class SessionPokeRouter extends HttpServlet {
 	private static final long serialVersionUID = 27L;
 	private static Logger logger = Logger.getLogger(SessionPokeRouter.class.getName());
 
+	private final SessionDataService sessionDataService = new SessionDataService();
+
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String uri = request.getRequestURI();
@@ -40,16 +42,16 @@ public class SessionPokeRouter extends HttpServlet {
 
 		if (uri.endsWith("/session_poke.json")) {	
 			if (request.getParameter("check") == null)
-				SessionDataService.touchSession(request);
+				sessionDataService.touchSession(request);
 
 			JSONObject json = new JSONObject();
 			
 			try{
-				long timeout = SessionDataService.getClientSessionTimeout(request);
+				long timeout = sessionDataService.getClientSessionTimeout(request);
 				
 				if(timeout == -1) {
 					String cookieName = (EnvironmentService.getEnvironment() == Environment.PRO) ? "BIGipServerPool_HTTPS_Ecommerce_DISCOnline_XS" : "JSESSIONID";
-					String bigIPCookieValue = SessionDataService.getCookieByName(request, cookieName);
+					String bigIPCookieValue = sessionDataService.getCookieByName(request, cookieName);
 					json.put("bigIP", bigIPCookieValue);
 				}
 				

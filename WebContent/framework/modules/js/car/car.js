@@ -235,30 +235,34 @@
 				includeFormData:true
 			},
 			onInitialise : function (event) {
-				var driversFirstName =  $('#quote_drivers_regular_firstname');
-				var driversLastName =  $('#quote_drivers_regular_surname');
-				var driversPhoneNumber =  $('#quote_contact_phoneinput');
-				var driversContactEmail =  $('#quote_contact_email');
+				var $driversFirstName =  $('#quote_drivers_regular_firstname');
+				var $driversLastName =  $('#quote_drivers_regular_surname');
+				var $driversPhoneNumber =  $('#quote_contact_phoneinput');
+				var $driversContactEmail =  $('#quote_contact_email');
+				var $competitionOptin = $('#quote_contact_competition_optin');
+				var nonStdJourney = meerkat.modules.tracking.getCurrentJourney() != 1;
 
-				$('#quote_contact_competition_optin').on('change', function() {
+				if($competitionOptin.length && nonStdJourney) {
+					$competitionOptin.on('change', function() {
 					if ($(this).is(':checked')) {
-						driversFirstName.rules('add', {required:true, messages:{required:'Please enter your First Name to be eligible for the competition'}});
-						driversLastName.rules('add', {required:true, messages:{required:'Please enter your Last Name to be eligible for the competition'}});
-						driversPhoneNumber.rules('add', {required:true, messages:{required:'Please enter your Contact Number to be eligible for the competition'}});
-						driversContactEmail.rules('add', {required:true, messages:{required:'Please enter your Email Address to be eligible for the competition'}});
+							$driversFirstName.rules('add', {required:true, messages:{required:'Please enter your First Name to be eligible for the competition'}});
+							$driversLastName.rules('add', {required:true, messages:{required:'Please enter your Last Name to be eligible for the competition'}});
+							$driversPhoneNumber.rules('add', {required:true, messages:{required:'Please enter your Contact Number to be eligible for the competition'}});
+							$driversContactEmail.rules('add', {required:true, messages:{required:'Please enter your Email Address to be eligible for the competition'}});
 					}
 					else {
-						driversFirstName.rules('remove', 'required');
-						driversLastName.rules('remove', 'required');
-						driversPhoneNumber.rules('remove', 'required');
-						driversContactEmail.rules('remove', 'required');
+							$driversFirstName.rules('remove', 'required');
+							$driversLastName.rules('remove', 'required');
+							$driversPhoneNumber.rules('remove', 'required');
+							$driversContactEmail.rules('remove', 'required');
 
-						driversFirstName.valid();
-						driversLastName.valid();
-						driversPhoneNumber.valid();
-						driversContactEmail.valid();
+							$driversFirstName.valid();
+							$driversLastName.valid();
+							$driversPhoneNumber.valid();
+							$driversContactEmail.valid();
 					}
 				});
+				}
 			},
 			onAfterEnter : function (event) {
 				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(3) .snapshot');

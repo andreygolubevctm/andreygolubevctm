@@ -11,23 +11,31 @@ import org.json.JSONObject;
 public class Transaction extends AbstractJsonModel {
 
 	private long transactionId;
+	private long newestTransactionId;
 	private long rootId;
 	private String vertical;
 	private int styleCodeId;
 	private String styleCodeName;
 	private String emailAddress;
 
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-	//
-	// Accessors
-	//
+
+
 	public long getTransactionId() {
 		return transactionId;
 	}
 	public void setTransactionId(long transactionId) {
 		this.transactionId = transactionId;
+	}
+
+	/**
+	 * The most-recent transaction ID in a chain of linked transactions.
+	 * @return
+	 */
+	public long getNewestTransactionId() {
+		return newestTransactionId;
+	}
+	public void setNewestTransactionId(long newestTransactionId) {
+		this.newestTransactionId = newestTransactionId;
 	}
 
 	public long getRootId() {
@@ -58,6 +66,13 @@ public class Transaction extends AbstractJsonModel {
 		this.styleCodeName = styleCodeName;
 	}
 
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
 
 
 	@Override
@@ -66,14 +81,12 @@ public class Transaction extends AbstractJsonModel {
 
 		// Transaction details
 		json.put("transactionId", getTransactionId());
+		json.put("newestTransactionId", getNewestTransactionId());
 		json.put("rootId", getRootId());
 		json.put("vertical", getVerticalCode());
 		json.put("styleCodeId", getStyleCodeId());
 		json.put("styleCodeName", getStyleCodeName());
 
 		return json;
-	}
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
 	}
 }

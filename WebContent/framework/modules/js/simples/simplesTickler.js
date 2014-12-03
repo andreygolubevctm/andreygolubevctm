@@ -53,8 +53,8 @@
 	 * Additionally, try to send an active transaction ID to keep it fresh in the session cache.
 	 */
 	function tickle() {
-		meerkat.modules.comms.post({
-			url: 'simples/ajax/tickle.jsp',
+		meerkat.modules.comms.get({
+			url: 'simples/tickle',
 			cache: false,
 			errorLevel: 'silent',
 			useDefaultErrorHandling: false,

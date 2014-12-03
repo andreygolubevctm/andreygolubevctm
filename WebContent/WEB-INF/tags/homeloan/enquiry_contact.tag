@@ -20,7 +20,7 @@
 		</form_new:row>
 
 		<form_new:row label="Last name" className="hidden">
-			<field:person_name xpath="${xpath}/lastName" title="last name" required="false" />
+			<field:person_name xpath="${xpath}/lastName" title="last name" required="true" />
 		</form_new:row>
 
 		<form_new:row label="Best contact" className="clear">
@@ -28,7 +28,7 @@
 		</form_new:row>
 
 		<form_new:row label="Your contact number" className="clear">
-			<field:contact_telno xpath="${xpath}/contactNumber" title="your contact number" required="false" size="40"/>
+			<field:contact_telno xpath="${xpath}/contactNumber" title="your contact number" required="true" size="40"/>
 		</form_new:row>
 
 		<div id="${name}_bestcontactToggleArea" class="${name}_bestcontactToggleArea show_${displayBestContact}">

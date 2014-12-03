@@ -1495,7 +1495,7 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $firstname, $surname, $email, $marketing, $iAm, $lookingTo, $currentHomeLoan, $purchasePrice, $loanAmount, $amountOwing, $currentLoanPanel, $existingOwnerPanel, $purchasePricePanel;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $firstname, $surname, $email, $marketing, $iAm, $lookingTo, $currentHomeLoan, $purchasePrice, $purchasePriceHidden, $loanAmount, $amountOwing, $amountOwingHidden, $currentLoanPanel, $existingOwnerPanel, $purchasePricePanel;
     function applyEventListeners() {
         $(document.body).on("click", ".btn-view-brands", displayBrandsModal);
         $marketing.on("change", function() {
@@ -1529,7 +1529,7 @@
                     code: "CL",
                     label: "Compare better home loan options"
                 } ];
-                $existingOwnerPanel.addClass("show_Y").removeClass("show_N").removeClass("show_");
+                toggleView($existingOwnerPanel, true);
             } else {
                 arr = [ {
                     code: "FH",
@@ -1538,8 +1538,9 @@
                     code: "IP",
                     label: "Buy an investment property"
                 } ];
-                $existingOwnerPanel.addClass("show_N").removeClass("show_Y").removeClass("show_");
+                toggleView($existingOwnerPanel, false);
                 $amountOwing.val("");
+                $amountOwingHidden.val("");
             }
             for (var currOpts = [], opts = '<option id="homeloan_details_goal_" value="">Please choose...</option>', i = 0; i < arr.length; i++) {
                 opts += '<option id="homeloan_details_goal_' + arr[i].code + '" value="' + arr[i].code + '">' + arr[i].label + "</option>";
@@ -1554,24 +1555,41 @@
             $iAm.change();
         }
         $lookingTo.on("change", function() {
-            if ($lookingTo.val() === "FH" || $lookingTo.val() === "APL" || $lookingTo.val() === "IP") {
-                $purchasePricePanel.addClass("show_Y").removeClass("show_N").removeClass("show_");
-            } else {
-                $purchasePricePanel.addClass("show_N").removeClass("show_Y").removeClass("show_");
+            var val = $(this).val(), currentLoan = $("#homeloan_details_currentLoan_Y").is(":checked");
+            if (val == "CD" || val == "CL") {
+                $amountOwing.val("");
+                $amountOwingHidden.val("");
+                toggleView($currentLoanPanel, false);
+                toggleView($purchasePricePanel, false);
                 $purchasePrice.val("");
+                $purchasePriceHidden.val("");
+            } else if (val === "FH" || val === "APL" || val === "IP") {
+                if (currentLoan) {
+                    toggleView($currentLoanPanel, true);
+                }
+                toggleView($purchasePricePanel, true);
+            } else {
+                if (currentLoan) {
+                    toggleView($currentLoanPanel, true);
+                }
+                toggleView($purchasePricePanel, false);
+                $purchasePrice.val("");
+                $purchasePriceHidden.val("");
             }
         });
         $currentHomeLoan.on("change", function() {
-            if ($("#homeloan_details_currentLoan_Y").is(":checked")) {
-                $amountOwing.val("");
-                $currentLoanPanel.addClass("show_Y").removeClass("show_N").removeClass("show_");
+            if ($("#homeloan_details_currentLoan_Y").is(":checked") && $lookingTo.val() != "CD" && $lookingTo.val() != "CL") {
+                toggleView($currentLoanPanel, true);
             } else {
-                $currentLoanPanel.addClass("show_N").removeClass("show_Y").removeClass("show_");
-                $amountOwing.val("");
+                toggleView($currentLoanPanel, false);
             }
+            $amountOwing.val("");
+            $amountOwingHidden.val("");
         });
         $loanAmount.on("blur.hmlValidate", function() {
-            if ($purchasePrice.val().length === 0) return;
+            if ($purchasePrice.val().length === 0) {
+                return;
+            }
             _.delay(function checkValidation() {
                 $purchasePrice.isValid(true);
             }, 250);
@@ -1583,6 +1601,13 @@
             }, 250);
         });
     }
+    function toggleView($el, makeVisible) {
+        if (makeVisible) {
+            $el.addClass("show_Y").removeClass("show_N show_");
+        } else {
+            $el.addClass("show_N").removeClass("show_Y show_");
+        }
+    }
     function init() {
         $(document).ready(function() {
             $firstname = $("#homeloan_contact_firstName");
@@ -1593,8 +1618,10 @@
             $lookingTo = $("#homeloan_details_goal");
             $currentHomeLoan = $('input:radio[name="homeloan_details_currentLoan"]');
             $purchasePrice = $("#homeloan_loanDetails_purchasePriceentry");
+            $purchasePriceHidden = $("#homeloan_loanDetails_purchasePrice");
             $loanAmount = $("#homeloan_loanDetails_loanAmountentry");
             $amountOwing = $("#homeloan_details_amountOwingentry");
+            $amountOwingHidden = $("#homeloan_details_amountOwing");
             $currentLoanPanel = $("#homeloan_details_currentLoanToggleArea");
             $existingOwnerPanel = $(".homeloan_details_existingToggleArea");
             $purchasePricePanel = $(".homeloan_loanDetails_purchasePriceToggleArea");

@@ -85,21 +85,6 @@ body > div > header a.bottombar .btn-call:hover {
   border-width: 1px;
   border-style: solid;
 }
-.sidebar .btn-call {
-  background-color: #0db14b;
-  color: #ffffff;
-}
-.sidebar .btn-call:hover,
-.sidebar .btn-call:focus {
-  background-color: #097833;
-  color: #ffffff;
-  outline: 0;
-}
-.sidebar .btn-call:active,
-.sidebar .btn-call.active {
-  background-color: #1c3e93;
-  color: #ffffff;
-}
 .bottombar .btn-call {
   background-color: #0db14b;
   color: #ffffff;
@@ -628,14 +613,15 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
   .sortbar-children ul.navbar-nav > li {
     padding-left: 0;
     padding-right: 0;
-    text-shadow: 0px 1px 0px #097d35;
+    text-shadow: 0px 1px 0px #097833;
   }
   .sortbar-children ul.navbar-nav > li a {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 9px;
+    padding-right: 9px;
     font-size: 12px;
     text-align: center;
     text-transform: uppercase;
+    border-color: #097d35;
   }
   .sortbar-children ul.navbar-nav > li .navbar-brand {
     display: block;
@@ -649,6 +635,22 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
   .sortbar-children ul.navbar-nav > li:first-child {
     border-right: 1px solid #097d35;
   }
+  .sortbar-children ul.navbar-nav.navbar-inverse > li > a,
+  .sortbar-children ul.navbar-nav.navbar-inverse > li.open > a,
+  .sortbar-children ul.navbar-nav.navbar-inverse > li a.active,
+  .sortbar-children ul.navbar-nav.navbar-inverse > li a:focus,
+  .sortbar-children ul.navbar-nav.navbar-inverse > li a:active,
+  .sortbar-children ul.navbar-nav.navbar-inverse > li.open > a:focus {
+    border-right: 1px solid #097d35;
+  }
+  .sortbar-children ul.navbar-nav.navbar-inverse > li > a:hover,
+  .sortbar-children ul.navbar-nav.navbar-inverse > li.open > a:hover,
+  .sortbar-children ul.navbar-nav.navbar-inverse > li a.active:hover,
+  .sortbar-children ul.navbar-nav.navbar-inverse > li a:focus:hover,
+  .sortbar-children ul.navbar-nav.navbar-inverse > li a:active:hover,
+  .sortbar-children ul.navbar-nav.navbar-inverse > li.open > a:focus:hover {
+    border-color: #097d35;
+  }
   .sortbar-children .active [data-sort-dir='asc']:before {
     position: absolute;
     width: 0;
@@ -657,10 +659,7 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
     left: 50%;
     content: '';
     margin-left: -8px;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 0 8px 8px;
-    border-bottom-color: #ffffff;
+    border-color: #097d35;
   }
   .sortbar-children .active [data-sort-dir='desc']:before {
     position: absolute;
@@ -670,10 +669,7 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
     left: 50%;
     content: '';
     margin-left: -8px;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 8px 8px 0;
-    border-top-color: #097d35;
+    border-color: #097d35;
   }
 }
 @media screen and (min-width: 992px) {

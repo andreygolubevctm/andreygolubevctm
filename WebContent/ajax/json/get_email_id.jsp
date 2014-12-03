@@ -46,6 +46,7 @@
 			<c:when test="${(empty result) || (result.rowCount == 0) }">
 				<sql:update>
 						INSERT INTO `aggregator`.`email_master` (emailAddress,styleCodeId,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) VALUES (?, ?, ?, ?, ?,'','', curdate(), ?, ?)
+						ON DUPLICATE KEY UPDATE brand = VALUES(brand), vertical = VALUES(vertical), source = VALUES(source), transactionId = VALUES(transactionId)
 						<sql:param value="${email}" />
 						<sql:param value="${styleCodeId}" />
 						<sql:param value="${brand}" />

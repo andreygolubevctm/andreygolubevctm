@@ -6,6 +6,22 @@
 
 (function($, undefined) {
     var meerkat = window.meerkat, log = meerkat.logging.info;
+    function getBaseUrl() {
+        if (meerkat.site && typeof meerkat.site.urls !== "undefined") {
+            if (typeof meerkat.site.urls.context !== "undefined") {
+                return meerkat.site.urls.context;
+            } else if (typeof meerkat.site.urls.base !== "undefined") {
+                return meerkat.site.urls.base;
+            }
+        }
+    }
+    meerkat.modules.register("simples", {
+        getBaseUrl: getBaseUrl
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, log = meerkat.logging.info;
     var modalId = false, currentTransactionId = false, currentMessage = false, templateComments = false, templatePostpone = false, $actionsDropdown = false, $homeButton = false;
     function init() {
         $(document).ready(function() {
@@ -35,8 +51,11 @@
                     currentTransactionId = obj || false;
                     updateMenu();
                 });
-                meerkat.messaging.subscribe(meerkat.modules.events.simplesMessage.MESSAGE_CHANGE, function idChange(obj) {
+                meerkat.messaging.subscribe(meerkat.modules.events.simplesMessage.MESSAGE_CHANGE, function messageChange(obj) {
                     currentMessage = obj || false;
+                    if (currentMessage.hasOwnProperty("transactionId")) {
+                        currentTransactionId = currentMessage.transactionId;
+                    }
                     updateMenu();
                 });
                 $e = $("#simples-template-comments");
@@ -47,17 +66,6 @@
                 if ($e.length > 0) {
                     templatePostpone = _.template($e.html());
                 }
-            }
-            var $checkSimplesHome = $(".simples-home");
-            if ($checkSimplesHome.length > 0) {
-                $(".message-getnext").on("click", function clickNext(event) {
-                    event.preventDefault();
-                    if (window.top.meerkat && window.top.meerkat.modules.simplesMessage) {
-                        window.top.meerkat.modules.simplesMessage.getNextMessage();
-                    } else {
-                        meerkat.modules.simplesMessage.getNextMessage();
-                    }
-                });
             }
         });
     }
@@ -148,17 +156,17 @@
     }
     function actionPostpone() {
         meerkat.modules.dialogs.show({
-            title: "Postpone message",
+            title: " ",
             buttons: [ {
                 label: "Cancel",
                 className: "btn-cancel",
                 closeWindow: true
             }, {
-                label: "OK",
-                className: "btn-save message-savebutton",
+                label: "Postpone",
+                className: "btn-save btn-cta message-savebutton",
                 closeWindow: false
             } ],
-            onOpen: function(id) {
+            onOpen: function postponeModalOpen(id) {
                 modalId = id;
                 var $modal = $("#" + modalId);
                 var $button = $modal.find(".message-savebutton");
@@ -168,42 +176,57 @@
                     url: "simples/ajax/message_statuses.json.jsp?parentStatusId=4",
                     dataType: "json",
                     cache: true,
-                    errorLevel: "silent",
-                    onSuccess: function onSuccess(json) {
-                        updateModal(json, templatePostpone);
-                    },
-                    onError: function onError(obj, txt, errorThrown) {
-                        updateModal(null, templatePostpone);
-                    },
-                    onComplete: function onComplete() {
-                        $button.prop("disabled", false);
-                        var $picker = $modal.find("#postponedate");
-                        $picker.datepicker({
-                            clearBtn: false,
-                            format: "dd/mm/yyyy"
-                        });
-                        $picker.siblings(".input-group-addon").on("click", function() {
-                            $picker.datepicker("show");
-                        });
-                        $button.on("click", function loadClick() {
-                            $button.prop("disabled", true);
-                            meerkat.modules.loadingAnimation.showInside($button, true);
-                            var data = {
-                                postponeDate: $modal.find("#postponedate").val(),
-                                postponeTime: $modal.find("#postponetime").val(),
-                                reasonStatusId: $modal.find("select").val(),
-                                comment: $modal.find("textarea").val(),
-                                assignToUser: $modal.find("#assigntome").is(":checked")
-                            };
-                            meerkat.modules.simplesMessage.performFinish("postpone", data, function performCallback() {
-                                if ($homeButton.length > 0) $homeButton[0].click();
-                                meerkat.modules.dialogs.close(modalId);
-                            }, function callbackError() {
-                                $button.prop("disabled", false);
-                                meerkat.modules.loadingAnimation.hide($button);
+                    errorLevel: "silent"
+                }).done(function onSuccess(json) {
+                    updateModal(json, templatePostpone);
+                }).fail(function onError(obj, txt, errorThrown) {
+                    updateModal(null, templatePostpone);
+                }).always(function onComplete() {
+                    $button.prop("disabled", false);
+                    $("#postponehour").val("04");
+                    var $picker = $modal.find("#postponedate_calendar");
+                    $picker.datepicker({
+                        startDate: "+0d",
+                        endDate: "+6m",
+                        clearBtn: false,
+                        format: "yyyy-mm-dd"
+                    }).find("table").addClass("table");
+                    $modal.on("changeDate", $picker, function picker(e) {
+                        $modal.find("#postponedate").val(e.format("yyyy-mm-dd"));
+                    });
+                    $button.on("click", function saveClick() {
+                        $button.prop("disabled", true);
+                        meerkat.modules.loadingAnimation.showInside($button, true);
+                        var data = {
+                            postponeDate: $modal.find("#postponedate").val(),
+                            postponeTime: $modal.find("#postponehour").val() + ":" + $modal.find("#postponeminute").val(),
+                            postponeAMPM: $modal.find('input[name="postponeampm"]:checked').val(),
+                            reasonStatusId: $modal.find('select[name="reason"]').val(),
+                            comment: $modal.find("textarea").val(),
+                            assignToUser: $modal.find("#assigntome").is(":checked")
+                        };
+                        if (!_.isString(data.postponeDate) || data.postponeDate.length === 0 || (!_.isString(data.postponeAMPM) || data.postponeAMPM.length === 0)) {
+                            meerkat.modules.dialogs.show({
+                                title: " ",
+                                htmlContent: "Please check fields: date, time and AM/PM.",
+                                buttons: [ {
+                                    label: "OK",
+                                    className: "btn-cta",
+                                    closeWindow: true
+                                } ]
                             });
+                            $button.prop("disabled", false);
+                            meerkat.modules.loadingAnimation.hide($button);
+                            return;
+                        }
+                        meerkat.modules.simplesMessage.performFinish("postpone", data, function performCallback() {
+                            if ($homeButton.length > 0) $homeButton[0].click();
+                            meerkat.modules.dialogs.close(modalId);
+                        }, function callbackError() {
+                            $button.prop("disabled", false);
+                            meerkat.modules.loadingAnimation.hide($button);
                         });
-                    }
+                    });
                 });
             }
         });
@@ -389,8 +412,10 @@
     }
     function init() {
         $(document).ready(resizeIframe);
-        window.onresize = resizeIframe;
-        window.addEventListener("message", receiveMessage, false);
+        $(window).resize(_.debounce(resizeIframe));
+        if (window.addEventListener) {
+            window.addEventListener("message", receiveMessage, false);
+        }
     }
     meerkat.modules.register("simplesInterface", {
         init: init,
@@ -404,9 +429,7 @@
     var baseUrl = "";
     function init() {
         $(document).ready(function() {
-            if (meerkat.site && typeof meerkat.site.urls !== "undefined" && typeof meerkat.site.urls.base !== "undefined") {
-                baseUrl = meerkat.site.urls.base;
-            }
+            baseUrl = meerkat.modules.simples.getBaseUrl();
             $(document.body).on("click", ".needs-loadsafe", function loadsafeClick(event) {
                 event.preventDefault();
                 var $this = $(this);
@@ -447,29 +470,55 @@
             MESSAGE_CHANGE: "MESSAGE_CHANGE"
         }
     }, moduleEvents = events.simplesMessage;
-    var modalId = false, templateMessageDetail = false, currentMessage = false;
+    var templateMessageDetail = false, currentMessage = false, $messageDetailsContainer, baseUrl = "";
     function init() {
         $(document).ready(function() {
+            baseUrl = meerkat.modules.simples.getBaseUrl();
             $e = $("#simples-template-messagedetail");
             if ($e.length > 0) {
                 templateMessageDetail = _.template($e.html());
             }
-            $("#dynamic_dom").on("click", ".messagedetail-loadbutton", function(event) {
-                event.preventDefault();
-                loadMessage();
+            $(".simples-menubar .simples-homebutton").on("click.simplesMessage", function clickHome(event) {
+                setCurrentMessage(false);
+                meerkat.messaging.publish(meerkat.modules.events.simplesInterface.TRANSACTION_ID_CHANGE, false);
             });
+            var $checkSimplesHome = $(".simples-home");
+            if ($checkSimplesHome.length > 0) {
+                $(".message-getnext").on("click.simplesMessage", function clickNext(event) {
+                    event.preventDefault();
+                    var $button = $(event.target);
+                    if ($button.prop("disabled") === true) {
+                        return;
+                    }
+                    $button.prop("disabled", true).addClass("disabled");
+                    $messageDetailsContainer.empty();
+                    meerkat.modules.loadingAnimation.showInside($messageDetailsContainer);
+                    getNextMessage(function nextComplete() {
+                        $button.prop("disabled", false).removeClass("disabled");
+                    });
+                });
+            }
+            $messageDetailsContainer = $(".simples-message-details-container");
+            if ($messageDetailsContainer.length > 0) {
+                renderMessageDetails(false, $messageDetailsContainer);
+                meerkat.messaging.subscribe(meerkat.modules.events.simplesMessage.MESSAGE_CHANGE, function messageChange(obj) {
+                    renderMessageDetails(obj, $messageDetailsContainer);
+                });
+                $messageDetailsContainer.on("click", ".messagedetail-loadbutton", loadMessage);
+            }
         });
     }
-    function loadMessage() {
+    function loadMessage(event) {
+        event.preventDefault();
         if (currentMessage === false || !currentMessage.hasOwnProperty("messageId")) {
             alert("Message details have not been stored correctly - can not load.");
             return;
         }
-        var $button = $("#" + modalId).find(".messagedetail-loadbutton");
-        $button.prop("disabled", true);
-        meerkat.modules.loadingAnimation.showInside($button, true);
+        var $button = $(event.target);
+        $button.prop("disabled", true).addClass("disabled");
+        meerkat.modules.loadingAnimation.showAfter($button);
         meerkat.modules.comms.post({
-            url: "simples/ajax/message_set_inprogress.jsp",
+            url: baseUrl + "simples/ajax/message_set_inprogress.jsp",
             dataType: "json",
             cache: false,
             errorLevel: "silent",
@@ -479,61 +528,45 @@
             onSuccess: function onSuccess(json) {
                 if (json.hasOwnProperty("errors") && json.errors.length > 0) {
                     alert("Could not set message to In Progress...\n" + json.errors[0].message);
-                    $button.prop("disabled", false);
+                    $button.prop("disabled", false).removeClass("disabled");
                     meerkat.modules.loadingAnimation.hide($button);
                     return;
                 }
-                var url = "simples/loadQuote.jsp?brandId=" + currentMessage.styleCodeId + "&verticalCode=" + currentMessage.vertical + "&transactionId=" + currentMessage.transactionId + "&action=amend";
+                var url = "simples/loadQuote.jsp?brandId=" + currentMessage.styleCodeId + "&verticalCode=" + currentMessage.vertical + "&transactionId=" + encodeURI(currentMessage.newestTransactionId) + "&action=amend";
+                log(url);
                 meerkat.modules.simplesLoadsafe.loadsafe(url, true);
-                meerkat.messaging.publish(moduleEvents.MESSAGE_CHANGE, currentMessage);
-                meerkat.modules.dialogs.close(modalId);
             },
             onError: function onError(obj, txt, errorThrown) {
                 alert("Could not set message to In Progress...\n" + txt + ": " + errorThrown);
-                $button.prop("disabled", false);
+                $button.prop("disabled", false).removeClass("disabled");
                 meerkat.modules.loadingAnimation.hide($button);
             }
         });
     }
-    function getNextMessage() {
-        modalId = meerkat.modules.dialogs.show({
-            title: "Message assigned to you:",
-            buttons: [ {
-                label: "Cancel",
-                className: "btn-cancel",
-                closeWindow: true
-            }, {
-                label: "Load",
-                className: "btn-save messagedetail-loadbutton",
-                closeWindow: false
-            } ],
-            onOpen: function(id) {
-                modalId = id;
-                $("#" + modalId).find(".modal-closebar").addClass("hidden");
-                meerkat.modules.dialogs.changeContent(modalId, meerkat.modules.loadingAnimation.getTemplate());
-                $("#" + modalId).find(".messagedetail-loadbutton").prop("disabled", true);
-                meerkat.modules.comms.get({
-                    url: "simples/messages/next.json",
-                    cache: false,
-                    errorLevel: "silent",
-                    onSuccess: function onSuccess(json) {
-                        updateModal(json, templateMessageDetail);
-                        currentMessage = json;
-                        if (json.hasOwnProperty("errors") === false || json.errors.length === 0) {
-                            if (currentMessage.messageId > 0) {
-                                $("#" + modalId).find(".messagedetail-loadbutton").prop("disabled", false);
-                            }
-                        }
-                    },
-                    onError: function onError(obj, txt, errorThrown) {
-                        var json = {
-                            errors: [ {
-                                message: txt + ": " + errorThrown
-                            } ]
-                        };
-                        updateModal(json, templateMessageDetail);
-                    }
-                });
+    function getNextMessage(callbackComplete) {
+        meerkat.modules.comms.get({
+            url: baseUrl + "simples/messages/next.json",
+            cache: false,
+            errorLevel: "silent",
+            onSuccess: function onSuccess(json) {
+                if (json.messageId === 0) {
+                    $messageDetailsContainer.html(templateMessageDetail(json));
+                } else {
+                    setCurrentMessage(json);
+                }
+            },
+            onError: function onError(obj, txt, errorThrown) {
+                var json = {
+                    errors: [ {
+                        message: txt + ": " + errorThrown
+                    } ]
+                };
+                $messageDetailsContainer.html(templateMessageDetail(json));
+            },
+            onComplete: function onComplete() {
+                if (typeof callbackComplete === "function") {
+                    callbackComplete();
+                }
             }
         });
     }
@@ -550,7 +583,7 @@
         data = data || {};
         data.messageId = currentMessage.messageId;
         meerkat.modules.comms.post({
-            url: "simples/ajax/message_set_" + type + ".jsp",
+            url: baseUrl + "simples/ajax/message_set_" + type + ".jsp",
             dataType: "json",
             cache: false,
             errorLevel: "silent",
@@ -561,8 +594,7 @@
                     if (typeof callbackError === "function") callbackError();
                     return;
                 }
-                meerkat.messaging.publish(moduleEvents.MESSAGE_CHANGE, false);
-                currentMessage = false;
+                setCurrentMessage(false);
                 if (typeof callbackSuccess === "function") callbackSuccess();
             },
             onError: function onError(obj, txt, errorThrown) {
@@ -571,19 +603,155 @@
             }
         });
     }
-    function updateModal(data, template) {
-        var htmlContent = "No template found.";
-        data = data || {};
-        if (typeof template === "function") {
-            htmlContent = template(data);
+    function getCurrentMessage() {
+        return currentMessage;
+    }
+    function setCurrentMessage(message) {
+        if (window.self !== window.top) {
+            window.top.meerkat.modules.simplesMessage.setCurrentMessage(message);
         }
-        meerkat.modules.dialogs.changeContent(modalId, htmlContent);
+        currentMessage = message;
+        meerkat.messaging.publish(moduleEvents.MESSAGE_CHANGE, currentMessage);
+    }
+    function renderMessageDetails(message, $destination) {
+        $destination = $destination || false;
+        if ($destination === false || $destination.length === 0) return;
+        if (message === false) {
+            $(".simples-home-buttons, .simples-notice-board").removeClass("hidden");
+        } else {
+            $(".simples-home-buttons, .simples-notice-board").addClass("hidden");
+        }
+        $destination.html(templateMessageDetail(message));
     }
     meerkat.modules.register("simplesMessage", {
         init: init,
         events: events,
         getNextMessage: getNextMessage,
-        performFinish: performFinish
+        getCurrentMessage: getCurrentMessage,
+        setCurrentMessage: setCurrentMessage,
+        performFinish: performFinish,
+        renderMessageDetails: renderMessageDetails
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, log = meerkat.logging.info;
+    var templatePQ = false, $container = false, baseUrl = "", viewMessageInProgress = false;
+    function init() {
+        $(document).ready(function() {
+            $container = $(".simples-postpone-queue-container");
+            if ($container.length === 0) return;
+            baseUrl = meerkat.modules.simples.getBaseUrl();
+            initDateStuff();
+            var $e = $("#simples-template-postponed-queue");
+            if ($e.length > 0) {
+                templatePQ = _.template($e.html());
+            }
+            $container.on("click.viewMessage", ".simples-postponed-message", viewMessage);
+            meerkat.messaging.subscribe(meerkat.modules.events.simplesMessage.MESSAGE_CHANGE, function messageChange(obj) {
+                var $messages = $container.find(".simples-postponed-message");
+                $messages.removeClass("active");
+                if (obj !== false) {
+                    $messages.filter('[data-messageId="' + obj.messageId + '"]').addClass("active");
+                }
+            });
+            refresh();
+        });
+    }
+    function initDateStuff() {
+        Date.locale = {
+            month_names: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+            month_names_short: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+            day_of_week: [ "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
+            day_of_week_short: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ]
+        };
+        Date.prototype.getMonthName = function(asUTC) {
+            if (asUTC === true) {
+                return Date.locale.month_names[this.getUTCMonth()];
+            } else {
+                return Date.locale.month_names[this.getMonth()];
+            }
+        };
+        Date.prototype.getMonthNameShort = function(asUTC) {
+            if (asUTC === true) {
+                return Date.locale.month_names_short[this.getUTCMonth()];
+            } else {
+                return Date.locale.month_names_short[this.getMonth()];
+            }
+        };
+        Date.prototype.getDayName = function(asUTC) {
+            if (asUTC === true) {
+                return Date.locale.day_of_week[this.getUTCDay()];
+            } else {
+                return Date.locale.day_of_week[this.getDay()];
+            }
+        };
+        Date.prototype.getDayNameShort = function(asUTC) {
+            if (asUTC === true) {
+                return Date.locale.day_of_week_short[this.getUTCDay()];
+            } else {
+                return Date.locale.day_of_week_short[this.getDay()];
+            }
+        };
+    }
+    function viewMessage(event) {
+        event.preventDefault();
+        var $element = $(event.target);
+        if (!$element.hasClass("simples-postponed-message")) {
+            $element = $element.parents(".simples-postponed-message");
+        }
+        if (viewMessageInProgress === true || $element.hasClass("disabled") || $element.hasClass("active")) {
+            return;
+        }
+        var messageId = $element.attr("data-messageId");
+        viewMessageInProgress = true;
+        meerkat.modules.loadingAnimation.showInside($element);
+        $element.addClass("disabled");
+        meerkat.modules.comms.get({
+            url: baseUrl + "simples/messages/get.json?messageId=" + encodeURI(messageId),
+            cache: false,
+            errorLevel: "silent",
+            useDefaultErrorHandling: false
+        }).done(function onSuccess(json) {
+            if (!json.hasOwnProperty("transactionId")) {
+                alert("Failed to load message: invalid response");
+            } else {
+                meerkat.modules.simplesMessage.setCurrentMessage(json);
+            }
+        }).fail(function onError(obj, txt, errorThrown) {
+            if (obj.hasOwnProperty("responseJSON") && obj.responseJSON.hasOwnProperty("errors") && obj.responseJSON.errors.length > 0) {
+                alert("Failed to load message\n" + obj.responseJSON.errors[0].message);
+            } else {
+                alert("Unsuccessful because: " + txt + ": " + errorThrown);
+            }
+        }).always(function onComplete() {
+            viewMessageInProgress = false;
+            meerkat.modules.loadingAnimation.hide($element);
+            $element.removeClass("disabled");
+        });
+    }
+    function refresh() {
+        if ($container === false || $container.length === 0) return;
+        $container.html("Fetching postponed queue...");
+        meerkat.modules.comms.get({
+            url: baseUrl + "simples/messages/postponed.json",
+            cache: false,
+            errorLevel: "silent",
+            useDefaultErrorHandling: false
+        }).done(function onSuccess(json) {
+            var htmlContent = "";
+            if (typeof templatePQ !== "function") {
+                htmlContent = "Unsuccessful because: template not configured.";
+            } else {
+                htmlContent = templatePQ(json);
+            }
+            $container.html(htmlContent);
+        }).fail(function onError(obj, txt, errorThrown) {
+            $container.html("Unsuccessful because: " + txt + ": " + errorThrown);
+        });
+    }
+    meerkat.modules.register("simplesPostponedQueue", {
+        init: init
     });
 })(jQuery);
 
@@ -820,7 +988,7 @@
             } else {
                 $resultRow.addClass("open");
                 $button.attr("data-originaltext", $button.text());
-                $button.text("Close");
+                $button.text("Less details");
                 $resultRow.parent().children().not(".open").removeClass("bg-success");
                 $resultRow.addClass("bg-success");
                 $resultRow.find("div.moreinfo-container").remove();
@@ -1014,8 +1182,8 @@
         log("Tickler stopped.");
     }
     function tickle() {
-        meerkat.modules.comms.post({
-            url: "simples/ajax/tickle.jsp",
+        meerkat.modules.comms.get({
+            url: "simples/tickle",
             cache: false,
             errorLevel: "silent",
             useDefaultErrorHandling: false,

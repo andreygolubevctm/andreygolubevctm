@@ -21,8 +21,8 @@ public class CallCentreService {
 	 * @return
 	 */
 	public static InboundPhoneNumber getInboundPhoneDetails(HttpServletRequest request) throws DaoException, ConfigSettingException {
-
-		SessionData sessionData = SessionDataService.getSessionDataFromSession(request);
+		SessionDataService sessionDataService = new SessionDataService();
+		SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
 		AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 
@@ -60,8 +60,8 @@ public class CallCentreService {
 	 * @return redirectUrl
 	 */
 	public static String createHandoverUrl(HttpServletRequest request, int brandId, String verticalCode, String transactionId) throws Exception{
-
-		SessionData sessionData = SessionDataService.getSessionDataFromSession(request);
+		SessionDataService sessionDataService = new SessionDataService();
+		SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
 
 		Brand currentBrand = ApplicationService.getBrandFromRequest(request);
 		Brand brand = ApplicationService.getBrandById(brandId);

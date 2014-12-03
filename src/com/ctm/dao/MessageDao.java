@@ -1,10 +1,12 @@
 package com.ctm.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.naming.NamingException;
 
@@ -18,34 +20,28 @@ import com.ctm.model.simples.MessageAudit;
 import com.ctm.model.simples.MessageStatus;
 import com.ctm.model.simples.User;
 
+import static com.ctm.model.simples.MessageStatus.STATUS_POSTPONED;
+
 public class MessageDao {
-	private static Logger logger = Logger.getLogger(MessageDao.class.getName());
+	private static final Logger logger = Logger.getLogger(MessageDao.class.getName());
 
-	/**
-	 * Get a message. Currently not public method due to being incomplete.
-	 */
-	protected Message getMessage(int messageId) throws DaoException {
-
-		SimpleDatabaseConnection dbSource = null;
-		Message message = new Message();
-
+	public Message getMessage(final int messageId) throws DaoException {
+		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		try {
-			PreparedStatement stmt;
-			dbSource = new SimpleDatabaseConnection();
-
-			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT msg.id, transactionId, userId, msg.statusId, stat.status, contactName, phoneNumber1, phoneNumber2, state " +
+			final PreparedStatement stmt = dbSource.getConnection().prepareStatement(
+				"SELECT msg.id, transactionId, userId, msg.statusId, stat.status, contactName, phoneNumber1, phoneNumber2, state, whenToAction " +
+				", IF(msg.postponeCount < src.maxPostpones, 1, 0) AS canPostpone " +
 				"FROM simples.message msg " +
+				"INNER JOIN simples.message_source src ON src.id = msg.sourceId " +
 				"LEFT JOIN simples.message_status stat ON stat.id = msg.statusId " +
 				"WHERE msg.id = ?;"
 			);
 			stmt.setInt(1, messageId);
-
-			ResultSet results = stmt.executeQuery();
-
-			while (results.next()) {
-				mapFieldsFromResultsToMessage(results, message);
+			final List<Message> messages = mapFieldsFromResultsToMessage(stmt.executeQuery());
+			if (messages.isEmpty()) {
+				throw new DaoException("Unable to find message id=" + messageId);
 			}
+			return messages.get(0);
 		}
 		catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
@@ -53,8 +49,6 @@ public class MessageDao {
 		finally {
 			dbSource.closeConnection();
 		}
-
-		return message;
 	}
 
 	/**
@@ -71,7 +65,6 @@ public class MessageDao {
 		}
 
 		SimpleDatabaseConnection dbSource = null;
-		Message message = new Message();
 
 		try {
 			PreparedStatement stmt;
@@ -85,11 +78,13 @@ public class MessageDao {
 			);
 			stmt.setInt(1, userId);
 
-			ResultSet results = stmt.executeQuery();
-
-			while (results.next()) {
-				mapFieldsFromResultsToMessage(results, message);
+			final ResultSet results = stmt.executeQuery();
+			List<Message> messages = mapFieldsFromResultsToMessage(results);
+			if (messages.size() > 0) {
+				return messages.get(0);
 			}
+
+			return new Message();
 		}
 		catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
@@ -97,8 +92,6 @@ public class MessageDao {
 		finally {
 			dbSource.closeConnection();
 		}
-
-		return message;
 	}
 
 	/**
@@ -178,7 +171,7 @@ public class MessageDao {
 		MessageAudit messageAudit = new MessageAudit();
 		messageAudit.setMessageId(messageId);
 		messageAudit.setUserId(actionIsPerformedByUserId);
-		messageAudit.setStatusId(MessageStatus.STATUS_POSTPONED);
+		messageAudit.setStatusId(STATUS_POSTPONED);
 		messageAudit.setReasonStatusId(reasonStatusId);
 		messageAudit.setComment("Postponed by userId '" + actionIsPerformedByUserId + "' (message.userId=" + message.getUserId() + ") until " + postponeTo.toString() + ", unassign=" + unassign);
 
@@ -217,7 +210,7 @@ public class MessageDao {
 				"WHERE id = ?;"
 			);
 			stmt.setInt(1, userId);
-			stmt.setInt(2, MessageStatus.STATUS_POSTPONED);
+			stmt.setInt(2, STATUS_POSTPONED);
 			stmt.setTimestamp(3, new java.sql.Timestamp(postponeTo.getTime()));
 			stmt.setInt(4, messageId);
 
@@ -298,7 +291,7 @@ public class MessageDao {
 		messageAuditDao.addMessageAudit(messageAudit);
 
 		// Change the status
-		if (message.getStatusId() == MessageStatus.STATUS_POSTPONED) {
+		if (message.getStatusId() == STATUS_POSTPONED) {
 			// Do not change the status if the message is postponed, because it could be past the
 			// configured expiry time (postponed is a special status that will always keep the message available).
 		}
@@ -339,7 +332,8 @@ public class MessageDao {
 		messageAuditDao.addMessageAudit(messageAudit);
 
 		// Perform the action
-		updateUserAndStatus(messageId, message.getUserId(), MessageStatus.STATUS_UNSUCCESSFUL);
+		// 0 for user ID because we're un-assigning it.
+		updateUserAndStatus(messageId, 0, MessageStatus.STATUS_UNSUCCESSFUL);
 		incrementCallAttempts(messageId);
 
 		// User is done with this message
@@ -440,9 +434,17 @@ WHERE msg.id = 53
 	/**
 	 * Internal method to pull the fields from a resultset and put into a Message model.
 	 * @param results Result set
-	 * @param message Message to map the fields onto
 	 */
-	private void mapFieldsFromResultsToMessage(ResultSet results, Message message) throws SQLException {
+	private List<Message> mapFieldsFromResultsToMessage(final ResultSet results) throws SQLException {
+		final List<Message> messages = new ArrayList<>();
+		while (results.next()) {
+			messages.add(message(results));
+		}
+		return messages;
+	}
+
+	private Message message(final ResultSet results) throws SQLException {
+		final Message message = new Message();
 		message.setMessageId(results.getInt("id"));
 		message.setTransactionId(results.getLong("transactionId"));
 		message.setUserId(results.getInt("userId"));
@@ -452,11 +454,35 @@ WHERE msg.id = 53
 		message.setPhoneNumber1(results.getString("phoneNumber1"));
 		message.setPhoneNumber2(results.getString("phoneNumber2"));
 		message.setState(results.getString("state"));
+		message.setWhenToAction(results.getTimestamp("whenToAction"));
 
 		// Fields that may not exist depending on method that is calling this.
 		try {
 			message.setCanPostpone(results.getBoolean("canPostpone"));
 		}
-		catch (SQLException e) {}
+		catch (final SQLException ignored) {}
+		return message;
+	}
+
+	public List<Message> postponedMessages(final int userId) throws DaoException {
+		final SimpleDatabaseConnection simpleDatabaseConnection = new SimpleDatabaseConnection();
+		try {
+			final Connection connection = simpleDatabaseConnection.getConnection();
+			final PreparedStatement statement = connection.prepareStatement(
+				"SELECT msg.id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, whenToAction " +
+				"FROM simples.message msg " +
+				"LEFT JOIN simples.message_status stat ON stat.id = msg.statusId " +
+				"WHERE statusId = ? AND userId = ? " +
+				"ORDER BY whenToAction ASC");
+			statement.setInt(1, STATUS_POSTPONED);
+			statement.setInt(2, userId);
+			final ResultSet results = statement.executeQuery();
+			return mapFieldsFromResultsToMessage(results);
+		} catch (SQLException | NamingException e) {
+			logger.error("unable to retrieve postponed messages for userId = " + userId, e);
+			throw new DaoException(e.getMessage(), e);
+		} finally {
+			simpleDatabaseConnection.closeConnection();
+		}
 	}
 }
