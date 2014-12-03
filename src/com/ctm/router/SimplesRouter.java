@@ -40,7 +40,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 		"/simples/messages/get.json",
 		"/simples/messages/next.json",
 		"/simples/messages/postponed.json",
-		"/simples/tickle",
+		"/simples/tickle.json",
 		"/simples/transactions/details.json",
 		"/simples/users/list_online.json"
 })
@@ -117,7 +117,7 @@ public class SimplesRouter extends HttpServlet {
 			postponedMessages(writer, authenticatedData);
 		}
 
-		else if (uri.endsWith("/simples/tickle")) {
+		else if (uri.endsWith("/simples/tickle.json")) {
 			response.setHeader("Cache-Control", "no-cache, max-age=0");
 			response.setHeader("Pragma","no-cache");
 			response.setHeader("Expires","-1");
@@ -133,7 +133,7 @@ public class SimplesRouter extends HttpServlet {
 				final UserDao userDao = new UserDao();
 				userDao.tickleUser(simplesUid);
 
-				writer.print("OK");
+				objectMapper.writeValue(writer, jsonObjectNode("status", "OK"));
 			}
 			catch (ConfigSettingException | DaoException | SessionException e) {
 				throw new ServletException(e);

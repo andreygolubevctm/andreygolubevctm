@@ -54,7 +54,7 @@
 	 */
 	function tickle() {
 		meerkat.modules.comms.get({
-			url: 'simples/tickle',
+			url: 'simples/tickle.json',
 			cache: false,
 			errorLevel: 'silent',
 			useDefaultErrorHandling: false,
