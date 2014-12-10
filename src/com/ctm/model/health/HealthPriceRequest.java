@@ -1,5 +1,6 @@
 package com.ctm.model.health;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,22 +10,53 @@ public class HealthPriceRequest {
 
 	private String searchDate;
 	private String state;
-	private String membership;
-
+	private Membership membership;
 	private String productType = "";
 	private double rebate;
-	private String loading;
+	private int loading;
+	private double loadingPerc;
 	private int excessMax;
 	private int excessMin;
-	private String hospitalSelection;
-	private String excludeStatus;
+	private HospitalSelection hospitalSelection;
+	private List<ProductStatus> excludeStatus;
 	private int tierHospital = -1;
 	private int tierExtras = -1;
-	private int providerId;
+	private int providerId = 0;
 	private double priceMinimum;
 	private int styleCodeId;
 	private Date searchDateValue;
 	private List<Integer> excludedProviders;
+	private List<String> preferences;
+	private Frequency paymentFrequency;
+	private int searchResults = 12;
+	private boolean retrieveSavedResults;
+	private long savedTransactionId;
+	private String selectedProductId;
+	private String productTitle;
+	private boolean onResultsPage;
+	private boolean directApplication;
+	private boolean simples;
+	private boolean pricesHaveChanged;
+	private boolean privateHospital;
+	private boolean publicHospital;
+	private String excessSel;
+	private String brandFilter = "";
+
+	public void setPrivateHospital(boolean privateHospital) {
+		this.privateHospital = privateHospital;
+	}
+
+	public boolean isPrivateHospital() {
+		return privateHospital;
+	}
+
+	public boolean isPublicHospital() {
+		return publicHospital;
+	}
+
+	public void setPublicHospital(boolean publicHospital) {
+		this.publicHospital = publicHospital;
+	}
 
 	/**
 	 * Hospital Tier
@@ -55,12 +87,20 @@ public class HealthPriceRequest {
 	}
 
 
-	public String getLoading() {
+	public int getLoading() {
 		return loading;
 	}
 
-	public void setLoading(String loading) {
+	public void setLoading(int loading) {
 		this.loading = loading;
+	}
+
+	public double getLoadingPerc() {
+		return loadingPerc;
+	}
+
+	public void setLoadingPerc(double loadingPerc) {
+		this.loadingPerc = loadingPerc;
 	}
 
 	public double getRebate() {
@@ -69,10 +109,6 @@ public class HealthPriceRequest {
 
 	public void setRebate(double rebate) {
 		this.rebate = rebate;
-	}
-
-	public String getHospitalSelection() {
-		return this.hospitalSelection;
 	}
 
 	public String getState() {
@@ -100,10 +136,10 @@ public class HealthPriceRequest {
 	}
 
 	public String getMembership() {
-		return membership;
+		return membership.getCode();
 	}
 
-	public void setMembership(String membership) {
+	public void setMembership(Membership membership) {
 		this.membership = membership;
 	}
 
@@ -123,15 +159,19 @@ public class HealthPriceRequest {
 		this.excessMin = excessMin;
 	}
 
-	public void setHospitalSelection(String hospitalSelection) {
+	public String getHospitalSelection() {
+		return hospitalSelection.getCode();
+	}
+
+	public void setHospitalSelection(HospitalSelection hospitalSelection) {
 		this.hospitalSelection = hospitalSelection;
 	}
 
-	public String getExcludeStatus() {
+	public List<ProductStatus> getExcludeStatus() {
 		return excludeStatus;
 	}
 
-	public void setExcludeStatus(String excludeStatus) {
+	public void setExcludeStatus(List<ProductStatus> excludeStatus) {
 		this.excludeStatus = excludeStatus;
 	}
 
@@ -177,5 +217,108 @@ public class HealthPriceRequest {
 
 	public List<Integer> getExcludedProvidersList() {
 		return excludedProviders;
+	}
+
+	public List<String> getPreferences() {
+		return preferences;
+	}
+
+	public void setPreferences(String preferencesString) {
+		this.preferences = new ArrayList<String>();
+		for (String preference : preferencesString.split(",")) {
+			if (!preference.isEmpty()) {
+				this.preferences.add(preference);
+			}
+		}
+	}
+
+	public Frequency getPaymentFrequency() {
+		return paymentFrequency;
+	}
+
+	public void setPaymentFrequency(String frequencyCode) {
+		this.paymentFrequency = Frequency.findByCode(frequencyCode);
+	}
+
+	public int getSearchResults() {
+		return searchResults;
+	}
+
+	public void setSearchResults(int searchResults) {
+		this.searchResults = searchResults;
+	}
+
+	public boolean getRetrieveSavedResults() {
+		return retrieveSavedResults;
+	}
+
+	public void setRetrieveSavedResults(boolean retrieveSavedResults) {
+		this.retrieveSavedResults = retrieveSavedResults;
+	}
+
+	public long getSavedTransactionId() {
+		return savedTransactionId;
+	}
+
+	public void setSavedTransactionId(long savedTransactionId) {
+		this.savedTransactionId = savedTransactionId;
+	}
+
+	public String getSelectedProductId() {
+		return selectedProductId;
+	}
+
+	public void setSelectedProductId(String selectedProductId) {
+		this.selectedProductId = selectedProductId;
+	}
+
+	public String getProductTitle() {
+		return productTitle;
+	}
+
+	public void setProductTitle(String productTitle) {
+		this.productTitle = productTitle;
+	}
+	public boolean isOnResultsPage() {
+		return onResultsPage;
+	}
+
+	public void setOnResultsPage(boolean onResultsPage) {
+		this.onResultsPage = onResultsPage;
+	}
+
+	public void setDirectApplication(boolean directApplication){
+		this.directApplication = directApplication;
+	}
+	public boolean isDirectApplication() {
+		return directApplication;
+	}
+	public void setIsSimples(boolean isSimples) {
+		this.simples = isSimples;
+	}
+	public boolean getIsSimples() {
+		return simples;
+	}
+	public void setPricesHaveChanged(boolean pricesHaveChanged) {
+		this.pricesHaveChanged = pricesHaveChanged;
+	}
+	public boolean getPricesHaveChanged() {
+		return pricesHaveChanged;
+	}
+
+	public String getExcessSel() {
+		return excessSel;
+	}
+
+	public void setBrandFilter(String brandFilter) {
+		this.brandFilter = brandFilter.replaceAll("[^0-9,]", "");
+	}
+
+	public void setExcessSel(String excessSel) {
+		this.excessSel = excessSel;
+	}
+
+	public String getBrandFilter() {
+		return brandFilter;
 	}
 }

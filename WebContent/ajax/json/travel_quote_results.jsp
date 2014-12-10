@@ -107,6 +107,8 @@
 		<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
+		<%-- !!IMPORTANT!! - ensure the trackingKey is passed back with results --%>
+		<go:setData dataVar="soapdata" xpath="soap-response/results/info/trackingKey" value="${data.travel.trackingKey}" />
 		<go:log level="TRACE" source="travel_quote_results_jsp">${resultXml}</go:log>
 		<go:log level="TRACE" source="travel_quote_results_jsp">${debugXml}</go:log>
 		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}

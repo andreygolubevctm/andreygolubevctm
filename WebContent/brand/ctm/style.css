@@ -2007,7 +2007,7 @@ ul.ui-autocomplete.ui-menu  {
     text-transform: uppercase;
     text-align: center;
 }
-.tinybtn.blue {
+.tinybtn.altbtn {
 	background-repeat: no-repeat;
     display:block;
     height:20px;
@@ -2019,7 +2019,7 @@ ul.ui-autocomplete.ui-menu  {
     font-weight: bold;
     text-decoration: none;
 }
-.tinybtn.blue span {
+.tinybtn.altbtn span {
 	color: #ffffff;
 	background-image:url("../../common/images/button_bg_tiny_bl_right.png");
     background-position: top right;

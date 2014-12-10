@@ -332,6 +332,56 @@ a:hover,
 a:active {
   font-weight: normal;
 }
+@font-face {
+  font-family: "SunLt Light";
+  src: url(../../../framework/fonts/Sun_LT_300.eot);
+  src: url(../../../framework/fonts/Sun_LT_300.woff) format("woff");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "SunLt Bold";
+  src: url(../../../framework/fonts/Sun_LT_700_.eot);
+  src: url(../../../framework/fonts/Sun_LT_700_.woff) format("woff");
+  font-weight: 700;
+}
+/*-----------------------------------------------------------
+Fonts
+-----------------------------------------------------------*/
+@font-face {
+  font-family: 'SunLTLightRegular';
+  src: url("../../../framework/fonts/sun_lt_3_-webfont.eot");
+  src: url("../../../framework/fonts/sun_lt_3_-webfont.eot?#iefix") format("embedded-opentype"), url("../../../framework/fonts/sun_lt_3_-webfont.woff") format("woff"), url("../../../framework/fonts/sun_lt_3_-webfont.ttf") format("truetype"), url("../../../framework/fonts/sun_lt_3_-webfont.svg#SunLTLightRegular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SunLTBoldRegular';
+  src: url("../../../framework/fonts/sun_lt_7_-webfont.eot");
+  src: url("../../../framework/fonts/sun_lt_7_-webfont.eot?#iefix") format("embedded-opentype"), url("../../../framework/fonts/sun_lt_7_-webfont.woff") format("woff"), url("../../../framework/fonts/sun_lt_7_-webfont.ttf") format("truetype"), url("../../../framework/fonts/sun_lt_7_-webfont.svg#SunLTBoldRegular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'sunsemibold';
+  src: url("../../../framework/fonts/sun6____-webfont.eot");
+  src: url("../../../framework/fonts/sun6____-webfont.eot?#iefix") format("embedded-opentype"), url("../../../framework/fonts/sun6____-webfont.woff") format("woff"), url("../../../framework/fonts/sun6____-webfont.ttf") format("truetype"), url("../../../framework/fonts/sun6____-webfont.svg#sunsemibold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'sunextrabold';
+  src: url("../../../framework/fonts/sun8____-webfont.eot");
+  src: url("../../../framework/fonts/sun8____-webfont.eot?#iefix") format("embedded-opentype"), url("../../../framework/fonts/sun8____-webfont.woff") format("woff"), url("../../../framework/fonts/sun8____-webfont.ttf") format("truetype"), url("../../../framework/fonts/sun8____-webfont.svg#sunextrabold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'just_another_handregular';
+  src: url('fonts/justanotherhand-webfont.eot');
+  src: url('fonts/justanotherhand-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/justanotherhand-webfont.woff') format('woff'), url('fonts/justanotherhand-webfont.ttf') format('truetype'), url('fonts/justanotherhand-webfont.svg#just_another_handregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 .hidden {
   display: none;
 }
@@ -1597,7 +1647,6 @@ h5 {
   width: 980px;
   margin: 0 auto;
   background-color: #fff;
-  position: relative;
   overflow: hidden;
   /* for IE */
 }
@@ -2904,21 +2953,21 @@ select,
   text-transform: uppercase;
   text-align: center;
 }
-.tinybtn.blue {
+.tinybtn.altbtn {
   background-repeat: no-repeat;
   display: block;
   height: 20px;
   width: 100px;
-  background-image: url("../../legacy/images/button_bg_tiny_bl.png");
+  background-image: url("../../legacy/images/button_bg_tiny_gr.png");
   cursor: pointer;
   cursor: hand;
   margin-left: 7px;
   font-weight: bold;
   text-decoration: none;
 }
-.tinybtn.blue span {
+.tinybtn.altbtn span {
   color: #ffffff;
-  background-image: url("../../legacy/images/button_bg_tiny_bl_right.png");
+  background-image: url("../../legacy/images/button_bg_tiny_gr_right.png");
   background-position: top right;
   color: #FFFFFF;
   display: block;

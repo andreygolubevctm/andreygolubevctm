@@ -1434,7 +1434,7 @@ meerkat.logging.init = function() {
                 if (settings.cache === true) addToCache(settings.url, data, result);
                 if (settings.onSuccess != null) settings.onSuccess(result);
                 if (settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
-                if (typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.setTimeoutLength(result.timeout);
+                if (typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.update(result.timeout);
             }
         }, function onAjaxError(jqXHR, textStatus, errorThrown) {
             var data = typeof settings.data != "undefined" ? settings.data : null;
@@ -1853,7 +1853,8 @@ meerkat.logging.init = function() {
             method: "trackQuoteComparison",
             object: {
                 products: getComparedProductIds(true),
-                vertical: verticalCode
+                vertical: verticalCode,
+                verticalFilter: typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null
             }
         });
     }
@@ -4740,7 +4741,7 @@ meerkat.logging.init = function() {
         if (typeof updatedSettings !== "object") {
             return;
         }
-        settings = $.extend({}, settings, updatedSettings);
+        settings = $.extend(true, {}, settings, updatedSettings);
     }
     meerkat.modules.register("moreInfo", {
         initMoreInfo: initMoreInfo,
@@ -4929,7 +4930,7 @@ meerkat.logging.init = function() {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
-    var log = meerkat.logging.info;
+    var log = meerkat.logging.info, url = null;
     var defaultSettings = {
         product: null,
         trackHandover: true,
@@ -4939,7 +4940,7 @@ meerkat.logging.init = function() {
         closeBridgingModalDialog: true
     };
     function buildURL(settings) {
-        var product = settings.product, handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? "POST" : "GET", brand = settings.brand ? settings.brand : product.provider, msg = settings.msg ? settings.msg : "", url = null;
+        var product = settings.product, handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? "POST" : "GET", brand = settings.brand ? settings.brand : product.provider, msg = settings.msg ? settings.msg : "";
         try {
             url = "transferring.jsp?transactionId=" + meerkat.modules.transactionId.get() + "&trackCode=" + product.trackCode + "&brand=" + brand + "&msg=" + msg + "&url=";
             url += product.encodeUrl === "Y" ? encodeURIComponent(product.quoteUrl) : product.quoteUrl;
@@ -5002,9 +5003,10 @@ meerkat.logging.init = function() {
                 transactionID: transaction_id,
                 productID: product.productId,
                 brandCode: product.brandCode,
+                productName: product.name,
                 productBrandCode: product.provider,
                 vertical: meerkat.site.vertical,
-                verticalFilter: $("input[name=travel_policyType]:checked").val() == "S" ? "Single Trip" : "Multi Trip"
+                verticalFilter: typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null
             }
         });
     }
@@ -5837,7 +5839,8 @@ meerkat.logging.init = function() {
                     method: "trackQuoteProductList",
                     object: {
                         products: sTagProductList,
-                        vertical: meerkat.site.vertical
+                        vertical: meerkat.site.vertical,
+                        verticalFilter: typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null
                     }
                 });
                 meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
@@ -6571,19 +6574,181 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
-    function initSession() {}
-    function poke() {
-        sessionExpiry.poke();
+    var meerkat = window.meerkat;
+    var windowTimeout = null, isModalOpen = false, lastClientPoke = 0, deferredPokeTimeout = null, sessionAlertModal = null, countDownInterval = null, ajaxRequestTimeoutCount = 0;
+    function init() {
+        if (!meerkat.modules.simplesTickler && meerkat.site.session.firstPokeEnabled) {
+            updateTimeout(meerkat.site.session.windowTimeout);
+            poke().done(function firstPokeDone(data) {
+                if (data.timeout < 0 || typeof data.bigIP !== "undefined") {
+                    meerkat.modules.errorHandling.error({
+                        errorLevel: "silent",
+                        message: "Session poke failed on first load",
+                        description: "Session poke failed on first load",
+                        page: "session_poke.json",
+                        data: {
+                            transactionId: meerkat.modules.transactionId.get(),
+                            bigIP_onPageLoad: meerkat.site.session.bigIP,
+                            bigIP_onFirstSessionPoke: data.bigIP
+                        },
+                        id: meerkat.modules.transactionId.get()
+                    });
+                    updateTimeout(meerkat.site.session.windowTimeout);
+                }
+            });
+            $(document).on("click.session", ".poke, .btn:not(.journeyNavButton,.dontPoke), .btn-back, .dropdown-toggle, .btn-pagination", function(e) {
+                deferredPoke();
+            });
+        }
     }
-    function setTimeoutLength(timeout) {
-        sessionExpiry._timeoutLength = timeout;
-        sessionExpiry.init();
+    function poke(check) {
+        var ajaxURL = "session_poke.json";
+        ajaxURL += check === true ? "?check" : "";
+        return meerkat.modules.comms.get({
+            url: ajaxURL,
+            dataType: "json",
+            onSuccess: function onPokeSuccess(data) {
+                ajaxRequestTimeoutCount = 0;
+                updateTimeout(data.timeout);
+            },
+            useDefaultErrorHandling: false,
+            errorLevel: "silent",
+            onError: function onPokeError(obj, txt, errorThrown) {
+                if (txt === "timeout" && ajaxRequestTimeoutCount < 3) {
+                    setTimeout(function retrySessionPoke() {
+                        poke(check);
+                        ajaxRequestTimeoutCount++;
+                    }, 3e4);
+                } else {
+                    showModal(false);
+                    meerkat.modules.errorHandling.error({
+                        errorLevel: "silent",
+                        message: "Session poke error",
+                        description: "An error occurred with your browsing session, session poke failed to return: " + txt + " " + errorThrown,
+                        data: {
+                            status: txt,
+                            error: errorThrown,
+                            transactionId: meerkat.modules.transactionId.get()
+                        },
+                        id: meerkat.modules.transactionId.get()
+                    });
+                }
+            }
+        });
+    }
+    function check() {
+        return poke(true);
+    }
+    function deferredPoke() {
+        if (lastClientPoke <= getClientTimestamp - meerkat.site.session.deferredPokeDuration) {
+            poke();
+        } else {
+            if (!deferredPokeTimeout) deferredPokeTimeout = window.setTimeout(poke, meerkat.site.session.deferredPokeDuration);
+        }
+    }
+    function getClientTimestamp() {
+        return parseInt(+new Date());
+    }
+    function updateTimeout(timeout) {
+        if (timeout > 0) {
+            lastClientPoke = getClientTimestamp();
+            window.clearTimeout(windowTimeout);
+            windowTimeout = window.setTimeout(function setTimeoutWindowTimeout() {
+                check();
+            }, timeout);
+            hideModal();
+        } else {
+            if (isModalOpen) showModal(false); else showModal(true);
+        }
+    }
+    function redirect(reload) {
+        meerkat.modules.leavePageWarning.disable();
+        hideModal();
+        meerkat.modules.utilities.scrollPageTo("body");
+        if (typeof reload === "boolean" && reload) {
+            meerkat.modules.journeyEngine.loadingShow("Reloading...");
+            window.location.reload();
+        } else {
+            meerkat.modules.journeyEngine.loadingShow("Redirecting...");
+            window.location = meerkat.site.urls.exit;
+        }
+    }
+    function showModal(canRecover) {
+        hideModal();
+        isModalOpen = true;
+        var modalConfig = {
+            title: "Hi, are you still there?",
+            className: "sessionModalContainer",
+            leftBtn: {
+                label: ""
+            },
+            onOpen: function onSessionModalOpen(dialogId) {
+                $("#" + dialogId).find(".modal-closebar").remove();
+            }
+        };
+        if (canRecover) {
+            var modalCountdownDuration = 180;
+            runModalCountdown(modalCountdownDuration);
+            modalConfig.htmlContent = [ '<p id="sessionModalCountDown">', getModalCountdownText(modalCountdownDuration), "</p>", "<p>We haven't noticed any activity from you for a while, so we wanted to let you know that your session will automatically time out in 3 minutes.</p>", "<p>If you are still there, great!</p>", '<p>To continue with your session, please click the "Continue" button below.</p>' ].join("");
+            modalConfig.buttons = [ {
+                label: "Continue",
+                className: "btn btn-success",
+                closeWindow: true,
+                action: poke
+            } ];
+        } else {
+            modalConfig.htmlContent = [ "<p>We didn't see any activity from you for a while, or your connection was interrupted, so we wanted to let you know your session has timed out.</p>" ].join("");
+            modalConfig.buttons = [ {
+                label: "Reload Page",
+                className: "btn btn-success",
+                closeWindow: true,
+                action: function sessionModalReloadPage() {
+                    redirect(true);
+                }
+            }, {
+                label: "Visit " + meerkat.site.name + "'s Home Page",
+                className: "btn btn-success",
+                closeWindow: true,
+                action: redirect
+            } ];
+        }
+        sessionAlertModal = meerkat.modules.dialogs.show(modalConfig);
+    }
+    function getModalCountdownText(countDownSecs) {
+        var minutes = Math.floor(countDownSecs / 60), seconds = ("0" + (countDownSecs - minutes * 60)).slice(-2);
+        return minutes + ":" + seconds;
+    }
+    function runModalCountdown(modalCountdownDuration) {
+        var countDownSecs = modalCountdownDuration, countDown = function sessionModalCountDown() {
+            $(document).find("#sessionModalCountDown").text(getModalCountdownText(countDownSecs));
+            if (countDownSecs <= 0) {
+                check().then(function sessionLastBreath(data) {
+                    if (data.timeout <= 0) {
+                        meerkat.modules.writeQuote.write({
+                            triggeredsave: "sessionpop"
+                        }, false, function writeQuoteCallback() {
+                            window.clearInterval(countDownInterval);
+                            redirect();
+                        });
+                    } else {
+                        hideModal();
+                    }
+                });
+            }
+            countDownSecs -= 1;
+        };
+        countDownInterval = window.setInterval(countDown, 1e3);
+    }
+    function hideModal() {
+        window.clearInterval(countDownInterval);
+        meerkat.modules.dialogs.close(sessionAlertModal);
+        isModalOpen = false;
     }
     meerkat.modules.register("session", {
-        init: initSession,
+        init: init,
         poke: poke,
-        setTimeoutLength: setTimeoutLength
+        check: check,
+        update: updateTimeout
     });
 })(jQuery);
 

@@ -3,37 +3,14 @@
  * Copyright 2014 Compare The Market Pty Ltd
  * http://www.comparethemarket.com.au/
  */
-@font-face {
-  font-family: SourceSansProLight;
-  src: url('../fonts/SourceSansPro-Light.eot');
-  src: url('../fonts/SourceSansPro-Light.eot?#iefix') format('embedded-opentype'), url('../fonts/SourceSansPro-Light.woff') format('woff'), url('../fonts/SourceSansPro-Light.ttf') format('truetype'), url('../fonts/SourceSansPro-Light.svg#SourceSansProLight') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: SourceSansProRegular;
-  src: url('../fonts/SourceSansPro-Regular.eot');
-  src: url('../fonts/SourceSansPro-Regular.eot?#iefix') format('embedded-opentype'), url('../fonts/SourceSansPro-Regular.woff') format('woff'), url('../fonts/SourceSansPro-Regular.ttf') format('truetype'), url('../fonts/SourceSansPro-Regular.svg#SourceSansProRegular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: SourceSansProBold;
-  src: url('../fonts/SourceSansPro-Semibold.eot');
-  src: url('../fonts/SourceSansPro-Semibold.eot?#iefix') format('embedded-opentype'), url('../fonts/SourceSansPro-Semibold.woff') format('woff'), url('../fonts/SourceSansPro-Semibold.ttf') format('truetype'), url('../fonts/SourceSansPro-Semibold.svg#SourceSansProBold') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
 /*
 
 	INSTRUCTIONS FOR UPDATING
 
-	When receiving an update to the CTM icon font, follow these instructions to convert style.css into ctm.icon-font.less
+	When receiving an update to the CTM icon font, follow these instructions to convert style.css into core.icon-font.less
 	(remember to copy the font files EOT, SVG, TTF, WOFF into WebContent\brand\ctm\fonts)
 
-	1. Ensure any 'ctm' is in uppercase: CTM
-
-	2. Ensure path to font is ../fonts/
+	1. Ensure path to font is ../../../framework/fonts/
 
 	3. Add '.icon,' to the selector '[class^="icon-"], [class*=" icon-"]'
 
@@ -54,22 +31,43 @@
 
 */
 @font-face {
-  font-family: 'CTM';
-  src: url('../fonts/CTM.eot?434f43');
-  src: url('../fonts/CTM.eot?#iefix434f43') format('embedded-opentype'), url('../fonts/CTM.woff?434f43') format('woff'), url('../fonts/CTM.ttf?434f43') format('truetype'), url('../fonts/CTM.svg?434f43#CTM') format('svg');
+  font-family: SourceSansProLight;
+  src: url('../../../framework/fonts/SourceSansPro-Light.eot');
+  src: url('../../../framework/fonts/SourceSansPro-Light.eot?#iefix') format('embedded-opentype'), url('../../../framework/fonts/SourceSansPro-Light.woff') format('woff'), url('../../../framework/fonts/SourceSansPro-Light.ttf') format('truetype'), url('../../../framework/fonts/SourceSansPro-Light.svg#SourceSansProLight') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: SourceSansProRegular;
+  src: url('../../../framework/fonts/SourceSansPro-Regular.eot');
+  src: url('../../../framework/fonts/SourceSansPro-Regular.eot?#iefix') format('embedded-opentype'), url('../../../framework/fonts/SourceSansPro-Regular.woff') format('woff'), url('../../../framework/fonts/SourceSansPro-Regular.ttf') format('truetype'), url('../../../framework/fonts/SourceSansPro-Regular.svg#SourceSansProRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: SourceSansProBold;
+  src: url('../../../framework/fonts/SourceSansPro-Semibold.eot');
+  src: url('../../../framework/fonts/SourceSansPro-Semibold.eot?#iefix') format('embedded-opentype'), url('../../../framework/fonts/SourceSansPro-Semibold.woff') format('woff'), url('../../../framework/fonts/SourceSansPro-Semibold.ttf') format('truetype'), url('../../../framework/fonts/SourceSansPro-Semibold.svg#SourceSansProBold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'framework_font';
+  src: url('../../../framework/fonts/CTM.eot?434f43');
+  src: url('../../../framework/fonts/CTM.eot?#iefix434f43') format('embedded-opentype'), url('../../../framework/fonts/CTM.woff?434f43') format('woff'), url('../../../framework/fonts/CTM.ttf?434f43') format('truetype'), url('../../../framework/fonts/CTM.svg?434f43#CTM') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   @font-face {
-    font-family: 'CTM';
-    src: url('../fonts/CTM.svg?434f43#CTM') format('svg');
+    font-family: 'framework_font';
+    src: url('../../../framework/fonts/CTM.svg?434f43#CTM') format('svg');
   }
 }
 .icon,
 [class^="icon-"],
 [class*=" icon-"] {
-  font-family: 'CTM';
+  font-family: 'framework_font';
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -6869,7 +6867,7 @@ html {
     padding-right: 40px;
   }
   .priceMode .result-row[data-available="Y"] .resultInsert.priceMode:after {
-    font-family: 'CTM';
+    font-family: 'framework_font';
     content: "\e910";
     position: absolute;
     right: 0;
@@ -7922,7 +7920,7 @@ body.simples .health .resultsHeadersBg {
   border-radius: 5px;
   /* By default, apply the success theme */
   border: 1px solid #9e9e9e;
-  font-family: 'CTM';
+  font-family: 'framework_font';
   font-size: 16px;
   display: block;
   float: left;
@@ -8429,78 +8427,50 @@ fieldset h2 .icon-text {
 #aggTimer.debugInfoHidden {
   display: none;
 }
-#session_pop {
-  display: none;
-  z-index: 9011;
-  position: fixed;
-  top: 130px;
-  left: 50%;
-  margin-left: -168px;
-  width: 325px;
-  background-color: #eee;
-  border: 10px solid #fff;
-  padding: 15px;
-  font-size: 14px;
+@media (min-width: 768px) {
+  .sessionModalContainer {
+    width: 400px;
+    height: auto !important;
+  }
+  .sessionModalContainer .modal-content {
+    height: auto !important;
+  }
 }
-#session_pop .noRecover,
-#session_pop.noRecover .recover {
-  display: none;
+.sessionModalContainer .modal-content {
+  background: #fff;
 }
-#session_pop.noRecover .noRecover {
-  display: block;
+.sessionModalContainer .modal-body {
+  padding-top: 0;
 }
-#session_pop p {
-  display: block;
-  margin: -2px 0 1em 0;
-  line-height: 17px;
-  font-size: 13px;
+@media (min-width: 768px) {
+  .sessionModalContainer .modal-body {
+    height: auto !important;
+  }
 }
-#session_btn,
-#session_btn_exit,
-#session_btn_restart {
-  display: block;
-  width: 80px;
-  font-weight: bold;
-  color: #fff;
-  padding: 5px 6px 6px 6px;
-  background-color: #06f;
-  margin: 9px auto 5px auto;
-  font-size: 14px;
-  cursor: pointer;
-  cursor: hand;
-  text-decoration: none;
+@media (max-width: 768px) {
+  .sessionModalContainer .modal-body {
+    padding-top: 55px;
+  }
+}
+.sessionModalContainer .modal-footer {
+  border-top: 0;
   text-align: center;
 }
-#session_btn_restart {
-  width: 160px;
-  margin-bottom: 2em;
+@media (min-width: 768px) {
+  .sessionModalContainer .modal-footer {
+    padding-bottom: 20px;
+    padding-top: 0;
+  }
 }
-#session_overlay {
-  display: none;
-  z-index: 9010;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -moz-opacity: 0.65;
-  background-color: #000;
+.sessionModalContainer .modal-footer button {
+  display: inline-block;
 }
-#session_countdown {
+#sessionModalCountDown {
   text-align: center;
   font-weight: bold;
-  margin: 12px 0 14px 0;
-  font-size: 16px;
-}
-#session_pop,
-#session_btn,
-#session_btn_exit,
-#session_btn_restart {
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -khtml-border-radius: 6px;
+  margin: 0 0 14px 0;
+  font-size: 32px;
+  color: #064667;
 }
 #confirmation-compare-options .options-list > div {
   min-height: 180px;
@@ -8760,7 +8730,7 @@ fieldset h2 .icon-text {
 }
 .compare-tick + label:after,
 .compare-tick + label:before {
-  font-family: 'CTM';
+  font-family: 'framework_font';
   font-weight: normal;
   position: absolute;
   cursor: pointer;

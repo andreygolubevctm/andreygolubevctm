@@ -4,7 +4,7 @@
 
 <%@ attribute name="bridgeToLive"	required="false"	 rtexprvalue="true"	 description="Bridge to the live system" %>
 
-<c:set var="baseUrl" value="${pageSettings.getBaseUrl()}" />
+<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
 
 <%--
 
@@ -30,7 +30,7 @@
 				<li class="dropdown">
 					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">New <b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a class="newquote needs-loadsafe" href="${baseUrl}simples/startQuote.jsp?verticalCode=HEALTH">Health quote</a></li>
+						<li><a class="newquote needs-loadsafe" href="${assetUrl}simples/startQuote.jsp?verticalCode=HEALTH">Health quote</a></li>
 					</ul>
 				</li>
 
@@ -97,7 +97,7 @@
 					</c:otherwise>
 				</c:choose>
 				<c:out value=", " />
-				<a href="${baseUrl}security/simples_logout.jsp" class="navbar-link">Log out</a>
+				<a href="${assetUrl}security/simples_logout.jsp" class="navbar-link">Log out</a>
 			</p>
 
 			<%-- Search form --%>

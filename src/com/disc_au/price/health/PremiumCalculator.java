@@ -27,6 +27,11 @@ public class PremiumCalculator {
 		}
 
 	}
+	
+	public void setLhc(double lhc) {
+		this.lhc = new BigDecimal(lhc);
+	}
+
 
 	public void setBasePremium(String basePremium) {
 		if(basePremium.isEmpty()) {
@@ -104,6 +109,12 @@ public class PremiumCalculator {
 			premium = new BigDecimal(price).divide(rebate, 2, RoundingMode.HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
 		return premium;
+	}
+	
+	public double getPremiumWithRebateAndLHC() {
+		BigDecimal calculatedLhc = getLoadingAmountDecimal();
+		BigDecimal calculatedPremiumWithRebate =getLHCFreeValueDecimal();
+		return calculatedPremiumWithRebate.add(calculatedLhc).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 
 }

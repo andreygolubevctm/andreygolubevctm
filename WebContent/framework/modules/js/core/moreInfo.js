@@ -301,7 +301,7 @@
 			 * car and the brandCode is stored differently eg Health product.info.FundCode */
 			if(product.hasOwnProperty("brandCode")) {
 				trackData.productBrandCode = product.brandCode;
-				}
+			}
 
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 				method:'trackProductView',
@@ -445,12 +445,11 @@
 	/**
 	 * Allows other verticals to update the settings object.
 	 */
-	function updateSettings(updatedSettings)
-	{
+	function updateSettings(updatedSettings) {
 		if (typeof updatedSettings !== 'object') {return;}
-		settings = $.extend({}, settings, updatedSettings);	
+		settings = $.extend(true, {}, settings, updatedSettings);
 	}
-	
+
 
 	meerkat.modules.register('moreInfo', {
 		initMoreInfo: initMoreInfo, // main entrypoint to be called.

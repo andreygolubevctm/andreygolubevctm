@@ -29,7 +29,9 @@
 				method:'trackQuoteEvent',
 				object: {
 					action: 'Start',
-					transactionID: parseInt(transaction_id, 10)
+					transactionID: parseInt(transaction_id, 10),
+					vertical: meerkat.site.vertical,
+					verticalFilter: meerkat.modules.homeloan.getVerticalFilter()
 				}
 			});
 		}

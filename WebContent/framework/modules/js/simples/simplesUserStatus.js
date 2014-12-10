@@ -20,12 +20,7 @@
 
 			if ($elements.length === 0) return;
 
-			//
-			// Get the base URL from the siteConfig if defined
-			//
-			if (meerkat.site && typeof meerkat.site.urls !== 'undefined' && typeof meerkat.site.urls.base !== 'undefined') {
-				baseUrl = meerkat.site.urls.base;
-			}
+			baseUrl = meerkat.modules.simples.getBaseUrl();
 
 			$elements.each(function() {
 				var $this = $(this);
@@ -63,8 +58,6 @@
 					htmlContent = 'Unsuccessful because: template not configured.';
 				}
 				else {
-					//console.log(json);
-
 					// Render the template using the data
 					htmlContent = templateUsers(json);
 				}

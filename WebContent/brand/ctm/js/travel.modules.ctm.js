@@ -41,7 +41,8 @@
                 method: "trackQuoteEvent",
                 object: {
                     action: "Start",
-                    transactionID: transaction_id
+                    transactionID: transaction_id,
+                    verticalFilter: meerkat.modules.travel.getVerticalFilter()
                 }
             });
             if (meerkat.site.isNewQuote === false) {
@@ -109,6 +110,13 @@
             resultsStep: resultsStep
         };
     }
+    function getVerticalFilter() {
+        var vf = null;
+        if ($policyTypeBtn.is(":checked")) {
+            vf = $policyTypeBtn.val() == "S" ? "Single Trip" : "Multi Trip";
+        }
+        return vf;
+    }
     function getTrackingFieldsObject() {
         try {
             var ok_to_call = $("input[name=travel_marketing]", "#mainform").val() === "Y" ? "Y" : "N";
@@ -147,7 +155,7 @@
                 email: email,
                 emailID: null,
                 marketOptIn: mkt_opt_in,
-                verticalFilter: policyType == "S" ? "Single Trip" : "Multi Trip"
+                verticalFilter: meerkat.modules.travel.getVerticalFilter()
             };
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("start")) {
                 _.extend(response, {
@@ -165,7 +173,8 @@
     meerkat.modules.register("travel", {
         init: initJourneyEngine,
         events: moduleEvents,
-        getTrackingFieldsObject: getTrackingFieldsObject
+        getTrackingFieldsObject: getTrackingFieldsObject,
+        getVerticalFilter: getVerticalFilter
     });
 })(jQuery);
 
@@ -174,24 +183,16 @@
     function applyEventListeners() {
         $marketing.on("change", function() {
             if ($(this).is(":checked")) {
-                $firstname.attr("required", "required").valid();
-                $surname.attr("required", "required").valid();
                 $email.attr("required", "required").valid();
             } else {
-                $firstname.removeAttr("required").valid();
-                $surname.removeAttr("required").valid();
                 $email.removeAttr("required").valid();
             }
         });
     }
     function init() {
         $(document).ready(function() {
-            $firstname = $("#travel_firstName");
-            $surname = $("#travel_surname");
             $email = $("#travel_email");
             $marketing = $("#travel_marketing");
-            $firstname.removeAttr("required");
-            $surname.removeAttr("required");
             $email.removeAttr("required");
             applyEventListeners();
         });
@@ -359,7 +360,10 @@
             onClickApplyNow: onClickApplyNow,
             onBeforeApply: null,
             onApplySuccess: null,
-            retrieveExternalCopy: retrieveExternalCopy
+            retrieveExternalCopy: retrieveExternalCopy,
+            additionalTrackingData: {
+                verticalFilter: meerkat.modules.travel.getVerticalFilter()
+            }
         };
         meerkat.modules.moreInfo.initMoreInfo(options);
         eventSubscriptions();
@@ -385,7 +389,8 @@
     function onBeforeShowModal(product) {
         var settings = {
             additionalTrackingData: {
-                productBrandCode: product.provider
+                productBrandCode: product.provider,
+                productName: product.name
             }
         };
         meerkat.modules.moreInfo.updateSettings(settings);

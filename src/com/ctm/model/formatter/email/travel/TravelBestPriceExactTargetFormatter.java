@@ -9,6 +9,7 @@ import com.ctm.model.email.ExactTargetEmailModel;
 import com.ctm.model.email.TravelBestPriceEmailModel;
 import com.ctm.model.email.TravelBestPriceRanking;
 import com.ctm.model.formatter.email.ExactTargetFormatter;
+import com.ctm.utils.FormDateUtils;
 
 public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<TravelBestPriceEmailModel> {
 
@@ -65,7 +66,7 @@ public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<Tr
 
 		if (date != null) {
 			try {
-				Date returnDate = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+				Date returnDate  = FormDateUtils.parseDateFromForm(date);
 				returnFormattedDate = new SimpleDateFormat("EEE, d MMM yyyy").format( returnDate );
 			} catch (Exception ex) {
 				logger.error(ex);

@@ -7,12 +7,12 @@
 
 <c:set var="fieldXpath" value="travel/firstName" />
 <form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear">
-	<field:person_name xpath="${fieldXpath}" title="firstname" required="true" className="sessioncamexclude" />
+	<field:person_name xpath="${fieldXpath}" title="firstname" required="false" className="sessioncamexclude" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="travel/surname" />
 <form_new:row fieldXpath="${fieldXpath}" label="Last Name" className="clear" >
-	<field:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField sessioncamexclude" />
+	<field:person_name xpath="${fieldXpath}" required="false" title="${title} last name" className="contactField sessioncamexclude" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="travel/email" />

@@ -110,6 +110,9 @@ button [class*=" icon-"] {
 .icon-phone:before {
   content: "\e608";
 }
+.icon-phone-hollow:before {
+  content: "\e628";
+}
 .icon-car-solid:before {
   content: "\e609";
 }
@@ -8395,78 +8398,50 @@ fieldset h2 .icon-text {
 #aggTimer.debugInfoHidden {
   display: none;
 }
-#session_pop {
-  display: none;
-  z-index: 9011;
-  position: fixed;
-  top: 130px;
-  left: 50%;
-  margin-left: -168px;
-  width: 325px;
-  background-color: #eee;
-  border: 10px solid #fff;
-  padding: 15px;
-  font-size: 14px;
+@media (min-width: 768px) {
+  .sessionModalContainer {
+    width: 400px;
+    height: auto !important;
 }
-#session_pop .noRecover,
-#session_pop.noRecover .recover {
-  display: none;
+  .sessionModalContainer .modal-content {
+    height: auto !important;
 }
-#session_pop.noRecover .noRecover {
-  display: block;
 }
-#session_pop p {
-  display: block;
-  margin: -2px 0 1em 0;
-  line-height: 17px;
-  font-size: 13px;
+.sessionModalContainer .modal-content {
+  background: #fff;
 }
-#session_btn,
-#session_btn_exit,
-#session_btn_restart {
-  display: block;
-  width: 80px;
-  font-weight: bold;
-  color: #fff;
-  padding: 5px 6px 6px 6px;
-  background-color: #06f;
-  margin: 9px auto 5px auto;
-  font-size: 14px;
-  cursor: pointer;
-  cursor: hand;
-  text-decoration: none;
+.sessionModalContainer .modal-body {
+  padding-top: 0;
+}
+@media (min-width: 768px) {
+  .sessionModalContainer .modal-body {
+    height: auto !important;
+  }
+}
+@media (max-width: 768px) {
+  .sessionModalContainer .modal-body {
+    padding-top: 55px;
+  }
+}
+.sessionModalContainer .modal-footer {
+  border-top: 0;
   text-align: center;
 }
-#session_btn_restart {
-  width: 160px;
-  margin-bottom: 2em;
+@media (min-width: 768px) {
+  .sessionModalContainer .modal-footer {
+    padding-bottom: 20px;
+    padding-top: 0;
 }
-#session_overlay {
-  display: none;
-  z-index: 9010;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  opacity: 0.65;
-  filter: alpha(opacity=65);
-  -moz-opacity: 0.65;
-  background-color: #000;
 }
-#session_countdown {
+.sessionModalContainer .modal-footer button {
+  display: inline-block;
+}
+#sessionModalCountDown {
   text-align: center;
   font-weight: bold;
-  margin: 12px 0 14px 0;
-  font-size: 16px;
-}
-#session_pop,
-#session_btn,
-#session_btn_exit,
-#session_btn_restart {
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -khtml-border-radius: 6px;
+  margin: 0 0 14px 0;
+  font-size: 32px;
+  color: #00629a;
 }
 #confirmation-compare-options a {
   display: inline-block;

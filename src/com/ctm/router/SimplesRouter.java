@@ -1,21 +1,5 @@
 package com.ctm.router;
 
-import static java.lang.Integer.parseInt;
-import static java.util.Arrays.asList;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.ctm.dao.UserDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
@@ -27,13 +11,28 @@ import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.model.simples.Message;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
-import com.ctm.services.SimplesService;
 import com.ctm.services.TransactionService;
 import com.ctm.services.simples.SimplesMessageService;
 import com.ctm.services.simples.SimplesUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+
+import static com.ctm.services.PhoneService.makeCall;
+import static java.lang.Integer.parseInt;
+import static java.util.Arrays.asList;
+import static javax.servlet.http.HttpServletResponse.*;
 
 @WebServlet(urlPatterns = {
 		"/simples/comments/list.json",
@@ -42,21 +41,21 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 		"/simples/messages/postponed.json",
 		"/simples/tickle.json",
 		"/simples/transactions/details.json",
-		"/simples/users/list_online.json"
+		"/simples/users/list_online.json",
+		"/simples/users/stats_today.json",
+		"/simples/phones/call"
 })
 public class SimplesRouter extends HttpServlet {
 	private static final long serialVersionUID = 13L;
 	private final ObjectMapper objectMapper = new ObjectMapper();
-	private final SimplesService simplesService;
 	private final SessionDataService sessionDataService;
 
 	@SuppressWarnings("UnusedDeclaration")
 	public SimplesRouter() {
-		this(new SimplesService(), new SessionDataService());
+		this(new SessionDataService());
 	}
 
-	public SimplesRouter(final SimplesService simplesService, SessionDataService sessionDataService) {
-		this.simplesService = simplesService;
+	public SimplesRouter(SessionDataService sessionDataService) {
 		this.sessionDataService = sessionDataService;
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 	}
@@ -150,6 +149,32 @@ public class SimplesRouter extends HttpServlet {
 			writer.print(simplesUserService.getUsersWhoAreLoggedIn(settings));
 		}
 
+		else if (uri.endsWith("/simples/users/stats_today.json")) {
+			int simplesUid = authenticatedData.getSimplesUid();
+			userStatsForToday(writer, simplesUid);
+	}
+
+		else if (uri.endsWith("/simples/phones/call")) {
+			if (authenticatedData != null) {
+				final String ext = authenticatedData.getExtension();
+				final String phone = request.getParameter("phone");
+
+				if (phone != null && !phone.isEmpty() && ext != null) {
+					if (makeCall(settings(), ext, phone)) {
+						response.setStatus(SC_OK);
+					} else {
+						response.sendError(SC_INTERNAL_SERVER_ERROR);
+	}
+				} else {
+					response.sendError(SC_BAD_REQUEST);
+				}
+			}
+		}
+
+		else {
+			response.sendError(SC_NOT_FOUND);
+		}
+
 	}
 
 	private void postponedMessages(final PrintWriter writer, final AuthenticatedData authenticatedData) throws IOException {
@@ -181,6 +206,11 @@ public class SimplesRouter extends HttpServlet {
 		}
 	}
 
+	private void userStatsForToday(final PrintWriter writer, int userId) throws IOException {
+		final SimplesUserService simplesUserService = new SimplesUserService();
+		objectMapper.writeValue(writer, simplesUserService.getUserStatsForToday(userId));
+	}
+
 	private ObjectNode errors(final Exception e) {
 		final Error error = new Error(e.getMessage());
 		return jsonObjectNode("errors", asList(error));
@@ -191,4 +221,8 @@ public class SimplesRouter extends HttpServlet {
 		objectNode.putPOJO(name, value);
 		return objectNode;
 	}
+
+	private PageSettings settings() {
+		return SettingsService.getPageSettingsByCode("CTM", VerticalType.SIMPLES.getCode());
+}
 }

@@ -566,7 +566,8 @@
 			method: 'trackQuoteComparison',
 			object: {
 				products: getComparedProductIds(true),
-				vertical: verticalCode
+				vertical: verticalCode,
+				verticalFilter: (typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === 'function' ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null)
 			}
 		});
 

@@ -6,14 +6,32 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ctm.dao.UserDao;
+import com.ctm.dao.simples.UserStatsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.simples.User;
+import com.ctm.model.simples.UserStats;
 
 public class SimplesUserService {
 	private static final Logger logger = Logger.getLogger(SimplesUserService.class.getName());
 
 
+
+	/**
+	 * Get today's message statistics for a particular user.
+	 * @param userId User ID
+	 */
+	public UserStats getUserStatsForToday(int userId) {
+		UserStatsDao userStatsDao = new UserStatsDao();
+		UserStats userStats = new UserStats();
+		try {
+			userStats = userStatsDao.getUserStats(userId);
+		}
+		catch (DaoException e) {
+			logger.error("Failed to getUserStatsForToday", e);
+		}
+		return userStats;
+	}
 
 	/**
 	 * Get list of users (operators) who are currently logged in.

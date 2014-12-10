@@ -51,8 +51,17 @@
 <c:choose>
 	<c:when test="${empty skipJSCSS}">
 
+	<%-- Disable session_pop on new journeys --%>
+	<c:set var="sessionPop" value="${false}" />
+
 	<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+	<c:choose>
+		<c:when test="${pageSettings.getVerticalCode() == 'generic' and pageSettings.getBrandCode() == 'ctm'}">
+		</c:when>
+		<c:otherwise>
 	<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		</c:otherwise>
+	</c:choose>
 
 	<!--  Modernizr -->
 	<c:if test="${isDev eq false}">
@@ -240,8 +249,11 @@
 
 		<!--  Meerkat -->
 <script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+		<c:choose>
+			<c:when test="${pageSettings.getVerticalCode() != 'generic'}">
 <script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-
+			</c:when>
+		</c:choose>
 
 			<script>
 
@@ -282,6 +294,12 @@
 							config: {},
 							instance: {},
 							enabled: false
+						},
+						session: {
+							windowTimeout: ${sessionDataService.getClientDefaultExpiryTimeout(pageContext.request)},
+							deferredPokeDuration: 300000,
+							firstPokeEnabled: true,
+							bigIP: "${sessionDataService.getCookieByName(pageContext.request, (environmentService.getEnvironmentAsString() == "PRO") ? "BIGipServerPool_HTTPS_Ecommerce_DISCOnline_XS" : "JSESSIONID")}"
 						},
 						navMenu: {
 							type: 'default',

@@ -45,9 +45,11 @@
 				<tr>
 					<th>Numbers to call</th>
 					<td>
-						{{ if (obj.phoneNumber1 && obj.phoneNumber1 != '') { }}<button class="btn btn-default">{{= obj.phoneNumber1 }}</button>{{ } }}
-						{{ if (obj.phoneNumber2 && obj.phoneNumber2 != '') { }}<button class="btn btn-default">{{= obj.phoneNumber2 }}</button>{{ } }}
-
+						{{ if (obj.phoneNumber1 && obj.phoneNumber1 != '') { }}
+						<button data-phone="{{= obj.phoneNumber1 }}" class="btn-form btn icon-phone"><span>&nbsp;{{= obj.phoneNumber1 }}</span></button>
+						{{ } if (obj.phoneNumber2 && obj.phoneNumber2 != '') { }}
+						<button data-phone="{{= obj.phoneNumber2 }}" class="btn-form btn icon-phone"><span>&nbsp;{{= obj.phoneNumber2 }}</span></button>
+						{{ } }}
 						<button class="btn btn-tertiary messagedetail-loadbutton">Amend quote <span class="icon icon-arrow-right"></span></button>
 					</td>
 				</tr>

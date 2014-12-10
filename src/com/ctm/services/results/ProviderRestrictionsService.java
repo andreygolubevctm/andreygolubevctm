@@ -11,6 +11,8 @@ import javax.naming.NamingException;
 import org.apache.log4j.Logger;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.model.health.HealthPriceRequest;
+import com.ctm.model.settings.Vertical.VerticalType;
 
 public class ProviderRestrictionsService {
 
@@ -137,4 +139,41 @@ public class ProviderRestrictionsService {
 		}
 		return restrictedProviders;
 	}
+	
+
+	/**
+	 * Set the provider exclusion from both the request and the restrictions in the database
+	 * @param transactionId 
+	 */
+	public List<Integer> setUpExcludedProviders(HealthPriceRequest healthPriceRequest, long transactionId) {
+		List<Integer> excludedProviders = new ArrayList<Integer>();
+
+		// Add providers that have been excluded in the request
+		for (String providerId : healthPriceRequest.getBrandFilter().split(",")) {
+			if (!providerId.isEmpty()) {
+				excludedProviders.add(Integer.parseInt(providerId));
+			}
+		}
+
+		List<Integer> providersThatHaveExceededLimit;
+
+		if (healthPriceRequest.isOnResultsPage()) {
+			// Check for soft limits
+			providersThatHaveExceededLimit = getProvidersThatHaveExceededLimit(healthPriceRequest.getState(),VerticalType.HEALTH.getCode(), transactionId);
+		} else {
+			// Check for hard limits
+			providersThatHaveExceededLimit = getProvidersThatHaveExceededMonthlyLimit(healthPriceRequest.getState(),VerticalType.HEALTH.getCode(), transactionId);
+		}
+
+		// Add providers that have been excluded in the database
+		for (Integer providerId : providersThatHaveExceededLimit) {
+			if (!excludedProviders.contains(providerId)) {
+				excludedProviders.add(providerId);
+			}
+		}
+
+		healthPriceRequest.setExcludedProviders(excludedProviders);
+		return excludedProviders;
+	}
+
 }

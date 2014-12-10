@@ -39,7 +39,10 @@
 			onClickApplyNow: onClickApplyNow,
 			onBeforeApply: null,
 			onApplySuccess: null,
-			retrieveExternalCopy: retrieveExternalCopy
+			retrieveExternalCopy: retrieveExternalCopy,
+			additionalTrackingData: {
+				verticalFilter: meerkat.modules.travel.getVerticalFilter()
+			}
 		};
 
 		meerkat.modules.moreInfo.initMoreInfo(options);
@@ -75,7 +78,7 @@
 
 	function onBeforeShowModal(product) {
 		
-		var settings = {'additionalTrackingData' : {'productBrandCode': product.provider}};
+		var settings = {'additionalTrackingData' : {'productBrandCode': product.provider, 'productName': product.name}};
 		meerkat.modules.moreInfo.updateSettings(settings);
 	}
 

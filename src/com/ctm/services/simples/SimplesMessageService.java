@@ -16,11 +16,11 @@ import org.json.JSONObject;
 
 import com.ctm.dao.BlacklistDao;
 import com.ctm.dao.CommentDao;
-import com.ctm.dao.MessageAuditDao;
-import com.ctm.dao.MessageDao;
 import com.ctm.dao.TouchDao;
 import com.ctm.dao.TransactionDao;
 import com.ctm.dao.UserDao;
+import com.ctm.dao.simples.MessageAuditDao;
+import com.ctm.dao.simples.MessageDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;

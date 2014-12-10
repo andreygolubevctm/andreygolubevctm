@@ -82,6 +82,26 @@
 
 				// Amend quote button
 				$messageDetailsContainer.on('click', '.messagedetail-loadbutton', loadMessage);
+
+				// Call buttons
+				$messageDetailsContainer.on('click', 'button[data-phone]', makeCall);
+			}
+		});
+	}
+
+	function makeCall(event) {
+		event.preventDefault();
+
+		var button = $(this);
+		var phone = button.attr('data-phone');
+
+		meerkat.modules.loadingAnimation.showAfter(button);
+		meerkat.modules.comms.get({
+			url:  baseUrl + 'simples/phones/call?phone=' + phone,
+			cache: false,
+			errorLevel: 'warning',
+			onComplete: function () {
+				meerkat.modules.loadingAnimation.hide(button);
 			}
 		});
 	}
@@ -126,6 +146,11 @@
 				meerkat.modules.loadingAnimation.hide($button);
 			}
 		});
+	}
+
+	function isMobile(value) {
+		var phoneRegex = new RegExp('^(0[45]{1}[0-9]{8})$');
+		return phoneRegex.test(value);
 	}
 
 	function getNextMessage(callbackComplete) {
@@ -223,6 +248,13 @@
 		}
 		else {
 			$('.simples-home-buttons, .simples-notice-board').addClass('hidden');
+
+			// swap numbers if there is only one mobile and this is the 2nd number as we want mobiles displayed first
+			if (isMobile(message.phoneNumber2) && !isMobile(message.phoneNumber1)) {
+				var x = message.phoneNumber1;
+				message.phoneNumber1 = message.phoneNumber2;
+				message.phoneNumber2 = x;
+			}
 		}
 
 		$destination.html( templateMessageDetail(message) );

@@ -9,7 +9,8 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events;
-	var log = meerkat.logging.info;
+	var log = meerkat.logging.info,
+		url = null;
 
 
 	var defaultSettings = {
@@ -31,8 +32,7 @@
 		var product = settings.product,
 			handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? 'POST' : 'GET',
 			brand = settings.brand ? settings.brand : product.provider,
-			msg =  settings.msg ? settings.msg : '',
-			url = null;
+			msg =  settings.msg ? settings.msg : '';
 
 		try {
 			
@@ -134,9 +134,10 @@
 				transactionID: transaction_id,
 				productID: product.productId,
 				brandCode: product.brandCode,
+				productName: product.name,
 				productBrandCode: product.provider,
 				vertical: meerkat.site.vertical,
-				verticalFilter: $("input[name=travel_policyType]:checked").val() == 'S' ? 'Single Trip' : 'Multi Trip'
+				verticalFilter: (typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === 'function' ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null)
 			}
 		});
 	}

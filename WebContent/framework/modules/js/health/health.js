@@ -982,8 +982,6 @@
 
 		var selectedProductPremium = meerkat.modules.healthResults.getSelectedProductPremium(frequency);
 		var periods = meerkat.modules.healthResults.getNumberOfPeriodsForFrequency(frequency);
-
-		$('#health_application_paymentAmt').val( selectedProductPremium.value * periods);
 		$('#health_application_paymentFreq').val( selectedProductPremium.value);
 		$('#health_application_paymentHospital').val( selectedProductPremium.hospitalValue * periods);
 

@@ -30,7 +30,7 @@
 			runDisplayMethod: runDisplayMethod,
 			onBeforeShowBridgingPage: null,
 			onBeforeShowTemplate: null,
-			onBeforeShowModal: null,
+			onBeforeShowModal: onBeforeShowModal,
 			onAfterShowModal: trackProductView,
 			onAfterShowTemplate: null,
 			onBeforeHideTemplate: null,
@@ -38,7 +38,10 @@
 			onClickApplyNow: onClickApplyNow,
 			onBeforeApply: null,
 			onApplySuccess: null,
-			retrieveExternalCopy: retrieveExternalCopy
+			retrieveExternalCopy: retrieveExternalCopy,
+			additionalTrackingData: {
+				verticalFilter: meerkat.modules.homeloan.getVerticalFilter()
+			}
 		};
 
 		meerkat.modules.moreInfo.initMoreInfo(options);
@@ -79,6 +82,7 @@
 	function retrieveExternalCopy(product) {
 		// Not called
 		return $.Deferred(function(dfd) {
+			meerkat.modules.moreInfo.setDataResult(product);
 			return dfd.resolveWith(this, []).promise();
 		});
 	}
@@ -88,6 +92,12 @@
 	function onClickApplyNow() {
 		Results.model.setSelectedProduct($('.btn-apply').attr('data-productId'));
 		meerkat.modules.journeyEngine.gotoPath("next");
+	}
+
+	function onBeforeShowModal(product) {
+
+		var settings = {'additionalTrackingData' : {'productName': product.lenderProductName}};
+		meerkat.modules.moreInfo.updateSettings(settings);
 	}
 
 	function trackProductView(){

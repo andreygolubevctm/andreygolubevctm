@@ -52,21 +52,23 @@
 <go:script marker="js-head">
 $.validator.addMethod('validateLoanAmount', function(value, element) {
 	<%-- Need to use the entry fields because validation fires before the currency plugin pushes the unformatted values into the hidden fields --%>
-	var $loanAmount = $('#${name}_loanAmountentry');
-	var $purchasePrice = $('#${name}_purchasePriceentry');
-
-	<%-- If the purchase price field is not visible due to hide/show logic then don't validate this --%>
-	if ($purchasePrice.is(':visible') === false) return true;
+	var $loanAmount = $('#${name}_loanAmountentry'),
+	$purchasePrice = $('#${name}_purchasePriceentry'),
+	$propertyWorth = $('#homeloan_details_assetAmountentry'),
+	$amountOwing = $('#homeloan_details_amountOwingentry');
 
 	<%-- If the elements have the currency plugin applied --%>
-	var loanAmount = (typeof $loanAmount.asNumber === 'function') ? $loanAmount.asNumber() : parseInt($loanAmount.val(), 10);
-	var purchasePrice = (typeof $purchasePrice.asNumber === 'function') ? $purchasePrice.asNumber() : parseInt($purchasePrice.val(), 10);
+	var loanAmount = typeof $loanAmount.asNumber === 'function' ? $loanAmount.asNumber() : 0,
+	purchasePrice = typeof $purchasePrice.asNumber === 'function' ? $purchasePrice.asNumber() : 0,
+	propertyWorth = typeof $propertyWorth.asNumber === 'function' ? $propertyWorth.asNumber() : 0,
+	amountOwing = typeof $amountOwing.asNumber === 'function' ? $amountOwing.asNumber() : 0;
 
-	if (loanAmount >= purchasePrice) {
-		return false;
+	if(!isNaN(loanAmount) && !isNaN(purchasePrice) && !isNaN(propertyWorth) && !isNaN(amountOwing)) {
+		var lvr = ((loanAmount+amountOwing) / (purchasePrice+propertyWorth)) * 100;
+		return lvr > 0 && lvr < 100;
 	}
+
 	return true;
 });
 </go:script>
-<go:validate selector="${name}_purchasePriceentry" rule="validateLoanAmount" parm="true" message="The amount you wish to borrow exceeds the value of the property. Please review the amounts before continuing." />
 <go:validate selector="${name}_loanAmountentry" rule="validateLoanAmount" parm="true" message="The amount you wish to borrow exceeds the value of the property. Please review the amounts before continuing." />

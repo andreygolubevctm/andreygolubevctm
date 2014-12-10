@@ -6,6 +6,23 @@
 
 <%@ include file="/WEB-INF/security/core.jsp" %>
 
+
+
+<%-- Check settings for if the message queue feature is enabled --%>
+<c:catch var="settingError">
+	<c:set var="messageQueueEnabled" value="${pageSettings.getSetting('messageQueueEnabled')}" />
+	<c:set var="messageQueueRole"    value="${pageSettings.getSetting('messageQueueRole')}" />
+</c:catch>
+<c:if test="${not empty settingError}"><go:log level="INFO" source="simples_message_queue_home">${settingError}</go:log></c:if>
+
+<%-- Check if queue is restricted to certain active directory groups --%>
+<c:if test="${messageQueueEnabled == 'Y' and (empty messageQueueRole or (not empty messageQueueRole and pageContext.request.isUserInRole(messageQueueRole)))}">
+	<c:set var="hasMessageQueue" value="${true}" />
+</c:if>
+
+
+
+
 <layout:simples_page>
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -14,6 +31,10 @@
 
 <div class="row">
 	<div class="col-sm-8 simples-home">
+
+		<c:if test="${hasMessageQueue}">
+			<simples:message_queue_home />
+		</c:if>
 
 		<div class="simples-notice-board">
 			<h2>Welcome to Simples</h2>
@@ -34,14 +55,18 @@
 					<p>If you are consulting please log into your phone, then log into Simples again.</p>
 				</div>
 			</c:if>
-		</div><%-- /simples-notice-board --%>
 
-		<simples:message_queue_home />
+			<c:if test="${hasMessageQueue}">
+				<simples:user_stats />
+			</c:if>
+		</div><%-- /simples-notice-board --%>
 
 	</div>
 	<div class="col-sm-3 col-sm-push-1">
 
-		<simples:postponed_queue />
+		<c:if test="${hasMessageQueue}">
+			<simples:postponed_queue />
+		</c:if>
 
 	</div>
 </div>

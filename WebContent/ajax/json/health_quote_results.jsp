@@ -54,6 +54,9 @@
 		<go:setData dataVar="data" xpath="health/transactionId" value="${data.current.transactionId}" />
 		<c:set var="tranId" value="${data.current.transactionId}" />
 
+		<%-- Set custom appilcation date from data.jsp --%>
+		<go:setData dataVar="data" xpath="health/applicationDate" value="${applicationService.getApplicationDate(pageContext.getRequest())}" />
+
 		<%-- Removed specific email writing operations from here as they're handled in core:transaction above --%>
 
 		<c:import var="config" url="/WEB-INF/aggregator/health/config_ALL.xml" />

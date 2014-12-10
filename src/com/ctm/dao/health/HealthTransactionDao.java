@@ -35,12 +35,10 @@ public class HealthTransactionDao {
 			throw new DaoException("Please specify a transactionId on your model.");
 		}
 
-		SimpleDatabaseConnection dbSource = null;
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try {
 			PreparedStatement stmt;
-			dbSource = new SimpleDatabaseConnection();
-
 			stmt = dbSource.getConnection().prepareStatement(
 				"SELECT IF(TransID > 0, 1, 0) AS isConfirmed, confirm.keyID AS confirmationKey, td1.textValue AS productTitle, td2.textValue AS provider " +
 				"FROM aggregator.transaction_header th " +

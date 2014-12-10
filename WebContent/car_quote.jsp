@@ -188,7 +188,7 @@
 	</jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<car:footer />
+		<core:whitelabeled_footer />
 	</jsp:attribute>
 			
 	<jsp:attribute name="vertical_settings">

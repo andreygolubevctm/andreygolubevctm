@@ -12,8 +12,6 @@
 <core_new:load_preload />
 
 <%-- Call centre numbers --%>
-<c:set var="callCentreNumber" scope="request"><content:get key="homeCallCentreNumber"/></c:set>
-<c:set var="callCentreHelpNumber" scope="request"><content:get key="homeCallCentreHelpNumber"/></c:set>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
 <%-- HTML --%>
@@ -172,7 +170,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<home_new:footer />
+		<core:whitelabeled_footer />
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">

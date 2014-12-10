@@ -39,14 +39,11 @@
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <xsl:variable name="benefits">
 	<xsl:for-each select="//benefitsExtras/*">
-		<xsl:text>'</xsl:text>
 		<xsl:choose>
 			<xsl:when test="name()='HearingAid'">HearingAids</xsl:when>
 			<xsl:when test="name()='Naturopath'">Naturopathy</xsl:when>
 			<xsl:otherwise><xsl:value-of select="name()" /></xsl:otherwise>
 		</xsl:choose>
-		
-		<xsl:text>'</xsl:text>
 		<xsl:if test="position() != last()" >
 			<xsl:text>,</xsl:text>
 		</xsl:if>
@@ -58,6 +55,7 @@
 			<header>
 				<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
 				<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
+				<applicationDate><xsl:value-of select="applicationDate" /></applicationDate>
 				<providerId>
 					<xsl:choose>
 						<xsl:when test="showAll = 'N' and string-length(application/provider) &gt; 0">
@@ -121,15 +119,12 @@
 					<tierHospital><xsl:value-of select="filter/tierHospital" /></tierHospital>
 					<tierExtras><xsl:value-of select="filter/tierExtras" /></tierExtras>
 				</filter>
-				<!-- Excluding particular status information (call center and online)  -->
 				<xsl:choose>
 					<xsl:when test='simples'>
 						<isSimples>Y</isSimples>
-						<excludeStatus>'N','X','O'</excludeStatus>
 					</xsl:when>
 					<xsl:otherwise>
 						<isSimples>N</isSimples>
-						<excludeStatus>'N','X','C'</excludeStatus>
 					</xsl:otherwise>
 				</xsl:choose>
 				<productId><xsl:value-of select="application/productId" /></productId>
@@ -162,6 +157,7 @@
 				<cover><xsl:value-of select="situation/healthCvr" /></cover>
 				<situation><xsl:value-of select="situation/healthSitu" /></situation>
 				<rebate><xsl:value-of select="rebate" /></rebate>				
+				<rebate_changeover><xsl:value-of select="rebate_changeover" /></rebate_changeover>
 				<loading><xsl:value-of select="loading" /></loading>
 				<income><xsl:value-of select="healthCover/income" /></income>
 				<dependants><xsl:value-of select="healthCover/dependants" /></dependants>

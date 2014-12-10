@@ -166,13 +166,13 @@
 		</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'home'}">
 			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
-			<c:if test="${empty authenticatedData.login.user.uid and not empty data.home.policyHolder.email && empty data.userData.emailSent}">
+			<c:if test="${empty authenticatedData.login.user.uid and not empty data.home.policyHolder.email && empty data.userData.emailSent && pageSettings.hasSetting('sendClientId') == 'true'}">
 				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.home.policyHolder.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
 			</c:if>
 		</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
 			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
-			<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
+			<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent && pageSettings.hasSetting('sendClientId') == 'true'}">
 				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
 			</c:if>
 

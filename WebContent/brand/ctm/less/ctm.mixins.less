@@ -36,20 +36,6 @@
 	left:0;
 }
 
-// Used for SunLTLightRegular, SunLTBoldRegular
-.include-custom-font(@family: arial, @file: @file, @weight: normal, @style: normal){
-	@font-face {
-		font-family: @family;
-		src:url('../fonts/@{file}.eot');
-		src:url('../fonts/@{file}.eot?#iefix') format('embedded-opentype'),
-			url('../fonts/@{file}.woff') format('woff'),
-			url('../fonts/@{file}.ttf') format('truetype'),
-			url('../fonts/@{file}.svg#@{family}') format('svg');
-		font-weight: @weight;
-		font-style: @style;
-	}
-}
-
 // Drop shadows
 .box-shadow(@shadow) {
 	//-webkit-box-shadow: @shadow; // iOS <4.3 & Android <4.1

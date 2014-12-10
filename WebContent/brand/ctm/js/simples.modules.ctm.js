@@ -505,6 +505,21 @@
                     renderMessageDetails(obj, $messageDetailsContainer);
                 });
                 $messageDetailsContainer.on("click", ".messagedetail-loadbutton", loadMessage);
+                $messageDetailsContainer.on("click", "button[data-phone]", makeCall);
+            }
+        });
+    }
+    function makeCall(event) {
+        event.preventDefault();
+        var button = $(this);
+        var phone = button.attr("data-phone");
+        meerkat.modules.loadingAnimation.showAfter(button);
+        meerkat.modules.comms.get({
+            url: baseUrl + "simples/phones/call?phone=" + phone,
+            cache: false,
+            errorLevel: "warning",
+            onComplete: function() {
+                meerkat.modules.loadingAnimation.hide(button);
             }
         });
     }
@@ -542,6 +557,10 @@
                 meerkat.modules.loadingAnimation.hide($button);
             }
         });
+    }
+    function isMobile(value) {
+        var phoneRegex = new RegExp("^(0[45]{1}[0-9]{8})$");
+        return phoneRegex.test(value);
     }
     function getNextMessage(callbackComplete) {
         meerkat.modules.comms.get({
@@ -620,6 +639,11 @@
             $(".simples-home-buttons, .simples-notice-board").removeClass("hidden");
         } else {
             $(".simples-home-buttons, .simples-notice-board").addClass("hidden");
+            if (isMobile(message.phoneNumber2) && !isMobile(message.phoneNumber1)) {
+                var x = message.phoneNumber1;
+                message.phoneNumber1 = message.phoneNumber2;
+                message.phoneNumber2 = x;
+            }
         }
         $destination.html(templateMessageDetail(message));
     }
@@ -1209,15 +1233,84 @@
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat;
+    var template = false, $containers = false, intervalSeconds = 60, timer = false, baseUrl = "";
+    function init() {
+        $(document).ready(function() {
+            $containers = $("[data-provide='simples-user-stats']");
+            if ($containers.length === 0) return;
+            var $e = $("#simples-template-user-stats");
+            if ($e.length > 0) {
+                template = _.template($e.html());
+            }
+            baseUrl = meerkat.modules.simples.getBaseUrl();
+            refresh();
+            setInterval(intervalSeconds);
+        });
+    }
+    function setInterval(seconds) {
+        intervalSeconds = seconds;
+        if (timer !== false) {
+            clearInterval(timer);
+        }
+        if (intervalSeconds !== false && intervalSeconds > 0) {
+            var intervalMs = intervalSeconds * 1e3;
+            timer = window.setInterval(refresh, intervalMs);
+        }
+        return intervalSeconds;
+    }
+    function refresh() {
+        $containers.each(function() {
+            var $this = $(this);
+            if ($this.find("table").length === 0) {
+                $this.hide();
+            }
+        });
+        var deferred = meerkat.modules.comms.get({
+            url: baseUrl + "simples/users/stats_today.json",
+            cache: false,
+            errorLevel: "silent",
+            useDefaultErrorHandling: false
+        }).done(function onSuccess(json) {
+            var htmlContent = "";
+            if (typeof template !== "function") {
+                htmlContent = "Unsuccessful because: template not configured.";
+            } else {
+                htmlContent = template(json);
+            }
+            $containers.each(function() {
+                var $this = $(this);
+                var slideDown = false;
+                if ($this.find("table").length === 0) {
+                    slideDown = true;
+                }
+                $this.html(htmlContent);
+                if (slideDown) {
+                    $this.slideDown(200);
+                }
+            });
+        }).fail(function onError(obj, txt, errorThrown) {
+            $containers.each(function() {
+                $(this).html("Unsuccessful because: " + txt + ": " + errorThrown);
+            });
+        });
+        return deferred;
+    }
+    meerkat.modules.register("simplesUserStats", {
+        init: init,
+        setInterval: setInterval,
+        refresh: refresh
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, log = meerkat.logging.info;
     var $refreshButton = false, templateUsers = false, $container = false, baseUrl = "";
     function init() {
         $(document).ready(function() {
             var $elements = $("[data-provide='simples-consultant-status']");
             if ($elements.length === 0) return;
-            if (meerkat.site && typeof meerkat.site.urls !== "undefined" && typeof meerkat.site.urls.base !== "undefined") {
-                baseUrl = meerkat.site.urls.base;
-            }
+            baseUrl = meerkat.modules.simples.getBaseUrl();
             $elements.each(function() {
                 var $this = $(this);
                 $refreshButton = $(".simples-status-refresh");

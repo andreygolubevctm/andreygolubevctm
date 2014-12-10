@@ -32,7 +32,7 @@
 							<xs:element name="surname" maxOccurs="1" minOccurs="1" />
 							<xs:element name="gender" type="gender" maxOccurs="1" minOccurs="1" />
 							<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
-							<xs:element name="authority" type="Y" maxOccurs="1" minOccurs="0" />
+							<xs:element name="authority" type="YN" maxOccurs="1" minOccurs="0" />
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
@@ -65,15 +65,13 @@
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="paymentFreq" maxOccurs="1" minOccurs="0" />
-				<xs:element name="paymentAmt" maxOccurs="1" minOccurs="0" />
 
 				<xs:element name="cbh" maxOccurs="1" minOccurs="0" >
 					<xs:complexType>
 						<xs:all>
 							<xs:element name="currentemployee" maxOccurs="1" minOccurs="1" />
 							<xs:element name="currentnumber" maxOccurs="1" minOccurs="0" />
-							<xs:element name="currentwork" maxOccurs="1" minOccurs="1" />
+							<xs:element name="currentwork" maxOccurs="1" minOccurs="0" />
 							<xs:element name="formernumber" maxOccurs="1" minOccurs="0" />
 							<xs:element name="partnerrel" maxOccurs="1" minOccurs="0" />
 							<xs:element name="formerwork" maxOccurs="1" minOccurs="0" />

@@ -8,15 +8,14 @@
 				<xs:element name="nonStdStreet" type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="type" type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="lastSearch" type="xs:string" maxOccurs="1" minOccurs="0" />
-				<xs:element name="sbrSeq" type="xs:string" maxOccurs="1" minOccurs="0" />
-				<xs:element name="postCode" maxOccurs="1" minOccurs="1" >
+				<xs:element name="postCode" maxOccurs="1" minOccurs="0" >
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
 							<xs:pattern value="([0-9]{4})"/>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:element>
-				<xs:element name="state" type="state" maxOccurs="1" minOccurs="1" />
+				<xs:element name="state" type="state" maxOccurs="1" minOccurs="0" />
 				<xs:element name="houseNoSel"  type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="streetNum"  type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="suburbName"  type="xs:string" maxOccurs="1" minOccurs="0" />
@@ -27,8 +26,8 @@
 				<xs:element name="unitSel" type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="unitType" type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="streetSearch" type="xs:string" maxOccurs="1" minOccurs="0" />
-				<xs:element name="fullAddress" type="nonEmptyString" maxOccurs="1" minOccurs="1" />
-				<xs:element name="fullAddressLineOne" type="nonEmptyString" maxOccurs="1" minOccurs="1" />
+				<xs:element name="fullAddress" type="nonEmptyString" maxOccurs="1" minOccurs="0" />
+				<xs:element name="fullAddressLineOne" type="nonEmptyString" maxOccurs="1" minOccurs="0" />
 			</xs:all>
 	</xs:complexType>
 </xs:schema>

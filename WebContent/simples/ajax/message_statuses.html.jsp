@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="messageDao" class="com.ctm.dao.MessageDao" scope="page" />
+<jsp:useBean id="messageDao" class="com.ctm.dao.simples.MessageDao" scope="page" />
 
 <c:set var="parentStatusId" value="${param.parentStatusId}" />
 

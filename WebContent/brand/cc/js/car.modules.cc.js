@@ -572,15 +572,6 @@
             }
         }
     }
-    function toggleValidation() {
-        var standard = meerkat.modules.tracking.getCurrentJourney() === "1";
-        if (!standard) {
-            $(elements.marketing).rules("remove", "validateOkToEmailRadio");
-            $(elements.marketing).rules("add", "required");
-            $(elements.oktocall).rules("remove", "validateOkToCallRadio");
-            $(elements.oktocall).rules("add", "required");
-        }
-    }
     function addChangeListeners() {
         $(elements.oktocall).on("change", onOkToCallChanged);
         $(elements.marketing).on("change", onOkToEmailChanged);
@@ -641,7 +632,6 @@
         $(document).ready(function() {
             if (meerkat.site.vertical !== "car") return false;
             addChangeListeners();
-            toggleValidation();
             dump();
         });
     }
@@ -1542,6 +1532,9 @@
             var displayMode = "price";
             if (typeof meerkat.site != "undefined" && typeof meerkat.site.resultOptions != "undefined") {
                 displayMode = meerkat.site.resultOptions.displayMode == "features" ? "features" : "price";
+            }
+            if (meerkat.modules.tracking.getCurrentJourney() !== "1") {
+                displayMode = "features";
             }
             Results.init({
                 url: "ajax/json/car_quote_results.jsp",

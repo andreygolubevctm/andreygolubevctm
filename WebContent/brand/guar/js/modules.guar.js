@@ -1436,7 +1436,7 @@ meerkat.logging.init = function() {
                 if (settings.cache === true) addToCache(settings.url, data, result);
                 if (settings.onSuccess != null) settings.onSuccess(result);
                 if (settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
-                if (typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.setTimeoutLength(result.timeout);
+                if (typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.initializeWindowTimeout(result.timeout);
             }
         }, function onAjaxError(jqXHR, textStatus, errorThrown) {
             var data = typeof settings.data != "undefined" ? settings.data : null;
@@ -6452,20 +6452,161 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
-    function initSession() {}
-    function poke() {
-        sessionExpiry.poke();
+    var meerkat = window.meerkat;
+    var windowTimeout = null, isModalOpen = false, lastClientPoke = 0, isFirstPoke = true;
+    function init() {
+        initializeWindowTimeout(meerkat.site.session.windowTimeout);
+        poke().done(function() {
+            isFirstPoke = false;
+        });
+        $(document).on("click.session", ".poke, .btn:not(.journeyNavButton,.dontPoke), .btn-back, .dropdown-toggle, .btn-pagination", function(e) {
+            deferredPoke();
+        }).on("click.session", "#session_button, #next-step, #slide-next", function(e) {
+            poke();
+        });
     }
-    function setTimeoutLength(timeout) {
-        sessionExpiry._timeoutLength = timeout;
-        sessionExpiry.init();
+    var ajaxRequestTimeoutCount = 0;
+    function poke(check) {
+        var ajaxURL = "session_poke.json";
+        if (typeof check === "boolean") ajaxURL += check ? "?check" : "";
+        return $.ajax({
+            type: "GET",
+            url: ajaxURL,
+            dataType: "json",
+            timeout: 6e4,
+            cache: false,
+            success: function(data) {
+                ajaxRequestTimeoutCount = 0;
+                initializeWindowTimeout(data.timeout);
+            },
+            error: function(obj, txt, errorThrown) {
+                if (txt === "timeout" && ajaxRequestTimeoutCount < 3) {
+                    setTimeout(function retrySessionPoke() {
+                        poke(check);
+                    }, 3e4);
+                } else {
+                    showModal(false);
+                    FatalErrorDialog.exec({
+                        message: "Unfortunately, something went wrong while checking your session with us. <br /><br />It's possible you were temporarily disconnected, or your session may have simply expired for this page. <br /><br />Please try to refresh this page and try again.",
+                        page: ajaxURL,
+                        description: "An error occurred with your browsing session, session poke failed to return: " + txt + " " + errorThrown,
+                        data: {
+                            transactionId: typeof referenceNo === "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID()
     }
+                    });
+                }
+            }
+        });
+    }
+    var deferredPokeTimeout = null;
+    function deferredPoke() {
+        if (lastClientPoke <= getClientTimestamp - meerkat.site.session.deferredPokeDuration) {
+            poke();
+        } else {
+            if (!deferredPokeTimeout) deferredPokeTimeout = window.setTimeout(poke, meerkat.site.session.deferredPokeDuration);
+        }
+    }
+    function getClientTimestamp() {
+        return parseInt(+new Date());
+    }
+    function initializeWindowTimeout(timeout) {
+        if (timeout > 0) {
+            lastClientPoke = getClientTimestamp();
+            window.clearTimeout(windowTimeout);
+            windowTimeout = window.setTimeout(function setTimeoutWindowTimeout() {
+                poke(true);
+            }, timeout);
+            hideModal();
+        } else {
+            if (isModalOpen || isFirstPoke) showModal(false); else showModal(true);
+        }
+    }
+    function redirect(reload) {
+        meerkat.modules.leavePageWarning.disable();
+        hideModal();
+        window.scrollTo(0, 0);
+        if (typeof reload === "boolean" && reload) {
+            meerkat.modules.journeyEngine.loadingShow("Reloading...");
+            window.location.reload();
+        } else {
+            meerkat.modules.journeyEngine.loadingShow("Redirecting...");
+            window.location = meerkat.site.urls.exit;
+        }
+    }
+    var countDownInterval = null, sessionAlertModal = null, onModalOpen = function(dialogId) {
+        $("#" + dialogId).find(".modal-closebar").remove();
+    };
+    function showModal(canRecover) {
+        hideModal();
+        isModalOpen = true;
+        var modalConfig = {
+            title: "Hi, are you still there?",
+            className: "sessionModalContainer",
+            leftBtn: {
+                label: ""
+            },
+            onOpen: onModalOpen
+        };
+        if (canRecover) {
+            var countDownSecs = 180, getTimerText = function sessionModalGetTimerText() {
+                var minutes = Math.floor(countDownSecs / 60), seconds = ("0" + (countDownSecs - minutes * 60)).slice(-2);
+                return minutes + ":" + seconds;
+            }, countDown = function sessionModalCountDown() {
+                $(document).find("#sessionModalCountDown").text(getTimerText());
+                if (countDownSecs <= 0) {
+                    poke(true).then(function sessionLastBreath(data) {
+                        if (data.timeout <= 0) {
+                            meerkat.modules.writeQuote.write({
+                                triggeredsave: "sessionpop"
+                            }, false, function writeQuoteCallback() {
+                                window.clearInterval(countDownInterval);
+                                redirect();
+                            });
+                        } else {
+                            hideModal();
+                        }
+                    });
+                }
+                countDownSecs -= 1;
+            };
+            countDownInterval = window.setInterval(countDown, 1e3);
+            modalConfig.htmlContent = [ '<p id="sessionModalCountDown">', getTimerText(), "</p>", "<p>We haven't noticed any activity from you for a while, so we wanted to let you know that your session will automatically time out in 3 minutes.</p>", "<p>If you are still there, great!</p>", '<p>To continue with your session, please click the "Continue" button below.</p>' ].join("");
+            modalConfig.buttons = [ {
+                label: "Continue",
+                className: "btn btn-success",
+                closeWindow: true,
+                action: poke
+            } ];
+        } else {
+            modalConfig.htmlContent = [ "<p>Hi, are you still there? We didn't see any activity from you for a while, or your connection was interrupted, so we wanted to let you know your session has timed out.</p>" ].join("");
+            modalConfig.buttons = [ {
+                label: "Reload Page",
+                className: "btn btn-success",
+                closeWindow: true,
+                action: function sessionModalReloadPage() {
+                    redirect(true);
+                }
+            }, {
+                label: "Visit " + meerkat.site.name + "'s Home Page",
+                className: "btn btn-success",
+                closeWindow: true,
+                action: redirect
+            } ];
+        }
+        sessionAlertModal = meerkat.modules.dialogs.show(modalConfig);
+    }
+    function hideModal() {
+        window.clearInterval(countDownInterval);
+        meerkat.modules.dialogs.close(sessionAlertModal);
+        isModalOpen = false;
+    }
+    if (!$("body").hasClass("simples")) {
     meerkat.modules.register("session", {
-        init: initSession,
+        init: init,
         poke: poke,
-        setTimeoutLength: setTimeoutLength
+        initializeWindowTimeout: initializeWindowTimeout
     });
+    }
 })(jQuery);
 
 (function($, undefined) {

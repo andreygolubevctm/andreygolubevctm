@@ -252,7 +252,8 @@
 						The things you've bought for your house are what make it a home. Protect them with simply smarter Contents Insurance.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						Winner Money magazines cheapest Home &amp; Contents Insurance 2014.
+						Winner of ServiceRage Australia’s Happiest Car &amp; Home Insurance Customers Award 2014.
+						Winner of The Australian Business Awards Service Excellence Award 2014
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>
@@ -296,13 +297,13 @@
 			<xsl:when test="$productId = 'BUDD-05-29'">
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
-						Save 20% when you buy online.
+						Save 15% when you buy online.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						Save 20% when you buy online.
+						Save 15% when you buy online.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						Save 35% on combined Smart Home &amp; Contents Insurance when you buy online.
+						Save 30% on combined Smart Home &amp; Contents Insurance when you buy online.
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>

@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.ctm.utils.FormDateUtils;
 import com.disc_au.web.go.xml.XmlNode;
 
 public class TokenReplaceUtils {
@@ -233,18 +234,11 @@ public class TokenReplaceUtils {
 	}
 	private static String convertToNewDate(String value) {
 		if (!value.isEmpty()){
-			SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 			Date date = null;
 			String formattedDate = "";
-			try {
-				date = sf.parse(value);
-				sf = new SimpleDateFormat("yyyy-MM-dd");
+			date = FormDateUtils.parseDateFromForm(value);
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 				formattedDate = sf.format(date);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println(" Kevin gets upset if there's nothing done with an exception.. :" + e);
-			}
 			return formattedDate;
 		}
 		else {

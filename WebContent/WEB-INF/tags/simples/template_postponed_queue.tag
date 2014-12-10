@@ -13,9 +13,9 @@
 			{{ if (whenToAction !== false) { }}
 			{{     whenToAction = new Date(whenToAction); }}
 			{{     var inThePast = (whenToAction <= new Date()) ? ' in-the-past' : ''; }}
-			{{     var upcoming  = (whenToAction <= (new Date().setHours(new Date().getUTCHours() + 2))) ? ' upcoming-reminder' : ''; }}
+			{{     var upcoming  = (whenToAction <= (new Date().setHours(new Date().getHours() + 2))) ? ' upcoming-reminder' : ''; }}
 			{{     var ampm = 'am'; }}
-			{{     var hours = whenToAction.getUTCHours(); }}
+			{{     var hours = whenToAction.getHours(); }}
 			{{     if (hours < 10) { }}
 			{{         hours = '0' + hours; }}
 			{{     } else if (hours == 12) { }}
@@ -23,8 +23,8 @@
 			{{     } else if (hours > 12) { }}
 			{{         ampm = 'pm'; hours -= 12; }}
 			{{     } }}
-			{{     var minutes = (whenToAction.getUTCMinutes() < 10) ? '0' + whenToAction.getUTCMinutes() : whenToAction.getUTCMinutes(); }}
-			{{     whenToAction = whenToAction.getDayNameShort(true) + ' ' + whenToAction.getUTCDate() + ' ' + whenToAction.getMonthNameShort(true) + ' ' + hours + ':' + minutes + ampm; }}
+			{{     var minutes = (whenToAction.getMinutes() < 10) ? '0' + whenToAction.getMinutes() : whenToAction.getMinutes(); }}
+			{{     whenToAction = whenToAction.getDayNameShort() + ' ' + whenToAction.getDate() + ' ' + whenToAction.getMonthNameShort() + ' ' + hours + ':' + minutes + ampm; }}
 			{{ } else { }}
 			{{     whenToAction = message.whenToAction; }}
 			{{ } }}

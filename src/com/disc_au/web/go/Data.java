@@ -3,6 +3,7 @@ package com.disc_au.web.go;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import com.disc_au.web.go.xml.XmlNode;
@@ -17,6 +18,8 @@ import com.disc_au.web.go.xml.XmlParser;
  */
 
 public class Data extends XmlNode implements Comparable<Data>{
+
+	private static Logger logger = Logger.getLogger(Data.class.getName());
 
 	/** The NODE. */
 	public static String NODE = "node";
@@ -249,6 +252,28 @@ public class Data extends XmlNode implements Comparable<Data>{
 		if (this.lastSessionTouch.before(other.getLastSessionTouch())) return BEFORE;
 		if (this.lastSessionTouch.after(other.getLastSessionTouch())) return AFTER;
 		return EQUAL;
+	}
+
+	public String getString(String xpath) {
+		Object rebateObj = get(xpath);
+		String value = "";
+		if (rebateObj instanceof String) {
+			value = (String) rebateObj;
+}
+		return value;
+	}
+	
+	public double getDouble(String xpath) {
+		String value =  getString(xpath);
+		double loadingValue = 0;
+		if(!value.isEmpty()) {
+			try {
+				loadingValue = Double.parseDouble(value);
+			} catch (NumberFormatException e) {
+				logger.error(e);
+			}
+		}
+		return loadingValue;
 	}
 
 }

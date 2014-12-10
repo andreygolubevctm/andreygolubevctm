@@ -40,7 +40,6 @@
 				<link rel="shortcut icon" type="image/x-icon" href="${baseUrl}common/images/favicon.ico">
 				<link rel="stylesheet" href="${baseUrl}common/reset.css">
 				<link rel="stylesheet" href="${baseUrl}common/base.css">
-				<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getSetting('fontStylesheet')}">
 				<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getSetting('stylesheet')}">
 				<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getSetting('errorStylesheet')}">
 

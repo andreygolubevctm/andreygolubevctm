@@ -1703,7 +1703,7 @@ a.more-info-content .pricepromise h2:hover {
 .resultsLowNumberMessage .insert ul li:before,
 .resultsMarketingMessage .insert ul li:after,
 .resultsLowNumberMessage .insert ul li:after {
-  font-family: 'CTM';
+  font-family: 'framework_font';
   font-weight: normal;
   position: absolute;
   top: 0;
@@ -2058,7 +2058,7 @@ a.more-info-content .pricepromise h2:hover {
 }
 .simples-dialogue h2:after,
 .simples-dialogue h3:after {
-  font-family: 'CTM';
+  font-family: 'framework_font';
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -3050,7 +3050,7 @@ header .healthCallCentreSpecialHoursLink {
 }
 .compareCheckbox input + label:after,
 .compareCheckbox input + label:before {
-  font-family: 'CTM';
+  font-family: 'framework_font';
   font-weight: normal;
   position: absolute;
   cursor: pointer;

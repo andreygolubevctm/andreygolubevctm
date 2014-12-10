@@ -123,6 +123,9 @@
 		<go:setData dataVar="soapdata" xpath="soap-response/results/transactionId" value="${tranId}" />
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
 
+				<%-- !!IMPORTANT!! - ensure the trackingKey is passed back with results --%>
+				<go:setData dataVar="soapdata" xpath="soap-response/results/info/trackingKey" value="${data.home.trackingKey}" />
+
 				<%--Calculate the end valid date for these quotes --%>
 				<c:set var="validateDate">
 					<agg:email_valid_date dateFormat="dd MMMMM yyyy" />
@@ -139,6 +142,7 @@
 			<c:set var="homeExcess"><x:out select="$resultXml/result/HHB/excess/amount" /></c:set>
 			<c:set var="contentsExcess"><x:out select="$resultXml/result/HHC/excess/amount" /></c:set>
 			<c:set var="terms"><x:out select="$resultXml/result/headline/terms" /></c:set>
+					<c:set var="offer"><x:out select="$resultXml/result/headline/offer" /></c:set>
 
 			<c:set var="productName"><x:out select="$resultXml/result/headline/name" /></c:set>
 
@@ -236,7 +240,14 @@
 								<c:set var="code">${feature[3]}</c:set>
 
 								<c:if test="${value == 'S'}">
-									<c:set var="value">${feature[1]}</c:set>
+									<c:choose>
+										<c:when test="${fn:contains(productId, 'BUDD')}">
+											<c:set var="value">${feature[1]}</c:set>
+										</c:when>
+										<c:otherwise>
+									<c:set var="value">${offer}</c:set>
+										</c:otherwise>
+									</c:choose>
 									<c:set var="extra">${terms}</c:set>
 								</c:if>
 

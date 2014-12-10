@@ -11,19 +11,27 @@ import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
+import com.ctm.dao.StyleCodeDao;
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.HealthPricePremiumRange;
 import com.ctm.model.health.HealthPriceRequest;
+import com.ctm.services.results.ProviderRestrictionsService;
 
 
 public class HealthPriceServiceTest {
 
 	HealthPriceDao healthPriceDao = mock(HealthPriceDao.class);
+	StyleCodeDao styleCodeDao = mock(StyleCodeDao.class);
+	ProviderRestrictionsService providerRestrictionsService = mock(ProviderRestrictionsService.class);
+	private HealthPriceRequest healthPriceRequest;
 
 	@Test
 	public void testShouldRoundPremiumToNearestFive() throws SQLException, DaoException {
-		HealthPriceService healthPriceService = new HealthPriceService(healthPriceDao);
+		HealthPriceService healthPriceService = new HealthPriceService(healthPriceDao, styleCodeDao, providerRestrictionsService);
+		healthPriceRequest = new HealthPriceRequest();
+		healthPriceRequest.setBrandFilter("");
+		healthPriceService.setHealthPriceRequest(healthPriceRequest);
 
 		healthPriceService.setChangeoverDate(new Date());
 		healthPriceService.setSearchDate("2014-01-01");
@@ -49,7 +57,7 @@ public class HealthPriceServiceTest {
 
 	@Test
 	public void testShouldSetRebate() throws SQLException, DaoException {
-		HealthPriceService healthPriceService = new HealthPriceService(healthPriceDao);
+		HealthPriceService healthPriceService = new HealthPriceService(healthPriceDao, styleCodeDao, providerRestrictionsService);
 
 		setUpHealthPriceService(healthPriceService);
 		healthPriceService.setup();
@@ -68,11 +76,15 @@ public class HealthPriceServiceTest {
 	private void setUpHealthPriceService(
 			HealthPriceService healthPriceService) throws DaoException {
 		GregorianCalendar cal = new GregorianCalendar();
-		cal.set(2014, 05, 01);
+		cal.set(2014, 5, 1);
+		healthPriceRequest = new HealthPriceRequest();
+		healthPriceRequest.setExcessSel("1");
+		healthPriceRequest.setBrandFilter("");
+		healthPriceService.setHealthPriceRequest(healthPriceRequest);
 		healthPriceService.setChangeoverDate(cal.getTime());
 		healthPriceService.setSearchDate("13/06/2014");
 		healthPriceService.setRebateChangeover(0.0);
-		healthPriceService.setRebate(30.0);
+		healthPriceRequest.setRebate(30.0);
 		healthPriceService.setRebateMultiplierCurrent(0.968);
 
 
@@ -91,24 +103,24 @@ public class HealthPriceServiceTest {
 
 	@Test
 	public void testShouldGetMinimum() throws SQLException, DaoException {
-		HealthPriceService healthPriceService = new HealthPriceService(healthPriceDao);
+		HealthPriceService healthPriceService = new HealthPriceService(healthPriceDao, styleCodeDao, providerRestrictionsService);
 		setUpHealthPriceService(healthPriceService);
-		healthPriceService.setPriceMinimum(100);
-		healthPriceService.setPaymentFrequency("F");
-		healthPriceService.setOnResultsPage(true);
+		healthPriceRequest.setPriceMinimum(100);
+		healthPriceRequest.setPaymentFrequency("F");
+		healthPriceRequest.setOnResultsPage(true);
 		healthPriceService.setup();
 
 		assertEquals("wrong price with rebate", 90.44, healthPriceService.getHealthPriceRequest().getPriceMinimum(), 1);
 
-		healthPriceService.setPriceMinimum(100);
-		healthPriceService.setPaymentFrequency("Q");
+		healthPriceRequest.setPriceMinimum(100);
+		healthPriceRequest.setPaymentFrequency("Q");
 		healthPriceService.setup();
 		assertEquals("wrong price with rebate", 0.00, healthPriceService.getHealthPriceRequest().getPriceMinimum(), 1);
 	}
 
 	@Test
 	public void testShouldSetSearchDate() throws SQLException, DaoException {
-		HealthPriceService healthPriceService = new HealthPriceService(healthPriceDao);
+		HealthPriceService healthPriceService = new HealthPriceService(healthPriceDao, styleCodeDao, providerRestrictionsService);
 
 		setUpHealthPriceService(healthPriceService);
 		healthPriceService.setSearchDate("18/08/2014");

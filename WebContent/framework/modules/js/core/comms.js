@@ -201,7 +201,7 @@
 							if(settings.onSuccess != null) settings.onSuccess(result);
 							if(settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
 
-					if(typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.setTimeoutLength(result.timeout);
+					if(typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.update(result.timeout);
 						}
 					},
 					function onAjaxError(jqXHR, textStatus, errorThrown){

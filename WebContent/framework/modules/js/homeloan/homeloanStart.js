@@ -61,6 +61,8 @@
 				toggleView($existingOwnerPanel, false);
 				$amountOwing.val('');
 				$amountOwingHidden.val('');
+				$propertyWorth.val('');
+				$propertyWorthHidden.val('');
 			}
 			for(var currOpts = [], opts = '<option id="homeloan_details_goal_" value="">Please choose...</option>', i = 0; i < arr.length; i++) {
 				opts += '<option id="homeloan_details_goal_'+arr[i].code+'" value="'+arr[i].code+'">'+arr[i].label+'</option>';
@@ -116,18 +118,8 @@
 
 		// Keep purchase price and loan amount validations in sync
 
-		$loanAmount.on('blur.hmlValidate', function() {
-			if ($purchasePrice.val().length === 0) {
-				return;
-			}
-
-			_.delay(function checkValidation() {
-				$purchasePrice.isValid(true);
-			}, 250);
-		});
-
 		$purchasePrice.on('blur.hmlValidate', function() {
-			if ($loanAmount.val().length === 0) return;
+			if ($loanAmount.val().length === 0) {return;}
 
 			_.delay(function checkValidation() {
 				$loanAmount.isValid(true);
@@ -165,6 +157,8 @@
 			$loanAmount = $('#homeloan_loanDetails_loanAmountentry');
 			$amountOwing = $('#homeloan_details_amountOwingentry');
 			$amountOwingHidden = $('#homeloan_details_amountOwing');
+			$propertyWorth = $('#homeloan_details_assetAmountentry');
+			$propertyWorthHidden = $('#homeloan_details_assetAmount');
 			$currentLoanPanel = $('#homeloan_details_currentLoanToggleArea');
 			$existingOwnerPanel = $('.homeloan_details_existingToggleArea');
 			$purchasePricePanel = $('.homeloan_loanDetails_purchasePriceToggleArea');

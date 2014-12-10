@@ -25,7 +25,9 @@
                 method: "trackQuoteEvent",
                 object: {
                     action: "Start",
-                    transactionID: parseInt(transaction_id, 10)
+                    transactionID: parseInt(transaction_id, 10),
+                    vertical: meerkat.site.vertical,
+                    verticalFilter: meerkat.modules.homeloan.getVerticalFilter()
                 }
             });
         }
@@ -830,7 +832,7 @@
             runDisplayMethod: runDisplayMethod,
             onBeforeShowBridgingPage: null,
             onBeforeShowTemplate: null,
-            onBeforeShowModal: null,
+            onBeforeShowModal: onBeforeShowModal,
             onAfterShowModal: trackProductView,
             onAfterShowTemplate: null,
             onBeforeHideTemplate: null,
@@ -838,7 +840,10 @@
             onClickApplyNow: onClickApplyNow,
             onBeforeApply: null,
             onApplySuccess: null,
-            retrieveExternalCopy: retrieveExternalCopy
+            retrieveExternalCopy: retrieveExternalCopy,
+            additionalTrackingData: {
+                verticalFilter: meerkat.modules.homeloan.getVerticalFilter()
+            }
         };
         meerkat.modules.moreInfo.initMoreInfo(options);
         eventSubscriptions();
@@ -865,12 +870,21 @@
     }
     function retrieveExternalCopy(product) {
         return $.Deferred(function(dfd) {
+            meerkat.modules.moreInfo.setDataResult(product);
             return dfd.resolveWith(this, []).promise();
         });
     }
     function onClickApplyNow() {
         Results.model.setSelectedProduct($(".btn-apply").attr("data-productId"));
         meerkat.modules.journeyEngine.gotoPath("next");
+    }
+    function onBeforeShowModal(product) {
+        var settings = {
+            additionalTrackingData: {
+                productName: product.lenderProductName
+            }
+        };
+        meerkat.modules.moreInfo.updateSettings(settings);
     }
     function trackProductView() {
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
@@ -1541,6 +1555,8 @@
                 toggleView($existingOwnerPanel, false);
                 $amountOwing.val("");
                 $amountOwingHidden.val("");
+                $propertyWorth.val("");
+                $propertyWorthHidden.val("");
             }
             for (var currOpts = [], opts = '<option id="homeloan_details_goal_" value="">Please choose...</option>', i = 0; i < arr.length; i++) {
                 opts += '<option id="homeloan_details_goal_' + arr[i].code + '" value="' + arr[i].code + '">' + arr[i].label + "</option>";
@@ -1586,16 +1602,10 @@
             $amountOwing.val("");
             $amountOwingHidden.val("");
         });
-        $loanAmount.on("blur.hmlValidate", function() {
-            if ($purchasePrice.val().length === 0) {
+        $purchasePrice.on("blur.hmlValidate", function() {
+            if ($loanAmount.val().length === 0) {
                 return;
             }
-            _.delay(function checkValidation() {
-                $purchasePrice.isValid(true);
-            }, 250);
-        });
-        $purchasePrice.on("blur.hmlValidate", function() {
-            if ($loanAmount.val().length === 0) return;
             _.delay(function checkValidation() {
                 $loanAmount.isValid(true);
             }, 250);
@@ -1622,6 +1632,8 @@
             $loanAmount = $("#homeloan_loanDetails_loanAmountentry");
             $amountOwing = $("#homeloan_details_amountOwingentry");
             $amountOwingHidden = $("#homeloan_details_amountOwing");
+            $propertyWorth = $("#homeloan_details_assetAmountentry");
+            $propertyWorthHidden = $("#homeloan_details_assetAmount");
             $currentLoanPanel = $("#homeloan_details_currentLoanToggleArea");
             $existingOwnerPanel = $(".homeloan_details_existingToggleArea");
             $purchasePricePanel = $(".homeloan_loanDetails_purchasePriceToggleArea");

@@ -13,6 +13,8 @@ Fund Specific JS
 //HCF is usually setting the default values
 var healthFunds_HCF = {
 	set: function(){
+		//credit card & bank account frequency & day frequency
+		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
 	},
 	unset: function(){
 	}

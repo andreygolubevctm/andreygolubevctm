@@ -281,9 +281,9 @@ ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 
 <%-- COMPETITION APPLICATION START --%>
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
-<c:set var="competitionId"><content:get key="competitionId"/></c:set>
 <c:set var="optedInForComp" value="${data['quote/contact/competition/optin'] == 'Y' }" />
 <c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
+	<c:set var="competitionId"><content:get key="competitionId"/></c:set>
 	<c:choose>
 		<c:when test="${not empty data['quote/contact/phone']}">
 			<c:set var="contactPhone" value="${data['quote/contact/phone']}"/>

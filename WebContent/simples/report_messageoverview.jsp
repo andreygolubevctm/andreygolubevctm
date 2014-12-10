@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<jsp:useBean id="messageOverviewDao" class="com.ctm.dao.MessageOverviewDao" scope="page" />
+<jsp:useBean id="messageOverviewDao" class="com.ctm.dao.simples.MessageOverviewDao" scope="page" />
 
 <settings:setVertical verticalCode="SIMPLES" />
 

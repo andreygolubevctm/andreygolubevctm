@@ -3,15 +3,17 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="providerId" 	required="true"	 rtexprvalue="true"	 description="Id of provider to link the promo content" %>
-<%@ attribute name="transactionId" 	required="true"	 rtexprvalue="true"	 description="transactionId to get the styleCodeId" %>
+<%@ attribute name="healthPriceService" type="com.ctm.services.health.HealthPriceService" required="true" rtexprvalue="true" description="service to get tranId and application date" %>
 
-<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+<%-- VARIABLES --%>
+<c:set var="styleCodeId"><core:get_stylecode_id transactionId="${healthPriceService.getTransactionId()}" /></c:set>
+<c:set var="applicationDate" value="${healthPriceService.getApplicationDate()}" />
 
 <%-- XML START --%>
 <fmt:setLocale value="en_US" />
 <promoData>
 <%-- Retrieve and render the common promotext --%>
-<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("promoText", providerId, styleCodeId, applicationService.getServerDate(), true)}' />
+<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("promoText", providerId, styleCodeId, applicationDate, true)}' />
 <c:forEach items="${contentItems}" var="item" varStatus="status">
 	<c:set var="summary" value="${item.getSupplementaryValueByKey('summary')}" />
 	<c:set var="dialog" value="${item.getSupplementaryValueByKey('dialog')}" />
@@ -24,7 +26,7 @@
 </c:forEach>
 
 <%-- Retrieve and render the common discountText --%>
-<c:set var="discountItems" value='${contentService.getMultipleContentValuesForProvider("discountText", providerId, styleCodeId, applicationService.getServerDate(), true)}' />
+<c:set var="discountItems" value='${contentService.getMultipleContentValuesForProvider("discountText", providerId, styleCodeId, applicationDate, true)}' />
 <c:forEach items="${discountItems}" var="item" varStatus="status">
 	<c:set var="content" value="${item.getSupplementaryValueByKey('content')}" />
 	<c:if test="${not empty content}">
@@ -33,7 +35,7 @@
 </c:forEach>
 
 <%-- Retrieve and render the product specific promo content --%>
-<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("promo", providerId, styleCodeId, applicationService.getServerDate(), true)}' />
+<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("promo", providerId, styleCodeId, applicationDate, true)}' />
 <c:forEach items="${contentItems}" var="item" varStatus="status">
 	<c:set var="hospitalAttr" value="${item.getSupplementaryValueByKey('@hospital')}" />
 	<c:set var="hospitalPDF" value="${item.getSupplementaryValueByKey('hospitalPDF')}" />

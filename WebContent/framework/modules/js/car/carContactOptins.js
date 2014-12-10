@@ -35,16 +35,6 @@
 		}
 	}
 
-	function toggleValidation() {
-		var standard = meerkat.modules.tracking.getCurrentJourney() === '1';
-		if(!standard) {
-			$(elements.marketing).rules('remove', 'validateOkToEmailRadio');
-			$(elements.marketing).rules('add', 'required');
-			$(elements.oktocall).rules('remove', 'validateOkToCallRadio');
-			$(elements.oktocall).rules('add', 'required');
-		}
-	}
-
 	function addChangeListeners() {
 		$(elements.oktocall).on('change', onOkToCallChanged);
 		$(elements.marketing).on('change', onOkToEmailChanged);
@@ -120,8 +110,6 @@
 				return false;
 
 			addChangeListeners();
-
-			toggleValidation();
 
 			dump();
 		});

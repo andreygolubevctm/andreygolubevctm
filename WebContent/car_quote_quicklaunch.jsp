@@ -45,6 +45,7 @@
 				display: none;
 			}
 			.form-group label {
+				color:#ffffff;
 				padding-left:0;
 			}
 			#quote_vehicle_buttonRow label {
@@ -78,6 +79,12 @@
 				border-radius:30px;
 				font-size:13px;
 				text-transform:uppercase;
+			}
+			#quote_vehicle_makeRow {
+				margin-top: 5px;
+			}
+			#quote_vehicle_buttonRow {
+				margin-bottom: 10px;
 			}
 			@media (max-width: 767px) {
 				fieldset .form-group {

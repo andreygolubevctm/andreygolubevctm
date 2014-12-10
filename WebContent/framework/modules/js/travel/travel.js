@@ -53,7 +53,8 @@
 				method:'trackQuoteEvent',
 				object: {
 					action: 'Start',
-					transactionID: transaction_id
+					transactionID: transaction_id,
+					verticalFilter: meerkat.modules.travel.getVerticalFilter()
 				}
 			});
 
@@ -138,6 +139,18 @@
 
 	}
 
+	// returns the value considered the vertical filter for travel
+	function getVerticalFilter()
+	{
+		var vf = null;
+		if ($policyTypeBtn.is(':checked'))
+		{
+			vf = ($policyTypeBtn.val() == 'S' ? 'Single Trip' : 'Multi Trip');
+		}
+
+		return vf;
+	}
+
 	// Build an object to be sent by SuperTag tracking.
 	function getTrackingFieldsObject(){
 		try{
@@ -180,6 +193,7 @@
 			insType='Annual Policy';
 		}
 
+
 		var response =  {
 			vertical:				meerkat.site.vertical,
 			actionStep:				actionStep,
@@ -189,7 +203,7 @@
 			email:					email,
 			emailID:				null,
 			marketOptIn:			mkt_opt_in,
-			verticalFilter:		(policyType == 'S' ? 'Single Trip' : 'Multi Trip')
+			verticalFilter:			meerkat.modules.travel.getVerticalFilter()
 		};
 
 		// Push in values from 2nd slide only when have been beyond it
@@ -213,7 +227,8 @@
 	meerkat.modules.register("travel", {
 		init: initJourneyEngine,
 		events: moduleEvents,
-		getTrackingFieldsObject: getTrackingFieldsObject
+		getTrackingFieldsObject: getTrackingFieldsObject,
+		getVerticalFilter: getVerticalFilter
 	});
 
 })(jQuery);

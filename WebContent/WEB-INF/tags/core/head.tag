@@ -92,9 +92,6 @@
 			<%-- The normal CTM based head inclusions --%>
 	<link rel="shortcut icon" type="image/x-icon" href="common/images/favicon.ico">
 
-	<c:if test="${pageSettings.getSetting('fontStylesheet') != ''}">
-		<go:style marker="css-href" href="brand/${pageSettings.getSetting('fontStylesheet')}"></go:style>
-	</c:if>
 	<go:style marker="css-href" href='common/reset.css'></go:style>
 	<go:style marker="css-href" href='common/base.css'></go:style>
 	<c:if test="${loadjQuery == true}">

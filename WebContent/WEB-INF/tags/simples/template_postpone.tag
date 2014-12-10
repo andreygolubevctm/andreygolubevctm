@@ -61,8 +61,8 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="checkbox">
-						<input type="checkbox" name="assigntome" id="assigntome" class="checkbox-custom" value="Y" checked>
-						<label for="assigntome">Assign to me</label>
+						<input type="checkbox" name="assigntome" id="assigntome" class="checkbox-custom" value="Y">
+						<label for="assigntome">Assign to me as a Personal Message</label>
 					</div>
 				</div>
 			</div>

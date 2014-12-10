@@ -195,9 +195,20 @@
 						</ul>
 					</div>
 				</div>
+			{{ }else{ }} 
+				<c:if test="${not empty callCentre}">
+					{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
+						<div class="row moreInfoExclusions">
+							<div class="col-xs-12">
+								<h5 class="text-hospital">Your Hospital Exclusions:</h5>
+								<ul class="exclusions">
+									<li class="text-danger"><span class="icon-cross" /></span>{{= custom.info.exclusions.cover }}</li>
+								</ul>
+							</div>
+						</div>
+					{{ } }}
+				</c:if>
 			{{ } }}
-
-
 
 
 <div class="row row-content ">

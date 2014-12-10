@@ -1,13 +1,7 @@
 package com.ctm.services;
 
-import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xml.sax.SAXException;
-
-import com.ctm.connectivity.SimpleConnection;
 import com.ctm.connectivity.JsonConnection;
+import com.ctm.connectivity.SimpleConnection;
 import com.ctm.dao.InboundPhoneNumberDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
@@ -18,14 +12,24 @@ import com.ctm.model.simples.CallInfo;
 import com.ctm.model.simples.InboundPhoneNumber;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xml.sax.SAXException;
+
+import java.util.IllegalFormatException;
+
+import static com.ctm.model.simples.CallInfo.STATE_INACTIVE;
+import static java.lang.String.format;
 
 public class PhoneService {
-
-	private static Logger logger = Logger.getLogger(PhoneService.class.getName());
+	private static final Logger logger = Logger.getLogger(PhoneService.class.getName());
+	public static final String CTI_MAKE_CALL = "/dataservices/makeCall?accessToken=&extension=%s&numberToCall=%s";
 
 	/**
 	 * Get Response from Verint' RIS (Recorder Integration Service) from either its Master or Slave (failover) server
-	 * @param pageSettings
+	 * @param settings
 	 * @param paramUrl
 	 * @return
 	 * @throws ConfigSettingException
@@ -57,7 +61,7 @@ public class PhoneService {
 
 	/**
 	 * Uses Verint's RIS (Recorder Integration Service) to pause / resume recording of audio / video
-	 * @param pagesettings
+	 * @param settings
 	 * @param agentId
 	 * @param contentType
 	 * @param action
@@ -212,7 +216,7 @@ public class PhoneService {
 				callInfo.setState(CallInfo.STATE_RINGING);
 			}
 			else {
-				callInfo.setState(CallInfo.STATE_INACTIVE);
+				callInfo.setState(STATE_INACTIVE);
 			}
 
 		}
@@ -296,5 +300,50 @@ public class PhoneService {
 
 	}
 
+	public static boolean makeCall(final PageSettings settings, final String extension, final String phone) {
+		try {
+			final CallInfo callInfo = getCallInfoByExtension(settings, extension);
+			if (callInfo == null) {
+				logger.error("error retrieving call status");
+				return false;
+			} else if (callInfo.getState() == STATE_INACTIVE) {
+				final String url = callUrl(settings, extension, phone);
+				final SimpleConnection conn = new SimpleConnection();
+				conn.setConnectTimeout(10000);
+				conn.setReadTimeout(10000);
+				final String result = conn.get(url);
+				return callReturnStatus(result);
+			} else {
+				logger.info("already on phone ext: " + extension);
+				return false;
+			}
+		} catch (Exception e) {
+			logger.error("error retrieving call status", e);
+			return false;
+		}
+	}
 
+	public static String callUrl(final PageSettings settings, final String extension, final String phone) throws ConfigSettingException {
+		try {
+			final String ctiBaseUrl = settings.getSetting("ctiMakeCallUrl");
+			return format(ctiBaseUrl + CTI_MAKE_CALL, extension, phone);
+		} catch (final IllegalFormatException e) {
+			logger.error("error retrieving cti make call server url", e);
+		}
+		return null;
+	}
+
+	public static boolean callReturnStatus(final String xml) {
+		if (xml != null) {
+			try {
+				final XmlParser parser = new XmlParser();
+				final XmlNode node = parser.parse(xml);
+				return node.get("response/status").toString().equalsIgnoreCase("OK");
+			} catch (final SAXException e) {
+				logger.error("unable parse call status", e);
+				return false;
+			}
+		}
+		return false;
+	}
 }

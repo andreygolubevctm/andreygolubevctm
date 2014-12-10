@@ -3,6 +3,7 @@ package com.ctm.services.health;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ctm.model.HealthApplication;
 import com.ctm.web.validation.SchemaValidationError;
 import com.disc_au.web.go.Data;
 
@@ -15,50 +16,88 @@ import com.disc_au.web.go.Data;
  */
 public class HealthApplicationValidationService {
 
-	private static final String REBATE_XPATH = "health/healthCover/rebate";
-	private static final String PROVIDER_XPATH = "health/application/provider";
-	private static final String MEDICARE_NUMBER_XPATH = "health/payment/medicare/number";
+	private static final String PREFIX = "health";
+	
+	private static final String REBATE_XPATH = PREFIX + "/healthCover/rebate";
+	private static final String PROVIDER_XPATH = PREFIX + "/application/provider";
+	private static final String MEDICARE_NUMBER_XPATH = PREFIX + "/payment/medicare/number";
+	
+	private static final String REBATE_HIDDEN_XPATH = PREFIX + "/rebate";
+	private static final String LOADING_XPATH = PREFIX + "/loading";
+	
+	List<SchemaValidationError> validationErrors;
+
+	private HealthApplication healthApplication;
 
 	public List<SchemaValidationError> validate(Data data) {
-		return validateMedicareNumber(data);
+		parseData(data);
+		validationErrors = new ArrayList<SchemaValidationError>();
+		validateRebate();
+		validateLoading();
+		validateMedicareNumber();
+		return validationErrors;
 	}
 
-	private List<SchemaValidationError> validateMedicareNumber(Data data) {
-		List<SchemaValidationError> validationErrors= new ArrayList<SchemaValidationError>();
-		SchemaValidationError error = new SchemaValidationError();
-		error.setElementXpath(MEDICARE_NUMBER_XPATH);
+	private void parseData(Data data) {
+		healthApplication = new HealthApplication();
+		healthApplication.rebateValue = data.getDouble(REBATE_HIDDEN_XPATH); 
+		healthApplication.loadingValue = data.getDouble(LOADING_XPATH); 
+		healthApplication.rebate =  data.getString(REBATE_XPATH);
+		healthApplication.provider =  data.getString(PROVIDER_XPATH);
+		healthApplication.medicareNumber =  data.getString(MEDICARE_NUMBER_XPATH);
+	}
 
-		Object rebateObj = data.get(REBATE_XPATH);
-		String rebate = "";
-		if (rebateObj instanceof String) {
-			rebate = (String) rebateObj;
-		}
+	private void validateRebate() {
+		boolean valid = false;
+		valid = healthApplication.rebateValue <= 40 && healthApplication.rebateValue >= 0;
+		addToListIfInvalid(valid, REBATE_HIDDEN_XPATH);
+		
+	}
 
-		Object providerObj = data.get(PROVIDER_XPATH);
-		String provider = "";
-		if (providerObj instanceof String) {
-			provider = (String) providerObj;
+	private void validateLoading() {
+		String xpath = LOADING_XPATH;
+		boolean valid = false;
+		valid = healthApplication.loadingValue < 100 && healthApplication.loadingValue >= 0;
+		addToListIfInvalid(valid, xpath);
+	}
+	
+	private void addToListIfInvalid(boolean valid, String xpath) {
+		if(!valid) {
+			SchemaValidationError error = new SchemaValidationError();
+			error.setElementXpath(xpath);
+			error.setMessage(SchemaValidationError.INVALID);
+			validationErrors.add(error);
 		}
+	}
+	
+	private String getValueAndAddToErrorsIfEmpty(String value, String xpath) {
+		boolean hasValue = false;
+		if(value != null){
+			value =  value.replaceAll( "[^\\d]", "" );
+			hasValue = !value.isEmpty();
+		}
+		if(!hasValue) {
+			SchemaValidationError error = new SchemaValidationError();
+			error.setElementXpath(xpath);
+			error.setMessage(SchemaValidationError.REQUIRED);
+			validationErrors.add(error);
+		}
+		return value;
+	}
+
+	private List<SchemaValidationError> validateMedicareNumber() {
 
 		/**
 		 * Medicare number is mandatory for Bupa
 		 * Otherwise it is mandatory if yes was selected for do you want a rebate?
 		 */
-		if(rebate.equals("Y") || provider.equals("BUP")) {
-			Object obj = data.get(MEDICARE_NUMBER_XPATH);
-			String medicareNumber = "";
-			if (obj instanceof String) {
-				// don't worry about space etc
-				medicareNumber =  ((String) obj).replaceAll( "[^\\d]", "" );
+		if(healthApplication.rebate.equals("Y") || healthApplication.provider.equals("BUP")) {
+			String medicareNumber  = getValueAndAddToErrorsIfEmpty(healthApplication.medicareNumber, MEDICARE_NUMBER_XPATH);
+			if (!medicareNumber.isEmpty()) {
 				// check not empty
-				if(medicareNumber.isEmpty()) {
-					error.setMessage(SchemaValidationError.REQUIRED);
-					validationErrors.add(error);
-				// check that 10 digits
-				} else if(medicareNumber.length() != 10) {
-					error.setMessage(SchemaValidationError.INVALID);
-					validationErrors.add(error);
-				// check format is valid
+				if(medicareNumber.length() != 10) {
+					addToListIfInvalid(false, MEDICARE_NUMBER_XPATH);
+					// check format is valid
 				} else {
 					int medicareFirstDigit = Integer.parseInt(medicareNumber.substring(0,1));
 					int sumTotalOFFirstToEighth =
@@ -75,17 +114,12 @@ public class HealthApplicationValidationService {
 
 					// Must start between 2 and 6
 					if(medicareFirstDigit < 2 || medicareFirstDigit > 6 ) {
-						error.setMessage(SchemaValidationError.INVALID);
-						validationErrors.add(error);
+						addToListIfInvalid(false, MEDICARE_NUMBER_XPATH);
 					// Remainder needs to = the 9th number
 					} else if( sumTotalOFFirstToEighth % 10 != medicareNinethDigit){
-						error.setMessage(SchemaValidationError.INVALID);
-						validationErrors.add(error);
+						addToListIfInvalid(false, MEDICARE_NUMBER_XPATH);
 					}
 				}
-			} else {
-				error.setMessage(SchemaValidationError.REQUIRED);
-				validationErrors.add(error);
 			}
 		}
 		return validationErrors;

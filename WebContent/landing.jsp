@@ -66,11 +66,11 @@
 
 			@font-face {
 				font-family: SourceSansProRegular;
-				src:url('/${pageSettings.getBrandCode()}/brand/${pageSettings.getBrandCode()}/fonts/SourceSansPro-Regular.eot');
-				src:url('/${pageSettings.getBrandCode()}/brand/${pageSettings.getBrandCode()}/fonts/SourceSansPro-Regular.eot?#iefix') format('embedded-opentype'),
-					url('/${pageSettings.getBrandCode()}/brand/${pageSettings.getBrandCode()}/fonts/SourceSansPro-Regular.woff') format('woff'),
-					url('/${pageSettings.getBrandCode()}/brand/${pageSettings.getBrandCode()}/fonts/SourceSansPro-Regular.ttf') format('truetype'),
-					url('/${pageSettings.getBrandCode()}/brand/${pageSettings.getBrandCode()}/fonts/SourceSansPro-Regular.svg#SourceSansProRegular') format('svg');
+				src:url('${pageSettings.getBaseUrl()}/framework/fonts/SourceSansPro-Regular.eot');
+				src:url('${pageSettings.getBaseUrl()}/framework/fonts/SourceSansPro-Regular.eot?#iefix') format('embedded-opentype'),
+					url('${pageSettings.getBaseUrl()}/framework/fonts/SourceSansPro-Regular.woff') format('woff'),
+					url('${pageSettings.getBaseUrl()}/framework/fonts/SourceSansPro-Regular.ttf') format('truetype'),
+					url('${pageSettings.getBaseUrl()}/framework/fonts/SourceSansPro-Regular.svg#SourceSansProRegular') format('svg');
 				font-weight: normal;
 				font-style: normal;
 			}
