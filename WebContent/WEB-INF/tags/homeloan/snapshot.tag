@@ -39,15 +39,6 @@
 				{{= interestComparisonTemplate }}
 			</div>
 			<div class="col-sm-6 col-xs-12 snapshot-rates">
-				<h5>Rates</h5>
-				{{ if(typeof obj.formatted.intrRate !== 'undefined') { }}
-				Interest rate &nbsp;
-				{{=obj.formatted.intrRate}}<br>
-				{{ } }}
-				{{ if(typeof obj.formatted.comparRate !== 'undefined') { }}
-				Comparison rate* &nbsp;
-				{{=obj.formatted.comparRate}}<br>
-				{{ } }}
 
 				<h5>Fees</h5>
 				{{ if(typeof obj.formatted.appFees !== 'undefined') { }}
@@ -62,26 +53,7 @@
 				Settlement fee &nbsp;
 				{{=obj.formatted.settlFees}}<br>
 				{{ } }}
-			</div>
-			<div class="col-sm-6 col-xs-12 snapshot-frequency">
-				<h5>Payment Frequency</h5>
-				{{ if(typeof obj.monthly !== 'undefined') { }}
-				{{ if(obj.monthly === 'Y') { }}
-				Monthly<br>
-				{{ } }}
-				{{ } }}
-				{{ if(typeof obj.fortni !== 'undefined') { }}
-				{{ if(obj.fortni === 'Y') { }}
-				Fortnightly<br>
-				{{ } }}
-				{{ } }}
-				{{ if(typeof obj.weekly !== 'undefined') { }}
-				{{ if(obj.weekly === 'Y') { }}
-				Weekly<br>
-				{{ } }}
-				{{ } }}
-
-				<h5>Features</h5>
+<h5>Features</h5>
 				{{ if(typeof obj.bpay !== 'undefined') { }}
 				{{ if(obj.bpay === 'Y') { }}
 				BPay available<br>
@@ -118,6 +90,24 @@
 				{{ } }}
 				{{ } }}
 			</div>
+			<div class="col-sm-6 col-xs-12 snapshot-frequency">
+				<h5>Payment Frequency</h5>
+				{{ if(typeof obj.monthly !== 'undefined') { }}
+				{{ if(obj.monthly === 'Y') { }}
+				Monthly<br>
+				{{ } }}
+				{{ } }}
+				{{ if(typeof obj.fortni !== 'undefined') { }}
+				{{ if(obj.fortni === 'Y') { }}
+				Fortnightly<br>
+				{{ } }}
+				{{ } }}
+				{{ if(typeof obj.weekly !== 'undefined') { }}
+				{{ if(obj.weekly === 'Y') { }}
+				Weekly<br>
+				{{ } }}
+				{{ } }}
+			</div>
 		</div>
 		</form_new:fieldset>
 	</div>
@@ -131,8 +121,8 @@
 <form_new:fieldset legend="Snapshot of Your Details" className="quoteSnapshot">
 	<div class="row snapshot">
 		<div class="col-sm-12 snapshot-title">
-			<span data-source="#homeloan_contact_firstName" data-alternate-source="#homeloan_enquiry_contact_firstName"></span>
-			<span data-source="#homeloan_contact_lastName" data-alternate-source="#homeloan_enquiry_contact_lastName"></span>
+			<span data-source="#homeloan_enquiry_contact_firstName" data-alternate-source="#homeloan_contact_firstName" ></span>
+			<span data-source="#homeloan_enquiry_contact_lastName" data-alternate-source="#homeloan_contact_lastName"></span>
 		</div>
 		<div class="col-sm-12">
 			<p data-source="#homeloan_details_location"></p>

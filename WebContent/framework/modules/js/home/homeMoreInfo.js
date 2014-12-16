@@ -42,7 +42,7 @@
 			onBeforeShowBridgingPage: onBeforeShowBridgingPage,
 			onBeforeShowTemplate: renderScrapes,
 			onBeforeShowModal: renderScrapes,
-			onAfterShowModal: null,
+			onAfterShowModal: requestTracking,
 			onAfterShowTemplate: onAfterShowTemplate,
 			onBeforeHideTemplate: null,
 			onAfterHideTemplate: onAfterHideTemplate,
@@ -51,8 +51,8 @@
 			onApplySuccess: onApplySuccess,
 			retrieveExternalCopy: retrieveExternalCopy,
 			additionalTrackingData: {
-				vertical: 'Home_Contents',
-				verticalFilter: meerkat.modules.home.getVerticalFilter()
+				verticalFilter: null,
+				productName: null
 			}
 		};
 
@@ -409,6 +409,9 @@
 	 * Called within meerkat.modules.moreInfo.showTemplate
 	 */
 	function onAfterShowTemplate() {
+
+		requestTracking();
+
 		if (meerkat.modules.deviceMediaState.get() == 'lg' || meerkat.modules.deviceMediaState.get() == 'md') {
 			fixSidebarHeight('.paragraphedContent', '.moreInfoRightColumn', $bridgingContainer);
 		}
@@ -594,12 +597,12 @@
 		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 			method:'trackBridgingClick',
 			object:{
-				vertical: 'Home_Contents', // has to be this. meerkat.site.vertical
 				type: type,
 				quoteReferenceNumber: product.leadNo,
 				transactionID: meerkat.modules.transactionId.get(),
 				productID: product.productId,
-				verticalFilter: meerkat.modules.home.getVerticalFilter()
+				verticalFilter: meerkat.modules.home.getVerticalFilter(),
+				productBrandCode: product.brandCode
 			}
 		});
 
@@ -618,7 +621,6 @@
 				transactionID: transaction_id,
 				productID: product.productId,
 				productBrandCode: product.brandCode,
-				vertical: 'Home_Contents',
 				verticalFilter: meerkat.modules.home.getVerticalFilter()
 			}
 		});
@@ -631,8 +633,8 @@
 				transactionID: transaction_id,
 				productID: product.productId,
 				productBrandCode: product.brandCode,
-				vertical: 'Home_Contents', // has to be this. meerkat.site.vertical
-				verticalFilter: meerkat.modules.home.getVerticalFilter()
+				verticalFilter: meerkat.modules.home.getVerticalFilter(),
+				productName : product.headline.name
 			}
 		});
 
@@ -670,9 +672,23 @@
 				return;
 		}
 	}
-	function renderScrapes(scrapeData) {
+
+	function requestTracking() {
+
+		var settings = {
+				additionalTrackingData : {
+					verticalFilter : meerkat.modules.home.getVerticalFilter(),
+					productName : meerkat.modules.moreInfo.getOpenProduct().headline.name
+				}
+		};
+
+		meerkat.modules.moreInfo.updateSettings(settings);
 
 		trackProductView();
+	}
+
+	function renderScrapes(scrapeData) {
+
 		updateQuoteSummaryTable();
 
 		if (typeof scrapeData != 'undefined' && typeof scrapeData.scrapes != 'undefined' && scrapeData.scrapes.length) {

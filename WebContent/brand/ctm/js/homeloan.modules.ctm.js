@@ -62,9 +62,6 @@
             validation: {
                 validate: false,
                 customValidation: function validateSelection(callback) {
-                    if (Results.getSelectedProduct() === false) {
-                        callback(false);
-                    }
                     callback(true);
                 }
             },
@@ -73,6 +70,7 @@
                 meerkat.modules.homeloanFilters.initFilters();
             },
             onBeforeEnter: function enterResultsStep(event) {
+                Results.removeSelectedProduct();
                 if (event.isForward === true) {
                     $("#resultsPage").addClass("hidden");
                     $(".morePromptContainer, .comparison-rate-disclaimer").addClass("hidden");
@@ -103,9 +101,10 @@
             },
             onInitialise: function() {
                 meerkat.modules.homeloanEnquiry.initHomeloanEnquiry();
+                meerkat.modules.homeloanSnapshot.initHomeloanSnapshot();
             },
             onBeforeEnter: function() {
-                meerkat.modules.homeloanSnapshot.initHomeloanSnapshot();
+                meerkat.modules.homeloanSnapshot.onEnter();
                 if (Results.getSelectedProduct() !== false && Results.getSelectedProduct().hasOwnProperty("id")) {
                     $("#homeloan_product_id").val(Results.getSelectedProduct().id);
                     $("#homeloan_product_lender").val(Results.getSelectedProduct().lender);
@@ -416,6 +415,7 @@
                     object: meerkat.modules.homeloan.getTrackingFieldsObject
                 });
                 var confirmationId = resultData.confirmationkey;
+                meerkat.modules.leavePageWarning.disable();
                 window.location.href = "viewConfirmation?key=" + encodeURI(confirmationId);
             },
             onError: onSubmitError,
@@ -1319,7 +1319,9 @@
     function enquireNowClick(event) {
         event.preventDefault();
         var $enquireNow = $(event.target);
-        Results.setSelectedProduct($enquireNow.attr("data-productId"));
+        if ($enquireNow.attr("data-productId")) {
+            Results.setSelectedProduct($enquireNow.attr("data-productId"));
+        }
         meerkat.modules.journeyEngine.gotoPath("next", $enquireNow);
     }
     function resultRowClick(event) {
@@ -1476,8 +1478,13 @@
     var events = {
         homeloanSnapshot: {}
     }, moduleEvents = events.example;
-    var product;
+    var product, $snapshotGoal, $productSnapshot;
     function initHomeloanSnapshot() {
+        $snapshotGoal = $(".snapshotGoal");
+        $productSnapshot = $(".product-snapshot");
+        $("#homeloan_enquiry_contact_firstName, #homeloan_enquiry_contact_lastName").on("change", renderSnapshot);
+    }
+    function onEnter() {
         renderSnapshot();
         fillTemplate();
     }
@@ -1492,19 +1499,25 @@
             $situation = $situation + ' and property worth <span data-source="#homeloan_details_assetAmountentry"></span>';
         }
         $situation = $situation + '. Looking to borrow <span data-source="#homeloan_loanDetails_loanAmountentry"></span>.';
-        $(".snapshotGoal").html($situation);
+        $snapshotGoal.html($situation);
         meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(2) .snapshot");
     }
     function fillTemplate() {
-        var productTemplate = $("#snapshot-template").html();
-        var htmlTemplate = _.template(productTemplate);
-        var htmlString = htmlTemplate(Results.getSelectedProduct());
-        $(".product-snapshot").html(htmlString);
+        var currentProduct = Results.getSelectedProduct();
+        if (currentProduct !== false) {
+            var productTemplate = $("#snapshot-template").html();
+            var htmlTemplate = _.template(productTemplate);
+            var htmlString = htmlTemplate(currentProduct);
+            $productSnapshot.html(htmlString);
+        } else {
+            $productSnapshot.empty();
+        }
     }
     meerkat.modules.register("homeloanSnapshot", {
         initHomeloanSnapshot: initHomeloanSnapshot,
         events: events,
-        renderSnapshot: renderSnapshot
+        renderSnapshot: renderSnapshot,
+        onEnter: onEnter
     });
 })(jQuery);
 

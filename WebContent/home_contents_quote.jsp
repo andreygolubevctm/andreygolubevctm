@@ -183,6 +183,7 @@
 	<jsp:body>
 
 		<div class="hiddenFields">
+			<field:hidden xpath="home/renderingMode" />
 			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>

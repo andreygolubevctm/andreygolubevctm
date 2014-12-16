@@ -15,9 +15,17 @@
 		},
 		moduleEvents = events.example;
 
-	var product;
+	var product,
+	$snapshotGoal,
+	$productSnapshot;
 
 	function initHomeloanSnapshot() {
+		$snapshotGoal = $('.snapshotGoal');
+		$productSnapshot = $(".product-snapshot");
+		$('#homeloan_enquiry_contact_firstName, #homeloan_enquiry_contact_lastName').on('change', renderSnapshot);
+	}
+
+	function onEnter() {
 		renderSnapshot();
 		fillTemplate();
 	}
@@ -33,23 +41,27 @@
 			$situation = $situation + ' and property worth <span data-source="#homeloan_details_assetAmountentry"></span>';
 		}
 		$situation = $situation + '. Looking to borrow <span data-source="#homeloan_loanDetails_loanAmountentry"></span>.';
-		$('.snapshotGoal').html($situation);
+		$snapshotGoal.html($situation);
 		meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(2) .snapshot');
-
 	}
 
 	function fillTemplate() {
+		var currentProduct = Results.getSelectedProduct();
+		if(currentProduct !== false) {
+			var productTemplate = $("#snapshot-template").html();
+			var htmlTemplate = _.template(productTemplate);
+			var htmlString = htmlTemplate(currentProduct);
+			$productSnapshot.html(htmlString);
+		} else {
+			$productSnapshot.empty();
+		}
 
-		var productTemplate = $("#snapshot-template").html();
-		var htmlTemplate = _.template(productTemplate);
-		var htmlString = htmlTemplate(Results.getSelectedProduct());
-		$(".product-snapshot").html(htmlString);
 	}
 	meerkat.modules.register('homeloanSnapshot', {
-		initHomeloanSnapshot: initHomeloanSnapshot, //main entrypoint to be called.
-		events: events, //exposes the events object
-		renderSnapshot: renderSnapshot
-		//here you can optionally expose functions for use on the 'meerkat.modules.example' object
+		initHomeloanSnapshot: initHomeloanSnapshot,
+		events: events,
+		renderSnapshot: renderSnapshot,
+		onEnter: onEnter,
 	});
 
 })(jQuery);

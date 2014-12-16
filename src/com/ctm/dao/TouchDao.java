@@ -239,21 +239,26 @@ public class TouchDao {
 	 * @param type
 	 * @throws DaoException
 	 */
-	public void record(Long transactionId, String type) throws DaoException {
+	public void record(Long transactionId, String type, String operator) throws DaoException {
 
 		SimpleDatabaseConnection dbSource = null;
 
 		try {
+			if(operator == null) {
+				operator = Touch.ONLINE_USER;
+			}
+
 			PreparedStatement stmt;
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
 				"INSERT INTO ctm.touches (transaction_id, date, time, operator_id, type) " +
-				"VALUES (?, NOW(), NOW(), 'ONLINE', ?);"
+				"VALUES (?, NOW(), NOW(), ?, ?);"
 			);
 
 			stmt.setLong(1, transactionId);
-			stmt.setString(2, type);
+			stmt.setString(2, operator);
+			stmt.setString(3, type);
 
 			stmt.executeUpdate();
 		}

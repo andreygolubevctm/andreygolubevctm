@@ -20,6 +20,15 @@
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="carCallCentreHelpNumber"/></c:set>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
+<%-- Used to get a random quote out  --%>
+<c:set var="selectQuote">
+	quote<%= java.lang.Math.round(java.lang.Math.random() * 4) %>
+</c:set>
+<c:set var="quoteText" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "quoteText")}' />
+<c:set var="quoteText" value="${quoteText.getSupplementaryValueByKey(selectQuote)}" />
+<c:set var="quoteAuthor" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "quoteAuthor")}' />
+<c:set var="quoteAuthor" value="${quoteAuthor.getSupplementaryValueByKey(selectQuote)}" />
+
 <%-- HTML --%>
 <layout:journey_engine_page title="Car Quote">
 
@@ -83,6 +92,9 @@
 	
 			<li class="slide-feature-back">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+			</li>
+			<li class="slide-feature-closeMoreInfo">
+				<a href="javascript:;" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
 			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="slide-feature-emailquote hidden-lg hidden-md hidden-sm" data-openSaveQuote="true">
@@ -176,6 +188,16 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="results_loading_message">
+		<div class="row loadingQuoteText hidden">
+			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
+				<div class="quoteContainer">
+					<span class="icon icon-quote-start"></span>
+					<div class="quote">${quoteText}</div>
+					<span class="icon icon-quote-end"></span>
+					<div class="quoteAuthor">${quoteAuthor}</div>
+				</div>
+			</div>
+		</div>
 		<div class="row loadingDisclaimerText hidden">
 			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
 				<p>Each brand may have differing terms as well as price. Please consider the Product Disclosure Statement for each brand before making any decisions to buy.</p>
@@ -213,6 +235,7 @@
 					<c:set var="jrny" value = "1"/>
 				</c:otherwise>
 			</c:choose>
+			<field:hidden xpath="quote/renderingMode" />
 				<field:hidden xpath="quote/journey/type" defaultValue="${jrny}" />
 		</div>
 	

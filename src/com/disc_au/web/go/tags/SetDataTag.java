@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 
+import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
 import com.disc_au.web.go.Data;
@@ -23,6 +24,8 @@ import com.disc_au.web.go.xml.XmlParser;
 
 @SuppressWarnings("serial")
 public class SetDataTag extends BaseTag {
+	
+	private static Logger logger = Logger.getLogger(SetDataTag.class.getName());
 
 	/** The VALU e_ params. */
 	public static String VALUE_PARAMS = "*PARAMS";
@@ -128,7 +131,7 @@ public class SetDataTag extends BaseTag {
 			this.data.put(this.xPath, this.value);
 
 			// PARSING SOME XML ...
-		} else if (this.xml != null) {
+		} else if (this.xml != null && !this.xml.isEmpty()) {
 
 			XmlParser p = new XmlParser();
 			try {
@@ -163,7 +166,8 @@ public class SetDataTag extends BaseTag {
 				}
 
 			} catch (SAXException e) {
-				e.printStackTrace();
+				logger.error("failed to setData xml:" + xml);
+				logger.error(e);
 			}
 		}
 		this.init();

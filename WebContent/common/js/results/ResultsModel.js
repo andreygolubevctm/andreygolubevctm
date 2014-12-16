@@ -611,6 +611,10 @@ ResultsModel = {
 		return Results.model.selectedProduct = Results.model.getResult( "productId", productId );
 	},
 
+	removeSelectedProduct: function(){
+		Results.model.selectedProduct = false;
+	},
+
 	getResult: function( identifierPathName, value, returnIndex ){
 
 		var result = false;

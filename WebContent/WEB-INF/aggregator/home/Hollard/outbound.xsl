@@ -51,41 +51,6 @@
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:variable name="excessHomeCode">
-
-			<xsl:variable name="excessHomeDif" select="(homeExcess - baseHomeExcess)" />
-			<!-- Codes as per A&G Rules -->
-			<!-- Home: -->
-			<xsl:choose>
-				<xsl:when test="baseExcess=''"></xsl:when>
-				<xsl:when test="$excessHomeDif = 0">0</xsl:when>
-				<xsl:when test="$excessHomeDif = 100">1</xsl:when>
-				<xsl:when test="$excessHomeDif = 200">4</xsl:when>
-				<xsl:when test="$excessHomeDif = 450">9</xsl:when>
-				<xsl:when test="$excessHomeDif = 700">E</xsl:when>
-				<xsl:when test="$excessHomeDif = -200">W</xsl:when>
-				<xsl:when test="$excessHomeDif = -100">Y</xsl:when>
-				<xsl:otherwise>0</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-
-		<xsl:variable name="excessContentsCode">
-
-			<xsl:variable name="excessContentsDif" select="(contentsExcess - baseContentsExcess)" />
-			<!-- Codes as per A&G Rules -->
-			<xsl:choose>
-				<xsl:when test="baseExcess=''"></xsl:when>
-				<xsl:when test="$excessContentsDif = 0">0</xsl:when>
-				<xsl:when test="$excessContentsDif = 100">1</xsl:when>
-				<xsl:when test="$excessContentsDif = 200">4</xsl:when>
-				<xsl:when test="$excessContentsDif = 450">9</xsl:when>
-				<xsl:when test="$excessContentsDif = 700">E</xsl:when>
-				<xsl:when test="$excessContentsDif = -200">W</xsl:when>
-				<xsl:when test="$excessContentsDif = -100">Y</xsl:when>
-				<xsl:otherwise>0</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-
 		<!-- Commencement date needs to be in DD Mmm YYYY format -->
 		<xsl:variable name="commencementDate">
 			<xsl:variable name="getMonth"><xsl:value-of select="substring(startDate,4,2)" /></xsl:variable>

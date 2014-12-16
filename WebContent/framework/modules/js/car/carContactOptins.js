@@ -23,15 +23,13 @@
 	};
 
 	function validateOptins() {
-		if(meerkat.modules.tracking.getCurrentJourney() === '1') {
-			$mkt = $(elements.marketing);
-			$otc = $(elements.oktocall);
-			if(!$mkt.is(':checked')) {
-				$mkt.filter("input[value=N]").prop("checked",true).change();
-			}
-			if(!$otc.is(':checked')) {
-				$otc.filter("input[value=N]").prop("checked",true).change();
-			}
+		$mkt = $(elements.marketing);
+		$otc = $(elements.oktocall);
+		if(!$mkt.is(':checked')) {
+			$mkt.filter("input[value=N]").prop("checked",true).change();
+		}
+		if(!$otc.is(':checked')) {
+			$otc.filter("input[value=N]").prop("checked",true).change();
 		}
 	}
 

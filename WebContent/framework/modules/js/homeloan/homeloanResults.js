@@ -572,8 +572,9 @@
 		event.preventDefault();
 
 		var $enquireNow = $(event.target);
-
-		Results.setSelectedProduct($enquireNow.attr("data-productId"));
+		if($enquireNow.attr("data-productId")) {
+			Results.setSelectedProduct($enquireNow.attr("data-productId"));
+		}
 
 		meerkat.modules.journeyEngine.gotoPath('next', $enquireNow);
 	}

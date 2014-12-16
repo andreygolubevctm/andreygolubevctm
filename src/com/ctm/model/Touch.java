@@ -14,7 +14,7 @@ public class Touch extends AbstractJsonModel {
 	private String operator;
 	private TouchType type;
 
-	public static String ONLINE = "ONLINE";
+	public static String ONLINE_USER = "ONLINE";
 
 	public static enum TouchType {
 		NEW ("New quote" , "N"),
@@ -25,7 +25,8 @@ public class Touch extends AbstractJsonModel {
 		FAIL("Join failed" , "F"),
 		SOLD("Policy sold" , "C"),
 		LOAD("Load quote" , "L"),
-		SAVE("Saved quote" , "S");
+		SAVE("Saved quote" , "S"),
+		CALL_FEED("Call Feed" , "CF"); // Added to a call feed list.
 
 		private final String description, code;
 

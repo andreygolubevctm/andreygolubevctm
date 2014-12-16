@@ -34,13 +34,15 @@
 							<xs:element name="smoker" maxOccurs="1" minOccurs="1" />
 							<xs:element name="postCode" type="postcode" maxOccurs="1" minOccurs="1" />
 							<xs:element name="state" type="state" maxOccurs="1" minOccurs="0" />
-							<xs:element name="occupation" maxOccurs="1" minOccurs="1" />
+							<xs:element name="occupation" type="fourtyCharHashCode" maxOccurs="1" minOccurs="1" />
 							<xs:element name="productid" maxOccurs="1" minOccurs="0" />
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="partner" maxOccurs="1" minOccurs="0" type="noValidation" />
 				<!-- no need to validate -->
+				<xs:element name="splitTestingJourney" maxOccurs="1" minOccurs="0" />
+				<xs:element name="contactLeadSent" maxOccurs="1" minOccurs="0" />
 				<xs:element name="contactDetails" type="contactDetails" />
 				<xs:element name="transactionId" maxOccurs="1" minOccurs="0" />
 				<xs:element name="operatorid" maxOccurs="1" minOccurs="0" />
@@ -50,6 +52,7 @@
 				<xs:element name="api" maxOccurs="1" minOccurs="0" />
 				<xs:element name="refine" maxOccurs="1" minOccurs="0" type="noValidation" />
 				<xs:element name="tracking" maxOccurs="1" minOccurs="0" />
+				<xs:element name="privacyoptin" maxOccurs="1" minOccurs="0" />
 			</xs:all>
 		</xs:complexType>
 	</xs:element>

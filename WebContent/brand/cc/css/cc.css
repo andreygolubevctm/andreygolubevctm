@@ -275,6 +275,12 @@ button [class*=" icon-"] {
 .icon-calendar:before {
   content: "\e913";
 }
+.icon-quote-start:before {
+  content: "\e629";
+}
+.icon-quote-end:before {
+  content: "\e62a";
+}
 @-ms-viewport {
   width: device-width;
 }
@@ -4628,6 +4634,11 @@ body > div > header a.btn-success {
     padding-right: 0;
   }
 }
+@media print {
+  .header-top {
+    outline: none;
+  }
+}
 /*
  * NAVBAR - The Off Canvas & Normal Menu Controller
  * --------------------------------------------------
@@ -6291,6 +6302,11 @@ x:-o-prefocus,
 #journeyEngineContainer {
   min-height: 500px;
   position: relative;
+}
+@media print {
+  #journeyEngineContainer {
+    min-height: 0;
+  }
 }
 .journeyEngineLoader {
   display: none;
@@ -8364,6 +8380,11 @@ fieldset h2 .icon-text {
     background: #A52E00;
   }
 }
+@media print {
+  #kampyle {
+    display: none !important;
+  }
+}
 [data-livechat="button"] {
   display: none;
 }
@@ -8426,6 +8447,11 @@ fieldset h2 .icon-text {
   width: 20px;
   right: -3px;
 }
+@media print {
+  .fixedDevEnvDialog {
+    display: none !important;
+  }
+}
 #aggTimer.debugInfoHidden {
   display: none;
 }
@@ -8477,6 +8503,11 @@ fieldset h2 .icon-text {
 #confirmation-compare-options .options-list > div {
   min-height: 180px;
 }
+@media print {
+  #confirmation-compare-options {
+    display: none !important;
+  }
+}
 #confirmation-compare-options a {
   display: inline-block;
   width: 100%;
@@ -8514,11 +8545,6 @@ fieldset h2 .icon-text {
 #confirmation-compare-options a:hover .icon {
   color: #ffffff;
   background-color: #1d4a82;
-}
-@media print {
-  #confirmation-compare-options {
-    display: none;
-  }
 }
 .dynamicTopHeaderContent .top-bar {
   text-align: center;
@@ -8984,10 +9010,15 @@ ul.themed > li:before {
   font-size: 12px;
   line-height: 14px;
 }
-#footer #footer_mcafee {
+#footer_mcafee {
   float: right !important;
   margin-left: 3px;
   margin-bottom: 3px;
+}
+@media print {
+  #footer_mcafee {
+    display: none !important;
+  }
 }
 #copyright {
   color: #ffffff;
@@ -9740,6 +9771,11 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
   margin-top: -1px;
   border-bottom: 1px solid #ffffff;
 }
+@media print {
+  #navbar-main {
+    display: none !important;
+  }
+}
 #navbar-main,
 #navbar-compare,
 #navbar-filter {
@@ -9960,7 +9996,7 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
   background-repeat: no-repeat;
   padding: 0;
   float: none;
-  display: block;
+  display: inline-block;
   width: 193px;
   height: 24px;
   margin: 8px auto 0 8px;
@@ -9968,6 +10004,10 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
   background-image: url("../graphics/logo-xs.png");
 }
 @media only screen and (max-width: 767px) {
+  #logo {
+    line-height: 12px;
+    font-size: 12px;
+  }
   .header_button_left #logo {
     margin: 8px auto 0 auto;
   }
@@ -9999,6 +10039,14 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
     height: 49px;
     margin: 24px 0 18px 0;
     background-size: 391px 49px;
+  }
+}
+@media print {
+  #logo.text-hide {
+    font-family: inherit;
+    font-size: 23px;
+    line-height: inherit;
+    width: auto;
   }
 }
 .modal-backdrop.in {
@@ -10605,8 +10653,18 @@ select + .spinner {
   font-family: 'SourceSansProLight';
   font-size: 14px;
 }
+.journeyEngineLoader .loadingDisclaimerText .originalDisclaimer {
+  position: static;
+}
 header .transactionIdContainer.small {
   line-height: 18px;
+}
+@media print {
+  .well-chatty:after,
+  .well-info:after,
+  .navbar-toggle.hamburger {
+    display: none !important;
+  }
 }
 #logo {
   background-repeat: no-repeat;

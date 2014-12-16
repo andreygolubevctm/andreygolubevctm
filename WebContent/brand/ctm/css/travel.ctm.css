@@ -100,6 +100,11 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #1c3e93;
   color: #ffffff;
 }
+@media (min-width: 768px) {
+  .travel label.btn {
+    white-space: normal;
+  }
+}
 .priceTitle,
 .excessTitle,
 .luggageTitle,
@@ -659,7 +664,10 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
     left: 50%;
     content: '';
     margin-left: -8px;
-    border-color: #097d35;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 0 8px 8px;
+    border-bottom-color: #ffffff;
   }
   .sortbar-children .active [data-sort-dir='desc']:before {
     position: absolute;
@@ -669,7 +677,10 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
     left: 50%;
     content: '';
     margin-left: -8px;
-    border-color: #097d35;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 8px 8px 0;
+    border-top-color: #097833;
   }
 }
 @media screen and (min-width: 992px) {
@@ -814,11 +825,11 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
   }
 }
 .logo_CLBS {
-  background-image: url("../../../common/images/logos/travel/columbus.png");
+  background-image: url("../../../common/images/logos/travel/columbus.png?20141208");
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
   .logo_CLBS {
-    background-image: url("../../../common/images/logos/travel/columbus@2x.png");
+    background-image: url("../../../common/images/logos/travel/columbus@2x.png?20141208");
   }
 }
 .logo_DUIN {

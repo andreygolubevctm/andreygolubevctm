@@ -185,7 +185,7 @@
 
 			var isIosXS = meerkat.modules.performanceProfiling.isIos() && meerkat.modules.deviceMediaState.get() == 'xs';
 
-			if(_.isArray(selectorData[type]) && selectorData[type]) {
+			if(selectorData[type] && _.isArray(selectorData[type])) {
 
 				var selected = null;
 				if(useSessionDefaults === true && defaults.hasOwnProperty(type) && defaults[type] !== '') {
@@ -206,12 +206,18 @@
 					})
 				);
 
-				if(type == 'makes') {
+				var hasPopularModels = false;
+				if(type == "models" && selectorData[type][0].hasOwnProperty('isTopModel') && selectorData[type][0].isTopModel === true) {
+					hasPopularModels = true;
+				}
+
+				if(type == 'makes' || hasPopularModels) {
+					var label = type.charAt(0).toUpperCase() + type.slice(1);
 					options.push(
-						$('<optgroup/>',{label:"Top Makes"})
+						$('<optgroup/>',{label:"Top " + label})
 					);
 					options.push(
-						$('<optgroup/>',{label:"All Makes"})
+						$('<optgroup/>',{label:"All " + label})
 					);
 				} else {
 					if(isIosXS && autoSelect !== true) {
@@ -234,8 +240,8 @@
 							option.prop('selected', true);
 							selected = true;
 						}
-						if(type == 'makes') {
-							if(item.isTopMake === true) {
+						if(type == 'makes' || (type == "models" && hasPopularModels)) {
+							if(item[hasPopularModels ? 'isTopModel' : 'isTopMake'] === true) {
 								option.appendTo(options[1], options[2]);
 							} else {
 								options[2].append(option);

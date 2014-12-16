@@ -40,6 +40,10 @@ public class FatalErrorService {
 			message = message.substring(255);
 		}
 
+		if(page.length() > 45) {
+			page = page.substring(page.length() - 45);
+		}
+
 		FatalErrorDao fatalErrorDao = new FatalErrorDao();
 		FatalError fatalError = new FatalError();
 		fatalError.setStyleCodeId(styleCodeId);
@@ -58,6 +62,11 @@ public class FatalErrorService {
 		} catch (DaoException e) {
 			logger.fatal("cannot log to fatal error table" , e);
 		}
+	}
+
+	public static void logFatalError(Exception exception, int styleCodeId, String page , String sessionId, boolean isFatal, Long transactionId) {
+		logFatalError(exception, styleCodeId, page,
+				sessionId, isFatal, String.valueOf(transactionId));
 	}
 
 }

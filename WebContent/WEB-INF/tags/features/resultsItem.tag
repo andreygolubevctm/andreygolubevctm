@@ -43,7 +43,13 @@
 					<c:when test="${item.getResultPath() != null && item.getResultPath() != ''}">
 						<c:forTokens delims="," items="${item.getResultPath()}" var="splitPath">
 							{{ var pathValue = Object.byString( obj, '${splitPath}' ) }}
-							{{ if( pathValue ){ }}
+							{{ if (obj.productId == "WOOL-01-01" || obj.productId == "REIN-01-01") { }}
+								{{ if ('${splitPath}' == 'features.annKilo.value') { }}
+									<div>{{= obj.feature }}</div>
+								{{ } else { }}
+									<div>{{= Features.parseFeatureValue( pathValue ) }}</div>
+								{{ } }}
+							{{ } else if ( pathValue ) { }}
 								<div>{{= Features.parseFeatureValue( pathValue ) }}</div>
 							{{ } else { }}
 								{{= "&nbsp;" }}

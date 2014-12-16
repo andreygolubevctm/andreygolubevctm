@@ -457,6 +457,10 @@ Results = {
 	setSelectedProduct: function( productId ){
 		return Results.model.setSelectedProduct( productId );
 	},
+	// delete/remove/clear/reset selected product
+	removeSelectedProduct: function(  ){
+		Results.model.removeSelectedProduct();
+	},
 
 	getDisplayMode: function() {
 		if (typeof Results.settings === 'undefined' || Results.settings.hasOwnProperty('displayMode') !== true) return null;

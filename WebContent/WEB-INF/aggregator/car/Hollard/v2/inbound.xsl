@@ -8,9 +8,8 @@
 	exclude-result-prefixes="soap z a encoder">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:import href="../../includes/utils.xsl"/>
-	<xsl:import href="../../includes/ranking.xsl"/>
-	<xsl:import href="../../includes/get_price_availability.xsl"/>
+	<xsl:import href="../../../includes/utils.xsl"/>
+	<xsl:import href="../../../includes/ranking.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="urlRoot" />
@@ -117,14 +116,6 @@
 						</xsl:choose>
 
 						<headlineOffer>ONLINE</headlineOffer>
-						<onlinePrice>
-							<lumpSumTotal>9999999999</lumpSumTotal>
-							<xsl:call-template name="productInfo">
-								<xsl:with-param name="productId" select="$productId" />
-								<xsl:with-param name="priceType"> </xsl:with-param>
-								<xsl:with-param name="kms" select="$kms" />
-							</xsl:call-template>
-						</onlinePrice>
 
 						<xsl:call-template name="ranking">
 							<xsl:with-param name="productId">*NONE</xsl:with-param>
@@ -137,31 +128,18 @@
 	</xsl:template>
 
 
-<!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- QUOTE DATA ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<!--
-For Production the following quote URL will be available:
-https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<Encrypted Token>&n=<Quote Number>&p=<Product Code>
--->
 	<xsl:template match="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteExcess">
-
 	</xsl:template>
 
 	<xsl:template match="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteReturned">
-
 	</xsl:template>
 
 	<xsl:template match="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteResult">
+
 		<results>
 			<xsl:for-each select="a:Quote">
-
-				<xsl:variable name="quoteUrl">
-					<xsl:value-of select="$urlRoot" />
-					<xsl:text>?utm_source=comparethemarket&amp;utm_medium=referral&amp;utm_campaign=websale&amp;t=</xsl:text>
-					<xsl:value-of select="encoder:encode($request/token)" />
-					<xsl:text>&amp;n=</xsl:text><xsl:value-of select="a:QuoteNumber" />
-					<xsl:text>&amp;p=</xsl:text><xsl:value-of select="a:Code" />
-				</xsl:variable>
 
 				<xsl:variable name="productId">
 					<xsl:choose>
@@ -170,13 +148,10 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 					</xsl:choose>
 				</xsl:variable>
 
-				<xsl:variable name="newKms">
-					<xsl:value-of select="translate(a:OfferTerms,'Ofer TmsoKM','')" />
-				</xsl:variable>
-
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service"/></xsl:attribute>
 					<xsl:attribute name="productId"><xsl:value-of select="$productId" /></xsl:attribute>
+					<xsl:attribute name="type">quote</xsl:attribute>
 
 					<available>Y</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
@@ -186,35 +161,17 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 					<onlineAvailable>Y</onlineAvailable>
 					<offlineAvailable>Y</offlineAvailable>
 
-					<callbackAvailable>
-						<xsl:call-template name="getPriceAvailability">
-							<xsl:with-param name="productId" select="$productId" />
-							<xsl:with-param name="priceType">CALLBACK</xsl:with-param>
-							<xsl:with-param name="hasModifications">N</xsl:with-param>
-						</xsl:call-template>
-					</callbackAvailable>
-					<callbackAvailableWithModifications>
-						<xsl:call-template name="getPriceAvailability">
-							<xsl:with-param name="productId" select="$productId" />
-							<xsl:with-param name="priceType">CALLBACK</xsl:with-param>
-							<xsl:with-param name="hasModifications">Y</xsl:with-param>
-						</xsl:call-template>
-					</callbackAvailableWithModifications>
+					<callbackAvailable>N</callbackAvailable>
+					<callbackAvailableWithModifications>N</callbackAvailableWithModifications>
 
 					<onlinePrice>
 						<xsl:call-template name="price">
 							<xsl:with-param name="premium" select="a:AnnualPremium" />
-							<xsl:with-param name="monthlyPremium" select="a:MonthlyPremium" />
-							<xsl:with-param name="kms" select="$newKms" />
-							<xsl:with-param name="productId" select="$productId" />
 						</xsl:call-template>
 					</onlinePrice>
 					<offlinePrice>
 						<xsl:call-template name="price">
 							<xsl:with-param name="premium" select="a:AnnualPremium" />
-							<xsl:with-param name="monthlyPremium" select="a:MonthlyPremium" />
-							<xsl:with-param name="kms" select="$newKms" />
-							<xsl:with-param name="productId" select="$productId" />
 						</xsl:call-template>
 					</offlinePrice>
 
@@ -223,125 +180,19 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 							<offline></offline>
 					</discount>
 
-					<xsl:choose>
-						<!-- Differing fields for Pay As You Drive (REIN-01-01) -->
-						<xsl:when test="$productId = 'REIN-01-01'">
-							<conditions>
-								<condition>
-									Indicative quote based on <xsl:value-of select="$newKms"/> annual kilometres.
-								</condition>
-							</conditions>
-							<productDes>Real Pay As You Drive</productDes>
-							<disclaimer>
-								<![CDATA[
-								The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:<br>
-								- Driver's history or offences or claims<br>
-								- Age or licence type of additional drivers<br>
-								- Vehicle condition, accessories and modifications<br>
-								]]>
-							</disclaimer>
-							<excess>
-								<total><xsl:value-of select="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Value" /></total>
-							</excess>
-							<pdsaUrl>http://www.realinsurance.com.au/Files/Real_New_Car_PDS.aspx</pdsaUrl>
-						</xsl:when>
+					<excess>
+						<total><xsl:value-of select="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Value" /></total>
+					</excess>
 
-						<!-- Differing fields for Comprehensive (REIN-01-02) -->
-						<xsl:when test="$productId = 'REIN-01-02'">
-							<conditions/>
-							<productDes>Real Comprehensive</productDes>
-							<disclaimer>
-								<![CDATA[
-								The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:<br>
-								- Driver's history or offences or claims<br>
-								- Age or licence type of additional drivers<br>
-								- Vehicle condition, accessories and modifications<br>
-								]]>
-							</disclaimer>
-							<excess>
-								<base><xsl:value-of select="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Value" /></base>
-								<total><xsl:value-of select="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Value" /></total>
-							</excess>
-							<pdsaUrl>http://www.realinsurance.com.au/Files/Real_New_Car_PDS.aspx</pdsaUrl>
-						</xsl:when>
-
-						<!-- Differing fields for Pay As You Drive (WOOL-01-01) -->
-						<xsl:when test="$productId = 'WOOL-01-01'">
-							<conditions>
-								<condition>
-									Indicative quote based on <xsl:value-of select="$newKms"/> annual kilometres.
-								</condition>
-							</conditions>
-							<productDes>Woolworths Drive less pay less</productDes>
-							<disclaimer>
-								<![CDATA[
-								The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:<br>
-								- Driver's history or offences or claims<br>
-								- Age or licence type of additional drivers<br>
-								- Vehicle condition, accessories and modifications<br>
-								]]>
-							</disclaimer>
-							<excess>
-								<total><xsl:value-of select="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Value" /></total>
-							</excess>
-							<pdsaUrl>http://insurance.woolworths.com.au/sites/default/files/Woolworths_Car%20Insurance_PDS.pdf</pdsaUrl>
-						</xsl:when>
-
-						<!-- Differing fields for Comprehensive (WOOL-01-02) -->
-						<xsl:when test="$productId = 'WOOL-01-02'">
-							<conditions/>
-							<productDes>Woolworths Comprehensive</productDes>
-							<disclaimer>The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:&lt;br&gt;- Driver's history or offences or claims&lt;br&gt;- Age or licence type of additional drivers&lt;br&gt;- Vehicle condition, accessories and modifications&lt;br&gt;</disclaimer>
-							<excess>
-								<base><xsl:value-of select="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Value" /></base>
-								<total><xsl:value-of select="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Value" /></total>
-							</excess>
-							<pdsaUrl>http://insurance.woolworths.com.au/sites/default/files/Woolworths_Car%20Insurance_PDS.pdf</pdsaUrl>
-						</xsl:when>
-					</xsl:choose>
-
-					<underwriter>The Hollard Insurance Company Pty Ltd ABN 78 090 584 473</underwriter>
 					<brandCode><xsl:value-of select="$service"/></brandCode>
 					<acn>111 586 353</acn>
-					<afsLicenceNo>241436</afsLicenceNo>
-
 
 					<leadNo><xsl:value-of select="a:QuoteNumber" /></leadNo>
-
-					<xsl:choose>
-						<xsl:when test="$productId = 'REIN-01-01' or $productId = 'REIN-01-02'">
-							<telNo>1300 301 918</telNo>
-							<openingHours>Monday to Friday (8am-7pm EST) and Saturday (9am-5pm EST)</openingHours>
-						</xsl:when>
-						<xsl:when test="$productId = 'WOOL-01-01' or $productId = 'WOOL-01-02'">
-							<telNo>1300 782 182</telNo>
-							<openingHours>Monday to Friday (8am-8pm EST) and Saturday (9am-5pm EST)</openingHours>
-						</xsl:when>
-						<xsl:otherwise>
-							<!-- Just incase something goes wrong, at least there will be hours within both companies instead of a blank space -->
-							<openingHours>Monday to Friday (8am-7pm EST) and Saturday (9am-5pm EST)</openingHours>
-						</xsl:otherwise>
-					</xsl:choose>
-
-					<quoteUrl><xsl:value-of select="$quoteUrl" /></quoteUrl>
-					<pdsaDesLong>Product Disclosure Statement</pdsaDesLong>
-					<pdsaDesShort>PDS</pdsaDesShort>
-					<pdsbUrl />
-					<pdsbDesLong />
-					<pdsbDesShort />
-					<fsgUrl />
-
 					<transferring />
 
 					<xsl:call-template name="ranking">
 						<xsl:with-param name="productId" select="$productId" />
 					</xsl:call-template>
-
-					<name><xsl:value-of select="a:ProductName" /></name>
-					<des><xsl:value-of select="a:Description" /></des>
-					<feature><xsl:value-of select="a:SpecialConditions" /></feature>
-					<info><xsl:value-of select="a:ShortDescription" /></info>
-					<terms><xsl:value-of select="a:OfferTerms" /></terms>
 
 				</xsl:element>
 			</xsl:for-each>
@@ -350,24 +201,24 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 
 	<xsl:template name="price">
 		<xsl:param name="premium" />
-		<xsl:param name="monthlyPremium" />
-		<xsl:param name="kms" />
-		<xsl:param name="productId" />
 		<lumpSumTotal>
 			<xsl:call-template name="util_mathCeil">
 				<xsl:with-param name="num" select="$premium" />
 			</xsl:call-template>
 		</lumpSumTotal>
-		<instalmentFirst><xsl:value-of select="format-number(a:MonthlyPremium,'#.##')" /></instalmentFirst>
-		<instalmentCount>11</instalmentCount>
-		<instalmentPayment><xsl:value-of select="format-number(a:MonthlyPremium,'#.##')" /></instalmentPayment>
-		<instalmentTotal><xsl:value-of select="format-number(a:MonthlyPremium * 12,'#.##')" /></instalmentTotal>
-		<xsl:call-template name="productInfo">
-			<xsl:with-param name="productId"><xsl:value-of select="$productId" /></xsl:with-param>
-			<xsl:with-param name="priceType"> </xsl:with-param>
-			<xsl:with-param name="kms" select="translate(a:OfferTerms,'Ofer TmsoKM','')" /> <!-- $request/quote/vehicle/annualKilometres -->
-		</xsl:call-template>
-
+		<xsl:for-each select="a:PaymentOptions/a:PriceBreakdown" >
+			<xsl:if test="a:Category = 'Monthly'">
+				<instalmentFirst><xsl:value-of select="format-number(a:FirstPayment, '#.##')" /></instalmentFirst>
+				<instalmentCount><xsl:value-of select="format-number(a:NumberOfAdditionalPayments, '#.##')" /></instalmentCount>
+				<instalmentPayment><xsl:value-of select="format-number(a:AdditionalPayment, '#.##')" /></instalmentPayment>
+				<instalmentTotal><xsl:value-of select="format-number(a:TotalAmountPaid, '#.##')" /></instalmentTotal>
+			</xsl:if>
+		</xsl:for-each>
+		<name><xsl:value-of select="a:ProductName" /></name>
+		<des><xsl:value-of select="a:MainText" /></des>
+		<feature><xsl:value-of select="a:CompareText" /></feature>
+		<terms><xsl:value-of select="a:OfferTerms" /></terms>
+		<info></info>
 	</xsl:template>
 
 	<!-- VALIDATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -408,125 +259,4 @@ https://quote.realinsurance.com.au/quotelines/car/referral/comparethemarket?t=<E
 		</xsl:if>
 
 	</xsl:template>
-
-	<xsl:template name="productInfo">
-		<xsl:param name="productId" />
-		<xsl:param name="priceType" />
-		<xsl:param name="kms" />
-
-		<xsl:choose>
-		<!-- REAL Pay as you drive -->
-		<xsl:when test="$productId = 'REIN-01-01'">
-			<name>Real Pay As You Drive</name>
-			<des><![CDATA[
-				Comprehensive cover for less, only pay for the km's you plan to drive - the less you drive, the more you save.
-				]]>
-			</des>
-			<feature>Pay by the month at no extra cost.</feature>
-			<info>
-				<![CDATA[
-				<p>With Real Pay As You Drive, the less you drive, the less you pay.</p>
-				<p>You get the benefits of comprehensive car insurance cover, but only pay for the kilometres you plan to drive. You pay a minimum premium and buy kilometres to use.</p>
-				<p>If you don't drive the kilometres you paid for, they can be transferred to the following cover period and unused kilometres never expire!</p>
-				<div id="real_insurance_awards"><img src="common/images/real_insurance_awards.jpg"></div>
-				]]>
-			</info>
-			<terms>
-				<![CDATA[
-				<p><b>Indicative quote based on ]]><xsl:value-of select="$kms" /><![CDATA[ kilometres</b></p>
-				<p>If it looks like you will exceed your planned kilometres, you can easily increase your number of planned kilometres by calling Real Insurance. Should you exceed your planned kilometres, an additional excess will be applied in the event of a claim, as stated on your Certificate of Insurance.</p>
-				<p>Indicative quote based on ]]><xsl:value-of select="$kms" /><![CDATA[ kilometres. Free quotes are available for different kilometre ranges or for standard Comprehensive insurance with an unlimited kilometre range.</p>
-				]]>
-			</terms>
-			<carbonOffset />
-			<kms><xsl:value-of select="$kms" /></kms>
-
-			</xsl:when>
-	<!-- REAL Comprehensive NEW PRODUCT -->
-		<xsl:when test="$productId = 'REIN-01-02'">
-			<name>Comprehensive Car Insurance</name>
-			<des><![CDATA[
-				Build personalised cover and only pay for what you choose.
-				]]>
-			</des>
-			<feature>Pay by the month at no extra cost.</feature>
-			<info>
-				<![CDATA[
-				<p>With Real Pay As You Drive, the less you drive, the less you pay.</p>
-				<p>You get the benefits of comprehensive car insurance cover, but only pay for the kilometres you plan to drive. You pay a minimum premium and buy kilometres to use.</p>
-				<p>If you dont drive the kilometres you paid for, they can be transferred to the following cover period and unused kilometres never expire!</p>
-				<div id="real_insurance_awards"><img src="common/images/real_insurance_awards.jpg"></div>
-				]]>
-			</info>
-			<terms />
-			<carbonOffset />
-			<kms><xsl:value-of select="$kms" /></kms>
-
-			</xsl:when>
-
-			<!-- WOOL #1 -->
-			<xsl:when test="$productId = 'WOOL-01-01'">
-				<name>Woolworths Drive Less Pay Less</name>
-				<des><![CDATA[
-					Available to people who drive less than average for their age and postcode. See how this can lower your comprehensive insurance premium.
-					]]>
-				</des>
-				<feature>
-					<![CDATA[
-						Get a $100 WISH Gift Card.<sup>#</sup>
-					]]>
-				</feature>
-				<info>
-					<![CDATA[
-
-					]]>
-				</info>
-				<terms>
-					<![CDATA[
-						<p>
-							<sup>#</sup>$100 Woolworths Insurance WISH Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent within 45 days of your first monthly/annual premium being paid. Terms of use apply, which includes 12 months to spend the full $100 value stored on the Card. The offer is applied to policies purchased from 1 October 2014 and ends 30 January 2015.
-						</p>
-						<p>
-							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473 AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's Authorised Representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
-						</p>
-					]]>
-				</terms>
-				<carbonOffset />
-				<kms><xsl:value-of select="$kms" /></kms>
-
-			</xsl:when>
-			<!-- WOOL #2 -->
-			<xsl:when test="$productId = 'WOOL-01-02'">
-				<name>Woolworths Comprehensive</name>
-				<des><![CDATA[
-					Thorough cover from bonnet to boot. Super insurance at a low supermarket price.
-					]]>
-				</des>
-				<feature>
-					<![CDATA[
-						Get a $100 WISH Gift Card.<sup>#</sup>
-					]]>
-				</feature>
-				<info>
-					<![CDATA[
-					]]>
-				</info>
-				<terms>
-					<![CDATA[
-						<p>
-							<sup>#</sup>$100 Woolworths Insurance WISH Gift Card, for use at participating stores only, listed at www.everydaygiftcards.com.au. Card sent within 45 days of your first monthly/annual premium being paid. Terms of use apply, which includes 12 months to spend the full $100 value stored on the Card. The offer is applied to policies purchased from 1 August 2014 and ends 30 September 2014.
-						</p>
-						<p>
-							Benefits are subject to the terms and conditions including the limits and exclusions of the insurance policy. Cover is issued by The Hollard Insurance Company Pty Ltd ABN 78 090 584 473 AFSL No. 241436 (Hollard). Woolworths Ltd ABN 88 000 014 675 AR No. 245476 (Woolworths) acts as Hollard's Authorised Representative. Any advice provided is general only and may not be right for you. Before you purchase this product you should carefully read the Combined Product Disclosure Statement and Financial Services Guide (Combined PDS FSG) to decide if it is right for you.
-						</p>
-					]]>
-				</terms>
-				<carbonOffset />
-				<kms><xsl:value-of select="$kms" /></kms>
-
-			</xsl:when>
-
-		</xsl:choose>
-	</xsl:template>
-
 </xsl:stylesheet>

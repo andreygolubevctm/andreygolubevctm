@@ -89,6 +89,9 @@
 			<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
 			<go:setData dataVar="soapdata" xml="${resultXml}" />
 			
+			<%-- !!IMPORTANT!! - ensure the trackingKey is passed back with results --%>
+			<go:setData dataVar="soapdata" xpath="soap-response/results/info/trackingKey" value="${data.health.trackingKey}" />
+
 			<%-- Add the results only if there is one version --%>
 			<go:setData dataVar="data" xpath="healthConfirmation" value="*DELETE"/>
 			<go:setData dataVar="data" xpath="confirmation/health" value="*DELETE"/>

@@ -109,6 +109,7 @@
 							<xsl:when test="$lcPlanId = 'backpacker'">DUIN-TRAVEL-50</xsl:when>
 							<xsl:when test="$lcPlanId = 'aftl'">DUIN-TRAVEL-51</xsl:when>
 							<xsl:when test="$lcPlanId = 'aftb'">DUIN-TRAVEL-52</xsl:when>
+							<xsl:when test="$lcPlanId = 'comprehensive_ski'">DUIN-TRAVEL-53</xsl:when>							
 							<xsl:otherwise>DUIN-TRAVEL-49</xsl:otherwise>
 						</xsl:choose>
 				</xsl:variable>
@@ -183,6 +184,9 @@
 								<xsl:text>%26adultAges=</xsl:text>
 								<xsl:value-of select="$ages" />
 								<xsl:text>%26affID=ctm1</xsl:text>
+								<xsl:if test="$newProductId = 'DUIN-TRAVEL-53'">
+									<xsl:text>%26ski=true</xsl:text>
+								</xsl:if>
 							</xsl:otherwise>
 						</xsl:choose>
 					</quoteUrl>

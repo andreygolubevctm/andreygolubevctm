@@ -11,19 +11,14 @@
 
 
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<soapenv:Envelope
-		xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-		xmlns:tem="http://tempuri.org/"
-		xmlns:real="http://schemas.datacontract.org/2004/07/Real.Aggregator.Service.DataContracts"
-		xmlns:arr="http://schemas.microsoft.com/2003/10/Serialization/Arrays"
-		xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
-
-		<soapenv:Body>
-			<tem:GetContentForToken>
-				<tem:token><xsl:value-of select="token" /></tem:token>
-			</tem:GetContentForToken>
-		</soapenv:Body>
-	</soapenv:Envelope>
+		<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+			<soapenv:Header/>
+			<soapenv:Body>
+				<tem:GetContentForToken>
+					<tem:token><xsl:value-of select="token" /></tem:token>
+				</tem:GetContentForToken>
+			</soapenv:Body>
+		</soapenv:Envelope>
 	</xsl:template>
 
 </xsl:stylesheet>

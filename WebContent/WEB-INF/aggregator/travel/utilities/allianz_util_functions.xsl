@@ -7,10 +7,10 @@
 
 		<!--begin_: RepeatTheLoopUntilFinished-->
 		<xsl:if test="$i &lt;= $count">
-				<Traveller>
-					<Type>CHILD</Type>
-					<DateOfBirth><xsl:value-of select="$childDOB" /></DateOfBirth>
-				</Traveller>
+			<Traveller>
+				<Type>CHILD</Type>
+				<DateOfBirth><xsl:value-of select="$childDOB" /></DateOfBirth>
+			</Traveller>
 			<xsl:call-template name="printChildren">
 				<xsl:with-param name="i">
 					<xsl:value-of select="$i + 1"/>

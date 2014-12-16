@@ -2,7 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<session:get />
+<c:set var="continueOnValidationError" value="${false}" />
+<c:set var="vertical" value="${fn:toUpperCase(param.vertical)}" />
+<session:get settings="true" authenticated="true" verticalCode="${vertical}" />
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 
@@ -32,16 +34,27 @@
 					xml = "${requestXML}"
 					var = "resultXml"
 					debugVar="debugXml"
-					verticalCode="${fn:toUpperCase(vertical)}"
+					validationErrorsVar="validationErrors"
+					isValidVar="isValid"
+					continueOnValidationError="${continueOnValidationError}"
+					verticalCode="${vertical}"
 					configDbKey="quoteService"
 					styleCodeId="${pageSettings.getBrandId()}"  />
 
-<%-- Add the results to the current session data --%>
-<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 
-<go:log level="DEBUG" source="life_product_select">${resultXml}</go:log>
-<go:log level="DEBUG" source="life_product_select">${debugXml}</go:log>
-
-${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+<c:choose>
+	<c:when test="${isValid || continueOnValidationError}">
+		<%-- Add the results to the current session data --%>
+		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
+		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
+		
+		<go:log level="DEBUG" source="life_product_select">${resultXml}</go:log>
+		<go:log level="DEBUG" source="life_product_select">${debugXml}</go:log>
+		
+		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+	</c:when>
+	<c:otherwise>
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_product_select.jsp"/>
+	</c:otherwise>
+</c:choose>

@@ -3,13 +3,13 @@
 
 <session:get settings="true" authenticated="true" verticalCode="CAR" />
 
-<c:set var="stylecode" value="${fn:toUpperCase(pageSettings.getBrandCode())}" />
 
 <%-- TODO: remove this once we are off DISC --%>
 <go:log level="INFO" source="ajax_write_car_quote_report">Writing Report</go:log>
 <security:populateDataFromParams rootPath="quote" delete="false" />
 <go:log level="DEBUG" source="ajax_write_car_quote_report">Calling AGGTRP, transid: ${data.text['current/transactionId']}, xmlval: ${go:getEscapedXml(data['quote'])}</go:log>
-<go:call pageId="AGGTRP"transactionId="${data.text['current/transactionId']}" xmlVar="${go:getEscapedXml(data['quote'])}" style="${stylecode}" />
+<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
+<go:call pageId="AGGTRP"transactionId="${data.text['current/transactionId']}" xmlVar="${go:getEscapedXml(data['quote'])}" style="${AGIS_leadFeedCode}" />
 
 <%-- Touch types: A = Apply now,  CB = Call me back,  CD = Call direct --%>
 <c:set var="touch" value="${param.touch}"/>

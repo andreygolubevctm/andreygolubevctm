@@ -88,6 +88,10 @@
 			<span class="icon-tag" title="icon-tag"></span>
 			<span class="icon-computer" title="icon-computer"></span>
 			<span class="icon-tick-hollow" title="icon-tick-hollow"></span>
+
+			<span class="icon-quote-start" title="icon-quote-start"></span>
+			<span class="icon-quote-end" title="icon-quote-end"></span>
+
 			<span class="icon-undo" title="icon-undo"></span>
 			<span class="icon-trophy" title="icon-trophy"></span>
 			<span class="icon-filter" title="icon-filter"></span>
@@ -153,6 +157,8 @@
 			<span class="icon-tag" title="icon-tag"></span>
 			<span class="icon-computer" title="icon-computer"></span>
 			<span class="icon-tick-hollow" title="icon-tick-hollow"></span>
+			<span class="icon-quote-start" title="icon-quote-start"></span>
+			<span class="icon-quote-end" title="icon-quote-end"></span>
 
 			<span class="icon-undo" title="icon-undo"></span>
 			<span class="icon-trophy" title="icon-trophy"></span>

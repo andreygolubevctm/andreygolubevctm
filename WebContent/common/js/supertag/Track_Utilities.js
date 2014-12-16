@@ -27,12 +27,14 @@ var Track_Utilities = {
 			}
 
 			var yob = "";
-			if($("#utilities_application_details_dob").val().length) {
+			var yob_raw = $("#utilities_application_details_dob").val();
+
+			if(typeof yobraw != 'undefined' && yobraw.length) {
 				yob = $("#utilities_application_details_dob").val().split("/")[2];
 			}
 
 			// Set email to application email if provided and is different
-			if( email2.length ) {
+			if( typeof email2 != 'undefined' && email2.length ) {
 				email = email2;
 			}
 
@@ -179,11 +181,11 @@ var Track_Utilities = {
 			var emailId = '';
 
 			if (emailAddress) {
-				
+
 				var dat = {
-					vertical:Settings.vertical, 
-					email:emailAddress, 
-					m:marketing, 
+					vertical:Settings.vertical,
+					email:emailAddress,
+					m:marketing,
 					o:oktocall,
 					transactionId:referenceNo.getTransactionID()
 				};

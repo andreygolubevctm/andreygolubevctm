@@ -8,6 +8,7 @@
 	<config-dir>aggregator/life</config-dir>
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/life/errors</error-dir>
 	<debug-dir>life/debug</debug-dir>
+	<validation-file>WEB-INF/xsd/life/productSelect.xsd</validation-file>
 
 	<service name="PRODUCTSELECT" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-7-0/quote/select</soap-url>

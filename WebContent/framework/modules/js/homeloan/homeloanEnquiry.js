@@ -138,10 +138,8 @@
 					object: meerkat.modules.homeloan.getTrackingFieldsObject
 				});
 
-				//var obj = resultData.responseData;
-				//window.location.href = "homeloan_confirmation.jsp?transactionid=" + meerkat.modules.transactionId.get() + "&data=" + obj;
-
 				var confirmationId = resultData.confirmationkey;
+				meerkat.modules.leavePageWarning.disable();
 				window.location.href = 'viewConfirmation?key=' + encodeURI(confirmationId);
 			},
 			onError: onSubmitError,

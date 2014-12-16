@@ -161,6 +161,7 @@
 				<health:benefitsHiddenItem item="${selectedValue}" />
 			</c:forEach>
 					
+			<field:hidden xpath="health/renderingMode" />
 			<field:hidden xpath="health/rebate" />
 			<field:hidden xpath="health/loading" />
 			<field:hidden xpath="health/primaryCAE" />

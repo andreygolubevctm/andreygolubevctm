@@ -104,14 +104,16 @@ body > div > header a.bottombar .btn-call:hover {
 .car .slide-feature-emailquote,
 .car .slide-feature-emailresults,
 .car .slide-edit-quote-dropdown,
-.car .slide-feature-filters {
+.car .slide-feature-filters,
+.car .slide-feature-closeMoreInfo {
   display: none;
 }
 .car .slide-feature-back a,
 .car .slide-feature-emailquote a,
 .car .slide-feature-emailresults a,
 .car .slide-edit-quote-dropdown a,
-.car .slide-feature-filters a {
+.car .slide-feature-filters a,
+.car .slide-feature-closeMoreInfo a {
   white-space: nowrap;
 }
 .car .slide-feature-pagination {
@@ -135,6 +137,13 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .car[data-step="results"] .slide-feature-pagination {
   display: block;
+}
+.car.moreInfoVisible .slide-edit-quote-dropdown,
+.car.moreInfoVisible .slide-feature-emailquote {
+  display: none !important;
+}
+.car.moreInfoVisible .slide-feature-closeMoreInfo {
+  display: block !important;
 }
 @media (min-width: 768px) {
   .resultsContainer.featuresMode.results-columns-sm-2 .featuresHeaders {
@@ -1171,5 +1180,41 @@ body > div > header a.bottombar .btn-call:hover {
 @media (max-width: 767px) {
   .car .edit-details-wrapper.expired-quote .expired-panel .column p {
     text-align: left !important;
+  }
+}
+.journeyEngineLoader {
+  min-height: 500px;
+}
+.journeyEngineLoader .loadingQuoteText {
+  font-family: 'SourceSansProLight';
+  font-size: 18px;
+}
+.journeyEngineLoader .loadingQuoteText .quoteContainer {
+  padding-top: 30px;
+}
+.journeyEngineLoader .loadingQuoteText .quoteContainer .icon-quote-start,
+.journeyEngineLoader .loadingQuoteText .quoteContainer .icon-quote-end {
+  color: #efefef;
+  font-size: 40px;
+  float: left;
+  width: 10%;
+}
+.journeyEngineLoader .loadingQuoteText .quoteContainer .quote {
+  padding-top: 10px;
+  float: left;
+  width: 80%;
+}
+.journeyEngineLoader .loadingQuoteText .quoteContainer .quoteAuthor {
+  font-family: 'SourceSansProLight';
+  float: left;
+  width: 100%;
+  padding-top: 15px;
+}
+.journeyEngineLoader .loadingDisclaimerText {
+  margin: 50px auto 0 auto;
+}
+@media (max-width: 767px) {
+  .journeyEngineLoader {
+    padding-top: 1.5em;
   }
 }

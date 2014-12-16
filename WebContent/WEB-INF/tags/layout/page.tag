@@ -164,8 +164,14 @@
 								<span class="icon icon-reorder"></span>
 								<span class="icon icon-cross"></span>
 							</button>
+							<c:set var="exitUrl" value="" />
+							<c:if test="${pageSettings.hasSetting('exitUrl')}">
+							<c:set var="exitUrl" value="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" />
+							</c:if>
 
+							<c:if test="${not empty exitUrl}"><a id="js-logo-link" href="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" title="${pageSettings.getSetting('windowTitle')}"></c:if>
 							<span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
+							<c:if test="${not empty exitUrl}"></a></c:if>
 						</nav>
 
 						<jsp:invoke fragment="header" />
@@ -272,7 +278,7 @@
 						<%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
 						urls:{
 							base: '${fn:toLowerCase(pageSettings.getBaseUrl())}',
-							exit: '${fn:toLowerCase(pageSettings.getSetting("exitUrl"))}',
+							exit: '${exitUrl}',
 							context: '/${fn:toLowerCase(pageSettings.getContextFolder())}'
 						},
 						watchedFields: '<content:get key="watchedFields"/>',
@@ -287,8 +293,10 @@
 							userTrackingEnabled: ${isUserTrackingEnabled}
 						},
 						leavePageWarning: {
-							enabled: ${pageSettings.getSetting("leavePageWarningEnabled")},
-							message: "${go:jsEscape(pageSettings.getSetting("leavePageWarningMessage"))}"
+							enabled: ${pageSettings.getSetting("leavePageWarningEnabled")},<c:if test="${pageSettings.hasSetting('leavePageWarningDefaultMessage')}">
+							defaultMessage: "${go:jsEscape(pageSettings.getSetting('leavePageWarningDefaultMessage'))}",</c:if>
+							message: "${go:jsEscape(pageSettings.getSetting('leavePageWarningMessage'))}"
+
 						},
 						liveChat: {
 							config: {},

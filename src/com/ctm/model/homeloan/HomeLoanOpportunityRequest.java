@@ -87,15 +87,19 @@ public class HomeLoanOpportunityRequest extends AbstractJsonModel {
 		json.put("primaryContactEmailAddress", model.getEmailAddress());
 
 		String comment = "";
-		comment = "Customer has found property: " + ((model.getFoundAProperty() != null && model.getFoundAProperty() == true) ? "Y" : "N") + "; ";
-		if (model.getOfferTime() != null && model.getOfferTime().length() > 0) {
-			comment += "Looking to make offer: " + model.getOfferTime() + "; ";
-		}
-		if (model.getPropertyType() != null && model.getPropertyType().length() > 0) {
-			comment += "Property type: " + model.getPropertyType() + "; ";
-		}
-		if (model.getEmploymentStatus() != null && model.getEmploymentStatus().length() > 0) {
-			comment += "Employment status: " + model.getEmploymentStatus() + "; ";
+		if(model.getAdditionalInformation() == "OUTBOUND LEAD") {
+			comment = model.getAdditionalInformation();
+		} else {
+			comment = "Customer has found property: " + ((model.getFoundAProperty() != null && model.getFoundAProperty() == true) ? "Y" : "N") + "; ";
+			if (model.getOfferTime() != null && model.getOfferTime().length() > 0) {
+				comment += "Looking to make offer: " + model.getOfferTime() + "; ";
+			}
+			if (model.getPropertyType() != null && model.getPropertyType().length() > 0) {
+				comment += "Property type: " + model.getPropertyType() + "; ";
+			}
+			if (model.getEmploymentStatus() != null && model.getEmploymentStatus().length() > 0) {
+				comment += "Employment status: " + model.getEmploymentStatus() + "; ";
+			}
 		}
 		json.put("comments", comment);
 

@@ -70,11 +70,13 @@ ul.themed {
 	p {
 		.small;
 	}
-
-	#footer_mcafee {
+}
+#footer_mcafee {
 		.pull-right;
 		margin-left: 3px;
 		margin-bottom: 3px;
+	@media print {
+		display: none !important;
 	}
 }
 #copyright {
@@ -490,6 +492,9 @@ a{
 	border-top: 1px solid @body-bg;
 	margin-top: -1px; //now negate the existance of that line in terms of 'space' so it wont appear when the bar is docked.
 	border-bottom: 1px solid @body-bg;
+	@media print {
+		display: none !important;
+	}
 }
 #navbar-main, #navbar-compare, #navbar-filter {
 	width: 100%; // Prevents ipad from collapsing the bar to the left
@@ -744,7 +749,7 @@ a{
 	// Allows the mobile first view to horizontally center
 	// Doesn't seem to negatively affect other breakpoints, but if it does, we just flip them back to the commented versions in each breakpoint below.
 	float: none;
-	display: block;
+	display: inline-block;
 
 	//XS Mobile first base
 	width: 193px;
@@ -752,6 +757,8 @@ a{
 
 	margin: 8px auto 0 8px;
 	@media only screen and (@xs-only) {
+		line-height: @font-size-small;
+		font-size: @font-size-small;
 		.header_button_left & {
 			margin: 8px auto 0 auto;
 		}
@@ -776,8 +783,16 @@ a{
 		margin: 24px 0 18px 0;
 		background-size: 391px 49px;
 	}
-}
 
+	@media print {
+		&.text-hide {
+			font-family: inherit;
+			font-size: @font-size-h1;
+			line-height: inherit;
+			width: auto;
+		}
+	}
+}
 //
 // Modal overrides
 // --------------------------------------------------
@@ -1284,10 +1299,19 @@ select {
 	.loadingDisclaimerText {
 		font-family: @font-family-theme-light;
 		font-size: @font-size-base;
+	.originalDisclaimer {
+		position: static;
+	}
 }
 }
 
 // When the tranId in the navbar has .small, correct its line-height to match the other normal-sized elements.
 header .transactionIdContainer.small {
 	line-height: @line-height-computed;
+}
+
+@media print {
+	.well-chatty:after, .well-info:after, .navbar-toggle.hamburger {
+			display: none !important;
+	}
 }

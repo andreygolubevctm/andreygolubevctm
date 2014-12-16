@@ -109,9 +109,8 @@
 				}
 			}
 		}
-
 		.active {
-			[data-sort-dir='asc']:before {
+			[data-sort-dir='asc']:before {	
 				position: absolute;
 				width: 0;
 				height: 0;
@@ -119,7 +118,10 @@
 				left: 50%;
 				content: '';
 				margin-left: -@sortbar-arrow-width;
-				border-color: @travel-navbar-inverse-border;
+				border-color: transparent;
+				border-style: solid;
+				border-width: 0 @sortbar-arrow-width @sortbar-arrow-width;
+				border-bottom-color: @sortbar-arrow-asc-color;
 			}
 			[data-sort-dir='desc']:before {
 				position: absolute;
@@ -129,7 +131,10 @@
 				left: 50%;
 				content: '';
 				margin-left: -@sortbar-arrow-width;
-				border-color: @travel-navbar-inverse-border;
+				border-color: transparent;
+				border-style: solid;
+				border-width: @sortbar-arrow-width @sortbar-arrow-width 0;
+				border-top-color: @sortbar-arrow-desc-color;
 			}
 		}
 	}

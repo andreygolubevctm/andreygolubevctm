@@ -1,35 +1,54 @@
 package com.ctm.services.homeloan;
 
+import java.security.GeneralSecurityException;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.ctm.dao.TransactionDetailsDao;
+import com.ctm.dao.homeloan.HomeloanUnconfirmedLeadsDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Touch;
+import com.ctm.model.TransactionDetail;
 import com.ctm.model.homeloan.HomeLoanModel;
 import com.ctm.model.homeloan.HomeLoanModel.CustomerGoal;
 import com.ctm.model.homeloan.HomeLoanModel.CustomerSituation;
 import com.ctm.model.homeloan.HomeLoanModel.RepaymentOptions;
+import com.ctm.router.homeloan.HomeLoanRouter;
+import com.ctm.services.AccessTouchService;
+import com.ctm.services.FatalErrorService;
+import com.disc_au.web.go.tags.AESEncryptDecryptTag;
 
 public class HomeLoanService {
+
+	private TransactionDetailsDao transactionDetailsDao;
+	private HomeloanUnconfirmedLeadsDao homeloanLeadsDao;
+	private HomeLoanOpportunityService opportunityService;
+
+	public HomeLoanService(TransactionDetailsDao transactionDetailsDao , HomeloanUnconfirmedLeadsDao homeloanLeadsDao , HomeLoanOpportunityService opportunityService){
+		this.transactionDetailsDao = transactionDetailsDao;
+		this.homeloanLeadsDao = homeloanLeadsDao;
+		this.opportunityService = opportunityService;
+
+	}
+
+	/** TODO: used by homeloan_submit.jsp refactor homeloan_submit.jsp to java and remove this constructor
+	 *
+	 */
+	public HomeLoanService(){
+		this.transactionDetailsDao = new TransactionDetailsDao();
+		this.homeloanLeadsDao = new HomeloanUnconfirmedLeadsDao();
+		this.opportunityService = new HomeLoanOpportunityService();
+
+	}
 
 	public static HomeLoanModel mapParametersToModel(HttpServletRequest request) {
 
 		HomeLoanModel model = new HomeLoanModel();
-
-		/* TEST
-		hlpsrModel.setCustomerSituation(CustomerSituation.FIRST_HOME_BUYER);
-		hlpsrModel.setCustomerGoal(CustomerGoal.BUY_FIRST_HOME);
-		hlpsrModel.setState("QLD");
-		hlpsrModel.setPurchasePrice(500000);
-		hlpsrModel.setLoanAmount(400000);
-		hlpsrModel.setRepaymentOption(RepaymentOptions.PRINCIPAL_AND_INTEREST);
-		hlpsrModel.setLoanTerm(30);
-		hlpsrModel.setExistingPropertiesWorth(0);
-		hlpsrModel.setAmountOwingOnLoan(0);
-
-		//hlpsrModel.setRateVariable(true);
-		//hlpsrModel.setRateFixed(true);
-		//hlpsrModel.setLineOfCredit(true);
-		//hlpsrModel.setIntroRate(true);
-		//hlpsrModel.setRepaymentsWeekly(true);
-		*/
 
 		String value;
 
@@ -259,9 +278,59 @@ public class HomeLoanService {
 			model.setAdditionalInformation(value);
 		}
 
-
-
 		return model;
+	}
+
+	public void scheduledLeadGenerator(HttpServletRequest request) {
+
+		JSONObject json = null;
+		Logger logger = Logger.getLogger(HomeLoanRouter.class.getName());
+		AccessTouchService touch = new AccessTouchService();
+
+		try {
+
+			AESEncryptDecryptTag decrypter = new AESEncryptDecryptTag();
+			decrypter.setKey(HomeLoanOpportunityService.SECRET_KEY);
+
+			List<HomeLoanModel> leads = homeloanLeadsDao.getUnconfirmedTransactionIds();
+			for(HomeLoanModel lead : leads) {
+				/**
+				 * Ignore leads with names like these.
+				 */
+				if(lead.getContactFirstName() == null || lead.getContactFirstName().isEmpty()
+						|| lead.getContactSurname() == null || lead.getContactSurname().isEmpty()
+						|| lead.getContactPhoneNumber() == null || lead.getContactPhoneNumber().isEmpty()
+						|| lead.getContactFirstName() ==  "UnknownFirstName " || lead.getContactSurname() == "UnknownLastName") {
+					continue;
+				}
+
+				json = opportunityService.submitOpportunity(request, lead);
+
+				if(json != null && json.has("responseData")) {
+					try {
+						decrypter.setContent(json.getString("responseData"));
+						JSONObject responseJson = new JSONObject(decrypter.decrypt());
+						if(responseJson.has("flexOpportunityId")) {
+							touch.recordTouch(lead.getTransactionId(), Touch.TouchType.CALL_FEED.getCode());
+							// Add a new tran detail
+							TransactionDetail transactionDetailNew = new TransactionDetail();
+							transactionDetailNew.setXPath("homeloan/flexOpportunityId");
+							transactionDetailNew.setTextValue(responseJson.getString("flexOpportunityId"));
+							transactionDetailsDao.addTransactionDetails(lead.getTransactionId(), transactionDetailNew);
+						}
+					} catch (JSONException | GeneralSecurityException e) {
+						logger.error("Failed to decrypt opportunity id for " + lead.getTransactionId(), e);
+						FatalErrorService.logFatalError(e, 0, "/cron/hourly/homeloan/flexOutboundLead.json" , "ctm", true, lead.getTransactionId());
+					}
+				}
+			}
+
+		} catch(DaoException e) {
+			logger.error("HomeLoan opportunity cron failed", e);
+			FatalErrorService.logFatalError(e, 0, "/cron/hourly/homeloan/flexOutboundLead.json" , "ctm", true);
+		}
+
+
 	}
 
 }

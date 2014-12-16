@@ -5,7 +5,8 @@
 	.slide-feature-emailquote,
 	.slide-feature-emailresults,
 	.slide-edit-quote-dropdown,
-	.slide-feature-filters
+	.slide-feature-filters,
+	.slide-feature-closeMoreInfo
 	{
 		.slide-feature-hidden();
 
@@ -50,4 +51,18 @@
 		}
 	}
 
+}
+.car.moreInfoVisible {
+
+	// Add your slide feature here to be hidden by default
+	.slide-edit-quote-dropdown,
+	.slide-feature-emailquote
+	{
+		.slide-feature-hidden() !important;
+	}
+
+	.slide-feature-closeMoreInfo
+	{
+		.slide-feature-is-visible() !important;
+	}
 }

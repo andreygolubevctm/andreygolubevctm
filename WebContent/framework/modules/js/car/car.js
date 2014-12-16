@@ -240,7 +240,7 @@
 				var $driversPhoneNumber =  $('#quote_contact_phoneinput');
 				var $driversContactEmail =  $('#quote_contact_email');
 				var $competitionOptin = $('#quote_contact_competition_optin');
-				var nonStdJourney = meerkat.modules.tracking.getCurrentJourney() != 1;
+				var nonStdJourney = meerkat.modules.splitTest.isActive(2);
 
 				if($competitionOptin.length && nonStdJourney) {
 					$competitionOptin.on('change', function() {
@@ -384,6 +384,8 @@
 
 		var email = $('#quote_contact_email').val();
 
+		var commencementDate = $("#quote_options_commencementDate").val();
+
 		var transactionId = meerkat.modules.transactionId.get();
 
 		var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
@@ -427,7 +429,8 @@
 				email:					null,
 				emailID:				null,
 				marketOptIn:			null,
-				okToCall:				null
+				okToCall:				null,
+				commencementDate:		null
 		};
 
 		// Push in values from 1st slide only when have been beyond it
@@ -453,7 +456,8 @@
 				state:			stateCode,
 				email:			email,
 				marketOptIn:	marketOptIn,
-				okToCall:		okToCall
+				okToCall:			okToCall,
+				commencementDate:	commencementDate
 			});
 		}
 

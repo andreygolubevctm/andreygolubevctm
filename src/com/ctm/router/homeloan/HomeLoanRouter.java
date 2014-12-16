@@ -15,10 +15,12 @@ import org.json.JSONObject;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
+import com.ctm.model.homeloan.HomeLoanModel;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.SettingsService;
 import com.ctm.services.homeloan.HomeLoanOpportunityService;
 import com.ctm.services.homeloan.HomeLoanResultsService;
+import com.ctm.services.homeloan.HomeLoanService;
 
 
 @WebServlet(urlPatterns = {
@@ -77,7 +79,8 @@ public class HomeLoanRouter extends HttpServlet {
 				SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.HOMELOAN.getCode());
 
 				HomeLoanOpportunityService oppService = new HomeLoanOpportunityService();
-				json = oppService.submitOpportunity(request);
+				HomeLoanModel model = HomeLoanService.mapParametersToModel(request);
+				json = oppService.submitOpportunity(request, model);
 
 				if (json == null) {
 					throw new DaoException("Create opportunity returned null");

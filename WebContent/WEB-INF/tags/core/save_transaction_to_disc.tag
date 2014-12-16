@@ -13,10 +13,10 @@
 		</transactionData>
 	</data>
 </c:set>
-<c:set var="stylecode" value="${fn:toUpperCase(pageSettings.getBrandCode())}" />
 <%-- HEAD TO DISC --%>
 <go:log>Saving ${data['current/transactionId']} to DISC</go:log>
-<go:call pageId="AGGTID" wait="FALSE" resultVar="tranXml" xmlVar="${DISCxml}" transactionId="${data['current/transactionId']}" style="${stylecode}" />
+<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
+<go:call pageId="AGGTID" wait="FALSE" resultVar="tranXml" xmlVar="${DISCxml}" transactionId="${data['current/transactionId']}" style="${AGIS_leadFeedCode}" />
 <go:setData dataVar="data" xml="${tranXml}" xpath="tmpTranXml" />
 <c:choose>
 	<c:when test="${data.tmpTranXml.data.transactionData.transactionId == data['current/transactionId'] &&

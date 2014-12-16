@@ -10,6 +10,7 @@ public class CarModel extends AbstractJsonModel {
 
 	private String code;
 	private String label;
+	private boolean isTopModel;
 
 	public String getCode() {
 		return code;
@@ -25,6 +26,13 @@ public class CarModel extends AbstractJsonModel {
 		this.label = label;
 	}
 
+	public boolean getIsTopModel() {
+		return isTopModel;
+	}
+	public void setIsTopModel(boolean isTopModel) {
+		this.isTopModel = isTopModel;
+	}
+
 
 
 	@Override
@@ -33,6 +41,7 @@ public class CarModel extends AbstractJsonModel {
 
 		json.put("code", getCode());
 		json.put("label", getLabel());
+		json.put("isTopModel", getIsTopModel());
 
 		return json;
 	}

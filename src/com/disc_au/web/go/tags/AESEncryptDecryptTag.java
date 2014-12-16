@@ -1,18 +1,16 @@
 package com.disc_au.web.go.tags;
 
 import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.security.GeneralSecurityException;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.jsp.JspException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.log4j.Logger;
+
+import com.ctm.security.StringEncryption;
 
 /**
  * AESEncryptDecryptTag uses the secret key and content provided to either
@@ -23,6 +21,8 @@ import org.apache.commons.codec.binary.Base64;
 
 @SuppressWarnings("serial")
 public class AESEncryptDecryptTag extends BaseTag {
+
+	Logger logger = Logger.getLogger(AESEncryptDecryptTag.class.getName());
 
 	String action = "";
 	String key = "";
@@ -49,63 +49,37 @@ public class AESEncryptDecryptTag extends BaseTag {
 		String output = "";
 
 		try {
-			// Convert the string version of the key to a SecretKey object
-			byte[] encoded_secret_key = Base64.decodeBase64(this.key);
-			final SecretKeySpec secret_key = new SecretKeySpec(encoded_secret_key, "AES");
-
-			// Create Cipher object needed to do encryption/decryption
-			Cipher aes_cipher = Cipher.getInstance("AES");
-			aes_cipher.init(Cipher.ENCRYPT_MODE, secret_key);
-
-			if( this.action.compareTo("encrypt") == 0 )
-			{
+			if( this.action.compareTo("encrypt") == 0 ) {
 				// Encrypt the content
-				byte[] content_as_bytes = this.content.getBytes();
-				byte[] content_as_byte_cipher_text = aes_cipher.doFinal(content_as_bytes);
-				output = Base64.encodeBase64URLSafeString(content_as_byte_cipher_text);
-				System.out.println("Encrypted content: " + output);
+				output = StringEncryption.encrypt(key, content);
+			} 	else if (this.action.compareTo("decrypt") == 0) {
+				output = decrypt();
 			}
-			else if (this.action.compareTo("decrypt") == 0)
-			{
-				// Decrypt the content
-				aes_cipher.init(Cipher.DECRYPT_MODE, secret_key, aes_cipher.getParameters());
-				byte[] content_as_byte_cipher_text = Base64.decodeBase64(this.content);
-				byte[] decrypted_text_as_bytes = aes_cipher.doFinal(content_as_byte_cipher_text);
-				output = new String(decrypted_text_as_bytes);
-				System.out.println("Decrypted content: " + output);
-			}
-
 			pageContext.getOut().write(output);
-
 			return SKIP_BODY;
-		}
-		catch (InvalidKeyException e)
-		{
+		} catch (GeneralSecurityException | IOException e) {
 			throw new JspException(e);
 		}
-		catch (NoSuchPaddingException e)
-		{
-			throw new JspException(e);
-		}
-		catch (BadPaddingException e)
-		{
-			throw new JspException(e);
-		}
-		catch (IllegalBlockSizeException e)
-		{
-			throw new JspException(e);
-		}
-		catch (NoSuchAlgorithmException e)
-		{
-			throw new JspException(e);
-		}
-		catch (InvalidAlgorithmParameterException e)
-		{
-			throw new JspException(e);
-		}
-		catch(IOException e)
-		{
-			throw new JspException(e);
-		}
+	}
+
+	public String decrypt() throws GeneralSecurityException {
+		String output;
+		// Convert the string version of the key to a SecretKey object
+		byte[] encoded_secret_key = Base64.decodeBase64(this.key);
+		final SecretKeySpec secret_key = new SecretKeySpec(encoded_secret_key, "AES");
+
+		// Create Cipher object needed to do encryption/decryption
+		Cipher aes_cipher = Cipher.getInstance("AES");
+		aes_cipher.init(Cipher.ENCRYPT_MODE, secret_key);
+
+		// Decrypt the content
+		aes_cipher.init(Cipher.DECRYPT_MODE, secret_key, aes_cipher.getParameters());
+		byte[] content_as_byte_cipher_text = Base64.decodeBase64(this.content);
+		byte[] decrypted_text_as_bytes = aes_cipher.doFinal(content_as_byte_cipher_text);
+		output = new String(decrypted_text_as_bytes);
+		// Important! keep this as debug and don't enable debug logging in production
+		// as this may include credit card details (this is from the nib webservice)
+		logger.debug("Decrypted content: " + output);
+		return output;
 	}
 }

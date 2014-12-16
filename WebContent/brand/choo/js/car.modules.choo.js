@@ -183,7 +183,7 @@
                 var $driversPhoneNumber = $("#quote_contact_phoneinput");
                 var $driversContactEmail = $("#quote_contact_email");
                 var $competitionOptin = $("#quote_contact_competition_optin");
-                var nonStdJourney = meerkat.modules.tracking.getCurrentJourney() != 1;
+                var nonStdJourney = meerkat.modules.splitTest.isActive(2);
                 if ($competitionOptin.length && nonStdJourney) {
                     $competitionOptin.on("change", function() {
                         if ($(this).is(":checked")) {
@@ -323,6 +323,7 @@
             var vehYear = $("#quote_vehicle_year").val();
             var vehMake = $("#quote_vehicle_make option:selected").text();
             var email = $("#quote_contact_email").val();
+            var commencementDate = $("#quote_options_commencementDate").val();
             var transactionId = meerkat.modules.transactionId.get();
             var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
             var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
@@ -366,7 +367,8 @@
                 email: null,
                 emailID: null,
                 marketOptIn: null,
-                okToCall: null
+                okToCall: null,
+                commencementDate: null
             };
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("start")) {
                 _.extend(response, {
@@ -386,7 +388,8 @@
                     state: stateCode,
                     email: email,
                     marketOptIn: marketOptIn,
-                    okToCall: okToCall
+                    okToCall: okToCall,
+                    commencementDate: commencementDate
                 });
             }
             return response;
@@ -561,15 +564,13 @@
         email: "#quote_contact_email"
     };
     function validateOptins() {
-        if (meerkat.modules.tracking.getCurrentJourney() === "1") {
-            $mkt = $(elements.marketing);
-            $otc = $(elements.oktocall);
-            if (!$mkt.is(":checked")) {
-                $mkt.filter("input[value=N]").prop("checked", true).change();
-            }
-            if (!$otc.is(":checked")) {
-                $otc.filter("input[value=N]").prop("checked", true).change();
-            }
+        $mkt = $(elements.marketing);
+        $otc = $(elements.oktocall);
+        if (!$mkt.is(":checked")) {
+            $mkt.filter("input[value=N]").prop("checked", true).change();
+        }
+        if (!$otc.is(":checked")) {
+            $otc.filter("input[value=N]").prop("checked", true).change();
         }
     }
     function addChangeListeners() {
@@ -1101,14 +1102,17 @@
             onBeforeShowBridgingPage: onBeforeShowBridgingPage,
             onBeforeShowTemplate: renderScrapes,
             onBeforeShowModal: renderScrapes,
-            onAfterShowModal: null,
+            onAfterShowModal: requestTracking,
             onAfterShowTemplate: onAfterShowTemplate,
             onBeforeHideTemplate: null,
             onAfterHideTemplate: onAfterHideTemplate,
             onClickApplyNow: onClickApplyNow,
             onBeforeApply: null,
             onApplySuccess: onApplySuccess,
-            retrieveExternalCopy: retrieveExternalCopy
+            retrieveExternalCopy: retrieveExternalCopy,
+            additionalTrackingData: {
+                productName: null
+            }
         };
         meerkat.modules.moreInfo.initMoreInfo(options);
         eventSubscriptions();
@@ -1183,6 +1187,9 @@
                 }, 200);
             }
             return false;
+        });
+        $(".slide-feature-closeMoreInfo a").off().on("click", function() {
+            meerkat.modules.moreInfo.close();
         });
     }
     function setupCallbackForm() {
@@ -1309,6 +1316,7 @@
         }
     }
     function onAfterShowTemplate() {
+        requestTracking();
         if (meerkat.modules.deviceMediaState.get() == "lg" || meerkat.modules.deviceMediaState.get() == "md") {
             fixSidebarHeight(".paragraphedContent", ".moreInfoRightColumn", $bridgingContainer);
         }
@@ -1456,7 +1464,8 @@
                 transactionID: transaction_id,
                 productID: product.productId,
                 productBrandCode: product.brandCode,
-                vertical: meerkat.site.vertical
+                vertical: meerkat.site.vertical,
+                productName: product.headline.name
             }
         });
         meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
@@ -1470,8 +1479,16 @@
             object: _.bind(meerkat.modules.car.getTrackingFieldsObject, this, true)
         });
     }
-    function renderScrapes(scrapeData) {
+    function requestTracking() {
+        var settings = {
+            additionalTrackingData: {
+                productName: meerkat.modules.moreInfo.getOpenProduct().headline.name
+            }
+        };
+        meerkat.modules.moreInfo.updateSettings(settings);
         trackProductView();
+    }
+    function renderScrapes(scrapeData) {
         if (typeof scrapeData != "undefined" && typeof scrapeData.scrapes != "undefined" && scrapeData.scrapes.length > 0) {
             $.each(scrapeData.scrapes, function(key, scrape) {
                 if (scrape.html !== "") {
@@ -1533,7 +1550,7 @@
             if (typeof meerkat.site != "undefined" && typeof meerkat.site.resultOptions != "undefined") {
                 displayMode = meerkat.site.resultOptions.displayMode == "features" ? "features" : "price";
             }
-            if (meerkat.modules.tracking.getCurrentJourney() !== "1") {
+            if (meerkat.modules.splitTest.isActive(2)) {
                 displayMode = "features";
             }
             Results.init({
@@ -1711,12 +1728,22 @@
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             meerkat.modules.journeyEngine.loadingShow("getting your quotes");
             $("#resultsPage, .loadingDisclaimerText").removeClass("hidden");
+            if (meerkat.site.tracking.brandCode == "ctm" && meerkat.modules.splitTest.isActive(4)) {
+                $("#resultsPage, .loadingQuoteText").removeClass("hidden");
+            } else {
+                $("#resultsPage, .loadingDisclaimerText").addClass("originalDisclaimer");
+            }
             Results.pagination.hide();
         });
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             $(Results.settings.elements.page).show();
             meerkat.modules.journeyEngine.loadingHide();
             $(".loadingDisclaimerText").addClass("hidden");
+            if (meerkat.site.tracking.brandCode == "ctm" && meerkat.modules.splitTest.isActive(4)) {
+                $(".loadingQuoteText").addClass("hidden");
+            } else {
+                $(".loadingDisclaimerText").addClass("originalDisclaimer");
+            }
             if (Results.getDisplayMode() !== "price") {
                 Results.pagination.show();
             } else {
@@ -2953,7 +2980,7 @@
             activeSelector = type;
             var autoSelect = false;
             var isIosXS = meerkat.modules.performanceProfiling.isIos() && meerkat.modules.deviceMediaState.get() == "xs";
-            if (_.isArray(selectorData[type]) && selectorData[type]) {
+            if (selectorData[type] && _.isArray(selectorData[type])) {
                 var selected = null;
                 if (useSessionDefaults === true && defaults.hasOwnProperty(type) && defaults[type] !== "") {
                     selected = defaults[type];
@@ -2966,12 +2993,17 @@
                     text: snippets.pleaseChooseOptionHTML,
                     value: ""
                 }));
-                if (type == "makes") {
+                var hasPopularModels = false;
+                if (type == "models" && selectorData[type][0].hasOwnProperty("isTopModel") && selectorData[type][0].isTopModel === true) {
+                    hasPopularModels = true;
+                }
+                if (type == "makes" || hasPopularModels) {
+                    var label = type.charAt(0).toUpperCase() + type.slice(1);
                     options.push($("<optgroup/>", {
-                        label: "Top Makes"
+                        label: "Top " + label
                     }));
                     options.push($("<optgroup/>", {
-                        label: "All Makes"
+                        label: "All " + label
                     }));
                 } else {
                     if (isIosXS && autoSelect !== true) {
@@ -2992,8 +3024,8 @@
                             option.prop("selected", true);
                             selected = true;
                         }
-                        if (type == "makes") {
-                            if (item.isTopMake === true) {
+                        if (type == "makes" || type == "models" && hasPopularModels) {
+                            if (item[hasPopularModels ? "isTopModel" : "isTopMake"] === true) {
                                 option.appendTo(options[1], options[2]);
                             } else {
                                 options[2].append(option);

@@ -66,6 +66,110 @@
 					</traveldocs>
 				</info>
 			</xsl:when>
+			<xsl:when test="$productId = 'DUIN-TRAVEL-53'">
+				<info>
+					<cxdfee>
+						<label>Cancellation Fees</label>
+						<desc>Cancellation Fees and Lost Deposits</desc>
+						<value>10000.0</value>
+						<text>$10,000</text>
+						<order />
+					</cxdfee>
+					<excess>
+						<label>Excess</label>
+						<desc>Excess on Claims</desc>
+						<value>100.0</value>
+						<text>$100</text>
+						<order />
+					</excess>
+					<liability>
+						<label>Personal Liability</label>
+						<desc>Personal Liability</desc>
+						<value>5000000.0</value>
+						<text>$5,000,000</text>
+						<order />
+					</liability>
+					<luggage>
+						<label>Luggage and PE</label>
+						<desc>Luggage and Personal Effects</desc>
+						<value>5000.0</value>
+						<text>$5,000</text>
+						<order />
+					</luggage>
+					<medical>
+						<label>Overseas Medical</label>
+						<desc>Overseas Emergency Medical and Hospital Expenses</desc>
+						<value>9.99999999E8</value>
+						<text>Unlimited</text>
+						<order />
+					</medical>
+					<medicalAssi>
+						<label>Overseas Medical Assistance</label>
+						<desc>Overseas Emergency Medical Assistance</desc>
+						<value>9.99999999E8</value>
+						<text>Unlimited</text>
+						<order />
+					</medicalAssi>
+					<traveldelay>
+						<label>Travel Delay</label>
+						<desc>Travel Delay</desc>
+						<value>1000.0</value>
+						<text>$1,000</text>
+						<order />
+					</traveldelay>
+					<traveldocs>
+						<label>Travel Documents, Credit Cards and Travellers Cheq
+						</label>
+						<desc>Travel Documents, Credit Cards and Travellers Cheques
+						</desc>
+						<value>1000.0</value>
+						<text>$1,000</text>
+						<order />
+					</traveldocs>
+					<rescue>
+						<label>Emergency Rescue</label>
+						<desc>Emergency Rescue</desc>
+						<value>9.99999999E8</value>
+						<text>Unlimited</text>
+						<order />
+					</rescue>
+					<skitheft>
+						<label>Theft of/Damage to Own Ski Equipment</label>
+						<desc>Theft of/Damage to Own Ski Equipment</desc>
+						<value>1500</value>
+						<text>$1,500</text>
+						<order />
+					</skitheft>
+					<skihire>
+						<label>Snow Ski Hire Equipment</label>
+						<desc>Snow Ski Hire Equipment</desc>
+						<value>1500</value>
+						<text>$1,500</text>
+						<order />
+					</skihire>
+					<skiPack>
+						<label>Ski Pack</label>
+						<desc>Ski Pack</desc>
+						<value>750</value>
+						<text>$750</text>
+						<order />
+					</skiPack>
+					<pisteClosure>
+						<label>Piste Closure</label>
+						<desc>Piste Closure</desc>
+						<value>1000</value>
+						<text>$1,000</text>
+						<order />
+					</pisteClosure>
+					<weatherClosure>
+						<label>Bad Weather &amp; Avalanche Closure</label>
+						<desc>Bad Weather &amp; Avalanche Closure</desc>
+						<value>750</value>
+						<text>$750</text>
+						<order />
+					</weatherClosure>
+				</info>
+			</xsl:when>
 			<!-- DUINSURE - BACKPACKER -->
 			<xsl:when test="$productId = 'DUIN-TRAVEL-50'">
 				<info>

@@ -8,7 +8,6 @@
 <%@ attribute name="debugXml"					required="false"	 rtexprvalue="true"	 description="debugXml (from soap aggregator)" %>
 
 <go:log>WRITE STATS: ${rootPath}</go:log>
-<c:set var="stylecode" value="${fn:toUpperCase(pageSettings.getBrandCode())}" />
 <c:set var="ignore">
 	<go:log>statisticDetailsResults: ${statisticDetailsResults}</go:log>
 	<c:if test="${statisticDetailsResults == null}">
@@ -36,7 +35,8 @@
 <%--TODO: CAR-29 remove this once we are off disc --%>
 	<c:if test="${rootPath == 'quote'}">
 	<go:log>Writing Results to iSeries</go:log>
-		<go:call pageId="AGGTRS"  xmlVar="${debugXml}" wait="FALSE" transactionId="${tranId}" style="${stylecode}" />
+		<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
+		<go:call pageId="AGGTRS"  xmlVar="${debugXml}" wait="FALSE" transactionId="${tranId}" style="${AGIS_leadFeedCode}" />
 	</c:if>
 	${statisticDetailsResults.clear()}
 </c:set>

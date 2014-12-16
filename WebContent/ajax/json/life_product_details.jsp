@@ -5,6 +5,7 @@
 <session:get />
 
 <c:set var="tranId" value="${data.current.transactionId}" />
+<c:set var="continueOnValidationError" value="${false}" />
 
 <%-- Build XML required for Life Broker request --%>
 <c:set var="requestXML">
@@ -27,14 +28,24 @@
 					debugVar="debugXml"
 					verticalCode="${fn:toUpperCase(vertical)}"
 					configDbKey="quoteService"
+					validationErrorsVar="validationErrors"
+					isValidVar="isValid"
+					continueOnValidationError="${continueOnValidationError}"
 					styleCodeId="${pageSettings.getBrandId()}"  />
 
-<%-- Add the results to the current session data --%>
-<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
-
-<go:log source="life_product_details_jsp" level="DEBUG">${resultXml}</go:log>
-<go:log source="life_product_details_jsp" level="DEBUG">${debugXml}</go:log>
-
-${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+<c:choose>
+	<c:when test="${isValid || continueOnValidationError}">
+		<%-- Add the results to the current session data --%>
+		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
+		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
+		
+		<go:log source="life_product_details_jsp" level="DEBUG">${resultXml}</go:log>
+		<go:log source="life_product_details_jsp" level="DEBUG">${debugXml}</go:log>
+		
+		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+	</c:when>
+	<c:otherwise>
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="life_product_details.jsp"/>
+	</c:otherwise>
+</c:choose>

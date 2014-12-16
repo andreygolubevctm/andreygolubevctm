@@ -55,8 +55,7 @@
                         method: "trackQuoteEvent",
                         object: {
                             action: "Retrieve",
-                            transactionID: parseInt(transaction_id, 10),
-                            vertical: "Home_Contents"
+                            transactionID: parseInt(transaction_id, 10)
                         }
                     });
                 } else {
@@ -64,8 +63,7 @@
                         method: "trackQuoteEvent",
                         object: {
                             action: "Start",
-                            transactionID: parseInt(transaction_id, 10),
-                            vertical: "Home_Contents"
+                            transactionID: parseInt(transaction_id, 10)
                         }
                     });
                 }
@@ -271,7 +269,7 @@
             var email = $("#home_policyHolder_email").val();
             var marketOptIn = null;
             var mVal = $("input[name=home_policyHolder_marketing]:checked").val();
-            var gender = $("#home_policyHolder_title").val() == "MR" ? "M" : "F";
+            var gender = $("#home_policyHolder_title").val() == "MR" ? "Male" : "Female";
             if ($("#home_policyHolder_title").val() === "") {
                 gender = null;
             }
@@ -327,7 +325,12 @@
                 email: null,
                 emailID: null,
                 marketOptIn: null,
-                okToCall: null
+                okToCall: null,
+                verticalFilter: null,
+                ownProperty: null,
+                principalResidence: null,
+                replaceContentsCost: null,
+                rebuildCost: null
             };
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("start")) {
                 _.extend(response, {
@@ -1174,7 +1177,7 @@
             onBeforeShowBridgingPage: onBeforeShowBridgingPage,
             onBeforeShowTemplate: renderScrapes,
             onBeforeShowModal: renderScrapes,
-            onAfterShowModal: null,
+            onAfterShowModal: requestTracking,
             onAfterShowTemplate: onAfterShowTemplate,
             onBeforeHideTemplate: null,
             onAfterHideTemplate: onAfterHideTemplate,
@@ -1183,8 +1186,8 @@
             onApplySuccess: onApplySuccess,
             retrieveExternalCopy: retrieveExternalCopy,
             additionalTrackingData: {
-                vertical: "Home_Contents",
-                verticalFilter: meerkat.modules.home.getVerticalFilter()
+                verticalFilter: null,
+                productName: null
             }
         };
         meerkat.modules.moreInfo.initMoreInfo(options);
@@ -1436,6 +1439,7 @@
         }
     }
     function onAfterShowTemplate() {
+        requestTracking();
         if (meerkat.modules.deviceMediaState.get() == "lg" || meerkat.modules.deviceMediaState.get() == "md") {
             fixSidebarHeight(".paragraphedContent", ".moreInfoRightColumn", $bridgingContainer);
         }
@@ -1555,12 +1559,12 @@
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: "trackBridgingClick",
             object: {
-                vertical: "Home_Contents",
                 type: type,
                 quoteReferenceNumber: product.leadNo,
                 transactionID: meerkat.modules.transactionId.get(),
                 productID: product.productId,
-                verticalFilter: meerkat.modules.home.getVerticalFilter()
+                verticalFilter: meerkat.modules.home.getVerticalFilter(),
+                productBrandCode: product.brandCode
             }
         });
         meerkat.modules.session.poke();
@@ -1574,7 +1578,6 @@
                 transactionID: transaction_id,
                 productID: product.productId,
                 productBrandCode: product.brandCode,
-                vertical: "Home_Contents",
                 verticalFilter: meerkat.modules.home.getVerticalFilter()
             }
         });
@@ -1586,8 +1589,8 @@
                 transactionID: transaction_id,
                 productID: product.productId,
                 productBrandCode: product.brandCode,
-                vertical: "Home_Contents",
-                verticalFilter: meerkat.modules.home.getVerticalFilter()
+                verticalFilter: meerkat.modules.home.getVerticalFilter(),
+                productName: product.headline.name
             }
         });
         meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
@@ -1617,8 +1620,17 @@
             return;
         }
     }
-    function renderScrapes(scrapeData) {
+    function requestTracking() {
+        var settings = {
+            additionalTrackingData: {
+                verticalFilter: meerkat.modules.home.getVerticalFilter(),
+                productName: meerkat.modules.moreInfo.getOpenProduct().headline.name
+            }
+        };
+        meerkat.modules.moreInfo.updateSettings(settings);
         trackProductView();
+    }
+    function renderScrapes(scrapeData) {
         updateQuoteSummaryTable();
         if (typeof scrapeData != "undefined" && typeof scrapeData.scrapes != "undefined" && scrapeData.scrapes.length) {
             $.each(scrapeData.scrapes, function(key, scrape) {
@@ -2318,7 +2330,6 @@
             }
         }
         var data = {
-            vertical: "Home_Contents",
             actionStep: "Results",
             display: display,
             paymentPlan: $("#navbar-filter .dropdown.filter-frequency span:first-child").text(),

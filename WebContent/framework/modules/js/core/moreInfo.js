@@ -46,7 +46,8 @@
 			retrieveExternalCopy: null, // could just return a simple javascript object, or a deferred promise (ajax request).
 			additionalTrackingData: null // add an object of additional tracking data to pass to trackProductView.
 		},
-		settings = {};
+		settings = {},
+		visibleBodyClass = 'moreInfoVisible';
 
 	/* Initialise the more info module with options passed from your vertical */
 	function initMoreInfo(options) {
@@ -164,6 +165,8 @@
 	 */
 	function showTemplate(moreInfoContainer) {
 
+		toggleBodyClass(true);
+
 		// show loading animation
 		moreInfoContainer.html(meerkat.modules.loadingAnimation.getTemplate()).show();
 
@@ -202,15 +205,13 @@
 						});
 					}
 					moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, showTemplateCallback);
+					isBridgingPageOpen = true;
 					if(typeof settings.onAfterShowTemplate == 'function') {
 						settings.onAfterShowTemplate();
 					}
 				});
 				totalDuration = animDuration + scrollToTopDuration;
 			}
-
-
-			isBridgingPageOpen = true;
 
 			_.delay(function () {
 				meerkat.messaging.publish(moduleEvents.bridgingPage.SHOW, {
@@ -219,8 +220,7 @@
 			}, totalDuration);
 
 			var trackData = {
-					productID: product.productId,
-					vertical: meerkat.site.vertical
+					productID: product.productId
 			};
 
 			if(settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === 'object') {
@@ -254,6 +254,8 @@
 	 */
 	function showModal(){
 		prepareProduct( function moreInfoShowModalSuccess(){
+
+			toggleBodyClass(true);
 
 			var options = {
 				htmlContent: htmlTemplate(product),
@@ -289,8 +291,7 @@
 			}, 0);
 
 			var trackData = {
-					productID: product.productId,
-					vertical: meerkat.site.vertical
+					productID: product.productId
 			};
 
 			if(settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === 'object') {
@@ -343,6 +344,7 @@
 		}
 
 		moreInfoContainer[settings.hideAction](400, function() {
+			toggleBodyClass(false);
 			hideTemplateCallback(moreInfoContainer);
 			if(typeof settings.onAfterHideTemplate == 'function') {
 				settings.onAfterHideTemplate();
@@ -352,7 +354,9 @@
 
 	function hideModal() {
 		$('#'+modalId).modal('hide');
-		$(".bridgingContainer, .more-info-content").hide();
+		$(".bridgingContainer, .more-info-content").hide(function(){
+			toggleBodyClass(false);
+		});
 		isModalOpen = false;
 	}
 
@@ -448,6 +452,15 @@
 	function updateSettings(updatedSettings) {
 		if (typeof updatedSettings !== 'object') {return;}
 		settings = $.extend(true, {}, settings, updatedSettings);
+	}
+
+	function toggleBodyClass(show) {
+		show = show || false;
+		if(show) {
+			$('body').addClass(visibleBodyClass);
+		} else {
+			$('body').removeClass(visibleBodyClass);
+		}
 	}
 
 

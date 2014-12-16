@@ -2,6 +2,9 @@
 	.options-list > div {
 		min-height: 180px;
 	}
+	@media print {
+		display: none !important;
+	}
 }
 
 #confirmation-compare-options a {
@@ -45,11 +48,5 @@
 			background-color: @related-icon-active-bg-color;
 		}
 
-	}
-}
-
-@media print {
-	#confirmation-compare-options {
-		display: none;
 	}
 }

@@ -5,7 +5,6 @@
 <session:get settings="true" authenticated="true" verticalCode="HOMELOAN" />
 
 <%-- VARIABLES --%>
-<c:set var="secret_key" value="kD0axgKXQ5HixuWsJ8-2BA" />
 <c:set var="brand" value="${pageSettings.getBrandCode()}" />
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
 <c:set var="source" value="QUOTE" />
@@ -43,13 +42,18 @@
 
 <%-- Get the transaction ID (after recovery etc) --%>
 <c:set var="tranId" value="${data['current/transactionId']}" />
+<c:set var="rootId" value="${data['current/rootId']}" />
 <c:if test="${empty tranId}"><c:set var="tranId" value="0" /></c:if>
+<c:if test="${empty rootId}"><c:set var="rootId" value="0" /></c:if>
 
 
 
 <%-- SUBMIT TO PARTNER --%>
 <jsp:useBean id="appService" class="com.ctm.services.homeloan.HomeLoanOpportunityService" scope="page" />
-<c:set var="submitResult" value="${appService.submitOpportunity(pageContext.getRequest())}" />
+<jsp:useBean id="homeloanService" class="com.ctm.services.homeloan.HomeLoanService" scope="page" />
+<c:set var="secret_key" value="${appService.getSecretKey()}" />
+<c:set var="model" value="${homeloanService.mapParametersToModel(pageContext.getRequest())}" />
+<c:set var="submitResult" value="${appService.submitOpportunity(pageContext.getRequest(), model)}" />
 <c:if test="${not empty submitResult}"><go:log level="DEBUG" source="homeloan_submit">${submitResult.toString()}</go:log></c:if>
 
 
@@ -160,7 +164,9 @@
 								<%-- Write confirmation and C touch --%>
 								<agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
 								<agg:write_touch transaction_id="${tranId}" touch="C" />
-
+								<c:if test="${tranId ne rootId}">
+									<agg:write_touch transaction_id="${rootId}" touch="C" />
+								</c:if>
 								<go:log level="INFO" source="homeloan_submit">CONFIRMATION: transactionId:${tranId}, opportunityId:${flexOpportunityId}</go:log>
 
 								<%-- crappy hack to inject properties --%>

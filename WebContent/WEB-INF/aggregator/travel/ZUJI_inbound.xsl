@@ -24,7 +24,7 @@
 
 		<xsl:choose>
 			<!-- ACCEPTABLE -->
-			<xsl:when test="/pr:PricingResponse/pr:Plans">
+			<xsl:when test="/pr:PricingResponse/pr:Plans/pr:Plan/pr:PlanId">
 				<xsl:apply-templates select="/pr:PricingResponse/pr:Plans"/>
 			</xsl:when>
 			<!-- UNACCEPTABLE -->

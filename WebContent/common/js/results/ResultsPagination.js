@@ -679,6 +679,7 @@ ResultsPagination = {
 			}).off('touchend.results').on('touchend.results', function() {
 				Results.pagination.isTouching = false;
 				Results.pagination.isScrolling = false;
+				Results.pagination.cancelExistingSnapTo();
 				setTimeout(function() {
 					if(Results.pagination.isScrolling === false){
 						Results.pagination.nativeScrollSnapTo();

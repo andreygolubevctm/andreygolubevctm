@@ -3490,6 +3490,7 @@ meerkat.logging.init = function() {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         journeyEngine: {
+            BEFORE_STEP_CHANGED: "BEFORE_STEP_CHANGED",
             STEP_CHANGED: "STEP_CHANGED",
             STEP_INIT: "STEP_INIT",
             READY: "JOURNEY_READY",
@@ -3657,6 +3658,7 @@ meerkat.logging.init = function() {
         return true;
     }
     function _goToStep(step, eventObject) {
+        meerkat.messaging.publish(moduleEvents.BEFORE_STEP_CHANGED);
         if (currentStep !== null && currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
         onStepEnter(step, eventObject);
         _goToSlide(step, eventObject);
@@ -4214,11 +4216,22 @@ meerkat.logging.init = function() {
     }, moduleEvents = events.leavePageWarning;
     var safeToLeave = true;
     function initLeavePageWarning() {
-        var ie10OrBelow = meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9() || meerkat.modules.performanceProfiling.isIE10();
-        if (meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && ie10OrBelow === false) {
+        var supportsUnload = !meerkat.modules.performanceProfiling.isIos() && !meerkat.modules.performanceProfiling.isIE8() && !meerkat.modules.performanceProfiling.isIE9() && !meerkat.modules.performanceProfiling.isIE10();
+        $(document).ready(function() {
+            safeToLeave = meerkat.site.vertical === "generic" || meerkat.site.pageAction == "confirmation" ? true : false;
+            if (supportsUnload === false && $("#js-logo-link").length) {
+                $("#js-logo-link").on("click", function(e) {
+                    meerkat.modules.leavePageWarning.disable();
+                    if (!confirm(fetchMessage())) {
+                        return false;
+                    }
+                });
+            }
+        });
+        if (meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && supportsUnload === true) {
             window.onbeforeunload = function() {
-                if (safeToLeave === false && meerkat.modules.saveQuote.isAvailable() === true) {
-                    return meerkat.site.leavePageWarning.message;
+                if (safeToLeave === false) {
+                    return fetchMessage();
                 } else {
                     return;
                 }
@@ -4229,6 +4242,16 @@ meerkat.logging.init = function() {
             meerkat.messaging.subscribe(meerkatEvents.saveQuote.QUOTE_SAVED, function quoteSaved() {
                 safeToLeave = true;
             });
+        }
+    }
+    function fetchMessage() {
+        if (meerkat.modules.saveQuote.isAvailable() === true) {
+            return meerkat.site.leavePageWarning.message;
+        } else {
+            if (typeof meerkat.site.leavePageWarning.defaultMessage !== "undefined") {
+                return meerkat.site.leavePageWarning.defaultMessage;
+            }
+            return;
         }
     }
     function disable() {
@@ -4478,7 +4501,7 @@ meerkat.logging.init = function() {
         onApplySuccess: null,
         retrieveExternalCopy: null,
         additionalTrackingData: null
-    }, settings = {};
+    }, settings = {}, visibleBodyClass = "moreInfoVisible";
     function initMoreInfo(options) {
         settings = $.extend({}, defaults, options);
         if (meerkat.site.pageAction === "confirmation") return false;
@@ -4546,6 +4569,7 @@ meerkat.logging.init = function() {
         settings.runDisplayMethod(productId);
     }
     function showTemplate(moreInfoContainer) {
+        toggleBodyClass(true);
         moreInfoContainer.html(meerkat.modules.loadingAnimation.getTemplate()).show();
         prepareProduct(function moreInfoShowSuccess() {
             var htmlString = htmlTemplate(product);
@@ -4573,21 +4597,20 @@ meerkat.logging.init = function() {
                         });
                     }
                     moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, showTemplateCallback);
+                    isBridgingPageOpen = true;
                     if (typeof settings.onAfterShowTemplate == "function") {
                         settings.onAfterShowTemplate();
                     }
                 });
                 totalDuration = animDuration + scrollToTopDuration;
             }
-            isBridgingPageOpen = true;
             _.delay(function() {
                 meerkat.messaging.publish(moduleEvents.bridgingPage.SHOW, {
                     isOpen: isBridgingPageOpen
                 });
             }, totalDuration);
             var trackData = {
-                productID: product.productId,
-                vertical: meerkat.site.vertical
+                productID: product.productId
             };
             if (settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === "object") {
                 trackData = $.extend({}, trackData, settings.additionalTrackingData);
@@ -4608,6 +4631,7 @@ meerkat.logging.init = function() {
     }
     function showModal() {
         prepareProduct(function moreInfoShowModalSuccess() {
+            toggleBodyClass(true);
             var options = {
                 htmlContent: htmlTemplate(product),
                 hashId: "moreinfo",
@@ -4633,8 +4657,7 @@ meerkat.logging.init = function() {
                 });
             }, 0);
             var trackData = {
-                productID: product.productId,
-                vertical: meerkat.site.vertical
+                productID: product.productId
             };
             if (settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === "object") {
                 trackData = $.extend({}, trackData, settings.additionalTrackingData);
@@ -4667,6 +4690,7 @@ meerkat.logging.init = function() {
             settings.onBeforeHideTemplate();
         }
         moreInfoContainer[settings.hideAction](400, function() {
+            toggleBodyClass(false);
             hideTemplateCallback(moreInfoContainer);
             if (typeof settings.onAfterHideTemplate == "function") {
                 settings.onAfterHideTemplate();
@@ -4675,7 +4699,9 @@ meerkat.logging.init = function() {
     }
     function hideModal() {
         $("#" + modalId).modal("hide");
-        $(".bridgingContainer, .more-info-content").hide();
+        $(".bridgingContainer, .more-info-content").hide(function() {
+            toggleBodyClass(false);
+        });
         isModalOpen = false;
     }
     function showTemplateCallback() {
@@ -4742,6 +4768,14 @@ meerkat.logging.init = function() {
             return;
         }
         settings = $.extend(true, {}, settings, updatedSettings);
+    }
+    function toggleBodyClass(show) {
+        show = show || false;
+        if (show) {
+            $("body").addClass(visibleBodyClass);
+        } else {
+            $("body").removeClass(visibleBodyClass);
+        }
     }
     meerkat.modules.register("moreInfo", {
         initMoreInfo: initMoreInfo,
@@ -5574,6 +5608,33 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $renderingModeFld;
+    function init() {
+        if (typeof meerkat.site === "undefined") {
+            return;
+        }
+        if (meerkat.site.pageAction == "confirmation") {
+            return;
+        }
+        var fld = meerkat.site.vertical == "car" ? "quote" : meerkat.site.vertical;
+        $renderingModeFld = $("#" + fld + "_renderingMode");
+        if (!$renderingModeFld.length) {
+            $("#mainform").append('<input type="hidden" name="' + fld + '_renderingMode" id="' + fld + '_renderingMode" class="" value="' + meerkat.modules.deviceMediaState.get() + '" data-autosave="true">');
+        } else {
+            meerkat.messaging.subscribe(meerkatEvents.journeyEngine.READY, record);
+        }
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.BEFORE_STEP_CHANGED, record);
+        meerkat.messaging.subscribe(meerkatEvents.RESULTS_INITIALISED, record);
+    }
+    function record() {
+        $renderingModeFld.val(meerkat.modules.deviceMediaState.get());
+    }
+    meerkat.modules.register("renderingMode", {
+        init: init
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = window.meerkat.logging.info;
     var events = {
         resultsHeaderBar: {}
@@ -5839,7 +5900,6 @@ meerkat.logging.init = function() {
                     method: "trackQuoteProductList",
                     object: {
                         products: sTagProductList,
-                        vertical: meerkat.site.vertical,
                         verticalFilter: typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null
                     }
                 });
@@ -6951,6 +7011,38 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, currentJourney = null, currentJourneyList = [], currentJourneyFieldLabel = "currentJourney", $currentJourney = null;
+    function init() {
+        $(document).ready(function() {
+            var prefix = meerkat.site.vertical == "car" ? "quote" : meerkat.site.vertical;
+            var name = prefix + "_" + currentJourneyFieldLabel;
+            $currentJourney = $("#" + name);
+            var current_journey = $currentJourney.val();
+            if (!_.isEmpty(current_journey)) {
+                set(current_journey);
+            }
+        });
+    }
+    function set(current_journey) {
+        currentJourney = current_journey;
+        currentJourneyList = _.isEmpty(currentJourney) ? [] : currentJourney.split("-");
+        $currentJourney.val(currentJourney);
+    }
+    function get(to_list) {
+        to_list = to_list || false;
+        return to_list === true ? _.extend({}, currentJourneyList) : currentJourney;
+    }
+    function isActive(jrny) {
+        return _.indexOf(currentJourneyList, String(jrny)) >= 0;
+    }
+    meerkat.modules.register("splitTest", {
+        init: init,
+        get: get,
+        isActive: isActive
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat;
     var events = {
         tracking: {
@@ -6960,7 +7052,6 @@ meerkat.logging.init = function() {
     }, moduleEvents = events.tracking;
     var lastFieldTouch = null;
     var lastFieldTouchXpath = null;
-    var currentJourney = 1;
     function recordTouch(touchType, touchComment, includeFormData, callback) {
         var data = [];
         if (includeFormData) {
@@ -7110,7 +7201,6 @@ meerkat.logging.init = function() {
             });
         });
         $(document).ready(function() {
-            setCurrentJourney();
             initLastFieldTracking();
             if (typeof meerkat !== "undefined" && typeof meerkat.site !== "undefined" && typeof meerkat.site.tracking !== "undefined" && meerkat.site.tracking.userTrackingEnabled === true) {
                 meerkat.modules.utilities.pluginReady("sessionCamRecorder").done(function() {
@@ -7120,14 +7210,14 @@ meerkat.logging.init = function() {
         });
     }
     function getCurrentJourney() {
-        return currentJourney;
+        return meerkat.modules.splitTest.get();
     }
-    function setCurrentJourney() {
-        var vertical = meerkat.site.vertical === "car" ? "quote" : meerkat.site.vertical;
-        $el = $("#" + vertical + "_currentJourney");
-        if ($el) {
-            currentJourney = $el.val();
+    function getVertical() {
+        var vertical = meerkat.site.vertical;
+        if (vertical === "home") {
+            vertical = "Home_Contents";
         }
+        return vertical;
     }
     function updateObjectData(object) {
         if (typeof object.brandCode === "undefined") {
@@ -7141,6 +7231,12 @@ meerkat.logging.init = function() {
         }
         if (typeof object.currentJourney === "undefined") {
             object.currentJourney = getCurrentJourney();
+        }
+        if (typeof object.vertical === "undefined") {
+            object.vertical = getVertical();
+        }
+        if (typeof object.verticalFilter === "undefined") {
+            object.verticalFilter = null;
         }
         object.trackingKey = meerkat.modules.trackingKey.get();
         object.lastFieldTouch = lastFieldTouch;

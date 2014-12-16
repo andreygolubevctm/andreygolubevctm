@@ -501,7 +501,6 @@
 
 
 		var data = {
-				vertical: 'Home_Contents', // has to be this. meerkat.site.vertical
 				actionStep: 'Results',
 				display: display,
 				paymentPlan: $('#navbar-filter .dropdown.filter-frequency span:first-child').text(),

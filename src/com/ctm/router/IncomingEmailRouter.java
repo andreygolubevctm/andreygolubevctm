@@ -61,7 +61,7 @@ public class IncomingEmailRouter extends HttpServlet {
 		String emailUrl = incomingEmailService.getRedirectionUrl(emailData);
 
 		AccessTouchService touchService = new AccessTouchService();
-		touchService.recordTouch(emailData.getTransactionId(), TOUCH_TYPE);
+		touchService.recordTouch(request, emailData.getTransactionId(), TOUCH_TYPE);
 
 		// Validate the URL
 		if (emailUrl.length() == 0) {

@@ -1,0 +1,130 @@
+package com.ctm.services.homeloan;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.ctm.dao.TransactionDetailsDao;
+import com.ctm.dao.homeloan.HomeloanUnconfirmedLeadsDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.homeloan.HomeLoanModel;
+
+public class HomeLoanServiceTest {
+
+	private HomeloanUnconfirmedLeadsDao homeloanUnconfirmedLeadsDao;
+	private TransactionDetailsDao transactionDetailsDao;
+	private HomeLoanService service;
+	private HomeLoanOpportunityService opportunityService;
+	private long transactionId = 1;
+
+	@Before
+	public void setUp() throws Exception {
+		homeloanUnconfirmedLeadsDao = mock(HomeloanUnconfirmedLeadsDao.class);
+		transactionDetailsDao =  mock(TransactionDetailsDao.class);
+		opportunityService =  mock(HomeLoanOpportunityService.class);
+		service = new HomeLoanService(transactionDetailsDao, homeloanUnconfirmedLeadsDao, opportunityService);
+	}
+
+	@Test
+	public void shouldNotSubmitIfFirstNameIsNull() throws DaoException {
+		List<HomeLoanModel> value = new ArrayList<>();
+		HomeLoanModel modelWithoutFirstName = new HomeLoanModel();
+		modelWithoutFirstName.setTransactionId(transactionId);
+		modelWithoutFirstName.setState("QLD");
+		modelWithoutFirstName.setContactFirstName(null);
+		modelWithoutFirstName.setContactSurname("Orlov");
+		modelWithoutFirstName.setContactPhoneNumber("0402111111");
+		modelWithoutFirstName.setEmailAddress("preload.testing@comparethemarket.com.au");
+		modelWithoutFirstName.setAddressCity("Toowong");
+		modelWithoutFirstName.setAddressPostcode("4066");
+		modelWithoutFirstName.setAdditionalInformation("OUTBOUND LEAD");
+		value.add(modelWithoutFirstName);
+		when(homeloanUnconfirmedLeadsDao.getUnconfirmedTransactionIds()).thenReturn(value);
+		HttpServletRequest request = mock(HttpServletRequest.class);
+
+		service.scheduledLeadGenerator(request);
+
+		// verify service.submitOpportunity was never called
+		verifyZeroInteractions(opportunityService);
+	}
+
+	@Test
+	public void shouldNotSubmitIfLastNameIsEmpty() throws DaoException {
+		List<HomeLoanModel> value = new ArrayList<>();
+		HomeLoanModel modelWithoutFirstName = new HomeLoanModel();
+		modelWithoutFirstName.setTransactionId(transactionId);
+		modelWithoutFirstName.setState("QLD");
+		modelWithoutFirstName.setContactFirstName("Aleksandr");
+		modelWithoutFirstName.setContactSurname("");
+		modelWithoutFirstName.setContactPhoneNumber("0402111111");
+		modelWithoutFirstName.setEmailAddress("preload.testing@comparethemarket.com.au");
+		modelWithoutFirstName.setAddressCity("Toowong");
+		modelWithoutFirstName.setAddressPostcode("4066");
+		modelWithoutFirstName.setAdditionalInformation("OUTBOUND LEAD");
+		value.add(modelWithoutFirstName);
+		when(homeloanUnconfirmedLeadsDao.getUnconfirmedTransactionIds()).thenReturn(value);
+		HttpServletRequest request = mock(HttpServletRequest.class);
+
+		service.scheduledLeadGenerator(request);
+
+		// verify service.submitOpportunity was never called
+		verifyZeroInteractions(opportunityService);
+	}
+
+	@Test
+	public void shouldNotSubmitIfPhoneNumberIsEmpty() throws DaoException {
+		List<HomeLoanModel> value = new ArrayList<>();
+		HomeLoanModel modelWithoutFirstName = new HomeLoanModel();
+		modelWithoutFirstName.setTransactionId(transactionId);
+		modelWithoutFirstName.setState("QLD");
+		modelWithoutFirstName.setContactFirstName("Aleksandr");
+		modelWithoutFirstName.setContactSurname("Orlov");
+		modelWithoutFirstName.setContactPhoneNumber("");
+		modelWithoutFirstName.setEmailAddress("preload.testing@comparethemarket.com.au");
+		modelWithoutFirstName.setAddressCity("Toowong");
+		modelWithoutFirstName.setAddressPostcode("4066");
+		modelWithoutFirstName.setAdditionalInformation("OUTBOUND LEAD");
+		value.add(modelWithoutFirstName);
+		when(homeloanUnconfirmedLeadsDao.getUnconfirmedTransactionIds()).thenReturn(value);
+		HttpServletRequest request = mock(HttpServletRequest.class);
+
+		service.scheduledLeadGenerator(request);
+
+		// verify service.submitOpportunity was never called
+		verifyZeroInteractions(opportunityService);
+	}
+
+	@Test
+	public void shouldSubmitIfAllRequiredFieldsExist() throws DaoException {
+		List<HomeLoanModel> value = new ArrayList<>();
+		HomeLoanModel model = new HomeLoanModel();
+		model.setTransactionId(transactionId);
+		model.setState("QLD");
+		model.setContactFirstName("Aleksandr");
+		model.setContactSurname("Orlov");
+		model.setContactPhoneNumber("0402111111");
+		model.setEmailAddress("preload.testing@comparethemarket.com.au");
+		model.setAddressCity("Toowong");
+		model.setAddressPostcode("4066");
+		model.setAdditionalInformation("OUTBOUND LEAD");
+		value.add(model);
+		when(homeloanUnconfirmedLeadsDao.getUnconfirmedTransactionIds()).thenReturn(value);
+		HttpServletRequest request = mock(HttpServletRequest.class);
+
+		service.scheduledLeadGenerator(request);
+
+		// verify service.submitOpportunity was called once
+		verify(opportunityService, times(1)).submitOpportunity(request, model);
+
+	}
+}

@@ -76,10 +76,6 @@
 				validate: false,
 				customValidation: function validateSelection(callback) {
 
-					if (Results.getSelectedProduct() === false) {
-						callback(false);
-					}
-
 					callback(true);
 				}
 			},
@@ -88,6 +84,8 @@
 				meerkat.modules.homeloanFilters.initFilters();
 			},
 			onBeforeEnter: function enterResultsStep(event) {
+				Results.removeSelectedProduct();
+
 				if(event.isForward === true) {
 					$('#resultsPage').addClass('hidden');
 					$('.morePromptContainer, .comparison-rate-disclaimer').addClass('hidden');
@@ -122,9 +120,10 @@
 				},
 				onInitialise: function() {
 					meerkat.modules.homeloanEnquiry.initHomeloanEnquiry();
+					meerkat.modules.homeloanSnapshot.initHomeloanSnapshot();
 				},
 				onBeforeEnter: function() {
-					meerkat.modules.homeloanSnapshot.initHomeloanSnapshot();
+					meerkat.modules.homeloanSnapshot.onEnter();
 
 					// Populate hidden fields to store product info
 					if (Results.getSelectedProduct() !== false && Results.getSelectedProduct().hasOwnProperty('id')) {

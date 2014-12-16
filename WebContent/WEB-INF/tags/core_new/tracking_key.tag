@@ -17,6 +17,4 @@ in ALL calls to tracking.
 	<c:set var="journeyVertical" value="quote" />
 </c:if>
 
-<go:setData dataVar="data" xpath="${journeyVertical}/currentJourney" value="${journeyRef}" />
-
 <field:hidden xpath="${journeyVertical}/trackingKey" defaultValue="${data[journeyVertical].trackingKey}" />

@@ -900,14 +900,16 @@ div[class*="ToggleArea"].show_Y {
 .homeloan .slide-feature-emailquote,
 .homeloan .slide-feature-emailresults,
 .homeloan .slide-edit-quote-dropdown,
-.homeloan .slide-feature-filters {
+.homeloan .slide-feature-filters,
+.homeloan .blank-enquire {
   display: none;
 }
 .homeloan .slide-feature-back a,
 .homeloan .slide-feature-emailquote a,
 .homeloan .slide-feature-emailresults a,
 .homeloan .slide-edit-quote-dropdown a,
-.homeloan .slide-feature-filters a {
+.homeloan .slide-feature-filters a,
+.homeloan .blank-enquire a {
   white-space: nowrap;
 }
 .homeloan .slide-feature-pagination {
@@ -916,6 +918,7 @@ div[class*="ToggleArea"].show_Y {
 .homeloan[data-step="situation"] .slide-feature-emailquote.privacyOptinChecked {
   display: block;
 }
+.homeloan[data-step="results"] .blank-enquire,
 .homeloan[data-step="results"] .slide-feature-back,
 .homeloan[data-step="results"] .slide-feature-emailquote.privacyOptinChecked,
 .homeloan[data-step="results"] .slide-edit-quote-dropdown,
@@ -1045,6 +1048,26 @@ div[class*="ToggleArea"].show_Y {
 }
 .homeloan .confirmation .btn-cta {
   border: none;
+}
+.homeloan .enquire-now-blank {
+  margin-top: 20px;
+}
+.homeloan .blank-enquire > div {
+  padding-top: 15px;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .homeloan .blank-enquire > div h5 {
+    margin-top: 0;
+  }
+}
+@media (min-width: 1200px) {
+  .homeloan .blank-enquire > div {
+    padding-top: 20px;
+  }
+}
+.homeloan .product-type-container .checkbox {
+  display: inline-block;
+  width: 49%;
 }
 @media (min-width: 768px) {
   .yourLoanDetails-bubble {

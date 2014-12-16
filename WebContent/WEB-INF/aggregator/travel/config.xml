@@ -10,13 +10,27 @@
 	<debug-dir>travel/app-logs-debug</debug-dir>
 	<validation-file>WEB-INF/xsd/travel/travelQuoteResults.xsd</validation-file>
 
-	<service name="WEBJ" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=305</soap-url>
-		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
-		<inbound-xsl>WEBJ_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ,rootURL=https://uat-webjetau.agaassistance.com.au/</inbound-xsl-parms>
+	<service name="AGIS" type="soap">
+		<soap-url>http://192.168.149.45/services/3.1/getTravelQuotes</soap-url>
+		<soap-action>getTravelQuotes</soap-action>
+		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000001</outbound-xsl-parms>
+		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
+	<service name="OTIS" type="soap">
+		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
+		<soap-user>CtM</soap-user>
+		<soap-password>F7AT8v57udgE5rx</soap-password>
+		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms></outbound-xsl-parms>
+		<inbound-xsl>FPE_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS,quoteUrl=https://uat-oti.agaassistance.com.au</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+		<content-type>text/xml</content-type>
+		<accept>text/xml</accept>
 	</service>
 
 	<service name="WLDC" type="url-encoded">
@@ -67,7 +81,7 @@
 	</service>
 
 	<service name="DUIN" type="soap">
-		<soap-url>http://www.duinsure.com.au/quoteEngineXML</soap-url>
+		<soap-url>http://www.duinsure.com.au/sites/duinsureaus.nsf/quoteEngineXMLSnow</soap-url>
 		<outbound-xsl>DUIN_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>DUIN_inbound.xsl</inbound-xsl>
@@ -122,7 +136,7 @@
 	<!-- The reference to travel_price_service_1COV.jsp below must not be removed as 1COV has some special rules in place (travel_price_service_1COV) waiting for updated algorithm from partners before re-instating the file
 	To be used for 1Cov, SKII, 30UN & ITRK -->
 	<service name="1COV" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=292</soap-url>
+		<soap-url>http://localhost:8080/ctm/rating/travel_price_service_1COV.jsp?providerId=292</soap-url>
 		<outbound-xsl>1COV_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>1COV_inbound.xsl</inbound-xsl>
@@ -221,13 +235,17 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="WEBJ" type="url-encoded">
-		<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=305</soap-url>
+	<service name="WEBJ" type="soap">
+		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
+		<soap-user>CtM</soap-user>
+		<soap-password>F7AT8v57udgE5rx</soap-password>
 		<outbound-xsl>WEBJ_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>WEBJ_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WEBJ,quoteUrl=https://uat-webjetau.agaassistance.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
+		<content-type>text/xml</content-type>
+		<accept>text/xml</accept>
 	</service>
 
 	<service name="ZUJI" type="soap">

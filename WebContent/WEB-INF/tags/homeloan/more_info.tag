@@ -47,16 +47,6 @@
 			</div>
 
 			<div class="col-sm-4 col-xs-6">
-				<h5>Rates</h5>
-				{{ if(typeof obj.formatted.intrRate !== 'undefined') { }}
-				Interest rate &nbsp;
-				{{=obj.formatted.intrRate}}<br>
-				{{ } }}
-				{{ if(typeof obj.formatted.comparRate !== 'undefined') { }}
-				Comparison rate* &nbsp;
-				{{=obj.formatted.comparRate}}<br>
-				{{ } }}
-
 				<h5>Fees</h5>
 				{{ if(typeof obj.formatted.appFees !== 'undefined') { }}
 				Application fee &nbsp;

@@ -92,8 +92,7 @@
 						method:'trackQuoteEvent',
 						object: {
 							action: 'Retrieve',
-							transactionID: parseInt(transaction_id, 10),
-							vertical: 'Home_Contents' // has to be this. meerkat.site.vertical
+							transactionID: parseInt(transaction_id, 10)
 						}
 					});
 				} else {
@@ -101,8 +100,7 @@
 						method: 'trackQuoteEvent',
 						object: {
 							action: 'Start',
-							transactionID: parseInt(transaction_id, 10),
-							vertical: 'Home_Contents' // has to be this. meerkat.site.vertical
+							transactionID: parseInt(transaction_id, 10)
 						}
 					});
 				}
@@ -355,7 +353,7 @@
 		var email = $('#home_policyHolder_email').val();
 		var marketOptIn = null;
 		var mVal = $('input[name=home_policyHolder_marketing]:checked').val();
-		var gender = $('#home_policyHolder_title').val() == 'MR' ? 'M' : 'F';
+		var gender = $('#home_policyHolder_title').val() == 'MR' ? 'Male' : 'Female';
 		if($('#home_policyHolder_title').val() === '') {
 			gender = null;
 		}
@@ -414,32 +412,37 @@
 				email:					null,
 				emailID:				null,
 				marketOptIn:			null,
-				okToCall:				null
+				okToCall:				null,
+				verticalFilter:			null,
+				ownProperty:			null,
+				principalResidence:		null,
+				replaceContentsCost:	null,
+				rebuildCost:			null
 		};
 
 		// Push in values from 1st slide only when have been beyond it
 		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
 			_.extend(response, {
-				commencementDate: commencementDate,
-				postCode: postCode,
-				state: stateCode,
-				verticalFilter: meerkat.modules.home.getVerticalFilter()
+				commencementDate:	commencementDate,
+				postCode:			postCode,
+				state:				stateCode,
+				verticalFilter:		meerkat.modules.home.getVerticalFilter()
 			});
 		}
 
 		// Push in values from 2nd slide only when have been beyond it
 		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('occupancy')) {
 			_.extend(response, {
-				ownProperty:	ownProperty,
-				principalResidence: principalResidence
+				ownProperty:		ownProperty,
+				principalResidence:	principalResidence
 			});
 		}
 
 		// Push in values from 3rd slide only when have been beyond it
 		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('property')) {
 			_.extend(response, {
-				replaceContentsCost: replaceContentsCost,
-				rebuildCost: rebuildCost
+				replaceContentsCost:	replaceContentsCost,
+				rebuildCost:			rebuildCost
 			});
 		}
 
@@ -450,7 +453,7 @@
 				email:			email,
 				marketOptIn:	marketOptIn,
 				okToCall:		okToCall,
-				gender: gender
+				gender:			gender
 			});
 		}
 

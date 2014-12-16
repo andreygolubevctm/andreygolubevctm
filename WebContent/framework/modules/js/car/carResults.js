@@ -52,7 +52,7 @@
 				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
 			}
 			// Split-test to display features by default
-			if(meerkat.modules.tracking.getCurrentJourney() !== '1') {
+			if(meerkat.modules.splitTest.isActive(2)) {
 				displayMode = 'features';
 			}
 			// Init the main Results object
@@ -278,6 +278,11 @@
 		$(document).on("resultsFetchStart", function onResultsFetchStart() {
 			meerkat.modules.journeyEngine.loadingShow('getting your quotes');
 			$('#resultsPage, .loadingDisclaimerText').removeClass('hidden');
+			if (meerkat.site.tracking.brandCode == 'ctm' && meerkat.modules.splitTest.isActive(4)) {
+				$('#resultsPage, .loadingQuoteText').removeClass('hidden');
+			} else {
+				$('#resultsPage, .loadingDisclaimerText').addClass('originalDisclaimer');
+			}
 			// Hide pagination
 			Results.pagination.hide();
 		});
@@ -291,6 +296,11 @@
 			meerkat.modules.journeyEngine.loadingHide();
 
 			$('.loadingDisclaimerText').addClass('hidden');
+			if (meerkat.site.tracking.brandCode == 'ctm' && meerkat.modules.splitTest.isActive(4)) {
+				$('.loadingQuoteText').addClass('hidden');
+			} else {
+				$('.loadingDisclaimerText').addClass('originalDisclaimer');
+			}
 
 			if (Results.getDisplayMode() !== 'price') {
 				// Show pagination

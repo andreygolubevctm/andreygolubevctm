@@ -13,8 +13,6 @@
 	var lastFieldTouch = null;
 	var lastFieldTouchXpath = null;
 
-	var currentJourney = 1;
-
 	function recordTouch(touchType, touchComment, includeFormData, callback){
 
 		var data = [];
@@ -219,9 +217,6 @@
 
 		$(document).ready(function(){
 
-			// Set the journey reference
-			setCurrentJourney();
-
 			initLastFieldTracking();
 			if(typeof meerkat !== 'undefined' && typeof meerkat.site !== 'undefined' && typeof meerkat.site.tracking !== 'undefined'
 				&& meerkat.site.tracking.userTrackingEnabled === true) {
@@ -234,19 +229,17 @@
 	}
 
 	function getCurrentJourney() {
-		return currentJourney;
+		return meerkat.modules.splitTest.get();
 	}
 
-	/**
-	 * Retrieve the current journey reference from the form - used to provide tracking
-	 * with the current splt-test journey
-	 */
-	function setCurrentJourney() {
-		var vertical = meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical;
-		$el = $('#' + vertical + '_currentJourney');
-		if($el) {
-			currentJourney = $el.val();
+	function getVertical() {
+		// Add any other vertical label overrides here
+		var vertical = meerkat.site.vertical;
+		if(vertical === 'home') {
+			vertical = 'Home_Contents';
 		}
+
+		return vertical;
 	}
 
 	/**
@@ -268,6 +261,14 @@
 
 		if (typeof object.currentJourney === "undefined") {
 			object.currentJourney = getCurrentJourney();
+		}
+
+		if (typeof object.vertical === "undefined") {
+			object.vertical = getVertical();
+		}
+
+		if (typeof object.verticalFilter === "undefined") {
+			object.verticalFilter = null;
 		}
 
 		// Always ensure the tracking key exists

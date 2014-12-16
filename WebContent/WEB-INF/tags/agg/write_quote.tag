@@ -21,8 +21,6 @@
 	</c:otherwise>
 </c:choose>
 
-<c:set var="stylecode" value="${fn:toUpperCase(pageSettings.getBrandCode())}" />
-
 <security:populateDataFromParams rootPath="save" />
 <security:populateDataFromParams rootPath="saved" />
 
@@ -95,23 +93,50 @@
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'utilities'}">
-		<c:if test="${not empty data['utilities/privacyoptin'] and data['utilities/privacyoptin'] eq 'Y'}">
+		<c:choose>
+		<c:when test="${not empty data['utilities/privacyoptin'] and data['utilities/privacyoptin'] eq 'Y'}">
 			<c:set var="hasPrivacyOptin">${true}</c:set>
-		</c:if>
+		</c:when>
+		<c:when test="${not empty data['utilities/leadFeed/privacyoptin'] and data['utilities/leadFeed/privacyoptin'] eq 'Y'}">
+			<c:set var="hasPrivacyOptin">${true}</c:set>
+		</c:when>
+		</c:choose>
 		<c:set var="emailAddress">
 			<c:choose>
 				<c:when test="${not empty data['utilities/application/details/email']}">${data['utilities/application/details/email']}</c:when>
+				<c:when test="${not empty data['utilities/leadFeed/email']}">${data['utilities/leadfeed/email']}</c:when>
 				<c:otherwise>${data['utilities/resultsDisplayed/email']}</c:otherwise>
 			</c:choose>
 		</c:set>
-		<c:set var="firstName" value="${data['utilities/application/details/firstName']}" />
-		<c:set var="lastName" value="${data['utilities/application/details/lastName']}" />
-		<c:if test="${empty optinPhone}">
-			<c:set var="optinPhone" value="" />
+		<c:set var="firstName">
+			<c:choose>
+				<c:when test="${not empty data['utilities/leadFeed/firstName']}">${data['utilities/leadfeed/firstName']}</c:when>
+				<c:otherwise>${data['utilities/application/details/firstName']}</c:otherwise>
+			</c:choose>
+		</c:set>
+
+		<c:set var="lastName">
+			<c:choose>
+				<c:when test="${not empty data['utilities/leadFeed/lastName']}">${data['utilities/leadfeed/lastName']}</c:when>
+				<c:otherwise>${data['utilities/application/details/lastName']}</c:otherwise>
+			</c:choose>
+		</c:set>
+
+
+		<c:if test="${not empty data['utilities/leadFeed/privacyoptin'] and data['utilities/leadfeed/privacyoptin'] eq 'Y'}">
+			<c:choose>
+				<c:when test="${not empty data['utilities/leadFeed/mobile']}">
+					<c:set var="optinPhone" value=",okToCall=${data['utilities/leadFeed/mobile']}" />
+				</c:when>
+				<c:when test="${not empty data['utilities/leadFeed/otherPhone']}">
+					<c:set var="optinPhone" value=",okToCall=${data['utilities/leadFeed/otherPhone']}" />
+				</c:when>
+			</c:choose>
 		</c:if>
 		<c:if test="${empty optinMarketing}">
 			<c:set var="optinMarketing">
 				<c:choose>
+					<c:when test="${not empty data['utilities/leadFeed/privacyoptin'] and data['utilities/leadFeed/privacyoptin'] eq 'Y'}">marketing=Y</c:when>
 					<c:when test="${empty data['utilities/application/thingsToKnow/receiveInfo']}">marketing=N</c:when>
 					<c:otherwise>marketing=${data['utilities/application/thingsToKnow/receiveInfo']}</c:otherwise>
 				</c:choose>
@@ -620,13 +645,14 @@
 		<%-- Note, we do not wait for it to return - this is a "fire and forget" request --%>
 		<c:if test="${rootPath == 'car'}">
 			<go:log level="INFO" source="agg:write_quote" >Writing quote to DISC</go:log>
-			<go:log level="DEBUG" source="agg:write_quote">${go:getEscapedXml(data['quote'])}</go:log>
+			<go:log level="DEBUG" source="agg:write_quote">${go:getEscapedXml(data['quote'])}</go:log>\
+			<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
 			<go:call pageId="AGGTIC"
 				xmlVar="${go:getEscapedXml(data['quote'])}"
 				transactionId="${transactionId}"
 				mode="P"
 				wait="FALSE"
-				style="${stylecode}"
+				style="${AGIS_leadFeedCode}"
 				/>
 		</c:if>
 	</c:when>

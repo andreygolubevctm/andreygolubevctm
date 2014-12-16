@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" />
+<c:set var="continueOnValidationError" value="${false}" />
 
 <%-- First check owner of the quote --%>
 <c:set var="proceedinator"><core:access_check quoteType="life" /></c:set>
@@ -17,25 +18,25 @@
 
 		<%-- Build XML required for Life Broker request --%>
 		<c:set var="requestXML">
-<applyrequest>
-	<request xmlns="urn:Lifebroker.EnterpriseAPI">
-		<api_reference><c:out value="${param.api_ref}" /></api_reference>
-		<action><c:out value="${param.request_type}" /></action>
-	<c:choose>
-		<c:when test="${param.partner_quote eq 'Y'}">
-			<c:if test="${not empty param.client_product_id}">
-		<client_product_id><c:out value="${param.client_product_id}" /></client_product_id>
-			</c:if>
-			<c:if test="${not empty param.partner_product_id}">
-		<partner_product_id><c:out value="${param.partner_product_id}" /></partner_product_id>
-			</c:if>
-		</c:when>
-		<c:otherwise>
-		<product_id><c:out value="${param.client_product_id}" /></product_id>
-		</c:otherwise>
-	</c:choose>
-	</request>
-</applyrequest>
+			<applyrequest>
+				<request xmlns="urn:Lifebroker.EnterpriseAPI">
+					<api_reference><c:out value="${param.api_ref}" /></api_reference>
+					<action><c:out value="${param.request_type}" /></action>
+				<c:choose>
+					<c:when test="${param.partner_quote eq 'Y'}">
+						<c:if test="${not empty param.client_product_id}">
+					<client_product_id><c:out value="${param.client_product_id}" /></client_product_id>
+						</c:if>
+						<c:if test="${not empty param.partner_product_id}">
+					<partner_product_id><c:out value="${param.partner_product_id}" /></partner_product_id>
+						</c:if>
+					</c:when>
+					<c:otherwise>
+					<product_id><c:out value="${param.client_product_id}" /></product_id>
+					</c:otherwise>
+				</c:choose>
+				</request>
+			</applyrequest>
 		</c:set>
 
 		<%-- Load the config and send quotes to the aggregator gadget --%>
@@ -47,19 +48,31 @@
 							debugVar="debugXml"
 							verticalCode="${fn:toUpperCase(vertical)}"
 							configDbKey="appService "
-							styleCodeId="${pageSettings.getBrandId()}"  />
-
-		<%-- Add the results to the current session data --%>
-		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
-		<go:setData dataVar="data" xpath="soap-response/results/selection/pds" value="*DELETE" />
-
-		<go:log level="DEBUG" source="life_submit_application">${resultXml}</go:log>
-		<go:log level="DEBUG" source="life_submit_application">${debugXml}</go:log>
-
-		<%-- Confirmation --%>
-		<core:transaction touch="C" noResponse="true" />
+							styleCodeId="${pageSettings.getBrandId()}"
+							validationErrorsVar="validationErrors"
+							continueOnValidationError="${continueOnValidationError}"
+							isValidVar="isValid"  />
+							
+							
+		<c:choose>
+			<c:when test="${isValid || continueOnValidationError}">
+		
+				<%-- Add the results to the current session data --%>
+				<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
+				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+				<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
+				<go:setData dataVar="data" xpath="soap-response/results/selection/pds" value="*DELETE" />
+		
+				<go:log level="DEBUG" source="life_submit_application">${resultXml}</go:log>
+				<go:log level="DEBUG" source="life_submit_application">${debugXml}</go:log>
+		
+				<%-- Confirmation --%>
+				<core:transaction touch="C" noResponse="true" />
+			</c:when>
+			<c:otherwise>
+				<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_submit_application.jsp" />
+			</c:otherwise>
+		</c:choose>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

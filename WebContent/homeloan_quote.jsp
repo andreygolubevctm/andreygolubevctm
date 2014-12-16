@@ -20,6 +20,16 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
+		<div class="row navbar-collapse header-collapse-contact collapse">
+			<div class="blank-enquire">
+				<%-- <div class="col-sm-3 col-sm-offset-0 col-lg-offset-2">
+					<h5 class="text-right">Need help choosing?</h5>
+				</div> --%>
+				<div class="col-sm-3 col-lg-2 col-sm-offset-3 col-lg-offset-5 pull-right">
+					<a class="btn btn-cta btn-block btn-enquire-now hidden-xs" href="javascript:;">General enquiry <span class="icon icon-arrow-right"></span></a>
+		</div>
+			</div>
+		</div>
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar">
@@ -108,6 +118,7 @@
 	<jsp:body>
 
 		<div class="hiddenFields">
+			<field:hidden xpath="homeloan/renderingMode" />
 			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>

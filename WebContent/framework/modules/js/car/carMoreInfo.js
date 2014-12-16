@@ -41,14 +41,17 @@
 			onBeforeShowBridgingPage: onBeforeShowBridgingPage,
 			onBeforeShowTemplate: renderScrapes,
 			onBeforeShowModal: renderScrapes,
-			onAfterShowModal: null,
+			onAfterShowModal: requestTracking,
 			onAfterShowTemplate: onAfterShowTemplate,
 			onBeforeHideTemplate: null,
 			onAfterHideTemplate: onAfterHideTemplate,
 			onClickApplyNow: onClickApplyNow,
 			onBeforeApply: null,
 			onApplySuccess: onApplySuccess,
-			retrieveExternalCopy: retrieveExternalCopy
+			retrieveExternalCopy: retrieveExternalCopy,
+			additionalTrackingData: {
+				productName: null
+			}
 		};
 
 		meerkat.modules.moreInfo.initMoreInfo(options);
@@ -59,97 +62,101 @@
 
 	function applyEventListeners() {
 
-			$(document).on('click', '.bridgingContainer .btn-call-actions', function (event) {
-				/**
-				 * Render the call modal template, set up default name values, fix height
-				 */
-				event.preventDefault();
-				event.stopPropagation();
-				var $el = $(this);
-				var $e = $('#car-call-modal-template');
-				if ($e.length > 0) {
-					templateCallback = _.template($e.html());
-				}
-				var obj = meerkat.modules.moreInfo.getOpenProduct();
+		$(document).on('click', '.bridgingContainer .btn-call-actions', function (event) {
+			/**
+			 * Render the call modal template, set up default name values, fix height
+			 */
+			event.preventDefault();
+			event.stopPropagation();
+			var $el = $(this);
+			var $e = $('#car-call-modal-template');
+			if ($e.length > 0) {
+				templateCallback = _.template($e.html());
+			}
+			var obj = meerkat.modules.moreInfo.getOpenProduct();
 
-				// If its unavailable, don't do anything
-				// This is if someone tries to fake a bridging page for a "non quote" product.
-				if(obj.available !== "Y")
-					return;
+			// If its unavailable, don't do anything
+			// This is if someone tries to fake a bridging page for a "non quote" product.
+			if(obj.available !== "Y")
+				return;
 
-				var htmlContent = templateCallback(obj);
-				var modalOptions = {
-					htmlContent: htmlContent,
-					hashId: 'call',
-					className: 'call-modal',
-					closeOnHashChange: true,
-					openOnHashChange: false,
-					onOpen: function (modalId) {
+			var htmlContent = templateCallback(obj);
+			var modalOptions = {
+				htmlContent: htmlContent,
+				hashId: 'call',
+				className: 'call-modal',
+				closeOnHashChange: true,
+				openOnHashChange: false,
+				onOpen: function (modalId) {
 
-						$('.' + $el.attr('data-callback-toggle')).show();
-						fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $('#'+modalId));
+					$('.' + $el.attr('data-callback-toggle')).show();
+					fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $('#'+modalId));
 
-						setupCallbackForm();
+					setupCallbackForm();
 
-						if ($el.hasClass('btn-calldirect')) {
-							recordCallDirect(event);
-						} else {
-							trackCallBack();// Add CallBack request event to supertag
-						}
-
+					if ($el.hasClass('btn-calldirect')) {
+						recordCallDirect(event);
+					} else {
+						trackCallBack();// Add CallBack request event to supertag
 					}
-				};
 
-				if(meerkat.modules.deviceMediaState.get() == 'xs') {
-					modalOptions.title = "Reference no. " + obj.leadNo;
 				}
+			};
 
-				callbackModalId = meerkat.modules.dialogs.show(modalOptions);
-			}).on('click', '.call-modal .btn-call-actions', function (event) {
-				/**
-				 * Just toggle between the modes here in the modal.
-				 */
-				if(meerkat.modules.deviceMediaState.get() != 'xs') {
-					event.preventDefault();
-				}
-				event.stopPropagation();
-				var $el = $(this);
+			if(meerkat.modules.deviceMediaState.get() == 'xs') {
+				modalOptions.title = "Reference no. " + obj.leadNo;
+			}
 
-				switch ($el.attr('data-callback-toggle')) {
-				case 'calldirect':
-					$('.callback').hide();
-					$('.calldirect').show();
-					recordCallDirect(event);
-					break;
-				case 'callback':
-					$('.calldirect').hide();
-					$('.callback').show();
-					trackCallBack();// Add CallBack request event to supertag
-					break;
-				}
-
-				// Fix the height of the sidebar
-				fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
-
-			}).on('click', '.btn-submit-callback', function (event) {
+			callbackModalId = meerkat.modules.dialogs.show(modalOptions);
+		}).on('click', '.call-modal .btn-call-actions', function (event) {
+			/**
+			 * Just toggle between the modes here in the modal.
+			 */
+			if(meerkat.modules.deviceMediaState.get() != 'xs') {
 				event.preventDefault();
-				var $el = $(this);
-				if($el.closest('form').valid()) {
-					var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
-					callLeadFeedSave(event, {
-						message: currentBrandCode+' - Car Vertical - Call me now',
-						phonecallme: 'GetaCall'
-					});
+			}
+			event.stopPropagation();
+			var $el = $(this);
 
-					trackCallBackSubmit();// Add CallBack Submit request event to supertag
-				} else {
-					_.delay(function() {
-						fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
-					}, 200);
-				}
-				return false;
-			});
-		}
+			switch ($el.attr('data-callback-toggle')) {
+			case 'calldirect':
+				$('.callback').hide();
+				$('.calldirect').show();
+				recordCallDirect(event);
+				break;
+			case 'callback':
+				$('.calldirect').hide();
+				$('.callback').show();
+				trackCallBack();// Add CallBack request event to supertag
+				break;
+			}
+
+			// Fix the height of the sidebar
+			fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
+
+		}).on('click', '.btn-submit-callback', function (event) {
+			event.preventDefault();
+			var $el = $(this);
+			if($el.closest('form').valid()) {
+				var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
+				callLeadFeedSave(event, {
+					message: currentBrandCode+' - Car Vertical - Call me now',
+					phonecallme: 'GetaCall'
+				});
+
+				trackCallBackSubmit();// Add CallBack Submit request event to supertag
+			} else {
+				_.delay(function() {
+					fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
+				}, 200);
+			}
+			return false;
+		});
+
+		$('.slide-feature-closeMoreInfo a').off().on('click', function() {
+			meerkat.modules.moreInfo.close();
+		});
+	}
 
 	/**
 	 * Setup the form fields/values for the callback form.
@@ -331,6 +338,9 @@
 	 * Called within meerkat.modules.moreInfo.showTemplate
 	 */
 	function onAfterShowTemplate() {
+
+		requestTracking();
+
 		if (meerkat.modules.deviceMediaState.get() == 'lg' || meerkat.modules.deviceMediaState.get() == 'md') {
 			fixSidebarHeight('.paragraphedContent', '.moreInfoRightColumn', $bridgingContainer);
 		}
@@ -552,7 +562,8 @@
 				transactionID: transaction_id,
 				productID: product.productId,
 				productBrandCode: product.brandCode,
-				vertical: meerkat.site.vertical
+				vertical: meerkat.site.vertical,
+				productName: product.headline.name
 			}
 		});
 
@@ -573,12 +584,23 @@
 		});
 	}
 
+	function requestTracking() {
+
+		var settings = {
+				additionalTrackingData : {
+					productName : meerkat.modules.moreInfo.getOpenProduct().headline.name
+				}
+		};
+
+		meerkat.modules.moreInfo.updateSettings(settings);
+
+		trackProductView();
+	}
+
 	/**
 	 *  Render the scrapes onto the placeholders in the page.
 	 */
 	function renderScrapes(scrapeData) {
-
-		trackProductView();
 
 		if (typeof scrapeData != 'undefined' && typeof scrapeData.scrapes != 'undefined' && scrapeData.scrapes.length > 0) {
 			$.each(scrapeData.scrapes, function (key, scrape) {

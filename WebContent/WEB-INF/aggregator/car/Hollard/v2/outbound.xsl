@@ -2,8 +2,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- IMPORTS -->
-	<xsl:import href="../../includes/utils.xsl"/>
-	<xsl:import href="../../includes/get_street_name.xsl"/>
+	<xsl:import href="../../../includes/utils.xsl"/>
+	<xsl:import href="../../../includes/get_street_name.xsl"/>
 
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
@@ -197,7 +197,16 @@
 							<xsl:when test="vehicle/marketValue != ''"><xsl:value-of select="vehicle/marketValue"/></xsl:when>
 						</xsl:choose>
 					</real:AgreedValue>
-					<real:CarExcess i:nil="true"/> <!-- TODO: Should this be the excess figure? How was this previously determined? -->
+					<real:CarExcess>
+						<xsl:choose>
+							<xsl:when test="excess">
+								<xsl:value-of select="excess" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="baseExcess" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</real:CarExcess>
 					<real:CarSeries><xsl:value-of select="glasses" /></real:CarSeries>
 					<real:CarUsage>
 						<xsl:choose>

@@ -26,24 +26,23 @@ import com.ctm.services.ServiceConfigurationService;
 public class HomeLoanOpportunityService {
 
 	private static Logger logger = Logger.getLogger(HomeLoanOpportunityService.class.getName());
+	public static final String SECRET_KEY = "kD0axgKXQ5HixuWsJ8-2BA";
 
-	public JSONObject submitOpportunity(HttpServletRequest request) {
+	public JSONObject submitOpportunity(HttpServletRequest request, HomeLoanModel model) {
 		JSONObject responseJson = null;
 
-		// Main form model
-
-		HomeLoanModel model = HomeLoanService.mapParametersToModel(request);
-
 		// Product model
-
 		HomeLoanOpportunityProduct product = new HomeLoanOpportunityProduct();
-		product.setFlexId(model.getProductId());
-		product.setRepaymentOption(model.getRepaymentOption());
+		if(model.getProductId() != null) {
+			product.setFlexId(model.getProductId());
+		}
+		if(model.getRepaymentOption() != null) {
+			product.setRepaymentOption(model.getRepaymentOption());
+		}
 		product.setSelected(true);
 		product.setIntegrationId(Long.toString(new Date().getTime()));
 
 		// The request model
-
 		HomeLoanOpportunityRequest hlorModel = new HomeLoanOpportunityRequest();
 		hlorModel.setReferenceId(Long.toString(model.getTransactionId()));
 		String name = "";
@@ -132,12 +131,11 @@ public class HomeLoanOpportunityService {
 			}
 		}
 		catch (Exception e) {
-			String sessionId = "";
 			int styleCodeId = 0;
-			String transactionId = "";
 
-			if (request.getSession() != null) sessionId = request.getSession().getId();
-			if (request.getParameter("transactionId") != null) transactionId = request.getParameter("transactionId");
+
+			String sessionId = request.getSession() != null ? request.getSession().getId() : "";
+			String transactionId = request.getParameter("transactionId") != null ? request.getParameter("transactionId") : "0";
 
 			try {
 				Brand brand = ApplicationService.getBrandFromRequest(request);
@@ -156,5 +154,9 @@ public class HomeLoanOpportunityService {
 		}
 
 		return responseJson;
+	}
+
+	public static String getSecretKey() {
+		return SECRET_KEY;
 	}
 }

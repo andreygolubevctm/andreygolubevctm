@@ -16,7 +16,6 @@
 
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
-<c:set var="stylecode" value="${fn:toUpperCase(pageSettings.getBrandCode())}" />
 
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
@@ -197,7 +196,8 @@
 
 			</c:forEach>
 			<go:log level="DEBUG">Writing Ranking to DISC ${data.xml['ranking']}</go:log>
-			<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" style="${stylecode}" />
+			<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
+			<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" style="${AGIS_leadFeedCode}" />
 			<!-- END DISC STUFF -->
 		</c:when>
 

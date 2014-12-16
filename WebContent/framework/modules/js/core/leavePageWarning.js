@@ -15,22 +15,37 @@
 			}
 		},
 		moduleEvents = events.leavePageWarning;
-
+	// Default to showing the alert, except on confirmation pages or generic verticals.
 	var safeToLeave = true;
 
 	function initLeavePageWarning() {
 
-		var ie10OrBelow = meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9() || meerkat.modules.performanceProfiling.isIE10();
-		if(meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && ie10OrBelow === false){
+		var supportsUnload = !meerkat.modules.performanceProfiling.isIos() && !meerkat.modules.performanceProfiling.isIE8() && !meerkat.modules.performanceProfiling.isIE9() && !meerkat.modules.performanceProfiling.isIE10();
 
-			window.onbeforeunload = function(){
+		$(document).ready(function() {
+			safeToLeave = meerkat.site.vertical === 'generic' || meerkat.site.pageAction == 'confirmation' ? true : false;
 
-				if(safeToLeave === false && meerkat.modules.saveQuote.isAvailable() === true){
-					return meerkat.site.leavePageWarning.message;
-				}else{
-					return ;
-				}
+			if(supportsUnload === false && $('#js-logo-link').length) {
+				$('#js-logo-link').on('click', function(e) {
+					meerkat.modules.leavePageWarning.disable();
+					if(!confirm(fetchMessage())) {
+						return false;
+					}
+				});
 			}
+		});
+
+
+		if(meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && supportsUnload === true){
+
+			window.onbeforeunload = function() {
+
+				if(safeToLeave === false) {
+					return fetchMessage();
+				} else {
+					return;
+				}
+			};
 
 			meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange( step ){
 				safeToLeave = false;
@@ -42,6 +57,17 @@
 
 		}
 
+	}
+
+	function fetchMessage() {
+		if(meerkat.modules.saveQuote.isAvailable() === true) {
+			return meerkat.site.leavePageWarning.message;
+		} else {
+			if (typeof meerkat.site.leavePageWarning.defaultMessage !== 'undefined') {
+				return meerkat.site.leavePageWarning.defaultMessage;
+			}
+			return;
+		}
 	}
 
 	function disable(){

@@ -6,6 +6,7 @@
 
 	var events = {
 			journeyEngine: {
+				BEFORE_STEP_CHANGED: 'BEFORE_STEP_CHANGED',
 				STEP_CHANGED: 'STEP_CHANGED',
 				STEP_INIT: 'STEP_INIT',
 				READY: 'JOURNEY_READY',
@@ -204,7 +205,6 @@
 
 	/* Navigation change - do not call directly, update window hash to trigger this event */
 	function onNavigationChange(eventObject){
-
 		try{
 
 			eventObject.isStartMode = false;
@@ -269,7 +269,7 @@
 
 			}
 
-
+			
 		}catch(e){
 			unlock();
 			meerkat.modules.address.setHash(currentStep.navigationId);
@@ -282,6 +282,10 @@
 	}
 
 	function _goToStep(step, eventObject){
+		// added new publish call. This is for renderingMode.js to be able to update the hidden field as verticals like
+		// home loans update the transaction details before the STEP_CHANGED event is fired.
+		meerkat.messaging.publish(moduleEvents.BEFORE_STEP_CHANGED);
+
 		if(currentStep !== null && currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
 
 		onStepEnter(step, eventObject);
