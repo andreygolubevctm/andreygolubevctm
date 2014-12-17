@@ -153,6 +153,8 @@
 					<xsl:attribute name="productId"><xsl:value-of select="$productId" /></xsl:attribute>
 					<xsl:attribute name="type">quote</xsl:attribute>
 
+					<productDes><xsl:value-of select="a:ProductName"/></productDes>
+
 					<available>Y</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 
