@@ -38,7 +38,7 @@ BEGIN
 	FROM simples.message msg
 	WHERE transactionId = _tranId;
 
-	/* Blacklist, Do not contact */
+	-- Blacklist, Do not contact
 	SELECT COUNT(mb.marketingBlacklistId) AS `count` 
 	INTO _doNotContact
 	FROM ctm.marketing_blacklist mb 
@@ -47,6 +47,11 @@ BEGIN
 	AND mb.channel = 'phone'
 	AND mb.`value` IN (_phoneNumber1, _phoneNumber2);
 	
+	-- This is a bit rubbish, but ignore the blacklist for the failed joins.
+	IF _sourceId = 5 THEN
+		SET _doNotContact = 0;
+	END IF;
+
 	--
 	-- Add message to the queue
 	--

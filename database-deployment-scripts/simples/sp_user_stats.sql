@@ -35,7 +35,7 @@ SELECT
 	, @sales AS `Sales`
 	, IFNULL(ROUND(@conversion,2), 0) AS `Conversion`
 	, (SELECT COUNT(id) FROM simples.message_queue_available WHERE userId IN (0,_userId)) AS `Active`
-	, (SELECT COUNT(id) FROM simples.message WHERE userId IN (0,_userId) AND whenToAction > NOW()) AS `Future`
+	, (SELECT COUNT(id) FROM simples.message WHERE userId IN (0,_userId) AND whenToAction > NOW() AND statusId != 2/*Completed*/) AS `Future`
 ;
 
 

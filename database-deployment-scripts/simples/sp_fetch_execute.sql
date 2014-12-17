@@ -24,7 +24,7 @@ BEGIN
 	DECLARE SourcesCursor CURSOR FOR
 		SELECT id, `name` FROM simples.message_source
 		WHERE active = 1
-		ORDER BY priority ASC;
+		ORDER BY fetchOrder ASC;
 
 	DECLARE TransactionsCursor CURSOR FOR
 	SELECT MAX(transactionId) AS transactionId, sourceId, phoneNumber1, phoneNumber2, contactName, state
@@ -74,6 +74,7 @@ BEGIN
 			AND contactName != 'Guybrush'
 			AND contactName NOT LIKE 'Test%'
 			AND contactName NOT LIKE '% test%'
+			AND contactName NOT LIKE '% O\'User-User'
 	)
 	AS `filtered`
 	WHERE phoneNumber1 IS NOT NULL OR phoneNumber2 IS NOT NULL

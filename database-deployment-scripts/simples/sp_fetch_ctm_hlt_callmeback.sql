@@ -1,9 +1,9 @@
 USE `simples`;
-DROP procedure IF EXISTS `fetch_ctm_hlt_noresults`;
+DROP procedure IF EXISTS `fetch_ctm_hlt_callmeback`;
 
 DELIMITER $$
 USE `simples`$$
-CREATE DEFINER=`server`@`%` PROCEDURE `fetch_ctm_hlt_noresults`(_sourceId INT)
+CREATE DEFINER=`server`@`%` PROCEDURE `fetch_ctm_hlt_callmeback`(_sourceId INT)
 BEGIN
 -- -----------------------------
 -- NOTE: Please ensure that any changes to this procedure are recorded via SVN.
@@ -38,87 +38,65 @@ SELECT
 	header.rootId,
 	_sourceId AS sourceId,
 	MAX(detailsPhoneMobile.textValue) AS phoneNumber1,
-	MAX(detailsPhoneOther.textValue) AS phoneNumber2,
+	NULL AS phoneNumber2,
 	MAX(detailsName.textValue) AS contactName,
 	MAX(detailsState.textValue) AS state
 
 FROM aggregator.transaction_header AS header
 
-	-- Transactions will be INCLUDED if they have these touches
-	-- ONLINE restriction is used to knock out call centre transactions.
-	LEFT JOIN ctm.touches AS touchInclude ON touchInclude.transaction_id = header.TransactionId
-		AND touchInclude.type IN ('HLT detail')
-		AND touchInclude.operator_id = 'ONLINE'
-
 	-- Transactions will be EXCLUDED if they have these touches
 	LEFT JOIN ctm.touches AS touchExclude ON touchExclude.transaction_id = header.TransactionId
-		AND touchExclude.type IN ('R', 'C')
+		AND touchExclude.type IN ('C')
 
 	-- Has customer opted in?
-	LEFT JOIN aggregator.transaction_details AS okToCall
-		ON header.TransactionId = okToCall.transactionId
-		AND okToCall.xpath = 'health/contactDetails/call'
-		AND okToCall.textValue = 'Y'
-
-	-- Why is this one needed?
-	/*
-	LEFT JOIN aggregator.transaction_details AS situation
-		ON header.TransactionId = situation.transactionId
-		AND situation.xpath = 'health/situation/healthCvr'
-		AND situation.textValue IN ('S', 'C', 'F', 'SPF')
-	*/
+	LEFT JOIN aggregator.transaction_details AS callbackOptin
+		ON header.TransactionId = callbackOptin.transactionId
+		AND callbackOptin.xpath = 'health/callmeback/optin'
+		AND callbackOptin.textValue = 'Y'
 
 	-- Contact phone numbers
 	LEFT JOIN aggregator.transaction_details detailsPhoneMobile
 		ON header.transactionId = detailsPhoneMobile.transactionid
-		AND detailsPhoneMobile.xpath = 'health/contactDetails/contactNumber/mobile'
-	LEFT JOIN aggregator.transaction_details detailsPhoneOther
-		ON header.transactionId = detailsPhoneOther.transactionid
-		AND detailsPhoneOther.xpath = 'health/contactDetails/contactNumber/other'
+		AND detailsPhoneMobile.xpath = 'health/callmeback/phone'
 
 	-- Contact name
 	LEFT JOIN aggregator.transaction_details AS detailsName
 		ON header.TransactionId = detailsName.transactionId
-		AND detailsName.xpath = 'health/contactDetails/name'
+		AND detailsName.xpath = 'health/callmeback/name'
 
 	-- State
 	LEFT JOIN aggregator.transaction_details AS detailsState
 		ON header.TransactionId = detailsState.transactionId
 		AND detailsState.xpath = 'health/situation/state'
 
-	-- Get the call me back phone
-	LEFT JOIN aggregator.transaction_details AS callMeBack
-		ON header.TransactionId = callMeBack.transactionId
-		AND callMeBack.xpath = 'health/callmeback/phone'
-
-	-- Get the tracking CID
-	LEFT JOIN aggregator.transaction_details AS trackingCID
-		ON header.TransactionId = trackingCID.transactionId
-		AND trackingCID.xpath = 'health/tracking/cid'
-
 WHERE
 	header.TransactionId >= _tranIdMarker
 	AND header.rootId >= _tranIdMarker
+
+	AND header.StartDate >= CURDATE()
+	AND header.PreviousId = 0
 
 	-- CTM Health only
 	AND header.ProductType = 'HEALTH'
 	AND header.styleCodeId = 1
 
-	-- Exclude this if the customer requested a call back
-	AND (callMeBack.textValue IS NULL OR callMeBack.textValue = '')
+	AND detailsPhoneMobile.textValue IS NOT NULL
+	AND detailsPhoneMobile.textValue != ''
 
-	-- Exclude this if the customer came from a particular offer (is this still relevant?)
-	AND (trackingCID.textValue IS NULL OR trackingCID.textValue != 'em:cm:offer')
+	-- Exclude if they'll be picked up by other message sources
+	AND NOT EXISTS (
+		SELECT okToCall.transactionid FROM aggregator.transaction_details AS okToCall
+		WHERE header.transactionId = okToCall.transactionid
+		AND okToCall.xpath = 'health/contactDetails/call'
+		AND okToCall.textValue = 'Y'
+	)
 
 GROUP BY
 	header.rootId, sourceId
 
  HAVING
  	-- Run the touches rules from above
-  	COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
-
-  	-- Minimum and maximum time since the relevant touch
-	AND TIMESTAMPDIFF(MINUTE, MAX(TIMESTAMP(touchInclude.date, touchInclude.time)), CURRENT_TIMESTAMP()) BETWEEN 20 AND 1440
+  	COUNT(touchExclude.id) = 0
 
 -- -----------------------------
 -- END QUERY

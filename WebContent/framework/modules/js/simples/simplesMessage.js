@@ -157,24 +157,24 @@
 		meerkat.modules.comms.get({
 			url: baseUrl + 'simples/messages/next.json',
 			cache: false,
-			errorLevel: 'silent',
-			onSuccess: function onSuccess(json) {
-				if (json.messageId === 0) {
-					$messageDetailsContainer.html( templateMessageDetail(json) );
-				}
-				else {
-					// Store the data and publish
-					setCurrentMessage(json);
-				}
-			},
-			onError: function onError(obj, txt, errorThrown) {
-				var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
+			errorLevel: 'silent'
+		})
+		.done(function onSuccess(json) {
+			if (!json.hasOwnProperty('messageId') || json.messageId === 0) {
 				$messageDetailsContainer.html( templateMessageDetail(json) );
-			},
-			onComplete: function onComplete() {
-				if (typeof callbackComplete === 'function') {
-					callbackComplete();
-				}
+			}
+			else {
+				// Store the data and publish
+				setCurrentMessage(json);
+			}
+		})
+		.fail(function onError(obj, txt, errorThrown) {
+			var json = {"errors":[{"message": txt + ': ' + errorThrown}]};
+			$messageDetailsContainer.html( templateMessageDetail(json) );
+		})
+		.always(function onComplete() {
+			if (typeof callbackComplete === 'function') {
+				callbackComplete();
 			}
 		});
 	}

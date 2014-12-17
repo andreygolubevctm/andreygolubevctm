@@ -37,10 +37,10 @@ INSERT INTO `temp_simples_fetches` (transactionId, sourceId, phoneNumber1, phone
 SELECT
 	header.rootId,
 	_sourceId AS sourceId,
-	detailsPhoneMobile.textValue AS phoneNumber1,
-	detailsPhoneOther.textValue AS phoneNumber2,
-	detailsName.textValue AS contactName,
-	detailsState.textValue AS state
+	MAX(detailsPhoneMobile.textValue) AS phoneNumber1,
+	MAX(detailsPhoneOther.textValue) AS phoneNumber2,
+	MAX(detailsName.textValue) AS contactName,
+	MAX(detailsState.textValue) AS state
 
 FROM aggregator.transaction_header AS header
 
@@ -118,7 +118,7 @@ GROUP BY
   	COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
 
   	-- Minimum and maximum time since the relevant touch
-	AND TIMESTAMPDIFF(MINUTE, MAX(TIMESTAMP(touchInclude.date, touchInclude.time)), CURRENT_TIMESTAMP()) BETWEEN 10 AND 1440
+	AND TIMESTAMPDIFF(MINUTE, MAX(TIMESTAMP(touchInclude.date, touchInclude.time)), CURRENT_TIMESTAMP()) BETWEEN 1 AND 1440
 
 -- -----------------------------
 -- END QUERY

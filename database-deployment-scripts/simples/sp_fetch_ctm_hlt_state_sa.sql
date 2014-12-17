@@ -37,10 +37,10 @@ INSERT INTO `temp_simples_fetches` (transactionId, sourceId, phoneNumber1, phone
 SELECT
 	header.rootId,
 	_sourceId AS sourceId,
-	detailsPhoneMobile.textValue AS phoneNumber1,
-	detailsPhoneOther.textValue AS phoneNumber2,
-	detailsName.textValue AS contactName,
-	detailsState.textValue AS state
+	MAX(detailsPhoneMobile.textValue) AS phoneNumber1,
+	MAX(detailsPhoneOther.textValue) AS phoneNumber2,
+	MAX(detailsName.textValue) AS contactName,
+	MAX(detailsState.textValue) AS state
 
 FROM aggregator.transaction_header AS header
 
@@ -85,8 +85,6 @@ FROM aggregator.transaction_header AS header
 	LEFT JOIN aggregator.transaction_details AS detailsState
 		ON header.TransactionId = detailsState.transactionId
 		AND detailsState.xpath = 'health/situation/state'
-		-- SA visitors only
-		AND detailsState.textValue = 'SA'
 
 	-- Get the call me back phone
 	LEFT JOIN aggregator.transaction_details AS callMeBack
@@ -118,6 +116,9 @@ GROUP BY
  HAVING
  	-- Run the touches rules from above
   	COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
+
+	-- SA visitors only
+	AND state = 'SA'
 
   	-- Minimum and maximum time since the relevant touch
 	AND TIMESTAMPDIFF(MINUTE, MAX(TIMESTAMP(touchInclude.date, touchInclude.time)), CURRENT_TIMESTAMP()) BETWEEN 1 AND 1440

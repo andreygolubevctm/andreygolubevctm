@@ -1,9 +1,9 @@
 USE `simples`;
-DROP procedure IF EXISTS `fetch_ctm_hlt_noresults`;
+DROP procedure IF EXISTS `fetch_ctm_hlt_singlecouple_under30`;
 
 DELIMITER $$
 USE `simples`$$
-CREATE DEFINER=`server`@`%` PROCEDURE `fetch_ctm_hlt_noresults`(_sourceId INT)
+CREATE DEFINER=`server`@`%` PROCEDURE `fetch_ctm_hlt_singlecouple_under30`(_sourceId INT)
 BEGIN
 -- -----------------------------
 -- NOTE: Please ensure that any changes to this procedure are recorded via SVN.
@@ -47,12 +47,12 @@ FROM aggregator.transaction_header AS header
 	-- Transactions will be INCLUDED if they have these touches
 	-- ONLINE restriction is used to knock out call centre transactions.
 	LEFT JOIN ctm.touches AS touchInclude ON touchInclude.transaction_id = header.TransactionId
-		AND touchInclude.type IN ('HLT detail')
+		AND touchInclude.type IN ('R')
 		AND touchInclude.operator_id = 'ONLINE'
 
 	-- Transactions will be EXCLUDED if they have these touches
 	LEFT JOIN ctm.touches AS touchExclude ON touchExclude.transaction_id = header.TransactionId
-		AND touchExclude.type IN ('R', 'C')
+		AND touchExclude.type IN ('A', 'C')
 
 	-- Has customer opted in?
 	LEFT JOIN aggregator.transaction_details AS okToCall
@@ -60,13 +60,16 @@ FROM aggregator.transaction_header AS header
 		AND okToCall.xpath = 'health/contactDetails/call'
 		AND okToCall.textValue = 'Y'
 
-	-- Why is this one needed?
-	/*
+	-- Singles and couples
 	LEFT JOIN aggregator.transaction_details AS situation
 		ON header.TransactionId = situation.transactionId
 		AND situation.xpath = 'health/situation/healthCvr'
-		AND situation.textValue IN ('S', 'C', 'F', 'SPF')
-	*/
+		AND situation.textValue IN ('S', 'C')
+
+	-- Under 30s
+	LEFT JOIN aggregator.transaction_details AS age
+		ON header.TransactionId = age.transactionId
+		AND age.xpath = 'health/healthCover/primary/dob'
 
 	-- Contact phone numbers
 	LEFT JOIN aggregator.transaction_details detailsPhoneMobile
@@ -91,14 +94,12 @@ FROM aggregator.transaction_header AS header
 		ON header.TransactionId = callMeBack.transactionId
 		AND callMeBack.xpath = 'health/callmeback/phone'
 
-	-- Get the tracking CID
-	LEFT JOIN aggregator.transaction_details AS trackingCID
-		ON header.TransactionId = trackingCID.transactionId
-		AND trackingCID.xpath = 'health/tracking/cid'
-
 WHERE
 	header.TransactionId >= _tranIdMarker
 	AND header.rootId >= _tranIdMarker
+
+	-- Because this is an expensive query, put a day cap in just in case the tranIdMarker gets behind.
+	AND header.StartDate >= DATE_SUB(CURDATE(), INTERVAL 5 DAY)
 
 	-- CTM Health only
 	AND header.ProductType = 'HEALTH'
@@ -107,8 +108,10 @@ WHERE
 	-- Exclude this if the customer requested a call back
 	AND (callMeBack.textValue IS NULL OR callMeBack.textValue = '')
 
-	-- Exclude this if the customer came from a particular offer (is this still relevant?)
-	AND (trackingCID.textValue IS NULL OR trackingCID.textValue != 'em:cm:offer')
+	-- Restrict by age
+	AND age.textValue IS NOT NULL
+	AND age.textValue != ''
+ 	AND TIMESTAMPDIFF(YEAR, STR_TO_DATE(age.textValue, '%d/%m/%Y'), CURDATE()) < 30
 
 GROUP BY
 	header.rootId, sourceId
@@ -118,7 +121,7 @@ GROUP BY
   	COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
 
   	-- Minimum and maximum time since the relevant touch
-	AND TIMESTAMPDIFF(MINUTE, MAX(TIMESTAMP(touchInclude.date, touchInclude.time)), CURRENT_TIMESTAMP()) BETWEEN 20 AND 1440
+	AND TIMESTAMPDIFF(MINUTE, MAX(TIMESTAMP(touchInclude.date, touchInclude.time)), CURRENT_TIMESTAMP()) BETWEEN 1 AND 1440
 
 -- -----------------------------
 -- END QUERY

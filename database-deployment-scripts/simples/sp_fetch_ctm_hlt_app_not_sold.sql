@@ -37,10 +37,10 @@ INSERT INTO `temp_simples_fetches` (transactionId, sourceId, phoneNumber1, phone
 SELECT
 	header.rootId,
 	_sourceId AS sourceId,
-	detailsPhoneMobile.textValue AS phoneNumber1,
-	detailsPhoneOther.textValue AS phoneNumber2,
-	detailsName.textValue AS contactName,
-	detailsState.textValue AS state
+	MAX(detailsPhoneMobile.textValue) AS phoneNumber1,
+	MAX(detailsPhoneOther.textValue) AS phoneNumber2,
+	MAX(detailsName.textValue) AS contactName,
+	MAX(detailsState.textValue) AS state
 
 FROM aggregator.transaction_header AS header
 
