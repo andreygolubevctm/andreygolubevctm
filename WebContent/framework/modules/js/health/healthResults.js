@@ -282,13 +282,7 @@
 			}
 		});
 
-		meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, function onFilterChange(){
-			resetCompare();
-		});
 
-		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function onHealthResultsXsEnterChange(){
-			resetCompare();
-		});
 
 	}
 
@@ -342,7 +336,8 @@
 					// Publish tracking events.
 					meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
 						touchType:'H',
-						touchComment: 'ResCompare'
+						touchComment: 'ResCompare',
+						simplesUser: meerkat.site.isCallCentreUser
 					});
 
 					var compareArray = [];
@@ -356,7 +351,8 @@
 					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 						method:'trackQuoteComparison',
 						object:{
-							products: compareArray
+							products: compareArray,
+							simplesUser: meerkat.site.isCallCentreUser
 						}
 					});
 
@@ -487,7 +483,6 @@
 
 			// Results are hidden in the CSS so we don't see the scaffolding after #benefits
 			$(Results.settings.elements.page).show();
-
 		});
 
 		$(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
@@ -553,6 +548,19 @@
 
 				$hoverRow.removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
 		});
+		});
+
+		// When the excess filter changes, fetch new results
+		meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, function onFilterChange(obj){
+			resetCompare();
+
+			if (obj && obj.hasOwnProperty('filter-frequency-change')) {
+				supertagEventMode = 'Refresh'; // Only for events that dont cause a new TranId
+	}
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function onHealthResultsXsEnterChange(){
+			resetCompare();
 		});
 
 	}
@@ -999,10 +1007,11 @@
 
 	function doCustomExternalTracking() {
 
-		var frequency = Results.getFrequency(); // eg monthly.yearly etc...
-		var sortHealthRanking = Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price";
+		var paymentPlan = Results.getFrequency(); // eg monthly.yearly etc...
+		var sortBy = Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price";
 
 		var excess = "ALL";
+		var display = 'price';
 		switch($("#health_excess").val())
 		{
 			case '1':
@@ -1023,13 +1032,15 @@
 			method:'trackQuoteList',
 			object:{
 				preferredExcess: excess,
-				sortPaymentFrequency: frequency,
-				sortHealthRanking: sortHealthRanking,
-				event: supertagEventMode
+				actionStep: meerkat.site.vertical + ' results',
+				paymentPlan: paymentPlan,
+				sortBy: sortBy,
+				event: supertagEventMode,
+				display: display,
+				simplesUser: meerkat.site.isCallCentreUser
 			}
 		});
-
-		supertagEventMode = 'Refresh'; // update for next call.
+		supertagEventMode = 'Load'; // update for next call.
 	}
 
 	function init(){

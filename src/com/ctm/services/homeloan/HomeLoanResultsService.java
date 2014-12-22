@@ -20,6 +20,7 @@ import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.ServiceConfigurationService;
+import com.disc_au.web.go.Data;
 
 public class HomeLoanResultsService {
 	private static Logger logger = Logger.getLogger(HomeLoanResultsService.class.getName());
@@ -28,6 +29,7 @@ public class HomeLoanResultsService {
 	private static BigDecimal fortnights = new BigDecimal("26");
 	private static BigDecimal weeks = new BigDecimal("52");
 	private static int ROUNDING_MODE = BigDecimal.ROUND_HALF_UP;
+	private Data dataBucket;
 
 
 	/**
@@ -121,8 +123,13 @@ public class HomeLoanResultsService {
 				JSONObject events = new JSONObject();
 				events.put("HOMELOAN_RESULTS_REMAINING_PRODUCTS", remainingProducts);
 
+				JSONObject info = new JSONObject();
+				dataBucket = (Data) request.getAttribute("data");
+				info.put("trackingKey", (String) dataBucket.get("homeloan/trackingKey"));
+
 				JSONObject results = new JSONObject();
 				results.put("events", events);
+				results.put("info", info);
 
 				responseJson.put("results", results);
 

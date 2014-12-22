@@ -1657,7 +1657,8 @@ creditCardDetails = {
                 method: "trackQuoteEvent",
                 object: {
                     action: "Start",
-                    transactionID: parseInt(transaction_id, 10)
+                    transactionID: parseInt(transaction_id, 10),
+                    simplesUser: meerkat.site.isCallCentreUser
                 }
             });
             if (meerkat.site.isNewQuote === false) {
@@ -1676,7 +1677,8 @@ creditCardDetails = {
                         method: "trackQuoteEvent",
                         object: {
                             action: "Retrieve",
-                            transactionID: transaction_id
+                            transactionID: transaction_id,
+                            simplesUser: meerkat.site.isCallCentreUser
                         }
                     });
                 }
@@ -2290,7 +2292,8 @@ creditCardDetails = {
                 email: null,
                 emailID: null,
                 marketOptIn: null,
-                okToCall: null
+                okToCall: null,
+                simplesUser: meerkat.site.isCallCentreUser
             };
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex("start")) {
                 $.extend(response, {
@@ -2911,7 +2914,11 @@ creditCardDetails = {
                     method: "completedApplication",
                     object: {
                         productID: confirmationProduct.productId,
-                        vertical: meerkat.site.vertical
+                        vertical: meerkat.site.vertical,
+                        productBrandCode: confirmationProduct.info.provider,
+                        productName: confirmationProduct.info.productTitle,
+                        quoteReferenceNumber: confirmationProduct.transactionId,
+                        simplesUser: meerkat.site.isCallCentreUser
                     }
                 });
             }
@@ -3068,7 +3075,7 @@ creditCardDetails = {
             $dropdown.closest(".navbar-collapse").removeClass("in");
         }
         _.defer(function() {
-            var valueOld, valueNew, filterId, needToFetchFromServer = false;
+            var valueOld, valueNew, filterId, needToFetchFromServer = false, filterChanges = {};
             readFilterValues("valueNew", true);
             for (filterId in filterValues) {
                 if (filterValues.hasOwnProperty(filterId)) {
@@ -3095,6 +3102,7 @@ creditCardDetails = {
                                         refreshSort = true;
                                     }
                                 }
+                                filterChanges["filter-frequency-change"] = valueNew;
                             }
                             Results.setFrequency(valueNew, false);
                         } else if ("filter-sort" === filterId) {
@@ -3124,7 +3132,7 @@ creditCardDetails = {
                     }
                 }
             }
-            meerkat.messaging.publish(moduleEvents.CHANGED);
+            meerkat.messaging.publish(moduleEvents.CHANGED, filterChanges);
             if (needToFetchFromServer) {
                 _.defer(function() {
                     meerkat.modules.journeyEngine.loadingShow("...updating your quotes...", true);
@@ -3273,13 +3281,20 @@ creditCardDetails = {
                     meerkat.modules.healthResults.setSelectedProduct(product);
                     healthFunds.load(product.info.provider, applyCallback);
                     var transaction_id = meerkat.modules.transactionId.get();
+                    var handoverType;
+                    if (meerkat.site.isCallCentreUser) {
+                        handoverType = "Simples";
+                    } else {
+                        handoverType = "Online";
+                    }
                     meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                         method: "trackHandoverType",
                         object: {
-                            type: "Online_R",
+                            type: handoverType,
                             quoteReferenceNumber: transaction_id,
                             transactionID: transaction_id,
-                            productID: "productID"
+                            productID: "productID",
+                            simplesUser: meerkat.site.isCallCentreUser
                         }
                     });
                 } else {
@@ -3375,7 +3390,10 @@ creditCardDetails = {
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: "trackProductView",
                 object: {
-                    productID: product.productId
+                    productID: product.productId,
+                    productBrandCode: product.info.providerName,
+                    productName: product.info.productTitle,
+                    simplesUser: meerkat.site.isCallCentreUser
                 }
             });
         });
@@ -3425,7 +3443,10 @@ creditCardDetails = {
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: "trackProductView",
                 object: {
-                    productID: product.productId
+                    productID: product.productId,
+                    productBrandCode: product.info.providerName,
+                    productName: product.info.productTitle,
+                    simplesUser: meerkat.site.isCallCentreUser
                 }
             });
         });
@@ -4662,12 +4683,6 @@ creditCardDetails = {
                 resetCompare();
             }
         });
-        meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, function onFilterChange() {
-            resetCompare();
-        });
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function onHealthResultsXsEnterChange() {
-            resetCompare();
-        });
     }
     function resetCompare() {
         $container = $(Results.settings.elements.container);
@@ -4701,7 +4716,8 @@ creditCardDetails = {
                     }
                     meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                         touchType: "H",
-                        touchComment: "ResCompare"
+                        touchComment: "ResCompare",
+                        simplesUser: meerkat.site.isCallCentreUser
                     });
                     var compareArray = [];
                     var items = Results.getFilteredResults();
@@ -4714,7 +4730,8 @@ creditCardDetails = {
                     meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                         method: "trackQuoteComparison",
                         object: {
-                            products: compareArray
+                            products: compareArray,
+                            simplesUser: meerkat.site.isCallCentreUser
                         }
                     });
                 }, Results.settings.animation.features.scroll.duration + 100);
@@ -4857,6 +4874,15 @@ creditCardDetails = {
                 var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
                 $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ""));
             });
+        });
+        meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, function onFilterChange(obj) {
+            resetCompare();
+            if (obj && obj.hasOwnProperty("filter-frequency-change")) {
+                supertagEventMode = "Refresh";
+            }
+        });
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function onHealthResultsXsEnterChange() {
+            resetCompare();
         });
     }
     function breakpointTracking() {
@@ -5218,9 +5244,10 @@ creditCardDetails = {
         return data;
     }
     function doCustomExternalTracking() {
-        var frequency = Results.getFrequency();
-        var sortHealthRanking = Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price";
+        var paymentPlan = Results.getFrequency();
+        var sortBy = Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price";
         var excess = "ALL";
+        var display = "price";
         switch ($("#health_excess").val()) {
           case "1":
             excess = "0";
@@ -5242,12 +5269,15 @@ creditCardDetails = {
             method: "trackQuoteList",
             object: {
                 preferredExcess: excess,
-                sortPaymentFrequency: frequency,
-                sortHealthRanking: sortHealthRanking,
-                event: supertagEventMode
+                actionStep: meerkat.site.vertical + " results",
+                paymentPlan: paymentPlan,
+                sortBy: sortBy,
+                event: supertagEventMode,
+                display: display,
+                simplesUser: meerkat.site.isCallCentreUser
             }
         });
-        supertagEventMode = "Refresh";
+        supertagEventMode = "Load";
     }
     function init() {
         $component = $("#resultsPage");

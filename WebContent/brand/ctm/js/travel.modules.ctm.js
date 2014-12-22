@@ -113,7 +113,7 @@
     function getVerticalFilter() {
         var vf = null;
         if ($policyTypeBtn.is(":checked")) {
-            vf = $policyTypeBtn.val() == "S" ? "Single Trip" : "Multi Trip";
+            vf = $("input[name=travel_policyType]:checked").val() == "S" ? "Single Trip" : "Multi Trip";
         }
         return vf;
     }
@@ -360,10 +360,7 @@
             onClickApplyNow: onClickApplyNow,
             onBeforeApply: null,
             onApplySuccess: null,
-            retrieveExternalCopy: retrieveExternalCopy,
-            additionalTrackingData: {
-                verticalFilter: meerkat.modules.travel.getVerticalFilter()
-            }
+            retrieveExternalCopy: retrieveExternalCopy
         };
         meerkat.modules.moreInfo.initMoreInfo(options);
         eventSubscriptions();
@@ -390,7 +387,8 @@
         var settings = {
             additionalTrackingData: {
                 productBrandCode: product.provider,
-                productName: product.name
+                productName: product.name,
+                verticalFilter: meerkat.modules.travel.getVerticalFilter()
             }
         };
         meerkat.modules.moreInfo.updateSettings(settings);

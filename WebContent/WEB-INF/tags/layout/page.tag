@@ -307,7 +307,7 @@
 							windowTimeout: ${sessionDataService.getClientDefaultExpiryTimeout(pageContext.request)},
 							deferredPokeDuration: 300000,
 							firstPokeEnabled: true,
-							bigIP: "${sessionDataService.getCookieByName(pageContext.request, (environmentService.getEnvironmentAsString() == "PRO") ? "BIGipServerPool_HTTPS_Ecommerce_DISCOnline_XS" : "JSESSIONID")}"
+							bigIP: "${sessionDataService.getCookieByName(pageContext.request, environmentService.getBIGIPCookieId())}"
 						},
 						navMenu: {
 							type: 'default',

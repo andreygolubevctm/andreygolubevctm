@@ -147,7 +147,8 @@
 					method:'trackQuoteProductList',
 					object:{
 						products: sTagProductList,
-						verticalFilter: (typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === 'function' ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null)
+						verticalFilter: (typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === 'function' ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null),
+						simplesUser: meerkat.site.isCallCentreUser
 					}
 				});
 

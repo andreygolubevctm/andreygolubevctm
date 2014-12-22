@@ -107,14 +107,22 @@
 						healthFunds.load(product.info.provider, applyCallback);
 
 						var transaction_id = meerkat.modules.transactionId.get();
+						var handoverType;
+						if(meerkat.site.isCallCentreUser){
+							handoverType = "Simples";
+						}
+						else {
+							handoverType = "Online";
+						}
 
 						meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 							method: 'trackHandoverType',
 							object: {
-								type: "Online_R",
+								type: handoverType,
 								quoteReferenceNumber: transaction_id,
 								transactionID: transaction_id,
-								productID: "productID"
+								productID: "productID",
+								simplesUser: meerkat.site.isCallCentreUser
 							}
 						});
 					}
@@ -246,7 +254,10 @@
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 				method:'trackProductView',
 				object:{
-					productID: product.productId
+					productID: product.productId,
+					productBrandCode: product.info.providerName,
+					productName: product.info.productTitle,
+					simplesUser: meerkat.site.isCallCentreUser
 				}
 			});
 
@@ -314,7 +325,10 @@
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 				method:'trackProductView',
 				object:{
-					productID: product.productId
+					productID: product.productId,
+					productBrandCode: product.info.providerName,
+					productName: product.info.productTitle,
+					simplesUser: meerkat.site.isCallCentreUser
 				}
 		});
 

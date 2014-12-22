@@ -501,7 +501,8 @@
 					object: {
 						action: 'Save',
 						transactionID: transactionId,
-						vertical: verticalCode
+						vertical: verticalCode,
+						simplesUser: meerkat.site.isCallCentreUser
 					}
 				});
 			}

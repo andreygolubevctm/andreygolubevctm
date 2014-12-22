@@ -61,7 +61,8 @@
 			sessionExpiry._timeoutLength = ${sessionDataService.getClientDefaultExpiryTimeout(pageContext.request)};
 			<%-- "Temporary" code starts here: --%>
 			<%-- Log applicable information to the DB --%>
-			if(typeof data.bigIP !== "undefined") {
+			var bigIPPageLoad = "${sessionDataService.getCookieByName(pageContext.request, environmentService.getBIGIPCookieId())}";
+			if(typeof data.bigIP !== "undefined" && data.bigIP !== bigIPPageLoad) {
 				if (typeof FatalErrorDialog !== 'undefined') {
 					FatalErrorDialog.exec({
 						message: "Session poke failed on first load",
@@ -69,7 +70,7 @@
 						description: "Session poke failed on first load",
 						data: {
 							transactionId: (typeof referenceNo == 'undefined') ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(),
-							bigIP_onPageLoad: "${sessionDataService.getCookieByName(pageContext.request, (environmentService.getEnvironmentAsString() == "PRO") ? "BIGipServerPool_HTTPS_Ecommerce_DISCOnline_XS" : "JSESSIONID")}",
+							bigIP_onPageLoad: bigIPPageLoad,
 							bigIP_onFirstSessionPoke: data.bigIP
 						},
 						silent: true

@@ -240,9 +240,10 @@
 		_.defer(function(){
 
 			var valueOld,
-			valueNew,
-			filterId,
-			needToFetchFromServer = false;
+				valueNew,
+				filterId,
+				needToFetchFromServer = false,
+				filterChanges = {};
 
 
 			// Collect the new (current) values from the filters (second argument 'true')
@@ -284,8 +285,10 @@
 										refreshSort = true;
 									}
 								}
+								filterChanges['filter-frequency-change'] = valueNew;
 							}
 							Results.setFrequency(valueNew, false); // was true
+
 
 						}
 
@@ -327,7 +330,7 @@
 			}
 
 
-				meerkat.messaging.publish(moduleEvents.CHANGED);
+				meerkat.messaging.publish(moduleEvents.CHANGED,filterChanges);
 
 				if (needToFetchFromServer) {
 					_.defer(function(){

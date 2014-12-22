@@ -14,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ctm.services.EnvironmentService;
-import com.ctm.services.EnvironmentService.Environment;
 import com.ctm.services.SessionDataService;
 
 @WebServlet(urlPatterns = {
@@ -50,8 +49,7 @@ public class SessionPokeRouter extends HttpServlet {
 				long timeout = sessionDataService.getClientSessionTimeout(request);
 				
 				if(timeout == -1) {
-					String cookieName = (EnvironmentService.getEnvironment() == Environment.PRO) ? "BIGipServerPool_HTTPS_Ecommerce_DISCOnline_XS" : "JSESSIONID";
-					String bigIPCookieValue = sessionDataService.getCookieByName(request, cookieName);
+					String bigIPCookieValue = sessionDataService.getCookieByName(request, EnvironmentService.getBIGIPCookieId());
 					json.put("bigIP", bigIPCookieValue);
 				}
 				

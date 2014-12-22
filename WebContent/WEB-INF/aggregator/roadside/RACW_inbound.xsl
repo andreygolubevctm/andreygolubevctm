@@ -182,8 +182,8 @@
 					<acn>000 000 000</acn>
 					<afsLicenceNo>000000</afsLicenceNo>
 						<!-- Decided not to implement on their side at this time -->
-						<!-- <quoteUrl>http://rac.com.au/motoring/roadside-assistance/<xsl:value-of select="$productString" />-form?affid=ctm%26yr=<xsl:value-of select="$request/roadside/vehicle/year"/>%26mk=<xsl:value-of select="$request/roadside/vehicle/make"/>%26mdl=%26st=wa</quoteUrl> -->
-						<quoteUrl>http://rac.com.au/motoring/roadside-assistance/<xsl:value-of select="$productString" /></quoteUrl>
+						<!-- <quoteUrl>https://rac.com.au/motoring/roadside-assistance/<xsl:value-of select="$productString" />-form?affid=ctm%26yr=<xsl:value-of select="$request/roadside/vehicle/year"/>%26mk=<xsl:value-of select="$request/roadside/vehicle/make"/>%26mdl=%26st=wa</quoteUrl> -->
+						<quoteUrl>https://rac.com.au/motoring/roadside-assistance/<xsl:value-of select="$productString" /></quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
 

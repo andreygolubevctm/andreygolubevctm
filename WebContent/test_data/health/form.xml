@@ -22,6 +22,7 @@
 		<postcode>4626</postcode>
 		<healthSitu>LC</healthSitu>
 		<cover>Y</cover>
+		<singleProvider></singleProvider>
 	</situation>
 	<benefits>
 		<benefitsExtras>

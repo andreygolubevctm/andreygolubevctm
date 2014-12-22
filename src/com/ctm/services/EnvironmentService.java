@@ -44,6 +44,34 @@ public class EnvironmentService {
 			}
 		};
 	}
+	
+	public enum BIGIPCookieId {
+		LOCALHOST {
+			public String toString() {
+				return "JSESSIONID";
+			}
+		},
+		NXI {
+			public String toString() {
+				return "BIGipServerPool_HTTP_AGGR_NXI_eCommerce_DISCOnline";
+			}
+		},
+		NXQ {
+			public String toString() {
+				return "BIGipServerPool_HTTPS_AGGR_NXQ_eCommerce_DISCOnline";
+			}
+		},
+		NXS {
+			public String toString() {
+				return "BIGipServerPool_HTTPS_AGGR_NXS_eCommerce_DISCOnline";
+			}
+		},
+		PRO {
+			public String toString() {
+				return "BIGipServerPool_HTTPS_Ecommerce_DISCOnline_XS";
+			}
+		};
+	}
 
 	public static void setEnvironment(String envCode) throws Exception{
 		for (Environment env : Environment.values()) {
@@ -63,6 +91,11 @@ public class EnvironmentService {
 	public static String getEnvironmentAsString() throws EnvironmentException{
 		if(currentEnvironment == null) throw new EnvironmentException("Environment variable not set, check the environment.properties file.");
 		return currentEnvironment.toString();
+	}
+	
+	public static String getBIGIPCookieId() {
+		String environment = getEnvironmentAsString().toUpperCase();
+		return EnvironmentService.BIGIPCookieId.valueOf(environment).toString();
 	}
 
 	/**

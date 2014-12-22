@@ -83,7 +83,7 @@
 			title : 'Travel Details',
 			navigationId : 'start',
 			slideIndex : 0,
-			externalTracking : { 
+			externalTracking : {
 				method:'trackQuoteForms',
 				object:meerkat.modules.travel.getTrackingFieldsObject
 			},
@@ -93,7 +93,7 @@
 				if ($policyTypeBtn.is(':checked')) {
 					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
 				}
-				
+
 				meerkat.modules.travelCountrySelection.initCountrySelection();
 				$policyTypeBtn.on('change', function(event){
 					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
@@ -102,7 +102,7 @@
 			onBeforeEnter: function(event) {
 			},
 			onBeforeLeave: function(event) {
-				
+
 			}
 		};
 
@@ -145,7 +145,7 @@
 		var vf = null;
 		if ($policyTypeBtn.is(':checked'))
 		{
-			vf = ($policyTypeBtn.val() == 'S' ? 'Single Trip' : 'Multi Trip');
+			vf = $("input[name=travel_policyType]:checked").val() == 'S' ? 'Single Trip' : 'Multi Trip';
 		}
 
 		return vf;
@@ -177,7 +177,7 @@
 				actionStep = "travel results";
 				break;
 		}
-		
+
 		if (meerkat.modules.moreInfo.isModalOpen())
 		{
 			actionStep ="travel more info";

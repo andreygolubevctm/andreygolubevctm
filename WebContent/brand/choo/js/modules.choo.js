@@ -5900,7 +5900,8 @@ meerkat.logging.init = function() {
                     method: "trackQuoteProductList",
                     object: {
                         products: sTagProductList,
-                        verticalFilter: typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null
+                        verticalFilter: typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null,
+                        simplesUser: meerkat.site.isCallCentreUser
                     }
                 });
                 meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
@@ -6285,7 +6286,8 @@ meerkat.logging.init = function() {
                     object: {
                         action: "Save",
                         transactionID: transactionId,
-                        vertical: verticalCode
+                        vertical: verticalCode,
+                        simplesUser: meerkat.site.isCallCentreUser
                     }
                 });
             }
@@ -6640,7 +6642,7 @@ meerkat.logging.init = function() {
         if (!meerkat.modules.simplesTickler && meerkat.site.session.firstPokeEnabled) {
             updateTimeout(meerkat.site.session.windowTimeout);
             poke().done(function firstPokeDone(data) {
-                if (data.timeout < 0 || typeof data.bigIP !== "undefined") {
+                if (data.timeout < 0 && typeof data.bigIP !== "undefined" && data.bigIP !== meerkat.site.session.bigIP) {
                     meerkat.modules.errorHandling.error({
                         errorLevel: "silent",
                         message: "Session poke failed on first load",

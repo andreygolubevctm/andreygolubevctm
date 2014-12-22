@@ -95,7 +95,11 @@
 					method:'completedApplication',
 					object:{
 						productID: confirmationProduct.productId,
-						vertical: meerkat.site.vertical
+						vertical: meerkat.site.vertical,
+						productBrandCode: confirmationProduct.info.provider,
+						productName: confirmationProduct.info.productTitle,
+						quoteReferenceNumber: confirmationProduct.transactionId,
+						simplesUser: meerkat.site.isCallCentreUser
 					}
 				});
 

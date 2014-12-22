@@ -55,7 +55,8 @@
 				method:'trackQuoteEvent',
 				object: {
 					action: 'Start',
-					transactionID: parseInt(transaction_id, 10)
+					transactionID: parseInt(transaction_id, 10),
+					simplesUser: meerkat.site.isCallCentreUser
 				}
 			});
 
@@ -75,7 +76,8 @@
 						method:'trackQuoteEvent',
 						object: {
 							action: 'Retrieve',
-							transactionID: transaction_id
+							transactionID: transaction_id,
+							simplesUser: meerkat.site.isCallCentreUser
 						}
 					});
 				}
@@ -915,7 +917,8 @@
 			email:					null,
 			emailID:				null,
 			marketOptIn:			null,
-			okToCall:				null
+			okToCall:				null,
+			simplesUser:			meerkat.site.isCallCentreUser
 		};
 
 		// Push in values from 1st slide only when have been beyond it

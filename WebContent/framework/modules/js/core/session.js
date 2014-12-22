@@ -23,7 +23,7 @@
 			
 			// Get the proper timeout as specified by the server
 			poke().done(function firstPokeDone(data) { 
-				if(data.timeout < 0 || typeof data.bigIP !== "undefined") {
+				if(data.timeout < 0 && typeof data.bigIP !== "undefined" && data.bigIP !== meerkat.site.session.bigIP) {
 					meerkat.modules.errorHandling.error({
 						errorLevel: "silent",
 						message: "Session poke failed on first load",

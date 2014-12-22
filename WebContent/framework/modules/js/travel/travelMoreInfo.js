@@ -39,10 +39,7 @@
 			onClickApplyNow: onClickApplyNow,
 			onBeforeApply: null,
 			onApplySuccess: null,
-			retrieveExternalCopy: retrieveExternalCopy,
-			additionalTrackingData: {
-				verticalFilter: meerkat.modules.travel.getVerticalFilter()
-			}
+			retrieveExternalCopy: retrieveExternalCopy
 		};
 
 		meerkat.modules.moreInfo.initMoreInfo(options);
@@ -77,8 +74,13 @@
 	}
 
 	function onBeforeShowModal(product) {
-		
-		var settings = {'additionalTrackingData' : {'productBrandCode': product.provider, 'productName': product.name}};
+
+		var settings = {'additionalTrackingData' : {
+			'productBrandCode': product.provider,
+			'productName': product.name,
+			'verticalFilter': meerkat.modules.travel.getVerticalFilter()
+			}
+		};
 		meerkat.modules.moreInfo.updateSettings(settings);
 	}
 
@@ -102,9 +104,9 @@
 				}
 
 				// check if the current benefit is meant to be exempted
-				if ($.inArray(a, exemptedBenefits) == -1) 
+				if ($.inArray(a, exemptedBenefits) == -1)
 				{
-					objectArray.push( [product.info[a].desc, a] );		
+					objectArray.push( [product.info[a].desc, a] );
 				}
 			});
 
@@ -120,7 +122,7 @@
 	function benefitException(product)
 	{
 		var exemptedBenefits = [];
-		if (typeof product.exemptedBenefits !== 'undefined') 
+		if (typeof product.exemptedBenefits !== 'undefined')
 		{
 			$.each(product.exemptedBenefits, function(a){
 				exemptedBenefits.push(product.exemptedBenefits[a]);
