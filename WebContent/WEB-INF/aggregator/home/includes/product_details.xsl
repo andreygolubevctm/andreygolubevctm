@@ -297,13 +297,13 @@
 			<xsl:when test="$productId = 'BUDD-05-29'">
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
-						Save 15% when you buy online.
+						Save 20% on Smart Home Insurance when you buy online.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						Save 15% when you buy online.
+						Save 20% on Smart Home Insurance when you buy online.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						Save 30% on combined Smart Home &amp; Contents Insurance when you buy online.
+						Save 35% on combined Smart Home &amp; Contents Insurance when you buy online.
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>

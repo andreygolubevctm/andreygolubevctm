@@ -11,7 +11,7 @@
 <%-- PARAMETERS --%>
 <c:set var="postcode"><c:out value="${param.postcode}" escapeXml="true" /></c:set>
 <c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${name}InfoDialog.open()'>privacy statement</a>" />
-<c:set var="label_text" value="I understand comparethemarket.com.au compares energy plans<br>based on a standard tariff from a range of participating retailers.<br>By providing my contact details I agree that comparethemarket.com.au<br>and its partner Save on Energy may contact me about the services<br>they provide. I confirm that I have read the ${privacyLink}." />
+<c:set var="label_text" value="I understand comparethemarket.com.au compares energy plans<br>based on a standard tariff from a range of participating retailers.<br>By providing my contact details I agree that comparethemarket.com.au<br>and its partner Thought World may contact me about the services<br>they provide. I confirm that I have read the ${privacyLink}." />
 <c:set var="error_text" value="Please confirm you have read the privacy statement" />
 
 <%-- HTML --%>

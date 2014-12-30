@@ -76,7 +76,7 @@
 
 	</form:form>
 
-	<utilities:footer />
+	<utilities:lead_footer />
 
 	<core:closing_body>
 		<agg:includes supertag="true" />

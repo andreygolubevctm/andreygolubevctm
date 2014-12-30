@@ -8,7 +8,7 @@
 		<div class="column left">
 			<div class="inner left">
 				<div class="panel nobdr lgetxt">
-					<div id="thank_you"><p>Thank you for choosing comparethemarket.com.au (powered by Save on Energy) to help you save on your energy bills.
+					<div id="thank_you"><p>Thank you for choosing comparethemarket.com.au (powered by Thought World) to help you save on your energy bills.
 An energy specialist will be in contact with you shortly to discuss your application.</p></div>
 				</div>
 			</div>

@@ -226,34 +226,18 @@
 							</v1:AllMembersAreUnderMedicare>
 						</v1:MedicareDetails>
 						<v1:ResidentialAddress>
-							<v1:AddressLine>
-								<xsl:text>&lt;![CDATA[</xsl:text>
-								<xsl:value-of select="application/address/fullAddressLineOne" />
-								<xsl:text>]]&gt;</xsl:text>
-							</v1:AddressLine>
+							<v1:AddressLine><xsl:value-of select="application/address/fullAddressLineOne" /></v1:AddressLine>
 							<v1:Postcode><xsl:value-of select="application/address/postCode" /></v1:Postcode>
-							<v1:Suburb>
-								<xsl:text>&lt;![CDATA[</xsl:text>
-								<xsl:value-of select="application/address/suburbName" />
-								<xsl:text>]]&gt;</xsl:text>
-							</v1:Suburb>
+							<v1:Suburb><xsl:value-of select="application/address/suburbName" /></v1:Suburb>
 							<v1:State><xsl:value-of select="application/address/state" /></v1:State>
 							<v1:Country>AU</v1:Country>
 						</v1:ResidentialAddress>
 						<xsl:if test="application/postalMatch != 'Y'">
 							<!--Optional: -->
 							<v1:PostalAddress>
-								<v1:AddressLine>
-									<xsl:text>&lt;![CDATA[</xsl:text>
-									<xsl:value-of select="application/postal/fullAddressLineOne" />
-									<xsl:text>]]&gt;</xsl:text>
-								</v1:AddressLine>
+								<v1:AddressLine><xsl:value-of select="application/postal/fullAddressLineOne" /></v1:AddressLine>
 								<v1:Postcode><xsl:value-of select="application/postal/postCode" /></v1:Postcode>
-								<v1:Suburb>
-									<xsl:text>&lt;![CDATA[</xsl:text>
-									<xsl:value-of select="application/postal/suburbName" />
-									<xsl:text>]]&gt;</xsl:text>
-								</v1:Suburb>
+								<v1:Suburb><xsl:value-of select="application/postal/suburbName" /></v1:Suburb>
 								<v1:State><xsl:value-of select="application/postal/state" /></v1:State>
 								<v1:Country>AU</v1:Country>
 							</v1:PostalAddress>

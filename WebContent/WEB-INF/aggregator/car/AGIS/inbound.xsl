@@ -358,7 +358,7 @@
 					<discount>
 						<online>
 							<xsl:choose>
-								<xsl:when test="brand/code = 'BUDD'">20</xsl:when>
+								<xsl:when test="brand/code = 'BUDD'">25</xsl:when>
 								<xsl:when test="brand/code = 'VIRG'">20</xsl:when>
 								<xsl:when test="brand/code = 'EXDD'">10</xsl:when>
 								<xsl:when test="brand/code = '1FOW'"></xsl:when>
