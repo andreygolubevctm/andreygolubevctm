@@ -905,6 +905,13 @@ body > div > header a.bottombar .btn-call:hover {
 .call-modal .callback-details-title {
   font-size: 16px;
 }
+/** PROVIDER OVERRIDES **/
+.more-info-content.BUDD .onlineOffer,
+.call-modal.BUDD .onlineOffer,
+.more-info-content.BUDD .offlineDiscount,
+.call-modal.BUDD .offlineDiscount {
+  display: none;
+}
 .car .edit-details-wrapper ul.primary-row-details li:first-child {
   margin-left: 0;
   margin-top: 0;

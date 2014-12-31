@@ -92,7 +92,7 @@
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var annualPriceTemplate = htmlTemplate(obj); }}
 
-	<div class="displayNone more-info-content">
+	<div class="displayNone more-info-content {{= brandCode }}">
 		<div class="modal-closebar">
 			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
 		</div>

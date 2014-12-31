@@ -1209,7 +1209,7 @@
             var modalOptions = {
                 htmlContent: htmlContent,
                 hashId: "call",
-                className: "call-modal",
+                className: "call-modal " + obj.brandCode,
                 closeOnHashChange: true,
                 openOnHashChange: false,
                 onOpen: function(modalId) {

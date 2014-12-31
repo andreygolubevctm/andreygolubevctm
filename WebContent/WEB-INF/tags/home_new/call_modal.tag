@@ -90,7 +90,7 @@
 	<!--  text center mobile -->
 	<h4>Get a Call Back</h4>
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-xs-12 offlineDiscount">
 			{{= offlineDiscountTemplate }}
 		</div>
 	</div>
@@ -167,7 +167,7 @@
 			<div class="hidden-xs">
 				{{= promotionOfferTemplate }}
 			</div>
-			<div class="hidden-xs push-top-10">
+			<div class="hidden-xs push-top-10 offlineDiscount">
 				{{= offlineDiscountTemplate }}
 			</div>
 			{{ if(obj.isCallbackAvailable === true) { }}

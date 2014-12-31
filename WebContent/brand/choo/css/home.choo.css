@@ -487,6 +487,13 @@ body > div > header a.bottombar .btn-call:hover {
 .modal-body .icon-phone-hollow:before {
   font-size: 25px;
 }
+/** PROVIDER OVERRIDES **/
+.more-info-content.BUDD .onlineOffer,
+.call-modal.BUDD .onlineOffer,
+.more-info-content.BUDD .offlineDiscount,
+.call-modal.BUDD .offlineDiscount {
+  display: none;
+}
 .companyLogo.logo_BUDD {
   background-image: url("../../../common/images/logos/home/budget.png");
 }

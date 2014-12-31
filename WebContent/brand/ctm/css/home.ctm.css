@@ -535,6 +535,13 @@ So it's going to be done progressively. Include this file in your framework.buil
 .modal-body .icon-phone-hollow:before {
   font-size: 25px;
 }
+/** PROVIDER OVERRIDES **/
+.more-info-content.BUDD .onlineOffer,
+.call-modal.BUDD .onlineOffer,
+.more-info-content.BUDD .offlineDiscount,
+.call-modal.BUDD .offlineDiscount {
+  display: none;
+}
 .companyLogo.logo_BUDD {
   background-image: url("../../../common/images/logos/home/budget.png");
 }
