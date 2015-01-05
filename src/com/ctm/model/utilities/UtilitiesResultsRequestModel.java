@@ -181,21 +181,59 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel{
 		json.put("fuel_type", getFuelType());
 
 		if(getHowToEstimate().equals("U")){
-			json.put("elec_peak_usage", getElectrictyPeakUsage());
-			json.put("gas_peak_usage", getGasPeakUsage());
-			json.put("elec_offpeak_usage", getElectricityOffpeakUsage());
-			json.put("gas_offpeak_usage", getGasOffpeakUsage());
+
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
+				json.put("elec_peak_usage", getElectrictyPeakUsage());
+				json.put("elec_offpeak_usage", getElectricityOffpeakUsage());
+			}else{
+				json.put("elec_peak_usage", 0);
+				json.put("elec_offpeak_usage", 0);
+			}
+
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
+				json.put("gas_peak_usage", getGasPeakUsage());
+				json.put("gas_offpeak_usage", getGasOffpeakUsage());
+			}else{
+				json.put("gas_peak_usage", 0);
+				json.put("gas_offpeak_usage", 0);
+			}
+
+			json.put("elec_money_spend", 0);
+			json.put("gas_money_spend", 0);
+
+
 		} else if(getHowToEstimate().equals("S")){
-			json.put("elec_money_spend", getElectricitySpend());
-			json.put("gas_money_spend", getGasSpend());
+
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
+				json.put("elec_money_spend", getElectricitySpend());
+			}else{
+				json.put("elec_money_spend", 0);
+			}
+
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
+				json.put("gas_money_spend", getGasSpend());
+			}else{
+				json.put("gas_money_spend", 0);
+			}
 		}
 
-		json.put("elec_duration", getElectricityDuration());
-		json.put("gas_duration", getGasDuration());
+		if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
+			json.put("elec_duration", getElectricityDuration());
+		}
+
+		if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
+			json.put("gas_duration", getGasDuration());
+		}
 
 		if(isConnection() == false  || (isConnection() && getHowToEstimate().equals("U"))){
-			json.put("current_elec_supplier", getCurrentElectricitySupplier());
-			json.put("current_gas_supplier", getCurrentGasSupplier());
+
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
+				json.put("current_elec_supplier", getCurrentElectricitySupplier());
+			}
+
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
+				json.put("current_gas_supplier", getCurrentGasSupplier());
+			}
 		}
 
 		json.put("tariff", getTariff());
@@ -246,31 +284,37 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel{
 		setTariff(request.getParameter("utilities_householdDetails_tariff"));
 		setConnection(convertStringToBoolean(request.getParameter("utilities_householdDetails_movingIn")));
 
-		setCurrentElectricitySupplier(request.getParameter("utilities_estimateDetails_usage_electricity_currentSupplier"));
-		setCurrentGasSupplier(request.getParameter("utilities_estimateDetails_usage_gas_currentSupplier"));
-
 		String whatToCompare = request.getParameter("utilities_householdDetails_whatToCompare");
 		if(whatToCompare.equals("EG")){
 			setFuelType(FuelType.Dual);
+			setCurrentElectricitySupplier(request.getParameter("utilities_estimateDetails_usage_electricity_currentSupplier"));
+			setCurrentGasSupplier(request.getParameter("utilities_estimateDetails_usage_gas_currentSupplier"));
 		} else if(whatToCompare.equals("E")){
 			setFuelType(FuelType.Electricity);
+			setCurrentElectricitySupplier(request.getParameter("utilities_estimateDetails_usage_electricity_currentSupplier"));
 		} else if(whatToCompare.equals("G")){
 			setFuelType(FuelType.Gas);
+			setCurrentGasSupplier(request.getParameter("utilities_estimateDetails_usage_gas_currentSupplier"));
 		}
 
 		setElectricitySpend(convertStringToFloat(request.getParameter("utilities_estimateDetails_spend_electricity_amount")));
 		setGasSpend(convertStringToFloat(request.getParameter("utilities_estimateDetails_spend_gas_amount")));
 
-		setElectrictyPeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_spend_electricity_amount")));
+		setElectrictyPeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_electricity_peak_amount")));
 		setElectricityOffpeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_electricity_offpeak_amount")));
 
 		setGasPeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_gas_peak_amount")));
 		setGasOffpeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_gas_offpeak_amount")));
 
-		setElectricityDuration(convertStringToDuraction(request.getParameter("utilities_estimateDetails_spend_electricity_period")));
-		setGasDuration(convertStringToDuraction(request.getParameter("utilities_estimateDetails_spend_gas_period")));
-
 		setHowToEstimate(request.getParameter("utilities_householdDetails_howToEstimate"));
+
+		if(getHowToEstimate().equals("U")){
+			setElectricityDuration(convertStringToDuraction(request.getParameter("utilities_estimateDetails_usage_electricity_peak_period")));
+			setGasDuration(convertStringToDuraction(request.getParameter("utilities_estimateDetails_usage_gas_peak_period")));
+		}else{
+			setElectricityDuration(convertStringToDuraction(request.getParameter("utilities_estimateDetails_spend_electricity_period")));
+			setGasDuration(convertStringToDuraction(request.getParameter("utilities_estimateDetails_spend_gas_period")));
+		}
 
 		if(request.getParameter("utilities_resultsDisplayed_optinPhone").equals("Y")){
 			setFirstName(request.getParameter("utilities_resultsDisplayed_firstName"));

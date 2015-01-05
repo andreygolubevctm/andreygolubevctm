@@ -10,9 +10,9 @@
 				<div class="panel nobdr lgetxt">
 					<div id="thank_you">
 						<p><strong>Thank you for choosing comparethemarket.com.au (powered by Thought World) to compare your energy options and save on your energy bills. Thought World's energy specialists will be in contact shortly to discuss your application. Please print this page with your reference number for your records.</strong></p>
-						<p>
+						<%--<p>
 							If you have any questions about your energy application, please call our trusted partner ThoughtWorld on: 1300 850 730
-						</p>
+						</p>--%>
 					</div>
 				</div>
 			</div>

@@ -832,6 +832,7 @@ Results = {
 		}
 		
 		var negative = false;
+		var dataString = String(data);
 		
 		if( formatDoubleValues.test( data )){
 			
@@ -859,7 +860,7 @@ Results = {
 			if(data < 0){
 				negative = true;
 				if(task == 'zero') $(tag).html("$0"); 
-				if(task == 'extra') $(tag).html('<span class="extraCost">extra cost</span> <span class="extraCost">up to</span> ' + data.substring(1, data.length) );
+				if(task == 'extra') $(tag).html('<span class="extraCost">extra cost</span> <span class="extraCost">up to</span> $' + dataString.substring(1, dataString.length) );
 			}
 
 		}
@@ -1199,15 +1200,15 @@ Results = {
 				}
 				
 				var tag = $(newRow).find("#estimatedSaving_" + this.planId);
-				/*
+				
 				if(this.price.Maximum == Math.abs(this.yearlySavings)) {
 					tag.empty().append("Existing provider/plan not found for comparison. Please revise these details.");
 					tag.css({marginTop:'-6px',fontSize:'10px',color:'#4a4f51'});
 				} else {
 					Results.negativeValues(this.yearlySavings, tag, 'extra', '12' );
 				}
-				*/
 				
+
 				// Position the row. 
 				$(newRow).css({position:"absolute", top:topPos});
 				topPos+=rowHeight;					
