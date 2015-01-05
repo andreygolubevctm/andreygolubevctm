@@ -39,17 +39,7 @@ the user to request a callback from the Call Centre.
 					<div class="cleardiv"></div>
 
 				</div>
-				<div class="fieldrow currentProviderContainerCurrentPlanRow">
-					<div class="fieldrow_label">
-						Which plan are you on?</div>
-					<div class="fieldrow_value">
-						<h5 class="left current-provider E"></h5>
-						<h5 class="left current-provider G"></h5>
-					</div>
-					<div class="fieldrow_legend"></div>
-					<div class="cleardiv"></div>
-
-				</div>
+				
 				<div class="fieldrow currentProviderContainerUpdateRow">
 					<div class="fieldrow_label"><!-- empty --></div>
 					<div class="fieldrow_value">

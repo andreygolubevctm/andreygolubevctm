@@ -20,6 +20,7 @@ public class FatalErrorService {
 			description = exception.getCause().getMessage();
 		}
 
+		if(message == null) message = "UNKNOWN";
 
 		logFatalError(styleCodeId, page, sessionId, isFatal, message, description, transactionId);
 	}
@@ -37,11 +38,11 @@ public class FatalErrorService {
 
 	public static void logFatalError(int styleCodeId, String page , String sessionId, boolean isFatal, String message, String description, String transactionId) {
 		if(message.length() > 255){
-			message = message.substring(255);
+			message = message.substring(0, 255);
 		}
 
 		if(page.length() > 45) {
-			page = page.substring(page.length() - 45);
+			page = page.substring(0, page.length() - 45);
 		}
 
 		FatalErrorDao fatalErrorDao = new FatalErrorDao();

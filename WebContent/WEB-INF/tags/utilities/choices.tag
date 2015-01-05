@@ -59,11 +59,8 @@ utilitiesChoices = {
 		electricity:	{},
 		gas:			{}
 	},
-	_located_plans: {
-		electricity:	{},
-		gas:			{}
-	},
 	
+
 	// ajaxLimiters
 	_loading_providers: false,
 	_loading_plans: false,
@@ -89,12 +86,10 @@ utilitiesChoices = {
 			utilitiesChoices.showHideCurrentProvider();
 		});
 		
-		$('#${nameHouseholdDetails}_state').on('change', function(){
-			utilitiesChoices.showHideShoulder();
-		});
 		
-		$("#${nameHouseholdDetails}_postcode").on('change', function() {
-			UtilitiesQuote.getUtilitiesForPostcode( $(this).val(), utilitiesChoices.showHideWhatToCompare );
+
+		$("#${nameHouseholdDetails}_state").on('change', function() {
+			UtilitiesQuote.getUtilitiesForPostcode( $("#${nameHouseholdDetails}_postcode").val(), $("#${nameHouseholdDetails}_suburb").val(), utilitiesChoices.updateServicesAndProviders );
 			});
 		
 		// trigger postcode change if field is preloaded
@@ -108,6 +103,16 @@ utilitiesChoices = {
 		});
 		utilitiesChoices.setEmail();
 		
+		$('#${nameResultsDisplayed}_phoneinput').on('blur', function(){
+			utilitiesChoices.setPhone();
+		});
+		utilitiesChoices.setPhone();
+
+		$('#${nameResultsDisplayed}_firstName').on('change', function(){
+			utilitiesChoices.setFirstName();
+		});
+		utilitiesChoices.setFirstName();
+
 		// update the Moving In value on the application slide
 		$('input[name=${nameHouseholdDetails}_movingIn]').on('change', function(){
 			utilitiesChoices.setMovingIn();
@@ -117,7 +122,6 @@ utilitiesChoices = {
 	
 		// init
 		utilitiesChoices.showHideQuestionElements();
-		utilitiesChoices.showHideShoulder();
 		utilitiesChoices.showHideCurrentProvider();
 	},
 	
@@ -166,6 +170,59 @@ utilitiesChoices = {
 		
 	},
 	
+	updateServicesAndProviders:function(json){
+
+		utilitiesChoices.setState($('#${nameHouseholdDetails}_state').val());
+
+		var selected_e = $("#utilities_estimateDetails_usage_electricity_currentSupplierSelected").val();
+		if( $("#utilities_estimateDetails_usage_electricity_currentSupplier").find(":selected") ) {
+			selected_e = $("#utilities_estimateDetails_usage_electricity_currentSupplier").find(":selected").val();
+		}
+		var selected_g = $("#utilities_estimateDetails_usage_gas_currentSupplierSelected").val();
+		if( $("#utilities_estimateDetails_usage_gas_currentSupplier").find(":selected") ) {
+			selected_g = $("#utilities_estimateDetails_usage_gas_currentSupplier").find(":selected").val();
+		}
+
+		if(json == null){
+			utilitiesChoices.showHideWhatToCompare([]);
+
+			var eProviders = [];
+			utilitiesChoices.renderProviderList(eProviders, 'Electricity', utilitiesChoices._state, selected_e);
+			
+			var gProviders = [];
+			utilitiesChoices.renderProviderList(gProviders, 'Gas', utilitiesChoices._state, selected_g);
+
+
+		}else{
+
+			// Services available
+
+			if(json.serviceType == "Electricity_Gas"){
+				utilitiesChoices.showHideWhatToCompare(['EG','E','G']);
+			}else if(json.serviceType == "Electricity"){
+				utilitiesChoices.showHideWhatToCompare(['E']);
+			}else if(json.serviceType == "Gas"){
+				utilitiesChoices.showHideWhatToCompare(['G']);
+			}else{
+				utilitiesChoices.showHideWhatToCompare([]);
+			}
+
+			// Providers available
+
+			var eProviders = json.electricityProviders;
+			utilitiesChoices.renderProviderList(eProviders, 'Electricity', utilitiesChoices._state, selected_e);
+			
+			var gProviders = json.gasProviders;
+			utilitiesChoices.renderProviderList(gProviders, 'Gas', utilitiesChoices._state, selected_g);
+
+			$("#utilities_householdDetails_tariff").val(json.electricityTariff);
+			
+
+		}
+		
+		
+	},
+
 	showHideQuestionElements: function(){
 		
 		// store the old values
@@ -203,7 +260,6 @@ utilitiesChoices = {
 			
 		}
 		
-		utilitiesChoices.showHideShoulder();		
 	},
 	
 	showFieldsets: function(){
@@ -356,6 +412,7 @@ utilitiesChoices = {
 	
 	showHideUtilities: function(){
 	
+		// Services available
 		switch(utilitiesChoices._whatToCompare){
 			case 'E':
 				$('.electricity').show();
@@ -375,18 +432,7 @@ utilitiesChoices = {
 		
 	},
 	
-	showHideShoulder: function(){
 	
-		utilitiesChoices.setState($('#${nameHouseholdDetails}_state').val());
-		utilitiesChoices._postcode = $('#${nameHouseholdDetails}_postcode').val();
-	
-		if(utilitiesChoices._postcode.substring(0,1) == '2' && utilitiesChoices._howToEstimate == 'U' && utilitiesChoices._whatToCompare != 'G'){
-			$('#${nameEstimateDetails} .usage .shoulderRow').slideDown();
-		}else {
-			$('#${nameEstimateDetails} .usage .shoulderRow').slideUp();
-		}
-		
-	},
 	
 	showHideCurrentProvider: function(){
 		utilitiesChoices.updateProviderSelects(function() {
@@ -418,6 +464,7 @@ utilitiesChoices = {
 			) && utilitiesChoices._state != ''
 		){
 			var state = utilitiesChoices._state;
+			
 			var postcode = utilitiesChoices._postcode;
 			var packagetype = utilitiesChoices._whatToCompare;
 			var selected_e = $("#utilities_estimateDetails_usage_electricity_currentSupplierSelected").val();
@@ -448,56 +495,10 @@ utilitiesChoices = {
 					callback();
 				}
 			} else {
-				if( !utilitiesChoices._loading_providers ) {
-					utilitiesChoices._loading_providers = true;
-					Loading.show("Loading Providers and Plans");
-					var dat = {
-						postcode:postcode,
-						state:state,
-						packagetype:packagetype,
-						transactionId:referenceNo.getTransactionID()
-					};
 					
-					$.ajax({
-						url: "ajax/json/utilities_get_allretailers.jsp",
-						data: dat,
-						type: "POST",
-						async: true,
-						dataType: "json",
-						timeout:15000,
-						cache: false,
-						success: function(json){
-							utilitiesChoices._loading_providers = false;
-							Loading.hide();
-							if( typeof json.results.electricity == "object") {
-								var eProviders = utilitiesChoices.normaliseProvidersObj(json.results.electricity.providers);
-								utilitiesChoices.renderProviderList(eProviders, 'Electricity', state, selected_e);
-							}
-							if( typeof json.results.gas == "object") {
-								var gProviders = utilitiesChoices.normaliseProvidersObj(json.results.gas.providers)
-								utilitiesChoices.renderProviderList(gProviders, 'Gas', state, selected_g);
-							}
+				// this was where we called the ajax again - but we should have the data already.
 							
-							if( typeof callback == "function" ) {
-								callback();
 							}
-						},
-						error: function(obj,txt,errorThrown){
-							utilitiesChoices._loading_providers = false;
-							Loading.hide();
-							if( typeof callback == "function" ) {
-								callback();
-							}
-							FatalErrorDialog.exec({
-								message:		"Error retrieving list of retailers.",
-								page:			"utilities:choices.tag",
-								description:	"utilitiesChoices.updateProviderSelects(). AJAX request failed: " + txt + " " + errorThrown,
-								data:			dat
-							});
-						}
-					});
-				}
-			}
 		} else {
 			$("#utilities_estimateDetails_usage_electricity_currentSupplier").empty();
 			$("#utilities_estimateDetails_usage_gas_currentSupplier").empty();
@@ -510,78 +511,7 @@ utilitiesChoices = {
 		}
 	},
 	
-	updateProductSelects: function( utility ) {
 
-		switch(utility) {
-			case "Electricity":
-			case "Gas":
-				var postcode = utilitiesChoices._postcode;
-				var state = utilitiesChoices._state;
-				var packagetype = utilitiesChoices._whatToCompare;
-				var retailerid = $("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentSupplier").val();
-				var selected = $("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentProductSelected").val();
-				if( $("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentProduct").find(":selected") ) {
-					selected = $("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentProduct").find(":selected").val();
-				}
-				
-				$("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentPlan").empty();	
-				
-				if( utilitiesChoices._located_plans[utility.toLowerCase()].hasOwnProperty(state + retailerid) ) {
-					utilitiesChoices.renderProductList(utilitiesChoices._located_plans[utility.toLowerCase()][state + retailerid], utility, state, retailerid, selected);
-				} else {	
-					if( !utilitiesChoices._loading_plans ) {
-						utilitiesChoices._loading_plans = true;
-						var dat = {
-							retailerid:retailerid,
-							postcode:postcode,
-							state:state,
-							packagetype:utility,
-							transactionId:referenceNo.getTransactionID()
-						};
-						$.ajax({
-							url: "ajax/json/utilities_get_allproducts.jsp",
-							data: dat,
-							type: "POST",
-							async: true,
-							dataType: "json",
-							timeout:15000,
-							cache: false,
-							success: function(json){
-								utilitiesChoices._loading_plans = false;						
-								utilitiesChoices.renderProductList(json.results[utility.toLowerCase()], utility, state, retailerid, selected);
-							},
-							error: function(obj,txt,errorThrown){			
-								utilitiesChoices._loading_plans = false;
-											
-								// Insurance against people who click too much
-								$("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentPlan").empty();
-								
-								FatalErrorDialog.exec({
-									message:		"Error retrieving list of retailers plans.",
-									page:			"utilities:choices.tag",
-									description:	"utilitiesChoices.updateProductSelects(). AJAX request failed: " + txt + " " + errorThrown,
-									data:			dat
-								});
-							}
-						});
-					}
-				}
-				break;
-				
-			default:
-				// ignore
-		}
-	},
-	
-	normaliseProvidersObj : function( providersObj ) {
-		var providers = [];
-		for(var i = 0; i < providersObj.length; i++) {
-			providers.push( providersObj[i].provider );
-		}
-		
-		return providers;
-	},
-	
 	getOptionsLength: function( options ) {
 			
 		/* Find the length of the options object. Most browsers honour the index order the object
@@ -616,61 +546,28 @@ utilitiesChoices = {
 			var optionsLen = utilitiesChoices.getOptionsLength(options);
 			for(var i = 0; i < optionsLen; i++) {
 				if(options.hasOwnProperty(i)) {
-					$("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentSupplier").append("<option value='" + options[i].RetailerId + "' " + (selected == options[i].RetailerId ? "selected='true'" : "") + ">" + options[i].Name + "</option>");
-				}
-			}
-			$("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentSupplier").on("change", function(){
-				utilitiesChoices.updateProductSelects(utility);
-			});
-			
-			if( selected ) {
-				utilitiesChoices.updateProductSelects(utility);
-			}
-		}
-	},
-	
-	renderProductList: function(list, utility, state, retailerid, selected) {					
-		// Insurance against people who click too much
-		$("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentPlan").empty();
-		
-		if(typeof list == "object") {
-			utilitiesChoices._located_plans[utility.toLowerCase()][state + retailerid] = list;
-			var options = utilitiesChoices._located_plans[utility.toLowerCase()][state + retailerid];
-			
-			for(var i = 0; i < utilitiesChoices.getOptionsLength(options); i++) {
-				if(options.hasOwnProperty(i)) {
-					$("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentPlan").append("<option value='" + options[i].ProductCode + "' " + (selected == options[i].ProductCode ? "selected='true'" : "") + ">" + options[i].Title + "</option>");
+					$("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentSupplier").append("<option value='" + options[i].id + "' " + (selected == options[i].id ? "selected='true'" : "") + ">" + options[i].name + "</option>");
 				}
 			}
 			
-			if( $.browser.msie ) {
-				var util = utility.toLowerCase();
-				$("#utilities_estimateDetails_usage_" + util + "_currentPlan").on("focus", function(){
-					$(this).css({width:'auto'});
-					if( $(this).width() < 185 ) {
-						$(this).css({width:'185px'});
-					}
-				});
-				$("#utilities_estimateDetails_usage_" + util + "_currentPlan").on("blur", function(){
-					$(this).css({width:'185px'});
-				});
-				$("#utilities_estimateDetails_usage_" + util + "_currentPlan option").on("click", function(){
-					$(this).css({width:'185px'});
-				});
 			}
-
-			if( utilitiesChoices._has_bill === false ) {
-				$("#utilities_estimateDetails_usage_" + utility.toLowerCase() + "_currentPlan").val("ignore");
-		}
-
-			utilitiesChoices.showHideCurrentPlans();
-
-			utilitiesChoices.showHidePlanHelpText();
-		}
 	},
 	
 	setEmail: function(){
 		$('#${nameApplicationDetails}_email').val( $('#${nameResultsDisplayed}_email').val() );
+	},
+		
+	setPhone: function(){
+		var phone = $('#${nameResultsDisplayed}_phone').val();
+		if(phone.substring(0, 2) == "04") {
+			$('#${nameApplicationDetails}_mobileNumberinput').val( $('#${nameResultsDisplayed}_phone').val() );
+		} else {
+			$('#${nameApplicationDetails}_otherPhoneNumberinput').val( $('#${nameResultsDisplayed}_phone').val() );
+				}
+	},
+	
+	setFirstName: function(){
+		$('#${nameApplicationDetails}_firstName').val( $('#${nameResultsDisplayed}_firstName').val() );
 	},
 	
 	setMovingIn: function(){
@@ -687,7 +584,7 @@ utilitiesChoices = {
 	
 	updateApplicationSlide: function(){
 		
-		$("#${nameApplicationThingsToKnow}_hidden_productId").val(utilitiesChoices._product.productId);
+		$("#${nameApplicationThingsToKnow}_hidden_productId").val(utilitiesChoices._product.planId);
 		$("#${nameApplicationThingsToKnow}_hidden_searchId").val(utilitiesChoices._product.searchId);
 		$("#${nameApplicationDetails}_address_postCode").val( $('#${nameHouseholdDetails}_postcode').val() );
 		$("#${nameApplicationDetails}_address_postCode").change();
@@ -699,27 +596,13 @@ utilitiesChoices = {
 		// update moving date datepicker minDate with the retailer's business days notice
 		utilitiesChoices.updateMovingDateMinimum();
 		
-		// show/hide payment information (only for DODO)
-		utilitiesChoices.showHidePaymentInformation();
 		
-		// show/hide option fields/fieldset
-		utilitiesChoices.showHideOptions();
-		
-		// show/hide identification fields
-		utilitiesChoices.showHideIdentificationFields();
-		
-		// isPowerOn
-		utilitiesChoices.showHideisPowerOn();
-		
-		// password question and password answer for Alinta
-		// @todo ?
 		
 		// some providers require more validation
 		utilitiesChoices.addRemoveValidationRules();
 		
-		// display the provider name in the terms and conditions checkboxes
-		utilitiesChoices.parseApplicationSlide();
 		
+
 		$(".providerName").html(utilitiesChoices._product.provider);
 	},
 	
@@ -729,9 +612,6 @@ utilitiesChoices = {
 		
 		$(".selectedProduct").html( parsedTemplate );
 		
-		if(utilitiesChoices._product.info.GreenPercent == 0){
-			$(".selectedProduct .green_percent").html("");
-		}
 		
 		if($("#${nameApplicationDetails}_movingIn :checked").val() == 'Y'){
 			$('.selectedProductTable .estSavings').hide();
@@ -739,25 +619,13 @@ utilitiesChoices = {
 			$('.selectedProductTable .estSavings').show();
 		}
 		
-		Results.negativeValues(utilitiesChoices._product.info.EstimatedSavingText, $(".estSavingsCell"), 'extra' );
+		Results.negativeValues(utilitiesChoices._product.yearlySavings, $(".estSavingsCell"), 'extra' );
 	},
 	
 	updateMovingDateMinimum: function() {
 		
 		var providerCode = utilitiesChoices._product.service;
-		<%-- set min date --%>
-		UtilitiesQuote.getMoveInAvailability(providerCode, utilitiesChoices._state, function(moveInAvailability){
-			var moveInDate = moveInAvailability.MoveInDate.split("-");
-			var minDate = new Date(moveInDate[0],moveInDate[1]-1,moveInDate[2]);
-			$("#${nameApplicationDetails}_movingDate").datepicker('option', 'minDate', minDate);
 			
-			// PARSE MOVE IN DETAILS
-			var moveInDetailsTemplate = $("#${nameApplicationDetails} #move-in-details-template").html();
-			var parsedTemplate = $(parseTemplate( moveInDetailsTemplate, {business_days: moveInAvailability.MoveInBusinessDayNotice-1} ));
-			$("#${nameApplicationDetails}_moveInDetails_placeholder").html( parsedTemplate );
-		});
-		
-		<%-- Disable public holidays --%>
 		var today = new Date();
 		today = today.getDate() + "/" + (today.getMonth()+1) + "/" + today.getFullYear();
 
@@ -766,342 +634,23 @@ utilitiesChoices = {
 		var maxDate = $.datepicker._determineDate(datepicker, maxDateAttr, new Date());
 		maxDate = maxDate.getDate() + "/" + (maxDate.getMonth()+1) + "/" + maxDate.getFullYear();
 
-		var params = {country: "Australia", region: utilitiesChoices._state, fromDate: today, toDate: maxDate, format: "dates"};
 
-		UtilitiesQuote.getPublicHolidays(params, function(publicHolidays){
-			${nameApplicationDetails}_movingDateHandler._publicHolidays = publicHolidays;
-			$("#${nameApplicationDetails}_movingDate").datepicker('option', 'beforeShowDay', ${nameApplicationDetails}_movingDateHandler.isNotWeekendAndNotPublicHoliday);
-			$("#${nameApplicationDetails}_movingDate").rules("add",{
-				"${nameApplicationDetails}_movingDatenotPublicHolidays": true,
-				messages: {
-					"${nameApplicationDetails}_movingDatenotPublicHolidays": "The moving date has to be a business day (i.e. not a public holiday)"
-				}
-			});
-		});
 	},
 	
-	showHidePaymentInformation: function(){
 
-		// 2 options on how to determine if we should show the payment information fieldset
-		// second option preferred until the payment information fielset's text is less Dodo specific 
 		
-		// if the payment information flag is on
-			/*
-			if( utilitiesChoices._product.info.PaymentInformationRequired == true){
-				// show fields
-				$('#${nameApplicationPaymentInformation}_fieldset').show();
-			} else {
-				// hide fields
-				$('#${nameApplicationPaymentInformation}_fieldset').hide();
-			}
-			*/
 		
-		// if the provider code is part of the list of providers listed in the API
-			if(utilitiesChoices._product.service == 'DOD'){
-				// show fields
-				$('#${nameApplicationPaymentInformation}_fieldset').show();
-			} else {
-				// hide fields
-				$('#${nameApplicationPaymentInformation}_fieldset').hide();
-			}
-	},
-	
-	showHideOptions: function(){
-		
-		// Direct Debit
-		if( utilitiesChoices._product.info.HasAddOnFeature == true && utilitiesChoices._product.service != 'AGL' ) {
-			$('#${nameApplicationOptions}_directDebitRow').show();
-			$("#${nameApplicationThingsToKnow}_hidden_directDebitRequired").val('Y');
-			
-			// trigger change events for preload
-			$('#${nameApplicationOptions}_directDebit').trigger('change');
-			$('#${nameApplicationOptions}_paymentSmoothing').trigger('change');
-		} else {
-			$('#${nameApplicationOptions}_directDebitRow').hide();
-			$("#${nameApplicationThingsToKnow}_hidden_directDebitRequired").val('N');
-		}
-		
-		// Electronic Bill
-		if( utilitiesChoices._product.info.HasAddOnFeature == true ) {
-			$('#${nameApplicationOptions}_electronicBillRow').show();
-			$("#${nameApplicationThingsToKnow}_hidden_electronicBillRequired").val('Y');
-		} else {
-			$('#${nameApplicationOptions}_electronicBillRow').hide();
-			$("#${nameApplicationThingsToKnow}_hidden_electronicBillRequired").val('N');
-		}
-		
-		// Electronic Communication
-		if( utilitiesChoices._product.info.HasAddOnFeature == true && $.inArray(utilitiesChoices._product.service, ['AGL', 'ALN']) == -1 ) {
-			$('#${nameApplicationOptions}_electronicCommunicationRow').show();
-			$("#${nameApplicationThingsToKnow}_hidden_electronicCommunicationRequired").val('Y');
-		} else {
-			$('#${nameApplicationOptions}_electronicCommunicationRow').hide();
-			$("#${nameApplicationThingsToKnow}_hidden_electronicCommunicationRequired").val('N');
-		}
-		
-		// Bill Delivery Method
-		if( utilitiesChoices._product.service == 'APG' ) {
-			$('#${nameApplicationOptions}_billDeliveryMethodRow').show();
-			$("#${nameApplicationThingsToKnow}_hidden_billDeliveryMethodRequired").val('Y');
-		} else {
-			$('#${nameApplicationOptions}_billDeliveryMethodRow').hide();
-			$("#${nameApplicationThingsToKnow}_hidden_billDeliveryMethodRequired").val('N');
-		}
-		
-		// Fieldset (at least one of the fields above will be displayed when fulfilling the below conditions, so we display the fieldset)
-		if( utilitiesChoices._product.info.HasAddOnFeature == true || utilitiesChoices._product.service == 'APG' ) {
-			$('#${nameApplicationOptions}').show();
-		} else {
-			$('#${nameApplicationOptions}').hide();
-		}
-		
-	},
-	
-	showHideIdentificationFields: function(){
-	
-		// 2 options on how to determine if we should show the identifications fields
-		
-		// if the identification flag is on
-			if( utilitiesChoices._product.info.IdentificationRequired == true){
-				// show fields
-				$('#${nameApplicationSituation} #identificationSection').show();
-				$("#${nameApplicationThingsToKnow}_hidden_identificationRequired").val('Y');
-			} else {
-				// hide fields
-				$('#${nameApplicationSituation} #identificationSection').hide();
-				$("#${nameApplicationThingsToKnow}_hidden_identificationRequired").val('N');
-			}
-		
-		// if the provider code is part of the list of providers listed in the API
-			/*
-			var provider = utilitiesChoices._product.service;
-			var identificationProviders = ['ATW','TRU','AGL','PWD','DOD','ALN'];
-			
-			if( $.inArray(provider, identificationProviders) != -1){
-				// show fields
-				$('#${nameApplicationSituation} #identificationSection').show();
-				$("#${nameApplicationThingsToKnow}_hidden_identificationRequired").val('Y');
-			}else{
-				// hide fields
-				$('#${nameApplicationSituation} #identificationSection').hide();
-				$("#${nameApplicationThingsToKnow}_hidden_identificationRequired").val('N');
-			}
-			*/
-		
-	},
-	
-	showHideisPowerOn: function(){
-		var qldExcludeExceptions = ['ORG', 'CLK'];
-		var generalExceptions = ['POS'];
-		
-		var isQldException = (utilitiesChoices._state == "QLD" && $.inArray(utilitiesChoices._product.service, qldExcludeExceptions) == -1);
-		var isGeneralException = $.inArray(utilitiesChoices._product.service, generalExceptions) > -1;
-		
-		if( (isQldException || isGeneralException)
-			&& $.type(utilitiesChoices._whatToCompare) != "undefined"
-			&& utilitiesChoices._whatToCompare.indexOf("E") != -1
-			&& $("#${nameApplicationDetails}_movingIn :checked").val() == "Y" ){
-			
-			$('#${nameApplicationDetails} #noVisualInspectionAppointmentContainer').slideUp("fast", function(){
-				// hack, sometimes the slideUp does not work for some reason
-				$('#noVisualInspectionAppointmentContainer').hide();
-			});
-			$('#isPowerOnContainer').slideDown();
-			$("#${nameApplicationThingsToKnow}_hidden_isPowerOnRequired").val('Y');
-			
-			// Remove the isPowerOn event handler if not QLD to prevent a bug
-			// where choosing a QLD property first and then returning to choose
-			// a property from another state makes the animation fire
-			if(!isQldException) {
-				$('#${nameApplicationDetails}_isPowerOn').off('change');
-			}
-
-			// if yes, then display VisualInspectionAppointment
-			$('#${nameApplicationDetails}_isPowerOn').on('change', function(){
-				var $appointmentContainer = $('#visualInspectionAppointmentContainer');
-
-				if($('#${nameApplicationDetails}_isPowerOn :checked').val() == 'N' && isQldException){
-						$appointmentContainer.find('.appointmentText.qld').show();
-					$appointmentContainer.slideDown();
-				}else{
-					$appointmentContainer.slideUp(400, function() {
-						$appointmentContainer.find('.appointmentText').hide();
-			});
-				}
-			});
-			$('#${nameApplicationDetails}_isPowerOn').trigger('change');
-			
-		}else{
-			if( utilitiesChoices._state == "QLD"
-				&& $.type(utilitiesChoices._whatToCompare) != "undefined"
-				&& utilitiesChoices._whatToCompare.indexOf("E") != -1
-				&& $("#${nameApplicationDetails}_movingIn :checked").val() == "Y"){
-				$('#noVisualInspectionAppointmentContainer').slideDown("fast", function(){
-					// hack, sometimes the slideDown does not work for some reason
-					$('#noVisualInspectionAppointmentContainer').show();
-				});
-			} else {
-				$('#noVisualInspectionAppointmentContainer').slideUp("fast", function(){
-					// hack, sometimes the slideUp does not work for some reason
-					$('#noVisualInspectionAppointmentContainer').hide();
-				});
-			}
-			$('#visualInspectionAppointmentContainer').hide();
-			$('#isPowerOnContainer').hide();
-			$("#${nameApplicationThingsToKnow}_hidden_isPowerOnRequired").val('N');
-			
-		}
-		
-	},
-	
-	showHideLifeSupport: function(){
-	
-		var lifeSupportProviders = ['ATW','NGB','ALN'];
-		var isActive = utilitiesChoices.showHideMedicalRequirementsOption( lifeSupportProviders, 'LS' );
-		$("#${nameApplicationThingsToKnow}_hidden_lifeSupportRequired").val(isActive);
-		
-	},
-	
-	showHideMultipleSclerosis: function(){
-		
-		var multipleSclerosisProviders = ['ATW','NGB'];
-		var isActive = utilitiesChoices.showHideMedicalRequirementsOption( multipleSclerosisProviders, 'MS' );
-		$("#${nameApplicationThingsToKnow}_hidden_multipleSclerosisRequired").val(isActive);
-		
-	},
-	
-	showHideMedicalRequirementsOption: function(providersArray, optionValue){
-	
-		var provider = utilitiesChoices._product.service;
-		var active;
-		
-		var medicalRequirementsSelectName = "#${nameApplicationSituation}_medicalRequirements";
-		var medicalRequirementsSelect = $(medicalRequirementsSelectName);
-		var option = medicalRequirementsSelect.find('option[value="'+optionValue+'"]');
-		
-		if( $.inArray(provider, providersArray) == -1 ){
-			
-			if(option.attr('selected') == 'selected'){
-				option.removeAttr('selected');
-				$(medicalRequirementsSelectName+'_').attr('selected', 'selected');
-			}
-			
-			option.hide();
-			active = 'N';
-			
-		} else {
-			option.show();
-			active = 'Y';
-		}
-		
-		return active;
-		
-	},
-	
 	addRemoveValidationRules: function(){
+	
 		
-		if(utilitiesChoices._product.service == 'DOD' || utilitiesChoices._product.service == 'ENA'){
-			// some more validation on phone numbers for Dodo and Energy Australia (they request to have the 2 of them)
-			$('#${nameApplicationDetails}_mobileNumberinput').rules("remove", "validateMobileField");
-			$('#${nameApplicationDetails}_mobileNumberinput').attr( "required", "required" )
-			$('#${nameApplicationDetails}_otherPhoneNumberinput').attr( "required", "required" )
-		} else {
 			$('#${nameApplicationDetails}_mobileNumberinput').rules("add", "validateMobileField");
 			$('#${nameApplicationDetails}_mobileNumberinput').removeAttr("required" )
 			$('#${nameApplicationDetails}_otherPhoneNumberinput').removeAttr("required" )
-		}
+		
 	},
 	
-	parseApplicationSlide: function(){
 		
-		// PREPARE THE DATA
-			var provider = utilitiesChoices._product.service;
 			
-			var data = {
-				selected_utilities: utilitiesChoices.returnWhatToCompare(),
-				provider_name: utilitiesChoices._product.provider,
-				switchwise_t_and_c: 'http:/www.switchwise.com/tandc',
-				switchwise_privacy_policy: 'http:/www.switchwise.com/privacy'
-			}
-			
-		// SITUATION FIELDSET
-			var concessionCheckboxTemplate = $("#${nameApplicationSituation} #concession-checkbox-template").html();
-			var parsedTemplate = $(parseTemplate( concessionCheckboxTemplate, data ));
-			$("#${nameApplicationSituation}_concession_placeholder").html( parsedTemplate );
-			
-		// PAYMENT INFORMATION FIELDSET
-			if(utilitiesChoices._product.service == 'DOD'){
-				// @todo = calculate the estimated costs / 12 (est cost can be a single price or a range of prices)
-				var monthlyEstCost = Math.round(utilitiesChoices._product.price.Maximum / 12);
-			
-				var paymentInformationTemplate = $("#${nameApplicationPaymentInformation} #payment-information-template").html();
-				var parsedTemplate = $(parseTemplate( paymentInformationTemplate, {monthlyEstCost: monthlyEstCost} ));
-				$("#${nameApplicationPaymentInformation}_template_placeholder").html( parsedTemplate );
-			}
-			
-		// PAYMENT DETAILS FOR ALINTA
-			if(utilitiesChoices._product.service == 'ALN'){
-				
-				UtilitiesQuote.getEnergyProfile(utilitiesChoices._product.searchId, function(energyProfile){
-				
-					var firstInstalmentsText = "";
-					
-					if(utilitiesChoices._whatToCompare == "E"){
-						firstInstalmentsText = "$" + Math.round(energyProfile.costrange.maximum / 12);
-					} else if (utilitiesChoices._whatToCompare == "G") {
-						firstInstalmentsText = "$" + Math.round(energyProfile.gascostrange.maximum / 12);
-					} else if (utilitiesChoices._whatToCompare == "EG") {
-						firstInstalmentsText = "$" + Math.round( (energyProfile.costrange.maximum - energyProfile.gascostrange.maximum) / 12) + " for electricity and $" + Math.round(energyProfile.gascostrange.maximum / 12) + " for gas";
-					}
-					
-					var paymentDetailsTemplate = $("#${nameApplicationOptions} #payment-details-template").html();
-					var parsedTemplate = $(parseTemplate( paymentDetailsTemplate, {firstInstalmentsText: firstInstalmentsText}));
-					$("#${nameApplicationOptions}_payment_details_placeholder").html( parsedTemplate );
-				});
-				
-			}
-		
-		// THINGS TO KNOW FIELDSET
-			var thingsToKnowTemplate = $("#${nameApplicationThingsToKnow} #things-to-know-template").html();
-			var parsedTemplate = $(parseTemplate( thingsToKnowTemplate, data ));
-			
-			if( utilitiesChoices._movingIn == "Y" ){
-				parsedTemplate.find('#${nameApplicationThingsToKnow}_transferChkTransferTitle').hide();
-			} else {
-				parsedTemplate.find('#${nameApplicationThingsToKnow}_transferChkMoveInTitle').hide();
-			}
-			
-			$("#${nameApplicationThingsToKnow}_template_placeholder").html( parsedTemplate );
-		
-			<%-- if Click Energy, add some text to the terms and conditions checkbox --%>
-			if(utilitiesChoices._product.service == "CLK"){
-				var termsText = " I understand that the due date on my Click Energy bills will be ";
-				<%-- if NSW, 13 days --%>
-				if(utilitiesChoices._state == "NSW"){
-					termsText += "13 days";
-				<%-- if QLD or VIC, 3 business days --%>
-				} else {
-					termsText += "3 business days";
-				}
-				termsText += " from the date the bill is issued.";
-				
-				var termsCheckbox = $("label[for=${nameApplicationThingsToKnow}_providerTermsAndConditions]");
-				termsCheckbox.html(termsCheckbox.html() + termsText);
-			<%-- if Red Energy, add some text to the terms and conditions checkbox --%>
-			} else if (utilitiesChoices._product.service == "RED") {
-				var termsText = " I understand and accept that " + utilitiesChoices._product.provider + " will perform a credit check in assessing my application.";
-				var termsCheckbox = $("label[for=${nameApplicationThingsToKnow}_providerTermsAndConditions]");
-				termsCheckbox.html(termsCheckbox.html() + termsText);
-				<%-- if Origin Energy, make some changes to the checkboxes --%>
-			} else if (utilitiesChoices._product.service == "ORG") {
-				setTimeout(function() {
-					$('#providerTermsAndConditionsBullets').find('.js-remove-for-origin').remove().end().append("<li>To find out more about how Origin collects, uses, holds and discloses personal and credit information, see their privacy statement at originenergy.com.au/privacy</li>");
-					$('label[for=utilities_application_thingsToKnow_receiveInfo]').html('I would like to receive electronic communication from <strong>compare</strong>the<strong>market</strong>.com.au');
-					$('#utilities_application_thingsToKnow_receiveInfo').before('<input type="checkbox" name="utilities_application_thingsToKnow_receiveRetailerInfo" id="utilities_application_thingsToKnow_receiveRetailerInfo" value="Y" data-visible="true"><label for="utilities_application_thingsToKnow_receiveRetailerInfo">From time to time Origin will let you know about their great products and offers, even after your agreement ends. But if you don\'t want them to, just un tick the box.</label>');
-				}, 200);
-			}
-	},
-	
 	updateApplyNowSlide : function(){
 
 		$(".${nameSummary}_planDetails").html( $("#aol-features > *:not(h5)").clone() );
@@ -1133,15 +682,6 @@ utilitiesChoices = {
 				address: '',
 				billing_address: '',
 				
-				medicalRequirementsType: '',
-				identificationType: '',
-				identificationNo: '',
-				issuedFrom: '',
-				isPowerOn: '',
-				directDebit: '',
-				electronicBill: '',
-				electronicCommunication: '',
-				billDeliveryMethod: ''
 			};
 		
 		// ADDRESS
@@ -1207,71 +747,10 @@ utilitiesChoices = {
 			}
 			$.extend(data, {billing_address: billing_address});
 		
-		// IDENTIFICATION
-			if( formValues['${nameApplicationThingsToKnow}_hidden_identificationRequired'] == "Y"){
-				// ID type
-				var identificationType = $('#${nameApplicationSituation}_identification_idType :selected').text();
-				$.extend(data, {identificationType: identificationType});
 				
-				// ID No
-				var identificationNo = formValues['${nameApplicationSituation}_identification_idNo'];
-				$.extend(data, {identificationNo: identificationNo});
 				
-				// Issued from
-				var issuedFrom = "";
-				if( formValues['${nameApplicationSituation}_identification_idType'] == "DriversLicence" ){
-					//state
-					issuedFrom = formValues['${nameApplicationSituation}_identification_state'];
-				} else if( formValues['${nameApplicationSituation}_identification_idType'] == "Passport" ){
-					// country
-					issuedFrom = $("#${nameApplicationSituation}_identification_country :selected").text();
-				}
-				$.extend(data, {issuedFrom: issuedFrom});
-			}
 		
-		// MEDICAL 
-			if( formValues['${nameApplicationSituation}_medicalRequirements'] == "Y" ){
-				var medical = new Array();
-				if( formValues['${nameApplicationSituation}_lifeSupport'] == "Y" ){
-					medical.push("Life Support");
-				}
-				if( formValues['${nameApplicationSituation}_multipleSclerosis'] == "Y" ){
-					medical.push("Multiple Sclerosis");
-				}
-				var medicalRequirementsType = medical.join("<br/>");
-				$.extend(data, {medicalRequirementsType: medicalRequirementsType});
-			}
 			
-		// IS POWER ON
-			if( formValues['${nameApplicationThingsToKnow}_hidden_isPowerOnRequired'] == "Y"){
-				var isPowerOn = formValues['${nameApplicationDetails}_isPowerOn'] == "Y" ? "Yes" : "No";
-				$.extend(data, {isPowerOn: isPowerOn});
-			}
-		
-		// DIRECT DEBIT
-			if( formValues['${nameApplicationThingsToKnow}_hidden_directDebitRequired'] == "Y"){
-				var directDebit = formValues['${nameApplicationOptions}_directDebit'] == "Y" ? "Yes" : "No";
-				$.extend(data, {directDebit: directDebit});
-			}
-			
-		// ELECTRONIC BILL
-			if( formValues['${nameApplicationThingsToKnow}_hidden_electronicBillRequired'] == "Y"){
-				var electronicBill = formValues['${nameApplicationOptions}_electronicBill'] == "Y" ? "Yes" : "No";
-				$.extend(data, {electronicBill: electronicBill});
-			}
-			
-		// ELECTRONIC COMMUNICATION
-			if( formValues['${nameApplicationThingsToKnow}_hidden_electronicCommunicationRequired'] == "Y"){
-				var electronicCommunication = formValues['${nameApplicationOptions}_electronicCommunication'] == "Y" ? "Yes" : "No";
-				$.extend(data, {electronicCommunication: electronicCommunication});
-			}
-		
-		// BILL DELIVERY METHOD
-			if( formValues['${nameApplicationThingsToKnow}_hidden_billDeliveryMethodRequired'] == "Y"){
-				var billDeliveryMethod = formValues['${nameApplicationOptions}_billDeliveryMethod'];
-				$.extend(data, {billDeliveryMethod: billDeliveryMethod});
-			}
-		
 		// PARSE TEMPLATES
 			var accountHolderDetailsTemplate = $(".${nameSummary} #account-holder-details-template").html();
 			var parsedTemplate = $(parseTemplate( accountHolderDetailsTemplate, data ));
@@ -1286,39 +765,7 @@ utilitiesChoices = {
 			$("#${nameSummary}_summaryText_template_placeholder").html( parsedTemplate );
 		
 		// HIDE SOME ROWS
-			if( formValues['${nameApplicationThingsToKnow}_hidden_identificationRequired'] == "N"){
-				// hide identification fields
-				$(".${nameSummary} .identification").hide();
-			}
-			if( formValues['${nameApplicationSituation}_concession_hasConcession'] == "N" ||
-				(formValues['${nameApplicationSituation}_concession_hasConcession'] == "Y" && utilitiesChoices._state == 'SA')){
-				// hide concession fields
-				$(".${nameSummary} .concession").hide();
-			}
-			if( formValues['${nameApplicationSituation}_medicalRequirements'] == "N" ){
-				// hide medicalRequirementsType
-				$(".${nameSummary} .medicalRequirements").hide();
-			}
-			if( formValues['${nameApplicationThingsToKnow}_hidden_isPowerOnRequired'] == "N"){
-				// hide isPowerOn field
-				$(".${nameSummary} .isPowerOn").hide();
-			}
-			if( formValues['${nameApplicationThingsToKnow}_hidden_directDebitRequired'] == "N"){
-				// hide direct debit field
-				$(".${nameSummary} .directDebit").hide();
-			}
-			if( formValues['${nameApplicationThingsToKnow}_hidden_electronicBillRequired'] == "N"){
-				// hide electronic bill field
-				$(".${nameSummary} .electronicBill").hide();
-			}
-			if( formValues['${nameApplicationThingsToKnow}_hidden_electronicCommunicationRequired'] == "N"){
-				// hide electronic communication field
-				$(".${nameSummary} .electronicCommunication").hide();
-			}
-			if( formValues['${nameApplicationThingsToKnow}_hidden_billDeliveryMethodRequired'] == "N"){
-				// hide bill delivery method fields
-				$(".${nameSummary} .billDeliveryMethod").hide();
-			}
+			
 			if( formValues['${nameApplicationDetails}_movingIn'] == "N" ){
 				// hide moving Date
 				$(".${nameSummary} .movingDate").hide();
@@ -1326,10 +773,7 @@ utilitiesChoices = {
 			} else {
 				$(".${nameSummary}_transfer").hide();
 			}
-			if( formValues['${nameApplicationSituation}_identification_idType'] == "Medicare"){
-				// hide Issued From if ID type is Medicare
-				$(".${nameSummary} .issuedFrom").hide();
-			}
+			
 			$(".${nameSummary}_row").each(function(){
 				if($(this).children(".right-column").html() == ""){
 					$(this).hide();

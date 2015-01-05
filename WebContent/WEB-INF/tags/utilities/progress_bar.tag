@@ -18,20 +18,11 @@
 			<a href="javascript:void(0);"><span>3. </span>Fill out your details</a>
 		</li>
 		<li id="step-4" class="navStep">
-			<a href="javascript:void(0);"><span>4. </span>Apply Now</a>
-		</li>
-		<li id="step-5" class="navStep">
-			<a href="javascript:void(0);"><span>5. </span>Confirmation</a>
+			<a href="javascript:void(0);"><span>4. </span>Confirmation</a>
 		</li>
 	</ul>
 	<a href="javascript:void(0);" data-restartquote="true" id="start-new-quote" class="smlbtn" title="Start New Quote"><span>Start New Quote</span></a>
 	<a href="javascript:void(0);" data-revisedetails="true" id="revise-details" class="smlbtn" title="Revise Details"><span>Revise Details</span></a>
-	<a href="javascript:void(0);" data-savequote="true" id="save-my-quote" class="button-common smlbtn" title="Save your quote">
-		<span class="icon-container">
-			<span class="icon"><!-- icon --></span>
-		</span>
-		<span class="text">Save Quote</span>
-	</a>
 </div>
 
 <form:active_progress_bar />

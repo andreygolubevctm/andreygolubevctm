@@ -1,7 +1,10 @@
 package com.ctm.router;
 
-import java.io.IOException;
-
+import com.ctm.model.email.EmailMode;
+import com.ctm.model.email.IncomingEmail;
+import com.ctm.services.AccessTouchService;
+import com.ctm.services.email.EmailUrlService;
+import com.ctm.services.email.IncomingEmailService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -9,14 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ctm.dao.TouchDao;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.email.EmailMode;
-import com.ctm.model.email.IncomingEmail;
-import com.ctm.services.email.EmailUrlService;
-import com.ctm.services.email.IncomingEmailService;
-import com.ctm.services.AccessTouchService;
+import java.io.IOException;
 
 @WebServlet(urlPatterns = {
 	"/email/incoming/gateway.json"

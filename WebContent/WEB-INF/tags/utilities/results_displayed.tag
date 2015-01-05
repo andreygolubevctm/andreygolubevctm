@@ -11,19 +11,26 @@
 <%-- HTML --%>
 <div id="${name}" class="${name}">
 	
-	<form:fieldset legend="Results Displayed">
+	<form:fieldset legend="Your Contact Details">
 		
-		<form:row label="Show me results for" helpId="529">
-			<field:array_select items="All=All,GP=Only Green Plans,NC=No Contract" xpath="${xpath}/resultsFor" title="show results for" required="true" />&nbsp;
+		<form:row label="First name">
+			<field:input xpath="${xpath}/firstName" required="false" title="your first name" />
 		</form:row>
 		
 		<form:row label="Your email address">
 			<field:contact_email xpath="${xpath}/email" required="false" title="your email address" />
 		</form:row>
 
+		<form:row label="Phone">
+			<field:contact_telno xpath="${xpath}/phone" required="false" title="your phone number" />
+		</form:row>
+		
 		<%-- Mandatory agreement to privacy policy --%>
 		<form:privacy_optin vertical="utilities" />
 
+		<field:hidden xpath="${xpath}/optinPhone" defaultValue="N" />
+		<field:hidden xpath="${xpath}/optinMarketing" defaultValue="N" />
+		
 	</form:fieldset>		
 
 </div>
@@ -33,10 +40,27 @@
 	#${name}{
 		zoom: 1;
 	}
+	.fieldrow_value {
+		max-width: 410px;
+		margin-bottom: 10px;
+	}
 </go:style>
 
 
 <%-- JAVASCRIPT --%>
+
+<go:script marker="onready">
+	$("#utilities_privacyoptin").on("click", function(event) {
+
+        if ($(this).is(":checked")) {
+           	$("#utilities_resultsDisplayed_optinPhone").val('Y');
+           	$("#utilities_resultsDisplayed_optinMarketing").val('Y');
+        } else {
+            $("#utilities_resultsDisplayed_optinPhone").val('N');
+            $("#utilities_resultsDisplayed_optinMarketing").val('N');
+        }
+    });
+</go:script>
 
 
 <%-- VALIDATION --%>

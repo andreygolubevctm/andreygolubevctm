@@ -12,6 +12,7 @@
 		// A counter for failed AJAX requests
 		// Lets us retry poking the server 3 times before calling it quits
 		ajaxRequestTimeoutCount = 0;	
+		firstPoke = true;
 	
 	function init() {
 		// Don't run the initial setup if Simples is present
@@ -23,6 +24,7 @@
 			
 			// Get the proper timeout as specified by the server
 			poke().done(function firstPokeDone(data) { 
+				firstPoke = false;
 				if(data.timeout < 0 && typeof data.bigIP !== "undefined" && data.bigIP !== meerkat.site.session.bigIP) {
 					meerkat.modules.errorHandling.error({
 						errorLevel: "silent",
@@ -135,10 +137,13 @@
 			// If the timeout is negative, and the modal is open or is the first poke
 			// there won't be an active session, so the user cannot recover their 
 			// current journey
-			if(isModalOpen)
-				showModal(false);
-			else 
-				showModal(true);
+			if (!firstPoke) {
+				if(isModalOpen) {
+					showModal(false);
+				} else {
+					showModal(true);
+				}
+			}
 		}
 	}
 	
