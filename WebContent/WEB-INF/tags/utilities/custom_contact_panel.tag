@@ -8,7 +8,7 @@
 
 		render : function( ) {
 
-			//$("#contact-panel").find(".row.mid").first().empty().append("<div class='thoughtworld-contact-panel'><div class='option call-us-now'></div></div>");
+			$("#contact-panel").find(".row.mid").first().empty().append("<div class='thoughtworld-contact-panel'><div class='option call-us-now'></div></div>");
 		},
 
 	};
