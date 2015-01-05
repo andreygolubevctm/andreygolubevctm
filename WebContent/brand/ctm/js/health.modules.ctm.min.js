@@ -1,6 +1,6 @@
 /*!
  * CTM-Platform v0.8.3
- * Copyright 2015 Compare The Market Pty Ltd
+ * Copyright 2014 Compare The Market Pty Ltd
  * http://www.comparethemarket.com.au/
  */
 

@@ -11,9 +11,8 @@ var Track_Utilities = {
 			var state = 		$("#utilities_householdDetails_state").val();
 			var email = 		$("#utilities_resultsDisplayed_email").val();
 			var email2 = 		$("#utilities_application_details_email").val();
-			var ok_to_call = 	$("#utilities_privacyoptin").is(":checked") ? "Y" : "N";
-			var mkt_opt_in = 	$("#utilities_privacyoptin").is(":checked") ? "Y" : "N";
-			
+			var ok_to_call = 	"N"; //Field not required in questionset (PRJAGGU-33)
+			var mkt_opt_in = 	$("#utilities_application_thingsToKnow_receiveInfo").is(":checked") ? "Y" : "N";
 
 			var gender = "";
 			switch( $('#utilities_application_details_title').val() ) {
@@ -34,6 +33,18 @@ var Track_Utilities = {
 				yob = $("#utilities_application_details_dob").val().split("/")[2];
 			}
 
+			// Set email to application email if provided and is different
+			if( typeof email2 != 'undefined' && email2.length ) {
+				email = email2;
+			}
+
+			var emailId = "";
+			var tmpEmailId = Track._getEmailId(email, mkt_opt_in, ok_to_call);
+			if( tmpEmailId ) {
+				emailId = tmpEmailId;
+			}
+
+
 			switch(stage) {
 				case 0:
 					actionStep = "Energy Household";
@@ -48,21 +59,15 @@ var Track_Utilities = {
 					actionStep = 'Energy Your Details';
 					Write.touchQuote('A');
 					break;
-				case 3:					
+				case 3:
+					actionStep = 'Energy Apply Now';
+					Write.touchQuote('H', false, 'UTL review', true);
+					email = $("#utilities_application_details_email").val();
+					break;
+				case 4:
 					actionStep = 'Energy Confirmation';
 					email = $("#utilities_application_details_email").val();
-					// TODO MAP TO NEW CHECKBOX
-					ok_to_call = "N"; 
-					mkt_opt_in = $("#utilities_application_thingsToKnow_receiveInfo").val();
 					break;
-			}
-
-			if(stage < 3){
-				var emailId = "";
-				var tmpEmailId = Track._getEmailId(email, mkt_opt_in, ok_to_call);
-				if( tmpEmailId ) {
-					emailId = tmpEmailId;
-				}
 			}
 
 			if( actionStep != false ) {

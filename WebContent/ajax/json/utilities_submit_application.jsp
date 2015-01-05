@@ -13,61 +13,77 @@
 	<go:setData dataVar="data" xpath="utilities/application/details/address/streetNum" value="0" />
 </c:if>
 
+<%-- RECOVER: if things have gone pear shaped --%>
+<c:if test="${empty data.current.transactionId}">
+	<error:recover origin="ajax/json/utilities_submit_application.jsp" quoteType="utilities" />
+</c:if>
+
+<%-- Save client data: ***FIX: before using this a 'C' status needs to be identified.
+<core:transaction touch="A" noResponse="true" />
+--%>
+<core:transaction touch="P" noResponse="true" />
+
+<c:set var="receiveInfo">
+	<c:choose>
+		<c:when test="${empty data['utilities/application/thingsToKnow/receiveInfo']}">N</c:when>
+		<c:otherwise>${data['utilities/application/thingsToKnow/receiveInfo']}</c:otherwise>
+	</c:choose>
+</c:set>
+
+<agg:write_email
+	brand="CTM"
+	vertical="UTILITIES"
+	source="QUOTE"
+	emailAddress="${data['utilities/application/details/email']}"
+	firstName="${data['utilities/application/details/firstName']}"
+	lastName="${data['utilities/application/details/lastName']}"
+	items="marketing=${receiveInfo}" />
+
+<%-- add external testing ip address checking and loading correct config and send quotes --%>
+<c:set var="clientIpAddress" value="${ sessionScope.userIP }" />
+
+<go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${data['current/transactionId']}</go:log>
+<c:set var="tranId" value="${data['current/transactionId']}" />
+
+<%-- Load the config and send quotes to the aggregator gadget --%>
+<c:import var="config" url="/WEB-INF/aggregator/utilities/config_application.xml" />
+<go:soapAggregator config = "${config}"
+					transactionId = "${tranId}"
+					xml = "${data.xml['utilities']}"
+					var = "resultXml"
+					debugVar="debugXml"
+					validationErrorsVar="validationErrors"
+					continueOnValidationError="${continueOnValidationError}"
+					isValidVar="isValid"
+					configDbKey="appService"
+					styleCodeId="${pageSettings.getBrandId()}"
+					verticalCode="UTILITIES"
+					 />
+
 <c:choose>
-	<c:when test="${empty data.utilities.application.thingsToKnow.termsAndConditions != 'Y'}">
-		ERROR - NO TERMS AND CONDITIONS
-	</c:when>
-	<c:otherwise>
-		<%-- RECOVER: if things have gone pear shaped --%>
-		<c:if test="${empty data.current.transactionId}">
-			<error:recover origin="ajax/json/utilities_submit_application.jsp" quoteType="utilities" />
+	<c:when test="${isValid || continueOnValidationError}">
+		<c:if test="${!isValid}">
+			<c:forEach var="validationError"  items="${validationErrors}">
+				<error:non_fatal_error origin="utilities_submit_application.jsp"
+									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
+			</c:forEach>
 		</c:if>
 
-		<%-- Save client data: ***FIX: before using this a 'C' status needs to be identified.
-		<core:transaction touch="A" noResponse="true" />
+		<%-- //FIX: turn this back on when you are ready!!!!
+		<%-- Write to the stats database
+		<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
 		--%>
 
-		<agg:write_email
-			brand="CTM"
-			vertical="UTILITIES"
-			source="QUOTE"
-			emailAddress="${data['utilities/application/details/email']}"
-			emailPassword=""
-			firstName="${data['utilities/application/details/firstName']}"
-			lastName="${data['utilities/application/details/lastName']}"
-			items="marketing=${data['utilities/application/thingsToKnow/receiveInfo']}" />
+		<%-- Add the results to the current session data --%>
+		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
+		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 
-		<%-- add external testing ip address checking and loading correct config and send quotes --%>
-		<c:set var="clientIpAddress" value="${ sessionScope.userIP }" />
-
-		<go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${data['current/transactionId']}</go:log>
-		<c:set var="tranId" value="${data['current/transactionId']}" />
-
-		<jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request" />
-		<c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest())}" scope="request"  />
-
-		<c:choose>
-			<c:when test="${empty results}">
-				<c:set var="json" value='{"info":{"transactionId":${tranId}}},"errors":[{"message":"getResults is empty"}]}' />
-			</c:when>
-			<c:otherwise>
-				<c:set var="json" value="${results}"/>
-			</c:otherwise>
-		</c:choose>
-
-		<c:set var="xmlData" value="<data>${go:JSONtoXML(json)}</data>" />
-		<x:parse var="parsedXml" doc="${xmlData}" />		
-
-		<c:set var="confirmationkey" value="${pageContext.session.id}-${tranId}" />
-		<go:setData dataVar="data" xpath="utilities/confirmationkey" value="${confirmationkey}" />
-
-		<agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
-		<agg:write_quote productType="UTILITIES" rootPath="utilities" />
-		<agg:write_touch touch="C" transaction_id="${tranId}" />
-
-		<c:out value="${json}" escapeXml="false" />
-
+		<go:log level="DEBUG" source="utilities_submit_application">RESULTS XML: ${resultXml}</go:log>
+		<go:log level="DEBUG" source="utilities_submit_application">DEBUG XML: ${debugXml}</go:log>
+		${go:XMLtoJSON(resultXml)}
+	</c:when>
+	<c:otherwise>
+		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="utilities_submit_application.jsp"/>
 	</c:otherwise>
 </c:choose>
-
-

@@ -3132,15 +3132,6 @@ body.health #contact-panel span.or {
 	padding:				7px 4px 4px 3px;
     background: #00AA39 url(images/call_us_now/circle.png) top left no-repeat;
 }
-body.utilities #contact-panel {
-	position: absolute;
-	width: 220px;
-	height: auto;
-	top: 30px;
-	right: 50%;
-	float: none;
-	margin-right: -480px;
-}
 /* Left Panel Styles */
 #left-panel .box h5.lt {
 	color:					#1C3F94;

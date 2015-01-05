@@ -13,22 +13,52 @@
 <div id="${name}" class="${name}">
 
 	<div id="${name}_template_placeholder"></div>
+	<core:js_template id="things-to-know-template">
 
+		<form:fieldset legend="Things you need to know" className="no-background-color"  id="${name}_fieldset">
 
-		<form:fieldset legend="Terms and Conditions" className="no-background-color"  id="${name}_fieldset">
-			<p>
+			<c:set var="switchwiseTermsAndConditions">
+				<a href="javascript:void(0);" class="showDoc" data-url="http://www.switchwise.com.au/terms-conditions/" data-title="Switchwise Terms and Conditions">Switchwise's Terms and Conditions</a>
+			</c:set>
+			<c:set var="switchwisePrivacyPolicy">
+				<a href="javascript:void(0);" class="showDoc" data-url="http://www.switchwise.com.au/privacy/" data-title="Switchwise Privacy Policy">Switchwise's Privacy Policy</a>
+			</c:set>
 			<field:checkbox
-				xpath="${xpath}/termsAndConditions"
+				xpath="${xpath}/switchwiseTermsAndConditions"
 				value="Y"
-				title="To process the offer and apply the discounts to your account you should read and should ensure you understand and agree to the following information:"
+				title="<span class='asterisk'>*</span> I understand that <strong>compare</strong>the<strong>market</strong>.com.au is collecting my personal data on behalf of Switchwise and that my personal data will be provided to Switchwise and its third parties for the purposes of 'switching'. I have read, understand and accept ${switchwiseTermsAndConditions} and ${switchwisePrivacyPolicy}."
 				required="true"
+				errorMsg="Please agree to Switchwise's Terms and Conditions and Privacy Policy"
 				label="true" />
-			</p>
-			<div id="termsConditions"></div>
+
+			<field:checkbox
+				xpath="${xpath}/providerTermsAndConditions"
+				value="Y"
+				title="<span class='asterisk'>*</span> I understand and agree that:"
+				required="true"
+				errorMsg="Please agree to the provider's Terms and conditions"
+				label="true" />
+
+			<c:set var="providerTermsAndConditions">
+				<a class="openProviderTermsAndConditionsDialog" href="javascript:void(0);" id="${name}_provider_t_and_c">[#= provider_name #]'s Terms and Conditions</a>
+			</c:set>
+
+			<ul id="providerTermsAndConditionsBullets">
+				<li>I have read, understand and accept ${providerTermsAndConditions}. I understand and accept that [#= provider_name #] will perform a credit check in assessing my application.</li>
+				<li class="js-remove-for-origin">[#= provider_name #] may contact me if any additional information is required. If my application is approved my [#= selected_utilities #] will be transferred to [#= provider_name #] as of my next meter read date.</li>
+				<li class="js-remove-for-origin">[#= provider_name #] can vary my rates, tariff structure, billing frequency and the terms of the energy plan at any time by writing to me.</li>
+			</ul>
+
+			<field:checkbox
+				xpath="${xpath}/receiveInfo"
+				value="Y"
+				title="I would like to receive electronic communication from <strong>compare</strong>the<strong>market</strong>.com.au and [#= provider_name #] from time to time."
+				required="false"
+				label="true" />
 
 		</form:fieldset>
 
-
+	</core:js_template>
 
 	<c:set var="css">
 		.${name}_providerTermsAndConditionsPopupDialogContainer ul li{
@@ -44,35 +74,26 @@
 		extraCss="${css}" />
 
 	<field:hidden xpath="${xpath}/hidden/productId" />
-	<field:hidden xpath="${xpath}/receiveInfo" />
 	<field:hidden xpath="${xpath}/hidden/searchId" />
 
 	<%-- some flags to use in the XSL outbound --%>
+	<field:hidden xpath="${xpath}/hidden/identificationRequired" />
+	<field:hidden xpath="${xpath}/hidden/isPowerOnRequired" />
+	<field:hidden xpath="${xpath}/hidden/directDebitRequired" />
+	<field:hidden xpath="${xpath}/hidden/paymentSmoothingRequired" />
+	<field:hidden xpath="${xpath}/hidden/electronicBillRequired" />
+	<field:hidden xpath="${xpath}/hidden/electronicCommunicationRequired" />
+	<field:hidden xpath="${xpath}/hidden/billDeliveryMethodRequired" />
 
 </div>
 
-<core:js_template id="terms-template">
-<p>You have the right to a 10 day cooling off period (COP). This cooling off period begins on the date your agreement commences. You may cancel your agreement by contacting us at any time during the COP without penalty. Your Agreement commences with [#= retailerName #] when you give your verbal acceptance and receive the Confirmation Pack, which will include the full terms and conditions of the Energy Agreement.</p>
-<p>[#= retailerName #] will send you a Welcome Pack containing written confirmation of the energy offer accepted, the Energy Agreement and Customer Charter. You may terminate the agreement at any time by contacting [#= retailerName #]. You may be liable for termination fees with your existing provider if you are under contract with them.</p>
-<p>By accepting the Energy Offer from [#= retailerName #], you authorise us to create a new account and collect, maintain, use and disclose personal information as set out in the Privacy Statement detailed in the Energy Agreement we will send you. You give your explicit informed consent that your tariff and or discount can change from time to time, in line with the relevant code or guideline, including government price increases. If the tariff and or discount do change you will be notified on your next bill or as required by the code or guideline for your area. You give your explicit informed consent that we may bill you quarterly for electricity and bi-monthly for gas unless you have chosen a monthly billed product.</p>
-<p>You accept the terms and conditions mentioned above and you consent to entering into an agreement with [#= retailerName #] on those terms and conditions. You understand and accept that you are accepting an agreement for: [#= planName #] </p>
-</core:js_template>
-
-
 <%-- CSS --%>
 <go:style marker="css-head">
-
-	#termsConditions{
-		padding-left:25px;
-		padding-right:25px;
-	}
-
-	
-
 	#${name} label{
 		display: block;
 		margin-left: 25px;
-		font-weight:bold;
+		padding-bottom: 15px;
+		line-height: 19px;
 	}
 	#${name} input[type="checkbox"]{
 		float: left;

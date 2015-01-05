@@ -93,7 +93,6 @@
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'utilities'}">
-		
 		<c:choose>
 		<c:when test="${not empty data['utilities/privacyoptin'] and data['utilities/privacyoptin'] eq 'Y'}">
 			<c:set var="hasPrivacyOptin">${true}</c:set>
@@ -102,7 +101,6 @@
 			<c:set var="hasPrivacyOptin">${true}</c:set>
 		</c:when>
 		</c:choose>
-		
 		<c:set var="emailAddress">
 			<c:choose>
 				<c:when test="${not empty data['utilities/application/details/email']}">${data['utilities/application/details/email']}</c:when>
@@ -110,7 +108,6 @@
 				<c:otherwise>${data['utilities/resultsDisplayed/email']}</c:otherwise>
 			</c:choose>
 		</c:set>
-		
 		<c:set var="firstName">
 			<c:choose>
 				<c:when test="${not empty data['utilities/leadFeed/firstName']}">${data['utilities/leadfeed/firstName']}</c:when>
@@ -126,11 +123,8 @@
 		</c:set>
 
 
+		<c:if test="${not empty data['utilities/leadFeed/privacyoptin'] and data['utilities/leadfeed/privacyoptin'] eq 'Y'}">
 			<c:choose>
-			<c:when test="${not empty data['utilities/leadFeed/privacyoptin'] and data['utilities/leadfeed/privacyoptin'] eq 'Y'}">
-				
-				<%-- This is a leed feed page --%>
-				<c:choose>
 				<c:when test="${not empty data['utilities/leadFeed/mobile']}">
 					<c:set var="optinPhone" value=",okToCall=${data['utilities/leadFeed/mobile']}" />
 				</c:when>
@@ -138,55 +132,16 @@
 					<c:set var="optinPhone" value=",okToCall=${data['utilities/leadFeed/otherPhone']}" />
 				</c:when>
 			</c:choose>
-
+		</c:if>
 		<c:if test="${empty optinMarketing}">
 			<c:set var="optinMarketing">
 				<c:choose>
 					<c:when test="${not empty data['utilities/leadFeed/privacyoptin'] and data['utilities/leadFeed/privacyoptin'] eq 'Y'}">marketing=Y</c:when>
-							<c:otherwise>marketing=N</c:otherwise>
+					<c:when test="${empty data['utilities/application/thingsToKnow/receiveInfo']}">marketing=N</c:when>
+					<c:otherwise>marketing=${data['utilities/application/thingsToKnow/receiveInfo']}</c:otherwise>
 				</c:choose>
 			</c:set>
 		</c:if>
-
-	</c:when>
-			<c:otherwise>
-
-				<%-- This is a quote page --%>
-
-				<c:if test="${empty optinPhone}">
-					<c:set var="optinPhone" value=",okToCall=${data['utilities/resultsDisplayed/optinPhone']}" />
-				</c:if>
-
-		
-
-				<c:set var="step1Email" value="${data['utilities/resultsDisplayed/email']}"/>
-				<c:set var="step3Email" value="${data['utilities/application/details/email']}"/>
-
-				<c:set var="optinMarketing">
-					<c:choose>
-						<c:when test="${emailAddress eq step1Email}">
-							<c:choose>
-								<c:when test="${data['utilities/resultsDisplayed/optinMarketing'] eq 'Y'}">marketing=Y</c:when>
-								<c:otherwise>marketing=N</c:otherwise>
-							</c:choose>
-						</c:when>
-						<c:when test="${emailAddress eq step3Email}">
-							<c:choose>
-								<c:when test="${data['utilities/application/thingsToKnow/receiveInfo'] eq 'Y'}">marketing=Y</c:when>
-								<c:otherwise>marketing=N</c:otherwise>
-							</c:choose>
-						</c:when>
-						<c:otherwise>marketing=N</c:otherwise>
-					</c:choose>
-				</c:set>
-
-
-
-			</c:otherwise>
-		</c:choose>
-		
-	
-
 	</c:when>
 	<c:when test="${rootPath eq 'life'}">
 		<c:if test="${not empty data['life/privacyoptin'] and data['life/privacyoptin'] eq 'Y'}">

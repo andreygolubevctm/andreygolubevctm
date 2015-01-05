@@ -13,7 +13,6 @@
 			.applyOnline .ui-dialog-titlebar{
 				background-image: none;
 				height: 26px;
-
 				padding: 0 4em !important;
 				margin-top: 38px;
 			}
@@ -164,6 +163,9 @@
 					color: #0DB14B;
 				}
 
+		.aol-features h5{
+			margin-bottom: -10px;
+		}
 		.aol-features p{
 			margin-bottom: 5px;
 		}
@@ -322,16 +324,20 @@
 			<div class="aol-left-column">
 
 				<div id="aol-header">
-					<div id="aol-logo" class="rounded-corners" style="background-image:url(common/images/logos/utilities/[#= retailerId #]_logo.jpg);"><!-- logo image --></div>
+					<div id="aol-logo" class="rounded-corners" style="background-image:url(common/images/logos/utilities/[#= LogoFileName #])"><!-- logo image --></div>
 					<div id="aol-main-info">
 						<table>
 							<tr>
 								<th>Estimated costs</th>
-								<td>[#= formatted.price #]</td>
+								<td>[#= priceText #]</td>
 							</tr>
 							<tr>
 								<th>Contract term</th>
-								<td>[#= contractPeriod #]</td>
+								<td>[#= info.ContractLength #]</td>
+							</tr>
+							<tr>
+								<th>Green Power</th>
+								<td>[#= info.GreenPercent #]%</td>
 							</tr>
 						</table>
 					</div>
@@ -340,29 +346,40 @@
 				<core:clear />
 
 				<div id="aol-plan">
-					<h3>[#= retailerName #] - [#= planName #]</h3>
+					<h3>[#= provider #] - [#= des #]</h3>
 				</div>
 
 				<div id="aol-features" class="aol-features">
 					<h5>Plan Features</h5>
-					[#= planDetails #]
-					[#= contractDetails #]
-					[#= billingOptions #]
 				</div>
 
 				<div id="aol-payment-options">
 					<h5>Payment Options</h5>
-					[#= paymentDetails #]
+					<ul></ul>
 				</div>
 
 				<div id="aol-price-info" class="aol-price-info">
 					<h5>Pricing Information</h5>
-					[#= pricingInformation #]
+					<p>The pricing information shown in the table below reflects the supplier's current standard rates excluding any of the discounts or bonuses shown above. If you are comparing these rates to those on the back of your electricity and gas bills please ensure you use the rates in the column with no GST added. Your bill shows rates excluding GST - GST is added on the front of the bill.</p>
+					<p>Some suppliers also include discounts in the unit prices displayed on the back of the bill whilst others calculate discounts separately and show them on the front of the bill. This is why comparing only unit prices between suppliers can be misleading and why we do all the calculations for you in the yearly cost figure shown above.</p>
+					<p>The pricing applicable to your property is based upon the information you have provided to us and assumptions about your distribution region, meter type and meter configuration. If your new energy retailer subsequently determines that this information is incorrect or incomplete, they will advise you of any changes to your energy plan, and of your options.</p>
+				</div>
+
+				<div id="aol-about-price">
+					<h5>About pricing</h5>
+					<p>If you can see more than one set of electricity or gas prices above this means that your home has an off-peak or time-of-use electricity meter and/or you live in a suburb serviced by more than one electricity or gas distributor.</p>
+					<p>If you have off-peak prices shown on your electricity bill this means that you have an off-peak or time-of-use meter. Unfortunately, electricity bills no longer include tariff or meter type information so you are not able to easily determine which of these meter types you might have. We display both sets of prices and your chosen supplier will inform you which meter type is at your property and which price set will apply.</p>
+					<p>All suppliers set their prices according to which distributor services your property. In some suburbs there are two or three distributors, one of which will service your property depending upon the street in which you live. Again, we display prices for all distribution areas relevant to your suburb and your chosen supplier will inform you which one you fall into and which price set will apply.</p>
+				</div>
+
+				<div id="aol-terms" class="aol-terms">
+					<h5>Terms and Conditions</h5>
+
 				</div>
 
 				<div id="aol-disclaimer">
 					<h5>Disclaimer</h5>
-					<p>This information is kindly provided by Thought World.</p>
+					<p>This information is kindly provided by Switchwise.</p>
 				</div>
 
 			</div>
@@ -372,13 +389,15 @@
 				<div id="aol-savings" class="rounded-corners">
 
 					<div id="aol-savings-amount" class="rounded-corners">
-						<div class="rounded-corners green">[#= formatted.yearlySavings #]</div>
+						<div class="rounded-corners green">[#= info.EstimatedSavingText #]</div>
 					</div>
 
 					<div id="aol-savings-text"><p>Estimated Savings in 1st year</p></div>
+					<core:clear />
+					<div id="aol-savings-not-available-text">Contact supplier directly to apply</div>
 				</div>
 
-				<div class='thoughtworld-contact-panel'><div class='option call-us-now'></div></div>
+				<div id="aol-savings-not-available" class="rounded-corners">Contact supplier directly to apply</div>
 
 				<div id="aol-call-to-action" class="rounded-corners">
 					<div id="aol-call-to-action-top-left"></div>
@@ -387,21 +406,18 @@
 
 					<div class="narrower">
 						<div id="aolApplyButton">
-							<a href="javascript:void(0);" data-applyonlinedialog="true" data-id="[#= planId #]" class="button" id="aol-apply-button"><span>Apply Now</span></a>
+							<a href="javascript:void(0);" data-applyonlinedialog="true" data-id="[#= productId #]" class="button" id="aol-apply-button"><span>Apply Now</span></a>
 						</div>
 
 						<div id="aol-documentation" class="aol-documentation">
 							<h5>Documentation to Download</h5>
-							<ul>
-								<li><a href="[#= termsUrl #]" target="_blank">Terms &amp; Conditions</a></li>
-								<li><a href="[#= privacyPolicyUrl #]" target="_blank">Privacy Policy</a></li>
-							</ul>
+							<ul></ul>
 						</div>
 					</div>
 
 					<div id="aol-partners" class="rounded-corners">
-						<p><strong>compare</strong>the<strong>market</strong>.com.au is an online comparison website. Energy product information is provided by our trusted affiliate, Thought World.</p>
-
+						<p><strong>compare</strong>the<strong>market</strong>.com.au is an online comparison website. Energy product information is provided by our trusted affiliate, Switchwise Pty Ltd.</p>
+						<div id="aol-logo-switchwise"><img src="common/images/logos/utilities/switchwise-logo.gif" alt="Switchwise Logo" title="Switchwise Logo" /></div>
 						<core:clear />
 					</div>
 
@@ -498,6 +514,9 @@
 
 			// TEMPLATES
 			var applyOnlineTemplate 				= $("#apply-online-template").html();
+			var applyOnlineFeaturesTemplate		 	= $("#apply-online-features-template").html();
+			var applyOnlinePriceInfoTemplate	 	= $("#apply-online-price-info-template").html();
+			var applyOnlinePriceInfoRateTemplate	= $("#apply-online-price-info-rate-template").html();
 
 			// MAIN TEMPLATE PARSING
 
@@ -508,6 +527,19 @@
 
 			// Parse
 			var dialogContent = $(parseTemplate(applyOnlineTemplate, ApplyOnlineDialog._product));
+
+			// Adjust
+				// hide if not available
+				if(ApplyOnlineDialog._product.available == 'N'){
+					$(dialogContent).find("#aolApplyButton").hide();
+					$(dialogContent).find('#aol-savings-not-available-text').show();
+				} else {
+					$(dialogContent).find("#aolApplyButton").show();
+					$(dialogContent).find('#aol-savings-not-available-text').hide();
+				}
+				if(ApplyOnlineDialog._hideApplyBtn){
+					$(dialogContent).find("#aolApplyButton").hide();
+				}
 
 				// hide estimated savings if Moving In
 				if(utilitiesChoices._movingIn == 'Y'){
@@ -523,11 +555,134 @@
 				}
 
 
+			// FEATURES
+			var features;
+			var lines;
+			var featuresTag = $(dialogContent).find("#aol-features");
+			var target = ApplyOnlineDialog._product.info.Features;
+			if ($.isArray(target.Feature))
+				target = target.Feature;
+			$.each(target, function(){
+				lines = "";
+				var target = this.Lines;
+				if ($.isArray(target.FeatureLine))
+					target = target.FeatureLine;
+				$.each(target, function(){
+					if( typeof( this.Content ) == "string" ){
+						var line = this;
+
+						var delimiter;
+						if( line.Prompt != ''  && typeof line.Prompt == 'string' && line.Content != '' ){
+							delimiter = ':';
+						} else {
+							delimiter = '';
+						}
+
+						// fixes some switchwise data where the feature title contains " - None" instead of the Content var
+						lookForArray = [" - None", " - 1 Year", " - 2 Years", " - 3 Years"];
+						$.each(lookForArray, function(key, lookFor){
+							if( line.Content == '' && typeof line.Prompt == 'string' && line.Prompt.substring( line.Prompt.length - lookFor.length, line.Prompt.length ) == lookFor ){
+								line.Prompt = line.Prompt.replace(lookFor, '') + ':';
+								line.Content = lookFor.replace(' - ', '');
+							}
+						});
+
+						lines += "<p><strong>" + line.Prompt + delimiter + "</strong> " + line.Content + "</p>";
+					}
+				});
+
+				if(lines != ""){
+					features = {
+						Name: this.Name,
+						Lines: lines
+					}
+					featuresTag.append( $(parseTemplate( applyOnlineFeaturesTemplate, features ) ) );
+				}
+			});
+
+
+			// PRICE INFORMATION
+			var priceInfoTag = $(dialogContent).find("#aol-price-info");
+
+			if( ApplyOnlineDialog._product.info.Rates.Rate.length == undefined ){
+				ApplyOnlineDialog._product.info.Rates.Rate = [ApplyOnlineDialog._product.info.Rates.Rate];
+			}
+
+			$.each(ApplyOnlineDialog._product.info.Rates.Rate, function(index, value){
+				// creating an index
+				$.extend(this, {index: index});
+
+				if(this.EffectiveFromDate){
+					this.EffectiveFromDate = this.EffectiveFromDate.replace('T00:00:00', '').split('-').reverse().join('/');
+				} else {
+					this.EffectiveFromDate = "";
+				}
+
+				// parsing the different prices info types (elec, gas, ...)
+				var priceInfoContent = parseTemplate( applyOnlinePriceInfoTemplate, this );
+				$(priceInfoTag).append( priceInfoContent );
+
+				if(this.EffectiveFromDate == ""){
+					$(priceInfoTag).find(".effectiveFromDate").hide();
+				} else {
+					$(priceInfoTag).find(".effectiveFromDate").show();
+				}
+
+				// parsing the different rates for each of the fuel types
+				var priceInfoTableTag = $(dialogContent).find('#price-info-table-'+index);
+				$.each(this.Prices.Price, function(){
+					var priceInfoTableContent = parseTemplate( applyOnlinePriceInfoRateTemplate, this );
+					$(priceInfoTableTag).append( priceInfoTableContent );
+				});
+
+			});
+
+			// TERMS AND CONDITIONS
+			var termsAndConditions = "<ul><li>" + ApplyOnlineDialog._product.info.TermConditions.TermCondition.join('</li><li>') + "</li></ul>";
+			$(dialogContent).find('#aol-terms').append(termsAndConditions);
+
+			// PAYMENT OPTIONS
+			var paymentOptions = "";
+
+			if (!$.isArray(ApplyOnlineDialog._product.info.PaymentOptions.FeatureGroup.Lines.FeatureLine)) {
+				ApplyOnlineDialog._product.info.PaymentOptions.FeatureGroup.Lines.FeatureLine = [ApplyOnlineDialog._product.info.PaymentOptions.FeatureGroup.Lines.FeatureLine];
+			}
+			$.each(ApplyOnlineDialog._product.info.PaymentOptions.FeatureGroup.Lines.FeatureLine, function(){
+				var delimiter;
+				if( this.Content != undefined && ( this.Content == '' || this.Content.substring(0,1) == '(' ) ) {
+					delimiter = ' ';
+				} else {
+					delimiter = ': ';
+				}
+				paymentOptions += '<li>' + this.Prompt + delimiter + this.Content + '</li>';
+			});
+			$(dialogContent).find('#aol-payment-options ul').append(paymentOptions);
+
+
+			// DOCUMENTATION
+			aolDocumentation 	= $(dialogContent).find('#aol-documentation');
+			aolDocumentationUl 	= $(dialogContent).find('#aol-documentation ul');
+			if (ApplyOnlineDialog._product.info.Downloads) {
+				var documents = "";
+				var target = ApplyOnlineDialog._product.info.Downloads;
+				if ($.isArray(target.Download))
+					target = target.Download;
+				$.each(target, function(){
+					if(this.FileName && this.FileName != '') {
+						documents += '<li><a href="javascript:void(0);" class="showDoc" data-url="http://www.switchwise.com.au/product-collateral/'+this.FileName+'\">'+this.Name+'</a></li>';
+					}
+				});
+				aolDocumentationUl.append(documents);
+				aolDocumentation.show();
+			} else {
+				aolDocumentation.hide();
+			}
 
 			// ADD HTML TO POPUP
 			$("#applyOnlineDialog").html(dialogContent);
 
-			Results.negativeValues(ApplyOnlineDialog._product.yearlySavings, $("#aol-savings-amount div"), 'extra' );
+			Results.negativeValues(ApplyOnlineDialog._product.info.EstimatedSavingText, $("#aol-savings-amount div"), 'extra' );
+
 		},
 
 		open: function(){
@@ -542,7 +697,7 @@
 		},
 
 		confirmProduct: function(){
-			Results.continueOnline(ApplyOnlineDialog._product.planId);
+			Results.continueOnline(ApplyOnlineDialog._product.productId);
 			/*QuoteEngine.gotoSlide({
 				index: QuoteEngine.getCurrentSlide()+1
 			});*/

@@ -2,7 +2,6 @@ package com.ctm.services.utilities;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.ctm.utils.RequestUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,8 +26,15 @@ public class UtilitiesLeadfeedService {
 	public static UtilitiesLeadfeedModel mapParametersToModel(HttpServletRequest request) {
 
 		UtilitiesLeadfeedModel model = new UtilitiesLeadfeedModel();
-		model.setTransactionId(RequestUtils.getTransactionIdFromRequest(request));
-		String value = request.getParameter("utilities_leadFeed_firstName");
+
+		String value;
+
+		value = request.getParameter("transactionId");
+		if (value != null && value.length() > 0) {
+			model.setTransactionId(Long.parseLong(value));
+		}
+
+		value = request.getParameter("utilities_leadFeed_firstName");
 		if (value != null && value.length() > 0) {
 			model.setFirstName(value);
 		}

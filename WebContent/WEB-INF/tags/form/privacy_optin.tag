@@ -1,7 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Represents a single row on a form."%>
 
-
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
@@ -20,13 +19,6 @@
 			I understand comparethemarket.com.au compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance and income protection partner may contact me to further assist with my life insurance and income protection needs. I confirm that I have read the ${privacyLink}.
 		</c:set>
 	</c:when>
-
-	<c:when test="${vertical eq 'utilities'}">
-		<c:set var="label_text">
-			I understand comparethemarket.com.au compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that comparethemarket.com.au and its partner Thought World may contact me about the services they provide. I confirm that I have read the ${privacyLink}.
-		</c:set>
-	</c:when>
-
 	<c:otherwise>
 		<c:set var="label_text" value="I have read the ${privacyLink}" />
 	</c:otherwise>

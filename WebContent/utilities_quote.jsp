@@ -39,7 +39,6 @@
 			<field:hidden xpath="utilities/order/receiptid" defaultValue="" />
 			<field:hidden xpath="utilities/order/productid" defaultValue="" />
 			<field:hidden xpath="utilities/order/estimatedcosts" defaultValue="" />
-			<field:hidden xpath="utilities/partner/uniqueCustomerId" defaultValue="" />
 					
 			<form:operator_id xpath="${xpath}/operatorid" />
 			
@@ -84,10 +83,19 @@
 								<utilities:selected_product />
 								<h2><span>Step 3.</span> Fill out your details</h2>
 								<utilities:application_details xpath="${xpath}/application/details" />
+								<utilities:situation xpath="${xpath}/application/situation" />
+								<utilities:payment_information xpath="${xpath}/application/paymentInformation" />
+								<utilities:options xpath="${xpath}/application/options" />
 								<utilities:things_to_know xpath="${xpath}/application/thingsToKnow" />
 							</slider:slide>
 							
-							<slider:slide id="slide3" title="Confirmation">
+							<slider:slide id="slide3" title="Apply">
+								<utilities:selected_product />
+								<h2><span>Step 4.</span> Confirm your details and submit your application</h2>
+								<utilities:summary xpath="${xpath}/summary" />
+							</slider:slide>
+							
+							<slider:slide id="slide4" title="Confirmation">
 								<%-- Confirmation is loaded outside of the slider --%>
 							</slider:slide>
 																					
@@ -104,8 +112,8 @@
 					
 					<div style="height:67px"><!--  empty --></div>
 					
+					<form:scrapes id="slideScrapesContainer" className="slideScrapesContainer" group="utilities" />
 					
-
 					<utilities:side_panel />
 					
 				</div>
@@ -120,7 +128,7 @@
 				
 		</form:form>
 				
-	<utilities:lead_footer />
+			<utilities:footer />
 						
 		<core:closing_body>
 			<agg:includes supertag="true" />

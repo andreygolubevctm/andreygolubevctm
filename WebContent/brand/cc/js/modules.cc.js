@@ -1,6 +1,6 @@
 /*!
  * CTM-Platform v0.8.3
- * Copyright 2015 Compare The Market Pty Ltd
+ * Copyright 2014 Compare The Market Pty Ltd
  * http://www.comparethemarket.com.au/
  */
 
@@ -6638,12 +6638,10 @@ meerkat.logging.init = function() {
 (function($, undefined) {
     var meerkat = window.meerkat;
     var windowTimeout = null, isModalOpen = false, lastClientPoke = 0, deferredPokeTimeout = null, sessionAlertModal = null, countDownInterval = null, ajaxRequestTimeoutCount = 0;
-    firstPoke = true;
     function init() {
         if (!meerkat.modules.simplesTickler && meerkat.site.session.firstPokeEnabled) {
             updateTimeout(meerkat.site.session.windowTimeout);
             poke().done(function firstPokeDone(data) {
-                firstPoke = false;
                 if (data.timeout < 0 && typeof data.bigIP !== "undefined" && data.bigIP !== meerkat.site.session.bigIP) {
                     meerkat.modules.errorHandling.error({
                         errorLevel: "silent",
@@ -6722,13 +6720,7 @@ meerkat.logging.init = function() {
             }, timeout);
             hideModal();
         } else {
-            if (!firstPoke) {
-                if (isModalOpen) {
-                    showModal(false);
-                } else {
-                    showModal(true);
-                }
-            }
+            if (isModalOpen) showModal(false); else showModal(true);
         }
     }
     function redirect(reload) {
