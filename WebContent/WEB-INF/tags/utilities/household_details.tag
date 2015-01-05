@@ -104,9 +104,11 @@
 		</form:row>
 		
 		<form:row label="Would you like us to estimate how much energy you use?" helpId="526">
-			<field:array_select items="=Please choose...,S=Yes - Use my $ spend to work out my usage,H=Yes - Use my household size to work out my usage,U=No&nbsp;&nbsp;&nbsp;- I will enter my usage in kWh/MJ from a recent bill(s)" xpath="${xpath}/howToEstimate" title="how to estimate how much energy you use" required="true" />&nbsp;
+			<field:array_select items="=Please choose...,S=Yes - Use my $ spend to work out my usage,U=No&nbsp;&nbsp;&nbsp;- I will enter my usage in kWh/MJ from a recent bill(s)" xpath="${xpath}/howToEstimate" title="how to estimate how much energy you use" required="true" />&nbsp;
 		</form:row>
 		
+		<field:hidden xpath="${xpath}/tariff" required="false" />
+
 	</form:fieldset>		
 
 </div>

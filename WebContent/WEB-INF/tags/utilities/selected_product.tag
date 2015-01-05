@@ -11,8 +11,7 @@
 		<th class="onepixel"></th>
 		<th class="selectedProductSupplierColumn">Supplier &amp; Plan</th>
 		<th class="onepixel"></th>
-		<th class="selectedProductGreenRatingColumn">Green Rating</th>
-		<th class="onepixel"></th>
+		
 		<th class="selectedProductContractPeriodColumn">Contract Period</th>
 		<th class="onepixel"></th>
 		<th class="selectedProductCancellationFeeColumn">Maximum Cancellation Fee</th>
@@ -33,23 +32,21 @@
 	<td class="delimiter onepixel"></td>
 	<td>
 		<div class="supplier_and_plan">
-			<div class="thumb"><img src="common/images/logos/utilities/[#= LogoFileName #]" alt="[#= provider #] Logo" title="[#= provider #] Logo" /></div>
+			<div class="thumb"><img src="common/images/logos/utilities/[#= retailerId #]_logo.jpg" alt="[#= retailerName #] Logo" title="[#= retailerName #] Logo" /></div>
 			<div class="label">
-				<p class="title">[#= provider #]</p>
-				<p>[#= des #] <a href="javascript:void(0);" data-selectproduct="true">View Details</a></p>
+				<p class="title">[#= retailerName #]</p>
+				<p>[#= planName #] <a href="javascript:void(0);" data-selectproduct="true">View Details</a></p>
 			</div>
 		</div>
 	</td>
 	<td class="delimiter onepixel"></td>
-	<td class="green_percent">[#= info.GreenPercent #]%</td>
+	<td>[#= contractPeriod #]</td>
 	<td class="delimiter onepixel"></td>
-	<td>[#= info.ContractLength #]</td>
+	<td>[#= formatted.cancellationFees #]</td>
 	<td class="delimiter onepixel"></td>
-	<td>[#= info.MaxCancellationFee #]</td>
-	<td class="delimiter onepixel"></td>
-	<td>[#= priceText #]</td>
+	<td>[#= formatted.price #]</td>
 	<td class="delimiter onepixel estSavings"></td>
-	<td class="estSavings estSavingsCell">[#= info.EstimatedSavingText #]</td>
+	<td class="estSavings estSavingsCell">[#= formatted.yearlySavings #]</td>
 	<td class="delimiter onepixel"></td>
 	<td><a href="javascript:void(0);" data-modifyplan="true" class="green-button" title="Modify Plan"><span>Modify Plan</span></a></td>
 	<td class="delimiter onepixel"></td>
@@ -60,7 +57,7 @@
 	var SelectedProduct = new Object();
 	SelectedProduct = {
 		view : function(){
-			Results.viewProduct(utilitiesChoices._product.productId, true);
+			Results.viewProduct(utilitiesChoices._product.planId, true);
 		}
 	}
 	$(document).on('click','a[data-modifyplan=true]',function(){

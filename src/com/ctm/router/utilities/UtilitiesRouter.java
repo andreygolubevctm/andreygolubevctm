@@ -12,17 +12,25 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
-import com.ctm.model.utilities.UtilitiesLeadfeedModel;
 import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.model.utilities.UtilitiesProductModel;
+import com.ctm.model.utilities.UtilitiesProductRequestModel;
+import com.ctm.model.utilities.UtilitiesProviderServiceModel;
+import com.ctm.model.utilities.UtilitiesProviderServiceRequest;
+import com.ctm.model.utilities.UtilitiesResultsModel;
+import com.ctm.model.utilities.UtilitiesResultsRequestModel;
 import com.ctm.services.SettingsService;
-import com.ctm.services.utilities.UtilitiesLeadfeedService;
+import com.ctm.services.utilities.UtilitiesProductService;
+import com.ctm.services.utilities.UtilitiesProviderService;
+import com.ctm.services.utilities.UtilitiesResultsService;
 
 
 @WebServlet(urlPatterns = {
-		"/utilities/leadfeed/submit.json"
+		"/utilities/providers/get.json",
+		"/utilities/results/get.json",
+		"/utilities/moreinfo/get.json",
+		"/utilities/application/submit.json"
 })
 public class UtilitiesRouter extends HttpServlet {
 	private static Logger logger = Logger.getLogger(UtilitiesRouter.class.getName());
@@ -30,45 +38,88 @@ public class UtilitiesRouter extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		PrintWriter writer = response.getWriter();
 
+		String uri = request.getRequestURI();
+		PrintWriter writer = response.getWriter();
 
 		// Automatically set content type based on request extension ////////////////////////////////////////
 
-		String uri = request.getRequestURI();
 		if (uri.endsWith(".json")) {
 			response.setContentType("application/json");
 		}
 
+		try {
 
-		// Route the requests ///////////////////////////////////////////////////////////////////////////////
+			// Set the vertical in the request object - required for loading of Settings and Config.
+			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.UTILITIES.getCode());
 
-		if (uri.endsWith("/utilities/leadfeed/submit.json")) {
-			JSONObject json = null;
+			// Route the requests ///////////////////////////////////////////////////////////////////////////////
 
-			try {
-				SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.UTILITIES.getCode());
+			if (uri.endsWith("/utilities/providers/get.json")) {
 
-				UtilitiesLeadfeedService service = new UtilitiesLeadfeedService();
-				UtilitiesLeadfeedModel model = UtilitiesLeadfeedService.mapParametersToModel(request);
-				json = service.submit(request, model);
+				/** Get Services and Suppliers available for specified location */
 
-				if (json == null) {
-					throw new DaoException("Create opportunity returned null");
+				UtilitiesProviderServiceRequest model = new UtilitiesProviderServiceRequest();
+				model.populateFromRequest(request);
+
+				UtilitiesProviderService service = new UtilitiesProviderService();
+				UtilitiesProviderServiceModel returnedModel = service.getResults(request, model);
+
+				if (returnedModel == null) {
+					throw new Exception("get services and providers returned null");
 				}
-			}
-			catch (Exception e) {
-				logger.error("Utiltilies leadfeed submit failed", e);
 
-				Error error = new Error();
-				error.addError(new Error("Failed to submit leadfeed"));
-				json = error.toJsonObject(true);
+				writer.print(returnedModel.toJson());
 
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			} else if (uri.endsWith("/utilities/results/get.json")) {
+
+				/** Product results FYI NOT USED */
+
+				UtilitiesResultsRequestModel model = new UtilitiesResultsRequestModel();
+				model.populateFromRequest(request);
+
+				UtilitiesResultsService service = new UtilitiesResultsService();
+
+				UtilitiesResultsModel returnedModel = service.getResults(request, model);
+
+				if (returnedModel == null) {
+					throw new Exception("getResults returned null");
+				}
+
+				writer.print(returnedModel.toJson());
+
+			} else if (uri.endsWith("/utilities/moreinfo/get.json")) {
+
+				/** Moreinfo product details */
+
+				UtilitiesProductRequestModel model = new UtilitiesProductRequestModel();
+				model.populateFromRequest(request);
+
+				UtilitiesProductService service = new UtilitiesProductService();
+
+				UtilitiesProductModel returnedModel = service.getResults(request, model);
+
+				if (returnedModel == null) {
+					throw new Exception("getResults returned null");
+				}
+
+				writer.print(returnedModel.toJson());
+
 			}
+
+		}catch (Exception e) {
+			logger.error("/utilities/providers/get.json failed: ", e);
+
+			JSONObject json = null;
+			Error error = new Error();
+			error.addError(new Error("Failed to get results"));
+			json = error.toJsonObject(true);
+
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
 			writer.print(json.toString());
 		}
 
 	}
+
 }

@@ -23,6 +23,16 @@ public class FormDateUtils {
 		return searchDateValue;
 	}
 
+	public static String convertDateToString(Date date, String format){
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		sdf.setCalendar(cal);
+
+		return sdf.format(cal.getTime());
+	}
+
 	/**
 	 * getTodaysDate returns the current date in the requested format
 	 *
@@ -32,12 +42,7 @@ public class FormDateUtils {
 
 		Date today = new Date();
 
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(today);
+		return convertDateToString(today, format);
 
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		sdf.setCalendar(cal);
-
-		return sdf.format(cal.getTime());
 	}
 }

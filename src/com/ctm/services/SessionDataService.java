@@ -1,14 +1,14 @@
 package com.ctm.services;
 
 /**
-*
-* Session service.
-*
-* This class is the handler for when using the session object. It contains the application logic for verifying session information.
-*
-* Note: This is should be application scoped (all methods should therefore be static)
-*
-*/
+ *
+ * Session service.
+ *
+ * This class is the handler for when using the session object. It contains the application logic for verifying session information.
+ *
+ * Note: This is should be application scoped (all methods should therefore be static)
+ *
+ */
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +44,11 @@ public class SessionDataService {
 	 */
 	public AuthenticatedData getAuthenticatedSessionData(HttpServletRequest request) {
 		SessionData sessionData = getSessionDataFromSession(request);
+		if(sessionData != null){
 		return sessionData.getAuthenticatedSessionData();
+		} else {
+			return null;
+	}
 	}
 
 	/**
@@ -62,7 +66,7 @@ public class SessionDataService {
 	 * @param session
 	 * @param touchSession
 	 */
-	public SessionData getSessionDataFromSession(HttpServletRequest request, boolean touchSession) {
+	private SessionData getSessionDataFromSession(HttpServletRequest request, boolean touchSession) {
 		HttpSession session = request.getSession();
 
 		SessionData sessionData = (SessionData) session.getAttribute("sessionData");
@@ -75,11 +79,11 @@ public class SessionDataService {
 	}
 
 	/**
-	 * Set the sessionData param of the session to a new sessiondata object.
+	 * Set the sessionData param of the session to a new SessionData object.
 	 *
 	 * @param session
 	 */
-	public void setSessionDataToNewSession(HttpServletRequest request) {
+	private void setSessionDataToNewSession(HttpServletRequest request) {
 		request.getSession().setAttribute("sessionData", new SessionData());
 	}
 
@@ -164,9 +168,7 @@ public class SessionDataService {
 			else {
 				// Extra safety check, verify the brand code on the transaction object with the current brand code for this session.
 				String dataBucketBrand = (String) data.get("current/brandCode");
-				String applicationBrand = null;
-
-				applicationBrand = ApplicationService.getBrandCodeFromRequest(request);
+				String applicationBrand = ApplicationService.getBrandCodeFromRequest(request);
 
 				if (dataBucketBrand != null && dataBucketBrand.equals("") == false && applicationBrand != null && dataBucketBrand.equalsIgnoreCase(applicationBrand) == false) {
 					logger.error("Transaction doesn't match brand: " + dataBucketBrand + "!=" + applicationBrand);
@@ -184,6 +186,7 @@ public class SessionDataService {
 
 	/**
 	 * Remove the specified transaction from the session. (usually called when restarting a quote)
+	 * used by delete.tag
 	 *
 	 * @param session
 	 * @param transactionId
@@ -204,7 +207,7 @@ public class SessionDataService {
 
 		Collections.sort(transactionSessions);
 
-		ArrayList<Data> itemsToDelete = new ArrayList<Data>();
+		ArrayList<Data> itemsToDelete = new ArrayList<>();
 
 		// Remove items with blank transaction id.
 		for (Data session : transactionSessions) {
@@ -221,7 +224,7 @@ public class SessionDataService {
 		// Remove old sessions (will make 10 sessions the max number... could be anything, just worried about the size of the session object and server)
 		if(transactionSessions.size() >= MAX_DATA_OBJECTS_IN_SESSION){
 			// Trim the oldest data objects.
-			itemsToDelete = new ArrayList<Data>();
+			itemsToDelete = new ArrayList<>();
 			itemsToDelete.addAll(transactionSessions.subList(0, transactionSessions.size()-MAX_DATA_OBJECTS_IN_SESSION));
 			transactionSessions.removeAll(itemsToDelete);
 		}
@@ -233,10 +236,10 @@ public class SessionDataService {
 	 * @param transactionId
 	 * @return Date
 	 */
-	public long getLastSessionTouchTimestamp(HttpServletRequest request) {
+	private long getLastSessionTouchTimestamp(HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
 		if(session == null || session.isNew()) return -1;
-		
+
 		try {
 			return getLastSessionTouch(request).getTime();
 		} catch (NullPointerException e) {
@@ -246,6 +249,7 @@ public class SessionDataService {
 
 	/**
 	 * Return the last session touch as a date
+	 * used in data.jsp
 	 * @param request
 	 * @return
 	 */
@@ -280,6 +284,7 @@ public class SessionDataService {
 
 	/**
 	 * Get a cookie's value by name
+	 * used by write_quote.jsp
 	 * @param request
 	 * @param cookieName
 	 * @return cookie value
@@ -289,16 +294,18 @@ public class SessionDataService {
 		if(cookies != null) {
 			for(Cookie cookie : cookies) {
 				if(cookie.getName().equals(cookieName)) {
-					return cookie.getValue(); 
+					return cookie.getValue();
 				}
 			}
 		}
-		
+
 		return "";
 	}
-	
+
 	/**
 	 * Get the default session timeout period (for JS timeout)
+	 * used in session_pop.tag
+	 * page.tag
 	 * @param request
 	 * @param shouldEnd
 	 */

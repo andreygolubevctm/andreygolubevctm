@@ -3,10 +3,12 @@
 	<householdDetails>
 		<location>4066 - Toowong, QLD</location>
 		<postcode>4066</postcode>
+		<suburb>Toowong</suburb>
 		<state>QLD</state>
 		<movingIn>Y</movingIn>
 		<whatToCompare>EG</whatToCompare>
 		<howToEstimate>S</howToEstimate>
+		<tariff>8400</tariff>
 	</householdDetails>
 	<estimateDetails>
 		<spend>
@@ -57,6 +59,7 @@
 	</estimateDetails>
 	<resultsDisplayed>
 		<resultsFor>All</resultsFor>
+		<firstName>Test</firstName>
 		<email>preload.testing@comparethemarket.com.au</email>
 	</resultsDisplayed>
 	<application>
@@ -88,7 +91,7 @@
 				<streetNum>0000</streetNum>
 			</postal>
 			<movingIn></movingIn>
-			<movingDate>12/02/2013</movingDate>
+			<movingDate>30/01/2015</movingDate>
 			<isPowerOff>Y</isPowerOff>
 			<visualInspectionAppointment>Time1pmTo6pm</visualInspectionAppointment>
 		</details>

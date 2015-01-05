@@ -3,7 +3,7 @@
 
 <c:set var="vertical" value="utilities" />
 
-<quote:save_quote quoteType="${vertical}" mainJS="UtilitiesQuote" />
+<%--<quote:save_quote quoteType="${vertical}" mainJS="UtilitiesQuote" /> --%>
 
 <%-- Apply Online Popup --%>
 <utilities:apply_online />
@@ -12,6 +12,7 @@
 <utilities:popup_providerplans />
 
 <go:script marker="onready">
+	<utilities:custom_contact_panel />
 	// Supertag tracking
 	Track.onQuoteEvent("Start", referenceNo.getTransactionID(true));
 	Track.nextClicked(0);

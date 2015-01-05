@@ -11,7 +11,7 @@
 	<c:set var="showReducedHoursMessageClassName" value="showReducedHoursMessage" />
 </c:if>
 <%-- HTML --%>
-<c:if test="${not empty quoteType and fn:contains('health,life,ip', quoteType)}">
+<c:if test="${not empty quoteType and fn:contains('health,life,ip,utilities', quoteType)}">
 		<div id="contact-panel">
 			<div class="row top"><span class="border-blue-bar"></span><!--  empty --></div>
 			<div class="row mid ${showReducedHoursMessageClassName}">
@@ -163,7 +163,7 @@
 </c:if>
 
 <%-- JAVASCRIPT --%>
-<c:if test="${not empty quoteType and fn:contains('health,life,ip', quoteType)}">
+<c:if test="${not empty quoteType and fn:contains('health,life,ip,utilities', quoteType)}">
 <go:script marker="js-head">	
 	var ContactPanelHandler = function() {
 		

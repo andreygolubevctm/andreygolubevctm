@@ -72,11 +72,18 @@ var UtilitiesQuote = {
 
 				utilitiesChoices.setProduct(Results._selectedProduct);
 				utilitiesChoices.updateApplicationSlide();
+				utilitiesChoices.updateApplyNowSlide();
+
+				var template = $("#terms-template").html();
+				var msg = $(parseTemplate( template, Results._selectedProduct ) );
+				$('#termsConditions').html(msg);
 
 				$('#page').show();
 				$('#resultsPage').hide();
 
 				$('.right-panel').not('.slideScrapesContainer').show();
+				$("#next-step").css("width", "170px");
+				$("#next-step span").html("Submit Application");
 			}
 		});
 
@@ -84,24 +91,6 @@ var UtilitiesQuote = {
 		slide_callbacks.register({
 			mode:		'before',
 			slide_id:	3,
-			callback:	function() {
-				utilitiesChoices.updateApplyNowSlide();
-			}
-		});
-		slide_callbacks.register({
-			mode:		'after',
-			slide_id:	3,
-			callback:	function() {
-				$("#next-step").css("width", "170px");
-				$("#next-step span").html("Submit Application");
-			}
-		});
-
-
-		// Confirmation
-		slide_callbacks.register({
-			mode:		'before',
-			slide_id:	4,
 			callback:	function() {
 				UtilitiesQuote.submitApplication(utilitiesChoices._product);
 			}
@@ -128,7 +117,7 @@ var UtilitiesQuote = {
 		}
 
 		if (!$.isArray(errors) || errors.length == 0) {
-			errors = ['An undefined error has occured.'];
+			errors = [''];
 		}
 
 		var content = '';
@@ -157,6 +146,7 @@ var UtilitiesQuote = {
 			Loading.show("Loading Quotes...");
 
 			var dat = serialiseWithoutEmptyFields('#mainform');
+			dat += "&transactionId="+referenceNo.getTransactionID();
 			
 			UtilitiesQuote.ajaxPending = true;
 			$.ajax({
@@ -173,28 +163,24 @@ var UtilitiesQuote = {
 					if (json && json.results) {
 						json = json.results; //for convenience
 					}
-					if(typeof json.error != 'undefined' && json.error.type == "validation") {
+					if(typeof json.errors != 'undefined' && json.errors.length > 0) {
 						Loading.hide();
 						ServerSideValidation.outputValidationErrors({
 							validationErrors: json.error.errorDetails.validationErrors,
 							startStage: 0,
 							singleStage: true
 						});
+
+						/* TODO -- FIX
 						if (typeof json.error.transactionId != 'undefined') {
 							referenceNo.setTransactionId(json.error.transactionId);
 						}
+						*/
 						return false;
-					} else if (!json || !json.price || (json.status && json.status=='ERROR')) {
+					} else if (json.plans.length == 0) {
 						var msgs = [];
-						if (typeof json.errors == "object" && ($.isArray(json.errors) || json.errors.hasOwnProperty("error"))) {
-							if($.isArray(json.errors)) {
-								msgs = json.errors;
-							} else {
-								msgs.push(json.errors.error);
-							}
-						} else {
+
 							msgs.push({code:0,message:"No products were found"});
-						}
 
 						if( msgs.length && msgs[0].message.indexOf("No products were found") != -1 ) {
 							Results.showErrors(["No results found, please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>."]);
@@ -208,13 +194,15 @@ var UtilitiesQuote = {
 					UtilitiesQuote.fetchPricesResponse = true;
 
 					// Let's sneak the tranID into each product - save an ajax call
+					/* TODO -- FIX
 					if( json.price.length ) {
 						for(var i = 0; i < json.price.length; i++) {
 							json.price[i].transactionId = json.transactionId;
 						}
 					}
-
-					Results.update(json.price);
+					*/
+					$("#utilities_partner_uniqueCustomerId").val(json.uniqueCustomerId);
+					Results.update(json.plans);
 					Results.show();
 					Loading.hide();
 					return false;
@@ -265,19 +253,14 @@ var UtilitiesQuote = {
 		return num;
 	},
 
-	fetchProductDetail: function( product_obj, callback ) {
+	fetchProductDetail: function( product, callback ) {
 
-		if (!UtilitiesQuote.ajaxPending) {
-			Loading.show("Loading Product...");
 			var dat = {
-					productId :	product_obj.productId,
-					searchId : product_obj.searchId,
-					ProductClassPackage : product_obj.info.ProductClassPackage,
-					transactionId:referenceNo.getTransactionID()
+				productId: product.planId
 			};
-			UtilitiesQuote.ajaxPending = true;
+
 			$.ajax({
-				url: "ajax/json/utilities_get_productdetail.jsp",
+			url: "utilities/moreinfo/get.json",
 				data: dat,
 				type: "POST",
 				async: true,
@@ -285,48 +268,32 @@ var UtilitiesQuote = {
 				timeout:60000,
 				cache: false,
 				success: function(json){
-					UtilitiesQuote.ajaxPending = false;
-
-					if (json && json.results) {
-						json = json.results; //for convenience
-					}
-					if (!json || !json.price || (json.status && json.status=='ERROR')) {
-						var msgs = [];
-						if (typeof json.errors == "object" && ($.isArray(json.errors) || json.errors.hasOwnProperty("error"))) {
-							if($.isArray(json.errors)) {
-								msgs = json.errors;
-							} else {
-								msgs.push(json.errors.error);
-						}
-						} else {
-							msgs.push({code:500,message:"Failed to find product details."});
-						}
-						UtilitiesQuote.error('An error occurred when fetching product details', msgs, {
-							description:	"UtilitiesQuote.fetchProductDetail(). JSON Response contained error messages. ",
-							data:			json
-						});
+				if (json.errors.length >0 ) {
 						return false;
 					}
 
-					/* no need to re-assign selected product as [a] this may not be a selected product and
-					 * [b] product_obj is already a reference to the product (whichever it is) */
-					$.extend(true, product_obj, json.price);
+				$.extend(true, product, json);
 
 					if( typeof callback == "function" ) {
 						callback();
 					}
 
-					Loading.hide();
+				return false;
 				},
 				error: function(obj,txt,errorThrown) {
-					UtilitiesQuote.error('An error occurred when fetching product details', txt+' '+errorThrown, {
+				UtilitiesQuote.error('Sorry, unable to find product '+productId, txt+' '+errorThrown, {
 						description:	"UtilitiesQuote.fetchProductDetail(). AJAX request failed: " + txt + " " + errorThrown,
 						data:			dat
 					});
+
+				if( typeof callback == "function" ) {
+					callback(null);
+				}
+
+
 					return false;
 				}
 			});
-		}
 	},
 
 	arrayIndex : function(arr, token) {
@@ -353,7 +320,11 @@ var UtilitiesQuote = {
 	},
 
 	errorSubmitApplication: function(errors, data) {
+	
+		_.delay(function(){
 		QuoteEngine.prevSlide();
+		},1000)
+		
 		UtilitiesQuote.error('An error occurred when submitting the application', errors, data);
 	},
 
@@ -375,7 +346,6 @@ var UtilitiesQuote = {
 				timeout:60000,
 				cache: false,
 				success: function(json){
-
 					UtilitiesQuote.ajaxPending = false;
 
 					if (json && json.results) {
@@ -406,6 +376,7 @@ var UtilitiesQuote = {
 					return false;
 				},
 				error: function(obj,txt,errorThrown) {
+					UtilitiesQuote.ajaxPending = false;
 					UtilitiesQuote.errorSubmitApplication(txt + ' ' + errorThrown, {
 						description:	"UtilitiesQuote.submitApplication(). AJAX request failed: " + txt + " " + errorThrown,
 						data:			dat
@@ -418,202 +389,53 @@ var UtilitiesQuote = {
 
 	},
 
-	getUtilitiesForPostcode : function(postcode, callback) {
 
-		var dat = {postcode: postcode};
-		$.ajax({
-			url: "ajax/json/utilities_get_utilitiesforpostcode.jsp",
-			data: dat,
-			type: "GET",
-			async: true,
-			dataType: "json",
-			timeout:60000,
-			cache: false,
-			success: function(json){
-				if (!json
-					|| !json.arrayofproductclasspackagetype
-					|| !json.arrayofproductclasspackagetype.productclasspackagetype) {
-					return false;
-				}
+	getUtilitiesForPostcode : function(postcode, suburb, callback) {
 
-				if( typeof callback == "function" ) {
-					callback(json.arrayofproductclasspackagetype.productclasspackagetype);
-				}
-
-				return false;
-			},
-			error: function(obj,txt,errorThrown) {
-				UtilitiesQuote.error('An error occurred when retrieving the utilities for postcode '+postcode, txt+' '+errorThrown, {
-					description:	"UtilitiesQuote.getUtilitiesForPostcode(). AJAX request failed: " + txt + " " + errorThrown,
-					data:			dat
-				});
-				return false;
-			}
-		});
-
-
-	},
-
-	getMoveInAvailability : function(providerCode, state, callback) {
+		// updated for thoughtworld
 
 		var dat = {
-			providerCode: providerCode, 
-			state: state,
+			postcode: postcode,
+			suburb: suburb,
 			transactionId: referenceNo.getTransactionID()
 		};
+
 		$.ajax({
-			url: "ajax/json/utilities_get_moveinavailability.jsp",
+			url: "utilities/providers/get.json",
 			data: dat,
-			type: "GET",
+			type: "POST",
 			async: true,
 			dataType: "json",
 			timeout:60000,
 			cache: false,
 			success: function(json){
-				if (!json
-					|| !json.results) {
+				if (json.errors.length >0 ) {
 					return false;
 				}
 
 				if( typeof callback == "function" ) {
-					callback(json.results);
+					callback(json);
 				}
 
 				return false;
 			},
 			error: function(obj,txt,errorThrown) {
-				UtilitiesQuote.error('An error occurred when retrieving the move in availability for retailer code ' + providerCode + ' and state ' + state, txt+' '+errorThrown, {
-					description:	"UtilitiesQuote.getMoveInAvailability(). AJAX request failed: " + txt + " " + errorThrown,
+				UtilitiesQuote.error('Sorry, it looks like energy comparison services are not available for your state at this time. For general information regarding your energy bills and consumption, we\'d suggest visiting <a href="http://www.energymadeeasy.gov.au">www.energymadeeasy.gov.au</a> ('+postcode+')', "", {
+					description:	"UtilitiesQuote.getUtilitiesForPostcode() " + txt + " " + errorThrown,
 					data:			dat
 				});
-				return false;
-			}
-		});
-
-	},
-
-	getPublicHolidays: function(params, callback){
-
-		$.ajax({
-			url: "ajax/json/read_public_holidays.jsp",
-			data: params,
-			type: "POST",
-			async: true,
-			dataType: "script",
-			timeout:20000,
-			cache: false,
-			success: function(publicHolidaysString){
-				/* should return an array of public holidays but in a string so needs to be evaluated */
-				publicHolidays = eval(publicHolidaysString);
-
-				if( !$.isArray(publicHolidays) ) {
-					FatalErrorDialog.register({
-						message:		"Error retrieving list of public holidays.",
-						page:			"common/js/utilities.js",
-						description:	"UtilitiesQuote.getPublicHolidays(). Returned results were not an array: " + publicHolidaysString,
-						data:			params
-					});
-				}
 
 				if( typeof callback == "function" ) {
-					callback(publicHolidays);
+					callback(null);
 				}
-			},
-			error: function(obj, txt, errorThrown) {
-				FatalErrorDialog.register({
-					message:		"Error retrieving list of public holidays.",
-					page:			"common/js/utilities.js",
-					description:	"UtilitiesQuote.getPublicHolidays(). AJAX request failed: " + txt + " " + errorThrown,
-					data:			params
-				});
-			}
-		});
 
-	},
 
-	getEnergyProfile : function(searchId, callback) {
-
-		var dat = {searchId: searchId};
-		$.ajax({
-			url: "ajax/json/utilities_get_energyprofile.jsp",
-			data: dat,
-			type: "GET",
-			async: true,
-			dataType: "json",
-			timeout:60000,
-			cache: false,
-			success: function(json){
-
-				if (!json
-					|| !json.energyprofile) {
 					return false;
 				}
-
-				if( typeof callback == "function" ) {
-					callback(json.energyprofile);
-				}
-
-				return false;
-			},
-			error: function(obj,txt,errorThrown) {
-				UtilitiesQuote.error('An error occurred when retrieving the energy profile for search ID '+searchID, txt+' '+errorThrown, {
-					description:	"UtilitiesQuote.getEnergyProfile(). AJAX request failed: " + txt + " " + errorThrown,
-					data:			dat
 				});
-				return false;
-			}
-		});
 
-	},
 
-	checkQuoteOwnership: function( callback ) {
-
-		var dat = {
-			quoteType:"utilities",
-			transactionId:referenceNo.getTransactionID()
-		};
-		$.ajax({
-			url: "ajax/json/access_check.jsp",
-			data: dat,
-			dataType: "json",
-			type: "POST",
-			async: true,
-			timeout:60000,
-			cache: false,
-			success: function(jsonResult){
-				if( !Number(jsonResult.result.success) )
-				{
-					FatalErrorDialog.exec({
-						message:		jsonResult.result.message,
-						page:			"utilities.js",
-						description:	"UtilitiesQuote.checkQuoteOwnership(). jsonResult contained an error message: " + jsonResult.result.message,
-						data:			jsonResult
-					});
-				}
-				else
-				{
-					if( typeof callback == "function" )
-					{
-						callback();
-					}
-				}
-
-				return false;
 			},
-			error: function(obj, txt, errorThrown){
-				FatalErrorDialog.exec({
-					message:		"An undefined error has occured - please try again later.",
-					page:			"utilities.js",
-					description:	"UtilitiesQuote.checkQuoteOwnership(). AJAX request failed: " + txt + ' ' + errorThrown,
-					data:			dat
-				});
-				return false;
-			}
-		});
-
-		return true;
-
-	},
 
 	restartQuote: function() {
 		Loading.show("Start New Quote...");
@@ -673,41 +495,8 @@ var UtilitiesQuote = {
 			$("#utilities_order_receiptid").val( receiptid );
 			$("#utilities_order_productid").val( product.productId );
 			$("#utilities_order_estimatedcosts").val( product.price.Maximum );
-			UtilitiesQuote.registerSale();
-		}
-	},
 
-	registerSale : function( receiptid ) {
-
-		var dat = serialiseWithoutEmptyFields('#mainform');
-		$.ajax({
-			url: "ajax/json/utilities_register_sale.jsp",
-			data: dat,
-			type: "POST",
-			async: true,
-			dataType: "json",
-			timeout:60000,
-			cache: false,
-			beforeSend : function(xhr,setting) {
-				var url = setting.url;
-				var label = "uncache",
-				url = url.replace("?_=","?" + label + "=");
-				url = url.replace("&_=","&" + label + "=");
-				setting.url = url;
-			},
-			success: function(jsonResult){
-				// Nothing to do
-				return false;
-			},
-			error: function(obj, txt, errorThrown){
-				FatalErrorDialog.register({
-					message:		"An error occurred trying to start a new quote.",
-					page:			"utilities.js",
-					description:	"UtilitiesQuote.registerSale(), AJAX request failed: " + txt + ' ' + errorThrown,
-					data:			dat
-				});
 			}
-		});
 	}
 };
 
