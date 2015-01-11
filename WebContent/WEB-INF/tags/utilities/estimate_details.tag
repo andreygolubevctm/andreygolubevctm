@@ -24,7 +24,7 @@
 				<field:currency xpath="${xpath}/spend/electricity/amount" title="Your electricity spend" required="true" symbol="$" decimal="${false}" className="${name}_input electricity" maxLength="15" />
 				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/spend/electricity/period" title="an electricity spend period" className="electricity" required="true" />
 				<field:currency xpath="${xpath}/spend/gas/amount" title="Your gas spend" required="true" symbol="$" decimal="${false}" className="${name}_input gas" maxLength="15" />
-				<field:array_select items="=Select period,M=Month,Q=Quarter,Y=Year" xpath="${xpath}/spend/gas/period" title="a gas spend period" className="gas" required="true"/>
+				<field:array_select items="=Select period,M=Month,B=2 Months,Q=Quarter,Y=Year" xpath="${xpath}/spend/gas/period" title="a gas spend period" className="gas" required="true"/>
 			</form:row>
 		</div>
 
@@ -36,7 +36,7 @@
 			<form:row label="How many bedrooms in your home?">
 				<field:array_select items="1=1,2=2,3=3,4=4+" xpath="${xpath}/household/bedrooms" title="household bedrooms" required="true" />
 			</form:row>
-			
+
 		</div>
 
 		<div class="usage">
@@ -204,6 +204,7 @@ $.validator.addMethod("amountPeriodRequired",
 	},
 	"Replace this message with something else"
 );
+
 </go:script>
 
 <%-- VALIDATION --%>

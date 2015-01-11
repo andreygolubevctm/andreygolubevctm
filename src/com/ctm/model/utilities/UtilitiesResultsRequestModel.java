@@ -7,14 +7,40 @@ import org.json.JSONObject;
 
 import com.ctm.model.AbstractJsonModel;
 
-public class UtilitiesResultsRequestModel  extends AbstractJsonModel{
+public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 	public static enum FuelType  {
 		Electricity, Gas, Dual;
 	}
 
 	public static enum Duration  {
-		Monthly, Quarterly, Yearly;
+		MONTHLY ("Monthly","M"),
+		BIMONTHLY ("Bimonthly","B"),
+		QUARTERLY ("Quarterly","Q"),
+		YEARLY ("Yearly","Y");
+
+		private final String label, code;
+
+		Duration(String label, String code) {
+			this.label = label;
+			this.code = code;
+		}
+
+		public String getLabel() {
+			return label;
+		}
+		public String getCode() {
+			return code;
+		}
+
+		public static Duration findByCode(String code) {
+			for (Duration t : Duration.values()) {
+				if (code.equals(t.getCode())) {
+					return t;
+				}
+			}
+			return null;
+		}
 	}
 
 	private String postcode;
@@ -218,11 +244,14 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel{
 		}
 
 		if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
-			json.put("elec_duration", getElectricityDuration());
+			Duration elecDuration = getElectricityDuration();
+			json.put("elec_duration", elecDuration.getLabel());
 		}
 
+
 		if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
-			json.put("gas_duration", getGasDuration());
+			Duration gasDuration = getGasDuration();
+			json.put("gas_duration", gasDuration.getLabel());
 		}
 
 		if(isConnection() == false  || (isConnection() && getHowToEstimate().equals("U"))){
@@ -262,20 +291,6 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel{
 		return Float.parseFloat(value);
 	}
 
-	private Duration convertStringToDuraction(String value){
-		if(value == null || value.equals("")) return null;
-
-		if(value.equals("M")){
-			return Duration.Monthly;
-		} else if(value.equals("Q")){
-			return Duration.Quarterly;
-		} else if(value.equals("Y")){
-			return Duration.Yearly;
-		}
-
-		return null;
-	}
-
 	public void populateFromRequest(HttpServletRequest request){
 
 
@@ -309,17 +324,25 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel{
 		setHowToEstimate(request.getParameter("utilities_householdDetails_howToEstimate"));
 
 		if(getHowToEstimate().equals("U")){
-			setElectricityDuration(convertStringToDuraction(request.getParameter("utilities_estimateDetails_usage_electricity_peak_period")));
-			setGasDuration(convertStringToDuraction(request.getParameter("utilities_estimateDetails_usage_gas_peak_period")));
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
+				setElectricityDuration(Duration.findByCode(request.getParameter("utilities_estimateDetails_usage_electricity_peak_period")));
+			}
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
+				setGasDuration(Duration.findByCode(request.getParameter("utilities_estimateDetails_usage_gas_peak_period")));
+			}
 		}else{
-			setElectricityDuration(convertStringToDuraction(request.getParameter("utilities_estimateDetails_spend_electricity_period")));
-			setGasDuration(convertStringToDuraction(request.getParameter("utilities_estimateDetails_spend_gas_period")));
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
+				setElectricityDuration(Duration.findByCode(request.getParameter("utilities_estimateDetails_spend_electricity_period")));
+			}
+			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Gas){
+				setGasDuration(Duration.findByCode(request.getParameter("utilities_estimateDetails_spend_gas_period")));
+			}
 		}
 
 		if(request.getParameter("utilities_resultsDisplayed_optinPhone").equals("Y")){
 			setFirstName(request.getParameter("utilities_resultsDisplayed_firstName"));
 			setPhoneNumber(request.getParameter("utilities_resultsDisplayed_phone"));
-			setReferenceNumber("CTM");
+			setReferenceNumber(request.getParameter("transactionId"));
 		}
 
 	}
