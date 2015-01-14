@@ -4884,7 +4884,7 @@ meerkat.logging.init = function() {
         return qs;
     }
     function addTrackingDataToSettings(settings) {
-        var tracking = _.pick(settings, "actionStep", "brandCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
+        var tracking = _.pick(settings, "actionStep", "brandValueCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
         meerkat.modules.tracking.updateObjectData(tracking);
         tracking = $.extend({
             actionStep: null,
@@ -4947,7 +4947,7 @@ meerkat.logging.init = function() {
                 touchComment: _.has(touchData, "comment") ? touchData.comment : ""
             });
         }
-        var data = _.pick(trackData, "actionStep", "brandCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
+        var data = _.pick(trackData, "actionStep", "brandValueCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
         if (doOldTrackCall === true) {
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: "trackHandoverType",
@@ -7256,9 +7256,7 @@ meerkat.logging.init = function() {
         return vertical;
     }
     function updateObjectData(object) {
-        if (typeof object.brandCode === "undefined") {
-            object.brandCode = meerkat.site.tracking.brandCode;
-        }
+        if (typeof object.brandCode === "undefined") {}
         if (typeof object.transactionID === "undefined") {
             object.transactionID = meerkat.modules.transactionId.get();
         }
@@ -7299,10 +7297,6 @@ meerkat.logging.init = function() {
             value: meerkat.modules.transactionId.get()
         };
         window.sessioncamConfiguration.customDataObjects.push(item);
-        item = {
-            key: "brandCode",
-            value: meerkat.site.tracking.brandCode
-        };
         window.sessioncamConfiguration.customDataObjects.push(item);
         item = {
             key: "vertical",

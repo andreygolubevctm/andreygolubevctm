@@ -84,7 +84,7 @@
 
 	function addTrackingDataToSettings(settings) {
 
-		var tracking = _.pick(settings, 'actionStep','brandCode','currentJourney','lastFieldTouch','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser');
+		var tracking = _.pick(settings, 'actionStep','brandValueCode','currentJourney','lastFieldTouch','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser');
 		meerkat.modules.tracking.updateObjectData(tracking);
 		// Guarantee all fields exist in the object
 		tracking = $.extend({
@@ -177,7 +177,7 @@
 			});
 		}
 
-		var data = _.pick(trackData, 'actionStep','brandCode','currentJourney','lastFieldTouch','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser');
+		var data = _.pick(trackData, 'actionStep','brandValueCode','currentJourney','lastFieldTouch','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser');
 
 		// OLD tracking method
 		if(doOldTrackCall === true) {

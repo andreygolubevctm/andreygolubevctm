@@ -254,7 +254,7 @@
 	function updateObjectData(object) {
 
 		if (typeof object.brandCode === "undefined") {
-			object.brandCode = meerkat.site.tracking.brandCode;
+			//object.brandCode = meerkat.site.tracking.brandCode;
 		}
 
 		if (typeof object.transactionID === "undefined") {
@@ -312,10 +312,12 @@
 				value: meerkat.modules.transactionId.get()
 		};
 		window.sessioncamConfiguration.customDataObjects.push(item);
+		/*
 		item = {
 				key: "brandCode",
 				value: meerkat.site.tracking.brandCode
 		};
+		*/
 		window.sessioncamConfiguration.customDataObjects.push(item);
 		item = {
 				key: "vertical",
