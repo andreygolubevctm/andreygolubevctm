@@ -38,7 +38,7 @@
 <core:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 		{{ if(obj.isOnlineAvailable === true) { }}
-			<a target="_blank" href="/${pageSettings.getContextFolder()}{{= meerkat.modules.carMoreInfo.getTransferUrl(obj) }}" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
 		{{ } }}
 	</div>
 	{{ if(obj.isOfflineAvailable === true) { }}
@@ -192,6 +192,7 @@
 							<h4>&nbsp;</h4>
 							<p>Underwriter: {{= underwriter }}</p>
 							<p>AFS Licence No: {{= afsLicenceNo }}</p>
+							<car:price_promise className="inverted" />
 						</div>
 					</div>
 				</div>
@@ -225,6 +226,8 @@
 					<p>Underwriter: {{= underwriter }}</p>
 					<p>AFS Licence No: {{= afsLicenceNo }}</p>
 				</div>
+
+				<car:price_promise />
 			</div>
 
 		</div>
@@ -237,14 +240,14 @@
 <div class="row">
 	<div class="col-xs-12 text-center">
 		<p>Please be aware that {{= obj.specialConditionsRule }}</p>
-		<p><strong>Would you like to proceed with your purchase?</strong></p>
+		<p><strong>Would you like to  with your purchase?</strong></p>
 		<p>&nbsp;</p>
 	</div>
 	<div class="col-xs-12 col-sm-6 push-top-15">
 		<a href="javascript:;" class="btn btn-block btn-back">Select a Different Product</a>
 	</div>
 	<div class="col-xs-12 col-sm-6 push-top-15">
-		<a class="btn btn-next btn-block btn-proceed-to-insurer" href="/${pageSettings.getContextFolder()}{{= meerkat.modules.carMoreInfo.getTransferUrl(obj) }}" target="_blank">Proceed to Insurer</a>
+		<a class="btn btn-next btn-block btn-proceed-to-insurer" href="javascript:;" target="_blank">Proceed to Insurer</a>
 	</div>
 </div>
 </core:js_template>

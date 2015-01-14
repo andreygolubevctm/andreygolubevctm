@@ -71,7 +71,7 @@
 			{{= obj.onlineDiscountTemplate }}
 		</div>
 		<div class="col-xs-12 col-sm-6 insurerBtn">
-			<a target="_blank" href="/${pageSettings.getContextFolder()}{{= obj.transferURL }}" class="btn btn-fat btn-cta btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+			<a target="_blank" href="javascript:;" class="btn btn-fat btn-cta btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
 		</div>
 	{{ } }}
 	<div class="col-xs-4 visible-xs text-right push-top-15">

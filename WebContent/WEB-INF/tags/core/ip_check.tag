@@ -43,13 +43,14 @@ ROLES
 
 <%-- Look for a match --%>
 <sql:query var="getSQL">
-	SELECT styleCodeId,ipStart,ipEnd,`Role`,`Total`
+	SELECT styleCodeId,ipStart,ipEnd,`Role`,
+	CASE WHEN `date` = CURRENT_DATE THEN total ELSE 0 END AS `total`
 	FROM aggregator.ip_address
 	WHERE Service = ?
 	AND styleCodeId = ?
 	AND ipStart <= ?
 	AND ipEND >= ?
-	ORDER BY ipEnd
+	ORDER BY ipEnd, date DESC
 	LIMIT 1;
 	<sql:param value="${service}" />
 	<sql:param value="${styleCodeId}" />
@@ -87,7 +88,7 @@ ROLES
 	(styleCodeId, ipStart, ipEnd, Date, Service, Role, Total) VALUES
 	(?,?,?,CURRENT_DATE,?,?,1)
 	ON DUPLICATE KEY UPDATE
-	`Total` = CASE WHEN `DATE` = CURRENT_DATE THEN ? WHEN `DATE` != CURRENT_DATE THEN 1 END,
+	`Total` = ?,
 	`Date` = CURRENT_DATE;
 	<sql:param value="${styleCodeId}" />
 	<sql:param value="${ipStart}" />

@@ -144,6 +144,7 @@
 								<xsl:with-param name="price" select="$price" />
 								<xsl:with-param name="productId" select="$priceProductId" />
 								<xsl:with-param name="productType">HHZ</xsl:with-param>
+								<xsl:with-param name="brandCode"><xsl:value-of select="quotesList/quote/brand/code" /></xsl:with-param>
 							</xsl:call-template>
 						</xsl:when>
 						<xsl:when test="quotesList/quote/components/component[@type = 'HHB']">
@@ -151,6 +152,7 @@
 								<xsl:with-param name="price" select="$price" />
 								<xsl:with-param name="productId" select="$priceProductId" />
 								<xsl:with-param name="productType">HHB</xsl:with-param>
+								<xsl:with-param name="brandCode"><xsl:value-of select="quotesList/quote/brand/code" /></xsl:with-param>
 							</xsl:call-template>
 						</xsl:when>
 						<xsl:when test="quotesList/quote/components/component[@type = 'HHC']">
@@ -158,6 +160,7 @@
 								<xsl:with-param name="price" select="$price" />
 								<xsl:with-param name="productId" select="$priceProductId" />
 								<xsl:with-param name="productType">HHC</xsl:with-param>
+								<xsl:with-param name="brandCode"><xsl:value-of select="quotesList/quote/brand/code" /></xsl:with-param>
 							</xsl:call-template>
 						</xsl:when>
 					</xsl:choose>
@@ -300,9 +303,16 @@
 	<xsl:param name="price"/>
 	<xsl:param name="productId"/>
 	<xsl:param name="productType"/>
+	<xsl:param name="brandCode"/>
 
 	<information><xsl:value-of select="$price/information" /></information>
-	<name><xsl:value-of select="$price/name" /></name>
+	<name>
+		<xsl:choose>
+			<xsl:when test="$brandCode = 'BUDD' and $productType = 'HHB'"><xsl:text>Smart Home Insurance</xsl:text></xsl:when>
+			<xsl:when test="$brandCode = 'BUDD' and $productType = 'HHC'"><xsl:text>Smart Contents Insurance</xsl:text></xsl:when>
+			<xsl:otherwise><xsl:value-of select="$price/name" /></xsl:otherwise>
+		</xsl:choose>
+	</name>
 	<des><xsl:value-of select="$price/des" /></des>
 	<description>
 		<!-- This is a temporary measure until the service can dynamically pass the product description -->

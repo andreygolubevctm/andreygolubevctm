@@ -65,8 +65,8 @@
 					// Store the ID
 					currentMessage = obj || false;
 
-					if (currentMessage.hasOwnProperty('transactionId')) {
-						currentTransactionId = currentMessage.transactionId;
+					if (currentMessage.hasOwnProperty('transaction')) {
+						currentTransactionId = currentMessage.transaction.transactionId;
 					}
 
 					updateMenu();
@@ -114,7 +114,7 @@
 		}
 
 		// Actions menu options
-		if (currentMessage === false || isNaN(currentMessage.messageId)) {
+		if (currentMessage === false || isNaN(currentMessage.message.messageId)) {
 			if (showMenu === false) showMenu = false;
 
 			$msgId.text('None');
@@ -125,12 +125,12 @@
 		else {
 			showMenu = true;
 
-			$msgId.text(currentMessage.messageId);
+			$msgId.text(currentMessage.message.messageId);
 			$actionCompleteParent.removeClass('disabled');
 			$actionUnsuccessfulParent.removeClass('disabled');
 
 			// Can the message be postponed?
-			if (currentMessage.hasOwnProperty('canPostpone') && currentMessage.canPostpone === true) {
+			if (currentMessage.message.hasOwnProperty('canPostpone') && currentMessage.message.canPostpone === true) {
 				$actionPostponeParent.removeClass('disabled');
 			}
 			else {

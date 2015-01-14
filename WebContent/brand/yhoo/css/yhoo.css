@@ -8383,18 +8383,6 @@ fieldset h2 .icon-text {
     display: none !important;
   }
 }
-[data-livechat="button"] {
-  display: none;
-}
-[data-livechat="target"][data-livechat-state="true"] [data-livechat="button"] {
-  display: inline-block;
-}
-.select select {
-  visibility: visible !important;
-}
-.invisible .select select {
-  visibility: hidden !important;
-}
 [data-poweredby="header"] {
   display: none;
 }
@@ -8948,6 +8936,43 @@ fieldset h2 .icon-text {
 }
 .btn-fat {
   width: 315px;
+}
+.coverLevelTabs {
+  color: #222222;
+}
+.coverLevelTabs .clt-action {
+  font-family: 'SourceSansProBold';
+  line-height: 14px;
+  padding: 10px 0;
+}
+.coverLevelTabs .clt-action {
+  cursor: pointer;
+  font-size: 12px;
+  text-transform: uppercase;
+  border: 1px solid #fff;
+  border-top: none;
+  background-color: #333333;
+}
+.coverLevelTabs .active,
+.coverLevelTabs .clt-action:hover {
+  background-color: #333333;
+  color: #ffffff;
+}
+@media (max-width: 767px) {
+  .coverLevelTabs {
+    margin-top: 0;
+  }
+  .coverLevelTabs #currentTabsContainer {
+    overflow-x: auto;
+    width: 100%;
+  }
+  .coverLevelTabs .clt-action {
+    padding: 10px 5px;
+    border: 1px solid #fff;
+    border-bottom: none;
+    /* not ideal */
+    white-space: nowrap;
+  }
 }
 /**
 	* [NOTE]

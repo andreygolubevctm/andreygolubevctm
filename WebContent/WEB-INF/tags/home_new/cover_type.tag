@@ -24,10 +24,10 @@
 	</form_new:row>
 
 	<%-- Commencement date --%>
-	<c:set var="fieldXpath" value="${xpath}/startDate" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Commencement date" className="${xpath}_startDateFieldset" helpId="500">
-		<field_new:commencement_date xpath="${fieldXpath}" mode="separated" includeMobile="false" />
-	</form_new:row>
+	<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+	<c:if test="${not splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">
+		<home_new:commencementDate xpath="${xpath}/startDate" />
+	</c:if>
 
 	<%-- Address --%>
 	<group_new:address xpath="${xpath}/property/address" type="R" showTitle="false" />

@@ -9,13 +9,31 @@
 
 .resultsSummaryPlaceholder {
 	.highlight {
-		color: @results-resultsSummaryPlaceholder-highlight-color;	
-		font-weight: bold;
-	}			
+		color: @results-resultsSummaryPlaceholder-highlight-color;
+		font-family: @font-family-theme-bold;
+	}
 }
 
 @media(@sm-only) {
 	.optional {
 		display: none;
 	}
+
+	.sm-block {
+	  display: block;
+	}
+}
+@media(@sm-md-only) {
+	.sm-md-block {
+		display: block;
+	}
+}
+
+//-------------------------------------------------------------------------------------------
+//MD ONLY breakpoints
+
+@media(@md-only) {
+  .resultsSummaryContainer h5 {
+	font-size: 16px;
+  }
 }

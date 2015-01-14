@@ -1472,20 +1472,6 @@
             }
         });
     }
-    function getTransferUrl(product) {
-        try {
-            return "transferring.jsp?url=" + escape(product.quoteUrl) + "&trackCode=" + product.trackCode + "&brand=" + escape(product.productDes) + "&msg=" + $("#transferring_" + product.productId).text() + "&transactionId=" + meerkat.modules.transactionId.get();
-        } catch (e) {
-            meerkat.modules.errorHandling.error({
-                errorLevel: "warning",
-                message: "An error occurred. Sorry about that!<br /><br /> To purchase this policy, please contact the provider " + (product.telNo !== "" ? " on " + product.telNo : "directly") + " quoting " + product.leadNo + ", or select another policy.",
-                page: "homeMoreInfo.js:getTransferUrl",
-                description: "Unable to generate transferring URL",
-                data: product
-            });
-            return "";
-        }
-    }
     function onClickApplyNow(product, applyNowCallback) {
         if (hasSpecialConditions === true && specialConditionContent.length) {
             var $e = $("#special-conditions-template");
@@ -1503,6 +1489,7 @@
                 openOnHashChange: false,
                 onOpen: function(modalId) {
                     $(".btn-proceed-to-insurer", $("#" + modalId)).off("click.proceed").on("click.proceed", function(event) {
+                        event.preventDefault();
                         return proceedToInsurer(product, modalId, applyNowCallback);
                     });
                     $(".btn-back", $("#" + modalId)).off("click.goback").on("click.goback", function(event) {
@@ -1524,6 +1511,9 @@
         if (modalId) {
             $("#" + modalId).modal("hide");
         }
+        if (callbackModalId) {
+            $("#" + callbackModalId).modal("hide");
+        }
         if (_.isEmpty(product.quoteUrl)) {
             meerkat.modules.errorHandling.error({
                 errorLevel: "warning",
@@ -1535,7 +1525,15 @@
             return false;
         }
         trackHandover(product);
-        applyNowCallback(true);
+        meerkat.modules.partnerTransfer.transferToPartner({
+            encodeTransferURL: true,
+            product: product,
+            applyNowCallback: applyNowCallback,
+            productName: product.headline.name,
+            productBrandCode: product.brandCode,
+            brand: product.productDes,
+            verticalFilter: meerkat.modules.home.getVerticalFilter()
+        });
         return true;
     }
     function trackCallDirect() {
@@ -1567,7 +1565,16 @@
                 productBrandCode: product.brandCode
             }
         });
-        meerkat.modules.session.poke();
+        meerkat.modules.partnerTransfer.trackHandoverEvent({
+            product: product,
+            type: type,
+            quoteReferenceNumber: product.leadNo,
+            transactionID: meerkat.modules.transactionId.get(),
+            productID: product.productId,
+            productName: product.headline.name,
+            verticalFilter: meerkat.modules.home.getVerticalFilter(),
+            productBrandCode: product.brandCode
+        }, false, false);
     }
     function trackHandover(product) {
         var transaction_id = meerkat.modules.transactionId.get();
@@ -1581,22 +1588,6 @@
                 verticalFilter: meerkat.modules.home.getVerticalFilter()
             }
         });
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackHandoverType",
-            object: {
-                type: "ONLINE",
-                quoteReferenceNumber: product.leadNo,
-                transactionID: transaction_id,
-                productID: product.productId,
-                productBrandCode: product.brandCode,
-                verticalFilter: meerkat.modules.home.getVerticalFilter(),
-                productName: product.headline.name
-            }
-        });
-        meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
-            touchType: "A"
-        });
-        meerkat.modules.session.poke();
     }
     function trackProductView() {
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
@@ -1653,7 +1644,6 @@
         events: events,
         setSpecialConditionDetail: setSpecialConditionDetail,
         runDisplayMethod: runDisplayMethod,
-        getTransferUrl: getTransferUrl,
         setScrollPosition: setScrollPosition
     });
 })(jQuery);
@@ -1941,11 +1931,10 @@
 })(jQuery);
 
 (function($) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load";
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         RESULTS_ERROR: "RESULTS_ERROR"
     };
-    var supertagResultsEventMode = "Load";
     var $component;
     var previousBreakpoint;
     var best_price_count = 5;
@@ -1984,7 +1973,9 @@
                     availability: {
                         product: "productAvailable"
                     },
-                    productId: "productId"
+                    productId: "productId",
+                    productBrandCode: "brandCode",
+                    productName: "headline.name"
                 },
                 show: {
                     savings: false,
@@ -2115,12 +2106,12 @@
         });
         meerkat.messaging.subscribe(meerkatEvents.homeFilters.CHANGED, function onFilterChange(obj) {
             if (obj && (obj.hasOwnProperty("homeExcess") || obj.hasOwnProperty("contentsExcess"))) {
-                supertagResultsEventMode = "Load";
+                meerkat.modules.resultsTracking.setResultsEventMode("Load");
                 Results.settings.incrementTransactionId = true;
                 get();
                 Results.settings.incrementTransactionId = false;
             } else {
-                supertagResultsEventMode = "Refresh";
+                meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
             }
             meerkat.modules.session.poke();
         });
@@ -2320,37 +2311,21 @@
         }
     }
     function publishExtraSuperTagEvents() {
-        var display;
-        if (meerkat.modules.compare.isCompareOpen() === true) {
-            display = "compare";
-        } else {
-            display = Results.getDisplayMode();
-            if (display.indexOf("f") === 0) {
-                display = display.slice(0, -1);
-            }
-        }
-        var data = {
-            actionStep: "Results",
-            display: display,
-            paymentPlan: $("#navbar-filter .dropdown.filter-frequency span:first-child").text(),
-            preferredExcess: null,
-            homeExcess: null,
-            contentsExcess: null,
-            event: supertagResultsEventMode,
-            verticalFilter: meerkat.modules.home.getVerticalFilter()
-        };
-        var coverType = meerkat.modules.home.getCoverType();
+        var coverType = meerkat.modules.home.getCoverType(), homeExcess = null, contentsExcess = null;
         if (coverType == "H" || coverType == "HC") {
-            data.homeExcess = $("#home_homeExcess").val() || $("#home_baseHomeExcess").val();
+            homeExcess = $("#home_homeExcess").val() || $("#home_baseHomeExcess").val();
         }
         if (coverType == "C" || coverType == "HC") {
-            data.contentsExcess = $("#home_contentsExcess").val() || $("#home_baseContentsExcess").val();
+            contentsExcess = $("#home_contentsExcess").val() || $("#home_baseContentsExcess").val();
         }
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackQuoteList",
-            object: data
+        meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+            additionalData: {
+                paymentPlan: $("#navbar-filter .dropdown.filter-frequency span:first-child").text(),
+                homeExcess: homeExcess,
+                contentsExcess: contentsExcess
+            },
+            onAfterEventMode: "Load"
         });
-        supertagResultsEventMode = "Load";
     }
     function launchOfferTerms(event) {
         meerkat.modules.homeMoreInfo.setScrollPosition();
@@ -2380,7 +2355,7 @@
             $(document.body).addClass("priceMode");
             $(window).scrollTop(0);
             if (doTracking) {
-                supertagResultsEventMode = "Refresh";
+                meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
                 publishExtraSuperTagEvents();
             }
         }
@@ -2407,7 +2382,7 @@
             $(document.body).removeClass("priceMode");
             $(window).scrollTop(0);
             if (doTracking) {
-                supertagResultsEventMode = "Refresh";
+                meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
                 publishExtraSuperTagEvents();
             }
         }

@@ -83,7 +83,6 @@
 			<c:set var="position"><c:out value="${position + 100}" /></c:set>
 		</c:if>
 		<c:if test="${not empty productId and productId != 'undefined'}">
-
 			${go:appendString(sqlBulkInsert, '(')}
 			${go:appendString(sqlBulkInsert, transactionId)}
 			<c:set var="prefix" value=", " />
@@ -111,8 +110,11 @@
 		</c:if>
 
 		</c:if>
+	
 		<c:set var="count" value="${count+1}" />
 	</c:forEach>
+	
+	<!-- Don't need to insert into the ranking_details table if there are no available results -->
 	<c:if test="${not empty sqlBulkInsert}">
 		<sql:update sql="${sqlBulkInsert.toString()}">
 			<c:forEach var="item" items="${insertParams}">
@@ -175,7 +177,7 @@
 				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
 			</c:if>
 
-			<!-- THIS IS ALL DISC STUFF AND WILL NEED REMOVING -->
+			<%-- THIS IS ALL DISC STUFF AND WILL NEED REMOVING --%>
 		<go:setData dataVar="data" xpath="ranking/results" value="*DELETE" />
 
 		<c:set var="TemplateInfo">EX</c:set>

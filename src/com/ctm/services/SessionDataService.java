@@ -95,6 +95,7 @@ public class SessionDataService {
 	 * @return newSession
 	 */
 	public Data addNewTransactionDataToSession(HttpServletRequest request) throws DaoException {
+		Data newSession = null;
 
 		SessionData sessionData = getSessionDataFromSession(request);
 
@@ -102,18 +103,13 @@ public class SessionDataService {
 			setSessionDataToNewSession(request);
 			sessionData = getSessionDataFromSession(request);
 		}
-
+		if(sessionData != null){
 		sessionData.setShouldEndSession(false);
-
 		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
 		String brandCode =  ApplicationService.getBrandCodeFromRequest(request);
 
-		if(sessionData != null){
 			cleanUpSessions(sessionData);
-		}
-
-		Data newSession = sessionData.addTransactionDataInstance();
-
+			newSession = sessionData.addTransactionDataInstance();
 		if (verticalCode == null || verticalCode.isEmpty()) {
 			// this is to assist recovery if session is lost.
 			verticalCode = VerticalType.GENERIC.getCode();
@@ -122,6 +118,7 @@ public class SessionDataService {
 
 		newSession.put("current/verticalCode", verticalCode);
 		newSession.put("current/brandCode", brandCode);
+		}
 
 		return newSession;
 	}

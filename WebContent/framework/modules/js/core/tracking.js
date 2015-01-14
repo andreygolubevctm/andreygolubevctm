@@ -166,54 +166,7 @@
 			recordTouch(eventObject.touchType, eventObject.touchComment, includeFormData, eventObject.callback);
 		});
 
-		meerkat.messaging.subscribe(moduleEvents.EXTERNAL, function(eventObject){
-			if (typeof eventObject === 'undefined') return;
-
-			if(typeof meerkat.site.tracking !== 'object')
-				meerkat.site.tracking = {};
-
-			// Create the value object here, to reduce duplicate code.
-			var values, object = eventObject.object;
-
-			if(meerkat.site.tracking.superTagEnabled === true || meerkat.site.tracking.DTMEnabled === true) {
-
-				if(typeof object ==='function') {
-					values = object();
-					values = updateObjectData(values);
-				} else{
-					values = updateObjectData(object);
-				}
-
-			} else {
-				// just set it to what it originally was.
-				values = updateObjectData(object);
-			}
-
-			// Set a resolved promise to start with.
-			var deferred = $.Deferred().resolve().promise();
-			if(typeof values === 'object') {
-
-				if(values.email !== null && values.email !== '' && values.emailID === null) {
-					// Reset it to the result of the XHR object
-					deferred = getEmailId(values.email, values.marketOptIn, values.okToCall).done(function(result) {
-						if(typeof result.emailId !== 'undefined') {
-							values.emailID = result.emailId;
-							values.email = null;
-						}
-					});
-				}
-			}
-
-			deferred.always(function() {
-			if(meerkat.site.tracking.superTagEnabled === true) {
-					recordSupertag(eventObject.method, values);
-			}
-
-			if(meerkat.site.tracking.DTMEnabled === true) {
-					recordDTM(eventObject.method, values);
-			}
-		});
-		});
+		meerkat.messaging.subscribe(moduleEvents.EXTERNAL, runTrackingCall);
 
 		$(document).ready(function(){
 
@@ -228,11 +181,64 @@
 
 	}
 
+	function runTrackingCall(eventObject, override) {
+
+			// override: is to bypass the eventObject being overwritten by updateObjectData
+			override = override || false;
+
+		if (typeof eventObject === 'undefined') {
+			return;
+		}
+
+		if(typeof meerkat.site.tracking !== 'object') {
+				meerkat.site.tracking = {};
+		}
+
+			// Create the value object here, to reduce duplicate code.
+			var values, object = eventObject.object;
+
+			if(meerkat.site.tracking.superTagEnabled === true || meerkat.site.tracking.DTMEnabled === true) {
+			values = typeof object === 'function' ? object() : object;
+				} else{
+				// just set it to what it originally was.
+				values = object;
+			}
+
+			// Add defaults to values if required
+			values = override === false ? updateObjectData(values) : values;
+
+			// Set a resolved promise to start with.
+			var deferred = $.Deferred().resolve().promise();
+			if(typeof values === 'object') {
+
+				if(values.email !== null && values.email !== '' && values.emailID === null) {
+				// Reset var deferred to the deferred result of the XHR object
+					deferred = getEmailId(values.email, values.marketOptIn, values.okToCall).done(function(result) {
+						if(typeof result.emailId !== 'undefined') {
+							values.emailID = result.emailId;
+							values.email = null;
+						}
+					});
+				}
+			}
+
+		// run when it is either resolved OR rejected (emailID would just be null if failed).
+			deferred.always(function() {
+			if(meerkat.site.tracking.superTagEnabled === true) {
+					recordSupertag(eventObject.method, values);
+			}
+
+			if(meerkat.site.tracking.DTMEnabled === true) {
+					recordDTM(eventObject.method, values);
+			}
+		});
+			}
+
 	function getCurrentJourney() {
 		return meerkat.modules.splitTest.get();
 	}
 
-	function getVertical() {
+	function getTrackingVertical() {
 		// Add any other vertical label overrides here
 		var vertical = meerkat.site.vertical;
 		if(vertical === 'home') {
@@ -264,11 +270,19 @@
 		}
 
 		if (typeof object.vertical === "undefined") {
-			object.vertical = getVertical();
+			object.vertical = getTrackingVertical();
+		}
+
+		if (typeof object.simplesUser === "undefined") {
+			object.simplesUser = meerkat.site.isCallCentreUser;
+		}
+
+		if (typeof object.campaignID === "undefined") {
+			object.campaignID = $('input[name$=tracking_cid]').val() || null;
 		}
 
 		if (typeof object.verticalFilter === "undefined") {
-			object.verticalFilter = null;
+			object.verticalFilter = (typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === 'function' ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null);
 		}
 
 		// Always ensure the tracking key exists
@@ -279,6 +293,9 @@
 		return object;
 	}
 
+	/**
+	 * For sessioncam
+	 */
 	function initUserTracking() {
 
 		if(typeof window.sessionCamRecorder === 'undefined') {
@@ -299,6 +316,7 @@
 				key: "brandCode",
 				value: meerkat.site.tracking.brandCode
 		};
+		window.sessioncamConfiguration.customDataObjects.push(item);
 		item = {
 				key: "vertical",
 				value: meerkat.site.vertical
@@ -323,7 +341,9 @@
 		recordSupertag: recordSupertag,
 		updateLastFieldTouch: updateLastFieldTouch,
 		applyLastFieldTouchListener: applyLastFieldTouchListener,
-		getCurrentJourney: getCurrentJourney
+		getCurrentJourney: getCurrentJourney,
+		updateObjectData: updateObjectData,
+		getTrackingVertical: getTrackingVertical
 	});
 
 })(jQuery);

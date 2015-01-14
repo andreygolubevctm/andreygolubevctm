@@ -252,6 +252,21 @@
         };
         meerkat.modules.contactDetails.configure(contactDetailsFields);
     }
+    function trackHandover() {
+        var product = Results.getSelectedProduct();
+        if (!_.isEmpty(product)) {
+            var transaction_id = meerkat.modules.transactionId.get();
+            meerkat.modules.partnerTransfer.trackHandoverEvent({
+                product: product,
+                type: "ONLINE",
+                quoteReferenceNumber: transaction_id,
+                transactionID: transaction_id,
+                productID: product.productId,
+                productName: product.lenderProductName,
+                productBrandCode: product.brandCode
+            }, false, true);
+        }
+    }
     function initHomeloan() {
         $(document).ready(function() {
             if (meerkat.site.vertical !== "homeloan") return false;
@@ -265,7 +280,8 @@
         events: moduleEvents,
         initProgressBar: initProgressBar,
         getTrackingFieldsObject: getTrackingFieldsObject,
-        getVerticalFilter: getVerticalFilter
+        getVerticalFilter: getVerticalFilter,
+        trackHandover: trackHandover
     });
 })(jQuery);
 
@@ -876,6 +892,7 @@
     }
     function onClickApplyNow() {
         Results.model.setSelectedProduct($(".btn-apply").attr("data-productId"));
+        meerkat.modules.homeloan.trackHandover();
         meerkat.modules.journeyEngine.gotoPath("next");
     }
     function onBeforeShowModal(product) {
@@ -905,7 +922,6 @@
         RESULTS_ERROR: "RESULTS_ERROR",
         RESULTS_REMAINING_PRODUCTS: "HOMELOAN_RESULTS_REMAINING_PRODUCTS"
     };
-    var supertagResultsEventMode = "Load";
     var $component;
     var previousBreakpoint;
     var best_price_count = 5;
@@ -965,7 +981,9 @@
                             monthly: "monthly"
                         }
                     },
-                    productId: "id"
+                    productId: "id",
+                    productBrandCode: "brandCode",
+                    productName: "lenderProductName"
                 },
                 show: {
                     topResult: false,
@@ -1236,27 +1254,12 @@
         });
     }
     function publishExtraSuperTagEvents() {
-        var display;
-        if (meerkat.modules.compare.isCompareOpen() === true) {
-            display = "compare";
-        } else {
-            display = Results.getDisplayMode();
-            if (display.indexOf("f") === 0) {
-                display = display.slice(0, -1);
-            }
-        }
-        var data = {
-            vertical: meerkat.site.vertical,
-            actionStep: meerkat.site.vertical + " results",
-            display: display,
-            event: supertagResultsEventMode,
-            verticalFilter: meerkat.modules.homeloan.getVerticalFilter()
-        };
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackQuoteList",
-            object: data
+        meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+            additionalData: {
+                loadMoreResultsPageNumber: "1"
+            },
+            onAfterEventMode: "Load"
         });
-        supertagResultsEventMode = "Load";
     }
     function launchOfferTerms(event) {
         event.preventDefault();
@@ -1285,7 +1288,7 @@
             $(document.body).addClass("priceMode");
             $(window).scrollTop(0);
             if (doTracking) {
-                supertagResultsEventMode = "Refresh";
+                meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
                 publishExtraSuperTagEvents();
             }
         }
@@ -1322,6 +1325,7 @@
         if ($enquireNow.attr("data-productId")) {
             Results.setSelectedProduct($enquireNow.attr("data-productId"));
         }
+        meerkat.modules.homeloan.trackHandover();
         meerkat.modules.journeyEngine.gotoPath("next", $enquireNow);
     }
     function resultRowClick(event) {
@@ -1419,16 +1423,20 @@
                 Results.model.filteredProducts.push(result);
                 sTagProductList[indexIncrement] = {
                     productID: result.id,
-                    ranking: indexIncrement
+                    ranking: indexIncrement,
+                    productName: result.lenderProductName,
+                    productBrandCode: result.brandCode,
+                    available: "Y"
                 };
                 indexIncrement++;
             });
-            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                method: "trackQuoteProductList",
-                object: {
+            meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+                additionalData: {
                     products: sTagProductList,
-                    vertical: meerkat.site.vertical
-                }
+                    loadMoreResultsPageNumber: $pageNumber.val(),
+                    event: "Refresh"
+                },
+                onAfterEventMode: "Load"
             });
             var $overflow = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.resultsOverflow);
             var overflowPreviousHeight = $overflow.outerHeight(true);

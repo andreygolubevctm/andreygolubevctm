@@ -5,11 +5,11 @@
 		<soap-response>
 				<results>
 					<xsl:for-each select="soap-response/results/price">
+							<xsl:variable name="productId" select="@productId" />
+							<xsl:variable name="service" select="@service" />
+							<xsl:variable name="type" select="@type" />
 							<xsl:choose>
 								<xsl:when test="@type = 'quote'">
-									<xsl:variable name="productId" select="@productId" />
-									<xsl:variable name="service" select="@service" />
-									<xsl:variable name="type" select="@type" />
 									<price service="{$service}" productId="{$productId}">
 										<xsl:apply-templates select="*" />
 										<xsl:for-each select="/soap-response/results/price">
@@ -22,6 +22,11 @@
 												</xsl:when>
 											</xsl:choose>
 										</xsl:for-each>
+									</price>
+								</xsl:when>
+								<xsl:when test="error">
+									<price service="{$service}" productId="{$productId}">
+										<xsl:apply-templates select="*" />
 									</price>
 								</xsl:when>
 							</xsl:choose>

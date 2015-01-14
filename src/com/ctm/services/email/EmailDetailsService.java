@@ -54,7 +54,7 @@ public class EmailDetailsService {
 
 	public EmailMaster handleReadAndWriteEmailDetails(long transactionId, EmailMaster emailDetailsRequest, String operator, String ipAddress)
 			throws EmailDetailsException {
-		EmailMaster emailDetails = emailDetailsRequest.copy();
+		EmailMaster emailDetails = emailDetailsRequest.clone();
 		EmailMaster emailDetailsDB;
 		try {
 			emailDetailsDB = emailMasterDao.getEmailDetails(emailDetailsRequest.getEmailAddress());
@@ -87,7 +87,7 @@ public class EmailDetailsService {
 	private EmailMaster writeNewEmailDetails(
 			long transactionId, EmailMaster emailDetailsRequest) throws EmailDetailsException {
 
-		EmailMaster emailDetails = emailDetailsRequest.copy();
+		EmailMaster emailDetails = emailDetailsRequest.clone();
 		emailDetails.setFirstName(getFirstName(emailDetailsRequest));
 		emailDetails.setLastName(getLastName(emailDetailsRequest));
 

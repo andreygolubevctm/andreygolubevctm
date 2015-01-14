@@ -53,6 +53,32 @@ public class MessageDao {
 		}
 	}
 
+	public Message getMessageByTransactionId(final long transactionId) throws DaoException {
+		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		try {
+			final PreparedStatement stmt = dbSource.getConnection().prepareStatement(
+					"SELECT msg.id FROM aggregator.transaction_header th " +
+					"INNER JOIN simples.message msg ON msg.transactionId = th.rootId " +
+					"WHERE th.transactionId = ? LIMIT 1;"
+			);
+			stmt.setLong(1, transactionId);
+
+			final ResultSet results = stmt.executeQuery();
+			if (results.next()) {
+				return getMessage(results.getInt("id"));
+			}
+			else {
+				return null;
+			}
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+	}
+
 	/**
 	 * Get a message from the message queue. The provided User ID may be used to target specific messages.
 	 *

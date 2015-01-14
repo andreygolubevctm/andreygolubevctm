@@ -2,6 +2,27 @@ package com.ctm.model.health;
 
 public class HealthPricePremium {
 
+	private double annualLhc;
+	private double annualPremium;
+	private double halfYearlyLhc;
+	private double halfYearlyPremium;
+	private double quarterlyLhc;
+	private double quarterlyPremium;
+	private double monthlyLhc;
+	private double monthlyPremium;
+	private double fortnightlyLhc;
+	private double fortnightlyPremium;
+	private double weeklyLhc;
+	private double weeklyPremium;
+
+	// needed for reporting purpose
+	private double grossAnnualPremium;
+	private double grossHalfYearlyPremium;
+	private double grossQuarterlyPremium;
+	private double grossMonthlyPremium;
+	private double grossFortnightlyPremium;
+	private double grossWeeklyPremium;
+
 	public double getAnnualLhc() {
 		return annualLhc;
 	}
@@ -74,17 +95,40 @@ public class HealthPricePremium {
 	public void setWeeklyPremium(double weeklyPremium) {
 		this.weeklyPremium = weeklyPremium;
 	}
-	private double annualLhc;
-	private double annualPremium;
-	private double halfYearlyLhc;
-	private double halfYearlyPremium;
-	private double quarterlyLhc;
-	private double quarterlyPremium;
-	private double monthlyLhc;
-	private double monthlyPremium;
-	private double fortnightlyLhc;
-	private double fortnightlyPremium;
-	private double weeklyLhc;
-	private double weeklyPremium;
-
+	public double getGrossAnnualPremium() {
+		return grossAnnualPremium;
+	}
+	public void setGrossAnnualPremium(double grossAnnualPremium) {
+		this.grossAnnualPremium = grossAnnualPremium;
+	}
+	public double getGrossHalfYearlyPremium() {
+		return grossHalfYearlyPremium;
+	}
+	public void setGrossHalfYearlyPremium(double grossHalfYearlyPremium) {
+		this.grossHalfYearlyPremium = grossHalfYearlyPremium;
+	}
+	public double getGrossQuarterlyPremium() {
+		return grossQuarterlyPremium;
+	}
+	public void setGrossQuarterlyPremium(double grossQuarterlyPremium) {
+		this.grossQuarterlyPremium = grossQuarterlyPremium;
+	}
+	public double getGrossMonthlyPremium() {
+		return grossMonthlyPremium;
+	}
+	public void setGrossMonthlyPremium(double grossMonthlyPremium) {
+		this.grossMonthlyPremium = grossMonthlyPremium;
+	}
+	public double getGrossFortnightlyPremium() {
+		return grossFortnightlyPremium;
+	}
+	public void setGrossFortnightlyPremium(double grossFortnightlyPremium) {
+		this.grossFortnightlyPremium = grossFortnightlyPremium;
+	}
+	public double getGrossWeeklyPremium() {
+		return grossWeeklyPremium;
+	}
+	public void setGrossWeeklyPremium(double grossWeeklyPremium) {
+		this.grossWeeklyPremium = grossWeeklyPremium;
+	}
 }

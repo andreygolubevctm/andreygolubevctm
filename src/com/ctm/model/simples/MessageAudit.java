@@ -2,6 +2,7 @@ package com.ctm.model.simples;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,6 +19,7 @@ public class MessageAudit extends AbstractJsonModel {
 	private int messageId;
 	private int userId;
 	private String operator;
+	@JsonSerialize(using = DisplayDateSerializer.class)
 	private Date created;
 	private int statusId;
 	private String status;

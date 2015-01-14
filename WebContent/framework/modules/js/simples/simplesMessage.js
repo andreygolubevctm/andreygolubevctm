@@ -109,7 +109,7 @@
 	function loadMessage(event) {
 		event.preventDefault();
 
-		if (currentMessage === false || !currentMessage.hasOwnProperty('messageId')) {
+		if (currentMessage === false || !currentMessage.hasOwnProperty('message')) {
 			alert('Message details have not been stored correctly - can not load.');
 			return;
 		}
@@ -125,7 +125,7 @@
 			cache: false,
 			errorLevel: 'silent',
 			data: {
-				messageId: currentMessage.messageId
+				messageId: currentMessage.message.messageId
 			},
 			onSuccess: function onSuccess(json) {
 				if (json.hasOwnProperty('errors') && json.errors.length > 0) {
@@ -136,7 +136,7 @@
 				}
 
 				// Load the quote
-				var url = 'simples/loadQuote.jsp?brandId=' + currentMessage.styleCodeId + '&verticalCode=' + currentMessage.vertical + '&transactionId=' + encodeURI(currentMessage.newestTransactionId) + '&action=amend';
+				var url = 'simples/loadQuote.jsp?brandId=' + currentMessage.transaction.styleCodeId + '&verticalCode=' + currentMessage.transaction.verticalCode + '&transactionId=' + encodeURI(currentMessage.transaction.newestTransactionId) + '&action=amend';
 				log(url);
 				meerkat.modules.simplesLoadsafe.loadsafe(url, true);
 			},
@@ -160,7 +160,7 @@
 			errorLevel: 'silent'
 		})
 		.done(function onSuccess(json) {
-			if (!json.hasOwnProperty('messageId') || json.messageId === 0) {
+			if (!json.hasOwnProperty('message') || !json.message.hasOwnProperty('messageId') || json.message.messageId === 0) {
 				$messageDetailsContainer.html( templateMessageDetail(json) );
 			}
 			else {
@@ -184,18 +184,18 @@
 
 		if (!type) return;
 
-		if (currentMessage === false || !currentMessage.hasOwnProperty('messageId')) {
+		if (currentMessage === false || !currentMessage.hasOwnProperty('message')) {
 			alert('Message details have not been stored correctly - can not load.');
 			return;
 		}
 
-		if (currentMessage.messageId === false || isNaN(currentMessage.messageId)) {
+		if (currentMessage.message.messageId === false || isNaN(currentMessage.message.messageId)) {
 			alert('No Message ID is currently known, so can not set as complete.');
 			return;
 		}
 
 		data = data || {};
-		data.messageId = currentMessage.messageId;
+		data.messageId = currentMessage.message.messageId;
 
 		meerkat.modules.comms.post({
 			url: baseUrl + 'simples/ajax/message_set_' + type + '.jsp',
@@ -250,10 +250,10 @@
 			$('.simples-home-buttons, .simples-notice-board').addClass('hidden');
 
 			// swap numbers if there is only one mobile and this is the 2nd number as we want mobiles displayed first
-			if (isMobile(message.phoneNumber2) && !isMobile(message.phoneNumber1)) {
-				var x = message.phoneNumber1;
-				message.phoneNumber1 = message.phoneNumber2;
-				message.phoneNumber2 = x;
+			if (isMobile(message.message.phoneNumber2) && !isMobile(message.message.phoneNumber1)) {
+				var x = message.message.phoneNumber1;
+				message.message.phoneNumber1 = message.message.phoneNumber2;
+				message.message.phoneNumber2 = x;
 			}
 		}
 

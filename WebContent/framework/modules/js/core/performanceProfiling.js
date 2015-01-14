@@ -52,6 +52,22 @@
 		return USER_AGENT.indexOf('chrome') > -1;
 	}
 
+	function isOpera(){
+		return USER_AGENT.indexOf('opera mini') > -1;
+	}
+
+	function isBlackBerry(){
+		return USER_AGENT.indexOf('blackBerry') > -1;
+	}
+
+	function isWindows(){
+		return USER_AGENT.indexOf('iemobile') > -1;
+	}
+
+	function isMobile() {
+		return isIos() || isAndroid() || isBlackBerry() || isOpera() || isWindows();
+	}
+
 	function isFFAffectedByDropdownMenuBug() {
 		return USER_AGENT.match(/firefox\/(30|31|32|33|34).*/i);
 	}
@@ -124,6 +140,10 @@
 		isIos:isIos,
 		isAndroid:isAndroid,
 		isChrome:isChrome,
+		isBlackBerry:isBlackBerry,
+		isOpera:isOpera,
+		isWindows:isWindows,
+		isMobile:isMobile,
 		isFFAffectedByDropdownMenuBug: isFFAffectedByDropdownMenuBug,
 		isSafariAffectedByColumnCountBug: isSafariAffectedByColumnCountBug,
 		isIE8:isIE8,

@@ -3,7 +3,6 @@
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
-		supertagEventMode = 'Load',
 		$resultsLowNumberMessage;
 
 	var templates =  {
@@ -97,14 +96,17 @@
 						info: "results.info"
 					},
 					brand: "info.Name",
+					productBrandCode: "info.providerName", // for tracking
 					productId: "productId",
 					productTitle: "info.productTitle",
+					productName: "info.productTitle", // for tracking
 					price: { // result object path to the price property
 						annually: "premium.annually.lhcfreevalue",
 						monthly: "premium.monthly.lhcfreevalue",
 						fortnightly: "premium.fortnightly.lhcfreevalue"
 					},
 					availability: { // result object path to the price availability property (see corresponding availability.price)
+						product: "available",
 						price: {
 							annually: "premium.annual.lhcfreevalue",
 							monthly: "premium.monthly.lhcfreevalue",
@@ -304,7 +306,7 @@
 			_.defer(function(){
 			Compare.reset();
 		});
-		})
+		});
 	}
 
 	function compareResults(){
@@ -494,7 +496,7 @@
 
 			var time = meerkat.modules.performanceProfiling.endTest('results');
 
-			var score
+			var score;
 			if(time < 800){
 				score = meerkat.modules.performanceProfiling.PERFORMANCE.HIGH;
 			}else if (time < 8000 && meerkat.modules.performanceProfiling.isIE8() === false){
@@ -555,7 +557,7 @@
 			resetCompare();
 
 			if (obj && obj.hasOwnProperty('filter-frequency-change')) {
-				supertagEventMode = 'Refresh'; // Only for events that dont cause a new TranId
+				meerkat.modules.resultsTracking.setResultsEventMode('Refresh'); // Only for events that dont cause a new TranId
 	}
 		});
 
@@ -947,11 +949,11 @@
 
 
 	function toggleMarketingMessage(show, columns){
+		var $marketingMessage = $(".resultsMarketingMessage");
 		if(show){
-			$(".resultsMarketingMessage").addClass('show');
-			$(".resultsMarketingMessage").attr('data-columns', columns);
+			$marketingMessage.addClass('show').attr('data-columns', columns);
 		}else{
-			$(".resultsMarketingMessage").removeClass('show');
+			$marketingMessage.removeClass('show');
 		}
 	}
 
@@ -1005,15 +1007,26 @@
 		return data;
 		}
 
-	function doCustomExternalTracking() {
+	/**
+	 * This function has been refactored into calling a core resultsTracking module.
+	 * It has remained here so verticals can run their own unique calls.
+	 */
+	function publishExtraSuperTagEvents() {
 
-		var paymentPlan = Results.getFrequency(); // eg monthly.yearly etc...
-		var sortBy = Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price";
+		meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+			additionalData: {
+				preferredExcess: getPreferredExcess(),
+				paymentPlan: Results.getFrequency(),
+				sortBy: (Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price"),
+				simplesUser: meerkat.site.isCallCentreUser
+			},
+			onAfterEventMode: 'Load'
+		});
+	}
 
-		var excess = "ALL";
-		var display = 'price';
-		switch($("#health_excess").val())
-		{
+	function getPreferredExcess() {
+		var excess = null;
+		switch($("#health_excess").val()) {
 			case '1':
 				excess = "0";
 				break;
@@ -1027,28 +1040,15 @@
 				excess = "ALL";
 				break;
 		}
-
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method:'trackQuoteList',
-			object:{
-				preferredExcess: excess,
-				actionStep: meerkat.site.vertical + ' results',
-				paymentPlan: paymentPlan,
-				sortBy: sortBy,
-				event: supertagEventMode,
-				display: display,
-				simplesUser: meerkat.site.isCallCentreUser
+		return excess;
 			}
-		});
-		supertagEventMode = 'Load'; // update for next call.
-	}
 
 	function init(){
 
 		$component = $("#resultsPage");
 
 		meerkat.messaging.subscribe(meerkatEvents.healthBenefits.CHANGED, onBenefitsSelectionChange);
-		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, doCustomExternalTracking);
+		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
 	}
 
 	meerkat.modules.register('healthResults', {
@@ -1071,7 +1071,7 @@
 		onBenefitsSelectionChange:onBenefitsSelectionChange,
 		recordPreviousBreakpoint:recordPreviousBreakpoint,
 		rankingCallback: rankingCallback,
-		doCustomExternalTracking: doCustomExternalTracking
+		publishExtraSuperTagEvents: publishExtraSuperTagEvents
 	});
 
 })(jQuery);

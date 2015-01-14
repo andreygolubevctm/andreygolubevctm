@@ -2,10 +2,8 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info,
-		supertagEventMode = 'Load';
+		log = meerkat.logging.info;
 
-	var supertagResultsEventMode = 'Load';
 
 	var $component; //Stores the jQuery object for the component group
 	var previousBreakpoint;
@@ -48,6 +46,9 @@
 						list: "results.price"
 					},
 					productId: "productId",
+					productName: "name",
+					productBrandCode: "provider",
+					coverLevel: "info.coverLevel",
 					price: {
 						premium: "price"
 					},
@@ -117,7 +118,7 @@
 					triggers : ['RESULTS_DATA_READY'],
 					callback : meerkat.modules.travelResults.rankingCallback,
 					forceIdNumeric : false,
-					filterUnavailableProducts : false
+					filterUnavailableProducts : true
 				}
 			});
 		}
@@ -125,8 +126,69 @@
 			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.travelResults.init(); '+e.message, e);
 		}
 	}
+	/**
+	 * Pre-filter the results object to add another parameter. This will be unnecessary when the field comes back from Java.
+	 */
+	function massageResultsObject(products) {
+
+		if(meerkat.modules.coverLevelTabs.isEnabled() !== true) {
+			return products;
+		}
+
+		var policyType = meerkat.modules.travel.getVerticalFilter();
+		_.each(products, function massageJson(result, index) {
+			if(typeof result.info !== 'object') {
+				return;
+			}
+
+			var obj = result.info;
+			if(policyType == 'Single Trip') {
+
+				/**
+				 * Currently ignore medical if destination country is JUST AU.
+				 */
+				var medical = 5000000,
+				countryList = meerkat.modules.travelCountrySelection.getCountryList();
+				countryList = typeof countryList.toString === 'function' ? countryList.toString() : countryList[0];
+				if(countryList == "pa:au") {
+					medical = 0;
+				}
+
+				if(obj.excess.value <= 250 && obj.medical.value >= medical
+						&& obj.cxdfee.value >= 7500 && obj.luggage.value >= 7500) {
+					obj.coverLevel = 'C';
+					meerkat.modules.coverLevelTabs.incrementCount("C");
+				} else if (obj.excess.value <= 250 && obj.medical.value >= medical
+						&& obj.cxdfee.value >= 2500
+						&& obj.luggage.value >= 2500) {
+					obj.coverLevel = 'M';
+					meerkat.modules.coverLevelTabs.incrementCount("M");
+				} else {
+					obj.coverLevel = 'B';
+					meerkat.modules.coverLevelTabs.incrementCount("B");
+				}
+			} else {
+				if(result.des.indexOf('Australia') == -1) {
+					obj.coverLevel = 'I';
+					meerkat.modules.coverLevelTabs.incrementCount("I");
+				} else {
+					obj.coverLevel = 'D';
+					meerkat.modules.coverLevelTabs.incrementCount("D");
+				}
+			}
+		});
+		return products;
+	}
 
 	function eventSubscriptions() { // might not need all/any
+
+		// Model updated, make changes before rendering
+		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
+			Results.model.returnedProducts = massageResultsObject(Results.model.returnedProducts);
+
+			// Populating sorted products is a trick for HML due to setting sortBy:false
+			Results.model.sortedProducts = Results.model.returnedProducts;
+		});
 
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
@@ -202,14 +264,14 @@
 		data["rank_premium" + position] = product.price;
 		data["rank_productId" + position] = product.productId;
 
-		if( _.isNumber(best_price_count) && position < best_price_count ) {
+		if( _.isNumber(best_price_count) && position < best_price_count) {
 			data["best_price" + position] = 1;
 			data["best_price_providerName" + position] = product.provider;
 			data["best_price_productName" + position] = product.name;
-			data["best_price_excess" + position] = product.info.excess.text;
-			data["best_price_medical" + position] = product.info.medical.text;
-			data["best_price_cxdfee" + position] = product.info.cxdfee.text;
-			data["best_price_luggage" + position] = product.info.luggage.text;
+			data["best_price_excess" + position] = typeof product.info.excess !== 'undefined' ? product.info.excess.text : 0;
+			data["best_price_medical" + position] = typeof product.info.medical !== 'undefined' ? product.info.medical.text : 0;
+			data["best_price_cxdfee" + position] = typeof product.info.cxdfee !== 'undefined' ? product.info.cxdfee.text : 0;
+			data["best_price_luggage" + position] = typeof product.info.luggage !== 'undefined' ? product.info.luggage.text : 0;
 			data["best_price_price" + position] = product.priceText;
 			data["best_price_service" + position] = product.service;
 			data["best_price_url" + position] = product.quoteUrl;
@@ -286,37 +348,37 @@
 		});
 	}
 
-	function publishExtraSuperTagEvents() {
-		var data = {
-				vertical: meerkat.site.vertical,
-				actionStep: meerkat.site.vertical + ' results',
-				event: supertagResultsEventMode,
-				verticalFilter: $("input[name=travel_policyType]:checked").val() == 'S' ? 'Single Trip' : 'Multi Trip',
+	/**
+	 * This function has been refactored into calling a core resultsTracking module.
+	 * It has remained here so verticals can run their own unique calls.
+	 */
+	function publishExtraSuperTagEvents(additionalData) {
+		additionalData = typeof additionalData === 'undefined' ? {} : additionalData;
+		meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+			additionalData: $.extend({
 				sortBy: Results.getSortBy() +'-'+ Results.getSortDir()
-		};
-
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method:	'trackQuoteList',
-			object:	data
+			}, additionalData),
+			onAfterEventMode: 'Refresh'
 		});
-
-		supertagResultsEventMode = 'Refresh'; // update for next call.*/
 	}
 
 	function init(){
-		$component = $("#resultsPage");
-
-		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
+		$(document).ready(function() {
+			$component = $("#resultsPage");
+			var currentJourney = meerkat.modules.tracking.getCurrentJourney();
+			if(currentJourney != 2 && currentJourney != 3 && currentJourney != 4) {
+				meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
+			}
+		});
 	}
 
 	meerkat.modules.register('travelResults', {
 		init: init,
 		initPage: initPage,
-//		onReturnToPage: onReturnToPage,
 		get: get,
-//		stopColumnWidthTracking: stopColumnWidthTracking,
 		showNoResults: showNoResults,
-		rankingCallback: rankingCallback
+		rankingCallback: rankingCallback,
+		publishExtraSuperTagEvents: publishExtraSuperTagEvents
 	});
 
 })(jQuery);

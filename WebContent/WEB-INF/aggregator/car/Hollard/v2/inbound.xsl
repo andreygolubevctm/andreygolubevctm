@@ -83,7 +83,7 @@
 
 							<xsl:when test="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteReturned = 'false'">
 								<xsl:call-template name="error_message">
-									<xsl:with-param name="service">${service}</xsl:with-param>
+									<xsl:with-param name="service"><xsl:value-of select="$service"/></xsl:with-param>
 									<xsl:with-param name="error_type">unknown</xsl:with-param>
 									<xsl:with-param name="message">QuoteReturned=false</xsl:with-param>
 									<xsl:with-param name="code"></xsl:with-param>

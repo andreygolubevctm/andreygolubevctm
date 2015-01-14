@@ -17,6 +17,7 @@ import com.ctm.services.simples.SimplesUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,6 +48,7 @@ import static javax.servlet.http.HttpServletResponse.*;
 })
 public class SimplesRouter extends HttpServlet {
 	private static final long serialVersionUID = 13L;
+	private static Logger logger = Logger.getLogger(SimplesRouter.class.getName());
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final SessionDataService sessionDataService;
 
@@ -96,17 +98,8 @@ public class SimplesRouter extends HttpServlet {
 		}
 
 		else if (uri.endsWith("/simples/messages/next.json")) {
-			int simplesUid = authenticatedData.getSimplesUid();
-			try {
-				SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.SIMPLES.getCode());
-
-				final SimplesMessageService simplesMessageService = new SimplesMessageService();
-				writer.print(simplesMessageService.getNextMessageForUser(request, simplesUid));
+			getNextMessage(writer, request, response, authenticatedData);
 			}
-			catch (DaoException | ConfigSettingException e) {
-				throw new ServletException(e);
-			}
-		}
 
 		else if (uri.endsWith("/simples/messages/get.json")) {
 			getMessage(writer, request, response);
@@ -140,7 +133,7 @@ public class SimplesRouter extends HttpServlet {
 		}
 
 		else if (uri.endsWith("/simples/transactions/details.json")) {
-			writer.print(TransactionService.getMoreDetailsOfTransaction(transactionId).toJson());
+			objectMapper.writeValue(writer, TransactionService.getMoreDetailsOfTransaction(transactionId));
 		}
 
 		else if (uri.endsWith("/simples/users/list_online.json")) {
@@ -193,16 +186,30 @@ public class SimplesRouter extends HttpServlet {
 		try {
 			final int messageId = parseInt(request.getParameter("messageId"));
 			final SimplesMessageService simplesMessageService = new SimplesMessageService();
-			final JSONObject json = simplesMessageService.getMessage(messageId);
-			writer.print(json.toString());
+			objectMapper.writeValue(writer, simplesMessageService.getMessage(messageId));
 		}
-		catch (final DaoException | JSONException e) {
+		catch (final DaoException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			objectMapper.writeValue(writer, errors(e));
 		}
 		catch (final NumberFormatException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			objectMapper.writeValue(writer, errors(new Exception("messageId was not provided or is invalid.")));
+		}
+	}
+
+	private void getNextMessage(final PrintWriter writer, final HttpServletRequest request, final HttpServletResponse response, final AuthenticatedData authenticatedData) throws IOException {
+		int simplesUid = authenticatedData.getSimplesUid();
+		try {
+			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.SIMPLES.getCode());
+
+			final SimplesMessageService simplesMessageService = new SimplesMessageService();
+			objectMapper.writeValue(writer, simplesMessageService.getNextMessageForUser(request, simplesUid));
+		}
+		catch (final DaoException | ConfigSettingException e) {
+			logger.error("Could not get next message for user '"+simplesUid+"'", e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			objectMapper.writeValue(writer, errors(e));
 		}
 	}
 

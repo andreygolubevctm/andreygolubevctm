@@ -2,10 +2,11 @@
 
 	// Add your slide feature here to be hidden by default
 	.slide-feature-back,
+	.coverLevelTabs,
 	.resultsSummaryContainer
 	{
 		.slide-feature-hidden();
-		
+
 		// Necessary to make use of the journeyEngine slide-feature styles that animate max-width.
 		a, .resultsSummaryPlaceholder {
 			white-space: nowrap;
@@ -29,6 +30,7 @@
 	&[data-step="results"] {
 		//put the sorting/filtering bar here to be shown once it exists.
 		.slide-feature-back,
+		.coverLevelTabs,
 		.resultsSummaryContainer {
 			.slide-feature-is-visible();
 		}

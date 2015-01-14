@@ -102,8 +102,10 @@ var Track_Utilities = {
 			}
 
 			try {
-				superT.trackQuoteProductList({products:prodArray});
-				superT.trackQuoteList({event:eventType});
+				superT.trackQuoteResultsList({
+					event:eventType,
+					products:prodArray
+				});
 			} catch(err) {
 				/* IGNORE */
 			}

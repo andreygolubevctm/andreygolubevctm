@@ -214,8 +214,9 @@ deBouncer(jQuery,'smartscroll', 'scroll', 50);
 
 		var property;
 		while (property = properties.shift()) {
-			if($(this).css(property)){
-				return Math.round(parseFloat($(this).css(property)) * 1000);
+			var $el = $(this);
+			if($el.css(property)){
+				return Math.round(parseFloat($el.css(property)) * 1000);
 			}
 		}
 		return 0;

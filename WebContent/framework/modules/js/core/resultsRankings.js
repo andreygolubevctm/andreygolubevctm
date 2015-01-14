@@ -15,53 +15,83 @@
 	},
 	moduleEvents = events;
 
-	var defaultRankingTriggers = ['RESULTS_DATA_READY','RESULTS_SORTED'];
+	var defaultRankingTriggers = ['RESULTS_DATA_READY','RESULTS_SORTED'],
+		trackingProductObject = [];
 
+	/**
+	 * Perform the write rank ajax call
+	 * Publish RESULTS_RANKING_READY
+	 * @param {String} trigger
+	 */
 	function write(trigger) {
 
-		var externalTrackingData = [];
-		var sTagProductList = [];
-
-		function appendTrackingData(id, pos, available) {
-
-			var data = {
-				productID : id,
-				ranking: pos
-			};
-
-			externalTrackingData.push(data);
-
-			if(available === true) {
-				sTagProductList.push(data);
-		}
+		// If we don't have a Results rankings property (see {vertical}Results.js), do nothing.
+		if(!Results.settings.hasOwnProperty('rankings')) {
+			return;
 		}
 
-		if(Results.settings.hasOwnProperty('rankings')) {
+		var config = Results.settings.rankings;
 
-			var config = Results.settings.rankings;
+		// If we do not want to record rankings,
+		// we can set the config to null in verticalResults.js
+		if(!_.isObject(config)) {
+			return;
+		}
 
-			var sorted = Results.getSortedResults();
-			var filtered = Results.getFilteredResults();
-			var vertical = meerkat.site.vertical;
-			var filterUnavailableProducts = Results.settings.rankings.filterUnavailableProducts;
-			var sortedAndFiltered = [];
+		var sortedAndFiltered = fetchProductsToRank(config.filterUnavailableProducts),
+		rankingData = getWriteRankData(config, sortedAndFiltered);
 
+		if(!rankingData) {
+			return;
+		}
 
-			var method = null;
-			var forceNumber = false;
-			if(_.isObject(config) && !_.isEmpty(config)) {
-				if(config.hasOwnProperty('paths') && _.isObject(config.paths)) {
-					method = "paths";
-				} else if(config.hasOwnProperty('callback') && _.isFunction(config.callback)) {
-					method = "callback";
+		buildTrackingDataObject(config, sortedAndFiltered);
+
+		sendQuoteRanking(trigger, rankingData);
+
+		// Publish event for verticalResults.js to perform tracking events
+		meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
+	}
+
+	function sendQuoteRanking(trigger, rankingData) {
+
+		log("[resultsRankings] sendWriteRank", {
+			trigger: trigger,
+			data: rankingData
+		});
+
+		if (Results.getFilteredResults().length) {
+			meerkat.modules.comms.post({
+				url: "ajax/write/quote_ranking.jsp",
+				data: rankingData,
+				cache: false,
+				errorLevel: "silent",
+				onError: function onWriteRankingsError(jqXHR, textStatus, errorThrown, settings, resultData) {
+					meerkat.modules.errorHandling.error({
+						message:		"Failed to write ranking results.",
+						page:			"core:resultsRankings.js:runWriteRank()",
+						errorLevel:		"silent",
+						description:	"Failed to write ranking results: " + errorThrown,
+						data: {settings:settings, resultsData:resultData}
+					});
 				}
-
-				if(config.hasOwnProperty('forceIdNumeric') && _.isBoolean(config.forceIdNumeric)) {
-					forceNumber = config.forceIdNumeric;
-				}
+			});
 			}
-			if(!_.isNull(method)) {
-				if (filterUnavailableProducts === true) {
+	}
+
+	/**
+	 * Return an array of products from the ResultsModel.
+	 * If you want to only rank visible products, set includeOnlyFilteredResults to true.
+	 * If you want to rank all products, including ones filtered OUT (e.g. unavailable products, cover level tabs),
+	 * then set includeOnlyFilteredResults to false.
+	 * @param {Bool} includeOnlyFilteredResults
+	 */
+	function fetchProductsToRank(includeOnlyFilteredResults) {
+		var sortedAndFiltered = [],
+		sorted = Results.getSortedResults(),
+		filtered = Results.getFilteredResults();
+
+		if (includeOnlyFilteredResults === true) {
 				for(var i=0; i < sorted.length; i++){
 					for(var j=0; j < filtered.length; j++){
 						if(sorted[i] == filtered[j]){
@@ -73,94 +103,122 @@
 				else {
 					sortedAndFiltered = sorted;
 				}
+		return sortedAndFiltered;
+	}
 
-				var data = {
-						rootPath:		vertical,
+	/**
+	 * Separated logic for building the data for write rank and the data for tracking purposes.
+	 * @param {POJO} config The Results.settings.rankings object
+	 * @param {POJO} sortedAndFiltered sorted and filtered (unavailable, cover level tabs etc) results.
+	 * @return {POJO|null} null to stop the call if no method is specified (i.e. "turns off ranking")
+	 * or object of data to send in rank call.
+	 */
+	function getWriteRankData(config, sortedAndFiltered) {
+
+		var rankingData = {
+				rootPath:		meerkat.site.vertical,
 						rankBy:			Results.getSortBy() + "-" + Results.getSortDir(),
 						rank_count:		sortedAndFiltered.length,
 						transactionId:	meerkat.modules.transactionId.get()
 				};
 
-				for (var k = 0; k < sortedAndFiltered.length; k++) {
-
-					var rank = k+1;
-					var price = sortedAndFiltered[k];
-					var productId = price.productId;
-					var available = false;
-					if(typeof price.available !== 'undefined') {
-						available = price.available === "Y";
-					} else if(typeof price.productAvailable !== 'undefined') { // HNC
-						available = price.productAvailable === "Y";
+		var method = null;
+		if(config.hasOwnProperty('paths') && _.isObject(config.paths)) {
+			method = "paths";
+		} else if(config.hasOwnProperty('callback') && _.isFunction(config.callback)) {
+			method = "callback";
 					}
 
-					if(forceNumber) {
-						productId = String(productId).replace(/\D/g,'');
+		if(method === null) {
+			return null;
 					}
 
-					if(method === "paths") {
+		for (var i = 0; i < sortedAndFiltered.length; i++) {
 
+			var productObj = sortedAndFiltered[i];
+
+			switch(method) {
+				case 'paths':
 						for(var p in config.paths) {
-
 							if(config.paths.hasOwnProperty(p)) {
-
-								var item = Object.byString( price, config.paths[p] );
-
-								data[p + k] = item;
-							}
-						}
-
-					} else if(method === "callback") {
-
-						var response = config.callback(price, k);
-						if(_.isObject(response) && !_.isEmpty(response)) {
-							_.extend(data, response);
+							var item = Object.byString( productObj, config.paths[p] );
+							rankingData[p + i] = item;
 						}
 					}
+					break;
+				case 'callback':
+					var response = config.callback(productObj, i);
+					if(_.isObject(response) && !_.isEmpty(response)) {
+						_.extend(rankingData, response);
+					}
+					break;
+			}
 
-					appendTrackingData(productId, rank, available);
+		}
+
+		return rankingData;
+							}
+
+	/**
+	 * Build the product list required for the "products" param in
+	 * trackQuoteResultsList tracking calls. This can be called by write(), but
+	 * also externally by other modules such as cover level tabs.
+	 * @param {POJO} config Results.settings.rankings
+	 * @param {POJO} sortedAndFiltered sorted and filtered (unavailable, cover level tabs etc) results.
+	 */
+	function buildTrackingDataObject(config, sortedAndFiltered) {
+
+		trackingProductObject = [];
+		var forceNumber = false;
+		if(config.hasOwnProperty('forceIdNumeric') && _.isBoolean(config.forceIdNumeric)) {
+			forceNumber = config.forceIdNumeric;
+						}
+
+		for (var rank = 0,
+				i = 0; i < sortedAndFiltered.length; i++) {
+
+			rank++;
+			var productObj = sortedAndFiltered[i];
+			if(typeof productObj !== 'object') {
+				continue;
+						}
+
+			var productId = productObj.productId;
+			if(forceNumber) {
+				productId = String(productId).replace(/\D/g,'');
 				}
 
-				meerkat.logging.info("writing ranking data", {
-					trigger: trigger,
-					method: method,
-					data: data
-				});
-
-				meerkat.modules.comms.post({
-					url: "ajax/write/quote_ranking.jsp",
-					data: data,
-					cache: false,
-					errorLevel: "silent",
-					onError: function onWriteRankingsError(jqXHR, textStatus, errorThrown, settings, resultData) {
-						meerkat.modules.errorHandling.error({
-							message:		"Failed to write ranking results.",
-							page:			"core:resultsRankings.js:write()",
-							errorLevel:		"silent",
-							description:	"Failed to write ranking results: " + errorThrown,
-							data: {settings:settings, resultsData:resultData}
-						});
+			data = {
+				productID : productId,
+				productName: Object.byString(productObj, Results.settings.paths.productName) || null,
+				productBrandCode: Object.byString(productObj, Results.settings.paths.productBrandCode) || null,
+				ranking: rank,
+				available: Object.byString(productObj, Results.settings.paths.availability.product) || "N"
+			};
+			trackingProductObject.push(data);
 					}
-				});
+				}
 
-				// Publish common external tracking
-				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-					method:'trackQuoteProductList',
-					object:{
-						products: sTagProductList,
-						verticalFilter: (typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === 'function' ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null),
-						simplesUser: meerkat.site.isCallCentreUser
+	/**
+	 * Getter for trackingProductObject array.
+	 */
+	function getTrackingProductObject() {
+		return trackingProductObject;
 					}
-				});
 
-				/* Due to disparity between object properties for each vertical it is up to the vertical
-				 * to make additional SuperTag calls to: trackQuoteList and/or trackQuoteForms
+	/**
+	 * The object sent to external tracking.
+	 * It may need to be reset if you are filtering without going back to the server
+	 * or using cover level tabs.
 				 */
-
-				// Publish event for vertical results JS to perform next tracking event
-				meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
+	function resetTrackingProductObject() {
+		var config = Results.settings.rankings;
+		if(!_.isObject(config)) {
+			return;
 			}
+		var sortedAndFiltered = fetchProductsToRank(true);
+		buildTrackingDataObject(config, sortedAndFiltered);
 		}
-	}
 
 	function registerSubscriptions() {
 
@@ -198,7 +256,12 @@
 	meerkat.modules.register("resultsRankings", {
 		init : initResultsRankings,
 		events : moduleEvents,
-		write : write
+		write: write,
+		getTrackingProductObject: getTrackingProductObject,
+		resetTrackingProductObject: resetTrackingProductObject,
+		sendQuoteRanking: sendQuoteRanking,
+		fetchProductsToRank: fetchProductsToRank,
+		getWriteRankData: getWriteRankData
 	});
 
 })(jQuery);

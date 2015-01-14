@@ -53,8 +53,8 @@
                 });
                 meerkat.messaging.subscribe(meerkat.modules.events.simplesMessage.MESSAGE_CHANGE, function messageChange(obj) {
                     currentMessage = obj || false;
-                    if (currentMessage.hasOwnProperty("transactionId")) {
-                        currentTransactionId = currentMessage.transactionId;
+                    if (currentMessage.hasOwnProperty("transaction")) {
+                        currentTransactionId = currentMessage.transaction.transactionId;
                     }
                     updateMenu();
                 });
@@ -86,7 +86,7 @@
             $tranId.text("None");
             $actionCommentParent.addClass("disabled");
         }
-        if (currentMessage === false || isNaN(currentMessage.messageId)) {
+        if (currentMessage === false || isNaN(currentMessage.message.messageId)) {
             if (showMenu === false) showMenu = false;
             $msgId.text("None");
             $actionCompleteParent.addClass("disabled");
@@ -94,10 +94,10 @@
             $actionPostponeParent.addClass("disabled");
         } else {
             showMenu = true;
-            $msgId.text(currentMessage.messageId);
+            $msgId.text(currentMessage.message.messageId);
             $actionCompleteParent.removeClass("disabled");
             $actionUnsuccessfulParent.removeClass("disabled");
-            if (currentMessage.hasOwnProperty("canPostpone") && currentMessage.canPostpone === true) {
+            if (currentMessage.message.hasOwnProperty("canPostpone") && currentMessage.message.canPostpone === true) {
                 $actionPostponeParent.removeClass("disabled");
             } else {
                 $actionPostponeParent.addClass("disabled");
@@ -525,7 +525,7 @@
     }
     function loadMessage(event) {
         event.preventDefault();
-        if (currentMessage === false || !currentMessage.hasOwnProperty("messageId")) {
+        if (currentMessage === false || !currentMessage.hasOwnProperty("message")) {
             alert("Message details have not been stored correctly - can not load.");
             return;
         }
@@ -538,7 +538,7 @@
             cache: false,
             errorLevel: "silent",
             data: {
-                messageId: currentMessage.messageId
+                messageId: currentMessage.message.messageId
             },
             onSuccess: function onSuccess(json) {
                 if (json.hasOwnProperty("errors") && json.errors.length > 0) {
@@ -547,7 +547,7 @@
                     meerkat.modules.loadingAnimation.hide($button);
                     return;
                 }
-                var url = "simples/loadQuote.jsp?brandId=" + currentMessage.styleCodeId + "&verticalCode=" + currentMessage.vertical + "&transactionId=" + encodeURI(currentMessage.newestTransactionId) + "&action=amend";
+                var url = "simples/loadQuote.jsp?brandId=" + currentMessage.transaction.styleCodeId + "&verticalCode=" + currentMessage.transaction.verticalCode + "&transactionId=" + encodeURI(currentMessage.transaction.newestTransactionId) + "&action=amend";
                 log(url);
                 meerkat.modules.simplesLoadsafe.loadsafe(url, true);
             },
@@ -568,7 +568,7 @@
             cache: false,
             errorLevel: "silent"
         }).done(function onSuccess(json) {
-            if (!json.hasOwnProperty("messageId") || json.messageId === 0) {
+            if (!json.hasOwnProperty("message") || !json.message.hasOwnProperty("messageId") || json.message.messageId === 0) {
                 $messageDetailsContainer.html(templateMessageDetail(json));
             } else {
                 setCurrentMessage(json);
@@ -588,16 +588,16 @@
     }
     function performFinish(type, data, callbackSuccess, callbackError) {
         if (!type) return;
-        if (currentMessage === false || !currentMessage.hasOwnProperty("messageId")) {
+        if (currentMessage === false || !currentMessage.hasOwnProperty("message")) {
             alert("Message details have not been stored correctly - can not load.");
             return;
         }
-        if (currentMessage.messageId === false || isNaN(currentMessage.messageId)) {
+        if (currentMessage.message.messageId === false || isNaN(currentMessage.message.messageId)) {
             alert("No Message ID is currently known, so can not set as complete.");
             return;
         }
         data = data || {};
-        data.messageId = currentMessage.messageId;
+        data.messageId = currentMessage.message.messageId;
         meerkat.modules.comms.post({
             url: baseUrl + "simples/ajax/message_set_" + type + ".jsp",
             dataType: "json",
@@ -636,10 +636,10 @@
             $(".simples-home-buttons, .simples-notice-board").removeClass("hidden");
         } else {
             $(".simples-home-buttons, .simples-notice-board").addClass("hidden");
-            if (isMobile(message.phoneNumber2) && !isMobile(message.phoneNumber1)) {
-                var x = message.phoneNumber1;
-                message.phoneNumber1 = message.phoneNumber2;
-                message.phoneNumber2 = x;
+            if (isMobile(message.message.phoneNumber2) && !isMobile(message.message.phoneNumber1)) {
+                var x = message.message.phoneNumber1;
+                message.message.phoneNumber1 = message.message.phoneNumber2;
+                message.message.phoneNumber2 = x;
             }
         }
         $destination.html(templateMessageDetail(message));
@@ -673,7 +673,7 @@
                 var $messages = $container.find(".simples-postponed-message");
                 $messages.removeClass("active");
                 if (obj !== false) {
-                    $messages.filter('[data-messageId="' + obj.messageId + '"]').addClass("active");
+                    $messages.filter('[data-messageId="' + obj.message.messageId + '"]').addClass("active");
                 }
             });
             refresh();
@@ -734,7 +734,7 @@
             errorLevel: "silent",
             useDefaultErrorHandling: false
         }).done(function onSuccess(json) {
-            if (!json.hasOwnProperty("transactionId")) {
+            if (!json.hasOwnProperty("message") || !json.message.hasOwnProperty("messageId")) {
                 alert("Failed to load message: invalid response");
             } else {
                 meerkat.modules.simplesMessage.setCurrentMessage(json);

@@ -257,6 +257,13 @@
 
 			$(document).pngFix();
 
+			$(window).load(function() {
+				$("[data-src]").each(function allDelayedSrcLoadLoop(){
+					$this = $(this);
+					$this.attr('src', $this.attr('data-src')).removeAttr('data-src');
+				})
+			});
+
 			$('.anyPhoneType' ).each( function() {
 				setPhoneMask($(this));
 				$(this).keyup(function(event) {

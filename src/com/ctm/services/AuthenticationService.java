@@ -23,6 +23,8 @@ import com.disc_au.web.LDAPDetails;
 public class AuthenticationService {
 
 	private static Logger logger = Logger.getLogger(AuthenticationService.class.getName());
+	
+	static AuthenticationService authenticationService = new AuthenticationService();
 
 	/**
 	 * Generate a token for a simples users. This is using their LDAP user id.
@@ -49,7 +51,7 @@ public class AuthenticationService {
 	 * @throws Exception
 	 */
 	public static boolean authenticateWithTokenForSimplesUser(HttpServletRequest request, String token) throws DaoException {
-		String uid = AuthenticationService.consumeLastTouchToken(SessionToken.IdentityType.LDAP, token);
+		String uid = authenticationService.consumeLastTouchToken(SessionToken.IdentityType.LDAP, token);
 		HttpSession session = request.getSession();
 
 		if (uid != null) {
@@ -83,12 +85,11 @@ public class AuthenticationService {
 	 * @param token
 	 * @return
 	 */
-	public static String verifyTokenForEmail(String token){
-
+	public int verifyTokenForEmail(String token){
 		try {
-			return AuthenticationService.consumeLastTouchToken(SessionToken.IdentityType.EMAIL_MASTER, token);
+			return Integer.parseInt(consumeLastTouchToken(SessionToken.IdentityType.EMAIL_MASTER, token));
 		} catch (Exception e) {
-			return null;
+			return -1;
 		}
 
 	}
@@ -153,16 +154,18 @@ public class AuthenticationService {
 	 * @throws DaoException
 	 * @throws Exception
 	 */
-	private static String consumeLastTouchToken(SessionToken.IdentityType identityType, String token) throws DaoException {
-
+	private String consumeLastTouchToken(SessionToken.IdentityType identityType, String token) throws TokenSecurityException {
 		SessionTokenDao sessionTokenDao = new SessionTokenDao();
-		SessionToken sessionToken = sessionTokenDao.getToken(token, identityType);
-
-		if(sessionToken != null){
-			sessionTokenDao.consumeToken(sessionToken);
-			return sessionToken.getIdentity();
-		}else{
-			throw new TokenSecurityException("Unable to consume token.");
+		try {
+			SessionToken sessionToken = sessionTokenDao.getToken(token, identityType);
+			if(sessionToken != null){
+				sessionTokenDao.consumeToken(sessionToken);
+				return sessionToken.getIdentity();
+			} else{
+				throw new TokenSecurityException("Unable to consume token.");
+			}
+		} catch (DaoException e) {
+			throw new TokenSecurityException("Unable to consume token." , e);
 		}
 
 	}

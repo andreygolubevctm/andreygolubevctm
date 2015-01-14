@@ -1,9 +1,14 @@
 package com.ctm.services;
 
+import com.ctm.dao.simples.MessageAuditDao;
+import com.ctm.dao.simples.MessageDao;
+import com.ctm.model.simples.ConfirmationOperator;
+import com.ctm.model.simples.Message;
 import org.apache.log4j.Logger;
 
 import com.ctm.dao.CommentDao;
 import com.ctm.dao.TouchDao;
+import com.ctm.dao.TransactionDao;
 import com.ctm.dao.health.HealthTransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
@@ -13,7 +18,7 @@ import com.ctm.model.health.HealthTransaction;
 public class TransactionService {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(TransactionService.class.getName());
+	private static final Logger logger = Logger.getLogger(TransactionService.class.getName());
 
 	/**
 	 * Get all comments for a transaction ID and related (based on root ID).
@@ -41,7 +46,7 @@ public class TransactionService {
 	/**
 	 *
 	 */
-	public static HealthTransaction getMoreDetailsOfTransaction(long transactionId) {
+	public static HealthTransaction getMoreDetailsOfTransaction(final long transactionId) {
 
 		// TODO: This would be extended to support other verticals, to collect vertical-specific details
 		// Would have to retrieve the vertical of the transaction first probably.
@@ -50,26 +55,39 @@ public class TransactionService {
 		details.setTransactionId(transactionId);
 
 		try {
-			//TransactionDao transactionDao = new TransactionDao();
-			//transactionDao.getCoreInformation(details);
-
-			HealthTransactionDao transactionHealthDao = new HealthTransactionDao();
+			final HealthTransactionDao transactionHealthDao = new HealthTransactionDao();
 			transactionHealthDao.getHealthDetails(details);
 
-			CommentDao commentDao = new CommentDao();
+			final CommentDao commentDao = new CommentDao();
 			details.setComments( commentDao.getCommentsForTransactionId(transactionId) );
 
-			TouchDao touchDao = new TouchDao();
+			final TouchDao touchDao = new TouchDao();
 			details.setTouches( touchDao.getTouchesForTransactionId(transactionId) );
+
+			final MessageDao messageDao = new MessageDao();
+			final Message message = messageDao.getMessageByTransactionId(transactionId);
+			if (message != null) {
+				final MessageAuditDao messageAuditDao = new MessageAuditDao();
+				details.setAudits(messageAuditDao.getMessageAudits(message.getMessageId()));
+			}
 		}
 		catch (DaoException e) {
-			Error error = new Error();
-			error.setMessage(e.getMessage());
+			Error error = new Error(e.getMessage());
 			details.addError(error);
 		}
 
 		return details;
 	}
 
+
+	/**
+	 * Find if any transaction chained from the provided Root ID is confirmed (sold).
+	 * @param rootId
+	 * @return Not null if confirmed
+	 */
+	public ConfirmationOperator findConfirmationByRootId(long rootId) throws DaoException {
+		TransactionDao transactionDao = new TransactionDao();
+		return transactionDao.getConfirmationFromTransactionChain(rootId);
+	}
 
 }

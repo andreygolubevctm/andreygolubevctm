@@ -93,8 +93,6 @@
 			var="quoteResultXml"
 			debugVar="debugXml" />
 
-			<go:log>Does this banana foam face: ${xmlData}</go:log>
-
 		<go:soapAggregator
 			config = ""
 		 	configDbKey="carQuoteService_hollard_content"

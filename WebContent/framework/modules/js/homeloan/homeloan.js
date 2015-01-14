@@ -342,6 +342,22 @@
 		meerkat.modules.contactDetails.configure(contactDetailsFields);
 	}
 
+	function trackHandover() {
+		var product = Results.getSelectedProduct();
+		if(!_.isEmpty(product)) {
+			var transaction_id = meerkat.modules.transactionId.get();
+			meerkat.modules.partnerTransfer.trackHandoverEvent({
+				product:				product,
+				type:					'ONLINE',
+				quoteReferenceNumber:	transaction_id,
+				transactionID:			transaction_id,
+				productID:				product.productId,
+				productName:			product.lenderProductName,
+				productBrandCode:		product.brandCode
+			}, false, true);
+		}
+	}
+
 
 	function initHomeloan() {
 
@@ -362,7 +378,8 @@
 		events: moduleEvents,
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
-		getVerticalFilter: getVerticalFilter
+		getVerticalFilter: getVerticalFilter,
+		trackHandover: trackHandover
 	});
 
 })(jQuery);

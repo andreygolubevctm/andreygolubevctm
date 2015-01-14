@@ -11,13 +11,30 @@
 		$worldwide,
 		$adults,
 		$children,
-		$policytype;
+		$policytype,
+		$summaryHeader;
 
 	function updateSummaryText() {
 		// let it fire in all modes if in the event xs is displayed but a different orientation displays something greater
 
 		// Build the summary text based on the entered information.
-		var txt= '<span>'+(meerkat.modules.deviceMediaState.get() !== 'sm' ? 'Your quote' : 'Quote') + '</span> is based on: <span class="highlight">';
+		var txt= '<span class="highlight">';
+
+		var amtTxt = '';
+		if ($policytype.val() == 'A')
+		{
+			amtTxt = '<span class="highlight">Annual Multi Trip (AMT)</span> ';
+		}
+
+		if(meerkat.modules.deviceMediaState.get() !== 'sm') 
+		{
+			
+			txt += 'Your '+amtTxt+'quote';
+		} else {
+			txt += amtTxt+($policytype.val() == 'A' ? ' quote' : 'Quote');
+		}  
+
+		txt += '</span> is based on: <span class="highlight">';
 
 		var adults = $adults.val(),
 		children = $children.val(),
@@ -35,7 +52,9 @@
 		// if this is a single trip 
 		if ($("input[name=travel_policyType]:checked").val() == 'S')
 		{
-			txt +='</span> <span class="optional">travelling</span> to <span class="highlight">';
+			// in case a user did an AMT quote and now wants a single trip quote
+			$summaryHeader.html('Your quote is based on');
+			txt +='</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
 				
 			// destinations
 			if ($worldwide.is(':checked')){
@@ -56,9 +75,11 @@
 			var DAY=1000*60*60*24,
 				days=1+Math.ceil((date2.getTime()-date1.getTime())/(DAY));
 
-			txt += "</span> for <span class='highlight'>"+days+" days";
+			txt += "</span> for <span class='highlight'>"+days+" days</span>";
 		} else {
-			txt+="</span> travelling <span class='highlight'>multiple times in one year";
+			$summaryHeader.html('Your Annual Multi Trip (AMT)quote is based on');
+			var blockClass = children > 1 ? 'sm-md-block' : 'sm-block';
+			txt+="</span> travelling <span class='highlight "+blockClass+"'>multiple times in one year";
 		}
 
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
@@ -72,6 +93,7 @@
 		$adults = $('#travel_adults'),
 		$children = $('#travel_children'),
 		$policytype = $('#travel_policyType');
+		$summaryHeader = $('.resultsSummaryContainer h5');
 
 		applyEventListeners();
 	}

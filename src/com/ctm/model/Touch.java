@@ -1,32 +1,37 @@
 package com.ctm.model;
 
-import java.util.Date;
-
+import com.ctm.model.simples.DisplayDateSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
 
 public class Touch extends AbstractJsonModel {
 	public static final String JSON_COLLECTION_NAME = "touches";
 
 	private int id;
 	private String transactionId;
+	@JsonSerialize(using = DisplayDateSerializer.class)
 	private Date datetime;
 	private String operator;
 	private TouchType type;
 
-	public static String ONLINE_USER = "ONLINE";
+	public static final String ONLINE_USER = "ONLINE";
 
+	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	public static enum TouchType {
 		NEW ("New quote" , "N"),
 		UNLOCKED ("Unlocked", "X"),
 		SUBMITTED ("Submit", "P"),
-		PRICE_PRESENTATION("Price presentation" , "R"),
-		APPLY("Apply" ,"A"),
-		FAIL("Join failed" , "F"),
-		SOLD("Policy sold" , "C"),
-		LOAD("Load quote" , "L"),
-		SAVE("Saved quote" , "S"),
-		CALL_FEED("Call Feed" , "CF"); // Added to a call feed list.
+		PRICE_PRESENTATION ("Price presentation" , "R"),
+		APPLY ("Apply" ,"A"),
+		FAIL ("Join failed" , "F"),
+		SOLD ("Policy sold" , "C"),
+		LOAD ("Load quote" , "L"),
+		SAVE ("Saved quote" , "S"),
+		CALL_FEED ("Call Feed" , "CF"); // Added to a call feed list.
 
 		private final String description, code;
 

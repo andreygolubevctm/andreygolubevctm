@@ -14,7 +14,7 @@ public class PremiumCalculatorTest {
 	@Test
 	public void shouldSetupPriceMinium() throws SQLException, ParseException, DaoException {
 		PremiumCalculator premiumCalculator = new PremiumCalculator();
-		premiumCalculator.setRebateCalc(0.2);
+		premiumCalculator.setRebate(0.2);
 		double calculatedPremium = premiumCalculator.getPremiumWithoutRebate(80);
 		assertEquals("wrong price minimum", 100.00, calculatedPremium, 1);
 	}
@@ -22,7 +22,7 @@ public class PremiumCalculatorTest {
 	@Test
 	public void shouldGetPremiumWithRebate() throws SQLException, ParseException, DaoException {
 		PremiumCalculator premiumCalculator = new PremiumCalculator();
-		premiumCalculator.setRebateCalc(0.2);
+		premiumCalculator.setRebate(0.2);
 		premiumCalculator.setBasePremium(100.00);
 		double calculatedPremium = premiumCalculator.getLHCFreeValueDecimal().doubleValue();
 		assertEquals("wrong price with rebate", 80.00, calculatedPremium, 1);

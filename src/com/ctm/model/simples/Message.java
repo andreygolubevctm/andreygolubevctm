@@ -36,9 +36,10 @@ public class Message extends AbstractJsonModel {
 		this.messageId = messageId;
 	}
 
-	public long getTransactionId() {
-		return transactionId;
-	}
+	/**
+	 * For a Message, transaction ID is the root ID.
+	 */
+	public long getTransactionId() { return transactionId; }
 	public void setTransactionId(long transactionId) {
 		this.transactionId = transactionId;
 	}

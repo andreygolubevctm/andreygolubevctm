@@ -42,6 +42,14 @@
 
 			<layout:slide_content>
 
+				<%-- Commencement date --%>
+				<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+				<c:if test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">
+					<form_new:fieldset legend="Your preferred date to start the insurance">
+						<home_new:commencementDate xpath="${xpath}/startDate" />
+					</form_new:fieldset>
+				</c:if>
+
 				<home_new:contact_details xpath="${xpath}/policyHolder" />
 
 			</layout:slide_content>

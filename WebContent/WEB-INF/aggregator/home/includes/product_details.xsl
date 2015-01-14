@@ -300,7 +300,7 @@
 						Save 20% on Smart Home Insurance when you buy online.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						Save 20% on Smart Home Insurance when you buy online.
+						Save 20% on Smart Contents Insurance when you buy online.
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
 						Save 35% on combined Smart Home &amp; Contents Insurance when you buy online.

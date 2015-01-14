@@ -4,7 +4,7 @@
 		meerkatEvents = meerkat.modules.events;
 
 	function initReloadQuote() {
-				
+
 	}
 
 	function loadQuote() {
@@ -19,9 +19,10 @@
 			cache: false,
 			useDefaultErrorHandling: false,
 			errorLevel: "fatal",
-			timeout: 30000, 
+			timeout: 30000,
 			onError: onSubmitToLoadQuoteError,
 			onSuccess: function onSubmitSuccess(resultData) {
+				meerkat.modules.leavePageWarning.disable();
 				window.location = resultData.result.destUrl + '&ts=' + Number(new Date());
 			}
 		});
@@ -29,7 +30,6 @@
 
 	function onSubmitToLoadQuoteError(jqXHR, textStatus, errorThrown, settings, resultData) {
 		stateSubmitInProgress = false;
-		meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'loadQuote'});
 		meerkat.modules.errorHandling.error({
 			message:		"An error occurred when attempting to retrieve your quotes",
 			page:			"travelReloadQuote.js:loadQuote()",
@@ -37,6 +37,7 @@
 			description:	"Ajax request to remote_load_quote.jsp failed to return a valid response: " + errorThrown,
 			data: resultData
 		});
+		meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK, { source: 'loadQuote'});
 	}
 
 	function getURLVars(sSearch) {

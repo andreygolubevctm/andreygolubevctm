@@ -7,11 +7,8 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="health" />
 
-<%-- Adjust the base rebate using multiplier - this is to ensure the rebate applicable to the
-					commencement date is sent to the provider --%>
-<health:changeover_rebates effective_date="${data.health.payment.details.start}" />
 <jsp:useBean id="healthApplicationService" class="com.ctm.services.health.HealthApplicationService" scope="page" />
-${healthApplicationService.calculatePremiums(data, rebate_multiplier_current)}
+${healthApplicationService.calculatePremiums(data)}
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
@@ -152,8 +149,6 @@ ${healthApplicationService.calculatePremiums(data, rebate_multiplier_current)}
 		</sql:transaction>
 
 		<go:log level="INFO" source="health_application_jsp" >transactionId : ${tranId} , Fund=${fund}</go:log>
-				
-				<go:setData dataVar="data" xpath="health/rebate" value="${data.health.rebate * rebate_multiplier_current}" />
 				
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />

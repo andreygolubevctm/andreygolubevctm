@@ -119,6 +119,18 @@ AGE ADJUSTMENT - if rebate not 0 (Take the OLDEST person and use their age)
 
 <%--
 *************
+GOV Rebate Factor - Calculate new rebate based on rebate multiplier variables
+-------------
+--%>
+
+<%-- Include this tag to add required rebate multiplier variables to the request --%>
+<health:changeover_rebates />
+
+<c:set var="rebateChangeover" value="${rebate * rebate_multiplier_future}" />
+<c:set var="rebate" value="${rebate * rebate_multiplier_current}" />
+
+<%--
+*************
 LOADING (LHC) - Calculate Loading LHC adjustment (Average individual results for 2 Adults)
 -------------
 --%>
@@ -248,6 +260,7 @@ RESPONSE
 --------
 <go:log  level="TRACE">
 	rebate = ${rebate}
+	rebateChangeover = ${rebateChangeover}
 	cover = ${cover}
 	income = ${income}
 	primaryAge = ${primaryAge}
@@ -271,7 +284,7 @@ RESPONSE
 	</c:when>
 		<%-- retrieve loading and rebate --%>
 	<c:otherwise>
-		<c:set var="response">{ "status":"ok", "rebate":"${rebate}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
+		<c:set var="response">{ "status":"ok", "rebate":"${rebate}", "rebateChangeover":"${rebateChangeover}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
 	</c:otherwise>
 </c:choose>
 

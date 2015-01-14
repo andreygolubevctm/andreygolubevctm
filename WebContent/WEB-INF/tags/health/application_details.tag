@@ -72,8 +72,6 @@
 		<field:hidden xpath="${xpath}/productId" className="health_application_details_productId" />
 		<field:hidden xpath="${xpath}/productName" className="health_application_details_productNumber" />
 		<field:hidden xpath="${xpath}/productTitle" className="health_application_details_productTitle" />
-		<field:hidden xpath="${xpath}/paymentFreq" className="health_application_details_paymentFreq" />
-		<field:hidden xpath="${xpath}/paymentHospital" className="health_application_details_paymentLHCfree" />
 	
 	</form_new:fieldset>
 

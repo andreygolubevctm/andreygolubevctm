@@ -2,6 +2,9 @@
 <%@ tag description="H&C Edit Details Dropdown"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" />
+
 <form class="edit-details-form"><div class="edit-details-wrapper scrollable"></div></form>
 
 <core:js_template id="edit-details-template">
@@ -30,7 +33,9 @@
 							<p class="detail-title">Cover</p>
 							<ul>
 								<li><span data-source="#home_coverType"></span></li>
+<c:if test="${not isAltView}">
 								<li>Policy Start Date: <span data-source="#home_startDate"></span></li>
+</c:if>
 							</ul>
 						</div>
 						<div class="col-xs-12 push-top-15">
@@ -237,6 +242,16 @@
 						</div>
 					</div>
 					{{ } }}
+<c:if test="${isAltView}">
+					<div class="row push-top-15">
+						<div class="col-xs-12">
+							<p class="detail-title">Policy Start Date</p>
+							<ul>
+								<li><span data-source="#home_startDate"></span></li>
+							</ul>
+						</div>
+					</div>
+</c:if>
 					<div class="clearfix"></div>
 				</div>
 			</div>

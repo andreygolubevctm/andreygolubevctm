@@ -22,30 +22,22 @@
 
 			<%-- Filter the comments to only the types that matter for an operator --%>
 			<tbody>
+			{{ var displayTouches = ['N','R','A','P','F','C','L','S']; }}
 			{{ _.each(touches, function(touch) { }}
-				{{ var _type = ''; }}
-				{{ if ('N' === touch.type) _type = 'New quote'; }}
-				{{ if ('R' === touch.type) _type = 'Price presentation'; }}
-				{{ if ('A' === touch.type) _type = 'Apply'; }}
-				{{ if ('P' === touch.type) _type = 'Submit'; }}
-				{{ if ('F' === touch.type) _type = 'Join failed'; }}
-				{{ if ('C' === touch.type) _type = 'Policy sold'; }}
-				{{ if ('L' === touch.type) _type = 'Load quote'; }}
-				{{ if ('S' === touch.type) _type = 'Saved quote'; }}
-				{{ if (_type !== '') { }}
+				{{ if (touch.type === null || _.indexOf(displayTouches, touch.type.code) == -1) return; }}
+				{{ var _des = touch.type.description; }}
 				<tr>
 					<td>{{= touch.datetime }}</td>
 					<td>{{= touch.operator }}</td>
 					<td>
-						{{ if ('C' === touch.type) { }}
-							{{= _type}}: {{= obj.selectedProductProvider }} {{= obj.selectedProductTitle }}</span>
+						{{ if ('C' === touch.type.code) { }}
+							{{= _des}}: {{= obj.selectedProductProvider }} {{= obj.selectedProductTitle }}</span>
 						{{ } else { }}
-							{{= _type }}
+							{{= _des }}
 						{{ } }}
 					</td>
 					<td>{{= touch.transactionId }}</td>
 				</tr>
-				{{ } }}
 			{{ }) }}
 			</tbody>
 		</table>

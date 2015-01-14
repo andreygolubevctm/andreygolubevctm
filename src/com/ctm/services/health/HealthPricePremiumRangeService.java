@@ -13,14 +13,14 @@ public class HealthPricePremiumRangeService {
 	private HealthPriceDao healthPriceDao;
 	private HealthPriceRequest healthPriceRequest;
 	private HealthPricePremiumRange healthPricePremiumRange;
-	private double rebateCalc;
+	private double rebate; // rebate after gov percentage, e.g. 29.04
 
 
 
-	public HealthPricePremiumRangeService(HealthPriceRequest healthPriceRequest , double rebateCalc, HealthPriceDao healthPriceDao) throws DaoException {
+	public HealthPricePremiumRangeService(HealthPriceRequest healthPriceRequest , double rebate, HealthPriceDao healthPriceDao) throws DaoException {
 		this.healthPriceDao = healthPriceDao;
 		this.healthPriceRequest = healthPriceRequest;
-		this.rebateCalc = rebateCalc;
+		this.rebate = rebate;
 		setUpHealthPricePremiumRange();
 		setUpPriceMinimum();
 	}
@@ -58,7 +58,7 @@ public class HealthPricePremiumRangeService {
 		double priceMinimum = healthPriceRequest.getPriceMinimum();
 		if (healthPriceRequest.isOnResultsPage() && priceMinimum  > 0) {
 			PremiumCalculator premiumCalculator = new PremiumCalculator();
-			premiumCalculator.setRebateCalc(rebateCalc);
+			premiumCalculator.setRebate(rebate);
 			newMinimum = premiumCalculator.getPremiumWithoutRebate(priceMinimum);
 
 			// set minimum value to max if it exceeds the max in the database
@@ -106,7 +106,7 @@ public class HealthPricePremiumRangeService {
 	private double calculatePriceFilterPremium(double basePremium) {
 		PremiumCalculator premiumCalculator = new PremiumCalculator();
 
-		premiumCalculator.setRebateCalc(rebateCalc);
+		premiumCalculator.setRebate(rebate);
 		premiumCalculator.setBasePremium(basePremium);
 
 		// Get premium with rebate applied to it as is shown on the results page

@@ -30,7 +30,6 @@ public class SplitTestService {
 
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 		VerticalType vertical = pageSettings.getVertical().getType();
-
 		String splitTests = null;
 		String tempSplitTests = request.getParameter("j");
 		if (tempSplitTests != null) {
@@ -41,7 +40,6 @@ public class SplitTestService {
 
 			final SessionDataService sessionDataService = new SessionDataService();
 			final Data data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
-
 			String xpathRoot = null;
 
 			switch (vertical) {
@@ -96,8 +94,15 @@ public class SplitTestService {
 			}
 
 			if(xpathRoot != null) {
+
 				String splitTests = data.getString(xpathRoot + "/" + FIELD_LABEL);
-				if(splitTests != null) {
+
+				// If not in session then trigger creation
+				if(splitTests.equals("")) {
+					splitTests = getJourney(request, transactionId);
+				}
+
+				if(splitTests != null && splitTests.equals("") == false) {
 					String[] tests = splitTests.split("-");
 					for(String test : tests) {
 						if(Integer.toString(journey).equals(test)) {

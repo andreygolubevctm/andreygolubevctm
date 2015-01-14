@@ -29,6 +29,19 @@ public class StringEncryption {
 
 	}
 
+	
+	public static String encryptNoKey(String theString) throws GeneralSecurityException {
+		StringEncryption encryption = new StringEncryption();
+		String output = "";
+		try {
+			output  = encryption.encrypt(theString);
+		} catch (GeneralSecurityException e) {
+			logger.error(e);
+			throw e;
+		}
+		return output;
+	}
+
 	public String encrypt(String theString) throws NoSuchAlgorithmException, InvalidKeyException{
 		Mac algorithm = Mac.getInstance(this.algorithm);
 		SecretKeySpec secretKey = new SecretKeySpec(this.secretKey.getBytes(), this.algorithm);
@@ -54,7 +67,7 @@ public class StringEncryption {
 
 	}
 	
-		public static String encrypt(String key, String content) throws GeneralSecurityException {
+	public static String encrypt(String key, String content) throws GeneralSecurityException {
 		String result = "";
 		// Convert the string version of the key to a SecretKey object
 		byte[] encoded_secret_key = Base64.decodeBase64(key);
@@ -75,4 +88,25 @@ public class StringEncryption {
 		}
 		return result;
 	}
+
+	public static String decrypt(String key, String content) throws GeneralSecurityException {
+		String output;
+		// Convert the string version of the key to a SecretKey object
+		byte[] encoded_secret_key = Base64.decodeBase64(key);
+		final SecretKeySpec secret_key = new SecretKeySpec(encoded_secret_key, "AES");
+
+		// Create Cipher object needed to do encryption/decryption
+		Cipher aes_cipher = Cipher.getInstance("AES");
+		aes_cipher.init(Cipher.ENCRYPT_MODE, secret_key);
+
+		// Decrypt the content
+		aes_cipher.init(Cipher.DECRYPT_MODE, secret_key, aes_cipher.getParameters());
+		byte[] content_as_byte_cipher_text = Base64.decodeBase64(content);
+		byte[] decrypted_text_as_bytes = aes_cipher.doFinal(content_as_byte_cipher_text);
+		output = new String(decrypted_text_as_bytes);
+		// Important! keep this as debug and don't enable debug logging in production
+		// as this may include credit card details (this is from the nib webservice)
+		logger.debug("Decrypted content: " + output);
+		return output;
+}
 }

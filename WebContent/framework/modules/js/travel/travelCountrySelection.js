@@ -8,7 +8,7 @@
 	var meerkat = window.meerkat,
 	meerkatEvents = meerkat.modules.events,
 	log = meerkat.logging.info,
-	$countries;
+	countryList = [];
 
 	var $destinations,
 		$destinationsCheckboxes;
@@ -37,20 +37,47 @@
 			$destinationsFieldset = $('.travel_details_destinations');
 			$destinations = $('#travel_destination');
 			$destinationsCheckboxes = $('.destcheckbox');
-
 			applyEventListeners();
+			// for preload
+			$destinationsFieldset.find('.destcheckbox:checked').each(function() {
+				$(this).change();
+			});
 		});
+	}
+
+	function getCountryList() {
+		return countryList || [];
+	}
+
+	function hasCountry(country) {
+		return countryList.indexOf(country) != -1;
 	}
 
 	function applyEventListeners(){
 		$destinationsCheckboxes.on('change', function(){
 			meerkat.modules.travelCountrySelection.updateCountries();
+
+			var $el = $(this), val = $el.val();
+			if($el.is(':checked')) {
+				countryList.push(val);
+			} else {
+				if(countryList.indexOf(val) !== -1) {
+					for(var i = 0; i < countryList.length; i++) {
+						if(countryList[i] == val) {
+							countryList.splice(i, 1);
+						}
+					}
+				}
+			}
+
 		});
 	}
 
 	meerkat.modules.register("travelCountrySelection", {
 		initCountrySelection: initCountrySelection,
-		updateCountries: updateCountries
+		updateCountries: updateCountries,
+		getCountryList: getCountryList,
+		hasCountry: hasCountry
 	});
 
 })(jQuery);

@@ -11,36 +11,14 @@
 
 <c:set var="healthPriceRequest" value="${healthPriceService.getHealthPriceRequest()}" />
 <c:set var="loading" value="${healthPriceRequest.getLoading()}" />
-<c:set var="rebate" value="${healthPriceRequest.getRebate()}" />
 <c:set var="membership" value="${healthPriceRequest.getMembership()}" />
 
 <c:set var="accountType"><x:out select="$healthXML/request/details/accountType" /></c:set>
 <c:set var="currentCustomer"><x:out select="$healthXML/request/details/currentCustomer" /></c:set>
 <c:set var="transactionId"><x:out select="$healthXML/request/header/partnerReference" /></c:set>
 
-<c:if test="${rebate > 0}">
-	<c:set var="rebate_changeover" value="${rebate * rebate_multiplier_future}" />
-</c:if>
-<c:set var="rebateCalc_changeover" value="${(100-rebate_changeover)*0.01}" />
-<c:set var="rebateCalcReal_changeover" value="${rebate_changeover*0.01}" />
-
-<%-- Test the date and apply the future rebate value --%>
-<fmt:formatDate value="${changeover_date_1}" var="matchDate" pattern="YYYY-MM-dd" />
-<c:choose>
-	<c:when test="${healthPriceRequest.getSearchDate() >= matchDate}">
-		<c:set var="rebate" value="${rebate_changeover}" />
-	</c:when>
-	<c:otherwise>
-		<c:if test="${rebate > 0}">
-			<c:set var="rebate" value="${rebate * rebate_multiplier_current}" />
-		</c:if>
-	</c:otherwise>
-</c:choose>
-
-
-
-<c:set var="rebateCalc" value="${(100-rebate)*0.01}" />
-<c:set var="rebateCalcReal" value="${rebate*0.01}" />
+<c:set var="rebateChangeover" value="${healthPriceService.getRebateChangeover()}" />
+<c:set var="rebate" value="${healthPriceService.getRebate()}" />
 
 <go:setData dataVar="data" xpath="tempProvidersPromoXML" value="" />
 
@@ -105,41 +83,29 @@
 			<des><c:out value="${row.getLongTitle()}" escapeXml="true"/></des>
 			<rank><c:out value="${row.getRank()+0}" escapeXml="true"/></rank>
 
-				<premium>
-				<c:set var="aRebate" value="${row.getHealthPricePremium().getAnnualPremium() * rebateCalcReal}" />
-					<annually>
-						<c:set var="discountAnnual">
+			<c:set var="discountAnnualAndHalfYearly">
 							<c:choose>
 							<c:when test="${discountRates}">Y</c:when>
 								<c:otherwise>N</c:otherwise>
 							</c:choose>
 						</c:set>
-						<c:set var="starOthersAnnual">
+			<c:set var="starAnnualAndHalfYearly">
 							<c:choose>
-								<c:when test="${discountAnnual=='Y'}">*</c:when>
+					<c:when test="${discountAnnualAndHalfYearly=='Y'}">*</c:when>
 								<c:otherwise></c:otherwise>
 							</c:choose>
 						</c:set>
-						<health:price_service_premium
-									discount="${discountAnnual}"
-								prm="${row.getHealthPricePremium().getAnnualPremium()}"
-									rebateCalc="${rebateCalc}"
-									loading="${loading}"
-									healthRebate="${aRebate}"
-									rebate="${rebate}"
-								lhc="${row.getHealthPricePremium().getAnnualLhc()}"
-									star="${starOthersAnnual}"
-									membership="${membership}" />
-					</annually>
 
 					<%--
+				GMF only has discount for Annual payment, so do not display * for all other frequenies
+				HIF only has discount for Annual/HalfYearly payment, so do not display * for all other frequenies
 						All the other payment frequencies following the "normal" logic ..
 						i.e. if the rates were discounted - show the * etc
-					GMF only has discount for Annual payment, so do not display * for all other frequenies
 					--%>
 					<c:set var="discountOthers">
 						<c:choose>
-						<c:when test="${discountRates && row.getProviderId()==6}">N</c:when>
+					<c:when test="${row.getProviderId()==6}">N</c:when>
+					<c:when test="${row.getProviderId()==11}">N</c:when>
 						<c:when test="${discountRates}">Y</c:when>
 							<c:otherwise>N</c:otherwise>
 						</c:choose>
@@ -148,122 +114,102 @@
 						<c:if test="${discountOthers=='Y'}">*</c:if>
 					</c:set>
 
-				<c:set var="qRebate" value="${row.getHealthPricePremium().getQuarterlyPremium() * rebateCalcReal}" />
+			<premium>
+				<annually>
+					<health:price_service_premium discount="${discountAnnualAndHalfYearly}" prm="${row.getHealthPricePremium().getAnnualPremium()}"
+								loading="${loading}"
+								rebate="${rebate}" lhc="${row.getHealthPricePremium().getAnnualLhc()}"
+								star="${starAnnualAndHalfYearly}"
+								membership="${membership}" />
+				</annually>
+				<halfyearly>
+					<health:price_service_premium discount="${discountAnnualAndHalfYearly}" prm="${row.getHealthPricePremium().getHalfYearlyPremium()}"
+								loading="${loading}"
+								rebate="${rebate}" lhc="${row.getHealthPricePremium().getHalfYearlyLhc()}"
+								star="${starAnnualAndHalfYearly}"
+								membership="${membership}" />
+				</halfyearly>
 					<quarterly>
 					<health:price_service_premium discount="${discountOthers}" prm="${row.getHealthPricePremium().getQuarterlyPremium()}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
-									healthRebate="${qRebate}"
+								loading="${loading}"
 								rebate="${rebate}" lhc="${row.getHealthPricePremium().getQuarterlyLhc()}"
 									star="${starOthers}"
 									membership="${membership}" />
 					</quarterly>
-				<c:set var="mRebate" value="${row.getHealthPricePremium().getMonthlyPremium() * rebateCalcReal}" />
 					<monthly>
 						<health:price_service_premium
 								discount="${discountOthers}" prm="${row.getHealthPricePremium().getMonthlyPremium()}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
-									healthRebate="${mRebate}"
+								loading="${loading}"
 								rebate="${rebate}" lhc="${row.getHealthPricePremium().getMonthlyLhc()}"
 									star="${starOthers}"
 									membership="${membership}" />
 					</monthly>
-				<c:set var="fRebate" value="${row.getHealthPricePremium().getFortnightlyPremium() * rebateCalcReal}" />
 					<fortnightly>
 					<health:price_service_premium discount="${discountOthers}" prm="${row.getHealthPricePremium().getFortnightlyPremium()}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
-									healthRebate="${fRebate}"
+								loading="${loading}"
 								rebate="${rebate}" lhc="${row.getHealthPricePremium().getFortnightlyLhc()}"
 									star="${starOthers}"
 									membership="${membership}" />
 					</fortnightly>
-				<c:set var="wRebate" value="${row.getHealthPricePremium().getWeeklyPremium() * rebateCalcReal}" />
 					<weekly>
 					<health:price_service_premium discount="${discountOthers}" prm="${row.getHealthPricePremium().getWeeklyPremium()}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
-									healthRebate="${wRebate}"
+								loading="${loading}"
 								rebate="${rebate}" lhc="${row.getHealthPricePremium().getWeeklyLhc()}"
 									star="${starOthers}"
 									membership="${membership}" />
 					</weekly>
-				<c:set var="hRebate" value="${row.getHealthPricePremium().getHalfYearlyPremium() * rebateCalcReal}" />
-					<halfyearly>
-					<health:price_service_premium discount="${discountOthers}" prm="${row.getHealthPricePremium().getHalfYearlyPremium()}"
-									rebateCalc="${rebateCalc}" loading="${loading}"
-									healthRebate="${hRebate}"
-								rebate="${rebate}" lhc="${row.getHealthPricePremium().getHalfYearlyLhc()}"
-									star="${starOthers}"
-									membership="${membership}" />
-					</halfyearly>
 				</premium>
 
 				<%-- Render the alternate Premium: NOTE see premium for full entry details --%>
 				<altPremium>
-				<c:set var="ALTaRebate" value="${row.getAltHealthPricePremium().getAnnualPremium() * rebateCalcReal_changeover}" />
 					<annually>
 						<health:price_service_premium
 								discount="${discountAnnual}" prm="${row.getAltHealthPricePremium().getAnnualPremium()}"
-									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
-									healthRebate="${ALTaRebate}"
-								rebate="${rebate_changeover}" lhc="${row.getAltHealthPricePremium().getAnnualLhc()}"
+								loading="${loading}"
+								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getAnnualLhc()}"
 									star="${starOthersAnnual}"
-									active_fund="${active_fund}"
 									membership="${membership}" />
 
 					</annually>
-				<c:set var="ALTqRebate" value="${row.getAltHealthPricePremium().getQuarterlyPremium() * rebateCalcReal_changeover}" />
 					<quarterly>
 						<health:price_service_premium
 								discount="${discountOthers}" prm="${row.getAltHealthPricePremium().getQuarterlyPremium()}"
-									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
-									healthRebate="${ALTqRebate}"
-								rebate="${rebate_changeover}" lhc="${row.getAltHealthPricePremium().getQuarterlyLhc()}"
+								loading="${loading}"
+								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getQuarterlyLhc()}"
 									star="${starOthers}"
-									active_fund="${active_fund}"
 									membership="${membership}"/>
 					</quarterly>
-				<c:set var="ALTmRebate" value="${row.getAltHealthPricePremium().getMonthlyPremium() * rebateCalcReal_changeover}" />
 					<monthly>
 						<health:price_service_premium
 								discount="${discountOthers}" prm="${row.getAltHealthPricePremium().getMonthlyPremium()}"
-									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
-									healthRebate="${ALTmRebate}"
-								rebate="${rebate_changeover}" lhc="${row.getAltHealthPricePremium().getMonthlyLhc()}"
+								loading="${loading}"
+								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getMonthlyLhc()}"
 									star="${starOthers}"
-									active_fund="${active_fund}"
 									membership="${membership}"/>
 					</monthly>
-				<c:set var="ALTfRebate" value="${row.getAltHealthPricePremium().getFortnightlyPremium() * rebateCalcReal_changeover}" />
 					<fortnightly>
 						<health:price_service_premium
 								discount="${discountOthers}" prm="${row.getAltHealthPricePremium().getFortnightlyPremium()}"
-									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
-									healthRebate="${ALTfRebate}"
-								rebate="${rebate_changeover}" lhc="${row.getAltHealthPricePremium().getFortnightlyLhc()}"
+								loading="${loading}"
+								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getFortnightlyLhc()}"
 									star="${starOthers}"
-									active_fund="${active_fund}"
 									membership="${membership}"/>
 					</fortnightly>
-				<c:set var="ALTwRebate" value="${row.getAltHealthPricePremium().getWeeklyPremium() * rebateCalcReal_changeover}" />
 					<weekly>
 						<health:price_service_premium
 								discount="${discountOthers}" prm="${row.getAltHealthPricePremium().getWeeklyPremium()}"
-									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
-									healthRebate="${ALTwRebate}"
-								rebate="${rebate_changeover}" lhc="${row.getAltHealthPricePremium().getWeeklyLhc()}"
+								loading="${loading}"
+								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getWeeklyLhc()}"
 									star="${starOthers}"
-									active_fund="${active_fund}"
 									membership="${membership}" />
 					</weekly>
-				<c:set var="ALThRebate" value="${row.getAltHealthPricePremium().getHalfYearlyPremium() * rebateCalcReal_changeover}" />
 					<halfyearly>
 						<health:price_service_premium
 									discount="${discountOthers}"
 								prm="${row.getAltHealthPricePremium().getHalfYearlyPremium()}"
-									rebateCalc="${rebateCalc_changeover}" loading="${loading}"
-									healthRebate="${ALThRebate}"
-								rebate="${rebate_changeover}" lhc="${row.getAltHealthPricePremium().getHalfYearlyLhc()}"
+								loading="${loading}"
+								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getHalfYearlyLhc()}"
 									star="${starOthers}"
-									active_fund="${active_fund}"
 									membership="${membership}"/>
 					</halfyearly>
 				</altPremium>

@@ -21,7 +21,7 @@ import com.ctm.model.health.HealthPriceResult;
 import com.ctm.model.health.Membership;
 
 public class HealthPriceResultsServiceTest {
-	
+
 	private HealthPriceRequest healthPriceRequest;
 	HealthPriceDao healthPriceDao = mock(HealthPriceDao.class);
 	StyleCodeDao styleCodeDao = mock(StyleCodeDao.class);
@@ -41,7 +41,6 @@ public class HealthPriceResultsServiceTest {
 		healthPriceRequest.setPrivateHospital(true);
 		healthPriceRequest.setPublicHospital(false);
 		healthPriceRequest.setPreferences("'PrHospital','DentalGeneral','GeneralHealth','Hospital'");
-		healthPriceRequest.setRebate(0);
 		healthPriceRequest.setLoading(17);
 		healthPriceRequest.setBrandFilter("0");
 		healthPriceRequest.setIsSimples(false);
@@ -55,7 +54,7 @@ public class HealthPriceResultsServiceTest {
 		HealthPricePremiumRange healthPricePremiumRange = new HealthPricePremiumRange();
 		when(healthPriceDao.getHealthPricePremiumRange(any(HealthPriceRequest.class))).thenReturn(healthPricePremiumRange);
 	}
-	
+
 	@Test
 	public void testShouldFetchMultipleResultWhenOnResultsPage() throws SQLException, DaoException {
 		HealthPriceResultsService healthPriceResultsService = new HealthPriceResultsService(healthPriceDao);
@@ -69,7 +68,7 @@ public class HealthPriceResultsServiceTest {
 		verify(healthPriceDao, times(1)).fetchHealthResults(healthPriceRequest);
 	}
 
-	
+
 	@Test
 	public void testShouldFetchSingleResultWhenDirectApplication() throws SQLException, DaoException {
 		HealthPriceResultsService healthPriceResultsService = new HealthPriceResultsService(healthPriceDao);
@@ -90,7 +89,7 @@ public class HealthPriceResultsServiceTest {
 		verify(healthPriceDao, times(2)).fetchHealthResults(healthPriceRequest);
 		verify(healthPriceDao, times(1)).fetchSingleHealthResult(healthPriceRequest);
 	}
-	
+
 	@Test
 	public void testShouldFetchSavedQuote() throws SQLException, DaoException {
 		HealthPriceResultsService healthPriceResultsService = new HealthPriceResultsService(healthPriceDao);

@@ -157,7 +157,7 @@
 				<cover><xsl:value-of select="situation/healthCvr" /></cover>
 				<situation><xsl:value-of select="situation/healthSitu" /></situation>
 				<rebate><xsl:value-of select="rebate" /></rebate>				
-				<rebate_changeover><xsl:value-of select="rebate_changeover" /></rebate_changeover>
+				<rebateChangeover><xsl:value-of select="rebateChangeover" /></rebateChangeover>
 				<loading><xsl:value-of select="loading" /></loading>
 				<income><xsl:value-of select="healthCover/income" /></income>
 				<dependants><xsl:value-of select="healthCover/dependants" /></dependants>

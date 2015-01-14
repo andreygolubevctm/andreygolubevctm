@@ -115,17 +115,18 @@
 							handoverType = "Online";
 						}
 
-						meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-							method: 'trackHandoverType',
-							object: {
+						// NEW tracking call
+						meerkat.modules.partnerTransfer.trackHandoverEvent({
+							product:				product,
 								type: handoverType,
 								quoteReferenceNumber: transaction_id,
 								transactionID: transaction_id,
-								productID: "productID",
+							productID:				product.productId.replace("PHIO-HEALTH-", ""),
+							productName:			product.info.name,
+							productBrandCode:		product.info.FundCode,
 								simplesUser: meerkat.site.isCallCentreUser
+						}, false, true);
 							}
-						});
-					}
 					else {
 						applyCallback(false);
 					}

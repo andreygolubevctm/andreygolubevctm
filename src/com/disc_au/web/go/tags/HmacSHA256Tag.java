@@ -50,19 +50,12 @@ public class HmacSHA256Tag extends BaseTag {
 	}
 
 	public int doStartTag() throws JspException {
-
 		try {
-
 			// Build the credentials string
 			String credentials = this.username + this.password + this.brand;
-
-			StringEncryption encyption = new StringEncryption();
-			String output = encyption.encrypt(credentials);
-
+			String output = StringEncryption.encryptNoKey(credentials);
 			pageContext.getOut().write(output);
-
 			return SKIP_BODY;
-
 		} catch (Exception e) {
 			throw new JspException(e);
 		}

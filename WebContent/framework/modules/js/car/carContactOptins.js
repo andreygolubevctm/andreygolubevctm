@@ -22,6 +22,17 @@
 			email:			"#quote_contact_email"
 	};
 
+	function toggleValidation() {
+		var isMobile = meerkat.modules.performanceProfiling.isMobile();
+		var isMDorLG = _.indexOf(['lg','md'], meerkat.modules.deviceMediaState.get()) !== -1;
+		if(!isMobile && isMDorLG) {
+			$(elements.marketing).rules('remove', 'validateOkToEmailRadio');
+			$(elements.marketing).rules('add', 'required');
+			$(elements.oktocall).rules('remove', 'validateOkToCallRadio');
+			$(elements.oktocall).rules('add', 'required');
+		}
+	}
+
 	function validateOptins() {
 		$mkt = $(elements.marketing);
 		$otc = $(elements.oktocall);
@@ -108,6 +119,8 @@
 				return false;
 
 			addChangeListeners();
+
+			toggleValidation();
 
 			dump();
 		});

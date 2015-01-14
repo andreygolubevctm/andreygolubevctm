@@ -98,8 +98,8 @@
 		//console.log('moveToNextInput', this);
 
 		var $this = $(this);
-		if (!$this.attr('maxlength')) return;
-		if ($this.hasClass('year')) return;
+		if (!$this.attr('maxlength')) {return;}
+		if ($this.hasClass('year') || $this.hasClass('dateinput-year')) {return;}
 
 		if ($this.val().length == $this.attr('maxlength')) {
 			var next = ($this.hasClass('dateinput-day')) ? 'input.dateinput-month' : 'input.dateinput-year';
@@ -136,6 +136,10 @@
 		if (day.length === 1) day = '0' + day;
 		if (month.length === 1) month = '0' + month;
 
+		if ($component.attr('data-dateinput-type') != 'native') {
+			$component.find('input.dateinput-day').val(day);
+			$component.find('input.dateinput-month').val(month);
+		}
 
 		// Run 'simple' validation - only checks for non zero and is a valid number!!
 		if (day.length > 0 && Number(day) > 0 && month.length > 0 && Number(month) > 0 && year.length > 0 && Number(year) > 0) {

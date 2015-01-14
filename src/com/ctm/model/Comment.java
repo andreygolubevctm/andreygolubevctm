@@ -2,6 +2,8 @@ package com.ctm.model;
 
 import java.util.Date;
 
+import com.ctm.model.simples.DisplayDateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +14,7 @@ public class Comment extends AbstractJsonModel {
 	private long transactionId;
 	private String operator;
 	private String comment;
+	@JsonSerialize(using = DisplayDateSerializer.class)
 	private Date datetime;
 
 	//

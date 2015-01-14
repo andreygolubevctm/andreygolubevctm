@@ -163,6 +163,7 @@
 					
 			<field:hidden xpath="health/renderingMode" />
 			<field:hidden xpath="health/rebate" />
+			<field:hidden xpath="health/rebateChangeover" />
 			<field:hidden xpath="health/loading" />
 			<field:hidden xpath="health/primaryCAE" />
 			<field:hidden xpath="health/partnerCAE" />

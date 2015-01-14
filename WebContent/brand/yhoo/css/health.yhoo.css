@@ -2515,6 +2515,12 @@ button .simples-dialogue h3:after {
     background-size: 100px 130px;
   }
 }
+.nortonIframe {
+  width: 600px;
+}
+.nortonIframe iframe {
+  height: 466px;
+}
 .agg_privacy {
   overflow: visible;
   background-color: #ffefef;

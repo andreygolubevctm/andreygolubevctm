@@ -325,9 +325,7 @@ Results = {
 	filterBy: function( filterBy, condition, options, renderView ){
 		if( typeof Object.byString( Results.settings.paths, filterBy ) !== "undefined" ){
 			Results.model.addFilter( filterBy, condition, options );
-			if( renderView ){
-				Results.model.filter(renderView);
-			}
+			Results.model.filter(renderView);
 		} else {
 			console.log("This filter could not find the path to the property it should be filtered by: filterBy= filterBy=", filterBy, "| condition=", condition, "| options=", options);
 		}

@@ -746,6 +746,7 @@
 	function setRates(ratesObject){
 		rates = ratesObject;
 		$("#health_rebate").val((rates.rebate || ''));
+		$("#health_rebateChangeover").val((rates.rebateChangeover || ''));
 		$("#health_loading").val((rates.loading || ''));
 		$("#health_primaryCAE").val((rates.primaryCAE || ''));
 		$("#health_partnerCAE").val((rates.partnerCAE || ''));
@@ -981,13 +982,6 @@
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication' });
 
 		try {
-		var frequency = $("#health_payment_details_frequency").val();
-
-		var selectedProductPremium = meerkat.modules.healthResults.getSelectedProductPremium(frequency);
-		var periods = meerkat.modules.healthResults.getNumberOfPeriodsForFrequency(frequency);
-		$('#health_application_paymentFreq').val( selectedProductPremium.value);
-		$('#health_application_paymentHospital').val( selectedProductPremium.hospitalValue * periods);
-
 		var postData = meerkat.modules.journeyEngine.getFormData();
 
 		// Disable fields must happen after the post data has been collected.

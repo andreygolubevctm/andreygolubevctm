@@ -304,4 +304,73 @@ public class EmailMasterDao {
 		stmt.close();
 	}
 
+	public EmailMaster getEmailMasterById(int emailid, int brandId) throws DaoException {
+		this.brandId = brandId;
+		return getEmailMasterById(emailid);
+}
+	public EmailMaster getEmailMasterById(int emailid) throws DaoException {
+		EmailMaster hashedEmailInfo =  new EmailMaster();
+		try {
+			PreparedStatement stmt;
+			Connection conn = dbSource.getConnection();
+			if(conn != null) {
+				stmt = conn.prepareStatement(
+					"SELECT emailAddress "
+					+ "FROM aggregator.email_master "
+					+ "WHERE emailId = ? "
+					+ "AND styleCodeId = ? "
+					+ "LIMIT 1;"
+				);
+
+				stmt.setInt(1 , emailid);
+				stmt.setInt(2 , brandId);
+
+				ResultSet resultSet = stmt.executeQuery();
+
+				while (resultSet.next()) {
+					hashedEmailInfo.setEmailId(emailid);
+					hashedEmailInfo.setEmailAddress(resultSet.getString("emailAddress"));
+				}
+				resultSet.close();
+			}
+		} catch (SQLException | NamingException e) {
+			logger.error("failed to get email details" , e);
+			throw new DaoException(e.getMessage(), e);
+		} finally {
+			if(dbSource != null) {
+				dbSource.closeConnection();
+			}
+		}
+		return hashedEmailInfo;
+	}
+	
+	public int updatePassword(EmailMaster emailMaster) throws DaoException {
+		int result = 0;
+		try {
+			PreparedStatement stmt;
+			Connection conn = dbSource.getConnection();
+			if(conn != null) {
+				stmt = conn.prepareStatement(
+						"UPDATE aggregator.email_master " +
+				" SET emailPword = ? "
+				+ "WHERE emailAddress = ? "
+				+ "AND styleCodeId = ? ");
+
+				stmt.setString(1 , emailMaster.getPassword());
+				stmt.setString(2 , emailMaster.getEmailAddress());
+				stmt.setInt(3 , brandId);
+
+				result = stmt.executeUpdate();
+			}
+		} catch (SQLException | NamingException e) {
+			logger.error("failed to get email details" , e);
+			throw new DaoException(e.getMessage(), e);
+		} finally {
+			if(dbSource != null) {
+				dbSource.closeConnection();
+			}
+		}
+		return result;
+	}
+
 }

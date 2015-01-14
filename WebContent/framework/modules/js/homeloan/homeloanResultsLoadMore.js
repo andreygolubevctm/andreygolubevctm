@@ -97,19 +97,22 @@
 				Results.model.returnedProducts.push(result);
 				Results.model.filteredProducts.push(result);
 				sTagProductList[indexIncrement] = {
-						'productID': result.id,
-						'ranking': indexIncrement
+						productID: result.id,
+						ranking: indexIncrement,
+						productName: result.lenderProductName,
+						productBrandCode: result.brandCode,
+						available: "Y"
 				};
 				indexIncrement++;
 			});
 
-			// Publish common external tracking
-			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-				method:'trackQuoteProductList',
-				object:{
+			meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+				additionalData: {
 					products: sTagProductList,
-					vertical: meerkat.site.vertical
-				}
+					loadMoreResultsPageNumber: $pageNumber.val(),
+					event: 'Refresh'
+				},
+				onAfterEventMode: 'Load'
 			});
 
 			var $overflow = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.resultsOverflow);

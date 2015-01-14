@@ -1,14 +1,14 @@
 package com.ctm.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
-
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Transaction;
+import com.ctm.model.simples.ConfirmationOperator;
+
+import javax.naming.NamingException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class TransactionDao {
 
@@ -102,8 +102,45 @@ public class TransactionDao {
 
 
 	/**
+	 * Check the transactions chained from the provided RootId and find any confirmation (sold) information.
+	 * @return Valid object or null
+	 */
+	public ConfirmationOperator getConfirmationFromTransactionChain(long rootId) throws DaoException {
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+
+		try {
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+				"SELECT transaction_id, operator_id, CONCAT(date, ' ', time) AS datetime FROM ctm.touches WHERE transaction_id IN (" +
+				"    SELECT TransactionId FROM aggregator.transaction_header WHERE rootId = ?" +
+				") AND type = 'C';"
+			);
+			stmt.setLong(1, rootId);
+			ResultSet results = stmt.executeQuery();
+
+			if (results.next()) {
+				ConfirmationOperator confirmationOperator = new ConfirmationOperator();
+				confirmationOperator.setTransactionId(results.getLong("transaction_id"));
+				confirmationOperator.setOperator(results.getString("operator_id"));
+				confirmationOperator.setDatetime(results.getTimestamp("datetime"));
+				return confirmationOperator;
+			}
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		return null;
+	}
+
+
+	/**
 	 * Update transaction header with the new email address
-	 * @param ransaction transaction
+	 * @param transaction transaction
 	 */
 	public void writeEmailAddress(Transaction transaction) throws DaoException {
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();

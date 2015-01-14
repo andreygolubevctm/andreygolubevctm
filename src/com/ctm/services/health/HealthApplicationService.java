@@ -9,51 +9,65 @@ import com.disc_au.price.health.PremiumCalculator;
 import com.disc_au.web.go.Data;
 
 public class HealthApplicationService {
-	
+
 	private HealthApplicationRequest request = new HealthApplicationRequest();
+	private PremiumCalculator premiumCalculator = new PremiumCalculator();
 	private HealthPriceDao healthPriceDao;
 
 	public HealthApplicationService() {
 		healthPriceDao = new HealthPriceDao();
 	}
-	
+
 	public HealthApplicationService(HealthPriceDao healthPriceDao) {
 		this.healthPriceDao = healthPriceDao;
 	}
-	
-	public void calculatePremiums(Data data, double rebateMultiplierCurrent) throws DaoException {
+
+	public void calculatePremiums(Data data) throws DaoException {
 		parseRequest(data);
 		HealthPricePremium premium = fetchHealthResult();
-		double paymentAmt = 0;
-		double annualAmount;
-		double rebateCalcReal = (request.rebate * rebateMultiplierCurrent);
+
+		premiumCalculator.setRebate(request.rebate);
+		premiumCalculator.setLoading(request.loading);
+		premiumCalculator.setMembership(request.membership);
+
+		int periods;
+
 		switch(request.frequency){
 			case WEEKLY:
-				paymentAmt = calculatePaymentAmt(premium.getWeeklyPremium(), premium.getWeeklyLhc(), rebateCalcReal);
-				annualAmount = 52 * paymentAmt;
+				setUpPremiumCalculator(premium.getWeeklyPremium(), premium.getGrossWeeklyPremium(), premium.getWeeklyLhc());
+				periods = 52;
 				break;
 			case FORTNIGHTLY:
-				paymentAmt = calculatePaymentAmt(premium.getFortnightlyPremium(), premium.getFortnightlyLhc(), rebateCalcReal);
-				annualAmount = 26 * paymentAmt;
+				setUpPremiumCalculator(premium.getFortnightlyPremium(), premium.getGrossFortnightlyPremium(), premium.getFortnightlyLhc());
+				periods = 26;
 				break;
 			case QUARTERLY:
-				paymentAmt = calculatePaymentAmt(premium.getQuarterlyPremium(), premium.getQuarterlyLhc(), rebateCalcReal);
-				annualAmount = 4 * paymentAmt;
+				setUpPremiumCalculator(premium.getQuarterlyPremium(), premium.getGrossQuarterlyPremium(), premium.getQuarterlyLhc());
+				periods = 4;
 				break;
 			case HALF_YEARLY:
-				paymentAmt = calculatePaymentAmt(premium.getHalfYearlyPremium(), premium.getHalfYearlyLhc(), rebateCalcReal);
-				annualAmount = 2 * premium.getHalfYearlyPremium();
+				setUpPremiumCalculator(premium.getHalfYearlyPremium(), premium.getGrossHalfYearlyPremium(), premium.getHalfYearlyLhc());
+				periods = 2;
 				break;
 			case ANNUALLY:
-				paymentAmt = calculatePaymentAmt(premium.getAnnualPremium(), premium.getAnnualLhc(), rebateCalcReal);
-				annualAmount = paymentAmt;
+				setUpPremiumCalculator(premium.getAnnualPremium(), premium.getGrossAnnualPremium(), premium.getAnnualLhc());
+				periods = 1;
 				break;
 			default:
-				paymentAmt = calculatePaymentAmt(premium.getMonthlyPremium(), premium.getMonthlyLhc(), rebateCalcReal);
-				annualAmount = 12 * paymentAmt;
+				setUpPremiumCalculator(premium.getMonthlyPremium(), premium.getGrossMonthlyPremium(), premium.getMonthlyLhc());
+				periods = 12;
 		}
-		data.put("health/application/paymentAmt", annualAmount);
+
+		double paymentAmt = premiumCalculator.getPremiumWithRebateAndLHC();
+
+		data.put("health/application/paymentHospital", premiumCalculator.getLhc() * periods);
+		data.put("health/application/grossPremium", premiumCalculator.getGrossPremium() * periods);
+		data.put("health/application/paymentAmt", paymentAmt * periods);
 		data.put("health/application/paymentFreq", paymentAmt);
+		data.put("health/application/discountAmt", premiumCalculator.getDiscountValue() * periods);
+		data.put("health/application/discount", premiumCalculator.getDiscountPercentage());
+		data.put("health/loadingAmt", premiumCalculator.getLoadingAmount() * periods);
+		data.put("health/rebateAmt", premiumCalculator.getRebateAmount() * periods);
 	}
 
 	private void parseRequest(Data data) {
@@ -74,20 +88,14 @@ public class HealthApplicationService {
 	private HealthPricePremium fetchHealthResult() throws DaoException {
 		boolean isDiscountRates = HealthPriceService.hasDiscountRates(request.frequency, request.provider,
 				request.currentCustomer, request.paymentType, false);
-		HealthPricePremium premium = healthPriceDao.getPremiumAndLhc(request.selectedProductId, isDiscountRates);			
+		HealthPricePremium premium = healthPriceDao.getPremiumAndLhc(request.selectedProductId, isDiscountRates);
 		return premium;
 	}
-	
-	private double calculatePaymentAmt(double premium, double lhc, double rebateCalcWhole) {
-		double rebateCalc = (rebateCalcWhole) * 0.01;
-		PremiumCalculator premiumCalculator = new PremiumCalculator();
-		premiumCalculator.setLhc(lhc);
-		premiumCalculator.setLoading(request.loading);
-		premiumCalculator.setMembership(request.membership);
-		premiumCalculator.setBasePremium(premium);
-		premiumCalculator.setRebateCalc(rebateCalc);
-		
-		return  premiumCalculator.getPremiumWithRebateAndLHC();
-	}
 
+	private void setUpPremiumCalculator(double premium, double grossPremium, double lhc) {
+		premiumCalculator.setLhc(lhc);
+		premiumCalculator.setBasePremium(premium);
+		premiumCalculator.setGrossPremium(grossPremium);
+
+	}
 }

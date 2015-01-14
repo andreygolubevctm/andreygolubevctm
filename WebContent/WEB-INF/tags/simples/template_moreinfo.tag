@@ -76,4 +76,9 @@
 	{{ var touchTemplate = _.template($("#simples-template-touches").html()); }}
 	{{= touchTemplate(obj) }}
 
+	<hr>
+
+	{{ var auditTemplate = _.template($("#simples-template-audits").html()); }}
+	{{= auditTemplate(obj) }}
+
 </script>

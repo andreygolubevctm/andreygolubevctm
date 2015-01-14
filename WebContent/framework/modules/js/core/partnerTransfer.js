@@ -32,16 +32,19 @@
 		var product = settings.product,
 			handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? 'POST' : 'GET',
 			brand = settings.brand ? settings.brand : product.provider,
-			msg =  settings.msg ? settings.msg : '';
+			msg =  settings.msg ? settings.msg : '',
+			tracking = encodeURIComponent(JSON.stringify(settings.tracking));
 
 		try {
-			
+
 			// build the initial url
 			url = "transferring.jsp?transactionId="+meerkat.modules.transactionId.get()+"&trackCode="+product.trackCode + "&brand="+brand+"&msg="+msg+"&url=";
 
 			// this will avoid affecting other handover urls from other verticals
-			url += (product.encodeUrl === 'Y') ? encodeURIComponent(product.quoteUrl) : product.quoteUrl;
-			
+			url += (product.encodeUrl === 'Y' || settings.encodeTransferURL === true) ? encodeURIComponent(product.quoteUrl) : product.quoteUrl;
+
+			url += "&tracking=" + tracking;
+
 			if (handoverType.toLowerCase() === "post")
 			{
 				url += "&handoverType="+product.handoverType+"&handoverData="+encodeURIComponent(product.handoverData)+"&handoverURL="+encodeURIComponent(product.handoverUrl)+"&handoverVar="+(product.handoverVar);
@@ -52,7 +55,7 @@
 			{
 				$.each(settings.extraParams, function transferExtraParam(key, value){
 					url += "&"+key +"="+ escape(value);
-				}); 
+				});
 			}
 
 			return url;
@@ -68,12 +71,56 @@
 		}
 	}
 
-	function transferToPartner(options){
+	function getQueryStringFromURL(url) {
+		var qs = null;
+		if(!_.isUndefined(url) && _.isString(url)) {
+			var pieces = url.split("?");
+			if(pieces.length == 2) {
+				qs = pieces[1];
+			}
+		}
+		return qs;
+	}
 
+	function addTrackingDataToSettings(settings) {
+
+		var tracking = _.pick(settings, 'actionStep','brandCode','currentJourney','lastFieldTouch','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser');
+		meerkat.modules.tracking.updateObjectData(tracking);
+		// Guarantee all fields exist in the object
+		tracking = $.extend({
+			actionStep:				null,
+			brandCode:				null,
+			currentJourney:			null,
+			lastFieldTouch:			null,
+			productBrandCode:		settings.product.provider,
+			productID:				settings.product.productId,
+			productName:			settings.product.name,
+			quoteReferenceNumber:	typeof settings.product.leadNo !== 'undefined' ? settings.product.leadNo : tracking.transactionID,
+			rootID:					null,
+			transactionID:			null,
+			type:					'ONLINE',
+			vertical:				null,
+			verticalFilter:			null,
+			handOverQS:				getQueryStringFromURL(settings.product.quoteUrl),
+			simplesUser:			meerkat.site.isCallCentreUser
+		},tracking);
+
+		if(_.isEmpty(tracking.actionStep)) {
+			tracking.actionStep = $.trim(tracking.vertical + " transfer " + tracking.type);
+		}
+
+		return tracking;
+	}
+
+	function transferToPartner(options){
 		var settings = $.extend({}, defaultSettings, options),
-			product = settings.product,
-			url = buildURL(settings);	
- 
+			product = settings.product;
+
+		// Add standard tracking variables
+		settings.tracking = addTrackingDataToSettings(settings);
+
+		url = buildURL(settings);
+
 		if (url != null)
 		{
 			// close the modal if it's open
@@ -96,58 +143,79 @@
 					.delay(4000)
 					.queue(function(next) {
 						next();
-				});	
+				});
 			}
 
 			// track the handover. This allows for custom handover tracking if this module is insufficient
 			if (settings.trackHandover === true) {
-				trackHandover(product);	
+				trackHandover(settings.tracking, {
+					type:'A',
+					comment:'Apply Online'
+				}, true);
 			}
 		}
 
 		// last thing to happen no matter if there is an error or not
 		if (typeof settings.applyNowCallback == 'function') {
-			
-			settings.applyNowCallback(true);	
+			settings.applyNowCallback(true);
 		}
 	}
 
 	/**
-	 * Supertag tracking
+	 * Private method for tracking handover - this method actually calls the specific tracking methods
 	 */
-	function trackHandover( product ) {
+	function trackHandover( trackData, touchData, doOldTrackCall ) {
 
-		var transaction_id = meerkat.modules.transactionId.get(),
-			referenceNumber = typeof product.leadNo !== 'undefined' ? product.leadNo : transaction_id;
+		touchData = touchData || false;
+		doOldTrackCall = doOldTrackCall || false;
 
 		// Publish tracking events.
-		meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
-			touchType:'A',
-			touchComment: 'Apply Online'
+		if(touchData !== false && _.isObject(touchData) && _.has(touchData,'type')) {
+			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+				touchType:		touchData.type,
+				touchComment:	_.has(touchData,'comment') ? touchData.comment : ''
+			});
+		}
+
+		var data = _.pick(trackData, 'actionStep','brandCode','currentJourney','lastFieldTouch','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser');
+
+		// OLD tracking method
+		if(doOldTrackCall === true) {
+			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+				method:	'trackHandoverType',
+				object:	data
+			});
+		}
+
+		// NEW combined tracking method
+		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+			method:	'trackQuoteHandoverClick',
+			object:	data
 		});
 
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method: 'trackHandoverType',
-			object: {
-				type: "ONLINE",
-				quoteReferenceNumber: referenceNumber,
-				transactionID: transaction_id,
-				productID: product.productId,
-				brandCode: product.brandCode,
-				productName: product.name,
-				productBrandCode: product.provider,
-				vertical: meerkat.site.vertical,
-				verticalFilter: (typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === 'function' ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null)
-			}
-		});
+		meerkat.modules.session.poke();
+	}
+
+	/**
+	 * Public method for tracking handover events - called by individual verticals which need to record
+	 * a handover but don't actually redirect to a 3rd party
+	 */
+	function trackHandoverEvent( trackData, touchData, doOldTrackCall ) {
+
+		doOldTrackCall = doOldTrackCall || false;
+
+		trackData = addTrackingDataToSettings(trackData || {});
+		touchData = touchData || false;
+
+		trackHandover(trackData, touchData, doOldTrackCall);
 	}
 
 	function applyEventListeners() {
 		// if not done this way, clicking on the btn-apply will create a popup error on the first click
-		$(document.body).on('click', '.btn-apply', function(e) { 
+		$(document.body).on('click', '.btn-apply', function(e) {
 			e.preventDefault();
 			var product = Results.getResultByProductId($(this).attr('data-productid'));
-			
+
 			var options = {
 				product: product
 			};
@@ -165,7 +233,7 @@
 	meerkat.modules.register('partnerTransfer', {
 		initTransfer: initTransfer,
 		transferToPartner: transferToPartner,
-		trackHandover: trackHandover,
+		trackHandoverEvent: trackHandoverEvent,
 		buildURL: buildURL
 	});
 })(jQuery);

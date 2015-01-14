@@ -37,6 +37,8 @@ public class CronRouter extends HttpServlet {
 
 	private static final long serialVersionUID = 18L;
 
+	private static HomeLoanService homeLoanService = new HomeLoanService(new TransactionDetailsDao() ,  new HomeloanUnconfirmedLeadsDao() , new HomeLoanOpportunityService());
+
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String uri = request.getRequestURI();
@@ -51,7 +53,6 @@ public class CronRouter extends HttpServlet {
 		if (uri.endsWith("/cron/hourly/homeloan/flexOutboundLead.json")) {
 			try {
 				SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.HOMELOAN.getCode());
-				HomeLoanService homeLoanService = new HomeLoanService(new TransactionDetailsDao() ,  new HomeloanUnconfirmedLeadsDao() , new HomeLoanOpportunityService());
 				homeLoanService.scheduledLeadGenerator(request);
 			} catch(Exception e) {
 				logger.error("Homeloan_flexOutboundLead cron failed", e);

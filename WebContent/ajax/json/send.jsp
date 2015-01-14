@@ -7,6 +7,7 @@
 <c:set var="emailAddress" value="${param.emailAddress}" />
 <c:set var="emailSubscribed" value="${param.emailSubscribed}" />
 <c:set var="hashedEmail" value="${param.hashedEmail}" />
+<c:set var="ignoreEmailSendToUnsubscribed" value="${false}" />
 
 <c:if test ="${not empty param.emailAddress && (empty hashedEmail or empty emailSubscribed)}">
 	<security:authentication emailAddress="${param.emailAddress}" justChecking="true" />
@@ -17,6 +18,26 @@
 		<c:set var="emailSubscribed" value="${userData.optInMarketing}" />
 	</c:if>
 </c:if>
+
+<c:set var="verticalCode" value="${pageSettings.getVerticalCode()}" />
+
+<c:if test="${empty emailSubscribed or emailSubscribed eq 'N'}">
+	<c:choose>
+		<c:when test="${verticalCode == 'car' and param.mode == 'bestprice'}">
+			<c:set var="ignoreEmailSendToUnsubscribed" value="${true}" />
+		</c:when>
+		<c:when test="${verticalCode == 'home' and param.mode == 'bestprice'}">
+			<c:set var="ignoreEmailSendToUnsubscribed" value="${true}" />
+		</c:when>
+		<c:otherwise><%-- Continue--%></c:otherwise>
+	</c:choose>
+</c:if>
+
+<c:choose>
+	<c:when test="${ignoreEmailSendToUnsubscribed eq true}">
+		<go:log level="INFO" source="send_jsp">/ajax/json/send.jsp - Email skipped as user not subscribed</go:log>
+	</c:when>
+	<c:otherwise>
 
 <%-- Choose which specific settings to pull out --%>
 <%-- Best price will have an additional mailing name --%>
@@ -63,20 +84,25 @@ tmpl: ${tmpl},
 <c:set var="xSQL" value=""/>
 
 <c:choose> <%-- CHECK / TODO: Would this work reliably? we just defined the verticalCode on settings as something passed by param at page top! --%>
-	<c:when test="${pageSettings.getVerticalCode() == 'travel' and param.mode == 'edm'}">
+			<c:when test="${verticalCode == 'travel' and param.mode == 'edm'}">
 		<c:set var="xSQL" value="${pageSettings.getSetting('sendEdmxSQL')}"/>
 	</c:when>
-	<c:when test="${pageSettings.getVerticalCode() == 'health' and param.mode == 'bestprice'}">
+			<c:when test="${verticalCode == 'health' and param.mode == 'bestprice'}">
 		<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
 	</c:when>
-	<c:when test="${pageSettings.getVerticalCode() == 'home' and param.mode == 'bestprice'}">
+			<c:when test="${verticalCode == 'home' and param.mode == 'bestprice'}">
 		<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
 	</c:when>
-	<c:when test="${pageSettings.getVerticalCode() == 'car' and param.mode == 'bestprice'}">
+			<c:when test="${verticalCode == 'car' and param.mode == 'bestprice'}">
 		<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
 	</c:when>
 </c:choose>
 
+		<c:choose>
+			<c:when test="${empty MailingName}">
+				<go:log level="WARN" source="send_jsp">/ajax/json/send.jsp - No email found to be sent</go:log>
+			</c:when>
+			<c:otherwise>
 <%-- Dial into the send script --%>
 <c:import url="${pageSettings.getSetting('sendUrl')}">
 <%-- The URL building details --%>
@@ -92,4 +118,8 @@ tmpl: ${tmpl},
 	<c:param name="hashedEmail" value="${hashedEmail}" />
 	<c:param name="emailAddress" value="${emailAddress}" />
 	<c:param name="emailSubscribed" value="${emailSubscribed}" />
-</c:import>
+				</c:import>
+			</c:otherwise>
+		</c:choose>
+	</c:otherwise>
+</c:choose>

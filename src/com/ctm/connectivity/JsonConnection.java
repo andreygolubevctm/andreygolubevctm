@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.google.json.JsonSanitizer;
 
 public class JsonConnection {
 
@@ -55,6 +56,10 @@ public class JsonConnection {
 	}
 
 	public JSONObject post(String url, String postBody) {
+		return post(url, postBody, true);
+	}
+
+	public JSONObject post(String url, String postBody, Boolean sanitize) {
 		try {
 			if (conn == null) {
 				conn = new SimpleConnection();
@@ -67,7 +72,14 @@ public class JsonConnection {
 
 			if(jsonString == null) return null;
 
-			JSONObject json = new JSONObject(jsonString);
+			JSONObject json;
+
+			if(sanitize) {
+				json = sanitizeJson(jsonString);
+			} else {
+				json = new JSONObject(jsonString);
+			}
+
 			return json;
 		}
 		catch (JSONException e) {
@@ -81,6 +93,10 @@ public class JsonConnection {
 	}
 
 	public JSONArray postArray(String url, String postBody) {
+		return postArray(url, postBody, true);
+	}
+
+	public JSONArray postArray(String url, String postBody, Boolean sanitize) {
 		try {
 			if (conn == null) {
 				conn = new SimpleConnection();
@@ -95,7 +111,13 @@ public class JsonConnection {
 
 			if(jsonString == null) return null;
 
-			JSONArray json = new JSONArray(jsonString);
+			JSONArray json;
+
+			if(sanitize) {
+				json = sanitizeJsonArray(jsonString);
+			} else {
+				json = new JSONArray(jsonString);
+			}
 
 			return json;
 		}
@@ -108,4 +130,29 @@ public class JsonConnection {
 
 		return null;
 	}
+
+	public static JSONObject sanitizeJson(String jsonString){
+		JSONObject json = new JSONObject();
+
+		try {
+			json = new JSONObject(JsonSanitizer.sanitize(jsonString));
+		} catch(JSONException e) {
+			logger.error(": json exception: " + e);
+		}
+
+		return json;
+	}
+
+	public static JSONArray sanitizeJsonArray(String jsonString){
+		JSONArray json = new JSONArray();
+
+		try {
+			json = new JSONArray(JsonSanitizer.sanitize(jsonString));
+		} catch(JSONException e) {
+			logger.error(": json exception: " + e);
+		}
+
+		return json;
+	}
+	
 }

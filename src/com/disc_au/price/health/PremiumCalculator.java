@@ -9,14 +9,19 @@ public class PremiumCalculator {
 	private BigDecimal loading;
 	private String membership;
 	private BigDecimal basePremium;
-	private BigDecimal rebateCalc;
+	private BigDecimal grossPremium;
+	private BigDecimal rebate; // rebate after gov percentage, e.g. 29.04
 
-	public void setRebateCalc(double d) {
+	public void setRebate(double d) {
 		if(d == 0) {
-			this.rebateCalc = new BigDecimal(1);
+			this.rebate = new BigDecimal(100);
 		} else {
-			this.rebateCalc = new BigDecimal(d);
+			this.rebate = new BigDecimal(d);
 		}
+	}
+
+	public double getLhc() {
+		return lhc.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 
 	public void setLhc(String lhc) {
@@ -27,7 +32,7 @@ public class PremiumCalculator {
 		}
 
 	}
-	
+
 	public void setLhc(double lhc) {
 		this.lhc = new BigDecimal(lhc);
 	}
@@ -46,6 +51,23 @@ public class PremiumCalculator {
 		this.basePremium = new BigDecimal(basePremium);
 	}
 
+	public double getGrossPremium() {
+		return grossPremium.doubleValue();
+	}
+
+	public void setGrossPremium(String grossPremium) {
+		if(grossPremium.isEmpty()) {
+			this.grossPremium = new BigDecimal(0);
+		} else {
+			this.grossPremium = new BigDecimal(grossPremium);
+		}
+
+	}
+
+	public void setGrossPremium(double grossPremium) {
+		this.grossPremium = new BigDecimal(grossPremium);
+	}
+
 	public void setLoading(String loading) {
 		if(loading.isEmpty()) {
 			this.loading = new BigDecimal(0);
@@ -59,14 +81,14 @@ public class PremiumCalculator {
 		this.membership = membership;
 	}
 
-	public String getLoadingAmount() {
+	public double getLoadingAmount() {
 		BigDecimal loadingAmount = getLoadingAmountDecimal();
-		return loadingAmount.toString();
+		return loadingAmount.doubleValue();
 	}
 
-	public String getBaseAndLHC() {
+	public double getBaseAndLHC() {
 		BigDecimal loadingAmount= getLoadingAmountDecimal();
-		return loadingAmount.add(basePremium).toString();
+		return loadingAmount.add(basePremium).doubleValue();
 	}
 
 	private BigDecimal getLoadingAmountDecimal() {
@@ -87,15 +109,27 @@ public class PremiumCalculator {
 		}
 	}
 
-	public String getLHCFreeValue() {
-		return getLHCFreeValueDecimal().toString();
+	public double getRebateAmount() {
+		double rebateAmount;
+		if(rebate.doubleValue() != 100.0) {
+			BigDecimal rebateCalcReal = rebate.divide(new BigDecimal(100));
+			rebateAmount =  basePremium.multiply(rebateCalcReal).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}else{
+			rebateAmount = 0.0;
+		}
+		return rebateAmount;
+	}
+
+	public double getLHCFreeValue() {
+		return getLHCFreeValueDecimal().doubleValue();
 	}
 
 	public BigDecimal getLHCFreeValueDecimal() {
 		BigDecimal calculatedPremium;
-		if(rebateCalc.doubleValue() != 1.0) {
-			BigDecimal rebate = new BigDecimal(1).subtract(rebateCalc);
-			calculatedPremium = basePremium.multiply(rebate).setScale(2, BigDecimal.ROUND_HALF_UP);
+		if(rebate.doubleValue() != 100.0) {
+			//e.g. 0.7096 = (100 - 29.04) / 100
+			BigDecimal rebateCalc = new BigDecimal(100).subtract(rebate).divide(new BigDecimal(100));
+			calculatedPremium = basePremium.multiply(rebateCalc).setScale(2, BigDecimal.ROUND_HALF_UP);
 		} else {
 			calculatedPremium = basePremium;
 		}
@@ -104,17 +138,25 @@ public class PremiumCalculator {
 
 	public double getPremiumWithoutRebate(double price) {
 		double premium = price;
-		if(rebateCalc.doubleValue() != 1.0 && price > 0) {
-			BigDecimal rebate = new BigDecimal(1).subtract(rebateCalc);
-			premium = new BigDecimal(price).divide(rebate, 2, RoundingMode.HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		if(rebate.doubleValue() != 100.0 && price > 0) {
+			//e.g. 0.7096 = (100 - 29.04) / 100
+			BigDecimal rebateCalc = new BigDecimal(100).subtract(rebate).divide(new BigDecimal(100));
+			premium = new BigDecimal(price).divide(rebateCalc, 2, RoundingMode.HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
 		return premium;
 	}
-	
+
 	public double getPremiumWithRebateAndLHC() {
 		BigDecimal calculatedLhc = getLoadingAmountDecimal();
 		BigDecimal calculatedPremiumWithRebate =getLHCFreeValueDecimal();
 		return calculatedPremiumWithRebate.add(calculatedLhc).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 
+	public double getDiscountValue() {
+		return grossPremium.subtract(basePremium).doubleValue();
+	}
+
+	public double getDiscountPercentage() {
+		return new BigDecimal(getDiscountValue()).divide(basePremium, 2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	}
 }

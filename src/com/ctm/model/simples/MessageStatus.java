@@ -18,6 +18,9 @@ public class MessageStatus extends AbstractJsonModel {
 	public final static int STATUS_ASSIGNED = 5;
 	public final static int STATUS_UNSUCCESSFUL = 6;
 	public final static int STATUS_ABANDONED = 7;
+	public final static int STATUS_COMPLETED_DONOTCONTACT = 9;
+	public final static int STATUS_COMPLETED_CONVERTEDTOSALE = 11;
+	public final static int STATUS_COMPLETED_ALREADYCUSTOMER = 16;
 
 	private int id;
 	private String status;

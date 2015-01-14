@@ -19,9 +19,10 @@ import com.ctm.model.homeloan.HomeLoanModel.CustomerGoal;
 import com.ctm.model.homeloan.HomeLoanModel.CustomerSituation;
 import com.ctm.model.homeloan.HomeLoanModel.RepaymentOptions;
 import com.ctm.router.homeloan.HomeLoanRouter;
+import com.ctm.security.StringEncryption;
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.FatalErrorService;
-import com.disc_au.web.go.tags.AESEncryptDecryptTag;
+import com.ctm.utils.RequestUtils;
 
 public class HomeLoanService {
 
@@ -281,19 +282,17 @@ public class HomeLoanService {
 		return model;
 	}
 
-	public void scheduledLeadGenerator(HttpServletRequest request) {
+	public synchronized void scheduledLeadGenerator(HttpServletRequest request) {
 
 		JSONObject json = null;
 		Logger logger = Logger.getLogger(HomeLoanRouter.class.getName());
 		AccessTouchService touch = new AccessTouchService();
 
 		try {
-
-			AESEncryptDecryptTag decrypter = new AESEncryptDecryptTag();
-			decrypter.setKey(HomeLoanOpportunityService.SECRET_KEY);
-
 			List<HomeLoanModel> leads = homeloanLeadsDao.getUnconfirmedTransactionIds();
+
 			for(HomeLoanModel lead : leads) {
+
 				/**
 				 * Ignore leads with names like these.
 				 */
@@ -308,8 +307,8 @@ public class HomeLoanService {
 
 				if(json != null && json.has("responseData")) {
 					try {
-						decrypter.setContent(json.getString("responseData"));
-						JSONObject responseJson = new JSONObject(decrypter.decrypt());
+						String out = StringEncryption.decrypt(HomeLoanOpportunityService.SECRET_KEY, json.getString("responseData"));
+						JSONObject responseJson = new JSONObject(out);
 						if(responseJson.has("flexOpportunityId")) {
 							touch.recordTouch(lead.getTransactionId(), Touch.TouchType.CALL_FEED.getCode());
 							// Add a new tran detail

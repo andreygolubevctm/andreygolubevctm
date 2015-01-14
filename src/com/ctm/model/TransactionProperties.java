@@ -1,7 +1,10 @@
 package com.ctm.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.ctm.model.simples.MessageAudit;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,22 +18,35 @@ import com.ctm.model.formatter.JsonUtils;
  */
 public class TransactionProperties extends Transaction {
 
-	private ArrayList<Comment> comments = new ArrayList<Comment>();
-	private ArrayList<Touch> touches = new ArrayList<Touch>();
+	@JsonProperty(Comment.JSON_COLLECTION_NAME)
+	private List<Comment> comments = new ArrayList<>();
+
+	@JsonProperty(Touch.JSON_COLLECTION_NAME)
+	private List<Touch> touches = new ArrayList<>();
+
+	@JsonProperty(MessageAudit.JSON_COLLECTION_NAME)
+	private List<MessageAudit> audits = new ArrayList<>();
 
 
 
-	public ArrayList<Comment> getComments() {
+	public List<MessageAudit> getAudits() {
+		return audits;
+	}
+	public void setAudits(List<MessageAudit> audits) {
+		this.audits = audits;
+	}
+
+	public List<Comment> getComments() {
 		return comments;
 	}
-	public void setComments(ArrayList<Comment> comments) {
+	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
 
-	public ArrayList<Touch> getTouches() {
+	public List<Touch> getTouches() {
 		return touches;
 	}
-	public void setTouches(ArrayList<Touch> touches) {
+	public void setTouches(List<Touch> touches) {
 		this.touches = touches;
 	}
 
@@ -40,11 +56,9 @@ public class TransactionProperties extends Transaction {
 	protected JSONObject getJsonObject() throws JSONException {
 		JSONObject json = super.getJsonObject();
 
-		// Add all the comments
 		JsonUtils.addListToJsonObject(json, Comment.JSON_COLLECTION_NAME, getComments());
-
-		// Add all the touches
 		JsonUtils.addListToJsonObject(json, Touch.JSON_COLLECTION_NAME, getTouches());
+		JsonUtils.addListToJsonObject(json, MessageAudit.JSON_COLLECTION_NAME, getAudits());
 
 		return json;
 	}

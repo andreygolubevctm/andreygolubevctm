@@ -58,15 +58,15 @@ ResultsView = {
 
 		// trigger the reflow into the default display mode
 		Results.view.setDisplayMode( Results.settings.displayMode, true );
-
+		var animatedElement;
 		// animate all the results one by one
 		if( Results.settings.animation.results.individual.active ){
 			Results.view.animateIndividualResults();
-			var animatedElement = $(Results.settings.elements.rows).last();
+			animatedElement = $(Results.settings.elements.rows).last();
 		// animate all the results as one element
 		} else {
 			Results.view.animateAllResults();
-			var animatedElement = $(Results.settings.elements.resultsContainer);
+			animatedElement = $(Results.settings.elements.resultsContainer);
 		}
 
 		// calculate and show savings if any
@@ -464,7 +464,9 @@ ResultsView = {
 		
 		// position all elements absolutely for the time of the animation
 		var allRows = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows );
+		if(Results.settings.animation.shuffle.active === true) {
 		ResultsUtilities.position("absolute", allRows, Results.view.orientation);
+		}
 
 		// wait for the next tick so that DOM is ready
 		setTimeout(function shuffleSetTimeout(){
@@ -557,7 +559,9 @@ ResultsView = {
 
 		Results.view.showResults(); // reshow elements just incase previous filter filtered everything out and hid all the elements.
 
+		if(Results.settings.animation.filter.active === true) {
 		Results.view.beforeAnimation();
+		}
 
 		var firstVisible = false;
 		var countVisible = 0;
@@ -641,8 +645,10 @@ ResultsView = {
 			}
 
 			// get the longest CSS transition duration of results elements (between fadeIn, fadeOut and translation)
+			if(Results.settings.animation.filter.active === true) {
 			if( !Results.view.filterTransitionDuration || currentResult.transitionDuration() > Results.view.filterTransitionDuration ){
 				Results.view.filterTransitionDuration = currentResult.transitionDuration(); // jquery plugin in common/js/results/ResultsUtilities.js
+			}
 			}
 
 		});

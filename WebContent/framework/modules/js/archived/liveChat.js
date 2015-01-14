@@ -9,13 +9,13 @@
 		debug = meerkat.logging.debug;
 
 		//PREVIOUSLY IN THE HEAD: Provide settings for mtagconfig
-		window.lpMTagConfig = window.lpMTagConfig || {}; //Preseved in case other areas modify 
+		window.lpMTagConfig = window.lpMTagConfig || {}; //Preseved in case other areas modify
 		window.lpMTagConfig.vars = window.lpMTagConfig.vars || [];
 		window.lpSettings = window.lpSettings || {};
 		var options, oldIE;
 
 	/* ==========================================================================
-	 * PLEASE NOTE, IE8,9,10 - live chat breaks positioning of ".select select" boxes 
+	 * PLEASE NOTE, IE8,9,10 - live chat breaks positioning of ".select select" boxes
 	 * on the page for no reason whatsoever, as soon as the live chat button is
 	 * injected into the html of it's target container. Also, we can't watch for
 	 * dom changes the live chat makes because there's no DOMSubtreeModified event
@@ -24,7 +24,7 @@
 	 *
 	 *--------------------------------------------------------------------------
 	 *
-	 * The above Issue seems get fixed on IE8 and above. We listen to the 
+	 * The above Issue seems get fixed on IE8 and above. We listen to the
 	 * "propertychange" event instead for IE8 to watch the Dom change [HLT-1172]
 	 *
 	 *--------------------------------------------------------------------------
@@ -35,7 +35,7 @@
 	 *--------------------------------------------------------------------------
 	 *
 	 * CSS Hack for IE8-IE10 in [HLT-1313] to reslove the issue temporarily
-	 * 
+	 *
 	 * ======================================================================== */
 
 	/*
@@ -81,7 +81,7 @@
 		}else{
 			return ['ctm:whiteLabel', options.brand, 'quote-form', options.vertical, page].join(':');
 		}
-		
+
 	}
 
 	function fire(stepPassed, confirmationBool, confirmationNavigationId) {
@@ -103,7 +103,7 @@
 			lpMTagConfig.vars.push(['unit', options.unit]);
 		}
 
-		//Add the current page, and a hardcoded value 
+		//Add the current page, and a hardcoded value
 		if (confirmationBool) {
 			lpMTagConfig.vars.push(['page', 'PageName', getPageName(confirmationNavigationId)]);
 			//If at the confirmation page then also call this
@@ -123,7 +123,7 @@
 
 		$(document).ready(function($) {
 			//lpSettings is a json object containing implementation settings if it exists already
-			
+
 			oldIE = $('html').hasClass('lt-ie9');
 			//Check if meerkat.site exsiting, abort if it is not
 			if (typeof meerkat.site === "undefined") return;
@@ -177,7 +177,7 @@
 			function liveChatDomEvents(event) {
 				var content = "";
 				var $contentElem = $("#" + options.button);
-				if ($contentElem.length) { content = $contentElem.html(); 
+				if ($contentElem.length) { content = $contentElem.html();
 				}
 				if(content === "" || content == "<span></span>" || content == "<SPAN></SPAN>"){ //IE8 Hack: somehow the injected html is all capital case in IE8
 					$('[data-livechat="target"]').attr("data-livechat-state",false);
@@ -212,7 +212,7 @@
 					//TODO: Test if on the confirmation page and reload mTag.
 					//It seems though that the fire function already does this at it's end too. I'm assuming that in the past there was a need to call it before fire as well as at it's end? The confirmation page calls fire directly now via it's livechat-fire data attribute.
 					//if( journey_end == (latestStepIndex) ) {
-						//Reload the MTag (aka Monitor Tag). Implemented to be called from the confirmation page once when sold. 
+						//Reload the MTag (aka Monitor Tag). Implemented to be called from the confirmation page once when sold.
 						//lpMTagConfig.loadTag();
 					//}
 					fire(latestStepIndex);

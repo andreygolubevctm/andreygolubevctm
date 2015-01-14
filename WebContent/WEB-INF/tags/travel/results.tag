@@ -9,6 +9,12 @@
 	<travel:more_info />
 
 <%-- RESULTS TABLE --%>
+	<div class="container">
+		<div class="row coverLevelTabs visible-xs">
+			<div class="currentTabsContainer"></div>
+		</div>
+	</div>
+
 	<div class="bridgingContainer"></div>
 	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
 		<div class="featuresHeaders featuresElements">
@@ -102,9 +108,9 @@
 								<div class="col-xs-6 priceContainer">
 									<span class="priceAmount">
 										{{= obj.priceText }}
-										
+
 									</span>
-									<span class="priceTitle">Price</span>						 
+									<span class="priceTitle">Price</span>
 								</div>
 								<div class="col-xs-6 excessContainer">
 									<span class="excessAmount">{{= obj.info.excess.text }}</span>
@@ -211,7 +217,7 @@
 		<div class="result">
 			<div class="unavailable featuresMode">
 				<div class="productSummary results clearfix">
-					
+
 				</div>
 			</div>
 

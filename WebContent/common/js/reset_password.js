@@ -41,9 +41,9 @@ Reset = {
 		var dat = $("#resetPasswordForm").serialize();
 		var self = this;
 		$.ajax({
-			url: "ajax/json/reset_password.jsp",
+			url: "generic/reset_password",
 			data: dat,
-			type: "GET",
+			type: "POST",
 			async: true,
 			cache: false,
 			beforeSend : function(xhr,setting) {
@@ -74,7 +74,7 @@ Reset = {
 			},
 			dataType: "json",
 			error: function(obj,txt){
-				$("#reset-error-message").text("Oops, something seems to have gone wrong: "+txt+" Please try again.");
+				$("#reset-error-message").text("Oops, something seems to have gone wrong: " + txt + " Please try again.");
 				Popup.show("#reset-error");
 				this._busy = false;
 			},

@@ -2,8 +2,7 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info,
-		supertagEventMode = 'Load';
+		log = meerkat.logging.info;
 
 	var events = {
 		// Defined here because it's published in Results.js
@@ -13,8 +12,6 @@
 	meerkatEvents.carResults = {
 		RESULTS_RENDER_COMPLETED : "RESULTS_RENDER_COMPLETED"
 	};
-
-	var supertagResultsEventMode = 'Load';
 
 	var $component; //Stores the jQuery object for the component group
 	var previousBreakpoint;
@@ -61,6 +58,8 @@
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
 					productId: "productId",
+					productName: "headline.name",
+					productBrandCode: "brandCode",
 					price: {
 						annually: "headline.lumpSumTotal",
 						/* The annual property is here as a hack because Payment Type (#quote_paymentType) is configured incorrectly.
@@ -239,7 +238,7 @@
 				get();
 				Results.settings.incrementTransactionId = false;
 			} else {
-				supertagResultsEventMode = 'Refresh';
+				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 			}
 
 			meerkat.modules.session.poke();
@@ -446,38 +445,26 @@
 	}
 	}
 
+	/**
+	 * This function has been refactored into calling a core resultsTracking module.
+	 * It has remained here so verticals can run their own unique calls.
+	 */
 	function publishExtraSuperTagEvents() {
+		var $excess = $('#navbar-filter .dropdown.filter-excess span:first-child'),
+		preferredExcess = "default";
 
-		var display;
-		if(meerkat.modules.compare.isCompareOpen() === true) {
-			display = 'compare';
-		} else {
-			display = Results.getDisplayMode();
-		if(display.indexOf("f") === 0) {
-			display = display.slice(0, -1); // drop the trailing S off of features
-		}
+		if($excess.length) {
+			preferredExcess = $excess.text().toLowerCase();
+			preferredExcess = preferredExcess.indexOf("please") !== -1 ? null : preferredExcess;
 		}
 
-		var data = {
-				vertical: meerkat.site.vertical,
-				actionStep: meerkat.site.vertical + ' results',
-				display: display,
+		meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+			additionalData: {
 				paymentPlan: $('#navbar-filter .dropdown.filter-frequency span:first-child').text(),
-				preferredExcess: $('#navbar-filter .dropdown.filter-excess span:first-child').text(),
-				event: supertagResultsEventMode
-		};
-
-		if(data.preferredExcess.toLowerCase().indexOf("please") !== -1) {
-			data.preferredExcess = '';
-		}
-
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method:	'trackQuoteList',
-			object:	data
+				preferredExcess: preferredExcess
+			},
+			onAfterEventMode: 'Load'
 		});
-
-		// Set this back to the init default, incase we go back and then forward.
-		supertagResultsEventMode = 'Load';
 	}
 
 	function launchOfferTerms(event) {
@@ -525,7 +512,7 @@
 		$(window).scrollTop(0);
 
 		if(doTracking) {
-				supertagResultsEventMode = 'Refresh';
+				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 			publishExtraSuperTagEvents();
 		}
 	}
@@ -572,7 +559,7 @@
 		$(document.body).removeClass('priceMode');
 		$(window).scrollTop(0);
 		if(doTracking) {
-				supertagResultsEventMode = 'Refresh';
+				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 			publishExtraSuperTagEvents();
 		}
 	}

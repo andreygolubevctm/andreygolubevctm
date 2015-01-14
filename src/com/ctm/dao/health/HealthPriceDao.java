@@ -648,27 +648,40 @@ public class HealthPriceDao {
 				propName = DISC_PREFIX;
 			}
 
+			StringBuilder sqlBuilder = new StringBuilder()
+					.append("SELECT props.value, props.text, props.PropertyId ")
+					.append("FROM ctm.product_properties props ")
+					.append("WHERE props.productid = ? ")
+					.append("AND props.PropertyId in ( ")
+					.append("'grossAnnualLhc', ")
+					.append("'grossFortnightlyLhc', ")
+					.append("'grossMonthlyLhc', ")
+					.append("'grossQuarterlyLhc', ")
+					.append("'grossWeeklyLhc', ")
+					.append("'grossHalfYearlyLhc', ")
+					.append("'" + propName + "AnnualPremium', ")
+					.append("'" + propName + "FortnightlyPremium', ")
+					.append("'" + propName + "MonthlyPremium', ")
+					.append("'" + propName + "QuarterlyPremium', ")
+					.append("'" + propName + "WeeklyPremium', ")
+					.append("'" + propName + "HalfYearlyPremium' ");
+
+			if (isDiscountRates) {
+				sqlBuilder
+					.append(", ")
+					.append("'grossAnnualPremium', ")
+					.append("'grossFortnightlyPremium', ")
+					.append("'grossMonthlyPremium', ")
+					.append("'grossQuarterlyPremium', ")
+					.append("'grossWeeklyPremium', ")
+					.append("'grossHalfYearlyPremium' ");
+			}
+				sqlBuilder
+					.append(") ")
+					.append("ORDER BY props.PropertyId ");
+
 			PreparedStatement stmt;
-			stmt = dbSource.getConnection().prepareStatement(
-					"SELECT props.value, props.text, props.PropertyId "
-					+ "FROM ctm.product_properties props "
-					+ "WHERE props.productid = ? "
-					+ "AND props.PropertyId in ( "
-					+	"'grossAnnualLhc', "
-					+	"'grossFortnightlyLhc', "
-					+	"'grossMonthlyLhc', "
-					+	"'grossQuarterlyLhc', "
-					+	"'grossWeeklyLhc', "
-					+	"'grossHalfYearlyLhc', "
-					+	"'" + propName + "AnnualPremium', "
-					+	"'" + propName + "FortnightlyPremium', "
-					+	"'" + propName + "MonthlyPremium', "
-					+	"'" + propName + "QuarterlyPremium', "
-					+	"'" + propName + "WeeklyPremium', "
-					+	"'" + propName + "HalfYearlyPremium' "
-					+ ") "
-					+ "ORDER BY props.PropertyId "
-			);
+			stmt = dbSource.getConnection().prepareStatement(sqlBuilder.toString());
 			stmt.setString(1, productId);
 
 			ResultSet result = stmt.executeQuery();
@@ -676,7 +689,7 @@ public class HealthPriceDao {
 			while (result.next()) {
 				String propertyId = result.getString("PropertyId");
 				double value = result.getDouble("value");
-				populatePremium(propertyId, value, pricePremium);
+				populatePremium(propertyId, value, pricePremium, isDiscountRates);
 			}
 
 		} catch (SQLException | NamingException e) {
@@ -690,51 +703,69 @@ public class HealthPriceDao {
 	}
 
 
-	private void populatePremium(String propertyId, double value, HealthPricePremium pricePremium) {
+	private void populatePremium(String propertyId, double value, HealthPricePremium pricePremium, boolean isDiscountRates) {
 		switch(propertyId){
-		case "grossAnnualLhc":
-			pricePremium.setAnnualLhc(value);
-			break;
-		case  "grossAnnualPremium":
-		case "discAnnualPremium":
-			pricePremium.setAnnualPremium(value);
-			break;
-		case "grossFortnightlyLhc":
-			pricePremium.setFortnightlyLhc(value);
-			break;
-		case "grossFortnightlyPremium":
-		case "discFortnightlyPremium":
-			pricePremium.setFortnightlyPremium(value);
-			break;
-		case "grossMonthlyLhc":
-			pricePremium.setMonthlyLhc(value);
-			break;
-		case "grossMonthlyPremium":
-		case "discMonthlyPremium":
-			pricePremium.setMonthlyPremium(value);
-			break;
-		case "grossQuarterlyLhc":
-			pricePremium.setQuarterlyLhc(value);
-			break;
-		case "grossQuarterlyPremium":
-		case "discQuarterlyPremium":
-			pricePremium.setQuarterlyPremium(value);
-			break;
-		case "grossWeeklyLhc":
-			pricePremium.setWeeklyLhc(value);
-			break;
-		case "grossWeeklyPremium":
-		case "discWeeklyPremium":
-			pricePremium.setWeeklyPremium(value);
-			break;
-		case "grossHalfYearlyLhc":
-			pricePremium.setHalfYearlyLhc(value);
-			break;
-		case "grossHalfYearlyPremium":
-		case "discHalfYearlyPremium":
-			pricePremium.setHalfYearlyPremium(value);
-			break;
-	}
+			case "grossAnnualLhc":
+				pricePremium.setAnnualLhc(value);
+				break;
+			case  "grossAnnualPremium":
+				if (!isDiscountRates){pricePremium.setAnnualPremium(value);}
+				pricePremium.setGrossAnnualPremium(value);
+				break;
+			case "discAnnualPremium":
+				pricePremium.setAnnualPremium(value);
+				break;
+			case "grossFortnightlyLhc":
+				pricePremium.setFortnightlyLhc(value);
+				break;
+			case "grossFortnightlyPremium":
+				if (!isDiscountRates){pricePremium.setFortnightlyPremium(value);}
+				pricePremium.setGrossFortnightlyPremium(value);
+				break;
+			case "discFortnightlyPremium":
+				pricePremium.setFortnightlyPremium(value);
+				break;
+			case "grossMonthlyLhc":
+				pricePremium.setMonthlyLhc(value);
+				break;
+			case "grossMonthlyPremium":
+				if (!isDiscountRates){pricePremium.setMonthlyPremium(value);}
+				pricePremium.setGrossMonthlyPremium(value);
+				break;
+			case "discMonthlyPremium":
+				pricePremium.setMonthlyPremium(value);
+				break;
+			case "grossQuarterlyLhc":
+				pricePremium.setQuarterlyLhc(value);
+				break;
+			case "grossQuarterlyPremium":
+				if (!isDiscountRates){pricePremium.setQuarterlyPremium(value);}
+				pricePremium.setGrossQuarterlyPremium(value);
+				break;
+			case "discQuarterlyPremium":
+				pricePremium.setQuarterlyPremium(value);
+				break;
+			case "grossWeeklyLhc":
+				pricePremium.setWeeklyLhc(value);
+				break;
+			case "grossWeeklyPremium":
+				if (!isDiscountRates){pricePremium.setWeeklyPremium(value);}
+				pricePremium.setGrossWeeklyPremium(value);
+				break;
+			case "discWeeklyPremium":
+				pricePremium.setWeeklyPremium(value);
+				break;
+			case "grossHalfYearlyLhc":
+				pricePremium.setHalfYearlyLhc(value);
+				break;
+			case "grossHalfYearlyPremium":
+				if (!isDiscountRates){pricePremium.setHalfYearlyPremium(value);}
+				pricePremium.setGrossHalfYearlyPremium(value);
+				break;
+			case "discHalfYearlyPremium":
+				pricePremium.setHalfYearlyPremium(value);
+				break;
+		}
 	}
 
 	public HealthPriceResult setUpFundCodeAndName(HealthPriceResult healthPriceResult) throws DaoException {

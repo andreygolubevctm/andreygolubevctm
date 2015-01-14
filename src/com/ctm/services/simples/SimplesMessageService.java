@@ -1,39 +1,22 @@
 package com.ctm.services.simples;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.ctm.dao.BlacklistDao;
-import com.ctm.dao.CommentDao;
-import com.ctm.dao.TouchDao;
-import com.ctm.dao.TransactionDao;
 import com.ctm.dao.UserDao;
-import com.ctm.dao.simples.MessageAuditDao;
 import com.ctm.dao.simples.MessageDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.Transaction;
-import com.ctm.model.TransactionProperties;
-import com.ctm.model.formatter.JsonUtils;
-import com.ctm.model.simples.BlacklistChannel;
-import com.ctm.model.simples.JsonResponse;
-import com.ctm.model.simples.Message;
-import com.ctm.model.simples.MessageAudit;
-import com.ctm.model.simples.MessageStatus;
-import com.ctm.model.simples.User;
-import com.ctm.services.ApplicationService;
+import com.ctm.model.simples.*;
+import com.ctm.services.TransactionService;
+import org.apache.log4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class SimplesMessageService {
 	private static final Logger logger = Logger.getLogger(SimplesMessageService.class.getName());
@@ -45,111 +28,83 @@ public class SimplesMessageService {
 		return messageDao.postponedMessages(userId);
 	}
 
-	public JSONObject getMessage(final int messageId) throws DaoException, JSONException {
+	public MessageDetail getMessage(final int messageId) throws DaoException {
 		final MessageDao messageDao = new MessageDao();
 		final Message message = messageDao.getMessage(messageId);
-		return buildMessageWithDetails(message);
-	}
 
-
-
-	/**
-	 * This is a smoosh of Messages + Transaction details.
-	 * @param message
-	 * @return
-	 * @throws DaoException
-	 * @throws JSONException
-	 */
-	public JSONObject buildMessageWithDetails(Message message) throws DaoException, JSONException {
-		TransactionProperties details = new TransactionProperties();
-		TransactionDao transactionDao = new TransactionDao();
-		ArrayList<MessageAudit> audits = new ArrayList<MessageAudit>();
-		MessageAuditDao messageAuditDao = new MessageAuditDao();
-
-		//
-		// Collect the extra details
-		//
-		details.setTransactionId(message.getTransactionId());
-		transactionDao.getCoreInformation(details);
-
-		CommentDao comments = new CommentDao();
-		details.setComments( comments.getCommentsForTransactionId(message.getTransactionId()) );
-
-		TouchDao touches = new TouchDao();
-		details.setTouches( touches.getTouchesForTransactionId(message.getTransactionId()) );
-
-		audits = messageAuditDao.getMessageAudits(message.getMessageId());
-
-		//
-		// Merge the objects (yikes...)
-		//
-		JSONObject json = details.toJsonObject(true);
-		JSONObject messageJsonObj = message.toJsonObject();
-		Iterator<?> it = messageJsonObj.keys();
-		String tmp_key;
-
-		while (it.hasNext()) {
-			tmp_key = (String) it.next();
-			json.put(tmp_key, messageJsonObj.get(tmp_key));
+		if (message.getMessageId() == 0) {
+			// No message available
+			MessageDetail messageDetail = new MessageDetail();
+			messageDetail.setMessage(message);
+			return messageDetail;
 		}
-
-		JsonUtils.addListToJsonObject(json, MessageAudit.JSON_COLLECTION_NAME, audits);
-
-		return json;
+		else {
+			final MessageDetailService messageDetailService = new MessageDetailService();
+			return messageDetailService.getMessageDetail(message);
+		}
 	}
+
 
 
 	/**
 	 * Get a message from the message queue. The provided User ID may be used to target specific messages, and they will be assigned the message.
 	 *
 	 * @param userId ID of the user who is getting the message
-	 * @return JSON string
 	 */
-	public String getNextMessageForUser(HttpServletRequest request, int userId) throws ConfigSettingException{
-		Message message = new Message();
-		MessageDao messageDao = new MessageDao();
-		BlacklistDao blacklistDao = new BlacklistDao();
-		JSONObject json = new JSONObject();
+	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId) throws ConfigSettingException, DaoException {
+		MessageDetail messageDetail = new MessageDetail();
 
-		try {
-			message = messageDao.getNextMessage(userId);
+		final MessageDao messageDao = new MessageDao();
+		Message message = messageDao.getNextMessage(userId);
 
-			if (message.getMessageId() == 0) {
-				// No message available
-				json = message.toJsonObject();
+		if (message.getMessageId() == 0) {
+			// No message available
+			messageDetail.setMessage(message);
+		}
+		else {
+			// Build the associated details
+			MessageDetailService messageDetailService = new MessageDetailService();
+			messageDetail = messageDetailService.getMessageDetail(message);
+
+			int styleCodeId = messageDetail.getTransaction().getStyleCodeId();
+
+			final BlacklistDao blacklistDao = new BlacklistDao();
+
+			// If message's phone number is in the blacklist, set the message to Complete + Do Not Contact
+			if (blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber1()) ||
+				blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber2())) {
+
+				setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED_DONOTCONTACT);
+
+				return getNextMessageForUser(request, userId);
 			}
-			else {
-				int styleCodeId = ApplicationService.getBrandFromRequest(request).getId();
 
-				if (blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber1()) ||
-					blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber2())) {
+			// If any transaction in the chain is confirmed, set the message to Complete
+			TransactionService transactionService = new TransactionService();
+			ConfirmationOperator confirmationOperator = transactionService.findConfirmationByRootId(message.getTransactionId());
+			if (confirmationOperator != null) {
+				UserDao userDao = new UserDao();
+				User user = userDao.getUser(userId);
 
-					// if message's phone number is in the blacklist, set the message to complete with reasonId 9 (Do not Contact)
-					setMessageToComplete(request, userId, message.getMessageId(), 9);
-
-					return getNextMessageForUser(request, userId);
+				// Decide what status to complete the message
+				// based on if the user was the consultant that sold the transaction.
+				if (user.getUsername().equals(confirmationOperator.getOperator())) {
+					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED_CONVERTEDTOSALE);
+				} else {
+					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED_ALREADYCUSTOMER);
 				}
 
-				// If the message is new or is a different user, assign it to our user.
-				// Do as last step in case anything above broke
-				if (message.getStatusId() == MessageStatus.STATUS_NEW || message.getUserId() != userId) {
-					messageDao.assignMessageToUser(message.getMessageId(), userId);
-				}
+				return getNextMessageForUser(request, userId);
+			}
 
-				// Build the associated details
-				json = buildMessageWithDetails(message);
+			// If the message is new or is a different user, assign it to our user.
+			// Do as last step in case anything above broke
+			if (message.getStatusId() == MessageStatus.STATUS_NEW || message.getUserId() != userId) {
+				messageDao.assignMessageToUser(message.getMessageId(), userId);
 			}
 		}
-		catch (DaoException | JSONException e) {
-			logger.error("Could not get next message for user '"+userId+"'", e);
 
-			JsonResponse jsonResponse = new JsonResponse();
-			Error error = new Error(e.getMessage());
-			jsonResponse.addError(error);
-			json = jsonResponse.toJsonObject(true);
-		}
-
-		return json.toString();
+		return messageDetail;
 	}
 
 
@@ -206,8 +161,8 @@ public class SimplesMessageService {
 
 			Message message = messageDao.setMessageToCompleted(actionIsPerformedByUserId, messageId, reasonStatusId);
 
-			// Check the reasonStatusId, if it equals 9 (Do not contact), add contact to Blacklist
-			if (reasonStatusId == 9) {
+			// Check the reasonStatusId, if it equals Do Not Contact, add contact to Blacklist
+			if (reasonStatusId == MessageStatus.STATUS_COMPLETED_DONOTCONTACT) {
 
 				SimplesBlacklistService simplesBlacklistService = new SimplesBlacklistService();
 				UserDao userDao = new UserDao();

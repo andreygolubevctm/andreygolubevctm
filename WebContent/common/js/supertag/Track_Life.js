@@ -83,10 +83,6 @@ var Track_Life = {
 					ranking : rank++
 				});
 			}
-			
-			try {				
-				superT.trackQuoteProductList({products:prodArray});
-				
 				var plan = "Annual Payment";
 				switch($('#life_primary_insurance_frequency').val()) {
 					case "A":
@@ -99,9 +95,12 @@ var Track_Life = {
 						break;
 				}
 				
-				superT.trackQuoteList ({
+
+			try {
+				superT.trackQuoteResultsList({
 				      paymentPlan: 			plan,
-				      event: 				eventType
+					event: eventType,
+					products: prodArray
 				});
 			} catch(err) {
 				/* IGNORE */

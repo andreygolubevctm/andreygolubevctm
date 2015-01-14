@@ -12,13 +12,13 @@
 			<div class="alert alert-danger">{{= error.message }}</div>
 		{{ }) }}
 
-	{{ } else if (obj.messageId === 0) { }}
-
-		<p>There are either no active messages in the queue, or current time is outside call centre hours.</p>
-
 	{{ } else if (obj === false) { }}
 
 		<p><!-- No current message. --></p>
+
+	{{ } else if (obj.message.messageId === 0) { }}
+
+		<p>There are either no active messages in the queue, or current time is outside call centre hours.</p>
 
 	{{ } else { }}
 
@@ -27,32 +27,39 @@
 		<table class="table table-condensed table-hover">
 			<tbody>
 				<tr>
-					<th width="30%">Status</th>
-					<td>{{= obj.status }} (Message ID: {{= obj.messageId }})</td>
+					<th width="26%">Status</th>
+					<td>{{= obj.message.status }} (Message ID: {{= obj.message.messageId }})</td>
 				</tr>
 				<tr>
 					<th>Brand/Vertical</th>
-					<td>{{= obj.styleCodeName }} - {{= obj.vertical }}</td>
+					<td>{{= obj.transaction.styleCodeName }} - {{= obj.transaction.verticalCode }}</td>
 				</tr>
 				<tr>
 					<th>Contact name</th>
-					<td>{{= obj.contactName }}</td>
+					<td>{{= obj.message.contactName }}</td>
 				</tr>
 				<tr>
 					<th>State</th>
-					<td>{{= obj.state }}</td>
+					<td>{{= obj.message.state }}</td>
 				</tr>
 				<tr>
 					<th>Numbers to call</th>
 					<td>
-						{{ if (obj.phoneNumber1 && obj.phoneNumber1 != '') { }}
-						<button data-phone="{{= obj.phoneNumber1 }}" class="btn-form btn icon-phone"><span>&nbsp;{{= obj.phoneNumber1 }}</span></button>
-						{{ } if (obj.phoneNumber2 && obj.phoneNumber2 != '') { }}
-						<button data-phone="{{= obj.phoneNumber2 }}" class="btn-form btn icon-phone"><span>&nbsp;{{= obj.phoneNumber2 }}</span></button>
+						{{ if (obj.message.phoneNumber1 && obj.message.phoneNumber1 != '') { }}
+						<button data-phone="{{= obj.message.phoneNumber1 }}" class="btn btn-form"><span class="icon icon-phone"></span> {{= obj.message.phoneNumber1 }}</button>
+						{{ } if (obj.message.phoneNumber2 && obj.message.phoneNumber2 != '') { }}
+						<button data-phone="{{= obj.message.phoneNumber2 }}" class="btn btn-form"><span class="icon icon-phone"></span> {{= obj.message.phoneNumber2 }}</span></button>
 						{{ } }}
 						<button class="btn btn-tertiary messagedetail-loadbutton">Amend quote <span class="icon icon-arrow-right"></span></button>
 					</td>
 				</tr>
+				{{ if (obj.hasOwnProperty('verticalProperties')) { }}
+				{{ _.each(obj.verticalProperties, function(value, key) { }}
+					<tr>
+						<th>{{= key }}</th><td>{{= value }}</td>
+					</tr>
+				{{ }) }}
+				{{ } }}
 			</tbody>
 		</table>
 

@@ -103,8 +103,8 @@
 
 <core:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
-		{{ if(obj.isOnlineAvailable === true && obj.transferURL !== "") { }}
-			<a target="_blank" href="/${pageSettings.getContextFolder()}{{= obj.transferURL }}" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+		{{ if(obj.isOnlineAvailable === true) { }}
+			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
 		{{ } }}
 	</div>
 	{{ if(obj.isOfflineAvailable === true) { }}
@@ -132,7 +132,6 @@
 	{{ obj.isOnlineAvailable = obj.onlineAvailable == "Y" }}
 	{{ obj.isOfflineAvailable = obj.offlineAvailable == "Y" }}
 	{{ obj.isCallbackAvailable = obj.callbackAvailable == "Y" }}
-	{{ obj.transferURL = meerkat.modules.homeMoreInfo.getTransferUrl(obj) }}
 
 	<%-- Set up Reusable Templates --%>
 	{{ var template = $("#promotion-offer-template").html(); }}
@@ -348,10 +347,8 @@
 	<div class="col-xs-12 col-sm-6 push-top-15">
 		<a href="javascript:;" class="btn btn-block btn-back">Select a Different Product</a>
 	</div>
-	{{ if(obj.transferURL !== ""){ }}
 		<div class="col-xs-12 col-sm-6 push-top-15">
-			<a class="btn btn-next btn-block btn-proceed-to-insurer" href="/${pageSettings.getContextFolder()}{{= obj.transferURL }}" target="_blank">Proceed to Insurer</a>
+		<a class="btn btn-next btn-block btn-proceed-to-insurer" href="javascript:;" target="_blank">Proceed to Insurer</a>
 		</div>
-	{{ } }}
 </div>
 </core:js_template>

@@ -18,6 +18,7 @@ ResultsModel = {
 		WEBAPP_LOCK: 'WEBAPP_LOCK',
 		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK',
 		RESULTS_DATA_READY: 'RESULTS_DATA_READY',
+		RESULTS_BEFORE_DATA_READY: 'RESULTS_BEFORE_DATA_READY',
 		RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW: 'RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW',
 		RESULTS_UPDATED_INFO_RECEIVED: 'RESULTS_UPDATED_INFO_RECEIVED'
 	},
@@ -254,7 +255,6 @@ ResultsModel = {
 
 	update: function( jsonResult ) {
 
-
 		try{
 
 			if(
@@ -323,7 +323,10 @@ ResultsModel = {
 		Results.model.filter(renderView);
 		$(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
 		if (typeof meerkat !== 'undefined') {
+			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_BEFORE_DATA_READY);
+			_.defer(function() {
 			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
+			});
 		}
 	},
 
@@ -506,7 +509,6 @@ ResultsModel = {
 				}
 
 				if (!valid) {
-					//console.log(value, filter.options, product);
 					return false;
 				}
 

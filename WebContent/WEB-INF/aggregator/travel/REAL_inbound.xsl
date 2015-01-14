@@ -55,7 +55,7 @@
 						<xsl:when test="$request/travel/destinations/am/us">66</xsl:when>
 						<xsl:when test="$request/travel/destinations/am/ca">20</xsl:when>
 						<xsl:when test="$request/travel/destinations/am/sa">6</xsl:when>
-						<xsl:when test="$request/travel/destinations/me/me">263</xsl:when>x
+						<xsl:when test="$request/travel/destinations/me/me">263</xsl:when>
 						<xsl:when test="$request/travel/destinations/do/do">2</xsl:when>
 
 						<!-- REGION 2 (R2) -->
@@ -72,7 +72,7 @@
 						<xsl:when test="$request/travel/destinations/pa/in">200</xsl:when>
 
 						<!-- REGION 4 (R4) -->
-						<xsl:when test="$request/travel/destinations/pa/pi">264</xsl:when>x
+						<xsl:when test="$request/travel/destinations/pa/pi">264</xsl:when>
 
 						<!-- REGION 5 (R5) -->
 						<xsl:when test="$request/travel/destinations/pa/ba">248</xsl:when>

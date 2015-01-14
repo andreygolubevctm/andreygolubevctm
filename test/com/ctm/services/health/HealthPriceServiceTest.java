@@ -84,8 +84,8 @@ public class HealthPriceServiceTest {
 		healthPriceService.setChangeoverDate(cal.getTime());
 		healthPriceService.setSearchDate("13/06/2014");
 		healthPriceService.setRebateChangeover(0.0);
-		healthPriceRequest.setRebate(30.0);
-		healthPriceService.setRebateMultiplierCurrent(0.968);
+		healthPriceService.setRebateCurrent(30.0);
+		healthPriceService.setRebateChangeover(29.04);
 
 
 		HealthPricePremiumRange healthPricePremiumRange = new HealthPricePremiumRange();

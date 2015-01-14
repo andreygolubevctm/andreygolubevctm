@@ -122,6 +122,7 @@ public class Data extends XmlNode implements Comparable<Data>{
 	 * @param obj the obj
 	 * @return the object
 	 */
+	@SuppressWarnings("rawtypes")
 	public static String ensureXml(Object obj, boolean escape) {
 		if (obj instanceof XmlNode) {
 			return ((XmlNode) obj).getXML(escape);

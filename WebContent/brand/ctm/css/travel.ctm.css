@@ -105,6 +105,9 @@ body > div > header a.bottombar .btn-call:hover {
     white-space: normal;
   }
 }
+.travel .push-top {
+  padding-top: 10px;
+}
 .priceTitle,
 .excessTitle,
 .luggageTitle,
@@ -517,12 +520,15 @@ body > div > header a.bottombar .btn-call:hover {
   }
 }
 .travel .slide-feature-back,
+.travel .coverLevelTabs,
 .travel .resultsSummaryContainer {
   display: none;
 }
 .travel .slide-feature-back a,
+.travel .coverLevelTabs a,
 .travel .resultsSummaryContainer a,
 .travel .slide-feature-back .resultsSummaryPlaceholder,
+.travel .coverLevelTabs .resultsSummaryPlaceholder,
 .travel .resultsSummaryContainer .resultsSummaryPlaceholder {
   white-space: nowrap;
 }
@@ -537,6 +543,7 @@ body > div > header a.bottombar .btn-call:hover {
   }
 }
 .travel[data-step="results"] .slide-feature-back,
+.travel[data-step="results"] .coverLevelTabs,
 .travel[data-step="results"] .resultsSummaryContainer {
   display: block;
 }
@@ -705,11 +712,24 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
 }
 .resultsSummaryPlaceholder .highlight {
   color: #1c3e93;
-  font-weight: bold;
+  font-family: 'SourceSansProBold';
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .optional {
     display: none;
+  }
+  .sm-block {
+    display: block;
+  }
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .sm-md-block {
+    display: block;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .resultsSummaryContainer h5 {
+    font-size: 16px;
   }
 }
 @media (min-width: 768px) {

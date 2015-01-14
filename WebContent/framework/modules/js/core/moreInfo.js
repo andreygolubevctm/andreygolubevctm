@@ -86,7 +86,9 @@
 
 		/* Other Methods */
 		// Apply button in bridging page
-		$(document.body).on("click", ".btn-more-info-apply", function applyClick() {
+		$(document.body).on("click", ".btn-more-info-apply", function applyClick(event) {
+
+			event.preventDefault();
 
 			var $this = $(this);
 			$this.addClass('inactive').addClass('disabled');

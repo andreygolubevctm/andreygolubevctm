@@ -65,10 +65,12 @@ Track = {
 			};
 		}
 		try {
-			superT.trackQuoteProductList({
+
+			superT.trackQuoteResultsList({
 				products:prodArray,
 				brandCode: window.Settings.brand
 			});
+
 			superT.trackQuoteForms({
 				paymentPlan: '',
 				preferredExcess: '',

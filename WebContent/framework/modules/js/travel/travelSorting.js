@@ -38,9 +38,9 @@
 
 		//debug'[travelSortings]','[setSortFromTarget]',$elem.attr('data-sort-type'));
 		//debug'[travelSortings]','[setSortFromTarget:after check]',sortType,sortDir,$elem);
-			
+
 		if (typeof sortType !== 'undefined' && typeof sortDir !== 'undefined') {
-	
+
 			//Update the direction on the element if it was already sorted this way.
 			if ((sortType === Results.getSortBy()) && (sortDir === Results.getSortDir())) {
 				//debug'[travelSorting]','Flipping sort direction');
@@ -51,15 +51,18 @@
 
 			//Combined version call is better! Now returns a bool!
 			//Set it, run it and check the return before setting classes
-			var sortByResult = Results.sortBy(sortType,sortDir);
+			var sortByResult = Results.sortBy(sortType, sortDir);
 			if (sortByResult) { //Successful sorting
-				//Clear actives and Mark as current
-				//$sortElements.removeClass('active'); //we don't rely on the clicked anchor for this since active classes are on li's in bootstrap navbars.
-				$sortElements.parent('li').removeClass('active'); //this helps utilise the existing bootstrap navbar 'active' styling by adding the class to the parent li instead of the item itself.
-				//$elem.addClass('active');
+				//Clear active classes and Mark as current
+				/**
+				 * This helps utilise the existing bootstrap navbar 'active' styling
+				 * by adding the class to the parent li instead of the item itself.
+				 */
+				$sortElements.parent('li').removeClass('active');
 				$elem.parent('li').addClass('active');
 
-				trackQuoteList(sortType+ "-" + sortDir);
+				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
+				meerkat.modules.travelResults.publishExtraSuperTagEvents({products: [], recordRanking: 'N'});
 			} else {
 				error('[travelSorting]','The sortBy or sortDir could not be set',setSortByReturn,setSortDirReturn);
 			}
@@ -74,19 +77,13 @@
 
 		//debug('[travelSorting]','initSorting now');
 
-		//Sync down the results defaults.
-		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, function getSortingData(obj) {
-			//debug('[travelSorting]','RESULTS_DATA_READY','was heard - getting the sort data now');
-		//});
-		
 		//Results.view.moduleEvents.RESULTS_SORTED
 		meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, function sortedCallback(obj) {
-			//debug('[travelSorting]','RESULTS_SORTED','Was heard');
 			meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK);
 		});
 
 		$sortElements.on('click', function sortingClickHandler(event){
-			
+
 			//console.time('processing click');
 			//console.profile('processing click');
 			//We clicked this
@@ -98,7 +95,7 @@
 			//console.timeEnd('setting event target');
 
 			//console.time('check disabled and run actions');
-			if (!($clicked.hasClass('disabled'))) {	
+			if (!($clicked.hasClass('disabled'))) {
 				//Lock Sorting.
 				meerkat.messaging.publish(meerkatEvents.WEBAPP_LOCK);
 
@@ -115,57 +112,21 @@
 		// On application lockdown/unlock, disable/enable the dropdown
 		meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockSorting(obj) {
 			$sortElements.addClass('inactive').addClass('disabled');
-			//debug('[travelSorting]','WEBAPP_LOCK','Was heard');
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockSorting(obj) {
 			$sortElements.removeClass('inactive').removeClass('disabled');
-			//debug('[travelSorting]','WEBAPP_UNLOCK','Was heard');
 		});
 
-		// Call initial supertag call
-		//var transaction_id = meerkat.modules.transactionId.get();
-
-		// Supertag
-		//if(meerkat.site.isNewQuote === false){ //only the subsequent re-sort events?
-		//	meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-		//		method:'trackQuoteEvent',
-		//		object: {
-		//			action: 'Sorting',
-		//			transactionID: transaction_id
-		//		}
-		//	});
-		//}
-		
-	}
-
-	function trackQuoteList(sortBy) {
-		var data = {
-				vertical: meerkat.site.vertical,
-				actionStep: meerkat.site.vertical + ' results',
-				event: 'Refresh',
-				verticalFilter: $("input[name=travel_policyType]:checked").val() == 'S' ? 'Single Trip' : 'Multi Trip',
-				sortBy: sortBy
-		};
-
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method:	'trackQuoteList',
-			object:	data
-		});
 	}
 
 	function init() {
 		$(document).ready(function travelSortingInitDomready() {
-			//debug'[travelSorting]','Domready now');
-			// Store the jQuery objects
-			//$sortbarParent = $('.sortbar-parent');
-			//$sortbarChildren = $('.sortbar-children');
 			$sortElements = $('[data-sort-type]');
-			////console.debug($sortElements);
 
 			//Just a test for the obvious
 			if(typeof Results === 'undefined') {
-				meerkat.logging.exception('[travelSorting]','No Results Object Found!')
+				meerkat.logging.exception('[travelSorting]','No Results Object Found!');
 			} else {
 				return;
 			}

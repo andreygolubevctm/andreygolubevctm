@@ -12,7 +12,6 @@ public class HealthPriceRequest {
 	private String state;
 	private Membership membership;
 	private String productType = "";
-	private double rebate;
 	private int loading;
 	private double loadingPerc;
 	private int excessMax;
@@ -101,14 +100,6 @@ public class HealthPriceRequest {
 
 	public void setLoadingPerc(double loadingPerc) {
 		this.loadingPerc = loadingPerc;
-	}
-
-	public double getRebate() {
-		return rebate;
-	}
-
-	public void setRebate(double rebate) {
-		this.rebate = rebate;
 	}
 
 	public String getState() {

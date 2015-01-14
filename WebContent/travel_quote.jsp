@@ -16,7 +16,16 @@
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li>
+			<li class="navbar-text slide-feature-back push-top">
+				<a href="javascript:;" data-slide-control="previous" class="btn btn-back">
+					<span class="icon icon-arrow-left"></span> <span>Revise <span class="hidden-sm">Your</span> Details</span>
+				</a>
+			</li>
+			<li class="navbar-text push-top">
+				<div class="hidden-xs resultsSummaryContainer" data-livechat="target">
+					<h5 class="hidden-sm">Your quote is based on</h5>
+					<div class="resultsSummaryPlaceholder"></div>
+				</div>
 					<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
 				</li>
 			</ul>
@@ -28,14 +37,16 @@
 			<li class="visible-xs">
 				<span class="navbar-text-block navMenu-header">Menu</span>
 			</li>
-			<li class="slide-feature-back">
+			<li class="slide-feature-back visible-xs">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back">
 					<span class="icon icon-arrow-left"></span> <span>Revise Your Details</span></a>
 			</li>
-			<li class="navbar-text hidden-xs resultsSummaryContainer">
-				<div class="resultsSummaryPlaceholder">results summary container placeholder</div>
-			</li>
 		</ul>
+
+		<div class="coverLevelTabs hidden-xs">
+			<div class="currentTabsContainer">
+			</div>
+		</div>
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar_outer">

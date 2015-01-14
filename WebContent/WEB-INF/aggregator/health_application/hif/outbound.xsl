@@ -415,14 +415,12 @@
 							<xsl:choose>
 								<xsl:when test="application/contactPoint = 'E'">1</xsl:when>
 								<xsl:when test="application/contactPoint = 'P'">4</xsl:when>
-								<xsl:when test="application/contactPoint = 'S'">0</xsl:when>
 							</xsl:choose>
 						</xsl:variable>
 						<xsl:variable name="CorrMethID">
 							<xsl:choose>
 								<xsl:when test="application/contactPoint = 'E'">Email</xsl:when>
 								<xsl:when test="application/contactPoint = 'P'">Mail</xsl:when>
-								<xsl:when test="application/contactPoint = 'S'">SMS</xsl:when>
 							</xsl:choose>
 						</xsl:variable>
 						<xsl:variable name="IsSendEmail">

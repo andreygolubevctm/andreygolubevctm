@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class EmailMaster {
+public class EmailMaster implements Cloneable {
 
 	private String lastName = "";
 	private String firstName = "";
@@ -15,6 +15,7 @@ public class EmailMaster {
 	private Map<String, Boolean> marketingOptIn = new HashMap<String, Boolean>();
 	private long transactionId;
 	private String source;
+	private String password;
 
 	public Map<String, Boolean> getMarketingOptIn() {
 		return marketingOptIn;
@@ -109,7 +110,16 @@ public class EmailMaster {
 		this.source = source;
 	}
 
-	public EmailMaster copy() {
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	@Override
+	public EmailMaster clone() {
 		EmailMaster emailDetails = new EmailMaster();
 		emailDetails.setEmailAddress(emailAddress);
 		emailDetails.setEmailId(emailId);
@@ -120,6 +130,7 @@ public class EmailMaster {
 		emailDetails.setSource(source);
 		emailDetails.setTransactionId(transactionId);
 		emailDetails.setValid(valid);
+		emailDetails.setPassword(password);
 		return emailDetails;
 	}
 }

@@ -10,4 +10,8 @@ public class TokenSecurityException extends RuntimeException {
 	public TokenSecurityException(String message){
 		super(message);
 	}
+	
+	public TokenSecurityException(String message , Throwable e){
+		super(message, e);
+	}
 }

@@ -12,8 +12,6 @@
 		RESULTS_REMAINING_PRODUCTS: 'HOMELOAN_RESULTS_REMAINING_PRODUCTS'
 	};
 
-	var supertagResultsEventMode = 'Load';
-
 	var $component; //Stores the jQuery object for the component group
 	var previousBreakpoint;
 	var best_price_count = 5;
@@ -83,7 +81,9 @@
 							monthly: "monthly"
 						}
 					},
-					productId: "id"
+					productId: "id",
+					productBrandCode: "brandCode",
+					productName: "lenderProductName"
 				},
 				show: {
 					topResult: false,
@@ -442,33 +442,17 @@
 		});
 	}
 
+	/**
+	 * This function has been refactored into calling a core resultsTracking module.
+	 * It has remained here so verticals can run their own unique calls.
+	 */
 	function publishExtraSuperTagEvents() {
-
-		var display;
-		if(meerkat.modules.compare.isCompareOpen() === true) {
-			display = 'compare';
-		} else {
-			display = Results.getDisplayMode();
-			if(display.indexOf("f") === 0) {
-				display = display.slice(0, -1); // drop the trailing S off of features
-			}
-		}
-
-		var data = {
-				vertical: meerkat.site.vertical,
-				actionStep: meerkat.site.vertical + ' results',
-				display: display,
-				event: supertagResultsEventMode,
-				verticalFilter: meerkat.modules.homeloan.getVerticalFilter()
-		};
-
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method:	'trackQuoteList',
-			object:	data
+		meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+			additionalData: {
+				loadMoreResultsPageNumber: "1"
+			},
+			onAfterEventMode: 'Load'
 		});
-
-		// Set this back to the init default, incase we go back and then forward.
-		supertagResultsEventMode = 'Load';
 	}
 
 	function launchOfferTerms(event) {
@@ -515,7 +499,7 @@
 			$(window).scrollTop(0);
 
 			if(doTracking) {
-				supertagResultsEventMode = 'Refresh';
+				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 				publishExtraSuperTagEvents();
 			}
 		}
@@ -575,6 +559,8 @@
 		if($enquireNow.attr("data-productId")) {
 			Results.setSelectedProduct($enquireNow.attr("data-productId"));
 		}
+
+		meerkat.modules.homeloan.trackHandover();
 
 		meerkat.modules.journeyEngine.gotoPath('next', $enquireNow);
 	}

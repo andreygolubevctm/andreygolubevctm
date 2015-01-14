@@ -88,7 +88,6 @@
 				closeOnHashChange: true,
 				openOnHashChange: false,
 				onOpen: function (modalId) {
-
 					$('.' + $el.attr('data-callback-toggle')).show();
 					fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $('#'+modalId));
 
@@ -388,25 +387,6 @@
 		});
 	}
 
-	function getTransferUrl(product) {
-		try {
-			return "transferring.jsp?url="+escape(product.quoteUrl)
-			+ "&trackCode="+product.trackCode
-			+ "&brand=" + escape(product.productDes)
-			+ "&msg=" + $("#transferring_"+product.productId).text() // where's this?
-			+ "&transactionId="+meerkat.modules.transactionId.get();
-		} catch (e) {
-			meerkat.modules.errorHandling.error({
-				errorLevel:		'warning',
-				message:		"An error occurred. Sorry about that!<br /><br /> To purchase this policy, please contact the provider " + (product.telNo !== '' ? " on " + product.telNo : "directly") + " quoting " + product.leadNo + ", or select another policy.",
-				page:			'carMoreInfo.js:getTransferUrl',
-				description:	"Unable to generate transferring URL",
-				data:			product
-			});
-			return "";
-		}
-	}
-
 	/**
 	 * When you click the btn-more-info-apply.
 	 * Pre-dispatch checking and functionality.
@@ -434,6 +414,7 @@
 					openOnHashChange: false,
 					onOpen: function(modalId) {
 						$('.btn-proceed-to-insurer', $('#'+modalId)).off('click.proceed').on('click.proceed', function(event) {
+							event.preventDefault();
 							return proceedToInsurer(product, modalId, applyNowCallback);
 						});
 						$('.btn-back', $('#'+modalId)).off('click.goback').on('click.goback', function(event) {
@@ -464,6 +445,10 @@
 			$('#'+modalId).modal('hide');
 		}
 
+		if(callbackModalId) {
+			$('#'+callbackModalId).modal('hide');
+		}
+
 		if(_.isEmpty(product.quoteUrl)) {
 			meerkat.modules.errorHandling.error({
 				errorLevel:		'warning',
@@ -476,15 +461,18 @@
 			return false;
 		}
 
-
 		trackHandover(product);
 
-		// last thing to happen
-		applyNowCallback(true);
+		meerkat.modules.partnerTransfer.transferToPartner({
+			encodeTransferURL:	true,
+			product:			product,
+			applyNowCallback:	applyNowCallback,
+			productName:		product.headline.name,
+			productBrandCode:	product.brandCode,
+			brand:				product.productDes
+		});
 
-		// allows the link to be clicked
 		return true;
-
 	}
 	/**
 	 * Performs the supertag trackBridgingClick tracking for the CrCallDir 'type'.
@@ -524,6 +512,8 @@
 	 */
 	function trackCallEvent(type) {
 		var product = meerkat.modules.moreInfo.getOpenProduct();
+
+		// OLD tracking call
 		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 			method:'trackBridgingClick',
 			object:{
@@ -536,7 +526,16 @@
 			}
 		});
 
-		meerkat.modules.session.poke();
+		// NEW tracking call
+		meerkat.modules.partnerTransfer.trackHandoverEvent({
+			product:				product,
+			type:					type,
+			quoteReferenceNumber:	product.leadNo,
+			transactionID:			meerkat.modules.transactionId.get(),
+			productID:				product.productId,
+			productName:			product.headline.name,
+			productBrandCode:		product.brandCode
+		}, false, false);
 	}
 	/**
 	 * Tracks when we click Proceed to Insurer
@@ -553,25 +552,6 @@
 				productBrandCode: product.brandCode
 			}
 		});
-
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method: 'trackHandoverType',
-			object: {
-				type: "ONLINE",
-				quoteReferenceNumber: product.leadNo,
-				transactionID: transaction_id,
-				productID: product.productId,
-				productBrandCode: product.brandCode,
-				vertical: meerkat.site.vertical,
-				productName: product.headline.name
-			}
-		});
-
-		meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
-			touchType:'A'
-		});
-
-		meerkat.modules.session.poke();
 	}
 
 	/**
@@ -634,7 +614,6 @@
 		events: events,
 		setSpecialConditionDetail: setSpecialConditionDetail,
 		runDisplayMethod: runDisplayMethod,
-		getTransferUrl: getTransferUrl,
 		setScrollPosition: setScrollPosition
 	});
 

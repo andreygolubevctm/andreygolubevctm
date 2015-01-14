@@ -5,6 +5,143 @@
  */
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        coverLevelTabs: {}
+    }, moduleEvents = events.coverLevelTabs;
+    var counts = {}, currentRankingFilter = "default", hasRunTrackingCall = [], defaults = {
+        enabled: true,
+        activeTabIndex: false,
+        disableAnimationsBetweenTabs: true,
+        activeTabSet: [ {
+            label: "Comprehensive",
+            rankingFilter: "C",
+            defaultTab: true,
+            showCount: true,
+            filter: function(renderView) {}
+        } ]
+    }, settings = {}, $tabsContainer = $(".coverLevelTabs"), $currentTabContainer = $(".currentTabsContainer");
+    function initCoverLevelTabs(options) {
+        settings = $.extend(true, {}, defaults, options);
+        if (settings.enabled === false) {
+            return;
+        }
+        jQuery(document).ready(function($) {
+            applyEventListeners();
+            eventSubscriptions();
+        });
+    }
+    function applyEventListeners() {
+        if (!$tabsContainer.length) {
+            return;
+        }
+        $tabsContainer.off("click").on("click", ".clt-action", function(e) {
+            var $el = $(this), tabIndex = $el.attr("data-clt-index");
+            log("[coverleveltabs] click", tabIndex);
+            if (tabIndex === "" || settings.activeTabIndex === tabIndex) {
+                return;
+            }
+            if (typeof settings.activeTabSet[tabIndex] === "undefined") {
+                return;
+            }
+            if (typeof settings.activeTabSet[tabIndex].filter === "function") {
+                var filterAnimate = Results.settings.animation.filter.active;
+                if (settings.disableAnimationsBetweenTabs === true) {
+                    Results.settings.animation.filter.active = false;
+                }
+                settings.activeTabSet[tabIndex].filter();
+                $el.siblings().removeClass("active").end().addClass("active");
+                settings.activeTabIndex = tabIndex;
+                setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
+                if (settings.disableAnimationsBetweenTabs === true) {
+                    Results.settings.animation.filter.active = filterAnimate;
+                }
+                var additionalData = {
+                    recordRanking: "Y"
+                }, hasTrackedThisTab = hasRunTrackingCall.indexOf(getRankingFilter()) !== -1;
+                if (hasTrackedThisTab) {
+                    additionalData.recordRanking = "N";
+                    additionalData.products = [];
+                }
+                meerkat.modules.resultsRankings.resetTrackingProductObject();
+                meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+                    additionalData: additionalData,
+                    onAfterEventMode: "Refresh"
+                });
+                if (!hasTrackedThisTab && hasRunTrackingCall.length) {
+                    var rankingData = meerkat.modules.resultsRankings.getWriteRankData(Results.settings.rankings, meerkat.modules.resultsRankings.fetchProductsToRank(true));
+                    meerkat.modules.resultsRankings.sendQuoteRanking("Cover Level Tabs", rankingData);
+                }
+                if (!hasTrackedThisTab) {
+                    hasRunTrackingCall.push(getRankingFilter());
+                }
+            }
+        });
+    }
+    function eventSubscriptions() {
+        meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_BEFORE_DATA_READY, setup);
+    }
+    function setup() {
+        log("[coverleveltabs] Setup");
+        buildTabs();
+        activateDefault();
+    }
+    function activateDefault() {
+        $(".clt-action:visible.active").click();
+    }
+    function buildTabs() {
+        if (typeof settings.activeTabSet === "undefined") {
+            return;
+        }
+        log("[coverleveltabs] buildTabs", settings.activeTabSet);
+        var tabLength = settings.activeTabSet.length, xsCols = parseInt(12 / tabLength, 10), state = meerkat.modules.deviceMediaState.get();
+        for (var out = "", i = 0; i < tabLength; i++) {
+            var tab = settings.activeTabSet[i], count = counts[tab.rankingFilter] || null;
+            out += '<div class="col-xs-' + xsCols + " text-center clt-action " + (tab.defaultTab === true ? "active" : "") + '" data-clt-index="' + i + '">';
+            out += tab.label + (state !== "xs" && tab.showCount === true && count !== null ? " (" + count + ")" : "");
+            out += "</div>";
+        }
+        $currentTabContainer.empty().html(out);
+    }
+    function setActiveTabSet(activeTabSet) {
+        log("[coverleveltabs] activeTabSet", activeTabSet);
+        settings.activeTabSet = activeTabSet;
+    }
+    function incrementCount(coverLevel) {
+        if (typeof counts[coverLevel] === "undefined") {
+            counts[coverLevel] = 0;
+        }
+        counts[coverLevel]++;
+    }
+    function setRankingFilter(rankingFilter) {
+        currentRankingFilter = rankingFilter;
+    }
+    function getRankingFilter() {
+        return currentRankingFilter;
+    }
+    function isEnabled() {
+        return settings.enabled || false;
+    }
+    function resetView(activeTabSet) {
+        log("[coverleveltabs] resetView");
+        $currentTabContainer.empty();
+        hasRunTrackingCall = [];
+        settings.activeTabIndex = false;
+        setActiveTabSet(activeTabSet);
+        counts = {};
+    }
+    meerkat.modules.register("coverLevelTabs", {
+        initCoverLevelTabs: initCoverLevelTabs,
+        events: events,
+        setActiveTabSet: setActiveTabSet,
+        resetView: resetView,
+        getRankingFilter: getRankingFilter,
+        isEnabled: isEnabled,
+        incrementCount: incrementCount
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, templateMoreInfo;
     var moduleEvents = {
         traveldetails: {
@@ -95,10 +232,13 @@
                 meerkat.modules.travelMoreInfo.initMoreInfo();
                 meerkat.modules.travelSorting.initSorting();
                 meerkat.modules.partnerTransfer.initTransfer();
+                meerkat.modules.travelCoverLevelTabs.initTravelCoverLevelTabs();
             },
             onBeforeEnter: function enterResultsStep(event) {
+                meerkat.modules.resultsTracking.setResultsEventMode("Load");
                 $("#resultsPage").addClass("hidden");
                 meerkat.modules.travelSummaryText.updateText();
+                meerkat.modules.travelCoverLevelTabs.updateSettings();
             },
             onAfterEnter: function afterEnterResults(event) {
                 meerkat.modules.travelResults.get();
@@ -203,7 +343,7 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $countries;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, countryList = [];
     var $destinations, $destinationsCheckboxes;
     function updateCountries() {
         var $errorField = $destinationsFieldset.find(".error-field");
@@ -223,16 +363,148 @@
             $destinations = $("#travel_destination");
             $destinationsCheckboxes = $(".destcheckbox");
             applyEventListeners();
+            $destinationsFieldset.find(".destcheckbox:checked").each(function() {
+                $(this).change();
+            });
         });
+    }
+    function getCountryList() {
+        return countryList || [];
+    }
+    function hasCountry(country) {
+        return countryList.indexOf(country) != -1;
     }
     function applyEventListeners() {
         $destinationsCheckboxes.on("change", function() {
             meerkat.modules.travelCountrySelection.updateCountries();
+            var $el = $(this), val = $el.val();
+            if ($el.is(":checked")) {
+                countryList.push(val);
+            } else {
+                if (countryList.indexOf(val) !== -1) {
+                    for (var i = 0; i < countryList.length; i++) {
+                        if (countryList[i] == val) {
+                            countryList.splice(i, 1);
+                        }
+                    }
+                }
+            }
         });
     }
     meerkat.modules.register("travelCountrySelection", {
         initCountrySelection: initCountrySelection,
-        updateCountries: updateCountries
+        updateCountries: updateCountries,
+        getCountryList: getCountryList,
+        hasCountry: hasCountry
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        travelCoverLevelTabs: {}
+    }, moduleEvents = events.travelCoverLevelTabs;
+    var singleTripTabs = [ {
+        label: "Comprehensive <span class='hidden-xs'>Cover</span>",
+        rankingFilter: "C",
+        defaultTab: true,
+        disableAnimationsBetweenTabs: true,
+        showCount: true,
+        filter: function() {
+            Results.filterBy("coverLevel", "value", {
+                equals: "C"
+            }, true);
+        }
+    }, {
+        label: "Mid Range <span class='hidden-xs'>Cover</span>",
+        rankingFilter: "M",
+        defaultTab: false,
+        showCount: true,
+        filter: function() {
+            Results.filterBy("coverLevel", "value", {
+                equals: "M"
+            }, true);
+        }
+    }, {
+        label: "Basic <span class='hidden-xs'>Cover</span>",
+        rankingFilter: "B",
+        showCount: true,
+        defaultTab: false,
+        filter: function() {
+            Results.filterBy("coverLevel", "value", {
+                equals: "B"
+            }, true);
+        }
+    } ], annualMultiTripTabs = [ {
+        label: "International <span class='hidden-xs'>Cover</span>",
+        rankingFilter: "I",
+        defaultTab: true,
+        showCount: true,
+        filter: function() {
+            Results.filterBy("coverLevel", "value", {
+                equals: "I"
+            }, true);
+        }
+    }, {
+        label: "Domestic <span class='hidden-xs'>Cover</span>",
+        rankingFilter: "D",
+        defaultTab: false,
+        showCount: true,
+        filter: function() {
+            Results.filterBy("coverLevel", "value", {
+                equals: "D"
+            }, true);
+        }
+    } ], $policyType;
+    function initTravelCoverLevelTabs() {
+        var currentJourney = meerkat.modules.tracking.getCurrentJourney();
+        if (currentJourney != 2 && currentJourney != 3 && currentJourney != 4) {
+            return;
+        }
+        setupABTestParameters(currentJourney);
+        var options = {
+            enabled: true,
+            tabCount: 3,
+            activeTabSet: getActiveTabSet()
+        };
+        meerkat.modules.coverLevelTabs.initCoverLevelTabs(options);
+    }
+    function setupABTestParameters(currentJourney) {
+        singleTripTabs[0].defaultTab = false;
+        singleTripTabs[1].defaultTab = false;
+        singleTripTabs[2].defaultTab = false;
+        switch (currentJourney) {
+          case "2":
+            singleTripTabs[0].defaultTab = true;
+            break;
+
+          case "3":
+            singleTripTabs[1].defaultTab = true;
+            break;
+
+          case "4":
+            singleTripTabs[2].defaultTab = true;
+            break;
+        }
+    }
+    function getActiveTabSet() {
+        switch ($("input[name=travel_policyType]:checked").val()) {
+          case "A":
+            return annualMultiTripTabs;
+
+          case "S":
+            return singleTripTabs;
+        }
+    }
+    function updateSettings() {
+        if (meerkat.modules.coverLevelTabs.isEnabled()) {
+            meerkat.modules.coverLevelTabs.resetView(getActiveTabSet());
+        }
+    }
+    meerkat.modules.register("travelCoverLevelTabs", {
+        initTravelCoverLevelTabs: initTravelCoverLevelTabs,
+        events: events,
+        updateSettings: updateSettings
     });
 })(jQuery);
 
@@ -529,21 +801,22 @@
             timeout: 3e4,
             onError: onSubmitToLoadQuoteError,
             onSuccess: function onSubmitSuccess(resultData) {
+                meerkat.modules.leavePageWarning.disable();
                 window.location = resultData.result.destUrl + "&ts=" + Number(new Date());
             }
         });
     }
     function onSubmitToLoadQuoteError(jqXHR, textStatus, errorThrown, settings, resultData) {
         stateSubmitInProgress = false;
-        meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {
-            source: "loadQuote"
-        });
         meerkat.modules.errorHandling.error({
             message: "An error occurred when attempting to retrieve your quotes",
             page: "travelReloadQuote.js:loadQuote()",
             errorLevel: "warning",
             description: "Ajax request to remote_load_quote.jsp failed to return a valid response: " + errorThrown,
             data: resultData
+        });
+        meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK, {
+            source: "loadQuote"
         });
     }
     function getURLVars(sSearch) {
@@ -563,8 +836,7 @@
 })(jQuery);
 
 (function($) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load";
-    var supertagResultsEventMode = "Load";
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var $component;
     var previousBreakpoint;
     var best_price_count = 5;
@@ -592,6 +864,9 @@
                         list: "results.price"
                     },
                     productId: "productId",
+                    productName: "name",
+                    productBrandCode: "provider",
+                    coverLevel: "info.coverLevel",
                     price: {
                         premium: "price"
                     },
@@ -655,14 +930,56 @@
                     triggers: [ "RESULTS_DATA_READY" ],
                     callback: meerkat.modules.travelResults.rankingCallback,
                     forceIdNumeric: false,
-                    filterUnavailableProducts: false
+                    filterUnavailableProducts: true
                 }
             });
         } catch (e) {
             Results.onError("Sorry, an error occurred initialising page", "results.tag", "meerkat.modules.travelResults.init(); " + e.message, e);
         }
     }
+    function massageResultsObject(products) {
+        if (meerkat.modules.coverLevelTabs.isEnabled() !== true) {
+            return products;
+        }
+        var policyType = meerkat.modules.travel.getVerticalFilter();
+        _.each(products, function massageJson(result, index) {
+            if (typeof result.info !== "object") {
+                return;
+            }
+            var obj = result.info;
+            if (policyType == "Single Trip") {
+                var medical = 5e6, countryList = meerkat.modules.travelCountrySelection.getCountryList();
+                countryList = typeof countryList.toString === "function" ? countryList.toString() : countryList[0];
+                if (countryList == "pa:au") {
+                    medical = 0;
+                }
+                if (obj.excess.value <= 250 && obj.medical.value >= medical && obj.cxdfee.value >= 7500 && obj.luggage.value >= 7500) {
+                    obj.coverLevel = "C";
+                    meerkat.modules.coverLevelTabs.incrementCount("C");
+                } else if (obj.excess.value <= 250 && obj.medical.value >= medical && obj.cxdfee.value >= 2500 && obj.luggage.value >= 2500) {
+                    obj.coverLevel = "M";
+                    meerkat.modules.coverLevelTabs.incrementCount("M");
+                } else {
+                    obj.coverLevel = "B";
+                    meerkat.modules.coverLevelTabs.incrementCount("B");
+                }
+            } else {
+                if (result.des.indexOf("Australia") == -1) {
+                    obj.coverLevel = "I";
+                    meerkat.modules.coverLevelTabs.incrementCount("I");
+                } else {
+                    obj.coverLevel = "D";
+                    meerkat.modules.coverLevelTabs.incrementCount("D");
+                }
+            }
+        });
+        return products;
+    }
     function eventSubscriptions() {
+        meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
+            Results.model.returnedProducts = massageResultsObject(Results.model.returnedProducts);
+            Results.model.sortedProducts = Results.model.returnedProducts;
+        });
         meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
             $component.css("margin-top", "8px");
         });
@@ -709,10 +1026,10 @@
             data["best_price" + position] = 1;
             data["best_price_providerName" + position] = product.provider;
             data["best_price_productName" + position] = product.name;
-            data["best_price_excess" + position] = product.info.excess.text;
-            data["best_price_medical" + position] = product.info.medical.text;
-            data["best_price_cxdfee" + position] = product.info.cxdfee.text;
-            data["best_price_luggage" + position] = product.info.luggage.text;
+            data["best_price_excess" + position] = typeof product.info.excess !== "undefined" ? product.info.excess.text : 0;
+            data["best_price_medical" + position] = typeof product.info.medical !== "undefined" ? product.info.medical.text : 0;
+            data["best_price_cxdfee" + position] = typeof product.info.cxdfee !== "undefined" ? product.info.cxdfee.text : 0;
+            data["best_price_luggage" + position] = typeof product.info.luggage !== "undefined" ? product.info.luggage.text : 0;
             data["best_price_price" + position] = product.priceText;
             data["best_price_service" + position] = product.service;
             data["best_price_url" + position] = product.quoteUrl;
@@ -765,30 +1082,31 @@
             htmlContent: $("#no-results-content")[0].outerHTML
         });
     }
-    function publishExtraSuperTagEvents() {
-        var data = {
-            vertical: meerkat.site.vertical,
-            actionStep: meerkat.site.vertical + " results",
-            event: supertagResultsEventMode,
-            verticalFilter: $("input[name=travel_policyType]:checked").val() == "S" ? "Single Trip" : "Multi Trip",
-            sortBy: Results.getSortBy() + "-" + Results.getSortDir()
-        };
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackQuoteList",
-            object: data
+    function publishExtraSuperTagEvents(additionalData) {
+        additionalData = typeof additionalData === "undefined" ? {} : additionalData;
+        meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+            additionalData: $.extend({
+                sortBy: Results.getSortBy() + "-" + Results.getSortDir()
+            }, additionalData),
+            onAfterEventMode: "Refresh"
         });
-        supertagResultsEventMode = "Refresh";
     }
     function init() {
-        $component = $("#resultsPage");
-        meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
+        $(document).ready(function() {
+            $component = $("#resultsPage");
+            var currentJourney = meerkat.modules.tracking.getCurrentJourney();
+            if (currentJourney != 2 && currentJourney != 3 && currentJourney != 4) {
+                meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
+            }
+        });
     }
     meerkat.modules.register("travelResults", {
         init: init,
         initPage: initPage,
         get: get,
         showNoResults: showNoResults,
-        rankingCallback: rankingCallback
+        rankingCallback: rankingCallback,
+        publishExtraSuperTagEvents: publishExtraSuperTagEvents
     });
 })(jQuery);
 
@@ -809,7 +1127,11 @@
             if (sortByResult) {
                 $sortElements.parent("li").removeClass("active");
                 $elem.parent("li").addClass("active");
-                trackQuoteList(sortType + "-" + sortDir);
+                meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
+                meerkat.modules.travelResults.publishExtraSuperTagEvents({
+                    products: [],
+                    recordRanking: "N"
+                });
             } else {
                 error("[travelSorting]", "The sortBy or sortDir could not be set", setSortByReturn, setSortDirReturn);
             }
@@ -840,19 +1162,6 @@
             $sortElements.removeClass("inactive").removeClass("disabled");
         });
     }
-    function trackQuoteList(sortBy) {
-        var data = {
-            vertical: meerkat.site.vertical,
-            actionStep: meerkat.site.vertical + " results",
-            event: "Refresh",
-            verticalFilter: $("input[name=travel_policyType]:checked").val() == "S" ? "Single Trip" : "Multi Trip",
-            sortBy: sortBy
-        };
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackQuoteList",
-            object: data
-        });
-    }
     function init() {
         $(document).ready(function travelSortingInitDomready() {
             $sortElements = $("[data-sort-type]");
@@ -872,16 +1181,27 @@
 
 (function($) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-    var $resultsSummaryPlaceholder, $fromDate, $toDate, $worldwide, $adults, $children, $policytype;
+    var $resultsSummaryPlaceholder, $fromDate, $toDate, $worldwide, $adults, $children, $policytype, $summaryHeader;
     function updateSummaryText() {
-        var txt = "<span>" + (meerkat.modules.deviceMediaState.get() !== "sm" ? "Your quote" : "Quote") + '</span> is based on: <span class="highlight">';
+        var txt = '<span class="highlight">';
+        var amtTxt = "";
+        if ($policytype.val() == "A") {
+            amtTxt = '<span class="highlight">Annual Multi Trip (AMT)</span> ';
+        }
+        if (meerkat.modules.deviceMediaState.get() !== "sm") {
+            txt += "Your " + amtTxt + "quote";
+        } else {
+            txt += amtTxt + ($policytype.val() == "A" ? " quote" : "Quote");
+        }
+        txt += '</span> is based on: <span class="highlight">';
         var adults = $adults.val(), children = $children.val(), chkCount = $(".destcheckbox:checked").length;
         txt += adults + " adult" + (adults == 1 ? "" : "s");
         if (children > 0) {
             txt += " and " + children + " child" + (children == 1 ? "" : "ren");
         }
         if ($("input[name=travel_policyType]:checked").val() == "S") {
-            txt += '</span> <span class="optional">travelling</span> to <span class="highlight">';
+            $summaryHeader.html("Your quote is based on");
+            txt += '</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
             if ($worldwide.is(":checked")) {
                 txt += "any country";
             } else if (chkCount > 1) {
@@ -892,9 +1212,11 @@
             }
             var x = $fromDate.val().split("/"), y = $toDate.val().split("/"), date1 = new Date(x[2], x[1] - 1, x[0]), date2 = new Date(y[2], y[1] - 1, y[0]);
             var DAY = 1e3 * 60 * 60 * 24, days = 1 + Math.ceil((date2.getTime() - date1.getTime()) / DAY);
-            txt += "</span> for <span class='highlight'>" + days + " days";
+            txt += "</span> for <span class='highlight'>" + days + " days</span>";
         } else {
-            txt += "</span> travelling <span class='highlight'>multiple times in one year";
+            $summaryHeader.html("Your Annual Multi Trip (AMT)quote is based on");
+            var blockClass = children > 1 ? "sm-md-block" : "sm-block";
+            txt += "</span> travelling <span class='highlight " + blockClass + "'>multiple times in one year";
         }
         $resultsSummaryPlaceholder.html(txt + "</span>").fadeIn();
     }
@@ -902,6 +1224,7 @@
         $resultsSummaryPlaceholder = $(".resultsSummaryPlaceholder"), $fromDate = $("#travel_dates_fromDate"), 
         $toDate = $("#travel_dates_toDate"), $worldwide = $("#travel_destinations_do_do"), 
         $adults = $("#travel_adults"), $children = $("#travel_children"), $policytype = $("#travel_policyType");
+        $summaryHeader = $(".resultsSummaryContainer h5");
         applyEventListeners();
     }
     function applyEventListeners() {

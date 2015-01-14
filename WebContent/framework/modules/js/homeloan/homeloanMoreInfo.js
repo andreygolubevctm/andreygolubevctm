@@ -91,6 +91,9 @@
 	 */
 	function onClickApplyNow() {
 		Results.model.setSelectedProduct($('.btn-apply').attr('data-productId'));
+
+		meerkat.modules.homeloan.trackHandover();
+
 		meerkat.modules.journeyEngine.gotoPath("next");
 	}
 

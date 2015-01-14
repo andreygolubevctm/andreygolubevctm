@@ -11,7 +11,13 @@ $(window).load(function() {
 	var url = decodeURIComponent(getUrlVars()['url']);
 	var msg = decodeURIComponent(getUrlVars()['msg']);
 	var brand = decodeURIComponent(getUrlVars()['brand']);
+	var tracking = null;
 
+	if(getUrlVars().hasOwnProperty('tracking')) {
+		try {
+			tracking = JSON.parse(decodeURIComponent(getUrlVars()['tracking']));
+		} catch(e) {/* IGNORE */}
+	}
 
 	$(window).queue(function(next) {
 		window.focus();
@@ -21,6 +27,13 @@ $(window).load(function() {
 			$('.message').text(msg);
 		}
 		
+		if(typeof meerkat == 'object' && tracking != null && typeof tracking == 'object') {
+		meerkat.messaging.publish(meerkat.modules.events.tracking.EXTERNAL, {
+			method: 'trackQuoteTransfer',
+			object: tracking
+		}, true);
+		}
+
 		next();
 	})
 	.delay(1000)
@@ -33,7 +46,7 @@ $(window).load(function() {
 			$mainForm.append(textArea);
 			$mainForm.submit();
 		} else {
-		window.location.replace(url);
+			window.location.replace(url);
 		}
 		next();
 	});

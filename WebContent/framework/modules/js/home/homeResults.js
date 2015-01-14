@@ -2,15 +2,13 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info,
-		supertagEventMode = 'Load';
+		log = meerkat.logging.info;
 
 	var events = {
 		// Defined here because it's published in Results.js
 		RESULTS_ERROR: 'RESULTS_ERROR'
 	};
 
-	var supertagResultsEventMode = 'Load';
 
 	var $component; //Stores the jQuery object for the component group
 	var previousBreakpoint;
@@ -61,7 +59,9 @@
 					availability: {
 						product: "productAvailable"
 					},
-					productId: "productId"
+					productId: "productId",
+					productBrandCode: "brandCode",
+					productName: "headline.name"
 				},
 				show: {
 					savings: false,
@@ -219,12 +219,12 @@
 			if (obj && (obj.hasOwnProperty('homeExcess') || obj.hasOwnProperty('contentsExcess'))) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
-				supertagResultsEventMode = 'Load';
+				meerkat.modules.resultsTracking.setResultsEventMode('Load');
 				Results.settings.incrementTransactionId = true;
 				get();
 				Results.settings.incrementTransactionId = false;
 			} else {
-				supertagResultsEventMode = 'Refresh';
+				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 			}
 
 			meerkat.modules.session.poke();
@@ -487,44 +487,32 @@
 		}
 	}
 
+	/**
+	 * This function has been refactored into calling a core resultsTracking module.
+	 * It has remained here so verticals can run their own unique calls.
+	 */
 	function publishExtraSuperTagEvents() {
 
-		var display;
-		if(meerkat.modules.compare.isCompareOpen() === true) {
-			display = 'compare';
-		} else {
-			display = Results.getDisplayMode();
-			if(display.indexOf("f") === 0) {
-				display = display.slice(0, -1); // drop the trailing S off of features
-			}
-		}
+		var coverType = meerkat.modules.home.getCoverType(),
+		homeExcess = null,
+		contentsExcess = null;
 
-
-		var data = {
-				actionStep: 'Results',
-				display: display,
-				paymentPlan: $('#navbar-filter .dropdown.filter-frequency span:first-child').text(),
-				preferredExcess: null,
-				homeExcess: null,
-				contentsExcess: null,
-				event: supertagResultsEventMode,
-				verticalFilter: meerkat.modules.home.getVerticalFilter()
-		};
-
-		var coverType = meerkat.modules.home.getCoverType();
 		if(coverType == 'H' || coverType == 'HC') {
-			data.homeExcess = $('#home_homeExcess').val()  || $('#home_baseHomeExcess').val();
+			homeExcess = $('#home_homeExcess').val()  || $('#home_baseHomeExcess').val();
 		}
+
 		if(coverType == 'C' || coverType == 'HC') {
-			data.contentsExcess = $('#home_contentsExcess').val() || $('#home_baseContentsExcess').val();
+			contentsExcess = $('#home_contentsExcess').val() || $('#home_baseContentsExcess').val();
 		}
 
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method:	'trackQuoteList',
-			object:	data
+		meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+			additionalData: {
+				paymentPlan: $('#navbar-filter .dropdown.filter-frequency span:first-child').text(),
+				homeExcess: homeExcess,
+				contentsExcess: contentsExcess
+			},
+			onAfterEventMode: 'Load'
 		});
-
-		supertagResultsEventMode = 'Load'; // update for next call.*/
 	}
 
 	function launchOfferTerms(event) {
@@ -572,7 +560,7 @@
 			$(window).scrollTop(0);
 
 			if(doTracking) {
-				supertagResultsEventMode = 'Refresh';
+				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 				publishExtraSuperTagEvents();
 			}
 		}
@@ -618,7 +606,7 @@
 			$(document.body).removeClass('priceMode');
 			$(window).scrollTop(0);
 			if(doTracking) {
-				supertagResultsEventMode = 'Refresh';
+				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 				publishExtraSuperTagEvents();
 			}
 		}

@@ -36,8 +36,6 @@
 
 								<a href="javascript:void(0);" class="bigbtn" id="reset-button"><span>Next step</span></a>
 
-
-
 								<input type="hidden" name="reset_id" value="${_reset_id}" />
 							</div>
 							<div class="footer"></div>

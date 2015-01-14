@@ -95,8 +95,6 @@ var Track_IP = {
 			}
 			
 			try {				
-				superT.trackQuoteProductList({products:prodArray});
-				
 				var plan = "Annual Payment";
 				switch($('#ip_primary_insurance_frequency').val()) {
 					case "A":
@@ -109,9 +107,10 @@ var Track_IP = {
 						break;
 				}
 				
-				superT.trackQuoteList ({
+				superT.trackQuoteResultsList({
 				      paymentPlan: 			plan,
-				      event: 				eventType
+					event: eventType,
+					products:prodArray
 				});
 			} catch(err) {
 				/* IGNORE */

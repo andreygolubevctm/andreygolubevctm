@@ -14,7 +14,7 @@
 	<form:fieldset legend="Your Details">
 		
 		<form:row label="Title">
-			<field:array_select items="=Please choose...,Mr=Mr,Mrs=Mrs,Miss=Miss,Ms=Ms,Cr=Cr,Prof=Prof" xpath="${xpath}/title" title="your title" required="true" />
+			<field:array_select items="=Please choose...,Mr=Mr,Mrs=Mrs,Miss=Miss,Ms=Ms,Dr=Dr,Prof=Prof" xpath="${xpath}/title" title="your title" required="true" />
 		</form:row>
 		
 		<form:row label="First name">

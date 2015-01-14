@@ -15,9 +15,7 @@
 	<core:transaction touch="H" comment="getQuote" noResponse="true" writeQuoteOverride="N" />
 </c:if>
 
-<%-- Call centre numbers --%>
-<c:set var="callCentreNumber" scope="request"><content:get key="carCallCentreNumber"/></c:set>
-<c:set var="callCentreHelpNumber" scope="request"><content:get key="carCallCentreHelpNumber"/></c:set>
+<%-- Initialise Save Quote --%>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
 <%-- Used to get a random quote out  --%>
@@ -39,48 +37,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<div class="navbar-collapse header-collapse-contact collapse">
-			<ul class="nav navbar-nav navbar-right">
-				<c:if test="${not empty callCentreNumber}">
-					<li>
-						<div class="navbar-text visible-xs">
-							<h4>Do you need a hand?</h4>
-							<h1>
-								<a class="needsclick" href="tel:${callCentreNumber}">Call <span class="noWrap">${callCentreNumber}</span></a>
-							</h1>
-							<p class="small">Our Australian based call centre hours are</p>
-							<p>
-								<%-- Would this be correct for car? Probably needs a different id. --%>
-								<form:scrape id='135' />
-							</p>
-							${callCentreSpecialHoursContent}
-						</div>
-						<div class="navbar-text hidden-xs" data-livechat="target">
-							<h4>Call us on</h4>
-							<h1>
-								<span class="noWrap">${callCentreNumber}</span>
-							</h1>
-							<%-- Needs to be modularised out of health.
-							<c:if test="${not empty callCentreSpecialHoursLink and not empty callCentreSpecialHoursContent}">
-								${callCentreSpecialHoursLink}
-								<div id="healthCallCentreSpecialHoursContent" class="hidden">
-									<div class="row">
-										<div class="col-sm-6">
-											<h4>Normal Hours</h4>
-											<p><form:scrape id='135'/></p>
-										</div>
-										<div class="col-sm-6">
-											${callCentreSpecialHoursContent}
-										</div>
-									</div>
-								</div>
-							</c:if> --%>
-						</div>
-						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
-					</li>
-</c:if>
-			</ul>
-		</div>
+		<car:price_promise />
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar">

@@ -93,7 +93,7 @@ var healthFunds_HIF = {
 
 			<%-- How to send information. Second argument = validation required --%>
 			healthApplicationDetails.showHowToSendInfo('HIF', true);
-			healthApplicationDetails.addOption('SMS', 'S');
+
 
 			<%-- Previous funds --%>
 			$('#health_previousfund_primary_memberID').attr('maxlength', '10');
@@ -115,9 +115,9 @@ var healthFunds_HIF = {
 			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
 			//selections for payment date
-			$('#update-premium').on('click.NIF', function() {
+			$('#update-premium').on('click.HIF', function() {
 				var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-				healthFunds._payments = { 'min':0, 'max':14, 'weekends':true };
+				healthFunds._payments = { 'min':3, 'max':17, 'weekends':true };
 				var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
 				healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
 				healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
@@ -166,7 +166,6 @@ var healthFunds_HIF = {
 			delete healthFunds_HIF.$_dobPartner;
 
 			<%-- How to send information --%>
-			healthApplicationDetails.removeLastOption();
 			healthApplicationDetails.hideHowToSendInfo();
 
 			<%-- Authority off --%>

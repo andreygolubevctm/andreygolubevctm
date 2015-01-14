@@ -1225,3 +1225,161 @@ body > div > header a.bottombar .btn-call:hover {
     padding-top: 1.5em;
   }
 }
+.car .price-promise-panel,
+.car .price-promise-panel .partition {
+  display: none;
+}
+body.car[data-step="results"] .price-promise-panel {
+  display: block;
+}
+body.car[data-step="results"] .price-promise-panel .partition {
+  height: 2px;
+  margin: 13px auto;
+  border-top: 1px solid #122961;
+  border-bottom: 1px solid #2149AD;
+}
+body.car[data-step="results"] .price-promise-panel .row {
+  margin-top: 10px;
+}
+body.car[data-step="results"] .price-promise-panel table {
+  width: 100%;
+}
+body.car[data-step="results"] .price-promise-panel td {
+  vertical-align: middle;
+}
+body.car[data-step="results"] .price-promise-panel td.logo {
+  width: 125px;
+}
+body.car[data-step="results"] .price-promise-panel td.logo div {
+  background-image: url("../images/price_promise/Price-Promise-Blue.png");
+  width: 125px;
+  height: 90px;
+  margin-right: 20px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  body.car[data-step="results"] .price-promise-panel td.logo div {
+    background-image: url("../images/price_promise/Price-Promise-Blue@2x.png");
+    background-size: 125px 90px;
+  }
+}
+body.car[data-step="results"] .price-promise-panel h6 {
+  margin-bottom: 4px;
+}
+body.car[data-step="results"] .price-promise-panel p {
+  text-align: justify;
+}
+body.car[data-step="results"] header .price-promise-panel {
+  position: absolute;
+  top: 0;
+  right: 1em;
+  width: 484px;
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel .partition {
+  display: block;
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel td {
+  vertical-align: top;
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel td.logo {
+  width: 111px;
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel td.logo div {
+  background-image: url("../images/price_promise/Price-Promise-White.png");
+  float: right;
+  width: 111px;
+  height: 80px;
+  margin-top: 11px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  body.car[data-step="results"] .more-info-content .price-promise-panel td.logo div {
+    background-image: url("../images/price_promise/Price-Promise-White@2x.png");
+    background-size: 111px 80px;
+  }
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel h6 {
+  font-size: 17px;
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel strong {
+  font-weight: normal !important;
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel.inverted .partition {
+  height: 0px;
+  border: none;
+  border-top: 1px solid #1c3e93;
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel.inverted table {
+  border-top-color: #999999;
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel.inverted td.logo div {
+  background-image: url("../images/price_promise/Price-Promise-Blue.png");
+  background-size: contain;
+  width: 100px !important;
+  height: 72px !important;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  body.car[data-step="results"] .more-info-content .price-promise-panel.inverted td.logo div {
+    background-image: url("../images/price_promise/Price-Promise-Blue@2x.png");
+    background-size: 100px 72px;
+  }
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel.inverted a {
+  color: #333333;
+}
+body.car[data-step="results"] .more-info-content .price-promise-panel.inverted p,
+body.car[data-step="results"] .more-info-content .price-promise-panel.inverted small {
+  font-size: 12px;
+}
+.lt-ie9 body.car[data-step="results"] header .price-promise-panel {
+  width: 494px !important;
+}
+.lt-ie9 body.car[data-step="results"] header .price-promise-panel .row {
+  margin-top: 8px;
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  body.car[data-step="results"] .more-info-content .price-promise-panel h6 {
+    font-size: 13px;
+  }
+  body.car[data-step="results"] .more-info-content .price-promise-panel p,
+  body.car[data-step="results"] .more-info-content .price-promise-panel small {
+    font-size: 11px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  body.car[data-step="results"] header .price-promise-panel {
+    width: 366px !important;
+    top: 7px !important;
+  }
+  body.car[data-step="results"] header .price-promise-panel .row {
+    margin-top: 0px !important;
+  }
+  body.car[data-step="results"] header .price-promise-panel td.logo {
+    width: 100px !important;
+  }
+  body.car[data-step="results"] header .price-promise-panel td.logo div {
+    background-size: contain;
+    width: 100px !important;
+    height: 72px !important;
+    margin-right: 15px !important;
+  }
+  body.car[data-step="results"] header .price-promise-panel h6 {
+    margin-bottom: 0px;
+  }
+  body.car[data-step="results"] .price-promise-panel h6 {
+    font-size: 14px;
+  }
+  body.car[data-step="results"] .price-promise-panel p {
+    font-size: 11px;
+  }
+  body.car[data-step="results"] .price-promise-panel p small {
+    font-size: 9px;
+  }
+}
+@media (max-width: 767px) {
+  .car .price-promise-panel {
+    display: none !important;
+  }
+}

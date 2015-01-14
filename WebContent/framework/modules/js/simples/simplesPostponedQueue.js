@@ -45,7 +45,7 @@
 
 				// Highlight correct one
 				if (obj !== false) {
-					$messages.filter('[data-messageId="' + obj.messageId + '"]').addClass('active');
+					$messages.filter('[data-messageId="' + obj.message.messageId + '"]').addClass('active');
 				}
 			});
 
@@ -123,7 +123,7 @@
 			useDefaultErrorHandling: false
 		})
 		.done(function onSuccess(json) {
-			if (!json.hasOwnProperty('transactionId')) {
+			if (!json.hasOwnProperty('message') || !json.message.hasOwnProperty('messageId')) {
 				alert('Failed to load message: invalid response');
 			}
 			else {

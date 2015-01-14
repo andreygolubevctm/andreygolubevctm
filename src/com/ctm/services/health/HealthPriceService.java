@@ -1,6 +1,7 @@
 package com.ctm.services.health;
 
 import static com.ctm.model.health.Frequency.ANNUALLY;
+import static com.ctm.model.health.Frequency.HALF_YEARLY;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,10 +36,10 @@ public class HealthPriceService {
 
 	private long transactionId;
 	private boolean showAll;
-	private double rebateCalc;
-	private double rebateMultiplierCurrent;
-	private Date changeoverDate;
-	private double rebateChangeover;
+	private double rebate;				// final rebate to be used
+	private double rebateCurrent; 		// current rebate percentage	e.g. 29.04
+	private double rebateChangeover;	// future rebate percentage		e.g. 28.65
+	private Date changeoverDate;		// rebate changeover date	April 1st every year.
 	private Date applicationDate;
 
 	private HealthPricePremiumRange healthPricePremiumRange;
@@ -67,12 +68,20 @@ public class HealthPriceService {
 		this.showAll = showAll;
 	}
 
-	public void setRebateMultiplierCurrent(double rebateMultiplierCurrent) {
-		this.rebateMultiplierCurrent = rebateMultiplierCurrent;
-	}
-
 	public void setChangeoverDate(Date changeoverDate) {
 		this.changeoverDate = changeoverDate;
+	}
+
+	public double getRebate() {
+		return rebate;
+	}
+
+	public double getRebateCurrent() {
+		return rebateCurrent;
+	}
+
+	public void setRebateCurrent(double rebateCurrent) {
+		this.rebateCurrent = rebateCurrent;
 	}
 
 	public double getRebateChangeover() {
@@ -170,8 +179,8 @@ public class HealthPriceService {
 		setUpStyleCodeId();
 		setUpHospitalSelection();
 		setUpExcludeStatus();
-		setUpRebateMultiplier();
-		HealthPricePremiumRangeService healthPricePremiumRangeService = new HealthPricePremiumRangeService(healthPriceRequest , rebateCalc, healthPriceDao);
+		setUpRebate();
+		HealthPricePremiumRangeService healthPricePremiumRangeService = new HealthPricePremiumRangeService(healthPriceRequest , rebate, healthPriceDao);
 		healthPricePremiumRange = healthPricePremiumRangeService.getHealthPricePremiumRange();
 		setUpLoadingPerc();
 	}
@@ -225,13 +234,13 @@ public class HealthPriceService {
 		}
 	}
 
-	private void setUpRebateMultiplier() throws DaoException {
-		this.rebateCalc = 0.0;
+	private void setUpRebate() throws DaoException {
+		this.rebate = 0.0;
 
-		if(!changeoverDate.before(healthPriceRequest.getSearchDateValue())) {
-			this.rebateCalc = rebateChangeover * 0.01;
-		} else if (healthPriceRequest.getRebate() > 0) {
-			this.rebateCalc = (healthPriceRequest.getRebate() * rebateMultiplierCurrent) * 0.01;
+		if (!healthPriceRequest.getSearchDateValue().before(changeoverDate)) {
+			this.rebate = rebateChangeover;
+		} else if (rebateCurrent > 0) {
+			this.rebate = rebateCurrent;
 		}
 	}
 
@@ -257,7 +266,7 @@ public class HealthPriceService {
 		DISCOUNT HACK: NEEDS TO BE REVISED
 		if onResultsPage = true + not(BUD)
 			= Discount
-			Show all .. and default to discount rates (except BUD,  and we'll only show the * for NIB)
+			Show all .. and default to discount rates (except BUD)
 	
 		else if NIB + Bank account + single-product only being fetched
 			= Discount
@@ -271,10 +280,13 @@ public class HealthPriceService {
 		else if BUD + Current Customer + single-product only being fetched
 			= Discount
 			
+		else if HIF + Annualy/Halfyealy payment + single-product only being fetched
+			= Discount
+
 		else
 			= No Discount
 	
-		1=AUF, 3=NIB, 5=GMHBA, 6=GMF, 54=BUD
+		1=AUF, 3=NIB, 5=GMHBA, 6=GMF, 54=BUD, 11=HIF
 	**/
 	public static boolean hasDiscountRates(Frequency frequency, String provider,
 			String currentCustomer, String paymentType, boolean onResultsPage) {
@@ -289,6 +301,9 @@ public class HealthPriceService {
 				break;
 			case "GMF":
 				isDiscountRates = onResultsPage || frequency.equals(ANNUALLY);
+				break;
+			case "HIF":
+				isDiscountRates = onResultsPage || frequency.equals(ANNUALLY) || frequency.equals(HALF_YEARLY);
 				break;
 			case "BUD":
 				isDiscountRates = currentCustomer != null && currentCustomer.equals("Y");

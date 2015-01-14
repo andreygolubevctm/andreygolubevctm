@@ -16,6 +16,7 @@
 <c:set var="directApplication"><x:out select="$healthXML/request/header/directApplication = 'Y'" /></c:set>
 <c:set var="onResultsPage"><x:out select="$healthXML/request/header/onResultsPage = 'Y'" /></c:set>
 <c:set var="rebate"><x:out select="$healthXML/request/details/rebate" escapeXml="false" /></c:set>
+<c:set var="rebateChangeover"><x:out select="$healthXML/request/details/rebateChangeover" escapeXml="false" /></c:set>
 <c:set var="paymentFrequency"><x:out select="$healthXML/request/header/paymentFrequency" /></c:set>
 <c:set var="preferences"><x:out select="$healthXML/request/details/preferences" escapeXml="false" /></c:set>
 <c:set var="state"><x:out select="$healthXML/request/details/state" /></c:set>
@@ -60,7 +61,6 @@ ${healthPriceRequest.setProductType(productType)}
 ${healthPriceRequest.setPrivateHospital(privateHospital)}
 ${healthPriceRequest.setPublicHospital(publicHospital)}
 ${healthPriceRequest.setLoading(loading)}
-${healthPriceRequest.setRebate(rebate)}
 ${healthPriceRequest.setExcessSel(excessSel)}
 ${healthPriceRequest.setSelectedProductId(selectedProductId)}
 ${healthPriceRequest.setRetrieveSavedResults(retrieveSavedResults)}
@@ -73,9 +73,9 @@ ${healthPriceService.setHealthPriceRequest(healthPriceRequest)}
 
 ${healthPriceService.setMembership(cover)}
 ${healthPriceService.setSearchDate(searchDate)}
-${healthPriceService.setRebateMultiplierCurrent(rebate_multiplier_current)}
 ${healthPriceService.setChangeoverDate(changeover_date_1)}
-${healthPriceService.setRebateChangeover(rebate * rebate_multiplier_future)}
+${healthPriceService.setRebateCurrent(rebate)}
+${healthPriceService.setRebateChangeover(rebateChangeover)}
 ${healthPriceService.setTransactionId(transactionId)}
 ${healthPriceService.getHealthPriceRequest().setIsSimples(isSimples)}
 ${healthPriceService.setShowAll(showAll)}

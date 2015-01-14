@@ -1,33 +1,24 @@
 .coverLevelTabs {
-	background-color: @clt-bg;
 	color: @gray-darker;
 
-	margin: -10px 0 3px 0;
-	border-bottom: 2px solid @clt-border-bottom;
-
-	.clt-action, .clt-label {
-		border: 3px solid #fff;
-		border-top: none;
-
-		font-size: 12px;
-		text-transform: uppercase;
+	.clt-action {
 		font-family: @font-family-theme-bold;
-
+		line-height: 14px;
 		padding: 10px 0;
-	}
-	.clt-label {
-		padding-right: 10px;
 	}
 	.clt-action {
 		cursor: pointer;
+		font-size: 12px;
+		text-transform: uppercase;
+		border: 1px solid #fff;
+		border-top: none;
+		background-color: @clt-inactive-bg-color;
 	}
 	.active, .clt-action:hover {
-		color: @clt-active-color;
 		background-color: @clt-active-bg;
+		color: @clt-active-color;
 	}
-	.active {
-		border-bottom: 3px solid @clt-border-bottom;
-	}
+
 	// xs styles
 	@media(@xs-only) {
 		& {
@@ -38,9 +29,9 @@
 			width: 100%;
 		}
 		.clt-action {
-			float:left;
-			padding: 10px;
-			border-width: 0;
+			padding: 10px 5px;
+			border: 1px solid #fff;
+			border-bottom: none;
 			/* not ideal */
 			white-space: nowrap;
 		}
