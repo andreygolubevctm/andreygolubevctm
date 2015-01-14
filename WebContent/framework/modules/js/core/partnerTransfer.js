@@ -89,7 +89,7 @@
 		// Guarantee all fields exist in the object
 		tracking = $.extend({
 			actionStep:				null,
-			brandCode:				null,
+			brandValueCode:				null,
 			currentJourney:			null,
 			lastFieldTouch:			null,
 			productBrandCode:		settings.product.provider,

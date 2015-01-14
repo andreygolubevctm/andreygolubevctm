@@ -4888,7 +4888,7 @@ meerkat.logging.init = function() {
         meerkat.modules.tracking.updateObjectData(tracking);
         tracking = $.extend({
             actionStep: null,
-            brandCode: null,
+            brandValueCode: null,
             currentJourney: null,
             lastFieldTouch: null,
             productBrandCode: settings.product.provider,
