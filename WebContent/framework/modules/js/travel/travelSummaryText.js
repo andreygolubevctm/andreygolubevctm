@@ -20,22 +20,6 @@
 		// Build the summary text based on the entered information.
 		var txt= '<span class="highlight">';
 
-		var amtTxt = '';
-		if ($policytype.val() == 'A')
-		{
-			amtTxt = '<span class="highlight">Annual Multi Trip (AMT)</span> ';
-		}
-
-		if(meerkat.modules.deviceMediaState.get() !== 'sm') 
-		{
-			
-			txt += 'Your '+amtTxt+'quote';
-		} else {
-			txt += amtTxt+($policytype.val() == 'A' ? ' quote' : 'Quote');
-		}  
-
-		txt += '</span> is based on: <span class="highlight">';
-
 		var adults = $adults.val(),
 		children = $children.val(),
 		chkCount = $('.destcheckbox:checked').length;
@@ -49,13 +33,13 @@
 			txt += ' and ' + children + ' child' + (children == 1 ? '' : 'ren');
 		}
 
-		// if this is a single trip 
+		// if this is a single trip
 		if ($("input[name=travel_policyType]:checked").val() == 'S')
 		{
 			// in case a user did an AMT quote and now wants a single trip quote
 			$summaryHeader.html('Your quote is based on');
 			txt +='</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
-				
+
 			// destinations
 			if ($worldwide.is(':checked')){
 				txt += "any country";
@@ -77,7 +61,7 @@
 
 			txt += "</span> for <span class='highlight'>"+days+" days</span>";
 		} else {
-			$summaryHeader.html('Your Annual Multi Trip (AMT)quote is based on');
+			$summaryHeader.html('Your Annual Multi Trip (AMT) quote is based on');
 			var blockClass = children > 1 ? 'sm-md-block' : 'sm-block';
 			txt+="</span> travelling <span class='highlight "+blockClass+"'>multiple times in one year";
 		}
@@ -111,9 +95,9 @@
 			}
 		});
 	}
-	
+
 	function init(){
-		
+
 	}
 
 	meerkat.modules.register('travelSummaryText', {
