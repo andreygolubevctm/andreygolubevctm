@@ -1,0 +1,1 @@
+INSERT INTO `ctm`.`provider_master` (ProviderId,Name,EffectiveStart,EffectiveEnd) VALUES (16,'QCHF','2011-03-01','2040-12-31');

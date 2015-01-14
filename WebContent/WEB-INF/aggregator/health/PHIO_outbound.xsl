@@ -81,6 +81,7 @@
 								<xsl:when test="situation/providerKey = 'ctm_123456789'">14</xsl:when>
 								<xsl:when test="situation/providerKey = 'bup_744568719'">15</xsl:when>
 								<xsl:when test="situation/providerKey = 'bud_296587056'">54</xsl:when>
+								<xsl:when test="situation/providerKey = 'qchf_63422354'">16</xsl:when>
 								<xsl:otherwise>-1</xsl:otherwise>
 							</xsl:choose>
 						</xsl:when>
