@@ -65,4 +65,17 @@
 		<xsl:value-of select="format-number($amount,'#,###,###')"/>
 	</xsl:template>
 
+	<xsl:template name="convertToValue">
+		<xsl:param name="amount"/>
+		<xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
+		<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+		<xsl:choose>
+			<xsl:when test="translate($amount, $uppercase, $smallcase) = 'unlimited'">999999999</xsl:when>
+			<xsl:otherwise>
+					<xsl:call-template name="removeDollarFormatting">
+						<xsl:with-param name="oldDollarValue"><xsl:value-of select="$amount" /></xsl:with-param>
+					</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 </xsl:stylesheet>

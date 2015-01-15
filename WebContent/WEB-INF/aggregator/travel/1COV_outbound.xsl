@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cal="java.util.GregorianCalendar" xmlns:sdf="java.text.SimpleDateFormat">
 	
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<!-- xsl:import href="../includes/utils.xsl"/ -->
@@ -8,6 +8,8 @@
 	<xsl:param name="partnerId" />
 	<xsl:param name="sourceId" />
 	<xsl:param name="today" />
+	<xsl:param name="username" />
+	<xsl:param name="password" />
 
 <!-- KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	
@@ -20,89 +22,92 @@
 			If user selected Africa - default to WW
 			Else - substitute the region code 
 		-->
+
+
 		<xsl:variable name="region">
 				<xsl:choose>
-					<xsl:when test="policyType = 'A'">R1</xsl:when>
-					<!-- REGION 1(R1) -->
-					<xsl:when test="destinations/af/af">R1</xsl:when>
-					<xsl:when test="destinations/am/us">R1</xsl:when>
-					<xsl:when test="destinations/am/ca">R1</xsl:when>
-					<xsl:when test="destinations/am/sa">R1</xsl:when>
-					<xsl:when test="destinations/as/jp">R1</xsl:when>
-					<xsl:when test="destinations/me/me">R1</xsl:when>
-					<xsl:when test="destinations/do/do">R1</xsl:when>
+				<xsl:when test="destinations/af/af">WW</xsl:when>
+				<xsl:when test="destinations/am/us">WW</xsl:when>
+				<xsl:when test="destinations/am/ca">WW</xsl:when>
+				<xsl:when test="destinations/am/sa">WW</xsl:when>
+				<xsl:when test="destinations/as/jp">WW</xsl:when>
+				<xsl:when test="destinations/me/me">WW</xsl:when>
+				<xsl:when test="destinations/do/do">WW</xsl:when>
 					
-					<!-- REGION 2 (R2) -->
-					<xsl:when test="destinations/eu/eu">R2</xsl:when>
-					<xsl:when test="destinations/eu/uk">R2</xsl:when>
+				<xsl:when test="destinations/eu/eu">EU</xsl:when>
+				<xsl:when test="destinations/eu/uk">EU</xsl:when>
 					
-					<!-- REGION 3 (R3) -->	
-					<xsl:when test="destinations/as/as">R3</xsl:when>
-					<xsl:when test="destinations/as/ch">R3</xsl:when>
-					<xsl:when test="destinations/as/hk">R3</xsl:when>
-					<xsl:when test="destinations/as/in">R3</xsl:when>
-					<xsl:when test="destinations/as/th">R3</xsl:when>
-					<xsl:when test="destinations/pa/in">R3</xsl:when>
+				<xsl:when test="destinations/as/ch">AS</xsl:when>
+				<xsl:when test="destinations/as/hk">AS</xsl:when>
+				<xsl:when test="destinations/as/in">AS</xsl:when>
+				<xsl:when test="destinations/as/th">AS</xsl:when>
+				<xsl:when test="destinations/pa/in">AS</xsl:when>
 
-					<!-- REGION 4 (R4) -->
-					<xsl:when test="destinations/pa/ba">R4</xsl:when>
-					<xsl:when test="destinations/pa/nz">R4</xsl:when>
-					<xsl:when test="destinations/pa/pi">R4</xsl:when>
+				<xsl:when test="destinations/pa/ba">PC</xsl:when>
+				<xsl:when test="destinations/pa/nz">PC</xsl:when>
+				<xsl:when test="destinations/pa/pi">PC</xsl:when>
 
-					<!-- REGION 5 (R5) -->
-					<xsl:when test="destinations/au/au">R5</xsl:when>
-					
-					<!-- Default to REGION 1 (WW) -->
-					<xsl:otherwise>R1</xsl:otherwise>								
+				<xsl:when test="destinations/au/au">AU</xsl:when>
+				<xsl:otherwise>WW</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
 		
-		<request>		
-<!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-			<header>
-				<partnerReference><xsl:value-of select="transactionId" /></partnerReference>
-				<clientIpAddress><xsl:value-of select="clientIpAddress" /></clientIpAddress>
-			</header>
-		
-<!-- REQUEST DETAILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!-- 
-			If children entered - set to (FAM)ily
-			If 2 adults - DUO
-			Otherwise, (SIN)gle
-		 -->
-			<details>
-				<age><xsl:value-of select="oldest" /></age>
-				<region><xsl:value-of select="$region" /></region>
-				<type>				
+		<xsl:variable name="fromDate">
 					<xsl:choose>
-						<xsl:when test="adults = '2' and children != '0'">FAM</xsl:when>
-						<xsl:when test="adults = '2'">DUO</xsl:when>
-						<xsl:when test="adults = '1'">SIN</xsl:when>				
+				<xsl:when test="policyType = 'S'">
+					<xsl:call-template name="util_isoDate"><xsl:with-param name="eurDate" select="dates/fromDate" /></xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$today" />
+				</xsl:otherwise>
 					</xsl:choose>					
-				</type>
+		</xsl:variable>
+
+		<xsl:variable name="toDate">
 					<xsl:choose>
-					<xsl:when test="policyType = 'A'">
-						<multiTrip>Y</multiTrip>
-						<startDate />
-						<endDate />
+				<xsl:when test="policyType = 'S'">
+					<xsl:call-template name="util_isoDate"><xsl:with-param name="eurDate" select="dates/toDate" /></xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
-						<multiTrip>N</multiTrip>
-				<startDate>
-					<xsl:call-template name="util_isoDate"> 
-						<xsl:with-param name="eurDate" select="dates/fromDate" />
-					</xsl:call-template>				
-				</startDate>
-				<endDate>
-					<xsl:call-template name="util_isoDate"> 
-						<xsl:with-param name="eurDate" select="dates/toDate" />
-					</xsl:call-template>				
-				</endDate>
+					<xsl:variable name="dayResult" select="cal:add(5, 89)"/> <!-- Add 89 Days. The current day is inclusive which pushes it to 90 days total -->
+					<xsl:value-of select="sdf:format(sdf:new('yyyy-MM-dd'),cal:getTime())" />
 					</xsl:otherwise>
 				</xsl:choose>
-			</details>
-		</request>
+		</xsl:variable>
 				
+		<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:quot="http://www.1cover.com.au/ws/schemas/quotes" xmlns:typ="http://www.1cover.com.au/ws/schemas/types">
+		<soapenv:Header>
+		<wsse:Security soapenv:mustUnderstand="0" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurityutility-1.0.xsd">
+		<wsse:UsernameToken>
+		<wsse:Username><xsl:value-of select="$username" /></wsse:Username>
+		<wsse:Password><xsl:value-of select="$password" /></wsse:Password>
+		</wsse:UsernameToken>
+		</wsse:Security>
+		</soapenv:Header>
+		<soapenv:Body>
+		<quot:GetQuotesRequest>
+		<quot:partner-id>1</quot:partner-id>
+		<quot:source-id>1</quot:source-id>
+		<quot:schema-version>1</quot:schema-version>
+		<quot:partner-reference>1</quot:partner-reference>
+		<quot:client-ip-address><xsl:value-of select="clientIpAddress" /></quot:client-ip-address>
+		<quot:destination>
+			<typ:destination-id><xsl:value-of select="$region" /></typ:destination-id>
+		</quot:destination>
+		<quot:number-of-adults><xsl:value-of select="adults" /></quot:number-of-adults>
+		<quot:number-of-children><xsl:value-of select="children" /></quot:number-of-children>
+		<quot:start-date><xsl:value-of select="$fromDate" /></quot:start-date>
+		<quot:end-date><xsl:value-of select="$toDate" /></quot:end-date>
+		<quot:affiliate-id>10169</quot:affiliate-id>
+		<quot:adult-age><xsl:value-of select="oldest" /></quot:adult-age>
+			<xsl:if test="adults = 2">
+				<quot:adult-age><xsl:value-of select="oldest" /></quot:adult-age>
+			</xsl:if>
+		</quot:GetQuotesRequest>
+		</soapenv:Body>
+		</soapenv:Envelope>
+
+
 	</xsl:template>
 
 <!-- UTILS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

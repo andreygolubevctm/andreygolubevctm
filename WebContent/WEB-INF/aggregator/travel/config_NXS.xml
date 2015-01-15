@@ -134,10 +134,11 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="1COV" type="url-encoded">
-		<soap-url>http://192.168.149.233/ctm/rating/travel_price_result.jsp?providerId=292</soap-url>
+	<service name="1COV" type="soap">
+		<soap-url>http://au.dev.1cover.com/services/quotes.wsdl</soap-url>
+		<soap-action>https://au.dev.1cover.com/services</soap-action>
 		<outbound-xsl>1COV_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms>SPName=CompareTheMarket,username=CTM,password=ZECEgnKGr7JhzDsagryJ7P8t</outbound-xsl-parms>
 		<inbound-xsl>1COV_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1COV</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>

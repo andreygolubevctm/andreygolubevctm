@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-	exclude-result-prefixes="soapenv">
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:ns3="http://www.1cover.com.au/ws/schemas/quotes"
+	xmlns:ns2="http://www.1cover.com.au/ws/schemas/types"
+	exclude-result-prefixes="SOAP-ENV ns2 ns3">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="utilities/unavailable.xsl" />
+	<xsl:import href="utilities/string_formatting.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -19,221 +22,112 @@
 <!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 		<xsl:choose>
-			<!-- ACCEPTABLE -->
-			<xsl:when test="/results/result/premium">
-				<xsl:apply-templates/>
-			</xsl:when>
-
 			<!-- UNACCEPTABLE -->
-			<xsl:otherwise>
+			<xsl:when test="/SOAP-ENV:Envelope/SOAP-ENV:Body/ns3:GetQuotesResponse/ns3:error or /error or ($request/travel/policyType = 'A' and not(//ns2:policy-id = '2'))">
+				<!-- UNACCEPTABLE. Check if ns3:error exists or if the /error node exists or if it's an amt policy and the frequent traveller doesn't exist  -->
 				<xsl:call-template name="unavailable">
 					<xsl:with-param name="productId">TRAVEL-57</xsl:with-param>
 				</xsl:call-template>
+			</xsl:when>
+
+			<!-- ACCEPTABLE -->
+			<xsl:otherwise>
+				<xsl:apply-templates select="/SOAP-ENV:Envelope/SOAP-ENV:Body/ns3:GetQuotesResponse" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 
 
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:template match="/results">
+	<xsl:template match="/SOAP-ENV:Envelope/SOAP-ENV:Body/ns3:GetQuotesResponse">
+		<xsl:variable name="partnerName"><xsl:value-of select="ns3:insurer" /></xsl:variable>
+		<xsl:variable name="moreInfo"><xsl:value-of select="ns3:more-info" /></xsl:variable>
+		<xsl:variable name="pdsURL"><xsl:value-of select="ns3:pds-url" /></xsl:variable>
+
+		<xsl:variable name="smallcase" select="'abcdefghijklmnopqrstuvwxyz'" />
+		<xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
 		<results>
 
-			<xsl:for-each select="result">
+			<xsl:for-each select="ns3:quotes">
 
-				<xsl:variable name="policyType">
+				<xsl:variable name="uniqueId">
 					<xsl:choose>
-						<xsl:when test="@productId = 'TRAVEL-57'">1</xsl:when>
-						<xsl:when test="@productId = 'TRAVEL-58'">4</xsl:when>
-						<xsl:when test="@productId = 'TRAVEL-59'">3</xsl:when>
-						<xsl:when test="@productId = 'TRAVEL-60'">1</xsl:when>
-						<xsl:when test="@productId = 'TRAVEL-61'">2</xsl:when>
-						<xsl:when test="@productId = 'TRAVEL-62'">2</xsl:when>
-						<xsl:when test="@productId = 'TRAVEL-63'">5</xsl:when>
-						<xsl:when test="@productId = 'TRAVEL-64'">5</xsl:when>
-						<xsl:when test="@productId = 'TRAVEL-182'">2</xsl:when>
-						<xsl:otherwise >1</xsl:otherwise>
+						<xsl:when test="ns2:policy-id = 1">605073</xsl:when> <!-- Comprehensive -->
+						<xsl:when test="ns2:policy-id = 2">605074</xsl:when> <!-- Frequent Traveller (AMT) -->
+						<xsl:when test="ns2:policy-id = 3">605075</xsl:when> <!-- Basics -->
+						<xsl:when test="ns2:policy-id = 4">605076</xsl:when> <!-- Essentials -->
+						<xsl:when test="ns2:policy-id = 5">605077</xsl:when> <!-- Ski Plus -->
+						<xsl:when test="ns2:policy-id = 6">608186</xsl:when> <!-- Ski Annual -->
 					</xsl:choose>
 				</xsl:variable>
 
-				<xsl:variable name="destinationCode">
-					<xsl:choose>
-						<xsl:when test="$request/travel/destinations/af/af">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/us">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/ca">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/sa">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/jp">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/me/me">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">WW</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/eu/eu">EU</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/uk">EU</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/as/ch">AS</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/hk">AS</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/in">AS</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/th">AS</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/in">AS</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/pa/ba">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/nz">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/pi">PC</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/au/au">AU</xsl:when>
-
-						<xsl:when test="@productId = 'TRAVEL-61'">AU</xsl:when>
-						<xsl:when test="@productId = 'TRAVEL-182'">PC</xsl:when>
-
-						<xsl:otherwise>WW</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-
-				<xsl:variable name="adults" select="$request/travel/adults" />
-				<xsl:variable name="children">
-					<xsl:choose>
-						<xsl:when test="$request/travel/children"><xsl:value-of select="$request/travel/children" /></xsl:when>
-						<xsl:otherwise >0</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-
-				<xsl:variable name="oldest">
-					<xsl:choose>
-						<xsl:when test="$adults = '2'">
-							<xsl:value-of select="$request/travel/oldest" />,<xsl:value-of select="$request/travel/oldest" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="$request/travel/oldest" />
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-
-				<xsl:variable name="fromDate" select="$request/travel/dates/fromDate" />
-				<xsl:variable name="toDate" select="$request/travel/dates/toDate" />
-
-				<xsl:variable name="fromDateFormatted">
-					<xsl:if test="$fromDate != ''">
-						<xsl:value-of select="substring($fromDate,1,2)" />-<xsl:value-of select="substring($fromDate,4,2)" />-<xsl:value-of select="substring($fromDate,7,4)" />
-					</xsl:if>
-				</xsl:variable>
-
-				<xsl:variable name="startDateFormatted"><xsl:value-of select="substring($fromDate,7,4)" />-<xsl:value-of select="substring($fromDate,4,2)" />-<xsl:value-of select="substring($fromDate,1,2)" /></xsl:variable>
-				<xsl:variable name="endDateFormatted"><xsl:value-of select="substring($toDate,7,4)" />-<xsl:value-of select="substring($toDate,4,2)" />-<xsl:value-of select="substring($toDate,1,2)" /></xsl:variable>
-
-				<xsl:element name="price">
-					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
-					<xsl:attribute name="productId">
-						<xsl:choose>
-							<xsl:when test="$productId != '*NONE'"><xsl:value-of select="$productId" /></xsl:when>
-							<xsl:otherwise>
-								<xsl:value-of select="$service" />-<xsl:value-of select="@productId" />
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:attribute>
-
-					<available>Y</available>
-					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-					<provider><xsl:value-of select="provider"/></provider>
-					<trackCode>9</trackCode>
-					<name><xsl:value-of select="name"/></name>
-					<des><xsl:value-of select="des"/></des>
-					<price><xsl:value-of select="format-number(premium,'#.00')"/></price>
-					<priceText><xsl:value-of select="premiumText"/></priceText>
-
-					<info>
-						<xsl:for-each select="productInfo">
+				<xsl:if test="(((ns2:policy-id != 2 and ns2:policy-id != 6) and $request/travel/policyType = 'S') or ((ns2:policy-id = 2 or ns2:policy-id = 6) and $request/travel/policyType = 'A'))">
+					<xsl:element name="price">
+						<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
+						<xsl:attribute name="productId">
 							<xsl:choose>
-							<xsl:when test="@propertyId = 'subTitle'"></xsl:when>
-							<xsl:when test="@propertyId = 'infoDes'"></xsl:when>
-							<xsl:when test="@propertyId = 'medical'">
-								<xsl:element name="{@propertyId}">
-									<label><xsl:value-of select="label" /></label>
-									<desc>Overseas Emergency Medical &amp; Hospital Expenses</desc>
-									<value><xsl:value-of select="value" /></value>
-									<text><xsl:value-of select="text" /></text>
-									<order/>
-								</xsl:element>
-							</xsl:when>
-							<xsl:when test="@propertyId = 'expenses'">
-								<xsl:element name="{@propertyId}">
-									<label><xsl:value-of select="label" /></label>
-									<desc>Additional Accommodation &amp; Travel Expenses</desc>
-									<value><xsl:value-of select="value" /></value>
-									<text><xsl:value-of select="text" /></text>
-									<order/>
-								</xsl:element>
-							</xsl:when>
-							<xsl:when test="@propertyId = 'traveldocs'">
-								<xsl:element name="{@propertyId}">
-									<label><xsl:value-of select="label" /></label>
-									<desc>Travel Documents &amp; Travellers Cheque</desc>
-									<value><xsl:value-of select="value" /></value>
-									<text><xsl:value-of select="text" /></text>
-									<order/>
-								</xsl:element>
-							</xsl:when>
-							<xsl:when test="@propertyId = 'traveldelayExp'">
-								<xsl:element name="{@propertyId}">
-									<label><xsl:value-of select="label" /></label>
-									<desc>Disruption of Journey</desc>
-									<value><xsl:value-of select="value" /></value>
-									<text><xsl:value-of select="text" /></text>
-									<order/>
-								</xsl:element>
-							</xsl:when>
-							<xsl:when test="@propertyId = 'rentalVeh'">
-								<xsl:element name="{@propertyId}">
-									<label><xsl:value-of select="label" /></label>
-									<desc>Rental Vehicle Excess</desc>
-									<value><xsl:value-of select="value" /></value>
-									<text><xsl:value-of select="text" /></text>
-									<order/>
-								</xsl:element>
-							</xsl:when>
-							<xsl:when test="@propertyId = 'pisteClosure'">
-								<xsl:element name="{@propertyId}">
-									<label><xsl:value-of select="label" /></label>
-									<desc>Piste Closure (daily/maximum)</desc>
-									<value><xsl:value-of select="value" /></value>
-									<text><xsl:value-of select="text" /></text>
-									<order/>
-								</xsl:element>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:element name="{@propertyId}">
-									<xsl:copy-of select="*"/>
-								</xsl:element>
-							</xsl:otherwise>
+								<xsl:when test="$productId != '*NONE'"><xsl:value-of select="$productId" /></xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$service" />-TRAVEL-<xsl:value-of select="$uniqueId" />
+								</xsl:otherwise>
 							</xsl:choose>
-						</xsl:for-each>
-					</info>
+						</xsl:attribute>
 
-					<infoDes>
-						<xsl:value-of select="productInfo[@propertyId='infoDes']/text" />
-					</infoDes>
-					<subTitle>
-						<xsl:value-of select="productInfo[@propertyId='subTitle']/text"/>
-					</subTitle>
+						<available>Y</available>
+						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
+						<provider><xsl:value-of select="$partnerName"/></provider>
+						<trackCode>61</trackCode>
+						<des><xsl:value-of select="$partnerName"/><xsl:text> </xsl:text><xsl:value-of select="ns2:policy-name"/> <xsl:if test="ns2:policy-id = 2 or ns2:policy-id = 6">&lt;br&gt; &lt;span class=&quot;daysPerTrip&quot;&gt;(<xsl:value-of select="ns2:max-trip-length" /><xsl:text> </xsl:text><xsl:value-of select="translate(ns2:max-trip-type, $uppercase, $smallcase)" />)&lt;/span&gt;</xsl:if></des>
+						<price><xsl:call-template name="removeDollarFormatting">
+							<xsl:with-param name="oldDollarValue"><xsl:value-of select="ns2:policy-price" /></xsl:with-param>
+						</xsl:call-template></price>
+						<priceText><xsl:value-of select="ns2:policy-price"/></priceText>
 
-					<acn>000 000 000</acn>
-					<afsLicenceNo>00000</afsLicenceNo>
-					<quoteUrl>
-						<xsl:text>https://www.1cover.com.au/travel-insurance/view-quote.html?policyTypeId=</xsl:text>
-						<xsl:value-of select="$policyType" />
-						<!-- <xsl:text>%26quoteOption=1%26destinationCode=</xsl:text> -->
-						<xsl:text>%26destinationCode=</xsl:text>
-						<xsl:value-of select="$destinationCode" />
-						<xsl:text>%26startDate=</xsl:text>
-						<xsl:value-of select="translate($fromDate, '/', '-')" />
-						<xsl:text>%26endDate=</xsl:text>
-						<xsl:value-of select="translate($toDate, '/', '-')" />
-						<xsl:text>%26numberOfAdults=</xsl:text>
-						<xsl:value-of select="$adults" />
-						<xsl:text>%26numberOfChildren=</xsl:text>
-						<xsl:value-of select="$children" />
-						<xsl:text>%26adultAges=</xsl:text>
-						<xsl:value-of select="$oldest" />
-						<xsl:text>%26affID=10169%26campaignID=64</xsl:text>
-					</quoteUrl>
-				</xsl:element>
+						<info>
+							<excess>
+								<label>Excess</label>
+								<desc>Excess on claims</desc>
+								<value><xsl:call-template name="convertToValue">
+									<xsl:with-param name="amount"><xsl:value-of select="ns2:Excess" /></xsl:with-param>
+								</xsl:call-template></value>
+								<text><xsl:value-of select="ns2:Excess" /></text>
+								<order />
+							</excess>
+							<xsl:for-each select="ns2:covers">
+								<xsl:variable name="nodeName">
+									<xsl:choose>
+										<xsl:when test="ns2:cover-id = 1">medical</xsl:when> <!-- OS Medical -->
+										<xsl:when test="ns2:cover-id = 15">luggage</xsl:when> <!-- Luggage -->
+										<xsl:when test="ns2:cover-id = 17">cxdfee</xsl:when> <!-- Cancellation -->
+										<xsl:otherwise>benefit_<xsl:value-of select="ns2:cover-id" /></xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+
+								<xsl:element name="{$nodeName}">
+									<label><xsl:value-of select="ns2:title" /></label>
+									<desc><xsl:value-of select="ns2:title" /></desc>
+									<value><xsl:call-template name="convertToValue">
+										<xsl:with-param name="amount"><xsl:value-of select="ns2:amount" /></xsl:with-param>
+									</xsl:call-template></value>
+									<text><xsl:if test="ns2:amount = '0'">$</xsl:if><xsl:value-of select="ns2:amount" /></text>
+									<order/>
+								</xsl:element>
+							</xsl:for-each>
+						</info>
+
+						<infoDes>
+							<xsl:value-of select="$moreInfo" />
+						</infoDes>
+						<subTitle>
+							<xsl:value-of select="$pdsURL"/>
+						</subTitle>
+
+						<acn>000 000 000</acn>
+						<afsLicenceNo>00000</afsLicenceNo>
+						<quoteUrl><xsl:value-of select="ns2:url" />&amp;transactionID=<xsl:value-of select="$transactionId"/></quoteUrl>
+						<encodeUrl>Y</encodeUrl>
+					</xsl:element>
+				</xsl:if>
 			</xsl:for-each>
 
 		</results>
