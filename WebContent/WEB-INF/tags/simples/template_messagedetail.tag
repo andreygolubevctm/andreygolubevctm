@@ -28,7 +28,7 @@
 			<tbody>
 				<tr>
 					<th width="26%">Status</th>
-					<td>{{= obj.message.status }} (Message ID: {{= obj.message.messageId }})</td>
+					<td>{{= obj.message.status }} (Message ID: {{= obj.message.messageId }}) Latest Transaction ID: {{= obj.transaction.newestTransactionId}}</td>
 				</tr>
 				<tr>
 					<th>Brand/Vertical</th>

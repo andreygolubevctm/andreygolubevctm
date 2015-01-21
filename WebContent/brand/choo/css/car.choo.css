@@ -62,18 +62,23 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #064667;
   color: #ffffff;
 }
-.compareBar.active .comparisonActive .compareBtn.clearMode {
+.compareBar.active .comparisonActive .compareBtn.clearMode,
+.filters-component .btn-save {
   background-color: #064667;
   color: #ffffff;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:hover,
-.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus,
+.filters-component .btn-save:hover,
+.filters-component .btn-save:focus {
   background-color: #031f2d;
   color: #ffffff;
   outline: 0;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:active,
-.compareBar.active .comparisonActive .compareBtn.clearMode.active {
+.compareBar.active .comparisonActive .compareBtn.clearMode.active,
+.filters-component .btn-save:active,
+.filters-component .btn-save.active {
   background-color: #00afd8;
   color: #ffffff;
 }
@@ -147,72 +152,72 @@ body > div > header a.bottombar .btn-call:hover {
 }
 @media (min-width: 768px) {
   .resultsContainer.featuresMode.results-columns-sm-2 .featuresHeaders {
-    width: 240px;
+    width: 239px;
   }
   .resultsContainer.featuresMode.results-columns-sm-2 .resultsOverflow {
-    width: 480px;
+    width: 478px;
   }
   .resultsContainer.featuresMode.results-columns-sm-2 .result-row {
-    width: 240px;
+    width: 239px;
   }
   .resultsContainer.featuresMode.results-columns-sm-3 .featuresHeaders {
     width: 180px;
   }
   .resultsContainer.featuresMode.results-columns-sm-3 .resultsOverflow {
-    width: 540px;
+    width: 537px;
   }
   .resultsContainer.featuresMode.results-columns-sm-3 .result-row {
-    width: 180px;
+    width: 179px;
   }
   .resultsContainer.featuresMode.results-columns-sm-4 .featuresHeaders {
-    width: 144px;
+    width: 145px;
   }
   .resultsContainer.featuresMode.results-columns-sm-4 .resultsOverflow {
-    width: 576px;
+    width: 572px;
   }
   .resultsContainer.featuresMode.results-columns-sm-4 .result-row {
-    width: 144px;
+    width: 143px;
   }
   .resultsContainer.featuresMode.results-columns-sm-5 .featuresHeaders {
-    width: 120px;
+    width: 122px;
   }
   .resultsContainer.featuresMode.results-columns-sm-5 .resultsOverflow {
-    width: 600px;
+    width: 595px;
   }
   .resultsContainer.featuresMode.results-columns-sm-5 .result-row {
-    width: 120px;
+    width: 119px;
   }
 }
 @media (min-width: 992px) {
   .resultsContainer.featuresMode.results-columns-md-2 .featuresHeaders {
-    width: 314px;
+    width: 313px;
   }
   .resultsContainer.featuresMode.results-columns-md-2 .resultsOverflow {
-    width: 626px;
+    width: 624px;
   }
   .resultsContainer.featuresMode.results-columns-md-2 .result-row {
-    width: 313px;
+    width: 312px;
   }
   .resultsContainer.featuresMode.results-columns-md-3 .featuresHeaders {
     width: 235px;
   }
   .resultsContainer.featuresMode.results-columns-md-3 .resultsOverflow {
-    width: 705px;
+    width: 702px;
   }
   .resultsContainer.featuresMode.results-columns-md-3 .result-row {
-    width: 235px;
+    width: 234px;
   }
   .resultsContainer.featuresMode.results-columns-md-4 .featuresHeaders {
-    width: 188px;
+    width: 189px;
   }
   .resultsContainer.featuresMode.results-columns-md-4 .resultsOverflow {
-    width: 752px;
+    width: 748px;
   }
   .resultsContainer.featuresMode.results-columns-md-4 .result-row {
-    width: 188px;
+    width: 187px;
   }
   .resultsContainer.featuresMode.results-columns-md-5 .featuresHeaders {
-    width: 160px;
+    width: 157px;
   }
   .resultsContainer.featuresMode.results-columns-md-5 .resultsOverflow {
     width: 780px;
@@ -223,7 +228,7 @@ body > div > header a.bottombar .btn-call:hover {
 }
 @media (min-width: 1200px) {
   .resultsContainer.featuresMode.results-columns-lg-2 .featuresHeaders {
-    width: 380px;
+    width: 381px;
   }
   .resultsContainer.featuresMode.results-columns-lg-2 .resultsOverflow {
     width: 760px;
@@ -232,7 +237,7 @@ body > div > header a.bottombar .btn-call:hover {
     width: 380px;
   }
   .resultsContainer.featuresMode.results-columns-lg-3 .featuresHeaders {
-    width: 285px;
+    width: 286px;
   }
   .resultsContainer.featuresMode.results-columns-lg-3 .resultsOverflow {
     width: 855px;
@@ -241,7 +246,7 @@ body > div > header a.bottombar .btn-call:hover {
     width: 285px;
   }
   .resultsContainer.featuresMode.results-columns-lg-4 .featuresHeaders {
-    width: 228px;
+    width: 229px;
   }
   .resultsContainer.featuresMode.results-columns-lg-4 .resultsOverflow {
     width: 912px;
@@ -250,7 +255,7 @@ body > div > header a.bottombar .btn-call:hover {
     width: 228px;
   }
   .resultsContainer.featuresMode.results-columns-lg-5 .featuresHeaders {
-    width: 190px;
+    width: 191px;
   }
   .resultsContainer.featuresMode.results-columns-lg-5 .resultsOverflow {
     width: 950px;
@@ -1140,7 +1145,7 @@ body > div > header a.bottombar .btn-call:hover {
 }
 @media (min-width: 992px) {
   .car .modal-dialog.edit-details-modal {
-    width: 970px;
+    width: 967px;
   }
   .car .expired-panel #modal-commencement-date-get-quotes {
     width: 75%;
@@ -1148,7 +1153,7 @@ body > div > header a.bottombar .btn-call:hover {
 }
 @media (min-width: 1200px) {
   .car .modal-dialog.edit-details-modal {
-    width: 1170px;
+    width: 1171px;
   }
 }
 .car .edit-details-wrapper.expired-quote p.edit-details-intro-text {

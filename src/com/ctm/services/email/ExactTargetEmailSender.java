@@ -2,6 +2,7 @@ package com.ctm.services.email;
 
 import static java.lang.Integer.parseInt;
 
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,12 +18,20 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.DOMException;
 
 import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SendEmailException;
+import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.model.email.EmailModel;
 import com.ctm.model.email.EmailResponse;
 import com.ctm.model.email.ExactTargetEmailModel;
 import com.ctm.model.formatter.email.ExactTargetFormatter;
+import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.model.settings.ServiceConfiguration;
+import com.ctm.model.settings.ServiceConfigurationProperty;
+import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
+import com.ctm.security.StringEncryption;
+import com.ctm.services.ServiceConfigurationService;
 import com.ctm.webservice.WebServiceUtils;
 import com.exacttarget.wsdl.partnerapi.APIObject;
 import com.exacttarget.wsdl.partnerapi.Attribute;
@@ -41,19 +50,56 @@ import com.exacttarget.wsdl.partnerapi.TriggeredSendDefinition;
 
 public class ExactTargetEmailSender<T extends EmailModel> {
 
-	// TODO: no hard coded passwords or urls
-	private static final String WEBSERVICE_USER = "6212063_API_User";
-	private static final String WEBSERVICE_PASSWORD = "c039@r3t3";
-	private static final String WEBSERVICE_URL = "https://webservice.s6.exacttarget.com/Service.asmx";
 	private PageSettings pageSettings;
 	private Client client;
+	
+	private static final String SECRET_KEY = "UyNf-Kh4jnzztSZQI8Z6Wg";
+	private String WEBSERVICE_URL;
+	private String WEBSERVICE_USER;
+	private String WEBSERVICE_PASSWORD;
 
 	static Logger logger = Logger.getLogger(ExactTargetEmailSender.class.getName());
 
-	public ExactTargetEmailSender(PageSettings pageSettings) {
+	public ExactTargetEmailSender(PageSettings pageSettings) throws SendEmailException {
 		this.pageSettings = pageSettings;
+		setWebserviceConfiguration(ConfigSetting.ALL_VERTICALS, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS);
 	}
-
+	
+	public ExactTargetEmailSender(PageSettings pageSettings, int verticalId, int brandId, int providerId) throws SendEmailException {
+		this.pageSettings = pageSettings;
+		setWebserviceConfiguration(verticalId, brandId, providerId);
+	}
+	
+	private void setWebserviceConfiguration(int verticalId, int brandId, int providerId) throws SendEmailException {		
+		try {
+			ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("exactTargetService", verticalId, brandId);
+			if (serviceConfig == null)
+				throw new SendEmailException("Unable to find service 'exactTarget'");
+				
+			WEBSERVICE_URL = serviceConfig.getPropertyValueByKey("serviceUrl", brandId, providerId, Scope.SERVICE);
+			WEBSERVICE_USER = serviceConfig.getPropertyValueByKey("serviceUser", brandId, providerId, Scope.SERVICE);
+			WEBSERVICE_PASSWORD = serviceConfig.getPropertyValueByKey("servicePassword", brandId, providerId, Scope.SERVICE);
+		} catch (DaoException | ServiceConfigurationException e1) {
+			throw new SendEmailException("Could not successfully get default exact target service configuration from database", e1);
+		}
+	
+		if (WEBSERVICE_URL == null)
+			throw new SendEmailException("Unable to find service property 'serviceUrl' for service 'exactTarget'");
+		
+		if (WEBSERVICE_USER == null)
+			throw new SendEmailException("Unable to find service property 'serviceUser' for service 'exactTarget'");
+		
+		if (WEBSERVICE_PASSWORD == null) {
+			throw new SendEmailException("Unable to find service property 'servicePassword' for service 'exactTarget'");
+		} else {
+			try {
+				WEBSERVICE_PASSWORD = StringEncryption.decrypt(SECRET_KEY, WEBSERVICE_PASSWORD);
+			} catch (GeneralSecurityException e) {
+				throw new SendEmailException("Could not decrypt ExactTarget password", e);
+			}
+		}			
+	}
+	
 	public void sendToExactTarget(ExactTargetFormatter<T> formatter, T emailModel)
 			throws SendEmailException {
 		ExactTargetEmailModel exactTargetEmailModel = formatter.convertToExactTarget(emailModel);

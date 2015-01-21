@@ -47,6 +47,43 @@ body > div > header a.bottombar .btn-call {
 body > div > header a.bottombar .btn-call:hover {
   color: #ffffff;
 }
+.featuresMode .productSummary .companyLogo,
+.policySummaryContainer .productSummary .companyLogo {
+  display: block;
+  text-align: center;
+  vertical-align: middle;
+  float: left;
+  background-repeat: no-repeat;
+  padding: 0;
+  width: 60px;
+  height: 60px;
+  background-size: 60px 60px;
+  background-color: #fff;
+  line-height: 70px;
+}
+@media (min-width: 480px) {
+  .featuresMode .productSummary .companyLogo,
+  .policySummaryContainer .productSummary .companyLogo {
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+  }
+}
+.btn-modal {
+  background-color: #333333;
+  color: #ffffff;
+}
+.btn-modal:hover,
+.btn-modal:focus {
+  background-color: #141414;
+  color: #ffffff;
+  outline: 0;
+}
+.btn-modal:active,
+.btn-modal.active {
+  background-color: #333333;
+  color: #ffffff;
+}
 .compareBar .comparisonActive .btn.compareBtn {
   background-color: #ab1d21;
   color: #ffffff;
@@ -62,18 +99,48 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #333333;
   color: #ffffff;
 }
-.compareBar.active .comparisonActive .compareBtn.clearMode {
+.compareBar.active .comparisonActive .compareBtn.clearMode,
+.filters-component .btn-save,
+.more-info-content .moreInfoRightColumn .btn-save,
+.more-info-content .row.moreInfoExcesses .btn-save,
+.more-info-content .row.moreInfoExclusions .btn-save,
+.more-info-content .moreInfoEmailBrochures .btn-save,
+.benefits-component .btn-save {
   background-color: #333333;
   color: #ffffff;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:hover,
-.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus,
+.filters-component .btn-save:hover,
+.filters-component .btn-save:focus,
+.more-info-content .moreInfoRightColumn .btn-save:hover,
+.more-info-content .moreInfoRightColumn .btn-save:focus,
+.more-info-content .row.moreInfoExcesses .btn-save:hover,
+.more-info-content .row.moreInfoExcesses .btn-save:focus,
+.more-info-content .row.moreInfoExclusions .btn-save:hover,
+.more-info-content .row.moreInfoExclusions .btn-save:focus,
+.more-info-content .moreInfoEmailBrochures .btn-save:hover,
+.more-info-content .moreInfoEmailBrochures .btn-save:focus,
+.benefits-component .btn-save:hover,
+.benefits-component .btn-save:focus {
   background-color: #141414;
   color: #ffffff;
   outline: 0;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:active,
-.compareBar.active .comparisonActive .compareBtn.clearMode.active {
+.compareBar.active .comparisonActive .compareBtn.clearMode.active,
+.filters-component .btn-save:active,
+.filters-component .btn-save.active,
+.more-info-content .moreInfoRightColumn .btn-save:active,
+.more-info-content .moreInfoRightColumn .btn-save.active,
+.more-info-content .row.moreInfoExcesses .btn-save:active,
+.more-info-content .row.moreInfoExcesses .btn-save.active,
+.more-info-content .row.moreInfoExclusions .btn-save:active,
+.more-info-content .row.moreInfoExclusions .btn-save.active,
+.more-info-content .moreInfoEmailBrochures .btn-save:active,
+.more-info-content .moreInfoEmailBrochures .btn-save.active,
+.benefits-component .btn-save:active,
+.benefits-component .btn-save.active {
   background-color: #333333;
   color: #ffffff;
 }
@@ -84,6 +151,20 @@ body > div > header a.bottombar .btn-call:hover {
   border-color: #ffffff;
   border-width: 1px;
   border-style: solid;
+}
+.navbar-default .navbar-nav > li > a.btn-modal {
+  color: #ffffff;
+  background-color: #333333;
+}
+.navbar-default .navbar-nav > li > a.btn-modal:hover,
+.navbar-default .navbar-nav > li > a.btn-modal:focus,
+.navbar-default .navbar-nav > li > a.btn-modal:active,
+.navbar-default .navbar-nav > li > a.btn-modal.active {
+  background-color: #141414;
+}
+.navbar-default .navbar-nav > li.open .btn-modal.dropdown-toggle {
+  color: #777777;
+  background-color: #f2f2f2;
 }
 .bottombar .btn-call {
   background-color: #333333;
@@ -107,102 +188,10 @@ body > div > header a.bottombar .btn-call:hover {
 @categoryExpandedBgColor hospital-expanded-color
 */
 .text-hospital {
-  color: #1d57aa;
+  color: #333333;
 }
 .text-extras {
-  color: #3f7a15;
-}
-.btn-hospital {
-  color: #ffffff;
-  background-color: #1d57aa;
-  border-color: transparent;
-}
-.btn-hospital:hover,
-.btn-hospital:focus,
-.btn-hospital:active,
-.btn-hospital.active,
-.open .dropdown-toggle.btn-hospital {
-  color: #ffffff;
-  background-color: #174587;
-  border-color: rgba(0, 0, 0, 0);
-}
-.btn-hospital:active,
-.btn-hospital.active,
-.open .dropdown-toggle.btn-hospital {
-  background-image: none;
-}
-.btn-hospital .badge {
-  color: #1d57aa;
-  background-color: #ffffff;
-}
-.btn-extras {
-  color: #ffffff;
-  background-color: #3f7a15;
-  border-color: transparent;
-}
-.btn-extras:hover,
-.btn-extras:focus,
-.btn-extras:active,
-.btn-extras.active,
-.open .dropdown-toggle.btn-extras {
-  color: #ffffff;
-  background-color: #2d570f;
-  border-color: rgba(0, 0, 0, 0);
-}
-.btn-extras:active,
-.btn-extras.active,
-.open .dropdown-toggle.btn-extras {
-  background-image: none;
-}
-.btn-extras .badge {
-  color: #3f7a15;
-  background-color: #ffffff;
-}
-.btn-hospital-light {
-  color: #1d57aa;
-  background-color: #e5eefb;
-  border-color: transparent;
-}
-.btn-hospital-light:hover,
-.btn-hospital-light:focus,
-.btn-hospital-light:active,
-.btn-hospital-light.active,
-.open .dropdown-toggle.btn-hospital-light {
-  color: #1d57aa;
-  background-color: #c2d7f5;
-  border-color: rgba(0, 0, 0, 0);
-}
-.btn-hospital-light:active,
-.btn-hospital-light.active,
-.open .dropdown-toggle.btn-hospital-light {
-  background-image: none;
-}
-.btn-hospital-light .badge {
-  color: #e5eefb;
-  background-color: #1d57aa;
-}
-.btn-extras-light {
-  color: #3f7a15;
-  background-color: #b2eb8a;
-  border-color: transparent;
-}
-.btn-extras-light:hover,
-.btn-extras-light:focus,
-.btn-extras-light:active,
-.btn-extras-light.active,
-.open .dropdown-toggle.btn-extras-light {
-  color: #3f7a15;
-  background-color: #9be567;
-  border-color: rgba(0, 0, 0, 0);
-}
-.btn-extras-light:active,
-.btn-extras-light.active,
-.open .dropdown-toggle.btn-extras-light {
-  background-image: none;
-}
-.btn-extras-light .badge {
-  color: #b2eb8a;
-  background-color: #3f7a15;
+  color: #333333;
 }
 .btn-close-more-info {
   border-color: #333333;
@@ -279,46 +268,46 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .health .featuresMode  .featuresHeaders .section > .content {
   background-color: transparent;
-  width: 810px;
-  padding-right: 540px;
+  width: 839px;
+  padding-right: 564px;
 }
 @media (min-width: 768px) {
   .health .featuresMode  .featuresHeaders .section > .content {
-    width: 720px;
-    padding-right: 549px;
+    width: 715px;
+    padding-right: 541px;
   }
 }
 @media (min-width: 992px) {
   .health .featuresMode  .featuresHeaders .section > .content {
-    width: 940px;
-    padding-right: 795px;
+    width: 935px;
+    padding-right: 784px;
   }
 }
 @media (min-width: 1200px) {
   .health .featuresMode  .featuresHeaders .section > .content {
-    width: 1140px;
-    padding-right: 960px;
+    width: 1139px;
+    padding-right: 954px;
   }
 }
 .health .featuresMode  .featuresHeaders .section > .content .extraText {
   position: absolute;
   top: 0;
   z-index: 1;
-  left: 270px;
+  left: 280px;
 }
 @media (min-width: 768px) {
   .health .featuresMode  .featuresHeaders .section > .content .extraText {
-    left: 183px;
+    left: 179px;
   }
 }
 @media (min-width: 992px) {
   .health .featuresMode  .featuresHeaders .section > .content .extraText {
-    left: 159px;
+    left: 156px;
   }
 }
 @media (min-width: 1200px) {
   .health .featuresMode  .featuresHeaders .section > .content .extraText {
-    left: 192px;
+    left: 190px;
   }
 }
 .health .featuresMode  .result-row .labelInColumn.section > .content {
@@ -520,10 +509,10 @@ body > div > header a.bottombar .btn-call:hover {
     background-color: #fff;
   }
   .health .featuresMode .result-row .content.c {
-    border-right: 2px solid #d7dc9e;
+    border-right: 1px solid #d7dc9e;
   }
   .health .featuresMode .result-row:nth-child(odd) .expanded > .content {
-    border-right: 2px solid #ffffff;
+    border-right: 1px solid #ffffff;
   }
 }
 @media (max-width: 767px) {
@@ -539,17 +528,17 @@ body > div > header a.bottombar .btn-call:hover {
 }
 @media (min-width: 768px) {
   .health .featuresMode .resultsOverflow {
-    width: 543px;
+    width: 536px;
   }
 }
 @media (min-width: 992px) {
   .health .featuresMode .resultsOverflow {
-    width: 788px;
+    width: 779px;
   }
 }
 @media (min-width: 1200px) {
   .health .featuresMode .resultsOverflow {
-    width: 954px;
+    width: 949px;
   }
 }
 .health .featuresMode .labelInColumn {
@@ -558,17 +547,9 @@ body > div > header a.bottombar .btn-call:hover {
 .health .featuresMode .help-icon {
   color: #333333;
 }
-.health .featuresMode .hospitalCover .category > .content > .help-icon,
-.health .featuresMode .hospitalCover .icon-tick {
-  color: #1d57aa;
-}
 .health .featuresMode .hospitalCover .category.expanded > .content > .help-icon,
 .health .featuresMode .hospitalCover .category > .content.expandableHover > .help-icon {
   color: #fff;
-}
-.health .featuresMode .extrasCover .category > .content > .help-icon,
-.health .featuresMode .extrasCover .icon-tick {
-  color: #3f7a15;
 }
 .health .featuresMode .extrasCover .category.expanded > .content > .help-icon,
 .health .featuresMode .extrasCover .category > .content.expandableHover > .help-icon {
@@ -614,7 +595,6 @@ body > div > header a.bottombar .btn-call:hover {
   display: block;
   text-align: left;
   padding: 0;
-  font-family: 'SourceSansProLight';
   font-size: 14px;
   overflow: hidden;
 }
@@ -624,7 +604,7 @@ body > div > header a.bottombar .btn-call:hover {
   .health .featuresMode .promosFeature > .labelInColumn > .content .extraText,
   .health .featuresMode .featuresHeaders .ambulanceSection > .content .extraText,
   .health .featuresMode .ambulanceSection > .labelInColumn > .content .extraText {
-    width: 531px;
+    width: 537px;
   }
 }
 @media (min-width: 992px) {
@@ -633,7 +613,7 @@ body > div > header a.bottombar .btn-call:hover {
   .health .featuresMode .promosFeature > .labelInColumn > .content .extraText,
   .health .featuresMode .featuresHeaders .ambulanceSection > .content .extraText,
   .health .featuresMode .ambulanceSection > .labelInColumn > .content .extraText {
-    width: 760px;
+    width: 780px;
   }
 }
 @media (min-width: 1200px) {
@@ -642,7 +622,7 @@ body > div > header a.bottombar .btn-call:hover {
   .health .featuresMode .promosFeature > .labelInColumn > .content .extraText,
   .health .featuresMode .featuresHeaders .ambulanceSection > .content .extraText,
   .health .featuresMode .ambulanceSection > .labelInColumn > .content .extraText {
-    width: 930px;
+    width: 950px;
   }
 }
 .health .featuresMode .section > .content .extraText .btn,
@@ -723,16 +703,39 @@ body > div > header a.bottombar .btn-call:hover {
   font-family: 'SourceSansProLight';
   font-size: 14px;
 }
-.health .featuresMode .featuresHeaders,
+.health .featuresMode .resultInsert,
+.health .featuresMode .featuresList,
 .health .featuresMode .result-row {
+  background: none;
+}
+.health .featuresMode .featuresTemplateComponent .featuresElements,
+.health .featuresMode .result-row .featuresElements {
+  border-left: 1px solid #cccccc;
   border-right: none;
+}
+.health .featuresMode .featuresTemplateComponent:last-of-type:not(.active) .featuresElements,
+.health .featuresMode .result-row:last-of-type:not(.active) .featuresElements {
+  border-right: 1px solid #cccccc;
+}
+.health .featuresMode .featuresTemplateComponent.active .featuresElements,
+.health .featuresMode .result-row.active .featuresElements,
+.health .featuresMode .featuresTemplateComponent.active .result,
+.health .featuresMode .result-row.active .result {
+  border-left: 1px solid #333333;
+  border-right: 1px solid #333333;
+}
+.health .featuresMode .featuresTemplateComponent.active + div .featuresElements,
+.health .featuresMode .result-row.active + div .featuresElements {
+  border-left: none;
+}
+.health .featuresMode .featuresHeaders {
   background: none;
 }
 .health .featuresMode .featuresHeaders .children .feature {
   font-weight: bold;
 }
 .health .featuresMode .featuresHeaders .featuresList > .feature > .content {
-  padding-right: 0;
+  padding-right: 5px;
 }
 .health .featuresMode .feature {
   color: #333333;
@@ -741,10 +744,10 @@ body > div > header a.bottombar .btn-call:hover {
 }
 @media (min-width: 768px) {
   .health .featuresMode .excessSection .feature > .content {
-    background-color: #f7f7f7;
+    background-color: #ffffff;
   }
   .health .featuresMode .excessSection .feature:nth-child(odd) > .content {
-    background-color: #f0f0f0;
+    background-color: #f1f1f1;
   }
 }
 @media (max-width: 767px) {
@@ -773,6 +776,8 @@ body > div > header a.bottombar .btn-call:hover {
 .health .featuresMode .featuresHeaders .hospitalCover > .content {
   background-color: #e5eefb;
   z-index: 1;
+  left: -1px;
+  margin-left: 1px;
 }
 .health .featuresMode .featuresHeaders .hospitalCover.expanded > .content,
 .health .featuresMode .featuresHeaders .hospitalCover.expanding > .content {
@@ -798,6 +803,8 @@ body > div > header a.bottombar .btn-call:hover {
 .health .featuresMode .featuresHeaders .extrasCover > .content {
   background-color: #e3f8d4;
   z-index: 1;
+  left: -1px;
+  margin-left: 1px;
 }
 .health .featuresMode .featuresHeaders .extrasCover.expanded > .content,
 .health .featuresMode .featuresHeaders .extrasCover.expanding > .content {
@@ -852,19 +859,19 @@ body > div > header a.bottombar .btn-call:hover {
 @media (min-width: 768px) {
   .health .featuresMode .ambulanceSection > .labelInColumn > .content,
   .health .featuresMode .ambulanceSection > .content {
-    width: 183px;
+    width: 178px;
   }
 }
 @media (min-width: 992px) {
   .health .featuresMode .ambulanceSection > .labelInColumn > .content,
   .health .featuresMode .ambulanceSection > .content {
-    width: 159px;
+    width: 153px;
   }
 }
 @media (min-width: 1200px) {
   .health .featuresMode .ambulanceSection > .labelInColumn > .content,
   .health .featuresMode .ambulanceSection > .content {
-    width: 192px;
+    width: 188px;
   }
 }
 .health .featuresMode .featuresHeaders .ambulanceSection > .content,
@@ -875,34 +882,24 @@ body > div > header a.bottombar .btn-call:hover {
 @media (min-width: 768px) {
   .health .featuresMode .featuresHeaders .ambulanceSection > .content,
   .health .featuresMode .result-row .ambulanceSection > .content {
-    padding-right: 22px;
+    padding-right: 10px;
   }
 }
 @media (min-width: 992px) {
   .health .featuresMode .featuresHeaders .ambulanceSection > .content,
   .health .featuresMode .result-row .ambulanceSection > .content {
-    padding-right: 24px;
+    padding-right: 10px;
   }
 }
 @media (min-width: 1200px) {
   .health .featuresMode .featuresHeaders .ambulanceSection > .content,
   .health .featuresMode .result-row .ambulanceSection > .content {
-    padding-right: 22px;
+    padding-right: 10px;
   }
 }
 @media (min-width: 768px) {
   .health .featuresMode .featuresHeaders .ambulanceSection > .content {
-    padding-right: 12px;
-  }
-}
-@media (min-width: 992px) {
-  .health .featuresMode .featuresHeaders .ambulanceSection > .content {
-    padding-right: 14px;
-  }
-}
-@media (min-width: 1200px) {
-  .health .featuresMode .featuresHeaders .ambulanceSection > .content {
-    padding-right: 12px;
+    padding-right: 5px;
   }
 }
 .health .featuresMode .featuresHeaders .ambulanceSection > .content {
@@ -933,10 +930,12 @@ body > div > header a.bottombar .btn-call:hover {
 }
 @media (min-width: 768px) {
   .health #resultsPage {
-    border-left: 0 solid #d5d6cb;
-    border-right: 0 solid #d5d6cb;
-    box-shadow: 2px 0 0 #d5d6cb, -2px 0 0 #d5d6cb;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
   }
+}
+.health #resultsPage a.dialogPop {
+  text-decoration: underline;
 }
 .health .resultsContainer .icon-tick,
 .health .resultsContainer .icon-cross {
@@ -953,33 +952,33 @@ body > div > header a.bottombar .btn-call:hover {
   color: #333333;
 }
 @media (min-width: 768px) {
-  .health .resultsContainer .expanded > .content > .icon-tick,
-  .health .resultsContainer .expanding > .content > .icon-tick,
-  .health .resultsContainer .expanded > .content > .icon-cross,
-  .health .resultsContainer .expanding > .content > .icon-cross {
+  .health .resultsContainer .expanded > .content .icon-tick,
+  .health .resultsContainer .expanding > .content .icon-tick,
+  .health .resultsContainer .expanded > .content .icon-cross,
+  .health .resultsContainer .expanding > .content .icon-cross {
     color: #FFFFFF;
   }
-  .health .resultsContainer .expandableHover > .icon-tick,
-  .health .resultsContainer .expandableHover > .icon-cross {
+  .health .resultsContainer .expandableHover .icon-tick,
+  .health .resultsContainer .expandableHover .icon-cross {
     color: #FFFFFF;
   }
 }
 @media (min-width: 768px) {
   .health .resultsContainer {
     padding: 0 10px;
-    margin: 0 -16px;
+    margin: 0 -10px;
   }
 }
 @media (min-width: 992px) {
   .health .resultsContainer {
     padding: 0 10px;
-    margin: 0 -17px;
+    margin: 0 -10px;
   }
 }
 @media (min-width: 1200px) {
   .health .resultsContainer {
     padding: 0 10px;
-    margin: 0 -16px;
+    margin: 0 -10px;
   }
 }
 .health .resultsContainer .result .productSummary,
@@ -988,63 +987,41 @@ body > div > header a.bottombar .btn-call:hover {
   margin-bottom: 5px;
 }
 @media (min-width: 768px) {
-  .result-row.active .resultInsert,
-  .result-row.active .featuresList > :not(.dualPricing):not(.ambulanceSection),
-  .result-row.active .ambulanceSection.expanded > .children {
-    border-left: 2px solid #333333;
-    border-right: 2px solid #333333;
-  }
   .result-row.active .featuresList > .section.collapsed,
   .result-row.active .featuresList > .ambulanceSection.collapsed {
     border-left: none;
     border-right: none;
   }
 }
-.productSummary.horizontal .companyLogo {
+.featuresMode .productSummary.horizontal .companyLogo,
+.policySummaryContainer .productSummary.horizontal .companyLogo {
+  width: 90px;
   line-height: 18px;
+  float: left;
 }
 @media (max-width: 767px) {
-  .productSummary.horizontal .companyLogo {
+  .featuresMode .productSummary.horizontal .companyLogo,
+  .policySummaryContainer .productSummary.horizontal .companyLogo {
     height: 45px;
   }
 }
-.productSummary.horizontal .companyLogo img {
-  margin-top: 0px;
-}
-@media (min-width: 1200px) {
-  .productSummary.horizontal .companyLogo img {
-    float: left;
-  }
-}
 @media (min-width: 768px) and (max-width: 991px) {
-  .productSummary.horizontal .companyLogo {
+  .featuresMode .productSummary.horizontal .companyLogo,
+  .policySummaryContainer .productSummary.horizontal .companyLogo {
     text-align: left;
   }
 }
-.productSummary.vertical .companyLogo {
-  width: 100%;
-  line-height: 15px;
-}
-.productSummary .companyLogo {
-  text-align: center;
-  min-height: 45px;
-  vertical-align: middle;
-  height: 60px;
-  background-size: 60px 60px;
-  float: none;
-}
-.productSummary .companyLogo img {
-  margin: 0px;
-  margin-top: 10px;
-}
-.productSummary.no-logo .companyLogo {
+.featuresMode .productSummary.no-logo .companyLogo,
+.policySummaryContainer .productSummary.no-logo .companyLogo {
   display: none !important;
   visibility: hidden !important;
 }
-.productSummary .price {
+.featuresMode .productSummary .price,
+.policySummaryContainer .productSummary .price {
   margin-top: 5px;
 }
-.productSummary .frequency .frequencyAmount {
+.featuresMode .productSummary .frequency .frequencyAmount,
+.policySummaryContainer .productSummary .frequency .frequencyAmount {
   font-family: 'SourceSansProBold';
   color: #ab1d21;
   font-size: 16px;
@@ -1052,21 +1029,25 @@ body > div > header a.bottombar .btn-call:hover {
   line-height: 14px;
 }
 @media (min-width: 768px) {
-  .productSummary .frequency .frequencyAmount {
+  .featuresMode .productSummary .frequency .frequencyAmount,
+  .policySummaryContainer .productSummary .frequency .frequencyAmount {
     font-size: 16px;
   }
 }
 @media (min-width: 992px) {
-  .productSummary .frequency .frequencyAmount {
+  .featuresMode .productSummary .frequency .frequencyAmount,
+  .policySummaryContainer .productSummary .frequency .frequencyAmount {
     font-size: 14px;
   }
 }
 @media (min-width: 1200px) {
-  .productSummary .frequency .frequencyAmount {
+  .featuresMode .productSummary .frequency .frequencyAmount,
+  .policySummaryContainer .productSummary .frequency .frequencyAmount {
     font-size: 20px;
   }
 }
-.productSummary .frequency .frequencyTitle {
+.featuresMode .productSummary .frequency .frequencyTitle,
+.policySummaryContainer .productSummary .frequency .frequencyTitle {
   color: #333333;
   font-size: 10px;
   font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
@@ -1074,8 +1055,10 @@ body > div > header a.bottombar .btn-call:hover {
   margin-left: -2px;
   letter-spacing: -0.06em;
 }
-.productSummary .frequency .lhcText,
-.productSummary .frequency .rounding {
+.featuresMode .productSummary .frequency .lhcText,
+.policySummaryContainer .productSummary .frequency .lhcText,
+.featuresMode .productSummary .frequency .rounding,
+.policySummaryContainer .productSummary .frequency .rounding {
   color: #333333;
   font-size: 10px;
   line-height: 0.95;
@@ -1083,101 +1066,240 @@ body > div > header a.bottombar .btn-call:hover {
   display: block;
 }
 @media (min-width: 992px) {
-  .productSummary .frequency .lhcText,
-  .productSummary .frequency .rounding {
+  .featuresMode .productSummary .frequency .lhcText,
+  .policySummaryContainer .productSummary .frequency .lhcText,
+  .featuresMode .productSummary .frequency .rounding,
+  .policySummaryContainer .productSummary .frequency .rounding {
     font-size: 9px;
     line-height: 1.1;
   }
 }
 @media (min-width: 1200px) {
-  .productSummary .frequency .lhcText,
-  .productSummary .frequency .rounding {
+  .featuresMode .productSummary .frequency .lhcText,
+  .policySummaryContainer .productSummary .frequency .lhcText,
+  .featuresMode .productSummary .frequency .rounding,
+  .policySummaryContainer .productSummary .frequency .rounding {
     font-size: 10px;
     line-height: 0.95;
   }
 }
-.productSummary.horizontal {
+.featuresMode .productSummary.horizontal,
+.policySummaryContainer .productSummary.horizontal {
   overflow: hidden;
 }
 @media (max-width: 767px) {
-  .productSummary.horizontal .companyLogo {
+  .featuresMode .productSummary.horizontal .companyLogo,
+  .policySummaryContainer .productSummary.horizontal .companyLogo {
     position: absolute;
-    width: 45px;
     overflow: hidden;
     text-align: left;
   }
-  .productSummary.horizontal .companyLogo img {
-    width: 100%;
-  }
 }
 @media (min-width: 768px) {
-  .productSummary.horizontal .companyLogo {
+  .featuresMode .productSummary.horizontal .companyLogo,
+  .policySummaryContainer .productSummary.horizontal .companyLogo {
     float: left;
   }
 }
 @media (max-width: 767px) {
-  .productSummary.horizontal .price {
+  .featuresMode .productSummary.horizontal .price,
+  .policySummaryContainer .productSummary.horizontal .price {
     margin-left: 65px;
   }
 }
 @media (min-width: 768px) {
-  .productSummary.horizontal .price {
+  .featuresMode .productSummary.horizontal .price,
+  .policySummaryContainer .productSummary.horizontal .price {
     float: right;
   }
 }
-.productSummary.horizontal .frequency .frequencyAmount,
-.productSummary.horizontal .frequency .lhcText,
-.productSummary.horizontal .frequency .rounding {
+.featuresMode .productSummary.horizontal .frequency .frequencyAmount,
+.policySummaryContainer .productSummary.horizontal .frequency .frequencyAmount,
+.featuresMode .productSummary.horizontal .frequency .lhcText,
+.policySummaryContainer .productSummary.horizontal .frequency .lhcText,
+.featuresMode .productSummary.horizontal .frequency .rounding,
+.policySummaryContainer .productSummary.horizontal .frequency .rounding {
   text-align: right;
 }
-.productSummary.no-logo.horizontal .price {
+.featuresMode .productSummary.no-logo.horizontal .price,
+.policySummaryContainer .productSummary.no-logo.horizontal .price {
   float: none;
 }
-.productSummary.no-logo.horizontal .price .frequencyAmount {
+.featuresMode .productSummary.no-logo.horizontal .price .frequencyAmount,
+.policySummaryContainer .productSummary.no-logo.horizontal .price .frequencyAmount {
   font-size: 32px;
   line-height: 20px;
   text-align: left;
 }
-.productSummary.no-logo.horizontal .price .frequencyAmount,
-.productSummary.no-logo.horizontal .price .lhcText,
-.productSummary.no-logo.horizontal .price .rounding {
+.featuresMode .productSummary.no-logo.horizontal .price .frequencyAmount,
+.policySummaryContainer .productSummary.no-logo.horizontal .price .frequencyAmount,
+.featuresMode .productSummary.no-logo.horizontal .price .lhcText,
+.policySummaryContainer .productSummary.no-logo.horizontal .price .lhcText,
+.featuresMode .productSummary.no-logo.horizontal .price .rounding,
+.policySummaryContainer .productSummary.no-logo.horizontal .price .rounding {
   text-align: left;
 }
-.productSummary.results {
+.featuresMode .productSummary.results,
+.policySummaryContainer .productSummary.results {
   height: 111px;
   overflow: hidden;
 }
-.productSummary.results .frequencyAmount {
+.featuresMode .productSummary.results .frequencyAmount,
+.policySummaryContainer .productSummary.results .frequencyAmount {
   color: #ab1d21;
 }
-.productSummary.results .rounding {
+.featuresMode .productSummary.results .rounding,
+.policySummaryContainer .productSummary.results .rounding {
   display: none;
 }
-.productSummary.compressed {
+.featuresMode .productSummary .companyLogo,
+.policySummaryContainer .productSummary .companyLogo {
+  float: none;
+}
+.ie8 .featuresMode .productSummary .companyLogo,
+.ie8 .policySummaryContainer .productSummary .companyLogo {
+  width: 90px;
+  height: 45px;
+  margin-left: 30px !important;
+}
+.featuresMode .productSummary.compressed,
+.policySummaryContainer .productSummary.compressed {
   height: 57px;
+  padding: 0;
 }
-.productSummary.compressed .companyLogo {
-  position: relative;
+.featuresMode .productSummary.compressed .companyLogo,
+.policySummaryContainer .productSummary.compressed .companyLogo {
   float: left;
-  width: 25%;
+  width: 26%;
+  margin-top: 10px;
+  margin-left: 3%;
 }
-.productSummary.compressed .companyLogo img {
-  position: relative;
-  max-height: 30px;
-  max-width: 100%;
+.featuresMode .productSummary.compressed .companyLogo.AHM,
+.policySummaryContainer .productSummary.compressed .companyLogo.AHM {
+  background-position: 0px -45px;
 }
-.productSummary.compressed .lhcText,
-.productSummary.compressed .rounding {
+.featuresMode .productSummary.compressed .companyLogo.AUF,
+.policySummaryContainer .productSummary.compressed .companyLogo.AUF {
+  background-position: -90px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.BUD,
+.policySummaryContainer .productSummary.compressed .companyLogo.BUD {
+  background-position: -180px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.BUP,
+.policySummaryContainer .productSummary.compressed .companyLogo.BUP {
+  background-position: -270px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.CBH,
+.policySummaryContainer .productSummary.compressed .companyLogo.CBH {
+  background-position: -360px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.CTM,
+.policySummaryContainer .productSummary.compressed .companyLogo.CTM {
+  background-position: -450px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.CUA,
+.policySummaryContainer .productSummary.compressed .companyLogo.CUA {
+  background-position: -540px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.FRA,
+.policySummaryContainer .productSummary.compressed .companyLogo.FRA {
+  background-position: -630px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.GMF,
+.policySummaryContainer .productSummary.compressed .companyLogo.GMF {
+  background-position: -720px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.GMH,
+.policySummaryContainer .productSummary.compressed .companyLogo.GMH {
+  background-position: -810px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.HCF,
+.policySummaryContainer .productSummary.compressed .companyLogo.HCF {
+  background-position: -900px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.HIF,
+.policySummaryContainer .productSummary.compressed .companyLogo.HIF {
+  background-position: -990px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.NIB,
+.policySummaryContainer .productSummary.compressed .companyLogo.NIB {
+  background-position: -1080px -45px;
+}
+.featuresMode .productSummary.compressed .companyLogo.THF,
+.policySummaryContainer .productSummary.compressed .companyLogo.THF {
+  background-position: -1170px -45px;
+}
+.featuresMode .productSummary.compressed .lhcText,
+.policySummaryContainer .productSummary.compressed .lhcText,
+.featuresMode .productSummary.compressed .rounding,
+.policySummaryContainer .productSummary.compressed .rounding {
   display: none;
 }
-.productSummary.compressed .price {
+.featuresMode .productSummary.compressed .price,
+.policySummaryContainer .productSummary.compressed .price {
   margin-top: 10px;
-  width: 55%;
-  text-align: left;
-  float: left;
+  margin-right: 15%;
+  width: 56%;
+  float: right;
 }
-.productSummary.compressed .price span {
+.featuresMode .productSummary.compressed .price span,
+.policySummaryContainer .productSummary.compressed .price span {
   display: block;
+}
+.featuresMode .priceItemisation,
+.policySummaryContainer .priceItemisation {
+  overflow: hidden;
+  line-height: 18px;
+}
+.featuresMode .priceItemisation .rounding,
+.policySummaryContainer .priceItemisation .rounding {
+  clear: both;
+  font-size: 12px;
+  text-align: right;
+}
+.featuresMode .priceItemisation .item,
+.policySummaryContainer .priceItemisation .item {
+  padding-bottom: 6px;
+}
+.featuresMode .priceItemisation .item .item-label-text,
+.policySummaryContainer .priceItemisation .item .item-label-text {
+  font-size: 12px;
+}
+.featuresMode .priceItemisation .item .item-value,
+.policySummaryContainer .priceItemisation .item .item-value {
+  text-align: right;
+}
+.featuresMode .priceItemisation .item.basePremium .item-value,
+.policySummaryContainer .priceItemisation .item.basePremium .item-value {
+  font-size: 18px;
+}
+.featuresMode .priceItemisation .item.totalPremium,
+.policySummaryContainer .priceItemisation .item.totalPremium {
+  border-top: solid 1px;
+  border-color: #f2f2f2;
+  font-family: 'SourceSansProBold';
+  color: #ab1d21;
+  padding-top: 10px;
+}
+.featuresMode .priceItemisation .item.totalPremium .item-label-text,
+.policySummaryContainer .priceItemisation .item.totalPremium .item-label-text {
+  font-size: 18px;
+}
+.featuresMode .priceItemisation .item.totalPremium .item-value,
+.policySummaryContainer .priceItemisation .item.totalPremium .item-value {
+  font-size: 23px;
+}
+.featuresMode .priceItemisation .item.totalPremium .item-value .frequencyTitle,
+.policySummaryContainer .priceItemisation .item.totalPremium .item-value .frequencyTitle {
+  color: #333333;
+  font-size: 10px;
+  font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  margin-top: 5px;
+  letter-spacing: -0.06em;
+  display: block;
+  line-height: 1;
 }
 /* Policy summary in right hand column */
 @media (max-width: 767px) {
@@ -1187,7 +1309,7 @@ body > div > header a.bottombar .btn-call:hover {
   }
 }
 @media (min-width: 768px) {
-  .policySummaryContainer {
+  .policySummaryContainer:not(.formMode) {
     margin-bottom: 20px;
     margin-top: -52px;
   }
@@ -1200,8 +1322,63 @@ body > div > header a.bottombar .btn-call:hover {
     margin-bottom: 20px;
   }
 }
+.companyLogo,
+.featuresMode .productSummary .companyLogo,
+.policySummaryContainer .productSummary .companyLogo {
+  height: 45px;
+  max-height: 45px;
+  width: 90px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  background-image: url('../../../common/images/logos/health/brands.png');
+  background-repeat: no-repeat;
+  background-size: inherit;
+}
+.companyLogo.AHM {
+  background-position: 0px top;
+}
+.companyLogo.AUF {
+  background-position: -90px top;
+}
+.companyLogo.BUD {
+  background-position: -180px top;
+}
+.companyLogo.BUP {
+  background-position: -270px top;
+}
+.companyLogo.CBH {
+  background-position: -360px top;
+}
+.companyLogo.CTM {
+  background-position: -450px top;
+}
+.companyLogo.CUA {
+  background-position: -540px top;
+}
+.companyLogo.FRA {
+  background-position: -630px top;
+}
+.companyLogo.GMF {
+  background-position: -720px top;
+}
+.companyLogo.GMH {
+  background-position: -810px top;
+}
+.companyLogo.HCF {
+  background-position: -900px top;
+}
+.companyLogo.HIF {
+  background-position: -990px top;
+}
+.companyLogo.NIB {
+  background-position: -1080px top;
+}
+.companyLogo.THF {
+  background-position: -1170px top;
+}
 .more-info-promotion {
-  color: #ab1d21;
+  color: #333333;
 }
 .more-info-about {
   color: #333333;
@@ -1217,13 +1394,6 @@ body > div > header a.bottombar .btn-call:hover {
   .btn-more-info span {
     display: none;
   }
-}
-.btn-more-info:hover,
-.btn-more-info:active {
-  background-color: #333333;
-}
-.btn-more-info:focus {
-  background-color: #ab1d21;
 }
 @media (min-width: 992px) and (max-width: 1199px) {
   .btn-close-more-info,
@@ -1279,6 +1449,10 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #fff;
   position: relative;
 }
+.more-info-content h2,
+.more-info-content .btn-download {
+  font-family: 'SourceSansProBold';
+}
 @media (max-width: 767px) {
   .more-info-content {
     background-color: #f2f2f2;
@@ -1309,9 +1483,6 @@ body > div > header a.bottombar .btn-call:hover {
 .more-info-content:after {
   clear: both;
 }
-.more-info-content .btn-more-info-apply:active {
-  background-color: #540e10;
-}
 .more-info-content li {
   padding-bottom: 5px;
 }
@@ -1325,18 +1496,11 @@ body > div > header a.bottombar .btn-call:hover {
   .more-info-content .moreInfoMainDetails .productName {
     font-family: 'SourceSansProLight';
   }
-  .more-info-content .moreInfoMainDetails .btn-more-info-apply {
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
   .more-info-content .moreInfoMainDetails .phone {
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
     color: white;
-    margin-top: 0;
   }
   .more-info-content .moreInfoMainDetails .phone:hover {
-    background-color: #ffffff;
+    background-color: #333333;
   }
 }
 .more-info-content .transactionID {
@@ -1398,48 +1562,25 @@ body > div > header a.bottombar .btn-call:hover {
   color: #ffffff;
   padding: 20px;
 }
+.more-info-content .moreInfoCallUsContainer {
+  padding-bottom: 30px;
+}
 .more-info-content h5.moreInfoCallUs {
-  color: #fff;
   margin: 0;
 }
-.more-info-content .moreInfoReferenceNoText {
-  font-family: 'SourceSansProLight';
-  font-size: 13px;
-}
-.more-info-content .moreInfoOr {
-  margin-top: 10px;
-  font-family: 'SourceSansProBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
-  font-weight: 500;
-  line-height: 1.1;
-  color: #ab1d21;
-  margin-top: 9px;
-  margin-bottom: 9px;
-  font-size: 18px;
-  padding-left: 0;
-  color: #fff;
-}
-.more-info-content .moreInfoOr small,
-.more-info-content .moreInfoOr .small {
-  font-weight: normal;
-  line-height: 1;
-  color: #999999;
-}
-.more-info-content .moreInfoOr small,
-.more-info-content .moreInfoOr .small {
-  font-size: 75%;
-}
-.more-info-content .btn-hospital-light,
-.more-info-content .btn-extras-light {
-  display: block;
-  width: 100%;
-  padding-left: 0;
-  padding-right: 0;
-}
-@media (min-width: 768px) and (max-width: 991px) {
-  .more-info-content .btn-hospital-light,
-  .more-info-content .btn-extras-light {
-    font-size: 12px;
+@media (min-width: 768px) {
+  .more-info-content h5.moreInfoCallUs {
+    color: #333333;
   }
+}
+@media (max-width: 767px) {
+  .more-info-content h5.moreInfoCallUs {
+    color: #fff;
+  }
+}
+.more-info-content .moreInfoReferenceNoText {
+  font-family: 'SourceSansProBold';
+  font-size: 14px;
 }
 .more-info-content .moreInfoRightColumn,
 .more-info-content .row.moreInfoExcesses,
@@ -1449,7 +1590,7 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .more-info-content .moreInfoEmailBrochures {
   display: none;
-  min-height: 90px;
+  min-height: 80px;
 }
 .more-info-content .moreInfoEmailBrochures .optInMarketingRow {
   margin-top: 10px;
@@ -1481,6 +1622,9 @@ body > div > header a.bottombar .btn-call:hover {
 .more-info-content .moreInfoEmailBrochuresSuccess {
   display: none;
 }
+.more-info-content .brochureButtons {
+  margin-top: 25px;
+}
 @media (max-width: 767px) {
   .more-info-content .btn-hospital,
   .more-info-content .sendBrochureEmailAddress {
@@ -1495,13 +1639,6 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .more-info-content .pricepromise h2 {
   margin: 0;
-  color: #ab1d21;
-}
-a.more-info-content .pricepromise h2:hover {
-  color: #7f1619;
-}
-.more-info-content .pricepromise h2:hover {
-  color: #ab1d21;
 }
 .more-info-content .pricepromise strong {
   color: #333333;
@@ -1510,15 +1647,28 @@ a.more-info-content .pricepromise h2:hover {
   color: #333333;
   text-decoration: underline;
 }
-@media (min-width: 768px) and (max-width: 991px) {
-  .more-info-content .btn-hospital,
-  .more-info-content .btn-extras {
-    font-size: 12px;
+.more-info-content .pricepromise .pricePromiseLogo {
+  background-image: url("../graphics/health/Price-Promise-Blue.png");
+  width: 135px;
+  height: 97px;
+  background-size: 135px 97px;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .more-info-content .pricepromise .pricePromiseLogo {
+    background-image: url("../graphics/health/Price-Promise-Blue@2x.png");
+    background-size: 135px 97px;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  #confirmation .btn-hospital-light,
-  #confirmation .btn-extras-light {
+  .more-info-content .btn-download {
+    font-size: 12px;
+  }
+}
+#confirmation .btn-download {
+  font-family: 'SourceSansProBold';
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #confirmation .btn-download {
     font-size: inherit;
   }
 }
@@ -1540,7 +1690,7 @@ a.more-info-content .pricepromise h2:hover {
 }
 [data-step=benefits] #pageContent,
 [data-step=results] #pageContent {
-  background-color: #f8f8f8;
+  background-color: #ffffff;
   -webkit-transition: background-color 250ms ease-in-out;
   transition: background-color 250ms ease-in-out;
 }
@@ -1667,19 +1817,19 @@ a.more-info-content .pricepromise h2:hover {
 @media (min-width: 768px) {
   .resultsMarketingMessage .insert,
   .resultsLowNumberMessage .insert {
-    width: 342px;
+    width: 358px;
   }
 }
 @media (min-width: 992px) {
   .resultsMarketingMessage .insert,
   .resultsLowNumberMessage .insert {
-    width: 290px;
+    width: 312px;
   }
 }
 @media (min-width: 1200px) {
   .resultsMarketingMessage .insert,
   .resultsLowNumberMessage .insert {
-    width: 360px;
+    width: 380px;
   }
 }
 .resultsMarketingMessage .insert h4,
@@ -1789,12 +1939,12 @@ a.more-info-content .pricepromise h2:hover {
 }
 @media (min-width: 992px) {
   .resultsMarketingMessages .resultsLowNumberMessage .insert * {
-    width: 145px;
+    width: 156px;
   }
 }
 @media (min-width: 1200px) {
   .resultsMarketingMessages .resultsLowNumberMessage .insert * {
-    width: 180px;
+    width: 190px;
   }
 }
 .resultsMarketingMessages .resultsLowNumberMessage .insert h4 {
@@ -2246,8 +2396,8 @@ button .simples-dialogue h3:after {
   /* Unselected state (confirm colours) */
 }
 .benefits-component .checkbox input + label:before {
-  background-color: #c9c9bf;
-  color: #f2f2f2;
+  background-color: #f2f2f2;
+  color: #c9c9bf;
 }
 .benefits-component .checkbox input[disabled] + label:before {
   color: #d6d7cb;
@@ -2299,7 +2449,7 @@ button .simples-dialogue h3:after {
 .benefits-component .hospitalCover .has-switch .switch-on span {
   background: #1d57aa;
 }
-.benefits-component .hospitalCover .checkbox .help-icon {
+.benefits-component .hospitalCover .checkbox input[type=checkbox]:checked + label .help-icon {
   color: #1d57aa;
 }
 .benefits-component .extrasCover h3 {
@@ -2336,7 +2486,7 @@ button .simples-dialogue h3:after {
 .benefits-component .extrasCover .has-switch .switch-on span {
   background: #3f7a15;
 }
-.benefits-component .extrasCover .checkbox .help-icon {
+.benefits-component .extrasCover .checkbox input[type=checkbox]:checked + label .help-icon {
   color: #3f7a15;
 }
 @media (max-width: 767px) {
@@ -2354,8 +2504,8 @@ button .simples-dialogue h3:after {
   }
 }
 .productSummaryDetails {
-  background-color: #f2f2f2;
-  padding: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   color: #333333;
   padding-top: 10px;
   font-size: 12px;
@@ -2368,12 +2518,36 @@ button .simples-dialogue h3:after {
 .productSummaryDetails .footer {
   text-align: right;
 }
+.productSummaryDetails h1 {
+  padding-bottom: 7px;
+  margin-bottom: 15px;
+  border-bottom: solid 1px;
+  border-color: #f2f2f2;
+}
+.productSummaryDetails p {
+  clear: both;
+}
+.productSummaryDetails .companyLogo {
+  margin-bottom: 15px;
+  margin-right: 20px;
+}
 .policySummaryContainer .policyPriceWarning {
   display: none;
   color: #ab1d21;
   padding-top: 5px;
   text-align: right;
   font-size: 10px;
+}
+.policySummaryContainer h1 {
+  padding-bottom: 7px;
+  border-bottom: solid 1px;
+  border-color: #f2f2f2;
+}
+.policySummaryContainer h1 a {
+  float: right;
+  font-size: 12px;
+  font-family: 'SourceSansProRegular';
+  padding-top: 10px;
 }
 .payment_assurance_message {
   position: absolute;
@@ -3088,13 +3262,13 @@ header .healthCallCentreSpecialHoursLink {
   color: #d5d6cb;
 }
 .compareCheckbox input:checked + label:before {
-  color: #ab1d21;
+  color: #333333;
 }
 .compareCheckbox input:checked + label:after {
   color: #333333;
 }
 .lt-ie9 .compareCheckbox input.checked + label:before {
-  color: #ab1d21;
+  color: #333333;
   content: "\e600 ";
 }
 .lt-ie9 .compareCheckbox input.checked + label:after {
@@ -3169,13 +3343,6 @@ header .healthCallCentreSpecialHoursLink {
   margin-top: 0;
   margin-bottom: 0;
 }
-.filterProviderCheckbox .checkbox input {
-  /*
-			margin-left: 80px;
-			margin-top: 80px;
-			position: absolute;
-			*/
-}
 .filterProviderCheckbox .checkbox input + label {
   text-align: center;
   padding-top: 0;
@@ -3198,9 +3365,8 @@ header .healthCallCentreSpecialHoursLink {
     border: 1px solid #b1b2ae;
   }
 }
-.filterProviderLogo img {
-  max-width: 90px;
-  max-height: 90px;
+.filterProviderLogo .companyLogo {
+  margin-top: 5px;
 }
 .btn-more-info {
   background-color: #333333;

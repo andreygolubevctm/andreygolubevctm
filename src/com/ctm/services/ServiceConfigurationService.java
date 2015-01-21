@@ -14,6 +14,7 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.model.ProviderExclusion;
 import com.ctm.model.settings.Brand;
+import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.Vertical;
 
@@ -115,11 +116,16 @@ public class ServiceConfigurationService {
 
 		getServiceConfigurations();
 
+		ServiceConfiguration serviceConfiguration = null;
+		
 		for(ServiceConfiguration service : services){
-			if(service.getCode().equals(code) && service.getVerticalId() == verticalId){
-				return service;
+			if(service.getCode().equals(code) && ((service.getVerticalId() == ConfigSetting.ALL_VERTICALS && serviceConfiguration == null) || service.getVerticalId() == verticalId)){
+				serviceConfiguration = service;
 			}
 		}
+		
+		if(serviceConfiguration != null)
+			return serviceConfiguration;
 
 		throw new ServiceConfigurationException("Unable to find matching service with code "+code);
 

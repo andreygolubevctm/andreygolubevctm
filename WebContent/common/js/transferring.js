@@ -15,7 +15,9 @@ $(window).load(function() {
 
 	if(getUrlVars().hasOwnProperty('tracking')) {
 		try {
-			tracking = JSON.parse(decodeURIComponent(getUrlVars()['tracking']));
+			var tmp = JSON.parse(decodeURIComponent(getUrlVars()['tracking']));
+			tracking = _.omit(tmp, 'brandXCode');
+			tracking.brandCode = tmp.brandXCode;
 		} catch(e) {/* IGNORE */}
 	}
 

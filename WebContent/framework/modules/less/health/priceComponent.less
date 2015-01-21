@@ -1,13 +1,27 @@
 .productSummaryDetails{
 	.name { color: @price-component-header-text; }
 	.footer{ text-align: right; }
-	background-color: @price-component-background;
-	padding: 20px;
+	padding-top: 20px;
+	padding-bottom: 20px;
 	color: @price-component-text;
 	padding-top: 10px;
 	font-size: @font-size-small;
 	border-radius: @border-radius-small;
 	margin-bottom: 28px;
+
+	h1 {
+		padding-bottom: 7px;
+		margin-bottom: 15px;
+		border-bottom: solid 1px;
+		border-color: @theme-light;
+	}
+	p{
+		clear: both;
+	}
+	.companyLogo{
+		margin-bottom: 15px;
+		margin-right: 20px;
+	}
 }
 
 .policySummaryContainer{
@@ -17,5 +31,16 @@
 		padding-top:5px;
 		text-align: right;
 		font-size: 10px;
+	}
+	h1 {
+		padding-bottom: 7px;
+		border-bottom: solid 1px;
+		border-color: @theme-light;
+		a{
+			float: right;
+			font-size: @font-size-small;
+			font-family: @font-family-theme-regular;
+			padding-top: 10px;
+		}
 	}
 }

@@ -5,7 +5,7 @@
 
 .resultsSectionFakeRow(@columnWidth, @columnsNumber, @columnGutterWidth, @containerBorderWidth){
 	width: ( ( @columnWidth * ( @columnsNumber + 1 ) ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @containerBorderWidth );
-	padding-right: ( ( @columnWidth * @columnsNumber ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @containerBorderWidth );
+	padding-right: ( ( @columnWidth * @columnsNumber ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @containerBorderWidth + @results-section-fake-row-padding);
 }
 
 .resultsSectionExtraTextLeftPos(@columnWidth, @columnGutterWidth){
@@ -647,11 +647,11 @@
 
 				}
 					.content.c{
-					border-right:2px solid darken(@feature-color, 20%);
+					border-right:1px solid darken(@feature-color, 20%);
 					}
 				&:nth-child(odd){
 					.expanded > .content{
-						border-right:2px solid lighten(@feature-color, 20%);
+						border-right:1px solid lighten(@feature-color, 20%);
 					}
 				}
 			}

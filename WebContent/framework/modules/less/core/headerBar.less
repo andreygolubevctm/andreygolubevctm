@@ -44,10 +44,16 @@ body > div > header {
 		h4,h1 {
 			line-height: 40px;
 			display: inline-block;
-			//This one dynamically fades based on highest contrast.
-			//color: contrast(@header-bg, @headings-color, lighten(@header-bg, 35%));
-			//This one picks white based on highest contrast
-			color: contrast(@header-bg, @headings-color, #fff);
+			color: @theme-dark;
+			font-size: @font-size-h5;
+			font-family: @font-family-sans-serif;
+			span {
+				//This one dynamically fades based on highest contrast.
+				//color: contrast(@header-bg, @contact-headings-color, lighten(@header-bg, 35%));
+				//This one picks white based on highest contrast
+				color: contrast(@header-bg, @contact-headings-color, #fff);
+				font-size: 38px;
+			}
 		}
 		[data-livechat="button"] {
 			vertical-align: super;

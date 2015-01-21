@@ -32,8 +32,14 @@
 		var product = settings.product,
 			handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? 'POST' : 'GET',
 			brand = settings.brand ? settings.brand : product.provider,
-			msg =  settings.msg ? settings.msg : '',
-			tracking = encodeURIComponent(JSON.stringify(settings.tracking));
+			msg =  settings.msg ? settings.msg : '';
+
+		// Create and cleanup tracking object to ensure brandCode is not passed as brandCode
+		// will be renamed while in url and reverted back on transferring page - this is to
+		// avoid issues with the F5
+		var tracking = _.omit(settings.tracking, 'brandCode');
+		tracking.brandXCode = settings.tracking.brandCode;
+		tracking = encodeURIComponent(JSON.stringify(tracking));
 
 		try {
 

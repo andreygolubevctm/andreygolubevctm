@@ -153,10 +153,14 @@ public class PremiumCalculator {
 	}
 
 	public double getDiscountValue() {
-		return grossPremium.subtract(basePremium).doubleValue();
+		return grossPremium.subtract(basePremium).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 
 	public double getDiscountPercentage() {
-		return new BigDecimal(getDiscountValue()).divide(basePremium, 2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		if (grossPremium.doubleValue() == 0.0){
+			return 0.0;
+		}else{
+			return new BigDecimal(getDiscountValue()).divide(grossPremium, 2, RoundingMode.HALF_UP).multiply(new BigDecimal(100)).doubleValue();
+		}
 	}
 }

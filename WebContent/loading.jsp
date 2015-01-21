@@ -53,7 +53,7 @@
 			display:block;
 			width:452px;
 			text-align:center;
-			color:#4a4f51;
+			color:#333333;
 			font-family:"SunLT Light",Arial,Helvetica,sans-serif;
 			font-size:19px;
 			font-weight:bold;
@@ -75,13 +75,13 @@
 		<div id="dump"></div>
 		<script type="text/javascript">
 			if (window.XMLHttpRequest)
-			  {// code for IE7+, Firefox, Chrome, Opera, Safari
-			  xmlhttp=new XMLHttpRequest();
-			  }
+			{// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+			}
 			else
-			  {// code for IE6, IE5
-			  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-			  }
+			{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
 			xmlhttp.open("GET","${pageSettings.getBaseUrl()}dataXML.jsp",false);
 			xmlhttp.send();
 			xmlHTML = xmlhttp.responseText

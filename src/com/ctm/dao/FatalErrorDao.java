@@ -14,13 +14,12 @@ import com.ctm.model.FatalError;
 
 public class FatalErrorDao {
 
-	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(FatalErrorDao.class.getName());
 
 	public void add(FatalError fatalError) throws DaoException {
-		SimpleDatabaseConnection dbSource = null;
+		String data = getData(fatalError);
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		try {
-			dbSource = new SimpleDatabaseConnection();
 			PreparedStatement stmt;
 			Connection conn = dbSource.getConnection();
 			if(conn != null) {
@@ -35,22 +34,28 @@ public class FatalErrorDao {
 				stmt.setString(3, fatalError.getpage());
 				stmt.setString(4, fatalError.getmessage());
 				stmt.setString(5, fatalError.getDescription());
-				stmt.setString(6, fatalError.getData());
+				stmt.setString(6, data);
 				stmt.setString(7, fatalError.getSessionId());
 				stmt.setString(8, fatalError.getTransactionId());
 				stmt.setString(9, fatalError.getFatal());
 
 				stmt.executeUpdate();
 			}
-		} catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
+		} catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
 		} finally {
-			if(dbSource != null) {
-				dbSource.closeConnection();
-			}
+			dbSource.closeConnection();
 		}
+	}
+
+	private String getData(FatalError fatalError) {
+		String data = fatalError.getData();
+		// Max length for mysql text field is 65535
+		if(data != null && data.length() > 65535) {
+			logger.info("truncating data:" + data);
+			data = data.substring(0, data.length() - 65535);
+		}
+		return data;
 	}
 
 }

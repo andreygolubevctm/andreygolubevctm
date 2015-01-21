@@ -139,7 +139,7 @@
 	}
 
 	#summary-header h2 {
-		color: #4A4F51;
+		color: #333333;
 		font-family: "SunLT Light",Arial,Helvetica,sans-serif;
 		font-size: 22px;
 		font-weight: normal;

@@ -51,20 +51,20 @@
 
 // Health conventions colour style overrides
 
-@hospital-color: #485f94;
-@hospital-hover-color: darken(@hospital-color, 8%);
+@hospital-color: @theme-tertiary;
+@hospital-hover-color: @hospital-color;
 @hospital-expanded-color: @hospital-color;
 
-@extras-color: #34734C;
+@extras-color: @theme-secondary;
 @extras-color-light: #0db14b;
-@extras-hover-color: darken(@extras-color, 8%);
+@extras-hover-color: @extras-color;
 @extras-expanded-color: @extras-color;
 
 @ambulance-color: @theme-light;
 @ambulance-text-color: @theme-dark;
 
-@excess-color: #F7F7F7;
-@excess-odd-color: #F0F0F0;
+@excess-color: #FFFFFF;
+@excess-odd-color: #F1F1F1;
 @excess-xs-section-color: @theme-tertiary;
 
 @results-features-promos-color: @theme-tertiary;
@@ -77,7 +77,7 @@
 @category-hospital-color: #E3E9F7;
 @category-hospital-odd-color: #DCE4F5;
 
-@category-extras-text-color: @extras-color;
+@category-extras-text-color: #2E4D3A;
 @category-extras-color: #CDF7DD;
 @category-extras-odd-color: #D7F9E4;
 
@@ -96,17 +96,17 @@
 //More info bridging page updates
 
 @more-info-product-color: @theme-tertiary;
-@more-info-promotion-color: @theme-primary;
+@more-info-promotion-color: @theme-tertiary;
 @more-info-about-color: @theme-tertiary;
-@more-info-nextsteps-color: @theme-secondary;
+@more-info-nextsteps-color: @theme-tertiary;
 @more-info-bubble-bg-color: @well-bg-info;
 @more-info-bubble-text-color: @well-text-info;
 
 
 // Other General Health Item
 
-@button-hospital-bg: @theme-tertiary;
-@button-extras-bg: @theme-secondary;
+@button-hospital-bg: @btn-default-color;
+@button-extras-bg: @btn-default-color;
 @button-hospital-bg-light: @category-hospital-color;
 @button-extras-bg-light: @category-extras-color;
 
@@ -120,7 +120,7 @@
 //##
 @checkbox-health-compare-circle-unchecked: #B4B5AC;
 @checkbox-health-compare-tick-unchecked: #D5D6CB;
-@checkbox-health-compare-tick-checked: @theme-primary;
+@checkbox-health-compare-tick-checked: @theme-secondary;
 @checkbox-health-compare-circle-checked: @theme-tertiary;
 
 @checkbox-health-marketing-tick-checked: @theme-secondary;

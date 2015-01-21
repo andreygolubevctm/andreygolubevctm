@@ -71,10 +71,10 @@
 	}
 		#results-information h2 em {
 			font-style:normal;
-			color:#4a4f51;
+			color:#333333;
 		}
 		#results-information h2 span {
-			color:#4a4f51;
+			color:#333333;
 		}
 	#summary-header {
 		position:relative;
@@ -91,7 +91,7 @@
 			font-weight: 600;
 		}
 		#summary-header h2 {
-			color: #4A4F51;
+			color: #333333;
 			font-family: "SunLT Light",Arial,Helvetica,sans-serif;
 			font-size: 22px;
 			font-weight: normal;
@@ -161,7 +161,7 @@
 		text-align:left;
 	}
 	.roadside #results-header div {
-		color:#4a4f51;
+		color:#333333;
 		font-size:12px;
 		font-weight:bold;
 		height:30px;

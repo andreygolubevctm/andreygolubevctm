@@ -162,7 +162,7 @@
 		display: block; width: 237px; height: 23px; top: -2px; left: 83px; position: absolute;
 	}
 
-	#tabTitleText { position: relative; color: #4a4f51; font-size: 10px; }
+	#tabTitleText { position: relative; color: #333333; font-size: 10px; }
 	#quote_vehicle_factoryOption { font-size: 13px; }
 	/*dialogClose { background: url(common/images/dialog/close.png) no-repeat; width: 36px; height: 34px; position: absolute; top: -34px; left: 608px; cursor: pointer; display: none;}*/
 	#nonStdHdrTop { border-bottom: 1px solid #F4A97F; padding-top: 18px; *padding-top: 0px; padding-bottom: 3px; z-index:60; margin-top:-18px;  }

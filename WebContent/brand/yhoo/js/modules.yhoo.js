@@ -4848,7 +4848,10 @@ meerkat.logging.init = function() {
         closeBridgingModalDialog: true
     };
     function buildURL(settings) {
-        var product = settings.product, handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? "POST" : "GET", brand = settings.brand ? settings.brand : product.provider, msg = settings.msg ? settings.msg : "", tracking = encodeURIComponent(JSON.stringify(settings.tracking));
+        var product = settings.product, handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? "POST" : "GET", brand = settings.brand ? settings.brand : product.provider, msg = settings.msg ? settings.msg : "";
+        var tracking = _.omit(settings.tracking, "brandCode");
+        tracking.brandXCode = settings.tracking.brandCode;
+        tracking = encodeURIComponent(JSON.stringify(tracking));
         try {
             url = "transferring.jsp?transactionId=" + meerkat.modules.transactionId.get() + "&trackCode=" + product.trackCode + "&brand=" + brand + "&msg=" + msg + "&url=";
             url += product.encodeUrl === "Y" || settings.encodeTransferURL === true ? encodeURIComponent(product.quoteUrl) : product.quoteUrl;
@@ -7273,6 +7276,9 @@ meerkat.logging.init = function() {
         }
         if (typeof object.simplesUser === "undefined") {
             object.simplesUser = meerkat.site.isCallCentreUser;
+        }
+        if (typeof object.contactCentreID === "undefined") {
+            object.contactCentreID = meerkat.site.userId || null;
         }
         if (typeof object.campaignID === "undefined") {
             object.campaignID = $("input[name$=tracking_cid]").val() || null;

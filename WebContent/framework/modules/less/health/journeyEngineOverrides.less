@@ -16,7 +16,7 @@
 &[data-step=benefits],
 &[data-step=results]{
 	#pageContent{
-		background-color: #f8f8f8;
+		background-color: @page-content-bg;
 		.transition(~"background-color 250ms ease-in-out");
 	}
 	#pageContentTop{
@@ -30,4 +30,7 @@
 	@media (min-width: @screen-sm-min) {
 		padding-top: 32px; //47px
 	}
+}
+.btn-modal {
+	&:extend(.btn-email all);
 }

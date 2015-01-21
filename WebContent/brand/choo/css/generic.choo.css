@@ -75,18 +75,23 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #064667;
   color: #ffffff;
 }
-.compareBar.active .comparisonActive .compareBtn.clearMode {
+.compareBar.active .comparisonActive .compareBtn.clearMode,
+.filters-component .btn-save {
   background-color: #064667;
   color: #ffffff;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:hover,
-.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus,
+.filters-component .btn-save:hover,
+.filters-component .btn-save:focus {
   background-color: #031f2d;
   color: #ffffff;
   outline: 0;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:active,
-.compareBar.active .comparisonActive .compareBtn.clearMode.active {
+.compareBar.active .comparisonActive .compareBtn.clearMode.active,
+.filters-component .btn-save:active,
+.filters-component .btn-save.active {
   background-color: #00afd8;
   color: #ffffff;
 }
@@ -1059,7 +1064,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 22px;
 	font-weight: 300;
-	color: #4a4f51;
+	color: #333333;
 }
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
 .ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
@@ -3304,7 +3309,7 @@ body #youngDriverRow {
 }
 /* Health */
 .health-benefits .des {
-  color: #4A4F51;
+  color: #333333;
   border: 1px solid #fff;
   margin: -12px -9px 10px -9px;
   padding: 12px;
@@ -3535,7 +3540,7 @@ body #youngDriverRow {
   text-align: center;
 }
 .health #results-bar .pagination div.page.active p {
-  color: #4a4f51 !important;
+  color: #6b6b6b !important;
   font-weight: bold;
   margin-top: 2px;
 }
@@ -3574,7 +3579,7 @@ body #youngDriverRow {
   margin-bottom: 10px;
 }
 .health #results-summary h2 {
-  color: #4A4F51;
+  color: #333333;
   font-size: 13px;
   line-height: 140%;
   font-weight: normal;
@@ -4500,7 +4505,7 @@ body.health #contact-panel span.or {
 .reminder_box h6 {
   font-size: 14px;
   font-family: Helvetica, Arial, sans-serif;
-  color: #4a4f51;
+  color: #333333;
   line-height: 1;
   text-align: center;
   font-weight: bold;
@@ -4996,7 +5001,7 @@ ul.plainBulletPoints {
   background: url("../../../common/images/loading.gif") no-repeat scroll left top transparent !important;
 }
 #loading-message {
-  color: #4a4f51;
+  color: #333333;
 }
 #fatal-error-dialog .dialog_footer {
   background: url("../../../common/images/error_fatal/footer.gif?v5") no-repeat scroll left top transparent !important;
@@ -5005,15 +5010,15 @@ ul.plainBulletPoints {
   background: url("../../../common/images/error_fatal/header_under.gif?v5") no-repeat scroll left top transparent !important;
 }
 .ui-dialog.fatal-error-dialog .ui-dialog-titlebar .ui-dialog-title {
-  color: #e75200 !important;
+  color: #00afd8 !important;
   background: transparent url("../../../common/images/error_fatal/warning.png?v5") center left no-repeat !important;
 }
 .fatal-error-dialog .ui-dialog-titlebar {
   background-image: url("../../../common/images/error_fatal/header_over.gif?v5") !important;
 }
 .fatal-error-dialog .ui-dialog-titlebar-close.ui-state-hover {
-  border-color: #e75200 !important;
-  background-color: #e75200 !important;
+  border-color: #00afd8 !important;
+  background-color: #00afd8 !important;
 }
 .fatal-error-dialog .ui-dialog-content {
   background-image: url("../../../common/images/error_fatal/content.gif?v5") !important;

@@ -162,7 +162,7 @@ var FuelPriceHistory = function() {
 				},
 				axisTitlesPosition:	'out',
 				pointSize:		3,
-				series: [{color:'#0C4DA2'},{color:'#0CB24E'},{color:'#4A4F51'}]
+				series: [{color:'#0C4DA2'},{color:'#0CB24E'},{color:'#333333'}]
 		};
 		var chart = new	google.visualization.LineChart(document.getElementById(elements.content.attr("id")));
 		chart.draw(data, options);

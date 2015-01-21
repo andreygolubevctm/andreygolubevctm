@@ -205,11 +205,124 @@ $.validator.addMethod("amountPeriodRequired",
 	"Replace this message with something else"
 );
 
+$.validator.addMethod("maximumSpend",
+	function(value, e) {
+
+		element = $('#' + $(e).attr('id').replace('amountentry', 'amount'));
+		var spend = $(element).val();
+		var period = $('#' + $(element).attr('id').replace('_amount', '_period') );
+		var normalise;
+
+		switch($(period).val()) {
+			case 'M':
+				normalise = 1;
+				break;
+			case 'B':
+				normalise = 2;
+				break;
+			case 'Q':
+				normalise = 3;
+				break;
+			default:
+				normalise = 12;
+				break;
+		}
+
+		if(spend >= 1 && spend < (5000 * normalise)){
+			return true;
+		} else {
+			return false;
+		}
+
+	},
+	(function(value, e) {
+		element = $('#' + $(e).attr('id').replace('amountentry', 'amount'));
+		var period = $('#' + $(element).attr('id').replace('_amount', '_period') );
+
+		switch($(period).val()) {
+			case 'M':
+				return "Monthly spend should be between $1 and $5,000";
+				break;
+			case 'B':
+				return "Bimonthly spend should be between $1 and $10,000";
+				break;
+			case 'Q':
+				return "Quartly spend should be between $1 and $15,000";
+				break;
+			default:
+				return "Annual spend should be between $1 and $60,000";
+				break;
+		}
+	})
+);
+
+$.validator.addMethod("maximumUsage",
+	function(value, e) {
+
+		element = $('#' + $(e).attr('id').replace('amountentry', 'amount'));
+		var usage = $(element).val();
+		var period = $('#' + $(element).attr('id').replace('_amount', '_period') );
+		var normalise;
+		var valid = false;
+
+		switch($(period).val()) {
+			case 'M':
+				if(usage == '' || (usage >= 0 && usage < 7000)){
+					valid = true;
+				}
+				break;
+			case 'B':
+				if(usage == '' || (usage >= 0 && usage < 14000)){
+					valid = true;
+				}
+				break;
+			case 'Q':
+				if(usage == '' || (usage >= 0 && usage < 20000)){
+					valid = true;
+				}
+				break;
+			default:
+				if(usage == '' || (usage >= 0 && usage < 85000)){
+					valid = true;
+				}
+				break;
+		}
+
+		return valid;
+	},
+	(function(value, e) {
+		element = $('#' + $(e).attr('id').replace('amountentry', 'amount'));
+		var period = $('#' + $(element).attr('id').replace('_amount', '_period') );
+
+		switch($(period).val()) {
+			case 'M':
+				return "Monthly usage should be between 1kwh and 7,000kwh";
+				break;
+			case 'B':
+				return "Bimonthly usage should be between 1kwh and 14,000kwh";
+				break;
+			case 'Q':
+				return "Quarterly usage should be between 1kwh and 20,000kwh";
+				break;
+			default:
+				return "Annual usage should be between 1kwh and 85,000kwh";
+				break;
+		}
+	})
+);
+
 </go:script>
 
 <%-- VALIDATION --%>
 
 <%-- Usage Electricity --%>
+<go:validate selector="${name}_spend_electricity_amountentry" rule="maximumSpend" parm="true" />
+<go:validate selector="${name}_spend_gas_amountentry" rule="maximumSpend" parm="true" />
+
+<go:validate selector="${name}_usage_electricity_peak_amountentry" rule="maximumUsage" parm="true" />
+<go:validate selector="${name}_usage_electricity_offpeak_amountentry" rule="maximumUsage" parm="true" />
+
+
 <go:validate selector="${name}_usage_electricity_offpeak_period" rule="amountPeriodRequired" parm="true" message="Please choose the usage electricity offpeak period" />
 <go:validate selector="${name}_usage_gas_offpeak_period" rule="amountPeriodRequired" parm="true" message="Please choose the usage gas offpeak period" />
 <go:validate selector="${name}_usage_electricity_shoulder_period" rule="amountPeriodRequired" parm="true" message="Please choose the usage electricity shoulder period" />

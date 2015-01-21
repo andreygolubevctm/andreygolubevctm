@@ -62,18 +62,23 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #1c3e93;
   color: #ffffff;
 }
-.compareBar.active .comparisonActive .compareBtn.clearMode {
+.compareBar.active .comparisonActive .compareBtn.clearMode,
+.filters-component .btn-save {
   background-color: #1c3e93;
   color: #ffffff;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:hover,
-.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus,
+.filters-component .btn-save:hover,
+.filters-component .btn-save:focus {
   background-color: #122860;
   color: #ffffff;
   outline: 0;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:active,
-.compareBar.active .comparisonActive .compareBtn.clearMode.active {
+.compareBar.active .comparisonActive .compareBtn.clearMode.active,
+.filters-component .btn-save:active,
+.filters-component .btn-save.active {
   background-color: #0db14b;
   color: #ffffff;
 }
@@ -169,7 +174,7 @@ body.simples .dropdown-header {
   font-weight: bold;
 }
 body.simples .dropdown-menu {
-  color: #4a4f51;
+  color: #333333;
 }
 body.simples .dropdown-menu > .disabled > a {
   color: #b2b2b2;
@@ -288,7 +293,7 @@ body.simples table.table td {
   padding: 20px 0;
 }
 .simples-postponed-message {
-  color: #4a4f51;
+  color: #333333;
   border: 1px solid #d4d4d4;
   margin-bottom: 12px;
   position: relative;

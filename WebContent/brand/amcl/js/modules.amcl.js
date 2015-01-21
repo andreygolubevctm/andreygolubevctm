@@ -1,6 +1,6 @@
 /*!
  * CTM-Platform v0.8.3
- * Copyright 2014 Compare The Market Pty Ltd
+ * Copyright 2015 Compare The Market Pty Ltd
  * http://www.comparethemarket.com.au/
  */
 
@@ -201,8 +201,10 @@ var Driftwood = new function() {
                 }
             }
             if (config.mode !== "production" && navigator.appName != "Microsoft Internet Explorer") {
+                if (typeof fn !== "undefined" && typeof fn.apply === "function") {
                 fn.apply(console, Array.prototype.slice.call(args));
             }
+        }
         }
         return {
             setServerPath: function(murl) {
@@ -850,7 +852,16 @@ meerkat.logging.init = function() {
                 offset: {
                     top: function() {
                         var offsetTop = $item.offset().top;
-                        return this.top = offsetTop;
+                        var attr = $item.attr("data-affix-after");
+                        if (attr && $(attr).length) {
+                            offsetTop = $(attr).offset().top;
+                            if ($item.is(":visible")) {
+                                this.top = offsetTop;
+                    }
+                        } else {
+                            this.top = offsetTop;
+                }
+                        return offsetTop;
                     }
                 }
             });
@@ -859,19 +870,6 @@ meerkat.logging.init = function() {
             });
             $item.on("affixed-top.bs.affix", function(event) {
                 meerkat.messaging.publish(moduleEvents.UNAFFIXED, $item);
-            });
-        });
-    }
-    function topDockBasedOnParentHeight($elems) {
-        $elems.each(function(index, val) {
-            $item = $(val);
-            $item.affix({
-                offset: {
-                    top: function() {
-                        var offsetTop = $item.parent().height() - $item.height();
-                        return this.top = offsetTop;
-                    }
-                }
             });
         });
     }
@@ -1380,7 +1378,7 @@ meerkat.logging.init = function() {
             return $.Deferred(function(dfd) {
                 if (settings.onSuccess != null) settings.onSuccess(cachedResult.result);
                 if (settings.onComplete != null) settings.onComplete();
-                return dfd.resolve().promise();
+                return dfd.resolveWith(this, [ cachedResult.result ]).promise();
             });
         }
         settings.attemptsCounter = 1;
@@ -1436,7 +1434,7 @@ meerkat.logging.init = function() {
                 if (settings.cache === true) addToCache(settings.url, data, result);
                 if (settings.onSuccess != null) settings.onSuccess(result);
                 if (settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
-                if (typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.initializeWindowTimeout(result.timeout);
+                if (typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.update(result.timeout);
             }
         }, function onAjaxError(jqXHR, textStatus, errorThrown) {
             var data = typeof settings.data != "undefined" ? settings.data : null;
@@ -1535,15 +1533,15 @@ meerkat.logging.init = function() {
     var events = {
         compare: {
             RENDER_BASKET: "RENDER_BASKET",
-            ADD_PRODUCT: "COMPARE_ADD_PRODUCT",
             BEFORE_ADD_COMPARE_PRODUCT: "BEFORE_ADD_COMPARE_PRODUCT",
+            ADD_PRODUCT: "COMPARE_ADD_PRODUCT",
             REMOVE_PRODUCT: "COMPARE_REMOVE_PRODUCT",
             ENTER_COMPARE: "ENTER_COMPARE",
             AFTER_ENTER_COMPARE_MODE: "AFTER_ENTER_COMPARE_MODE",
             EXIT_COMPARE: "EXIT_COMPARE_MODE"
         }
     }, moduleEvents = events.compare;
-    var comparedProducts = [], comparisonOpen = false, resultsFiltered = false, previousMode, resultsContainer, defaults = {
+    var comparedProducts = [], comparisonOpen = false, resultsFiltered = false, previousMode, resultsContainer, productIdPath, defaults = {
         minProducts: 2,
         maxProducts: 3,
         autoCompareAtMax: true,
@@ -1552,32 +1550,38 @@ meerkat.logging.init = function() {
             basketLocationPrice: $("#navbar-compare > .compare-basket"),
             enterCompareMode: $(".enter-compare-mode"),
             clearCompare: $(".clear-compare"),
-            priceModeToggle: $(".filter-pricemode"),
-            featuresModeToggle: $(".filter-featuresmode"),
             exitCompareButton: $(".back-to-price-mode"),
-            compareBar: $("#navbar-compare")
+            compareBar: $("#navbar-compare"),
+            priceModeToggle: $(".filter-pricemode"),
+            featuresModeToggle: $(".filter-featuresmode")
         },
         templates: {
             compareBasketFeatures: $("#compare-basket-features-template"),
             compareBasketPrice: $("#compare-basket-price-template")
         },
         callbacks: {
-            add_product: function(eventObject, context) {
-                if (typeof eventObject.productId !== "undefined") {
-                    $('.result-row[data-productId="' + eventObject.productId + '"]', context).toggleClass("compared", true);
+            switchMode: function(mode) {
+                switch (mode) {
+                  case "features":
+                    settings.elements.featuresModeToggle.trigger("click");
+                    break;
+
+                  case "price":
+                    settings.elements.priceModeToggle.trigger("click");
+                    $(".featuresHeaders .expandable.expanded, .featuresList .expandable.expanded").removeClass("expanded").addClass("collapsed");
+                    break;
+
+                  default:
+                    log("[compare:switchMode] No mode specified");
+                    break;
                 }
-            },
-            remove_product: function(eventObject, context) {
-                if (typeof eventObject.productId !== "undefined") {
-                    $('.result-row[data-productId="' + eventObject.productId + '"]', context).toggleClass("compared", false);
                 }
-            },
-            toggleFiltersState: function(toggle) {}
         }
     }, settings = {};
     function initCompare(options) {
         options = typeof options === "object" && options !== null ? options : {};
         settings = $.extend({}, defaults, options);
+        productIdPath = Results.settings.paths.productId;
         jQuery(document).ready(function($) {
             applyEventListeners();
             eventSubscriptions();
@@ -1599,6 +1603,7 @@ meerkat.logging.init = function() {
         meerkat.messaging.subscribe(moduleEvents.ENTER_COMPARE, enterCompareMode);
         meerkat.messaging.subscribe(meerkatEvents.TOGGLE_MODE, toggleViewMode);
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, resetComparison);
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, resetComparison);
     }
     function toggleProductEvent(event) {
         var $element = $(this), eventType, productId = $element.attr("data-productId");
@@ -1620,15 +1625,14 @@ meerkat.logging.init = function() {
         var productId = eventObject.productId;
         var success = addComparedProduct(productId, eventObject.product);
         if (success) {
-            toggleCheckbox(productId, true);
-            if (typeof settings.callbacks.add_product === "function") {
-                settings.callbacks.add_product(eventObject, resultsContainer);
-            }
+            toggleSelectedState(productId, true);
             if (isAtMaxQueue() && settings.autoCompareAtMax === true) {
                 meerkat.messaging.publish(moduleEvents.ENTER_COMPARE);
             } else {
                 meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
             }
+        } else {
+            log("[compare] Failed to add product");
         }
     }
     function removeProduct(eventObject) {
@@ -1642,41 +1646,47 @@ meerkat.logging.init = function() {
                 filterResults();
             }
             meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
-            toggleCheckbox(productId, false);
-            if (typeof settings.callbacks.remove_product === "function") {
-                settings.callbacks.remove_product(eventObject, resultsContainer);
+            toggleSelectedState(productId, false);
+        } else {
+            log("[compare] Failed to remove product");
             }
         }
-    }
     function resetComparison() {
         if (Results.getFilteredResults() === false) return;
         comparedProducts = [];
         meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
-        toggleCheckbox(false, false);
-        $(".result-row.compared").removeClass("compared");
+        toggleSelectedState(false, false);
         if (isCompareOpen()) {
+            comparisonOpen = false;
             if (previousMode == "price") {
-                settings.elements.priceModeToggle.trigger("click");
+                if (typeof settings.callbacks.switchMode === "function") {
+                    settings.callbacks.switchMode(previousMode);
             }
-            settings.elements.priceModeToggle.removeClass("hidden");
-            settings.elements.featuresModeToggle.removeClass("hidden");
+            } else {
+                if (typeof meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents === "function") {
+                    meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents();
+                }
+            }
             settings.elements.exitCompareButton.addClass("hidden");
             _.defer(function() {
                 unfilterResults();
             });
             meerkat.messaging.publish(moduleEvents.EXIT_COMPARE);
         }
-        comparisonOpen = false;
     }
     function enterCompareMode() {
         comparisonOpen = true;
         settings.elements.enterCompareMode.addClass("disabled");
-        settings.elements.priceModeToggle.addClass("hidden");
-        settings.elements.featuresModeToggle.addClass("hidden");
         settings.elements.exitCompareButton.removeClass("hidden");
         previousMode = Results.getDisplayMode();
         if (previousMode == "price") {
-            settings.elements.featuresModeToggle.trigger("click");
+            if (typeof settings.callbacks.switchMode === "function") {
+                settings.callbacks.switchMode("features");
+        }
+        } else {
+            if (typeof meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents === "function") {
+                meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents();
+            }
         }
         filterResults();
         meerkat.messaging.publish(moduleEvents.AFTER_ENTER_COMPARE_MODE);
@@ -1710,28 +1720,36 @@ meerkat.logging.init = function() {
             isCompareOpen: isCompareOpen()
         };
         $location.html(templateCallback(templateObj));
+        if (Results.getDisplayMode() == "price") {
+            if (getComparedProducts().length) {
+                $location.closest("nav").removeClass("hidden");
+            } else {
+                $location.closest("nav").addClass("hidden");
     }
-    function toggleCheckbox(productId, status) {
-        var $collection;
-        if (productId === false) {
-            $collection = $(".compare-tick[data-productId]");
-        } else {
-            $collection = $('.compare-tick[data-productId="' + productId + '"]');
         }
-        $collection.each(function() {
+    }
+    function toggleSelectedState(productId, status) {
+        var $collectionCheckboxes, $collectionRows;
+        if (productId === false) {
+            $collectionCheckboxes = $(".compare-tick[data-productId]");
+            $collectionRows = $(".result-row.compared", resultsContainer);
+        } else {
+            $collectionCheckboxes = $('.compare-tick[data-productId="' + productId + '"]');
+            $collectionRows = $('.result-row[data-productId="' + productId + '"]', resultsContainer);
+        }
+        $collectionCheckboxes.each(function() {
             var $el = $(this);
             $el.prop("checked", status).toggleClass("checked", status);
+        });
+        $collectionRows.each(function() {
+            $(this).toggleClass("compared", status);
         });
     }
     function toggleViewMode() {
         meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
         switch (Results.getDisplayMode()) {
           case "features":
-            settings.elements.compareBar.hide();
-            break;
-
-          case "price":
-            settings.elements.compareBar.show();
+            settings.elements.compareBar.addClass("hidden");
             break;
         }
     }
@@ -1769,12 +1787,20 @@ meerkat.logging.init = function() {
     function getComparedProductIds(asObj) {
         var productIds = [], products = getComparedProducts();
         for (var i = 0; i < products.length; i++) {
+            if (typeof products[i][productIdPath] === "undefined") {
+                log("[getComparedProductIds] No Product Id in Object: ", products[i]);
+                continue;
+            }
             if (asObj) {
-                productIds.push({
-                    productID: products[i].productId
-                });
+                var data = {
+                    productID: products[i][productIdPath]
+                };
+                if (typeof products[i].brandCode !== "undefined") {
+                    data.productBrandCode = products[i].brandCode;
+                }
+                productIds.push(data);
             } else {
-                productIds.push(products[i].productId);
+                productIds.push(products[i][productIdPath]);
             }
         }
         return productIds;
@@ -1790,8 +1816,8 @@ meerkat.logging.init = function() {
         return false;
     }
     function removeComparedProductId(productId) {
-        var list = getComparedProducts(), index = Results.settings.paths.productId;
-        var removeIndex = findById(list, productId, true, index);
+        var list = getComparedProducts();
+        var removeIndex = findById(list, productId, true, productIdPath);
         if (typeof list[removeIndex] !== "undefined") {
             list.splice(removeIndex, 1);
             return true;
@@ -1799,7 +1825,7 @@ meerkat.logging.init = function() {
         return false;
     }
     function findById(array, id, returnKey, index) {
-        index = !index ? "productId" : index;
+        index = !index ? productIdPath : index;
         for (var i = 0, len = array.length; i < len; i++) {
             if (id == array[i][index]) {
                 if (returnKey) {
@@ -1822,10 +1848,13 @@ meerkat.logging.init = function() {
             touchType: "H",
             touchComment: "ResCompare"
         });
+        var verticalCode = meerkat.site.vertical === "home" ? "Home_Contents" : meerkat.site.vertical;
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: "trackQuoteComparison",
             object: {
-                products: getComparedProductIds(true)
+                products: getComparedProductIds(true),
+                vertical: verticalCode,
+                verticalFilter: typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null
             }
         });
     }
@@ -2198,7 +2227,7 @@ meerkat.logging.init = function() {
     }
     function render(container) {
         $("[data-source]", $(container)).each(function() {
-            var output = "", $el = $(this), $sourceElement = $($el.attr("data-source"));
+            var output = "", $el = $(this), $sourceElement = $($el.attr("data-source")), $alternateSourceElement = $($el.attr("data-alternate-source"));
             if (!$sourceElement.length) return;
             sourceType = $sourceElement.get(0).tagName.toLowerCase(), dataType = $el.attr("data-type"), 
             callback = $el.attr("data-callback");
@@ -2231,15 +2260,27 @@ meerkat.logging.init = function() {
                 switch (sourceType) {
                   case "select":
                     var $selected = $sourceElement.find("option:selected");
-                    if ($selected.val() === "") output = ""; else output = $selected.text() || "";
+                    if ($selected.val() === "") {
+                        output = "";
+                    } else {
+                        output = $selected.text() || "";
+                        if (output === "" && $alternateSourceElement.length) {
+                            $selected = $alternateSourceElement.find("option:selected");
+                            if ($selected.val() === "") {
+                                output = "";
+                            } else {
+                                output = $selected.text() || "";
+                            }
+                        }
+                    }
                     break;
 
                   case "input":
-                    output = $sourceElement.val() || "";
+                    output = $sourceElement.val() || $alternateSourceElement.val() || "";
                     break;
 
                   default:
-                    output = $sourceElement.html() || "";
+                    output = $sourceElement.html() || $alternateSourceElement.html() || "";
                     break;
                 }
             } else {
@@ -2331,11 +2372,14 @@ meerkat.logging.init = function() {
     }
     function initCurrency() {
         $.fn.setCursorPosition = function(pos) {
-            if ($(this).get(0).setSelectionRange) {
-                $(this).get(0).setSelectionRange(pos, pos);
-            } else if ($(this).get(0).createTextRange) {
-                var range = $(this).get(0).createTextRange();
+            var $el = $(this).get(0);
+            if ($el.setSelectionRange) {
+                $el.setSelectionRange(pos, pos);
+            } else if ($el.createTextRange) {
+                var range = $el.createTextRange();
+                if (typeof range.collapse === "function") {
                 range.collapse(true).moveEnd("character", pos).moveStart("character", pos).select();
+            }
             }
         };
         initCurrencyFields();
@@ -2343,7 +2387,8 @@ meerkat.logging.init = function() {
     }
     meerkat.modules.register("currencyField", {
         initCurrency: initCurrency,
-        formatCurrency: formatCurrency
+        formatCurrency: formatCurrency,
+        initSingleCurrencyField: initCurrencyField
     });
 })(jQuery);
 
@@ -2447,6 +2492,23 @@ meerkat.logging.init = function() {
         initSeparated: initSeparatedDatepicker,
         initComponent: initComponentDatepicker,
         setDefaults: setDefaultSettings
+    });
+})(jQuery);
+
+(function($) {
+    var meerkat = window.meerkat;
+    function init() {
+        jQuery(document).ready(function($) {
+            $(window).load(function() {
+                $("[data-defer-src]").each(function allDeferSrcLoadLoop() {
+                    $this = $(this);
+                    $this.attr("src", $this.attr("data-defer-src")).removeAttr("data-defer-src");
+                });
+            });
+        });
+    }
+    meerkat.modules.register("deferSrcLoad", {
+        init: init
     });
 })(jQuery);
 
@@ -2685,7 +2747,7 @@ meerkat.logging.init = function() {
                 resizeDialog(dialogId);
             }, 20);
         } else {
-            var viewport_height, content_height, dialogTop, $modalContent = $dialog.find(".modal-content"), $modalDialog = $dialog.find(".modal-dialog");
+            var viewport_height, content_height, dialogTop, $modalContent = $dialog.find(".modal-content"), $modalBody = $dialog.find(".modal-body"), $modalDialog = $dialog.find(".modal-dialog");
             viewport_height = $(window).height();
             if (!isXS) {
                 viewport_height -= 60;
@@ -2703,6 +2765,9 @@ meerkat.logging.init = function() {
                 $modalContent.css("max-height", viewport_height);
                 if ($dialog.attr("data-fullheight") === "true") {
                     $modalContent.css("height", viewport_height);
+                } else {
+                    $modalContent.css("height", "auto");
+                    $modalBody.css("height", "auto");
                 }
                 $dialog.find(".modal-body").css("max-height", content_height);
                 dialogTop = viewport_height / 2 - $modalDialog.height() / 2;
@@ -2886,7 +2951,9 @@ meerkat.logging.init = function() {
         }
     }
     function fitIntoViewport($dropdown, useCache) {
-        if (!$dropdown || $dropdown.length === 0) return;
+        if (!$dropdown || $dropdown.length === 0) {
+            return;
+        }
         var viewportHeight = 0, maxHeight = 0, extraHeights = 0;
         if (useCache === true && $dropdown.attr("data-maxheight")) {
             maxHeight = $dropdown.attr("data-maxheight");
@@ -2910,7 +2977,7 @@ meerkat.logging.init = function() {
             $dropdown.attr("data-maxheight", maxHeight);
         }
         if (maxHeight > 0) {
-            $dropdown.find(".dropdown-container .scrollable").css("max-height", maxHeight).css("overflow-y", "auto");
+            $dropdown.find(".dropdown-container .scrollable").css("max-height", maxHeight).css("overflow-y", "auto").hide().show(0);
             return true;
         } else {
             resetFit($dropdown);
@@ -3047,6 +3114,54 @@ meerkat.logging.init = function() {
         setup: setup,
         events: events,
         tearDown: tearDown
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging, handlers = {
+        data_ready: false,
+        validation_error: false
+    };
+    var events = {
+        emailLoadQuote: {
+            TRIGGERS_MODAL: "TRIGGERS_MODAL"
+        }
+    }, moduleEvents = events;
+    var emailTypes = [ "expired", "promotion" ];
+    function init() {
+        if (isApplicable()) {
+            handlers.step_init = meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.STEP_INIT, _.bind(action, this, true));
+            handlers.validation_error = meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.STEP_VALIDATION_ERROR, _.bind(action, this, false));
+        }
+    }
+    function action(valid) {
+        meerkat.messaging.unsubscribe(meerkat.modules.events.journeyEngine.STEP_INIT, handlers.step_init);
+        meerkat.messaging.unsubscribe(meerkat.modules.events.journeyEngine.STEP_VALIDATION_ERROR, handlers.validation_error);
+        var publish = function() {
+            meerkat.messaging.publish(events.emailLoadQuote.TRIGGERS_MODAL, {
+                action: meerkat.site.pageAction,
+                valid: valid
+            });
+        };
+        if (valid && meerkat.modules.performanceProfiling.isIE8()) {
+            _.defer(publish);
+        } else {
+            publish();
+        }
+    }
+    function isApplicable() {
+        return _.indexOf(emailTypes, meerkat.site.pageAction) > -1;
+    }
+    function getStartStepOverride(startStep) {
+        if (isApplicable()) {
+            return "results";
+        }
+        return startStep;
+    }
+    meerkat.modules.register("emailLoadQuote", {
+        init: init,
+        events: events,
+        getStartStepOverride: getStartStepOverride
     });
 })(jQuery);
 
@@ -3273,8 +3388,12 @@ meerkat.logging.init = function() {
     }
     function moveToNextInput() {
         var $this = $(this);
-        if (!$this.attr("maxlength")) return;
-        if ($this.hasClass("year")) return;
+        if (!$this.attr("maxlength")) {
+            return;
+        }
+        if ($this.hasClass("year") || $this.hasClass("dateinput-year")) {
+            return;
+        }
         if ($this.val().length == $this.attr("maxlength")) {
             var next = $this.hasClass("dateinput-day") ? "input.dateinput-month" : "input.dateinput-year";
             $this.closest('[data-provide="dateinput"]').find(next).focus().select();
@@ -3296,6 +3415,10 @@ meerkat.logging.init = function() {
         }
         if (day.length === 1) day = "0" + day;
         if (month.length === 1) month = "0" + month;
+        if ($component.attr("data-dateinput-type") != "native") {
+            $component.find("input.dateinput-day").val(day);
+            $component.find("input.dateinput-month").val(month);
+        }
         if (day.length > 0 && Number(day) > 0 && month.length > 0 && Number(month) > 0 && year.length > 0 && Number(year) > 0) {
             $destination.val(day + "/" + month + "/" + year);
             $destination.valid();
@@ -3392,9 +3515,11 @@ meerkat.logging.init = function() {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         journeyEngine: {
+            BEFORE_STEP_CHANGED: "BEFORE_STEP_CHANGED",
             STEP_CHANGED: "STEP_CHANGED",
             STEP_INIT: "STEP_INIT",
-            READY: "JOURNEY_READY"
+            READY: "JOURNEY_READY",
+            STEP_VALIDATION_ERROR: "STEP_VALIDATION_ERROR"
         }
     }, moduleEvents = events.journeyEngine;
     var currentStep = null, webappLock = false, furtherestStep = null;
@@ -3558,6 +3683,7 @@ meerkat.logging.init = function() {
         return true;
     }
     function _goToStep(step, eventObject) {
+        meerkat.messaging.publish(moduleEvents.BEFORE_STEP_CHANGED);
         if (currentStep !== null && currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
         onStepEnter(step, eventObject);
         _goToSlide(step, eventObject);
@@ -3707,6 +3833,7 @@ meerkat.logging.init = function() {
                     if (typeof failureCallback === "function") {
                         failureCallback();
                     }
+                    meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
                     throw "Validation failed on " + step.navigationId;
                 }
             }
@@ -3719,6 +3846,7 @@ meerkat.logging.init = function() {
                         if (typeof failureCallback === "function") {
                             failureCallback();
                         }
+                        meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
                         throw "Custom validation failed on " + step.navigationId;
                     }
                 });
@@ -3894,8 +4022,10 @@ meerkat.logging.init = function() {
         $ele.removeClass("opacity1");
         var speed = $ele.transitionDuration();
         _.delay(function() {
+            if ($ele.attr("data-active") !== "1") {
             $ele.removeClass("displayBlock");
             $ele.find(".message").text($ele.find(".message").attr("data-oldtext"));
+            }
         }, speed);
     }
     function updateCurrentStepHiddenField(step) {
@@ -4111,11 +4241,22 @@ meerkat.logging.init = function() {
     }, moduleEvents = events.leavePageWarning;
     var safeToLeave = true;
     function initLeavePageWarning() {
-        var ie10OrBelow = meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9() || meerkat.modules.performanceProfiling.isIE10();
-        if (meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && ie10OrBelow === false) {
+        var supportsUnload = !meerkat.modules.performanceProfiling.isIos() && !meerkat.modules.performanceProfiling.isIE8() && !meerkat.modules.performanceProfiling.isIE9() && !meerkat.modules.performanceProfiling.isIE10();
+        $(document).ready(function() {
+            safeToLeave = meerkat.site.vertical === "generic" || meerkat.site.pageAction == "confirmation" ? true : false;
+            if (supportsUnload === false && $("#js-logo-link").length) {
+                $("#js-logo-link").on("click", function(e) {
+                    meerkat.modules.leavePageWarning.disable();
+                    if (!confirm(fetchMessage())) {
+                        return false;
+                    }
+                });
+            }
+        });
+        if (meerkat.site.leavePageWarning.enabled && meerkat.site.isCallCentreUser === false && supportsUnload === true) {
             window.onbeforeunload = function() {
-                if (safeToLeave === false && meerkat.modules.saveQuote.isAvailable() === true) {
-                    return meerkat.site.leavePageWarning.message;
+                if (safeToLeave === false) {
+                    return fetchMessage();
                 } else {
                     return;
                 }
@@ -4128,6 +4269,16 @@ meerkat.logging.init = function() {
             });
         }
     }
+    function fetchMessage() {
+        if (meerkat.modules.saveQuote.isAvailable() === true) {
+            return meerkat.site.leavePageWarning.message;
+        } else {
+            if (typeof meerkat.site.leavePageWarning.defaultMessage !== "undefined") {
+                return meerkat.site.leavePageWarning.defaultMessage;
+            }
+            return;
+        }
+    }
     function disable() {
         safeToLeave = true;
     }
@@ -4135,158 +4286,6 @@ meerkat.logging.init = function() {
         init: initLeavePageWarning,
         events: events,
         disable: disable
-    });
-})(jQuery);
-
-(function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, debug = meerkat.logging.debug;
-    window.lpMTagConfig = window.lpMTagConfig || {};
-    window.lpMTagConfig.vars = window.lpMTagConfig.vars || [];
-    window.lpSettings = window.lpSettings || {};
-    var options, oldIE;
-    function getPageName(navigationId) {
-        var step, page;
-        if (typeof navigationId === "undefined") {
-            step = meerkat.modules.journeyEngine.getCurrentStep();
-            page = step.navigationId;
-        } else {
-            page = navigationId;
-        }
-        if (options.brand == "ctm") {
-            return [ options.brand, "quote-form", options.vertical, page ].join(":");
-        } else {
-            return [ "ctm:whiteLabel", options.brand, "quote-form", options.vertical, page ].join(":");
-        }
-    }
-    function fire(stepPassed, confirmationBool, confirmationNavigationId) {
-        if (meerkat.site.liveChat.enabled === false) return;
-        lpMTagConfig.vars.push([ "page", "ConversionStage", stepPassed ]);
-        var tran_id = false;
-        tran_id = meerkat.modules.transactionId.get();
-        lpMTagConfig.vars.push([ "visitor", "transactionID", tran_id ]);
-        if (options.hasOwnProperty("unit")) {
-            lpMTagConfig.vars.push([ "page", "unit", options.unit ]);
-            lpMTagConfig.vars.push([ "unit", options.unit ]);
-        }
-        if (confirmationBool) {
-            lpMTagConfig.vars.push([ "page", "PageName", getPageName(confirmationNavigationId) ]);
-            lpMTagConfig.vars.push([ "page", "OrderNumber", tran_id ]);
-            lpMTagConfig.loadTag();
-        } else {
-            lpMTagConfig.vars.push([ "page", "PageName", getPageName() ]);
-        }
-        lpSendData();
-    }
-    function init() {
-        $(document).ready(function($) {
-            oldIE = $("html").hasClass("lt-ie9");
-            if (typeof meerkat.site === "undefined") return;
-            if (typeof meerkat.site.liveChat === "undefined" || meerkat.site.liveChat.enabled === false) return;
-            if (meerkat.site.isCallCentreUser) return;
-            window.lpMTagConfig = $.extend(lpMTagConfig, meerkat.site.liveChat.config);
-            options = $.extend({}, meerkat.site.liveChat.instance);
-            window.lpMTagConfig = window.lpMTagConfig || {};
-            window.lpMTagConfig.vars = window.lpMTagConfig.vars || [];
-            window.lpMTagConfig.dynButton = window.lpMTagConfig.dynButton || [];
-            window.lpMTagConfig.lpProtocol = document.location.toString().indexOf("https:") === 0 ? "https" : "http";
-            window.lpMTagConfig.pageStartTime = new Date().getTime();
-            if (!window.lpMTagConfig.pluginsLoaded) window.lpMTagConfig.pluginsLoaded = !1;
-            window.lpMTagConfig.loadTag = function() {
-                for (var a = document.cookie.split(";"), b = {}, c = 0; c < a.length; c++) {
-                    var d = a[c].substring(0, a[c].indexOf("="));
-                    b[d.replace(/^\s+|\s+$/g, "")] = a[c].substring(a[c].indexOf("=") + 1);
-                }
-                for (var a = b.HumanClickRedirectOrgSite, b = b.HumanClickRedirectDestSite, c = [ "lpTagSrv", "lpServer", "lpNumber", "deploymentID" ], d = !0, e = 0; e < c.length; e++) window.lpMTagConfig[c[e]] || (d = !1, 
-                typeof console != "undefined" && console.log && console.log("LivePerson : lpMTagConfig." + c[e] + " is required and has not been defined before lpMTagConfig.loadTag()."));
-                if (!window.lpMTagConfig.pluginsLoaded && d) window.lpMTagConfig.pageLoadTime = new Date().getTime() - window.lpMTagConfig.pageStartTime, 
-                a = "?site=" + (a == window.lpMTagConfig.lpNumber ? b : window.lpMTagConfig.lpNumber) + "&d_id=" + window.lpMTagConfig.deploymentID + "&default=simpleDeploy", 
-                lpAddMonitorTag(window.lpMTagConfig.deploymentConfigPath != null ? window.lpMTagConfig.lpProtocol + "://" + window.lpMTagConfig.deploymentConfigPath + a : window.lpMTagConfig.lpProtocol + "://" + window.lpMTagConfig.lpTagSrv + "/visitor/addons/deploy2.asp" + a), 
-                window.lpMTagConfig.pluginsLoaded = !0;
-            };
-            function lpAddMonitorTag(a) {
-                if (!window.lpMTagConfig.lpTagLoaded) {
-                    if (typeof a == "undefined" || typeof a == "object") a = window.lpMTagConfig.lpMTagSrc ? window.lpMTagConfig.lpMTagSrc : window.lpMTagConfig.lpTagSrv ? window.lpMTagConfig.lpProtocol + "://" + window.lpMTagConfig.lpTagSrv + "/hcp/html/mTag.js" : "/hcp/html/mTag.js";
-                    a.indexOf("http") !== 0 ? a = window.lpMTagConfig.lpProtocol + "://" + window.lpMTagConfig.lpServer + a + "?site=" + window.lpMTagConfig.lpNumber : a.indexOf("site=") < 0 && (a += a.indexOf("?") < 0 ? "?" : "&", 
-                    a = a + "site=" + window.lpMTagConfig.lpNumber);
-                    var b = document.createElement("script");
-                    b.setAttribute("type", "text/javascript");
-                    b.setAttribute("charset", "iso-8859-1");
-                    b.setAttribute("src", a);
-                    document.getElementsByTagName("head").item(0).appendChild(b);
-                }
-            }
-            window.attachEvent ? window.attachEvent("onload", function() {
-                window.lpMTagConfig.disableOnLoad || window.lpMTagConfig.loadTag();
-            }) : window.addEventListener("load", function() {
-                window.lpMTagConfig.disableOnLoad || window.lpMTagConfig.loadTag();
-            }, !1);
-            window.lpAddMonitorTag = lpAddMonitorTag;
-            function lpSendData(a, b, c) {
-                if (arguments.length > 0) window.lpMTagConfig.vars = window.lpMTagConfig.vars || [], 
-                window.lpMTagConfig.vars.push([ a, b, c ]);
-                if (typeof lpMTag != "undefined" && typeof window.lpMTagConfig.pluginCode != "undefined" && typeof window.lpMTagConfig.pluginCode.simpleDeploy != "undefined") {
-                    var d = window.lpMTagConfig.pluginCode.simpleDeploy.processVars();
-                    lpMTag.lpSendData(d, !0);
-                }
-            }
-            function lpAddVars(a, b, c) {
-                window.lpMTagConfig.vars = window.lpMTagConfig.vars || [];
-                window.lpMTagConfig.vars.push([ a, b, c ]);
-            }
-            window.lpSendData = lpSendData;
-            var $container = $('div[data-livechat="target"]');
-            if ($container.length) {
-                if (typeof options.button !== "undefined") {
-                    var buttonHtml = "" + '<div id="' + options.button + '" data-livechat="button"></div>';
-                    $container.append(buttonHtml);
-                    $("#" + options.button).on("click", "a", function() {
-                        lpMTagConfig.dynButton0.actionHook();
-                    });
-                }
-            }
-            function liveChatDomEvents(event) {
-                var content = "";
-                var $contentElem = $("#" + options.button);
-                if ($contentElem.length) {
-                    content = $contentElem.html();
-                }
-                if (content === "" || content == "<span></span>" || content == "<SPAN></SPAN>") {
-                    $('[data-livechat="target"]').attr("data-livechat-state", false);
-                } else {
-                    $('[data-livechat="target"]').attr("data-livechat-state", true);
-                }
-            }
-            if (!oldIE) {
-                $(document).on("DOMSubtreeModified", '[data-livechat="target"]', _.debounce(liveChatDomEvents, 100));
-            } else {
-                $container.on("propertychange", _.debounce(liveChatDomEvents, 100));
-            }
-            meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function journeyEngineStepInit(journeyInitData) {
-                var initialSlideIndex = journeyInitData.step.slideIndex + 1;
-                var initialStepIndex = journeyInitData.step.stepIndex + 1;
-                var latestNavigationId = journeyInitData.navigationId;
-                fire(initialStepIndex);
-                meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function journeyEngineSlideChange(journeyStepChangedData) {
-                    var latestSlideIndex = journeyStepChangedData.step.slideIndex + 1;
-                    var latestStepIndex = journeyStepChangedData.step.stepIndex + 1;
-                    latestNavigationId = journeyStepChangedData.navigationId;
-                    fire(latestStepIndex);
-                });
-            });
-            liveChatDomEvents();
-            $container = $('[data-livechat="target"]');
-            if ($container.length) {
-                var manualFireCall = $container.data("livechat-fire");
-                if (typeof manualFireCall === "object") {
-                    debug("manual fire", lpMTagConfig.vars);
-                    fire(manualFireCall.step, manualFireCall.confirmation, manualFireCall.navigationId);
-                }
-            }
-        });
-    }
-    meerkat.modules.register("liveChat", {
-        init: init,
-        fire: fire
     });
 })(jQuery);
 
@@ -4373,8 +4372,9 @@ meerkat.logging.init = function() {
         onBeforeApply: null,
         onClickApplyNow: null,
         onApplySuccess: null,
-        retrieveExternalCopy: null
-    }, settings = {};
+        retrieveExternalCopy: null,
+        additionalTrackingData: null
+    }, settings = {}, visibleBodyClass = "moreInfoVisible";
     function initMoreInfo(options) {
         settings = $.extend({}, defaults, options);
         if (meerkat.site.pageAction === "confirmation") return false;
@@ -4394,7 +4394,8 @@ meerkat.logging.init = function() {
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             closeBridgingPage();
         });
-        $(document.body).on("click", ".btn-more-info-apply", function applyClick() {
+        $(document.body).on("click", ".btn-more-info-apply", function applyClick(event) {
+            event.preventDefault();
             var $this = $(this);
             $this.addClass("inactive").addClass("disabled");
             meerkat.modules.loadingAnimation.showInside($this, true);
@@ -4442,6 +4443,7 @@ meerkat.logging.init = function() {
         settings.runDisplayMethod(productId);
     }
     function showTemplate(moreInfoContainer) {
+        toggleBodyClass(true);
         moreInfoContainer.html(meerkat.modules.loadingAnimation.getTemplate()).show();
         prepareProduct(function moreInfoShowSuccess() {
             var htmlString = htmlTemplate(product);
@@ -4469,22 +4471,24 @@ meerkat.logging.init = function() {
                         });
                     }
                     moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, showTemplateCallback);
+                    isBridgingPageOpen = true;
                     if (typeof settings.onAfterShowTemplate == "function") {
                         settings.onAfterShowTemplate();
                     }
                 });
                 totalDuration = animDuration + scrollToTopDuration;
             }
-            isBridgingPageOpen = true;
             _.delay(function() {
                 meerkat.messaging.publish(moduleEvents.bridgingPage.SHOW, {
                     isOpen: isBridgingPageOpen
                 });
             }, totalDuration);
             var trackData = {
-                productID: product.productId,
-                vertical: meerkat.site.vertical
+                productID: product.productId
             };
+            if (settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === "object") {
+                trackData = $.extend({}, trackData, settings.additionalTrackingData);
+            }
             if (product.hasOwnProperty("brandCode")) {
                 trackData.productBrandCode = product.brandCode;
             }
@@ -4501,6 +4505,7 @@ meerkat.logging.init = function() {
     }
     function showModal() {
         prepareProduct(function moreInfoShowModalSuccess() {
+            toggleBodyClass(true);
             var options = {
                 htmlContent: htmlTemplate(product),
                 hashId: "moreinfo",
@@ -4526,9 +4531,11 @@ meerkat.logging.init = function() {
                 });
             }, 0);
             var trackData = {
-                productID: product.productId,
-                vertical: meerkat.site.vertical
+                productID: product.productId
             };
+            if (settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === "object") {
+                trackData = $.extend({}, trackData, settings.additionalTrackingData);
+            }
             if (product.hasOwnProperty("brandCode")) {
                 trackData.productBrandCode = product.brandCode;
             }
@@ -4557,6 +4564,7 @@ meerkat.logging.init = function() {
             settings.onBeforeHideTemplate();
         }
         moreInfoContainer[settings.hideAction](400, function() {
+            toggleBodyClass(false);
             hideTemplateCallback(moreInfoContainer);
             if (typeof settings.onAfterHideTemplate == "function") {
                 settings.onAfterHideTemplate();
@@ -4565,7 +4573,9 @@ meerkat.logging.init = function() {
     }
     function hideModal() {
         $("#" + modalId).modal("hide");
-        $(".bridgingContainer, .more-info-content").hide();
+        $(".bridgingContainer, .more-info-content").hide(function() {
+            toggleBodyClass(false);
+        });
         isModalOpen = false;
     }
     function showTemplateCallback() {
@@ -4627,6 +4637,20 @@ meerkat.logging.init = function() {
     function setDataResult(result) {
         jsonResult = result;
     }
+    function updateSettings(updatedSettings) {
+        if (typeof updatedSettings !== "object") {
+            return;
+        }
+        settings = $.extend(true, {}, settings, updatedSettings);
+    }
+    function toggleBodyClass(show) {
+        show = show || false;
+        if (show) {
+            $("body").addClass(visibleBodyClass);
+        } else {
+            $("body").removeClass(visibleBodyClass);
+        }
+    }
     meerkat.modules.register("moreInfo", {
         initMoreInfo: initMoreInfo,
         events: events,
@@ -4641,7 +4665,8 @@ meerkat.logging.init = function() {
         getOpenProduct: getOpenProduct,
         setProduct: setProduct,
         setDataResult: setDataResult,
-        applyCallback: applyCallback
+        applyCallback: applyCallback,
+        updateSettings: updateSettings
     });
 })(jQuery);
 
@@ -4813,7 +4838,7 @@ meerkat.logging.init = function() {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
-    var log = meerkat.logging.info;
+    var log = meerkat.logging.info, url = null;
     var defaultSettings = {
         product: null,
         trackHandover: true,
@@ -4821,12 +4846,17 @@ meerkat.logging.init = function() {
         errorMessage: "An error occurred. Sorry about that!",
         errorDescription: "There is an issue with the handover url.",
         closeBridgingModalDialog: true
+    }, moduleEvents = {
+        partnerTransfer: {
+            TRANSFER_TO_PARTNER: "TRANSFER_TO_PARTNER"
+        }
     };
     function buildURL(settings) {
-        var product = settings.product, handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? "POST" : "GET", brand = settings.brand ? settings.brand : product.provider, msg = settings.msg ? settings.msg : "", url = null;
+        var product = settings.product, handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? "POST" : "GET", brand = settings.brand ? settings.brand : product.provider, msg = settings.msg ? settings.msg : "", tracking = encodeURIComponent(JSON.stringify(settings.tracking));
         try {
             url = "transferring.jsp?transactionId=" + meerkat.modules.transactionId.get() + "&trackCode=" + product.trackCode + "&brand=" + brand + "&msg=" + msg + "&url=";
-            url += product.encodeUrl === "Y" ? encodeURIComponent(product.quoteUrl) : product.quoteUrl;
+            url += product.encodeUrl === "Y" || settings.encodeTransferURL === true ? encodeURIComponent(product.quoteUrl) : product.quoteUrl;
+            url += "&tracking=" + tracking;
             if (handoverType.toLowerCase() === "post") {
                 url += "&handoverType=" + product.handoverType + "&handoverData=" + encodeURIComponent(product.handoverData) + "&handoverURL=" + encodeURIComponent(product.handoverUrl) + "&handoverVar=" + product.handoverVar;
             }
@@ -4847,8 +4877,45 @@ meerkat.logging.init = function() {
             return null;
         }
     }
+    function getQueryStringFromURL(url) {
+        var qs = null;
+        if (!_.isUndefined(url) && _.isString(url)) {
+            var pieces = url.split("?");
+            if (pieces.length == 2) {
+                qs = pieces[1];
+            }
+        }
+        return qs;
+    }
+    function addTrackingDataToSettings(settings) {
+        var tracking = _.pick(settings, "actionStep", "brandCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
+        meerkat.modules.tracking.updateObjectData(tracking);
+        tracking = $.extend({
+            actionStep: null,
+            brandCode: null,
+            currentJourney: null,
+            lastFieldTouch: null,
+            productBrandCode: settings.product.provider,
+            productID: settings.product.productId,
+            productName: settings.product.name,
+            quoteReferenceNumber: typeof settings.product.leadNo !== "undefined" ? settings.product.leadNo : tracking.transactionID,
+            rootID: null,
+            transactionID: null,
+            type: "ONLINE",
+            vertical: null,
+            verticalFilter: null,
+            handOverQS: getQueryStringFromURL(settings.product.quoteUrl),
+            simplesUser: meerkat.site.isCallCentreUser
+        }, tracking);
+        if (_.isEmpty(tracking.actionStep)) {
+            tracking.actionStep = $.trim(tracking.vertical + " transfer " + tracking.type);
+    }
+        return tracking;
+    }
     function transferToPartner(options) {
-        var settings = $.extend({}, defaultSettings, options), product = settings.product, url = buildURL(settings);
+        var settings = $.extend({}, defaultSettings, options), product = settings.product;
+        settings.tracking = addTrackingDataToSettings(settings);
+        url = buildURL(settings);
         if (url != null) {
             if (settings.closeBridgingModalDialog === true && (meerkat.modules.moreInfo.isBridgingPageOpen() || meerkat.modules.moreInfo.isModalOpen())) {
                 meerkat.modules.moreInfo.close();
@@ -4865,39 +4932,48 @@ meerkat.logging.init = function() {
                 });
             }
             if (settings.trackHandover === true) {
-                trackHandover(product);
+                trackHandover(settings.tracking, {
+                    type: "A",
+                    comment: "Apply Online"
+                }, true);
             }
+            meerkat.messaging.publish(moduleEvents.partnerTransfer.TRANSFER_TO_PARTNER, {
+                transactionID: settings.tracking.transactionID,
+                partnerID: settings.product.trackCode,
+                productDescription: settings.product.productId
+            });
         }
         if (typeof settings.applyNowCallback == "function") {
             settings.applyNowCallback(true);
         }
     }
-    function trackHandover(product) {
-        var transaction_id = meerkat.modules.transactionId.get(), referenceNumber = typeof product.leadNo !== "undefined" ? product.leadNo : transaction_id;
+    function trackHandover(trackData, touchData, doOldTrackCall) {
+        touchData = touchData || false;
+        doOldTrackCall = doOldTrackCall || false;
+        if (touchData !== false && _.isObject(touchData) && _.has(touchData, "type")) {
         meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
-            touchType: "A",
-            touchComment: "Apply Online"
+                touchType: touchData.type,
+                touchComment: _.has(touchData, "comment") ? touchData.comment : ""
         });
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackHandover",
-            object: {
-                quoteReferenceNumber: referenceNumber,
-                transactionID: transaction_id,
-                productID: product.productId,
-                brandCode: product.brandCode
-            }
-        });
+        }
+        var data = _.pick(trackData, "actionStep", "brandCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
+        if (doOldTrackCall === true) {
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: "trackHandoverType",
-            object: {
-                type: "ONLINE",
-                quoteReferenceNumber: referenceNumber,
-                transactionID: transaction_id,
-                productID: product.productId,
-                brandCode: product.brandCode,
-                vertical: meerkat.site.vertical
-            }
+                object: data
         });
+    }
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+            method: "trackQuoteHandoverClick",
+            object: data
+        });
+        meerkat.modules.session.poke();
+    }
+    function trackHandoverEvent(trackData, touchData, doOldTrackCall) {
+        doOldTrackCall = doOldTrackCall || false;
+        trackData = addTrackingDataToSettings(trackData || {});
+        touchData = touchData || false;
+        trackHandover(trackData, touchData, doOldTrackCall);
     }
     function applyEventListeners() {
         $(document.body).on("click", ".btn-apply", function(e) {
@@ -4917,8 +4993,9 @@ meerkat.logging.init = function() {
     meerkat.modules.register("partnerTransfer", {
         initTransfer: initTransfer,
         transferToPartner: transferToPartner,
-        trackHandover: trackHandover,
-        buildURL: buildURL
+        trackHandoverEvent: trackHandoverEvent,
+        buildURL: buildURL,
+        events: moduleEvents
     });
 })(jQuery);
 
@@ -5136,8 +5213,23 @@ meerkat.logging.init = function() {
     function isChrome() {
         return USER_AGENT.indexOf("chrome") > -1;
     }
+    function isOpera() {
+        return USER_AGENT.indexOf("opera mini") > -1;
+    }
+    function isBlackBerry() {
+        return USER_AGENT.indexOf("blackBerry") > -1;
+    }
+    function isWindows() {
+        return USER_AGENT.indexOf("iemobile") > -1;
+    }
+    function isMobile() {
+        return isIos() || isAndroid() || isBlackBerry() || isOpera() || isWindows();
+    }
     function isFFAffectedByDropdownMenuBug() {
         return USER_AGENT.match(/firefox\/(30|31|32|33|34).*/i);
+    }
+    function isSafariAffectedByColumnCountBug() {
+        return USER_AGENT.match(/(8\.\d+\.?\d?|7\.1|6\.2) safari/i);
     }
     function isIE8() {
         if (getIEVersion() === 8) {
@@ -5194,7 +5286,12 @@ meerkat.logging.init = function() {
         isIos: isIos,
         isAndroid: isAndroid,
         isChrome: isChrome,
+        isBlackBerry: isBlackBerry,
+        isOpera: isOpera,
+        isWindows: isWindows,
+        isMobile: isMobile,
         isFFAffectedByDropdownMenuBug: isFFAffectedByDropdownMenuBug,
+        isSafariAffectedByColumnCountBug: isSafariAffectedByColumnCountBug,
         isIE8: isIE8,
         isIE9: isIE9,
         isIE10: isIE10,
@@ -5459,6 +5556,33 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $renderingModeFld;
+    function init() {
+        if (typeof meerkat.site === "undefined") {
+            return;
+        }
+        if (meerkat.site.pageAction == "confirmation") {
+            return;
+        }
+        var fld = meerkat.site.vertical == "car" ? "quote" : meerkat.site.vertical;
+        $renderingModeFld = $("#" + fld + "_renderingMode");
+        if (!$renderingModeFld.length) {
+            $("#mainform").append('<input type="hidden" name="' + fld + '_renderingMode" id="' + fld + '_renderingMode" class="" value="' + meerkat.modules.deviceMediaState.get() + '" data-autosave="true">');
+        } else {
+            meerkat.messaging.subscribe(meerkatEvents.journeyEngine.READY, record);
+        }
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.BEFORE_STEP_CHANGED, record);
+        meerkat.messaging.subscribe(meerkatEvents.RESULTS_INITIALISED, record);
+    }
+    function record() {
+        $renderingModeFld.val(meerkat.modules.deviceMediaState.get());
+    }
+    meerkat.modules.register("renderingMode", {
+        init: init
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = window.meerkat.logging.info;
     var events = {
         resultsHeaderBar: {}
@@ -5618,41 +5742,52 @@ meerkat.logging.init = function() {
         RESULTS_DATA_READY: "RESULTS_DATA_READY",
         RESULTS_SORTED: "RESULTS_SORTED"
     }, moduleEvents = events;
-    var defaultRankingTriggers = [ "RESULTS_DATA_READY", "RESULTS_SORTED" ];
+    var defaultRankingTriggers = [ "RESULTS_DATA_READY", "RESULTS_SORTED" ], trackingProductObject = [];
     function write(trigger) {
-        var externalTrackingData = [];
-        var sTagProductList = [];
-        function appendTrackingData(id, pos, available) {
-            var data = {
-                productID: id,
-                ranking: pos
-            };
-            externalTrackingData.push(data);
-            if (available === true) {
-                sTagProductList.push(data);
+        if (!Results.settings.hasOwnProperty("rankings")) {
+            return;
             }
-        }
-        if (Results.settings.hasOwnProperty("rankings")) {
             var config = Results.settings.rankings;
-            var sorted = Results.getSortedResults();
-            var filtered = Results.getFilteredResults();
-            var vertical = meerkat.site.vertical;
-            var filterUnavailableProducts = Results.settings.rankings.filterUnavailableProducts;
-            var sortedAndFiltered = [];
-            var method = null;
-            var forceNumber = false;
-            if (_.isObject(config) && !_.isEmpty(config)) {
-                if (config.hasOwnProperty("paths") && _.isObject(config.paths)) {
-                    method = "paths";
-                } else if (config.hasOwnProperty("callback") && _.isFunction(config.callback)) {
-                    method = "callback";
+        if (!_.isObject(config)) {
+            return;
                 }
-                if (config.hasOwnProperty("forceIdNumeric") && _.isBoolean(config.forceIdNumeric)) {
-                    forceNumber = config.forceIdNumeric;
+        var sortedAndFiltered = fetchProductsToRank(config.filterUnavailableProducts), rankingData = getWriteRankData(config, sortedAndFiltered);
+        if (!rankingData) {
+            return;
                 }
+        buildTrackingDataObject(config, sortedAndFiltered);
+        sendQuoteRanking(trigger, rankingData);
+        meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
             }
-            if (!_.isNull(method)) {
-                if (filterUnavailableProducts === true) {
+    function sendQuoteRanking(trigger, rankingData) {
+        log("[resultsRankings] sendWriteRank", {
+            trigger: trigger,
+            data: rankingData
+        });
+        if (Results.getFilteredResults().length) {
+            meerkat.modules.comms.post({
+                url: "ajax/write/quote_ranking.jsp",
+                data: rankingData,
+                cache: false,
+                errorLevel: "silent",
+                onError: function onWriteRankingsError(jqXHR, textStatus, errorThrown, settings, resultData) {
+                    meerkat.modules.errorHandling.error({
+                        message: "Failed to write ranking results.",
+                        page: "core:resultsRankings.js:runWriteRank()",
+                        errorLevel: "silent",
+                        description: "Failed to write ranking results: " + errorThrown,
+                        data: {
+                            settings: settings,
+                            resultsData: resultData
+                        }
+                    });
+                }
+            });
+        }
+    }
+    function fetchProductsToRank(includeOnlyFilteredResults) {
+        var sortedAndFiltered = [], sorted = Results.getSortedResults(), filtered = Results.getFilteredResults();
+        if (includeOnlyFilteredResults === true) {
                     for (var i = 0; i < sorted.length; i++) {
                         for (var j = 0; j < filtered.length; j++) {
                             if (sorted[i] == filtered[j]) {
@@ -5663,68 +5798,82 @@ meerkat.logging.init = function() {
                 } else {
                     sortedAndFiltered = sorted;
                 }
-                var data = {
-                    rootPath: vertical,
+        return sortedAndFiltered;
+    }
+    function getWriteRankData(config, sortedAndFiltered) {
+        var rankingData = {
+            rootPath: meerkat.site.vertical,
                     rankBy: Results.getSortBy() + "-" + Results.getSortDir(),
                     rank_count: sortedAndFiltered.length,
                     transactionId: meerkat.modules.transactionId.get()
                 };
-                for (var k = 0; k < sortedAndFiltered.length; k++) {
-                    var rank = k + 1;
-                    var price = sortedAndFiltered[k];
-                    var productId = price.productId;
-                    var available = price.available == "Y";
-                    if (forceNumber) {
-                        productId = String(productId).replace(/\D/g, "");
+        var method = null;
+        if (config.hasOwnProperty("paths") && _.isObject(config.paths)) {
+            method = "paths";
+        } else if (config.hasOwnProperty("callback") && _.isFunction(config.callback)) {
+            method = "callback";
                     }
-                    if (method === "paths") {
+        if (method === null) {
+            return null;
+                    }
+        for (var i = 0; i < sortedAndFiltered.length; i++) {
+            var productObj = sortedAndFiltered[i];
+            switch (method) {
+              case "paths":
                         for (var p in config.paths) {
                             if (config.paths.hasOwnProperty(p)) {
-                                var item = Object.byString(price, config.paths[p]);
-                                data[p + k] = item;
+                        var item = Object.byString(productObj, config.paths[p]);
+                        rankingData[p + i] = item;
                             }
                         }
-                    } else if (method === "callback") {
-                        var response = config.callback(price, k);
+                break;
+
+              case "callback":
+                var response = config.callback(productObj, i);
                         if (_.isObject(response) && !_.isEmpty(response)) {
-                            _.extend(data, response);
+                    _.extend(rankingData, response);
                         }
+                break;
                     }
-                    appendTrackingData(productId, rank, available);
                 }
-                meerkat.logging.info("writing ranking data", {
-                    trigger: trigger,
-                    method: method,
-                    data: data
-                });
-                meerkat.modules.comms.post({
-                    url: "ajax/write/quote_ranking.jsp",
-                    data: data,
-                    cache: false,
-                    errorLevel: "silent",
-                    onError: function onWriteRankingsError(jqXHR, textStatus, errorThrown, settings, resultData) {
-                        meerkat.modules.errorHandling.error({
-                            message: "Failed to write ranking results.",
-                            page: "core:resultsRankings.js:write()",
-                            errorLevel: "silent",
-                            description: "Failed to write ranking results: " + errorThrown,
-                            data: {
-                                settings: settings,
-                                resultsData: resultData
+        return rankingData;
                             }
-                        });
+    function buildTrackingDataObject(config, sortedAndFiltered) {
+        trackingProductObject = [];
+        var forceNumber = false;
+        if (config.hasOwnProperty("forceIdNumeric") && _.isBoolean(config.forceIdNumeric)) {
+            forceNumber = config.forceIdNumeric;
                     }
-                });
-                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                    method: "trackQuoteProductList",
-                    object: {
-                        products: sTagProductList,
-                        vertical: meerkat.site.vertical
+        for (var rank = 0, i = 0; i < sortedAndFiltered.length; i++) {
+            rank++;
+            var productObj = sortedAndFiltered[i];
+            if (typeof productObj !== "object") {
+                continue;
+                }
+            var productId = productObj.productId;
+            if (forceNumber) {
+                productId = String(productId).replace(/\D/g, "");
                     }
-                });
-                meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
+            data = {
+                productID: productId,
+                productName: Object.byString(productObj, Results.settings.paths.productName) || null,
+                productBrandCode: Object.byString(productObj, Results.settings.paths.productBrandCode) || null,
+                ranking: rank,
+                available: Object.byString(productObj, Results.settings.paths.availability.product) || "N"
+            };
+            trackingProductObject.push(data);
             }
         }
+    function getTrackingProductObject() {
+        return trackingProductObject;
+    }
+    function resetTrackingProductObject() {
+        var config = Results.settings.rankings;
+        if (!_.isObject(config)) {
+            return;
+        }
+        var sortedAndFiltered = fetchProductsToRank(true);
+        buildTrackingDataObject(config, sortedAndFiltered);
     }
     function registerSubscriptions() {
         var config = Results.settings.rankings;
@@ -5751,7 +5900,74 @@ meerkat.logging.init = function() {
     meerkat.modules.register("resultsRankings", {
         init: initResultsRankings,
         events: moduleEvents,
-        write: write
+        write: write,
+        getTrackingProductObject: getTrackingProductObject,
+        resetTrackingProductObject: resetTrackingProductObject,
+        sendQuoteRanking: sendQuoteRanking,
+        fetchProductsToRank: fetchProductsToRank,
+        getWriteRankData: getWriteRankData
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        resultsTracking: {
+            TRACK_QUOTE_RESULTS_LIST: "TRACK_QUOTE_RESULTS_LIST"
+        }
+    }, moduleEvents = events.resultsTracking;
+    var resultsEventMode = "Load";
+    function initResultsTracking() {
+        if (meerkat.site.vertical === "generic" || meerkat.site.vertical === "") {
+            return;
+        }
+        meerkat.messaging.subscribe(moduleEvents.TRACK_QUOTE_RESULTS_LIST, trackQuoteResultsList);
+    }
+    function setResultsEventMode(mode) {
+        resultsEventMode = mode;
+    }
+    function getResultsEventMode() {
+        return resultsEventMode;
+    }
+    function getTrackingDisplayMode() {
+        var display;
+        if (meerkat.modules.compare.isCompareOpen() === true) {
+            display = "compare";
+        } else {
+            display = Results.getDisplayMode();
+            display = display.indexOf("f") === 0 ? display.slice(0, -1) : display;
+        }
+        return display;
+    }
+    function trackQuoteResultsList(eventObject) {
+        log("[trackQuoteResultsList]", eventObject);
+        eventObject = eventObject || {};
+        var trackingVertical = meerkat.modules.tracking.getTrackingVertical();
+        var data = {
+            actionStep: trackingVertical + " results",
+            display: getTrackingDisplayMode(),
+            event: resultsEventMode,
+            products: meerkat.modules.resultsRankings.getTrackingProductObject(),
+            rankingFilter: typeof meerkat.modules.coverLevelTabs !== "undefined" ? meerkat.modules.coverLevelTabs.getRankingFilter() : "default",
+            recordRanking: "Y"
+        };
+        if (typeof eventObject.additionalData === "object") {
+            data = $.extend({}, data, eventObject.additionalData);
+        }
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+            method: "trackQuoteResultsList",
+            object: data
+        });
+        if (typeof eventObject.onAfterEventMode === "string") {
+            setResultsEventMode(eventObject.onAfterEventMode);
+        }
+    }
+    meerkat.modules.register("resultsTracking", {
+        init: initResultsTracking,
+        events: events,
+        setResultsEventMode: setResultsEventMode,
+        getResultsEventMode: getResultsEventMode,
+        trackQuoteResultsList: trackQuoteResultsList
     });
 })(jQuery);
 
@@ -6094,16 +6310,18 @@ meerkat.logging.init = function() {
                 $dropdown.find(".activator span:not([class])").html("Save Quote");
                 $auxilleryActivator.find("span:not([class])").html("Save Quote");
             }
-            if (typeof transactionId !== "undefined") {
+            if (typeof transactionId !== "undefined" && Number(transactionId) > 0) {
                 meerkat.modules.transactionId.set(transactionId);
             }
-            if ($.inArray(meerkat.site.vertical, [ "car", "ip", "life", "health" ]) !== -1) {
+            if ($.inArray(meerkat.site.vertical, [ "car", "ip", "life", "health", "home" ]) !== -1) {
+                var verticalCode = meerkat.site.vertical === "home" ? "Home_Contents" : meerkat.site.vertical;
                 meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                     method: "trackQuoteEvent",
                     object: {
                         action: "Save",
                         transactionID: transactionId,
-                        vertical: meerkat.site.vertical
+                        vertical: verticalCode,
+                        simplesUser: meerkat.site.isCallCentreUser
                     }
                 });
             }
@@ -6193,7 +6411,7 @@ meerkat.logging.init = function() {
         settings.emailInputOnChangeFunction = function(event) {
             emailKeyChange(event, settings);
         };
-        settings.emailInputBlurFunction = function() {
+        settings.emailInputBlurFunction = function(event) {
             emailKeyChange(event, settings);
             $(this).val($.trim($(this).val()));
         };
@@ -6335,7 +6553,7 @@ meerkat.logging.init = function() {
                 cache: false,
                 errorLevel: "warning",
                 onSuccess: function emailResultsSuccess(result) {
-                    if (typeof result.transactionId !== "undefined" && result.transactionId !== "") {
+                    if (typeof result.transactionId !== "undefined" && Number(result.transactionId) > 0) {
                         meerkat.modules.transactionId.set(result.transactionId);
                     }
                     if (typeof settings.emailResultsSuccessCallback === "function") {
@@ -6453,52 +6671,72 @@ meerkat.logging.init = function() {
 
 (function($, undefined) {
     var meerkat = window.meerkat;
-    var windowTimeout = null, isModalOpen = false, lastClientPoke = 0, isFirstPoke = true;
+    var windowTimeout = null, isModalOpen = false, lastClientPoke = 0, deferredPokeTimeout = null, sessionAlertModal = null, countDownInterval = null, ajaxRequestTimeoutCount = 0;
+    firstPoke = true;
     function init() {
-        initializeWindowTimeout(meerkat.site.session.windowTimeout);
-        poke().done(function() {
-            isFirstPoke = false;
+        if (!meerkat.modules.simplesTickler && meerkat.site.session.firstPokeEnabled) {
+            updateTimeout(meerkat.site.session.windowTimeout);
+            poke().done(function firstPokeDone(data) {
+                firstPoke = false;
+                if (data.timeout < 0 && typeof data.bigIP !== "undefined" && data.bigIP !== meerkat.site.session.bigIP) {
+                    meerkat.modules.errorHandling.error({
+                        errorLevel: "silent",
+                        message: "Session poke failed on first load",
+                        description: "Session poke failed on first load",
+                        page: "session_poke.json",
+                        data: {
+                            transactionId: meerkat.modules.transactionId.get(),
+                            bigIP_onPageLoad: meerkat.site.session.bigIP,
+                            bigIP_onFirstSessionPoke: data.bigIP
+                        },
+                        id: meerkat.modules.transactionId.get()
         });
+                    updateTimeout(meerkat.site.session.windowTimeout);
+                }
+            });
         $(document).on("click.session", ".poke, .btn:not(.journeyNavButton,.dontPoke), .btn-back, .dropdown-toggle, .btn-pagination", function(e) {
             deferredPoke();
-        }).on("click.session", "#session_button, #next-step, #slide-next", function(e) {
-            poke();
         });
     }
-    var ajaxRequestTimeoutCount = 0;
+    }
     function poke(check) {
         var ajaxURL = "session_poke.json";
-        if (typeof check === "boolean") ajaxURL += check ? "?check" : "";
-        return $.ajax({
-            type: "GET",
+        ajaxURL += check === true ? "?check" : "";
+        return meerkat.modules.comms.get({
             url: ajaxURL,
             dataType: "json",
-            timeout: 6e4,
-            cache: false,
-            success: function(data) {
+            onSuccess: function onPokeSuccess(data) {
                 ajaxRequestTimeoutCount = 0;
-                initializeWindowTimeout(data.timeout);
+                updateTimeout(data.timeout);
             },
-            error: function(obj, txt, errorThrown) {
+            useDefaultErrorHandling: false,
+            errorLevel: "silent",
+            onError: function onPokeError(obj, txt, errorThrown) {
                 if (txt === "timeout" && ajaxRequestTimeoutCount < 3) {
                     setTimeout(function retrySessionPoke() {
                         poke(check);
+                        ajaxRequestTimeoutCount++;
                     }, 3e4);
                 } else {
                     showModal(false);
-                    FatalErrorDialog.exec({
-                        message: "Unfortunately, something went wrong while checking your session with us. <br /><br />It's possible you were temporarily disconnected, or your session may have simply expired for this page. <br /><br />Please try to refresh this page and try again.",
-                        page: ajaxURL,
+                    meerkat.modules.errorHandling.error({
+                        errorLevel: "silent",
+                        message: "Session poke error",
                         description: "An error occurred with your browsing session, session poke failed to return: " + txt + " " + errorThrown,
                         data: {
-                            transactionId: typeof referenceNo === "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID()
-    }
+                            status: txt,
+                            error: errorThrown,
+                            transactionId: meerkat.modules.transactionId.get()
+                        },
+                        id: meerkat.modules.transactionId.get()
                     });
                 }
             }
         });
     }
-    var deferredPokeTimeout = null;
+    function check() {
+        return poke(true);
+    }
     function deferredPoke() {
         if (lastClientPoke <= getClientTimestamp - meerkat.site.session.deferredPokeDuration) {
             poke();
@@ -6509,22 +6747,28 @@ meerkat.logging.init = function() {
     function getClientTimestamp() {
         return parseInt(+new Date());
     }
-    function initializeWindowTimeout(timeout) {
+    function updateTimeout(timeout) {
         if (timeout > 0) {
             lastClientPoke = getClientTimestamp();
             window.clearTimeout(windowTimeout);
             windowTimeout = window.setTimeout(function setTimeoutWindowTimeout() {
-                poke(true);
+                check();
             }, timeout);
             hideModal();
         } else {
-            if (isModalOpen || isFirstPoke) showModal(false); else showModal(true);
+            if (!firstPoke) {
+                if (isModalOpen) {
+                    showModal(false);
+                } else {
+                    showModal(true);
+        }
+    }
         }
     }
     function redirect(reload) {
         meerkat.modules.leavePageWarning.disable();
         hideModal();
-        window.scrollTo(0, 0);
+        meerkat.modules.utilities.scrollPageTo("body");
         if (typeof reload === "boolean" && reload) {
             meerkat.modules.journeyEngine.loadingShow("Reloading...");
             window.location.reload();
@@ -6533,9 +6777,6 @@ meerkat.logging.init = function() {
             window.location = meerkat.site.urls.exit;
         }
     }
-    var countDownInterval = null, sessionAlertModal = null, onModalOpen = function(dialogId) {
-        $("#" + dialogId).find(".modal-closebar").remove();
-    };
     function showModal(canRecover) {
         hideModal();
         isModalOpen = true;
@@ -6545,32 +6786,14 @@ meerkat.logging.init = function() {
             leftBtn: {
                 label: ""
             },
-            onOpen: onModalOpen
+            onOpen: function onSessionModalOpen(dialogId) {
+                $("#" + dialogId).find(".modal-closebar").remove();
+            }
         };
         if (canRecover) {
-            var countDownSecs = 180, getTimerText = function sessionModalGetTimerText() {
-                var minutes = Math.floor(countDownSecs / 60), seconds = ("0" + (countDownSecs - minutes * 60)).slice(-2);
-                return minutes + ":" + seconds;
-            }, countDown = function sessionModalCountDown() {
-                $(document).find("#sessionModalCountDown").text(getTimerText());
-                if (countDownSecs <= 0) {
-                    poke(true).then(function sessionLastBreath(data) {
-                        if (data.timeout <= 0) {
-                            meerkat.modules.writeQuote.write({
-                                triggeredsave: "sessionpop"
-                            }, false, function writeQuoteCallback() {
-                                window.clearInterval(countDownInterval);
-                                redirect();
-                            });
-                        } else {
-                            hideModal();
-                        }
-                    });
-                }
-                countDownSecs -= 1;
-            };
-            countDownInterval = window.setInterval(countDown, 1e3);
-            modalConfig.htmlContent = [ '<p id="sessionModalCountDown">', getTimerText(), "</p>", "<p>We haven't noticed any activity from you for a while, so we wanted to let you know that your session will automatically time out in 3 minutes.</p>", "<p>If you are still there, great!</p>", '<p>To continue with your session, please click the "Continue" button below.</p>' ].join("");
+            var modalCountdownDuration = 180;
+            runModalCountdown(modalCountdownDuration);
+            modalConfig.htmlContent = [ '<p id="sessionModalCountDown">', getModalCountdownText(modalCountdownDuration), "</p>", "<p>We haven't noticed any activity from you for a while, so we wanted to let you know that your session will automatically time out in 3 minutes.</p>", "<p>If you are still there, great!</p>", '<p>To continue with your session, please click the "Continue" button below.</p>' ].join("");
             modalConfig.buttons = [ {
                 label: "Continue",
                 className: "btn btn-success",
@@ -6578,7 +6801,7 @@ meerkat.logging.init = function() {
                 action: poke
             } ];
         } else {
-            modalConfig.htmlContent = [ "<p>Hi, are you still there? We didn't see any activity from you for a while, or your connection was interrupted, so we wanted to let you know your session has timed out.</p>" ].join("");
+            modalConfig.htmlContent = [ "<p>We didn't see any activity from you for a while, or your connection was interrupted, so we wanted to let you know your session has timed out.</p>" ].join("");
             modalConfig.buttons = [ {
                 label: "Reload Page",
                 className: "btn btn-success",
@@ -6595,18 +6818,42 @@ meerkat.logging.init = function() {
         }
         sessionAlertModal = meerkat.modules.dialogs.show(modalConfig);
     }
+    function getModalCountdownText(countDownSecs) {
+        var minutes = Math.floor(countDownSecs / 60), seconds = ("0" + (countDownSecs - minutes * 60)).slice(-2);
+        return minutes + ":" + seconds;
+    }
+    function runModalCountdown(modalCountdownDuration) {
+        var countDownSecs = modalCountdownDuration, countDown = function sessionModalCountDown() {
+            $(document).find("#sessionModalCountDown").text(getModalCountdownText(countDownSecs));
+            if (countDownSecs <= 0) {
+                check().then(function sessionLastBreath(data) {
+                    if (data.timeout <= 0) {
+                        meerkat.modules.writeQuote.write({
+                            triggeredsave: "sessionpop"
+                        }, false, function writeQuoteCallback() {
+                            window.clearInterval(countDownInterval);
+                            redirect();
+                        });
+                    } else {
+                        hideModal();
+                    }
+                });
+            }
+            countDownSecs -= 1;
+        };
+        countDownInterval = window.setInterval(countDown, 1e3);
+    }
     function hideModal() {
         window.clearInterval(countDownInterval);
         meerkat.modules.dialogs.close(sessionAlertModal);
         isModalOpen = false;
     }
-    if (!$("body").hasClass("simples")) {
     meerkat.modules.register("session", {
         init: init,
         poke: poke,
-        initializeWindowTimeout: initializeWindowTimeout
+        check: check,
+        update: updateTimeout
     });
-    }
 })(jQuery);
 
 (function($, undefined) {
@@ -6808,6 +7055,45 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, currentJourney = null, currentJourneyList = [], currentJourneyFieldLabel = "currentJourney", $currentJourney = null;
+    var events = {
+        splitTest: {
+            SPLIT_TEST_READY: "SPLIT_TEST_READY"
+        }
+    }, moduleEvents = events.splitTest;
+    function init() {
+        $(document).ready(function() {
+            var prefix = meerkat.site.vertical == "car" ? "quote" : meerkat.site.vertical;
+            var name = prefix + "_" + currentJourneyFieldLabel;
+            $currentJourney = $("#" + name);
+            var current_journey = $currentJourney.val();
+            if (!_.isEmpty(current_journey)) {
+                set(current_journey);
+            }
+            meerkat.messaging.publish(moduleEvents.SPLIT_TEST_READY);
+        });
+    }
+    function set(current_journey) {
+        currentJourney = current_journey;
+        currentJourneyList = _.isEmpty(currentJourney) ? [] : currentJourney.split("-");
+        $currentJourney.val(currentJourney);
+    }
+    function get(to_list) {
+        to_list = to_list || false;
+        return to_list === true ? _.extend({}, currentJourneyList) : currentJourney;
+    }
+    function isActive(jrny) {
+        return _.indexOf(currentJourneyList, String(jrny)) >= 0;
+    }
+    meerkat.modules.register("splitTest", {
+        init: init,
+        events: events,
+        get: get,
+        isActive: isActive
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat;
     var events = {
         tracking: {
@@ -6843,19 +7129,10 @@ meerkat.logging.init = function() {
             }
         });
     }
-    function recordDTM(method, object) {
-        var value;
+    function recordDTM(method, value) {
         try {
-            if (typeof object === "function") {
-                value = object();
-            } else {
-                value = object;
-            }
             if (typeof _satellite === "undefined") {
                 throw "_satellite is undefined";
-            }
-            if (typeof value.brandCode === "undefined") {
-                value.brandCode = meerkat.site.tracking.brandCode;
             }
             for (var key in value) {
                 if (value.hasOwnProperty(key) && typeof value[key] !== "function") {
@@ -6873,44 +7150,19 @@ meerkat.logging.init = function() {
             meerkat.logging.info("_satellite catch", method, value, e);
         }
     }
-    function recordSupertag(method, object) {
-        var value;
+    function recordSupertag(method, value) {
         try {
-            if (typeof object === "function") {
-                value = object();
-            } else {
-                value = object;
-            }
             if (typeof superT === "undefined") {
                 throw "Supertag is undefined";
             }
-            if (typeof value.brandCode === "undefined") {
-                value.brandCode = meerkat.site.tracking.brandCode;
-            }
-            if (typeof value.transactionID === "undefined") {
-                value.transactionID = meerkat.modules.transactionId.get();
-            }
-            if (typeof value.rootID === "undefined") {
-                value.rootID = meerkat.modules.transactionId.getRootId();
-            }
-            value.lastFieldTouch = lastFieldTouch;
-            if (value.email !== null && value.email !== "" && value.emailID === null) {
-                getEmailId(value.email, value.marketOptIn, value.okToCall, function getEmailId(emailId) {
-                    value.emailID = emailId;
-                    value.email = null;
                     superT[method](value);
                     meerkat.logging.info("Supertag", method, value);
-                });
-            } else {
-                superT[method](value);
-                meerkat.logging.info("Supertag", method, value);
-            }
         } catch (e) {
             meerkat.logging.info("Supertag catch", method, value, e);
         }
     }
     function getEmailId(emailAddress, marketing, oktocall, callback) {
-        meerkat.modules.comms.post({
+        return meerkat.modules.comms.post({
             url: "ajax/json/get_email_id.jsp",
             data: {
                 vertical: meerkat.site.vertical,
@@ -6918,10 +7170,8 @@ meerkat.logging.init = function() {
                 m: marketing,
                 o: oktocall
             },
-            errorLevel: "silent",
-            onSuccess: function onSuccess(result) {
-                callback(result.emailId);
-            }
+            cache: true,
+            errorLevel: "silent"
         });
     }
     function updateLastFieldTouch(label) {
@@ -6935,7 +7185,7 @@ meerkat.logging.init = function() {
             updateLastFieldTouch($(this).closest(":input").attr("name"));
         });
         $("a[data-slide-control]").on("click", function() {
-            updateLastFieldTouch($(this).attr("data-slide-control"));
+            updateLastFieldTouch($(this).attr("data-slide-control") + "-" + meerkat.modules.journeyEngine.getCurrentStep().navigationId);
         });
     }
     function initLastFieldTracking() {
@@ -6967,24 +7217,92 @@ meerkat.logging.init = function() {
             if (typeof eventObject.includeFormData !== "undefined" && eventObject.includeFormData === true) includeFormData = true;
             recordTouch(eventObject.touchType, eventObject.touchComment, includeFormData, eventObject.callback);
         });
-        meerkat.messaging.subscribe(moduleEvents.EXTERNAL, function(eventObject) {
-            if (typeof eventObject === "undefined") return;
-            if (typeof meerkat.site.tracking !== "object") meerkat.site.tracking = {};
-            if (meerkat.site.tracking.superTagEnabled === true) {
-                recordSupertag(eventObject.method, eventObject.object);
-            }
-            if (meerkat.site.tracking.DTMEnabled === true) {
-                recordDTM(eventObject.method, eventObject.object);
-            }
-        });
+        meerkat.messaging.subscribe(moduleEvents.EXTERNAL, runTrackingCall);
         $(document).ready(function() {
             initLastFieldTracking();
-            if (meerkat.site.userTrackingEnabled === true) {
+            if (typeof meerkat !== "undefined" && typeof meerkat.site !== "undefined" && typeof meerkat.site.tracking !== "undefined" && meerkat.site.tracking.userTrackingEnabled === true) {
                 meerkat.modules.utilities.pluginReady("sessionCamRecorder").done(function() {
                     initUserTracking();
                 });
             }
         });
+    }
+    function runTrackingCall(eventObject, override) {
+            override = override || false;
+        if (typeof eventObject === "undefined") {
+            return;
+        }
+        if (typeof meerkat.site.tracking !== "object") {
+            meerkat.site.tracking = {};
+        }
+            var values, object = eventObject.object;
+            if (meerkat.site.tracking.superTagEnabled === true || meerkat.site.tracking.DTMEnabled === true) {
+            values = typeof object === "function" ? object() : object;
+                } else {
+                    values = object;
+                }
+            values = override === false ? updateObjectData(values) : values;
+            var deferred = $.Deferred().resolve().promise();
+            if (typeof values === "object") {
+                if (values.email !== null && values.email !== "" && values.emailID === null) {
+                    deferred = getEmailId(values.email, values.marketOptIn, values.okToCall).done(function(result) {
+                        if (typeof result.emailId !== "undefined") {
+                            values.emailID = result.emailId;
+                            values.email = null;
+                        }
+                    });
+                }
+            }
+            deferred.always(function() {
+            if (meerkat.site.tracking.superTagEnabled === true) {
+                    recordSupertag(eventObject.method, values);
+            }
+            if (meerkat.site.tracking.DTMEnabled === true) {
+                    recordDTM(eventObject.method, values);
+            }
+        });
+            }
+    function getCurrentJourney() {
+        return meerkat.modules.splitTest.get();
+    }
+    function getTrackingVertical() {
+        var vertical = meerkat.site.vertical;
+        if (vertical === "home") {
+            vertical = "Home_Contents";
+        }
+        return vertical;
+    }
+    function updateObjectData(object) {
+        if (typeof object.brandCode === "undefined") {
+            object.brandCode = meerkat.site.tracking.brandCode;
+        }
+        if (typeof object.transactionID === "undefined") {
+            object.transactionID = meerkat.modules.transactionId.get();
+        }
+        if (typeof object.rootID === "undefined") {
+            object.rootID = meerkat.modules.transactionId.getRootId();
+        }
+        if (typeof object.currentJourney === "undefined") {
+            object.currentJourney = getCurrentJourney();
+        }
+        if (typeof object.vertical === "undefined") {
+            object.vertical = getTrackingVertical();
+        }
+        if (typeof object.simplesUser === "undefined") {
+            object.simplesUser = meerkat.site.isCallCentreUser;
+        }
+        if (typeof object.contactCentreID === "undefined") {
+            object.contactCentreID = meerkat.site.userId || null;
+        }
+        if (typeof object.campaignID === "undefined") {
+            object.campaignID = $("input[name$=tracking_cid]").val() || null;
+        }
+        if (typeof object.verticalFilter === "undefined") {
+            object.verticalFilter = typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null;
+        }
+        object.trackingKey = meerkat.modules.trackingKey.get();
+        object.lastFieldTouch = lastFieldTouch;
+        return object;
     }
     function initUserTracking() {
         if (typeof window.sessionCamRecorder === "undefined") {
@@ -7001,6 +7319,26 @@ meerkat.logging.init = function() {
             value: meerkat.modules.transactionId.get()
         };
         window.sessioncamConfiguration.customDataObjects.push(item);
+        item = {
+            key: "brandCode",
+            value: meerkat.site.tracking.brandCode
+        };
+        window.sessioncamConfiguration.customDataObjects.push(item);
+        item = {
+            key: "vertical",
+            value: meerkat.site.vertical
+        };
+        window.sessioncamConfiguration.customDataObjects.push(item);
+        item = {
+            key: "rootID",
+            value: meerkat.modules.transactionId.getRootId()
+        };
+        window.sessioncamConfiguration.customDataObjects.push(item);
+        item = {
+            key: "currentJourney",
+            value: getCurrentJourney
+        };
+        window.sessioncamConfiguration.customDataObjects.push(item);
     }
     meerkat.modules.register("tracking", {
         init: initTracking,
@@ -7008,7 +7346,52 @@ meerkat.logging.init = function() {
         recordTouch: recordTouch,
         recordSupertag: recordSupertag,
         updateLastFieldTouch: updateLastFieldTouch,
-        applyLastFieldTouchListener: applyLastFieldTouchListener
+        applyLastFieldTouchListener: applyLastFieldTouchListener,
+        getCurrentJourney: getCurrentJourney,
+        updateObjectData: updateObjectData,
+        getTrackingVertical: getTrackingVertical
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, trackingKey = null, $trackingKeyFld = null;
+    function init() {
+        $(document).ready(function() {
+            if (typeof ResultsModel != "undefined") {
+                var prefix = meerkat.site.vertical == "car" ? "quote" : meerkat.site.vertical;
+                var name = prefix + "_trackingKey";
+                $trackingKeyFld = $("#" + name);
+                if (!$trackingKeyFld.length) {
+                    $("#mainform").append($("<input />", {
+                        id: name,
+                        name: name,
+                        value: trackingKey
+                    }).attr("type", "hidden").attr("data-autosave", "true"));
+                } else {
+                    var key = $trackingKeyFld.val();
+                    if (!_.isEmpty(key)) {
+                        set(key);
+                    }
+                }
+                meerkat.messaging.subscribe(ResultsModel.moduleEvents.RESULTS_UPDATED_INFO_RECEIVED, update);
+            }
+        });
+    }
+    function update(data) {
+        if (data.hasOwnProperty("trackingKey")) {
+            set(data.trackingKey);
+        }
+    }
+    function set(key) {
+        trackingKey = key;
+        $trackingKeyFld.val(trackingKey);
+    }
+    function get() {
+        return trackingKey;
+    }
+    meerkat.modules.register("trackingKey", {
+        init: init,
+        get: get
     });
 })(jQuery);
 
@@ -7070,7 +7453,7 @@ meerkat.logging.init = function() {
                 id_handler: actionId
             },
             onSuccess: function fetchTransactionIdSuccess(msg) {
-                if (msg.transactionId !== transactionId) {
+                if (msg.transactionId !== transactionId && Number(msg.transactionId) > 0) {
                     set(msg.transactionId, msg.rootId);
                     meerkat.messaging.publish(moduleEvents.CHANGED, {
                         transactionId: transactionId

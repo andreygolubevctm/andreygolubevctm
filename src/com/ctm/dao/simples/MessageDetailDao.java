@@ -28,7 +28,7 @@ public class MessageDetailDao {
 
 			String situationValue = "";
 			String coverValue = "";
-			StringBuilder benefitsValue = null;
+			StringBuilder benefitsValue = new StringBuilder();
 
 			while (results.next()) {
 				String key = results.getString("xpath");
@@ -61,10 +61,7 @@ public class MessageDetailDao {
 					key = "Income level";
 				}
 				else if (key.startsWith("health/benefits/")) {
-					if (benefitsValue == null) {
-						benefitsValue = new StringBuilder();
-					}
-					else {
+					if (benefitsValue.length() > 0) {
 						benefitsValue.append(", ");
 					}
 					value = key.replace("health/benefits/benefitsExtras/", "");

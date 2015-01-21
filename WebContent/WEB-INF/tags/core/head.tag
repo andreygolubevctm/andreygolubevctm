@@ -258,9 +258,9 @@
 			$(document).pngFix();
 
 			$(window).load(function() {
-				$("[data-src]").each(function allDelayedSrcLoadLoop(){
+				$("[data-defer-src]").each(function allDelayedSrcLoadLoop(){
 					$this = $(this);
-					$this.attr('src', $this.attr('data-src')).removeAttr('data-src');
+					$this.attr('src', $this.attr('data-defer-src')).removeAttr('data-defer-src');
 				})
 			});
 

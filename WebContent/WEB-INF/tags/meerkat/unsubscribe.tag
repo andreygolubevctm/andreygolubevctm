@@ -135,7 +135,7 @@
 			}
 
 			body {
-				color: #4a4f51;
+				color: #333333;
 				font-size: 12px;
 				font-family: arial, sans-serif;
 				background-image: none;

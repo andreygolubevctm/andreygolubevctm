@@ -1,6 +1,6 @@
 /*!
  * CTM-Platform v0.8.3
- * Copyright 2014 Compare The Market Pty Ltd
+ * Copyright 2015 Compare The Market Pty Ltd
  * http://www.comparethemarket.com.au/
  */
 .container,
@@ -54,11 +54,9 @@
 .modal-footer:after {
   clear: both;
 }
-body > div > header a.sidebar .btn-call,
 body > div > header a.bottombar .btn-call {
   color: #ffffff;
 }
-body > div > header a.sidebar .btn-call:hover,
 body > div > header a.bottombar .btn-call:hover {
   color: #ffffff;
 }
@@ -77,18 +75,23 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #00629a;
   color: #ffffff;
 }
-.compareBar.active .comparisonActive .compareBtn.clearMode {
+.compareBar.active .comparisonActive .compareBtn.clearMode,
+.filters-component .btn-save {
   background-color: #00629a;
   color: #ffffff;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:hover,
-.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus,
+.filters-component .btn-save:hover,
+.filters-component .btn-save:focus {
   background-color: #003b5d;
   color: #ffffff;
   outline: 0;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:active,
-.compareBar.active .comparisonActive .compareBtn.clearMode.active {
+.compareBar.active .comparisonActive .compareBtn.clearMode.active,
+.filters-component .btn-save:active,
+.filters-component .btn-save.active {
   background-color: #f5821f;
   color: #ffffff;
 }
@@ -100,21 +103,16 @@ body > div > header a.bottombar .btn-call:hover {
   border-width: 1px;
   border-style: solid;
 }
-.sidebar .btn-call,
 .bottombar .btn-call {
   background-color: #f5821f;
   color: #ffffff;
 }
-.sidebar .btn-call:hover,
-.sidebar .btn-call:focus,
 .bottombar .btn-call:hover,
 .bottombar .btn-call:focus {
   background-color: #ce6409;
   color: #ffffff;
   outline: 0;
 }
-.sidebar .btn-call:active,
-.sidebar .btn-call.active,
 .bottombar .btn-call:active,
 .bottombar .btn-call.active {
   background-color: #00629a;
@@ -338,6 +336,56 @@ a:visited {
 a:hover,
 a:active {
   font-weight: normal;
+}
+@font-face {
+  font-family: "SunLt Light";
+  src: url(../../../framework/fonts/Sun_LT_300.eot);
+  src: url(../../../framework/fonts/Sun_LT_300.woff) format("woff");
+  font-weight: 300;
+}
+@font-face {
+  font-family: "SunLt Bold";
+  src: url(../../../framework/fonts/Sun_LT_700_.eot);
+  src: url(../../../framework/fonts/Sun_LT_700_.woff) format("woff");
+  font-weight: 700;
+}
+/*-----------------------------------------------------------
+Fonts
+-----------------------------------------------------------*/
+@font-face {
+  font-family: 'SunLTLightRegular';
+  src: url("../../../framework/fonts/sun_lt_3_-webfont.eot");
+  src: url("../../../framework/fonts/sun_lt_3_-webfont.eot?#iefix") format("embedded-opentype"), url("../../../framework/fonts/sun_lt_3_-webfont.woff") format("woff"), url("../../../framework/fonts/sun_lt_3_-webfont.ttf") format("truetype"), url("../../../framework/fonts/sun_lt_3_-webfont.svg#SunLTLightRegular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SunLTBoldRegular';
+  src: url("../../../framework/fonts/sun_lt_7_-webfont.eot");
+  src: url("../../../framework/fonts/sun_lt_7_-webfont.eot?#iefix") format("embedded-opentype"), url("../../../framework/fonts/sun_lt_7_-webfont.woff") format("woff"), url("../../../framework/fonts/sun_lt_7_-webfont.ttf") format("truetype"), url("../../../framework/fonts/sun_lt_7_-webfont.svg#SunLTBoldRegular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'sunsemibold';
+  src: url("../../../framework/fonts/sun6____-webfont.eot");
+  src: url("../../../framework/fonts/sun6____-webfont.eot?#iefix") format("embedded-opentype"), url("../../../framework/fonts/sun6____-webfont.woff") format("woff"), url("../../../framework/fonts/sun6____-webfont.ttf") format("truetype"), url("../../../framework/fonts/sun6____-webfont.svg#sunsemibold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'sunextrabold';
+  src: url("../../../framework/fonts/sun8____-webfont.eot");
+  src: url("../../../framework/fonts/sun8____-webfont.eot?#iefix") format("embedded-opentype"), url("../../../framework/fonts/sun8____-webfont.woff") format("woff"), url("../../../framework/fonts/sun8____-webfont.ttf") format("truetype"), url("../../../framework/fonts/sun8____-webfont.svg#sunextrabold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'just_another_handregular';
+  src: url('fonts/justanotherhand-webfont.eot');
+  src: url('fonts/justanotherhand-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/justanotherhand-webfont.woff') format('woff'), url('fonts/justanotherhand-webfont.ttf') format('truetype'), url('fonts/justanotherhand-webfont.svg#just_another_handregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 .hidden {
   display: none;
@@ -1016,7 +1064,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 	font-family: Helvetica, Arial, sans-serif;
 	font-size: 22px;
 	font-weight: 300;
-	color: #4a4f51;
+	color: #333333;
 }
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
 .ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
@@ -1604,7 +1652,6 @@ h5 {
   width: 980px;
   margin: 0 auto;
   background-color: #fff;
-  position: relative;
   overflow: hidden;
   /* for IE */
 }
@@ -2911,21 +2958,21 @@ select,
   text-transform: uppercase;
   text-align: center;
 }
-.tinybtn.blue {
+.tinybtn.altbtn {
   background-repeat: no-repeat;
   display: block;
   height: 20px;
   width: 100px;
-  background-image: url("../../legacy/images/button_bg_tiny_bl.png");
+  background-image: url("../../legacy/images/button_bg_tiny_gr.png");
   cursor: pointer;
   cursor: hand;
   margin-left: 7px;
   font-weight: bold;
   text-decoration: none;
 }
-.tinybtn.blue span {
+.tinybtn.altbtn span {
   color: #ffffff;
-  background-image: url("../../legacy/images/button_bg_tiny_bl_right.png");
+  background-image: url("../../legacy/images/button_bg_tiny_gr_right.png");
   background-position: top right;
   color: #FFFFFF;
   display: block;
@@ -3262,7 +3309,7 @@ body #youngDriverRow {
 }
 /* Health */
 .health-benefits .des {
-  color: #4A4F51;
+  color: #333333;
   border: 1px solid #fff;
   margin: -12px -9px 10px -9px;
   padding: 12px;
@@ -3493,7 +3540,7 @@ body #youngDriverRow {
   text-align: center;
 }
 .health #results-bar .pagination div.page.active p {
-  color: #4a4f51 !important;
+  color: #666666 !important;
   font-weight: bold;
   margin-top: 2px;
 }
@@ -3532,7 +3579,7 @@ body #youngDriverRow {
   margin-bottom: 10px;
 }
 .health #results-summary h2 {
-  color: #4A4F51;
+  color: #333333;
   font-size: 13px;
   line-height: 140%;
   font-weight: normal;
@@ -4458,7 +4505,7 @@ body.health #contact-panel span.or {
 .reminder_box h6 {
   font-size: 14px;
   font-family: Helvetica, Arial, sans-serif;
-  color: #4a4f51;
+  color: #333333;
   line-height: 1;
   text-align: center;
   font-weight: bold;
@@ -4954,7 +5001,7 @@ ul.plainBulletPoints {
   background: url("../../../common/images/loading.gif") no-repeat scroll left top transparent !important;
 }
 #loading-message {
-  color: #4a4f51;
+  color: #333333;
 }
 #fatal-error-dialog .dialog_footer {
   background: url("../../../common/images/error_fatal/footer.gif?v5") no-repeat scroll left top transparent !important;

@@ -12,6 +12,9 @@
 		var params = getURLVars(window.location.search),
 			dat = "vertical=travel&action=load&id="+params.id+"&hash="+params.hash+"&type="+params.type+"&vertical=TRAVEL&transactionId="+ params.id;
 
+		if(typeof meerkat.modules.transactionId.get() == 'undefined'){
+			meerkat.modules.transactionId.set(params.id);
+		}
 		meerkat.modules.comms.post({
 			url: "ajax/json/remote_load_quote.jsp",
 

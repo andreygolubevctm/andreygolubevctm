@@ -274,7 +274,7 @@
 		text-align:left;
 	}	
 	.utilities #results-header div {
-		color:#4a4f51;
+		color:#333333;
 		font-size:13px;
 		font-weight:bold;
 		height:40px;
@@ -868,7 +868,7 @@ Results = {
 		if(negative == true){
 		
 			if(task == 'extra'){
-				$(tag).css('color', '#4a4f51');
+				$(tag).css('color', '#333333');
 			} else if(task == 'color'){
 				$(tag).css('color', color);
 			}
@@ -1203,7 +1203,7 @@ Results = {
 				
 				if(this.price.Maximum == Math.abs(this.yearlySavings)) {
 					tag.empty().append("Existing provider/plan not found for comparison. Please revise these details.");
-					tag.css({marginTop:'-6px',fontSize:'10px',color:'#4a4f51'});
+					tag.css({marginTop:'-6px',fontSize:'10px',color:'#333333'});
 				} else {
 					Results.negativeValues(this.yearlySavings, tag, 'extra', '12' );
 				}

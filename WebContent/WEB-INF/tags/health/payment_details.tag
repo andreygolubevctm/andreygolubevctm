@@ -11,6 +11,9 @@
 <c:set var="field_frequency" value="${go:nameFromXpath(field_frequency)}" />
 <c:set var="disclaimer_content"><content:get key="paymentDisclaimer" /></c:set>
 
+<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" />
+
 <%-- HTML --%>
 <div id="${name}-selection" class="health-payment_details">
 
@@ -50,7 +53,17 @@
 		</form_new:row>
 
 		<form_new:row label="Your Premium" className="health-payment-details_premium">
+			<div class="policySummaryContainer formMode">
+				<c:choose>
+					<c:when test="${isAltView}">
+						<div class="priceItemisationTemplateHolder priceItemisation hidden-xs hidden-sm"></div>
+						<div class="policySummaryTemplateHolder productSummary horizontal no-logo hidden-md hidden-lg"></div>
+					</c:when>
+					<c:otherwise>
 			<div class="policySummaryTemplateHolder productSummary horizontal no-logo"></div>
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</form_new:row>
 
 	</form_new:fieldset>

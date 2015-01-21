@@ -83,79 +83,59 @@
 			<des><c:out value="${row.getLongTitle()}" escapeXml="true"/></des>
 			<rank><c:out value="${row.getRank()+0}" escapeXml="true"/></rank>
 
-			<c:set var="discountAnnualAndHalfYearly">
-							<c:choose>
-							<c:when test="${discountRates}">Y</c:when>
-								<c:otherwise>N</c:otherwise>
-							</c:choose>
-						</c:set>
-			<c:set var="starAnnualAndHalfYearly">
-							<c:choose>
-					<c:when test="${discountAnnualAndHalfYearly=='Y'}">*</c:when>
-								<c:otherwise></c:otherwise>
-							</c:choose>
-						</c:set>
-
-					<%--
-				GMF only has discount for Annual payment, so do not display * for all other frequenies
-				HIF only has discount for Annual/HalfYearly payment, so do not display * for all other frequenies
-						All the other payment frequencies following the "normal" logic ..
-						i.e. if the rates were discounted - show the * etc
-					--%>
-					<c:set var="discountOthers">
-						<c:choose>
-					<c:when test="${row.getProviderId()==6}">N</c:when>
-					<c:when test="${row.getProviderId()==11}">N</c:when>
-						<c:when test="${discountRates}">Y</c:when>
-							<c:otherwise>N</c:otherwise>
-						</c:choose>
-					</c:set>
-					<c:set var="starOthers">
-						<c:if test="${discountOthers=='Y'}">*</c:if>
-					</c:set>
-
 			<premium>
 				<annually>
-					<health:price_service_premium discount="${discountAnnualAndHalfYearly}" prm="${row.getHealthPricePremium().getAnnualPremium()}"
+					<health:price_service_premium
+								grossPrm="${row.getHealthPricePremium().getGrossAnnualPremium()}"
+								prm="${row.getHealthPricePremium().getAnnualPremium()}"
 								loading="${loading}"
-								rebate="${rebate}" lhc="${row.getHealthPricePremium().getAnnualLhc()}"
-								star="${starAnnualAndHalfYearly}"
+								rebate="${rebate}"
+								lhc="${row.getHealthPricePremium().getAnnualLhc()}"
 								membership="${membership}" />
 				</annually>
 				<halfyearly>
-					<health:price_service_premium discount="${discountAnnualAndHalfYearly}" prm="${row.getHealthPricePremium().getHalfYearlyPremium()}"
+					<health:price_service_premium
+								grossPrm="${row.getHealthPricePremium().getGrossHalfYearlyPremium()}"
+								prm="${row.getHealthPricePremium().getHalfYearlyPremium()}"
 								loading="${loading}"
-								rebate="${rebate}" lhc="${row.getHealthPricePremium().getHalfYearlyLhc()}"
-								star="${starAnnualAndHalfYearly}"
+								rebate="${rebate}"
+								lhc="${row.getHealthPricePremium().getHalfYearlyLhc()}"
 								membership="${membership}" />
 				</halfyearly>
 					<quarterly>
-					<health:price_service_premium discount="${discountOthers}" prm="${row.getHealthPricePremium().getQuarterlyPremium()}"
+					<health:price_service_premium
+								grossPrm="${row.getHealthPricePremium().getGrossQuarterlyPremium()}"
+								prm="${row.getHealthPricePremium().getQuarterlyPremium()}"
 								loading="${loading}"
-								rebate="${rebate}" lhc="${row.getHealthPricePremium().getQuarterlyLhc()}"
-									star="${starOthers}"
+								rebate="${rebate}"
+								lhc="${row.getHealthPricePremium().getQuarterlyLhc()}"
 									membership="${membership}" />
 					</quarterly>
 					<monthly>
 						<health:price_service_premium
-								discount="${discountOthers}" prm="${row.getHealthPricePremium().getMonthlyPremium()}"
+								grossPrm="${row.getHealthPricePremium().getGrossMonthlyPremium()}"
+								prm="${row.getHealthPricePremium().getMonthlyPremium()}"
 								loading="${loading}"
-								rebate="${rebate}" lhc="${row.getHealthPricePremium().getMonthlyLhc()}"
-									star="${starOthers}"
+								rebate="${rebate}"
+								lhc="${row.getHealthPricePremium().getMonthlyLhc()}"
 									membership="${membership}" />
 					</monthly>
 					<fortnightly>
-					<health:price_service_premium discount="${discountOthers}" prm="${row.getHealthPricePremium().getFortnightlyPremium()}"
+					<health:price_service_premium
+								grossPrm="${row.getHealthPricePremium().getGrossFortnightlyPremium()}"
+								prm="${row.getHealthPricePremium().getFortnightlyPremium()}"
 								loading="${loading}"
-								rebate="${rebate}" lhc="${row.getHealthPricePremium().getFortnightlyLhc()}"
-									star="${starOthers}"
+								rebate="${rebate}"
+								lhc="${row.getHealthPricePremium().getFortnightlyLhc()}"
 									membership="${membership}" />
 					</fortnightly>
 					<weekly>
-					<health:price_service_premium discount="${discountOthers}" prm="${row.getHealthPricePremium().getWeeklyPremium()}"
+					<health:price_service_premium
+								grossPrm="${row.getHealthPricePremium().getGrossWeeklyPremium()}"
+								prm="${row.getHealthPricePremium().getWeeklyPremium()}"
 								loading="${loading}"
-								rebate="${rebate}" lhc="${row.getHealthPricePremium().getWeeklyLhc()}"
-									star="${starOthers}"
+								rebate="${rebate}"
+								lhc="${row.getHealthPricePremium().getWeeklyLhc()}"
 									membership="${membership}" />
 					</weekly>
 				</premium>
@@ -164,52 +144,57 @@
 				<altPremium>
 					<annually>
 						<health:price_service_premium
-								discount="${discountAnnual}" prm="${row.getAltHealthPricePremium().getAnnualPremium()}"
+								grossPrm="${row.getAltHealthPricePremium().getGrossAnnualPremium()}"
+								prm="${row.getAltHealthPricePremium().getAnnualPremium()}"
 								loading="${loading}"
-								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getAnnualLhc()}"
-									star="${starOthersAnnual}"
+								rebate="${rebateChangeover}"
+								lhc="${row.getAltHealthPricePremium().getAnnualLhc()}"
 									membership="${membership}" />
 
 					</annually>
 					<quarterly>
 						<health:price_service_premium
-								discount="${discountOthers}" prm="${row.getAltHealthPricePremium().getQuarterlyPremium()}"
+								grossPrm="${row.getAltHealthPricePremium().getGrossQuarterlyPremium()}"
+								prm="${row.getAltHealthPricePremium().getQuarterlyPremium()}"
 								loading="${loading}"
-								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getQuarterlyLhc()}"
-									star="${starOthers}"
+								rebate="${rebateChangeover}"
+								lhc="${row.getAltHealthPricePremium().getQuarterlyLhc()}"
 									membership="${membership}"/>
 					</quarterly>
 					<monthly>
 						<health:price_service_premium
-								discount="${discountOthers}" prm="${row.getAltHealthPricePremium().getMonthlyPremium()}"
+								grossPrm="${row.getAltHealthPricePremium().getGrossMonthlyPremium()}"
+								prm="${row.getAltHealthPricePremium().getMonthlyPremium()}"
 								loading="${loading}"
-								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getMonthlyLhc()}"
-									star="${starOthers}"
+								rebate="${rebateChangeover}"
+								lhc="${row.getAltHealthPricePremium().getMonthlyLhc()}"
 									membership="${membership}"/>
 					</monthly>
 					<fortnightly>
 						<health:price_service_premium
-								discount="${discountOthers}" prm="${row.getAltHealthPricePremium().getFortnightlyPremium()}"
+								grossPrm="${row.getAltHealthPricePremium().getGrossFortnightlyPremium()}"
+								prm="${row.getAltHealthPricePremium().getFortnightlyPremium()}"
 								loading="${loading}"
-								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getFortnightlyLhc()}"
-									star="${starOthers}"
+								rebate="${rebateChangeover}"
+								lhc="${row.getAltHealthPricePremium().getFortnightlyLhc()}"
 									membership="${membership}"/>
 					</fortnightly>
 					<weekly>
 						<health:price_service_premium
-								discount="${discountOthers}" prm="${row.getAltHealthPricePremium().getWeeklyPremium()}"
+								grossPrm="${row.getAltHealthPricePremium().getGrossWeeklyPremium()}"
+								prm="${row.getAltHealthPricePremium().getWeeklyPremium()}"
 								loading="${loading}"
-								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getWeeklyLhc()}"
-									star="${starOthers}"
+								rebate="${rebateChangeover}"
+								lhc="${row.getAltHealthPricePremium().getWeeklyLhc()}"
 									membership="${membership}" />
 					</weekly>
 					<halfyearly>
 						<health:price_service_premium
-									discount="${discountOthers}"
+								grossPrm="${row.getAltHealthPricePremium().getGrossHalfYearlyPremium()}"
 								prm="${row.getAltHealthPricePremium().getHalfYearlyPremium()}"
 								loading="${loading}"
-								rebate="${rebateChangeover}" lhc="${row.getAltHealthPricePremium().getHalfYearlyLhc()}"
-									star="${starOthers}"
+								rebate="${rebateChangeover}"
+								lhc="${row.getAltHealthPricePremium().getHalfYearlyLhc()}"
 									membership="${membership}"/>
 					</halfyearly>
 				</altPremium>

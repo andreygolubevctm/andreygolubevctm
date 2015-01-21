@@ -188,6 +188,32 @@
 	<c:set var="kms"><x:out select="$resultXml/result/headline/kms" /></c:set>
 	<c:set var="terms"><x:out select="$resultXml/result/headline/terms" /></c:set>
 
+			<%-- Set flag to indicate this is a Hollard product. --%>
+			<c:set var="brandCode"><x:out select="$resultXml/result/brandCode" /></c:set>
+			<c:set var="isHollard">
+				<c:choose>
+					<c:when test="${brandCode eq 'WOOL' or brandCode eq 'REIN'}">${true}</c:when>
+					<c:otherwise>${false}</c:otherwise>
+				</c:choose>
+			</c:set>
+
+			<fmt:parseNumber var="excessAsNum" type="number" value="${excess}" />
+			<fmt:parseNumber var="dataBaseExcessAsNum" type="number" value="${data.quote.baseExcess}" />
+			<fmt:parseNumber var="dataExcessAsNum" type="number" value="${data.quote.excess}" />
+
+			<%-- Knock out results if excess is invalid for search --%>
+
+			<%-- TEMP COMMENT OUT CODE TO ALLOW NXI TESTING
+			<c:if test="${available eq 'Y' and ((empty data.quote.excess and excessAsNum > dataBaseExcessAsNum) || (not empty data.quote.excess and excessAsNum > dataExcessAsNum))}">
+				<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="<available>N</available>" />
+				<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]/headline" xml="<lumpSumTotal>9999999999</lumpSumTotal>" />
+				<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]/onlinePrice" xml="<lumpSumTotal></lumpSumTotal>" />
+				<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]/offlinePrice" xml="<lumpSumTotal></lumpSumTotal>" />
+
+				<go:setData dataVar="soapdata" xpath="soap-response/results/info" xml="<excessKnockouts>true</excessKnockouts>" />
+			</c:if>
+			--%>
+
 	<sql:query var="featureResult">
 				SELECT general.description, features.description, features.field_value, features.code
 				FROM aggregator.features
@@ -240,10 +266,22 @@
 							<c:set var="value">${ fn:replace(value, '[xx,xxx]', kms) }</c:set>
 				</c:if>
 
-				<c:if test="${value == 'S'}">
+						<c:choose>
+							<%-- Replace product name with service value for features view --%>
+							<c:when test="${code == 'product' and isHollard eq true}">
+								<c:set var="value"><x:out select="$resultXml/result/headline/name" /></c:set>
+							</c:when>
+							<%-- Replace special with service value for features view --%>
+							<c:when test="${value == 'S' and isHollard eq true}">
+								<c:set var="value"><x:out select="$resultXml/result/headline/feature" /></c:set>
+								<c:set var="extra">${terms}</c:set>
+							</c:when>
+							<%-- Ensure offer terms comes from service (offer from db) --%>
+							<c:when test="${value == 'S'}">
 					<c:set var="value">${feature[1]}</c:set>
 					<c:set var="extra">${terms}</c:set>
-				</c:if>
+							</c:when>
+						</c:choose>
 
 						<c:if test="${code ne ''}">
 						<${code} value="${fn:escapeXml(value)}" extra="${extra}" />

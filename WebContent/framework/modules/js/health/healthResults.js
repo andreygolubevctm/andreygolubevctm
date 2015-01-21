@@ -47,6 +47,7 @@
 	var selectedProduct = null;
 	var previousBreakpoint;
 	var best_price_count = 5;
+	var isLhcApplicable = 'N';
 
 	function initPage(){
 
@@ -1018,7 +1019,8 @@
 				preferredExcess: getPreferredExcess(),
 				paymentPlan: Results.getFrequency(),
 				sortBy: (Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price"),
-				simplesUser: meerkat.site.isCallCentreUser
+				simplesUser: meerkat.site.isCallCentreUser,
+				isLhcApplicable: isLhcApplicable
 			},
 			onAfterEventMode: 'Load'
 		});
@@ -1042,6 +1044,10 @@
 		}
 		return excess;
 			}
+
+	function setLhcApplicable(lhcLoading){
+		isLhcApplicable = lhcLoading > 0 ? 'Y' : 'N';
+	}
 
 	function init(){
 
@@ -1071,7 +1077,8 @@
 		onBenefitsSelectionChange:onBenefitsSelectionChange,
 		recordPreviousBreakpoint:recordPreviousBreakpoint,
 		rankingCallback: rankingCallback,
-		publishExtraSuperTagEvents: publishExtraSuperTagEvents
+		publishExtraSuperTagEvents: publishExtraSuperTagEvents,
+		setLhcApplicable: setLhcApplicable
 	});
 
 })(jQuery);

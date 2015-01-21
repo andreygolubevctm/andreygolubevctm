@@ -24,7 +24,8 @@
 
 <form_new:row className="travel-contact-details-optin-sgroup">
 	<%-- Mandatory agreement to privacy policy --%>
-	<field_new:checkbox xpath="travel/marketing" value="Y" required="false" label="true" title="Stay up to date with news and offers direct to your inbox" />
+	<c:set var="brandedName"><content:get key="boldedBrandDisplayName" /></c:set>
+	<field_new:checkbox xpath="travel/marketing" value="Y" required="false" label="true" title="I agree to receive news &amp; offer emails from ${brandedName}" />
 </form_new:row>
 
 <%-- Mandatory agreement to privacy policy --%>

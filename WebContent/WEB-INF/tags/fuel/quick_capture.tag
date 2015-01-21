@@ -81,7 +81,7 @@
 		
 	#quickForm h3, #aside .aside h3 {
 		font-family:"SunLT Bold",Arial,Helvetica,sans-serif;
-		color:#4a4f51;
+		color:#333333;
 		font-size:16px;
 		padding:20px 10px 0px 10px;
 	}

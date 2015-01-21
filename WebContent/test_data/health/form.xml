@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <health>
+	<searchResults></searchResults>
 	<privacyoptin>Y</privacyoptin>
 	<rebate>0</rebate>
 	<contactDetails>

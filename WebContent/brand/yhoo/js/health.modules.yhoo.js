@@ -1662,26 +1662,14 @@ creditCardDetails = {
                 }
             });
             if (meerkat.site.isNewQuote === false) {
-                if (meerkat.site.isCallCentreUser === true) {
-                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                        method: "contactCentreUser",
-                        object: {
-                            contactCentreID: meerkat.site.userId,
-                            quoteReferenceNumber: transaction_id,
-                            transactionID: transaction_id,
-                            productID: meerkat.site.productId
-                        }
-                    });
-                } else {
-                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                        method: "trackQuoteEvent",
-                        object: {
-                            action: "Retrieve",
-                            transactionID: transaction_id,
-                            simplesUser: meerkat.site.isCallCentreUser
-                        }
-                    });
-                }
+                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                    method: "trackQuoteEvent",
+                    object: {
+                        action: "Retrieve",
+                        transactionID: transaction_id,
+                        simplesUser: meerkat.site.isCallCentreUser
+                    }
+                });
             }
         }
     }
@@ -2160,6 +2148,7 @@ creditCardDetails = {
         $("#health_loading").val(rates.loading || "");
         $("#health_primaryCAE").val(rates.primaryCAE || "");
         $("#health_partnerCAE").val(rates.partnerCAE || "");
+        meerkat.modules.healthResults.setLhcApplicable(rates.loading);
     }
     function loadRates(callback) {
         $healthCoverDetails = $(".health-cover_details");
@@ -4330,6 +4319,7 @@ creditCardDetails = {
                     $policySummaryContainer.find(".policyPriceWarning").show();
                 });
             }
+            applyEventListeners();
             meerkat.messaging.publish(moduleEvents.INIT);
         });
     }
@@ -4354,6 +4344,11 @@ creditCardDetails = {
         var htmlTemplate = _.template(logoPriceTemplate);
         var htmlString = htmlTemplate(product);
         $policySummaryTemplateHolder.html(htmlString);
+        if (meerkat.modules.splitTest.isActive(2)) {
+            var htmlTemplate_B = _.template($("#price-itemisation-template").html());
+            var htmlString_B = htmlTemplate_B(product);
+            $(".priceItemisationTemplateHolder").html(htmlString_B);
+        }
         $policySummaryContainer.find(".policyPriceWarning").hide();
         if ($policySummaryDualPricing.length > 0) {
             product.showAltPremium = true;
@@ -4385,6 +4380,18 @@ creditCardDetails = {
         if (typeof product.hospital.inclusions === "undefined" || product.hospital.inclusions.copayment === "") {
             $policySummaryDetailsComponents.find(".copayment").parent().addClass("hidden");
         }
+        if (meerkat.modules.splitTest.isActive(2)) {
+            $policySummaryDetailsComponents.find(".companyLogo").attr("class", "companyLogo hidden-sm");
+            $policySummaryDetailsComponents.find(".companyLogo").addClass(product.info.provider);
+        }
+    }
+    function applyEventListeners() {
+        $(".btn-show-how-calculated").on("click", function() {
+            meerkat.modules.dialogs.show({
+                title: "Here is how your premium is calculated:",
+                htmlContent: '<p>The BASE PREMIUM is the cost of a policy set by the health fund. This cost excludes any discounts or additional charges that are applied to the policy due to your age or income.</p><p>LHC LOADING is an initiative designed by the Federal Government to encourage people to take out private hospital cover earlier in life. If you&rsquo;re over the age of 31 and don&rsquo;t already have cover, you&rsquo;ll be required to pay a 2% Lifetime Health Cover loading for every year over the age of 30 that you were without hospital cover. The loading is applied to the BASE PREMIUM of the hospital component of your cover if applicable.<br/>For full information please go to: <a href="http://www.privatehealth.gov.au/healthinsurance/incentivessurcharges/lifetimehealthcover.htm" target="_blank">http://www.privatehealth.gov.au/healthinsurance/incentivessurcharges/lifetimehealthcover.htm</a></p><p>The AUSTRALIAN GOVERNMENT REBATE exists to provide financial assistance to those who need help with the cost of their health insurance premium. It is currently income-tested and tiered according to total income and the age of the oldest person covered by the policy. If you claim a rebate and find at the end of the financial year that it was incorrect for whatever reason, the Australian Tax Office will simply correct the amount either overpaid or owing to you after your tax return has been completed. There is no penalty for making a rebate claim that turns out to have been incorrect. The rebate is calculated against the BASE PREMIUM for both the hospital &amp; extras components of your cover.<br/>For full information please go to: <a href="https://www.ato.gov.au/Calculators-and-tools/Private-health-insurance-rebate-calculator/" target="_blank">https://www.ato.gov.au/Calculators-and-tools/Private-health-insurance-rebate-calculator/</a></p><p>PAYMENT DISCOUNTS can be offered by health funds for people who choose to pay by certain payment methods or pay their premiums upfront. These are applied to the total premium costs.</p>'
+            });
+        });
     }
     meerkat.modules.register("healthPriceComponent", {
         init: init,
@@ -4489,6 +4496,7 @@ creditCardDetails = {
     var selectedProduct = null;
     var previousBreakpoint;
     var best_price_count = 5;
+    var isLhcApplicable = "N";
     function initPage() {
         initResults();
         initCompare();
@@ -5248,7 +5256,8 @@ creditCardDetails = {
                 preferredExcess: getPreferredExcess(),
                 paymentPlan: Results.getFrequency(),
                 sortBy: Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price",
-                simplesUser: meerkat.site.isCallCentreUser
+                simplesUser: meerkat.site.isCallCentreUser,
+                isLhcApplicable: isLhcApplicable
             },
             onAfterEventMode: "Load"
         });
@@ -5273,6 +5282,9 @@ creditCardDetails = {
             break;
         }
         return excess;
+    }
+    function setLhcApplicable(lhcLoading) {
+        isLhcApplicable = lhcLoading > 0 ? "Y" : "N";
     }
     function init() {
         $component = $("#resultsPage");
@@ -5299,7 +5311,8 @@ creditCardDetails = {
         onBenefitsSelectionChange: onBenefitsSelectionChange,
         recordPreviousBreakpoint: recordPreviousBreakpoint,
         rankingCallback: rankingCallback,
-        publishExtraSuperTagEvents: publishExtraSuperTagEvents
+        publishExtraSuperTagEvents: publishExtraSuperTagEvents,
+        setLhcApplicable: setLhcApplicable
     });
 })(jQuery);
 

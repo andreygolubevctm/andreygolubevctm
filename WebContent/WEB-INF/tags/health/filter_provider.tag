@@ -70,7 +70,7 @@
 				value="${row.FundCode}"
 				xpath="${xpath}/${fn:toLowerCase(row.FundCode)}"
 				label="${row.FundCode}"
-				title='<div class="filterProviderLogo"><img src="common/images/logos/health/${row.FundCode}.png" alt="${row.FundCode}"/><span>${row.Name}</span></div>' />
+				title='<div class="filterProviderLogo"><div class="companyLogo ${row.FundCode}"/></div></div>' />
 		</div>
 	</c:if>
 

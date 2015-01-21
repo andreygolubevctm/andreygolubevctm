@@ -91,7 +91,7 @@
 }
 
 #contact-panel h3 span {
-	color:					#4A4F51;
+	color:					#333333;
 }
 	
 #contact-panel .row {

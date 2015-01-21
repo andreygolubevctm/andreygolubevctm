@@ -19,7 +19,7 @@
 
 @theme-default:                  @theme-dark;
 
-@theme-primary:                  #ab1d21;//#AA1D21;
+@theme-primary:                  #ab1d21; //#AA1D21; // Dark Red
 @theme-secondary:                @theme-dark;
 @theme-tertiary:                 @theme-dark;
 
@@ -66,6 +66,8 @@
 @navbar-inverse-link-disabled-color: @theme-medium;
 @navbar-inverse-dropdown-open-active-bg: @theme-secondary;
 
+// Filter
+@form-input-common-slidehandle-bg-colour: @theme-primary;
 
 //== Journey CTM BUTTONS:
 //
@@ -104,9 +106,9 @@
 @journeyProgressBar-border-color:               #D5D6CB;
 
 //Hover active
-@journeyProgressBar-color-hover:                @theme-primary;
-@journeyProgressBar-separator-color-hover:      @theme-primary;
-@journeyProgressBar-border-color-hover:         @theme-primary;
+@journeyProgressBar-color-hover:                darken(@theme-primary, 20%);
+@journeyProgressBar-separator-color-hover:      darken(@theme-primary, 20%);
+@journeyProgressBar-border-color-hover:         darken(@theme-primary, 20%);
 
 // Navbars
 @navbar-default-color:           @theme-light;

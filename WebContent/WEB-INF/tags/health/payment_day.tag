@@ -30,7 +30,6 @@
 </c:forEach>
 </c:set>
 
-
 <%-- HTML --%>
-<field_new:array_select items="${days}" required="${required}" xpath="${xpath}" delims="||" className="health_payment_day ${className}" title="${title}" />
+<field_new:array_select items="${days}" required="${required}" xpath="${xpath}" delims="||" className="health_payment_day ${className}" title="${title}"/>
 <p class="health_payment-day_message">It can take up to 6 days to set up your direct debit so your payment may not be deducted until the following month if you chose a date within this time frame</p>

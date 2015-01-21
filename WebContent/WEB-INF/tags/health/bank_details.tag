@@ -27,7 +27,9 @@
 		<%-- NIB based payment day --%>		
 		<c:set var="fieldXpath" value="${xpath}/paymentDay" />
 		<form_new:row fieldXpath="${fieldXpath}" label="What day would you like your payment deducted?" className="health_bank-details_paymentDay_group">
-			<health:payment_day xpath="${fieldXpath}" title="your chosen day" required="true" className="health-bank_details-paymentDay" />
+			<field:payment_day xpath="${fieldXpath}" title="your chosen day" required="true" className="health_payment_day health-bank_details-paymentDay" messageClassName="health_payment-day_message"
+								displayDatePattern="d" buffer="8" includeOriginal="true" exclude="28" days="30"
+								message="It can take up to 6 days to set up your direct debit so your payment may not be deducted until the following month if you chose a date within this time frame"/>
 		</form_new:row>
 		
 		<%-- AUF based payment day --%>

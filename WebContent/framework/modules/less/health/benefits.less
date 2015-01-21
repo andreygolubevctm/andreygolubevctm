@@ -47,12 +47,11 @@
 	}
 
 	.checkbox {
-
-		.help-icon {
-			color:@color;
+		input[type=checkbox]:checked + label {
+			.help-icon {
+				color:@color;
+			}
 		}
-
-
 	}
 }
 
@@ -107,7 +106,7 @@
 
 		.has-switch{
 			margin-left: 10px;
-    		margin-top: -5px;
+			margin-top: -5px;
 		}
 
 		.hasShortlistableChildren{
@@ -225,8 +224,8 @@
 		input {
 			/* Unselected state (confirm colours) */
 			& + label:before {
-				background-color: @health-benefits-checkbox-bg;
-				color: @theme-light;
+				background-color: @theme-light;
+				color: @health-benefits-checkbox-bg;
 			}
 			&[disabled] {
 				& + label:before {
@@ -262,7 +261,9 @@
 		.benefitSection(@extras-color);
 	}
 
-
+	.btn-save {
+		&:extend(.btn-clear all);
+	}
 }
 
 @media (@xs-only) {

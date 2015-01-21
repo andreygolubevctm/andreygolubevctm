@@ -559,7 +559,7 @@ body {
   font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.28571429;
-  color: #4a4f51;
+  color: #333333;
   background-color: #ffffff;
 }
 input,
@@ -975,17 +975,17 @@ address {
 }
 @media (min-width: 768px) {
   .container {
-    width: 750px;
+    width: 747px;
   }
 }
 @media (min-width: 992px) {
   .container {
-    width: 970px;
+    width: 967px;
   }
 }
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 1171px;
   }
 }
 .container-fluid {
@@ -1932,7 +1932,7 @@ output {
   color: #333333;
   background-color: #ffffff;
   background-image: none;
-  border: 1px solid #7b8386;
+  border: 1px solid #666666;
   border-radius: 5px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -2120,7 +2120,7 @@ select[multiple].input-lg {
 }
 .has-success .input-group-addon {
   color: #b3b3b3;
-  border-color: #7b8386;
+  border-color: #666666;
   background-color: #ffffff;
 }
 .has-success .datepicker-inline {
@@ -2177,7 +2177,7 @@ select[multiple].input-lg {
 }
 .has-warning .input-group-addon {
   color: #b3b3b3;
-  border-color: #7b8386;
+  border-color: #666666;
   background-color: #ffffff;
 }
 .has-warning .datepicker-inline {
@@ -2234,7 +2234,7 @@ select[multiple].input-lg {
 }
 .has-error .input-group-addon {
   color: #b3b3b3;
-  border-color: #7b8386;
+  border-color: #666666;
   background-color: #ffffff;
 }
 .has-error .datepicker-inline {
@@ -2250,7 +2250,7 @@ select[multiple].input-lg {
   display: block;
   margin-top: 5px;
   margin-bottom: 10px;
-  color: #888f92;
+  color: #737373;
 }
 @media (min-width: 768px) {
   .form-inline .form-group {
@@ -2363,8 +2363,8 @@ fieldset[disabled] .btn {
 }
 .btn-default {
   color: #ffffff;
-  background-color: #4a4f51;
-  border-color: #4a4f51;
+  background-color: #333333;
+  border-color: #333333;
 }
 .btn-default:hover,
 .btn-default:focus,
@@ -2372,8 +2372,8 @@ fieldset[disabled] .btn {
 .btn-default.active,
 .open .dropdown-toggle.btn-default {
   color: #ffffff;
-  background-color: #373a3c;
-  border-color: #2d3031;
+  background-color: #1f1f1f;
+  border-color: #141414;
 }
 .btn-default:active,
 .btn-default.active,
@@ -2395,11 +2395,11 @@ fieldset[disabled] .btn-default:active,
 .btn-default.disabled.active,
 .btn-default[disabled].active,
 fieldset[disabled] .btn-default.active {
-  background-color: #4a4f51;
-  border-color: #4a4f51;
+  background-color: #333333;
+  border-color: #333333;
 }
 .btn-default .badge {
-  color: #4a4f51;
+  color: #333333;
   background-color: #ffffff;
 }
 .btn-primary {
@@ -2643,6 +2643,12 @@ fieldset[disabled] .btn-link:focus {
 .btn-lg {
   padding: 10px 16px;
   font-size: 18px;
+  line-height: 1.33;
+  border-radius: 10px;
+}
+.btn-md {
+  padding: 10px 16px;
+  font-size: 14px;
   line-height: 1.33;
   border-radius: 10px;
 }
@@ -3099,7 +3105,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   color: #333333;
   text-align: center;
   background-color: #ffffff;
-  border: 1px solid #7b8386;
+  border: 1px solid #666666;
   border-radius: 5px;
 }
 .input-group-addon.input-sm {
@@ -3667,7 +3673,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   background-color: transparent;
 }
 .navbar-default .navbar-text {
-  color: #4a4f51;
+  color: #333333;
 }
 .navbar-default .navbar-nav > li > a {
   color: #777777;
@@ -4454,7 +4460,14 @@ body > div > header a.btn-success {
 .header-collapse-contact > ul li h1 {
   line-height: 40px;
   display: inline-block;
-  color: #1c3e93;
+  color: #333333;
+  font-size: 18px;
+  font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
+}
+.header-collapse-contact > ul li h4 span,
+.header-collapse-contact > ul li h1 span {
+  color: #0db14b;
+  font-size: 38px;
 }
 .header-collapse-contact > ul li [data-livechat="button"] {
   vertical-align: super;
@@ -4561,7 +4574,7 @@ body > div > header a.btn-success {
 }
 .header-top .navbar-default .navbar-text-block {
   display: block;
-  color: #4a4f51;
+  color: #333333;
   padding: 11px 15px;
 }
 .header-top .navbar-nav {
@@ -4823,7 +4836,7 @@ body > div > header a.btn-success {
 }
 @media (min-width: 768px) {
   .modal-dialog {
-    width: 738px;
+    width: 735px;
   }
   .modal-content {
     border: 1px solid #b2b2b2;
@@ -4895,17 +4908,17 @@ body > div > header a.btn-success {
 }
 @media (min-width: 768px) {
   .modal-breakpoint-wide {
-    width: 750px;
+    width: 747px;
   }
 }
 @media (min-width: 992px) {
   .modal-breakpoint-wide {
-    width: 970px;
+    width: 967px;
   }
 }
 @media (min-width: 1200px) {
   .modal-breakpoint-wide {
-    width: 1170px;
+    width: 1171px;
   }
 }
 @media (max-width: 767px) {
@@ -5048,7 +5061,7 @@ body > div > header a.btn-success {
     margin: 0;
   }
   .accordion-xs .accordion-title a {
-    color: #4a4f51;
+    color: #333333;
   }
   .accordion-xs .accordion-body {
     padding: 15px;
@@ -5188,7 +5201,7 @@ body > div > header a.btn-success {
   color: #333333;
   vertical-align: middle;
   background-color: #ffffff;
-  border: 1px solid #7b8386;
+  border: 1px solid #666666;
   height: 41px;
   padding: 10px 15px;
   font-size: 14px;
@@ -5602,7 +5615,7 @@ select[multiple].hint-lg.tt-hint {
 .datepicker table tr th {
   font-family: 'SourceSansProBold';
   font-weight: normal;
-  font-color: #4a4f51;
+  font-color: #333333;
 }
 .table-striped .datepicker table tr td,
 .table-striped .datepicker table tr th {
@@ -6005,7 +6018,7 @@ fieldset[disabled] .datepicker table tr td.selected.disabled:hover.active {
 .datepicker table tr td.active.disabled:hover {
   background-color: #ffffff;
   color: #333333;
-  border-color: #7b8386;
+  border-color: #666666;
   border-width: 1px;
   border-style: solid;
   border-width: 0px;
@@ -6022,7 +6035,7 @@ fieldset[disabled] .datepicker table tr td.selected.disabled:hover.active {
   background-color: #ffffff;
   color: #333333;
   outline: 0;
-  border-color: #7b8386;
+  border-color: #666666;
 }
 .datepicker table tr td.active:active,
 .datepicker table tr td.active:hover:active,
@@ -6061,7 +6074,7 @@ fieldset[disabled] .datepicker table tr td.selected.disabled:hover.active {
 .datepicker table tr td span.active.disabled:hover {
   background-color: #ffffff;
   color: #333333;
-  border-color: #7b8386;
+  border-color: #666666;
   border-width: 1px;
   border-style: solid;
   border-width: 0px;
@@ -6078,7 +6091,7 @@ fieldset[disabled] .datepicker table tr td.selected.disabled:hover.active {
   background-color: #ffffff;
   color: #333333;
   outline: 0;
-  border-color: #7b8386;
+  border-color: #666666;
 }
 .datepicker table tr td span.active:active,
 .datepicker table tr td span.active:hover:active,
@@ -6100,13 +6113,13 @@ fieldset[disabled] .datepicker table tr td.selected.disabled:hover.active {
   font-weight: normal;
 }
 .datepicker th.prev {
-  color: #4a4f51;
+  color: #333333;
   font-size: 18px;
   font-family: 'SourceSansProLight';
   font-weight: normal;
 }
 .datepicker th.next {
-  color: #4a4f51;
+  color: #333333;
   font-size: 18px;
   font-family: 'SourceSansProLight';
   font-weight: normal;
@@ -6153,7 +6166,7 @@ fieldset[disabled] .datepicker table tr td.selected.disabled:hover.active {
   text-shadow: 0 1px 0 #fff;
   vertical-align: middle;
   background-color: #ffffff;
-  border: solid #7b8386;
+  border: solid #666666;
   border-width: 1px 0;
   margin-left: -5px;
   margin-right: -5px;
@@ -6327,17 +6340,17 @@ x:-o-prefocus,
 }
 @media (min-width: 768px) {
   .journeyEngineLoader {
-    width: 720px;
+    width: 717px;
   }
 }
 @media (min-width: 992px) {
   .journeyEngineLoader {
-    width: 940px;
+    width: 937px;
   }
 }
 @media (min-width: 1200px) {
   .journeyEngineLoader {
-    width: 1140px;
+    width: 1141px;
   }
 }
 body.jeinit .journeyEngineLoader {
@@ -6422,7 +6435,7 @@ DISABLED due to breaking iPad iOS6 rendering
 }
 .journeyProgressBar a,
 .journeyProgressBar div {
-  color: #4a4f51;
+  color: #333333;
   text-decoration: none;
   border-bottom: 3px solid #f1f1f1;
   display: inline-block;
@@ -6444,30 +6457,30 @@ DISABLED due to breaking iPad iOS6 rendering
 }
 .journeyProgressBar .complete a,
 .journeyProgressBar .complete div {
-  color: #0db14b;
-  border-color: #0db14b;
-}
-.journeyProgressBar .complete a:before,
-.journeyProgressBar .complete div:before {
-  color: #0db14b;
-}
-.journeyProgressBar .complete.end a:before,
-.journeyProgressBar .complete.end div:before {
-  color: #fe8814;
-}
-.journeyProgressBar .current div {
-  color: #fe8814;
-  border-color: #fe8814;
-}
-.journeyProgressBar .current div:before {
-  color: #fe8814;
-}
-.journeyProgressBar a:hover {
   color: #1c3e93;
   border-color: #1c3e93;
 }
-.journeyProgressBar a:hover:before {
+.journeyProgressBar .complete a:before,
+.journeyProgressBar .complete div:before {
   color: #1c3e93;
+}
+.journeyProgressBar .complete.end a:before,
+.journeyProgressBar .complete.end div:before {
+  color: #0db14b;
+}
+.journeyProgressBar .current div {
+  color: #0db14b;
+  border-color: #0db14b;
+}
+.journeyProgressBar .current div:before {
+  color: #0db14b;
+}
+.journeyProgressBar a:hover {
+  color: #0c1a3d;
+  border-color: #0c1a3d;
+}
+.journeyProgressBar a:hover:before {
+  color: #0c1a3d;
 }
 .sidebar {
   padding: 15px;
@@ -6935,7 +6948,7 @@ html {
 .featuresMode .result-row {
   float: left;
   margin: 0;
-  width: 270px;
+  width: 280px;
   background: #ffffff;
 }
 .featuresMode .labelInColumn {
@@ -7127,17 +7140,17 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 }
 @media (min-width: 768px) {
   .health .noResults {
-    width: 750px;
+    width: 747px;
   }
 }
 @media (min-width: 992px) {
   .health .noResults {
-    width: 970px;
+    width: 967px;
   }
 }
 @media (min-width: 1200px) {
   .health .noResults {
-    width: 1170px;
+    width: 1171px;
   }
 }
 .health .noResults .alert {
@@ -7230,27 +7243,27 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
 .health .featuresMode .result-row {
   float: left;
   margin: 0 0px;
-  width: 270px;
+  width: 280px;
 }
 @media (min-width: 768px) {
   .health .featuresMode .featuresHeaders,
   .health .featuresMode .result-row {
-    margin: 0 6px;
-    width: 171px;
+    margin: 0 0px;
+    width: 179px;
   }
 }
 @media (min-width: 992px) {
   .health .featuresMode .featuresHeaders,
   .health .featuresMode .result-row {
-    margin: 0 7px;
-    width: 145px;
+    margin: 0 0px;
+    width: 156px;
   }
 }
 @media (min-width: 1200px) {
   .health .featuresMode .featuresHeaders,
   .health .featuresMode .result-row {
-    margin: 0 6px;
-    width: 180px;
+    margin: 0 0px;
+    width: 190px;
   }
 }
 .health .featuresMode .featuresList {
@@ -7343,7 +7356,7 @@ Keeping it here anyway as they seem to be working on it, so wait and see if that
   width: 100%;
   height: 172px;
   background: #ffffff;
-  border-bottom: 2px solid #cfd0c4;
+  border-bottom: 1px solid #7b8386;
   -webkit-transition: height 100ms ease-in-out;
   -moz-transition: height 100ms ease-in-out;
   transition: height 100ms ease-in-out;
@@ -7371,31 +7384,31 @@ body.simples .health .resultsHeadersBg {
   overflow: hidden;
   height: 172px;
   background: #ffffff;
-  border-bottom: 2px solid #cfd0c4;
+  border-bottom: 1px solid #7b8386;
 }
 .health .resultsContainer .result .resultInsert {
   padding: 0 6px;
-  height: 170px;
+  height: 172px;
 }
 @media (min-width: 768px) {
   .health .resultsContainer .result {
-    margin: 0 -6px;
-    padding: 0 6px;
-    width: 183px;
+    margin: 0 0px;
+    padding: 0 0px;
+    width: 179px;
   }
 }
 @media (min-width: 992px) {
   .health .resultsContainer .result {
-    margin: 0 -7px;
-    padding: 0 7px;
-    width: 159px;
+    margin: 0 0px;
+    padding: 0 0px;
+    width: 156px;
   }
 }
 @media (min-width: 1200px) {
   .health .resultsContainer .result {
-    margin: 0 -6px;
-    padding: 0 6px;
-    width: 192px;
+    margin: 0 0px;
+    padding: 0 0px;
+    width: 190px;
   }
 }
 .health .resultsContainer.affixed-settings .featuresHeaders,
@@ -7706,7 +7719,7 @@ body.simples .health .resultsHeadersBg {
 .filters-component .btn-group .btn {
   font-size: 10px;
   text-transform: uppercase;
-  color: #4a4f51;
+  color: #333333;
   height: 41px;
 }
 .filters-component .filter-label {
@@ -7743,7 +7756,7 @@ body.simples .health .resultsHeadersBg {
   cursor: pointer;
   border-radius: 5px;
   border: 1px solid;
-  border-color: #4a4f51;
+  border-color: #333333;
   position: relative;
   text-align: left;
   overflow: hidden;
@@ -7853,7 +7866,7 @@ body.simples .health .resultsHeadersBg {
   margin-bottom: -1px;
   z-index: 100;
   width: 34%;
-  background: #4a4f51;
+  background: #333333;
 }
 .has-switch label i {
   color: #000;
@@ -7937,7 +7950,7 @@ body.simples .health .resultsHeadersBg {
   user-select: none;
   border-radius: 5px;
   /* By default, apply the success theme */
-  border: 1px solid #7b8386;
+  border: 1px solid #666666;
   font-family: 'framework_font';
   font-size: 16px;
   display: block;
@@ -8020,7 +8033,7 @@ fieldset[disabled] .checkbox input + label:before {
 }
 @media (max-width: 767px) {
   .slider-control .noUi-origin {
-    border: 1px solid #7b8386;
+    border: 1px solid #666666;
   }
 }
 .slider-control .noUi-target {
@@ -8043,7 +8056,7 @@ fieldset[disabled] .checkbox input + label:before {
   width: 14px;
   top: -3px;
   left: -3px;
-  background: #fe8814;
+  background: #1c3e93;
   border-radius: 14px;
   border: 3px solid #f1f1f1;
 }
@@ -8182,9 +8195,6 @@ fieldset[disabled] .checkbox input + label:before {
   width: 80px;
   height: 80px;
   margin-left: -10px;
-}
-.ie8 .featuresMode .productSummary .frequency {
-  margin-left: 80px;
 }
 fieldset .icon-text {
   font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
@@ -8500,7 +8510,7 @@ fieldset h2 .icon-text {
   display: inline-block;
   width: 100%;
   font-family: 'SourceSansProBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
-  color: #4a4f51;
+  color: #333333;
   font-size: 23px;
   text-align: center;
   text-decoration: none;
@@ -8627,7 +8637,7 @@ fieldset h2 .icon-text {
   }
 }
 .featuresMode .compare-basket p {
-  color: #4a4f51;
+  color: #333333;
   line-height: 1.8;
 }
 .featuresMode .compare-basket p .compare-tick + label {
@@ -8738,7 +8748,7 @@ fieldset h2 .icon-text {
 }
 .lt-ie9 .compare-tick.checked + label + label,
 .compare-tick:checked + label + label {
-  color: #4a4f51;
+  color: #333333;
 }
 .lt-ie9 .compare-tick.checked + label + label:before,
 .compare-tick:checked + label + label:before {
@@ -9005,7 +9015,7 @@ ul.themed > li:before {
 }
 #footer {
   background: #f1f1f1;
-  color: #4a4f51;
+  color: #333333;
   padding-top: 20px;
   padding-bottom: 15px;
 }
@@ -9044,7 +9054,7 @@ ul.themed > li:before {
   color: #ffffff;
   padding: 10px;
   text-align: center;
-  background-color: #4a4f51;
+  background-color: #333333;
 }
 #copyright:before,
 #copyright:after {
@@ -9104,12 +9114,12 @@ ul.themed > li:before {
   background-image: none;
 }
 .btn-default {
-  background-color: #4a4f51;
+  background-color: #333333;
   color: #ffffff;
 }
 .btn-default:hover,
 .btn-default:focus {
-  background-color: #2d3031;
+  background-color: #141414;
   color: #ffffff;
   outline: 0;
 }
@@ -9311,12 +9321,12 @@ ul.themed > li:before {
   color: #ffffff;
 }
 .btn-cancel {
-  background-color: #4a4f51;
+  background-color: #333333;
   color: #ffffff;
 }
 .btn-cancel:hover,
 .btn-cancel:focus {
-  background-color: #2d3031;
+  background-color: #141414;
   color: #ffffff;
   outline: 0;
 }
@@ -9376,14 +9386,17 @@ ul.themed > li:before {
   color: #ffffff;
 }
 .btn-clear,
-.compareBar.active .comparisonActive .compareBtn.clearMode {
+.compareBar.active .comparisonActive .compareBtn.clearMode,
+.filters-component .btn-save {
   background-color: #1c3e93;
   color: #ffffff;
 }
 .btn-clear:hover,
 .btn-clear:focus,
 .compareBar.active .comparisonActive .compareBtn.clearMode:hover,
-.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus,
+.filters-component .btn-save:hover,
+.filters-component .btn-save:focus {
   background-color: #122860;
   color: #ffffff;
   outline: 0;
@@ -9391,7 +9404,9 @@ ul.themed > li:before {
 .btn-clear:active,
 .btn-clear.active,
 .compareBar.active .comparisonActive .compareBtn.clearMode:active,
-.compareBar.active .comparisonActive .compareBtn.clearMode.active {
+.compareBar.active .comparisonActive .compareBtn.clearMode.active,
+.filters-component .btn-save:active,
+.filters-component .btn-save.active {
   background-color: #0db14b;
   color: #ffffff;
 }
@@ -9599,7 +9614,7 @@ ul.themed > li:before {
   color: #b2b2b2;
 }
 .text-dark {
-  color: #4a4f51;
+  color: #333333;
 }
 .text-light {
   color: #f1f1f1;
@@ -9615,7 +9630,7 @@ h2,
   font-family: 'SourceSansProLight';
 }
 h5 {
-  color: #4a4f51;
+  color: #333333;
 }
 a {
   cursor: pointer;
@@ -9734,7 +9749,7 @@ a {
   color: #ffffff;
 }
 .datepicker.datepicker-inline {
-  border: 1px solid #7b8386;
+  border: 1px solid #666666;
 }
 #email-quote-dropdown #saveQuoteSuccess + #callback-form-component {
   padding-top: 0;
@@ -10173,11 +10188,11 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
 }
 .well-help {
   background-color: #e6e6e6;
-  color: #4a4f51;
+  color: #333333;
   position: relative;
 }
 .well-help h4 {
-  color: #4a4f51;
+  color: #333333;
 }
 .well-help:after {
   border-color: #e6e6e6 transparent;
@@ -10323,7 +10338,7 @@ fieldset[disabled] .form-control {
 .btn-form-inverse {
   background-color: #ffffff;
   color: #333333;
-  border-color: #7b8386;
+  border-color: #666666;
   border-width: 1px;
   border-style: solid;
 }
@@ -10332,7 +10347,7 @@ fieldset[disabled] .form-control {
   background-color: #ffffff;
   color: #333333;
   outline: 0;
-  border-color: #7b8386;
+  border-color: #666666;
 }
 .btn-form-inverse:active,
 .btn-form-inverse.active {
@@ -10424,7 +10439,7 @@ fieldset[disabled] .form-control {
 .has-switch .switch-off,
 .has-switch .switch-off label,
 .has-switch .switch-off span {
-  background: #4a4f51;
+  background: #333333;
 }
 .has-switch .switch-on,
 .has-switch .switch-on label,
@@ -10654,11 +10669,11 @@ select + .spinner {
 .popover.qtip .qtip-titlebar {
   padding: 9px 14px 5px 14px;
   background-color: #f1f1f1;
-  color: #4a4f51;
+  color: #333333;
 }
 .popover.qtip .qtip-content {
   padding: 5px 14px;
-  color: #4a4f51;
+  color: #333333;
 }
 .journeyEngineLoader {
   font-family: 'SourceSansProBold';

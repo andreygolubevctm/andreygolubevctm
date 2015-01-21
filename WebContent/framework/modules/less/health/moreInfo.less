@@ -13,14 +13,6 @@
 			display: none;
 		}
 	}
-
-	&:hover,
-	&:active{
-		background-color: @theme-secondary;
-	}
-	&:focus{
-		background-color: @theme-primary;
-	}
 }
 
 .btn-close-more-info,
@@ -82,6 +74,10 @@
 
 .more-info-content {
 	padding-bottom:10px;
+	h2,
+	.btn-download {
+		font-family: @font-family-theme-bold;
+	}
 	@media (max-width: @screen-xs-max) {
 
 		.moreInfoRightColumn{
@@ -106,10 +102,6 @@
 
 	.clearfix();
 
-	.btn-more-info-apply:active {
-		background-color: darken(@theme-primary, 20%)
-	}
-
 	li {
 		padding-bottom: 5px;
 	}
@@ -127,15 +119,10 @@
 				font-family: @font-family-theme-light;
 			}
 
-			.btn-more-info-apply {
-				.border-bottom-radius(0);
-			}
 			.phone {
-				.border-top-radius(0);
 				color: white;
-				margin-top: 0;
 				&:hover {
-					background-color: @btn-call-color;
+					background-color: @theme-secondary;
 				}
 			}
 
@@ -180,30 +167,24 @@
 		color: @more-info-bubble-text-color;
 		padding: 20px;
 	}
+	.moreInfoCallUsContainer {
+		padding-bottom: 30px;
+	}
 	h5.moreInfoCallUs{
-		color:#fff;
+		@media (@sm){
+			color:@theme-tertiary;
+		}
+		@media(@xs-only){
+			color:#fff;
+		}
 		margin: 0;
 	}
 	.moreInfoReferenceNoText{
-		font-family: @font-family-theme-light;
-		font-size: 13px;
+		font-family: @font-family-theme-bold;
+		font-size: 14px;
 	}
 	.moreInfoReferenceNo{
 		//font-family: @font-family-theme-bold;
-	}
-	.moreInfoOr{
-		margin-top: 10px;
-		.h5;
-		padding-left: 0;
-		color:#fff;
-	}
-
-	.btn-hospital-light,
-	.btn-extras-light{
-		.btn-block;
-		@media(@sm-only){
-			font-size: 12px;
-		}
 	}
 
 	.moreInfoRightColumn,
@@ -211,6 +192,9 @@
 	.row.moreInfoExclusions,
 	.moreInfoEmailBrochures {
 		margin-top: 20px;
+		.btn-save {
+			&:extend(.btn-clear all);
+		}
 	}
 
 	.moreInfoEmailBrochures {
@@ -222,7 +206,7 @@
 			color: @gray-light;
 		}
 		display : none;
-		min-height: 90px;
+		min-height: 80px;
 		@media(@xs-only){
 			font-size: inherit;
 			min-height: 150px;
@@ -244,6 +228,9 @@
 	.moreInfoEmailBrochuresSuccess {
 		display : none;
 	}
+	.brochureButtons {
+		margin-top: 25px;
+	}
 
 	.btn-hospital, .sendBrochureEmailAddress {
 		@media(@xs-only){
@@ -261,7 +248,6 @@
 		}
 		h2 {
 			margin: 0;
-			.text-primary;
 		}
 		strong {
 			.text-tertiary;
@@ -270,18 +256,24 @@
 			color: @text-color;
 			text-decoration: underline;
 		}
+		.pricePromiseLogo{
+			.highResImg('../graphics/health/Price-Promise-Blue.png'; '../graphics/health/Price-Promise-Blue@2x.png'; 135px; 97px);
+			width: 135px;
+			height: 97px;
+			background-size: 135px 97px;
+		}
 	}
 
 	@media(@sm-only) {
-		.btn-hospital,.btn-extras {
+		.btn-download {
 			font-size: 12px;
 		}
 	}
 }//.more-info-content
 
 #confirmation {
-	.btn-hospital-light,
-	.btn-extras-light{
+	.btn-download{
+		font-family: @font-family-theme-bold;
 		@media(@sm-only){
 			font-size: inherit;
 		}

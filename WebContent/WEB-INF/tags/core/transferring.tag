@@ -32,7 +32,7 @@
 		left: 27px;
 		font-size: 19px;
 		width: 480px;
-		color: #4a4f51;
+		color: #333333;
 		font-weight: bold;
 		line-height:23px;
 	}

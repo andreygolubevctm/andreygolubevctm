@@ -61,17 +61,6 @@
 			});
 
 			if(meerkat.site.isNewQuote === false){
-				if(meerkat.site.isCallCentreUser === true){
-					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-						method:'contactCentreUser',
-						object: {
-							contactCentreID: meerkat.site.userId,
-							quoteReferenceNumber: transaction_id,
-							transactionID: transaction_id,
-							productID: meerkat.site.productId
-						}
-					});
-				}else{
 					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 						method:'trackQuoteEvent',
 						object: {
@@ -81,7 +70,6 @@
 						}
 					});
 				}
-			}
 
 		}
 
@@ -750,6 +738,8 @@
 		$("#health_loading").val((rates.loading || ''));
 		$("#health_primaryCAE").val((rates.primaryCAE || ''));
 		$("#health_partnerCAE").val((rates.partnerCAE || ''));
+
+		meerkat.modules.healthResults.setLhcApplicable(rates.loading);
 	}
 
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.

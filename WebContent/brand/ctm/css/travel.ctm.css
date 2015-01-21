@@ -62,18 +62,23 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #1c3e93;
   color: #ffffff;
 }
-.compareBar.active .comparisonActive .compareBtn.clearMode {
+.compareBar.active .comparisonActive .compareBtn.clearMode,
+.filters-component .btn-save {
   background-color: #1c3e93;
   color: #ffffff;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:hover,
-.compareBar.active .comparisonActive .compareBtn.clearMode:focus {
+.compareBar.active .comparisonActive .compareBtn.clearMode:focus,
+.filters-component .btn-save:hover,
+.filters-component .btn-save:focus {
   background-color: #122860;
   color: #ffffff;
   outline: 0;
 }
 .compareBar.active .comparisonActive .compareBtn.clearMode:active,
-.compareBar.active .comparisonActive .compareBtn.clearMode.active {
+.compareBar.active .comparisonActive .compareBtn.clearMode.active,
+.filters-component .btn-save:active,
+.filters-component .btn-save.active {
   background-color: #0db14b;
   color: #ffffff;
 }
@@ -376,7 +381,7 @@ body > div > header a.bottombar .btn-call:hover {
 @media (min-width: 768px) {
   .column-banded-row > div {
     border-left: 1px solid #e0e0e0;
-    color: #4a4f51;
+    color: #333333;
     background-color: transparent;
   }
   .column-banded-row > div:first-child {
@@ -388,7 +393,7 @@ body > div > header a.bottombar .btn-call:hover {
   .column-banded-row .cdxfeeAmount,
   .column-banded-row .priceAmount,
   .column-banded-row .cta {
-    color: #4a4f51;
+    color: #333333;
     background-color: #f9f9f9;
   }
   .column-banded-row .priceAmount {
@@ -409,7 +414,7 @@ body > div > header a.bottombar .btn-call:hover {
   .column-banded-row .medicalAmount,
   .column-banded-row .luggageAmount,
   .column-banded-row .cta {
-    color: #4a4f51;
+    color: #333333;
     background-color: #f9f9f9;
   }
   .column-banded-row .priceAmount {

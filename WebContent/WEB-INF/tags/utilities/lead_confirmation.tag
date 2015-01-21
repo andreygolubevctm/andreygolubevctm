@@ -180,7 +180,7 @@ An energy specialist will be in contact with you shortly to discuss your applica
 #utilities-confirmation a {
 	font-size:					14px;
 	font-weight:				normal;
-	color:						#4A4F51;
+	color:						#333333;
 	padding:					2px 0 2px 10px;
 	background:					transparent url(brand/ctm/images/bullet_edit.png) center left no-repeat;
 }

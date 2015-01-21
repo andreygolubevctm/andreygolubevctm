@@ -20,8 +20,6 @@
 	</c:otherwise>
 </c:choose>
 
-<c:set var="transactionId" value="${data.current.transactionId}" />
-
 <%-- Add log entry --%>
 <c:catch var="error">
 	<error:fatal_error

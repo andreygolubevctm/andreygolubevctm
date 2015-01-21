@@ -356,14 +356,14 @@ html {
 	background-color: #ffffff;
 }
 body {
-	color: #4a4f51;
+	color: #333333;
 	font-size: 12px;
 	font-family: arial, sans-serif;
 	background-image: url(images/speckle.png);
 	background-repeat: repeat;
 }
 select {
-	color: #4a4f51;
+	color: #333333;
 	font-size: 12px;
 	font-family: arial, sans-serif;
 }
@@ -374,15 +374,15 @@ h2, h3, h4, h5 {
 	color: #0CB24E;
 }
 h2 span {
-	color: #4a4f51;
+	color: #333333;
 }
 h3 {
 	font-size: 22px;
-	color: #4a4f51;
+	color: #333333;
 }
 h4, h5 {
 	font-size: 18px;
-	color: #4a4f51;
+	color: #333333;
 }
 #wrapper {
 	width: 100%;
@@ -1695,7 +1695,7 @@ ul.ui-autocomplete.ui-menu  {
 	position:relative;
 }
 .error-panel-top h3 {
-	color: #4A4F51;
+	color: #333333;
     font-size: 1.5em;
     padding: 21px 24px;
 }
@@ -1792,7 +1792,7 @@ ul.ui-autocomplete.ui-menu  {
 	margin: 0 16px;
 }
 #quote-builder h3 {
-	color: #4a4f51;
+	color: #333333;
 	font-size: 18px;
 	font-weight: 600;
 }
@@ -1812,7 +1812,7 @@ ul.ui-autocomplete.ui-menu  {
 	padding-left: 20px;
 }
 .quote-builder-steps h4 span {
-	color: #4a4f51;
+	color: #333333;
 	font-weight: 100;
 }
 .quote-builder-steps li.active h4 {
@@ -2351,7 +2351,7 @@ body #youngDriverRow {
 }
 /* Health */
 .health-benefits .des {
-	color:#4A4F51;
+	color: #333333;
 	border:1px solid #fff;
 	margin:-12px -9px 10px -9px;
 	padding:12px;
@@ -2580,7 +2580,7 @@ body #youngDriverRow {
 		text-align: center;
 	}
 	.health  #results-bar .pagination div.page.active p {
-		color: rgb(74, 79, 81) !important;
+	color: #333333 !important;
 		font-weight: bold;
 		margin-top: 2px;
 	}
@@ -2619,7 +2619,7 @@ body #youngDriverRow {
 	margin-bottom:10px;
 }
 .health #results-summary h2 {
-	color:#4A4F51;
+	color: #333333;
 	font-size:13px;
 	line-height:140%;
 	font-weight:normal;
@@ -3464,7 +3464,7 @@ body.utilities #contact-panel {
 .reminder_box h6 {
 	font-size: 14px;
     font-family:"SunLTBoldRegular", "Open Sans", Helvetica, Arial, sans-serif;
-	color: #4a4f51;
+	color: #333333;
 	line-height: 1;
 	text-align: center;
 	font-weight: bold;

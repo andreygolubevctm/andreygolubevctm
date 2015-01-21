@@ -277,6 +277,10 @@
 			object.simplesUser = meerkat.site.isCallCentreUser;
 		}
 
+		if (typeof object.contactCentreID === "undefined") {
+			object.contactCentreID = meerkat.site.userId || null;
+		}
+
 		if (typeof object.campaignID === "undefined") {
 			object.campaignID = $('input[name$=tracking_cid]').val() || null;
 		}

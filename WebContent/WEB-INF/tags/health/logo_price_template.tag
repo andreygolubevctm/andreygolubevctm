@@ -7,9 +7,7 @@
 	<%-- Decide whether to render the normal premium or the alt premium (for dual-pricing) --%>
 	{{ var property = premium; if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { property = altPremium; } }}
 
-	<div class="companyLogo">
-		<img src="common/images/logos/health/{{= info.provider }}.png" class="companyImage" />
-	</div>
+	<div class="companyLogo {{= info.provider }}"></div>
 	<div class="price premium">
 		{{ if( typeof property.annually !== "undefined" ) { }}
 		<div class="frequency annually {{= _selectedFrequency != 'annually' ? 'displayNone' : '' }}" data-text="{{= property.annually.text }}" data-lhcfreetext="{{= property.annually.lhcfreetext }}">

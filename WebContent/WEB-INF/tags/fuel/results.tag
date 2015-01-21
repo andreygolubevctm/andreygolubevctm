@@ -110,10 +110,10 @@
 	}
 		#results-information h2 em {
 			font-style:normal;
-			color:#4a4f51;
+			color:#333333;
 		}
 		#results-information h2 span {
-			color:#4a4f51;
+			color:#333333;
 			display:block;
 			font-weight:normal;
 			font-size:12px;
@@ -140,7 +140,7 @@
 					padding: 6px 23px;
 				}
 				#summary-header h2 {
-					color: #4A4F51;
+					color: #333333;
 				    font-family: "SunLT Light",Arial,Helvetica,sans-serif;
 				    font-size: 22px;
 				    font-weight: normal;	
@@ -204,7 +204,7 @@
 		text-align:left;
 	}	
 	.fuel #results-header div div {
-		color:#4a4f51;
+		color:#333333;
 		font-size:14px;
 		font-weight:bold;
 		height:20px;

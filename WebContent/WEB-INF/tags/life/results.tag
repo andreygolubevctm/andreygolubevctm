@@ -87,7 +87,7 @@
 			text-decoration:	none;
 		}
 		#summary-header h2 {
-			color: #4A4F51;
+			color: #333333;
 		    font-family: "SunLT Light",Arial,Helvetica,sans-serif;
 		    font-size: 22px;
 		    font-weight: normal;	
@@ -204,7 +204,7 @@
 		text-align:left;
 	}	
 	.${vertical} #results-header div {
-		color:#4a4f51;
+		color:#333333;
 		font-size:13px;
 		font-weight:bold;
 		height:30px;

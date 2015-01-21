@@ -39,7 +39,7 @@ the user to request a callback from the Call Centre.
 					<div class="cleardiv"></div>
 
 				</div>
-				
+
 				<div class="fieldrow currentProviderContainerUpdateRow">
 					<div class="fieldrow_label"><!-- empty --></div>
 					<div class="fieldrow_value">
@@ -239,7 +239,7 @@ var update_provider_plans = new UpdateProviderPlans();
 }
 
 #${id} .currentProviderContainer .current-provider {
-	color:					#4a4f51;
+	color:					#333333;
 }
 
 #${id} .currentProviderContainer .current-provider select {
