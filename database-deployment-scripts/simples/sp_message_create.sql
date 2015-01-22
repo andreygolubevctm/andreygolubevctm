@@ -21,6 +21,10 @@ BEGIN
 	DECLARE _messageDelay INT;
 	DECLARE _tranIdExists INT;
 	DECLARE _doNotContact INT;
+	DECLARE _activeMessageId INT;
+	DECLARE _activeMessageStatusId INT;
+	DECLARE _activeMessageTranId  INT;
+	DECLARE _dupeTranIdExists INT;
 
 	--
 	-- Calculate when this message should be actioned
@@ -53,15 +57,41 @@ BEGIN
 	END IF;
 
 	--
+	-- check if lead exsits with same phone number
+	--
+	SELECT id, transactionId, statusId
+	INTO _activeMessageId, _activeMessageTranId, _activeMessageStatusId
+	FROM simples.message
+	WHERE
+		( phoneNumber1 = _phoneNumber1 AND phoneNumber1 IS NOT NULL )
+	OR
+		( phoneNumber2 = _phoneNumber2 AND phoneNumber2 IS NOT NULL )
+	ORDER BY id DESC
+	LIMIT 1;
+
+	--
+	-- Check duplicates againest message_duplicates table
+	--
+	SELECT COUNT(transactionId)
+	INTO _dupeTranIdExists
+	FROM simples.message_duplicates
+	WHERE transactionId = _tranId;
+
+	--
 	-- Add message to the queue
 	--
-	IF _tranIdExists = 0 AND _doNotContact = 0 THEN
-		INSERT INTO message
-		(transactionId, sourceId, statusId, created, whenToAction, contactName, phoneNumber1, phoneNumber2, state)
-		VALUES
-		(_tranId, _sourceId, 1/*New*/, NOW(), _whenToAction, _contactName, _phoneNumber1, _phoneNumber2, _state);
+	IF _tranIdExists = 0 AND _doNotContact = 0 AND _dupeTranIdExists = 0 THEN
+		IF _activeMessageId IS NULL OR _activeMessageStatusId = 2 THEN
+			INSERT INTO message
+			(transactionId, sourceId, statusId, created, whenToAction, contactName, phoneNumber1, phoneNumber2, state)
+			VALUES
+			(_tranId, _sourceId, 1/*New*/, NOW(), _whenToAction, _contactName, _phoneNumber1, _phoneNumber2, _state);
 
-		SET _inserted = 1;
+			SET _inserted = 1;
+		ELSE
+			CALL simples.message_handle_duplicates (_activeMessageId, _activeMessageTranId, _activeMessageStatusId, _tranId, _whenToAction, _contactName, _phoneNumber1, _phoneNumber2, _state);
+			SET _inserted = 0;
+		END IF;
 	ELSE
 		SET _inserted = 0;
 	END IF;

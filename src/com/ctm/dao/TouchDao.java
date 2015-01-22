@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.NamingException;
 
@@ -147,11 +148,25 @@ public class TouchDao {
 		touch.setType(TouchType.findByCode(resultSet.getString("type")));
 	}
 
+	private String questionMarksBuilder(int length) {
+		StringBuilder stringBuilder = new StringBuilder();
+		for( int i = 0; i< length; i++){
+			stringBuilder.append(" ?");
+			if(i != length -1) stringBuilder.append(",");
+		}
+		return stringBuilder.toString();
+	}
+
+	public ArrayList<Touch> getTouchesForTransactionId(long transactionId) throws DaoException {
+		List<Long> transactionIds = new ArrayList<Long>();
+		transactionIds.add(transactionId);
+		return getTouchesForTransactionIds(transactionIds);
+	}
+
 	/**
 	 *
 	 */
-	public ArrayList<Touch> getTouchesForTransactionId(long transactionId) throws DaoException {
-
+	public ArrayList<Touch> getTouchesForTransactionIds(List<Long> transactionIds) throws DaoException {
 		SimpleDatabaseConnection dbSource = null;
 		ArrayList<Touch> touches = new ArrayList<Touch>();
 
@@ -178,10 +193,16 @@ public class TouchDao {
 				"	INNER JOIN ctm.touches AS t2 " +
 				"	ON t2.transaction_id = th2.transactionid " +
 
-				"	WHERE t.transaction_id  = ? " +
+				"	WHERE t.transaction_id  IN ( " + questionMarksBuilder(transactionIds.size()) + ") " +
+
 				"	ORDER BY t2.id DESC, t2.date DESC, t2.time DESC LIMIT 50"
 			);
-			stmt.setLong(1, transactionId);
+
+			int i = 1;
+
+			for(long transactionId : transactionIds){
+				stmt.setLong(i++, transactionId);
+			}
 
 			ResultSet results = stmt.executeQuery();
 

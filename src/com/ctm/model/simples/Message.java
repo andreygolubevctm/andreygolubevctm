@@ -1,6 +1,8 @@
 package com.ctm.model.simples;
 
 import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +27,7 @@ public class Message extends AbstractJsonModel {
 	@JsonSerialize(using = CustomDateSerializer.class)
 	private Date whenToAction;
 	private boolean canPostpone;
-
+	private List<Long> dupeTransactionIds = new ArrayList<Long>();
 
 
 
@@ -105,6 +107,18 @@ public class Message extends AbstractJsonModel {
 	}
 	public void setWhenToAction(final Date whenToAction) {
 		this.whenToAction = whenToAction;
+	}
+
+	public List<Long> getDupeTransactionIds() {
+		return dupeTransactionIds;
+	}
+	public void setDupeTransactionIds(List<Long> dupeTransactionIds) {
+		this.dupeTransactionIds = dupeTransactionIds;
+	}
+	public void addDupeTransactionId(Long transactionId) {
+		if(transactionId > 0 && transactionId != null){
+			this.dupeTransactionIds.add(transactionId);
+		}
 	}
 
 	@Override
