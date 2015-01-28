@@ -7,9 +7,10 @@
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
+<c:set var="safeName" value="${fn:replace(name,'_','/')}" />
 
 <%-- Test if we have a commencement date already set - if not then set to today--%>
-<c:if test="${empty data[name]}">
+<c:if test="${empty data[safeName]}">
 	<jsp:useBean id="now" class="java.util.Date" />
 	<fmt:formatDate var="commencementDate" value="${now}" pattern="dd/MM/yyyy"/>
 	<go:setData dataVar="data" xpath="${xpath}" value="${commencementDate}" />

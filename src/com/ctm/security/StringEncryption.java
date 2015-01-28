@@ -50,7 +50,7 @@ public class StringEncryption {
 		return Base64.encodeBase64String((algorithm.doFinal((this.salt + theString).getBytes())));
 	}
 
-	public static String hash(String value) throws NoSuchAlgorithmException, InvalidKeyException{
+	public static String hash(String value) throws GeneralSecurityException {
 		MessageDigest md = MessageDigest.getInstance("SHA-1");
 		return byteArray2Hex(md.digest(value.getBytes()));
 	}

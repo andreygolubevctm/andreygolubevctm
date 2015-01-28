@@ -31,29 +31,24 @@ public class ApplicationService {
 
 	/**
 	 * Check if a vertical is enabled for the brand associated with the request.
-	 */
+	 * @throws BrandException if there is no brand code
+	 **/
 	public static boolean isVerticalEnabledForBrand(HttpServletRequest request, String verticalCode) throws DaoException {
 
 		// Check for the vertical enabled setting for this brand/vertical combination.
 		Brand brand = getBrandFromRequest(request);
+		if(brand == null){
+			throw new BrandException("Unable to find valid brand code");
+		}
 		Vertical vertical = brand.getVerticalByCode(verticalCode);
 
 		if(vertical == null){
 			return false;
 		}
-
 		ConfigSetting verticalEnabledSetting = vertical.getSettingForName("status");
 
-		if(verticalEnabledSetting == null){
-			return false;
+		return verticalEnabledSetting != null && verticalEnabledSetting.getValue().equals("Y");
 		}
-
-		if(verticalEnabledSetting.getValue().equals("Y") == false){
-			return false;
-		}
-
-		return true;
-	}
 
 	/**
 	 * Returns an array of brands which are enabled for the specified vertical code.

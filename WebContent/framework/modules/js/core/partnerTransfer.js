@@ -20,6 +20,11 @@
 		errorMessage : "An error occurred. Sorry about that!",
 		errorDescription : 'There is an issue with the handover url.',
 		closeBridgingModalDialog : true
+	},
+	moduleEvents = {
+		partnerTransfer: {
+			TRANSFER_TO_PARTNER: 'TRANSFER_TO_PARTNER'
+		}
 	};
 
 	/**
@@ -157,23 +162,31 @@
 				trackHandover(settings.tracking, {
 					type:'A',
 					comment:'Apply Online'
-				}, true);
+				});
 			}
+
+			// finally publish an event
+			meerkat.messaging.publish(moduleEvents.partnerTransfer.TRANSFER_TO_PARTNER, {
+				transactionID: settings.tracking.transactionID,
+				partnerID: settings.product.trackCode,
+				productDescription: settings.product.productId
+			});
 		}
 
 		// last thing to happen no matter if there is an error or not
 		if (typeof settings.applyNowCallback == 'function') {
 			settings.applyNowCallback(true);
 		}
+
+
 	}
 
 	/**
 	 * Private method for tracking handover - this method actually calls the specific tracking methods
 	 */
-	function trackHandover( trackData, touchData, doOldTrackCall ) {
+	function trackHandover( trackData, touchData ) {
 
 		touchData = touchData || false;
-		doOldTrackCall = doOldTrackCall || false;
 
 		// Publish tracking events.
 		if(touchData !== false && _.isObject(touchData) && _.has(touchData,'type')) {
@@ -185,19 +198,12 @@
 
 		var data = _.pick(trackData, 'actionStep','brandCode','currentJourney','lastFieldTouch','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser');
 
-		// OLD tracking method
-		if(doOldTrackCall === true) {
-			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-				method:	'trackHandoverType',
-				object:	data
-			});
-		}
-
 		// NEW combined tracking method
 		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 			method:	'trackQuoteHandoverClick',
 			object:	data
 		});
+
 
 		meerkat.modules.session.poke();
 	}
@@ -206,14 +212,12 @@
 	 * Public method for tracking handover events - called by individual verticals which need to record
 	 * a handover but don't actually redirect to a 3rd party
 	 */
-	function trackHandoverEvent( trackData, touchData, doOldTrackCall ) {
-
-		doOldTrackCall = doOldTrackCall || false;
+	function trackHandoverEvent( trackData, touchData ) {
 
 		trackData = addTrackingDataToSettings(trackData || {});
 		touchData = touchData || false;
 
-		trackHandover(trackData, touchData, doOldTrackCall);
+		trackHandover(trackData, touchData);
 	}
 
 	function applyEventListeners() {
@@ -240,6 +244,7 @@
 		initTransfer: initTransfer,
 		transferToPartner: transferToPartner,
 		trackHandoverEvent: trackHandoverEvent,
-		buildURL: buildURL
+		buildURL: buildURL,
+		events: moduleEvents
 	});
 })(jQuery);

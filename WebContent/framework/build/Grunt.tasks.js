@@ -67,6 +67,18 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		}
 	};
 
+	//We build a minified file of the CTM Handover Tracking solution.
+	uglify.ctm_handover_tracking = {
+		src: [
+			tools.getExternalPath('handover') + 'ctmh.js'
+		],
+		dest: tools.getExternalPath('handover') + 'ctmh.min.js',
+		options: {
+			sourceMap: tools.getExternalPath('handover') + 'ctmh.min.map'
+			//sourceMappingURL: tools.relativizer(tools.getExternalPath('handover') + 'ctmh.min.map','../../../')
+		}
+	};
+
 	uglify[brand+'_modules'] = {
 		src: [
 			tools.getFrameworkPath('meerkat') + '*.js', //First
@@ -130,6 +142,7 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 	jshint.gruntfile = { src: '../Gruntfile.js' }; //TODO: should probably check this file too.
 	jshint.meerkat = { src: [tools.getFrameworkPath('meerkat') + '*.js'] }; // Source files to JSHint
 	jshint.modules = { src: [tools.getFrameworkPath('modules','js/core') + '*.js'] };
+	jshint.ctm_handover_tracking = { src: [tools.getExternalPath('handover') + 'ctmh.js'] };
 	
 	//Dynamic task name creation
 	verticals.forEach(function(vertical) {
@@ -295,6 +308,10 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 	watch[brand+'_modules'] = {
 		files: ['<%= uglify.'+brand+'_modules.src %>'],
 		tasks: ['jshint:modules','build_'+brand+'_js']
+	};
+	watch.ctm_handover_tracking = {
+		files: ['<%= uglify.ctm_handover_tracking.src %>'],
+		tasks: ['jshint:ctm_handover_tracking','uglify:ctm_handover_tracking']
 	};
 	watch.grunt_file = {
 		files: [

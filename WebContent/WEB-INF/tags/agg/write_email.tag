@@ -14,11 +14,12 @@
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
+<jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
+
 <c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}" />
 <c:set var="sessionId" 		value="${pageContext.session.id}" />
 <c:set var="transactionId"	value="${data.current.transactionId}" />
 <c:set var="emailAddress" 	value="${fn:trim(emailAddress)}" />
-<c:set var="hashedEmail"><security:hashed_email email="${emailAddress}" brand="${brand}" /></c:set>
 <c:if test="${empty updateName}"><c:set var="updateName" value="${true}"/></c:if>
 
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
@@ -55,24 +56,9 @@
 	<%-- Write client info to DB --%>
 	<c:choose>
 		<c:when test="${email_result eq false}">
-			<sql:update>
-			 	INSERT INTO aggregator.email_master 
-				(styleCodeId,emailAddress,emailPword,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail)
-				VALUES (?,?,?,?,?,?,?,?,CURRENT_DATE,?,?);
-				<sql:param value="${styleCodeId}" />
-				<sql:param value="${emailAddress}" />
-				<sql:param value="${emailPassword}" />
-				<sql:param value="${brand}" />
-				<sql:param value="${vertical}" />
-				<sql:param value="${source}" />
-				<sql:param value="${firstName}" />
-				<sql:param value="${lastName}" />
-				<sql:param value="${transactionId}" />
-				<sql:param value="${hashedEmail}" />
-			</sql:update>
+			${emailDetailsService.init(styleCodeId, brand , vertical)}
+			<c:set var="emailId" value="${emailDetailsService.handleWriteEmailDetailsFromJsp(emailAddress, emailPassword , source, firstName , lastName, transactionId)}" />
 		</c:when>
-		<c:otherwise>
-			<c:choose>
 				<c:when test="${not empty emailPassword}">
 			<sql:update>
 				UPDATE aggregator.email_master
@@ -96,6 +82,7 @@
 			</sql:update>
 				</c:when>
 				<c:otherwise>
+			<c:set var="hashedEmail"><security:hashed_email email="${emailAddress}" brand="${brand}" /></c:set>
 					<sql:update>
 						UPDATE aggregator.email_master
 					SET 
@@ -118,9 +105,8 @@
 				</sql:update>
 		</c:otherwise>
 	</c:choose>
-		</c:otherwise>
-	</c:choose>
 
+	<c:if test="${email_result}">
 	<sql:query var="result">
 		SELECT emailId
 			FROM aggregator.email_master
@@ -130,10 +116,10 @@
 		<sql:param value="${emailAddress}" />
 		<sql:param value="${styleCodeId}" />
 	</sql:query>
-
 	<c:set var="emailId" value="${result.rows[0].emailId}" />
+	</c:if>
 
-	<c:if test="${not empty items}">
+	<c:if test="${not empty items && not empty emailId && emailId > 0}">
 	<agg:write_email_properties
 		emailId="${emailId}"
 		email="${emailAddress}"

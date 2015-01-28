@@ -1388,3 +1388,119 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
     display: none !important;
   }
 }
+#noResultsContainer {
+  text-align: center;
+  color: #333333;
+}
+#noResultsContainer .row {
+  margin-bottom: 10px;
+}
+#noResultsContainer .row h2 {
+  margin-bottom: 0px;
+  margin-top: 20px;
+}
+#noResultsContainer .knockOutReasonsRow {
+  margin-bottom: 20px;
+}
+@media (min-width: 768px) {
+  #noResultsContainer .knockOutReasonsRow {
+    margin-bottom: 10px;
+  }
+}
+@media (min-width: 992px) {
+  #noResultsContainer .knockOutReasonsRow {
+    margin-bottom: 10px;
+  }
+}
+@media (min-width: 1200px) {
+  #noResultsContainer .knockOutReasonsRow {
+    margin-bottom: 10px;
+  }
+}
+#noResultsContainer .knockOutReasonsRow .knockOutReasons {
+  display: block;
+  vertical-align: top;
+  text-align: center;
+  list-style: none;
+  line-height: 2em;
+  padding-left: 0px;
+  margin-bottom: 0px;
+}
+@media (min-width: 768px) {
+  #noResultsContainer .knockOutReasonsRow .knockOutReasons {
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+  }
+}
+@media (min-width: 992px) {
+  #noResultsContainer .knockOutReasonsRow .knockOutReasons {
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+  }
+}
+@media (min-width: 1200px) {
+  #noResultsContainer .knockOutReasonsRow .knockOutReasons {
+    display: inline-block;
+    text-align: left;
+    padding-left: 20px;
+  }
+}
+#noResultsContainer .companyRow {
+  margin-bottom: 20px;
+}
+#noResultsContainer .companyRow .companyContainer {
+  position: relative;
+  float: left;
+  width: 50%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 30px;
+}
+@media (min-width: 768px) {
+  #noResultsContainer .companyRow .companyContainer {
+    width: 33%;
+  }
+}
+@media (min-width: 992px) {
+  #noResultsContainer .companyRow .companyContainer {
+    width: 25%;
+  }
+}
+@media (min-width: 1200px) {
+  #noResultsContainer .companyRow .companyContainer {
+    width: 20%;
+  }
+}
+#noResultsContainer .companyRow .companyContainer .companyLogo {
+  display: block;
+  margin: auto;
+  float: none;
+  margin-bottom: 5px;
+}
+@media (min-width: 992px) {
+  #noResultsContainer .companyRow .companyContainer .companyLogo {
+    width: 100px;
+    height: 100px;
+    background-size: 100px 100px;
+  }
+}
+#noResultsContainer .companyRow .companyContainer .callContainer {
+  display: block;
+}
+#noResultsContainer .companyRow .companyContainer .callContainer p {
+  margin: 0;
+}
+#noResultsContainer .companyRow .companyContainer .callContainer a {
+  margin: 0;
+  color: #417fd0;
+  font-size: 18px;
+}
+#noResultsContainer .companyRow .companyContainer .callContainer a:hover {
+  text-decoration: none;
+}
+#noResultsContainer .findAnInsurerRow {
+  margin-bottom: 40px;
+}

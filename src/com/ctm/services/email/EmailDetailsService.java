@@ -1,8 +1,10 @@
 package com.ctm.services.email;
 
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+import com.ctm.web.validation.EmailValidation;
 import org.apache.log4j.Logger;
 
 import com.ctm.dao.EmailMasterDao;
@@ -23,14 +25,31 @@ public class EmailDetailsService {
 
 	private final Data data;
 	private final EmailDetailsMappings emailDetailMappings;
-	private final EmailMasterDao emailMasterDao;
+	private EmailMasterDao emailMasterDao;
 	private final TransactionDao transactionDao;
-	private final String brandCode;
+	private String brandCode;
 	private StampingService stampingService;
 
 	private String vertical;
 
 	private static Logger logger = Logger.getLogger(EmailDetailsService.class.getName());
+
+	/**
+	 * TODO used by JSP remove when jsp has been refactored
+	 */
+	public EmailDetailsService() {
+		data = null;
+		emailDetailMappings = null;
+		transactionDao = null;
+	}
+
+	/**
+	 * TODO used by JSP remove when jsp has been refactored
+	 */
+	public void init(int brandId, String brandCode, String vertical) {
+		this.emailMasterDao = new EmailMasterDao(brandId, brandCode, vertical);
+		this.brandCode = brandCode;
+	}
 
 	public EmailDetailsService(EmailMasterDao emailMasterDao, TransactionDao transactionDao, Data data ,
 			String brandCode, EmailDetailsMappings emailDetailMappings, StampingDao stampingDao, String vertical) {
@@ -41,15 +60,6 @@ public class EmailDetailsService {
 		this.emailDetailMappings = emailDetailMappings;
 		this.stampingService = new StampingService(stampingDao);
 		this.vertical = vertical;
-	}
-
-	public EmailDetailsService(EmailMasterDao emailMasterDao, TransactionDao transactionDao ,
-			String brandCode) {
-		this.emailMasterDao = emailMasterDao;
-		this.transactionDao = transactionDao;
-		this.brandCode = brandCode;
-		this.data = null;
-		this.emailDetailMappings = null;
 	}
 
 	public EmailMaster handleReadAndWriteEmailDetails(long transactionId, EmailMaster emailDetailsRequest, String operator, String ipAddress)
@@ -84,6 +94,45 @@ public class EmailDetailsService {
 		return emailDetails;
 	}
 
+
+	/**
+	 * TODO: this is used my write_email.tag refactor write_email and remove this method
+	 * @param emailAddress
+	 * @param emailPassword
+	 * @param source
+	 * @param firstName
+	 * @param lastName
+	 * @param transactionId
+	 * @return
+	 * @throws EmailDetailsException
+	 */
+	public int handleWriteEmailDetailsFromJsp(String emailAddress, String emailPassword , String source, String firstName ,
+											   String lastName, String transactionId) throws EmailDetailsException {
+		EmailMaster emailMaster = new EmailMaster();
+		if(EmailValidation.validate(emailAddress)){
+			emailMaster.setEmailAddress(emailAddress);
+			emailMaster.setPassword(emailPassword);
+			emailMaster.setSource(source);
+			emailMaster.setFirstName(firstName);
+			emailMaster.setLastName(lastName);
+			try {
+				emailMaster.setHashedEmail(StringEncryption.hash(emailAddress + SALT + brandCode.toUpperCase()));
+			} catch (GeneralSecurityException e) {
+				logger.error(e);
+				throw new EmailDetailsException("failed to hash email", e);
+			}
+			long transId = 0L;
+			try {
+				transId =  Long.parseLong(transactionId);
+			} catch (NumberFormatException e) {
+				//Session probably died recoverable
+				logger.warn(e);
+			}
+			writeNewEmailDetails(transId , emailMaster);
+		}
+		return emailMaster.getEmailId();
+	}
+
 	private EmailMaster writeNewEmailDetails(
 			long transactionId, EmailMaster emailDetailsRequest) throws EmailDetailsException {
 
@@ -99,7 +148,7 @@ public class EmailDetailsService {
 		try {
 			emailDetails.setHashedEmail(StringEncryption.hash(emailDetails.getEmailAddress() + SALT + brandCode.toUpperCase()));
 			return emailMasterDao.writeEmailDetails(emailDetails);
-		} catch (InvalidKeyException | NoSuchAlgorithmException | DaoException e) {
+		} catch (GeneralSecurityException | DaoException e) {
 			throw new EmailDetailsException("failed to write to email details", e);
 		}
 	}

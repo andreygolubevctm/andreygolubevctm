@@ -35,7 +35,7 @@
 	var resultLabels = ${jsonString};
 </script>
 
-
+<c:set var="brandCode" value="${pageSettings.getBrandCode()}" />
 
 <div class="resultsHeadersBg">
 </div>
@@ -251,64 +251,44 @@
 		</c:forEach>
 	</div>
 
-<%-- UNAVAILABLE ROW --%>
-<core:js_template id="unavailable-template">
-	{{ var productTitle = (typeof obj.headline !== 'undefined' && typeof obj.headline.name !== 'undefined') ? obj.headline.name : 'Unknown product name'; }}
-	{{ var productDescription = (typeof obj.headline !== 'undefined' && typeof obj.headline.des !== 'undefined') ? obj.headline.des : 'Unknown product name'; }}
-
-	{{ var template = $("#provider-logo-template").html(); }}
-	{{ var logo = _.template(template); }}
-	{{ logo = logo(obj); }}
-
-	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="N">
-		<div class="result">
-			<div class="resultInsert featuresMode">
-				<div class="productSummary results">
-					{{= logo }}
-					<p>We're sorry but this provider chose not to quote.</p>
-				</div>
-			</div>
-
-			<div class="resultInsert priceMode">
-				<div class="row">
-					<div class="col-xs-2 col-sm-8 col-md-6">
-						{{= logo }}
-
-						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
-
-						<p class="description hidden-xs">{{= productDescription }}</p>
-					</div>
-					<div class="col-xs-10 col-sm-4 col-md-6">
-						<p class="specialConditions">We're sorry but this provider chose not to quote.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</core:js_template>
-
 <%-- UNAVAILABLE COMBINED ROW --%>
 <core:js_template id="unavailable-combined-template">
-{{ var template = $("#provider-logo-template").html(); }}
-{{ var logo = _.template(template); }}
-{{ var logos = ''; }}
-{{ _.each(obj, function(result) { }}
-{{	if (result.available !== 'Y') { }}
-{{		logos += logo(result); }}
-{{	} }}
-{{ }) }}
+	{{ var template = $("#provider-logo-template").html(); }}
+	{{ var logo = _.template(template); }}
+	{{ var logos = ''; }}
+	{{ var brandsKnockedOut = 0; }}
+	{{ var $featuresMode = $('.featuresMode'); }}
+	{{ _.each(obj, function(result) { }}
+		{{ if (result.available !== 'Y') { }}
+			{{ brandsKnockedOut++; }}
+			{{ logos += logo(result); }}
+		{{ } }}
+	{{ }) }}
 	<div class="result-row result_unavailable_combined notfiltered" data-available="N" style="display:block" data-position="{{= obj.length }}" data-sort="{{= obj.length }}">
 		<div class="result">
+		{{ if (brandsKnockedOut == obj.length && $featuresMode.length == 0) { }}
+			<c:choose>
+				<c:when test="${brandCode eq 'ctm'}">
+					<car:noResults />
+				</c:when>
+				<c:otherwise>
+					<div class="resultInsert priceMode clearfix">
+						<h2>We're sorry but these providers chose not to quote:</h2>
+						<div class="logos">{{= logos }}</div>
+					</div>
+				</c:otherwise>
+			</c:choose>
+		{{ } else { }}
+				<div class="resultInsert priceMode clearfix">
+					<h2>We're sorry but these providers chose not to quote:</h2>
+					<div class="logos">{{= logos }}</div>
+				</div>
+			{{ } }}
 			<div class="resultInsert featuresMode">
 				<div class="productSummary results clearfix">
 					<h2>We're sorry but these providers chose not to quote:</h2>
 					<div class="logos">{{= logos }}</div>
 				</div>
-			</div>
-
-			<div class="resultInsert priceMode clearfix">
-				<h2>We're sorry but these providers chose not to quote:</h2>
-				<div class="logos">{{= logos }}</div>
 			</div>
 		</div>
 	</div>

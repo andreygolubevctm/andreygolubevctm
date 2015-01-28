@@ -9,7 +9,7 @@
     function getBaseUrl() {
         if (meerkat.site && typeof meerkat.site.urls !== "undefined") {
             if (typeof meerkat.site.urls.context !== "undefined") {
-                return meerkat.site.urls.context;
+                return "/" + meerkat.site.urls.context;
             } else if (typeof meerkat.site.urls.base !== "undefined") {
                 return meerkat.site.urls.base;
             }

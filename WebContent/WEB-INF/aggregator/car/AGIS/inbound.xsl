@@ -10,9 +10,12 @@
 	<xsl:import href="../../includes/get_price_availability.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:param name="validationErrors"></xsl:param>
 	<xsl:param name="productId">*NONE</xsl:param>
 	<xsl:param name="defaultProductId"><xsl:value-of select="$productId" /></xsl:param>
-	<xsl:param name="service"></xsl:param>
+	<xsl:param name="service">*NONE</xsl:param>
+	<xsl:param name="defaultProductList"></xsl:param>
+	<xsl:param name="defaultServiceList"></xsl:param>
 	<xsl:param name="certServer"></xsl:param>
 	<xsl:param name="request" />
 	<xsl:param name="today" />
@@ -33,121 +36,22 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<results>
-					<price productId="{$defaultProductId}" service="{$service}">
-						<available>N</available>
-						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-						<xsl:choose>
-
-							<xsl:when test="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring">
-								<xsl:call-template name="error_message">
-									<xsl:with-param name="service" select="$service"/>
-									<xsl:with-param name="error_type">returned_fault</xsl:with-param>
-									<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultcode[1]"/></xsl:with-param>
-									<xsl:with-param name="code"></xsl:with-param>
-									<xsl:with-param name="data"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring[1]"/></xsl:with-param>
-								</xsl:call-template>
-							</xsl:when>
-
-							<xsl:when test="/soapenv:Envelope/soapenv:Body/response/errorList/error/code = '11582'">
-								<!--  This is an unconfirmed error code - awaiting confirmation on knockout error codes. -->
-								<xsl:call-template name="error_message">
-									<xsl:with-param name="service" select="$service"/>
-									<xsl:with-param name="error_type">knock_out</xsl:with-param>
-									<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/response/errorList/error/message"/></xsl:with-param>
-									<xsl:with-param name="code"></xsl:with-param>
-									<xsl:with-param name="data"></xsl:with-param>
-								</xsl:call-template>
-							</xsl:when>
-
-							<xsl:when test="/soapenv:Envelope/soapenv:Body/response/errorList/error/code">
-
-								<xsl:variable name="categories">
-									<xsl:call-template name="join">
-										<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/category" />
-										<xsl:with-param name="separator" select="','" />
-									</xsl:call-template>
-								</xsl:variable>
-
-								<xsl:variable name="elements">
-									<xsl:call-template name="join">
-										<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/element" />
-										<xsl:with-param name="separator" select="','" />
-									</xsl:call-template>
-								</xsl:variable>
-
-								<xsl:variable name="codes">
-									<xsl:call-template name="join">
-										<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/code" />
-										<xsl:with-param name="separator" select="','" />
-									</xsl:call-template>
-								</xsl:variable>
-
-								<xsl:call-template name="error_message">
-									<xsl:with-param name="service" select="$service"/>
-									<xsl:with-param name="error_type">returned_error</xsl:with-param>
-									<xsl:with-param name="message">
-										<xsl:call-template name="join">
-											<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/message" />
-											<xsl:with-param name="separator" select="','" />
-										</xsl:call-template>
-									</xsl:with-param>
-									<xsl:with-param name="code"></xsl:with-param>
-									<xsl:with-param name="data">
-										Category: <xsl:value-of select="$categories"/>; Element: <xsl:value-of select="$elements"/>; Code: <xsl:value-of select="$codes"/>
-									</xsl:with-param>
-								</xsl:call-template>
-
-							</xsl:when>
-
-							<xsl:when test="error[1]">
-								<!-- Pass through error created by CtM soap error handling -->
-								<xsl:copy-of select="error[1]"></xsl:copy-of>
-							</xsl:when>
-
-							<xsl:when test="$validationErrors != ''">
-								<xsl:call-template name="error_message">
-									<xsl:with-param name="service" select="$service"/>
-									<xsl:with-param name="error_type">invalid</xsl:with-param>
-									<xsl:with-param name="message">
-									<xsl:copy-of select="$validationErrors"></xsl:copy-of>
-									</xsl:with-param>
-									<xsl:with-param name="code"></xsl:with-param>
-									<xsl:with-param name="data"></xsl:with-param>
-								</xsl:call-template>
-							</xsl:when>
-
-							<xsl:otherwise>
-								<!-- Fall through, unknown error -->
-								<xsl:call-template name="error_message">
-									<xsl:with-param name="service" select="$service"/>
-									<xsl:with-param name="error_type">unknown</xsl:with-param>
-									<xsl:with-param name="message"></xsl:with-param>
-									<xsl:with-param name="code"></xsl:with-param>
-									<xsl:with-param name="data"></xsl:with-param>
-								</xsl:call-template>
-							</xsl:otherwise>
-						</xsl:choose>
-
-						<headlineOffer>ONLINE</headlineOffer>
-						<onlinePrice>
-							<lumpSumTotal>9999999999</lumpSumTotal>
-							<name></name>
-							<des></des>
-							<feature></feature>
-							<terms></terms>
-							<info></info>
-						</onlinePrice>
-						<trackCode></trackCode>
-						<name></name>
-						<des></des>
-						<feature></feature>
-						<terms></terms>
-						<info></info>
-
-						<xsl:call-template name="ranking">
-							<xsl:with-param name="productId">*NONE</xsl:with-param>
-						</xsl:call-template>
-					</price>
+					<xsl:choose>
+						<xsl:when test="contains($defaultProductList, '@')">
+							<xsl:call-template name="multiRenderError">
+								<xsl:with-param name="validationErrors" select="$validationErrors"/>
+								<xsl:with-param name="defaultProductList" select="$defaultProductList"/>
+								<xsl:with-param name="defaultServiceList" select="$defaultServiceList"/>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="renderError">
+								<xsl:with-param name="validationErrors" select="$validationErrors"/>
+								<xsl:with-param name="defaultProductId" select="$defaultProductId"/>
+								<xsl:with-param name="service" select="$service"/>
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
 				</results>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -166,20 +70,28 @@
 				<xsl:variable name="carbonOffset">
 					<xsl:value-of select="substring-before(substring-after($carbonOffsetText, 'Includes cost to offset '),' tonnes')" />
 				</xsl:variable>
-
-
-
+				<xsl:variable name="currentBrand">
+					<xsl:value-of select="brand/code" />
+				</xsl:variable>
 
 				<xsl:element name="price">
-					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
+					<xsl:variable name="serviceId">
+						<xsl:choose>
+							<xsl:when test="$service != '*NONE'"><xsl:value-of select="$service" /></xsl:when>
+							<xsl:otherwise>
+								<xsl:text>AGIS_</xsl:text><xsl:value-of select="$currentBrand" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 					<xsl:variable name="priceProductId">
 						<xsl:choose>
 							<xsl:when test="$productId != '*NONE'"><xsl:value-of select="$productId" /></xsl:when>
 							<xsl:otherwise>
-								<xsl:value-of select="brand/code" />-<xsl:value-of select="underwriter/code" />-<xsl:value-of select="product/code" />
+								<xsl:value-of select="$currentBrand" />-<xsl:value-of select="underwriter/code" />-<xsl:value-of select="product/code" />
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
+					<xsl:attribute name="service"><xsl:value-of select="$serviceId" /></xsl:attribute>
 					<xsl:attribute name="productId"><xsl:value-of select="$priceProductId" /></xsl:attribute>
 
 					<available>Y</available>
@@ -194,7 +106,6 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</headlineOffer>
-
 
 					<onlineAvailable>
 						<xsl:choose>
@@ -241,7 +152,7 @@
 
 					<productDes><xsl:value-of select="product/description" /></productDes>
 					<underwriter><xsl:value-of select="underwriter/description" /></underwriter>
-					<brandCode><xsl:value-of select="brand/code" /></brandCode>
+					<brandCode><xsl:value-of select="$currentBrand" /></brandCode>
 					<acn>111 586 353</acn>
 					<afsLicenceNo>285571</afsLicenceNo>
 
@@ -320,7 +231,7 @@
 
 					<disclaimer>
 						<xsl:choose>
-							<xsl:when test="brand/code = 'EXPO'">
+							<xsl:when test="$currentBrand = 'EXPO'">
 								<![CDATA[
 									*Discount applies to Australia Post Gold Comprehensive motor policies initiated and purchased online. Australia Post reserves the right to amend the discount amount. Discount applies to premium only (not fees and statutory charges) and does not extend to renewing motor policies.  The discount does not apply to any other products advertised on the Australia Post website and is not available in conjunction with any other offers.
 									<br><br>The discount offer is not available if:
@@ -349,7 +260,7 @@
 									<xsl:value-of select="$productId" />
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="brand/code" />-<xsl:value-of select="underwriter/code" />-<xsl:value-of select="product/code" />
+									<xsl:value-of select="$currentBrand" />-<xsl:value-of select="underwriter/code" />-<xsl:value-of select="product/code" />
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:with-param>
@@ -358,25 +269,25 @@
 					<discount>
 						<online>
 							<xsl:choose>
-								<xsl:when test="brand/code = 'BUDD'">25</xsl:when>
-								<xsl:when test="brand/code = 'VIRG'">20</xsl:when>
-								<xsl:when test="brand/code = 'EXDD'">10</xsl:when>
-								<xsl:when test="brand/code = '1FOW'"></xsl:when>
-								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
-								<xsl:when test="brand/code = 'EXPO'">20</xsl:when>
-								<xsl:when test="brand/code = 'IECO'"></xsl:when>
+								<xsl:when test="$currentBrand = 'BUDD'">25</xsl:when>
+								<xsl:when test="$currentBrand = 'VIRG'">20</xsl:when>
+								<xsl:when test="$currentBrand = 'EXDD'">10</xsl:when>
+								<xsl:when test="$currentBrand = '1FOW'"></xsl:when>
+								<xsl:when test="$currentBrand = 'OZIC'"></xsl:when>
+								<xsl:when test="$currentBrand = 'EXPO'">20</xsl:when>
+								<xsl:when test="$currentBrand = 'IECO'"></xsl:when>
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
 						</online>
 						<offline>
 							<xsl:choose>
-								<xsl:when test="brand/code = 'BUDD'">10</xsl:when>
-								<xsl:when test="brand/code = 'VIRG'">10</xsl:when>
-								<xsl:when test="brand/code = 'EXDD'">10</xsl:when>
-								<xsl:when test="brand/code = '1FOW'"></xsl:when>
-								<xsl:when test="brand/code = 'OZIC'"></xsl:when>
-								<xsl:when test="brand/code = 'EXPO'">10</xsl:when>
-								<xsl:when test="brand/code = 'IECO'"></xsl:when>
+								<xsl:when test="$currentBrand = 'BUDD'">10</xsl:when>
+								<xsl:when test="$currentBrand = 'VIRG'">10</xsl:when>
+								<xsl:when test="$currentBrand = 'EXDD'">10</xsl:when>
+								<xsl:when test="$currentBrand = '1FOW'"></xsl:when>
+								<xsl:when test="$currentBrand = 'OZIC'"></xsl:when>
+								<xsl:when test="$currentBrand = 'EXPO'">10</xsl:when>
+								<xsl:when test="$currentBrand = 'IECO'"></xsl:when>
 								<xsl:otherwise></xsl:otherwise>
 							</xsl:choose>
 						</offline>
@@ -384,6 +295,28 @@
 
 				</xsl:element>
 			</xsl:for-each>
+
+			<xsl:variable name="actualProductList">
+				<xsl:for-each select="quoteList/quote">
+					<xsl:value-of select="brand/code" />-<xsl:value-of select="underwriter/code" />-<xsl:value-of select="product/code" /><xsl:text>@</xsl:text>
+				</xsl:for-each>
+			</xsl:variable>
+
+			<xsl:variable name="actualServiceList">
+				<xsl:for-each select="quoteList/quote">
+					<xsl:text>AGIS_</xsl:text><xsl:value-of select="brand/code" /><xsl:text>@</xsl:text>
+				</xsl:for-each>
+			</xsl:variable>
+
+			<xsl:if test="contains($defaultProductList, '@')">
+				<xsl:call-template name="deriveError">
+					<xsl:with-param name="validationErrors" select="$validationErrors"/>
+					<xsl:with-param name="defaultProductList" select="$defaultProductList"/>
+					<xsl:with-param name="defaultServiceList" select="$defaultServiceList"/>
+					<xsl:with-param name="actualProductList" select="$actualProductList"/>
+					<xsl:with-param name="actualServiceList" select="$actualServiceList"/>
+				</xsl:call-template>
+			</xsl:if>
 
 		</results>
 	</xsl:template>
@@ -544,6 +477,208 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="renderError">
+		<xsl:param name="validationErrors" />
+		<xsl:param name="defaultProductId" />
+		<xsl:param name="service" />
+		<price productId="{$defaultProductId}" service="{$service}">
+			<available>N</available>
+			<transactionId><xsl:value-of select="$transactionId"/></transactionId>
+			<xsl:choose>
+
+				<xsl:when test="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring">
+					<xsl:call-template name="error_message">
+						<xsl:with-param name="service" select="$service"/>
+						<xsl:with-param name="error_type">returned_fault</xsl:with-param>
+						<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultcode[1]"/></xsl:with-param>
+						<xsl:with-param name="code"></xsl:with-param>
+						<xsl:with-param name="data"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring[1]"/></xsl:with-param>
+					</xsl:call-template>
+				</xsl:when>
+
+				<xsl:when test="/soapenv:Envelope/soapenv:Body/response/errorList/error/code = '11582'">
+					<!--  This is an unconfirmed error code - awaiting confirmation on knockout error codes. -->
+					<xsl:call-template name="error_message">
+						<xsl:with-param name="service" select="$service"/>
+						<xsl:with-param name="error_type">knock_out</xsl:with-param>
+						<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/response/errorList/error/message"/></xsl:with-param>
+						<xsl:with-param name="code"></xsl:with-param>
+						<xsl:with-param name="data"></xsl:with-param>
+					</xsl:call-template>
+				</xsl:when>
+
+				<xsl:when test="/soapenv:Envelope/soapenv:Body/response/errorList/error/code">
+
+					<xsl:variable name="categories">
+						<xsl:call-template name="join">
+							<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/category" />
+							<xsl:with-param name="separator" select="','" />
+						</xsl:call-template>
+					</xsl:variable>
+
+					<xsl:variable name="elements">
+						<xsl:call-template name="join">
+							<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/element" />
+							<xsl:with-param name="separator" select="','" />
+						</xsl:call-template>
+					</xsl:variable>
+
+					<xsl:variable name="codes">
+						<xsl:call-template name="join">
+							<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/code" />
+							<xsl:with-param name="separator" select="','" />
+						</xsl:call-template>
+					</xsl:variable>
+
+					<xsl:call-template name="error_message">
+						<xsl:with-param name="service" select="$service"/>
+						<xsl:with-param name="error_type">returned_error</xsl:with-param>
+						<xsl:with-param name="message">
+							<xsl:call-template name="join">
+								<xsl:with-param name="list" select="/soapenv:Envelope/soapenv:Body/response/errorList/error/message" />
+								<xsl:with-param name="separator" select="','" />
+							</xsl:call-template>
+						</xsl:with-param>
+						<xsl:with-param name="code"></xsl:with-param>
+						<xsl:with-param name="data">
+							Category: <xsl:value-of select="$categories"/>; Element: <xsl:value-of select="$elements"/>; Code: <xsl:value-of select="$codes"/>
+						</xsl:with-param>
+					</xsl:call-template>
+
+				</xsl:when>
+
+				<xsl:when test="error[1]">
+					<!-- Pass through error created by CtM soap error handling -->
+					<xsl:copy-of select="error[1]"></xsl:copy-of>
+				</xsl:when>
+
+				<xsl:when test="$validationErrors != ''">
+					<xsl:call-template name="error_message">
+						<xsl:with-param name="service" select="$service"/>
+						<xsl:with-param name="error_type">invalid</xsl:with-param>
+						<xsl:with-param name="message">
+						<xsl:copy-of select="$validationErrors"></xsl:copy-of>
+						</xsl:with-param>
+						<xsl:with-param name="code"></xsl:with-param>
+						<xsl:with-param name="data"></xsl:with-param>
+					</xsl:call-template>
+				</xsl:when>
+
+				<xsl:otherwise>
+					<!-- Fall through, unknown error -->
+					<xsl:call-template name="error_message">
+						<xsl:with-param name="service" select="$service"/>
+						<xsl:with-param name="error_type">unknown</xsl:with-param>
+						<xsl:with-param name="message"></xsl:with-param>
+						<xsl:with-param name="code"></xsl:with-param>
+						<xsl:with-param name="data"></xsl:with-param>
+					</xsl:call-template>
+				</xsl:otherwise>
+			</xsl:choose>
+
+			<headlineOffer>ONLINE</headlineOffer>
+			<onlinePrice>
+				<lumpSumTotal>9999999999</lumpSumTotal>
+				<name></name>
+				<des></des>
+				<feature></feature>
+				<terms></terms>
+				<info></info>
+			</onlinePrice>
+			<trackCode></trackCode>
+			<name></name>
+			<des></des>
+			<feature></feature>
+			<terms></terms>
+			<info></info>
+
+			<xsl:call-template name="ranking">
+				<xsl:with-param name="productId">*NONE</xsl:with-param>
+			</xsl:call-template>
+		</price>
+	</xsl:template>
+
+
+	<!-- recursive named template -->
+	<xsl:template name="multiRenderError">
+		<xsl:param name="validationErrors" />
+		<xsl:param name="defaultProductList" />
+		<xsl:param name="defaultServiceList" />
+
+		<xsl:variable name="defaultProductId">
+			<xsl:value-of select="substring-before($defaultProductList, '@')" />
+		</xsl:variable>
+		<xsl:variable name="service">
+			<xsl:value-of select="substring-before($defaultServiceList, '@')" />
+		</xsl:variable>
+
+		<xsl:call-template name="renderError">
+			<xsl:with-param name="validationErrors" select="$validationErrors"/>
+			<xsl:with-param name="defaultProductId" select="$defaultProductId"/>
+			<xsl:with-param name="service" select="$service"/>
+		</xsl:call-template>
+
+		<xsl:variable name="defaultProductList">
+			<xsl:value-of select="substring-after($defaultProductList, '@')" />
+		</xsl:variable>
+		<xsl:variable name="defaultServiceList">
+			<xsl:value-of select="substring-after($defaultServiceList, '@')" />
+		</xsl:variable>
+
+		<!-- evaluate and recurse -->
+		<xsl:if test="contains($defaultProductList, '@')">
+			<xsl:call-template name="multiRenderError" >
+				<xsl:with-param name="validationErrors" select="$validationErrors"/>
+				<xsl:with-param name="defaultProductList" select="$defaultProductList"/>
+				<xsl:with-param name="defaultServiceList" select="$defaultServiceList"/>
+			</xsl:call-template>
+		</xsl:if>
+
+	</xsl:template>
+
+	<!-- recursive named template -->
+	<xsl:template name="deriveError">
+		<xsl:param name="validationErrors" />
+		<xsl:param name="defaultProductList" />
+		<xsl:param name="defaultServiceList" />
+		<xsl:param name="actualProductList" />
+		<xsl:param name="actualServiceList" />
+
+		<xsl:variable name="defaultProductId">
+			<xsl:value-of select="substring-before($defaultProductList, '@')" />
+		</xsl:variable>
+		<xsl:variable name="service">
+			<xsl:value-of select="substring-before($defaultServiceList, '@')" />
+		</xsl:variable>
+
+		<xsl:if test="not(contains($actualProductList, $defaultProductId))">
+			<xsl:call-template name="renderError">
+				<xsl:with-param name="validationErrors" select="$validationErrors"/>
+				<xsl:with-param name="defaultProductId" select="$defaultProductId"/>
+				<xsl:with-param name="service" select="$service"/>
+			</xsl:call-template>
+		</xsl:if>
+
+		<xsl:variable name="defaultProductList">
+			<xsl:value-of select="substring-after($defaultProductList, '@')" />
+		</xsl:variable>
+		<xsl:variable name="defaultServiceList">
+			<xsl:value-of select="substring-after($defaultServiceList, '@')" />
+		</xsl:variable>
+
+		<!-- evaluate and recurse -->
+		<xsl:if test="contains($defaultProductList, '@')">
+			<xsl:call-template name="deriveError" >
+				<xsl:with-param name="validationErrors" select="$validationErrors"/>
+				<xsl:with-param name="defaultProductList" select="$defaultProductList"/>
+				<xsl:with-param name="defaultServiceList" select="$defaultServiceList"/>
+				<xsl:with-param name="actualProductList" select="$actualProductList"/>
+				<xsl:with-param name="actualServiceList" select="$actualServiceList"/>
+			</xsl:call-template>
+		</xsl:if>
+
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -4846,6 +4846,10 @@ meerkat.logging.init = function() {
         errorMessage: "An error occurred. Sorry about that!",
         errorDescription: "There is an issue with the handover url.",
         closeBridgingModalDialog: true
+    }, moduleEvents = {
+        partnerTransfer: {
+            TRANSFER_TO_PARTNER: "TRANSFER_TO_PARTNER"
+        }
     };
     function buildURL(settings) {
         var product = settings.product, handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? "POST" : "GET", brand = settings.brand ? settings.brand : product.provider, msg = settings.msg ? settings.msg : "";
@@ -4934,16 +4938,20 @@ meerkat.logging.init = function() {
                 trackHandover(settings.tracking, {
                     type: "A",
                     comment: "Apply Online"
-                }, true);
+                });
             }
+            meerkat.messaging.publish(moduleEvents.partnerTransfer.TRANSFER_TO_PARTNER, {
+                transactionID: settings.tracking.transactionID,
+                partnerID: settings.product.trackCode,
+                productDescription: settings.product.productId
+            });
         }
         if (typeof settings.applyNowCallback == "function") {
             settings.applyNowCallback(true);
         }
     }
-    function trackHandover(trackData, touchData, doOldTrackCall) {
+    function trackHandover(trackData, touchData) {
         touchData = touchData || false;
-        doOldTrackCall = doOldTrackCall || false;
         if (touchData !== false && _.isObject(touchData) && _.has(touchData, "type")) {
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                 touchType: touchData.type,
@@ -4951,23 +4959,16 @@ meerkat.logging.init = function() {
             });
         }
         var data = _.pick(trackData, "actionStep", "brandCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
-        if (doOldTrackCall === true) {
-            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                method: "trackHandoverType",
-                object: data
-            });
-        }
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: "trackQuoteHandoverClick",
             object: data
         });
         meerkat.modules.session.poke();
     }
-    function trackHandoverEvent(trackData, touchData, doOldTrackCall) {
-        doOldTrackCall = doOldTrackCall || false;
+    function trackHandoverEvent(trackData, touchData) {
         trackData = addTrackingDataToSettings(trackData || {});
         touchData = touchData || false;
-        trackHandover(trackData, touchData, doOldTrackCall);
+        trackHandover(trackData, touchData);
     }
     function applyEventListeners() {
         $(document.body).on("click", ".btn-apply", function(e) {
@@ -4988,7 +4989,8 @@ meerkat.logging.init = function() {
         initTransfer: initTransfer,
         transferToPartner: transferToPartner,
         trackHandoverEvent: trackHandoverEvent,
-        buildURL: buildURL
+        buildURL: buildURL,
+        events: moduleEvents
     });
 })(jQuery);
 

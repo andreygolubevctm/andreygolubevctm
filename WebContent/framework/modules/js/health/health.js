@@ -86,6 +86,7 @@
 		});
 
 		$('#health_application-selection').delegate('.changeStateAndQuote', 'click', changeStateAndQuote);
+
 	}
 
 	function initProgressBar(render){
@@ -158,7 +159,8 @@
 
 					$('.follow-up-call input:checkbox, .simples-privacycheck-statement input:checkbox').on('change', function() {
 						toggleDialogueInChatCallback();
-					})
+					});
+
 			}
 
 			}
@@ -1236,6 +1238,11 @@
 			}
 
 			healthDependents.init();
+
+			if(meerkat.site.isCallCentreUser === true){
+				meerkat.modules.simplesSnapshot.initSimplesSnapshot();
+			}
+
 
 		});
 

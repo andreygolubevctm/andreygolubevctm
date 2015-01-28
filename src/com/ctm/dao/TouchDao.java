@@ -1,5 +1,6 @@
 package com.ctm.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -226,6 +227,25 @@ public class TouchDao {
 		}
 
 		return touches;
+	}
+
+	public boolean hasTouch(final long transactionId, final String type) throws DaoException {
+		SimpleDatabaseConnection simpleDatabaseConnection = new SimpleDatabaseConnection();
+		try {
+			final Connection connection = simpleDatabaseConnection.getConnection();
+			final PreparedStatement statement = connection.prepareStatement("" +
+					"SELECT count(transaction_id) FROM ctm.touches " +
+					"WHERE transaction_id=? AND type=?");
+			statement.setLong(1, transactionId);
+			statement.setString(2, type);
+			final ResultSet resultSet = statement.executeQuery();
+			resultSet.first();
+			return resultSet.getInt(1) == 1;
+		} catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		} finally {
+			simpleDatabaseConnection.closeConnection();
+		}
 	}
 
 

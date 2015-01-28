@@ -5,9 +5,11 @@ var Track_IP = {
 		Track.init('IP','Details');
 		
 		Track.updateEVars = function() {
-			s.eVar63	= $('#ip_primary_insurance_value').val();	// IP: Indemnity
-			s.eVar64	= $('#ip_primary_insurance_waiting').val();	// IP: Waiting Period
-			s.eVar65	= $('#ip_primary_insurance_benefit').val();	// IP: Benefit Period
+			return {
+				IPIndemnityValue: $('#ip_primary_insurance_value').val(),
+				IPWaitingPeriod: $('#ip_primary_insurance_waiting').val(),
+				IPBenefitPeriod: $('#ip_primary_insurance_benefit').val()
+		};
 		};
 
 		Track.nextClicked = function(stage, tran_id) {
@@ -16,11 +18,9 @@ var Track_IP = {
 			switch(stage){
 				case 0:
 					actionStep = "Income Details";
-					Track.updateEVars();
 					break;
 				case 1:
 					actionStep = 'Income Compare'; 
-					Track.updateEVars();
 					break;
 				case 2:
 					actionStep = 'Income Apply'; 
@@ -53,12 +53,6 @@ var Track_IP = {
 			var ok_to_call = 	$('input[name=ip_contactDetails_call]:checked', '#mainform').val() == "Y" ? "Y" : "N";
 			var mkt_opt_in = 	$("#ip_contactDetails_optIn").is(":checked") ? "Y" : "N";	
 			
-			var emailId = "";
-			var tmpEmailId = Track._getEmailId(email, mkt_opt_in, ok_to_call);
-			if( tmpEmailId ) {
-				emailId = tmpEmailId;
-			}
-			
 				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) );
 
 			var fields = {
@@ -70,16 +64,15 @@ var Track_IP = {
 			    gender: 				gender,
 			    postCode: 				postcode,
 			    state: 					state,
-			    emailID: 				emailId,
+					email:	 				email,
+					emailID: 				null,
 			    marketOptIn: 			mkt_opt_in,
 			    okToCall: 				ok_to_call
 			};
 			
-			try {
-				superT.trackQuoteForms( fields );
-			} catch(err) {
-				/* IGNORE */
-			}
+				fields = $.extend({}, fields, Track.updateEVars());
+
+				Track.runTrackingCall('trackQuoteForms', fields);
 			}
 		};
 		
@@ -90,11 +83,12 @@ var Track_IP = {
 			for (var i = 0; i < length; i += 1) {
 				prodArray.push({
 					productID : Results._currentPrices.primary[i].product_id,
+					productBrandCode : Results._currentPrices.primary[i].company,
+					productName : Results._currentPrices.primary[i].description,
 					ranking : rank++
 				});
 			}
 			
-			try {				
 				var plan = "Annual Payment";
 				switch($('#ip_primary_insurance_frequency').val()) {
 					case "A":
@@ -106,119 +100,52 @@ var Track_IP = {
 						plan = "Instalment Payments";
 						break;
 				}
-				
-				superT.trackQuoteResultsList({
-				      paymentPlan: 			plan,
+			Track.runTrackingCall('trackQuoteResultsList', {
+				paymentPlan: plan,
 					event: eventType,
 					products:prodArray
 				});
-			} catch(err) {
-				/* IGNORE */
-			}
 		};
 		
 		Track.onMoreInfoClick = function(product_id) {
-			try {
-				superT.trackProductView({productID: product_id});
-			} catch(err) {
-				/* IGNORE */
-			}
+			Track.runTrackingCall('trackProductView', {productID: product_id});
 		};
 		
 		Track.onSaveQuote = function() {
-			try {
-				Track.updateEVars();
-				superT.trackQuoteEvent({
-					action:  "Save",
-					transactionID:	( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) )
-				});
-			} catch(err) {
-				/* IGNORE */
-			}
+			var fields = {
+				action:  "Save"
+		};
+			fields = $.extend({}, fields, Track.updateEVars());
+			Track.runTrackingCall('trackQuoteEvent', fields);
 		};
 		
 		Track.onRetrieveQuote = function() {
 			Track.onQuoteEvent("Retrieve");
 		};
 		
-		Track.onQuoteEvent = function( action ) {
-			try {
-				var tranId = ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) );
-				
-				superT.trackQuoteEvent({
-				      action: 			action,
-				      transactionID:	tranId
-				});
-			} catch(err) {
-				/* IGNORE */
-			}
-		};
-		
 		Track.onQuoteEvent = function(action, tran_id) {
 			try {
 				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) );
-
-				superT.trackQuoteEvent({
+			} catch(err) {
+				/* IGNORE */
+			}
+		
+			Track.runTrackingCall('trackQuoteEvent', {
 					action: 		action,
 					transactionID:	parseInt(tran_id, 10)
 				});
-			}
-			catch(err) {
-				/* IGNORE */
-			}
 		};
 
 		Track.onCallMeBackClick = function(product) {
-			try {
-				superT.trackHandover({
+			if(!product) {
+				return;
+			}
+			Track.runTrackingCall('trackQuoteHandoverClick', {
 					quoteReferenceNumber:	product.api_ref,
 					transactionID: 			product.transaction_id,
 					productID: 				product.product_id
 				});
-			} catch(err) {
-				/* IGNORE */
-			}
 		};
 		
-		Track.contactCentreUser = function( product_id, contactcentre_id ) {
-			try {
-				var tranId = ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) );
-				superT.contactCentreUser({
-					contactCentreID:		contactcentre_id,
-					quoteReferenceNumber: 	tranId,
-					transactionID: 			tranId,
-					productID: 				product_id
-				});
-			} catch(err) {
-				/* IGNORE */
 			}
-		};
-
-		Track._getEmailId = function(emailAddress, marketing, oktocall) {
-			var emailId = '';
-
-			if(emailAddress) {
-				var dat = {
-					vertical:Settings.vertical, 
-					email:emailAddress, 
-					m:marketing, 
-					o:oktocall,
-					transactionId:referenceNo.getTransactionID()
-				};
-
-				$.ajax({
-					url: "ajax/json/get_email_id.jsp",
-					data: dat,
-					type: "GET",
-					async: false,
-					dataType: "json",
-					success: function(msg){
-						emailId = msg.emailId;
-					}
-				});	
-				
-				return emailId;
-			}
-		};
-	}	
 };

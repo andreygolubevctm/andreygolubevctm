@@ -24,7 +24,7 @@
 		<%-- Header --%>
 		<div class="row snapshot-product-header">
 			<div class="col-sm-5 col-md-4 col=lg-3 logoContainer">{{= companyLogo}}</div>
-			<div class="col-xs-7 col-md-8 col=lg-9"><h4>{{= obj.lender}}</h4>{{= obj.name}}
+			<div class="col-xs-7 col-md-8 col=lg-9"><h4>{{= obj.lender}}</h4>{{= obj.lenderProductName}}
 			</div>
 		</div>
 		<%-- Benefits --%>

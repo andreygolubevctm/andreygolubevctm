@@ -354,7 +354,7 @@
 				productID:				product.productId,
 				productName:			product.lenderProductName,
 				productBrandCode:		product.brandCode
-			}, false, true);
+			}, false);
 		}
 	}
 

@@ -227,7 +227,7 @@ var LifeConfirmationPage = {
 			// Shift progress bar to Confirmation stage
 			QuoteEngine.gotoSlide({noAnimation:true, index:3});
 
-			Track.onCallMeBackClick(Results.getSelectedProduct());
+			Track.onCallMeBackClick(Results.getSelectedProduct('primary'));
 		
 			var link_labels = ['revise_link','save_link'];
 			var links = {};
@@ -255,7 +255,7 @@ var LifeConfirmationPage = {
 	
 	callMeBack : function()
 	{
-		Track.onCallMeBackClick(Results.getSelectedProduct());
+		Track.onCallMeBackClick(Results.getSelectedProduct('primary'));
 	}
 };
 </go:script>

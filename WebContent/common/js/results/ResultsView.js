@@ -206,7 +206,9 @@ ResultsView = {
 		Results.view.setOverflowWidthToWindowWidth();
 
 		// recalculate row heights
-		if( typeof Features !== "undefined" ) Features.balanceVisibleRowsHeight();
+		if( typeof Features !== "undefined") {
+			Features.balanceVisibleRowsHeight();
+		}
 
 		// start tracking the window resize and resize column accordingly
 		$(window).on("resize.ResultsView.columnWidthTracking", _.debounce(function debounceColumnWidthTracking(){
@@ -428,8 +430,7 @@ ResultsView = {
 			Results.view.noResultsMode = false;
 			Results.view.toggleFilters('show');
 			Results.view.toggleCompare('show');
-			$(Results.settings.elements.features.headers).show();
-			$(Results.settings.elements.resultsOverflow).show();
+			$(Results.settings.elements.features.headers + ', ' + Results.settings.elements.resultsOverflow).show();
 			$(Results.settings.elements.resultsContainer).find(".noResults.clone").remove();
 		}
 	},
@@ -439,10 +440,9 @@ ResultsView = {
 		Results.view.noResultsMode = true;
 		Results.view.toggleFilters('hide');
 		Results.view.toggleCompare('hide');
-		$(Results.settings.elements.features.headers).hide();
-		$(Results.settings.elements.resultsOverflow).hide();
-		$(Results.settings.elements.resultsContainer).find(".noResults.clone").remove();
-		$(Results.settings.elements.resultsContainer).append( $(Results.settings.elements.noResults).clone().addClass("clone").stop(true, true).delay(500).fadeIn(800) );
+		$(Results.settings.elements.features.headers + ', ' + Results.settings.elements.resultsOverflow).hide();
+		$(Results.settings.elements.resultsContainer).find(".noResults.clone").remove().end()
+		.append( $(Results.settings.elements.noResults).clone().addClass("clone").stop(true, true).delay(500).fadeIn(800) );
 		Results.pagination.reset();
 	},
 
@@ -557,7 +557,7 @@ ResultsView = {
 
 	filter: function(){
 
-		Results.view.showResults(); // reshow elements just incase previous filter filtered everything out and hid all the elements.
+		Results.view.showResults(); // re-show elements just in case previous filter filtered everything out and hid all the elements.
 
 		if(Results.settings.animation.filter.active === true) {
 		Results.view.beforeAnimation();
@@ -580,14 +580,13 @@ ResultsView = {
 		}
 
 
-		if(typeof Features !== 'undefined') {
+		if(typeof Features !== 'undefined' && Features.target !== false) {
 
 			var items = [];
 			for(var i=0;i< Results.model.filteredProducts.length;i++){
 				var product = Results.model.filteredProducts[i];
 				var productId = Object.byString( product, Results.settings.paths.productId );
-				var string = Results.settings.elements.rows +"[data-productId=" + productId + "].filtered";
-				items.push(string);
+				items.push(Results.settings.elements.rows +"[data-productId=" + productId + "].filtered");
 			}
 			if(items.length > 0){
 				$items = $( items.join(','));
@@ -598,12 +597,10 @@ ResultsView = {
 				}
 			}
 		}
-
-		$.each(Results.model.sortedProducts, function(sortedIndex, product){
+		$.each(Results.model.sortedProducts, function iterateSortedProducts(sortedIndex, product){
 
 			var productId = Object.byString( product, Results.settings.paths.productId );
 			var currentResult = $( Results.settings.elements.rows + "[data-productId=" + productId + "]" );
-
 			// result has been filtered, so fades out
 			if( $.inArray( product, Results.model.filteredProducts ) == -1 ){
 
@@ -619,7 +616,7 @@ ResultsView = {
 				}
 
 				// if was not visible before, position first, then fade it in
-				if( !currentResult.is(":visible") ){
+				if( currentResult.hasClass('filtered') ) { //previously !currentResult.is(":visible")
 
 					Results.view.fadeResultIn( currentResult, countVisible, Results.settings.animation.filter.active );
 					countFadedIn++;

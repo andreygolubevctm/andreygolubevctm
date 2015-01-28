@@ -12,6 +12,7 @@ import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.router.IncomingEmailRouter;
+import org.apache.log4j.Logger;
 
 public class AccessTouchService {
 
@@ -84,5 +85,9 @@ public class AccessTouchService {
 			logger.error(e);
 			return false;
 		}
+	}
+
+	public boolean hasTouch(final long transactionId, final TouchType touchType) throws DaoException {
+		return dao.hasTouch(transactionId, touchType.getCode());
 	}
 }

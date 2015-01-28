@@ -6,28 +6,27 @@ Track_Fuel = {
 
 		/* Tracking extensions for Travel Quotes (extend the object - no need for prototype extension as there should only ever be one Track */
 		Track.nextClicked = function(stage){
-			try {
-				superT.trackQuoteForms({
-					vertical: this._type,
-					actionStep: stage,
-					yearOfBirth: '',
-					gender: '',
-					postCode: '',
-					state: '',
-					yearOfManufacture: '',
-					makeOfCar: '',
-					emailID: '',
-					destinationCountry: '',
-					travelInsuranceType: '',
-					marketOptIn: '',
-					okToCall: ''
-				});
-			} catch(err){}
+
+			Track.runTrackingCall('trackQuoteForms', {
+				vertical: this._type,
+				actionStep: stage,
+				yearOfBirth: '',
+				gender: '',
+				postCode: '',
+				state: '',
+				yearOfManufacture: '',
+				makeOfCar: '',
+				emailID: null,
+				email: null,
+				destinationCountry: '',
+				travelInsuranceType: '',
+				marketOptIn: '',
+				okToCall: ''
+			});
 		};
 
 		Track.mapOpened = function() {
-			s.eVar68 = "Fuel:Map";
-			superT.trackCustomPage("Fuel:Map");
+			Track.runTrackingCall('trackCustomPage', {customPage: "Fuel:Map"});
 		};
 	}
 };

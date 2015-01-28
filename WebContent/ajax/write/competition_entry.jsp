@@ -76,6 +76,18 @@
 	</c:if>
 </c:if>
 
+<!-- Utilities promos, uses ID sent from life_quote_results -->
+<c:if test="${not empty param.secret and param.secret == 'W8C6A452F9823ECBE719DBZFC196C3QB'}">
+	<c:if test="${not empty param.competitionId}">
+		<c:set var="competition_id" value="${param.competitionId}" />
+		<c:choose>
+			<c:when test="${competition_id == '14'}">
+				<c:set var="source" value="Energy$1000CashPromoJan2015" />
+			</c:when>
+		</c:choose>
+	</c:if>
+</c:if>
+
 <%-- STEP 1: Validate the input received before proceeding --%>
 <c:if test="${empty data['competition/email']}">
 	<c:set var="errorPool" value="{error:'Your email address is required.'}" />

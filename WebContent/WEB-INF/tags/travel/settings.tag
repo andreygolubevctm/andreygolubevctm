@@ -16,5 +16,8 @@
 	navMenu: {
 		type: 'offcanvas',
 		direction: 'right'
+	},
+	ctmh: {
+		fBase: "${pageSettings.getSetting("handoverRootUrl")}${pageSettings.getSetting("contextFolder")}"
 	}
 }

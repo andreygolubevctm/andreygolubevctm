@@ -41,7 +41,7 @@ Reset = {
 		var dat = $("#resetPasswordForm").serialize();
 		var self = this;
 		$.ajax({
-			url: "generic/reset_password",
+			url: "generic/reset_password.json",
 			data: dat,
 			type: "POST",
 			async: true,

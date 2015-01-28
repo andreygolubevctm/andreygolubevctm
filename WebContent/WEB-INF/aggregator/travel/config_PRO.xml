@@ -162,10 +162,11 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="SKII" type="url-encoded">
-		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_1COV.jsp?providerId=293</soap-url>
+	<service name="SKII" type="soap">
+		<soap-url>https://www.ski-insurance.com.au/services/quotes.wsdl</soap-url>
+		<soap-action>https://www.ski-insurance.com.au/services</soap-action>
 		<outbound-xsl>SKII_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001,username=CTM,password=ZECEgnKGr7JhzDsagryJ7P8</outbound-xsl-parms>
 		<inbound-xsl>SKII_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=SKII</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
@@ -189,10 +190,11 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="ITRK" type="url-encoded">
-		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=300</soap-url>
+	<service name="ITRK" type="soap">
+		<soap-url>https://www.itrektravelinsurance.com.au/services/quotes.wsdl</soap-url>
+		<soap-action>https://www.itrektravelinsurance.com.au/services</soap-action>
 		<outbound-xsl>ITRK_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001,username=CTM,password=ZECEgnKGr7JhzDsagryJ7P8t</outbound-xsl-parms>
 		<inbound-xsl>ITRK_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ITRK</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>

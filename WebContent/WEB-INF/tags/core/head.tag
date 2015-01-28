@@ -227,10 +227,13 @@
 
 		// Head javascript
 		<go:insertmarker format="SCRIPT" name="js-head" />
-
+		<c:set var="env" value="${environmentService.getEnvironmentAsString()}" />
 		var Settings =  new Object();
 		Settings.vertical = '${pageSettings.getVerticalCode()}';
 		Settings.brand = '${pageSettings.getBrandCode()}';
+		Settings.superTagEnabled = <c:out value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />;
+		Settings.DTMEnabled = <c:out value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />;
+		<c:choose><c:when test="${env eq 'localhost' or env eq 'NXI'}">Settings.environment = '<c:out value="${env}" />';</c:when><c:otherwise>Settings.environment = null;</c:otherwise></c:choose>
 
 		var UserData =  new Object();
 		<c:choose>
@@ -239,6 +242,7 @@
 			</c:when>
 			<c:otherwise>
 				UserData.callCentre = true;
+				UserData.callCentreID = '${authenticatedData.login.user.uid}';
 			</c:otherwise>
 		</c:choose>
 

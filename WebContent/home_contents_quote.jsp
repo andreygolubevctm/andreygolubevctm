@@ -7,6 +7,17 @@
 <session:new verticalCode="HOME" authenticated="true" />
 
 <fmt:setLocale value="en_AU" scope="session" />
+<%-- Import the data on QuickLaunch action --%>
+<c:if test="${not empty param.action && param.action == 'ql'}">
+	<c:if test="${not empty param.home_coverType}">
+		<go:setData dataVar="data" value="${param.home_coverType}" xpath="home/coverType" />
+	</c:if>
+	<c:if test="${not empty param.home_startDate}">
+		<go:setData dataVar="data" value="${param.home_startDate}" xpath="home/startDate" />
+	</c:if>
+</c:if>
+
+<c:set var="xpath" value="home" scope="session" />
 
 <core:quote_check quoteType="home" />
 <core_new:load_preload />

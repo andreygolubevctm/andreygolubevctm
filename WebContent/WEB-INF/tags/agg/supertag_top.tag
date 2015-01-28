@@ -44,11 +44,6 @@ if(typeof superT!="undefined" && typeof superT.t=="function")
 				Track_${type}.init('${initVertical}');
 			</c:otherwise>
 		</c:choose>
-
-		<c:set var="loginData" value="${authenticatedData.login}" />
-		<c:if test="${loginData.user.uid != ''}">
-			Track.trackUser('${loginData.user.uid}');
-		</c:if>
 	</go:script>
 
 	<c:set var="pageName">

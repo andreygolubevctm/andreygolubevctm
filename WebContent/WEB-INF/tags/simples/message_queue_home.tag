@@ -9,7 +9,7 @@
 
 <div class="simples-home-buttons hidden">
 	<field:button xpath="loadquote" title="Get Next Message" className="btn btn-tertiary btn-lg message-getnext" />
-	<a href="/${pageSettings.getContextFolder()}simples/startQuote.jsp" class="btn btn-form btn-lg message-inbound">Start New Quote <span class="icon icon-arrow-right"></span></a>
+	<a href="/${pageSettings.getContextFolder()}simples/startQuote.jsp?verticalCode=HEALTH" class="btn btn-form btn-lg message-inbound">Start New Quote <span class="icon icon-arrow-right"></span></a>
 </div>
 
 <div class="simples-message-details-container">

@@ -328,6 +328,10 @@ Features = {
 	},
 
 	balanceVisibleRowsHeight: function(){
+		// Never needs to run on price mode.
+		if(Features.target === false || (typeof Results.getDisplayMode === 'function' && Results.getDisplayMode() == 'price')) {
+			return;
+		}
 		var visibleMultirowElements = $( Features.target + " " + Results.settings.elements.features.values+":visible"  ); // Removed .filter(":visible") because IE couldn't handle it.
 		Features.sameHeightRows( visibleMultirowElements );
 	},
@@ -361,8 +365,6 @@ Features = {
 		for(var i =0;i<featureRowCache.length;i++){
 
 			var item2 = featureRowCache[i];
-
-			var featureId = item2.featureId;
 
 			for(var j =0;j<item2.elements.length;j++){
 

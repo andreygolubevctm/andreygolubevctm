@@ -61,10 +61,6 @@
 	
 <go:script marker="onready">
 	
-	<c:if test="${isNewQuote eq false and not empty callCentre}">
-		Track.contactCentreUser( '${data.life.application.productId}', '${authenticatedData.login.user.uid}' );
-	</c:if>
-
 	<c:if test="${not empty bs_life}">
 		QuestionSetUpdater.setLife(${bs_life});
 	</c:if>

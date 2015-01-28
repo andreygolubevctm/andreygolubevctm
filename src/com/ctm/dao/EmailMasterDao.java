@@ -15,8 +15,8 @@ import com.ctm.model.EmailMaster;
 
 public class EmailMasterDao {
 
-	private static Logger logger = Logger.getLogger(EmailMasterDao.class.getName());
-	private SimpleDatabaseConnection dbSource;
+	private static final Logger logger = Logger.getLogger(EmailMasterDao.class.getName());
+	private final SimpleDatabaseConnection dbSource;
 	private int brandId;
 	private String vertical;
 	private String brandCode;
@@ -26,7 +26,7 @@ public class EmailMasterDao {
 	 */
 	public EmailMasterDao() {
 		this.dbSource = new SimpleDatabaseConnection();
-	};
+	}
 
 	public EmailMasterDao(int brandId, String brandCode, String vertical) {
 		this.dbSource = new SimpleDatabaseConnection();
@@ -59,7 +59,7 @@ public class EmailMasterDao {
 			Connection conn = dbSource.getConnection();
 			if(conn != null) {
 				stmt = conn.prepareStatement(
-					"SELECT emailid, firstName , lastName, emailAddress, hashedEmail " +
+					"SELECT emailId, firstName , lastName, emailAddress, hashedEmail " +
 					"FROM aggregator.email_master " +
 					"WHERE emailAddress = ? " +
 					"AND styleCodeId = ?;"
@@ -71,7 +71,7 @@ public class EmailMasterDao {
 				ResultSet resultSet = stmt.executeQuery();
 
 				while (resultSet.next()) {
-					hashedEmailInfo.setEmailId(resultSet.getInt("emailid"));
+					hashedEmailInfo.setEmailId(resultSet.getInt("emailId"));
 					hashedEmailInfo.setFirstName(resultSet.getString("firstName"));
 					hashedEmailInfo.setLastName(resultSet.getString("lastName"));
 					hashedEmailInfo.setEmailAddress(resultSet.getString("emailAddress"));
@@ -95,7 +95,7 @@ public class EmailMasterDao {
 		return getEmailMasterFromHashedEmail(hashedEmail);
 	}
 
-	public EmailMaster getEmailMasterFromHashedEmail(String hashedEmail) throws DaoException {
+	private EmailMaster getEmailMasterFromHashedEmail(String hashedEmail) throws DaoException {
 		EmailMaster hashedEmailInfo =  new EmailMaster();
 		try {
 			hashedEmailInfo.setHashedEmail(hashedEmail);
@@ -103,7 +103,7 @@ public class EmailMasterDao {
 			Connection conn = dbSource.getConnection();
 			if(conn != null) {
 				stmt = conn.prepareStatement(
-						"SELECT emailid, firstName , lastName, emailAddress " +
+						"SELECT emailId, firstName , lastName, emailAddress " +
 						"FROM aggregator.email_master " +
 						"WHERE hashedEmail = ? " +
 						"AND styleCodeId = ? " +
@@ -116,7 +116,7 @@ public class EmailMasterDao {
 				ResultSet resultSet = stmt.executeQuery();
 
 				while (resultSet.next()) {
-					hashedEmailInfo.setEmailId(resultSet.getInt("emailid"));
+					hashedEmailInfo.setEmailId(resultSet.getInt("emailId"));
 					hashedEmailInfo.setFirstName(resultSet.getString("firstName"));
 					hashedEmailInfo.setLastName(resultSet.getString("lastName"));
 					hashedEmailInfo.setEmailAddress(resultSet.getString("emailAddress"));
@@ -163,7 +163,7 @@ public class EmailMasterDao {
 					emailDetails= new EmailMaster();
 					emailDetails.setHashedEmail(resultSet.getString("hashedEmail"));
 					String optedIn = resultSet.getString("optedIn");
-					boolean isOptedIn = optedIn == null ? false : optedIn.equalsIgnoreCase("Y");
+					boolean isOptedIn = optedIn != null && optedIn.equalsIgnoreCase("Y");
 					emailDetails.setOptedInMarketing(isOptedIn , vertical);
 					emailDetails.setEmailAddress(emailAddress);
 				}
@@ -187,19 +187,20 @@ public class EmailMasterDao {
 			if(conn != null) {
 				stmt = conn.prepareStatement(
 				"INSERT INTO aggregator.email_master " +
-				"(styleCodeId,emailAddress,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) " +
-				"VALUES (?,?,?,?,?,?,?,CURRENT_DATE,?,?); ", java.sql.Statement.RETURN_GENERATED_KEYS
+				"(styleCodeId, emailAddress, emailPword, brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) " +
+				"VALUES (?,?,?,?,?,?,?, ? ,CURRENT_DATE,?,?); ", java.sql.Statement.RETURN_GENERATED_KEYS
 				);
 
 				stmt.setInt(1 , brandId);
 				stmt.setString(2 , emailDetails.getEmailAddress());
-				stmt.setString(3 , brandCode);
-				stmt.setString(4 , vertical);
-				stmt.setString(5 , emailDetails.getSource());
-				stmt.setString(6 , emailDetails.getFirstName());
-				stmt.setString(7 , emailDetails.getLastName());
-				stmt.setLong(8 , emailDetails.getTransactionId());
-				stmt.setString(9 , emailDetails.getHashedEmail());
+				stmt.setString(3 , emailDetails.getPassword());
+				stmt.setString(4 , brandCode);
+				stmt.setString(5 , vertical);
+				stmt.setString(6 , emailDetails.getSource());
+				stmt.setString(7 , emailDetails.getFirstName());
+				stmt.setString(8 , emailDetails.getLastName());
+				stmt.setLong(9 , emailDetails.getTransactionId());
+				stmt.setString(10, emailDetails.getHashedEmail());
 				stmt.executeUpdate();
 
 				// Update the emailDetails model with the insert ID
@@ -304,11 +305,7 @@ public class EmailMasterDao {
 		stmt.close();
 	}
 
-	public EmailMaster getEmailMasterById(int emailid, int brandId) throws DaoException {
-		this.brandId = brandId;
-		return getEmailMasterById(emailid);
-}
-	public EmailMaster getEmailMasterById(int emailid) throws DaoException {
+	public EmailMaster getEmailMasterById(int emailId) throws DaoException {
 		EmailMaster hashedEmailInfo =  new EmailMaster();
 		try {
 			PreparedStatement stmt;
@@ -322,13 +319,13 @@ public class EmailMasterDao {
 					+ "LIMIT 1;"
 				);
 
-				stmt.setInt(1 , emailid);
+				stmt.setInt(1 , emailId);
 				stmt.setInt(2 , brandId);
 
 				ResultSet resultSet = stmt.executeQuery();
 
 				while (resultSet.next()) {
-					hashedEmailInfo.setEmailId(emailid);
+					hashedEmailInfo.setEmailId(emailId);
 					hashedEmailInfo.setEmailAddress(resultSet.getString("emailAddress"));
 				}
 				resultSet.close();

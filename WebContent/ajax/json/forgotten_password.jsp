@@ -22,7 +22,7 @@
 		<%--
 			From the outside looking in, it seems like disc currently makes a token IN THIS FILE and sends the email regardless. It must also go and look up the mysql database to see if one exists there too.
 
-			Once we're in the /generic/reset_password, we'll send the token to disc again, and if it finds it in disc will handle it there... otherwise we'll get an error xml node back from disc and it contains the persons email address matching the token that disc created earlier, and we then overwrite the password on the mysql side. Disc is the lookup point to return the email address for a token, so this token creation, mailout, and then lookup before reset needs to be developed on our side now for the mysql setup.
+			Once we're in the /generic/reset_password.json, we'll send the token to disc again, and if it finds it in disc will handle it there... otherwise we'll get an error xml node back from disc and it contains the persons email address matching the token that disc created earlier, and we then overwrite the password on the mysql side. Disc is the lookup point to return the email address for a token, so this token creation, mailout, and then lookup before reset needs to be developed on our side now for the mysql setup.
 		--%>
 
 		<%-- Check email on MySQL --%> <%-- This seems like it's only to say, OK to the ajax request... we don't actually take any action to email or create a token here. I'm changing this now. --%>

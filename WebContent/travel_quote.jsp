@@ -100,6 +100,18 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
+		<%-- <div id="CtMh_logging_frame" style="position: absolute; overflow-y: scroll; top: 160px; left: 51%; background: #cfcfcf; width: 48%; height: 500px;"><h4>Outside IFrame</h4></div> --%>
+		<%--
+			This is put here for the moment instead of layout page, as we're minimising the impact of the code to travel only initially for the CTM handover tracking library.
+			For uat situations, we need to override the initial domain as the script defaults to production. This override sets the options in the first lib, not inside the iframe, and that's okay.
+		--%>
+		<c:if test="${environmentService.getEnvironmentAsString() != 'pro' || environmentService.getEnvironmentAsString() != 'prelive'}">
+			<script>
+				var _CtMH = {};
+				_CtMH.options = { 'fBase': meerkat.site.ctmh.fBase };
+			</script>
+		</c:if>
+		<script src="${assetUrl}external/handover/ctmh.min.js"></script>
 	</jsp:attribute>
 				
 	<jsp:body>

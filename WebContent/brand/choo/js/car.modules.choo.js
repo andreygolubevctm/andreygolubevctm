@@ -1411,7 +1411,6 @@
             });
             return false;
         }
-        trackHandover(product);
         meerkat.modules.partnerTransfer.transferToPartner({
             encodeTransferURL: true,
             product: product,
@@ -1440,38 +1439,14 @@
     }
     function trackCallEvent(type) {
         var product = meerkat.modules.moreInfo.getOpenProduct();
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackBridgingClick",
-            object: {
-                vertical: meerkat.site.vertical,
-                productBrandCode: product.brandCode,
-                type: type,
-                quoteReferenceNumber: product.leadNo,
-                transactionID: meerkat.modules.transactionId.get(),
-                productID: product.productId
-            }
-        });
         meerkat.modules.partnerTransfer.trackHandoverEvent({
             product: product,
             type: type,
             quoteReferenceNumber: product.leadNo,
-            transactionID: meerkat.modules.transactionId.get(),
             productID: product.productId,
             productName: product.headline.name,
             productBrandCode: product.brandCode
         }, false, false);
-    }
-    function trackHandover(product) {
-        var transaction_id = meerkat.modules.transactionId.get();
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackHandover",
-            object: {
-                quoteReferenceNumber: product.leadNo,
-                transactionID: transaction_id,
-                productID: product.productId,
-                productBrandCode: product.brandCode
-            }
-        });
     }
     function trackProductView() {
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
@@ -1838,11 +1813,6 @@
         }
     }
     function showNoResults() {
-        if (meerkat.site.tracking.brandCode == "ctm") {
-            meerkat.modules.dialogs.show({
-                htmlContent: $("#no-results-content")[0].outerHTML
-            });
-        }
         if (meerkat.modules.hasOwnProperty("carFilters")) {
             meerkat.modules.carFilters.disable();
         }

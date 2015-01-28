@@ -19,7 +19,7 @@
 
 	<body>
 
-		<form:form action="reset_password.jsp" method="POST" id="resetPasswordForm" name="resetPasswordForm">
+		<form:form action="/generic/reset_password.json" method="POST" id="resetPasswordForm" name="resetPasswordForm">
 
 			<div id="wrapper">
 				<form:header hasReferenceNo="false" />

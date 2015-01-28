@@ -8,18 +8,14 @@ public class EmailMaster implements Cloneable {
 
 	private String lastName = "";
 	private String firstName = "";
-	private int emailId;
+	private int emailId = 0;
 	private String emailAddress;
 	private boolean valid = false;
 	private String hashedEmail;
-	private Map<String, Boolean> marketingOptIn = new HashMap<String, Boolean>();
+	private Map<String, Boolean> marketingOptIn = new HashMap<>();
 	private long transactionId;
 	private String source;
 	private String password;
-
-	public Map<String, Boolean> getMarketingOptIn() {
-		return marketingOptIn;
-	}
 
 	public void setMarketingOptIn(Map<String, Boolean> marketingOptIn) {
 		this.marketingOptIn = marketingOptIn;

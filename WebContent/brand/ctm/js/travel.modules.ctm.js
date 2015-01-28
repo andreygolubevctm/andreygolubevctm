@@ -142,6 +142,42 @@
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    function callFunctions() {
+        log("[handoverCookieSetup]", "Running the onready code");
+        if (meerkat.site.environment != "pro" || meerkat.site.environment != "prelive") {
+            log("[handoverCookieSetup]", "_CtMH setting test options now");
+            _CtMH.setOpts({
+                debug: meerkat.site.showLogging,
+                asTest: true,
+                endp: meerkat.site.ctmh.fBase + "handover/confirm"
+            });
+        }
+        log("[handoverCookieSetup]", "_CtMH running start now");
+        _CtMH.start(meerkat.modules.transactionId.get(), meerkat.site.vertical);
+    }
+    function init() {
+        log("[handoverCookieSetup]", "Initialised");
+        meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, function resultsCallback() {
+            log("[handoverCookieSetup]", "RESULTS_DATA_READY", "Triggered");
+            if (typeof _CtMH !== "undefined") {
+                log("[handoverCookieSetup]", "_CtMH is defined");
+                _CtMH.onready(callFunctions());
+            }
+        });
+        meerkat.messaging.subscribe(meerkatEvents.partnerTransfer.TRANSFER_TO_PARTNER, function partnerTransferCallback(data) {
+            log("[handoverCookieSetup]", "partnerTransfer.TRANSFER_TO_PARTNER", "Triggered");
+            if (typeof _CtMH !== "undefined") {
+                _CtMH.add(data.transactionID, data.partnerID, data.productDescription);
+            }
+        });
+    }
+    meerkat.modules.register("handoverCookieSetup", {
+        init: init
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, templateMoreInfo;
     var moduleEvents = {
         traveldetails: {

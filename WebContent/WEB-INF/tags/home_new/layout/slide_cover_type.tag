@@ -3,6 +3,10 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" />
+
+<%-- Load in quicklaunch form values from brochure site --%>
+<home_new:quicklaunch_preload />
+
 <layout:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
 
 	<layout:slide_columns sideHidden="false">

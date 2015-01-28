@@ -35,7 +35,7 @@
 <fmt:formatDate var="nowPlusMonthDate" pattern="yyyy-MM-dd" value="${nowPlusMonth.time}" />
 
 <%-- PRELOAD HANDLING --%>
-<c:if test="${not empty param.preload and param.preload eq 'true'}">
+<c:if test="${not empty param.preload and param.preload eq 'true' and empty data[xpath]}">
 	<fmt:formatDate var="nowDiffFmt" pattern="dd/MM/yyyy" value="${now.time}" />
 	<go:setData dataVar="data" xpath="${xpath}" value="${nowDiffFmt}" />
 </c:if>

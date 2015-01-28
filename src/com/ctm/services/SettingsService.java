@@ -25,7 +25,7 @@ public class SettingsService {
 	 * @return
 	 * @throws DaoException
 	 * @throws ConfigSettingException
-	 * @throws Exception
+	 * @throws BrandException if there is no brand code or it is not enabled for the vertical
 	 */
 	public static PageSettings setVerticalAndGetSettingsForPage(HttpServletRequest request, String verticalCode) throws DaoException, ConfigSettingException {
 

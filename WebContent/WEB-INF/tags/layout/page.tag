@@ -273,13 +273,13 @@
 			isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
-						<%-- could be: localhost, integration, qa, staging, prelive, prod --%>
+						<%-- could be: localhost, integration, qa, staging, prelive, pro --%>
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId},</c:if>
 						<%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
 						urls:{
 							base: '${fn:toLowerCase(pageSettings.getBaseUrl())}',
 							exit: '${exitUrl}',
-							context: '/${fn:toLowerCase(pageSettings.getContextFolder())}'
+							context: '${fn:toLowerCase(pageSettings.getContextFolder())}'
 						},
 						watchedFields: '<content:get key="watchedFields"/>',
 						content:{

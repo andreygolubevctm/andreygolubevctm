@@ -12,6 +12,7 @@
 	Marketing/promo code collector
 --%>
 <c:set var="xpath" value="${root}/cid" />
+
 <c:choose>
 	<c:when test="${not empty data[xpath]}">
 		<%-- Retain campaign in data bucket --%>
@@ -28,6 +29,21 @@
 		<c:set var="cid" ><c:out value="${go:decodeUrl(param.cid)}" escapeXml="true"/></c:set>
 		<c:set var="source" value="param"/>
 		<go:setData dataVar="data" xpath="${xpath}" value="${cid}" />
+	</c:when>
+	<c:when test="${not empty param.utm_campaign}">
+		<c:set var="cid" ><c:out value="${go:decodeUrl(param.utm_campaign)}" escapeXml="true"/></c:set>
+		<c:set var="source" value="invalid param - Aborting"/>
+
+		<%-- Get Valid Campaign Codes  --%>
+		<c:set var="campaign_codes">
+			<content:get key="utm_campaign"/>
+		</c:set>
+		<c:forTokens delims="," items="${campaign_codes}" var="code">
+			<c:if test="${code eq cid}">
+				<c:set var="source" value="param"/>
+				<go:setData dataVar="data" xpath="${xpath}" value="${cid}" />
+			</c:if>
+		</c:forTokens>
 	</c:when>
 </c:choose>
 <go:log source="core:referral_tracking">CID: ${cid} from ${source}</go:log>

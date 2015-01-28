@@ -168,8 +168,8 @@
 <field:hidden xpath="${xpath}/streetName" />
 <field:hidden xpath="${xpath}/suburbName" />
 <c:choose>
-	<c:when test="${stateValidation}">
-		<field_new:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="${stateValidation}" />
+	<c:when test="${not empty stateValidationField}">
+		<field_new:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="${stateValidationField}" />
 	</c:when>
 	<c:otherwise>
 		<field:hidden xpath="${xpath}/state" />

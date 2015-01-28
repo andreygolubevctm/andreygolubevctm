@@ -26,7 +26,7 @@
 		<div class="row headerBar">
 			<div class="col-xs-12">
 				<div class="col-xs-4 col-sm-2 logoContainer">{{= companyLogo}}</div>
-				<div class="col-xs-8 col-sm-10"><h2>{{= obj.lender}}</h2>{{= obj.name}}</div>
+				<div class="col-xs-8 col-sm-10"><h2>{{= obj.lender}}</h2>{{= obj.lenderProductName}}</div>
 			</div>
 		</div>
 

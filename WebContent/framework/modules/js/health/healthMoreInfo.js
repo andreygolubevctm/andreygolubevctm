@@ -125,7 +125,7 @@
 							productName:			product.info.name,
 							productBrandCode:		product.info.FundCode,
 								simplesUser: meerkat.site.isCallCentreUser
-						}, false, true);
+						}, false);
 							}
 					else {
 						applyCallback(false);

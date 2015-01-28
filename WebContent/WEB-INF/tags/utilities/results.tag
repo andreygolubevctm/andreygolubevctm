@@ -411,6 +411,17 @@
 		text-align:center;
 	}
 
+	.promo-container label {
+		margin-left: 5px;
+	}
+	.promo-image {
+		background-repeat: no-repeat;
+		padding: 0;
+		display: block;
+		width: 300px;
+		height: 160px;
+		background-image: url(brand/ctm/images/results_utilities/energy-1000-offer.png);
+	}
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -882,7 +893,7 @@ Results = {
 	
 	getPeriodString : function( code ) {
 		switch( code ) {
-			case "2":
+			case "B":
 				return "/2 Months"
 			case "M":
 				return "/Month";

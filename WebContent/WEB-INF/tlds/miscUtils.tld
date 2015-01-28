@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+
+	<description>Misc Utils Tag Library</description>
+	<display-name>MiscUtils</display-name>
+	<tlib-version>0.1</tlib-version>
+	<short-name>miscUtils</short-name>
+
+	<function>
+		<description>MiscUtils</description>
+		<name>randomiseContent</name>
+		<function-class>com.ctm.utils.MiscUtils</function-class>
+		<function-signature>
+			com.ctm.model.content.Content randomiseContent(com.ctm.model.content.Content)
+		</function-signature>
+		<example>
+			<![CDATA[
+				${miscUtils:randomiseContent(contentObject)};
+			]]>
+		</example>
+	</function>
+
+</taglib>

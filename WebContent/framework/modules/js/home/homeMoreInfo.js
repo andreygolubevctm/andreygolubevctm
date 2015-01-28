@@ -532,8 +532,6 @@
 			return false;
 		}
 
-		trackHandover(product);
-
 		meerkat.modules.partnerTransfer.transferToPartner({
 			encodeTransferURL:	true,
 			product:			product,
@@ -585,20 +583,6 @@
 	function trackCallEvent(type) {
 		var product = meerkat.modules.moreInfo.getOpenProduct();
 
-		// Legacy tracking call
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method:'trackBridgingClick',
-			object:{
-				type: type,
-				quoteReferenceNumber: product.leadNo,
-				transactionID: meerkat.modules.transactionId.get(),
-				productID: product.productId,
-				verticalFilter: meerkat.modules.home.getVerticalFilter(),
-				productBrandCode: product.brandCode
-			}
-		});
-
-		// NEW tracking call
 		meerkat.modules.partnerTransfer.trackHandoverEvent({
 			product:				product,
 			type:					type,
@@ -608,25 +592,7 @@
 			productName:			product.headline.name,
 			verticalFilter:			meerkat.modules.home.getVerticalFilter(),
 			productBrandCode:		product.brandCode
-		}, false, false);
-	}
-
-	/**
-	 * Tracks when we click Proceed to Insurer
-	 */
-	function trackHandover( product ) {
-
-		var transaction_id = meerkat.modules.transactionId.get();
-		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method:'trackHandover',
-			object:{
-				quoteReferenceNumber: product.leadNo,
-				transactionID: transaction_id,
-				productID: product.productId,
-				productBrandCode: product.brandCode,
-				verticalFilter: meerkat.modules.home.getVerticalFilter()
-			}
-		});
+		}, false);
 	}
 
 	/**

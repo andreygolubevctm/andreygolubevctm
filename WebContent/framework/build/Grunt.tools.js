@@ -21,6 +21,13 @@ module.exports = function(grunt,rootOverride){
 
 	return {
 
+		getExternalPath: function(component,sub,rootOverride) {
+			var subPath = '/';
+			if (typeof sub !== 'undefined') { subPath  += sub + '/'; }
+			var root = (typeof rootOverride !== 'undefined') ? '/' : rt;
+			return '' + root + 'external/' + component + subPath;
+		},
+
 		getFrameworkPath: function(component,sub,rootOverride) {
 			var subPath = '/';
 			if (typeof sub !== 'undefined') { subPath  += sub + '/'; }

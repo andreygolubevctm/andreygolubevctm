@@ -13,7 +13,7 @@ var Track_Utilities = {
 			var email2 = 		$("#utilities_application_details_email").val();
 			var ok_to_call = 	$("#utilities_privacyoptin").is(":checked") ? "Y" : "N";
 			var mkt_opt_in = 	$("#utilities_privacyoptin").is(":checked") ? "Y" : "N";
-			
+
 
 			var gender = "";
 			switch( $('#utilities_application_details_title').val() ) {
@@ -48,21 +48,13 @@ var Track_Utilities = {
 					actionStep = 'Energy Your Details';
 					Write.touchQuote('A');
 					break;
-				case 3:					
+				case 3:
 					actionStep = 'Energy Confirmation';
 					email = $("#utilities_application_details_email").val();
 					// TODO MAP TO NEW CHECKBOX
-					ok_to_call = "N"; 
+					ok_to_call = "N";
 					mkt_opt_in = $("#utilities_application_thingsToKnow_receiveInfo").val();
 					break;
-			}
-
-			if(stage < 3){
-				var emailId = "";
-				var tmpEmailId = Track._getEmailId(email, mkt_opt_in, ok_to_call);
-				if( tmpEmailId ) {
-					emailId = tmpEmailId;
-				}
 			}
 
 			if( actionStep != false ) {
@@ -78,16 +70,13 @@ var Track_Utilities = {
 					gender: 				gender,
 					postCode: 				postcode,
 					state: 					state,
-					emailID: 				emailId,
+					email: 					email,
+					emailID: 				null,
 					marketOptIn: 			mkt_opt_in,
 					okToCall: 				ok_to_call
 				};
 
-				try {
-					superT.trackQuoteForms( fields );
-				} catch(err) {
-					/* IGNORE */
-				}
+				Track.runTrackingCall('trackQuoteForms', fields);
 			}
 		};
 
@@ -100,106 +89,55 @@ var Track_Utilities = {
 					ranking : rank++
 				});
 			}
-
-			try {
-				superT.trackQuoteResultsList({
-					event:eventType,
-					products:prodArray
-				});
-			} catch(err) {
-				/* IGNORE */
-			}
+			Track.runTrackingCall('trackQuoteResultsList', {
+				event:eventType,
+				products:prodArray
+			});
 		};
 
 		Track.onMoreInfoClick = function(product_id) {
-			try {
-				Track.nextClicked(1.5);
-				superT.trackProductView({productID: product_id});
-			} catch(err) {
-				/* IGNORE */
+			if(!product_id) {
+				return;
 			}
+			Track.nextClicked(1.5);
+			Track.runTrackingCall('trackProductView', {productID: product_id});
 		};
 
 		Track.onConfirmation = function( product ) {
-			try {
-				superT.completedApplication({
-					quoteReferenceNumber: product.transactionId,
-					transactionID: 		product.transactionId,
-					productID: 			product.productId
-				});
-			} catch(err) {
-				/* IGNORE */
+			if(!product) {
+				return;
 			}
+			Track.runTrackingCall('completedApplication', {
+				quoteReferenceNumber: product.transactionId,
+				transactionID: 		product.transactionId,
+				productID: 			product.productId
+			});
+
 		};
 
 		Track.onSaveQuote = function() {
-			try {
-				superT.trackQuoteEvent({
-					action:  "Save",
-					transactionID:	( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) )
-				});
-			} catch(err) {
-				/* IGNORE */
-			}
+			Track.runTrackingCall('trackQuoteEvent', {
+				action:  "Save",
+				transactionID:	( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) )
+			});
 		};
 
 		Track.onRetrieveQuote = function() {
 			Track.onQuoteEvent("Retrieve");
 		};
 
-		Track.onQuoteEvent = function( action ) {
-			try {
-				var tranId = ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) );
-
-				superT.trackQuoteEvent({
-					action: 		action,
-					transactionID:	tranId
-				});
-			} catch(err) {
-				/* IGNORE */
-			}
-		};
-
 		Track.onQuoteEvent = function(action, tran_id) {
 			try {
 				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) );
-
-				superT.trackQuoteEvent({
-					action: 		action,
-					transactionID:	parseInt(tran_id, 10)
-				});
 			}
 			catch(err) {
 				/* IGNORE */
 			}
-		};
 
-		Track._getEmailId = function(emailAddress, marketing, oktocall) {
-			var emailId = '';
-
-			if (emailAddress) {
-
-				var dat = {
-					vertical:Settings.vertical,
-					email:emailAddress,
-					m:marketing,
-					o:oktocall,
-					transactionId:referenceNo.getTransactionID()
-				};
-
-				$.ajax({
-					url: "ajax/json/get_email_id.jsp",
-					data: dat,
-					type: "GET",
-					async: false,
-					dataType: "json",
-					success: function(msg){
-						emailId = msg.emailId;
-					}
-				});
-
-				return emailId;
-			}
+			Track.runTrackingCall('trackQuoteEvent', {
+				action:  action,
+				transactionID:	parseInt(tran_id, 10)
+			});
 		};
 
 	}

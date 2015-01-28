@@ -19,6 +19,19 @@ public class EmailValidationTest {
 
 		isValid = EmailValidation.validate("");
 		assertFalse(isValid);
+
+
+		isValid = EmailValidation.validate("Testin.O'Test+7@comparethemarket.com.au");
+		assertTrue(isValid);
+
+		isValid = EmailValidation.validate("Testina.Mctest!@gmail.com");
+		assertTrue(isValid);
+
+		isValid = EmailValidation.validate("14049955@student.test.edu.au");
+		assertTrue(isValid);
+
+		isValid = EmailValidation.validate("-==---@test.com");
+		assertTrue(isValid);
 	}
 
 }

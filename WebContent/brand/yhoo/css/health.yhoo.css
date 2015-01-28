@@ -3368,6 +3368,17 @@ header .healthCallCentreSpecialHoursLink {
 .filterProviderLogo .companyLogo {
   margin-top: 5px;
 }
+#navbar-main .simplesSnapshot {
+  padding-left: 40px;
+}
+#navbar-main span.snapshotJourneyName:empty + span,
+#navbar-main span.snapshotSituation:empty + span,
+#navbar-main span.snapshotState:empty + span {
+  display: none;
+}
+#navbar-main .navbar-text-block {
+  max-height: 30px;
+}
 .btn-more-info {
   background-color: #333333;
   color: #ffffff;

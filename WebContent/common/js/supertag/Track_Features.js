@@ -11,11 +11,7 @@ Track_Features = {
 			vertical: this._type,
 			actionStep: "Select"
 		};
-
-		try {
-			//console.log("SUPERTAG - SELECT - PLEASE REMOVE ME");
-			superT.trackQuoteForms(stObj);
-		} catch(err){}
+		Track.runTrackingCall('trackQuoteForms', stObj);
 
 
 		Track.resultsShown=function(eventType){
@@ -23,8 +19,8 @@ Track_Features = {
 			try {
 
 				var productsArray = Track_Features.getDisplayedProducts();
-				superT.trackFeaturedProducts({products:productsArray});
-				superT.trackQuoteForms({
+				Track.runTrackingCall('trackFeaturedProducts', {products:productsArray});
+				Track.runTrackingCall('trackQuoteForms', {
 					paymentPlan: '',
 					preferredExcess: '',
 					sortEnvironment: '',
@@ -49,7 +45,7 @@ Track_Features = {
 				Write.touchQuote('H', false, 'CompareProducts');
 
 				var productsArray = Track_Features.getDisplayedProducts();
-				superT.trackCompareFeatures({ products: productsArray });
+				Track.runTrackingCall('trackCompareFeatures', { products: productsArray });
 
 			} catch(err){
 				Track_Features.onError("Track.compareClicked: "+err);
@@ -84,7 +80,7 @@ Track_Features = {
 			for (var b in brands){
 				brandsArray.push({brand:brands[b]});
 			}
-			superT.trackBrandComparison({ brands: brandsArray });
+			Track.runTrackingCall('trackBrandComparison', { brands: brandsArray });
 
 		} catch(err){
 			Track_Features.onError("Track_Features.trackBrandSelection: "+err);
