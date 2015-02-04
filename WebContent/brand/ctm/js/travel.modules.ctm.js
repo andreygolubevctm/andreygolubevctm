@@ -75,6 +75,7 @@
                 if (!hasTrackedThisTab) {
                     hasRunTrackingCall.push(getRankingFilter());
                 }
+                meerkat.modules.utilities.scrollPageTo("html body");
             }
         });
     }
@@ -145,7 +146,7 @@
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     function callFunctions() {
         log("[handoverCookieSetup]", "Running the onready code");
-        if (meerkat.site.environment != "pro" || meerkat.site.environment != "prelive") {
+        if (meerkat.site.environment != "pro" && meerkat.site.environment != "prelive") {
             log("[handoverCookieSetup]", "_CtMH setting test options now");
             _CtMH.setOpts({
                 debug: meerkat.site.showLogging,

@@ -362,6 +362,7 @@
 						parent.find('.formInput').hide();
 						parent.find('.moreInfoEmailBrochuresSuccess').show();
 						meerkat.modules.emailBrochures.tearDown(settings);
+						meerkat.modules.healthResults.setSelectedProduct(product);
 					} else {
 						meerkat.modules.errorHandling.error({
 							errorLevel:		'warning',

@@ -18,6 +18,8 @@
 			<go:setData dataVar="data" xml="${utilitiesXml}" />		
 </c:if>
 
+<c:set var="hasBill" value="${param.has_bill}" />
+
 <c:set var="xpath" value="utilities" scope="session" />
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
@@ -41,6 +43,15 @@
 			<field:hidden xpath="utilities/order/estimatedcosts" defaultValue="" />
 			<field:hidden xpath="utilities/partner/uniqueCustomerId" defaultValue="" />
 					
+	<c:choose>
+		<c:when test="${hasBill == 'yes'}">
+			<field:hidden xpath="utilities/hasBill" defaultValue="Y" />
+		</c:when>
+		<c:otherwise>
+			<field:hidden xpath="utilities/hasBill" defaultValue="N" />
+		</c:otherwise>
+		</c:choose>
+
 			<form:operator_id xpath="${xpath}/operatorid" />
 			
 			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />

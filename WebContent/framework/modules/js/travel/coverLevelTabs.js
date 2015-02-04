@@ -155,6 +155,9 @@
 				if(!hasTrackedThisTab) {
 					hasRunTrackingCall.push(getRankingFilter());
 				}
+
+				// scroll back to the top of the page 
+				meerkat.modules.utilities.scrollPageTo("html body");
 			}
 
 

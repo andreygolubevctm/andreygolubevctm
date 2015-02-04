@@ -180,23 +180,20 @@ public class TouchDao {
 			//
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT DISTINCT t2.transaction_id, CONCAT(t2.date, ' ', t2.time) as dateTime, " +
-				"t2.operator_id, t2.type " +
+				"SELECT DISTINCT t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
+				"t.operator_id, t.type " +
 
-				"FROM ctm.touches t " +
-
-				"	INNER JOIN aggregator.transaction_header AS th " +
-				"		ON th.transactionid  = t.transaction_id " +
+				"FROM aggregator.transaction_header AS th  " +
 
 				"	INNER JOIN aggregator.transaction_header AS th2 " +
-				"		ON th.rootId = th2.rootId " +
+				"	ON th.rootId = th2.rootId " +
 
-				"	INNER JOIN ctm.touches AS t2 " +
-				"	ON t2.transaction_id = th2.transactionid " +
+				"	INNER JOIN ctm.touches AS t " +
+				"	ON t.transaction_id = th2.transactionid " +
 
-				"	WHERE t.transaction_id  IN ( " + questionMarksBuilder(transactionIds.size()) + ") " +
+				"	WHERE th.transactionId  IN ( " + questionMarksBuilder(transactionIds.size()) + ") " +
 
-				"	ORDER BY t2.id DESC, t2.date DESC, t2.time DESC LIMIT 50"
+				"	ORDER BY t.id DESC, t.date DESC, t.time DESC LIMIT 50"
 			);
 
 			int i = 1;

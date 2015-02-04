@@ -137,7 +137,8 @@ public class MessageDao {
 			stmt = dbSource.getConnection().prepareStatement(
 				"SELECT id, status " +
 				"FROM simples.message_status " +
-				"WHERE parentId = ?;"
+				"WHERE parentId = ? " +
+				"AND active = 1;"
 			);
 			stmt.setInt(1, parentStatusId);
 

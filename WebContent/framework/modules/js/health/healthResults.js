@@ -704,6 +704,14 @@
 				Results.pagination.gotoPosition(targetPosition, true, false);
 			}
 
+			// update transaction details otherwise we will have to wait until people get to payment page
+			meerkat.modules.writeQuote.write({ 
+				health_application_provider: selectedProduct.info.provider,
+				health_application_productId: selectedProduct.productId,
+				health_application_productName: selectedProduct.info.productCode,
+				health_application_productTitle: selectedProduct.info.productTitle
+			}, false);
+
 		}
 
 	}

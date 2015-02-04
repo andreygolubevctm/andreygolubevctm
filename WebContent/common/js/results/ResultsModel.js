@@ -157,9 +157,7 @@ ResultsModel = {
 			},
 			error: function(jqXHR, txt, errorThrown){
 				Results.model.ajaxRequest = false;
-				if (jqXHR.status === 0 || jqXHR.readyState === 0) { // Aborted - not an error
-					return;
-				} else {
+				if (jqXHR.status !== 0 && jqXHR.readyState !== 0) { // is an error
 				Results.model.handleFetchError( data, "AJAX request failed: " + txt + " " + errorThrown );
 				}
 			},

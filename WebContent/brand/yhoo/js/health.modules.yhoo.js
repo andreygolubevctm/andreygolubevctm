@@ -3482,6 +3482,7 @@ creditCardDetails = {
                     parent.find(".formInput").hide();
                     parent.find(".moreInfoEmailBrochuresSuccess").show();
                     meerkat.modules.emailBrochures.tearDown(settings);
+                    meerkat.modules.healthResults.setSelectedProduct(product);
                 } else {
                     meerkat.modules.errorHandling.error({
                         errorLevel: "warning",
@@ -5027,6 +5028,12 @@ creditCardDetails = {
                 $targetProduct.addClass("active");
                 Results.pagination.gotoPosition(targetPosition, true, false);
             }
+            meerkat.modules.writeQuote.write({
+                health_application_provider: selectedProduct.info.provider,
+                health_application_productId: selectedProduct.productId,
+                health_application_productName: selectedProduct.info.productCode,
+                health_application_productTitle: selectedProduct.info.productTitle
+            }, false);
         }
     }
     function resetSelectedProduct() {

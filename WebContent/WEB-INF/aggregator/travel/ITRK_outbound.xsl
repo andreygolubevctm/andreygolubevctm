@@ -85,9 +85,9 @@
 			</soapenv:Header>
 			<soapenv:Body>
 				<quot:GetQuotesRequest>
-					<quot:partner-id>1</quot:partner-id>
+					<quot:partner-id>2</quot:partner-id>
 					<quot:source-id>1</quot:source-id>
-					<quot:schema-version>1</quot:schema-version>
+					<quot:schema-version>2</quot:schema-version>
 					<quot:partner-reference>1</quot:partner-reference>
 					<quot:client-ip-address><xsl:value-of select="clientIpAddress" /></quot:client-ip-address>
 					<quot:destination>

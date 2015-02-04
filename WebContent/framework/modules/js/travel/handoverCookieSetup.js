@@ -8,7 +8,7 @@
 	function callFunctions(){
 		log('[handoverCookieSetup]','Running the onready code');
 		//So, we want NXI,NXS,NXQ and localhost to all act as test, but only NXI and local will show logging by default.
-		if (meerkat.site.environment != "pro" || meerkat.site.environment != "prelive") {
+		if (meerkat.site.environment != "pro" && meerkat.site.environment != "prelive") {
 			log('[handoverCookieSetup]','_CtMH setting test options now');
 			_CtMH.setOpts({
 				'debug': meerkat.site.showLogging,

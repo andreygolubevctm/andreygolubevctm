@@ -172,19 +172,21 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="30UN" type="url-encoded">
-		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_1COV.jsp?providerId=294</soap-url>
+	<service name="30UN" type="soap">
+		<soap-url>https://www.under30stravelinsurance.com.au/services/quotes.wsdl</soap-url>
+		<soap-action>https://www.under30stravelinsurance.com.au/services</soap-action>
 		<outbound-xsl>30UN_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001,username=CTM,password=ZECEgnKGr7JhzDsagryJ7P8t</outbound-xsl-parms>
 		<inbound-xsl>30UN_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=30UN</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="KANG" type="url-encoded">
-		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=299</soap-url>
+	<service name="KANG" type="soap">
+		<soap-url>https://www.kangocover.com.au/services/quotes.wsdl</soap-url>
+		<soap-action>https://www.kangocover.com.au/services</soap-action>
 		<outbound-xsl>KANG_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001,username=CTM,password=ZECEgnKGr7JhzDsagryJ7P8t</outbound-xsl-parms>
 		<inbound-xsl>KANG_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=KANG</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
