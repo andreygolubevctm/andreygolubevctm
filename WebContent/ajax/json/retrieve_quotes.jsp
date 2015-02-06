@@ -57,24 +57,62 @@
 		<%-- Load in quotes from MySQL --%>
 			<%-- Find the latest transactionIds for the user.  --%>
 		<sql:query var="transactions">
-			SELECT DISTINCT th.TransactionId AS id, th.ProductType AS productType,
-				th.EmailAddress AS email, th.StartDate AS quoteDate, th.StartTime AS quoteTime,
+				SELECT * FROM
+				(
+					(SELECT DISTINCT th.TransactionId AS id, th.ProductType AS productType,
+							th.EmailAddress AS email, DATE(th.StartDate) AS quoteDate, TIME(th.StartTime) AS quoteTime,
 				COALESCE(t1.type,t2.type,1) AS editable,
 				COALESCE(MAX(th2.transactionid),th.TransactionId) AS latestID,
 				td.textValue as pendingID
-			FROM aggregator.transaction_header As th
+						FROM aggregator.transaction_header As th
 			INNER JOIN ctm.touches AS tch ON tch.transaction_id = th.TransactionId AND tch.type = 'S'
 			LEFT JOIN ctm.touches t1 ON th.TransactionId = t1.transaction_id AND t1.type = 'C'
 			LEFT JOIN ctm.touches t2 ON th.TransactionId = t2.transaction_id AND t2.type = 'F'
-			LEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId
-			LEFT JOIN aggregator.transaction_details td ON th.TransactionId = td.TransactionId AND sequenceNo = -7
+						LEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId
+						LEFT JOIN aggregator.transaction_details td ON th.TransactionId = td.TransactionId AND sequenceNo = -7
 			WHERE th.EmailAddress = ?
 				AND th.styleCodeId = ?
 			GROUP BY id
-			ORDER BY th.TransactionId DESC
+						ORDER BY th.transactionId DESC
+				LIMIT 20
+					)
+					UNION ALL
+					(SELECT te.transactionId AS id,
+						(SELECT verticalCode FROM ctm.vertical_master WHERE verticalID = th2c.verticalId) AS productType,
+						(SELECT emailAddress FROM aggregator.email_master WHERE emailId = te.emailId) AS email,
+						DATE(DATE_FORMAT(th2c.transactionStartDateTime,'%Y-%m-%d')) AS quoteDate,
+						TIME(DATE_FORMAT(th2c.transactionStartDateTime,'%T')) AS quoteTime,
+						COALESCE(t1.type,t2.type,1) AS editable,
+						(SELECT max(transactionId) AS id FROM aggregator.transaction_header
+							WHERE rootId = th2c.rootId
+							UNION ALL
+							SELECT max(transactionId) AS id FROM aggregator.transaction_header2_cold
+							WHERE rootId = th2c.rootId
+							ORDER BY id DESC
+						LIMIT 1) AS latestID,
+						td.textValue as pendingID
+					FROM aggregator.transaction_emails te
+						JOIN aggregator.transaction_header2_cold th2c USING (transactionId)
+						INNER JOIN ctm.touches AS tch ON tch.transaction_id = te.TransactionId AND tch.type = 'S'
+						LEFT JOIN ctm.touches t1 ON te.TransactionId = t1.transaction_id AND t1.type = 'C'
+						LEFT JOIN ctm.touches t2 ON te.TransactionId = t2.transaction_id AND t2.type = 'F'
+						LEFT JOIN aggregator.transaction_details2_cold td ON te.TransactionId = td.TransactionId AND fieldID = 861
+						LEFT JOIN aggregator.transaction_header2_cold th2 ON th2.rootId = th2c.rootId
+					WHERE te.emailId = (SELECT emailId FROM aggregator.email_master
+							WHERE styleCodeId = ?
+							AND EmailAddress = ?)
+						GROUP BY id
+						ORDER BY te.transactionId DESC
+						LIMIT 20
+					)
+				) AS savedQuotes
+				GROUP BY id
+				ORDER BY id DESC
 				LIMIT 20
 			<sql:param>${emailAddress}</sql:param>
 				<sql:param>${styleCodeId}</sql:param>
+				<sql:param>${styleCodeId}</sql:param>
+				<sql:param>${emailAddress}</sql:param>
 		</sql:query>
 
 		<%-- Test for DB issue and handle - otherwise move on --%>
@@ -127,12 +165,23 @@
 					details.xpath,
 					header.ProductType AS productType,
 					details.textValue
-					FROM aggregator.transaction_details AS details
-					RIGHT JOIN aggregator.transaction_header AS header
+						FROM aggregator.transaction_details AS details
+						RIGHT JOIN aggregator.transaction_header AS header
 						ON details.transactionId = header.TransactionId
 					WHERE details.transactionId IN (${tranIds})
                            AND styleCodeId = ?
-					ORDER BY transactionId DESC, sequenceNo ASC;
+						UNION ALL
+						SELECT details.transactionId,
+						tf.fieldCode AS xpath,
+						(SELECT verticalCode FROM ctm.vertical_master WHERE verticalID = details.verticalId) AS productType,
+						details.textValue
+						FROM aggregator.transaction_details2_cold AS details
+							RIGHT JOIN aggregator.transaction_header2_cold header USING(transactionId)
+							JOIN aggregator.transaction_fields tf USING(fieldId)
+						WHERE details.transactionId IN (${tranIds})
+						AND header.styleCodeId = ?
+						ORDER BY transactionId DESC, xpath ASC;
+						<sql:param>${styleCodeId}</sql:param>
 						<sql:param>${styleCodeId}</sql:param>
 				</sql:query>
 			</c:catch>

@@ -49,12 +49,7 @@
 		try {
 
 			// build the initial url
-			url = "transferring.jsp?transactionId="+meerkat.modules.transactionId.get()+"&trackCode="+product.trackCode + "&brand="+brand+"&msg="+msg+"&url=";
-
-			// this will avoid affecting other handover urls from other verticals
-			url += (product.encodeUrl === 'Y' || settings.encodeTransferURL === true) ? encodeURIComponent(product.quoteUrl) : product.quoteUrl;
-
-			url += "&tracking=" + tracking;
+			url = "transferring.jsp?transactionId="+meerkat.modules.transactionId.get()+"&trackCode="+product.trackCode+"&brand="+brand+"&msg="+msg+"&vertical="+meerkat.site.vertical+"&productId="+product.productId+"&tracking=" + tracking;
 
 			if (handoverType.toLowerCase() === "post")
 			{

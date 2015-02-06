@@ -5,7 +5,14 @@
 <c:set var="transactionId">
 	<c:out value="${param.transactionId}" escapeXml="true" />
 </c:set>
+<c:set var="productId">
+	<c:out value="${param.productId}" escapeXml="true" />
+</c:set>
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+
+<jsp:useBean id="resultsService" class="com.ctm.services.ResultsService" scope="request" />
+
+<c:set var="quoteUrl" value="${resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl') }" />
 
 <%-- HTML --%>
 <layout:generic_page title="Transferring you...">
@@ -74,6 +81,7 @@
 							<div class="bounce3"></div>
 						</div>
 						<p class="message">Please wait while we transfer you</p>
+						<div class="quoteUrl" quoteUrl="${quoteUrl}"></div>
 					</div>
 				</div>
 			</article>

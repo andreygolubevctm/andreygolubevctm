@@ -6,12 +6,33 @@ function getUrlVars() {
     return vars;
 }
 
+function transferError(description, data) {
+	meerkat.modules.errorHandling.error({
+		errorLevel:		"fatal",
+		page:			"transferring.js",
+		description:	description,
+		data:			data,
+		closeWindow:	true,
+		transactionId:	data.transactionId
+	});
+}
 
 $(window).load(function() {
-	var url = decodeURIComponent(getUrlVars()['url']);
+	var transactionId = decodeURIComponent(getUrlVars()['transactionId']);
+	var productId = decodeURIComponent(getUrlVars()['productId']);
+	var vertical = decodeURIComponent(getUrlVars()['vertical']);
 	var msg = decodeURIComponent(getUrlVars()['msg']);
 	var brand = decodeURIComponent(getUrlVars()['brand']);
 	var tracking = null;
+
+	var data = {
+		transactionId: transactionId,
+		productId: productId,
+		vertical: vertical,
+		msg: msg,
+		brand: brand,
+		tracking: tracking
+	};
 
 	if(getUrlVars().hasOwnProperty('tracking')) {
 		try {
@@ -48,7 +69,18 @@ $(window).load(function() {
 			$mainForm.append(textArea);
 			$mainForm.submit();
 		} else {
-			window.location.replace(url);
+				try {
+			var quoteUrl = $('.quoteUrl').attr('quoteUrl');
+			if (quoteUrl != '') {
+					quoteUrl = decodeURIComponent(quoteUrl);
+				window.location.replace(quoteUrl);
+			} else {
+						transferError("No quoteURL was found for the transfer handover for "+vertical, data);
+					}
+				} catch (e) {
+					transferError("Something went wrong during the redirect of the trasferring page for "+vertical, data);
+				}
+
 		}
 		next();
 	});

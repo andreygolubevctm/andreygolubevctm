@@ -3229,14 +3229,25 @@ meerkat.logging.init = function() {
     function showErrorMessage(fatal, data) {
         var buttons;
         if (fatal) {
-            buttons = [ {
-                label: "Refresh page",
-                className: "btn-cta",
-                action: function(eventObject) {
-                    location.reload();
-                },
-                closeWindow: false
-            } ];
+            if (data.closeWindow === true) {
+                buttons = [ {
+                    label: "Close page",
+                    className: "btn-cta",
+                    action: function(eventObject) {
+                        window.close();
+                    },
+                    closeWindow: false
+                } ];
+            } else {
+                buttons = [ {
+                    label: "Refresh page",
+                    className: "btn-cta",
+                    action: function(eventObject) {
+                        location.reload();
+                    },
+                    closeWindow: false
+                } ];
+            }
             if (meerkat.site.isDev === true) {
                 buttons.push({
                     label: "Attempt to continue [dev only]",
@@ -4857,9 +4868,7 @@ meerkat.logging.init = function() {
         tracking.brandXCode = settings.tracking.brandCode;
         tracking = encodeURIComponent(JSON.stringify(tracking));
         try {
-            url = "transferring.jsp?transactionId=" + meerkat.modules.transactionId.get() + "&trackCode=" + product.trackCode + "&brand=" + brand + "&msg=" + msg + "&url=";
-            url += product.encodeUrl === "Y" || settings.encodeTransferURL === true ? encodeURIComponent(product.quoteUrl) : product.quoteUrl;
-            url += "&tracking=" + tracking;
+            url = "transferring.jsp?transactionId=" + meerkat.modules.transactionId.get() + "&trackCode=" + product.trackCode + "&brand=" + brand + "&msg=" + msg + "&vertical=" + meerkat.site.vertical + "&productId=" + product.productId + "&tracking=" + tracking;
             if (handoverType.toLowerCase() === "post") {
                 url += "&handoverType=" + product.handoverType + "&handoverData=" + encodeURIComponent(product.handoverData) + "&handoverURL=" + encodeURIComponent(product.handoverUrl) + "&handoverVar=" + product.handoverVar;
             }

@@ -28,7 +28,7 @@
 			className="pretty_buttons"
 			id="marketing"
 			title="if you would like to be informed via email of news and other offers" />
-		<p class="optinText">I agree to receive news &amp; offer emails from Compare the Market &amp; the insurance provider that presents the lowest price.</p>
+		<p class="optinText"><content:get key="okToEmail" /></p>
 	</form_new:row>
 
 	<%-- Best Contact Number --%>

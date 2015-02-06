@@ -4,6 +4,7 @@
 
 <%@ attribute name="transactionId" 			required="true"	 rtexprvalue="true"	 description="Transaction" %>
 <%@ attribute name="recordXPaths" 			required="true"	 rtexprvalue="true"	 description="A comma delimetered list of xpaths which are to be written to the database" %>
+<%@ attribute name="baseXmlNode" 			required="true"	 rtexprvalue="true"	 description="The base xml node that is wrapped around each result." %>
 <%@ attribute name="sessionXPaths" 			required="false"	 rtexprvalue="true"	 description="A comma delimetered list of xpaths which are to be written to the session object - eg premiums" %>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
@@ -21,7 +22,7 @@
 
 ${go:appendString(insertSQLSB ,'INSERT INTO aggregator.results_properties (transactionId,productId,property,value) VALUES ')}
 
-<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
+<c:forEach var="result" items="${soapdata[baseXmlNode]}" varStatus='vs'>
 
 	<c:if test="${result['available'] == 'Y' || result['productAvailable'] == 'Y'}">
 

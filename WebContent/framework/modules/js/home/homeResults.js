@@ -478,9 +478,11 @@
 	}
 
 	function showNoResults() {
+		if (meerkat.site.tracking.brandCode == 'ctm') {
 		meerkat.modules.dialogs.show({
 			htmlContent: $('#no-results-content')[0].outerHTML
 		});
+		}
 
 		if (meerkat.modules.hasOwnProperty('homeFilters')) {
 			meerkat.modules.homeFilters.disable();

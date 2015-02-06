@@ -80,7 +80,18 @@
 		<sql:query var="getTransaction" dataSource="jdbc/aggregator">
 			SELECT `ProductType`,`EmailAddress`,`styleCodeId`,`styleCode`,`rootId`
 			FROM aggregator.transaction_header
-			WHERE TransactionId = ? AND styleCodeId = ?;
+			WHERE TransactionId = ? AND styleCodeId = ?
+			UNION ALL
+			SELECT vm.verticalCode AS productType, em.emailAddress AS EmailAddress,th2c.`styleCodeId`,sc.styleCode,`rootId`
+			FROM aggregator.transaction_header2_cold th2c
+				JOIN ctm.vertical_master vm USING(verticalId)
+				JOIN ctm.stylecodes sc USING(styleCodeId)
+				LEFT JOIN aggregator.transaction_emails te USING(transactionId)
+				LEFT JOIN aggregator.email_master em ON em.styleCodeId = th2c.styleCodeId AND em.emailId = te.emailId
+			WHERE th2c.TransactionId = ? AND th2c.styleCodeId = ?
+			LIMIT 1;
+			<sql:param value="${requestedTransaction}" />
+			<sql:param value="${styleCodeId}" />
 			<sql:param value="${requestedTransaction}" />
 			<sql:param value="${styleCodeId}" />
 		</sql:query>
@@ -152,8 +163,15 @@
 							INSERT INTO aggregator.transaction_details
 							SELECT ${tranId} as transactionId, sequenceNo, xpath, textValue, numericValue, dateValue
 							FROM aggregator.transaction_details
+								WHERE transactionId = ?
+								UNION ALL
+								SELECT ${tranId} as transactionId, (@sequence := @sequence + 1) AS sequenceNo, tf.fieldCode AS xpath, td2c.textValue, 0.00, CURDATE()
+								FROM aggregator.transaction_details2_cold td2c
+									JOIN aggregator.transaction_fields tf USING(fieldId)
+									JOIN (SELECT @sequence := 0) AS sequencer
 							WHERE transactionId = ?;
 							<sql:param value="${requestedTransaction}" />
+								<sql:param value="${requestedTransaction}" />
 						</sql:update>
 
 						<%-- Finally we'll replace the requestedTransaction var with the new ID --%>

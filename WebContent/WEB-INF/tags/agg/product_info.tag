@@ -260,16 +260,8 @@
 				id = ResultsPopup.popid;
 			}
 			var popTop = screen.height + 300;
-			var url = "transferring.jsp?transactionId="+details.transactionId+"&trackCode="+details.trackCode + "&brand="+details.provider+"&url=";
+			var url = "transferring.jsp?transactionId="+details.transactionId+"&trackCode="+details.trackCode + "&brand="+details.provider+"&productId="+id+"&vertical=roadside";
 			//omnitureReporting(4);
-
-			// this will avoid affecting other handover urls from other verticals
-			if (details.encodeUrl === 'Y')
-			{
-				url += encodeURIComponent(details.quoteUrl);
-			} else {
-				url += details.quoteUrl;
-			}
 
 			if (details.handoverType === "post")
 			{

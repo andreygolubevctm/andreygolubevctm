@@ -135,7 +135,16 @@
 								WHERE td.transactionId = ?
 								AND td.transactionId = th.transactionId
 								AND th.styleCodeId = ?
-								ORDER BY sequenceNo ASC;
+								UNION ALL
+								SELECT td2c.transactionId, tf.fieldCode AS xpath, td2c.textValue
+								FROM aggregator.transaction_details2_cold td2c
+									JOIN aggregator.transaction_header2_cold th2c USING(transactionId)
+									JOIN aggregator.transaction_fields tf USING(fieldId)
+								WHERE td2c.transactionId = ?
+								AND th2c.styleCodeId = ?
+								ORDER BY xpath ASC;
+								<sql:param value="${requestedTransaction}" />
+								<sql:param value="${styleCodeId}" />
 								<sql:param value="${requestedTransaction}" />
 								<sql:param value="${styleCodeId}" />
 							</sql:query>
@@ -148,7 +157,24 @@
 								AND td.transactionId = th.transactionId
 								AND th.styleCodeId = ?
 								AND th.EmailAddress = ?
-								ORDER BY sequenceNo ASC;
+								UNION ALL
+								SELECT td2c.transactionId, tf.fieldCode AS xpath, td2c.textValue
+								FROM aggregator.transaction_details2_cold td2c
+									JOIN aggregator.transaction_header2_cold th2c USING(transactionId)
+									JOIN aggregator.transaction_fields tf USING(fieldId)
+									JOIN aggregator.transaction_emails te USING(transactionId)
+								WHERE td2c.transactionId = ?
+								AND th2c.styleCodeId = ?
+								AND ? =
+									( SELECT emailAddress
+									FROM aggregator.email_master
+									WHERE emailId = te.emailId
+									AND styleCodeId = 1
+									)
+								ORDER BY xpath ASC;
+								<sql:param value="${requestedTransaction}" />
+								<sql:param value="${styleCodeId}" />
+								<sql:param value="${authenticatedData.userData.authentication.emailAddress}" />
 								<sql:param value="${requestedTransaction}" />
 								<sql:param value="${styleCodeId}" />
 								<sql:param value="${authenticatedData.userData.authentication.emailAddress}" />

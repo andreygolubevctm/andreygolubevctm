@@ -307,7 +307,7 @@
 		</c:if>
 
 <%-- Write result details to the database for potential later use when sending emails etc... FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
-		<agg:write_result_details transactionId="${tranId}" recordXPaths="validateDate/display,validateDate/normal,productId,productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal"/>
+		<agg:write_result_details transactionId="${tranId}" recordXPaths="validateDate/display,validateDate/normal,productId,productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal" baseXmlNode="soap-response/results/result" />
 
 ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 

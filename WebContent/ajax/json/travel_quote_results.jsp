@@ -111,6 +111,9 @@
 		<go:setData dataVar="soapdata" xpath="soap-response/results/info/trackingKey" value="${data.travel.trackingKey}" />
 		<go:log level="TRACE" source="travel_quote_results_jsp">${resultXml}</go:log>
 		<go:log level="TRACE" source="travel_quote_results_jsp">${debugXml}</go:log>
+
+		<agg:write_result_details transactionId="${tranId}" recordXPaths="quoteUrl" baseXmlNode="soap-response/results/price"/>
+
 		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 	</c:when>
 	<c:otherwise>

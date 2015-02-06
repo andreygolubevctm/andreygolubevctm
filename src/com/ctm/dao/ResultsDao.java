@@ -129,4 +129,55 @@ public class ResultsDao {
 
 		return age;
 	}
+
+
+	/**
+	 * Returns a single property value stored against a transaction id with specific productId and request property.
+	 * These are specific xpaths from the results set that were stored after the results were returned.
+	 *
+	 * @param transactionId
+	 * @param productId
+	 * @param property
+	 * @return
+	 * @throws DaoException
+	 */
+	public String getSingleResultPropertyValue(Long transactionId, String productId, String property) {
+
+		SimpleDatabaseConnection dbSource = null;
+
+		String propertyValue = "";
+
+		try{
+
+			dbSource = new SimpleDatabaseConnection();
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+				"SELECT value " +
+				"FROM aggregator.results_properties rp " +
+				"WHERE rp.transactionId = ? AND rp.productId = ? AND rp.property = ?; "
+			);
+
+			stmt.setLong(1, transactionId);
+			stmt.setString(2, productId);
+			stmt.setString(3, property);
+
+			ResultSet result = stmt.executeQuery();
+
+			while (result.next()) {
+				propertyValue = result.getString("value");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			dbSource.closeConnection();
+		}
+
+		return propertyValue;
+	}
 }

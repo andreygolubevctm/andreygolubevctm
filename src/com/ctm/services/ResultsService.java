@@ -29,6 +29,24 @@ public class ResultsService {
 	}
 
 	/**
+	 * Returns an array of product properties stored against a transaction id.
+	 * These are specific xpaths from the results set that were stored after the results were returned.
+	 *
+	 * @param transactionId
+	 * @param productId
+	 * @param property
+	 * @return propertyValue
+	 * @throws DaoException
+	 */
+	public static String getSingleResultPropertyValue(Long transactionId, String productId, String property) throws DaoException{
+
+		ResultsDao resultsDao = new ResultsDao();
+		String propertyValue = resultsDao.getSingleResultPropertyValue(transactionId, productId, property);
+		return propertyValue;
+
+	}
+
+	/**
 	 * Return an array of Ranking positions from a results set.
 	 * The objects contain the rank position and the product id. They are sorted in ascending order.
 	 *

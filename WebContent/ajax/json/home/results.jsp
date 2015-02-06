@@ -265,7 +265,7 @@
 					Write result details to the database for potential later use when sending emails etc...
 					Note: premium data can not be stored in the DB, placed in session instead
 				--%>
-				<agg:write_result_details transactionId="${tranId}" recordXPaths="validateDate/display,validateDate/normal,productId,productDes,des,HHB/excess/amount,HHC/excess/amount,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="price/annual/total"/>
+				<agg:write_result_details transactionId="${tranId}" recordXPaths="validateDate/display,validateDate/normal,productId,productDes,des,HHB/excess/amount,HHC/excess/amount,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="price/annual/total" baseXmlNode="soap-response/results/result" />
 
 		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 	</c:when>

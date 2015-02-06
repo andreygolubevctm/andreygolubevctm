@@ -14,7 +14,7 @@
 <c:set var="session_id" value="${pageContext.session.id}" />
 
 <c:choose>
-	<c:when test="${fatal == 'false' || fatal == 0}">
+	<c:when test="${fatal == 'false' || fatal == '0'}">
 		<c:set var="fatal" value="0" />
 	</c:when>
 	<c:otherwise>

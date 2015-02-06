@@ -90,15 +90,29 @@
 
 		if(fatal){
 
+			// data.closeWindow is only used on the transferring.js page when the quoteUrl is dodgy.
+			if (data.closeWindow === true) {
 			buttons = [{
+					label: "Close page",
+					className: 'btn-cta',
+					action: function(eventObject){
+						// Warning, window.close() only works in Chrome.
+						// It does not work in Firefox/IE8 and perhaps safari.
+						// Something will need to be done if this is going to be used by others.
+						window.close();
+					},
+					closeWindow:false
+				}];
+			} else {
+				buttons = [{
 					label: "Refresh page",
 					className: 'btn-cta',
 					action: function(eventObject){
 						location.reload();
 					},
 					closeWindow:false
+				}];
 				}
-			];
 
 			if(meerkat.site.isDev === true){
 				buttons.push({

@@ -12,6 +12,8 @@
 
 <c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
 
+<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
+
 <c:choose>
 <%-- RECOVER: if things have gone pear shaped --%>
 	<c:when test="${empty data.current.transactionId}">
@@ -64,6 +66,11 @@
 		<%-- Add the results to the current session data --%>
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+
+		<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
+		<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
+
+		<agg:write_result_details transactionId="${tranId}" recordXPaths="quoteUrl" baseXmlNode="soap-response/results/price"/>
 
 		${go:XMLtoJSON(resultXml)}
 	</c:when>
