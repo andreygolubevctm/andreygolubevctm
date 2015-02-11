@@ -7707,15 +7707,22 @@ jQuery.fn.extend({
 });
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
+    var meerkat = window.meerkat;
     var events = {
         validation: {}
-    }, moduleEvents = events.validation;
+    };
     var $form = null;
     function init() {
         jQuery(document).ready(function($) {
             $form = $("#mainform");
         });
+        $.validator.addMethod("personName", validatePersonName, "Please enter alphabetic characters only. " + "Unfortunately, international alphabetic characters, numbers and symbols are not " + "supported by many of our partners at this time.");
+    }
+    var validNameCharsRegex = /^([a-zA-Z .'\-,]*)$/;
+    var isUrlRegex = /(?:[^\s])\.(com|co|net|org|asn|ws|us|mobi)(\.[a-z][a-z])?/;
+    function validatePersonName(value) {
+        var isURL = value.match(isUrlRegex) !== null;
+        return !isURL && validNameCharsRegex.test(value);
     }
     function isValid($element, displayErrors) {
         if (displayErrors) {
@@ -7806,7 +7813,8 @@ jQuery.fn.extend({
         init: init,
         events: events,
         isValid: isValid,
-        setupDefaultValidationOnForm: setupDefaultValidationOnForm
+        setupDefaultValidationOnForm: setupDefaultValidationOnForm,
+        validatePersonName: validatePersonName
     });
 })(jQuery);
 

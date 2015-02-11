@@ -95,7 +95,7 @@ $(document).ready(function() {
 				$errorContainer.hide();
 			}
 		}
-	}
+	};
 
 
 	$('.journeyEngineSlide form').each(function(index, element){
@@ -163,11 +163,11 @@ function setupDefaultValidationOnForm( $formElement ){
 			var element_id = jQuery(element).attr('id');
 			if ( !this.settings.rules.hasOwnProperty(element_id) || this.settings.rules[element_id].onkeyup == false) {
 				return;
-			};
+			}
 
 			if (validation && element.name != "captcha_code") {
 				this.element(element);
-			};
+			}
 		},
 		onfocusout: function(element, event) {
 
@@ -215,7 +215,7 @@ window._
 						.write('<script src="C:/dev/web_ctm/WebContent/framework/lib/js/underscore-1.5.2.min.js">\x3C/script>')
 
 $(document).ready( function(){
-	var vertical = "health";;
+	var vertical = "health";
 	var frequency="Monthly";
 
 	meerkat.site =  {
@@ -379,12 +379,11 @@ function getProduct() {
 					rebateValue: "$0.00",
 					text: "$2,669.24",
 					value: 2669.24
+				}
 				},
-			},
 			service: "PHIO",
 			showAltPremium: true,
 			showApply: true,
-			transactionId: 2204639,
 			whatHappensNext: ""
 	};
 }

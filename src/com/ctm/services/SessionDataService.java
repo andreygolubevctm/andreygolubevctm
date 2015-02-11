@@ -146,7 +146,7 @@ public class SessionDataService {
 
 			if (data == null && searchPreviousIds == true) {
 				// Check for previous id as the transaction might have been incremented (should only be true when called from get_transaction_id.jsp)
-				data = sessionData.getSessionDataForPreviousTransactionId(transactionId);
+				data = sessionData.getSessionDataForPreviousTransactionId(Long.parseLong(transactionId));
 			}
 
 			if (data == null) {
@@ -180,7 +180,6 @@ public class SessionDataService {
 			return data;
 		}
 	}
-
 	/**
 	 * Remove the specified transaction from the session. (usually called when restarting a quote)
 	 * used by delete.tag

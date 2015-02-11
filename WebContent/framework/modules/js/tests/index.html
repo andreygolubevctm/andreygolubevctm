@@ -1,42 +1,43 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>CTM Test Suite</title>
+	<title>CTM Test Suite</title>
 
-<script src="../../../../common/js/ipp/jquery.min.js"></script>
-<!-- qunit -->
-<link rel="stylesheet" href="vendor/qunit.css" media="screen">
-<script src="vendor/qunit.js"></script>
+	<script src="../../../../common/js/ipp/jquery.min.js"></script>
+	<!-- qunit -->
+	<link rel="stylesheet" href="vendor/qunit.css" media="screen">
+	<script src="vendor/qunit.js"></script>
 
-<script>
-	// See https://github.com/axemclion/grunt-saucelabs#test-result-details-with-qunit
-	QUnit.done(function(results) {
-	window.global_test_results = results
-	})
-</script>
+	<script>
+		// See https://github.com/axemclion/grunt-saucelabs#test-result-details-with-qunit
+		QUnit.done(function (results) {
+			window.global_test_results = results
+		})
+	</script>
 
-<!--  plugin sources -->
-<script>$.support.transition = false</script>
-<script src="../../../jquery/plugins/jquery.validate-1.11.1.js"></script>
-<script src="../../../meerkat\meerkat.js"></script>
-<script src="../../../meerkat\meerkat.logging.js"></script>
-<script src="../../../meerkat\meerkat.modules.js"></script>
-<script src="../../../modules\js\core\transactionId.js"></script>
-<script src="../../../modules\js\core\loadingAnimation.js"></script>
-<script src="../../../modules\js\core\validation.js"></script>
-<script src="../../../modules\js\core\contactDetails.js"></script>
-<script src="../../../modules\js\core\sendEmail.js"></script>
-<script src="../../../modules\js\core\emailBrochures.js"></script>
-<script src="../../../modules\js\core\journeyEngine.js"></script>
-<script src="../../../modules\js\core\form.js"></script>
-<script src="../../../modules\js\core\saveQuote.js"></script>
+	<!--  plugin sources -->
+	<script>$.support.transition = false</script>
+	<script src="../../../jquery/plugins/jquery.validate-1.11.1.js"></script>
+	<script src="../../../meerkat\meerkat.js"></script>
+	<script src="../../../meerkat\meerkat.logging.js"></script>
+	<script src="../../../meerkat\meerkat.modules.js"></script>
+	<script src="../../../modules\js\core\transactionId.js"></script>
+	<script src="../../../modules\js\core\loadingAnimation.js"></script>
+	<script src="../../../modules\js\core\validation.js"></script>
+	<script src="../../../modules\js\core\contactDetails.js"></script>
+	<script src="../../../modules\js\core\sendEmail.js"></script>
+	<script src="../../../modules\js\core\emailBrochures.js"></script>
+	<script src="../../../modules\js\core\journeyEngine.js"></script>
+	<script src="../../../modules\js\core\form.js"></script>
+	<script src="../../../modules\js\core\saveQuote.js"></script>
 
-<!-- default site config -->
-<script src="unit/testBoilerPlate.js"></script>
+	<!-- default site config -->
+	<script src="unit/testBoilerPlate.js"></script>
 
-<!-- unit tests -->
-<script src="unit/emailBrochures.js"></script>
-<script src="unit/saveQuote.js"></script>
+	<!-- unit tests -->
+	<script src="unit/emailBrochures.js"></script>
+	<script src="unit/saveQuote.js"></script>
+	<script src="unit/validation.js"></script>
 
 </head>
 <body>

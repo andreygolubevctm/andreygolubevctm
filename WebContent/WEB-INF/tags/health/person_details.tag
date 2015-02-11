@@ -68,3 +68,6 @@
 	</form_new:fieldset>
 
 </div>
+
+<go:validate selector="${field_firstname}" rule="personName" parm="true" />
+<go:validate selector="${field_surname}" rule="personName" parm="true" />

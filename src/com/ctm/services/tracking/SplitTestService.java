@@ -98,7 +98,7 @@ public class SplitTestService {
 				String splitTests = data.getString(xpathRoot + "/" + FIELD_LABEL);
 
 				// If not in session then trigger creation
-				if(splitTests.equals("")) {
+			if(splitTests == null || splitTests.equals("")) {
 					splitTests = getJourney(request, transactionId);
 				}
 

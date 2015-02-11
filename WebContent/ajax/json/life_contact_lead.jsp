@@ -2,13 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="lifeService" class="com.ctm.services.life.LifeService" scope="page" />
+<c:set var="serviceRespone" value="${lifeService.contactLead(pageContext.request)}" />
 <c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
 
 <%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
-<c:choose>
+<c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set><c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
 
@@ -48,10 +49,7 @@
 		<core:transaction touch="LF" noResponse="true" comment="Send contact lead" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="resultXml">
-			<error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
-		</c:set>
-		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+		${serviceRespone}
 	</c:otherwise>
 </c:choose>
 ${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}

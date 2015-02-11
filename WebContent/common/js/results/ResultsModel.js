@@ -157,8 +157,9 @@ ResultsModel = {
 			},
 			error: function(jqXHR, txt, errorThrown){
 				Results.model.ajaxRequest = false;
-				if (jqXHR.status !== 0 && jqXHR.readyState !== 0) { // is an error
-				Results.model.handleFetchError( data, "AJAX request failed: " + txt + " " + errorThrown );
+				// status/readyState can be 0 if abort OR if timeout, so check for timeout only.
+				if ((jqXHR.status !== 0 && jqXHR.readyState !== 0) || txt == 'timeout') { // is an error or timeout
+					Results.model.handleFetchError( data, "AJAX request failed: " + txt + " " + errorThrown );
 				}
 			},
 			complete: function(){
@@ -193,10 +194,10 @@ ResultsModel = {
 			}
 			else if (jsonResult.results.hasOwnProperty('info') && jsonResult.results.info.hasOwnProperty('transactionId')) {
 			newTranID = jsonResult.results.info.transactionId;
-		}
+			}
 			else if (jsonResult.results.hasOwnProperty('noresults') && jsonResult.results.noresults.hasOwnProperty('transactionId')) {
 				newTranID = jsonResult.results.noresults.transactionId;
-		}
+			}
 		}
 		if (newTranID !== 0) {
 			if (typeof meerkat !== 'undefined') {

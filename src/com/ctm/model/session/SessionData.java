@@ -13,8 +13,9 @@ package com.ctm.model.session;
 
 import java.util.ArrayList;
 import java.util.Date;
-
 import com.disc_au.web.go.Data;
+
+import static com.ctm.utils.SessionDataUtils.*;
 
 public class SessionData {
 
@@ -25,18 +26,37 @@ public class SessionData {
 	private boolean shouldEndSession = false;
 
 	public SessionData(){
-		transactionSessionData = new ArrayList<Data>();
+		transactionSessionData = new ArrayList<>();
 		authenticatedSessionData = new AuthenticatedData();
 	}
 
 	/**
 	 *
-	 * @return
+	 * @return Data
 	 */
 	public Data addTransactionDataInstance(){
 		Data newSession = new Data();
 		getTransactionSessionData().add(newSession);
 		return newSession;
+	}
+
+	/**
+	 *
+	 * @param transactionId that is stored against the data
+	 * @return Data
+	 */
+	public Data getSessionDataForTransactionId(long transactionId){
+
+		ArrayList<Data> sessions = getTransactionSessionData();
+
+		for (Data session : sessions) {
+			long sessionTransactionId = getTransactionIdFromTransactionSessionData(session);
+			if(sessionTransactionId > 0 && sessionTransactionId == transactionId){
+				return session;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -60,16 +80,16 @@ public class SessionData {
 
 	/**
 	 *
-	 * @param previousTransactionId
-	 * @return
+	 * @param previousTransactionId previously known transaction id
+	 * @return Data null if cannot be found
 	 */
-	public Data getSessionDataForPreviousTransactionId(String previousTransactionId){
+	public Data getSessionDataForPreviousTransactionId(long previousTransactionId){
 
 		ArrayList<Data> sessions = getTransactionSessionData();
 
 		for (Data session : sessions) {
-			String sessionTransactionId = (String) session.get("current/previousTransactionId");
-			if(sessionTransactionId != null && sessionTransactionId.equals(previousTransactionId)){
+			long sessionTransactionId = session.getLong("current/previousTransactionId");
+			if(sessionTransactionId > 0 && sessionTransactionId == previousTransactionId){
 				return session;
 			}
 		}

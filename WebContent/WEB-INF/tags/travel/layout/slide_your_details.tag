@@ -21,6 +21,9 @@
 			<ui:bubble variant="info">
 				<content:get key="step1Info"/>
 			</ui:bubble>
+
+			<travel:brand_sidebar />
+
 		</jsp:attribute>
 		<jsp:body>
 			<ui:bubble variant="chatty">

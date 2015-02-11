@@ -9,15 +9,11 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import com.ctm.model.health.*;
 import org.apache.log4j.Logger;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.health.HealthPricePremium;
-import com.ctm.model.health.HealthPricePremiumRange;
-import com.ctm.model.health.HealthPriceRequest;
-import com.ctm.model.health.HealthPriceResult;
-import com.ctm.model.health.ProductStatus;
 
 public class HealthPriceDao {
 	private static final String DISC_PREFIX = "disc";

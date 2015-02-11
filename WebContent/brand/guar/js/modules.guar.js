@@ -1,6 +1,6 @@
 /*!
  * CTM-Platform v0.8.3
- * Copyright 2015 Compare The Market Pty Ltd
+ * Copyright 2014 Compare The Market Pty Ltd
  * http://www.comparethemarket.com.au/
  */
 
@@ -2495,23 +2495,6 @@ meerkat.logging.init = function() {
     });
 })(jQuery);
 
-(function($) {
-    var meerkat = window.meerkat;
-    function init() {
-        jQuery(document).ready(function($) {
-            $(window).load(function() {
-                $("[data-defer-src]").each(function allDeferSrcLoadLoop() {
-                    $this = $(this);
-                    $this.attr("src", $this.attr("data-defer-src")).removeAttr("data-defer-src");
-                });
-            });
-        });
-    }
-    meerkat.modules.register("deferSrcLoad", {
-        init: init
-    });
-})(jQuery);
-
 (function($, undefined) {
     var meerkat = window.meerkat;
     function initRefreshCSS() {
@@ -4846,10 +4829,6 @@ meerkat.logging.init = function() {
         errorMessage: "An error occurred. Sorry about that!",
         errorDescription: "There is an issue with the handover url.",
         closeBridgingModalDialog: true
-    }, moduleEvents = {
-        partnerTransfer: {
-            TRANSFER_TO_PARTNER: "TRANSFER_TO_PARTNER"
-        }
     };
     function buildURL(settings) {
         var product = settings.product, handoverType = product.handoverType && product.handoverType.toLowerCase() === "post" ? "POST" : "GET", brand = settings.brand ? settings.brand : product.provider, msg = settings.msg ? settings.msg : "", tracking = encodeURIComponent(JSON.stringify(settings.tracking));
@@ -4877,40 +4856,18 @@ meerkat.logging.init = function() {
             return null;
         }
     }
-    function getQueryStringFromURL(url) {
-        var qs = null;
-        if (!_.isUndefined(url) && _.isString(url)) {
-            var pieces = url.split("?");
-            if (pieces.length == 2) {
-                qs = pieces[1];
-            }
-        }
-        return qs;
-    }
     function addTrackingDataToSettings(settings) {
-        var tracking = _.pick(settings, "actionStep", "brandCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
+        var tracking = _.pick(settings, "actionStep", "quoteReferenceNumber", "handOverUrl", "productID", "productName", "productBrandCode", "verticalFilter", "type");
         meerkat.modules.tracking.updateObjectData(tracking);
-        tracking = $.extend({
-            actionStep: null,
-            brandCode: null,
-            currentJourney: null,
-            lastFieldTouch: null,
-            productBrandCode: settings.product.provider,
+        return $.extend({
+            actionStep: tracking.vertical + " transfer",
+            quoteReferenceNumber: typeof settings.product.leadNo !== "undefined" ? settings.product.leadNo : tracking.transactionID,
+            handOverUrl: settings.product.quoteUrl,
             productID: settings.product.productId,
             productName: settings.product.name,
-            quoteReferenceNumber: typeof settings.product.leadNo !== "undefined" ? settings.product.leadNo : tracking.transactionID,
-            rootID: null,
-            transactionID: null,
-            type: "ONLINE",
-            vertical: null,
-            verticalFilter: null,
-            handOverQS: getQueryStringFromURL(settings.product.quoteUrl),
-            simplesUser: meerkat.site.isCallCentreUser
+            productBrandCode: settings.product.provider,
+            type: "ONLINE"
         }, tracking);
-        if (_.isEmpty(tracking.actionStep)) {
-            tracking.actionStep = $.trim(tracking.vertical + " transfer " + tracking.type);
-    }
-        return tracking;
     }
     function transferToPartner(options) {
         var settings = $.extend({}, defaultSettings, options), product = settings.product;
@@ -4932,48 +4889,22 @@ meerkat.logging.init = function() {
                 });
             }
             if (settings.trackHandover === true) {
-                trackHandover(settings.tracking, {
-                    type: "A",
-                    comment: "Apply Online"
-                }, true);
+                trackHandover(settings.tracking);
             }
-            meerkat.messaging.publish(moduleEvents.partnerTransfer.TRANSFER_TO_PARTNER, {
-                transactionID: settings.tracking.transactionID,
-                partnerID: settings.product.trackCode,
-                productDescription: settings.product.productId
-            });
         }
         if (typeof settings.applyNowCallback == "function") {
             settings.applyNowCallback(true);
         }
     }
-    function trackHandover(trackData, touchData, doOldTrackCall) {
-        touchData = touchData || false;
-        doOldTrackCall = doOldTrackCall || false;
-        if (touchData !== false && _.isObject(touchData) && _.has(touchData, "type")) {
+    function trackHandover(data) {
         meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
-                touchType: touchData.type,
-                touchComment: _.has(touchData, "comment") ? touchData.comment : ""
+            touchType: "A",
+            touchComment: "Apply Online"
         });
-        }
-        var data = _.pick(trackData, "actionStep", "brandCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
-        if (doOldTrackCall === true) {
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: "trackHandoverType",
-                object: data
+            object: _.omit(data, "actionStep", "handOverUrl")
         });
-    }
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackQuoteHandoverClick",
-            object: data
-        });
-        meerkat.modules.session.poke();
-    }
-    function trackHandoverEvent(trackData, touchData, doOldTrackCall) {
-        doOldTrackCall = doOldTrackCall || false;
-        trackData = addTrackingDataToSettings(trackData || {});
-        touchData = touchData || false;
-        trackHandover(trackData, touchData, doOldTrackCall);
     }
     function applyEventListeners() {
         $(document.body).on("click", ".btn-apply", function(e) {
@@ -4993,9 +4924,8 @@ meerkat.logging.init = function() {
     meerkat.modules.register("partnerTransfer", {
         initTransfer: initTransfer,
         transferToPartner: transferToPartner,
-        trackHandoverEvent: trackHandoverEvent,
-        buildURL: buildURL,
-        events: moduleEvents
+        trackHandover: trackHandover,
+        buildURL: buildURL
     });
 })(jQuery);
 
@@ -5742,52 +5672,41 @@ meerkat.logging.init = function() {
         RESULTS_DATA_READY: "RESULTS_DATA_READY",
         RESULTS_SORTED: "RESULTS_SORTED"
     }, moduleEvents = events;
-    var defaultRankingTriggers = [ "RESULTS_DATA_READY", "RESULTS_SORTED" ], trackingProductObject = [];
+    var defaultRankingTriggers = [ "RESULTS_DATA_READY", "RESULTS_SORTED" ];
     function write(trigger) {
-        if (!Results.settings.hasOwnProperty("rankings")) {
-            return;
+        var externalTrackingData = [];
+        var sTagProductList = [];
+        function appendTrackingData(id, pos, available) {
+            var data = {
+                productID: id,
+                ranking: pos
+            };
+            externalTrackingData.push(data);
+            if (available === true) {
+                sTagProductList.push(data);
             }
-            var config = Results.settings.rankings;
-        if (!_.isObject(config)) {
-            return;
-                }
-        var sortedAndFiltered = fetchProductsToRank(config.filterUnavailableProducts), rankingData = getWriteRankData(config, sortedAndFiltered);
-        if (!rankingData) {
-            return;
-                }
-        buildTrackingDataObject(config, sortedAndFiltered);
-        sendQuoteRanking(trigger, rankingData);
-        meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
-            }
-    function sendQuoteRanking(trigger, rankingData) {
-        log("[resultsRankings] sendWriteRank", {
-            trigger: trigger,
-            data: rankingData
-        });
-        if (Results.getFilteredResults().length) {
-            meerkat.modules.comms.post({
-                url: "ajax/write/quote_ranking.jsp",
-                data: rankingData,
-                cache: false,
-                errorLevel: "silent",
-                onError: function onWriteRankingsError(jqXHR, textStatus, errorThrown, settings, resultData) {
-                    meerkat.modules.errorHandling.error({
-                        message: "Failed to write ranking results.",
-                        page: "core:resultsRankings.js:runWriteRank()",
-                        errorLevel: "silent",
-                        description: "Failed to write ranking results: " + errorThrown,
-                        data: {
-                            settings: settings,
-                            resultsData: resultData
-                        }
-                    });
-                }
-            });
         }
-    }
-    function fetchProductsToRank(includeOnlyFilteredResults) {
-        var sortedAndFiltered = [], sorted = Results.getSortedResults(), filtered = Results.getFilteredResults();
-        if (includeOnlyFilteredResults === true) {
+        if (Results.settings.hasOwnProperty("rankings")) {
+            var config = Results.settings.rankings;
+            var sorted = Results.getSortedResults();
+            var filtered = Results.getFilteredResults();
+            var vertical = meerkat.site.vertical;
+            var filterUnavailableProducts = Results.settings.rankings.filterUnavailableProducts;
+            var sortedAndFiltered = [];
+            var method = null;
+            var forceNumber = false;
+            if (_.isObject(config) && !_.isEmpty(config)) {
+                if (config.hasOwnProperty("paths") && _.isObject(config.paths)) {
+                    method = "paths";
+                } else if (config.hasOwnProperty("callback") && _.isFunction(config.callback)) {
+                    method = "callback";
+                }
+                if (config.hasOwnProperty("forceIdNumeric") && _.isBoolean(config.forceIdNumeric)) {
+                    forceNumber = config.forceIdNumeric;
+                }
+            }
+            if (!_.isNull(method)) {
+                if (filterUnavailableProducts === true) {
                     for (var i = 0; i < sorted.length; i++) {
                         for (var j = 0; j < filtered.length; j++) {
                             if (sorted[i] == filtered[j]) {
@@ -5798,82 +5717,76 @@ meerkat.logging.init = function() {
                 } else {
                     sortedAndFiltered = sorted;
                 }
-        return sortedAndFiltered;
-    }
-    function getWriteRankData(config, sortedAndFiltered) {
-        var rankingData = {
-            rootPath: meerkat.site.vertical,
+                var data = {
+                    rootPath: vertical,
                     rankBy: Results.getSortBy() + "-" + Results.getSortDir(),
                     rank_count: sortedAndFiltered.length,
                     transactionId: meerkat.modules.transactionId.get()
                 };
-        var method = null;
-        if (config.hasOwnProperty("paths") && _.isObject(config.paths)) {
-            method = "paths";
-        } else if (config.hasOwnProperty("callback") && _.isFunction(config.callback)) {
-            method = "callback";
+                for (var k = 0; k < sortedAndFiltered.length; k++) {
+                    var rank = k + 1;
+                    var price = sortedAndFiltered[k];
+                    var productId = price.productId;
+                    var available = false;
+                    if (typeof price.available !== "undefined") {
+                        available = price.available === "Y";
+                    } else if (typeof price.productAvailable !== "undefined") {
+                        available = price.productAvailable === "Y";
                     }
-        if (method === null) {
-            return null;
+                    if (forceNumber) {
+                        productId = String(productId).replace(/\D/g, "");
                     }
-        for (var i = 0; i < sortedAndFiltered.length; i++) {
-            var productObj = sortedAndFiltered[i];
-            switch (method) {
-              case "paths":
+                    if (method === "paths") {
                         for (var p in config.paths) {
                             if (config.paths.hasOwnProperty(p)) {
-                        var item = Object.byString(productObj, config.paths[p]);
-                        rankingData[p + i] = item;
+                                var item = Object.byString(price, config.paths[p]);
+                                data[p + k] = item;
                             }
                         }
-                break;
-
-              case "callback":
-                var response = config.callback(productObj, i);
+                    } else if (method === "callback") {
+                        var response = config.callback(price, k);
                         if (_.isObject(response) && !_.isEmpty(response)) {
-                    _.extend(rankingData, response);
+                            _.extend(data, response);
                         }
-                break;
                     }
+                    appendTrackingData(productId, rank, available);
                 }
-        return rankingData;
+                meerkat.logging.info("writing ranking data", {
+                    trigger: trigger,
+                    method: method,
+                    data: data
+                });
+                if (Results.getFilteredResults().length) {
+                    meerkat.modules.comms.post({
+                        url: "ajax/write/quote_ranking.jsp",
+                        data: data,
+                        cache: false,
+                        errorLevel: "silent",
+                        onError: function onWriteRankingsError(jqXHR, textStatus, errorThrown, settings, resultData) {
+                            meerkat.modules.errorHandling.error({
+                                message: "Failed to write ranking results.",
+                                page: "core:resultsRankings.js:write()",
+                                errorLevel: "silent",
+                                description: "Failed to write ranking results: " + errorThrown,
+                                data: {
+                                    settings: settings,
+                                    resultsData: resultData
                             }
-    function buildTrackingDataObject(config, sortedAndFiltered) {
-        trackingProductObject = [];
-        var forceNumber = false;
-        if (config.hasOwnProperty("forceIdNumeric") && _.isBoolean(config.forceIdNumeric)) {
-            forceNumber = config.forceIdNumeric;
+                            });
                     }
-        for (var rank = 0, i = 0; i < sortedAndFiltered.length; i++) {
-            rank++;
-            var productObj = sortedAndFiltered[i];
-            if (typeof productObj !== "object") {
-                continue;
+                    });
                 }
-            var productId = productObj.productId;
-            if (forceNumber) {
-                productId = String(productId).replace(/\D/g, "");
+                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                    method: "trackQuoteProductList",
+                    object: {
+                        products: sTagProductList,
+                        verticalFilter: typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null,
+                        simplesUser: meerkat.site.isCallCentreUser
                     }
-            data = {
-                productID: productId,
-                productName: Object.byString(productObj, Results.settings.paths.productName) || null,
-                productBrandCode: Object.byString(productObj, Results.settings.paths.productBrandCode) || null,
-                ranking: rank,
-                available: Object.byString(productObj, Results.settings.paths.availability.product) || "N"
-            };
-            trackingProductObject.push(data);
+                });
+                meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
             }
         }
-    function getTrackingProductObject() {
-        return trackingProductObject;
-    }
-    function resetTrackingProductObject() {
-        var config = Results.settings.rankings;
-        if (!_.isObject(config)) {
-            return;
-        }
-        var sortedAndFiltered = fetchProductsToRank(true);
-        buildTrackingDataObject(config, sortedAndFiltered);
     }
     function registerSubscriptions() {
         var config = Results.settings.rankings;
@@ -5900,74 +5813,7 @@ meerkat.logging.init = function() {
     meerkat.modules.register("resultsRankings", {
         init: initResultsRankings,
         events: moduleEvents,
-        write: write,
-        getTrackingProductObject: getTrackingProductObject,
-        resetTrackingProductObject: resetTrackingProductObject,
-        sendQuoteRanking: sendQuoteRanking,
-        fetchProductsToRank: fetchProductsToRank,
-        getWriteRankData: getWriteRankData
-    });
-})(jQuery);
-
-(function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-    var events = {
-        resultsTracking: {
-            TRACK_QUOTE_RESULTS_LIST: "TRACK_QUOTE_RESULTS_LIST"
-        }
-    }, moduleEvents = events.resultsTracking;
-    var resultsEventMode = "Load";
-    function initResultsTracking() {
-        if (meerkat.site.vertical === "generic" || meerkat.site.vertical === "") {
-            return;
-        }
-        meerkat.messaging.subscribe(moduleEvents.TRACK_QUOTE_RESULTS_LIST, trackQuoteResultsList);
-    }
-    function setResultsEventMode(mode) {
-        resultsEventMode = mode;
-    }
-    function getResultsEventMode() {
-        return resultsEventMode;
-    }
-    function getTrackingDisplayMode() {
-        var display;
-        if (meerkat.modules.compare.isCompareOpen() === true) {
-            display = "compare";
-        } else {
-            display = Results.getDisplayMode();
-            display = display.indexOf("f") === 0 ? display.slice(0, -1) : display;
-        }
-        return display;
-    }
-    function trackQuoteResultsList(eventObject) {
-        log("[trackQuoteResultsList]", eventObject);
-        eventObject = eventObject || {};
-        var trackingVertical = meerkat.modules.tracking.getTrackingVertical();
-        var data = {
-            actionStep: trackingVertical + " results",
-            display: getTrackingDisplayMode(),
-            event: resultsEventMode,
-            products: meerkat.modules.resultsRankings.getTrackingProductObject(),
-            rankingFilter: typeof meerkat.modules.coverLevelTabs !== "undefined" ? meerkat.modules.coverLevelTabs.getRankingFilter() : "default",
-            recordRanking: "Y"
-        };
-        if (typeof eventObject.additionalData === "object") {
-            data = $.extend({}, data, eventObject.additionalData);
-        }
-        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackQuoteResultsList",
-            object: data
-        });
-        if (typeof eventObject.onAfterEventMode === "string") {
-            setResultsEventMode(eventObject.onAfterEventMode);
-        }
-    }
-    meerkat.modules.register("resultsTracking", {
-        init: initResultsTracking,
-        events: events,
-        setResultsEventMode: setResultsEventMode,
-        getResultsEventMode: getResultsEventMode,
-        trackQuoteResultsList: trackQuoteResultsList
+        write: write
     });
 })(jQuery);
 
@@ -6310,7 +6156,7 @@ meerkat.logging.init = function() {
                 $dropdown.find(".activator span:not([class])").html("Save Quote");
                 $auxilleryActivator.find("span:not([class])").html("Save Quote");
             }
-            if (typeof transactionId !== "undefined" && Number(transactionId) > 0) {
+            if (typeof transactionId !== "undefined" && transactionId !== "") {
                 meerkat.modules.transactionId.set(transactionId);
             }
             if ($.inArray(meerkat.site.vertical, [ "car", "ip", "life", "health", "home" ]) !== -1) {
@@ -6553,7 +6399,7 @@ meerkat.logging.init = function() {
                 cache: false,
                 errorLevel: "warning",
                 onSuccess: function emailResultsSuccess(result) {
-                    if (typeof result.transactionId !== "undefined" && Number(result.transactionId) > 0) {
+                    if (typeof result.transactionId !== "undefined" && result.transactionId !== "") {
                         meerkat.modules.transactionId.set(result.transactionId);
                     }
                     if (typeof settings.emailResultsSuccessCallback === "function") {
@@ -6672,12 +6518,10 @@ meerkat.logging.init = function() {
 (function($, undefined) {
     var meerkat = window.meerkat;
     var windowTimeout = null, isModalOpen = false, lastClientPoke = 0, deferredPokeTimeout = null, sessionAlertModal = null, countDownInterval = null, ajaxRequestTimeoutCount = 0;
-    firstPoke = true;
     function init() {
         if (!meerkat.modules.simplesTickler && meerkat.site.session.firstPokeEnabled) {
             updateTimeout(meerkat.site.session.windowTimeout);
             poke().done(function firstPokeDone(data) {
-                firstPoke = false;
                 if (data.timeout < 0 && typeof data.bigIP !== "undefined" && data.bigIP !== meerkat.site.session.bigIP) {
                     meerkat.modules.errorHandling.error({
                         errorLevel: "silent",
@@ -6756,13 +6600,7 @@ meerkat.logging.init = function() {
             }, timeout);
             hideModal();
         } else {
-            if (!firstPoke) {
-                if (isModalOpen) {
-                    showModal(false);
-                } else {
-                    showModal(true);
-        }
-    }
+            if (isModalOpen) showModal(false); else showModal(true);
         }
     }
     function redirect(reload) {
@@ -7056,11 +6894,6 @@ meerkat.logging.init = function() {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, currentJourney = null, currentJourneyList = [], currentJourneyFieldLabel = "currentJourney", $currentJourney = null;
-    var events = {
-        splitTest: {
-            SPLIT_TEST_READY: "SPLIT_TEST_READY"
-        }
-    }, moduleEvents = events.splitTest;
     function init() {
         $(document).ready(function() {
             var prefix = meerkat.site.vertical == "car" ? "quote" : meerkat.site.vertical;
@@ -7070,7 +6903,6 @@ meerkat.logging.init = function() {
             if (!_.isEmpty(current_journey)) {
                 set(current_journey);
             }
-            meerkat.messaging.publish(moduleEvents.SPLIT_TEST_READY);
         });
     }
     function set(current_journey) {
@@ -7087,7 +6919,6 @@ meerkat.logging.init = function() {
     }
     meerkat.modules.register("splitTest", {
         init: init,
-        events: events,
         get: get,
         isActive: isActive
     });
@@ -7217,30 +7048,20 @@ meerkat.logging.init = function() {
             if (typeof eventObject.includeFormData !== "undefined" && eventObject.includeFormData === true) includeFormData = true;
             recordTouch(eventObject.touchType, eventObject.touchComment, includeFormData, eventObject.callback);
         });
-        meerkat.messaging.subscribe(moduleEvents.EXTERNAL, runTrackingCall);
-        $(document).ready(function() {
-            initLastFieldTracking();
-            if (typeof meerkat !== "undefined" && typeof meerkat.site !== "undefined" && typeof meerkat.site.tracking !== "undefined" && meerkat.site.tracking.userTrackingEnabled === true) {
-                meerkat.modules.utilities.pluginReady("sessionCamRecorder").done(function() {
-                    initUserTracking();
-                });
-            }
-        });
-    }
-    function runTrackingCall(eventObject, override) {
+        meerkat.messaging.subscribe(moduleEvents.EXTERNAL, function(eventObject, override) {
             override = override || false;
-        if (typeof eventObject === "undefined") {
-            return;
-        }
-        if (typeof meerkat.site.tracking !== "object") {
-            meerkat.site.tracking = {};
-        }
+            if (typeof eventObject === "undefined") return;
+            if (typeof meerkat.site.tracking !== "object") meerkat.site.tracking = {};
             var values, object = eventObject.object;
             if (meerkat.site.tracking.superTagEnabled === true || meerkat.site.tracking.DTMEnabled === true) {
-            values = typeof object === "function" ? object() : object;
+                if (typeof object === "function") {
+                    values = object();
                 } else {
                     values = object;
                 }
+            } else {
+                values = object;
+            }
             values = override === false ? updateObjectData(values) : values;
             var deferred = $.Deferred().resolve().promise();
             if (typeof values === "object") {
@@ -7261,11 +7082,20 @@ meerkat.logging.init = function() {
                     recordDTM(eventObject.method, values);
             }
         });
+        });
+        $(document).ready(function() {
+            initLastFieldTracking();
+            if (typeof meerkat !== "undefined" && typeof meerkat.site !== "undefined" && typeof meerkat.site.tracking !== "undefined" && meerkat.site.tracking.userTrackingEnabled === true) {
+                meerkat.modules.utilities.pluginReady("sessionCamRecorder").done(function() {
+                    initUserTracking();
+                });
             }
+        });
+    }
     function getCurrentJourney() {
         return meerkat.modules.splitTest.get();
     }
-    function getTrackingVertical() {
+    function getVertical() {
         var vertical = meerkat.site.vertical;
         if (vertical === "home") {
             vertical = "Home_Contents";
@@ -7286,19 +7116,10 @@ meerkat.logging.init = function() {
             object.currentJourney = getCurrentJourney();
         }
         if (typeof object.vertical === "undefined") {
-            object.vertical = getTrackingVertical();
-        }
-        if (typeof object.simplesUser === "undefined") {
-            object.simplesUser = meerkat.site.isCallCentreUser;
-        }
-        if (typeof object.contactCentreID === "undefined") {
-            object.contactCentreID = meerkat.site.userId || null;
-        }
-        if (typeof object.campaignID === "undefined") {
-            object.campaignID = $("input[name$=tracking_cid]").val() || null;
+            object.vertical = getVertical();
         }
         if (typeof object.verticalFilter === "undefined") {
-            object.verticalFilter = typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null;
+            object.verticalFilter = null;
         }
         object.trackingKey = meerkat.modules.trackingKey.get();
         object.lastFieldTouch = lastFieldTouch;
@@ -7323,7 +7144,6 @@ meerkat.logging.init = function() {
             key: "brandCode",
             value: meerkat.site.tracking.brandCode
         };
-        window.sessioncamConfiguration.customDataObjects.push(item);
         item = {
             key: "vertical",
             value: meerkat.site.vertical
@@ -7348,8 +7168,7 @@ meerkat.logging.init = function() {
         updateLastFieldTouch: updateLastFieldTouch,
         applyLastFieldTouchListener: applyLastFieldTouchListener,
         getCurrentJourney: getCurrentJourney,
-        updateObjectData: updateObjectData,
-        getTrackingVertical: getTrackingVertical
+        updateObjectData: updateObjectData
     });
 })(jQuery);
 
@@ -7453,7 +7272,7 @@ meerkat.logging.init = function() {
                 id_handler: actionId
             },
             onSuccess: function fetchTransactionIdSuccess(msg) {
-                if (msg.transactionId !== transactionId && Number(msg.transactionId) > 0) {
+                if (msg.transactionId !== transactionId && msg.transactionId !== "0" && msg.transactionId !== "") {
                     set(msg.transactionId, msg.rootId);
                     meerkat.messaging.publish(moduleEvents.CHANGED, {
                         transactionId: transactionId

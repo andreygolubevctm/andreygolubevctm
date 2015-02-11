@@ -11,7 +11,10 @@
 		$firstname,
 		$surname,
 		$email,
-		$marketing;
+		$postcodeDetails,
+		$productDetailsField,
+		$marketing,
+		currentJourney;
 
 
 
@@ -21,10 +24,57 @@
 
 			if ($(this).is(':checked')) {
 				$email.attr('required', 'required').valid();
+				showHidePostcodeField();
 			} else {
 				$email.removeAttr('required').valid();
 			}
 		});
+
+		$email.on('blur', function() {
+				showHidePostcodeField();
+			});
+	}
+
+	function showHidePostcodeField()
+	{
+		if (currentJourney == 5 || currentJourney == 6)
+		{
+			if ($marketing.is(':checked') && $email.valid()) {
+				if ($email.val().trim().length > 0) {
+					$postcodeDetails.slideDown();
+				} else {
+					$postcodeDetails.slideUp();
+				}
+			}
+		}
+	}
+
+	function setLocation(location) {
+		if( isValidLocation(location) ) {
+			var value = $.trim(String(location));
+			var pieces = value.split(' ');
+			var state = pieces.pop();
+			var postcode = pieces.pop();
+			var suburb = pieces.join(' ');
+
+			$('#travel_state').val(state);
+			$('#travel_postcode').val(postcode).trigger("change");
+			$('#travel_suburb').val(suburb);
+		} 
+	}
+
+	function isValidLocation( location ) {
+
+		var search_match = new RegExp(/^((\s)*([^~,])+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
+
+		value = $.trim(String(location));
+
+		if( value !== '' ) {
+			if( value.match(search_match) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	function init(){
@@ -33,15 +83,17 @@
 		$(document).ready(function() {
 			$email = $('#travel_email'); 
 			$marketing = $('#travel_marketing');
-
+			$postcodeDetails = $('.postcodeDetails');
+			$productDetailsField = $postcodeDetails.find('#travel_location');
+			currentJourney = meerkat.modules.tracking.getCurrentJourney();
 			$email.removeAttr('required');
-
 			applyEventListeners();
 		});
 	}
 
 	meerkat.modules.register("travelContactDetails", {
-		init: init
+		init: init,
+		setLocation: setLocation
 	});
 
 })(jQuery);

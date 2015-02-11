@@ -1,11 +1,13 @@
 package com.ctm.model.utilities;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ctm.model.AbstractJsonModel;
+import com.ctm.utils.FormDateUtils;
 
 public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
@@ -46,6 +48,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 	private String postcode;
 	private String suburb;
 	private boolean isConnection; // true if moving to the property
+	private Date connectionDate; // date moving to the property
 	private FuelType fuelType;
 	private String tariff;
 
@@ -99,6 +102,14 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 	public void setConnection(boolean isConnection) {
 		this.isConnection = isConnection;
+	}
+
+	public Date getConnectionDate() {
+		return connectionDate;
+	}
+
+	public void setConnectionDate(Date connectionDate) {
+		this.connectionDate = connectionDate;
 	}
 
 	public FuelType getFuelType() {
@@ -204,6 +215,11 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		json.put("postcode", getPostcode());
 		json.put("suburb", getSuburb());
 		json.put("is_connection", convertBooleanToString(isConnection()));
+		if(isConnection) {
+			json.put("connectiondate", FormDateUtils.convertDateToString(getConnectionDate(), "yyyy-MM-dd"));
+		} else {
+			json.put("connection_date", "0000-00-00");
+		}
 		json.put("fuel_type", getFuelType());
 
 		if(getHowToEstimate().equals("U")){
@@ -298,6 +314,10 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		setSuburb(request.getParameter("utilities_householdDetails_suburb"));
 		setTariff(request.getParameter("utilities_householdDetails_tariff"));
 		setConnection(convertStringToBoolean(request.getParameter("utilities_householdDetails_movingIn")));
+
+		if(request.getParameter("utilities_householdDetails_movingInDate")!= null){
+			setConnectionDate(FormDateUtils.parseDateFromForm(request.getParameter("utilities_householdDetails_movingInDate")));
+		}
 
 		String whatToCompare = request.getParameter("utilities_householdDetails_whatToCompare");
 		if(whatToCompare.equals("EG")){

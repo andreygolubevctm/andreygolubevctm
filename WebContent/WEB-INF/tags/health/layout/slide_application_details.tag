@@ -15,6 +15,8 @@
 
 			<layout:slide_content>
 
+				<health:competition_jeep />
+
 				<ui:bubble variant="chatty">
 					<h4>Your Application</h4>
 					<p>In a few more steps, you'll be done. Just fill in your details below and we'll pass them onto your chosen health fund, making the application process easier for you!</p>

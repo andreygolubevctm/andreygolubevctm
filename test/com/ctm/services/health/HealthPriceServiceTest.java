@@ -9,13 +9,13 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import com.ctm.model.health.HealthPriceRequest;
 import org.junit.Test;
 
 import com.ctm.dao.StyleCodeDao;
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.HealthPricePremiumRange;
-import com.ctm.model.health.HealthPriceRequest;
 import com.ctm.services.results.ProviderRestrictionsService;
 
 

@@ -43,6 +43,16 @@
 		<c:set var="competition_id" value="${12}" />
 		<c:set var="source" value="OctHealthPromo2014$1000" />
 	</c:when>
+	<%-- HLT-1833 --%>
+	<c:when test="${not empty param.secret and param.secret == 'hVChRLoupPEFA6udMweD'}">
+		<c:set var="competition_id" value="${16}" />
+		<c:set var="source" value="FebHealthPromo2015$1000" />
+	</c:when>
+	<%-- HLT-1737 --%>
+	<c:when test="${not empty param.secret and param.secret == '1F6F87144375AD8BAED4D53F8CF5B'}">
+		<c:set var="competition_id" value="${15}" />
+		<c:set var="source" value="Feb2015HealthJEEPPromo" />
+	</c:when>
 </c:choose>
 
 <!-- Car promos, uses ID sent from car_quote_results -->
@@ -71,6 +81,9 @@
 		<c:choose>
 			<c:when test="${competition_id == '13'}">
 				<c:set var="source" value="Life$1000CashPromoNov2014" />
+			</c:when>
+			<c:when test="${competition_id == '17'}">
+				<c:set var="source" value="Life$1000CashPromoFeb2015" />
 			</c:when>
 		</c:choose>
 	</c:if>

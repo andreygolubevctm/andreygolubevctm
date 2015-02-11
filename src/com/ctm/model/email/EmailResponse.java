@@ -15,7 +15,7 @@ public class EmailResponse extends AbstractJsonModel {
 	private boolean successful;
 	private String message;
 	private int errorCode;
-	private long transactionId;
+	private Long transactionId;
 
 	public int getErrorCode() {
 		return errorCode;
@@ -90,7 +90,7 @@ public class EmailResponse extends AbstractJsonModel {
 		this.errorCode = errorCode;
 	}
 
-	public void setTransactionId(long transactionId) {
+	public void setTransactionId(Long transactionId) {
 		this.transactionId = transactionId;
 	}
 

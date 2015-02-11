@@ -1,6 +1,11 @@
 package com.ctm.web.validation;
 
-public class SchemaValidationError {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.ctm.model.AbstractJsonModel;
+
+public class SchemaValidationError extends AbstractJsonModel {
 
 	public static final String INVALID = "INVALID VALUE";
 	public static final String REQUIRED = "ELEMENT REQUIRED";
@@ -32,5 +37,19 @@ public class SchemaValidationError {
 	public String getElements() {
 		return elements;
 	}
+	
+
+	/**
+	 * Add the attributes to the data model JSON object.
+	 */
+	@Override
+	protected JSONObject getJsonObject() throws JSONException {
+		JSONObject json = new JSONObject();
+		json.put("message", getMessage());
+		json.put("elementXpath", getElementXpath());
+		json.put("elements", getElements());
+		return json;
+	}
+
 
 }

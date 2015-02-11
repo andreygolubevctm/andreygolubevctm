@@ -1,11 +1,14 @@
-package com.ctm.services.health;
+package com.ctm.web.validation.health;
 
-import java.util.ArrayList;
+import static com.ctm.services.health.HealthApplicationService.LOADING_XPATH;
+import static com.ctm.services.health.HealthApplicationService.MEDICARE_NUMBER_XPATH;
+import static com.ctm.services.health.HealthApplicationService.REBATE_HIDDEN_XPATH;
+
 import java.util.List;
 
-import com.ctm.model.HealthApplication;
+import com.ctm.model.request.health.HealthApplicationRequest;
+import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
-import com.disc_au.web.go.Data;
 
 
 /**
@@ -14,42 +17,24 @@ import com.disc_au.web.go.Data;
  * @author lbuchanan
  *
  */
-public class HealthApplicationValidationService {
-
-	private static final String PREFIX = "health";
-	
-	private static final String REBATE_XPATH = PREFIX + "/healthCover/rebate";
-	private static final String PROVIDER_XPATH = PREFIX + "/application/provider";
-	private static final String MEDICARE_NUMBER_XPATH = PREFIX + "/payment/medicare/number";
-	
-	private static final String REBATE_HIDDEN_XPATH = PREFIX + "/rebate";
-	private static final String LOADING_XPATH = PREFIX + "/loading";
+public class HealthApplicationValidation {
 	
 	List<SchemaValidationError> validationErrors;
 
-	private HealthApplication healthApplication;
+	private HealthApplicationRequest request;
 
-	public List<SchemaValidationError> validate(Data data) {
-		parseData(data);
-		validationErrors = new ArrayList<SchemaValidationError>();
+	public List<SchemaValidationError> validate(HealthApplicationRequest request) {
+		this.request = request;
+		validationErrors = FormValidation.validate(request , "health");
 		validateRebate();
 		validateLoading();
 		validateMedicareNumber();
 		return validationErrors;
 	}
 
-	private void parseData(Data data) {
-		healthApplication = new HealthApplication();
-		healthApplication.rebateValue = data.getDouble(REBATE_HIDDEN_XPATH); 
-		healthApplication.loadingValue = data.getDouble(LOADING_XPATH); 
-		healthApplication.rebate =  data.getString(REBATE_XPATH);
-		healthApplication.provider =  data.getString(PROVIDER_XPATH);
-		healthApplication.medicareNumber =  data.getString(MEDICARE_NUMBER_XPATH);
-	}
-
 	private void validateRebate() {
 		boolean valid = false;
-		valid = healthApplication.rebateValue <= 40 && healthApplication.rebateValue >= 0;
+		valid = request.rebateValue <= 40 && request.rebateValue >= 0;
 		addToListIfInvalid(valid, REBATE_HIDDEN_XPATH);
 		
 	}
@@ -57,7 +42,7 @@ public class HealthApplicationValidationService {
 	private void validateLoading() {
 		String xpath = LOADING_XPATH;
 		boolean valid = false;
-		valid = healthApplication.loadingValue < 100 && healthApplication.loadingValue >= 0;
+		valid = request.loadingValue < 100 && request.loadingValue >= 0;
 		addToListIfInvalid(valid, xpath);
 	}
 	
@@ -91,8 +76,8 @@ public class HealthApplicationValidationService {
 		 * Medicare number is mandatory for Bupa
 		 * Otherwise it is mandatory if yes was selected for do you want a rebate?
 		 */
-		if(healthApplication.rebate.equals("Y") || healthApplication.provider.equals("BUP")) {
-			String medicareNumber  = getValueAndAddToErrorsIfEmpty(healthApplication.medicareNumber, MEDICARE_NUMBER_XPATH);
+		if(request.hasRebate || request.application.provider.equals("BUP")) {
+			String medicareNumber  = getValueAndAddToErrorsIfEmpty(request.payment.medicare.number, MEDICARE_NUMBER_XPATH);
 			if (!medicareNumber.isEmpty()) {
 				// check not empty
 				if(medicareNumber.length() != 10) {

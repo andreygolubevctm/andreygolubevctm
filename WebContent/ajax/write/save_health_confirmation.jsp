@@ -64,13 +64,20 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		</c:otherwise>
 	</c:choose>
 
+	<%-- ENTER FEB 2015 JEEP COMPETITION - HLT-1737 --%>
+	<c:if test="${empty jeepCompetitionEnabledFlag}">
+		<jsp:useBean id="competitionService" class="com.ctm.services.competition.CompetitionService" />
+		<c:set var="jeepCompetitionEnabledFlag" scope="session" value="${competitionService.isActive(pageContext.getRequest(), 15)}" />
+	</c:if>
+	<c:if test="${jeepCompetitionEnabledFlag eq true}">
 	<c:import var="response" url="/ajax/write/competition_entry.jsp">
-		<c:param name="secret">bRevefUM4Pruwr</c:param>
+			<c:param name="secret">1F6F87144375AD8BAED4D53F8CF5B</c:param>
 		<c:param name="competition_email" value="${fn:trim(data['health/application/email'])}" />
 		<c:param name="competition_firstname" value="${fn:trim(data['health/application/primary/firstname'])}" />
 		<c:param name="competition_lastname" value="${fn:trim(data['health/application/primary/surname'])}" />
 		<c:param name="competition_phone" value="${contactPhone}" />
 	</c:import>
+</c:if>
 </c:if>
 <%-- COMPETITION APPLICATION END --%>
 

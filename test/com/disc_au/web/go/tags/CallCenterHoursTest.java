@@ -42,7 +42,7 @@ public class CallCenterHoursTest {
 	@Before
 	public void setup() throws SQLException, ClassNotFoundException {
 		/* set to 25/11/2013 and 10am */
-		mondayMorning = Calendar.getInstance();
+		mondayMorning = getBaseCalendar();
 		mondayMorning.set(Calendar.MONTH, Calendar.NOVEMBER);
 		mondayMorning.set(Calendar.DAY_OF_MONTH, 25);
 		mondayMorning.clear(Calendar.MINUTE);
@@ -61,14 +61,14 @@ public class CallCenterHoursTest {
 		mondayEveningAfterHours = (Calendar) mondayMorning.clone();
 		mondayEveningAfterHours.set(Calendar.HOUR_OF_DAY, 21);
 
-		fridayEvening = Calendar.getInstance();
+		fridayEvening = getBaseCalendar();
 		fridayEvening.set(Calendar.MONTH, Calendar.NOVEMBER);
 		fridayEvening.set(Calendar.DAY_OF_MONTH, 29);
 		fridayEvening.set(Calendar.HOUR_OF_DAY, 19);
 		fridayAfterHours= (Calendar) fridayEvening.clone();
 		fridayAfterHours.set(Calendar.HOUR_OF_DAY, 21);
 
-		saturdayMorning = Calendar.getInstance();
+		saturdayMorning = getBaseCalendar();
 		saturdayMorning.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
 		saturdayMorning.set(Calendar.HOUR_OF_DAY, 10);
 
@@ -81,7 +81,7 @@ public class CallCenterHoursTest {
 		saturdayEvening = (Calendar) saturdayAfterNoon.clone();
 		saturdayEvening.set(Calendar.HOUR_OF_DAY, 19);
 
-		sundayMorning = Calendar.getInstance();
+		sundayMorning = getBaseCalendar();
 		sundayMorning.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 		sundayMorning.set(Calendar.HOUR_OF_DAY, 10);
 
@@ -99,6 +99,17 @@ public class CallCenterHoursTest {
 		values.put(MON, "08:30,20:00");
 		when(generalDao.getValues("healthCallCentreHours")).thenReturn(values );
 		callCenterHours = new CallCenterHours("health", generalDao );
+	}
+
+	private Calendar getBaseCalendar() {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR , 2014);
+		cal.set(Calendar.MONTH, Calendar.JANUARY);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		cal.clear(Calendar.MINUTE);
+		cal.clear(Calendar.MILLISECOND);
+		cal.set(Calendar.HOUR_OF_DAY, 1);
+		return cal;
 	}
 
 	@Test
@@ -253,13 +264,13 @@ public class CallCenterHoursTest {
 	}
 
 	protected void assertDayOfMonth(int expected, Date result) {
-		Calendar returnedResult = Calendar.getInstance();
+		Calendar returnedResult = getBaseCalendar();
 		returnedResult.setTime(result);
 		assertEquals(expected, returnedResult.get(Calendar.DAY_OF_MONTH));
 	}
 
 	protected void assertDayOfWeek(String expected, Date result) {
-		Calendar returnedResult = Calendar.getInstance();
+		Calendar returnedResult = getBaseCalendar();
 		returnedResult.setTime(result);
 		String resultDay = "";
 		switch (returnedResult.get(Calendar.DAY_OF_WEEK)) {
@@ -290,7 +301,7 @@ public class CallCenterHoursTest {
 
 
 	private void assertHour(int hour, Date result) {
-		Calendar returnedResult = Calendar.getInstance();
+		Calendar returnedResult = getBaseCalendar();
 		returnedResult.setTime(result);
 		System.out.println("returnedResult " + returnedResult.getTime());
 		assertEquals(hour, returnedResult.get(Calendar.HOUR_OF_DAY));

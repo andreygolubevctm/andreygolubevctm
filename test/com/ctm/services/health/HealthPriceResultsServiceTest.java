@@ -10,13 +10,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
+import com.ctm.model.health.HealthPriceRequest;
 import org.junit.Test;
 
-import com.ctm.dao.StyleCodeDao;
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.HealthPricePremiumRange;
-import com.ctm.model.health.HealthPriceRequest;
 import com.ctm.model.health.HealthPriceResult;
 import com.ctm.model.health.Membership;
 
@@ -24,7 +23,6 @@ public class HealthPriceResultsServiceTest {
 
 	private HealthPriceRequest healthPriceRequest;
 	HealthPriceDao healthPriceDao = mock(HealthPriceDao.class);
-	StyleCodeDao styleCodeDao = mock(StyleCodeDao.class);
 
 	private void setUpHealthPriceService() throws DaoException {
 		healthPriceRequest = new HealthPriceRequest();

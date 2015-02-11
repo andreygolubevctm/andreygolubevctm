@@ -3,14 +3,12 @@ package com.ctm.services.health;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ctm.model.health.HealthPriceRequest;
 import org.apache.log4j.Logger;
 
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.health.HealthPriceRequest;
-import com.ctm.model.health.HealthPriceResult;
-import com.ctm.model.health.ProductStatus;
-
+import com.ctm.model.health.HealthPriceResult;import com.ctm.model.health.ProductStatus;
 public class HealthPriceResultsService {
 
 	private static Logger logger = Logger.getLogger(HealthPriceResultsService.class.getName());

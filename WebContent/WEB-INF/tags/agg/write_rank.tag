@@ -114,7 +114,7 @@
 		<c:set var="count" value="${count+1}" />
 	</c:forEach>
 	
-	<!-- Don't need to insert into the ranking_details table if there are no available results -->
+		<%-- Don't need to insert into the ranking_details table if there are no available results --%>
 	<c:if test="${not empty sqlBulkInsert}">
 		<sql:update sql="${sqlBulkInsert.toString()}">
 			<c:forEach var="item" items="${insertParams}">
@@ -200,7 +200,7 @@
 			<go:log level="DEBUG">Writing Ranking to DISC ${data.xml['ranking']}</go:log>
 			<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
 			<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" style="${AGIS_leadFeedCode}" />
-			<!-- END DISC STUFF -->
+				<%-- END DISC STUFF --%>
 		</c:when>
 
 		<c:otherwise><%-- ignore --%></c:otherwise>

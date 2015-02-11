@@ -10,6 +10,8 @@
 <%@ attribute name="title" 		 required="true"  rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
 <%@ attribute name="size" 		 required="false" rtexprvalue="true"	 description="the size attribute of this input"%>
 <%@ attribute name="placeholder" required="false" rtexprvalue="true"  description="HTML5 placeholder" %>
+<%@ attribute name="maxlength" required="false" rtexprvalue="true"
+			  description="The maximum length for the input field" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -29,11 +31,15 @@
 	<c:set var="placeHolderAttribute" value=' placeholder="${placeholder}"' />
 </c:if>
 
+<c:if test="${not empty maxlength}">
+	<c:set var="maxlengthAttribute" value=' maxlength="${maxlength}"'/>
+</c:if>
+
 <%-- HTML --%>
 <input type="text" name="${name}" id="${name}" class="form-control person_name ${className}"
-					value="${value}" ${sizeAttribute}${requiredAttribute}${placeHolderAttribute}
+	   value="${value}" ${sizeAttribute}${requiredAttribute}${placeHolderAttribute} ${maxlengthAttribute}
 					data-msg-required="Please enter ${title}">
 
 <%-- VALIDATION --%>
-<go:validate selector="${name}" rule="personName" parm="true" message="Please enter a valid name"/>
+<go:validate selector="${name}" rule="personName" parm="true" />
 

@@ -22,6 +22,20 @@
 	<field:hidden xpath="travel/emailhistory" />
 </form_new:row>
 
+<c:if test="${data.travel.currentJourney != null && (data.travel.currentJourney == 5 or data.travel.currentJourney == 6)}">
+	<c:set var="postcodeRequired">
+		<c:if test="${data.travel.currentJourney == 5}">false</c:if>
+		<c:if test="${data.travel.currentJourney == 6}">true</c:if>
+	</c:set>
+
+	<form_new:row label="Postcode / Suburb" className="postcodeDetails">
+		<field_new:lookup_suburb_postcode xpath="travel/location" required="${postcodeRequired}" placeholder="Postcode / Suburb" />
+		<field:hidden xpath="travel/suburb" />
+		<field:hidden xpath="travel/postcode" />
+		<field:hidden xpath="travel/state" />
+	</form_new:row>
+</c:if>
+
 <form_new:row className="travel-contact-details-optin-sgroup">
 	<%-- Mandatory agreement to privacy policy --%>
 	<c:set var="brandedName"><content:get key="boldedBrandDisplayName" /></c:set>

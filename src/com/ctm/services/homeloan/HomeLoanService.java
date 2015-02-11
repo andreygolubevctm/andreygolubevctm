@@ -1,14 +1,5 @@
 package com.ctm.services.homeloan;
 
-import java.security.GeneralSecurityException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.ctm.dao.TransactionDetailsDao;
 import com.ctm.dao.homeloan.HomeloanUnconfirmedLeadsDao;
 import com.ctm.exceptions.DaoException;
@@ -22,7 +13,13 @@ import com.ctm.router.homeloan.HomeLoanRouter;
 import com.ctm.security.StringEncryption;
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.FatalErrorService;
-import com.ctm.utils.RequestUtils;
+import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.GeneralSecurityException;
+import java.util.List;
 
 public class HomeLoanService {
 
@@ -85,16 +82,7 @@ public class HomeLoanService {
 		if (value != null) {
 			model.setState(value);
 		}
-
-		// Name can also be overwritten on the enquiry step - see below
-		value = request.getParameter("homeloan_contact_firstName");
-		if (value != null) {
-			model.setContactFirstName(value);
-		}
-		value = request.getParameter("homeloan_contact_lastName");
-		if (value != null) {
-			model.setContactSurname(value);
-		}
+		model.contact = HomeLoanFormParser.parseNames(request);
 
 		value = request.getParameter("homeloan_loanDetails_purchasePrice");
 		if (value != null && value.length() > 0) {
@@ -223,15 +211,6 @@ public class HomeLoanService {
 		value = request.getParameter("homeloan_enquiry_newLoan_contribution");
 		if (value != null && value.length() > 0) {
 			model.setDepositAmount(Math.abs(Integer.parseInt(value)));
-		}
-
-		value = request.getParameter("homeloan_enquiry_contact_firstName");
-		if (value != null && value.length() > 0) {
-			model.setContactFirstName(value);
-		}
-		value = request.getParameter("homeloan_enquiry_contact_lastName");
-		if (value != null && value.length() > 0) {
-			model.setContactSurname(value);
 		}
 
 		value = request.getParameter("homeloan_enquiry_contact_email");

@@ -17,9 +17,12 @@
 		$travel_dates_fromDate_row,
 		$travel_dates_toDate_row,
 		$detailsForm,
-		$resultsContainer;
+		$resultsContainer,
+		modalId = null;
 
 	function init() {
+
+			$(document.body).on('click', '.btn-view-brands', displayBrandsModal);
 		
 			// setup object references
 			$destinationfs = $('#destinationsfs');
@@ -42,8 +45,34 @@
 
 			// subsribe to the COVER_TYPE_CHANGE event
 			meerkat.messaging.subscribe(meerkatEvents.traveldetails.COVER_TYPE_CHANGE, toggleDetailsFields);
-			
-		
+
+			applyEventListeners();
+	}
+
+	function applyEventListeners() {
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
+			if (meerkat.modules.dialogs.isDialogOpen(modalId))
+			{
+				meerkat.modules.dialogs.close(modalId);
+			}
+		});
+	}
+
+	function displayBrandsModal(event) {
+
+		var template = _.template($('#brands-template').html());
+
+		modalId = meerkat.modules.dialogs.show({
+			title : $(this).attr('title'),
+			hashId : 'travel-brands',
+			className : 'travel-brands-modal',
+			htmlContent: template(),
+			closeOnHashChange: true,
+			openOnHashChange: false
+		});
+
+		return false;
 	}
 
 	function toggleDetailsFields() {

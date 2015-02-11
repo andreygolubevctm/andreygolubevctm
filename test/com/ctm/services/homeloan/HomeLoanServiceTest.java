@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ctm.model.homeloan.HomeLoanContact;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,8 +42,9 @@ public class HomeLoanServiceTest {
 		HomeLoanModel modelWithoutFirstName = new HomeLoanModel();
 		modelWithoutFirstName.setTransactionId(transactionId);
 		modelWithoutFirstName.setState("QLD");
-		modelWithoutFirstName.setContactFirstName(null);
-		modelWithoutFirstName.setContactSurname("Orlov");
+		modelWithoutFirstName.contact = new HomeLoanContact();
+		modelWithoutFirstName.contact.firstName = null;
+		modelWithoutFirstName.contact.lastName = "Orlov";
 		modelWithoutFirstName.setContactPhoneNumber("0402111111");
 		modelWithoutFirstName.setEmailAddress("preload.testing@comparethemarket.com.au");
 		modelWithoutFirstName.setAddressCity("Toowong");
@@ -64,8 +66,9 @@ public class HomeLoanServiceTest {
 		HomeLoanModel modelWithoutFirstName = new HomeLoanModel();
 		modelWithoutFirstName.setTransactionId(transactionId);
 		modelWithoutFirstName.setState("QLD");
-		modelWithoutFirstName.setContactFirstName("Aleksandr");
-		modelWithoutFirstName.setContactSurname("");
+		modelWithoutFirstName.contact = new HomeLoanContact();
+		modelWithoutFirstName.contact.firstName = "Aleksandr";
+		modelWithoutFirstName.contact.lastName = "";
 		modelWithoutFirstName.setContactPhoneNumber("0402111111");
 		modelWithoutFirstName.setEmailAddress("preload.testing@comparethemarket.com.au");
 		modelWithoutFirstName.setAddressCity("Toowong");
@@ -87,8 +90,9 @@ public class HomeLoanServiceTest {
 		HomeLoanModel modelWithoutFirstName = new HomeLoanModel();
 		modelWithoutFirstName.setTransactionId(transactionId);
 		modelWithoutFirstName.setState("QLD");
-		modelWithoutFirstName.setContactFirstName("Aleksandr");
-		modelWithoutFirstName.setContactSurname("Orlov");
+		modelWithoutFirstName.contact = new HomeLoanContact();
+		modelWithoutFirstName.contact.firstName = "Aleksandr";
+		modelWithoutFirstName.contact.lastName = "Orlov";
 		modelWithoutFirstName.setContactPhoneNumber("");
 		modelWithoutFirstName.setEmailAddress("preload.testing@comparethemarket.com.au");
 		modelWithoutFirstName.setAddressCity("Toowong");
@@ -110,8 +114,9 @@ public class HomeLoanServiceTest {
 		HomeLoanModel model = new HomeLoanModel();
 		model.setTransactionId(transactionId);
 		model.setState("QLD");
-		model.setContactFirstName("Aleksandr");
-		model.setContactSurname("Orlov");
+		model.contact = new HomeLoanContact();
+		model.contact.firstName = "Aleksandr";
+		model.contact.lastName = "Orlov";
 		model.setContactPhoneNumber("0402111111");
 		model.setEmailAddress("preload.testing@comparethemarket.com.au");
 		model.setAddressCity("Toowong");

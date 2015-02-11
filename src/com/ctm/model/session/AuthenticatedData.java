@@ -1,6 +1,7 @@
 package com.ctm.model.session;
 
 import com.disc_au.web.go.Data;
+import org.apache.log4j.Logger;
 
 /**
  * Extends the DATA object with some quick methods to return and set common values via xpath.
@@ -8,6 +9,8 @@ import com.disc_au.web.go.Data;
  */
 
 public class AuthenticatedData extends Data {
+
+	private static Logger logger = Logger.getLogger(AuthenticatedData.class.getName());
 
 	public AuthenticatedData(){
 		super();
@@ -21,12 +24,19 @@ public class AuthenticatedData extends Data {
 
 	/**
 	 * The ID from the simples.user row.
-	 * @return
+	 * @return login/user/simplesUid from data bucket
 	 */
-	public Integer getSimplesUid() {
+	public int getSimplesUid() {
+		int simplesUid = -1;
 		String uid = (String) get("login/user/simplesUid");
-		if (uid == null || uid.equals("")) return null;
-		return Integer.parseInt(uid);
+		if (uid != null && !uid.isEmpty()) {
+			try {
+				simplesUid = Integer.parseInt(uid);
+			} catch (NumberFormatException e) {
+				logger.error(e);
+			}
+		}
+		return simplesUid;
 	}
 
 	public boolean isLoggedIn(){

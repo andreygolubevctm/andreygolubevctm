@@ -2,6 +2,7 @@ package com.ctm.services.health;
 
 import static com.ctm.model.health.Frequency.ANNUALLY;
 import static com.ctm.model.health.Frequency.HALF_YEARLY;
+import static com.ctm.model.health.Frequency.HALF_YEARLY;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,18 +11,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.ctm.model.health.*;
 import org.apache.log4j.Logger;
 
 import com.ctm.dao.StyleCodeDao;
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.health.Frequency;
-import com.ctm.model.health.HealthPricePremiumRange;
-import com.ctm.model.health.HealthPriceRequest;
-import com.ctm.model.health.HealthPriceResult;
-import com.ctm.model.health.HospitalSelection;
-import com.ctm.model.health.Membership;
-import com.ctm.model.health.ProductStatus;
 import com.ctm.services.results.ProviderRestrictionsService;
 import com.ctm.utils.FormDateUtils;
 
@@ -44,6 +39,9 @@ public class HealthPriceService {
 
 	private HealthPricePremiumRange healthPricePremiumRange;
 
+	/**
+	 * Used by jsp
+	**/
 	public HealthPriceService() {
 		healthPriceDao = new HealthPriceDao();
 		styleCodeDao = new StyleCodeDao();
@@ -289,8 +287,8 @@ public class HealthPriceService {
 		1=AUF, 3=NIB, 5=GMHBA, 6=GMF, 54=BUD, 11=HIF
 	**/
 	public static boolean hasDiscountRates(Frequency frequency, String provider,
-			String currentCustomer, String paymentType, boolean onResultsPage) {
-		boolean isBankAccount = paymentType != null && paymentType.equals("ba");
+			String currentCustomer, PaymentType paymentType, boolean onResultsPage) {
+		boolean isBankAccount = paymentType != null && paymentType == PaymentType.BANK;
 		boolean isDiscountRates ;
 		switch(provider){
 			case "NIB":
@@ -318,6 +316,5 @@ public class HealthPriceService {
 	}
 
 	public boolean hasDiscountRates(String provider, String currentCustomer, String paymentType) {
-		return hasDiscountRates(healthPriceRequest.getPaymentFrequency(), provider, currentCustomer, paymentType, healthPriceRequest.isOnResultsPage());
-	}
-}
+		return hasDiscountRates(healthPriceRequest.getPaymentFrequency(), provider, currentCustomer, PaymentType.findByCode(paymentType), healthPriceRequest.isOnResultsPage());
+	}}

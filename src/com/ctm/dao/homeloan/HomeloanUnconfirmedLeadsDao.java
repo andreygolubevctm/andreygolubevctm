@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
+import com.ctm.model.homeloan.HomeLoanContact;
 import com.ctm.model.homeloan.HomeLoanModel;
 import com.ctm.model.homeloan.HomeLoanModel.CustomerGoal;
 import com.ctm.model.homeloan.HomeLoanModel.CustomerSituation;
@@ -80,10 +82,11 @@ public class HomeloanUnconfirmedLeadsDao {
 					homeloanOpportunities.add(opportunity);
 				}
 
+				opportunity.contact = new HomeLoanContact();
 				if(xPath.equals("homeloan/contact/firstName")) {
-					opportunity.setContactFirstName(textValue);
+					opportunity.contact.firstName = textValue;
 				} else if(xPath.equals("homeloan/contact/lastName")) {
-					opportunity.setContactSurname(textValue);
+					opportunity.contact.lastName = textValue;
 				} else if(xPath.equals("homeloan/contact/contactNumber")) {
 					opportunity.setContactPhoneNumber(textValue);
 				} else if(xPath.equals("homeloan/contact/email")) {

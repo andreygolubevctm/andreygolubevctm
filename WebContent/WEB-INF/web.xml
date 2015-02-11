@@ -88,21 +88,6 @@
 
 
 
-	<!-- Online Chat Servlet -->
-	<servlet>
-		<description>Chat Servlet</description>
-		<display-name>ChatServlet</display-name>
-		<servlet-name>ChatServlet</servlet-name>
-		<servlet-class>com.disc_au.web.socket.ChatWebSocketServlet</servlet-class>
-		<init-param>
-			<param-name>polling_secs</param-name>
-			<param-value>1</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ChatServlet</servlet-name>
-		<url-pattern>/chat</url-pattern>
-	</servlet-mapping>
 
 	<!-- Path Poisoning Protection Filter -->
 	<!--

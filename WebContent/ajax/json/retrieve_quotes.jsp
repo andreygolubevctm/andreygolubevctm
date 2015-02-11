@@ -31,6 +31,7 @@
 <c:if test="${!validCredentials}">
 			<go:log source="retrieve_quotes_jsp" level="INFO">Authenticating for: ${param.email}</go:log>
 			<c:set var="password"><go:HmacSHA256 username="${param.email}" password="${param.password}" brand="${pageSettings.getBrandCode()}" /></c:set>
+			<go:log source="retrieve_quotes_jsp" level="INFO">password: ${password}</go:log>
 	<security:authentication
 			emailAddress="${param.email}"
 		password="${password}"

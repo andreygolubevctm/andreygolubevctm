@@ -24,7 +24,7 @@
 	<%-- Policy Holder First Name --%>
 	<c:set var="fieldXpath" value="${xpath}/firstName" />
 	<form_new:row fieldXpath="${fieldXpath}" label="First Name">
-		<field_new:input xpath="${fieldXpath}"
+		<field:person_name xpath="${fieldXpath}"
 			title="policy holder's first name"
 			required="false"
 			maxlength="50" />
@@ -33,7 +33,7 @@
 	<%-- Policy Holder Last Name --%>
 	<c:set var="fieldXpath" value="${xpath}/lastName" />
 	<form_new:row fieldXpath="${fieldXpath}" label="Last Name">
-		<field_new:input xpath="${fieldXpath}"
+		<field:person_name xpath="${fieldXpath}"
 			title="policy holder's last name"
 			required="false"
 			maxlength="50" />
@@ -65,7 +65,7 @@
 	<%-- Joint Policy Holder First Name --%>
 	<c:set var="fieldXpath" value="${xpath}/jointFirstName" />
 	<form_new:row fieldXpath="${fieldXpath}" label="First Name">
-		<field_new:input xpath="${fieldXpath}"
+		<field:person_name xpath="${fieldXpath}"
 			title="joint policy holder's first name"
 			required="false"
 			maxlength="50"
@@ -75,7 +75,7 @@
 	<%-- Joint Policy Holder Last Name --%>
 	<c:set var="fieldXpath" value="${xpath}/jointLastName" />
 	<form_new:row fieldXpath="${fieldXpath}" label="Last Name">
-		<field_new:input xpath="${fieldXpath}"
+		<field:person_name xpath="${fieldXpath}"
 			title="joint policy holder's last name"
 			required="false"
 			maxlength="50"

@@ -99,6 +99,11 @@
 			<field:array_radio items="Y=Yes,N=No" id="${name}_movingIn" xpath="${xpath}/movingIn" title="if you are moving to this property" required="true" />	
 		</form:row>
 		
+		<div id="movingInContainer">
+		<form:row label="What date are you moving in?">
+			<field:basic_date xpath="${xpath}/movingInDate" title="moving in date" required="true" disableWeekends="true" maxDate="+60d" />
+		</form:row>
+		</div>
 		<form:row label="What would you like to compare?" helpId="528">
 			<field:array_radio items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_whatToCompare" xpath="${xpath}/whatToCompare" title="which energies to compare" required="true" />	
 		</form:row>
@@ -166,6 +171,12 @@ var HouseholdDetailsHandler = {
 	init: function(){
 		$("#${name}_movingIn, #${name}_whatToCompare").buttonset();
 	
+		if($("input[name=utilities_householdDetails_movingIn]:checked").val() == 'Y'){
+			$('#movingInContainer').show();
+		} else {
+			$('#movingInContainer').hide();
+		}
+
 		<c:if test="${not empty postcode && postcode ne null}">
 			$('#${name}_location').focus().val('${postcode}').autocomplete('search','${postcode}');
 		</c:if>
@@ -203,6 +214,14 @@ $.validator.addMethod("validateLocation",
 
 <go:script marker="onready">	
 	HouseholdDetailsHandler.init();
+
+	$('input[name=utilities_householdDetails_movingIn]').on('change',function(){
+		if($("input[name=utilities_householdDetails_movingIn]:checked").val() == 'Y'){
+			$('#movingInContainer').show();
+		} else {
+			$('#movingInContainer').hide();
+		}
+	});
 </go:script>
 
 <%-- VALIDATION --%>

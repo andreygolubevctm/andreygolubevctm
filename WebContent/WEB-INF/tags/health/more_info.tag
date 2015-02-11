@@ -101,8 +101,8 @@
 
 			<c:if test="${pricePromiseEnabled eq 'Y'}">
 				<div class="row pricepromise paragraphedContent">
-					<div class="col-xs-3 col-sm-5 pricePromiseLogo"></div>
-					<div class="col-xs-9 col-sm-7">
+					<div class="col-xs-4 col-sm-4 col-lg-5 pricePromiseLogo"></div>
+					<div class="col-xs-8 col-sm-8 col-lg-7">
 						<h2 class="more-info-promotion">Our Price Promise To You</h2>
 						<p>
 							Buy health insurance through us and if you find a better price on the same policy within 30 days, <strong>we'll give you $50*</strong>
@@ -111,6 +111,9 @@
 					</div>
 				</div>
 			</c:if>
+
+			<health:competition_jeep />
+
 			<div class="row row-content brochureButtons">
 				{{ if(typeof hospitalCover !== 'undefined') { }}
 					<div class="col-sm-6 col-xs-12">

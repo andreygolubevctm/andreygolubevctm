@@ -46,14 +46,13 @@ public class LogRouter extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
 		PrintWriter writer = response.getWriter();
-		/**
+			/**
 		 * Get the transactionId from the request.
 		 */
 		Long transactionId = null;
 		if (request.getParameter("transactionId") != null) {
 			transactionId = Long.parseLong(request.getParameter("transactionId"));
 		}
-
 		/**
 		 * Set content-type header based on uri extension.
 		 */

@@ -89,6 +89,15 @@
 			},
 			onInitialise : function onStartInit(event) {
 
+				var currentJourney = meerkat.modules.tracking.getCurrentJourney();
+
+				if (typeof currentJourney !== 'undefined' && (currentJourney === 5 || currentJourney === 6))
+				{
+					$('#travel_location').on('blur',function() {
+						meerkat.modules.travelContactDetails.setLocation($(this).val());
+					});
+				}
+
 				// if preloaded or load from EDM
 				if ($policyTypeBtn.is(':checked')) {
 					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);

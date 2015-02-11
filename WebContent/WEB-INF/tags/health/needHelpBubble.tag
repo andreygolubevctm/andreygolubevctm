@@ -1,6 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:if test="${not empty callCentreNumber}">		
+<c:if test="${not empty callCentreNumber}">
 <ui:bubble variant="info">
 	<h4>Do you need a hand?</h4>
 	<p class="larger">

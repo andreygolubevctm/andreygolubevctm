@@ -2,6 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="lifeService" class="com.ctm.services.life.LifeService" scope="page" />
+<c:set var="serviceRespone" value="${lifeService.contactLead(pageContext.request)}" />
+<c:choose>
+	<c:when test="${lifeService.isValid()}">
 <c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
 
@@ -12,11 +16,8 @@
 		<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
 		<%-- Load the params into data --%>
 		<security:populateDataFromParams rootPath="${vertical}" />
-		<jsp:useBean id="validationService" class="com.ctm.services.life.LifeValidationService" scope="page" />
-		<c:set var="validationErrors" value="${validationService.validateRequestCall(data, fn:toLowerCase(vertical))}" />
-		<c:set var="isValid" value="${validationErrors.isEmpty()}" />
 		<c:choose>
-			<c:when test="${isValid}">
+					<c:when test="${lifeService.isValid()}">
 		<%-- Save client data --%>
 		<%-- <agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${fn:toLowerCase(vertical)}"/> --%>
 		<core:transaction touch="CB" noResponse="true" comment="Request call back" />
@@ -57,3 +58,8 @@
 	</c:otherwise>
 </c:choose>
 ${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+	</c:when>
+	<c:otherwise>
+		${serviceRespone}
+	</c:otherwise>
+</c:choose>

@@ -1,6 +1,6 @@
 /*!
  * CTM-Platform v0.8.3
- * Copyright 2015 Compare The Market Pty Ltd
+ * Copyright 2014 Compare The Market Pty Ltd
  * http://www.comparethemarket.com.au/
  */
 
@@ -1664,6 +1664,17 @@ creditCardDetails = {
                 }
             });
             if (meerkat.site.isNewQuote === false) {
+                if (meerkat.site.isCallCentreUser === true) {
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: "contactCentreUser",
+                        object: {
+                            contactCentreID: meerkat.site.userId,
+                            quoteReferenceNumber: transaction_id,
+                            transactionID: transaction_id,
+                            productID: meerkat.site.productId
+                        }
+                    });
+                } else {
                     meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                         method: "trackQuoteEvent",
                         object: {
@@ -1675,6 +1686,7 @@ creditCardDetails = {
                 }
             }
         }
+    }
     function eventSubscriptions() {
         meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockHealth(obj) {
             var isSameSource = typeof obj !== "undefined" && obj.source && obj.source === "submitApplication";
@@ -2447,7 +2459,7 @@ creditCardDetails = {
                 validationErrors: error.errorDetails.validationErrors,
                 startStage: "payment"
             });
-            if (typeof error.transactionId != "undefined" && Number(error.transactionId) > 0) {
+            if (typeof error.transactionId != "undefined" && error.transactionId !== "") {
                 meerkat.modules.transactionId.set(error.transactionId);
             }
         } else {
@@ -3273,16 +3285,16 @@ creditCardDetails = {
                     } else {
                         handoverType = "Online";
                     }
-                    meerkat.modules.partnerTransfer.trackHandoverEvent({
-                        product: product,
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: "trackHandoverType",
+                        object: {
                             type: handoverType,
                             quoteReferenceNumber: transaction_id,
                             transactionID: transaction_id,
-                        productID: product.productId.replace("PHIO-HEALTH-", ""),
-                        productName: product.info.name,
-                        productBrandCode: product.info.FundCode,
+                            productID: "productID",
                             simplesUser: meerkat.site.isCallCentreUser
-                    }, false, true);
+                        }
+                    });
                 } else {
                     applyCallback(false);
                 }
@@ -4343,7 +4355,6 @@ creditCardDetails = {
                     $policySummaryContainer.find(".policyPriceWarning").show();
                 });
             }
-            applyEventListeners();
             meerkat.messaging.publish(moduleEvents.INIT);
         });
     }
@@ -4368,11 +4379,6 @@ creditCardDetails = {
         var htmlTemplate = _.template(logoPriceTemplate);
         var htmlString = htmlTemplate(product);
         $policySummaryTemplateHolder.html(htmlString);
-        if (meerkat.modules.splitTest.isActive(2)) {
-            var htmlTemplate_B = _.template($("#price-itemisation-template").html());
-            var htmlString_B = htmlTemplate_B(product);
-            $(".priceItemisationTemplateHolder").html(htmlString_B);
-        }
         $policySummaryContainer.find(".policyPriceWarning").hide();
         if ($policySummaryDualPricing.length > 0) {
             product.showAltPremium = true;
@@ -4404,18 +4410,6 @@ creditCardDetails = {
         if (typeof product.hospital.inclusions === "undefined" || product.hospital.inclusions.copayment === "") {
             $policySummaryDetailsComponents.find(".copayment").parent().addClass("hidden");
         }
-        if (meerkat.modules.splitTest.isActive(2)) {
-            $policySummaryDetailsComponents.find(".companyLogo").attr("class", "companyLogo hidden-sm");
-            $policySummaryDetailsComponents.find(".companyLogo").addClass(product.info.provider);
-    }
-    }
-    function applyEventListeners() {
-        $(".btn-show-how-calculated").on("click", function() {
-            meerkat.modules.dialogs.show({
-                title: "Here is how your premium is calculated:",
-                htmlContent: '<p>The BASE PREMIUM is the cost of a policy set by the health fund. This cost excludes any discounts or additional charges that are applied to the policy due to your age or income.</p><p>LHC LOADING is an initiative designed by the Federal Government to encourage people to take out private hospital cover earlier in life. If you&rsquo;re over the age of 31 and don&rsquo;t already have cover, you&rsquo;ll be required to pay a 2% Lifetime Health Cover loading for every year over the age of 30 that you were without hospital cover. The loading is applied to the BASE PREMIUM of the hospital component of your cover if applicable.<br/>For full information please go to: <a href="http://www.privatehealth.gov.au/healthinsurance/incentivessurcharges/lifetimehealthcover.htm" target="_blank">http://www.privatehealth.gov.au/healthinsurance/incentivessurcharges/lifetimehealthcover.htm</a></p><p>The AUSTRALIAN GOVERNMENT REBATE exists to provide financial assistance to those who need help with the cost of their health insurance premium. It is currently income-tested and tiered according to total income and the age of the oldest person covered by the policy. If you claim a rebate and find at the end of the financial year that it was incorrect for whatever reason, the Australian Tax Office will simply correct the amount either overpaid or owing to you after your tax return has been completed. There is no penalty for making a rebate claim that turns out to have been incorrect. The rebate is calculated against the BASE PREMIUM for both the hospital &amp; extras components of your cover.<br/>For full information please go to: <a href="https://www.ato.gov.au/Calculators-and-tools/Private-health-insurance-rebate-calculator/" target="_blank">https://www.ato.gov.au/Calculators-and-tools/Private-health-insurance-rebate-calculator/</a></p><p>PAYMENT DISCOUNTS can be offered by health funds for people who choose to pay by certain payment methods or pay their premiums upfront. These are applied to the total premium costs.</p>'
-            });
-        });
     }
     meerkat.modules.register("healthPriceComponent", {
         init: init,
@@ -4503,7 +4497,7 @@ creditCardDetails = {
 })(jQuery);
 
 (function($) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $resultsLowNumberMessage;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, supertagEventMode = "Load", $resultsLowNumberMessage;
     var templates = {
         premiumsPopOver: "{{ if(product.premium.hasOwnProperty(frequency)) { }}" + '<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' + "<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> " + "<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> " + "<strong>Base price: </strong>{{= product.premium[frequency].base }}<br/> " + "{{ } }}" + "<hr/> " + "{{ if(product.premium.hasOwnProperty('fortnightly')) { }}" + "<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> " + "{{ } }}" + "{{ if(product.premium.hasOwnProperty('monthly')) { }}" + "<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> " + "{{ } }}" + "{{ if(product.premium.hasOwnProperty('annually')) { }}" + "<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> " + "{{ } }}" + "<hr/> " + "{{ if(product.hasOwnProperty('info')) { }}" + "<strong>Name: </strong>{{=product.info.productTitle}}<br/> " + "<strong>Product Code: </strong>{{=product.info.productCode}}<br/> " + "<strong>Product ID: </strong>{{=product.productId}}<br/>" + "<strong>State: </strong>{{=product.info.State}}<br/> " + "<strong>Membership Type: </strong>{{=product.info.Category}}" + "{{ } }}"
     };
@@ -4555,17 +4549,14 @@ creditCardDetails = {
                         info: "results.info"
                     },
                     brand: "info.Name",
-                    productBrandCode: "info.providerName",
                     productId: "productId",
                     productTitle: "info.productTitle",
-                    productName: "info.productTitle",
                     price: {
                         annually: "premium.annually.lhcfreevalue",
                         monthly: "premium.monthly.lhcfreevalue",
                         fortnightly: "premium.fortnightly.lhcfreevalue"
                     },
                     availability: {
-                        product: "available",
                         price: {
                             annually: "premium.annual.lhcfreevalue",
                             monthly: "premium.monthly.lhcfreevalue",
@@ -4908,7 +4899,7 @@ creditCardDetails = {
         meerkat.messaging.subscribe(meerkatEvents.healthFilters.CHANGED, function onFilterChange(obj) {
             resetCompare();
             if (obj && obj.hasOwnProperty("filter-frequency-change")) {
-                meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
+                supertagEventMode = "Refresh";
     }
         });
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function onHealthResultsXsEnterChange() {
@@ -5223,11 +5214,11 @@ creditCardDetails = {
         });
     }
     function toggleMarketingMessage(show, columns) {
-        var $marketingMessage = $(".resultsMarketingMessage");
         if (show) {
-            $marketingMessage.addClass("show").attr("data-columns", columns);
+            $(".resultsMarketingMessage").addClass("show");
+            $(".resultsMarketingMessage").attr("data-columns", columns);
         } else {
-            $marketingMessage.removeClass("show");
+            $(".resultsMarketingMessage").removeClass("show");
         }
     }
     function toggleResultsLowNumberMessage(show) {
@@ -5273,19 +5264,11 @@ creditCardDetails = {
         }
         return data;
     }
-    function publishExtraSuperTagEvents() {
-        meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
-            additionalData: {
-                preferredExcess: getPreferredExcess(),
-                paymentPlan: Results.getFrequency(),
-                sortBy: Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price",
-                simplesUser: meerkat.site.isCallCentreUser
-            },
-            onAfterEventMode: "Load"
-        });
-    }
-    function getPreferredExcess() {
-        var excess = null;
+    function doCustomExternalTracking() {
+        var paymentPlan = Results.getFrequency();
+        var sortBy = Results.getSortBy() === "benefitsSort" ? "Benefits" : "Lowest Price";
+        var excess = "ALL";
+        var display = "price";
         switch ($("#health_excess").val()) {
           case "1":
             excess = "0";
@@ -5303,12 +5286,24 @@ creditCardDetails = {
             excess = "ALL";
             break;
         }
-        return excess;
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+            method: "trackQuoteList",
+            object: {
+                preferredExcess: excess,
+                actionStep: meerkat.site.vertical + " results",
+                paymentPlan: paymentPlan,
+                sortBy: sortBy,
+                event: supertagEventMode,
+                display: display,
+                simplesUser: meerkat.site.isCallCentreUser
             }
+        });
+        supertagEventMode = "Load";
+    }
     function init() {
         $component = $("#resultsPage");
         meerkat.messaging.subscribe(meerkatEvents.healthBenefits.CHANGED, onBenefitsSelectionChange);
-        meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
+        meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, doCustomExternalTracking);
     }
     meerkat.modules.register("healthResults", {
         init: init,
@@ -5330,7 +5325,7 @@ creditCardDetails = {
         onBenefitsSelectionChange: onBenefitsSelectionChange,
         recordPreviousBreakpoint: recordPreviousBreakpoint,
         rankingCallback: rankingCallback,
-        publishExtraSuperTagEvents: publishExtraSuperTagEvents
+        doCustomExternalTracking: doCustomExternalTracking
     });
 })(jQuery);
 

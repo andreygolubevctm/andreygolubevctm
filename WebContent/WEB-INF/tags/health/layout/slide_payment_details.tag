@@ -9,6 +9,7 @@
 		<jsp:attribute name="rightColumn">
 			<health:policySummary showProductDetails="true" showDualPricing="true" />
 			<health:needHelpBubble />
+			<health:competition_jeep />
 		</jsp:attribute>
 
 		<jsp:body>

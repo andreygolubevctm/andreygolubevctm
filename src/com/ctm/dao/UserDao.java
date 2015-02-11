@@ -1,21 +1,19 @@
 package com.ctm.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.naming.NamingException;
-
-import org.apache.log4j.Logger;
-
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.simples.CallInfo;
 import com.ctm.model.simples.User;
 import com.ctm.services.PhoneService;
+import org.apache.log4j.Logger;
+
+import javax.naming.NamingException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class UserDao {
 
@@ -27,14 +25,10 @@ public class UserDao {
 	 */
 	public User getUser(int userId) throws DaoException {
 		User user = new User();
-		SimpleDatabaseConnection dbSource = null;
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try {
-
-			dbSource = new SimpleDatabaseConnection();
-
-			PreparedStatement stmt = null;
-			stmt = dbSource.getConnection().prepareStatement(
+			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
 				"SELECT id, displayName, extension, ldapuid, loggedIn, modified, available FROM simples.user WHERE id = ?"
 			);
 			stmt.setInt(1, userId);
@@ -73,13 +67,10 @@ public class UserDao {
 	 * @return List of users
 	 */
 	public ArrayList<User> getUsers(PageSettings settings, boolean onlyLoggedInUsers) throws DaoException {
-		ArrayList<User> users = new ArrayList<User>();
-		SimpleDatabaseConnection dbSource = null;
+		ArrayList<User> users = new ArrayList<>();
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try {
-
-			dbSource = new SimpleDatabaseConnection();
-
 			String sql = "SELECT id, displayName, extension, ldapuid, loggedIn, modified, available FROM simples.user";
 
 			// Restrict to logged in users and if they are 'fresh'. This is because they may have session-expired instead of logging out.
@@ -87,8 +78,7 @@ public class UserDao {
 				sql += " WHERE loggedIn = 1 AND modified >= DATE_SUB(NOW(), INTERVAL 6 MINUTE)";
 			}
 
-			PreparedStatement stmt = null;
-			stmt = dbSource.getConnection().prepareStatement(sql);
+			PreparedStatement stmt = dbSource.getConnection().prepareStatement(sql);
 
 			ResultSet results = stmt.executeQuery();
 
@@ -107,7 +97,7 @@ public class UserDao {
 				if (user.getAvailable()) {
 					// Attempt to read the phone information to determine if user is on a call.
 					try {
-						if (user.getLoggedIn() == true) {
+						if (user.getLoggedIn()) {
 							// Firstly assume they're not available (in case an exception occurs)
 							user.setAvailable(false);
 
@@ -153,13 +143,11 @@ public class UserDao {
 	 */
 	public User loginUser(User user) throws DaoException {
 
-		SimpleDatabaseConnection dbSource = null;
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try {
 			PreparedStatement stmt;
 			PreparedStatement simplesUserStatement;
-			ResultSet results;
-			dbSource = new SimpleDatabaseConnection();
 			Connection conn = dbSource.getConnection();
 
 			//
@@ -169,7 +157,7 @@ public class UserDao {
 				"SELECT id FROM simples.user WHERE ldapuid = ?"
 			);
 			stmt.setString(1, user.getUsername());
-			results = stmt.executeQuery();
+			ResultSet results = stmt.executeQuery();
 
 			// Update the model with the row ID
 			while (results != null && results.next()) {
@@ -208,11 +196,12 @@ public class UserDao {
 
 				// Update the model with the row ID
 				results = simplesUserStatement.getGeneratedKeys();
-				if (results != null && results.next()) {
-					user.setId(results.getInt(1));
+				if (results != null) {
+					if (results.next()) {
+						user.setId(results.getInt(1));
+					}
+					results.close();
 				}
-
-				results.close();
 				simplesUserStatement.close();
 			}
 
@@ -230,7 +219,7 @@ public class UserDao {
 
 	/**
 	 * Flag the user as having logged out.
-	 * @param userId
+	 * @param userId that matcher username in simples.user
 	 */
 	public void logoutUser(int userId) throws DaoException {
 
@@ -315,12 +304,8 @@ public class UserDao {
 	 * @param userId
 	 */
 	public void tickleUser(int userId) throws DaoException {
-
-		SimpleDatabaseConnection dbSource = null;
-
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		try {
-			dbSource = new SimpleDatabaseConnection();
-
 			PreparedStatement stmt;
 			stmt = dbSource.getConnection().prepareStatement(
 				"UPDATE simples.user SET loggedIn = 1, modified = NOW() WHERE id = ?"
@@ -328,8 +313,7 @@ public class UserDao {
 			stmt.setInt(1, userId);
 			stmt.executeUpdate();
 			stmt.close();
-		}
-		catch (SQLException | NamingException e) {
+		} catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
 		}
 		finally {

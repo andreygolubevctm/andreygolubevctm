@@ -95,7 +95,7 @@
 								<text><xsl:value-of select="ns2:Excess" /></text>
 								<order />
 							</excess>
-							<xsl:message> <xsl:value-of select="ns2:policy-name"/></xsl:message>
+
 							<xsl:for-each select="ns2:covers">
 								<xsl:variable name="nodeName">
 									<xsl:choose>

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.Nullable;
+import org.springframework.util.NumberUtils;
 import org.xml.sax.SAXException;
 
 import com.disc_au.web.go.xml.XmlNode;
@@ -17,8 +19,8 @@ import com.disc_au.web.go.xml.XmlParser;
  * @version 1.0
  */
 
-public class Data extends XmlNode implements Comparable<Data>{
-
+public class Data extends XmlNode implements Comparable<Data> {
+	
 	private static Logger logger = Logger.getLogger(Data.class.getName());
 
 	/** The NODE. */
@@ -255,26 +257,55 @@ public class Data extends XmlNode implements Comparable<Data>{
 		return EQUAL;
 	}
 
+	@Nullable
 	public String getString(String xpath) {
-		Object rebateObj = get(xpath);
-		String value = "";
-		if (rebateObj instanceof String) {
-			value = (String) rebateObj;
-}
+		Object obj = get(xpath);
+		String value = null;
+		if (obj instanceof String) {
+			value = (String) obj;
+		}
 		return value;
 	}
+
+	@Nullable
+	public Long getLong(String xpath) {
+		return getNumber(xpath, Long.class);
+	}
+
+	@Nullable
+	public Integer getInteger(String xpath) {
+		return getNumber(xpath, Integer.class);
+	}
+
+	@Nullable
+	public Double getDouble(String xpath) {
+		return getNumber(xpath, Double.class);
+	}
 	
-	public double getDouble(String xpath) {
-		String value =  getString(xpath);
-		double loadingValue = 0;
-		if(!value.isEmpty()) {
-			try {
-				loadingValue = Double.parseDouble(value);
-			} catch (NumberFormatException e) {
-				logger.error(e);
+	/* (non-Javadoc)
+	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
+	 */
+
+	public synchronized Object putInteger(String key, @Nullable Integer value) {
+		return put(key, String.valueOf(value));
+	}
+
+	public synchronized Object putDouble(String key,@Nullable Double annualAmount) {
+		return put(key, String.valueOf(annualAmount));
+	}
+
+	private <T extends Number> T getNumber(String xpath, Class<T> targetClass) {
+		T value= null;
+		String valueString = getString(xpath);
+		try {
+			if(valueString != null && !valueString.isEmpty()){
+				value = NumberUtils.parseNumber(getString(xpath), targetClass);
 			}
+		} catch (NumberFormatException e) {
+			logger.error(e);
 		}
-		return loadingValue;
+		return value;
 	}
 
 }
+

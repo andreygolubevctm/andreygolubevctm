@@ -211,3 +211,4 @@
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}_optin" rule="required" parm="true" message="Please agree to the Terms &amp; Conditions" />
+<go:validate selector="${name}_name" rule="personName" parm="true" />

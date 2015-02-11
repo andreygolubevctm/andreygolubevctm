@@ -1,5 +1,7 @@
 package com.ctm.model.homeloan;
 
+import javax.validation.Valid;
+
 public class HomeLoanModel {
 
 	public static enum CustomerSituation {
@@ -139,8 +141,8 @@ public class HomeLoanModel {
 	private Boolean bpayAccess;
 	private String productsMustBeIncluded;
 	private Integer depositAmount;
-	private String contactFirstName;
-	private String contactSurname;
+	@Valid
+	public HomeLoanContact contact;
 	private String emailAddress;
 	private String contactPhoneNumber;
 	private String contactBestContact;
@@ -152,8 +154,6 @@ public class HomeLoanModel {
 	private String propertyType;
 	private String employmentStatus;
 	private String additionalInformation;
-
-
 
 	public Long getTransactionId() {
 		return transactionId;
@@ -346,17 +346,10 @@ public class HomeLoanModel {
 	}
 
 	public String getContactFirstName() {
-		return contactFirstName;
+		return contact.firstName;
 	}
-	public void setContactFirstName(String contactFirstName) {
-		this.contactFirstName = contactFirstName;
-	}
-
 	public String getContactSurname() {
-		return contactSurname;
-	}
-	public void setContactSurname(String contactSurname) {
-		this.contactSurname = contactSurname;
+		return contact.lastName;
 	}
 	public String getEmailAddress() {
 		return emailAddress;

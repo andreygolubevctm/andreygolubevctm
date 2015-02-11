@@ -254,7 +254,7 @@
 					<leadNo><xsl:value-of select="$referenceNumber"/></leadNo>
 					<telNo>1300 284 875</telNo>
 					<openingHours>Monday to Friday (9am-7pm EST)</openingHours>
-					<quoteUrl><xsl:value-of select="$quoteURL" /><xsl:value-of select="$referenceNumber"/>?p=<xsl:value-of select="ai:Product" />&amp;e=<xsl:value-of select="ai:Excess"/></quoteUrl>
+					<quoteUrl><xsl:value-of select="$quoteURL" /><xsl:value-of select="$referenceNumber"/></quoteUrl>
 					<refnoUrl/>
 
 					<xsl:choose>

@@ -10,10 +10,11 @@ import org.apache.log4j.Logger;
 
 public class FormDateUtils {
 
+	static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+
 	private static Logger logger = Logger.getLogger(FormDateUtils.class.getName());
 
 	public static Date parseDateFromForm(String searchDate) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 		Date searchDateValue = null;
 		try {
 			searchDateValue = formatter.parse(searchDate);
@@ -39,10 +40,14 @@ public class FormDateUtils {
 	 * @return
 	 */
 	public static String getTodaysDate(String format) {
-
 		Date today = new Date();
-
 		return convertDateToString(today, format);
 
+	}
+
+	public static Object convertDateToFormFormat(Date date) {
+		String dateString = null;
+		dateString = formatter.format(date);
+		return dateString;
 	}
 }

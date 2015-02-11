@@ -12,11 +12,7 @@ $.validator.addMethod('min_DateOfBirth', function(value, element, params) {
 	var temp = value.split('/');
 	var minDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- params.ageMin) );
 
-	if (minDate > now) {
-		return false;
-	};
-
-	return true;
+	return minDate <= now;
 });
 
 $.validator.addMethod('max_DateOfBirth', function(value, element, params) {
@@ -29,11 +25,7 @@ $.validator.addMethod('max_DateOfBirth', function(value, element, params) {
 	var temp = value.split('/');
 	var maxDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- params.ageMax) );
 
-	if (maxDate < now) {
-		return false;
-	};
-
-	return true;
+	return maxDate >= now;
 });
 
 $.validator.addMethod('min_DateOfBirthYearException', function(value, element, params) {
@@ -51,7 +43,7 @@ $.validator.addMethod('min_DateOfBirthYearException', function(value, element, p
 
 		if (minDate > now) {
 			return false;
-		};
+		}
 	}
 
 	return true;
@@ -72,7 +64,7 @@ $.validator.addMethod('max_DateOfBirthYearException', function(value, element, p
 
 		if (maxDate < now) {
 			return false;
-		};
+		}
 	}
 
 	return true;
@@ -85,20 +77,16 @@ $.validator.addMethod("dateOfBirthEUR", function(value, element, params) {
 
 	var check = false;
 	var re = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
-	if (re.test(value)) {
+	if (!re.test(value)) {
+		check = false;
+	} else {
 		var adata = value.split('/');
 		var d = parseInt(adata[0], 10);
 		var m = parseInt(adata[1], 10);
 		var y = parseInt(adata[2], 10);
 		var xdata = new Date(y, m - 1, d);
-		if ((xdata.getFullYear() == y || String(xdata.getFullYear()).substring(2) == y) && (xdata.getMonth() == m - 1)
-				&& (xdata.getDate() == d)) {
-			check = true;
-		} else {
-			check = false;
-		}
-	} else {
-		check = false;
+		check = (xdata.getFullYear() == y || String(xdata.getFullYear()).substring(2) == y) && (xdata.getMonth() == m - 1)
+		&& (xdata.getDate() == d);
 	}
 
 	return (this.optional(element) != false) || check;
@@ -116,17 +104,13 @@ $.validator.addMethod("dateOfBirthEURValidYear", function(value, element, params
 		var y = parseInt(adata[2], 10);
 		var d = parseInt(adata[0], 10);
 		var m = parseInt(adata[1], 10);
-		if(String(y).length === 4) {
-		var xdata = new Date(y, m - 1, d);
-		if ((xdata.getFullYear() == y) && (xdata.getMonth() == m - 1)
-				&& (xdata.getDate() == d)) {
-			check = true;
-		} else {
+		if (String(y).length !== 4) {
 			check = false;
+		} else {
+			var xdata = new Date(y, m - 1, d);
+			check = (xdata.getFullYear() == y) && (xdata.getMonth() == m - 1)
+			&& (xdata.getDate() == d);
 		}
-	} else {
-		check = false;
-	}
 	} else {
 		check = false;
 	}
@@ -141,20 +125,16 @@ $.validator.addMethod("dateEUR", function(value, element, params) {
 
 	var check = false;
 	var re = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
-	if (re.test(value)) {
+	if (!re.test(value)) {
+		check = false;
+	} else {
 		var adata = value.split('/');
 		var d = parseInt(adata[0], 10);
 		var m = parseInt(adata[1], 10);
 		var y = parseInt(adata[2], 10);
 		var xdata = new Date(y, m - 1, d);
-		if ((xdata.getFullYear() == y) && (xdata.getMonth() == m - 1)
-				&& (xdata.getDate() == d)) {
-			check = true;
-		} else {
-			check = false;
-		}
-	} else {
-		check = false;
+		check = (xdata.getFullYear() == y) && (xdata.getMonth() == m - 1)
+		&& (xdata.getDate() == d);
 	}
 
 	return (this.optional(element) != false) || check;
@@ -203,18 +183,15 @@ $.validator.addMethod("ncdValid", function(value, element) {
 	var ncdYears = value;
 	var yearsDriving = rgdYrs - minDrivingAge;
 	// alert("ncdYears: " + ncdYears + " yearsDriving: " + yearsDriving);
-	if (ncdYears > yearsDriving) {
-		return false;
-	}
-	return true;
+	return ncdYears <= yearsDriving;
+
 }, "Invalid NCD Rating based on number of years driving.");
 
 //
 // Validates youngest drivers age with regular driver, youngest can not be older
 // than regular driver
 //
-$.validator.addMethod("youngRegularDriversAgeCheck", function(value, element,
-		params) {
+$.validator.addMethod("youngRegularDriversAgeCheck", function (value, element) {
 	function getDate(v) {
 		var adata = v.split('/');
 		return new Date(parseInt(adata[2], 10), parseInt(adata[1], 10) - 1,
@@ -235,32 +212,25 @@ $.validator.addMethod("youngRegularDriversAgeCheck", function(value, element,
 // Validates youngest drivers annual kilometers with the car details kilometers per year
 // Youngest cannot exceed the car details kilometers.
 //
-$.validator.addMethod("youngRegularDriversAnnualKilometersCheck", function(value, element,
-		params) {
+$.validator.addMethod("youngRegularDriversAnnualKilometersCheck", function () {
 
 	var vehicleAnnualKms = parseInt($('#quote_vehicle_annualKilometres').val());
 	var youngestAnnualKms = parseInt($('#quote_drivers_young_annualKilometres').val());
 
-	if (youngestAnnualKms >= vehicleAnnualKms) {
-		return false;
-	}
-	return true;
+	return youngestAnnualKms < vehicleAnnualKms;
 }, "The annual kilometres driven by the youngest driver cannot exceed those of the regular driver.");
 
+//
 // Validates the dropdown for mobile commencement date.
 //
-$.validator.addMethod("commencementDateMobileDropdownCheck", function(value, element, params) {
-	if (element.value == '' || element.value == null) {
-		return false;
-	}
-	return true;
+$.validator.addMethod("commencementDateMobileDropdownCheck", function (value, element) {
+	return !(element.value == '' || element.value == null);
 }, "Please select a commencement date.");
 
 //
-//
 // Validates...
 //
-$.validator.addMethod("allowedDrivers", function(value, element, params) {
+$.validator.addMethod("allowedDrivers", function (value) {
 
 	var allowDate = false;
 
@@ -301,9 +271,10 @@ $.validator.addMethod("allowedDrivers", function(value, element, params) {
 	var d = new Date();
 	var curYear = d.getFullYear();
 	var curMonth = d.getMonth();
-	var rgdDOB = getDate($("#quote_drivers_regular_dob").val());
-	var rgdFullYear = getDateFullYear($("#quote_drivers_regular_dob").val());
-	var rgdMonth = getDateMonth($("#quote_drivers_regular_dob").val());
+	var dobValue = $("#quote_drivers_regular_dob").val();
+	var rgdDOB = getDate(dobValue);
+	var rgdFullYear = getDateFullYear(dobValue);
+	var rgdMonth = getDateMonth(dobValue);
 	var rgdYrs = curYear - rgdFullYear;
 
 	// Check AlwDrv allows Rgd
@@ -322,18 +293,14 @@ $.validator.addMethod("allowedDrivers", function(value, element, params) {
 		allowDate = true;
 	}
 
-	if (allowDate == false) {
-		return false;
-	}
-
-	return true;
+	return allowDate;
 
 }, "Driver age restriction invalid due to regular driver's age.");
 
 //
 // Validates youngest driver minimum age
 //
-$.validator.addMethod("youngestDriverMinAge", function(value, element, params) {
+$.validator.addMethod("youngestDriverMinAge", function (value, element) {
 
 	function getDateFullYear(v) {
 		var adata = v.split('/');
@@ -373,7 +340,6 @@ $.validator.addMethod("youngestDriverMinAge", function(value, element, params) {
 //
 // Is used to reset the number of form errors when moving between slides
 //
-;
 (function($) {
 	$.extend($.validator.prototype, {
 		resetNumberOfInvalids : function() {
@@ -397,7 +363,7 @@ $(function() {
 //
 // Validates age licence obtained for regular driver
 //
-$.validator.addMethod("ageLicenceObtained", function(value, element, param) {
+$.validator.addMethod("ageLicenceObtained", function (value, element) {
 
 	var driver;
 	switch (element.name) {
@@ -436,7 +402,7 @@ $.validator.addMethod("ageLicenceObtained", function(value, element, param) {
 // Ensures that client agrees to the field
 // Makes sure that checkbox for 'Y' is checked
 //
-$.validator.addMethod("agree", function(value, element, params) {
+$.validator.addMethod("agree", function (value, element) {
 	if (value == "Y") {
 		return $(element).is(":checked");
 	} else {
@@ -444,49 +410,35 @@ $.validator.addMethod("agree", function(value, element, params) {
 	}
 }, "");
 
-//
+// TODO: delete this when all vertical are on the new framework
+// Name is alpha and .'\-, only with no foreign characters as providers don't support them
 //Ensures that an email address or URL is not being entered
 //
-$.validator.addMethod("personName",
-		function(value, element, params) {
-			var isEmail = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i.test(value);
-			var isURL = value.match(/(?:[^\s])\.(com|co|net|org|asn|ws|us|mobi)(\.[a-z][a-z])?/) != null;
-			return !isEmail && !isURL;
+if (typeof meerkat === 'undefined' || typeof meerkat.modules.validation === 'undefined') {
+	var validNameCharsRegex = /^([a-zA-Z .'\-,]*)$/;
+	var isUrlRegex = /(?:[^\s])\.(com|co|net|org|asn|ws|us|mobi)(\.[a-z][a-z])?/;
+	$.validator.addMethod("personName",
+		function validatePersonName(value, element) {
+			return value.match(isUrlRegex) === null && validNameCharsRegex.test(value);
 		},
-		"Please enter a valid name"
-);
+		"Please enter alphabetic characters only. Unfortunately, international " +
+		"alphabetic characters, numbers and symbols are not supported by many of our " +
+		"partners at this time.");
+}
 
 //
 // Validates OK to call which ensure we have a phone number if they select yes
 //
-$.validator
-		.addMethod(
-				"personName",
-				function(value, element, params) {
-					var isEmail = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i
-							.test(value);
-					var isURL = value
-							.match(/(?:[^\s])\.(com|co|net|org|asn|ws|us|mobi)(\.[a-z][a-z])?/) != null;
-					return !isEmail && !isURL;
-				}, "Please enter a valid name");
-
-//
-// Validates OK to call which ensure we have a phone number if they select yes
-//
-$.validator.addMethod("okToCall", function(value, element, params) {
-	if ($('input[name="quote_contact_oktocall"]:checked').val() == "Y"
-			&& $('input[name="quote_contact_phone"]').val() == "") {
-		return false;
-	} else {
-		return true;
-	}
+$.validator.addMethod("okToCall", function() {
+	return !($('input[name="quote_contact_oktocall"]:checked').val() == "Y"
+	&& $('input[name="quote_contact_phone"]').val() == "");
 
 }, "");
 
 //
 //Validates OK to email which ensure we have a email address if they select yes
 //
-$.validator.addMethod("marketing", function(value, element, params) {
+$.validator.addMethod("marketing", function () {
 	if ($('input[name="quote_contact_marketing"]:checked').val() == "Y"
 			&& $('input[name="quote_contact_email"]').val() == "") {
 		return false;
@@ -507,21 +459,19 @@ $.validator.addMethod(
 
 		if(typeof meerkat != 'undefined') {
 
-					var $ele = $(element);
-		var $streetSearch = $("#" + name + "_streetSearch");
-		var $streetNoElement = $("#" + name + "_streetNum");
-		var $unitShopElement = $("#" + name + "_unitShop");
-		var $unitSelElement = $("#" + name + "_unitSel");
-		var $unitTypeElement = $("#" + name + "_unitType");
-		var $dpIdElement = $("#" + name + "_dpId");
-		var $streetIdElement = $("#" + name + "_streetId");
-		var $houseNoSel = $("#" + name + "_houseNoSel");
-		var houseNo = $streetNoElement.val();
-		var isNonStd = $("#" + name + "_nonStd").is(":checked");
+			var $ele = $(element);
+			var $streetNoElement = $("#" + name + "_streetNum");
+			var $unitShopElement = $("#" + name + "_unitShop");
+			var $unitSelElement = $("#" + name + "_unitSel");
+			var $unitTypeElement = $("#" + name + "_unitType");
+			var $dpIdElement = $("#" + name + "_dpId");
+			var $streetIdElement = $("#" + name + "_streetId");
+			var $houseNoSel = $("#" + name + "_houseNoSel");
+			var houseNo = $streetNoElement.val();
+			var isNonStd = $("#" + name + "_nonStd").is(":checked");
 
 					var fldName = $ele.attr("id").substring(name.length);
 			var type = $("#" + name + "_type").val();
-;
 			var selectedAddress = window.selectedAddressObj[type];
 
 					switch (fldName) {
@@ -682,7 +632,7 @@ $.validator.addMethod(
 
 			/* Legacy address validation for non-meerkat verticals */
 
-			var $ele = $(element);
+			$ele = $(element);
 			var streetNoElement = $("#" + name + "_streetNum");
 			var unitShopElement = $("#" + name + "_unitShop");
 			var dpIdElement = $("#" + name + "_dpId");
@@ -725,7 +675,7 @@ $.validator.addMethod(
 					if (unitNo == "") {
 						unitNo = unitShopElement.val();
 					}
-					var houseNo = streetNoElement.val();
+					houseNo = streetNoElement.val();
 					if (houseNo == "") {
 						houseNo = $("#" + name + "_houseNoSel").val();
 					}
@@ -875,7 +825,7 @@ validateAddressAgainstServer = function(name, dpIdElement, data, element) {
 //Validates the 4 digit postcode against server records.
 //
 $.validator.addMethod("validatePostcode",
-		function(value, element, params) {
+	function (value, element) {
 			var valid = false;
 			if(value.length == 4){
 				valid = validatePostcodeAgainstServer(name , element , {
@@ -893,8 +843,7 @@ $.validator.addMethod("validatePostcode",
 
 validatePostcodeAgainstServer = function(name, dpIdElement, data, url) {
 	var passed = false;
-	var url;
-	if (url == null)
+	if (url === null)
 		url = '';
 	$.ajax({
 		url : url + "ajax/json/validation/validate_postcode.jsp",
@@ -1034,10 +983,10 @@ var ServerSideValidation = {
 					// Didn't find the element, try more attempts...
 
 					var elements = error.elements.split(",");
-					for(var i = 0; i < elements.length; i++){
-						var fieldName = partialName + "_" + $.trim(elements[i]);
+					for (var x = 0; i < elements.length; x++) {
+						var fieldName = partialName + "_" + $.trim(elements[x]);
 
-						var matches = $('input[name*="' + fieldName + '"]');
+						matches = $('input[name*="' + fieldName + '"]');
 						if(matches.length == 0) matches = $('input[id*="' + fieldName + '"]');	// Try finding by ID.
 
 					}
@@ -1226,32 +1175,30 @@ var ServerSideValidation = {
 	}
 };
 
-$.validator.addMethod('checkPrefix', function(value, element, param) {
+$.validator.addMethod('checkPrefix', function (value) {
 	var tmpVal = value.replace(/[^0-9]+/g, '');
 	var phoneRegex = new RegExp("^(0[234785]{1})");
 	return phoneRegex.test(tmpVal);
 });
 
-$.validator.addMethod('confirmLandline', function(value, element, param) {
+$.validator.addMethod('confirmLandline', function (value) {
 	var strippedValue = value.replace(/[^0-9]+/g, '');
 	return strippedValue == '' || isLandLine(strippedValue);
 });
 
-$.validator.addMethod('validateTelNo', function(value, element) {
+$.validator.addMethod('validateTelNo', function (value) {
 	if (value.length == 0) return true;
 
-	var valid = true;
 	var strippedValue = value.replace(/[^0-9]/g, '');
 	if (strippedValue.length == 0 && value.length > 0) {
 		return false;
 	}
 
 	var phoneRegex = new RegExp('^(0[234785]{1}[0-9]{8})$');
-	valid = phoneRegex.test(strippedValue);
-	return valid;
+	return phoneRegex.test(strippedValue);
 });
 
-$.validator.addMethod('validateMobile', function(value, element) {
+$.validator.addMethod('validateMobile', function (value) {
 	if (value.length == 0) return true;
 
 	var valid = true;
@@ -1267,17 +1214,14 @@ $.validator.addMethod('validateMobile', function(value, element) {
 	}
 	return valid;
 });
+
 $.validator.addMethod("requiredOneContactNumber", function(value, element) {
 	var nameSuffix = element.id.split(/[_]+/);
 	nameSuffix.pop();
 	nameSuffix = nameSuffix.join("_");
 	var mobileElement = $("#" + nameSuffix + "_mobile");
 	var otherElement = $("#" + nameSuffix + "_other");
-	if (mobileElement.val() + otherElement.val() == '') {
-		return false;
-	} else {
-		return true;
-	}
+	return mobileElement.val() + otherElement.val() != '';
 });
 
 isLandLine = function(number) {
@@ -1316,9 +1260,5 @@ date_gt_date = function (date1, date2){
 	var datenum1 = parseInt(d1[2]+d1[1]+d1[0]);
 	var datenum2 = parseInt(d2[2]+d2[1]+d2[0]);
 
-	if(datenum2 <= datenum1){
-		return true;
-	}else{
-		return false;
-	}
+	return datenum2 <= datenum1;
 };

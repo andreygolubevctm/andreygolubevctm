@@ -3,7 +3,7 @@ package com.ctm.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class FormValidation extends AbstractJsonModel {
+public class FormValidationLog extends AbstractJsonModel {
 	public static final String JSON_COLLECTION_NAME = "form_validation";
 
 	private String xpath;

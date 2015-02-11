@@ -1,4 +1,3 @@
-<%@ tag import="java.util.*"%>
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Select box built comma separated values."%>
 
@@ -86,19 +85,23 @@
 
 		<%-- first names --%>
 		<c:set var="firstName">
-			<field:input xpath="${xpath}/firstName" title="policy holder's first name" required="false" maxlength="50"/>
+			<field:person_name xpath="${xpath}/firstName" title="policy holder's first name" required="false"
+							   maxlength="50"/>
 		</c:set>
 		<c:set var="jointFirstName">
-			<field:input xpath="${xpath}/jointFirstName" title="joint policy holder's first name" required="false" maxlength="50" className="jointPolicyHolder"/>
+			<field:person_name xpath="${xpath}/jointFirstName" title="joint policy holder's first name" required="false"
+							   maxlength="50" className="jointPolicyHolder"/>
 		</c:set>
 		<form:items_grid label="First Name" columns="2" items="=${firstName},=${jointFirstName}" className="policyHolderColumns"  xpath="${xpath}/bothFirstNames"/>
 
 		<%-- lastNames --%>
 		<c:set var="lastName">
-			<field:input xpath="${xpath}/lastName" title="policy holder's last name" required="false" maxlength="50"/>
+			<field:person_name xpath="${xpath}/lastName" title="policy holder's last name" required="false"
+							   maxlength="50"/>
 		</c:set>
 		<c:set var="jointLastName">
-			<field:input xpath="${xpath}/jointLastName" title="joint policy holder's last name" required="false" maxlength="50" className="jointPolicyHolder"/>
+			<field:person_name xpath="${xpath}/jointLastName" title="joint policy holder's last name" required="false"
+							   maxlength="50" className="jointPolicyHolder"/>
 		</c:set>
 		<form:items_grid label="Last Name" columns="2" items="=${lastName},=${jointLastName}" className="policyHolderColumns"  xpath="${xpath}/bothLastNames"/>
 

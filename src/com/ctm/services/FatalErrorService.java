@@ -1,10 +1,10 @@
 package com.ctm.services;
 
-import org.apache.log4j.Logger;
-
 import com.ctm.dao.FatalErrorDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.FatalError;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 
 /**
  * Used to log errors to the database
@@ -12,31 +12,37 @@ import com.ctm.model.FatalError;
 public class FatalErrorService {
 
 	private static Logger logger = Logger.getLogger(FatalErrorService.class.getName());
+	public String sessionId;
+	public String page;
+	public int styleCodeId;
+	public String property;
+
+	public FatalErrorService(){
+		this.sessionId = "";
+	}
+
+	public FatalErrorService(String sessionId){
+		this.sessionId = sessionId;
+	}
 
 	public static void logFatalError(Exception exception, int styleCodeId, String page , String sessionId, boolean isFatal, String transactionId) {
-		String description = exception.getMessage();
 		String message = exception.getMessage();
-		if(exception.getCause() != null) {
-			description = exception.getCause().getMessage();
-		}
-
 		if(message == null) message = "UNKNOWN";
+		String data = ExceptionUtils.getStackTrace(exception);
+		logFatalError(styleCodeId, page, sessionId, isFatal, message, getDescription(exception), transactionId, data, null);
+	}
 
-		logFatalError(styleCodeId, page, sessionId, isFatal, message, description, transactionId);
+	public void logFatalError(Exception exception, int styleCodeId, String page , boolean isFatal, String transactionId) {
+		logFatalError(exception, styleCodeId,  page , this.sessionId,  isFatal,  transactionId);
 	}
 
 	public static void logFatalError(Exception exception, int styleCodeId, String page , String sessionId, boolean isFatal) {
-		String description = exception.getMessage();
 		String message = exception.getMessage();
-		if(exception.getCause() != null) {
-			description = exception.getCause().getMessage();
-		}
-
-
-		logFatalError(styleCodeId, page, sessionId, isFatal, message, description, null);
+		String data = ExceptionUtils.getStackTrace(exception);
+		logFatalError(styleCodeId, page, sessionId, isFatal, message, getDescription(exception), null, data, null);
 	}
 
-	public static void logFatalError(int styleCodeId, String page , String sessionId, boolean isFatal, String message, String description, String transactionId) {
+	public static void logFatalError(int styleCodeId, String page , String sessionId, boolean isFatal, String message, String description, String transactionId, String data, String property) {
 		if(message.length() > 255){
 			message = message.substring(0, 255);
 		}
@@ -53,6 +59,8 @@ public class FatalErrorService {
 		fatalError.setDescription(description);
 		fatalError.setSessionId(sessionId);
 		fatalError.setTransactionId(transactionId);
+		fatalError.setData(data);
+		fatalError.setProperty(property);
 		if(isFatal) {
 			fatalError.setFatal("1");
 		} else {
@@ -70,4 +78,27 @@ public class FatalErrorService {
 				sessionId, isFatal, String.valueOf(transactionId));
 	}
 
+	public void logFatalError(Exception exception, int styleCodeId, String page, boolean isFatal, Long transactionId) {
+		logFatalError(exception, styleCodeId, page, this.sessionId, isFatal, transactionId);
+	}
+
+	public void logFatalError(int styleCodeId, String page, boolean isFatal, String message, String description, Long transactionId) {
+		logFatalError(styleCodeId, page, this.sessionId, isFatal, message, description, String.valueOf(transactionId), "" , null);
+	}
+
+	public void logFatalError(int styleCodeId, String page, boolean isFatal, String message, String description, String transactionId) {
+		logFatalError(styleCodeId, page, this.sessionId, isFatal, message, description, transactionId, "" , null);
+	}
+
+	public static void logFatalError(int styleCodeId, String page, String sessionId, boolean isFatal, String message, String description, String transactionId) {
+		logFatalError(styleCodeId, page, sessionId, isFatal, message, description, transactionId, "" , null);
+	}
+
+	private static String getDescription(Exception exception) {
+		String description = exception.getMessage();
+		if(exception.getCause() != null) {
+			description = " cause:" + exception.getCause().getMessage();
+		}
+		return description;
+	}
 }

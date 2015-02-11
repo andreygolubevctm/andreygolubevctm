@@ -14,12 +14,11 @@ import com.ctm.services.SettingsService;
 import com.ctm.services.TransactionService;
 import com.ctm.services.simples.SimplesMessageService;
 import com.ctm.services.simples.SimplesUserService;
+import com.ctm.utils.RequestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -94,8 +93,7 @@ public class SimplesRouter extends HttpServlet {
 		// Route the requests ///////////////////////////////////////////////////////////////////////////////
 
 		if (uri.endsWith("/simples/comments/list.json")) {
-			writer.print(TransactionService.getCommentsForTransactionId(transactionId));
-		}
+				writer.print(TransactionService.getCommentsForTransactionId(RequestUtils.getTransactionIdFromRequest(request)));			}
 
 		else if (uri.endsWith("/simples/messages/next.json")) {
 			getNextMessage(writer, request, response, authenticatedData);
@@ -126,15 +124,14 @@ public class SimplesRouter extends HttpServlet {
 				userDao.tickleUser(simplesUid);
 
 				objectMapper.writeValue(writer, jsonObjectNode("status", "OK"));
-			}
+		}
 			catch (ConfigSettingException | DaoException | SessionException e) {
 				throw new ServletException(e);
 			}
 		}
 
 		else if (uri.endsWith("/simples/transactions/details.json")) {
-			objectMapper.writeValue(writer, TransactionService.getMoreDetailsOfTransaction(transactionId));
-		}
+			objectMapper.writeValue(writer, TransactionService.getMoreDetailsOfTransaction(RequestUtils.getTransactionIdFromRequest(request)));				}
 
 		else if (uri.endsWith("/simples/users/list_online.json")) {
 			PageSettings settings = SettingsService.getPageSettingsByCode("CTM", VerticalType.SIMPLES.getCode());

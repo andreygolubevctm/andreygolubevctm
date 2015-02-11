@@ -4,21 +4,20 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ctm.model.FormValidationLog;
 import org.apache.log4j.Logger;
 
 import com.ctm.constants.PrivacyBlacklist;
 import com.ctm.dao.FormValidationDao;
 import com.ctm.dao.TransactionDetailsDao;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.FormValidation;
 
 public class FormValidationService {
 
 	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(FormValidationService.class.getName());
-	/**
-	 * @param transactionDetailsDao
-	 */
+
+
 	public FormValidationService() {
 	}
 
@@ -81,7 +80,7 @@ public class FormValidationService {
 				message = message.substring(0,499);
 			}
 
-			FormValidation formValidation = new FormValidation();
+			FormValidationLog formValidation = new FormValidationLog();
 			formValidation.setXPath(xpath);
 			formValidation.setValidationMessage(message);
 			formValidation.setTextValue(inputValue);

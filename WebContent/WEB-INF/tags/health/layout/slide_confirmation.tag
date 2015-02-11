@@ -45,6 +45,8 @@
 					</div>
 				</div>
 
+				<health:competition_jeep />
+
 			</jsp:attribute>
 
 			<jsp:body>

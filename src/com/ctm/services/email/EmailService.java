@@ -93,7 +93,7 @@ public class EmailService {
 					throw new SendEmailException("failed to get settings", e);
 				}
 			EmailServiceHandler emailService = EmailServiceFactory.newInstance(pageSettings, mode, data);
-				emailService.send(request, emailAddress, transactionId);
+			emailService.send(request, emailAddress, transactionId);
 		} else {
 			throw new SendEmailException(transactionId + ": invalid email recieved emailAddress:" +  emailAddress);
 		}

@@ -18,11 +18,11 @@
 		</form:row>
 		
 		<form:row label="First name">
-			<field:input xpath="${xpath}/firstName" title="First name" required="true" maxlength="50"/>
+			<field:person_name xpath="${xpath}/firstName" title="First name" required="true" maxlength="50"/>
 		</form:row>
 		
 		<form:row label="Last name">
-			<field:input xpath="${xpath}/lastName" title="Last name" required="true" maxlength="50"/>
+			<field:person_name xpath="${xpath}/lastName" title="Last name" required="true" maxlength="50"/>
 		</form:row>
 		
 		<form:row label="Date of birth">

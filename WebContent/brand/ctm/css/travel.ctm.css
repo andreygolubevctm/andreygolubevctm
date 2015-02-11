@@ -581,6 +581,9 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
   padding-top: 6px;
   font-size: 0.86em;
 }
+.postcodeDetails {
+  display: none;
+}
 .travel_details_datesTravellers .dateinput_container .hidden-datepicker {
   width: 85%;
   margin: 0 0 0 15px;
@@ -782,6 +785,11 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
     width: 100%;
     height: 80px;
   }
+}
+.logogrid .travelCompanyLogo,
+.travel-brands-content div .travelCompanyLogo {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 .resultsContainer.v2 .unavailable .travelCompanyLogo {
   float: left;
@@ -1016,4 +1024,41 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
   .logo_ZUJI {
     background-image: url("../../../common/images/logos/travel/zuji@2x.png");
   }
+}
+@media (min-width: 992px) {
+  .travel-brands-content {
+    height: 540px;
+    overflow: auto;
+    padding: 20px;
+  }
+}
+.travel-brands-content .underwriter-link {
+  margin-top: 10px;
+}
+@media (min-width: 992px) {
+  .travel-brands-modal .modal-body {
+    padding: 0px;
+  }
+}
+.travel-brands-modal .modal-body .underwriters {
+  margin-top: 10px;
+}
+.travel-brands-modal .modal-body .underwriters:before,
+.travel-brands-modal .modal-body .underwriters:after {
+  content: " ";
+  display: table;
+}
+.travel-brands-modal .modal-body .underwriters:after {
+  clear: both;
+}
+.travel-brands-modal .modal-body .underwriters:before,
+.travel-brands-modal .modal-body .underwriters:after {
+  content: " ";
+  display: table;
+}
+.travel-brands-modal .modal-body .underwriters:after {
+  clear: both;
+}
+.travel-brands-modal .modal-body .underwriters p {
+  text-align: justify;
 }

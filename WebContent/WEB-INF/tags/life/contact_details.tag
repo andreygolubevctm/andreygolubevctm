@@ -38,13 +38,16 @@
 
 	<form:fieldset legend="Your Contact Details">
 
-		<life:name xpath="${vertical}/primary" />
+		<life:name xpath="${vertical}/primary" vertical="${vertical}" />
+		
+		<form:row label="Surname" className="clear">
+			<field:input xpath="${vertical}/primary/lastname" title="${error_phrase}surname" required="true" size="13" />
+		</form:row>
+		
+		<go:validate selector="${vertical}_primary_lastname" rule="personName" parm="true" />
 
 		<form:row label="Your email address" className="clear email-row">
 			<field:contact_email xpath="${xpath}/email" title="your email address" required="true" size="40"/><span id="email_note">For confirming quote and transaction details</span>
-		</form:row>
-		<form:row label="" className="email-optin-row clear closer">
-			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from <strong>Compare</strong>the<strong>market</strong>.com.au" required="false" label="true"/>
 		</form:row>
 
 		<form:row label="Your phone number">
@@ -65,14 +68,46 @@
 			<form:row label="" className="promo-row">
 				<div class="promo-container">
 					<div class="promo-image ${vertical}"></div>
-					<c:set var="competitionCheckboxText"><content:get key="competitionCheckboxText" /></c:set>
-					<field:hidden xpath="${xpath}/competition/optin" constantValue="N" />
-					<field:checkbox xpath="${xpath}/competition/optin" value="Y" title="${competitionCheckboxText}" required="false" label="true"/>
-					<field:hidden xpath="${xpath}/competition/previous" />
 				</div>
+			</form:row>
+		
+			<form:row label="" className="clear">
+				<c:set var="competitionCheckboxText"><content:get key="competitionCheckboxText" /></c:set>
+				<field:hidden xpath="${xpath}/competition/optin" constantValue="N" />
+				<field:checkbox xpath="${xpath}/competition/optin" value="Y" title="${competitionCheckboxText}" required="false" label="true"/>
+				<field:hidden xpath="${xpath}/competition/previous" />
 			</form:row>
 		</c:if>
 		<%-- COMPETITION END--%>
+		
+		<form:row label="" className="clear">
+			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from <strong>Compare</strong>the<strong>market</strong>.com.au" required="false" label="true"/>
+		</form:row>
+		
+		<form:row label="" className="clear closer">
+			<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${vertical}_privacyoptinInfoDialog.open()'>privacy statement</a>" />
+			<c:choose>
+				<c:when test="${vertical eq 'life'}">
+					<c:set var="label_text">
+						I understand comparethemarket.com.au compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance partner may contact me to further assist with my life insurance needs. I confirm that I have read the ${privacyLink}.
+					</c:set>
+				</c:when>
+				<c:when test="${vertical eq 'ip'}">
+					<c:set var="label_text">
+						I understand comparethemarket.com.au compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance and income protection partner may contact me to further assist with my life insurance and income protection needs. I confirm that I have read the ${privacyLink}.
+					</c:set>
+				</c:when>
+			</c:choose>
+			
+			<field:checkbox
+				xpath="${vertical}_privacyoptin"
+				value="Y"
+				title="${label_text}"
+				errorMsg="Please confirm you have read the privacy statement"
+				required="true"
+				label="true"
+			/>
+		</form:row>
 
 		<field:hidden xpath="${xpath}/call" />
 		<field:hidden xpath="${vertical}/splitTestingJourney" constantValue="${splitTestingJourney}" />

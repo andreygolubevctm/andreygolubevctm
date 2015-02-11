@@ -8,7 +8,7 @@ import javax.naming.NamingException;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.FormValidation;
+import com.ctm.model.FormValidationLog;
 
 /**
  * Data Access Object to interface with the form_validation table.
@@ -28,7 +28,7 @@ public class FormValidationDao {
 	 * @param transactionId
 	 * @throws DaoException
 	 */
-	public void addValidationLog(FormValidation formValidation, long transactionId) throws DaoException {
+	public void addValidationLog(FormValidationLog formValidation, long transactionId) throws DaoException {
 		SimpleDatabaseConnection dbSource = null;
 		try {
 			dbSource = new SimpleDatabaseConnection();

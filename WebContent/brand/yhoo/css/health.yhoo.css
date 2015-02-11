@@ -1435,6 +1435,11 @@ body > div > header a.bottombar .btn-call:hover {
   font-size: 1.15em;
   line-height: 1.37em;
 }
+#resultsPage .moreInfoDropdown {
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
 #resultsPage .more-info-content {
   border-top: 2px solid #F7F7F7;
 }
@@ -1634,8 +1639,9 @@ body > div > header a.bottombar .btn-call:hover {
 .more-info-content .row.moreInfoExcesses p {
   margin-bottom: 5px;
 }
-.more-info-content .pricepromise img {
-  width: 100%;
+.more-info-content .pricepromise {
+  margin-left: 0;
+  margin-right: 0;
 }
 .more-info-content .pricepromise h2 {
   margin: 0;
@@ -1649,14 +1655,30 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .more-info-content .pricepromise .pricePromiseLogo {
   background-image: url("../graphics/health/Price-Promise-Blue.png");
-  width: 135px;
-  height: 97px;
-  background-size: 135px 97px;
+  width: 90px;
+  height: 65px;
+  background-size: contain;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
   .more-info-content .pricepromise .pricePromiseLogo {
     background-image: url("../graphics/health/Price-Promise-Blue@2x.png");
-    background-size: 135px 97px;
+    background-size: 135px 97px ;
+  }
+}
+@media (min-width: 768px) {
+  .more-info-content .pricepromise h2 {
+    font-size: 16px;
+  }
+  .more-info-content .pricepromise .pricePromiseLogo {
+    width: 105px;
+    height: 76px;
+    background-size: contain !important;
+  }
+}
+@media (min-width: 992px) {
+  .more-info-content .pricepromise .pricePromiseLogo {
+    width: 135px;
+    height: 97px;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
@@ -3378,6 +3400,157 @@ header .healthCallCentreSpecialHoursLink {
 }
 #navbar-main .navbar-text-block {
   max-height: 30px;
+}
+.health .jeepPromotion {
+  margin: 25px auto 0px auto;
+}
+.health .jeepPromotion a {
+  outline: none;
+  border: none;
+  color: #333;
+  display: block;
+}
+.health .jeepPromotion div {
+  background-image: url("../competition/health/jeep-promo/jeep-entry-xs.jpg");
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0 auto;
+  width: 268px;
+  height: 89px;
+}
+@media  (-webkit-min-device-pixel-ratio: 1.5),  (min--moz-device-pixel-ratio: 1.5),  (-o-min-device-pixel-ratio: 3/2),  (min-device-pixel-ratio: 1.5),  (min-resolution: 1.5dppx),  (min-resolution: 144dpi) {
+  .health .jeepPromotion div {
+    background-image: url("../competition/health/jeep-promo/jeep-entry-xs@2x.jpg");
+    background-size: 268px 89px;
+  }
+}
+.health .jeepPromotion span {
+  float: none;
+  display: block;
+  margin: 3px auto 0 auto;
+  font-size: 10px;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .health .jeepPromotion span {
+    float: right;
+    font-size: 10px;
+    margin-top: 3px;
+  }
+}
+body[data-step="payment"].health .jeepPromotion,
+.health #confirmationForm .jeepPromotion {
+  margin-top: 40px;
+}
+@media (min-width: 768px) {
+  body[data-step="payment"].health .jeepPromotion div,
+  .health #confirmationForm .jeepPromotion div {
+    background-image: url("../competition/health/jeep-promo/jeep-entry-sidebar.jpg");
+    width: 100%;
+    height: 73px;
+    background-size: contain !important;
+  }
+}
+@media (min-width: 768px) and  (-webkit-min-device-pixel-ratio: 1.5), (min-width: 768px) and  (min--moz-device-pixel-ratio: 1.5), (min-width: 768px) and  (-o-min-device-pixel-ratio: 3/2), (min-width: 768px) and  (min-device-pixel-ratio: 1.5), (min-width: 768px) and  (min-resolution: 1.5dppx), (min-width: 768px) and  (min-resolution: 144dpi) {
+  body[data-step="payment"].health .jeepPromotion div,
+  .health #confirmationForm .jeepPromotion div {
+    background-image: url("../competition/health/jeep-promo/jeep-entry-sidebar@2x.jpg");
+    background-size: 374px 124px;
+  }
+}
+@media (min-width: 992px) {
+  body[data-step="payment"].health .jeepPromotion div,
+  .health #confirmationForm .jeepPromotion div {
+    width: 100%;
+    height: 97px;
+  }
+}
+@media (min-width: 1200px) {
+  body[data-step="payment"].health .jeepPromotion div,
+  .health #confirmationForm .jeepPromotion div {
+    width: 100%;
+    height: 124px;
+  }
+}
+body[data-step="apply"].health .jeepPromotion {
+  margin-top: 0;
+  margin-bottom: 25px;
+}
+@media (min-width: 768px) {
+  body[data-step="apply"].health .jeepPromotion div {
+    background-image: url("../competition/health/jeep-promo/jeep-entry-form.jpg");
+    width: 468px;
+    height: 155px;
+    background-size: contain !important;
+  }
+}
+@media (min-width: 768px) and  (-webkit-min-device-pixel-ratio: 1.5), (min-width: 768px) and  (min--moz-device-pixel-ratio: 1.5), (min-width: 768px) and  (-o-min-device-pixel-ratio: 3/2), (min-width: 768px) and  (min-device-pixel-ratio: 1.5), (min-width: 768px) and  (min-resolution: 1.5dppx), (min-width: 768px) and  (min-resolution: 144dpi) {
+  body[data-step="apply"].health .jeepPromotion div {
+    background-image: url("../competition/health/jeep-promo/jeep-entry-form@2x.jpg");
+    background-size: 768px 255px;
+  }
+}
+@media (min-width: 992px) {
+  body[data-step="apply"].health .jeepPromotion div {
+    width: 100%;
+    height: 204px;
+  }
+}
+@media (min-width: 1200px) {
+  body[data-step="apply"].health .jeepPromotion div {
+    width: 100%;
+    height: 249px;
+  }
+}
+@media (min-width: 768px) {
+  body[data-step="results"].health .jeepPromotion div,
+  body[data-step="apply"].health .healthMoreInfoModel .jeepPromotion div,
+  body[data-step="payment"].health .healthMoreInfoModel .jeepPromotion div {
+    background-image: url("../competition/health/jeep-promo/jeep-entry-form.jpg");
+    width: 100%;
+    height: 109px;
+    background-size: contain !important;
+  }
+}
+@media (min-width: 768px) and  (-webkit-min-device-pixel-ratio: 1.5), (min-width: 768px) and  (min--moz-device-pixel-ratio: 1.5), (min-width: 768px) and  (-o-min-device-pixel-ratio: 3/2), (min-width: 768px) and  (min-device-pixel-ratio: 1.5), (min-width: 768px) and  (min-resolution: 1.5dppx), (min-width: 768px) and  (min-resolution: 144dpi) {
+  body[data-step="results"].health .jeepPromotion div,
+  body[data-step="apply"].health .healthMoreInfoModel .jeepPromotion div,
+  body[data-step="payment"].health .healthMoreInfoModel .jeepPromotion div {
+    background-image: url("../competition/health/jeep-promo/jeep-entry-form@2x.jpg");
+    background-size: 768px 255px;
+  }
+}
+@media (min-width: 992px) {
+  body[data-step="results"].health .jeepPromotion div,
+  body[data-step="apply"].health .healthMoreInfoModel .jeepPromotion div,
+  body[data-step="payment"].health .healthMoreInfoModel .jeepPromotion div {
+    width: 100%;
+    height: 146px;
+  }
+}
+@media (min-width: 1200px) {
+  body[data-step="results"].health .jeepPromotion div,
+  body[data-step="apply"].health .healthMoreInfoModel .jeepPromotion div,
+  body[data-step="payment"].health .healthMoreInfoModel .jeepPromotion div {
+    width: 100%;
+    height: 180px;
+  }
+}
+body[data-step="apply"].health .healthMoreInfoModel .jeepPromotion,
+body[data-step="payment"].health .healthMoreInfoModel .jeepPromotion {
+  margin-top: 25px;
+}
+@media (min-width: 0) {
+  .health #confirmationForm .jeepPromotion div {
+    background-image: url("../competition/health/jeep-promo/jeep-confirm-sidebar.jpg");
+  }
+}
+@media (min-width: 0) and  (-webkit-min-device-pixel-ratio: 1.5), (min-width: 0) and  (min--moz-device-pixel-ratio: 1.5), (min-width: 0) and  (-o-min-device-pixel-ratio: 3/2), (min-width: 0) and  (min-device-pixel-ratio: 1.5), (min-width: 0) and  (min-resolution: 1.5dppx), (min-width: 0) and  (min-resolution: 144dpi) {
+  .health #confirmationForm .jeepPromotion div {
+    background-image: url("../competition/health/jeep-promo/jeep-confirm-sidebar@2x.jpg");
+    background-size: 374px 124px;
+  }
 }
 .btn-more-info {
   background-color: #333333;

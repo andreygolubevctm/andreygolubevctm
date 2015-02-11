@@ -8,10 +8,10 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import com.ctm.model.health.HealthPriceRequest;
 import org.apache.log4j.Logger;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.model.health.HealthPriceRequest;
 import com.ctm.model.settings.Vertical.VerticalType;
 
 public class ProviderRestrictionsService {
