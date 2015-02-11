@@ -16,11 +16,8 @@
 <go:validate selector="${name}_firstName" rule="personName" parm="true" />
 
 <c:if test="${empty vertical or (vertical != 'life' and vertical != 'ip')}">
-<form:row label="Surname" className="halfrow right">
-	<field:input xpath="${xpath}/lastname" title="${error_phrase}surname" required="true" size="13" />
-</form:row>
-
-<go:validate selector="${name}_firstName" rule="personName" parm="true" />
+	<form:row label="Surname" className="halfrow right">
+		<field:input xpath="${xpath}/lastname" title="${error_phrase}surname" required="true" size="13" />
 	</form:row>
 	
 	<go:validate selector="${name}_lastname" rule="personName" parm="true" />
