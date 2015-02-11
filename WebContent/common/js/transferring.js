@@ -72,7 +72,9 @@ $(window).load(function() {
 				try {
 			var quoteUrl = $('.quoteUrl').attr('quoteUrl');
 			if (quoteUrl != '') {
-					quoteUrl = decodeURIComponent(quoteUrl);
+					if (vertical == 'travel') {
+						quoteUrl = decodeURIComponent(quoteUrl);
+					}
 				window.location.replace(quoteUrl);
 			} else {
 						transferError("No quoteURL was found for the transfer handover for "+vertical, data);
