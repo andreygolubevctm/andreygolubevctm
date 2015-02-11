@@ -8,33 +8,27 @@
 <security:populateDataFromParams rootPath="health" />
 
 <jsp:useBean id="healthApplicationService" class="com.ctm.services.health.HealthApplicationService" scope="page" />
-${healthApplicationService.calculatePremiums(data)}
+<c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request)}" />
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
 
 <c:set var="continueOnAggregatorValidationError" value="${true}" />
 <jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="page" />
-<jsp:useBean id="validationService" class="com.ctm.services.health.HealthApplicationValidationService" scope="page" />
-
-<c:set var="validationErrors" value="${validationService.validate(data)}" />
-<c:set var="isValid" value="${validationErrors.isEmpty()}" />
 
 <c:set var="proceedinator"><core:access_check quoteType="health" /></c:set>
 <c:set var="touch_count"><core:access_count touch="P" /></c:set>
 
 <c:choose>
 	<%-- only output validation errors if call centre --%>
-	<c:when test="${!isValid && callCentre}">
-		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="health_application.jsp" transactionId="${tranId}" />
+	<c:when test="${!healthApplicationService.isValid() && callCentre}">
+		${validationResponse}
 	</c:when>
 	<%-- set to pending if online and validation fails --%>
-	<c:when test="${!isValid && !callCentre}">
+	<c:when test="${!healthApplicationService.isValid() && !callCentre}">
 		<c:set var="resultXml"><result><success>false</success><errors></c:set>
-		<c:forEach var="validationError"  items="${validationErrors}">
+		<c:forEach var="validationError"  items="${healthApplicationService.getValidationErrors()}">
 			<c:set var="resultXml">${resultXml}<error><code>${validationError.message}</code><original>${validationError.elementXpath}</original></error></c:set>
-			<error:non_fatal_error origin="health_application.jsp"
-							errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
 		</c:forEach>
 		<c:set var="resultXml">${resultXml}</errors></result></c:set>
 		<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
