@@ -7,14 +7,15 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="health" />
 
+<%-- Adjust the base rebate using multiplier - this is to ensure the rebate applicable to the
+					commencement date is sent to the provider --%>
+<health:changeover_rebates effective_date="${data.health.payment.details.start}" />
 <jsp:useBean id="healthApplicationService" class="com.ctm.services.health.HealthApplicationService" scope="page" />
 <c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request)}" />
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
-
 <c:set var="continueOnAggregatorValidationError" value="${true}" />
-<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="page" />
 
 <c:set var="proceedinator"><core:access_check quoteType="health" /></c:set>
 <c:set var="touch_count"><core:access_count touch="P" /></c:set>
@@ -52,19 +53,6 @@
 <go:log level="INFO" source="health_application_jsp">transactionId : ${tranId} , Product Id : ${productId}</go:log>
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
-
-<%-- FIX frequency value to legacy so outbound soap messages work --%>
-<c:set var="freq">
-	<c:choose>
-		<c:when test="${data['health/payment/details/frequency'] == 'annually'}">A</c:when>
-		<c:when test="${data['health/payment/details/frequency'] == 'halfyearly'}">H</c:when>
-		<c:when test="${data['health/payment/details/frequency'] == 'quarterly'}">Q</c:when>
-		<c:when test="${data['health/payment/details/frequency'] == 'monthly'}">M</c:when>
-		<c:when test="${data['health/payment/details/frequency'] == 'fortnightly'}">F</c:when>
-		<c:when test="${data['health/payment/details/frequency'] == 'weekly'}">W</c:when>
-	</c:choose>
-</c:set>
-<go:setData dataVar="data" xpath="health/payment/details/frequency" value="${freq}" />
 
 <c:choose>
 	<c:when test="${ct_outcome == 'C'}">
@@ -143,7 +131,7 @@
 		</sql:transaction>
 
 		<go:log level="INFO" source="health_application_jsp" >transactionId : ${tranId} , Fund=${fund}</go:log>
-				
+
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />
 <go:soapAggregator config = "${config}"
@@ -156,7 +144,7 @@
 						isValidVar="isValid"
 						verticalCode="HEALTH"
 						configDbKey="appService"
-						styleCodeId="${pageSettings.getBrandId()}" 
+						styleCodeId="${pageSettings.getBrandId()}"
 						/>
 				<go:log level="DEBUG">${resultXml}</go:log>
 		<c:choose>
@@ -207,6 +195,7 @@
 				<core:transaction touch="C" noResponse="true" />
 
 						<c:set var="ignore">
+								<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="page" />
 						${joinService.writeJoin(tranId,productId)}
 						</c:set>
 
