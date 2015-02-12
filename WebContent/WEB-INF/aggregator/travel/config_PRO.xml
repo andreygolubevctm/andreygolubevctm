@@ -88,7 +88,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=FAST</inbound-xsl-parms>
 		<timeoutMillis>200000</timeoutMillis>
 	</service>
-
+<!--
 	<service name="DUIN" type="soap">
 		<soap-url>http://www.duinsure.com.au/quoteEngineXML</soap-url>
 		<outbound-xsl>DUIN_outbound.xsl</outbound-xsl>
@@ -98,7 +98,7 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<!--<service name="ALBL" type="url-encoded">
+	<service name="ALBL" type="url-encoded">
 		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_service_ALBL.jsp</soap-url>
 		<outbound-xsl>ALBL_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
