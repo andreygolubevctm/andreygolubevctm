@@ -72,10 +72,14 @@ $(window).load(function() {
 				try {
 			var quoteUrl = $('.quoteUrl').attr('quoteUrl');
 			if (quoteUrl != '') {
-					if (vertical == 'travel') {
-						quoteUrl = decodeURIComponent(quoteUrl);
+					if (quoteUrl == 'DUPLICATE') {
+						transferError("Duplicate productId "+productId+" encounted on "+vertical, data);
+					} else {
+						if (vertical == 'travel') {
+							quoteUrl = decodeURIComponent(quoteUrl);
+						}
+						window.location.replace(quoteUrl);
 					}
-				window.location.replace(quoteUrl);
 			} else {
 						transferError("No quoteURL was found for the transfer handover for "+vertical, data);
 					}

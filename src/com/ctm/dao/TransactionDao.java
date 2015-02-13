@@ -30,13 +30,27 @@ public class TransactionDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT th.rootId, LOWER(th.ProductType) AS vertical, th.styleCodeId, styleCodeName,  th.EmailAddress, MAX(th2.transactionId) AS newestTransactionId " +
+				"SELECT th.rootId, LOWER(th.ProductType) AS vertical, th.styleCodeId, style.styleCode AS styleCodeName, " +
+				"th.EmailAddress, MAX(th2.transactionId) AS newestTransactionId " +
 				"FROM aggregator.transaction_header th " +
 				"LEFT JOIN ctm.stylecodes style ON style.styleCodeId = th.styleCodeId " +
 				"LEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId " +
-				"WHERE th.TransactionId = ?"
+				"WHERE th.TransactionId = ? " +
+				"HAVING rootId IS NOT NULL " +
+				"UNION ALL " +
+				"SELECT th.rootId, LOWER(vm.verticalCode) AS vertical, th.styleCodeId, style.styleCode AS styleCodeName, " +
+				"em.emailAddress, MAX(th2.transactionId) AS newestTransactionId " +
+				"FROM aggregator.transaction_header2_cold th " +
+				"LEFT JOIN ctm.vertical_master vm ON vm.verticalId = th.verticalId " +
+				"LEFT JOIN ctm.stylecodes style ON style.styleCodeId = th.styleCodeId " +
+				"LEFT JOIN aggregator.transaction_header2_cold th2 ON th2.rootId = th.rootId " +
+				"LEFT JOIN aggregator.transaction_emails te ON te.TransactionId = th.TransactionId " +
+				"LEFT JOIN aggregator.email_master em ON em.emailId = te.emailId " +
+				"WHERE th.TransactionId = ? " +
+				"HAVING rootId IS NOT NULL;"
 			);
 			stmt.setLong(1, transaction.getTransactionId());
+			stmt.setLong(2, transaction.getTransactionId());
 
 			ResultSet results = stmt.executeQuery();
 
@@ -76,9 +90,12 @@ public class TransactionDao {
 			PreparedStatement stmt;
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT rootId FROM aggregator.transaction_header WHERE TransactionId = ?"
+				"SELECT rootId FROM aggregator.transaction_header WHERE TransactionId = ? " +
+				"UNION ALL " +
+				"SELECT rootId FROM aggregator.transaction_header2_cold WHERE TransactionId = ?;"
 			);
 			stmt.setLong(1, transactionId);
+			stmt.setLong(2, transactionId);
 
 			ResultSet results = stmt.executeQuery();
 
@@ -112,11 +129,18 @@ public class TransactionDao {
 			PreparedStatement stmt;
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT transaction_id, operator_id, CONCAT(date, ' ', time) AS datetime FROM ctm.touches WHERE transaction_id IN (" +
-				"    SELECT TransactionId FROM aggregator.transaction_header WHERE rootId = ?" +
-				") AND type = 'C';"
+				"SELECT th.transactionId, tc.operator_id, CONCAT(tc.`date`, ' ', tc.`time`)  AS datetime " +
+				"	FROM aggregator.transaction_header th " +
+				"	JOIN ctm.touches tc ON th.transactionID = tc.transaction_Id AND tc.`type` = 'C' " +
+				"	WHERE rootID = ? " +
+				"UNION ALL " +
+				"SELECT th.transactionId, tc.operator_id, CONCAT(tc.`date`, ' ', tc.`time`)  AS datetime " +
+				"	FROM aggregator.transaction_header2_cold th " +
+				"	JOIN ctm.touches tc ON th.transactionID = tc.transaction_Id AND tc.`type` = 'C' " +
+				"	WHERE rootID = ?;"
 			);
 			stmt.setLong(1, rootId);
+			stmt.setLong(2, rootId);
 			ResultSet results = stmt.executeQuery();
 
 			if (results.next()) {

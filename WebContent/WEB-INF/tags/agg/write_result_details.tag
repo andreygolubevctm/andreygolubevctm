@@ -14,12 +14,6 @@
 <c:set var="insertSQLSB" value="${go:getStringBuilder()}" />
 <c:set var="prefix" value=" " />
 
-<c:catch var="error">
-	<sql:update sql="DELETE FROM aggregator.results_properties WHERE transactionId = ? ;">
-		<sql:param value="${transactionId}" />
-	</sql:update>
-</c:catch>
-
 ${go:appendString(insertSQLSB ,'INSERT INTO aggregator.results_properties (transactionId,productId,property,value) VALUES ')}
 
 <c:forEach var="result" items="${soapdata[baseXmlNode]}" varStatus='vs'>
@@ -59,6 +53,9 @@ ${go:appendString(insertSQLSB ,'INSERT INTO aggregator.results_properties (trans
 	</c:if>
 
 </c:forEach>
+
+<%-- On duplicate productId, update the initial value to DUPLICATE, which we handle in the transferring.js --%>
+${go:appendString(insertSQLSB, ' ON DUPLICATE KEY UPDATE `value`="DUPLICATE";')}
 
 <%-- We are not allow to store things like premium in the database, therefore place this sort of data in the session object for retrival later --%>
 <c:if test="${not empty sessionXPaths}">

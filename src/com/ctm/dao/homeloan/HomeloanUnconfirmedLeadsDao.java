@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -79,10 +78,11 @@ public class HomeloanUnconfirmedLeadsDao {
 					opportunity = new HomeLoanModel();
 					opportunity.setTransactionId(results.getLong("transactionId"));
 					opportunity.setAdditionalInformation("OUTBOUND LEAD");
+					opportunity.contact = new HomeLoanContact();
 					homeloanOpportunities.add(opportunity);
 				}
 
-				opportunity.contact = new HomeLoanContact();
+
 				if(xPath.equals("homeloan/contact/firstName")) {
 					opportunity.contact.firstName = textValue;
 				} else if(xPath.equals("homeloan/contact/lastName")) {

@@ -121,12 +121,8 @@
 		<xsl:variable name="excessCode">
 			<xsl:choose>
 				<xsl:when test="fundData/hospitalCoverName = ''"></xsl:when>
-				<xsl:when test="fundData/excess = '$900.00' or fundData/excess = '$900'">H</xsl:when>
-				<xsl:when test="fundData/excess = '$450.00' or fundData/excess = '$450'">H</xsl:when>
-				<xsl:when test="fundData/excess = '$500.00' or fundData/excess = '$500'">G</xsl:when>
+				<xsl:when test="fundData/excess = '$500.00' or fundData/excess = '$500'">I</xsl:when>
 				<xsl:when test="fundData/excess = '$250.00' or fundData/excess = '$250'">G</xsl:when>
-				<xsl:when test="fundData/excess = '$300.00' or fundData/excess = '$300'">F</xsl:when>
-				<xsl:when test="fundData/excess = '$150.00' or fundData/excess = '$150'">F</xsl:when>
 				<xsl:when test="fundData/excess = '$0.00' or fundData/excess = '$0'">A</xsl:when>
 				<xsl:otherwise>ERROR: Unable to determine Excess Code</xsl:otherwise>
 			</xsl:choose>	
@@ -134,11 +130,12 @@
 	
 		<xsl:variable name="extrasCover">
 			<xsl:choose>
-				<xsl:when test="starts-with(fundData/extrasCoverName, 'Fit ')">FitFree</xsl:when>
-				<xsl:when test="starts-with(fundData/extrasCoverName, 'General Extras Plus')">generalplus</xsl:when>
-				<xsl:when test="starts-with(fundData/extrasCoverName, 'Multicover')">multicover</xsl:when>
-				<xsl:when test="starts-with(fundData/extrasCoverName, 'Super Multicover')">supermulticover</xsl:when>
-				<xsl:when test="starts-with(fundData/extrasCoverName, 'Young Singles')">YoungSingleCouple</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Bronze Plus')">BronzePlus</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Bronze')">Bronze</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Gold')">Gold</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Platinum')">Platinum</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Silver')">Silver</xsl:when>
+				<xsl:when test="starts-with(fundData/extrasCoverName, 'Young Starter')">YoungStarter</xsl:when>
 				<xsl:when test="fundData/extrasCoverName = ''">none</xsl:when>
 				<xsl:otherwise>ERROR: Unable to determine Extras Cover</xsl:otherwise>
 			</xsl:choose>
@@ -146,12 +143,12 @@
 	
 		<xsl:variable name="hospitalCover">
 			<xsl:choose>
-				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Fit ')">FitFree</xsl:when>
-				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Young Singles')">YoungSingleCouple</xsl:when>
-				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Hospital Advanced Savings')">AdvSavings</xsl:when>
-				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Advanced Savings')">AdvSavings</xsl:when>
-				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Top Plus Cover')">TopPlus</xsl:when>
-				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Budget Hospital')">BudgetHosp</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Accident Only')">Accident</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Basic')">BasicHosp</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Mid Plus')">MidPlusHosp</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Mid')">MidHosp</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Premium')">PremHosp</xsl:when>
+				<xsl:when test="starts-with(fundData/hospitalCoverName, 'Young Starter')">YoungStarter</xsl:when>
 				<xsl:when test="fundData/hospitalCoverName = ''">none</xsl:when>		
 				<xsl:otherwise>ERROR: Unable to determine Hospital Cover</xsl:otherwise>
 			</xsl:choose>

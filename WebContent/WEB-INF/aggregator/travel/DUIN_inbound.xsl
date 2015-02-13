@@ -22,9 +22,10 @@
 
 <!-- MAIN TEMPLATE and ERRORS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
+		<xsl:variable name="plan_id" select="/soap:Envelope/soap:Body/policy_response/calculated_multi_values/bulk_premiums/bulk_premium/plan_id" />
 		<xsl:choose>
 		<!-- ACCEPTABLE -->
-			<xsl:when test="/soap:Envelope/soap:Body/policy_response/calculated_multi_values/bulk_premiums/bulk_premium">
+			<xsl:when test="/soap:Envelope/soap:Body/policy_response/calculated_multi_values/bulk_premiums/bulk_premium and not($plan_id = 'ComprehensiveDom') and not ($plan_id = 'ComprehensiveDom_ski')">
 				<xsl:apply-templates select="/soap:Envelope/soap:Body/policy_response" />
 		</xsl:when>
 

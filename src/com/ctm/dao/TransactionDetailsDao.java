@@ -321,30 +321,35 @@ public class TransactionDetailsDao {
 			}
 		}
 	}
-	
-	
+
+
 	/** returns transaction details based off transactionId.
-	 * @param vertical 
-	 * @param type 
-	 * @param email 
-	 * @param transactionId 
+	 * @param vertical
+	 * @param type
+	 * @param email
+	 * @param transactionId
 	 * @param transactionDetails
 	 * @throws DaoException
 	 */
 	public List<TransactionDetail> getTransactionDetails(long transactionId) throws DaoException {
-		List<TransactionDetail> transactionDetails = new  ArrayList<TransactionDetail>(); 
+		List<TransactionDetail> transactionDetails = new  ArrayList<TransactionDetail>();
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		try {
 			PreparedStatement stmt;
 			Connection conn = dbSource.getConnection();
 
-				String sql ="SELECT xpath, textValue "
-						+ " FROM aggregator.transaction_details td "
-						+ "WHERE td.transactionId = ? "
-						+ "ORDER BY td.sequenceNo ASC;";
-				
+				String sql =	"SELECT xpath, textValue " +
+								"FROM aggregator.transaction_details td " +
+								"WHERE td.transactionId = ? " +
+								"UNION ALL " +
+								"SELECT tf.fieldCode AS xpath, td.textValue " +
+								"FROM aggregator.transaction_details2_cold td " +
+								"	JOIN aggregator.transaction_fields tf USING(fieldId) " +
+								"WHERE td.transactionId = ?;";
+
 				stmt = conn.prepareStatement(sql);
 				stmt.setLong(1, transactionId);
+				stmt.setLong(2, transactionId);
 				ResultSet results = stmt.executeQuery();
 				while (results.next()) {
 					TransactionDetail transactionDetail = new TransactionDetail();
