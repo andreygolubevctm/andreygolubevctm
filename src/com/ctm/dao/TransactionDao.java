@@ -145,7 +145,7 @@ public class TransactionDao {
 
 			if (results.next()) {
 				ConfirmationOperator confirmationOperator = new ConfirmationOperator();
-				confirmationOperator.setTransactionId(results.getLong("transaction_id"));
+				confirmationOperator.setTransactionId(results.getLong("transactionId"));
 				confirmationOperator.setOperator(results.getString("operator_id"));
 				confirmationOperator.setDatetime(results.getTimestamp("datetime"));
 				return confirmationOperator;
