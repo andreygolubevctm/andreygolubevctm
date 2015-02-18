@@ -190,6 +190,22 @@
 		return pluginDef.promise();
 	}
 
+	/*
+	 * Add no. of business days(excluding weekends) in a date to get next date
+	 * Param fromDate, javascript Date object
+	 * Param days, how many business days to add
+	 */
+	function calcWorkingDays(fromDate, days) {
+		var count = 0;
+		while (count < days) {
+			fromDate.setDate(fromDate.getDate() + 1);
+			if (fromDate.getDay() !== 0 && fromDate.getDay() !== 6) // Skip weekends
+				count++;
+		}
+		return fromDate;
+	}
+
+
 	meerkat.modules.register('utilities', {
 		slugify: slugify,
 		scrollPageTo: scrollPageTo,
@@ -199,7 +215,8 @@
 		isValidNumericKeypressEvent: isValidNumericKeypressEvent,
 		invertDate: invertDate,
 		returnDateValue : returnDateValue,
-		pluginReady: pluginReady
+		pluginReady: pluginReady,
+		calcWorkingDays: calcWorkingDays
 	});
 
 })(jQuery);

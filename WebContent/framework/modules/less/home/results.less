@@ -46,6 +46,7 @@
 			color: @hnc-results-no-quote-text;
 			font-size: 20px;
 			margin-bottom: (@results-price-row-padding * 2);
+			margin-left: 0px !important; // This overwrites the margin that is applied to the ones in a result row. This is needed because of the priority Bootstrap renders media queries.
 
 			@media(@xs-only) {
 				margin: (@results-price-row-padding * 2) @results-price-row-padding;

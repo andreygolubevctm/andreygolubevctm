@@ -1523,9 +1523,6 @@
             if (typeof meerkat.site != "undefined" && typeof meerkat.site.resultOptions != "undefined") {
                 displayMode = meerkat.site.resultOptions.displayMode == "features" ? "features" : "price";
             }
-            if (meerkat.modules.splitTest.isActive(2)) {
-                displayMode = "features";
-            }
             Results.init({
                 url: "ajax/json/car_quote_results.jsp",
                 runShowResultsPage: false,
@@ -2368,7 +2365,7 @@
     function validateAddAccessoriesForm() {
         var item = $(elements.accessories.type).find("option:selected");
         var included = $(elements.accessories.included + " .active").find("input");
-        var price = $(elements.accessories.price).find("input").val();
+        var price = Math.floor($(elements.accessories.price).find("input").val());
         var item_valid = !_.isEmpty(item) && !_.isEmpty(item.val());
         var inc_valid = !_.isEmpty(included) && !_.isEmpty(included.val());
         var price_valid = !_.isEmpty(price) && !isNaN(price) && price > 0;

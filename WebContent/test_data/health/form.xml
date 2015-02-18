@@ -137,13 +137,12 @@
 			<houseNoSel>1</houseNoSel>
 			<streetNum>1</streetNum>
 			<suburbName>Toowong</suburbName>
+			<suburb>7984</suburb>
 			<streetId>239459</streetId>
 			<dpId>81907205</dpId>
-			<unitShop>10</unitShop>
-			<unitSel>10</unitSel>
-			<streetSearch>10/1 Golding St, Toowong QLD</streetSearch>
-			<fullAddress>Unit 10 1 Golding St,Toowong QLD 4066</fullAddress>
-			<fullAddressLineOne>Unit 10 1 Golding St</fullAddressLineOne>
+			<streetSearch>10 Golding St., Toowong QLD</streetSearch>
+			<fullAddress>10 Golding St.,Toowong QLD 4066</fullAddress>
+			<fullAddressLineOne>10 Golding St</fullAddressLineOne>
 		</address>
 		<mobileinput>(0412) 345 678</mobileinput>
 		<mobile>0412345678</mobile>

@@ -97,6 +97,9 @@
 	<x:parse doc="${go:getEscapedXml(accs)}" var="accsXML" />
 	<c:set var="accsPath"><x:out select="name($accsXML/*)" /></c:set>
 	<c:set var="accsCode"><x:out select="$accsXML/*/sel" /></c:set>
+		<c:if test="${fn:contains(accsCode, '&amp;')}">
+			<c:set var="accsCode" value="${fn:replace(accsCode,'&amp;','&')}" />
+		</c:if>
 	<c:forEach items="${accListResult.rows}" var="accList" varStatus="status">
 		<c:if test="${accList.code == accsCode and accList.underwriter == 'HOLL'}">
 			<c:set var="accHOLLDesc" value="${accList.des }"/>
@@ -117,6 +120,9 @@
 	<x:parse doc="${go:getEscapedXml(accs)}" var="accsXML" />
 	<c:set var="accsPath"><x:out select="name($accsXML/*)" /></c:set>
 	<c:set var="accsCode"><x:out select="$accsXML/*/sel" /></c:set>
+	<c:if test="${fn:contains(accsCode, '&amp;')}">
+		<c:set var="accsCode" value="${fn:replace(accsCode,'&amp;','&')}" />
+	</c:if>
 	<c:forEach items="${accListResult.rows}" var="accList" varStatus="status">
 		<c:if test="${accList.code == accsCode and accList.underwriter == 'HOLL'}">
 			<c:set var="accHOLLDesc" value="${accList.des }"/>

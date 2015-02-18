@@ -272,7 +272,7 @@
 						<!-- Purchase prices supplied? -->
 						<xsl:choose>
 							<xsl:when test="$accInc = 'N'">
-								<purchasePrice><xsl:value-of select="$accPrc" /></purchasePrice>
+								<purchasePrice><xsl:value-of select="floor($accPrc)" /></purchasePrice>
 							</xsl:when>
 							<xsl:otherwise>
 								<includedInCar />

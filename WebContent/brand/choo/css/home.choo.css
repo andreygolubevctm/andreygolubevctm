@@ -699,6 +699,7 @@ body > div > header a.bottombar .btn-call:hover {
   color: #064667;
   font-size: 20px;
   margin-bottom: 30px;
+  margin-left: 0px !important;
 }
 @media (max-width: 767px) {
   .result_unavailable_combined.result-row h2 {

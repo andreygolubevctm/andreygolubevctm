@@ -423,6 +423,9 @@ var healthFunds_GMH = {
 			if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
 				meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(healthFunds_GMH.$policyDateCreditMessage, $('#health_payment_details_start').val(), [1], 7);
 			}
+			else {
+				meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 14, true, true);
+			}
 		});
 
 	},

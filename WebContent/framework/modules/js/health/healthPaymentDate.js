@@ -43,16 +43,68 @@
 			foundMatch = _.contains(daysMatch, earliestDate.getDate());
 			i++;
 		}
-
 		$policyDateHiddenField.val(meerkat.modules.utilities.returnDateValue(earliestDate));
 		$message.text( 'Your payment will be deducted on: ' + healthFunds._getNiceDate(earliestDate) );
 
+	}
+	/*
+	 * Updates the payment days to be the following month
+	 * Param euroDate String in the format dd/MM/yyyy to count from
+	 * Param exclusion a buffer (in days) from euroDate to start counting from
+	 * Param excludeWeekend, true to exclude weekend from the buffer, false for otherwise
+	 * Param isBank, true for bank payment, otherwise cc payment
+	 */
+	function populateFuturePaymentDays(euroDate, exclusion, excludeWeekend, isBank) {
+		var startDate,
+			minimumDate,
+			childDateOriginal,
+			childDateNew,
+			$paymentDays;
+
+		if (typeof euroDate === "undefined" || euroDate === "") {
+			startDate = new Date(); // default to use today
+		} else {
+			startDate = meerkat.modules.utilities.returnDate(euroDate);
+			}
+
+		if (typeof exclusion === "undefined") exclusion = 7; // default a week buffer
+		if (typeof excludeWeekend === "undefined") excludeWeekend = false; // default not to exclude weekend
+		if (typeof isBank === "undefined") isBank = true; // default as bank payment
+
+		if (isBank) {
+			$paymentDays = $('#health_payment_bank_paymentDay');
+		} else {
+			$paymentDays = $('#health_payment_credit_paymentDay');
+			}
+
+		minimumDate = new Date(startDate);
+		if (excludeWeekend) {
+			minimumDate = meerkat.modules.utilities.calcWorkingDays(minimumDate, exclusion);
+		} else {
+			minimumDate.setDate(minimumDate.getDate() + exclusion);
+		}
+		
+		$paymentDays.children().each(function playWithChildren () {
+			childDateOriginal = new Date($(this).val());
+			childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
+			$(this).val(meerkat.modules.utilities.returnDateValue(childDateNew));
+		});
+	}
+
+	function compareAndAddMonth(oldDate, minDate) {
+		if (oldDate < minDate){
+			var newDate = new Date(oldDate.setMonth(oldDate.getMonth() +  1 ));
+			return compareAndAddMonth(newDate, minDate)
+		}else{
+			return oldDate;
+		}
 	}
 
 	meerkat.modules.register("healthPaymentDate", {
 		init: init,
 		events: moduleEvents,
-		paymentDaysRenderEarliestDay: paymentDaysRenderEarliestDay
+		paymentDaysRenderEarliestDay: paymentDaysRenderEarliestDay,
+		populateFuturePaymentDays: populateFuturePaymentDays
 	});
 
 })(jQuery);

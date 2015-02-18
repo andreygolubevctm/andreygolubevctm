@@ -395,7 +395,7 @@
 
 		var item = $(elements.accessories.type).find('option:selected');
 		var included = $(elements.accessories.included + ' .active').find('input');
-		var price = $(elements.accessories.price).find('input').val();
+		var price = Math.floor($(elements.accessories.price).find('input').val());
 
 		var item_valid = !_.isEmpty(item) && !_.isEmpty(item.val());
 		var inc_valid = !_.isEmpty(included) && !_.isEmpty(included.val());

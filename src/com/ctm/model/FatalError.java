@@ -53,7 +53,7 @@ public class FatalError {
 	}
 
 	public String getProperty() {
-		return property;
+		return property != null ? property : "";
 	}
 
 	public String getpage() {

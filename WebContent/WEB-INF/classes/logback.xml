@@ -40,6 +40,14 @@
 		<appender-ref ref="ASYNC" />
   	</logger>
 
+	<logger name="org.springframework.ws.client.MessageTracing.sent" level="trace" additivity="false">
+		<appender-ref ref="stdout" />
+  	</logger>
+
+	<logger name="org.springframework.ws.client.MessageTracing.received" level="trace" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
 	<root level="info">
    		<appender-ref ref="stdout" />
 	</root>

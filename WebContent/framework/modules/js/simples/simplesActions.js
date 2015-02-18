@@ -221,6 +221,7 @@
 				closeWindow: false
 			}],
 			onOpen: function postponeModalOpen(id) {
+
 				modalId = id;
 
 				var $modal = $('#'+modalId);
@@ -250,11 +251,22 @@
 					// Default values
 					$('#postponehour').val('04');
 
+					// Prepare the start and finish dates for datepicker
+					var getDateFormat = function(dateObj) {
+							return dateObj.getFullYear() + "-"
+							+ ("0" + (dateObj.getMonth() + 1)).slice(-2) + "-"
+							+ ("0" + dateObj.getDate()).slice(-2);
+					};
+					var currentDate = new Date();
+					var today = getDateFormat(currentDate);
+					currentDate.setMonth(currentDate.getMonth() + 6);
+					var future = getDateFormat(currentDate);
+
 					// Set up datepicker
 					var $picker = $modal.find('#postponedate_calendar');
 					$picker.datepicker({
-						startDate: "+0d", // today
-						endDate: "+6m",   // 6 months
+						startDate: today, // today
+						endDate: future,   // 6 months
 						clearBtn: false,
 						format: 'yyyy-mm-dd'
 					})

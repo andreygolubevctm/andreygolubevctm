@@ -1,26 +1,27 @@
-.travel-brands-content {
-  @media(min-width: @screen-md-min) {
-    height:540px;
-    overflow:auto;
-    padding:20px;
-  }
-
-  .underwriter-link {
-    margin-top:10px;
-  }
+.underwriter-link {
+	margin-top:10px;
+	strong {
+		font-size: 1.2em;
+	}
 }
 
 .travel-brands-modal .modal-body {
-  @media(min-width: @screen-md-min) {
-    padding: 0px;
-  }
+	@media(min-width: @screen-md-min) {
+		padding: 0px;
+		.travel-brands-content {
+			height:540px;
+			overflow:auto;
+			padding:20px;
+		}
+	}
 
-  .underwriters {
-    margin-top:10px;
-    .clearfix();
+	.underwriters {
+		margin-top:10px;
+		.clearfix();
 
-    p {
-      text-align: justify;
-    }
-  }
+		p {
+		text-align: justify;
+		}
+	}
 }
+

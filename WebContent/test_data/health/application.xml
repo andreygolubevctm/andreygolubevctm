@@ -53,6 +53,7 @@
 			<name>Test Bank</name>
 			<account>Test User Account</account>
 			<bsb>124001</bsb>
+			<bsbinput>124001</bsbinput>
 			<number>12345678</number>
 			<day>12</day>
 		</bank>

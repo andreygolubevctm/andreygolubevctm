@@ -20,6 +20,8 @@ BEGIN
 	DECLARE _phoneNumber2 VARCHAR(15);
 	DECLARE _contactName VARCHAR(255);
 	DECLARE _state VARCHAR(3);
+	DECLARE _inProgress CHAR(1);
+	DECLARE _lastExecutedStart DATETIME;
 
 	DECLARE SourcesCursor CURSOR FOR
 		SELECT id, `name` FROM simples.message_source
@@ -86,56 +88,96 @@ BEGIN
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET bDone = 1;
 
 -- -----------------------------
--- Populate a temp table using any active sources.
+-- Check if store procedure is currently running, do nothing if it is. Set status and timestamp otherwise
 -- -----------------------------
 
-	OPEN SourcesCursor;
-	SET bDone = 0;
-	REPEAT
-		-- Fetch the row's columns into variables
-		FETCH SourcesCursor INTO _sourceId, _sourceName;
+	SELECT inProgress, lastExecutedStart
+	INTO _inProgress, _lastExecutedStart
+	FROM ctm.stored_procedure_status
+	WHERE spName = 'simples.fetch_execute';
 
-		IF bDone = 0 THEN
-			-- Execute the source's stored procedure
-			SET @sql := concat('CALL simples.', _sourceName, '(', _sourceId, ');');
-			PREPARE stmt FROM @sql;
-			EXECUTE stmt;
-			DEALLOCATE PREPARE stmt;
-		END IF;
-	UNTIL bDone
-	END REPEAT;
-	CLOSE SourcesCursor;
+	-- if the status is inProgress for longer than 3 hours, set back to 'N' 
+	-- to prevent it from never gets running again, also send a warning to logging table.
+	IF _inProgress = 'Y' AND HOUR(TIMEDIFF(NOW(),  _lastExecutedStart)) >= 3 THEN
 
--- -----------------------------
--- Iterate the temp table and create messages.
--- -----------------------------
+		UPDATE ctm.stored_procedure_status
+		SET inProgress = 'N'
+		WHERE spName = 'simples.fetch_execute';
 
-	OPEN TransactionsCursor;
-	SET bDone = 0;
-	SET count = 0;
-	SET insertedCount = 0;
+		CALL logging.doLog('WARNING: simples.fetch_execute is taking over 3 hours to execute', 'MK-20005');
+		CALL logging.saveLog();
 
-	REPEAT
-		-- Fetch the row's columns into variables
-		FETCH TransactionsCursor INTO _tranId, _sourceId, _phoneNumber1, _phoneNumber2, _contactName, _state;
+	-- Log a warning if it tries to run over itself
+	ELSEIF _inProgress = 'Y' THEN
 
-		IF bDone = 0 THEN
-			-- Create a new message
-			CALL simples.message_create (_tranId, _sourceId, _contactName, _phoneNumber1, _phoneNumber2, _state, @inserted);
+		CALL logging.doLog('WARNING: simples.fetch_execute tried to execute over itself', 'MK-20006');
+		CALL logging.saveLog();
 
-			SET count = count + 1;
-			SET insertedCount = insertedCount + @inserted;
-		END IF;
-	UNTIL bDone
-	END REPEAT;
+	ELSEIF _inProgress = 'N' THEN
 
-	CLOSE TransactionsCursor;
+		-- update status table, set to inProgress, write timestamp
+		UPDATE ctm.stored_procedure_status
+		SET inProgress = 'Y', lastExecutedStart = NOW()
+		WHERE spName = 'simples.fetch_execute';
 
-	-- Don't drop because the temp table will be cleaned up once the session/connection has ended and avoid any concurrency issues.
-	-- DROP TABLE `temp_simples_fetches`;
+		-- -----------------------------
+		-- Populate a temp table using any active sources.
+		-- -----------------------------
 
-	-- Return some stats
-	SELECT count AS `count`, insertedCount AS `insertedCount`;
+			OPEN SourcesCursor;
+			SET bDone = 0;
+			REPEAT
+				-- Fetch the row's columns into variables
+				FETCH SourcesCursor INTO _sourceId, _sourceName;
+
+				IF bDone = 0 THEN
+					-- Execute the source's stored procedure
+					SET @sql := concat('CALL simples.', _sourceName, '(', _sourceId, ');');
+					PREPARE stmt FROM @sql;
+					EXECUTE stmt;
+					DEALLOCATE PREPARE stmt;
+				END IF;
+			UNTIL bDone
+			END REPEAT;
+			CLOSE SourcesCursor;
+
+		-- -----------------------------
+		-- Iterate the temp table and create messages.
+		-- -----------------------------
+
+			OPEN TransactionsCursor;
+			SET bDone = 0;
+			SET count = 0;
+			SET insertedCount = 0;
+
+			REPEAT
+				-- Fetch the row's columns into variables
+				FETCH TransactionsCursor INTO _tranId, _sourceId, _phoneNumber1, _phoneNumber2, _contactName, _state;
+
+				IF bDone = 0 THEN
+					-- Create a new message
+					CALL simples.message_create (_tranId, _sourceId, _contactName, _phoneNumber1, _phoneNumber2, _state, @inserted);
+
+					SET count = count + 1;
+					SET insertedCount = insertedCount + @inserted;
+				END IF;
+			UNTIL bDone
+			END REPEAT;
+
+			CLOSE TransactionsCursor;
+
+			-- Don't drop because the temp table will be cleaned up once the session/connection has ended and avoid any concurrency issues.
+			-- DROP TABLE `temp_simples_fetches`;
+
+			-- update status table, set inProgess to 'N'
+			UPDATE ctm.stored_procedure_status
+			SET inProgress = 'N', lastExecutedEnd = NOW()
+			WHERE spName = 'simples.fetch_execute';
+
+			-- Return some stats
+			SELECT count AS `count`, insertedCount AS `insertedCount`;
+
+	END IF;
 
 END$$
 

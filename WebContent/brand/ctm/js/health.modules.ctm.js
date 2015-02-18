@@ -417,6 +417,8 @@ var healthFunds_GMH = {
         $("#update-premium").on("click.GMH", function() {
             if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == "cc") {
                 meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay(healthFunds_GMH.$policyDateCreditMessage, $("#health_payment_details_start").val(), [ 1 ], 7);
+            } else {
+                meerkat.modules.healthPaymentDate.populateFuturePaymentDays($("#health_payment_details_start").val(), 14, true, true);
             }
         });
     },
@@ -3657,10 +3659,46 @@ creditCardDetails = {
         $policyDateHiddenField.val(meerkat.modules.utilities.returnDateValue(earliestDate));
         $message.text("Your payment will be deducted on: " + healthFunds._getNiceDate(earliestDate));
     }
+    function populateFuturePaymentDays(euroDate, exclusion, excludeWeekend, isBank) {
+        var startDate, minimumDate, childDateOriginal, childDateNew, $paymentDays;
+        if (typeof euroDate === "undefined" || euroDate === "") {
+            startDate = new Date();
+        } else {
+            startDate = meerkat.modules.utilities.returnDate(euroDate);
+        }
+        if (typeof exclusion === "undefined") exclusion = 7;
+        if (typeof excludeWeekend === "undefined") excludeWeekend = false;
+        if (typeof isBank === "undefined") isBank = true;
+        if (isBank) {
+            $paymentDays = $("#health_payment_bank_paymentDay");
+        } else {
+            $paymentDays = $("#health_payment_credit_paymentDay");
+        }
+        minimumDate = new Date(startDate);
+        if (excludeWeekend) {
+            minimumDate = meerkat.modules.utilities.calcWorkingDays(minimumDate, exclusion);
+        } else {
+            minimumDate.setDate(minimumDate.getDate() + exclusion);
+        }
+        $paymentDays.children().each(function playWithChildren() {
+            childDateOriginal = new Date($(this).val());
+            childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
+            $(this).val(meerkat.modules.utilities.returnDateValue(childDateNew));
+        });
+    }
+    function compareAndAddMonth(oldDate, minDate) {
+        if (oldDate < minDate) {
+            var newDate = new Date(oldDate.setMonth(oldDate.getMonth() + 1));
+            return compareAndAddMonth(newDate, minDate);
+        } else {
+            return oldDate;
+        }
+    }
     meerkat.modules.register("healthPaymentDate", {
         init: init,
         events: moduleEvents,
-        paymentDaysRenderEarliestDay: paymentDaysRenderEarliestDay
+        paymentDaysRenderEarliestDay: paymentDaysRenderEarliestDay,
+        populateFuturePaymentDays: populateFuturePaymentDays
     });
 })(jQuery);
 

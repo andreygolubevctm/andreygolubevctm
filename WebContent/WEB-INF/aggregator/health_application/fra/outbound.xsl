@@ -246,12 +246,10 @@
 										<xsl:value-of select="$transactionId" />
 									</Value>
 								</Property>
-								<xsl:if test="healthCover/rebate='Y'">
 									<Property>
 										<Name>wact</Name>
 										<Value>Yes</Value>
 									</Property>
-								</xsl:if>
 							</Properties>
     					</Person>
     					<xsl:if test="application/partner/firstname != ''">

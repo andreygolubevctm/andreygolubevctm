@@ -747,6 +747,7 @@ So it's going to be done progressively. Include this file in your framework.buil
   color: #1c3e93;
   font-size: 20px;
   margin-bottom: 30px;
+  margin-left: 0px !important;
 }
 @media (max-width: 767px) {
   .result_unavailable_combined.result-row h2 {

@@ -216,7 +216,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		json.put("suburb", getSuburb());
 		json.put("is_connection", convertBooleanToString(isConnection()));
 		if(isConnection) {
-			json.put("connectiondate", FormDateUtils.convertDateToString(getConnectionDate(), "yyyy-MM-dd"));
+			json.put("connection_date", FormDateUtils.convertDateToString(getConnectionDate(), "yyyy-MM-dd"));
 		} else {
 			json.put("connection_date", "0000-00-00");
 		}

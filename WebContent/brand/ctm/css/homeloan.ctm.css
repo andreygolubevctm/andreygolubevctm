@@ -1048,8 +1048,15 @@ div[class*="ToggleArea"].show_Y {
   left: 8%;
   width: 84%;
 }
+.homeloan strong {
+  font-family: 'SourceSansProBold';
+}
 .homeloan #navbar-compare.navbar-affix.affix {
   top: 41px;
+}
+.homeloan .btn-view-brands strong {
+  font-size: 1.2em;
+  font-weight: 400;
 }
 .homeloan .confirmation .btn-cta {
   border: none;

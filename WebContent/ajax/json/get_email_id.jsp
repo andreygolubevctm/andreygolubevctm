@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
+
 <core_new:no_cache_header/>
 
 <session:get settings="true"/>
@@ -13,7 +15,6 @@
 <c:set var="email">${fn:trim(param.email)}</c:set>
 <c:set var="brand">${pageSettings.getBrandCode()}</c:set>
 <c:set var="vertical">${fn:trim(param.vertical)}</c:set>
-<c:set var="hashedEmail"><security:hashed_email email="${email}" brand="${brand}" /></c:set>
 <c:set var="source" value="QUOTE" />
 <c:set var="marketing">${fn:trim(param.m)}</c:set>
 <c:set var="oktocall">${fn:trim(param.o)}</c:set>
@@ -44,36 +45,14 @@
 		<c:choose>
 			<%-- When no results exist --%>
 			<c:when test="${(empty result) || (result.rowCount == 0) }">
-				<sql:update>
-						INSERT INTO `aggregator`.`email_master` (emailAddress,styleCodeId,brand,vertical,source,firstName,lastName,createDate,transactionId,hashedEmail) VALUES (?, ?, ?, ?, ?,'','', curdate(), ?, ?)
-						ON DUPLICATE KEY UPDATE brand = VALUES(brand), vertical = VALUES(vertical), source = VALUES(source), transactionId = VALUES(transactionId)
-						<sql:param value="${email}" />
-						<sql:param value="${styleCodeId}" />
-						<sql:param value="${brand}" />
-						<sql:param value="${vertical}" />
-						<sql:param value="${source}" />
-						<sql:param value="${transactionId}" />
-						<sql:param value="${hashedEmail}" />
-				</sql:update>
-
-				<sql:query var="result">
-					SELECT emailId
-						FROM aggregator.email_master
-						WHERE emailAddress = ?
-						AND styleCodeId = ?
-						LIMIT 1;
-					<sql:param value="${email}" />
-					<sql:param value="${styleCodeId}" />
-				</sql:query>
-
-				<c:set var="emailId">${result.rows[0].emailId}</c:set>
-
+				${emailDetailsService.init(styleCodeId, brand , vertical)}
+				<c:set var="emailId" value="${emailDetailsService.handleWriteEmailDetailsFromJsp(email, null , source, '' , '', transactionId)}" />
 				<agg:write_email_properties
-					emailId="${emailId}"
-					email="${email}"
-					items="${properties}"
-					vertical="${fn:toLowerCase(vertical)}"
-					stampComment="${source}" />
+						emailId="${emailId}"
+						email="${email}"
+						items="${properties}"
+						vertical="${fn:toLowerCase(vertical)}"
+						stampComment="${source}" />
 			</c:when>
 			<%-- When result exists --%>
 			<c:otherwise>

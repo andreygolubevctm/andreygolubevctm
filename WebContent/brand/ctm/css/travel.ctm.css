@@ -105,6 +105,10 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #1c3e93;
   color: #ffffff;
 }
+.travel strong {
+  font-family: 'SourceSansProBold';
+  font-weight: 400;
+}
 @media (min-width: 768px) {
   .travel label.btn {
     white-space: normal;
@@ -1025,19 +1029,20 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
     background-image: url("../../../common/images/logos/travel/zuji@2x.png");
   }
 }
-@media (min-width: 992px) {
-  .travel-brands-content {
-    height: 540px;
-    overflow: auto;
-    padding: 20px;
-  }
-}
-.travel-brands-content .underwriter-link {
+.underwriter-link {
   margin-top: 10px;
+}
+.underwriter-link strong {
+  font-size: 1.2em;
 }
 @media (min-width: 992px) {
   .travel-brands-modal .modal-body {
     padding: 0px;
+  }
+  .travel-brands-modal .modal-body .travel-brands-content {
+    height: 540px;
+    overflow: auto;
+    padding: 20px;
   }
 }
 .travel-brands-modal .modal-body .underwriters {

@@ -2,6 +2,7 @@ package com.ctm.services.email;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ctm.utils.RequestUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -26,7 +27,13 @@ public class EmailService {
 	private static final Logger logger = Logger.getLogger(EmailService.class.getName());
 
 	private final SessionDataService sessionDataService = new SessionDataService();
+	private final FatalErrorService fatalErrorService;
 	protected TransactionDao transactionDao;
+	private PageSettings pageSettings;
+
+	public EmailService(){
+		fatalErrorService = new FatalErrorService();
+	}
 
 	/**
 	 * Sends a email based on the EmailMode.
@@ -38,7 +45,10 @@ public class EmailService {
 	 * @return JSONObject whether sending email was successful
 	 */
 	public JSONObject send(HttpServletRequest request, EmailMode mode , String emailAddress) {
-		long transactionId = Long.parseLong(request.getParameter("transactionId"));
+		fatalErrorService.sessionId  = request.getSession().getId();
+		fatalErrorService.page = request.getRequestURI();
+		Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
+		fatalErrorService.transactionId = transactionId;
 		EmailResponse emailResponse = new EmailResponse();
 		emailResponse.setTransactionId(transactionId);
 		emailResponse.setSuccessful(false);
@@ -46,7 +56,7 @@ public class EmailService {
 			send(request, mode , emailAddress, transactionId);
 			emailResponse.setSuccessful(true);
 		} catch (SendEmailException e) {
-			FatalErrorService.logFatalError(e, 0, request.getRequestURI(), request.getSession().getId(), true);
+			fatalErrorService.logFatalError(e, "failed to send " + mode + " to " + emailAddress, true);
 			logger.error("failed to send " + mode + " to " + emailAddress, e);
 			logger.error("error description " + e.getDescription());
 			emailResponse.setMessage(e.getMessage());
@@ -67,7 +77,6 @@ public class EmailService {
 			String emailAddress, long transactionId) throws SendEmailException {
 		boolean isValid = EmailValidation.validate(emailAddress);
 		if(isValid) {
-			PageSettings pageSettings;
 			Data data = null;
 				try {
 					if(transactionId > 0) {
@@ -88,6 +97,10 @@ public class EmailService {
 						pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical);
 					} else {
 						pageSettings = SettingsService.getPageSettingsForPage(request);
+					}
+					fatalErrorService.styleCodeId = pageSettings.getBrandId();
+					if(pageSettings.getBrandCode() != null){
+						fatalErrorService.property = pageSettings.getBrandCode().toLowerCase();
 					}
 				} catch (DaoException | ConfigSettingException  e) {
 					throw new SendEmailException("failed to get settings", e);

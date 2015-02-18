@@ -210,12 +210,10 @@
 										<Value>Fund: <xsl:value-of select="$primaryFund"/>, No: <xsl:value-of select="previousfund/primary/memberID" /></Value>
 									</Property>
 								</xsl:if>
-								<xsl:if test="healthCover/rebate='Y'">
 									<Property>
 										<Name>wact</Name>
 										<Value>Yes</Value>
 									</Property>
-								</xsl:if>
 							</Properties>
 						</Person>
 						<xsl:if test="application/partner/firstname != ''">

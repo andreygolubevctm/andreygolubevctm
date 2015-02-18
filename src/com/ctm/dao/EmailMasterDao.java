@@ -182,6 +182,9 @@ public class EmailMasterDao {
 
 	public EmailMaster writeEmailDetails(EmailMaster emailDetails) throws DaoException {
 		try {
+			// database is set to max 35 chars
+			emailDetails.setFirstName(trimTo(emailDetails.getFirstName(), 35));
+			emailDetails.setLastName(trimTo(emailDetails.getLastName(), 35));
 			PreparedStatement stmt;
 			Connection conn = dbSource.getConnection();
 			if(conn != null) {
@@ -368,6 +371,15 @@ public class EmailMasterDao {
 			}
 		}
 		return result;
+	}
+
+
+	private String trimTo(String value, int characterToTrim) {
+		if(value != null && value.length() > characterToTrim){
+			value = value.substring(0, characterToTrim);
+			logger.warn("Trimming " + value + " to " + characterToTrim + " chars ");
+}
+		return value;
 	}
 
 }

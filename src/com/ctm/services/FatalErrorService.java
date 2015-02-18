@@ -15,6 +15,7 @@ public class FatalErrorService {
 	public String sessionId;
 	public String page;
 	public int styleCodeId;
+	public Long transactionId;
 	public String property;
 
 	public FatalErrorService(){
@@ -29,7 +30,7 @@ public class FatalErrorService {
 		String message = exception.getMessage();
 		if(message == null) message = "UNKNOWN";
 		String data = ExceptionUtils.getStackTrace(exception);
-		logFatalError(styleCodeId, page, sessionId, isFatal, message, getDescription(exception), transactionId, data, null);
+		logFatalError(styleCodeId, page, sessionId, isFatal, message, getDescription(exception), transactionId, data, "");
 	}
 
 	public void logFatalError(Exception exception, int styleCodeId, String page , boolean isFatal, String transactionId) {
@@ -39,7 +40,7 @@ public class FatalErrorService {
 	public static void logFatalError(Exception exception, int styleCodeId, String page , String sessionId, boolean isFatal) {
 		String message = exception.getMessage();
 		String data = ExceptionUtils.getStackTrace(exception);
-		logFatalError(styleCodeId, page, sessionId, isFatal, message, getDescription(exception), null, data, null);
+		logFatalError(styleCodeId, page, sessionId, isFatal, message, getDescription(exception), null, data, "");
 	}
 
 	public static void logFatalError(int styleCodeId, String page , String sessionId, boolean isFatal, String message, String description, String transactionId, String data, String property) {
@@ -83,15 +84,21 @@ public class FatalErrorService {
 	}
 
 	public void logFatalError(int styleCodeId, String page, boolean isFatal, String message, String description, Long transactionId) {
-		logFatalError(styleCodeId, page, this.sessionId, isFatal, message, description, String.valueOf(transactionId), "" , null);
+		logFatalError(styleCodeId, page, this.sessionId, isFatal, message, description, String.valueOf(transactionId), "" , this.property);
 	}
 
 	public void logFatalError(int styleCodeId, String page, boolean isFatal, String message, String description, String transactionId) {
-		logFatalError(styleCodeId, page, this.sessionId, isFatal, message, description, transactionId, "" , null);
+		logFatalError(styleCodeId, page, this.sessionId, isFatal, message, description, transactionId, "" , this.property);
 	}
 
 	public static void logFatalError(int styleCodeId, String page, String sessionId, boolean isFatal, String message, String description, String transactionId) {
-		logFatalError(styleCodeId, page, sessionId, isFatal, message, description, transactionId, "" , null);
+		logFatalError(styleCodeId, page, sessionId, isFatal, message, description, transactionId, "" , "");
+	}
+
+	public void logFatalError(Exception exception, String message, boolean isFatal) {
+		message += " exception:" + exception.getMessage();
+		String data = ExceptionUtils.getStackTrace(exception);
+		logFatalError(styleCodeId, page, sessionId, isFatal, message, getDescription(exception), String.valueOf(transactionId), data, this.property);
 	}
 
 	private static String getDescription(Exception exception) {

@@ -184,10 +184,17 @@
                 }).always(function onComplete() {
                     $button.prop("disabled", false);
                     $("#postponehour").val("04");
+                    var getDateFormat = function(dateObj) {
+                        return dateObj.getFullYear() + "-" + ("0" + (dateObj.getMonth() + 1)).slice(-2) + "-" + ("0" + dateObj.getDate()).slice(-2);
+                    };
+                    var currentDate = new Date();
+                    var today = getDateFormat(currentDate);
+                    currentDate.setMonth(currentDate.getMonth() + 6);
+                    var future = getDateFormat(currentDate);
                     var $picker = $modal.find("#postponedate_calendar");
                     $picker.datepicker({
-                        startDate: "+0d",
-                        endDate: "+6m",
+                        startDate: today,
+                        endDate: future,
                         clearBtn: false,
                         format: "yyyy-mm-dd"
                     }).find("table").addClass("table");

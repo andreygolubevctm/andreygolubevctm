@@ -7683,6 +7683,14 @@ meerkat.logging.init = function() {
         });
         return pluginDef.promise();
     }
+    function calcWorkingDays(fromDate, days) {
+        var count = 0;
+        while (count < days) {
+            fromDate.setDate(fromDate.getDate() + 1);
+            if (fromDate.getDay() !== 0 && fromDate.getDay() !== 6) count++;
+        }
+        return fromDate;
+    }
     meerkat.modules.register("utilities", {
         slugify: slugify,
         scrollPageTo: scrollPageTo,
@@ -7692,7 +7700,8 @@ meerkat.logging.init = function() {
         isValidNumericKeypressEvent: isValidNumericKeypressEvent,
         invertDate: invertDate,
         returnDateValue: returnDateValue,
-        pluginReady: pluginReady
+        pluginReady: pluginReady,
+        calcWorkingDays: calcWorkingDays
     });
 })(jQuery);
 

@@ -48,10 +48,6 @@
 				// confirming its either features or price.
 				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
 			}
-			// Split-test to display features by default
-			if(meerkat.modules.splitTest.isActive(2)) {
-				displayMode = 'features';
-			}
 			// Init the main Results object
 			Results.init({
 				url: "ajax/json/car_quote_results.jsp",

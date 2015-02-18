@@ -51,6 +51,9 @@ public class SchemaValidation {
 		//String xsdLocation = (String) config.get("validation-file/text()");
 
 		if(xsdLocation != null && !xsdLocation.isEmpty()) {
+			// Required by Tomcat8: resources start with slash
+			if (!xsdLocation.startsWith("/")) xsdLocation = "/" + xsdLocation;
+			
 		URL schemaLocation = pageContext.getServletContext().getResource(xsdLocation);
 			valid = validateSchema(pageContext , xml, schemaLocation);
 		}else{

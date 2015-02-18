@@ -47,9 +47,14 @@ var CompareBenefits = function() {
 	};
 
 	this.hide = function( callback ) {
+		if( $.browser.msie && parseInt($.browser.version, 10) <= 8 ) {
+			elements.root.hide();
+			showHideResultsContent(true, callback);
+		} else {
 		elements.root.slideUp('fast', function(){
 			showHideResultsContent(true, callback);
 		});
+		}
 	};
 
 	var renderBenefitsCol = function() {
