@@ -6,39 +6,39 @@ Handling of the rebate tiers based off situation
 ;(function($, undefined) {
 
 	var meerkat = window.meerkat,
-	meerkatEvents = meerkat.modules.events,
-	log = meerkat.logging.info,
-	rebateTiers = {
-		single:{
-			incomeBaseTier:90000,
-			incomeTier1:{
-				from:90001,
-				to:105000
-			},incomeTier2:{
-				from:105001,
-				to:140000
+		meerkatEvents = meerkat.modules.events,
+		log = meerkat.logging.info,
+		rebateTiers = {
+			single:{
+				incomeBaseTier:90000,
+				incomeTier1:{
+					from:90001,
+					to:105000
+				},incomeTier2:{
+					from:105001,
+					to:140000
+				},
+				incomeTier3:140001
 			},
-			incomeTier3:140001
+			familyOrCouple:{
+				incomeBaseTier:180000,
+				incomeTier1:{
+					from:180001,
+					to:210000
+				},
+				incomeTier2:{
+					from:210001,
+					to:280000
+				},
+				incomeTier3:280001
+			}
 		},
-		familyOrCouple:{
-			incomeBaseTier:180000,
-			incomeTier1:{
-				from:180001,
-				to:210000
-			},
-			incomeTier2:{
-				from:210001,
-				to:280000
-			},
-			incomeTier3:280001
-		}
-	},
-	$dependants,
-	$incomeMessage,
-	$incomeBase,
-	$income,
-	$tier,
-	$medicare;
+		$dependants,
+		$incomeMessage,
+		$incomeBase,
+		$income,
+		$tier,
+		$medicare;
 
 	init =  function(){
 		$dependants = $('#health_healthCover_dependants');
@@ -133,6 +133,7 @@ Handling of the rebate tiers based off situation
 				}
 
 				$medicare.hide();
+				meerkat.modules.form.clearInitialFieldsAttribute($medicare);
 			} else {
 
 				if(initMode){

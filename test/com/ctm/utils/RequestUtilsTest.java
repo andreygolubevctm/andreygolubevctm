@@ -5,7 +5,6 @@ import org.junit.Test;
 import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,6 +22,6 @@ public class RequestUtilsTest {
 
         when(request.getParameter("transactionId")).thenReturn("meerkat");
         result =  RequestUtils.getTransactionIdFromRequest(request);
-        assertNull(result);
+        assertEquals(Long.valueOf(-1L), result);
     }
 }

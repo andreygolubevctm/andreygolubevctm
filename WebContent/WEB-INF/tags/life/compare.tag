@@ -201,45 +201,17 @@ var Compare = function( _config ) {
 
 		$('#toggle-compare-' + type + '-' + product_id).removeClass( selectedClass );
 
-		var commonFinish = function() {
-			$('#comparebox-' + type + '-' + product_id).find('a').first().unbind('click').prop('id', null);
-			if( typeof callback == "function" ) {
-				callback();
-			}
-
-			benefits_obj.dropColumn(type, product_id);
-
-			<%-- Show/Hide the compare button --%>
-			toggleCompareButton(type);
-		};
-
-		<%-- Bypass animation if IE and less than IE8 --%>
-		if( $.browser.msie && parseInt($.browser.version, 10) < 8 ) {
-			$('#comparebox-' + type + '-' + product_id).removeClass('active').css({backgroundImage:'none'});
-			commonFinish();
-		} else {
-
-			// Next we do a pretty animation
-			var start = $("#comparebox-" + type + "-" + product_id);
-
-			var start_pos = start.offset();
-			var speed = 250;
-			var travel_distance = Number(100);
-
-			<%-- Calculate the top/left position on the line that is the travel_distance on the line between the start and finish --%>
-			var x1 = start_pos.left;
-			var y1 = start_pos.top;
-			var x2 = start_pos.left;
-			var y2 = start_pos.top + travel_distance;
-
-			var copy = start.clone();
-			copy.attr('id', 'compare_animated_logo_' + type + '_' + product_id).css({position:'absolute', width:44, height:25, top:start_pos.top, left:start_pos.left, border:'1px solid #06883e'}).appendTo('body');
-			$('#comparebox-' + type + '-' + product_id).removeClass('active').css({backgroundImage:'none'});
-			copy.animate({top:y2, left:x2, opacity:0.2}, speed, function(){
-				copy.remove();
-				commonFinish();
-			});
+		$('#comparebox-' + type + '-' + product_id).removeClass('active').css({backgroundImage:'none'});
+		
+		$('#comparebox-' + type + '-' + product_id).find('a').first().unbind('click').prop('id', null);
+		if( typeof callback == "function" ) {
+			callback();
 		}
+
+		benefits_obj.dropColumn(type, product_id);
+
+		<%-- Show/Hide the compare button --%>
+		toggleCompareButton(type);
 	};
 
 	<%-- Add item to compare list with a pretty animation --%>
@@ -258,49 +230,17 @@ var Compare = function( _config ) {
 				finish :	getNextAvailableCompareBox(type)
 		};
 
-		var completeLogoMove = function() {
-			elements.finish.addClass('active');
-			elements.finish.css({backgroundImage:"url(common/images/logos/life/44x25/" + list[type][product_id].thumb + ")"});
-			elements.finish.prop("id", "comparebox-" + type + "-" + product_id);
+		elements.finish.addClass('active');
+		elements.finish.css({backgroundImage:"url(common/images/logos/life/44x25/" + list[type][product_id].thumb + ")"});
+		elements.finish.prop("id", "comparebox-" + type + "-" + product_id);
 
-			<%--Add event to the product close button --%>
-			elements.finish.find('a').first().unbind('click').on('click', function() {
-				that.toggleInCompareList(type, product_id);
-			});
+		<%--Add event to the product close button --%>
+		elements.finish.find('a').first().unbind('click').on('click', function() {
+			that.toggleInCompareList(type, product_id);
+		});
 
-			<%-- Show/Hide the compare button --%>
-			toggleCompareButton(type);
-		};
-
-		<%-- Bypass animation if IE and less than IE8 --%>
-		if( $.browser.msie && parseInt($.browser.version, 10) < 8 ) {
-			completeLogoMove();
-		} else {
-			var start_pos = elements.start.offset();
-			var end_pos = elements.finish.offset();
-			var speed = 250;
-			var travel_distance = 250;
-
-			<%-- Calculate the top/left position on the line that is the travel_distance on the line between the start and finish --%>
-			var x1 = start_pos.left;
-			var y1 = start_pos.top;
-			var x2 = end_pos.left;
-			var y2 = end_pos.top;
-			var vx = Number(x2 - x1);
-			var vy = Number(y2 - y1);
-			var mag = Number(Math.sqrt(vx*vx + vy*vy));
-			vx = vx / mag;
-			vy = vy / mag;
-			var px = parseInt( Number(x1 + (vx * (travel_distance))), 10);
-			var py = parseInt( Number(y1 + (vy * (travel_distance))), 10);
-
-			var copy = elements.start.clone();
-			copy.attr('id', 'compare_animated_logo_' + type + '_' + product_id).css({position:'absolute', width:83, height:53, top:start_pos.top, left:start_pos.left, border:'1px solid #b6b6b6'}).appendTo('body');
-			copy.animate({top:py, left:px, opacity:0.2}, speed, function(){
-				copy.remove();
-				completeLogoMove();
-			});
-		}
+		<%-- Show/Hide the compare button --%>
+		toggleCompareButton(type);
 	};
 
 	<%-- Switches the button between being inactive/active compare button and a close button --%>

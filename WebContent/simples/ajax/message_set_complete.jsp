@@ -7,6 +7,7 @@
 
 <c:set var="simplesUid" value="${authenticatedData['login/user/simplesUid']}" />
 <c:set var="messageId" value="${param.messageId}" />
+<c:set var="statusId" value="${param.statusId}" />
 <c:set var="reasonStatusId" value="${param.reasonStatusId}" />
 
-<c:out value="${ simplesService.setMessageToComplete(pageContext.getRequest(), simplesUid, messageId, reasonStatusId) }" escapeXml="false" />
+<c:out value="${ simplesService.setMessageToComplete(pageContext.getRequest(), simplesUid, messageId, statusId, reasonStatusId) }" escapeXml="false" />

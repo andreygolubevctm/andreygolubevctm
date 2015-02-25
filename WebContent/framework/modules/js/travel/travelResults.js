@@ -4,7 +4,10 @@
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info;
 
-
+	var events = {
+			// Defined here because it's published in Results.js
+			RESULTS_ERROR: 'RESULTS_ERROR'
+	};
 	var $component; //Stores the jQuery object for the component group
 	var previousBreakpoint;
 	var best_price_count = 5;
@@ -123,7 +126,7 @@
 			});
 		}
 		catch(e) {
-			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.travelResults.init(); '+e.message, e);
+			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.travelResults.initResults(); '+e.message, e);
 		}
 	}
 	/**
@@ -202,6 +205,14 @@
 		// This will render the unavailable combined template
 		$(Results.settings.elements.resultsContainer).on("noFilteredResults", function() {
 			Results.view.show();
+		});
+
+		// If error occurs, go back in the journey
+		meerkat.messaging.subscribe(events.RESULTS_ERROR, function resultsError() {
+			// Delayed to allow journey engine to unlock
+			_.delay(function() {
+				meerkat.modules.journeyEngine.gotoPath('previous');
+			}, 1000);
 		});
 
 		//$(document).on("resultsLoaded", onResultsLoaded);

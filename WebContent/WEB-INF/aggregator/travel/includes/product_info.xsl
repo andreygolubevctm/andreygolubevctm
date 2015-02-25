@@ -399,6 +399,196 @@
 					</traveldocs>
 				</info>
 			</xsl:when>
+			<!-- DUINSURE - Australia -->
+			<xsl:when test="$productId = 'DUIN-TRAVEL-54'">
+				<info>
+					<cxdfee>
+						<label>Cancellation Fees</label>
+						<desc>Cancellation Fees and Lost Deposits</desc>
+						<value>10000</value>
+						<text>$10,000</text>
+						<order />
+					</cxdfee>
+					<excess>
+						<label>Excess</label>
+						<desc>Excess on Claims</desc>
+						<value>0</value>
+						<text>$0</text>
+						<order />
+					</excess>
+					<luggage>
+						<label>Luggage and PE</label>
+						<desc>Luggage and Personal Effects</desc>
+						<value>5000.0</value>
+						<text>$5,000</text>
+						<order />
+					</luggage>
+					<medical>
+						<label>Overseas Medical</label>
+						<desc>Overseas Emergency Medical and Hospital Expenses</desc>
+						<value>0</value>
+						<text>$0</text>
+						<order />
+					</medical>
+					<expenses>
+						<label>Additional Expenses</label>
+						<desc>Additional Expenses</desc>
+						<value>10000</value>
+						<text>$10,000</text>
+					</expenses>
+					<death>
+						<label>Accidental Death</label>
+						<desc>Accidental Death</desc>
+						<value>30000</value>
+						<text>$30,000</text>
+					</death>
+					<disability>
+						<label>Permanent Disability</label>
+						<desc>Permanent Disability</desc>
+						<value>50000</value>
+						<text>$50,000</text>
+						<order />
+					</disability>
+					<traveldocs>
+						<label>Travel Documents, Transaction Cards and Travellers Cheques</label>
+						<desc>Travel Documents, Transaction Cards and Travellers Cheques</desc>
+						<value>1000</value>
+						<text>$1,000</text>
+						<order />
+					</traveldocs>
+					<luggagedel>
+						<label>Luggage and PE Delay</label>
+						<desc>Luggage and Personal Effects Delay Expenses</desc>
+						<value>250</value>
+						<text>$250</text>
+						<order />
+					</luggagedel>
+					<traveldelayExp>
+						<label>Travel Delay Expenses</label>
+						<desc>Travel Delay Expenses</desc>
+						<value>1000</value>
+						<text>$1,000</text>
+						<order />
+					</traveldelayExp>
+					<transport>
+						<label>Alternative Transport Expenses</label>
+						<desc>Alternative Transport Expenses</desc>
+						<value>3000</value>
+						<text>$3,000</text>
+						<order />
+					</transport>
+					<liability>
+						<label>Personal Liability</label>
+						<desc>Personal Liability</desc>
+						<value>5000000</value>
+						<text>$5,000,000</text>
+						<order />
+					</liability>
+					<cashtheft>
+						<label>Theft of Cash</label>
+						<desc>Theft of Cash</desc>
+						<value>500</value>
+						<text>$500</text>
+						<order />
+					</cashtheft>
+				</info>
+			</xsl:when>
+			<!-- DUINSURE - Australia Ski -->
+			<xsl:when test="$productId = 'DUIN-TRAVEL-55'">
+				<info>
+					<cxdfee>
+						<label>Cancellation Fees</label>
+						<desc>Cancellation Fees and Lost Deposits</desc>
+						<value>10000</value>
+						<text>$10,000</text>
+						<order />
+					</cxdfee>
+					<expenses>
+						<label>Additional Expenses</label>
+						<desc>Additional Expenses</desc>
+						<value>10000</value>
+						<text>$10,000</text>
+						<order />
+					</expenses>
+					<death>
+						<label>Accidental Death</label>
+						<desc>Accidental Death</desc>
+						<value>30000</value>
+						<text>$30,000</text>
+						<order />
+					</death>
+					<disability>
+						<label>Permanent Disability</label>
+						<desc>Permanent Disability</desc>
+						<value>50000</value>
+						<text>$50,000</text>
+						<order />
+					</disability>
+					<traveldocs>
+						<label>Travel Documents, Transaction Cards and Travellers Cheques</label>
+						<desc>Travel Documents, Transaction Cards and Travellers Cheques</desc>
+						<value>1000</value>
+						<text>$1,000</text>
+						<order />
+					</traveldocs>
+					<cashtheft>
+						<label>Theft of Cash</label>
+						<desc>Theft of Cash</desc>
+						<value>500</value>
+						<text>$500</text>
+						<order />
+					</cashtheft>
+					<luggage>
+						<label>Luggage and PE</label>
+						<desc>Luggage and Personal Effects</desc>
+						<value>5000</value>
+						<text>$5,000</text>
+						<order />
+					</luggage>
+					<luggagedel>
+						<label>Luggage and PE Delay</label>
+						<desc>Luggage and Personal Effects Delay Expenses</desc>
+						<value>250</value>
+						<text>$250</text>
+						<order />
+					</luggagedel>
+					<traveldelayExp>
+						<label>Travel Delay Expenses</label>
+						<desc>Travel Delay Expenses</desc>
+						<value>1000</value>
+						<text>$1,000</text>
+						<order />
+					</traveldelayExp>
+					<transport>
+						<label>Alternative Transport Expenses</label>
+						<desc>Alternative Transport Expenses</desc>
+						<value>3000</value>
+						<text>$3,000</text>
+						<order />
+					</transport>
+					<liability>
+						<label>Personal Liability</label>
+						<desc>Personal Liability</desc>
+						<value>5000000</value>
+						<text>$5,000,000</text>
+						<order />
+					</liability>
+					<excess>
+						<label>Excess</label>
+						<desc>Excess on Claims</desc>
+						<value>0</value>
+						<text>$0</text>
+						<order />
+					</excess>
+					<medical>
+						<label>Overseas Medical</label>
+						<desc>Overseas Emergency Medical and Hospital Expenses</desc>
+						<value>0</value>
+						<text>$0</text>
+						<order />
+					</medical>
+				</info>
+			</xsl:when>
 			<xsl:otherwise>
 				<info></info>
 			</xsl:otherwise>

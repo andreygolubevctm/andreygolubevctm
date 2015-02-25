@@ -51,6 +51,10 @@
 
 		// Publish event for verticalResults.js to perform tracking events
 		meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
+		// send sessioncam call out 3 seconds later so it has time to fade in.
+		setTimeout(function() {
+			meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId":"ResultsLoaded"});
+		}, 2000);
 	}
 
 	function sendQuoteRanking(trigger, rankingData) {

@@ -227,6 +227,9 @@ body.simples .postpone-container table.table > * > tr > th {
 body.simples .postpone-container table.table > * > tr:nth-child(odd) > td.active {
   background-color: #0db14b;
 }
+body.simples .left-border {
+  border-left: 2px solid #ddd;
+}
 @media (min-width: 768px) {
   body.simples .modal-header {
     padding: 15px 15px 7px;

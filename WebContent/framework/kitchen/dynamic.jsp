@@ -112,6 +112,8 @@
 			<span class="icon-angle-up" title="icon-angle-up"></span>
 			<span class="icon-angle-down" title="icon-angle-down"></span>
 			<span class="icon-calendar" title="icon-calendar"></span>
+			<span class="icon-angle-down" title="icon-radio-empty"></span>
+			<span class="icon-calendar" title="icon-radio-selected"></span>
 		</div>
 		<div class="col-xs-12" style="font-size:200%">
 			<h3>Bigger!</h3>
@@ -180,6 +182,8 @@
 			<span class="icon-angle-up" title="icon-angle-up"></span>
 			<span class="icon-angle-down" title="icon-angle-down"></span>
 			<span class="icon-calendar" title="icon-calendar"></span>
+			<span class="icon-radio-empty" title="icon-radio-empty"></span>
+			<span class="icon-radio-selected" title="icon-radio-selected"></span>
 		</div>
 	</div>
 </form_new:fieldset>
@@ -382,10 +386,6 @@
 	<form_new:row label="password">
 		<field:password xpath="save/password" required="true" title="field:password" minlength="6" onKeyUp="getElementById(\"field_password_test\").innerText=this.value;" />
 		<span id="field_password_test" class="help-block">Type password; will appear here</span>
-	</form_new:row>
-
-	<form_new:row label="payment_day">
-		<field:payment_day xpath="${xpath}/searchDate" title="field:payment_day" required="true" days="30" />
 	</form_new:row>
 
 	<form_new:row label="<del>payment_type</del>">

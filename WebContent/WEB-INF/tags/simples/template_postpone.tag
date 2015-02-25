@@ -6,7 +6,7 @@
 
 <div class="postpone-container" data-id="{{= obj.transactionId }}">
 
-	<h2>Postpone this message</h2>
+	<h2>{{= obj.heading}}</h2>
 
 	<%-- ERRORS --%>
 	{{ if (typeof errors !== 'undefined' && errors.length > 0) { }}
@@ -55,15 +55,6 @@
 				<div class="col-sm-12">
 					<h5>Comments</h5>
 					<textarea class="form-control" placeholder="Write your comments here"></textarea>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="checkbox">
-						<input type="checkbox" name="assigntome" id="assigntome" class="checkbox-custom" value="Y">
-						<label for="assigntome">Assign to me as a Personal Message</label>
-					</div>
 				</div>
 			</div>
 

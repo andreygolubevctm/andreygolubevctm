@@ -2,20 +2,25 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_ordered` AS
 
 -- Messages assigned to users
 SELECT 0 AS _rule, avail.* FROM simples.message_queue_available avail
-WHERE userId > 0
+WHERE userId > 0 AND statusId IN (1, 3, 4, 5, 6)
 
 -- All first time postponements (i.e. had one postponement)
 UNION
 SELECT 1 AS _rule, avail.* FROM simples.message_queue_available avail
-WHERE postponeCount = 1
+WHERE avail.sourceId = 5
+AND userId = 0
+ORDER BY avail.id DESC
+LIMIT 1
+)
 
 -- Any new messages created, sorted by source priority then last in first out
 UNION
 (
 SELECT 2 AS _rule, avail.* FROM simples.message_queue_available avail
-LEFT JOIN simples.message_source src ON src.id = avail.sourceId
-WHERE DATE(created) = CURRENT_DATE() AND statusId = 1
-ORDER BY src.priority ASC, avail.id DESC
+WHERE avail.sourceId IN (8)
+AND userId = 0
+ORDER BY avail.id DESC
+LIMIT 1
 )
 
 -- All other types of messages (other than points 1 & 2 above) created today
@@ -30,9 +35,12 @@ WHERE DATE(created) = CURRENT_DATE() AND callAttempts = 1
 -- where there have been more than 1 call attempts
 UNION
 SELECT 4 AS _rule, avail.* FROM simples.message_queue_available avail
-WHERE DATE(created) = CURRENT_DATE() AND callAttempts > 1
-	AND postponeCount <> 1
-	AND statusId <> 1
+LEFT JOIN simples.message_source src ON src.id = avail.sourceId
+WHERE statusId = 1
+AND userId = 0
+ORDER BY src.priority ASC, avail.id DESC
+LIMIT 1
+)
 
 -- All new messages created yesterday or further back that have had no action taken yet
 UNION

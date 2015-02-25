@@ -40,11 +40,23 @@
                     });
                     $actionsDropdown.on("click", ".action-postpone", function(event) {
                         if ($(this).parent("li").hasClass("disabled")) return false;
-                        actionPostpone();
+                        actionPostpone(false, "postpone");
                     });
                     $actionsDropdown.on("click", ".action-comment", function(event) {
                         if ($(this).parent("li").hasClass("disabled")) return false;
                         actionComments();
+                    });
+                    $actionsDropdown.on("click", ".action-remove-pm", function() {
+                        if ($(this).parent("li").hasClass("disabled")) return false;
+                        actionFinish("remove_pm");
+                    });
+                    $actionsDropdown.on("click", ".action-complete-pm", function() {
+                        if ($(this).parent("li").hasClass("disabled")) return false;
+                        actionPostpone(true, "complete_pm");
+                    });
+                    $actionsDropdown.on("click", ".action-change-time", function() {
+                        if ($(this).parent("li").hasClass("disabled")) return false;
+                        actionPostpone(true, "change_time");
                     });
                 });
                 meerkat.messaging.subscribe(meerkat.modules.events.simplesInterface.TRANSACTION_ID_CHANGE, function tranIdChange(obj) {
@@ -77,6 +89,9 @@
         var $actionUnsuccessfulParent = $actionsDropdown.find(".action-unsuccessful").parent("li");
         var $actionPostponeParent = $actionsDropdown.find(".action-postpone").parent("li");
         var $actionCommentParent = $actionsDropdown.find(".action-comment").parent("li");
+        var $actionCompletePmParent = $actionsDropdown.find(".action-complete-pm").parent("li");
+        var $actionChangeTimeParent = $actionsDropdown.find(".action-change-time").parent("li");
+        var $actionRemovePmParent = $actionsDropdown.find(".action-remove-pm").parent("li");
         if (currentTransactionId !== false) {
             showMenu = true;
             $tranId.text(currentTransactionId);
@@ -92,15 +107,38 @@
             $actionCompleteParent.addClass("disabled");
             $actionUnsuccessfulParent.addClass("disabled");
             $actionPostponeParent.addClass("disabled");
+            $actionCompletePmParent.addClass("disabled");
+            $actionChangeTimeParent.addClass("disabled");
+            $actionRemovePmParent.addClass("disabled");
         } else {
             showMenu = true;
             $msgId.text(currentMessage.message.messageId);
             $actionCompleteParent.removeClass("disabled");
             $actionUnsuccessfulParent.removeClass("disabled");
+            $actionRemovePmParent.removeClass("disabled");
             if (currentMessage.message.hasOwnProperty("canPostpone") && currentMessage.message.canPostpone === true) {
                 $actionPostponeParent.removeClass("disabled");
+                $actionCompletePmParent.removeClass("disabled");
+                $actionChangeTimeParent.removeClass("disabled");
             } else {
                 $actionPostponeParent.addClass("disabled");
+                $actionCompletePmParent.addClass("disabled");
+                $actionChangeTimeParent.addClass("disabled");
+            }
+            if (isCompletedAsPM()) {
+                $actionRemovePmParent.show();
+                $actionChangeTimeParent.show();
+                $actionCompleteParent.hide();
+                $actionCompletePmParent.hide();
+                $actionPostponeParent.hide();
+                $actionUnsuccessfulParent.hide();
+            } else {
+                $actionRemovePmParent.hide();
+                $actionChangeTimeParent.hide();
+                $actionCompleteParent.show();
+                $actionCompletePmParent.show();
+                $actionPostponeParent.show();
+                $actionUnsuccessfulParent.show();
             }
         }
         if (showMenu) {
@@ -116,6 +154,9 @@
             parentStatusId = 2;
         } else if (type === "unsuccessful") {
             parentStatusId = 6;
+        } else if (type === "remove_pm") {
+            parentStatusId = 33;
+            type = "complete";
         }
         modalId = meerkat.modules.dialogs.show({
             title: " ",
@@ -145,6 +186,7 @@
                     meerkat.modules.loadingAnimation.showInside($button, true);
                     var statusId = $modal.find("input[type=radio]:checked").val();
                     meerkat.modules.simplesMessage.performFinish(type, {
+                        statusId: parentStatusId,
                         reasonStatusId: statusId
                     }, function performCallback() {
                         if ($homeButton.length > 0) $homeButton[0].click();
@@ -154,7 +196,21 @@
             }
         });
     }
-    function actionPostpone() {
+    function actionPostpone(assignToUser, type) {
+        if (!type) return;
+        var parentStatusId = 0;
+        var heading = "";
+        if (type === "postpone") {
+            parentStatusId = 4;
+            heading = "Postpone this message";
+        } else if (type === "complete_pm") {
+            parentStatusId = 31;
+            heading = "Complete as PM";
+        } else if (type === "change_time") {
+            parentStatusId = 32;
+            heading = "Change Time";
+        }
+        heading = encodeURIComponent(heading);
         meerkat.modules.dialogs.show({
             title: " ",
             buttons: [ {
@@ -173,7 +229,7 @@
                 $button.prop("disabled", true);
                 meerkat.modules.dialogs.changeContent(modalId, meerkat.modules.loadingAnimation.getTemplate());
                 meerkat.modules.comms.get({
-                    url: "simples/ajax/message_statuses.json.jsp?parentStatusId=4",
+                    url: "simples/ajax/message_statuses.json.jsp?parentStatusId=" + parentStatusId + "&heading=" + heading,
                     dataType: "json",
                     cache: true,
                     errorLevel: "silent"
@@ -208,9 +264,10 @@
                             postponeDate: $modal.find("#postponedate").val(),
                             postponeTime: $modal.find("#postponehour").val() + ":" + $modal.find("#postponeminute").val(),
                             postponeAMPM: $modal.find('input[name="postponeampm"]:checked').val(),
+                            statusId: parentStatusId,
                             reasonStatusId: $modal.find('select[name="reason"]').val(),
                             comment: $modal.find("textarea").val(),
-                            assignToUser: $modal.find("#assigntome").is(":checked")
+                            assignToUser: assignToUser
                         };
                         if (!_.isString(data.postponeDate) || data.postponeDate.length === 0 || (!_.isString(data.postponeAMPM) || data.postponeAMPM.length === 0)) {
                             meerkat.modules.dialogs.show({
@@ -281,6 +338,17 @@
             htmlContent = template(data);
         }
         meerkat.modules.dialogs.changeContent(modalId, htmlContent);
+    }
+    function isCompletedAsPM() {
+        if (currentMessage.hasOwnProperty("messageaudits")) {
+            for (var i = 0; i < currentMessage.messageaudits.length; i++) {
+                var auditObj = currentMessage.messageaudits[i];
+                if (auditObj.hasOwnProperty("statusId") && auditObj.statusId === 31) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     meerkat.modules.register("simplesActions", {
         init: init

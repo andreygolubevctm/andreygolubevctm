@@ -37,6 +37,7 @@ public class UserStatsDao {
 
 			while (results.next()) {
 				userStats.setCompleted(results.getInt("Completed"));
+				userStats.setCompletedAsPM(results.getInt("CompletedAsPM"));
 				userStats.setUnsuccessful(results.getInt("Unsuccessful"));
 				userStats.setPostponed(results.getInt("Postponed"));
 				userStats.setContact(results.getInt("contact"));

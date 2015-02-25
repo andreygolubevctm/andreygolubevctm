@@ -60,8 +60,8 @@
 <%-- VALIDATION --%>
 <go:validate selector="${name}" rule="dateOfBirthEUR" parm="true" message="Please enter a valid date in DD/MM/YYYY format"/>
 <go:validate selector="${name}" rule="dateOfBirthEURValidYear" parm="true" message="Please enter a valid four digit number for the year."/>
-<go:validate selector="${name}" rule="min_DateOfBirthYearException" parm="{ ageMin:dob_${name}.ageMin }" message="${title} age cannot be under ${ageMin}" />
-<go:validate selector="${name}" rule="max_DateOfBirthYearException" parm="{ ageMax:dob_${name}.ageMax }" message="${title} age cannot be over ${ageMax}" />
+<go:validate selector="${name}" rule="min_DateOfBirth" parm="{ ageMin:dob_${name}.ageMin }" message="${title} age cannot be under ${ageMin}" />
+<go:validate selector="${name}" rule="max_DateOfBirth" parm="{ ageMax:dob_${name}.ageMax }" message="${title} age cannot be over ${ageMax}" />
 <c:if test="${validateYoungest eq true}">
 	<go:validate selector="${name}" rule="youngRegularDriversAgeCheck" parm="true" message="Youngest driver should not be older than the regular driver"/>
 </c:if>

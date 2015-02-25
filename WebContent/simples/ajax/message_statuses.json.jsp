@@ -4,8 +4,10 @@
 <jsp:useBean id="messageDao" class="com.ctm.dao.simples.MessageDao" scope="page" />
 
 <c:set var="parentStatusId" value="${param.parentStatusId}" />
+<c:set var="heading" value="${param.heading}" />
 
 <json:object>
+	<json:property name="heading" value="${heading}"/>
 	<json:array name="statuses" var="status" items="${messageDao.getStatuses(parentStatusId)}">
 		<json:object>
 			<json:property name="id" value="${status.getId()}" />

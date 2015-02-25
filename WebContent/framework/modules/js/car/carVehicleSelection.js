@@ -61,6 +61,10 @@
 
 	var useSessionDefaults = true;
 
+	var radioButtonFields = ['types'];
+
+	var isSplitTestFlag = false;
+
 	function getVehicleData( type ) {
 
 		if( ajaxInProgress === false ) {
@@ -88,12 +92,16 @@
 
 			// Flush out the selector which is to be populated
 			stripValidationStyles($element);
+			if(isSplitTest() && isRadioButtonField(type)) {
+				$element.empty();
+			} else {
 			$element.attr('selectedIndex', 0);
 			$element.empty().append(
 				$('<option/>',{
 					value:''
 				}).append(snippets.resetOptionHTML)
 			);
+			}
 
 			// Prevent previous selectors from being active until response received
 			enableDisablePreviousSelectors(type, true);
@@ -199,12 +207,15 @@
 				$selector.empty();
 
 				var options = [];
+
+				if(!isSplitTest() || (isSplitTest() && !isRadioButtonField(type))) {
 				options.push(
 					$('<option/>',{
 						text:snippets.pleaseChooseOptionHTML,
 						value:''
 					})
 				);
+				}
 
 				var hasPopularModels = false;
 				if(type == "models" && selectorData[type][0].hasOwnProperty('isTopModel') && selectorData[type][0].isTopModel === true) {
@@ -219,12 +230,10 @@
 					options.push(
 						$('<optgroup/>',{label:"All " + label})
 					);
-				} else {
-					if(isIosXS && autoSelect !== true) {
-						options.push(
-							$('<optgroup/>',{label:(type.charAt(0).toUpperCase() + type.slice(1))})
-						);
-					}
+				} else if((!isSplitTest() || (isSplitTest() && !isRadioButtonField(type))) && isIosXS && autoSelect !== true) {
+					options.push(
+						$('<optgroup/>',{label:(type.charAt(0).toUpperCase() + type.slice(1))})
+					);
 				}
 
 				for(var i in selectorData[type]){
@@ -232,14 +241,44 @@
 						if(typeof selectorData[type][i] === 'function')
 							continue;
 						var item = selectorData[type][i];
-						var option = $('<option/>',{
+						var option = null;
+						if(isSplitTest() && isRadioButtonField(type)) {
+							var radio_name = 'quote_vehicle_redbookCode';
+							option = $('<div/>', {
+										'class': "radioCustom"
+									}).append(
+											$('<input/>', {
+												'type': "radio",
+												'id': radio_name + '_' + item.code,
+												'name': radio_name,
+												'value': item.code,
+												'required': "required",
+												'data-autosave': "true",
+												'data-msg-required': "Please select a vehicle type"
+											})
+										).append(
+											$('<label/>', {
+												'for': radio_name + '_' + item.code,
+												'text': item.label
+											})
+										);
+
+						} else {
+							option = $('<option/>',{
 							text:item.label,
 							value:item.code
 						});
+						}
+
 						if( selected !== true && (autoSelect === true || (!_.isNull(selected) && selected == item.code)) ) {
+							if(isSplitTest() && isRadioButtonField(type)) {
+								option.find('input').prop('checked', true);
+							} else {
 							option.prop('selected', true);
+							}
 							selected = true;
 						}
+
 						if(type == 'makes' || (type == "models" && hasPopularModels)) {
 							if(item[hasPopularModels ? 'isTopModel' : 'isTopMake'] === true) {
 								option.appendTo(options[1], options[2]);
@@ -247,7 +286,7 @@
 								options[2].append(option);
 							}
 						} else {
-							if(isIosXS && autoSelect !== true) {
+							if((!isSplitTest() || (isSplitTest() && !isRadioButtonField(type))) && isIosXS && autoSelect !== true) {
 								options[1].append(option);
 							} else {
 								options.push(option);
@@ -259,6 +298,11 @@
 				// Append all the options to the selector
 				for(var o=0; o<options.length; o++) {
 					$selector.append(options[o]);
+				}
+
+				// Add listener to selector if is radio group
+				if(isSplitTest() && isRadioButtonField(type)) {
+					addChangeListenerToRadioGroup($selector, type);
 				}
 
 				// Enable the selector and make it visible
@@ -299,6 +343,10 @@
 
 			// No matches results found
 			} else {
+				if(isSplitTest() && isRadioButtonField(type)) {
+					$(elements[activeSelector + 'Row']).addClass('hidden');
+					$(elements[activeSelector]).empty();
+				} else {
 				$(elements[activeSelector]).empty().append(
 					$('<option/>',{
 						text:snippets.notFoundOptionHTML,
@@ -307,6 +355,7 @@
 				);
 			}
 		}
+	}
 	}
 
 	function getPreviousSelector(current) {
@@ -327,6 +376,10 @@
 		return false;
 	}
 
+	function emptyElement($element) {
+		$element.empty();
+	}
+
 	function disableFutureSelectors(current) {
 		var indexOfActiveSelector = _.indexOf(selectorOrder, current);
 		if(indexOfActiveSelector > -1 ) {
@@ -334,12 +387,17 @@
 				if(elements.hasOwnProperty(selectorOrder[i])) {
 					var $e = $(elements[selectorOrder[i]]);
 					if(i > indexOfActiveSelector) {
-					$e.attr('selectedIndex', 0);
-					$e.empty().append(
-						$('<option/>',{
-							value:''
-							}).append(snippets.resetOptionHTML)
-					);
+						if(isSplitTest() && isRadioButtonField(selectorOrder[i])) {
+							$(elements[selectorOrder[i] + 'Row']).addClass('hidden');
+							$e.empty();
+						} else {
+							$e.attr('selectedIndex', 0);
+							$e.empty().append(
+								$('<option/>',{
+									value:''
+								}).append(snippets.resetOptionHTML)
+							);
+						}
 					stripValidationStyles($e);
 						$e.prop("disabled", true);
 						if(indexOfActiveSelector === 1) {
@@ -386,8 +444,16 @@
 			getVehicleData(next);
 		}
 
-		if(data.field === 'types' && !_.isEmpty($(elements.types).val())) {
+		if(data.field === 'types') {
+			var $element = $(elements.types);
+			if(
+				(isSplitTest() && $element.find('input:checked'))
+				||
+				(!isSplitTest() && !_.isEmpty($element.val()))
+			) {
+				addValidationStyles($element);
 			checkAndNotifyOfVehicleChange();
+		}
 		}
 		meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
 	}
@@ -395,9 +461,17 @@
 	function addChangeListeners() {
 		for(var i=0; i<selectorOrder.length; i++) {
 			if(selectorOrder.hasOwnProperty(i)) {
-				$(elements[selectorOrder[i]]).on("change", _.bind(selectionChanged, this, {field:selectorOrder[i]}));
+				if(isSplitTest() && isRadioButtonField(selectorOrder[i])){
+					addChangeListenerToRadioGroup($(elements[selectorOrder[i]]), selectorOrder[i]);
+				} else {
+					$(elements[selectorOrder[i]]).off().on("change", _.bind(selectionChanged, this, {field:selectorOrder[i]}));
 			}
 		}
+	}
+	}
+
+	function addChangeListenerToRadioGroup($element, type) {
+		$element.find("input[type=radio]").off().on("change", _.bind(selectionChanged, this, {field:type}));
 	}
 
 	function stripValidationStyles(element) {
@@ -423,7 +497,8 @@
 	}
 
 	function checkAndNotifyOfVehicleChange() {
-		var rbc = $(elements.types).val();
+		var vehicle = isSplitTest() ? $(elements.types).find("input:checked") : $(elements.types);
+		var rbc = vehicle ? vehicle.val() : null;
 		if(!_.isEmpty(rbc)){
 
 			// Set hidden field values
@@ -442,20 +517,28 @@
 				$(elements.variant).val(type.label);
 			}
 
+			if(isSplitTest()) {
+				_.defer(function(){
 			meerkat.messaging.publish(moduleEvents.car.VEHICLE_CHANGED);
+				});
+			} else {
+				meerkat.messaging.publish(moduleEvents.car.VEHICLE_CHANGED);
 		}
+	}
 	}
 
 	function initCarVehicleSelection() {
 
 		var self = this;
 
+		//meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function() {
 		$(document).ready(function() {
 
 			// Only init if health... obviously...
 			if (meerkat.site.vertical !== "car")
 				return false;
 
+			isSplitTestFlag = meerkat.modules.splitTest.isActive(8);
 			for(var i=0; i<selectorOrder.length; i++) {
 				$(elements[selectorOrder[i]]).attr('tabindex', i + 1);
 			}
@@ -471,7 +554,7 @@
 
 			checkAndNotifyOfVehicleChange();
 
-			if(meerkat.modules.performanceProfiling.isIE8()) {
+			if(!isSplitTest() && meerkat.modules.performanceProfiling.isIE8()) {
 				$(document).on('focus', '#quote_vehicle_redbookCode', function() {
 					var el = $(this);
 					el.data('width', el.width());
@@ -489,14 +572,22 @@
 					// make it reset
 		});
 			}
-
 		});
 
 	}
 
+	function isRadioButtonField(type) {
+		return _.indexOf(radioButtonFields, type) > -1;
+	}
+
+	function isSplitTest() {
+		return isSplitTestFlag;
+	}
+
 	meerkat.modules.register("carVehicleSelection", {
 		init : initCarVehicleSelection,
-		events : moduleEvents
+		events : moduleEvents,
+		isSplitTest : isSplitTest
 	});
 
 })(jQuery);

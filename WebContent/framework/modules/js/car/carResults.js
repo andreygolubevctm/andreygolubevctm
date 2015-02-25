@@ -205,7 +205,7 @@
 
 		}
 		catch(e) {
-			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.carResults.init(); '+e.message, e);
+			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.carResults.initResults(); '+e.message, e);
 		}
 	}
 

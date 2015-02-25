@@ -1505,3 +1505,30 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
 #noResultsContainer .findAnInsurerRow {
   margin-bottom: 40px;
 }
+.car {
+  /* Ideally the radio input styling would be moved
+	to a more generic location however given this is
+	a split test and will only become permanent if
+	successful and at that stage the radio buttons will
+	likely become styled and will have a totally
+	different struction - akin to the checkboxes
+	*/
+}
+.car #quote_vehicle_selection #quote_vehicle_redbookCodeRow.radio-button-group-row .control-label {
+  padding-top: 0px;
+}
+.car #quote_vehicle_selection .radio-button-group {
+  outline: 0;
+}
+.car #quote_vehicle_selection .radio-button-group label {
+  cursor: pointer;
+}
+.car #quote_vehicle_selection .radio-button-group label input {
+  cursor: pointer;
+}
+.car #quote_vehicle_selection .has-success .radio-button-group input:checked + label {
+  color: #417fd0;
+}
+.car #quote_vehicle_selection .has-error .radio-button-group label {
+  color: #ff5f5f;
+}

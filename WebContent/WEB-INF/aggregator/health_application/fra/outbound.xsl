@@ -559,64 +559,47 @@
 	<xsl:template name="get-fund-name">
 		<xsl:param name="fundName" />
 		<xsl:choose>
+			<xsl:when test="$fundName='ACA'">ACA</xsl:when>
 			<xsl:when test="$fundName='AHM'">GEH</xsl:when>
+			<xsl:when test="$fundName='AMA'">AMA</xsl:when>
 			<xsl:when test="$fundName='AUSTUN'">AU</xsl:when>
 			<xsl:when test="$fundName='BUPA'">BUP</xsl:when>
-			<xsl:when test="$fundName='FRANK'">Frank</xsl:when>
-			<xsl:when test="$fundName='GMHBA'">GMHBA</xsl:when>
+			<xsl:when test="$fundName='CBHS'">CBH</xsl:when>
+			<xsl:when test="$fundName='CDH'">CDH</xsl:when>
+			<xsl:when test="$fundName='CPS'">CPS</xsl:when>
+			<xsl:when test="$fundName='DHBS'">AHB</xsl:when>
+			<xsl:when test="$fundName='FI'">YMH</xsl:when>
+			<xsl:when test="$fundName='FRANK'">FHI</xsl:when>
+			<xsl:when test="$fundName='GMF'">GMF</xsl:when>
+			<xsl:when test="$fundName='GMHBA'">GMH</xsl:when>
+			<xsl:when test="$fundName='GU'">GUC</xsl:when>
 			<xsl:when test="$fundName='HBA'">HBA</xsl:when>
 			<xsl:when test="$fundName='HBF'">HBF</xsl:when>
-			<xsl:when test="$fundName='HBFSA'">NONE</xsl:when>
 			<xsl:when test="$fundName='HCF'">HCF</xsl:when>
-			<xsl:when test="$fundName='HHBFL'">HHBF</xsl:when>
-			<xsl:when test="$fundName='MBF'">MBF</xsl:when>
-			<xsl:when test="$fundName='MEDIBK'">MP</xsl:when>
-			<xsl:when test="$fundName='NIB'">NIB</xsl:when>
-			<xsl:when test="$fundName='WDHF'">WDHF</xsl:when>
-			<xsl:when test="$fundName='ACA'">ACA</xsl:when>
-			<xsl:when test="$fundName='AMA'">AMA</xsl:when>
-			<xsl:when test="$fundName='API'">NONE</xsl:when>
-			<xsl:when test="$fundName='BHP'">NONE</xsl:when>
-			<xsl:when test="$fundName='CBHS'">NONE</xsl:when>
-			<xsl:when test="$fundName='CDH'">CDH</xsl:when>
-			<xsl:when test="$fundName='CI'">NONE</xsl:when>
-			<xsl:when test="$fundName='CPS'">NONE</xsl:when>
-			<xsl:when test="$fundName='CUA'">CUA</xsl:when>
-			<xsl:when test="$fundName='CWH'">CWH</xsl:when>
-			<xsl:when test="$fundName='DFS'">UAOD</xsl:when>
-			<xsl:when test="$fundName='DHBS'">AHBS</xsl:when>
-			<xsl:when test="$fundName='FI'">YMHS</xsl:when>
-			<xsl:when test="$fundName='GMF'">GMF</xsl:when>
-			<xsl:when test="$fundName='GU'">GU</xsl:when>
 			<xsl:when test="$fundName='HCI'">HCI</xsl:when>
+			<xsl:when test="$fundName='HHBFL'">HG</xsl:when>
 			<xsl:when test="$fundName='HIF'">HIF</xsl:when>
-			<xsl:when test="$fundName='HEA'">NONE</xsl:when>
-			<xsl:when test="$fundName='IFHP'">NONE</xsl:when>
-			<xsl:when test="$fundName='IMAN'">NONE</xsl:when>
 			<xsl:when test="$fundName='IOOF'">IOOF</xsl:when>
 			<xsl:when test="$fundName='IOR'">IOR</xsl:when>
-			<xsl:when test="$fundName='LHMC'">LHMC</xsl:when>
+			<xsl:when test="$fundName='LHMC'">LHM</xsl:when>
 			<xsl:when test="$fundName='LVHHS'">LHS</xsl:when>
+			<xsl:when test="$fundName='MBF'">MBF</xsl:when>
 			<xsl:when test="$fundName='MC'">MC</xsl:when>
-			<xsl:when test="$fundName='MDHF'">MDHF</xsl:when>
-			<xsl:when test="$fundName='MU'">NONE</xsl:when>
-			<xsl:when test="$fundName='NATMUT'">NONE</xsl:when>
-			<xsl:when test="$fundName='NHBA'">NONE</xsl:when>
-			<xsl:when test="$fundName='NHBS'">NAVY</xsl:when>
-			<xsl:when test="$fundName='NRMA'">SGIO</xsl:when>
-			<xsl:when test="$fundName='PWAL'">PWAL</xsl:when>
-			<xsl:when test="$fundName='QCH'">QCH</xsl:when>
-			<xsl:when test="$fundName='QTUHS'">QTUHS</xsl:when>
-			<xsl:when test="$fundName='RBHS'">RBHS</xsl:when>
-			<xsl:when test="$fundName='RTEHF'">RTEFS</xsl:when>
-			<xsl:when test="$fundName='SAPOL'">NONE</xsl:when>
-			<xsl:when test="$fundName='SGIC'">NONE</xsl:when>
-			<xsl:when test="$fundName='SGIO'">SGIO</xsl:when>
-			<xsl:when test="$fundName='SLHI'">SLMHB</xsl:when>
-			<xsl:when test="$fundName='TFHS'">NONE</xsl:when>
+			<xsl:when test="$fundName='MDHF'">MDH</xsl:when>
+			<xsl:when test="$fundName='MEDIBK'">MP</xsl:when>
+			<xsl:when test="$fundName='NHBS'">NHB</xsl:when>
+			<xsl:when test="$fundName='NIB'">NIB</xsl:when>
+			<xsl:when test="$fundName='NRMA'">SGH</xsl:when>
+			<xsl:when test="$fundName='PWAL'">PWA</xsl:when>
+			<xsl:when test="$fundName='QCH'">MIM</xsl:when>
+			<xsl:when test="$fundName='QTUHS'">QTH</xsl:when>
+			<xsl:when test="$fundName='RBHS'">RBH</xsl:when>
+			<xsl:when test="$fundName='RTEHF'">RTE</xsl:when>
+			<xsl:when test="$fundName='SLHI'">SL</xsl:when>
 			<xsl:when test="$fundName='TFS'">TFS</xsl:when>
-			<xsl:when test="$fundName='UAOD'">UAOD</xsl:when>
-			<xsl:otherwise>NONE</xsl:otherwise>
+			<xsl:when test="$fundName='UAOD'">UAD</xsl:when>
+			<xsl:when test="$fundName='WDHF'">WFD</xsl:when>
+			<xsl:otherwise>ZZZ</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	

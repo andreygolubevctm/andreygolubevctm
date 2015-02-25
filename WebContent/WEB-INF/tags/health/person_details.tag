@@ -18,8 +18,8 @@
 
 <c:set var="dobTitle">
 	<c:choose>
-		<c:when test="${id eq 'partner'}">applicant's partners</c:when>
-		<c:otherwise>primary applicant's</c:otherwise>
+		<c:when test="${id eq 'partner'}">partner's</c:when>
+		<c:otherwise>primary person's</c:otherwise>
 	</c:choose>
 </c:set>
 
@@ -50,7 +50,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
-			<field_new:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" className="sessioncamexclude" />
+			<field_new:person_dob xpath="${fieldXpath}" title="${dobTitle}" required="true" ageMin="16" ageMax="120" className="sessioncamexclude" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/gender" />

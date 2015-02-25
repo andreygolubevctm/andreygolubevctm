@@ -36,7 +36,9 @@
 
 	<xs:simpleType name="YN" >
 		<xs:restriction base="xs:string">
-			<xs:pattern value="Y|N"/>
+			<xs:enumeration value="Y"/>
+			<xs:enumeration value="N"/>
+			<xs:enumeration value=""/>
 		</xs:restriction>
 	</xs:simpleType>
 

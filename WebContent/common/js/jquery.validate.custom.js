@@ -10,32 +10,6 @@ $.validator.addMethod('min_DateOfBirth', function(value, element, params) {
 	}
 	var now = new Date();
 	var temp = value.split('/');
-	var minDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- params.ageMin) );
-
-	return minDate <= now;
-});
-
-$.validator.addMethod('max_DateOfBirth', function(value, element, params) {
-	if (typeof params === 'undefined' || !params.hasOwnProperty('ageMax')) return false;
-
-	if (params.selector) {
-		value = $(params.selector).val() || value;
-	}
-	var now = new Date();
-	var temp = value.split('/');
-	var maxDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- params.ageMax) );
-
-	return maxDate >= now;
-});
-
-$.validator.addMethod('min_DateOfBirthYearException', function(value, element, params) {
-	if (typeof params === 'undefined' || !params.hasOwnProperty('ageMin')) return false;
-
-	if (params.selector) {
-		value = $(params.selector).val() || value;
-	}
-	var now = new Date();
-	var temp = value.split('/');
 
 	if(String(parseInt(temp[2], 10)).length === 4) {
 
@@ -49,7 +23,7 @@ $.validator.addMethod('min_DateOfBirthYearException', function(value, element, p
 	return true;
 });
 
-$.validator.addMethod('max_DateOfBirthYearException', function(value, element, params) {
+$.validator.addMethod('max_DateOfBirth', function(value, element, params) {
 	if (typeof params === 'undefined' || !params.hasOwnProperty('ageMax')) return false;
 
 	if (params.selector) {

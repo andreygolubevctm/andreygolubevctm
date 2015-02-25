@@ -68,13 +68,13 @@
 								<a href="javascript:;" data-sort-type="benefits.excess" data-sort-dir="asc"><span class="icon"></span> <span>Excess</span></a>
 							</li>
 							<li class="col-sm-2 col-lg-1">
-								<a href="javascript:;" data-sort-type="benefits.medical" data-sort-dir="asc"><span class="icon"></span> <span>O.S. Medical <span class="">Expenses</span></span></a>
+								<a href="javascript:;" data-sort-type="benefits.medical" data-sort-dir="desc"><span class="icon"></span> <span>O.S. Medical <span class="">Expenses</span></span></a>
 							</li>
 							<li class="col-sm-2 col-lg-1">
-								<a href="javascript:;" data-sort-type="benefits.cxdfee" data-sort-dir="asc"><span class="icon"></span> <span>Cancellation Fee&nbsp;Cover</span></a>
+								<a href="javascript:;" data-sort-type="benefits.cxdfee" data-sort-dir="desc"><span class="icon"></span> <span>Cancellation Fee&nbsp;Cover</span></a>
 							</li>
 							<li class="col-sm-2 col-lg-1">
-								<a href="javascript:;" data-sort-type="benefits.luggage" data-sort-dir="asc"><span class="icon"></span> <span>Luggage</span></a>
+								<a href="javascript:;" data-sort-type="benefits.luggage" data-sort-dir="desc"><span class="icon"></span> <span>Luggage</span></a>
 							</li>
 							<li class="col-sm-2 col-lg-2 active">
 								<a href="javascript:;" data-sort-type="price.premium" data-sort-dir="asc"><span class="icon"></span> <span>Price</span></a>

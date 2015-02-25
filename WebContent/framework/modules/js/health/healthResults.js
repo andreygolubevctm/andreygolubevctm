@@ -40,7 +40,8 @@
 				PREMIUM_UPDATED: 'PREMIUM_UPDATED'
 			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
-			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK',
+			RESULTS_ERROR: 'RESULTS_ERROR'
 		};
 
 	var $component; //Stores the jQuery object for the component group
@@ -201,7 +202,7 @@
 			});
 
 		}catch(e){
-			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.healthResults.init(); '+e.message, e);
+			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.healthResults.initResults(); '+e.message, e);
 		}
 	}
 
@@ -421,6 +422,14 @@
 
 			// Hide pagination
 			$('header .slide-feature-pagination, header a[data-results-pagination-control]').addClass('hidden');
+		});
+
+		// If error occurs, go back in the journey
+		meerkat.messaging.subscribe(moduleEvents.RESULTS_ERROR, function resultsError() {
+			// Delayed to allow journey engine to unlock
+			_.delay(function() {
+				meerkat.modules.journeyEngine.gotoPath('previous');
+			}, 1000);
 		});
 
 		$(document).on("resultsFetchFinish", function onResultsFetchFinish() {
@@ -705,7 +714,7 @@
 			}
 
 			// update transaction details otherwise we will have to wait until people get to payment page
-			meerkat.modules.writeQuote.write({ 
+			meerkat.modules.writeQuote.write({
 				health_application_provider: selectedProduct.info.provider,
 				health_application_productId: selectedProduct.productId,
 				health_application_productName: selectedProduct.info.productCode,

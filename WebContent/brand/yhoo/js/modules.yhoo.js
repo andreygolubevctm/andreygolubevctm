@@ -764,6 +764,2620 @@ meerkat.logging.init = function() {
     meerkat.modules.events = events;
 })(jQuery);
 
+var Results = new Object();
+
+Results = {
+    view: new Object(),
+    model: new Object(),
+    moduleEvents: {
+        RESULTS_INITIALISED: "RESULTS_INITIALISED",
+        RESULTS_ERROR: "RESULTS_ERROR"
+    },
+    init: function(userSettings) {
+        Results.view = ResultsView;
+        Results.model = ResultsModel;
+        Results.pagination = ResultsPagination;
+        var settings = {
+            url: "ajax/json/results.jsp",
+            formSelector: "#mainform",
+            runShowResultsPage: true,
+            paths: {
+                results: {
+                    rootElement: "results",
+                    list: "results.result",
+                    general: "results.info"
+                },
+                price: {
+                    annually: "price.annual.total",
+                    quarterly: "price.quarterly.total",
+                    monthly: "price.monthly.total",
+                    fortnightly: "price.fortnightly.total",
+                    weekly: "price.weekly.total",
+                    daily: "price.daily.total"
+                },
+                availability: {
+                    price: {
+                        annually: "price.annual.available",
+                        quarterly: "price.quarterly.available",
+                        monthly: "price.monthly.available",
+                        fortnightly: "price.fortnightly.available",
+                        weekly: "price.weekly.available",
+                        daily: "price.daily.available"
+                    },
+                    product: "productAvailable"
+                },
+                productId: "productId",
+                features: "compareFeatures.features"
+            },
+            sort: {
+                sortBy: "price.annually",
+                sortDir: "asc"
+            },
+            frequency: "annually",
+            displayMode: "price",
+            pagination: {
+                mode: "slide",
+                touchEnabled: false,
+                emptyContainerFunction: false,
+                afterPaginationRefreshFunction: false
+            },
+            availability: {
+                product: [ "equals", "Y" ],
+                price: [ "equals", "Y" ]
+            },
+            animation: {
+                results: {
+                    individual: {
+                        active: true,
+                        delay: -50,
+                        acceleration: 25
+                    },
+                    delay: 100,
+                    options: {
+                        effect: "slide",
+                        direction: "right",
+                        easing: "easeInOutQuart",
+                        duration: 400
+                    }
+                },
+                shuffle: {
+                    active: true,
+                    options: {
+                        duration: 400,
+                        easing: "easeInOutQuart",
+                        queue: "shuffle"
+                    }
+                },
+                filter: {
+                    active: true,
+                    queue: "filter",
+                    reposition: {
+                        options: {
+                            duration: 1e3,
+                            easing: "easeInOutQuart"
+                        }
+                    },
+                    appear: {
+                        options: {
+                            duration: 1200
+                        }
+                    },
+                    disappear: {
+                        options: {
+                            duration: 1e3
+                        }
+                    }
+                },
+                features: {
+                    scroll: {
+                        active: true,
+                        duration: 1e3,
+                        percentage: 1
+                    }
+                }
+            },
+            elements: {
+                frequency: ".frequency",
+                reviseButton: ".reviseButton",
+                page: "#resultsPage",
+                container: ".results-table",
+                rows: ".result-row",
+                productHeaders: ".result",
+                templates: {
+                    result: "#result-template",
+                    unavailable: "#unavailable-template",
+                    unavailableCombined: "#unavailable-combined-template",
+                    error: "#error-template",
+                    currentProduct: "#current-product-template",
+                    feature: "#feature-template"
+                },
+                noResults: ".noResults",
+                resultsFetchError: ".resultsFetchError",
+                resultsContainer: ".resultsContainer",
+                resultsOverflow: ".resultsOverflow",
+                features: {
+                    headers: ".featuresHeaders",
+                    list: ".featuresList",
+                    allElements: ".featuresElements",
+                    expandable: ".expandable",
+                    expandableHover: ".expandableHover",
+                    values: ".featuresValues",
+                    extras: ".featuresExtras"
+                }
+            },
+            render: {
+                templateEngine: "microTemplate",
+                features: {
+                    mode: "build",
+                    headers: true,
+                    expandRowsOnComparison: true,
+                    numberOfXSColumns: 2
+                },
+                dockCompareBar: true
+            },
+            templates: {
+                pagination: {
+                    pageItem: '<li><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}">{{= label}}</a></li>',
+                    pageText: "Page {{=currentPage}} of {{=totalPages}}"
+                }
+            },
+            show: {
+                featuresCategories: true,
+                topResult: true,
+                currentProduct: true,
+                nonAvailableProducts: true,
+                nonAvailablePrices: true,
+                savings: true,
+                unavailableCombined: false
+            },
+            dictionary: {
+                loadingMessage: "Loading Your Quotes...",
+                valueMap: []
+            },
+            rankings: {
+                filterUnavailableProducts: true
+            },
+            incrementTransactionId: true
+        };
+        $.extend(true, settings, userSettings);
+        Results.settings = settings;
+        Results.view.$containerElement = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.container);
+        Results.pagination.init();
+        Results.view.setDisplayMode(Results.settings.displayMode, true);
+        if (typeof meerkat !== "undefined") {
+            meerkat.messaging.publish(Results.moduleEvents.RESULTS_INITIALISED);
+        }
+    },
+    get: function(url, data) {
+        Results.model.fetch(url, data);
+    },
+    render: function() {
+        Results.view.show();
+        Results.pagination.refresh();
+    },
+    reset: function() {
+        $(Results.settings.elements.resultsContainer).trigger("resultsReset");
+        Results.model.flush();
+        Results.pagination.reset();
+        if (typeof QuoteEngine != "undefined") QuoteEngine.updateAddress();
+    },
+    reviseDetails: function() {
+        if (typeof QuoteEngine !== "undefined") QuoteEngine.setOnResults(false);
+        if (typeof Track !== "undefined" && typeof Track.quoteLoadRefresh !== "undefined") {
+            Track.quoteLoadRefresh("Refresh");
+        }
+        Results.view.toggleResultsPage();
+        Results.reset();
+    },
+    sortBy: function(sortBy, sortDir) {
+        if (Results.setSortBy(sortBy)) {
+            if (sortDir) Results.setSortDir(sortDir);
+            Results.model.sort();
+            return true;
+        } else {
+            return false;
+        }
+    },
+    getSortBy: function() {
+        return Results.settings.sort.sortBy;
+    },
+    getSortDir: function() {
+        return Results.settings.sort.sortDir;
+    },
+    setSortBy: function(sortBy) {
+        if (typeof Object.byString(Results.settings.paths, sortBy) !== "undefined") {
+            Results.settings.sort.sortBy = sortBy;
+            return true;
+        }
+        console.log("Results.setSortBy() has been called but it could not find the path to the property it should be sorted by: sortBy=", sortBy);
+        return false;
+    },
+    setSortDir: function(sortDir) {
+        if (sortDir && sortDir.length > 0 && $.inArray(sortDir, [ "asc", "desc" ]) != -1) {
+            Results.settings.sort.sortDir = sortDir;
+            return true;
+        }
+        console.log("Results.setSortDir() has been called but it was provided an invalid argument: sortDir=", sortDir);
+        return false;
+    },
+    filterBy: function(filterBy, condition, options, renderView) {
+        if (typeof Object.byString(Results.settings.paths, filterBy) !== "undefined") {
+            Results.model.addFilter(filterBy, condition, options);
+            Results.model.filter(renderView);
+        } else {
+            console.log("This filter could not find the path to the property it should be filtered by: filterBy= filterBy=", filterBy, "| condition=", condition, "| options=", options);
+        }
+    },
+    unfilterBy: function(filterBy, condition, renderView) {
+        if (typeof Object.byString(Results.settings.paths, filterBy) !== "undefined") {
+            Results.model.removeFilter(filterBy, condition);
+            if (renderView) {
+                Results.model.filter(renderView);
+            }
+        } else {
+            console.log("This filter could not find the path to the property it should be unfiltered by: filterBy=", filterBy, "| condition=", condition);
+        }
+    },
+    applyFiltersAndSorts: function() {
+        Results.model.filterAndSort(true);
+        Results.view.toggleFrequency(Results.settings.frequency);
+    },
+    getFrequency: function() {
+        return Results.settings.frequency;
+    },
+    setFrequency: function(frequency, renderView) {
+        if (typeof renderView === "undefined") renderView = true;
+        if (!Results.settings.show.nonAvailablePrices) {
+            $.each(Results.settings.paths.price, function(currentFrequency, pricePath) {
+                Results.unfilterBy("availability.price." + currentFrequency, "value", false);
+            });
+            var options = {};
+            options[Results.settings.availability.price[0]] = Results.settings.availability.price[1];
+            Results.filterBy("availability.price." + frequency, "value", options, renderView);
+        }
+        Results.model.setFrequency(frequency, renderView);
+        if (renderView !== false) {
+            Results.sortBy("price." + frequency);
+        }
+    },
+    addCurrentProduct: function(identifierPathName, product) {
+        Results.model.addCurrentProduct(product);
+        Results.setCurrentProduct(identifierPathName, Object.byString(product, identifierPathName));
+    },
+    removeCurrentProduct: function() {
+        Results.model.currentProduct = false;
+    },
+    setCurrentProduct: function(identifierPathName, currentProduct) {
+        if (typeof Object.byString(Results.settings.paths, identifierPathName) != "undefined") {
+            Results.model.setCurrentProduct(identifierPathName, currentProduct);
+        } else {
+            console.log("You have been trying to set the current product but the path to the identifier does not seem to exists: identifierPathName=", identifierPathName, "| currentProduct=", currentProduct);
+        }
+    },
+    getResult: function(identifierPathName, value) {
+        if (typeof Object.byString(Results.settings.paths, identifierPathName) != "undefined") {
+            return Results.model.getResult(identifierPathName, value);
+        } else {
+            console.log("You have been trying to retrieve a result through an identifier, but the path to that identifier does not seem to exist in the results objects: identifierPathName=", identifierPathName, "| value=", value);
+        }
+    },
+    getResultIndex: function(identifierPathName, value) {
+        if (typeof Object.byString(Results.settings.paths, identifierPathName) != "undefined") {
+            return Results.model.getResultIndex(identifierPathName, value);
+        } else {
+            console.log("You have been trying to retrieve a result through an identifier, but the path to that identifier does not seem to exist in the results objects: identifierPathName=", identifierPathName, "| value=", value);
+        }
+    },
+    getResultByIndex: function(productIndex) {
+        return Results.model.returnedProducts[productIndex];
+    },
+    getResultByProductId: function(productId) {
+        return Results.getResult(Results.settings.paths.productId, productId);
+    },
+    getTopResult: function() {
+        return Results.model.sortedProducts && Results.model.sortedProducts.length > 0 ? Results.model.sortedProducts[0] : false;
+    },
+    getReturnedGeneral: function() {
+        return Results.model.returnedGeneral;
+    },
+    getReturnedResults: function() {
+        return Results.model.returnedProducts;
+    },
+    getAjaxRequest: function() {
+        return Results.model.ajaxRequest;
+    },
+    getSortedResults: function() {
+        return Results.model.sortedProducts;
+    },
+    getFilteredResults: function() {
+        return Results.model.filteredProducts;
+    },
+    getSelectedProduct: function() {
+        return Results.model.selectedProduct;
+    },
+    setSelectedProduct: function(productId) {
+        return Results.model.setSelectedProduct(productId);
+    },
+    removeSelectedProduct: function() {
+        Results.model.removeSelectedProduct();
+    },
+    getDisplayMode: function() {
+        if (typeof Results.settings === "undefined" || Results.settings.hasOwnProperty("displayMode") !== true) return null;
+        return Results.settings.displayMode;
+    },
+    setDisplayMode: function(mode, forceRefresh) {
+        Results.view.setDisplayMode(mode, forceRefresh);
+    },
+    isResultDisplayed: function(resultModel) {
+        if ($.inArray(resultModel, Results.model.filteredProducts) == -1) {
+            return false;
+        }
+        return true;
+    },
+    setPerformanceMode: function(level) {
+        var profile = meerkat.modules.performanceProfiling.PERFORMANCE;
+        switch (level) {
+          case profile.LOW:
+            Results.settings.animation.filter.active = false;
+            Results.settings.animation.shuffle.active = false;
+            Results.settings.animation.features.scroll.active = false;
+            Results.settings.render.features.expandRowsOnComparison = false;
+            break;
+
+          case profile.MEDIUM:
+            Results.settings.animation.filter.active = false;
+            Results.settings.animation.shuffle.active = false;
+            Results.settings.animation.features.scroll.active = true;
+            Results.settings.render.features.expandRowsOnComparison = true;
+            break;
+
+          case profile.HIGH:
+            Results.settings.animation.filter.active = true;
+            Results.settings.animation.shuffle.active = true;
+            Results.settings.animation.features.scroll.active = true;
+            Results.settings.render.features.expandRowsOnComparison = true;
+            break;
+        }
+    },
+    onError: function(message, page, description, data) {
+        if (typeof meerkat !== "undefined") {
+            meerkat.messaging.publish(Results.moduleEvents.RESULTS_ERROR);
+            meerkat.modules.errorHandling.error({
+                errorLevel: "warning",
+                message: message,
+                page: page,
+                description: description,
+                data: data
+            });
+        } else if (typeof FatalErrorDialog !== "undefined") {
+            FatalErrorDialog.exec({
+                message: message,
+                page: page,
+                description: description,
+                data: data
+            });
+        }
+    },
+    startResultsFetch: function() {
+        Results.model.startResultsFetch();
+    },
+    finishResultsFetch: function() {
+        Results.model.finishResultsFetch();
+    },
+    publishResultsDataReady: function() {
+        Results.model.publishResultsDataReady();
+    }
+};
+
+var ResultsModel = new Object();
+
+ResultsModel = {
+    ajaxRequest: false,
+    returnedGeneral: false,
+    returnedProducts: false,
+    filteredProducts: false,
+    sortedProducts: false,
+    currentProduct: false,
+    selectedProduct: false,
+    filters: new Array(),
+    resultsLoadedOnce: false,
+    moduleEvents: {
+        WEBAPP_LOCK: "WEBAPP_LOCK",
+        WEBAPP_UNLOCK: "WEBAPP_UNLOCK",
+        RESULTS_DATA_READY: "RESULTS_DATA_READY",
+        RESULTS_BEFORE_DATA_READY: "RESULTS_BEFORE_DATA_READY",
+        RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW: "RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW",
+        RESULTS_UPDATED_INFO_RECEIVED: "RESULTS_UPDATED_INFO_RECEIVED"
+    },
+    fetch: function(url, data) {
+        Results.model.startResultsFetch();
+        try {
+            Results.model.flush();
+            if (typeof Loading !== "undefined") {
+                Loading.show(Results.settings.dictionary.loadingMessage);
+            }
+            if (typeof Compare !== "undefined") {
+                Compare.reset();
+            }
+            if (Results.settings.runShowResultsPage === true) {
+                Results.view.showResultsPage();
+            }
+            try {
+                $.address.parameter("stage", "results", false);
+            } catch (e) {}
+            if (typeof url == "undefined") {
+                url = Results.settings.url;
+            }
+            if (typeof data == "undefined") {
+                var data;
+                if (typeof meerkat !== "undefined") {
+                    data = meerkat.modules.form.getData($(Results.settings.formSelector));
+                    data.push({
+                        name: "transactionId",
+                        value: meerkat.modules.transactionId.get()
+                    });
+                    if (meerkat.site.isCallCentreUser) {
+                        data.push({
+                            name: meerkat.modules.comms.getCheckAuthenticatedLabel(),
+                            value: true
+                        });
+                    }
+                } else {
+                    data = Results.model.getFormData($(Results.settings.formSelector));
+                    data.push({
+                        name: "transactionId",
+                        value: referenceNo.getTransactionID()
+                    });
+                }
+            }
+        } catch (e) {
+            Results.onError("Sorry, an error occurred fetching results", "Results.js", "Results.model.fetch(); " + e.message, e);
+        }
+        if (Results.model.resultsLoadedOnce == true) {
+            var hasIncTranIdSetting = Results.settings.hasOwnProperty("incrementTransactionId");
+            if (!hasIncTranIdSetting || hasIncTranIdSetting && Results.settings.incrementTransactionId === true) {
+                url += (url.indexOf("?") == -1 ? "?" : "&") + "id_handler=increment_tranId";
+            }
+        }
+        Results.model.ajaxRequest = $.ajax({
+            url: url,
+            data: data,
+            type: "POST",
+            async: true,
+            dataType: "json",
+            cache: false,
+            success: function(jsonResult) {
+                Results.model.updateTransactionIdFromResult(jsonResult);
+                if (typeof meerkat != "undefined") {
+                    if (jsonResult.hasOwnProperty("results")) {
+                        if (jsonResult.results.hasOwnProperty("info")) {
+                            meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_UPDATED_INFO_RECEIVED, jsonResult.results.info);
+                        }
+                    }
+                }
+                try {
+                    if (jsonResult && jsonResult.messages && jsonResult.messages.length > 0) {}
+                    if (typeof meerkat !== "undefined" && typeof jsonResult.error !== "undefined" && jsonResult.error == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
+                        if (typeof Loading !== "undefined") Loading.hide();
+                        _.defer(function() {
+                            meerkat.modules.journeyEngine.gotoPath("previous");
+                        });
+                        if (!meerkat.modules.dialogs.isDialogOpen(jsonResult.error)) {
+                            meerkat.modules.errorHandling.error({
+                                errorLevel: "warning",
+                                id: jsonResult.error,
+                                message: "Your Simples login session has been lost. Please open Simples in a separate tab, login, then you can continue with this quote.",
+                                page: "ResultsModel.js",
+                                description: "Error loading url: " + url + " : " + jsonResult.error,
+                                data: data
+                            });
+                        }
+                    } else if (typeof jsonResult.error !== "undefined" && jsonResult.error.type == "validation") {
+                        if (typeof Loading !== "undefined") Loading.hide();
+                        Results.reviseDetails();
+                        ServerSideValidation.outputValidationErrors({
+                            validationErrors: jsonResult.error.errorDetails.validationErrors,
+                            startStage: 0
+                        });
+                    } else if (!jsonResult || typeof Object.byString(jsonResult, Results.settings.paths.results.rootElement) == "undefined") {
+                        Results.model.handleFetchError(jsonResult, "Returned results did not have the expected format");
+                    } else {
+                        Results.model.update(jsonResult);
+                    }
+                    Results.model.triggerEventsFromResult(jsonResult);
+                } catch (e) {
+                    Results.model.handleFetchError(data, "Try/Catch fail on success: " + e.message);
+                }
+            },
+            error: function(jqXHR, txt, errorThrown) {
+                Results.model.ajaxRequest = false;
+                if (jqXHR.status !== 0 && jqXHR.readyState !== 0 || txt == "timeout") {
+                    Results.model.handleFetchError(data, "AJAX request failed: " + txt + " " + errorThrown);
+                }
+            },
+            complete: function() {
+                Results.model.ajaxRequest = false;
+                Results.model.finishResultsFetch();
+            }
+        });
+    },
+    triggerEventsFromResult: function(jsonResult) {
+        if (typeof meerkat !== "undefined" && typeof jsonResult == "object" && jsonResult.hasOwnProperty("results") && jsonResult.results.hasOwnProperty("events")) {
+            for (var i in jsonResult.results.events) {
+                if (jsonResult.results.events.hasOwnProperty(i)) {
+                    meerkat.messaging.publish(i, jsonResult.results.events[i]);
+                }
+            }
+        }
+    },
+    updateTransactionIdFromResult: function(jsonResult) {
+        var newTranID = 0;
+        if (jsonResult.hasOwnProperty("info") && jsonResult.info.hasOwnProperty("transactionId")) {
+            newTranID = jsonResult.info.transactionId;
+        } else if (jsonResult.hasOwnProperty("error") && jsonResult.error.hasOwnProperty("transactionId")) {
+            newTranID = jsonResult.error.transactionId;
+        } else if (jsonResult.hasOwnProperty("results")) {
+            if (jsonResult.results.hasOwnProperty("transactionId")) {
+                newTranID = jsonResult.results.transactionId;
+            } else if (jsonResult.results.hasOwnProperty("info") && jsonResult.results.info.hasOwnProperty("transactionId")) {
+                newTranID = jsonResult.results.info.transactionId;
+            } else if (jsonResult.results.hasOwnProperty("noresults") && jsonResult.results.noresults.hasOwnProperty("transactionId")) {
+                newTranID = jsonResult.results.noresults.transactionId;
+            }
+        }
+        if (newTranID !== 0) {
+            if (typeof meerkat !== "undefined") {
+                meerkat.modules.transactionId.set(newTranID);
+            } else if (typeof referenceNo !== "undefined") {
+                referenceNo.setTransactionId(newTranID);
+            }
+        }
+    },
+    handleFetchError: function(data, description) {
+        if (typeof Loading !== "undefined") Loading.hide();
+        Results.reviseDetails();
+        var callString = "";
+        if (typeof meerkat !== "undefined" && typeof meerkat.site !== "undefined" && typeof meerkat.site.content !== "undefined" && typeof meerkat.site.content.callCentreHelpNumber != "undefined" && meerkat.site.content.callCentreHelpNumber.length > 0) {
+            callString = "If the problem persists, please feel free to discuss your comparison needs with our call centre on " + meerkat.site.content.callCentreHelpNumber + ".";
+        }
+        Results.onError("Sorry, an error occurred while retrieving your results.<br />Please close this message and try again. " + callString, "common/js/Results.js for " + Results.model.getVertical(), "Results.model.fetch(). " + description, data);
+    },
+    getVertical: function() {
+        var vertical = "unknown";
+        if (Results.settings.hasOwnProperty("vertical")) {
+            vertical = Results.settings.vertical;
+        } else if (typeof meerkat == "object" && meerkat.site.hasOwnProperty("vertical")) {
+            vertical = meerkat.site.vertical;
+        }
+        return vertical;
+    },
+    reset: function() {
+        Results.model.flush();
+        Results.model.currentProduct = false;
+        Results.settings.frequency = "annual";
+        Results.model.filters = [];
+    },
+    flush: function() {
+        Results.model.returnedGeneral = [];
+        Results.model.returnedProducts = [];
+        Results.model.sortedProducts = [];
+        Results.model.filteredProducts = [];
+        Results.view.flush();
+    },
+    getFormData: function(form) {
+        return form.find(":input:visible, input[type=hidden], :input[data-visible=true]").filter(function() {
+            return $(this).val() != "" && $(this).val() != "Please choose...";
+        }).serializeArray();
+    },
+    update: function(jsonResult) {
+        try {
+            if (Object.byString(jsonResult, Results.settings.paths.results.rootElement) != "" && Object.byString(jsonResult, Results.settings.paths.results.list) && (Object.byString(jsonResult, Results.settings.paths.results.list).length > 0 || typeof Object.byString(jsonResult, Results.settings.paths.results.list) == "object")) {
+                if (Object.byString(jsonResult, Results.settings.paths.results.general) && Object.byString(jsonResult, Results.settings.paths.results.general) != "") {
+                    Results.model.returnedGeneral = Object.byString(jsonResult, Results.settings.paths.results.general);
+                    $(Results.settings.elements.resultsContainer).trigger("generalReturned");
+                }
+                if (!Object.byString(jsonResult, Results.settings.paths.results.list).length) {
+                    Results.model.returnedProducts = [ Object.byString(jsonResult, Results.settings.paths.results.list) ];
+                } else {
+                    Results.model.returnedProducts = Object.byString(jsonResult, Results.settings.paths.results.list);
+                }
+                if (Results.model.currentProduct && Results.model.currentProduct.product) {
+                    Results.model.returnedProducts.push(Results.model.currentProduct.product);
+                }
+                if (typeof meerkat !== "undefined") {
+                    meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
+                }
+                $(Results.settings.elements.resultsContainer).trigger("resultsReturned");
+                var options = {};
+                if (!Results.settings.show.nonAvailableProducts) {
+                    options[Results.settings.availability.product[0]] = Results.settings.availability.product[1];
+                    Results.model.addFilter("availability.product", "value", options);
+                }
+                options = {};
+                if (!Results.settings.show.nonAvailablePrices) {
+                    options[Results.settings.availability.price[0]] = Results.settings.availability.price[1];
+                    Results.model.addFilter("availability.price." + Results.settings.frequency, "value", options);
+                }
+                Results.model.filterAndSort(false);
+                Results.view.show();
+            } else {
+                Results.view.showNoResults();
+                $(Results.settings.elements.resultsContainer).trigger("noResults");
+            }
+        } catch (e) {
+            Results.onError("Sorry, an error occurred updating results", "Results.js", "Results.model.update(); " + e.message, e);
+        }
+        Results.model.resultsLoadedOnce = true;
+    },
+    filterAndSort: function(renderView) {
+        Results.model.sort(renderView);
+        Results.model.filter(renderView);
+        $(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
+        if (typeof meerkat !== "undefined") {
+            meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_BEFORE_DATA_READY);
+            _.defer(function() {
+                meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
+            });
+        }
+    },
+    sort: function(renderView) {
+        if (Results.settings.sort.sortBy === false) return false;
+        if (Results.model.returnedProducts.length > 0) {
+            if (Results.model.sortedProducts.length > 0) {
+                var previousSortedResults = Results.model.sortedProducts.slice();
+            }
+            var results = Results.model.returnedProducts.slice();
+            Results.model.sortedProducts = results.sort(function(resultA, resultB) {
+                var valueA = Object.byString(resultA, Object.byString(Results.settings.paths, Results.settings.sort.sortBy));
+                var valueB = Object.byString(resultB, Object.byString(Results.settings.paths, Results.settings.sort.sortBy));
+                if (isNaN(valueA) || isNaN(valueB)) {
+                    valueA = String(valueA).toLowerCase();
+                    valueB = String(valueB).toLowerCase();
+                }
+                var frequencyPriceAvailability = Results.settings.paths.availability.price[Results.settings.frequency];
+                if (frequencyPriceAvailability && frequencyPriceAvailability != "") {
+                    var availabilityA = Object.byString(resultA, frequencyPriceAvailability);
+                    var availabilityB = Object.byString(resultB, frequencyPriceAvailability);
+                    if (availabilityB == "N" || !valueB || valueB == "") {
+                        return -1;
+                    }
+                    if (availabilityA == "N" || !valueA || valueA == "") {
+                        return 1;
+                    }
+                }
+                if (valueA < valueB) {
+                    returnValue = -1;
+                } else if (valueA > valueB) {
+                    returnValue = 1;
+                } else if (Results.settings.sort.sortBy.indexOf("price.") == -1) {
+                    var currentFrequencyPricePath = Object.byString(Results.settings.paths, "price." + Results.settings.frequency);
+                    valueA = Object.byString(resultA, currentFrequencyPricePath);
+                    valueB = Object.byString(resultB, currentFrequencyPricePath);
+                    if (valueA == null || valueB == null) {
+                        return 0;
+                    }
+                    return valueA - valueB;
+                } else {
+                    returnValue = valueA - valueB;
+                }
+                if (Results.settings.sort.sortDir == "desc") {
+                    returnValue *= -1;
+                }
+                return returnValue;
+            });
+            if (typeof previousSortedResults != "undefined" && renderView !== false) {
+                Results.view.shuffle(previousSortedResults);
+            }
+            Results.pagination.gotoStart(true);
+        }
+    },
+    addFilter: function(filterBy, condition, options) {
+        if (typeof filterBy !== "undefined" && typeof condition !== "undefined" && typeof options !== "undefined" && filterBy !== "" && condition !== "") {
+            var path = Object.byString(Results.settings.paths, filterBy);
+            if (typeof path !== "undefined") {
+                var filterIndex = Results.model.findFilter(path, condition);
+                if (filterIndex !== false) {
+                    Results.model.filters[filterIndex].options = options;
+                } else {
+                    Results.model.filters.push({
+                        path: path,
+                        condition: condition,
+                        options: options
+                    });
+                }
+            } else {
+                console.log("This filter could not find the path to the property it should be filtered by: filterBy=", filterBy, "| condition=", condition, "| options=", options);
+            }
+        }
+    },
+    removeFilter: function(filterBy, condition) {
+        if (typeof filterBy != "undefined" && typeof condition != "undefined") {
+            var path = Object.byString(Results.settings.paths, filterBy);
+            if (typeof path != "undefined") {
+                var filterIndex = Results.model.findFilter(path, condition);
+                if (filterIndex !== false) {
+                    Results.model.filters.splice(filterIndex, 1);
+                }
+            } else {
+                console.log("This filter could not find the path to the property it should be unfiltered by: filterBy=", filterBy, "| condition=", condition);
+            }
+        }
+    },
+    findFilter: function(path, condition) {
+        if (typeof path !== "undefined" && typeof condition !== "undefined") {
+            var filterIndex = false;
+            $.each(Results.model.filters, function(index, filter) {
+                if (filter.path == path && filter.condition == condition) {
+                    filterIndex = index;
+                    return false;
+                }
+            });
+            return filterIndex;
+        }
+        return false;
+    },
+    filter: function(renderView) {
+        var initialProducts = Results.model.sortedProducts.slice();
+        var finalProducts = new Array();
+        var valid, value;
+        $.each(initialProducts, function(productIndex, product) {
+            valid = true;
+            $.each(Results.model.filters, function(filterIndex, filter) {
+                value = Object.byString(product, filter.path);
+                if (typeof value !== "undefined") {
+                    switch (filter.condition) {
+                      case "value":
+                        valid = Results.model.filterByValue(value, filter.options);
+                        break;
+
+                      case "range":
+                        valid = Results.model.filterByRange(value, filter.options);
+                        break;
+
+                      default:
+                        console.log("The filter condition type seems to be erroneous");
+                        break;
+                    }
+                }
+                if (!valid) {
+                    return false;
+                }
+            });
+            if (valid) {
+                finalProducts.push(product);
+            }
+        });
+        Results.model.filteredProducts = finalProducts;
+        if (typeof Compare !== "undefined") Compare.applyFilters();
+        if (renderView !== false) {
+            if (Results.getFilteredResults().length === 0) {
+                Results.view.showNoFilteredResults();
+                $(Results.settings.elements.resultsContainer).trigger("noFilteredResults");
+            } else {
+                Results.view.filter();
+                Results.pagination.gotoStart(true);
+            }
+        }
+    },
+    filterByValue: function(value, options) {
+        if (!options || typeof options === "undefined") {
+            console.log("Check the parameters passed to Results.model.filterByValue()");
+            return true;
+        } else {
+            if (options.hasOwnProperty("equals")) {
+                return value == options.equals;
+            } else if (options.hasOwnProperty("notEquals")) {
+                return value != options.notEquals;
+            } else if (options.hasOwnProperty("inArray") && $.isArray(options.inArray)) {
+                return $.inArray(String(value), options.inArray) != -1;
+            } else {
+                console.log("Options from this value filter are incorrect and has not been applied: ", value, options);
+                return true;
+            }
+        }
+    },
+    filterByRange: function(value, options) {
+        if (!options || typeof options == "undefined") {
+            console.log("Check the parameters passed to Results.model.filterByRange()");
+            return true;
+        } else if (options.hasOwnProperty("min") || options.hasOwnProperty("max")) {
+            if (options.hasOwnProperty("min") && value < options.min || options.hasOwnProperty("max") && value > options.max) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            console.log("Options from this range filter are incorrect and have not been applied: ", value, options);
+            return true;
+        }
+    },
+    filterByDateRange: function(value, options) {},
+    addCurrentProduct: function(product) {
+        if (Results.model.currentProduct) {
+            $.extend(Results.model.currentProduct, {
+                product: product
+            });
+        } else {
+            Results.model.currentProduct = new Object();
+            Results.model.currentProduct = {
+                product: product
+            };
+        }
+    },
+    setCurrentProduct: function(identifierPathName, currentProduct) {
+        if (Results.model.currentProduct) {
+            $.extend(Results.model.currentProduct, {
+                path: Object.byString(Results.settings.paths, identifierPathName),
+                value: currentProduct
+            });
+        } else {
+            Results.model.currentProduct = new Object();
+            Results.model.currentProduct = {
+                path: Object.byString(Results.settings.paths, identifierPathName),
+                value: currentProduct
+            };
+        }
+    },
+    setSelectedProduct: function(productId) {
+        return Results.model.selectedProduct = Results.model.getResult("productId", productId);
+    },
+    removeSelectedProduct: function() {
+        Results.model.selectedProduct = false;
+    },
+    getResult: function(identifierPathName, value, returnIndex) {
+        var result = false;
+        var resultIndex = false;
+        $.each(Results.model.returnedProducts, function(index, product) {
+            var productValue = Object.byString(product, Object.byString(Results.settings.paths, identifierPathName));
+            if (productValue == value) {
+                result = product;
+                resultIndex = index;
+                return false;
+            }
+        });
+        if (returnIndex) {
+            return resultIndex;
+        } else {
+            return result;
+        }
+    },
+    getResultIndex: function(identifierPathName, value) {
+        return Results.model.getResult(identifierPathName, value, true);
+    },
+    setFrequency: function(frequency, refreshView) {
+        Results.settings.frequency = frequency;
+        if (refreshView !== false) {
+            Results.view.toggleFrequency(frequency);
+        }
+    },
+    startResultsFetch: function() {
+        if (typeof meerkat != "undefined") {
+            meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_LOCK, {
+                source: "resultsModel"
+            });
+        }
+        $(Results.settings.elements.resultsContainer).trigger("resultsFetchStart");
+    },
+    finishResultsFetch: function() {
+        if (typeof Loading !== "undefined") Loading.hide();
+        if (typeof meerkat != "undefined") {
+            _.defer(function() {
+                meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_UNLOCK, {
+                    source: "resultsModel"
+                });
+            });
+        }
+        $(Results.settings.elements.resultsContainer).trigger("resultsFetchFinish");
+    },
+    publishResultsDataReady: function() {
+        if (typeof meerkat !== "undefined") {
+            $(Results.settings.elements.resultsContainer).trigger("resultsReturned");
+            meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
+        }
+    }
+};
+
+var ResultsPagination = new Object();
+
+ResultsPagination = {
+    NEXT: "next",
+    PREVIOUS: "previous",
+    $pagesContainer: null,
+    $nextButton: null,
+    $previousButton: null,
+    $pageText: null,
+    invalidated: true,
+    currentPageNumber: null,
+    currentPageMeasurements: null,
+    scrollMode: null,
+    previousScrollPosition: 0,
+    isLocked: false,
+    isHidden: false,
+    isTouching: false,
+    isScrolling: false,
+    touchendSnapTimeout: false,
+    scrollCheckTimeout: false,
+    init: function() {
+        $(document).on("click", "[data-results-pagination-control]", function paginationControlClick(event) {
+            Results.pagination.controlListener(event);
+        });
+        Results.pagination.$pagesContainer = $("[data-results-pagination-pages-cell]");
+        Results.pagination.$nextButton = $('[data-results-pagination-control="next"]');
+        Results.pagination.$previousButton = $('[data-results-pagination-control="previous"]');
+        Results.pagination.$pageText = $('[data-results-pagination-pagetext="true"]').removeClass("hidden");
+        Results.pagination.setScrollMode();
+        if (typeof meerkat !== "undefined") {
+            meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function paginationBreakPointChange(event) {
+                if (event.state === "xs") return;
+                Results.pagination.resync();
+            });
+        }
+    },
+    resync: function() {
+        if (Results.pagination.isHidden === true) return false;
+        Results.pagination.invalidate();
+        Results.pagination.gotoPage(Results.pagination.getCurrentPageNumber(), true, true);
+        Results.pagination.refresh();
+    },
+    reposition: function() {
+        Results.pagination.gotoPage(Results.pagination.getCurrentPageNumber(), false, true);
+    },
+    isSlideMode: function() {
+        return Results.settings.pagination.mode === "slide";
+    },
+    isPageMode: function() {
+        return Results.settings.pagination.mode === "page";
+    },
+    getCurrentHorizontalPosition: function() {
+        return ResultsUtilities.getScroll("x", Results.view.$containerElement);
+    },
+    invalidate: function() {
+        Results.pagination.isLocked = false;
+        Results.pagination.invalidated = true;
+        Results.pagination.currentPageMeasurements = null;
+    },
+    reset: function() {
+        Results.pagination.invalidate();
+        Results.pagination.$nextButton.addClass("inactive");
+        Results.pagination.$previousButton.addClass("inactive");
+        Results.pagination.$pageText.empty();
+        if (Results.pagination.isSlideMode()) {} else if (Results.pagination.isPageMode()) {
+            Results.pagination.empty(Results.pagination.$pagesContainer);
+        }
+    },
+    refresh: function() {
+        if (Results.pagination.isHidden === true) return;
+        if (Results.pagination.isPageMode()) {
+            var pageMeasurements = Results.pagination.getPageMeasurements();
+            if (pageMeasurements === null) return false;
+            if (Results.pagination.invalidated === true) {
+                Results.pagination.invalidated = false;
+                var pageItemTemplate = _.template(Results.settings.templates.pagination.pageItem);
+                Results.pagination.empty(Results.pagination.$pagesContainer);
+                if (pageMeasurements.numberOfPages > 1 && pageMeasurements.numberOfPages != Number.POSITIVE_INFINITY) {
+                    for (var i = 0; i < pageMeasurements.numberOfPages; i++) {
+                        var num = i + 1;
+                        var htmlString = pageItemTemplate({
+                            pageNumber: num,
+                            label: num
+                        });
+                        Results.pagination.$pagesContainer.append(htmlString);
+                    }
+                }
+            }
+            if (Results.pagination.$pageText != null && Results.pagination.$pageText.length > 0) {
+                var pageTextTemplate = _.template(Results.settings.templates.pagination.pageText);
+                var htmlString = pageTextTemplate({
+                    currentPage: Results.pagination.getCurrentPageNumber(),
+                    totalPages: pageMeasurements.numberOfPages
+                });
+                Results.pagination.$pageText.html(htmlString);
+            }
+            var pageNumber = Results.pagination.getCurrentPageNumber();
+            $("[data-results-pagination-control].active").removeClass("active");
+            $('[data-results-pagination-control="' + pageNumber + '"]').addClass("active");
+            Results.pagination.addCurrentPageClasses(pageNumber, pageMeasurements);
+            if (Results.pagination.getCurrentPageNumber() == 1) {
+                Results.pagination.$previousButton.addClass("inactive");
+            } else {
+                Results.pagination.$previousButton.removeClass("inactive");
+            }
+            if (Results.pagination.getCurrentPageNumber() === pageMeasurements.numberOfPages) {
+                Results.pagination.$nextButton.addClass("inactive");
+            } else {
+                Results.pagination.$nextButton.removeClass("inactive");
+            }
+            if (typeof Results.settings.pagination.afterPaginationRefreshFunction === "function") {
+                Results.settings.pagination.afterPaginationRefreshFunction(Results.pagination.$pagesContainer);
+            }
+        } else {
+            Results.pagination.toggleScrollButtons(Results.pagination.previousScrollPosition);
+        }
+    },
+    controlListener: function(event) {
+        if (Results.pagination.isSlideMode()) {
+            Results.pagination.scrollResults($(event.currentTarget));
+        } else if (Results.pagination.isPageMode()) {
+            Results.pagination.gotoPage($(event.currentTarget).attr("data-results-pagination-control"));
+        }
+    },
+    empty: function($container) {
+        if (typeof Results.settings.pagination.emptyContainerFunction === "function") {
+            Results.settings.pagination.emptyContainerFunction($container);
+        } else {
+            $container.empty();
+        }
+    },
+    gotoPage: function(pageNumber, reset, forceReposition) {
+        if (Results.pagination.isLocked) return false;
+        if (reset !== true) reset = false;
+        if (forceReposition !== true) forceReposition = false;
+        if (pageNumber === ResultsPagination.NEXT) {
+            pageNumber = Results.pagination.getCurrentPageNumber() + 1;
+        } else if (pageNumber === ResultsPagination.PREVIOUS) {
+            pageNumber = ResultsPagination.getCurrentPageNumber() - 1;
+        }
+        if (isNaN(pageNumber) === true) return false;
+        if (pageNumber < 1) pageNumber = 1;
+        pageNumber = Number(pageNumber);
+        var info = Results.pagination.getPageMeasurements();
+        var scrollPosition = 0;
+        if (pageNumber !== 1) {
+            var pageWidth = info.pageWidth;
+            if (pageNumber > info.numberOfPages) pageNumber = info.numberOfPages;
+            var pageNumberMultiplier = pageNumber - 1;
+            scrollPosition = 0 - pageWidth * pageNumberMultiplier;
+        }
+        var previousPageNumber = Results.pagination.getCurrentPageNumber();
+        if (pageNumber === previousPageNumber && forceReposition == false) {
+            return false;
+        }
+        Results.pagination.setCurrentPageNumber(pageNumber);
+        Results.pagination.removeCurrentPageClasses();
+        if (reset || forceReposition) {
+            Results.pagination.scroll(scrollPosition);
+        } else {
+            Results.pagination.animateScroll(scrollPosition);
+        }
+        var event = jQuery.Event("resultPageChange");
+        event.pageData = {
+            pageNumber: pageNumber,
+            measurements: info
+        };
+        $(Results.settings.elements.resultsContainer).trigger(event);
+    },
+    gotoPosition: function(positionNumber, reset, forceReposition) {
+        if (Results.pagination.isLocked) return false;
+        var info = Results.pagination.getPageMeasurements();
+        var pageNumber = Math.ceil(positionNumber / info.columnsPerPage);
+        Results.pagination.gotoPage(pageNumber, reset, forceReposition);
+    },
+    getCurrentPageNumber: function() {
+        if (Results.pagination.currentPageNumber === null) {
+            return Results.pagination.calculateCurrentPageNumber();
+        }
+        return Results.pagination.currentPageNumber;
+    },
+    setCurrentPageNumber: function(pageNumber) {
+        Results.pagination.currentPageNumber = pageNumber;
+    },
+    calculateCurrentPageNumber: function() {
+        var pageMeasurements = Results.pagination.getPageMeasurements();
+        if (pageMeasurements === null) return false;
+        var pageWidth = pageMeasurements.pageWidth;
+        var currentHorizontalPosition = 0 - Results.pagination.getCurrentHorizontalPosition();
+        var pageNumber = Math.round(currentHorizontalPosition / pageWidth) + 1;
+        return pageNumber;
+    },
+    getPageMeasurements: function() {
+        if (Results.pagination.currentPageMeasurements === null || Results.view.currentlyColumnWidthTracking === true) {
+            return Results.pagination.calculatePageMeasurements();
+        }
+        return Results.pagination.currentPageMeasurements;
+    },
+    calculatePageMeasurements: function() {
+        var viewableArea = Results.view.$containerElement.parent().width();
+        var $rows = Results.view.$containerElement.find(Results.settings.elements.rows + ".notfiltered");
+        if ($rows.length == 0) return null;
+        var numberOfColumns = $rows.length;
+        var columnWidth = $rows.outerWidth(true);
+        var columnsPerPage = Math.round(viewableArea / columnWidth);
+        var pageWidth = columnWidth * columnsPerPage;
+        var obj = {
+            pageWidth: pageWidth,
+            columnsPerPage: columnsPerPage,
+            numberOfColumns: numberOfColumns,
+            numberOfPages: Math.ceil(numberOfColumns * columnWidth / pageWidth)
+        };
+        Results.pagination.currentPageMeasurements = obj;
+        return obj;
+    },
+    gotoStart: function(invalidate) {
+        if (invalidate) {
+            Results.pagination.invalidate();
+        }
+        if (Results.pagination.isSlideMode()) {
+            var newScroll = 0;
+            Results.pagination.animateScroll(newScroll);
+        } else if (Results.pagination.isPageMode()) {
+            Results.pagination.gotoPage(1);
+            if (invalidate) {
+                Results.pagination.refresh();
+            }
+        }
+    },
+    setScrollMode: function() {
+        var isIos6 = false;
+        if (typeof meerkat != "undefined") {
+            isIos6 = meerkat.modules.performanceProfiling.isIos6();
+        }
+        if (Results.settings.pagination.touchEnabled === true) {
+            Results.pagination.scrollMode = "scrollto";
+        } else if (Modernizr.csstransforms3d && isIos6 == false) {
+            Results.pagination.scrollMode = "csstransforms3d";
+        } else if (Modernizr.csstransitions) {
+            Results.pagination.scrollMode = "csstransitions";
+        } else {
+            Results.pagination.scrollMode = "jquery";
+        }
+    },
+    animateScroll: function(newScroll) {
+        if (newScroll === Results.pagination.previousScrollPosition) {
+            _.defer(function() {
+                Results.pagination.refresh();
+            });
+            return false;
+        }
+        if (Results.settings.animation.features.scroll.active === false) {
+            Results.pagination.scroll(newScroll);
+            Results.pagination._afterPaginationMotion(false);
+        } else {
+            Results.pagination.lock();
+            $(Results.settings.elements.resultsContainer).trigger("pagination.scrolling.start");
+            switch (Results.pagination.scrollMode) {
+              case "scrollto":
+                var rowEq = (Results.pagination.getCurrentPageNumber() - 1) * Results.pagination.currentPageMeasurements.columnsPerPage;
+                $(Results.settings.elements.resultsOverflow).scrollTo($(Results.settings.elements.rows).not(".filtered").eq(rowEq), 500, {
+                    onAfter: function() {
+                        Results.pagination._afterPaginationMotion(true);
+                    }
+                });
+                break;
+
+              case "csstransforms3d":
+                var css = {
+                    marginLeft: 0
+                };
+                css[Modernizr.prefixed("transform")] = "translate3d(" + ResultsPagination.previousScrollPosition + "px,0,0)";
+                Results.view.$containerElement.css(css);
+                _.delay(function() {
+                    Results.view.$containerElement.addClass("resultsTransformTransition");
+                    Results.view.$containerElement.css(Modernizr.prefixed("transform"), "translate3d(" + newScroll + "px,0,0)");
+                    _.delay(function() {
+                        Results.view.$containerElement.removeClass("resultsTransformTransition");
+                        var css = {
+                            marginLeft: newScroll + "px"
+                        };
+                        css[Modernizr.prefixed("transform")] = "";
+                        Results.view.$containerElement.css(css);
+                        Results.pagination._afterPaginationMotion(true);
+                    }, Results.view.$containerElement.transitionDuration() + 10);
+                }, 25);
+                break;
+
+              case "csstransitions":
+                if (!Results.view.$containerElement.hasClass("resultsTableLeftMarginTransition")) {
+                    Results.view.$containerElement.addClass("resultsTableLeftMarginTransition");
+                }
+                _.defer(function() {
+                    var duration = Results.view.$containerElement.transitionDuration();
+                    Results.view.$containerElement.css("margin-left", newScroll);
+                    _.delay(function() {
+                        Results.pagination._afterPaginationMotion(true);
+                        Results.view.$containerElement.removeClass("resultsTableLeftMarginTransition");
+                    }, duration);
+                });
+                break;
+
+              default:
+                var duration = Results.settings.animation.features.scroll.duration;
+                Results.view.$containerElement.animate({
+                    "margin-left": newScroll
+                }, duration, function() {
+                    Results.pagination._afterPaginationMotion(true);
+                });
+                break;
+            }
+            ResultsPagination.previousScrollPosition = newScroll;
+        }
+    },
+    _afterPaginationMotion: function(wasAnimated) {
+        Results.pagination.unlock();
+        Results.pagination.refresh();
+        if (wasAnimated) {
+            $(Results.settings.elements.resultsContainer).trigger("pagination.scrolling.end");
+        }
+    },
+    scroll: function(scrollPosition) {
+        ResultsPagination.previousScrollPosition = scrollPosition;
+        var recalc = function() {
+            Results.pagination.currentPageMeasurements = Results.pagination.calculatePageMeasurements();
+            $(Results.settings.elements.resultsContainer).trigger(" pagination.instantScroll");
+        };
+        if (Results.settings.pagination.touchEnabled === true && !_.isNull(Results.pagination.currentPageMeasurements) && Results.pagination.currentPageMeasurements.hasOwnProperty("pageWidth")) {
+            var baseDuration = 150;
+            var width = Results.pagination.currentPageMeasurements.pageWidth;
+            var start = $(Results.settings.elements.resultsOverflow).scrollLeft();
+            var finish = Math.abs(scrollPosition);
+            var gap = Math.abs(start - finish);
+            var duration = Math.floor(gap / width * baseDuration);
+            var maxScroll = width * (Results.pagination.currentPageMeasurements.numberOfColumns - 1);
+            if (start > 0 || start < maxScroll) {
+                $(Results.settings.elements.resultsOverflow).stop(true, true).animate({
+                    scrollLeft: Math.abs(scrollPosition)
+                }, {
+                    duration: duration,
+                    step: function() {
+                        if (Results.pagination.isTouching === true || Results.pagination.isScrolling === true) {
+                            $(Results.settings.elements.resultsOverflow).stop(true, true);
+                        }
+                    },
+                    complete: function() {
+                        _.defer(recalc);
+                    }
+                });
+            } else {
+                _.defer(recalc);
+            }
+        } else {
+            Results.view.$containerElement.css("margin-left", scrollPosition);
+            recalc();
+        }
+    },
+    scrollResults: function(clickedButton) {
+        if (clickedButton.hasClass("inactive") == false) {
+            if (Results.pagination.isLocked === false) {
+                Results.pagination.lock();
+                var fullWidth = Results.view.$containerElement.parent().width();
+                var widthAllColumns = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows).first().outerWidth(true) * $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").length;
+                var scrollWidth = fullWidth * Results.settings.animation.features.scroll.percentage;
+                var currentScroll = ResultsUtilities.getScroll("x", Results.view.$containerElement);
+                var newScroll;
+                if (clickedButton.attr("data-results-pagination-control") == "previous") {
+                    newScroll = currentScroll + scrollWidth;
+                    if (newScroll >= 0) {
+                        newScroll = 0;
+                    }
+                } else {
+                    newScroll = currentScroll - scrollWidth;
+                    if (widthAllColumns <= fullWidth) {
+                        newScroll = 0;
+                    } else if (Math.abs(newScroll) >= widthAllColumns - fullWidth && fullWidth < widthAllColumns) {
+                        newScroll = widthAllColumns * -1 + fullWidth;
+                    }
+                }
+                Results.pagination.animateScroll(newScroll);
+            }
+        }
+    },
+    toggleScrollButtons: function(expectedHorizontalPosition) {
+        var container = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.container);
+        var currentHorizontalPosition = ResultsUtilities.getScroll("x", Results.view.$containerElement);
+        if (expectedHorizontalPosition != currentHorizontalPosition) {
+            window.setTimeout(function() {
+                Results.pagination.toggleScrollButtons(expectedHorizontalPosition, leftStatus, rightStatus);
+            }, 100);
+        } else {
+            var viewableWidth = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.resultsOverflow).width();
+            var contentWidth = container.width();
+            var rightStatus;
+            var leftStatus;
+            if (contentWidth <= viewableWidth) {
+                rightStatus = "inactive";
+            } else {
+                if (0 - currentHorizontalPosition + viewableWidth < contentWidth) {
+                    rightStatus = "active";
+                } else {
+                    rightStatus = "inactive";
+                }
+            }
+            if (currentHorizontalPosition >= 0) {
+                leftStatus = "inactive";
+            } else {
+                leftStatus = "active";
+            }
+            if (rightStatus == "active") {
+                Results.pagination.$nextButton.removeClass("inactive");
+            } else {
+                Results.pagination.$nextButton.addClass("inactive");
+            }
+            if (leftStatus == "active") {
+                Results.pagination.$previousButton.removeClass("inactive");
+            } else {
+                Results.pagination.$previousButton.addClass("inactive");
+            }
+        }
+    },
+    lock: function() {
+        Results.pagination.isLocked = true;
+        Results.pagination.$nextButton.addClass("inactive");
+        Results.pagination.$previousButton.addClass("inactive");
+        Results.pagination.$pagesContainer.find("a").addClass("inactive");
+    },
+    unlock: function() {
+        Results.pagination.isLocked = false;
+        Results.pagination.$pagesContainer.find("a").removeClass("inactive");
+    },
+    hide: function() {
+        Results.pagination.isHidden = true;
+        Results.pagination.$pagesContainer.addClass("hidden");
+        Results.pagination.$nextButton.addClass("hidden");
+        Results.pagination.$previousButton.addClass("hidden");
+        Results.pagination.$pageText.addClass("hidden");
+    },
+    show: function(performResync) {
+        Results.pagination.isHidden = false;
+        Results.pagination.$pagesContainer.removeClass("hidden");
+        Results.pagination.$nextButton.removeClass("hidden");
+        Results.pagination.$previousButton.removeClass("hidden");
+        Results.pagination.$pageText.removeClass("hidden");
+        if (performResync === true) {
+            Results.pagination.resync();
+        }
+    },
+    addCurrentPageClasses: function(pageNumber, pageMeasurements) {
+        Results.pagination.removeCurrentPageClasses();
+        if (isNaN(pageMeasurements.columnsPerPage)) return;
+        var startVar = (pageNumber - 1) * pageMeasurements.columnsPerPage;
+        var endVar = pageNumber * pageMeasurements.columnsPerPage;
+        var looking = true;
+        var i = startVar;
+        var columnsFound = 0;
+        while (looking) {
+            var columnNumber = i;
+            if ($("#result-row-" + columnNumber).hasClass("notfiltered")) {
+                $("#result-row-" + columnNumber).addClass("currentPage");
+                columnsFound++;
+            }
+            i++;
+            if (columnsFound === pageMeasurements.columnsPerPage || i === Results.getReturnedResults().length || i > 1e3) {
+                looking = false;
+            }
+        }
+    },
+    removeCurrentPageClasses: function() {
+        $(Results.settings.elements.rows + ".currentPage").removeClass("currentPage");
+    },
+    setupNativeScroll: function() {
+        if (Results.settings.pagination.touchEnabled !== true) {
+            return;
+        }
+        var $featuresModeContainer = $(Results.settings.elements.resultsContainer + ".featuresMode");
+        var columnsLength = Results.getFilteredResults().length;
+        if ($featuresModeContainer.find(".result-row.result_unavailable_combined").length) {
+            columnsLength++;
+        }
+        var numPages = Math.ceil(columnsLength / Results.pagination.currentPageMeasurements.columnsPerPage);
+        var newWidth = Results.pagination.currentPageMeasurements.pageWidth * numPages;
+        $(Results.settings.elements.container, $featuresModeContainer).width(newWidth);
+        $(Results.settings.elements.resultsOverflow).off("scroll.results").on("scroll.results", Results.pagination.nativePaginationOnScroll);
+        if (Modernizr.touch) {
+            $(Results.settings.elements.resultsOverflow, $featuresModeContainer).off("touchstart.results").on("touchstart.results", function() {
+                Results.pagination.isTouching = true;
+                Results.pagination.cancelExistingSnapTo();
+            }).off("touchend.results").on("touchend.results", function() {
+                Results.pagination.isTouching = false;
+                Results.pagination.isScrolling = false;
+                Results.pagination.cancelExistingSnapTo();
+                setTimeout(function() {
+                    if (Results.pagination.isScrolling === false) {
+                        Results.pagination.nativeScrollSnapTo();
+                    }
+                }, 250);
+            });
+        }
+    },
+    nativePaginationOnScroll: _.debounce(function(event) {
+        if (Results.pagination.isLocked) {
+            return;
+        }
+        Results.pagination.isScrolling = true;
+        var divisor = 3;
+        var widthToDivide = Results.pagination.currentPageMeasurements.pageWidth;
+        var experiencePadding = Math.floor(widthToDivide / divisor);
+        var pxFromLeft = $(event.target).scrollLeft() + experiencePadding;
+        var pageNumber = Math.floor(pxFromLeft / Results.pagination.currentPageMeasurements.pageWidth) + 1;
+        var isMidPage = $(event.target).scrollLeft() % Results.pagination.currentPageMeasurements.pageWidth != 0;
+        var isNewPage = Results.pagination.getCurrentPageNumber() != pageNumber;
+        if ((isNewPage === true || isMidPage === true) && pageNumber <= Results.pagination.currentPageMeasurements.numberOfPages) {
+            Results.pagination.invalidate();
+            Results.pagination.setCurrentPageNumber(pageNumber);
+            Results.pagination.refresh();
+            if (meerkat.modules.deviceMediaState.get() == "xs" && Results.pagination.isTouching === false && isNewPage === true) {
+                Results.pagination.isScrolling = false;
+                Results.pagination.nativeScrollSnapTo();
+            }
+            var eventData = $.Event("resultPageChange");
+            eventData.pageData = {
+                pageNumber: pageNumber,
+                measurements: Results.pagination.getPageMeasurements()
+            };
+            $(Results.settings.elements.resultsContainer).trigger(eventData);
+        }
+    }, 25),
+    nativeScrollSnapTo: function() {
+        Results.pagination.cancelExistingSnapTo();
+        Results.pagination.touchendSnapTimeout = setTimeout(function() {
+            if (Results.pagination.isTouching === false && Results.pagination.isScrolling === false) {
+                var pNum = Results.pagination.currentPageNumber;
+                var pWidth = Results.pagination.currentPageMeasurements.pageWidth;
+                Results.pagination.scroll(pWidth * (pNum - 1));
+            }
+        }, 750);
+    },
+    cancelExistingSnapTo: function() {
+        $(Results.settings.elements.resultsOverflow).stop(true, true);
+        clearTimeout(Results.pagination.touchendSnapTimeout);
+    }
+};
+
+var ResultsUtilities = new Object();
+
+ResultsUtilities = {
+    setContainerWidth: function(elements, container) {
+        var width = $(elements).first().outerWidth(true) * $(elements).length;
+        $(container).css("width", width + "px");
+    },
+    makeElementSticky: function(stickySide, element, extraClass, startPosition) {
+        if (element.attr("data-fixed") != "true") {
+            var msie6 = $.browser == "msie" && $.browser.version < 7;
+            if (!msie6) {
+                var $window = $(window);
+                var elementHeight = element.height();
+                var scrollTop = $window.scrollTop();
+                var windowHeight = $window.height();
+                $window.smartscroll(function(e) {
+                    scrollTop = $window.scrollTop();
+                    windowHeight = $window.height();
+                    if (stickySide == "top") {
+                        if (scrollTop >= startPosition) {
+                            element.addClass(extraClass);
+                        } else {
+                            element.removeClass(extraClass);
+                            if ($.browser.version == 8 && element.is(":visible") && scrollTop == 0) {
+                                element.delay(5).hide(0).show(0);
+                            }
+                        }
+                    } else if (stickySide == "bottom") {
+                        if (elementHeight + startPosition > scrollTop + windowHeight) {
+                            element.addClass(extraClass);
+                        } else {
+                            element.removeClass(extraClass);
+                        }
+                    }
+                });
+            }
+            element.attr("data-fixed", "true");
+        }
+    },
+    position: function(position, elements, orientation) {
+        switch (position) {
+          case "absolute":
+            ResultsUtilities.positionAbsolute(elements, orientation);
+            break;
+
+          case "relative":
+          case "static":
+            ResultsUtilities.positionStaticOrRelative(position, elements);
+            break;
+        }
+    },
+    positionAbsolute: function($elements, orientation) {
+        if (!$elements.parent().hasClass("absoluteContainer")) {
+            $elements.wrapAll('<div class="absoluteContainer" />');
+        }
+        var $container = $elements.parent();
+        $container.css("position", "relative");
+        var totalDimension;
+        var $firstElement = $elements.first();
+        if (orientation === "vertical") {
+            totalDimension = $firstElement.outerWidth(true) * $elements.length;
+            var maxHeight = 0;
+            $elements.each(function() {
+                var height = $(this).outerHeight(true);
+                if (height > maxHeight) {
+                    maxHeight = height;
+                }
+            });
+            $container.css("height", maxHeight);
+            $container.css("width", totalDimension);
+        } else {
+            totalDimension = $firstElement.outerHeight(true) * $elements.length;
+            $container.css("height", totalDimension);
+        }
+        $elements.each(function(index, element) {
+            var $element = $(element);
+            var elementPosition = $element.position();
+            if (orientation === "horizontal") {
+                $element.css("top", elementPosition.top);
+            }
+            $element.css("left", elementPosition.left);
+        });
+        $elements.css("position", "absolute");
+    },
+    positionStaticOrRelative: function(position, $elements) {
+        var $container = $elements.parent();
+        if ($container.hasClass("absoluteContainer")) {
+            $elements.unwrap();
+        } else {
+            if ($container.children(".absoluteContainer").length > 0) {
+                $container.children(".absoluteContainer").remove();
+            }
+            $container.css({
+                position: position,
+                height: "auto"
+            });
+        }
+        $elements.css({
+            top: "auto",
+            left: "auto",
+            position: position
+        });
+    },
+    getScroll: function(axis, element) {
+        if (axis != "x" & axis != "y" && axis != "z") {
+            return;
+        }
+        switch (axis) {
+          case "x":
+            return parseInt(element.css("margin-left"));
+
+          case "y":
+            return parseInt(element.css("margin-top"));
+
+          case "z":
+            return 0;
+        }
+    }
+};
+
+var deBouncer = function($, cf, of, interval) {
+    var debounce = function(func, threshold, execAsap) {
+        var timeout;
+        return function debounced() {
+            var obj = this, args = arguments;
+            function delayed() {
+                if (!execAsap) func.apply(obj, args);
+                timeout = null;
+            }
+            if (timeout) clearTimeout(timeout); else if (execAsap) func.apply(obj, args);
+            timeout = setTimeout(delayed, threshold || interval);
+        };
+    };
+    jQuery.fn[cf] = function(fn) {
+        return fn ? this.bind(of, debounce(fn)) : this.trigger(cf);
+    };
+};
+
+deBouncer(jQuery, "smartscroll", "scroll", 50);
+
+(function($) {
+    $.fn.transitionDuration = function() {
+        var properties = [ "transition-duration", "-webkit-transition-duration", "-ms-transition-duration", "-moz-transition-duration", "-o-transition-duration" ];
+        var property;
+        while (property = properties.shift()) {
+            var $el = $(this);
+            if ($el.css(property)) {
+                return Math.round(parseFloat($el.css(property)) * 1e3);
+            }
+        }
+        return 0;
+    };
+})(jQuery);
+
+var ResultsView = new Object();
+
+ResultsView = {
+    rowHeight: false,
+    rowWidth: false,
+    orientation: "horizontal",
+    shuffleTransitionDuration: false,
+    filterTransitionDuration: false,
+    $containerElement: false,
+    currentlyColumnWidthTracking: false,
+    noResultsMode: false,
+    moduleEvents: {
+        RESULTS_SORTED: "RESULTS_SORTED",
+        TOGGLE_MODE: "RESULTS_TOGGLE_MODE"
+    },
+    show: function() {
+        try {
+            $.address.parameter("stage", "results", false);
+        } catch (e) {}
+        if (typeof Filters != "undefined" && $(Filters.settings.elements.filtersBar).length > 0) {
+            Results.view.toggleFilters("show");
+        }
+        if (typeof Compare != "undefined") {
+            if ($(Compare.settings.elements.bar).length > 0) {
+                Results.view.toggleCompare("show");
+                if (Results.settings.render.dockCompareBar === true) {
+                    ResultsUtilities.makeElementSticky("top", $(Compare.settings.elements.bar), "fixed-top", $(Compare.settings.elements.bar).offset().top);
+                    ResultsUtilities.makeElementSticky("top", $(Results.settings.elements.page), "fixedThree", $(Compare.settings.elements.bar).offset().top);
+                }
+            }
+        }
+        Results.view.showResults();
+        Results.view.flush();
+        $(Results.settings.elements.resultsContainer).find(".noResults.clone").remove();
+        Results.view.buildHtml();
+        Results.view.setDisplayMode(Results.settings.displayMode, true);
+        var animatedElement;
+        if (Results.settings.animation.results.individual.active) {
+            Results.view.animateIndividualResults();
+            animatedElement = $(Results.settings.elements.rows).last();
+        } else {
+            Results.view.animateAllResults();
+            animatedElement = $(Results.settings.elements.resultsContainer);
+        }
+        if (Results.settings.show.savings && Results.model.currentProduct && Results.model.currentProduct.product) {
+            var currentFrequencyPricePath = Results.settings.paths.price[Results.settings.frequency];
+            var currentPrice = Object.byString(Results.model.currentProduct.product, currentFrequencyPricePath);
+            if (currentPrice && typeof currentPrice != "undefined") {
+                var topResult = Results.getTopResult();
+                var topResultPrice = Object.byString(topResult, currentFrequencyPricePath);
+                var savings = currentPrice - topResultPrice;
+                if (typeof Compare != "undefined") Compare.setSavings(savings);
+            }
+        }
+        $(animatedElement).queue("fx", function(next) {
+            $(Results.settings.elements.resultsContainer).trigger("resultsAnimated");
+            next();
+        });
+    },
+    setDisplayMode: function(mode, forceRefresh) {
+        if (mode != Results.settings.displayMode || forceRefresh) {
+            $(Results.settings.elements.resultsContainer).removeClass(Results.settings.displayMode + "Mode");
+            $(Results.settings.elements.resultsContainer).addClass(mode + "Mode");
+            Results.settings.displayMode = mode;
+            if (mode == "features") {
+                Results.view.orientation = "vertical";
+                $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.features.allElements).css("display", "block");
+                Results.view.calculateResultsContainerWidth();
+            } else {
+                Results.view.$containerElement.css("margin-left", "0px");
+                Results.view.$containerElement.css("width", "auto");
+                $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.features.allElements).css("display", "none");
+            }
+            if (mode == "price") {
+                Results.view.orientation = "horizontal";
+            }
+            if (forceRefresh === true) {
+                $(Results.settings.elements.resultsContainer).trigger(mode + "DisplayMode");
+            }
+            if (typeof meerkat !== "undefined") {
+                meerkat.messaging.publish(Results.view.moduleEvents.RESULTS_TOGGLE_MODE);
+            }
+        }
+    },
+    calculateResultsContainerWidth: function() {
+        ResultsUtilities.setContainerWidth(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered", Results.settings.elements.resultsContainer + " " + Results.settings.elements.container);
+    },
+    setColumnWidth: function($container, nbColumns, hasOutsideGutters) {
+        if (typeof hasOutsideGutters === "undefined") {
+            hasOutsideGutters = true;
+        }
+        var columnMargin = parseInt($(Results.settings.elements.rows).first().css("margin-right"));
+        var nbMargins = nbColumns * 2;
+        if (!hasOutsideGutters) {
+            nbMargins -= 2;
+        }
+        var width = ($container.width() - nbMargins * columnMargin) / nbColumns;
+        $(Results.settings.elements.rows).width(width);
+        if (typeof Features != "undefined" && Features) {
+            Features.balanceVisibleRowsHeight();
+        }
+        if (Results.settings.pagination.touchEnabled === true) {
+            ResultsUtilities.setContainerWidth($(Results.settings.elements.rows).not(".filtered"), $(Results.settings.elements.container));
+        } else {
+            ResultsUtilities.setContainerWidth($(Results.settings.elements.rows), $(Results.settings.elements.container));
+        }
+        Results.pagination.reposition();
+    },
+    setOverflowWidthToWindowWidth: function() {
+        $(Results.settings.elements.resultsOverflow).width($(window).width());
+    },
+    startColumnWidthTracking: function($container, nbColumns, hasOutsideGutters) {
+        if (Results.view.currentlyColumnWidthTracking === true) {
+            $(window).off("resize.ResultsView.columnWidthTracking");
+        }
+        Results.view.currentlyColumnWidthTracking = true;
+        Results.view.setColumnWidth($container, nbColumns, hasOutsideGutters);
+        Results.view.setOverflowWidthToWindowWidth();
+        if (typeof Features !== "undefined") {
+            Features.balanceVisibleRowsHeight();
+        }
+        $(window).on("resize.ResultsView.columnWidthTracking", _.debounce(function debounceColumnWidthTracking() {
+            Results.view.setColumnWidth($container, nbColumns, hasOutsideGutters);
+            Results.view.setOverflowWidthToWindowWidth();
+        }));
+    },
+    stopColumnWidthTracking: function() {
+        Results.view.currentlyColumnWidthTracking = false;
+        $(window).off("resize.ResultsView.columnWidthTracking");
+        _.defer(function() {
+            $(Results.settings.elements.rows).width("");
+            $(Results.settings.elements.resultsOverflow).width("");
+            if (typeof Features !== "undefined" && Results.getDisplayMode() === "features") {
+                Features.balanceVisibleRowsHeight();
+            }
+            Results.pagination.resync();
+        });
+    },
+    buildHtml: function() {
+        var results;
+        var resultRow = "";
+        var resultsHtml = "";
+        var resultTemplate = $(Results.settings.elements.templates.result).html();
+        if (resultTemplate == "") {
+            console.log("The result template could not be found: templateSelector=", Results.settings.elements.templates.result, "This template is mandatory, make sure to pass the correct selector to the Results.settings.elements.templates.result user setting when calling Results.init()");
+        }
+        if (Results.settings.elements.templates.unavailable) {
+            var unavailableTemplate = $(Results.settings.elements.templates.unavailable).html();
+            if (unavailableTemplate == "") {
+                console.log("The unavailable template could not be found: templateSelector=", Results.settings.elements.templates.unavailable, "If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailable user setting when calling Results.init()");
+            }
+        }
+        if (Results.settings.elements.templates.unavailableCombined) {
+            var unavailableCombinedTemplate = $(Results.settings.elements.templates.unavailableCombined).html();
+            if (unavailableCombinedTemplate == "") {
+                console.log("The unavailable combined template could not be found: templateSelector=", Results.settings.elements.templates.unavailableCombinedTemplate, "If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailableCombinedTemplate user setting when calling Results.init()");
+            }
+        }
+        if (Results.settings.elements.templates.error) {
+            var errorTemplate = $(Results.settings.elements.templates.error).html();
+            if (errorTemplate == "") {
+                console.log("The error template could not be found: templateSelector=", Results.settings.elements.templates.error, "If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.error user setting when calling Results.init()");
+            }
+        }
+        if (Results.settings.elements.templates.currentProduct) {
+            var currentProductTemplate = $(Results.settings.elements.templates.currentProduct).html();
+            if (currentProductTemplate == "") {
+                console.log("The current Product template could not be found: templateSelector=", Results.settings.elements.templates.currentProduct, "If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.currentProduct user setting when calling Results.init()");
+            }
+        }
+        var topResult = Results.model.sortedProducts[0];
+        var topResultRow = false;
+        var countVisible = 0;
+        var countUnavailable = 0;
+        results = Results.model.sortedProducts;
+        $.each(results, function(index, result) {
+            var productAvailability = null;
+            if (Results.settings.paths.availability.product && Results.settings.paths.availability.product != "") {
+                var productAvailability = Object.byString(result, Results.settings.paths.availability.product);
+            }
+            if (typeof productAvailability !== "undefined" && productAvailability !== "Y" && !unavailableTemplate) {
+                countUnavailable++;
+                resultRow = $(Results.view.parseTemplate("<div></div>", result));
+            } else if (typeof productAvailability !== "undefined" && productAvailability === "E") {
+                countUnavailable++;
+                resultRow = $(Results.view.parseTemplate(errorTemplate, result));
+            } else if (typeof productAvailability !== "undefined" && productAvailability !== "Y") {
+                countUnavailable++;
+                resultRow = $(Results.view.parseTemplate(unavailableTemplate, result));
+            } else {
+                if (Results.model.currentProduct && Results.model.currentProduct.value == Object.byString(result, Results.model.currentProduct.path)) {
+                    resultRow = $(Results.view.parseTemplate(currentProductTemplate, result));
+                } else {
+                    resultRow = $(Results.view.parseTemplate(resultTemplate, result));
+                }
+            }
+            if ($.inArray(result, Results.model.filteredProducts) == -1) {
+                $row = $(resultRow);
+                $row.addClass("filtered");
+                $row.hide();
+                $row.attr("data-position", "undefined");
+            } else {
+                $(resultRow).addClass("notfiltered").attr("data-position", countVisible);
+                countVisible++;
+            }
+            $(resultRow).attr("id", "result-row-" + index).attr("data-sort", index);
+            if (result == topResult) {
+                topResultRow = "#result-row-" + index;
+            }
+            resultsHtml += $(resultRow)[0].outerHTML || new XMLSerializer().serializeToString($(resultRow)[0]);
+        });
+        if (Results.settings.show.hasOwnProperty("unavailableCombined") && Results.settings.show.unavailableCombined === true && countUnavailable > 0) {
+            resultRow = $(Results.view.parseTemplate(unavailableCombinedTemplate, results));
+            resultsHtml += $(resultRow)[0].outerHTML;
+        }
+        $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.container).append(resultsHtml);
+        Results.view.setTopResult($(topResultRow));
+        Results.view.toggleFrequency(Results.settings.frequency);
+        $(Results.settings.elements.resultsContainer).trigger("resultsLoaded");
+        Results.pagination.refresh();
+    },
+    parseTemplate: function(template, data) {
+        if (Results.settings.render.templateEngine == "microTemplate") {
+            htmlString = parseTemplate(template, data);
+        } else {
+            htmlTemplate = _.template(template);
+            htmlString = htmlTemplate(data);
+        }
+        return htmlString;
+    },
+    getRowHeight: function() {
+        if (Results.view.orientation == "horizontal" && !Results.view.rowHeight) {
+            Results.view.rowHeight = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").first().outerHeight(true);
+        }
+        return Results.view.rowHeight;
+    },
+    getRowWidth: function() {
+        if (Results.view.orientation == "vertical" && !Results.view.rowWidth) {
+            Results.view.rowWidth = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").first().outerWidth(true);
+        }
+        return Results.view.rowWidth;
+    },
+    setTopResult: function(element) {
+        if (Results.settings.show.topResult) {
+            $(Results.settings.elements.rows).find(".topResult").remove();
+            $(element).prepend('<div class="topResult"></div>');
+            $(Results.settings.elements.resultsContainer).trigger("topResultSet");
+        }
+    },
+    animateIndividualResults: function() {
+        var delay = Results.settings.animation.results.delay;
+        var individualDelay = Results.settings.animation.results.options.duration + Results.settings.animation.results.individual.delay;
+        $(Results.settings.elements.rows).each(function() {
+            delay += individualDelay;
+            $(this).stop(true, true).delay(delay).show(Results.settings.animation.results.options);
+            if (individualDelay - Results.settings.animation.results.individual.acceleration >= 0) {
+                individualDelay -= Results.settings.animation.results.individual.acceleration;
+            }
+        });
+    },
+    animateAllResults: function() {
+        $(Results.settings.elements.rows + ".notFiltered").show();
+        $(Results.settings.elements.resultsContainer).css("opacity", 0);
+        $(Results.settings.elements.resultsContainer).stop(true, true).delay(Results.settings.animation.results.delay).animate({
+            opacity: 1
+        }, Results.settings.animation.results.options);
+    },
+    showResults: function() {
+        if (Results.view.noResultsMode === true) {
+            Results.view.noResultsMode = false;
+            Results.view.toggleFilters("show");
+            Results.view.toggleCompare("show");
+            $(Results.settings.elements.features.headers + ", " + Results.settings.elements.resultsOverflow).show();
+            $(Results.settings.elements.resultsContainer).find(".noResults.clone").remove();
+        }
+    },
+    showNoFilteredResults: function() {
+        Results.view.noResultsMode = true;
+        Results.view.toggleFilters("hide");
+        Results.view.toggleCompare("hide");
+        $(Results.settings.elements.features.headers + ", " + Results.settings.elements.resultsOverflow).hide();
+        $(Results.settings.elements.resultsContainer).find(".noResults.clone").remove().end().append($(Results.settings.elements.noResults).clone().addClass("clone").stop(true, true).delay(500).fadeIn(800));
+        Results.pagination.reset();
+    },
+    showNoResults: function() {
+        Results.view.noResultsMode = true;
+        Results.view.toggleFilters("hide");
+        Results.view.toggleCompare("hide");
+        Results.view.flush();
+        $(Results.settings.elements.features.headers).hide();
+        $(Results.settings.elements.resultsOverflow).hide();
+        $(Results.settings.elements.resultsContainer).find(".noResults.clone").remove();
+        $(Results.settings.elements.resultsContainer).append($(Results.settings.elements.noResults).clone().addClass("clone").stop(true, true).delay(500).fadeIn(800));
+        Results.pagination.reset();
+    },
+    shuffle: function(previousSortedResults) {
+        var allRows = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows);
+        if (Results.settings.animation.shuffle.active === true) {
+            ResultsUtilities.position("absolute", allRows, Results.view.orientation);
+        }
+        setTimeout(function shuffleSetTimeout() {
+            if (typeof previousSortedResults == "undefined") {
+                previousSortedResults = Results.model.returnedProducts.slice();
+            }
+            var currentTop = 0;
+            var currentLeft = 0;
+            var topResultIndex = 0;
+            var rowHeight = Results.view.getRowHeight();
+            var rowWidth = Results.view.getRowWidth();
+            $(Results.settings.elements.resultsContainer).trigger("results.view.animation.start");
+            $.each(Results.model.sortedProducts, function(sortedIndex, sortedResult) {
+                var previousIndex;
+                $.each(previousSortedResults, function(currentPreviousIndex, previousResult) {
+                    if (sortedResult == previousResult) {
+                        previousIndex = currentPreviousIndex;
+                        return false;
+                    }
+                });
+                var currentResult = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + Object.byString(sortedResult, "productId") + "]");
+                var posDifference = sortedIndex - previousIndex;
+                var shuffleOptions = false;
+                if (Results.settings.animation.shuffle.active === true) {
+                    shuffleOptions = Results.settings.animation.shuffle.options;
+                }
+                Results.view.moveResult(currentResult, sortedIndex, posDifference, currentTop, currentLeft, shuffleOptions);
+                if (!Results.view.shuffleTransitionDuration) {
+                    Results.view.shuffleTransitionDuration = currentResult.transitionDuration();
+                }
+                currentResult.attr("data-sort", sortedIndex);
+                if (currentResult.hasClass("notfiltered")) {
+                    if (sortedIndex == topResultIndex) {
+                        Results.view.setTopResult(currentResult);
+                    }
+                    currentTop += rowHeight;
+                    currentLeft += rowWidth;
+                } else {
+                    topResultIndex++;
+                }
+            });
+            var animationDuration = Results.view.shuffleTransitionDuration != 0 ? Results.view.shuffleTransitionDuration : Results.settings.animation.shuffle.options.duration + 50;
+            $(Results.settings.elements.rows).clearQueue(Results.settings.animation.filter.queue).dequeue(Results.settings.animation.shuffle.options.queue);
+            Results.view.afterAnimation(animationDuration, function() {
+                $(Results.settings.elements.resultsContainer).trigger("resultsSorted");
+                if (typeof meerkat !== "undefined") {
+                    meerkat.messaging.publish(Results.view.moduleEvents.RESULTS_SORTED);
+                }
+                Results.pagination.invalidate();
+                Results.pagination.refresh();
+                $(Results.settings.elements.resultsContainer).trigger("results.view.animation.end");
+            });
+        }, 0);
+    },
+    filter: function() {
+        Results.view.showResults();
+        if (Results.settings.animation.filter.active === true) {
+            Results.view.beforeAnimation();
+        }
+        var firstVisible = false;
+        var countVisible = 0;
+        var currentTop = 0;
+        var currentLeft = 0;
+        var countMoved = 0;
+        var countFadedIn = 0;
+        var countFadedOut = 0;
+        var repositionAnimationOptions = false;
+        if (Results.settings.animation.filter.active === true) {
+            repositionAnimationOptions = $.extend(Results.settings.animation.filter.reposition.options, {
+                queue: Results.settings.animation.filter.queue
+            });
+        }
+        if (typeof Features !== "undefined" && Features.target !== false) {
+            var items = [];
+            for (var i = 0; i < Results.model.filteredProducts.length; i++) {
+                var product = Results.model.filteredProducts[i];
+                var productId = Object.byString(product, Results.settings.paths.productId);
+                items.push(Results.settings.elements.rows + "[data-productId=" + productId + "].filtered");
+            }
+            if (items.length > 0) {
+                $items = $(items.join(","));
+                if ($items.length > 0) {
+                    $items.show();
+                    Features.balanceVisibleRowsHeight();
+                    $(Results.settings.elements.rows + ".filtered").hide();
+                }
+            }
+        }
+        $.each(Results.model.sortedProducts, function iterateSortedProducts(sortedIndex, product) {
+            var productId = Object.byString(product, Results.settings.paths.productId);
+            var currentResult = $(Results.settings.elements.rows + "[data-productId=" + productId + "]");
+            if ($.inArray(product, Results.model.filteredProducts) == -1) {
+                Results.view.fadeResultOut(currentResult, Results.settings.animation.filter.active);
+                countFadedOut++;
+            } else {
+                if (!firstVisible) {
+                    firstVisible = true;
+                    Results.view.setTopResult(currentResult);
+                }
+                if (currentResult.hasClass("filtered")) {
+                    Results.view.fadeResultIn(currentResult, countVisible, Results.settings.animation.filter.active);
+                    countFadedIn++;
+                } else {
+                    var prevPosition = currentResult.attr("data-position");
+                    if (countVisible != prevPosition) {
+                        var posDifference = countVisible - prevPosition;
+                        Results.view.moveResult(currentResult, countVisible, posDifference, currentTop, currentLeft, repositionAnimationOptions);
+                        countMoved++;
+                    }
+                }
+                countVisible++;
+                currentTop += Results.view.getRowHeight();
+                currentLeft += Results.view.getRowWidth();
+            }
+            if (Results.settings.animation.filter.active === true) {
+                if (!Results.view.filterTransitionDuration || currentResult.transitionDuration() > Results.view.filterTransitionDuration) {
+                    Results.view.filterTransitionDuration = currentResult.transitionDuration();
+                }
+            }
+        });
+        setTimeout(function() {
+            Results.view.setDisplayMode(Results.settings.displayMode, "partial");
+        }, 0);
+        if (Results.settings.animation.filter.active === true) {
+            $(Results.settings.elements.rows).clearQueue(Results.settings.animation.shuffle.options.queue).dequeue(Results.settings.animation.filter.queue);
+            var animationDuration = 0;
+            if (countMoved == 0 && countFadedIn == 0 && countFadedOut == 0) {
+                animationDuration = 1;
+            } else if (Results.view.filterTransitionDuration != 0) {
+                animationDuration = Results.view.filterTransitionDuration;
+                animationDuration += 200;
+            } else {
+                var durations = new Array();
+                if (countMoved != 0) durations.push(Results.settings.animation.filter.reposition.options.duration);
+                if (countFadedIn != 0) durations.push(Results.settings.animation.filter.appear.options.duration);
+                if (countFadedOut != 0) durations.push(Results.settings.animation.filter.disappear.options.duration);
+                $.each(durations, function(index, duration) {
+                    if (duration > animationDuration) {
+                        animationDuration = duration;
+                    }
+                });
+                animationDuration += 50;
+            }
+        } else {
+            animationDuration = 0;
+        }
+        Results.view.afterAnimation(animationDuration, function() {
+            $(Results.settings.elements.resultsContainer).trigger("resultsFiltered");
+            $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".filtered").css("display", "none");
+            Results.view.setDisplayMode(Results.settings.displayMode, "partial");
+            _.defer(function() {
+                Results.pagination.invalidate();
+                Results.pagination.refresh();
+                $(Results.settings.elements.resultsContainer).trigger("results.view.animation.end");
+            });
+        });
+    },
+    beforeAnimation: function() {
+        var allRows = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows);
+        ResultsUtilities.position("absolute", allRows, Results.view.orientation);
+        $(Results.settings.elements.resultsContainer).trigger("results.view.animation.start");
+        Results.view.disableDuringAnimation();
+    },
+    afterAnimation: function(animationDuration, callback) {
+        var allRows = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows);
+        setTimeout(function() {
+            ResultsUtilities.position("relative", allRows);
+            allRows.sort(function(a, b) {
+                var sortA = parseInt($(a).attr("data-sort"));
+                var sortB = parseInt($(b).attr("data-sort"));
+                return sortA < sortB ? -1 : sortA > sortB ? 1 : 0;
+            }).each(function() {
+                $(this).appendTo(Results.settings.elements.resultsContainer + " " + Results.settings.elements.container);
+            });
+            if (animationDuration !== 0) {
+                if (Modernizr.csstransforms3d) {
+                    allRows.removeClass("transformTransition").removeClass("opacityTransition").addClass("noTransformTransition").css(Modernizr.prefixed("transform"), "");
+                    setTimeout(function() {
+                        allRows.removeClass("noTransformTransition");
+                    }, 0);
+                } else if (Modernizr.csstransitions) {
+                    allRows.removeClass("leftTransition").removeClass("topTransition").removeClass("opacityTransition");
+                }
+            }
+            Results.view.enableAfterAnimation();
+            if (typeof callback == "function") {
+                callback();
+            }
+        }, animationDuration);
+    },
+    disableDuringAnimation: function() {
+        if (typeof Compare != "undefined") {
+            Compare.view.toggleButton("disable");
+        }
+    },
+    enableAfterAnimation: function() {
+        if (typeof Compare != "undefined") {
+            Compare.view.toggleButton("enable");
+        }
+    },
+    moveResult: function(resultElement, position, posDifference, top, left, animationOptions) {
+        var currentPosition = resultElement.attr("data-position");
+        if (currentPosition == position) {
+            return true;
+        }
+        resultElement.attr("data-position", position);
+        if (animationOptions !== false) {
+            if (Modernizr.csstransitions) {
+                resultElement.addClass("hardwareAcceleration");
+                _.defer(function() {
+                    if (Results.view.orientation == "horizontal") {
+                        resultElement.addClass("topTransition");
+                        resultElement.css("top", top);
+                    } else {
+                        resultElement.addClass("leftTransition");
+                        resultElement.css("left", left);
+                    }
+                });
+                _.delay(function() {
+                    resultElement.removeClass("hardwareAcceleration");
+                }, animationOptions.duration + 100);
+            } else {
+                var animatedProperty = new Object();
+                if (Results.view.orientation == "horizontal") {
+                    animatedProperty = {
+                        top: top
+                    };
+                } else {
+                    animatedProperty = {
+                        left: left
+                    };
+                }
+                resultElement.animate(animatedProperty, animationOptions);
+            }
+        } else {
+            if (Results.view.orientation == "horizontal") {
+                resultElement.css("top", top);
+            } else {
+                resultElement.css("left", left);
+            }
+        }
+    },
+    fadeResultIn: function(resultElement, position, animate) {
+        if (Results.view.orientation == "vertical") {
+            resultElement.css("left", position * Results.view.getRowWidth());
+        } else {
+            resultElement.css("top", position * Results.view.getRowHeight());
+        }
+        if (animate === true) {
+            if (Modernizr.csstransitions) {
+                resultElement.addClass("hardwareAcceleration");
+                resultElement.addClass("opacityTransition").css("display", "block");
+                setTimeout(function() {
+                    resultElement.removeClass("filtered").addClass("notfiltered");
+                }, 0);
+                _.delay(function() {
+                    resultElement.removeClass("hardwareAcceleration");
+                }, 1e3);
+            } else {
+                resultElement.removeClass("filtered").addClass("notfiltered");
+                var options = $.extend(Results.settings.animation.filter.appear.options, {
+                    queue: Results.settings.animation.filter.queue
+                });
+                resultElement.fadeIn(options);
+            }
+        } else {
+            resultElement.removeClass("filtered").addClass("notfiltered");
+            resultElement.css("display", "block");
+        }
+        resultElement.attr("data-position", position);
+    },
+    fadeResultOut: function(resultElement, animate) {
+        if (animate === true) {
+            if (Modernizr.csstransitions) {
+                resultElement.addClass("hardwareAcceleration");
+                resultElement.addClass("opacityTransition").addClass("filtered").removeClass("notfiltered");
+                _.delay(function() {
+                    resultElement.removeClass("hardwareAcceleration");
+                }, 1e3);
+            } else {
+                var options = $.extend(Results.settings.animation.filter.disappear.options, {
+                    queue: Results.settings.animation.filter.queue,
+                    complete: function() {
+                        $(this).addClass("filtered").removeClass("notfiltered");
+                    }
+                });
+                resultElement.fadeOut(options);
+            }
+        } else {
+            resultElement.addClass("filtered").removeClass("notfiltered");
+        }
+        resultElement.attr("data-position", "undefined");
+    },
+    showResultsPage: function() {
+        if (Results.settings.runShowResultsPage === false) {
+            return;
+        }
+        if (!$(Results.settings.elements.page).is(":visible")) {
+            $("body, html").animate({
+                scrollTop: 0
+            }, 500);
+            Results.view.toggleReferenceNo();
+            $(Results.settings.formSelector).find(":input").removeAttr("data-visible");
+            $(Results.settings.formSelector).find(":input:visible, .ui-dialog :input, .force-invisible-select :input").attr("data-visible", "true");
+            if ($("#page").length > 0) {
+                $("#page").slideUp("fast", function() {
+                    $(Results.settings.elements.page).show();
+                    Results.view.toggleHeaderSize();
+                    Results.view.toggleProgressBar();
+                    Results.view.toggleResultsSummary();
+                });
+            }
+            if (typeof btnInit !== "undefined") {
+                btnInit._show();
+            }
+        }
+    },
+    hideResultsPage: function() {
+        if ($(Results.settings.elements.page).is(":visible")) {
+            $("body, html").scrollTop(0);
+            Results.view.toggleHeaderSize();
+            Results.view.toggleProgressBar();
+            Results.view.toggleReferenceNo();
+            Results.view.toggleFilters("hide");
+            Results.view.toggleCompare("hide");
+            Results.view.toggleResultsSummary();
+            if ($("#page").length > 0) {
+                $("#page").slideDown(300);
+                $(Results.settings.elements.page).hide();
+            }
+            $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.container).css("margin-left", 0);
+            Results.pagination.reset();
+            $(Results.settings.elements.page + " .resultsOverlay").hide(0);
+        }
+    },
+    toggleResultsPage: function() {
+        if ($(Results.settings.elements.page).is(":visible")) {
+            Results.view.hideResultsPage();
+        } else {
+            Results.view.showResultsPage();
+        }
+    },
+    toggleProgressBar: function() {
+        $("#steps").toggle(0);
+    },
+    toggleReferenceNo: function() {
+        if (typeof referenceNo != "undefined" && referenceNo.showReferenceNumber) {
+            $(referenceNo.elements.root).slideToggle(200);
+        }
+    },
+    toggleCompare: function(action) {
+        if (typeof Compare != "undefined") {
+            if (action && action == "hide") {
+                $(Compare.settings.elements.bar).hide();
+            } else if (action && action == "show") {
+                $(Compare.settings.elements.bar).fadeIn(400, function() {
+                    Compare.topPosition = $(Compare.settings.elements.bar).offset().top;
+                });
+            } else {
+                $(Compare.settings.elements.bar).toggle(0);
+                Compare.topPosition = $(Compare.settings.elements.bar).offset().top;
+            }
+        }
+    },
+    toggleFilters: function(action) {
+        if (typeof Filters != "undefined") {
+            if (action && action == "hide") {
+                $(Filters.settings.elements.filtersBar).hide();
+            } else if (action && action == "show") {
+                $(Filters.settings.elements.filtersBar).fadeIn();
+            } else {
+                $(Filters.settings.elements.filtersBar).toggle(0);
+            }
+        }
+    },
+    toggleHeaderSize: function() {
+        if ($("#header").hasClass("normal-header")) {
+            $("#header").removeClass("normal-header");
+            $("#header").addClass("narrow-header");
+        } else {
+            $("#header").removeClass("narrow-header");
+            $("#header").addClass("normal-header");
+        }
+    },
+    toggleResultsSummary: function() {
+        $("#resultsDes").hide();
+        if ($("#navContainer #summary-header").length === 0) {
+            $("#summary-header").prependTo("#navContainer");
+            $("#summary-header").show();
+        } else {
+            $("#summary-header").toggle();
+        }
+    },
+    toggleFrequency: function(frequency) {
+        try {
+            $(Results.settings.elements.frequency).hide();
+            $("." + frequency + Results.settings.elements.frequency).show();
+        } catch (e) {
+            Results.onError("Sorry, an error occurred toggling frequencies", "ResultsView.js", "Results.view.toggleFrequency(); " + e.message, e);
+        }
+    },
+    flush: function() {
+        $(Results.settings.elements.rows).remove();
+    }
+};
+
+Features = new Object();
+
+Features = {
+    template: false,
+    target: false,
+    results: false,
+    featuresIds: false,
+    emptyAdditionalInfoCategory: true,
+    init: function(target) {
+        if (typeof target === "undefined") {
+            Features.target = Results.settings.elements.resultsContainer;
+        } else {
+            Features.target = target;
+        }
+        if (typeof meerkat !== "undefined") {
+            meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function deviceMediaStateChange(state) {
+                if (Results.getDisplayMode() !== "features") return;
+                if ($(Results.settings.elements.resultsContainer + " :visible").length > 0) {
+                    Results.view.calculateResultsContainerWidth();
+                    Features.clearSetHeights();
+                    Features.balanceVisibleRowsHeight();
+                }
+            });
+        }
+        Features.applyExpandableEvents();
+    },
+    buildHtml: function(results) {
+        if (typeof results === "undefined") {
+            Features.results = Results.model.sortedProducts;
+        } else {
+            Features.results = results;
+        }
+        Features.template = $(Results.settings.elements.templates.feature).html();
+        if (Features.template == "") {
+            console.log("The comparison feature template could not be found: templateSelector=", Compare.settings.elements.templates.feature, "This template is mandatory, make sure to pass the correct selector to the Compare.settings.elements.templates.feature user setting when calling Compare.init()");
+        } else {
+            $(Results.settings.elements.resultsContainer).trigger("populateFeaturesStart");
+            Features.populateHeaders();
+            Features.populateFeatures();
+            Features.setExpandableRows();
+            _.defer(function() {
+                Features.clearSetHeights();
+                Features.balanceVisibleRowsHeight();
+                $(Results.settings.elements.resultsContainer).trigger("populateFeaturesEnd");
+            });
+            Features.hideEmptyRows();
+            $(Features.target).trigger("FeaturesRendered");
+        }
+    },
+    populateHeaders: function() {
+        if (Results.settings.render.features.headers === true) {
+            Features.emptyAdditionalInfoCategory = true;
+            var featuresIds = new Array();
+            var html = "";
+            $.each(Features.results, function(index, result) {
+                var productAvailability = null;
+                if (Results.settings.paths.availability.product && Results.settings.paths.availability.product != "") {
+                    var productAvailability = Object.byString(result, Results.settings.paths.availability.product);
+                }
+                if (productAvailability == "Y" || typeof productAvailability == "undefined") {
+                    var features = Object.byString(result, Results.settings.paths.features);
+                    if (typeof features != "undefined" && features.length > 0) {
+                        var currentCategory = "";
+                        $.each(features, function(index, feature) {
+                            if (Features.emptyAdditionalInfoCategory && feature.categoryId == 9 && feature.extra != "") {
+                                Features.emptyAdditionalInfoCategory = false;
+                            }
+                            if ($.inArray(feature.featureId, featuresIds) == -1) {
+                                featuresIds.push(feature.featureId);
+                                if (Results.settings.show.featuresCategories && currentCategory != feature.categoryId) {
+                                    parsedCategory = Results.view.parseTemplate(Features.template, {
+                                        value: feature.categoryName,
+                                        featureId: "category-" + feature.categoryId,
+                                        extra: "",
+                                        cellType: "category"
+                                    });
+                                    html += parsedCategory;
+                                    currentCategory = feature.categoryId;
+                                }
+                                if (!isNaN(feature.desc)) {
+                                    feature.desc = "";
+                                }
+                                var parsedFeatureId = Results.view.parseTemplate(Features.template, {
+                                    featureId: feature.featureId,
+                                    value: feature.desc,
+                                    extra: "&nbsp;",
+                                    cellType: "feature"
+                                });
+                                html += parsedFeatureId;
+                            }
+                        });
+                    }
+                }
+            });
+            $(Features.target + " " + Results.settings.elements.features.headers + " " + Results.settings.elements.features.list).html(html);
+            Features.featuresIds = featuresIds;
+        }
+    },
+    populateFeatures: function() {
+        $.each(Features.results, function(index, product) {
+            var productAvailability = null;
+            if (Results.settings.paths.availability.product && Results.settings.paths.availability.product != "") {
+                var productAvailability = Object.byString(product, Results.settings.paths.availability.product);
+            }
+            if ((productAvailability == "Y" || typeof productAvailability == "undefined") && (!Results.model.currentProduct || Results.model.currentProduct.value != Object.byString(product, Results.model.currentProduct.path))) {
+                var productId = Object.byString(product, Results.settings.paths.productId);
+                var $targetContainer = $(Features.target + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']").find(Results.settings.elements.features.list);
+                var html = "";
+                if (Results.settings.render.features.mode == "populate") {
+                    html = Features.populateTemplate(product);
+                } else {
+                    html = Features.buildAndPopulateTemplate(product);
+                }
+                $targetContainer.html(html);
+            }
+        });
+        if (Features.emptyAdditionalInfoCategory) {
+            $(Features.target + " [data-featureId=category-9]").next().remove();
+            $(Features.target + " [data-featureId=category-9]").remove();
+        }
+    },
+    populateTemplate: function(product) {
+        var currentProductTemplate = $(Results.settings.elements.templates.feature).html();
+        return Results.view.parseTemplate(currentProductTemplate, product);
+    },
+    buildAndPopulateTemplate: function(product) {
+        var html = "";
+        var currentCategory = "";
+        $.each(Features.featuresIds, function(featureIdIndex, featureId) {
+            var features = Object.byString(product, Results.settings.paths.features);
+            var foundFeature = false;
+            var parsedFeature = "";
+            $.each(features, function(featureIndex, feature) {
+                if (feature.featureId == featureId) {
+                    foundFeature = feature;
+                    feature.value = Features.parseFeatureValue(feature.value);
+                    if (feature.extra == "") {
+                        feature.extra = "&nbsp;";
+                    }
+                    if (feature.value == "" && feature.extra != "") {
+                        feature.value = feature.extra;
+                        feature.extra = "&nbsp;";
+                    }
+                    parsedFeature = Results.view.parseTemplate(Features.template, $.extend(feature, {
+                        cellType: "feature"
+                    }));
+                    return false;
+                }
+            });
+            if (!foundFeature) {
+                var parsedFeature = Results.view.parseTemplate(Features.template, {
+                    value: "&nbsp;",
+                    featureId: featureId,
+                    extra: "",
+                    cellType: "feature"
+                });
+            } else {
+                if (Results.settings.show.featuresCategories && currentCategory != foundFeature.categoryId) {
+                    parsedCategory = Results.view.parseTemplate(Features.template, {
+                        value: "&nbsp;",
+                        featureId: "category-" + foundFeature.categoryId,
+                        extra: "",
+                        cellType: "category"
+                    });
+                    html += parsedCategory;
+                    currentCategory = foundFeature.categoryId;
+                }
+            }
+            html += parsedFeature;
+        });
+        return html;
+    },
+    parseFeatureValue: function(value) {
+        if (typeof value === "undefined" || value === "") {
+            value = "&nbsp;";
+        } else {
+            var obj = _.findWhere(Results.settings.dictionary.valueMap, {
+                key: value
+            });
+            if (typeof obj !== "undefined") {
+                value = obj.value;
+            }
+        }
+        return value;
+    },
+    setExpandableRows: function() {
+        if ($(Features.target + " .expandable").length == 0) {
+            $(Features.target + " " + Results.settings.elements.rows + ".notfiltered " + Results.settings.elements.features.extras + " " + Results.settings.elements.features.values).filter(function() {
+                return $(this).html() != "&nbsp;" && $(this).html() != "";
+            }).parent().parent().addClass(Results.settings.elements.features.expandable.replace(/[#\.]/g, ""));
+        }
+    },
+    applyExpandableEvents: function() {
+        $(document.body).on("click", Features.target + " .expandable > " + Results.settings.elements.features.values, function(e) {
+            var featureId = $(this).attr("data-featureId");
+            var $extras = $(Features.target + ' .children[data-fid="' + featureId + '"]');
+            var $parents = $extras.parent();
+            if ($parents.hasClass("expanded") === false) {
+                Features.toggleOpen($extras, $parents);
+            } else {
+                Features.toggleClose($parents);
+            }
+        }).on("click", ".expandAllFeatures, .collapseAllFeatures", function(e) {
+            e.preventDefault();
+            $(this).parent().find(".active").removeClass("active");
+            $(this).addClass("active");
+            var $extras = $(Features.target + " .children[data-fid]"), $parents = $extras.parent();
+            if ($(this).hasClass("expandAllFeatures")) {
+                Features.toggleOpen($extras, $parents);
+            } else {
+                Features.toggleClose($parents);
+            }
+        });
+    },
+    toggleClose: function($parents) {
+        $parents.removeClass("expanded").addClass("collapsed");
+    },
+    toggleOpen: function($extras, $parents) {
+        _.defer(function() {
+            $parents.removeClass("collapsed").addClass("expanding");
+            _.defer(function() {
+                Features.sameHeightRows($extras.find(Results.settings.elements.features.values + ":visible"));
+                $parents.removeClass("expanding").addClass("expanded");
+            });
+        });
+    },
+    clearSetHeights: function() {
+        $(Features.target + " " + Results.settings.elements.features.values).removeClass(function(index, css) {
+            return (css.match(/\height\S+/g) || []).join(" ");
+        });
+        $(Features.target + " " + Results.settings.elements.features.values).css("height", "");
+    },
+    balanceVisibleRowsHeight: function() {
+        if (Features.target === false || typeof Results.getDisplayMode === "function" && Results.getDisplayMode() == "price") {
+            return;
+        }
+        var visibleMultirowElements = $(Features.target + " " + Results.settings.elements.features.values + ":visible");
+        Features.sameHeightRows(visibleMultirowElements);
+    },
+    sameHeightRows: function(elements) {
+        var featureRowCache = [];
+        elements.each(function elementsEach(elementIndex, element) {
+            $e = $(element);
+            var featureId = $e.attr("data-featureId");
+            var item = _.findWhere(featureRowCache, {
+                featureId: featureId
+            });
+            if (typeof item != "undefined") {
+                item.height = Math.max(getHeight($e), item.height);
+                item.elements.push($e);
+            } else {
+                var obj = {};
+                obj.featureId = featureId;
+                obj.height = getHeight($e);
+                obj.elements = [];
+                obj.elements.push($e);
+                featureRowCache.push(obj);
+            }
+        });
+        for (var i = 0; i < featureRowCache.length; i++) {
+            var item2 = featureRowCache[i];
+            for (var j = 0; j < item2.elements.length; j++) {
+                var $ee = item2.elements[j];
+                var roundedHeight = Math.ceil(item2.height / 10) * 10;
+                if (roundedHeight <= 270) {
+                    $ee.addClass("height" + roundedHeight);
+                } else {
+                    $ee.height(item2.height);
+                }
+            }
+        }
+        function getHeight($h) {
+            if ($h.hasClass("isMultiRow") || $h.hasClass("h")) {
+                return $h.innerHeight();
+            } else {
+                return 0;
+            }
+        }
+    },
+    hideEmptyRows: function() {
+        $.each(Features.featuresIds, function(featureIdIndex, featureId) {
+            var found = false;
+            $currentRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+            $currentRow.each(function() {
+                var value = $(this).html();
+                if (!found && value != "" && value != "&nbsp;") {
+                    found = true;
+                }
+            });
+            if (!found) {
+                $currentRow.parent().hide();
+            }
+        });
+    },
+    flush: function() {
+        $(Features.target).find(Results.settings.elements.features.list).html("");
+    }
+};
+
 (function($, undefined) {
     var meerkat = window.meerkat, log = meerkat.logging.info;
     var moduleEvents = {
@@ -3318,9 +5932,12 @@ meerkat.logging.init = function() {
         });
     }
     function markFieldsAsVisible($parentElement) {
-        $parentElement.find(":input[data-initValue]").removeAttr("data-initValue");
+        clearInitialFieldsAttribute($parentElement);
         $parentElement.find(":input[data-visible]").removeAttr("data-visible");
         $parentElement.find(":input:visible").attr("data-visible", "true");
+    }
+    function clearInitialFieldsAttribute($parentElement) {
+        $parentElement.find(":input[data-initValue]").removeAttr("data-initValue");
     }
     function markInitialFieldsWithValue($parentElement) {
         $elements = $parentElement.find(":input").filter(function() {
@@ -3338,7 +5955,8 @@ meerkat.logging.init = function() {
         getSerializedData: getSerializedData,
         appendHiddenField: appendHiddenField,
         markFieldsAsVisible: markFieldsAsVisible,
-        markInitialFieldsWithValue: markInitialFieldsWithValue
+        markInitialFieldsWithValue: markInitialFieldsWithValue,
+        clearInitialFieldsAttribute: clearInitialFieldsAttribute
     });
 })(jQuery);
 
@@ -3723,13 +6341,14 @@ meerkat.logging.init = function() {
         function onHidePreviousStep() {
             if (currentStep != null && currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
         }
-        function sessionCamRecorder(step) {
-            if (window.sessionCamRecorder) {
-                if (window.sessionCamRecorder.createVirtualPageLoad) {
-                    setTimeout(function() {
-                        window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + step.navigationId);
-                    }, 1e3);
-                }
+    }
+    function sessionCamRecorder(step) {
+        if (window.sessionCamRecorder) {
+            if (window.sessionCamRecorder.createVirtualPageLoad) {
+                log("[sessionCamRecorder:createVirtualPageLoad]", step);
+                setTimeout(function() {
+                    window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + step.navigationId);
+                }, 1e3);
             }
         }
     }
@@ -4058,7 +6677,8 @@ meerkat.logging.init = function() {
         loadingShow: loadingShow,
         loadingHide: loadingHide,
         gotoPath: gotoPath,
-        getPreviousStepId: getPreviousStepId
+        getPreviousStepId: getPreviousStepId,
+        sessionCamRecorder: sessionCamRecorder
     });
 })(jQuery);
 
@@ -4452,6 +7072,11 @@ meerkat.logging.init = function() {
         var productId = $this.attr("data-productId"), showApply = $this.hasClass("more-info-showapply");
         setProduct(Results.getResult("productId", productId), showApply);
         settings.runDisplayMethod(productId);
+        setTimeout(function() {
+            meerkat.modules.journeyEngine.sessionCamRecorder({
+                navigationId: "MoreInfo"
+            });
+        }, 2e3);
     }
     function showTemplate(moreInfoContainer) {
         toggleBodyClass(true);
@@ -5762,6 +8387,11 @@ meerkat.logging.init = function() {
         buildTrackingDataObject(config, sortedAndFiltered);
         sendQuoteRanking(trigger, rankingData);
         meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
+        setTimeout(function() {
+            meerkat.modules.journeyEngine.sessionCamRecorder({
+                navigationId: "ResultsLoaded"
+            });
+        }, 2e3);
     }
     function sendQuoteRanking(trigger, rankingData) {
         log("[resultsRankings] sendWriteRank", {
@@ -7333,7 +9963,7 @@ meerkat.logging.init = function() {
         window.sessioncamConfiguration.customDataObjects.push(item);
         item = {
             key: "currentJourney",
-            value: getCurrentJourney
+            value: getCurrentJourney()
         };
         window.sessioncamConfiguration.customDataObjects.push(item);
     }
@@ -7733,6 +10363,16 @@ jQuery.fn.extend({
         var isURL = value.match(isUrlRegex) !== null;
         return !isURL && validNameCharsRegex.test(value);
     }
+    function setMinAgeValidation($field, ageMin, title) {
+        $field.rules("add", {
+            messages: {
+                min_DateOfBirth: title + " age cannot be under " + ageMin
+            },
+            min_DateOfBirth: {
+                ageMin: ageMin
+            }
+        });
+    }
     function isValid($element, displayErrors) {
         if (displayErrors) {
             return $element.valid();
@@ -7823,7 +10463,8 @@ jQuery.fn.extend({
         events: events,
         isValid: isValid,
         setupDefaultValidationOnForm: setupDefaultValidationOnForm,
-        validatePersonName: validatePersonName
+        validatePersonName: validatePersonName,
+        setMinAgeValidation: setMinAgeValidation
     });
 })(jQuery);
 

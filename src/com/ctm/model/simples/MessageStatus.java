@@ -11,6 +11,8 @@ import com.ctm.model.AbstractJsonModel;
  */
 public class MessageStatus extends AbstractJsonModel {
 	// These status codes come from simples.message_status database table
+
+	//parent statues
 	public final static int STATUS_NEW = 1;
 	public final static int STATUS_COMPLETED = 2;
 	public final static int STATUS_INPROGRESS = 3;
@@ -18,9 +20,14 @@ public class MessageStatus extends AbstractJsonModel {
 	public final static int STATUS_ASSIGNED = 5;
 	public final static int STATUS_UNSUCCESSFUL = 6;
 	public final static int STATUS_ABANDONED = 7;
-	public final static int STATUS_COMPLETED_DONOTCONTACT = 9;
-	public final static int STATUS_COMPLETED_CONVERTEDTOSALE = 11;
-	public final static int STATUS_COMPLETED_ALREADYCUSTOMER = 16;
+	public final static int STATUS_COMPLETED_AS_PM = 31;
+	public final static int STATUS_CHANGED_TIME_FOR_PM = 32;
+	public final static int STATUS_REMOVED_FROM_PM = 33;
+
+	//sub statues
+	public final static int STATUS_DONOTCONTACT = 9;
+	public final static int STATUS_CONVERTEDTOSALE = 11;
+	public final static int STATUS_ALREADYCUSTOMER = 16;
 
 	private int id;
 	private String status;

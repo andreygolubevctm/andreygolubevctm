@@ -23,7 +23,7 @@
 	function init() {
 
 			$(document.body).on('click', '.btn-view-brands', displayBrandsModal);
-		
+
 			// setup object references
 			$destinationfs = $('#destinationsfs');
 			$datestravellersfs = $('#datestravellersfs');
@@ -79,7 +79,7 @@
 
 		// set the policytype
 		$resultsContainer.attr('policytype', $("input[name=travel_policyType]:checked").val());
-
+		meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId": "PolicyType-"+$("input[name=travel_policyType]:checked").val()});
 		// single trip
 		if ($travel_policyType_S.is(":checked"))
 		{
@@ -117,7 +117,7 @@
 			$datestravellersfs.find('h2').text("Travellers");
 		}
 	}
-	
+
 	meerkat.modules.register("travelYourCover", {
 		initTravelCover: init,
 		toggleDetailsFields: toggleDetailsFields

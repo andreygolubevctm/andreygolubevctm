@@ -1,7 +1,9 @@
 package com.ctm.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +12,7 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.content.Content;
 import com.ctm.model.settings.PageSettings;
+import org.apache.commons.lang3.StringUtils;
 
 public class ContentService {
 
@@ -32,6 +35,22 @@ public class ContentService {
 		}
 
 		return "";
+	}
+
+	/**
+	 * Checks a value against a comma separated list in the database `ctm`.`content_control`
+	 *
+	 * @param request used for get brand and vertical to match in the database
+	 * @param contentKey key that will match contentKey column in database must be comma separated list of valid values
+	 * @param value value to check against list
+	 * @return
+	 * @throws DaoException
+	 * @throws ConfigSettingException brand or vertical isn't valid in request
+	 */
+	public static boolean getContentIsValid(HttpServletRequest request, String contentKey, String value) throws DaoException, ConfigSettingException {
+		String content = getContentValue(request, contentKey) ;
+		List<String> validSources = Arrays.asList(StringUtils.split(content.toUpperCase(), ","));
+		return validSources.contains(value.toUpperCase());
 	}
 
 	/**

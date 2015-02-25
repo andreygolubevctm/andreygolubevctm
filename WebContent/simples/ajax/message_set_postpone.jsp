@@ -7,6 +7,7 @@
 
 <c:set var="simplesUid" value="${authenticatedData['login/user/simplesUid']}" />
 <c:set var="messageId" value="${param.messageId}" />
+<c:set var="statusId" value="${param.statusId}" />
 <c:set var="reasonStatusId" value="${param.reasonStatusId}" />
 <c:set var="postponeDate" value="${param.postponeDate}" />
 <c:set var="postponeTime" value="${param.postponeTime}" />
@@ -14,4 +15,4 @@
 <c:set var="comment" value="${param.comment}" />
 <c:set var="assignToUser" value="${param.assignToUser}" />
 
-<c:out value="${ simplesService.postponeMessage(simplesUid, messageId, reasonStatusId, postponeDate, postponeTime, postponeAMPM, comment, assignToUser) }" escapeXml="false" />
+<c:out value="${ simplesService.postponeMessage(simplesUid, messageId, statusId, reasonStatusId, postponeDate, postponeTime, postponeAMPM, comment, assignToUser) }" escapeXml="false" />

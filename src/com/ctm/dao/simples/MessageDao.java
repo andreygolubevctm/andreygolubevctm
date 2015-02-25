@@ -1,6 +1,8 @@
 package com.ctm.dao.simples;
 
 import static com.ctm.model.simples.MessageStatus.STATUS_POSTPONED;
+import static com.ctm.model.simples.MessageStatus.STATUS_COMPLETED_AS_PM;
+import static com.ctm.model.simples.MessageStatus.STATUS_CHANGED_TIME_FOR_PM;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -135,10 +137,12 @@ public class MessageDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT id, status " +
-				"FROM simples.message_status " +
-				"WHERE parentId = ? " +
-				"AND active = 1;"
+				"SELECT ms.id, ms.status " +
+				"FROM simples.message_status ms " +
+				"INNER JOIN simples.message_status_mapping msp " +
+				"ON msp.statusId = ms.id " +
+				"WHERE msp.parentId = ? " +
+				"AND ms.active = 1;"
 			);
 			stmt.setInt(1, parentStatusId);
 
@@ -187,12 +191,13 @@ public class MessageDao {
 	 *
 	 * @param actionIsPerformedByUserId User ID of user performing this action
 	 * @param messageId ID of message
+	 * @param statusId: Contains [postpone], [completed as pm], [change time for PM]
 	 * @param reasonStatusId Reason for the action
 	 * @param postponeTo
 	 * @param unassign Set to true to assign the message to nobody
 	 * @param comment
 	 */
-	public void postponeMessage(int actionIsPerformedByUserId, int messageId, int reasonStatusId, Date postponeTo, String comment, boolean unassign) throws DaoException {
+	public void postponeMessage(int actionIsPerformedByUserId, int messageId, int statusId, int reasonStatusId, Date postponeTo, String comment, boolean unassign) throws DaoException {
 		// Get the message so we can use some of its details
 		Message message = getMessage(messageId);
 
@@ -200,7 +205,7 @@ public class MessageDao {
 		MessageAudit messageAudit = new MessageAudit();
 		messageAudit.setMessageId(messageId);
 		messageAudit.setUserId(actionIsPerformedByUserId);
-		messageAudit.setStatusId(STATUS_POSTPONED);
+		messageAudit.setStatusId(statusId);
 		messageAudit.setReasonStatusId(reasonStatusId);
 		messageAudit.setComment("Postponed by userId '" + actionIsPerformedByUserId + "' (message.userId=" + message.getUserId() + ") until " + postponeTo.toString() + ", unassign=" + unassign);
 
@@ -239,7 +244,7 @@ public class MessageDao {
 				"WHERE id = ?;"
 			);
 			stmt.setInt(1, userId);
-			stmt.setInt(2, STATUS_POSTPONED);
+			stmt.setInt(2, statusId);
 			stmt.setTimestamp(3, new java.sql.Timestamp(postponeTo.getTime()));
 			stmt.setInt(4, messageId);
 
@@ -263,10 +268,11 @@ public class MessageDao {
 	 *
 	 * @param actionIsPerformedByUserId User ID of user performing this action
 	 * @param messageId ID of message
+	 * @param statusId Contains [Completed], [Removed from PM]
 	 * @param reasonStatusId ID of the reason status
 	 * @return message
 	 */
-	public Message setMessageToCompleted(int actionIsPerformedByUserId, int messageId, int reasonStatusId) throws DaoException {
+	public Message setMessageToCompleted(int actionIsPerformedByUserId, int messageId, int statusId, int reasonStatusId) throws DaoException {
 		// Get the message so we can use some of its details
 		Message message = getMessage(messageId);
 
@@ -274,7 +280,7 @@ public class MessageDao {
 		MessageAudit messageAudit = new MessageAudit();
 		messageAudit.setMessageId(messageId);
 		messageAudit.setUserId(actionIsPerformedByUserId);
-		messageAudit.setStatusId(MessageStatus.STATUS_COMPLETED);
+		messageAudit.setStatusId(statusId);
 		messageAudit.setReasonStatusId(reasonStatusId);
 
 		if (actionIsPerformedByUserId != message.getUserId()) {
@@ -285,7 +291,7 @@ public class MessageDao {
 		messageAuditDao.addMessageAudit(messageAudit);
 
 		// Perform the action
-		updateUserAndStatus(messageId, message.getUserId(), MessageStatus.STATUS_COMPLETED);
+		updateUserAndStatus(messageId, message.getUserId(), statusId);
 
 		// User is done with this message
 		UserDao userDao = new UserDao();
@@ -501,10 +507,12 @@ WHERE msg.id = 53
 				"SELECT msg.id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, whenToAction " +
 				"FROM simples.message msg " +
 				"LEFT JOIN simples.message_status stat ON stat.id = msg.statusId " +
-				"WHERE statusId = ? AND userId = ? " +
+				"WHERE statusId IN (?, ?, ?) AND userId = ? " +
 				"ORDER BY whenToAction ASC");
 			statement.setInt(1, STATUS_POSTPONED);
-			statement.setInt(2, userId);
+			statement.setInt(2, STATUS_COMPLETED_AS_PM);
+			statement.setInt(3, STATUS_CHANGED_TIME_FOR_PM);
+			statement.setInt(4, userId);
 			final ResultSet results = statement.executeQuery();
 			return mapFieldsFromResultsToMessage(results);
 		} catch (SQLException | NamingException e) {

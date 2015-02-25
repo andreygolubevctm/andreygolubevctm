@@ -608,13 +608,11 @@ var healthFunds_WFD = {
 		//Age requirements for applicants
 		//primary
 		healthFunds_WFD.$_dobPrimary = $('#health_application_primary_dob');
-		healthFunds_WFD.defaultAgeMin = dob_health_application_primary_dob.ageMin;
-		dob_health_application_primary_dob.ageMin = 18;
-		healthFunds_WFD.$_dobPrimary.rules('add', {messages: {'min_DateOfBirth': healthFunds_WFD.$_dobPrimary.attr('title') + ' age cannot be under ' + dob_health_application_primary_dob.ageMin} } );
 		//partner
 		healthFunds_WFD.$_dobPartner = $('#health_application_partner_dob');
-		dob_health_application_partner_dob.ageMin = 18;
-		healthFunds_WFD.$_dobPartner.rules('add', {messages: {'min_DateOfBirth': healthFunds_WFD.$_dobPartner.attr('title') + ' age cannot be under ' + dob_health_application_partner_dob.ageMin} } );
+
+		meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPrimary, 18 , "primary person's");
+		meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPartner, 18, "partner's");
 
 		// Load join dec into label
 		healthFunds_WFD.joinDecLabelHtml = $('#health_declaration + label').html();
@@ -660,13 +658,9 @@ var healthFunds_WFD = {
 		healthFunds._previousfund_authority(false);
 
 		//Age requirements for applicants (back to default)
-		dob_health_application_primary_dob.ageMin = healthFunds_WFD.defaultAgeMin;
-		healthFunds_WFD.$_dobPrimary.rules('add', {messages: {'min_DateOfBirth': healthFunds_WFD.$_dobPrimary.attr('title') + ' age cannot be under ' + dob_health_application_primary_dob.ageMin} } );
+		meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPrimary, dob_health_application_primary_dob.ageMin , "primary person's");
+		meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPartner, dob_health_application_partner_dob.ageMin, "partner's");
 
-		dob_health_application_partner_dob.ageMin = healthFunds_WFD.defaultAgeMin;
-		healthFunds_WFD.$_dobPrimary.rules('add', {messages: {'min_DateOfBirth': healthFunds_WFD.$_dobPartner.attr('title') + ' age cannot be under ' + dob_health_application_partner_dob.ageMin} } );
-
-		delete healthFunds_WFD.defaultAgeMin;
 		delete healthFunds_WFD.$_dobPrimary;
 		delete healthFunds_WFD.$_dobPartner;
 	}

@@ -33,6 +33,18 @@
 		return !isURL && validNameCharsRegex.test(value);
 	}
 
+	function setMinAgeValidation($field, ageMin, title) {
+		$field.rules('add', {
+			messages: {
+				min_DateOfBirth: title + ' age cannot be under ' + ageMin
+			},
+			min_DateOfBirth: {
+				ageMin: ageMin
+			}
+		} );
+
+	}
+
 	function isValid( $element, displayErrors ){
 		if( displayErrors ){
 			return $element.valid();
@@ -160,7 +172,8 @@
 		events: events,
 		isValid: isValid,
 		setupDefaultValidationOnForm: setupDefaultValidationOnForm,
-		validatePersonName: validatePersonName
+		validatePersonName: validatePersonName,
+		setMinAgeValidation: setMinAgeValidation
 	});
 
 })(jQuery);

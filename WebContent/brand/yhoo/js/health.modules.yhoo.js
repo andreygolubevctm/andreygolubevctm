@@ -589,20 +589,9 @@ var healthFunds_WFD = {
             $(".health-bank_details-policyDay option").val(deductionDateValue);
         });
         healthFunds_WFD.$_dobPrimary = $("#health_application_primary_dob");
-        healthFunds_WFD.defaultAgeMin = dob_health_application_primary_dob.ageMin;
-        dob_health_application_primary_dob.ageMin = 18;
-        healthFunds_WFD.$_dobPrimary.rules("add", {
-            messages: {
-                min_DateOfBirth: healthFunds_WFD.$_dobPrimary.attr("title") + " age cannot be under " + dob_health_application_primary_dob.ageMin
-            }
-        });
         healthFunds_WFD.$_dobPartner = $("#health_application_partner_dob");
-        dob_health_application_partner_dob.ageMin = 18;
-        healthFunds_WFD.$_dobPartner.rules("add", {
-            messages: {
-                min_DateOfBirth: healthFunds_WFD.$_dobPartner.attr("title") + " age cannot be under " + dob_health_application_partner_dob.ageMin
-            }
-        });
+        meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPrimary, 18, "primary person's");
+        meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPartner, 18, "partner's");
         healthFunds_WFD.joinDecLabelHtml = $("#health_declaration + label").html();
         healthFunds_WFD.ajaxJoinDec = $.ajax({
             url: "health_fund_info/WFD/declaration.html",
@@ -632,19 +621,8 @@ var healthFunds_WFD = {
         $("#health_previousfund_primary_fundName").attr("required", "required");
         $("#health_previousfund_partner_fundName").attr("required", "required");
         healthFunds._previousfund_authority(false);
-        dob_health_application_primary_dob.ageMin = healthFunds_WFD.defaultAgeMin;
-        healthFunds_WFD.$_dobPrimary.rules("add", {
-            messages: {
-                min_DateOfBirth: healthFunds_WFD.$_dobPrimary.attr("title") + " age cannot be under " + dob_health_application_primary_dob.ageMin
-            }
-        });
-        dob_health_application_partner_dob.ageMin = healthFunds_WFD.defaultAgeMin;
-        healthFunds_WFD.$_dobPrimary.rules("add", {
-            messages: {
-                min_DateOfBirth: healthFunds_WFD.$_dobPartner.attr("title") + " age cannot be under " + dob_health_application_partner_dob.ageMin
-            }
-        });
-        delete healthFunds_WFD.defaultAgeMin;
+        meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPrimary, dob_health_application_primary_dob.ageMin, "primary person's");
+        meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPartner, dob_health_application_partner_dob.ageMin, "partner's");
         delete healthFunds_WFD.$_dobPrimary;
         delete healthFunds_WFD.$_dobPartner;
     }
@@ -3681,9 +3659,11 @@ creditCardDetails = {
             minimumDate.setDate(minimumDate.getDate() + exclusion);
         }
         $paymentDays.children().each(function playWithChildren() {
-            childDateOriginal = new Date($(this).val());
-            childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
-            $(this).val(meerkat.modules.utilities.returnDateValue(childDateNew));
+            if ($(this).val() !== "") {
+                childDateOriginal = new Date($(this).val());
+                childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
+                $(this).val(meerkat.modules.utilities.returnDateValue(childDateNew));
+            }
         });
     }
     function compareAndAddMonth(oldDate, minDate) {
@@ -4532,7 +4512,8 @@ creditCardDetails = {
             PREMIUM_UPDATED: "PREMIUM_UPDATED"
         },
         WEBAPP_LOCK: "WEBAPP_LOCK",
-        WEBAPP_UNLOCK: "WEBAPP_UNLOCK"
+        WEBAPP_UNLOCK: "WEBAPP_UNLOCK",
+        RESULTS_ERROR: "RESULTS_ERROR"
     };
     var $component;
     var selectedProduct = null;
@@ -4670,7 +4651,7 @@ creditCardDetails = {
                 }
             });
         } catch (e) {
-            Results.onError("Sorry, an error occurred initialising page", "results.tag", "meerkat.modules.healthResults.init(); " + e.message, e);
+            Results.onError("Sorry, an error occurred initialising page", "results.tag", "meerkat.modules.healthResults.initResults(); " + e.message, e);
         }
     }
     function initCompare() {
@@ -4829,6 +4810,11 @@ creditCardDetails = {
             toggleResultsLowNumberMessage(false);
             meerkat.modules.journeyEngine.loadingShow("getting your quotes");
             $("header .slide-feature-pagination, header a[data-results-pagination-control]").addClass("hidden");
+        });
+        meerkat.messaging.subscribe(moduleEvents.RESULTS_ERROR, function resultsError() {
+            _.delay(function() {
+                meerkat.modules.journeyEngine.gotoPath("previous");
+            }, 1e3);
         });
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             toggleResultsLowNumberMessage(true);
@@ -5483,6 +5469,7 @@ creditCardDetails = {
                     $tier.slideUp();
                 }
                 $medicare.hide();
+                meerkat.modules.form.clearInitialFieldsAttribute($medicare);
             } else {
                 if (initMode) {
                     $tier.show();

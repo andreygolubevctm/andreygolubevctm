@@ -2,6 +2,7 @@ package com.ctm.model.simples;
 
 public class UserStats {
 	private int completed;
+	private int completedAsPM;
 	private int unsuccessful;
 	private int postponed;
 	private int contact;
@@ -16,7 +17,12 @@ public class UserStats {
 	public void setCompleted(int completed) {
 		this.completed = completed;
 	}
-
+	public int getCompletedAsPM() {
+		return completedAsPM;
+	}
+	public void setCompletedAsPM(int completedAsPM) {
+		this.completedAsPM = completedAsPM;
+	}
 	public int getUnsuccessful() {
 		return unsuccessful;
 	}

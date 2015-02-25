@@ -159,6 +159,9 @@
 
 		// load, parse and show the bridging page
 		settings.runDisplayMethod(productId);
+		setTimeout(function() {
+			meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId":"MoreInfo"});
+		}, 2000);
 	}
 
 	/**

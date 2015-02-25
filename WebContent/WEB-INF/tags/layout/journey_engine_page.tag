@@ -86,15 +86,6 @@
 		<script src="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.min.js"></script>
 		<script src="framework/jquery/plugins/bootstrap-switch-2.0.0.min.js"></script>
 
-		<script src="common/js/scrollable.js"></script>
-
-		<script src="common/js/results/Results.js?${revision}"></script>
-		<script src="common/js/results/ResultsView.js?${revision}"></script>
-		<script src="common/js/results/ResultsModel.js?${revision}"></script>
-		<script src="common/js/results/ResultsUtilities.js?${revision}"></script>
-		<script src="common/js/results/ResultsPagination.js?${revision}"></script>
-		<script src="common/js/features/Features.js?${revision}"></script>
-
 		<jsp:invoke fragment="body_end" />
 
 	</jsp:attribute>

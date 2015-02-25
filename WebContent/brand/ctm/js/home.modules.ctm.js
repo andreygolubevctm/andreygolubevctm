@@ -2067,7 +2067,7 @@
                 incrementTransactionId: false
             });
         } catch (e) {
-            Results.onError("Sorry, an error occurred initialising page", "results.tag", "meerkat.modules.homeResults.init(); " + e.message, e);
+            Results.onError("Sorry, an error occurred initialising page", "results.tag", "meerkat.modules.homeResults.initResults(); " + e.message, e);
         }
     }
     function eventSubscriptions() {

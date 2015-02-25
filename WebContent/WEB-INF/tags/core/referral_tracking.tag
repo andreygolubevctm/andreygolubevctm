@@ -5,6 +5,8 @@
 
 <%@ attribute name="vertical"	required="true"	 	rtexprvalue="true" 	description="Vertical to associate this tracking with e.g. health" %>
 
+<jsp:useBean id="referralTracking" class="com.ctm.web.ReferralTracking" scope="page" />
+
 <c:set var="vertical" value="${fn:toLowerCase(vertical)}" />
 <c:set var="root" value="${vertical}/tracking" />
 
@@ -31,21 +33,10 @@
 		<go:setData dataVar="data" xpath="${xpath}" value="${cid}" />
 	</c:when>
 	<c:when test="${not empty param.utm_campaign}">
-		<c:set var="cid" ><c:out value="${go:decodeUrl(param.utm_campaign)}" escapeXml="true"/></c:set>
-		<c:set var="source" value="invalid param - Aborting"/>
-
-		<%-- Get Valid Campaign Codes  --%>
-		<c:set var="campaign_codes">
-			<content:get key="utm_campaign"/>
-		</c:set>
-		<c:forTokens delims="," items="${campaign_codes}" var="code">
-			<c:if test="${code eq cid}">
-				<c:set var="source" value="param"/>
-				<go:setData dataVar="data" xpath="${xpath}" value="${cid}" />
-			</c:if>
-		</c:forTokens>
+		<c:set var="cid" value="${referralTracking.getAndSetUtmCampaign(pageContext.request,  data, root)}" />
 	</c:when>
 </c:choose>
-<go:log source="core:referral_tracking">CID: ${cid} from ${source}</go:log>
+<go:log source="core:referral_tracking" level="INFO">CID: ${cid} from ${source}</go:log>
 <field:hidden xpath="${xpath}" defaultValue="" />
+<field:hidden xpath="${root}/sourceid" defaultValue="${referralTracking.getAndSetUtmSource(pageContext.request,  data, root)}" />
 

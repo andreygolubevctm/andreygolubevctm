@@ -1088,7 +1088,16 @@ Results = {
 					temp.partner.push($(this));
 				});
 		
-				var alternating = $.map(temp.primary, function(v, i) { return [v, temp.partner[i]]; });
+				if(temp.primary.length >= temp.partner.length) {
+					var alternating = $.map(temp.primary, function(v, i) {
+						return [v, temp.partner[i] || ""];
+					});
+				} else {
+					var alternating = $.map(temp.partner, function(i, v) {
+						return [temp.primary[v] || "", i];
+					});
+				}
+
 				for(var i = 0; i < alternating.length; i++) {
 					if( i % 2 == 0 ) {
 						max_height += row_height;
@@ -1956,10 +1965,9 @@ Results = {
 	},
 	
 	toggleRefineInputVisibility : function(event) {
-	
 		var hide = true
 			type = event.data.type,
-			value = $("#${vertical}_refine_primary_insurance_" + type).val();
+			value = $("#${vertical}_refine_primary_insurance_" + type).val() || 0;
 
 		var clean_val = parseInt(value, 10);
 		$("#${vertical}_refine_primary_insurance_" + type + "_value").text( clean_val );

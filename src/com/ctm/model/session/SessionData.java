@@ -11,11 +11,12 @@ package com.ctm.model.session;
  *
  */
 
-import java.util.ArrayList;
-import java.util.Date;
 import com.disc_au.web.go.Data;
 
-import static com.ctm.utils.SessionDataUtils.*;
+import java.util.ArrayList;
+import java.util.Date;
+
+import static com.ctm.utils.SessionDataUtils.getTransactionIdFromTransactionSessionData;
 
 public class SessionData {
 
@@ -50,8 +51,8 @@ public class SessionData {
 		ArrayList<Data> sessions = getTransactionSessionData();
 
 		for (Data session : sessions) {
-			long sessionTransactionId = getTransactionIdFromTransactionSessionData(session);
-			if(sessionTransactionId > 0 && sessionTransactionId == transactionId){
+			Long sessionTransactionId = getTransactionIdFromTransactionSessionData(session);
+			if(sessionTransactionId != null && sessionTransactionId > 0 && sessionTransactionId == transactionId){
 				return session;
 			}
 		}

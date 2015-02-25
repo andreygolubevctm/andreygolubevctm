@@ -20,7 +20,7 @@
 							<xs:element name="surname" maxOccurs="1" minOccurs="1" />
 							<xs:element name="gender" type="gender" maxOccurs="1" minOccurs="1" />
 							<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
-							<xs:element name="authority" type="Y" maxOccurs="1" minOccurs="0" />
+							<xs:element name="authority" type="YN" maxOccurs="1" minOccurs="0" />
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
@@ -32,7 +32,7 @@
 							<xs:element name="surname" maxOccurs="1" minOccurs="1" />
 							<xs:element name="gender" type="gender" maxOccurs="1" minOccurs="1" />
 							<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
-							<xs:element name="authority" type="Y" maxOccurs="1" minOccurs="0" />
+							<xs:element name="authority" type="YN" maxOccurs="1" minOccurs="0" />
 						</xs:all>
 					</xs:complexType>
 				</xs:element>

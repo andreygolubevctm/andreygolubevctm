@@ -156,8 +156,10 @@
 					hasRunTrackingCall.push(getRankingFilter());
 				}
 
-				// scroll back to the top of the page 
-				meerkat.modules.utilities.scrollPageTo("html body");
+				// scroll back to the top of the page
+				meerkat.modules.utilities.scrollPageTo("html body", 350, 0, function() {
+					meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId":"CoverLevel"+getRankingFilter()});
+				});
 			}
 
 

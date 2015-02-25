@@ -333,7 +333,7 @@
 		window.sessioncamConfiguration.customDataObjects.push(item);
 		item = {
 				key: "currentJourney",
-				value: getCurrentJourney
+				value: getCurrentJourney()
 		};
 		window.sessioncamConfiguration.customDataObjects.push(item);
 	}

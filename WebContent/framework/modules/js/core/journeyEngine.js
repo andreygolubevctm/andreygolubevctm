@@ -336,19 +336,18 @@
 		function onHidePreviousStep(){
 			if(currentStep != null && currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
 		}
+	}
 
 		function sessionCamRecorder(step) {
 			if (window.sessionCamRecorder) {
 				if (window.sessionCamRecorder.createVirtualPageLoad) {
+				log("[sessionCamRecorder:createVirtualPageLoad]", step);
 					setTimeout(function() {
 						window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + step.navigationId);
 					}, 1000);
-	}
+			}
 		}
 		}
-
-
-	}
 
 	function onShowNextStep(eventObject, previousStep, triggerEnterMethod){
 
@@ -811,7 +810,8 @@
 		loadingShow: loadingShow,
 		loadingHide: loadingHide,
 		gotoPath: gotoPath,
-		getPreviousStepId: getPreviousStepId
+		getPreviousStepId: getPreviousStepId,
+		sessionCamRecorder: sessionCamRecorder
 	});
 
 })(jQuery);

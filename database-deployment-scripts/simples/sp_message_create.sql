@@ -81,7 +81,7 @@ BEGIN
 	-- Add message to the queue
 	--
 	IF _tranIdExists = 0 AND _doNotContact = 0 AND _dupeTranIdExists = 0 THEN
-		IF _activeMessageId IS NULL OR _activeMessageStatusId = 2 THEN
+		IF _activeMessageId IS NULL OR _activeMessageStatusId = 2 /* Completed */ OR _activeMessageStatusId = 33 /* Removed from PM */ THEN
 			INSERT INTO message
 			(transactionId, sourceId, statusId, created, whenToAction, contactName, phoneNumber1, phoneNumber2, state)
 			VALUES

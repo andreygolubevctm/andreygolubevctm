@@ -799,12 +799,22 @@
         if (val === "N") return "No" + output;
         return "";
     }
+    function formatRedbookCode(sourceEl) {
+        var val = "";
+        if (meerkat.modules.carVehicleSelection.isSplitTest()) {
+            val = sourceEl.find("input:checked").parent().text();
+        } else {
+            val = sourceEl.text();
+        }
+        return val;
+    }
     meerkat.modules.register("carEditDetails", {
         initEditDetails: initEditDetails,
         events: events,
         driverOptin: driverOptin,
         formatNcd: formatNcd,
         formatDamage: formatDamage,
+        formatRedbookCode: formatRedbookCode,
         hide: hide
     });
 })(jQuery);
@@ -1659,7 +1669,7 @@
                 incrementTransactionId: false
             });
         } catch (e) {
-            Results.onError("Sorry, an error occurred initialising page", "results.tag", "meerkat.modules.carResults.init(); " + e.message, e);
+            Results.onError("Sorry, an error occurred initialising page", "results.tag", "meerkat.modules.carResults.initResults(); " + e.message, e);
         }
     }
     function eventSubscriptions() {
@@ -2108,8 +2118,9 @@
         if (ajaxInProgress === false) {
             var $element = $(elements.factory.button);
             meerkat.modules.loadingAnimation.showAfter($element);
+            var vehicle = meerkat.modules.carVehicleSelection.isSplitTest() ? $(elements.redbook).find("input:checked") : $(elements.redbook);
             var data = {
-                redbookCode: $(elements.redbook).val()
+                redbookCode: vehicle ? vehicle.val() : null
             };
             ajaxInProgress = true;
             meerkat.modules.comms.get({
@@ -2841,6 +2852,8 @@
     var activeSelector = false;
     var ajaxInProgress = false;
     var useSessionDefaults = true;
+    var radioButtonFields = [ "types" ];
+    var isSplitTestFlag = false;
     function getVehicleData(type) {
         if (ajaxInProgress === false) {
             activeSelector = type;
@@ -2862,10 +2875,14 @@
                 }
             }
             stripValidationStyles($element);
-            $element.attr("selectedIndex", 0);
-            $element.empty().append($("<option/>", {
-                value: ""
-            }).append(snippets.resetOptionHTML));
+            if (isSplitTest() && isRadioButtonField(type)) {
+                $element.empty();
+            } else {
+                $element.attr("selectedIndex", 0);
+                $element.empty().append($("<option/>", {
+                    value: ""
+                }).append(snippets.resetOptionHTML));
+            }
             enableDisablePreviousSelectors(type, true);
             ajaxInProgress = true;
             _.defer(function() {
@@ -2943,10 +2960,12 @@
                 $selector = $(elements[type]);
                 $selector.empty();
                 var options = [];
-                options.push($("<option/>", {
-                    text: snippets.pleaseChooseOptionHTML,
-                    value: ""
-                }));
+                if (!isSplitTest() || isSplitTest() && !isRadioButtonField(type)) {
+                    options.push($("<option/>", {
+                        text: snippets.pleaseChooseOptionHTML,
+                        value: ""
+                    }));
+                }
                 var hasPopularModels = false;
                 if (type == "models" && selectorData[type][0].hasOwnProperty("isTopModel") && selectorData[type][0].isTopModel === true) {
                     hasPopularModels = true;
@@ -2959,23 +2978,44 @@
                     options.push($("<optgroup/>", {
                         label: "All " + label
                     }));
-                } else {
-                    if (isIosXS && autoSelect !== true) {
-                        options.push($("<optgroup/>", {
-                            label: type.charAt(0).toUpperCase() + type.slice(1)
-                        }));
-                    }
+                } else if ((!isSplitTest() || isSplitTest() && !isRadioButtonField(type)) && isIosXS && autoSelect !== true) {
+                    options.push($("<optgroup/>", {
+                        label: type.charAt(0).toUpperCase() + type.slice(1)
+                    }));
                 }
                 for (var i in selectorData[type]) {
                     if (selectorData[type].hasOwnProperty(i)) {
                         if (typeof selectorData[type][i] === "function") continue;
                         var item = selectorData[type][i];
-                        var option = $("<option/>", {
-                            text: item.label,
-                            value: item.code
-                        });
+                        var option = null;
+                        if (isSplitTest() && isRadioButtonField(type)) {
+                            var radio_name = "quote_vehicle_redbookCode";
+                            option = $("<div/>", {
+                                "class": "radioCustom"
+                            }).append($("<input/>", {
+                                type: "radio",
+                                id: radio_name + "_" + item.code,
+                                name: radio_name,
+                                value: item.code,
+                                required: "required",
+                                "data-autosave": "true",
+                                "data-msg-required": "Please select a vehicle type"
+                            })).append($("<label/>", {
+                                "for": radio_name + "_" + item.code,
+                                text: item.label
+                            }));
+                        } else {
+                            option = $("<option/>", {
+                                text: item.label,
+                                value: item.code
+                            });
+                        }
                         if (selected !== true && (autoSelect === true || !_.isNull(selected) && selected == item.code)) {
-                            option.prop("selected", true);
+                            if (isSplitTest() && isRadioButtonField(type)) {
+                                option.find("input").prop("checked", true);
+                            } else {
+                                option.prop("selected", true);
+                            }
                             selected = true;
                         }
                         if (type == "makes" || type == "models" && hasPopularModels) {
@@ -2985,7 +3025,7 @@
                                 options[2].append(option);
                             }
                         } else {
-                            if (isIosXS && autoSelect !== true) {
+                            if ((!isSplitTest() || isSplitTest() && !isRadioButtonField(type)) && isIosXS && autoSelect !== true) {
                                 options[1].append(option);
                             } else {
                                 options.push(option);
@@ -2995,6 +3035,9 @@
                 }
                 for (var o = 0; o < options.length; o++) {
                     $selector.append(options[o]);
+                }
+                if (isSplitTest() && isRadioButtonField(type)) {
+                    addChangeListenerToRadioGroup($selector, type);
                 }
                 $selector.prop("disabled", false);
                 if (!$selector.is(":visible")) {
@@ -3020,10 +3063,15 @@
                     }
                 }
             } else {
-                $(elements[activeSelector]).empty().append($("<option/>", {
-                    text: snippets.notFoundOptionHTML,
-                    value: ""
-                }));
+                if (isSplitTest() && isRadioButtonField(type)) {
+                    $(elements[activeSelector + "Row"]).addClass("hidden");
+                    $(elements[activeSelector]).empty();
+                } else {
+                    $(elements[activeSelector]).empty().append($("<option/>", {
+                        text: snippets.notFoundOptionHTML,
+                        value: ""
+                    }));
+                }
             }
         }
     }
@@ -3041,6 +3089,9 @@
         }
         return false;
     }
+    function emptyElement($element) {
+        $element.empty();
+    }
     function disableFutureSelectors(current) {
         var indexOfActiveSelector = _.indexOf(selectorOrder, current);
         if (indexOfActiveSelector > -1) {
@@ -3048,10 +3099,15 @@
                 if (elements.hasOwnProperty(selectorOrder[i])) {
                     var $e = $(elements[selectorOrder[i]]);
                     if (i > indexOfActiveSelector) {
-                        $e.attr("selectedIndex", 0);
-                        $e.empty().append($("<option/>", {
-                            value: ""
-                        }).append(snippets.resetOptionHTML));
+                        if (isSplitTest() && isRadioButtonField(selectorOrder[i])) {
+                            $(elements[selectorOrder[i] + "Row"]).addClass("hidden");
+                            $e.empty();
+                        } else {
+                            $e.attr("selectedIndex", 0);
+                            $e.empty().append($("<option/>", {
+                                value: ""
+                            }).append(snippets.resetOptionHTML));
+                        }
                         stripValidationStyles($e);
                         $e.prop("disabled", true);
                         if (indexOfActiveSelector === 1) {
@@ -3093,19 +3149,32 @@
             disableFutureSelectors(next);
             getVehicleData(next);
         }
-        if (data.field === "types" && !_.isEmpty($(elements.types).val())) {
-            checkAndNotifyOfVehicleChange();
+        if (data.field === "types") {
+            var $element = $(elements.types);
+            if (isSplitTest() && $element.find("input:checked") || !isSplitTest() && !_.isEmpty($element.val())) {
+                addValidationStyles($element);
+                checkAndNotifyOfVehicleChange();
+            }
         }
         meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
     }
     function addChangeListeners() {
         for (var i = 0; i < selectorOrder.length; i++) {
             if (selectorOrder.hasOwnProperty(i)) {
-                $(elements[selectorOrder[i]]).on("change", _.bind(selectionChanged, this, {
-                    field: selectorOrder[i]
-                }));
+                if (isSplitTest() && isRadioButtonField(selectorOrder[i])) {
+                    addChangeListenerToRadioGroup($(elements[selectorOrder[i]]), selectorOrder[i]);
+                } else {
+                    $(elements[selectorOrder[i]]).off().on("change", _.bind(selectionChanged, this, {
+                        field: selectorOrder[i]
+                    }));
+                }
             }
         }
+    }
+    function addChangeListenerToRadioGroup($element, type) {
+        $element.find("input[type=radio]").off().on("change", _.bind(selectionChanged, this, {
+            field: type
+        }));
     }
     function stripValidationStyles(element) {
         element.removeClass("has-success has-error");
@@ -3126,7 +3195,8 @@
         return false;
     }
     function checkAndNotifyOfVehicleChange() {
-        var rbc = $(elements.types).val();
+        var vehicle = isSplitTest() ? $(elements.types).find("input:checked") : $(elements.types);
+        var rbc = vehicle ? vehicle.val() : null;
         if (!_.isEmpty(rbc)) {
             var make = getDataForCode("makes", $(elements.makes).val());
             if (make !== false) $(elements.makeDes).val(make.label);
@@ -3139,13 +3209,20 @@
                 $(elements.marketValue).val(type.value);
                 $(elements.variant).val(type.label);
             }
-            meerkat.messaging.publish(moduleEvents.car.VEHICLE_CHANGED);
+            if (isSplitTest()) {
+                _.defer(function() {
+                    meerkat.messaging.publish(moduleEvents.car.VEHICLE_CHANGED);
+                });
+            } else {
+                meerkat.messaging.publish(moduleEvents.car.VEHICLE_CHANGED);
+            }
         }
     }
     function initCarVehicleSelection() {
         var self = this;
         $(document).ready(function() {
             if (meerkat.site.vertical !== "car") return false;
+            isSplitTestFlag = meerkat.modules.splitTest.isActive(8);
             for (var i = 0; i < selectorOrder.length; i++) {
                 $(elements[selectorOrder[i]]).attr("tabindex", i + 1);
             }
@@ -3155,7 +3232,7 @@
             addChangeListeners();
             renderVehicleSelectorData("makes");
             checkAndNotifyOfVehicleChange();
-            if (meerkat.modules.performanceProfiling.isIE8()) {
+            if (!isSplitTest() && meerkat.modules.performanceProfiling.isIE8()) {
                 $(document).on("focus", "#quote_vehicle_redbookCode", function() {
                     var el = $(this);
                     el.data("width", el.width());
@@ -3173,9 +3250,16 @@
             }
         });
     }
+    function isRadioButtonField(type) {
+        return _.indexOf(radioButtonFields, type) > -1;
+    }
+    function isSplitTest() {
+        return isSplitTestFlag;
+    }
     meerkat.modules.register("carVehicleSelection", {
         init: initCarVehicleSelection,
-        events: moduleEvents
+        events: moduleEvents,
+        isSplitTest: isSplitTest
     });
 })(jQuery);
 

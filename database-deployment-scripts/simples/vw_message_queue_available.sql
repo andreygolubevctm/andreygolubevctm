@@ -17,6 +17,8 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_available` AS
 		AND (
 			NOW() < ADDTIME(created, SEC_TO_TIME(src.messageExpiry * 60))
 			OR statusId = 4 /*Postponed*/
+			OR statusId = 31 /*Completed as PM*/
+			OR statusId = 32 /*Changed Time for PM*/
 		)
 
 		-- Is the source available at the current time?
@@ -40,5 +42,5 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_available` AS
 
 		AND postponeCount <= src.maxPostpones
 
-		-- Status check 2=Completed 7=Abandoned
-		AND msg.statusId NOT IN (2, 7)
+		-- Status check 2=Completed 7=Abandoned 33=Removed from PM
+		AND msg.statusId NOT IN (2, 7, 33)

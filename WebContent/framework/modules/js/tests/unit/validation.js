@@ -18,5 +18,22 @@ $(function () {
         ok(!meerkat.modules.validation.validatePersonName("日本語"), "日本語" + " should be invalid");
         ok(!meerkat.modules.validation.validatePersonName("العربية"), "العربية" + " should be invalid");
     });
+
+    QUnit.test("should set age message", function (assert) {
+        var title = "test";
+        var ageMin = 42;
+        var expectedMessage = title + ' age cannot be under ' + ageMin;
+        var resultMessage = "";
+        var Field = {
+            rules :  function(action, request ){
+                resultMessage = request.messages.min_DateOfBirth
+            }
+        }
+        var field = Object.create(Field);
+
+
+        meerkat.modules.validation.setMinAgeValidation(field, 42, title);
+        ok(resultMessage == expectedMessage, "min age should be set");
+    });
 });
 

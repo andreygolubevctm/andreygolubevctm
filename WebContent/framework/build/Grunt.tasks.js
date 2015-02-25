@@ -82,7 +82,10 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 	uglify[brand+'_modules'] = {
 		src: [
 			tools.getFrameworkPath('meerkat') + '*.js', //First
+			tools.getFrameworkPath('../common/','js/results/') + '*.js', //Results Library
+			tools.getFrameworkPath('../common/','js/features/') + 'Features.js', //Features library
 			tools.getFrameworkPath('modules','js/core') + '*.js' //General Core components
+
 		],
 		dest: tools.getBrandFile(brand,'js','dest','modules'),
 		options: {

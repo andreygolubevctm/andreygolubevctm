@@ -74,7 +74,7 @@ public class SimplesMessageService {
 			if (blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber1()) ||
 				blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber2())) {
 
-				setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED_DONOTCONTACT);
+				setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_DONOTCONTACT);
 
 				return getNextMessageForUser(request, userId);
 			}
@@ -89,9 +89,9 @@ public class SimplesMessageService {
 				// Decide what status to complete the message
 				// based on if the user was the consultant that sold the transaction.
 				if (user.getUsername().equals(confirmationOperator.getOperator())) {
-					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED_CONVERTEDTOSALE);
+					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_CONVERTEDTOSALE);
 				} else {
-					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED_ALREADYCUSTOMER);
+					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_ALREADYCUSTOMER);
 				}
 
 				return getNextMessageForUser(request, userId);
@@ -113,6 +113,7 @@ public class SimplesMessageService {
 	 * Postpone a message
 	 * @param actionIsPerformedByUserId User ID
 	 * @param messageId
+	 * @param statusId: Contains [postpone], [completed as pm], [change time for PM]
 	 * @param reasonStatusId Reason status for the postpone
 	 * @param postponeDate yyyy-MM-dd
 	 * @param postponeTime hh:mm
@@ -121,7 +122,7 @@ public class SimplesMessageService {
 	 * @param assignToUser
 	 * @return
 	 */
-	public String postponeMessage(int actionIsPerformedByUserId, int messageId, int reasonStatusId, String postponeDate, String postponeTime, String postponeAMPM, String comment, boolean assignToUser) {
+	public String postponeMessage(int actionIsPerformedByUserId, int messageId, int statusId, int reasonStatusId, String postponeDate, String postponeTime, String postponeAMPM, String comment, boolean assignToUser) {
 		MessageDao messageDao = new MessageDao();
 		Transaction details = new Transaction();
 
@@ -131,7 +132,7 @@ public class SimplesMessageService {
 
 			Date postponeTo = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(postponeDate + " " + postponeTime + " " + postponeAMPM);
 
-			messageDao.postponeMessage(actionIsPerformedByUserId, messageId, reasonStatusId, postponeTo, comment, unassign);
+			messageDao.postponeMessage(actionIsPerformedByUserId, messageId, statusId, reasonStatusId, postponeTo, comment, unassign);
 
 		}
 		catch (DaoException e) {
@@ -153,16 +154,16 @@ public class SimplesMessageService {
 	/**
 	 *
 	 */
-	public String setMessageToComplete(HttpServletRequest request, int actionIsPerformedByUserId, int messageId, int reasonStatusId) throws ConfigSettingException{
+	public String setMessageToComplete(HttpServletRequest request, int actionIsPerformedByUserId, int messageId, int statusId, int reasonStatusId) throws ConfigSettingException{
 		MessageDao messageDao = new MessageDao();
 		Transaction details = new Transaction();
 
 		try {
 
-			Message message = messageDao.setMessageToCompleted(actionIsPerformedByUserId, messageId, reasonStatusId);
+			Message message = messageDao.setMessageToCompleted(actionIsPerformedByUserId, messageId, statusId, reasonStatusId);
 
 			// Check the reasonStatusId, if it equals Do Not Contact, add contact to Blacklist
-			if (reasonStatusId == MessageStatus.STATUS_COMPLETED_DONOTCONTACT) {
+			if (reasonStatusId == MessageStatus.STATUS_DONOTCONTACT) {
 
 				SimplesBlacklistService simplesBlacklistService = new SimplesBlacklistService();
 				UserDao userDao = new UserDao();

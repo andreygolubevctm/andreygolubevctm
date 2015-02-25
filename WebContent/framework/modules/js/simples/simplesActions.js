@@ -43,14 +43,30 @@
 
 					$actionsDropdown.on('click', '.action-postpone', function(event) {
 						if ($(this).parent('li').hasClass('disabled')) return false;
-						actionPostpone();
+						actionPostpone(false, 'postpone');
 					});
 
 					$actionsDropdown.on('click', '.action-comment', function(event) {
 						if ($(this).parent('li').hasClass('disabled')) return false;
 						actionComments();
 					});
+
+					$actionsDropdown.on('click', '.action-remove-pm', function() {
+						if ($(this).parent('li').hasClass('disabled')) return false;
+						actionFinish('remove_pm');
+					});
+
+					$actionsDropdown.on('click', '.action-complete-pm', function() {
+						if ($(this).parent('li').hasClass('disabled')) return false;
+						actionPostpone(true, 'complete_pm');
+					});
+
+					$actionsDropdown.on('click', '.action-change-time', function() {
+						if ($(this).parent('li').hasClass('disabled')) return false;
+						actionPostpone(true, 'change_time');
+					});
 				});
+
 
 				// Subscribe to the transactionId changing
 				meerkat.messaging.subscribe(meerkat.modules.events.simplesInterface.TRANSACTION_ID_CHANGE, function tranIdChange(obj) {
@@ -100,6 +116,9 @@
 		var $actionUnsuccessfulParent = $actionsDropdown.find('.action-unsuccessful').parent('li');
 		var $actionPostponeParent = $actionsDropdown.find('.action-postpone').parent('li');
 		var $actionCommentParent = $actionsDropdown.find('.action-comment').parent('li');
+		var $actionCompletePmParent = $actionsDropdown.find('.action-complete-pm').parent('li');
+		var $actionChangeTimeParent = $actionsDropdown.find('.action-change-time').parent('li');
+		var $actionRemovePmParent = $actionsDropdown.find('.action-remove-pm').parent('li');
 
 		// Comments menu option
 		if (currentTransactionId !== false) {
@@ -121,6 +140,10 @@
 			$actionCompleteParent.addClass('disabled');
 			$actionUnsuccessfulParent.addClass('disabled');
 			$actionPostponeParent.addClass('disabled');
+			$actionCompletePmParent.addClass('disabled');
+			$actionChangeTimeParent.addClass('disabled');
+			$actionRemovePmParent.addClass('disabled');
+
 		}
 		else {
 			showMenu = true;
@@ -128,15 +151,41 @@
 			$msgId.text(currentMessage.message.messageId);
 			$actionCompleteParent.removeClass('disabled');
 			$actionUnsuccessfulParent.removeClass('disabled');
+			$actionRemovePmParent.removeClass('disabled');
 
 			// Can the message be postponed?
 			if (currentMessage.message.hasOwnProperty('canPostpone') && currentMessage.message.canPostpone === true) {
 				$actionPostponeParent.removeClass('disabled');
+				$actionCompletePmParent.removeClass('disabled');
+				$actionChangeTimeParent.removeClass('disabled');
 			}
 			else {
 				$actionPostponeParent.addClass('disabled');
+				$actionCompletePmParent.addClass('disabled');
+				$actionChangeTimeParent.addClass('disabled');
+			}
+
+			// If set to completed as pm, user will need to see a different Active dropdown
+			if (isCompletedAsPM()) {
+				
+				$actionRemovePmParent.show();
+				$actionChangeTimeParent.show();
+
+				$actionCompleteParent.hide();
+				$actionCompletePmParent.hide();
+				$actionPostponeParent.hide();
+				$actionUnsuccessfulParent.hide();
+			}else{
+				$actionRemovePmParent.hide();
+				$actionChangeTimeParent.hide();
+
+				$actionCompleteParent.show();
+				$actionCompletePmParent.show();
+				$actionPostponeParent.show();
+				$actionUnsuccessfulParent.show();
 			}
 		}
+		
 
 		// Hide/show the actions navbar menu
 		if (showMenu) {
@@ -159,6 +208,10 @@
 		}
 		else if (type === 'unsuccessful') {
 			parentStatusId = 6;
+		}
+		else if (type === 'remove_pm') {
+			parentStatusId = 33;
+			type = 'complete';
 		}
 
 		modalId = meerkat.modules.dialogs.show({
@@ -194,7 +247,7 @@
 
 					var statusId = $modal.find('input[type=radio]:checked').val();
 
-					meerkat.modules.simplesMessage.performFinish(type, {reasonStatusId:statusId}, function performCallback() {
+					meerkat.modules.simplesMessage.performFinish(type, {statusId:parentStatusId, reasonStatusId:statusId}, function performCallback() {
 						// Click the nav bar home button
 						if ($homeButton.length > 0) $homeButton[0].click();
 
@@ -207,7 +260,26 @@
 
 	}
 
-	function actionPostpone() {
+	function actionPostpone(assignToUser, type) {
+		if (!type) return;
+
+		var parentStatusId = 0;
+		var heading = '';
+		if (type === 'postpone') {
+			parentStatusId = 4;
+			heading = 'Postpone this message';
+		}
+		else if (type === 'complete_pm') {
+			parentStatusId = 31;
+			heading = 'Complete as PM';
+		}
+		else if (type === 'change_time') {
+			parentStatusId = 32;
+			heading = 'Change Time';
+		}
+
+		heading = encodeURIComponent(heading);
+
 		meerkat.modules.dialogs.show({
 			title: ' ',
 			buttons: [{
@@ -233,7 +305,7 @@
 
 				// Get some content
 				meerkat.modules.comms.get({
-					url: 'simples/ajax/message_statuses.json.jsp?parentStatusId=4',
+					url: 'simples/ajax/message_statuses.json.jsp?parentStatusId=' + parentStatusId + '&heading=' + heading,
 					dataType: 'json',
 					cache: true,
 					errorLevel: 'silent'
@@ -286,9 +358,10 @@
 							postponeDate: $modal.find('#postponedate').val(),
 							postponeTime: $modal.find('#postponehour').val() + ':' + $modal.find('#postponeminute').val(),
 							postponeAMPM: $modal.find('input[name="postponeampm"]:checked').val(),
+							statusId: parentStatusId,
 							reasonStatusId: $modal.find('select[name="reason"]').val(),
 							comment: $modal.find('textarea').val(),
-							assignToUser: $modal.find('#assigntome').is(':checked')
+							assignToUser: assignToUser
 						};
 
 						// Validation checks
@@ -315,6 +388,7 @@
 							$button.prop('disabled', false);
 							meerkat.modules.loadingAnimation.hide($button);
 						});
+
 					});
 				});
 			}
@@ -371,6 +445,18 @@
 		// Replace modal with updated contents
 		meerkat.modules.dialogs.changeContent(modalId, htmlContent);
 
+	}
+
+	function isCompletedAsPM() {
+		if (currentMessage.hasOwnProperty("messageaudits")) {
+			for (var i = 0; i < currentMessage.messageaudits.length; i++) {
+				var auditObj = currentMessage.messageaudits[i];
+				if (auditObj.hasOwnProperty("statusId") && auditObj.statusId === 31) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 

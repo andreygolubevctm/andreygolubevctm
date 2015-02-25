@@ -83,13 +83,10 @@ var healthFunds_HIF = {
 			<%-- Increase minimum age requirement for applicants from 16 to 18 --%>
 			<%-- Primary --%>
 			healthFunds_HIF.$_dobPrimary = $('#health_application_primary_dob');
-			healthFunds_HIF.defaultAgeMin = dob_health_application_primary_dob.ageMin;
-			dob_health_application_primary_dob.ageMin = 18;
-			healthFunds_HIF.$_dobPrimary.rules('add', {messages: {'min_DateOfBirth': healthFunds_HIF.$_dobPrimary.attr('title') + ' age cannot be under ' + dob_health_application_primary_dob.ageMin} } );
-			<%-- Partner --%>
 			healthFunds_HIF.$_dobPartner = $('#health_application_partner_dob');
-			dob_health_application_partner_dob.ageMin = 18;
-			healthFunds_HIF.$_dobPartner.rules('add', {messages: {'min_DateOfBirth': healthFunds_HIF.$_dobPartner.attr('title') + ' age cannot be under ' + dob_health_application_partner_dob.ageMin} } );
+
+			meerkat.modules.validation.setMinAgeValidation(healthFunds_HIF.$_dobPrimary, 18 , "primary person's");
+			meerkat.modules.validation.setMinAgeValidation(healthFunds_HIF.$_dobPartner, 18, "partner's");
 
 			<%-- How to send information. Second argument = validation required --%>
 			healthApplicationDetails.showHowToSendInfo('HIF', true);
@@ -155,13 +152,9 @@ var healthFunds_HIF = {
 			$('.health_dependant_details_schoolGroup .help-icon').show();
 
 			<%-- Age requirements for applicants (back to default) --%>
-			dob_health_application_primary_dob.ageMin = healthFunds_HIF.defaultAgeMin;
-			healthFunds_HIF.$_dobPrimary.rules('add', {messages: {'min_DateOfBirth': healthFunds_HIF.$_dobPrimary.attr('title') + ' age cannot be under ' + dob_health_application_primary_dob.ageMin} } );
+			meerkat.modules.validation.setMinAgeValidation(healthFunds_HIF.$_dobPrimary, dob_health_application_primary_dob.ageMin , "primary person's");
+			meerkat.modules.validation.setMinAgeValidation(healthFunds_HIF.$_dobPartner, dob_health_application_partner_dob.ageMin, "partner's");
 
-			dob_health_application_partner_dob.ageMin = healthFunds_HIF.defaultAgeMin;
-			healthFunds_HIF.$_dobPrimary.rules('add', {messages: {'min_DateOfBirth': healthFunds_HIF.$_dobPartner.attr('title') + ' age cannot be under ' + dob_health_application_partner_dob.ageMin} } );
-
-			delete healthFunds_HIF.defaultAgeMin;
 			delete healthFunds_HIF.$_dobPrimary;
 			delete healthFunds_HIF.$_dobPartner;
 

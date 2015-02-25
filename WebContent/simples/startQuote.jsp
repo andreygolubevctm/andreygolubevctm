@@ -5,7 +5,6 @@
 
 <core_new:no_cache_header />
 
-<c:set var="verticalCode" value="" />
 <c:set var="verticalCodeParam" value="${param.verticalCode}" />
 
 <c:choose>

@@ -22,10 +22,9 @@
 
 <!-- MAIN TEMPLATE and ERRORS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
-		<xsl:variable name="plan_id" select="/soap:Envelope/soap:Body/policy_response/calculated_multi_values/bulk_premiums/bulk_premium/plan_id" />
 		<xsl:choose>
 		<!-- ACCEPTABLE -->
-			<xsl:when test="/soap:Envelope/soap:Body/policy_response/calculated_multi_values/bulk_premiums/bulk_premium and not($plan_id = 'ComprehensiveDom') and not ($plan_id = 'ComprehensiveDom_ski')">
+			<xsl:when test="/soap:Envelope/soap:Body/policy_response/calculated_multi_values/bulk_premiums/bulk_premium">
 				<xsl:apply-templates select="/soap:Envelope/soap:Body/policy_response" />
 		</xsl:when>
 
@@ -107,11 +106,13 @@
 
 				<xsl:variable name="newProductId">
 						<xsl:choose>
-							<xsl:when test="$lcPlanId = 'backpacker'">DUIN-TRAVEL-50</xsl:when>
-							<xsl:when test="$lcPlanId = 'aftl'">DUIN-TRAVEL-51</xsl:when>
-							<xsl:when test="$lcPlanId = 'aftb'">DUIN-TRAVEL-52</xsl:when>
-							<xsl:when test="$lcPlanId = 'comprehensive_ski'">DUIN-TRAVEL-53</xsl:when>							
-							<xsl:otherwise>DUIN-TRAVEL-49</xsl:otherwise>
+							<xsl:when test="$lcPlanId = 'backpacker'">DUIN-TRAVEL-50</xsl:when> <!-- Plan C - Backpackers International -->
+							<xsl:when test="$lcPlanId = 'aftl'">DUIN-TRAVEL-51</xsl:when> <!-- Plan D - Frequent Traveller (Leisure) -->
+							<xsl:when test="$lcPlanId = 'aftb'">DUIN-TRAVEL-52</xsl:when> <!-- Plan E - Frequent Traveller (Business) -->
+							<xsl:when test="$lcPlanId = 'comprehensive_ski'">DUIN-TRAVEL-53</xsl:when>	<!-- Comprehensive Snow Cover -->
+							<xsl:when test="$lcPlanId = 'comprehensivedom'">DUIN-TRAVEL-54</xsl:when>	<!-- Plan B - Comprehensive Australia Only -->
+							<xsl:when test="$lcPlanId = 'comprehensivedom_ski'">DUIN-TRAVEL-55</xsl:when>	<!-- Comprehensive Snow Cover -->
+							<xsl:otherwise>DUIN-TRAVEL-49</xsl:otherwise><!-- Plan A - Comprehensive International. Done so that if a new product is slipped in, it won't prevent results from returning-->
 						</xsl:choose>
 				</xsl:variable>
 				<xsl:variable name="formattedTodayDate">
@@ -185,7 +186,7 @@
 								<xsl:text>%26adultAges=</xsl:text>
 								<xsl:value-of select="$ages" />
 								<xsl:text>%26affID=ctm1</xsl:text>
-								<xsl:if test="$newProductId = 'DUIN-TRAVEL-53'">
+								<xsl:if test="$newProductId = 'DUIN-TRAVEL-53' or $newProductId = 'DUIN-TRAVEL-55'"> <!-- The Ski products -->
 									<xsl:text>%26ski=true</xsl:text>
 								</xsl:if>
 							</xsl:otherwise>

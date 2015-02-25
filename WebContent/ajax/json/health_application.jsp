@@ -262,7 +262,19 @@
 
 			</c:when>
 			<c:otherwise>
+						<c:choose>
+							<c:when test="${empty callCentre }">
+								<c:set var="resultXml"><result><success>false</success><errors></c:set>
+								<c:forEach var="validationError"  items="${validationErrors}">
+									<c:set var="resultXml">${resultXml}<error><code>${validationError.message}</code><original>${validationError.elementXpath}</original></error></c:set>
+								</c:forEach>
+								<c:set var="resultXml">${resultXml}</errors></result></c:set>
+								<health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}" transactionId="${tranId}" productId="${productId}" />
+							</c:when>
+							<c:otherwise>
 				<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="health_application.jsp" />
+	</c:otherwise>
+		</c:choose>
 	</c:otherwise>
 		</c:choose>
 	</c:otherwise>

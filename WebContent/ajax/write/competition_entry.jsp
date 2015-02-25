@@ -1,9 +1,10 @@
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<security:populateDataFromParams rootPath="competition" />
 
-<session:get settings="true"/>
+<session:get settings="true" />
+
+<security:populateDataFromParams rootPath="competition" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>

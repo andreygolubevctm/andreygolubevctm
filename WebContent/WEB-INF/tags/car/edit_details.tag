@@ -66,7 +66,17 @@
 						<li class="vehicle-details-title"><span data-source="#quote_vehicle_make"></span> <span data-source="#quote_vehicle_model"></span></li>
 						<li><span data-source="#quote_vehicle_year"></span> <span data-source="#quote_vehicle_body"></span></li>
 						<li class="push-right"><span data-source="#quote_vehicle_trans"></span> <span data-source="#quote_vehicle_fuel"></span></li>
-						<li><span data-source="#quote_vehicle_redbookCode"></span></li>
+						<li>
+							<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+							<c:choose>
+								<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 8)}">
+									<span data-source="#quote_vehicle_redbookCode" data-callback="meerkat.modules.carEditDetails.formatRedbookCode"></span>
+								</c:when>
+								<c:otherwise>
+									<span data-source="#quote_vehicle_redbookCode"></span>
+								</c:otherwise>
+							</c:choose>
+						</li>
 					</ul>
 					<a href="#start" class="btn btn-sm btn-edit stick-btn-left visible-lg needsclick">Edit</a>
 					<div class="clearfix"></div>

@@ -1,6 +1,6 @@
 /*
-	This module supports the Sorting for travel results page.
-*/
+ This module supports the Sorting for travel results page.
+ */
 
 ;(function($, undefined){
 
@@ -11,9 +11,16 @@
 		exception = meerkat.logging.exception,
 		$sortElements,
 		activeSortBy,
-		activeSortDir;
-		//$sortbarChildren,
-		//$sortbarParent,
+		activeSortDir,
+		defaultSortStates = {
+			'benefits.excess' : 'asc',
+			'benefits.medical' : 'desc',
+			'benefits.cxdfee' : 'desc',
+			'benefits.luggage' : 'desc',
+			'price.premium' : 'asc'
+		};
+	//$sortbarChildren,
+	//$sortbarParent,
 
 
 	//Sorting is a kind of filtering for now in the events
@@ -101,6 +108,10 @@
 
 				//defer here allows it to be as responsive as possible to the click, since this is an expensive operation to actually sort animate things.
 				_.defer(function deferredSortClickWrapper(){
+					// check if resetState is enabled and that the clicked item isn't the currently clicked item
+					if (!$clicked.parent().hasClass('active')) {
+						resetSortDir($clicked);
+					}
 					setSortFromTarget($clicked);
 				});
 			}
@@ -117,7 +128,12 @@
 		meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockSorting(obj) {
 			$sortElements.removeClass('inactive').removeClass('disabled');
 		});
+	}
 
+	// Reset the sort dir everytime we click on a sortable column header
+	function resetSortDir($elem) {
+		var sortType = $elem.attr('data-sort-type'); // grab the currently clicked sort type
+		$elem.attr('data-sort-dir', defaultSortStates[sortType]); // reset this element's default sort state
 	}
 
 	function init() {

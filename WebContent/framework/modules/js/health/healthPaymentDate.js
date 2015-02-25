@@ -85,9 +85,11 @@
 		}
 		
 		$paymentDays.children().each(function playWithChildren () {
-			childDateOriginal = new Date($(this).val());
-			childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
-			$(this).val(meerkat.modules.utilities.returnDateValue(childDateNew));
+			if ($(this).val() !== '') {
+				childDateOriginal = new Date($(this).val());
+				childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
+				$(this).val(meerkat.modules.utilities.returnDateValue(childDateNew));
+			}
 		});
 	}
 

@@ -11,7 +11,7 @@
 	<validation-file>WEB-INF/xsd/travel/travelQuoteResults.xsd</validation-file>
 
 	<service name="AGIS" type="soap">
-		<soap-url>http://services-nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
+		<soap-url>https://services-nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
 		<soap-action>getTravelQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000001,partnerReference=TEST-01</outbound-xsl-parms>
@@ -43,7 +43,7 @@
 	</service>
 
 	<service name="1FOW" type="soap">
-		<soap-url>http://services-nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
+		<soap-url>https://services-nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
 		<soap-action>getTravelQuotes</soap-action>
 		<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000002,partnerReference=TEST-01</outbound-xsl-parms>

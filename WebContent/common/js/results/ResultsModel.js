@@ -211,7 +211,12 @@ ResultsModel = {
 	handleFetchError: function( data, description ){
 		if (typeof Loading !== "undefined") Loading.hide();
 		Results.reviseDetails();
-		Results.onError("Sorry, an error occured with the results page.<br />Please close this message and click 'next' to reload your results.", "common/js/Results.js for " + Results.model.getVertical(), "Results.model.fetch(). " + description, data);
+		var callString = '';
+		if(typeof meerkat !== 'undefined' && typeof meerkat.site !== 'undefined'
+			&& typeof meerkat.site.content !== 'undefined' && typeof meerkat.site.content.callCentreHelpNumber != 'undefined' && meerkat.site.content.callCentreHelpNumber.length > 0) {
+			callString = 'If the problem persists, please feel free to discuss your comparison needs with our call centre on ' + meerkat.site.content.callCentreHelpNumber + '.';
+		}
+		Results.onError("Sorry, an error occurred while retrieving your results.<br />Please close this message and try again. " + callString, "common/js/Results.js for " + Results.model.getVertical(), "Results.model.fetch(). " + description, data);
 	},
 
 	getVertical: function() {

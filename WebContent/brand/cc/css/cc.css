@@ -53,8 +53,8 @@
 }
 @font-face {
   font-family: 'framework_font';
-  src: url('../../../framework/fonts/CTM.eot?434f43');
-  src: url('../../../framework/fonts/CTM.eot?#iefix434f43') format('embedded-opentype'), url('../../../framework/fonts/CTM.woff?434f43') format('woff'), url('../../../framework/fonts/CTM.ttf?434f43') format('truetype'), url('../../../framework/fonts/CTM.svg?434f43#CTM') format('svg');
+  src: url('../../../framework/fonts/CTM.eot?20150209');
+  src: url('../../../framework/fonts/CTM.eot?#iefix20150209') format('embedded-opentype'), url('../../../framework/fonts/CTM.woff?20150209') format('woff'), url('../../../framework/fonts/CTM.ttf?20150209') format('truetype'), url('../../../framework/fonts/CTM.svg?20150209#CTM') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -274,6 +274,12 @@ button [class*=" icon-"] {
 }
 .icon-calendar:before {
   content: "\e913";
+}
+.icon-radio-empty:before {
+  content: "\e914";
+}
+.icon-radio-selected:before {
+  content: "\e915";
 }
 .icon-quote-start:before {
   content: "\e629";
@@ -8972,6 +8978,75 @@ fieldset h2 .icon-text {
     /* not ideal */
     white-space: nowrap;
   }
+}
+.radioCustom {
+  display: block;
+  vertical-align: baseline;
+  margin-bottom: 10px;
+}
+.radioCustom input {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  position: absolute;
+  /* Checked state */
+  /* This should be combined with the :checked above but I couldn't get IE8 to pick up the rule */
+  /* Focused state */
+  /* Parent Disabled state */
+}
+.radioCustom input + label {
+  position: relative;
+  display: block;
+  /* Use the CTM icon font */
+}
+.radioCustom input + label:before {
+  content: "\e914";
+}
+.radioCustom input + label:before {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  /* By default, apply the success theme */
+  font-family: 'framework_font';
+  font-size: 1.3em;
+  display: block;
+  float: left;
+  visibility: visible;
+  line-height: 1;
+  text-align: center;
+  padding-right: 10px;
+}
+.radioCustom input + label:before:hover,
+.radioCustom input + label:before:focus {
+  color: #ffffff;
+  text-decoration: none;
+}
+.radioCustom input + label:before.disabled,
+.radioCustom input + label:before[disabled],
+fieldset[disabled] .radioCustom input + label:before {
+  cursor: not-allowed;
+  pointer-events: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.radioCustom input:checked + label:before {
+  content: "\e915 ";
+}
+.lt-ie9 .radioCustom input.checked + label:before {
+  content: "\e915 ";
+}
+.radioCustom input.has-error + label:before {
+  color: #ff5f5f;
+}
+.radioCustom input[disabled] + label {
+  cursor: default;
+}
+.radioCustom input[disabled] + label:before {
+  cursor: pointer;
+}
+.form-horizontal .checkbox {
+  padding-top: 3px;
 }
 /**
 	* [NOTE]

@@ -1082,7 +1082,7 @@
                 incrementTransactionId: false
             });
         } catch (e) {
-            Results.onError("Sorry, an error occurred initialising page", "results.tag", "meerkat.modules.homeloanResults.init(); " + e.message, e);
+            Results.onError("Sorry, an error occurred initialising page", "results.tag", "meerkat.modules.homeloanResults.initResults(); " + e.message, e);
         }
     }
     function eventSubscriptions() {

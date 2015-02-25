@@ -181,12 +181,25 @@
 		return '';
 	}
 
+	function formatRedbookCode(sourceEl) {
+		var val = "";
+
+		if(meerkat.modules.carVehicleSelection.isSplitTest()) {
+			val = sourceEl.find('input:checked').parent().text();
+		} else {
+			val = sourceEl.text();
+		}
+
+		return val;
+	}
+
 	meerkat.modules.register('carEditDetails', {
 		initEditDetails : initEditDetails, // main entrypoint to be called.
 		events : events, // exposes the events object
 		driverOptin : driverOptin,
 		formatNcd : formatNcd,
 		formatDamage : formatDamage,
+		formatRedbookCode : formatRedbookCode,
 		hide: hide
 	});
 

@@ -35,11 +35,14 @@
 
 	
 	function markFieldsAsVisible($parentElement){
-
-		$parentElement.find(':input[data-initValue]').removeAttr('data-initValue');
+		clearInitialFieldsAttribute($parentElement);
 		$parentElement.find(':input[data-visible]').removeAttr('data-visible');
 		$parentElement.find(':input:visible').attr('data-visible', "true");
 
+	}
+
+	function clearInitialFieldsAttribute($parentElement){
+		$parentElement.find(':input[data-initValue]').removeAttr('data-initValue');
 	}
 
 	function markInitialFieldsWithValue($parentElement){
@@ -60,7 +63,8 @@
 		getSerializedData: getSerializedData,
 		appendHiddenField: appendHiddenField,
 		markFieldsAsVisible:markFieldsAsVisible,
-		markInitialFieldsWithValue:markInitialFieldsWithValue
+		markInitialFieldsWithValue:markInitialFieldsWithValue,
+		clearInitialFieldsAttribute: clearInitialFieldsAttribute
 	});
 
 })(jQuery);
