@@ -10,6 +10,7 @@
 	<debug-dir>life/debug</debug-dir>
 	<validation-file>WEB-INF/xsd/life/lifeQuoteResults.xsd</validation-file>
 
+	<!--
 	<service name="OZIC_RESULTS" type="SOAP">
 		<soap-url>https://ecommerce.disconline.com.au/services/3.1/getLifeQuotes</soap-url>
 		<soap-action>https://ecommerce.disconline.com.au/services/3.1/getLifeQuotes</soap-action>
@@ -19,6 +20,7 @@
 		<inbound-xsl-parms>company=ozicare,companyCode=OZIC</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+	-->
 
 	<service name="LB_RESULTS" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-7-0/term-quote/new</soap-url>
