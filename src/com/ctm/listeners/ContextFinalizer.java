@@ -20,6 +20,7 @@ import ch.qos.logback.classic.LoggerContext;
 
 import com.ctm.services.ApplicationService;
 import com.ctm.services.EnvironmentService;
+import com.ctm.services.elasticsearch.AddressSearchService;
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 
 /** adding this to debug threads **/
@@ -49,6 +50,8 @@ public class ContextFinalizer implements ServletContextListener {
 
 			EnvironmentService environmentService = new EnvironmentService();
 			environmentService.getBuildDetailsFromManifest(sce.getServletContext());
+
+			AddressSearchService.init();
 		}
 		catch (IOException e) {
 			logger.error(e);
@@ -75,6 +78,8 @@ public class ContextFinalizer implements ServletContextListener {
 				logger.warn(String.format("Error deregistering driver %s", d), ex);
 			}
 		}
+
+		AddressSearchService.destroy();
 		try {
 			AbandonedConnectionCleanupThread.shutdown();
 		} catch (InterruptedException e) {

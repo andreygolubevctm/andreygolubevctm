@@ -11,16 +11,22 @@
 
 <c:set var="best_price_param_name">best_price${rankPosition}</c:set>
 <%-- Left this line below in as removing prevents the price from being picked up and sent. Quite possibly due to the permissions system  --%>
-<c:if test="${not empty param[best_price_param_name]}"> 
+<c:if test="${not empty param[best_price_param_name]}">
 	<%-- Used by dreammail/send.jsp xmlForOtherQuery call ---%>
 	<go:setData dataVar="data" xpath="travel/bestPricePosition" value="${rankPosition}" />
 
 	<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 	<c:set var="prefix" value="best_price_" />
-	<c:set var="suffixes" value="productId,providerName,service,productName,excess,medical,cxdfee,luggage,price,url" />
+	<c:set var="suffixes" value="productId,providerName,service,productName,excess,medical,cxdfee,luggage,price,url,coverLevelType" />
 	<c:set var="search" value="'" />
 	<c:set var="replace" value="\\'" />
+
+	<c:if test="${empty data.coverLevelTab}">
+		<%-- set the cover level tab --%>
+		<c:set var="coverLevelParamName" value="coverLevelType${rankPosition}" />
+		<go:setData dataVar="data" xpath="travel/coverLevelTab" value="${param[coverLevelParamName]}" />
+	</c:if>
 
 	<%-- Located expected params using the suffixes list and add to rankings_data --%>
 	<c:set var="sqlBulkInsert" value="" />

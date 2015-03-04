@@ -14,7 +14,7 @@
 	<div class="tab-content">
 		<div class="tab-pane car-non-standard-accessories">
 			<form_new:fieldset legend="Available non-standard accessories for your car">
-				<p>By listing all the options, accessories and  modifications the insurer will be able to get a more accurate idea of the car's true value. </p>
+				<p>By listing aasdfasdfasdfasdfasdfdea of the car's true value. </p>
 				<div class="row">
 					<div class="col-md-4 small">
 						<p>Option / Accessory type</p>

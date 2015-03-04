@@ -65,4 +65,53 @@ public class VerticalsDao {
 
 		return verticals;
 	}
+
+	/**
+	 * Return a vertical base on Code
+	 *
+	 * @return
+	 * @throws DaoException
+	 */
+	public Vertical getVerticalByCode(String verticalCode) throws DaoException{
+
+		SimpleDatabaseConnection dbSource = null;
+
+
+		try{
+
+			dbSource = new SimpleDatabaseConnection();
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+				"SELECT verticalId, verticalName, verticalCode " +
+				"FROM ctm.vertical_master v " +
+				"WHERE v.verticalCode = ?;"
+			);
+
+			stmt.setString(1, verticalCode);
+
+			ResultSet verticalResult = stmt.executeQuery();
+
+			while (verticalResult.next()) {
+				Vertical vertical = new Vertical();
+				vertical.setId(verticalResult.getInt("verticalId"));
+				vertical.setType(VerticalType.findByCode(verticalResult.getString("verticalCode") ));
+				vertical.setName(verticalResult.getString("verticalName") );
+				return vertical;
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DaoException(e.getMessage(), e);
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new DaoException(e.getMessage(), e);
+		} finally {
+			dbSource.closeConnection();
+		}
+
+		return null;
+
+	}
 }

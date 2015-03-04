@@ -19,6 +19,7 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.Vertical;
+import com.ctm.services.elasticsearch.AddressSearchService;
 import com.disc_au.web.go.Data;
 
 public class ApplicationService {
@@ -332,6 +333,8 @@ public class ApplicationService {
 		brands = new ArrayList<Brand>();
 		getBrands();
 		ServiceConfigurationService.clearCache();
+		AddressSearchService.destroy();
+		AddressSearchService.init();
 		return true;
 	}
 

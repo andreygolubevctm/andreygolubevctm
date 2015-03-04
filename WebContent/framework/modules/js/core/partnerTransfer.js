@@ -90,7 +90,10 @@
 
 	function addTrackingDataToSettings(settings) {
 
-		var tracking = _.pick(settings, 'actionStep','brandCode','currentJourney','lastFieldTouch','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser');
+		var tracking = _.pick(settings, 'actionStep','brandCode','currentJourney','lastFieldTouch','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser'),
+			originatingTab = (typeof meerkat.modules.coverLevelTabs === 'undefined') ? 'default' : meerkat.modules.coverLevelTabs.getOriginatingTab(),
+			departingTab = (typeof meerkat.modules.coverLevelTabs === 'undefined') ? 'default' : meerkat.modules.coverLevelTabs.getDepartingTabJourney();
+
 		meerkat.modules.tracking.updateObjectData(tracking);
 		// Guarantee all fields exist in the object
 		tracking = $.extend({
@@ -107,6 +110,8 @@
 			type:					'ONLINE',
 			vertical:				null,
 			verticalFilter:			null,
+			originatingTab:			originatingTab,
+			departingTab:			departingTab,
 			handOverQS:				getQueryStringFromURL(settings.product.quoteUrl),
 			simplesUser:			meerkat.site.isCallCentreUser
 		},tracking);
@@ -191,7 +196,7 @@
 			});
 		}
 
-		var data = _.pick(trackData, 'actionStep','brandCode','currentJourney','lastFieldTouch','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser');
+		var data = _.pick(trackData, 'actionStep','brandCode','currentJourney','departingTab','lastFieldTouch','originatingTab','productBrandCode','productID','productName','quoteReferenceNumber','rootID','trackingKey','transactionID','type','vertical','verticalFilter','handoverQS','simplesUser');
 
 		// NEW combined tracking method
 		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {

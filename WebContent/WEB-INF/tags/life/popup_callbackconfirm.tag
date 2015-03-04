@@ -29,7 +29,7 @@
 			<c:if test="${empty callCentre}">
 				<div class="${xpath}_contactDetails_callHelp">Phone number must be either a mobile phone<br/>or a landline number (including area code)</div>
 				<div class="clear"><!-- empty --></div>
-				<div class="${xpath}_contactDetails_callConfirm">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/${life_link}/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life partner may contact me to further assist with my life insurance needs</div>
+				<div class="${xpath}_contactDetails_callConfirm">I understand comparethemarket.com.au compares life insurance policies from a range of <a href="http://www.comparethemarket.com.au/${life_link}/#tab_nav_1610_0" target="_blank">participating suppliers</a>. By entering my telephone number I agree that Lifebroker or Auto &amp; General Services, Compare the Market&#39;s trusted life partners may contact me to further assist with my life insurance needs</div>
 			</c:if>
 
 			<field:hidden xpath="${xpath}/confirmCall" />

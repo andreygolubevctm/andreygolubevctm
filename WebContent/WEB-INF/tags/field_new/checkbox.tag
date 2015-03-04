@@ -15,6 +15,8 @@
 <%@ attribute name="helpId" 		required="false"	rtexprvalue="true"	%>
 <%@ attribute name="helpClassName" 	required="false"	rtexprvalue="true"	%>
 <%@ attribute name="helpPosition" 	required="false"	rtexprvalue="true"	%>
+<%@ attribute name="customAttribute"	required="false"	rtexprvalue="true" description="Add a custom attribute to the element." %>
+
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -23,6 +25,10 @@
 
 <c:if test='${xpathval==value}'>
 	<c:set var="checked" value=" checked='checked'" />
+</c:if>
+
+<c:if test="${not empty customAttribute}">
+	<c:set var="customAttribute" value="${customAttribute}" />
 </c:if>
 
 <c:if test="${not empty theme}">
@@ -35,7 +41,7 @@
 
 <%-- HTML --%>
 <div class="checkbox">
-	<input type="checkbox" name="${name}" id="${id}" class="checkbox-custom ${className}" value="${value}"${checked}>
+	<input type="checkbox" name="${name}" id="${id}" class="checkbox-custom ${className}" value="${value}"${checked} ${customAttribute}>
 
 	<label for="${id}">
 		<c:if test="${label!=null && not empty label}">${title}</c:if>

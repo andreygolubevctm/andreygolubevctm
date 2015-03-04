@@ -30,4 +30,4 @@
 
 </form_new:fieldset>
 
-<car:options_accessories_dialog xpath="${xpath}"/>
+<car:options_accessories_dialog_listed xpath="${xpath}"/>

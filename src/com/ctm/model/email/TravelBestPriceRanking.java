@@ -5,7 +5,7 @@ public class TravelBestPriceRanking extends BestPriceRanking {
 	private String medical;
 	private String cancellation;
 	private String luggage;
-	
+	private String coverLevelType;
 
 	public void setMedical(String medical) {
 		this.medical = medical;
@@ -31,5 +31,11 @@ public class TravelBestPriceRanking extends BestPriceRanking {
 		return luggage;
 	}
 
+	public void setCoverLevelType(String coverLevelType) {
+		this.coverLevelType = coverLevelType;
+	}
 
+	public String getCoverLevelType() {
+		return coverLevelType;
+	}
 }

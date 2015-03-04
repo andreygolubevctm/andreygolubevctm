@@ -134,9 +134,21 @@
 					case 'list':
 						// get it from a source ul, but text only
 						// assumes the first span is the one with the text in it
-						$sourceElement.find('li').each(function() {
-							output += '<li>' + $(this).find('span:eq(0)').text() + '</li>';
-						});
+						var $listElements = $sourceElement.find('li');
+						if ($listElements.length > 0) {
+							$listElements.each(function() {
+								output += '<li>' + $(this).find('span:eq(0)').text() + '</li>';
+							});
+						} else {
+							output += '<li>None selected</li>';
+						}
+						break;
+					case 'optional':
+						output = $sourceElement.val() || $alternateSourceElement.val() || '';
+						// If we get even one output, we remove the no details element.
+						if (output !== '') {
+							$('.noDetailsEntered').remove();
+						}
 						break;
 					case 'object':
 						// get it from an object and do stuff

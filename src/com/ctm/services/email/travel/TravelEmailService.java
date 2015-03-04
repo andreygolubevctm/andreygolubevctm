@@ -1,12 +1,15 @@
 package com.ctm.services.email.travel;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
+import com.ctm.services.ApplicationService;
+import com.ctm.services.ContentService;
 import com.ctm.dao.RankingDetailsDao;
 import com.ctm.dao.TransactionDao;
 import com.ctm.exceptions.ConfigSettingException;
@@ -17,6 +20,7 @@ import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.VerticalException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
+import com.ctm.model.content.Content;
 import com.ctm.model.email.EmailMode;
 import com.ctm.model.email.TravelBestPriceEmailModel;
 import com.ctm.model.email.TravelBestPriceRanking;
@@ -65,11 +69,11 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 	@Override
 	public void sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
-		
+
 		splitTestEnabledKey = BestPriceEmailHandler.SPLIT_TESTING_ENABLED;
 
 		ExactTargetEmailSender<TravelBestPriceEmailModel> emailSender = new ExactTargetEmailSender<TravelBestPriceEmailModel>(pageSettings);
-		
+
 		try {
 			EmailMaster emailDetails = new EmailMaster();
 			emailDetails.setEmailAddress(emailAddress);
@@ -100,6 +104,16 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setStartDate((String) data.get("travel/dates/fromDate"));
 			emailModel.setEndDate((String) data.get("travel/dates/toDate"));
 			emailModel.setOldestAge((String) data.get("travel/oldest"));
+
+			// default to standard if travel/coverLevelTab xpath is not found
+			String coverLevelTab = (String) data.get("travel/coverLevelTab");
+			coverLevelTab = (coverLevelTab == null || coverLevelTab.equals(""))  ? "standard" : coverLevelTab;
+			emailModel.setCoverLevelTabsType(coverLevelTab);
+
+			Date serverDate = ApplicationService.getApplicationDate(null);
+			Content content = ContentService.getContent("CoverLevelTabKeys", pageSettings.getBrandId(), 2, serverDate, true);
+			emailModel.setCoverLevelTabsDescription(content.getSupplementaryValueByKey(coverLevelTab+"EDMVar"));
+
 			emailModel.setOptIn((boolean) (data.get("travel/marketing") != null && data.get("travel/marketing").equals("Y")));
 
 			String price_presentation_url = pageSettings.getBaseUrl() + "travel_quote.jsp?action=load&type=bestprice&id=" + transactionId + "&hash=" + emailDetails.getHashedEmail() + "&vertical=travel&type="+(String) data.get("travel/policyType");
@@ -177,6 +191,7 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			bestPriceRanking.setExcess(rankingDetail.getProperty("excess"));
 			bestPriceRanking.setLuggage(rankingDetail.getProperty("luggage"));
 			bestPriceRanking.setCancellation(rankingDetail.getProperty("cxdfee"));
+			bestPriceRanking.setCoverLevelType(rankingDetail.getProperty("coverLevelType"));
 			bestPriceRanking.setSmallLogo(rankingDetail.getProperty("service") + ".png");
 
 			bestPriceRankings.add(bestPriceRanking);

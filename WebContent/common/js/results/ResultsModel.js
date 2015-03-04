@@ -7,7 +7,7 @@ ResultsModel = {
 	returnedProducts: false,
 	filteredProducts: false,
 	sortedProducts: false,
-
+	hasValidationErrors : false,
 	currentProduct: false,
 	selectedProduct: false,
 	filters: new Array(),
@@ -133,7 +133,12 @@ ResultsModel = {
 						}
 
 					} else if(typeof jsonResult.error !== 'undefined' && jsonResult.error.type == "validation") {
-						if (typeof Loading !== "undefined") Loading.hide();
+						if (typeof Loading !== "undefined") {
+							Loading.hide();
+						}
+
+						Results.model.hasValidationErrors = typeof( Object.byString( jsonResult, Results.settings.paths.results.errors ) ) === 'object';
+
 						Results.reviseDetails();
 						ServerSideValidation.outputValidationErrors({
 								validationErrors: jsonResult.error.errorDetails.validationErrors,

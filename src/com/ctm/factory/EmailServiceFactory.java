@@ -15,8 +15,10 @@ import com.ctm.services.email.EmailDetailsService;
 import com.ctm.services.email.EmailServiceHandler;
 import com.ctm.services.email.EmailUrlService;
 import com.ctm.services.email.health.HealthEmailService;
+import com.ctm.services.email.life.LifeEmailService;
 import com.ctm.services.email.mapping.EmailDetailsMappings;
 import com.ctm.services.email.mapping.HealthEmailDetailMappings;
+import com.ctm.services.email.mapping.LifeEmailDetailMappings;
 import com.ctm.services.email.mapping.TravelEmailDetailMappings;
 import com.ctm.services.email.travel.TravelEmailService;
 import com.disc_au.web.go.Data;
@@ -27,13 +29,16 @@ public class EmailServiceFactory {
 		VerticalType vertical = pageSettings.getVertical().getType();
 
 		EmailServiceHandler emailService = null;
-
+		
 		switch (vertical) {
 			case HEALTH:
 				emailService = getHealthEmailService(pageSettings, mode, data , vertical);
 				break;
 			case TRAVEL:
 				emailService = getTravelEmailService(pageSettings, mode, data , vertical);
+				break;
+			case LIFE:
+				emailService = getLifeEmailService(pageSettings, mode, data, vertical);
 				break;
 			case HOME:
 				// TODO: refactor this
@@ -66,6 +71,12 @@ public class EmailServiceFactory {
 				vertical);
 
 		return new TravelEmailService(pageSettings, mode , emailDetailsService, urlService, data);
+	}
+	
+	private static EmailServiceHandler getLifeEmailService(PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
+		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical, new LifeEmailDetailMappings());
+		EmailUrlService urlService = createEmailUrlService(pageSettings, vertical);
+		return new LifeEmailService(pageSettings, mode, emailDetailsService, urlService);
 	}
 
 	private static EmailDetailsService createEmailDetailsService(

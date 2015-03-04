@@ -5,6 +5,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath"			required="true"	 rtexprvalue="true"		description="variable's xpath" %>
+<%@ attribute name="hannoverXpath"	required="false" rtexprvalue="true"		description="hannover xpath (for life/ip)" %>
 <%@ attribute name="required"		required="false" rtexprvalue="true"		description="is this field required?" %>
 <%@ attribute name="className"		required="false" rtexprvalue="true"		description="additional css class attribute" %>
 <%@ attribute name="title"			required="false" rtexprvalue="true"		description="subject of the select box" %>
@@ -30,10 +31,23 @@
 <%-- HTML --%>
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 
-<sql:query var="result">
-	SELECT code, description FROM aggregator.general WHERE type = ?  AND (status IS NULL OR status != 0) ORDER BY orderSeq
-	<sql:param>${type}</sql:param>
-</sql:query>
+<c:choose>
+	<c:when test="${not empty type && type eq 'occupation'}">
+		<sql:query var="result">
+			SELECT occupationCode AS code, title AS description, hannover AS hannoverCode
+			FROM ctm.lifebroker_occupations
+			JOIN ctm.tal_hannover_mappings ON lifebroker_occupations.talCode = tal_hannover_mappings.tal
+			WHERE occupationCode != '' 
+			ORDER BY description ASC
+		</sql:query>
+	</c:when>
+	<c:otherwise>
+		<sql:query var="result">
+			SELECT code, description FROM aggregator.general WHERE type = ?  AND (status IS NULL OR status != 0) ORDER BY orderSeq
+			<sql:param>${type}</sql:param>
+		</sql:query>
+	</c:otherwise>
+</c:choose>
 
 <c:if test="${value == ''}">
 	<c:set var="sel" value="selected" />
@@ -46,22 +60,28 @@
 <c:if test="${comboBox}">
 	<input type="text" value="${value}" name="${name}" id="${name}_input" <c:if test="${required}">required data-msg-required="Please enter the ${title}"</c:if> />
 </c:if>
+
+<c:set var="hannoverDefault" value="" />
 <select <c:if test="${!comboBox}">name="${name}"</c:if> id="${name}" class="form-control ${className}"<c:if test="${not empty tabIndex}"> tabindex="${tabIndex}"</c:if>>
 	<%-- Write the initial "please choose" option --%>
 	<option value="">${initialText}</option>
 
 	<%-- Write the options for each row --%>
 	<c:forEach var="row" items="${result.rows}">
-		<c:choose>
-			<c:when test="${row.code == value}">
-				<option value="${row.code}" selected="selected">${row.description}</option>
-			</c:when>
-			<c:otherwise>
-				<option value="${row.code}">${row.description}</option>
-			</c:otherwise>
-		</c:choose>
+		<option value="${row.code}" 
+			<c:if test="${row.code == value}"> selected="selected" </c:if> 
+			<c:if test="${row.code == value && not empty row.hannoverCode}"><c:set var="hannoverDefault" value="${row.hannoverCode}" /></c:if>
+			<c:if test="${not empty row.hannoverCode}"> data-hannovercode="${row.hannoverCode}" </c:if>
+		>
+			${row.description}
+		</option>
 	</c:forEach>
 </select>
+
+<c:if test="${comboBox && not empty type && type eq 'occupation'}">
+	<c:set var="hannoverName" value="${go:nameFromXpath(hannoverXpath)}" />
+	<input type="hidden" value="${hannoverDefault}" name="${hannoverName}" id="${hannoverName}" />
+</c:if>
 		
 <c:if test="${comboBox}">
 	<go:style marker="css-href" href='common/js/select2/select2.css'></go:style>
@@ -77,9 +97,12 @@
 			${name}SelectData.push({
 				id: $this.val(),
 				text: $this.text()
-			}); 
+				<c:if test="${not empty hannoverXpath}">
+					, hannoverCode: $this.data("hannovercode")
+				</c:if>
+			});			
 		});
-
+		
 		$('#${name}_input').select2({
 			initSelection: function(element, callback) {
 				var selection = _.find(${name}SelectData, function(metric){
@@ -123,7 +146,13 @@
 			}
 		}).on('select2-close', function(e) {
 			$("#mainform").validate().element('#${name}_input');
-		});
+		})
+		<c:if test="${not empty hannoverName}">
+			.on('select2-selecting', function(e) {
+				$('#${hannoverName}').val(e.choice.hannoverCode);
+			})
+		</c:if>
+		;
 	</go:script>
 </c:if>
 

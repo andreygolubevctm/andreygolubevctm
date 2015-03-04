@@ -29,7 +29,7 @@
 				<div class="right-panel-top"><!-- empty --></div>
 				<div class="right-panel-middle">
 					<div class="panel nopad nobdr">
-						<p><strong>Compare</strong>the<strong>market</strong>.com.au is an online comparison website aimed at delivering our clients competitively priced yet comprehensive policies.  Information and quotes are provided by our trusted partner, Lifebroker Pty Ltd.</p>
+						<p><strong>Compare</strong>the<strong>market</strong>.com.au is an online comparison website aimed at delivering our clients competitively priced yet comprehensive policies.  Information and quotes are provided by our trusted partners, Lifebroker Pty Ltd and Auto and General Services.</p>
 					</div>
 				</div>
 				<div class="right-panel-bottom"><!-- empty --></div>
@@ -220,15 +220,27 @@ var LifeConfirmationPage = {
 	init: function() {
 	},
 
-	show: function() {	
+	show: function(products) {
+		
 		<%-- LETO TODO Why is checkQuoteOwnership client side? Surely should be in life_submit_application --%>
 		LifeQuote.checkQuoteOwnership( function() {
 
 			// Shift progress bar to Confirmation stage
 			QuoteEngine.gotoSlide({noAnimation:true, index:3});
 
+			if(products && typeof products == 'object') {
+			
+				var $contactPanel = $('.lifebroker-contact-panel'),
+					productSelector = products.hasOwnProperty('primary') ? 'primary' : 'partner';
+				
+				$contactPanel
+					.find('.provider-phone-number').text(products[productSelector].insurer_contact).end()
+					.find('.call-provider-message span').text(products[productSelector].companyName);
+					
+				$('#reference_number h4 span').text(products[productSelector].lead_number);
+
 			Track.onCallMeBackClick(Results.getSelectedProduct('primary'));
-		
+			}
 			var link_labels = ['revise_link','save_link'];
 			var links = {};
 			

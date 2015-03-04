@@ -34,7 +34,7 @@
 			required="true" />
 	</form_new:row>
 
-	<form_new:row label="Enter the number of kilometres the car is driven per year" helpId="14">
+	<form_new:row label="Enter the number of kilometres the car is driven per year (Australian average 15,000 Km’s per year)" helpId="14">
 		<field_new:kilometers_travelled xpath="${xpath}/annualKilometres"
 			id="annual_kilometres"
 			className="annual_kilometres"

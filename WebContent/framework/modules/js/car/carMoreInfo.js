@@ -238,21 +238,33 @@
 		var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
 
 		var defaultData = {
+				state: $("#quote_riskAddress_state").val(),
+				brand: currProduct.productId.split('-')[0]
+		};
+
+		if(meerkat.site.leadfeed[data.phonecallme].use_disc_props) {
+			$.extend(defaultData, {
 				source: currentBrandCode+'CAR',
 				leadNo: currProduct.leadNo,
 				client: $('#quote_CrClientName').val() || '',
 				clientTel: $('#quote_CrClientTelinput').val() || '',
-				state: $("#quote_riskAddress_state").val(),
-				brand: currProduct.productId.split('-')[0],
 				transactionId: meerkat.modules.transactionId.get()
-		};
+			});
+		} else {
+			$.extend(defaultData, {
+				clientNumber: currProduct.leadNo,
+				clientName: $('#quote_CrClientName').val() || '',
+				phoneNumber: $('#quote_CrClientTelinput').val() || '',
+				partnerReference: meerkat.modules.transactionId.get()
+			});
+		}
 
 		var allData = $.extend(defaultData, data);
 
 		var $element = $(event.target);
 		meerkat.modules.loadingAnimation.showInside($element, true);
 		return meerkat.modules.comms.post({
-			url: "ajax/write/lead_feed_save.jsp",
+			url: meerkat.site.leadfeed[data.phonecallme].url,
 			data: allData,
 			dataType: 'json',
 			cache: false,

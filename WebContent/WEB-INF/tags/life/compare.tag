@@ -413,6 +413,21 @@ var Compare = function( _config ) {
 			Loading.show("Loading Products...");
 			data.transactionId = referenceNo.getTransactionID();
 
+			var nonLBProducts = [];
+			
+			for(var i in list[data.type]) {
+				var product = list[data.type][i];
+				
+				if(product.company == "ozicare") {
+					nonLBProducts.push({
+						feature: product.features.features.feature,
+						id: product.product_id
+					});
+				}
+			}
+			
+			if(data.products !== "") {
+
 			$.ajax({
 				url: "ajax/json/lifebroker_benefits.jsp",
 				data: data,
@@ -432,6 +447,10 @@ var Compare = function( _config ) {
 					Loading.hide();
 
 					if( json.results.success ) {
+							if(!json.results.features.product.length) {
+								json.results.features.product = [json.results.features.product];
+							}
+							
 						if(
 							json.hasOwnProperty("results") &&
 							json.results.hasOwnProperty("features") &&
@@ -439,18 +458,8 @@ var Compare = function( _config ) {
 							json.results.features.product.constructor == Array &&
 							json.results.features.product.length
 						) {
-							$compareFormWrapper.data('compare', data.type);
-
-							// Do cleanup here to remove age related multiples
-							for(var i in json.results.features.product) {
-								json.results.features.product[i].feature = sanitiseFeatures(json.results.features.product[i].feature);
-							}
-
-							var output = sanitiseCompareData(json.results.features.product, data.type);
-							addDataToCache(output);
-							benefits_obj.show( output, function(){
-								onComparisonShown(data.type);
-							} );
+								json.results.features.product = $.merge(json.results.features.product, nonLBProducts);
+								benefitsCallShow($compareFormWrapper, data.type, json.results.features.product);
 						} else {
 							FatalErrorDialog.exec({
 								message:		"An invalid response was received when fetching the benefits data.",
@@ -487,7 +496,26 @@ var Compare = function( _config ) {
 					});
 				}
 			});
+			} else {
+				Loading.hide();
+				benefitsCallShow($compareFormWrapper, data.type, nonLBProducts);
 		}
+		}
+	};
+
+	var benefitsCallShow = function($compareFormWrapper, dataType, products) {
+		$compareFormWrapper.data('compare', dataType);
+
+		// Do cleanup here to remove age related multiples
+		for(var i in products) {
+			products[i].feature = sanitiseFeatures(products[i].feature);
+		}
+
+		var output = sanitiseCompareData(products, dataType);
+		addDataToCache(output);
+		benefits_obj.show( output, function(){
+			onComparisonShown(dataType);
+		} );
 	};
 
 	var setPlaceholdersAbsolute = function() {
@@ -598,7 +626,8 @@ var Compare = function( _config ) {
 				pds :	prod.pds,
 				info :	prod.info,
 				name :	prod.name,
-				desc :	prod.description
+				desc :	prod.description,
+				source : prod.company
 			};
 
 			// Copy product and insert features then append to sanitised products list
@@ -739,11 +768,13 @@ var Compare = function( _config ) {
 		var flat = "";
 
 		for(var i in list[type]) {
+			if(list[type][i].company !== "ozicare") {
 			if( flat.length ) {
 				flat += "," + i
 			} else {
 				flat = i;
 			}
+		}
 		}
 
 		return flat;

@@ -9,6 +9,14 @@
 			<xs:element name="optIn" type="Y" maxOccurs="1" minOccurs="0" />
 			<xs:element name="contactNumber" type="phone" maxOccurs="1" minOccurs="0" />
 			<xs:element name="contactNumberinput" maxOccurs="1" minOccurs="0" />
+			<xs:element name="competition" maxOccurs="1" minOccurs="0">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="optin" maxOccurs="1" minOccurs="0" type="YN" />
+						<xs:element name="previous" maxOccurs="1" minOccurs="0" />
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
 		</xs:all>
 	</xs:complexType>
 </xs:schema>

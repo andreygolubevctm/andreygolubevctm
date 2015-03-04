@@ -658,6 +658,7 @@ function initializeNewLogging() {
         var column = column || window.event && window.event.errorCharacter;
         var stack;
         var url = file.substring(file.lastIndexOf("/ctm"), file.length);
+        url = file.substring(file.lastIndexOf("/app"), file.length);
         if (!error) {
             stack = [];
             var f = arguments.callee.caller;
@@ -785,7 +786,8 @@ Results = {
                 results: {
                     rootElement: "results",
                     list: "results.result",
-                    general: "results.info"
+                    general: "results.info",
+                    errors: "error"
                 },
                 price: {
                     annually: "price.annual.total",
@@ -1177,6 +1179,7 @@ ResultsModel = {
     returnedProducts: false,
     filteredProducts: false,
     sortedProducts: false,
+    hasValidationErrors: false,
     currentProduct: false,
     selectedProduct: false,
     filters: new Array(),
@@ -1273,7 +1276,10 @@ ResultsModel = {
                             });
                         }
                     } else if (typeof jsonResult.error !== "undefined" && jsonResult.error.type == "validation") {
-                        if (typeof Loading !== "undefined") Loading.hide();
+                        if (typeof Loading !== "undefined") {
+                            Loading.hide();
+                        }
+                        Results.model.hasValidationErrors = typeof Object.byString(jsonResult, Results.settings.paths.results.errors) === "object";
                         Results.reviseDetails();
                         ServerSideValidation.outputValidationErrors({
                             validationErrors: jsonResult.error.errorDetails.validationErrors,
@@ -3450,6 +3456,78 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var moduleEvents = {
+        HIDDEN_FIELDS_POPULATED: "HIDDEN_FIELDS_POPULATED"
+    };
+    var $currentAjaxRequest = null, dpIdCache = {};
+    function initAddressLookup() {
+        meerkat.messaging.subscribe(meerkatEvents.autocomplete.ELASTIC_SEARCH_COMPLETE, function elasticAddress(dpId) {
+            getAddressData(dpId);
+        });
+    }
+    function getAddressData(dpId) {
+        if ($currentAjaxRequest) {
+            $currentAjaxRequest.abort();
+            $currentAjaxRequest = null;
+        }
+        if (dpIdCache.hasOwnProperty(dpId)) {
+            setAddressDataFields(dpIdCache[dpId]);
+        } else {
+            meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, {
+                source: "address_lookup"
+            });
+            if (typeof dpId !== "undefined" && dpId !== "") {
+                $currentAjaxRequest = meerkat.modules.comms.post({
+                    url: "/ctm/address/get.json",
+                    errorLevel: "mandatory",
+                    data: {
+                        dpId: dpId
+                    },
+                    onSuccess: function ajaxGetTypeaheadAddressDataSuccess(data) {
+                        dpIdCache[dpId] = data;
+                        setAddressDataFields(data);
+                        if (typeof data.dpId === "undefined" || data.dpId === "") {
+                            meerkat.modules.errorHandling.error({
+                                page: "elastic_search.js",
+                                errorLevel: "slient",
+                                description: "Could not find address with dpId of " + dpId,
+                                data: data
+                            });
+                        }
+                    },
+                    onError: function ajaxGetTypeaheadAddressDataError(xhr, status) {
+                        if (status !== "abort") {
+                            meerkat.modules.errorHandling.error({
+                                page: "elastic_search.js",
+                                errorLevel: "slient",
+                                description: "Something went wrong and the elastic address lookup failed for " + dpId,
+                                data: xhr
+                            });
+                        }
+                    },
+                    onComplete: function ajaxGetTypeaheadAddressDataComplete() {
+                        meerkat.messaging.publish(meerkat.modules.events.WEBAPP_UNLOCK, {
+                            source: "address_lookup"
+                        });
+                    }
+                });
+            }
+        }
+    }
+    function setAddressDataFields(data) {
+        for (var addressItem in data) {
+            var $hiddenAddressElement = $("#quote_riskAddress_" + addressItem);
+            $hiddenAddressElement.val(data[addressItem]);
+        }
+    }
+    meerkat.modules.register("address_lookup", {
+        init: initAddressLookup,
+        events: moduleEvents
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat;
     var meerkatEvents = meerkat.modules.events;
     var log = window.meerkat.logging.info;
@@ -3506,28 +3584,68 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat;
-    var moduleEvents = {
-        CANT_FIND_ADDRESS: "EVENT_CANT_FIND_ADDRESS"
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        autocomplete: {
+            CANT_FIND_ADDRESS: "EVENT_CANT_FIND_ADDRESS",
+            ELASTIC_SEARCH_COMPLETE: "ELASTIC_SEARCH_COMPLETE"
+        }
     };
-    function initialiseAutoCompleteFields() {
+    var moduleEvents = events.autocomplete;
+    var elasticSearch = false;
+    function initAutoComplete() {
+        meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function navbarFixed() {
+            elasticSearch = meerkat.modules.splitTest.isActive(1001) ? true : false;
+            setTypeahead(elasticSearch);
+        });
+    }
+    function setTypeahead(elasticSearch) {
         var $typeAheads = $("input.typeahead");
+        var params = null;
         $typeAheads.each(function eachTypeaheadElement() {
             var $component = $(this);
-            var params = {
-                name: $component.attr("name"),
-                remote: {
-                    beforeSend: function() {
-                        autocompleteBeforeSend($component);
+            if (elasticSearch) {
+                var url = "address/search.json";
+                params = {
+                    name: $component.attr("name"),
+                    remote: {
+                        rateLimitWait: 100,
+                        beforeSend: function(jqXhr, settings) {
+                            autocompleteBeforeSend($component);
+                            jqXhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                            settings.type = "POST";
+                            settings.hasContent = true;
+                            settings.url = url;
+                            var $addressField = $("#quote_riskAddress_streetSearch");
+                            var query = $addressField.val();
+                            settings.data = $.param({
+                                query: decodeURI(query)
+                            });
+                        },
+                        filter: function(parsedResponse) {
+                            autocompleteComplete($component);
+                            return parsedResponse;
+                        },
+                        url: url
                     },
-                    filter: function(parsedResponse) {
-                        autocompleteComplete($component);
-                        return parsedResponse;
+                    limit: 150
+                };
+            } else {
+                params = {
+                    name: $component.attr("name"),
+                    remote: {
+                        beforeSend: function() {
+                            autocompleteBeforeSend($component);
+                        },
+                        filter: function(parsedResponse) {
+                            autocompleteComplete($component);
+                            return parsedResponse;
+                        },
+                        url: $component.attr("data-source-url") + "%QUERY"
                     },
-                    url: $component.attr("data-source-url") + "%QUERY"
-                },
-                limit: 150
-            };
+                    limit: 150
+                };
+            }
             params = checkIfAddressSearch($component, params);
             $component.typeahead(params);
             if ($component.hasClass("input-lg")) {
@@ -3538,7 +3656,9 @@ Features = {
             }
             if ($component.hasClass("blur-on-select")) {
                 $component.bind("typeahead:selected", function blurOnSelect(event, datum, name) {
-                    if (datum.hasOwnProperty("value") && datum.value === "Type your address...") return;
+                    if (datum.hasOwnProperty("value") && datum.value === "Type your address...") {
+                        return;
+                    }
                     if (event && event.target && event.target.blur) {
                         event.target.blur();
                     }
@@ -3561,7 +3681,7 @@ Features = {
             typeaheadParams.remote.url = $element.attr("id");
             typeaheadParams.remote.replace = addressSearch;
             typeaheadParams.valueKey = "value";
-            typeaheadParams.template = _.template("<p><%= highlight %></p>");
+            typeaheadParams.template = _.template("<p>{{= highlight }}</p>");
             if ($element.hasClass("typeahead-streetSearch")) {
                 typeaheadParams.remote.filter = function(parsedResponse) {
                     autocompleteComplete($element);
@@ -3569,6 +3689,14 @@ Features = {
                         parsedResponse.push({
                             value: "Type your address...",
                             highlight: "Can't find your address? <u>Click here.</u>"
+                        });
+                    } else if (elasticSearch) {
+                        $.each(parsedResponse, function(index, addressObj) {
+                            if (addressObj.hasOwnProperty("text") && addressObj.hasOwnProperty("payload")) {
+                                addressObj.value = addressObj.text;
+                                addressObj.highlight = addressObj.text;
+                                addressObj.dpId = addressObj.payload;
+                            }
                         });
                     }
                     return parsedResponse;
@@ -3582,6 +3710,8 @@ Features = {
                         meerkat.messaging.publish(moduleEvents.CANT_FIND_ADDRESS, {
                             fieldgroup: id
                         });
+                    } else if (elasticSearch) {
+                        meerkat.messaging.publish(moduleEvents.ELASTIC_SEARCH_COMPLETE, datum.dpId);
                     }
                 });
             }
@@ -3598,8 +3728,8 @@ Features = {
         return url;
     }
     meerkat.modules.register("autocomplete", {
-        init: initialiseAutoCompleteFields,
-        events: moduleEvents
+        init: initAutoComplete,
+        events: events
     });
 })(jQuery);
 
@@ -4915,9 +5045,21 @@ Features = {
                     break;
 
                   case "list":
-                    $sourceElement.find("li").each(function() {
-                        output += "<li>" + $(this).find("span:eq(0)").text() + "</li>";
-                    });
+                    var $listElements = $sourceElement.find("li");
+                    if ($listElements.length > 0) {
+                        $listElements.each(function() {
+                            output += "<li>" + $(this).find("span:eq(0)").text() + "</li>";
+                        });
+                    } else {
+                        output += "<li>None selected</li>";
+                    }
+                    break;
+
+                  case "optional":
+                    output = $sourceElement.val() || $alternateSourceElement.val() || "";
+                    if (output !== "") {
+                        $(".noDetailsEntered").remove();
+                    }
                     break;
 
                   case "object":
@@ -7525,7 +7667,7 @@ Features = {
         return qs;
     }
     function addTrackingDataToSettings(settings) {
-        var tracking = _.pick(settings, "actionStep", "brandCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
+        var tracking = _.pick(settings, "actionStep", "brandCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser"), originatingTab = typeof meerkat.modules.coverLevelTabs === "undefined" ? "default" : meerkat.modules.coverLevelTabs.getOriginatingTab(), departingTab = typeof meerkat.modules.coverLevelTabs === "undefined" ? "default" : meerkat.modules.coverLevelTabs.getDepartingTabJourney();
         meerkat.modules.tracking.updateObjectData(tracking);
         tracking = $.extend({
             actionStep: null,
@@ -7541,6 +7683,8 @@ Features = {
             type: "ONLINE",
             vertical: null,
             verticalFilter: null,
+            originatingTab: originatingTab,
+            departingTab: departingTab,
             handOverQS: getQueryStringFromURL(settings.product.quoteUrl),
             simplesUser: meerkat.site.isCallCentreUser
         }, tracking);
@@ -7592,7 +7736,7 @@ Features = {
                 touchComment: _.has(touchData, "comment") ? touchData.comment : ""
             });
         }
-        var data = _.pick(trackData, "actionStep", "brandCode", "currentJourney", "lastFieldTouch", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
+        var data = _.pick(trackData, "actionStep", "brandCode", "currentJourney", "departingTab", "lastFieldTouch", "originatingTab", "productBrandCode", "productID", "productName", "quoteReferenceNumber", "rootID", "trackingKey", "transactionID", "type", "vertical", "verticalFilter", "handoverQS", "simplesUser");
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: "trackQuoteHandoverClick",
             object: data
@@ -9690,6 +9834,11 @@ Features = {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, currentJourney = null, currentJourneyList = [], currentJourneyFieldLabel = "currentJourney", $currentJourney = null;
+    var events = {
+        splitTest: {
+            SPLIT_TEST_READY: "SPLIT_TEST_READY"
+        }
+    }, moduleEvents = events.splitTest;
     function init() {
         $(document).ready(function() {
             var prefix = meerkat.site.vertical == "car" ? "quote" : meerkat.site.vertical;
@@ -9699,6 +9848,7 @@ Features = {
             if (!_.isEmpty(current_journey)) {
                 set(current_journey);
             }
+            meerkat.messaging.publish(moduleEvents.SPLIT_TEST_READY);
         });
     }
     function set(current_journey) {
@@ -9715,6 +9865,7 @@ Features = {
     }
     meerkat.modules.register("splitTest", {
         init: init,
+        events: events,
         get: get,
         isActive: isActive
     });

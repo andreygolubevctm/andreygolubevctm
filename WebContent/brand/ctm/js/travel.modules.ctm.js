@@ -9,8 +9,9 @@
     var events = {
         coverLevelTabs: {}
     }, moduleEvents = events.coverLevelTabs;
-    var counts = {}, currentRankingFilter = "default", hasRunTrackingCall = [], defaults = {
+    var counts = {}, currentRankingFilter = "default", hasRunTrackingCall = [], recordFullTabJourney = false, originatingTab = "default", departingTab = [], defaults = {
         enabled: true,
+        verticalMapping: {},
         activeTabIndex: false,
         disableAnimationsBetweenTabs: true,
         activeTabSet: [ {
@@ -63,6 +64,10 @@
                     additionalData.recordRanking = "N";
                     additionalData.products = [];
                 }
+                if (!recordFullTabJourney) {
+                    departingTab = [];
+                }
+                departingTab.push(getRankingFilter());
                 meerkat.modules.resultsRankings.resetTrackingProductObject();
                 meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
                     additionalData: additionalData,
@@ -105,8 +110,26 @@
             out += '<div class="col-xs-' + xsCols + " text-center clt-action " + (tab.defaultTab === true ? "active" : "") + '" data-clt-index="' + i + '">';
             out += tab.label + (state !== "xs" && tab.showCount === true && count !== null ? " (" + count + ")" : "");
             out += "</div>";
+            if (tab.defaultTab === true) {
+                originatingTab = settings.verticalMapping[tab.rankingFilter];
+            }
         }
         $currentTabContainer.empty().html(out);
+    }
+    function getOriginatingTab() {
+        return originatingTab;
+    }
+    function getDepartingTabJourney() {
+        var departingTabJourney = "default";
+        if (settings.enabled) {
+            departingTabJourney = "";
+            var sep = "";
+            for (var i = 0; i < departingTab.length; i++) {
+                departingTabJourney += sep + settings.verticalMapping[departingTab[i]];
+                sep = ",";
+            }
+        }
+        return departingTabJourney;
     }
     function setActiveTabSet(activeTabSet) {
         log("[coverleveltabs] activeTabSet", activeTabSet);
@@ -142,7 +165,9 @@
         resetView: resetView,
         getRankingFilter: getRankingFilter,
         isEnabled: isEnabled,
-        incrementCount: incrementCount
+        incrementCount: incrementCount,
+        getOriginatingTab: getOriginatingTab,
+        getDepartingTabJourney: getDepartingTabJourney
     });
 })(jQuery);
 
@@ -553,9 +578,21 @@
         var options = {
             enabled: true,
             tabCount: 3,
-            activeTabSet: getActiveTabSet()
+            activeTabSet: getActiveTabSet(),
+            hasMultipleTabTypes: true,
+            verticalMapping: tabMapping()
         };
         meerkat.modules.coverLevelTabs.initCoverLevelTabs(options);
+    }
+    function tabMapping() {
+        return {
+            DEFAULT: "DEFAULT",
+            C: "Comprehensive",
+            M: "Mid Range",
+            B: "Basic",
+            I: "International",
+            D: "Domestic"
+        };
     }
     function setupABTestParameters(currentJourney) {
         singleTripTabs[0].defaultTab = false;
@@ -1111,7 +1148,7 @@
                     availableCounts++;
                 }
             });
-            if (availableCounts === 0) {
+            if (availableCounts === 0 && !Results.model.hasValidationErrors) {
                 showNoResults();
             }
         });
@@ -1121,6 +1158,9 @@
         var data = {};
         data["rank_premium" + position] = product.price;
         data["rank_productId" + position] = product.productId;
+        if (typeof product.info.coverLevel !== "undefined") {
+            data["coverLevelType" + position] = product.info.coverLevel;
+        }
         if (_.isNumber(best_price_count) && position < best_price_count) {
             data["best_price" + position] = 1;
             data["best_price_providerName" + position] = product.provider;

@@ -33,5 +33,9 @@ public class RankingDetail {
 	public String getProperty(String key) {
 		return properties.get(key);
 	}
+	
+	public Map<String, String> getProperties() {
+		return properties;
+	}
 
 }

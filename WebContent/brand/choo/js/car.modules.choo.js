@@ -675,6 +675,9 @@
                 youngDriver: $("input[name=quote_drivers_young_exists]:checked").val()
             };
             show(templateCallback(data));
+        }).on("click", ".closeDetailsDropdown", function(e) {
+            hide();
+            e.stopPropagation();
         }).on("click", ".dropdown-container", function(e) {
             e.stopPropagation();
         });
@@ -1257,19 +1260,30 @@
         }
         var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
         var defaultData = {
-            source: currentBrandCode + "CAR",
-            leadNo: currProduct.leadNo,
-            client: $("#quote_CrClientName").val() || "",
-            clientTel: $("#quote_CrClientTelinput").val() || "",
             state: $("#quote_riskAddress_state").val(),
-            brand: currProduct.productId.split("-")[0],
-            transactionId: meerkat.modules.transactionId.get()
+            brand: currProduct.productId.split("-")[0]
         };
+        if (meerkat.site.leadfeed[data.phonecallme].use_disc_props) {
+            $.extend(defaultData, {
+                source: currentBrandCode + "CAR",
+                leadNo: currProduct.leadNo,
+                client: $("#quote_CrClientName").val() || "",
+                clientTel: $("#quote_CrClientTelinput").val() || "",
+                transactionId: meerkat.modules.transactionId.get()
+            });
+        } else {
+            $.extend(defaultData, {
+                clientNumber: currProduct.leadNo,
+                clientName: $("#quote_CrClientName").val() || "",
+                phoneNumber: $("#quote_CrClientTelinput").val() || "",
+                partnerReference: meerkat.modules.transactionId.get()
+            });
+        }
         var allData = $.extend(defaultData, data);
         var $element = $(event.target);
         meerkat.modules.loadingAnimation.showInside($element, true);
         return meerkat.modules.comms.post({
-            url: "ajax/write/lead_feed_save.jsp",
+            url: meerkat.site.leadfeed[data.phonecallme].url,
             data: allData,
             dataType: "json",
             cache: false,
@@ -2089,17 +2103,18 @@
             button: "#quote_vehicle_accessoriesButton",
             template: "#quote-nonstandard-accessories-template",
             inputs: "#quote_vehicle_options_inputs_container .accessories:first",
-            wrapper: "#quote_vehicle_accessoriesDialog .quote-optional-accessories",
+            wrapper: "#quote_vehicle_accessoriesDialog .quote-optional-accessories-listed",
             type: "#quote_vehicle_accessoriesDialog .ac-type",
             included: "#quote_vehicle_accessoriesDialog .ac-included",
             price: "#quote_vehicle_accessoriesDialog .ac-price",
             add: "#quote_vehicle_accessoriesDialog .ac-add",
             clear: "#quote_vehicle_accessoriesDialog .ac-clear",
-            addeditems: "#quote_vehicle_accessoriesDialog .quote-optional-accessories .added-items ul",
+            addeditems: "#quote_vehicle_accessoriesDialog .quote-optional-accessories-listed .added-items ul",
             saveditems: "#quote_vehicle_accessoriesSelections .added-items ul"
         },
         redbook: "#quote_vehicle_redbookCode"
     };
+    elements.accessories.wrapper = "#quote_vehicle_accessoriesDialog .quote-optional-accessories-listed";
     var isIE8 = false;
     var modals = {
         factory: {},
@@ -2245,15 +2260,61 @@
         return false;
     }
     function renderAccessoriesModal() {
-        var optionalAccessories = generateAccessoryOptionsHTML(vehicleNonStandardAccessories);
         var standardAccessories = generateStandardAccessoriesHTML(vehicleOptionsData.standard);
         var selectedAccessories = generateSelectedAccessoriesHTML();
         var templateAccessories = _.template($(elements.accessories.template).html());
-        var htmlContent = templateAccessories({
-            optionalAccessories: optionalAccessories,
-            standardAccessories: standardAccessories,
-            selectedAccessories: selectedAccessories
+        var accessories = optionPreselections.accessories.accs;
+        var savedAccessories = $(elements.accessories.saveditems).children();
+        var selectedIndexes = [];
+        var selectedPrices = [];
+        $.each(savedAccessories, function(index, savedAccessory) {
+            savedAccessory = $(this);
+            var itemIndex = savedAccessory.attr("itemIndex");
+            var itemPrice = savedAccessory.attr("itemPrice");
+            selectedIndexes.push(parseInt(itemIndex));
+            selectedPrices.push(itemPrice);
         });
+        $.each(vehicleNonStandardAccessories, function(index, vehicleNonStandardAccessory) {
+            var foundSelectedIndex = selectedIndexes.indexOf(index);
+            var checked = false;
+            if (foundSelectedIndex >= 0) {
+                checked = true;
+            }
+            vehicleNonStandardAccessory.checked = checked;
+            vehicleNonStandardAccessory.priceDropdown = '<option value="">Please choose&hellip;</option>';
+            selectedDropdown = "";
+            if (selectedPrices[foundSelectedIndex] == "0") {
+                selectedDropdown = "selected";
+            }
+            vehicleNonStandardAccessory.priceDropdown += '<option value="" disabled="true">---</option>';
+            vehicleNonStandardAccessory.priceDropdown += '<option value="0" ' + selectedDropdown + ">Included in purchase price</option>";
+            vehicleNonStandardAccessory.priceDropdown += '<option value="" disabled="true">---</option>';
+            var min = Math.ceil(vehicleNonStandardAccessory.standard * (vehicleNonStandardAccessory.min / 100));
+            var step = min;
+            var max = Math.floor(vehicleNonStandardAccessory.standard * (vehicleNonStandardAccessory.max / 100));
+            while (step <= max) {
+                selectedDropdown = "";
+                if (selectedPrices[foundSelectedIndex] == step) {
+                    selectedDropdown = "selected";
+                }
+                vehicleNonStandardAccessory.priceDropdown += '<option value="' + step + '" ' + selectedDropdown + ">$" + step + "</option>";
+                step += min;
+            }
+            step -= min;
+            if (step != max) {
+                selectedDropdown = "";
+                if (selectedPrices[foundSelectedIndex] == max) {
+                    selectedDropdown = "selected";
+                }
+                vehicleNonStandardAccessory.priceDropdown += '<option value="' + max + '" ' + selectedDropdown + ">$" + max + "</option>";
+            }
+        });
+        var htmlContent = templateAccessories({
+            standardAccessories: standardAccessories,
+            vehicleNonStandardAccessories: vehicleNonStandardAccessories
+        });
+        var optionalTargetSelector = ".quote-optional-accessories-listed";
+        var standardTargetSelector = ".quote-standard-accessories";
         modals.accessories = meerkat.modules.dialogs.show({
             title: $(this).attr("title"),
             htmlContent: htmlContent,
@@ -2261,11 +2322,11 @@
             tabs: [ {
                 title: "Add Non-Standard Accessories",
                 xsTitle: "Non-Standard Accessories",
-                targetSelector: ".quote-optional-accessories"
+                targetSelector: optionalTargetSelector
             }, {
                 title: "View Included Standard Accessories",
                 xsTitle: "Standard Accessories",
-                targetSelector: ".quote-standard-accessories"
+                targetSelector: standardTargetSelector
             } ],
             buttons: [ {
                 label: "Save Changes",
@@ -2287,10 +2348,16 @@
                 type: "accessories"
             }),
             onOpen: function(dialogId) {
+                var $injectBlock = $("#injectIntoHeader");
+                $injectBlock.remove();
+                $(".modal-header").append($injectBlock);
+                $("#quote_vehicle_accessoriesDialog").parent().css({
+                    "padding-top": "5px"
+                });
                 if (_.isArray(vehicleNonStandardAccessories) && vehicleNonStandardAccessories.length) {
-                    $(".quote-optional-accessories .no-items-found").addClass("hidden");
+                    $(".quote-optional-accessories-listed .no-items-found").addClass("hidden");
                 } else {
-                    $(".quote-optional-accessories .items-found").addClass("hidden");
+                    $(".quote-optional-accessories-listed .items-found").addClass("hidden");
                 }
                 if (_.isArray(vehicleOptionsData.standard) && vehicleOptionsData.standard.length) {
                     $(".quote-standard-accessories .no-items-found").addClass("hidden");
@@ -2298,6 +2365,11 @@
                     $(".quote-standard-accessories .items-found").addClass("hidden");
                 }
                 $("#" + dialogId).on("click", ".nav-tabs a", function(e) {
+                    if ($(this).attr("data-target") == standardTargetSelector) {
+                        $injectBlock.hide();
+                    } else {
+                        $injectBlock.show();
+                    }
                     e.preventDefault();
                     e.stopPropagation();
                     $(this).tab("show");
@@ -2310,21 +2382,22 @@
         return false;
     }
     function onAccessoriesFormRendered() {
-        $(elements.accessories.add).find("button:first").on("click", onAddAccessoriesItem);
-        $(elements.accessories.clear).find("button:first").on("click", onClearAccessoriesForm);
-        $(elements.accessories.included).find("label.btn").off().on("click", function() {
-            $(this).change();
-            if ($(this).find("input:first").val() == "N") {
-                _.defer(function() {
-                    $(elements.accessories.included).hide();
-                    $(elements.accessories.price).show();
-                });
+        $(".nonStandardAccessoryCheckbox").on("change", function() {
+            var $rowCheckbox = $(this), itemIndex = $rowCheckbox.attr("itemIndex"), $relatedPriceSelect = $('select[itemIndex="' + itemIndex + '"]');
+            if ($rowCheckbox.prop("checked")) {
+                $relatedPriceSelect.prop("disabled", false);
             } else {
-                $(elements.accessories.price).hide();
+                $relatedPriceSelect.prop("disabled", true);
+                $relatedPriceSelect.val("");
             }
-            _.defer(function() {
-                $(elements.accessories.add + "," + elements.accessories.clear).show();
-            });
+        });
+        $(".nonStandardAccessorySelect").on("change", function() {
+            var selectBox = $(this);
+            if (selectBox.val() === "") {
+                selectBox.parent().addClass("has-error");
+            } else {
+                selectBox.parent().removeClass("has-error");
+            }
         });
         for (var i = 0; i < savedSelections.accessories.length; i++) {
             var item = savedSelections.accessories[i];
@@ -2334,110 +2407,22 @@
             $li.find("a:first").on("click", _.bind(onRemoveAccessoriesItem, this, item));
         }
     }
-    function onClearAccessoriesForm() {
-        $(elements.accessories.price + "," + elements.accessories.add + "," + elements.accessories.clear).hide();
-        $(elements.accessories.included).show();
-        $type = $(elements.accessories.type);
-        $included = $(elements.accessories.included);
-        $price = $(elements.accessories.price);
-        $included.find(".active").removeClass("active").end().find("input:checked").prop("checked", false).change().end().find(".error-field").empty().end().removeClass("has-error");
-        $type.find("select:first").prop("selectedIndex", 0).end().find("option").prop("selected", false).end().removeClass("has-error").end().find(".error-field").empty();
-        $price.removeClass("has-error").find(".error-field").empty().end().find("input").val("");
-    }
-    function onAddAccessoriesItem() {
-        var validated = validateAddAccessoriesForm();
-        if (validated !== false) {
-            $(elements.accessories.type).find("option").each(function() {
-                if ($(this).val().indexOf(validated.position) === 0) {
-                    $(this).remove();
-                }
-            });
-            $(elements.accessories.addeditems).append(getAddedAccessoryItemHTML(validated));
-            onClearAccessoriesForm();
-        }
-    }
     function getAddedAccessoryItemHTML(item) {
-        return $("<li/>").addClass("added-item-" + item.position).data("info", item).append($("<span/>").append(item.info.label)).append($("<a/>", {
+        return $("<li/>").addClass("added-item-" + item.position).data("info", item).append($("<span/>").append(item.label)).append($("<a/>", {
             title: "remove accessory"
-        }).addClass("icon-cross").on("click", _.bind(onRemoveAccessoriesItem, this, item))).append($("<span/>").append(item.price === false ? "included" : "$" + item.price));
+        }).addClass("icon-cross").on("click", _.bind(onRemoveAccessoriesItem, this, item))).append($("<span/>").append(item.price === false ? "Included" : "$" + item.price));
     }
     function onRemoveAccessoriesItem(item) {
         $(elements.accessories.addeditems).find(".added-item-" + item.position).remove();
         $(elements.accessories.type).find("option").each(function() {
             if (parseInt($(this).val(), 10) > item.position) {
                 $(this).before($("<option/>", {
-                    text: item.info.label,
-                    value: item.position + "_" + item.info.code
+                    text: item.label,
+                    value: item.position + "_" + item.code
                 }));
                 return false;
             }
         });
-    }
-    function validateAddAccessoriesForm() {
-        var item = $(elements.accessories.type).find("option:selected");
-        var included = $(elements.accessories.included + " .active").find("input");
-        var price = Math.floor($(elements.accessories.price).find("input").val());
-        var item_valid = !_.isEmpty(item) && !_.isEmpty(item.val());
-        var inc_valid = !_.isEmpty(included) && !_.isEmpty(included.val());
-        var price_valid = !_.isEmpty(price) && !isNaN(price) && price > 0;
-        $type = $(elements.accessories.type);
-        if (item_valid === false) {
-            $type.addClass("has-error");
-            $type.find(".error-field").empty().append("Select an accessory");
-        } else {
-            $type.removeClass("has-error");
-            $type.find(".error-field").empty();
-        }
-        $included = $(elements.accessories.included);
-        if (inc_valid === false) {
-            $included.addClass("has-error");
-            $included.find(".error-field").empty().append("Is included in purchase price?");
-        } else {
-            $included.removeClass("has-error");
-            $included.find(".error-field").empty();
-        }
-        $price = $(elements.accessories.price);
-        if (price_valid === false) {
-            $price.addClass("has-error");
-            $price.find(".error-field").empty().append("Enter the accessory purchase price");
-        } else {
-            $price.removeClass("has-error");
-            $included.find(".error-field").empty();
-        }
-        if (item_valid === true && inc_valid === true) {
-            var temp = item.val();
-            item = temp.substring(3).replace(/^\s+|\s+$/gm, "");
-            position = String(temp.substring(0, 2));
-            included = included.val() == "Y";
-            price = price === "" || isNaN(price) ? false : price;
-            if (included === true || price !== false) {
-                var accObj = false;
-                for (var i = 0; i < vehicleNonStandardAccessories.length; i++) {
-                    if (vehicleNonStandardAccessories[i].code == item) {
-                        accObj = {
-                            position: position,
-                            included: included,
-                            price: price,
-                            info: vehicleNonStandardAccessories[i]
-                        };
-                        i = vehicleNonStandardAccessories.length + 1;
-                    }
-                }
-                if (accObj !== false) {
-                    if (included === false) {
-                        var min = Math.ceil(accObj.info.standard * (accObj.info.min / 100));
-                        var max = Math.floor(accObj.info.standard * (accObj.info.max / 100));
-                        if (Number(price) < min || Number(price) > max) {
-                            $price.addClass("has-error");
-                            $price.find(".error-field").empty().append("Please enter a value between $" + min + " and $" + max);
-                            return false;
-                        }
-                    }
-                    return accObj;
-                }
-            }
-        }
-        return false;
     }
     function generateFactoryOptionsHTML(data) {
         var output = $("<ul/>");
@@ -2467,7 +2452,7 @@
         }));
         function isInSavedSelections(code) {
             for (var s = 0; s < savedSelections.accessories.length; s++) {
-                if (code == savedSelections.accessories[s].info.code) {
+                if (code == savedSelections.accessories[s].code) {
                     return true;
                 }
             }
@@ -2560,11 +2545,13 @@
             for (var j in accessories.accs) {
                 if (accessories.accs.hasOwnProperty(j)) {
                     var aItem = accessories.accs[j];
+                    var itemInfo = getAccessoryByCode(aItem.sel);
                     var obj = {
                         included: aItem.inc === "Y",
-                        position: j.substring(3),
-                        price: aItem.hasOwnProperty("prc") ? String(aItem.prc) : false,
-                        info: getAccessoryByCode(aItem.sel)
+                        position: parseInt(j.substring(3), 10),
+                        price: aItem.hasOwnProperty("prc") ? String(aItem.prc) : "0",
+                        code: aItem.sel,
+                        label: itemInfo.label
                     };
                     savedSelections.accessories.push(obj);
                     addSavedAccessoryHTML(obj);
@@ -2593,7 +2580,7 @@
             }
         } else {
             for (var j = 0; j < savedSelections.accessories.length; j++) {
-                if (savedSelections.accessories[j].info.code == item.code) {
+                if (savedSelections.accessories[j].code == item.code) {
                     savedSelections.accessories.splice(j, 1);
                 }
             }
@@ -2605,11 +2592,11 @@
         }
     }
     function getSavedAccessoryItemHTML(item) {
-        var $li = $("<li/>").addClass("saved-item-" + item.type + "-" + ("0" + item.position).slice(-2)).data("info", item).append($("<span/>").append(item.label)).append($("<a/>", {
+        var $li = $("<li/>").addClass("saved-item-" + item.type + "-" + item.position).attr("itemIndex", item.position).attr("itemPrice", item.price).append($("<span/>").append(item.label)).append($("<a/>", {
             title: "remove " + (item.type == "factory" ? "factory option" : "accessory")
         }).addClass("icon-cross").on("click", _.bind(onRemoveSavedItem, this, item)));
         if (!_.isNull(item.price)) {
-            $li.append($("<span/>").append(item.price === false ? "included" : "$" + item.price));
+            $li.append($("<span/>").append(item.price === "0" ? "Included" : "$" + item.price));
         }
         return $li;
     }
@@ -2624,9 +2611,9 @@
         };
         if (data.type == "accessories") {
             item.position = data.item.position;
-            item.label = data.item.info.label;
+            item.label = data.item.label;
             item.price = data.item.price;
-            item.code = data.item.info.code;
+            item.code = data.item.code;
             item.item = data.item;
             $(elements.accessories.saveditems).append(getSavedAccessoryItemHTML(item));
         } else {
@@ -2659,16 +2646,46 @@
         }
     }
     function saveCurrentForm(data) {
-        savedSelections[data.type] = [];
-        $(elements[data.type].inputs).empty();
-        $(elements[data.type].saveditems).empty();
         if (data.type == "accessories") {
-            $(elements[data.type].addeditems).find("li").each(function(i, el) {
-                var aItem = $(this).data("info");
-                savedSelections.accessories.push(aItem);
-                addSavedAccessoryHTML(aItem);
+            var accessoriesToSave = [];
+            var validationPasses = true;
+            $(".nonStandardAccessoryCheckbox:checked").each(function(index, checkedBox) {
+                checkedBox = $(this);
+                var itemIndex = checkedBox.attr("itemIndex");
+                var labelText = checkedBox.siblings().text();
+                var $relatedPriceSelect = $('select[itemIndex="' + itemIndex + '"]');
+                var itemPrice = $relatedPriceSelect.val();
+                if (itemPrice === "") {
+                    validationPasses = false;
+                    $relatedPriceSelect.parent().addClass("has-error");
+                } else {
+                    $relatedPriceSelect.parent().removeClass("has-error");
+                }
+                var accessory = {
+                    position: itemIndex,
+                    label: labelText,
+                    code: checkedBox.val(),
+                    included: $relatedPriceSelect.val() == "0" ? true : false,
+                    price: itemPrice
+                };
+                accessoriesToSave.push(accessory);
             });
+            if (validationPasses) {
+                savedSelections[data.type] = [];
+                $(elements[data.type].inputs).empty();
+                $(elements[data.type].saveditems).empty();
+                accessoriesToSave.forEach(function(accessory) {
+                    savedSelections.accessories.push(accessory);
+                    addSavedAccessoryHTML(accessory);
+                });
+                meerkat.modules.dialogs.close(modals[data.type]);
+            } else {
+                $(".has-error select").first().focus();
+            }
         } else {
+            savedSelections[data.type] = [];
+            $(elements[data.type].inputs).empty();
+            $(elements[data.type].saveditems).empty();
             $(elements[data.type].checkboxes).find(":checked").each(function(i, el) {
                 var that = $(this);
                 savedSelections.factory.push(that.attr("id"));
@@ -2687,14 +2704,14 @@
                     item: fItem
                 });
             });
+            meerkat.modules.dialogs.close(modals[data.type]);
         }
-        meerkat.modules.dialogs.close(modals[data.type]);
     }
     function addSavedAccessoryHTML(item) {
         $(elements.accessories.inputs).append(getInputHTML({
             name: "quote_accs_acc" + item.position + "_sel",
             id: "acc_" + item.position + "_chk",
-            value: item.info.code
+            value: item.code
         }).addClass("saved-item-accessories-" + ("0" + item.position).slice(-2))).append(getInputHTML({
             name: "quote_accs_acc" + item.position + "_inc",
             value: item.included === true ? "Y" : "N"

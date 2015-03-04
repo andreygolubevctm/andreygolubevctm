@@ -5,14 +5,24 @@ import org.json.JSONObject;
 
 public class Address {
 
+	private String dpId;
 	private String unitType;
 	private String unitNo;
 	private String houseNo;
 	private String FloorNo;
 	private String street;
+	private String streetId;
 	private String suburb;
 	private String postCode;
 	private String state;
+
+	public String getDpId() {
+		return dpId;
+	}
+
+	public void setDpId(String dpId) {
+		this.dpId = dpId;
+	}
 
 	public String getUnitType() {
 		return unitType;
@@ -54,6 +64,14 @@ public class Address {
 		this.street = street;
 	}
 
+	public String getStreetId() {
+		return streetId;
+	}
+
+	public void setStreetId(String streetId) {
+		this.streetId = streetId;
+	}
+
 	public String getSuburb() {
 		return suburb;
 	}
@@ -81,12 +99,14 @@ public class Address {
 	public JSONObject toJSONObject() {
 		JSONObject json = new JSONObject();
 		try {
+			json.put("dpId", getDpId());
 			json.put("unitType", getUnitType());
-			json.put("unitNo", getUnitNo());
-			json.put("houseNo", getHouseNo());
+			json.put("unitSel", getUnitNo());
+			json.put("houseNoSel", getHouseNo());
 			json.put("floorNo", getFloorNo());
-			json.put("street", getStreet());
-			json.put("suburb", getSuburb());
+			json.put("streetName", getStreet());
+			json.put("streetId", getStreetId());
+			json.put("suburbName", getSuburb());
 			json.put("postCode", getPostCode());
 			json.put("state", getState());
 		} catch (JSONException e) {

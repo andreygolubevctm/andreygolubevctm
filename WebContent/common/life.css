@@ -108,12 +108,12 @@ body.stage-2 {
 
 /* Contact Panel Overrides */
 #contact-panel {
-	width:					180px !important;
+	width:					192px !important;
 	height:					50px !important;
 	margin-right:			-490px !important;
 }
 #contact-panel.extended {
-	width:					354px !important;
+	width:					374px !important;
 }
 
 #contact-panel .row {
@@ -127,25 +127,52 @@ body.stage-2 {
 #contact-panel .lifebroker-contact-panel {
 	width:					100%;
 	height:					48px;
-	overflow:				hidden;
+	overflow:				visible;
 }
 
 #contact-panel .lifebroker-contact-panel .option {
 	position:				absolute;
-	height:					50px;
+	height:					43px;
 	top:					0px;
 	margin:					0 !important;
-	padding:				0 !important;
+	padding:				7px 0 0 !important;
 	background-position:	top left;
 	background-repeat:		no-repeat;
 	background-color:		transparent;
 	zoom: 1;
 }
 
+#contact-panel.extended .lifebroker-contact-panel .option.call-us-now {
+	width: 200px;
+}
+
 #contact-panel .lifebroker-contact-panel .option.call-us-now {
-	width: 180px;
-	left: 0;
-	background-image:		url("../brand/ctm/images/results_Life_IP/header-call-us-now.png");
+	width: 190px;
+	padding-top: 5px;
+	height: 41px;
+	margin-left: -14px;
+	background: #fff url("../brand/ctm/images/results_Life_IP/header-telephone.png") 11px 11px no-repeat;
+	border: 1px solid #8a8a8a;
+	border-radius: 3px;
+	text-align: right;
+}
+
+#contact-panel.extended .lifebroker-contact-panel .option.call-us-now p {
+	padding-right: 25px;	
+}
+
+#contact-panel .lifebroker-contact-panel .option.call-us-now p {
+	padding: 1px 15px;
+}
+
+#contact-panel .lifebroker-contact-panel .option.call-us-now p.call-provider-message {
+	color: #ababab;
+	font-size: 11px;
+}
+
+#contact-panel .lifebroker-contact-panel .option.call-us-now p.provider-phone-number {
+	color: #00b251;
+	font-size: 21px;
 }
 
 #contact-panel .lifebroker-contact-panel .option.call-me-back {
@@ -280,10 +307,16 @@ a.we-call-you:hover {
 }
 
 /* Important to ensure reference number hidden in results and faux Apply stages */
+body.life.stage-0 #reference_number,
 body.stage-1 #reference_number,
 body.stage-2 #reference_number {
 	display:				none !important;
 }
+
+body.ip.stage-0 #reference_number {
+	display: block !important;
+}
+
 body.stage-0 #reference_number {
 	background-image:		url(../brand/ctm/images/bg_reference_no_short_v2.png) !important;
 	height:					40px;
@@ -308,6 +341,13 @@ body.stage-0 #reference_number a {display:none;}
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	background: url("../brand/ctm/images/results_Life_IP/icon_heart.png") 0px 2px no-repeat;
 	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/icon_heart.png, sizingMethod='image');
+}
+
+.stage-1 #navContainer #summary-header h2.error,
+.stage-2 #navContainer #summary-header h2.error {
+	display: none;
+	height: 42px;
+	line-height: 42px;
 }
 
 .stage-1 #navContainer #summary-header h2 span,
@@ -452,23 +492,49 @@ body.stage-0 #reference_number a {display:none;}
 	background:				#ededed;
 	border-top:				1px solid #b0b0b0;
 	border-bottom:			1px solid #b0b0b0;
+	overflow: auto;
 }
 
 #results-errors-wrapper .innertube {
-	width: 					400px;
-	padding: 				20px;
+	width: 	760px;
+	padding: 30px 40px;
 	margin: 				0 auto;
 	background:				#ffffff;
-	border: 				1px solid #E54200;
+	border: 1px solid #ccc;
 	-moz-border-radius: 	5px;
 	-webkit-border-radius: 	5px;
 	-khtml-border-radius: 	5px;
 	border-radius: 			5px;
+	overflow: auto;
 }
 
 #results-errors-wrapper .innertube p {
-	color: 					#E54200;
+	color: #222;
+	font-size: 18px;
+	line-height: 24px;
+	margin-bottom: 18px;
 }
+
+#results-errors-wrapper .innertube .provider {
+	width: 103px;
+	height: 57px;
+	margin: 16px 10px;
+	float: left;
+	background: url(images/logos/life/providerSpritesheet.png) left top no-repeat;
+}
+
+#results-errors-wrapper .innertube .provider.aia { background-position: left top; }
+#results-errors-wrapper .innertube .provider.amp { background-position: -103px top; }
+#results-errors-wrapper .innertube .provider.asteron { background-position: -206px top; }
+#results-errors-wrapper .innertube .provider.bt-australia { background-position: -309px top; }
+#results-errors-wrapper .innertube .provider.comm-insure { background-position: -412px top; }
+#results-errors-wrapper .innertube .provider.macquarie { background-position: -515px top; }
+#results-errors-wrapper .innertube .provider.metlife { background-position: -618px top; }
+#results-errors-wrapper .innertube .provider.mlc { background-position: -721px top; }
+#results-errors-wrapper .innertube .provider.onepath { background-position: -824px top; }
+#results-errors-wrapper .innertube .provider.tal { background-position: -927px top; }
+#results-errors-wrapper .innertube .provider.zurich { background-position: -1030px top; }
+#results-errors-wrapper .innertube .provider.ozicare { background-position: -1133px top; }
 
 /** COMPARE ROW STYLING
 	******************/
@@ -930,6 +996,24 @@ body.stage-0 #reference_number a {display:none;}
 	border-color: transparent !important;
 }
 
+#results-rows-wrapper .results-row[data-source="missing"] .product.price,
+#results-rows-wrapper .results-row[data-source="missing"] .description,
+#results-rows-wrapper .results-row[data-source="missing"] .seltocompare{
+	display: none;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row[data-source="missing"] .product p.title {
+	font-size: 14pt;
+}
+
+#results-rows-wrapper .results-row[data-source="missing"] .box {
+	height: 50px;
+}
+
+#results-rows-wrapper .results-row[data-source="missing"] .product.details {
+	width: 308px;
+}
+
 .stage-2 #results-rows-wrapper .results-row .box.detail {
 	background: #1c3e93;
 	border-color: #0a1c71;
@@ -1014,6 +1098,17 @@ body.stage-0 #reference_number a {display:none;}
 	border: 1px solid #C2C2C2;
 	border-radius: 2px;
 }
+
+.special-offers-description {
+	margin-bottom: 10px;
+	font-size:11px;
+}
+
+.special-offers-description p {
+	padding-bottom: 4px;
+	padding-right: 15px;
+}
+
 #resultsPage.single #results-rows-wrapper .results-row .box.detail {width:938px;}
 
 #results-rows-wrapper .results-row .box.detail .col {
@@ -1060,6 +1155,57 @@ body.stage-0 #reference_number a {display:none;}
 	top: 110px;
 }
 
+#results-rows-wrapper .results-row .more-info-slider .call-me-back {
+	display: block;
+	background: #1C3E93;
+	width: 423px;
+	padding: 10px;
+	position: relative;
+	top: -4px;
+	left: 13px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+	color: #fff;
+	margin-bottom: -10px;
+	text-align: center;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .more-info-slider .call-me-back {
+	width: 934px;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .more-info-slider .call-me-back br {
+	display: none;
+}
+
+#results-rows-wrapper .results-row .more-info-slider .call-me-back p {
+	padding: 5px 0;
+	line-height: 20px;
+}
+
+#results-rows-wrapper .results-row .more-info-slider .call-me-back .phone {
+	font-size: 24px;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .more-info-slider .call-me-back .phone {
+	margin: 0 8px;
+}
+
+#results-rows-wrapper .results-row .more-info-slider .call-me-back .callback-button {
+	background: #fff;
+	color: #4a4a4a;
+	margin-left: 10px;
+	margin-top: 10px;
+	display: inline-block;
+}
+
+#resultsPage.single #results-rows-wrapper .results-row .more-info-slider .call-me-back button .callback-button {
+	margin-top: 0;
+}
+
+.stage-2 #results-rows-wrapper .results-row .more-info-slider .call-me-back {
+	display: none;
+}
+
 .stage-2 #resultsPage.single #results-rows-wrapper .results-row .more-info-slider,
 #results-rows-wrapper .results-row .more-info-slider {
 	top: 118px;
@@ -1082,20 +1228,17 @@ body.stage-0 #reference_number a {display:none;}
 
 #results-rows-wrapper .results-row .more-info-slider td.lft {
 	width:					6px;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_more-info_left.png") bottom right no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_more-info_left.png, sizingMethod='image');
+	background:				url("../brand/ctm/images/results_Life_IP/bkg_more-info_left_new.png") bottom right no-repeat;
 }
 
 #results-rows-wrapper .results-row .more-info-slider td.rht {
 	width:					6px;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_more-info_right.png") bottom left no-repeat;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_more-info_right.png, sizingMethod='image');
+	background:				url("../brand/ctm/images/results_Life_IP/bkg_more-info_right_new.png") bottom left no-repeat;
 }
 
 #results-rows-wrapper .results-row .more-info-slider td.mid {
 	width:					437px;
-	background:				url("../brand/ctm/images/results_Life_IP/bkg_more-info_mid.png") bottom left repeat-x;
-	filter:					progid:DXImageTransform.Microsoft.AlphaImageLoader(src=../brand/ctm/images/results_Life_IP/bkg_more-info_mid.png, sizingMethod='image');
+	background:				url("../brand/ctm/images/results_Life_IP/bkg_more-info_mid_new.png") bottom left repeat-x;
 }
 #resultsPage.single #results-rows-wrapper .results-row .more-info-slider td.mid {width:948px;}
 
@@ -1110,6 +1253,11 @@ body.stage-0 #reference_number a {display:none;}
 	display:				block;
 	width:					auto;
 }
+
+#results-rows-wrapper .results-row .more-info-slider .innertube .panel.optional {
+	display: none;
+}
+
 #resultsPage.single #results-rows-wrapper .results-row .more-info-slider .innertube .panel {float:left;width:50%;}
 
 #results-rows-wrapper .results-row .more-info-slider h4 {

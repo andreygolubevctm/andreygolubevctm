@@ -89,14 +89,18 @@
 				<c:if test="${vertical.isEnabled()}">
 					<c:forEach items="${serviceConfigurationService.getServiceConfigurations()}" var="configItem">
 						<c:if test="${configItem.getVerticalId() == vertical.getId()}">
-								
-							<h2>${brand.getName()} / ${vertical.getName()} / ${configItem.getCode()} [${configItem.getId()}]</h2>
+						<div id="${brand.getId()}-${vertical.getId()}-${configItem.getId()}" style="padding:20px;background-color:#f5f5f5;margin:10px;">	
+							<h2>${configItem.getCode()} [${configItem.getId()}]</h2>
+							<p>Brand: ${brand.getName()} <br/>Vertical: ${vertical.getName()}</p>
+
 										
-							<c:forEach items="${configItem.getProviderIds()}" var="providerId">
+							<c:forEach items="${configItem.getAllProviderIds()}" var="providerId">
 								
-								<div id="${brand.getId()}-${vertical.getId()}-${configItem.getId()}" style="margin:10px;padding:10px 20px; border:1px solid #ccc;">
-									
-									<h3>${providerId}</h3>									
+								<c:if test="${providerId != 0}">
+									<div style="margin:10px 0;padding:10px 20px; border:1px solid #ccc;background-color:#eee">
+								
+									<h3>Provider ID: ${providerId}</h3>									
+								</c:if>
 									<table>
 										<tr>
 											<th>key</th>
@@ -111,34 +115,36 @@
 
 											<c:if test="${configProperty.getStyleCodeId() == 0 || configProperty.getStyleCodeId() == brand.getId()}">
 
-											<c:if test="${configProperty.getProviderId() == 0 || configProperty.getProviderId() == providerId}">
-												<tr>
-													
-													<td align="right" width="30%">${configProperty.getKey()}</td>
-													<td>${configProperty.getValue()}</td>
+												<c:if test="${configProperty.getProviderId() == 0 || configProperty.getProviderId() == providerId}">
+													<tr>
+														
+														<td align="right" width="30%">${configProperty.getKey()}</td>
+														<td>${configProperty.getValue()}</td>
 
 
-													<td>${configProperty.getServiceId()}</td>
-													<td>${configProperty.getProviderId()}</td>
-													<td>${configProperty.getScope()}</td>
-													<td>${configProperty.getEnvironmentCode()}</td>
+														<td>${configProperty.getServiceId()}</td>
+														<td>${configProperty.getProviderId()}</td>
+														<td>${configProperty.getScope()}</td>
+														<td>${configProperty.getEnvironmentCode()}</td>
 
-													<td align="right" width="20%">
-														<c:if test="${configProperty.getStyleCodeId() != 0}">
-															Brand specific
-														</c:if>			
-														${configProperty.getStyleCodeId()}	
-													</td>
-												</tr>
+														<td align="right" width="20%">
+															<c:if test="${configProperty.getStyleCodeId() != 0}">
+																Brand specific
+															</c:if>			
+															${configProperty.getStyleCodeId()}	
+														</td>
+													</tr>
+												</c:if>
 											</c:if>
-</c:if>
 							
 
 										</c:forEach>
 									</table>
-
+<c:if test="${providerId != 0}">
 								</div>
+	</c:if>							
 							</c:forEach>
+							</div>
 						</c:if>
 					</c:forEach>
 				</c:if>

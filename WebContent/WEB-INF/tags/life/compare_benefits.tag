@@ -124,9 +124,13 @@ var CompareBenefits = function() {
 					ui_popup_window.open('pds', info.pds, '_blank', {location:0,status:0});
 				}))
 			)
-			.append($("<h5/>").append(info.name))
-				.append($("<h6/>").append(info.desc))
-				.append($("<a/>", {
+				.append($("<h5/>").append(info.name));
+			
+			if(info.source == "LB") {
+				$heading.append($("<h6/>").append(info.desc));
+			}
+				
+			$heading.append($("<a/>", {
 						"class": "new-btn btn-primary",
 						"href": "javascript:void(0);"
 					}).append('Enquire Now')

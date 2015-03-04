@@ -450,7 +450,10 @@ function initializeNewLogging() {
 	window.onerror = function(message, file, line, column, error) {
 		var column = column || (window.event && window.event.errorCharacter);
 		var stack;
+		// Used to trim CTM urls.
 		var url = file.substring(file.lastIndexOf('/ctm'), file.length);
+		// Used to trim WHITELABEL urls.
+		url = file.substring(file.lastIndexOf('/app'), file.length);
 
 		if(!error) {
 			stack = [];

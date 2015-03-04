@@ -44,21 +44,25 @@
 		<body>4SED</body>
 	</vehicle>
 	<accs>
+		<acc27>
+			<prc>125</prc>
+			<sel>C*</sel>
+			<inc>N</inc>
+		</acc27>
 		<acc13>
 			<inc>N</inc>
+			<prc>125</prc>
 			<sel>CH</sel>
-			<prc>125</prc>
 		</acc13>
-		<acc02>
-			<inc>N</inc>
-			<sel>CB</sel>
+		<acc2>
 			<prc>500</prc>
-		</acc02>
-		<acc05>
+			<sel>CB</sel>
 			<inc>N</inc>
-			<sel>C*</sel>
-			<prc>125</prc>
-		</acc05>
+		</acc2>
+		<acc3>
+			<inc>Y</inc>
+			<sel>CA</sel>
+		</acc3>
 	</accs>
 	<opts>
 		<opt00>MAZD12AB</opt00>

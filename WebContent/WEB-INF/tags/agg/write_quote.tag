@@ -11,6 +11,7 @@
 <%@ attribute name="triggeredsave" 			required="false" rtexprvalue="true"	 description="If not empty will insert sticky data into the transaction details" %>
 <%@ attribute name="triggeredsavereason"	required="false" rtexprvalue="true"	 description="Optional reason for triggeredsave" %>
 <%@ attribute name="source"					required="false" rtexprvalue="true"	 description="Where we are writing the quote from (ie. QUOTE, SIGNUP, SAVE_QUOTE, etc.)" %>
+<%@ attribute name="dataObject"	required="false" rtexprvalue="true"	 description="Pass through a data object to use instead of params" %>
 
 <c:choose>
 	<c:when test="${rootPath eq 'car'}">
@@ -21,8 +22,15 @@
 	</c:otherwise>
 </c:choose>
 
+<c:choose>
+	<c:when test="${not empty dataObject}">
+		<go:setData dataVar="data" xml="${dataObject}" />
+	</c:when>
+	<c:otherwise>
 <security:populateDataFromParams rootPath="save" />
 <security:populateDataFromParams rootPath="saved" />
+	</c:otherwise>
+</c:choose>
 
 <sql:setDataSource dataSource="jdbc/aggregator"/>
 <c:set var="brand" value="${pageSettings.getBrandCode()}" />
@@ -614,12 +622,14 @@
 
 						<%-- Otherwise we're good to write --%>
 	<c:otherwise>
+								
 							<c:set var="counter" value="${counter + 1}" />
 							${go:appendString(insertSQLSB ,prefix)}
 							<c:set var="prefix" value="," />
 							${go:appendString(insertSQLSB , '(')}
 							${go:appendString(insertSQLSB , transactionId)}
 							${go:appendString(insertSQLSB , ', ?, ?, ?, default, Now()) ')}
+									
 							<c:set var="ignore">
 								${insertParams.add(counter)};
 								${insertParams.add(xpath)};

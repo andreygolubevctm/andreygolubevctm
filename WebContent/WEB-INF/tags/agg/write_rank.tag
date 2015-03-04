@@ -11,7 +11,6 @@
 <%@ attribute name="rankBy"			required="true"	 rtexprvalue="true"	 description="eg. price-asc, benefitsSort-asc" %>
 <%@ attribute name="rankParamName"	required="false"	 rtexprvalue="true"	 description="rankParamName" %>
 
-
 <jsp:useBean id="fatalErrorService" class="com.ctm.services.FatalErrorService" scope="page" />
 
 
@@ -109,8 +108,12 @@
 				<travel:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 		</c:if>
 
+				<c:if test="${pageSettings.getVerticalCode() == 'life'}">
+					<life:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
 		</c:if>
 	
+			</c:if>
+
 		<c:set var="count" value="${count+1}" />
 	</c:forEach>
 	
@@ -178,6 +181,10 @@
 			</c:if>
 
 			<%-- THIS IS ALL DISC STUFF AND WILL NEED REMOVING --%>
+				<c:set var="useDISCFlag" scope="request"><content:get key="bestPriceCallDisc"/></c:set>
+				<c:if test="${not empty useDISCFlag and useDISCFlag eq 'Y'}">
+					<go:log level="DEBUG">[Lead feed] Best price sent to AGIS via DISC</go:log>
+					<%-- Only continue if override exists and new java service has been switched off --%>
 		<go:setData dataVar="data" xpath="ranking/results" value="*DELETE" />
 
 		<c:set var="TemplateInfo">EX</c:set>
@@ -197,9 +204,11 @@
 			</c:if>
 
 			</c:forEach>
-			<go:log level="DEBUG">Writing Ranking to DISC ${data.xml['ranking']}</go:log>
+					<go:log level="DEBUG">[Lead feed] Writing Ranking to DISC ${data.xml['ranking']}</go:log>
 			<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
 			<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" style="${AGIS_leadFeedCode}" />
+					<agg:write_touch transaction_id="${data.current.transactionId }" touch="BP" />
+				</c:if>
 				<%-- END DISC STUFF --%>
 		</c:when>
 

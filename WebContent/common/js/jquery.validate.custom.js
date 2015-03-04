@@ -400,6 +400,19 @@ if (typeof meerkat === 'undefined' || typeof meerkat.modules.validation === 'und
 		"partners at this time.");
 }
 
+// TODO: delete this when all vertical are on the new framework
+// Validate only numeric only fields with no foreign characters as providers don't support them
+// Ensures that an email address or URL is not being entered
+if (typeof meerkat === 'undefined' || typeof meerkat.modules.validation === 'undefined') {
+	var validNumericRegex = /^(\d+)$/;
+	$.validator.addMethod("numericOnly",
+		function validateNumericOnly(value, element) {
+			return validNumericRegex.test(value);
+		},
+		"Please enter a valid number.");
+}
+
+
 //
 // Validates OK to call which ensure we have a phone number if they select yes
 //
@@ -434,6 +447,7 @@ $.validator.addMethod(
 		if(typeof meerkat != 'undefined') {
 
 			var $ele = $(element);
+			var $streetSearch = $("#" + name + "_streetSearch");
 			var $streetNoElement = $("#" + name + "_streetNum");
 			var $unitShopElement = $("#" + name + "_unitShop");
 			var $unitSelElement = $("#" + name + "_unitSel");
@@ -446,6 +460,7 @@ $.validator.addMethod(
 
 					var fldName = $ele.attr("id").substring(name.length);
 			var type = $("#" + name + "_type").val();
+;
 			var selectedAddress = window.selectedAddressObj[type];
 
 					switch (fldName) {
@@ -731,6 +746,24 @@ $.validator.addMethod(
 	}, "Please enter a valid address"
 );
 
+$.validator.addMethod(
+	"validStreetSearch",
+	function(value, element, name) {
+		"use strict";
+
+		// Default is to FAIL
+		var valid = false;
+
+		var fullAddressFld = $("#" + name + "_fullAddress");
+
+		if (fullAddressFld.val() !== '') {
+			valid = true;
+		}
+
+		return valid;
+
+	}, "Please select a valid address"
+);
 
 $.validator.addMethod(
 		"validSuburb",
@@ -967,6 +1000,9 @@ var ServerSideValidation = {
 
 				}
 
+				// code to add the error message
+				var SSVresult = ServerSideValidation._addErrorMessage(error, matches, false);
+
 				for(var b=0;b<matches.length;b++){
 					// FYI error.message == "ELEMENT REQUIRED" || INVALID VALUE
 					var element = matches[b];
@@ -982,7 +1018,11 @@ var ServerSideValidation = {
 				// TODO - Decide what to do here,
 				// eg: work out which slide to navigate to, also should we display a message to the user as the error may be unrecoverable?
 				var firstSlide = $(matches[0]).parents(".journeyEngineSlide").first();
-				meerkat.modules.address.setHash('start');
+
+				// adding defer allows the setHash to actually affect the journeyEngine
+				_.defer(function deferSetHash() {
+					meerkat.modules.address.setHash("start");
+				});
 			}
 
 
@@ -1117,6 +1157,7 @@ var ServerSideValidation = {
 		var displayGenericMessage = false;
 		var message = "";
 		var missingFieldText = value.elementXpath.replace("/", " ") ;
+
 		if (value.message == "INVALID VALUE") {
 			if(UserData.callCentre) {
 				message = "Please enter a valid value for " + missingFieldText + ".";
@@ -1134,7 +1175,7 @@ var ServerSideValidation = {
 				displayGenericMessage = true;
 			}
 		} else {
-			if(UserData.callCentre) {
+			if (typeof UserData !== 'undefined' && UserData.callCentre) {
 				message = "Please check " + missingFieldText + ".";
 			} else {
 				message = "It looks like something has gone wrong when filling out the form. Please check that you've entered the right details into each section.";
@@ -1142,8 +1183,45 @@ var ServerSideValidation = {
 			}
 		}
 		if(!genericMessageDisplayed) {
+			// pre-AMS verticals
+			if ($('#slideErrorContainer').length > 0)
+			{
 			$('#slideErrorContainer ul').append(
 					"<li><label class='error'>" + message + "</label></li>");
+			} else {
+				// AMS verticals
+				var field = value.elementXpath.replace("/", "_");
+				// this is done so that if an error message needs to be placed when it involves a dropdown, we need to do the insertion before the select field
+				// otherwise the dropdown arrows don't move down with the actual field. JS validation correctly hides this error field in this new position if the values are correct.
+				//
+
+				var insertTarget = invalidField.parent('.select').length == 1 ? invalidField.parent('.select') : invalidField;
+				if (typeof invalidField.attr('data-validation-placement') !== 'undefined')
+				{
+					insertTarget = $(invalidField.attr('data-validation-placement'));
+		}
+
+
+				// need to add this check so that we don't continuously add new error field divs
+				if (insertTarget.prev('.error-field').hasClass('error-field'))
+				{
+					var errorLabel = insertTarget.prev('.error-field').find('label.has-error');
+					if (errorLabel.length == 0)
+					{
+						insertTarget.addClass('has-error').prev('.error-field').html("<label for='"+field+"' class='has-error'>" + value.message + "</label>");
+
+						if (insertTarget.hasClass('select')) {
+							// this step is required otherwise we'll display a green field with a red error message
+							insertTarget.children('select').removeClass('has-success').addClass('has-error');
+							insertTarget.parent('.row-content').removeClass('has-success');
+						}
+					} else {
+						errorLabel.text(value.message);
+					}
+				} else {
+					$("<div class='error-field' style='display: block;'><label for='"+field+"' class='has-error'>" + value.message + "</label></div>").insertBefore(insertTarget);
+				}
+			}
 		}
 		return genericMessageDisplayed || displayGenericMessage;
 	}

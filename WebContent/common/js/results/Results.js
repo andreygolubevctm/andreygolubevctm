@@ -35,7 +35,8 @@ Results = {
 				results: {
 					rootElement: "results",
 					list: "results.result",
-					general: "results.info"
+					general: "results.info",
+					errors: "error"
 				},
 				price: { // result object path to the price property
 					annually: "price.annual.total",

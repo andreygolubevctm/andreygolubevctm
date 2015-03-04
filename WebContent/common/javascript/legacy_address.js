@@ -105,7 +105,7 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 	});
 
 	if (typeof meerkat !== 'undefined') {
-		meerkat.messaging.subscribe(meerkat.modules.events.CANT_FIND_ADDRESS, function handleCantFindAddress(data) {
+		meerkat.messaging.subscribe(meerkat.modules.events.autocomplete.CANT_FIND_ADDRESS, function handleCantFindAddress(data) {
 			// Check that the event came from this address group
 			if (data.hasOwnProperty('fieldgroup') && data.fieldgroup === fieldName) {
 				//nonStdFld.prop('checked', false);

@@ -43,7 +43,22 @@
 	<c:set var="failedData" value="${fn:substring(failedData, 0, 65535)}" />
 </c:if>
 
-<c:if test="${empty page}"><c:set var="page" value="${pageContext.request.servletPath}" /></c:if>
+<%-- Ensure description length will fit into database field --%>
+<c:if test="${fn:length(description) > 65535}">
+	<c:set var="description" value="${fn:substring(description, 0, 65535)}" />
+</c:if>
+
+<c:if test="${empty page}">
+	<c:set var="page" value="${pageContext.request.servletPath}" />
+</c:if>
+
+<c:if test="${fn:length(page) > 45}">
+	<c:set var="page" value="${fn:substring(page, 0, 45)}" />
+</c:if>
+
+<c:if test="${fn:length(session_id) > 64}">
+	<c:set var="session_id" value="${fn:substring(session_id, 0, 64)}" />
+</c:if>
 
 <%--Commented out because the data var was changed in commit 8407 (AMS-143)
 	and this code snippet didn't seem to do anything... --%>

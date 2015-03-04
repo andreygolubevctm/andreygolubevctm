@@ -80,16 +80,31 @@
 		if(currentJourney != 2 && currentJourney != 3 && currentJourney != 4) {
 			return;
 		}
+
 		setupABTestParameters(currentJourney);
 		// end AB test code
 
 		var options = {
 			enabled: true,
 			tabCount : 3,
-			activeTabSet : getActiveTabSet()
+			activeTabSet : getActiveTabSet(),
+			hasMultipleTabTypes: true,
+			verticalMapping : tabMapping()
 		};
 		meerkat.modules.coverLevelTabs.initCoverLevelTabs(options);
 
+	}
+
+	/* This maps the shortcuts (eg C, M, B etc... ) to an actual tab */
+	function tabMapping() {
+		return {
+			DEFAULT: 'DEFAULT',
+			C: 'Comprehensive',
+			M: 'Mid Range',
+			B: 'Basic',
+			I: 'International',
+			D: 'Domestic'
+		}
 	}
 
 	/**

@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" />
+<c:set var="vertical">${pageSettings.getVerticalCode()}</c:set>
 <c:set var="continueOnValidationError" value="${false}" />
 
 <%-- First check owner of the quote --%>
@@ -15,64 +16,156 @@
 		<core:transaction touch="P" noResponse="true" />
 
 		<c:set var="tranId" value="${data.current.transactionId}" />
+		
+		<c:choose>
+			<c:when test="${param.company eq 'ozicare'}">
+				<go:setData dataVar="data" xpath="lead" value="*DELETE" />
+				<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
+			
+				<jsp:useBean id="AGISLeadFromRequest" class="com.ctm.services.life.AGISLeadFromRequest" scope="page" />
+				<c:set var="paramCompany"><c:out value="${param.company}" /></c:set>
+				<go:setData dataVar="data" xpath="lead/company" value="${paramCompany}" />
+				<c:set var="paramLeadNumber"><c:out value="${param.lead_number}" /></c:set>
+				<go:setData dataVar="data" xpath="lead/leadNumber" value="${paramLeadNumber}" />
 
-		<%-- Build XML required for Life Broker request --%>
-		<c:set var="requestXML">
-			<applyrequest>
-				<request xmlns="urn:Lifebroker.EnterpriseAPI">
-					<api_reference><c:out value="${param.api_ref}" /></api_reference>
-					<action><c:out value="${param.request_type}" /></action>
+				<c:set var="leadResultStatus" value="${AGISLeadFromRequest.newLeadFeed(pageContext.request, pageSettings, tranId)}" />
+
 				<c:choose>
-					<c:when test="${param.partner_quote eq 'Y'}">
-						<c:if test="${not empty param.client_product_id}">
-					<client_product_id><c:out value="${param.client_product_id}" /></client_product_id>
-						</c:if>
-						<c:if test="${not empty param.partner_product_id}">
-					<partner_product_id><c:out value="${param.partner_product_id}" /></partner_product_id>
+					<c:when test="${leadResultStatus eq 'OK'}">
+						<go:setData dataVar="data" xpath="soap-response/results/success" value="true" />
+						<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
+						
+						<%-- Check if email already sent and who it was sent to --%>
+						<sql:setDataSource dataSource="jdbc/ctm" />
+						
+						<c:catch var="error">
+							<sql:query var="companies">
+								SELECT textValue
+								FROM aggregator.transaction_details
+								WHERE transactionid = ?
+								AND xpath LIKE "%/emailSentBy"
+								LIMIT 1;
+								<sql:param value="${tranId}" />
+							</sql:query>
+						</c:catch>
+
+						<c:if test="${empty error}">
+							<c:set var="companyName" value="" />
+							<c:forEach var="company" items="${companies.rows}">
+								<c:set var="companyName" value="${company.textValue}" />
+							</c:forEach>
+
+							<c:if test="${companyName ne 'ozicare'}">
+								<%-- SEND AGIS EMAIL --%>
+								<jsp:useBean id="emailService" class="com.ctm.services.email.EmailService" scope="page" />
+								
+								<%-- enums are not will handled in jsp --%>
+								<% request.setAttribute("BEST_PRICE", com.ctm.model.email.EmailMode.BEST_PRICE); %>
+								<c:catch var="error">
+									${emailService.send(pageContext.request, BEST_PRICE, data.life.contactDetails.email, tranId)}
+									<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/emailSentBy" value="ozicare" />
+								</c:catch>
+							</c:if>
 						</c:if>
 					</c:when>
 					<c:otherwise>
-					<product_id><c:out value="${param.client_product_id}" /></product_id>
+						<go:setData dataVar="data" xpath="soap-response/results/success" value="false" />
+						<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 					</c:otherwise>
 				</c:choose>
-				</request>
-			</applyrequest>
-		</c:set>
-
-		<%-- Load the config and send quotes to the aggregator gadget --%>
-		<c:import var="config" url="/WEB-INF/aggregator/life/config_product_apply.xml" />
-		<go:soapAggregator	config = "${config}"
-							transactionId = "${tranId}"
-							xml = "${requestXML}"
-							var = "resultXml"
-							debugVar="debugXml"
-							verticalCode="${fn:toUpperCase(vertical)}"
-							configDbKey="appService "
-							styleCodeId="${pageSettings.getBrandId()}"
-							validationErrorsVar="validationErrors"
-							continueOnValidationError="${continueOnValidationError}"
-							isValidVar="isValid"  />
-							
-							
-		<c:choose>
-			<c:when test="${isValid || continueOnValidationError}">
-		
-				<%-- Add the results to the current session data --%>
-				<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-				<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
-				<go:setData dataVar="data" xpath="soap-response/results/selection/pds" value="*DELETE" />
-		
-				<go:log level="DEBUG" source="life_submit_application">${resultXml}</go:log>
-				<go:log level="DEBUG" source="life_submit_application">${debugXml}</go:log>
-		
-				<%-- Confirmation --%>
-				<core:transaction touch="C" noResponse="true" />
 			</c:when>
 			<c:otherwise>
-				<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_submit_application.jsp" />
+	
+				<%-- 
+					We need to do this, because up to this point, we still haven't actually sent any contact details to Lifebroker.
+					So, we create a new lead by passing through all previously provided information and sending that information
+					back.
+				--%>
+				<c:import var="config" url="/WEB-INF/aggregator/life/config_results_${vertical}.xml" />
+
+				<go:setData dataVar="data" xpath="${vertical}/sendRealData" value="true" />
+
+				<c:set var="dataXml" value="${go:getEscapedXml(data[vertical])}" />
+				<go:soapAggregator	config = "${config}"
+									transactionId = "${tranId}"
+									xml = "${dataXml}"
+									var = "newQuoteResults"
+									debugVar="debugXml"
+									validationErrorsVar="validationErrors"
+									continueOnValidationError="${true}"
+									isValidVar="isValid"
+									verticalCode="${fn:toUpperCase(vertical)}"
+									configDbKey="quoteService"
+									styleCodeId="${pageSettings.getBrandId()}"  />
+				
+				<x:parse xml="${newQuoteResults}" var="newQuoteResultsOutput" />
+				<c:set var="apiReference"><x:out select="$newQuoteResultsOutput/results/api/reference" /></c:set>
+
+				<%-- Build XML required for Life Broker request --%>
+				<c:set var="requestXML">
+					<applyrequest>
+						<request xmlns="urn:Lifebroker.EnterpriseAPI">
+							<api_reference><c:out value="${apiReference}" /></api_reference>
+							<action><c:out value="${param.request_type}" /></action>
+						<c:choose>
+							<c:when test="${param.partner_quote eq 'Y'}">
+								<client_product_id>
+									<c:choose>
+										<c:when test="${not empty param.client_product_id}">
+											<c:out value="${param.client_product_id}" />
+										</c:when>
+										<c:otherwise>null</c:otherwise>
+									</c:choose>
+								</client_product_id>
+								
+								<c:if test="${not empty param.partner_product_id}">
+									<partner_product_id><c:out value="${param.partner_product_id}" /></partner_product_id>
+								</c:if>
+							</c:when>
+							<c:otherwise>
+								<product_id><c:out value="${param.client_product_id}" /></product_id>
+							</c:otherwise>
+						</c:choose>
+						</request>
+					</applyrequest>
+				</c:set>
+		
+				<%-- Load the config and send quotes to the aggregator gadget --%>
+				<c:import var="config" url="/WEB-INF/aggregator/life/config_product_apply.xml" />
+				<go:soapAggregator	config = "${config}"
+									transactionId = "${tranId}"
+									xml = "${requestXML}"
+									var = "resultXml"
+									debugVar="debugXml"
+									verticalCode="${fn:toUpperCase(vertical)}"
+									styleCodeId="${pageSettings.getBrandId()}"
+									validationErrorsVar="validationErrors"
+									continueOnValidationError="${continueOnValidationError}"
+									isValidVar="isValid"  />	
+
+				<c:choose>
+					<c:when test="${isValid || continueOnValidationError}">
+						<%-- Add the results to the current session data --%>
+						<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+						<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
+						<go:setData dataVar="data" xpath="soap-response/results/selection/pds" value="*DELETE" />
+				
+						<go:log level="DEBUG" source="life_submit_application">${resultXml}</go:log>
+						<go:log level="DEBUG" source="life_submit_application">${debugXml}</go:log>
+					</c:when>
+					<c:otherwise>
+						<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_submit_application.jsp" />
+					</c:otherwise>
+				</c:choose>
+				
 			</c:otherwise>
 		</c:choose>
+		
+		<c:set var="leadSentTo" value="${param.company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
+		<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/leadSentTo" value="${leadSentTo}" />
+		<go:setData dataVar="data" xpath="current/transactionId" value="${data.current.transactionId}" />
+		<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" /></c:set>
+		<core:transaction touch="C" noResponse="true" writeQuoteOverride="N" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

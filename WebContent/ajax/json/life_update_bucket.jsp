@@ -24,7 +24,9 @@
 		<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/clientUserAgent" value="${clientUserAgent}" />
 
 		<%-- Save client data --%>
-		<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${fn:toLowerCase(vertical)}"/>
+		<c:if test="${empty param.updateBucket or param.updateBucket eq 'true'}">
+			<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${fn:toLowerCase(vertical)}"/>
+		</c:if>
 
 		<%-- Add calcSequence and transactionId back in --%>
 		<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/calcSequence" value="${calcSequence}" />

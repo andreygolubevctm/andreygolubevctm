@@ -51,11 +51,23 @@ public abstract class EmailServiceHandler {
 	}
 
 	protected void setCustomerKey(EmailModel emailModel, String mailingName) {
+		setCustomerKey(emailModel, mailingName, true);
+	}
+	
+	protected void setCustomerKey(EmailModel emailModel, String mailingName, Boolean prefixCustomerKey) {
+		String key;
+		
+		if(prefixCustomerKey) {
 		if(EnvironmentService.getEnvironment() == Environment.PRO){
-			emailModel.setCustomerKey(pageSettings.getBrandCode().toUpperCase() + "_" + mailingName);
+				key = pageSettings.getBrandCode().toUpperCase() + "_" + mailingName;
 		} else {
-			emailModel.setCustomerKey("QA_" + pageSettings.getBrandCode().toUpperCase() + "_" + mailingName);
+				key = "QA_" + pageSettings.getBrandCode().toUpperCase() + "_" + mailingName;
 		}
+		} else {
+			key = mailingName;
+	}
+
+		emailModel.setCustomerKey(key);
 	}
 
 	protected String getSplitTestMailingName(String mailingKey, String mailingKeyVariation, String splitTest) throws SendEmailException {
@@ -76,8 +88,7 @@ public abstract class EmailServiceHandler {
 		}
 	}
 
-	protected void buildEmailModel(EmailMaster emailDetails,
-			EmailModel emailModel) {
+	protected void buildEmailModel(EmailMaster emailDetails, EmailModel emailModel) {
 		emailModel.setEmailAddress(emailDetails.getEmailAddress());
 		try {
 			emailModel.setImageUrlPrefix(getPageSetting("imageUrlPrefix"));

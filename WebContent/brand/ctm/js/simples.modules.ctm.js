@@ -213,6 +213,7 @@
         heading = encodeURIComponent(heading);
         meerkat.modules.dialogs.show({
             title: " ",
+            className: _.indexOf([ 31, 32 ], parentStatusId) >= 0 ? "simples-messagescolumn-dialog" : "simples-postpone-dialog",
             buttons: [ {
                 label: "Cancel",
                 className: "btn-cancel",
@@ -234,6 +235,7 @@
                     cache: true,
                     errorLevel: "silent"
                 }).done(function onSuccess(json) {
+                    json.parentStatusId = parentStatusId;
                     updateModal(json, templatePostpone);
                 }).fail(function onError(obj, txt, errorThrown) {
                     updateModal(null, templatePostpone);
@@ -291,6 +293,15 @@
                             meerkat.modules.loadingAnimation.hide($button);
                         });
                     });
+                    var $messages = $modal.find(".personal-messages-container");
+                    $messages.empty();
+                    meerkat.modules.simplesPostponedQueue.initDateStuff();
+                    var messages = document.getElementById("simplesiframe").contentWindow.meerkat.modules.simplesPostponedQueue.getMessageQueue();
+                    if (!_.isEmpty(messages)) {
+                        for (var i = 0; i < messages.length; i++) {
+                            $messages.append($("<span/>").addClass("well").append($("<strong/>").append(messages[i].contactName)).append(":&nbsp;" + formatWhenToAction(messages[i].whenToAction)));
+                        }
+                    }
                 });
             }
         });
@@ -349,6 +360,26 @@
             }
         }
         return false;
+    }
+    function formatWhenToAction(dateStr) {
+        var whenToAction = Date.parse(dateStr) || false;
+        if (whenToAction !== false) {
+            whenToAction = new Date(whenToAction);
+            var ampm = "am";
+            var hours = whenToAction.getHours();
+            if (hours < 10) {
+                hours = "0" + hours;
+            } else if (hours == 12) {
+                ampm = "pm";
+            } else if (hours > 12) {
+                ampm = "pm";
+                hours -= 12;
+            }
+            var minutes = whenToAction.getMinutes() < 10 ? "0" + whenToAction.getMinutes() : whenToAction.getMinutes();
+            return whenToAction.getDayNameShort() + " " + whenToAction.getDate() + " " + whenToAction.getMonthNameShort() + " " + hours + ":" + minutes + ampm;
+        } else {
+            return dateStr;
+        }
     }
     meerkat.modules.register("simplesActions", {
         init: init
@@ -732,7 +763,7 @@
 
 (function($, undefined) {
     var meerkat = window.meerkat, log = meerkat.logging.info;
-    var templatePQ = false, $container = false, baseUrl = "", viewMessageInProgress = false;
+    var templatePQ = false, $container = false, baseUrl = "", viewMessageInProgress = false, currentMessageQueue = [];
     function init() {
         $(document).ready(function() {
             $container = $(".simples-postpone-queue-container");
@@ -839,6 +870,7 @@
             if (typeof templatePQ !== "function") {
                 htmlContent = "Unsuccessful because: template not configured.";
             } else {
+                setMessageQueue(json);
                 htmlContent = templatePQ(json);
             }
             $container.html(htmlContent);
@@ -846,8 +878,24 @@
             $container.html("Unsuccessful because: " + txt + ": " + errorThrown);
         });
     }
+    function setMessageQueue(json) {
+        currentMessageQueue = [];
+        if (_.isObject(json) && json.hasOwnProperty("messages") && _.isArray(json.messages) && json.messages.length > 0) {
+            for (var i = 0; i < json.messages.length; i++) {
+                currentMessageQueue.push({
+                    contactName: json.messages[i].contactName,
+                    whenToAction: json.messages[i].whenToAction
+                });
+            }
+        }
+    }
+    function getMessageQueue() {
+        return currentMessageQueue;
+    }
     meerkat.modules.register("simplesPostponedQueue", {
-        init: init
+        init: init,
+        initDateStuff: initDateStuff,
+        getMessageQueue: getMessageQueue
     });
 })(jQuery);
 

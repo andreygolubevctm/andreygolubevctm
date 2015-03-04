@@ -15,6 +15,13 @@
 		currentJourneyFieldLabel = "currentJourney",
 		$currentJourney = null;
 
+	var events = {
+			splitTest: {
+				SPLIT_TEST_READY: 'SPLIT_TEST_READY'
+			}
+		},
+		moduleEvents = events.splitTest;
+
 
 	function init(){
 
@@ -26,6 +33,8 @@
 			if(!_.isEmpty(current_journey)) {
 				set(current_journey);
 			}
+			//
+			meerkat.messaging.publish(moduleEvents.SPLIT_TEST_READY);
 		});
 	}
 
@@ -46,6 +55,7 @@
 
 	meerkat.modules.register("splitTest", {
 		init: init,
+		events: events,
 		get: get,
 		isActive : isActive
 	});

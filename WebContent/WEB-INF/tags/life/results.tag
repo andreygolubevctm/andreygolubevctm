@@ -784,6 +784,13 @@ Results = {
 			$refineFormWrapper = $('#refine-form-wrapper');
 
 			if( cart_full ) {
+				$(".results-row").each(function(){
+					var $this = $(this);
+					if($this.find(".more-info-slider").is(":visible")) {
+						Results.toggleMoreDetails($this.data('clienttype'),$this.data('productid'));
+					}
+				});
+			
 				// Shift progress bar to Apply stage
 				QuoteEngine.gotoSlide({noAnimation:true, index:2});
 
@@ -794,7 +801,12 @@ Results = {
 				if( Results._partnerQuote ) {
 					$('#results-mast-wrapper .premium-summary').find('.part').first().text('$' + Results._selectedProduct.partner.price);
 				}
-				$('.reference_no_replace').text(Results._selectedProduct.primary.transaction_id);
+
+				var providerName = (Results._selectedProduct.primary.company !== "ozicare") ? Results._selectedProduct.primary.service_provider : Results._selectedProduct.primary.companyName;
+				$(".company_reference_replace").text(providerName);
+				
+				var referenceNumber = (Results._selectedProduct.primary.company !== "ozicare") ? Results._selectedProduct.primary.transaction_id : Results._selectedProduct.primary.lead_number;
+				$('.reference_no_replace').text(referenceNumber);
 
 				switch( $('#${vertical}_primary_insurance_frequency').val() ) {
 					case 'Y':
@@ -845,6 +857,10 @@ Results = {
 		} else {
 			callback();
 		}
+		
+		
+		Results.recalculateRowPositions();
+		Results.resizeResultsWrappers(false);
 	},
 
 	toggleMoreDetails : function( type, product_id )
@@ -852,6 +868,13 @@ Results = {
 		if( !$('#result_' + type + '_' + product_id).hasClass('pending') ) {
 
 			$('#result_' + type + '_' + product_id).addClass('pending');
+
+			$('#more-info-' + type + '_' + product_id).parents(".innertube").find(".results-row").each(function(){
+				var $this = $(this);
+				if($this.find(".more-info-slider").is(":visible")) {
+					Results.toggleMoreDetails($this.data('clienttype'),$this.data('productid'));
+				}
+			});
 
 			var callback = function() {
 				if( $('#more-info-' + type + '_' + product_id).is(":visible") ) {
@@ -869,16 +892,36 @@ Results = {
 					}});
 				} else {
 					var product = Results.getProductByID(type, product_id);
-					LifeQuote.fetchProductDetails(product, function(){
-						/* Build and inject details into more-info-slider */
+					var $moreInfo = $('#more-info-' + type + '_' + product_id);
 
-						Results.populateMoreDetails( product );
+					var openDropdownInstance = function openDropdown() {
+						var $callMeBack = $moreInfo.find(".call-me-back");
+
+						if(!$callMeBack.length) {
+							var refNo = product.company == "ozicare" ? product.lead_number : referenceNo.getTransactionID();
+
+							var callMeBackHTML = [
+								"<p>",
+									"Call " + product.service_provider + " now <span class='phone'>" + product.insurer_contact + "</span>",
+									"<br> Reference No. " + refNo,
+									"<br> or <a href='javascript:void(0)' class='new-btn btn-white callback-button'>Request a call back</a>",
+								"</p>"
+							].join("");
+
+							$moreInfo
+								.append("<div class='call-me-back'>" + callMeBackHTML + "</div>")
+								.on("click", ".callback-button", function(e) {
+									var submitObj = {};
+									submitObj[type] = product;
+									LifeQuote.submitApplication(submitObj);
+								});
+						}
 
 						var ignore = true;
 						var cur_height = 0;
 						var margin = 10;
 						$('#result_' + type + '_' + product_id).addClass('expanded');
-						$('#more-info-' + type + '_' + product_id).slideDown({duration:500,step:function(){
+						$moreInfo.slideDown({duration:500,step:function(){
 							Results.recalculateRowPositions();
 							Results.resizeResultsWrappers( $('#resultsPage').hasClass('proceed') );
 						},complete : function(){
@@ -886,9 +929,22 @@ Results = {
 							$('#moreinfobtn_' + type + '_' + product_id).text("View Less Details");
 							Track.onMoreInfoClick( product_id );
 						}});
+					};
+
+					if(product.company == "ozicare") {
+						Results.populateMoreDetails(product);
+						openDropdownInstance();
+					} else {
+						LifeQuote.fetchProductDetails(product, function(){
+							/* Build and inject details into more-info-slider */
+
+							Results.populateMoreDetails( product );
+
+							openDropdownInstance();
 					});
 		}
 		}
+			}
 		
 			if( Results._renderingProducts ) {
 				Results.forceShowAllProducts( callback );
@@ -906,6 +962,8 @@ Results = {
 			inc		: parent.find('.inclusions').first().empty(),
 			exc		: parent.find('.exclusions').first().empty(),
 			ext		: parent.find('.extras').first().empty(),
+			special_list: parent.find('.special-offers-list').first().empty(),
+			special_description : parent.find('.special-offers-description').first().empty(),
 			pds		: parent.find('.pds a').first(),
 			term	: $('#life_insurance_term'),
 			tpd		: $('#life_insurance_tpd'),
@@ -954,26 +1012,67 @@ Results = {
 			}
 		}
 
+		if(typeof product.special_offer !== "undefined" && product.special_offer) {
+			for(var i in product.features.special_offers) {
+				elements.special_list.append( getLI(product.features.special_offers[i].name) );
+			}
+			
+			elements.special_description.append(product.special_offer).parents('.optional').show();
+		}
+
 		if(typeof(product.features.available) == 'undefined') {
 			//console.log("product " , product);
 		}
 
-		for(var i in product.features.available) {
-			if( count++ < 5 ) {
-				elements.inc.append( getLI(product.features.available[i]) );
+		var available = {};
+
+		if(typeof product.features.whats_included != "undefined") {
+			var whats_included = product.features.whats_included.feature;
+			for(var i = 0; i < whats_included.length; i++) {
+				available[whats_included[i].id] = whats_included[i].name;
+			}
+		} else {
+			available = product.features.available;
+		}
+
+		for(var i in available) {
+			if( count++ < 10 ) {
+				elements.inc.append( getLI(available[i]) );
 			}
 		}
 
 		count = 0;
 
-		for(var i in product.features.unavailable) {
-			if( count++ < 5 ) {
-				elements.exc.append( getLI(product.features.unavailable[i]) );
+		var unavailable = {};
+
+		if(typeof product.features.exclusions != "undefined") {
+			var exclusions = product.features.exclusions.feature;
+			for(var i = 0; i < exclusions.length; i++) {
+				unavailable[exclusions[i].id] = exclusions[i].name;
 			}
+		} else {
+			unavailable = product.features.unavailable;
 		}
 
-		for(var i in product.features.extras) {
-			elements.ext.append( getLI(product.features.extras[i]) );
+		for(var i in unavailable) {
+			if( count++ < 10 ) {
+				elements.exc.append( getLI(unavailable[i]) );
+		}
+		}
+
+		var extras = {};
+
+		if(typeof product.features.optional_extras != "undefined") {
+			var optional_extras = product.features.optional_extras.feature;
+			for(var i = 0; i < optional_extras.length; i++) {
+				extras[optional_extras[i].id] = optional_extras[i].name;
+			}
+		} else {
+			extras = product.features.extras;
+		}
+
+		for(var i in extras) {
+			elements.ext.append( getLI(extras[i]) );
 		}
 
 		elements.pds.on('click', function(){
@@ -1020,12 +1119,11 @@ Results = {
 				$('#results-mast-wrapper').slideUp(200, function(){
 					compare.hide(function(){
 						$('#refine-form-wrapper').slideDown(100, function(){
-							$("#results-errors-wrapper .innertube:first").empty();
-
-							for(var i=0; i < msgs.length; i++) {
-								$("#results-errors-wrapper .innertube:first").append("<p>" + msgs[i] + "</p>")
-							}
-
+							$('#resultsPage').css({'min-height': 0});
+							$('#contact-panel').show();
+							$('#save-my-quote').hide();
+							$('#summary-header').find('h2.success').hide().end()
+								.find('h2.error').show();
 							$("#results-errors-wrapper").slideDown('slow');
 		});
 					});
@@ -1202,8 +1300,23 @@ Results = {
 		Results._sortDir="asc";
 		var qs = "rootPath=${vertical}&rankBy=" + Results._sortBy + "-" + Results._sortDir + "&rank_count=" + Results._currentPrices.primary.length;
 		for(var i in Results._currentPrices.primary) {
-			var prodId= Results._currentPrices.primary[i].product_id;
+			var product = Results._currentPrices.primary[i];
+						
+			// Log product ID
+			var prodId= product.product_id;
 			qs+="&rank_productId"+i+"="+prodId;
+			
+			qs += "&rank_company" + i + "=" + product.company;
+			qs += "&rank_productName" + i + "=" + product.name;
+			qs += "&rank_premium" + i + "=" + product.price;
+			
+			if(product.hasOwnProperty('companyName') && product.companyName == "Ozicare") {
+				qs += "&rank_callCentreHours" + i + "=" + product.call_centre_hours;
+		}
+			
+			if(typeof product.lead_number !== "undefined") {
+				qs += "&rank_leadNumber" + i + "=" + product.lead_number;
+			}
 		}
 		qs+="&transactionId="+referenceNo.getTransactionID();
 		$.ajax({
@@ -1546,9 +1659,22 @@ Results = {
 	
 		Results.renderRefineResultsDOM();
 		
+		<c:if test="${vertical eq 'life'}">
+		var sortPrices = function(a, b) {
+			var aPrice = parseFloat(a.price),
+				bPrice = parseFloat(b.price);
+			if(aPrice < bPrice) return -1;
+			if(aPrice > bPrice) return 1;
+			return 0;
+		};
+
 		prices['primary'] = [].concat(prices.primary);
 		prices['partner'] = [].concat(prices.partner);
 		
+		prices['primary'].sort(sortPrices);
+		prices['partner'].sort(sortPrices);
+		</c:if>
+
 		Results._currentPrices = prices;
 		
 		Results._updateQuoteCount();
@@ -1718,8 +1844,10 @@ Results = {
 				}
 			});
 		} else {
-			$($('#results-rows-wrapper .results-row').reverse()).show();
+			$($('#results-rows-wrapper .results-row').reverse()).show(400, function() {
 			Results.recalculateRowPositions();
+				Results.resizeResultsWrappers(false);
+			});
 		}
 
 		Results.resizeResultsWrappers( true );
@@ -2233,9 +2361,17 @@ var highlightMeTextObj = new HighlightMeText();
 		<div id="summary-header">
 			<div>
 			<c:if test="${splitTestingJourney != 'noresults'}">
-			<h2>We have found <strong><!-- empty --></strong><span>These quotes have been provided by Lifebroker, a trusted partner of Comparethemarket.com.au.</span></h2>
+				<c:choose>
+					<c:when test="${vertical eq 'life'}">
+						<h2 class="success">We have found <strong><!-- empty --></strong><span>These quotes have been provided by Comparethemarket.com.au's trusted partners.</span></h2>
+					</c:when>
+					<c:otherwise>
+						<h2 class="success">We have found <strong><!-- empty --></strong><span>These quotes have been provided by Lifebroker, a trusted partner of Comparethemarket.com.au.</span></h2>
+					</c:otherwise>
+				</c:choose>
 			</c:if>
-			<a href="javascript:void(0);" data-savequote="true"' id="save-my-quote" class="new-btn btn-primary" title="Save your quote"><span><!-- icon --></span>Save Quote</a>
+			<h2 class="error">We apologise for the inconvenience</h2>
+			<a href="javascript:void(0);" data-savequote="true" id="save-my-quote" class="new-btn btn-primary" title="Save your quote"><span><!-- icon --></span>Save Quote</a>
 			<a href="javascript:void(0);" data-revisedetails="true" id="revise-quote" class="new-btn btn-tertiary" title="Revise your details"><span><!-- icon --></span>Edit Details</a>
 			</div>
 		</div>
@@ -2325,8 +2461,24 @@ var highlightMeTextObj = new HighlightMeText();
 						</div>
 
 	<div id="results-errors-wrapper">
-		<div class="innertube"><!-- empty  --></div>
+		<div class="innertube">
+			<p>Unfortunately, due to a technical failure, we are temporarily unable to provide the quotes. If you have left your contact details, a consultant may call you to assist with your ${vertical eq 'life' ? 'life' : 'income protection' } insurance needs. Alternatively, for a quote from one of the below brands, feel free to contact our partner directly or visit us again at a later time.</p>
+			<div class="providers">
+				<div class="provider aia"></div>
+				<div class="provider amp"></div>
+				<div class="provider asteron"></div>
+				<div class="provider bt-australia"></div>
+				<div class="provider comm-insure"></div>
+				<div class="provider macquarie"></div>
+				<div class="provider metlife"></div>
+				<div class="provider mlc"></div>
+				<div class="provider onepath"></div>
+				<div class="provider ozicare"></div>
+				<div class="provider tal"></div>
+				<div class="provider zurich"></div>
 						</div>
+		</div>
+	</div>
 
 	<life:compare quoteType="${vertical}" />
 
@@ -2387,22 +2539,29 @@ var highlightMeTextObj = new HighlightMeText();
 			<span id="what-happens-next-text" class="col text">What happens next?</span>
 			<c:choose>
 				<c:when test="${splitTestingJourney eq 'noresults'}">
-					<p>A Lifebroker consultant can call you or you can call Lifebroker to discuss options and process your insurance policy.</p>
+					<p>A <span class="company_reference_replace">Lifebroker</span> consultant can call you or you can call <span class="company_reference_replace">Lifebroker</span> to discuss options and process your insurance policy.</p>
 				</c:when>
 				<c:otherwise>
-			<p>A Lifebroker consultant can call you or you can call Lifebroker to discuss this option and process your insurance policy.</p>
+					<p>A <span class="company_reference_replace">Lifebroker</span> consultant can call you or you can call <span class="company_reference_replace">Lifebroker</span> to discuss this option and process your insurance policy.</p>
 				</c:otherwise>
 			</c:choose>
 
 			<div class="left">
-				<p>Call us on <span class="icon"></span><span>1800 204 124</span></p>
+				<p>Call us on <span class="icon"></span><span class="phone-no-replace">1800 204 124</span></p>
 				<p>Your reference no. <span class="reference_no_replace"><%-- populated by javascript --%></span></p>
 			</div>
 			<div class="right">
 				<p>Or we can call you <a href="javascript:void(0);" class="new-btn btn-primary" id="we-call-you"><span><%-- icon --%></span>Request a Call Back</a></p>
 				<p>Your reference no. <span class="reference_no_replace"><%-- populated by javascript --%></span></p>
 			</div>
+			<c:choose>
+				<c:when test="${fn:toLowerCase(vertical) eq 'life'}">
+					<p class="legal">Comparethemarket.com.au is an online comparison website aimed at delivering our clients competitively priced yet comprehensive policies. Information and quotes are provided by our trusted partners, Lifebroker Pty Ltd and Auto &amp; General services.</p>
+				</c:when>
+				<c:otherwise>
 			<p class="legal">Comparethemarket.com.au is an online comparison website aimed at delivering our clients competitively priced yet comprehensive policies. Information and quotes are provided by our trusted partner, Lifebroker Pty Ltd.</p>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</div>
 
@@ -2425,7 +2584,7 @@ var highlightMeTextObj = new HighlightMeText();
 		
 	<%-- TEMPLATE FOR RESULT ROW --%>
 		<core:js_template id="result-template">
-		<div class="results-row" id="result_[#= client_type #]_[#= product_id #]" data-clienttype="[#= client_type #]" data-productid="[#= product_id #]">
+		<div class="results-row" id="result_[#= client_type #]_[#= product_id #]" data-clienttype="[#= client_type #]" data-productid="[#= product_id #]" data-source="[#= company #]">
 			<div id="more-info-[#= client_type #]_[#= product_id #]" class="more-info-slider">
 				<table><tbody><tr>
 					<td class="lft"><!-- empty --></td>
@@ -2441,6 +2600,12 @@ var highlightMeTextObj = new HighlightMeText();
 						<span class="panel">
 							<h4>Optional Extras</h4>
 							<ul class="extras"><!-- empty --></ul>
+						</span>
+						<div class="clear"></div>
+						<span class="panel optional">
+							<h4>Special Offers</h4>
+							<ul class="special-offers-list"><!-- empty --></ul>
+							<div class="special-offers-description"><!--  empty --></div>
 						</span>
 						<span class="panel">
 							<h4>Product disclosure statement</h4>
@@ -2469,7 +2634,7 @@ var highlightMeTextObj = new HighlightMeText();
 				</div>
 					<div class="product details">
 						<p class="title">[#= name #]</p>
-						<p>[#= description #]</p>
+						<p class="description">[#= description #]</p>
 				</div>
 					<div class="product price">
 						<div class="amt">

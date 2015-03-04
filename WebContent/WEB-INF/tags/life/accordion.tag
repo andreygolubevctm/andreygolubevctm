@@ -24,7 +24,6 @@ var LifeAccordionIsPartnerQuote = function() {
 var LifeAccordion = function() {
 
 	var vertical		= '${quoteType}',
-		contactLeadSent = false,
 		active_panel	= false,
 		valid_panels	= [],
 		labels			= [
@@ -171,10 +170,9 @@ var LifeAccordion = function() {
 				toggleValidPanels(panel, true);
 
 				var step2_callback = function() {
-					if(!contactLeadSent) {
-						LifeQuote.sendContactLead();	
-						contactLeadSent = true;
-					}					
+					if(!LifeQuote._contactLeadSent) {
+						LifeQuote.sendContactLead(true);
+					}
 
 					if( LifeAccordionElements[panel].body instanceof jQuery ) {
 						LifeAccordionElements[panel].body.slideDown(step3_callback);

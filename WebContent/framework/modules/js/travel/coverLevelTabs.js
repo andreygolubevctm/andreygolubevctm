@@ -37,8 +37,12 @@
 	var counts = {},
 		currentRankingFilter = 'default',
 		hasRunTrackingCall = [],
+		recordFullTabJourney = false,
+		originatingTab = 'default',
+		departingTab = [],
 		defaults = {
 		enabled: true, // whether it should be enabled for this vertical.
+		verticalMapping: {}, // each vertical's definition of a tab
 		activeTabIndex: false, // nothing by default.
 		disableAnimationsBetweenTabs: true,
 		/**
@@ -135,6 +139,14 @@
 					additionalData.products = [];
 				}
 
+				// grab the tab they've clicked on
+				// recordFullTabJourney gives us the option to record all the other tab clicks in between
+				if (!recordFullTabJourney){
+					departingTab = [];
+				}
+
+				departingTab.push(getRankingFilter());
+
 				// reset it for the next "filter"
 				meerkat.modules.resultsRankings.resetTrackingProductObject();
 				// run the trackQuoteResultsList event again, with new products/rankingFilter
@@ -207,15 +219,47 @@
 		state = meerkat.modules.deviceMediaState.get();
 		for(var out = '',
 				i = 0; i < tabLength; i ++) {
-			var	tab = settings.activeTabSet[i],
+			var tab = settings.activeTabSet[i],
 				count = counts[tab.rankingFilter] || null;
-			out += '<div class="col-xs-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="'+i+'">';
-			out += tab.label + (state !== 'xs' && tab.showCount === true && count !== null ? ' ('+(count)+')' : '');
+			out += '<div class="col-xs-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '">';
+			out += tab.label + (state !== 'xs' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
 			out += '</div>';
+
+			// set the originatingTab
+			if (tab.defaultTab === true) {
+				// retrieve the text value
+				originatingTab = settings.verticalMapping[tab.rankingFilter];
+			}
 		}
 
 		$currentTabContainer.empty().html(out);
 
+	}
+
+	// return the originating tab value
+	function getOriginatingTab() {
+		return originatingTab;
+	}
+
+	// return the departing tab value. Depending
+	function getDepartingTabJourney() {
+
+		var departingTabJourney = "default";
+
+		if (settings.enabled) {
+			departingTabJourney = "";
+			var sep = ""; // separator
+			for (var i = 0; i < departingTab.length; i++) {
+				departingTabJourney += sep + settings.verticalMapping[departingTab[i]];
+				sep = ",";
+			}
+		}
+
+		// clear the departing tab array every time we handover
+		// not required for now but can be added as an option later
+		// departingTab = [];
+
+		return departingTabJourney;
 	}
 
 	/**
@@ -274,7 +318,9 @@
 		resetView: resetView,
 		getRankingFilter: getRankingFilter,
 		isEnabled: isEnabled,
-		incrementCount: incrementCount
+		incrementCount: incrementCount,
+		getOriginatingTab: getOriginatingTab,
+		getDepartingTabJourney: getDepartingTabJourney
 	});
 
 })(jQuery);

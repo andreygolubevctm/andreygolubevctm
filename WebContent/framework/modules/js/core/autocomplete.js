@@ -1,31 +1,62 @@
-/*
-
-	CLASS-BASED FEATURES:
-		blur-on-select
-
-		show-loading
-
-*/
 ;(function($, undefined){
 
-	var meerkat = window.meerkat;
+	var meerkat = window.meerkat,
+		meerkatEvents = meerkat.modules.events,
+		log = meerkat.logging.info;
 
-	var moduleEvents = {
-			CANT_FIND_ADDRESS: 'EVENT_CANT_FIND_ADDRESS'
-		};
+	var events = {
+		autocomplete: {
+			CANT_FIND_ADDRESS: 'EVENT_CANT_FIND_ADDRESS',
+			ELASTIC_SEARCH_COMPLETE: 'ELASTIC_SEARCH_COMPLETE'
+		}
+	};
 
+	var moduleEvents = events.autocomplete;
 
+	var elasticSearch = false;
 
-	function initialiseAutoCompleteFields() {
-		// Start typeahead
+	function initAutoComplete() {
+		meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function navbarFixed() {
+			elasticSearch = meerkat.modules.splitTest.isActive(1001) ? true : false;
+			setTypeahead(elasticSearch);
+		});
+	}
+
+	function setTypeahead(elasticSearch) {
 		var $typeAheads = $('input.typeahead');
+		var params = null;
 		$typeAheads.each(function eachTypeaheadElement() {
 			var $component = $(this);
+			if (elasticSearch) {
+				var url = 'address/search.json';
+				params = {
+					name: $component.attr('name'),
+					remote: {
+						rateLimitWait: 100,
+						beforeSend: function(jqXhr, settings) {
+						autocompleteBeforeSend($component);
+						jqXhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+						settings.type = "POST";
+						settings.hasContent = true;
+						settings.url = url;
 
-			var params = {
-				name: $component.attr('name'),
-				remote: {
-					beforeSend: function() {
+						var $addressField = $('#quote_riskAddress_streetSearch');
+						var query = $addressField.val();
+						settings.data = $.param({ query: decodeURI(query) });
+					},
+					filter: function(parsedResponse) {
+						autocompleteComplete($component);
+						return parsedResponse;
+					},
+					url: url
+					},
+					limit: 150
+				};
+			} else {
+				params = {
+					name: $component.attr('name'),
+					remote: {
+						beforeSend: function() {
 						autocompleteBeforeSend($component);
 					},
 					filter: function(parsedResponse) {
@@ -33,9 +64,10 @@
 						return parsedResponse;
 					},
 					url: $component.attr('data-source-url')+'%QUERY'
-				},
-				limit: 150
-			};
+					},
+					limit: 150
+				};
+			}
 
 			params = checkIfAddressSearch($component, params);
 
@@ -55,37 +87,29 @@
 			if ($component.hasClass('blur-on-select')) {
 				$component.bind('typeahead:selected', function blurOnSelect(event, datum, name) {
 					// #CANTFIND#
-					if (datum.hasOwnProperty('value') && datum.value === 'Type your address...') return;
+					if (datum.hasOwnProperty('value') && datum.value === 'Type your address...') {
+						return;
+					}
 
 					if (event && event.target && event.target.blur) {
-						//console.log('blurOnSelect', datum);
 						event.target.blur();
 					}
 				});
 			}
 		});
-		// End typeahead
 	}
 
-
-
 	function autocompleteBeforeSend($component) {
-		//console.log('autocompleteBeforeSend');
-
 		if ($component.hasClass('show-loading')) {
 			meerkat.modules.loadingAnimation.showInside($component.parent('.twitter-typeahead'));
 		}
 	}
 
 	function autocompleteComplete($component) {
-		//console.log('autocompleteComplete');
-
 		if ($component.hasClass('show-loading')) {
 			meerkat.modules.loadingAnimation.hide($component.parent('.twitter-typeahead'));
 		}
 	}
-
-
 
 	//
 	// Check if the input has .typeahead-address
@@ -98,7 +122,7 @@
 
 			// Two properties need to be received in the json: 'value' and 'highlight'
 			typeaheadParams.valueKey = 'value';
-			typeaheadParams.template = _.template('<p><%= highlight %></p>');
+			typeaheadParams.template = _.template('<p>{{= highlight }}</p>');
 
 			if ($element.hasClass('typeahead-streetSearch')) {
 				// If no results, inject a message.
@@ -108,27 +132,31 @@
 
 					if (parsedResponse.length === 0) {
 						parsedResponse.push({
-							value: 'Type your address...', // #CANTFIND#
+							value: 'Type your address...',
 							highlight: 'Can\'t find your address? <u>Click here.</u>'
+						});
+					} else if (elasticSearch) {
+						$.each(parsedResponse, function(index, addressObj) {
+							if(addressObj.hasOwnProperty('text') && addressObj.hasOwnProperty('payload')) {
+								addressObj.value = addressObj.text;
+								addressObj.highlight = addressObj.text;
+								addressObj.dpId = addressObj.payload;
+							}
 						});
 					}
 					return parsedResponse;
 				}
 
 				$element.bind('typeahead:selected', function catchEmptyValue(event, datum, name) {
-					//console.log('catchEmptyValue', datum, datum.value.length);
-					//console.log(event);
-
-					// #CANTFIND#
 					if (datum.hasOwnProperty('value') && datum.value === 'Type your address...') {
-						//console.log('Publish', EVENT_CANT_FIND_ADDRESS);
-
 						var id = '';
 						if (event.target && event.target.id) {
 							id = event.target.id.replace('_streetSearch', '');
 						}
 
 						meerkat.messaging.publish(moduleEvents.CANT_FIND_ADDRESS, { fieldgroup: id });
+					} else if (elasticSearch) {
+						meerkat.messaging.publish(moduleEvents.ELASTIC_SEARCH_COMPLETE, datum.dpId );
 					}
 				});
 			}
@@ -150,11 +178,9 @@
 		return url;
 	}
 
-
-
 	meerkat.modules.register("autocomplete", {
-		init: initialiseAutoCompleteFields,
-		events: moduleEvents
+		init: initAutoComplete,
+		events: events
 	});
 
 })(jQuery);

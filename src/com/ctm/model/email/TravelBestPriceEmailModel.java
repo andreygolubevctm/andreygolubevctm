@@ -21,6 +21,8 @@ public class TravelBestPriceEmailModel extends BestPriceEmailModel {
 	private String policyType;
 	private String duration;
 	private String pricePresentationUrl;
+	private String coverLevelTabsType;
+	private String coverLevelTabsDesc;
 	private List<TravelBestPriceRanking> rankings;
 
 	public List<TravelBestPriceRanking> getRankings() {
@@ -171,5 +173,20 @@ public class TravelBestPriceEmailModel extends BestPriceEmailModel {
 		this.pricePresentationUrl = url;
 	}
 
+	public String getCoverLevelTabsType() {
+		return coverLevelTabsType;
+	}
+
+	public void setCoverLevelTabsType(String coverLevelTabsType) {
+		this.coverLevelTabsType = coverLevelTabsType;
+	}
+
+	public String getCoverLevelTabsDescription() {
+		return coverLevelTabsDesc;
+	}
+
+	public void setCoverLevelTabsDescription(String coverLevelTabsDesc) {
+		this.coverLevelTabsDesc = coverLevelTabsDesc;
+	}
 
 }

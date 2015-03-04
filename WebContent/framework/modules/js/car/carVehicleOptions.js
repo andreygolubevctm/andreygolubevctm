@@ -33,17 +33,19 @@
 				button:			"#quote_vehicle_accessoriesButton",
 				template:		"#quote-nonstandard-accessories-template",
 				inputs:			"#quote_vehicle_options_inputs_container .accessories:first",
-				wrapper :		"#quote_vehicle_accessoriesDialog .quote-optional-accessories",
+				wrapper :		"#quote_vehicle_accessoriesDialog .quote-optional-accessories-listed",
 				type :			"#quote_vehicle_accessoriesDialog .ac-type",
 				included :		"#quote_vehicle_accessoriesDialog .ac-included",
 				price :			"#quote_vehicle_accessoriesDialog .ac-price",
 				add :			"#quote_vehicle_accessoriesDialog .ac-add",
 				clear :			"#quote_vehicle_accessoriesDialog .ac-clear",
-				addeditems :	"#quote_vehicle_accessoriesDialog .quote-optional-accessories .added-items ul",
+				addeditems :	"#quote_vehicle_accessoriesDialog .quote-optional-accessories-listed .added-items ul",
 				saveditems:		"#quote_vehicle_accessoriesSelections .added-items ul"
 			},
 			redbook:			"#quote_vehicle_redbookCode"
 	};
+
+	elements.accessories.wrapper = "#quote_vehicle_accessoriesDialog .quote-optional-accessories-listed";
 
 	var isIE8 = false;
 
@@ -210,17 +212,74 @@
 
 	function renderAccessoriesModal() {
 		// Pass in the list of included items as string of html LI's
-		var optionalAccessories = generateAccessoryOptionsHTML(vehicleNonStandardAccessories);
 		var standardAccessories = generateStandardAccessoriesHTML(vehicleOptionsData.standard);
 		var selectedAccessories = generateSelectedAccessoriesHTML();
 
 		var templateAccessories = _.template($(elements.accessories.template).html());
 
-		var htmlContent = templateAccessories({
-				optionalAccessories: optionalAccessories,
-				standardAccessories: standardAccessories,
-				selectedAccessories: selectedAccessories
+		var accessories = optionPreselections.accessories.accs;
+		var savedAccessories = $(elements.accessories.saveditems).children();
+		var selectedIndexes = [];
+		var selectedPrices = [];
+
+		$.each(savedAccessories, function(index, savedAccessory) {
+			savedAccessory = $(this);
+			var itemIndex = savedAccessory.attr('itemIndex');
+			var itemPrice = savedAccessory.attr('itemPrice');
+			selectedIndexes.push(parseInt(itemIndex));
+			selectedPrices.push(itemPrice);
 		});
+
+		// Create the new dropdown lists (per accessory) used for prices of non-standard accessories also set the select dropdown, if it has one.
+		$.each(vehicleNonStandardAccessories, function(index, vehicleNonStandardAccessory) {
+
+			var foundSelectedIndex = selectedIndexes.indexOf(index);
+
+			var checked = false;
+			if (foundSelectedIndex >= 0) {
+				checked = true;
+			}
+			vehicleNonStandardAccessory.checked = checked;
+
+			vehicleNonStandardAccessory.priceDropdown = '<option value="">Please choose&hellip;</option>';
+
+			selectedDropdown = '';
+			if (selectedPrices[foundSelectedIndex] == '0') {
+				selectedDropdown = 'selected';
+			}
+			vehicleNonStandardAccessory.priceDropdown += '<option value="" disabled="true">---</option>';
+			vehicleNonStandardAccessory.priceDropdown += '<option value="0" '+selectedDropdown+'>Included in purchase price</option>';
+			vehicleNonStandardAccessory.priceDropdown += '<option value="" disabled="true">---</option>';
+			var min = Math.ceil(vehicleNonStandardAccessory.standard * (vehicleNonStandardAccessory.min / 100));
+			var step = min;
+			var max = Math.floor(vehicleNonStandardAccessory.standard * (vehicleNonStandardAccessory.max / 100));
+
+			while (step <= max) {
+				selectedDropdown = '';
+				if (selectedPrices[foundSelectedIndex] == step) {
+					selectedDropdown = 'selected';
+				}
+				vehicleNonStandardAccessory.priceDropdown += '<option value="'+step+'" '+selectedDropdown+'>$'+step+'</option>';
+				step += min;
+			}
+			step -= min;
+			// Add the max value if the last step fell short of the max.
+			if (step != max) {
+				selectedDropdown = '';
+				if (selectedPrices[foundSelectedIndex] == max) {
+					selectedDropdown = 'selected';
+				}
+				vehicleNonStandardAccessory.priceDropdown += '<option value="'+max+'" '+selectedDropdown+'>$'+max+'</option>';
+			}
+		});
+
+		var htmlContent = templateAccessories({
+				standardAccessories: standardAccessories,
+				vehicleNonStandardAccessories: vehicleNonStandardAccessories
+		});
+
+		var optionalTargetSelector = '.quote-optional-accessories-listed';
+		var standardTargetSelector = '.quote-standard-accessories';
 
 		modals.accessories = meerkat.modules.dialogs.show({
 				title : $(this).attr('title'),
@@ -229,11 +288,11 @@
 				tabs : [{
 					title:'Add Non-Standard Accessories',
 					xsTitle:'Non-Standard Accessories',
-					targetSelector:'.quote-optional-accessories'
+					targetSelector: optionalTargetSelector
 				},{
 					title: 'View Included Standard Accessories',
 					xsTitle: 'Standard Accessories',
-					targetSelector: '.quote-standard-accessories'
+					targetSelector: standardTargetSelector
 				}],
 				buttons: [{
 					label: 'Save Changes',
@@ -250,11 +309,17 @@
 				onClose : _.bind(toggleButtonStates, this, {type:'accessories'}),
 				onOpen : function(dialogId) {
 
+					// Steal the injection div and add it to the header.
+					var $injectBlock = $('#injectIntoHeader');
+					$injectBlock.remove();
+					$('.modal-header').append($injectBlock);
+					$('#quote_vehicle_accessoriesDialog').parent().css({'padding-top': '5px'});
+
 					// Toggle add accessories form depending on whether content is available
 					if(_.isArray(vehicleNonStandardAccessories) && vehicleNonStandardAccessories.length){
-						$('.quote-optional-accessories .no-items-found').addClass('hidden');
+						$('.quote-optional-accessories-listed .no-items-found').addClass('hidden');
 					} else {
-						$('.quote-optional-accessories .items-found').addClass('hidden');
+						$('.quote-optional-accessories-listed .items-found').addClass('hidden');
 					}
 
 					// Toggle included accessories list depending on whether content is available
@@ -265,6 +330,11 @@
 					}
 
 					$('#' + dialogId).on('click', '.nav-tabs a', function(e) {
+						if ($(this).attr('data-target') == standardTargetSelector) {
+							$injectBlock.hide();
+						} else {
+							$injectBlock.show();
+						}
 						e.preventDefault();
 						e.stopPropagation();
 						$(this).tab('show');
@@ -280,26 +350,29 @@
 
 	function onAccessoriesFormRendered() {
 
-		$(elements.accessories.add).find('button:first').on('click', onAddAccessoriesItem);
-		$(elements.accessories.clear).find('button:first').on('click', onClearAccessoriesForm);
+		$('.nonStandardAccessoryCheckbox').on('change', function(){
+			var $rowCheckbox = $(this),
+				itemIndex = $rowCheckbox.attr('itemIndex'),
+				$relatedPriceSelect = $('select[itemIndex="'+itemIndex+'"]');
 
-		// Add on change event for Y/N buttons
-		$(elements.accessories.included).find('label.btn').off().on('click', function(){
-			$(this).change();
-			if($(this).find('input:first').val() == 'N') {
-				_.defer(function(){ /* For IE8 - ensure above change is completed */
-					$(elements.accessories.included).hide();
-					$(elements.accessories.price).show();
-				});
+			// Add or remove the disabled property on the dropdown based on checked status.
+			if ($rowCheckbox.prop('checked')) {
+				$relatedPriceSelect.prop('disabled', false);
 			} else {
-				$(elements.accessories.price).hide();
+				$relatedPriceSelect.prop('disabled', true);
+				$relatedPriceSelect.val('');
 			}
+				});
 
-			/* Ensure the defer above is completed before showing fields otherwise IE8 flashes weirdly */
-			_.defer(function(){
-				$(elements.accessories.add + "," + elements.accessories.clear).show();
+		// Watch the dropdowns to remove any errors that may have been added previously, or add an error if the user selects nothing.
+		$('.nonStandardAccessorySelect').on('change', function() {
+			var selectBox = $(this);
+			if (selectBox.val() === '') {
+				selectBox.parent().addClass('has-error')
+			} else {
+				selectBox.parent().removeClass('has-error')
+			}
 			});
-		});
 
 		// Add events etc to previously saved selections (lost through template rendering)
 		for(var i=0; i<savedSelections.accessories.length; i++) {
@@ -311,48 +384,6 @@
 		}
 	}
 
-	function onClearAccessoriesForm() {
-
-		$(elements.accessories.price + "," + elements.accessories.add + "," + elements.accessories.clear).hide();
-		$(elements.accessories.included).show();
-
-		$type = $(elements.accessories.type);
-		$included = $(elements.accessories.included);
-		$price = $(elements.accessories.price);
-
-		$included.find('.active').removeClass('active')
-			.end().find('input:checked').prop('checked', false).change()
-			.end().find('.error-field').empty()
-			.end().removeClass('has-error');
-		$type.find('select:first').prop('selectedIndex', 0)
-			.end().find('option').prop('selected', false)
-			.end().removeClass('has-error')
-			.end().find('.error-field').empty();
-		$price.removeClass('has-error')
-			.find('.error-field').empty()
-			.end().find('input').val('');
-	}
-
-	function onAddAccessoriesItem() {
-		var validated = validateAddAccessoriesForm();
-		if(validated !== false){
-
-			// Remove from selector
-			$(elements.accessories.type).find('option').each(function(){
-				if($(this).val().indexOf(validated.position) === 0) {
-					$(this).remove();
-				}
-			});
-
-			$(elements.accessories.addeditems).append(
-				getAddedAccessoryItemHTML(validated)
-			);
-
-
-			onClearAccessoriesForm();
-		}
-	}
-
 	function getAddedAccessoryItemHTML(item) {
 
 		// Append to selected list
@@ -360,7 +391,7 @@
 		.addClass('added-item-' + item.position)
 		.data("info", item)
 		.append(
-			$("<span/>").append(item.info.label)
+			$("<span/>").append(item.label)
 		)
 		.append(
 			$("<a/>",{
@@ -369,7 +400,7 @@
 			.on('click', _.bind(onRemoveAccessoriesItem, this, item))
 		)
 		.append(
-			$("<span/>").append(item.price === false ? "included" : "$" + item.price)
+			$("<span/>").append(item.price === false ? "Included" : "$" + item.price)
 		);
 	}
 
@@ -383,96 +414,13 @@
 			if(parseInt($(this).val(), 10) > item.position) {
 				$(this).before(
 					$('<option/>',{
-						text:	item.info.label,
-						value:	item.position + "_" + item.info.code
+						text:	item.label,
+						value:	item.position + "_" + item.code
 					})
 				);
 				return false;
 			}
 		});
-	}
-
-	function validateAddAccessoriesForm() {
-
-		var item = $(elements.accessories.type).find('option:selected');
-		var included = $(elements.accessories.included + ' .active').find('input');
-		var price = Math.floor($(elements.accessories.price).find('input').val());
-
-		var item_valid = !_.isEmpty(item) && !_.isEmpty(item.val());
-		var inc_valid = !_.isEmpty(included) && !_.isEmpty(included.val());
-		var price_valid = !_.isEmpty(price) && !isNaN(price) && price > 0;
-
-		$type = $(elements.accessories.type);
-		if(item_valid === false) {
-			$type.addClass('has-error');
-			$type.find('.error-field').empty().append('Select an accessory');
-		} else {
-			$type.removeClass('has-error');
-			$type.find('.error-field').empty();
-		}
-
-		$included = $(elements.accessories.included);
-		if(inc_valid === false) {
-			$included.addClass('has-error');
-			$included.find('.error-field').empty().append('Is included in purchase price?');
-		} else {
-			$included.removeClass('has-error');
-			$included.find('.error-field').empty();
-		}
-
-		$price = $(elements.accessories.price);
-		if(price_valid === false) {
-			$price.addClass('has-error');
-			$price.find('.error-field').empty().append('Enter the accessory purchase price');
-		} else {
-			$price.removeClass('has-error');
-			$included.find('.error-field').empty();
-		}
-
-		if(item_valid === true && inc_valid === true) {
-
-			var temp = item.val();
-			item = temp.substring(3).replace(/^\s+|\s+$/gm,''); /* Removes trailing white space (ie8 fwd-slash fix) */
-			position = String(temp.substring(0,2));
-			included = included.val() == 'Y';
-			price = price === '' || isNaN(price) ? false : price;
-			if(included === true || price !== false) {
-
-				// Locate the accessories details
-				var accObj = false;
-				for(var i=0; i<vehicleNonStandardAccessories.length; i++) {
-					if(vehicleNonStandardAccessories[i].code == item) {
-						accObj = {
-							position : position,
-							included : included,
-							price : price,
-							info : vehicleNonStandardAccessories[i]
-						};
-
-						i = vehicleNonStandardAccessories.length + 1;
-					}
-				}
-
-				if(accObj !== false) {
-
-					if(included === false) {
-						var min = Math.ceil(accObj.info.standard * (accObj.info.min / 100));
-						var max = Math.floor(accObj.info.standard * (accObj.info.max / 100));
-
-						if(Number(price) < min || Number(price) > max) {
-							$price.addClass('has-error');
-							$price.find('.error-field').empty().append('Please enter a value between $' + min + ' and $' + max);
-							return false;
-						}
-					}
-
-					// finally return the accessory
-					return accObj;
-				}
-			}
-		}
-
-		return false;
 	}
 
 	function generateFactoryOptionsHTML(data) {
@@ -517,7 +465,7 @@
 
 		function isInSavedSelections(code) {
 			for(var s=0; s<savedSelections.accessories.length; s++) {
-				if(code == savedSelections.accessories[s].info.code) {
+				if(code == savedSelections.accessories[s].code) {
 					return true;
 				}
 			}
@@ -638,11 +586,13 @@
 			for(var j in accessories.accs) {
 				if(accessories.accs.hasOwnProperty(j)) {
 					var aItem = accessories.accs[j];
+					var itemInfo = getAccessoryByCode(aItem.sel);
 					var obj = {
 							included:	aItem.inc === 'Y' ,
-							position:	j.substring(3),
-							price:		aItem.hasOwnProperty("prc") ? String(aItem.prc) : false,
-							info:		getAccessoryByCode(aItem.sel)
+							position: parseInt(j.substring(3), 10),
+							price: aItem.hasOwnProperty("prc") ? String(aItem.prc) : '0',
+							code: aItem.sel,
+							label: itemInfo.label
 					}
 					savedSelections.accessories.push(obj);
 					addSavedAccessoryHTML(obj);
@@ -670,7 +620,7 @@
 			}
 		} else {
 			for(var j = 0; j < savedSelections.accessories.length; j++) {
-				if(savedSelections.accessories[j].info.code == item.code) {
+				if(savedSelections.accessories[j].code == item.code) {
 					savedSelections.accessories.splice(j, 1);
 				}
 			}
@@ -682,11 +632,11 @@
 	}
 
 	function getSavedAccessoryItemHTML(item) {
-
 		// Append to selected list
 		var $li = $("<li/>")
-		.addClass('saved-item-' + item.type + '-' + ("0" + item.position).slice(-2))
-		.data("info", item)
+		.addClass('saved-item-' + item.type + '-' + item.position)
+		.attr("itemIndex", item.position)
+		.attr("itemPrice", item.price)
 		.append(
 			$("<span/>").append(item.label)
 		)
@@ -699,7 +649,7 @@
 
 		if(!_.isNull(item.price)) {
 			$li.append(
-				$("<span/>").append(item.price === false ? "included" : "$" + item.price)
+				$("<span/>").append(item.price === '0' ? "Included" : "$" + item.price)
 			);
 		}
 
@@ -718,9 +668,9 @@
 
 		if(data.type == 'accessories') {
 			item.position = data.item.position;
-			item.label = data.item.info.label;
+			item.label = data.item.label;
 			item.price = data.item.price;
-			item.code = data.item.info.code;
+			item.code = data.item.code;
 			item.item = data.item;
 			$(elements.accessories.saveditems).append(
 				getSavedAccessoryItemHTML(item)
@@ -758,22 +708,56 @@
 
 	function saveCurrentForm(data) {
 
-		// Save the checked form fields to an object
-		savedSelections[data.type] = [];
-		$(elements[data.type].inputs).empty();
-		$(elements[data.type].saveditems).empty();
 
 		if(data.type == 'accessories') {
-			$(elements[data.type].addeditems).find('li').each(function(i, el){
-				var aItem = $(this).data('info');
+			var accessoriesToSave = [];
+			var validationPasses = true;
+			// Get all the selected items, validate then and create the accessory object.
+			$('.nonStandardAccessoryCheckbox:checked').each(function(index, checkedBox) {
+				// We need to use this element as a jQuery object.
+				checkedBox = $(this);
+				var itemIndex = checkedBox.attr('itemIndex');
+				var labelText = checkedBox.siblings().text()
+				var $relatedPriceSelect = $('select[itemIndex="'+itemIndex+'"]');
+				var itemPrice = $relatedPriceSelect.val();
 
-				// Push item to saveSelections object
-				savedSelections.accessories.push(aItem);
+				// If there is no price validation fails
+				if (itemPrice === '') {
+					validationPasses = false;
+					// Add an error to this row.
+					$relatedPriceSelect.parent().addClass('has-error');
+				} else {
+					$relatedPriceSelect.parent().removeClass('has-error');
+				}
 
-				// Add required form inputs
-				addSavedAccessoryHTML(aItem);
+				var accessory = {
+					position: itemIndex,
+					label: labelText,
+					code: checkedBox.val(),
+					included: $relatedPriceSelect.val() == '0' ? true : false,
+					price: itemPrice
+				}
+				// Add them to an array to save all at once, once we know that they all validate.
+				accessoriesToSave.push(accessory);
 			});
+
+			if (validationPasses) {
+				savedSelections[data.type] = [];
+				$(elements[data.type].inputs).empty();
+				$(elements[data.type].saveditems).empty();
+				accessoriesToSave.forEach(function(accessory) {
+					savedSelections.accessories.push(accessory);
+					addSavedAccessoryHTML(accessory);
+				});
+				meerkat.modules.dialogs.close(modals[data.type]);
 		} else {
+				$('.has-error select').first().focus();
+			}
+		} else {
+			savedSelections[data.type] = [];
+			$(elements[data.type].inputs).empty();
+			$(elements[data.type].saveditems).empty();
+
 			$(elements[data.type].checkboxes).find(':checked').each(function(i, el){
 				var that = $(this);
 
@@ -799,9 +783,10 @@
 					item: fItem
 				});
 			});
-		}
 
 		meerkat.modules.dialogs.close(modals[data.type]);
+	}
+
 	}
 
 	function addSavedAccessoryHTML(item) {
@@ -811,7 +796,7 @@
 			getInputHTML({
 				name: 'quote_accs_acc' + item.position + '_sel',
 				id: 'acc_' + item.position + '_chk',
-				value: item.info.code
+				value: item.code
 			}).addClass('saved-item-accessories-' + ("0" + item.position).slice(-2))
 		)
 		.append(

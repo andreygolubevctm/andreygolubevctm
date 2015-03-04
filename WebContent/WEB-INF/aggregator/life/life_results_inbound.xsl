@@ -57,6 +57,8 @@
 				<xsl:element name="product_id"><xsl:value-of select="lb:product_id"/></xsl:element>
 				<xsl:element name="value"><xsl:value-of select="lb:value"/></xsl:element>
 				<xsl:element name="below_min"><xsl:value-of select="lb:below_min"/></xsl:element>
+				<xsl:element name="insurer_contact">1800 204 124</xsl:element>
+				<xsl:element name="service_provider">Lifebroker</xsl:element>
 			</xsl:element>
 		</xsl:for-each>
 	</xsl:template>

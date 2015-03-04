@@ -56,7 +56,8 @@ var LifeQuote = {
 
 		Results._partnerQuote = $('#' + LifeQuote._vertical + '_primary_insurance_partner_Y').is(':checked');
 
-		var data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical;
+		var that = this,
+			data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical;
 
 		if(this._contactLeadSent)
 			data = data + "&" + LifeQuote._vertical + "_contactLeadSent=Y";
@@ -93,12 +94,17 @@ var LifeQuote = {
 					}
 				} else if( jsonResult.results.success ) {
 					if( LifeQuote.isValidResultsResponse(jsonResult) ) {
+						$('#summary-header').find('h2.error').hide().end()
+							.find('h2.success').show();
+						$('#save-my-quote').show();
 						if(Results._splitTestingJourney != "noresults") {
 						if( LifeQuote.responseContainsProducts(jsonResult) ) {
 							// Update form with client/product data
-							LifebrokerRef.updateAPIFormFields( jsonResult.results.api.reference, null );
+								LifebrokerRef.updateAPIFormFields(jsonResult.results.api.reference, null);
+
 							var clean_data = LifeQuote.sanitiseResults(jsonResult.results, jsonResult.results.api.reference, jsonResult.results.transactionId);
-							Results.update(clean_data, jsonResult.results.transactionId);
+
+								Results.update(clean_data, jsonResult.results.transactionId);
 							Results.show();
 							Results._revising = true;
 	
@@ -235,7 +241,10 @@ var LifeQuote = {
 				prod.priceHTML = LifeQuote.getPriceHTML( prod.price );
 				prod.priceFrequency = LifeQuote.getPremiumFrequencyTerm();
 				prod.thumb = prod.company.toLowerCase().replace(" ", "_") + ".png";
+				
+				if(prod.company !== "ozicare") {
 				prod.pds = "pds/life/" + decodeURI(prod.pds.split("/").pop()).replace(/ /g, "_");
+				}
 
 				return prod;
 				}
@@ -720,6 +729,10 @@ var LifeQuote = {
 
 	selectProduct: function( type, product, callback )
 	{
+		if(LifeQuote._vertical === 'life') {
+			if( typeof callback == 'function' )
+				callback();
+		} else {
 		var data = {
 			request_type:			'REQUEST-INFO',
 			api_ref:				product.api_ref,
@@ -764,19 +777,16 @@ var LifeQuote = {
 						referenceNo.setTransactionId(jsonResult.error.transactionId);
 					}
 				}else if( jsonResult.results.success ) {
-
 					product.transaction_id = jsonResult.results.transactionId;
 
-					// Update form with client/product data
-					LifebrokerRef.updateAPIFormFields( product.api_ref, type, product.product_id );
+						// Update form with client/product data
+						LifebrokerRef.updateAPIFormFields( product.api_ref, type, product.product_id );
 
-					// Form updated with product id now so update databucket again
-					LifebrokerRef.updateDataBucket();
+						// Form updated with product id now so update databucket again
+						LifebrokerRef.updateDataBucket();
 
-					if( typeof callback == 'function' )
-					{
-						callback();
-					}
+						if( typeof callback == 'function' )
+							callback();
 				} else {
 					// Remove the loading icon on error
 					$('#addtocart_' + type + '_' + product.product_id).removeClass('adding');
@@ -808,6 +818,7 @@ var LifeQuote = {
 				});
 			}
 		});
+		}
 	},
 
 	submitApplication: function(products, callback ){
@@ -821,12 +832,14 @@ var LifeQuote = {
 				Loading.show("Submitting application...");
 			var data = {
 					request_type:	"REQUEST-CALL",
-				client_product_id:		products.hasOwnProperty('primary') ? products.primary.product_id : null,
-				partner_product_id:		products.hasOwnProperty('partner') ? products.partner.product_id : null,
-				api_ref:				products.primary.api_ref,
+				client_product_id:		products.hasOwnProperty('primary') ? products.primary.product_id : "",
+				partner_product_id:		products.hasOwnProperty('partner') ? products.partner.product_id : "",
+				api_ref:				products.hasOwnProperty('primary') ? products.primary.api_ref : products.partner.api_ref,
 				vertical:				LifeQuote._vertical,
 				partner_quote:			Results._partnerQuote ? 'Y' : 'N',
-				transactionId: 			referenceNo.getTransactionID()
+				transactionId: 			referenceNo.getTransactionID(),
+				lead_number:			products.hasOwnProperty('primary') ? products.primary.lead_number : products.partner.lead_number,
+				company:				products.hasOwnProperty('primary') ? products.primary.company : products.partner.company
 				};
 
 			$.ajax({
@@ -858,7 +871,7 @@ var LifeQuote = {
 							referenceNo.setTransactionId(jsonResult.error.transactionId);
 						}
 					}else if( jsonResult.results.success ) {
-						LifeConfirmationPage.show();
+						LifeConfirmationPage.show(products);
 					} else {
 						var msg = "This service is temporarily unavailable. Please try again later.";
 						FatalErrorDialog.exec({
@@ -1118,8 +1131,10 @@ var LifeQuote = {
 		LifeQuote.requestCallback();
 	},
 
-	sendContactLead: function() {
-		var data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical,
+	sendContactLead: function(softLead) {
+		// for softLead information, see life_contact_lead.jsp comments
+		var softLead = softLead || false,
+			data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical + "&softLead=" + softLead,
 			that = this;
 
 		$.ajax({
@@ -1155,10 +1170,17 @@ var LifeQuote = {
 
 		Loading.show("Requesting Callback...");
 
-		var data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical;
+		var that = this,
+			data = serialiseWithoutEmptyFields('#mainform') + "&vertical=" + LifeQuote._vertical;
 
 		if(this._contactLeadSent)
 			data = data + "&" + LifeQuote._vertical + "_contactLeadSent=Y";
+
+		var primaryProduct = Results.getPrimarySelectedProduct();
+		
+		if(primaryProduct.service_provider == "Ozicare") {
+			data = data + "&company=ozicare&lead_number=" + primaryProduct.lead_number;
+		}
 
 		// Force this field to be updated - actual change would have occured after
 		// this function was added to the callback
@@ -1194,12 +1216,18 @@ var LifeQuote = {
 					}
 				}else if( jsonResult.results.success ) {
 					LifebrokerRef.updateClientRefField(jsonResult.results.client.reference);
-					LifebrokerRef.updateDataBucket();
+					LifebrokerRef.updateDataBucket(false);
 
 					if( $('#callbackconfirm-dialog').is(":visible") ) {
-						CallbackConfirmDialog.close(LifeConfirmationPage.show);
+						CallbackConfirmDialog.close(function() {
+							LifeConfirmationPage.show({
+								primary: primaryProduct
+							});
+						});
 					} else {
-						LifeConfirmationPage.show();
+						LifeConfirmationPage.show({
+							primary: primaryProduct
+						});
 					}
 
 				} else {

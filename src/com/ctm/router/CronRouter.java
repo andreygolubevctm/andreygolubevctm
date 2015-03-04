@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import com.ctm.dao.TransactionDetailsDao;
 import com.ctm.dao.homeloan.HomeloanUnconfirmedLeadsDao;
 import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.services.CronService;
 import com.ctm.services.SettingsService;
 import com.ctm.services.homeloan.HomeLoanOpportunityService;
 import com.ctm.services.homeloan.HomeLoanService;
@@ -25,11 +26,18 @@ import com.ctm.services.homeloan.HomeLoanService;
  * This will help guide INF in setup, and gives us visibility over Cron schedules.
  */
 @WebServlet(urlPatterns = {
-		"/cron/hourly/homeloan/flexOutboundLead.json"
-		//,
-		//"/cron/hourly/vertical/doSomethingHourly.json",
-		//"/cron/daily/vertical/doSomethingDaily.json",
-		//"/cron/monthly/vertical/doSomethingMonthly.json",
+		"/cron/hourly/homeloan/flexOutboundLead.json",
+		"/cron/monthly.json",
+		"/cron/fortnightly.json",
+		"/cron/weekly.json",
+		"/cron/daily.json",
+		"/cron/hourly.json",
+		"/cron/30minutes.json",
+		"/cron/25minutes.json",
+		"/cron/20minutes.json",
+		"/cron/15minutes.json",
+		"/cron/10minutes.json",
+		"/cron/5minutes.json"
 })
 public class CronRouter extends HttpServlet {
 
@@ -37,20 +45,20 @@ public class CronRouter extends HttpServlet {
 
 	private static final long serialVersionUID = 18L;
 
-	private static HomeLoanService homeLoanService = new HomeLoanService(new TransactionDetailsDao() ,  new HomeloanUnconfirmedLeadsDao() , new HomeLoanOpportunityService());
-
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
 		String uri = request.getRequestURI();
 
 		// Automatically set content type based on request extension ////////////////////////////////////////
-
 		if (uri.endsWith(".json")) {
 			response.setContentType("application/json");
 		}
 
 		// Route the requests ///////////////////////////////////////////////////////////////////////////////
 		if (uri.endsWith("/cron/hourly/homeloan/flexOutboundLead.json")) {
+
+			HomeLoanService homeLoanService = new HomeLoanService(new TransactionDetailsDao() ,  new HomeloanUnconfirmedLeadsDao() , new HomeLoanOpportunityService());
 			try {
 				SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.HOMELOAN.getCode());
 				homeLoanService.scheduledLeadGenerator(request);
@@ -58,8 +66,39 @@ public class CronRouter extends HttpServlet {
 				logger.error("Homeloan_flexOutboundLead cron failed", e);
 			}
 
+		} else {
+			String frequency = null;
+			if (uri.endsWith("/cron/monthly.json")) {
+				frequency = "monthly";
+			} else if (uri.endsWith("/cron/fortnightly.json")) {
+				frequency = "fortnightly";
+			} else if (uri.endsWith("/cron/weekly.json")) {
+				frequency = "weekly";
+			} else if (uri.endsWith("/cron/daily.json")) {
+				frequency = "daily";
+			} else if (uri.endsWith("/cron/hourly.json")) {
+				frequency = "hourly";
+			} else if(uri.endsWith("/cron/30minutes.json")) {
+				frequency = "30minutes";
+			} else if(uri.endsWith("/cron/25minutes.json")) {
+				frequency = "25minutes";
+			} else if(uri.endsWith("/cron/20minutes.json")) {
+				frequency = "20minutes";
+			} else if(uri.endsWith("/cron/15minutes.json")) {
+				frequency = "15minutes";
+			} else if(uri.endsWith("/cron/10minutes.json")) {
+				frequency = "10minutes";
+			} else if(uri.endsWith("/cron/5minutes.json")) {
+				frequency = "5minutes";
+			}
+
+			if(frequency != null) {
+				try {
+					CronService.execute(request, frequency);
+				} catch(Exception e) {
+					logger.error("Error executing '" + frequency + "' cron jobs: " + e.getMessage(), e);
+				}
+			}
 		}
-
-
 	}
 }

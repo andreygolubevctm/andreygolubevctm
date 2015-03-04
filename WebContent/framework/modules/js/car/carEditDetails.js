@@ -34,10 +34,12 @@
 			};
 
 			show(templateCallback(data));
+		}).on('click', '.closeDetailsDropdown', function(e) {
+			hide();
+			e.stopPropagation();
 		}).on('click', '.dropdown-container', function(e) {
 			e.stopPropagation();
 		});
-
 	}
 	function eventSubscriptions() {
 		// On application lockdown/unlock, disable/enable the dropdown

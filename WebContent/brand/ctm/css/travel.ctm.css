@@ -588,6 +588,12 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
 .postcodeDetails {
   display: none;
 }
+#contactDetails {
+  margin-bottom: 35px;
+}
+.slideAction {
+  padding-bottom: 60px;
+}
 .travel_details_datesTravellers .dateinput_container .hidden-datepicker {
   width: 85%;
   margin: 0 0 0 15px;

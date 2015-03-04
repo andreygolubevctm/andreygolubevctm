@@ -18,7 +18,8 @@
 				<th>Contact</th>
 				<th>Sales</th>
 				<th>Conversion</th>
-				<th class="left-border">Active</th>
+				<th class="left-border">Hot</th>
+				<th>Remaining</th>
 				<th>Future</th>
 			</tr>
 		</thead>
@@ -31,7 +32,8 @@
 				<td>{{= obj.contact }}%</td>
 				<td>{{= obj.sales }}</td>
 				<td>{{= obj.conversion }}%</td>
-				<td class="left-border">{{= obj.active }}</td>
+				<td class="left-border">{{= obj.hot }}</td>
+				<td>{{= obj.remaining }}</td>
 				<td>{{= obj.future }}</td>
 				<td></td>
 			</tr>

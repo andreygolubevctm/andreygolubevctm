@@ -57,10 +57,8 @@ WHERE DATE(created) < CURRENT_DATE() AND callAttempts = 1
 -- All other types other than point 6 above where we have had more than 1 call attempt
 UNION
 SELECT 7 AS _rule, avail.* FROM simples.message_queue_available avail
-WHERE callAttempts > 1
-	AND statusId NOT IN (1, 4)
-
--- All other postponed messages where there have been more than 1 postponement previously
-UNION
-SELECT 8 AS _rule, avail.* FROM simples.message_queue_available avail
-WHERE postponeCount > 1
+WHERE (postponeCount > 2 OR callAttempts > 2)
+AND userId = 0
+ORDER BY avail.id DESC
+LIMIT 1
+)

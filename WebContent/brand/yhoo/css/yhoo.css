@@ -5503,6 +5503,15 @@ select[multiple].hint-lg.tt-hint {
 .tt-dropdown-menu .tt-suggestion p {
   margin: 0;
 }
+#elasticSearchTypeaheadComponent .tt-dropdown-menu {
+  max-height: none;
+}
+#elasticSearchContainer {
+  background-color: magenta;
+}
+#elasticSearchContainer #nonStandardFields {
+  display: none;
+}
 /** Styles for confirmation on HML */
 #confirmation strong {
   font-weight: normal;

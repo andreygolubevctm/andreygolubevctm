@@ -12,8 +12,8 @@
 	});
 
 	$.address.externalChange(function(event){
-		var stage = event.parameters.stage;
-		History.showStage(event.parameters.stage, true);
+		if($('#loading-popup:hidden').length)
+			History.showStage(event.parameters.stage, true);
 	});
 
 </go:script>
@@ -70,10 +70,13 @@ History = {
 
 				switch(QuoteEngine.getCurrentSlide()) {
 					case 0:
-						compare.flushCompareList();
+						Results.reviseDetails();
 						break;
 					case 1:
 						LifeQuote.fetchPrices(true);
+						break;
+					case 2:
+						window.location.reload();
 						break;
 				}
 

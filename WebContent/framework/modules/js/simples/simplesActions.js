@@ -282,6 +282,7 @@
 
 		meerkat.modules.dialogs.show({
 			title: ' ',
+			className: (_.indexOf([31,32], parentStatusId) >= 0 ? 'simples-messagescolumn-dialog' : 'simples-postpone-dialog'),
 			buttons: [{
 				label: 'Cancel',
 				className: 'btn-cancel',
@@ -311,6 +312,7 @@
 					errorLevel: 'silent'
 				})
 				.done(function onSuccess(json) {
+					json.parentStatusId = parentStatusId;
 					updateModal(json, templatePostpone);
 				})
 				.fail(function onError(obj, txt, errorThrown) {
@@ -390,6 +392,21 @@
 						});
 
 					});
+
+					// Add existing messages to view
+					var $messages = $modal.find(".personal-messages-container");
+					$messages.empty();
+					meerkat.modules.simplesPostponedQueue.initDateStuff();
+					var messages = document.getElementById('simplesiframe').contentWindow.meerkat.modules.simplesPostponedQueue.getMessageQueue();
+					if(!_.isEmpty(messages)) {
+						for(var i = 0; i < messages.length; i++) {
+							$messages.append(
+								$("<span/>").addClass("well")
+								.append($("<strong/>").append(messages[i].contactName))
+								.append(":&nbsp;" + formatWhenToAction(messages[i].whenToAction))
+							);
+						}
+					}
 				});
 			}
 		});
@@ -457,6 +474,27 @@
 			}
 		}
 		return false;
+	}
+
+	function formatWhenToAction(dateStr) {
+
+		var whenToAction = Date.parse(dateStr) || false;
+		if (whenToAction !== false) {
+			whenToAction = new Date(whenToAction);
+			var ampm = 'am';
+			var hours = whenToAction.getHours();
+			if (hours < 10) {
+				hours = '0' + hours;
+			} else if (hours == 12) {
+				ampm = 'pm';
+			} else if (hours > 12) {
+				ampm = 'pm'; hours -= 12;
+			}
+			var minutes = (whenToAction.getMinutes() < 10) ? '0' + whenToAction.getMinutes() : whenToAction.getMinutes();
+			return whenToAction.getDayNameShort() + ' ' + whenToAction.getDate() + ' ' + whenToAction.getMonthNameShort() + ' ' + hours + ':' + minutes + ampm;
+		} else {
+			return dateStr;
+		}
 	}
 
 

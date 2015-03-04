@@ -31,6 +31,8 @@ public class Touch extends AbstractJsonModel {
 		SOLD ("Policy sold" , "C"),
 		LOAD ("Load quote" , "L"),
 		SAVE ("Saved quote" , "S"),
+		LEAD_CALL_ME_BACK("Call me back", "CB"),
+		LEAD_BEST_PRICE("Best price", "BP"),
 		CALL_FEED ("Call Feed" , "CF"); // Added to a call feed list.
 
 		private final String description, code;

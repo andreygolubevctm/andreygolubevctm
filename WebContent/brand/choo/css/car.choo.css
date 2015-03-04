@@ -935,6 +935,20 @@ body > div > header a.bottombar .btn-call:hover {
 .car .edit-details-wrapper .panel.accordion-panel.expired-panel {
   display: none;
 }
+.car .edit-details-wrapper .edit-details-intro-text {
+  display: inline-block;
+  float: left;
+  padding-left: 0px;
+}
+.car .edit-details-wrapper .closeDetailsDropdown {
+  display: inline-block;
+  float: right;
+  padding-left: 10px;
+  margin-right: 15px;
+}
+.car .edit-details-wrapper .btn-edit {
+  text-transform: none;
+}
 .car #quote_vehicle_factoryOptionsButton,
 .car #quote_vehicle_accessoriesButton {
   display: none;
@@ -1067,8 +1081,99 @@ body > div > header a.bottombar .btn-call:hover {
     width: 100%;
   }
 }
-.car #quote_riskAddressFieldSet .content .fieldrow:first-child {
-  display: none;
+.car #injectIntoHeader {
+  padding: 20px 20px 0px 20px;
+}
+.car #injectIntoHeader .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.car #injectIntoHeader .accessoriesHeader {
+  color: #064667;
+  border-bottom: 1px solid #efefef;
+}
+.car #quote_vehicle_factoryOptionsDialog ul,
+.car #quote_vehicle_accessoriesDialog ul,
+.car #quote_vehicle_factoryOptionsSelections ul,
+.car #quote_vehicle_accessoriesSelections ul {
+  list-style-type: none;
+  padding: 0;
+}
+.car #quote_vehicle_factoryOptionsDialog li,
+.car #quote_vehicle_accessoriesDialog li,
+.car #quote_vehicle_factoryOptionsSelections li,
+.car #quote_vehicle_accessoriesSelections li {
+  display: inline-block;
+  padding: 0 10px 5px;
+  width: 50%;
+}
+.car #quote_vehicle_factoryOptionsDialog li .checkbox,
+.car #quote_vehicle_accessoriesDialog li .checkbox,
+.car #quote_vehicle_factoryOptionsSelections li .checkbox,
+.car #quote_vehicle_accessoriesSelections li .checkbox {
+  margin-top: 0px;
+}
+.car #quote_vehicle_factoryOptionsSelections li,
+.car #quote_vehicle_accessoriesSelections li {
+  width: 100%;
+}
+.car #quote_vehicle_accessoriesDialog span {
+  display: block;
+}
+.car #quote_vehicle_accessoriesDialog .quote-optional-accessories-listed .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+.car #quote_vehicle_accessoriesDialog .quote-optional-accessories-listed .accessoryRow {
+  border-bottom: 1px solid #efefef;
+  padding: 10px 0 10px 0;
+}
+.car #quote_vehicle_accessoriesDialog .quote-optional-accessories-listed .accessoryRow :disabled {
+  opacity: 0.5;
+}
+.car #quote_vehicle_accessoriesDialog .added-items li,
+.car #quote_vehicle_accessoriesSelections .added-items li,
+.car #quote_vehicle_factoryOptionsSelections .added-items li {
+  padding-left: 0px;
+}
+.car #quote_vehicle_accessoriesDialog .added-items li span,
+.car #quote_vehicle_accessoriesSelections .added-items li span,
+.car #quote_vehicle_factoryOptionsSelections .added-items li span,
+.car #quote_vehicle_accessoriesDialog .added-items li a,
+.car #quote_vehicle_accessoriesSelections .added-items li a,
+.car #quote_vehicle_factoryOptionsSelections .added-items li a {
+  float: right;
+}
+.car #quote_vehicle_accessoriesDialog .added-items li span:first-child,
+.car #quote_vehicle_accessoriesSelections .added-items li span:first-child,
+.car #quote_vehicle_factoryOptionsSelections .added-items li span:first-child {
+  float: left;
+}
+.car #quote_vehicle_accessoriesDialog .added-items li a,
+.car #quote_vehicle_accessoriesSelections .added-items li a,
+.car #quote_vehicle_factoryOptionsSelections .added-items li a {
+  color: red;
+  margin-left: 2em;
+  margin-top: 0.15em;
+}
+.car #quote_vehicle_accessoriesDialog .added-items li a.icon-cross:hover,
+.car #quote_vehicle_accessoriesSelections .added-items li a.icon-cross:hover,
+.car #quote_vehicle_factoryOptionsSelections .added-items li a.icon-cross:hover {
+  text-decoration: none;
+}
+.lt-ie9 .car #quote_vehicle_factoryOptionsDialog li,
+.lt-ie9 .car #quote_vehicle_accessoriesDialog li {
+  width: 49%;
+}
+@media (max-width: 767px) {
+  .car #quote_vehicle_factoryOptionsDialog li,
+  .car #quote_vehicle_accessoriesDialog li {
+    width: 100%;
+  }
+  .car #quote_vehicle_factoryOptionsDialog .quote-standard-accessories li,
+  .car #quote_vehicle_accessoriesDialog .quote-standard-accessories li {
+    text-align: center;
+  }
 }
 .car #quote_contactFieldSet .quote_accept_terms ol {
   padding-left: 15px;

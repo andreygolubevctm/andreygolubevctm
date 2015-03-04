@@ -37,7 +37,8 @@ SELECT
 	, ROUND((@completed + @completedAsPM - @invalidLeads) / (@completed + @completedAsPM + @postponed + @unsuccessful - @invalidLeads) * 100) AS `Contact`
 	, @sales AS `Sales`
 	, IFNULL(ROUND(@conversion,2), 0) AS `Conversion`
-	, (SELECT COUNT(id) FROM simples.message_queue_available WHERE userId IN (0,_userId) AND statusId NOT IN (31, 32 /*PMs are not active leads*/)) AS `Active`
+	, (SELECT COUNT(id) FROM simples.message_queue_available WHERE statusId = 1) AS `Hot`
+	, (SELECT COUNT(id) FROM simples.message_queue_available WHERE userId IN (0,_userId) AND statusId NOT IN (1, 31, 32 /*PMs are not active leads*/)) AS `Remaining`
 	, (SELECT COUNT(id) FROM simples.message WHERE userId IN (0,_userId) AND whenToAction > NOW() AND statusId NOT IN (2, 33, 31, 32 /*PMs and Completed*/)) AS `Future`
 ;
 

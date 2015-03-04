@@ -8,7 +8,8 @@ public class UserStats {
 	private int contact;
 	private int sales;
 	private float conversion;
-	private int active;
+	private int hot;
+	private int remaining;
 	private int future;
 
 	public int getCompleted() {
@@ -55,11 +56,17 @@ public class UserStats {
 	public void setConversion(float conversion) {
 		this.conversion = conversion;
 	}
-	public int getActive() {
-		return active;
+	public int getHot() {
+		return hot;
 	}
-	public void setActive(int active) {
-		this.active = active;
+	public void setHot(int hot) {
+		this.hot = hot;
+	}
+	public int getRemaining() {
+		return remaining;
+	}
+	public void setRemaining(int remaining) {
+		this.remaining = remaining;
 	}
 	public int getFuture() {
 		return future;

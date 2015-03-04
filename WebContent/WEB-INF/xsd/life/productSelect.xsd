@@ -9,7 +9,7 @@
 				<xs:element name="request">
 			 		<xs:complexType>
 					      <xs:sequence>
-					        <xs:element type="fourtyCharHashCode"  name="api_reference" maxOccurs="1" minOccurs="0" />
+					        <xs:element name="api_reference" maxOccurs="1" minOccurs="0" />
 					        <xs:element name="action" maxOccurs="1" minOccurs="0" />
 					        <xs:element type="fourtyCharHashCode"  name="client_product_id" maxOccurs="1" minOccurs="0" />
 					        <xs:element type="fourtyCharHashCode"  name="partner_product_id" maxOccurs="1" minOccurs="0" />

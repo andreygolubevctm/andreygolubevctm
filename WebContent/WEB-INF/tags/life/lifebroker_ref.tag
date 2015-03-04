@@ -20,6 +20,7 @@ var LifebrokerRef = {
 		if( api_reference && api_reference != null ) {
 			$("#${label}_api_reference").val( api_reference );
 		}
+		
 		if( product_id && product_id != null ) {
 			$("#${label}_${type}_productid").val( product_id );
 		}
@@ -31,9 +32,11 @@ var LifebrokerRef = {
 		}
 	},
 
-	updateDataBucket : function() {
+	updateDataBucket : function(autoWrite) {	
+		autoWrite = autoWrite ? true : false;
 
-		var dat = $("#mainform").serialize() + "&vertical=${label}"+ "&transactionId="+referenceNo.getTransactionID();
+		var dat = $("#mainform").serialize() + "&vertical=${label}"+ "&transactionId="+referenceNo.getTransactionID() + "&leadSentTo=" + Results._currentPrices.primary[0].company + "&updateBucket=" + autoWrite;
+		
 		$.ajax({
 			url: "ajax/json/life_update_bucket.jsp",
 			data: dat,

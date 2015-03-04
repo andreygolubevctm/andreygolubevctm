@@ -36,6 +36,21 @@
 <%-- Retrieve non-standard accessories list --%>
 <c:import var="nonStandardAccessories" url="/ajax/json/car_vehicle_options_nonstandard.jsp" />
 
+<%-- Check whether to force to use disc for GetaCall lead feeds --%>
+<c:set var="forceToUseDISCForGetACall" value="${contentService.getContentWithSupplementary(pageContext.getRequest(), 'forceToUseDISC').getSupplementaryValueByKey('GetaCall')}" />
+<c:set var="defaultLeadFeedURL" value="ajax/write/lead_feed_save.jsp" />
+<c:set var="useDISCLeadFeedProperties" value="${false}" />
+<c:set var="getACallLeadFeedURL">
+	<c:choose>
+		<c:when test="${not empty forceToUseDISCForGetACall and forceToUseDISCForGetACall eq 'Y'}">
+			<c:set var="useDISCLeadFeedProperties" value="${true}" />
+			<c:out value="${defaultLeadFeedURL}" />
+		</c:when>
+		<c:otherwise>
+			<c:out value="leadfeed/car/getacall.json" />
+		</c:otherwise>
+	</c:choose>
+</c:set>
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
@@ -73,5 +88,15 @@
 	resultOptions: {
 		displayMode: "<c:out value="${priceDisplayMode}" />"
 	},
-	commencementDate : '${data.quote.options.commencementDate}'
+	commencementDate : '${data.quote.options.commencementDate}',
+	leadfeed : {
+		CallDirect : {
+			use_disc_props : ${true},
+			url : '${defaultLeadFeedURL}'
+		},
+		GetaCall : {
+			use_disc_props : ${useDISCLeadFeedProperties},
+			url : '${getACallLeadFeedURL}'
+		}
+	}
 }

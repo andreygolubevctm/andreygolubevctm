@@ -8,7 +8,7 @@
 {
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['travel/journey/stage']}"/>",
-	pageAction: '<c:out value="${param.action}"/>',
+	pageAction: '<c:out value="${param.action}"  escapeXml="true"/>',
 	previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",
 	isNewQuote: <c:out value="${isNewQuote eq true}" />,
 	productId: '<c:out value="${data.travel.application.productId}" />',

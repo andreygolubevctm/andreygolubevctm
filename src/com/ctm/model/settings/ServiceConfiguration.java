@@ -197,6 +197,23 @@ public class ServiceConfiguration {
 		return tempProviderIds;
 	}
 
+	public ArrayList<Integer> getAllProviderIds() {
+		ArrayList<Integer> tempProviderIds = new ArrayList<Integer>();
+
+		for(ServiceConfigurationProperty prop : getServiceProperties()){
+			int providerId = prop.getProviderId();
+			if(providerId > 0 && tempProviderIds.indexOf(providerId) == -1){
+				tempProviderIds.add(providerId);
+			}
+		}
+
+		if(tempProviderIds.size() == 0){
+			tempProviderIds.add(0);
+		}
+
+		return tempProviderIds;
+	}
+
 	/**
 	 *
 	 * @return

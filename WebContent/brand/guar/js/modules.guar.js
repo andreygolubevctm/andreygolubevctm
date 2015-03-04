@@ -836,6 +836,137 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, log = meerkat.logging.info;
+    var moduleEvents = {};
+    var settings = {
+        suggestionEngine: {
+            remote: {
+                url: "/ctm/address/search.json?query=%QUERY",
+                ajax: {
+                    beforeSend: function(jqXhr, settings) {
+                        jqXhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                        settings.type = "POST";
+                        settings.hasContent = true;
+                        var splitURL = settings.url.split("?");
+                        settings.url = splitURL[0];
+                        var query = decodeURI(splitURL[1].split("=")[1]);
+                        settings.data = $.param({
+                            query: query
+                        });
+                    },
+                    success: function ajaxSuggestionEngineSuccess(data) {
+                        $("#testResultsList").html("");
+                        for (var d in data) {
+                            var datum = data[d];
+                            $("#testResultsList").append($("<li>").text("[" + datum.payload + "] " + datum.text));
+                        }
+                    }
+                }
+            }
+        },
+        typeahead: {
+            targetSelector: ".typeahead-addressSearch",
+            displayKey: "text"
+        }
+    };
+    var dpIdCache = {};
+    function init() {
+        var autocomplete = new meerkat.modules.autocomplete.inherit();
+        autocomplete.setSuggestionEngine(settings.suggestionEngine);
+        var autocompleteElement = autocomplete.setAutocomplete(settings.typeahead);
+        if (autocompleteElement) {
+            autocompleteElement.on("typeahead:selected", onAddressSelected);
+            autocompleteElement.on("focus.typeaheadAddress", onFieldFocus);
+            autocompleteElement.on("blur.typeaheadAddress", onFieldBlur);
+            autocompleteElement.on("keyup.typeaheadAddress", onKeyUp);
+        }
+    }
+    function setAddressDataFields($target, data) {
+        $hiddenInputs = $target.parent(".twitter-typeahead").parent("div").find(".hidden-inputs").find("input[type='hidden']");
+        $("#testSelectedResults").html("");
+        $hiddenInputs.each(function eachHiddenInput() {
+            var $this = $(this), id = $this.attr("id"), lastUnderscoreInId = id.lastIndexOf("_"), lastWord = id.substr(lastUnderscoreInId + 1, id.length);
+            switch (lastWord) {
+              case "dpId":
+                $this.val(data.dpId);
+                break;
+
+              case "unitSel":
+                $this.val(data.unitNo);
+                break;
+
+              case "houseNoSel":
+                $this.val(data.houseNo);
+                break;
+
+              case "suburbName":
+                $this.val(data.suburb);
+                break;
+
+              case "streetName":
+                $this.val(data.street);
+                break;
+
+              case "postCode":
+                $this.val(data.postCode);
+                break;
+
+              case "state":
+                $this.val(data.state);
+                break;
+            }
+        });
+        $hiddenInputs.each(function eachHiddenInput() {
+            $("#testSelectedResults").append($("<li>").text(this.id + ": " + $(this).val()));
+        });
+    }
+    function getAddressData(target, dpId) {
+        var $this = $(target);
+        if (dpIdCache.hasOwnProperty(dpId)) {
+            setAddressDataFields($this, dpIdCache[dpId]);
+        } else {
+            if (typeof dpId !== "undefined" && dpId !== "") {
+                meerkat.modules.comms.post({
+                    url: "/ctm/address/get.json",
+                    errorLevel: "mandatory",
+                    data: {
+                        dpId: dpId
+                    },
+                    onSuccess: function ajaxGetTypeaheadAddressDataSuccess(data) {
+                        dpIdCache[dpId] = data;
+                        setAddressDataFields($this, data);
+                    },
+                    onError: function ajaxGetTypeaheadAddressDataError() {}
+                });
+            }
+        }
+    }
+    function onAddressSelected(event, suggestion, name) {
+        $(event.target).data("last-selected-address", suggestion.text).data("last-selected-dpid", suggestion.payload);
+        getAddressData(event.target, suggestion.payload);
+    }
+    function onKeyUp(event) {
+        var $this = $(event.target);
+        var input = String.fromCharCode(event.keyCode);
+        if (/[a-zA-Z0-9- ]/.test(input)) {
+            $this.data("last-user-search", $this.typeahead("val"));
+        }
+    }
+    function onFieldFocus(event) {
+        var $this = $(event.target), lastUserSearch = $this.data("last-user-search");
+        $this.typeahead("val", lastUserSearch).typeahead("open");
+    }
+    function onFieldBlur(event) {
+        var $this = $(event.target);
+        $this.typeahead("val", $this.data("last-selected-address"));
+        getAddressData(event.target, $this.data("last-selected-dpid"));
+    }
+    meerkat.modules.register("addressSearch", {
+        init: init
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat;
     var meerkatEvents = meerkat.modules.events;
     var log = window.meerkat.logging.info;
@@ -892,12 +1023,90 @@ meerkat.logging.init = function() {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, log = meerkat.logging.info;
+    var moduleEvents = {
+        CANT_FIND_ADDRESS: "EVENT_CANT_FIND_ADDRESS"
+    };
+    var defaultSettings = {
+        suggestionEngine: {
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace("value"),
+            queryTokenizer: Bloodhound.tokenizers.whitespace
+        },
+        typeahead: {
+            displayKey: "value",
+            templates: {
+                empty: [ "<div class='empty-message'>", "Oh maaaan!", "</div>" ].join("")
+            }
+        }
+    };
+    function init() {
+        $("input.typeahead").each(function() {
+            var $this = $(this);
+            if (typeof $this.data("source-url") !== "undefined") {
+                var suggestionEngineSettings = {
+                    remote: {
+                        url: $this.data("source-url") + "%QUERY",
+                        filter: function filter(parsedResponse) {
+                            for (var i in parsedResponse) {
+                                if (typeof parsedResponse[i] === "string" || typeof parsedResponse[i] === "number") {
+                                    parsedResponse[i] = {
+                                        value: parsedResponse[i]
+                                    };
+                                }
+                            }
+                            return parsedResponse;
+                        }
+                    }
+                };
+                var typeaheadSettings = {
+                    targetSelector: this
+                };
+                var autocomplete = new meerkat.modules.autocomplete.inherit();
+                autocomplete.setSuggestionEngine(suggestionEngineSettings);
+                var autocompleteElement = autocomplete.setAutocomplete(typeaheadSettings);
+            } else {
+                console.log($this.attr("id"));
+            }
+        });
+    }
+    function autocomplete(config) {
+        this.config = $.extend(true, defaultSettings, config);
+    }
+    autocomplete.prototype = {
+        setSuggestionEngine: function setSuggestionEngine(config) {
+            config = config || {};
+            var suggestionEngineConfig = $.extend(true, {}, this.config.suggestionEngine, config);
+            this.suggestionEngine = new Bloodhound(suggestionEngineConfig);
+            this.suggestionEngine.initialize();
+        },
+        setAutocomplete: function setAutocomplete(config, engine) {
+            config = config || {};
+            var typeaheadConfig = $.extend(true, {}, this.config.typeahead, config);
+            typeaheadConfig.source = this.suggestionEngine.ttAdapter();
+            var $element = $(config.targetSelector);
+            if ($element.length) {
+                return $element.typeahead({
+                    minLength: 1,
+                    highlight: true
+                }, typeaheadConfig);
+            } else {
+                return false;
+            }
+        }
+    };
+    meerkat.modules.register("autocomplete", {
+        init: init,
+        inherit: autocomplete
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat;
     var moduleEvents = {
         CANT_FIND_ADDRESS: "EVENT_CANT_FIND_ADDRESS"
     };
     function initialiseAutoCompleteFields() {
-        var $typeAheads = $("input.typeahead");
+        var $typeAheads = $("input.typeahead-old");
         $typeAheads.each(function eachTypeaheadElement() {
             var $component = $(this);
             var params = {
@@ -983,7 +1192,7 @@ meerkat.logging.init = function() {
         }
         return url;
     }
-    meerkat.modules.register("autocomplete", {
+    meerkat.modules.register("autocomplete_old", {
         init: initialiseAutoCompleteFields,
         events: moduleEvents
     });

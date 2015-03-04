@@ -133,7 +133,6 @@
 	 * Pre-filter the results object to add another parameter. This will be unnecessary when the field comes back from Java.
 	 */
 	function massageResultsObject(products) {
-
 		if(meerkat.modules.coverLevelTabs.isEnabled() !== true) {
 			return products;
 		}
@@ -258,7 +257,8 @@
 					availableCounts++;
 				}
 			});
-			if (availableCounts === 0) {
+
+			if (availableCounts === 0 && !Results.model.hasValidationErrors) {
 				showNoResults();
 			}
 
@@ -274,6 +274,11 @@
 		// If the is the first time sorting, send the prm as well
 		data["rank_premium" + position] = product.price;
 		data["rank_productId" + position] = product.productId;
+
+		if (typeof product.info.coverLevel !== 'undefined')
+		{
+			data["coverLevelType" + position] = product.info.coverLevel;
+		} 
 
 		if( _.isNumber(best_price_count) && position < best_price_count) {
 			data["best_price" + position] = 1;

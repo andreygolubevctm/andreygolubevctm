@@ -46,6 +46,7 @@
 	</form_new:row>
 </c:if>
 
+<field:hidden xpath="${xpath}/elasticSearch" defaultValue="N" />
 <field:hidden xpath="${xpath}/type" defaultValue="${type}" />
 
 <%-- POSTCODE --%>

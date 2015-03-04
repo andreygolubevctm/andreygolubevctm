@@ -19,13 +19,6 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_available` AS
 			OR statusId = 4 /*Postponed*/
 			OR statusId = 31 /*Completed as PM*/
 			OR statusId = 32 /*Changed Time for PM*/
-
-			/* New leads exprity time to 7 days (604800 secs)  */
-			OR (
-				statusId = 1
-				AND
-				NOW() < ADDTIME(created, SEC_TO_TIME(604800))
-			)
 		)
 
 		-- Is the source available at the current time?

@@ -182,10 +182,20 @@
 			<agg:email_valid_date dateFormat="dd MMMMM yyyy" />
 		</c:set>
 
+		<%-- Construct the best price lead info - only if opted in for call --%>
+		<c:set var="fullName" value="${fn:trim(data.quote.drivers.regular.firstname)}${' '}${fn:trim(data.quote.drivers.regular.surname)}" />
+		<c:set var="leadFeedData">
+			<%-- Build as concatenated string to reduce number of joins to pull data out --%>
+			<leadfeedinfo><c:if test="${not empty okToCall and okToCall eq 'Y'}">${fn:trim(fullName)}</c:if>||<c:if test="${not empty okToCall and okToCall eq 'Y'}">${data.quote.contact.phone}</c:if>||<c:if test="${not empty okToCall and okToCall eq 'Y'}">${data.quote.vehicle.redbookCode}</c:if>||<c:if test="${not empty okToCall and okToCall eq 'Y'}">${data.quote.riskAddress.state}</c:if></leadfeedinfo>
+		</c:set>
+
 		<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
 
 			<%-- Add the quote valid date to result --%>
 			<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${validateDate}" />
+
+			<%-- Add best price lead feed fields to result --%>
+			<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${leadFeedData}" />
 
 	<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
 	<c:set var="productId"><x:out select="$resultXml/result/@productId" /></c:set>
@@ -313,7 +323,7 @@
 		</c:if>
 
 <%-- Write result details to the database for potential later use when sending emails etc... FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
-		<agg:write_result_details transactionId="${tranId}" recordXPaths="validateDate/display,validateDate/normal,productId,productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal" baseXmlNode="soap-response/results/result" />
+		<agg:write_result_details transactionId="${tranId}" recordXPaths="leadfeedinfo,validateDate/display,validateDate/normal,productId,productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal" baseXmlNode="soap-response/results/result" />
 
 ${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 

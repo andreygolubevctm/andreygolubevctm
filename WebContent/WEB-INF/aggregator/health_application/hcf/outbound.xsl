@@ -307,7 +307,9 @@
 						<!--No dependents if Single or Couple -->
 						<xsl:when test="$healthCvr = 'S' or $healthCvr = 'C'">0</xsl:when>
 						<!-- Calculate the number of dependents based on the field count -->
-						<xsl:otherwise><xsl:value-of select="count(application/dependants/*)" /></xsl:otherwise>
+						<xsl:when test="healthCover/rebate = 'N'"><xsl:value-of select="count(application/dependants/*)" /></xsl:when>
+						<!-- Calculate the dependants question -->
+						<xsl:otherwise><xsl:value-of select="healthCover/dependants" /></xsl:otherwise>
 					</xsl:choose>
 				</NumDependants>
 				

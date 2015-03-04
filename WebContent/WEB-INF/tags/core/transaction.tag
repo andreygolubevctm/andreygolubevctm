@@ -24,9 +24,11 @@
 	Touch types:
 	------------
 	A = Apply now (user has selected a product and starting application form)
+	BP = Best Price lead feed
 	C = Confirmation (sale/transaction confirmed)
-	CB = Call me back
-	CD = Call direct
+	CB = Call me back lead feed
+	CD = Call direct lead feed
+	CDC = Contact details collected (currently only used in Life, for when we have collected a user's contact details but have not yet sent out a lead feed)
 	E = Error (general error e.g. ajax timeout)
 	F = Application failed (in Health this is considering Pending and will lock out ONLINE user)
 	H = General hit (e.g. tracking user between slides)
@@ -75,7 +77,7 @@
 	TODO Might be good to query transaction_header and validate TransactionId and ProductType
 --%>
 <c:set var="is_valid_touch">
-	<core:validate_touch_type valid_touches="A,C,CB,CD,E,F,H,L,LF,N,P,Q,R,S,T,X" touch="${touch}" />
+	<core:validate_touch_type valid_touches="A,BP,C,CB,CD,CDC,E,F,H,L,LF,N,P,Q,R,S,T,X" touch="${touch}" />
 </c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">
@@ -209,7 +211,7 @@
 		<c:when test="${write_quote == 'Y'}">Y</c:when>
 
 		<%-- Don't write quote details for these touches --%>
-		<c:when test="${touch == 'A' or touch == 'C' or touch == 'CD' or touch == 'CB' or touch == 'E' or touch == 'F' or touch == 'N' or touch == 'L' or touch == 'X'}">N</c:when>
+		<c:when test="${touch == 'A' or touch == 'C' or touch == 'CD' or touch == 'CB' or touch == 'BP' or touch == 'E' or touch == 'F' or touch == 'N' or touch == 'L' or touch == 'X'}">N</c:when>
 
 		<%-- This is a hidden field at the end of the form:form tag. It ensures that we've collected the form contents. --%>
 		<c:when test="${param.transcheck != '1'}">

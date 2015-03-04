@@ -92,22 +92,23 @@
 			</callback>
 		</c:set>
 
-						<%-- Confirm whether DISC call has been overridden in content control --%>
-						<c:set var="recordInDISC" value="${true}" />
+						<%-- Confirm whether write feed call has been overridden in content control --%>
+						<c:set var="proceedWithLeadFeed" value="${true}" />
 						<c:set var="ignoreFeedContentReference" value="ignore${data.request.phonecallme}" />
 						<c:set var="ignoreFlagFound" value="${contentService.getContentWithSupplementary(pageContext.getRequest(), ignoreFeedContentReference).getSupplementaryValueByKey(data.request.brand)}" />
 						<c:if test="${not empty ignoreFlagFound and ignoreFlagFound eq 'Y'}">
-							<c:set var="recordInDISC" value="${false}" />
+							<c:set var="proceedWithLeadFeed" value="${false}" />
 						</c:if>
 
 						<c:choose>
-							<%-- DISC call is to be skipped --%>
-							<c:when test="${recordInDISC eq false}">
+							<%-- Write lead feed call is to be skipped --%>
+							<c:when test="${proceedWithLeadFeed eq false}">
 								<go:log level="INFO" source="lead_feed_save_jsp">Skipping DISC call for '${data.request.phonecallme}'</go:log>
 								<c:set var="myResult" value="OK" />
 							</c:when>
-							<%-- Make the DISC call --%>
+							<%-- Write lead feed --%>
 							<c:otherwise>
+								<go:log level="INFO" source="lead_feed_save_jsp">Making DISC call for '${data.request.phonecallme}'</go:log>
 		<go:call transactionId="${data.current.transactionId}" pageId="AGGCME" xmlVar="myParams" resultVar="myResult" />
 							</c:otherwise>
 						</c:choose>

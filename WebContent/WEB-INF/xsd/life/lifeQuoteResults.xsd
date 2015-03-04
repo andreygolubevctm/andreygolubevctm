@@ -35,6 +35,7 @@
 							<xs:element name="postCode" type="postcode" maxOccurs="1" minOccurs="1" />
 							<xs:element name="state" type="state" maxOccurs="1" minOccurs="0" />
 							<xs:element name="occupation" type="fourtyCharHashCode"  maxOccurs="1" minOccurs="1" />
+							<xs:element name="hannover" maxOccurs="1" minOccurs="1" />
 							<xs:element name="productid" maxOccurs="1" minOccurs="0" />
 						</xs:all>
 					</xs:complexType>
@@ -48,6 +49,7 @@
 							<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
 							<xs:element name="smoker" maxOccurs="1" minOccurs="1" />
 							<xs:element name="occupation" type="fourtyCharHashCode" maxOccurs="1" minOccurs="1" />
+							<xs:element name="hannover" maxOccurs="1" minOccurs="1" />
 							<xs:element name="postCode" type="postcode" maxOccurs="1" minOccurs="0" />
 							<xs:element name="age" type="age18to99" maxOccurs="1" minOccurs="1" />
 							<xs:element name="productid" maxOccurs="1" minOccurs="0" />

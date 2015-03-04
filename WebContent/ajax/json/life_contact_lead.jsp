@@ -18,6 +18,16 @@
 	<c:when test="${lifeService.isValid() and not empty proceedinator and proceedinator > 0}">
 		<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
 
+		<c:choose>
+			<c:when test="${param.softLead eq 'true'}">
+				<security:populateDataFromParams rootPath="${vertical}" />
+				<core:transaction touch="CDC" noResponse="true" comment="Contact details collected" />
+				<c:set var="resultXml">
+					<results><success>true</success></results>
+				</c:set>
+				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+			</c:when>
+			<c:otherwise>
 		<%-- Load the params into data --%>
 		<security:populateDataFromParams rootPath="${vertical}" />
 
@@ -52,6 +62,8 @@
 		</c:if>
 
 		<core:transaction touch="LF" noResponse="true" comment="Send contact lead" />
+			</c:otherwise>
+		</c:choose>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

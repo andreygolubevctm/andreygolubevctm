@@ -22,18 +22,16 @@
 		<xsl:variable name="marketing"><xsl:value-of select="contactDetails/call" /></xsl:variable>
 		<xsl:variable name="phoneNo">
 			<xsl:choose>
-				<xsl:when test="$okToCall = 'N'">
-					<xsl:text>0000000000</xsl:text>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="contactDetails/contactNumber" />
-				</xsl:otherwise>
+				<xsl:when test="sendRealData = 'true'"><xsl:value-of select="contactDetails/contactNumber" /></xsl:when>
+				<xsl:otherwise>0000000000</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-
-		<!-- Replace the email if selected 'no marketing' -->
-		<xsl:variable name="optIn"><xsl:value-of select="contactDetails/optIn" /></xsl:variable>
-		<xsl:variable name="email"><xsl:value-of select="contactDetails/email" /></xsl:variable>
+		<xsl:variable name="email">
+			<xsl:choose>
+				<xsl:when test="sendRealData = 'true'"><xsl:value-of select="contactDetails/email" /></xsl:when>
+				<xsl:otherwise>e@fake.org</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<request xmlns="urn:Lifebroker.EnterpriseAPI">
@@ -151,18 +149,6 @@
 					<flag>ICB</flag>
 				</flags>
 			</quote>
-			<xsl:choose>
-				<xsl:when test="contactLeadSent != '' and contactLeadSent = 'Y'">
-					<additional>
-						<progress>Quote</progress>
-					</additional>
-				</xsl:when>
-				<xsl:otherwise>
-					<additional>
-						<progress>Start</progress>
-					</additional>
-				</xsl:otherwise>
-			</xsl:choose>
 		</request>
 
 	</xsl:template>

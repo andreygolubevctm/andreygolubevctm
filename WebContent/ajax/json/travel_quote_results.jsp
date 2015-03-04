@@ -4,12 +4,19 @@
 
 <session:get settings="true" authenticated="true" verticalCode="TRAVEL" />
 
+<%-- Load the params into data --%>
+<security:populateDataFromParams rootPath="travel" />
+
+<jsp:useBean id="travelService" class="com.ctm.services.travel.TravelService" scope="page" />
+<c:set var="serviceResponse" value="${travelService.validateFields(pageContext.request)}" />
+
+<c:choose>
+	<c:when test="${travelService.isValid()}">
+
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
-<%-- Load the params into data --%>
-<security:populateDataFromParams rootPath="travel" />
 
 <c:set var="continueOnValidationError" value="${true}" />
 
@@ -118,5 +125,10 @@
 	</c:when>
 	<c:otherwise>
 		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="travel_quote_results.jsp" />
+	</c:otherwise>
+		</c:choose>
+	</c:when>
+	<c:otherwise>
+		${serviceResponse}
 	</c:otherwise>
 </c:choose>

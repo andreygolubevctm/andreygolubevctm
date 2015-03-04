@@ -43,7 +43,8 @@ public class UserStatsDao {
 				userStats.setContact(results.getInt("contact"));
 				userStats.setSales(results.getInt("Sales"));
 				userStats.setConversion(results.getFloat("Conversion"));
-				userStats.setActive(results.getInt("Active"));
+				userStats.setHot(results.getInt("Hot"));
+				userStats.setRemaining(results.getInt("Remaining"));
 				userStats.setFuture(results.getInt("Future"));
 			}
 		}

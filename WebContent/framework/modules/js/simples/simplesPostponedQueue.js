@@ -9,9 +9,8 @@
 	var templatePQ = false,
 		$container = false,
 		baseUrl = '',
-		viewMessageInProgress = false;
-
-
+		viewMessageInProgress = false,
+		currentMessageQueue = [];
 
 	function init() {
 		$(document).ready(function() {
@@ -165,6 +164,9 @@
 			else {
 				//console.log(json);
 
+				// Store the existing message queue
+				setMessageQueue(json);
+
 				// Render the template using the data
 				htmlContent = templatePQ(json);
 			}
@@ -177,10 +179,26 @@
 		});
 	}
 
+	function setMessageQueue(json) {
+		currentMessageQueue = [];
+		if(_.isObject(json) && json.hasOwnProperty('messages') && _.isArray(json.messages) && json.messages.length > 0) {
+			for(var i = 0; i < json.messages.length; i++) {
+				currentMessageQueue.push({
+					contactName : json.messages[i].contactName,
+					whenToAction : json.messages[i].whenToAction
+				});
+			}
+		}
+	}
 
+	function getMessageQueue() {
+		return currentMessageQueue;
+	}
 
 	meerkat.modules.register('simplesPostponedQueue', {
-		init: init
+		init: init,
+		initDateStuff : initDateStuff,
+		getMessageQueue : getMessageQueue
 	});
 
 })(jQuery);

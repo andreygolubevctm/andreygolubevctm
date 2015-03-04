@@ -21,12 +21,17 @@ public class FormValidation {
 	public static <T> List<SchemaValidationError> validate(T request , String vertical) {
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 		List<SchemaValidationError> validationErrors = new ArrayList<SchemaValidationError>();
+		String errorValue = "";
 
 		final Set<ConstraintViolation<T>> violations = validator.validate(request);
 		for(ConstraintViolation<T> violation : violations) {
 			SchemaValidationError error = new SchemaValidationError();
 			error.setElementXpath(vertical + "/" + violation.getPropertyPath().toString().replace(".", "/"));
-			error.setMessage(violation.getMessage() + " value= '" + violation.getInvalidValue() + "'");
+
+			// we don't want travel's destination erroneous value to appear. Just alert the user the the destination is invalid.
+			errorValue = violation.getPropertyPath().toString().equals("destination") ? "" : " value= '" + violation.getInvalidValue() + "'";
+
+			error.setMessage(violation.getMessage() + errorValue);
 			validationErrors.add(error);
 		}
 

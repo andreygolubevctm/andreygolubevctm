@@ -16,11 +16,18 @@
 	{{ } }}
 
 	<div class="row">
+	{{ if(obj.parentStatusId == 31 || obj.parentStatusId == 32){ }}
+		<div class="col-sm-3">
+	{{ } else { }}
 		<div class="col-sm-5">
+	{{ } }}
 			<field_new:calendar mode="inline" xpath="postponedate" required="true" title="postpone date" minDate="" maxDate="" validateMinMax="false" />
 		</div>
-
+	{{ if(obj.parentStatusId == 31 || obj.parentStatusId == 32){ }}
+		<div class="col-sm-5">
+	{{ } else { }}
 		<div class="col-sm-6">
+	{{ } }}
 			<div class="row">
 				<div class="col-sm-12">
 					<h5>Select a time</h5>
@@ -33,7 +40,7 @@
 							<field_new:array_select items="00=00|05=05|10=10|15=15|20=20|25=25|30=30|35=35|40=40|45=45|50=50|55=55" required="true" title="Minute" xpath="postponeminute" className="" delims="|" />
 						</div>
 						<div class="col-xs-4">
-							<field_new:array_radio items="AM=AM,PM=PM" required="true" title="AM/PM" xpath="postponeampm" className="" />
+							<field_new:array_radio items="AM=AM,PM=PM" required="true" title="AM/PM" xpath="postponeampm" className="postponeampmgroup" />
 						</div>
 					</div>
 				</div>
@@ -59,6 +66,13 @@
 			</div>
 
 		</div>
+
+	{{ if(obj.parentStatusId == 31 || obj.parentStatusId == 32){ }}
+		<div class="col-sm-4">
+			<h5>Personal Messages</h5>
+			<div class="personal-messages-container"><!-- empty --></div>
+		</div>
+	{{ } }}
 	</div>
 
 </div>
