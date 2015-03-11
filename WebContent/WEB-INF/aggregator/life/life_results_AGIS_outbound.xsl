@@ -49,9 +49,8 @@
 							</dob>
 							<gender><xsl:value-of select="primary/gender" /></gender>
 							<smoker><xsl:value-of select="primary/smoker" /></smoker>
-							<occupation><xsl:value-of select="primary/occupation" /></occupation>
+							<occupation><xsl:value-of select="primary/occupationTitle" /></occupation>
 							<occupationGroup><xsl:value-of select="primary/hannover" /></occupationGroup>
-
 							<xsl:choose>
 								<xsl:when test="primary/insurance/term != ''">
 									<lifeBenefit><xsl:value-of select="primary/insurance/term" /></lifeBenefit>
@@ -88,7 +87,7 @@
 								</dob>
 								<gender><xsl:value-of select="partner/gender" /></gender>
 								<smoker><xsl:value-of select="partner/smoker" /></smoker>
-								<occupation><xsl:value-of select="partner/occupation" /></occupation>
+								<occupation><xsl:value-of select="partner/occupationTitle" /></occupation>
 								<occupationGroup><xsl:value-of select="partner/hannover" /></occupationGroup>
 
 								<xsl:choose>

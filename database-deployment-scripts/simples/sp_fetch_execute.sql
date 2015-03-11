@@ -96,15 +96,15 @@ BEGIN
 	FROM ctm.stored_procedure_status
 	WHERE spName = 'simples.fetch_execute';
 
-	-- if the status is inProgress for longer than 3 hours, set back to 'N' 
+	-- if the status is inProgress for longer than 30 minutes, set back to 'N' 
 	-- to prevent it from never gets running again, also send a warning to logging table.
-	IF _inProgress = 'Y' AND HOUR(TIMEDIFF(NOW(),  _lastExecutedStart)) >= 3 THEN
+	IF _inProgress = 'Y' AND MINUTE(TIMEDIFF(NOW(),  _lastExecutedStart)) >= 30 THEN
 
 		UPDATE ctm.stored_procedure_status
 		SET inProgress = 'N'
 		WHERE spName = 'simples.fetch_execute';
 
-		CALL logging.doLog('WARNING: simples.fetch_execute is taking over 3 hours to execute', 'MK-20005');
+		CALL logging.doLog('WARNING: simples.fetch_execute is taking over 30 minutes to execute', 'MK-20005');
 		CALL logging.saveLog();
 
 	-- Log a warning if it tries to run over itself

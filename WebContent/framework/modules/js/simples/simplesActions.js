@@ -100,6 +100,10 @@
 				}
 
 			}
+//			$('#simplesiframe').contents().find('input[name="health_simples_hawking"]:checked').val();
+			$('input[name="health_simples_hawking"]').on('change', function() {
+				toggleHawking($('input[name="health_simples_hawking"]:checked').val());
+			});
 		});
 	}
 
@@ -497,10 +501,62 @@
 		}
 	}
 
+	function toggleHawking(status) {
+		if(status == 'ON') {
+			status = 1;
+		} else {
+			status = 0;
+		}
+		meerkat.modules.comms.get({
+			url: 'hawking/toggle', //  ==  simples/hawking/toggle
+			cache: false,
+			errorLevel: 'silent',
+			data: {
+				status: status
+			},
+			onSuccess: function onSuccess() {
+				console.log("Hawking Changed to "+status);
+			},
+			onError: function onError(obj, txt, errorThrown) {
+				console.log("Hawking Status update FAILED for "+status);
+			}
+		});
+	}
+	function getHawking() {
+		meerkat.modules.comms.get({
+			url: 'simples/hawking/get.json',
+			cache: false,
+			errorLevel: 'silent',
+			onSuccess: function onSuccess(result) {
+				setHawkingInput (result.status);
+			},
+			onError: function onError(obj, txt, errorThrown) {
+				console.log("Failed to get Hawking Status");
+			}
+		});
+	}
+	function initiateHawkingInput () {
+		getHawking();
+	}
+	function setHawkingInput (status) {
+		if (status === 1) {
+			$('#simplesiframe').contents().find('input[name="health_simples_hawking"]').filter('[value=ON]').parent().addClass('active');
+			$('#simplesiframe').contents().find('input[name="health_simples_hawking"]').filter('[value=OFF]').parent().removeClass('active');
+		}
+		else if (status === 0) {
+			$('#simplesiframe').contents().find('input[name="health_simples_hawking"]').filter('[value=ON]').parent().removeClass('active');
+			$('#simplesiframe').contents().find('input[name="health_simples_hawking"]').filter('[value=OFF]').parent().addClass('active');
+		}
+		else {
+			console.log("Failed to set Hawking Input");
+		}
+	}
+
 
 
 	meerkat.modules.register('simplesActions', {
-		init: init
+		init: init,
+		setHawkingInput : initiateHawkingInput
 	});
 
 })(jQuery);

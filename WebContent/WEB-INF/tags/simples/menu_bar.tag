@@ -44,6 +44,7 @@
 							<li class="dropdown-header">Reports</li>
 							<li><a target="simplesiframe" href="simples/report_callstatus.jsp">Consultant call status</a></li>
 							<li><a target="simplesiframe" href="simples/report_messageoverview.jsp">Message queue overview</a></li>
+							<li><a target="simplesiframe" href="simples/hawking_status.jsp">Hawking Status</a></li>
 							<%-- DISABLED UNTIL CAN BE WORKED ON
 							<li><a target="simplesiframe" href="simples/report_managerOpEnq.jsp">Manager - Operator enquires</a></li>
 							--%>

@@ -26,9 +26,10 @@ public class Message extends AbstractJsonModel {
 	private String state;
 	@JsonSerialize(using = CustomDateSerializer.class)
 	private Date whenToAction;
+	private Date created;
 	private boolean canPostpone;
 	private List<Long> dupeTransactionIds = new ArrayList<Long>();
-
+	private boolean isHawking;
 
 
 	public int getMessageId() {
@@ -109,6 +110,12 @@ public class Message extends AbstractJsonModel {
 		this.whenToAction = whenToAction;
 	}
 
+	public Date getCreated() {
+		return created;
+	}
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 	public List<Long> getDupeTransactionIds() {
 		return dupeTransactionIds;
 	}
@@ -119,6 +126,12 @@ public class Message extends AbstractJsonModel {
 		if(transactionId > 0 && transactionId != null){
 			this.dupeTransactionIds.add(transactionId);
 		}
+	}
+	public boolean isHawking() {
+		return isHawking;
+	}
+	public void setHawking(boolean isHawking) {
+		this.isHawking = isHawking;
 	}
 
 	@Override
@@ -135,7 +148,7 @@ public class Message extends AbstractJsonModel {
 		json.put("phoneNumber2", getPhoneNumber2());
 		json.put("state", getState());
 		json.put("canPostpone", getCanPostpone());
-
+		json.put("hawking", isHawking());
 		return json;
 	}
 

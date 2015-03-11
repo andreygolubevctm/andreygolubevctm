@@ -115,5 +115,42 @@ public class HealthTransactionDao {
 		}
 	}
 
+	/**
+	 * get hawking Optin For Transaction
+	 * @param transactionId
+	 */
+	public String getHawkingOptinForTransaction(final long transactionId) throws DaoException {
+
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+
+		try {
+			PreparedStatement stmt;
+			stmt = dbSource.getConnection().prepareStatement(
+				"SELECT textValue FROM aggregator.transaction_details " +
+				"WHERE transactionId = ? " +
+				"AND xpath = 'health/contactDetails/hawkingOptin' " +
+				"ORDER BY sequenceNo DESC " +
+				"LIMIT 1"
+			);
+			stmt.setLong(1, transactionId);
+
+			ResultSet results = stmt.executeQuery();
+
+			while (results.next()) {
+				return results.getString("textValue");
+			}
+
+			results.close();
+			stmt.close();
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		return null;
+	}
 
 }

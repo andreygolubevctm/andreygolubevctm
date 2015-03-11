@@ -79,6 +79,15 @@ public class TransactionService {
 		return details;
 	}
 
+	/**
+	 * HEALTH CALL CENTRE SPECIFIC LOGIC, need to be moved to somewhere else
+	 * @throws DaoException
+	 */
+	public String getHawkingOptinForTransaction(final long transactionId) throws DaoException {
+		final HealthTransactionDao transactionHealthDao = new HealthTransactionDao();
+		return transactionHealthDao.getHawkingOptinForTransaction(transactionId);
+	}
+
 
 	/**
 	 * Find if any transaction chained from the provided Root ID is confirmed (sold).

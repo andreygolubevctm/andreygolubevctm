@@ -24,10 +24,15 @@ public class MessageStatus extends AbstractJsonModel {
 	public final static int STATUS_CHANGED_TIME_FOR_PM = 32;
 	public final static int STATUS_REMOVED_FROM_PM = 33;
 
-	//sub statues
+	//common sub statues
 	public final static int STATUS_DONOTCONTACT = 9;
 	public final static int STATUS_CONVERTEDTOSALE = 11;
 	public final static int STATUS_ALREADYCUSTOMER = 16;
+
+	//skip and defer, not in mapping table
+	public final static int STATUS_SKIP_AND_DEFER = 34;
+	//confirm and unlock for hawking message, not in mapping table
+	public final static int STATUS_HAWKING_UNLOCK = 35;
 
 	private int id;
 	private String status;

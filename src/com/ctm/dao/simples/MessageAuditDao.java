@@ -22,7 +22,7 @@ public class MessageAuditDao {
 	private static Logger logger = Logger.getLogger(MessageAuditDao.class.getName());
 	private final FatalErrorService fatalErrorService = new FatalErrorService();
 
-	protected MessageAudit addMessageAudit(MessageAudit messageAudit) throws DaoException {
+	public MessageAudit addMessageAudit(MessageAudit messageAudit) throws DaoException {
 
 		SimpleDatabaseConnection dbSource = null;
 
@@ -71,7 +71,8 @@ public class MessageAuditDao {
 				String errorDesc = "[SIMPLES]: Duplicate audit";
 				String errorMsg = "[SIMPLES]: Duplicate audit detected for message "+messageAudit.getMessageId();
 				logger.error(errorMsg);
-				fatalErrorService.logFatalError(0, "MessageAuditDao", false, errorDesc, errorMsg, "");
+				fatalErrorService.property = "ctm";
+				fatalErrorService.logFatalError(0, "MessageAuditDao", false, errorDesc, errorMsg, 0L);
 			}
 
 			stmt.close();

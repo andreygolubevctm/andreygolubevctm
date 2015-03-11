@@ -52,7 +52,8 @@
 	},
 	content:{
 		callCentreNumber: '${callCentreNumber}',
-		callCentreHelpNumber: '${callCentreHelpNumber}'
+		callCentreHelpNumber: '${callCentreHelpNumber}',
+		hawkingOptinText: '<content:get key="hawkingOptinText"/>'
 	},
 	emailBrochures: {
 		enabled: <c:out value="${pageSettings.getSetting('emailBrochuresEnabled') eq 'Y'}"/>

@@ -15,6 +15,7 @@
 	var rates = null;
 	var steps = null;
 	var stateSubmitInProgress = false;
+	var isInAntiHawkingTimeframe = false;
 
 	function initJourneyEngine(){
 
@@ -160,8 +161,30 @@
 					$('.follow-up-call input:checkbox, .simples-privacycheck-statement input:checkbox').on('change', function() {
 						toggleDialogueInChatCallback();
 					});
+				}
 
-			}
+			},
+			onBeforeLeave: function(event){
+				
+				meerkat.modules.comms.get({
+					url: "health/optin/isInAntiHawkingTimeframe.json",
+					cache: true,
+					data: {
+						state: $('#health_situation_state').val()
+					},
+					errorLevel: "silent",
+					onSuccess: function (result) {
+						isInAntiHawkingTimeframe = result.isInAntiHawkingTimeframe;
+
+						$hawkingOptinTextPlaceholder = $(".hawkingOptinTextPlaceholder");
+						if( isInAntiHawkingTimeframe === true ){
+							$hawkingOptinTextPlaceholder.html( meerkat.site.content.hawkingOptinText );
+						} else {
+							$hawkingOptinTextPlaceholder.html("");
+						}
+
+					}
+				});
 
 			}
 		};
@@ -1228,9 +1251,15 @@
 			}
 
 			$("#health_contactDetails_optin").on("click", function(){
-				$("#health_contactDetails_optInEmail").val( $(this).is(":checked") ? "Y" : "N" );
-				$("#health_contactDetails_call").val( $(this).is(":checked") ? "Y" : "N" );
-		});
+				var optinVal = $(this).is(":checked") ? "Y" : "N";
+
+				$("#health_contactDetails_optInEmail").val(optinVal);
+				$("#health_contactDetails_call").val(optinVal);
+
+				if(isInAntiHawkingTimeframe === true){
+					$("#health_contactDetails_hawkingOptin").val(optinVal);
+				}
+			});
 
 			if ($('input[name="health_directApplication"]').val() === 'Y') {
 				$('#health_application_productId').val( meerkat.site.loadProductId );

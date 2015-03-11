@@ -17,7 +17,7 @@ BEGIN
 		LIMIT 1
 	);
 
-	SELECT id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, canPostpone, whenToAction
+	SELECT id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, canPostpone, whenToAction, created
 	FROM simples.message_queue_ordered
 	WHERE
 		userId = _userId

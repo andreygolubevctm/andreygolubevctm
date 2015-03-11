@@ -2,6 +2,7 @@ package com.ctm.services.simples;
 
 import com.ctm.dao.BlacklistDao;
 import com.ctm.dao.UserDao;
+import com.ctm.dao.simples.MessageAuditDao;
 import com.ctm.dao.simples.MessageDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,7 +30,7 @@ public class SimplesMessageService {
 		return messageDao.postponedMessages(userId);
 	}
 
-	public MessageDetail getMessage(final int messageId) throws DaoException {
+	public MessageDetail getMessage(final HttpServletRequest request, final int messageId) throws DaoException {
 		final MessageDao messageDao = new MessageDao();
 		final Message message = messageDao.getMessage(messageId);
 
@@ -39,6 +41,7 @@ public class SimplesMessageService {
 			return messageDetail;
 		}
 		else {
+			message.setHawking(checkHawking(request, message));
 			final MessageDetailService messageDetailService = new MessageDetailService();
 			return messageDetailService.getMessageDetail(message);
 		}
@@ -64,13 +67,18 @@ public class SimplesMessageService {
 		else {
 			// Build the associated details
 			MessageDetailService messageDetailService = new MessageDetailService();
+			TransactionService transactionService = new TransactionService();
 			messageDetail = messageDetailService.getMessageDetail(message);
 
-			int styleCodeId = messageDetail.getTransaction().getStyleCodeId();
-
-			final BlacklistDao blacklistDao = new BlacklistDao();
+			// Check Anti Hawking, if true, than defer the message to next Monday and skip to the next one
+			if (checkHawking(request, message, messageDetailService, transactionService)) {
+				messageDao.deferMessage(userId, message.getMessageId(), message.getStatusId(), convertToNextMonday(message.getWhenToAction()), canUnassign(message.getStatusId()));
+				return getNextMessageForUser(request, userId);
+			}
 
 			// If message's phone number is in the blacklist, set the message to Complete + Do Not Contact
+			int styleCodeId = messageDetail.getTransaction().getStyleCodeId();
+			final BlacklistDao blacklistDao = new BlacklistDao();
 			if (blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber1()) ||
 				blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber2())) {
 
@@ -80,7 +88,6 @@ public class SimplesMessageService {
 			}
 
 			// If any transaction in the chain is confirmed, set the message to Complete
-			TransactionService transactionService = new TransactionService();
 			ConfirmationOperator confirmationOperator = transactionService.findConfirmationByRootId(message.getTransactionId());
 			if (confirmationOperator != null) {
 				UserDao userDao = new UserDao();
@@ -107,7 +114,74 @@ public class SimplesMessageService {
 		return messageDetail;
 	}
 
+	private boolean checkHawking(final HttpServletRequest request, final Message message) throws DaoException{
+		MessageDetailService messageDetailService = new MessageDetailService();
+		TransactionService transactionService = new TransactionService();
+		return checkHawking(request, message, messageDetailService, transactionService);
+	}
 
+	private boolean checkHawking(final HttpServletRequest request, final Message message, final MessageDetailService messageDetailService, final TransactionService transactionService) throws DaoException{
+
+		MessageConfigService messageConfigService = new MessageConfigService();
+		MessageDetail messageDetail = messageDetailService.getMessageDetail(message);
+
+		// Anti Hawking optin logic
+		if (messageConfigService.isInAntiHawkingTimeframe(request, message.getState())) {
+			if (!isDateInCurrentWeek(message.getCreated()) || !messageConfigService.isInAntiHawkingTimeframe(message.getCreated(), message.getState())) {
+				return true;
+			}else{
+				Long lastestTransactionId = messageDetail.getTransaction().getNewestTransactionId();
+				String hawkingOptin = transactionService.getHawkingOptinForTransaction(lastestTransactionId);
+				return !hawkingOptin.equals("Y");
+			}
+		}
+		return false;
+	}
+
+	private static boolean isDateInCurrentWeek(Date date) {
+		Calendar currentCalendar = Calendar.getInstance();
+		int week = currentCalendar.get(Calendar.WEEK_OF_YEAR);
+		int year = currentCalendar.get(Calendar.YEAR);
+		Calendar targetCalendar = Calendar.getInstance();
+		targetCalendar.setTime(date);
+		int targetWeek = targetCalendar.get(Calendar.WEEK_OF_YEAR);
+		int targetYear = targetCalendar.get(Calendar.YEAR);
+		return week == targetWeek && year == targetYear;
+	}
+
+	private static Date convertToNextMonday(Date date){
+		Calendar currentCalendar = Calendar.getInstance();
+		currentCalendar.setTime(date);
+
+		Calendar targetCalendar = Calendar.getInstance();
+		while( targetCalendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY ){
+			targetCalendar.add( Calendar.DATE, 1 );
+		}
+		// set to call centre opening hour to the original date's time stamp
+		targetCalendar.set(Calendar.HOUR_OF_DAY, currentCalendar.get(Calendar.HOUR_OF_DAY));
+		targetCalendar.set(Calendar.MINUTE, currentCalendar.get(Calendar.MINUTE));
+		targetCalendar.set(Calendar.SECOND, currentCalendar.get(Calendar.SECOND));
+
+		return targetCalendar.getTime();
+	}
+
+	private static boolean canUnassign(int statusId){
+		switch (statusId) {
+		case MessageStatus.STATUS_NEW:
+		case MessageStatus.STATUS_POSTPONED:
+		case MessageStatus.STATUS_UNSUCCESSFUL:
+			return true;
+		case MessageStatus.STATUS_ASSIGNED:
+		case MessageStatus.STATUS_INPROGRESS:
+		case MessageStatus.STATUS_COMPLETED_AS_PM:
+		case MessageStatus.STATUS_CHANGED_TIME_FOR_PM:
+		case MessageStatus.STATUS_REMOVED_FROM_PM:
+		case MessageStatus.STATUS_COMPLETED:
+			return false;
+		default:
+			return false;
+		}
+	}
 
 	/**
 	 * Postpone a message
@@ -234,4 +308,22 @@ public class SimplesMessageService {
 		return details.toJson();
 	}
 
+	/**
+	 * add message audit entry when user confirm and unlock hawking message, Personal message only
+	 * @throws DaoException
+	 */
+	public void addHawkingConfirmationAudit(int messageId) throws DaoException{
+		final MessageDao messageDao = new MessageDao();
+		final MessageAuditDao messageAuditDao = new MessageAuditDao();
+		final Message message = messageDao.getMessage(messageId);
+
+		MessageAudit messageAudit = new MessageAudit();
+		messageAudit.setMessageId(messageId);
+		messageAudit.setUserId(message.getUserId());
+		messageAudit.setStatusId(message.getStatusId());
+		messageAudit.setReasonStatusId(MessageStatus.STATUS_HAWKING_UNLOCK);
+		messageAudit.setComment("Hawking message confirmed and unlocked by userId '" + message.getUserId());
+
+		messageAuditDao.addMessageAudit(messageAudit);
+	}
 }

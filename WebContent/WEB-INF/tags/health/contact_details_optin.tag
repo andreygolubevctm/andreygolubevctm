@@ -102,10 +102,10 @@
 					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
 					I understand <content:get key="brandDisplayName" /> compares health insurance policies from a range of
 					<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
-					By providing my contact details I agree that comparethemarket.com.au may contact me about the services they provide.
+					By providing my contact details I agree that comparethemarket.com.au may contact me<span class="hawkingOptinTextPlaceholder"></span> about the services they provide.
 					I confirm that I have read the <a data-toggle="dialog" data-content="legal/privacy_statement.jsp" data-cache="true" data-dialog-hash-id="privacystatement" href="legal/privacy_statement.jsp" target="_blank">privacy statement</a>.
 				</c:set>
-
+				
 				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
 				<form_new:row className="health-contact-details-optin-group" hideHelpIconCol="true">
 					<field_new:checkbox
@@ -116,6 +116,8 @@
 						label="${true}"
 						title="${termsAndConditions}"
 						errorMsg="Please agree to the Terms &amp; Conditions" />
+
+					<field:hidden xpath="${xpath}/hawkingOptin" defaultValue="N" />
 				</form_new:row>
 
 			</form_new:fieldset>

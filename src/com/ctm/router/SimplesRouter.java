@@ -12,6 +12,7 @@ import com.ctm.model.simples.Message;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
 import com.ctm.services.TransactionService;
+import com.ctm.services.simples.MessageConfigService;
 import com.ctm.services.simples.SimplesMessageService;
 import com.ctm.services.simples.SimplesUserService;
 import com.ctm.utils.RequestUtils;
@@ -43,7 +44,10 @@ import static javax.servlet.http.HttpServletResponse.*;
 		"/simples/transactions/details.json",
 		"/simples/users/list_online.json",
 		"/simples/users/stats_today.json",
-		"/simples/phones/call"
+		"/simples/phones/call",
+		"/simples/hawking/unlock",
+		"/simples/hawking/toggle",
+		"/simples/hawking/get.json"
 })
 public class SimplesRouter extends HttpServlet {
 	private static final long serialVersionUID = 13L;
@@ -131,7 +135,8 @@ public class SimplesRouter extends HttpServlet {
 		}
 
 		else if (uri.endsWith("/simples/transactions/details.json")) {
-			objectMapper.writeValue(writer, TransactionService.getMoreDetailsOfTransaction(RequestUtils.getTransactionIdFromRequest(request)));				}
+			objectMapper.writeValue(writer, TransactionService.getMoreDetailsOfTransaction(RequestUtils.getTransactionIdFromRequest(request)));
+		}
 
 		else if (uri.endsWith("/simples/users/list_online.json")) {
 			PageSettings settings = SettingsService.getPageSettingsByCode("CTM", VerticalType.SIMPLES.getCode());
@@ -160,7 +165,15 @@ public class SimplesRouter extends HttpServlet {
 				}
 			}
 		}
-
+		else if (uri.endsWith("/simples/hawking/get.json")) {
+			getHawkingStatus(writer, response);
+		}
+		else if (uri.endsWith("/simples/hawking/toggle")) {
+			toggleHawkingStatus(writer, authenticatedData, request, response);
+		}
+		else if (uri.endsWith("/simples/hawking/unlock")) {
+			unlockHawkingMessage(writer, authenticatedData, request, response);
+		}
 		else {
 			response.sendError(SC_NOT_FOUND);
 		}
@@ -183,7 +196,7 @@ public class SimplesRouter extends HttpServlet {
 		try {
 			final int messageId = parseInt(request.getParameter("messageId"));
 			final SimplesMessageService simplesMessageService = new SimplesMessageService();
-			objectMapper.writeValue(writer, simplesMessageService.getMessage(messageId));
+			objectMapper.writeValue(writer, simplesMessageService.getMessage(request, messageId));
 		}
 		catch (final DaoException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -228,5 +241,47 @@ public class SimplesRouter extends HttpServlet {
 
 	private PageSettings settings() {
 		return SettingsService.getPageSettingsByCode("CTM", VerticalType.SIMPLES.getCode());
-}
+	}
+
+	private void toggleHawkingStatus(final PrintWriter writer, final AuthenticatedData authenticatedData, final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+		try {
+			int statusId = parseInt(request.getParameter("status"));
+			int simplesUid = authenticatedData.getSimplesUid();
+			MessageConfigService.setHawkingStatus(statusId, simplesUid, request);
+		}
+		catch (final DaoException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			objectMapper.writeValue(writer, errors(e));
+		}
+		catch (final NumberFormatException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			objectMapper.writeValue(writer, errors(new Exception("status was not provided or is invalid.")));
+		}
+	}
+	private void getHawkingStatus(final PrintWriter writer, final HttpServletResponse response) throws IOException {
+		try {
+			objectMapper.writeValue(writer, jsonObjectNode("status", MessageConfigService.getHawkingStatus()));
+		}
+		catch (final DaoException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			objectMapper.writeValue(writer, errors(e));
+		}
+	}
+
+	private void unlockHawkingMessage(final PrintWriter writer, final AuthenticatedData authenticatedData, final HttpServletRequest request, final HttpServletResponse response) throws IOException{
+		if (authenticatedData != null) {
+			final SimplesMessageService simplesMessageService = new SimplesMessageService();
+			try {
+				final int messageId = parseInt(request.getParameter("messageId"));
+				simplesMessageService.addHawkingConfirmationAudit(messageId);
+			} catch (DaoException e) {
+				response.sendError(SC_INTERNAL_SERVER_ERROR);
+				objectMapper.writeValue(writer, errors(e));
+			}
+			catch (final NumberFormatException e) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				objectMapper.writeValue(writer, errors(new Exception("messageId was not provided or is invalid.")));
+			}
+		}
+	}
 }

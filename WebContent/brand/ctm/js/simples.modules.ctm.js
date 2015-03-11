@@ -79,6 +79,9 @@
                     templatePostpone = _.template($e.html());
                 }
             }
+            $('input[name="health_simples_hawking"]').on("change", function() {
+                toggleHawking($('input[name="health_simples_hawking"]:checked').val());
+            });
         });
     }
     function updateMenu() {
@@ -381,8 +384,57 @@
             return dateStr;
         }
     }
+    function toggleHawking(status) {
+        if (status == "ON") {
+            status = 1;
+        } else {
+            status = 0;
+        }
+        meerkat.modules.comms.get({
+            url: "hawking/toggle",
+            cache: false,
+            errorLevel: "silent",
+            data: {
+                status: status
+            },
+            onSuccess: function onSuccess() {
+                console.log("Hawking Changed to " + status);
+            },
+            onError: function onError(obj, txt, errorThrown) {
+                console.log("Hawking Status update FAILED for " + status);
+            }
+        });
+    }
+    function getHawking() {
+        meerkat.modules.comms.get({
+            url: "simples/hawking/get.json",
+            cache: false,
+            errorLevel: "silent",
+            onSuccess: function onSuccess(result) {
+                setHawkingInput(result.status);
+            },
+            onError: function onError(obj, txt, errorThrown) {
+                console.log("Failed to get Hawking Status");
+            }
+        });
+    }
+    function initiateHawkingInput() {
+        getHawking();
+    }
+    function setHawkingInput(status) {
+        if (status === 1) {
+            $("#simplesiframe").contents().find('input[name="health_simples_hawking"]').filter("[value=ON]").parent().addClass("active");
+            $("#simplesiframe").contents().find('input[name="health_simples_hawking"]').filter("[value=OFF]").parent().removeClass("active");
+        } else if (status === 0) {
+            $("#simplesiframe").contents().find('input[name="health_simples_hawking"]').filter("[value=ON]").parent().removeClass("active");
+            $("#simplesiframe").contents().find('input[name="health_simples_hawking"]').filter("[value=OFF]").parent().addClass("active");
+        } else {
+            console.log("Failed to set Hawking Input");
+        }
+    }
     meerkat.modules.register("simplesActions", {
-        init: init
+        init: init,
+        setHawkingInput: initiateHawkingInput
     });
 })(jQuery);
 
@@ -605,13 +657,18 @@
                 });
             }
             $messageDetailsContainer = $(".simples-message-details-container");
+            var messageId = 0;
             if ($messageDetailsContainer.length > 0) {
                 renderMessageDetails(false, $messageDetailsContainer);
                 meerkat.messaging.subscribe(meerkat.modules.events.simplesMessage.MESSAGE_CHANGE, function messageChange(obj) {
                     renderMessageDetails(obj, $messageDetailsContainer);
+                    messageId = obj.message.messageId;
                 });
                 $messageDetailsContainer.on("click", ".messagedetail-loadbutton", loadMessage);
                 $messageDetailsContainer.on("click", "button[data-phone]", makeCall);
+                $messageDetailsContainer.on("click", 'button[data-provide="simples-hawking-unlock"]', function() {
+                    addHawkingAudit(messageId);
+                });
             }
         });
     }
@@ -749,6 +806,21 @@
             }
         }
         $destination.html(templateMessageDetail(message));
+    }
+    function addHawkingAudit(messageId) {
+        $hawkingWarningContainer = $(".hawking-warning-container");
+        $callButton = $("button[data-phone]");
+        meerkat.modules.comms.get({
+            url: baseUrl + "simples/hawking/unlock?messageId=" + messageId,
+            cache: false,
+            errorLevel: "warning"
+        }).done(function onSuccess(json) {
+            $hawkingWarningContainer.html("Hawking meesage unlocked!");
+            $callButton.removeAttr("disabled");
+        }).fail(function onError(obj, txt, errorThrown) {
+            $hawkingWarningContainer.html("Failed to unlock ...\n" + txt + ": " + errorThrown);
+            $callButton.attr("disabled", true);
+        });
     }
     meerkat.modules.register("simplesMessage", {
         init: init,

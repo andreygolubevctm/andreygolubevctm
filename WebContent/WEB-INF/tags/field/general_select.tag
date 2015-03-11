@@ -70,7 +70,7 @@
 	<c:forEach var="row" items="${result.rows}">
 		<option value="${row.code}" 
 			<c:if test="${row.code == value}"> selected="selected" </c:if> 
-			<c:if test="${row.code == value && not empty row.hannoverCode}"><c:set var="hannoverDefault" value="${row.hannoverCode}" /></c:if>
+			<c:if test="${row.code == value && not empty row.hannoverCode}"><c:set var="hannoverDefault" value="${row.hannoverCode}" /><c:set var="occupationTitleDefault" value="${row.description}" /></c:if>
 			<c:if test="${not empty row.hannoverCode}"> data-hannovercode="${row.hannoverCode}" </c:if>
 		>
 			${row.description}
@@ -81,6 +81,9 @@
 <c:if test="${comboBox && not empty type && type eq 'occupation'}">
 	<c:set var="hannoverName" value="${go:nameFromXpath(hannoverXpath)}" />
 	<input type="hidden" value="${hannoverDefault}" name="${hannoverName}" id="${hannoverName}" />
+
+	<c:set var="occupationTitle" value="${go:nameFromXpath(xpath)}Title" />
+	<input type="hidden" value="${occupationTitleDefault}" name="${occupationTitle}" id="${occupationTitle}" />
 </c:if>
 		
 <c:if test="${comboBox}">
@@ -150,6 +153,7 @@
 		<c:if test="${not empty hannoverName}">
 			.on('select2-selecting', function(e) {
 				$('#${hannoverName}').val(e.choice.hannoverCode);
+				$('#${occupationTitle}').val(e.choice.text.trim());
 			})
 		</c:if>
 		;

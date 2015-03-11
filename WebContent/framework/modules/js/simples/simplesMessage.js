@@ -71,6 +71,7 @@
 			// Message details
 			//
 			$messageDetailsContainer = $('.simples-message-details-container');
+			var messageId = 0;
 			if ($messageDetailsContainer.length > 0) {
 				// Render
 				renderMessageDetails(false, $messageDetailsContainer);
@@ -78,6 +79,7 @@
 				// Subscribe to changes (be mindful this is only within the scope of the owner frame)
 				meerkat.messaging.subscribe(meerkat.modules.events.simplesMessage.MESSAGE_CHANGE, function messageChange(obj) {
 					renderMessageDetails(obj, $messageDetailsContainer);
+					messageId = obj.message.messageId;
 				});
 
 				// Amend quote button
@@ -85,6 +87,10 @@
 
 				// Call buttons
 				$messageDetailsContainer.on('click', 'button[data-phone]', makeCall);
+
+				$messageDetailsContainer.on('click', 'button[data-provide="simples-hawking-unlock"]', function(){
+					addHawkingAudit(messageId);
+				});
 			}
 		});
 	}
@@ -258,6 +264,25 @@
 		}
 
 		$destination.html( templateMessageDetail(message) );
+	}
+
+	function addHawkingAudit(messageId){
+		$hawkingWarningContainer = $('.hawking-warning-container');
+		$callButton = $('button[data-phone]');
+
+		meerkat.modules.comms.get({
+			url: baseUrl + 'simples/hawking/unlock?messageId=' + messageId,
+			cache: false,
+			errorLevel: 'warning'
+		})
+		.done(function onSuccess(json) {
+			$hawkingWarningContainer.html('Hawking meesage unlocked!');
+			$callButton.removeAttr('disabled');
+		})
+		.fail(function onError(obj, txt, errorThrown) {
+			$hawkingWarningContainer.html('Failed to unlock ...\n' + txt + ': ' + errorThrown);
+			$callButton.attr('disabled', true);
+		});
 	}
 
 
