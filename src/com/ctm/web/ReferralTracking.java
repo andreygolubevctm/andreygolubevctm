@@ -12,43 +12,44 @@ import java.net.URLDecoder;
 
 public class ReferralTracking {
 
-    private static final Logger logger = Logger.getLogger(ReferralTracking.class.getName());
+	private static final Logger logger = Logger.getLogger(ReferralTracking.class.getName());
 
-    public String getAndSetUtmSource(HttpServletRequest request, Data data, String prefix) {
-        return getAndSetFromParam(request, data, "utm_source", prefix + "/sourceid");
-    }
+	public String getAndSetUtmSource(HttpServletRequest request, Data data, String prefix) {
+		return getAndSetFromParam(request, data, "utm_source", prefix + "/sourceid");
+	}
 
-    private String getAndSetFromParam(HttpServletRequest request, Data data, String key, String xpath) {
-        String value = data.getString(xpath);
-        if(value == null || value.isEmpty()) {
-            value = request.getParameter(key);
-            boolean valid = false;
-            if (value != null && !value.isEmpty()) {
-                try {
-                    value = URLDecoder.decode(value, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    logger.warn(e);
-                }
-                try {
-                    valid = ContentService.getContentIsValid(request, key, value);
-                    if (valid) {
-                        data.put(xpath, value);
-                    }
-                } catch (DaoException | ConfigSettingException e) {
-                    logger.warn(e);
-                }
-            }
-            if(valid){
-                logger.info(key + ": " + value + " from " + "param");
-            } else {
-                logger.warn(key + ": " + value + " from " + "invalid param - Aborting");
-                value = "";
-            }
-        }
-        return value;
-    }
+	private String getAndSetFromParam(HttpServletRequest request, Data data, String key, String xpath) {
+		String value = data.getString(xpath);
+		if(value == null || value.isEmpty()) {
+			value = request.getParameter(key);
+			boolean valid = false;
+			if (value != null && !value.isEmpty()) {
+				try {
+					value = URLDecoder.decode(value, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					logger.warn(e);
+				}
+				try {
+					valid = ContentService.getContentIsValid(request, key, value);
+					if (valid) {
+						data.put(xpath, value);
+					}
+				} catch (DaoException | ConfigSettingException e) {
+					logger.warn(e);
+				}
 
-    public String getAndSetUtmCampaign(HttpServletRequest request, Data data, String prefix) {
-        return getAndSetFromParam(request, data, "utm_campaign", prefix + "/cid");
-    }
+				if(valid ){
+					logger.info(key + ": '" + value + "' from " + "param");
+				} else {
+					logger.warn(key + ": '" + value + "' from " + "invalid param - Aborting");
+					value = "";
+				}
+			}
+		}
+		return value;
+	}
+
+	public String getAndSetUtmCampaign(HttpServletRequest request, Data data, String prefix) {
+		return getAndSetFromParam(request, data, "utm_campaign", prefix + "/cid");
+	}
 }

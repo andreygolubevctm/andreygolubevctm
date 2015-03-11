@@ -155,10 +155,10 @@
 <go:validate selector="${name}" rule="dateEUR" parm="${required}" message="Please enter a valid ${title} date for DD MM YYYY"/>
 <c:set var="todaysDate" value="today's date" />
 <c:if test="${not empty minDateEuro and validateMinMax == true}">
-	<go:log>${name} : ${minDateEuro}</go:log>
+	
 	<go:validate selector="${name}" rule="minDateEUR" parm="'${minDateEuro}'" message="Please enter a date on or after ${todayDateEuro == minDateEuro ? todaysDate : minDateEuro}" />
 </c:if>
 <c:if test="${not empty maxDateEuro and validateMinMax == true}">
-	<go:log>${name} : ${maxDateEuro}</go:log>
+	
 	<go:validate selector="${name}" rule="maxDateEUR" parm="'${maxDateEuro}'" message="Please enter a date on or before ${todayDateEuro == maxDateEuro ? todaysDate : maxDateEuro}" />
 </c:if>

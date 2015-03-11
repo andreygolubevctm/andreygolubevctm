@@ -1,9 +1,5 @@
 package com.ctm.services;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-
 import com.ctm.dao.TouchDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.AccessTouch;
@@ -14,15 +10,17 @@ import com.ctm.model.session.AuthenticatedData;
 import com.ctm.router.IncomingEmailRouter;
 import org.apache.log4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class AccessTouchService {
 
 	private static Logger logger = Logger.getLogger(IncomingEmailRouter.class.getName());
 
-	private final SessionDataService sessionDataService;
+	protected final SessionDataService sessionDataService;
 
 	TouchDao dao = new TouchDao();
 
-	public AccessTouchService(TouchDao dao, SessionDataService sessionDataService) {
+	public AccessTouchService(TouchDao dao ,SessionDataService sessionDataService) {
 		this.dao = dao;
 		this.sessionDataService = sessionDataService;
 	}
@@ -60,7 +58,7 @@ public class AccessTouchService {
 		return recordTouch(transactionId,  type , null);
 	}
 
-	public Boolean recordTouch(HttpServletRequest request, long transactionId, String type) {
+	public Boolean recordTouch(HttpServletRequest request, long transactionId, String type, String description) {
 		// Set operator to null - the TouchDao will use this as 'ONLINE' if not superseded
 		String operator = null;
 		// Populate operator from authenticated data if available
@@ -71,7 +69,7 @@ public class AccessTouchService {
 			}
 		}
 
-		return recordTouch(transactionId,  type , operator);
+		return recordTouch(transactionId,  type , operator, description);
 
 	}
 
@@ -83,6 +81,24 @@ public class AccessTouchService {
 			// Failing to write the touch shouldn't be fatal - let's just log an error
 			logger.error("Failed to record touch (" + type + ") against transaction [" + transactionId + "].");
 			logger.error(e);
+			return false;
+		}
+	}
+
+	public boolean recordTouch(Long transactionId, String type , String operatorId, String description) {
+		try {
+
+			Touch touch = new Touch();
+			touch.setTransactionId(transactionId);
+			touch.setType(TouchType.findByCode(type));
+			touch.setOperator(operatorId);
+			touch.setDescription(description);
+			dao.record(touch);
+			return true;
+		} catch(DaoException e) {
+			// Failing to write the touch shouldn't be fatal - let's just log an error
+			String message = "Failed to record touch (" + type + ") against transaction [" + transactionId + "].";
+			logger.error(message, e);
 			return false;
 		}
 	}

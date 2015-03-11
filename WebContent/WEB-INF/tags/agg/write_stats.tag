@@ -7,9 +7,9 @@
 <%@ attribute name="tranId" 	required="true"	 rtexprvalue="true"	 description="transaction Id" %>
 <%@ attribute name="debugXml"					required="false"	 rtexprvalue="true"	 description="debugXml (from soap aggregator)" %>
 
-<go:log>WRITE STATS: ${rootPath}</go:log>
+
 <c:set var="ignore">
-	<go:log>statisticDetailsResults: ${statisticDetailsResults}</go:log>
+	
 	<c:if test="${statisticDetailsResults == null}">
 		<agg:get_soap_response_stats debugXml="${debugXml}" />
 	</c:if>
@@ -19,7 +19,6 @@
 	<jsp:useBean id="statisticsService" class="com.ctm.statistics.StatisticsService" scope="request" />
 	<c:catch var="error">
 		<c:set var="calcSequence" value="${statisticsService.writeStatistics(statisticDetailsResults , tranId)}" />
-		<go:log>calcSequence: ${calcSequence}</go:log>
 <go:setData dataVar="data" xpath="${rootPath}/calcSequence" value="${calcSequence}" />
 	</c:catch>
 	<c:if test="${not empty error}">
@@ -34,7 +33,7 @@
 
 <%--TODO: CAR-29 remove this once we are off disc --%>
 	<c:if test="${rootPath == 'quote'}">
-	<go:log>Writing Results to iSeries</go:log>
+		<go:log>Writing Results to iSeries [AGGTRS]</go:log>
 		<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
 		<go:call pageId="AGGTRS"  xmlVar="${debugXml}" wait="FALSE" transactionId="${tranId}" style="${AGIS_leadFeedCode}" />
 	</c:if>

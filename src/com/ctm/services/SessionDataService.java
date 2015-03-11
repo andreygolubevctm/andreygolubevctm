@@ -159,10 +159,7 @@ public class SessionDataService {
 			data.setLastSessionTouch(new Date());
 
 			// If localhost or NXI, the URL writing is not in place, therefore we have fall back logic...
-			if (EnvironmentService.needsManuallyAddedBrandCodeParam()) {
-				logger.warn("Skipping transaction brand check for LOCALHOST, NXI and NXS");
-			}
-			else {
+			if (EnvironmentService.needsManuallyAddedBrandCodeParam() == false) {
 				// Extra safety check, verify the brand code on the transaction object with the current brand code for this session.
 				String dataBucketBrand = (String) data.get("current/brandCode");
 				String applicationBrand = ApplicationService.getBrandCodeFromRequest(request);

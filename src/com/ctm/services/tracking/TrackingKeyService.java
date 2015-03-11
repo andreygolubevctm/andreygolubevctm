@@ -53,7 +53,6 @@ public class TrackingKeyService {
 				}
 
 				for (String xpath : trackingKeyXpaths) {
-					logger.info("include xpath in trackingKey: " + xpath);
 					keyBuilder.append(data.get(xpath));
 				}
 

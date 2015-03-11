@@ -40,12 +40,18 @@
 					<field_new:age_licence xpath="${xpath}/licenceAge" required="true"	title="youngest" />
 				</form_new:row>
 
+				<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+				<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+
 				<form_new:row label="Approximate annual kilometres driven by the youngest driver">
-					<field_new:kilometers_travelled xpath="${xpath}/annualKilometres"
-						id="annual_kilometres"
-						className="annual_kilometres"
-						placeHolder="Example: 20000"
-						required="true" />
+					<c:choose>
+						<c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>
+							<field_new:kilometers_travelled_number xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres annual_kilometres_number_youngest" placeHolder="Example: 20000" required="true" />
+						</c:when>
+						<c:otherwise>
+							<field_new:kilometers_travelled xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres" placeHolder="Example: 20000" required="true" />
+						</c:otherwise>
+					</c:choose>
 				</form_new:row>
 
 				<form_new:row label="Gender" id="${name}_genderRow">

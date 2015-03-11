@@ -112,8 +112,6 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		if(valid || continueOnValidationError) {
 		timer = System.currentTimeMillis();
 
-			logger.debug("Using debug path " + configuration.getDebugPath());
-			
 		try {
 			// Create the client threads and launch each one
 			HashMap<Thread, SOAPClientThread> threads = new HashMap<Thread, SOAPClientThread>();
@@ -137,7 +135,6 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 				threads.put(thread, client);
 				thread.start();
 			}
-			logTime("Launch Client Threads");
 
 			// Join each thread for their given timeout
 
@@ -156,11 +153,9 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 						logger.error(e);
 				}
 			}
-			logTime("All client Threads returned");
 
 			// Get the merge root node
 				XmlNode resultNode = new XmlNode(configuration.getMergeRoot());
-			logTime("Make Result Node");
 
 			// Append each of the client results
 			for (SOAPClientThread client : threads.values()) {
@@ -208,8 +203,6 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 						PageContext.PAGE_SCOPE);
 			}
 
-			logTime("Add results");
-
 			// If we have results, run them through the merge xsl
 				if (configuration.getMergeXsl() != null && configuration.getMergeXsl() != "") {
 				resultNode = processMergeXSL(resultNode);
@@ -224,7 +217,6 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			} else {
 				pageContext.getOut().write(resultNode.getXML(true));
 			}
-			logTime("Return to the page");
 
 		} catch (IOException e) {
 			e.printStackTrace();

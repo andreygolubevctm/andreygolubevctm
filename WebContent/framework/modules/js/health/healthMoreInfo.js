@@ -300,7 +300,7 @@
 
 	function openModal(){
 		prepareProduct( function moreInfoOpenModalSuccess(){
-
+			
 			var htmlString = "<form class='healthMoreInfoModel'>" + htmlTemplate(product) + "</form>";
 			modalId = meerkat.modules.dialogs.show({
 				htmlContent: htmlString,

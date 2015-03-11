@@ -22,7 +22,6 @@
 %><%= ip %></c:set>
 
 <%-- Fetch and store the transaction id --%>
-<go:log source="core:get_transactionid">transactionId: ${transactionId} id_handler: ${id_handler} emailAddress: ${emailAddress}  quoteType: ${quoteType}</go:log>
 
 <%-- Current TransId Test --%>
 <c:choose>
@@ -42,8 +41,7 @@
 <c:choose>
 	<%-- PRESERVE TEST --%>
 	<c:when test="${ (hasTransId && not empty id_handler && id_handler == 'preserve_tranId' ) ||
-					(hasTransId && ((empty id_handler and not empty param.action and (param.action == 'amend' || param.action == 'latest' || param.action == 'confirmation')) ))}">
-		<go:log  source="core:get_transactionid">var="method" value="PRESERVE"</go:log>
+					(hasTransId && ((empty id_handler and not empty param.action and (param.action == 'amend' || param.action == 'latest' || param.action == 'confirmation')) ))}">		
 		<c:set var="method" value="PRESERVE" />
 	</c:when>
 	<%-- INSTA FAIL --%>
@@ -217,9 +215,6 @@
 		<%-- Remove any previous save content for the new quote --%>
 
 		<c:set var="previousRootId" value="${data.current.rootId}" />
-
-
-		<go:log source="core:get_transactionid">Delete data bucket and create new transaction id. PreviousRootId: '${previousRootId}'</go:log>
 
 		<go:setData dataVar="data" xpath="save" value="*DELETE" />
 

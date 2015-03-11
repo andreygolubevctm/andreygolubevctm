@@ -36,7 +36,7 @@
 		<c:set var="cid" value="${referralTracking.getAndSetUtmCampaign(pageContext.request,  data, root)}" />
 	</c:when>
 </c:choose>
-<go:log source="core:referral_tracking" level="INFO">CID: ${cid} from ${source}</go:log>
+
 <field:hidden xpath="${xpath}" defaultValue="" />
 <field:hidden xpath="${root}/sourceid" defaultValue="${referralTracking.getAndSetUtmSource(pageContext.request,  data, root)}" />
 

@@ -73,8 +73,8 @@ var ${name}__PostCodeStateHandler = {
 					url: "ajax/json/get_state.jsp",
 					data: {postCode:value},
 					type: "POST",
-					async: true,
-					cache: false,
+					async: false,
+					cache: true,
 					success: function(jsonResult){
 						var count = Number(jsonResult[0].count);
 						var state = jsonResult[0].state;

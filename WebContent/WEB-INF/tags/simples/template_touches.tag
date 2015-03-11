@@ -22,7 +22,7 @@
 
 			<%-- Filter the comments to only the types that matter for an operator --%>
 			<tbody>
-			{{ var displayTouches = ['N','R','A','P','F','C','L','S']; }}
+			{{ var displayTouches = ['N','R','A','P','F','C','L','S', 'B']; }}
 			{{ _.each(touches, function(touch) { }}
 				{{ if (touch.type === null || _.indexOf(displayTouches, touch.type.code) == -1) return; }}
 				{{ var _des = touch.type.description; }}
@@ -32,6 +32,8 @@
 					<td>
 						{{ if ('C' === touch.type.code) { }}
 							{{= _des}}: {{= obj.selectedProductProvider }} {{= obj.selectedProductTitle }}</span>
+						{{ } else if( touch.description !== null && touch.description !== '') { }}
+							{{= _des }}: {{= touch.description }}
 						{{ } else { }}
 							{{= _des }}
 						{{ } }}

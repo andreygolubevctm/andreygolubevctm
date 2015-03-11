@@ -408,24 +408,7 @@
 				<terms>
 					<![CDATA[
 						<p><b>Maximum No Claims discount:</b></p>
-						<p>With AI Insurance you will automatically receive the 65% maximum no claims discount.</p>
-						<p><b>Adjustable Excess Structure:</b></p>
-						<p>This policy includes a reducing basic excess structure which rewards you for claims-free driving. This means that the amount of your basic excess is reduced for each claim-free year that you hold your policy with AI Insurance.</p>
-						<p>The following table provides you with more information on how the basic excess reduces when you have no at fault claims.</p>
-
-						<table class="offer-terms-table">
-							<tr class="otbh">
-								<td class="otbh">Claims Free Year</td>
-								<td class="otbh">Basic Excess - Option 1</td>
-							</tr>
-							<tr><td>Year 1</td><td>$600</td></tr>
-							<tr><td>Year 2</td><td>$450</td></tr>
-							<tr><td>Year 3</td><td>$300</td></tr>
-							<tr><td>Year 4</td><td>$150</td></tr>
-							<tr><td>Year 5</td><td>$0</td></tr>
-						</table>
-
-						<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:void(0);" data-url='http://b2b.aiinsurance.com.au/SSPublicDocs/Comprehensive_Cover_PDS_01.pdf' class='showDoc'>Product Disclosure Statement</a>.</p>
+						<p>With AI Insurance you will automatically receive a 65% maximum no claims discount and Rating 1 protection.</p>
 					]]>
 				</terms>
 				<carbonOffset />
@@ -455,25 +438,6 @@
 					<![CDATA[
 						<p><b>Telematics device installation requirement:</b></p>
 						<p>If you think that you are a "safer and better" driver than most other road users, here’s your chance to demonstrate your driving behavior to us – more accurate, individualized and cheaper premiums being your objective.</p>
-						<p><b>Rating 1:</b></p>
-						<p>You will automatically be placed on a Rating 1 when you insure with us.</p>
-						<p><b>Adjustable Excess Structure:</b></p>
-						<p>This policy includes a reducing basic excess structure which rewards you for claims-free driving. This means that the amount of your basic excess is reduced for each claim-free year that you hold your policy with AI Insurance.</p>
-						<p>The following table provides you with more information on how the basic excess reduces when you have no at fault claims.</p>
-
-						<table class="offer-terms-table">
-							<tr class="otbh">
-								<td class="otbh">Claims Free Year</td>
-								<td class="otbh">Basic Excess - Option 1</td>
-							</tr>
-							<tr><td>Year 1</td><td>$600</td></tr>
-							<tr><td>Year 2</td><td>$450</td></tr>
-							<tr><td>Year 3</td><td>$300</td></tr>
-							<tr><td>Year 4</td><td>$150</td></tr>
-							<tr><td>Year 5</td><td>$0</td></tr>
-						</table>
-
-						<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:void(0);" data-url='http://b2b.aiinsurance.com.au/SSPublicDocs/Smart-Box_Cover_PDS_01.pdf' class='showDoc'>Product Disclosure Statement.</a></p>
 					]]>
 				</terms>
 				<carbonOffset />
@@ -502,27 +466,6 @@
 					<![CDATA[
 						<p><b>Terms of the 20% online discount promotion:</b></p>
 						<p>The discount applies to AI comprehensive car insurance policies purchased online and initiated after 4th September 2014, and is applicable to premium only - not fees and statutory charges - and does not extend to renewal of a policy. AI Insurance reserves the right to amend the discount amount and/or the period and base rate premiums are subject to change at their discretion.</p>
-						<p><b>Replacement Car benefit:</b></p>
-						<p>Your policy includes New Vehicle Replacement benefit.  If you are the first registered owner of the car and it becomes a total loss within 2 years or 40 000 km of original registration in your name (whichever occurs first) and the loss is a result of events covered under your comprehensive cover, AI Insurance will replace the insured car with a new one of the same make, model and specification if available locally.  In addition, AI Insurance will pay the initial 12 months registration fee and compulsory third party insurance costs.</p>
-						<p><b>Maximum No Claims discount:</b></p>
-						<p>With AI Insurance you will automatically receive the 65% maximum no claims discount.</p>
-						<p><b>Adjustable Excess Structure:</b></p>
-						<p>This policy includes a reducing basic excess structure which rewards you for claims-free driving. This means that the amount of your basic excess is reduced for each claim-free year that you hold your policy with AI Insurance.</p>
-						<p>The following table provides you with more information on how the basic excess reduces when you have no at fault claims.</p>
-
-						<table class="offer-terms-table">
-							<tr class="otbh">
-								<td class="otbh">Claims Free Year</td>
-								<td class="otbh">Basic Excess - Option 1</td>
-							</tr>
-							<tr><td>Year 1</td><td>$600</td></tr>
-							<tr><td>Year 2</td><td>$450</td></tr>
-							<tr><td>Year 3</td><td>$300</td></tr>
-							<tr><td>Year 4</td><td>$150</td></tr>
-							<tr><td>Year 5</td><td>$0</td></tr>
-						</table>
-
-						<p>Please note that if you make an at fault claim, your basic excess level will revert back by two years. For more information, please refer to the <a href="javascript:void(0);" data-url='http://b2b.aiinsurance.com.au/SSPublicDocs/Smart-Box_Cover_PDS_01.pdf' class='showDoc'>Product Disclosure Statement.</a></p>
 					]]>
 				</terms>
 				<carbonOffset />

@@ -20,14 +20,7 @@ public class Dreammail {
 		if (rtm_url.indexOf("http") != 0) {
 			rtm_url = "http://" + rtm_url;
 		}
-		logger.debug("DreamMail params:");
-		logger.debug("Username=" +username);
-		// Keep level as debug so as not to log password
-		logger.debug("Password=" +password);
-		logger.debug("ServerName=" +servername);
-		logger.debug("Url=" +rtm_url);
-		logger.debug("XML=" +xml_content);
-		logger.debug("Exact Target=" + (is_exact_target == true ? "true" : "false"));
+		logger.debug("[Email] Message sent: " +xml_content.replaceAll("\\r?\\n", ""));
 
 		URL url = new URL(rtm_url);
 		URLConnection connection = url.openConnection();
@@ -54,8 +47,8 @@ public class Dreammail {
 		while ((inputLine = in.readLine()) != null) {
 			resp.append(inputLine);
 		}
-		logger.debug("Result:");
-		logger.debug(resp.toString());
+
+		logger.debug("[Email] Message received: " +resp.toString());
 		return resp.toString();
 	}
 }

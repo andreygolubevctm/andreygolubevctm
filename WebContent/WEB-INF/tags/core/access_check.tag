@@ -49,7 +49,6 @@
 	</c:when>
 	<c:otherwise>
 		<c:set var="access_check" value="${1}" />
-		<go:log source="core:access_check">not performed for '${quoteType}'</go:log>
 	</c:otherwise>
 
 </c:choose>

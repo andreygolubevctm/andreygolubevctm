@@ -51,6 +51,12 @@ public class AGISLeadFromCronJob {
 			lead.setPhoneNumber("0000000000");
 		}
 		
+		// If no state has been provided, we'll send them an empty string
+		// to meet validation requirements.
+		if(lead.getState() == null) {
+			lead.setState("");
+		}
+
 		for (SortedMap<?, ?> detail : rankingDetails.getRows()) {
 			String property = (String) detail.get("Property");
 			String value = (String) detail.get("Value");

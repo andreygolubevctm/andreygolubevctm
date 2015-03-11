@@ -188,8 +188,8 @@ $.validator.addMethod("youngRegularDriversAgeCheck", function (value, element) {
 //
 $.validator.addMethod("youngRegularDriversAnnualKilometersCheck", function () {
 
-	var vehicleAnnualKms = parseInt($('#quote_vehicle_annualKilometres').val());
-	var youngestAnnualKms = parseInt($('#quote_drivers_young_annualKilometres').val());
+	var vehicleAnnualKms = parseInt($('#quote_vehicle_annualKilometres').val().replace(/\D/g,''));
+	var youngestAnnualKms = parseInt($('#quote_drivers_young_annualKilometres').val().replace(/\D/g,''));
 
 	return youngestAnnualKms < vehicleAnnualKms;
 }, "The annual kilometres driven by the youngest driver cannot exceed those of the regular driver.");
@@ -1294,6 +1294,13 @@ $.validator.addMethod("fromToDate", function(value, element, params){
 	}
 
 	return true;
+});
+
+$.validator.addMethod("digitsIgnoreComma", function(value, element, params) {
+	// Replace commas with blanks.
+	value = value.replace(/,/g, "");
+	// Do the normal digit check.
+	return this.optional(element) || /^\d+$/.test(value);
 });
 
 date_gt_date = function (date1, date2){

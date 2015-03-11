@@ -61,23 +61,12 @@ public class AddressSearchRouter extends HttpServlet {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 
 		if (uri.endsWith("/address/search.json")) {
-			String queryText = request.getParameter("query") != null
-					? request.getParameter("query")
-						.toLowerCase()
-						.replaceAll("[^A-Za-z0-9\\s\\/\\_\\-]+", " ")
-						.replaceAll("(\\s+)?\\/(\\s+)?", "/")
-						.replaceFirst("^(shop|duplex|apartment|apt|lot|store|level|lv|l|f|floor|u)\\s+", "unit ")
-						.replaceFirst("([a-z0-9]+)\\/([a-z0-9]+)", "unit $1 $2 ")
-						.replaceAll("\\s\\-|\\-", "_")
-						.replaceAll("^(unit )+", "unit ")
-					: "";
-
 			JSONArray output = null;
 
 			try {
 				PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.GENERIC.getCode());
 				String indexName = pageSettings.getSetting("elasticSearchAddressIndex");
-				output = searchService.suggest(queryText, indexName, "address");
+				output = searchService.suggest(request.getParameter("query"), indexName, "address");
 			} catch (JSONException | ConfigSettingException | DaoException e) {
 				logger.error("There was an issue producing the JSON response", e);
 			}

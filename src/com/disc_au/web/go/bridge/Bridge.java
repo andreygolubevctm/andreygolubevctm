@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 
 import com.disc_au.web.go.bridge.messages.Message;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Bridge.
  *
@@ -82,7 +81,7 @@ public class Bridge {
 	 * @return the message
 	 */
 	public Message sendReceive(Message req) {
-		long t = System.currentTimeMillis();
+
 
 		Message resp = null;
 		try {
@@ -92,7 +91,6 @@ public class Bridge {
 			int len = req.getLength();
 			NumericField reqLength = new NumericField(CONF_LEN, 's', 0);
 			reqLength.setValue(req.getLength() + CONF_LEN);
-			logger.info("Sending: " + len);
 			// Send the request
 			OutputStream out = socket.getOutputStream();
 			out.write(reqLength.getBytes());
@@ -108,7 +106,6 @@ public class Bridge {
 
 			int responseLength = reqLength.getValue();
 
-			logger.info("Receiving: " + responseLength);
 			if (responseLength > 0) {
 
 				int remainingData = responseLength - CONF_LEN;
@@ -137,11 +134,7 @@ public class Bridge {
 				out.flush();
 			}
 
-			in.close();
-			out.close();
-			socket.close();
-			logger.info("Call made in "
-					+ (System.currentTimeMillis() - t) + "ms");
+
 			return resp;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();

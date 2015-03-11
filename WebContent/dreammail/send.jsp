@@ -198,7 +198,7 @@
 						<json:property name="message" value="${error.cause.message}"/>
 					</json:object>
 					</c:if>
-				<go:log source="dreammail_send_jsp">An email send was attempted via go:Dreammail. emailResponseXML: ${emailResponseXML}</go:log>
+						
 						<x:parse xml="${emailResponseXML}" var="output"/>
 						<x:set var="resultNode" select="string($output//*[local-name()='CreateResponse']/*[local-name()='OverallStatus']/text())" />
 						<c:if test="${resultNode != 'OK' and isExactTarget eq true}">

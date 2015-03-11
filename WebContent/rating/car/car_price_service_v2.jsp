@@ -118,11 +118,11 @@
 			pageContext.setAttribute("combinedXml2", xml);
 			%>
 		</c:set>
-		<go:log level="DEBUG" source="home_price_service">CombinedXml TWO ${combinedXml2 }</go:log>
+		
 		<c:set var="finalXml">
 			<x:transform xml="${combinedXml2}" xslt="${transferXml}"/>
 		</c:set>
-		<go:log level="DEBUG" source="home_price_service">FINALXML: ${finalXml}</go:log>
+		
 		<c:out value="${finalXml}" escapeXml="false" />
 
 	</c:otherwise>

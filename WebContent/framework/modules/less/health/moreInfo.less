@@ -172,6 +172,27 @@
 		background-color: @more-info-bubble-bg-color;
 		color: @more-info-bubble-text-color;
 		padding: 20px;
+
+		h5.moreInfoCallUs{
+			color:#fff;
+			margin: 0;
+		}
+
+		.moreInfoReferenceNoText{
+			font-family: @font-family-theme-light;
+			font-size: 13px;
+		}
+
+		.btn-more-info-apply:active {
+			background-color: darken(@theme-primary, 20%)
+		}
+
+		.moreInfoOr{
+			margin-top: 10px;
+			.h5;
+			padding-left: 0;
+			color:#fff;
+		}
 	}
 	.moreInfoCallUsContainer {
 		padding-bottom: 30px;
@@ -185,10 +206,12 @@
 		}
 		margin: 0;
 	}
+
 	.moreInfoReferenceNoText{
 		font-family: @font-family-theme-bold;
 		font-size: 14px;
 	}
+
 	.moreInfoReferenceNo{
 		//font-family: @font-family-theme-bold;
 	}
@@ -298,5 +321,29 @@
 		@media(@sm-only){
 			font-size: inherit;
 		}
+	}
+}
+
+
+// Old CTA buttons variables for A/B testing
+@old-btn-cta-bg-color: @theme-primary;
+@old-btn-cta-color: contrast(@old-btn-cta-bg-color);
+@old-btn-cta-border-color: @old-btn-cta-bg-color;
+
+@old-btn-cta-hover-bg-color: darken(@old-btn-cta-bg-color, 12%);
+@old-btn-cta-hover-color: contrast(@old-btn-cta-hover-bg-color);
+@old-btn-cta-hover-border-color: @old-btn-cta-hover-bg-color;
+
+@old-btn-cta-active-bg-color: @theme-secondary;
+@old-btn-cta-active-color: contrast(@old-btn-cta-active-bg-color);
+@old-btn-cta-active-border-color: @old-btn-cta-active-bg-color;
+
+// A/B testing for old organge color buttons
+.old-cta{
+	&.btn-cta {
+		.btn-styles(@old-btn-cta-bg-color, @old-btn-cta-color,
+		@old-btn-cta-active-bg-color, @old-btn-cta-active-color,
+		@old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
+		@old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true); 
 	}
 }

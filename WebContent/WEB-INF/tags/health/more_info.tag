@@ -30,7 +30,7 @@
 				<h1 class="productName">{{= info.productTitle }}</h1>
 
 				<div class="visible-xs">
-					{{ if (showApply === true) { }}<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Online</a>{{ } }}
+					{{ if (showApply === true) { }}<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Online</a>{{ } }}
 					<c:if test="${not empty callCentreNumber}">
 					<a href="tel:${callCentreNumber}" class="needsclick btn btn-form btn-block phone" data-productId="{{= productId }}">
 						<h5 class="moreInfoCallUs">Call us now on <span class="noWrap">${callCentreNumber}</span></h5>
@@ -82,6 +82,31 @@
 		<%-- DUAL PRICING END --%>
 
 			{{ if (showApply === true) { }}
+
+			<c:choose>
+				<c:when test="${useOldCtaBtn}">
+					<ui:bubble variant="info" className="moreInfoBubble hidden-xs">
+						<div class="row">
+							<c:if test="${not empty callCentreNumber}">
+							<div class="col-xs-6">
+								<h5 class="moreInfoCallUs">Call us now on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
+								<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
+							</div>
+							</c:if>
+
+							<c:if test="${not empty callCentreNumber}">
+							<div class="col-xs-1 moreInfoOr">
+								OR
+							</div>
+							</c:if>
+
+							<div class="col-xs-5">
+								<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
+							</div>
+						</div>
+					</ui:bubble>
+				</c:when>
+				<c:otherwise>
 				<div class="row moreInfoCallUsContainer hidden-xs">
 					<c:if test="${not empty callCentreNumber}">
 					<div class="col-xs-6">
@@ -93,6 +118,8 @@
 						<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
 					</div>
 				</div>
+				</c:otherwise>
+			</c:choose>
 			{{ } }}
 
 			<c:set var="pricePromiseEnabled">

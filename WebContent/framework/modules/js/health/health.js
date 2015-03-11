@@ -456,8 +456,8 @@
 			onBeforeEnter: function enterApplyStep(event){
 
 				if(event.isForward === true){
-
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+					this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
 
 					// Load the selected product details.
 					healthFunds.load(selectedProduct.info.provider);

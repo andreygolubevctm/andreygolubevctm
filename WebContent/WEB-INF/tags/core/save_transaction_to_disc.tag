@@ -14,7 +14,7 @@
 	</data>
 </c:set>
 <%-- HEAD TO DISC --%>
-<go:log>Saving ${data['current/transactionId']} to DISC</go:log>
+<go:log source="save_transaction_to_disc">Saving ${data['current/transactionId']} to DISC</go:log>
 <c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
 <go:call pageId="AGGTID" wait="FALSE" resultVar="tranXml" xmlVar="${DISCxml}" transactionId="${data['current/transactionId']}" style="${AGIS_leadFeedCode}" />
 <go:setData dataVar="data" xml="${tranXml}" xpath="tmpTranXml" />

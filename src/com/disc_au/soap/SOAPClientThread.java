@@ -146,8 +146,7 @@ public class SOAPClientThread implements Runnable {
 	}
 
 	private void logTime(String msg, long timer) {
-		logger.info(this.name + ": " + msg + ": "
-				+ (System.currentTimeMillis() - timer) + "ms ");
+		logger.info(this.name + ": " + msg + ": " + (System.currentTimeMillis() - timer) + "ms ");
 	}
 
 	/**
@@ -253,12 +252,11 @@ public class SOAPClientThread implements Runnable {
 				connection.setRequestProperty("Accept", configuration.getAccept());
 			}
 
-			logTime("Initialise service connection (SOAPClient)");
 			// Send the soap request
 			Writer wout = new OutputStreamWriter(connection.getOutputStream() , Charset.forName(configuration.getEncoding()));
 			wout.write(soapRequest);
 			wout.flush();
-			logTime("Write to service");
+
 			this.setResponseCode(connection.getResponseCode());
 
 			switch (connection.getResponseCode()) {
@@ -273,7 +271,6 @@ public class SOAPClientThread implements Runnable {
 					// Clean up the streams and the connection
 					rin.close();
 
-					logTime("Receive from service");
 					break;
 				}
 				case HTTP_NOT_FOUND: {
@@ -285,15 +282,13 @@ public class SOAPClientThread implements Runnable {
 							(System.currentTimeMillis() - startTime));
 
 					returnData.append(err.getXMLDoc());
-					logTime("Receive from service");
 					break;
 				}
 				// An error or some unknown condition occurred
 				default: {
-					logger.info(connection.getResponseCode());
 					// Important! keep this as debug and don't enable debug logging in production
 					// as this response may include credit card details (this is from the nib webservice)
-					logger.debug(connection.getResponseMessage());
+					logger.debug("[SOAP Response] "+connection.getResponseMessage());
 
 					StringBuffer errorData = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(((HttpURLConnection)connection).getErrorStream()));
@@ -323,8 +318,6 @@ public class SOAPClientThread implements Runnable {
 					logTime("Receive from service");
 				}
 			}
-
-			logger.warn("Response Code: " + ((HttpURLConnection)connection).getResponseCode());
 
 			wout.close();
 			((HttpURLConnection)connection).disconnect();
@@ -385,8 +378,6 @@ public class SOAPClientThread implements Runnable {
 			writer.writeXmlToFile(maskXml(soapRequest , configuration.getMaskReqInXSL()), REQ_OUT);
 		}
 
-		logTime("Translate outbound XSL");
-
 		// Determine if the only thing written to the soapRequest is the header
 		int i = soapRequest.indexOf('<',2);
 		if (i > -1 ) {
@@ -411,7 +402,7 @@ public class SOAPClientThread implements Runnable {
 			if (configuration.getInboundXSL() != null) {
 				// Important! keep this as debug and don't enable debug logging in production
 				// as this response may include credit card details (this is from the nib webservice)
-				logger.debug(this.name + ":" + soapResponse);
+				logger.debug("[SOAP Response] "+this.name + ":" + soapResponse);
 
 				// The following ugliness had to be added to get OTI working ..
 				//REVISE: oh please do - we need something better than this.... :(
@@ -455,7 +446,6 @@ public class SOAPClientThread implements Runnable {
 
 				setResultXML(translator.translate(configuration.getInboundXSL(),
 						soapResponse, configuration.getInboundParms(), params , false));
-				logTime("Translate inbound XSL");
 			} else {
 				this.setResultXML(soapResponse);
 			}

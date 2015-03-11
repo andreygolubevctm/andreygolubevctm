@@ -18,7 +18,7 @@
 <c:set var="error_message">Please enter the number of kilometres the vehicle is driven per year</c:set>
 
 <%-- HTML --%>
-<field_new:input type="text" xpath="${xpath}" required="${required}" className="numeric ${classname}" maxlength="${7}" title="${title}" pattern="[0-9]*" placeHolder="${placeHolder}" formattedInteger="true" />
+<field_new:input type="text" xpath="${xpath}" required="${required}" className="numeric ${className}" maxlength="${7}" title="${title}" pattern="[0-9]*" placeHolder="${placeHolder}" formattedInteger="true" />
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}" rule="required" parm="${required}" message="${error_message}"/>

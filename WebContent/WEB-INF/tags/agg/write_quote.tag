@@ -699,8 +699,7 @@
 		<%-- Set data from the form and call AGGTIC to write the client data to tables --%>
 		<%-- Note, we do not wait for it to return - this is a "fire and forget" request --%>
 		<c:if test="${rootPath == 'car'}">
-			<go:log level="INFO" source="agg:write_quote" >Writing quote to DISC</go:log>
-			<go:log level="DEBUG" source="agg:write_quote">${go:getEscapedXml(data['quote'])}</go:log>
+			<go:log level="DEBUG" source="agg:write_quote">Writing quote to DISC: ${go:getEscapedXml(data['quote'])}</go:log>
 			<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
 			<go:call pageId="AGGTIC"
 				xmlVar="${go:getEscapedXml(data['quote'])}"

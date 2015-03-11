@@ -5,7 +5,6 @@
 
 <session:get settings="true" authenticated="true" throwCheckAuthenticatedError="true" verticalCode="${fn:toUpperCase(param.quoteType)}"/>
 
-<go:log level="INFO" source="access_touch_jsp">quoteType: ${param.quoteType}</go:log>
 <c:set var="proceedinator"><core:access_check quoteType="${param.quoteType}" /></c:set>
 <c:if test="${empty proceedinator}">
 	<c:set var="proceedinator">${0}</c:set>

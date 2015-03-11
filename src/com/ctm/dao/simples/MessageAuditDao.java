@@ -1,5 +1,6 @@
 package com.ctm.dao.simples;
 
+import org.apache.log4j.Logger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,12 +11,17 @@ import javax.naming.NamingException;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.simples.MessageAudit;
+import com.ctm.services.FatalErrorService;
+
 
 public class MessageAuditDao {
 
 	/**
 	 *
 	 */
+	private static Logger logger = Logger.getLogger(MessageAuditDao.class.getName());
+	private final FatalErrorService fatalErrorService = new FatalErrorService();
+
 	protected MessageAudit addMessageAudit(MessageAudit messageAudit) throws DaoException {
 
 		SimpleDatabaseConnection dbSource = null;
@@ -24,22 +30,50 @@ public class MessageAuditDao {
 			PreparedStatement stmt;
 			dbSource = new SimpleDatabaseConnection();
 
+			/*
+			 * Need to check that the audit entry doesn't already exist due to locked tables in the message table update statement
+			 * Example query for testing
+			 * SELECT *, NOW() as NOW, ADDTIME(NOW(), SEC_TO_TIME(-60)) as NOWMINUSMINUTE FROM simples.message_audit where created > ADDTIME(NOW(), SEC_TO_TIME(-60)) order by created desc;
+			 */
 			stmt = dbSource.getConnection().prepareStatement(
-				"INSERT INTO simples.message_audit (messageId, userId, created, statusId, reasonStatusId, comment)" +
-				"VALUES (?, ?, NOW(), ?, ?, ?);"
-				, java.sql.Statement.RETURN_GENERATED_KEYS
+					"SELECT id FROM simples.message_audit WHERE " +
+					"messageId = ? AND " +
+					"userId = ? AND " +
+					"statusId = ? AND " +
+					"reasonStatusId = ? AND " +
+					"created > ADDTIME(NOW(), SEC_TO_TIME(-60));"
 			);
 			stmt.setInt(1, messageAudit.getMessageId());
 			stmt.setInt(2, messageAudit.getUserId());
 			stmt.setInt(3, messageAudit.getStatusId());
 			stmt.setInt(4, messageAudit.getReasonStatusId());
-			stmt.setString(5, messageAudit.getComment());
-			stmt.executeUpdate();
 
-			ResultSet rs = stmt.getGeneratedKeys();
-			if (rs != null && rs.next()) {
-				messageAudit.setId(rs.getInt(1));
+			ResultSet results = stmt.executeQuery();
+
+			if (!results.next()) {
+				stmt = dbSource.getConnection().prepareStatement(
+					"INSERT INTO simples.message_audit (messageId, userId, created, statusId, reasonStatusId, comment)" +
+					"VALUES (?, ?, NOW(), ?, ?, ?);"
+					, java.sql.Statement.RETURN_GENERATED_KEYS
+				);
+				stmt.setInt(1, messageAudit.getMessageId());
+				stmt.setInt(2, messageAudit.getUserId());
+				stmt.setInt(3, messageAudit.getStatusId());
+				stmt.setInt(4, messageAudit.getReasonStatusId());
+				stmt.setString(5, messageAudit.getComment());
+				stmt.executeUpdate();
+
+				ResultSet rs = stmt.getGeneratedKeys();
+				if (rs != null && rs.next()) {
+					messageAudit.setId(rs.getInt(1));
+				}
+			} else {
+				String errorDesc = "[SIMPLES]: Duplicate audit";
+				String errorMsg = "[SIMPLES]: Duplicate audit detected for message "+messageAudit.getMessageId();
+				logger.error(errorMsg);
+				fatalErrorService.logFatalError(0, "MessageAuditDao", false, errorDesc, errorMsg, "");
 			}
+
 			stmt.close();
 		}
 		catch (SQLException e) {

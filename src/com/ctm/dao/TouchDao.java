@@ -1,19 +1,15 @@
 package com.ctm.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.naming.NamingException;
-
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.AccessTouch;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
+
+import javax.naming.NamingException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TouchDao {
 
@@ -143,7 +139,7 @@ public class TouchDao {
 
 	private void mapToObject(Touch touch, ResultSet resultSet) throws SQLException {
 		touch.setId(resultSet.getInt("id"));
-		touch.setTransactionId(resultSet.getString("transaction_id"));
+		touch.setTransactionId(resultSet.getLong("transaction_id"));
 		touch.setDatetime(resultSet.getTimestamp("dateTime"));
 		touch.setOperator(resultSet.getString("operator_id"));
 		touch.setType(TouchType.findByCode(resultSet.getString("type")));
@@ -181,7 +177,7 @@ public class TouchDao {
 
 			stmt = dbSource.getConnection().prepareStatement(
 				"SELECT DISTINCT t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
-				"t.operator_id, t.type " +
+				"t.operator_id, t.type , t.description " +
 
 				"FROM aggregator.transaction_header AS th  " +
 
@@ -206,10 +202,11 @@ public class TouchDao {
 
 			while (results.next()) {
 				Touch touch = new Touch();
-				touch.setTransactionId(results.getString("transaction_id"));
+				touch.setTransactionId(results.getLong("transaction_id"));
 				touch.setOperator(results.getString("operator_id"));
 				touch.setType(TouchType.findByCode(results.getString("type")));
 				touch.setDatetime(results.getTimestamp("dateTime"));
+				touch.setDescription(results.getString("description"));
 				touches.add(touch);
 			}
 		}
@@ -277,38 +274,70 @@ public class TouchDao {
 	 * @param type
 	 * @throws DaoException
 	 */
-	public void record(Long transactionId, String type, String operator) throws DaoException {
+	public Touch record(Long transactionId, String type, String operator) throws DaoException {
+		return record( transactionId,  type,  operator,  null);
+	}
 
-		SimpleDatabaseConnection dbSource = null;
+	/**
+	 * record() records a touch event against a transaction
+	 *
+	 * @param transactionId
+	 * @param type
+	 * @throws DaoException
+	 */
+	private Touch record(Long transactionId, String type, String operator, String description) throws DaoException {
+		Touch touch = new Touch();
+		touch.setTransactionId(transactionId);
+		touch.setType(TouchType.findByCode(type));
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		if(description != null && description.length() > 200){
+			description = description.substring(0 ,200);
+		}
 
 		try {
-			if(operator == null) {
+			if(operator == null || operator.isEmpty()) {
 				operator = Touch.ONLINE_USER;
 			}
+			touch.setOperator(operator);
 
-			PreparedStatement stmt;
-			dbSource = new SimpleDatabaseConnection();
-
-			stmt = dbSource.getConnection().prepareStatement(
-				"INSERT INTO ctm.touches (transaction_id, date, time, operator_id, type) " +
-				"VALUES (?, NOW(), NOW(), ?, ?);"
+			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
+					"INSERT INTO ctm.touches (transaction_id, date, time, operator_id, type, description) " +
+							"VALUES (?, NOW(), NOW(), ?, ?, ?);" , Statement.RETURN_GENERATED_KEYS
 			);
 
 			stmt.setLong(1, transactionId);
 			stmt.setString(2, operator);
 			stmt.setString(3, type);
+			stmt.setString(4, description);
 
 			stmt.executeUpdate();
+			// Update the comment model with the insert ID
+			ResultSet rs = stmt.getGeneratedKeys();
+			if (rs != null && rs.next()) {
+				touch.setId(rs.getInt(1));
+			}
 		}
-		catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		catch (NamingException e) {
+		catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
 		}
 		finally {
 			dbSource.closeConnection();
 		}
+		return touch;
 	}
+
+
+
+	/**
+	 * record() records a touch event against a transaction
+	 *
+	 * @param transactionId
+	 * @param type
+	 * @throws DaoException
+	 */
+	public Touch record(Touch touch) throws DaoException {
+		return record( touch.getTransactionId(),  touch.getType().getCode(),  touch.getOperator(),  touch.getDescription());
+	}
+
 
 }

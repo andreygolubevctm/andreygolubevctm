@@ -2608,7 +2608,7 @@ var highlightMeTextObj = new HighlightMeText();
 							<div class="special-offers-description"><!--  empty --></div>
 						</span>
 						<span class="panel">
-							<h4>Product disclosure statement</h4>
+							<h4>Product Disclosure Statement</h4>
 							<p class="pds"><a href="javascript:void(0);" title="view the PDS">Product Disclosure Statement</a></p>
 						</span>
 						<span class="panel">

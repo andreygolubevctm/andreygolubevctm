@@ -407,47 +407,48 @@
 	 */
 	function onClickApplyNow(product, applyNowCallback) {
 
-			if(hasSpecialConditions === true && specialConditionContent.length > 0) {
+		var is_autogeneral = product.service.search(/agis_/i) === 0;
+		if(hasSpecialConditions === true && specialConditionContent.length > 0 && !is_autogeneral) {
 
-				var $e = $('#special-conditions-template');
-				if ($e.length > 0) {
-					templateCallback = _.template($e.html());
-				}
-				var obj = meerkat.modules.moreInfo.getOpenProduct();
-				obj.specialConditionsRule = specialConditionContent;
-
-				var htmlContent = templateCallback(obj);
-
-				var modalId = meerkat.modules.dialogs.show({
-					htmlContent: htmlContent,
-					hashId: 'special-conditions',
-					title: 'Special Conditions Confirmation',
-					closeOnHashChange: true,
-					openOnHashChange: false,
-					onOpen: function(modalId) {
-						$('.btn-proceed-to-insurer', $('#'+modalId)).off('click.proceed').on('click.proceed', function(event) {
-							event.preventDefault();
-							return proceedToInsurer(product, modalId, applyNowCallback);
-						});
-						$('.btn-back', $('#'+modalId)).off('click.goback').on('click.goback', function(event) {
-							$('.modal').modal('hide');
-							if (meerkat.modules.moreInfo.isBridgingPageOpen()) {
-								meerkat.modules.moreInfo.close();
-							}
-						});
-
-					},
-					onClose: function(modalId) {
-						meerkat.modules.moreInfo.applyCallback(false);
-					}
-				});
-
-				return false;
+			var $e = $('#special-conditions-template');
+			if ($e.length > 0) {
+				templateCallback = _.template($e.html());
 			}
-			// otherwise just do it.
-			return proceedToInsurer(product, false, applyNowCallback);
+			var obj = meerkat.modules.moreInfo.getOpenProduct();
+			obj.specialConditionsRule = specialConditionContent;
 
+			var htmlContent = templateCallback(obj);
+
+			var modalId = meerkat.modules.dialogs.show({
+				htmlContent: htmlContent,
+				hashId: 'special-conditions',
+				title: 'Special Conditions Confirmation',
+				closeOnHashChange: true,
+				openOnHashChange: false,
+				onOpen: function(modalId) {
+					$('.btn-proceed-to-insurer', $('#'+modalId)).off('click.proceed').on('click.proceed', function(event) {
+						event.preventDefault();
+						return proceedToInsurer(product, modalId, applyNowCallback);
+					});
+					$('.btn-back', $('#'+modalId)).off('click.goback').on('click.goback', function(event) {
+						$('.modal').modal('hide');
+						if (meerkat.modules.moreInfo.isBridgingPageOpen()) {
+							meerkat.modules.moreInfo.close();
+						}
+					});
+
+				},
+				onClose: function(modalId) {
+					meerkat.modules.moreInfo.applyCallback(false);
+				}
+			});
+
+			return false;
+		}
+		// otherwise just do it.
+		return proceedToInsurer(product, false, applyNowCallback);
 	}
+
 	/**
 	 * On confirmation of conditions, perform tracking and start the transfer.
 	 */

@@ -19,7 +19,6 @@ public class AGISLeadFromRequest {
 		
 		Lead lead = new Lead();
 		AGISLeadFeed leadFeed = new AGISLeadFeed();
-		Long transactionIdLong = Long.parseLong(transactionId);
 		
 		SessionDataService sds = new SessionDataService();
 		Data data = null;
@@ -36,7 +35,9 @@ public class AGISLeadFromRequest {
 		lead.setClientName(data.get(vertical + "/primary/firstName").toString() + " " + data.get(vertical + "/primary/lastname").toString());
 		lead.setPhoneNumber(data.get(vertical + "/contactDetails/contactNumber").toString());
 		lead.setSourceId(AGISLeadFeed.ProviderSourceID.valueOf(data.get("lead/company").toString().toUpperCase()));
-		lead.setState(data.get(vertical + "/primary/state").toString());
+		
+		String state = data.get(vertical + "/primary/state") != null ? data.get(vertical + "/primary/state").toString() : "";
+		lead.setState(state);
 		
 		String IPAddress = data.get(vertical + "/clientIpAddress") != null ? data.get(vertical + "/clientIpAddress").toString() : request.getRemoteAddr();
 		lead.setIpAddress(IPAddress);

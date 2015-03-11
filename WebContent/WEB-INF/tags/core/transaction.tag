@@ -67,7 +67,6 @@
 </c:set>
 
 <sql:setDataSource dataSource="jdbc/ctm" />
-<go:log source="core:transaction">START - touch:${touch}, vertical:${vertical}, noResponse:${noResponse}, writeQuoteOverride:${writeQuoteOverride}, comment:${comment}</go:log>
 
 
 
@@ -131,11 +130,16 @@
 	</c:otherwise>
 </c:choose>
 
-<go:log source="core:transaction" >TRANSACTION ID: ${transactionId}</go:log>
 
 <%-- TOUCH ....................................................................... --%>
 <c:choose>
 	<c:when test="${empty touch}"></c:when>
+	<c:when test="${touch != 'H' and touch != 'F' and not empty comment}">
+		<jsp:useBean id="touchService" class="com.ctm.services.AccessTouchService" scope="page" />
+		<c:catch var="error">
+			<c:set var="ignore" value="${touchService.recordTouch(transactionId, touch , operator, comment)}" />
+		</c:catch>
+	</c:when>
 	<c:otherwise>
 		<c:set var="type" value="${touch}" />
 		<c:if test="${touch == 'H' and not empty comment}">
@@ -150,7 +154,7 @@
 			<sql:param value="${type}" />
 		</sql:update>
 
-		<go:log source="core:transaction" >TOUCHED: ${touch}</go:log>
+		<go:log source="core:transaction" >Record touch: ${touch}</go:log>
 
 		<%-- SUBMIT FAIL: add error to comments table --%>
 		<c:if test="${touch != 'H' and not empty comment}">
@@ -231,8 +235,7 @@
 	</c:catch>
 </c:if>
 
-<c:choose>
-	<c:when test="${write_quote == 'Y'}">
+<c:if test="${write_quote == 'Y'}">
 
 		<c:set var="currentTransactionId" value="${data.current.transactionId}" />
 
@@ -245,15 +248,11 @@
 				<go:setData dataVar="data" xpath="quote/transactionId" value="${currentTransactionId}" />
 			</c:when>
 			<c:otherwise>
-		<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${currentTransactionId}" />
+				<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${currentTransactionId}" />
 			</c:otherwise>
 		</c:choose>
-	</c:when>
-	<c:otherwise>
-		<go:log source="core:transaction" >WRITE QUOTE NO</go:log>
-	</c:otherwise>
-</c:choose>
-
+</c:if>
+		
 
 
 <%-- RESPONSE .................................................................... --%>
@@ -270,4 +269,4 @@
 <c:if test="${noResponse != 'true'}">
 	<c:out value="${response}" />
 </c:if>
-<go:log source="core:transaction" >FINISH</go:log>
+

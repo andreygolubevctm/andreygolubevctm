@@ -12,16 +12,25 @@ public class Touch extends AbstractJsonModel {
 	public static final String JSON_COLLECTION_NAME = "touches";
 
 	private int id;
-	private String transactionId;
+	private Long transactionId;
 	@JsonSerialize(using = DisplayDateSerializer.class)
 	private Date datetime;
 	private String operator;
 	private TouchType type;
-
 	public static final String ONLINE_USER = "ONLINE";
+	private String description;
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	public static enum TouchType {
+		BROCHURE ("Brochure sent" , "B"),
 		NEW ("New quote" , "N"),
 		UNLOCKED ("Unlocked", "X"),
 		SUBMITTED ("Submit", "P"),
@@ -75,11 +84,11 @@ public class Touch extends AbstractJsonModel {
 		this.id = id;
 	}
 
-	public String getTransactionId() {
+	public Long getTransactionId() {
 		return transactionId;
 	}
 
-	public void setTransactionId(String transactionId) {
+	public void setTransactionId(Long transactionId) {
 		this.transactionId = transactionId;
 	}
 
@@ -119,7 +128,7 @@ public class Touch extends AbstractJsonModel {
 		}
 		json.put("type", typeCode);
 		json.put("datetime", getDatetime());
-
+		json.put("description", description);
 		return json;
 	}
 }

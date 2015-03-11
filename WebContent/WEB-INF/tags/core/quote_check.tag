@@ -4,8 +4,6 @@
 
 <%@ attribute name="quoteType" 	required="true"		rtexprvalue="true"	description="The vertical this quote is for"%>
 
-<go:log source="core:quote_check">Quote Check Started: ${quoteType}</go:log>
-
 <c:if test="${not empty quoteType}">
 	<c:set var="isNewQuote" scope="session">
 		<c:choose>
@@ -17,7 +15,6 @@
 
 	<c:choose>
 		<c:when test="${isNewQuote eq true}">
-			<go:log source="core:quote_check">Treated as NEW quote</go:log>
 			<core:transaction touch="N" noResponse="true" />
 		</c:when>
 		<c:otherwise>

@@ -144,6 +144,19 @@
             },
             onAfterEnter: function onOptionsEnter(event) {
                 meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(1) .snapshot");
+                $annualKilometers = $(".annual_kilometres_number");
+                $annualKilometers.on("keyup", function(event, input) {
+                    $this = $(this);
+                    formatNumberInput($this, event);
+                });
+                $annualKilometers.trigger("keyup");
+            },
+            onBeforeLeave: function(event) {
+                $annualKilometers = $(".annual_kilometres_number");
+                if ($annualKilometers.length > 0) {
+                    var numberOnlyValue = trimNonNumbers($annualKilometers.val());
+                    $annualKilometers.val(numberOnlyValue);
+                }
             }
         };
         var detailsStep = {
@@ -159,10 +172,22 @@
                 touchComment: "DriverDtls",
                 includeFormData: true
             },
-            onAfterEnter: function(event) {
+            onAfterEnter: function onDetailsEnter(event) {
                 meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(2) .snapshot");
+                $annualKilometersYoungest = $(".annual_kilometres_number_youngest");
+                $annualKilometersYoungest.on("keyup", function(event, input) {
+                    $this = $(this);
+                    formatNumberInput($this, event);
+                });
+                $annualKilometersYoungest.trigger("keyup");
             },
-            onBeforeLeave: function(event) {}
+            onBeforeLeave: function(event) {
+                $annualKilometersYoungest = $(".annual_kilometres_number_youngest");
+                if ($annualKilometersYoungest.length > 0) {
+                    var numberOnlyValue = trimNonNumbers($annualKilometersYoungest.val());
+                    $annualKilometersYoungest.val(numberOnlyValue);
+                }
+            }
         };
         var addressStep = {
             title: "Address & Contact",
@@ -396,6 +421,20 @@
         } catch (e) {
             return false;
         }
+    }
+    function formatNumberInput(element, event) {
+        var currentValue = element.val(), numbersOnly = trimNonNumbers(currentValue), newValueLength = numbersOnly.length;
+        if (currentValue.length > 7) {
+            element.val(currentValue.substring(0, 7));
+        } else if (newValueLength > 3) {
+            var lastPart = numbersOnly.substring(newValueLength - 3, newValueLength), firstPart = numbersOnly.substring(0, newValueLength - 3);
+            element.val(firstPart + "," + lastPart);
+        } else {
+            element.val(numbersOnly);
+        }
+    }
+    function trimNonNumbers(string) {
+        return string.replace(/\D/g, "");
     }
     meerkat.modules.register("car", {
         init: initCar,
@@ -1384,7 +1423,8 @@
         });
     }
     function onClickApplyNow(product, applyNowCallback) {
-        if (hasSpecialConditions === true && specialConditionContent.length > 0) {
+        var is_autogeneral = product.service.search(/agis_/i) === 0;
+        if (hasSpecialConditions === true && specialConditionContent.length > 0 && !is_autogeneral) {
             var $e = $("#special-conditions-template");
             if ($e.length > 0) {
                 templateCallback = _.template($e.html());

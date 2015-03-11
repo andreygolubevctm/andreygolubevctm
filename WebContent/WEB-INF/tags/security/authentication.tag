@@ -83,17 +83,13 @@
 			<sql:param>${emailAddress}</sql:param>
 			<sql:param value="${styleCodeId}" />
 		</sql:query>
-		<go:log source="retrieve_quotes_jsp" level="INFO">emailAddress for: ${emailAddress}</go:log>
-		<go:log source="retrieve_quotes_jsp" level="INFO">styleCodeId for: ${styleCodeId}</go:log>
+
 		<c:choose>
 			<c:when test="${emailResults.rowCount > 0}">
-				<go:log source="retrieve_quotes_jsp" level="INFO">emailResults.rowCount: emailResults.rowCount</go:log>
 				<c:set var="optInMarketing" value="${not empty emailResults.rows[0].value && emailResults.rows[0].value == 'Y'}" />
 				<c:set var="loginExists" value="${not empty fn:trim(emailResults.rows[0].emailPword)}" />
 				<c:if test="${loginExists}">
 					<c:set var="validCredentials" value="${emailResults.rows[0].emailPword == password}" />
-					<go:log source="retrieve_quotes_jsp" level="INFO">emailResults.rows[0].emailPword: ${emailResults.rows[0].emailPword}</go:log>
-					<go:log source="retrieve_quotes_jsp" level="INFO">password: ${password}</go:log>
 				</c:if>
 				<c:choose>
 					<c:when test="${validCredentials}">

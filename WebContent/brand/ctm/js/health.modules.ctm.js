@@ -1937,6 +1937,7 @@ creditCardDetails = {
             onBeforeEnter: function enterApplyStep(event) {
                 if (event.isForward === true) {
                     var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+                    this.tracking.touchComment = selectedProduct.info.provider + " " + selectedProduct.info.des;
                     healthFunds.load(selectedProduct.info.provider);
                     var $slide = $("#journeyEngineSlidesContainer .journeyEngineSlide").slice(meerkat.modules.journeyEngine.getCurrentStepIndex() - 1);
                     $slide.find(".error-field").remove();

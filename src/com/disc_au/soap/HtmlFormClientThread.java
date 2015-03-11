@@ -74,15 +74,14 @@ public class HtmlFormClientThread extends SOAPClientThread {
 
 			// Important! keep this as debug and don't enable debug logging in production
 			// data may include credit card details (this is from the nib webservice)
-			logger.debug("HTMLFormClientThread " + data);
+			logger.debug("[HTML Response] " + data);
 
-			logTime("Initialise service connection (HtmlFormClient)");
 			// Send the request
 			connection.setRequestProperty("Content-Length", String.valueOf(data.length()));
 			Writer wout = new OutputStreamWriter(connection.getOutputStream());
 			wout.write(data);
 			wout.flush();
-			logTime("Write to service");
+
 			this.setResponseCode(connection.getResponseCode());
 
 			switch (connection.getResponseCode()){
@@ -97,7 +96,6 @@ public class HtmlFormClientThread extends SOAPClientThread {
 					// Clean up the streams and the connection
 					rin.close();
 
-					logTime("Receive from service");
 					break;
 				}
 				case HTTP_NOT_FOUND: {
@@ -109,7 +107,6 @@ public class HtmlFormClientThread extends SOAPClientThread {
 							(System.currentTimeMillis() - startTime));
 
 					returnData.append(err.getXMLDoc());
-					logTime("Receive from service");
 					break;
 				}
 				// An error or some unknown condition occurred
@@ -140,11 +137,8 @@ public class HtmlFormClientThread extends SOAPClientThread {
 						returnData.append(err.getXMLDoc());
 					}
 
-					logTime("Receive from service");
 				}
 			}
-
-			logger.warn("Response Code: " + connection.getResponseCode());
 
 			wout.close();
 			connection.disconnect();

@@ -54,7 +54,6 @@ public class ISeriesConfig {
 		// Finalise environment variable string and check for its presence in the server environment
 		String envVarFinal = envVar.append(feature.toUpperCase()).toString();
 		String envValue = System.getenv(envVarFinal);
-		System.out.println("ISeriesConfig: Testing for environment variable: " + envVarFinal + " / " + envValue);
 
 		if ( envValue != null && envValue.matches("[a-zA-Z0-9]+:[1-9][0-9]*") ) {
 			// Variable matched from server environment and in valid format "server:port"; build output hashtable

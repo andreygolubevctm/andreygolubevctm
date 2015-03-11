@@ -13,7 +13,7 @@
 							<xs:element name="email" type="email" maxOccurs="1" minOccurs="0" />
 							<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
 							<xs:element name="phone" type="phone" maxOccurs="1" minOccurs="0" />
-							<xs:element name="phoneinput" type="phone" maxOccurs="1" minOccurs="0" />
+							<xs:element name="phoneinput" type="xs:string" maxOccurs="1" minOccurs="0" />
 							<xs:element name="anyoneOlder" type="YN" maxOccurs="1" minOccurs="0" />
 							<xs:element name="oldestPersonDob" type="date" maxOccurs="1" minOccurs="0" />
 							<xs:element name="over55" type="YN" maxOccurs="1" minOccurs="0" />
@@ -95,23 +95,9 @@
 								</xs:complexType>
 							</xs:element>
 							<xs:element name="itemsAway" type="YN" maxOccurs="1" minOccurs="0" />
-							<xs:element name="rebuildCost" maxOccurs="1" minOccurs="0">
-								<xs:simpleType>
-									<xs:restriction base="xs:integer">
-										<xs:minInclusive value="100000"/>
-										<xs:maxInclusive value="999999"/>
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
+							<xs:element name="rebuildCost"  type="xs:integer" maxOccurs="1" minOccurs="0" />
 							<xs:element name="rebuildCostentry" maxOccurs="1" minOccurs="0" />
-							<xs:element name="replaceContentsCost" maxOccurs="1" minOccurs="0">
-								<xs:simpleType>
-									<xs:restriction base="xs:integer">
-										<xs:minInclusive value="30000"/>
-										<xs:maxInclusive value="499999"/>
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
+							<xs:element name="replaceContentsCost" type="xs:integer" maxOccurs="1" minOccurs="0" />
 							<xs:element name="replaceContentsCostentry" maxOccurs="1" minOccurs="0" />
 							<xs:element name="abovePolicyLimits" type="YN" maxOccurs="1" minOccurs="0" />
 							<xs:element name="coverTotal" type="xs:integer" maxOccurs="1" minOccurs="0" />
@@ -142,7 +128,7 @@
 							<xs:element name="whenMovedIn" maxOccurs="1" minOccurs="0">
 								<xs:complexType>
 									<xs:all>
-										<xs:element name="year" type="year" maxOccurs="1" minOccurs="0" />
+										<xs:element name="year" type="xs:string" maxOccurs="1" minOccurs="0" />
 										<xs:element name="month" maxOccurs="1" minOccurs="0">
 											<xs:simpleType>
 												<xs:restriction base="xs:integer">

@@ -38,7 +38,6 @@
 			<sql:param value="${email}" />
 			<sql:param value="${styleCodeId}" />
 		</sql:query>
-		<go:log source="get_email_id_jsp">${result}</go:log>
 
 		<c:set var="properties">marketing=${marketing},okToCall=${oktocall},transactional=Y,leadFeed=N</c:set>
 

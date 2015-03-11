@@ -1567,6 +1567,39 @@ body > div > header a.bottombar .btn-call:hover {
   color: #ffffff;
   padding: 20px;
 }
+.more-info-content .moreInfoBubble h5.moreInfoCallUs {
+  color: #fff;
+  margin: 0;
+}
+.more-info-content .moreInfoBubble .moreInfoReferenceNoText {
+  font-family: 'SourceSansProLight';
+  font-size: 13px;
+}
+.more-info-content .moreInfoBubble .btn-more-info-apply:active {
+  background-color: #540e10;
+}
+.more-info-content .moreInfoBubble .moreInfoOr {
+  margin-top: 10px;
+  font-family: 'SourceSansProBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  line-height: 1.1;
+  color: #ab1d21;
+  margin-top: 9px;
+  margin-bottom: 9px;
+  font-size: 18px;
+  padding-left: 0;
+  color: #fff;
+}
+.more-info-content .moreInfoBubble .moreInfoOr small,
+.more-info-content .moreInfoBubble .moreInfoOr .small {
+  font-weight: normal;
+  line-height: 1;
+  color: #999999;
+}
+.more-info-content .moreInfoBubble .moreInfoOr small,
+.more-info-content .moreInfoBubble .moreInfoOr .small {
+  font-size: 75%;
+}
 .more-info-content .moreInfoCallUsContainer {
   padding-bottom: 30px;
 }
@@ -1693,6 +1726,26 @@ body > div > header a.bottombar .btn-call:hover {
   #confirmation .btn-download {
     font-size: inherit;
   }
+}
+.old-cta.btn-cta {
+  background-color: #ab1d21;
+  color: #ffffff;
+  border-color: #ab1d21;
+  border-width: 1px;
+  border-style: solid;
+}
+.old-cta.btn-cta:hover,
+.old-cta.btn-cta:focus {
+  background-color: #771417;
+  color: #ffffff;
+  outline: 0;
+  border-color: #771417;
+}
+.old-cta.btn-cta:active,
+.old-cta.btn-cta.active {
+  background-color: #333333;
+  color: #ffffff;
+  border-color: #333333;
 }
 #journeyEngineContainer {
   position: inherit;

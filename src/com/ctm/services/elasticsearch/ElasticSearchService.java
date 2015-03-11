@@ -1,7 +1,5 @@
 package com.ctm.services.elasticsearch;
 
-import static com.ctm.services.elasticsearch.ElasticSearchService.fatalErrorService;
-
 import org.elasticsearch.action.suggest.SuggestRequestBuilder;
 import org.elasticsearch.action.suggest.SuggestResponse;
 import org.elasticsearch.client.Client;
@@ -51,10 +49,27 @@ public class ElasticSearchService {
 		 * Doing this the proper way using the SDK doesn't return payloads (for whatever reason).
 		 */
 		JSONObject output = new JSONObject(suggestResponse.toString());
-		JSONArray suggestArray = output.getJSONArray("suggest").getJSONObject(0).getJSONArray("options");
-		JSONArray suggestFuzzyArray = output.getJSONArray("suggest_fuzzy").getJSONObject(0).getJSONArray("options");
 		
-		return concatJSONArrays(suggestArray, suggestFuzzyArray);
+		JSONArray suggestArray = null;
+		JSONArray suggestFuzzyArray = null;
+		
+		if(output.has("suggest")) {
+			suggestArray = output.getJSONArray("suggest").getJSONObject(0).getJSONArray("options");
+		}
+		
+		if(output.has("suggest_fuzzy")) {
+			suggestFuzzyArray = output.getJSONArray("suggest_fuzzy").getJSONObject(0).getJSONArray("options");
+		}
+		
+		if(suggestArray != null && suggestFuzzyArray != null) {
+			return concatJSONArrays(suggestArray, suggestFuzzyArray);
+		} else if (suggestArray != null) {
+			return suggestArray;
+		} else if (suggestFuzzyArray != null) {
+			return suggestFuzzyArray;
+		} else {
+			return null;
+		}
 	}
 
 	public JSONArray concatJSONArrays(JSONArray... arrs) throws JSONException {

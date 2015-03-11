@@ -1,9 +1,6 @@
 package com.ctm.factory;
 
-import com.ctm.dao.ContentDao;
-import com.ctm.dao.EmailMasterDao;
-import com.ctm.dao.StampingDao;
-import com.ctm.dao.TransactionDao;
+import com.ctm.dao.*;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.SendEmailException;
@@ -11,6 +8,8 @@ import com.ctm.exceptions.VerticalException;
 import com.ctm.model.email.EmailMode;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.services.AccessTouchService;
+import com.ctm.services.SessionDataService;
 import com.ctm.services.email.EmailDetailsService;
 import com.ctm.services.email.EmailServiceHandler;
 import com.ctm.services.email.EmailUrlService;
@@ -59,8 +58,11 @@ public class EmailServiceFactory {
 			PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
 		ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());
 		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical ,  new HealthEmailDetailMappings());
-		EmailUrlService urlService = createEmailUrlService(pageSettings,vertical);
-		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService );
+		EmailUrlService urlService = createEmailUrlService(pageSettings, vertical);
+		SessionDataService sessionDataService = new SessionDataService();
+		TouchDao dao = new TouchDao();
+		AccessTouchService accessTouchService = new AccessTouchService(dao , sessionDataService);
+		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService , accessTouchService );
 	}
 
 	private static EmailServiceHandler getTravelEmailService(

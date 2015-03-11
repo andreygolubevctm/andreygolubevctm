@@ -111,17 +111,9 @@ public class ApplicationService {
 				brandCode = (String) session.getAttribute("lastUsedBrandCode");
 			}
 
-			boolean loggerWarnCheck = (request.getAttribute("manuallyAddedBrandCodeSet") != null);
-
 			if (brandCode == null || brandCode.equals("")) {
 				brandCode = "CTM";
-				if (loggerWarnCheck == false) logger.warn("Brand code unknown - automatically setting brand to CTM - LOCALHOST, NXI and NXS functionality only - to override, add brandCode=X to your url");
 			}
-			else {
-				if (loggerWarnCheck == false) logger.warn("Brand code unknown - using last used brand code: "+brandCode+" - LOCALHOST, NXI and NXS functionality only");
-			}
-
-			request.setAttribute("manuallyAddedBrandCodeSet", brandCode);
 
 			brand = getBrandByCode(brandCode);
 

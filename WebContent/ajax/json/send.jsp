@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="${fn:toUpperCase(param.vertical)}" />
-<go:log level="DEBUG" source="send_jsp">#### SENT VERTICAL: ${param.vertical} ####</go:log>
+
 
 <c:set var="emailAddress" value="${param.emailAddress}" />
 <c:set var="emailSubscribed" value="${param.emailSubscribed}" />
@@ -35,7 +35,7 @@
 
 <c:choose>
 	<c:when test="${ignoreEmailSendToUnsubscribed eq true}">
-		<go:log level="INFO" source="send_jsp">/ajax/json/send.jsp - Email skipped as user not subscribed</go:log>
+		<go:log level="INFO" source="send_jsp">[Email] Email skipped as user not subscribed</go:log>
 	</c:when>
 	<c:otherwise>
 
@@ -61,22 +61,11 @@
 		<c:set var="MailingName" value="${pageSettings.getSetting('sendBestPriceMailingName')}" />
 		<c:set var="OptInMailingName" value="${pageSettings.getSetting('sendBestPriceOptInMailingName')}"/>
 		<c:set var="tmpl" value="${pageSettings.getSetting('sendBestPriceTmpl')}" />
-		<go:log level="INFO" source="send_jsp">
----------------------------------------
-EMAIL VIA ajax/json/send.jsp
----------------------------------------
-Mode: ${param.mode},
-MailingName: ${MailingName},
-OptInMailingName: ${OptInMailingName},
-tmpl: ${tmpl},
-<c:choose><c:when test="${not empty param.emailAddress}">emailAddress was passed</c:when><c:otherwise>emailAddress not passed</c:otherwise></c:choose>,
-<c:choose><c:when test="${not empty hashedEmail}">hashedEmail is available</c:when><c:otherwise>hashedEmail NOT available!</c:otherwise></c:choose>
----------------------------------------
-		</go:log>
+				<go:log level="INFO" source="send_jsp">[Email] Mode: ${param.mode}, MailingName: ${MailingName}, OptInMailingName: ${OptInMailingName}, tmpl: ${tmpl}, <c:choose><c:when test="${not empty param.emailAddress}">emailAddress was passed</c:when><c:otherwise>emailAddress not passed</c:otherwise></c:choose>, <c:choose><c:when test="${not empty hashedEmail}">hashedEmail is available</c:when><c:otherwise>hashedEmail NOT available!</c:otherwise></c:choose></go:log>
 	</c:when>
 	<%-- Reset password, called from forgotten_password.jsp --%>
 	<c:otherwise>
-		<go:log level="WARN" source="send_jsp">/ajax/json/send.jsp - No matching mode passed. param.mode was: ${param.mode}</go:log>
+				<go:log level="WARN" source="send_jsp">[Email] No matching mode passed. param.mode was: ${param.mode}</go:log>
 	</c:otherwise>
 </c:choose>
 
@@ -100,7 +89,7 @@ tmpl: ${tmpl},
 
 		<c:choose>
 			<c:when test="${empty MailingName}">
-				<go:log level="WARN" source="send_jsp">/ajax/json/send.jsp - No email found to be sent</go:log>
+				<go:log level="WARN" source="send_jsp">[Email] No email found to be sent</go:log>
 			</c:when>
 			<c:otherwise>
 <%-- Dial into the send script --%>
