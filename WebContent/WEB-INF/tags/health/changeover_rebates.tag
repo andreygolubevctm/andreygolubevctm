@@ -26,8 +26,8 @@
 <%-- List of multiplier that align with change-over dates --%>
 <c:set var="multiplier_2013" value="${1}" />
 <c:set var="multiplier_2014" value="${0.968}" />
-<c:set var="multiplier_2015" value="${0.968 * 0.958}" />
-<c:set var="multiplier_2016" value="${0.968 * 0.958}" />
+<c:set var="multiplier_2015" value="${0.968}" />
+<c:set var="multiplier_2016" value="${0.968}" />
 
 <%-- Tag loaded in multiple place so just ensure this is done once --%>
 <c:if test="${empty rebate_multiplier_current}">

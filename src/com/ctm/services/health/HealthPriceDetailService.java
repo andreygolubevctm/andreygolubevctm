@@ -1,40 +1,23 @@
 package com.ctm.services.health;
 
-import com.ctm.dao.health.HealthPriceDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.HealthAltPriceException;
-import com.ctm.model.content.Content;
-import com.ctm.model.health.HealthAlternatePricing;
-import com.ctm.model.health.HealthPriceResult;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.ContentService;
-import com.ctm.services.SettingsService;
-import org.apache.log4j.Logger;
-import org.json.JSONException;
+import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.health.HealthPriceResult;
 
 public class HealthPriceDetailService {
 
-	private static Logger logger = Logger.getLogger(HealthPriceDetailService.class.getName());
-	private Integer styleCodeId;
 
 	private HealthPriceDao healthPriceDao;
 
-	private HealthAlternatePricing alternatePricing = null;
-	private Content alternatePricingContent;
 
 	public HealthPriceDetailService() {
 		this.healthPriceDao = new HealthPriceDao();
 	}
 
-	public HealthPriceDetailService(HealthPriceDao healthPriceDao , Integer styleCodeId, Content alternatePricingContent) {
+	public HealthPriceDetailService(HealthPriceDao healthPriceDao) {
 		this.healthPriceDao = healthPriceDao;
-		this.styleCodeId = styleCodeId;
-		this.alternatePricingContent = alternatePricingContent;
 	}
 
 	/**
@@ -81,100 +64,18 @@ public class HealthPriceDetailService {
 	}
 
 	/**
-	 * Check if alternate pricing has been turned off for the fund
+	 * Check if dual pricing has been turned off for the fund
 	 */
-	public Boolean isAlternatePriceDisabledForResult(HttpServletRequest request, HealthPriceResult healthPriceResult) throws HealthAltPriceException {
+	public boolean isAlternatePriceDisabled(HealthPriceResult healthPriceResult) throws DaoException {
 
-		if(alternatePricing == null) {
-			createAlternatePricingModel(request, 4);
+		boolean alternatePriceDisabled = false;
+		List<String> disabledFunds = healthPriceDao.getDualPricingDisabledFunds();
+
+		if (disabledFunds.contains(healthPriceResult.getFundCode())) {
+			alternatePriceDisabled = true;
 		}
 
-		return alternatePricing.isProviderDisabled(healthPriceResult.getFundCode());
-	}
-
-	/**
-	 * Check if alternate pricing has been turned off universally
-	 */
-	public Boolean isAlternatePriceActive(HttpServletRequest request) throws HealthAltPriceException {
-
-		if(alternatePricing == null) {
-			createAlternatePricingModel(request);
-		}
-
-		return alternatePricing.getIsActive();
-	}
-
-	public String getAlternatePriceMonth(HttpServletRequest request) throws HealthAltPriceException {
-
-		if(alternatePricing == null) {
-			createAlternatePricingModel(request);
-		}
-
-		return alternatePricing.getFromMonth();
-	}
-
-	public String getAlternatePricingJSON(HttpServletRequest request) throws HealthAltPriceException {
-
-		String json = null;
-
-		if(alternatePricing == null) {
-			createAlternatePricingModel(request);
-		}
-
-		try {
-			json = alternatePricing.toJSON().toString();
-		} catch(JSONException e) {
-			throw new HealthAltPriceException(e.getMessage(), e);
-		}
-
-		return json;
-	}
-
-	private void createAlternatePricingModel(HttpServletRequest request, Integer verticalId) throws HealthAltPriceException {
-		try {
-			if(styleCodeId == null){
-				styleCodeId = ApplicationService.getBrandFromRequest(request).getId();
-			}
-			createAlternatePricingModel(request, styleCodeId, verticalId);
-		} catch(DaoException e) {
-			throw new HealthAltPriceException(e.getMessage(), e);
-		}
-	}
-
-	private void createAlternatePricingModel(HttpServletRequest request) throws HealthAltPriceException {
-		try {
-			PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-			Integer brandId = pageSettings.getBrandId();
-			Integer verticalId = pageSettings.getVertical().getId();
-			createAlternatePricingModel(request, brandId, verticalId);
-		} catch(ConfigSettingException | DaoException e) {
-			throw new HealthAltPriceException(e.getMessage(), e);
-		}
-	}
-
-	private void createAlternatePricingModel(HttpServletRequest request, Integer styleCodeId, Integer verticalId) throws HealthAltPriceException {
-
-		Date serverDate = ApplicationService.getApplicationDate(request);
-		try {
-			if(alternatePricingContent == null){
-				alternatePricingContent = ContentService.getContent("alternatePricingActive", styleCodeId, verticalId, serverDate, true);
-			}
-			String supplementaryValueByKey = alternatePricingContent.getSupplementaryValueByKey("disabledFunds");
-			String[] fundList = new String[0];
-			if(supplementaryValueByKey != null) {
-				fundList = supplementaryValueByKey.split(",");
-			}
-			if(fundList.length == 1 && fundList[0].isEmpty()) {
-				fundList = new String[0];
-			}
-			alternatePricing = new HealthAlternatePricing(
-				alternatePricingContent.getContentValue() != null && alternatePricingContent.getContentValue().equalsIgnoreCase("Y"),
-				alternatePricingContent.getSupplementaryValueByKey("fromMonth"),
-				fundList
-			);
-		} catch(DaoException e) {
-			throw new HealthAltPriceException(e.getMessage(), e);
-		}
+		return alternatePriceDisabled;
 	}
 
 }

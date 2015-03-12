@@ -15,7 +15,6 @@
 --%>
 <c:set var="xpath" value="${root}/cid" />
 
-
 <c:choose>
 	<c:when test="${not empty data[xpath]}">
 		<%-- Retain campaign in data bucket --%>
@@ -41,12 +40,3 @@
 <field:hidden xpath="${xpath}" defaultValue="" />
 <field:hidden xpath="${root}/sourceid" defaultValue="${referralTracking.getAndSetUtmSource(pageContext.request,  data, root)}" />
 
-<!-- Optional Extra Marketing code. If this is present and set to N(o) then this will exclude the lead from the call centre queues  -->
-<c:set var="xpathcl" value="${root}/cidcl" />
-
-<c:if test="${not empty param.cidcl and (fn:toUpperCase(param.cidcl) eq 'Y' or fn:toUpperCase(param.cidcl) eq 'N')}">
-	<c:set var="cidcl" ><c:out value="${go:decodeUrl(param.cidcl)}" escapeXml="true"/></c:set>
-	<c:set var="source" value="param"/>
-	<go:setData dataVar="data" xpath="${xpathcl}" value="${fn:toUpperCase(cidcl)}" />
-</c:if>
-<field:hidden xpath="${xpathcl}" defaultValue="" />

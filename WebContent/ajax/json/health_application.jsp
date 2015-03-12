@@ -11,7 +11,7 @@
 					commencement date is sent to the provider --%>
 <health:changeover_rebates effective_date="${data.health.payment.details.start}" />
 <jsp:useBean id="healthApplicationService" class="com.ctm.services.health.HealthApplicationService" scope="page" />
-<c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request, changeover_date_2)}" />
+<c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request)}" />
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />

@@ -5519,13 +5519,6 @@ select[multiple].hint-lg.tt-hint {
   font-weight: normal;
   font-family: 'SourceSansProBold';
 }
-#health_confirmation-warning ul {
-  padding-left: 40px;
-  list-style: disc;
-}
-#health_confirmation-warning ul li {
-  padding-bottom: 0px;
-}
 /*!
  * Datepicker for Bootstrap
  *

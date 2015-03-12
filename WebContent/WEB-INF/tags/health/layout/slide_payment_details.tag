@@ -7,7 +7,7 @@
 	<layout:slide_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
-			<health:policySummary showProductDetails="true" />
+			<health:policySummary showProductDetails="true" showDualPricing="true" />
 			<health:needHelpBubble />
 			<health:competition_jeep />
 		</jsp:attribute>

@@ -16,6 +16,8 @@
 <c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('health')}" scope="request"  />
 <%--TODO: turn this on and off either in a settings file or in the database --%>
 <c:set var="showReducedHoursMessage" value="false" />
+<c:set var="healthDualpricing" value="0" /> <%-- UPDATE TO BE LOADED VIA DATABASE SETTING WHEN NEXT NEEDED --%>
+
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="healthCallCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="healthCallCentreHelpNumber"/></c:set>

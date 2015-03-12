@@ -69,15 +69,9 @@ BEGIN
 			END AS phoneNumber2,
 			contactName,
 			state
-		FROM `temp_simples_fetches` temp
+		FROM `temp_simples_fetches`
 		WHERE
-			-- CIDCL param is set to N when we DO NOT want the call centre to call them
-			NOT EXISTS(
-				SELECT transactionId FROM aggregator.transaction_details
-				WHERE transactionId = temp.transactionId
-				AND xpath = 'health/tracking/cidcl' AND textValue = 'N'
-			)
-			AND state IS NOT NULL AND state != ''
+			state IS NOT NULL AND state != ''
 
 			AND contactName != 'Guybrush'
 			AND contactName NOT LIKE 'Test%'

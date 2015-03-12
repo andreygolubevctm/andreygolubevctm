@@ -22,9 +22,6 @@
 		<div class="definition alert alert-info">
 			<%-- insert promo data --%>
 		</div>
-		<div class="fundWarning alert alert-danger">
-			<%-- insert fund warning data --%>
-		</div>
 
 		<health:calendar xpath="${xpath}" />
 

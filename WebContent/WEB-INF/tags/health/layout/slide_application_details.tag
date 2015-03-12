@@ -7,7 +7,7 @@
 	<layout:slide_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
-			<health:policySummary showProductDetails="true" />
+			<health:policySummary showProductDetails="true" showDualPricing="true" />
 			<health:needHelpBubble />
 		</jsp:attribute>
 
@@ -16,12 +16,6 @@
 			<layout:slide_content>
 
 				<health:competition_jeep />
-
-				<div id="health_application-warning">
-					<div class="fundWarning alert alert-danger">
-						<%-- insert fund warning data --%>
-					</div>
-				</div>
 
 				<ui:bubble variant="chatty">
 					<h4>Your Application</h4>

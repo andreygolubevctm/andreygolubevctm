@@ -1,6 +1,5 @@
 package com.ctm.utils.health;
 
-import java.util.Date;
 import java.util.List;
 
 import com.ctm.model.health.Frequency;
@@ -20,26 +19,16 @@ import com.ctm.utils.FormDateUtils;
 import com.disc_au.web.go.Data;
 
 public class HealthApplicationParser {
-
+	
 	public static final String PREFIX = "health/";
-
-	public static HealthApplicationRequest parseRequest(Data data, Date changeOverDate) {
+	
+	public static HealthApplicationRequest parseRequest(Data data) {
 		HealthApplicationRequest request = new HealthApplicationRequest();
-		request.rebateValue = data.getDouble(PREFIX + "rebate");
-		request.loadingValue = data.getDouble(PREFIX + "loading");
+		request.rebateValue = data.getDouble(PREFIX + "rebate"); 
+		request.loadingValue = data.getDouble(PREFIX + "loading"); 
 		request.loading = data.getString(PREFIX + "loading");
 		request.membership =  data.getString(PREFIX + "situation/healthCvr");
-
-		// logic to load the correct rebate when select future product that after the rate rise
-		String startDateString = data.getString(PREFIX + "payment/details/start");
-		if(startDateString != null && !startDateString.equals("")){
-			Date startDate = FormDateUtils.parseDateFromForm(startDateString);
-			Date currentDate = new Date();
-			if (!startDate.before(changeOverDate) && currentDate.before(changeOverDate)) {
-				request.rebateValue  = data.getDouble(PREFIX + "rebateChangeover");
-			}
-		}
-
+		request.rebate  = data.getDouble(PREFIX + "rebate");
 		request.hasRebate = parseBoolean(PREFIX + "healthCover/rebate" ,data);
 		Integer income = data.getInteger(PREFIX + "healthCover/income");
 		if(income != null){
@@ -59,7 +48,7 @@ public class HealthApplicationParser {
 		Payment payment = new Payment();
 		String prefix = PREFIX + "payment/";
 		payment.details = parseDetails(data, prefix);
-
+		
 		String bankPrefix = prefix + "bank/";
 		parseBank(data, bankPrefix, payment.bank);
 		payment.credit = parseCredit(data, prefix + "credit/");
@@ -69,7 +58,7 @@ public class HealthApplicationParser {
 		payment.gatewayNumber = data.getString(prefix + "gateway/number");
 		payment.gatewayName = data.getString(prefix + "gateway/name");
 		payment.creditName = data.getString(prefix + "credit/name");
-
+		
 		payment.medicare = parseMedicare(data, prefix);
 		return payment;
 	}
@@ -78,7 +67,7 @@ public class HealthApplicationParser {
 		Details details = new Details();
 		String prefix = basePrefix + "details/";
 		String frequencyCode = data.getString(prefix + "frequency");
-
+		
 		details.frequency = Frequency.findByDescription(frequencyCode);
 		details.paymentType = PaymentType.findByCode(data.getString(prefix + "type"));
 		String start = data.getString(prefix + "start");
@@ -115,7 +104,7 @@ public class HealthApplicationParser {
 		}
 		application.postalMatch = parseBoolean(PREFIX + "application/postalMatch" , data);
 		parseAddress(data, prefix + "address", application.address);
-
+		
 		if(!application.postalMatch){
 			parseAddress(data, prefix + "postal", application.postal);
 		}
@@ -155,7 +144,7 @@ public class HealthApplicationParser {
 		bank.account = data.getString(prefix + "account");
 		bank.name = data.getString(prefix + "name");
 	}
-
+	
 	private static Credit parseCredit(final Data data, String prefix) {
 		Credit credit = new Credit();
 		credit.number = data.getString(prefix + "number");
@@ -167,7 +156,7 @@ public class HealthApplicationParser {
 		person.firstname = data.getString(primaryPrefix + "firstname");
 		person.surname = data.getString(primaryPrefix + "surname");
 	}
-
+	
 	private static Dependant parseDependent(final Data data, String primaryPrefix) {
 		Dependant person = new Dependant();
 		person.firstname = data.getString(primaryPrefix + "firstname");

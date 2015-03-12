@@ -79,76 +79,46 @@
 	*/
 }
 .dualPricing {
-	@media(@xs-only){
-		.hidden;
-	}
-	margin-top: -20px;
-	.well {
-		border-radius: 0px;
-	}
 	// Policy summary START
-	&.policySummary {
-		margin-top: 20px;
-		.well {
-			border-bottom-left-radius: 20px;
-			border-bottom-right-radius: 20px;
+	&.policySummary .well {
+		border-radius: 4px;
 
-			.labels {
-				h5 {
-					text-align: right;
-					font-size: 19px;
-					margin: 0 0 5px;
-				}
-				p {
-					text-align: right;
-					text-transform: uppercase;
-					margin: 0;
-					font-size: 11px;
-					line-height: 12px;
-				}
-				a {
-					text-transform: none;
-					text-decoration: underline;
-					color: #fff;
-				}
+		.labels {
+			h5 {
+				text-align: right;
+				font-size: 19px;
+				margin: 0 0 5px;
 			}
+			p {
+				text-align: right;
+				text-transform: uppercase;
+				margin: 0;
+				font-size: 11px;
+				line-height: 12px;
+			}
+			a {
+				text-transform: none;
+				text-decoration: underline;
+				color: #fff;
+			}
+		}
 
-			.frequencyTitle {
-				display: block;
-			}
+		.frequencyTitle {
+			display: block;
+		}
 
-			@media (@sm-only) {
-				.labels h5 {
-					font-size: 17px;
-				}
-				.frequencyAmount {
-					font-size: 20px;
-					line-height: 18px;
-				}
-				.lhcText, .frequencyTitle {
-					text-align: left;
-				}
+		@media (@sm-only) {
+			.labels h5 {
+				font-size: 17px;
 			}
-			&.rateRise {
+			.frequencyAmount {
 				font-size: 20px;
-				padding-left: 35px;
+				line-height: 18px;
 			}
-			&.pricingDetails {
-				margin-top:0px;
-			}
-		}
-		.payAdvance {
-			margin-top: 20px;
-			text-align: center;
-			font-size: 14px;
-			.datesDetail {
+			.lhcText, .frequencyTitle {
 				text-align: left;
-				padding-left: 15px;
 			}
 		}
-	}
-	.payAdvance {
-		margin-bottom: 40px;
 	}
 	// Policy summary END
 
@@ -180,20 +150,9 @@
 
 	// Hide the bubble's tail
 	.moreInfoBubble {
-		margin-bottom: 0px;
+		margin-bottom: 20px;
 		&:after {
 			border: none;
-		}
-		&.contactBlock {
-			background-color: darken(@theme-tertiary, 5%);
-			border-bottom-left-radius: 20px;
-			border-bottom-right-radius: 20px;
-			margin-bottom: 20px;
-		}
-		&.rateRise {
-			background-color: darken(@theme-tertiary, 5%);
-			border-bottom-left-radius: 0px;
-			border-bottom-right-radius: 0px;
 		}
 	}
 
@@ -207,7 +166,7 @@
 
 		.frequencyAmount {
 			font: 28px/18px @font-family-theme-bold;
-			color: @duel-pricing-frequencyAmount-colour;
+			color: #fff;
 		}
 
 		.frequencyTitle {
@@ -218,7 +177,7 @@
 
 	.altPremium {
 		.frequencyAmount {
-		  color: @duel-pricing-frequencyAmount-colour;
+			color: @theme-primary;
 		}
 
 		.frequencyTitle {
@@ -264,26 +223,6 @@
 			.frequencyTitle {
 				font-size: 12px;
 			}
-		}
-	}
-}
-
-.health-premium-increase-modal {
-	.disclaimer {
-		font-size: 10px;
-		clear:left;
-	}
-	.premiumIncreasePaymentDetails,
-	.premiumIncreaseSteps {
-		padding-right: 20px;
-	}
-	.premiumIncreaseSelectFrequency {
-		clear:left;
-	}
-	.premiumIncreaseSelectFrequency {
-		.callCentreNumber {
-			color: @theme-secondary;
-			font-size: 38px;
 		}
 	}
 }

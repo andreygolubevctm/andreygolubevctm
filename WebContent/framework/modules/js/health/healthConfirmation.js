@@ -89,17 +89,6 @@
 
 				fillTemplate();
 
-				if(confirmationProduct.warningAlert === "" || confirmationProduct.warningAlert === undefined){
-					meerkat.modules.healthMoreInfo.prepareExternalCopy(function confirmationExternalCopySuccess(){
-						// Show warning if applicable
-						if (typeof confirmationProduct.warningAlert !== 'undefined' && confirmationProduct.warningAlert !== '') {
-							$("#health_confirmation-warning").find(".fundWarning").show().html(confirmationProduct.warningAlert);
-						} else {
-							$("#health_confirmation-warning").find(".fundWarning").hide().empty();
-						}
-					});
-				}
-
 				meerkat.modules.healthMoreInfo.applyEventListeners();
 
 				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
@@ -133,7 +122,7 @@
 			meerkat.modules.healthPriceComponent.updateProductSummaryDetails(confirmationProduct, confirmationProduct.startDate, false);
 		});
 
-		// if pending, it might not have the about fund info so let's get it
+		// if pending, it might not have the aboud fund info so let's get it
 		if(confirmationProduct.about === ""){
 			meerkat.modules.healthMoreInfo.prepareExternalCopy(function confirmationExternalCopySuccess(){
 				$(".aboutFund").append(confirmationProduct.aboutFund).parents(".displayNone").first().removeClass("displayNone");

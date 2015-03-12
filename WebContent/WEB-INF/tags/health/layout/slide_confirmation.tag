@@ -53,12 +53,6 @@
 
 				<layout:slide_content >
 
-					<div id="health_confirmation-warning">
-						<div class="fundWarning alert alert-danger">
-							<%-- insert fund warning data --%>
-						</div>
-					</div>
-
 					<ui:bubble variant="info" className="moreInfoBubble">
 						{{ if ( typeof pending !== "undefined" && pending ) { }}
 							<h2>Your application is being processed.</h2>
