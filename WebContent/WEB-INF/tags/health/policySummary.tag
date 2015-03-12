@@ -2,15 +2,14 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="showProductDetails" rtexprvalue="true"	 description="Display the additional product details?" %>
-<%@ attribute name="showDualPricing"    rtexprvalue="true"	 description="Display the future pricing component?" %>
 
 <jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
 <c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" />
 
-<%-- If page setting for dual pricing is turned off --%>
-<c:if test="${not empty showDualPricing and (empty healthDualpricing or healthDualpricing == '0') }">
-	<c:set var="showDualPricing" value="" />
-</c:if>
+<%-- Setup variables needed for dual pricing --%>
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.services.health.HealthPriceDetailService" scope="page" />
+<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+
 
 <div class="policySummaryContainer ${className}">
 	<c:choose>
@@ -30,18 +29,32 @@
 	<div class="policyPriceWarning">You have made changes that will possibly affect your policy price</div>
 </div>
 
-<c:if test="${showDualPricing == true}">
+<c:if test="${healthAlternatePricingActive eq true}">
 	<div class="policySummary dualPricing">
-		<ui:bubble variant="chatty" className="moreInfoBubble">
+		<ui:bubble variant="chatty" className="moreInfoBubble rateRise">
 			<div class="row">
-				<div class="col-xs-6 labels">
-					<h5><c:out value="${healthDualpricing}" /> Rate Rise</h5>
-					<p>Pricing from <c:out value="${healthDualpricing}" /></p>
+				beat the rate rise
+			</div>
+		</ui:bubble>
+		<ui:bubble variant="chatty" className="moreInfoBubble pricingDetails">
+			<div class="row">
+				<div class="col-xs-5 col-sm-5 labels productSummary vertical Premium">
+
 				</div>
-				<div class="col-xs-6 productSummary vertical altPremium">
+				<div class="col-xs-2 col-sm-2 arrow-column">
+					<span class="icon icon-arrow-right"></span>
+				</div>
+				<div class="col-xs-5 col-sm-5 labels productSummary vertical altPremium">
 				</div>
 			</div>
 		</ui:bubble>
+		<div class="payAdvance">
+			<p>Did you know, if you buy now and <strong>pay up to 12 months in advance</strong> before the rate rise applies, you can <strong>lock in the current price.</strong></p>
+			<c:if test="${not empty callCentreNumber}">
+				<p class="datesDetail">Please note: cut off dates for each fund may vary.
+				<br/>Call <span class="noWrap callCentreNumber">${callCentreNumber}</span> and select Option 2 for more information</p>
+			</c:if>
+		</div>
 	</div>
 </c:if>
 

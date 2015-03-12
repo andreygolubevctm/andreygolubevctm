@@ -619,12 +619,15 @@ public class HealthPriceDao {
 	}
 
 	public HealthPriceResult setUpPremiumAndLhc(HealthPriceResult healthPriceResult, boolean isAlt) throws DaoException {
-		String productId;
-		if (isAlt && healthPriceResult.getAltProductId() != null && !healthPriceResult.getAltProductId().isEmpty()) {
+		String productId = null;
+		if (!isAlt){
+			productId = healthPriceResult.getProductId();
+		} else if (healthPriceResult.getAltProductId() != null && !healthPriceResult.getAltProductId().isEmpty()) {
 			productId =  healthPriceResult.getAltProductId();
 		} else {
-			productId = healthPriceResult.getProductId();
+			return healthPriceResult;
 		}
+
 		HealthPricePremium pricePremium =  getPremiumAndLhc(productId, healthPriceResult.isDiscountRates());
 		if (isAlt) {
 			healthPriceResult.setAltHealthPricePremium(pricePremium);
@@ -792,38 +795,6 @@ public class HealthPriceDao {
 		}
 
 		return healthPriceResult;
-	}
-
-	public List<String> getDualPricingDisabledFunds() throws DaoException {
-
-		List<String> disableFunds = new ArrayList<String>();
-
-		try {
-			PreparedStatement stmt;
-			stmt = dbSource.getConnection().prepareStatement(
-					"SELECT Description FROM  aggregator.general "
-					+ "WHERE type like 'healthSettings' "
-					+ "AND code like 'dual-pricing-disabledfunds'"
-			);
-
-			ResultSet result = stmt.executeQuery();
-
-			while (result.next()) {
-				for(String fundCode : result.getString("Description").split(",")) {
-					if(!fundCode.isEmpty()){
-						disableFunds.add(fundCode);
-					}
-				}
-			}
-
-		} catch (SQLException | NamingException e) {
-			logger.error("failed to get dual pricing disabled funds" , e);
-			throw new DaoException(e.getMessage(), e);
-		} finally {
-			dbSource.closeConnection();
-		}
-
-		return disableFunds;
 	}
 
 	public HealthPriceResult setUpAltProductId(HealthPriceRequest healthPriceRequest, HealthPriceResult healthPriceResult) throws DaoException {

@@ -58,4 +58,5 @@
 	emailBrochures: {
 		enabled: <c:out value="${pageSettings.getSetting('emailBrochuresEnabled') eq 'Y'}"/>
 	},
+	alternatePricing: <health:alternate_pricing_json />,
 }

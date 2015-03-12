@@ -139,6 +139,14 @@
 		<c:catch var="error">
 			<c:set var="ignore" value="${touchService.recordTouch(transactionId, touch , operator, comment)}" />
 		</c:catch>
+		<c:if test="${not empty error}">
+			<go:log level="ERROR">
+				Failed to record touch
+				touch: ${touch}
+				comment: ${comment}
+				error: ${error}
+			</go:log>
+		</c:if>
 	</c:when>
 	<c:otherwise>
 		<c:set var="type" value="${touch}" />

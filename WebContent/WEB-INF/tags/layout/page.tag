@@ -148,6 +148,11 @@
 				<c:if test="${competitionApplicationEnabledSetting eq 'Y' and not callCentre}">
 					<content:get key="competitionApplicationTopHeaderContent" />
 				</c:if>
+
+					<c:set var="premiumIncreaseEnabledSetting"><content:get key="premiumIncreaseEnabled"/></c:set>
+					<c:if test="${premiumIncreaseEnabledSetting eq 'Y' and not callCentre}">
+						<content:get key="premiumIncreaseContent" />
+					</c:if>
 			</div>
 
 				<div class="container">

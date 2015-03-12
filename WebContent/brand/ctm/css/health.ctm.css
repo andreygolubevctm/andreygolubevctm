@@ -1599,7 +1599,7 @@ So it's going to be done progressively. Include this file in your framework.buil
   max-width: 230px;
 }
 .more-info-content .moreInfoBubble {
-  background-color: #0db14b;
+  background-color: #1c3e93;
   color: #ffffff;
   padding: 20px;
 }
@@ -2137,8 +2137,24 @@ So it's going to be done progressively. Include this file in your framework.buil
   margin-top: 3px;
   margin-bottom: 0;
 }
+.dualPricing {
+  margin-top: -20px;
+}
+@media (max-width: 767px) {
+  .dualPricing {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+.dualPricing .well {
+  border-radius: 0px;
+}
+.dualPricing.policySummary {
+  margin-top: 20px;
+}
 .dualPricing.policySummary .well {
-  border-radius: 4px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 .dualPricing.policySummary .well .labels h5 {
   text-align: right;
@@ -2173,6 +2189,25 @@ So it's going to be done progressively. Include this file in your framework.buil
     text-align: left;
   }
 }
+.dualPricing.policySummary .well.rateRise {
+  font-size: 20px;
+  padding-left: 35px;
+}
+.dualPricing.policySummary .well.pricingDetails {
+  margin-top: 0px;
+}
+.dualPricing.policySummary .payAdvance {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+.dualPricing.policySummary .payAdvance .datesDetail {
+  text-align: left;
+  padding-left: 15px;
+}
+.dualPricing .payAdvance {
+  margin-bottom: 40px;
+}
 .dualPricing > h2,
 .dualPricing > p {
   display: inline-block;
@@ -2199,10 +2234,21 @@ So it's going to be done progressively. Include this file in your framework.buil
   left: -6px;
 }
 .dualPricing .moreInfoBubble {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 .dualPricing .moreInfoBubble:after {
   border: none;
+}
+.dualPricing .moreInfoBubble.contactBlock {
+  background-color: #18357e;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin-bottom: 20px;
+}
+.dualPricing .moreInfoBubble.rateRise {
+  background-color: #18357e;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
 }
 .dualPricing .frequency .frequencyAmount,
 .dualPricing .frequency .lhcText {
@@ -2212,14 +2258,14 @@ So it's going to be done progressively. Include this file in your framework.buil
 }
 .dualPricing .frequency .frequencyAmount {
   font: 28px/18px 'SourceSansProBold';
-  color: #fff;
+  color: #0db14b;
 }
 .dualPricing .frequency .frequencyTitle {
   font-size: 12px;
   color: #f1f1f1;
 }
 .dualPricing .altPremium .frequencyAmount {
-  color: #fe8814;
+  color: #0db14b;
 }
 .dualPricing .altPremium .frequencyTitle {
   color: #fff;
@@ -2251,6 +2297,21 @@ So it's going to be done progressively. Include this file in your framework.buil
   .dualPricing .frequency .frequencyTitle {
     font-size: 12px;
   }
+}
+.health-premium-increase-modal .disclaimer {
+  font-size: 10px;
+  clear: left;
+}
+.health-premium-increase-modal .premiumIncreasePaymentDetails,
+.health-premium-increase-modal .premiumIncreaseSteps {
+  padding-right: 20px;
+}
+.health-premium-increase-modal .premiumIncreaseSelectFrequency {
+  clear: left;
+}
+.health-premium-increase-modal .premiumIncreaseSelectFrequency .callCentreNumber {
+  color: #0db14b;
+  font-size: 38px;
 }
 .simples-dialogue {
   padding: 15px;
@@ -3265,7 +3326,8 @@ body.THF #thf_ineligible {
     background-size: 301px 170px;
   }
 }
-a.healthCompetitionApplicationTopHeaderContent {
+a.healthCompetitionApplicationTopHeaderContent,
+a.healthPremiumIncreaseContent {
   font-size: 16px;
   text-align: center;
   padding: 10px;
@@ -3273,7 +3335,8 @@ a.healthCompetitionApplicationTopHeaderContent {
   color: white;
   display: block;
 }
-a.healthCompetitionApplicationTopHeaderContent:hover {
+a.healthCompetitionApplicationTopHeaderContent:hover,
+a.healthPremiumIncreaseContent:hover {
   text-decoration: none;
   color: white;
 }

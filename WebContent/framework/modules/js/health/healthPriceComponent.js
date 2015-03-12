@@ -34,7 +34,7 @@
 			$policySummaryContainer = $(".policySummaryContainer");
 			$policySummaryTemplateHolder = $(".policySummaryTemplateHolder");
 			$policySummaryDetailsComponents = $(".productSummaryDetails");
-			$policySummaryDualPricing = $('.policySummary.dualPricing .productSummary');
+			$policySummaryDualPricing = $('.policySummary.dualPricing');
 
 			if(meerkat.site.pageAction != "confirmation"){
 
@@ -88,12 +88,13 @@
 		}else{
 			product.mode = '';
 		}
-		//console.log("UPDATE", showIncPrice,product.mode)
 		product.showAltPremium = false;
 
 		var htmlTemplate = _.template(logoPriceTemplate);
 		var htmlString = htmlTemplate(product);
 		$policySummaryTemplateHolder.html(htmlString);
+
+		$policySummaryDualPricing.find('.Premium').html(htmlString);
 
 		// A/B testing price itemisation
 		if (meerkat.modules.splitTest.isActive(2)) {
@@ -107,7 +108,7 @@
 		if ($policySummaryDualPricing.length > 0) {
 			product.showAltPremium = true;
 			htmlString = htmlTemplate(product);
-			$policySummaryDualPricing.html(htmlString);
+			$policySummaryDualPricing.find('.altPremium').html(htmlString);
 		}
 	}
 
