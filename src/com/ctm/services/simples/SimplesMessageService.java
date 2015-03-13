@@ -157,10 +157,10 @@ public class SimplesMessageService {
 		while( targetCalendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY ){
 			targetCalendar.add( Calendar.DATE, 1 );
 		}
-		// set to call centre opening hour to the original date's time stamp
-		targetCalendar.set(Calendar.HOUR_OF_DAY, currentCalendar.get(Calendar.HOUR_OF_DAY));
-		targetCalendar.set(Calendar.MINUTE, currentCalendar.get(Calendar.MINUTE));
-		targetCalendar.set(Calendar.SECOND, currentCalendar.get(Calendar.SECOND));
+		// set to call centre opening hour to the 1:00am
+		targetCalendar.set(Calendar.HOUR_OF_DAY, 1);
+		targetCalendar.set(Calendar.MINUTE, 0);
+		targetCalendar.set(Calendar.SECOND, 0);
 
 		return targetCalendar.getTime();
 	}
