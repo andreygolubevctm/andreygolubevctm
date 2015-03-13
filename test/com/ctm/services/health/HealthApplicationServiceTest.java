@@ -1,6 +1,7 @@
 package com.ctm.services.health;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -8,6 +9,8 @@ import javax.servlet.jsp.JspException;
 
 import com.ctm.model.health.Frequency;
 import com.ctm.services.RequestService;
+import com.ctm.utils.FormDateUtils;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +31,7 @@ public class HealthApplicationServiceTest {
 	private Data data = new Data();
 	private HealthPriceDao healthPriceDao;
 	private HttpServletRequest request = mock(HttpServletRequest.class);
+	private Date changeOverDate;
 
 	@Before
 	public void setup() throws Exception {
@@ -51,13 +55,16 @@ public class HealthApplicationServiceTest {
 
 		healthApplicationService = new HealthApplicationService(healthPriceDao);
 		healthApplicationService.setRequestService(requestService);
+
+		setChangeOverDate();
 	}
 
 	@Test
 	public void testShouldGetAmount() throws SQLException, Exception {
 		data.put("health/loading", "0");
 		data.put("health/rebate", "0");
-		healthApplicationService.setUpApplication(data, request);
+		Date changeOverDate = new Date();
+		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
 		assertEquals("1707.6000000000001" ,paymentAmtResult);
@@ -69,7 +76,7 @@ public class HealthApplicationServiceTest {
 		data.put("health/loading", "0");
 		data.put("health/rebate", "29.04");
 
-		healthApplicationService.setUpApplication(data, request);
+		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
 		assertEquals("100.98" ,paymentFreqResult);
@@ -80,7 +87,7 @@ public class HealthApplicationServiceTest {
 	public void testShouldGetAmountWithLHC() throws SQLException, Exception, JspException {
 		data.put("health/loading", "34");
 		data.put("health/rebate", "0");
-		healthApplicationService.setUpApplication(data, request);
+		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
 		assertEquals("171.59" ,paymentFreqResult);
@@ -92,7 +99,7 @@ public class HealthApplicationServiceTest {
 	public void testShouldGetAmountWithLHCandRebate() throws SQLException, Exception {
 		data.put("health/loading", "34");
 		data.put("health/rebate", "29.04");
-		healthApplicationService.setUpApplication(data, request);
+		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
 		assertEquals("1563.2400000000002" ,paymentAmtResult);
@@ -105,7 +112,7 @@ public class HealthApplicationServiceTest {
 		//credit
 		data.put("health/payment/details/type", "cc");
 
-		healthApplicationService.setUpApplication(data, request);
+		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
 		assertEquals("1506.6" ,paymentAmtResult);
@@ -119,7 +126,7 @@ public class HealthApplicationServiceTest {
 
 		//bank
 		data.put("health/payment/details/type", "ba");
-		healthApplicationService.setUpApplication(data, request);
+		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult = (String) data.get("health/application/paymentFreq");
 		assertEquals("1459.92" ,paymentAmtResult);
@@ -148,7 +155,7 @@ public class HealthApplicationServiceTest {
 		//credit
 		data.put("health/payment/details/type", "cc");
 
-		healthApplicationService.setUpApplication(data, request);
+		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		String paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		String paymentFreqResult =  (String) data.get("health/application/paymentFreq");
 		assertEquals("1506.6" ,paymentAmtResult);
@@ -157,13 +164,18 @@ public class HealthApplicationServiceTest {
 		//bank
 		data.put("health/payment/details/type", "ba");
 		data.put(PREFIX + "/payment/details/frequency", Frequency.MONTHLY.getDescription());
-		healthApplicationService.setUpApplication(data, request);
+		healthApplicationService.setUpApplication(data, request, changeOverDate);
 		paymentAmtResult = (String) data.get("health/application/paymentAmt");
 		paymentFreqResult =  (String) data.get("health/application/paymentFreq");
 		assertEquals("1459.92" ,paymentAmtResult);
 		assertEquals("121.66" ,paymentFreqResult);
 		data.put(PREFIX + "/payment/details/frequency", Frequency.MONTHLY.getDescription());
 
+	}
+
+	private void setChangeOverDate() {
+		String changeOverDateString = "01/04/2015";
+		this.changeOverDate = FormDateUtils.parseDateFromForm(changeOverDateString);
 	}
 
 }

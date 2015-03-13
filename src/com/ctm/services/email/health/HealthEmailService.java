@@ -96,7 +96,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		emailBrochureRequest.provider = request.getParameter("provider");
 		emailBrochureRequest.productName = request.getParameter("productName");
 		emailBrochureRequest.transactionId = transactionId;
-		accessTouchService.recordTouch(request, emailBrochureRequest.transactionId,
+		accessTouchService.setRequest(request);
+		accessTouchService.recordTouchWithDescription(emailBrochureRequest.transactionId,
 				Touch.TouchType.BROCHURE.getCode(),
 				emailBrochureRequest.provider + " " + emailBrochureRequest.productName);
 

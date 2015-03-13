@@ -39,9 +39,16 @@ public class Touch extends AbstractJsonModel {
 		FAIL ("Join failed" , "F"),
 		SOLD ("Policy sold" , "C"),
 		LOAD ("Load quote" , "L"),
+		RESULTS_SINGLE ("Results single", "Q"),
 		SAVE ("Saved quote" , "S"),
+		GENERAL_HIT ("General hit", "H"),
+		ERROR ("General error", "E"),
+		TRANSFERRING ("Transferring", "T"),
 		LEAD_CALL_ME_BACK("Call me back", "CB"),
 		LEAD_BEST_PRICE("Best price", "BP"),
+		LEAD_FEED("Lead feed", "LF"),
+		CONTACT_DETAILS_COLLECTED("Contact details collected", "CDC"),
+		CALL_DIRECT("Call direct", "CD"),
 		CALL_FEED ("Call Feed" , "CF"); // Added to a call feed list.
 
 		private final String description, code;

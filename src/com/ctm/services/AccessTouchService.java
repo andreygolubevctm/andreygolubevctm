@@ -19,6 +19,7 @@ public class AccessTouchService {
 	protected final SessionDataService sessionDataService;
 
 	TouchDao dao = new TouchDao();
+	private HttpServletRequest request;
 
 	public AccessTouchService(TouchDao dao ,SessionDataService sessionDataService) {
 		this.dao = dao;
@@ -54,40 +55,24 @@ public class AccessTouchService {
 		return touch;
 	}
 
+	// Don't reorder any of the recordTouch methods.
+	// Doing so will cause hell to break loose.
+	// JSP tries to 'best match' calls to overloaded methods
+	// and does so on a first-come first-served basis. This results
+	// in the method with HttpServletRequest as the first parameter to
+	// complain.
 	public Boolean recordTouch(long transactionId, String type) {
 		return recordTouch(transactionId,  type , null);
 	}
 
-	public Boolean recordTouch(HttpServletRequest request, long transactionId, String type, String description) {
-		// Set operator to null - the TouchDao will use this as 'ONLINE' if not superseded
-		String operator = null;
-		// Populate operator from authenticated data if available
-		if (request.getSession() != null) {
+	public Boolean recordTouch(Long transactionId, String type , String operatorId, String description) {
+		if (request != null && request.getSession() != null) {
 			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
 			if(authenticatedData != null) {
-				operator = authenticatedData.getUid();
+				operatorId = authenticatedData.getUid();
 			}
 		}
-
-		return recordTouch(transactionId,  type , operator, description);
-
-	}
-
-	public Boolean recordTouch(long transactionId, String type , String operatorId) {
 		try {
-			dao.record(transactionId, type, operatorId);
-			return true;
-		} catch(DaoException e) {
-			// Failing to write the touch shouldn't be fatal - let's just log an error
-			logger.error("Failed to record touch (" + type + ") against transaction [" + transactionId + "].");
-			logger.error(e);
-			return false;
-		}
-	}
-
-	public boolean recordTouch(Long transactionId, String type , String operatorId, String description) {
-		try {
-
 			Touch touch = new Touch();
 			touch.setTransactionId(transactionId);
 			touch.setType(TouchType.findByCode(type));
@@ -103,7 +88,45 @@ public class AccessTouchService {
 		}
 	}
 
+	public Boolean recordTouch(long transactionId, String type , String operatorId) {
+		if (request != null && request.getSession() != null) {
+			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
+			if(authenticatedData != null) {
+				operatorId = authenticatedData.getUid();
+			}
+		}
+
+		try {
+			dao.record(transactionId, type, operatorId);
+			return true;
+		} catch(DaoException e) {
+			// Failing to write the touch shouldn't be fatal - let's just log an error
+			logger.error("Failed to record touch (" + type + ") against transaction [" + transactionId + "].");
+			logger.error(e);
+			return false;
+		}
+	}
+
+	public Boolean recordTouchWithDescription(long transactionId, String type, String description) {
+		// Set operator to null - the TouchDao will use this as 'ONLINE' if not superseded
+		String operator = null;
+		// Populate operator from authenticated data if available
+		if (request.getSession() != null) {
+			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
+			if(authenticatedData != null) {
+				operator = authenticatedData.getUid();
+			}
+		}
+
+		return recordTouch(transactionId,  type , operator, description);
+
+	}
+
 	public boolean hasTouch(final long transactionId, final TouchType touchType) throws DaoException {
 		return dao.hasTouch(transactionId, touchType.getCode());
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
 	}
 }

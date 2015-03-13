@@ -477,8 +477,9 @@
 		// Default text in case an ajax error occurs
 		product.aboutFund = '<p>Apologies. This information did not download successfully.</p>';
 		product.whatHappensNext = '<p>Apologies. This information did not download successfully.</p>';
+		product.warningAlert = '';
 
-		// Get the "about fund" and "what happens next" info
+		// Get the "about fund", "what happens next" and warningAlert info
 		$.when(
 			meerkat.modules.comms.get({
 				url: "health_fund_info/"+ product.info.provider +"/about.html",
@@ -494,6 +495,14 @@
 				errorLevel: "silent",
 				onSuccess: function whatHappensNextSuccess(result) {
 					product.whatHappensNext = result;
+				}
+			}),
+			meerkat.modules.comms.get({
+				url: "health_fund_info/"+ product.info.provider +"/warning.html",
+				cache: true,
+				errorLevel: "silent",
+				onSuccess: function warningAlertSuccess(result) {
+					product.warningAlert = result;
 				}
 			})
 		)

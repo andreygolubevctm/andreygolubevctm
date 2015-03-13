@@ -73,7 +73,7 @@ ${healthPriceService.setHealthPriceRequest(healthPriceRequest)}
 
 ${healthPriceService.setMembership(cover)}
 ${healthPriceService.setSearchDate(searchDate)}
-${healthPriceService.setChangeoverDate(changeover_date_1)}
+${healthPriceService.setChangeoverDate(changeover_date_2)}
 ${healthPriceService.setRebateCurrent(rebate)}
 ${healthPriceService.setRebateChangeover(rebateChangeover)}
 ${healthPriceService.setTransactionId(transactionId)}

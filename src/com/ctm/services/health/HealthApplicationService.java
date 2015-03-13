@@ -19,6 +19,8 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
+
+import java.util.Date;
 import java.util.List;
 
 public class HealthApplicationService {
@@ -52,14 +54,14 @@ public class HealthApplicationService {
 		this.fatalErrorService = new FatalErrorService();
 	}
 
-	public JSONObject setUpApplication(Data data, HttpServletRequest httpRequest) throws JspException {
+	public JSONObject setUpApplication(Data data, HttpServletRequest httpRequest, Date changeOverDate) throws JspException {
 		// TODO: refactor this when are away from jsp
 		if(requestService == null) {
 			requestService = new RequestService(httpRequest, "HEALTH");
 		}
 		List<SchemaValidationError> validationErrors;
 		try {
-			request = HealthApplicationParser.parseRequest(data);
+			request = HealthApplicationParser.parseRequest(data, changeOverDate);
 			HealthApplicationValidation validationService = new HealthApplicationValidation();
 			validationErrors = validationService.validate(request);
 			if(validationErrors.size() == 0){
@@ -78,7 +80,7 @@ public class HealthApplicationService {
 		Frequency frequency = request.payment.details.frequency;
 		HealthPricePremium premium = fetchHealthResult();
 
-		premiumCalculator.setRebate(request.rebate);
+		premiumCalculator.setRebate(request.rebateValue);
 		premiumCalculator.setLoading(request.loading);
 		premiumCalculator.setMembership(request.membership);
 
@@ -148,7 +150,6 @@ public class HealthApplicationService {
 		data.putDouble(REBATE_HIDDEN_XPATH, request.rebateValue);
 		data.putDouble(LOADING_XPATH, request.loadingValue);
 		data.put(REBATE_XPATH, request.hasRebate ? "Y" : "N");
-		data.putDouble(PREFIX + "/rebate", request.rebate);
 
 		if(request.payment.details.start != null){
 			data.put(PREFIX + "/payment/details/start ", FormDateUtils.convertDateToFormFormat(request.payment.details.start));

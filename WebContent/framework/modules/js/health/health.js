@@ -480,6 +480,12 @@
 
 				if(event.isForward === true){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+					// Show warning if applicable
+					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
+						$("#health_application-warning").find(".fundWarning").show().html(selectedProduct.warningAlert);
+					} else {
+						$("#health_application-warning").find(".fundWarning").hide().empty();
+					}
 					this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
 
 					// Load the selected product details.
@@ -581,6 +587,13 @@
 						$("#health_payment_details-selection").find(".definition").show().html(selectedProduct.promo.discountText);
 					} else {
 						$("#health_payment_details-selection").find(".definition").hide().empty();
+					}
+
+					// Show warning if applicable
+					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
+						$("#health_payment_details-selection").find(".fundWarning").show().html(selectedProduct.warningAlert);
+					} else {
+						$("#health_payment_details-selection").find(".fundWarning").hide().empty();
 					}
 
 					// Insert fund into checkbox label

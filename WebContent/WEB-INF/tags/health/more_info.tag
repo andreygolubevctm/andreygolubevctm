@@ -6,6 +6,13 @@
 	<content:get key="emailPlaceHolder"/>
 </c:set>
 
+<%-- Setup variables needed for dual pricing --%>
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.services.health.HealthPriceDetailService" scope="page" />
+<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+<c:if test="${healthAlternatePricingActive eq true}">
+	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
+</c:if>
+
 <%-- MORE INFO TEMPLATE --%>
 <script id="more-info-template" type="text/html">
 
@@ -56,31 +63,46 @@
 		<div class="col-sm-6 moreInfoRightColumn">
 
 		<%-- DUAL PRICING START --%>
-		<c:if test="${not empty healthDualpricing and healthDualpricing != '0'}">
+		<c:if test="${healthAlternatePricingActive eq true}">
 			{{ if (showApply === true) { }}
 				<div class="dualPricing">
-					<h2><c:out value="${healthDualpricing}" /> Rate Rise</h2>
-
 					<ui:bubble variant="chatty" className="moreInfoBubble">
 						<div class="row">
 							<div class="col-xs-5 productSummary vertical">
-								<h5>Current Pricing</h5>
+								<h5>Current</h5>
 								{{= htmlString }}
 							</div>
 							<div class="col-xs-2 col-sm-1 arrow-column">
 								<span class="icon icon-arrow-right"></span>
 							</div>
 							<div class="col-xs-5 col-sm-6 productSummary vertical altPremium">
-								<h5>Pricing from <c:out value="${healthDualpricing}" /></h5>
+								<h5>1 <c:out value="${healthAlternatePricingMonth}" /> 2015</h5>
 								{{= htmlStringAlt }}
 							</div>
 						</div>
 					</ui:bubble>
+					<ui:bubble variant="chatty" className="moreInfoBubble contactBlock">
+						<div class="row">
+							<div class="col-xs-5">
+								<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
+				</div>
+							<c:if test="${not empty callCentreNumber}">
+								<div class="col-xs-6">
+									<h5 class="moreInfoCallUs">Or call <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
+									<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
+								</div>
+							</c:if>
+						</div>
+					</ui:bubble>
+					<div class="payAdvance">
+						<h2>Buy now and beat the 1 April rate rise</h2>
+						<p>Did you know, if you buy now and <strong>pay up to 12 months in advance</strong> before the rate rise applies, you can <strong>lock in the current price.</strong></p>
+					</div>
 				</div>
 			{{ } }}
 		</c:if>
 		<%-- DUAL PRICING END --%>
-
+		<c:if test="${healthAlternatePricingActive eq false}">
 			{{ if (showApply === true) { }}
 
 			<c:choose>
@@ -121,6 +143,7 @@
 				</c:otherwise>
 			</c:choose>
 			{{ } }}
+		</c:if>
 
 			<c:set var="pricePromiseEnabled">
 				<content:get key="healthPricePromiseEnabled" />

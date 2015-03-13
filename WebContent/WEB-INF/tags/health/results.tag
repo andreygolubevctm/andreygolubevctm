@@ -2,6 +2,13 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- Setup variables needed for dual pricing --%>
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.services.health.HealthPriceDetailService" scope="page" />
+<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+<c:if test="${healthAlternatePricingActive eq true}">
+	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
+</c:if>
+
 <%-- Hidden fields necessary for Results page --%>
 <input type="hidden" name="health_showAll" value="Y" />
 <input type="hidden" name="health_onResultsPage" value="Y" />
@@ -122,21 +129,6 @@
 
 			</div>
 			<div class="featuresList featuresTemplateComponent">
-				<%-- Dual pricing START --%>
-				<c:if test="${not empty healthDualpricing and healthDualpricing != '0'}">
-
-					<div class="cell feature collapsed promosFeature dualPricing" data-index="-1">
-						<div class="labelInColumn feature collapsed promosFeature">
-							<div class="content" data-featureid="0">
-								<div class="contentInner"><c:out value="${healthDualpricing}" /> Rate Rise</div>
-			</div>
-		</div>
-						<div class="h content isMultiRow dualPricingLabel" data-featureid="0"><c:out value="${healthDualpricing}" /> Rate Rise</div>
-	</div>
-
-				</c:if>
-				<%-- Dual pricing END --%>
-
 				<%-- Note: ${resultTemplateItems} is a request scoped variable on health_quote.jsp page - as it is used in multiple places --%>
 				<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
 					<features:resultsItem item="${selectedValue}" labelMode="true" index="${status.index}" />
@@ -167,18 +159,6 @@
 					{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
 					{{ obj._selectedFrequency = Results.getFrequency(); }}
 					{{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
-					<%-- Dual pricing START --%>
-			<c:choose>
-						<c:when test="${not empty healthDualpricing and healthDualpricing != '0'}">
-							{{ obj.showAltPremium = true;  obj.htmlStringAlt = htmlTemplatePrice(obj); }}
-				</c:when>
-				<c:otherwise>
-							{{ obj.htmlStringAlt = ''; }}
-				</c:otherwise>
-			</c:choose>
-					{{ obj.pricingMessage = ''; if (obj.info.provider === 'THF') { obj.pricingMessage = 'We are pleased to welcome Teachers Health Fund to our panel!'; } }}
-					<%-- Dual pricing END --%>
-
 					{{= htmlString }}
 
 		</div>
@@ -208,28 +188,6 @@
 
 <%-- FEATURE TEMPLATE --%>
 	<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
-		<%-- Dual pricing START --%>
-		<c:if test="${not empty healthDualpricing and healthDualpricing != '0'}">
-
-			<div class="cell feature collapsed promosFeature dualPricing" data-index="-1">
-				<div class="labelInColumn feature collapsed promosFeature">
-					<div class="content" data-featureid="0">
-						<div class="contentInner"><c:out value="${healthDualpricing}" /> Rate Rise</div>
-		</div>
-			</div>
-
-				<div class="c content isMultiRow productSummary vertical" data-featureid="0">
-					<h5>Pricing from <c:out value="${healthDualpricing}" /></h5>
-					{{= htmlStringAlt }}
-					{{ if (pricingMessage.length !== 0) { }}
-						<p class="message">{{= pricingMessage }}</p>
-					{{ } }}
-			</div>
-			</div>
-
-		</c:if>
-		<%-- Dual pricing END --%>
-
 		<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
 			<features:resultsItem item="${selectedValue}" labelMode="false" index="${status.index}"/>
 		</c:forEach>

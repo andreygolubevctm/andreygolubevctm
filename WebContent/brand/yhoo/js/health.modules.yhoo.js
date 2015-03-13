@@ -1957,6 +1957,11 @@ creditCardDetails = {
             onBeforeEnter: function enterApplyStep(event) {
                 if (event.isForward === true) {
                     var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+                    if (typeof selectedProduct.warningAlert !== "undefined" && selectedProduct.warningAlert !== "") {
+                        $("#health_application-warning").find(".fundWarning").show().html(selectedProduct.warningAlert);
+                    } else {
+                        $("#health_application-warning").find(".fundWarning").hide().empty();
+                    }
                     this.tracking.touchComment = selectedProduct.info.provider + " " + selectedProduct.info.des;
                     healthFunds.load(selectedProduct.info.provider);
                     var $slide = $("#journeyEngineSlidesContainer .journeyEngineSlide").slice(meerkat.modules.journeyEngine.getCurrentStepIndex() - 1);
@@ -2025,6 +2030,11 @@ creditCardDetails = {
                         $("#health_payment_details-selection").find(".definition").show().html(selectedProduct.promo.discountText);
                     } else {
                         $("#health_payment_details-selection").find(".definition").hide().empty();
+                    }
+                    if (typeof selectedProduct.warningAlert !== "undefined" && selectedProduct.warningAlert !== "") {
+                        $("#health_payment_details-selection").find(".fundWarning").show().html(selectedProduct.warningAlert);
+                    } else {
+                        $("#health_payment_details-selection").find(".fundWarning").hide().empty();
                     }
                     $("#mainform").find(".health_declaration span").text(selectedProduct.info.providerName);
                     var $firstnameField = $("#health_payment_medicare_firstName");
@@ -2563,6 +2573,41 @@ creditCardDetails = {
     });
 })(jQuery);
 
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
+    var moduleEvents = {};
+    var isActive = false, fromMonth = null, disabledFunds = [];
+    function getIsActive() {
+        return isActive;
+    }
+    function getFromMonth() {
+        return fromMonth;
+    }
+    function isFundDisabled(fund) {
+        return _.indexOf(disabledFunds, fund) >= 0;
+    }
+    function init() {
+        var self = this;
+        $(document).ready(function() {
+            var json = meerkat.site.alternatePricing;
+            if (!_.isNull(json) && _.isObject(json) && !_.isEmpty(json)) {
+                if (json.hasOwnProperty("isActive") && json.hasOwnProperty("fromMonth") && json.hasOwnProperty("disabledFunds")) {
+                    isActive = json.isActive;
+                    fromMonth = json.fromMonth;
+                    disabledFunds = json.disabledFunds;
+                }
+            }
+        });
+    }
+    meerkat.modules.register("healthAltPricing", {
+        init: init,
+        events: moduleEvents,
+        getIsActive: getIsActive,
+        getFromMonth: getFromMonth,
+        isFundDisabled: isFundDisabled
+    });
+})(jQuery);
+
 (function($) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $dropdown, $component, mode, changedByCallCentre = false, isIE8;
     var events = {
@@ -2902,6 +2947,15 @@ creditCardDetails = {
                 }
                 confirmationProduct._selectedFrequency = confirmationProduct.frequency;
                 fillTemplate();
+                if (confirmationProduct.warningAlert === "" || confirmationProduct.warningAlert === undefined) {
+                    meerkat.modules.healthMoreInfo.prepareExternalCopy(function confirmationExternalCopySuccess() {
+                        if (typeof confirmationProduct.warningAlert !== "undefined" && confirmationProduct.warningAlert !== "") {
+                            $("#health_confirmation-warning").find(".fundWarning").show().html(confirmationProduct.warningAlert);
+                        } else {
+                            $("#health_confirmation-warning").find(".fundWarning").hide().empty();
+                        }
+                    });
+                }
                 meerkat.modules.healthMoreInfo.applyEventListeners();
                 meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                     method: "completedApplication",
@@ -3558,6 +3612,7 @@ creditCardDetails = {
     function prepareExternalCopy(successCallback) {
         product.aboutFund = "<p>Apologies. This information did not download successfully.</p>";
         product.whatHappensNext = "<p>Apologies. This information did not download successfully.</p>";
+        product.warningAlert = "";
         $.when(meerkat.modules.comms.get({
             url: "health_fund_info/" + product.info.provider + "/about.html",
             cache: true,
@@ -3571,6 +3626,13 @@ creditCardDetails = {
             errorLevel: "silent",
             onSuccess: function whatHappensNextSuccess(result) {
                 product.whatHappensNext = result;
+            }
+        }), meerkat.modules.comms.get({
+            url: "health_fund_info/" + product.info.provider + "/warning.html",
+            cache: true,
+            errorLevel: "silent",
+            onSuccess: function warningAlertSuccess(result) {
+                product.warningAlert = result;
             }
         })).then(successCallback, successCallback);
     }
@@ -4352,7 +4414,7 @@ creditCardDetails = {
             $policySummaryContainer = $(".policySummaryContainer");
             $policySummaryTemplateHolder = $(".policySummaryTemplateHolder");
             $policySummaryDetailsComponents = $(".productSummaryDetails");
-            $policySummaryDualPricing = $(".policySummary.dualPricing .productSummary");
+            $policySummaryDualPricing = $(".policySummary.dualPricing");
             if (meerkat.site.pageAction != "confirmation") {
                 $displayedFrequency = $("#health_payment_details_frequency");
                 $startDateInput = $("#health_payment_details_start");
@@ -4391,6 +4453,7 @@ creditCardDetails = {
         var htmlTemplate = _.template(logoPriceTemplate);
         var htmlString = htmlTemplate(product);
         $policySummaryTemplateHolder.html(htmlString);
+        $policySummaryDualPricing.find(".Premium").html(htmlString);
         if (meerkat.modules.splitTest.isActive(2)) {
             var htmlTemplate_B = _.template($("#price-itemisation-template").html());
             var htmlString_B = htmlTemplate_B(product);
@@ -4400,7 +4463,7 @@ creditCardDetails = {
         if ($policySummaryDualPricing.length > 0) {
             product.showAltPremium = true;
             htmlString = htmlTemplate(product);
-            $policySummaryDualPricing.html(htmlString);
+            $policySummaryDualPricing.find(".altPremium").html(htmlString);
         }
     }
     function updateProductSummaryDetails(product, startDateString, displayMoreInfoLink) {

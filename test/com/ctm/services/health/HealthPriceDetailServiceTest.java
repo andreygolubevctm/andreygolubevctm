@@ -1,45 +1,44 @@
 package com.ctm.services.health;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Test;
-
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
+import com.ctm.exceptions.HealthAltPriceException;
+import com.ctm.model.content.Content;
+import com.ctm.model.content.ContentSupplement;
 import com.ctm.model.health.HealthPriceResult;
+import org.junit.Test;
+
+import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class HealthPriceDetailServiceTest {
-	
+
 	HealthPriceDao healthPriceDao = mock(HealthPriceDao.class);
-	
+	private HttpServletRequest request = mock(HttpServletRequest.class);
+	private ArrayList<ContentSupplement> sup = new ArrayList<>();
+
 	@Test
-	public void testIsAlternatePriceDisabled() throws SQLException, DaoException {
-		HealthPriceDetailService healthPriceDetailService = new HealthPriceDetailService(healthPriceDao);
-
-		List<String> disabledFundsFromDB = new ArrayList<String>();
-		disabledFundsFromDB.add("BUD");
-		disabledFundsFromDB.add("AUF");
-		disabledFundsFromDB.add("GMF");
-
-		when(healthPriceDao.getDualPricingDisabledFunds()).thenReturn(disabledFundsFromDB);
+	public void testIsAlternatePriceDisabled() throws SQLException, DaoException, HealthAltPriceException {
+		ContentSupplement contentSupplement = new ContentSupplement();
+		contentSupplement.setSupplementaryKey("disabledFunds");
+		contentSupplement.setSupplementaryValue("BUD,AUF,GMF");
+		sup.add(contentSupplement);
+		Integer styleCodeId = 1;
+		Content alternatePricingContent = new Content();
+		alternatePricingContent.setSupplementary(sup);
+		HealthPriceDetailService healthPriceDetailService = new HealthPriceDetailService( healthPriceDao, alternatePricingContent);
 
 		HealthPriceResult targetHealthResult= new HealthPriceResult();
 		targetHealthResult.setFundCode("BUD");
 
-		assertEquals("wrong fund dual pricing disabled", true, healthPriceDetailService.isAlternatePriceDisabled(targetHealthResult));
-		verify(healthPriceDao, times(1)).getDualPricingDisabledFunds();
+		assertEquals("wrong fund dual pricing disabled", true, healthPriceDetailService.isAlternatePriceDisabledForResult(request, styleCodeId, targetHealthResult));
 
 		targetHealthResult.setFundCode("FRA");
-		assertEquals("wrong fund dual pricing disabled", false, healthPriceDetailService.isAlternatePriceDisabled(targetHealthResult));
-		verify(healthPriceDao, times(2)).getDualPricingDisabledFunds();
+		assertEquals("wrong fund dual pricing disabled", false, healthPriceDetailService.isAlternatePriceDisabledForResult(request, styleCodeId, targetHealthResult));
 	}
 
 }

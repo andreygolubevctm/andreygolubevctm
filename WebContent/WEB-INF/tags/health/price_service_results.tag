@@ -55,13 +55,13 @@
 		<c:set var="row" value="${healthPriceDetailService.setUpPremiumAndLhc(row, false)}" />
 
 			<%-- Only attempt to find future price if fund NOT disabled --%>
-		<c:if test="${healthPriceDetailService.isAlternatePriceDisabled(row) eq false}">
+		<c:if test="${healthPriceDetailService.isAlternatePriceDisabledForResult(pageContext.getRequest(), healthPriceRequest.getStyleCodeId(), row) eq false}">
 
 				<%-- ALTERNATE PRICING --%>
 			<c:set var="row" value="${healthPriceService.setUpAltProductId(row)}" />
 
 				<%-- Get the alternate product prices - if alt product exists then use that product
-					Otherwise get the existing product and we'll apply percentage increase--%>
+				Otherwise the premium will be 0 and says coming soon --%>
 			<c:set var="row" value="${healthPriceDetailService.setUpPremiumAndLhc(row, true)}" />
 
 				</c:if>

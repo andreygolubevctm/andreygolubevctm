@@ -127,10 +127,10 @@ GOV Rebate Factor - Calculate new rebate based on rebate multiplier variables
 <health:changeover_rebates />
 
 <c:set var="rebateChangeover">
-	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${rebate * rebate_multiplier_future}" />
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebate * rebate_multiplier_future}" />
 </c:set>
 <c:set var="rebate">
-	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${rebate * rebate_multiplier_current}" />
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebate * rebate_multiplier_current}" />
 </c:set>
 
 <%--
