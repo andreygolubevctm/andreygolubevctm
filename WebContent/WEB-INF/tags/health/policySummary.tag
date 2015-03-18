@@ -33,7 +33,7 @@
 	<div class="policySummary dualPricing">
 		<ui:bubble variant="chatty" className="moreInfoBubble rateRise">
 			<div class="row">
-				beat the rate rise
+				Beat the rate rise
 			</div>
 		</ui:bubble>
 		<ui:bubble variant="chatty" className="moreInfoBubble pricingDetails">
@@ -42,7 +42,7 @@
 
 				</div>
 				<div class="col-xs-2 col-sm-2 arrow-column">
-					<span class="icon icon-arrow-right"></span>
+					<span class="icon icon-arrow-thick-right"></span>
 				</div>
 				<div class="col-xs-5 col-sm-5 labels productSummary vertical altPremium">
 				</div>

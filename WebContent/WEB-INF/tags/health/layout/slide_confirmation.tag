@@ -59,7 +59,7 @@
 						</div>
 					</div>
 
-					<ui:bubble variant="info" className="moreInfoBubble">
+					<ui:bubble variant="info" className="">
 						{{ if ( typeof pending !== "undefined" && pending ) { }}
 							<h2>Your application is being processed.</h2>
 							<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong><content:get key="healthCallCentreHelpNumber"/></strong>.

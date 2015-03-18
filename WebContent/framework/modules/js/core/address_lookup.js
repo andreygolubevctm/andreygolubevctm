@@ -18,21 +18,21 @@
 	}
 
 	function getAddressData(dpId) {
-		// If a get details request takes too long and the user reselects cached address data, it will load in the ajax's 
-		// response instead of the cached data. 
+		// If a get details request takes too long and the user reselects cached address data, it will load in the ajax's
+		// response instead of the cached data.
 		// Here, we abort that request.
 		if($currentAjaxRequest) {
 			$currentAjaxRequest.abort();
 			$currentAjaxRequest = null;
 		}
-		
+
 		if(dpIdCache.hasOwnProperty(dpId)) {
 			// Get the address data from the cache
 			setAddressDataFields(dpIdCache[dpId]);
 		} else {
 			// Lock Journey
 			meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, { source: 'address_lookup' });
-			
+
 			// Send a request for the address details associated with
 			// the given dpId
 			if(typeof dpId !== "undefined" && dpId !== "") {

@@ -359,6 +359,19 @@
 			<c:set var="optinMarketing" value ="marketing=${data['homeloan/contact/optIn']}"/>
 		</c:if>
 	</c:when>
+	<c:when test="${rootPath eq 'creditcard'}">
+		<c:if test="${not empty data['creditcard/privacyoptin'] and data['creditcard/privacyoptin'] eq 'Y'}">
+			<c:set var="hasPrivacyOptin">${true}</c:set>
+		</c:if>
+
+		<c:set var="emailAddress" value="${data['creditcard/email']}" />
+
+		<c:set var="firstName" value="${data['creditcard/name']}" />
+		<c:set var="lastName" value="" />
+		<c:if test="${not empty data['creditcard/optIn']}">
+			<c:set var="optinMarketing" value ="marketing=${data['creditcard/optIn']}"/>
+		</c:if>
+	</c:when>
 
 	<c:otherwise>
 		<c:set var="firstName" value="" />

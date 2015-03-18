@@ -7,9 +7,11 @@
 <%@ attribute name="head" fragment="true" required="true"  %>
 <%@ attribute name="head_meta" fragment="true" required="true"  %>
 <%@ attribute name="header" fragment="true" required="true" %>
+<%@ attribute fragment="true" required="false" name="navbar" %>
 <%@ attribute name="form_bottom" fragment="true" required="true" %>
 <%@ attribute name="footer" fragment="true" required="true" %>
 <%@ attribute name="body_end" fragment="true" required="true" %>
+<%@ attribute fragment="true" required="false" name="vertical_settings" %>
 
 <c:set var="incSuperTag"><c:choose><c:when test="${not empty incSuperTag}">true</c:when><c:otherwise>false</c:otherwise></c:choose></c:set>
 <c:set var="skipJSCSS"><c:if test="${not empty skipJSCSS}">true</c:if></c:set>
@@ -26,6 +28,14 @@
 
 	<jsp:attribute name="header">
 		<jsp:invoke fragment="header" />
+	</jsp:attribute>
+
+	<jsp:attribute name="navbar">
+		<jsp:invoke fragment="navbar" />
+	</jsp:attribute>
+
+	<jsp:attribute name="vertical_settings">
+		<jsp:invoke fragment="vertical_settings" />
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">

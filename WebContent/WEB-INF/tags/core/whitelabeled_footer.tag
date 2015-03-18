@@ -1,5 +1,5 @@
 <%--
-	Whitelabeled footer. Currently used for Car and Home, runs of DB content control.
+	Whitelabeled footer.
 --%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>

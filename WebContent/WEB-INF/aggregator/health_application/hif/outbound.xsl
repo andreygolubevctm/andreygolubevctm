@@ -564,6 +564,11 @@
 						</Account>
 					</Contributions>
 					<Membership>
+						<Group>
+							<EffDate><xsl:value-of select="$startDate" /></EffDate>
+							<GroupID>G0946</GroupID>
+							<PayrollNo></PayrollNo>
+						</Group>
 						<Agency>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<AgencyID>CTM</AgencyID>

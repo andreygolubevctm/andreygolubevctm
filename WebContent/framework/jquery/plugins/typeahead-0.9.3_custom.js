@@ -302,12 +302,14 @@
             this.wildcard = o.wildcard || "%QUERY";
             this.filter = o.filter;
             this.replace = o.replace;
+            // CUSTOM CHANGE, added o.error so we could use the ajax onError stuff.
             this.ajaxSettings = {
                 type: "get",
                 cache: o.cache,
                 timeout: o.timeout,
                 dataType: o.dataType || "json",
-                beforeSend: o.beforeSend
+                beforeSend: o.beforeSend,
+                error: o.error
             };
             this._get = (/^throttle$/i.test(o.rateLimitFn) ? utils.throttle : utils.debounce)(this._get, o.rateLimitWait || 300);
         }

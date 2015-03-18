@@ -6,13 +6,17 @@
 <%-- HTML --%>
 
 <c:set var="fieldXpath" value="travel/firstName" />
+<c:set var="required" value="false" />
+<c:if test="${data.travel.currentJourney != null && data.travel.currentJourney == 7}">
+	<c:set var="required" value="true" />
+</c:if>
 <form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear">
-	<field:person_name xpath="${fieldXpath}" title="firstname" required="false" className="sessioncamexclude" />
+	<field:person_name xpath="${fieldXpath}" title="first name" required="${required}" className="sessioncamexclude" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="travel/surname" />
 <form_new:row fieldXpath="${fieldXpath}" label="Last Name" className="clear" >
-	<field:person_name xpath="${fieldXpath}" required="false" title="${title} last name" className="contactField sessioncamexclude" />
+	<field:person_name xpath="${fieldXpath}" required="${required}" title="${title} last name" className="contactField sessioncamexclude" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="travel/email" />

@@ -21,7 +21,8 @@ public class Vertical {
 		CARLMI ("CARLMI"),
 		HOMELMI ("HOMELMI"),
 		COMPETITION ("COMPETITION"),
-		HOMELOAN ("HOMELOAN");
+		HOMELOAN ("HOMELOAN"),
+		CREDITCARD ("CREDITCARD");
 
 		private final String code;
 

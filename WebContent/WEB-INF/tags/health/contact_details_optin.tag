@@ -103,7 +103,7 @@
 					I understand <content:get key="brandDisplayName" /> compares health insurance policies from a range of
 					<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
 					By providing my contact details I agree that comparethemarket.com.au may contact me<span class="hawkingOptinTextPlaceholder"></span> about the services they provide.
-					I confirm that I have read the <a data-toggle="dialog" data-content="legal/privacy_statement.jsp" data-cache="true" data-dialog-hash-id="privacystatement" href="legal/privacy_statement.jsp" target="_blank">privacy statement</a>.
+					I confirm that I have read the <form:link_privacy_statement />.
 				</c:set>
 				
 				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>

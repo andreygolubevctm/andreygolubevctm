@@ -73,7 +73,7 @@
 								{{= htmlString }}
 							</div>
 							<div class="col-xs-2 col-sm-1 arrow-column">
-								<span class="icon icon-arrow-right"></span>
+								<span class="icon icon-arrow-thick-right"></span>
 							</div>
 							<div class="col-xs-5 col-sm-6 productSummary vertical altPremium">
 								<h5>1 <c:out value="${healthAlternatePricingMonth}" /> 2015</h5>

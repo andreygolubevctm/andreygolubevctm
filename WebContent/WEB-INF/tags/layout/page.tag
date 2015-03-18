@@ -352,10 +352,8 @@
 
 		</script>
 
-		<div id="dynamic_dom">
-
+		<div id="dynamic_dom"></div>
 		</div>
-	</div>
 
 	<jsp:invoke fragment="before_close_body" />
 </body>

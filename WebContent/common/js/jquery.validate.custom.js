@@ -571,10 +571,14 @@ $.validator.addMethod(
 						}
 						/** Residential street cannot start with GPO or PO * */
 				if (type === 'R') {
+					// AddressUtils has been removed from ElasticSearch,
+					// so this is needed to keep validation of this on the new verticals
+					if (typeof AddressUtils != 'undefined') {
 							if (AddressUtils.isPostalBox(value)) {
 								return false;
 							}
 						}
+				}
 						$ele.trigger("customAddressEnteredEvent", [ name ]);
 						return true;
 					case "_nonStd":

@@ -20,16 +20,17 @@
 
 	function applyEventListeners(){
 
-		$marketing.on('change', function() {
+		if (currentJourney != 7) {
+			$marketing.on('change', function () {
 
-			if ($(this).is(':checked')) {
-				$email.attr('required', 'required').valid();
-				showHidePostcodeField();
-			} else {
-				$email.removeAttr('required').valid();
-			}
-		});
-
+				if ($(this).is(':checked')) {
+					$email.attr('required', 'required').valid();
+					showHidePostcodeField();
+				} else {
+					$email.removeAttr('required').valid();
+				}
+			});
+		}
 		$email.on('blur', function() {
 				showHidePostcodeField();
 			});
@@ -86,7 +87,9 @@
 			$postcodeDetails = $('.postcodeDetails');
 			$productDetailsField = $postcodeDetails.find('#travel_location');
 			currentJourney = meerkat.modules.tracking.getCurrentJourney();
-			$email.removeAttr('required');
+			if (currentJourney != 7) {
+				$email.removeAttr('required');
+			}
 			applyEventListeners();
 		});
 	}

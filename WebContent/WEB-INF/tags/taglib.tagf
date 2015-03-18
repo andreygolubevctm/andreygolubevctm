@@ -14,6 +14,8 @@
 <%@ taglib tagdir="/WEB-INF/tags/car"					prefix="car" %>
 <%@ taglib tagdir="/WEB-INF/tags/car/layout"			prefix="car_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/core"					prefix="core" %>
+<%@ taglib tagdir="/WEB-INF/tags/creditcard"			prefix="creditcard" %>
+<%@ taglib tagdir="/WEB-INF/tags/creditcard/layout"		prefix="creditcard_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/group"					prefix="group" %>
 <%@ taglib tagdir="/WEB-INF/tags/group_new"				prefix="group_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/slider"				prefix="slider" %>

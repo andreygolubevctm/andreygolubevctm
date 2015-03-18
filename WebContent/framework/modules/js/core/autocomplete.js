@@ -34,21 +34,35 @@
 					remote: {
 						rateLimitWait: 100,
 						beforeSend: function(jqXhr, settings) {
-						autocompleteBeforeSend($component);
-						jqXhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-						settings.type = "POST";
-						settings.hasContent = true;
-						settings.url = url;
+							autocompleteBeforeSend($component);
+							jqXhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+							settings.type = "POST";
+							settings.hasContent = true;
+							settings.url = url;
 
-						var $addressField = $('#quote_riskAddress_streetSearch');
-						var query = $addressField.val();
-						settings.data = $.param({ query: decodeURI(query) });
-					},
-					filter: function(parsedResponse) {
-						autocompleteComplete($component);
-						return parsedResponse;
-					},
-					url: url
+							var $addressField = $('#quote_riskAddress_streetSearch');
+							var query = $addressField.val();
+							settings.data = $.param({ query: decodeURI(query) });
+						},
+						filter: function(parsedResponse) {
+							autocompleteComplete($component);
+							return parsedResponse;
+						},
+						url: url,
+						error: function(xhr, status) {
+							// Throw a pop up error
+							meerkat.modules.errorHandling.error({
+								page: "autocomplete.js",
+								errorLevel: "warning",
+								title: "Address lookup failed",
+								message: "<p>Sorry, we are having troubles connecting to our address servers.</p><p>Please manually enter your address.</p>",
+								description: "Could not connect to the elastic search.json",
+								data: xhr
+							});
+							// Tick non-std box.
+							$('#quote_riskAddress_nonStd').trigger('click').prop('checked', true);
+							autocompleteComplete($component);
+						},
 					},
 					limit: 150
 				};
@@ -57,13 +71,13 @@
 					name: $component.attr('name'),
 					remote: {
 						beforeSend: function() {
-						autocompleteBeforeSend($component);
-					},
-					filter: function(parsedResponse) {
-						autocompleteComplete($component);
-						return parsedResponse;
-					},
-					url: $component.attr('data-source-url')+'%QUERY'
+							autocompleteBeforeSend($component);
+						},
+						filter: function(parsedResponse) {
+							autocompleteComplete($component);
+							return parsedResponse;
+						},
+						url: $component.attr('data-source-url')+'%QUERY'
 					},
 					limit: 150
 				};
@@ -130,12 +144,7 @@
 				typeaheadParams.remote.filter = function(parsedResponse) {
 					autocompleteComplete($element);
 
-					if (parsedResponse.length === 0) {
-						parsedResponse.push({
-							value: 'Type your address...',
-							highlight: 'Can\'t find your address? <u>Click here.</u>'
-						});
-					} else if (elasticSearch) {
+					if (elasticSearch) {
 						$.each(parsedResponse, function(index, addressObj) {
 							if(addressObj.hasOwnProperty('text') && addressObj.hasOwnProperty('payload')) {
 								addressObj.value = addressObj.text;
@@ -144,6 +153,13 @@
 							}
 						});
 					}
+					// Add this option to the parsed response, all the time.
+					// Now gives the user the option to select it when there
+					// are results but not the on they are looking for.
+					parsedResponse.push({
+						value: 'Type your address...',
+						highlight: 'Can\'t find your address? <u>Click here.</u>'
+					});
 					return parsedResponse;
 				}
 
@@ -157,6 +173,8 @@
 						meerkat.messaging.publish(moduleEvents.CANT_FIND_ADDRESS, { fieldgroup: id });
 					} else if (elasticSearch) {
 						meerkat.messaging.publish(moduleEvents.ELASTIC_SEARCH_COMPLETE, datum.dpId );
+						// Validate the element now the user has made a selection.
+						$element.valid();
 					}
 				});
 			}

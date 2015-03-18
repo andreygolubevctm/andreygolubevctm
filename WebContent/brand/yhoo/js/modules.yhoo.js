@@ -3626,7 +3626,19 @@ Features = {
                             autocompleteComplete($component);
                             return parsedResponse;
                         },
-                        url: url
+                        url: url,
+                        error: function(xhr, status) {
+                            meerkat.modules.errorHandling.error({
+                                page: "autocomplete.js",
+                                errorLevel: "warning",
+                                title: "Address lookup failed",
+                                message: "<p>Sorry, we are having troubles connecting to our address servers.</p><p>Please manually enter your address.</p>",
+                                description: "Could not connect to the elastic search.json",
+                                data: xhr
+                            });
+                            $("#quote_riskAddress_nonStd").trigger("click").prop("checked", true);
+                            autocompleteComplete($component);
+                        }
                     },
                     limit: 150
                 };
@@ -3685,12 +3697,7 @@ Features = {
             if ($element.hasClass("typeahead-streetSearch")) {
                 typeaheadParams.remote.filter = function(parsedResponse) {
                     autocompleteComplete($element);
-                    if (parsedResponse.length === 0) {
-                        parsedResponse.push({
-                            value: "Type your address...",
-                            highlight: "Can't find your address? <u>Click here.</u>"
-                        });
-                    } else if (elasticSearch) {
+                    if (elasticSearch) {
                         $.each(parsedResponse, function(index, addressObj) {
                             if (addressObj.hasOwnProperty("text") && addressObj.hasOwnProperty("payload")) {
                                 addressObj.value = addressObj.text;
@@ -3699,6 +3706,10 @@ Features = {
                             }
                         });
                     }
+                    parsedResponse.push({
+                        value: "Type your address...",
+                        highlight: "Can't find your address? <u>Click here.</u>"
+                    });
                     return parsedResponse;
                 };
                 $element.bind("typeahead:selected", function catchEmptyValue(event, datum, name) {
@@ -3712,6 +3723,7 @@ Features = {
                         });
                     } else if (elasticSearch) {
                         meerkat.messaging.publish(moduleEvents.ELASTIC_SEARCH_COMPLETE, datum.dpId);
+                        $element.valid();
                     }
                 });
             }
@@ -5932,6 +5944,7 @@ Features = {
     var defaultSettings = {
         errorLevel: "silent",
         page: "unknown",
+        title: "Error",
         message: "Sorry, an error has occurred",
         description: "unknown",
         data: null,
@@ -6023,7 +6036,7 @@ Features = {
             } ];
         }
         var dialogSettings = {
-            title: "Error",
+            title: data.title,
             htmlContent: data.message,
             buttons: buttons
         };
@@ -10714,11 +10727,15 @@ jQuery.fn.extend({
                 }
             }
         });
-        if (!data.length) return;
-        data.push({
-            name: $(".journey_stage").attr("name"),
-            value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
-        });
+        if (!data.length) {
+            return;
+        }
+        if (meerkat.modules.journeyEngine.getCurrentStep() !== null) {
+            data.push({
+                name: $(".journey_stage").attr("name"),
+                value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
+            });
+        }
         data.push({
             name: "hasPrivacyOptin",
             value: meerkat.modules.optIn.isPrivacyOptedIn()
@@ -10742,10 +10759,12 @@ jQuery.fn.extend({
             name: "quoteType",
             value: meerkat.site.vertical
         });
-        data.push({
-            name: "stage",
-            value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
-        });
+        if (meerkat.modules.journeyEngine.getCurrentStep() !== null) {
+            data.push({
+                name: "stage",
+                value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
+            });
+        }
         if (typeof extraDataToSave === "object") {
             for (var i in extraDataToSave) {
                 if (extraDataToSave.hasOwnProperty(i)) {

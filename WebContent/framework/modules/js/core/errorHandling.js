@@ -18,6 +18,7 @@
 	var defaultSettings = {
 		errorLevel: 'silent', // silent (only log in the db), warning (visible to user but can go back to page) or fatal (visible to user and forces page refresh)
 		page: "unknown",
+		title: "Error",
 		message: "Sorry, an error has occurred",
 		description: "unknown",
 		data:null,
@@ -136,7 +137,7 @@
 		}
 
 		var dialogSettings = {
-				title: "Error",
+				title: data.title,
 				htmlContent: data.message,
 				buttons: buttons
 		};

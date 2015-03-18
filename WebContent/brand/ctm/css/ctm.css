@@ -55,15 +55,15 @@
 }
 @font-face {
   font-family: 'framework_font';
-  src: url('../../../framework/fonts/CTM.eot?20150209');
-  src: url('../../../framework/fonts/CTM.eot?#iefix20150209') format('embedded-opentype'), url('../../../framework/fonts/CTM.woff?20150209') format('woff'), url('../../../framework/fonts/CTM.ttf?20150209') format('truetype'), url('../../../framework/fonts/CTM.svg?20150209#CTM') format('svg');
+  src: url('../../../framework/fonts/CTM.eot?20150316');
+  src: url('../../../framework/fonts/CTM.eot?#iefix20150316') format('embedded-opentype'), url('../../../framework/fonts/CTM.woff?20150316') format('woff'), url('../../../framework/fonts/CTM.ttf?20150316') format('truetype'), url('../../../framework/fonts/CTM.svg?20150316#CTM') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   @font-face {
     font-family: 'framework_font';
-    src: url('../../../framework/fonts/CTM.svg?434f43#CTM') format('svg');
+    src: url('../../../framework/fonts/CTM.svg?20150316#CTM') format('svg');
   }
 }
 .icon,
@@ -288,6 +288,18 @@ button [class*=" icon-"] {
 }
 .icon-quote-end:before {
   content: "\e62a";
+}
+.icon-arrow-thick-down:before {
+  content: "\e62b";
+}
+.icon-arrow-thick-up:before {
+  content: "\e62c";
+}
+.icon-arrow-thick-left:before {
+  content: "\e62d";
+}
+.icon-arrow-thick-right:before {
+  content: "\e62e";
 }
 @-ms-viewport {
   width: device-width;
@@ -5508,10 +5520,16 @@ select[multiple].hint-lg.tt-hint {
 #elasticSearchTypeaheadComponent .tt-dropdown-menu {
   max-height: none;
 }
-#elasticSearchContainer {
-  background-color: magenta;
+#elasticSearchTypeaheadComponent .tt-hint {
+  visibility: hidden;
 }
-#elasticSearchContainer #nonStandardFields {
+#elasticSearchTypeaheadComponent .tt-dropdown-menu {
+  width: auto;
+}
+#elasticSearchTypeaheadComponent .tt-dropdown-menu .tt-suggestion p {
+  white-space: nowrap !important;
+}
+#elasticSearchTypeaheadComponent div[class$="_nonStdFieldRow"] {
   display: none;
 }
 /** Styles for confirmation on HML */

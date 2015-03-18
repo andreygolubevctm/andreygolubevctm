@@ -551,6 +551,15 @@ So it's going to be done progressively. Include this file in your framework.buil
     background-size: 80px 80px;
   }
 }
+.companyLogo.logo_AFG_GREEN {
+  background-image: url("../../../common/images/logos/homeloan/AFG_GREEN.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .companyLogo.logo_AFG_GREEN {
+    background-image: url("../../../common/images/logos/homeloan/AFG_GREEN@2x.png");
+    background-size: 80px 80px;
+  }
+}
 .companyLogo.logo_AMP {
   background-image: url("../../../common/images/logos/homeloan/AMP.png");
 }

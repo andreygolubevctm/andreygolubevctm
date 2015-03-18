@@ -96,6 +96,9 @@
 		<streetName>Sherwood Rd</streetName>
 		<suburbName>Toowong</suburbName>
 		<postCode>4066</postCode>
+		<!-- For elastic search prefill -->
+		<nonStdPostCode>4066</nonStdPostCode>
+		<!-- For elastic search prefill -->
 		<unitSel>501</unitSel>
 		<unitShop>501</unitShop>
 		<fullAddress/>

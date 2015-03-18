@@ -31,7 +31,7 @@
 <%-- This is used to return a full list of providers, such as where a client can select their current fund so does not need to go through provider validation --%>
 <%-- Added the check to exclude expired products/providers --%>
 <sql:query var="result">
-	SELECT a.ProviderId, a.Name FROM provider_master a
+	SELECT a.ProviderId, a.ProviderCode, a.Name FROM provider_master a
 	WHERE
 	EXISTS (
 		Select * from product_master b where b.providerid = a.providerid
@@ -61,6 +61,7 @@
 
 	<%-- Write the options for each row --%>
 	<c:forEach var="row" items="${result.rows}" varStatus='idx'>
+			<c:if test="${pageSettings.getVerticalCode() == 'health'}">
 		<c:choose>
 			<c:when test="${row.ProviderId == value}">
 				<option value="${row.ProviderId}" selected="selected">${row.Name}</option>
@@ -69,6 +70,18 @@
 				<option value="${row.ProviderId}">${row.Name}</option>
 			</c:otherwise>
 		</c:choose>
+			</c:if>
+			<c:if test="${pageSettings.getVerticalCode() ne 'health'}">
+				<c:choose>
+					<c:when test="${row.ProviderCode == value}">
+						<option value="${row.ProviderCode}" selected="selected">${row.Name}</option>
+					</c:when>
+					<c:otherwise>
+						<option value="${row.ProviderCode}">${row.Name}</option>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+
 	</c:forEach>
 	</select>
 </div>

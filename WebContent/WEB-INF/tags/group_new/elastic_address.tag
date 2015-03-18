@@ -18,19 +18,20 @@
 
 	<%-- STREET-SEARCH (ELASTIC) --%>
 	<c:set var="fieldXpath" value="${xpath}/streetSearch" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Street Address" id="${name}_std_street" className="std_street">
+	<form_new:row fieldXpath="${fieldXpath}" label="Street Address" id="${name}_streetSearchRow">
+		<c:set var="placeholder" value="e.g. 5/20 Sample St" />
 		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading sessioncamexclude" title="the street address" placeHolder="${placeholder}" required="false" />
 	</form_new:row>
 
 	<%-- POSTCODE --%>
 	<c:set var="fieldXpath" value="${xpath}/nonStdPostCode" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="std_postCode">
+	<form_new:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow">
 		<field:post_code xpath="${fieldXpath}" required="true" title="postcode" />
 	</form_new:row>
 
 	<%-- SUBURB DROPDOWN (populated from postcode) --%>
 	<c:set var="fieldXpath" value="${xpath}/suburb" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStd_street">
+	<form_new:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStdFieldRow">
 		<c:choose>
 			<c:when test="${not empty address.postCode}">
 				<sql:query var="result" dataSource="jdbc/aggregator">
@@ -78,13 +79,13 @@
 
 	<%-- STREET NAME --%>
 	<c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStd_street">
+	<form_new:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStdFieldRow">
 		<field_new:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" />
 	</form_new:row>
 
 	<%-- STREET NUMBER --%>
 	<c:set var="fieldXpath" value="${xpath}/streetNum" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Street No." id="${name}_streetNumRow" className="std_streetNum">
+	<form_new:row fieldXpath="${fieldXpath}" label="Street No." id="${name}_streetNumRow" className="${name}_nonStdFieldRow">
 		<div class="${name}_streetNum_container">
 			<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" />
 		</div>
@@ -92,14 +93,14 @@
 
 	<%-- UNIT/SHOP NUMBER (Optional) --%>
 	<c:set var="fieldXpath" value="${xpath}/unitShop" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow">
+	<form_new:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="${name}_nonStdFieldRow">
 		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" />
 	</form_new:row>
 
 	<%-- UNIT/SHOP TYPE (Optional) --%>
 	<c:set var="unitTypes">=Please choose...,CO=Cottage,DU=Duplex,FA=Factory,HO=House,KI=Kiosk,L=Level,M=Maisonette,MA=Marine Berth,OF=Office,PE=Penthouse,RE=Rear,RO=Room,SH=Shop,ST=Stall,SI=Site,SU=Suite,TO=Townhouse,UN=Unit,VI=Villa,WA=Ward,OT=Other</c:set>
-	<c:set var="fieldXpath" value="${xpath}/unitType" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStd_street ${name}_unitShopRow">
+	<c:set var="fieldXpath" value="${xpath}/nonStdUnitType" />
+	<form_new:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStdFieldRow">
 		<field_new:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" />
 	</form_new:row>
 
@@ -138,7 +139,6 @@
 <go:validate selector="${name}_streetNum"		rule="validAddress"			parm="'${name}'"	message="Please enter a valid street number"/>
 <go:validate selector="${name}_unitShop"		rule="validAddress"			parm="'${name}'"	message="Please enter a valid unit/shop/level"/>
 <go:validate selector="${name}_unitType"		rule="validAddress"			parm="'${name}'"	message="Please select a unit type"/>
-<go:validate selector="${name}_nonStd"			rule="validAddress"			parm="'${name}'"	message="Please enter the address"/>
 
 <go:script marker="onready">
 	<c:choose>
@@ -149,34 +149,6 @@
 			init_address("${name}");
 		</c:otherwise>
 	</c:choose>
-		$("#${name}_streetNum").val("${address.streetNum}");
-		$("#${name}_unitShop").val("${address.unitShop}");
-	<%-- Standard Address --%>
-	<c:if test="${address.nonStd != 'Y'}">
-		$(".${name}_nonStd_street").hide();
-		$("#${name}_postCode_suburb").hide();
-
-		<c:if test="${fn:length(address.streetNum) == 0 || fn:length(address.dpId) != 0 }">
-			$("#${name}_streetNumRow").hide();
-		</c:if>
-		<c:if test="${fn:length(address.unitShop) == 0 || fn:length(address.dpId) != 0 }">
-			$("#${name}_unitShopRow").hide();
-		</c:if>
-	</c:if>
-
-	<%-- Non-standard Address --%>
-	<c:if test="${address.nonStd == 'Y'}">
-		$("#${name}_std_street").hide();
-	</c:if>
-
-	<%-- Non-standard Address --%>
-	$("#${name}_nonStdStreet").change(function changeNonStdStreet(){
-		$(this).val($.trim($(this).val()));
-		$("#${name}_streetName").val($(this).val());
-	});
-	$("#${name}_streetSearch, #${name}_streetNum, #${name}_unitShop, #${name}_unitType").bind('blur', function blurStreetNumUnit(){
-		if($("#mainform").validate().numberOfInvalids() !== 0) {
-			$("#mainform").validate().element($(this));
-		}
-	});
+	$("#${name}_streetNum").val("${address.streetNum}");
+	$("#${name}_unitShop").val("${address.unitShop}");
 </go:script>

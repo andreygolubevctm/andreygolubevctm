@@ -12,9 +12,12 @@
 <%@ attribute name="showHelpText"		required="false" rtexprvalue="true"	description="Trigger to display help icon as text rather than icon" %>
 <%@ attribute name="legend"				required="false" rtexprvalue="true"	 description="Optional legend field, when an item is readonly"%>
 <%@ attribute name="hideHelpIconCol"	required="false" rtexprvalue="true"	 description="Set to a value to hide the help icon placeholder column" %>
+<%@ attribute name="labelAbove"			required="false" rtexprvalue="true"	 description="Have the label above the element instead of beside it" %>
 
 <%-- VARIABLES --%>
-
+<c:if test="${empty labelAbove}">
+	<c:set var="labelAbove" value="${false}" />
+</c:if>
 <%-- HTML --%>
 <%--
 	Bootstrap classes:
@@ -50,9 +53,18 @@
 	</c:choose>
 
 	<c:choose>
+		<c:when test="${labelAbove eq true}">
+			<c:set var="labelClassName" value="col-xs-${toggleHelpColMobile} col-sm-12" />
+		</c:when>
+		<c:otherwise>
+			<c:set var="labelClassName" value="col-lg-3 col-sm-4 col-xs-${toggleHelpColMobile}" />
+		</c:otherwise>
+	</c:choose>
+
+	<c:choose>
 		<c:when test="${not empty label and label ne ''}">
 
-			<field_new:label value="${label}" xpath="${fieldXpath}" className="col-lg-3 col-sm-4 col-xs-${toggleHelpColMobile}" />
+			<field_new:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" />
 
 			<div class="col-xs-2 visible-xs helpIconXSColumn ${offset}">
 				<field_new:help_icon helpId="${helpId}" showText="${showHelpText}" />

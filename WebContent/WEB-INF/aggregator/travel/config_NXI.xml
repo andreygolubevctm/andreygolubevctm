@@ -9,7 +9,7 @@
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/travel/errors</error-dir>
 	<debug-dir>travel/debug</debug-dir>
 	<validation-file>WEB-INF/xsd/travel/travelQuoteResults.xsd</validation-file>
-
+<!--
 	<service name="AGIS" type="soap">
 		<soap-url>https://services-nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
 		<soap-action>getTravelQuotes</soap-action>
@@ -19,7 +19,7 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
-
+-->
 	<service name="OTIS" type="soap">
 		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/quickquote</soap-url>
 		<soap-user>CtM</soap-user>

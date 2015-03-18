@@ -1,7 +1,19 @@
-#elasticSearchContainer {
-	background-color: magenta;
+#elasticSearchTypeaheadComponent {
 
-	#nonStandardFields {
+	.tt-hint {
+		visibility:hidden;
+	}
+
+	.tt-dropdown-menu {
+		width: auto;
+		.tt-suggestion {
+			p {
+				white-space: nowrap !important;
+			}
+		}
+	}
+
+	div[class$="_nonStdFieldRow"] {
 		display: none;
 	}
 }

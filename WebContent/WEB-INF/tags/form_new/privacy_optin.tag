@@ -10,7 +10,8 @@
 <c:set var="suffix"  	value="privacyoptin" />
 <c:set var="xpath_name" value="${vertical}_${suffix}" />
 <c:set var="xpath"  	value="${vertical}/${suffix}" />
-<c:set var="label_text" value='I have read the <a data-toggle="dialog" data-content="legal/privacy_statement.jsp" data-cache="true" data-dialog-hash-id="privacystatement" href="legal/privacy_statement.jsp" target="_blank">privacy statement</a>' />
+<c:set var="privacyStatementLink"><form:link_privacy_statement /></c:set>
+<c:set var="label_text" value='I have read the ${privacyStatementLink}' />
 <c:set var="error_text" value="Please confirm you have read the privacy statement" />
 
 <%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>

@@ -4886,6 +4886,9 @@ creditCardDetails = {
             Compare.reset();
             meerkat.modules.utilities.scrollPageTo($("header"));
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
+            _.defer(function() {
+                $(".healthPremiumIncreaseContent").click();
+            });
         });
         $(document).on("resultsDataReady", function() {
             updateBasketCount();

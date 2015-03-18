@@ -16,21 +16,25 @@
 	<c:set var="competitionEnabled" value="${true}" />
 </c:if>
 
+<%-- Var for mandatory fields --%>
+<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<c:set var="mandatoryFieldsSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" />
+
 <%-- HTML --%>
-<form_new:fieldset legend="Your Contact Details" id="${name}FieldSet">
+<form_new:fieldset legend="Contact Details" id="${name}FieldSet">
 
 	<form_new:row label="First Name" id="firstName">
 		<field:person_name xpath="quote/drivers/regular/firstname"
-			required="false" title="the policy holder's first name" className="sessioncamexclude" />
+			required="${mandatoryFieldsSplitTest}" title="the policy holder's first name" className="sessioncamexclude" />
 	</form_new:row>
 
 	<form_new:row label="Last Name" id="lastName">
 		<field:person_name xpath="quote/drivers/regular/surname"
-			required="false" title="the policy holder's last name" className="sessioncamexclude" />
+			required="${mandatoryFieldsSplitTest}" title="the policy holder's last name" className="sessioncamexclude" />
 	</form_new:row>
 
 	<form_new:row label="Email Address" id="contactEmailRow">
-		<field_new:email xpath="${xpath}/email" required="false" title="the policy holder's email address" className="sessioncamexclude" />
+		<field_new:email xpath="${xpath}/email" required="${mandatoryFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" />
 	</form_new:row>
 
 	<form_new:row label="Contact Number" id="contactNoRow">
@@ -105,9 +109,9 @@ $.validator.addMethod('validateOkToEmailRadio', function(value, element) {
 </go:script>
 
 	<go:validate selector="quote_contact_oktocall" rule="validateOkToCallRadio" parm="true"
-				 message="Please choose if OK to call"/>
+				message="Please choose if OK to call"/>
 	<go:validate selector="quote_contact_marketing" rule="validateOkToEmailRadio" parm="true"
-				 message="Please choose if OK to email"/>
+				message="Please choose if OK to email"/>
 
 
 	<%-- COMPETITION START --%>

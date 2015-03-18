@@ -2,7 +2,13 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
-		templateMoreInfo;
+		templateMoreInfo,
+		$travel_dates_toDate,
+		$travel_dates_fromDate_button,
+		$travel_dates_fromDate,
+		$travel_dates_toDate_button,
+		$travel_adults,
+		$travel_destinations_do_do;
 
 	var moduleEvents = {
 			traveldetails: {
@@ -17,6 +23,16 @@
 
 	function initJourneyEngine(){
 		$(document).ready(function(){
+
+			$travel_dates_toDate = $("#travel_dates_toDate"),
+			$travel_dates_fromDate_button = $('#travel_dates_fromDate_button'),
+			$travel_dates_fromDate = $("#travel_dates_fromDate"),
+			$travel_dates_toDate_button = $('#travel_dates_toDate_button').trigger("click"),
+			$travel_adults = $('#travel_adults'),
+			$travel_dates_toDate = $("#travel_dates_toDate")
+			$travel_destinations_do_do = $('#travel_destinations_do_do');
+
+
 			$policyTypeBtn = $("input[name=travel_policyType]");
 			meerkat.modules.travelYourCover.initTravelCover();
 			// Initialise the journey engine steps
@@ -107,6 +123,28 @@
 				$policyTypeBtn.on('change', function(event){
 					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
 				});
+
+				$( "#travel_dates_fromDateInputD, #travel_dates_fromDateInputM, #travel_dates_fromDateInputY").focus(function showCalendar() {
+					$travel_dates_toDate.datepicker('hide');
+					$travel_dates_fromDate_button.trigger("click");
+				});
+
+				$( "#travel_dates_toDateInputD, #travel_dates_toDateInputM, #travel_dates_toDateInputY").focus(function showCalendar() {
+					$travel_dates_fromDate.datepicker('hide');
+					$travel_dates_toDate_button.trigger("click");
+				});
+
+				// if in the event the user is a tab key navigator
+				$travel_adults.focus(function hideCalendar() {
+					$travel_dates_toDate.datepicker('hide');
+				});
+
+				// if in the event the user is a tab key navigator
+				$travel_destinations_do_do.focus(function hideCalendar() {
+					$travel_dates_fromDate.datepicker('hide');
+					$travel_dates_toDate.datepicker('hide');
+				});
+
 			},
 			onBeforeEnter: function(event) {
 			},
@@ -180,7 +218,9 @@
 		var policyType = $("input[name=travel_policyType]:checked").val(),
 			email = $("#travel_email").val(),
 			dest='',
-			insType='';
+			insType='',
+			leaveDate = '',
+			returnDate = null;
 
 		var actionStep='';
 		switch(current_step) {
@@ -199,14 +239,18 @@
 
 		if (policyType=='S') {
 			$('input.destcheckbox:checked').each(function(idx,elem){
-				dest+=','+$(this).val();
+
+				dest+=','+$('label[for="' + this.id + '"]').text().trim();
 			});
 			dest=dest.substring(1);
 			insType='Single Trip';
+			leaveDate = formatDate($("#travel_dates_fromDate").val());
+			returnDate = formatDate($("#travel_dates_toDate").val());
 		} else {
 			insType='Annual Policy';
+			dest = "Multi-Trip";
+			leaveDate = formatDate(new Date());
 		}
-
 
 		var response =  {
 			vertical:				meerkat.site.vertical,
@@ -227,7 +271,12 @@
 				destinationCountry: dest,
 				travelInsuranceType: insType,
 				//okToCall:		ok_to_call
-				marketOptIn:	mkt_opt_in
+				marketOptIn:	mkt_opt_in,
+				leaveDate:		leaveDate,
+				returnDate:		returnDate,
+				adults:			$("#travel_adults").val(),
+				children:		$("#travel_children").val(),
+				oldest:			$("#travel_oldest").val()
 			});
 		}
 
@@ -236,6 +285,22 @@
 		}catch(e){
 			return false;
 		}
+	}
+
+	function formatDate(d) {
+
+		if (typeof d === 'string')
+		{
+			var dateStr = d.split('/');
+			d = new Date(dateStr[2], dateStr[1], dateStr[0]);
+		}
+
+		var month = d.getMonth()+1;
+		var day = d.getDate();
+
+		return (day<10 ? '0' : '') + day
+				+ '/' +
+			(month<10 ? '0' : '') + month + '/' + d.getFullYear();
 	}
 
 	meerkat.modules.register("travel", {

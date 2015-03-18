@@ -113,7 +113,11 @@
 			<span class="icon-angle-down" title="icon-angle-down"></span>
 			<span class="icon-calendar" title="icon-calendar"></span>
 			<span class="icon-angle-down" title="icon-radio-empty"></span>
-			<span class="icon-calendar" title="icon-radio-selected"></span>
+			<span class="icon-radio-selected" title="icon-radio-selected"></span>
+			<span class="icon-arrow-thick-left" title="icon-arrow-thick-left"></span>
+			<span class="icon-arrow-thick-right" title="icon-arrow-thick-right"></span>
+			<span class="icon-arrow-thick-down" title="icon-arrow-thick-down"></span>
+			<span class="icon-arrow-thick-up" title="icon-arrow-thick-up"></span>
 		</div>
 		<div class="col-xs-12" style="font-size:200%">
 			<h3>Bigger!</h3>
@@ -184,6 +188,10 @@
 			<span class="icon-calendar" title="icon-calendar"></span>
 			<span class="icon-radio-empty" title="icon-radio-empty"></span>
 			<span class="icon-radio-selected" title="icon-radio-selected"></span>
+			<span class="icon-arrow-thick-left" title="icon-arrow-thick-left"></span>
+			<span class="icon-arrow-thick-right" title="icon-arrow-thick-right"></span>
+			<span class="icon-arrow-thick-down" title="icon-arrow-thick-down"></span>
+			<span class="icon-arrow-thick-up" title="icon-arrow-thick-up"></span>
 		</div>
 	</div>
 </form_new:fieldset>
@@ -655,6 +663,106 @@
 
 </form_new:fieldset>
 
+<form_new:fieldset legend="Function based buttons">
+	<form_new:row label="btn btn-back">
+		<a class="btn btn-back" href="javascript:;">Button text</a>
+		<a class="btn btn-sm btn-back" href="javascript:;">Button with btn-sm</a>
+		<a class="btn btn-block btn-back" href="javascript:;">Button with btn-block</a>
+		<a class="btn btn-sm btn-block btn-back" href="javascript:;">Button with btn-sm and btn-block</a>
+	</form_new:row>
+	<form_new:row label="btn btn-email">
+		<a class="btn btn-email" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-dropdown">
+		<a class="btn btn-dropdown" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-">
+		<a class="btn btn-" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-pagination">
+		<a class="btn btn-pagination" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-save">
+		<a class="btn btn-" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-save">
+		<a class="btn btn-" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-cancel">
+		<a class="btn btn-cancel" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-next">
+		<a class="btn btn-next" href="javascript:;">Button text <span class="icon icon-arrow-right"></span></a>
+	</form_new:row>
+	<form_new:row label="btn btn-cta">
+		<a class="btn btn-cta" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-shortlist">
+		<a class="btn btn-shortlist" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-clear">
+		<a class="btn btn-clear" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-download">
+		<a class="btn btn-download" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-compare-clear">
+		<a class="btn btn-compare-clear" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-features-compare">
+		<a class="btn btn-features-compare" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-edit">
+		<a class="btn btn-edit" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-hollow (transparent)">
+		<div style="background-color: #1c3e93;">
+			<a class="btn btn-hollow" href="javascript:;">Button text</a>
+		</div>
+	</form_new:row>
+	<form_new:row label="btn btn-hollow-inverse (transparent)">
+		<div style="background-color: #1c3e93;">
+			<a class="btn btn-hollow-inverse" href="javascript:;">Button text</a>
+		</div>
+	</form_new:row>
+	<form_new:row label="btn btn-hollow-red">
+		<a class="btn btn-hollow-red" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-call">
+		<a class="btn btn-call" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-call-inverse">
+		<a class="btn btn-call-inverse" href="javascript:;">Button text</a>
+	</form_new:row>
+
+</form_new:fieldset>
+
+<form_new:fieldset legend="Mostly Deprecated Buttons">
+	<form_new:row label="btn btn-default">
+		<a class="btn btn-default" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-primary">
+		<a class="btn btn-primary" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-secondary">
+		<a class="btn btn-secondary" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-tertiary">
+		<a class="btn btn-tertiary" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-info">
+		<a class="btn btn-info" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-success">
+		<a class="btn btn-success" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-warning">
+		<a class="btn btn-warning" href="javascript:;">Button text</a>
+	</form_new:row>
+	<form_new:row label="btn btn-danger">
+		<a class="btn btn-danger" href="javascript:;">Button text</a>
+	</form_new:row>
+</form_new:fieldset>
 
 
 <form_new:fieldset legend="'form' tags">

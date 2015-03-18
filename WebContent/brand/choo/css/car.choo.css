@@ -1379,12 +1379,6 @@ body.car[data-step="results"] .price-promise-panel h6 {
 body.car[data-step="results"] .price-promise-panel p {
   text-align: justify;
 }
-body.car[data-step="results"] header .price-promise-panel {
-  position: absolute;
-  top: 0;
-  right: 1em;
-  width: 484px;
-}
 body.car[data-step="results"] .more-info-content .price-promise-panel .partition {
   display: block;
 }
@@ -1444,12 +1438,6 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted p
 body.car[data-step="results"] .more-info-content .price-promise-panel.inverted small {
   font-size: 12px;
 }
-.lt-ie9 body.car[data-step="results"] header .price-promise-panel {
-  width: 494px !important;
-}
-.lt-ie9 body.car[data-step="results"] header .price-promise-panel .row {
-  margin-top: 8px;
-}
 @media (min-width: 992px) and (max-width: 1199px) {
   body.car[data-step="results"] .more-info-content .price-promise-panel h6 {
     font-size: 13px;
@@ -1460,25 +1448,6 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
-  body.car[data-step="results"] header .price-promise-panel {
-    width: 366px !important;
-    top: 7px !important;
-  }
-  body.car[data-step="results"] header .price-promise-panel .row {
-    margin-top: 0px !important;
-  }
-  body.car[data-step="results"] header .price-promise-panel td.logo {
-    width: 100px !important;
-  }
-  body.car[data-step="results"] header .price-promise-panel td.logo div {
-    background-size: contain;
-    width: 100px !important;
-    height: 72px !important;
-    margin-right: 15px !important;
-  }
-  body.car[data-step="results"] header .price-promise-panel h6 {
-    margin-bottom: 0px;
-  }
   body.car[data-step="results"] .price-promise-panel h6 {
     font-size: 14px;
   }
@@ -1636,4 +1605,7 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
 }
 .car #quote_vehicle_selection .has-error .radio-button-group label {
   color: #ff5f5f;
+}
+.car .cantFindAddressHelper {
+  margin-top: 108px;
 }

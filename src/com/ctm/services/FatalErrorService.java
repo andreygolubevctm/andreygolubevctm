@@ -93,13 +93,13 @@ public class FatalErrorService {
 
 	public static void logFatalError(int styleCodeId, String page, String sessionId, boolean isFatal, String message, String description, String transactionId) {
 		logFatalError(styleCodeId, page, sessionId, isFatal, message, description, transactionId, "" , "");
-	}
+}
 
 	public void logFatalError(Exception exception, String message, boolean isFatal) {
 		message += " exception:" + exception.getMessage();
 		String data = ExceptionUtils.getStackTrace(exception);
 		logFatalError(styleCodeId, page, sessionId, isFatal, message, getDescription(exception), String.valueOf(transactionId), data, this.property);
-	}
+}
 
 	private static String getDescription(Exception exception) {
 		String description = exception.getMessage();

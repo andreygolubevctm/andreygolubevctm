@@ -9,7 +9,7 @@
 	<error-dir>aggregator/travel/app-logs-errors</error-dir>
 	<debug-dir>travel/app-logs-debug</debug-dir>
 	<validation-file>WEB-INF/xsd/travel/travelQuoteResults.xsd</validation-file>
-
+<!--
 	<service name="AGIS" type="soap">
 		<soap-url>http://192.168.149.45/services/3.1/getTravelQuotes</soap-url>
 		<soap-action>getTravelQuotes</soap-action>
@@ -18,7 +18,7 @@
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
-	</service>
+	</service>-->
 
 	<service name="OTIS" type="soap">
 		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>

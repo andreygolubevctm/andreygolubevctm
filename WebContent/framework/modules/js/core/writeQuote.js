@@ -171,15 +171,18 @@
 			}
 		});
 
-		if(!data.length)
+		if(!data.length) {
 			return;
+		}
 		/**
 		 * Only if there is something to change, append the stage.
 		 */
-		data.push({
-			name: $('.journey_stage').attr('name'),
-			value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
-		});
+		if(meerkat.modules.journeyEngine.getCurrentStep() !== null) {
+			data.push({
+				name: $('.journey_stage').attr('name'),
+				value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
+			});
+		}
 
 		data.push({
 			name: 'hasPrivacyOptin',
@@ -217,11 +220,13 @@
 			name: 'quoteType',
 			value: meerkat.site.vertical
 		});
-
-		data.push({
-			name: 'stage',
-			value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
-		});
+		// may be used on pages that don't have journey engines.
+		if(meerkat.modules.journeyEngine.getCurrentStep() !== null) {
+			data.push({
+				name: 'stage',
+				value: meerkat.modules.journeyEngine.getCurrentStep().navigationId
+			});
+		}
 
 		if( typeof extraDataToSave === "object" ){
 			for(var i in extraDataToSave) {

@@ -37,7 +37,6 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<car:price_promise />
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar">

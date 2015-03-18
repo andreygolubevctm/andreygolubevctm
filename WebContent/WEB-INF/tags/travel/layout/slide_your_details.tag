@@ -18,7 +18,7 @@
 <layout:slide formId="detailsForm" nextLabel="Get Quote">
 	<layout:slide_columns>
 		<jsp:attribute name="rightColumn">
-			<ui:bubble variant="info">
+			<ui:bubble variant="info" className="hidden-xs">
 				<content:get key="step1Info"/>
 			</ui:bubble>
 
@@ -27,7 +27,7 @@
 		</jsp:attribute>
 		<jsp:body>
 			<ui:bubble variant="chatty">
-					<div class="default">	
+					<div class="default">
 						<content:get key="defaultStep1Marketing"/>
 					</div>
 					<div class="amt">
@@ -35,9 +35,12 @@
 					</div>
 					<div class="single">
 						<content:get key="singleTripStep1Marketing"/>
-					</div>					
+					</div>
 			</ui:bubble>
 			<layout:slide_content>
+				<%-- PROVIDER TESTING --%>
+				<agg:provider_testing xpath="${pageSettings.getVerticalCode()}" displayFullWidth="true" showNumberofResults="false" showExpectedCoverDate="false" />
+
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_new:fieldset legend="Your Cover" id="yourcoverfs">
 					<travel:your_cover />
@@ -64,10 +67,14 @@
 						<field_new:input_age maxlength="2" xpath="travel/oldest" title="age of oldest traveller" required="true" className="age_input" validationNoun="traveller" />
 					</form_new:row>
 				</form_new:fieldset>
-
+				<c:set var="fieldSetHeading">
+					<c:if test="${data.travel.currentJourney == null or empty data.travel.currentJourney or (data.travel.currentJourney != null && data.travel.currentJourney != 7)}">
+						Your&nbsp;
+					</c:if>
+				</c:set>
 
 				<%-- YOUR CONTACT DETAILS SECTION --%>
-				<form_new:fieldset legend="Your Contact Details" id="contactDetails">
+				<form_new:fieldset legend="${fieldSetHeading}Contact Details" id="contactDetails">
 					<travel:contact_details />
 				</form_new:fieldset>
 

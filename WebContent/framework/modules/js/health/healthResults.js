@@ -86,6 +86,8 @@
 		var frequencyValue = $('#health_filter_frequency').val();
 		frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
 
+
+
 		try{
 
 			// Init the main Results object
@@ -404,6 +406,10 @@
 
 			// Reset the feature header to match the new column content.
 			$(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
+
+			_.defer(function(){
+				$('.healthPremiumIncreaseContent').click();
+			});
 
 		});
 

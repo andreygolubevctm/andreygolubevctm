@@ -208,7 +208,7 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, templateMoreInfo;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, templateMoreInfo, $travel_dates_toDate, $travel_dates_fromDate_button, $travel_dates_fromDate, $travel_dates_toDate_button, $travel_adults, $travel_destinations_do_do;
     var moduleEvents = {
         traveldetails: {
             COVER_TYPE_CHANGE: "COVER_TYPE_CHANGE"
@@ -219,6 +219,10 @@
     var steps = null, $policyTypeBtn;
     function initJourneyEngine() {
         $(document).ready(function() {
+            $travel_dates_toDate = $("#travel_dates_toDate"), $travel_dates_fromDate_button = $("#travel_dates_fromDate_button"), 
+            $travel_dates_fromDate = $("#travel_dates_fromDate"), $travel_dates_toDate_button = $("#travel_dates_toDate_button").trigger("click"), 
+            $travel_adults = $("#travel_adults"), $travel_dates_toDate = $("#travel_dates_toDate");
+            $travel_destinations_do_do = $("#travel_destinations_do_do");
             $policyTypeBtn = $("input[name=travel_policyType]");
             meerkat.modules.travelYourCover.initTravelCover();
             setJourneyEngineSteps();
@@ -286,6 +290,21 @@
                 $policyTypeBtn.on("change", function(event) {
                     meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
                 });
+                $("#travel_dates_fromDateInputD, #travel_dates_fromDateInputM, #travel_dates_fromDateInputY").focus(function showCalendar() {
+                    $travel_dates_toDate.datepicker("hide");
+                    $travel_dates_fromDate_button.trigger("click");
+                });
+                $("#travel_dates_toDateInputD, #travel_dates_toDateInputM, #travel_dates_toDateInputY").focus(function showCalendar() {
+                    $travel_dates_fromDate.datepicker("hide");
+                    $travel_dates_toDate_button.trigger("click");
+                });
+                $travel_adults.focus(function hideCalendar() {
+                    $travel_dates_toDate.datepicker("hide");
+                });
+                $travel_destinations_do_do.focus(function hideCalendar() {
+                    $travel_dates_fromDate.datepicker("hide");
+                    $travel_dates_toDate.datepicker("hide");
+                });
             },
             onBeforeEnter: function(event) {},
             onBeforeLeave: function(event) {}
@@ -336,7 +355,7 @@
             var transactionId = meerkat.modules.transactionId.get();
             var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
             var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
-            var policyType = $("input[name=travel_policyType]:checked").val(), email = $("#travel_email").val(), dest = "", insType = "";
+            var policyType = $("input[name=travel_policyType]:checked").val(), email = $("#travel_email").val(), dest = "", insType = "", leaveDate = "", returnDate = null;
             var actionStep = "";
             switch (current_step) {
               case 0:
@@ -352,12 +371,16 @@
             }
             if (policyType == "S") {
                 $("input.destcheckbox:checked").each(function(idx, elem) {
-                    dest += "," + $(this).val();
+                    dest += "," + $('label[for="' + this.id + '"]').text().trim();
                 });
                 dest = dest.substring(1);
                 insType = "Single Trip";
+                leaveDate = formatDate($("#travel_dates_fromDate").val());
+                returnDate = formatDate($("#travel_dates_toDate").val());
             } else {
                 insType = "Annual Policy";
+                dest = "Multi-Trip";
+                leaveDate = formatDate(new Date());
             }
             var response = {
                 vertical: meerkat.site.vertical,
@@ -374,13 +397,27 @@
                     email: email,
                     destinationCountry: dest,
                     travelInsuranceType: insType,
-                    marketOptIn: mkt_opt_in
+                    marketOptIn: mkt_opt_in,
+                    leaveDate: leaveDate,
+                    returnDate: returnDate,
+                    adults: $("#travel_adults").val(),
+                    children: $("#travel_children").val(),
+                    oldest: $("#travel_oldest").val()
                 });
             }
             return response;
         } catch (e) {
             return false;
         }
+    }
+    function formatDate(d) {
+        if (typeof d === "string") {
+            var dateStr = d.split("/");
+            d = new Date(dateStr[2], dateStr[1], dateStr[0]);
+        }
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+        return (day < 10 ? "0" : "") + day + "/" + (month < 10 ? "0" : "") + month + "/" + d.getFullYear();
     }
     meerkat.modules.register("travel", {
         init: initJourneyEngine,
@@ -393,14 +430,16 @@
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $firstname, $surname, $email, $postcodeDetails, $productDetailsField, $marketing, currentJourney;
     function applyEventListeners() {
-        $marketing.on("change", function() {
-            if ($(this).is(":checked")) {
-                $email.attr("required", "required").valid();
-                showHidePostcodeField();
-            } else {
-                $email.removeAttr("required").valid();
-            }
-        });
+        if (currentJourney != 7) {
+            $marketing.on("change", function() {
+                if ($(this).is(":checked")) {
+                    $email.attr("required", "required").valid();
+                    showHidePostcodeField();
+                } else {
+                    $email.removeAttr("required").valid();
+                }
+            });
+        }
         $email.on("blur", function() {
             showHidePostcodeField();
         });
@@ -445,7 +484,9 @@
             $postcodeDetails = $(".postcodeDetails");
             $productDetailsField = $postcodeDetails.find("#travel_location");
             currentJourney = meerkat.modules.tracking.getCurrentJourney();
-            $email.removeAttr("required");
+            if (currentJourney != 7) {
+                $email.removeAttr("required");
+            }
             applyEventListeners();
         });
     }
