@@ -40,8 +40,6 @@ var Track_Life = {
 				var postcode = 		$("#life_primary_postCode").val();
 				var state = 		$("#life_primary_state").val();
 			var email = 		$("#life_contactDetails_email").val();
-			var ok_to_call = 	$('input[name=life_contactDetails_call]:checked', '#mainform').val() == "Y" ? "Y" : "N";
-			var mkt_opt_in = 	$("#life_contactDetails_optIn").is(":checked") ? "Y" : "N";		
 			
 				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) );
 
@@ -55,9 +53,7 @@ var Track_Life = {
 					email: 					email,
 					emailID:			    null,
 			    postCode: 				postcode,
-			    state: 					state,
-			    marketOptIn: 			mkt_opt_in,
-			    okToCall: 				ok_to_call
+					state: 					state
 			};
 			
 				Track.runTrackingCall('trackQuoteForms', fields);
@@ -138,6 +134,17 @@ var Track_Life = {
 					transactionID: 			product.transaction_id,
 					productID: 				product.product_id
 				});
+		};
+		
+		Track.onContactDetailsCollected = function(splitTest) {
+			splitTest = (splitTest && splitTest != "0") ? splitTest : null;
+			
+			Track.runTrackingCall('trackContactDetailsCollected', {
+				currentJourney: splitTest,
+				emailAddress: $('#life_contactDetails_email').val() ? "Y" : "N",
+				okToCall: $('#life_contactDetails_contactNumberinput').val() ? "Y" : "N",
+				marketOptIn: $("#life_contactDetails_optIn").is(":checked") ? "Y" : "N"
+			});
 		};
 			}
 };

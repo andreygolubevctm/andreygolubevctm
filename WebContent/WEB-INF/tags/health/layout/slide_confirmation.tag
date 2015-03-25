@@ -62,11 +62,11 @@
 					<ui:bubble variant="info" className="">
 						{{ if ( typeof pending !== "undefined" && pending ) { }}
 							<h2>Your application is being processed.</h2>
-							<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong><content:get key="healthCallCentreHelpNumber"/></strong>.
+							<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumberApplication"/></strong>.
 						{{ } else if( whatsNext ) { }}
 							<h2>Success!</h2>
 							<p>Your health insurance application is complete and has been submitted to {{= info.providerName }} for processing. Thanks for comparing with <content:get key="brandDisplayName"/>.</p>
-							<p>If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong><content:get key="healthCallCentreHelpNumber"/></strong>.
+							<p>If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumberApplication"/></strong>.
 						{{ } }}
 					</ui:bubble>
 
@@ -90,7 +90,7 @@
 					{{ if ( typeof pending !== "undefined" && pending ) { }}
 						<h2 class="text-hospital">Your application is currently being processed.</h2>
 						<p>
-							We will be in contact with you should we require further information to complete your application. Once your application has been completed you will receive a confirmation email. If you have any questions about your purchased policy call us on: <content:get key="healthCallCentreHelpNumber"/>
+							We will be in contact with you should we require further information to complete your application. Once your application has been completed you will receive a confirmation email. If you have any questions about your purchased policy call us on: <span class="callCentreHelpNumber"><content:get key="callCentreHelpNumberApplication"/></span>
 						</p>
 					{{ } else if( whatsNext ) { }}
 						<h2 class="text-hospital">Your application has been submitted to {{= info.providerName }} for processing. This is what happens next...</h2>

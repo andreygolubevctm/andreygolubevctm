@@ -3,24 +3,25 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 						required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
-<%@ attribute name="type" 						required="true"	 rtexprvalue="true"	 description="the address type R=Residential P=Postal" %>
+<%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath" %>
+<%@ attribute name="type" required="true" rtexprvalue="true" description="the address type R=Residential P=Postal" %>
 
 <%-- VARIABLES --%>
-<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-<c:set var="postcode" 		value="${name}_postcode" />
-<c:set var="streetSearch" 	value="${name}_streetSearch" />
-<c:set var="address" 		value="${data.node[xpath]}" />
+<c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:set var="postcode" value="${name}_postcode" />
+<c:set var="autofilllessSearchXpath" value="quote_risk" />
+<c:set var="address" value="${data.node[xpath]}" />
 
 <go:script href="common/javascript/elastic_address.js" marker="js-href"/>
 
 <div id="elasticSearchTypeaheadComponent">
 
 	<%-- STREET-SEARCH (ELASTIC) --%>
-	<c:set var="fieldXpath" value="${xpath}/streetSearch" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Street Address" id="${name}_streetSearchRow">
+	<!-- Since Chrome now ignores the autofill="off" param we can't have address or street in the name/id of the search field. Thanks Chrome... -->
+	<c:set var="fieldXpath" value="${autofilllessSearchXpath}/autofilllessSearch" />
+	<form_new:row fieldXpath="${fieldXpath}" label="Street Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
 		<c:set var="placeholder" value="e.g. 5/20 Sample St" />
-		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading sessioncamexclude" title="the street address" placeHolder="${placeholder}" required="false" />
+		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address" placeHolder="${placeholder}" required="false" />
 	</form_new:row>
 
 	<%-- POSTCODE --%>
@@ -132,13 +133,13 @@
 </div>
 
 <%-- Custom validation for address --%>
-<go:validate selector="${name}_streetSearch"	rule="validStreetSearch"	parm="'${name}'"	message="Please select a valid address"/>
-<go:validate selector="${name}_postCode"		rule="validAddress"			parm="'${name}'"	message="Please enter a valid postcode"/>
-<go:validate selector="${name}_suburb"			rule="validSuburb"			parm="'${name}'"	message="Please select a suburb"/>
-<go:validate selector="${name}_nonStdStreet"	rule="validAddress"			parm="'${name}'"	message="Please enter the residential street"/>
-<go:validate selector="${name}_streetNum"		rule="validAddress"			parm="'${name}'"	message="Please enter a valid street number"/>
-<go:validate selector="${name}_unitShop"		rule="validAddress"			parm="'${name}'"	message="Please enter a valid unit/shop/level"/>
-<go:validate selector="${name}_unitType"		rule="validAddress"			parm="'${name}'"	message="Please select a unit type"/>
+<go:validate selector="${autofilllessSearchXpath}_autofilllessSearch" rule="validAutofilllessSearch" parm="'${name}'" message="Please select a valid address"/>
+<go:validate selector="${name}_postCode" rule="validAddress" parm="'${name}'" message="Please enter a valid postcode"/>
+<go:validate selector="${name}_suburb" rule="validSuburb" parm="'${name}'" message="Please select a suburb"/>
+<go:validate selector="${name}_nonStdStreet" rule="validAddress" parm="'${name}'" message="Please enter the residential street"/>
+<go:validate selector="${name}_streetNum" rule="validAddress" parm="'${name}'" message="Please enter a valid street number"/>
+<go:validate selector="${name}_unitShop" rule="validAddress" parm="'${name}'" message="Please enter a valid unit/shop/level"/>
+<go:validate selector="${name}_unitType" rule="validAddress" parm="'${name}'" message="Please select a unit type"/>
 
 <go:script marker="onready">
 	<c:choose>

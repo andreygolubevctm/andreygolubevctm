@@ -5,6 +5,9 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
 
+<%-- VARIABLES --%>
+<c:set var="name"  value="${go:nameFromXpath(xpath)}" />
+
 <%-- Test if we have a commencement date already set - if not then set to today--%>
 <c:if test="${empty data.quote.options.commencementDate}">
 	<jsp:useBean id="now" class="java.util.Date" />
@@ -12,7 +15,7 @@
 	<go:setData dataVar="data" xpath="${xpath}" value="${commencementDate}" />
 </c:if>
 
-<form_new:fieldset legend="Your preferred date to start the insurance" id="${xpath}FieldSet">
+<form_new:fieldset legend="Your preferred date to start the insurance" id="${name}FieldSet">
 	<form_new:row label="Commencement date">
 		<field_new:commencement_date xpath="${xpath}" mode="separated" includeMobile="false" />
 	</form_new:row>

@@ -113,7 +113,7 @@
 		<div class="col-sm-4 hidden-xs">
 			<ui:bubble variant="chatty">
 				<p>Please be aware that product availability may change from time to time, so buy today to ensure you lock in your first choice!</p>
-					<p><strong>Buy online or call us on <span class="noWrap">${callCentreNumber}</span></strong></p>
+					<p><strong>Buy online or call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></strong></p>
 				<p><small>Our Australian based call centre hours are<br><strong><form:scrape id='135'/></strong></small></p>
 			</ui:bubble>
 		</div>

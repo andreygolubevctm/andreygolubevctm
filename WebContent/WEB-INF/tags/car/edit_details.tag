@@ -142,7 +142,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- SessionCam:Hide -->
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-4 clear-left-md clear-left-sm">
 			<div class="accordion-heading visible-xs">
 				<a href="#details" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
@@ -161,7 +160,7 @@
 						<div class="col-xs-12 col-sm-6">
 							<p class="detail-title">Regular Driver</p>
 							<ul>
-								<li><span data-source="#quote_drivers_regular_gender" data-type="radiogroup"></span> <span data-source="#quote_drivers_regular_dob"></span></li>
+								<li><!-- SessionCam:Hide --><span data-source="#quote_drivers_regular_gender" data-type="radiogroup"></span> <span data-source="#quote_drivers_regular_dob"></span><!-- /SessionCam:Hide --></li>
 								<li><span data-source="#quote_drivers_regular_employmentStatus"></span></li>
 								<li><span data-source="#quote_drivers_regular_ncd" data-callback="meerkat.modules.carEditDetails.formatNcd"></span></li>
 							</ul>
@@ -170,7 +169,7 @@
 							<p class="detail-title">Youngest Driver</p>
 							{{ if(youngDriver == 'Y') { }}
 							<ul>
-								<li><span data-source="#quote_drivers_young_gender" data-type="radiogroup"></span> <span data-source="#quote_drivers_young_dob"></span></li>
+								<li><!-- SessionCam:Hide --><span data-source="#quote_drivers_young_gender" data-type="radiogroup"></span> <span data-source="#quote_drivers_young_dob"></span><!-- /SessionCam:Hide --></li>
 								<li><span data-source="#quote_options_driverOption" data-callback="meerkat.modules.carEditDetails.driverOptin"></span></li>
 							</ul>
 							{{ } else { }}
@@ -205,26 +204,29 @@
 						</div>
 						<div class="col-xs-12 col-sm-6">
 							<p class="detail-title">Parking Your Car</p>
+							<!-- SessionCam:Hide -->
 							<ul>
 								<li><span data-source="#quote_riskAddress_fullAddressLineOne"></span></li>
 								<li><span data-source="#quote_riskAddress_suburbName"></span> <span data-source="#quote_riskAddress_state"></span> <span data-source="#quote_riskAddress_postCode"></span></li>
 							</ul>
+							<!-- /SessionCam:Hide -->
 						</div>
 						<div class="col-xs-12 col-sm-6">
 							<p class="detail-title">Contact Details</p>
+							<!-- SessionCam:Hide -->
 							<ul>
 								<li><span data-source="#quote_drivers_regular_firstname" data-type="optional"></span> <span data-source="#quote_drivers_regular_surname" data-type="optional"></span></li>
 								<li><span data-source="#quote_contact_email" data-type="optional"></span></li>
 								<li><span data-source="#quote_contact_phoneinput" data-type="optional"></span></li>
 								<li class="noDetailsEntered"><span>Not specified</span></li>
 							</ul>
+							<!-- /SessionCam:Hide -->
 						</div>
 					</div>
 					<div class="clearfix"></div>
 				</div>
 			</div>
 		</div>
-		<!-- /SessionCam:Hide -->
 		<div class="clearfix"></div>
 	</div>
 

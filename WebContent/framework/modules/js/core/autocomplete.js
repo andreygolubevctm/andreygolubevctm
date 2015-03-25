@@ -32,7 +32,6 @@
 				params = {
 					name: $component.attr('name'),
 					remote: {
-						rateLimitWait: 100,
 						beforeSend: function(jqXhr, settings) {
 							autocompleteBeforeSend($component);
 							jqXhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -40,7 +39,7 @@
 							settings.hasContent = true;
 							settings.url = url;
 
-							var $addressField = $('#quote_riskAddress_streetSearch');
+							var $addressField = $('#quote_risk_autofilllessSearch');
 							var query = $addressField.val();
 							settings.data = $.param({ query: decodeURI(query) });
 						},
@@ -138,7 +137,7 @@
 			typeaheadParams.valueKey = 'value';
 			typeaheadParams.template = _.template('<p>{{= highlight }}</p>');
 
-			if ($element.hasClass('typeahead-streetSearch')) {
+			if ($element.hasClass('typeahead-autofilllessSearch') || $element.hasClass('typeahead-streetSearch')) {
 				// If no results, inject a message.
 				// Improve this later after typeahead 0.10 is released https://github.com/twitter/typeahead.js/issues/253
 				typeaheadParams.remote.filter = function(parsedResponse) {
@@ -166,11 +165,13 @@
 				$element.bind('typeahead:selected', function catchEmptyValue(event, datum, name) {
 					if (datum.hasOwnProperty('value') && datum.value === 'Type your address...') {
 						var id = '';
-						if (event.target && event.target.id) {
-							id = event.target.id.replace('_streetSearch', '');
+						if (!elasticSearch) {
+							if (event.target && event.target.id) {
+								id = event.target.id.replace('_streetSearch', '');
+							}
 						}
-
 						meerkat.messaging.publish(moduleEvents.CANT_FIND_ADDRESS, { fieldgroup: id });
+
 					} else if (elasticSearch) {
 						meerkat.messaging.publish(moduleEvents.ELASTIC_SEARCH_COMPLETE, datum.dpId );
 						// Validate the element now the user has made a selection.

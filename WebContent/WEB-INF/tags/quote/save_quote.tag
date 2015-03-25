@@ -1053,7 +1053,7 @@ SaveQuote = {
 		<div class="promotional callUsNow">
 				<content:get key="brandDisplayName"/> product availability can change from time to time - to ensure your first choice is still available buy today, either on-line or call us on
 			<br />
-				<strong><span class="noWrap">${callCentreNumber}</span></strong>
+				<strong><span class="noWrap callCentreNumber">${callCentreNumber}</span></strong>
 </div>
 	</c:if>
 	</c:if>

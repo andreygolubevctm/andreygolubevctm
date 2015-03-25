@@ -74,6 +74,7 @@
 						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 						<provider><xsl:value-of select="$partnerName"/></provider>
 						<trackCode>65</trackCode>
+						<name><xsl:value-of select="$partnerName"/><xsl:text> </xsl:text><xsl:value-of select="ns3:policy-name"/></name>
 						<des><xsl:value-of select="$partnerName"/><xsl:text> </xsl:text><xsl:value-of select="ns3:policy-name"/></des>
 						<price><xsl:call-template name="removeDollarFormatting">
 							<xsl:with-param name="oldDollarValue"><xsl:value-of select="ns3:policy-price" /></xsl:with-param>

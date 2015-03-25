@@ -22,7 +22,7 @@ var healthFunds_AHM = {
     set: function() {
         var dependantsString = "ahm Health Insurance provides cover for your children up to the age of 21 plus students who are single and studying full time aged between 21 and 25. Adult dependants outside this criteria can be covered by an additional premium on certain covers";
         if (meerkat.site.content.callCentreNumber !== "") {
-            dependantsString += " so please call " + meerkat.site.content.brandDisplayName + " on " + meerkat.site.content.callCentreNumber;
+            dependantsString += " so please call " + meerkat.site.content.brandDisplayName + ' on <span class="callCentreNumber">' + meerkat.site.content.callCentreNumberApplication + "</span>";
             if (meerkat.site.liveChat.enabled) dependantsString += " or chat to our consultants online";
             dependantsString += " to discuss your health cover needs.";
         } else {
@@ -1601,19 +1601,13 @@ creditCardDetails = {
 };
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
-    var moduleEvents = {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, moduleEvents = {
         health: {
             CHANGE_MAY_AFFECT_PREMIUM: "CHANGE_MAY_AFFECT_PREMIUM"
         },
         WEBAPP_LOCK: "WEBAPP_LOCK",
         WEBAPP_UNLOCK: "WEBAPP_UNLOCK"
-    };
-    var hasSeenResultsScreen = false;
-    var rates = null;
-    var steps = null;
-    var stateSubmitInProgress = false;
-    var isInAntiHawkingTimeframe = false;
+    }, hasSeenResultsScreen = false, rates = null, steps = null, stateSubmitInProgress = false, isInAntiHawkingTimeframe = false;
     function initJourneyEngine() {
         if (meerkat.site.pageAction === "confirmation") {
             meerkat.modules.journeyEngine.configure(null);
@@ -1734,6 +1728,9 @@ creditCardDetails = {
                         } else {
                             $hawkingOptinTextPlaceholder.html("");
                         }
+                    },
+                    onAfterEnter: function(event) {
+                        meerkat.modules.healthPhoneNumber.changePhoneNumber(steps.startStep.navigationId);
                     }
                 });
             }
@@ -2042,7 +2039,7 @@ creditCardDetails = {
                     if ($firstnameField.val() === "") $firstnameField.val($("#health_application_primary_firstname").val());
                     if ($surnameField.val() === "") $surnameField.val($("#health_application_primary_surname").val());
                     var product = meerkat.modules.healthResults.getSelectedProduct();
-                    var mustShowList = [ "GMHBA", "Frank", "Budget Direct", "Bupa" ];
+                    var mustShowList = [ "GMHBA", "Frank", "Budget Direct", "Bupa", "HIF" ];
                     if ($("input[name=health_healthCover_rebate]:checked").val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
                         $("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
                     } else {
@@ -2462,7 +2459,7 @@ creditCardDetails = {
             }
         } else {
             if (meerkat.site.isCallCentreUser === false) {
-                msg = "Please contact us on " + meerkat.site.content.callCentreHelpNumber + " for assistance.";
+                msg = 'Please contact us on <span class="callCentreHelpNumber">' + meerkat.site.content.callCentreHelpNumberApplication + "</span> for assistance.";
             }
             meerkat.modules.errorHandling.error({
                 message: "<strong>Application failed:</strong><br/>" + msg,
@@ -3434,6 +3431,7 @@ creditCardDetails = {
                     });
                 }
             }, totalDuration);
+            meerkat.modules.healthPhoneNumber.changePhoneNumber();
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: "trackProductView",
                 object: {
@@ -3487,6 +3485,7 @@ creditCardDetails = {
             $(".more-info-content .moreInfoRightColumn > .dualPricing").insertAfter($(".more-info-content .moreInfoMainDetails"));
             isModalOpen = true;
             $(".more-info-content").show();
+            meerkat.modules.healthPhoneNumber.changePhoneNumber(true);
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: "trackProductView",
                 object: {
@@ -3545,7 +3544,7 @@ creditCardDetails = {
                 } else {
                     meerkat.modules.errorHandling.error({
                         errorLevel: "warning",
-                        message: "Oops! Something seems to have gone wrong. Please try again by re-entering your email address or " + "alternatively contact our call centre on " + meerkat.site.content.callCentreHelpNumber + " and they'll be able to assist you further.",
+                        message: "Oops! Something seems to have gone wrong. Please try again by re-entering your email address or " + 'alternatively contact our call centre on <span class="callCentreHelpNumber">' + meerkat.site.content.callCentreHelpNumber + "</span> and they'll be able to assist you further.",
                         page: "healthMoreInfo.js:onSendBrochuresCallback",
                         description: result.message,
                         data: product
@@ -3848,7 +3847,7 @@ creditCardDetails = {
         timeout = _.delay(function onOpenTimout() {
             meerkat.messaging.publish(meerkatEvents.paymentGateway.FAIL);
         }, 45e3);
-        var iframe = '<iframe width="100%" height="390" frameBorder="0" src="' + settings.src + "external/hambs/nab_ctm_iframe.jsp?src=" + settings.hambsIframe.src + "&remote=" + settings.hambsIframe.remote + "&b=" + settings.brandCode + '"></iframe>';
+        var iframe = '<iframe width="100%" height="390" frameBorder="0" src="' + settings.src + "external/hambs/nab_ctm_iframe.jsp?providerCode=" + settings.providerCode + "&b=" + settings.brandCode + '"></iframe>';
         meerkat.modules.dialogs.changeContent(id, iframe);
         if (window.addEventListener) {
             window.addEventListener("message", onMessage, false);
@@ -4290,7 +4289,7 @@ creditCardDetails = {
         _.defer(function() {
             meerkat.modules.healthResults.getProductData(function(data) {
                 if (data === null) {
-                    var notAvailableHtml = "<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on " + meerkat.site.content.callCentreHelpNumber + " for assistance.</p>" + '<div class="col-sm-offset-4 col-xs-12 col-sm-4">' + '<a class="btn btn-next btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' + '<a class="btn btn-cta btn-block visible-xs" href="tel:' + meerkat.site.content.callCentreHelpNumber + '">Call Us Now</a>' + "</div>";
+                    var notAvailableHtml = '<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on <span class="callCentreHelpNumber">' + meerkat.site.content.callCentreHelpNumber + "</span> for assistance.</p>" + '<div class="col-sm-offset-4 col-xs-12 col-sm-4">' + '<a class="btn btn-next btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' + '<a class="btn btn-cta btn-block visible-xs" href="tel:' + meerkat.site.content.callCentreHelpNumber + '">Call Us Now</a>' + "</div>";
                     modalId = meerkat.modules.dialogs.show({
                         title: "Policy not available",
                         htmlContent: notAvailableHtml
@@ -4390,6 +4389,38 @@ creditCardDetails = {
         setCoverStartRange: setCoverStartRange,
         getSelectedFrequency: getSelectedFrequency,
         getSelectedPaymentMethod: getSelectedPaymentMethod
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, moduleEvents = {}, callCentreNumber = ".callCentreNumber", applicationSteps = [ "apply", "payment" ];
+    function init() {
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChangeChangePhone(step) {
+            _.defer(function() {
+                changePhoneNumber(false);
+            });
+        });
+    }
+    function changePhoneNumber(isModal) {
+        var $callCentreFields = $(callCentreNumber), $callCentreHelpFields = $(".callCentreHelpNumber");
+        var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
+        if (isModal === true) {
+            $callCentreFields = $(".more-info-content").find(callCentreNumber);
+        }
+        if (applicationSteps.indexOf(navigationId) > -1) {
+            $callCentreFields.text(meerkat.site.content.callCentreNumberApplication);
+            $callCentreFields.closest(".callCentreNumberClick").attr("href", "tel:" + meerkat.site.content.callCentreNumberApplication);
+            $callCentreHelpFields.text(meerkat.site.content.callCentreHelpNumberApplication);
+        } else {
+            $callCentreFields.text(meerkat.site.content.callCentreNumber);
+            $callCentreFields.closest(".callCentreNumberClick").attr("href", "tel:" + meerkat.site.content.callCentreNumber);
+            $callCentreHelpFields.text(meerkat.site.content.callCentreHelpNumber);
+        }
+    }
+    meerkat.modules.register("healthPhoneNumber", {
+        init: init,
+        events: moduleEvents,
+        changePhoneNumber: changePhoneNumber
     });
 })(jQuery);
 
@@ -4589,11 +4620,9 @@ creditCardDetails = {
 })(jQuery);
 
 (function($) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $resultsLowNumberMessage;
-    var templates = {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $resultsLowNumberMessage, $component, selectedProduct = null, previousBreakpoint, best_price_count = 5, isLhcApplicable = "N", premiumIncreaseContent = $(".healthPremiumIncreaseContent"), templates = {
         premiumsPopOver: "{{ if(product.premium.hasOwnProperty(frequency)) { }}" + '<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' + "<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> " + "<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> " + "<strong>Base price: </strong>{{= product.premium[frequency].base }}<br/> " + "{{ } }}" + "<hr/> " + "{{ if(product.premium.hasOwnProperty('fortnightly')) { }}" + "<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> " + "{{ } }}" + "{{ if(product.premium.hasOwnProperty('monthly')) { }}" + "<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> " + "{{ } }}" + "{{ if(product.premium.hasOwnProperty('annually')) { }}" + "<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> " + "{{ } }}" + "<hr/> " + "{{ if(product.hasOwnProperty('info')) { }}" + "<strong>Name: </strong>{{=product.info.productTitle}}<br/> " + "<strong>Product Code: </strong>{{=product.info.productCode}}<br/> " + "<strong>Product ID: </strong>{{=product.productId}}<br/>" + "<strong>State: </strong>{{=product.info.State}}<br/> " + "<strong>Membership Type: </strong>{{=product.info.Category}}" + "{{ } }}"
-    };
-    var moduleEvents = {
+    }, moduleEvents = {
         healthResults: {
             SELECTED_PRODUCT_CHANGED: "SELECTED_PRODUCT_CHANGED",
             SELECTED_PRODUCT_RESET: "SELECTED_PRODUCT_RESET",
@@ -4603,11 +4632,6 @@ creditCardDetails = {
         WEBAPP_UNLOCK: "WEBAPP_UNLOCK",
         RESULTS_ERROR: "RESULTS_ERROR"
     };
-    var $component;
-    var selectedProduct = null;
-    var previousBreakpoint;
-    var best_price_count = 5;
-    var isLhcApplicable = "N";
     function initPage() {
         initResults();
         initCompare();
@@ -4886,9 +4910,11 @@ creditCardDetails = {
             Compare.reset();
             meerkat.modules.utilities.scrollPageTo($("header"));
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
-            _.defer(function() {
-                $(".healthPremiumIncreaseContent").click();
-            });
+            if (premiumIncreaseContent.length > 0) {
+                _.defer(function() {
+                    premiumIncreaseContent.click();
+                });
+            }
         });
         $(document).on("resultsDataReady", function() {
             updateBasketCount();
@@ -4932,11 +4958,11 @@ creditCardDetails = {
                     var htmlContent = "";
                     if (productUpdated) {
                         meerkat.modules.healthResults.setSelectedProduct(productUpdated);
-                        htmlContent = "Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Please note that for this particular product, " + "the price and/or features have changed since the last time you were comparing. If you need further assistance, " + "you can chat to one of our Health Insurance Specialists on " + meerkat.site.content.callCentreHelpNumber + ", and they will be able to help you with your options.";
+                        htmlContent = "Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Please note that for this particular product, " + "the price and/or features have changed since the last time you were comparing. If you need further assistance, " + 'you can chat to one of our Health Insurance Specialists on <span class="callCentreHelpNumber">' + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
                     } else {
                         $("#health_application_productId").val("");
                         $("#health_application_productTitle").val("");
-                        htmlContent = "Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Unfortunately the product you're looking for is no longer available. " + "Please head to your results page to compare available policies or alternatively, " + "chat to one of our Health Insurance Specialists on " + meerkat.site.content.callCentreHelpNumber + ", and they will be able to help you with your options.";
+                        htmlContent = "Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Unfortunately the product you're looking for is no longer available. " + "Please head to your results page to compare available policies or alternatively, " + 'chat to one of our Health Insurance Specialists on <span class="callCentreHelpNumber">' + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
                     }
                     meerkat.modules.dialogs.show({
                         title: "Just a quick note",

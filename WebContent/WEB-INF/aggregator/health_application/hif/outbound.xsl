@@ -175,7 +175,7 @@
 					<xsl:with-param name="eurDate" select="application/primary/dob" />
 				</xsl:call-template>
 			</Birthdate>
-			<xsl:if test="healthCover/rebate = 'Y'">
+
 								<xsl:variable name="medicareFirstname">
 									<xsl:value-of select="translate(substring(payment/medicare/firstName, 1, 1), $LOWERCASE, $UPPERCASE)" />
 									<xsl:value-of select="translate(substring(payment/medicare/firstName, 2), $UPPERCASE, $LOWERCASE)" />
@@ -185,16 +185,15 @@
 									<xsl:value-of select="translate(substring(payment/medicare/surname, 2), $UPPERCASE, $LOWERCASE)" />
 								</xsl:variable>
 
-				<MediCardNo><xsl:value-of select="translate(payment/medicare/number,' ','')" /></MediCardNo>
-				<MediCardExpDate>
-						<xsl:text>20</xsl:text><xsl:value-of select="payment/medicare/expiry/cardExpiryYear" />-<xsl:value-of select="payment/medicare/expiry/cardExpiryMonth" /><xsl:text>-01</xsl:text>
-				</MediCardExpDate>
+							<MediCardNo><xsl:value-of select="translate(payment/medicare/number,' ','')" /></MediCardNo>
+							<MediCardExpDate>
+								<xsl:text>20</xsl:text><xsl:value-of select="payment/medicare/expiry/cardExpiryYear" />-<xsl:value-of select="payment/medicare/expiry/cardExpiryMonth" /><xsl:text>-01</xsl:text>
+							</MediCardExpDate>
 								<MediCardFirstName><xsl:value-of select="$medicareFirstname" /></MediCardFirstName>
 								<xsl:if test="payment/medicare/middleInitial!= ''">
-				<MediCardSecondName><xsl:value-of select="payment/medicare/middleInitial" /></MediCardSecondName>
+								<MediCardSecondName><xsl:value-of select="payment/medicare/middleInitial" /></MediCardSecondName>
 								</xsl:if>
 								<MediCardSurname><xsl:value-of select="$medicareSurname" /></MediCardSurname>
-			</xsl:if>
 
 							<IsRebateApplicant>
 								<xsl:choose>

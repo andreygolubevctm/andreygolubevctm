@@ -15,7 +15,8 @@
 		specialConditionContent = '', // content for the special condition dialog
 		hasSpecialConditions = false, // to display the special condition dialog
 		callbackModalId, // the id of the currently displayed callback modal
-		scrollPosition; //The position of the page on the modal display
+		scrollPosition, //The position of the page on the modal display
+		activeCallModal;
 
 	/**
 	 * Specify the options within here to pass to meerkat.modules.moreInfo.
@@ -80,6 +81,9 @@
 			if(obj.available !== "Y")
 				return;
 
+			activeCallModal = $el.attr('data-callback-toggle');
+			var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
+
 			var htmlContent = templateCallback(obj);
 			var modalOptions = {
 				htmlContent: htmlContent,
@@ -88,7 +92,8 @@
 				closeOnHashChange: true,
 				openOnHashChange: false,
 				onOpen: function (modalId) {
-					$('.' + $el.attr('data-callback-toggle')).show();
+
+					$('.' + activeCallModal).show();
 					fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $('#'+modalId));
 
 					setupCallbackForm();
@@ -99,6 +104,11 @@
 						trackCallBack();// Add CallBack request event to supertag
 					}
 
+					meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+
+				},
+				onClose: function(modalId) {
+					meerkat.modules.sessionCamHelper.setMoreInfoModal();
 				}
 			};
 
@@ -117,7 +127,10 @@
 			event.stopPropagation();
 			var $el = $(this);
 
-			switch ($el.attr('data-callback-toggle')) {
+			activeCallModal = $el.attr('data-callback-toggle');
+			var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
+
+			switch (activeCallModal) {
 			case 'calldirect':
 				$('.callback').hide();
 				$('.calldirect').show();
@@ -132,6 +145,9 @@
 
 			// Fix the height of the sidebar
 			fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
+
+			// Update session cam virtual page
+			meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
 
 		}).on('click', '.btn-submit-callback', function (event) {
 			event.preventDefault();
@@ -277,7 +293,14 @@
 						hashId: 'call-back-success',
 						openOnHashChange: false,
 						closeOnHashChange: true,
+						onOpen: function(modalId) {
+							var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal + "-submitted");
+							meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+						},
 						onClose: function (modalId) {
+							var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
+							meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+
 							$('.modal').modal('hide');
 							if (meerkat.modules.moreInfo.isBridgingPageOpen()) {
 								meerkat.modules.moreInfo.close();

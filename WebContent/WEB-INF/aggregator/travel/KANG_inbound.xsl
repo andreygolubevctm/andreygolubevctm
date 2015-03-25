@@ -79,6 +79,7 @@
 						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 						<provider><xsl:value-of select="$partnerName"/></provider>
 						<trackCode>62</trackCode>
+						<name><xsl:value-of select="$partnerName"/><xsl:text> </xsl:text><xsl:value-of select="ns2:policy-name"/> <xsl:if test="ns2:policy-id = 10 or ns2:policy-id = 11 and $request/travel/policyType = 'A'">(<xsl:value-of select="ns2:max-trip-length" /><xsl:text> </xsl:text><xsl:value-of select="translate(ns2:max-trip-type, $uppercase, $smallcase)" />)</xsl:if></name>
 						<des><xsl:value-of select="$partnerName"/><xsl:text> </xsl:text><xsl:value-of select="ns2:policy-name"/> <xsl:if test="ns2:policy-id = 10 or ns2:policy-id = 11 and $request/travel/policyType = 'A'">&lt;br&gt; &lt;span class=&quot;daysPerTrip&quot;&gt;(<xsl:value-of select="ns2:max-trip-length" /><xsl:text> </xsl:text><xsl:value-of select="translate(ns2:max-trip-type, $uppercase, $smallcase)" />)&lt;/span&gt;</xsl:if></des>
 						<price><xsl:call-template name="removeDollarFormatting">
 							<xsl:with-param name="oldDollarValue"><xsl:value-of select="ns2:policy-price" /></xsl:with-param>

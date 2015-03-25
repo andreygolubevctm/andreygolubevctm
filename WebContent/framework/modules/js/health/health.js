@@ -1,21 +1,19 @@
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
-		meerkatEvents = meerkat.modules.events;
-
-	var moduleEvents = {
+	meerkatEvents = meerkat.modules.events,
+	moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
 			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
-		};
-
-	var hasSeenResultsScreen = false;
-	var rates = null;
-	var steps = null;
-	var stateSubmitInProgress = false;
-	var isInAntiHawkingTimeframe = false;
+		},
+	hasSeenResultsScreen = false,
+	rates = null,
+	steps = null,
+	stateSubmitInProgress = false,
+	isInAntiHawkingTimeframe = false;
 
 	function initJourneyEngine(){
 
@@ -183,6 +181,9 @@
 							$hawkingOptinTextPlaceholder.html("");
 						}
 
+			},
+			onAfterEnter: function(event) {
+					meerkat.modules.healthPhoneNumber.changePhoneNumber(steps.startStep.navigationId);
 					}
 				});
 
@@ -365,7 +366,6 @@
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
 				}
-
 			},
 			onAfterEnter: function(event){
 
@@ -516,7 +516,6 @@
 					$("#health_payment_details_start_calendar").datepicker('setStartDate', min).datepicker('setEndDate', max);
 
 				}
-
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
 				// Need to call this after the form is visible because of the show/hiding of buttons based on visibility.
@@ -606,7 +605,7 @@
 					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF"];
 
 					if( $('input[name=health_healthCover_rebate]:checked').val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
@@ -1143,7 +1142,7 @@
 
 			// Only show the real error to the Call Centre operator
 			if (meerkat.site.isCallCentreUser === false) {
-				msg = "Please contact us on "+meerkat.site.content.callCentreHelpNumber+" for assistance.";
+				msg = "Please contact us on <span class=\"callCentreHelpNumber\">"+meerkat.site.content.callCentreHelpNumberApplication+"</span> for assistance.";
 			}
 			meerkat.modules.errorHandling.error({
 				message:		"<strong>Application failed:</strong><br/>" + msg,

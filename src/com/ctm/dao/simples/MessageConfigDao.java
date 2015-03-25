@@ -21,7 +21,7 @@ public class MessageConfigDao {
 
 		try {
 			final PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-					"CALL simples.message_check_config(?,?);"
+					"SELECT simples.isInAntiHawkingTimeframe(?, ?);"
 			);
 
 			stmt.setTimestamp(1, new java.sql.Timestamp(date.getTime()));
@@ -30,11 +30,11 @@ public class MessageConfigDao {
 			ResultSet resultSet = stmt.executeQuery();
 
 			while (resultSet.next()) {
-				return resultSet.getBoolean("isInAntiHawkingTimeframe");
+				return resultSet.getBoolean(1);
 			}
 		}
 		catch (SQLException | NamingException e) {
-			logger.error("unable to check message config.", e);
+			logger.error("unable to check hawking status.", e);
 			throw new DaoException(e.getMessage(), e);
 		}
 		finally {

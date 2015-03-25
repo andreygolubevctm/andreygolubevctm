@@ -24,6 +24,8 @@
 
 	var selectorHTML = null;
 
+	var sessionCamStep = null;
+
 	function updateRestrictAgeSelector() {
 
 		var ageRegular = meerkat.modules.utilities.returnAge($(elements.reg_dob).val(), true);
@@ -85,13 +87,32 @@
 		});
 	}
 
-	function toggleVisibleContent() {
+	function isYoungDriverSelected() {
 
 		var $e = $(elements.labels).find("input:checked");
 
 		if(!_.isEmpty($e)) {
-			if($e.val() === 'Y') {
-				$(elements.toggle).slideDown();
+			return $e.val() === 'Y'
+		}
+
+		return false;
+	}
+
+	function toggleVisibleContent(updateVirtualPage) {
+
+		updateVirtualPage = updateVirtualPage || false;
+
+		var $e = $(elements.labels).find("input:checked");
+
+		if(!_.isEmpty($e)) {
+			if(isYoungDriverSelected()) {
+				$(elements.toggle).slideDown('fast', function() {
+					if(updateVirtualPage) {
+						var sessionCamStep = getSessionCamStep();
+						sessionCamStep.navigationId += "-youngdriver";
+						meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+					}
+				});
 			} else {
 				$(elements.toggle).slideUp('fast', function(){
 					var $that = $(this);
@@ -101,6 +122,10 @@
 					$that.find('.has-success').removeClass('has-success');
 					$that.find('.has-error').removeClass('has-error');
 					$that.find('.error-field').remove();
+
+					if(updateVirtualPage) {
+						meerkat.modules.sessionCamHelper.updateVirtualPage(getSessionCamStep());
+					}
 				});
 			}
 		}
@@ -110,27 +135,60 @@
 
 		var self = this;
 
+		// Tell sessionCamHelper to ignore step updates for this step as handled inhouse (aka in this module)
+		meerkat.modules.sessionCamHelper.addStepToIgnoreList("details");
+
+		// When hitting this step ensure the correct virtual page is set
+		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function youngDriverStepOnStepChange(event) {
+			if(event.navigationId == "details") {
+				// Allow for standard step change stuff to finish
+				_.defer(_.bind(toggleVisibleContent, this, true));
+			}
+		});
+
 		$(document).ready(function() {
 
 			// Only init if CAR... obviously...
 			if (meerkat.site.vertical !== "car")
 				return false;
 
-			$(elements.labels + " label").on("click", toggleVisibleContent);
+			$(elements.labels + " label input").on("click", function(e){
+				// Allow for input value to be updated
+				_.defer(_.bind(toggleVisibleContent, this, true));
+			});
+
 			$(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
 
 			captureOptions();
 
 			toggleVisibleContent();
+			// Need to allow time for the currentStep to be populated
+			setTimeout(function(){
+				if(meerkat.modules.journeyEngine.getCurrentStep().navigationId == "details") {
+					var sessionCamStep = getSessionCamStep();
+					if(isYoungDriverSelected()) {
+						sessionCamStep.navigationId += "-youngdriver";
+					}
+					meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+				}
+			},250);
 
 			updateRestrictAgeSelector();
 		});
 
 	}
 
+	function getSessionCamStep() {
+		if(sessionCamStep == null) {
+			sessionCamStep = meerkat.modules.journeyEngine.getCurrentStep();
+		}
+		return _.extend({}, sessionCamStep); // prevent external override
+	}
+
 	meerkat.modules.register("carYoungDrivers", {
 		initCarYoungDrivers : initCarYoungDrivers,
-		events : moduleEvents
+		events : moduleEvents,
+		getSessionCamStep : getSessionCamStep
 	});
 
 })(jQuery);

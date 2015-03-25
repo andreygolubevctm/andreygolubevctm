@@ -25,6 +25,8 @@
 <%-- Call centre numbers --%>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
+<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+
 <%-- HTML --%>
 <layout:journey_engine_page title="Home & Contents Quote">
 
@@ -44,7 +46,7 @@
 						<div class="navbar-text visible-xs">
 							<h4>Do you need a hand?</h4>
 							<h1>
-								<a class="needsclick" href="tel:${callCentreNumber}">Call <span class="noWrap">${callCentreNumber}</span></a>
+								<a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></a>
 							</h1>
 							<p class="small">Our Australian based call centre hours are</p>
 							<p>
@@ -56,7 +58,7 @@
 						<div class="navbar-text hidden-xs" data-livechat="target">
 							<h4>Call us on</h4>
 							<h1>
-								<span class="noWrap">${callCentreNumber}</span>
+								<span class="noWrap callCentreNumber">${callCentreNumber}</span>
 							</h1>
 						</div>
 						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
@@ -92,7 +94,14 @@
 				<span>Edit Details</span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
-						<home_new:edit_details />
+						<c:choose>
+							<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 34) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}">
+								<home_new:edit_details_v2 />
+							</c:when>
+							<c:otherwise>
+								<home_new:edit_details />
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</li>
@@ -199,12 +208,26 @@
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
 
+		<%-- Split Test Flags --%>
+		<c:set var="splitTestA" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 34)}" />
+		<c:set var="splitTestB" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}" />
+
 		<%-- Slides --%>
 		<home_new_layout:slide_cover_type />
 		<home_new_layout:slide_occupancy />
 		<home_new_layout:slide_your_property />
-		<home_new_layout:slide_policy_holders />
-		<home_new_layout:slide_history />
+		<c:choose>
+			<%-- When splittest is ON --%>
+			<c:when test="${splitTestA eq true or splitTestB eq true}">
+				<home_new_layout:slide_history />
+				<home_new_layout:slide_policy_holders />
+			</c:when>
+			<%-- When splittest is OFF --%>
+			<c:otherwise>
+				<home_new_layout:slide_policy_holders />
+				<home_new_layout:slide_history />
+			</c:otherwise>
+		</c:choose>
 		<home_new_layout:slide_results />
 
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />

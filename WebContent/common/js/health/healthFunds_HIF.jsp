@@ -1,18 +1,7 @@
 <%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <session:get settings="true" />
-<% pageContext.setAttribute("newLineChar", "\n"); %>
-<% pageContext.setAttribute("newLineChar2", "\r"); %>
-<% pageContext.setAttribute("aposChar", "'"); %>
-<% pageContext.setAttribute("aposChar2", "\\\\'"); %>
-<% pageContext.setAttribute("slashChar", "\\\\"); %>
-<% pageContext.setAttribute("slashChar2", "\\\\\\\\"); %>
-
-
-<c:import var="config" url="/WEB-INF/aggregator/health_application/hif/config.xml" />
-<x:parse var="configXml" doc="${config}" />
-<c:set var="gatewayURL" scope="page" ><x:out select="$configXml//*[name()='nabGateway']/*[name()='gatewayURL']" /></c:set>
-<c:set var="gatewayDomain" scope="page"><x:out select="$configXml//*[name()='nabGateway']/*[name()='domain']" /></c:set>
+<c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
 
 <%-- Because of cross domain issues with the payment gateway, we always use a CTM iframe to proxy to HAMBS' iframes so we need iframe src URL and hostOrigin to be pulled from CTM's settings (not the base and root URLs of the current brand). --%>
 <c:set var="ctmSettings" value="${settingsService.getPageSettingsByCode('CTM','HEALTH')}"/>
@@ -21,6 +10,7 @@
 	<c:set var="hostOrigin">${fn:substring( hostOrigin, 0, fn:length(hostOrigin)-1 )}</c:set>
 </c:if>
 
+<c:set var="content">
 <%--
 =======================
 HIF
@@ -51,8 +41,6 @@ var healthFunds_HIF = {
 					</form_new:row>
 				</div>
 			</c:set>
-			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
-
 			$('#health_payment_medicare-selection .content').append('<c:out value="${html}" escapeXml="false" />');
 
 
@@ -111,7 +99,7 @@ var healthFunds_HIF = {
 			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
-			//selections for payment date
+			<%--selections for payment date --%>
 			$('#update-premium').on('click.HIF', function() {
 				var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
 				healthFunds._payments = { 'min':3, 'max':17, 'weekends':true };
@@ -120,16 +108,13 @@ var healthFunds_HIF = {
 				healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
 			});
 
-		}<%-- /not loading quote --%>
+		}<%-- not loading quote --%>
 		meerkat.modules.paymentGateway.setup({
 			"paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
 			"name" : 'health_payment_gateway',
 			"src": '${ctmSettings.getBaseUrl()}', <%-- the CTM iframe source URL --%>
 			"origin": '${hostOrigin}', <%-- the CTM host origin --%>
-			"hambsIframe": {
-				src: '${gatewayURL}',
-				remote: '${gatewayDomain}'
-	},
+			"providerCode": 'hif',
 			"brandCode": '${pageSettings.getBrandCode()}',
 			"handledType" :  {
 				"credit" : true,
@@ -177,3 +162,5 @@ var healthFunds_HIF = {
 		}
 	}
 };
+</c:set>
+<c:out value="${go:replaceAll(content, whiteSpaceRegex, ' ')}" escapeXml="false" />

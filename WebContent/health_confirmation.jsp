@@ -6,7 +6,7 @@
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <%-- Call centre numbers --%>
-<c:set var="callCentreNumber"><content:get key="healthCallCentreNumber"/></c:set>
+<c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
 <%-- Call centre special hours --%>
 <c:set var="callCentreSpecialHoursLink"><content:get key="healthCallCentreSpecialHoursLink"/></c:set>
 <c:set var="callCentreSpecialHoursContent"><content:get key="healthCallCentreSpecialHoursContent"/></c:set>
@@ -24,18 +24,18 @@
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<c:if test="${not empty callCentreNumber}">				
+				<c:if test="${not empty callCentreNumberApplication}">
 					<li>
 						<div class="navbar-text visible-xs">
 							<h4>Do you need a hand?</h4>
-							<h1><a class="needsclick" href="tel:${callCentreNumber}">Call ${callCentreNumber}</a></h1>
+							<h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumberApplication}">Call <span class="callCentreNumber">${callCentreNumberApplication}</span></a></h1>
 							<p class="small">Our Australian based call centre hours are</p>
 							<p><form:scrape id='135'/></p>
 							${callCentreSpecialHoursContent}
 						</div>
 						<div class="navbar-text hidden-xs" data-livechat="target" data-livechat-fire='{"step":7,"confirmation":true,"navigationId":"confirmation"}'>
 							<h4>Call us on</h4>
-							<h1><span class="noWrap">${callCentreNumber}</span></h1>						
+							<h1><span class="noWrap callCentreNumber">${callCentreNumberApplication}</span></h1>
 							<c:if test="${not empty callCentreSpecialHoursLink and not empty callCentreSpecialHoursContent}">
 								${callCentreSpecialHoursLink}
 								<div id="healthCallCentreSpecialHoursContent" class="hidden">

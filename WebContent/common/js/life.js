@@ -93,6 +93,11 @@ var LifeQuote = {
 						referenceNo.setTransactionId(jsonResult.error.transactionId);
 					}
 				} else if( jsonResult.results.success ) {
+					if(!LifeQuote._contactLeadSent) {
+						Track.onContactDetailsCollected(Results._splitTestingJourney);
+					}
+
+					LifeQuote._contactLeadSent = true;
 					if( LifeQuote.isValidResultsResponse(jsonResult) ) {
 						$('#summary-header').find('h2.error').hide().end()
 							.find('h2.success').show();
@@ -1156,6 +1161,9 @@ var LifeQuote = {
 				Loading.hide();
 			},
 			success: function(jsonResult){
+				if(!that._contactLeadSent)
+					Track.onContactDetailsCollected(Results._splitTestingJourney);
+
 				that._contactLeadSent = (jsonResult.results && jsonResult.results.success) ? true : false;
 
 				return false;

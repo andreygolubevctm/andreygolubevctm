@@ -16,7 +16,7 @@
 	</div>
 
 	<div class="fail alert alert-danger">
-		We were unable to register your credit card details. Please try again or call us <strong>${callCentreHelpNumber}</strong>.
+		We were unable to register your credit card details. Please try again or call us <strong class="callCentreHelpNumber">${callCentreHelpNumber}</strong>.
 	</div>
 
 	<p class="launcher">

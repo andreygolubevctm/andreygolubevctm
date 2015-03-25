@@ -33,7 +33,7 @@ public class MessageDao {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		try {
 			final PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-				"SELECT msg.id, transactionId, userId, msg.statusId, stat.status, contactName, phoneNumber1, phoneNumber2, state, whenToAction, created " +
+				"SELECT msg.id, transactionId, userId, msg.statusId, stat.status, contactName, phoneNumber1, phoneNumber2, state, whenToAction, created, hawkingOptin " +
 				", IF(msg.postponeCount < src.maxPostpones, 1, 0) AS canPostpone " +
 				"FROM simples.message msg " +
 				"INNER JOIN simples.message_source src ON src.id = msg.sourceId " +
@@ -491,6 +491,7 @@ WHERE msg.id = 53
 		message.setState(results.getString("state"));
 		message.setWhenToAction(results.getTimestamp("whenToAction"));
 		message.setCreated(results.getTimestamp("created"));
+		message.setHawkingOptin(results.getString("hawkingOptin").equals("Y"));
 
 		// Fields that may not exist depending on method that is calling this.
 		try {
@@ -505,7 +506,7 @@ WHERE msg.id = 53
 		try {
 			final Connection connection = simpleDatabaseConnection.getConnection();
 			final PreparedStatement statement = connection.prepareStatement(
-				"SELECT msg.id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, whenToAction, created " +
+				"SELECT msg.id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, whenToAction, created, hawkingOptin " +
 				"FROM simples.message msg " +
 				"LEFT JOIN simples.message_status stat ON stat.id = msg.statusId " +
 				"WHERE statusId IN (?, ?, ?) AND userId = ? " +
@@ -521,56 +522,6 @@ WHERE msg.id = 53
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			simpleDatabaseConnection.closeConnection();
-		}
-	}
-
-	/**
-	 * Defer a new message, just to get the message out of the queue
-	 *
-	 * @param actionIsPerformedByUserId User ID of user performing this action
-	 * @param messageId ID of message
-	 * @param statusId ID of status
-	 * @param deferTo
-	 * @param unassign Set to true to assign the message to nobody
-	 */
-	public void deferMessage(int actionIsPerformedByUserId, int messageId, int statusId, Date deferTo, boolean unassign) throws DaoException {
-
-		// Get the message so we can use some of its details
-		Message message = getMessage(messageId);
-
-		// Audit this action
-		MessageAudit messageAudit = new MessageAudit();
-		messageAudit.setMessageId(messageId);
-		messageAudit.setUserId(actionIsPerformedByUserId);
-		messageAudit.setStatusId(statusId);
-		messageAudit.setReasonStatusId(MessageStatus.STATUS_SKIP_AND_DEFER);
-		messageAudit.setComment("Skipped and deferred by userId '" + actionIsPerformedByUserId + "' (message.userId=" + message.getUserId() + ") until " + deferTo.toString() + ", unassign=" + unassign);
-
-		MessageAuditDao messageAuditDao = new MessageAuditDao();
-		messageAuditDao.addMessageAudit(messageAudit);
-
-		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-
-		int userId = actionIsPerformedByUserId;
-		if (unassign) userId = 0;
-
-		try {
-			final PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-				"UPDATE simples.message " +
-				"SET userId = ?, whenToAction = ? " +
-				"WHERE id = ?;"
-			);
-			stmt.setInt(1, userId);
-			stmt.setTimestamp(2, new java.sql.Timestamp(deferTo.getTime()));
-			stmt.setInt(3, messageId);
-
-			stmt.executeUpdate();
-		}
-		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		finally {
-			dbSource.closeConnection();
 		}
 	}
 }

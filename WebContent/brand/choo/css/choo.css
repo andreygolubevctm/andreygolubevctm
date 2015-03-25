@@ -4480,10 +4480,22 @@ body > div > header a.btn-success {
   font-size: 18px;
   font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
 }
+@media (max-width: 767px) {
+  .header-collapse-contact > ul li h4 a:hover,
+  .header-collapse-contact > ul li h1 a:hover {
+    color: #ffffff;
+  }
+}
 .header-collapse-contact > ul li h4 span,
 .header-collapse-contact > ul li h1 span {
   color: #00afd8;
   font-size: 38px;
+}
+@media (max-width: 767px) {
+  .header-collapse-contact > ul li h4 span.callCentreNumber,
+  .header-collapse-contact > ul li h1 span.callCentreNumber {
+    color: #ffffff;
+  }
 }
 .header-collapse-contact > ul li [data-livechat="button"] {
   vertical-align: super;
@@ -10156,7 +10168,7 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
     font-size: 12px;
   }
   .header_button_left #logo {
-    margin: 8px auto 0 auto;
+    margin: 9px auto 0 3px;
   }
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {

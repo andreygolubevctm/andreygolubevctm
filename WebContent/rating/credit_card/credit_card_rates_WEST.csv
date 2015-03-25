@@ -1,16 +1,15 @@
 PRODUCT CODE,CREDIT CARD PROVIDER,SLUG,META PAGE TITLE,META PAGE DESCRIPTION,PRODUCT NAME (Short Description),PRODUCT TYPE,CARD CLASS,INTRODUCTORY INTEREST RATE,INTRODUCTORY INTEREST RATE PERIOD,INTEREST RATE,INTRODUCTORY BALANCE TRANSFER RATE,INTRODUCTORY BALANCE TRANSFER RATE PERIOD,BALANCE TRANSFER RATE,BALANCE TRANSFER FEE,INTRODUCTORY ANNUAL FEE,INTRODUCTORY ANNUAL FEE PERIOD,ANNUAL FEE,CASH ADVANCE RATE,REWARDS POINTS: STANDARD CARD CLASS,REWARDS POINTS: AMEX CARD POINTS,REWARDS POINTS: BONUS POINTS,SPECIAL OFFER,"PRODUCT DESCRIPTION
 (Max 200 characters limit)",REWARDS DESCRIPTION (bullet points),OTHER FEATURES (Maximum 200 characters),INTEREST RATE TERMS AND CONDITIONS,REWARDS TERMS AND CONDITIONS,BALANCE TRANSFER TERMS AND CONDITIONS,OTHER FEATURES TERMS AND CONDITIONS,GENERAL TERMS AND CONDITIONS,ADDITIONAL CARD HOLDER,FOREIGN EXCHANGE FEES,COMPLIMENTARY TRAVEL INSURANCE,EXTENDED WARRANTY,AVAILABLE TO TEMPORARY RESIDENTS,INTEREST FREE DAYS,LATE PAYMENT FEE,MINIMUM INCOME,MINIMUM CREDIT LIMIT,MAXIMUM CREDIT LIMIT,MINIMUM MONTHLY REPAYMENT,CATEGORIES,HANDOVER URL
-WEST-LR,Westpac,westpac-low-rate-card,,,Low Rate Card,Low Interest Rate,VISA,0%,3,13.49%,0%,16,21.49%,N/A,N/A,N/A,$59,21.49%,N/A,N/A,N/A,,A low interest purchase credit card to help trim your credit card costs,N/A,"-Contactless Payments
+WEST-LR,Westpac,westpac-low-rate,,,Westpac Low Rate Card,Low Interest Rate,Visa,0%,3,13.49%,0%,16,21.49%,N/A,N/A,N/A,$59,21.49%,N/A,N/A,N/A,,A low interest purchase credit card to help trim your credit card costs,N/A,"-Contactless Payments
 '-CardShield helps defend against fraudulent activity
 '-Secure online shopping through Verified by Visa
 '-Falcon&reg Fraud Protection 24/7
-'-Fraud Money Back Guarantee- Cardholders will be reimburder for unauthorised transactions, procided the cardholder didn't contribute to the loss and notified Westpac promptly. ",[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),N/A,[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),Yes,Yes,No,No,No,55,$9,,"$1,000",,2%,LOWINTERESTRATE,
-WEST-AP,Westpac,westpac-altitude-platinum,,,Altitude Platinum ,Platinum,VISA,0%,6,20.24%,3.99,6,21.24%,N/A,N/A,N/A,$150,21.24%,1,2,30000,,Choose between two great rewards programs- Altitude Rewards or Altitude Qantas and enjoy the convenience of a platinum concierge service as well as a range of complimentary insurance covers,"-If you choose Altitude Rewards:
+'-Fraud Money Back Guarantee- Cardholders will be reimburder for unauthorised transactions, procided the cardholder didn't contribute to the loss and notified Westpac promptly. ",[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),N/A,[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),Yes,Yes,No,No,No,55,$9,"$15,000","$1,000","$30,000",2%,"LOWINTERESTRATE,BALANCETRANSFER",
+WEST-AP,Westpac,westpac-altitude-platinum,,,Westpac Altitude Platinum ,Platinum,Visa/American Express,0%,6,20.24%,3.99%,6,21.24%,N/A,N/A,N/A,$150,21.24%,1,2,30000,,Choose between two great rewards programs- Altitude Rewards or Altitude Qantas and enjoy the convenience of a platinum concierge service as well as a range of complimentary insurance covers,"-If you choose Altitude Rewards:
 '--2 Altitude Points - Altitude Platinum American Express&trade Card
 '--1 Altitude Point - Altitude Platinum Visa Card
 '--For each statement cycle a points cap of 7,500 Altitude Points applies when using either or both cards. Bonus points do not count towards the points cap.
-If you choose Altitude Qantas:
-
+'-If you choose Altitude Qantas:
 '--1 Qantas Point - Altitude Platinum American Express&trade Card
 '--0.5 Qantas Points - Altitude Platinum Visa Card
 '--For each statement cycle a points cap of 3,750 Qantas Points applies when using either or both cards. Bonus points do not count towards the points cap.","-Platinum Concierge Service
@@ -20,15 +19,15 @@ If you choose Altitude Qantas:
 '-After 6 months, the introductory purchase rate will switch to the variable purchase rate then applicable to your card account.
 [Consumer Credit Cards - Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf)",[Altitude Rewards and Altitude Qantas Terms and Conditions](http://www.westpac.com.au/docs/pdf/pb/credit-cards/Altitude_Rewards_Terms_and_1.pdf),"-The promotional balance transfer rate is available when you apply for a new card between 6 January 2015 and 19 April 2015 and request at application to transfer balance(s) from up to 3 non-Westpac Australian issued credit, charge or store cards.
 '-The variable cash advance rate will apply to balance(s) transferred but left unpaid at the end of the promotional period and to balance transfers requested at any time after card application.
-Switches, upgrades, customers accessing employee benefits or packaged cards are ineligible
+'-Switches, upgrades, customers accessing employee benefits or packaged cards are ineligible
 '-The balance transfer rate is not available in conjunction with any other promotion unless specified
 '-Balance transfer rate will apply to any balance(s) transferred (min $200 up to 95% of your approved available credit limit) for the promotional period, unless the amount is paid off earlier
 '-Card activation will trigger the processing of the balance(s) transferred
-'-Interest free days don’t apply to balance transfers
+'-Interest free days don?t apply to balance transfers
 '-Westpac will not be responsible for any delays that may occur in processing payment to your other card account(s) and will not close the account(s).","[Westpac Credit Cards Complimentary Insurance Policy](http://www.westpac.com.au/docs/pdf/pb/westpac_credit_card_comp_insurance_policy_after21Oct2012)
 [Westpac Rewards Credit Cards Emergency Travel Assistance](http://www.westpac.com.au/docs/pdf/pb/rewards_cards_emergency_travel_assit_tcs.pdf)
 [Westpac Rewards Cards Concierge Service Terms and Conditions](http://www.westpac.com.au/docs/pdf/pb/plat_rewards_cards_concierge_tcs.pdf)",[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),Yes,Yes,Yes,Yes,No,45,$9,"$30,000","$6,000","$50,000",2%,"PLATINUM,REWARDS",
-WEST-AB,Westpac,westpac-altitude-black,,,Altitude Black,Black,VISA,0%,6,20.24%,3.99%,6,21.24%,N/A,N/A,N/A,$395,21.24%,1.25,3,"60,000",,"Westpac's most rewarding card offering you a choice of two great rewards programs- Altitude Rewards and Altitude Wantas with our highest points earn rate, premium travel and lifestyle services. ","-If you choose Altitude Rewards:
+WEST-AB,Westpac,westpac-altitude-black,,,Westpac Altitude Black,Black,Visa/American Express,0%,6,20.24%,3.99%,6,21.24%,N/A,N/A,N/A,$395,21.24%,1.25,3,"60,000",,"Westpac's most rewarding card offering you a choice of two great rewards programs- Altitude Rewards and Altitude Wantas with our highest points earn rate, premium travel and lifestyle services. ","-If you choose Altitude Rewards:
 '--1.25 points - Altitude Black World MasterCard &trade (Australian Merchants)
 '--3 points - Altitude Black World MasterCard &trade (Overseas Merchants)
 '--3 points - Altitude Black American Express Card (Australian Merchants and Overseas Merchants). 
@@ -38,7 +37,7 @@ WEST-AB,Westpac,westpac-altitude-black,,,Altitude Black,Black,VISA,0%,6,20.24%,3
 '--1.5 points - Altitude Black American Express Card (Australian ","-Premium features and benefits 
 '--Dedicated Westpac Concierge service and access to exclusive Black Card Concierge App
 '--Be fast tracked to elite Gold Preferred Guest '--Membership status with Starwood Hotels and Resorts
-'--Westpac’s most comprehensive complimentary insurance cover.
+'--Westpac?s most comprehensive complimentary insurance cover.
 '-If you select Altitude Rewards:
 '--Two complimentary  Priority Passes per year to use at your choice of over 700 VIP airport lounges in over 400 cities in 120 countries when you enrol
 '-If you select Qantas Rewards:
@@ -56,15 +55,15 @@ WEST-AB,Westpac,westpac-altitude-black,,,Altitude Black,Black,VISA,0%,6,20.24%,3
 '-The balance transfer rate is not available in conjunction with any other promotion unless specified
 '-Balance transfer rate will apply to any balance(s) transferred (min $200 up to 95% of your approved available credit limit) for the promotional period, unless the amount is paid off earlier
 '-Card activation will trigger the processing of the balance(s) transferred
-'-Interest free days don’t apply to balance transfers
+'-Interest free days don?t apply to balance transfers
 '-Westpac will not be responsible for any delays that may occur in processing payment to your other card account(s) and will not close the account(s).","[Westpac Credit Cards Complimentary Insurance Policy](http://www.westpac.com.au/docs/pdf/pb/westpac_credit_card_comp_insurance_policy_after21Oct2012)
-[Westpac Rewards Credit Cards Emergency Travel Assistance](http://www.westpac.com.au/docs/pdf/pb/rewards_",[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),Yes,Yes,Yes,Yes,No,45,$9,"$75,000","$15,000",,2%,"BLACK,REWARDS",
-WEST-A,Westpac,westpac-altitude,,,Altitude,Rewards,VISA,0%,6,20.24%,3.99%,6,21.24%,N/A,N/A,N/A,$100,21.24%,1,2,"10,000",,Choose between 2 great rewards progams- Altitude Rewards or Altitude Qantas and earn points on eligible purchases,"-If you choose Altitude Rewards:
-'--2 Altitude Points - Altitude American Express&trade Card
+[Westpac Rewards Credit Cards Emergency Travel Assistance](http://www.westpac.com.au/docs/pdf/pb/rewards_)",[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),Yes,Yes,Yes,Yes,No,45,$9,"$75,000","$15,000",,2%,"BLACK,REWARDS,BALANCETRANSFER",
+WEST-A,Westpac,westpac-altitude,,,Westpac Altitude,Rewards,Visa/American Express,0%,6,20.24%,3.99%,6,21.24%,N/A,N/A,N/A,$100,21.24%,1,2,"10,000",,Choose between 2 great rewards progams- Altitude Rewards or Altitude Qantas and earn points on eligible purchases,"-If you choose Altitude Rewards:
+'--2 Altitude Points - Altitude American Express&trade; Card
 '--1 Altitude Point - Altitude Visa Card
 '--For each statement cycle a points cap of 5,000 Altitude Points applies when using either or both cards. Bonus points do not count towards the points cap.
 '-If you choose Altitude Qantas:
-'--1 Qantas Point - Altitude American Express&trade Card
+'--1 Qantas Point - Altitude American Express&trade; Card
 '--0.5 Qantas Points - Altitude Visa Card
 '--For each statement cycle a points cap of 2,500 Qantas Points applies when using either or both cards. Bonus points do not count towards the points cap.","-Contactless payments
 '-Cardshield helps defend against fraudulent activity
@@ -80,34 +79,39 @@ WEST-A,Westpac,westpac-altitude,,,Altitude,Rewards,VISA,0%,6,20.24%,3.99%,6,21.2
 '-The balance transfer rate is not available in conjunction with any other promotion unless specified
 '-Balance transfer rate will apply to any balance(s) transferred (min $200 up to 95% of your approved available credit limit) for the promotional period, unless the amount is paid off earlier
 '-Card activation will trigger the processing of the balance(s) transferred
-'-Interest free days don’t apply to balance transfers
-'-Westpac will not be responsible for any delays that may occur in processing payment to your other card account(s) and will not close the account(s).",,[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),Yes,Yes,No,No,No,45,$9,,"$1,000","$30,000",2%,REWARDS,
-WEST-APB,Westpac,westpac-altitude-platinum-business-card,,,Altitude Platinum Business Card,Business,VISA,0%,12,20.24%,N/A,N/A,N/A,N/A,$0,12,$295,21.24%,1,3,"40,000",,"From the everyday benefits of a low rate credit card, to credit cards that rewards you for your business expenditure, with Westpac, you can choose a credit card that best reflects your priorities.","-Receive 40,000 bonus Aquire Points after the first purchase on a new BusinessChoice Rewards card facility opened before 5 May 2015.
-'-A rewards credit card for business purchases that allows businesses to earn Aquire Points while enjoying a range of complimentary insurances including travel and purchase cover as well as business continuity protection. Accepted everywhere Visa is accepted.
-'-Earn 1 Aquire Point for every $1.50 you spend on eligible purchases on your new BusinessChoice Rewards credit card. Points are credited to the ABN holder's Aquire Loyalty Program account.
-","-Complimentary Insurance
+'-Interest free days don?t apply to balance transfers
+'-Westpac will not be responsible for any delays that may occur in processing payment to your other card account(s) and will not close the account(s).",,[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),Yes,Yes,No,No,No,45,$9,,"$1,000","$30,000",2%,"REWARDS,BALANCETRANSFER",
+WEST-APB,Westpac,westpac-altitude-business-platinum,,,Westpac Altitude Business Platinum ,Business,Visa/American Express,0%,12,20.24%,N/A,N/A,N/A,N/A,$0,12,$295,21.24%,1,3,,,"From the everyday benefits of a low rate credit card, to credit cards that rewards you for your business expenditure, with Westpac, you can choose a credit card that best reflects your priorities.","With Altitude Business Platinum Credit Cards, use your Altitude Points to redeem a great range of rewards, for you or your business.
+'-Earn 3 Altitude Points per $1 spent on purchases on your Altitude Business Platinum American Express&reg; Card
+'-Earn 1 Altitude Point per $1 spent on purchases on your Altitude Business Platinum Visa card (Australian Merchants)
+'-Earn 2 Altitude Points per $1 spent on purchases on your Altitude Business Platinum Visa card (Overseas Merchants)
+'-Earn up to 3 Altitude Points per $1 spent at participating Bonus Partner store. 
+'-Earn 0.5 Altitude Points per $1 spent on government payments on your Altitude Business Platinum cards","-Complimentary Insurance
 '-Contactless Payments
 '-Fraud Money Back Guarantee
 '-Easy tax reporting
-'-Safe and sound transactions",[Business Choice Cards Terms and Conditions](http://www.westpac.com.au/docs/pdf/bb/010BusinessChoiceCardsT_C.pdf),"[Business Choice Rewards Card Acquire Rewards Terms and Conditions](http://www.westpac.com.au/docs/pdf/bb/010BusinessChoiceCardsT_C.pdf)
-[Business Choice Rewards Brochure](http://www.westpac.com.au/docs/pdf/bb/BusinessChoiceRewards-brochure.pdf)",[Business Choice Cards Terms and Conditions](http://www.westpac.com.au/docs/pdf/bb/010BusinessChoiceCardsT_C.pdf),"[Westpac Credit Cards Complimentary Insurance Policy](http://www.westpac.com.au/docs/pdf/pb/westpac_credit_card_comp_insurance_policy_after21Oct2012)
-_",[Business Choice Cards Terms and Conditions](http://www.westpac.com.au/docs/pdf/bb/010BusinessChoiceCardsT_C.pdf),Yes,Yes,Yes,Yes,No,45,$9,,"$20,000","$150,000",2%,"BUSINESS,REWARDS",
-WEST-ABG,Westpac,westpac-altitude-business-gold-card,,,Altitude Business Gold Card,Business,VISA,0%,12,20.24%,N/A,N/A,N/A,N/A,$0,12,$150,21.24%,1,2,,,Altitude Business Gold Credit Card,"-With Altitude Business Gold Credit Cards, use your Altitude reward points to redeem a great range of rewards, for you or your business.
-'-Earn 2 Altitude points per $1 spent on purchases on your Altitude Business Gold American Express&trade Card
+'-Safe and sound transactions",[Altitude Business Credit Cards Conditions of Use](http://www.westpac.com.au/docs/pdf/bb/Altitude_Business_Conditions_Use.pdf),[Altitude Business Rewards Terms and Conditions](http://www.westpac.com.au/docs/pdf/bb/Altitude_Business_Rewards_T-C.pdf),[Altitude Business Credit Cards Conditions of Use](http://www.westpac.com.au/docs/pdf/bb/Altitude_Business_Conditions_Use.pdf),[Westpac Credit Cards Complimentary Insurance Policy](http://www.westpac.com.au/docs/pdf/pb/westpac_credit_card_comp_insurance_policy_after21Oct2012),[Altitude Business Credit Cards Conditions of Use](http://www.westpac.com.au/docs/pdf/bb/Altitude_Business_Conditions_Use.pdf),Yes,Yes,Yes,Yes,No,45,$9,,"$20,000","$150,000",2%,"BUSINESS,REWARDS",
+WEST-ABG,Westpac,westpac-altitude-business-gold,,,Westpac Altitude Business Gold Card,Business,Visa/American Express,0%,12,20.24%,N/A,N/A,N/A,N/A,$0,12,$150,21.24%,1,2,,,Altitude Business Gold Credit Card,"-With Altitude Business Gold Credit Cards, use your Altitude reward points to redeem a great range of rewards, for you or your business.
+'-Earn 2 Altitude points per $1 spent on purchases on your Altitude Business Gold American Express&trade; Card
 '-Earn 1 Altitude point per $1 spent on purchases on your Altitude Business Gold Visa accepted at over 32 million locations
-'-Earn up to 3 Altitude points per $1 spent at participating Bonus Partner store. See altituderewards.com.au for  details
+'-Earn up to 3 Altitude points per $1 spent at participating Bonus Partner store.
 '-For each statement cycle, a cap of 20,000 points applies when using either or both cards. Bonus points do not count towards the points cap.","-Complimentary Insurance Cover
 '-Contactless Payments
 '-Fraud Money Back Guarantee","-Special offer: 0%p.a. on purchases for 12 months: The introductory rate of 0%p.a. on purchases for 12 months applies from card approval when you apply between for a new Westpac Altitude Business Gold Credit Card between 1 April 2014 and 19 April 2015. After 12 months, the introductory purchase rate will switch to the variable purchase rate then applicable to your card account. The introductory rate on purchases is not available in conjunction with any promotion other than the special purchase rate and annual fee waiver offers. Switches, upgrades, customers accessing employee benefits or packaged cards are ineligible
 '-[Altitude Business Credit Cards Conditions of Use](http://www.westpac.com.au/docs/pdf/bb/Altitude_Business_Conditions_Use.pdf)",[Altitude Business Rewards Terms and Conditions](http://www.westpac.com.au/docs/pdf/bb/Altitude_Business_Rewards_T-C.pdf),N/A,[Westpac Business Credit Cards Complimentary Insurance](http://www.westpac.com.au/docs/pdf/bb/Westpac_Business_Cards_comp_insurance.pdf),[Altitude Business Credit Cards Conditions of Use](http://www.westpac.com.au/docs/pdf/bb/Altitude_Business_Conditions_Use.pdf),Yes,Yes,Yes,Yes,No,45,$9,"$30,000","$1,000","$50,000",2%,"GOLD,BUSINESS,REWARDS",
-WEST-BC,Westpac,westpac-business-choice-card,,,Business Choice Card,Business,VISA,N/A,N/A,18.99%,N/A,N/A,N/A,N/A,N/A,N/A,$150,18.99%,,,"40,000",,Business Choice Rewards Credit Card,"-Earn 1 Aquire Point for every $1.50 you spend on eligible purchases on your new BusinessChoice Rewards credit card. Points are credited to the ABN holder's Aquire Loyalty Program account.
+WEST-BC,Westpac,westpac-business-choice,,,Westpac Business Choice Card,Business,Visa,N/A,N/A,18.99%,N/A,N/A,N/A,N/A,N/A,N/A,$150,18.99%,,,"40,000",,Business Choice Rewards Credit Card,"-Earn 1 Aquire Point for every $1.50 you spend on eligible purchases on your new BusinessChoice Rewards credit card. Points are credited to the ABN holder's Aquire Loyalty Program account.
 '-Receive 40,000 bonus Aquire Points after the first purchase on a new BusinessChoice Rewards card facility opened before 5 May 2015.
 '-A rewards credit card for business purchases that allows businesses to earn Aquire Points while enjoying a range of complimentary insurances including travel and purchase cover as well as business continuity protection. Accepted everywhere Visa is accepted.","-Complimentary Insurance
 '-Easy Tax Reporting
 '-Contactless Payments
 '-Safe and sound transactions",[Business Choice Cards Terms and Conditions](http://www.westpac.com.au/docs/pdf/bb/010BusinessChoiceCardsT_C.pdf),"[Business Choice Rewards Card Acquire Rewards Terms and Conditions](http://www.westpac.com.au/docs/pdf/bb/010BusinessChoiceCardsT_C.pdf)
 [Business Choice Rewards Brochure](http://www.westpac.com.au/docs/pdf/bb/BusinessChoiceRewards-brochure.pdf)",,[Westpac Business Credit Cards Complimentary Insurance](http://www.westpac.com.au/docs/pdf/bb/Westpac_Business_Cards_comp_insurance.pdf),[Business Choice Cards Terms and Conditions](http://www.westpac.com.au/docs/pdf/bb/010BusinessChoiceCardsT_C.pdf),Yes,Yes,Yes,Yes,No,45,$9,,"$2,000","$100,000",2%,"BUSINESS,REWARDS",
-WEST-S,Westpac,westpac-student,,,Student,Student,VISA,N/A,N/A,20.45%,N/A,N/A,N/A,N/A,$0,12,$30,20.45%,N/A,N/A,N/A,,Wesptac Student Card,N/A,"-Cardshield
+WEST-S,Westpac,westpac-student,,,Westpac Student Card,Student,Visa,N/A,N/A,20.45%,N/A,N/A,N/A,N/A,$0,12,$30,20.45%,N/A,N/A,N/A,,Wesptac Student Card,N/A,"-Cardshield
 '-Secure online shoppng with Verified by Visa
 '-Faclon&reg Fraud Protection",[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),N/A,N/A,,[Consumer Credit Cards- Conditions of Use](http://www.westpac.com.au/docs/pdf/pb/Consumer_Conditions_of_use.pdf),No,Yes,No,No,Yes,55,$9,,$300,"$1,000",2%,STUDENT,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

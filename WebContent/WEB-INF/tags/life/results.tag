@@ -23,13 +23,17 @@
 </c:choose>
 
 <c:choose>
+	<%-- Set to split test  --%>
+	<c:when test="${not empty param.j}">
+		<c:set var="splitTestingJourney"><c:out value="${param.j}" escapeXml="true" /></c:set>
+	</c:when>
 	<%-- No results journey --%>
-	<c:when test="${not empty param.jrny and param.jrny eq 'noresults'}">
-		<c:set var="splitTestingJourney"><c:out value="${param.jrny}" /></c:set>
+	<c:when test="${not empty param.jrny}">
+		<c:set var="splitTestingJourney"><c:out value="${param.jrny}" escapeXml="true" /></c:set>
 	</c:when>
 	<%-- Standard journey --%>
 	<c:otherwise>
-		<c:set var="splitTestingJourney" value="original" />
+		<c:set var="splitTestingJourney" value="0" />
 	</c:otherwise>
 </c:choose>
 

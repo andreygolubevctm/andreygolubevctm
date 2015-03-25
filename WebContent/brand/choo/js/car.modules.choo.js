@@ -1144,7 +1144,7 @@
     var events = {
         carMoreInfo: {}
     }, moduleEvents = events.carMoreInfo;
-    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId, scrollPosition;
+    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId, scrollPosition, activeCallModal;
     function initMoreInfo() {
         var options = {
             container: $bridgingContainer,
@@ -1192,6 +1192,8 @@
             }
             var obj = meerkat.modules.moreInfo.getOpenProduct();
             if (obj.available !== "Y") return;
+            activeCallModal = $el.attr("data-callback-toggle");
+            var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
             var htmlContent = templateCallback(obj);
             var modalOptions = {
                 htmlContent: htmlContent,
@@ -1200,7 +1202,7 @@
                 closeOnHashChange: true,
                 openOnHashChange: false,
                 onOpen: function(modalId) {
-                    $("." + $el.attr("data-callback-toggle")).show();
+                    $("." + activeCallModal).show();
                     fixSidebarHeight(".paragraphedContent:visible", ".sidebar-right", $("#" + modalId));
                     setupCallbackForm();
                     if ($el.hasClass("btn-calldirect")) {
@@ -1208,6 +1210,10 @@
                     } else {
                         trackCallBack();
                     }
+                    meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+                },
+                onClose: function(modalId) {
+                    meerkat.modules.sessionCamHelper.setMoreInfoModal();
                 }
             };
             if (meerkat.modules.deviceMediaState.get() == "xs") {
@@ -1220,7 +1226,9 @@
             }
             event.stopPropagation();
             var $el = $(this);
-            switch ($el.attr("data-callback-toggle")) {
+            activeCallModal = $el.attr("data-callback-toggle");
+            var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
+            switch (activeCallModal) {
               case "calldirect":
                 $(".callback").hide();
                 $(".calldirect").show();
@@ -1234,6 +1242,7 @@
                 break;
             }
             fixSidebarHeight(".paragraphedContent:visible", ".sidebar-right", $el.closest(".modal.in"));
+            meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
         }).on("click", ".btn-submit-callback", function(event) {
             event.preventDefault();
             var $el = $(this);
@@ -1335,7 +1344,13 @@
                         hashId: "call-back-success",
                         openOnHashChange: false,
                         closeOnHashChange: true,
+                        onOpen: function(modalId) {
+                            var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal + "-submitted");
+                            meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+                        },
                         onClose: function(modalId) {
+                            var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
+                            meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
                             $(".modal").modal("hide");
                             if (meerkat.modules.moreInfo.isBridgingPageOpen()) {
                                 meerkat.modules.moreInfo.close();
@@ -2169,6 +2184,7 @@
     };
     var isFirstLoad = true;
     var ajaxInProgress = false;
+    var sessionCamStep = null;
     function getVehicleData(callback) {
         if (ajaxInProgress === false) {
             var $element = $(elements.factory.button);
@@ -2259,9 +2275,12 @@
             },
             closeOnHashChange: true,
             openOnHashChange: false,
-            onClose: _.bind(toggleButtonStates, this, {
-                type: "factory"
-            }),
+            onClose: function() {
+                meerkat.modules.sessionCamHelper.updateVirtualPage(getSessionCamStep());
+                toggleButtonStates({
+                    type: "factory"
+                });
+            },
             onOpen: function(dialogId) {
                 if (_.isArray(vehicleOptionsData.options) && vehicleOptionsData.options.length) {
                     $(".quote-factory-options .no-items-found").addClass("hidden");
@@ -2276,6 +2295,9 @@
                 $("#" + dialogId).on("click", ".nav-tabs a", function(e) {
                     e.preventDefault();
                     e.stopPropagation();
+                    var sessionCamStep = getSessionCamStep();
+                    sessionCamStep.navigationId += "-FactoryDealerOptions-" + $(this).attr("data-target").split("-")[2];
+                    meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
                     $(this).tab("show");
                     $("#" + dialogId + " .modal-title-label").html($(this).attr("title"));
                 });
@@ -2384,9 +2406,12 @@
             },
             closeOnHashChange: true,
             openOnHashChange: false,
-            onClose: _.bind(toggleButtonStates, this, {
-                type: "accessories"
-            }),
+            onClose: function() {
+                meerkat.modules.sessionCamHelper.updateVirtualPage(getSessionCamStep());
+                toggleButtonStates({
+                    type: "accessories"
+                });
+            },
             onOpen: function(dialogId) {
                 var $injectBlock = $("#injectIntoHeader");
                 $injectBlock.remove();
@@ -2412,6 +2437,9 @@
                     }
                     e.preventDefault();
                     e.stopPropagation();
+                    var sessionCamStep = getSessionCamStep();
+                    sessionCamStep.navigationId += "-NonStandardAccessories-" + $(this).attr("data-target").split("-")[1];
+                    meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
                     $(this).tab("show");
                     $("#" + dialogId + " .modal-title-label").html($(this).attr("title"));
                 });
@@ -2856,6 +2884,12 @@
             $(elements.factory.button).on("click", renderFactoryModal);
             $(elements.accessories.button).on("click", renderAccessoriesModal);
         });
+    }
+    function getSessionCamStep() {
+        if (sessionCamStep == null) {
+            sessionCamStep = meerkat.modules.journeyEngine.getCurrentStep();
+        }
+        return _.extend({}, sessionCamStep);
     }
     meerkat.modules.register("carVehicleOptions", {
         init: initCarVehicleOptions,
@@ -3334,6 +3368,7 @@
     var driverOptions = {};
     var driverOptionsOrder = [ "0", "3", "H", "7", "A", "D" ];
     var selectorHTML = null;
+    var sessionCamStep = null;
     function updateRestrictAgeSelector() {
         var ageRegular = meerkat.modules.utilities.returnAge($(elements.reg_dob).val(), true);
         var ageYoungest = meerkat.modules.utilities.returnAge($(elements.yng_dob).val(), true);
@@ -3380,11 +3415,25 @@
             driverOptions[key].prop("selected", false);
         });
     }
-    function toggleVisibleContent() {
+    function isYoungDriverSelected() {
         var $e = $(elements.labels).find("input:checked");
         if (!_.isEmpty($e)) {
-            if ($e.val() === "Y") {
-                $(elements.toggle).slideDown();
+            return $e.val() === "Y";
+        }
+        return false;
+    }
+    function toggleVisibleContent(updateVirtualPage) {
+        updateVirtualPage = updateVirtualPage || false;
+        var $e = $(elements.labels).find("input:checked");
+        if (!_.isEmpty($e)) {
+            if (isYoungDriverSelected()) {
+                $(elements.toggle).slideDown("fast", function() {
+                    if (updateVirtualPage) {
+                        var sessionCamStep = getSessionCamStep();
+                        sessionCamStep.navigationId += "-youngdriver";
+                        meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+                    }
+                });
             } else {
                 $(elements.toggle).slideUp("fast", function() {
                     var $that = $(this);
@@ -3394,23 +3443,50 @@
                     $that.find(".has-success").removeClass("has-success");
                     $that.find(".has-error").removeClass("has-error");
                     $that.find(".error-field").remove();
+                    if (updateVirtualPage) {
+                        meerkat.modules.sessionCamHelper.updateVirtualPage(getSessionCamStep());
+                    }
                 });
             }
         }
     }
     function initCarYoungDrivers() {
         var self = this;
+        meerkat.modules.sessionCamHelper.addStepToIgnoreList("details");
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function youngDriverStepOnStepChange(event) {
+            if (event.navigationId == "details") {
+                _.defer(_.bind(toggleVisibleContent, this, true));
+            }
+        });
         $(document).ready(function() {
             if (meerkat.site.vertical !== "car") return false;
-            $(elements.labels + " label").on("click", toggleVisibleContent);
+            $(elements.labels + " label input").on("click", function(e) {
+                _.defer(_.bind(toggleVisibleContent, this, true));
+            });
             $(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
             captureOptions();
             toggleVisibleContent();
+            setTimeout(function() {
+                if (meerkat.modules.journeyEngine.getCurrentStep().navigationId == "details") {
+                    var sessionCamStep = getSessionCamStep();
+                    if (isYoungDriverSelected()) {
+                        sessionCamStep.navigationId += "-youngdriver";
+                    }
+                    meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+                }
+            }, 250);
             updateRestrictAgeSelector();
         });
     }
+    function getSessionCamStep() {
+        if (sessionCamStep == null) {
+            sessionCamStep = meerkat.modules.journeyEngine.getCurrentStep();
+        }
+        return _.extend({}, sessionCamStep);
+    }
     meerkat.modules.register("carYoungDrivers", {
         initCarYoungDrivers: initCarYoungDrivers,
-        events: moduleEvents
+        events: moduleEvents,
+        getSessionCamStep: getSessionCamStep
     });
 })(jQuery);

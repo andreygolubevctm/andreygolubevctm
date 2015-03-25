@@ -61,7 +61,7 @@
 			<div class="insert">
 				<h4>Do you need a hand?</h4>
 				<p class="larger">
-					Call <em class="noWrap">${callCentreNumber}</em>
+					Call <em class="noWrap callCentreNumber">${callCentreNumber}</em>
 				</p>
 				<p class="smaller">
 					Our Australian based call centre hours are

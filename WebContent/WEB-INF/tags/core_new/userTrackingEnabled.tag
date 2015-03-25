@@ -22,4 +22,4 @@ even if you don't want it on, which is why it's inside this condition --%>
 		<c:otherwise>false</c:otherwise>
 	</c:choose>
 </c:set>
-<c:out value="${param.forceOnSC == 'true' or (isEnabledForBrowserAndDevice && !isOperator && !param.disableSC)}" />
+<c:out value="${param.forceOnSC == 'true' or (!param.preload && isEnabledForBrowserAndDevice && !isOperator && !param.disableSC)}" />

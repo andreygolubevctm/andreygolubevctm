@@ -7,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.ctm.dao.TransactionDetailsDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.TransactionDetail;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.HttpRequestHandler;
 /**
@@ -61,6 +63,19 @@ public class QuoteService {
 			Data dataBucket) {
 		// TODO: For another ticket - this will handle all the normal write quote stuff.
 		return null;
+	}
+
+
+	/**
+	 * Write the single xpath and value to transaction details for a quote
+	 * @param transactionId long
+	 * @param xpath String
+	 * @param textValue String
+	 * @return
+	 */
+	public void writeSingle(long transactionId, String xpath, String textValue) {
+		TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
+		transactionDetailsDao.insertOrUpdate(xpath, textValue, transactionId);
 	}
 
 }

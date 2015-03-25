@@ -14,13 +14,13 @@ function init_address(name, defaultSuburbSeq) {
 	var isPostalAddress = false;
 
 	// General/default elements
-	var streetAddressInput = $("#" + name + "_streetSearch"),
+	var autofilllessSearchInput = $("#quote_risk_autofilllessSearch"),
+		autofilllessSearchFieldRow = $("#quote_risk_autofilllessSearchRow"),
 		nonStdCheckbox = $("#" + name + "_nonStd"),
 		lastSearchHidden = $("#" + name + "_lastSearch"),
 		fullAddressLineOneHidden = $("#" + name + "_fullAddressLineOne"),
 		fullAddressHidden = $("#" + name + "_fullAddress"),
-		allNonStdFieldRows = $("." + name + "_nonStdFieldRow"),
-		streetSearchFieldRow = $("#" + name + "_streetSearchRow");
+		allNonStdFieldRows = $("." + name + "_nonStdFieldRow");
 
 	// Lookup hidden fields (populated in address_lookup.js)
 	var lookupStreetNameHidden = $("#" + name + "_streetName"),
@@ -54,27 +54,31 @@ function init_address(name, defaultSuburbSeq) {
 
 	nonStdUnitShopInput.data("srchLen" , 1);
 	nonStdStreetNumInput.data("srchLen" , 1);
-	streetAddressInput.data("srchLen" , 2);
+	autofilllessSearchInput.data("srchLen" , 2);
 
 	// Watch for these events.
-	streetAddressInput.on('keyup blur', clearValidationOnEmpty);
+	autofilllessSearchInput.on('keyup blur focus', clearValidationOnEmpty);
 	nonStdCheckbox.on('change', swapInputsCleanValidation);
 	nonStdPostCodeInput.on('change keyup', postCodeLookup);
 	nonStdSuburbInput.on('change', setSuburbName);
 
 	function clearValidationOnEmpty() {
-		// Remove the validation if the input bos is empty.
-		if (streetAddressInput.val() == '') {
-			toggleValidationStyles(streetAddressInput);
-			toggleValidationStyles(nonStdCheckbox);
+		// Remove the validation if the input is empty.
+		// Always remove the error validation, this prevents autofill from happening when a partial entry has been made.
+		if (autofilllessSearchInput.val() == '' || autofilllessSearchInput.closest('.row-content').hasClass('has-error')) {
+			toggleValidationStyles(autofilllessSearchInput);
+		}
 
+		if (autofilllessSearchInput.val() != fullAddressHidden.val()) {
+			resetSelectAddress();
+			toggleValidationStyles(autofilllessSearchInput);
 		}
 	}
 
 	function swapInputsCleanValidation() {
 		if ($(this).is(':checked')) {
 			// Hide street search fields
-			streetSearchFieldRow.hide();
+			autofilllessSearchFieldRow.hide();
 			// Show non-standard fields
 			allNonStdFieldRows.show();
 
@@ -84,7 +88,7 @@ function init_address(name, defaultSuburbSeq) {
 
 		} else {
 			// Show street search fields
-			streetSearchFieldRow.show();
+			autofilllessSearchFieldRow.show();
 			// Show non-standard fields
 			allNonStdFieldRows.hide();
 
@@ -122,9 +126,9 @@ function init_address(name, defaultSuburbSeq) {
 	}
 
 	function resetElasticSearchFields() {
-			toggleValidationStyles(streetAddressInput);
+			toggleValidationStyles(autofilllessSearchInput);
 			lastSearchHidden.val('');
-			streetAddressInput.val('');
+			autofilllessSearchInput.val('');
 			lookupStreetNameHidden.val('');
 			lookupStreetIdHidden.val('');
 			lookupUnitTypeHidden.val('');
@@ -148,7 +152,7 @@ function init_address(name, defaultSuburbSeq) {
 
 				}
 				reset();
-				streetAddressInput.val("");
+				autofilllessSearchInput.val("");
 				nonStdStreetNameInput.val("");
 				lastSearchHidden.val("");
 				postCodeField.data('previous', postCodeField.val());
@@ -173,12 +177,9 @@ function init_address(name, defaultSuburbSeq) {
 
 	if (typeof meerkat !== 'undefined') {
 		meerkat.messaging.subscribe(meerkat.modules.events.autocomplete.CANT_FIND_ADDRESS, function handleCantFindAddress(data) {
-			// Check that the event came from this address group
-			if (data.hasOwnProperty('fieldgroup') && data.fieldgroup === fieldName) {
-				nonStdCheckbox.prop('checked', true);
-				nonStdCheckbox.change();
-				nonStdPostCodeInput.focus();
-			}
+			nonStdCheckbox.prop('checked', true);
+			nonStdCheckbox.change();
+			nonStdPostCodeInput.focus();
 		});
 	}
 
@@ -261,7 +262,7 @@ function init_address(name, defaultSuburbSeq) {
 	nonStdPostCodeInput.data('previous', nonStdPostCodeInput.val());
 	updateSuburb(nonStdPostCodeInput.val());
 	if (nonStdCheckbox.is(':checked')) {
-		streetSearchFieldRow.hide();
+		autofilllessSearchFieldRow.hide();
 		allNonStdFieldRows.show();
 	}
 
@@ -274,11 +275,11 @@ function init_address(name, defaultSuburbSeq) {
 			userStartedTyping = false;
 
 			// STREET
-			var url = "address/search.json?query="+streetAddressInput.val();
+			var url = "address/search.json?query="+autofilllessSearchInput.val();
 
-			lastSearchHidden.val(streetAddressInput.val());
+			lastSearchHidden.val(autofilllessSearchInput.val());
 
-			streetAddressInput.data('source-url', url);
+			autofilllessSearchInput.data('source-url', url);
 
 			if (typeof callback === 'function') {
 				callback(url);
@@ -286,7 +287,7 @@ function init_address(name, defaultSuburbSeq) {
 		}
 	};
 
-	streetAddressInput.on('getSearchURL' , getSearchURLStreetFld);
+	autofilllessSearchInput.on('getSearchURL' , getSearchURLStreetFld);
 
 	var populateFullAddressStreetSearch =  function(event, name, jsonAddress) {
 
@@ -440,16 +441,16 @@ function init_address(name, defaultSuburbSeq) {
 		}
 	};
 
-	streetAddressInput.on('typeahead:selected', function streetFldAutocompleteSelected(obj, datum, name) {
+	autofilllessSearchInput.on('typeahead:selected', function streetFldAutocompleteSelected(obj, datum, name) {
 		if (typeof datum.text !== 'undefined') {
 			var fullAddressLineOneValue = datum.text.substring(0, datum.text.indexOf(','));
 			fullAddressLineOneHidden.val(fullAddressLineOneValue);
 			fullAddressHidden.val(datum.text);
-			streetAddressInput.typeahead('setQuery', datum.text);
+			autofilllessSearchInput.typeahead('setQuery', datum.text);
 		}
 	});
 
-	streetAddressInput.focus(function(event) {
+	autofilllessSearchInput.focus(function(event) {
 		userStartedTyping = true;
 	});
 

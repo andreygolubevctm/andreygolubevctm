@@ -144,7 +144,7 @@
 
 		// External events:
 		// This mode is causing it to render 3 times for no reason when in compare mode... maybe hooked up in Results.js in the wrong place?
-		meerkat.messaging.subscribe(meerkatEvents.TOGGLE_MODE, toggleViewMode);
+		meerkat.messaging.subscribe(ResultsView.moduleEvents.RESULTS_TOGGLE_MODE, toggleViewMode);
 
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, resetComparison);
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, resetComparison);

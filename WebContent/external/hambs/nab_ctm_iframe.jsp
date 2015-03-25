@@ -18,7 +18,13 @@
 	<c:set var="hostOrigin">${fn:substring( hostOrigin, 0, fn:length(hostOrigin)-1 )}</c:set>
 </c:if>
 
-<c:set var="remote" value="${go:jsEscape(param.remote)}" />
+<%-- TODO: move this over to the database --%>
+<c:if test="${not empty param.providerCode}">
+	<c:import var="config" url="/WEB-INF/aggregator/health_application/${param.providerCode}/config.xml" />
+	<x:parse var="configXml" doc="${config}" />
+	<c:set var="gatewayURL" scope="page" ><x:out select="$configXml//*[name()='nabGateway']/*[name()='gatewayURL']" /></c:set>
+	<c:set var="gatewayDomain" scope="page"><x:out select="$configXml//*[name()='nabGateway']/*[name()='domain']" /></c:set>
+</c:if>
 
 <!DOCTYPE html>
 <html>
@@ -45,7 +51,7 @@
 		<div id="loadingMessage">
 			<div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>
 		</div>
-		<iframe id="hambsIframe" onload="loadComplete();" style="display:none;" src="${param.src}?hostOrigin=${ctmHostOrigin}" width="100%" height="365" frameBorder="0"></iframe>
+		<iframe id="hambsIframe" onload="loadComplete();" style="display:none;" src="${gatewayURL}?hostOrigin=${ctmHostOrigin}" width="100%" height="365" frameBorder="0"></iframe>
 
 		<script>
 			if (window.addEventListener) {
@@ -55,7 +61,7 @@
 			}
 
 			function onMessageFromHambs(e){
-				if(e.origin !== '${remote}')
+				if(e.origin !== '${gatewayDomain}')
 					return;
 
 				parent.postMessage(

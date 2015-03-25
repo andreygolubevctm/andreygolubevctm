@@ -199,6 +199,7 @@
 
 	<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
 	<c:set var="productId"><x:out select="$resultXml/result/@productId" /></c:set>
+			<c:set var="serviceRef"><x:out select="$resultXml/result/@service" /></c:set>
 	<c:set var="excess"><x:out select="$resultXml/result/excess/total" /></c:set>
 			<c:set var="baseExcess"><x:out select="$resultXml/result/excess/base" /></c:set>
 	<c:set var="kms"><x:out select="$resultXml/result/headline/kms" /></c:set>
@@ -209,6 +210,14 @@
 			<c:set var="isHollard">
 				<c:choose>
 					<c:when test="${brandCode eq 'WOOL' or brandCode eq 'REIN'}">${true}</c:when>
+					<c:otherwise>${false}</c:otherwise>
+				</c:choose>
+			</c:set>
+
+			<%-- Set flag to indicate this is an Auto & General product. --%>
+			<c:set var="isAutoGeneral">
+				<c:choose>
+					<c:when test="${fn:startsWith(serviceRef, 'AGIS_')}">${true}</c:when>
 					<c:otherwise>${false}</c:otherwise>
 				</c:choose>
 			</c:set>
@@ -292,9 +301,17 @@
 								<c:set var="value"><x:out select="$resultXml/result/headline/feature" /></c:set>
 								<c:set var="extra">${terms}</c:set>
 							</c:when>
-							<%-- Ensure offer terms comes from service (offer from db) --%>
+							<%-- Ensure offer and offer terms comes from service except for
+								non-autogeneral products where offer comes from db --%>
 							<c:when test="${value == 'S'}">
+								<c:choose>
+									<c:when test="${isAutoGeneral eq true}">
+										<c:set var="value"><x:out select="$resultXml/result/headline/feature" escapeXml="false" /></c:set>
+									</c:when>
+									<c:otherwise>
 					<c:set var="value">${feature[1]}</c:set>
+									</c:otherwise>
+								</c:choose>
 					<c:set var="extra">${terms}</c:set>
 							</c:when>
 						</c:choose>

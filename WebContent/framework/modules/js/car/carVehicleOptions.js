@@ -65,6 +65,8 @@
 
 	var ajaxInProgress = false;
 
+	var sessionCamStep = null;
+
 	function getVehicleData(callback) {
 
 		if( ajaxInProgress === false ) {
@@ -162,7 +164,10 @@
 			},
 			closeOnHashChange: true,
 			openOnHashChange: false,
-			onClose : _.bind(toggleButtonStates, this, {type:'factory'}),
+			onClose : function(){
+				meerkat.modules.sessionCamHelper.updateVirtualPage(getSessionCamStep());
+				toggleButtonStates({type:'factory'});
+			},
 			onOpen : function(dialogId) {
 
 				// Toggle select options form depending on whether content is available
@@ -182,6 +187,11 @@
 				$('#' + dialogId).on('click', '.nav-tabs a', function(e) {
 					e.preventDefault();
 					e.stopPropagation();
+
+					var sessionCamStep = getSessionCamStep();
+					sessionCamStep.navigationId += "-FactoryDealerOptions-" + $(this).attr('data-target').split("-")[2];
+					meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+
 					$(this).tab('show');
 					$('#' + dialogId + ' .modal-title-label').html($(this).attr('title'));
 				});
@@ -306,7 +316,10 @@
 				},
 				closeOnHashChange: true,
 				openOnHashChange: false,
-				onClose : _.bind(toggleButtonStates, this, {type:'accessories'}),
+				onClose : function(){
+					meerkat.modules.sessionCamHelper.updateVirtualPage(getSessionCamStep());
+					toggleButtonStates({type:'accessories'});
+				},
 				onOpen : function(dialogId) {
 
 					// Steal the injection div and add it to the header.
@@ -337,6 +350,11 @@
 						}
 						e.preventDefault();
 						e.stopPropagation();
+
+						var sessionCamStep = getSessionCamStep();
+						sessionCamStep.navigationId += "-NonStandardAccessories-" + $(this).attr('data-target').split("-")[1];
+						meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+
 						$(this).tab('show');
 						$('#' + dialogId + ' .modal-title-label').html($(this).attr('title'));
 					});
@@ -929,6 +947,13 @@
 
 		});
 
+	}
+
+	function getSessionCamStep() {
+		if(sessionCamStep == null) {
+			sessionCamStep = meerkat.modules.journeyEngine.getCurrentStep();
+		}
+		return _.extend({}, sessionCamStep); // prevent external override
 	}
 
 	meerkat.modules.register("carVehicleOptions", {

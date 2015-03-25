@@ -73,12 +73,8 @@
         $(".cc-just-continue, .cc-submit-details").addClass("disabled");
         meerkat.modules.loadingAnimation.showInside($submitButton, true);
         trackTransfer();
-        var data = [];
-        $.extend(data, meerkat.modules.journeyEngine.getFormData());
-        data.push({
-            name: "quoteType",
-            value: meerkat.site.vertical
-        });
+        var data = meerkat.modules.journeyEngine.getSerializedFormData($("#mainform"));
+        data += "&quoteType=" + meerkat.site.vertical;
         return meerkat.modules.comms.post({
             url: "ajax/write/creditcard_submit.jsp",
             data: data,

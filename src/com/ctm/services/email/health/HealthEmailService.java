@@ -4,6 +4,7 @@ import com.ctm.dao.ContentDao;
 import com.ctm.dao.RankingDetailsDao;
 import com.ctm.dao.TransactionDao;
 import com.ctm.exceptions.*;
+import com.ctm.model.content.Content;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.Touch;
@@ -213,7 +214,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 	private String getCallCentreNumber() throws DaoException {
-		return contentDao.getByKey("healthCallCentreNumber", ApplicationService.getServerDate(), false).getContentValue();
+		Content content = contentDao.getByKey("callCentreNumber", ApplicationService.getServerDate(), false);
+		return content != null ? content.getContentValue() : "";
 	}
 
 }

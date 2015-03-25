@@ -47,12 +47,22 @@ body > div > header {
 			color: @theme-dark;
 			font-size: @font-size-h5;
 			font-family: @font-family-sans-serif;
+			@media (@xs-only) {
+				a:hover {
+					color: #ffffff;
+				}
+			}
 			span {
 				//This one dynamically fades based on highest contrast.
 				//color: contrast(@header-bg, @contact-headings-color, lighten(@header-bg, 35%));
 				//This one picks white based on highest contrast
 				color: contrast(@header-bg, @contact-headings-color, #fff);
 				font-size: 38px;
+				@media (@xs-only) {
+					&.callCentreNumber {
+						color: #ffffff;
+					}
+				}
 			}
 		}
 		[data-livechat="button"] {
@@ -220,7 +230,7 @@ body > div > header {
 			}
 		}
 
-		//Design Attributes of the mobile xs header's contact us dropdown
+		//Design Attributes of the mobile xs headers contact us dropdown
 		.header-collapse-contact {
 			background-color: @theme-secondary;
 			color: #fff;

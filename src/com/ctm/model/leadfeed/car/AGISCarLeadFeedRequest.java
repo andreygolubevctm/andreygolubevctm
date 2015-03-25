@@ -33,19 +33,21 @@ public class AGISCarLeadFeedRequest extends AGISLeadFeedRequest {
 	 *
 	 */
 	public static enum MessageData {
-		CTM_REQUEST_CALLBACK( "CTMCAR", "CTM - Car Vertical - Call me now"),
-		CTM_BEST_PRICE("CTBESTPRC", "CTM - Car Vertical - Best price"),
-		CHOOSI_REQUEST_CALLBACK("CHCAR", "CH - Car Vertical - Call me now"),
-		CHOOSI_BEST_PRICE("CHBESTPRC", "CH - Car Vertical - Best price"),
-		CAPTAIN_COMPARE_REQUEST_CALLBACK("CCCAR", "CC - Car Vertical - Call me now"),
-		CAPTAIN_COMPARE_BEST_PRICE("CCBESTPRC", "CC - Car Vertical - Best price");
+		CTM_REQUEST_CALLBACK( "CTMCAR", "CTM - Car Vertical - Call me now", "CTM0000300"),
+		CTM_BEST_PRICE("CTBESTPRC", "CTM - Car Vertical - Best price", "CTM0000300"),
+		CHOOSI_REQUEST_CALLBACK("CHCAR", "CH - Car Vertical - Call me now", "CHI0000300"),
+		CHOOSI_BEST_PRICE("CHBESTPRC", "CH - Car Vertical - Best price", "CHI0000300"),
+		CAPTAIN_COMPARE_REQUEST_CALLBACK("CCCAR", "CC - Car Vertical - Call me now", "CCX0000300"),
+		CAPTAIN_COMPARE_BEST_PRICE("CCBESTPRC", "CC - Car Vertical - Best price", "CCX0000300");
 
 		private final String source;
 		private final String message;
+		private final String partnerId;
 
-		MessageData(String source, String message) {
+		MessageData(String source, String message, String partnerId) {
 			this.source = source;
 			this.message = message;
+			this.partnerId = partnerId;
 		}
 
 		public String getSource() {
@@ -54,6 +56,10 @@ public class AGISCarLeadFeedRequest extends AGISLeadFeedRequest {
 
 		public String getMessage() {
 			return message;
+		}
+
+		public String getPartnerId() {
+			return partnerId;
 		}
 
 	}
@@ -69,6 +75,9 @@ public class AGISCarLeadFeedRequest extends AGISLeadFeedRequest {
 
 		setMessageSource(messageData.getSource());
 		setMessageText(messageData.getMessage());
+
+		setPartnerId(messageData.getPartnerId()); // hardcoded above for now - to be dynamic in CAR-886
+		setSourceId("0000000002"); // hardcoded for now - to be dynamic in CAR-886
 
 		importLeadData(leadData);
 

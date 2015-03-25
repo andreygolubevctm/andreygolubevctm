@@ -7,6 +7,8 @@
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
+<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<c:set var="mandatoryFieldsSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}" />
 
 <form_new:fieldset legend="Policy Holder Details">
 
@@ -26,7 +28,7 @@
 	<form_new:row fieldXpath="${fieldXpath}" label="First Name">
 		<field:person_name xpath="${fieldXpath}"
 			title="policy holder's first name"
-			required="false"
+			required="${mandatoryFieldsSplitTest}"
 			maxlength="50" />
 	</form_new:row>
 
@@ -35,7 +37,7 @@
 	<form_new:row fieldXpath="${fieldXpath}" label="Last Name">
 		<field:person_name xpath="${fieldXpath}"
 			title="policy holder's last name"
-			required="false"
+			required="${mandatoryFieldsSplitTest}"
 			maxlength="50" />
 	</form_new:row>
 

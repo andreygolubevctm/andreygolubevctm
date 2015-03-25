@@ -5,7 +5,7 @@
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" scope="request" />
 
 <jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
-<div class="row handover-container">
+<div class="row handover-container journeyEngineSlide active">
 	<c:choose>
 		<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 1)}">
 			<creditcard:details />

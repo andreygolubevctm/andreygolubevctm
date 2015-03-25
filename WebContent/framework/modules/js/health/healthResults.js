@@ -3,9 +3,15 @@
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
-		$resultsLowNumberMessage;
+		$resultsLowNumberMessage,
+		$component, //Stores the jQuery object for the component group
+		selectedProduct = null,
+		previousBreakpoint,
+		best_price_count = 5,
+		isLhcApplicable = 'N',
+		premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
 
-	var templates =  {
+		templates =  {
 		premiumsPopOver :
 				'{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
 				'<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' +
@@ -31,9 +37,8 @@
 				'<strong>State: </strong>{{=product.info.State}}<br/> ' +
 					'<strong>Membership Type: </strong>{{=product.info.Category}}' +
 				'{{ } }}'
-	};
-
-	var moduleEvents = {
+		},
+		moduleEvents = {
 			healthResults: {
 				SELECTED_PRODUCT_CHANGED: 'SELECTED_PRODUCT_CHANGED',
 				SELECTED_PRODUCT_RESET: 'SELECTED_PRODUCT_RESET',
@@ -44,11 +49,6 @@
 			RESULTS_ERROR: 'RESULTS_ERROR'
 		};
 
-	var $component; //Stores the jQuery object for the component group
-	var selectedProduct = null;
-	var previousBreakpoint;
-	var best_price_count = 5;
-	var isLhcApplicable = 'N';
 
 	function initPage(){
 
@@ -407,10 +407,11 @@
 			// Reset the feature header to match the new column content.
 			$(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
 
-			_.defer(function(){
-				$('.healthPremiumIncreaseContent').click();
-			});
-
+			if (premiumIncreaseContent.length > 0){
+				_.defer(function(){
+					premiumIncreaseContent.click();
+				});
+			}
 		});
 
 		$(document).on("resultsDataReady", function(){
@@ -473,13 +474,13 @@
 						meerkat.modules.healthResults.setSelectedProduct(productUpdated);
 						htmlContent	=	"Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Please note that for this particular product, " +
 										"the price and/or features have changed since the last time you were comparing. If you need further assistance, " +
-										"you can chat to one of our Health Insurance Specialists on " + meerkat.site.content.callCentreHelpNumber + ", and they will be able to help you with your options.";
+										"you can chat to one of our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">" + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
 					}else{
 						$('#health_application_productId').val(''); // reset selected productId to prevent it getting saved into transaction details.
 						$('#health_application_productTitle').val(''); // reset selected productTitle to prevent it getting saved into transaction details.
 						htmlContent	=	"Thanks for visiting " + meerkat.site.content.brandDisplayName + ". Unfortunately the product you're looking for is no longer available. " +
 										"Please head to your results page to compare available policies or alternatively, " +
-										"chat to one of our Health Insurance Specialists on " + meerkat.site.content.callCentreHelpNumber + ", and they will be able to help you with your options.";
+										"chat to one of our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">" + meerkat.site.content.callCentreHelpNumber + "</span>, and they will be able to help you with your options.";
 					}
 
 					meerkat.modules.dialogs.show({

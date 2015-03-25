@@ -2394,7 +2394,7 @@ ResultsView = {
     noResultsMode: false,
     moduleEvents: {
         RESULTS_SORTED: "RESULTS_SORTED",
-        TOGGLE_MODE: "RESULTS_TOGGLE_MODE"
+        RESULTS_TOGGLE_MODE: "RESULTS_TOGGLE_MODE"
     },
     show: function() {
         try {
@@ -3474,6 +3474,8 @@ Features = {
         if (dpIdCache.hasOwnProperty(dpId)) {
             setAddressDataFields(dpIdCache[dpId]);
         } else {
+            var $navButton = $(".journeyNavButton");
+            meerkat.modules.loadingAnimation.showInside($navButton);
             meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, {
                 source: "address_lookup"
             });
@@ -3510,6 +3512,7 @@ Features = {
                         meerkat.messaging.publish(meerkat.modules.events.WEBAPP_UNLOCK, {
                             source: "address_lookup"
                         });
+                        meerkat.modules.loadingAnimation.hide($navButton);
                     }
                 });
             }
@@ -3609,14 +3612,13 @@ Features = {
                 params = {
                     name: $component.attr("name"),
                     remote: {
-                        rateLimitWait: 100,
                         beforeSend: function(jqXhr, settings) {
                             autocompleteBeforeSend($component);
                             jqXhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                             settings.type = "POST";
                             settings.hasContent = true;
                             settings.url = url;
-                            var $addressField = $("#quote_riskAddress_streetSearch");
+                            var $addressField = $("#quote_risk_autofilllessSearch");
                             var query = $addressField.val();
                             settings.data = $.param({
                                 query: decodeURI(query)
@@ -3694,7 +3696,7 @@ Features = {
             typeaheadParams.remote.replace = addressSearch;
             typeaheadParams.valueKey = "value";
             typeaheadParams.template = _.template("<p>{{= highlight }}</p>");
-            if ($element.hasClass("typeahead-streetSearch")) {
+            if ($element.hasClass("typeahead-autofilllessSearch") || $element.hasClass("typeahead-streetSearch")) {
                 typeaheadParams.remote.filter = function(parsedResponse) {
                     autocompleteComplete($element);
                     if (elasticSearch) {
@@ -3715,8 +3717,10 @@ Features = {
                 $element.bind("typeahead:selected", function catchEmptyValue(event, datum, name) {
                     if (datum.hasOwnProperty("value") && datum.value === "Type your address...") {
                         var id = "";
-                        if (event.target && event.target.id) {
-                            id = event.target.id.replace("_streetSearch", "");
+                        if (!elasticSearch) {
+                            if (event.target && event.target.id) {
+                                id = event.target.id.replace("_streetSearch", "");
+                            }
                         }
                         meerkat.messaging.publish(moduleEvents.CANT_FIND_ADDRESS, {
                             fieldgroup: id
@@ -4357,7 +4361,7 @@ Features = {
         meerkat.messaging.subscribe(moduleEvents.REMOVE_PRODUCT, removeProduct);
         meerkat.messaging.subscribe(moduleEvents.RENDER_BASKET, renderBasket);
         meerkat.messaging.subscribe(moduleEvents.ENTER_COMPARE, enterCompareMode);
-        meerkat.messaging.subscribe(meerkatEvents.TOGGLE_MODE, toggleViewMode);
+        meerkat.messaging.subscribe(ResultsView.moduleEvents.RESULTS_TOGGLE_MODE, toggleViewMode);
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, resetComparison);
         meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, resetComparison);
     }
@@ -6344,6 +6348,15 @@ Features = {
         for (var i = 0; i < settings.steps.length; i++) {
             settings.steps[i] = $.extend({}, defaultStepSettings, settings.steps[i]);
         }
+        settings.steps.sort(function(a, b) {
+            if (a.slideIndex < b.slideIndex) {
+                return -1;
+            } else if (a.slideIndex > b.slideIndex) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
         if (settings.startStepId === null && meerkat.modules.address.getWindowHash() === "") {
             settings.startStepId = settings.steps[0].navigationId;
             meerkat.modules.address.setStartHash(settings.startStepId);
@@ -6498,14 +6511,7 @@ Features = {
         }
     }
     function sessionCamRecorder(step) {
-        if (window.sessionCamRecorder) {
-            if (window.sessionCamRecorder.createVirtualPageLoad) {
-                log("[sessionCamRecorder:createVirtualPageLoad]", step);
-                setTimeout(function() {
-                    window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + step.navigationId);
-                }, 1e3);
-            }
-        }
+        meerkat.modules.sessionCamHelper.updateVirtualPageFromJourneyEngine(step);
     }
     function onShowNextStep(eventObject, previousStep, triggerEnterMethod) {
         $("body").attr("data-step", currentStep.navigationId);
@@ -7227,11 +7233,7 @@ Features = {
         var productId = $this.attr("data-productId"), showApply = $this.hasClass("more-info-showapply");
         setProduct(Results.getResult("productId", productId), showApply);
         settings.runDisplayMethod(productId);
-        setTimeout(function() {
-            meerkat.modules.journeyEngine.sessionCamRecorder({
-                navigationId: "MoreInfo"
-            });
-        }, 2e3);
+        meerkat.modules.sessionCamHelper.setMoreInfoModal();
     }
     function showTemplate(moreInfoContainer) {
         toggleBodyClass(true);
@@ -7344,10 +7346,12 @@ Features = {
         if (isModalOpen) {
             hideModal();
             meerkat.modules.address.removeFromHash("moreinfo");
+            meerkat.modules.sessionCamHelper.setResultsShownPage();
         }
         if (isBridgingPageOpen) {
             hideTemplate(settings.container);
             meerkat.modules.address.removeFromHash("moreinfo");
+            meerkat.modules.sessionCamHelper.setResultsShownPage();
         }
     }
     function hideTemplate(moreInfoContainer) {
@@ -8544,11 +8548,6 @@ Features = {
         buildTrackingDataObject(config, sortedAndFiltered);
         sendQuoteRanking(trigger, rankingData);
         meerkat.messaging.publish(meerkatEvents.RESULTS_RANKING_READY);
-        setTimeout(function() {
-            meerkat.modules.journeyEngine.sessionCamRecorder({
-                navigationId: "ResultsLoaded"
-            });
-        }, 2e3);
     }
     function sendQuoteRanking(trigger, rankingData) {
         log("[resultsRankings] sendWriteRank", {
@@ -9644,6 +9643,101 @@ Features = {
         poke: poke,
         check: check,
         update: updateTimeout
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
+    var events = {}, moduleEvents = events;
+    var skipStepForSessionCam = [ "results" ];
+    var ignoreSetResultsDisplayMode = true;
+    var stepCopy = {
+        RESULTS_LOADING: "resultsLoading",
+        RESULTS_PAGE: "resultsPage",
+        MOREINFO_PAGE: "MoreInfo"
+    };
+    function init() {
+        msg.subscribe(ResultsModel.moduleEvents.WEBAPP_LOCK, setResultsLoadingPage);
+        msg.subscribe(meerkat.modules.events.RESULTS_RANKING_READY, _.bind(setResultsShownPage, this, 2e3));
+        msg.subscribe(ResultsView.moduleEvents.RESULTS_TOGGLE_MODE, onResultsDisplayTypeSet);
+        msg.subscribe(meerkat.modules.events.journeyEngine.READY, setInitialPage);
+    }
+    function addStepToIgnoreList(navigationId) {
+        if (_.indexOf(skipStepForSessionCam, navigationId) === -1) {
+            skipStepForSessionCam.push(navigationId);
+        }
+    }
+    function updateVirtualPageFromJourneyEngine(step, delay) {
+        if (!_.isArray(skipStepForSessionCam) || _.indexOf(skipStepForSessionCam, step.navigationId) === -1) {
+            updateVirtualPage(step, delay);
+        }
+    }
+    function updateVirtualPage(step, delay) {
+        delay = delay || 1e3;
+        if (window.sessionCamRecorder) {
+            if (window.sessionCamRecorder.createVirtualPageLoad) {
+                setTimeout(function() {
+                    log("[sessionCamHelper:createVirtualPageLoad]", step);
+                    window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + step.navigationId);
+                }, delay);
+            }
+        }
+    }
+    function setInitialPage() {
+        setTimeout(function() {
+            updateVirtualPageFromJourneyEngine(meerkat.modules.journeyEngine.getCurrentStep());
+        }, 2e3);
+    }
+    function setResultsLoadingPage(data, delay) {
+        delay = delay || false;
+        if (data.source === "resultsModel") {
+            updateVirtualPage({
+                navigationId: stepCopy.RESULTS_LOADING
+            }, delay);
+        }
+    }
+    function setResultsShownPage(delay) {
+        delay = delay || false;
+        updateVirtualPage(getResultsStep(), delay);
+    }
+    function onResultsDisplayTypeSet() {
+        if (ignoreSetResultsDisplayMode === false) {
+            setResultsShownPage();
+        }
+        ignoreSetResultsDisplayMode = true;
+    }
+    function setMoreInfoModal(delay) {
+        delay = delay || false;
+        updateVirtualPage(getMoreInfoStep(), delay);
+    }
+    function getResultsStep() {
+        return {
+            navigationId: stepCopy.RESULTS_PAGE + "-" + Results.getDisplayMode()
+        };
+    }
+    function getMoreInfoStep(suffix) {
+        suffix = suffix || false;
+        return appendToStep({
+            navigationId: stepCopy.MOREINFO_PAGE
+        }, suffix);
+    }
+    function appendToStep(step, suffix) {
+        suffix = suffix || false;
+        if (suffix !== false && !_.isEmpty(suffix)) {
+            step.navigationId += "-" + suffix;
+        }
+        return step;
+    }
+    meerkat.modules.register("sessionCamHelper", {
+        init: init,
+        events: events,
+        updateVirtualPage: updateVirtualPage,
+        updateVirtualPageFromJourneyEngine: updateVirtualPageFromJourneyEngine,
+        addStepToIgnoreList: addStepToIgnoreList,
+        setResultsLoadingPage: setResultsLoadingPage,
+        setResultsShownPage: setResultsShownPage,
+        setMoreInfoModal: setMoreInfoModal,
+        getMoreInfoStep: getMoreInfoStep
     });
 })(jQuery);
 

@@ -83,7 +83,7 @@
 			<div class="${rightColumnWidthClass} hidden-xs">
 				<ui:bubble variant="info">
 					<h1>Do you need a hand?</h1>
-					<h6>Call us on <span class="noWrap">${callCentreNumber}</span></h6>
+					<h6>Call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h6>
 					<p><small>Our Australian based call centre hours are<br><strong><form:scrape id='135'/></strong></small></p>
 				</ui:bubble>
 			</div>

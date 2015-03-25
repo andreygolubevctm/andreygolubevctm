@@ -7,7 +7,7 @@
 	var moduleEvents = {
 		creditcard : {
 
-		},
+		}
 	},
 	$mainForm,
 	product;
@@ -62,6 +62,7 @@
 				} else {
 					meerkat.modules.loadingAnimation.hide($el);
 					$('.cc-just-continue, .cc-submit-details').removeClass('disabled');
+					//meerkat.modules.journeyEngine.logValidationErrors();
 				}
 			});
 
@@ -103,14 +104,9 @@
 
 		trackTransfer();
 
-		var data = [];
+		var data = meerkat.modules.journeyEngine.getSerializedFormData($("#mainform"));
 
-		$.extend(data, meerkat.modules.journeyEngine.getFormData());
-
-		data.push({
-			name: 'quoteType',
-			value: meerkat.site.vertical
-		});
+		data += "&quoteType=" + meerkat.site.vertical;
 
 		return meerkat.modules.comms.post({
 			url: 'ajax/write/creditcard_submit.jsp',

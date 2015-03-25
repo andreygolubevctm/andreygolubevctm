@@ -31,7 +31,7 @@ var healthFunds_AHM = {
 		var dependantsString = 'ahm Health Insurance provides cover for your children up to the age of 21 plus students who are single and studying full time aged between 21 and 25. Adult dependants outside this criteria can be covered by an additional premium on certain covers';
 
 		if(meerkat.site.content.callCentreNumber !== ''){
-			dependantsString += ' so please call '+meerkat.site.content.brandDisplayName+' on '+meerkat.site.content.callCentreNumber;
+			dependantsString += ' so please call '+meerkat.site.content.brandDisplayName+' on <span class=\"callCentreNumber\">'+meerkat.site.content.callCentreNumberApplication+"</span>";
 			if(meerkat.site.liveChat.enabled) dependantsString += ' or chat to our consultants online';
 			dependantsString += ' to discuss your health cover needs.';
 		}else{

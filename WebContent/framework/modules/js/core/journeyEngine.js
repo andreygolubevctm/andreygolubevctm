@@ -93,6 +93,18 @@
 			settings.steps[i] = $.extend({}, defaultStepSettings, settings.steps[i]);
 		}
 
+		// Sort the steps array based on the slideIndex property of each step rather than
+		// assuming the array provided matches that order (eg arose in split-testing)
+		settings.steps.sort(function(a,b){
+			if(a.slideIndex < b.slideIndex) {
+				return -1;
+			} else if(a.slideIndex > b.slideIndex) {
+				return 1;
+			} else {
+				return 0;
+			}
+		});
+
 		// Show the initial step (either the first step, or the one defined in the settings, or the one identified in the hash)
 
 		if(settings.startStepId === null && meerkat.modules.address.getWindowHash() === ''){
@@ -305,7 +317,7 @@
 			if(currentStep === null) showSlide(step, false); // Force show the first step on the initial call of the journey engine.
 
 			currentStep = step;
-			//sessionCamRecorder(currentStep);
+
 			setFurtherestStep();
 
 			onShowNextStep(eventObject, previousStep, true);
@@ -339,15 +351,8 @@
 	}
 
 		function sessionCamRecorder(step) {
-			if (window.sessionCamRecorder) {
-				if (window.sessionCamRecorder.createVirtualPageLoad) {
-				log("[sessionCamRecorder:createVirtualPageLoad]", step);
-					setTimeout(function() {
-						window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + step.navigationId);
-					}, 1000);
+		meerkat.modules.sessionCamHelper.updateVirtualPageFromJourneyEngine(step);
 			}
-		}
-		}
 
 	function onShowNextStep(eventObject, previousStep, triggerEnterMethod){
 

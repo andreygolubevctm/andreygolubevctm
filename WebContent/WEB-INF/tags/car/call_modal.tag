@@ -5,9 +5,17 @@
 
 <%-- Smaller Templates to reduce duplicate code --%>
 <core:js_template id="car-offline-discount-template">
-<%-- If there's a discount.offline e.g. of "10", display the static text of x% Discount included in price shown, otherwise use headline feature. --%>
+<%-- Flag to identify Auto and General product (via the service property) --%>
+{{ obj.isAutoAndGeneral = obj.service.search(/agis_/i) === 0 }}
+<!-- This flag is for specific A&G brands which only feature online products - the balance of
+	brands only have a generic offer which is online/offline agnostic -->
+{{ obj.isAutoAndGeneralSpecialCase = obj.isAutoAndGeneral && _.indexOf(['BUDD','VIRG','EXPO','EXDD'], obj.brandCode) >= 0 }}
+
+<%-- If there's a discount.offline e.g. of "10" (and is not an A&G brand),
+	display the static text of x% Discount included in price shown,
+	otherwise use headline feature. --%>
 {{ obj.offlinePromotionText = ''; }}
-{{ if(typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0) { }}
+{{ if(!obj.isAutoAndGeneral && typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0) { }}
 	{{ 	obj.offlinePromotionText = discount.offline + "% Discount included in price shown"; }}
 {{ } else if(typeof obj.headline !== 'undefined' && typeof obj.headline.feature !== 'undefined' && obj.headline.feature.length > 0)  { }}
 	{{ 	obj.offlinePromotionText = obj.headline.feature; }}
@@ -16,8 +24,8 @@
 {{ obj.offerTermsContent = (typeof obj.headline !== 'undefined' && typeof obj.headline.terms !== 'undefined' && obj.headline.terms.length > 0) ? obj.headline.terms : ''; }}
 
 <%-- If the headlineOffer is "OFFLINE" (meaning you can't continue online), it should show "Call Centre" offer --%>
-{{ obj.isANGProduct = obj.underwriter.indexOf("Auto & General") >= 0}}
-{{ if (((obj.isANGProduct && obj.headlineOffer == "ONLINE") || !obj.isANGProduct) && offlinePromotionText.length > 0) { }}
+<%-- This copy if bypassed if there's no copy above or it's a flagged A&G product --%>
+{{ if (offlinePromotionText.length > 0 && !obj.isAutoAndGeneralSpecialCase) { }}
 	<h5>
 	{{ if(headlineOffer == "OFFLINE" || discount.offline > 0) { }}
 		Call Centre Offer
@@ -37,16 +45,18 @@
 </core:js_template>
 
 <core:js_template id="car-online-discount-template">
-<%-- If there's a discount.online of e.g. 10 or 20, show x% discount included in price shown. If not, show headline.feature --%>
+<%-- If there's a discount.online of e.g. 10 or 20 (and is not an A&G brand),
+	show x% discount included in price shown. If not, show headline.feature --%>
 {{ obj.onlinePromotionText = ''; }}
-{{ if(typeof discount !== 'undefined' && typeof discount.online !== 'undefined' && discount.online > 0) { }}
+{{ if(!obj.isAutoAndGeneral && typeof obj.discount !== 'undefined' && typeof obj.discount.online !== 'undefined' && obj.discount.online > 0) { }}
 	{{ obj.onlinePromotionText = discount.online + "% Discount included in price shown"; }}
 {{ } else if(typeof obj.headline !== 'undefined' && typeof obj.headline.feature !== 'undefined' && obj.headline.feature.length > 0)  { }}
 	{{ obj.onlinePromotionText = obj.headline.feature; }}
 {{ } }}
 
-<%-- If the online/offline discount is the same, or if the headline.feature is the same, don't show the online offer. --%>
-{{ if (obj.onlineAvailable == "Y" && onlinePromotionText.length > 0 && onlinePromotionText != offlinePromotionText) { }}
+<%-- Copy bypassed if not online or there's no copy above and only show if it's an
+	A&G special case or the online/offline discount is different. --%>
+{{ if (obj.onlineAvailable == "Y" && obj.onlinePromotionText.length > 0 && (obj.isAutoAndGeneralSpecialCase || obj.onlinePromotionText != obj.offlinePromotionText)) { }}
 	<h5>
 	Special Online Offer
 	</h5>

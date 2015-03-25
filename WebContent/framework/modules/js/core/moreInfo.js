@@ -159,9 +159,9 @@
 
 		// load, parse and show the bridging page
 		settings.runDisplayMethod(productId);
-		setTimeout(function() {
-			meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId":"MoreInfo"});
-		}, 2000);
+
+		// set virtual page in sessioncam
+		meerkat.modules.sessionCamHelper.setMoreInfoModal();
 	}
 
 	/**
@@ -325,14 +325,17 @@
 	 * Funnel - determines whether to close a modal or template view.
 	 */
 	function closeBridgingPage() {
+
 		if (isModalOpen) {
 			hideModal();
 			meerkat.modules.address.removeFromHash('moreinfo');
+			meerkat.modules.sessionCamHelper.setResultsShownPage();
 		}
 
 		if(isBridgingPageOpen) {
 			hideTemplate(settings.container);
 			meerkat.modules.address.removeFromHash('moreinfo');
+			meerkat.modules.sessionCamHelper.setResultsShownPage();
 		}
 
 	}
@@ -467,7 +470,6 @@
 			$('body').removeClass(visibleBodyClass);
 		}
 	}
-
 
 	meerkat.modules.register('moreInfo', {
 		initMoreInfo: initMoreInfo, // main entrypoint to be called.

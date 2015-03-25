@@ -63,12 +63,8 @@
 						<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 						<provider>Online Travel Insurance</provider>
 						<trackCode>34</trackCode>
-						<name>
-							<xsl:value-of select="pr:PlanName"/>
-						</name>
-						<des>
-							<xsl:value-of select="pr:PlanName"/>
-						</des>
+						<name><xsl:value-of select="pr:PlanName"/></name>
+						<des><xsl:value-of select="pr:PlanName"/></des>
 						<price><xsl:value-of select="format-number(pr:Premium,'#.00')"/></price>
 						<priceText>$<xsl:value-of select="format-number(pr:Premium,'#.00')"/></priceText>
 						<xsl:variable name="otherNodes" />

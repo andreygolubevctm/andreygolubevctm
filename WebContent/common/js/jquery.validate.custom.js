@@ -769,6 +769,21 @@ $.validator.addMethod(
 	}, "Please select a valid address"
 );
 
+$.validator.addMethod("validAutofilllessSearch", function(value, element, name) {
+	"use strict";
+
+	// Default is to FAIL
+	var valid = false;
+	var fullAddressFld = $("#" + name + "_fullAddress");
+
+	if (fullAddressFld.val() !== '') {
+		valid = true;
+	}
+
+	return valid;
+
+}, "Please select a valid address" );
+
 $.validator.addMethod(
 		"validSuburb",
 		function(value, element, name) {

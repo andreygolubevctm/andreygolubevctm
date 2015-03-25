@@ -308,8 +308,8 @@
 				if(data === null){
 
 					// Sometimes the date selected by the user is not actually available, show message.
-					var notAvailableHtml = 
-									'<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on '+meerkat.site.content.callCentreHelpNumber+' for assistance.</p>' +
+					var notAvailableHtml =
+									'<p>Unfortunately this policy is not currently available. Please select another policy or call our Health Insurance Specialists on <span class=\"callCentreHelpNumber\">'+meerkat.site.content.callCentreHelpNumber+'</span> for assistance.</p>' +
 									'<div class="col-sm-offset-4 col-xs-12 col-sm-4">' +
 										'<a class="btn btn-next btn-block" id="select-another-product" href="javascript:;">Select Another Product</a>' +
 										'<a class="btn btn-cta btn-block visible-xs" href="tel:'+meerkat.site.content.callCentreHelpNumber+'">Call Us Now</a>' +

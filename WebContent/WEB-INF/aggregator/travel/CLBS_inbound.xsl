@@ -123,7 +123,7 @@
 
 					<available>Y</available>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-					<provider><xsl:value-of select="provider"/></provider>
+					<provider>Columbus Direct</provider>
 					<trackCode>7</trackCode>
 					<name><xsl:value-of select="$productName"/></name>
 					<des><xsl:value-of select="$productDesc"/></des>

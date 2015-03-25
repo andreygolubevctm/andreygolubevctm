@@ -13,6 +13,13 @@
 	</c:choose>
 </c:set>
 
+<c:set var="isSplitTest">
+	<c:choose>
+		<c:when test="${not empty param.j and param.j eq '1'}">${true}</c:when>
+		<c:otherwise>${false}</c:otherwise>
+	</c:choose>
+</c:set>
+
 <%-- JAVASCRIPT --%>
 <go:script marker="js-head">
 <%-- The HTML structure of the page doesn't suit implementation of jQuery's Accordion class so
@@ -53,12 +60,26 @@ var LifeAccordion = function() {
 
 		<%-- Wrap content and footer elements with accordion tags --%>
 		<%-- Nb: Primary & Partner sections are shown together --%>
-		$("#" + vertical + "_contactDetails-selection .content, #" + vertical + "_contactDetails-selection .footer" ).wrapAll("<span id='accordion0' class='accordion' />");
-		$("#" + vertical + "_primary .content, #" + vertical + "_primary .footer" ).wrapAll("<span id='accordion1' class='accordion' />");
+		
+		<c:choose>
+			<c:when test="${isSplitTest}">
+				$("#" + vertical + "${insurance_label} .content, #" + vertical + "${insurance_label} .footer").wrapAll("<span id='accordion0' class='accordion' />");
+				$("#" + vertical + "_primary .content, #" + vertical + "_primary .footer" ).wrapAll("<span id='accordion1' class='accordion' />");
+				$("#" + vertical + "_contactDetails-selection .content, #" + vertical + "_contactDetails-selection .footer" ).wrapAll("<span id='accordion3' class='accordion' />");
+			</c:when>
+			<c:otherwise>
+				$("#" + vertical + "_contactDetails-selection .content, #" + vertical + "_contactDetails-selection .footer" ).wrapAll("<span id='accordion0' class='accordion' />");
+				$("#" + vertical + "_primary .content, #" + vertical + "_primary .footer" ).wrapAll("<span id='accordion1' class='accordion' />");
+			</c:otherwise>
+		</c:choose>
+		
 		if( vertical == 'life' ) {
 			$( "#" + vertical + "_partner" ).wrapAll( "<span id='accordion2' class='accordion' />");
 		}
-		$("#" + vertical + "${insurance_label} .content, #" + vertical + "${insurance_label} .footer").wrapAll("<span id='accordion3' class='accordion' />");
+		
+		<c:if test="${!isSplitTest}">
+			$("#" + vertical + "${insurance_label} .content, #" + vertical + "${insurance_label} .footer").wrapAll("<span id='accordion3' class='accordion' />");
+		</c:if>
 
 		<%-- Wrap primary person heading in span (needs to be updated later) --%>
 		if( vertical == 'life' ) {
@@ -67,40 +88,80 @@ var LifeAccordion = function() {
 		}
 
 		<%-- Setup elements object with required elements --%>
-		LifeAccordionElements = {
-			contact : {
-				heading:	$("#" + vertical + "_contactDetails-selection h4:first").css({position:'relative'}),
-				body:		$("#accordion0").hide(),
-				content:	$("#" + vertical + "_contactDetails-selection .content:first"),
-				edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
-				delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
-				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
-			},
-			personal : {
-				heading:	$("#" + vertical + "_primary h4:first").css({position:'relative'}),
-				title:		$("#" + vertical + "_primary h4:first").find("span:first"),
-				body:		{
-								primary : $("#accordion1").hide(),
-								partner : $("#accordion2").hide()
-				},
-				content:	{
-								primary : $("#" + vertical + "_primary .content:first"),
-								partner : $("#" + vertical + "_partner .content:first")
-				},
-				edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
-				delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
-				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
-			},
-			insurance :	{
-				heading:	$("#" + vertical + "${insurance_label} h4:first").css({position:'relative'}),
-				body:		$("#accordion3").hide(),
-				content:	$("#" + vertical + "${insurance_label} .content:first"),
-				edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
-				delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
-				summary:	$('<span/>').addClass('accordion-toggle summary-text').hide(),
-				next:		$("#content .button-wrapper:first")
-			}
-		};
+		<c:choose>
+			<c:when test="${isSplitTest}">
+				LifeAccordionElements = {
+					insurance :	{
+						heading:	$("#" + vertical + "${insurance_label} h4:first").css({position:'relative'}),
+						body:		$("#accordion0").hide(),
+						content:	$("#" + vertical + "${insurance_label} .content:first"),
+						edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
+						delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
+						summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
+					},
+					personal : {
+						heading:	$("#" + vertical + "_primary h4:first").css({position:'relative'}),
+						title:		$("#" + vertical + "_primary h4:first").find("span:first"),
+						body:		{
+										primary : $("#accordion1").hide(),
+										partner : $("#accordion2").hide()
+						},
+						content:	{
+										primary : $("#" + vertical + "_primary .content:first"),
+										partner : $("#" + vertical + "_partner .content:first")
+						},
+						edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
+						delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
+						summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
+					},
+					contact :	{
+						heading:	$("#" + vertical + "_contactDetails-selection h4:first").css({position:'relative'}),
+						body:		$("#accordion3").hide(),
+						content:	$("#" + vertical + "_contactDetails-selection .content:first"),
+						next:		$("#content .button-wrapper:first"),
+						edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
+						delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
+						summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
+					}
+				};
+			</c:when>
+			<c:otherwise>
+				LifeAccordionElements = {
+					contact : {
+						heading:	$("#" + vertical + "_contactDetails-selection h4:first").css({position:'relative'}),
+						body:		$("#accordion0").hide(),
+						content:	$("#" + vertical + "_contactDetails-selection .content:first"),
+						edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
+						delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
+						summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
+					},
+					personal : {
+						heading:	$("#" + vertical + "_primary h4:first").css({position:'relative'}),
+						title:		$("#" + vertical + "_primary h4:first").find("span:first"),
+						body:		{
+										primary : $("#accordion1").hide(),
+										partner : $("#accordion2").hide()
+						},
+						content:	{
+										primary : $("#" + vertical + "_primary .content:first"),
+										partner : $("#" + vertical + "_partner .content:first")
+						},
+						edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
+						delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
+						summary:	$('<span/>').addClass('accordion-toggle summary-text').hide()
+					},
+					insurance :	{
+						heading:	$("#" + vertical + "${insurance_label} h4:first").css({position:'relative'}),
+						body:		$("#accordion3").hide(),
+						content:	$("#" + vertical + "${insurance_label} .content:first"),
+						edit:		$('<a/>',{text:'edit', href:'javascript:void(0);'}).addClass('accordion-toggle edit-button').hide(),
+						delimiter:	$('<span/>').addClass('accordion-toggle delimiter').hide(),
+						summary:	$('<span/>').addClass('accordion-toggle summary-text').hide(),
+						next:		$("#content .button-wrapper:first")
+					}
+				};
+			</c:otherwise>
+		</c:choose>
 
 		<%-- Add applicable buttons/text to each section --%>
 		for(var j in LifeAccordionElements) {
@@ -131,7 +192,14 @@ var LifeAccordion = function() {
 			}(j));
 		}
 
-		gotoPanel('contact');
+		<c:choose>
+			<c:when test="${isSplitTest}">
+				gotoPanel('insurance');
+			</c:when>
+			<c:otherwise>
+				gotoPanel('contact');
+			</c:otherwise>
+		</c:choose>
 
 		if( vertical == 'life' ) {
 			$("input[name='life_primary_insurance_partner']").change(updatePersonalSectionHeading);
@@ -170,9 +238,11 @@ var LifeAccordion = function() {
 				toggleValidPanels(panel, true);
 
 				var step2_callback = function() {
-					if(!LifeQuote._contactLeadSent) {
-						LifeQuote.sendContactLead(true);
-					}
+					<c:if test="${!isSplitTest}">
+						if(!LifeQuote._contactLeadSent) {
+							LifeQuote.sendContactLead(true);
+						}
+					</c:if>
 
 					if( LifeAccordionElements[panel].body instanceof jQuery ) {
 						LifeAccordionElements[panel].body.slideDown(step3_callback);
@@ -188,11 +258,22 @@ var LifeAccordion = function() {
 				}
 
 				var step3_callback = function() {
-					if( panel == 'insurance' ) {
-						LifeAccordionElements[panel].next.slideDown();
-					} else {
-						LifeAccordionElements.insurance.next.slideUp()
-					}
+					<c:choose>
+						<c:when test="${isSplitTest}">
+							if( panel == 'contact' ) {
+								LifeAccordionElements[panel].next.slideDown();
+							} else {
+								LifeAccordionElements.contact.next.slideUp()
+							}
+						</c:when>
+						<c:otherwise>
+							if( panel == 'insurance' ) {
+								LifeAccordionElements[panel].next.slideDown();
+							} else {
+								LifeAccordionElements.insurance.next.slideUp()
+							}
+						</c:otherwise>
+					</c:choose>
 				}
 
 				if( LifeAccordionElements[active_panel].body instanceof jQuery ) {

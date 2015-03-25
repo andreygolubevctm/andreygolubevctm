@@ -50,8 +50,6 @@ var Track_IP = {
 				var state = 		$("#ip_primary_state").val();
 
 			var email = 		$("#ip_contactDetails_email").val();
-			var ok_to_call = 	$('input[name=ip_contactDetails_call]:checked', '#mainform').val() == "Y" ? "Y" : "N";
-			var mkt_opt_in = 	$("#ip_contactDetails_optIn").is(":checked") ? "Y" : "N";	
 			
 				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(true) );
 
@@ -65,9 +63,7 @@ var Track_IP = {
 			    postCode: 				postcode,
 			    state: 					state,
 					email:	 				email,
-					emailID: 				null,
-			    marketOptIn: 			mkt_opt_in,
-			    okToCall: 				ok_to_call
+					emailID: 				null
 			};
 			
 				fields = $.extend({}, fields, Track.updateEVars());
@@ -147,5 +143,15 @@ var Track_IP = {
 				});
 		};
 		
+		Track.onContactDetailsCollected = function(splitTest) {
+			splitTest = (splitTest && splitTest != "0") ? splitTest : null;
+			
+			Track.runTrackingCall('trackContactDetailsCollected', {
+				currentJourney: splitTest,
+				emailAddress: $('#ip_contactDetails_email').val() ? "Y" : "N",
+				okToCall: $('#ip_contactDetails_contactNumberinput').val() ? "Y" : "N",
+				marketOptIn: $("#ip_contactDetails_optIn").is(":checked") ? "Y" : "N"
+			});
+		};
 			}
 };

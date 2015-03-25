@@ -83,7 +83,7 @@
             object: meerkat.modules.home.getTrackingFieldsObject
         };
         var startStep = {
-            title: "Cover",
+            title: "Cover Type",
             navigationId: "start",
             slideIndex: 0,
             externalTracking: externalTrackingSettings,
@@ -147,7 +147,7 @@
         var policyHoldersStep = {
             title: "Policy Holder",
             navigationId: "policyHolder",
-            slideIndex: 3,
+            slideIndex: isSplitTestOn() ? 4 : 3,
             tracking: {
                 touchType: "H",
                 touchComment: "PolicyHolder",
@@ -155,19 +155,22 @@
             },
             externalTracking: externalTrackingSettings,
             onInitialise: function onInitialisePolicyHolder() {
+                if (isSplitTestOn()) {
+                    meerkat.modules.homeResults.initPage();
+                }
                 meerkat.modules.homePolicyHolder.initHomePolicyHolder();
             },
             onBeforeEnter: function onBeforeEnterPolicyHolder(event) {
                 meerkat.modules.homePolicyHolder.togglePolicyHolderFields();
             },
             onAfterEnter: function onPolicyHolderEnter(event) {
-                meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(3) .snapshot");
+                meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(" + (isSplitTestOn() ? "4" : "3") + ") .snapshot");
             }
         };
         var historyStep = {
-            title: "Cover History",
+            title: "Cover",
             navigationId: "history",
-            slideIndex: 4,
+            slideIndex: isSplitTestOn() ? 3 : 4,
             tracking: {
                 touchType: "H",
                 touchComment: "History",
@@ -175,11 +178,13 @@
             },
             externalTracking: externalTrackingSettings,
             onInitialise: function onInitialiseHistory(event) {
-                meerkat.modules.homeResults.initPage();
+                if (!isSplitTestOn()) {
+                    meerkat.modules.homeResults.initPage();
+                }
                 meerkat.modules.homeHistory.initHomeHistory();
             },
             onAfterEnter: function onHistoryEnter(event) {
-                meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(4) .snapshot");
+                meerkat.modules.contentPopulation.render(".journeyEngineSlide:eq(" + (isSplitTestOn() ? "3" : "4") + ") .snapshot");
             }
         };
         var resultsStep = {
@@ -224,22 +229,15 @@
         };
     }
     function configureProgressBar() {
-        meerkat.modules.journeyProgressBar.configure([ {
-            label: "Cover Type",
-            navigationId: steps.startStep.navigationId
-        }, {
-            label: "Occupancy",
-            navigationId: steps.occupancyStep.navigationId
-        }, {
-            label: "Property Details",
-            navigationId: steps.propertyStep.navigationId
-        }, {
-            label: "Policy Holder",
-            navigationId: steps.policyHoldersStep.navigationId
-        }, {
-            label: "Cover History",
-            navigationId: steps.historyStep.navigationId
-        } ]);
+        var keys = _.keys(steps);
+        var progressBarSteps = new Array(keys.length - 1);
+        for (var i = 0; i < keys.length - 1; i++) {
+            progressBarSteps[steps[keys[i]].slideIndex] = {
+                label: steps[keys[i]].title,
+                navigationId: steps[keys[i]].navigationId
+            };
+        }
+        meerkat.modules.journeyProgressBar.configure(progressBarSteps);
     }
     function getVerticalFilter() {
         return $("#home_coverType").val() || null;
@@ -299,11 +297,11 @@
                 break;
 
               case 3:
-                actionStep = "PolicyHolder";
+                actionStep = isSplitTestOn() ? "History" : "PolicyHolder";
                 break;
 
               case 4:
-                actionStep = "History";
+                actionStep = isSplitTestOn() ? "PolicyHolder" : "History";
                 break;
 
               case 5:
@@ -379,6 +377,9 @@
             return "HC";
         }
         return "";
+    }
+    function isSplitTestOn() {
+        return _.indexOf([ "34", "35" ], meerkat.modules.splitTest.get()) >= 0;
     }
     meerkat.modules.register("home", {
         init: initHome,

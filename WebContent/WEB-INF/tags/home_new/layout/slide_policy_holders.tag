@@ -2,8 +2,16 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" />
-<layout:slide formId="policyHoldersForm" nextLabel="Next Step">
+
+<c:set var="buttonLabel" value="Next Step" />
+<c:if test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 34) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 35)}">
+	<c:set var="buttonLabel" value="Get Quotes" />
+</c:if>
+
+<layout:slide formId="policyHoldersForm" nextLabel="${buttonLabel}">
 
 	<layout:slide_columns sideHidden="false">
 
@@ -43,7 +51,6 @@
 			<layout:slide_content>
 
 				<%-- Commencement date --%>
-				<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
 				<c:if test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">
 					<form_new:fieldset legend="Your preferred date to start the insurance">
 						<home_new:commencementDate xpath="${xpath}/startDate" />

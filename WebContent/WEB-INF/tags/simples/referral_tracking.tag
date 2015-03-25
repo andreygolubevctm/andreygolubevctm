@@ -3,6 +3,7 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="phoneService" class="com.ctm.services.PhoneService" scope="application" />
+<jsp:useBean id="quoteService" class="com.ctm.services.QuoteService" scope="application" />
 
 <%@ attribute name="vertical"	required="true"	 	rtexprvalue="true" 	description="Vertical to associate this tracking with e.g. health" %>
 <%@ attribute name="required" 	required="false"	rtexprvalue="true"	description="Is this field required?" %>
@@ -23,9 +24,12 @@
 	<c:if test="${not empty authenticatedData['login/user/extension']}">
 		<c:catch>
 			<c:set var="phoneVdn" value="${phoneService.getVdnByExtension(pageSettings, authenticatedData['login/user/extension'])}" />
+			<c:if test="${not empty phoneVdn}">
+				<c:set var="xpathVDN" value="${xpath}/VDN" />
+				<c:set var="ignore">${quoteService.writeSingle(data.current.transactionId, xpathVDN, phoneVdn)}</c:set>
+			</c:if>
 		</c:catch>
 	</c:if>
-	<field:hidden xpath="${xpath}/VDN" constantValue="${phoneVdn}" />
 
 	<%-- Form stuff --%>
 	<c:set var="id" value="${go:nameFromXpath(xpath)}" />

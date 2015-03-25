@@ -12,6 +12,19 @@
 <% nowPlusYear.add(java.util.GregorianCalendar.YEAR, 1); %>
 <fmt:formatDate var="nowPlusYear_Date" pattern="yyyy-MM-dd" value="${nowPlusYear.time}" />
 
+<c:if test="${param.preload eq 'true'}">
+
+	<jsp:useBean id="preloadToDate" class="java.util.GregorianCalendar" />
+	<% preloadToDate.add(java.util.GregorianCalendar.DAY_OF_MONTH, 8); %>
+
+	<fmt:formatDate var="preloadFromDate" value="${now}" pattern="dd/MM/yyyy" />
+	<fmt:formatDate var="preloadToDate" pattern="dd/MM/yyyy" value="${preloadToDate.time}" />
+	<go:setData dataVar="data" xpath="travel/dates/fromDate" value="${preloadFromDate}" />
+	<go:setData dataVar="data" xpath="travel/dates/toDate" value="${preloadToDate}" />
+</c:if>
+
+
+
 <%-- TODO: Minimum/Maximum Dates used to be handled with this crazy go tag, lets determine what difference this has to the above. --%>
 <%-- <fmt:formatDate value="${go:AddDays(now,365)}" var="nowPlusYear_Date" type="date" pattern="dd/MM/yyyy"/> --%>
 
@@ -50,10 +63,9 @@
 				<form_new:fieldset helpId="213" showHelpText="true" legend="Where are you going?" className="travel_details_destinations" id="destinationsfs">
 					<travel:country_selection xpath="travel/destinations" xpathhidden="travel/destination" />
 				</form_new:fieldset>
-
+				<go:log>PRELOAD IS ${param.preload}</go:log>
 				<%-- DATES AND TRAVELLERS SECTION --%>
 				<form_new:fieldset legend="Dates &amp; Travellers" className="travel_details_datesTravellers" id="datestravellersfs">
-
 					<field_new:date_range xpath="travel/dates" required="true" labelFrom="When do you leave?" labelTo="When do you return?" titleFrom="departure" titleTo="return" minDateFrom="${now_Date}" maxDateFrom="${nowPlusYear_Date}" minDateTo="${now_Date}" maxDateTo="${nowPlusYear_Date}" offsetText="up to 1 year" helpIdFrom="214" helpIdTo="215" />
 
 					<form_new:row label="How many adults?" className="smallWidth" helpId="216">

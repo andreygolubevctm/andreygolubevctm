@@ -15,15 +15,15 @@ import com.ctm.services.FatalErrorService;
 public class ElasticSearchService {
 
 	protected static FatalErrorService fatalErrorService;
-	
+
 	private final static Fuzziness SUGGESTION_FUZZINESS = Fuzziness.ONE;
 	private final static int SUGGESTION_SIZE = 7;
-	
+
 	public ElasticSearchService() {
 		fatalErrorService = new FatalErrorService();
 	}
 
-	public JSONArray suggest(Client client, String query, String index, String field) throws JSONException {		
+	public JSONArray suggest(Client client, String query, String index, String field) throws JSONException {
 		CompletionSuggestionBuilder suggestionBuilder = new CompletionSuggestionBuilder("suggest");
 		suggestionBuilder
 			.text(query)
@@ -49,18 +49,18 @@ public class ElasticSearchService {
 		 * Doing this the proper way using the SDK doesn't return payloads (for whatever reason).
 		 */
 		JSONObject output = new JSONObject(suggestResponse.toString());
-		
+
 		JSONArray suggestArray = null;
 		JSONArray suggestFuzzyArray = null;
-		
+
 		if(output.has("suggest")) {
 			suggestArray = output.getJSONArray("suggest").getJSONObject(0).getJSONArray("options");
 		}
-		
+
 		if(output.has("suggest_fuzzy")) {
 			suggestFuzzyArray = output.getJSONArray("suggest_fuzzy").getJSONObject(0).getJSONArray("options");
 		}
-		
+
 		if(suggestArray != null && suggestFuzzyArray != null) {
 			return concatJSONArrays(suggestArray, suggestFuzzyArray);
 		} else if (suggestArray != null) {
@@ -68,7 +68,7 @@ public class ElasticSearchService {
 		} else if (suggestFuzzyArray != null) {
 			return suggestFuzzyArray;
 		} else {
-			return null;
+			return new JSONArray("[]");
 		}
 	}
 

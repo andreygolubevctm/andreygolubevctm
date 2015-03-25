@@ -252,6 +252,9 @@
 				}
 			}, totalDuration);
 
+			// Set the correct phone number
+			meerkat.modules.healthPhoneNumber.changePhoneNumber();
+
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 				method:'trackProductView',
 				object:{
@@ -261,6 +264,7 @@
 					simplesUser: meerkat.site.isCallCentreUser
 				}
 			});
+
 
 		});
 
@@ -323,6 +327,9 @@
 
 			$(".more-info-content").show();
 
+			// Set the correct phone number
+			meerkat.modules.healthPhoneNumber.changePhoneNumber(true);
+
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 				method:'trackProductView',
 				object:{
@@ -367,7 +374,7 @@
 						meerkat.modules.errorHandling.error({
 							errorLevel:		'warning',
 							message:		'Oops! Something seems to have gone wrong. Please try again by re-entering your email address or ' +
-											'alternatively contact our call centre on ' + meerkat.site.content.callCentreHelpNumber +  ' and they\'ll be able to assist you further.',
+											'alternatively contact our call centre on <span class=\"callCentreHelpNumber\">' + meerkat.site.content.callCentreHelpNumber +  '</span> and they\'ll be able to assist you further.',
 							page:			'healthMoreInfo.js:onSendBrochuresCallback',
 							description:	result.message,
 							data:			product

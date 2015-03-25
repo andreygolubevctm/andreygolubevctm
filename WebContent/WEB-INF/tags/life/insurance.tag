@@ -17,6 +17,12 @@
 <div id="${name}_insurance" class="${name}_insurance_details">
 	<form:fieldset legend="Life Insurance Details">
 
+		<c:if test="${not empty param.j and param.j eq '1'}">
+			<form:row label="Who is the cover for?" id="${name}${primary_label}_partner_group" >
+				<field:array_radio items="N=Just for you,Y=You &amp; your partner" id="${name}${primary_label}_partner" xpath="${xpath}${primary_xpath}/partner" title="who the cover is for" required="true" className="" />
+			</form:row>
+		</c:if>
+
 		<div id="${name}_same_cover_group">
 			<form:row label="Would you like to be covered<br>for the same amount?">
 				<field:array_radio items="Y=Same cover,N=Different cover" id="${name}${primary_label}_samecover" xpath="${xpath}${primary_xpath}/samecover" title="share the same amount of cover" required="true" className="" />
@@ -249,39 +255,46 @@ $.validator.addMethod("minPartnerInsuranceSelected",
 		});
 	}
 
+	<c:set var="tooltipInitialValue">
+		<c:choose>
+			<c:when test="${not empty param.j and param.j eq '1'}">0</c:when>
+			<c:otherwise>2</c:otherwise>
+		</c:choose>
+	</c:set>
+
 	$('#${name}${primary_label}_termentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(2).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(${tooltipInitialValue}).trigger('click')",500);
 		return false;
 	});
 
 	$('#${name}${primary_label}_tpdentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(3).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(${tooltipInitialValue + 1}).trigger('click')",500);
 		return false;
 	});
 
 	$('#${name}${primary_label}_traumaentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(4).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(${tooltipInitialValue + 2}).trigger('click')",500);
 		return false;
 	});
 
 	$('#${name}${partner_label}_termentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(5).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(${tooltipInitialValue + 3}).trigger('click')",500);
 		return false;
 	});
 
 	$('#${name}${partner_label}_tpdentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(6).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(${tooltipInitialValue + 4}).trigger('click')",500);
 		return false;
 	});
 
 	$('#${name}${partner_label}_traumaentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>
-		var t = setTimeout("$('.help_icon').eq(7).trigger('click')",500);
+		var t = setTimeout("$('.help_icon').eq(${tooltipInitialValue + 5}).trigger('click')",500);
 		return false;
 	});
 

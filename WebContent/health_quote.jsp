@@ -17,8 +17,11 @@
 <%--TODO: turn this on and off either in a settings file or in the database --%>
 <c:set var="showReducedHoursMessage" value="false" />
 <%-- Call centre numbers --%>
-<c:set var="callCentreNumber" scope="request"><content:get key="healthCallCentreNumber"/></c:set>
-<c:set var="callCentreHelpNumber" scope="request"><content:get key="healthCallCentreHelpNumber"/></c:set>
+<c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
+<c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
+<c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
+<c:set var="callCentreHelpNumberApplication" scope="request"><content:get key="callCentreHelpNumberApplication"/></c:set>
+
 <%-- Call centre special hours --%>
 <c:set var="callCentreSpecialHoursLink" scope="request"><content:get key="healthCallCentreSpecialHoursLink"/></c:set>
 <c:set var="callCentreSpecialHoursContent" scope="request"><content:get key="healthCallCentreSpecialHoursContent"/></c:set>
@@ -47,14 +50,15 @@
 			<li>
 				<div class="navbar-text visible-xs">
 						<h4>Do you need a hand?</h4>
-							<h1><a class="needsclick" href="tel:${callCentreNumber}">Call <span class="noWrap">${callCentreNumber}</span></a></h1>
+							<h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></a></h1>
+
 					<p class="small">Our Australian based call centre hours are</p>
 						<p><form:scrape id='135'/></p>
 							${callCentreSpecialHoursContent}
 				</div>
 				<div class="navbar-text hidden-xs" data-livechat="target">
 					<h4>Call us on</h4>
-							<h1><span class="noWrap">${callCentreNumber}</span></h1>						
+							<h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
 							<c:if test="${not empty callCentreSpecialHoursLink and not empty callCentreSpecialHoursContent}">
 								${callCentreSpecialHoursLink}
 								<div id="healthCallCentreSpecialHoursContent" class="hidden">

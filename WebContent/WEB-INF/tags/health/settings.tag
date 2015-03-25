@@ -52,7 +52,9 @@
 	},
 	content:{
 		callCentreNumber: '${callCentreNumber}',
-		callCentreHelpNumber: '${callCentreHelpNumber}',
+		callCentreNumberApplication		: '${callCentreNumberApplication}',
+		callCentreHelpNumber			: '${callCentreHelpNumber}',
+		callCentreHelpNumberApplication	: '${callCentreHelpNumberApplication}',
 		hawkingOptinText: '<content:get key="hawkingOptinText"/>'
 	},
 	emailBrochures: {

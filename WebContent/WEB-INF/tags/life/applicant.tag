@@ -32,13 +32,13 @@
 <div id="${name}" class="${name}_details">
 	<form:fieldset legend="${label}">
 
-		<c:if test="${vertical eq 'life' && fn:contains(name, 'primary')}">
+		<c:if test="${vertical eq 'life' && fn:contains(name, 'primary') && (empty param.j or param.j ne '1')}">
 			<form:row label="Who is the cover for?" id="${name}_insurance_partner_group" >
 				<field:array_radio items="N=Just for you,Y=You &amp; your partner" id="${name}_insurance_partner" xpath="${xpath}/insurance/partner" title="who the cover is for" required="true" className="" />
 			</form:row>
 		</c:if>
 
-		<c:if test="${fn:contains(name, 'partner')}">
+		<c:if test="${fn:contains(name, 'partner') or (not empty param.j and param.j eq '1')}">
 			<life:name xpath="${xpath}" error_phrase="${error_phrase}" />
 		</c:if>
 

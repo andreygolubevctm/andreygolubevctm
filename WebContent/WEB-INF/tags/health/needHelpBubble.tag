@@ -4,7 +4,7 @@
 <ui:bubble variant="info">
 	<h4>Do you need a hand?</h4>
 	<p class="larger">
-		Call <span class="noWrap">${callCentreNumber}</span>
+		Call <span class="noWrap callCentreNumber">${callCentreNumber}</span>
 	</p>
 	<p class="smaller">
 		Our Australian based call centre hours are

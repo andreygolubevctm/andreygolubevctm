@@ -45,7 +45,7 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 						<li>We answer any questions you may have along the way</li>
 						<li>We can help you find the right cover for your needs</li>
 					</ul>
-					<h4>Call us on <span class="noWrap">${callCentreNumber}</span></h4>
+					<h4>Call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h4>
 					<p>Our Australian-based call centre hours are:</p>
 					<p>
 						<strong><form:scrape id='135'/></strong><%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>

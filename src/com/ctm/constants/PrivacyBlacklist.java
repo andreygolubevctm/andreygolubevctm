@@ -68,6 +68,7 @@ public final class PrivacyBlacklist {
 			"streetId",
 			"fullAddress",
 			"streetSearch",
+			"autofilllessSearch", // Elastic search input
 			"lastSearch",
 			/**
 			 * Bank details

@@ -86,21 +86,34 @@ public class TransactionDetailsDao {
 				paramValue = maskPrivateFields(xpath, paramValue);
 			}
 
-			try {
-				TransactionDetail transactionDetail = getTransactionDetailByXpath(transactionId, xpath);
-				TransactionDetail transactionDetailNew = new TransactionDetail();
-				transactionDetailNew.setXPath(xpath);
-				transactionDetailNew.setTextValue(paramValue);
-				if(transactionDetail == null) {
-					addTransactionDetails(transactionId, transactionDetailNew);
-				} else {
-					updateTransactionDetails(transactionId, transactionDetailNew);
-				}
-			} catch (DaoException e) {
-				logger.error(e);
-			}
+			insertOrUpdate(xpath, paramValue, transactionId);
+
 		}
 		return true;
+	}
+
+	/**
+	 * Low level insertOrUpdate. Determines whether to insert a new transaction detail or update the existing one.
+	 * @param xpath String
+	 * @param textValue String
+	 * @param transactionId Long
+	 * @return
+	 */
+	public void insertOrUpdate(String xpath, String textValue, long transactionId) {
+
+		try {
+			TransactionDetail transactionDetail = getTransactionDetailByXpath(transactionId, xpath);
+			TransactionDetail transactionDetailNew = new TransactionDetail();
+			transactionDetailNew.setXPath(xpath);
+			transactionDetailNew.setTextValue(textValue);
+			if(transactionDetail == null) {
+				addTransactionDetails(transactionId, transactionDetailNew);
+			} else {
+				updateTransactionDetails(transactionId, transactionDetailNew);
+			}
+		} catch (DaoException e) {
+			logger.error("failed to write transaction details for transactionId: " + transactionId, e);
+		}
 	}
 
 	/**

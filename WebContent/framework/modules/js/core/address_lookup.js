@@ -30,7 +30,11 @@
 			// Get the address data from the cache
 			setAddressDataFields(dpIdCache[dpId]);
 		} else {
+
+			var $navButton = $('.journeyNavButton');
+
 			// Lock Journey
+			meerkat.modules.loadingAnimation.showInside($navButton);
 			meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, { source: 'address_lookup' });
 
 			// Send a request for the address details associated with
@@ -67,6 +71,7 @@
 					onComplete: function ajaxGetTypeaheadAddressDataComplete() {
 						// Unlock Journey
 						meerkat.messaging.publish(meerkat.modules.events.WEBAPP_UNLOCK, { source: 'address_lookup' });
+						meerkat.modules.loadingAnimation.hide($navButton);
 					}
 				});
 			}

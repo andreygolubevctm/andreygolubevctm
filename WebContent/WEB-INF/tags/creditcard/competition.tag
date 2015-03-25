@@ -26,9 +26,9 @@
 	<%-- Mandatory agreement to privacy policy --%>
 	<form_new:row hideHelpIconCol="true" className="optin-group">
 		<c:set var="label">
-			I have read the <a data-toggle="dialog" data-content="legal/privacy_statement.jsp" data-cache="true" data-dialog-hash-id="privacystatement" href="legal/privacy_statement.jsp" target="_blank">privacy statement</a> and ANYTHING ELSE
+			I have read the <a data-toggle="dialog" data-content="legal/privacy_statement.jsp" data-cache="true" data-dialog-hash-id="privacystatement" href="legal/privacy_statement.jsp" target="_blank">privacy statement</a>.
 		</c:set>
-		<field:hidden xpath="${xpath}/optIn" defaultValue="Y" />
+		<field:hidden xpath="${xpath}/optIn" defaultValue="N" />
 		<field_new:checkbox
 			xpath="${xpath}/privacyoptin"
 			value="Y"

@@ -17,7 +17,7 @@ ResultsView = {
 
 	moduleEvents: {
 		RESULTS_SORTED: 'RESULTS_SORTED',
-		TOGGLE_MODE: 'RESULTS_TOGGLE_MODE'
+		RESULTS_TOGGLE_MODE: 'RESULTS_TOGGLE_MODE'
 	},
 
 	/* Displays the results */

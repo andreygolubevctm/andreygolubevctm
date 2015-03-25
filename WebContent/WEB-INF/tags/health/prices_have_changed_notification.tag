@@ -10,7 +10,7 @@
 		Hurry, buy now and don't miss out.
 	</p>
 	<p>
-	Call our friendly team on <b class="text-primary">${callCentreNumber}</b> for
+	Call our friendly team on <b class="text-primary callCentreNumber">${callCentreNumber}</b> for
 	professional help on selecting the right health policy for you or
 		<a href="${pageSettings.getBaseUrl()}health_quote.jsp">start a new quote</a>.
 	</p>

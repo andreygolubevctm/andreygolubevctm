@@ -13,10 +13,16 @@
 <%@ attribute name="legend"				required="false" rtexprvalue="true"	 description="Optional legend field, when an item is readonly"%>
 <%@ attribute name="hideHelpIconCol"	required="false" rtexprvalue="true"	 description="Set to a value to hide the help icon placeholder column" %>
 <%@ attribute name="labelAbove"			required="false" rtexprvalue="true"	 description="Have the label above the element instead of beside it" %>
+<%@ attribute name="addForAttr" 		required="false" rtexprvalue="true"	 description="Bool to add or not the for attribute" %>
 
 <%-- VARIABLES --%>
 <c:if test="${empty labelAbove}">
 	<c:set var="labelAbove" value="${false}" />
+</c:if>
+
+<!-- Default to true. -->
+<c:if test="${empty addForAttr}">
+	<c:set var="addForAttr" value="${true}" />
 </c:if>
 <%-- HTML --%>
 <%--
@@ -64,7 +70,7 @@
 	<c:choose>
 		<c:when test="${not empty label and label ne ''}">
 
-			<field_new:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" />
+			<field_new:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
 
 			<div class="col-xs-2 visible-xs helpIconXSColumn ${offset}">
 				<field_new:help_icon helpId="${helpId}" showText="${showHelpText}" />

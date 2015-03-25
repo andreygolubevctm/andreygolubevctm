@@ -4,11 +4,6 @@
 <session:get settings="true" />
 <settings:setVertical verticalCode="HEALTH" />
 
-<c:import var="config" url="/WEB-INF/aggregator/health_application/gmf/config.xml" />
-<x:parse var="configXml" doc="${config}" />
-<c:set var="gatewayURL" scope="page" ><x:out select="$configXml//*[name()='nabGateway']/*[name()='gatewayURL']" /></c:set>
-<c:set var="gatewayDomain" scope="page"><x:out select="$configXml//*[name()='nabGateway']/*[name()='domain']" /></c:set>
-
 <%-- Because of cross domain issues with the payment gateway, we always use a CTM iframe to proxy to HAMBS' iframes so we need iframe src URL and hostOrigin to be pulled from CTM's settings (not the base and root URLs of the current brand). --%>
 <c:set var="ctmSettings" value="${settingsService.getPageSettingsByCode('CTM','HEALTH')}"/>
 <c:set var="hostOrigin">${ctmSettings.getRootUrl()}</c:set>
@@ -82,10 +77,7 @@ var healthFunds_GMF = {
 			"name" : 'health_payment_gateway',
 			"src": '${ctmSettings.getBaseUrl()}', <%-- the CTM iframe source URL --%>
 			"origin": '${hostOrigin}', <%-- the CTM host origin --%>
-			"hambsIframe": {
-				src: '${gatewayURL}',
-				remote: '${gatewayDomain}'
-			},
+			"providerCode":'gmf',
 			"brandCode": '${pageSettings.getBrandCode()}',
 			"handledType" :  {
 				"credit" : true,
