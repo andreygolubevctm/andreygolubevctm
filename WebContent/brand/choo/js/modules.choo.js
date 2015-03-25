@@ -9689,8 +9689,9 @@ Features = {
         }, 2e3);
     }
     function setResultsLoadingPage(data, delay) {
+        data = data || false;
         delay = delay || false;
-        if (data.source === "resultsModel") {
+        if (data !== false && _.has(data, "source") && data.source === "resultsModel") {
             updateVirtualPage({
                 navigationId: stepCopy.RESULTS_LOADING
             }, delay);
