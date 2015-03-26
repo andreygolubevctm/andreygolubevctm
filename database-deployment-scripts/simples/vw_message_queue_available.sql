@@ -44,12 +44,3 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_available` AS
 
 		-- Status check 2=Completed 7=Abandoned 33=Removed from PM
 		AND msg.statusId NOT IN (2, 7, 33)
-
-		AND (
-			simples.isInAntiHawkingTimeframe(NOW(), state) < 1 /* If customer's timezone is not in hawking time frame, okToCall */
-			OR (
-				msg.hawkingOptin = 'Y' /* user has to tick the hawkingOptin */
-				AND simples.isInAntiHawkingTimeframe(created, state) = 1 /* message has to be created during hawking time frame */
-				AND YEARWEEK(created, 1) = YEARWEEK(NOW(), 1) /* message has to be created in current week */
-			)
-		)

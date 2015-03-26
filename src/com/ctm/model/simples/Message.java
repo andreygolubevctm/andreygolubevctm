@@ -30,7 +30,6 @@ public class Message extends AbstractJsonModel {
 	private boolean canPostpone;
 	private List<Long> dupeTransactionIds = new ArrayList<Long>();
 	private boolean isHawking;
-	private boolean hawkingOptin;
 
 
 	public int getMessageId() {
@@ -134,12 +133,7 @@ public class Message extends AbstractJsonModel {
 	public void setHawking(boolean isHawking) {
 		this.isHawking = isHawking;
 	}
-	public boolean isHawkingOptin() {
-		return hawkingOptin;
-	}
-	public void setHawkingOptin(boolean hawkingOptin) {
-		this.hawkingOptin = hawkingOptin;
-	}
+
 	@Override
 	protected JSONObject getJsonObject() throws JSONException {
 		JSONObject json = new JSONObject();

@@ -69,6 +69,12 @@ public class SimplesMessageService {
 			TransactionService transactionService = new TransactionService();
 			messageDetail = messageDetailService.getMessageDetail(message);
 
+			// Check Anti Hawking, if true, than defer the message to next Monday and skip to the next one
+			if (checkHawking(request, message, messageDetailService, transactionService)) {
+				messageDao.deferMessage(userId, message.getMessageId(), message.getStatusId(), convertToNextMonday(message.getWhenToAction()), canUnassign(message.getStatusId()));
+				return getNextMessageForUser(request, userId);
+			}
+
 			// If message's phone number is in the blacklist, set the message to Complete + Do Not Contact
 			int styleCodeId = messageDetail.getTransaction().getStyleCodeId();
 			final BlacklistDao blacklistDao = new BlacklistDao();
@@ -108,13 +114,24 @@ public class SimplesMessageService {
 	}
 
 	private boolean checkHawking(final HttpServletRequest request, final Message message) throws DaoException{
-		MessageConfigService messageConfigService = new MessageConfigService();
+		MessageDetailService messageDetailService = new MessageDetailService();
+		TransactionService transactionService = new TransactionService();
+		return checkHawking(request, message, messageDetailService, transactionService);
+	}
 
+	private boolean checkHawking(final HttpServletRequest request, final Message message, final MessageDetailService messageDetailService, final TransactionService transactionService) throws DaoException{
+
+		MessageConfigService messageConfigService = new MessageConfigService();
+		MessageDetail messageDetail = messageDetailService.getMessageDetail(message);
+
+		// Anti Hawking optin logic
 		if (messageConfigService.isInAntiHawkingTimeframe(request, message.getState())) {
 			if (!isDateInCurrentWeek(message.getCreated()) || !messageConfigService.isInAntiHawkingTimeframe(message.getCreated(), message.getState())) {
 				return true;
 			}else{
-				return !message.isHawkingOptin();
+				Long lastestTransactionId = messageDetail.getTransaction().getNewestTransactionId();
+				String hawkingOptin = transactionService.getHawkingOptinForTransaction(lastestTransactionId);
+				return !hawkingOptin.equals("Y");
 			}
 		}
 		return false;
@@ -131,6 +148,40 @@ public class SimplesMessageService {
 		int targetWeek = targetCalendar.get(Calendar.WEEK_OF_YEAR);
 		int targetYear = targetCalendar.get(Calendar.YEAR);
 		return week == targetWeek && year == targetYear;
+	}
+
+	private static Date convertToNextMonday(Date date){
+		Calendar currentCalendar = Calendar.getInstance();
+		currentCalendar.setTime(date);
+
+		Calendar targetCalendar = Calendar.getInstance();
+		while( targetCalendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY ){
+			targetCalendar.add( Calendar.DATE, 1 );
+		}
+		// set to call centre opening hour to the 1:00am
+		targetCalendar.set(Calendar.HOUR_OF_DAY, 1);
+		targetCalendar.set(Calendar.MINUTE, 0);
+		targetCalendar.set(Calendar.SECOND, 0);
+
+		return targetCalendar.getTime();
+	}
+
+	private static boolean canUnassign(int statusId){
+		switch (statusId) {
+		case MessageStatus.STATUS_NEW:
+		case MessageStatus.STATUS_POSTPONED:
+		case MessageStatus.STATUS_UNSUCCESSFUL:
+			return true;
+		case MessageStatus.STATUS_ASSIGNED:
+		case MessageStatus.STATUS_INPROGRESS:
+		case MessageStatus.STATUS_COMPLETED_AS_PM:
+		case MessageStatus.STATUS_CHANGED_TIME_FOR_PM:
+		case MessageStatus.STATUS_REMOVED_FROM_PM:
+		case MessageStatus.STATUS_COMPLETED:
+			return false;
+		default:
+			return false;
+		}
 	}
 
 	/**
