@@ -26,8 +26,12 @@ public class MessageStatus extends AbstractJsonModel {
 
 	//common sub statues
 	public final static int STATUS_DONOTCONTACT = 9;
+	public final static int STATUS_INVALIDLEAD = 10;
 	public final static int STATUS_CONVERTEDTOSALE = 11;
+	public final static int STATUS_WARMTRANSFER = 14;
 	public final static int STATUS_ALREADYCUSTOMER = 16;
+	public final static int STATUS_DUPLICATELEAD = 24;
+	public final static int STATUS_OVERSEASCOVER = 25;
 
 	//skip and defer, not in mapping table
 	public final static int STATUS_SKIP_AND_DEFER = 34;

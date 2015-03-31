@@ -9,13 +9,8 @@ BEGIN
 -- NOTE: Please ensure that any changes to this procedure are recorded via SVN.
 -- -----------------------------
 
-DECLARE _tranIdMarker INT UNSIGNED;
-
 -- Record the start time
 UPDATE simples.message_source SET lastExecuteStart = NOW() WHERE id = _sourceId;
-
--- Get the marker to improve selection speed
-SELECT tranIdMarker INTO _tranIdMarker FROM simples.message_source WHERE id = _sourceId;
 
 -- Set up temp table to store the selected transactions
 CREATE TEMPORARY TABLE IF NOT EXISTS `temp_simples_fetches` (
@@ -35,80 +30,85 @@ INSERT INTO `temp_simples_fetches` (transactionId, sourceId, phoneNumber1, phone
 -- The following section is used to select the transaction for this source
 -- -----------------------------
 SELECT
-	header.rootId,
+	H.rootId,
 	_sourceId AS sourceId,
-	MAX(detailsPhoneMobile.textValue) AS phoneNumber1,
+	detailsPhoneMobile.textValue AS phoneNumber1,
 	NULL AS phoneNumber2,
-	MAX(detailsName.textValue) AS contactName,
-	MAX(detailsState.textValue) AS state
+	detailsName.textValue AS contactName,
+	detailsState.textValue AS state
 
-FROM aggregator.transaction_header AS header
+FROM 
+	(	
+		SELECT
+			MAX(header.transactionId) AS transactionId,
+			header.rootId
+ 
+		FROM aggregator.transaction_header AS header
 
-	-- Transactions will be EXCLUDED if they have these touches
-	LEFT JOIN ctm.touches AS touchExclude ON touchExclude.transaction_id = header.TransactionId
+		-- Transactions will be EXCLUDED if they have these touches
+		LEFT JOIN ctm.touches AS touchExclude ON touchExclude.transaction_id = header.TransactionId
 		AND touchExclude.type IN ('C')
+
+		WHERE
+			-- limit to 2 days to improve the query speed, as well as handle the case 
+			-- where we could miss the quote e.g. created at 23:57:00, because we fetch in 10 mins interval,
+			-- if only use CURDATE() and we fetchs at 23:55:00 and 00:05:00, 
+			-- we could miss all quotes created from 23:55:01 to 23:59:59
+			header.startDate >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+			AND header.PreviousId = 0
+
+			-- CTM Health only
+  			AND header.ProductType = 'HEALTH'
+			AND header.styleCodeId = 1
+
+		GROUP BY
+			header.rootId
+
+		HAVING
+			-- Run the touches rules from above
+			COUNT(touchExclude.id) = 0
+
+	) H
 
 	-- Has customer opted in?
 	LEFT JOIN aggregator.transaction_details AS callbackOptin
-		ON header.TransactionId = callbackOptin.transactionId
+		ON H.TransactionId = callbackOptin.transactionId
 		AND callbackOptin.xpath = 'health/callmeback/optin'
 		AND callbackOptin.textValue = 'Y'
 
 	-- Contact phone numbers
 	LEFT JOIN aggregator.transaction_details detailsPhoneMobile
-		ON header.transactionId = detailsPhoneMobile.transactionid
+		ON H.transactionId = detailsPhoneMobile.transactionid
 		AND detailsPhoneMobile.xpath = 'health/callmeback/phone'
 
 	-- Contact name
 	LEFT JOIN aggregator.transaction_details AS detailsName
-		ON header.TransactionId = detailsName.transactionId
+		ON H.TransactionId = detailsName.transactionId
 		AND detailsName.xpath = 'health/callmeback/name'
 
 	-- State
 	LEFT JOIN aggregator.transaction_details AS detailsState
-		ON header.TransactionId = detailsState.transactionId
+		ON H.TransactionId = detailsState.transactionId
 		AND detailsState.xpath = 'health/situation/state'
 
-WHERE
-	header.TransactionId >= _tranIdMarker
-	AND header.rootId >= _tranIdMarker
-
-	AND header.StartDate >= CURDATE()
-	AND header.PreviousId = 0
-
-	-- CTM Health only
-	AND header.ProductType = 'HEALTH'
-	AND header.styleCodeId = 1
-
-	AND detailsPhoneMobile.textValue IS NOT NULL
-	AND detailsPhoneMobile.textValue != ''
-
-	-- Exclude if they'll be picked up by other message sources
-	AND NOT EXISTS (
-		SELECT okToCall.transactionid FROM aggregator.transaction_details AS okToCall
-		WHERE header.transactionId = okToCall.transactionid
+	-- Exclude if they'll be picked up by other message sources (only where: okToCall.transactionid IS NULL)
+	LEFT JOIN aggregator.transaction_details AS okToCall
+		ON H.transactionId = okToCall.transactionid
 		AND okToCall.xpath = 'health/contactDetails/call'
 		AND okToCall.textValue = 'Y'
-	)
 
-GROUP BY
-	header.rootId, sourceId
-
- HAVING
- 	-- Run the touches rules from above
-  	COUNT(touchExclude.id) = 0
+WHERE
+	detailsPhoneMobile.textValue IS NOT NULL
+	AND detailsPhoneMobile.textValue != ''
+	AND okToCall.transactionid IS NULL
 
 -- -----------------------------
 -- END QUERY
 -- -----------------------------
 ;
 
--- Record a marker to improve speed next time this is run
-UPDATE simples.message_source SET lastExecuteEnd = NOW(), tranIdMarker = (
-	SELECT IFNULL(MIN(transactionId), _tranIdMarker)
-	FROM `temp_simples_fetches`
-	WHERE sourceId = _sourceId
-) WHERE id = _sourceId;
+-- Record the end time
+UPDATE simples.message_source SET lastExecuteEnd = NOW() WHERE id = _sourceId;
 
 END$$
 

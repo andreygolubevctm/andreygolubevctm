@@ -1,9 +1,9 @@
 USE `simples`;
-DROP procedure IF EXISTS `fetch_ctm_hlt_app_not_sold`;
+DROP procedure IF EXISTS `fetch_yhoo_hlt_failed_joins`;
 
 DELIMITER $$
 USE `simples`$$
-CREATE DEFINER=`server`@`%` PROCEDURE `fetch_ctm_hlt_app_not_sold`(_sourceId INT)
+CREATE DEFINER=`server`@`%` PROCEDURE `fetch_yhoo_hlt_failed_joins`(_sourceId INT)
 BEGIN
 -- -----------------------------
 -- NOTE: Please ensure that any changes to this procedure are recorded via SVN.
@@ -34,7 +34,7 @@ SELECT
 	_sourceId AS sourceId,
 	detailsPhoneMobile.textValue AS phoneNumber1,
 	detailsPhoneOther.textValue AS phoneNumber2,
-	detailsName.textValue AS contactName,
+	CONCAT(detailsName.textValue, ' ', detailsSurname.textValue) AS contactName,
 	detailsState.textValue AS state
 
 FROM 
@@ -42,13 +42,13 @@ FROM
 		SELECT
 			MAX(header.transactionId) AS transactionId,
 			header.rootId
-	 
+
 		FROM aggregator.transaction_header AS header
 
 		-- Transactions will be INCLUDED if they have these touches
 		-- ONLINE restriction is used to knock out call centre transactions.
 		LEFT JOIN ctm.touches AS touchInclude ON touchInclude.transaction_id = header.TransactionId
-			AND touchInclude.type IN ('A')
+			AND touchInclude.type IN ('F')
 			AND touchInclude.operator_id = 'ONLINE'
 
 		-- Transactions will be EXCLUDED if they have these touches
@@ -56,46 +56,34 @@ FROM
 			AND touchExclude.type IN ('C')
 
 		WHERE
-		 	-- limit to 2 days to improve the query speed, as well as handle the case 
+			-- limit to 2 days to improve the query speed, as well as handle the case 
 			-- where we could miss the quote e.g. created at 23:57:00, because we fetch in 10 mins interval,
 			-- if only use CURDATE() and we fetchs at 23:55:00 and 00:05:00, 
 			-- we could miss all quotes created from 23:55:01 to 23:59:59
 			header.startDate >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
 
-			-- CTM Health only
+			-- YHOO Health only
 			AND header.ProductType = 'HEALTH'
-			AND header.styleCodeId = 1
+			AND header.styleCodeId = 4
+
+			-- Shaun's list; what are these?
+			AND header.IpAddress NOT IN ('114.111.151.218','202.177.206.170','63.128.6.197',
+										'206.31.247.235','206.31.247.241','206.31.247.249','64.95.77.131',
+										'64.95.77.131','64.95.77.131','206.31.247.245','206.31.247.236',
+										'206.31.247.228','206.31.247.245')
 
 		GROUP BY
 			header.rootId
 
 		HAVING
-			-- Run the touches rules from above
-			COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
-
-			-- Minimum and maximum time since the relevant touch
-			AND TIMESTAMPDIFF(MINUTE, MAX(TIMESTAMP(touchInclude.date, touchInclude.time)), CURRENT_TIMESTAMP()) BETWEEN 40 AND 1440
-
+		 	-- Run the touches rules from above
+		  	COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
 	) H
-
-	-- Has customer opted in?
-	LEFT JOIN aggregator.transaction_details AS okToCall
-		ON H.TransactionId = okToCall.transactionId
-		AND okToCall.xpath = 'health/contactDetails/call'
-		AND okToCall.textValue = 'Y'
-
-	-- Why is this one needed?
-	/*
-	LEFT JOIN aggregator.transaction_details AS situation
-		ON H.TransactionId = situation.transactionId
-		AND situation.xpath = 'health/situation/healthCvr'
-		AND situation.textValue IN ('S', 'C', 'F', 'SPF')
-	*/
 
 	-- Contact phone numbers
 	LEFT JOIN aggregator.transaction_details detailsPhoneMobile
 		ON H.transactionId = detailsPhoneMobile.transactionid
-		AND detailsPhoneMobile.xpath = 'health/contactDetails/contactNumber/mobile'
+		AND detailsPhoneMobile.xpath = 'health/application/mobile'
 	LEFT JOIN aggregator.transaction_details detailsPhoneOther
 		ON H.transactionId = detailsPhoneOther.transactionid
 		AND detailsPhoneOther.xpath = 'health/contactDetails/contactNumber/other'
@@ -103,29 +91,15 @@ FROM
 	-- Contact name
 	LEFT JOIN aggregator.transaction_details AS detailsName
 		ON H.TransactionId = detailsName.transactionId
-		AND detailsName.xpath = 'health/contactDetails/name'
+		AND detailsName.xpath = 'health/application/primary/firstname'
+	LEFT JOIN aggregator.transaction_details AS detailsSurname
+		ON H.TransactionId = detailsSurname.transactionId
+		AND detailsSurname.xpath = 'health/application/primary/surname'
 
 	-- State
 	LEFT JOIN aggregator.transaction_details AS detailsState
 		ON H.TransactionId = detailsState.transactionId
 		AND detailsState.xpath = 'health/situation/state'
-
-	-- Get the call me back phone
-	LEFT JOIN aggregator.transaction_details AS callMeBack
-		ON H.TransactionId = callMeBack.transactionId
-		AND callMeBack.xpath = 'health/callmeback/phone'
-
-	-- Get the tracking CID
-	LEFT JOIN aggregator.transaction_details AS trackingCID
-		ON H.TransactionId = trackingCID.transactionId
-		AND trackingCID.xpath = 'health/tracking/cid'
-
-WHERE
-	-- Exclude this if the customer requested a call back
-	(callMeBack.textValue IS NULL OR callMeBack.textValue = '')
-
-	-- Exclude this if the customer came from a particular offer (is this still relevant?)
-	AND (trackingCID.textValue IS NULL OR trackingCID.textValue != 'em:cm:offer')
 
 -- -----------------------------
 -- END QUERY

@@ -32,7 +32,8 @@
 			// Fetch straight away
 			refresh();
 
-			setInterval(intervalSeconds);
+			// polling turned off fow now (refresh of the page required), uncomment next line to re-enabled it
+			//setInterval(intervalSeconds);
 		});
 	}
 

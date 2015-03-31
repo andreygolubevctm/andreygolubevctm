@@ -55,9 +55,16 @@ public class SimplesMessageService {
 	 */
 	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId) throws ConfigSettingException, DaoException {
 		MessageDetail messageDetail = new MessageDetail();
+		Message message = null;
 
 		final MessageDao messageDao = new MessageDao();
-		Message message = messageDao.getNextMessage(userId);
+
+		//TODO: Remove the logic when we tested in Production
+		if (messageDao.useNewMethodToGetNexMessage()){
+			message = messageDao.getNextMessage(userId);
+		}else{
+			message = messageDao.getNextMessageOld(userId);
+		}
 
 		if (message.getMessageId() == 0) {
 			// No message available

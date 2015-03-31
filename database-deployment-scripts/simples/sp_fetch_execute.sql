@@ -89,6 +89,8 @@ BEGIN
 
 	-- Grouping will de-duplicate same details that are on different root IDs
 	GROUP BY sourceId, phoneNumber1, phoneNumber2, contactName, state
+	-- Ordering will make sure lower transactionId gets created first, ensure last in first out later
+	ORDER BY transactionId ASC
 	;
 
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET bDone = 1;

@@ -1437,7 +1437,6 @@
             }
             baseUrl = meerkat.modules.simples.getBaseUrl();
             refresh();
-            setInterval(intervalSeconds);
         });
     }
     function setInterval(seconds) {

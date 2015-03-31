@@ -5,9 +5,9 @@ public class UserStats {
 	private int completedAsPM;
 	private int unsuccessful;
 	private int postponed;
-	private int contact;
+	private double contact;
 	private int sales;
-	private float conversion;
+	private double conversion;
 	private int hot;
 	private int remaining;
 	private int future;
@@ -38,10 +38,10 @@ public class UserStats {
 		this.postponed = postponed;
 	}
 
-	public int getContact() {
+	public double getContact() {
 		return contact;
 	}
-	public void setContact(int contact) {
+	public void setContact(double contact) {
 		this.contact = contact;
 	}
 	public int getSales() {
@@ -50,10 +50,10 @@ public class UserStats {
 	public void setSales(int sales) {
 		this.sales = sales;
 	}
-	public float getConversion() {
+	public double getConversion() {
 		return conversion;
 	}
-	public void setConversion(float conversion) {
+	public void setConversion(double conversion) {
 		this.conversion = conversion;
 	}
 	public int getHot() {

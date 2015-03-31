@@ -29,6 +29,67 @@ import com.ctm.model.simples.User;
 public class MessageDao {
 	private static final Logger logger = Logger.getLogger(MessageDao.class.getName());
 
+	private static final String MESSAGE_AVAILABLE_SELECT = "SELECT id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, canPostpone, whenToAction, created " +
+			"FROM simples.message_queue_available avail ";
+
+	// -- Rule 0: Messages assigned to users, (InProgress, Postponed, Assigned, Unsuccessful), deal with your current message
+	private static final String MESSAGE_AVAILABLE_RULE_0 = MESSAGE_AVAILABLE_SELECT +
+			"WHERE userId = ? AND statusId IN (1, 3, 4, 5, 6) " +
+			"ORDER BY whenToAction ASC " +
+			"LIMIT 1 FOR UPDATE";
+	// -- Rule 1: CTM fail joins, last in first out
+	private static final String MESSAGE_AVAILABLE_RULE_1 = MESSAGE_AVAILABLE_SELECT +
+			"WHERE avail.sourceId = 5 " +
+			"AND userId = 0 " +
+			"ORDER BY avail.created DESC, avail.id DESC " +
+			"LIMIT 1 FOR UPDATE";
+	// -- Rule 2: WHITELABLE fail joins, last in first out
+	private static final String MESSAGE_AVAILABLE_RULE_2 = MESSAGE_AVAILABLE_SELECT +
+			"WHERE avail.sourceId = 8 " +
+			"AND userId = 0 " +
+			"ORDER BY avail.created DESC, avail.id DESC " +
+			"LIMIT 1 FOR UPDATE";
+	// -- Rule 3: Messages assigned to users, (Personal Messages)
+	private static final String MESSAGE_AVAILABLE_RULE_3 = MESSAGE_AVAILABLE_SELECT +
+			"WHERE userId = ? AND statusId IN (31, 32) " +
+			"ORDER BY whenToAction ASC " +
+			"LIMIT 1 FOR UPDATE";
+	// -- Rule 4: Any new messages created, sorted by source priority then last in first out
+	private static final String MESSAGE_AVAILABLE_RULE_4 = MESSAGE_AVAILABLE_SELECT +
+			"WHERE statusId = 1 " +
+			"AND userId = 0 " +
+			"ORDER BY avail.created DESC, avail.id DESC " +
+			"LIMIT 1 FOR UPDATE";
+	// -- Rule 5: All first time postponements and call attempt, last in first out
+	private static final String MESSAGE_AVAILABLE_RULE_5 = MESSAGE_AVAILABLE_SELECT +
+			"WHERE postponeCount <= 1 AND callAttempts <= 1 " +
+			"AND userId = 0 " +
+			"ORDER BY avail.created DESC, avail.id DESC " +
+			"LIMIT 1 FOR UPDATE";
+	// -- Rule 6: All second time postponements and call attempt, last in first out
+	private static final String MESSAGE_AVAILABLE_RULE_6 = MESSAGE_AVAILABLE_SELECT +
+			"WHERE postponeCount <= 2 AND callAttempts <= 2 " +
+			"AND userId = 0 " +
+			"ORDER BY avail.created DESC, avail.id DESC " +
+			"LIMIT 1 FOR UPDATE";
+	// -- Rule 7: All other postponed or unseccussful messages, last in first out
+	private static final String MESSAGE_AVAILABLE_RULE_7 = MESSAGE_AVAILABLE_SELECT +
+			"WHERE (postponeCount > 2 OR callAttempts > 2) " +
+			"AND userId = 0 " +
+			"ORDER BY avail.created DESC, avail.id DESC " +
+			"LIMIT 1 FOR UPDATE";
+	private static final String MESSAGE_AVAILABLE_RULES[] = new String[]{
+			MESSAGE_AVAILABLE_RULE_0,
+			MESSAGE_AVAILABLE_RULE_1,
+			MESSAGE_AVAILABLE_RULE_2,
+			MESSAGE_AVAILABLE_RULE_3,
+			MESSAGE_AVAILABLE_RULE_4,
+			MESSAGE_AVAILABLE_RULE_5,
+			MESSAGE_AVAILABLE_RULE_6,
+			MESSAGE_AVAILABLE_RULE_7
+	};
+
+
 	public Message getMessage(final int messageId) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		try {
@@ -94,6 +155,76 @@ public class MessageDao {
 			throw new DaoException("userId must be greater than zero.");
 		}
 
+		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		final boolean autoCommit[] = new boolean[1];
+		PreparedStatement stmt = null;
+
+		try {
+			Message message = null;
+			autoCommit[0] = dbSource.getConnection().getAutoCommit();
+			dbSource.getConnection().setAutoCommit(false);
+
+			for(String rule : MESSAGE_AVAILABLE_RULES) {
+				ExecuteMessageQueueRule executeMessageQueueRule = new ExecuteMessageQueueRule(dbSource, rule, userId).invoke();
+				if (executeMessageQueueRule.is()) {
+					message = executeMessageQueueRule.getMessage();
+					break;
+				}
+			}
+
+			if (message != null) {
+				stmt = dbSource.getConnection().prepareStatement(
+						"UPDATE simples.message " +
+						"SET userId = ? " +
+						"WHERE id = ?");
+
+				stmt.setInt(1, userId);
+				stmt.setInt(2, message.getMessageId());
+
+				stmt.executeUpdate();
+				message.setUserId(userId);
+
+				dbSource.getConnection().commit();
+				return message;
+			}
+
+			dbSource.getConnection().commit();
+			return new Message();
+		}
+		catch (SQLException | NamingException e) {
+			try {
+				logger.error("Simple getNextMessage transaction is being rolled back");
+				dbSource.getConnection().rollback();
+			} catch (SQLException | NamingException e1) {
+				throw new DaoException(e.getMessage(), e);
+			}
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			try {
+				dbSource.getConnection().setAutoCommit(autoCommit[0]);
+			} catch (SQLException | NamingException e) {
+				throw new DaoException(e.getMessage(), e);
+			}
+
+			dbSource.closeConnection();
+		}
+	}
+
+
+	/**
+	 * Get a message from the message queue. The provided User ID may be used to target specific messages.
+	 *
+	 * @param userId ID of the user who is getting the message
+	 * @return Message model
+	 * @throws DaoException
+	 */
+	public Message getNextMessageOld(int userId) throws DaoException {
+
+		if (userId <= 0) {
+			throw new DaoException("userId must be greater than zero.");
+		}
+
 		SimpleDatabaseConnection dbSource = null;
 
 		try {
@@ -123,6 +254,36 @@ public class MessageDao {
 			dbSource.closeConnection();
 		}
 	}
+
+	/**
+	 * get next mssage flag, if true, use the new method
+	 * TODO: remove when we tested on production
+	 */
+	public boolean useNewMethodToGetNexMessage() throws DaoException {
+
+		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+
+		try {
+			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
+					"SELECT isNew FROM simples.next_message_flag;"
+			);
+
+			final ResultSet results = stmt.executeQuery();
+
+			while (results.next()) {
+				return results.getBoolean("isNew");
+			}
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		return false;
+	}
+
 
 	/**
 	 * Get a list of message statuses.
@@ -571,6 +732,55 @@ WHERE msg.id = 53
 		}
 		finally {
 			dbSource.closeConnection();
+		}
+	}
+
+	private class ExecuteMessageQueueRule {
+		private boolean myResult;
+		private SimpleDatabaseConnection dbSource;
+		private String rule0;
+		private Message message;
+		private int userId;
+
+		public ExecuteMessageQueueRule(SimpleDatabaseConnection dbSource, String rule0, int userId) {
+			this.dbSource = dbSource;
+			this.rule0 = rule0;
+			this.userId = userId;
+		}
+
+		boolean is() {
+			return myResult;
+		}
+
+		public Message getMessage() {
+			return message;
+		}
+
+		public ExecuteMessageQueueRule invoke() throws DaoException {
+			PreparedStatement stmt = null;
+
+			try {
+				stmt = dbSource.getConnection().prepareStatement(rule0);
+
+				if (rule0.equals(MESSAGE_AVAILABLE_RULE_0) || rule0.equals(MESSAGE_AVAILABLE_RULE_3)) {
+					stmt.setInt(1, userId);
+				}
+
+				final ResultSet results = stmt.executeQuery();
+				List<Message> messages = mapFieldsFromResultsToMessage(results);
+
+				if (messages.size() > 0) {
+					message = messages.get(0);
+					myResult = true;
+					return this;
+				}
+				myResult = false;
+				return this;
+			} catch (SQLException | NamingException e) {
+				throw new DaoException(e.getMessage(), e);
+			} finally {
+				dbSource.closeConnection();
+			}
 		}
 	}
 }
