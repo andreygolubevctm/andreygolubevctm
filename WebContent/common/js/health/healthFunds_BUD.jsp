@@ -13,43 +13,6 @@ var healthFunds_BUD = {
 	$policyDateCreditMessage : $('.health_credit-card-details_policyDay-message'),
 	$policyDateBankMessage : $('.health_bank-details_policyDay-message'),
 	set: function(){
-		<%-- inject bud current customer question --%>
-		if ($('#bud_current_customer').length > 0) {
-			<%-- HTML was already injected so unhide it --%>
-			$('#bud_current_customer').show();
-			<%-- Reflow current customer question --%>
-			$('#bud_current_customer .bud-main select').trigger('change');
-		} else {
-			<c:set var="budCurrentCustomerHtml">
-
-				<form_new:fieldset id="bud_current_customer" legend="Current Customer" className="primary">
-
-					<c:set var="fieldXpath" value="health/application/currentCustomer" />
-					<form_new:row fieldXpath="${fieldXpath}" label="Are you a current Budget Direct customer?" className="bud-main" helpId="531">
-						<field_new:array_select xpath="${fieldXpath}" required="true" title="Are you a current Budget Direct customer" items="=Please choose...,Y=Yes,N=No" />
-					</form_new:row>
-					
-
-					<c:set var="fieldXpath" value="health/application/currentCustomerPolicyNo" />
-					<form_new:row fieldXpath="${fieldXpath}" label="My policy number is" className="bud-sub">
-						<field_new:input xpath="${fieldXpath}" title="" required="true" maxlength="20" />
-					</form_new:row>
-
-				</form_new:fieldset>
-
-			</c:set>
-			$('#health_application').prepend('<c:out value="${budCurrentCustomerHtml}" escapeXml="false" />');
-			$('#bud_current_customer .bud-sub').hide();
-		}
-		
-		<%-- show or hide policy number field --%>
-		$('#bud_current_customer .bud-main select').on('change', function() {
-			if ($(this).val() === 'Y') {
-				$('#bud_current_customer .bud-sub').slideDown(200);
-			} else {
-				$('#bud_current_customer .bud-sub').slideUp(200);
-			}
-		});
 		<%-- dependant definition --%>
 		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Adult dependants over 21 years old can be covered by applying for a separate singles policy.');
 
@@ -94,9 +57,6 @@ var healthFunds_BUD = {
 		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
 	},
 	unset: function(){
-		<%-- Custom questions - hide in case user comes back --%>
-		$('#bud_current_customer, #bud_current_customer .bud-sub').hide();
-
 		healthFunds._reset();
 
 		<%-- dependant definition off --%>

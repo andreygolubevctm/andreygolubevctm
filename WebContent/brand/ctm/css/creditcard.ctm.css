@@ -135,6 +135,7 @@ body > div > header a.bottombar .btn-call:hover {
   text-align: center;
   margin: 0 auto 1em auto;
   line-height: 22px;
+  padding: 0 10px;
 }
 @media (min-width: 992px) {
   .creditcard .handover-container h5 {

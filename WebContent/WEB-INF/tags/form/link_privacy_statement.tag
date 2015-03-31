@@ -22,4 +22,4 @@
 	<c:set var="bodyContent" value="${fn:replace(bodyContent, '#AFG_PRIVACY_POLICY_URL#', pageSettings.getSetting('argPrivacyPolicyUrl'))}" />
 </c:if>
 
-<a data-toggle="dialog" data-content="${openingContent}${bodyContent}" data-cache="true" data-dialog-hash-id="privacystatement" href="${privacyPolicyPDF}" target="_blank">${anchorLabel}</a>
+<a data-toggle="dialog" data-content="${openingContent}${bodyContent}" data-cache="true" data-dialog-hash-id="privacystatement">${anchorLabel}</a>

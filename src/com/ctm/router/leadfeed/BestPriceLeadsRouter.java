@@ -1,21 +1,19 @@
 package com.ctm.router.leadfeed;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
+import com.ctm.model.settings.Vertical;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.ContentService;
+import com.ctm.services.leadfeed.car.CarLeadFeedService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-
-import com.ctm.model.settings.Vertical;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.ContentService;
-import com.ctm.services.leadfeed.car.CarLeadFeedService;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
 
 @WebServlet(urlPatterns = {
 	"/cron/leadfeed/car/triggerBestPriceLeads.json"
@@ -84,7 +82,7 @@ public class BestPriceLeadsRouter extends HttpServlet {
 
 			Date serverDate = ApplicationService.getApplicationDate(request);
 			for (BestPriceLeadDISCOverride bestPriceOverride : BestPriceLeadDISCOverride.values()) {
-				String tempOverride = ContentService.getContent("bestPriceCallDisc", bestPriceOverride.getBrandCodeId(), 0, serverDate, false).getContentValue();
+				String tempOverride = ContentService.getInstance().getContent("bestPriceCallDisc", bestPriceOverride.getBrandCodeId(), 0, serverDate, false).getContentValue();
 				if(tempOverride != null) {
 					bestPriceOverride.setOverride(tempOverride);
 				}

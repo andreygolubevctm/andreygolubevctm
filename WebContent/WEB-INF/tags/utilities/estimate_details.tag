@@ -267,22 +267,22 @@ $.validator.addMethod("maximumUsage",
 
 		switch($(period).val()) {
 			case 'M':
-				if(usage == '' || (usage >= 0 && usage < 7000)){
+				if(usage == '' || (usage >= 0 && usage <= 7000)){
 					valid = true;
 				}
 				break;
 			case 'B':
-				if(usage == '' || (usage >= 0 && usage < 14000)){
+				if(usage == '' || (usage >= 0 && usage <= 14000)){
 					valid = true;
 				}
 				break;
 			case 'Q':
-				if(usage == '' || (usage >= 0 && usage < 20000)){
+				if(usage == '' || (usage >= 0 && usage <= 20000)){
 					valid = true;
 				}
 				break;
 			default:
-				if(usage == '' || (usage >= 0 && usage < 85000)){
+				if(usage == '' || (usage >= 0 && usage <=  85000)){
 					valid = true;
 				}
 				break;

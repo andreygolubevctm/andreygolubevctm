@@ -111,7 +111,7 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setCoverLevelTabsType(coverLevelTab);
 
 			Date serverDate = ApplicationService.getApplicationDate(null);
-			Content content = ContentService.getContent("CoverLevelTabKeys", pageSettings.getBrandId(), 2, serverDate, true);
+			Content content = ContentService.getInstance().getContent("CoverLevelTabKeys", pageSettings.getBrandId(), 2, serverDate, true);
 			emailModel.setCoverLevelTabsDescription(content.getSupplementaryValueByKey(coverLevelTab+"EDMVar"));
 
 			emailModel.setOptIn((boolean) (data.get("travel/marketing") != null && data.get("travel/marketing").equals("Y")));

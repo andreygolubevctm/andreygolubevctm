@@ -300,6 +300,7 @@
 	{{ if (obj.lender === 'AFG Home Loans - Precision') img = 'AFG'; }}
 	{{ if (obj.lender === 'AMP Bank') img = 'AMP'; }}
 	{{ if (obj.lender === 'ANZ') img = 'ANZ'; }}
+	{{ if (obj.lender === 'Auswide Bank') img = 'AUSWIDE'; }}
 	{{ if (obj.lender === 'Bank of Melbourne') img = 'BOM'; }}
 	{{ if (obj.lender === 'Bank of QLD') img = 'BOQ'; }}
 	{{ if (obj.lender === 'Bank SA') img = 'BANKSA'; }}

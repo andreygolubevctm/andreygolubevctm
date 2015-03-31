@@ -41,7 +41,7 @@
 		
 		<c:set var="fieldXpath" value="${xpath}/expiry" />
 		<form_new:row fieldXpath="${fieldXpath}_cardExpiryMonth" label="Credit Card Expiry" id="${name}_expiry">
-			<field:cards_expiry rule="ccExp" xpath="${fieldXpath}" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry sessioncamexclude" />
+			<field:cards_expiry rule="ccExp" xpath="${fieldXpath}" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry sessioncamexclude" maxYears="7"/>
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}/ccv" />

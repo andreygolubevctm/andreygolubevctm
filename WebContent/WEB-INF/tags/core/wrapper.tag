@@ -26,6 +26,7 @@
 <c:set var="server_real_url">${pageSettings.getServerUrl()}</c:set>
 <c:set var="server_url">${pageSettings.getRootUrl()}</c:set>
 
+window.$ = jQuery;
 var allowExternal = 1; // 1 = on, 0 = off
 var uri = window.location.host;
 if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1)) {

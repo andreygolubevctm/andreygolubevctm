@@ -133,6 +133,7 @@ public class ProductService {
 					CreditCardProduct creditCard = new CreditCardProduct();
 					creditCard.setSlug(product.getPropertyAsString("slug"));
 					creditCard.setCode(product.getCode());
+					creditCard.setId(product.getId());
 					creditCard.setProvider(product.getProvider());
 					creditCards.add(creditCard);
 				}

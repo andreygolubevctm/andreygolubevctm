@@ -61,15 +61,18 @@
 			<number>5105105105105100</number>
 			<expiry>
 				<cardExpiryMonth>11</cardExpiryMonth>
-				<cardExpiryYear>14</cardExpiryYear>
+				<cardExpiryYear>17</cardExpiryYear>
 			</expiry>
+			<ccv>123</ccv>
 		</credit>
 		<bank>
 			<name>Test Bank</name>
 			<account>Test User Account</account>
 			<bsb>124001</bsb>
+			<bsbinput>124001</bsbinput>
 			<number>12345678</number>
 			<day>12</day>
+			<claims>Y</claims>
 		</bank>
 		<medicare>
 			<cover>Y</cover>
@@ -79,7 +82,7 @@
 			<position>1</position>
 			<expiry>
 				<cardExpiryMonth>10</cardExpiryMonth>
-				<cardExpiryYear>15</cardExpiryYear>
+				<cardExpiryYear>18</cardExpiryYear>
 			</expiry>
 		</medicare>
 	</payment>
@@ -88,10 +91,12 @@
 		<primary>
 			<fundName>HCF</fundName>
 			<memberID>12345</memberID>
+			<authority>Y</authority>
 		</primary>
 		<partner>
 			<fundName>BUPA</fundName>
 			<memberID>12345</memberID>
+			<authority>Y</authority>
 		</partner>
 	</previousfund>
 	<application>
@@ -156,7 +161,7 @@
 				<firstName>Wally</firstName>
 				<middleName>Middlea</middleName>
 				<lastname>One</lastname>
-				<dob>21/01/1994</dob>
+				<dob>21/01/1999</dob>
 				<school>UNSW</school>
 				<gender>M</gender>
 				<maritalincomestatus>Y</maritalincomestatus>
@@ -273,6 +278,7 @@
 			</dependant12>
 		</dependants>
 	</application>
+	<declaration>Y</declaration>
 	<simples>
 		<dialogue-checkbox-21>Y</dialogue-checkbox-21>
 		<dialogue-checkbox-24>Y</dialogue-checkbox-24>

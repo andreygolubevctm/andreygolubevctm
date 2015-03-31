@@ -107,7 +107,6 @@ public class HealthApplicationParser {
 		application.income = data.getInteger(prefix + "dependants/income");
 		application.provider =  data.getString(prefix + "provider");
 		application.selectedProductId = data.getString(prefix + "productId").replace("PHIO-HEALTH-", "");
-		application.currentCustomer = data.getString(prefix + "currentCustomer");
 		parsePerson(data, prefix + "primary/", application.primary);
 		parsePerson(data, prefix + "partner/", application.partner);
 		if(request.membership.equals("SPF") || request.membership.equals("F")) {

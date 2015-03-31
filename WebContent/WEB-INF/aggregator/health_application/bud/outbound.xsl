@@ -216,12 +216,6 @@
 										<Value>Fund: <xsl:value-of select="$primaryFund"/>, No: <xsl:value-of select="previousfund/primary/memberID" /></Value>
 									</Property>
 								</xsl:if>
-								<xsl:if test="application/currentCustomer = 'Y' and string-length(application/currentCustomerPolicyNo) &gt; 0">
-									<Property>
-										<Name>BDPID</Name>
-										<Value><xsl:value-of select="application/currentCustomerPolicyNo" /></Value>
-									</Property>
-								</xsl:if>
 							</Properties>
 						</Person>
 						<xsl:if test="application/partner/firstname != ''">
@@ -470,18 +464,8 @@
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<GroupID>
 								<xsl:choose>
-									<xsl:when test="application/currentCustomer = 'Y' and string-length(application/currentCustomerPolicyNo) &gt; 0">
-										<xsl:choose>
-											<xsl:when test="payment/details/type='ba'">BBA10</xsl:when>
-											<xsl:otherwise>BCC10</xsl:otherwise>
-										</xsl:choose>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:choose>
-											<xsl:when test="payment/details/type='ba'">BBA00</xsl:when>
-											<xsl:otherwise>BCC00</xsl:otherwise>
-										</xsl:choose>
-									</xsl:otherwise>
+									<xsl:when test="payment/details/type='ba'">BBA00</xsl:when>
+									<xsl:otherwise>BCC00</xsl:otherwise>
 								</xsl:choose>
 							</GroupID>
 							<PayrollNo></PayrollNo>

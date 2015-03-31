@@ -406,7 +406,7 @@
 								<xsl:otherwise>F</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
-						<CoverRateSelection><xsl:value-of select="fundData/fundCode" /><xsl:value-of select="$crsCvr" />/<xsl:value-of select="$crsState" /></CoverRateSelection>
+						<CoverRateSelection><xsl:value-of select="fundData/fundCode" /></CoverRateSelection>
 						<Account>
 							<AccountType>credit</AccountType>
 							<DebitCreditID>Bank</DebitCreditID>

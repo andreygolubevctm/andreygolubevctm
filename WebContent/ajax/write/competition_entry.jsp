@@ -9,6 +9,13 @@
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
 
+<%-- Pass in competition_phone_required param to tell the script if phone is required --%>
+<c:set var="phoneRequiredParam"><c:out value="${data['competition/required/phone']}" /></c:set>
+<c:set var="isPhoneRequired" value="${true}" />
+<c:if test="${phoneRequiredParam eq 'N'}">
+	<c:set var="isPhoneRequired" value="${false}" />
+</c:if>
+
 <%-- Variables --%>
 <c:set var="database" value="aggregator" />
 <c:set var="competition_id" value="${2}" /><%-- 1=Robe, 2=1000grubs, 3=1000dollars --%>
@@ -102,6 +109,12 @@
 	</c:if>
 </c:if>
 
+<!-- Credit Cards promo -->
+<c:if test="${not empty param.secret and param.secret == 'yfIOyxdBzXw7CjVcNWuX'}">
+	<c:set var="competition_id" value="${18}" />
+	<c:set var="source" value="CreditCard$1000PromotionApril2015" />
+</c:if>
+
 <%-- STEP 1: Validate the input received before proceeding --%>
 <c:if test="${empty data['competition/email']}">
 	<c:set var="errorPool" value="{error:'Your email address is required.'}" />
@@ -112,7 +125,7 @@
 <c:if test="${competition_id == 2 and empty data['competition/lastname']}">
 	<c:set var="errorPool"><c:if test="${not empty errorPool}">${errorPool},</c:if>{error:'Your last name is required.'}</c:set>
 </c:if>
-<c:if test="${empty data['competition/phone']}">
+<c:if test="${isPhoneRequired eq true && empty data['competition/phone']}">
 	<c:set var="errorPool"><c:if test="${not empty errorPool}">${errorPool},</c:if>{error:'Your phone number is required.'}</c:set>
 </c:if>
 
@@ -187,7 +200,7 @@
 <%-- JSON RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log source="october_promo_jsp">ENTRY ERRORS: ${errorPool}</go:log>
+		<go:log source="competition_entry_jsp">ENTRY ERRORS: ${errorPool}</go:log>
 		{[${errorPool}]}
 
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">

@@ -66,7 +66,7 @@ public class BestPriceLeadsDao {
 					stmt = dbSource.getConnection().prepareStatement(
 						"SELECT h.rootId AS rootId, h.TransactionId AS transactionId, t.type AS type, h.styleCode, h.ipAddress " +
 						"FROM aggregator.transaction_header AS h " +
-						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CB') " +
+						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('A','R','BP','CB') " +
 						"WHERE h.ProductType = ? AND h.styleCodeId = ? " +
 						// Next line is important as it greatly reduces the size of the recordset and query speed overall
 						"AND t.date >= DATE(CURRENT_DATE - INTERVAL " + minutes_max.toString() + " MINUTE) " +
@@ -129,9 +129,10 @@ public class BestPriceLeadsDao {
 										String curLeadNumber = resultSet.getString("leadNo");
 										String curIdentifier = leadConcat[2];
 										String phoneNumber = leadConcat[1];
+										String phoneTest = "0411111111,0755254545,0712345678";
 										// Only proceed if a phone number has been provided otherwise the
 										// user has not opted in and no lead should be generated
-										if(!phoneNumber.isEmpty()) {
+										if(!phoneNumber.isEmpty() && !phoneTest.contains(phoneNumber)) {
 											// Create a lead data object only for the most recent identifer
 											// Eg for car only get the latest lead for the first redbook code (aka identifier) found
 											if(identifier == null || (curIdentifier.equals(identifier) && !curLeadNumber.equals(leadNumber))) {
@@ -158,6 +159,8 @@ public class BestPriceLeadsDao {
 											} else {
 												searching = false;
 											}
+										} else {
+											logger.info("[Lead info] Skipped " + transactionId + " as no optin or email/phone flagged as testing");
 										}
 									} else {
 										logger.error("leadInfo field in results properties (for " + transactionId + ") has an invalid number of elements (" + leadConcat.length + ")");
@@ -203,8 +206,9 @@ public class BestPriceLeadsDao {
 			tran.setIpAddress(set.getString("ipAddress"));
 			// Flag the root transaction as having existing lead feed if applicable
 			String type = set.getString("type");
-			if(type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")) {
+			if(type.equalsIgnoreCase("A") || type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")) {
 				tran.setHasLeadFeed(true);
+				logger.info("[Lead info] Skipping transaction " + set.getLong("transactionId") + " as has lead already");
 			}
 		} catch(SQLException e) {
 			logger.error(e.getMessage(), e);
@@ -223,7 +227,8 @@ public class BestPriceLeadsDao {
 	private String getActiveProviders(Integer verticalId, Date serverDate) throws DaoException {
 		StringBuilder providers = new StringBuilder();
 		try {
-			Content content = ContentService.getContent("bestPriceProviders", 0, verticalId, serverDate, true);
+			ContentService contentService = new ContentService();
+			Content content = contentService.getContent("bestPriceProviders", 0, verticalId, serverDate, true);
 			ArrayList<ContentSupplement> providersContent = content.getSupplementary();
 			for (ContentSupplement provider : providersContent) {
 				if(provider.getSupplementaryValue().equalsIgnoreCase("Y")) {

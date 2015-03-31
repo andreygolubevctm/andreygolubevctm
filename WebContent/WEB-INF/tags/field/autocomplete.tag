@@ -59,7 +59,7 @@
 
 <%-- JavasScript --%>
 <go:script marker="onready">
-$('#${name}').autocomplete({
+	$('#${name}').autocomplete({
 	source: ${source},
 	minLength: ${min},
 	select: ${select},
@@ -68,12 +68,12 @@ $('#${name}').autocomplete({
 		return false;
 	},
 	open: ${open}
-});
-$('#${name}').on('focus', function(){
+	});
+	$('#${name}').on('focus', function(){
 	if($(this).val() != '' && $(this).val().length >= ${min}) {
 		$(this).autocomplete('search', $(this).val());
 	}
-});
+	});
 </go:script>
 
 <go:style marker="css-head">

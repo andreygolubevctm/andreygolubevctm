@@ -262,7 +262,7 @@
 					<afsLicenceNo></afsLicenceNo>
 					<quoteUrl></quoteUrl>
 					<handoverType>post</handoverType>
-					<handoverUrl>https://www.columbusdirect.com.au/landingService</handoverUrl>
+					<handoverUrl>https://travel.columbusdirect.com.au/landingService.cfm</handoverUrl>
 					<handoverVar>policy_xml</handoverVar>
 					<handoverData>
 						<!-- This is ugly but is done this way so that:

@@ -5,28 +5,27 @@ import javax.validation.Valid;
 import com.ctm.model.request.Person;
 
 public class Application {
-	
+
 	public String provider;
 	public String selectedProductId;
-	public String currentCustomer;
-	
+
 	@Valid
 	public final Person partner = new Person();
-	
+
 	@Valid
 	public final Person primary = new Person();
-	
+
 	public Integer income;
-	
+
 	@Valid
 	public Dependants dependants;
-	
+
 	@Valid
 	public Address address = new Address();
-	
+
 	@Valid
 	public Address postal = new Address();
-	
+
 	public boolean postalMatch;
 
 	@Override

@@ -205,12 +205,6 @@
 					</xsl:choose>
 				</productType>
 				<accountType><xsl:value-of select="payment/details/type" /></accountType>
-				<currentCustomer>
-					<xsl:choose>
-						<xsl:when test="application/currentCustomer = 'Y' and string-length(application/currentCustomerPolicyNo) &gt; 0">Y</xsl:when>
-						<xsl:otherwise>N</xsl:otherwise>
-					</xsl:choose>
-				</currentCustomer>
 			</details>
 			
 		</request>

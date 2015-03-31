@@ -29,7 +29,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/expiry" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Medicare Expiry Date">
-			<field:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="Medicare card expiry date" required="true" className="health-medicare_details-expiry" />
+			<field:cards_expiry rule="mcExp" xpath="${fieldXpath}" title="Medicare card expiry date" required="true" className="health-medicare_details-expiry" maxYears="7"/>
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/firstName" />

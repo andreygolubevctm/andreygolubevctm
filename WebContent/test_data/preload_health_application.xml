@@ -46,15 +46,18 @@
 			<number>1234567890123456</number>
 			<expiry>
 				<cardExpiryMonth>11</cardExpiryMonth>
-				<cardExpiryYear>14</cardExpiryYear>
+				<cardExpiryYear>17</cardExpiryYear>
 			</expiry>
+			<ccv>123</ccv>
 		</credit>
 		<bank>
 			<name>Test Bank</name>
 			<account>Test User Account</account>
 			<bsb>124001</bsb>
+			<bsbinput>124001</bsbinput>
 			<number>12345678</number>
 			<day>12</day>
+			<claims>Y</claims>
 		</bank>
 		<medicare>
 			<cover>Y</cover>
@@ -64,7 +67,7 @@
 			<position>1</position>
 			<expiry>
 				<cardExpiryMonth>10</cardExpiryMonth>
-				<cardExpiryYear>15</cardExpiryYear>
+				<cardExpiryYear>18</cardExpiryYear>
 			</expiry>
 		</medicare>
 	</payment>
@@ -73,10 +76,12 @@
 		<primary>
 			<fundName>hcf2</fundName>
 			<memberID>testPrimaryMemberID</memberID>
+			<authority>Y</authority>
 		</primary>
 		<partner>
 			<fundName>hcf3</fundName>
 			<memberID>testPartnerMemberID</memberID>
+			<authority>Y</authority>
 		</partner>
 	</previousfund>
 	<application>
@@ -138,4 +143,5 @@
 			</dependant2>
 		</dependants>
 	</application>
+	<declaration>Y</declaration>
 </health>

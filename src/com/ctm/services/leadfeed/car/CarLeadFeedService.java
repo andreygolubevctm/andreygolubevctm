@@ -50,10 +50,16 @@ public class CarLeadFeedService extends LeadFeedService {
 
 					logger.info("[Lead feed] Prepare to send lead to AGIS brand "+leadType+"; Transaction ID: "+leadData.getTransactionId());
 
-					AGISCarLeadFeedService leadFeedService = new AGISCarLeadFeedService();
-					response = leadFeedService.sendLeadFeedRequest(leadType, leadData);
-					if(response.equalsIgnoreCase("ok")) {
+					String phoneTest = "0411111111,0755254545,0712345678";
+					if(phoneTest.contains(leadData.getPhoneNumber())) {
 						recordTouch(leadData.getTransactionId(), touchType.getCode());
+						response = "ok";
+					} else {
+						AGISCarLeadFeedService leadFeedService = new AGISCarLeadFeedService();
+						response = leadFeedService.sendLeadFeedRequest(leadType, leadData);
+						if(response.equalsIgnoreCase("ok")) {
+							recordTouch(leadData.getTransactionId(), touchType.getCode());
+						}
 					}
 
 					break;

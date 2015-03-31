@@ -503,14 +503,6 @@
 				onSuccess: function whatHappensNextSuccess(result) {
 					product.whatHappensNext = result;
 				}
-			}),
-			meerkat.modules.comms.get({
-				url: "health_fund_info/"+ product.info.provider +"/warning.html",
-				cache: true,
-				errorLevel: "silent",
-				onSuccess: function warningAlertSuccess(result) {
-					product.warningAlert = result;
-				}
 			})
 		)
 		.then(

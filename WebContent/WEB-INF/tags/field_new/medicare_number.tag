@@ -24,7 +24,11 @@
 	$.validator.addMethod("medicareNumber",
 			function(value, elem, parm) {
 
-				var cardNumber = value.replace(/\s/g, '')  + ''; //turn into a string
+				var cardNumber = value.replace(/\s/g, ''); //remove spaces
+
+				if (isNaN(cardNumber)){
+					return false;
+				}
 
 				<%-- Ten is the length --%>
 				if(cardNumber.length != 10){

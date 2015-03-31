@@ -23,18 +23,19 @@ import java.util.Date;
 public class HealthPriceDetailService {
 
 	private static Logger logger = Logger.getLogger(HealthPriceDetailService.class.getName());
+	private final ContentService contentService;
 
 	private HealthPriceDao healthPriceDao;
 	private HealthAlternatePricing alternatePricing = null;
-	private Content alternatePricingContent;
 
 	public HealthPriceDetailService() {
 		this.healthPriceDao = new HealthPriceDao();
+		contentService = new ContentService();
 	}
 
-	public HealthPriceDetailService(HealthPriceDao healthPriceDao, Content alternatePricingContent) {
+	public HealthPriceDetailService(HealthPriceDao healthPriceDao, ContentService contentService) {
 		this.healthPriceDao = healthPriceDao;
-		this.alternatePricingContent = alternatePricingContent;
+		this.contentService = contentService;
 	}
 
 	/**
@@ -147,7 +148,7 @@ public class HealthPriceDetailService {
 		Date serverDate = ApplicationService.getApplicationDate(request);
 		try {
 			String[] fundList = new String[0];
-			alternatePricingContent = ContentService.getContent("alternatePricingActive", styleCodeId, verticalId, serverDate, true);
+			Content alternatePricingContent = contentService.getContent("alternatePricingActive", styleCodeId, verticalId, serverDate, true);
 
 			if(alternatePricingContent != null){
 				String supplementaryValueByKey = alternatePricingContent.getSupplementaryValueByKey("disabledFunds");

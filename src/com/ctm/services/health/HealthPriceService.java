@@ -2,7 +2,6 @@ package com.ctm.services.health;
 
 import static com.ctm.model.health.Frequency.ANNUALLY;
 import static com.ctm.model.health.Frequency.HALF_YEARLY;
-import static com.ctm.model.health.Frequency.HALF_YEARLY;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -262,23 +261,23 @@ public class HealthPriceService {
 	
 	/**
 		DISCOUNT HACK: NEEDS TO BE REVISED
-		if onResultsPage = true + not(BUD)
+		if onResultsPage = true
 			= Discount
-			Show all .. and default to discount rates (except BUD)
+			Show all .. and default to discount rates
 	
-		else if NIB + Bank account + single-product only being fetched
-			= Discount
-	
-		else if GMHBA + Bank account + single-product only being fetched
+		else if NIB + Bank account
 			= Discount
 	
-		else if GMF + Annualy payment + single-product only being fetched
+		else if GMHBA + Bank account
 			= Discount
 	
-		else if BUD + Current Customer + single-product only being fetched
+		else if GMF + Annualy payment
+			= Discount
+	
+		else if HIF + Annualy/Halfyealy payment
 			= Discount
 			
-		else if HIF + Annualy/Halfyealy payment + single-product only being fetched
+		else if BUD || AUF
 			= Discount
 
 		else
@@ -286,8 +285,7 @@ public class HealthPriceService {
 	
 		1=AUF, 3=NIB, 5=GMHBA, 6=GMF, 54=BUD, 11=HIF
 	**/
-	public static boolean hasDiscountRates(Frequency frequency, String provider,
-			String currentCustomer, PaymentType paymentType, boolean onResultsPage) {
+	public static boolean hasDiscountRates(Frequency frequency, String provider, PaymentType paymentType, boolean onResultsPage) {
 		boolean isBankAccount = paymentType != null && paymentType == PaymentType.BANK;
 		boolean isDiscountRates ;
 		switch(provider){
@@ -304,8 +302,6 @@ public class HealthPriceService {
 				isDiscountRates = onResultsPage || frequency.equals(ANNUALLY) || frequency.equals(HALF_YEARLY);
 				break;
 			case "BUD":
-				isDiscountRates = currentCustomer != null && currentCustomer.equals("Y");
-				break;
 			case "AUF":
 				isDiscountRates = true;
 				break;
@@ -315,6 +311,6 @@ public class HealthPriceService {
 		return isDiscountRates;
 	}
 
-	public boolean hasDiscountRates(String provider, String currentCustomer, String paymentType) {
-		return hasDiscountRates(healthPriceRequest.getPaymentFrequency(), provider, currentCustomer, PaymentType.findByCode(paymentType), healthPriceRequest.isOnResultsPage());
+	public boolean hasDiscountRates(String provider, String paymentType) {
+		return hasDiscountRates(healthPriceRequest.getPaymentFrequency(), provider, PaymentType.findByCode(paymentType), healthPriceRequest.isOnResultsPage());
 	}}

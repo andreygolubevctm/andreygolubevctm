@@ -14,7 +14,6 @@
 <c:set var="membership" value="${healthPriceRequest.getMembership()}" />
 
 <c:set var="accountType"><x:out select="$healthXML/request/details/accountType" /></c:set>
-<c:set var="currentCustomer"><x:out select="$healthXML/request/details/currentCustomer" /></c:set>
 <c:set var="transactionId"><x:out select="$healthXML/request/header/partnerReference" /></c:set>
 
 <c:set var="rebateChangeover" value="${healthPriceService.getRebateChangeover()}" />
@@ -48,7 +47,7 @@
 		<c:set var="active_fund" value="${row.getFundCode()}" />
 
 		<%-- set up if provider has discount --%>
-		<c:set var="discountRates" value="${healthPriceService.hasDiscountRates(active_fund, currentCustomer, accountType)}" />
+		<c:set var="discountRates" value="${healthPriceService.hasDiscountRates(active_fund, accountType)}" />
 		<c:set var="row" value="${healthPriceDetailService.setUpDiscountRates(row, discountRates)}" />
 
 		<%-- set up premimum and lhc for normal prcing --%>

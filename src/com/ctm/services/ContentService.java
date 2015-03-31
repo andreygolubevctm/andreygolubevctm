@@ -17,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 public class ContentService {
 
 
+	private static ContentService contentService = new ContentService();
+
 	/**
 	 * Returns the value of the content key (as a string) this is the one that should be called by the JSP page.
 	 *
@@ -94,13 +96,16 @@ public class ContentService {
 	 * @throws ConfigSettingException
 	 */
 	private static Content getContentWithOptions(HttpServletRequest request, String contentKey, boolean includeSupplementary) throws DaoException, ConfigSettingException{
-
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 		int brandId = pageSettings.getBrandId();
 		int verticalId = pageSettings.getVertical().getId();
 		Date serverDate = ApplicationService.getApplicationDate(request);
-		return getContent(contentKey, brandId, verticalId, serverDate, includeSupplementary);
+		return getInstance().getContent(contentKey, brandId, verticalId, serverDate, includeSupplementary);
 
+	}
+
+	public static ContentService getInstance() throws DaoException, ConfigSettingException{
+		return contentService;
 	}
 
 	/**
@@ -113,7 +118,7 @@ public class ContentService {
 	 * @return
 	 * @throws DaoException
 	 */
-	public static Content getContent(String contentKey, int brandId, int verticalId, Date effectiveDate, boolean includeSupplementary ) throws DaoException {
+	public Content getContent(String contentKey, int brandId, int verticalId, Date effectiveDate, boolean includeSupplementary ) throws DaoException {
 
 		ContentDao contentDao = new ContentDao();
 		Content content = contentDao.getByKey(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);

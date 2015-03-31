@@ -116,8 +116,7 @@ public class HealthApplicationService {
 	 * Fetch single health product based on product id
 	 */
 	private HealthPricePremium fetchHealthResult() throws DaoException {
-		boolean isDiscountRates = HealthPriceService.hasDiscountRates(request.payment.details.frequency, request.application.provider,
-				request.application.currentCustomer, request.payment.details.paymentType, false);
+		boolean isDiscountRates = HealthPriceService.hasDiscountRates(request.payment.details.frequency, request.application.provider, request.payment.details.paymentType, false);
 		return healthPriceDao.getPremiumAndLhc(request.application.selectedProductId, isDiscountRates);
 	}
 

@@ -86,12 +86,12 @@ public class HomeLoanService {
 
 		value = request.getParameter("homeloan_loanDetails_purchasePrice");
 		if (value != null && value.length() > 0) {
-			model.setPurchasePrice(Math.abs(Integer.parseInt(value)));
+			model.setPurchasePrice((int)Double.parseDouble(value));
 		}
 
 		value = request.getParameter("homeloan_loanDetails_loanAmount");
 		if (value != null && value.length() > 0) {
-			model.setLoanAmount(Math.abs(Integer.parseInt(value)));
+			model.setLoanAmount((int)Double.parseDouble(value));
 		}
 
 		value = request.getParameter("homeloan_loanDetails_interestRate");

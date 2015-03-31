@@ -11,6 +11,7 @@
 <%@ attribute name="className" 	required="false" 	rtexprvalue="true"	description="additional css class attribute" %>
 <%@ attribute name="title" 		required="true"	 	rtexprvalue="true"	description="The subject of the field (e.g. 'regular driver')"%>
 <%@ attribute name="rule" 		required="false"	rtexprvalue="true"	description="Create a new rule name in case of conflict"%>
+<%@ attribute name="maxYears" 		required="false"	rtexprvalue="true"	description="The number of years to display"%>
 
 <%-- VARIABLES --%>
 <c:set var="cardExpiryMonth" value="${go:nameFromXpath(xpath)}_cardExpiryMonth" />
@@ -19,6 +20,22 @@
 <c:if test="${empty rule}">
 	<c:set var="rule" value="ccExp" />
 </c:if>
+<c:if test="${empty maxYears}">
+	<c:set var="maxYears" value="7" />
+</c:if>
+
+<jsp:useBean id="currentYear" class="java.util.GregorianCalendar" scope="page" />
+<c:set var="year_list">
+	<c:forEach var="i" begin="1" end="${maxYears}" varStatus="theCount">
+		<fmt:formatDate value="${currentYear.time}" pattern="yy" var="basicYear" />
+		<fmt:formatDate value="${currentYear.time}" pattern="yyyy" var="fullYear" />
+		<c:out value="${basicYear}=${fullYear}"/>
+		<c:if test="${theCount.count < maxYears}">
+			<c:out value=","/>
+		</c:if>
+		<% currentYear.add(java.util.GregorianCalendar.YEAR, 1); %>
+	</c:forEach>
+</c:set>
 
 <%-- HTML --%>
 <div class="row">
@@ -26,7 +43,12 @@
 		<field_new:import_select xpath="${xpath}/cardExpiryMonth" url="/WEB-INF/option_data/month.html"	title="expiry month" required="true" omitPleaseChoose="Y" className="${className}"/>
 	</div>
 	<div class="col-xs-6 col-md-5">
-		<field_new:import_select xpath="${xpath}/cardExpiryYear" url="/WEB-INF/option_data/creditcard_year.html" title="expiry year" required="true" omitPleaseChoose="Y" className="${className}"/>
+		<field_new:array_select
+			items="=,${year_list}"
+			xpath="${xpath}/cardExpiryYear"
+			title="expiry year"
+			className="${className}"
+			required="true" />
 	</div>
 </div>
 

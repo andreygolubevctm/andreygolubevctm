@@ -5,9 +5,10 @@
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" scope="request" />
 
 <jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled" /></c:set>
 <div class="row handover-container journeyEngineSlide active">
 	<c:choose>
-		<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 1)}">
+		<c:when test="${competitionEnabledSetting eq 'N' or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 1)}">
 			<creditcard:details />
 		</c:when>
 		<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">

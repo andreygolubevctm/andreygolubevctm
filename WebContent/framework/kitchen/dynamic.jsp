@@ -383,10 +383,6 @@
 		<field:make_select xpath="${xpath}/make" title="field:make_select" type="make" required="true" />
 	</form_new:row>
 
-	<form_new:row label="<del>medicare_number</del>">
-		<field:medicare_number xpath="${xpath}/number" required="true" title="field:medicare_number" />
-	</form_new:row>
-
 	<form_new:row label="<del>name_on_card</del>">
 		<field:name_on_card xpath="quote/avea/payment/cardName" title="field:name_on_card" required="true" />
 	</form_new:row>
@@ -624,6 +620,7 @@
 	<form_new:row label="calendar">
 		<field_new:calendar xpath="${xpath}/new/calendar" required="true" title="start date" />
 	</form_new:row>
+
 
 
 

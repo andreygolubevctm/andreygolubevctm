@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
+
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
@@ -15,8 +17,11 @@ import com.ctm.model.homeloan.HomeLoanContact;
 import com.ctm.model.homeloan.HomeLoanModel;
 import com.ctm.model.homeloan.HomeLoanModel.CustomerGoal;
 import com.ctm.model.homeloan.HomeLoanModel.CustomerSituation;
+import com.ctm.router.GenericRouter;
 
 public class HomeloanUnconfirmedLeadsDao {
+
+	private static Logger logger = Logger.getLogger(HomeloanUnconfirmedLeadsDao.class.getName());
 
 	public HomeloanUnconfirmedLeadsDao() {
 	}
@@ -71,48 +76,52 @@ public class HomeloanUnconfirmedLeadsDao {
 			HomeLoanModel opportunity = null;
 			while (results.next()) {
 
-				String textValue = results.getString("textValue");
-				String xPath = results.getString("xpath");
+				try {
+					String textValue = results.getString("textValue");
+					String xPath = results.getString("xpath");
 
-				if(opportunity == null || opportunity.getTransactionId() != results.getLong("transactionId")) {
-					opportunity = new HomeLoanModel();
-					opportunity.setTransactionId(results.getLong("transactionId"));
-					opportunity.setAdditionalInformation("OUTBOUND LEAD");
-					opportunity.contact = new HomeLoanContact();
-					homeloanOpportunities.add(opportunity);
-				}
+					if(opportunity == null || opportunity.getTransactionId() != results.getLong("transactionId")) {
+						opportunity = new HomeLoanModel();
+						opportunity.setTransactionId(results.getLong("transactionId"));
+						opportunity.setAdditionalInformation("OUTBOUND LEAD");
+						opportunity.contact = new HomeLoanContact();
+						homeloanOpportunities.add(opportunity);
+					}
 
+					if(xPath.equals("homeloan/contact/firstName")) {
+						opportunity.contact.firstName = textValue;
+					} else if(xPath.equals("homeloan/contact/lastName")) {
+						opportunity.contact.lastName = textValue;
+					} else if(xPath.equals("homeloan/contact/contactNumber")) {
+						opportunity.setContactPhoneNumber(textValue);
+					} else if(xPath.equals("homeloan/contact/email")) {
+						opportunity.setEmailAddress(textValue);
+					} else if(xPath.equals("homeloan/details/suburb")) {
+						opportunity.setAddressCity(textValue);
+					} else if(xPath.equals("homeloan/details/postcode")) {
+						opportunity.setAddressPostcode(textValue);
+					} else if(xPath.equals("homeloan/details/state")) {
+						opportunity.setState(textValue);
+					} else if(xPath.equals("homeloan/details/situation")) {
+						if (textValue != null && textValue.length() > 0) {
+							opportunity.setCustomerSituation(CustomerSituation.findByCode(textValue));
+						}
+					} else if(xPath.equals("homeloan/details/goal")) {
+						if (textValue != null && textValue.length() > 0) {
+							opportunity.setCustomerGoal(CustomerGoal.findByCode(textValue));
+						}
+					} else if(xPath.equals("homeloan/loanDetails/purchasePrice")) {
+						if (textValue != null && textValue.length() > 0) {
+							opportunity.setPurchasePrice((int)Double.parseDouble(textValue));
+						}
+					} else if(xPath.equals("homeloan/loanDetails/loanAmount")) {
+						if (textValue != null && textValue.length() > 0) {
+							opportunity.setLoanAmount((int)Double.parseDouble(textValue));
+						}
+					}
 
-				if(xPath.equals("homeloan/contact/firstName")) {
-					opportunity.contact.firstName = textValue;
-				} else if(xPath.equals("homeloan/contact/lastName")) {
-					opportunity.contact.lastName = textValue;
-				} else if(xPath.equals("homeloan/contact/contactNumber")) {
-					opportunity.setContactPhoneNumber(textValue);
-				} else if(xPath.equals("homeloan/contact/email")) {
-					opportunity.setEmailAddress(textValue);
-				} else if(xPath.equals("homeloan/details/suburb")) {
-					opportunity.setAddressCity(textValue);
-				} else if(xPath.equals("homeloan/details/postcode")) {
-					opportunity.setAddressPostcode(textValue);
-				} else if(xPath.equals("homeloan/details/state")) {
-					opportunity.setState(textValue);
-				} else if(xPath.equals("homeloan/details/situation")) {
-					if (textValue != null && textValue.length() > 0) {
-						opportunity.setCustomerSituation(CustomerSituation.findByCode(textValue));
-					}
-				} else if(xPath.equals("homeloan/details/goal")) {
-					if (textValue != null && textValue.length() > 0) {
-						opportunity.setCustomerGoal(CustomerGoal.findByCode(textValue));
-					}
-				} else if(xPath.equals("homeloan/loanDetails/purchasePrice")) {
-					if (textValue != null && textValue.length() > 0) {
-						opportunity.setPurchasePrice(Math.abs(Integer.parseInt(textValue)));
-					}
-				} else if(xPath.equals("homeloan/loanDetails/loanAmount")) {
-					if (textValue != null && textValue.length() > 0) {
-						opportunity.setLoanAmount(Math.abs(Integer.parseInt(textValue)));
-					}
+				} catch(Exception e) {
+					logger.error(e.getMessage(),e);
 				}
 			}
 		}

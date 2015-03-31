@@ -600,8 +600,15 @@ var Compare = function( _config ) {
 		*/
 
 		// Add flat list of features (for creating rows later)
-		for( var i = 0; i < data[0].feature.length; i++ ) {
-			sanitised.features.push( data[0].feature[i].name );
+		// Flat list is the a cumulative list of all all features presented
+		// by the selected products
+		for(var productPos = 0; productPos < data.length; productPos++) {
+			for( var i = 0; i < data[productPos].feature.length; i++ ) {
+				var featureName = data[productPos].feature[i].name;
+				if(sanitised.features.indexOf(featureName) === -1) {
+					sanitised.features.push(featureName);
+		}
+			}
 		}
 
 		// Add list of products inc features
@@ -609,9 +616,22 @@ var Compare = function( _config ) {
 
 			// Build flat features list for product
 			var features = [];
+			// Iterate through the common list of features
+			for(var u = 0; u < sanitised.features.length; u++) {
+				var featureIsSet = false;
+				// Iterate through the list of features and availabilities
+				// assigned to a given product
 			for( var k = 0; k < data[j].feature.length; k++ ) {
 				var f = data[j].feature[k];
+					// Push the feature's availability to the feature availabilities array
+					if(f.name == sanitised.features[u]) {
 				features.push(f.available);
+						featureIsSet = true;
+			}
+				}
+				
+				if(!featureIsSet)
+					features.push(0);
 			}
 
 			// Add product info

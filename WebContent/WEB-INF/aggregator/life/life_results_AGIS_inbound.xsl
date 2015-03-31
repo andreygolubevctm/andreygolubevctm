@@ -7,6 +7,9 @@
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../includes/utils.xsl" />
 
+	<xsl:variable name="keywords" select="document('life_keywords.xml')" />
+	<xsl:variable name="luFeatureNames" select="$keywords//featureNames" />
+
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="company" />
 	<xsl:param name="companyCode" />
@@ -115,14 +118,48 @@
 			<xsl:variable name="name" select="translate($apostropheRemoved, ' ABCDEFGHIJKLMNOPQRSTUVWXYZ', '_abcdefghijklmnopqrstuvwxyz')" />
 			<xsl:element name="{$name}">
 				<xsl:for-each select="type">
-					<xsl:element name="feature">
-						<xsl:attribute name="id"><xsl:value-of select="@id"/></xsl:attribute>
-						<xsl:element name="name"><xsl:value-of select="description"/></xsl:element>
-						<xsl:element name="available"><xsl:value-of select="value" /></xsl:element>
-					</xsl:element>
+					<xsl:variable name="featureId"><xsl:value-of select="@id"/></xsl:variable>
+					<xsl:variable name="featureValue"><xsl:value-of select="value"/></xsl:variable>
+					
+					<xsl:variable name="outputFeature">
+						<xsl:for-each select="$luFeatureNames/item">
+							<xsl:if test="string-length($featureId) = 5 and contains(@key, $featureId)">
+								<xsl:value-of select="text()"/>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:variable>
+					
+					<xsl:choose>
+						<xsl:when test="$outputFeature != ''">
+							<xsl:call-template name="getFeature">
+								<xsl:with-param name="id"><xsl:value-of select="$featureId"/></xsl:with-param>
+								<xsl:with-param name="description"><xsl:value-of select="$outputFeature"/></xsl:with-param>
+								<xsl:with-param name="available"><xsl:value-of select="$featureValue" /></xsl:with-param>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="getFeature">
+								<xsl:with-param name="id"><xsl:value-of select="$featureId"/></xsl:with-param>
+								<xsl:with-param name="description"><xsl:value-of select="description"/></xsl:with-param>
+								<xsl:with-param name="available"><xsl:value-of select="$featureValue" /></xsl:with-param>
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:for-each>
 			</xsl:element>
 		</xsl:for-each>
+	</xsl:template>
+	
+	<xsl:template name="getFeature">
+		<xsl:param name="id" />
+		<xsl:param name="description" />
+		<xsl:param name="available" />
+	
+		<xsl:element name="feature">
+			<xsl:attribute name="id"><xsl:value-of select="$id"/></xsl:attribute>
+			<xsl:element name="name"><xsl:value-of select="$description"/></xsl:element>
+			<xsl:element name="available"><xsl:value-of select="$available" /></xsl:element>
+		</xsl:element>
 	</xsl:template>
 	
 </xsl:stylesheet>

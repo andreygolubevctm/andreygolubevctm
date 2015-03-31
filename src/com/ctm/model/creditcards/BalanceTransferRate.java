@@ -7,6 +7,7 @@ public class BalanceTransferRate {
 	private Double percentage;
 	private Double introductoryPercentage;
 	private Double introductoryPeriodMonths;
+	private Double fee;
 
 	public BalanceTransferRate(){
 
@@ -41,7 +42,15 @@ public class BalanceTransferRate {
 		setPercentage(product.getPropertyAsDouble("balance-transfer-rate"));
 		setIntroductoryPercentage(product.getPropertyAsDouble("intro-balance-transfer-rate"));
 		setIntroductoryPeriodMonths(product.getPropertyAsDouble("intro-balance-transfer-rate-period"));
+		setFee(product.getPropertyAsDouble("balance-transfer-fee"));
 
 	}
 
+	public Double getFee() {
+		return fee;
+	}
+
+	public void setFee(Double fee) {
+		this.fee = fee;
+	}
 }
