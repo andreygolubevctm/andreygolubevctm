@@ -156,12 +156,12 @@ public class MessageDao {
 		}
 
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-		final boolean autoCommit[] = new boolean[1];
+		boolean autoCommit = true;
 		PreparedStatement stmt = null;
 
 		try {
 			Message message = null;
-			autoCommit[0] = dbSource.getConnection().getAutoCommit();
+			autoCommit = dbSource.getConnection().getAutoCommit();
 			dbSource.getConnection().setAutoCommit(false);
 
 			for(String rule : MESSAGE_AVAILABLE_RULES) {
@@ -202,11 +202,13 @@ public class MessageDao {
 		}
 		finally {
 			try {
-				dbSource.getConnection().setAutoCommit(autoCommit[0]);
+				dbSource.getConnection().setAutoCommit(autoCommit);
+				if(stmt != null) {
+					stmt.close();
+				}
 			} catch (SQLException | NamingException e) {
 				throw new DaoException(e.getMessage(), e);
 			}
-
 			dbSource.closeConnection();
 		}
 	}
@@ -265,13 +267,13 @@ public class MessageDao {
 
 		try {
 			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-					"SELECT isNew FROM simples.next_message_flag;"
+					"SELECT isNew, isNew2 FROM simples.next_message_flag;"
 			);
 
 			final ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
-				return results.getBoolean("isNew");
+				return results.getBoolean("isNew") || results.getBoolean("isNew2");
 			}
 		}
 		catch (SQLException | NamingException e) {
@@ -756,7 +758,7 @@ WHERE msg.id = 53
 			return message;
 		}
 
-		public ExecuteMessageQueueRule invoke() throws DaoException {
+		public ExecuteMessageQueueRule invoke() throws DaoException, SQLException {
 			PreparedStatement stmt = null;
 
 			try {
@@ -779,7 +781,9 @@ WHERE msg.id = 53
 			} catch (SQLException | NamingException e) {
 				throw new DaoException(e.getMessage(), e);
 			} finally {
-				dbSource.closeConnection();
+				if(stmt != null) {
+					stmt.close();
+				}
 			}
 		}
 	}

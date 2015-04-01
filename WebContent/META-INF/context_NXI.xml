@@ -29,7 +29,7 @@
 		timeBetweenEvictionRunsMillis="34000"
 		minEvictableIdleTimeMillis="55000"
 		logAbandoned="true"
-	testOnBorrow="true"
+		testOnBorrow="true"
 		defaultAutoCommit="true"
 	/>
 
@@ -54,7 +54,7 @@
 		timeBetweenEvictionRunsMillis="34000"
 		minEvictableIdleTimeMillis="55000"
 		logAbandoned="true"
-	testOnBorrow="true"
+		testOnBorrow="true"
 		defaultAutoCommit="true"
 	/>
 
@@ -79,7 +79,7 @@
 		timeBetweenEvictionRunsMillis="34000"
 		minEvictableIdleTimeMillis="55000"
 		logAbandoned="true"
-	testOnBorrow="true"
+		testOnBorrow="true"
 		defaultAutoCommit="true"
 	/>
 
