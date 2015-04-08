@@ -1,6 +1,7 @@
 CREATE OR REPLACE VIEW `simples`.`message_queue_available` AS
 
 	SELECT msg.*, stat.status
+		, ( msg.callAttempts + msg.postponeCount) AS TotalCalls
 		, IF(msg.postponeCount < src.maxPostpones, 1, 0) AS canPostpone
 	FROM simples.message msg
 
@@ -25,7 +26,7 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_available` AS
 		-- Timezone checks (see AGG-1961 for notes/research on this)
 		AND (
 			-- No need to convert QLD time because that's our local time!
-			   (state = 'QLD' AND CURRENT_TIME() BETWEEN src.availableFrom AND src.availableTo)
+			(state = 'QLD' AND CURRENT_TIME() BETWEEN src.availableFrom AND src.availableTo)
 			-- These can be hardcoded timezones because they don't have daylight saving:
 			OR (state = 'WA' AND TIME(CONVERT_TZ(NOW(), '+10:00', '+08:00')) BETWEEN src.availableFrom AND src.availableTo)
 			OR (state = 'NT' AND TIME(CONVERT_TZ(NOW(), '+10:00', '+09:30')) BETWEEN src.availableFrom AND src.availableTo)

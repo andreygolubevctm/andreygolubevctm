@@ -54,39 +54,22 @@ public class MessageDao {
 			"WHERE userId = ? AND statusId IN (31, 32) " +
 			"ORDER BY whenToAction ASC " +
 			"LIMIT 1 FOR UPDATE";
-	// -- Rule 4: Any new messages created, sorted by source priority then last in first out
+	// -- Rule 4: All other messages, Sort by dates THEN new THEN Postponed THEN Unsuccessful and Last In Last Out
 	private static final String MESSAGE_AVAILABLE_RULE_4 = MESSAGE_AVAILABLE_SELECT +
-			"WHERE statusId = 1 " +
-			"AND userId = 0 " +
-			"ORDER BY avail.created DESC, avail.id DESC " +
-			"LIMIT 1 FOR UPDATE";
-	// -- Rule 5: All first time postponements and call attempt, last in first out
-	private static final String MESSAGE_AVAILABLE_RULE_5 = MESSAGE_AVAILABLE_SELECT +
-			"WHERE postponeCount <= 1 AND callAttempts <= 1 " +
-			"AND userId = 0 " +
-			"ORDER BY avail.created DESC, avail.id DESC " +
-			"LIMIT 1 FOR UPDATE";
-	// -- Rule 6: All second time postponements and call attempt, last in first out
-	private static final String MESSAGE_AVAILABLE_RULE_6 = MESSAGE_AVAILABLE_SELECT +
-			"WHERE postponeCount <= 2 AND callAttempts <= 2 " +
-			"AND userId = 0 " +
-			"ORDER BY avail.created DESC, avail.id DESC " +
-			"LIMIT 1 FOR UPDATE";
-	// -- Rule 7: All other postponed or unseccussful messages, last in first out
-	private static final String MESSAGE_AVAILABLE_RULE_7 = MESSAGE_AVAILABLE_SELECT +
-			"WHERE (postponeCount > 2 OR callAttempts > 2) " +
-			"AND userId = 0 " +
-			"ORDER BY avail.created DESC, avail.id DESC " +
+			"WHERE userId = 0 " +
+			"ORDER BY date(created) DESC, " +
+			"TotalCalls ASC, " +
+			"callAttempts ASC, " +
+			"postponeCount ASC, " +
+			"created DESC, " +
+			"id DESC " +
 			"LIMIT 1 FOR UPDATE";
 	private static final String MESSAGE_AVAILABLE_RULES[] = new String[]{
 			MESSAGE_AVAILABLE_RULE_0,
 			MESSAGE_AVAILABLE_RULE_1,
 			MESSAGE_AVAILABLE_RULE_2,
 			MESSAGE_AVAILABLE_RULE_3,
-			MESSAGE_AVAILABLE_RULE_4,
-			MESSAGE_AVAILABLE_RULE_5,
-			MESSAGE_AVAILABLE_RULE_6,
-			MESSAGE_AVAILABLE_RULE_7
+			MESSAGE_AVAILABLE_RULE_4
 	};
 
 
