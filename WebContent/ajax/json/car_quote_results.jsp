@@ -145,6 +145,7 @@
 					transactionId = "${data.text['current/transactionId']}" 
 					xml = "${go:getEscapedXml(data['quote'])}" 
 					var = "resultXml"
+					authToken = "${param.quote_authToken}"
 					debugVar="debugXml"
 					validationErrorsVar="validationErrors"
 					continueOnValidationError="${continueOnValidationError}"
@@ -189,7 +190,21 @@
 			<leadfeedinfo><c:if test="${not empty okToCall and okToCall eq 'Y'}">${fn:trim(fullName)}</c:if>||<c:if test="${not empty okToCall and okToCall eq 'Y'}">${data.quote.contact.phone}</c:if>||<c:if test="${not empty okToCall and okToCall eq 'Y'}">${data.quote.vehicle.redbookCode}</c:if>||<c:if test="${not empty okToCall and okToCall eq 'Y'}">${data.quote.riskAddress.state}</c:if></leadfeedinfo>
 		</c:set>
 
-		<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
+		<c:set var="isSingleResult" value="false" />
+		<c:if test="${not(fn:startsWith(soapdata['soap-response/results/result'], '[')) and not(empty soapdata['soap-response/results/result'])}">
+			<c:set var="isSingleResult" value="true" />
+		</c:if>
+
+		<c:choose>
+			<c:when test="${isSingleResult eq 'true'}">
+				<c:set var="xmlAsArray" value="[${soapdata['soap-response/results/result']}]" />
+			</c:when>
+			<c:otherwise>
+				<c:set var="xmlAsArray" value="${soapdata['soap-response/results/result']}" />
+			</c:otherwise>
+		</c:choose>
+
+		<c:forEach var="result" items="${xmlAsArray}" varStatus='vs'>
 
 			<%-- Add the quote valid date to result --%>
 			<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${validateDate}" />
@@ -240,13 +255,44 @@
 			--%>
 
 	<sql:query var="featureResult">
-				SELECT general.description, features.description, features.field_value, features.code
-				FROM aggregator.features
-					INNER JOIN aggregator.general ON general.code = features.code
+				SELECT features.description, features.description, features.field_value, features.code
+				FROM aggregator.features as features
 			WHERE features.productId = ?
-			ORDER BY general.orderSeq
 		<sql:param>${productId}</sql:param>
 	</sql:query>
+
+			<%-- from get_scrapes.jsp --%>
+			<sql:query var="scrapesIdResult">
+				SELECT `description`
+				FROM  aggregator.general
+				WHERE `type` = 'carBrandScrapes'
+				AND `code` = ?
+				<sql:param value="${productId}" />
+			</sql:query>
+
+			<c:set var="scrapeIds" value="${ fn:split(scrapesIdResult.getRowsByIndex()[0][0], ',') }" />
+
+			<c:set var="scrapeIdsList">
+				<c:forEach var="id" varStatus="status" items="${scrapeIds}">${id}<c:if test="${!status.last}">, </c:if></c:forEach>
+			</c:set>
+
+			<sql:query var="scrapesResult">
+				SELECT *
+				FROM `ctm`.`scrapes`
+				WHERE `group` = 'car'
+				AND cssSelector in ('#inclusions', '#extras', '#benefits')
+				AND (styleCodeId = ? OR stylecodeid = 0)
+				AND `id` IN (
+				<c:forEach var="id" varStatus="status" items="${scrapeIds}">
+					?<c:if test="${!status.last}">,</c:if>
+				</c:forEach>
+				)
+				ORDER BY `id`, styleCodeId DESC
+				<sql:param value="${pageSettings.getBrandId()}" />
+				<c:forEach var="id" varStatus="status" items="${scrapeIds}">
+					<sql:param value="${id}" />
+				</c:forEach>
+			</sql:query>
 
 			<c:set var="featuresXml">
 				<features>
@@ -320,6 +366,16 @@
 						<${code} value="${fn:escapeXml(value)}" extra="${extra}" />
 						</c:if>
 			</c:forEach>
+
+						<%-- Loop through all the database scrapes --%>
+					<c:forEach var="scrapes" items="${scrapesResult.rows}" varStatus='status'>
+
+						<c:set var="code">${fn:replace(scrapes.cssSelector, '#', '')}</c:set>
+						<c:set var="value">${go:replaceAll(scrapes.html, '"', '\\\\"')}</c:set>
+
+						<${code} value="${fn:escapeXml(value)}" extra="" />
+					</c:forEach>
+
 				</features>
 	</c:set>
 			<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${featuresXml}" />
@@ -339,10 +395,19 @@
 			<go:setData dataVar="soapdata" xpath="soap-response/results/events/COMMENCEMENT_DATE_UPDATED" value="${data.quote.options.commencementDate}" />
 		</c:if>
 
-<%-- Write result details to the database for potential later use when sending emails etc... FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
+		<%-- This condition exists because there is a problem with the forEach trying to iterate when there is only a single item.
+			This is in place for NXS specific views. The reason we don't need to write_result_details is because if no one chooses to quote
+		 	nothing is written, and this issue only occurs when a single providers shows (which only happens when AI does not quot. (three products turn into one.)) --%>
+		<c:choose>
+			<c:when test="${isSingleResult eq 'true'}">
+				${go:XMLtoJSON(soapdata['soap-response/results'])}
+			</c:when>
+			<c:otherwise>
+				<%-- Write result details to the database for potential later use when sending emails etc... FYI - NEVER STORE PREMIUM IN THE DATABASE FOR CAR VERTICAL --%>
 		<agg:write_result_details transactionId="${tranId}" recordXPaths="leadfeedinfo,validateDate/display,validateDate/normal,productId,productDes,excess/total,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="headline/lumpSumTotal" baseXmlNode="soap-response/results/result" />
-
-${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
+				${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
+			</c:otherwise>
+		</c:choose>
 
 	</c:when>
 	<c:otherwise>

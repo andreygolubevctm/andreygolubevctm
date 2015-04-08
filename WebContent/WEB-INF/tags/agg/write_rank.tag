@@ -181,10 +181,7 @@
 			</c:if>
 
 			<%-- THIS IS ALL DISC STUFF AND WILL NEED REMOVING --%>
-				<c:set var="useDISCFlag" scope="request"><content:get key="bestPriceCallDisc"/></c:set>
-				<c:if test="${not empty useDISCFlag and useDISCFlag eq 'Y'}">
-					<go:log level="DEBUG">[Lead feed] Best price sent to AGIS via DISC</go:log>
-					<%-- Only continue if override exists and new java service has been switched off --%>
+
 		<go:setData dataVar="data" xpath="ranking/results" value="*DELETE" />
 
 		<c:set var="TemplateInfo">EX</c:set>
@@ -204,12 +201,19 @@
 			</c:if>
 
 			</c:forEach>
-					<go:log level="DEBUG">[Lead feed] Writing Ranking to DISC ${data.xml['ranking']}</go:log>
+
+				<go:log level="DEBUG">Writing Results to iSeries [AGGTRK] ${data.xml['ranking']}</go:log>
+
 			<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
 			<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" style="${AGIS_leadFeedCode}" />
+
+				<c:set var="useDISCFlag" scope="request"><content:get key="bestPriceCallDisc"/></c:set>
+				<c:if test="${not empty useDISCFlag and useDISCFlag eq 'Y'}">
+					<%-- Only write the BP touch if we are using DISC for lead feed population. --%>
 					<agg:write_touch transaction_id="${data.current.transactionId }" touch="BP" />
 				</c:if>
 				<%-- END DISC STUFF --%>
+
 		</c:when>
 
 		<c:otherwise><%-- ignore --%></c:otherwise>

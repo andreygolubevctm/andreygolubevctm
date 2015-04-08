@@ -37,6 +37,13 @@
 
 <c:set var="brandCode" value="${pageSettings.getBrandCode()}" />
 
+<jsp:useBean id="environmentService" class="com.ctm.services.EnvironmentService" scope="request" />
+<c:set var="environmentCode" value="${environmentService.getEnvironmentAsString()}" />
+
+<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+<div id="deviceType" data-deviceType="${deviceType}"></div>
+
 <div class="resultsHeadersBg">
 </div>
 
@@ -46,16 +53,18 @@
 
 <%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>
-	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-5">
+	<div id="resultsBridgeLess" class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
 		<div class="featuresHeaders featuresElements">
-			<div class="result headers">
 
-				<div class="resultInsert controlContainer">
+			<div class="result fixedDockedHeader">
 					<div class="expand-collapse-toggle small hidden-xs">
 						<a href="javascript:;" class="expandAllFeatures">Expand All</a> / <a href="javascript:;" class="collapseAllFeatures active">Collapse All</a>
 					</div>
 				</div>
 
+			<div class="result headers featuresNormalHeader">
+				<div class="resultInsert controlContainer">
+			</div>
 			</div>
 
 			<%-- Feature headers --%>
@@ -94,25 +103,42 @@
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var annualPriceTemplate = htmlTemplate(obj); }}
 
-	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
-		<div class="result">
+	<%-- Main call to action button. --%>
+	{{ var mainCallToActionButton = '' }}
+	{{ if (obj.onlineAvailable == 'Y') { }}
+		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply push-top-10" data-productId="'+obj.productId+'">Apply now<span class="icon-arrow-right"></span></a>' }}
+	{{ } else if (obj.offlineAvailable == "Y") { }}
+		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-cta btn-block btn-call-actions btn-calldirect push-top-10" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Insurer Direct</a></div>' }}
+	{{ } else if (obj.offlineAvailable == "Y" && obj.callbackAvailable == "Y") { }}
+		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-cta btn-block btn-call-actions btn-callback push-top-10" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'">Get a Call Back</a></div>' }}
+	{{ } }}
 
+	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
+
+		<div class="result featuresDockedHeader">
+			<div class="resultInsert featuresMode">
+				{{= logo }}
+				{{= annualPriceTemplate }}
+				{{= monthlyPriceTemplate }}
+				<div class="applyNowWrapper">
+					{{= mainCallToActionButton }}
+				</div>
+			</div>
+		</div>
+
+		<div class="result featuresNormalHeader headers">
 			<div class="resultInsert featuresMode">
 				<div class="productSummary results hidden-xs">
 					<div class="compare-toggle-wrapper">
 						<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" />
 						<label for="features_compareTick_{{= obj.productId }}"></label>
-						<label for="features_compareTick_{{= obj.productId }}" class="compare-label"></label>
 					</div>
 					{{= logo }}
 					{{= annualPriceTemplate }}
 					{{= monthlyPriceTemplate }}
-					<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+					<div class="applyNowWrapper">
+						{{= mainCallToActionButton }}
 				</div>
-				<div class="productSummary results visible-xs">
-					{{= logo }}
-					<h2 class="productTitle">{{= productTitle }}</h2>
-					<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info <span class="icon icon-arrow-right" /></a>
 				</div>
 			</div>
 
@@ -268,7 +294,7 @@
 		<div class="result">
 		{{ if (brandsKnockedOut == obj.length && $featuresMode.length == 0) { }}
 			<c:choose>
-				<c:when test="${brandCode eq 'ctm'}">
+				<c:when test="${brandCode eq 'ctm' && not(environmentCode eq 'NXS')}">
 					<car:noResults />
 				</c:when>
 				<c:otherwise>
@@ -371,13 +397,14 @@
 
 
 
+<!-- COMPARE TEMPLETING BELOW -->
 <%-- Template for CAR results list. --%>
 <core:js_template id="compare-basket-features-item-template">
-{{ var tFrequency = Results.getFrequency(); }}
-{{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
-{{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
+	{{ var tFrequency = Results.getFrequency(); }}
+	{{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
+	{{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
 
-{{ for(var i = 0; i < products.length; i++) { }}
+	{{ for(var i = 0; i < products.length; i++) { }}
 	<li>
 		<span class="active-product">
 			<input type="checkbox" class="compare-tick checked" data-productId="{{= products[i].productId }}" checked />
@@ -396,18 +423,18 @@
 			</span>
 		</span>
 	</li>
-{{ } }}
+	{{ } }}
 </core:js_template>
 
 <core:js_template id="compare-basket-price-item-template">
-{{ var tFrequency = Results.getFrequency(); }}
-{{ var tDisplayMode = Results.getDisplayMode(); }}
-{{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
-{{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
+	{{ var tFrequency = Results.getFrequency(); }}
+	{{ var tDisplayMode = Results.getDisplayMode(); }}
+	{{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
+	{{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
 
-{{ for(var i = 0; i < products.length; i++) { }}
-{{ var img = products[i].brandCode; }}
-{{ if ((typeof img === 'undefined' || img === '') && products[i].hasOwnProperty('productId') && products[i].productId.length > 1) img = products[i].productId.substring(0, products[i].productId.indexOf('-')); }}
+	{{ for(var i = 0; i < products.length; i++) { }}
+		{{ var img = products[i].brandCode; }}
+		{{ if ((typeof img === 'undefined' || img === '') && products[i].hasOwnProperty('productId') && products[i].productId.length > 1) img = products[i].productId.substring(0, products[i].productId.indexOf('-')); }}
 
 	<li class="compare-item">
 		<span class="carCompanyLogo logo_{{= img }}" title="{{= products[i].headline.name }}"></span>
@@ -421,24 +448,25 @@
 		</span>
 		<span class="icon icon-cross remove-compare" data-productId="{{= products[i].productId }}" title="Remove from shortlist"></span>
 	</li>
-{{ } }}
+	{{ } }}
 </core:js_template>
+
+<!-- Compare products colums -->
 <core:js_template id="compare-basket-features-template">
-<div class="compare-basket">
-<h2>Compare Products</h2>
-{{ if(comparedResultsCount === 0) { }}
+	<div class="compare-basket">
+		{{ if(comparedResultsCount === 0) { }}
 	<p>
 		Click the <input type="checkbox" class="compare-tick"><label></label> to add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist.
 		We've found <span class="products-returned-count">{{= resultsCount }} products</span> matching your needs.
 	</p>
-{{ }  else { }}
+		{{ }  else { }}
 
 	{{ var template = $("#compare-basket-features-item-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var comparedItems = htmlTemplate(obj); }}
 
 
-<ul class="compared-products-list">
+			<ul class="compared-products-list">
 
 	{{= comparedItems }}
 
@@ -455,15 +483,22 @@
 	{{ } }}
 	</ul>
 	{{ if (comparedResultsCount > 1) { }}
+				<div class="compareButtonsContainer">
 		{{ if(meerkat.modules.compare.isCompareOpen() === true) { }}
 			<a class="btn btn-features-compare clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
 		{{ } else { }}
 			<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;">Compare Products<span class="icon icon-arrow-right"></span></a>
 		{{ } }}
+				</div>
 	{{ } }}
-{{ } }}
-</div>
+		{{ } }}
+	</div>
+	<div class="expand-collapse-toggle small hidden-xs">
+		<a href="javascript:;" class="expandAllFeatures">Expand All</a> / <a href="javascript:;" class="collapseAllFeatures active">Collapse All</a>
+	</div>
 </core:js_template>
+
+<!-- Compare view from quick price view. -->
 <core:js_template id="compare-basket-price-template">
 	{{ if(comparedResultsCount > 0) { }}
 		{{ var template = $("#compare-basket-price-item-template").html(); }}

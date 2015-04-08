@@ -4,7 +4,7 @@
 		<young>
 			<exists>Y</exists>
 			<licenceAge>17</licenceAge>
-			<dob>23/10/1980</dob>
+			<dob>23/10/1982</dob>
 			<gender>M</gender>
 			<annualKilometres>1500</annualKilometres>
 		</young>
@@ -17,7 +17,7 @@
 			<licenceAge>17</licenceAge>
 			<firstname>Compare</firstname>
 			<surname>TheMarket</surname>
-			<dob>05/05/1972</dob>
+			<dob>05/05/1981</dob>
 			<claims>N</claims>
 		</regular>
 	</drivers>

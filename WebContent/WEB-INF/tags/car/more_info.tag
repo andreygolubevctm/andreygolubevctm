@@ -44,14 +44,14 @@
 	{{ if(obj.isOfflineAvailable === true) { }}
 		{{ if(obj.isCallbackAvailable === true) { }}
 			<div class="col-xs-12 col-sm-3 col-md-6 push-top-15">
-				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
+				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-productId="{{= obj.productId }}" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
 			</div>
 			<div class="col-xs-12 col-sm-3 col-md-6 push-top-15">
-				<a class="btn btn-call btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;">Get a Call Back</a>
+				<a class="btn btn-call btn-block btn-call-actions btn-callback" data-productId="{{= obj.productId }}" data-callback-toggle="callback" href="javascript:;">Get a Call Back</a>
 			</div>
 		{{ } else { }}
 			<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
-				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
+				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-productId="{{= obj.productId }}" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
 			</div>
 		{{ } }}
 	{{ } }}
@@ -143,7 +143,9 @@
 						{{= promotionOfferHtml }}
 					</div>
 					<div class="col-xs-12 col-sm-6">
+						<h5>What's Included</h5>
 						<div id="inclusions"></div>
+						<h5>Further Benefits</h5>
 						<div id="benefits"></div>
 					</div>
 					<div class="col-xs-12 col-sm-6">
@@ -186,6 +188,7 @@
 							</ul>
 						</div>
 						{{ } }}
+						<h5>Optional Extras</h5>
 						<div id="extras"></div>
 						<div class="hidden-md hidden-lg">{{= PdsDisclaimerHtml }}</div>
 						<div class="hidden-md hidden-lg">

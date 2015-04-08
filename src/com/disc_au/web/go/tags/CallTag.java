@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
+import com.ctm.services.FatalErrorService;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -59,7 +60,13 @@ public class CallTag extends BaseTag {
 		 */
 		@Override
 		public void run() {
-			bridge.sendReceive(message);
+			try {
+				bridge.sendReceive(message);
+			} catch (IOException e) {
+				logger.error("Failed to call disc message:" + message.getData(), e);
+				FatalErrorService.logFatalError(e, 0, "CallTag:doEndTag", "Failed to call disc message", true, "");
+
+			}
 		}
 
 	}
@@ -124,42 +131,43 @@ public class CallTag extends BaseTag {
 
 		// If we are to wait for a response, call inline
 		if (this.wait.equals(TRUE) || !this.resultVar.equals("")) {
-			Message resp = b.sendReceive(req);
-			String resultData = resp.getData();
-
-			if (!this.resultVar.equals("")) {
-				Object o = pageContext.findAttribute(this.resultVar);
-				// Unable to locate object .. skip
-				if (o == null) {
-					pageContext.setAttribute(this.resultVar, resultData,
-							PageContext.PAGE_SCOPE);
-					return EVAL_PAGE;
-
-					// Load the response into a String
-				} else if (o instanceof String) {
-					o = resultData;
-					return EVAL_PAGE;
-
-					// Load the response into an XmlNode
-				} else if (o instanceof XmlNode) {
-
-					try {
-						o = (new XmlParser()).parse(resultData);
-						return EVAL_PAGE;
-					} catch (SAXException e) {
-						e.printStackTrace();
-					}
-					// Unknown result type
-				} else {
-					System.err.println("Unkown type for resultVar: "
-							+ o.getClass().getName());
-				}
-			}
-
 			try {
+				Message resp = b.sendReceive(req);
+				String resultData = "";
+				if (!this.resultVar.equals("") && resp != null) {
+					resultData = resp.getData();
+					Object o = pageContext.findAttribute(this.resultVar);
+					// Unable to locate object .. skip
+					if (o == null) {
+						pageContext.setAttribute(this.resultVar, resultData,
+								PageContext.PAGE_SCOPE);
+						return EVAL_PAGE;
+
+						// Load the response into a String
+					} else if (o instanceof String) {
+						o = resultData;
+						return EVAL_PAGE;
+
+						// Load the response into an XmlNode
+					} else if (o instanceof XmlNode) {
+
+						try {
+							o = (new XmlParser()).parse(resultData);
+							return EVAL_PAGE;
+						} catch (SAXException e) {
+							e.printStackTrace();
+						}
+						// Unknown result type
+					} else {
+						System.err.println("Unkown type for resultVar: "
+								+ o.getClass().getName());
+					}
+				}
+
 				pageContext.getOut().write(resultData);
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Failed to call disc message:" + req.getData(), e);
+				FatalErrorService.logFatalError(e, 0, "CallTag:doEndTag", "", true, this.transactionId);
 			}
 
 			// Otherwise submit the thread and return

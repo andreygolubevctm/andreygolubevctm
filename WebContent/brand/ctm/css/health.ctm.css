@@ -1367,7 +1367,7 @@ So it's going to be done progressively. Include this file in your framework.buil
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
-  background-image: url('../../../common/images/logos/health/brands.png');
+  background-image: url('../../../common/images/logos/health/brands.png?version=20150331');
   background-repeat: no-repeat;
   background-size: inherit;
 }

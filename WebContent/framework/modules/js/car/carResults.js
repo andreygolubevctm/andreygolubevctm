@@ -10,13 +10,20 @@
 	};
 
 	meerkatEvents.carResults = {
-		RESULTS_RENDER_COMPLETED : "RESULTS_RENDER_COMPLETED"
+		FEATURES_CALL_ACTION: 'FEATURES_CALL_ACTION',
+		FEATURES_CALL_ACTION_MODAL: 'FEATURES_CALL_ACTION_MODAL',
+		FEATURES_SUBMIT_CALLBACK: 'FEATURES_SUBMIT_CALLBACK'
 	};
 
 	var $component; //Stores the jQuery object for the component group
 	var previousBreakpoint;
 	var best_price_count = 5;
 	var needToBuildFeatures = false;
+
+	// Keep track of the device type so we can adjust how we calculate and show the docked header.
+	var deviceType = null;
+	// We need to keep track of the headerAffixed state, so we keep the docked header on other events.
+	var headerAffixed = false;
 
 	function initPage(){
 
@@ -42,12 +49,19 @@
 
 	function initResults(){
 
+		deviceType = $('#deviceType').attr('data-deviceType');
+
 		try {
 			var displayMode = 'price';
-			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
-				// confirming its either features or price.
-				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
+			if (meerkat.site.tracking.brandCode == 'ctm') {
+				displayMode = 'features';
 			}
+
+			if (meerkat.modules.splitTest.isActive(17)) {
+				displayMode = 'price';
+
+			}
+
 			// Init the main Results object
 			Results.init({
 				url: "ajax/json/car_quote_results.jsp",
@@ -220,9 +234,38 @@
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
 			$('#resultsPage').css('margin-top', '35px');
+
+			headerAffixed = true;
+			calculateDockedHeader('affixed');
 		});
 		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
 			$('#resultsPage').css('margin-top', '0');
+
+			headerAffixed = false;
+			calculateDockedHeader('unaffixed');
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.carFilters.DISPLAY_MODE_CHANGED, function onDisplayModeChange() {
+			calculateDockedHeader('displayModeChanged');
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function onDeviceMediaStateChange() {
+			calculateDockedHeader('deviceMediaStateChange');
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function onExitCompareMode() {
+			calculateDockedHeader('startPaginationScroll');
+		});
+
+		$(document).on('results.view.animation.start', function onAnimationStart() {
+			calculateDockedHeader('startPaginationScroll');
+		});
+
+		$(document).on('results.view.animation.end', function onAnimationEnd() {
+			// Remove the "position:relative" from the result-row, otherwise Chrome will not render the
+			// docked header correctly when the animation finishes after a shuffle.
+			$('.result-row').css({'position': ''});
+			calculateDockedHeader('filterAnimationEnded');
 		});
 
 		// When the excess filter changes, fetch new results
@@ -369,9 +412,105 @@
 			});
 		});
 
+		$(document.body).on('click', '#resultsBridgeLess .btnContainer .btn-call-actions', function triggerMoreInfoCallActions(event) {
+			var element = $(this);
+			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION, {event: event, element: element});
+		});
+
+		$(document.body).on('click', '#resultsBridgeLess .call-modal .btn-call-actions', function triggerMoreInfoCallActionsFromModal(event) {
+			var element = $(this);
+			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION_MODAL, {event: event, element: element});
+		});
+
+		$(document.body).on('click', '#resultsBridgeLess .btn-submit-callback', function triggerMoreInfoSubmitCallback(event) {
+			var element = $(this);
+			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, {event: event, element: element});
+		});
 
 		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
 		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
+	}
+
+
+	function calculateDockedHeader(event) {
+
+		// There are copious issues with tablets and position:fixed. This just doesn't do the docked header, until we can fix it.
+		if (deviceType != 'TABLET') {
+		var featuresView = Results.getDisplayMode() == 'features' ? true : false,
+			redrawFixedHeader = true,
+				pagePaginationActive = event == 'startPaginationScroll' || event == 'endPaginationScroll' || event == 'filterAnimationEnded',
+			$featuresDockedHeader = $('.featuresDockedHeader'),
+			$originalHeader = $('.headers');
+
+		if (featuresView) {
+			var $fixedDockedHeader = $('.fixedDockedHeader');
+
+			if (headerAffixed) {
+				$originalHeader.hide();
+
+				var $currentPage = $('.currentPage'),
+					topPosition = $('#navbar-filter').height() + $('#navbar-main').outerHeight(),
+					dockedHeaderTop = event == 'startPaginationScroll' ? '0' : topPosition + 'px',
+					dockedHeaderWidth = $('.result-row').first().width();
+
+				var pageContentOffSet = $('#pageContent').offset(),
+					navFilterOffSet = $('#navbar-filter').offset(),
+					offSetFromTopPlusNav = navFilterOffSet.top - pageContentOffSet.top + 7,
+					dockedHeaderPosition = event == 'startPaginationScroll' ? 'absolute' : 'fixed',
+					dockedHeaderPaddingTop = event == 'startPaginationScroll' ? offSetFromTopPlusNav + 'px' : '0px';
+
+					if (!pagePaginationActive) {
+					$currentPage.find($featuresDockedHeader).css({'top': dockedHeaderTop, 'width': dockedHeaderWidth}).show();
+
+				} else {
+					redrawFixedHeader = false;
+					$featuresDockedHeader.css({'position': dockedHeaderPosition, 'top': dockedHeaderTop, 'width': dockedHeaderWidth, 'padding-top': dockedHeaderPaddingTop}).show();
+
+					if (event == 'endPaginationScroll' || event == 'filterAnimationEnded') {
+						// Only show the current providers docked bar.
+						if ($currentPage.length >= 1) {
+						$currentPage.siblings(":not(.currentPage)").find($featuresDockedHeader).hide();
+						} else {
+							$featuresDockedHeader.hide();
+						}
+						redrawFixedHeader = true;
+
+					}
+				}
+
+				recalculateFixedHeader(redrawFixedHeader);
+
+			} else {
+				$featuresDockedHeader.hide();
+				$fixedDockedHeader.hide();
+				$originalHeader.show();
+
+			}
+
+		} else {
+			// Reset the elements, so we don't have any weirdness switching back and forth.
+			$originalHeader.show();
+			$featuresDockedHeader.hide();
+
+		}
+	}
+
+	}
+
+	function recalculateFixedHeader(redrawFixedHeader) {
+		var $fixedDockedHeader = $('.fixedDockedHeader'),
+			$currentPage = $('.currentPage'),
+			topPosition = $('#navbar-filter').height() + $('#navbar-main').outerHeight();
+		if (redrawFixedHeader) {
+			// Set a default height if we don't have a docked header on the current page.
+			var cellFeatureWidth = $('.cell.feature').width() + 2 + 'px',
+				dockedHeaderHeight = '100px';
+			if ($currentPage.length >= 1) {
+				// Calculate the hight of the fixed header based off the docked header hight.
+				dockedHeaderHeight = $('.resultInsert.featuresMode:visible').first().innerHeight() + 1 + 'px';
+			}
+			$fixedDockedHeader.css({'top': topPosition, 'width': cellFeatureWidth, 'height': dockedHeaderHeight}).show();
+		}
 	}
 
 	function breakpointTracking(){
@@ -561,8 +700,6 @@
 		if ($(Results.settings.elements.resultsContainer).hasClass('priceMode') === false) return;
 		if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
 
-		//console.log(event);
-
 		var $resultrow = $(event.target);
 		if ($resultrow.hasClass('result-row') === false) {
 			$resultrow = $resultrow.parents('.result-row');
@@ -606,6 +743,7 @@
 		recordPreviousBreakpoint: recordPreviousBreakpoint,
 		switchToPriceMode: switchToPriceMode,
 		switchToFeaturesMode: switchToFeaturesMode,
+		calculateDockedHeader: calculateDockedHeader,
 		showNoResults: showNoResults,
 		publishExtraSuperTagEvents: publishExtraSuperTagEvents
 	});

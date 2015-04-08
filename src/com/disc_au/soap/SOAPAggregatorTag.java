@@ -75,6 +75,8 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 
 	private String isValidVar;
 
+	private String authToken = null;
+
 	private boolean continueOnValidationError;
 
 	public void setContinueOnValidationError(boolean continueOnValidationError) {
@@ -87,6 +89,10 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 
 	public void setIsValidVar(String isValidVar) {
 		this.isValidVar = isValidVar;
+	}
+
+	public void setAuthToken(String authToken){
+		this.authToken = authToken;
 	}
 
 	/* (non-Javadoc)
@@ -231,7 +237,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			configuration = new SoapAggregatorConfiguration();
 		}
 		
-		SoapConfiguration.setUpConfigurationFromDatabase(configDbKey, configuration, styleCodeId, verticalCode, manuallySetProviderIds);
+		SoapConfiguration.setUpConfigurationFromDatabase(configDbKey, configuration, styleCodeId, verticalCode, manuallySetProviderIds, authToken);
 	}
 
 	private void reset() {

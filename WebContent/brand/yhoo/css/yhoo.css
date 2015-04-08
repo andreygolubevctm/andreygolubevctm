@@ -9105,6 +9105,244 @@ fieldset[disabled] .radioCustom input + label:before {
 .form-horizontal .checkbox {
   padding-top: 3px;
 }
+#resultsBridgeLess .resultsOverflow {
+  overflow-x: hidden !important;
+}
+#resultsBridgeLess .result_unavailable_combined .productSummary {
+  height: auto;
+}
+#resultsBridgeLess .productSummary {
+  height: 175px;
+}
+#resultsBridgeLess .featuresMode .compare-toggle-wrapper {
+  float: right;
+}
+#resultsBridgeLess .featuresMode .monthlyBreakdown {
+  padding: 5px 0;
+}
+#resultsBridgeLess .featuresMode .monthlyBreakdown .totalPayment {
+  display: inline-block;
+}
+#resultsBridgeLess .expand-collapse-toggle {
+  text-transform: uppercase;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+#resultsBridgeLess .fixedDockedHeader {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  background-color: #FFFFFF;
+  border: #e0e0e0 1px solid;
+  border-top: none;
+}
+#resultsBridgeLess .featuresDockedHeader {
+  height: auto;
+  display: none;
+  position: fixed;
+  z-index: 1;
+}
+#resultsBridgeLess .featuresDockedHeader .featuresMode {
+  background-color: #FFFFFF;
+  margin-top: -10px;
+  margin-bottom: 0px;
+  padding: 0 10px 10px 10px;
+  border-bottom: #e0e0e0 1px solid;
+}
+#resultsBridgeLess .featuresDockedHeader .companyLogo {
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  background-size: 60px 60px;
+}
+#resultsBridgeLess .featuresDockedHeader .frequency {
+  margin: 10px 0 0 75px;
+  padding-top: 10px;
+  width: auto;
+  text-align: left;
+}
+#resultsBridgeLess .featuresDockedHeader .frequency .frequencyAmount {
+  display: inline-block;
+  text-align: left;
+  width: auto;
+}
+#resultsBridgeLess .featuresDockedHeader .frequency .frequencyTitle {
+  display: inline-block;
+  text-align: left;
+  width: auto;
+}
+#resultsBridgeLess .featuresDockedHeader .btn-cta {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 0px;
+}
+#resultsBridgeLess .headers.featuresNormalHeader .controlContainer {
+  border-left: #e0e0e0 1px solid;
+}
+#resultsBridgeLess .headers.featuresNormalHeader .compare-basket {
+  padding: 15px;
+  text-align: justify;
+}
+#resultsBridgeLess .headers.featuresNormalHeader .compare-basket .compare-max-count-label {
+  font-weight: bold;
+}
+#resultsBridgeLess .headers.featuresNormalHeader .compare-basket .products-returned-count {
+  font-weight: bold;
+}
+#resultsBridgeLess .featuresNormalHeader .companyLogo {
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  background-size: 80px 80px;
+}
+#resultsBridgeLess .featuresNormalHeader .compareButtonsContainer {
+  text-align: center;
+}
+#resultsBridgeLess .featuresNormalHeader .compareButtonsContainer .btn-features-compare,
+#resultsBridgeLess .featuresNormalHeader .compareButtonsContainer .btn-compare-clear {
+  position: inherit;
+  width: 60%;
+  margin-top: 12px;
+  bottom: 40px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+#resultsBridgeLess .featuresNormalHeader .frequency {
+  margin-bottom: 0;
+  margin-left: 15px;
+  width: auto;
+  padding-top: 21px;
+}
+#resultsBridgeLess .featuresNormalHeader .frequency .frequencyAmount {
+  display: inline-block;
+  text-align: left;
+  width: auto;
+}
+#resultsBridgeLess .featuresNormalHeader .frequency .frequencyTitle {
+  display: inline-block;
+  text-align: left;
+  width: auto;
+}
+#resultsBridgeLess .applyNowWrapper {
+  text-align: center;
+}
+#resultsBridgeLess .applyNowWrapper .btn-cta {
+  display: inline-block;
+  width: 70%;
+}
+#resultsBridgeLess .featuresList .icon-tick,
+#resultsBridgeLess .featuresList icon-cross {
+  margin-top: 3px;
+}
+#resultsBridgeLess .featuresList .btnContainerNoBtn {
+  margin-top: 8px;
+}
+#resultsBridgeLess .featuresList .btnContainer {
+  text-align: center;
+}
+#resultsBridgeLess .featuresList .btnContainer .btn {
+  width: 70%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 2px;
+  display: inline-block;
+}
+#resultsBridgeLess .featuresList .btnContainer .btn-download {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+#resultsBridgeLess .featuresList ul {
+  list-style: none;
+  padding: 0 10px;
+}
+#resultsBridgeLess .featuresList ul li {
+  padding-bottom: 10px;
+}
+#resultsBridgeLess .featuresList ul li:before {
+  content: "- ";
+}
+#resultsBridgeLess .featuresList .height10 {
+  height: 5px;
+}
+#resultsBridgeLess .featuresList .height20 {
+  height: 15px;
+}
+#resultsBridgeLess .featuresList .height30 {
+  height: 25px;
+}
+#resultsBridgeLess .featuresList .height40 {
+  height: 35px;
+}
+#resultsBridgeLess .featuresList .height50 {
+  height: 45px;
+}
+#resultsBridgeLess .featuresList .height60 {
+  height: 55px;
+}
+#resultsBridgeLess .featuresList .height70 {
+  height: 65px;
+}
+#resultsBridgeLess .featuresList .height80 {
+  height: 75px;
+}
+#resultsBridgeLess .featuresList .height90 {
+  height: 85px;
+}
+#resultsBridgeLess .featuresList .height100 {
+  height: 95px;
+}
+#resultsBridgeLess .featuresList .height110 {
+  height: 105px;
+}
+#resultsBridgeLess .featuresList .height120 {
+  height: 115px;
+}
+#resultsBridgeLess .featuresList .height130 {
+  height: 125px;
+}
+#resultsBridgeLess .featuresList .height140 {
+  height: 135px;
+}
+#resultsBridgeLess .featuresList .height150 {
+  height: 145px;
+}
+#resultsBridgeLess .featuresList .height160 {
+  height: 155px;
+}
+#resultsBridgeLess .featuresList .height170 {
+  height: 165px;
+}
+#resultsBridgeLess .featuresList .height180 {
+  height: 175px;
+}
+#resultsBridgeLess .featuresList .height190 {
+  height: 185px;
+}
+#resultsBridgeLess .featuresList .height200 {
+  height: 195px;
+}
+#resultsBridgeLess .featuresList .height210 {
+  height: 205px;
+}
+#resultsBridgeLess .featuresList .height220 {
+  height: 215px;
+}
+#resultsBridgeLess .featuresList .height230 {
+  height: 225px;
+}
+#resultsBridgeLess .featuresList .height240 {
+  height: 235px;
+}
+#resultsBridgeLess .featuresList .height250 {
+  height: 245px;
+}
+#resultsBridgeLess .featuresList .height260 {
+  height: 255px;
+}
+#resultsBridgeLess .featuresList .height270 {
+  height: 265px;
+}
 /**
 	* [NOTE]
 	* This file was copied from the default bootstrap

@@ -286,7 +286,7 @@
 								</xsl:when>
 							</xsl:choose>
 						</real:DateOfBirth>
-						<real:Email><xsl:value-of select="contact/email" /></real:Email>
+						<real:Email i:nil="true"/>
 						<real:EmploymentStatus>
 							<xsl:choose>
 								<xsl:when test="drivers/regular/employmentStatus='E'">EMFT</xsl:when>
@@ -311,22 +311,8 @@
 							</xsl:choose>
 						</real:Gender>
 						<real:OptIn>false</real:OptIn><!-- Do not allow marketing -->
-						<!-- Provide a default phone when not supplied -->
-						<xsl:variable name="def_phone">
-							<xsl:choose>
-								<xsl:when test="contact/phone != ''">
-									<xsl:value-of select="contact/phone" />
-								</xsl:when>
-							</xsl:choose>
-						</xsl:variable>
-						<real:PhoneNumber>
-							<xsl:call-template name="util_numbersOnly">
-								<xsl:with-param name="value" select="$def_phone" />
-							</xsl:call-template>
-						</real:PhoneNumber>
-						<xsl:if test="contact/phone != ''">
-							<real:PhoneNumberType>Home</real:PhoneNumberType>
-						</xsl:if>
+						<real:PhoneNumber i:nil="true"/>
+						<real:PhoneNumberType i:nil="true"/>
 						<xsl:if test="drivers/regular/surname != ''">
 							<real:Surname><xsl:value-of select="drivers/regular/surname" /></real:Surname>
 						</xsl:if>

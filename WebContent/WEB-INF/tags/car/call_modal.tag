@@ -135,7 +135,7 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-sm-offset-6">
-						<a href="javascript:;" class="btn btn-form btn-block btn-submit-callback">Submit</a><br />
+						<a href="javascript:;" class="btn btn-form btn-block btn-submit-callback" data-productId="{{= obj.productId }}">Submit</a><br />
 					</div>
 				</div>
 			</form>
@@ -146,7 +146,7 @@
 			Would you prefer to call direct?
 		</div>
 		<div class="col-xs-12 col-sm-6">
-			<a class="btn btn-call-inverse btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
+			<a class="btn btn-call-inverse btn-block btn-call-actions btn-calldirect" data-productId="{{= obj.productId }}" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
 		</div>
 	</div>
 </core:js_template>
@@ -167,7 +167,7 @@
 			{{= offlineDiscountTemplate }}
 		</div>
 		<div class="col-xs-12 visible-xs push-top-15">
-			<a class="needsclick btn btn-call btn-block btn-call-actions btn-calldirect" href="tel:{{= telNo }}">{{= telNo }}</a>
+			<a class="needsclick btn btn-call btn-block btn-call-actions btn-calldirect" data-productId="{{= obj.productId }}" href="tel:{{= telNo }}">{{= telNo }}</a>
 		</div>
 		<div class="col-xs-12 visible-xs">
 			<h5>Call Centre Hours</h5>
@@ -183,7 +183,7 @@
 				Would you prefer to have the insurer call you?
 			</div>
 			<div class="col-xs-12 col-sm-6">
-				<a class="btn btn-call-inverse btn-block btn-call-actions btn-callback" href="javascript:;" data-callback-toggle="callback">Get a Call Back</a>
+				<a class="btn btn-call-inverse btn-block btn-call-actions btn-callback" data-productId="{{= obj.productId }}" href="javascript:;" data-callback-toggle="callback">Get a Call Back</a>
 			</div>
 		</div>
 	{{ } }}

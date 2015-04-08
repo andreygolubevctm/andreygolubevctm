@@ -1,23 +1,25 @@
 package com.ctm.router;
 
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.SessionException;
-import com.ctm.model.session.SessionData;
-import com.ctm.services.FatalErrorService;
-import com.ctm.services.QuoteService;
-import com.ctm.services.SessionDataService;
-import com.ctm.utils.RequestUtils;
-import com.disc_au.web.go.Data;
-import org.apache.log4j.Logger;
-import org.json.JSONObject;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import com.ctm.services.FatalErrorService;
+import com.ctm.utils.RequestUtils;
+import org.apache.log4j.Logger;
+import org.json.JSONObject;
+
+import com.ctm.exceptions.DaoException;
+import com.ctm.exceptions.SessionException;
+import com.ctm.model.session.SessionData;
+import com.ctm.services.QuoteService;
+import com.ctm.services.SessionDataService;
+import com.disc_au.web.go.Data;
 
 /**
  * To handle writing and retrieving of quotes.

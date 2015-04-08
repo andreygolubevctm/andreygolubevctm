@@ -57,7 +57,7 @@
 	}
 
 	function isApplicable() {
-		return _.indexOf(emailTypes, meerkat.site.pageAction) > -1;
+		return !meerkat.site.isNewQuote && _.indexOf(emailTypes, meerkat.site.pageAction) > -1;
 	}
 
 	function getStartStepOverride(startStep) {

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;
 
@@ -80,25 +79,27 @@ public class Bridge {
 	 * @param req the req
 	 * @return the message
 	 */
-	public Message sendReceive(Message req) {
+	public Message sendReceive(Message req) throws IOException {
 
-
+		InputStream in = null;
+		OutputStream out = null;
 		Message resp = null;
+		Socket socket = null;
 		try {
 			logger.debug("Connecting to " + server + " " + port);
-			Socket socket = new Socket(server, port);
+			socket = new Socket(server, port);
 
 			int len = req.getLength();
 			NumericField reqLength = new NumericField(CONF_LEN, 's', 0);
 			reqLength.setValue(req.getLength() + CONF_LEN);
 			// Send the request
-			OutputStream out = socket.getOutputStream();
+			out = socket.getOutputStream();
 			out.write(reqLength.getBytes());
 			out.write(req.getBytes(), 0, len);
 			out.flush();
 
 			// Read the length of the result
-			InputStream in = socket.getInputStream();
+			in = socket.getInputStream();
 
 			byte[] reqLengthBytes = new byte[reqLength.getLength()];
 			in.read(reqLengthBytes);
@@ -136,15 +137,16 @@ public class Bridge {
 
 
 			return resp;
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+		} finally {
+			if(in != null){
+				in.close();
+			}
+			if(out != null){
+				out.close();
+			}
+			if(socket != null){
+				socket.close();
+			}
 		}
 	}
 

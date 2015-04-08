@@ -49,6 +49,9 @@
 	}
 
 	function set( newTransactionId, newRootId ) {
+		if(newTransactionId != transactionId) {
+			meerkat.messaging.publish(moduleEvents.CHANGED, {transactionId: transactionId});
+		}
 		transactionId = newTransactionId;
 		if(typeof newRootId != 'undefined') {
 			rootId = newRootId;
@@ -81,7 +84,6 @@
 
 				if( msg.transactionId !== transactionId ) {
 					set(msg.transactionId, msg.rootId); // will update the private transactionId and render it on the page
-					meerkat.messaging.publish(moduleEvents.CHANGED, {transactionId: transactionId});
 				}
 
 				if( typeof callback === "function" ) {

@@ -1157,7 +1157,7 @@
     var events = {
         homeMoreInfo: {}
     }, moduleEvents = events.homeMoreInfo;
-    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId, scrapeType, scrollPosition;
+    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId, scrapeType, scrollPosition, callDirectTrackingFlag = true;
     function initMoreInfo() {
         var options = {
             container: $bridgingContainer,
@@ -1297,9 +1297,9 @@
         }
     }
     function recordCallDirect(event) {
+        trackCallDirect();
         var currProduct = meerkat.modules.moreInfo.getOpenProduct();
         if (typeof callDirectLeadFeedSent[currProduct.productId] != "undefined") return;
-        trackCallDirect();
         var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
         return callLeadFeedSave(event, {
             message: currentBrandCode + " - Home Vertical - Call direct",
@@ -1429,6 +1429,9 @@
                 meerkat.modules.moreInfo.close();
             }
         });
+        meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCallDirectTrackingFlag() {
+            callDirectTrackingFlag = true;
+        });
     }
     function setScrollPosition() {
         scrollPosition = $(window).scrollTop();
@@ -1537,14 +1540,12 @@
         return true;
     }
     function trackCallDirect() {
-        var i = 0;
-        for (var key in callDirectLeadFeedSent) {
-            if (callDirectLeadFeedSent.hasOwnProperty(key)) {
-                i++;
-            }
+        if (callDirectTrackingFlag === true) {
+            callDirectTrackingFlag = false;
+            trackCallEvent("CrCallDir");
+        } else {
+            return;
         }
-        if (i > 1) return;
-        trackCallEvent("CrCallDir");
     }
     function trackCallBack() {
         trackCallEvent("CrCallBac");

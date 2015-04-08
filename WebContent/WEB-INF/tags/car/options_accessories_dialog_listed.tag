@@ -16,12 +16,12 @@
 			<form_new:fieldset legend="">
 				<p class="no-items-found">No non-standard accessories have been found for your selected vehicle.</p>
 				<div class="items-found">
-					<div id="injectIntoHeader">
-						<div class="row">
-							<div class="col-xs-12">
-								<p>By listing all the non-standard accessories the insurer will be able to get a more accurate idea of the car's true value.</p>
-							</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<p>By listing all the non-standard accessories the insurer will be able to get a more accurate idea of the car's true value.</p>
 						</div>
+					</div>
+					<div id="injectIntoHeader">
 						<div class="row accessoriesHeader">
 							<div class="col-xs-5">
 								<p>

@@ -6,7 +6,8 @@
 
 	var events = {
 			carFilters: {
-				CHANGED: 'CAR_FILTERS_CHANGED'
+				CHANGED: 'CAR_FILTERS_CHANGED',
+				DISPLAY_MODE_CHANGED: 'DISPLAY_MODE_CHANGED'
 			}
 		},
 		moduleEvents = events.carFilters;
@@ -19,6 +20,7 @@
 
 	var deviceStateXS = false;
 	var modalID = false;
+	var pageScrollingLockYScroll = false;
 
 	var currentValues = {
 			display:	false,
@@ -44,6 +46,7 @@
 					$featuresMode.addClass('active');
 					break;
 			}
+			meerkat.messaging.publish(moduleEvents.DISPLAY_MODE_CHANGED, {newDisplayMode: Results.getDisplayMode()});
 		}
 
 		// Refresh frequency
@@ -158,25 +161,47 @@
 	}
 
 	function eventSubscriptions() {
-		// Disable filters while results are in progress
 
+		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
+			headerAffixed = true;
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
+			headerAffixed = false;
+		});
+
+		// Disable filters while results are in progress
 		$(document).on('resultsFetchStart', function onResultsFetchStart() {
 			disable();
 		});
+
 		$(document).on('pagination.scrolling.start', function onPaginationStart() {
+			meerkat.modules.carResults.calculateDockedHeader('startPaginationScroll');
+			pageScrollingLockYScroll = true;
 			disable();
 		});
 
-		$(document).on('resultsFetchFinish', function onResultsFetchStart() {
+		$(document).on('resultsFetchFinish', function onResultsFetchFinish() {
 			enable();
 		});
-		$(document).on('pagination.scrolling.end', function onPaginationStart() {
+
+		$(document).on('pagination.scrolling.end', function onPaginationEnd() {
+			meerkat.modules.carResults.calculateDockedHeader('endPaginationScroll');
+			pageScrollingLockYScroll = false;
 			enable();
 		});
+
 		meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, enable);
 
-		// Display mode toggle
+		// Lock Y scrolling if page is scrolling. Events -> (Chrome, Firefox, IE)
+		$(document.body).on('mousewheel DOMMouseScroll onmousewheel', function(e) {
+			if (pageScrollingLockYScroll) {
+				e.preventDefault();
+				e.stopPropagation();
+			}
+		});
 
+		// Display mode toggle
 		$priceMode.on('click', function filterPrice(event) {
 			event.preventDefault();
 			if ($(this).hasClass('disabled')) return;

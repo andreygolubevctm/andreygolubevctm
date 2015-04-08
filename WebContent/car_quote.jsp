@@ -193,6 +193,7 @@
 			</c:choose>
 			<field:hidden xpath="quote/renderingMode" />
 				<field:hidden xpath="quote/journey/type" defaultValue="${jrny}" />
+			<core_new:authToken authToken="${param['authToken']}"/>
 		</div>
 	
 		<%-- Slides --%>

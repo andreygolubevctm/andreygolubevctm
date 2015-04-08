@@ -228,7 +228,7 @@
 													<xsl:call-template name="util_isoDate">
 														<xsl:with-param name="eurDate" select="policyHolder/dob" />
 													</xsl:call-template>T00:00:00</real:DateOfBirth>
-												<real:Email><xsl:value-of select="policyHolder/email" /></real:Email>
+												<real:Email i:nil="true"/>
 												<real:EmploymentStatus i:nil="true"/> <!-- We do not collect this -->
 												<real:FirstName><xsl:value-of select="policyHolder/firstName" /></real:FirstName>
 												<!-- GENDER -->
@@ -241,10 +241,7 @@
 												</xsl:choose>
 												<real:OptIn>false</real:OptIn>  <!-- Customers NEVER opt in to a partners marketing -->
 												<!-- PHONE NUMBER -->
-												<xsl:choose>
-													<xsl:when test="policyHolder/phone != ''"><real:PhoneNumber><xsl:value-of select="policyHolder/phone" /></real:PhoneNumber></xsl:when>
-													<xsl:otherwise><real:PhoneNumber i:nil="true"/></xsl:otherwise>
-												</xsl:choose>
+												<real:PhoneNumber i:nil="true"/>
 												<real:PhoneNumberType i:nil="true"/>  <!-- Unsure what options they are expecting with this -->
 												<real:Surname><xsl:value-of select="policyHolder/lastName" /></real:Surname>
 											</real:MainPolicyHolder>

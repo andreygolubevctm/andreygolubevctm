@@ -2477,7 +2477,9 @@ var highlightMeTextObj = new HighlightMeText();
 				<div class="provider metlife"></div>
 				<div class="provider mlc"></div>
 				<div class="provider onepath"></div>
+				<c:if test="${vertical eq 'life'}">
 				<div class="provider ozicare"></div>
+				</c:if>
 				<div class="provider tal"></div>
 				<div class="provider zurich"></div>
 						</div>

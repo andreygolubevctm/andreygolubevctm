@@ -78,6 +78,7 @@ ResultsPagination = {
 		Results.pagination.isLocked = false;
 		Results.pagination.invalidated = true;
 		Results.pagination.currentPageMeasurements = null;
+		Results.pagination.isHidden = false;
 	},
 
 	// Reset - called when results are reloaded.
@@ -632,8 +633,8 @@ ResultsPagination = {
 		while(looking){
 
 			var columnNumber = i;
-			if($("#result-row-"+columnNumber).hasClass('notfiltered')){
-				$("#result-row-"+columnNumber).addClass("currentPage");
+			if($("[data-position='"+columnNumber+"']").hasClass('notfiltered')){
+				$("[data-position='"+columnNumber+"']").addClass("currentPage");
 				columnsFound++;
 			}
 			i++;

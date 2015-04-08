@@ -141,10 +141,6 @@
 							</xsl:choose>
 							</Title>
 							<Birthdate><xsl:value-of select="$rgdBirthDate" />T00:00:00</Birthdate>
-							<MobileNo><xsl:value-of select="$mobileTel" /></MobileNo>
-							<HomeTel><xsl:value-of select="$homeTel" /></HomeTel>
-							<WorkTel />
-							<EmailAddress><xsl:value-of select="contact/email" /></EmailAddress>
 							<AddressLine1><xsl:value-of select="translate($addressLine1, $LOWERCASE, $UPPERCASE)"/></AddressLine1>
 							<Suburb><xsl:value-of select="translate(riskAddress/suburbName, $LOWERCASE, $UPPERCASE)" /></Suburb>
 							<State><xsl:value-of select="translate(riskAddress/state, $LOWERCASE, $UPPERCASE)" /></State>

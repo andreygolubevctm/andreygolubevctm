@@ -17,6 +17,7 @@ import com.ctm.model.EmailMaster;
 public class HashedEmailServiceTest {
 
 	private EmailMasterDao emailMasterDao = mock(EmailMasterDao.class);
+	private int brandId = 1;
 
 	@Test
 	public void testShouldGetEmailMaster() throws SQLException, DaoException, EmailDetailsException {
@@ -28,14 +29,14 @@ public class HashedEmailServiceTest {
 
 		EmailMaster emailDetails = new EmailMaster();
 		emailDetails.setHashedEmail(hashedEmail);
-		when(emailMasterDao.getEmailMaster(target)).thenReturn(emailDetails  );
+		when(emailMasterDao.getEmailMaster(target, brandId )).thenReturn(emailDetails  );
 
-		EmailMaster result = hashedEmailService.getEmailDetails(hashedEmail, target, 1);
-		assertTrue(result.isValid());
+		EmailMaster result = hashedEmailService.getEmailDetails(hashedEmail, target, brandId);
+		assertTrue(result != null && result.isValid());
 
-		result = hashedEmailService.getEmailDetails(invalidHashedEmail, target, 1);
+		result = hashedEmailService.getEmailDetails(invalidHashedEmail, target, brandId);
 
-		assertFalse(result.isValid());
+		assertFalse(result != null && result.isValid());
 
 	}
 
@@ -49,16 +50,17 @@ public class HashedEmailServiceTest {
 		emailDetails.setEmailAddress("test@test.com");
 		emailDetails.setHashedEmail(hashedEmail);
 		emailDetails.setEmailId(100);
-		when(emailMasterDao.getEmailMasterFromHashedEmail(hashedEmail)).thenReturn(emailDetails  );
-		EmailMaster result = hashedEmailService.getEmailDetails(hashedEmail, target, 1);
-		assertTrue(result.isValid());
+		when(emailMasterDao.getEmailMasterFromHashedEmail(hashedEmail, brandId)).thenReturn(emailDetails  );
+		EmailMaster result = hashedEmailService.getEmailDetails(hashedEmail, target, brandId);
+		assertTrue(result != null && result.isValid());
 
 		String hashedEmail2 = "hashedEmail2";
 		EmailMaster emailDetails2 = new EmailMaster();
-		when(emailMasterDao.getEmailMasterFromHashedEmail(hashedEmail2)).thenReturn(emailDetails2);
-		result = hashedEmailService.getEmailDetails(hashedEmail2, target, 1);
+		when(emailMasterDao.getEmailMasterFromHashedEmail(hashedEmail2, brandId)).thenReturn(emailDetails2);
 
-		assertFalse(result.isValid());
+		result = hashedEmailService.getEmailDetails(hashedEmail2, target, brandId);
+
+		assertFalse(result != null && result.isValid());
 
 	}
 

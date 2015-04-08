@@ -16,7 +16,8 @@
 		hasSpecialConditions = false, // to display the special condition dialog
 		callbackModalId, // the id of the currently displayed callback modal
 		scrapeType, //The type of scrape 'home', 'contents' or 'homeandcontents'
-		scrollPosition; //The position of the page on the modal display
+		scrollPosition, //The position of the page on the modal display,
+		callDirectTrackingFlag = true; // used to flag when ok to call tracking on CallDirect (once per transaction)
 
 	/**
 	 * Specify the options within here to pass to meerkat.modules.moreInfo.
@@ -208,12 +209,13 @@
 	 * @param {event} event The event object.
 	 */
 	function recordCallDirect(event) {
+
+		// Call supertag to register event - only once per transaction
+		trackCallDirect();// Add CallDirect request event to supertag
+
 		var currProduct = meerkat.modules.moreInfo.getOpenProduct();
 		if (typeof callDirectLeadFeedSent[currProduct.productId] != 'undefined')
 			return;
-
-		// Call supertag to register event - only once per session
-		trackCallDirect();// Add CallDirect request event to supertag
 
 		var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
 
@@ -386,6 +388,10 @@
 				meerkat.modules.moreInfo.close();
 			}
 		});
+
+		meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCallDirectTrackingFlag() {
+			callDirectTrackingFlag = true;
+		});
 	}
 	/**
 	 * Set the current scroll position so that it can be used when modals are closed
@@ -551,17 +557,12 @@
 	 * to send multiple transaction detail saves.
 	 */
 	function trackCallDirect(){
-		var i = 0;
-
-		for(var key in callDirectLeadFeedSent) {
-			if(callDirectLeadFeedSent.hasOwnProperty(key)) {
-				i++;
-			}
-		}
-
-		if (i > 1)
+		if(callDirectTrackingFlag === true) {
+			callDirectTrackingFlag = false;
+			trackCallEvent('CrCallDir');
+		} else {
 			return;
-		trackCallEvent('CrCallDir');
+		}
 	}
 
 	/**

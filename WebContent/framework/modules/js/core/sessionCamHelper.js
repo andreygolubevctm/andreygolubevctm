@@ -18,6 +18,8 @@
 	// loading and results shown triggers
 	var skipStepForSessionCam = ["results"];
 
+	var activeNavigationId = false;
+
 	// Display-mode is set when results first initialised (before results shown) - we want to
 	// ignore this first call and only listen when mode is actually changed
 	var ignoreSetResultsDisplayMode = true;
@@ -54,12 +56,15 @@
 
 	function updateVirtualPage(step, delay) {
 		delay = delay || 1000;
-		if (window.sessionCamRecorder) {
-			if (window.sessionCamRecorder.createVirtualPageLoad) {
-				setTimeout(function() {
-					log("[sessionCamHelper:createVirtualPageLoad]", step);
-					window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + step.navigationId);
-				}, delay);
+		if(step.navigationId !== activeNavigationId) {
+			activeNavigationId = step.navigationId;
+			if (window.sessionCamRecorder) {
+				if (window.sessionCamRecorder.createVirtualPageLoad) {
+					setTimeout(function() {
+						log("[sessionCamHelper:createVirtualPageLoad]", step);
+						window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + activeNavigationId);
+					}, delay);
+				}
 			}
 		}
 	}
@@ -87,7 +92,7 @@
 		if(ignoreSetResultsDisplayMode === false) {
 			setResultsShownPage();
 		}
-		ignoreSetResultsDisplayMode = true;
+		ignoreSetResultsDisplayMode = false;
 	}
 
 	function setMoreInfoModal(delay) {

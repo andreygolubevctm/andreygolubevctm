@@ -14,16 +14,18 @@ import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.ApplicationService;
+import com.ctm.services.EnvironmentService;
 import com.ctm.services.ServiceConfigurationService;
+import com.ctm.services.EnvironmentService.Environment;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
 
 public class SoapConfiguration {
-	
+
 	static Logger logger = Logger.getLogger(SoapConfiguration.class.getName());
-	
-	public static void setUpConfigurationFromDatabase(String configDbKey , SoapAggregatorConfiguration configuration, int styleCodeId, 
-			String verticalCode, String manuallySetProviderIds) {
+
+	public static void setUpConfigurationFromDatabase(String configDbKey , SoapAggregatorConfiguration configuration, int styleCodeId,
+			String verticalCode, String manuallySetProviderIds, String authToken) {
 		// If the configDbKey is specified, attempt to load the config from the database and/or config xml.
 		if(configDbKey != null && !configDbKey.isEmpty()){
 			try {
@@ -33,14 +35,14 @@ public class SoapConfiguration {
 					logger.error("vertical is not set");
 					return;
 				}
-				
+
 				ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(configDbKey, vertical.getId(), brand.getId());
 				configuration.setFromDb(serviceConfig, styleCodeId, 0);
 				setUpIsWriteToFile(serviceConfig, styleCodeId, 0, configuration);
-	
+
 				// If the tag has specific partner ids specified use that, otherwise load from the configuration object.
 				ArrayList<Integer> providerIds = new ArrayList<Integer>();
-	
+
 				if(!manuallySetProviderIds.isEmpty()){
 					for(String item: manuallySetProviderIds.split(",")){
 						providerIds.add(Integer.parseInt(item));
@@ -49,22 +51,35 @@ public class SoapConfiguration {
 					// Ensure to only use enabled partners
 					providerIds = ServiceConfigurationService.getEnabledProviderIdsForConfiguration(brand.getId(),  vertical.getId(), serviceConfig);
 				}
-	
+
 				for(Integer providerId : providerIds){
 					SoapClientThreadConfiguration item = new SoapClientThreadConfiguration();
-					if(serviceConfig.isProviderEnabledForBrand(providerId, brand.getId())){
+					if (serviceConfig.isProviderEnabledForBrand(providerId, brand.getId())) {
 						item.setFromDb(serviceConfig, providerId, styleCodeId, configuration.getRootPath());
-						configuration.getServices().add(item);
+
+						if (EnvironmentService.getEnvironment() == Environment.NXS && authToken != null) {
+							String storedAuthToken = serviceConfig.getPropertyValueByKey("authToken", styleCodeId, providerId, Scope.SERVICE);
+
+							if (storedAuthToken != null) {
+								if (storedAuthToken.equals(authToken)) {
+									configuration.getServices().add(item);
+
+								}
+							}
+						} else {
+							// Do normal, no auth needed.
+							configuration.getServices().add(item);
+						}
 					}
 				}
-				
-	
+
+
 			} catch (DaoException | ServiceConfigurationException e) {
 				logger.error("Unable to load Database configuration or ServiceConfiguration exception", e);
 			}
 		}
 	}
-	
+
 	private static void setUpIsWriteToFile(ServiceConfiguration config,
 			int styleCodeId, int providerId, SoapAggregatorConfiguration configuration) {
 		String isWriteToFileValue = config.getPropertyValueByKey("isWriteToFile", styleCodeId, providerId, Scope.GLOBAL);
@@ -72,10 +87,10 @@ public class SoapConfiguration {
 			configuration.setIsWriteToFile(isWriteToFileValue.equals("Y"));
 		}
 	}
-	
+
 	/**
 	 * Sets the configuration xml.
-	 * @param parser 
+	 * @param parser
 	 *
 	 * @param config the new configuration xml
 	 * @throws SAXException thrown as a result of an error parsing the config xml
@@ -94,7 +109,7 @@ public class SoapConfiguration {
 				configuration.getServices().add(item);
 			}
 		}
-		
+
 		return configuration;
 	}
 

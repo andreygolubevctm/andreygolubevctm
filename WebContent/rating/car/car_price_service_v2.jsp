@@ -15,6 +15,7 @@
 </c:set>
 
 <c:set var="service" value="${param.service}" />
+<c:set var="authToken" value="${param.authToken}" />
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${tranId}" /></c:set>
 <c:set var="pageSettings" value="${settingsService.getPageSettings(styleCodeId, 'CAR')}" />
 
@@ -36,6 +37,7 @@
 	verticalCode="CAR"
 	styleCodeId="${pageSettings.getBrandId()}"
 	transactionId="${tranId}"
+	authToken="${authToken}"
 	xml="<xml />"
 	var="tokenResultXml"
 	debugVar="tokenDebugXml" />
@@ -89,6 +91,7 @@
 			verticalCode="CAR"
 			styleCodeId="${pageSettings.getBrandId()}"
 			transactionId="${tranId}"
+			authToken="${authToken}"
 			xml="${xmlData}"
 			var="quoteResultXml"
 			debugVar="debugXml" />
@@ -100,6 +103,7 @@
 			verticalCode="CAR"
 			styleCodeId="${pageSettings.getBrandId()}"
 			transactionId="${tranId}"
+			authToken="${authToken}"
 			xml="${xmlData}"
 			var="contentResultXml"
 			debugVar="debugXml" />

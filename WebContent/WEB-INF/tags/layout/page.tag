@@ -323,7 +323,14 @@
 
 		<%-- Vertical settings should be passed in as a JSP fragment --%>
 		<c:if test="${not empty vertical_settings}">
-			$.extend(true, siteConfig, <jsp:invoke fragment="vertical_settings" />);
+			<c:set var="verticalSettingsJSTemp"><jsp:invoke fragment="vertical_settings" /></c:set>
+			<c:set var="verticalSettingsJSObj">
+				<c:choose>
+					<c:when test="${not empty verticalSettingsJSTemp}"><c:out value="${verticalSettingsJSTemp}" escapeXml="false" /></c:when>
+					<c:otherwise><c:out value="{}" escapeXml="false" /></c:otherwise>
+				</c:choose>
+			</c:set>
+			$.extend(true, siteConfig, ${verticalSettingsJSObj});
 		</c:if>
 
 					var options = {};

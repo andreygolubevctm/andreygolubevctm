@@ -1741,6 +1741,7 @@ ResultsPagination = {
         Results.pagination.isLocked = false;
         Results.pagination.invalidated = true;
         Results.pagination.currentPageMeasurements = null;
+        Results.pagination.isHidden = false;
     },
     reset: function() {
         Results.pagination.invalidate();
@@ -2141,8 +2142,8 @@ ResultsPagination = {
         var columnsFound = 0;
         while (looking) {
             var columnNumber = i;
-            if ($("#result-row-" + columnNumber).hasClass("notfiltered")) {
-                $("#result-row-" + columnNumber).addClass("currentPage");
+            if ($("[data-position='" + columnNumber + "']").hasClass("notfiltered")) {
+                $("[data-position='" + columnNumber + "']").addClass("currentPage");
                 columnsFound++;
             }
             i++;
@@ -5922,7 +5923,7 @@ Features = {
         }
     }
     function isApplicable() {
-        return _.indexOf(emailTypes, meerkat.site.pageAction) > -1;
+        return !meerkat.site.isNewQuote && _.indexOf(emailTypes, meerkat.site.pageAction) > -1;
     }
     function getStartStepOverride(startStep) {
         if (isApplicable()) {
@@ -9650,6 +9651,7 @@ Features = {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, msg = meerkat.messaging;
     var events = {}, moduleEvents = events;
     var skipStepForSessionCam = [ "results" ];
+    var activeNavigationId = false;
     var ignoreSetResultsDisplayMode = true;
     var stepCopy = {
         RESULTS_LOADING: "resultsLoading",
@@ -9674,12 +9676,15 @@ Features = {
     }
     function updateVirtualPage(step, delay) {
         delay = delay || 1e3;
-        if (window.sessionCamRecorder) {
-            if (window.sessionCamRecorder.createVirtualPageLoad) {
-                setTimeout(function() {
-                    log("[sessionCamHelper:createVirtualPageLoad]", step);
-                    window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + step.navigationId);
-                }, delay);
+        if (step.navigationId !== activeNavigationId) {
+            activeNavigationId = step.navigationId;
+            if (window.sessionCamRecorder) {
+                if (window.sessionCamRecorder.createVirtualPageLoad) {
+                    setTimeout(function() {
+                        log("[sessionCamHelper:createVirtualPageLoad]", step);
+                        window.sessionCamRecorder.createVirtualPageLoad(location.pathname + "/" + activeNavigationId);
+                    }, delay);
+                }
             }
         }
     }
@@ -9705,7 +9710,7 @@ Features = {
         if (ignoreSetResultsDisplayMode === false) {
             setResultsShownPage();
         }
-        ignoreSetResultsDisplayMode = true;
+        ignoreSetResultsDisplayMode = false;
     }
     function setMoreInfoModal(delay) {
         delay = delay || false;
@@ -10313,6 +10318,11 @@ Features = {
         return rootId;
     }
     function set(newTransactionId, newRootId) {
+        if (newTransactionId != transactionId) {
+            meerkat.messaging.publish(moduleEvents.CHANGED, {
+                transactionId: transactionId
+            });
+        }
         transactionId = newTransactionId;
         if (typeof newRootId != "undefined") {
             rootId = newRootId;
@@ -10341,9 +10351,6 @@ Features = {
             onSuccess: function fetchTransactionIdSuccess(msg) {
                 if (msg.transactionId !== transactionId) {
                     set(msg.transactionId, msg.rootId);
-                    meerkat.messaging.publish(moduleEvents.CHANGED, {
-                        transactionId: transactionId
-                    });
                 }
                 if (typeof callback === "function") {
                     callback(transactionId);

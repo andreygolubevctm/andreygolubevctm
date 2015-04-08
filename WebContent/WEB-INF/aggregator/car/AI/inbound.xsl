@@ -283,10 +283,12 @@
 					<fsgUrl />
 					<disclaimer>
 						<![CDATA[
-						The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:<br>
-						- Driver's history or offences or claims<br>
-						- Age or licence type of additional drivers<br>
-						- Vehicle condition, accessories and modifications<br>
+						The indicative quote includes any applicable online discount and is subject to meeting the insurer's underwriting criteria and may change due to factors such as:
+						<ul>
+							<li>Driver's history or offences or claims</li>
+							<li>Age or licence type of additional drivers</li>
+							<li>Vehicle condition, accessories and modifications</li>
+						</ul>
 						]]>
 					</disclaimer>
 					<transferring />

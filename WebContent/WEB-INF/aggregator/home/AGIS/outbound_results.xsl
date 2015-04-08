@@ -410,18 +410,13 @@
 					<policyHolder>
 						<firstName><xsl:value-of select="policyHolder/firstName" /></firstName>
 						<surname><xsl:value-of select="policyHolder/lastName" /></surname>
-						<email><xsl:value-of select="policyHolder/email" /></email>
+						<email />
 						<dob>
 							<xsl:call-template name="util_isoDate">
 								<xsl:with-param name="eurDate" select="policyHolder/dob" />
 							</xsl:call-template>
 						</dob>
-						<contactNumber>
-							<xsl:choose>
-								<xsl:when test="policyHolder/phone != ''"><xsl:value-of select="policyHolder/phone" /></xsl:when>
-								<xsl:otherwise>0</xsl:otherwise>
-							</xsl:choose>
-						</contactNumber>
+						<contactNumber>0</contactNumber>
 					</policyHolder>
 
 					<olderResident>

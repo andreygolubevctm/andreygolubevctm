@@ -865,7 +865,8 @@
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         carFilters: {
-            CHANGED: "CAR_FILTERS_CHANGED"
+            CHANGED: "CAR_FILTERS_CHANGED",
+            DISPLAY_MODE_CHANGED: "DISPLAY_MODE_CHANGED"
         }
     }, moduleEvents = events.carFilters;
     var $component;
@@ -874,6 +875,7 @@
     var $filterFrequency, $filterExcess;
     var deviceStateXS = false;
     var modalID = false;
+    var pageScrollingLockYScroll = false;
     var currentValues = {
         display: false,
         frequency: false,
@@ -892,6 +894,9 @@
                 $featuresMode.addClass("active");
                 break;
             }
+            meerkat.messaging.publish(moduleEvents.DISPLAY_MODE_CHANGED, {
+                newDisplayMode: Results.getDisplayMode()
+            });
         }
         var freq = $("#quote_paymentType").val();
         if (typeof freq === "undefined") {
@@ -980,19 +985,35 @@
         $component.find("li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle").removeClass("disabled");
     }
     function eventSubscriptions() {
+        meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
+            headerAffixed = true;
+        });
+        meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
+            headerAffixed = false;
+        });
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             disable();
         });
         $(document).on("pagination.scrolling.start", function onPaginationStart() {
+            meerkat.modules.carResults.calculateDockedHeader("startPaginationScroll");
+            pageScrollingLockYScroll = true;
             disable();
         });
-        $(document).on("resultsFetchFinish", function onResultsFetchStart() {
+        $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             enable();
         });
-        $(document).on("pagination.scrolling.end", function onPaginationStart() {
+        $(document).on("pagination.scrolling.end", function onPaginationEnd() {
+            meerkat.modules.carResults.calculateDockedHeader("endPaginationScroll");
+            pageScrollingLockYScroll = false;
             enable();
         });
         meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, enable);
+        $(document.body).on("mousewheel DOMMouseScroll onmousewheel", function(e) {
+            if (pageScrollingLockYScroll) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
         $priceMode.on("click", function filterPrice(event) {
             event.preventDefault();
             if ($(this).hasClass("disabled")) return;
@@ -1144,7 +1165,7 @@
     var events = {
         carMoreInfo: {}
     }, moduleEvents = events.carMoreInfo;
-    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId, scrollPosition, activeCallModal;
+    var $bridgingContainer = $(".bridgingContainer"), callDirectLeadFeedSent = {}, specialConditionContent = "", hasSpecialConditions = false, callbackModalId, scrollPosition, activeCallModal, callDirectTrackingFlag = true;
     function initMoreInfo() {
         var options = {
             container: $bridgingContainer,
@@ -1183,82 +1204,14 @@
     }
     function applyEventListeners() {
         $(document).on("click", ".bridgingContainer .btn-call-actions", function(event) {
-            event.preventDefault();
-            event.stopPropagation();
             var $el = $(this);
-            var $e = $("#car-call-modal-template");
-            if ($e.length > 0) {
-                templateCallback = _.template($e.html());
-            }
-            var obj = meerkat.modules.moreInfo.getOpenProduct();
-            if (obj.available !== "Y") return;
-            activeCallModal = $el.attr("data-callback-toggle");
-            var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
-            var htmlContent = templateCallback(obj);
-            var modalOptions = {
-                htmlContent: htmlContent,
-                hashId: "call",
-                className: "call-modal " + obj.brandCode,
-                closeOnHashChange: true,
-                openOnHashChange: false,
-                onOpen: function(modalId) {
-                    $("." + activeCallModal).show();
-                    fixSidebarHeight(".paragraphedContent:visible", ".sidebar-right", $("#" + modalId));
-                    setupCallbackForm();
-                    if ($el.hasClass("btn-calldirect")) {
-                        recordCallDirect(event);
-                    } else {
-                        trackCallBack();
-                    }
-                    meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
-                },
-                onClose: function(modalId) {
-                    meerkat.modules.sessionCamHelper.setMoreInfoModal();
-                }
-            };
-            if (meerkat.modules.deviceMediaState.get() == "xs") {
-                modalOptions.title = "Reference no. " + obj.leadNo;
-            }
-            callbackModalId = meerkat.modules.dialogs.show(modalOptions);
+            callActions(event, $el);
         }).on("click", ".call-modal .btn-call-actions", function(event) {
-            if (meerkat.modules.deviceMediaState.get() != "xs") {
-                event.preventDefault();
-            }
-            event.stopPropagation();
             var $el = $(this);
-            activeCallModal = $el.attr("data-callback-toggle");
-            var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
-            switch (activeCallModal) {
-              case "calldirect":
-                $(".callback").hide();
-                $(".calldirect").show();
-                recordCallDirect(event);
-                break;
-
-              case "callback":
-                $(".calldirect").hide();
-                $(".callback").show();
-                trackCallBack();
-                break;
-            }
-            fixSidebarHeight(".paragraphedContent:visible", ".sidebar-right", $el.closest(".modal.in"));
-            meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+            modalCallActions(event, $el);
         }).on("click", ".btn-submit-callback", function(event) {
-            event.preventDefault();
             var $el = $(this);
-            if ($el.closest("form").valid()) {
-                var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
-                callLeadFeedSave(event, {
-                    message: currentBrandCode + " - Car Vertical - Call me now",
-                    phonecallme: "GetaCall"
-                });
-                trackCallBackSubmit();
-            } else {
-                _.delay(function() {
-                    fixSidebarHeight(".paragraphedContent:visible", ".sidebar-right", $el.closest(".modal.in"));
-                }, 200);
-            }
-            return false;
+            submitCallback(event, $el);
         });
         $(".slide-feature-closeMoreInfo a").off().on("click", function() {
             meerkat.modules.moreInfo.close();
@@ -1291,37 +1244,38 @@
             }
         }
     }
-    function recordCallDirect(event) {
-        trackCallDirect();
-        var currProduct = meerkat.modules.moreInfo.getOpenProduct();
-        if (typeof callDirectLeadFeedSent[currProduct.productId] != "undefined") return;
+    function recordCallDirect(event, product) {
+        trackCallDirect(product);
+        var currProduct = product;
+        if (typeof callDirectLeadFeedSent[currProduct.productId] != "undefined") {
+            return;
+        }
         var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
         return callLeadFeedSave(event, {
             message: currentBrandCode + " - Car Vertical - Call direct",
             phonecallme: "CallDirect"
-        });
+        }, product);
     }
-    function callLeadFeedSave(event, data) {
-        var currProduct = meerkat.modules.moreInfo.getOpenProduct();
-        if (typeof currProduct !== "undefined" && currProduct !== null && typeof currProduct.vdn !== "undefined" && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) {
-            data.vdn = currProduct.vdn;
+    function callLeadFeedSave(event, data, product) {
+        if (typeof product !== "undefined" && product !== null && typeof product.vdn !== "undefined" && !_.isEmpty(product.vdn) && product.vdn > 0) {
+            data.vdn = product.vdn;
         }
         var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
         var defaultData = {
             state: $("#quote_riskAddress_state").val(),
-            brand: currProduct.productId.split("-")[0]
+            brand: product.productId.split("-")[0]
         };
         if (meerkat.site.leadfeed[data.phonecallme].use_disc_props) {
             $.extend(defaultData, {
                 source: currentBrandCode + "CAR",
-                leadNo: currProduct.leadNo,
+                leadNo: product.leadNo,
                 client: $("#quote_CrClientName").val() || "",
                 clientTel: $("#quote_CrClientTelinput").val() || "",
                 transactionId: meerkat.modules.transactionId.get()
             });
         } else {
             $.extend(defaultData, {
-                clientNumber: currProduct.leadNo,
+                clientNumber: product.leadNo,
                 clientName: $("#quote_CrClientName").val() || "",
                 phoneNumber: $("#quote_CrClientTelinput").val() || "",
                 partnerReference: meerkat.modules.transactionId.get()
@@ -1361,7 +1315,7 @@
             },
             onComplete: function onSubmitComplete() {
                 if (data.phonecallme == "CallDirect") {
-                    callDirectLeadFeedSent[currProduct.productId] = true;
+                    callDirectLeadFeedSent[product.productId] = true;
                 }
                 meerkat.modules.loadingAnimation.hide($element);
             }
@@ -1394,6 +1348,100 @@
                 meerkat.modules.moreInfo.close();
             }
         });
+        meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCallDirectTrackingFlag() {
+            callDirectTrackingFlag = true;
+        });
+        meerkat.messaging.subscribe(meerkatEvents.carResults.FEATURES_CALL_ACTION, function triggerCallActions(obj) {
+            callActions(obj.event, obj.element);
+        });
+        meerkat.messaging.subscribe(meerkatEvents.carResults.FEATURES_CALL_ACTION_MODAL, function triggerCallActionsFromModal(obj) {
+            modalCallActions(obj.event, obj.element);
+        });
+        meerkat.messaging.subscribe(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, function triggerSubmitCallback(obj) {
+            submitCallback(obj.event, obj.element);
+        });
+    }
+    function callActions(event, element) {
+        event.preventDefault();
+        event.stopPropagation();
+        var $el = element;
+        var $e = $("#car-call-modal-template");
+        if ($e.length > 0) {
+            templateCallback = _.template($e.html());
+        }
+        var obj = Results.getResultByProductId($el.attr("data-productId"));
+        if (obj.available !== "Y") return;
+        activeCallModal = $el.attr("data-callback-toggle");
+        var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
+        var htmlContent = templateCallback(obj);
+        var modalOptions = {
+            htmlContent: htmlContent,
+            hashId: "call",
+            className: "call-modal " + obj.brandCode,
+            closeOnHashChange: true,
+            openOnHashChange: false,
+            onOpen: function(modalId) {
+                $("." + activeCallModal).show();
+                fixSidebarHeight(".paragraphedContent:visible", ".sidebar-right", $("#" + modalId));
+                setupCallbackForm();
+                if ($el.hasClass("btn-calldirect")) {
+                    recordCallDirect(event, obj);
+                } else {
+                    trackCallBack(obj);
+                }
+                meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+            },
+            onClose: function(modalId) {
+                meerkat.modules.sessionCamHelper.setMoreInfoModal();
+            }
+        };
+        if (meerkat.modules.deviceMediaState.get() == "xs") {
+            modalOptions.title = "Reference no. " + obj.leadNo;
+        }
+        callbackModalId = meerkat.modules.dialogs.show(modalOptions);
+    }
+    function modalCallActions(event, element) {
+        if (meerkat.modules.deviceMediaState.get() != "xs") {
+            event.preventDefault();
+        }
+        event.stopPropagation();
+        var $el = element;
+        var obj = Results.getResultByProductId($el.attr("data-productId"));
+        activeCallModal = $el.attr("data-callback-toggle");
+        var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
+        switch (activeCallModal) {
+          case "calldirect":
+            $(".callback").hide();
+            $(".calldirect").show();
+            recordCallDirect(event, obj);
+            break;
+
+          case "callback":
+            $(".calldirect").hide();
+            $(".callback").show();
+            trackCallBack(obj);
+            break;
+        }
+        fixSidebarHeight(".paragraphedContent:visible", ".sidebar-right", $el.closest(".modal.in"));
+        meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+    }
+    function submitCallback(event, element) {
+        event.preventDefault();
+        var $el = element;
+        var obj = Results.getResultByProductId($el.attr("data-productId"));
+        if ($el.closest("form").valid()) {
+            var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
+            callLeadFeedSave(event, {
+                message: currentBrandCode + " - Car Vertical - Call me now",
+                phonecallme: "GetaCall"
+            }, obj);
+            trackCallBackSubmit(obj);
+        } else {
+            _.delay(function() {
+                fixSidebarHeight(".paragraphedContent:visible", ".sidebar-right", $el.closest(".modal.in"));
+            }, 200);
+        }
+        return false;
     }
     function setScrollPosition() {
         scrollPosition = $(window).scrollTop();
@@ -1500,24 +1548,21 @@
         });
         return true;
     }
-    function trackCallDirect() {
-        var i = 0;
-        for (var key in callDirectLeadFeedSent) {
-            if (callDirectLeadFeedSent.hasOwnProperty(key)) {
-                i++;
-            }
+    function trackCallDirect(product) {
+        if (callDirectTrackingFlag === true) {
+            callDirectTrackingFlag = false;
+            trackCallEvent("CrCallDir", product);
+        } else {
+            return;
         }
-        if (i > 1) return;
-        trackCallEvent("CrCallDir");
     }
-    function trackCallBack() {
-        trackCallEvent("CrCallBac");
+    function trackCallBack(product) {
+        trackCallEvent("CrCallBac", product);
     }
-    function trackCallBackSubmit() {
-        trackCallEvent("CrCallBacSub");
+    function trackCallBackSubmit(product) {
+        trackCallEvent("CrCallBacSub", product);
     }
-    function trackCallEvent(type) {
-        var product = meerkat.modules.moreInfo.getOpenProduct();
+    function trackCallEvent(type, product) {
         meerkat.modules.partnerTransfer.trackHandoverEvent({
             product: product,
             type: type,
@@ -1574,12 +1619,16 @@
         RESULTS_ERROR: "RESULTS_ERROR"
     };
     meerkatEvents.carResults = {
-        RESULTS_RENDER_COMPLETED: "RESULTS_RENDER_COMPLETED"
+        FEATURES_CALL_ACTION: "FEATURES_CALL_ACTION",
+        FEATURES_CALL_ACTION_MODAL: "FEATURES_CALL_ACTION_MODAL",
+        FEATURES_SUBMIT_CALLBACK: "FEATURES_SUBMIT_CALLBACK"
     };
     var $component;
     var previousBreakpoint;
     var best_price_count = 5;
     var needToBuildFeatures = false;
+    var deviceType = null;
+    var headerAffixed = false;
     function initPage() {
         initResults();
         Features.init();
@@ -1597,10 +1646,14 @@
         Results.pagination.refresh();
     }
     function initResults() {
+        deviceType = $("#deviceType").attr("data-deviceType");
         try {
             var displayMode = "price";
-            if (typeof meerkat.site != "undefined" && typeof meerkat.site.resultOptions != "undefined") {
-                displayMode = meerkat.site.resultOptions.displayMode == "features" ? "features" : "price";
+            if (meerkat.site.tracking.brandCode == "ctm") {
+                displayMode = "features";
+            }
+            if (meerkat.modules.splitTest.isActive(17)) {
+                displayMode = "price";
             }
             Results.init({
                 url: "ajax/json/car_quote_results.jsp",
@@ -1746,9 +1799,31 @@
         $(Results.settings.elements.resultsContainer).on("click", ".result-row", resultRowClick);
         meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
             $("#resultsPage").css("margin-top", "35px");
+            headerAffixed = true;
+            calculateDockedHeader("affixed");
         });
         meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
             $("#resultsPage").css("margin-top", "0");
+            headerAffixed = false;
+            calculateDockedHeader("unaffixed");
+        });
+        meerkat.messaging.subscribe(meerkatEvents.carFilters.DISPLAY_MODE_CHANGED, function onDisplayModeChange() {
+            calculateDockedHeader("displayModeChanged");
+        });
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function onDeviceMediaStateChange() {
+            calculateDockedHeader("deviceMediaStateChange");
+        });
+        meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function onExitCompareMode() {
+            calculateDockedHeader("startPaginationScroll");
+        });
+        $(document).on("results.view.animation.start", function onAnimationStart() {
+            calculateDockedHeader("startPaginationScroll");
+        });
+        $(document).on("results.view.animation.end", function onAnimationEnd() {
+            $(".result-row").css({
+                position: ""
+            });
+            calculateDockedHeader("filterAnimationEnded");
         });
         meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj) {
             if (obj && obj.hasOwnProperty("excess")) {
@@ -1844,6 +1919,84 @@
                 $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ""));
             });
         });
+        $(document.body).on("click", "#resultsBridgeLess .btnContainer .btn-call-actions", function triggerMoreInfoCallActions(event) {
+            var element = $(this);
+            meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION, {
+                event: event,
+                element: element
+            });
+        });
+        $(document.body).on("click", "#resultsBridgeLess .call-modal .btn-call-actions", function triggerMoreInfoCallActionsFromModal(event) {
+            var element = $(this);
+            meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION_MODAL, {
+                event: event,
+                element: element
+            });
+        });
+        $(document.body).on("click", "#resultsBridgeLess .btn-submit-callback", function triggerMoreInfoSubmitCallback(event) {
+            var element = $(this);
+            meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, {
+                event: event,
+                element: element
+            });
+        });
+    }
+    function calculateDockedHeader(event) {
+        if (deviceType != "TABLET") {
+            var featuresView = Results.getDisplayMode() == "features" ? true : false, redrawFixedHeader = true, pagePaginationActive = event == "startPaginationScroll" || event == "endPaginationScroll" || event == "filterAnimationEnded", $featuresDockedHeader = $(".featuresDockedHeader"), $originalHeader = $(".headers");
+            if (featuresView) {
+                var $fixedDockedHeader = $(".fixedDockedHeader");
+                if (headerAffixed) {
+                    $originalHeader.hide();
+                    var $currentPage = $(".currentPage"), topPosition = $("#navbar-filter").height() + $("#navbar-main").outerHeight(), dockedHeaderTop = event == "startPaginationScroll" ? "0" : topPosition + "px", dockedHeaderWidth = $(".result-row").first().width();
+                    var pageContentOffSet = $("#pageContent").offset(), navFilterOffSet = $("#navbar-filter").offset(), offSetFromTopPlusNav = navFilterOffSet.top - pageContentOffSet.top + 7, dockedHeaderPosition = event == "startPaginationScroll" ? "absolute" : "fixed", dockedHeaderPaddingTop = event == "startPaginationScroll" ? offSetFromTopPlusNav + "px" : "0px";
+                    if (!pagePaginationActive) {
+                        $currentPage.find($featuresDockedHeader).css({
+                            top: dockedHeaderTop,
+                            width: dockedHeaderWidth
+                        }).show();
+                    } else {
+                        redrawFixedHeader = false;
+                        $featuresDockedHeader.css({
+                            position: dockedHeaderPosition,
+                            top: dockedHeaderTop,
+                            width: dockedHeaderWidth,
+                            "padding-top": dockedHeaderPaddingTop
+                        }).show();
+                        if (event == "endPaginationScroll" || event == "filterAnimationEnded") {
+                            if ($currentPage.length >= 1) {
+                                $currentPage.siblings(":not(.currentPage)").find($featuresDockedHeader).hide();
+                            } else {
+                                $featuresDockedHeader.hide();
+                            }
+                            redrawFixedHeader = true;
+                        }
+                    }
+                    recalculateFixedHeader(redrawFixedHeader);
+                } else {
+                    $featuresDockedHeader.hide();
+                    $fixedDockedHeader.hide();
+                    $originalHeader.show();
+                }
+            } else {
+                $originalHeader.show();
+                $featuresDockedHeader.hide();
+            }
+        }
+    }
+    function recalculateFixedHeader(redrawFixedHeader) {
+        var $fixedDockedHeader = $(".fixedDockedHeader"), $currentPage = $(".currentPage"), topPosition = $("#navbar-filter").height() + $("#navbar-main").outerHeight();
+        if (redrawFixedHeader) {
+            var cellFeatureWidth = $(".cell.feature").width() + 2 + "px", dockedHeaderHeight = "100px";
+            if ($currentPage.length >= 1) {
+                dockedHeaderHeight = $(".resultInsert.featuresMode:visible").first().innerHeight() + 1 + "px";
+            }
+            $fixedDockedHeader.css({
+                top: topPosition,
+                width: cellFeatureWidth,
+                height: dockedHeaderHeight
+            }).show();
+        }
     }
     function breakpointTracking() {
         startColumnWidthTracking();
@@ -2000,6 +2153,7 @@
         recordPreviousBreakpoint: recordPreviousBreakpoint,
         switchToPriceMode: switchToPriceMode,
         switchToFeaturesMode: switchToFeaturesMode,
+        calculateDockedHeader: calculateDockedHeader,
         showNoResults: showNoResults,
         publishExtraSuperTagEvents: publishExtraSuperTagEvents
     });
