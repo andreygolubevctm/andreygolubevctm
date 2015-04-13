@@ -1649,11 +1649,8 @@
         deviceType = $("#deviceType").attr("data-deviceType");
         try {
             var displayMode = "price";
-            if (meerkat.site.tracking.brandCode == "ctm") {
+            if (meerkat.modules.splitTest.isActive(18)) {
                 displayMode = "features";
-            }
-            if (meerkat.modules.splitTest.isActive(17)) {
-                displayMode = "price";
             }
             Results.init({
                 url: "ajax/json/car_quote_results.jsp",
@@ -1942,8 +1939,9 @@
         });
     }
     function calculateDockedHeader(event) {
-        if (deviceType != "TABLET") {
-            var featuresView = Results.getDisplayMode() == "features" ? true : false, redrawFixedHeader = true, pagePaginationActive = event == "startPaginationScroll" || event == "endPaginationScroll" || event == "filterAnimationEnded", $featuresDockedHeader = $(".featuresDockedHeader"), $originalHeader = $(".headers");
+        var $featuresDockedHeader = $(".featuresDockedHeader"), $originalHeader = $(".headers");
+        if (deviceType != "TABLET" && meerkat.modules.deviceMediaState.get() != "xs") {
+            var featuresView = Results.getDisplayMode() == "features" ? true : false, redrawFixedHeader = true, pagePaginationActive = event == "startPaginationScroll" || event == "endPaginationScroll" || event == "filterAnimationEnded";
             if (featuresView) {
                 var $fixedDockedHeader = $(".fixedDockedHeader");
                 if (headerAffixed) {
@@ -1982,6 +1980,9 @@
                 $originalHeader.show();
                 $featuresDockedHeader.hide();
             }
+        } else {
+            $originalHeader.show();
+            $featuresDockedHeader.hide();
         }
     }
     function recalculateFixedHeader(redrawFixedHeader) {

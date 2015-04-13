@@ -9101,6 +9101,13 @@ fieldset[disabled] .radioCustom input + label:before {
 #resultsBridgeLess .productSummary {
   height: 175px;
 }
+@media (max-width: 767px) {
+  #resultsBridgeLess .productSummary {
+    text-align: center;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+}
 #resultsBridgeLess .featuresMode .compare-toggle-wrapper {
   float: right;
 }
@@ -9177,11 +9184,16 @@ fieldset[disabled] .radioCustom input + label:before {
 #resultsBridgeLess .headers.featuresNormalHeader .compare-basket .products-returned-count {
   font-weight: bold;
 }
-#resultsBridgeLess .featuresNormalHeader .companyLogo {
-  width: 80px;
-  height: 80px;
-  line-height: 80px;
-  background-size: 80px 80px;
+@media (max-width: 767px) {
+  #resultsBridgeLess .featuresNormalHeader {
+    height: auto;
+  }
+}
+@media (max-width: 767px) {
+  #resultsBridgeLess .featuresNormalHeader .companyLogo {
+    display: inline-block;
+    float: none;
+  }
 }
 #resultsBridgeLess .featuresNormalHeader .compareButtonsContainer {
   text-align: center;
@@ -9196,10 +9208,17 @@ fieldset[disabled] .radioCustom input + label:before {
   padding-bottom: 9px;
 }
 #resultsBridgeLess .featuresNormalHeader .frequency {
+  display: block;
   margin-bottom: 0;
   margin-left: 15px;
   width: auto;
   padding-top: 21px;
+}
+@media (max-width: 767px) {
+  #resultsBridgeLess .featuresNormalHeader .frequency {
+    text-align: center;
+    padding: 0px;
+  }
 }
 #resultsBridgeLess .featuresNormalHeader .frequency .frequencyAmount {
   display: inline-block;

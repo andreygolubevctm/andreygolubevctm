@@ -53,13 +53,9 @@
 
 		try {
 			var displayMode = 'price';
-			if (meerkat.site.tracking.brandCode == 'ctm') {
+
+			if (meerkat.modules.splitTest.isActive(18)) {
 				displayMode = 'features';
-			}
-
-			if (meerkat.modules.splitTest.isActive(17)) {
-				displayMode = 'price';
-
 			}
 
 			// Init the main Results object
@@ -434,13 +430,14 @@
 
 	function calculateDockedHeader(event) {
 
+		var $featuresDockedHeader = $('.featuresDockedHeader'),
+			$originalHeader = $('.headers');
+
 		// There are copious issues with tablets and position:fixed. This just doesn't do the docked header, until we can fix it.
-		if (deviceType != 'TABLET') {
+		if (deviceType != 'TABLET'  && meerkat.modules.deviceMediaState.get() != 'xs') {
 		var featuresView = Results.getDisplayMode() == 'features' ? true : false,
 			redrawFixedHeader = true,
-				pagePaginationActive = event == 'startPaginationScroll' || event == 'endPaginationScroll' || event == 'filterAnimationEnded',
-			$featuresDockedHeader = $('.featuresDockedHeader'),
-			$originalHeader = $('.headers');
+				pagePaginationActive = event == 'startPaginationScroll' || event == 'endPaginationScroll' || event == 'filterAnimationEnded';
 
 		if (featuresView) {
 			var $fixedDockedHeader = $('.fixedDockedHeader');
@@ -493,6 +490,10 @@
 			$featuresDockedHeader.hide();
 
 		}
+		} else {
+			// Reset the elements, so we don't have any weirdness switching back and forth.
+			$originalHeader.show();
+			$featuresDockedHeader.hide();
 	}
 
 	}

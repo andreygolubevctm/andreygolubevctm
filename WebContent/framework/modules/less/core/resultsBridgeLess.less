@@ -12,6 +12,11 @@
 
 	.productSummary {
 		height: 175px;
+		@media(@xs-only) {
+			text-align: center;
+			padding-top: 0px;
+			padding-bottom: 0px;
+	}
 	}
 
 	.featuresMode {
@@ -112,11 +117,15 @@
 	}
 
 	.featuresNormalHeader {
+		@media(@xs-only) {
+			height: auto;
+		}
+
 		.companyLogo {
-			width: 80px;
-			height: 80px;
-			line-height: 80px;
-			background-size: 80px 80px;
+			@media(@xs-only) {
+				display: inline-block;
+				float: none;
+		}
 		}
 
 		.compareButtonsContainer {
@@ -133,6 +142,11 @@
 		}
 
 		.frequency {
+			@media(@xs-only) {
+				text-align: center;
+				padding: 0px;
+			}
+			display: block;
 			margin-bottom: 0;
 			margin-left: 15px;
 			width: auto;

@@ -128,7 +128,7 @@
 
 		<div class="result featuresNormalHeader headers">
 			<div class="resultInsert featuresMode">
-				<div class="productSummary results hidden-xs">
+				<div class="productSummary results">
 					<div class="compare-toggle-wrapper">
 						<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" />
 						<label for="features_compareTick_{{= obj.productId }}"></label>
