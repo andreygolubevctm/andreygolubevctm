@@ -113,8 +113,7 @@
 					<!-- <CompanyProductCd> element is mandatory to specify the ACE-provided Product Code -->
 					<CompanyProductCd>
 						<xsl:choose>
-							<xsl:when test="destinations/*[not(self::au)]/*">ED8B9250-3964-4A5F-BC56-A1CF00319F9D</xsl:when>
-							<xsl:when test="destinations/au/au">C9FF3B06-AF1E-42A2-9FCA-A1D5001064F9</xsl:when>
+							<xsl:when test="$region = '8C9779C1-8C1B-4FAC-BC87-E71CBD73C403'">C9FF3B06-AF1E-42A2-9FCA-A1D5001064F9</xsl:when>
 							<xsl:otherwise>ED8B9250-3964-4A5F-BC56-A1CF00319F9D</xsl:otherwise>
 						</xsl:choose>
 					</CompanyProductCd>

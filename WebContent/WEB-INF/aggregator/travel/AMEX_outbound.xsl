@@ -21,19 +21,6 @@
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<xsl:variable name="isoDate">T10:10:10Z</xsl:variable>
 
-		<xsl:variable name="quoteCode">
-			<xsl:choose>
-				<xsl:when test="policyType = 'S'">
-					<xsl:choose>
-						<xsl:when test="destinations/*[not(self::au)]/*">SingleTrip</xsl:when>
-						<xsl:when test="destinations/au/au">SingleDomestic</xsl:when>
-						<xsl:otherwise>SingleTrip</xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>
-				<xsl:otherwise>Annual</xsl:otherwise>
-			</xsl:choose>
-		</xsl:variable>
-
 		<xsl:variable name="fromDate">
 			<xsl:choose>
 				<xsl:when test="policyType = 'S'">
@@ -84,6 +71,18 @@
 					</Destination>
 				</xsl:when>
 				<xsl:otherwise>Worldwide</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
+		<xsl:variable name="quoteCode">
+			<xsl:choose>
+				<xsl:when test="policyType = 'S'">
+					<xsl:choose>
+						<xsl:when test="$destination = 'Domestic'">SingleDomestic</xsl:when>
+						<xsl:otherwise>SingleTrip</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>Annual</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 

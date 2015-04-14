@@ -58,7 +58,7 @@
 		<outbound-xsl>AMEX_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>SPName=CompareTheMarket,CustLoginId=axau_ctm.svc,password=$craMBLeD@123!</outbound-xsl-parms>
 		<inbound-xsl>AMEX_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AMEX,rootURL=https://amex.atuat.acegroup.com/AU</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AMEX,rootURL=https://amex.atuat.acegroup.com/AUResp/</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
