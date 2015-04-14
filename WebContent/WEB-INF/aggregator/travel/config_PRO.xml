@@ -123,7 +123,7 @@
 		<outbound-xsl>VIRG_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>VIRG_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=VIRG,quoteUrl=https://www.virginmoney.com.au/</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=VIRG,quoteUrl=https://travel.virginmoney.com.au/</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 		<content-type>text/xml</content-type>
 		<accept>text/xml</accept>
