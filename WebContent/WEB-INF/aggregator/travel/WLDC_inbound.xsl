@@ -6,6 +6,7 @@
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="utilities/unavailable.xsl"/>
+	<xsl:import href="utilities/handoverMapping.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -41,29 +42,11 @@
 
 				<xsl:variable name="region">
 					<xsl:choose>
-						<xsl:when test="$request/travel/destinations/af/af">worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/me/me">worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/ca">worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/sa">worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">worldwide</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/us">worldwide</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/eu/eu">europe</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/uk">europe</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/as/ch">asia</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/hk">asia</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/jp">asia</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/in">asia</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/th">asia</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/in">asia</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/pa/ba">pacific</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/nz">pacific</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/pi">pacific</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/au/au">australia</xsl:when>
-
+						<xsl:when test="$request/travel/policyType = 'S'">
+							<xsl:call-template name="getHandoverMapping">
+								<xsl:with-param name="handoverValues" select="$request/travel/mappedCountries/WLDC/handoverMapping" />
+							</xsl:call-template>
+						</xsl:when>
 						<xsl:otherwise>worldwide</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

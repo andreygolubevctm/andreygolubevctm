@@ -5,6 +5,7 @@
 	exclude-result-prefixes="soapenv">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/handoverMapping.xsl" />
 	<xsl:import href="utilities/unavailable.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -62,28 +63,11 @@
 
 				<xsl:variable name="destinationCode">
 					<xsl:choose>
-						<xsl:when test="$request/travel/destinations/af/af">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/us">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/ca">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/sa">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/jp">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/me/me">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">WW</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/eu/eu">EU</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/uk">EU</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/as/ch">AS</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/hk">AS</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/th">AS</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/in">AS</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/pa/in">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/ba">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/nz">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/pi">PC</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/au/au">AU</xsl:when>
+						<xsl:when test="$request/travel/policyType = 'S'">
+							<xsl:call-template name="getHandoverMapping">
+								<xsl:with-param name="handoverValues" select="$request/travel/mappedCountries/FAST/handoverMapping" />
+							</xsl:call-template>
+						</xsl:when>
 						<xsl:otherwise>WW</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

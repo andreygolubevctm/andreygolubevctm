@@ -221,8 +221,8 @@
         $(document).ready(function() {
             $travel_dates_toDate = $("#travel_dates_toDate"), $travel_dates_fromDate_button = $("#travel_dates_fromDate_button"), 
             $travel_dates_fromDate = $("#travel_dates_fromDate"), $travel_dates_toDate_button = $("#travel_dates_toDate_button").trigger("click"), 
-            $travel_adults = $("#travel_adults"), $travel_dates_toDate = $("#travel_dates_toDate");
-            $travel_destinations_do_do = $("#travel_destinations_do_do");
+            $travel_adults = $("#travel_adults"), $travel_dates_toDate = $("#travel_dates_toDate"), 
+            $travel_destinations = $("#travel_destinations");
             $policyTypeBtn = $("input[name=travel_policyType]");
             meerkat.modules.travelYourCover.initTravelCover();
             setJourneyEngineSteps();
@@ -286,7 +286,6 @@
                 if ($policyTypeBtn.is(":checked")) {
                     meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
                 }
-                meerkat.modules.travelCountrySelection.initCountrySelection();
                 $policyTypeBtn.on("change", function(event) {
                     meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
                 });
@@ -301,10 +300,14 @@
                 $travel_adults.focus(function hideCalendar() {
                     $travel_dates_toDate.datepicker("hide");
                 });
-                $travel_destinations_do_do.focus(function hideCalendar() {
-                    $travel_dates_fromDate.datepicker("hide");
-                    $travel_dates_toDate.datepicker("hide");
-                });
+                if (meerkat.site.countrySelectionDefaults.length) {
+                    var countries = meerkat.site.countrySelectionDefaults.split(",");
+                    for (var i = 0; i < countries.length; i++) {
+                        if (countries[i].length) {
+                            $travel_destinations.val(countries[i]).change();
+                        }
+                    }
+                }
             },
             onBeforeEnter: function(event) {},
             onBeforeLeave: function(event) {}
@@ -493,63 +496,6 @@
     meerkat.modules.register("travelContactDetails", {
         init: init,
         setLocation: setLocation
-    });
-})(jQuery);
-
-(function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, countryList = [];
-    var $destinations, $destinationsCheckboxes;
-    function updateCountries() {
-        var $errorField = $destinationsFieldset.find(".error-field");
-        if ($errorField.length > 0) {
-            $errorField.remove();
-        }
-        if ($destinationsFieldset.find(".destcheckbox:checked").length > 0) {
-            $destinations.val("1");
-        } else {
-            $destinations.val("");
-        }
-        $destinations.valid();
-    }
-    function initCountrySelection() {
-        $(document).ready(function() {
-            $destinationsFieldset = $(".travel_details_destinations");
-            $destinations = $("#travel_destination");
-            $destinationsCheckboxes = $(".destcheckbox");
-            applyEventListeners();
-            $destinationsFieldset.find(".destcheckbox:checked").each(function() {
-                $(this).change();
-            });
-        });
-    }
-    function getCountryList() {
-        return countryList || [];
-    }
-    function hasCountry(country) {
-        return countryList.indexOf(country) != -1;
-    }
-    function applyEventListeners() {
-        $destinationsCheckboxes.on("change", function() {
-            meerkat.modules.travelCountrySelection.updateCountries();
-            var $el = $(this), val = $el.val();
-            if ($el.is(":checked")) {
-                countryList.push(val);
-            } else {
-                if (countryList.indexOf(val) !== -1) {
-                    for (var i = 0; i < countryList.length; i++) {
-                        if (countryList[i] == val) {
-                            countryList.splice(i, 1);
-                        }
-                    }
-                }
-            }
-        });
-    }
-    meerkat.modules.register("travelCountrySelection", {
-        initCountrySelection: initCountrySelection,
-        updateCountries: updateCountries,
-        getCountryList: getCountryList,
-        hasCountry: hasCountry
     });
 })(jQuery);
 
@@ -1120,9 +1066,8 @@
             }
             var obj = result.info;
             if (policyType == "Single Trip") {
-                var medical = 5e6, countryList = meerkat.modules.travelCountrySelection.getCountryList();
-                countryList = typeof countryList.toString === "function" ? countryList.toString() : countryList[0];
-                if (countryList == "pa:au") {
+                var medical = 5e6, countryList = $("#travel_destinations").val();
+                if (countryList == "AUS") {
                     medical = 0;
                 }
                 if (obj.excess.value <= 250 && obj.medical.value >= medical && obj.cxdfee.value >= 7500 && obj.luggage.value >= 7500) {
@@ -1374,10 +1319,10 @@
 
 (function($) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-    var $resultsSummaryPlaceholder, $fromDate, $toDate, $worldwide, $adults, $children, $policytype, $summaryHeader;
+    var $resultsSummaryPlaceholder, $fromDate, $toDate, $worldwide, $adults, $children, $policytype, $summaryHeader, $selectedTags;
     function updateSummaryText() {
         var txt = '<span class="highlight">';
-        var adults = $adults.val(), children = $children.val(), chkCount = $(".destcheckbox:checked").length;
+        var adults = $adults.val(), children = $children.val();
         txt += adults + " adult" + (adults == 1 ? "" : "s");
         if (children > 0) {
             txt += " and " + children + " child" + (children == 1 ? "" : "ren");
@@ -1385,13 +1330,10 @@
         if ($("input[name=travel_policyType]:checked").val() == "S") {
             $summaryHeader.html("Your quote is based on");
             txt += '</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
-            if ($worldwide.is(":checked")) {
-                txt += "any country";
-            } else if (chkCount > 1) {
-                txt += chkCount + " destinations";
+            if ($selectedTags.children().length == 1) {
+                txt += $selectedTags.find(".selected-tag span").text();
             } else {
-                var chkId = $(".destcheckbox:checked").first().attr("id");
-                txt += $("label[for=" + chkId + "]").text();
+                txt += "multiple destinations";
             }
             var x = $fromDate.val().split("/"), y = $toDate.val().split("/"), date1 = new Date(x[2], x[1] - 1, x[0]), date2 = new Date(y[2], y[1] - 1, y[0]);
             var DAY = 1e3 * 60 * 60 * 24, days = 1 + Math.ceil((date2.getTime() - date1.getTime()) / DAY);
@@ -1408,6 +1350,7 @@
         $toDate = $("#travel_dates_toDate"), $worldwide = $("#travel_destinations_do_do"), 
         $adults = $("#travel_adults"), $children = $("#travel_children"), $policytype = $("#travel_policyType");
         $summaryHeader = $(".resultsSummaryContainer h5");
+        $selectedTags = $(".selected-tags");
         applyEventListeners();
     }
     function applyEventListeners() {

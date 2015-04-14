@@ -9,17 +9,17 @@
 	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/travel/errors</error-dir>
 	<debug-dir>travel/debug</debug-dir>
 	<validation-file>WEB-INF/xsd/travel/travelQuoteResults.xsd</validation-file>
-<!--
+
 	<service name="AGIS" type="soap">
 		<soap-url>https://services-nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
 		<soap-action>getTravelQuotes</soap-action>
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000001,partnerReference=TEST-01</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000001</outbound-xsl-parms>
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
--->
+
 	<service name="OTIS" type="soap">
 		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/quickquote</soap-url>
 		<soap-user>CtM</soap-user>
@@ -46,7 +46,7 @@
 		<soap-url>https://services-nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>
 		<soap-action>getTravelQuotes</soap-action>
 		<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000002,partnerReference=TEST-01</outbound-xsl-parms>
+		<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000002</outbound-xsl-parms>
 		<inbound-xsl>1FOW_inbound.xsl</inbound-xsl>
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
@@ -98,13 +98,17 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="VIRG" type="url-encoded">
-		<soap-url>http://192.168.149.65/ctm/rating/travel_price_result.jsp?providerId=78</soap-url>
+	<service name="VIRG" type="soap">
+		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
+		<soap-user>CtM</soap-user>
+		<soap-password>F7AT8v57udgE5rx</soap-password>
 		<outbound-xsl>VIRG_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>VIRG_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=VIRG</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=VIRG,quoteUrl=https://uat-aspire.agaassistance.com.au/virginmoney/</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
+		<content-type>text/xml</content-type>
+		<accept>text/xml</accept>
 	</service>
 
 	<service name="I4LS" type="url-encoded">

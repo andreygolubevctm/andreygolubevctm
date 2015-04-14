@@ -569,12 +569,6 @@ body > div > header a.bottombar .btn-call:hover {
   margin-top: 22px;
   margin-bottom: 0;
 }
-.travel_details_destinations .content {
-  margin-top: -20px;
-}
-.travel_details_destinations .checkbox {
-  padding-top: 10px;
-}
 fieldset.travel_details_destinations .content .error-field + .row input.destcheckbox + label:before {
   color: #ffefef;
   border-color: #ff5f5f;

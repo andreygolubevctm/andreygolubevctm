@@ -99,7 +99,7 @@
 <%-- 			</form:row> --%>
 <!-- 		</div> -->
 
-			<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD & CALLIDEN --%>
+			<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE & CALLIDEN --%>
 <%-- 		<hr/> --%>
 
 <%-- 		<form:row label="Has an insurance company cancelled or refused to renew your insurance in the last 5 years?"> --%>
@@ -179,7 +179,7 @@
 
 		init: function(){
 
-<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD & CALLIDEN --%>
+<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE & CALLIDEN --%>
 <%-- 			$('input[name=${name}_claims]').on('change', function(){ --%>
 <!-- 				InsuranceInformation.toggleClaimNumber(); -->
 <!-- 			}); -->
@@ -207,7 +207,7 @@
 			});
 
 			$('input[name=${name}_previousInsurance]').trigger("change");
-			<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD & CALLIDEN --%>
+			<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE & CALLIDEN --%>
 <!-- 			InsuranceInformation.toggleClaimNumber(); -->
 <%-- 			InsuranceInformation.toggleRefusal(); --%>
 <%-- 			InsuranceInformation.toggleCriminalOffenceNumber(); --%>

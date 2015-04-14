@@ -6,6 +6,7 @@
 	
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="utilities/unavailable.xsl"/>
+	<xsl:import href="utilities/handoverMapping.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -58,40 +59,11 @@
 				</xsl:variable>
 				<xsl:variable name="destinationCode">
 					<xsl:choose>
-						<!-- REGION 1 (R1) -->
-						<xsl:when test="$request/travel/destinations/am/us">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/ca">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/sa">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/af/af">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/me/me">WW</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">WW</xsl:when>
-
-						<!-- REGION 2 (R2) -->
-						<xsl:when test="$request/travel/destinations/eu/eu">EU</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/uk">EU</xsl:when>
-
-						<!-- REGION 3 (R3) -->
-						<!-- China -->
-						<xsl:when test="$request/travel/destinations/as/ch">AS</xsl:when>
-						<!-- India -->
-						<xsl:when test="$request/travel/destinations/as/in">AS</xsl:when>
-						<!-- Japan -->
-						<xsl:when test="$request/travel/destinations/as/jp">AS</xsl:when>
-						<!-- HongKong -->
-						<xsl:when test="$request/travel/destinations/as/hk">AS</xsl:when>
-						<!-- Thailand -->
-						<xsl:when test="$request/travel/destinations/as/th">AS</xsl:when>
-						<!-- Indonesia -->
-						<xsl:when test="$request/travel/destinations/pa/in">AS</xsl:when>
-						<!-- Bali -->
-						<xsl:when test="$request/travel/destinations/pa/ba">AS</xsl:when>
-
-						<!-- REGION 4 (R4) -->
-						<xsl:when test="$request/travel/destinations/pa/nz">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/pi">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/au/au">AU</xsl:when>
-
-						<!-- Default to REGION 1 (WW) -->
+						<xsl:when test="$request/travel/policyType = 'S'">
+							<xsl:call-template name="getHandoverMapping">
+								<xsl:with-param name="handoverValues" select="$request/travel/mappedCountries/STIN/handoverMapping" />
+							</xsl:call-template>
+						</xsl:when>
 						<xsl:otherwise>WW</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

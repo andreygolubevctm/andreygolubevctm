@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- xsl:import href="../includes/utils.xsl"/ -->
+	<xsl:import href="utilities/countryMapping.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
@@ -16,48 +16,15 @@
 
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<xsl:variable name="region">
-				<xsl:choose>
-					<xsl:when test="policyType = 'A'">R1</xsl:when>
-					<!-- REGION 1 (R1) -->
-					<xsl:when test="destinations/am/us">R1</xsl:when>
-					<xsl:when test="destinations/am/ca">R1</xsl:when>
-					<xsl:when test="destinations/am/sa">R1</xsl:when>
-					<xsl:when test="destinations/do/do">R1</xsl:when>
-
-					<!-- REGION 2 (R2) -->
-					<xsl:when test="destinations/af/af">R2</xsl:when>
-					<!-- Middle East -->
-					<xsl:when test="destinations/me/me">R2</xsl:when>
-					<xsl:when test="destinations/eu/eu">R2</xsl:when>
-					<xsl:when test="destinations/eu/uk">R2</xsl:when>
-
-					<!-- REGION 3 (R3) -->
-					<!-- China -->
-					<xsl:when test="destinations/as/ch">R3</xsl:when>
-					<!-- India -->
-					<xsl:when test="destinations/as/in">R3</xsl:when>
-					<!-- Japan -->
-					<xsl:when test="destinations/as/jp">R3</xsl:when>
-					<!-- HongKong -->
-					<xsl:when test="destinations/as/hk">R3</xsl:when>
-					<!-- Thailand -->
-					<xsl:when test="destinations/as/th">R3</xsl:when>
-					<!-- Indonesia -->
-					<xsl:when test="destinations/pa/in">R3</xsl:when>
-
-					<!-- REGION 4 (R4) -->
-					<xsl:when test="destinations/pa/ba">R4</xsl:when>
-					<xsl:when test="destinations/pa/nz">R4</xsl:when>
-					<xsl:when test="destinations/pa/pi">R4</xsl:when>
-
-					<!-- REGION 5 (R5) -->
-					<!-- Australia -->
-					<xsl:when test="destinations/au/au">R5</xsl:when>
-
-					<!-- Default to REGION 1 (WW) -->
-					<xsl:otherwise>R1</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
+			<xsl:choose>
+				<xsl:when test="policyType = 'S'">
+					<xsl:call-template name="getRegionMapping">
+						<xsl:with-param name="selectedRegions" select="mappedCountries/INGO/regions" />
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>R1</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
 
 		<request>
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

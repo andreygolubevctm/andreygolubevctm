@@ -1,7 +1,6 @@
 package com.ctm.web.validation;
 
 import com.ctm.services.FatalErrorService;
-import com.ctm.services.life.LifeService;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +15,7 @@ import java.util.Set;
 
 public class FormValidation {
 
-	private static Logger logger = Logger.getLogger(LifeService.class.getName());
+	private static Logger logger = Logger.getLogger(FormValidation.class.getName());
 
 	public static <T> List<SchemaValidationError> validate(T request , String vertical) {
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();

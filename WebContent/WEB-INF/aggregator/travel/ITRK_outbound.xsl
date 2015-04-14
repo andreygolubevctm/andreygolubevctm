@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cal="java.util.GregorianCalendar" xmlns:sdf="java.text.SimpleDateFormat">
 
-<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- xsl:import href="../includes/utils.xsl"/ -->
+	<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/countryMapping.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
@@ -26,27 +26,11 @@
 
 		<xsl:variable name="region">
 			<xsl:choose>
-				<xsl:when test="destinations/af/af">WW</xsl:when>
-				<xsl:when test="destinations/am/us">WW</xsl:when>
-				<xsl:when test="destinations/am/ca">WW</xsl:when>
-				<xsl:when test="destinations/am/sa">WW</xsl:when>
-				<xsl:when test="destinations/as/jp">WW</xsl:when>
-				<xsl:when test="destinations/me/me">WW</xsl:when>
-				<xsl:when test="destinations/do/do">WW</xsl:when>
-
-				<xsl:when test="destinations/eu/eu">EU</xsl:when>
-				<xsl:when test="destinations/eu/uk">EU</xsl:when>
-
-				<xsl:when test="destinations/as/ch">AS</xsl:when>
-				<xsl:when test="destinations/as/hk">AS</xsl:when>
-				<xsl:when test="destinations/as/in">AS</xsl:when>
-				<xsl:when test="destinations/as/th">AS</xsl:when>
-				<xsl:when test="destinations/pa/in">AS</xsl:when>
-
-				<xsl:when test="destinations/pa/ba">PC</xsl:when>
-				<xsl:when test="destinations/pa/nz">PC</xsl:when>
-				<xsl:when test="destinations/pa/pi">PC</xsl:when>
-
+				<xsl:when test="policyType = 'S'">
+					<xsl:call-template name="getRegionMapping">
+						<xsl:with-param name="selectedRegions" select="mappedCountries/ITRK/regions" />
+					</xsl:call-template>
+				</xsl:when>
 				<xsl:otherwise>WW</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>

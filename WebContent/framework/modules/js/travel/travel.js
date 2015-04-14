@@ -22,6 +22,7 @@
 		$policyTypeBtn;
 
 	function initJourneyEngine(){
+
 		$(document).ready(function(){
 
 			$travel_dates_toDate = $("#travel_dates_toDate"),
@@ -29,8 +30,8 @@
 			$travel_dates_fromDate = $("#travel_dates_fromDate"),
 			$travel_dates_toDate_button = $('#travel_dates_toDate_button').trigger("click"),
 			$travel_adults = $('#travel_adults'),
-			$travel_dates_toDate = $("#travel_dates_toDate")
-			$travel_destinations_do_do = $('#travel_destinations_do_do');
+			$travel_dates_toDate = $("#travel_dates_toDate"),
+			$travel_destinations = $('#travel_destinations');
 
 
 			$policyTypeBtn = $("input[name=travel_policyType]");
@@ -119,7 +120,6 @@
 					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
 				}
 
-				meerkat.modules.travelCountrySelection.initCountrySelection();
 				$policyTypeBtn.on('change', function(event){
 					meerkat.messaging.publish(moduleEvents.traveldetails.COVER_TYPE_CHANGE);
 				});
@@ -139,11 +139,14 @@
 					$travel_dates_toDate.datepicker('hide');
 				});
 
-				// if in the event the user is a tab key navigator
-				$travel_destinations_do_do.focus(function hideCalendar() {
-					$travel_dates_fromDate.datepicker('hide');
-					$travel_dates_toDate.datepicker('hide');
-				});
+				if(meerkat.site.countrySelectionDefaults.length) {
+					var countries = meerkat.site.countrySelectionDefaults.split(',');
+					for(var i = 0; i < countries.length; i++) {
+						if(countries[i].length) {
+						$travel_destinations.val(countries[i]).change();
+					}
+				}
+				}
 
 			},
 			onBeforeEnter: function(event) {

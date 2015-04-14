@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- xsl:import href="../includes/utils.xsl"/ -->
+	<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/countryMapping.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
@@ -18,44 +18,11 @@
 
 		<xsl:variable name="region">
 			<xsl:choose>
-				<xsl:when test="policyType = 'A'">R1</xsl:when>
-				<!-- REGION 1 (R1) -->
-				<xsl:when test="destinations/am/us">R1</xsl:when>
-				<xsl:when test="destinations/am/sa">R1</xsl:when>
-				<xsl:when test="destinations/do/do">R1</xsl:when>
-
-				<!-- REGION 2 (R2) -->
-				<xsl:when test="destinations/am/ca">R2</xsl:when>
-				<xsl:when test="destinations/af/af">R2</xsl:when>
-
-				<!-- REGION 3 (R3) -->
-				<xsl:when test="destinations/eu/eu">R3</xsl:when>
-				<xsl:when test="destinations/me/me">R3</xsl:when>
-
-				<!-- REGION 4 (R4) -->
-				<xsl:when test="destinations/as/jp">R4</xsl:when>
-				<xsl:when test="destinations/as/hk">R4</xsl:when>
-				<xsl:when test="destinations/as/in">R4</xsl:when>
-				<xsl:when test="destinations/as/ch">R4</xsl:when>
-				<xsl:when test="destinations/as/th">R4</xsl:when>
-
-				<!-- REGION 5 (R5) -->
-				<xsl:when test="destinations/eu/uk">R5</xsl:when>
-
-				<!-- REGION 6 (R6) -->
-				<xsl:when test="destinations/pa/pi">R6</xsl:when>
-
-				<!-- REGION 7 (R7) -->
-				<xsl:when test="destinations/pa/nz">R7</xsl:when>
-
-				<!-- REGION 8 (R8) -->
-				<xsl:when test="destinations/pa/in">R8</xsl:when>
-				<xsl:when test="destinations/pa/ba">R8</xsl:when>
-
-				<!-- AUSTRALIA -->
-				<xsl:when test="destinations/au/au">R9</xsl:when>
-
-				<!-- Default to REGION 1 (WW) -->
+				<xsl:when test="policyType = 'S'">
+					<xsl:call-template name="getRegionMapping">
+						<xsl:with-param name="selectedRegions" select="mappedCountries/EASY/regions" />
+					</xsl:call-template>
+				</xsl:when>
 				<xsl:otherwise>R1</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>

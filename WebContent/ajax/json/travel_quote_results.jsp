@@ -56,6 +56,14 @@
 	</c:otherwise>
 </c:choose>
 
+		<c:catch var="mappingError">
+		    <jsp:useBean id="countryMapping" class="com.ctm.services.CountryMappingService" scope="page" />
+			<c:set var="mapping" value="${countryMapping.getCountryMapping(pageContext.request, data.travel.destination)}" />
+		</c:catch>
+		<c:if test="${not empty mappingError}">
+			<go:log level="ERROR">Country Mapping Error: ${mappingError}</go:log>
+		</c:if>
+
 <%-- Save Client Data --%>
 <core:transaction touch="R" noResponse="true" />
 
@@ -85,16 +93,18 @@
 
 <c:import var="config" url="/WEB-INF/aggregator/travel/config.xml" />
 
+		<%--
 		<jsp:useBean id="providerFilter" class="com.ctm.services.ProviderFilter" scope="page" />
 		<c:set var="config" value="${providerFilter.getXMLConfig(pageContext.getRequest(), config)}" />
 
-		<%-- Dirty hack for travel as we're using both the db and config*.xml files at the same time. I need a shower.
+                                         Dirty hack for travel as we're using both the db and config*.xml files at the same time. I need a shower.
 		removed authToken until CAR-863 goes into NXQ
 		<c:set var="authToken">
 			<c:if test="${not empty data['travel/filter/providerKey'] and data['travel/filter/providerKey'] eq 'budd_1FyoO9TN0t'}">
 				${data['travel/filter/providerKey']}
 			</c:if>
-		</c:set> --%>
+                                        </c:set>
+                                --%>
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <go:soapAggregator config = "${config}"

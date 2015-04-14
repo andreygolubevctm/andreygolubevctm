@@ -220,9 +220,9 @@
 	<c:set var="kms"><x:out select="$resultXml/result/headline/kms" /></c:set>
 	<c:set var="terms"><x:out select="$resultXml/result/headline/terms" /></c:set>
 
-			<%-- Set flag to indicate this is a Hollard product. --%>
+			<%-- Set flag to indicate this is a Greenstone product. --%>
 			<c:set var="brandCode"><x:out select="$resultXml/result/brandCode" /></c:set>
-			<c:set var="isHollard">
+			<c:set var="isGreenstone">
 				<c:choose>
 					<c:when test="${brandCode eq 'WOOL' or brandCode eq 'REIN'}">${true}</c:when>
 					<c:otherwise>${false}</c:otherwise>
@@ -339,11 +339,11 @@
 
 						<c:choose>
 							<%-- Replace product name with service value for features view --%>
-							<c:when test="${code == 'product' and isHollard eq true}">
+							<c:when test="${code == 'product' and isGreenstone eq true}">
 								<c:set var="value"><x:out select="$resultXml/result/headline/name" /></c:set>
 							</c:when>
 							<%-- Replace special with service value for features view --%>
-							<c:when test="${value == 'S' and isHollard eq true}">
+							<c:when test="${value == 'S' and isGreenstone eq true}">
 								<c:set var="value"><x:out select="$resultXml/result/headline/feature" /></c:set>
 								<c:set var="extra">${terms}</c:set>
 							</c:when>

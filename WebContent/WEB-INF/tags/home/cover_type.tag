@@ -52,7 +52,7 @@
 				CoverType.coverType = $coverType.val();
 				CoverAmounts.toggleCoverAmountsFields();
 				CoverAmounts.togglePersonalEffectsFields();
-				<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD  --%>
+				<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE  --%>
 <!-- 				PropertyFeature.toggleSecurityFeatures(); -->
 				Summary.setVerticalName( CoverType.coverType.replace(" Cover", "").replace(" Only", "") );
 				//Set the pageName

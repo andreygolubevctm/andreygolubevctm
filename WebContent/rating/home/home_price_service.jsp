@@ -34,7 +34,7 @@
 
 <go:soapAggregator
 			config=""
-			configDbKey="homeQuoteService_hollard_init"
+	configDbKey="homeQuoteService_Greenstone_init"
 		 	manuallySetProviderIds="${providerId}"
 			verticalCode="HOME"
 			styleCodeId="${pageSettings.getBrandId()}"
@@ -59,10 +59,9 @@
 	<c:when test="${empty token}">
 
 		<%-- Has failed to get a token, print through failed response. --%>
-
-		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/home/Hollard/inbound.xsl?service=${service}" />
+		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/home/Greenstone/inbound.xsl?service=${service}" />
 		<c:set var="tokenResultXml">
-			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/home/Hollard/inbound.xsl?service=${service}" />
+			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/home/Greenstone/inbound.xsl?service=${service}" />
 		</c:set>
 
 		<c:out value="${tokenResultXml}" escapeXml="false" />
@@ -85,7 +84,7 @@
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/home'])}" />
 
 				<go:soapAggregator config = ""
-				 	configDbKey="homeQuoteService_hollard_quote"
+			configDbKey="homeQuoteService_Greenstone_quote"
 				 	manuallySetProviderIds="${providerId}"
 					verticalCode="HOME"
 					styleCodeId="${pageSettings.getBrandId()}"
@@ -96,7 +95,7 @@
 
 		<%-- Get the content for Bridging Pages --%>
 				<go:soapAggregator config = ""
-				 	configDbKey="homeQuoteService_hollard_content"
+			configDbKey="homeQuoteService_Greenstone_content"
 				 	manuallySetProviderIds="${providerId}"
 					verticalCode="HOME"
 					styleCodeId="${pageSettings.getBrandId()}"
@@ -106,7 +105,7 @@
 					debugVar="debugXml" />
 
 		<%-- Combine these two --%>
-		<c:import var="transferXml" url="/WEB-INF/aggregator/home/Hollard/merge-quote-and-content.xsl"/>
+		<c:import var="transferXml" url="/WEB-INF/aggregator/home/Greenstone/merge-quote-and-content.xsl"/>
 		<c:set var="combinedXml">${resultXml}${resultContentXml}</c:set>
 
 		<%-- 	This is ugly... and needs to be fixed... --%>

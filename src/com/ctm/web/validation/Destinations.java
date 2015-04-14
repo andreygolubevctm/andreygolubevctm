@@ -13,14 +13,14 @@ import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Pattern(regexp = "[\\d]*")
-@Size(min = 0, max = 200)
+@Pattern(regexp = "^(?!\\s*$).+")
+@Size(min = 0)
 @ReportAsSingleViolation
 @Target({ METHOD, FIELD })
 @Retention(RUNTIME)
 @Constraint(validatedBy = { })
 public @interface Destinations {
-    String message() default "Please select your destination/s.";
+    String message() default "Please select your destination(s).";
 
     Class<?>[] groups() default { };
 

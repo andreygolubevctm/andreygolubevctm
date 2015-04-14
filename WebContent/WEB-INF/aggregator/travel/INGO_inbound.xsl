@@ -5,6 +5,7 @@
 	exclude-result-prefixes="soapenv">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/handoverMapping.xsl" />
 	<xsl:import href="utilities/unavailable.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -110,35 +111,11 @@
 
 				<xsl:variable name="destinationCode">
 					<xsl:choose>
-						<!-- WORLDWIDE* INCLUDING NORTH AND SOUTH AMERICA AND ANTARCTICA -->
-						<xsl:when test="$request/travel/destinations/am/us">7</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/ca">7</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/sa">7</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">7</xsl:when>
-
-
-						<!-- WORLDWIDE* EXCLUDING NORTH AND SOUTH AMERICA AND ANTARCTICA -->
-						<xsl:when test="$request/travel/destinations/af/af">6</xsl:when>
-						<xsl:when test="$request/travel/destinations/me/me">6</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/eu">6</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/uk">6</xsl:when>
-
-						<!-- ASIA -->
-						<xsl:when test="$request/travel/destinations/as/jp">9</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/ch">9</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/hk">9</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/in">9</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/th">9</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/in">9</xsl:when>
-
-						<!-- NEW ZEALAND, PACIFIC AND BALI -->
-						<xsl:when test="$request/travel/destinations/pa/ba">5</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/nz">5</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/pi">5</xsl:when>
-
-						<!-- DOMESTIC -->
-						<xsl:when test="$request/travel/destinations/au/au">8</xsl:when>
-
+						<xsl:when test="$request/travel/policyType = 'S'">
+							<xsl:call-template name="getHandoverMapping">
+								<xsl:with-param name="handoverValues" select="$request/travel/mappedCountries/INGO/handoverMapping" />
+							</xsl:call-template>
+						</xsl:when>
 						<xsl:otherwise>6</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

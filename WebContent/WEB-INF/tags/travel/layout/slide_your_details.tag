@@ -51,17 +51,27 @@
 					</div>
 			</ui:bubble>
 			<layout:slide_content>
-				<%-- PROVIDER TESTING --%>
+				<%-- PROVIDER TESTING
 				<agg:provider_testing xpath="${pageSettings.getVerticalCode()}" displayFullWidth="true" showNumberofResults="false" showExpectedCoverDate="false" />
-
+--%>
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_new:fieldset legend="Your Cover" id="yourcoverfs">
 					<travel:your_cover />
 				</form_new:fieldset>
 
 				<%-- COUNTRY SECTION --%>
-				<form_new:fieldset helpId="213" showHelpText="true" legend="Where are you going?" className="travel_details_destinations" id="destinationsfs">
-					<travel:country_selection xpath="travel/destinations" xpathhidden="travel/destination" />
+				<form_new:fieldset showHelpText="true" legend="Where are you going?" className="travel_details_destinations" id="destinationsfs">
+					<jsp:useBean id="locationsService" class="com.ctm.services.LocationsService" scope="page" />
+					<core:select_tags 
+						variableListName="countrySelectionList" 
+						variableListArray="${locationsService.getCountrySelectionList()}"
+						xpath="travel/destinations" 
+						xpathhidden="travel/destination" 
+						label="What Country(ies) are you going to?"
+						title="Where are you travelling?" 
+						validationErrorPlacementSelector=".travel_details_destinations"
+						helpId="213"
+						/>
 				</form_new:fieldset>
 				<go:log>PRELOAD IS ${param.preload}</go:log>
 				<%-- DATES AND TRAVELLERS SECTION --%>

@@ -7,6 +7,7 @@
 <%@ attribute name="xpath" 			required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
 <%@ attribute name="required" 		required="true"	 rtexprvalue="true"  description="is this field required?" %>
 <%@ attribute name="className" 		required="false" rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="extraDataAttributes" required="false" rtexprvalue="true" description="additional data attributes" %>
 <%@ attribute name="title" 			required="true"  rtexprvalue="true"	 description="title of the select box" %>
 <%@ attribute name="items" 			required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
 <%@ attribute name="delims"			required="false"  rtexprvalue="true" description="Appoints a new delimiter set, i.e. ||" %>
@@ -26,7 +27,7 @@
 	<span class=" input-group-addon">
 		<i class="icon-sort"></i>
 	</span>
-	<field:array_select xpath="${xpath}" required="${required}" className="${className}" title="${title}" items="${items}" delims="${delims}" includeInForm="${includeInForm}" />
+	<field:array_select xpath="${xpath}" extraDataAttributes="${extraDataAttributes}" required="${required}" className="${className}" title="${title}" items="${items}" delims="${delims}" includeInForm="${includeInForm}" />
 </div>
 <c:if test="${not empty helpId}">
 	<field_new:help_icon helpId="${helpId}" position="${helpPosition}" tooltipClassName="${helpClassName}" />

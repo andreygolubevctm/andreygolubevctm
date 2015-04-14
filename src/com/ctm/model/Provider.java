@@ -3,6 +3,9 @@ package com.ctm.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /** This maps to provider_master table */
 
 public class Provider extends AbstractJsonModel{
@@ -10,6 +13,7 @@ public class Provider extends AbstractJsonModel{
 	private int id;
 	private String code;
 	private String name;
+	Map<String, String> propertyDetails = new HashMap<>();
 
 	public Provider(){
 
@@ -37,6 +41,14 @@ public class Provider extends AbstractJsonModel{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setPropertyDetail(String propertyId, String value) {
+		propertyDetails.put(propertyId, value);
+	}
+
+	public String getPropertyDetail(String propertyId) {
+		return propertyDetails.get(propertyId);
 	}
 
 	@Override

@@ -2,6 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/countryMapping.xsl" />
 	<xsl:import href="utilities/date_functions.xsl" />
 	<xsl:import href="utilities/CLBS_functions.xsl" />
 
@@ -25,42 +26,11 @@
 
 		<xsl:variable name="areaCode">
 			<xsl:choose>
-				<xsl:when test="policyType = 'A'">L</xsl:when>
-
-				<!-- WORLDWIDE -->
-				<xsl:when test="destinations/am/us">L</xsl:when>
-				<xsl:when test="destinations/am/ca">L</xsl:when>
-
-				<!-- AFRICA -->
-				<xsl:when test="destinations/af/af">K</xsl:when>
-				<!-- SOUTH AMERICA -->
-				<xsl:when test="destinations/am/sa">K</xsl:when>
-
-				<xsl:when test="destinations/do/do">K</xsl:when>
-				<xsl:when test="destinations/me/me">K</xsl:when>
-
-				<!-- EUROPE -->
-				<xsl:when test="destinations/eu/eu">J</xsl:when>
-				<xsl:when test="destinations/eu/uk">J</xsl:when>
-
-
-				<!-- ASIA -->
-				<xsl:when test="destinations/as/in">H</xsl:when>
-				<xsl:when test="destinations/pa/in">H</xsl:when>
-				<xsl:when test="destinations/as/th">H</xsl:when>
-				<xsl:when test="destinations/as/jp">H</xsl:when>
-				<xsl:when test="destinations/as/ch">H</xsl:when>
-				<xsl:when test="destinations/as/hk">H</xsl:when>
-
-				<!-- SOUTH PACIFIC -->
-				<xsl:when test="destinations/pa/nz">G</xsl:when>
-				<xsl:when test="destinations/pa/ba">G</xsl:when>
-				<xsl:when test="destinations/pa/pi">G</xsl:when>
-
-				<!-- DOMESTIC -->
-				<xsl:when test="destinations/au/au">A</xsl:when>
-
-				<!-- Default to WORLDWIDE -->
+				<xsl:when test="policyType = 'S'">
+					<xsl:call-template name="getRegionMapping">
+						<xsl:with-param name="selectedRegions" select="mappedCountries/CLBS/regions" />
+					</xsl:call-template>
+				</xsl:when>
 				<xsl:otherwise>L</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>

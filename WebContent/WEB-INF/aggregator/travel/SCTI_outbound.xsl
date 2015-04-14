@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- xsl:import href="../includes/utils.xsl"/ -->
+	<xsl:import href="utilities/countryMapping.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
@@ -17,40 +17,14 @@
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 		<!-- Order of regions of most expensive to cheapest below is correct-->
 		<xsl:variable name="region">
-				<xsl:choose>
-					<!-- Multi-Trip -->
-					<xsl:when test="policyType = 'A'">R1</xsl:when>
-
-					<!-- REGION 1 (R1) -->
-					<xsl:when test="destinations/am/us">R3</xsl:when>
-					<xsl:when test="destinations/am/ca">R3</xsl:when>
-
-
-					<!-- REGION 2 (R2) -->
-					<xsl:when test="destinations/af/af">R2</xsl:when>
-					<xsl:when test="destinations/am/sa">R2</xsl:when>
-					<xsl:when test="destinations/me/me">R2</xsl:when>
-					<xsl:when test="destinations/eu/eu">R2</xsl:when>
-					<xsl:when test="destinations/eu/uk">R2</xsl:when>
-					<xsl:when test="destinations/as/ch">R2</xsl:when>
-					<xsl:when test="destinations/as/hk">R2</xsl:when>
-					<xsl:when test="destinations/as/in">R2</xsl:when>
-					<xsl:when test="destinations/as/th">R2</xsl:when>
-					<xsl:when test="destinations/as/jp">R2</xsl:when>
-					<xsl:when test="destinations/do/do">R2</xsl:when>
-
-					<!-- REGION 3 (R3) -->
-					<xsl:when test="destinations/pa/in">R1</xsl:when>
-					<xsl:when test="destinations/pa/pi">R1</xsl:when>
-					<xsl:when test="destinations/pa/ba">R1</xsl:when>
-					<xsl:when test="destinations/pa/nz">R1</xsl:when>
-
-					<!-- REGION 4 (R4) NO QUOTE -->
-					<xsl:when test="destinations/au/au">R4</xsl:when>
-
-					<!-- Default to REGION 1 (WW) -->
-					<xsl:otherwise>R3</xsl:otherwise>
-				</xsl:choose>
+			<xsl:choose>
+				<xsl:when test="policyType = 'S'">
+					<xsl:call-template name="getRegionMapping">
+						<xsl:with-param name="selectedRegions" select="mappedCountries/SCTI/regions" />
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>R1</xsl:otherwise>
+			</xsl:choose>
 			</xsl:variable>
 
 		<request>

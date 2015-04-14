@@ -10,15 +10,8 @@
 	<policyType>S</policyType>
 	<firstName>Test</firstName>
 	<email>preload.testing@comparethemarket.com.au</email>
-	<destinations>
-		<pa>
-			<ba>pa:ba</ba>
-		</pa>
-		<au>
-			<au>pa:au</au>
-		</au>
-	</destinations>
-	<destination>1</destination>
+	<destinations>Please choose your Destination(s)...</destinations>
+	<destination>AUS,BAL</destination>
 	<children>0</children>
 	<marketing>Y</marketing>
 	<privacyoptin>Y</privacyoptin>

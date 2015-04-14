@@ -28,7 +28,7 @@ public class ProviderDao {
 			stmt = dbSource.getConnection().prepareStatement(
 				"SELECT ProviderId, providerCode, Name " +
 				"FROM ctm.provider_master " +
-				"WHERE ProviderId IN (SELECT DISTINCT providerId FROM product_master WHERE productCat= ?)"
+				"WHERE ProviderId IN (SELECT DISTINCT providerId FROM product_master WHERE productCat= ?) ORDER BY Name ASC"
 			);
 
 			/*
@@ -63,5 +63,46 @@ public class ProviderDao {
 		}
 
 		return providers;
+	}
+
+	public Provider getProviderDetails(String providerCode, String propertyId) throws DaoException{
+		SimpleDatabaseConnection dbSource = null;
+
+		Provider provider = null;
+		try{
+
+			dbSource = new SimpleDatabaseConnection();
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+					"SELECT pm.providerId, Name, Text\n" +
+					"FROM ctm.provider_master pm\n" +
+							"JOIN ctm.provider_properties pp ON pp.providerid = pm.providerid\n" +
+							"WHERE providerCode = ?\n" +
+							"AND propertyId = ?;"
+			);
+
+			stmt.setString(1, providerCode);
+			stmt.setString(2, propertyId);
+
+			ResultSet providerResult = stmt.executeQuery();
+
+			provider = new Provider();
+			while (providerResult.next()) {
+				provider.setId(providerResult.getInt("providerId"));
+				provider.setPropertyDetail("mappingType", providerResult.getString("Text"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DaoException(e.getMessage(), e);
+		} catch (NamingException e) {
+			e.printStackTrace();
+			throw new DaoException(e.getMessage(), e);
+		} finally {
+			dbSource.closeConnection();
+		}
+
+		return provider;
 	}
 }

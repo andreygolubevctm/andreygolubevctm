@@ -39,7 +39,7 @@
 			</form:row>
 		</div>
 
-<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD & CALLIDEN --%>
+<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE & CALLIDEN --%>
 <%-- 		<form:row label="Is the home structurally sound and watertight?"> --%>
 <%-- 			<field:array_radio xpath="${xpath}/soundWatertight" --%>
 <%-- 				title="if the home is structurally sound and watertight" --%>

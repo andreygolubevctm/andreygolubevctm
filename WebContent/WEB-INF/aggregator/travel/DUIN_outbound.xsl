@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:SimpleDateFormat="java.text.SimpleDateFormat" xmlns:Date="java.util.Date" exclude-result-prefixes="SimpleDateFormat Date">
 	
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- xsl:import href="../includes/utils.xsl"/ -->
+	<xsl:import href="utilities/countryMapping.xsl" />
 	
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
@@ -23,35 +23,11 @@
 
 		<xsl:variable name="region">
 				<xsl:choose>
-
-				<!-- USA, South america, Canada, Japan, Any other country -->
-				<xsl:when test="destinations/am/us">WW</xsl:when>
-				<xsl:when test="destinations/am/ca">WW</xsl:when>
-				<xsl:when test="destinations/am/sa">WW</xsl:when>
-				<xsl:when test="destinations/do/jp">WW</xsl:when>
-				<xsl:when test="destinations/do/do">WW</xsl:when>
-
-				<!-- Europe, UK, Africa, Middle East, Indonesia, Thailand, Hong Kong, China, India -->
-				<xsl:when test="destinations/eu/eu">EU</xsl:when>
-				<xsl:when test="destinations/eu/uk">EU</xsl:when>
-				<xsl:when test="destinations/af/af">EU</xsl:when>
-				<xsl:when test="destinations/me/me">EU</xsl:when>
-				<xsl:when test="destinations/as/in">EU</xsl:when>
-				<xsl:when test="destinations/as/th">EU</xsl:when>
-				<xsl:when test="destinations/as/hk">EU</xsl:when>
-				<xsl:when test="destinations/as/ch">EU</xsl:when>
-				<xsl:when test="destinations/pa/in">EU</xsl:when>
-					
-
-				<!-- Bali, NZ, Pacific Islands -->
-				<xsl:when test="destinations/pa/ba">PA</xsl:when>
-				<xsl:when test="destinations/pa/nz">PA</xsl:when>
-				<xsl:when test="destinations/pa/pi">PA</xsl:when>
-
-				<!-- Australia -->
-				<xsl:when test="destinations/au/au">AU</xsl:when>
-
-				<!-- Default to Worldwide -->
+			<xsl:when test="policyType = 'S'">
+				<xsl:call-template name="getRegionMapping">
+					<xsl:with-param name="selectedRegions" select="mappedCountries/DUIN/regions" />
+				</xsl:call-template>
+			</xsl:when>
 				<xsl:otherwise>WW</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>

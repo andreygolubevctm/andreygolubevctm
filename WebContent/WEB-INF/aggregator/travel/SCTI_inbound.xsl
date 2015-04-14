@@ -6,6 +6,7 @@
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="utilities/unavailable.xsl"/>
+	<xsl:import href="utilities/handoverMapping.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -81,34 +82,15 @@
 								<xsl:when test="@productId = 'TRAVEL-196'">WW2</xsl:when>
 							</xsl:choose>
 						</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/am/us">WW2</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/ca">WW2</xsl:when>
-
-
-						<xsl:when test="$request/travel/destinations/af/af">WW1</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/sa">WW1</xsl:when>
-						<xsl:when test="$request/travel/destinations/me/me">WW1</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/eu">WW1</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/uk">WW1</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/ch">WW1</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/hk">WW1</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/in">WW1</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/th">WW1</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/jp">WW1</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">WW1</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/pa/nz">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/ba">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/pi">PC</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/in">PC</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/au/au">NA</xsl:when>
-
-
-						<xsl:otherwise>WW2</xsl:otherwise>
+						<xsl:otherwise>
+							<xsl:call-template name="getHandoverMapping">
+								<xsl:with-param name="handoverValues" select="$request/travel/mappedCountries/SCTI/handoverMapping" />
+							</xsl:call-template>
+						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+
+				<xsl:message>SCTI <xsl:value-of select="$destinationCode" /></xsl:message>
 
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>

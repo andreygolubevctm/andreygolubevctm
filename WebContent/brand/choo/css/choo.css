@@ -9349,6 +9349,46 @@ fieldset[disabled] .radioCustom input + label:before {
 #resultsBridgeLess .featuresList .height270 {
   height: 265px;
 }
+.form-group.select-tags-row {
+  margin-bottom: 0;
+}
+ul.selected-tags {
+  padding-left: 0;
+  list-style: none;
+}
+ul.selected-tags li {
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 5px;
+  float: left;
+  padding-left: 10px;
+  color: #064667;
+  margin: 8px 8px 0 0;
+  font-size: 14px;
+}
+ul.selected-tags li.hover {
+  color: #a90000;
+  border-color: #a90000;
+}
+ul.selected-tags li span {
+  padding-top: 3px;
+  display: inline-block;
+  float: left;
+}
+ul.selected-tags li button {
+  margin-left: 10px;
+  border-radius: 0 4px 4px 0;
+  color: #fff;
+  background: #999;
+  padding: 4px 10px;
+}
+ul.selected-tags li button:hover {
+  background: #ffefef;
+  color: #a90000;
+}
+ul.selected-tags li button:focus {
+  outline: none;
+}
 /**
 	* [NOTE]
 	* This file was copied from the default bootstrap

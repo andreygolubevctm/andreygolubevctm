@@ -207,7 +207,7 @@
 					</xsl:call-template>
 
 					<productDes>AI Car Insurance</productDes>
-					<underwriter>The Hollard Insurance Company (PTY) LTD</underwriter>
+					<underwriter>Greenstone Financial Services (PTY) LTD</underwriter>
 					<brandCode>AI</brandCode>
 					<acn>78 090 584 473</acn>
 					<afsLicenceNo>241436</afsLicenceNo>
@@ -403,8 +403,8 @@
 					<li style="font-size:11px;"><strong>Reducible basic excess</strong> - AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
 					<li style="font-size:11px;"><strong>Client choice of repairer</strong> - AI Insurance allows clients to select their repairer of choice*<br>
 					*Refer to the Product Disclosure Statement for more information.</li>
-					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by The Hollard Insurance Company Pty Ltd. Hollard is a member of the international Hollard Insurance Group which provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
-					<p>Hollard has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
+					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by Greenstone Financial Services Pty Ltd. Greenstone Financial Services provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
+					<p>Greenstone has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
 					]]>
 				</info>
 				<terms>
@@ -432,8 +432,8 @@
 					<li style="font-size:11px;"><strong>Reducible basic excess</strong> - AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
 					<li style="font-size:11px;"><strong>Client choice of repairer</strong> - AI Insurance allows clients to select their repairer of choice*<br>
 					*Refer to the Product Disclosure Statement for more information.</li>
-					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by The Hollard Insurance Company Pty Ltd. Hollard is a member of the international Hollard Insurance Group which provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
-					<p>Hollard has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
+					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by Greenstone Financial Services Pty Ltd. Greenstone Financial Services provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
+					<p>Greenstone has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
 					]]>
 				</info>
 				<terms>
@@ -460,8 +460,8 @@
 					<li style="font-size:11px;"><strong>Reducible basic excess</strong> - AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
 					<li style="font-size:11px;"><strong>Client choice of repairer</strong> - AI Insurance allows clients to select their repairer of choice*<br>
 					*Refer to the Product Disclosure Statement for more information.</li>
-					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by The Hollard Insurance Company Pty Ltd. Hollard is a member of the international Hollard Insurance Group which provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
-					<p>Hollard has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
+					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by Greenstone Financial Services Pty Ltd. Greenstone Financial Services provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
+					<p>Greenstone has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
 					]]>
 				</info>
 				<terms>

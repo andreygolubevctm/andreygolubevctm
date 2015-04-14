@@ -7,6 +7,7 @@
 <%@ attribute name="xpath" 			required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
 <%@ attribute name="required" 		required="true"	 rtexprvalue="true"  description="is this field required?" %>
 <%@ attribute name="className" 		required="false" rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="extraDataAttributes" required="false" rtexprvalue="true" description="additional data attributes" %>
 <%@ attribute name="title" 			required="true"  rtexprvalue="true"	 description="title of the select box" %>
 <%@ attribute name="items" 			required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
 <%@ attribute name="delims"			required="false"  rtexprvalue="true"  description="Appoints a new delimiter set, i.e. ||" %>
@@ -36,7 +37,7 @@
 
 
 <%-- HTML --%>
-<select class="form-control array_select ${className}" id="${name}" name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" ${includeAttribute}>
+<select class="form-control array_select ${className}" id="${name}" name="${name}" ${extraDataAttributes} ${requiredAttribute} data-msg-required="Please choose ${title}" ${includeAttribute}>
 	<c:forTokens items="${items}" delims="${delims}" var="option">
 		<c:set var="val" value="${fn:substringBefore(option,'=')}" />
 		<c:set var="des" value="${fn:substringAfter(option,'=')}" />

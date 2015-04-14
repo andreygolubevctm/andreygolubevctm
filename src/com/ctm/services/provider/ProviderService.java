@@ -29,4 +29,25 @@ public class ProviderService {
 		return null;
 
 	}
+
+	public static String fetchProviders(String vertical, int brandId) {
+
+		StringBuilder providerDropdown = new StringBuilder();
+		ProviderDao providerDao = new ProviderDao();
+		try {
+			ArrayList<Provider> providers = providerDao.getProviders(vertical, brandId);
+
+			for (Provider entry : providers) {
+
+				providerDropdown.append("<option value='"+entry.getCode()+"'>"+entry.getName()+"</option>");
+			}
+
+		}
+		catch (Exception e) {
+			logger.error(e);
+		}
+
+		return providerDropdown.toString();
+
+	}
 }

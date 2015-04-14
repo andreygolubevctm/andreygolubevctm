@@ -35,6 +35,14 @@
 	<jsp:attribute name="footer">
 	</jsp:attribute>
 
+	<jsp:attribute name="vertical_settings">
+		{
+			session: {
+				firstPokeEnabled: false
+			}
+		}
+	</jsp:attribute>
+
 	<jsp:attribute name="body_end">
 		<script src="${assetUrl}common/js/jquery.maskedinput-1.3.1.min.js"></script>
 		<script src="${assetUrl}framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>

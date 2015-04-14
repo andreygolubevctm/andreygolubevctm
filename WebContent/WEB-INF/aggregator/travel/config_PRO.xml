@@ -116,13 +116,17 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="VIRG" type="url-encoded">
-		<soap-url>https://ecommerce.disconline.com.au/ctm/rating/travel_price_result.jsp?providerId=78</soap-url>
+	<service name="VIRG" type="soap">
+		<soap-url>https://pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
+		<soap-user>CtM</soap-user>
+		<soap-password>F7AT8v57udgE5rx</soap-password>
 		<outbound-xsl>VIRG_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<outbound-xsl-parms></outbound-xsl-parms>
 		<inbound-xsl>VIRG_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=VIRG</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=VIRG,quoteUrl=https://www.virginmoney.com.au/</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
+		<content-type>text/xml</content-type>
+		<accept>text/xml</accept>
 	</service>
 
 	<service name="I4LS" type="url-encoded">

@@ -24,7 +24,7 @@
 
 		<form:section title="Is the home..." separator="false" id="isTheHome">
 
-<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD & CALLIDEN --%>
+<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE & CALLIDEN --%>
 <%-- 			<form:row label="...situated on a farm or on more than 10 acres?"> --%>
 <%-- 				<field:array_radio xpath="${xpath}/farm" --%>
 <%-- 					title="if the home is situated on a farm or on more than 10 acres" --%>

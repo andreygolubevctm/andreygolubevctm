@@ -114,7 +114,7 @@
 <%-- 									xpath="${xpath}/property" --%>
 <%-- 									title="Property Situation" /> --%>
 
-<%-- TEMPORARY REMOVAL OF MULTIPLE QUESTIONs WHICH ARE ONLY REQUIRED BY HOLLARD  --%>
+<%-- TEMPORARY REMOVAL OF MULTIPLE QUESTIONs WHICH ARE ONLY REQUIRED BY GREENSTONE  --%>
 <%-- 								<home:property_construction --%>
 <%-- 									xpath="${xpath}/property" --%>
 <%-- 									title="Property Construction / Renovation" /> --%>

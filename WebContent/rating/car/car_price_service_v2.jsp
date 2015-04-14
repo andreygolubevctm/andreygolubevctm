@@ -32,7 +32,7 @@
 
 <go:soapAggregator
 	config = ""
- 	configDbKey="carQuoteService_hollard_init"
+	configDbKey="carQuoteService_Greenstone_init"
  	manuallySetProviderIds="${providerId}"
 	verticalCode="CAR"
 	styleCodeId="${pageSettings.getBrandId()}"
@@ -58,9 +58,9 @@
 
 		<%-- Has failed to get a token, print through failed response. --%>
 
-		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/car/Hollard/v2/inbound.xsl" />
+		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/car/Greenstone/v2/inbound.xsl" />
 		<c:set var="tokenResultXml">
-			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/car/Hollard/v2/inbound.xsl" />
+			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/car/Greenstone/v2/inbound.xsl" />
 		</c:set>
 
 		<c:out value="${tokenResultXml}" escapeXml="false" />
@@ -86,7 +86,7 @@
 
 		<go:soapAggregator
 			config = ""
-		 	configDbKey="carQuoteService_hollard_quote"
+			configDbKey="carQuoteService_Greenstone_quote"
 		 	manuallySetProviderIds="${providerId}"
 			verticalCode="CAR"
 			styleCodeId="${pageSettings.getBrandId()}"
@@ -98,7 +98,7 @@
 
 		<go:soapAggregator
 			config = ""
-		 	configDbKey="carQuoteService_hollard_content"
+			configDbKey="carQuoteService_Greenstone_content"
 		 	manuallySetProviderIds="${providerId}"
 			verticalCode="CAR"
 			styleCodeId="${pageSettings.getBrandId()}"
@@ -109,7 +109,7 @@
 			debugVar="debugXml" />
 
 		<%-- Combine these two --%>
-		<c:import var="transferXml" url="/WEB-INF/aggregator/car/Hollard/v2/merge-quote-and-content.xsl"/>
+		<c:import var="transferXml" url="/WEB-INF/aggregator/car/Greenstone/v2/merge-quote-and-content.xsl"/>
 		<c:set var="combinedXml">${quoteResultXml}${contentResultXml}</c:set>
 
 		<%-- 	This is ugly... and needs to be fixed... --%>
@@ -122,11 +122,11 @@
 			pageContext.setAttribute("combinedXml2", xml);
 			%>
 		</c:set>
-		
+
 		<c:set var="finalXml">
 			<x:transform xml="${combinedXml2}" xslt="${transferXml}"/>
 		</c:set>
-		
+
 		<c:out value="${finalXml}" escapeXml="false" />
 
 	</c:otherwise>

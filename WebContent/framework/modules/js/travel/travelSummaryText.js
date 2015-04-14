@@ -12,7 +12,8 @@
 		$adults,
 		$children,
 		$policytype,
-		$summaryHeader;
+		$summaryHeader,
+		$selectedTags;
 
 	function updateSummaryText() {
 		// let it fire in all modes if in the event xs is displayed but a different orientation displays something greater
@@ -21,8 +22,7 @@
 		var txt= '<span class="highlight">';
 
 		var adults = $adults.val(),
-		children = $children.val(),
-		chkCount = $('.destcheckbox:checked').length;
+		children = $children.val();
 
 		// adults
 		txt += adults + ' adult' + (adults == 1 ? '' : 's');
@@ -40,14 +40,11 @@
 			$summaryHeader.html('Your quote is based on');
 			txt +='</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
 
-			// destinations
-			if ($worldwide.is(':checked')){
-				txt += "any country";
-			} else if (chkCount > 1){
-				txt += chkCount + " destinations";
+			// update the country text for single trip
+			if ($selectedTags.children().length == 1) {
+				txt += $selectedTags.find('.selected-tag span').text();
 			} else {
-				var chkId=$('.destcheckbox:checked').first().attr('id');
-				txt += $('label[for='+chkId+']').text();
+				txt += "multiple destinations";
 			}
 
 			// duration calculation
@@ -78,6 +75,7 @@
 		$children = $('#travel_children'),
 		$policytype = $('#travel_policyType');
 		$summaryHeader = $('.resultsSummaryContainer h5');
+		$selectedTags = $('.selected-tags');
 
 		applyEventListeners();
 	}

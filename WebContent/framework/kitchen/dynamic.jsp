@@ -623,10 +623,19 @@
 
 
 
-
 	<form_new:row label="lookup_suburb_postcode">
 		<field_new:lookup_suburb_postcode xpath="${xpath}/new/location" required="true" placeholder="Suburb / Postcode" />
 	</form_new:row>
+	
+	<core:select_tags 
+		variableListName="countrySelectionList" 
+		variableListArray="{ 'options': [{ 'value': 'VAL', 'text': 'Hello' }, { 'value': 'VAL2', 'text': 'Hello2' }, { 'value': 'VAL3', 'text': 'Hello3' }] }" 
+		xpath="travel/destinations" 
+		xpathhidden="travel/destination" 
+		label="Country"
+		title="Where are you travelling?" 
+		validationErrorPlacementSelector=".travel_details_destinations" 
+		/>
 
 	<form_new:row label="slider">
 	<div style="background:#f8f8f8; padding:10px">

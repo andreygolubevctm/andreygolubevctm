@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ctm.dao.CountryMappingDao;
+import com.ctm.model.CountryMapping;
 import org.apache.log4j.Logger;
 
 import com.ctm.services.ApplicationService;
@@ -124,9 +126,9 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setPolicyType(pt.equals("S") ? "ST" : "AMT");
 			emailModel.setDuration((String) data.get("travel/soapDuration"));
 
-			emailModel.setDestinations(getDestinations(data.get("travel/destinations/*/*")));
+			emailModel.setDestinations(getDestinations((String) data.get("travel/destination")));
 
-			setupRankingDetails(emailModel , transactionId);
+			setupRankingDetails(emailModel, transactionId);
 			emailModel.setTransactionId(transactionId);
 			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
 			emailModel.setApplyUrl(price_presentation_url);
@@ -149,32 +151,16 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 		return emailModel;
 	}
 
-	public String getDestinations(Object destinationsObj) {
-		String destinations = "";
-		if (destinationsObj instanceof String) {
-			destinations  = Destination.findDescriptionByCode((String) destinationsObj);
-		} else if (destinationsObj instanceof List) {
-			@SuppressWarnings("unchecked")
-			List<String> destList = (List<String>) destinationsObj;
+	/**
+	 * Returns the country names from the user's selected ISO Codes
+	 */
+	public String getDestinations(String selectedISOCodes) throws DaoException {
+		CountryMappingDao countries = new CountryMappingDao();
+		CountryMapping userSelectedCountries = countries.getSelectedCountryNames(selectedISOCodes);
 
-			int maxDestinations = 5;
-			int listSize = destList.size();
-
-			String separator = "";
-			for (int i = 0; i < listSize && i < maxDestinations; i++) {
-				destinations += separator + Destination.findDescriptionByCode(destList.get(i));
-				separator = ", ";
+		// currently limited to 5 countries due to EDM design
+		return userSelectedCountries.getSelectedCountries(5);
 			}
-
-			// If there is more than 5 destinations, we want to append the text more ....
-			if (listSize > maxDestinations) {
-				destinations += ", more ...";
-			}
-		}
-		return destinations;
-	}
-
-
 
 	private void setupRankingDetails(TravelBestPriceEmailModel emailModel, Long transactionId) throws DaoException {
 		RankingDetailsDao rankingDetailsDao = new RankingDetailsDao();

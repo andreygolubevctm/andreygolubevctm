@@ -4,20 +4,7 @@
 	<xs:element name="travel">
 		<xs:complexType>
 			<xs:all>
-				<xs:element name="destinations" maxOccurs="1" minOccurs="0" >
-					<xs:complexType>
-						<xs:all>
-							<xs:element name="af" maxOccurs="1" minOccurs="0" type="noValidation" />
-							<xs:element name="am" maxOccurs="1" minOccurs="0" type="noValidation" />
-							<xs:element name="as" maxOccurs="1" minOccurs="0" type="noValidation" />
-							<xs:element name="au" maxOccurs="1" minOccurs="0" type="noValidation" />
-							<xs:element name="pa" maxOccurs="1" minOccurs="0" type="noValidation" />
-							<xs:element name="eu" maxOccurs="1" minOccurs="0" type="noValidation" />
-							<xs:element name="me" maxOccurs="1" minOccurs="0" type="noValidation" />
-							<xs:element name="do" maxOccurs="1" minOccurs="0" type="noValidation" />
-						</xs:all>
-					</xs:complexType>
-				</xs:element>
+				<xs:element name="destinations" type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="dates" maxOccurs="1" minOccurs="0" >
 					<xs:complexType>
 						<xs:all>

@@ -3,12 +3,13 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns="http://pricingapi.agaassistance.com.au/PricingRequest.xsd">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<xsl:import href="utilities/date_functions.xsl" />
+	<xsl:import href="utilities/countryMappingAllianz.xsl" />
+	<xsl:import href="utilities/date_functions.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<xsl:param name="partnerId" />
-<xsl:param name="sourceId" />
-<xsl:param name="today" />
+	<xsl:param name="partnerId" />
+	<xsl:param name="sourceId" />
+	<xsl:param name="today" />
 
 <!-- KEYS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -70,37 +71,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns="http://pricingapi.agaas
 
 	<xsl:variable name="destinations">
 		<xsl:choose>
-			<xsl:when test="policyType = 'A'">
-				<Destination><RegionCode>WORLD</RegionCode><CountryCode>WWID</CountryCode></Destination>
+			<xsl:when test="policyType = 'S'">
+				<xsl:call-template name="getRegionCountryMapping">
+					<xsl:with-param name="groupCode">ALNZ</xsl:with-param>
+					<xsl:with-param name="selectedCountries" select="mappedCountries/OTIS/countries" />
+					<xsl:with-param name="selectedRegions" select="mappedCountries/OTIS/regions" />
+				</xsl:call-template>
 			</xsl:when>
-			<xsl:otherwise>
-				<!-- Africa -->
-				<xsl:choose><xsl:when test="destinations/af/af !=''"><Destination><RegionCode>AFRCA</RegionCode><CountryCode>AFR</CountryCode></Destination></xsl:when></xsl:choose>
-				<!-- Americas -->
-				<xsl:choose><xsl:when test="destinations/am/us !=''"><Destination><RegionCode>AMS</RegionCode><CountryCode>USA</CountryCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/am/ca !=''"><Destination><RegionCode>AMS</RegionCode><CountryCode>CAN</CountryCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/am/sa !=''"><Destination><RegionCode>AMS</RegionCode><CountryCode>STAM</CountryCode></Destination></xsl:when></xsl:choose>
-				<!-- Middle East -->
-				<xsl:choose><xsl:when test="destinations/me/me !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>MEA</CountryCode></Destination></xsl:when></xsl:choose>
-				<!-- Europe, UK -->
-				<xsl:choose><xsl:when test="destinations/eu/eu !=''"><Destination><RegionCode>ZEUR</RegionCode><CountryCode>EUR</CountryCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/eu/uk !=''"><Destination><RegionCode>ZEUR</RegionCode><CountryCode>GBR</CountryCode></Destination></xsl:when></xsl:choose>
-				<!-- China, HK, Japan, India, Thailand, Indonesia -->
-				<xsl:choose><xsl:when test="destinations/as/ch !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>CHN</CountryCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/as/hk !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>HKG</CountryCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/as/jp !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>JPN</CountryCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/as/in !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>IND</CountryCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/as/th !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>THA</CountryCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/pa/in !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>IDN</CountryCode></Destination></xsl:when></xsl:choose>
-				<!-- Bali, New Zealand, Pacific Islands -->
-				<xsl:choose><xsl:when test="destinations/pa/ba !=''"><Destination><RegionCode>ZASI</RegionCode><CountryCode>IDN</CountryCode><LocationCode>BAL</LocationCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/pa/nz !=''"><Destination><RegionCode>NZL</RegionCode><CountryCode>NZL</CountryCode></Destination></xsl:when></xsl:choose>
-				<xsl:choose><xsl:when test="destinations/pa/pi !=''"><Destination><RegionCode>PACIF</RegionCode><CountryCode>PAC</CountryCode></Destination></xsl:when></xsl:choose>
-				<!-- Australia -->
-				<xsl:choose><xsl:when test="destinations/au/au !=''"><Destination><RegionCode>AUS</RegionCode><CountryCode>AUS</CountryCode></Destination></xsl:when></xsl:choose>
-				<!-- Other -->
-				<xsl:choose><xsl:when test="destinations/do/do !=''"><Destination><RegionCode>WORLD</RegionCode><CountryCode>WWID</CountryCode></Destination></xsl:when></xsl:choose>
-			</xsl:otherwise>
+			<xsl:otherwise><Destination><RegionCode>WORLD</RegionCode><CountryCode>WWID</CountryCode></Destination></xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
 

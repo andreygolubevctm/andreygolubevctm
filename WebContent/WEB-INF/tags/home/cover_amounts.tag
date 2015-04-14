@@ -82,7 +82,7 @@
 					title="if you wish to cover specified contents above the policy limits"/>&nbsp;
 			</form:row>
 		</div>
-<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD & CALLIDEN --%>
+<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE & CALLIDEN --%>
 		<div class="abovePolicyLimitsAmount">
 			<form:row label="">
 <%-- 			<form:row label="Total cover for specified contents"> --%>

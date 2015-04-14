@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cal="java.util.GregorianCalendar" xmlns:sdf="java.text.SimpleDateFormat" xmlns:java="http://xml.apache.org/xslt/java" exclude-result-prefixes="cal sdf java">
 
-<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/countryMapping.xsl" />
 	<xsl:import href="utilities/util_functions.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -63,78 +64,24 @@
 		<xsl:variable name="region">
 			<xsl:choose>
 				<xsl:when test="policyType = 'S'">
-					<xsl:choose>
-						<!-- REGION 1 (Worldwide) -->
-						<xsl:when test="destinations/af/af">aeae6488-662f-4a5c-9c2d-a2e4003f7a86</xsl:when>
-						<xsl:when test="destinations/am/us">aeae6488-662f-4a5c-9c2d-a2e4003f7a86</xsl:when>
-						<xsl:when test="destinations/am/ca">aeae6488-662f-4a5c-9c2d-a2e4003f7a86</xsl:when>
-						<xsl:when test="destinations/am/sa">aeae6488-662f-4a5c-9c2d-a2e4003f7a86</xsl:when>
-						<xsl:when test="destinations/do/do">aeae6488-662f-4a5c-9c2d-a2e4003f7a86</xsl:when>
-
-						<!-- REGION 2 (Worldwide excluding Americas and Africa) -->
-						<xsl:when test="destinations/eu/eu">c4ee8e38-b191-45b3-b1ed-a2e4003f8b36</xsl:when>
-						<xsl:when test="destinations/eu/uk">c4ee8e38-b191-45b3-b1ed-a2e4003f8b36</xsl:when>
-						<xsl:when test="destinations/me/me">c4ee8e38-b191-45b3-b1ed-a2e4003f8b36</xsl:when>
-						<xsl:when test="destinations/as/jp">c4ee8e38-b191-45b3-b1ed-a2e4003f8b36</xsl:when>
-						<xsl:when test="destinations/as/in">c4ee8e38-b191-45b3-b1ed-a2e4003f8b36</xsl:when>
-						<xsl:when test="destinations/as/ch">c4ee8e38-b191-45b3-b1ed-a2e4003f8b36</xsl:when>
-						<xsl:when test="destinations/as/hk">c4ee8e38-b191-45b3-b1ed-a2e4003f8b36</xsl:when>
-
-						<!-- REGION 3 (South East Asia) -->
-						<xsl:when test="destinations/as/th">e09e1c38-0efc-4a86-ba52-a2e4003f9803</xsl:when>
-
-						<!-- REGION 4 (NZ/Pacific Islands) -->
-						<xsl:when test="destinations/pa/nz">84421cdc-bfe1-42d6-a3d4-a2e4003fa71a</xsl:when>
-						<xsl:when test="destinations/pa/ba">84421cdc-bfe1-42d6-a3d4-a2e4003fa71a</xsl:when>
-						<xsl:when test="destinations/pa/pi">84421cdc-bfe1-42d6-a3d4-a2e4003fa71a</xsl:when>
-						<xsl:when test="destinations/pa/in">84421cdc-bfe1-42d6-a3d4-a2e4003fa71a</xsl:when>
-
-						<!-- REGION 5 (Domestic) -->
-						<xsl:when test="destinations/au/au">245b95d7-d772-4d8d-90f6-a2e4003fb3f7</xsl:when>
-
-						<!-- Default to REGION 1 (Worldwide) -->
-						<xsl:otherwise>aeae6488-662f-4a5c-9c2d-a2e4003f7a86</xsl:otherwise>
-					</xsl:choose>
+					<Destination>
+						<xsl:call-template name="getRegionMapping">
+							<xsl:with-param name="selectedRegions" select="mappedCountries/AMEX/regions" />
+						</xsl:call-template>
+					</Destination>
 				</xsl:when>
 				<xsl:otherwise>aeae6488-662f-4a5c-9c2d-a2e4003f7a86</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-
+		<!-- Yes AMEX needs two entries for this to work hence the look up of region -->
 		<xsl:variable name="destination">
 			<xsl:choose>
 				<xsl:when test="policyType = 'S'">
-					<xsl:choose>
-						<!-- REGION 1 (Worldwide) -->
-						<xsl:when test="destinations/af/af">Worldwide</xsl:when>
-						<xsl:when test="destinations/am/us">Worldwide</xsl:when>
-						<xsl:when test="destinations/am/ca">Worldwide</xsl:when>
-						<xsl:when test="destinations/am/sa">Worldwide</xsl:when>
-						<xsl:when test="destinations/do/do">Worldwide</xsl:when>
-
-						<!-- REGION 2 (Worldwide excluding Americas and Africa) -->
-						<xsl:when test="destinations/eu/eu">Europe</xsl:when>
-						<xsl:when test="destinations/eu/uk">Europe</xsl:when>
-						<xsl:when test="destinations/me/me">Europe</xsl:when>
-
-						<!-- REGION 3 (South East Asia) -->
-						<xsl:when test="destinations/as/jp">South East Asia</xsl:when>
-						<xsl:when test="destinations/as/in">South East Asia</xsl:when>
-						<xsl:when test="destinations/as/ch">South East Asia</xsl:when>
-						<xsl:when test="destinations/as/hk">South East Asia</xsl:when>
-						<xsl:when test="destinations/as/th">South East Asia</xsl:when>
-
-						<!-- REGION 4 (NZ/Pacific Islands) -->
-						<xsl:when test="destinations/pa/nz">Pacific</xsl:when>
-						<xsl:when test="destinations/pa/ba">Pacific</xsl:when>
-						<xsl:when test="destinations/pa/pi">Pacific</xsl:when>
-						<xsl:when test="destinations/pa/in">Pacific</xsl:when>
-
-						<!-- REGION 5 (Domestic) -->
-						<xsl:when test="destinations/au/au">Domestic</xsl:when>
-
-						<!-- Default to REGION 1 (Worldwide) -->
-						<xsl:otherwise>Worldwide</xsl:otherwise>
-					</xsl:choose>
+					<Destination>
+						<xsl:call-template name="getRegionMapping">
+							<xsl:with-param name="selectedRegions" select="mappedCountries/AMEX/countries" />
+						</xsl:call-template>
+					</Destination>
 				</xsl:when>
 				<xsl:otherwise>Worldwide</xsl:otherwise>
 			</xsl:choose>

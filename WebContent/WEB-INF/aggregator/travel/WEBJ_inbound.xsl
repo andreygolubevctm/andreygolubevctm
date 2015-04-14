@@ -6,6 +6,7 @@
 	exclude-result-prefixes="soapenv pr">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/countryMapping.xsl" />
 	<xsl:import href="utilities/string_formatting.xsl" />
 	<xsl:import href="utilities/unavailable.xsl"/>
 	<xsl:import href="includes/webjet_benefits.xsl"/>
@@ -59,38 +60,12 @@
 
 					<xsl:variable name="regionCode">
 					<xsl:choose>
-							<xsl:when test="policyType = 'A'">WORLD</xsl:when>
-							<xsl:otherwise>
-								<xsl:choose>
-										<!-- Africa, Worldwide, Canada, Middle East, Japan -->
-									<xsl:when test="$request/travel/destinations/af/af !=''">WORLD</xsl:when>
-									<xsl:when test="$request/travel/destinations/do/do !=''">WORLD</xsl:when>
-									<xsl:when test="$request/travel/destinations/am/ca !=''">WORLD</xsl:when>
-									<xsl:when test="$request/travel/destinations/me/me !=''">WORLD</xsl:when>
-									<xsl:when test="$request/travel/destinations/as/jp !=''">WORLD</xsl:when>
-
-										<!-- US, South America -->
-									<xsl:when test="$request/travel/destinations/am/us !=''">USASC</xsl:when>
-									<xsl:when test="$request/travel/destinations/am/sa !=''">USASC</xsl:when>
-									
-									<!-- Europe, UK -->
-									<xsl:when test="$request/travel/destinations/eu/eu !=''">EURUK</xsl:when>
-									<xsl:when test="$request/travel/destinations/eu/uk !=''">EURUK</xsl:when>
-										<!-- China, HK, India, Thailand, Indonesia, India -->
-									<xsl:when test="$request/travel/destinations/as/ch !=''">ASNJP</xsl:when>
-									<xsl:when test="$request/travel/destinations/as/hk !=''">ASNJP</xsl:when>
-									
-									<xsl:when test="$request/travel/destinations/as/in !=''">ASNJP</xsl:when>
-									<xsl:when test="$request/travel/destinations/as/th !=''">ASNJP</xsl:when>
-									<xsl:when test="$request/travel/destinations/pa/in !=''">ASNJP</xsl:when>
-									<!-- Bali, New Zealand, Pacific Islands -->
-									<xsl:when test="$request/travel/destinations/pa/ba !=''">PACBL</xsl:when>
-									<xsl:when test="$request/travel/destinations/pa/nz !=''">PACBL</xsl:when>
-									<xsl:when test="$request/travel/destinations/pa/pi !=''">PACBL</xsl:when>
-						<!-- Australia -->
-									<xsl:when test="$request/travel/destinations/au/au !=''">AUS</xsl:when>
-					</xsl:choose>
-							</xsl:otherwise>
+								<xsl:when test="$request/travel/policyType = 'S'">
+									<xsl:call-template name="getRegionMapping">
+										<xsl:with-param name="selectedRegions" select="$request/travel/mappedCountries/WEBJ/regions" />
+									</xsl:call-template>
+								</xsl:when>
+								<xsl:otherwise>WORLD</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
 

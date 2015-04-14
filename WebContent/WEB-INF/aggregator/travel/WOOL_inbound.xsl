@@ -7,6 +7,7 @@
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="utilities/unavailable.xsl" />
+	<xsl:import href="utilities/handoverMapping.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -51,36 +52,11 @@
 
 				<xsl:variable name="destinationCode">
 					<xsl:choose>
-						<!-- REGION 1 (R1) -->
-						<xsl:when test="$request/travel/destinations/am/us">117</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/ca">23</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/sa">477</xsl:when>
-						<xsl:when test="$request/travel/destinations/me/me">531</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">471</xsl:when>
-
-						<!-- REGION 2 (R2) -->
-						<xsl:when test="$request/travel/destinations/af/af">473</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/eu">189</xsl:when>
-
-						<!-- REGION 3 (R3) -->
-						<xsl:when test="$request/travel/destinations/eu/uk">411</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/ch">363</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/jp">377</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/hk">369</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/in">371</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/th">409</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/in">373</xsl:when>
-
-						<!-- REGION 4 (R4) -->
-						<xsl:when test="$request/travel/destinations/pa/pi">533</xsl:when>
-
-						<!-- REGION 5 (R5) -->
-						<xsl:when test="$request/travel/destinations/pa/ba">461</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/nz">465</xsl:when>
-
-						<!-- DOMESTIC -->
-						<xsl:when test="$request/travel/destinations/au/au">469</xsl:when>
-
+						<xsl:when test="$request/travel/policyType = 'S'">
+							<xsl:call-template name="getMultipleHandoverMapping">
+								<xsl:with-param name="handoverValues" select="$request/travel/mappedCountries/WOOL/handoverMapping" />
+							</xsl:call-template>
+						</xsl:when>
 						<xsl:otherwise>471</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
@@ -183,7 +159,7 @@
 					<quoteUrl>
 						<xsl:choose>
 							<xsl:when test="$policyType = 'AMT'">
-								<xsl:text>https://www.woolworthstravelinsurance.com.au/ctm?utm_source=ctm%26utm_medium=travel%26utm_campaign=atm%26DestinationCode=</xsl:text>
+								<xsl:text>https://www.woolworthstravelinsurance.com.au/ctm?utm_source=ctm%26utm_medium=travel%26utm_campaign=atm%26DestinationCode[]=</xsl:text>
 								<xsl:value-of select="$destinationCode" />
 								<xsl:text>%26StartDate=</xsl:text>
 								<xsl:value-of select="$currentDateFormatted" />
@@ -200,7 +176,6 @@
 								<xsl:value-of select="$policyType" />
 								<xsl:text>%26PolicyTypeID=</xsl:text>
 								<xsl:value-of select="$policyType" />
-								<xsl:text>%26DestinationCode=</xsl:text>
 								<xsl:value-of select="$destinationCode" />
 								<xsl:text>%26StartDate=</xsl:text>
 								<xsl:value-of select="translate($fromDate, '/', '-')" />

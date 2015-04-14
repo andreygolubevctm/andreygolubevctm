@@ -168,6 +168,7 @@ public class CreditCardsRouter extends HttpServlet {
 
 	}
 
+	/* TODO: Whenever a refactor is done, will need to look at TravelRouter.java as it was a copy of the doPost function */
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 

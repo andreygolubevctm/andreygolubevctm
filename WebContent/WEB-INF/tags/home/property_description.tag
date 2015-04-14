@@ -44,7 +44,7 @@
 			</form:row>
 		</div>
 
-<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD  --%>
+<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE  --%>
 <%-- 		<div class="numberStoreys"> --%>
 <%-- 			<form:row label="Number of storeys?"> --%>
 <%-- 				<field:array_select --%>

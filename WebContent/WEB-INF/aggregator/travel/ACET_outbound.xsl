@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:math="http://exslt.org/math"
 				extension-element-prefixes="math">
+	<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<xsl:import href="utilities/countryMapping.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
@@ -20,63 +22,11 @@
 
 		<xsl:variable name="region">
 			<xsl:choose>
-				<xsl:when test="policyType = 'A'">37c47d9d-cc54-4543-a9f1-9ff6011349b2</xsl:when>
-
-				<!-- REGION 1 (Worldwide) -->
-				<xsl:when test="destinations/af/af !='' ">37c47d9d-cc54-4543-a9f1-9ff6011349b2</xsl:when>
-				<xsl:when test="destinations/am/us !='' ">37c47d9d-cc54-4543-a9f1-9ff6011349b2</xsl:when>
-				<xsl:when test="destinations/am/ca !='' ">37c47d9d-cc54-4543-a9f1-9ff6011349b2</xsl:when>
-				<xsl:when test="destinations/am/sa !='' ">37c47d9d-cc54-4543-a9f1-9ff6011349b2</xsl:when>
-
-				<!-- REGION 2 (Worldwide excluding Americas and Africa) -->
-				<!-- Europe -->
-				<xsl:when test="destinations/eu">b054b9d7-41d9-470f-a487-9ff60113539c</xsl:when>
-
-				<!-- UK -->
-				<xsl:when test="destinations/eu/uk">b054b9d7-41d9-470f-a487-9ff60113539c</xsl:when>
-
-				<!-- Japan -->
-				<xsl:when test="destinations/as/jp !='' ">b054b9d7-41d9-470f-a487-9ff60113539c</xsl:when>
-
-				<!-- India -->
-				<xsl:when test="destinations/as/in !='' ">b054b9d7-41d9-470f-a487-9ff60113539c</xsl:when>
-
-				<!-- China -->
-				<xsl:when test="destinations/as/ch !='' ">b054b9d7-41d9-470f-a487-9ff60113539c</xsl:when>
-
-				<!-- HongKong -->
-				<xsl:when test="destinations/as/hk !='' ">b054b9d7-41d9-470f-a487-9ff60113539c</xsl:when>
-
-				<!-- Middle East -->
-				<xsl:when test="destinations/me/me !='' ">b054b9d7-41d9-470f-a487-9ff60113539c</xsl:when>
-
-
-				<!-- REGION 3 (South East Asia) -->
-				<!-- Thailand -->
-				<xsl:when test="destinations/as/th !='' ">eac89a74-662c-4e36-a0b6-9ff60113602a</xsl:when>
-
-
-				<!-- REGION 4 (NZ/Pacific Islands) -->
-				<!-- NZ, bro -->
-				<xsl:when test="destinations/pa/nz">8ecf958d-8708-4b22-8e96-9ff601136a2c</xsl:when>
-
-				<!-- Bali -->
-				<xsl:when test="destinations/pa/ba">8ecf958d-8708-4b22-8e96-9ff601136a2c</xsl:when>
-
-				<!-- Pacific Islands -->
-				<xsl:when test="destinations/pa/pi">8ecf958d-8708-4b22-8e96-9ff601136a2c</xsl:when>
-
-				<!-- Indonesia -->
-				<xsl:when test="destinations/pa/in !='' ">8ecf958d-8708-4b22-8e96-9ff601136a2c</xsl:when>
-
-				<!-- REGION 5 (Domestic) -->
-				<!-- Australia -->
-				<xsl:when test="destinations/au/au !='' ">833b107a-9dc7-4d52-841d-6074884dcf50</xsl:when>
-
-				<!-- Default to REGION 1 (Worldwide) -->
-				<!-- Any other country -->
-				<xsl:when test="destinations/do/do !='' ">37c47d9d-cc54-4543-a9f1-9ff6011349b2</xsl:when>
-
+				<xsl:when test="policyType = 'S'">
+					<xsl:call-template name="getRegionMapping">
+						<xsl:with-param name="selectedRegions" select="mappedCountries/ACET/regions" />
+					</xsl:call-template>
+				</xsl:when>
 				<xsl:otherwise>37c47d9d-cc54-4543-a9f1-9ff6011349b2</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>

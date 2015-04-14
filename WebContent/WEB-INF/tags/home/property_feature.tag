@@ -20,7 +20,7 @@
 <div class="${className}">
 
 	<form:fieldset legend="${title}" className="${className}" id="${name}">
-			<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD & CALLIDEN --%>
+			<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE & CALLIDEN --%>
 <%-- 		<c:set var="swimmingPool"> --%>
 <%-- 			<field:checkbox xpath="${xpath}/features/swimmingPool" value="Y"  title="Swimming Pool" required="false"/> --%>
 <%-- 		</c:set> --%>
@@ -67,7 +67,7 @@
 
 <!-- 		<hr/> -->
 
-			<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD & CALLIDEN --%>
+			<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE & CALLIDEN --%>
 <%-- 		<c:set var="doorLocks"> --%>
 <%-- 			<field:checkbox xpath="${xpath}/securityFeatures/doorLocks" value="Y"  title="Locks on all doors" required="false"/> --%>
 <%-- 		</c:set> --%>
@@ -97,7 +97,7 @@
 									Active Back To Base Monitoring=${backToBase}"
 								xpath="${xpath}/securityFeatures"
 																			/>
-						<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY HOLLARD & CALLIDEN --%>
+						<%-- TEMPORARY REMOVAL OF QUESTION WHICH IS ONLY REQUIRED BY GREENSTONE & CALLIDEN --%>
 <%-- 																			Locks on all doors=${doorLocks}, --%>
 <%-- 																			Locks on all windows=${windowLocks}, --%>
 		</div>

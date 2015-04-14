@@ -133,6 +133,7 @@
 	 * Pre-filter the results object to add another parameter. This will be unnecessary when the field comes back from Java.
 	 */
 	function massageResultsObject(products) {
+
 		if(meerkat.modules.coverLevelTabs.isEnabled() !== true) {
 			return products;
 		}
@@ -150,9 +151,8 @@
 				 * Currently ignore medical if destination country is JUST AU.
 				 */
 				var medical = 5000000,
-				countryList = meerkat.modules.travelCountrySelection.getCountryList();
-				countryList = typeof countryList.toString === 'function' ? countryList.toString() : countryList[0];
-				if(countryList == "pa:au") {
+				countryList = $('#travel_destinations').val();
+				if(countryList == "AUS") {
 					medical = 0;
 				}
 

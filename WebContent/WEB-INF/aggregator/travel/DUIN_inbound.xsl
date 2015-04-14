@@ -7,6 +7,7 @@
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="includes/product_info.xsl"/>
 	<xsl:import href="utilities/unavailable.xsl" />
+	<xsl:import href="utilities/handoverMapping.xsl"/>
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
@@ -45,28 +46,11 @@
 			<xsl:for-each select="calculated_multi_values/bulk_premiums/bulk_premium">
 				<xsl:variable name="destinationCode">
 					<xsl:choose>
-						<xsl:when test="$request/travel/destinations/am/us">Area3</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/ca">Area3</xsl:when>
-						<xsl:when test="$request/travel/destinations/am/sa">Area3</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/jp">Area3</xsl:when>
-						<xsl:when test="$request/travel/destinations/do/do">Area3</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/af/af">Area2</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/eu">Area2</xsl:when>
-						<xsl:when test="$request/travel/destinations/eu/uk">Area2</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/ch">Area2</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/hk">Area2</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/in">Area2</xsl:when>
-						<xsl:when test="$request/travel/destinations/as/th">Area2</xsl:when>
-						<xsl:when test="$request/travel/destinations/me/me">Area2</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/in">Area2</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/pa/ba">Area1</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/nz">Area1</xsl:when>
-						<xsl:when test="$request/travel/destinations/pa/pi">Area1</xsl:when>
-
-						<xsl:when test="$request/travel/destinations/au/au">Domestic</xsl:when>
-
+						<xsl:when test="$request/travel/policyType = 'S'">
+							<xsl:call-template name="getHandoverMapping">
+								<xsl:with-param name="handoverValues" select="$request/travel/mappedCountries/DUIN/handoverMapping" />
+							</xsl:call-template>
+						</xsl:when>
 						<xsl:otherwise>Area3</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

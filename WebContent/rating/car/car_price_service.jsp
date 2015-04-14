@@ -22,7 +22,7 @@
 <%--
 <go:soapAggregator
 	config = ""
- 	configDbKey="carQuoteService_hollard_init"
+ 	configDbKey="carQuoteService_Greenstone_init"
  	manuallySetProviderIds="71"
 	verticalCode="CAR"
 	styleCodeId="${pageSettings.getBrandId()}"
@@ -33,7 +33,7 @@
 --%>
 
 <%-- init_config.xml will contain details of the init_inbound.xsl and init_outbound.xsl for init --%>
-<c:import var="init_config" url="/WEB-INF/aggregator/car/Hollard/config_${service}_init.xml" />
+<c:import var="init_config" url="/WEB-INF/aggregator/car/Greenstone/config_${service}_init.xml" />
 <go:soapAggregator config="${init_config}" transactionId="${tranId}" xml="<xml />" var="tokenResultXml" debugVar="tokenDebugXml" />
 
 <go:setData dataVar="data" xpath="soap-response/result" value="*DELETE" />
@@ -52,9 +52,9 @@
 
 		<%-- Has failed to get a token, print through failed response. --%>
 
-		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/car/Hollard/v2/inbound.xsl" />
+		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/car/Greenstone/v2/inbound.xsl" />
 		<c:set var="tokenResultXml">
-			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/car/Hollard/v2/inbound.xsl" >
+			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/car/Greenstone/v2/inbound.xsl" >
 				<x:param name="service" value="${service}" />
 			</x:transform>
 		</c:set>
@@ -82,7 +82,7 @@
 		<%--
 		<go:soapAggregator
 			config = ""
-		 	configDbKey="carQuoteService_hollard_quote"
+		 	configDbKey="carQuoteService_Greenstone_quote"
 		 	manuallySetProviderIds="71"
 			verticalCode="CAR"
 			styleCodeId="${pageSettings.getBrandId()}"
@@ -92,7 +92,7 @@
 			debugVar="debugXml" />
 		--%>
 
-		<c:import var="config" url="/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml" />
+		<c:import var="config" url="/WEB-INF/aggregator/car/Greenstone/config_${service}_quote.xml" />
 		<go:soapAggregator config="${config}" transactionId="${tranId}" xml="${xmlData}" var="resultXml" debugVar="debugXml" />
 		<c:out value="${resultXml}" escapeXml="false" />
 

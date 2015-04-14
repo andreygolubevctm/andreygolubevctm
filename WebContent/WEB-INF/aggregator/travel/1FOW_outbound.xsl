@@ -2,7 +2,7 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:cal="java.util.GregorianCalendar" xmlns:sdf="java.text.SimpleDateFormat" xmlns:java="http://xml.apache.org/xslt/java" exclude-result-prefixes="java">
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- xsl:import href="../includes/utils.xsl"/ -->
+	<xsl:import href="utilities/countryMapping.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
@@ -21,44 +21,14 @@
 			Else - substitute the region code
 		-->
 		<xsl:variable name="countryCode">
-				<xsl:choose>
-					<xsl:when test="policyType = 'S'">
-					<!-- China -->
-						<xsl:choose><xsl:when test="destinations/as/ch != ''"><countryCode>CHN</countryCode></xsl:when></xsl:choose>
-						<!-- HongKong -->
-						<xsl:choose><xsl:when test="destinations/as/hk != ''"><countryCode>HKG</countryCode></xsl:when></xsl:choose>
-						<!-- Japan -->
-						<xsl:choose><xsl:when test="destinations/as/jp != ''"><countryCode>JPN</countryCode></xsl:when></xsl:choose>
-						<!-- South America -->
-						<xsl:choose><xsl:when test="destinations/am/sa != ''"><countryCode>SA</countryCode></xsl:when></xsl:choose>
-						<xsl:choose><xsl:when test="destinations/af/af != ''"><countryCode>AF</countryCode></xsl:when></xsl:choose>
-						<xsl:choose><xsl:when test="destinations/am/us != ''"><countryCode>USA</countryCode></xsl:when></xsl:choose>
-						<xsl:choose><xsl:when test="destinations/am/ca != ''"><countryCode>CAN</countryCode></xsl:when></xsl:choose>
-
-						<xsl:choose>
-							<xsl:when test="destinations/me/me != ''"><countryCode>WW</countryCode></xsl:when>
-							<xsl:when test="destinations/do/do != ''"><countryCode>WW</countryCode></xsl:when>
-						</xsl:choose>
-
-						<!-- REGION 2 (EU) -->
-						<xsl:choose><xsl:when test="destinations/eu/eu != ''"><countryCode>EU</countryCode></xsl:when></xsl:choose>
-						<xsl:choose><xsl:when test="destinations/eu/uk != ''"><countryCode>GBR</countryCode></xsl:when></xsl:choose>
-
-						<!-- REGION 3 (AS) -->
-						<xsl:choose><xsl:when test="destinations/as/in != ''"><countryCode>IND</countryCode></xsl:when></xsl:choose>
-						<xsl:choose><xsl:when test="destinations/as/th != ''"><countryCode>THA</countryCode></xsl:when></xsl:choose>
-
-						<!-- REGION 4 (PA) -->
-						<xsl:choose><xsl:when test="destinations/pa/ba != ''"><countryCode>BAL</countryCode></xsl:when></xsl:choose>
-						<xsl:choose><xsl:when test="destinations/pa/in != ''"><countryCode>IDN</countryCode></xsl:when></xsl:choose>
-						<xsl:choose><xsl:when test="destinations/pa/nz != ''"><countryCode>NZL</countryCode></xsl:when></xsl:choose>
-						<xsl:choose><xsl:when test="destinations/pa/pi != ''"><countryCode>PC</countryCode></xsl:when></xsl:choose>
-
-						<!-- REGION 5 (AU) -->
-						<!-- Australia -->
-						<xsl:choose><xsl:when test="destinations/au/au != ''"><countryCode>AUS</countryCode></xsl:when></xsl:choose>
-					</xsl:when>
-					<xsl:otherwise><countryCode>WW</countryCode></xsl:otherwise>
+			<xsl:choose>
+				<xsl:when test="policyType = 'S'">
+					<xsl:call-template name="getCountryMapping">
+						<xsl:with-param name="groupCode">AGIS</xsl:with-param>
+						<xsl:with-param name="selectedCountries" select="mappedCountries/FFOW/countries" />
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise><countryCode>WW</countryCode></xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 
