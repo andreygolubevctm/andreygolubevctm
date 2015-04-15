@@ -39,7 +39,10 @@
 </c:choose>
 
 <field:hidden xpath="${xpath}" defaultValue="" />
-<field:hidden xpath="${root}/sourceid" defaultValue="${referralTracking.getAndSetUtmSource(pageContext.request,  data, root)}" />
+<c:set var="xpathSourceid" value="${root}/sourceid" />
+<c:set var="xpathMedium" value="${root}/medium" />
+<field:hidden xpath="${xpathSourceid}" defaultValue="${referralTracking.getAndSetUtmSource(pageContext.request,  data, root)}" />
+<field:hidden xpath="${xpathMedium}" defaultValue="${referralTracking.getAndSetUtmMedium(pageContext.request,  data, root)}" />
 
 <!-- Optional Extra Marketing code. If this is present and set to N(o) then this will exclude the lead from the call centre queues  -->
 <c:set var="xpathcl" value="${root}/cidcl" />

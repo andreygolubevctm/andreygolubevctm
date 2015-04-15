@@ -17,6 +17,12 @@ public class ReferralTracking {
 	public String getAndSetUtmSource(HttpServletRequest request, Data data, String prefix) {
 		return getAndSetFromParam(request, data, "utm_source", prefix + "/sourceid");
 	}
+	public String getAndSetUtmMedium(HttpServletRequest request, Data data, String prefix) {
+		return getAndSetFromParam(request, data, "utm_medium", prefix + "/medium");
+	}
+	public String getAndSetUtmCampaign(HttpServletRequest request, Data data, String prefix) {
+		return getAndSetFromParam(request, data, "utm_campaign", prefix + "/cid");
+	}
 
 	private String getAndSetFromParam(HttpServletRequest request, Data data, String key, String xpath) {
 		String value = data.getString(xpath);
@@ -49,7 +55,4 @@ public class ReferralTracking {
 		return value;
 	}
 
-	public String getAndSetUtmCampaign(HttpServletRequest request, Data data, String prefix) {
-		return getAndSetFromParam(request, data, "utm_campaign", prefix + "/cid");
-	}
 }

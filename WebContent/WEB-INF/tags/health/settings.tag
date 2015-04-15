@@ -19,6 +19,36 @@
 	</c:choose>
 </c:set>
 
+<c:set var="utm_source">
+	<c:choose>
+		<c:when test="${not empty param.utm_source}">
+			<c:out value="${param.utm_source}"/>
+		</c:when>
+		<c:when test="${not empty data['health/tracking/sourceid']}">
+			<c:out value="${data['health/tracking/sourceid']}"/>
+		</c:when>
+</c:choose>
+</c:set>
+<c:set var="utm_medium">
+	<c:choose>
+		<c:when test="${not empty param.utm_medium}">
+			<c:out value="${param.utm_medium}"/>
+		</c:when>
+		<c:when test="${not empty data['health/tracking/medium']}">
+			<c:out value="${data['health/tracking/medium']}"/>
+		</c:when>
+	</c:choose>
+</c:set>
+<c:set var="utm_campaign">
+	<c:choose>
+		<c:when test="${not empty param.utm_campaign}">
+			<c:out value="${param.utm_campaign}"/>
+		</c:when>
+		<c:when test="${not empty data['health/tracking/cid']}">
+			<c:out value="${data['health/tracking/cid']}"/>
+		</c:when>
+	</c:choose>
+</c:set>
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
@@ -30,9 +60,9 @@
 	loadProductId: '<c:out value="${param.productId}"/>',
 	loadProductTitle: '<c:out value="${param.productTitle}"/>',
 	userId: '<c:out value="${authenticatedData.login.user.uid}" />',
-	utm_source: '<c:out value="${param.utm_source}"/>',
-	utm_medium: '<c:out value="${param.utm_medium}"/>',
-	utm_campaign: '<c:out value="${param.utm_campaign}"/>',
+	utm_source: '<c:out value="${utm_source}" />',
+	utm_medium: '<c:out value="${utm_medium}" />',
+	utm_campaign: '<c:out value="${utm_campaign}" />',
 	liveChat: {
 		config: {
 			lpServer			: "server.lon.liveperson.net",
