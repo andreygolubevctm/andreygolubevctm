@@ -7,8 +7,17 @@
 	<c:set var="escapeCharacter" value="&" />
 </c:if>
 <c:set var="vertical" value="${fn:toLowerCase(vertical)}" />
-<c:set var="xpath" value="${vertical}/tracking/cid" />
-<c:set var="productHandoverUrlWithParams" value="${productHandoverUrlWithParams}${escapeCharacter}brand=${productBrandCode}&productID=${productID}&campaignID=${data[xpath]}&transactionID=${data.current.transactionId}" />
+<c:set var="campaignIdXpath" value="${vertical}/tracking/cid" />
+<c:choose>
+	<c:when test="${productBrandCode eq 'NABA'}">
+		<c:set var="productHandoverUrlWithParams" value="${productHandoverUrlWithParams}/pubref:brand=${productBrandCode}|productID=${productID}|campaignID=${data[campaignIdXpath]}|transactionID=${data.current.transactionId}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="productHandoverUrlWithParams" value="${productHandoverUrlWithParams}${escapeCharacter}brand=${productBrandCode}&productID=${productID}&campaignID=${data[campaignIdXpath]}&transactionID=${data.current.transactionId}" />
+	</c:otherwise>
+</c:choose>
+
+
 {
 	product: {
 		code: '<c:out value="${productID}" />',

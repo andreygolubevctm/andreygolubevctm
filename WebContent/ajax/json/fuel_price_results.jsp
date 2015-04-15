@@ -9,7 +9,6 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="fuel" delete="false" />
 
-
 <c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
 
 <c:choose>
@@ -29,11 +28,14 @@
 	<c:otherwise></c:otherwise>
 </c:choose>
 
+<%-- Capture the Client IP and User Agent used later to check limits--%>
+<go:setData dataVar="data" xpath="fuel/clientIpAddress" value="${pageContext.request.remoteAddr}" />
+<go:setData dataVar="data" xpath="fuel/clientUserAgent" value="<%=request.getHeader("user-agent")%>" />
+
 <%-- Save Client Data --%>
 <core:transaction touch="R" noResponse="true" />
 
 <c:set var="tranId" value="${data['current/transactionId']}" />
-
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/fuel/config.xml" />

@@ -103,16 +103,16 @@
 	}
 
 	function updateLastFieldTouch(label) {
-		if(!_.isUndefined(label) && !_.isEmpty(label)) {
+		if(!_.isUndefined(label) && !_.isEmpty(label) && label !== lastFieldTouch) {
 			lastFieldTouch = label;
 			$('#' + lastFieldTouchXpath).val(lastFieldTouch);
-			//meerkat.logging.debug('last touched field: ' + lastFieldTouch);
+			meerkat.logging.debug('last touched field: ' + lastFieldTouch);
 		}
 	}
 
 	function applyLastFieldTouchListener() {
 
-		$('form input, form select').on('click focus', function (e) {
+		$(document.body).on('click focus', 'form input, form select', function (e) {
 			updateLastFieldTouch( $(this).closest(':input').attr('name') );
 		});
 

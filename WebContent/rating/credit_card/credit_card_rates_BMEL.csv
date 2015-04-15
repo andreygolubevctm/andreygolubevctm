@@ -6,7 +6,7 @@ BMEL-VV,Bank of Melbourne,bank-of-melbourne-vertigo-visa,,,Bank of Melbourne Ver
 '-View the terms and conditions:
 '--[Credit Card Conditions of Use](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom_credit_cards_conditions_1-Jul-2014.pdf)
 '--[Credit Card Accounts Fees and Charges](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom-cc-fee-charges-nov14.pdf)
-",Yes,Yes,No,No,No,55,$9,N/A,"$1,000","$40,000",2%,"LOWINTERESTRATE,BALANCETRANSFER",
+",Yes,Yes,No,No,No,55,$9,N/A,"$1,000","$40,000",2%,"LOWINTERESTRATE,BALANCETRANSFER,INTERESTFREE",
 BMEL-VP,Bank of Melbourne,bank-of-melbourne-vertigo-platinum,,,Bank of Melbourne Vertigo Platinum,Platinum,Visa,0%,3,12.74%,0%,20,21.49%,N/A,N/A,N/A,$99,21.49%,N/A,N/A,N/A,N/A,"A platinum credit card with Bank of Melbourne's lowest variable purchase rate, a range of complimentary insurance covers and personal concierge service",N/A,"- Complimentary Overseas Travel Insurance Cover
 '-Transit Accident Cover
 '-Complimentary Purchase Cover Insurance
@@ -18,7 +18,7 @@ BMEL-VP,Bank of Melbourne,bank-of-melbourne-vertigo-platinum,,,Bank of Melbourne
 '--[Credit Card Accounts Fees and Charges](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom-cc-fee-charges-nov14.pdf)
 '--[Credit Card Complimentary Insurance Terms and Conditions](http://webapps.bankofmelbourne.com.au/pds/redirects/GoldPlatCreditCardInsurance/GoldPlatCreditCardInsurance%281%29.pdf)
 '-Please refer to your Internet Banking, Mobile Banking or your monthly credit card statement for your current interest rates.
-'-The information on our website is prepared without knowing your personal financial circumstances. Before you act on this information, please consider if it's right for you.",Yes,Yes,Yes,Yes,No,55,$9,N/A,"$6,000","$80,000",2%,"PLATINUM,BALANCETRANSFER",
+'-The information on our website is prepared without knowing your personal financial circumstances. Before you act on this information, please consider if it's right for you.",Yes,Yes,Yes,Yes,No,55,$9,N/A,"$6,000","$80,000",2%,"PLATINUM,BALANCETRANSFER,INTERESTFREE",
 BMEL-AC,Bank of Melbourne,bank-of-melbourne-amplify-classic,,,Bank of Melbourne Amplify Classic,REWARDS,Visa,0%,6,19.49%,0%,6,20.74%,N/A,N/A,N/A, $79 ,20.74%,1,N/A,"10,000",,Amplify Card- Reward yourself with more choice,"-$1 = 1 Amplify point
 '-$2 = 1 Qantas point
 '-Earn bonus Amplify Points with Amplify Rewards Bonus Partners
@@ -38,13 +38,13 @@ BMEL-AC,Bank of Melbourne,bank-of-melbourne-amplify-classic,,,Bank of Melbourne 
 '--[Credit Card Conditions of Use](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom_credit_cards_conditions_1-Jul-2014.pdf)
 '--[Credit Card Accounts Fees and Charges](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom-cc-fee-charges-nov14.pdf)
 '--[Amplify Rewards Terms and Conditions and Amplify Qantas Terms and Conditions](http://webapps.bankofmelbourne.com.au/pds/redirects/AmplifyTerms/AmplifyTerms%282%29.pdf)
-",Yes,Yes,No,No,No,55,$9,N/A,"$1,000","$25,000",2%,"REWARDS,BALANCETRANSFER",
-BMEL-AP,Bank of Melbourne,bank-of-melbourne-amplify-platinum,,,Bank of Melbourne Amplify Platinum,Platinum,Visa,0%,6,19.49%,0,6,20.74%,N/A,N/A,N/A,$99,20.74%,1,N/A,"30,000",N/A,"Your choice of rewards progreams, with Platinum extras","-$1 = 1 Amplify Point at Australian merchant
-'-$1 = 2 Amplify Points at Overseas merchant
+",Yes,Yes,No,No,No,55,$9,N/A,"$1,000","$25,000",2%,"REWARDS,BALANCETRANSFER,INTERESTFREE",
+BMEL-AP,Bank of Melbourne,bank-of-melbourne-amplify-platinum,,,Bank of Melbourne Amplify Platinum,Platinum,Visa,0%,6,19.49%,0,6,20.74%,N/A,N/A,N/A,$99,20.74%,1,N/A,"30,000",N/A,"Your choice of rewards programs, with Platinum extras","-$1 = 1 Amplify Point at Australian merchants
+'-$1 = 2 Amplify Points at Overseas merchants
 '-$1 = 0.5 Qantas Points at Australian merchants
-'-$1 = 1 Qantas Point at Overseas merchant
+'-$1 = 1 Qantas Point at Overseas merchants
 '-Earn Qantas Points twice with Qantas Frequent Flyer Program partners - once on your Amplify Platinum Card and again with the program partner","-Complimentary insurance covers as set out in the policy
-'-Overseas Travel Insurance for trips up to 2 months for you and your spuse and/or dependent children. 
+'-Overseas Travel Insurance for trips up to 2 months for you and your spouse and/or dependent children. 
 '-Time poor? Call Concierge on 1800 639 607
 '-24/7 Falcon Fraud Monitoring
 '-Detection of suspicious purchase transactions","The introductory rate of 0% p.a. on purchases for 6 months applies from card approval when you apply for a new Bank of Melbourne Amplify Platinum credit card between 6 January 2015 and 31 March 2015. After 6 months, the introductory purchase rate will switch to the variable purchase rate then applicable to your card account. The introductory rate on purchases is not available in conjunction with any promotion other than the special balance transfer and bonus points promotions available at card application. Switches, upgrades, customers accessing employee benefits or packaged cards are ineligible.","-The bonus points depend on your choice of Rewards Program.  Eligible purchases do not include fees, cash, cash equivalent transactions, refunds or balance transfers debited from the card account. Switches, upgrades, customers accessing employee benefits or packaged cards are ineligible. In order to be eligible customers must have been charged the standard annual fee. This promotion only applies to one account in the customer's name and is not available in conjunction with any other promotion other than the balance transfer promotion available at card application and promotional rate on purchases. The bonus points will be added to your points balance (Amplify Rewards or Qantas Frequent Flyer membership account) within three months after the first purchase transaction is debited to your account. The earning and redemption of Amplify Points and Qantas Points is subject to the Amplify Rewards Terms and Conditions and Amplify Qantas Terms and Conditions. You do not receive points if your card account is in arrears for 2 consecutive statement cycles and in other circumstances.  You must be a member of the Qantas Frequent Flyer program to earn and redeem Qantas Points in accordance with the terms and conditions of the Qantas Frequent Flyer program.
@@ -64,11 +64,11 @@ BMEL-AP,Bank of Melbourne,bank-of-melbourne-amplify-platinum,,,Bank of Melbourne
 '--[Amplify Rewards Terms and Conditions and Amplify Qantas Terms and Conditions](http://webapps.bankofmelbourne.com.au/pds/redirects/AmplifyTerms/AmplifyTerms%282%29.pdf)
 '--[Credit Card Complimentary Insurance Terms and Conditions](http://webapps.bankofmelbourne.com.au/pds/redirects/GoldPlatCreditCardInsurance/GoldPlatCreditCardInsurance%281%29.pdf)
 '-Zurich Australian Insurance Limited ABN 13 000 296 640 AFSL 232507 (Zurich) issues these covers to St.George Bank under separate Master Policies and is liable for the risks insured. Terms, conditions, exclusions and limits apply. No Westpac Group company has any liability in connection with the insurance policies. Read the policy details carefully.
-'-An additional card can be issued on the primary cardholder's credit card account to any nominated person 16 or older provided the account is not a joint account. All transactions using the additional card will be the responsibility of the primary cardholder.",Yes,Yes,Yes,Yes,No,55,$9,"$35,000","$6,000","$35,000",2%,"PLATINUM,REWARDS,BALANCETRANSFER",
-BMEL-AS,Bank of Melbourne,bank-of-melbourne-amplify-signature,,,Bank of Melbourne Amplify Signature,Rewards,Visa,0%,6,19.49%,0,6,20.74%,N/A,N/A,N/A,$279,20.74%,1.5,N/A,"60,000",N/A,"Rewards yourself with Bank of Melbourne's highest points earn rate, uncapped","-$1 = 1.5 Amplify Points at any Australian merchant
-'-$1 = 3 Amplify Points at any Overseas merchant
+'-An additional card can be issued on the primary cardholder's credit card account to any nominated person 16 or older provided the account is not a joint account. All transactions using the additional card will be the responsibility of the primary cardholder.",Yes,Yes,Yes,Yes,No,55,$9,"$35,000","$6,000","$35,000",2%,"PLATINUM,REWARDS,BALANCETRANSFER,INTERESTFREE",
+BMEL-AS,Bank of Melbourne,bank-of-melbourne-amplify-signature,,,Bank of Melbourne Amplify Signature,Rewards,Visa,0%,6,19.49%,0,6,20.74%,N/A,N/A,N/A,$279,20.74%,1.5,N/A,"60,000",N/A,"Reward yourself with Bank of Melbourne's highest points earn rate, uncapped","-$1 = 1.5 Amplify Points at any Australian merchants
+'-$1 = 3 Amplify Points at any Overseas merchants
 '-$1 = 0.75 Qantas Points at any Australian merchants
-'-$1 = 1.5 Qantas Points at any Overseas merchant
+'-$1 = 1.5 Qantas Points at any Overseas merchants
 '-Earn Qantas Points twice with Qantas Frequent Flyer Program partners - once on your Amplify Signature Card and again with the program partner","-Two Complimentary Airport Lounge Passes
 '-Hotel Benefits including membership to Visa Luxury Hotel Collection
 '-Complimentary Insurance Cover
@@ -91,37 +91,12 @@ BMEL-AS,Bank of Melbourne,bank-of-melbourne-amplify-signature,,,Bank of Melbourn
 '--[Credit Card Conditions of Use](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom_credit_cards_conditions_1-Jul-2014.pdf)
 '--[Credit Card Accounts Fees and Charges](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom-cc-fee-charges-nov14.pdf)
 '--[Amplify Rewards Terms and Conditions and Amplify Qantas Terms and Conditions](https://webapps.stgeorge.com.au/pds/redirects/AmplifyTerms/)
-'--{Credit Card Complimentary Insurance Terms and Conditions](http://webapps.bankofmelbourne.com.au/pds/redirects/GoldPlatCreditCardInsurance/GoldPlatCreditCardInsurance%281%29.pdf)",Yes,Yes,Yes,Yes,No,55,$9,"$75,000","$15,000","$75,000",2%,"REWARDS,BALANCETRANSFER",
+'--{Credit Card Complimentary Insurance Terms and Conditions](http://webapps.bankofmelbourne.com.au/pds/redirects/GoldPlatCreditCardInsurance/GoldPlatCreditCardInsurance%281%29.pdf)",Yes,Yes,Yes,Yes,No,55,$9,"$75,000","$15,000","$75,000",2%,"REWARDS,BALANCETRANSFER,INTERESTFREE",
 BMEL-NAF,Bank of Melbourne,bank-of-melbourne-no-annual-fee,,,Bank of Melbourne No Annual Fee,No Annual Fee,Visa,0%,6,20.49%,N/A,N/A,N/A,N/A,N/A,N/A,$0,20.49%,N/A,N/A,N/A,N/A,Freedom and security of a credit card with no annual fee,N/A,"-Secure shopping with Verified by Visa
 '-24/7 Falcon&regFraud Monitoring","The introductory rate of 0% p.a. on purchases for 6 months applies from card approval when you apply for a new Bank of Melbourne No Annual Fee credit card between 6 January 2015 and 31 March 2015. After 6 months, the introductory purchase rate will switch to the variable purchase rate then applicable to your card account. The introductory rate on purchases is not available in conjunction with any promotion unless stated otherwise. Switches, upgrades, customers accessing employee benefits or packaged cards are ineligible.",N/A,N/A,,"-Conditions, fees and credit criteria apply.
 '-View the terms and conditions:
 '--[Credit Card Conditions of Use](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom_credit_cards_conditions_1-Jul-2014.pdf)
-'--[Credit Card Accounts Fees and Charges](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom-cc-fee-charges-nov14.pdf)",Yes,Yes,No,No,No,55,$9,N/A,$500,N/A,2%,NOANNUALFEE,
-BMEL-BV,Bank of Melbourne,bank-of-melbourne-business-vantage,,,Bank of Melbourne Business Vantage,Business,Visa,N/A,N/A,9.99%,N/A,N/A,17.15%,N/A,N/A,N/A,$55,17.15%,N/A,N/A,N/A,N/A,Offers low interes rate on purchases and interest free period to help manage your business cash flow,N/A,"-Business credit limit- minimum business credit limit on the credit card facility is $1000. You can have an unlimited number of credit cards for the card facility.
-'-Complimentary Insurance against fraudulent use and unauthorised transactions.
-'- Easier expense reporting
-'-Full Visa Service
-'-Contactless payments",,N/A,,,"-Your business must be registered in Australia.
-'-Fees, charges and credit criteria apply.
-'- Before making a decision, it's best to read the terms and conditions.
-'--[BusinessVantage Visa Credit Card Conditions of Use](http://www.bankofmelbourne.com.au/assets/bom/downloads/small_business/Business-vantage-visa-1-Jul-2014.pdf)
-'--[Credit Card Accounts - Fees & Charges](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom-cc-fee-charges-nov14.pdf)
-'-Zurich Australian Insurance Limited ABN 13 000 296 640 AFSL 232507 (Zurich) issues these covers to Bank of Melbourne - A Division of Westpac Banking Corporation under separate Master Policies and is liable for the risks insured. Terms, conditions, exclusions and limits apply. No Westpac Group company has any liability in connection with the insurance policies. Policy wording may be obtained by calling 13 82 66 or by downloading the BusinessVantage Visa Credit Card Conditions of Use.",Yes,Yes,No,No,No,55,$9,N/A,"$1,000",$0,2%,"BUSINESS,BALANCETRANSFER",
-BMEL-AB,Bank of Melbourne,bank-of-melbourne-amplify-business,,,Bank of Melbourne Amplify Business,Business,Visa,0%,12,19.49%,N/A,N/A,N/A,N/A,N/A,N/A,$89,20.74%,1,N/A,N/A,N/A,A personal liability business credit card that rewards you for your business expenses,"-1 Amplify Point at Australian merchants
-'-2 Amplify Points at Overseas merchants
-'-0.5 Amplify Points on Government Payments
-'-0.5 Qantas Points at Australian merchants
-'-1 Qantas Point at Overseas merchants
-'-0.25 Qantas Points on Government Payments
-'-Uncapped points earning potential
-'-Double points on international spend","- Complimentary Insurance
-'-Simplify tax reporting- export expenses directly into MYOB and BAS. 
-'-Contacless payments","The introductory rate of 0%p.a. on purchases for 12 months applies from card approval when you apply for a new Amplify Business Credit Card between 19 January 2015 and 31 March 2015.  After 12 months, the introductory purchase rate will switch to the variable purchase rate then applicable to your card account. The introductory rate on purchases is not available in conjunction with any other promotion unless stated otherwise. Switches, upgrades, customers accessing employee benefits or packaged cards (unless the package conditions state otherwise) are ineligible.","-The earning and redemption of Amplify Points through the use of an Amplify Business card is subject to the Amplify Business Credit Card Rewards Terms and Conditions. Amplify Points are not earned on cash advances, balance transfers and ATM withdrawals or if your card is in arrears and in other specified circumstances. You need a minimum of 3,000 Amplify Points before you can redeem any reward. Specific conditions may apply to the redemption of particular rewards. Refer to amplify.bankofmelbourne.com.au.
-'-The earning and redemption of Qantas Points through the use of an Amplify Business card is subject to the Amplify Business Credit Card Rewards Terms and Conditions. Qantas Points are not earned on cash advances, balance transfers and ATM withdrawals or if your card is in arrears and in other specified circumstances. You must be a member of the Qantas Frequent Flyer program to earn and redeem Qantas Points. Membership and Qantas Points are subject to the Terms and Conditions of the Qantas Frequent Flyer program. A joining fee usually applies but for a limited time Bank of Melbourne has arranged for this to be waived for the nominated Amplify Business cardholder with a new card who is not already a member and chooses to link their card to Amplify Qantas. ",,,"-Fees, charges and credit criteria apply.
-'-Before making a decision, it's best to read the terms and conditions.
-'--[Amplify Business Credit Card Conditions of Use](http://www.bankofmelbourne.com.au/assets/bom/downloads/small_business/bom-amplify-business-credit-card-cou-nov14.pdf)
-'--[Amplify Business Credit Card Complimentary Insurance Terms and Conditions](http://webapps.bankofmelbourne.com.au/pds/redirects/BusinessCreditCardInsurance/BusinessCreditCardInsurance%282%29.pdf)
-'--[Amplify Business Credit Card Rewards Terms and Conditions](https://www.bankofmelbourne.com.au/content/dam/bom/downloads/small_business/bom-amplify-business-credit-card-rewards-tc-nov14.pdf)
-'--[Credit Card Accounts - Fees & Charges]( http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom-cc-fee-charges-nov14.pdf)",Yes,Yes,Yes,No,No,55,$9,N/A,0,0,2%,"BUSINESS,REWARDS",
+'--[Credit Card Accounts Fees and Charges](http://www.bankofmelbourne.com.au/assets/bom/downloads/accounts_and_cards/bom-cc-fee-charges-nov14.pdf)",Yes,Yes,No,No,No,55,$9,N/A,$500,N/A,2%,"NOANNUALFEE,INTERESTFREE",
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

@@ -67,7 +67,7 @@
 
 	<sql:query  var="dailyLimit">
 		SELECT pm.name , count.currentJoinCount, count.maxJoins, count.limitType,count.limitValue
-		FROM ctm.dailySalesCount count
+		FROM ctm.vw_dailySalesCount count
 		INNER JOIN ctm.provider_master pm
 		ON count.providerId = pm.providerId
 		UNION
@@ -79,14 +79,14 @@
 		WHERE PropertyId like '%DailyLimit%'
 		AND pp.providerId NOT IN (
 		SELECT count.providerId
-		FROM ctm.dailySalesCount count
+		FROM ctm.vw_dailySalesCount count
 		)
 		AND pp.EffectiveStart <= CURDATE() AND pp.EffectiveEnd >= CURDATE();
 	</sql:query>
 
 	<sql:query  var="monthlyLimit">
 		SELECT pm.name , count.currentJoinCount, count.maxJoins, count.limitType,count.limitValue
-		FROM ctm.monthlySalesCount count
+		FROM ctm.vw_monthlySalesCount count
 		INNER JOIN ctm.provider_master pm
 		ON count.providerId = pm.providerId
 			UNION
@@ -98,7 +98,7 @@
 		WHERE PropertyId like '%MonthlyLimit%'
 		AND pp.providerId NOT IN (
 		SELECT count.providerId
-		FROM ctm.monthlySalesCount count
+		FROM ctm.vw_monthlySalesCount count
 		)
 		AND pp.EffectiveStart <= CURDATE() AND pp.EffectiveEnd >= CURDATE();
 	</sql:query>

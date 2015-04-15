@@ -22,7 +22,7 @@ public class SessionData {
 
 	final private ArrayList<Data> transactionSessionData;
 	final private AuthenticatedData authenticatedSessionData;
-	
+
 	private Date lastSessionTouch;
 	private boolean shouldEndSession = false;
 
@@ -87,9 +87,14 @@ public class SessionData {
 	public Data getSessionDataForPreviousTransactionId(long previousTransactionId){
 
 		ArrayList<Data> sessions = getTransactionSessionData();
+		long sessionTransactionId = 0;
 
 		for (Data session : sessions) {
-			long sessionTransactionId = session.getLong("current/previousTransactionId");
+			try {
+				sessionTransactionId = session.getLong("current/previousTransactionId");
+			} catch(Exception e) {
+
+			}
 			if(sessionTransactionId > 0 && sessionTransactionId == previousTransactionId){
 				return session;
 			}
@@ -107,7 +112,7 @@ public class SessionData {
 	public AuthenticatedData getAuthenticatedSessionData() {
 		return authenticatedSessionData;
 	}
-	
+
 	public Date getLastSessionTouch() {
 		return lastSessionTouch;
 	}
@@ -115,11 +120,11 @@ public class SessionData {
 	public void setLastSessionTouch(Date lastTouch) {
 		this.lastSessionTouch = lastTouch;
 	}
-	
+
 	public boolean isShouldEndSession() {
 		return shouldEndSession;
 	}
-	
+
 	public void setShouldEndSession(boolean shouldEnd) {
 		this.shouldEndSession = shouldEnd;
 	}

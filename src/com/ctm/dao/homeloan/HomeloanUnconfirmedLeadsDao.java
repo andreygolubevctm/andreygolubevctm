@@ -17,7 +17,6 @@ import com.ctm.model.homeloan.HomeLoanContact;
 import com.ctm.model.homeloan.HomeLoanModel;
 import com.ctm.model.homeloan.HomeLoanModel.CustomerGoal;
 import com.ctm.model.homeloan.HomeLoanModel.CustomerSituation;
-import com.ctm.router.GenericRouter;
 
 public class HomeloanUnconfirmedLeadsDao {
 
@@ -27,6 +26,8 @@ public class HomeloanUnconfirmedLeadsDao {
 	}
 	/**
 	 * Select all HOMELOAN, styleCodeId 1 transactionids that have a contactNumber that's not empty
+	 * from a deduped list of unique phone/email for homeloans from the last 30 days. The earliest instance
+	 * of a contact is selected so a contact is not resent as a lead.
 	 * Of them, only select transactionIds that don't have preload.testing or gomez.testing values.
 	 * Of them, only select those whose rootId doesn't have a C/CF touch.
 	 */
@@ -47,11 +48,15 @@ public class HomeloanUnconfirmedLeadsDao {
 					+ "   AND CONCAT(startDate, ' ', startTime) <= NOW() - INTERVAL 3 HOUR "
 					+ "   AND startDate > CURDATE() - INTERVAL 7 DAY"
 					+ "   AND th.transactionid IN("
-					+ "   	SELECT transactionId "
-					+ "   	FROM aggregator.transaction_details "
-					+ "   	WHERE transactionId = th.transactionId "
-					+ "   	AND xpath = 'homeloan/contact/contactNumber' "
-					+ "   	AND textValue != '' "
+					+ "   	SELECT MIN(ith.transactionId) "
+					+ "   	FROM aggregator.transaction_header ith "
+					+ "         INNER JOIN aggregator.transaction_details itd USING(transactionId) "
+					+ "         LEFT OUTER JOIN aggregator.transaction_details itde ON ith.transactionId = itde.transactionid "
+					+ "             AND itde.xpath = 'homeloan/contact/email' "
+					+ "   	WHERE itd.xpath = 'homeloan/contact/contactNumber' "
+					+ "   	AND itd.textValue != '' "
+					+ "     AND ith.startDate > CURDATE() - INTERVAL 30 DAY "
+					+ "   	GROUP BY itd.textValue, itde.textValue "
 					+ "   ) "
 					+ "   AND th.transactionid NOT IN( "
 					+ "   	SELECT transactionId "
@@ -60,7 +65,7 @@ public class HomeloanUnconfirmedLeadsDao {
 					+ "   ) "
 					+ "   AND td.xpath IN('homeloan/details/state', 'homeloan/contact/firstName', 'homeloan/contact/lastName', "
 					+ "		'homeloan/contact/contactNumber','homeloan/contact/email','homeloan/details/suburb', 'homeloan/details/postcode', "
-					+"		'homeloan/details/situation', 'homeloan/details/goal', 'homeloan/loanDetails/loanAmount',"
+					+ "		'homeloan/details/situation', 'homeloan/details/goal', 'homeloan/loanDetails/loanAmount',"
 					+ "		'homeloan/loanDetails/purchasePrice') "
 					+ "   AND th.rootId NOT IN ( "
 					+ "  	SELECT transaction_id "

@@ -11,8 +11,8 @@
 	<validation-file>WEB-INF/xsd/life/lifeQuoteResults.xsd</validation-file>
 
 	<service name="OZIC_RESULTS" type="SOAP">
-		<soap-url>https://ecommerce.disconline.com.au/services/3.1/getLifeQuotes</soap-url>
-		<soap-action>https://ecommerce.disconline.com.au/services/3.1/getLifeQuotes</soap-action>
+		<soap-url>https://services.ecommerce.disconline.com.au/services/3.1/getLifeQuotes</soap-url>
+		<soap-action>https://services.ecommerce.disconline.com.au/services/3.1/getLifeQuotes</soap-action>
 		<outbound-xsl>life_results_AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>sourceId=0000000002</outbound-xsl-parms>
 		<inbound-xsl>life_results_AGIS_inbound.xsl</inbound-xsl>

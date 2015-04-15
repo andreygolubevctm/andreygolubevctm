@@ -296,16 +296,71 @@ $.validator.addMethod("maximumUsage",
 
 		switch($(period).val()) {
 			case 'M':
-				return "Monthly usage should be between 1kwh and 7,000kwh";
+				return "Monthly usage should be between 1kWh and 7,000kWh";
 				break;
 			case 'B':
-				return "Bimonthly usage should be between 1kwh and 14,000kwh";
+				return "Bimonthly usage should be between 1kWh and 14,000kWh";
 				break;
 			case 'Q':
-				return "Quarterly usage should be between 1kwh and 20,000kwh";
+				return "Quarterly usage should be between 1kWh and 20,000kWh";
 				break;
 			default:
-				return "Annual usage should be between 1kwh and 85,000kwh";
+				return "Annual usage should be between 1kWh and 85,000kWh";
+				break;
+		}
+	})
+);
+
+$.validator.addMethod("maximumUsageGas",
+	function(value, e) {
+
+		element = $('#' + $(e).attr('id').replace('amountentry', 'amount'));
+		var usage = $(element).val();
+		var period = $('#' + $(element).attr('id').replace('_amount', '_period') );
+		var normalise;
+		var valid = false;
+
+		switch($(period).val()) {
+			case 'M':
+				if(usage == '' || (usage >= 0 && usage <= 6500)){
+					valid = true;
+				}
+				break;
+			case 'B':
+				if(usage == '' || (usage >= 0 && usage <= 14000)){
+					valid = true;
+				}
+				break;
+			case 'Q':
+				if(usage == '' || (usage >= 0 && usage <= 20000)){
+					valid = true;
+				}
+				break;
+			default:
+				if(usage == '' || (usage >= 0 && usage <=  85000)){
+					valid = true;
+				}
+				break;
+		}
+
+		return valid;
+	},
+	(function(value, e) {
+		element = $('#' + $(e).attr('id').replace('amountentry', 'amount'));
+		var period = $('#' + $(element).attr('id').replace('_amount', '_period') );
+
+		switch($(period).val()) {
+			case 'M':
+				return "Monthly usage should be between 1MJ and 6,500MJ";
+				break;
+			case 'B':
+				return "Bimonthly usage should be between 1MJ and 14,000MJ";
+				break;
+			case 'Q':
+				return "Quarterly usage should be between 1MJ and 20,000MJ";
+				break;
+			default:
+				return "Annual usage should be between 1MJ and 85,000MJ";
 				break;
 		}
 	})
@@ -322,6 +377,9 @@ $.validator.addMethod("maximumUsage",
 <go:validate selector="${name}_usage_electricity_peak_amountentry" rule="maximumUsage" parm="true" />
 <go:validate selector="${name}_usage_electricity_offpeak_amountentry" rule="maximumUsage" parm="true" />
 
+<%-- Usage Electricity --%>
+<go:validate selector="${name}_usage_gas_peak_amountentry" rule="maximumUsageGas" parm="true" />
+<go:validate selector="${name}_usage_gas_offpeak_amountentry" rule="maximumUsageGas" parm="true" />
 
 <go:validate selector="${name}_usage_electricity_offpeak_period" rule="amountPeriodRequired" parm="true" message="Please choose the usage electricity offpeak period" />
 <go:validate selector="${name}_usage_gas_offpeak_period" rule="amountPeriodRequired" parm="true" message="Please choose the usage gas offpeak period" />

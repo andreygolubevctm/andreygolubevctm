@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Pattern(regexp = "^(?!\\s*$).+")
-@Size(min = 0)
+@Size(min = 0, max = 200)
 @ReportAsSingleViolation
 @Target({ METHOD, FIELD })
 @Retention(RUNTIME)

@@ -514,8 +514,9 @@ public class MessageDao {
 
 		// Perform the action
 		// 0 for user ID because we're un-assigning it.
-		updateUserAndStatus(messageId, 0, MessageStatus.STATUS_UNSUCCESSFUL);
+		// Make sure we perform the increase to callAttempts as well as the whenToAction BEFORE the userid/status change which causes issues due to database deadlocking
 		incrementCallAttempts(messageId);
+		updateUserAndStatus(messageId, 0, MessageStatus.STATUS_UNSUCCESSFUL);
 
 		// User is done with this message
 		UserDao userDao = new UserDao();
@@ -532,49 +533,103 @@ public class MessageDao {
 	 */
 	private int incrementCallAttempts(int messageId) throws DaoException {
 
-		SimpleDatabaseConnection dbSource = null;
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		PreparedStatement stmtSelectMessage = null;
+		PreparedStatement stmtSelectMessageSource = null;
+		PreparedStatement stmtUpdate = null;
+
+		ResultSet resultSetSelectMessage = null;
+		ResultSet resultSetSelectMessageSource = null;
 		int outcome = 0;
 
+		boolean autoCommit = true;
 		try {
-			PreparedStatement stmt;
-			dbSource = new SimpleDatabaseConnection();
+			autoCommit = dbSource.getConnection().getAutoCommit();
+			dbSource.getConnection().setAutoCommit(false);
 
-			/*
-Hey are you trying to debug this? Here is a handy SQL I prepared earlier.
-It looks complicated because there are multiple attempt delay table columns, so we have to use the right one for the delay amount depending on how many attempts have already been made.
-
-SELECT msg.id, atmpt.*, ADDTIME(NOW(), SEC_TO_TIME(atmpt.delay * 60)) AS newTime
-FROM simples.message msg
-INNER JOIN simples.message_source src ON src.id = msg.sourceId
-INNER JOIN (
-	SELECT id, 1 AS attempt, attemptDelay1 AS delay FROM simples.message_source
-	UNION SELECT id, 2, attemptDelay2 FROM simples.message_source
-	UNION SELECT id, 3, attemptDelay3 FROM simples.message_source
-) AS atmpt ON atmpt.id = msg.sourceId AND (atmpt.attempt = callAttempts+1 OR (callAttempts+1 > 3 AND atmpt.attempt = 3))
-WHERE msg.id = 53
-			 */
-			stmt = dbSource.getConnection().prepareStatement(
-				"UPDATE simples.message msg " +
-				"INNER JOIN simples.message_source src ON src.id = msg.sourceId " +
-				"INNER JOIN (" +
-				"	      SELECT id, 1 AS attempt, attemptDelay1 AS delay FROM simples.message_source " +
-				"	UNION SELECT id, 2, attemptDelay2 FROM simples.message_source " +
-				"	UNION SELECT id, 3, attemptDelay3 FROM simples.message_source " +
-				") AS atmpt ON atmpt.id = msg.sourceId AND (atmpt.attempt = callAttempts+1 OR (callAttempts+1 > 3 AND atmpt.attempt = 3)) " +
-				"SET callAttempts = callAttempts + 1, whenToAction = ADDTIME(NOW(), SEC_TO_TIME(atmpt.delay * 60)) " +
-				"WHERE msg.id = ?;"
+			stmtSelectMessage = dbSource.getConnection().prepareStatement(
+					"SELECT sourceId, callAttempts " +
+					"FROM simples.message " +
+					"WHERE id = ? FOR UPDATE"
 			);
-			stmt.setInt(1, messageId);
+			stmtSelectMessage.setInt(1, messageId);
 
-			outcome = stmt.executeUpdate();
+			// Lock the message
+			resultSetSelectMessage = stmtSelectMessage.executeQuery();
+			resultSetSelectMessage.next();
+			int sourceId = resultSetSelectMessage.getInt("sourceId");
+			int callAttempts = resultSetSelectMessage.getInt("callAttempts");
+
+			stmtSelectMessageSource = dbSource.getConnection().prepareStatement(
+					"SELECT attemptDelay1, attemptDelay2, attemptDelay3 " +
+					"FROM simples.message_source " +
+					"WHERE id = ? FOR UPDATE"
+			);
+			stmtSelectMessageSource.setInt(1, sourceId);
+
+			resultSetSelectMessageSource = stmtSelectMessageSource.executeQuery();
+			resultSetSelectMessageSource.next();
+			long attemptDelay1 = resultSetSelectMessageSource.getLong(1);
+			long attemptDelay2 = resultSetSelectMessageSource.getLong(2);
+			long attemptDelay3 = resultSetSelectMessageSource.getLong(3);
+
+			long delay = -1;
+			switch ((callAttempts + 1)) {
+				case 1:
+					delay = attemptDelay1;
+					break;
+				case 2:
+					delay = attemptDelay2;
+					break;
+				default:
+					delay = attemptDelay3;
+					break;
+		}
+
+			stmtUpdate = dbSource.getConnection().prepareStatement(
+				"UPDATE simples.message " +
+				"SET callAttempts = callAttempts + 1, whenToAction = ADDTIME(NOW(), SEC_TO_TIME(? * 60)) " +
+				"WHERE id = ?"
+			);
+			stmtUpdate.setLong(1, delay);
+			stmtUpdate.setInt(2, messageId);
+
+			outcome = stmtUpdate.executeUpdate();
+
+			dbSource.getConnection().commit();
 		}
 		catch (SQLException | NamingException e) {
+			try {
+				dbSource.getConnection().rollback();
+			} catch (SQLException | NamingException e1) {
+				throw new DaoException(e.getMessage(), e1);
+			}
 			throw new DaoException(e.getMessage(), e);
 		}
 		finally {
+			try {
+				dbSource.getConnection().setAutoCommit(autoCommit);
+				if(stmtSelectMessage != null) {
+					stmtSelectMessage.close();
+				}
+				if(stmtSelectMessageSource != null) {
+					stmtSelectMessageSource.close();
+				}
+				if(stmtUpdate != null) {
+					stmtUpdate.close();
+				}
+
+				if(resultSetSelectMessage != null) {
+					resultSetSelectMessage.close();
+				}
+				if(resultSetSelectMessageSource != null) {
+					resultSetSelectMessageSource.close();
+				}
+			} catch (SQLException | NamingException e) {
+				throw new DaoException(e.getMessage(), e);
+			}
 			dbSource.closeConnection();
 		}
-
 		return outcome;
 	}
 

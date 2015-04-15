@@ -1,19 +1,18 @@
 package com.ctm.dao.health;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.health.*;
+import org.apache.log4j.Logger;
+
+import javax.naming.NamingException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-
-import javax.naming.NamingException;
-
-import com.ctm.model.health.*;
-import org.apache.log4j.Logger;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
 
 public class HealthPriceDao {
 	private static final String DISC_PREFIX = "disc";
@@ -26,7 +25,6 @@ public class HealthPriceDao {
 	}
 
 	public HealthPricePremiumRange getHealthPricePremiumRange(HealthPriceRequest healthPriceRequest) throws DaoException {
-
 		HealthPricePremiumRange healthPricePremiumRange = new HealthPricePremiumRange();
 		Date searchDate = new java.sql.Date(healthPriceRequest.getSearchDateValue().getTime());
 
@@ -44,23 +42,22 @@ public class HealthPriceDao {
 					.append("SELECT ")
 					.append("search.ProductId ")
 					.append("FROM ctm.product_properties_search search ")
-					.append("INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId ")
-					.append(getFilterLevelOfCover(healthPriceRequest))
+					.append("INNER JOIN ctm.stylecode_products product ON search.ProductId = product.ProductId ");
+			buildCappingLimitJoin(healthPriceRequest, sqlBuilder);
+			sqlBuilder.append(getFilterLevelOfCover(healthPriceRequest))
 					.append("WHERE ")
 					.append("? BETWEEN product.EffectiveStart AND product.EffectiveEnd ")
 					.append("AND product.Status NOT IN(")
-					.append(questionMarksBuilder(healthPriceRequest.getExcludeStatus().size()))
+					.append(questionMarksBuilder(healthPriceRequest.getExcludeStatus()))
 					.append(") ")
 					.append("AND product.styleCodeId = ? ");
 			if (healthPriceRequest.getProviderId() != 0) {
 				sqlBuilder
 					.append("AND product.providerId = ? ");
 			}
-				sqlBuilder
-					.append("AND product.providerId NOT IN(")
-					.append(questionMarksBuilder(healthPriceRequest.getExcludedProvidersList().size()))
-					.append(") ")
-					.append("AND product.productCat = 'HEALTH' ")
+			buildExcludedProviders(healthPriceRequest, sqlBuilder);
+			buildCappingLimit(healthPriceRequest, sqlBuilder);
+			sqlBuilder.append("AND product.productCat = 'HEALTH' ")
 					.append("AND search.state = ? ")
 					.append("AND search.membership = ? ")
 					.append("AND search.productType = ? ")
@@ -69,7 +66,7 @@ public class HealthPriceDao {
 				sqlBuilder
 					.append("AND search.hospitalType = ? ");
 			}
-				sqlBuilder
+			sqlBuilder
 					.append("GROUP BY search.ProductId " + ") as results ")
 					.append("INNER JOIN ctm.product_properties_premiums premiums ")
 					.append("ON premiums.productID = results.productID");
@@ -96,9 +93,9 @@ public class HealthPriceDao {
 				stmt.setInt(i++, healthPriceRequest.getProviderId());
 			}
 
-			for(Integer providerId :  healthPriceRequest.getExcludedProvidersList()){
-				stmt.setInt(i++, providerId);
-			}
+			i = buildParamList(healthPriceRequest.getExcludedProvidersList(), stmt, i);
+			i = buildParamList(healthPriceRequest.getProvidersThatHaveExceededLimit(), stmt, i);
+
 			stmt.setString(i++, healthPriceRequest.getState());
 			stmt.setString(i++, healthPriceRequest.getMembership());
 			stmt.setString(i++, healthPriceRequest.getProductType());
@@ -138,10 +135,16 @@ public class HealthPriceDao {
 		return healthPricePremiumRange;
 	}
 
-	public ArrayList<HealthPriceResult> fetchHealthResults(HealthPriceRequest healthPriceRequest) throws DaoException {
+	private void buildExcludedProviders(HealthPriceRequest healthPriceRequest, StringBuilder sqlBuilder) {
+		sqlBuilder
+            .append("AND product.providerId NOT IN(")
+            .append(questionMarksBuilder(healthPriceRequest.getExcludedProvidersList()))
+            .append(") ");
+	}
 
-		ArrayList<HealthPriceResult> healthResults = new ArrayList<HealthPriceResult>();
-		List<String> excludedProductIds = new ArrayList<String>();
+	public ArrayList<HealthPriceResult> fetchHealthResults(HealthPriceRequest healthPriceRequest) throws DaoException {
+		ArrayList<HealthPriceResult> healthResults = new ArrayList<>();
+		List<String> excludedProductIds = new ArrayList<>();
 		int limit = 4;
 
 		try {
@@ -240,7 +243,7 @@ public class HealthPriceDao {
 					.append("(SELECT SUM(value) FROM ctm.product_properties m ")
 					.append("WHERE m.productid = search.productid ")
 					.append("AND m.propertyid COLLATE latin1_bin IN (")
-					.append(questionMarksBuilder(healthPriceRequest.getPreferences().size()))
+					.append(questionMarksBuilder(healthPriceRequest.getPreferences()))
 					.append(") ")
 					.append("GROUP BY ProductID) AS rank, ");
 			}
@@ -249,7 +252,7 @@ public class HealthPriceDao {
 					.append("search.monthlyPremium + (search.monthlyLhc * 10) as factoredPrice, ")
 					.append("(? BETWEEN product.EffectiveStart AND product.EffectiveEnd ")
 					.append("AND product.Status NOT IN (")
-					.append(questionMarksBuilder(healthPriceRequest.getExcludeStatus().size()))
+					.append(questionMarksBuilder(healthPriceRequest.getExcludeStatus()))
 					.append(")) as isValid ")
 					.append("FROM ctm.product_properties_search search ")
 					.append("INNER JOIN ctm.stylecode_products product ")
@@ -330,7 +333,7 @@ public class HealthPriceDao {
 					.append("(SELECT SUM(value) FROM ctm.product_properties m ")
 					.append("WHERE m.productid = search.productid ")
 					.append("AND m.propertyid COLLATE latin1_bin IN (")
-					.append(questionMarksBuilder(healthPriceRequest.getPreferences().size()))
+					.append(questionMarksBuilder(healthPriceRequest.getPreferences()))
 					.append(") ")
 					.append("GROUP BY ProductID) AS rank, ");
 			}
@@ -343,20 +346,20 @@ public class HealthPriceDao {
 					.append("INNER JOIN ctm.product_properties_premiums premiums ")
 					.append("ON premiums.ProductId = product.ProductId ");
 			}
+			buildCappingLimitJoin(healthPriceRequest, sqlBuilder);
 				sqlBuilder
 					.append(getFilterLevelOfCover(healthPriceRequest))
 					.append("WHERE ")
 					.append("? BETWEEN product.EffectiveStart AND product.EffectiveEnd ")
 					.append("AND product.Status NOT IN(")
-					.append(questionMarksBuilder(healthPriceRequest.getExcludeStatus().size()))
+					.append(questionMarksBuilder(healthPriceRequest.getExcludeStatus()))
 					.append(") ")
 					.append("AND (product.ShortTitle = ? OR product.LongTitle = ?) ")
 					.append("AND product.styleCodeId = ? ")
-					.append("AND (? = 0 OR product.providerId = ?) ")
-					.append("AND product.providerId NOT IN(")
-					.append(questionMarksBuilder(healthPriceRequest.getExcludedProvidersList().size()))
-					.append(") ")
-					.append("AND product.productCat = 'HEALTH' ");
+					.append("AND (? = 0 OR product.providerId = ?) ");
+			buildExcludedProviders(healthPriceRequest, sqlBuilder);
+			buildCappingLimit(healthPriceRequest, sqlBuilder);
+			sqlBuilder.append("AND product.productCat = 'HEALTH' ");
 			if (healthPriceRequest.getPriceMinimum() > 0) {
 				switch(healthPriceRequest.getPaymentFrequency()) {
 					case FORTNIGHTLY :
@@ -425,7 +428,7 @@ public class HealthPriceDao {
 				.append("(SELECT SUM(value) FROM ctm.product_properties m ")
 				.append("WHERE m.productid = search.productid ")
 				.append("AND m.propertyid COLLATE latin1_bin IN (")
-				.append(questionMarksBuilder(healthPriceRequest.getPreferences().size()))
+				.append(questionMarksBuilder(healthPriceRequest.getPreferences()))
 				.append(") ")
 				.append("GROUP BY ProductID) AS rank, ");
 		}
@@ -438,19 +441,21 @@ public class HealthPriceDao {
 				.append("INNER JOIN ctm.product_properties_premiums premiums ")
 				.append("ON premiums.ProductId = product.ProductId ");
 		}
-			sqlBuilder
+		buildCappingLimitJoin(healthPriceRequest, sqlBuilder);
+		sqlBuilder
 				.append(getFilterLevelOfCover(healthPriceRequest))
 				.append("WHERE ")
 				.append("? BETWEEN product.EffectiveStart AND product.EffectiveEnd ")
 				.append("AND product.Status NOT IN(")
-				.append(questionMarksBuilder(healthPriceRequest.getExcludeStatus().size()))
+				.append(questionMarksBuilder(healthPriceRequest.getExcludeStatus()))
 				.append(") ")
 				.append("AND product.styleCodeId = ? ")
 				.append("AND (? = 0 OR product.providerId = ?) ")
 				.append("AND product.providerId NOT IN(")
-				.append(questionMarksBuilder(healthPriceRequest.getExcludedProvidersList().size()))
-				.append(") ")
-				.append("AND product.productCat = 'HEALTH' ");
+				.append(questionMarksBuilder(healthPriceRequest.getExcludedProvidersList()))
+				.append(") ");
+				buildCappingLimit(healthPriceRequest, sqlBuilder);
+		sqlBuilder.append("AND product.productCat = 'HEALTH' ");
 		if (healthPriceRequest.getPriceMinimum() > 0) {
 			switch(healthPriceRequest.getPaymentFrequency()) {
 				case FORTNIGHTLY :
@@ -476,7 +481,7 @@ public class HealthPriceDao {
 		if (excludedProductIds != null && excludedProductIds.isEmpty() == false) {
 			sqlBuilder
 				.append("AND search.ProductId NOT IN (")
-				.append(questionMarksBuilder(excludedProductIds.size()))
+				.append(questionMarksBuilder(excludedProductIds))
 				.append(", 0) ");
 		}
 			sqlBuilder
@@ -484,6 +489,21 @@ public class HealthPriceDao {
 				.append("ORDER BY rank DESC, factoredPrice ASC ");
 
 		return sqlBuilder.toString();
+	}
+
+	private void buildCappingLimit(HealthPriceRequest healthPriceRequest, StringBuilder sqlBuilder) {
+		if(!healthPriceRequest.getProvidersThatHaveExceededLimit().isEmpty()) {
+			sqlBuilder.append(" AND ( product.providerId NOT IN(").append(questionMarksBuilder(healthPriceRequest.getProvidersThatHaveExceededLimit()))
+					.append(") ").append("OR pce.productId IS NOT NULL ) \n");
+		}
+	}
+
+	private void buildCappingLimitJoin(HealthPriceRequest healthPriceRequest, StringBuilder sqlBuilder) {
+		if(!healthPriceRequest.getProvidersThatHaveExceededLimit().isEmpty()) {
+			sqlBuilder.append(" LEFT JOIN ctm.product_capping_exclusions pce " +
+					"ON pce.productId = product.productId " +
+					"AND curDate() between pce.effectiveStart and pce.effectiveEnd ");
+		}
 	}
 
 	private String getFetchSQL(HealthPriceRequest healthPriceRequest, List<String> excludedProductIds, int limit) {
@@ -516,11 +536,15 @@ public class HealthPriceDao {
 		return healthResult;
 	}
 
-	private String questionMarksBuilder(int length) {
+	private String questionMarksBuilder(Collection<?> coll) {
+		return questionMarksBuilder(coll.size());
+	}
+
+	private String questionMarksBuilder(int size) {
 		StringBuilder stringBuilder = new StringBuilder();
-		for( int i = 0; i< length; i++){
+		for( int i = 0; i< size; i++){
 			stringBuilder.append(" ?");
-			if(i != length -1) stringBuilder.append(",");
+			if(i != size -1) stringBuilder.append(",");
 		}
 		return stringBuilder.toString();
 	}
@@ -572,9 +596,8 @@ public class HealthPriceDao {
 		stmt.setInt(index++, healthPriceRequest.getProviderId());
 		stmt.setInt(index++, healthPriceRequest.getProviderId());
 
-		for(int excludedProvider : healthPriceRequest.getExcludedProvidersList()){
-			stmt.setInt(index++, excludedProvider);
-		}
+		index = buildParamList(healthPriceRequest.getExcludedProvidersList(), stmt, index);
+		index = buildParamList(healthPriceRequest.getProvidersThatHaveExceededLimit(), stmt, index);
 
 		if (healthPriceRequest.getPriceMinimum() > 0) {
 			stmt.setDouble(index++, healthPriceRequest.getPriceMinimum());
@@ -602,6 +625,13 @@ public class HealthPriceDao {
 
 		return index;
 }
+
+	private int buildParamList(List<Integer> values, PreparedStatement stmt, int index) throws SQLException {
+		for(int excludedProvider : values){
+			stmt.setInt(index++, excludedProvider);
+		}
+		return index;
+	}
 
 	private String getFilterLevelOfCover(HealthPriceRequest healthPriceRequest) {
 		String filterLevelOfCover = "";

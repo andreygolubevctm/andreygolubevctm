@@ -6,7 +6,7 @@ BNSA-VV,Bank SA,bank-sa-vertigo-visa,,,BankSA Vertigo Visa,Low interest rate,Vis
 '-View the terms and conditions:
 '--[Credit Card Conditions of Use](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/bsa-cou-1-July-2014.pdf)
     '--[Credit Card Accounts Fees and Charges](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/bsa-cc-fee-charges-nov14.pdf)
-",Yes,Yes,No,No,No,55,$9,,"$1,000",0,2%,"LOWINTERESTRATE,BALANCETRANSFER",
+",Yes,Yes,No,No,No,55,$9,,"$1,000",0,2%,"LOWINTERESTRATE,BALANCETRANSFER,INTERESTFREE",
 BNSA-AC,Bank SA,bank-sa-amplify-classic,,,BankSA Amplify Classic,Rewards,Visa,0%,6,19.49%,0%,6,20.74%,N/A,N/A,N/A,$79,20.74%,1,N/A,"10,000",N/A,Reward yourself with more choice,"-Choose between two great rewards programs - Amplify Rewards or Amplify Qantas
 '-$1 = 1 Amplify point
 '-$2 = 1 Qantas Point
@@ -27,9 +27,9 @@ BNSA-AC,Bank SA,bank-sa-amplify-classic,,,BankSA Amplify Classic,Rewards,Visa,0%
     '--[Credit Card Conditions of Use](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/bsa-cou-1-July-2014.pdf)
     '--[Credit Card Accounts Fees and Charges](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/bsa-cc-fee-charges-nov14.pdf)
     '--[Amplify Rewards Terms and Conditions and Amplify Qantas Terms and Conditions](http://webapps.banksa.com.au/pds/redirects/AmplifyTerms/AmplifyTerms%283%29.pdf)
-",No,Yes,No,No,No,55,$9,,"$1,000","$25,000",2%,"REWARDS,BALANCETRANSFER",
-BNSA-AP,Bank SA,bank-sa-amplify-platinum,,,BankSA Amplify Platinum,,Visa,0%,6,19.49%,0%,6,20.74%,N/A,N/A,N/A,$99,20.74%,1,N/A,"30,000",N/A,"Your choice of rewards programs, with Platinum extras","-$1 = 1 Amplify Point at Australian merchant
-'-$1 = 2 Amplify Points at Overseas merchant
+",No,Yes,No,No,No,55,$9,,"$1,000","$25,000",2%,"REWARDS,BALANCETRANSFER,INTERESTFREE",
+BNSA-AP,Bank SA,bank-sa-amplify-platinum,,,BankSA Amplify Platinum,,Visa,0%,6,19.49%,0%,6,20.74%,N/A,N/A,N/A,$99,20.74%,1,N/A,"30,000",N/A,"Your choice of rewards programs, with Platinum extras","-$1 = 1 Amplify Point at Australian merchants
+'-$1 = 2 Amplify Points at Overseas merchants
 '-Earn bonus Amplify Points with Amplify Rewards Bonus Partners
 '-Earn Qantas Points twice with Qantas Frequent Flyer Program partners - once on your Amplify Platinum Card and again with the program partner.
 '-Choose between two great rewards programs-Amplify Rewards or Amplify Qantas","-A range of complimentary insurance and 24/7 Concierge
@@ -50,9 +50,9 @@ BNSA-AP,Bank SA,bank-sa-amplify-platinum,,,BankSA Amplify Platinum,,Visa,0%,6,19
    '-- [Amplify Rewards and Amplify Qantas Terms and Conditions](http://webapps.banksa.com.au/pds/redirects/AmplifyTerms/AmplifyTerms%283%29.pdf)
     '--[Credit Card Complimentary Insurance Terms and Conditions](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/BSA00973_0614_WEB_2.pdf)
 '-Zurich Australian Insurance Limited ABN 13 000 296 640 AFSL 232507 (Zurich) issues these covers to St.George Bank under separate Master Policies and is liable for the risks insured. Terms, conditions, exclusions and limits apply. No Westpac Group company has any liability in connection with the insurance policies. Read the policy details carefully.
-",Yes,Yes,Yes,Yes,No,55,$9,$0,"$6,000","$35,000",2%,"REWARDS,PLATINUM,BALANCETRANSFER",
-BNSA-AS,Bank SA,bank-sa-amplify-signature,,,BankSA Amplify Signature,Rewards,Visa,0%,6,19.49%,0%,6,20.74%,N/A,N/A,N/A,$279,20.74%,1.5,N/A,"60,000",N/A,"Reward yourself with the BankSA highest points earn rate, uncapped","-$1 = 1.5 Amplify Points at any Australian merchant
-'-$1 = 3 Amplify Points at any Overseas merchant
+",Yes,Yes,Yes,Yes,No,55,$9,$0,"$6,000","$35,000",2%,"REWARDS,PLATINUM,BALANCETRANSFER,INTERESTFREE",
+BNSA-AS,Bank SA,bank-sa-amplify-signature,,,BankSA Amplify Signature,Rewards,Visa,0%,6,19.49%,0%,6,20.74%,N/A,N/A,N/A,$279,20.74%,1.5,N/A,"60,000",N/A,"Reward yourself with the BankSA highest points earn rate, uncapped","-$1 = 1.5 Amplify Points at any Australian merchants
+'-$1 = 3 Amplify Points at any Overseas merchants
 '-$1 = 0.75 Qantas Points at any Australian merchants
 '-$1 = 1.5 Qantas Points at any Overseas merchant
 '-Earn bonus Amplify Points with Amplify Rewards Bonus Partners
@@ -88,7 +88,7 @@ BNSA-AS,Bank SA,bank-sa-amplify-signature,,,BankSA Amplify Signature,Rewards,Vis
     '--[Credit Card Conditions of Use](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/bsa-cou-1-July-2014.pdf)
     '--[Credit Card Accounts Fees and Charges](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/bsa-cc-fee-charges-nov14.pdf)
     '--[Amplify Rewards Terms and Conditions and Amplify Qantas Terms and Conditions](http://webapps.banksa.com.au/pds/redirects/AmplifyTerms/AmplifyTerms%283%29.pdf)
-    '--[Credit Card Complimentary Insurance Terms and Conditions](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/BSA00973_0614_WEB_2.pdf)",Yes,Yes,Yes,Yes,No,55,$9,0 ,"$15,000","$75,000",2%,"REWARDS,BALANCETRANSFER",
+    '--[Credit Card Complimentary Insurance Terms and Conditions](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/BSA00973_0614_WEB_2.pdf)",Yes,Yes,Yes,Yes,No,55,$9,0 ,"$15,000","$75,000",2%,"REWARDS,BALANCETRANSFER,INTERESTFREE",
 BNSA-VP,Bank SA,bank-sa-vertigo-platinum,,,BankSA Vertigo Platinum,Platinum,Visa,0%,3,12.74%,0%,20,21.49%,N/A,N/A,N/A,$99,21.49%,N/A,N/A,N/A,N/A,"A platinum credit card with BankSA's lowest variable purchase rate, a range of complimentary insurance covers and personal concierge service",N/A,"-Complimentary Insurance Cover
 '-Visa Platinum Concierge
 '-24/7 Falcon&reg Fraud monitoring
@@ -100,24 +100,14 @@ BNSA-VP,Bank SA,bank-sa-vertigo-platinum,,,BankSA Vertigo Platinum,Platinum,Visa
     '--[Credit Card Accounts Fees and Charges](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/bsa-cc-fee-charges-nov14.pdf)
     '--[Credit Card Complimentary Insurance Terms and Conditions](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/BSA00973_0614_WEB_2.pdf)
 '-Please refer to your Internet Banking, Mobile Banking or your monthly credit card statement for your current interest rates.
-'-Zurich Australian Insurance Limited ABN 13 000 296 640 AFSL 232507 (Zurich) issues these covers to St.George Bank under separate Master Policies and is liable for the risks insured. Terms, conditions, exclusions and limits apply. No Westpac Group company has any liability in connection with the insurance policies. Read the policy details carefully.",Yes,Yes,Yes,Yes,No,55,$9,0 ," $6,000.00 "," $80,000.00 ",2%,"PLATINUM,BALANCETRANSFER",
+'-Zurich Australian Insurance Limited ABN 13 000 296 640 AFSL 232507 (Zurich) issues these covers to St.George Bank under separate Master Policies and is liable for the risks insured. Terms, conditions, exclusions and limits apply. No Westpac Group company has any liability in connection with the insurance policies. Read the policy details carefully.",Yes,Yes,Yes,Yes,No,55,$9,0 ," $6,000.00 "," $80,000.00 ",2%,"PLATINUM,BALANCETRANSFER,INTERESTFREE",
 BNSA-NAF,Bank SA,bank-sa-no-annual-fee,,,BankSA No Annual Fee ,No Annual Fee,Visa,0%,3,20.49%,N/A,N/A,N/A,N/A,N/A,N/A,$0,20.49%,N/A,N/A,N/A,N/A,Freedom and security of a credit card with no annual fee,N/A,"-Secure shopping with Verified by Visa
 '-24/7 Falcon&reg Fraud Monitoring","The introductory rate of 0% p.a. on purchases for 6 months applies from card approval when you apply for a new BankSA No Annual Fee credit card between 6 January 2015 and 31 March 2015. After 6 months, the introductory purchase rate will switch to the variable purchase rate then applicable to your card account. The introductory rate on purchases is not available in conjunction with any promotion unless stated otherwise. Switches, upgrades, customers accessing employee benefits or packaged cards are ineligible.",N/A,N/A,N/A,"-Conditions, fees and credit criteria apply.
 '-View the terms and conditions:
   '--[Credit Card Conditions of Use](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/bsa-cou-1-July-2014.pdf)
     '--[Credit Card Accounts Fees and Charges](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/bsa-cc-fee-charges-nov14.pdf)
-",Yes,Yes,No,No,No,55,$9,0 ,$500,,2%,NOANNUALFEE,
-BNSA-VB,Bank SA,bank-sa-visa-business,,,BankSA Visa Business,Business,Visa,N/A,N/A,9.99%,N/A,N/A,N/A,N/A,N/A,N/A, $55.00 ,17.15%,N/A,N/A,N/A,N/A,Offers low interest rate on purchases and interest free period to help manage your business cash flow,N/A,"-Minimum business credit limit
-'-Complimentary insurance
-'-Easier expense reporting
-'-Full Visa service
-'-Contactless payments",,N/A,N/A,N/A,"-Fees, charges and credit criteria apply.
-'-Before making a decision, it's best to read the terms and conditions.
-'--[Visa Business Card Conditions of Use](http://www.banksa.com.au/assets/bsa/downloads/business/credit-card/Business-vantage-visa-1-Jul-2014.pdf)
-'--[Fees and charges](http://www.banksa.com.au/assets/bsa/downloads/accounts_and_cards/bsa-cc-fee-charges-nov14.pdf) 
-'-Please read these documents and keep a copy. You can request a paper copy at a branch.
-'-Zurich Australian Insurance Limited ABN 13 000 296 640 AFSL 232507 (Zurich) issues these covers to BankSA - A Division of Westpac Banking Corporation under separate Master Policies and is liable for the risks insured. Terms, conditions, exclusions and limits apply. No Westpac Group company has any liability in connection with the insurance policies. Policy wording may be obtained by calling 1800 804 411 or by downloading the Visa Business Credit Card Conditions of Use.
-",Yes,Yes,Yes,No,No,,,,,,,BUSINESS,
+",Yes,Yes,No,No,No,55,$9,0 ,$500,,2%,"NOANNUALFEE,INTERESTFREE",
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,

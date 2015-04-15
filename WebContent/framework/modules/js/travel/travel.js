@@ -241,11 +241,8 @@
 		}
 
 		if (policyType=='S') {
-			$('input.destcheckbox:checked').each(function(idx,elem){
 
-				dest+=','+$('label[for="' + this.id + '"]').text().trim();
-			});
-			dest=dest.substring(1);
+			dest = $('#travel_destination').val();
 			insType='Single Trip';
 			leaveDate = formatDate($("#travel_dates_fromDate").val());
 			returnDate = formatDate($("#travel_dates_toDate").val());

@@ -1535,7 +1535,8 @@
             productName: product.headline.name,
             productBrandCode: product.brandCode,
             brand: product.productDes,
-            verticalFilter: meerkat.modules.home.getVerticalFilter()
+            verticalFilter: meerkat.modules.home.getVerticalFilter(),
+            productID: product.trackingProductId
         });
         return true;
     }
@@ -1589,10 +1590,12 @@
         }
     }
     function requestTracking() {
+        var product = meerkat.modules.moreInfo.getOpenProduct();
         var settings = {
             additionalTrackingData: {
                 verticalFilter: meerkat.modules.home.getVerticalFilter(),
-                productName: meerkat.modules.moreInfo.getOpenProduct().headline.name
+                productName: product.headline.name,
+                productID: product.trackingProductId
             }
         };
         meerkat.modules.moreInfo.updateSettings(settings);

@@ -63,7 +63,7 @@
 	</c:when>
 </c:choose>
 
-<!-- Car promos, uses ID sent from car_quote_results -->
+<%-- Car promos, uses ID sent from car_quote_results --%>
 <c:if test="${not empty param.secret and param.secret == 'Ja1337c0Bru1z2'}">
 	<c:choose>
 		<c:when test="${not empty param.competitionId}">
@@ -82,7 +82,7 @@
 	</c:choose>
 </c:if>
 
-<!-- Life/IP promos, uses ID sent from life_quote_results -->
+<%-- Life/IP promos, uses ID sent from life_quote_results --%>
 <c:if test="${not empty param.secret and param.secret == 'F982336B6A298CDBFCECBE719645C'}">
 	<c:if test="${not empty param.competitionId}">
 		<c:set var="competition_id" value="${param.competitionId}" />
@@ -97,7 +97,7 @@
 	</c:if>
 </c:if>
 
-<!-- Utilities promos, uses ID sent from life_quote_results -->
+<%-- Utilities promos, uses ID sent from life_quote_results --%>
 <c:if test="${not empty param.secret and param.secret == 'W8C6A452F9823ECBE719DBZFC196C3QB'}">
 	<c:if test="${not empty param.competitionId}">
 		<c:set var="competition_id" value="${param.competitionId}" />
@@ -109,7 +109,7 @@
 	</c:if>
 </c:if>
 
-<!-- Credit Cards promo -->
+<%-- Credit Cards promo --%>
 <c:if test="${not empty param.secret and param.secret == 'yfIOyxdBzXw7CjVcNWuX'}">
 	<c:set var="competition_id" value="${18}" />
 	<c:set var="source" value="CreditCard$1000PromotionApril2015" />

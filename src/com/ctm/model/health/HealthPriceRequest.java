@@ -1,10 +1,10 @@
 package com.ctm.model.health;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class HealthPriceRequest {
 
@@ -40,6 +40,7 @@ public class HealthPriceRequest {
 	private boolean publicHospital;
 	private String excessSel;
 	private String brandFilter = "";
+	private List<Integer> providersThatHaveExceededLimit;
 
 	public void setPrivateHospital(boolean privateHospital) {
 		this.privateHospital = privateHospital;
@@ -311,5 +312,13 @@ public class HealthPriceRequest {
 
 	public String getBrandFilter() {
 		return brandFilter;
+	}
+
+	public void setProvidersThatHaveExceededLimit(List<Integer> providersThatHaveExceededLimit) {
+		this.providersThatHaveExceededLimit = providersThatHaveExceededLimit;
+}
+
+	public List<Integer> getProvidersThatHaveExceededLimit() {
+		return providersThatHaveExceededLimit;
 	}
 }

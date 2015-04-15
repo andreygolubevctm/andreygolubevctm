@@ -31,7 +31,6 @@
 <c:if test="${fn:contains(fuels, '3') and not fn:contains(fuels, '9')}">
 	<c:set var="fuels"><c:out value="${fuels}" />,9</c:set>
 </c:if>
-
 <%-- TEST: user search limits: 0 = a failed or blocked user --%>
 <c:set var="limit"><core:ip_check service="FUEL" ip="${ip}" /></c:set>
 

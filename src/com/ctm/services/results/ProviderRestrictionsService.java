@@ -1,18 +1,16 @@
 package com.ctm.services.results;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.model.health.HealthPriceRequest;
+import com.ctm.model.settings.Vertical.VerticalType;
+import org.apache.log4j.Logger;
+
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.naming.NamingException;
-
-import com.ctm.model.health.HealthPriceRequest;
-import org.apache.log4j.Logger;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.model.settings.Vertical.VerticalType;
 
 public class ProviderRestrictionsService {
 
@@ -27,7 +25,7 @@ public class ProviderRestrictionsService {
 	public List<Integer> getProvidersThatHaveExceededLimit(String state, String vertical, long transactionid) {
 		String selectStatement =
 				"SELECT providerId " +
-				"FROM ctm.dailySalesCount " +
+				"FROM ctm.vw_dailySalesCount " +
 				"WHERE ( " +
 				"(limitValue = ? AND limitType = 'STATE') " +
 				"OR " +
@@ -43,7 +41,7 @@ public class ProviderRestrictionsService {
 					")" +
 				") " +
 				"UNION "+
-				"SELECT providerId FROM ctm.monthlySalesCount " +
+				"SELECT providerId FROM ctm.vw_monthlySalesCount " +
 				"WHERE ( " +
 				"(limitValue = ? AND limitType = 'STATE') " +
 				"OR " +
@@ -99,7 +97,7 @@ public class ProviderRestrictionsService {
 	public List<Integer> getProvidersThatHaveExceededMonthlyLimit(String state, String vertical, long transactionid) {
 		String selectStatement =
 				"SELECT providerId " +
-				"FROM ctm.monthlySalesCount " +
+				"FROM ctm.vw_monthlySalesCount " +
 				"WHERE ( " +
 				"(limitValue = ? AND limitType = 'STATE') " +
 				"OR " +
@@ -166,12 +164,13 @@ public class ProviderRestrictionsService {
 		}
 
 		// Add providers that have been excluded in the database
-		for (Integer providerId : providersThatHaveExceededLimit) {
-			if (!excludedProviders.contains(providerId)) {
-				excludedProviders.add(providerId);
+		for (Integer providerId : new ArrayList<>(providersThatHaveExceededLimit)) {
+			if (excludedProviders.contains(providerId)) {
+				providersThatHaveExceededLimit.remove(providerId);
 			}
 		}
 
+		healthPriceRequest.setProvidersThatHaveExceededLimit(providersThatHaveExceededLimit);
 		healthPriceRequest.setExcludedProviders(excludedProviders);
 		return excludedProviders;
 	}

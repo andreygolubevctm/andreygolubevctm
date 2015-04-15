@@ -108,8 +108,6 @@
 </go:style>
 
 <%-- JAVASCRIPT --%>
-<go:script href="common/js/car/nonStandardAcc.js" marker="js-href" />
-<go:script href="common/js/car/dialog_controller.js" marker="js-href" />
 <go:script href="common/js/utils.js" marker="js-href" />
 
 <go:script marker="onready">

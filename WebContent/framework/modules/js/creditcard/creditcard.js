@@ -23,7 +23,7 @@
 
 			product = meerkat.site.product;
 
-			if(typeof product === null) {
+			if(product === null) {
 				return false;
 			}
 

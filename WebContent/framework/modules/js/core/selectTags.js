@@ -97,11 +97,7 @@
 		
 		selectedTextHTML = '<span>' + selectedTextHTML + '</span>';
 
-		var isAlreadySelected = $list.find('li span').filter(function(){
-			return optionSelectedIcon + $(this).text() === selectedText; 
-		}).length;
-		
-		if($selected.not('[readonly]').length && !isAlreadySelected) {
+		if($selected.not('[readonly]').length && !$list.find('li:contains("' + selectedText + '")').length) {
 			$select[0].selectedIndex = 0;
 			
 			// Find options by value because we may have multiple opt-groups which cause the same value

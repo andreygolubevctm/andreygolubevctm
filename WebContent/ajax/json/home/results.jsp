@@ -181,6 +181,9 @@
 						<sql:param>${homeProductId}</sql:param>
 					</sql:query>
 
+					<%-- Add homeProductId to resultset to use for tracking --%>
+					<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="<trackingProductId>${homeProductId}</trackingProductId>" />
+
 					<%-- OLD style features (decommission this once we no longer need to support non-AMS vertical) --%>
 					<c:set var="features">
 						<compareFeatures>

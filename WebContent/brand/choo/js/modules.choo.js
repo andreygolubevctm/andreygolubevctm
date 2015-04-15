@@ -9212,10 +9212,7 @@ Features = {
             selectedTextHTML = selectedTextHTML.substr(0, 20) + "...";
         }
         selectedTextHTML = "<span>" + selectedTextHTML + "</span>";
-        var isAlreadySelected = $list.find("li span").filter(function() {
-            return optionSelectedIcon + $(this).text() === selectedText;
-        }).length;
-        if ($selected.not("[readonly]").length && !isAlreadySelected) {
+        if ($selected.not("[readonly]").length && !$list.find('li:contains("' + selectedText + '")').length) {
             $select[0].selectedIndex = 0;
             $select.find('option[value="' + value + '"]').text(optionSelectedIcon + selectedText).attr("disabled", "disabled");
             setTimeout(function delayTagAppearance() {
@@ -10152,13 +10149,14 @@ Features = {
         });
     }
     function updateLastFieldTouch(label) {
-        if (!_.isUndefined(label) && !_.isEmpty(label)) {
+        if (!_.isUndefined(label) && !_.isEmpty(label) && label !== lastFieldTouch) {
             lastFieldTouch = label;
             $("#" + lastFieldTouchXpath).val(lastFieldTouch);
+            meerkat.logging.debug("last touched field: " + lastFieldTouch);
         }
     }
     function applyLastFieldTouchListener() {
-        $("form input, form select").on("click focus", function(e) {
+        $(document.body).on("click focus", "form input, form select", function(e) {
             updateLastFieldTouch($(this).closest(":input").attr("name"));
         });
         $("a[data-slide-control]").on("click", function() {

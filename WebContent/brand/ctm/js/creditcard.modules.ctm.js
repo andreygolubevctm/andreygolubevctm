@@ -13,7 +13,7 @@
         $(document).ready(function() {
             if (meerkat.site.vertical !== "creditcard") return false;
             product = meerkat.site.product;
-            if (typeof product === null) {
+            if (product === null) {
                 return false;
             }
             if (meerkat.modules.tracking.getCurrentJourney() == "2") {
