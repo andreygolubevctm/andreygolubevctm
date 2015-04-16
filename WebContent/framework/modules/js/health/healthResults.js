@@ -412,6 +412,11 @@
 					premiumIncreaseContent.click();
 				});
 			}
+
+			// coupon logic, filter for user, then render banner
+			meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack(){
+				meerkat.modules.coupon.renderCouponBanner();
+		});
 		});
 
 		$(document).on("resultsDataReady", function(){

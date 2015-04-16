@@ -44,6 +44,8 @@
 			<field_new:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you want to supply bank account details for claims to be paid into" required="true" className="health-payment_details-claims" id="${name}_claims"/>
 		</form_new:row>
 
+		<coupon:fields xpath="health" />
+
 		<c:if test="${not empty disclaimer_content}">
 			<c:set var="fieldXpath" value="${xpath}/disclaimer" />
 			<form_new:row fieldXpath="${fieldXpath}" hideHelpIconCol="true">

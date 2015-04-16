@@ -13,6 +13,15 @@
 	<c:if test="${environmentService.needsManuallyAddedBrandCodeParam()}">?brandCode=${pageSettings.getBrandCode()}</c:if>
 </c:set>
 
+<c:set var="vdnUrl">
+	<c:if test="${not empty param.vdn}">
+		<c:choose>
+			<c:when test="${empty brandCodeUrl}">?vdn=${param.vdn}</c:when>
+			<c:otherwise>&vdn=${param.vdn}</c:otherwise>
+		</c:choose>
+	</c:if>
+</c:set>
+
 <c:choose>
 	<c:when test="${empty param.token && not empty sessionScope.isLoggedIn}">
 		<c:set var="isAuthenticated" value="true"/>
@@ -30,7 +39,7 @@
 		<c:set var="login"><core:login uid="" /></c:set>
 		<c:choose>
 			<c:when test="${empty param.transactionId}">
-				<c:redirect url="${pageSettings.getBaseUrl()}${pageSettings.getSetting('quoteUrl')}${brandCodeUrl}"/>
+				<c:redirect url="${pageSettings.getBaseUrl()}${pageSettings.getSetting('quoteUrl')}${brandCodeUrl}${vdnUrl}"/>
 			</c:when>
 			<c:otherwise>
 				<simples:load_quote />

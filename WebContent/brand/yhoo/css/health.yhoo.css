@@ -3668,6 +3668,18 @@ body[data-step="payment"].health .healthMoreInfoModel .jeepPromotion {
     background-size: 374px 124px;
   }
 }
+/* TODO: to read the src from DB so we don't have to set this up for each promo */
+.health100eftpos {
+  width: 280px;
+  height: 175px;
+  background-image: url("../coupon/100-eftpos-card.jpg");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .health100eftpos {
+    background-image: url("../coupon/100-eftpos-card@2x.jpg");
+    background-size: 280px 175px;
+  }
+}
 .btn-more-info {
   background-color: #333333;
   color: #ffffff;

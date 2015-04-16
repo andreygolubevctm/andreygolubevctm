@@ -25,6 +25,7 @@
 <c:if test="${not empty phoneDetails}">
 	<c:set var="brandId" value="${phoneDetails.getStyleCodeId()}" />
 	<c:set var="verticalId" value="${phoneDetails.getVerticalId()}" />
+	<c:set var="vdn" value="${phoneDetails.getVdn()}" />
 
 	<%-- If vertical has not been specified, use the call's details --%>
 	<c:if test="${empty verticalCodeParam}">
@@ -45,11 +46,11 @@
 
 	<%-- Unknown brand code to transfer to, get user to select the right one --%>
 	<c:when test="${empty brandId or brandId == -1}">
-		<c:redirect url="${pageSettings.getBaseUrl()}simples/selectBrand.jsp?verticalCode=${verticalCodeParam}" />
+		<c:redirect url="${pageSettings.getBaseUrl()}simples/selectBrand.jsp?verticalCode=${verticalCodeParam}&vdn=${vdn}" />
 	</c:when>
 
 	<c:otherwise>
-		<c:redirect url="${callCentreService.createHandoverUrl(pageContext.getRequest(), brandId, verticalCodeParam, null)}" />
+		<c:redirect url="${callCentreService.createHandoverUrl(pageContext.getRequest(), brandId, verticalCodeParam, null, vdn)}" />
 	</c:otherwise>
 
 </c:choose>

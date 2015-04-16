@@ -196,9 +196,17 @@ public class ApplicationService {
 	 * @return
 	 */
 	public static String getVerticalCodeFromTransactionSessionData(Data data){
-		return (String) data.get("current/vertical");
+		return (String) data.get("current/verticalCode");
 	}
 
+	/**
+	 *
+	 * @param data
+	 * @return
+	 */
+	public static String getBrandCodeFromTransactionSessionData(Data data){
+		return (String) data.get("current/brandCode");
+	}
 
 
 	/**

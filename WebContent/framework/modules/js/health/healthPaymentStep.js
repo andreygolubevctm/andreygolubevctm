@@ -77,6 +77,14 @@
 
 			$paymentRadioGroup.find('input').on('change', updateFrequencySelectOptions);
 
+			// validate coupon
+			$('#update-premium').on('click', function(){
+				meerkat.modules.coupon.validateCouponCode($('.coupon-code-field').val());
+			});
+
+			// reset state when change coupon code to bring update premium button back
+			$('.coupon-code-field').on('change', resetState);
+
 			// Update premium button
 			$('#update-premium').on('click', updatePremium);
 

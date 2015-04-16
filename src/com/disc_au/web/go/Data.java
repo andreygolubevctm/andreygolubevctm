@@ -20,7 +20,7 @@ import com.disc_au.web.go.xml.XmlParser;
  */
 
 public class Data extends XmlNode implements Comparable<Data> {
-	
+
 	private static Logger logger = Logger.getLogger(Data.class.getName());
 
 	/** The NODE. */
@@ -257,6 +257,18 @@ public class Data extends XmlNode implements Comparable<Data> {
 		return EQUAL;
 	}
 
+	/**
+	 * if xpath value is empty return empty string instead of null
+	 */
+	public String getStringNotNull(String xpath) {
+		Object obj = get(xpath);
+		String value = "";
+		if (obj instanceof String) {
+			value = (String) obj;
+		}
+		return value;
+	}
+
 	@Nullable
 	public String getString(String xpath) {
 		Object obj = get(xpath);
@@ -281,7 +293,7 @@ public class Data extends XmlNode implements Comparable<Data> {
 	public Double getDouble(String xpath) {
 		return getNumber(xpath, Double.class);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
 	 */

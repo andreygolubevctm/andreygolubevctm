@@ -7,7 +7,7 @@
 
 <c:choose>
 	<c:when test="${param.brandId != pageSettings.getBrandId()}">
-		<c:redirect url="${callCentreService.createHandoverUrl(pageContext.getRequest(), param.brandId, param.verticalCode, param.transactionId)}"/>
+		<c:redirect url="${callCentreService.createHandoverUrl(pageContext.getRequest(), param.brandId, param.verticalCode, param.transactionId, null)}"/>
 	</c:when>
 	<c:otherwise>
 		<simples:load_quote/>

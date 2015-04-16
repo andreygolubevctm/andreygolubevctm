@@ -57,3 +57,4 @@
 <%@ taglib tagdir="/WEB-INF/tags/session"				prefix="session" %>
 <%@ taglib tagdir="/WEB-INF/tags/settings"				prefix="settings" %>
 <%@ taglib tagdir="/WEB-INF/tags/content"				prefix="content" %>
+<%@ taglib tagdir="/WEB-INF/tags/coupon"				prefix="coupon" %>

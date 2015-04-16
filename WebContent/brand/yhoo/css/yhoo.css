@@ -9402,6 +9402,185 @@ ul.selected-tags li button:hover {
 ul.selected-tags li button:focus {
   outline: none;
 }
+.coupon-banner-container a.coupon-banner {
+  font-size: 16px;
+  text-align: center;
+  padding: 10px;
+  background-color: #333333;
+  color: white;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.coupon-banner-container a.coupon-banner:hover {
+  text-decoration: none;
+  color: white;
+}
+.coupon-banner-container a.coupon-banner .link {
+  color: #ab1d21;
+}
+.coupon-input-group .has-success .help-block,
+.coupon-optin-group .has-success .help-block,
+.coupon-input-group .has-success .control-label,
+.coupon-optin-group .has-success .control-label,
+.coupon-input-group .has-success .radio,
+.coupon-optin-group .has-success .radio,
+.coupon-input-group .has-success .checkbox,
+.coupon-optin-group .has-success .checkbox,
+.coupon-input-group .has-success .radio-inline,
+.coupon-optin-group .has-success .radio-inline,
+.coupon-input-group .has-success .checkbox-inline,
+.coupon-optin-group .has-success .checkbox-inline {
+  color: #333333;
+}
+.coupon-input-group .has-success .form-control,
+.coupon-optin-group .has-success .form-control {
+  border-color: #b1b2ae;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: none;
+}
+.coupon-input-group .has-success .form-control:focus,
+.coupon-optin-group .has-success .form-control:focus {
+  border-color: #989994;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #e3e4e2;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #e3e4e2;
+  box-shadow: none;
+}
+.coupon-input-group .has-success .input-group-addon,
+.coupon-optin-group .has-success .input-group-addon {
+  color: #333333;
+  border-color: #b1b2ae;
+  background-color: #ffffff;
+}
+.coupon-input-group .has-success .form-control-feedback,
+.coupon-optin-group .has-success .form-control-feedback {
+  color: #333333;
+}
+.coupon-input-group .has-success .help-block,
+.coupon-optin-group .has-success .help-block,
+.coupon-input-group .has-success .control-label,
+.coupon-optin-group .has-success .control-label,
+.coupon-input-group .has-success .radio,
+.coupon-optin-group .has-success .radio,
+.coupon-input-group .has-success .checkbox,
+.coupon-optin-group .has-success .checkbox,
+.coupon-input-group .has-success .radio-inline,
+.coupon-optin-group .has-success .radio-inline,
+.coupon-input-group .has-success .checkbox-inline,
+.coupon-optin-group .has-success .checkbox-inline {
+  color: #333333;
+}
+.coupon-input-group .has-success .form-control,
+.coupon-optin-group .has-success .form-control,
+.coupon-input-group .has-success .select,
+.coupon-optin-group .has-success .select {
+  color: #333333;
+  border-color: #b1b2ae;
+  background-color: #ffffff;
+}
+.coupon-input-group .has-success .form-control:focus,
+.coupon-optin-group .has-success .form-control:focus,
+.coupon-input-group .has-success .select:focus,
+.coupon-optin-group .has-success .select:focus {
+  border-color: #989994;
+}
+.coupon-input-group .has-success .input-group-addon,
+.coupon-optin-group .has-success .input-group-addon {
+  color: #b3b3b3;
+  border-color: #b1b2ae;
+  background-color: #ffffff;
+}
+.coupon-input-group .has-success .datepicker-inline,
+.coupon-optin-group .has-success .datepicker-inline {
+  border-color: #b1b2ae;
+}
+.coupon-input-group .has-success .datepicker-inline .dow,
+.coupon-optin-group .has-success .datepicker-inline .dow {
+  color: #333333;
+}
+.coupon-input-group .has-custom-error .help-block,
+.coupon-optin-group .has-custom-error .help-block,
+.coupon-input-group .has-custom-error .control-label,
+.coupon-optin-group .has-custom-error .control-label,
+.coupon-input-group .has-custom-error .radio,
+.coupon-optin-group .has-custom-error .radio,
+.coupon-input-group .has-custom-error .checkbox,
+.coupon-optin-group .has-custom-error .checkbox,
+.coupon-input-group .has-custom-error .radio-inline,
+.coupon-optin-group .has-custom-error .radio-inline,
+.coupon-input-group .has-custom-error .checkbox-inline,
+.coupon-optin-group .has-custom-error .checkbox-inline {
+  color: #ff5f5f;
+}
+.coupon-input-group .has-custom-error .form-control,
+.coupon-optin-group .has-custom-error .form-control,
+.coupon-input-group .has-custom-error .select,
+.coupon-optin-group .has-custom-error .select {
+  color: #ff5f5f;
+  border-color: #ff5f5f;
+  background-color: #ffefef;
+}
+.coupon-input-group .has-custom-error .form-control:focus,
+.coupon-optin-group .has-custom-error .form-control:focus,
+.coupon-input-group .has-custom-error .select:focus,
+.coupon-optin-group .has-custom-error .select:focus {
+  border-color: #ff2c2c;
+}
+.coupon-input-group .has-custom-error .input-group-addon,
+.coupon-optin-group .has-custom-error .input-group-addon {
+  color: #ff5f5f;
+  border-color: #ff5f5f;
+  background-color: #ffefef;
+}
+.coupon-input-group .has-custom-error .datepicker-inline,
+.coupon-optin-group .has-custom-error .datepicker-inline {
+  border-color: #ff5f5f;
+}
+.coupon-input-group .has-custom-error .datepicker-inline .dow,
+.coupon-optin-group .has-custom-error .datepicker-inline .dow {
+  color: #ff5f5f;
+}
+.coupon-input-group .has-custom-error .btn-group > .btn,
+.coupon-optin-group .has-custom-error .btn-group > .btn {
+  background-color: #ffefef;
+  border-color: #ff5f5f;
+  color: #ff5f5f;
+}
+.coupon-input-group .has-custom-error .btn-group > .btn.active,
+.coupon-optin-group .has-custom-error .btn-group > .btn.active {
+  background-color: #ff5f5f;
+  color: #ffefef;
+}
+.coupon-input-group .coupon-error-container,
+.coupon-optin-group .coupon-error-container {
+  color: #a90000;
+}
+.coupon-input-group .coupon-error-container label,
+.coupon-optin-group .coupon-error-container label {
+  font-weight: normal;
+  font-size: 0.9em;
+  display: block;
+}
+.coupon-confirmation {
+  margin-top: 20px;
+}
+.conpon-congrats {
+  color: #333333;
+  font-size: 16px;
+}
+/** 
+ * Background image src|width|height will be set individually for each campaign in vertial specific modules
+ * TODO: to read the src from DB so we don't have to set this up for each promo 
+ */
+.coupon-modal-image,
+.coupon-confirmation-image {
+  width: 100%;
+  background-repeat: no-repeat;
+  padding: 0;
+  display: block;
+}
 /**
 	* [NOTE]
 	* This file was copied from the default bootstrap

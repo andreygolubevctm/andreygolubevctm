@@ -59,7 +59,7 @@ public class CallCentreService {
 	 * @param verticalCode
 	 * @return redirectUrl
 	 */
-	public static String createHandoverUrl(HttpServletRequest request, int brandId, String verticalCode, String transactionId) throws Exception{
+	public static String createHandoverUrl(HttpServletRequest request, int brandId, String verticalCode, String transactionId, String vdn) throws Exception{
 		SessionDataService sessionDataService = new SessionDataService();
 		SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
 
@@ -90,6 +90,10 @@ public class CallCentreService {
 
 		if(EnvironmentService.needsManuallyAddedBrandCodeParam()){
 			redirectUrl.append("&brandCode=").append(brand.getCode());
+		}
+
+		if(vdn != null && !vdn.equals("")){
+			redirectUrl.append("&vdn=").append(vdn);
 		}
 
 		return redirectUrl.toString();

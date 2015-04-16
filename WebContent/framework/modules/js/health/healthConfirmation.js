@@ -110,7 +110,8 @@
 						productBrandCode: confirmationProduct.info.provider,
 						productName: confirmationProduct.info.productTitle,
 						quoteReferenceNumber: confirmationProduct.transactionId,
-						simplesUser: meerkat.site.isCallCentreUser
+						simplesUser: meerkat.site.isCallCentreUser,
+						reedemedCouponID: $('.coupon-confirmation').data('couponId')
 					}
 				});
 

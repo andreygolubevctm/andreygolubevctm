@@ -6,6 +6,10 @@
 <%-- Load confirmation information (either a full confirmation or a pending one) --%>
 <c:set var="confirmationData"><health:load_confirmation /></c:set>
 
+<%-- get transactionId from confirmation data--%>
+<x:parse var="confirmationDataXML" xml="${confirmationData}" />
+<c:set var="transactionId"><x:out select="$confirmationDataXML/data/transID" /></c:set>
+
 <%-- HTML PLACEHOLDER --%>
 <layout:slide formId="confirmationForm" className="displayBlock">
 
@@ -45,6 +49,7 @@
 					</div>
 				</div>
 
+				<coupon:confirmation transactionId="${transactionId}" />
 				<health:competition_jeep />
 
 			</jsp:attribute>

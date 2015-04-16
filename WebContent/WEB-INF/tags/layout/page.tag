@@ -153,6 +153,8 @@
 					<c:if test="${premiumIncreaseEnabledSetting eq 'Y' and not callCentre}">
 						<content:get key="premiumIncreaseContent" />
 					</c:if>
+
+					<coupon:banner />
 			</div>
 
 				<div class="container">
@@ -266,6 +268,18 @@
 			</c:when>
 		</c:choose>
 
+		<!-- CouponId from either brochure site cookies or direct query string -->
+		<c:choose>
+			<c:when test="${not empty param.couponid}">
+				<c:set var="couponId" ><c:out value="${go:decodeUrl(param.couponid)}" escapeXml="true"/></c:set>
+			</c:when>
+			<c:when test="${not empty cookie.CouponID and not empty cookie.CouponID.value}">
+				<c:set var="couponId">
+					<c:out value="${go:decodeUrl(cookie.CouponID.value)}" escapeXml="true"/>
+				</c:set>
+			</c:when>
+		</c:choose>
+
 			<script>
 
 				;(function (meerkat) {
@@ -318,7 +332,9 @@
 							type: 'default',
 							direction: 'right'
 						},
-						useNewLogging: ${pageSettings.getSetting("useNewLogging")}
+						useNewLogging: ${pageSettings.getSetting("useNewLogging")},
+						couponId: '<c:out value="${couponId}"/>',
+						vdn: '<c:out value="${go:decodeUrl(param.vdn)}" escapeXml="true" />'
 					};
 
 		<%-- Vertical settings should be passed in as a JSP fragment --%>

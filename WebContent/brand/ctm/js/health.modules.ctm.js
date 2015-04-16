@@ -2962,7 +2962,8 @@ creditCardDetails = {
                         productBrandCode: confirmationProduct.info.provider,
                         productName: confirmationProduct.info.productTitle,
                         quoteReferenceNumber: confirmationProduct.transactionId,
-                        simplesUser: meerkat.site.isCallCentreUser
+                        simplesUser: meerkat.site.isCallCentreUser,
+                        reedemedCouponID: $(".coupon-confirmation").data("couponId")
                     }
                 });
             }
@@ -4128,6 +4129,10 @@ creditCardDetails = {
                 resetSettings();
             });
             $paymentRadioGroup.find("input").on("change", updateFrequencySelectOptions);
+            $("#update-premium").on("click", function() {
+                meerkat.modules.coupon.validateCouponCode($(".coupon-code-field").val());
+            });
+            $(".coupon-code-field").on("change", resetState);
             $("#update-premium").on("click", updatePremium);
             $("#health_payment_credit_type").on("change", creditCardDetails.set);
             creditCardDetails.set();
@@ -4908,6 +4913,9 @@ creditCardDetails = {
                     premiumIncreaseContent.click();
                 });
             }
+            meerkat.modules.coupon.loadCoupon("filter", null, function successCallBack() {
+                meerkat.modules.coupon.renderCouponBanner();
+            });
         });
         $(document).on("resultsDataReady", function() {
             updateBasketCount();
