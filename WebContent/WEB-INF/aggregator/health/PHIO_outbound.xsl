@@ -25,6 +25,7 @@
 		<xsl:when test="$name = 'NIB'">3</xsl:when>
 		<xsl:when test="$name = 'WFD'">7</xsl:when>
 		<xsl:when test="$name = 'BUD'">54</xsl:when>
+		<xsl:when test="$name = 'QCH'">16</xsl:when>
 		<xsl:otherwise>0</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
