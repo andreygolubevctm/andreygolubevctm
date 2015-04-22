@@ -31,38 +31,12 @@ WHERE userId > 0 AND statusId IN (31, 32)
 UNION
 (
 SELECT 4 AS _rule, avail.* FROM simples.message_queue_available avail
-LEFT JOIN simples.message_source src ON src.id = avail.sourceId
-WHERE statusId = 1
-ORDER BY src.priority ASC, avail.id DESC
-LIMIT 1
-)
-
--- All first time postponements and call attempt, last in first out
-UNION
-(
-SELECT 5 AS _rule, avail.* FROM simples.message_queue_available avail
-WHERE postponeCount <= 1 AND callAttempts <= 1
-AND userId = 0
-ORDER BY avail.id DESC
-LIMIT 1
-)
-
--- All second time postponements and call attempt, last in first out
-UNION
-(
-SELECT 6 AS _rule, avail.* FROM simples.message_queue_available avail
-WHERE postponeCount <= 2 AND callAttempts <= 2
-AND userId = 0
-ORDER BY avail.id DESC
-LIMIT 1
-)
-
--- All other postponed or unseccussful messages
-UNION
-(
-SELECT 7 AS _rule, avail.* FROM simples.message_queue_available avail
-WHERE postponeCount > 2 OR callAttempts > 2
-AND userId = 0
-ORDER BY avail.id DESC
+WHERE userId = 0
+ORDER BY date(created) DESC,
+TotalCalls ASC,
+callAttempts ASC,
+postponeCount ASC,
+created DESC,
+id DESC
 LIMIT 1
 )

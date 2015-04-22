@@ -66,6 +66,9 @@ public class SimplesMessageService {
 			message = messageDao.getNextMessageOld(userId);
 		}
 
+		message = messageDao.getNextMessage(userId);
+
+
 		if (message.getMessageId() == 0) {
 			// No message available
 			messageDetail.setMessage(message);
