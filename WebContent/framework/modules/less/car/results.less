@@ -49,7 +49,6 @@
 	.promotion {
 		color: @theme-tertiary;
 		@media(@md) {
-			text-align: right;
 			margin-top: 20px;
 		}
 		@media(@xs-only) {
@@ -114,14 +113,39 @@
 	}
 }
 
+.priceMode .result-row {
+	.frequency {
+		padding-top:1px !important;
+		.frequencyTitle {
+			display:inline-block !important;
+		}
+	}
+	.excess {
+		.excessTitle {
+			display:inline-block !important;
+		}
+	}
+}
+
 .offerTerms {
 	text-decoration:underline;
 	white-space: pre;
 }
 
 // Correct the 'trophy' icon alignment inside promotion text.
+.promotion {
+	position: relative;
+	padding-left: 32px;
+}
 .promotion .icon {
-	line-height: inherit;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	width: 32px;
+	height: 32px;
+	font-size: 22px;
+	line-height: 24px;
 }
 
 @media(min-width: @screen-sm-min) and (max-width: @screen-md-max) {
@@ -153,6 +177,19 @@
 			margin-top: 5px;
 		}
 	}
+	}	
+	.priceMode .result-row {
+		.frequency, .excess {
+			.frequencyTitle, .excessTitle {
+				display:block !important;
+				margin-top: 0 !important;
+	}
+		}
+		.excess {
+			.excessAmount {
+				margin-top:11px !important;
+			}
+		}
 	}
 }//media sm
 
@@ -222,6 +259,18 @@
 			}
 		}
 	}
+	
+	.priceMode .result-row {
+		.frequency {
+			padding-top:1px !important;
+		}
+		.frequency, .excess {
+			.frequencyTitle, .excessTitle {
+				display:inline-block !important;
+				margin-top: 0 !important;
+			}
+		}
+	}
 }
 
 @media(max-width: 480px) {
@@ -239,7 +288,6 @@
 // Feature mode styling
 //
 .featuresMode {
-	margin-bottom: 30px;
 
 	.compare-toggle-wrapper {
 		margin-bottom: 0;
@@ -319,11 +367,6 @@
 				margin-left: 90px;
 				line-height: 0.9;
 			}
-			.btn-more-info {
-				clear: none;
-				width: auto;
-				margin: @results-feature-cell-padding @results-feature-cell-padding 0 90px;
-			}
 
 			// Using .content to pick up normal feature row styling
 			// Needs -margin to combat the padding on .productSummary
@@ -392,12 +435,38 @@
 
 
 // This is a "sub-XS" special rule... because iPhone.
-@media(max-width: 520px) {
-	.priceMode {
-		.frequencyTitle,
-		.excessTitle {
-			display: block;
-			margin-top: 0;
+// 615px is the max width where titles are to appear 
+// below the dollar value 
+@media(max-width: 615px) {
+	.priceMode .result-row {
+		.frequency {
+			padding-top:0px !important;
+		}
+		.frequency, .excess {
+			.frequencyTitle, .excessTitle {
+				display:block !important;
+				margin-top: 0 !important;
+	}
+		}
+	}
+}
+
+@media(@md-only) {
+	.priceMode .result-row {
+		.frequency, .excess {
+			.frequencyTitle, .excessTitle {
+				text-align:right !important;
+			}
+		}
+	}
+}
+
+@media(@lg-only) {
+	.priceMode .result-row {
+		.frequency {
+			.frequencyTitle {
+				float:left !important;
+			}
 		}
 	}
 }

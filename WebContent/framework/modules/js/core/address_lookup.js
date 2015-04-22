@@ -9,11 +9,13 @@
 	};
 
 	var $currentAjaxRequest = null,
-		dpIdCache = {};
+		dpIdCache = {},
+		addressFieldId = null;
 
 	function initAddressLookup() {
-		meerkat.messaging.subscribe(meerkatEvents.autocomplete.ELASTIC_SEARCH_COMPLETE, function elasticAddress(dpId) {
-			getAddressData(dpId);
+		meerkat.messaging.subscribe(meerkatEvents.autocomplete.ELASTIC_SEARCH_COMPLETE, function elasticAddress(data) {
+			addressFieldId = data.addressFieldId;
+			getAddressData(data.dpid);
 		});
 	}
 
@@ -34,8 +36,12 @@
 			var $navButton = $('.journeyNavButton');
 
 			// Lock Journey
-			meerkat.modules.loadingAnimation.showInside($navButton);
-			meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, { source: 'address_lookup' });
+			// Don't lock on home, as the address is on the first slide and the next button is directly after the question.
+			// If this address question moves it might be worth removing this condition.
+			if (meerkat.site.vertical != 'home') {
+				meerkat.modules.loadingAnimation.showInside($navButton);
+				meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, { source: 'address_lookup' });
+			}
 
 			// Send a request for the address details associated with
 			// the given dpId
@@ -62,10 +68,16 @@
 						if(status !== "abort") {
 							meerkat.modules.errorHandling.error({
 								page: "elastic_search.js",
-								errorLevel: "slient",
+								errorLevel: "warning",
 								description: "Something went wrong and the elastic address lookup failed for " + dpId,
+								message: "Sorry, there was a problem loading your address details, please try again.",
 								data: xhr
 							});
+
+							if (meerkat.site.vertical == 'home') {
+								meerkat.modules.journeyEngine.gotoPath("start");
+							}
+							$('#' + addressFieldId + '_nonStd').trigger('click').prop('checked', true);
 						}
 					},
 					onComplete: function ajaxGetTypeaheadAddressDataComplete() {
@@ -82,7 +94,7 @@
 	// Populate the hidden fields.
 	function setAddressDataFields(data) {
 		for (var addressItem in data) {
-			var $hiddenAddressElement = $('#quote_riskAddress_'+addressItem);
+			var $hiddenAddressElement = $('#' + addressFieldId + '_'+addressItem);
 			$hiddenAddressElement.val(data[addressItem]);
 		}
 	}

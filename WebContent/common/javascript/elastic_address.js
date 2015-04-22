@@ -14,8 +14,8 @@ function init_address(name, defaultSuburbSeq) {
 	var isPostalAddress = false;
 
 	// General/default elements
-	var autofilllessSearchInput = $("#quote_risk_autofilllessSearch"),
-		autofilllessSearchFieldRow = $("#quote_risk_autofilllessSearchRow"),
+	var autofilllessSearchInput = $("#" + name + "_autofilllessSearch"),
+		autofilllessSearchFieldRow = $("#" + name + "_autofilllessSearchRow"),
 		nonStdCheckbox = $("#" + name + "_nonStd"),
 		lastSearchHidden = $("#" + name + "_lastSearch"),
 		fullAddressLineOneHidden = $("#" + name + "_fullAddressLineOne"),

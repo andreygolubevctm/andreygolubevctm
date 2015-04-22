@@ -1,9 +1,11 @@
 //Non XS modes:
 @media(@sm) {
 	.morePromptContainer {
+	    z-index: 1000;
 		text-align:center;
 		position:fixed;
 		bottom:0px;
+	  	margin-top: 15px;
 	}
 
 	.morePromptCell {
@@ -16,7 +18,8 @@
 			text-decoration: none;
 		}
 
-		.icon-angle-down {
+		.icon-angle-down,
+		.icon-angle-up {
 			color: #fff;
 			vertical-align: middle;
 			margin: 0 8px;

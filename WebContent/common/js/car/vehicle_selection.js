@@ -3,7 +3,7 @@
 /*-- --------------------------------------------------------------- --*/
 
 /*-- Re-used HTML snippets --*/
-var pleaseChooseOptionHTML = "<option value=''>Please choose...</option>";
+var pleaseChooseOptionHTML = "<option value=''>Select vehicle {{label}}...</option>";
 var resetOptionHTML = "<option value=''>&nbsp;</option>";
 var notFoundOptionHTML = "<option value=''>No match for above choices</option>"; //None found. Change above.
 
@@ -88,7 +88,6 @@ car.vehicleSelect.showAllFields = function() {
 
 /*-- Handle the clearing and interaction state --*/
 car.vehicleSelect.updateSelectState = function() {
-	//console.groupCollapsed("Enabled or Disabled Elements:");
 	$allSelects.each(function(){
 		$this = $(this);
 
@@ -263,9 +262,7 @@ var error500 = function(xhr){
 var ajaxComplete = function(jqxhr,xhr){
 	/*Ported over from the old code, not sure if we need to do this all the time,
 	but gets immediate action on removing the additional accessories. Added a check for pre-loaded data.*/
-	//console.debug('resetCar is tested inside ajaxComplete');
 	if(resetCar) {
-		//console.debug('resetCar is true and we now resetSelectedNonStdAcc inside ajaxComplete');
 		//The quicklaunch page wouldn't have the reset accessories JS - so this is an important check.
 		if (typeof resetSelectedNonStdAcc != 'undefined') { resetSelectedNonStdAcc(); }
 	}
@@ -291,6 +288,12 @@ var ajaxSuccess = function(data,xhr,jqxhr){
 		/*-- Set is eg. 'car_model', at the moment only 1 set will exist per call but a future unified ajax endpoint will likely have multiple --*/
 		var dataSet = data[set];
 		var localDataModelName = ''+set.slice(car.vehicleSelect.fields.ajaxPfx.length,set.length);
+
+		if(set == "models") {
+			options = options.replace("{{label}}", "Model");
+		} else {
+			options = options.replace("{{label}}", "Year");
+		}
 
 		//The insane thing about Mobile Safari (iOS7 at least) is that without an option group, it wont trigger change events immediately.
 		options += '<optgroup label="'+$labelForContext+'">';
@@ -424,15 +427,10 @@ car.vehicleSelect.getActionsForField = function($thisSelect, $prevSelects, $cont
 Tries to unify the functionality that was defined here before --*/
 car.vehicleSelect.selectChange = function(event,$selectPassed){
 
-	//console.time("Ajax call and change handler time");
-	//console.profile("Ajax call and change handler performance");
-
-	//console.log('event', event,':','Checking the target',event.target, ''+(typeof event));
 	var $thisSelect = $(event.target);
 
 	if (typeof event.target === 'undefined') {
 		if (typeof $selectPassed !== 'undefined') {
-			//console.log('Now passing an overriding param to selectChange', $thisSelect, 'to', $selectPassed);
 			$thisSelect = $selectPassed;
 		} else {
 			//Error shouldn't display to user as it's a .register, not .exec or .display
@@ -461,33 +459,9 @@ car.vehicleSelect.selectChange = function(event,$selectPassed){
 
 	var $allNextAjaxSelects = $allNextSelects.not(".initial select");
 
-	//console checks
-	/*
-	console.groupCollapsed("Vehicle Selection States:");
-		console.debug('Change event on:',$thisSelect,$thisSelect.val());
-		console.group("Selects:");
-		console.log("$prevSelect",$prevSelect.length,$prevSelect,$prevSelect.val());
-		console.log("$thisSelect",$thisSelect.length,$thisSelect,$thisSelect.val());
-		console.log("$nextSelect",$nextSelect.length,$nextSelect,$nextSelect.val());
-		console.log("$allPrevSelects",$allPrevSelects.length,$allPrevSelects);
-		console.log("$allNextAjaxSelects",$allNextAjaxSelects.length,$allNextAjaxSelects);
-		console.groupEnd();
-
-		console.group("Rows:");
-		console.log("$prevRow",$prevRow.length,$prevRow);
-		console.log("$nextRow",$nextRow.length,$nextRow);
-		console.log("$allNextRows",$allNextRows.length,$allNextRows);
-		console.log("$allPrevRows",$allPrevRows.length,$allPrevRows);
-		console.groupEnd();
-	console.groupEnd();
-	*/
-
-	/*-- Clear old values and undo concertina --*/
-
 	/*-- Reset options --*/
 	$allNextAjaxSelects.each(function(){
 		$(this).html(resetOptionHTML);
-		//hideRowAfter($(this)); //this might work? TODO
 	});
 
 	car.vehicleSelect.updateSelectState();
@@ -510,9 +484,6 @@ car.vehicleSelect.selectChange = function(event,$selectPassed){
 
 	/*-- Concertina: As our other functions initiate changes in the hidden rows, we can apply update row on that trigger. --*/
 	showRowAfter($thisSelect);
-
-	//console.profileEnd();
-	//console.timeEnd("Ajax call and change handler time");
 
 };
 
@@ -537,7 +508,7 @@ car.vehicleSelect.init = function(options){
 		options.push(
 			$('<option/>',{
 				value:''
-			}).append("Please choose...")
+			}).append("Select vehicle Make...")
 		);
 
 		options.push(
@@ -579,8 +550,6 @@ car.vehicleSelect.init = function(options){
 	//This ensures legacy code is happy to keep going
 	$allSelects.click(function(e){
 		resetCar = true;
-		//This isn't working in chrome mac (NO CLUES AS TO WHY!!)
-		//console.debug('resetCar is being reset by a click handler placed on allSelects inside init. $allSelects is:',$allSelects,e);
 	});
 
 	//Intended to be applying a change handler to everything from the '$allSelects' but jquery .on is crazy
@@ -598,8 +567,6 @@ car.vehicleSelect.init = function(options){
 	$(car.vehicleSelect.fields.button).on('click', function() {
 		document.getElementById('mainform').submit();
 	});
-
-	//console.log('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
 };
 
 /*-- ----------------------------------------- --*/

@@ -53,7 +53,7 @@
 
 <%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>
-	<div id="resultsBridgeLess" class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
+	<div id="results_v3" class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
 		<div class="featuresHeaders featuresElements">
 
 			<div class="result fixedDockedHeader">
@@ -102,15 +102,22 @@
 	{{ var template = $("#annual-price-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var annualPriceTemplate = htmlTemplate(obj); }}
+	{{ var ctaBtnText = 'Apply Now'; }}
+	{{ var ctaBtnClass = ''; }}
+
+	{{ if(meerkat.modules.splitTest.isActive(64)) { }}
+		{{ ctaBtnText = 'Continue to Insurer'; }}
+		{{ ctaBtnClass = 'ctaBtnExpanded'; }}
+	{{ } }}
 
 	<%-- Main call to action button. --%>
 	{{ var mainCallToActionButton = '' }}
 	{{ if (obj.onlineAvailable == 'Y') { }}
-		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply push-top-10" data-productId="'+obj.productId+'">Apply now<span class="icon-arrow-right"></span></a>' }}
+		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-primary btn-cta btn-block btn-more-info-apply '+ctaBtnClass+'" data-productId="'+obj.productId+'">'+ctaBtnText+'<span class="icon-arrow-right"></span></a>' }}
 	{{ } else if (obj.offlineAvailable == "Y") { }}
-		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-cta btn-block btn-call-actions btn-calldirect push-top-10" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Insurer Direct</a></div>' }}
-	{{ } else if (obj.offlineAvailable == "Y" && obj.callbackAvailable == "Y") { }}
-		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-cta btn-block btn-call-actions btn-callback push-top-10" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'">Get a Call Back</a></div>' }}
+	{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Insurer Direct</a></div>' }}
+	{{ } else if (obj.callbackAvailable == "Y") { }}
+	{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-cta btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'">Get a Call Back</a></div>' }}
 	{{ } }}
 
 	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
@@ -118,9 +125,11 @@
 		<div class="result featuresDockedHeader">
 			<div class="resultInsert featuresMode">
 				{{= logo }}
+				<div class="hidden-xs">
 				{{= annualPriceTemplate }}
 				{{= monthlyPriceTemplate }}
-				<div class="applyNowWrapper">
+				</div>
+				<div class="headerButtonWrapper carSpecific">
 					{{= mainCallToActionButton }}
 				</div>
 			</div>
@@ -128,7 +137,7 @@
 
 		<div class="result featuresNormalHeader headers">
 			<div class="resultInsert featuresMode">
-				<div class="productSummary results">
+				<div class="productSummary results hidden-xs carSpecific">
 					<div class="compare-toggle-wrapper">
 						<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" />
 						<label for="features_compareTick_{{= obj.productId }}"></label>
@@ -136,9 +145,15 @@
 					{{= logo }}
 					{{= annualPriceTemplate }}
 					{{= monthlyPriceTemplate }}
-					<div class="applyNowWrapper">
+					<div class="headerButtonWrapper">
 						{{= mainCallToActionButton }}
 				</div>
+				</div>
+				<div class="productSummary results visible-xs">
+					{{= logo }}
+					<div class="headerButtonWrapper">
+						{{= mainCallToActionButton }}
+			</div>
 				</div>
 			</div>
 
@@ -157,7 +172,7 @@
 
 						{{ if (promotionText.length > 0) { }}
 						<div class="promotion visible-sm">
-							<span class="icon icon-trophy"></span> {{= promotionText }}
+							<span class="icon icon-tag"></span> {{= promotionText }}
 							{{ if (offerTermsContent.length > 0) { }}
 								<a class="small offerTerms" href="javascript:;">Offer terms</a>
 								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
@@ -190,7 +205,7 @@
 						</div>
 						{{ if (promotionText.length > 0) { }}
 						<div class="promotion hidden-sm">
-							<span class="icon icon-trophy"></span> {{= promotionText }}
+							<span class="icon icon-tag"></span> {{= promotionText }}
 							{{ if (offerTermsContent.length > 0) { }}
 								<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
 								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>

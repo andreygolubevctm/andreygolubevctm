@@ -43,7 +43,7 @@
 				
 				<xsl:variable name="domestic">
 					<xsl:choose>
-						<xsl:when test="count($request/travel/destinations/*) = 1 and $request/travel/destinations/au/au">Yes</xsl:when>
+						<xsl:when test="$request/travel/destination = 'AUS'">Yes</xsl:when>
 						<xsl:otherwise>No</xsl:otherwise>								
 					</xsl:choose>
 				</xsl:variable>

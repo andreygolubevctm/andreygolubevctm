@@ -868,6 +868,14 @@ div[class*="ToggleArea"].show_Y {
   text-transform: lowercase;
   color: #1c3e93;
 }
+@media (min-width: 992px) and (max-width: 1199px) {
+  .homeloan .dropdown-container form {
+    padding: 10px;
+  }
+  .homeloan #filter-loan-amount {
+    padding-right: 0;
+  }
+}
 .homeloan .filters-component .footer .small {
   text-align: left;
 }

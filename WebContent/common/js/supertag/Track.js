@@ -22,11 +22,13 @@ Track = {
 	transferInit: function(phoneOnline, quoteRef, tranId, prodId){
 		alert('If you see this, we need Track.transferInit.');
 	},
-	transfer: function(quoteRef, tranId, prodId){
+	transfer: function(quoteRef, tranId, prodId, brandCode, prodName){
 		Track.runTrackingCall('trackQuoteHandoverClick', {
 			quoteReferenceNumber: quoteRef,
 			transactionID: tranId,
-			productID:prodId
+			productID: prodId,
+			productBrandCode: brandCode,
+			productName: prodName
 		});
 	},
 	offerTerms: function(prodId){

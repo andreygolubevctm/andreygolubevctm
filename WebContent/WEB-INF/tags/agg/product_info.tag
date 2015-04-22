@@ -270,7 +270,7 @@
 
 			if (!details.conditions || jumpToUrl) {
 				try {
-					Track.transfer('',details.transactionId, id);
+					Track.transfer('',details.transactionId,id,details.provider,details.name);
 				} catch(e) {
 					// ignore
 				}

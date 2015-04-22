@@ -271,6 +271,9 @@ body > div > header a.bottombar .btn-call:hover {
   }
 }
 @media (min-width: 768px) {
+  footer {
+    margin-top: 30px;
+  }
   .resultsOverflow {
     margin-bottom: 30px;
   }
@@ -300,6 +303,7 @@ body > div > header a.bottombar .btn-call:hover {
     vertical-align: middle;
   }
   .results-table .result_unavailable_combined {
+    margin-top: 60px;
     padding: 15px;
   }
   .results-table .result_unavailable_combined .companyLogo img {
@@ -746,9 +750,11 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
 }
 @media (min-width: 768px) {
   .morePromptContainer {
+    z-index: 1000;
     text-align: center;
     position: fixed;
     bottom: 0px;
+    margin-top: 15px;
   }
   .morePromptCell {
     line-height: 31px;
@@ -762,7 +768,8 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
   .morePromptCell a {
     text-decoration: none;
   }
-  .morePromptCell .icon-angle-down {
+  .morePromptCell .icon-angle-down,
+  .morePromptCell .icon-angle-up {
     color: #fff;
     vertical-align: middle;
     margin: 0 8px;

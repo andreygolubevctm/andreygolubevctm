@@ -50,7 +50,16 @@
 	}
 
 	function isActive( jrny ) {
-		return _.indexOf(currentJourneyList, String(jrny)) >= 0;
+		if(_.isArray(jrny)) {
+			for(var i=0; i<jrny.length; i++) {
+				if(_.indexOf(currentJourneyList, String(jrny[i])) >= 0) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+			return _.indexOf(currentJourneyList, String(jrny)) >= 0;
+		}
 	}
 
 	meerkat.modules.register("splitTest", {

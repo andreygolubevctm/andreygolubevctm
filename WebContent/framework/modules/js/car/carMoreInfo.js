@@ -53,7 +53,8 @@
 			retrieveExternalCopy: retrieveExternalCopy,
 			additionalTrackingData: {
 				productName: null
-			}
+			},
+			onBreakpointChangeCallback : _.bind(resizeSidebarOnBreakpointChange, this, '.paragraphedContent', '.moreInfoRightColumn', $bridgingContainer)
 		};
 
 		meerkat.modules.moreInfo.initMoreInfo(options);
@@ -104,6 +105,12 @@
 
 	}
 
+	function resizeSidebarOnBreakpointChange(leftContainer, rightContainer, mainContainer) {
+		if (meerkat.modules.deviceMediaState.get() == 'lg' || meerkat.modules.deviceMediaState.get() == 'md') {
+			fixSidebarHeight(leftContainer, rightContainer, mainContainer);
+		}
+	}
+
 	/**
 	 * Sets a min-height on a right sidebar.
 	 * @param {String} leftSelector A selector for the left container
@@ -114,6 +121,10 @@
 		if(meerkat.modules.deviceMediaState.get() != 'xs') {
 		/* match up sidebar's height with left side or vice versa */
 			if($(rightSelector, $container).length) {
+				// firstly reset the height of the columns
+				$(leftSelector, $container).css('min-height', '0px');
+				$(rightSelector, $container).css('min-height', '0px');
+				// Then measure the heights to work out which to toggle
 				var leftHeight = $(leftSelector, $container).outerHeight();
 				var rightHeight = $(rightSelector, $container).outerHeight();
 				if(leftHeight >= rightHeight) {

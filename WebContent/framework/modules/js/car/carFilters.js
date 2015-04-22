@@ -6,8 +6,7 @@
 
 	var events = {
 			carFilters: {
-				CHANGED: 'CAR_FILTERS_CHANGED',
-				DISPLAY_MODE_CHANGED: 'DISPLAY_MODE_CHANGED'
+				CHANGED: 'CAR_FILTERS_CHANGED'
 			}
 		},
 		moduleEvents = events.carFilters;
@@ -46,7 +45,6 @@
 					$featuresMode.addClass('active');
 					break;
 			}
-			meerkat.messaging.publish(moduleEvents.DISPLAY_MODE_CHANGED, {newDisplayMode: Results.getDisplayMode()});
 		}
 
 		// Refresh frequency
@@ -162,21 +160,12 @@
 
 	function eventSubscriptions() {
 
-		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
-			headerAffixed = true;
-		});
-
-		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
-			headerAffixed = false;
-		});
-
 		// Disable filters while results are in progress
 		$(document).on('resultsFetchStart', function onResultsFetchStart() {
 			disable();
 		});
 
 		$(document).on('pagination.scrolling.start', function onPaginationStart() {
-			meerkat.modules.carResults.calculateDockedHeader('startPaginationScroll');
 			pageScrollingLockYScroll = true;
 			disable();
 		});
@@ -186,7 +175,6 @@
 		});
 
 		$(document).on('pagination.scrolling.end', function onPaginationEnd() {
-			meerkat.modules.carResults.calculateDockedHeader('endPaginationScroll');
 			pageScrollingLockYScroll = false;
 			enable();
 		});

@@ -1,97 +1,177 @@
 /*
-	This module supports the Sorting for travel results page.
-*/
+ This module supports the Sorting for travel results page.
+ */
 
-//hasScrollBar($htmlBody) &&
+;(function ($, undefined) {
 
-;(function($, undefined){
-
-	var meerkat = window.meerkat,
-		meerkatEvents = meerkat.modules.events,
-		$htmlBody,
-		$morePrompt,
-		promptInit = false;
-
-
-	function initPrompt() {
-		$(document).ready(function(){
-			$htmlBody = $('body,html'),
-			$footer = $("#footer"),
-			$morePrompt = $('.morePromptContainer'),
-			contentBottom = $footer.offset().top - $(window).height();
-
-			if (!promptInit && (meerkat.modules.deviceMediaState.get() != 'xs')) {
-				
-				applyEventListeners();
-			} else if (promptInit) {
-				//come back slowly if you're 're-showing'
-				_.delay(handleFades,600);
-			}
-			eventSubscriptions();
-		});
-	}
-
-	function eventSubscriptions() {
-		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function leaveXSMode() {
-			if (!promptInit)
-			{
-				applyEventListeners();	
-			}
-		});
-	}
+    var scrollTop = 0,
+        meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
+        $htmlBody,
+        $morePrompt = null,
+        $morePromptIcons,
+        $morePromptTextLink,
+        $lastResultRow,
+        morePromptClicked = false,
+        promptInit = false,
+        $footer,
+        goToBottomText = "Go to Bottom",
+        goToTopText = "Go to Top",
+        scrollTo = 'bottom',
+        disablePrompt = false; // made this global so that the bar won't get confused as to which direction it should travel to. There has been instances where it says to go bottom but clicking on the bar takes the user to the top
 
 
-	function handleFades() {
-		var height = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
-		if ((height + $(window).scrollTop()) >= $('.resultsContainer').outerHeight()) {
-			$morePrompt.fadeOut();
-		} else {
-			$morePrompt.fadeIn();
-		}
-	}
+    function initPrompt() {
+        scrollTo = "bottom";
+        $(document).ready(function () {
+            $lastResultRow = $('div.results-table .available.notfiltered').last();
 
-	function applyEventListeners()	{
+            if (!promptInit && meerkat.modules.deviceMediaState.get() != 'xs') {
+                applyEventListeners();
+            }
+            eventSubscriptions();
+            resetMorePromptBar();
+        });
+    }
 
-		$morePrompt.fadeIn();
-		promptInit = true;
+    function applyEventListeners() {
 
-		$( window ).scroll(function() {
-			clearTimeout( $.data( this, "scrollCheck" ) );
-			$.data( this, "scrollCheck", setTimeout(handleFades, 150) );
-		});
+        $morePrompt.fadeIn('slow');
+        promptInit = true;
 
-		$(document.body).on('click', '.morePromptLink', function(e){
-			
-			//e.preventDefault();
-			var scrollTo = ('top').toLowerCase(),
-				animationOptions = {},
-				contentBottom = $footer.offset().top - $(window).height();
-			
-			if(scrollTo == 'bottom'){
-				contentBottom += $footer.outerHeight(true);
-			}
+        $(document.body).on('click', '.morePromptLink', function (e) {
 
-			animationOptions.scrollTop = contentBottom;
+            var animationOptions = {},
+                contentBottom = $footer.offset().top - $(window).height();
 
-			$htmlBody.stop(true, true).animate(animationOptions, 800);					
-		});
-	}
+            if (scrollTo == 'bottom') {
+                contentBottom += $footer.outerHeight(true);
+            } else {
+                // send the user to the top
+                contentBottom = 0;
+            }
 
-	function hasScrollBar($obj) {
-		return $obj.get(0).scrollHeight > $(window).height();
-	}
-	
+            animationOptions.scrollTop = contentBottom;
+            morePromptClicked = true;
 
-	function init() {
-		meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, function morePromptCallBack(obj) {
-			
-			meerkat.modules.travelMorePrompt.initPrompt();
-		});
-	}
+            $htmlBody.stop(true, true).animate(animationOptions, 800, function morePromptAnimateEnd() {
+                morePromptClicked = false;
+            });
+        });
+    }
 
-	meerkat.modules.register('travelMorePrompt', {
-		init: init,
-		initPrompt: initPrompt
-	});
+    function eventSubscriptions() {
+
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function leaveXSMode() {
+            if (!promptInit) {
+                applyEventListeners();
+            }
+        });
+
+        // Reset the more prompt bar to the bottom when the state changes
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function breakPointChange() {
+            resetMorePromptBar();
+        });
+        if(typeof meerkatEvents.coverLevelTabs !== 'undefined') {
+            meerkat.messaging.subscribe(meerkatEvents.coverLevelTabs.CHANGE_COVER_TAB, function onTabChange(eventObject) {
+                if (eventObject.activeTab == "D") {
+                    $morePrompt.hide();
+                    disablePrompt = true;
+                } else {
+                    $morePrompt.removeAttr('style');
+                    disablePrompt = false;
+                }
+            });
+        }
+
+        $(document).on("results.view.animation.end", function() {
+            fixMorePromptAfterSortOrFilter();
+        });
+
+        var timeout;
+        $(window).off("scroll.travelMorePrompt").on("scroll.travelMorePrompt", function () {
+            scrollTop = $(this).scrollTop();
+            if (timeout)
+                clearTimeout(timeout);
+            timeout = setTimeout(handleMorePromptToggling, 150);
+        });
+    }
+
+    function fixMorePromptAfterSortOrFilter() {
+        $lastResultRow = $('div.results-table .available.notfiltered').last(); // update who is the last visible row for cover level tabs
+        handleMorePromptToggling();
+    }
+
+    function handleMorePromptToggling() {
+        // we only want this to happen when the results are rendered otherwise it will appear when the loading screen appears
+        if(disablePrompt) {
+            return;
+        }
+        // check if we've reached the bottom of the results page
+        var height = window.innerHeight || document.documentElement.offsetHeight,
+            currentScrollTopPos = scrollTop,
+            currentPos = height + currentScrollTopPos,
+            lastAvailableProduct = $lastResultRow.position(),
+            lastAvailableProductPos = (lastAvailableProduct.top + $lastResultRow.outerHeight());
+
+        if (scrollTop === 0) { // if we're at the top
+            // remove the previous attributes added above and reset the position to fixed
+            $morePrompt.removeAttr('style').css({position: 'fixed'});
+            $morePromptTextLink.html(goToBottomText);
+            toggleArrowClass("icon-angle-down");
+            scrollTo = 'bottom';
+        } else {
+            // if we've hit the area just after the results
+            if (currentPos >= lastAvailableProductPos) {
+                $morePrompt.css({top: lastAvailableProductPos, height: $morePrompt.height(), position: 'absolute'});
+                $morePromptTextLink.html(goToTopText);
+                toggleArrowClass("icon-angle-up");
+                scrollTo = 'top';
+            } else {
+                if ($morePrompt.css("position") != "fixed") {
+                    $morePrompt.removeAttr('style').css({position: 'fixed'});
+                }
+            }
+        }
+    }
+
+    function resetMorePromptBar() {
+        // defer by 1ms to ensure everything is rendered otherwise it throws an error
+        _.defer(function () {
+            $morePromptTextLink.html(goToBottomText);
+            scrollTo = "bottom";
+            toggleArrowClass("icon-angle-down");
+            $morePrompt.removeAttr('style');
+        });
+    }
+
+    function toggleArrowClass(thisClass) {
+        if (!$morePromptIcons.hasClass(thisClass)) {
+            $morePromptIcons.toggleClass("icon-angle-down icon-angle-up"); // toggle classes
+        }
+    }
+
+    function disablePromptBar() {
+        $(window).off('scroll.travelMorePrompt');
+        $morePrompt.hide();
+    }
+    function initTravelMorePrompt() {
+
+        $htmlBody = $('body,html');
+        $footer = $("#footer");
+        $morePrompt = $('.morePromptContainer');
+        $morePromptIcons = $morePrompt.find('.icon');
+        $morePromptTextLink = $morePrompt.find('.morePromptLinkText');
+
+        meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, function morePromptCallBack() {
+            initPrompt();
+        });
+    }
+
+    meerkat.modules.register('travelMorePrompt', {
+        initTravelMorePrompt: initTravelMorePrompt,
+        resetMorePromptBar: resetMorePromptBar,
+        disablePromptBar: disablePromptBar
+    });
 
 })(jQuery);

@@ -32,7 +32,14 @@
 		</div>
 
 		<div class="resultsOverflow">
-			<div class="results-table"></div>
+			<div class="results-table">
+				<%-- Prompt --%>
+				<div class="hidden-xs container morePromptContainer">
+					<span class="morePromptCell">
+						<a href="javascript:;" class="morePromptLink"><span class="icon icon-angle-down"></span><span class="morePromptLinkText">Go to Bottom</span><span class="icon icon-angle-down"></span></a>
+					</span>
+				</div>
+			</div>
 		</div>
 
 		<core:clear />
@@ -158,7 +165,7 @@
 
 		<%-- Feature list, defaults to a spinner --%>
 		<div class="featuresList featuresElements">
-			<img src="brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/><%-- #WHITELABEL CX --%>
+
 		</div>
 
 	</div>
@@ -281,12 +288,5 @@
 	{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
 	<div class="travelCompanyLogo logo_{{= img }}"></div>
 </core:js_template>
-
-<%-- Prompt --%>
-<div data-spy="affix" class="hidden-xs container morePromptContainer">
-	<span class="morePromptCell">
-		<a href="javascript:;" class="morePromptLink"><span class="icon icon-angle-down"></span>Scroll to view more quotes<span class="icon icon-angle-down"></span></a>
-	</span>
-</div>
 
 </agg_new_results:results>

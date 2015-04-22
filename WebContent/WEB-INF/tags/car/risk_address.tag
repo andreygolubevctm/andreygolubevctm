@@ -50,11 +50,11 @@
 			</c:if>
 
 			<c:choose>
-				<c:when test="${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 1001)}">
-					<group_new:elastic_address xpath="${xpath}" type="R" />
+				<c:when test="${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 1003)}">
+					<group_new:address xpath="${xpath}" type="R" showTitle="false" />
 				</c:when>
 				<c:otherwise>
-					<group_new:address xpath="${xpath}" type="R" showTitle="false" />
+					<group_new:elastic_address xpath="${xpath}" type="R" />
 				</c:otherwise>
 			</c:choose>
 

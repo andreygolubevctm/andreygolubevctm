@@ -22,6 +22,7 @@
 
 	var deviceStateXS = false;
 	var modalID = false;
+	var pageScrollingLockYScroll = false;
 
 	var currentValues = {
 			display:		false,
@@ -241,13 +242,23 @@
 	}
 
 	function eventSubscriptions() {
-		// Disable filters while results are in progress
 
+		// Lock Y scrolling if page is scrolling. Events -> (Chrome, Firefox, IE)
+		$(document.body).on('mousewheel DOMMouseScroll onmousewheel', function(e) {
+			if (pageScrollingLockYScroll) {
+				e.preventDefault();
+				e.stopPropagation();
+			}
+		});
+
+		// Disable filters while results are in progress
 		$(document).on('resultsFetchStart pagination.scrolling.start', function onResultsFetchStart() {
+			pageScrollingLockYScroll = true;
 			disable();
 		});
 
 		$(document).on('resultsFetchFinish pagination.scrolling.end', function onResultsFetchStart() {
+			pageScrollingLockYScroll = false;
 			enable();
 		});
 		meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, enable);

@@ -9,7 +9,7 @@
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="postcode" value="${name}_postcode" />
-<c:set var="autofilllessSearchXpath" value="quote_risk" />
+<c:set var="autofilllessSearchXpath" value="${name}" />
 <c:set var="address" value="${data.node[xpath]}" />
 
 <go:script href="common/javascript/elastic_address.js" marker="js-href"/>
@@ -130,6 +130,9 @@
 	<field:hidden xpath="${xpath}/suburbName" />
 	<field:hidden xpath="${xpath}/postCode" />
 	<field:hidden xpath="${xpath}/state" />
+
+	<%-- Hidden field for autocomplete.js to use --%>
+	<field:hidden xpath="autoCompleteModuleFieldPrefix" defaultValue="${name}" />
 </div>
 
 <%-- Custom validation for address --%>

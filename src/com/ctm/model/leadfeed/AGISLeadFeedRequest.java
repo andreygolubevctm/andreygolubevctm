@@ -10,6 +10,8 @@ import org.joda.time.LocalTime;
  */
 public abstract class AGISLeadFeedRequest {
 
+	private static int CLIENTNAME_CHAR_LIMIT = 30;
+
 	protected String brandCode = "";
 
 	// Header Fields
@@ -100,6 +102,28 @@ public abstract class AGISLeadFeedRequest {
 	}
 
 	public void setClientName(String clientName) {
+		if(clientName != null) {
+			StringBuilder output = new StringBuilder();
+			nameBuilder : {
+				for(String str : clientName.split(" ")) {
+					// Exit if surname(s) makes name too long
+					if(output.length() > 0 && (output.length() + str.length() + 1) > CLIENTNAME_CHAR_LIMIT) {
+						break nameBuilder;
+					// Append surname as is within limits
+					} else if(output.length() > 0) {
+						output.append(" " + str);
+					// Append if name within limits
+					} else if(str.length() <= CLIENTNAME_CHAR_LIMIT) {
+						output.append(str);
+					// Otherwise truncate the name and exit
+					} else {
+						output.append(str.substring(0, CLIENTNAME_CHAR_LIMIT));
+						break nameBuilder;
+					}
+				}
+			}
+			clientName = output.toString();
+		}
 		this.clientName = clientName;
 	}
 

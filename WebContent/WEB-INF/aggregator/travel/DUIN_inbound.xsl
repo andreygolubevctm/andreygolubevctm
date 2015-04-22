@@ -77,12 +77,6 @@
 				<xsl:variable name="fromDate" select="$request/travel/dates/fromDate" />
 				<xsl:variable name="toDate" select="$request/travel/dates/toDate" />
 
-				<xsl:variable name="domestic">
-					<xsl:choose>
-						<xsl:when test="count($request/travel/destinations/*) = 1 and $request/travel/destinations/au/au">Yes</xsl:when>
-						<xsl:otherwise>No</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
 				<!-- lc = lower case  -->
 				<xsl:variable name="lcPlanId">
 					<xsl:value-of select="translate(plan_id, $uppercase, $smallcase)" />

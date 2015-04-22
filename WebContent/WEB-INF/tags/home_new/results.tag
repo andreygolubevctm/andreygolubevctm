@@ -60,13 +60,18 @@
 
 <%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>
-	<div class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-5">
+	<div id="results_v3" class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-5">
 		<div class="featuresHeaders featuresElements">
-			<div class="result headers">
 
+			<div class="result fixedDockedHeader">
+				<div class="expand-collapse-toggle small hidden-xs">
+					<a href="javascript:;" class="expandAllFeatures">Expand All</a> / <a href="javascript:;" class="collapseAllFeatures active">Collapse All</a>
+				</div>
+			</div>
+
+			<div class="result headers featuresNormalHeader">
 				<div class="resultInsert controlContainer">
 				</div>
-
 			</div>
 
 			<%-- Feature headers --%>
@@ -107,24 +112,43 @@
 	{{ obj.annualPriceTemplate = htmlTemplate(obj); }}
 
 	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
-		<div class="result">
 
+		<div class="result featuresDockedHeader">
 			<div class="resultInsert featuresMode">
-				<div class="productSummary results hidden-xs">
+				{{= logo }}
+				{{= annualPriceTemplate }}
+				{{= monthlyPriceTemplate }}
+				<div class="headerButtonWrapper">
+					<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+				</div>
+			</div>
+			<div class="productSummary results visible-xs">
+				{{= logo }}
+				<div class="headerButtonWrapper">
+					<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info <span class="icon icon-arrow-right" /></a>
+				</div>
+			</div>
+		</div>
+
+		<div class="result featuresNormalHeader headers">
+			<div class="resultInsert featuresMode">
+				<div class="productSummary results hidden-xs homeSpecific">
 					<div class="compare-toggle-wrapper">
 						<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" />
 						<label for="features_compareTick_{{= obj.productId }}"></label>
-						<label for="features_compareTick_{{= obj.productId }}" class="compare-label"></label>
 					</div>
 					{{= logo }}
 					{{= annualPriceTemplate }}
 					{{= monthlyPriceTemplate }}
-					<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+					<div class="headerButtonWrapper">
+						<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+					</div>
 				</div>
 				<div class="productSummary results visible-xs">
 					{{= logo }}
-					<h2 class="productTitle">{{= productTitle }}</h2>
-					<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info <span class="icon icon-arrow-right" /></a>
+					<div class="headerButtonWrapper">
+						<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+					</div>
 				</div>
 			</div>
 
@@ -388,9 +412,9 @@
 	<div class="frequency monthly clearfix" data-availability="{{= obj.productAvailable }}">
 		<div class="frequencyAmount">{{= obj.price.monthly.amountFormatted }}</div>
 		<div class="frequencyTitle">Monthly Price</div>
-		<div class="monthlyBreakdown small">
-			<div class="firstPayment nowrap">1st Month: {{= obj.price.monthly.firstPaymentFormatted }}</div>
-			<div class="totalPayment nowrap">Total: {{= obj.price.monthly.totalFormatted }}</div>
+		<div class="monthlyBreakdown">
+			<span class="nowrap"><span class="firstPayment">1st Month: {{= obj.price.monthly.firstPaymentFormatted }}</span></span>
+			<span class="nowrap"><span class="firstPayment">Total: {{= obj.price.monthly.totalFormatted }}</span></span>
 		</div>
 	</div>
 </core:js_template>
@@ -457,7 +481,6 @@
 </core:js_template>
 <core:js_template id="compare-basket-features-template">
 <div class="compare-basket">
-<h2>Compare Products</h2>
 {{ if(comparedResultsCount === 0) { }}
 	<p>
 		Click the <input type="checkbox" class="compare-tick"><label></label> to add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist.
@@ -487,13 +510,18 @@
 	{{ } }}
 	</ul>
 	{{ if (comparedResultsCount > 1) { }}
-		{{ if(meerkat.modules.compare.isCompareOpen() === true) { }}
-			<a class="btn btn-compare-clear clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
-		{{ } else { }}
-			<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;">Compare Products<span class="icon icon-arrow-right"></span></a>
-		{{ } }}
+		<div class="compareButtonsContainer">
+			{{ if(meerkat.modules.compare.isCompareOpen() === true) { }}
+				<a class="btn btn-compare-clear clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
+			{{ } else { }}
+				<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;">Compare Products<span class="icon icon-arrow-right"></span></a>
+			{{ } }}
+		</div>
 	{{ } }}
 {{ } }}
+</div>
+<div class="expand-collapse-toggle small hidden-xs">
+	<a href="javascript:;" class="expandAllFeatures">Expand All</a> / <a href="javascript:;" class="collapseAllFeatures active">Collapse All</a>
 </div>
 </core:js_template>
 <core:js_template id="compare-basket-price-template">

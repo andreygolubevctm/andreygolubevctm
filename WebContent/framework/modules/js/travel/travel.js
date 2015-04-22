@@ -168,6 +168,7 @@
 				meerkat.modules.travelResults.initPage();
 				meerkat.modules.travelSummaryText.initSummaryText();
 				meerkat.modules.travelMoreInfo.initMoreInfo();
+				meerkat.modules.travelMorePrompt.initTravelMorePrompt();
 				meerkat.modules.travelSorting.initSorting();
 				meerkat.modules.partnerTransfer.initTransfer();
 				meerkat.modules.travelCoverLevelTabs.initTravelCoverLevelTabs();
@@ -184,6 +185,9 @@
 				meerkat.modules.travelResults.get();
 			},
 			onAfterLeave: function(event) {
+				if(event.isBackward) {
+					meerkat.modules.travelMorePrompt.disablePromptBar();
+			}
 			}
 		};
 

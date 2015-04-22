@@ -3350,6 +3350,11 @@ Features = {
             for (var j = 0; j < item2.elements.length; j++) {
                 var $ee = item2.elements[j];
                 var roundedHeight = Math.ceil(item2.height / 10) * 10;
+                if (typeof meerkat !== "undefined") {
+                    if (meerkat.site.vertical == "car" || meerkat.site.vertical == "home") {
+                        roundedHeight = roundedHeight - 5;
+                    }
+                }
                 if (roundedHeight <= 270) {
                     $ee.addClass("height" + roundedHeight);
                 } else {
@@ -3461,10 +3466,11 @@ Features = {
     var moduleEvents = {
         HIDDEN_FIELDS_POPULATED: "HIDDEN_FIELDS_POPULATED"
     };
-    var $currentAjaxRequest = null, dpIdCache = {};
+    var $currentAjaxRequest = null, dpIdCache = {}, addressFieldId = null;
     function initAddressLookup() {
-        meerkat.messaging.subscribe(meerkatEvents.autocomplete.ELASTIC_SEARCH_COMPLETE, function elasticAddress(dpId) {
-            getAddressData(dpId);
+        meerkat.messaging.subscribe(meerkatEvents.autocomplete.ELASTIC_SEARCH_COMPLETE, function elasticAddress(data) {
+            addressFieldId = data.addressFieldId;
+            getAddressData(data.dpid);
         });
     }
     function getAddressData(dpId) {
@@ -3476,10 +3482,12 @@ Features = {
             setAddressDataFields(dpIdCache[dpId]);
         } else {
             var $navButton = $(".journeyNavButton");
-            meerkat.modules.loadingAnimation.showInside($navButton);
-            meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, {
-                source: "address_lookup"
-            });
+            if (meerkat.site.vertical != "home") {
+                meerkat.modules.loadingAnimation.showInside($navButton);
+                meerkat.messaging.publish(meerkat.modules.events.WEBAPP_LOCK, {
+                    source: "address_lookup"
+                });
+            }
             if (typeof dpId !== "undefined" && dpId !== "") {
                 $currentAjaxRequest = meerkat.modules.comms.post({
                     url: "/ctm/address/get.json",
@@ -3503,10 +3511,15 @@ Features = {
                         if (status !== "abort") {
                             meerkat.modules.errorHandling.error({
                                 page: "elastic_search.js",
-                                errorLevel: "slient",
+                                errorLevel: "warning",
                                 description: "Something went wrong and the elastic address lookup failed for " + dpId,
+                                message: "Sorry, there was a problem loading your address details, please try again.",
                                 data: xhr
                             });
+                            if (meerkat.site.vertical == "home") {
+                                meerkat.modules.journeyEngine.gotoPath("start");
+                            }
+                            $("#" + addressFieldId + "_nonStd").trigger("click").prop("checked", true);
                         }
                     },
                     onComplete: function ajaxGetTypeaheadAddressDataComplete() {
@@ -3521,7 +3534,7 @@ Features = {
     }
     function setAddressDataFields(data) {
         for (var addressItem in data) {
-            var $hiddenAddressElement = $("#quote_riskAddress_" + addressItem);
+            var $hiddenAddressElement = $("#" + addressFieldId + "_" + addressItem);
             $hiddenAddressElement.val(data[addressItem]);
         }
     }
@@ -3592,16 +3605,24 @@ Features = {
     var events = {
         autocomplete: {
             CANT_FIND_ADDRESS: "EVENT_CANT_FIND_ADDRESS",
-            ELASTIC_SEARCH_COMPLETE: "ELASTIC_SEARCH_COMPLETE"
+            ELASTIC_SEARCH_COMPLETE: "ELASTIC_SEARCH_COMPLETE",
+            INIT: "INIT"
         }
     };
     var moduleEvents = events.autocomplete;
     var elasticSearch = false;
+    var addressFieldId = false;
     function initAutoComplete() {
-        meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function navbarFixed() {
-            elasticSearch = meerkat.modules.splitTest.isActive(1001) ? true : false;
+        $(document).ready(function() {
+            if ($("#autoCompleteModuleFieldPrefix").length) {
+                setAddressFieldId($("#autoCompleteModuleFieldPrefix").val());
+            }
+            elasticSearch = addressFieldId !== false;
             setTypeahead(elasticSearch);
         });
+    }
+    function setAddressFieldId(id) {
+        addressFieldId = id;
     }
     function setTypeahead(elasticSearch) {
         var $typeAheads = $("input.typeahead");
@@ -3619,7 +3640,7 @@ Features = {
                             settings.type = "POST";
                             settings.hasContent = true;
                             settings.url = url;
-                            var $addressField = $("#quote_risk_autofilllessSearch");
+                            var $addressField = $("#" + addressFieldId + "_autofilllessSearch");
                             var query = $addressField.val();
                             settings.data = $.param({
                                 query: decodeURI(query)
@@ -3639,7 +3660,7 @@ Features = {
                                 description: "Could not connect to the elastic search.json",
                                 data: xhr
                             });
-                            $("#quote_riskAddress_nonStd").trigger("click").prop("checked", true);
+                            $("#" + addressFieldId + "_nonStd").trigger("click").prop("checked", true);
                             autocompleteComplete($component);
                         }
                     },
@@ -3727,7 +3748,10 @@ Features = {
                             fieldgroup: id
                         });
                     } else if (elasticSearch) {
-                        meerkat.messaging.publish(moduleEvents.ELASTIC_SEARCH_COMPLETE, datum.dpId);
+                        meerkat.messaging.publish(moduleEvents.ELASTIC_SEARCH_COMPLETE, {
+                            dpid: datum.dpId,
+                            addressFieldId: addressFieldId
+                        });
                         $element.valid();
                     }
                 });
@@ -6246,6 +6270,122 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var deviceType = null;
+    var headerAffixed = false;
+    var isV3 = null;
+    function init() {
+        deviceType = $("#deviceType").attr("data-deviceType");
+        jQuery(document).ready(function($) {
+            applyEventListeners();
+            eventSubscriptions();
+        });
+    }
+    function applyEventListeners() {
+        $(document).on("results.view.animation.start, pagination.scrolling.start", function onAnimationStart() {
+            calculateDockedHeader("startPaginationScroll");
+        });
+        $(document).on("pagination.scrolling.end", function onPaginationEnd() {
+            calculateDockedHeader("endPaginationScroll");
+        });
+        $(document).on("results.view.animation.end", function onAnimationEnd() {
+            $(".result-row").css({
+                position: ""
+            });
+            calculateDockedHeader("filterAnimationEnded");
+        });
+    }
+    function eventSubscriptions() {
+        meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
+            headerAffixed = true;
+            calculateDockedHeader("affixed");
+        });
+        meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
+            headerAffixed = false;
+            calculateDockedHeader("unaffixed");
+        });
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function onDeviceMediaStateChange() {
+            calculateDockedHeader("deviceMediaStateChange");
+        });
+        meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function onExitCompareMode() {
+            calculateDockedHeader("startPaginationScroll");
+        });
+        meerkat.messaging.subscribe(meerkatEvents.compare.AFTER_ENTER_COMPARE_MODE, function onAfterEnterCompareMode() {
+            calculateDockedHeader("endPaginationScroll");
+        });
+    }
+    function calculateDockedHeader(event) {
+        if (_.isNull(isV3)) {
+            isV3 = $("#results_v3").length > 0;
+        }
+        var $featuresDockedHeader = $(".featuresDockedHeader"), $originalHeader = $(".headers");
+        if (isV3 === true && deviceType != "TABLET" && meerkat.modules.deviceMediaState.get() != "xs") {
+            var featuresView = Results.getDisplayMode() == "features" ? true : false, redrawFixedHeader = true, pagePaginationActive = event == "startPaginationScroll" || event == "endPaginationScroll" || event == "filterAnimationEnded";
+            if (featuresView) {
+                var $fixedDockedHeader = $(".fixedDockedHeader");
+                if (headerAffixed) {
+                    if ($originalHeader.parent().hasClass("featuresHeaders") === false) {
+                        $originalHeader.hide();
+                    }
+                    var $currentPage = $(".currentPage"), topPosition = $("#navbar-filter").height() + $("#navbar-main").outerHeight(), dockedHeaderTop = event == "startPaginationScroll" ? "0" : topPosition + "px", dockedHeaderWidth = $(".result-row").first().width();
+                    var pageContentOffSet = $("#pageContent").offset(), navFilterOffSet = $("#navbar-filter").offset(), offSetFromTopPlusNav = (_.isUndefined(navFilterOffSet) ? 0 : navFilterOffSet.top) - (_.isUndefined(pageContentOffSet) ? 0 : pageContentOffSet.top) + 7, dockedHeaderPosition = event == "startPaginationScroll" ? "absolute" : "fixed", dockedHeaderPaddingTop = event == "startPaginationScroll" ? offSetFromTopPlusNav + "px" : "0px";
+                    if (!pagePaginationActive) {
+                        $currentPage.find($featuresDockedHeader).css({
+                            top: dockedHeaderTop,
+                            width: dockedHeaderWidth
+                        }).show();
+                    } else {
+                        redrawFixedHeader = false;
+                        $featuresDockedHeader.css({
+                            position: dockedHeaderPosition,
+                            top: dockedHeaderTop,
+                            width: dockedHeaderWidth,
+                            "padding-top": dockedHeaderPaddingTop
+                        }).show();
+                        if (event == "endPaginationScroll" || event == "filterAnimationEnded") {
+                            if ($currentPage.length >= 1) {
+                                $currentPage.siblings(":not(.currentPage)").find($featuresDockedHeader).hide();
+                            } else {
+                                $featuresDockedHeader.hide();
+                            }
+                            redrawFixedHeader = true;
+                        }
+                    }
+                    recalculateFixedHeader(redrawFixedHeader);
+                } else {
+                    $featuresDockedHeader.hide();
+                    $fixedDockedHeader.hide();
+                    $originalHeader.show();
+                }
+            } else {
+                $originalHeader.show();
+                $featuresDockedHeader.hide();
+            }
+        } else {
+            $originalHeader.show();
+            $featuresDockedHeader.hide();
+        }
+    }
+    function recalculateFixedHeader(redrawFixedHeader) {
+        var $fixedDockedHeader = $(".fixedDockedHeader"), $currentPage = $(".currentPage"), topPosition = $("#navbar-filter").height() + $("#navbar-main").outerHeight();
+        if (redrawFixedHeader) {
+            var cellFeatureWidth = $(".cell.feature").width() + 2 + "px", dockedHeaderHeight = "100px";
+            if ($currentPage.length >= 1) {
+                dockedHeaderHeight = $(".resultInsert.featuresMode:visible").first().innerHeight() + 1 + "px";
+            }
+            $fixedDockedHeader.css({
+                top: topPosition,
+                width: cellFeatureWidth,
+                height: dockedHeaderHeight
+            }).show();
+        }
+    }
+    meerkat.modules.register("featuresDockedHeader", {
+        init: init
+    });
+})(jQuery);
+
+(function($, undefined) {
     function init() {
         jQuery(document).ready(function($) {
             if (meerkat.modules.performanceProfiling.isFFAffectedByDropdownMenuBug()) {
@@ -7350,7 +7490,8 @@ Features = {
         onClickApplyNow: null,
         onApplySuccess: null,
         retrieveExternalCopy: null,
-        additionalTrackingData: null
+        additionalTrackingData: null,
+        onBreakpointChangeCallback: null
     }, settings = {}, visibleBodyClass = "moreInfoVisible";
     function initMoreInfo(options) {
         settings = $.extend({}, defaults, options);
@@ -7362,6 +7503,7 @@ Features = {
                 eventSubscriptions();
             }
         });
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, onBreakpointChange);
     }
     function applyEventListeners() {
         if (typeof Results.settings !== "undefined") {
@@ -7629,6 +7771,11 @@ Features = {
             $("body").addClass(visibleBodyClass);
         } else {
             $("body").removeClass(visibleBodyClass);
+        }
+    }
+    function onBreakpointChange() {
+        if (_.isFunction(settings.onBreakpointChangeCallback)) {
+            _.defer(settings.onBreakpointChangeCallback);
         }
     }
     meerkat.modules.register("moreInfo", {
@@ -10242,7 +10389,16 @@ Features = {
         return to_list === true ? _.extend({}, currentJourneyList) : currentJourney;
     }
     function isActive(jrny) {
-        return _.indexOf(currentJourneyList, String(jrny)) >= 0;
+        if (_.isArray(jrny)) {
+            for (var i = 0; i < jrny.length; i++) {
+                if (_.indexOf(currentJourneyList, String(jrny[i])) >= 0) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            return _.indexOf(currentJourneyList, String(jrny)) >= 0;
+        }
     }
     meerkat.modules.register("splitTest", {
         init: init,

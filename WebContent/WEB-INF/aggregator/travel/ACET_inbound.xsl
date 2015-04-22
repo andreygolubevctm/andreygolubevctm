@@ -52,33 +52,6 @@
 
 	<xsl:template match="/soap:Envelope/soap:Body/a1:GetTravelQuoteArrayResponse/a2:ArrayOfACORD_QuoteResp/a3:ACORD">
 		<xsl:if test="a3:InsuranceSvcRs/a3:PersPkgPolicyQuoteInqRs/a3:MsgStatus/a3:MsgStatusCd ='Success'">
-			<xsl:variable name="region">
-				<xsl:choose>
-					<xsl:when test="$request/travel/destinations/af/af">worldwide</xsl:when>
-					<xsl:when test="$request/travel/destinations/me/me">worldwide</xsl:when>
-					<xsl:when test="$request/travel/destinations/am/ca">worldwide</xsl:when>
-					<xsl:when test="$request/travel/destinations/am/sa">worldwide</xsl:when>
-					<xsl:when test="$request/travel/destinations/do/do">worldwide</xsl:when>
-					<xsl:when test="$request/travel/destinations/am/us">worldwide</xsl:when>
-
-					<xsl:when test="$request/travel/destinations/eu/eu">europe%2Fasia</xsl:when>
-					<xsl:when test="$request/travel/destinations/eu/uk">europe%2Fasia</xsl:when>
-					<xsl:when test="$request/travel/destinations/as/jp">europe%2Fasia</xsl:when>
-					<xsl:when test="$request/travel/destinations/as/ch">europe%2Fasia</xsl:when>
-					<xsl:when test="$request/travel/destinations/as/hk">europe%2Fasia</xsl:when>
-					<xsl:when test="$request/travel/destinations/as/in">europe%2Fasia</xsl:when>
-					<xsl:when test="$request/travel/destinations/as/th">europe%2Fasia</xsl:when>
-
-					<xsl:when test="$request/travel/destinations/pa/in">pacific</xsl:when>
-					<xsl:when test="$request/travel/destinations/pa/ba">pacific</xsl:when>
-					<xsl:when test="$request/travel/destinations/pa/nz">pacific</xsl:when>
-					<xsl:when test="$request/travel/destinations/pa/pi">pacific</xsl:when>
-
-					<xsl:when test="$request/travel/destinations/au/au">australia</xsl:when>
-
-					<xsl:otherwise>worldwide</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
 
 			<xsl:variable name="adults"><xsl:value-of select="$request/travel/adults" /></xsl:variable>
 			<xsl:variable name="children"><xsl:value-of select="$request/travel/children" /></xsl:variable>

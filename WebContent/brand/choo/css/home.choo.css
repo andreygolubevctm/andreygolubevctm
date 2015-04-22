@@ -937,11 +937,6 @@ body > div > header a.bottombar .btn-call:hover {
     margin-left: 90px;
     line-height: 0.9;
   }
-  .featuresMode .productSummary .btn-more-info {
-    clear: none;
-    width: auto;
-    margin: 12px 12px 0 90px;
-  }
   .featuresMode .productSummary .content {
     margin: 0 -12px;
   }

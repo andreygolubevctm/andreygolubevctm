@@ -39,13 +39,6 @@
 
 			<xsl:for-each select="result">
 
-				<xsl:variable name="domestic">
-					<xsl:choose>
-						<xsl:when test="count($request/travel/destinations/*) = 1 and $request/travel/destinations/au/au">Yes</xsl:when>
-						<xsl:otherwise>No</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-
 				<xsl:variable name="product">
 					<xsl:value-of select="@productId" />
 				</xsl:variable>

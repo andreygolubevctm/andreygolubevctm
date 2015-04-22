@@ -375,6 +375,13 @@ Features = {
 
 				var roundedHeight = Math.ceil( item2.height / 10 ) * 10;
 
+				// Smaller rows for Car and Home
+				if(typeof meerkat !== "undefined") {
+					if (meerkat.site.vertical == 'car' || meerkat.site.vertical == 'home') {
+						roundedHeight = roundedHeight - 5;
+					}
+				}
+
 				if(roundedHeight <= 270){
 					$ee.addClass('height'+roundedHeight);
 				}else{

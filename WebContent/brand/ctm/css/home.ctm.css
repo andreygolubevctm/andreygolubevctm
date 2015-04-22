@@ -105,54 +105,6 @@ body > div > header a.bottombar .btn-call:hover {
   background-color: #1c3e93;
   color: #ffffff;
 }
-/*
-
-This theme override is related to AGG-2135.
-It should be done globally to the CTM theme i.e. @btn-cta-xxx in ctm.variables.less but there are many tweaks to make at a vertical level.
-
-So it's going to be done progressively. Include this file in your framework.build.xxx.ctm.less to change the CTA button from orange to green.
-
-*/
-.btn-cta {
-  background-color: #0db14b;
-  color: #ffffff;
-  border-color: #0db14b;
-  border-width: 1px;
-  border-style: solid;
-}
-.btn-cta:hover,
-.btn-cta:focus {
-  background-color: #097833;
-  color: #ffffff;
-  outline: 0;
-  border-color: #097833;
-}
-.btn-cta:active,
-.btn-cta.active {
-  background-color: #1c3e93;
-  color: #ffffff;
-  border-color: #91aaea;
-}
-.btn-call {
-  background-color: #999999;
-  color: #ffffff;
-  border-color: #4d4d4d;
-  border-width: 1px;
-  border-style: solid;
-}
-.btn-call:hover,
-.btn-call:focus {
-  background-color: #7a7a7a;
-  color: #ffffff;
-  outline: 0;
-  border-color: #2e2e2e;
-}
-.btn-call:active,
-.btn-call.active {
-  background-color: #999999;
-  color: #1c3e93;
-  border-color: #1c3e93;
-}
 .home .input-group-addon {
   cursor: pointer;
 }
@@ -984,11 +936,6 @@ So it's going to be done progressively. Include this file in your framework.buil
   .featuresMode .productSummary h2 {
     margin-left: 90px;
     line-height: 0.9;
-  }
-  .featuresMode .productSummary .btn-more-info {
-    clear: none;
-    width: auto;
-    margin: 12px 12px 0 90px;
   }
   .featuresMode .productSummary .content {
     margin: 0 -12px;

@@ -1,0 +1,267 @@
+#results_v3 {
+
+	.resultsOverflow {
+		overflow-x: hidden !important;
+	}
+
+	.result_unavailable_combined {
+		.productSummary {
+			height: auto;
+		}
+	}
+
+	.productSummary {
+		height: 175px;
+		@media(@xs-only) {
+			text-align: center;
+			padding-top: 0px;
+			padding-bottom: 0px;
+		}
+	}
+
+	.featuresMode {
+
+		.compare-toggle-wrapper {
+			position: absolute;
+			top: 5px;
+			right: 5px;
+		}
+
+		.monthlyBreakdown {
+			padding: 5px 0 0 0;
+			font-size: 12px;
+			line-height: 12px;
+
+			.totalPayment {
+				display: inline-block;
+			}
+		}
+	}
+
+	.expand-collapse-toggle {
+		text-transform: uppercase;
+		position: absolute;
+		right: 10px;
+		bottom: 10px;
+	}
+
+	.fixedDockedHeader {
+		display: none;
+		position: fixed;
+		z-index: 1;
+		background-color: #FFFFFF;
+		border: @results-border-color 1px solid;
+		border-top: none;
+	}
+
+	.featuresDockedHeader {
+		height: auto;
+		display: none;
+		position: fixed;
+		z-index: 1;
+
+		.featuresMode {
+			background-color: #FFFFFF;
+			margin-top: -10px;
+			margin-bottom: 0px;
+			padding: 0 10px 10px 10px;
+			border-bottom: @results-border-color 1px solid;
+		}
+
+		.companyLogo {
+			width: 60px;
+			height: 60px;
+			line-height: 60px;
+			background-size: 60px 60px;
+		}
+
+		.frequency {
+			margin: 10px 0 0 75px;
+			padding-top: 10px;
+			width: auto;
+			text-align: right;
+
+			.frequencyAmount {
+				display: inline-block;
+				text-align: right;
+				width: auto;
+				font-size: 28px;
+			}
+
+			.frequencyTitle {
+				display: inline-block;
+				text-align: right;
+				width: auto;
+			}
+		}
+		.headerButtonWrapper {
+			.btn-more-info-apply, .btn-more-info, .btn-call-actions {
+				padding-top: 5px;
+				padding-bottom: 5px;
+				margin-top: 0px;
+			}
+		}
+		.headerButtonWrapper.carSpecific {
+			text-align: center;
+
+			.btn-more-info-apply, .btn-call-actions {
+				position: inherit;
+				display: inline-block;
+				width: 70%;
+			}
+
+			.btn-more-info-apply.ctaBtnExpanded {
+				width: 85%;
+			}
+		}
+	}
+
+	.headers.featuresNormalHeader {
+		.controlContainer {
+			border-left: @results-border-color 1px solid;
+		}
+
+		.compare-basket {
+			padding: 15px;
+			text-align: justify;
+
+			.compare-max-count-label {
+				font-weight: normal;
+				font-family: @font-family-theme-bold;
+				white-space: nowrap;
+			}
+
+			.products-returned-count {
+				font-weight: normal;
+				font-family: @font-family-theme-bold;
+				white-space: nowrap;
+			}
+		}
+	}
+
+	.compareButtonsContainer {
+		text-align: center;
+
+		.btn-features-compare, .btn-compare-clear {
+			position: inherit;
+			width: 90%;
+			margin-top: 12px;
+			bottom: 40px;
+			padding-top: 9px;
+			padding-bottom: 9px;
+		}
+	}
+
+	.featuresNormalHeader {
+
+		.featuresMode {
+			.companyLogo {
+				margin-top: 15px;
+				@media(@xs-only) {
+					display: inline-block;
+					float: none;
+				}
+			}
+
+
+			.frequency {
+				@media(@xs-only) {
+					background-color: red;
+					text-align: center;
+					padding: 0px;
+				}
+				display: block;
+				margin-bottom: 0;
+				margin-left: 0px;
+				width: auto;
+				padding-top: 23px;
+				text-align: right;
+
+				.frequencyAmount {
+					display: inline-block;
+					text-align: right;
+					width: auto;
+					font-size: 28px;
+					padding-right: 0px;
+				}
+
+				.frequencyTitle {
+					display: inline-block;
+					text-align: right;
+					width: auto;
+				}
+			}
+		}
+	}
+
+	.hidden-xs.homeSpecific {
+		.headerButtonWrapper {
+			position: absolute;
+			bottom: 5px;
+			width: 100%;
+
+			.btn-more-info {
+				left:0;
+				right:0;
+				margin: 0;
+				width: 85%;
+			}
+		}
+	}
+
+	.hidden-xs.carSpecific {
+		.headerButtonWrapper {
+			text-align: center;
+
+			.btn-more-info-apply, .btn-call-actions {
+				position: inherit;
+				display: inline-block;
+				margin-top: 20px;
+				width: 70%;
+			}
+			.btn-more-info-apply.ctaBtnExpanded {
+				width: 85%;
+			}
+		}
+	}
+
+	// Custom themeing for the elements in the cols/rows.
+	.featuresList {
+		.icon-tick, icon-cross {
+			margin-top: 3px;
+		}
+
+		.btnContainerNoBtn {
+			margin-top: 8px;
+		}
+
+		.btnContainer  {
+			text-align: center;
+
+			.btn {
+				width: 70%;
+				padding-top: 5px;
+				padding-bottom: 5px;
+				margin-top: 2px;
+				display: inline-block;
+			}
+
+			.btn-download {
+				margin-right: 5px;
+				margin-left: 5px;
+			}
+		}
+
+		ul {
+			list-style: none;
+			padding: 0 10px;
+
+			li {
+				padding-bottom: 10px;
+				&:before {
+					content: "- ";
+				}
+			}
+		}
+	}
+}

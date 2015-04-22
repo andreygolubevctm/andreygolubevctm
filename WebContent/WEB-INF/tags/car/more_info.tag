@@ -8,7 +8,7 @@
 {{ if (promotionText.length > 0) { }}
 	<h2>Special Online Offer</h2>
 	<div class="promotion">
-		<span class="icon icon-trophy"></span> {{= promotionText }}
+		<span class="icon icon-tag"></span> {{= promotionText }}
 		{{ if (offerTermsContent.length > 0) { }}
 			<a class="small offerTerms" href="javascript:;">Offer terms</a>
 			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>

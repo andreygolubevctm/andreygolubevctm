@@ -532,7 +532,7 @@ ResultsView = {
 
 			});
 			
-			var animationDuration = Results.view.shuffleTransitionDuration != 0 ? Results.view.shuffleTransitionDuration : Results.settings.animation.shuffle.options.duration + 50
+			var animationDuration = Results.view.shuffleTransitionDuration != 0 ? Results.view.shuffleTransitionDuration : Results.settings.animation.shuffle.options.duration + 50;
 
 			// launch the animations (this is for jQuery animations)
 			$(Results.settings.elements.rows).clearQueue( Results.settings.animation.filter.queue ).dequeue( Results.settings.animation.shuffle.options.queue );

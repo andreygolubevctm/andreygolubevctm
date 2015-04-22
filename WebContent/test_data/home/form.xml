@@ -33,18 +33,27 @@
 
 		<address>
 			<postCode>4209</postCode>
-			<fullAddressLineOne>22 Peregrine Cres</fullAddressLineOne>
-			<streetSearch>22 Peregrine Cres, Coomera QLD</streetSearch>
-			<lastSearch>22 pere</lastSearch>
+			<fullAddressLineOne>22 Peregrine Crescent</fullAddressLineOne>
+			<autofilllessSearch>22 Peregrine Crescent, Coomera QLD</autofilllessSearch>
+			<streetSearch>22 Peregrine Crescent, Coomera QLD</streetSearch>
+			<lastSearch>22 Peregrine Crescent, Coomera QLD</lastSearch>
 			<streetId>256851</streetId>
-			<fullAddress>22 Peregrine Cres,Coomera QLD 4209</fullAddress>
+			<fullAddress>22 Peregrine Crescent,Coomera QLD 4209</fullAddress>
 			<suburbName>Coomera</suburbName>
 			<suburb>10494</suburb>
 			<state>QLD</state>
 			<houseNoSel>22</houseNoSel>
 			<streetNum>22</streetNum>
-			<streetName>Peregrine Cres</streetName>
+			<streetName>Peregrine Crescent</streetName>
 			<dpId>46890936</dpId>
+			<!-- For elastic search prefill -->
+			<nonStdPostCode>4209</nonStdPostCode>
+			<!-- For elastic search prefill -->
+			<unitSel/>
+			<unitShop/>
+			<type>R</type>
+			<nonStdStreet>Peregrine Crescent</nonStdStreet>
+			<nonStd>Y</nonStd>
 		</address>
 
 	</property>

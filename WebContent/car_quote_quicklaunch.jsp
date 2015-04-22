@@ -45,11 +45,10 @@
 				display: none;
 			}
 			.form-group label {
-				color:#ffffff;
-				padding-left:0;
+				display:none;
 			}
 			#quote_vehicle_buttonRow label {
-				visibility: hidden;
+				display:none;
 			}
 			article.container {
 				width:100%;
@@ -75,10 +74,12 @@
 			fieldset .form-group .row-content a {
 				width: 100%;
 				padding: 11px 15px 12px 15px;
-				background-color:#0db14b!important;
-				border-radius:30px;
-				font-size:13px;
-				text-transform:uppercase;
+				background-color:#0db14b !important;
+				border-radius:20px;
+				font-family:inherit;
+				font-size:16px;
+				font-weight:600;
+				box-shadow: rgba(0, 0, 0, 0.0980392) 0px -1px 0px 0px inset;
 			}
 			#quote_vehicle_makeRow {
 				margin-top: 5px;
@@ -89,7 +90,7 @@
 			@media (max-width: 767px) {
 				fieldset .form-group {
 					width: 100%;
-					margin: 0 0 15px 0;
+					margin: 0 0 10px 0;
 				}
 				fieldset .form-group .row-content .select {
 					margin-right: 0;

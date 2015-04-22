@@ -28,21 +28,38 @@
 	</c:catch>
 </c:if>
 
-<security:authentication justChecking="true" emailAddress="${email}" />
-<c:set var="emailSubscribed">
+<c:set var="sendYN">
 	<c:choose>
-		<c:when test="${userData.optInMarketing eq true}">Y</c:when>
-		<c:otherwise>N</c:otherwise>
+		<c:when test="${pageSettings.hasSetting('sendYN') eq 'false'}">false</c:when>
+		<c:otherwise>${pageSettings.getSetting('sendYN')}</c:otherwise>
 	</c:choose>
 </c:set>
-<c:set var="emailResponse">
-	<c:import url="../json/send.jsp">
-		<c:param name="vertical" value="${fn:toUpperCase(vertical)}" />
-		<c:param name="mode" value="${mode}" />
-		<c:param name="tmpl" value="${tmpl}" />
-		<c:param name="emailAddress" value="${email}" />
-		<c:param name="hashedEmail" value="${userData.hashedEmail}" />
-		<c:param name="emailSubscribed" value="${emailSubscribed}" />
-	</c:import>
-</c:set>
-<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
+
+<c:choose>
+	<c:when test="${sendYN eq 'Y'}">
+		<security:authentication justChecking="true" emailAddress="${email}" />
+		<c:set var="emailSubscribed">
+			<c:choose>
+				<c:when test="${userData.optInMarketing eq true}">Y</c:when>
+				<c:otherwise>N</c:otherwise>
+			</c:choose>
+		</c:set>
+		<c:set var="emailResponse">
+			<c:import url="../json/send.jsp">
+				<c:param name="vertical" value="${fn:toUpperCase(vertical)}" />
+				<c:param name="mode" value="${mode}" />
+				<c:param name="tmpl" value="${tmpl}" />
+				<c:param name="emailAddress" value="${email}" />
+				<c:param name="hashedEmail" value="${userData.hashedEmail}" />
+				<c:param name="emailSubscribed" value="${emailSubscribed}" />
+			</c:import>
+		</c:set>
+		<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
+	</c:when>
+	<c:when test="${sendYN eq 'N'}">
+		<go:log level="WARN" source="send_jsp">[sendYN] No email sent - Emails are not sent for this brand/vertical combo</go:log>
+	</c:when>
+	<c:otherwise>
+		<go:log level="WARN" source="send_jsp">[sendYN] No email sent - Value is not defind</go:log>
+	</c:otherwise>
+</c:choose>

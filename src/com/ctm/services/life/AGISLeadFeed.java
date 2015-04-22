@@ -52,6 +52,7 @@ public class AGISLeadFeed {
 		this.lead = lead;
 
 		AgLeadFeedService agLeadFeedService = new AgLeadFeedService();
+		agLeadFeedService.setTransactionId(lead.getPartnerReference());
 		Request request = createRequest();
 		Response response = agLeadFeedService.request(pageSettings, request);
 		MessageResponseDetails responseDetails = response.getDetails();

@@ -7,7 +7,8 @@
 	var events = {
 		autocomplete: {
 			CANT_FIND_ADDRESS: 'EVENT_CANT_FIND_ADDRESS',
-			ELASTIC_SEARCH_COMPLETE: 'ELASTIC_SEARCH_COMPLETE'
+			ELASTIC_SEARCH_COMPLETE: 'ELASTIC_SEARCH_COMPLETE',
+			INIT: 'INIT'
 		}
 	};
 
@@ -15,11 +16,20 @@
 
 	var elasticSearch = false;
 
+	var addressFieldId = false;
+
 	function initAutoComplete() {
-		meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function navbarFixed() {
-			elasticSearch = meerkat.modules.splitTest.isActive(1001) ? true : false;
+		$(document).ready(function(){
+			if($("#autoCompleteModuleFieldPrefix").length) {
+				setAddressFieldId($("#autoCompleteModuleFieldPrefix").val());
+			}
+			elasticSearch = addressFieldId !== false;
 			setTypeahead(elasticSearch);
 		});
+	}
+
+	function setAddressFieldId(id) {
+		addressFieldId = id;
 	}
 
 	function setTypeahead(elasticSearch) {
@@ -39,7 +49,7 @@
 							settings.hasContent = true;
 							settings.url = url;
 
-							var $addressField = $('#quote_risk_autofilllessSearch');
+							var $addressField = $('#' + addressFieldId + '_autofilllessSearch');
 							var query = $addressField.val();
 							settings.data = $.param({ query: decodeURI(query) });
 						},
@@ -59,7 +69,7 @@
 								data: xhr
 							});
 							// Tick non-std box.
-							$('#quote_riskAddress_nonStd').trigger('click').prop('checked', true);
+							$('#' + addressFieldId + '_nonStd').trigger('click').prop('checked', true);
 							autocompleteComplete($component);
 						},
 					},
@@ -173,7 +183,10 @@
 						meerkat.messaging.publish(moduleEvents.CANT_FIND_ADDRESS, { fieldgroup: id });
 
 					} else if (elasticSearch) {
-						meerkat.messaging.publish(moduleEvents.ELASTIC_SEARCH_COMPLETE, datum.dpId );
+						meerkat.messaging.publish(moduleEvents.ELASTIC_SEARCH_COMPLETE, {
+							dpid:			datum.dpId,
+							addressFieldId:	addressFieldId
+						});
 						// Validate the element now the user has made a selection.
 						$element.valid();
 					}

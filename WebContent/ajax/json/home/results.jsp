@@ -92,6 +92,7 @@
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['home'])}"
 					var = "resultXml"
+							authToken = "${param.home_authToken}"
 					debugVar="debugXml"
 					validationErrorsVar="validationErrors"
 							continueOnValidationError="${continueOnValidationError}" />
@@ -146,9 +147,9 @@
 
 			<c:set var="productName"><x:out select="$resultXml/result/headline/name" /></c:set>
 
-					<%-- Set flag to indicate this is a Greenstone product. --%>
+					<%-- Set flag to indicate this is a Hollard product. --%>
 					<c:set var="brandCode"><x:out select="$resultXml/result/brandCode" /></c:set>
-					<c:set var="isGreenstone">
+					<c:set var="isHollard">
 			<c:choose>
 							<c:when test="${brandCode eq 'WOOL' or brandCode eq 'REIN'}">${true}</c:when>
 							<c:otherwise>${false}</c:otherwise>
@@ -203,12 +204,12 @@
 						<c:set var="extra">${fn:escapeXml(feature[1])}</c:set>
 
 								<c:choose>
-									<c:when test="${value == 'S' and isGreenstone eq false}">
+									<c:when test="${value == 'S' and isHollard eq false}">
 							<c:set var="value">${feature[1]}</c:set>
 							<c:set var="extra">${terms}</c:set>
 									</c:when>
-									<%-- Special Offer content for Greenstone is taken from the service --%>
-									<c:when test="${value == 'S' and isGreenstone eq true}">
+									<%-- Special Offer content for Hollard is taken from the service --%>
+									<c:when test="${value == 'S' and isHollard eq true}">
 										<c:set var="value"><x:out select="$resultXml/result/feature" /></c:set>
 										<c:set var="extra"><x:out select="$resultXml/result/terms" /></c:set>
 									</c:when>
@@ -218,7 +219,7 @@
 
 					</c:forEach>
 
-							<c:if test="${isGreenstone eq true}">
+							<c:if test="${isHollard eq true}">
 								<features featureId="${feature[0]}" desc="${feature[0]}" value="${fn:escapeXml(value)}" extra="${extra}" />
 							</c:if>
 				</compareFeatures>

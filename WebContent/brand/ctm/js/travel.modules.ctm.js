@@ -7,7 +7,9 @@
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
-        coverLevelTabs: {}
+        coverLevelTabs: {
+            CHANGE_COVER_TAB: "CHANGE_COVER_TAB"
+        }
     }, moduleEvents = events.coverLevelTabs;
     var counts = {}, currentRankingFilter = "default", hasRunTrackingCall = [], recordFullTabJourney = false, originatingTab = "default", departingTab = [], defaults = {
         enabled: true,
@@ -36,7 +38,7 @@
         if (!$tabsContainer.length) {
             return;
         }
-        $tabsContainer.off("click").on("click", ".clt-action", function(e) {
+        $tabsContainer.off("click", ".clt-action").on("click", ".clt-action", function(e) {
             var $el = $(this), tabIndex = $el.attr("data-clt-index");
             log("[coverleveltabs] click", tabIndex);
             if (tabIndex === "" || settings.activeTabIndex === tabIndex) {
@@ -54,6 +56,9 @@
                 $el.siblings().removeClass("active").end().addClass("active");
                 settings.activeTabIndex = tabIndex;
                 setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
+                meerkat.messaging.publish(moduleEvents.CHANGE_COVER_TAB, {
+                    activeTab: getRankingFilter()
+                });
                 if (settings.disableAnimationsBetweenTabs === true) {
                     Results.settings.animation.filter.active = filterAnimate;
                 }
@@ -324,6 +329,7 @@
                 meerkat.modules.travelResults.initPage();
                 meerkat.modules.travelSummaryText.initSummaryText();
                 meerkat.modules.travelMoreInfo.initMoreInfo();
+                meerkat.modules.travelMorePrompt.initTravelMorePrompt();
                 meerkat.modules.travelSorting.initSorting();
                 meerkat.modules.partnerTransfer.initTransfer();
                 meerkat.modules.travelCoverLevelTabs.initTravelCoverLevelTabs();
@@ -337,7 +343,11 @@
             onAfterEnter: function afterEnterResults(event) {
                 meerkat.modules.travelResults.get();
             },
-            onAfterLeave: function(event) {}
+            onAfterLeave: function(event) {
+                if (event.isBackward) {
+                    meerkat.modules.travelMorePrompt.disablePromptBar();
+                }
+            }
         };
         steps = {
             detailsStep: detailsStep,
@@ -838,17 +848,33 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $htmlBody, $morePrompt, promptInit = false;
+    var scrollTop = 0, meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $htmlBody, $morePrompt = null, $morePromptIcons, $morePromptTextLink, $lastResultRow, morePromptClicked = false, promptInit = false, $footer, goToBottomText = "Go to Bottom", goToTopText = "Go to Top", scrollTo = "bottom", disablePrompt = false;
     function initPrompt() {
+        scrollTo = "bottom";
         $(document).ready(function() {
-            $htmlBody = $("body,html"), $footer = $("#footer"), $morePrompt = $(".morePromptContainer"), 
-            contentBottom = $footer.offset().top - $(window).height();
+            $lastResultRow = $("div.results-table .available.notfiltered").last();
             if (!promptInit && meerkat.modules.deviceMediaState.get() != "xs") {
                 applyEventListeners();
-            } else if (promptInit) {
-                _.delay(handleFades, 600);
             }
             eventSubscriptions();
+            resetMorePromptBar();
+        });
+    }
+    function applyEventListeners() {
+        $morePrompt.fadeIn("slow");
+        promptInit = true;
+        $(document.body).on("click", ".morePromptLink", function(e) {
+            var animationOptions = {}, contentBottom = $footer.offset().top - $(window).height();
+            if (scrollTo == "bottom") {
+                contentBottom += $footer.outerHeight(true);
+            } else {
+                contentBottom = 0;
+            }
+            animationOptions.scrollTop = contentBottom;
+            morePromptClicked = true;
+            $htmlBody.stop(true, true).animate(animationOptions, 800, function morePromptAnimateEnd() {
+                morePromptClicked = false;
+            });
         });
     }
     function eventSubscriptions() {
@@ -857,42 +883,96 @@
                 applyEventListeners();
             }
         });
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function breakPointChange() {
+            resetMorePromptBar();
+        });
+        if (typeof meerkatEvents.coverLevelTabs !== "undefined") {
+            meerkat.messaging.subscribe(meerkatEvents.coverLevelTabs.CHANGE_COVER_TAB, function onTabChange(eventObject) {
+                if (eventObject.activeTab == "D") {
+                    $morePrompt.hide();
+                    disablePrompt = true;
+                } else {
+                    $morePrompt.removeAttr("style");
+                    disablePrompt = false;
+                }
+            });
+        }
+        $(document).on("results.view.animation.end", function() {
+            fixMorePromptAfterSortOrFilter();
+        });
+        var timeout;
+        $(window).off("scroll.travelMorePrompt").on("scroll.travelMorePrompt", function() {
+            scrollTop = $(this).scrollTop();
+            if (timeout) clearTimeout(timeout);
+            timeout = setTimeout(handleMorePromptToggling, 150);
+        });
     }
-    function handleFades() {
-        var height = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
-        if (height + $(window).scrollTop() >= $(".resultsContainer").outerHeight()) {
-            $morePrompt.fadeOut();
+    function fixMorePromptAfterSortOrFilter() {
+        $lastResultRow = $("div.results-table .available.notfiltered").last();
+        handleMorePromptToggling();
+    }
+    function handleMorePromptToggling() {
+        if (disablePrompt) {
+            return;
+        }
+        var height = window.innerHeight || document.documentElement.offsetHeight, currentScrollTopPos = scrollTop, currentPos = height + currentScrollTopPos, lastAvailableProduct = $lastResultRow.position(), lastAvailableProductPos = lastAvailableProduct.top + $lastResultRow.outerHeight();
+        if (scrollTop === 0) {
+            $morePrompt.removeAttr("style").css({
+                position: "fixed"
+            });
+            $morePromptTextLink.html(goToBottomText);
+            toggleArrowClass("icon-angle-down");
+            scrollTo = "bottom";
         } else {
-            $morePrompt.fadeIn();
+            if (currentPos >= lastAvailableProductPos) {
+                $morePrompt.css({
+                    top: lastAvailableProductPos,
+                    height: $morePrompt.height(),
+                    position: "absolute"
+                });
+                $morePromptTextLink.html(goToTopText);
+                toggleArrowClass("icon-angle-up");
+                scrollTo = "top";
+            } else {
+                if ($morePrompt.css("position") != "fixed") {
+                    $morePrompt.removeAttr("style").css({
+                        position: "fixed"
+                    });
+                }
+            }
         }
     }
-    function applyEventListeners() {
-        $morePrompt.fadeIn();
-        promptInit = true;
-        $(window).scroll(function() {
-            clearTimeout($.data(this, "scrollCheck"));
-            $.data(this, "scrollCheck", setTimeout(handleFades, 150));
-        });
-        $(document.body).on("click", ".morePromptLink", function(e) {
-            var scrollTo = "top".toLowerCase(), animationOptions = {}, contentBottom = $footer.offset().top - $(window).height();
-            if (scrollTo == "bottom") {
-                contentBottom += $footer.outerHeight(true);
-            }
-            animationOptions.scrollTop = contentBottom;
-            $htmlBody.stop(true, true).animate(animationOptions, 800);
+    function resetMorePromptBar() {
+        _.defer(function() {
+            $morePromptTextLink.html(goToBottomText);
+            scrollTo = "bottom";
+            toggleArrowClass("icon-angle-down");
+            $morePrompt.removeAttr("style");
         });
     }
-    function hasScrollBar($obj) {
-        return $obj.get(0).scrollHeight > $(window).height();
+    function toggleArrowClass(thisClass) {
+        if (!$morePromptIcons.hasClass(thisClass)) {
+            $morePromptIcons.toggleClass("icon-angle-down icon-angle-up");
+        }
     }
-    function init() {
-        meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, function morePromptCallBack(obj) {
-            meerkat.modules.travelMorePrompt.initPrompt();
+    function disablePromptBar() {
+        $(window).off("scroll.travelMorePrompt");
+        $morePrompt.hide();
+    }
+    function initTravelMorePrompt() {
+        $htmlBody = $("body,html");
+        $footer = $("#footer");
+        $morePrompt = $(".morePromptContainer");
+        $morePromptIcons = $morePrompt.find(".icon");
+        $morePromptTextLink = $morePrompt.find(".morePromptLinkText");
+        meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, function morePromptCallBack() {
+            initPrompt();
         });
     }
     meerkat.modules.register("travelMorePrompt", {
-        init: init,
-        initPrompt: initPrompt
+        initTravelMorePrompt: initTravelMorePrompt,
+        resetMorePromptBar: resetMorePromptBar,
+        disablePromptBar: disablePromptBar
     });
 })(jQuery);
 

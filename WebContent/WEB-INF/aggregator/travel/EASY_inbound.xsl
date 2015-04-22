@@ -44,7 +44,7 @@
 
 				<xsl:variable name="isNewZeland">
 					<xsl:choose>
-						<xsl:when test="count($request/travel/destinations/*) = 1 and count($request/travel/destinations/pa/*) = 1 and $request/travel/destinations/pa/nz">Yes</xsl:when>
+						<xsl:when test="$request/travel/destination = 'NZL'">Yes</xsl:when>
 						<xsl:otherwise>No</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>

@@ -296,7 +296,6 @@ body > div > header a.bottombar .btn-call:hover {
 }
 @media (min-width: 992px) {
   .result .promotion {
-    text-align: right;
     margin-top: 20px;
   }
 }
@@ -346,12 +345,32 @@ body > div > header a.bottombar .btn-call:hover {
 .frequency.monthly .monthlyBreakdown .totalPayment {
   text-transform: uppercase;
 }
+.priceMode .result-row .frequency {
+  padding-top: 1px !important;
+}
+.priceMode .result-row .frequency .frequencyTitle {
+  display: inline-block !important;
+}
+.priceMode .result-row .excess .excessTitle {
+  display: inline-block !important;
+}
 .offerTerms {
   text-decoration: underline;
   white-space: pre;
 }
+.promotion {
+  position: relative;
+  padding-left: 32px;
+}
 .promotion .icon {
-  line-height: inherit;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  line-height: 24px;
 }
 @media (min-width: 768px) and (max-width: 1199px) {
   .result .frequencyAmount,
@@ -375,6 +394,16 @@ body > div > header a.bottombar .btn-call:hover {
   .offer-terms-modal .modal-body h2 {
     margin-left: 105px;
     margin-top: 5px;
+  }
+  .priceMode .result-row .frequency .frequencyTitle,
+  .priceMode .result-row .excess .frequencyTitle,
+  .priceMode .result-row .frequency .excessTitle,
+  .priceMode .result-row .excess .excessTitle {
+    display: block !important;
+    margin-top: 0 !important;
+  }
+  .priceMode .result-row .excess .excessAmount {
+    margin-top: 11px !important;
   }
 }
 @media (min-width: 480px) {
@@ -427,6 +456,16 @@ body > div > header a.bottombar .btn-call:hover {
     margin-top: 25px;
     margin-bottom: 40px;
   }
+  .priceMode .result-row .frequency {
+    padding-top: 1px !important;
+  }
+  .priceMode .result-row .frequency .frequencyTitle,
+  .priceMode .result-row .excess .frequencyTitle,
+  .priceMode .result-row .frequency .excessTitle,
+  .priceMode .result-row .excess .excessTitle {
+    display: inline-block !important;
+    margin-top: 0 !important;
+  }
 }
 @media (max-width: 480px) {
   .offer-terms-modal .modal-header h2,
@@ -434,9 +473,6 @@ body > div > header a.bottombar .btn-call:hover {
     margin-top: 15px !important;
     margin-bottom: 30px !important;
   }
-}
-.featuresMode {
-  margin-bottom: 30px;
 }
 .featuresMode .compare-toggle-wrapper {
   margin-bottom: 0;
@@ -505,11 +541,6 @@ body > div > header a.bottombar .btn-call:hover {
     margin-left: 90px;
     line-height: 0.9;
   }
-  .featuresMode .productSummary .btn-more-info {
-    clear: none;
-    width: auto;
-    margin: 12px 12px 0 90px;
-  }
   .featuresMode .productSummary .content {
     margin: 0 -12px;
   }
@@ -544,11 +575,29 @@ body > div > header a.bottombar .btn-call:hover {
     display: block;
   }
 }
-@media (max-width: 520px) {
-  .priceMode .frequencyTitle,
-  .priceMode .excessTitle {
-    display: block;
-    margin-top: 0;
+@media (max-width: 615px) {
+  .priceMode .result-row .frequency {
+    padding-top: 0px !important;
+  }
+  .priceMode .result-row .frequency .frequencyTitle,
+  .priceMode .result-row .excess .frequencyTitle,
+  .priceMode .result-row .frequency .excessTitle,
+  .priceMode .result-row .excess .excessTitle {
+    display: block !important;
+    margin-top: 0 !important;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .priceMode .result-row .frequency .frequencyTitle,
+  .priceMode .result-row .excess .frequencyTitle,
+  .priceMode .result-row .frequency .excessTitle,
+  .priceMode .result-row .excess .excessTitle {
+    text-align: right !important;
+  }
+}
+@media (min-width: 1200px) {
+  .priceMode .result-row .frequency .frequencyTitle {
+    float: left !important;
   }
 }
 .companyLogo.logo_BUDD {

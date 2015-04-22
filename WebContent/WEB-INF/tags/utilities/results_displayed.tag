@@ -5,8 +5,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath" %>
 
-<c:set var="competitionEnabledSetting">Y</c:set>
-<%--<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>--%>
+<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionEnabled" value="${competitionEnabledSetting == 'Y'}" />
 
 <%-- VARIABLES --%>

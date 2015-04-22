@@ -30,6 +30,7 @@
 			</c:if>
 		</c:catch>
 	</c:if>
+	<field:hidden xpath="${xpath}/VDN" constantValue="${phoneVdn}" />
 
 	<%-- Form stuff --%>
 	<c:set var="id" value="${go:nameFromXpath(xpath)}" />

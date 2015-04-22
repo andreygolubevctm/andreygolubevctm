@@ -29,7 +29,7 @@
 
 	var events = {
 			coverLevelTabs: {
-
+				CHANGE_COVER_TAB: "CHANGE_COVER_TAB"
 			}
 		},
 		moduleEvents = events.coverLevelTabs;
@@ -94,7 +94,7 @@
 		if(!$tabsContainer.length) {
 			return;
 		}
-		$tabsContainer.off('click').on('click', '.clt-action', function(e) {
+		$tabsContainer.off('click', '.clt-action').on('click', '.clt-action', function(e) {
 
 			var $el = $(this),
 			tabIndex = $el.attr('data-clt-index');
@@ -121,6 +121,9 @@
 				$el.siblings().removeClass('active').end().addClass('active');
 				settings.activeTabIndex = tabIndex;
 				setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
+				meerkat.messaging.publish(moduleEvents.CHANGE_COVER_TAB, {
+					activeTab: getRankingFilter()
+				});
 
 				if(settings.disableAnimationsBetweenTabs === true) {
 					// Re-Enable Animation, or set to whatever it was before.

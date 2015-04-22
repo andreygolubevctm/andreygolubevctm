@@ -28,12 +28,12 @@
 	}
 */
 .generate-result-cell-heights();
-.generate-result-cell-heights(@i: 20) when (@i =< 270) {
+.generate-result-cell-heights(@i: 5) when (@i =< 270) {
 	.height@{i} {
 		height: (1px*@i);
 	}
 
-	.generate-result-cell-heights((@i + 10));
+	.generate-result-cell-heights((@i + 5));
 }
 
 /*

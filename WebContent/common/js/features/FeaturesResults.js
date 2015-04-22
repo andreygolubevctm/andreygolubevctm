@@ -5,7 +5,7 @@ FeaturesComparison = {
 		QuoteEngine.completed(function(){
 			Results.get();
 
-			$('#kampyle').css({ 'margin-bottom': '76px' });
+			$('#kampyle').css({ 'margin-bottom': '91px' });
 			$('#footer').css({ 'margin-bottom': '46px' });
 			$('#call_to_action_bar').show(); //updates element of call_to_action_bar.tag.
 		});

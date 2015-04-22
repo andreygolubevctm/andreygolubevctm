@@ -35,7 +35,7 @@
 	</h5>
 
 	<div class="promotion">
-		<span class="icon icon-trophy"></span> {{= offlinePromotionText }}
+		<span class="icon icon-tag"></span> {{= offlinePromotionText }}
 		{{ if (offerTermsContent.length > 0) { }}
 			<a class="small offerTerms" href="javascript:;">Offer terms</a>
 			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
@@ -61,7 +61,7 @@
 	Special Online Offer
 	</h5>
 	<div class="promotion">
-		<span class="icon icon-trophy"></span> {{= onlinePromotionText }}
+		<span class="icon icon-tag"></span> {{= onlinePromotionText }}
 		{{ if (offerTermsContent.length > 0) { }}
 			<a class="small offerTerms" href="javascript:;">Offer terms</a>
 			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>

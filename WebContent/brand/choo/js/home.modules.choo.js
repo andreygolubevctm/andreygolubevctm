@@ -740,6 +740,7 @@
     var $filterFrequency, $filterHomeExcess, $filterContentsExcess, $filterHomeExcessLabel, $filterContentsExcessLabel;
     var deviceStateXS = false;
     var modalID = false;
+    var pageScrollingLockYScroll = false;
     var currentValues = {
         display: false,
         frequency: false,
@@ -941,10 +942,18 @@
         $component.find("li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle").removeClass("disabled");
     }
     function eventSubscriptions() {
+        $(document.body).on("mousewheel DOMMouseScroll onmousewheel", function(e) {
+            if (pageScrollingLockYScroll) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        });
         $(document).on("resultsFetchStart pagination.scrolling.start", function onResultsFetchStart() {
+            pageScrollingLockYScroll = true;
             disable();
         });
         $(document).on("resultsFetchFinish pagination.scrolling.end", function onResultsFetchStart() {
+            pageScrollingLockYScroll = false;
             enable();
         });
         meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, enable);

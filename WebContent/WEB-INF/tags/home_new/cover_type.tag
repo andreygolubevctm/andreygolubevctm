@@ -30,6 +30,13 @@
 	</c:if>
 
 	<%-- Address --%>
-	<group_new:address xpath="${xpath}/property/address" type="R" showTitle="false" />
+	<c:choose>
+		<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 1002)}">
+			<group_new:elastic_address xpath="${xpath}/property/address" type="R" />
+		</c:when>
+		<c:otherwise>
+			<group_new:address xpath="${xpath}/property/address" type="R" showTitle="false" />
+		</c:otherwise>
+	</c:choose>
 
 </form_new:fieldset>

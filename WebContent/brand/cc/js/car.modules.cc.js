@@ -865,8 +865,7 @@
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         carFilters: {
-            CHANGED: "CAR_FILTERS_CHANGED",
-            DISPLAY_MODE_CHANGED: "DISPLAY_MODE_CHANGED"
+            CHANGED: "CAR_FILTERS_CHANGED"
         }
     }, moduleEvents = events.carFilters;
     var $component;
@@ -894,9 +893,6 @@
                 $featuresMode.addClass("active");
                 break;
             }
-            meerkat.messaging.publish(moduleEvents.DISPLAY_MODE_CHANGED, {
-                newDisplayMode: Results.getDisplayMode()
-            });
         }
         var freq = $("#quote_paymentType").val();
         if (typeof freq === "undefined") {
@@ -985,17 +981,10 @@
         $component.find("li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle").removeClass("disabled");
     }
     function eventSubscriptions() {
-        meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
-            headerAffixed = true;
-        });
-        meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
-            headerAffixed = false;
-        });
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             disable();
         });
         $(document).on("pagination.scrolling.start", function onPaginationStart() {
-            meerkat.modules.carResults.calculateDockedHeader("startPaginationScroll");
             pageScrollingLockYScroll = true;
             disable();
         });
@@ -1003,7 +992,6 @@
             enable();
         });
         $(document).on("pagination.scrolling.end", function onPaginationEnd() {
-            meerkat.modules.carResults.calculateDockedHeader("endPaginationScroll");
             pageScrollingLockYScroll = false;
             enable();
         });
@@ -1196,7 +1184,8 @@
             retrieveExternalCopy: retrieveExternalCopy,
             additionalTrackingData: {
                 productName: null
-            }
+            },
+            onBreakpointChangeCallback: _.bind(resizeSidebarOnBreakpointChange, this, ".paragraphedContent", ".moreInfoRightColumn", $bridgingContainer)
         };
         meerkat.modules.moreInfo.initMoreInfo(options);
         eventSubscriptions();
@@ -1229,9 +1218,16 @@
         }
         telNum.attr("data-msg-required", "Please enter your contact number");
     }
+    function resizeSidebarOnBreakpointChange(leftContainer, rightContainer, mainContainer) {
+        if (meerkat.modules.deviceMediaState.get() == "lg" || meerkat.modules.deviceMediaState.get() == "md") {
+            fixSidebarHeight(leftContainer, rightContainer, mainContainer);
+        }
+    }
     function fixSidebarHeight(leftSelector, rightSelector, $container) {
         if (meerkat.modules.deviceMediaState.get() != "xs") {
             if ($(rightSelector, $container).length) {
+                $(leftSelector, $container).css("min-height", "0px");
+                $(rightSelector, $container).css("min-height", "0px");
                 var leftHeight = $(leftSelector, $container).outerHeight();
                 var rightHeight = $(rightSelector, $container).outerHeight();
                 if (leftHeight >= rightHeight) {
@@ -1627,8 +1623,6 @@
     var previousBreakpoint;
     var best_price_count = 5;
     var needToBuildFeatures = false;
-    var deviceType = null;
-    var headerAffixed = false;
     function initPage() {
         initResults();
         Features.init();
@@ -1646,7 +1640,6 @@
         Results.pagination.refresh();
     }
     function initResults() {
-        deviceType = $("#deviceType").attr("data-deviceType");
         try {
             var displayMode = "price";
             if (meerkat.modules.splitTest.isActive(18)) {
@@ -1796,31 +1789,9 @@
         $(Results.settings.elements.resultsContainer).on("click", ".result-row", resultRowClick);
         meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
             $("#resultsPage").css("margin-top", "35px");
-            headerAffixed = true;
-            calculateDockedHeader("affixed");
         });
         meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
             $("#resultsPage").css("margin-top", "0");
-            headerAffixed = false;
-            calculateDockedHeader("unaffixed");
-        });
-        meerkat.messaging.subscribe(meerkatEvents.carFilters.DISPLAY_MODE_CHANGED, function onDisplayModeChange() {
-            calculateDockedHeader("displayModeChanged");
-        });
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function onDeviceMediaStateChange() {
-            calculateDockedHeader("deviceMediaStateChange");
-        });
-        meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function onExitCompareMode() {
-            calculateDockedHeader("startPaginationScroll");
-        });
-        $(document).on("results.view.animation.start", function onAnimationStart() {
-            calculateDockedHeader("startPaginationScroll");
-        });
-        $(document).on("results.view.animation.end", function onAnimationEnd() {
-            $(".result-row").css({
-                position: ""
-            });
-            calculateDockedHeader("filterAnimationEnded");
         });
         meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj) {
             if (obj && obj.hasOwnProperty("excess")) {
@@ -1916,88 +1887,27 @@
                 $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ""));
             });
         });
-        $(document.body).on("click", "#resultsBridgeLess .btnContainer .btn-call-actions", function triggerMoreInfoCallActions(event) {
+        $(document.body).on("click", "#results_v3 .btnContainer .btn-call-actions", function triggerMoreInfoCallActions(event) {
             var element = $(this);
             meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION, {
                 event: event,
                 element: element
             });
         });
-        $(document.body).on("click", "#resultsBridgeLess .call-modal .btn-call-actions", function triggerMoreInfoCallActionsFromModal(event) {
+        $(document.body).on("click", "#results_v3 .call-modal .btn-call-actions", function triggerMoreInfoCallActionsFromModal(event) {
             var element = $(this);
             meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION_MODAL, {
                 event: event,
                 element: element
             });
         });
-        $(document.body).on("click", "#resultsBridgeLess .btn-submit-callback", function triggerMoreInfoSubmitCallback(event) {
+        $(document.body).on("click", "#results_v3 .btn-submit-callback", function triggerMoreInfoSubmitCallback(event) {
             var element = $(this);
             meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, {
                 event: event,
                 element: element
             });
         });
-    }
-    function calculateDockedHeader(event) {
-        var $featuresDockedHeader = $(".featuresDockedHeader"), $originalHeader = $(".headers");
-        if (deviceType != "TABLET" && meerkat.modules.deviceMediaState.get() != "xs") {
-            var featuresView = Results.getDisplayMode() == "features" ? true : false, redrawFixedHeader = true, pagePaginationActive = event == "startPaginationScroll" || event == "endPaginationScroll" || event == "filterAnimationEnded";
-            if (featuresView) {
-                var $fixedDockedHeader = $(".fixedDockedHeader");
-                if (headerAffixed) {
-                    $originalHeader.hide();
-                    var $currentPage = $(".currentPage"), topPosition = $("#navbar-filter").height() + $("#navbar-main").outerHeight(), dockedHeaderTop = event == "startPaginationScroll" ? "0" : topPosition + "px", dockedHeaderWidth = $(".result-row").first().width();
-                    var pageContentOffSet = $("#pageContent").offset(), navFilterOffSet = $("#navbar-filter").offset(), offSetFromTopPlusNav = navFilterOffSet.top - pageContentOffSet.top + 7, dockedHeaderPosition = event == "startPaginationScroll" ? "absolute" : "fixed", dockedHeaderPaddingTop = event == "startPaginationScroll" ? offSetFromTopPlusNav + "px" : "0px";
-                    if (!pagePaginationActive) {
-                        $currentPage.find($featuresDockedHeader).css({
-                            top: dockedHeaderTop,
-                            width: dockedHeaderWidth
-                        }).show();
-                    } else {
-                        redrawFixedHeader = false;
-                        $featuresDockedHeader.css({
-                            position: dockedHeaderPosition,
-                            top: dockedHeaderTop,
-                            width: dockedHeaderWidth,
-                            "padding-top": dockedHeaderPaddingTop
-                        }).show();
-                        if (event == "endPaginationScroll" || event == "filterAnimationEnded") {
-                            if ($currentPage.length >= 1) {
-                                $currentPage.siblings(":not(.currentPage)").find($featuresDockedHeader).hide();
-                            } else {
-                                $featuresDockedHeader.hide();
-                            }
-                            redrawFixedHeader = true;
-                        }
-                    }
-                    recalculateFixedHeader(redrawFixedHeader);
-                } else {
-                    $featuresDockedHeader.hide();
-                    $fixedDockedHeader.hide();
-                    $originalHeader.show();
-                }
-            } else {
-                $originalHeader.show();
-                $featuresDockedHeader.hide();
-            }
-        } else {
-            $originalHeader.show();
-            $featuresDockedHeader.hide();
-        }
-    }
-    function recalculateFixedHeader(redrawFixedHeader) {
-        var $fixedDockedHeader = $(".fixedDockedHeader"), $currentPage = $(".currentPage"), topPosition = $("#navbar-filter").height() + $("#navbar-main").outerHeight();
-        if (redrawFixedHeader) {
-            var cellFeatureWidth = $(".cell.feature").width() + 2 + "px", dockedHeaderHeight = "100px";
-            if ($currentPage.length >= 1) {
-                dockedHeaderHeight = $(".resultInsert.featuresMode:visible").first().innerHeight() + 1 + "px";
-            }
-            $fixedDockedHeader.css({
-                top: topPosition,
-                width: cellFeatureWidth,
-                height: dockedHeaderHeight
-            }).show();
-        }
     }
     function breakpointTracking() {
         startColumnWidthTracking();
@@ -2154,7 +2064,6 @@
         recordPreviousBreakpoint: recordPreviousBreakpoint,
         switchToPriceMode: switchToPriceMode,
         switchToFeaturesMode: switchToFeaturesMode,
-        calculateDockedHeader: calculateDockedHeader,
         showNoResults: showNoResults,
         publishExtraSuperTagEvents: publishExtraSuperTagEvents
     });

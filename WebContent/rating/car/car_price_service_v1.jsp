@@ -34,7 +34,7 @@
 
 		<go:soapAggregator
 			config = ""
-			configDbKey="carQuoteService_Greenstone_init"
+		 	configDbKey="carQuoteService_hollard_init"
 		 	manuallySetProviderIds="${providerId}"
 			verticalCode="CAR"
 			styleCodeId="${pageSettings.getBrandId()}"
@@ -46,12 +46,12 @@
 	</c:when>
 	<c:otherwise>
 
-		<c:import var="init_config" url="/WEB-INF/aggregator/car/Greenstone/config_${service}_init.xml" />
-		<go:soapAggregator
-			config="${init_config}"
-			transactionId="${tranId}"
-			xml="<xml />"
-			var="tokenResultXml"
+		<c:import var="init_config" url="/WEB-INF/aggregator/car/Hollard/config_${service}_init.xml" />
+		<go:soapAggregator 
+			config="${init_config}" 
+			transactionId="${tranId}" 
+			xml="<xml />" 
+			var="tokenResultXml" 
 			debugVar="tokenDebugXml" />
 
 	</c:otherwise>
@@ -73,9 +73,9 @@
 
 		<%-- Has failed to get a token, print through failed response. --%>
 
-		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/car/Greenstone/v1/${service}_inbound.xsl" />
+		<c:import var="inbound_xsl" url="/WEB-INF/aggregator/car/Hollard/v1/${service}_inbound.xsl" />
 		<c:set var="tokenResultXml">
-			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/car/Greenstone/v1/${service}_inbound.xsl" />
+			<x:transform doc="${tokenResultXml}" xslt="${inbound_xsl}" xsltSystemId="/WEB-INF/aggregator/car/Hollard/v1/${service}_inbound.xsl" />
 		</c:set>
 
 		<c:out value="${tokenResultXml}" escapeXml="false" />
@@ -104,7 +104,7 @@
 
 				<go:soapAggregator
 					config = ""
-					configDbKey="carQuoteService_Greenstone_quote"
+				 	configDbKey="carQuoteService_hollard_quote"
 				 	manuallySetProviderIds="${providerId}"
 					verticalCode="CAR"
 					styleCodeId="${pageSettings.getBrandId()}"
@@ -116,14 +116,14 @@
 			</c:when>
 			<c:otherwise>
 
-				<c:import var="config" url="/WEB-INF/aggregator/car/Greenstone/config_${service}_quote.xml" />
-				<go:soapAggregator
-					config="${config}"
-					transactionId="${tranId}"
-					xml="${xmlData}"
-					var="resultXml"
+				<c:import var="config" url="/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml" />
+				<go:soapAggregator 
+					config="${config}" 
+					transactionId="${tranId}" 
+					xml="${xmlData}" 
+					var="resultXml" 
 					debugVar="debugXml" />
-
+				
 			</c:otherwise>
 		</c:choose>
 

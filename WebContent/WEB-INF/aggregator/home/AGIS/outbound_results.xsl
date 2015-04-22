@@ -468,7 +468,7 @@
 											<xsl:when test="disclosures/insurer='Elders Insurance'">7323</xsl:when>
 											<xsl:when test="disclosures/insurer='GIO'">7315</xsl:when>
 											<xsl:when test="disclosures/insurer='HBF Insurance'">7157</xsl:when>
-											<xsl:when test="disclosures/insurer='Greenstone'">7406</xsl:when>
+											<xsl:when test="disclosures/insurer='Hollard'">7406</xsl:when>
 											<xsl:when test="disclosures/insurer='iSelect'">7800</xsl:when>
 											<xsl:when test="disclosures/insurer='Just Car Insurance'">7335</xsl:when>
 											<xsl:when test="disclosures/insurer='Kmart Insurance'">7874</xsl:when>

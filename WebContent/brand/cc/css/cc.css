@@ -6789,80 +6789,164 @@ html {
 		height: 20px;
 	}
 */
+.height5 {
+  height: 5px;
+}
+.height10 {
+  height: 10px;
+}
+.height15 {
+  height: 15px;
+}
 .height20 {
   height: 20px;
+}
+.height25 {
+  height: 25px;
 }
 .height30 {
   height: 30px;
 }
+.height35 {
+  height: 35px;
+}
 .height40 {
   height: 40px;
+}
+.height45 {
+  height: 45px;
 }
 .height50 {
   height: 50px;
 }
+.height55 {
+  height: 55px;
+}
 .height60 {
   height: 60px;
+}
+.height65 {
+  height: 65px;
 }
 .height70 {
   height: 70px;
 }
+.height75 {
+  height: 75px;
+}
 .height80 {
   height: 80px;
+}
+.height85 {
+  height: 85px;
 }
 .height90 {
   height: 90px;
 }
+.height95 {
+  height: 95px;
+}
 .height100 {
   height: 100px;
+}
+.height105 {
+  height: 105px;
 }
 .height110 {
   height: 110px;
 }
+.height115 {
+  height: 115px;
+}
 .height120 {
   height: 120px;
+}
+.height125 {
+  height: 125px;
 }
 .height130 {
   height: 130px;
 }
+.height135 {
+  height: 135px;
+}
 .height140 {
   height: 140px;
+}
+.height145 {
+  height: 145px;
 }
 .height150 {
   height: 150px;
 }
+.height155 {
+  height: 155px;
+}
 .height160 {
   height: 160px;
+}
+.height165 {
+  height: 165px;
 }
 .height170 {
   height: 170px;
 }
+.height175 {
+  height: 175px;
+}
 .height180 {
   height: 180px;
+}
+.height185 {
+  height: 185px;
 }
 .height190 {
   height: 190px;
 }
+.height195 {
+  height: 195px;
+}
 .height200 {
   height: 200px;
+}
+.height205 {
+  height: 205px;
 }
 .height210 {
   height: 210px;
 }
+.height215 {
+  height: 215px;
+}
 .height220 {
   height: 220px;
+}
+.height225 {
+  height: 225px;
 }
 .height230 {
   height: 230px;
 }
+.height235 {
+  height: 235px;
+}
 .height240 {
   height: 240px;
+}
+.height245 {
+  height: 245px;
 }
 .height250 {
   height: 250px;
 }
+.height255 {
+  height: 255px;
+}
 .height260 {
   height: 260px;
+}
+.height265 {
+  height: 265px;
 }
 .height270 {
   height: 270px;
@@ -9094,38 +9178,42 @@ fieldset[disabled] .radioCustom input + label:before {
 .form-horizontal .checkbox {
   padding-top: 3px;
 }
-#resultsBridgeLess .resultsOverflow {
+#results_v3 .resultsOverflow {
   overflow-x: hidden !important;
 }
-#resultsBridgeLess .result_unavailable_combined .productSummary {
+#results_v3 .result_unavailable_combined .productSummary {
   height: auto;
 }
-#resultsBridgeLess .productSummary {
+#results_v3 .productSummary {
   height: 175px;
 }
 @media (max-width: 767px) {
-  #resultsBridgeLess .productSummary {
+  #results_v3 .productSummary {
     text-align: center;
     padding-top: 0px;
     padding-bottom: 0px;
   }
 }
-#resultsBridgeLess .featuresMode .compare-toggle-wrapper {
-  float: right;
+#results_v3 .featuresMode .compare-toggle-wrapper {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 }
-#resultsBridgeLess .featuresMode .monthlyBreakdown {
-  padding: 5px 0;
+#results_v3 .featuresMode .monthlyBreakdown {
+  padding: 5px 0 0 0;
+  font-size: 12px;
+  line-height: 12px;
 }
-#resultsBridgeLess .featuresMode .monthlyBreakdown .totalPayment {
+#results_v3 .featuresMode .monthlyBreakdown .totalPayment {
   display: inline-block;
 }
-#resultsBridgeLess .expand-collapse-toggle {
+#results_v3 .expand-collapse-toggle {
   text-transform: uppercase;
   position: absolute;
   right: 10px;
   bottom: 10px;
 }
-#resultsBridgeLess .fixedDockedHeader {
+#results_v3 .fixedDockedHeader {
   display: none;
   position: fixed;
   z-index: 1;
@@ -9133,223 +9221,180 @@ fieldset[disabled] .radioCustom input + label:before {
   border: #e0e0e0 1px solid;
   border-top: none;
 }
-#resultsBridgeLess .featuresDockedHeader {
+#results_v3 .featuresDockedHeader {
   height: auto;
   display: none;
   position: fixed;
   z-index: 1;
 }
-#resultsBridgeLess .featuresDockedHeader .featuresMode {
+#results_v3 .featuresDockedHeader .featuresMode {
   background-color: #FFFFFF;
   margin-top: -10px;
   margin-bottom: 0px;
   padding: 0 10px 10px 10px;
   border-bottom: #e0e0e0 1px solid;
 }
-#resultsBridgeLess .featuresDockedHeader .companyLogo {
+#results_v3 .featuresDockedHeader .companyLogo {
   width: 60px;
   height: 60px;
   line-height: 60px;
   background-size: 60px 60px;
 }
-#resultsBridgeLess .featuresDockedHeader .frequency {
+#results_v3 .featuresDockedHeader .frequency {
   margin: 10px 0 0 75px;
   padding-top: 10px;
   width: auto;
-  text-align: left;
+  text-align: right;
 }
-#resultsBridgeLess .featuresDockedHeader .frequency .frequencyAmount {
+#results_v3 .featuresDockedHeader .frequency .frequencyAmount {
   display: inline-block;
-  text-align: left;
+  text-align: right;
+  width: auto;
+  font-size: 28px;
+}
+#results_v3 .featuresDockedHeader .frequency .frequencyTitle {
+  display: inline-block;
+  text-align: right;
   width: auto;
 }
-#resultsBridgeLess .featuresDockedHeader .frequency .frequencyTitle {
-  display: inline-block;
-  text-align: left;
-  width: auto;
-}
-#resultsBridgeLess .featuresDockedHeader .btn-cta {
+#results_v3 .featuresDockedHeader .headerButtonWrapper .btn-more-info-apply,
+#results_v3 .featuresDockedHeader .headerButtonWrapper .btn-more-info,
+#results_v3 .featuresDockedHeader .headerButtonWrapper .btn-call-actions {
   padding-top: 5px;
   padding-bottom: 5px;
   margin-top: 0px;
 }
-#resultsBridgeLess .headers.featuresNormalHeader .controlContainer {
+#results_v3 .featuresDockedHeader .headerButtonWrapper.carSpecific {
+  text-align: center;
+}
+#results_v3 .featuresDockedHeader .headerButtonWrapper.carSpecific .btn-more-info-apply,
+#results_v3 .featuresDockedHeader .headerButtonWrapper.carSpecific .btn-call-actions {
+  position: inherit;
+  display: inline-block;
+  width: 70%;
+}
+#results_v3 .featuresDockedHeader .headerButtonWrapper.carSpecific .btn-more-info-apply.ctaBtnExpanded {
+  width: 85%;
+}
+#results_v3 .headers.featuresNormalHeader .controlContainer {
   border-left: #e0e0e0 1px solid;
 }
-#resultsBridgeLess .headers.featuresNormalHeader .compare-basket {
+#results_v3 .headers.featuresNormalHeader .compare-basket {
   padding: 15px;
   text-align: justify;
 }
-#resultsBridgeLess .headers.featuresNormalHeader .compare-basket .compare-max-count-label {
-  font-weight: bold;
+#results_v3 .headers.featuresNormalHeader .compare-basket .compare-max-count-label {
+  font-weight: normal;
+  font-family: 'SourceSansProBold';
+  white-space: nowrap;
 }
-#resultsBridgeLess .headers.featuresNormalHeader .compare-basket .products-returned-count {
-  font-weight: bold;
+#results_v3 .headers.featuresNormalHeader .compare-basket .products-returned-count {
+  font-weight: normal;
+  font-family: 'SourceSansProBold';
+  white-space: nowrap;
 }
-@media (max-width: 767px) {
-  #resultsBridgeLess .featuresNormalHeader {
-    height: auto;
-  }
-}
-@media (max-width: 767px) {
-  #resultsBridgeLess .featuresNormalHeader .companyLogo {
-    display: inline-block;
-    float: none;
-  }
-}
-#resultsBridgeLess .featuresNormalHeader .compareButtonsContainer {
+#results_v3 .compareButtonsContainer {
   text-align: center;
 }
-#resultsBridgeLess .featuresNormalHeader .compareButtonsContainer .btn-features-compare,
-#resultsBridgeLess .featuresNormalHeader .compareButtonsContainer .btn-compare-clear {
+#results_v3 .compareButtonsContainer .btn-features-compare,
+#results_v3 .compareButtonsContainer .btn-compare-clear {
   position: inherit;
-  width: 60%;
+  width: 90%;
   margin-top: 12px;
   bottom: 40px;
   padding-top: 9px;
   padding-bottom: 9px;
 }
-#resultsBridgeLess .featuresNormalHeader .frequency {
-  display: block;
-  margin-bottom: 0;
-  margin-left: 15px;
-  width: auto;
-  padding-top: 21px;
+#results_v3 .featuresNormalHeader .featuresMode .companyLogo {
+  margin-top: 15px;
 }
 @media (max-width: 767px) {
-  #resultsBridgeLess .featuresNormalHeader .frequency {
+  #results_v3 .featuresNormalHeader .featuresMode .companyLogo {
+    display: inline-block;
+    float: none;
+  }
+}
+#results_v3 .featuresNormalHeader .featuresMode .frequency {
+  display: block;
+  margin-bottom: 0;
+  margin-left: 0px;
+  width: auto;
+  padding-top: 23px;
+  text-align: right;
+}
+@media (max-width: 767px) {
+  #results_v3 .featuresNormalHeader .featuresMode .frequency {
+    background-color: red;
     text-align: center;
     padding: 0px;
   }
 }
-#resultsBridgeLess .featuresNormalHeader .frequency .frequencyAmount {
+#results_v3 .featuresNormalHeader .featuresMode .frequency .frequencyAmount {
   display: inline-block;
-  text-align: left;
+  text-align: right;
+  width: auto;
+  font-size: 28px;
+  padding-right: 0px;
+}
+#results_v3 .featuresNormalHeader .featuresMode .frequency .frequencyTitle {
+  display: inline-block;
+  text-align: right;
   width: auto;
 }
-#resultsBridgeLess .featuresNormalHeader .frequency .frequencyTitle {
-  display: inline-block;
-  text-align: left;
-  width: auto;
+#results_v3 .hidden-xs.homeSpecific .headerButtonWrapper {
+  position: absolute;
+  bottom: 5px;
+  width: 100%;
 }
-#resultsBridgeLess .applyNowWrapper {
+#results_v3 .hidden-xs.homeSpecific .headerButtonWrapper .btn-more-info {
+  left: 0;
+  right: 0;
+  margin: 0;
+  width: 85%;
+}
+#results_v3 .hidden-xs.carSpecific .headerButtonWrapper {
   text-align: center;
 }
-#resultsBridgeLess .applyNowWrapper .btn-cta {
+#results_v3 .hidden-xs.carSpecific .headerButtonWrapper .btn-more-info-apply,
+#results_v3 .hidden-xs.carSpecific .headerButtonWrapper .btn-call-actions {
+  position: inherit;
   display: inline-block;
+  margin-top: 20px;
   width: 70%;
 }
-#resultsBridgeLess .featuresList .icon-tick,
-#resultsBridgeLess .featuresList icon-cross {
+#results_v3 .hidden-xs.carSpecific .headerButtonWrapper .btn-more-info-apply.ctaBtnExpanded {
+  width: 85%;
+}
+#results_v3 .featuresList .icon-tick,
+#results_v3 .featuresList icon-cross {
   margin-top: 3px;
 }
-#resultsBridgeLess .featuresList .btnContainerNoBtn {
+#results_v3 .featuresList .btnContainerNoBtn {
   margin-top: 8px;
 }
-#resultsBridgeLess .featuresList .btnContainer {
+#results_v3 .featuresList .btnContainer {
   text-align: center;
 }
-#resultsBridgeLess .featuresList .btnContainer .btn {
+#results_v3 .featuresList .btnContainer .btn {
   width: 70%;
   padding-top: 5px;
   padding-bottom: 5px;
   margin-top: 2px;
   display: inline-block;
 }
-#resultsBridgeLess .featuresList .btnContainer .btn-download {
+#results_v3 .featuresList .btnContainer .btn-download {
   margin-right: 5px;
   margin-left: 5px;
 }
-#resultsBridgeLess .featuresList ul {
+#results_v3 .featuresList ul {
   list-style: none;
   padding: 0 10px;
 }
-#resultsBridgeLess .featuresList ul li {
+#results_v3 .featuresList ul li {
   padding-bottom: 10px;
 }
-#resultsBridgeLess .featuresList ul li:before {
+#results_v3 .featuresList ul li:before {
   content: "- ";
-}
-#resultsBridgeLess .featuresList .height10 {
-  height: 5px;
-}
-#resultsBridgeLess .featuresList .height20 {
-  height: 15px;
-}
-#resultsBridgeLess .featuresList .height30 {
-  height: 25px;
-}
-#resultsBridgeLess .featuresList .height40 {
-  height: 35px;
-}
-#resultsBridgeLess .featuresList .height50 {
-  height: 45px;
-}
-#resultsBridgeLess .featuresList .height60 {
-  height: 55px;
-}
-#resultsBridgeLess .featuresList .height70 {
-  height: 65px;
-}
-#resultsBridgeLess .featuresList .height80 {
-  height: 75px;
-}
-#resultsBridgeLess .featuresList .height90 {
-  height: 85px;
-}
-#resultsBridgeLess .featuresList .height100 {
-  height: 95px;
-}
-#resultsBridgeLess .featuresList .height110 {
-  height: 105px;
-}
-#resultsBridgeLess .featuresList .height120 {
-  height: 115px;
-}
-#resultsBridgeLess .featuresList .height130 {
-  height: 125px;
-}
-#resultsBridgeLess .featuresList .height140 {
-  height: 135px;
-}
-#resultsBridgeLess .featuresList .height150 {
-  height: 145px;
-}
-#resultsBridgeLess .featuresList .height160 {
-  height: 155px;
-}
-#resultsBridgeLess .featuresList .height170 {
-  height: 165px;
-}
-#resultsBridgeLess .featuresList .height180 {
-  height: 175px;
-}
-#resultsBridgeLess .featuresList .height190 {
-  height: 185px;
-}
-#resultsBridgeLess .featuresList .height200 {
-  height: 195px;
-}
-#resultsBridgeLess .featuresList .height210 {
-  height: 205px;
-}
-#resultsBridgeLess .featuresList .height220 {
-  height: 215px;
-}
-#resultsBridgeLess .featuresList .height230 {
-  height: 225px;
-}
-#resultsBridgeLess .featuresList .height240 {
-  height: 235px;
-}
-#resultsBridgeLess .featuresList .height250 {
-  height: 245px;
-}
-#resultsBridgeLess .featuresList .height260 {
-  height: 255px;
-}
-#resultsBridgeLess .featuresList .height270 {
-  height: 265px;
 }
 .form-group.select-tags-row {
   margin-bottom: 0;

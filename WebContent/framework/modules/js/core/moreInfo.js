@@ -44,7 +44,8 @@
 			onClickApplyNow: null,
 			onApplySuccess: null,
 			retrieveExternalCopy: null, // could just return a simple javascript object, or a deferred promise (ajax request).
-			additionalTrackingData: null // add an object of additional tracking data to pass to trackProductView.
+			additionalTrackingData: null, // add an object of additional tracking data to pass to trackProductView.,
+			onBreakpointChangeCallback: null
 		},
 		settings = {},
 		visibleBodyClass = 'moreInfoVisible';
@@ -67,6 +68,7 @@
 
 		});
 
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, onBreakpointChange);
 	}
 
 	function applyEventListeners() {
@@ -468,6 +470,12 @@
 			$('body').addClass(visibleBodyClass);
 		} else {
 			$('body').removeClass(visibleBodyClass);
+		}
+	}
+
+	function onBreakpointChange() {
+		if(_.isFunction(settings.onBreakpointChangeCallback)) {
+			_.defer(settings.onBreakpointChangeCallback);
 		}
 	}
 
