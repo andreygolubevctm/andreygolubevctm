@@ -16,6 +16,33 @@
 		eventSubscriptions();
 	}
 
+	function getData() {
+		return {
+			coverType: $('#home_coverType').val(),
+			icon: meerkat.modules.homeSnapshot.getIcon(),
+			ownsHome: $('#home_occupancy_ownProperty_Y').is(':checked'),
+			isPrincipalResidence: $('#home_occupancy_principalResidence_Y').is(':checked'),
+			businessActivity: $('#home_businessActivity_conducted_Y').is(':checked'),
+			isBodyCorp: $('#home_property_bodyCorp_Y').is(':checked'),
+			hasInternalSiren: $('#home_property_securityFeatures_internalSiren').is(':checked'),
+			hasExternalSiren: $('#home_property_securityFeatures_externalSiren').is(':checked'),
+			hasExternalStrobe: $('#home_property_securityFeatures_strobeLight').is(':checked'),
+			hasBackToBase: $('#home_property_securityFeatures_backToBase').is(':checked'),
+			isSpecifyingPersonalEffects: $('#home_coverAmounts_itemsAway_Y').is(':checked'),
+			specifiedPersonalEffects: $('#home_coverAmounts_specifyPersonalEffects_Y').is(':checked'),
+			bicycles: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_bicycleentry"),
+			musical: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_musicalentry"),
+			clothing: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_clothingentry"),
+			jewellery: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_jewelleryentry"),
+			sporting: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_sportingentry"),
+			photography: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_photoentry"),
+			hasOlderResident: $('#home_policyHolder_anyoneOlder_Y').is(':checked'),
+			hasRetiredOver55: $('#home_policyHolder_over55_Y').is(':checked'),
+			previousCover: $('#home_disclosures_previousInsurance_Y').is(':checked'),
+			previousClaims: $('#home_disclosures_claims_Y').is(':checked')
+		};
+	}
+
 	function applyEventListeners() {
 
 		$editDetailsDropDown.on('show.bs.dropdown', function() {
@@ -23,30 +50,7 @@
 			if ($e.length > 0) {
 				templateCallback = _.template($e.html());
 			}
-			var data = {
-				coverType: $('#home_coverType').val(),
-				icon: meerkat.modules.homeSnapshot.getIcon(),
-				ownsHome: $('#home_occupancy_ownProperty_Y').is(':checked'),
-				isPrincipalResidence: $('#home_occupancy_principalResidence_Y').is(':checked'),
-				businessActivity: $('#home_businessActivity_conducted_Y').is(':checked'),
-				isBodyCorp: $('#home_property_bodyCorp_Y').is(':checked'),
-				hasInternalSiren: $('#home_property_securityFeatures_internalSiren').is(':checked'),
-				hasExternalSiren: $('#home_property_securityFeatures_externalSiren').is(':checked'),
-				hasExternalStrobe: $('#home_property_securityFeatures_strobeLight').is(':checked'),
-				hasBackToBase: $('#home_property_securityFeatures_backToBase').is(':checked'),
-				isSpecifyingPersonalEffects: $('#home_coverAmounts_itemsAway_Y').is(':checked'),
-				specifiedPersonalEffects: $('#home_coverAmounts_specifyPersonalEffects_Y').is(':checked'),
-				bicycles: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_bicycleentry"),
-				musical: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_musicalentry"),
-				clothing: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_clothingentry"),
-				jewellery: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_jewelleryentry"),
-				sporting: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_sportingentry"),
-				photography: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_photoentry"),
-				hasOlderResident: $('#home_policyHolder_anyoneOlder_Y').is(':checked'),
-				hasRetiredOver55: $('#home_policyHolder_over55_Y').is(':checked'),
-				previousCover: $('#home_disclosures_previousInsurance_Y').is(':checked'),
-				previousClaims: $('#home_disclosures_claims_Y').is(':checked')
-			};
+			var data = getData();
 
 			show(templateCallback(data));
 		}).on('click', '.dropdown-container', function(e) {
@@ -138,7 +142,8 @@
 	meerkat.modules.register('homeEditDetails', {
 		initEditDetails : initEditDetails,
 		events : events,
-		hide: hide
+		hide: hide,
+		getFormData: getData
 	});
 
 })(jQuery);

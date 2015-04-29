@@ -135,7 +135,12 @@
 								WHERE td.transactionId = ?
 								AND td.transactionId = th.transactionId
 								AND th.styleCodeId = ?
-								UNION ALL
+								ORDER BY xpath ASC;
+								<sql:param value="${requestedTransaction}" />
+								<sql:param value="${styleCodeId}" />
+							</sql:query>
+							<c:if test="${details.rowCount == 0}">
+								<sql:query var="details">
 								SELECT td2c.transactionId, tf.fieldCode AS xpath, td2c.textValue
 								FROM aggregator.transaction_details2_cold td2c
 									JOIN aggregator.transaction_header2_cold th2c USING(transactionId)
@@ -145,9 +150,8 @@
 								ORDER BY xpath ASC;
 								<sql:param value="${requestedTransaction}" />
 								<sql:param value="${styleCodeId}" />
-								<sql:param value="${requestedTransaction}" />
-								<sql:param value="${styleCodeId}" />
 							</sql:query>
+							</c:if>
 						</c:when>
 						<c:otherwise>
 							<sql:query var="details">
@@ -286,15 +290,16 @@
 					<result>
 						<errorDetails>
 							<reason>reserved</reason>
-							<c:if test="${not empty isOperator }">
-								<c:set var="reservedName"><c:out value="${accessTouch.getOperator()}">${reservedName}</c:out></c:set>
-								<c:set var="typeDescription"><c:out value="${accessTouch.getType().getDescription()}">unknown</c:out></c:set>
-								<type>${typeDescription}</type>
-								<datetime><fmt:formatDate value="${accessTouch.getDatetime()}" pattern="dd/MM/yyyy hh:mm:ss aa"/></datetime>
-							</c:if>
-							<operator>${reservedName}</operator>
+							<operator>another user</operator>
 						</errorDetails>
-						<error>This quote has been reserved by ${reservedName}. Please try again later.</error>
+						<c:choose>
+							<c:when test="${param.vertical eq 'health'}">
+								<error>Your quote is currently being reviewed by one of our health specialists. Please call <content:get key="callCentreNumber"/> to speak with us.</error>
+							</c:when>
+							<c:otherwise>
+								<error>This quote has been reserved by another user. Please try again later.</error>
+							</c:otherwise>
+						</c:choose>
 						<showToUser>true</showToUser>
 					</result>
 				</c:set>

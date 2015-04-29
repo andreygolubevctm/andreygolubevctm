@@ -5,7 +5,7 @@ import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 
 import com.ctm.dao.ConfirmationDao;
-import com.ctm.dao.TransactionDao;
+import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Confirmation;
 import com.ctm.model.TransactionProperties;

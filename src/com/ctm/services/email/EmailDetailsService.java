@@ -1,15 +1,13 @@
 package com.ctm.services.email;
 
 import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 
 import com.ctm.web.validation.EmailValidation;
 import org.apache.log4j.Logger;
 
 import com.ctm.dao.EmailMasterDao;
 import com.ctm.dao.StampingDao;
-import com.ctm.dao.TransactionDao;
+import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.model.EmailMaster;

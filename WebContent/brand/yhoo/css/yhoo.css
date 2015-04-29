@@ -9062,6 +9062,14 @@ fieldset h2 .icon-text {
     clear: left;
   }
 }
+.edit-details-wrapper .edit-details-intro-text {
+  display: inline-block;
+  float: left;
+  padding-left: 0px;
+}
+.edit-details-wrapper .panel.accordion-panel.expired-panel {
+  display: none;
+}
 @media (max-width: 767px) {
   .accordion-xs .detail-title {
     margin: 10px 0 10px 0;
@@ -9071,6 +9079,61 @@ fieldset h2 .icon-text {
   }
   .accordion-xs .accordion-heading .btn-edit {
     margin-top: 5px;
+  }
+}
+@media (min-width: 992px) {
+  body.modal-open .modal-dialog.edit-details-modal {
+    width: 967px;
+  }
+  body.modal-open .expired-panel #modal-commencement-date-get-quotes {
+    width: 75%;
+  }
+}
+@media (min-width: 1200px) {
+  body.modal-open .modal-dialog.edit-details-modal {
+    width: 1171px;
+  }
+}
+body.modal-open .edit-details-modal .edit-details-wrapper .panel.accordion-panel.expired-panel {
+  display: none;
+}
+body.modal-open .edit-details-wrapper.expired-quote p.edit-details-intro-text,
+body.modal-open .edit-details-wrapper.expired-quote .edit-details-intro-icon {
+  display: none !important;
+}
+body.modal-open .edit-details-wrapper.expired-quote .panel.accordion-panel.expired-panel {
+  margin-top: 0;
+  display: block;
+}
+body.modal-open .edit-details-wrapper.expired-quote .panel.accordion-panel.expired-panel .column p {
+  font-weight: bold;
+  text-align: right;
+}
+@media (min-width: 768px) {
+  body.modal-open .edit-details-wrapper.expired-quote {
+    padding: 15px 0 0 0;
+  }
+  body.modal-open .edit-details-wrapper.expired-quote #edit-details-panel-group {
+    border-top: 1px solid #333333;
+    background-color: #f2f2f2;
+    padding-bottom: 15px;
+    margin-top: 9px;
+  }
+}
+@media (min-width: 1200px) {
+  body.modal-open .edit-details-wrapper.expired-quote #edit-details-panel-group {
+    padding-top: 9px;
+  }
+  body.modal-open .edit-details-wrapper.expired-quote .icon-arrow-right {
+    font-size: 14px;
+    color: #ffffff;
+    margin: 0;
+    height: auto;
+  }
+}
+@media (max-width: 767px) {
+  body.modal-open .edit-details-wrapper.expired-quote .expired-panel .column p {
+    text-align: left !important;
   }
 }
 .btn-right {

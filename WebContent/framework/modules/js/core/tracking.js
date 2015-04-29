@@ -13,7 +13,7 @@
 	var lastFieldTouch = null;
 	var lastFieldTouchXpath = null;
 
-	function recordTouch(touchType, touchComment, includeFormData, callback){
+	function recordTouch(touchType, touchComment, productId, includeFormData, callback){
 
 		var data = [];
 		if(includeFormData){
@@ -32,13 +32,20 @@
 			name: 'comment',
 			value: touchComment
 		});
+		data.push({
+			name: 'productId',
+			value: productId
+		});
 
 		meerkat.modules.comms.post({
 			url: 'ajax/json/access_touch.jsp',
 			data: data,
 			errorLevel: "silent",
-			onSuccess: function recordTouchSuccess(result){
-				if (typeof callback === "function") callback(result);
+			onSuccess: function recordTouchSuccess(response){
+				if(_.has(response,"result") && _.has(response.result, "transactionId") && _.isNumber(response.result.transactionId) && response.result.transactionId > 0) {
+					meerkat.modules.transactionId.set(response.result.transactionId);
+			}
+				if (typeof callback === "function") callback(response);
 			}
 		});
 	}
@@ -163,7 +170,7 @@
 			var includeFormData = false;
 			if(typeof eventObject.includeFormData !== 'undefined' && eventObject.includeFormData === true) includeFormData = true;
 
-			recordTouch(eventObject.touchType, eventObject.touchComment, includeFormData, eventObject.callback);
+			recordTouch(eventObject.touchType, eventObject.touchComment, eventObject.productId, includeFormData, eventObject.callback);
 		});
 
 		meerkat.messaging.subscribe(moduleEvents.EXTERNAL, runTrackingCall);

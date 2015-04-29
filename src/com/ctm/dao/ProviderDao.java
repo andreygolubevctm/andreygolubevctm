@@ -1,17 +1,113 @@
 package com.ctm.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Date;
 
 import javax.naming.NamingException;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Provider;
+import com.ctm.services.ApplicationService;
 
 public class ProviderDao {
+
+	public static enum GetMethod {
+		BY_CODE, BY_ID
+	};
+
+	public ProviderDao(){
+	}
+
+	/**
+	 * Returns a Provider model for the provider requested
+	 *
+	 * @param method
+	 * @param parameter
+	 * @param serverDate
+	 * @return
+	 * @throws DaoException
+	 */
+	private Provider get(GetMethod method, String parameter, Date serverDate) throws DaoException{
+
+		SimpleDatabaseConnection dbSource = null;
+		Provider provider = null;
+
+		try{
+
+			dbSource = new SimpleDatabaseConnection();
+
+			PreparedStatement stmt = null;
+
+			if (method == GetMethod.BY_CODE) {
+				stmt = dbSource.getConnection().prepareStatement(
+					"SELECT ProviderId, ProviderCode, Name " +
+					"FROM ctm.provider_master " +
+					"WHERE ProviderCode = ? " +
+					"AND Status = '' " +
+					"LIMIT 1 ;"
+				);
+				stmt.setString(1, parameter);
+			}
+			else {
+				stmt = dbSource.getConnection().prepareStatement(
+						"SELECT ProviderId, ProviderCode, Name " +
+						"FROM ctm.provider_master " +
+						"WHERE ProviderId = ? " +
+						"AND Status = '' " +
+						"LIMIT 1 ;"
+				);
+				stmt.setString(1, parameter);
+			}
+
+			ResultSet resultSet = stmt.executeQuery();
+
+			if (resultSet.next()) {
+				provider = new Provider(resultSet.getInt("ProviderId"), resultSet.getString("ProviderCode"), resultSet.getString("Name"));
+			}
+		}
+		catch (SQLException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		catch (NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		return provider;
+	}
+
+	/**
+	 * Returns the provider by providerId.
+	 *
+	 * @param providerId
+	 * @param serverDate
+	 * @return
+	 * @throws DaoException
+	 */
+	public Provider getById(Integer providerId, Date serverDate) throws DaoException{
+		return get(GetMethod.BY_ID, providerId.toString(), serverDate);
+	}
+
+	/**
+	 * Returns the provider by provider code eg BUDD.
+	 *
+	 * @param providerCode
+	 * @param serverDate
+	 * @return
+	 * @throws DaoException
+	 */
+	public Provider getByCode(String providerCode, Date serverDate) throws DaoException{
+		return get(GetMethod.BY_CODE, providerCode, serverDate);
+	}
+
 	// TODO: Add styleCodeId and isActive and combine with ProviderCodes DAO in e.g. a get query string method.
 	// add to router as well
 	public ArrayList<Provider> getProviders(String verticalCode, int styleCodeId) throws DaoException{

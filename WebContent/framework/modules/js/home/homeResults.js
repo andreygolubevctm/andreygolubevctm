@@ -303,6 +303,8 @@
 				showNoResults();
 			}
 
+			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
+
 		});
 
 		$(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {

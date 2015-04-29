@@ -75,6 +75,8 @@
 				startStepId = steps.resultsStep.navigationId;
 			} else if (meerkat.site.journeyStage.length && meerkat.site.pageAction === 'amend') {
 				startStepId = steps.startStep.navigationId;
+			} else {
+				startStepId = meerkat.modules.emailLoadQuote.getStartStepOverride(startStepId);
 			}
 
 			$(document).ready(function(){

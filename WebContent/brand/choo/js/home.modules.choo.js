@@ -43,6 +43,8 @@
                 startStepId = steps.resultsStep.navigationId;
             } else if (meerkat.site.journeyStage.length && meerkat.site.pageAction === "amend") {
                 startStepId = steps.startStep.navigationId;
+            } else {
+                startStepId = meerkat.modules.emailLoadQuote.getStartStepOverride(startStepId);
             }
             $(document).ready(function() {
                 meerkat.modules.journeyEngine.configure({
@@ -464,16 +466,17 @@
 
 (function($, undefined) {
     var meerkat = window.meerkat;
-    var $desktopField = $("#home_startDate");
     function applyEventListeners() {}
     function init() {
         $(document).ready(function() {
-            if (meerkat.site.vertical !== "home") {
-                return false;
-            }
+            meerkat.modules.commencementDate.initCommencementDate({
+                dateField: "#home_startDate",
+                getResults: meerkat.modules.homeResults.get,
+                updateData: function updateDataWithIcon(data) {
+                    _.extend(data, meerkat.modules.homeEditDetails.getFormData());
+                }
+            });
         });
-        $desktopField.attr("data-attach", "true");
-        applyEventListeners();
     }
     meerkat.modules.register("homeCommencementDate", {
         init: init
@@ -622,36 +625,39 @@
         applyEventListeners();
         eventSubscriptions();
     }
+    function getData() {
+        return {
+            coverType: $("#home_coverType").val(),
+            icon: meerkat.modules.homeSnapshot.getIcon(),
+            ownsHome: $("#home_occupancy_ownProperty_Y").is(":checked"),
+            isPrincipalResidence: $("#home_occupancy_principalResidence_Y").is(":checked"),
+            businessActivity: $("#home_businessActivity_conducted_Y").is(":checked"),
+            isBodyCorp: $("#home_property_bodyCorp_Y").is(":checked"),
+            hasInternalSiren: $("#home_property_securityFeatures_internalSiren").is(":checked"),
+            hasExternalSiren: $("#home_property_securityFeatures_externalSiren").is(":checked"),
+            hasExternalStrobe: $("#home_property_securityFeatures_strobeLight").is(":checked"),
+            hasBackToBase: $("#home_property_securityFeatures_backToBase").is(":checked"),
+            isSpecifyingPersonalEffects: $("#home_coverAmounts_itemsAway_Y").is(":checked"),
+            specifiedPersonalEffects: $("#home_coverAmounts_specifyPersonalEffects_Y").is(":checked"),
+            bicycles: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_bicycleentry"),
+            musical: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_musicalentry"),
+            clothing: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_clothingentry"),
+            jewellery: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_jewelleryentry"),
+            sporting: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_sportingentry"),
+            photography: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_photoentry"),
+            hasOlderResident: $("#home_policyHolder_anyoneOlder_Y").is(":checked"),
+            hasRetiredOver55: $("#home_policyHolder_over55_Y").is(":checked"),
+            previousCover: $("#home_disclosures_previousInsurance_Y").is(":checked"),
+            previousClaims: $("#home_disclosures_claims_Y").is(":checked")
+        };
+    }
     function applyEventListeners() {
         $editDetailsDropDown.on("show.bs.dropdown", function() {
             var $e = $("#edit-details-template");
             if ($e.length > 0) {
                 templateCallback = _.template($e.html());
             }
-            var data = {
-                coverType: $("#home_coverType").val(),
-                icon: meerkat.modules.homeSnapshot.getIcon(),
-                ownsHome: $("#home_occupancy_ownProperty_Y").is(":checked"),
-                isPrincipalResidence: $("#home_occupancy_principalResidence_Y").is(":checked"),
-                businessActivity: $("#home_businessActivity_conducted_Y").is(":checked"),
-                isBodyCorp: $("#home_property_bodyCorp_Y").is(":checked"),
-                hasInternalSiren: $("#home_property_securityFeatures_internalSiren").is(":checked"),
-                hasExternalSiren: $("#home_property_securityFeatures_externalSiren").is(":checked"),
-                hasExternalStrobe: $("#home_property_securityFeatures_strobeLight").is(":checked"),
-                hasBackToBase: $("#home_property_securityFeatures_backToBase").is(":checked"),
-                isSpecifyingPersonalEffects: $("#home_coverAmounts_itemsAway_Y").is(":checked"),
-                specifiedPersonalEffects: $("#home_coverAmounts_specifyPersonalEffects_Y").is(":checked"),
-                bicycles: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_bicycleentry"),
-                musical: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_musicalentry"),
-                clothing: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_clothingentry"),
-                jewellery: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_jewelleryentry"),
-                sporting: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_sportingentry"),
-                photography: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_photoentry"),
-                hasOlderResident: $("#home_policyHolder_anyoneOlder_Y").is(":checked"),
-                hasRetiredOver55: $("#home_policyHolder_over55_Y").is(":checked"),
-                previousCover: $("#home_disclosures_previousInsurance_Y").is(":checked"),
-                previousClaims: $("#home_disclosures_claims_Y").is(":checked")
-            };
+            var data = getData();
             show(templateCallback(data));
         }).on("click", ".dropdown-container", function(e) {
             e.stopPropagation();
@@ -723,7 +729,8 @@
     meerkat.modules.register("homeEditDetails", {
         initEditDetails: initEditDetails,
         events: events,
-        hide: hide
+        hide: hide,
+        getFormData: getData
     });
 })(jQuery);
 
@@ -1277,18 +1284,19 @@
     }
     function setupCallbackForm() {
         setupDefaultValidationOnForm($("#getcallback"));
-        var clientName = "";
-        if ($("#CrClientName").val() !== "" && $("#CrClientName").val() !== undefined) {
-            clientName = $("#CrClientName").val();
-        } else if (($("#home_policyHolder_firstName").val() !== undefined || $("#home_policyHolder_lastName").val() !== undefined) && $("#home_policyHolder_firstName").val() !== "" || $("#home_policyHolder_lastName").val() !== "") {
-            clientName = $("#home_policyHolder_firstName").val() + " " + $("#home_policyHolder_lastName").val();
+        var $clientName = $("#home_CrClientName");
+        var $firstName = $("#home_policyHolder_firstName");
+        var $lastName = $("#home_policyHolder_lastName");
+        var test1 = $firstName.length;
+        var test2 = $lastName.length;
+        if ($firstName.length && $firstName.val() !== "" || $lastName.length && $lastName.val() !== "") {
+            $clientName.val($.trim($firstName.val() + " " + $lastName.val()));
         }
-        clientName.trim();
-        telNum = $("#home_CrClientTelinput");
-        if (telNum.length && !telNum.val().length) {
-            telNum.val($("#home_policyHolder_phone").val());
+        var $telNum = $("#home_CrClientTelinput");
+        if ($telNum.length && !$telNum.val().length) {
+            $telNum.val($("#home_policyHolder_phone").val());
         }
-        telNum.attr("data-msg-required", "Please enter your contact number");
+        $telNum.attr("data-msg-required", "Please enter your contact number");
     }
     function fixSidebarHeight(leftSelector, rightSelector, $container) {
         if (meerkat.modules.deviceMediaState.get() != "xs") {
@@ -1320,18 +1328,21 @@
         if (typeof currProduct !== "undefined" && currProduct !== null && typeof currProduct.vdn !== "undefined" && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) {
             data.vdn = currProduct.vdn;
         }
+        var state = $("#home_property_address_state").val();
         var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
         var clientName = "";
         var clientTel = "";
-        var CrClientName = $("#CrClientName").val();
+        var $CrClientName = $("#home_CrClientName");
+        var CrClientName = $CrClientName.length ? $CrClientName.val() : "";
         var firstName = $("#home_policyHolder_firstName").val();
         var lastName = $("#home_policyHolder_lastName").val();
-        var CrClientTel = $("#CrClientTel").val();
+        var $CrClientTel = $("#home_CrClientTelinput");
+        var CrClientTel = $CrClientTel.length ? $CrClientTel.val() : "";
         var policyHolderPhone = $("#home_policyHolder_phone").val();
-        if (typeof CrClientName !== "undefined") {
+        if (CrClientName !== "") {
             clientName = CrClientName;
         } else if (firstName !== "" || lastName !== "") {
-            clientName = firstName + " " + lastName;
+            clientName = $.trim(firstName + " " + lastName);
         }
         if (CrClientTel !== "") {
             clientTel = CrClientTel;
@@ -1339,19 +1350,19 @@
             clientTel = policyHolderPhone;
         }
         var defaultData = {
-            source: currentBrandCode + "HOME",
-            leadNo: currProduct.leadNo,
-            client: clientName,
-            clientTel: $("#home_CrClientTelinput").val() || "",
-            state: $("#home_property_address_state").val(),
+            state: state,
             brand: currProduct.productId.split("-")[0],
-            transactionId: meerkat.modules.transactionId.get()
+            productId: currProduct.productId,
+            clientNumber: currProduct.leadNo,
+            clientName: clientName,
+            phoneNumber: clientTel,
+            partnerReference: meerkat.modules.transactionId.get()
         };
         var allData = $.extend(defaultData, data);
         var $element = $(event.target);
         meerkat.modules.loadingAnimation.showInside($element, true);
         return meerkat.modules.comms.post({
-            url: "ajax/write/lead_feed_save.jsp",
+            url: "leadfeed/homecontents/getacall.json",
             data: allData,
             dataType: "json",
             cache: false,
@@ -2146,6 +2157,7 @@
             if (availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
                 showNoResults();
             }
+            meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
         });
         $(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
             meerkat.modules.performanceProfiling.startTest("results");

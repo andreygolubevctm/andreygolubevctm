@@ -20,3 +20,4 @@
 <form_new:row fieldXpath="${fieldXpath}" label="Commencement date" className="${xpath}_startDateFieldset" helpId="500">
 	<field_new:commencement_date xpath="${fieldXpath}" mode="separated" includeMobile="false" />
 </form_new:row>
+<home_new:commencement_date_expired />

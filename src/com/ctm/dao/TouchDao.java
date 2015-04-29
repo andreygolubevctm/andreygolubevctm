@@ -1,10 +1,12 @@
 package com.ctm.dao;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.dao.transaction.DatabaseQueryMapping;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.AccessTouch;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
+import com.ctm.model.TouchProductProperty;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.naming.NamingException;
 import java.sql.*;
@@ -13,7 +15,9 @@ import java.util.List;
 
 public class TouchDao {
 
+	private final SqlDao<Touch> sqlDao;
 	public TouchDao(){
+		sqlDao = new SqlDao<Touch>();
 	}
 
 	/**
@@ -27,64 +31,50 @@ public class TouchDao {
 	 * @return
 	 * @throws DaoException
 	 */
-	private Touch getBy(String method, String parameter) throws DaoException{
-		SimpleDatabaseConnection dbSource = null;
-		Touch touch = null;
-
-		try{
-
-			dbSource = new SimpleDatabaseConnection();
-
-			PreparedStatement stmt = null;
-
-			if (method.equals("operator")) {
-				stmt = dbSource.getConnection().prepareStatement(
-					"SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime " +
+	private Touch getBy(String method, final String parameter) throws DaoException{
+		DatabaseQueryMapping<Touch> databaseMapping;
+		String sql;
+		if (method.equals("operator")) {
+				sql = "SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime " +
 					"FROM ctm.touches " +
 					"WHERE operator_id = ? " +
 					"ORDER BY id desc " +
-					"LIMIT 1 ;"
-				);
-				stmt.setString(1, parameter);
-			}
-			else {
-				stmt = dbSource.getConnection().prepareStatement(
-					"SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime " +
+					"LIMIT 1 ;";
+				databaseMapping = new DatabaseQueryMapping<Touch>() {
+
+					@Override
+					public void handleParams(PreparedStatement stmt) throws SQLException {
+						stmt.setString(1, parameter);
+					}
+
+					@Override
+					public Touch handleResult(ResultSet rs) throws SQLException {
+						return mapToObject(rs);
+					}
+				};
+		} else {
+			sql = "SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime " +
 					"FROM ctm.touches " +
 					"WHERE transaction_id = ? AND operator_id = ? " +
 					"ORDER BY id desc " +
-					"LIMIT 1 ;"
-				);
-				stmt.setString(1, parameter);
-				stmt.setString(2, "online");
-			}
+					"LIMIT 1 ;";
 
-			ResultSet resultSet = stmt.executeQuery();
+			databaseMapping = new DatabaseQueryMapping<Touch>() {
 
-			ArrayList<Touch> touches = new ArrayList<Touch>();
+					@Override
+					public void handleParams(PreparedStatement stmt) throws SQLException {
+						stmt.setString(1, parameter);
+						stmt.setString(2, "online");
+					}
 
-			while (resultSet.next()) {
-				Touch touchObject = new Touch();
-				mapToObject(touchObject,resultSet);
-				touches.add(touchObject);
-			}
-
-			if(touches.size() == 1){
-				touch = touches.get(0);
-			}
-
-		}
-		catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		finally {
-			dbSource.closeConnection();
+					@Override
+					public Touch handleResult(ResultSet rs) throws SQLException {
+						return mapToObject(rs);
+					}
+			};
 		}
 
-		return touch;
+		return sqlDao.get(databaseMapping, sql);
 	}
 
 	/**
@@ -94,55 +84,25 @@ public class TouchDao {
 	 * @return
 	 * @throws DaoException
 	 */
-	public AccessTouch getlatestAccessTouch(long transactionId) throws DaoException{
-		SimpleDatabaseConnection dbSource = null;
-		AccessTouch touch = null;
+	public Touch getLatestTouchByTransactionId(final long transactionId) throws DaoException{
+		DatabaseQueryMapping<Touch> databaseMapping = new DatabaseQueryMapping<Touch>(){
 
-		try{
-
-			dbSource = new SimpleDatabaseConnection();
-
-			PreparedStatement stmt = null;
-
-
-			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT id, transaction_id, operator_id, type, CONCAT(date, ' ', time) AS dateTime, " +
-				"IF(TIMESTAMP(NOW() - INTERVAL 45 MINUTE) > TIMESTAMP(CONCAT(date, ' ', time)), 1, 0) AS expired " +
-				"FROM ctm.touches " +
-				"WHERE transaction_id = ? " +
-				"ORDER BY id desc " +
-				"LIMIT 1 ;"
-			);
-			stmt.setLong(1, transactionId);
-
-			ResultSet resultSet = stmt.executeQuery();
-
-			while (resultSet.next()) {
-				touch = new AccessTouch();
-				mapToObject(touch, resultSet);
-				touch.setExpired(resultSet.getInt("expired"));
+			@Override
+			public void handleParams(PreparedStatement stmt) throws SQLException {
+				stmt.setLong(1, transactionId);
 			}
 
-		}
-		catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		finally {
-			dbSource.closeConnection();
-		}
-
-		return touch;
-	}
-
-	private void mapToObject(Touch touch, ResultSet resultSet) throws SQLException {
-		touch.setId(resultSet.getInt("id"));
-		touch.setTransactionId(resultSet.getLong("transaction_id"));
-		touch.setDatetime(resultSet.getTimestamp("dateTime"));
-		touch.setOperator(resultSet.getString("operator_id"));
-		touch.setType(TouchType.findByCode(resultSet.getString("type")));
+			@Override
+			public Touch handleResult(ResultSet rs) throws SQLException {
+				return mapToObject(rs);
+			}
+		};
+		return sqlDao.get(databaseMapping,
+				"SELECT t.id, t.transaction_id, t.operator_id, t.type, CONCAT(date, ' ', time) AS dateTime " +
+				"FROM ctm.touches t " +
+				"WHERE transaction_id = ? " +
+				"ORDER BY id desc " +
+				"LIMIT 1 ;");
 	}
 
 	private String questionMarksBuilder(int length) {
@@ -152,6 +112,91 @@ public class TouchDao {
 			if(i != length -1) stringBuilder.append(",");
 		}
 		return stringBuilder.toString();
+	}
+
+	private void mapResult(ArrayList<Touch> touches, ResultSet results) throws SQLException {
+		Touch touch = new Touch();
+		touch.setTransactionId(results.getLong("transaction_id"));
+		touch.setOperator(results.getString("operator_id"));
+		touch.setType(TouchType.findByCode(results.getString("type")));
+		touch.setDatetime(results.getTimestamp("dateTime"));
+
+		String productCode = results.getString("productCode");
+		if (productCode != null) {
+			TouchProductProperty touchProductProperty = new TouchProductProperty();
+			touchProductProperty.setProductCode(results.getString("productCode"));
+			touchProductProperty.setProductName(results.getString("productName"));
+			touchProductProperty.setProviderCode(results.getString("providerCode"));
+			touchProductProperty.setProviderName(results.getString("providerName"));
+			touch.setTouchProductProperty(touchProductProperty);
+		}
+		touches.add(touch);
+	}
+
+	/**
+	 *
+	 */
+	public ArrayList<Touch> getTouchesForRootId(long transactionId) throws DaoException {
+
+		String sql = " SELECT" +
+				" 	DISTINCT t.touchId, t.transaction_id, t.dateTime, t.operator_id, t.type,  " +
+				"     tp.productCode, pm.shortTitle as productName, pp.providerCode, pp.name as providerName" +
+				" FROM" +
+				" 	(SELECT " +
+				" 		DISTINCT t.id as touchId, t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
+				" 		t.operator_id, t.type" +
+				" 	FROM " +
+				" 		ctm.touches AS t " +
+				" 		INNER JOIN aggregator.transaction_header2_cold  AS th  " +
+				" 		ON t.transaction_id = th.transactionid" +
+				" 	WHERE th.rootId  = ?" +
+				" 	UNION ALL" +
+				" 	SELECT " +
+				" 		DISTINCT t.id as touchId, t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
+				" 		t.operator_id, t.type" +
+				" 	FROM aggregator.transaction_header AS th  " +
+				" 		INNER JOIN ctm.touches AS t " +
+				" 		ON t.transaction_id = th.transactionid" +
+				" 	WHERE th.rootId  = ?" +
+				" 	) AS t" +
+				" 	LEFT OUTER JOIN ctm.touches_products AS tp " +
+				" 	ON t.touchId = tp.touchesId " +
+				" 	LEFT OUTER JOIN ctm.product_master AS pm " +
+				" 	ON pm.productCode = tp.productCode and CURDATE() BETWEEN pm.effectiveStart and pm.effectiveEnd " +
+				" 	LEFT OUTER JOIN ctm.provider_master AS pp " +
+				" 	ON pm.providerId = pp.providerId" +
+				" ORDER BY " +
+				" 	t.touchId DESC, t.dateTime DESC" +
+				" LIMIT 50;";
+		SimpleDatabaseConnection dbSource  = new SimpleDatabaseConnection();
+		ArrayList<Touch> touches = new ArrayList<>();
+
+		try {
+			//
+			// Get the touches on the provided transaction and others related by root ID
+			//
+
+			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
+					sql
+			);
+			stmt.setLong(1, transactionId);
+			stmt.setLong(2, transactionId);
+
+			ResultSet results = stmt.executeQuery();
+
+			while (results.next()) {
+				mapResult(touches, results);
+			}
+			stmt.close();
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		return touches;
 	}
 
 	public ArrayList<Touch> getTouchesForTransactionId(long transactionId) throws DaoException {
@@ -176,20 +221,30 @@ public class TouchDao {
 			//
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT DISTINCT t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
-				"t.operator_id, t.type , t.description " +
+					"SELECT DISTINCT t.id, t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
+							"t.operator_id, t.type, tp.productCode, pm.shortTitle as productName, " +
+							"pp.providerCode, pp.name as providerName " +
 
-				"FROM aggregator.transaction_header AS th  " +
+							"FROM aggregator.transaction_header AS th  " +
 
-				"	INNER JOIN aggregator.transaction_header AS th2 " +
-				"	ON th.rootId = th2.rootId " +
+							"	INNER JOIN aggregator.transaction_header AS th2 " +
+							"	ON th.rootId = th2.rootId " +
 
-				"	INNER JOIN ctm.touches AS t " +
-				"	ON t.transaction_id = th2.transactionid " +
+							"	INNER JOIN ctm.touches AS t " +
+							"	ON t.transaction_id = th2.transactionid " +
 
-				"	WHERE th.transactionId  IN ( " + questionMarksBuilder(transactionIds.size()) + ") " +
+							"	LEFT OUTER JOIN ctm.touches_products AS tp " +
+							"	ON t.id = tp.touchesId " +
 
-				"	ORDER BY t.id DESC, t.date DESC, t.time DESC LIMIT 50"
+							"	LEFT OUTER JOIN ctm.product_master AS pm " +
+							"	ON pm.productCode = tp.productCode and CURDATE() BETWEEN pm.effectiveStart and pm.effectiveEnd " +
+
+							"	LEFT OUTER JOIN ctm.provider_master AS pp " +
+							"	ON pm.providerId = pp.providerId " +
+
+							"	WHERE th.transactionId  IN ( " + questionMarksBuilder(transactionIds.size()) + ") " +
+
+							"	ORDER BY t.id DESC, t.date DESC, t.time DESC LIMIT 50"
 			);
 
 			int i = 1;
@@ -201,13 +256,7 @@ public class TouchDao {
 			ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
-				Touch touch = new Touch();
-				touch.setTransactionId(results.getLong("transaction_id"));
-				touch.setOperator(results.getString("operator_id"));
-				touch.setType(TouchType.findByCode(results.getString("type")));
-				touch.setDatetime(results.getTimestamp("dateTime"));
-				touch.setDescription(results.getString("description"));
-				touches.add(touch);
+				mapResult(touches, results);
 			}
 		}
 		catch (SQLException e) {
@@ -263,7 +312,7 @@ public class TouchDao {
 	 * @return
 	 * @throws DaoException
 	 */
-	public Touch getLatestByTransactionId(String transactionId) throws DaoException{
+	public Touch getLatestOnlineTouchByTransactionId(String transactionId) throws DaoException{
 		return getBy("transactionId", transactionId);
 	}
 
@@ -285,36 +334,64 @@ public class TouchDao {
 	 * @param type
 	 * @throws DaoException
 	 */
-	private Touch record(Long transactionId, String type, String operator, String description) throws DaoException {
+	private Touch record(Long transactionId, String type, String operator, String productCode) throws DaoException {
 		Touch touch = new Touch();
 		touch.setTransactionId(transactionId);
 		touch.setType(TouchType.findByCode(type));
-		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-		if(description != null && description.length() > 200){
-			description = description.substring(0 ,200);
+		touch.setOperator(operator);
+		if (StringUtils.isNotBlank(productCode)) {
+			TouchProductProperty touchProductProperty = new TouchProductProperty();
+			touchProductProperty.setProductCode(productCode);
+			touch.setTouchProductProperty(touchProductProperty);
 		}
+		return touch;
+	}
+
+	/***
+	 * record() records a touch event against a transaction
+	 *
+	 * @param touch
+	 * @return
+	 * @throws DaoException
+	 */
+	public Touch record(Touch touch) throws DaoException {
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try {
-			if(operator == null || operator.isEmpty()) {
-				operator = Touch.ONLINE_USER;
-			}
-			touch.setOperator(operator);
-
 			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-					"INSERT INTO ctm.touches (transaction_id, date, time, operator_id, type, description) " +
-							"VALUES (?, NOW(), NOW(), ?, ?, ?);" , Statement.RETURN_GENERATED_KEYS
+					"INSERT INTO ctm.touches (transaction_id, date, time, operator_id, type) " +
+							"VALUES (?, NOW(), NOW(), ?, ?);" , Statement.RETURN_GENERATED_KEYS
 			);
 
-			stmt.setLong(1, transactionId);
-			stmt.setString(2, operator);
-			stmt.setString(3, type);
-			stmt.setString(4, description);
+			stmt.setLong(1, touch.getTransactionId());
+			if(touch.getOperator() == null || touch.getOperator().isEmpty()) {
+				touch.setOperator(Touch.ONLINE_USER);
+			}
+			stmt.setString(2, touch.getOperator());
+			stmt.setString(3, touch.getType().getCode());
 
 			stmt.executeUpdate();
 			// Update the comment model with the insert ID
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs != null && rs.next()) {
 				touch.setId(rs.getInt(1));
+			}
+
+			if (touch.getTouchProductProperty() != null) {
+				stmt = dbSource.getConnection().prepareStatement(
+						"INSERT INTO ctm.touches_products (touchesId, productCode) " +
+								"VALUES (?, ?);" , Statement.RETURN_GENERATED_KEYS
+				);
+
+				stmt.setLong(1, touch.getId());
+				stmt.setString(2, touch.getTouchProductProperty().getProductCode());
+
+				stmt.executeUpdate();
+				// Update the comment model with the insert ID
+				rs = stmt.getGeneratedKeys();
+				if (rs != null && rs.next()) {
+					touch.getTouchProductProperty().setId(rs.getLong(1));
+				}
 			}
 		}
 		catch (SQLException | NamingException e) {
@@ -326,17 +403,14 @@ public class TouchDao {
 		return touch;
 	}
 
-
-
-	/**
-	 * record() records a touch event against a transaction
-	 *
-	 * @param transactionId
-	 * @param type
-	 * @throws DaoException
-	 */
-	public Touch record(Touch touch) throws DaoException {
-		return record( touch.getTransactionId(),  touch.getType().getCode(),  touch.getOperator(),  touch.getDescription());
+	private Touch mapToObject(ResultSet rs) throws SQLException {
+		Touch touch = new Touch();
+		touch.setId(rs.getInt("id"));
+		touch.setTransactionId(rs.getLong("transaction_id"));
+		touch.setDatetime(rs.getTimestamp("dateTime"));
+		touch.setOperator(rs.getString("operator_id"));
+		touch.setType(TouchType.findByCode(rs.getString("type")));
+		return touch;
 	}
 
 

@@ -3,6 +3,10 @@ package com.ctm.services.leadfeed;
 import java.io.IOException;
 import java.util.List;
 
+import com.ctm.interceptors.SpringWSLoggingInterceptor;
+import com.ctm.model.settings.Vertical;
+import com.ctm.services.*;
+import com.ctm.xml.XMLOutputWriter;
 import org.apache.log4j.Logger;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
@@ -12,58 +16,60 @@ import com.ctm.aglead.ws.MessageResponseDetails;
 import com.ctm.aglead.ws.PartnerHeader;
 import com.ctm.aglead.ws.Request;
 import com.ctm.aglead.ws.Response;
-import com.ctm.dao.TransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.LeadFeedException;
+import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.VerticalException;
-import com.ctm.model.TransactionProperties;
 import com.ctm.model.leadfeed.AGISLeadFeedRequest;
 import com.ctm.model.leadfeed.LeadFeedData;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.services.SettingsService;
-import com.ctm.services.leadfeed.car.AGIS.AGISCarLeadFeedService.LeadType;
+import com.ctm.model.settings.ServiceConfiguration;
+import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
+import com.ctm.model.Provider;
+import com.ctm.services.leadfeed.LeadFeedService.LeadType;
 
 public abstract class AGISLeadFeedService extends WebServiceGatewaySupport{
 
 	private static Logger logger = Logger.getLogger(AGISLeadFeedService.class.getName());
-
 
 	/**
 	 * getModel() is implemented by the extended lead feed class to construct the lead feed model.
 	 *
 	 * @return
 	 */
-	protected abstract AGISLeadFeedRequest getModel(LeadType leadType, LeadFeedData leadData);
+	protected abstract AGISLeadFeedRequest getModel(LeadType leadType, LeadFeedData leadData) throws LeadFeedException;
 
 	/**
-	 * addLeadFeed() the base method called which generates a new lead feed.
+	 * sendLeadFeedRequest() the base method called which generates a new lead feed.
 	 *
 	 */
 	public String sendLeadFeedRequest(LeadType leadType, LeadFeedData leadData) throws LeadFeedException {
 
 		String feedResponse = null;
 		try {
-			// Generate the lead feed model
-			AGISLeadFeedRequest leadModel = getModel(leadType, leadData);
 
-			// Get the related transaction details (brand, vertical)
-			TransactionDao transactionDao = new TransactionDao();
-			TransactionProperties transactionProps = new TransactionProperties();
-			transactionProps.setTransactionId(leadData.getTransactionId());
-			transactionDao.getCoreInformation(transactionProps);
+			if(leadType == LeadType.CALL_DIRECT) {
+				// Return OK as we still want to record touches etc
+				feedResponse = "ok";
+				logger.info("[Lead feed] Skipped sending lead to service as overridden in content control");
+			} else {
+				// Generate the lead feed model
+				AGISLeadFeedRequest leadModel = getModel(leadType, leadData);
 
-			// Get the relevant brand+vertical settings
-			PageSettings pageSettings = SettingsService.getPageSettings(transactionProps.getStyleCodeId(), transactionProps.getVerticalCode());
+				// Get the relevant brand+vertical settings
+				PageSettings pageSettings = SettingsService.getPageSettings(leadData.getBrandId(), leadData.getVerticalCode());
 
-			// Get to the business end of actioning the lead feed
-			Request feedRequest = createRequest(leadModel);
-			Response response = this.request(pageSettings, feedRequest);
-			MessageResponseDetails responseDetails = response.getDetails();
+				Request feedRequest = createRequest(leadModel);
+				Response response = this.request(pageSettings, feedRequest, leadModel.getServiceUrl(), leadData.getTransactionId());
+				MessageResponseDetails responseDetails = response.getDetails();
 
-			feedResponse = responseDetails.getStatus();
+				feedResponse = responseDetails.getStatus();
 
-		} catch (DaoException | EnvironmentException | VerticalException | IOException e) {
+				logger.info("[Lead feed] Response Status from AGIS: " + feedResponse);
+			}
+
+		} catch (EnvironmentException | VerticalException | IOException e) {
 			logger.error("[Lead feed] Exception adding lead feed message",e);
 			throw new LeadFeedException(e.getMessage(), e);
 		}
@@ -71,7 +77,39 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport{
 		return feedResponse;
 	}
 
+	protected AGISLeadFeedRequest addRequestsServiceProperties(AGISLeadFeedRequest model, LeadType leadType, LeadFeedData leadData) throws LeadFeedException {
 
+		Provider provider;
+		ServiceConfiguration serviceConfig;
+		String serviceCode = null;
+
+		if(leadType == LeadType.CALL_ME_BACK){
+			serviceCode = LeadType.CALL_ME_BACK.getServiceUrlFlag();
+		} else if(leadType == LeadType.BEST_PRICE){
+			serviceCode = LeadType.BEST_PRICE.getServiceUrlFlag();
+		}
+
+		try {
+			provider = ProviderService.getProvider(leadData.getPartnerBrand(), ApplicationService.getServerDate());
+			serviceConfig = ServiceConfigurationService.getServiceConfiguration(serviceCode, leadData.getVerticalId(), leadData.getBrandId());
+		} catch (DaoException | ServiceConfigurationException e) {
+			throw new LeadFeedException("[Lead feed] Could not load the required configuration for the " + leadData.getPartnerBrand() + " Lead Feed Service", e);
+		}
+
+		String serviceUrl = serviceConfig.getPropertyValueByKey("serviceUrl", leadData.getBrandId(), provider.getId(), Scope.SERVICE);
+		String messageSource = serviceConfig.getPropertyValueByKey("messageSource", leadData.getBrandId(), provider.getId(), Scope.SERVICE);
+		String messageText = serviceConfig.getPropertyValueByKey("messageText", leadData.getBrandId(), provider.getId(), Scope.SERVICE);
+		String sourceId = serviceConfig.getPropertyValueByKey("sourceId", leadData.getBrandId(), provider.getId(), Scope.SERVICE);
+		String partnerId = serviceConfig.getPropertyValueByKey("partnerId", leadData.getBrandId(), provider.getId(), Scope.SERVICE);
+
+		model.setServiceUrl(serviceUrl);
+		model.setMessageSource(messageSource);
+		model.setMessageText(messageText);
+		model.setSourceId(sourceId);
+		model.setPartnerId(partnerId);
+
+		return model;
+	}
 
 	/**
 	 * createRequest()
@@ -146,14 +184,29 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport{
 	 * @return
 	 * @throws IOException
 	 */
-	public Response request(PageSettings settings,  Request request) throws IOException {
+	public Response request(PageSettings settings,  Request request, String serviceUrl, Long transactionId) throws IOException {
 		try {
 			Jaxb2Marshaller marshaller = marshaller();
-			String uri = settings.getSetting("agLeadFeedUrl");
 			setMarshaller(marshaller);
 			setUnmarshaller(marshaller);
 			logger.info("[Lead feed] Sending message to AGIS");
-			return (Response) getWebServiceTemplate().marshalSendAndReceive(uri, request);
+
+			// Log copy of XML Request/Response in Debug folders
+			String path = "";
+			if(settings.getVertical().getType() == Vertical.VerticalType.CAR){
+				path = "get_prices/app-logs-debug";
+			}else{
+				path = settings.getVerticalCode()+"/app-logs-debug";
+			}
+
+			String fileName = "_AGIS_LEADFEED";
+			if(transactionId != null) {
+				fileName = transactionId + fileName;
+			}
+			XMLOutputWriter writer = new XMLOutputWriter(fileName, path);
+			setInterceptors(new SpringWSLoggingInterceptor[]{ new SpringWSLoggingInterceptor(writer)});
+
+			return (Response) getWebServiceTemplate().marshalSendAndReceive(serviceUrl, request);
 		} catch (Exception e) {
 			logger.error("[Lead feed] Exception sending lead feed message to AGIS",e);
 			throw new IOException(e);

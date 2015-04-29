@@ -1,5 +1,11 @@
 package com.ctm.dao;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.dao.transaction.TransactionDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Comment;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +14,7 @@ import java.util.ArrayList;
 import javax.naming.NamingException;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Comment;
 
@@ -26,10 +33,9 @@ public class CommentDao {
 			throw new DaoException("Comment length must be greater than zero.");
 		}
 
-		SimpleDatabaseConnection dbSource = null;
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		try {
 			PreparedStatement stmt;
-			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
 				"INSERT INTO ctm.quote_comments (transactionId, operatorId, comment, createDate, createTime)" +
@@ -79,12 +85,11 @@ public class CommentDao {
 	 */
 	public ArrayList<Comment> getCommentsForRootId(long rootId) throws DaoException {
 
-		SimpleDatabaseConnection dbSource = null;
-		ArrayList<Comment> comments = new ArrayList<Comment>();
+		SimpleDatabaseConnection dbSource =  new SimpleDatabaseConnection();
+		ArrayList<Comment> comments = new ArrayList<>();
 
 		try {
 			PreparedStatement stmt;
-			dbSource = new SimpleDatabaseConnection();
 
 			//
 			// Get the comments
@@ -101,7 +106,6 @@ public class CommentDao {
 			ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
-
 				Comment comment = new Comment();
 				comment.setId(results.getInt("commId"));
 				comment.setTransactionId(results.getLong("transactionId"));
@@ -111,10 +115,7 @@ public class CommentDao {
 				comments.add(comment);
 			}
 		}
-		catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		catch (NamingException e) {
+		catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
 		}
 		finally {

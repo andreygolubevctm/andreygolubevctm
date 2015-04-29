@@ -151,7 +151,18 @@
 
 							<%-- EXPIRED COMMENCEMENT DATE --%>
 							<c:when test="${param.action=='load' && not empty param.expired}">
-								<go:setData dataVar="data" xpath="${xpathQuoteType}/options/commencementDate" value="${param.expired}" />
+								<c:set var="fieldXPath" value="" />
+								<c:choose>
+									<c:when test="${xpathQuoteType eq 'quote'}">
+										<c:set var="fieldXPath" value="${xpathQuoteType}/options/commencementDate" />
+									</c:when>
+									<c:when test="${xpathQuoteType eq 'home'}">
+										<c:set var="fieldXPath" value="${xpathQuoteType}/startDate" />
+									</c:when>
+								</c:choose>
+								<c:if test="${not empty fieldXPath}">
+									<go:setData dataVar="data" xpath="${fieldXPath}" value="${param.expired}" />
+								</c:if>
 								<core:transaction touch="L" noResponse="true" />
 								<c:set var="quotePagePrefix">
 									<c:choose>

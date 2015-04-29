@@ -32,8 +32,8 @@
 					<td>
 						{{ if ('C' === touch.type.code) { }}
 							{{= _des}}: {{= obj.selectedProductProvider }} {{= obj.selectedProductTitle }}</span>
-						{{ } else if( touch.description !== null && touch.description !== '') { }}
-							{{= _des }}: {{= touch.description }}
+						{{ } else if( touch.touchProductProperty !== null) { }}
+							{{= _des }}: {{= touch.touchProductProperty.providerName }} {{= touch.touchProductProperty.productName }}
 						{{ } else { }}
 							{{= _des }}
 						{{ } }}

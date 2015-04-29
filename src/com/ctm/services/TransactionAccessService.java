@@ -2,8 +2,8 @@ package com.ctm.services;
 
 import org.apache.log4j.Logger;
 
-import com.ctm.dao.TransactionDao;
-import com.ctm.dao.TransactionDetailsDao;
+import com.ctm.dao.transaction.TransactionDao;
+import com.ctm.dao.transaction.TransactionDetailsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.Transaction;

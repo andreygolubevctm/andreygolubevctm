@@ -73,9 +73,8 @@
 		<go:setData dataVar="data" xpath="temp" xml="${param_QuoteData}" />
 		<go:setData dataVar="data" xpath="temp/quote/token" value="${token}" />
 		<go:log level="DEBUG" source="car_price_service">Params: ${param}</go:log>
-		<c:set var="glassesCode">
-			<car:getGlassesCode redbookCode="${data['temp/quote/vehicle/redbookCode']}" year="${data['temp/quote/vehicle/registrationYear']}" />
-		</c:set>
+		<jsp:useBean id="carService" class="com.ctm.services.car.CarVehicleSelectionService"/>
+		<c:set var="glassesCode" value="${carService.getGlassesCode(data['temp/quote/vehicle/redbookCode'], data['temp/quote/vehicle/registrationYear'])}"/>
 		<go:setData dataVar="data" xpath="temp/quote/glasses" value="${glassesCode}"/>
 
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/quote'])}" />

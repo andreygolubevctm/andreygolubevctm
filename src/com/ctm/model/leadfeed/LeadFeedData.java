@@ -1,5 +1,7 @@
 package com.ctm.model.leadfeed;
 
+import java.util.Date;
+
 /**
  * Generic container for CtM data
  *
@@ -8,14 +10,40 @@ package com.ctm.model.leadfeed;
  */
 public class LeadFeedData {
 
+	public enum CallType {
+		CALL_DIRECT("CallDirect"),
+		GET_CALLBACK("GetaCall");
+
+		private String callType;
+
+		CallType(String callType) {
+			this.callType = callType;
+		}
+
+		public String getCallType() {
+			return callType;
+		}
+
+		public Boolean equals(String calltype) {
+			return this.callType.equals(calltype);
+		}
+	};
+
+	private CallType callType;
+
+	private Date eventDate;
+
+	private Integer brandId;
 	private String brandCode;
+
+	private Integer verticalId;
 	private String verticalCode;
 
 	private String clientName;
 
 	private Long transactionId;
 
-	private String phoneNumber;
+	private String phoneNumber = null;
 	private String partnerReference;
 	private String partnerBrand;
 
@@ -24,8 +52,34 @@ public class LeadFeedData {
 
 	private String clientIpAddress;
 
+	private String productId;
+
 	public LeadFeedData(){
 
+	}
+
+	public CallType getCallType() {
+		return callType;
+	}
+
+	public void setCallType(CallType callType) {
+		this.callType = callType;
+	}
+
+	public Date getEventDate() {
+		return eventDate;
+	}
+
+	public void setEventDate(Date eventDate) {
+		this.eventDate = eventDate;
+	}
+
+	public Integer getBrandId() {
+		return brandId;
+	}
+
+	public void setBrandId(Integer brandId) {
+		this.brandId = brandId;
 	}
 
 	public String getBrandCode() {
@@ -34,6 +88,14 @@ public class LeadFeedData {
 
 	public void setBrandCode(String brandCode) {
 		this.brandCode = brandCode;
+	}
+
+	public Integer getVerticalId() {
+		return verticalId;
+	}
+
+	public void setVerticalId(Integer verticalId) {
+		this.verticalId = verticalId;
 	}
 
 	public String getVerticalCode() {
@@ -108,6 +170,11 @@ public class LeadFeedData {
 		this.clientName = clientName;
 	}
 
+	public String getProductId() {
+		return productId;
+	}
 
-
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 }

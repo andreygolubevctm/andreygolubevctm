@@ -8,7 +8,6 @@
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
 <%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="health" /></c:set>
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 
 <c:set var="continueOnValidationError" value="${true}" />
@@ -36,10 +35,6 @@
 		<%-- All is good --%>
 	</c:otherwise>
 </c:choose>
-
-<c:choose>
-	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log level="INFO" source="health_quote_results_jsp" >PROCEEDINATOR PASSED</go:log>
 		<%-- Save client data --%>
 		<c:choose>
 			<c:when test="${param.health_showAll == 'N'}">
@@ -111,20 +106,6 @@
 				<go:setData dataVar="data" xpath="confirmation/health" value="${priceXML}" />
 			</c:if>
 		</c:if>
-	</c:when>
-	<c:otherwise>
-		<c:set var="resultXml">
-			<error>
-				<errorType></errorType>
-				<message><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></message>
-				<transactionId>${data.current.transactionId}</transactionId>
-				<errorDetails>
-					<errorType></errorType>
-				</errorDetails>
-			</error>
-		</c:set>
-	</c:otherwise>
-</c:choose>
 
 <c:choose>
 	<c:when test="${isValid || continueOnValidationError}" >

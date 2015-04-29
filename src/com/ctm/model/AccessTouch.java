@@ -1,44 +1,40 @@
 package com.ctm.model;
 
-public class AccessTouch extends Touch {
+import java.util.Date;
 
-	private AccessCheck accessCheck;
-	private int expired;
+public class AccessTouch {
 
-	public static enum AccessCheck {
-		LOCKED (0),
-		NO_TOUCHES (1),
-		EXPIRED (2),
-		UNLOCKED (3),
-		ONLINE(5),
-		MATCHING_OPERATOR(5),
-		SUMMITTED(6);
+	private final Touch touch;
+	private Date lockDateTime;
+	private String operator;
 
-		private final int code;
-
-		AccessCheck(int code) {
-			this.code = code;
-		}
-
-		public int getCode() {
-			return code;
-		}
+	public AccessTouch(Touch touch) {
+		this.touch = touch;
 	}
 
-	public AccessCheck getAccessCheck() {
-		return this.accessCheck;
+	public void setLockDateTime(Date lockDateTime) {
+		this.lockDateTime = lockDateTime;
 	}
 
-	public void setAccessCheck(AccessCheck accessCheck) {
-		this.accessCheck = accessCheck;
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
 
-	public void setExpired(int expired) {
-		this.expired = expired;
+
+	@SuppressWarnings("unused")
+	// This is used in the jsp load_quote.tag
+	public Date getLockDateTime() {
+		return lockDateTime;
 	}
 
-	public int getExpired() {
-		return expired;
+	@SuppressWarnings("unused")
+	// This is used in the jsp load_quote.tag
+	public String  getOperator(){
+		return operator;
+	}
+
+	public Touch getLastTouch(){
+		return touch;
 	}
 
 }

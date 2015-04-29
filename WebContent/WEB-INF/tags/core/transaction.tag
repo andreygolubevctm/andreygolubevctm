@@ -8,6 +8,7 @@
 
 <%@ attribute name="touch" 				required="true"		description="Touch type (single character) e.g. N, R" %>
 <%@ attribute name="comment"			required="false"	description="If this is a fail touch (F), optional comment/error message can be specified" %>
+<%@ attribute name="productId"			required="false"	description="The productId property for the touch" %>
 <%@ attribute name="noResponse"			required="false"	description="Set to 'true' and this tag will not echo back the outcome" %>
 <%@ attribute name="writeQuoteOverride"	required="false"	description="STOP! Do you know what you're doing? Values can be Y or N" %>
 <%@ attribute name="emailAddress"	required="false"	description="emailAddress for transaction details" %>
@@ -78,6 +79,9 @@
 <c:set var="is_valid_touch">
 	<core:validate_touch_type valid_touches="A,BP,C,CB,CD,CDC,E,F,H,L,LF,N,P,Q,R,S,T,X" touch="${touch}" />
 </c:set>
+<c:set var="touch_with_productId">
+	<core:validate_touch_type valid_touches="A,BP,CB,CD" touch="${touch}" />
+</c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">
 		<go:log level="ERROR" source="core:transaction">Touch type is invalid or unsupported: "${touch}"</go:log>
@@ -134,16 +138,16 @@
 <%-- TOUCH ....................................................................... --%>
 <c:choose>
 	<c:when test="${empty touch}"></c:when>
-	<c:when test="${touch != 'H' and touch != 'F' and not empty comment}">
+	<c:when test="${touch_with_productId and not empty productId}">
 		<jsp:useBean id="touchService" class="com.ctm.services.AccessTouchService" scope="page" />
 		<c:catch var="error">
-			<c:set var="ignore" value="${touchService.recordTouch(transactionId, touch , operator, comment)}" />
+			<c:set var="ignore" value="${touchService.recordTouch(transactionId, touch , operator, productId)}" />
 		</c:catch>
 		<c:if test="${not empty error}">
 			<go:log level="ERROR">
 				Failed to record touch
 				touch: ${touch}
-				comment: ${comment}
+				productId: ${productId}
 				error: ${error}
 			</go:log>
 		</c:if>

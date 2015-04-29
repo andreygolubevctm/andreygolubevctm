@@ -487,6 +487,7 @@
 						$("#health_application-warning").find(".fundWarning").hide().empty();
 					}
 					this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
+					this.tracking.productId = selectedProduct.info.productCode;
 
 					// Load the selected product details.
 					healthFunds.load(selectedProduct.info.provider);

@@ -2,7 +2,7 @@ package com.ctm.services.simples;
 
 import com.ctm.dao.CommentDao;
 import com.ctm.dao.TouchDao;
-import com.ctm.dao.TransactionDao;
+import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.dao.simples.MessageAuditDao;
 import com.ctm.dao.simples.MessageDetailDao;
 import com.ctm.dao.simples.MessageDuplicatesDao;

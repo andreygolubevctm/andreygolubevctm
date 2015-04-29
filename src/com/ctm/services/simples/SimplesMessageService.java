@@ -59,12 +59,7 @@ public class SimplesMessageService {
 
 		final MessageDao messageDao = new MessageDao();
 
-		//TODO: Remove the logic when we tested in Production
-		if (messageDao.useNewMethodToGetNexMessage()){
-			message = messageDao.getNextMessage(userId);
-		}else{
-			message = messageDao.getNextMessageOld(userId);
-		}
+		message = messageDao.getNextMessage(userId);
 
 		if (message.getMessageId() == 0) {
 			// No message available

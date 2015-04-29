@@ -67,7 +67,7 @@
 		<c:set var="fieldXpath" value="${xpath}${count}/schoolDate" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Date Study Commenced" id="${name}_schoolDateGroup"
 					  className="health_dependant_details_schoolDateGroup">
-			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s study commencement date" required="false" />
+			<field_new:basic_date xpath="${fieldXpath}" title="dependant ${count}'s study commencement date" required="false" />
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}${count}/maritalincomestatus" />

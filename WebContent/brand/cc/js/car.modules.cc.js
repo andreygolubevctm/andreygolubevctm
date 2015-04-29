@@ -445,146 +445,22 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, expiredNoticeShown = false, loadQuoteModalId = false, pending_results_handler = false;
-    var moduleEvents = {
-        COMMENCEMENT_DATE_UPDATED: "COMMENCEMENT_DATE_UPDATED"
-    };
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     function initCarCommencementDate() {
-        var self = this;
         $(document).ready(function() {
-            if (meerkat.site.vertical !== "car") return false;
-            meerkat.messaging.subscribe(moduleEvents.COMMENCEMENT_DATE_UPDATED, commencementDateUpdated);
-            meerkat.messaging.subscribe(meerkatEvents.emailLoadQuote.TRIGGERS_MODAL, triggerLoadQuoteModal);
-        });
-        $("#quote_options_commencementDate").attr("data-attach", "true");
-    }
-    function commencementDateUpdated(updatedDate) {
-        $("#quote_options_commencementDate").datepicker("update", updatedDate);
-        _.defer(function() {
-            showSimpleModal(updatedDate);
-        });
-    }
-    function showSimpleModal(updatedDate) {
-        var $e = $("#expired-commencement-date-template");
-        if ($e.length > 0) {
-            templateCallback = _.template($e.html());
-        }
-        var obj = {
-            updatedDate: updatedDate
-        };
-        var htmlContent = templateCallback(obj);
-        var modalOptions = {
-            htmlContent: htmlContent,
-            hashId: "call",
-            className: "expired-commencement-date-modal",
-            closeOnHashChange: true,
-            openOnHashChange: false,
-            onOpen: function(modalId) {}
-        };
-        _.defer(function() {
-            callbackModalId = meerkat.modules.dialogs.show(modalOptions);
-        });
-    }
-    function triggerLoadQuoteModal(data) {
-        _.extend(data, {
-            youngDriver: $("input[name=quote_drivers_young_exists]:checked").val()
-        });
-        _.defer(_.bind(showLoadQuoteModal, this, data));
-    }
-    function showLoadQuoteModal(data) {
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, _.bind(deviceStateChanged, this, true));
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, _.bind(deviceStateChanged, this, false));
-        var $e = $("#edit-details-template");
-        if ($e.length > 0) {
-            templateCallback = _.template($e.html());
-        }
-        var originalDate = $("#quote_options_commencementDate").val();
-        var htmlContent = templateCallback(data);
-        var modalOptions = {
-            htmlContent: '<div class="edit-details-wrapper expired-quote"></div>',
-            hashId: "expiredCommencementDate",
-            className: "edit-details-modal",
-            closeOnHashChange: false,
-            openOnHashChange: false,
-            onOpen: function(modalId) {
-                loadQuoteModalId = modalId;
-                expiredNoticeShown = true;
-                var $editDetails = $(".edit-details-wrapper", $("#" + modalId));
-                $editDetails.html(htmlContent);
-                meerkat.modules.contentPopulation.render("#" + modalId + " .edit-details-wrapper");
-                $(".accordion-collapse").on("show.bs.collapse", function() {
-                    $(this).prev(".accordion-heading").addClass("active-panel");
-                }).on("hide.bs.collapse", function() {
-                    $(this).prev(".accordion-heading").removeClass("active-panel");
-                });
-                $form = $("#modal-commencement-date-form");
-                setupDefaultValidationOnForm($form);
-                $("#quote_options_commencementDate_mobile").attr("data-msg-required", "Commencement date required");
-                $("#quote_options_commencementDate_mobile option:first").remove();
-                $("#modal-commencement-date-get-quotes").on("click", function(event) {
-                    event.preventDefault();
-                    var $btn = $(this);
-                    if ($form.valid()) {
-                        $("#quote_options_commencementDate").datepicker("update", $("#quote_options_commencementDate_mobile").val());
-                        meerkat.modules.dialogs.close(loadQuoteModalId);
-                        if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results" && originalDate != $("#quote_options_commencementDate").val()) {
-                            if (!_.isUndefined(Results.getAjaxRequest()) && Results.getAjaxRequest() !== false && Results.getAjaxRequest().readyState !== 4 && Results.getAjaxRequest().status !== 200) {
-                                $btn.addClass("disabled");
-                                pending_results_handler = meerkat.messaging.subscribe(meerkatEvents.carResults.RESULTS_RENDER_COMPLETED, getFreshResults);
-                            } else {
-                                meerkat.modules.carResults.get();
-                            }
-                        }
-                    }
-                });
-                $editDetails.find("a.btn-edit").on("click", function editDetails(event) {
-                    event.preventDefault();
-                    if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results" && !_.isUndefined(Results.getAjaxRequest()) && Results.getAjaxRequest() !== false && Results.getAjaxRequest().readyState !== 4 && Results.getAjaxRequest().status !== 200) {
-                        Results.getAjaxRequest().abort();
-                    }
-                    meerkat.modules.dialogs.close(loadQuoteModalId);
-                    meerkat.modules.journeyEngine.gotoPath($(this).attr("href").substring(1));
-                });
-                if (meerkat.modules.deviceMediaState.get() === "xs") {
-                    $editDetails.show();
-                } else {
-                    $editDetails.find(".accordion-collapse").addClass("in").end().show();
-                }
-            },
-            onClose: function(modalId) {
-                $("#quote_options_commencementDate").datepicker("update", $("#quote_options_commencementDate_mobile").val());
-                loadQuoteModalId = false;
-            }
-        };
-        meerkat.modules.dialogs.show(modalOptions);
-    }
-    function getFreshResults() {
-        meerkat.messaging.unsubscribe(meerkatEvents.carResults.RESULTS_RENDER_COMPLETED, pending_results_handler);
-        _.defer(meerkat.modules.carResults.get);
-    }
-    function deviceStateChanged(enterXS) {
-        enterXS = enterXS || false;
-        if (loadQuoteModalId !== false && meerkat.modules.dialogs.isDialogOpen(loadQuoteModalId)) {
-            var $modal = $(".edit-details-wrapper", $("#" + loadQuoteModalId));
-            if (enterXS === true) {
-                $modal.find(".accordion-collapse").not(".expired-panel").removeClass("in");
-                $modal.find(".accordion-heading.active-panel").next(".accordion-collapse").addClass("in");
-            } else {
-                $modal.find(".accordion-collapse").each(function() {
-                    $that = $(this);
-                    $that.addClass("in").css({
-                        height: "auto"
+            meerkat.modules.commencementDate.initCommencementDate({
+                dateField: "#quote_options_commencementDate",
+                getResults: meerkat.modules.carResults.get,
+                updateData: function updateDataWithYoungDriver(data) {
+                    _.extend(data, {
+                        youngDriver: $("input[name=quote_drivers_young_exists]:checked").val()
                     });
-                });
-            }
-        }
-    }
-    function getExpiredNoticeShown() {
-        return expiredNoticeShown;
+                }
+            });
+        });
     }
     meerkat.modules.register("carCommencementDate", {
-        init: initCarCommencementDate,
-        events: moduleEvents
+        init: initCarCommencementDate
     });
 })(jQuery);
 
@@ -1259,7 +1135,8 @@
         var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
         var defaultData = {
             state: $("#quote_riskAddress_state").val(),
-            brand: product.productId.split("-")[0]
+            brand: product.productId.split("-")[0],
+            productId: product.productId
         };
         if (meerkat.site.leadfeed[data.phonecallme].use_disc_props) {
             $.extend(defaultData, {
@@ -1852,7 +1729,7 @@
             if (availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
                 showNoResults();
             }
-            meerkat.messaging.publish(meerkatEvents.carResults.RESULTS_RENDER_COMPLETED);
+            meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
         });
         $(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
             meerkat.modules.performanceProfiling.startTest("results");
@@ -2259,7 +2136,7 @@
             };
             ajaxInProgress = true;
             meerkat.modules.comms.get({
-                url: "ajax/json/car_vehicle_options.jsp",
+                url: "rest/car/vehicleAccessories/list.json",
                 data: data,
                 cache: true,
                 useDefaultErrorHandling: false,
@@ -3042,7 +2919,7 @@
             ajaxInProgress = true;
             _.defer(function() {
                 meerkat.modules.comms.get({
-                    url: "car/" + type + "/list.json",
+                    url: "rest/car/" + type + "/list.json",
                     data: data,
                     cache: true,
                     useDefaultErrorHandling: false,
@@ -3361,7 +3238,7 @@
             if (year !== false) $(elements.registrationYear).val(year.code);
             var type = getDataForCode("types", rbc);
             if (type !== false) {
-                $(elements.marketValue).val(type.value);
+                $(elements.marketValue).val(type.marketValue);
                 $(elements.variant).val(type.label);
             }
             if (isSplitTest()) {

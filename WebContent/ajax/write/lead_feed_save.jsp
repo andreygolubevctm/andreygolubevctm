@@ -86,6 +86,7 @@
 							<clientTel><c:out value="${data.request.clientTel}" escapeXml="true" /></clientTel>
 							<state><c:out value="${data.request.state}" escapeXml="true" /></state>
 							<brand><c:out value="${data.request.brand}" escapeXml="true" /></brand>
+							<productId><c:out value="${data.request.productId}" escapeXml="true" /></productId>
 							<message><c:out value="${data.request.message}" escapeXml="true" /></message>
 							<phonecallme><c:out value="${data.request.phonecallme}" escapeXml="true" /></phonecallme>
 				<c:if test="${not empty data.request.vdn}"><vdn>${data.request.vdn}</vdn></c:if>
@@ -126,7 +127,7 @@
 								</c:set>
 
 								<%-- Record appropriate touch --%>
-								<core:transaction touch="${touchType}" noResponse="true" comment="User requested call me back" />
+								<core:transaction touch="${touchType}" noResponse="true" productId="${data.request.productId}"/>
 
 							</c:when>
 			<c:otherwise>{"result":false,"message":"We could not record the request in our system, please try again or contact us if the issue persists."}</c:otherwise>

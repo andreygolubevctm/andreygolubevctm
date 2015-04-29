@@ -6,7 +6,7 @@ import com.ctm.utils.RequestUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-import com.ctm.dao.TransactionDao;
+import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SendEmailException;

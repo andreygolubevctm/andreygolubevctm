@@ -23,7 +23,6 @@
 		<xsl:when test="$name = 'HCF'">2</xsl:when>
 		<xsl:when test="$name = 'HIF'">11</xsl:when>
 		<xsl:when test="$name = 'NIB'">3</xsl:when>
-		<xsl:when test="$name = 'THF'">13</xsl:when>
 		<xsl:when test="$name = 'WFD'">7</xsl:when>
 		<xsl:when test="$name = 'BUD'">54</xsl:when>
 		<xsl:otherwise>0</xsl:otherwise>
@@ -78,7 +77,6 @@
 								<xsl:when test="situation/providerKey = 'cbhs_597125'">10</xsl:when>
 								<xsl:when test="situation/providerKey = 'hif_87364556'">11</xsl:when>
 								<xsl:when test="situation/providerKey = 'cua_089105165'">12</xsl:when>
-								<xsl:when test="situation/providerKey = 'thf_9348212'">13</xsl:when>
 								<xsl:when test="situation/providerKey = 'ctm_123456789'">14</xsl:when>
 								<xsl:when test="situation/providerKey = 'bup_744568719'">15</xsl:when>
 								<xsl:when test="situation/providerKey = 'bud_296587056'">54</xsl:when>

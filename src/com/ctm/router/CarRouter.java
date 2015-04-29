@@ -1,127 +1,105 @@
 package com.ctm.router;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-import org.json.JSONObject;
-
-import com.ctm.model.car.CarBody;
-import com.ctm.model.car.CarFuel;
-import com.ctm.model.car.CarMake;
-import com.ctm.model.car.CarModel;
-import com.ctm.model.car.CarTransmission;
-import com.ctm.model.car.CarType;
-import com.ctm.model.car.CarYear;
-import com.ctm.model.formatter.JsonUtils;
+import com.ctm.model.car.*;
 import com.ctm.services.car.CarVehicleSelectionService;
 
-@WebServlet(urlPatterns = {
-		"/car/bodies/list.json",
-		"/car/fuels/list.json",
-		"/car/makes/list.json",
-		"/car/models/list.json",
-		"/car/transmissions/list.json",
-		"/car/types/list.json",
-		"/car/years/list.json"
-})
-public class CarRouter extends HttpServlet {
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(CarRouter.class.getName());
+@Path("/car")
+public class CarRouter {
 
-	private static final long serialVersionUID = 14L;
+	@GET
+	@Path("/makes/list.json")
+	@Produces("application/json")
+	public Map<String, List<CarMake>> getMakes() {
+		Map<String, List<CarMake>> result = new HashMap<>();
+		result.put(CarMake.JSON_COLLECTION_NAME, CarVehicleSelectionService.getAllMakes());
+		return result;
+	}
 
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		String uri = request.getRequestURI();
-		PrintWriter writer = response.getWriter();
+	@GET
+	@Path("/models/list.json")
+	@Produces("application/json")
+	public Map<String, List<CarModel>> getModels(@QueryParam("make") String makeCode) {
+		Map<String, List<CarModel>> result = new HashMap<>();
+		result.put(CarModel.JSON_COLLECTION_NAME, CarVehicleSelectionService.getModels(makeCode));
+		return result;
+	}
 
-		// Automatically set content type based on request extension ////////////////////////////////////////
+	@GET
+	@Path("/years/list.json")
+	@Produces("application/json")
+	public Map<String, List<CarYear>> getYears(@QueryParam("make") String makeCode, @QueryParam("model") String modelCode) {
+		Map<String, List<CarYear>> result = new HashMap<>();
+		result.put(CarYear.JSON_COLLECTION_NAME, CarVehicleSelectionService.getYears(makeCode, modelCode));
+		return result;
+	}
 
-		if (uri.endsWith(".json")) {
-			response.setContentType("application/json");
-		}
+	@GET
+	@Path("/bodies/list.json")
+	@Produces("application/json")
+	public Map<String, List<CarBody>> getBodies(@QueryParam("make") String makeCode, @QueryParam("model") String modelCode, @QueryParam("year") String yearCode) {
+		Map<String, List<CarBody>> result = new HashMap<>();
+		result.put(CarBody.JSON_COLLECTION_NAME, CarVehicleSelectionService.getBodies(makeCode, modelCode, yearCode));
+		return result;
+	}
 
+	@GET
+	@Path("/transmissions/list.json")
+	@Produces("application/json")
+	public Map<String, List<CarTransmission>> getTransmissions(@QueryParam("make") String makeCode, @QueryParam("model") String modelCode,
+															   @QueryParam("year") String yearCode, @QueryParam("body") String bodyCode) {
+		Map<String, List<CarTransmission>> result = new HashMap<>();
+		result.put(CarTransmission.JSON_COLLECTION_NAME, CarVehicleSelectionService.getTransmissions(makeCode, modelCode, yearCode, bodyCode));
+		return result;
+	}
 
-		// Get common parameters ////////////////////////////////////////////////////////////////////////////
+	@GET
+	@Path("/fuels/list.json")
+	@Produces("application/json")
+	public Map<String, List<CarFuel>> getFuels(@QueryParam("make") String makeCode, @QueryParam("model") String modelCode,
+											   @QueryParam("year") String yearCode, @QueryParam("body") String bodyCode,
+											   @QueryParam("transmission") String transmissionCode, @QueryParam("fuel") String fuelCode) {
+		Map<String, List<CarFuel>> result = new HashMap<>();
+		result.put(CarFuel.JSON_COLLECTION_NAME, CarVehicleSelectionService.getFuels(makeCode, modelCode, yearCode, bodyCode, transmissionCode));
+		return result;
+	}
 
-		String makeCode = null;
-		String modelCode = null;
-		String yearCode = null;
-		String bodyCode = null;
-		String transmissionCode = null;
-		String fuelCode = null;
+	@GET
+	@Path("/types/list.json")
+	@Produces("application/json")
+	public Map<String, List<CarType>> getTypes(@QueryParam("make") String makeCode, @QueryParam("model") String modelCode,
+											   @QueryParam("year") String yearCode, @QueryParam("body") String bodyCode,
+											   @QueryParam("transmission") String transmissionCode, @QueryParam("fuel") String fuelCode) {
+		Map<String, List<CarType>> result = new HashMap<>();
+		result.put(CarType.JSON_COLLECTION_NAME, CarVehicleSelectionService.getTypes(makeCode, modelCode, yearCode, bodyCode, transmissionCode, fuelCode));
+		return result;
+	}
 
-		if (request.getParameter("make") != null) {
-			makeCode = request.getParameter("make");
-		}
-		if (request.getParameter("model") != null) {
-			modelCode = request.getParameter("model");
-		}
-		if (request.getParameter("year") != null) {
-			yearCode = request.getParameter("year");
-		}
-		if (request.getParameter("body") != null) {
-			bodyCode = request.getParameter("body");
-		}
-		if (request.getParameter("transmission") != null) {
-			transmissionCode = request.getParameter("transmission");
-		}
-		if (request.getParameter("fuel") != null) {
-			fuelCode = request.getParameter("fuel");
-		}
+	@GET
+	@Path("/vehicleNonStandards/list.json")
+	@Produces("application/json")
+	public Map<String, List<VehicleNonStandard>> getVehicleNonStandards() {
+		Map<String, List<VehicleNonStandard>> result = new HashMap<>();
+		result.put("items", CarVehicleSelectionService.getVehicleNonStandards());
+		return result;
+	}
 
-
-		// Route the requests ///////////////////////////////////////////////////////////////////////////////
-
-		if (uri.endsWith("/car/bodies/list.json")) {
-			JSONObject json = new JSONObject();
-			JsonUtils.addListToJsonObject(json, CarBody.JSON_COLLECTION_NAME, CarVehicleSelectionService.getBodies(makeCode, modelCode, yearCode));
-			writer.print(json.toString());
-		}
-
-		else if (uri.endsWith("/car/fuels/list.json")) {
-			JSONObject json = new JSONObject();
-			JsonUtils.addListToJsonObject(json, CarFuel.JSON_COLLECTION_NAME, CarVehicleSelectionService.getFuels(makeCode, modelCode, yearCode, bodyCode, transmissionCode));
-			writer.print(json.toString());
-		}
-
-		else if (uri.endsWith("/car/makes/list.json")) {
-			JSONObject json = new JSONObject();
-			JsonUtils.addListToJsonObject(json, CarMake.JSON_COLLECTION_NAME, CarVehicleSelectionService.getAllMakes());
-			writer.print(json.toString());
-		}
-
-		else if (uri.endsWith("/car/models/list.json")) {
-			JSONObject json = new JSONObject();
-			JsonUtils.addListToJsonObject(json, CarModel.JSON_COLLECTION_NAME, CarVehicleSelectionService.getModels(makeCode));
-			writer.print(json.toString());
-		}
-
-		else if (uri.endsWith("/car/transmissions/list.json")) {
-			JSONObject json = new JSONObject();
-			JsonUtils.addListToJsonObject(json, CarTransmission.JSON_COLLECTION_NAME, CarVehicleSelectionService.getTransmissions(makeCode, modelCode, yearCode, bodyCode));
-			writer.print(json.toString());
-		}
-
-		else if (uri.endsWith("/car/types/list.json")) {
-			JSONObject json = new JSONObject();
-			JsonUtils.addListToJsonObject(json, CarType.JSON_COLLECTION_NAME, CarVehicleSelectionService.getTypes(makeCode, modelCode, yearCode, bodyCode, transmissionCode, fuelCode));
-			writer.print(json.toString());
-		}
-
-		else if (uri.endsWith("/car/years/list.json")) {
-			JSONObject json = new JSONObject();
-			JsonUtils.addListToJsonObject(json, CarYear.JSON_COLLECTION_NAME, CarVehicleSelectionService.getYears(makeCode, modelCode));
-			writer.print(json.toString());
-		}
-
+	@GET
+	@Path("/vehicleAccessories/list.json")
+	@Produces("application/json")
+	public Map<String, List<VehicleAccessory>> getVehicleAccessories(@QueryParam("redbookCode")String redbookCode) {
+		Map<String, List<VehicleAccessory>> result = new HashMap<>();
+		result.put("standard", CarVehicleSelectionService.getStandardAccessories(redbookCode));
+		result.put("options", CarVehicleSelectionService.getOptionalAccessories(redbookCode));
+		result.put("alarm", CarVehicleSelectionService.getAlarmAccessories(redbookCode));
+		result.put("immobiliser", CarVehicleSelectionService.getImmobiliserAccessories(redbookCode));
+		return result;
 	}
 }

@@ -1,6 +1,7 @@
 package com.ctm.services.simples;
 
 import com.ctm.dao.UserDao;
+import com.ctm.dao.transaction.TransactionLockDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.services.FatalErrorService;
@@ -15,6 +16,7 @@ import java.sql.SQLException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SimplesTickleServiceTest {
     private long transactionId = 1234567;
@@ -23,11 +25,13 @@ public class SimplesTickleServiceTest {
     private FatalErrorService fatalErrorService;
     private AuthenticatedData authenticatedData;
     private SimplesTickleService service;
+    private TransactionLockDao transactionLockDao = mock(TransactionLockDao.class);
 
     @Before
     public void setup() throws SQLException, DaoException {
         SessionDataService sessionDataService = mock(SessionDataService.class);
         request = mock(HttpServletRequest.class);
+        when(request.getParameter("doTickle")).thenReturn("true");
         userDao = mock(UserDao.class);
         fatalErrorService = mock(FatalErrorService.class);
         service = new SimplesTickleService(sessionDataService);

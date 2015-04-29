@@ -15,8 +15,12 @@ public class Provider extends AbstractJsonModel{
 	private String name;
 	Map<String, String> propertyDetails = new HashMap<>();
 
-	public Provider(){
+	public Provider(){}
 
+	public Provider(Integer id, String code, String name){
+		setId(id);
+		setCode(code);
+		setName(name);
 	}
 
 	public int getId() {

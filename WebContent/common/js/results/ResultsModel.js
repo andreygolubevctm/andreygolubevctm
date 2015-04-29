@@ -112,6 +112,7 @@ ResultsModel = {
 					}
 
 					// check meerkat object
+					// TODO: this is health only and really doesn't belong here
 					if(typeof meerkat !== "undefined" && typeof jsonResult.error !== "undefined" && jsonResult.error == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
 
 						if (typeof Loading !== "undefined") Loading.hide();

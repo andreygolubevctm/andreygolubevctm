@@ -2,7 +2,7 @@ package com.ctm.services.email.health;
 
 import com.ctm.dao.ContentDao;
 import com.ctm.dao.RankingDetailsDao;
-import com.ctm.dao.TransactionDao;
+import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.*;
 import com.ctm.model.content.Content;
 import com.ctm.model.EmailMaster;
@@ -98,9 +98,9 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		emailBrochureRequest.productName = request.getParameter("productName");
 		emailBrochureRequest.transactionId = transactionId;
 		accessTouchService.setRequest(request);
-		accessTouchService.recordTouchWithDescription(emailBrochureRequest.transactionId,
+		accessTouchService.recordTouchWithProductCode(emailBrochureRequest.transactionId,
 				Touch.TouchType.BROCHURE.getCode(),
-				emailBrochureRequest.provider + " " + emailBrochureRequest.productName);
+				request.getParameter("productCode"));
 
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(ProductBrochuresEmailHandler.MAILING_NAME_KEY);

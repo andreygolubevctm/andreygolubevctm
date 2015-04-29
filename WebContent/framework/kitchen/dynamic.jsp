@@ -621,6 +621,9 @@
 		<field_new:calendar xpath="${xpath}/new/calendar" required="true" title="start date" />
 	</form_new:row>
 
+	<form_new:row label="basic_date">
+		<field_new:basic_date xpath="${xpath}/new/basic_date" required="true" title="Basic date" />
+	</form_new:row>
 
 
 	<form_new:row label="lookup_suburb_postcode">

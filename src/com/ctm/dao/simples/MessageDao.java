@@ -139,15 +139,16 @@ public class MessageDao {
 		}
 	}
 
-	public Message getMessageByTransactionId(final long transactionId) throws DaoException {
+	public Message getMessageByRootId(final long rootId) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		try {
 			final PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-					"SELECT msg.id FROM aggregator.transaction_header th " +
-					"INNER JOIN simples.message msg ON msg.transactionId = th.rootId " +
-					"WHERE th.transactionId = ? LIMIT 1;"
+					"SELECT msg.id " +
+					"FROM  simples.message msg " +
+					"WHERE msg.transactionId = ? " +
+					"LIMIT 1;"
 			);
-			stmt.setLong(1, transactionId);
+			stmt.setLong(1, rootId);
 
 			final ResultSet results = stmt.executeQuery();
 			if (results.next()) {
@@ -186,12 +187,23 @@ public class MessageDao {
 		try {
 			int i = 0;
 			for(String rule : MESSAGE_AVAILABLE_RULES_FOR_UPDATE) {
+				if (rule.equals(MESSAGE_AVAILABLE_RULE_0_FOR_UPDATE) || rule.equals(MESSAGE_AVAILABLE_RULE_3_FOR_UPDATE)) {
+					stmtSelect = dbSource.getConnection().prepareStatement(MESSAGE_AVAILABLE_RULES[i]);
+					stmtSelect.setInt(1, userId);
+
+					resultSet = stmtSelect.executeQuery();
+					List<Message> messages = mapFieldsFromResultsToMessage(resultSet);
+
+					if(!messages.isEmpty()) {
+						Message message = messages.get(0);
+						message.setUserId(userId);
+
+						return message;
+					}
+				} else {
 				stmtUpdate = dbSource.getConnection().prepareStatement(MESSAGE_AVAILABLE_UPDATE + rule + MESSAGE_AVAILABLE_UPDATE_SET);
 
 				stmtUpdate.setInt(1, userId);
-				if (rule.equals(MESSAGE_AVAILABLE_RULE_0_FOR_UPDATE) || rule.equals(MESSAGE_AVAILABLE_RULE_3_FOR_UPDATE)) {
-					stmtUpdate.setInt(2, userId);
-				}
 
 				int numberOfRows = stmtUpdate.executeUpdate();
 				if(numberOfRows > 0) {
@@ -203,6 +215,7 @@ public class MessageDao {
 					message.setUserId(userId);
 
 					return message;
+				}
 				}
 				i++;
 			}
@@ -224,77 +237,6 @@ public class MessageDao {
 					stmtSelect.close();
 				}
 			} catch (SQLException e) {
-				throw new DaoException(e.getMessage(), e);
-			}
-			dbSource.closeConnection();
-		}
-	}
-
-	/**
-	 * Get a message from the message queue. The provided User ID may be used to target specific messages.
-	 *
-	 * @param userId ID of the user who is getting the message
-	 * @return Message model
-	 * @throws DaoException
-	 */
-	public Message getNextMessageOld(int userId) throws DaoException {
-
-		if (userId <= 0) {
-			throw new DaoException("userId must be greater than zero.");
-		}
-
-		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-		boolean autoCommit = true;
-		PreparedStatement stmt = null;
-
-		try {
-			Message message = null;
-			autoCommit = dbSource.getConnection().getAutoCommit();
-			dbSource.getConnection().setAutoCommit(false);
-
-			for(String rule : MESSAGE_AVAILABLE_RULES) {
-				ExecuteMessageQueueRule executeMessageQueueRule = new ExecuteMessageQueueRule(dbSource, rule, userId).invoke();
-				if (executeMessageQueueRule.is()) {
-					message = executeMessageQueueRule.getMessage();
-					break;
-				}
-			}
-
-			if (message != null) {
-				stmt = dbSource.getConnection().prepareStatement(
-						"UPDATE simples.message " +
-						"SET userId = ? " +
-						"WHERE id = ?");
-
-				stmt.setInt(1, userId);
-				stmt.setInt(2, message.getMessageId());
-
-				stmt.executeUpdate();
-				message.setUserId(userId);
-
-				dbSource.getConnection().commit();
-				return message;
-			}
-
-			dbSource.getConnection().commit();
-			return new Message();
-		}
-		catch (SQLException | NamingException e) {
-			try {
-				logger.error("Simple getNextMessage transaction is being rolled back");
-				dbSource.getConnection().rollback();
-			} catch (SQLException | NamingException e1) {
-				throw new DaoException(e.getMessage(), e);
-			}
-			throw new DaoException(e.getMessage(), e);
-		}
-		finally {
-			try {
-				dbSource.getConnection().setAutoCommit(autoCommit);
-				if(stmt != null) {
-					stmt.close();
-				}
-			} catch (SQLException | NamingException e) {
 				throw new DaoException(e.getMessage(), e);
 			}
 			dbSource.closeConnection();
@@ -832,57 +774,6 @@ public class MessageDao {
 		}
 		finally {
 			dbSource.closeConnection();
-		}
-	}
-
-	private class ExecuteMessageQueueRule {
-		private boolean myResult;
-		private SimpleDatabaseConnection dbSource;
-		private String rule0;
-		private Message message;
-		private int userId;
-
-		public ExecuteMessageQueueRule(SimpleDatabaseConnection dbSource, String rule0, int userId) {
-			this.dbSource = dbSource;
-			this.rule0 = rule0;
-			this.userId = userId;
-		}
-
-		boolean is() {
-			return myResult;
-		}
-
-		public Message getMessage() {
-			return message;
-		}
-
-		public ExecuteMessageQueueRule invoke() throws DaoException, SQLException {
-			PreparedStatement stmt = null;
-
-			try {
-				stmt = dbSource.getConnection().prepareStatement(rule0);
-
-				if (rule0.equals(MESSAGE_AVAILABLE_RULE_0) || rule0.equals(MESSAGE_AVAILABLE_RULE_3)) {
-					stmt.setInt(1, userId);
-				}
-
-				final ResultSet results = stmt.executeQuery();
-				List<Message> messages = mapFieldsFromResultsToMessage(results);
-
-				if (messages.size() > 0) {
-					message = messages.get(0);
-					myResult = true;
-					return this;
-				}
-				myResult = false;
-				return this;
-			} catch (SQLException | NamingException e) {
-				throw new DaoException(e.getMessage(), e);
-			} finally {
-				if(stmt != null) {
-					stmt.close();
-				}
-			}
 		}
 	}
 }

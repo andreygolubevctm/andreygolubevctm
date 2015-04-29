@@ -18,10 +18,14 @@ public class SimpleDatabaseConnection {
 	private DataSource ds;
 
 	public Connection getConnection() throws SQLException, NamingException {
+		return getConnection("jdbc/ctm");
+	}
+	
+	public Connection getConnection(String context) throws SQLException, NamingException {
 		if(ds == null) {
 			Context initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			ds = (DataSource) envCtx.lookup("jdbc/ctm");
+			ds = (DataSource) envCtx.lookup(context);
 		}
 		if(connection == null || connection.isClosed()) {
 			setConnection(ds.getConnection());

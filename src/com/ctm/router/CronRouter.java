@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.ctm.dao.TransactionDetailsDao;
+import com.ctm.dao.transaction.TransactionDetailsDao;
 import com.ctm.dao.homeloan.HomeloanUnconfirmedLeadsDao;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.CronService;

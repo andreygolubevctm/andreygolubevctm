@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 import com.ctm.dao.CommentDao;
 import com.ctm.dao.TouchDao;
-import com.ctm.dao.TransactionDao;
+import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.dao.health.HealthTransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
@@ -55,23 +55,28 @@ public class TransactionService {
 		details.setTransactionId(transactionId);
 
 		try {
+			TransactionDao transactionDao = new TransactionDao();
+			long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
+
 			final HealthTransactionDao transactionHealthDao = new HealthTransactionDao();
 			transactionHealthDao.getHealthDetails(details);
 
 			final CommentDao commentDao = new CommentDao();
-			details.setComments( commentDao.getCommentsForTransactionId(transactionId) );
+			details.setComments( commentDao.getCommentsForRootId(rootId) );
 
 			final TouchDao touchDao = new TouchDao();
-			details.setTouches( touchDao.getTouchesForTransactionId(transactionId) );
+			details.setTouches( touchDao.getTouchesForRootId(rootId));
 
 			final MessageDao messageDao = new MessageDao();
-			final Message message = messageDao.getMessageByTransactionId(transactionId);
+			final Message message = messageDao.getMessageByRootId(rootId);
+
 			if (message != null) {
 				final MessageAuditDao messageAuditDao = new MessageAuditDao();
 				details.setAudits(messageAuditDao.getMessageAudits(message.getMessageId()));
 			}
 		}
 		catch (DaoException e) {
+			logger.error(e);
 			Error error = new Error(e.getMessage());
 			details.addError(error);
 		}

@@ -1,19 +1,19 @@
 package com.ctm.dao.health;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.health.HealthTransaction;
+import org.apache.log4j.Logger;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.naming.NamingException;
-
-import org.apache.log4j.Logger;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.health.HealthTransaction;
-
 public class HealthTransactionDao {
 
+	private static final String PRODUCT_TITLE_XPATH = "health/application/productTitle";
+	public static final String PROVIDER_XPATH = "health/application/provider";
 	private static Logger logger = Logger.getLogger(HealthTransactionDao.class.getName());
 
 
@@ -36,6 +36,7 @@ public class HealthTransactionDao {
 		}
 
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		boolean found = false;
 
 		try {
 			PreparedStatement stmt;
@@ -44,9 +45,9 @@ public class HealthTransactionDao {
 				"FROM aggregator.transaction_header th " +
 				"LEFT JOIN ctm.confirmations confirm ON th.TransactionId = confirm.TransID " +
 				"LEFT JOIN aggregator.transaction_details AS td1 " +
-				"	ON td1.transactionId = th.transactionId AND td1.xpath = 'health/application/productTitle' " +
+				"	ON td1.transactionId = th.transactionId AND td1.xpath = '" + PRODUCT_TITLE_XPATH + "' " +
 				"LEFT JOIN aggregator.transaction_details AS td2 " +
-				"	ON td2.transactionId = th.transactionId AND td2.xpath = 'health/application/provider' " +
+				"	ON td2.transactionId = th.transactionId AND td2.xpath = '" + PROVIDER_XPATH + "' " +
 				"WHERE th.TransactionId = ?"
 			);
 			stmt.setLong(1, details.getTransactionId());
@@ -54,19 +55,65 @@ public class HealthTransactionDao {
 			ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
-				details.setIsConfirmed(results.getBoolean("isConfirmed"));
-				details.setConfirmationKey(results.getString("confirmationKey"));
-				details.setSelectedProductTitle(results.getString("productTitle"));
-				details.setSelectedProductProvider(results.getString("provider"));
+				mapHealthDetails(details, results);
+				found = true;
 			}
 
 			results.close();
 			stmt.close();
 		}
-		catch (SQLException e) {
+		catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
 		}
-		catch (NamingException e) {
+		finally {
+			dbSource.closeConnection();
+		}
+		if(!found){
+			getHealthDetailsColdTable(details);
+		}
+
+		return details;
+	}
+
+	private HealthTransaction getHealthDetailsColdTable(HealthTransaction details) throws DaoException {
+
+		String sql = "SELECT IF(TransID > 0, 1, 0) AS isConfirmed, confirm.keyID AS confirmationKey, " +
+				"td1.textValue AS productTitle, td2.textValue AS provider " +
+				"FROM aggregator.transaction_header2_cold th " +
+				"LEFT JOIN ctm.confirmations confirm ON th.TransactionId = confirm.TransID " +
+				"LEFT JOIN aggregator.transaction_details2_cold td1 " +
+				"ON td1.transactionId = th.transactionId " +
+				"AND td1.fieldId = ( " +
+					"SELECT  tf.fieldId " +
+					"FROM aggregator.transaction_fields tf " +
+					"WHERE tf.fieldCode = '" + PRODUCT_TITLE_XPATH+"' " +
+				") " +
+				"LEFT JOIN aggregator.transaction_details2_cold td2 " +
+				"ON td2.transactionId = th.transactionId " +
+				"AND td2.fieldId = ( " +
+					"SELECT tf.fieldId " +
+					"FROM aggregator.transaction_fields tf " +
+					"WHERE tf.fieldCode = '" + PROVIDER_XPATH + "' " +
+				") " +
+				"WHERE th.TransactionId = ?;";
+
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+
+		try {
+			PreparedStatement stmt;
+			stmt = dbSource.getConnection().prepareStatement(sql);
+			stmt.setLong(1, details.getTransactionId());
+
+			ResultSet results = stmt.executeQuery();
+
+			while (results.next()) {
+				mapHealthDetails(details, results);
+			}
+
+			results.close();
+			stmt.close();
+		}
+		catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
 		}
 		finally {
@@ -75,6 +122,14 @@ public class HealthTransactionDao {
 
 		return details;
 	}
+
+	private void mapHealthDetails(HealthTransaction details, ResultSet results) throws SQLException {
+		details.setIsConfirmed(results.getBoolean("isConfirmed"));
+		details.setConfirmationKey(results.getString("confirmationKey"));
+		details.setSelectedProductTitle(results.getString("productTitle"));
+		details.setSelectedProductProvider(results.getString("provider"));
+	}
+
 
 	/**
 	 * Write error codes to the aggregator.transaction_details table

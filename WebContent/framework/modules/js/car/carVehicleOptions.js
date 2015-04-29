@@ -81,7 +81,7 @@
 			ajaxInProgress = true;
 
 			meerkat.modules.comms.get({
-				url: "ajax/json/car_vehicle_options.jsp",
+				url: "rest/car/vehicleAccessories/list.json",
 				data: data,
 				cache: true,
 				useDefaultErrorHandling: false,

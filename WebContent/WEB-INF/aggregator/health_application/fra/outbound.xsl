@@ -274,12 +274,6 @@
 										<xsl:with-param name="eurDate" select="application/partner/dob" />
 									</xsl:call-template>    						
 	    						</Birthdate>
-	    						<IsRebateApplicant>
-	    							<xsl:choose>
-	    								<xsl:when test="healthCover/rebate='Y'">true</xsl:when>
-	    								<xsl:otherwise>false</xsl:otherwise>
-	    							</xsl:choose>
-	    						</IsRebateApplicant>
 	    						<FullTimeStudent>false</FullTimeStudent>
 	    						
 	    						<xsl:variable name="partnerFund">

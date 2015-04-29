@@ -28,6 +28,27 @@
 				<sql:param value="${styleCodeId}" />
 				<sql:param value="${PendingTranID}" />
 			</sql:query>
+			<c:if test="${result.rowCount == 0}">
+				<sql:query var="result">
+					SELECT tf2.fieldCode as 'xpath', d2.textValue
+					FROM aggregator.transaction_details2_cold d1
+					LEFT JOIN aggregator.transaction_details2_cold d2
+					ON d1.transactionId = d2.transactionId
+					INNER JOIN aggregator.transaction_header2_cold h
+					ON d2.transactionid = h.transactionid
+					AND h.StyleCodeId = ?
+
+					INNER JOIN aggregator.transaction_fields tf
+					ON d1.fieldId = tf.fieldId
+					AND  tf.fieldCode = 'pendingID'
+
+					INNER JOIN aggregator.transaction_fields tf2
+					ON d2.fieldId = tf2.fieldId
+					WHERE h.transactionid = ?
+					<sql:param value="${styleCodeId}" />
+					<sql:param value="${PendingTranID}" />
+				</sql:query>
+			</c:if>
 		</c:when>
 		<c:otherwise>
 			<sql:query var="result">
@@ -46,6 +67,29 @@
 				<sql:param value="${PendingTranID}" />
 				<sql:param value="${token}" />
 			</sql:query>
+			<c:if test="${result.rowCount == 0}">
+				<sql:query var="result">
+					SELECT tf2.fieldCode as 'xpath', d2.textValue
+					FROM aggregator.transaction_details2_cold d1
+					LEFT JOIN aggregator.transaction_details2_cold d2
+					ON d1.transactionId = d2.transactionId
+					INNER JOIN aggregator.transaction_header2_cold h
+					ON d2.transactionid = h.transactionid
+					AND h.StyleCodeId = ?
+
+					INNER JOIN aggregator.transaction_fields tf
+					ON d1.fieldId = tf.fieldId
+					AND  tf.fieldCode = 'pendingID'
+					AND d1.textValue = ?
+
+					INNER JOIN aggregator.transaction_fields tf2
+					ON d2.fieldId = tf2.fieldId
+					WHERE h.transactionid = ?
+					<sql:param value="${styleCodeId}" />
+					<sql:param value="${token}" />
+					<sql:param value="${PendingTranID}" />
+				</sql:query>
+			</c:if>
 		</c:otherwise>
 	</c:choose>
 

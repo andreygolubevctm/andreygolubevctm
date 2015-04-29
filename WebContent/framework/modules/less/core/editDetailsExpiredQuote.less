@@ -1,4 +1,4 @@
-.car {
+body.modal-open {
 
 	@media(@md) {
 		.modal-dialog.edit-details-modal {
@@ -18,10 +18,19 @@
 		}
 	}
 
+	.edit-details-modal{
+		.edit-details-wrapper {
+			.panel.accordion-panel.expired-panel {
+				display: none;
+			}
+		}
+	}
+
 	.edit-details-wrapper.expired-quote {
 
-		p.edit-details-intro-text {
-			display: none;
+		p.edit-details-intro-text,
+		.edit-details-intro-icon {
+			display: none !important;
 		}
 
 		.panel.accordion-panel.expired-panel {

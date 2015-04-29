@@ -85,9 +85,9 @@
 
 <%-- Add accessorie descriptions to databucket --%>
 
-<sql:query var="accListResult">
-	SELECT `code`, `des`, `underwriter` FROM aggregator.vehicle_nonstandard_mapping;
-</sql:query>
+<jsp:useBean id="carService" class="com.ctm.services.car.CarVehicleSelectionService" scope="request"/>
+<c:set var="accListResult" value="${carService.getVehicleNonStandardMappings()}"/>
+
 <c:set var="accsList" value="${data['quote/accs/*']}"/>
 
 <c:catch var="error">
@@ -100,7 +100,7 @@
 		<c:if test="${fn:contains(accsCode, '&amp;')}">
 			<c:set var="accsCode" value="${fn:replace(accsCode,'&amp;','&')}" />
 		</c:if>
-	<c:forEach items="${accListResult.rows}" var="accList" varStatus="status">
+		<c:forEach items="${accListResult}" var="accList" varStatus="status">
 		<c:if test="${accList.code == accsCode and accList.underwriter == 'HOLL'}">
 			<c:set var="accHOLLDesc" value="${accList.des }"/>
 		</c:if>
@@ -123,7 +123,7 @@
 	<c:if test="${fn:contains(accsCode, '&amp;')}">
 		<c:set var="accsCode" value="${fn:replace(accsCode,'&amp;','&')}" />
 	</c:if>
-	<c:forEach items="${accListResult.rows}" var="accList" varStatus="status">
+	<c:forEach items="${accListResult}" var="accList" varStatus="status">
 		<c:if test="${accList.code == accsCode and accList.underwriter == 'HOLL'}">
 			<c:set var="accHOLLDesc" value="${accList.des }"/>
 		</c:if>

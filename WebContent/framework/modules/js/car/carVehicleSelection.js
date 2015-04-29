@@ -110,7 +110,7 @@
 
 			_.defer(function() {
 			meerkat.modules.comms.get({
-				url: "car/" + type + "/list.json",
+					url: "rest/car/" + type + "/list.json",
 				data: data,
 				cache: true,
 				useDefaultErrorHandling: false,
@@ -513,7 +513,7 @@
 
 			var type = getDataForCode('types', rbc);
 			if(type !== false) {
-				$(elements.marketValue).val(type.value);
+				$(elements.marketValue).val(type.marketValue);
 				$(elements.variant).val(type.label);
 			}
 

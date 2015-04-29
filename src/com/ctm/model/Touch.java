@@ -18,21 +18,21 @@ public class Touch extends AbstractJsonModel {
 	private String operator;
 	private TouchType type;
 	public static final String ONLINE_USER = "ONLINE";
-	private String description;
 
-	public String getDescription() {
-		return description;
+	private TouchProductProperty touchProductProperty;
+
+	public TouchProductProperty getTouchProductProperty() {
+		return touchProductProperty;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setTouchProductProperty(TouchProductProperty touchProductProperty) {
+		this.touchProductProperty = touchProductProperty;
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	public static enum TouchType {
 		BROCHURE ("Brochure sent" , "B"),
 		NEW ("New quote" , "N"),
-		UNLOCKED ("Unlocked", "X"),
 		SUBMITTED ("Submit", "P"),
 		PRICE_PRESENTATION ("Price presentation" , "R"),
 		APPLY ("Apply" ,"A"),
@@ -45,12 +45,12 @@ public class Touch extends AbstractJsonModel {
 		ERROR ("General error", "E"),
 		TRANSFERRING ("Transferring", "T"),
 		LEAD_CALL_ME_BACK("Call me back", "CB"),
+		CALL_DIRECT("Call direct", "CD"),
 		LEAD_BEST_PRICE("Best price", "BP"),
 		LEAD_FEED("Lead feed", "LF"),
 		CONTACT_DETAILS_COLLECTED("Contact details collected", "CDC"),
-		CALL_DIRECT("Call direct", "CD"),
 		CALL_FEED ("Call Feed" , "CF"), // Added to a call feed list.
-		EMAIL_GATEWAY ("Email gateway", "EmlGateway"); 
+		EMAIL_GATEWAY ("Email gateway", "EmlGateway");
 
 		private final String description, code;
 
@@ -136,7 +136,6 @@ public class Touch extends AbstractJsonModel {
 		}
 		json.put("type", typeCode);
 		json.put("datetime", getDatetime());
-		json.put("description", description);
 		return json;
 	}
 }

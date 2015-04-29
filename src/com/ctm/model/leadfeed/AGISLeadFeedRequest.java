@@ -16,8 +16,9 @@ public abstract class AGISLeadFeedRequest {
 
 	// Header Fields
 	protected String schemaVersion = "3.1";
-	protected String partnerId = "CTM0000300";
-	protected String sourceId =	"0000000001";
+	protected String serviceUrl;
+	protected String partnerId;
+	protected String sourceId;
 	private String partnerReference;		// transactionId
 	private String ipAddress;				// users ip address
 
@@ -33,9 +34,12 @@ public abstract class AGISLeadFeedRequest {
 	private String brand = "";				// optional
 	private String vdn = "";				// optional
 
+	public AGISLeadFeedRequest() {}
 
-	public AGISLeadFeedRequest() {
-
+	public AGISLeadFeedRequest(LeadFeedData leadData) {
+		importLeadData(leadData);
+		setCallbackDate(new LocalDate());
+		setCallbackTime(new LocalTime());
 	}
 
 	/**
@@ -61,6 +65,14 @@ public abstract class AGISLeadFeedRequest {
 
 	public void setSchemaVersion(String schemaVersion) {
 		this.schemaVersion = schemaVersion;
+	}
+
+	public String getServiceUrl() {
+		return serviceUrl;
+	}
+
+	public void setServiceUrl(String serviceUrl) {
+		this.serviceUrl = serviceUrl;
 	}
 
 	public String getPartnerId() {
@@ -202,5 +214,4 @@ public abstract class AGISLeadFeedRequest {
 	public String toString() {
 		return "brandCode: " + brandCode + ", partnerReference: " + partnerReference + ", ipAddress: " + ipAddress + ", clientName: " + clientName + ", phoneNumber: " + phoneNumber + ", messageSource: " + messageSource + ", messageText: " + messageText + ", clientNumber: " + clientNumber + ", state: " + state + ", brand: " + brand + ", vdn: " + vdn;
 	}
-
 }

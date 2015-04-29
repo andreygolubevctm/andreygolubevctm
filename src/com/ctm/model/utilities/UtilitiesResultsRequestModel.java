@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import com.ctm.model.AbstractJsonModel;
 import com.ctm.utils.FormDateUtils;
+import com.ctm.utils.NGram;
 
 public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
@@ -63,7 +64,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 	private float gasSpend = 0;
 
 	// The following are only required if customer chooses to enter usage
-	private float electrictyPeakUsage = 0;
+	private float electricityPeakUsage = 0;
 	private float gasPeakUsage = 0;
 	private float electricityOffpeakUsage = 0;
 	private float gasOffpeakUsage = 0;
@@ -176,12 +177,12 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		this.gasSpend = gasSpend;
 	}
 
-	public float getElectrictyPeakUsage() {
-		return electrictyPeakUsage;
+	public float getElectricityPeakUsage() {
+		return electricityPeakUsage;
 	}
 
-	public void setElectrictyPeakUsage(float electrictyPeakUsage) {
-		this.electrictyPeakUsage = electrictyPeakUsage;
+	public void setElectricityPeakUsage(float electricityPeakUsage) {
+		this.electricityPeakUsage = electricityPeakUsage;
 	}
 
 	public float getGasPeakUsage() {
@@ -225,7 +226,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		if(getHowToEstimate().equals("U")){
 
 			if(getFuelType() == FuelType.Dual || getFuelType() == FuelType.Electricity){
-				json.put("elec_peak_usage", getElectrictyPeakUsage());
+				json.put("elec_peak_usage", getElectricityPeakUsage());
 				json.put("elec_offpeak_usage", getElectricityOffpeakUsage());
 			}else{
 				json.put("elec_peak_usage", 0);
@@ -285,7 +286,11 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 		if(getReferenceNumber() != null){
 			json.put("first_name", getFirstName());
-			json.put("phone", getPhoneNumber());
+
+			if(getPhoneNumber() != null){
+				json.put("phone", getPhoneNumber());
+				json.put("phone1_rating", getPhoneRating());
+			}
 			json.put("reference_number", getReferenceNumber());
 		}
 
@@ -335,7 +340,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		setElectricitySpend(convertStringToFloat(request.getParameter("utilities_estimateDetails_spend_electricity_amount")));
 		setGasSpend(convertStringToFloat(request.getParameter("utilities_estimateDetails_spend_gas_amount")));
 
-		setElectrictyPeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_electricity_peak_amount")));
+		setElectricityPeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_electricity_peak_amount")));
 		setElectricityOffpeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_electricity_offpeak_amount")));
 
 		setGasPeakUsage(convertStringToFloat(request.getParameter("utilities_estimateDetails_usage_gas_peak_amount")));
@@ -389,6 +394,12 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	public Integer getPhoneRating() {
+		NGram ngram = new NGram(phoneNumber,3);
+			
+		return ngram.score();
 	}
 
 	public String getReferenceNumber() {

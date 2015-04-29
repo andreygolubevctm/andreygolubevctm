@@ -15,11 +15,11 @@ BEGIN
 		, (SELECT COUNT(id) FROM simples.message WHERE statusId = 4) AS `postponed`
 		, (SELECT COUNT(id) FROM simples.message WHERE statusId = 2) AS `completed`
 		, (
-			SELECT COUNT(msg.id) FROM simples.message msg
-			INNER JOIN simples.message_source src ON src.id = msg.sourceId
-			WHERE msg.statusId NOT IN (2, 7)
-			AND NOW() >= ADDTIME(msg.created, SEC_TO_TIME(src.messageExpiry * 60))
-			) AS `expired`
+					 SELECT COUNT(msg.id) FROM simples.message msg
+					 	 INNER JOIN simples.message_source src ON src.id = msg.sourceId
+					 WHERE msg.statusId NOT IN (2, 7)
+								 AND NOW() >=  DATE_ADD(msg.created,INTERVAL src.messageExpiry DAY)
+				 ) AS `expired`
 	FROM simples.message_queue_available;
 
 END$$

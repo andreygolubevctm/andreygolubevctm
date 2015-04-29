@@ -17,7 +17,7 @@
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />
 <c:set var="continueOnAggregatorValidationError" value="${true}" />
 
-<c:set var="proceedinator"><core:access_check quoteType="health" /></c:set>
+<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
 <c:set var="touch_count"><core:access_count touch="P" /></c:set>
 
 <c:choose>
@@ -41,7 +41,7 @@
 		{ "error": { "type":"submission", "message":"${errorMessage}" } }
 	</c:when>
 	<%-- check the latest touch, to make sure a join is not already actively in progress [HLT-1092] --%>
-	<c:when test="${proceedinator == 6}">
+	<c:when test="${accessTouchService.isBeingSubmitted(tranId)}">
 		<c:set var="errorMessage" value="Your application is still being submitted. Please wait." />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
 		{ "error": { "type":"submission", "message":"${errorMessage}" } }

@@ -1,6 +1,6 @@
 package com.ctm.services.homeloan;
 
-import com.ctm.dao.TransactionDetailsDao;
+import com.ctm.dao.transaction.TransactionDetailsDao;
 import com.ctm.dao.homeloan.HomeloanUnconfirmedLeadsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;

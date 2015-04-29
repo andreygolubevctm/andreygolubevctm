@@ -321,7 +321,7 @@
 				showNoResults();
 			}
 
-				meerkat.messaging.publish(meerkatEvents.carResults.RESULTS_RENDER_COMPLETED);
+			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
 
 		});
 

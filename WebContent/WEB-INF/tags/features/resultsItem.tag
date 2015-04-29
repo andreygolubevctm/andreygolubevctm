@@ -73,8 +73,12 @@
 									{{ pathValue = true }}
 									{{ displayValue += '<ul>' }}
 									<%-- Loop through the excess, put them in an li and put that in the displayValue --%>
-									{{for(var index in excess.excess) { }}
-										{{ displayValue += '<li>'+ excess.excess[index].description + ' ' + excess.excess[index].amount + '</li>' }}
+									{{ if(excess.excess.hasOwnProperty("description")) { }}
+										{{ displayValue += '<li>'+ excess.excess.description + (excess.excess.hasOwnProperty('amount') ? ' ' + excess.excess.amount : '') + '</li>' }}
+									{{ } else { }}
+										{{for(var index in excess.excess) { }}
+											{{ displayValue += '<li>'+ excess.excess[index].description + ' ' + excess.excess[index].amount + '</li>' }}
+										{{ } }}
 									{{ } }}
 									{{ displayValue += '</ul>' }}
 								{{ } }}

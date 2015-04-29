@@ -31,7 +31,7 @@
 
 	<%-- Address --%>
 	<c:choose>
-		<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 1002)}">
+		<c:when test="${(not empty data.home.property.address.elasticSearch and data.home.property.address.elasticSearch eq 'Y') or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 1002)}">
 			<group_new:elastic_address xpath="${xpath}/property/address" type="R" />
 		</c:when>
 		<c:otherwise>

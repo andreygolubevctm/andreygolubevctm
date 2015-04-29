@@ -184,6 +184,10 @@
 
 					<excess>
 						<total><xsl:value-of select="/soap:Envelope/soap:Body/z:GetMotorQuoteResponse/z:GetMotorQuoteResult/a:QuoteExcess/a:QuoteExcess/a:Value" /></total>
+						<excess>
+							<amount></amount>
+							<description>Please consult the product PDS for further information</description>
+						</excess>
 					</excess>
 
 					<brandCode><xsl:value-of select="$service"/></brandCode>

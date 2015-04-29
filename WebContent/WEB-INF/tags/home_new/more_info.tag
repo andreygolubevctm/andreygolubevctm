@@ -128,7 +128,7 @@
 	<%-- Setup variables --%>
 	{{ obj.isOnlineAvailable  = false; }}
 	{{ obj.isOfflineAvailable  = false; }}
-	{{ obj.isCallbackAvailable  = false; }}
+	{{ obj.isCallbackAvailable  = true; }}
 	{{ obj.isOnlineAvailable = obj.onlineAvailable == "Y" }}
 	{{ obj.isOfflineAvailable = obj.offlineAvailable == "Y" }}
 	{{ obj.isCallbackAvailable = obj.callbackAvailable == "Y" }}

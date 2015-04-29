@@ -1,4 +1,4 @@
-package com.ctm.dao;
+package com.ctm.dao.transaction;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;

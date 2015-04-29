@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.ctm.dao.EmailMasterDao;
 import com.ctm.dao.StampingDao;
-import com.ctm.dao.TransactionDao;
+import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;
 import com.ctm.model.EmailMaster;

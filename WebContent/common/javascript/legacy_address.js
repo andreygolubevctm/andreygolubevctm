@@ -32,10 +32,10 @@ AddressUtils = {
 
 window.selectedAddressObj  = {
 	P:{
-		hasUnits:false,
+		hasUnits:false
 	},
 	R:{
-		hasUnits:false,
+		hasUnits:false
 	}
 };
 

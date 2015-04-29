@@ -183,14 +183,6 @@ SaveQuote = {
 		});
 	},
 
-	toggleUnlock: function() {
-		if( SessionSaveQuote._IS_OPERATOR ) {
-			if($('#operator-save-form').find('input:checked').val() == 'Y' ) {
-				$("#operator-save-form").hide();
-			}
-		}
-	},
-
 	/**
 	 * @param defaults	Object		[optional] Contains email and optin properties to update the form with
 	 * @param callback	Function	[optional] Function to call before save to update the quote form's optin field
@@ -394,9 +386,6 @@ SaveQuote = {
 					SaveQuote.elements.email.val(SessionSaveQuote.SAVED_EMAIL);
 					SaveQuote.emailChanged(true);
 				}
-		if( SessionSaveQuote._IS_OPERATOR ) {
-			//$("#operator-save-unlock").buttonset(); // doesn't need to be inited anymore.
-		}
 	},
 	save: function() {
 		if (SaveQuote._mode == SaveQuote._SAVE) {
@@ -422,9 +411,6 @@ SaveQuote = {
 				}
 				$('#' + SessionSaveQuote.quoteType + "_journey_stage").val(stage);
 				Write.touchQuote("S", SaveQuote.saveCallBack, null, true);
-				if($('#operator-save-unlock').find('input:checked').val() == "Y") {
-					Write.touchQuote("X");
-				}
 			} else {
 					SaveQuote._ajaxSave();
 				}		
@@ -571,12 +557,6 @@ SaveQuote = {
 			},
 			timeout:30000
 		});
-				
-		if(SessionSaveQuote._IS_OPERATOR)
-				{
-			$('#save_unlock').find('input').removeAttr('checked');
-			$('#save_unlock').find('input').button('refresh');
-					}
 	},
 					
 	saveCallBack: function(success, transactionId) {
@@ -592,7 +572,6 @@ SaveQuote = {
 						SaveQuote.bindCallMeBackCloseButton();
 			}
 					SaveQuote.show(SaveQuote._CONFIRM);
-			SaveQuote.toggleUnlock();
 			try {
 				if(typeof(transactionId) != 'undefined') {
 					referenceNo.setTransactionId(jsonResult.transactionId);
@@ -990,15 +969,6 @@ SaveQuote = {
 					label="true"
 					title="Stay up to date with news and offers direct to your inbox" />
 			</div>
-			<c:if test="${isOperator}">
-			<div id="operator-save-form">
-				<h4>Do you want to unlock this quote so the client can access it?</h4>
-				
-					<form:row label="Unlock Quote" horizontal="false">
-						<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="save/unlock" title="Do you wish to unlock this quote?" required="true"  id="operator-save-unlock"/>
-					</form:row>
-				</div>
-			</c:if>
 			<div id="save_quote_errors" class="lightBoxValidationErrors" >
 					<div class="error-panel-top small"><h3>Oops...</h3></div>
 					<div class="error-panel-middle small"><ul></ul></div>

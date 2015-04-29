@@ -1,11 +1,6 @@
 package com.ctm.model.car;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.ctm.model.AbstractJsonModel;
-
-public class CarModel extends AbstractJsonModel {
+public class CarModel {
 	public static final String JSON_COLLECTION_NAME = "models";
 
 	private String code;
@@ -34,15 +29,4 @@ public class CarModel extends AbstractJsonModel {
 	}
 
 
-
-	@Override
-	protected JSONObject getJsonObject() throws JSONException {
-		JSONObject json = new JSONObject();
-
-		json.put("code", getCode());
-		json.put("label", getLabel());
-		json.put("isTopModel", getIsTopModel());
-
-		return json;
-	}
 }

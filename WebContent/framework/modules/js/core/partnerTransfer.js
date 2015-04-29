@@ -161,6 +161,7 @@
 			if (settings.trackHandover === true) {
 				trackHandover(settings.tracking, {
 					type:'A',
+					productId: settings.product.productId,
 					comment:'Apply Online'
 				});
 			}
@@ -192,7 +193,8 @@
 		if(touchData !== false && _.isObject(touchData) && _.has(touchData,'type')) {
 			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
 				touchType:		touchData.type,
-				touchComment:	_.has(touchData,'comment') ? touchData.comment : ''
+				touchComment:	_.has(touchData,'comment') ? touchData.comment : '',
+				productId: touchData.productId
 			});
 		}
 

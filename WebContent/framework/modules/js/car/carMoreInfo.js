@@ -178,7 +178,8 @@
 
 		var defaultData = {
 				state: $("#quote_riskAddress_state").val(),
-				brand: product.productId.split('-')[0]
+				brand: product.productId.split('-')[0],
+				productId: product.productId
 		};
 
 		if(meerkat.site.leadfeed[data.phonecallme].use_disc_props) {

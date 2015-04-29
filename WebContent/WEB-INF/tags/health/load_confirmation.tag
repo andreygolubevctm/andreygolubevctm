@@ -26,6 +26,19 @@
 			<sql:param value="${styleCodeId}" />
 			<sql:param value="${token}" />
 		</sql:query>
+		<c:if test="${result.rowCount == 0}">
+			<sql:query var="result">
+				SELECT h.StyleCodeId,c.XMLdata
+				FROM ctm.confirmations c
+				INNER JOIN aggregator.transaction_header2_cold h
+				ON c.transid = h.transactionid
+				AND h.StyleCodeId = ?
+				WHERE KeyID = ?
+				LIMIT 1
+				<sql:param value="${styleCodeId}" />
+				<sql:param value="${token}" />
+			</sql:query>
+		</c:if>
 	</c:otherwise>
 </c:choose>
 

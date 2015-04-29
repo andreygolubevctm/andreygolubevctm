@@ -81,22 +81,6 @@
 					</div>
 				</div>
 
-				<%-- UNLOCK QUOTE --%>
-				<c:if test="${isOperator}">
-					<div id="operator-save-form">
-						<p class="text-tertiary text-bold">Do you want to unlock this quote so the client can access it?</p>
-
-						<div class="form-group row">
-							<c:set var="fieldXpath" value="save/unlock" />
-							<field_new:label value="Unlock Quote" xpath="${fieldXpath}" className="col-lg-2 col-md-3 col-sm-4" />
-							<div class="row-content col-lg-10 col-md-9 col-sm-8">
-								<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="Do you wish to unlock this quote?" required="true" id="operator-save-unlock" />
-							</div>
-						</div>
-
-					</div>
-				</c:if>
-
 				<%-- SUBMIT BTN --%>
 				<div class="form-group row">
 					<div class="col-lg-offset-2 col-md-offset-3 col-sm-offset-4 col-lg-3 col-sm-4">

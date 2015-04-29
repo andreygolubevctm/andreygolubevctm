@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.ContentService;
 import com.ctm.dao.RankingDetailsDao;
-import com.ctm.dao.TransactionDao;
+import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;
@@ -155,12 +155,16 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 	 * Returns the country names from the user's selected ISO Codes
 	 */
 	public String getDestinations(String selectedISOCodes) throws DaoException {
+        if (selectedISOCodes != null && !selectedISOCodes.equals("")) {
 		CountryMappingDao countries = new CountryMappingDao();
 		CountryMapping userSelectedCountries = countries.getSelectedCountryNames(selectedISOCodes);
 
 		// currently limited to 5 countries due to EDM design
 		return userSelectedCountries.getSelectedCountries(5);
 			}
+
+        return "";
+	}
 
 	private void setupRankingDetails(TravelBestPriceEmailModel emailModel, Long transactionId) throws DaoException {
 		RankingDetailsDao rankingDetailsDao = new RankingDetailsDao();

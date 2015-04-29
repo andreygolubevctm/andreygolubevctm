@@ -4,6 +4,7 @@ import com.ctm.model.settings.Vertical;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.ContentService;
 import com.ctm.services.leadfeed.car.CarLeadFeedService;
+import com.ctm.services.leadfeed.homecontents.HomeContentsLeadFeedService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -16,7 +17,8 @@ import java.io.PrintWriter;
 import java.util.Date;
 
 @WebServlet(urlPatterns = {
-	"/cron/leadfeed/car/triggerBestPriceLeads.json"
+	"/cron/leadfeed/car/triggerBestPriceLeads.json",
+	"/cron/leadfeed/home/triggerBestPriceLeads.json"
 })
 public class BestPriceLeadsRouter extends HttpServlet {
 
@@ -102,6 +104,9 @@ public class BestPriceLeadsRouter extends HttpServlet {
 						if(uri.contains("/car/")) {
 							CarLeadFeedService carLeadService = new CarLeadFeedService();
 							output = carLeadService.processBestPriceLeads(bestPriceOverride.getBrandCodeId(), Vertical.VerticalType.CAR.getCode(), frequency, serverDate);
+						} else if(uri.contains("/home/")) {
+							HomeContentsLeadFeedService homeLeadService = new HomeContentsLeadFeedService();
+							output = homeLeadService.processBestPriceLeads(bestPriceOverride.getBrandCodeId(), Vertical.VerticalType.HOME.getCode(), frequency, serverDate);
 						}
 					}
 

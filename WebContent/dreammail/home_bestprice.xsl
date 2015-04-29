@@ -27,6 +27,7 @@
 	</xsl:param>
 	<xsl:param name="MailingName"></xsl:param>
 	<xsl:param name="OptInMailingName"></xsl:param>
+	<xsl:param name="sendToEmail"></xsl:param>
 	<xsl:param name="hashedEmail"></xsl:param>
 	<xsl:param name="callCentrePhone"></xsl:param>
 	<xsl:param name="ClientId"></xsl:param>
@@ -282,6 +283,8 @@
 		<xsl:variable name="uppercase"><xsl:text>ABCDEFGHIJKLMNOPQRSTUVWXYZ</xsl:text></xsl:variable>
 		<xsl:variable name="lowercase"><xsl:text>abcdefghijklmnopqrstuvwxyz</xsl:text></xsl:variable>
 
+		<xsl:variable name="productId"><xsl:value-of select="$currentProduct/productId" /></xsl:variable>
+
 		<Attributes>
 			<Name>CoverType<xsl:value-of select="$index" /></Name>
 			<Value><xsl:value-of select="$currentProduct/headline/name" /></Value>
@@ -321,7 +324,7 @@
 
 		<Attributes>
 			<Name>ApplyURL<xsl:value-of select="$index" /></Name>
-			<Value><xsl:value-of select="$currentProduct/quoteUrl" /></Value>
+			<Value><xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?vertical=home&amp;type=bestprice','&amp;pid=',$productId,'&amp;id=',$tranId,'&amp;email=',$sendToEmail,'&amp;hash=',$hashedEmail,']]&gt;')" /></Value>
 		</Attributes>
 
 		<Attributes>

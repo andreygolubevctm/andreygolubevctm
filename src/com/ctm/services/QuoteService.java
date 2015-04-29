@@ -6,9 +6,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.ctm.dao.TransactionDetailsDao;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.TransactionDetail;
+import com.ctm.dao.transaction.TransactionDetailsDao;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.HttpRequestHandler;
 /**

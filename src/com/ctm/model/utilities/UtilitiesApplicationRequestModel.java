@@ -11,6 +11,7 @@ import com.ctm.model.AbstractJsonModel;
 import com.ctm.model.Address;
 import com.ctm.utils.FormAddressUtils;
 import com.ctm.utils.FormDateUtils;
+import com.ctm.utils.NGram;
 
 
 public class UtilitiesApplicationRequestModel extends AbstractJsonModel {
@@ -130,12 +131,24 @@ public class UtilitiesApplicationRequestModel extends AbstractJsonModel {
 		this.primaryPhone = primaryPhone;
 	}
 
+	public Integer getPrimaryPhoneRating() {
+		NGram ngram = new NGram(primaryPhone,3);
+			
+		return ngram.score();
+	}
+
 	public String getSecondaryPhone() {
 		return this.secondaryPhone;
 	}
 
 	public void setSecondaryPhone(String secondaryPhone) {
 		this.secondaryPhone = secondaryPhone;
+	}
+
+	public Integer getSecondaryPhoneRating() {
+		NGram ngram = new NGram(secondaryPhone,3);
+			
+		return ngram.score();
 	}
 
 	public String getEmail() {
@@ -400,6 +413,7 @@ public class UtilitiesApplicationRequestModel extends AbstractJsonModel {
 		json.put("last_name", getLastName());
 		json.put("dob", FormDateUtils.convertDateToString(getDateOfBirth(), "yyyy-MM-dd"));
 		json.put("phone1", getPrimaryPhone());
+		json.put("phone1_rating", getPrimaryPhoneRating());
 
 		json.put("unique_customer_id", getUniqueCustomerId());
 		json.put("product_id", getProductId());
@@ -407,6 +421,7 @@ public class UtilitiesApplicationRequestModel extends AbstractJsonModel {
 
 		if(getSecondaryPhone() != null){
 			json.put("phone2", getSecondaryPhone());
+			json.put("phone2_rating", getSecondaryPhoneRating());
 		}
 
 		json.put("email", getEmail());

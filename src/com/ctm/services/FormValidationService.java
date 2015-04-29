@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.ctm.constants.PrivacyBlacklist;
 import com.ctm.dao.FormValidationDao;
-import com.ctm.dao.TransactionDetailsDao;
+import com.ctm.dao.transaction.TransactionDetailsDao;
 import com.ctm.exceptions.DaoException;
 
 public class FormValidationService {

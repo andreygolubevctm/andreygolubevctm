@@ -1,5 +1,15 @@
-package com.ctm.dao;
+package com.ctm.dao.transaction;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.constants.PrivacyBlacklist;
+import com.ctm.dao.DatabaseUpdateMapping;
+import com.ctm.dao.SqlDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.TransactionDetail;
+import org.apache.log4j.Logger;
+
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,16 +18,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.constants.PrivacyBlacklist;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.TransactionDetail;
-
 /**
  * Data Access Object to interface with the transaction_details table.
  * @author bthompson
@@ -25,11 +25,13 @@ import com.ctm.model.TransactionDetail;
 public class TransactionDetailsDao {
 
 	private static Logger logger = Logger.getLogger(TransactionDetailsDao.class.getName());
+	private final SqlDao sqlDao;
 
 	/**
 	 * Constructor
 	 */
 	public TransactionDetailsDao() {
+		sqlDao = new SqlDao();
 	}
 	/**
 	 * Handles all the parameters. Determines whether to insert a new transaction detail or update the existing one.
@@ -86,34 +88,21 @@ public class TransactionDetailsDao {
 				paramValue = maskPrivateFields(xpath, paramValue);
 			}
 
-			insertOrUpdate(xpath, paramValue, transactionId);
-
+			try {
+				TransactionDetail transactionDetail = getTransactionDetailByXpath(transactionId, xpath);
+				TransactionDetail transactionDetailNew = new TransactionDetail();
+				transactionDetailNew.setXPath(xpath);
+				transactionDetailNew.setTextValue(paramValue);
+				if(transactionDetail == null) {
+					addTransactionDetails(transactionId, transactionDetailNew);
+				} else {
+					updateTransactionDetails(transactionId, transactionDetailNew);
+				}
+			} catch (DaoException e) {
+				logger.error(e);
+			}
 		}
 		return true;
-	}
-
-	/**
-	 * Low level insertOrUpdate. Determines whether to insert a new transaction detail or update the existing one.
-	 * @param xpath String
-	 * @param textValue String
-	 * @param transactionId Long
-	 * @return
-	 */
-	public void insertOrUpdate(String xpath, String textValue, long transactionId) {
-
-		try {
-			TransactionDetail transactionDetail = getTransactionDetailByXpath(transactionId, xpath);
-			TransactionDetail transactionDetailNew = new TransactionDetail();
-			transactionDetailNew.setXPath(xpath);
-			transactionDetailNew.setTextValue(textValue);
-			if(transactionDetail == null) {
-				addTransactionDetails(transactionId, transactionDetailNew);
-			} else {
-				updateTransactionDetails(transactionId, transactionDetailNew);
-			}
-		} catch (DaoException e) {
-			logger.error("failed to write transaction details for transactionId: " + transactionId, e);
-		}
 	}
 
 	/**
@@ -298,41 +287,26 @@ public class TransactionDetailsDao {
 
 	/**
 	 * Performs an insert on the transaction details table.
-	 * @param transactionDetails
+	 * @param transactionDetail
 	 * @throws DaoException
 	 */
 	// Should pass in ArrayList<TransactionDetails> so can batch insert.
-	public void addTransactionDetails(long transactionId, TransactionDetail transactionDetails) throws DaoException {
-		SimpleDatabaseConnection dbSource = null;
-		try {
-			dbSource = new SimpleDatabaseConnection();
-			PreparedStatement stmt;
-			Connection conn = dbSource.getConnection();
-
-			if(conn != null) {
-				stmt = conn.prepareStatement(
-						"INSERT INTO aggregator.transaction_details " +
-						"(transactionId, sequenceNo, xpath, textValue, dateValue) " +
-						"VALUES " +
-						"(?,?,?,?,CURDATE());"
-				);
-				Integer nextSequenceNo = getMaxSequenceNo(transactionId) + 1;
-
+	public void addTransactionDetails(final long transactionId, final TransactionDetail transactionDetail) throws DaoException {
+		final Integer nextSequenceNo = getMaxSequenceNo(transactionId) + 1;
+		DatabaseUpdateMapping databaseMapping = new DatabaseUpdateMapping(){
+			@Override
+			public void handleParams(PreparedStatement stmt) throws SQLException {
 				stmt.setLong(1, transactionId);
 				stmt.setInt(2, nextSequenceNo);
-				stmt.setString(3, transactionDetails.getXPath());
-				stmt.setString(4, transactionDetails.getTextValue());
-				stmt.executeUpdate();
+				stmt.setString(3, transactionDetail.getXPath());
+				stmt.setString(4, transactionDetail.getTextValue());
 			}
-		} catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
-		} finally {
-			if(dbSource != null) {
-				dbSource.closeConnection();
-			}
-		}
+		};
+		sqlDao.insert(databaseMapping, "INSERT INTO aggregator.transaction_details " +
+				"(transactionId, sequenceNo, xpath, textValue, dateValue) " +
+				"VALUES " +
+				"(?,?,?,?,CURDATE());");
+		
 	}
 
 
@@ -381,6 +355,31 @@ public class TransactionDetailsDao {
 			}
 		}
 		return transactionDetails;
+	}
+	
+	
+	/**
+	 * Low level insertOrUpdate. Determines whether to insert a new transaction detail or update the existing one.
+	 * @param xpath String
+	 * @param textValue String
+	 * @param transactionId Long
+	 * @return
+	 */
+	public void insertOrUpdate(String xpath, String textValue, long transactionId) {
+
+		try {
+			TransactionDetail transactionDetail = getTransactionDetailByXpath(transactionId, xpath);
+			TransactionDetail transactionDetailNew = new TransactionDetail();
+			transactionDetailNew.setXPath(xpath);
+			transactionDetailNew.setTextValue(textValue);
+			if(transactionDetail == null) {
+				addTransactionDetails(transactionId, transactionDetailNew);
+			} else {
+				updateTransactionDetails(transactionId, transactionDetailNew);
+			}
+		} catch (DaoException e) {
+			logger.error("failed to write transaction details for transactionId: " + transactionId, e);
+		}
 	}
 
 }

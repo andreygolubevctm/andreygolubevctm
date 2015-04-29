@@ -1,13 +1,14 @@
 package com.ctm.services;
 
 import com.ctm.dao.TouchDao;
+
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.AccessTouch;
-import com.ctm.model.AccessTouch.AccessCheck;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
+import com.ctm.model.TouchProductProperty;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.router.IncomingEmailRouter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,7 @@ public class AccessTouchService {
 
 	protected final SessionDataService sessionDataService;
 
-	TouchDao dao = new TouchDao();
+	TouchDao dao;
 	private HttpServletRequest request;
 
 	public AccessTouchService(TouchDao dao ,SessionDataService sessionDataService) {
@@ -31,30 +32,6 @@ public class AccessTouchService {
 		this.sessionDataService = new SessionDataService();
 	}
 
-	public AccessTouch getLatestAccessTouchByTransactionId(long transactionId , String operatorId) throws DaoException{
-		AccessCheck accessCheck = AccessCheck.LOCKED;
-		AccessTouch touch = dao.getlatestAccessTouch(transactionId);
-		if(touch == null) {
-			accessCheck = AccessCheck.NO_TOUCHES;
-			touch = new AccessTouch();
-		} else {
-			if (touch.getExpired() == 1){
-				accessCheck = AccessCheck.EXPIRED;
-			} else if (touch.getType() == TouchType.UNLOCKED){
-				accessCheck = AccessCheck.UNLOCKED;
-			} else if (touch.getType() == TouchType.SUBMITTED) {
-				accessCheck = AccessCheck.SUMMITTED;
-			} else if (touch.getOperator().equals(Touch.ONLINE_USER)){
-				accessCheck = AccessCheck.ONLINE;
-			} else if (touch.getOperator().equals(operatorId)){
-				accessCheck = AccessCheck.MATCHING_OPERATOR;
-			}
-		}
-		touch.setAccessCheck(accessCheck);
-
-		return touch;
-	}
-
 	// Don't reorder any of the recordTouch methods.
 	// Doing so will cause hell to break loose.
 	// JSP tries to 'best match' calls to overloaded methods
@@ -65,7 +42,7 @@ public class AccessTouchService {
 		return recordTouch(transactionId,  type , null);
 	}
 
-	public Boolean recordTouch(Long transactionId, String type , String operatorId, String description) {
+	public Boolean recordTouch(Long transactionId, String type , String operatorId, String productCode) {
 		if (request != null && request.getSession() != null) {
 			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
 			if(authenticatedData != null) {
@@ -77,7 +54,11 @@ public class AccessTouchService {
 			touch.setTransactionId(transactionId);
 			touch.setType(TouchType.findByCode(type));
 			touch.setOperator(operatorId);
-			touch.setDescription(description);
+			if (StringUtils.isNotBlank(productCode)) {
+				TouchProductProperty touchProductProperty = new TouchProductProperty();
+				touchProductProperty.setProductCode(productCode);
+				touch.setTouchProductProperty(touchProductProperty);
+			}
 			dao.record(touch);
 			return true;
 		} catch(DaoException e) {
@@ -93,7 +74,7 @@ public class AccessTouchService {
 			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
 			if(authenticatedData != null) {
 				operatorId = authenticatedData.getUid();
-			}
+	}
 		}
 
 		try {
@@ -107,7 +88,7 @@ public class AccessTouchService {
 		}
 	}
 
-	public Boolean recordTouchWithDescription(long transactionId, String type, String description) {
+	public Boolean recordTouchWithProductCode(long transactionId, String type, String productCode) {
 		// Set operator to null - the TouchDao will use this as 'ONLINE' if not superseded
 		String operator = null;
 		// Populate operator from authenticated data if available
@@ -115,10 +96,10 @@ public class AccessTouchService {
 			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
 			if(authenticatedData != null) {
 				operator = authenticatedData.getUid();
-			}
 		}
+	}
 
-		return recordTouch(transactionId,  type , operator, description);
+		return recordTouch(transactionId,  type , operator, productCode);
 
 	}
 
@@ -128,5 +109,18 @@ public class AccessTouchService {
 
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
-	}
+}
+
+    public boolean isBeingSubmitted(Long transactionId) {
+        boolean isBeingSubmitted = false;
+        try {
+            Touch touch = dao.getLatestTouchByTransactionId(transactionId);
+            if(touch != null ){
+                isBeingSubmitted = touch.getType() == Touch.TouchType.SUBMITTED;
+            }
+        } catch (DaoException e) {
+            logger.error(e);
+        }
+        return isBeingSubmitted;
+    }
 }

@@ -76,6 +76,15 @@
 		<go:setData dataVar="data" xpath="${vertical}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
 		<go:setData dataVar="data" xpath="${vertical}/clientUserAgent" value="${header['User-Agent']}" />
 
+		<%-- Fix the commencement date if prior to the current date --%>
+		<c:set var="sanitisedCommencementDate">
+			<agg:sanitiseCommencementDate commencementDate="${data.home.startDate}" dateFormat="dd/MM/yyyy" />
+		</c:set>
+		<c:if test="${sanitisedCommencementDate ne data.home.startDate}">
+			<go:setData dataVar="data" xpath="${vertical}/startDate" value="${sanitisedCommencementDate}" />
+			<c:set var="commencementDateUpdated" value="true" />
+		</c:if>
+
 		<go:log level="DEBUG" source="home_results">CURRENT DATA = ${data.home}</go:log>
 
 		<%-- Save client data --%>
@@ -127,15 +136,35 @@
 				<%-- !!IMPORTANT!! - ensure the trackingKey is passed back with results --%>
 				<go:setData dataVar="soapdata" xpath="soap-response/results/info/trackingKey" value="${data.home.trackingKey}" />
 
+				<c:if test="${not empty commencementDateUpdated}">
+					<go:setData dataVar="soapdata" xpath="soap-response/results/events/COMMENCEMENT_DATE_UPDATED" value="${data.home.startDate}" />
+				</c:if>
+
 				<%--Calculate the end valid date for these quotes --%>
 				<c:set var="validateDate">
 					<agg:email_valid_date dateFormat="dd MMMMM yyyy" />
+				</c:set>
+
+				<%-- Construct the best price lead info - only if opted in for call --%>
+				<c:set var="okToCall"><%-- Input now a checkbox rather than Y/N --%>
+					<c:choose>
+						<c:when test="${not empty data.home.policyHolder.oktocall}">${data.home.policyHolder.oktocall}</c:when>
+						<c:otherwise>N</c:otherwise>
+					</c:choose>
+				</c:set>
+				<c:set var="fullName" value="${fn:trim(data.home.policyHolder.firstName)}${' '}${fn:trim(data.home.policyHolder.lastName)}" />
+				<c:set var="leadFeedData">
+				<%-- Build as concatenated string to reduce number of joins to pull data out --%>
+				<leadfeedinfo><c:if test="${okToCall eq 'Y'}">${fn:trim(fullName)}</c:if>||<c:if test="${okToCall eq 'Y'}">${data.home.policyHolder.phone}</c:if>||<c:if test="${okToCall eq 'Y'}">${data.home.property.address.dpId}</c:if>||<c:if test="${okToCall eq 'Y'}">${data.home.property.address.state}</c:if></leadfeedinfo>
 				</c:set>
 
 				<c:forEach var="result" items="${soapdata['soap-response/results/result']}" varStatus='vs'>
 
 					<%-- Add the quote valid date to result --%>
 					<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${validateDate}" />
+
+					<%-- Add best price lead feed fields to result --%>
+					<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${leadFeedData}" />
 
 					<x:parse doc="${go:getEscapedXml(result)}" var="resultXml" />
 					<c:set var="productId"><x:out select="$resultXml/result/@productId" /></c:set>
@@ -269,7 +298,7 @@
 					Write result details to the database for potential later use when sending emails etc...
 					Note: premium data can not be stored in the DB, placed in session instead
 				--%>
-				<agg:write_result_details transactionId="${tranId}" recordXPaths="validateDate/display,validateDate/normal,productId,productDes,des,HHB/excess/amount,HHC/excess/amount,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="price/annual/total" baseXmlNode="soap-response/results/result" />
+				<agg:write_result_details transactionId="${tranId}" recordXPaths="leadfeedinfo,validateDate/display,validateDate/normal,productId,productDes,des,HHB/excess/amount,HHC/excess/amount,headline/name,quoteUrl,telNo,openingHours,leadNo,brandCode" sessionXPaths="price/annual/total" baseXmlNode="soap-response/results/result" />
 
 		${go:XMLtoJSON(go:getEscapedXml(soapdata['soap-response/results']))}
 	</c:when>

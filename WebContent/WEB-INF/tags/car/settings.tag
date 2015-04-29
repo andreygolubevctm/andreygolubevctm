@@ -34,7 +34,7 @@
 <c:set var="json" value="${service.getVehicleSelection(data.quote.vehicle.make, data.quote.vehicle.model, data.quote.vehicle.year, data.quote.vehicle.body, data.quote.vehicle.trans, data.quote.vehicle.fuel) }" />
 
 <%-- Retrieve non-standard accessories list --%>
-<c:import var="nonStandardAccessories" url="/ajax/json/car_vehicle_options_nonstandard.jsp" />
+<c:set var="nonStandardAccessories" value="${service.getVehicleNonStandardsJson()}" />
 
 <%-- Check whether to force to use disc for GetaCall lead feeds --%>
 <c:set var="forceToUseDISCForGetACall" value="${contentService.getContentWithSupplementary(pageContext.getRequest(), 'forceToUseDISC').getSupplementaryValueByKey('GetaCall')}" />

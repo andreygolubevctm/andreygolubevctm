@@ -163,22 +163,23 @@
 	 */
 	function setupCallbackForm() {
 		setupDefaultValidationOnForm( $('#getcallback') );
+
 		// populate client name if empty
-		var clientName = '';
-
-		if( $("#CrClientName").val() !== '' && $("#CrClientName").val() !== undefined){
-			clientName = $("#CrClientName").val();
-		} else if( ($("#home_policyHolder_firstName").val() !== undefined || $("#home_policyHolder_lastName").val() !== undefined) && $("#home_policyHolder_firstName").val() !== '' || $("#home_policyHolder_lastName").val() !== '' ) {
-			clientName = $("#home_policyHolder_firstName").val() + " " + $("#home_policyHolder_lastName").val();
+		var $clientName = $("#home_CrClientName");
+		var $firstName = $("#home_policyHolder_firstName");
+		var $lastName = $("#home_policyHolder_lastName");
+		var test1 = $firstName.length;
+		var test2 = $lastName.length;
+		if( ($firstName.length && $firstName.val() !== '') || ($lastName.length && $lastName.val() !== '') ) {
+			$clientName.val($.trim($firstName.val() + " " + $lastName.val()));
 		}
-		clientName.trim();
 
-		telNum = $("#home_CrClientTelinput");
 		// populate client number if empty
-		if (telNum.length && !telNum.val().length) {
-			telNum.val($('#home_policyHolder_phone').val());
+		var $telNum = $("#home_CrClientTelinput");
+		if ($telNum.length && !$telNum.val().length) {
+			$telNum.val($('#home_policyHolder_phone').val());
 		}
-		telNum.attr('data-msg-required', "Please enter your contact number");
+		$telNum.attr('data-msg-required', "Please enter your contact number");
 	}
 
 	/**
@@ -235,19 +236,22 @@
 			data.vdn = currProduct.vdn;
 		}
 
+		var state = $("#home_property_address_state").val();
 		var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
 		var clientName = '';
 		var clientTel = '';
-		var CrClientName = $("#CrClientName").val();
+		var $CrClientName = $("#home_CrClientName");
+		var CrClientName = $CrClientName.length ? $CrClientName.val() : "";
 		var firstName = $("#home_policyHolder_firstName").val();
 		var lastName = $("#home_policyHolder_lastName").val();
-		var CrClientTel = $("#CrClientTel").val();
+		var $CrClientTel = $("#home_CrClientTelinput");
+		var CrClientTel = $CrClientTel.length ? $CrClientTel.val() : "";
 		var policyHolderPhone = $("#home_policyHolder_phone").val();
 
-		if(typeof CrClientName !== 'undefined'){
+		if(CrClientName !== ""){
 			clientName = CrClientName;
 		} else if(firstName !== '' || lastName !== '' ) {
-			clientName = firstName + " " + lastName;
+			clientName = $.trim(firstName + " " + lastName);
 		}
 
 		if(CrClientTel !== ''){
@@ -257,13 +261,13 @@
 		}
 
 		var defaultData = {
-				source: currentBrandCode+'HOME',
-				leadNo: currProduct.leadNo,
-				client: clientName,
-				clientTel: $('#home_CrClientTelinput').val() || '',
-				state: $("#home_property_address_state").val(),
-				brand: currProduct.productId.split('-')[0],
-				transactionId: meerkat.modules.transactionId.get()
+				state:				state,
+				brand:				currProduct.productId.split('-')[0],
+				productId:			currProduct.productId,
+				clientNumber:		currProduct.leadNo,
+				clientName:			clientName,
+				phoneNumber:		clientTel,
+				partnerReference:	meerkat.modules.transactionId.get()
 		};
 
 		var allData = $.extend(defaultData, data);
@@ -271,7 +275,7 @@
 		var $element = $(event.target);
 		meerkat.modules.loadingAnimation.showInside($element, true);
 		return meerkat.modules.comms.post({
-			url: "ajax/write/lead_feed_save.jsp",
+			url: "leadfeed/homecontents/getacall.json",
 			data: allData,
 			dataType: 'json',
 			cache: false,

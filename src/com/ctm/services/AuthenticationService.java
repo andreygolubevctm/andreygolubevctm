@@ -115,7 +115,7 @@ public class AuthenticationService {
 		if(identityType == SessionToken.IdentityType.LDAP){
 			touch = touchDao.getLatestByOperatorId(identityValue);
 		}else if(identityType == SessionToken.IdentityType.EMAIL_MASTER && transactionId != null){
-			touch = touchDao.getLatestByTransactionId(transactionId);
+			touch = touchDao.getLatestOnlineTouchByTransactionId(transactionId);
 		}
 
 		// If no transaction id for customer, or if new simples user, just use now.

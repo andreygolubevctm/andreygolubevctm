@@ -95,7 +95,7 @@
 			</soapenv:Header>
 
 			<soapenv:Body>
-				<tem:SubmitMembershipTransaction>
+				<tem:SubmitMembershipTransactionUsingSTP>
 
 				<tem:xmlFile>
 					<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
@@ -216,6 +216,10 @@
 										<Value>Fund: <xsl:value-of select="$primaryFund"/>, No: <xsl:value-of select="previousfund/primary/memberID" /></Value>
 									</Property>
 								</xsl:if>
+								<Property>
+									<Name>wact</Name>
+									<Value>Yes</Value>
+								</Property>
 							</Properties>
 						</Person>
 						<xsl:if test="application/partner/firstname != ''">
@@ -240,7 +244,6 @@
 										<xsl:with-param name="eurDate" select="application/partner/dob" />
 									</xsl:call-template>
 								</Birthdate>
-								<IsRebateApplicant>false</IsRebateApplicant>
 								<FullTimeStudent>false</FullTimeStudent>
 
 								<xsl:variable name="partnerFund">
@@ -464,8 +467,8 @@
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<GroupID>
 								<xsl:choose>
-									<xsl:when test="payment/details/type='ba'">BBA00</xsl:when>
-									<xsl:otherwise>BCC00</xsl:otherwise>
+									<xsl:when test="payment/details/type='ba'">BBA10</xsl:when>
+									<xsl:otherwise>BCC10</xsl:otherwise>
 								</xsl:choose>
 							</GroupID>
 							<PayrollNo></PayrollNo>
@@ -491,7 +494,7 @@
 				</tem:xmlFile>
 
 		<tem:AgentID>B-CTM</tem:AgentID>
-	</tem:SubmitMembershipTransaction>
+	</tem:SubmitMembershipTransactionUsingSTP>
 
 			</soapenv:Body>
 		</soapenv:Envelope>

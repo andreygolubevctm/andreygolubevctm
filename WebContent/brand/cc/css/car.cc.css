@@ -981,14 +981,6 @@ body > div > header a.bottombar .btn-call:hover {
   font-size: 14px;
   margin-top: 5px;
 }
-.car .edit-details-wrapper .panel.accordion-panel.expired-panel {
-  display: none;
-}
-.car .edit-details-wrapper .edit-details-intro-text {
-  display: inline-block;
-  float: left;
-  padding-left: 0px;
-}
 .car .edit-details-wrapper .closeDetailsDropdown {
   display: inline-block;
   float: right;
@@ -1297,57 +1289,6 @@ body > div > header a.bottombar .btn-call:hover {
   background-size: 30px 30px;
   background-color: #fff;
   margin-right: 10px;
-}
-@media (min-width: 992px) {
-  .car .modal-dialog.edit-details-modal {
-    width: 967px;
-  }
-  .car .expired-panel #modal-commencement-date-get-quotes {
-    width: 75%;
-  }
-}
-@media (min-width: 1200px) {
-  .car .modal-dialog.edit-details-modal {
-    width: 1171px;
-  }
-}
-.car .edit-details-wrapper.expired-quote p.edit-details-intro-text {
-  display: none;
-}
-.car .edit-details-wrapper.expired-quote .panel.accordion-panel.expired-panel {
-  margin-top: 0;
-  display: block;
-}
-.car .edit-details-wrapper.expired-quote .panel.accordion-panel.expired-panel .column p {
-  font-weight: bold;
-  text-align: right;
-}
-@media (min-width: 768px) {
-  .car .edit-details-wrapper.expired-quote {
-    padding: 15px 0 0 0;
-  }
-  .car .edit-details-wrapper.expired-quote #edit-details-panel-group {
-    border-top: 1px solid #808080;
-    background-color: #dfdfdf;
-    padding-bottom: 15px;
-    margin-top: 9px;
-  }
-}
-@media (min-width: 1200px) {
-  .car .edit-details-wrapper.expired-quote #edit-details-panel-group {
-    padding-top: 9px;
-  }
-  .car .edit-details-wrapper.expired-quote .icon-arrow-right {
-    font-size: 14px;
-    color: #333333;
-    margin: 0;
-    height: auto;
-  }
-}
-@media (max-width: 767px) {
-  .car .edit-details-wrapper.expired-quote .expired-panel .column p {
-    text-align: left !important;
-  }
 }
 .journeyEngineLoader {
   min-height: 500px;

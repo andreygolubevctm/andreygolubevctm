@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import com.ctm.dao.RankingDetailsDao;
-import com.ctm.dao.TransactionDao;
-import com.ctm.dao.TransactionDetailsDao;
+import com.ctm.dao.transaction.TransactionDao;
+import com.ctm.dao.transaction.TransactionDetailsDao;
 import com.ctm.dao.life.OccupationsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.EmailDetailsException;

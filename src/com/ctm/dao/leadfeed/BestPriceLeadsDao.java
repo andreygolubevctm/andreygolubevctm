@@ -17,7 +17,9 @@ import com.ctm.model.content.Content;
 import com.ctm.model.content.ContentSupplement;
 import com.ctm.model.leadfeed.LeadFeedData;
 import com.ctm.model.leadfeed.LeadFeedRootTransaction;
+import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.Vertical;
+import com.ctm.services.ApplicationService;
 import com.ctm.services.ContentService;
 
 public class BestPriceLeadsDao {
@@ -31,7 +33,6 @@ public class BestPriceLeadsDao {
 	 * Query the database for leads
 	 *
 	 * @param brandCodeId
-	 * @param verticalId
 	 * @param verticalCode
 	 * @param minutes
 	 * @param serverDate
@@ -66,7 +67,7 @@ public class BestPriceLeadsDao {
 					stmt = dbSource.getConnection().prepareStatement(
 						"SELECT h.rootId AS rootId, h.TransactionId AS transactionId, t.type AS type, h.styleCode, h.ipAddress " +
 						"FROM aggregator.transaction_header AS h " +
-						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('A','R','BP','CB') " +
+						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CB','A') " +
 						"WHERE h.ProductType = ? AND h.styleCodeId = ? " +
 						// Next line is important as it greatly reduces the size of the recordset and query speed overall
 						"AND t.date >= DATE(CURRENT_DATE - INTERVAL " + minutes_max.toString() + " MINUTE) " +
@@ -90,15 +91,15 @@ public class BestPriceLeadsDao {
 							if(tran.getHasLeadFeed() == false) {
 								stmt = dbSource.getConnection().prepareStatement(
 									"SELECT r.TransactionId AS transactionId, p1.Value AS leadNo, " +
-									"p2.Value AS leadInfo, p3.Value AS brandCode, " +
+									"p2.Value AS leadInfo, p3.Value AS brandCode, p1.productId, " +
 									// This sub-select will count all leads for the rootID which will eliminate
 									// sending duplicates for transactions that span more than one reporting
-									// period - ie greater than the delay to source leads
+									// period - ie greater than the delay to source leads (in previous select)
 									"(SELECT COUNT(type) FROM ctm.touches WHERE transaction_id IN (" +
 									"		SELECT TransactionId FROM aggregator.transaction_header " +
 									"		WHERE rootId = '" + tran.getId() + "'" +
 									"	) " +
-									"	AND type IN ('BP','CB')" +
+									"	AND type IN ('BP','CB','A')" +
 									") AS existingLeadCount " +
 									"FROM aggregator.ranking_details AS r " +
 									"LEFT JOIN aggregator.results_properties AS p1 " +
@@ -123,16 +124,15 @@ public class BestPriceLeadsDao {
 								Boolean searching = true;
 								LeadFeedData leadData = null;
 								while(resultSet.next() && searching == true) {
-									String[] leadConcat = resultSet.getString("leadInfo").split("\\|\\|", -1);
 									Long transactionId = resultSet.getLong("transactionId");
+									String[] leadConcat = resultSet.getString("leadInfo").split("\\|\\|", -1);
 									if(leadConcat.length == 4) {
 										String curLeadNumber = resultSet.getString("leadNo");
 										String curIdentifier = leadConcat[2];
 										String phoneNumber = leadConcat[1];
-										String phoneTest = "0411111111,0755254545,0712345678";
 										// Only proceed if a phone number has been provided otherwise the
 										// user has not opted in and no lead should be generated
-										if(!phoneNumber.isEmpty() && !phoneTest.contains(phoneNumber)) {
+										if(!phoneNumber.isEmpty()) {
 											// Create a lead data object only for the most recent identifer
 											// Eg for car only get the latest lead for the first redbook code (aka identifier) found
 											if(identifier == null || (curIdentifier.equals(identifier) && !curLeadNumber.equals(leadNumber))) {
@@ -145,6 +145,7 @@ public class BestPriceLeadsDao {
 												String brandCode = resultSet.getString("brandCode");
 
 												leadData = new LeadFeedData();
+												leadData.setEventDate(serverDate);
 												leadData.setPartnerBrand(brandCode);
 												leadData.setTransactionId(transactionId);
 												leadData.setClientName(fullName);
@@ -152,15 +153,21 @@ public class BestPriceLeadsDao {
 												leadData.setPartnerBrand(brandCode);
 												leadData.setPartnerReference(leadNumber);
 												leadData.setState(state);
-												leadData.setBrandCode(tran.getStyleCode());
 												leadData.setClientIpAddress(tran.getIpAddress());
+												leadData.setProductId(resultSet.getString("productId"));
+
+												Brand brand = ApplicationService.getBrandByCode(tran.getStyleCode());
+												leadData.setBrandId(brand.getId());
+												leadData.setBrandCode(brand.getCode());
+												leadData.setVerticalCode(verticalCode);
+												leadData.setVerticalId(brand.getVerticalByCode(verticalCode).getId());
 
 											// Escape current loop as the identifier has changed and we already have our lead data
 											} else {
 												searching = false;
 											}
 										} else {
-											logger.info("[Lead info] Skipped " + transactionId + " as no optin or email/phone flagged as testing");
+											logger.info("[Lead info] Skipped " + transactionId + " as no optin for call");
 										}
 									} else {
 										logger.error("leadInfo field in results properties (for " + transactionId + ") has an invalid number of elements (" + leadConcat.length + ")");

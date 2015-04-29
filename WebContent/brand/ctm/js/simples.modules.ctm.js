@@ -1425,6 +1425,58 @@
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, log = meerkat.logging.info;
+    var currentTransactionId = 0, intervalSeconds = 60, timer;
+    function init() {
+        meerkat.messaging.subscribe(meerkat.modules.events.simplesInterface.TRANSACTION_ID_CHANGE, function tranIdChange(obj) {
+            if (obj === undefined) {
+                currentTransactionId = 0;
+            } else {
+                currentTransactionId = obj;
+            }
+        });
+        start(intervalSeconds);
+    }
+    function start(_intervalSeconds) {
+        var intervalMs = _intervalSeconds * 1e3;
+        clearInterval(timer);
+        timer = setInterval(tickle, intervalMs);
+        log("Locker started @ " + _intervalSeconds + " second interval.");
+    }
+    function stop() {
+        clearInterval(timer);
+        log("Locker stopped.");
+    }
+    function tickle() {
+        if (currentTransactionId > 0) {
+            meerkat.modules.comms.get({
+                url: "simples/transactions/lock.json",
+                cache: false,
+                errorLevel: "silent",
+                useDefaultErrorHandling: false,
+                timeout: 5e3,
+                data: {
+                    transactionId: currentTransactionId
+                },
+                onError: function onError(obj, txt, errorThrown) {
+                    meerkat.modules.errorHandling.error({
+                        page: "simplesTransactionLocker.js",
+                        errorLevel: "silent",
+                        description: "failed to update lock " + txt,
+                        data: errorThrown
+                    });
+                }
+            });
+        }
+    }
+    meerkat.modules.register("simplesTransactionLocker", {
+        init: init,
+        start: start,
+        stop: stop
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat;
     var template = false, $containers = false, intervalSeconds = 60, timer = false, baseUrl = "";
     function init() {

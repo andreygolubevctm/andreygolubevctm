@@ -7,12 +7,30 @@
 
 <form class="edit-details-form"><div class="edit-details-wrapper scrollable"></div></form>
 
-<core:js_template id="edit-details-template">
-	<div class="visible-lg" style="float:left;">
+<c:set var="introPanelStart">
+	<div class="visible-lg edit-details-intro-icon" style="float:left;">
 		<span class="icon {{= icon }}"></span>
 	</div>
-	<p class="hidden-xs push-top-15">Use the handy links below to edit your details and update your results.</p>
+	<p class="hidden-xs edit-details-intro-text">Use the handy links below to edit your details and update your results.</p>
+</c:set>
+
+<c:set var="introPanelEnd">
 	<div class="clearfix"></div>
+</c:set>
+
+<c:set var="introPanel">${introPanelStart}${introPanelEnd}</c:set>
+
+<c:if test="${not empty param.action and (param.action eq 'expired' or param.action eq 'promotion')}">
+	<%-- Additional template copy --%>
+	<c:set var="expiredPanel">
+		<form_new:expired_quote_summary xpath="home/startDate" action="${param.action}" />
+	</c:set>
+</c:if>
+
+<core:js_template id="edit-details-template">
+	${introPanel}
+	<div class="clearfix"></div>
+	${expiredPanel}
 	<div class="panel-group accordion accordion-xs" id="edit-details-panel-group">
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-4">
 			<div class="accordion-heading visible-xs active-panel">
