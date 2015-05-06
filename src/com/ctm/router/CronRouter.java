@@ -37,7 +37,8 @@ import com.ctm.services.homeloan.HomeLoanService;
 		"/cron/20minutes.json",
 		"/cron/15minutes.json",
 		"/cron/10minutes.json",
-		"/cron/5minutes.json"
+		"/cron/5minutes.json",
+		"/cron/1minute.json"
 })
 public class CronRouter extends HttpServlet {
 
@@ -90,6 +91,8 @@ public class CronRouter extends HttpServlet {
 				frequency = "10minutes";
 			} else if(uri.endsWith("/cron/5minutes.json")) {
 				frequency = "5minutes";
+			} else if(uri.endsWith("/cron/1minute.json")) {
+				frequency = "1minute";
 			}
 
 			if(frequency != null) {
