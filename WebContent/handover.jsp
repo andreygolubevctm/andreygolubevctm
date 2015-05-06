@@ -55,6 +55,25 @@
 		<c:set var="productHandoverUrl" value="${product.handoverUrl}" scope="request" />
 		<go:setData xpath="creditcard/handover/productCode" dataVar="data" value="${productID}" />
 		<go:setData xpath="creditcard/trackingKey" dataVar="data" value="${trackingKey}" />
+
+
+		<c:set var="productHandoverUrlWithParams" scope="request"><c:out value="${productHandoverUrl}" escapeXml="false" /></c:set>
+		<c:set var="escapeCharacter" value="?" />
+		<c:if test="${fn:contains(productHandoverUrl, '?')}">
+			<c:set var="escapeCharacter" value="&" />
+		</c:if>
+		<c:set var="vertical" value="${fn:toLowerCase(vertical)}" />
+		<c:set var="campaignIdXpath" value="${vertical}/tracking/cid" />
+		<c:choose>
+			<c:when test="${productBrandCode eq 'NABA' or productBrandCode eq 'ANZ'}">
+				<c:set var="productHandoverUrlWithParams" value="${productHandoverUrlWithParams}/pubref:brand=${productBrandCode}|productID=${productID}|campaignID=${data[campaignIdXpath]}|transactionID=${data.current.transactionId}" scope="request" />
+			</c:when>
+			<c:otherwise>
+				<c:set var="productHandoverUrlWithParams" value="${productHandoverUrlWithParams}${escapeCharacter}brand=${productBrandCode}&productID=${productID}&campaignID=${data[campaignIdXpath]}&transactionID=${data.current.transactionId}" scope="request" />
+			</c:otherwise>
+		</c:choose>
+
+
 	</c:otherwise>
 </c:choose>
 
@@ -113,6 +132,9 @@
 		<core_new:journey_tracking />
 		<core_new:tracking_key />
 		<div class="hiddenFields">
+			<c:if test="${productBrandCode eq 'AMEX'}">
+				<img src="${fn:replace(productHandoverUrlWithParams, '/jump/','/ad/')}" border="0" width="1" height="1" alt="Advertisement" />
+			</c:if>
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
 	</jsp:body>

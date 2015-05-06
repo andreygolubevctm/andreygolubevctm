@@ -368,8 +368,8 @@
 
 		<c:set var="firstName" value="${data['creditcard/name']}" />
 		<c:set var="lastName" value="" />
-		<c:if test="${not empty data['creditcard/optIn']}">
-			<c:set var="optinMarketing" value ="marketing=${data['creditcard/optIn']}"/>
+		<c:if test="${not empty data['creditcard/marketing']}">
+			<c:set var="optinMarketing" value ="marketing=${data['creditcard/marketing']}" />
 		</c:if>
 	</c:when>
 

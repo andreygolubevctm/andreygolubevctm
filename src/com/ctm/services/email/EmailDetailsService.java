@@ -126,7 +126,7 @@ public class EmailDetailsService {
 				//Session probably died recoverable
 				logger.warn(e);
 			}
-			writeNewEmailDetails(transId , emailMaster);
+			emailMaster = writeNewEmailDetails(transId , emailMaster);
 		}
 		return emailMaster.getEmailId();
 	}

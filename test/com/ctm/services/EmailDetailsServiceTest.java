@@ -129,6 +129,29 @@ public class EmailDetailsServiceTest {
 
 	}
 
+
+	@Test
+	public void testHandleAddingEmailToDB() throws SQLException, DaoException, EmailDetailsException {
+
+		String emailAddress= "test@gmail.com";
+		EmailMaster emailMasterAdded = new EmailMaster();
+		int expectedEmailId = 10;
+		emailMasterAdded.setEmailId(10);
+		emailMasterAdded.setEmailAddress(emailAddress);
+		when(emailMasterDao.writeEmailDetails((EmailMaster) anyObject())).thenReturn(emailMasterAdded);
+
+		String emailPassword = "";
+		String source = "";
+		String firstName = "";
+		String lastName = "";
+		String transactionIdString = "";
+		int emailId = emailDetailsService.handleWriteEmailDetailsFromJsp(emailAddress, emailPassword, source, firstName,
+				lastName, transactionIdString);
+
+		assertEquals(expectedEmailId, emailId);
+
+	}
+
 	@Test
 	public void testHandleNotInDB() throws SQLException, DaoException, EmailDetailsException {
 
