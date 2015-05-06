@@ -238,6 +238,75 @@ XML PARSE AND SQL UPDATE
 				
 		<c:if test="${empty errorPool}">
 			<c:catch var="error">
+				<sql:query var="result_u">
+					SELECT DISTINCT fuel_results.SiteId FROM aggregator.fuel_results
+						LEFT JOIN aggregator.fuel_sites ON aggregator.fuel_results.SiteId = aggregator.fuel_sites.SiteId
+					WHERE aggregator.fuel_sites.SiteId IS NOT NULL AND fuel_results.UpdateId = ?;
+					<sql:param>${updateId}</sql:param>
+				</sql:query>
+			</c:catch>
+
+			<%-- ARE THERE ANY NEW SITES? IF SO UPDATE THEM --%>
+			<%-- Capture the error and set the Status OR add to the count --%>
+			<c:choose>
+				<c:when test="${not empty error}">
+					<c:set var="errorPool" value="${errorPool} <error s='select sites'>${error.rootCause}</error>" />
+				</c:when>
+				<c:otherwise>
+					<%-- FOR EACH ROW RESULT / UPDATE SOME NEW SQL --%>
+					<c:forEach var="row" items="${result_u.rows}">
+
+						<c:set var="xID" value="${row.SiteId}" scope="page" />
+						<x:set select="$data//Result[SiteID=$pageScope:xID][1]" var="res" />
+						<c:set var="state"><x:out select="$res/StateID" /></c:set>
+						<c:choose>
+							<c:when test="${state == '1'}">
+								<c:set var="state" value="QLD" />
+							</c:when>
+							<c:when test="${state == '2'}">
+								<c:set var="state" value="NSW" />
+							</c:when>
+							<c:when test="${state == '3'}">
+								<c:set var="state" value="VIC" />
+							</c:when>
+							<c:when test="${state == '4'}">
+								<c:set var="state" value="SA" />
+							</c:when>
+							<c:when test="${state == '5'}">
+								<c:set var="state" value="WA" />
+							</c:when>
+							<c:when test="${state == '6'}">
+								<c:set var="state" value="ACT" />
+							</c:when>
+							<c:when test="${state == '7'}">
+								<c:set var="state" value="TAS" />
+							</c:when>
+							<c:when test="${state == '8'}">
+								<c:set var="state" value="NT" />
+							</c:when>
+							<c:otherwise>
+							<c:set var="state" value="UNK" />
+							</c:otherwise>
+						</c:choose>
+
+						<c:catch var="error2a">
+							<sql:update var="result2">
+								UPDATE aggregator.fuel_sites
+								SET Name = ?, Brand = ?
+								WHERE SiteId = ?;
+								<sql:param><x:out select="$res/Name" /></sql:param>
+								<sql:param><x:out select="$res/Brand" /></sql:param>
+								<sql:param>${row.SiteId}</sql:param>
+							</sql:update>
+						</c:catch>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</c:if>
+
+
+		<c:if test="${empty errorPool}">
+			<c:catch var="error">
 				<sql:query var="result">
 					SELECT DISTINCT fuel_results.SiteId FROM aggregator.fuel_results 
 					     LEFT JOIN aggregator.fuel_sites ON aggregator.fuel_results.SiteId = aggregator.fuel_sites.SiteId

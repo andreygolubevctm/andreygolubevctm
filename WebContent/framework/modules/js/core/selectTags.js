@@ -50,6 +50,8 @@
 				_onOptionSelect(this);
 			});
 		});
+
+
 	}
 
 	// This is currently used specific for the purposes of the country select tag on Travel.
@@ -97,9 +99,13 @@
 		
 		selectedTextHTML = '<span>' + selectedTextHTML + '</span>';
 
-		if($selected.not('[readonly]').length && !$list.find('li:contains("' + selectedText + '")').length) {
+		var isAlreadySelected = $list.find('li span').filter(function(){
+			return optionSelectedIcon + $(this).text() === selectedText; 
+		}).length;
+
+		if($selected.not('[readonly]').length && !isAlreadySelected) {
 			$select[0].selectedIndex = 0;
-			
+
 			// Find options by value because we may have multiple opt-groups which cause the same value
 			// to be used multiple times
 			$select.find('option[value="' + value + '"]').text(optionSelectedIcon + selectedText).attr('disabled', 'disabled');
@@ -128,6 +134,12 @@
 						) 
 						.fadeIn(fadeSpeed, function() {
 							_updateHiddenInputs();
+
+							// fix for browsers that don't reset the dropdown eg iOS + Chrome Mobile v 42
+							if (!document.getElementById($select.attr('id')).options[0].selected) {
+								document.getElementById($select.attr('id')).options[0].selected = true;
+							}
+
 						})
 				);
 			}, 75);

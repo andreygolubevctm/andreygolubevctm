@@ -51,9 +51,9 @@
 					</div>
 			</ui:bubble>
 			<layout:slide_content>
-				<%-- PROVIDER TESTING
+				<%-- PROVIDER TESTING --%>
 				<agg:provider_testing xpath="${pageSettings.getVerticalCode()}" displayFullWidth="true" showNumberofResults="false" showExpectedCoverDate="false" />
---%>
+
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_new:fieldset legend="Your Cover" id="yourcoverfs">
 					<travel:your_cover />
@@ -68,7 +68,7 @@
 						xpath="travel/destinations" 
 						xpathhidden="travel/destination" 
 						label="What Country(ies) are you going to?"
-						title="Where are you travelling?" 
+						title="Where are you travelling?"
 						validationErrorPlacementSelector=".travel_details_destinations"
 						helpId="213"
 						/>

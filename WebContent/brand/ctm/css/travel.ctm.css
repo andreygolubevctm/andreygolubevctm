@@ -748,39 +748,52 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
     font-size: 16px;
   }
 }
-@media (min-width: 768px) {
+.morePromptContainer {
+  z-index: 1000;
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  right: inherit;
+  margin-left: -131px;
+}
+@media (max-width: 767px) {
   .morePromptContainer {
-    z-index: 1000;
-    text-align: center;
-    position: fixed;
-    bottom: 0px;
-    margin-top: 15px;
+    left: inherit;
+    right: 10px;
+    margin: 10px;
   }
+}
+.morePromptCell {
+  text-align: center;
+  line-height: 31px;
+}
+@media (max-width: 767px) {
   .morePromptCell {
-    line-height: 31px;
+    line-height: 35px;
   }
-  .morePromptCell:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
-  .morePromptCell a {
-    text-decoration: none;
-  }
-  .morePromptCell .icon-angle-down,
-  .morePromptCell .icon-angle-up {
-    color: #fff;
-    vertical-align: middle;
-    margin: 0 8px;
-  }
+}
+.morePromptCell a {
+  text-decoration: none;
+}
+.morePromptCell .icon-angle-down,
+.morePromptCell .icon-angle-up {
+  color: #fff;
+  vertical-align: middle;
+  margin: 0 8px;
+}
+.morePromptCell .morePromptLink {
+  background: #1c3e93;
+  width: 262px;
+  height: 31px;
+  color: #FFF;
+  display: inline-block;
+  bottom: 0;
+  position: fixed;
+}
+@media (max-width: 767px) {
   .morePromptCell .morePromptLink {
-    background: #1c3e93;
-    width: 262px;
-    height: 31px;
-    color: #FFF;
-    margin: 0 8px;
-    display: inline-block;
+    width: 35px;
+    height: 35px;
   }
 }
 .travelCompanyLogo {

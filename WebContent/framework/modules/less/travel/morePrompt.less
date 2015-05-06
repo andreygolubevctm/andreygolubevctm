@@ -1,37 +1,48 @@
 //Non XS modes:
-@media(@sm) {
-	.morePromptContainer {
-	    z-index: 1000;
-		text-align:center;
-		position:fixed;
-		bottom:0px;
-	  	margin-top: 15px;
-	}
+@promptWidthSm: 262px;
+.morePromptContainer {
+  z-index: 1000;
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  right: inherit;
+  margin-left: -(@promptWidthSm/2);
+  @media(@xs-only) {
+    left: inherit;
+    right: 10px;
+    margin: 10px;
+  }
+}
 
-	.morePromptCell {
-		line-height: 31px;
-		&:before {
-			.beforeVerticalCentering();
-		}
+.morePromptCell {
+  text-align: center;
+  line-height: 31px;
+  @media(@xs-only) {
+    line-height: 35px;
+  }
 
-		a {
-			text-decoration: none;
-		}
+  a {
+    text-decoration: none;
+  }
 
-		.icon-angle-down,
-		.icon-angle-up {
-			color: #fff;
-			vertical-align: middle;
-			margin: 0 8px;
-		}
+  .icon-angle-down,
+  .icon-angle-up {
+    color: #fff;
+    vertical-align: middle;
+    margin: 0 8px;
+  }
 
-		.morePromptLink {
-			background: @results-morePromptLink-bg-color;
-			width: 262px;
-			height: 31px;
-			color: #FFF;
-			margin: 0 8px;
-			display:inline-block;
-		}
-	}
+  .morePromptLink {
+    background: @results-morePromptLink-bg-color;
+    width: @promptWidthSm;
+    height: 31px;
+    color: #FFF;
+    display: inline-block;
+    bottom: 0;
+    position: fixed;
+    @media(@xs-only) {
+      width: 35px;
+      height: 35px;
+    }
+  }
 }

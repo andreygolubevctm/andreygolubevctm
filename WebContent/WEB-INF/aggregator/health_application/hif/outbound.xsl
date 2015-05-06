@@ -5,9 +5,6 @@
 	xmlns:xalan="http://xml.apache.org/xalan"
 	exclude-result-prefixes="xalan">
 
-	<xsl:variable name="LOWERCASE" select="'abcdefghijklmnopqrstuvwxyz'" />
-	<xsl:variable name="UPPERCASE" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
-
 	<!-- PARAMETERS -->
 	<xsl:param name="today" />
 	<xsl:param name="overrideEmail"></xsl:param>
@@ -19,6 +16,7 @@
 
 	<!-- IMPORTS -->
 	<xsl:include href="../utils.xsl"/>
+	<xsl:include href="../../includes/utils.xsl"/>
 
 	<xsl:variable name="startDate">
 		<xsl:call-template name="format_date">
@@ -115,13 +113,16 @@
 
 	<!-- MAIN TEMPLATE -->
 	<xsl:template match="/health">
+		<!-- Force First letter to be a Capital then all lowercase and strip out special characters from the whole string -->
 		<xsl:variable name="primaryFirstname">
-			<xsl:value-of select="translate(substring(application/primary/firstname, 1, 1), $LOWERCASE, $UPPERCASE)" />
-			<xsl:value-of select="translate(substring(application/primary/firstname, 2), $UPPERCASE, $LOWERCASE)" />
+			<xsl:call-template name="format_person_name">
+				<xsl:with-param name="name" select="application/primary/firstname," />
+			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="primarySurname">
-			<xsl:value-of select="translate(substring(application/primary/surname, 1, 1), $LOWERCASE, $UPPERCASE)" />
-			<xsl:value-of select="translate(substring(application/primary/surname, 2), $UPPERCASE, $LOWERCASE)" />
+			<xsl:call-template name="format_person_name">
+				<xsl:with-param name="name" select="application/primary/surname," />
+			</xsl:call-template>
 		</xsl:variable>
 		<!-- FUND PRODUCT SPECIFIC VALUES -->
 		<soap:Envelope xmlns:hsl="http://HSL.OMS.Public.API.Service" xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
@@ -176,14 +177,16 @@
 				</xsl:call-template>
 			</Birthdate>
 
-								<xsl:variable name="medicareFirstname">
-									<xsl:value-of select="translate(substring(payment/medicare/firstName, 1, 1), $LOWERCASE, $UPPERCASE)" />
-									<xsl:value-of select="translate(substring(payment/medicare/firstName, 2), $UPPERCASE, $LOWERCASE)" />
-								</xsl:variable>
-								<xsl:variable name="medicareSurname">
-									<xsl:value-of select="translate(substring(payment/medicare/surname, 1, 1), $LOWERCASE, $UPPERCASE)" />
-									<xsl:value-of select="translate(substring(payment/medicare/surname, 2), $UPPERCASE, $LOWERCASE)" />
-								</xsl:variable>
+							<xsl:variable name="medicareFirstname">
+								<xsl:call-template name="format_person_name">
+									<xsl:with-param name="name" select="payment/medicare/firstName" />
+								</xsl:call-template>
+							</xsl:variable>
+							<xsl:variable name="medicareSurname">
+								<xsl:call-template name="format_person_name">
+									<xsl:with-param name="name" select="payment/medicare/surname," />
+								</xsl:call-template>
+							</xsl:variable>
 
 							<MediCardNo><xsl:value-of select="translate(payment/medicare/number,' ','')" /></MediCardNo>
 							<MediCardExpDate>
@@ -251,12 +254,14 @@
 						</Person>
 						<xsl:if test="application/partner/firstname != ''">
 							<xsl:variable name="partnerFirstname">
-								<xsl:value-of select="translate(substring(application/partner/firstname, 1, 1), $LOWERCASE, $UPPERCASE)" />
-								<xsl:value-of select="translate(substring(application/partner/firstname, 2), $UPPERCASE, $LOWERCASE)" />
+								<xsl:call-template name="format_person_name">
+									<xsl:with-param name="name" select="application/partner/firstname," />
+								</xsl:call-template>
 							</xsl:variable>
 							<xsl:variable name="partnerSurname">
-								<xsl:value-of select="translate(substring(application/partner/surname, 1, 1), $LOWERCASE, $UPPERCASE)" />
-								<xsl:value-of select="translate(substring(application/partner/surname, 2), $UPPERCASE, $LOWERCASE)" />
+								<xsl:call-template name="format_person_name">
+									<xsl:with-param name="name" select="application/partner/surname," />
+								</xsl:call-template>
 							</xsl:variable>
 							<Person>
 								<PersonID>0</PersonID>
@@ -330,10 +335,18 @@
 											<xsl:when test="title='MRS'">Mrs</xsl:when>
 											<xsl:when test="title='MISS'">Miss</xsl:when>
 											<xsl:when test="title='MS'">Ms</xsl:when>
-					</xsl:choose>
-				</Title>
-				<FirstName><xsl:value-of select="firstName" /></FirstName>
-				<Surname><xsl:value-of select="lastname" /></Surname>
+										</xsl:choose>
+									</Title>
+									<FirstName>
+										<xsl:call-template name="format_person_name">
+											<xsl:with-param name="name" select="firstName" />
+										</xsl:call-template>
+									</FirstName>
+									<Surname>
+										<xsl:call-template name="format_person_name">
+											<xsl:with-param name="name" select="lastname" />
+										</xsl:call-template>
+									</Surname>
 									<Gender>
 										<xsl:choose>
 											<xsl:when test="title='MR'">M</xsl:when>

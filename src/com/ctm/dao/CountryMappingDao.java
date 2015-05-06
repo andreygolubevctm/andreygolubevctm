@@ -38,7 +38,8 @@ public class CountryMappingDao {
 						"    IF(regionValue IS NULL or regionValue = '', '', GROUP_CONCAT(regionValue ORDER by priority ASC)) AS selectedRegions, \n" +
 						"    IF(regionValue IS NULL or regionValue = '', 'N', 'Y') AS hasRegions, \n" +
 						"    IF(handoverValue IS NULL or handoverValue = '', '', GROUP_CONCAT(handoverValue  ORDER by priority ASC)) AS handoverMappings, " +
-						"    IF(handoverValue IS NULL or handoverValue = '', 'N', 'Y') AS hasHandoverValue " +
+						"    IF(handoverValue IS NULL or handoverValue = '', 'N', 'Y') AS hasHandoverValue, " +
+						"	 IF (COUNT(isoCode) = "+countries.length+", 'Y', 'N')  AS isAvailable "+
 						"FROM ctm.country_provider_mapping  cpm\n" +
 						"INNER JOIN ctm.provider_master pm ON pm.providerId = cpm.providerId\n" +
 						"WHERE isoCode IN ("+SimpleDatabaseConnection.createSqlArrayParams(countries.length)+") \n" +
@@ -54,18 +55,22 @@ public class CountryMappingDao {
 			ResultSet countryMappingResult = stmt.executeQuery();
 
 			while (countryMappingResult.next()) {
+				// this bit of code prevents a quote being shown for providers that do not provider a quote to countries that are not eligible. This includes countries
+				// that are selected as part of a multi-selection or as a single destination
+				if (countryMappingResult.getString("isAvailable").charAt(0) == 'Y') {
 
-				CountryMapping mappedEntries = new CountryMapping();
-				mappedEntries.setProviderCode(countryMappingResult.getString("providerCode"));
-				mappedEntries.setProductGroup(countryMappingResult.getInt("productGroup"));
-				mappedEntries.setSelectedCountries(countryMappingResult.getString("selectedCountries"));
-				mappedEntries.setHasCountries(countryMappingResult.getString("hasCountries").charAt(0));
-				mappedEntries.setSelectedRegions(countryMappingResult.getString("selectedRegions"));
-				mappedEntries.setHasRegions(countryMappingResult.getString("hasRegions").charAt(0));
-				mappedEntries.setHandoverMappings(countryMappingResult.getString("handoverMappings"));
-				mappedEntries.setHasHandoverValues(countryMappingResult.getString("hasHandoverValue").charAt(0));
+					CountryMapping mappedEntries = new CountryMapping();
+					mappedEntries.setProviderCode(countryMappingResult.getString("providerCode"));
+					mappedEntries.setProductGroup(countryMappingResult.getInt("productGroup"));
+					mappedEntries.setSelectedCountries(countryMappingResult.getString("selectedCountries"));
+					mappedEntries.setHasCountries(countryMappingResult.getString("hasCountries").charAt(0));
+					mappedEntries.setSelectedRegions(countryMappingResult.getString("selectedRegions"));
+					mappedEntries.setHasRegions(countryMappingResult.getString("hasRegions").charAt(0));
+					mappedEntries.setHandoverMappings(countryMappingResult.getString("handoverMappings"));
+					mappedEntries.setHasHandoverValues(countryMappingResult.getString("hasHandoverValue").charAt(0));
 
-				providerCountries.add(mappedEntries);
+					providerCountries.add(mappedEntries);
+				}
 			}
 
 		} catch (SQLException | NamingException e) {

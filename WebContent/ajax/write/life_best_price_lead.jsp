@@ -21,13 +21,14 @@
 		AND ProductType IN ("LIFE", "IP")
 		AND type = "R"
 		AND rootId NOT IN (
-			SELECT transaction_header.rootId
-			FROM ctm.touches
-			JOIN aggregator.transaction_header ON transaction_header.transactionId = touches.transaction_id
-			WHERE ProductType IN ("LIFE", "IP")
-			AND type IN ("C", "CB", "LF")
+			SELECT th.rootId
+			FROM aggregator.transaction_header th
+			JOIN ctm.touches t ON th.transactionId = t.transaction_id
+			WHERE th.ProductType IN ("LIFE", "IP")
+			AND t.type IN ("C", "CB", "LF")
+			GROUP BY th.rootId
 		)
-		GROUP BY rootId;
+		GROUP BY transaction_header.rootId;
 	</sql:query>
 </c:catch>
 
@@ -120,7 +121,9 @@
 						<c:otherwise>
 							<%-- Load the config for the contact lead sender --%>
 							<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
-							
+
+							<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="delay" />
+
 							<%-- SEND LIFEBROKER LEAD --%>
 							<go:soapAggregator  config = "${config}"
 												transactionId = "${result.transaction_id}"
@@ -135,7 +138,7 @@
 					</c:choose>
 					
 					<c:set var="leadSentTo" value="${company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
-					<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/leadSentTo" value="${leadSentTo}" />
+					<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/bestPriceLeadSentTo" value="${leadSentTo}" />
 					<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/emailSentBy" value="${leadSentTo}" />
 					<go:setData dataVar="data" xpath="current/transactionId" value="${result.transaction_id}" />
 					<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" />

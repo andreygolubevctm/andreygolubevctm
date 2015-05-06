@@ -34,6 +34,11 @@
 				<%-- add external testing ip address checking and loading correct config and send quotes --%>
 				<c:set var="tranId" value="${data.current.transactionId}" />
 				<go:setData dataVar="data" xpath="${vertical}/transactionId" value="${tranId}" />
+				
+				<c:if test="${vertical eq 'ip'}">
+					<go:setData dataVar="data" xpath="${vertical}/sendRealData" value="true" />
+				</c:if>
+				
 				<%-- Load the config and send quotes to the aggregator gadget --%>
 				<c:import var="config" url="/WEB-INF/aggregator/life/config_results_${vertical}.xml" />
 

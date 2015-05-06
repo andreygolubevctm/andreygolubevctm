@@ -1,6 +1,0 @@
-CtM,provide_id,provider_name,provider_short_name,,,,
-provider,285,Easy Travel Insurance,Easy Travel Insurance,,,,
-products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?,
-product,38,Easy Travel Insurance AMT Worldwide (60 days),1,0,0,1,
-product,37,Easy Travel Insurance AMT Worldwide Excl. USA (60 days),1,0,0,1,
-properties_headings,ProductId,PropertyId,Value,Text,benefitOrder,,Label Reference

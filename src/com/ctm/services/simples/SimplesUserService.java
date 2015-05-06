@@ -68,9 +68,9 @@ public class SimplesUserService {
 	 * @param extension User's phone extension e.g. 1234
 	 * @param displayName User's full name e.g. Leto Kauler
 	 *
-	 * @return The 'uid' of the user from our database.
+	 * @return User user.
 	 */
-	public int loginUser(String username, String extension, String displayName) throws Exception {
+	public User loginUser(String username, String extension, String displayName) throws Exception {
 
 		User user = new User();
 		user.setId(0);
@@ -85,7 +85,7 @@ public class SimplesUserService {
 			throw new Exception("loginUser() failed to produce a valid user ID (uid)");
 		}
 
-		return user.getId();
+		return user;
 	}
 
 	/**

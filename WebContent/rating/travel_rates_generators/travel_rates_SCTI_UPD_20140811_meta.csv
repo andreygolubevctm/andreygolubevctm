@@ -1,7 +1,0 @@
-CtM,provide_id,provider_name,provider_short_name,,,
-provider,304,Southern Cross Travel,Southern Cross Travel,,,
-products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?
-product,193,TravelCare,1,0,0,1
-product,194,TravelCare AMT NZ  Indonesia  South Pacific (90 days),1,0,0,1
-product,195,TravelCare AMT Limited World Excl USA Canada (90 days),1,0,0,1
-product,196,TravelCare AMT World Inc. USA Canada (90 days),1,0,0,1

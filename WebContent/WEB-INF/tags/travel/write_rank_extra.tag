@@ -22,10 +22,20 @@
 	<c:set var="search" value="'" />
 	<c:set var="replace" value="\\'" />
 
-	<c:if test="${empty data.coverLevelTab}">
+	<%-- This should be made core when cover level tabs is available on more verticals --%>
+	<c:if test="${rankPosition eq 0}">
 		<%-- set the cover level tab --%>
 		<c:set var="coverLevelParamName" value="coverLevelType${rankPosition}" />
 		<go:setData dataVar="data" xpath="travel/coverLevelTab" value="${param[coverLevelParamName]}" />
+	</c:if>
+
+
+	<c:if test="${rankPosition eq 0 and not empty data.travel.coverLevelTab}">
+		<sql:update>
+			INSERT INTO aggregator.ranking_details
+			(TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value)
+			VALUES (${transactionId},${calcSequence},${rankSequence},${rankPosition},'coverLevelType','${data.travel.coverLevelTab}')
+		</sql:update>
 	</c:if>
 
 	<%-- Located expected params using the suffixes list and add to rankings_data --%>

@@ -90,8 +90,6 @@
 					</xsl:choose>
 				</xsl:variable>
 
-				<xsl:message>SCTI <xsl:value-of select="$destinationCode" /></xsl:message>
-
 				<xsl:element name="price">
 					<xsl:attribute name="service"><xsl:value-of select="$service" /></xsl:attribute>
 					<xsl:attribute name="productId">

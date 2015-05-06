@@ -28,8 +28,9 @@ import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
 import com.ctm.model.Provider;
 import com.ctm.services.leadfeed.LeadFeedService.LeadType;
+import com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus;
 
-public abstract class AGISLeadFeedService extends WebServiceGatewaySupport{
+public abstract class AGISLeadFeedService extends WebServiceGatewaySupport implements IProviderLeadFeedService{
 
 	private static Logger logger = Logger.getLogger(AGISLeadFeedService.class.getName());
 
@@ -44,14 +45,14 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport{
 	 * sendLeadFeedRequest() the base method called which generates a new lead feed.
 	 *
 	 */
-	public String sendLeadFeedRequest(LeadType leadType, LeadFeedData leadData) throws LeadFeedException {
+	public LeadResponseStatus process(LeadType leadType, LeadFeedData leadData) throws LeadFeedException {
 
-		String feedResponse = null;
+		LeadResponseStatus feedResponse = LeadResponseStatus.FAILURE;
 		try {
 
 			if(leadType == LeadType.CALL_DIRECT) {
 				// Return OK as we still want to record touches etc
-				feedResponse = "ok";
+				feedResponse = LeadResponseStatus.SUCCESS;
 				logger.info("[Lead feed] Skipped sending lead to service as overridden in content control");
 			} else {
 				// Generate the lead feed model
@@ -64,9 +65,11 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport{
 				Response response = this.request(pageSettings, feedRequest, leadModel.getServiceUrl(), leadData.getTransactionId());
 				MessageResponseDetails responseDetails = response.getDetails();
 
-				feedResponse = responseDetails.getStatus();
+				if(responseDetails.getStatus().equalsIgnoreCase("ok")){
+					feedResponse = LeadResponseStatus.SUCCESS;
+				}
 
-				logger.info("[Lead feed] Response Status from AGIS: " + feedResponse);
+				logger.info("[Lead feed] Response Status from AGIS: " + responseDetails.getStatus());
 			}
 
 		} catch (EnvironmentException | VerticalException | IOException e) {

@@ -76,16 +76,13 @@
 			</c:when>
 			<c:otherwise>
 	
-				<%-- 
-					We need to do this, because up to this point, we still haven't actually sent any contact details to Lifebroker.
-					So, we create a new lead by passing through all previously provided information and sending that information
-					back.
-				--%>
-				<c:import var="config" url="/WEB-INF/aggregator/life/config_results_${vertical}.xml" />
-
-				<go:setData dataVar="data" xpath="${vertical}/sendRealData" value="true" />
+				<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="apply" />
 
 				<c:set var="dataXml" value="${go:getEscapedXml(data[vertical])}" />
+
+				<%-- Load the config for the contact lead sender --%>
+				<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
+
 				<go:soapAggregator	config = "${config}"
 									transactionId = "${tranId}"
 									xml = "${dataXml}"
@@ -99,7 +96,7 @@
 									styleCodeId="${pageSettings.getBrandId()}"  />
 				
 				<x:parse xml="${newQuoteResults}" var="newQuoteResultsOutput" />
-				<c:set var="apiReference"><x:out select="$newQuoteResultsOutput/results/api/reference" /></c:set>
+				<c:set var="apiReference"><x:out select="$newQuoteResultsOutput/results/client/reference" /></c:set>
 
 				<%-- Build XML required for Life Broker request --%>
 				<c:set var="requestXML">
@@ -162,7 +159,7 @@
 		</c:choose>
 		
 		<c:set var="leadSentTo" value="${param.company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
-		<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/leadSentTo" value="${leadSentTo}" />
+		<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/callBackLeadSentTo" value="${leadSentTo}" />
 		<go:setData dataVar="data" xpath="current/transactionId" value="${data.current.transactionId}" />
 		<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" /></c:set>
 		<core:transaction touch="C" noResponse="true" writeQuoteOverride="N" />

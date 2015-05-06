@@ -2,8 +2,9 @@ package com.ctm.services.health;
 
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.health.HealthPricePremium;
+import com.ctm.model.Provider;
 import com.ctm.model.health.Frequency;
+import com.ctm.model.health.HealthPricePremium;
 import com.ctm.model.request.health.HealthApplicationRequest;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.RequestService;
@@ -19,7 +20,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-
 import java.util.Date;
 import java.util.List;
 
@@ -75,7 +75,9 @@ public class HealthApplicationService {
 		}
 		return handleValidationResult(requestService, validationErrors);
 	}
-
+public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
+	return healthPriceDao.getAllProviders(styleCodeId);
+}
 	private void calculatePremiums() throws DaoException {
 		Frequency frequency = request.payment.details.frequency;
 		HealthPricePremium premium = fetchHealthResult();

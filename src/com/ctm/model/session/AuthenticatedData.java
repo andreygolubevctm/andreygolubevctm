@@ -1,7 +1,12 @@
 package com.ctm.model.session;
 
-import com.disc_au.web.go.Data;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
+
+import com.ctm.model.simples.Role;
+import com.disc_au.web.go.Data;
 
 /**
  * Extends the DATA object with some quick methods to return and set common values via xpath.
@@ -11,6 +16,9 @@ import org.apache.log4j.Logger;
 public class AuthenticatedData extends Data {
 
 	private static Logger logger = Logger.getLogger(AuthenticatedData.class.getName());
+
+	// store the roles in java instead of data bucket
+	private List<Role> simplesUserRoles;
 
 	public AuthenticatedData(){
 		super();
@@ -37,6 +45,15 @@ public class AuthenticatedData extends Data {
 			}
 		}
 		return simplesUid;
+	}
+
+	public List<Role> getSimplesUserRoles() {
+		if(simplesUserRoles == null) return new ArrayList<Role>();
+		return simplesUserRoles;
+	}
+
+	public void setSimplesUserRoles(List<Role> roles) {
+		this.simplesUserRoles = roles;
 	}
 
 	public boolean isLoggedIn(){

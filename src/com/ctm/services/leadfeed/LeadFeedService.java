@@ -40,7 +40,8 @@ public abstract class LeadFeedService {
 
 	public static enum LeadResponseStatus{
 		SUCCESS,
-		FAILURE
+		FAILURE,
+		SKIPPED
 	};
 
 	public LeadResponseStatus callDirect(LeadFeedData leadData) throws LeadFeedException {
@@ -67,7 +68,7 @@ public abstract class LeadFeedService {
 	 */
 	private LeadResponseStatus processGateway(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException {
 		if(isTestOnlyLead(leadData)) {
-			recordTouch(touchType.getCode(), leadData);
+			// Don't process or record touch for test data - simply return success
 			return LeadResponseStatus.SUCCESS;
 		} else {
 			return process(leadType, leadData, touchType);

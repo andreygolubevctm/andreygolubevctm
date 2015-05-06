@@ -213,7 +213,8 @@ public class BestPriceLeadsDao {
 			tran.setIpAddress(set.getString("ipAddress"));
 			// Flag the root transaction as having existing lead feed if applicable
 			String type = set.getString("type");
-			if(type.equalsIgnoreCase("A") || type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")) {
+			if(
+				type.equalsIgnoreCase("A") || type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")) {
 				tran.setHasLeadFeed(true);
 				logger.info("[Lead info] Skipping transaction " + set.getLong("transactionId") + " as has lead already");
 			}

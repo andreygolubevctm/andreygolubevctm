@@ -275,12 +275,16 @@ var ajaxSuccess = function(data,xhr,jqxhr){
 	car.tryCount = 1;
 
 	var $context = $(this);
-	var options = pleaseChooseOptionHTML;
+	var options = {
+			intro : pleaseChooseOptionHTML,
+			popular : "",
+			normal : ""
+	};
 	var firstValidVal = '';
 	var $labelForContext = $.trim($context.closest('.form-group').find('.control-label').first().text()); //used for option group labels
 
 	if (jQuery.isEmptyObject(data)) {
-		options = notFoundOptionHTML;
+		options.intro = notFoundOptionHTML;
 		car.vehicleSelect.noDataError($context,"No data was in the returned object");
 	} //TODO: probably convert whole thing to try catch
 
@@ -289,45 +293,58 @@ var ajaxSuccess = function(data,xhr,jqxhr){
 		var dataSet = data[set];
 		var localDataModelName = ''+set.slice(car.vehicleSelect.fields.ajaxPfx.length,set.length);
 
-		if(set == "models") {
-			options = options.replace("{{label}}", "Model");
-		} else {
-			options = options.replace("{{label}}", "Year");
-		}
-
-		//The insane thing about Mobile Safari (iOS7 at least) is that without an option group, it wont trigger change events immediately.
-		options += '<optgroup label="'+$labelForContext+'">';
-
 		/*-- ERROR: Double check, when we don't return any data in the key, log error and freak out! --*/
 		if ((typeof dataSet === 'undefined')||(dataSet.length==0)) {
 			//car.vehicleSelect.noDataError($context,"No data found in the key returned from the server lookup"); //Not quite - the db might legit not have data for their selection.
-			options = notFoundOptionHTML;
+			options.intro = notFoundOptionHTML;
 		} else if ((typeof dataSet[0].code === 'undefined')||(typeof dataSet[0].label === 'undefined')) {
 			car.vehicleSelect.noDataError($context,"Required value and label was not found in the key returned from the server lookup");
-			options = notFoundOptionHTML;
+			options.intro = notFoundOptionHTML;
+		} else {
+			if(set == "models") {
+				options.intro = options.intro.replace("{{label}}", "Model");
+				options.popular = dataSet.length ? '<optgroup label="Top Models">' : "";
+				options.normal = '<optgroup label="All Models">';
+			} else {
+				options.intro = options.intro.replace("{{label}}", "Year");
+				options.normal = '<optgroup label="'+$labelForContext+'">';
+			}
+			/*--
+			 * This object should be an array. Look into the array return and extract the right values per key.
+			 * If it was a for (var item in dataSet) we'd end up looping into the .filter prototype we are shim-ing in on ie
+			 * --*/
+			for (var i = 0; i < dataSet.length; i++) {
+				var objectItem = dataSet[i];
+
+				/*-- The data might be pre-populated, or if there's only 1 result select the first one --*/
+				var sel = "";
+				var rel = "";
+				if ((dataSet.length == 1) || (car.vehicleSelect.data[localDataModelName] == objectItem.code)) {
+					sel = " selected";
+				}
+				if (typeof objectItem.rel !== 'undefined' && objectItem.rel != null) {
+					rel = ' rel="' + objectItem.rel + '"';
+				}
+
+				/*-- Write the option --*/
+				var temp = "<option value='" + objectItem.code + "'" + sel + rel + ">" + objectItem.label + "</option>";
+				if(dataSet.length > 1 && objectItem.hasOwnProperty("isTopModel") && objectItem.isTopModel === true) {
+					options.popular += temp;
+				} else {
+					options.normal += temp;
+				}
+
+				if (firstValidVal == '') firstValidVal = objectItem.code;
+			}
 		}
 
-		/*--
-		 * This object should be an array. Look into the array return and extract the right values per key.
-		 * If it was a for (var item in dataSet) we'd end up looping into the .filter prototype we are shim-ing in on ie
-		 * --*/
-		for (var i = 0; i < dataSet.length; i++) {
-			var objectItem = dataSet[i];
-
-			/*-- The data might be pre-populated, or if there's only 1 result select the first one --*/
-			var sel = ""; var rel = "";
-			if ((dataSet.length==1) || (car.vehicleSelect.data[localDataModelName] == objectItem.code)) { sel = " selected"; }
-			if (typeof objectItem.rel !== 'undefined' && objectItem.rel != null) { rel = ' rel="'+objectItem.rel+'"'; }
-
-			/*-- Write the option --*/
-			options += "<option value='" + objectItem.code + "'" + sel + rel + ">" + objectItem.label + "</option>";
-			if (firstValidVal=='') firstValidVal = objectItem.code;
+		options.normal += '</optgroup>'; //Closing the stupidity for mobile safari.
+		if(options.popular != "") {
+			options.popular += '</optgroup>'
 		}
-
-		options += '</optgroup>'; //Closing the stupidity for mobile safari.
 	}
 
-	$context.html(options);
+	$context.html(options.intro + options.popular + options.normal);
 
 	/*-- Fix up interactability --*/
 	car.vehicleSelect.updateSelectState();

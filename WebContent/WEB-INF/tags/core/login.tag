@@ -103,8 +103,9 @@
 
 				<%-- Register the user into our database; fetch the database UID --%>
 				<c:if test="${callCentre == 'Y'}">
-					<c:set var="simplesUid" value="${ simplesUserService.loginUser(sessionScope.userDetails['uid'], extension, sessionScope.userDetails['displayName'])  }" />
-					<go:setData dataVar="authenticatedData" xpath="login/user/simplesUid" value="${simplesUid}" />
+					<c:set var="simplesUser" value="${ simplesUserService.loginUser(sessionScope.userDetails['uid'], extension, sessionScope.userDetails['displayName'])  }" />
+					<go:setData dataVar="authenticatedData" xpath="login/user/simplesUid" value="${simplesUser.getId()}" />
+					${authenticatedData.setSimplesUserRoles(simplesUser.getRoles())}
 				</c:if>
 
 				<c:set var="out" value="OK" />

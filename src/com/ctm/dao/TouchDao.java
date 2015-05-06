@@ -324,7 +324,8 @@ public class TouchDao {
 	 * @throws DaoException
 	 */
 	public Touch record(Long transactionId, String type, String operator) throws DaoException {
-		return record( transactionId,  type,  operator,  null);
+		Touch touch = createTouchObject( transactionId,  type,  operator,  null);
+		return record(touch);
 	}
 
 	/**
@@ -334,7 +335,7 @@ public class TouchDao {
 	 * @param type
 	 * @throws DaoException
 	 */
-	private Touch record(Long transactionId, String type, String operator, String productCode) throws DaoException {
+	private Touch createTouchObject(Long transactionId, String type, String operator, String productCode) throws DaoException {
 		Touch touch = new Touch();
 		touch.setTransactionId(transactionId);
 		touch.setType(TouchType.findByCode(type));

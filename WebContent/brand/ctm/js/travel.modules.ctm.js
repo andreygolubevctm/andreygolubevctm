@@ -338,6 +338,7 @@
                 meerkat.modules.resultsTracking.setResultsEventMode("Load");
                 $("#resultsPage").addClass("hidden");
                 meerkat.modules.travelSummaryText.updateText();
+                meerkat.modules.travelSorting.resetToDefaultSort();
                 meerkat.modules.travelCoverLevelTabs.updateSettings();
             },
             onAfterEnter: function afterEnterResults(event) {
@@ -848,12 +849,12 @@
 })(jQuery);
 
 (function($, undefined) {
-    var scrollTop = 0, meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $htmlBody, $morePrompt = null, $morePromptIcons, $morePromptTextLink, $lastResultRow, morePromptClicked = false, promptInit = false, $footer, goToBottomText = "Go to Bottom", goToTopText = "Go to Top", scrollTo = "bottom", disablePrompt = false;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $morePrompt, $morePromptLink, $morePromptIcons, $morePromptTextLink, promptInit = false, goToBottomText = "Go to Bottom", goToTopText = "Go to Top", scrollTo = "bottom", scrollBottomAnchor, disablePrompt = false, isXs = false;
     function initPrompt() {
         scrollTo = "bottom";
+        isXs = meerkat.modules.deviceMediaState.get() == "xs";
         $(document).ready(function() {
-            $lastResultRow = $("div.results-table .available.notfiltered").last();
-            if (!promptInit && meerkat.modules.deviceMediaState.get() != "xs") {
+            if (!promptInit) {
                 applyEventListeners();
             }
             eventSubscriptions();
@@ -863,28 +864,24 @@
     function applyEventListeners() {
         $morePrompt.fadeIn("slow");
         promptInit = true;
-        $(document.body).on("click", ".morePromptLink", function(e) {
-            var animationOptions = {}, contentBottom = $footer.offset().top - $(window).height();
+        $(document.body).on("click", ".morePromptLink", function() {
+            var $footer = $("#footer"), contentBottom = 0;
             if (scrollTo == "bottom") {
-                contentBottom += $footer.outerHeight(true);
-            } else {
-                contentBottom = 0;
+                contentBottom = $footer.offset().top - $(window).height();
             }
-            animationOptions.scrollTop = contentBottom;
-            morePromptClicked = true;
-            $htmlBody.stop(true, true).animate(animationOptions, 800, function morePromptAnimateEnd() {
-                morePromptClicked = false;
-            });
+            resetScrollBottomAnchorElement();
+            $("body,html").stop(true, true).animate({
+                scrollTop: contentBottom
+            }, 1e3, "linear");
         });
     }
     function eventSubscriptions() {
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function leaveXSMode() {
-            if (!promptInit) {
-                applyEventListeners();
-            }
-        });
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function breakPointChange() {
-            resetMorePromptBar();
+            isXs = meerkat.modules.deviceMediaState.get() == "xs";
+            if (!disablePrompt) {
+                resetMorePromptBar();
+                _.defer(setPromptBottomPx);
+            }
         });
         if (typeof meerkatEvents.coverLevelTabs !== "undefined") {
             meerkat.messaging.subscribe(meerkatEvents.coverLevelTabs.CHANGE_COVER_TAB, function onTabChange(eventObject) {
@@ -892,77 +889,80 @@
                     $morePrompt.hide();
                     disablePrompt = true;
                 } else {
+                    resetScrollBottomAnchorElement();
+                    resetMorePromptBar();
                     $morePrompt.removeAttr("style");
                     disablePrompt = false;
+                    setPromptBottomPx();
                 }
             });
         }
         $(document).on("results.view.animation.end", function() {
-            fixMorePromptAfterSortOrFilter();
+            resetScrollBottomAnchorElement();
         });
-        var timeout;
-        $(window).off("scroll.travelMorePrompt").on("scroll.travelMorePrompt", function() {
-            scrollTop = $(this).scrollTop();
-            if (timeout) clearTimeout(timeout);
-            timeout = setTimeout(handleMorePromptToggling, 150);
+        meerkat.messaging.subscribe(meerkatEvents.RESIZE_DEBOUNCED, function(obj) {
+            resetScrollBottomAnchorElement();
+        });
+        $(window).off("scroll.viewMorePrompt").on("scroll.viewMorePrompt", function() {
+            setPromptBottomPx();
         });
     }
-    function fixMorePromptAfterSortOrFilter() {
-        $lastResultRow = $("div.results-table .available.notfiltered").last();
-        handleMorePromptToggling();
-    }
-    function handleMorePromptToggling() {
-        if (disablePrompt) {
+    function setPromptBottomPx() {
+        if (disablePrompt || typeof scrollBottomAnchor == "undefined" || !scrollBottomAnchor.length) {
             return;
         }
-        var height = window.innerHeight || document.documentElement.offsetHeight, currentScrollTopPos = scrollTop, currentPos = height + currentScrollTopPos, lastAvailableProduct = $lastResultRow.position(), lastAvailableProductPos = lastAvailableProduct.top + $lastResultRow.outerHeight();
-        if (scrollTop === 0) {
-            $morePrompt.removeAttr("style").css({
-                position: "fixed"
-            });
-            $morePromptTextLink.html(goToBottomText);
-            toggleArrowClass("icon-angle-down");
-            scrollTo = "bottom";
+        var docHeight = $(document).height(), windowHeight = $(window).height();
+        var anchorOffsetTop = scrollBottomAnchor.offset().top + scrollBottomAnchor.outerHeight(true) + 15;
+        var anchorViewportOffsetTop = anchorOffsetTop - $(document).scrollTop();
+        var anchorFromBottom = docHeight - (docHeight - anchorOffsetTop);
+        var currentHeight = anchorFromBottom - windowHeight;
+        if (currentHeight <= $(this).scrollTop()) {
+            if (!isXs) {
+                var setHeightFromBottom = windowHeight - anchorViewportOffsetTop;
+                $(".morePromptLink").css("bottom", setHeightFromBottom + "px");
+            }
+            if (scrollTo != "top") {
+                toggleArrow("up");
+            }
         } else {
-            if (currentPos >= lastAvailableProductPos) {
-                $morePrompt.css({
-                    top: lastAvailableProductPos,
-                    height: $morePrompt.height(),
-                    position: "absolute"
-                });
-                $morePromptTextLink.html(goToTopText);
-                toggleArrowClass("icon-angle-up");
-                scrollTo = "top";
-            } else {
-                if ($morePrompt.css("position") != "fixed") {
-                    $morePrompt.removeAttr("style").css({
-                        position: "fixed"
-                    });
-                }
+            $(".morePromptLink").css("bottom", 0);
+            if (scrollTo != "bottom") {
+                toggleArrow("down");
             }
         }
     }
+    function resetScrollBottomAnchorElement() {
+        scrollBottomAnchor = $("div.results-table .available.notfiltered").last();
+    }
     function resetMorePromptBar() {
         _.defer(function() {
-            $morePromptTextLink.html(goToBottomText);
-            scrollTo = "bottom";
-            toggleArrowClass("icon-angle-down");
+            resetScrollBottomAnchorElement();
+            toggleArrow("down");
             $morePrompt.removeAttr("style");
         });
     }
-    function toggleArrowClass(thisClass) {
-        if (!$morePromptIcons.hasClass(thisClass)) {
-            $morePromptIcons.toggleClass("icon-angle-down icon-angle-up");
+    function toggleArrow(direction) {
+        switch (direction) {
+          case "up":
+            scrollTo = "top";
+            $morePromptTextLink.html(goToTopText);
+            $morePromptIcons.removeClass("icon-angle-down").addClass("icon-angle-up");
+            break;
+
+          default:
+            scrollTo = "bottom";
+            $morePromptTextLink.html(goToBottomText);
+            $morePromptIcons.removeClass("icon-angle-up").addClass("icon-angle-down");
+            break;
         }
     }
     function disablePromptBar() {
-        $(window).off("scroll.travelMorePrompt");
+        $(window).off("scroll.viewMorePrompt");
         $morePrompt.hide();
     }
     function initTravelMorePrompt() {
-        $htmlBody = $("body,html");
-        $footer = $("#footer");
         $morePrompt = $(".morePromptContainer");
+        $morePromptLink = $(".morePromptContainer");
         $morePromptIcons = $morePrompt.find(".icon");
         $morePromptTextLink = $morePrompt.find(".morePromptLinkText");
         meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, function morePromptCallBack() {
@@ -1032,10 +1032,7 @@
     var events = {
         RESULTS_ERROR: "RESULTS_ERROR"
     };
-    var $component;
-    var previousBreakpoint;
-    var best_price_count = 5;
-    var needToBuildFeatures = false;
+    var $component, previousBreakpoint, best_price_count = 5, price_log_count = 10, needToBuildFeatures = false;
     function initPage() {
         initResults();
         eventSubscriptions();
@@ -1221,7 +1218,7 @@
         var data = {};
         data["rank_premium" + position] = product.price;
         data["rank_productId" + position] = product.productId;
-        if (typeof product.info.coverLevel !== "undefined") {
+        if (typeof product.info.coverLevel !== "undefined" && position === 0) {
             data["coverLevelType" + position] = product.info.coverLevel;
         }
         if (_.isNumber(best_price_count) && position < best_price_count) {
@@ -1235,6 +1232,10 @@
             data["best_price_price" + position] = product.priceText;
             data["best_price_service" + position] = product.service;
             data["best_price_url" + position] = product.quoteUrl;
+        }
+        if (_.isNumber(price_log_count) && position < price_log_count && position >= best_price_count) {
+            data["best_price" + position] = 1;
+            data["best_price_price" + position] = product.priceText;
         }
         return data;
     }
@@ -1313,7 +1314,7 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, error = meerkat.logging.error, exception = meerkat.logging.exception, $sortElements, activeSortBy, activeSortDir, defaultSortStates = {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, error = meerkat.logging.error, $sortElements, defaultSortStates = {
         "benefits.excess": "asc",
         "benefits.medical": "desc",
         "benefits.cxdfee": "desc",
@@ -1382,15 +1383,23 @@
             $sortElements = $("[data-sort-type]");
             if (typeof Results === "undefined") {
                 meerkat.logging.exception("[travelSorting]", "No Results Object Found!");
-            } else {
-                return;
             }
         });
+    }
+    function resetToDefaultSort() {
+        var $priceSortEl = $("[data-sort-type='price.premium']");
+        var sortBy = Results.getSortBy(), price = "price.premium";
+        if (sortBy != price || $priceSortEl.attr("data-sort-dir") == "desc" && sortBy == price) {
+            $priceSortEl.parent("li").siblings().removeClass("active").end().addClass("active").end().attr("data-sort-dir", "asc");
+            Results.setSortBy("price.premium");
+            Results.setSortDir("asc");
+        }
     }
     meerkat.modules.register("travelSorting", {
         init: init,
         initSorting: initSorting,
-        events: events
+        events: events,
+        resetToDefaultSort: resetToDefaultSort
     });
 })(jQuery);
 

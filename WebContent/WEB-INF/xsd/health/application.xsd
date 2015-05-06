@@ -45,6 +45,8 @@
 				<xs:element name="other" type="phone" maxOccurs="1" minOccurs="0" />
 				<xs:element name="email" type="email" maxOccurs="1" minOccurs="1" />
 				<xs:element name="optInEmail" type="Y" maxOccurs="1" minOccurs="0" />
+				<xs:element name="hospitalPDF" type="Y" maxOccurs="1" minOccurs="0" />
+				<xs:element name="extrasPDF" type="Y" maxOccurs="1" minOccurs="0" />
 				<xs:element name="dependantrequired" maxOccurs="1" minOccurs="0" />
 				<xs:element name="dependants" maxOccurs="1" minOccurs="0" >
 					<xs:complexType>

@@ -113,7 +113,14 @@
 
 				<c:set var="currentProduct" value="${feature.productId}" />
 			</c:if>
-						<feature featureId="${feature.featureId}" desc="${go:htmlEscape(feature.desc)}" extra="${go:htmlEscape(feature.extra)}" value="${go:htmlEscape(feature.value)}" categoryId="${feature.categoryId}"  categoryName="${go:htmlEscape(feature.categoryName)}" />
+
+			<%-- Ensure number values  are formatted as currency - to cover shortcoming in LMI doc formatting --%>
+			<c:set var="featureVal" value="${feature.value}" />
+			<c:if test="${feature.value.matches('[0-9]+')}">
+				<c:set var="featureVal"><fmt:formatNumber value="${feature.value}" type="CURRENCY" currencySymbol="$" maxFractionDigits="0" /></c:set>
+			</c:if>
+
+			<feature featureId="${feature.featureId}" desc="${go:htmlEscape(feature.desc)}" extra="${go:htmlEscape(feature.extra)}" value="${go:htmlEscape(featureVal)}" categoryId="${feature.categoryId}"  categoryName="${go:htmlEscape(feature.categoryName)}" />
 
 		</c:forEach>
 

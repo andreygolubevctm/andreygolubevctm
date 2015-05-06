@@ -8,10 +8,10 @@
 			// Defined here because it's published in Results.js
 			RESULTS_ERROR: 'RESULTS_ERROR'
 	};
-	var $component; //Stores the jQuery object for the component group
-	var previousBreakpoint;
-	var best_price_count = 5;
-	var needToBuildFeatures = false;
+	var $component, //Stores the jQuery object for the component group
+	previousBreakpoint,
+	best_price_count = 5, price_log_count = 10,
+	needToBuildFeatures = false;
 
 	function initPage(){
 
@@ -275,7 +275,7 @@
 		data["rank_premium" + position] = product.price;
 		data["rank_productId" + position] = product.productId;
 
-		if (typeof product.info.coverLevel !== 'undefined')
+		if (typeof product.info.coverLevel !== 'undefined' && position === 0)
 		{
 			data["coverLevelType" + position] = product.info.coverLevel;
 		} 
@@ -291,6 +291,12 @@
 			data["best_price_price" + position] = product.priceText;
 			data["best_price_service" + position] = product.service;
 			data["best_price_url" + position] = product.quoteUrl;
+		}
+		// These price recordings are not used for best price. It is just so we can send the premium in the same format to the JSP.
+		// Ideally, we wouldn't need to label the params as "best_price"
+		if(_.isNumber(price_log_count) && position < price_log_count && position >= best_price_count) {
+			data["best_price" + position] = 1;
+			data["best_price_price" + position] = product.priceText;
 		}
 
 		return data;

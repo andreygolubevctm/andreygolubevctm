@@ -5,6 +5,7 @@
 <!-- CONSTANTS -->
 	<xsl:variable name="LOWERCASE" select="'abcdefghijklmnopqrstuvwxyz'" />
 	<xsl:variable name="UPPERCASE" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+	<xsl:variable name="STRIPCHARS" select="',-&quot;/\'" /> <!-- Apostrophes are stripped too except this needs a different method -->
 
 	<xsl:template name="util_numbersOnly">
 		<xsl:param name="value"/>
@@ -156,6 +157,31 @@
 			<message><xsl:value-of select="$message" /></message>
 			<data><xsl:value-of select="$data" /></data>
 		</error>
+	</xsl:template>
+
+	<xsl:template name="default_value">
+		<xsl:param name="value"/>
+		<xsl:param name="default"/>
+
+		<xsl:if test="$value">
+			<xsl:value-of select="$value" />
+		</xsl:if>
+		<xsl:if test="not($value)">
+			<xsl:value-of select="$default" />
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="format_person_name">
+		<xsl:param name="name"/>
+		<xsl:variable name="apostropheRemovedName"> <!-- Because stupid apostrophes simply will not work in the translate... so we have to remove them first... *le sigh* -->
+			<xsl:call-template name="util_replace">
+				<xsl:with-param name="text" select="$name" />
+				<xsl:with-param name="replace">'</xsl:with-param>
+				<xsl:with-param name="with"></xsl:with-param>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:value-of select="translate(translate(substring($apostropheRemovedName, 1, 1), $LOWERCASE, $UPPERCASE), $STRIPCHARS, '')" />
+		<xsl:value-of select="translate(translate(substring($apostropheRemovedName, 2), $UPPERCASE, $LOWERCASE), $STRIPCHARS, '')" />
 	</xsl:template>
 
 </xsl:stylesheet>

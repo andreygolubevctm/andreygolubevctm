@@ -52,7 +52,7 @@ public class LeadFeedData {
 
 	private String clientIpAddress;
 
-	private String productId;
+	private String productId = null;
 
 	public LeadFeedData(){
 

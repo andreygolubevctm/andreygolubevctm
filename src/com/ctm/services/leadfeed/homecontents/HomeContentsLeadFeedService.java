@@ -1,5 +1,6 @@
 package com.ctm.services.leadfeed.homecontents;
 
+import com.ctm.services.leadfeed.IProviderLeadFeedService;
 import org.apache.log4j.Logger;
 
 import com.ctm.exceptions.LeadFeedException;
@@ -16,26 +17,17 @@ public class HomeContentsLeadFeedService extends LeadFeedService {
 
 		LeadResponseStatus responseStatus = LeadResponseStatus.SUCCESS;
 
+		IProviderLeadFeedService providerLeadFeedService = null;
+
 		try {
 
 			switch(leadData.getPartnerBrand()) {
 
 				case "BUDD":
 				case "VIRG":
-
 					logger.info("[Lead feed] Prepare to send lead to AGIS brand "+leadType+"; Transaction ID: "+leadData.getTransactionId());
-
-					AGISHomeContentsLeadFeedService leadFeedService = new AGISHomeContentsLeadFeedService();
-					String response = leadFeedService.sendLeadFeedRequest(leadType, leadData);
-
-					if(response.equalsIgnoreCase("ok")) {
-						recordTouch(touchType.getCode(), leadData);
-					} else {
-						responseStatus = LeadResponseStatus.FAILURE;
-					}
-
+					providerLeadFeedService = new AGISHomeContentsLeadFeedService();
 					break;
-
 				case "WOOL":
 					logger.debug("[Lead feed] No lead feed set up for WOOL "+leadType+"; Transaction ID: "+leadData.getTransactionId());
 					break;
@@ -43,6 +35,15 @@ public class HomeContentsLeadFeedService extends LeadFeedService {
 					logger.debug("[Lead feed] No lead feed set up for REIN "+leadType+"; Transaction ID: "+leadData.getTransactionId());
 					break;
 			}
+
+			if(providerLeadFeedService != null) {
+				responseStatus = providerLeadFeedService.process(leadType, leadData);
+				if (responseStatus == LeadResponseStatus.SUCCESS) {
+					recordTouch(touchType.getCode(), leadData);
+				}
+				logger.debug("[Lead feed] Provider lead process response: " + responseStatus);
+			}
+
 		} catch(LeadFeedException e) {
 			logger.error("[Lead feed] Exception adding lead feed message",e);
 			responseStatus = LeadResponseStatus.FAILURE;

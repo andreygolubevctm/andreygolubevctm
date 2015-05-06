@@ -75,27 +75,30 @@
 								<go:setData dataVar="data" xpath="soap-response" xml="<results><success>${leadResultStatus eq 'OK'}</success><client><reference>${leadResultStatus}</reference></client></results>" />
 							</c:when>
 							<c:otherwise>
-		<%-- Load the config and send quotes to the aggregator gadget --%>
-		<c:import var="config" url="/WEB-INF/aggregator/life/config_request_call.xml" />
-		<go:soapAggregator config = "${config}"
-							transactionId = "${tranId}" 
-							xml = "${go:getEscapedXml(data[fn:toLowerCase(vertical)])}"
-							var = "resultXml"
-							debugVar="debugXml"
-							verticalCode="${fn:toUpperCase(vertical)}"
-							configDbKey="quoteService"
-							styleCodeId="${pageSettings.getBrandId()}"  />
-		
-		<%-- Add the results to the current session data --%>
-		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-		
-		<go:log level="DEBUG" source="life_request_call">${resultXml}</go:log>
-		<go:log level="DEBUG" source="life_request_call">${debugXml}</go:log>
+								<%-- Load the config and send quotes to the aggregator gadget --%>
+								<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
+
+								<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="call" />
+
+								<go:soapAggregator	config = "${config}"
+													transactionId = "${tranId}"
+													xml = "${go:getEscapedXml(data[fn:toLowerCase(vertical)])}"
+													var = "resultXml"
+													debugVar="debugXml"
+													verticalCode="${fn:toUpperCase(vertical)}"
+													configDbKey="quoteService"
+													styleCodeId="${pageSettings.getBrandId()}"  />
+						
+								<%-- Add the results to the current session data --%>
+								<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+						
+								<go:log level="DEBUG" source="life_request_call">${resultXml}</go:log>
+								<go:log level="DEBUG" source="life_request_call">${debugXml}</go:log>
 							</c:otherwise>
 						</c:choose>
 
 						<c:set var="leadSentTo" value="${not empty param.company and param.company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
-						<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/leadSentTo" value="${leadSentTo}" />
+						<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/callBackLeadSentTo" value="${leadSentTo}" />
 						<go:setData dataVar="data" xpath="current/transactionId" value="${data.current.transactionId}" />
 						<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" /></c:set>
 						<core:transaction touch="CB" noResponse="true" writeQuoteOverride="N" />

@@ -4,29 +4,27 @@
 
 ;(function ($, undefined) {
 
-    var scrollTop = 0,
-        meerkat = window.meerkat,
+    var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        $htmlBody,
-        $morePrompt = null,
+        $morePrompt,
+        $morePromptLink,
         $morePromptIcons,
         $morePromptTextLink,
-        $lastResultRow,
-        morePromptClicked = false,
         promptInit = false,
-        $footer,
         goToBottomText = "Go to Bottom",
         goToTopText = "Go to Top",
         scrollTo = 'bottom',
-        disablePrompt = false; // made this global so that the bar won't get confused as to which direction it should travel to. There has been instances where it says to go bottom but clicking on the bar takes the user to the top
+        scrollBottomAnchor,
+        disablePrompt = false,
+        isXs = false;
 
 
     function initPrompt() {
         scrollTo = "bottom";
+        isXs = meerkat.modules.deviceMediaState.get() == "xs";
         $(document).ready(function () {
-            $lastResultRow = $('div.results-table .available.notfiltered').last();
 
-            if (!promptInit && meerkat.modules.deviceMediaState.get() != 'xs') {
+            if (!promptInit) {
                 applyEventListeners();
             }
             eventSubscriptions();
@@ -39,127 +37,141 @@
         $morePrompt.fadeIn('slow');
         promptInit = true;
 
-        $(document.body).on('click', '.morePromptLink', function (e) {
+        $(document.body).on('click', '.morePromptLink', function () {
 
-            var animationOptions = {},
-                contentBottom = $footer.offset().top - $(window).height();
+            var $footer = $("#footer"),
+                contentBottom = 0;
 
             if (scrollTo == 'bottom') {
-                contentBottom += $footer.outerHeight(true);
-            } else {
-                // send the user to the top
-                contentBottom = 0;
+                contentBottom = $footer.offset().top - $(window).height();
             }
-
-            animationOptions.scrollTop = contentBottom;
-            morePromptClicked = true;
-
-            $htmlBody.stop(true, true).animate(animationOptions, 800, function morePromptAnimateEnd() {
-                morePromptClicked = false;
-            });
+            resetScrollBottomAnchorElement();
+            $('body,html').stop(true, true).animate({scrollTop: contentBottom}, 1000, 'linear');
         });
     }
 
     function eventSubscriptions() {
 
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function leaveXSMode() {
-            if (!promptInit) {
-                applyEventListeners();
+        // Reset the more prompt bar to the bottom when the state changes
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function breakPointChange() {
+            isXs = meerkat.modules.deviceMediaState.get() == "xs";
+            if(!disablePrompt) {
+                resetMorePromptBar();
+                _.defer(setPromptBottomPx);
             }
         });
 
-        // Reset the more prompt bar to the bottom when the state changes
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function breakPointChange() {
-            resetMorePromptBar();
-        });
         if(typeof meerkatEvents.coverLevelTabs !== 'undefined') {
             meerkat.messaging.subscribe(meerkatEvents.coverLevelTabs.CHANGE_COVER_TAB, function onTabChange(eventObject) {
                 if (eventObject.activeTab == "D") {
                     $morePrompt.hide();
                     disablePrompt = true;
                 } else {
+                    // needed here too because we defer in resetMorePrompt
+                    resetScrollBottomAnchorElement();
+                    resetMorePromptBar();
                     $morePrompt.removeAttr('style');
                     disablePrompt = false;
+                    setPromptBottomPx();
                 }
+
             });
         }
 
+
         $(document).on("results.view.animation.end", function() {
-            fixMorePromptAfterSortOrFilter();
+            resetScrollBottomAnchorElement();
         });
 
-        var timeout;
-        $(window).off("scroll.travelMorePrompt").on("scroll.travelMorePrompt", function () {
-            scrollTop = $(this).scrollTop();
-            if (timeout)
-                clearTimeout(timeout);
-            timeout = setTimeout(handleMorePromptToggling, 150);
+        meerkat.messaging.subscribe(meerkatEvents.RESIZE_DEBOUNCED, function(obj) {
+            resetScrollBottomAnchorElement();
+        });
+
+
+       $(window).off("scroll.viewMorePrompt").on("scroll.viewMorePrompt", function () {
+            setPromptBottomPx();
         });
     }
 
-    function fixMorePromptAfterSortOrFilter() {
-        $lastResultRow = $('div.results-table .available.notfiltered').last(); // update who is the last visible row for cover level tabs
-        handleMorePromptToggling();
-    }
-
-    function handleMorePromptToggling() {
+    function setPromptBottomPx() {
         // we only want this to happen when the results are rendered otherwise it will appear when the loading screen appears
-        if(disablePrompt) {
+        if(disablePrompt || typeof scrollBottomAnchor == 'undefined' || !scrollBottomAnchor.length) {
             return;
         }
-        // check if we've reached the bottom of the results page
-        var height = window.innerHeight || document.documentElement.offsetHeight,
-            currentScrollTopPos = scrollTop,
-            currentPos = height + currentScrollTopPos,
-            lastAvailableProduct = $lastResultRow.position(),
-            lastAvailableProductPos = (lastAvailableProduct.top + $lastResultRow.outerHeight());
+        var docHeight = $(document).height(),
+            windowHeight = $(window).height();
 
-        if (scrollTop === 0) { // if we're at the top
-            // remove the previous attributes added above and reset the position to fixed
-            $morePrompt.removeAttr('style').css({position: 'fixed'});
-            $morePromptTextLink.html(goToBottomText);
-            toggleArrowClass("icon-angle-down");
-            scrollTo = 'bottom';
+        // Object with top: xxx left xxx. from top of element to top of document.
+
+        var anchorOffsetTop = scrollBottomAnchor.offset().top + scrollBottomAnchor.outerHeight(true) + 15;
+
+        // The offset relative to the actual viewport (whats visible on screen).
+        var anchorViewportOffsetTop = anchorOffsetTop - $(document).scrollTop();
+
+        // Get the position of the anchor from the bottom of the document.
+        var anchorFromBottom = docHeight - (docHeight - anchorOffsetTop);
+
+        // Get the current height relative to the anch or
+        var currentHeight = anchorFromBottom - windowHeight;
+
+        // When the current height is in the range of scrollTop the anchor is visible.
+        if (currentHeight <= $(this).scrollTop()) {
+            // Set the bottom style to be the offset from the bottom.
+            if(!isXs) {
+                var setHeightFromBottom = windowHeight - anchorViewportOffsetTop;
+                $(".morePromptLink").css("bottom", setHeightFromBottom + 'px');
+            }
+            if(scrollTo != 'top') {
+                toggleArrow("up");
+            }
         } else {
-            // if we've hit the area just after the results
-            if (currentPos >= lastAvailableProductPos) {
-                $morePrompt.css({top: lastAvailableProductPos, height: $morePrompt.height(), position: 'absolute'});
-                $morePromptTextLink.html(goToTopText);
-                toggleArrowClass("icon-angle-up");
-                scrollTo = 'top';
-            } else {
-                if ($morePrompt.css("position") != "fixed") {
-                    $morePrompt.removeAttr('style').css({position: 'fixed'});
-                }
+            $(".morePromptLink").css("bottom", 0);
+            if(scrollTo != 'bottom') {
+                toggleArrow("down");
             }
         }
+    }
+
+    /**
+     * The element and its properties must be cached when its initially set on scroll for this to have any use when the page resizes for example.
+     */
+    function resetScrollBottomAnchorElement() {
+        scrollBottomAnchor = $('div.results-table .available.notfiltered').last();
     }
 
     function resetMorePromptBar() {
         // defer by 1ms to ensure everything is rendered otherwise it throws an error
         _.defer(function () {
-            $morePromptTextLink.html(goToBottomText);
-            scrollTo = "bottom";
-            toggleArrowClass("icon-angle-down");
+            resetScrollBottomAnchorElement();
+            toggleArrow("down");
             $morePrompt.removeAttr('style');
         });
     }
 
-    function toggleArrowClass(thisClass) {
-        if (!$morePromptIcons.hasClass(thisClass)) {
-            $morePromptIcons.toggleClass("icon-angle-down icon-angle-up"); // toggle classes
+    function toggleArrow(direction) {
+        switch(direction) {
+            case "up":
+                scrollTo = "top";
+                $morePromptTextLink.html(goToTopText);
+                $morePromptIcons.removeClass("icon-angle-down").addClass("icon-angle-up");
+                break;
+            default:
+                scrollTo = "bottom";
+                $morePromptTextLink.html(goToBottomText);
+                $morePromptIcons.removeClass("icon-angle-up").addClass("icon-angle-down");
+                break;
         }
     }
 
     function disablePromptBar() {
-        $(window).off('scroll.travelMorePrompt');
+        $(window).off('scroll.viewMorePrompt');
         $morePrompt.hide();
     }
+
     function initTravelMorePrompt() {
 
-        $htmlBody = $('body,html');
-        $footer = $("#footer");
         $morePrompt = $('.morePromptContainer');
+        $morePromptLink = $('.morePromptContainer');
         $morePromptIcons = $morePrompt.find('.icon');
         $morePromptTextLink = $morePrompt.find('.morePromptLinkText');
 

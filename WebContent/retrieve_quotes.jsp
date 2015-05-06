@@ -46,7 +46,7 @@
 
 		<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
 		
-		<form:form action="retrieve_quotes.jsp" method="POST" id="retrieveQuoteForm" name="retrieveQuoteForm" autoComplete="on">
+		<form:form action="retrieve_quotes.jsp" method="POST" id="retrieveQuoteForm" name="retrieveQuoteForm" autoComplete="off">
 		
 			<div id="wrapper">		
 				<form:header quoteType="false" hasReferenceNo="false" />

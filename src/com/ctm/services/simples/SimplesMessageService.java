@@ -53,13 +53,13 @@ public class SimplesMessageService {
 	 *
 	 * @param userId ID of the user who is getting the message
 	 */
-	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId) throws ConfigSettingException, DaoException {
+	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId, final List<Role> userRoles) throws ConfigSettingException, DaoException {
 		MessageDetail messageDetail = new MessageDetail();
 		Message message = null;
 
 		final MessageDao messageDao = new MessageDao();
 
-		message = messageDao.getNextMessage(userId);
+		message = messageDao.getNextMessage(userId, userRoles);
 
 		if (message.getMessageId() == 0) {
 			// No message available
@@ -74,7 +74,7 @@ public class SimplesMessageService {
 			// Check Anti Hawking, if true, than defer the message to next Monday and skip to the next one
 			if (checkHawking(request, message, messageDetailService, transactionService)) {
 				messageDao.deferMessage(userId, message.getMessageId(), message.getStatusId(), convertToNextMonday(message.getWhenToAction()), canUnassign(message.getStatusId()));
-				return getNextMessageForUser(request, userId);
+				return getNextMessageForUser(request, userId, userRoles);
 			}
 
 			// If message's phone number is in the blacklist, set the message to Complete + Do Not Contact
@@ -85,7 +85,7 @@ public class SimplesMessageService {
 
 				setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_DONOTCONTACT);
 
-				return getNextMessageForUser(request, userId);
+				return getNextMessageForUser(request, userId, userRoles);
 			}
 
 			// If any transaction in the chain is confirmed, set the message to Complete
@@ -102,7 +102,7 @@ public class SimplesMessageService {
 					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_ALREADYCUSTOMER);
 				}
 
-				return getNextMessageForUser(request, userId);
+				return getNextMessageForUser(request, userId, userRoles);
 			}
 
 			// If the message is new or is a different user, assign it to our user.

@@ -4,16 +4,20 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.simples.CallInfo;
+import com.ctm.model.simples.Role;
 import com.ctm.model.simples.User;
 import com.ctm.services.PhoneService;
+
 import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
 
@@ -205,6 +209,9 @@ public class UserDao {
 				simplesUserStatement.close();
 			}
 
+			//set user roles
+			setRolesForUser(user);
+
 			logger.info("loginUser(): username:" + user.getUsername() + ", extension:" + user.getExtension() + ", displayName:" + user.getDisplayName() + " > uid:" + user.getId());
 		}
 		catch (SQLException | NamingException e) {
@@ -317,6 +324,55 @@ public class UserDao {
 			throw new DaoException(e.getMessage(), e);
 		}
 		finally {
+			dbSource.closeConnection();
+		}
+	}
+
+	private void setRolesForUser(User user) throws DaoException {
+		SimpleDatabaseConnection dbSource = null;
+		ResultSet results = null;
+		PreparedStatement stmt = null;
+
+		try {
+			dbSource = new SimpleDatabaseConnection();
+			stmt = dbSource.getConnection().prepareStatement(
+				"SELECT r.id, r.admin, r.messageQueue, r.developer " +
+				"FROM simples.role r " +
+				"INNER JOIN simples.user_role ur " +
+				"ON ur.roleId = r.id " +
+				"WHERE userId = ? " +
+				"AND CURDATE() BETWEEN effectiveStart AND effectiveEnd"
+			);
+			stmt.setInt(1, user.getId());
+			results = stmt.executeQuery();
+
+			List<Role> userRoles = new ArrayList<Role>();
+
+			while (results.next()) {
+				Role role = new Role();
+				role.setId(results.getInt("id"));
+				role.setAdmin(results.getBoolean("admin"));
+				role.setCanSeeMessageQueue(results.getBoolean("messageQueue"));
+				role.setDeveloper(results.getBoolean("developer"));
+				userRoles.add(role);
+			}
+
+			user.setRoles(userRoles);
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			try {
+				if(results != null) {
+					results.close();
+				}
+				if(stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+				throw new DaoException(e.getMessage(), e);
+			}
 			dbSource.closeConnection();
 		}
 	}

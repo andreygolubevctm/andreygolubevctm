@@ -172,6 +172,26 @@
 					<Value><xsl:value-of disable-output-escaping="yes" select="$unsubscribeURL" /></Value>
 				</Attributes>
 
+				<Attributes>
+					<Name>ProductName</Name>
+					<Value><xsl:value-of select="health/application/productTitle"/></Value>
+				</Attributes>
+				<Attributes>
+					<Name>HealthFund</Name>
+					<Value><xsl:value-of select="health/application/provider"/></Value>
+				</Attributes>
+				<Attributes>
+					<Name>HealthFundPhoneNo</Name>
+					<Value><xsl:value-of select="health/fundData/providerPhoneNumber"/></Value>
+				</Attributes>
+				<Attributes>
+					<Name>HospitalPDSUrl</Name>
+					<Value><xsl:value-of select="health/fundData/hospitalPDF"/></Value>
+				</Attributes>
+				<Attributes>
+					<Name>ExtrasPDSUrl</Name>
+					<Value><xsl:value-of select="health/fundData/extrasPDF"/></Value>
+				</Attributes>
 			</Subscribers>
 
 		</Objects>

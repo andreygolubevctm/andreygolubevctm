@@ -1,4 +1,4 @@
-CREATE OR REPLACE VIEW `simples`.`message_queue_available` AS
+CREATE OR REPLACE VIEW `simples`.`message_queue_expired` AS
 
 	SELECT msg.*, stat.status
 		, ( msg.callAttempts + msg.postponeCount) AS TotalCalls
@@ -16,7 +16,7 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_available` AS
 
 		-- Has the message expired? (created + source expiry)
 		AND (
-			NOW() <  DATE_ADD(created,INTERVAL src.messageExpiry DAY)
+			NOW() >=  DATE_ADD(created,INTERVAL src.messageExpiry DAY)
 			OR statusId = 31 /*Completed as PM*/
 			OR statusId = 32 /*Changed Time for PM*/
 		)

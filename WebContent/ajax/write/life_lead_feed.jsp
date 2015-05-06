@@ -6,22 +6,28 @@
 <sql:setDataSource dataSource="jdbc/ctm" />
 <jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="request" />
 
+<%-- This query only runs on Life for now as IP sends the lead directly. --%>
+<c:set var="vertical" value="life" />
+
 <c:catch var="error">
 	<sql:query var="transactionIds">
-		SELECT touches.transaction_id
-		FROM ctm.touches
-		JOIN aggregator.transaction_header ON transaction_header.transactionId = touches.transaction_id
-		WHERE transaction_id NOT IN (
-			SELECT transaction_id
-			FROM ctm.touches
-			WHERE date = CURDATE()
+		SELECT th.transactionId as transaction_id
+		FROM ctm.touches t
+		JOIN aggregator.transaction_header th ON th.transactionId = t.transaction_id
+		WHERE th.rootId NOT IN (
+			SELECT th.rootId
+			FROM aggregator.transaction_header th
+			JOIN ctm.touches t ON th.transactionId = t.transaction_id
+			WHERE th.ProductType IN ("LIFE")
+			AND StartDate = CURDATE()
 			AND (type = "LF" OR type = "R")
+			GROUP BY th.rootId
 		)
 		AND type = "CDC"
-		AND date = CURDATE()
+		AND StartDate = CURDATE()
 		AND time < TIME(NOW() - INTERVAL 15 MINUTE)
-		AND ProductType = "LIFE"
-		GROUP BY transaction_id;
+		AND th.ProductType = "LIFE"
+		GROUP BY th.rootId;
 	</sql:query>
 </c:catch>
 
@@ -33,9 +39,6 @@
 
 	<%-- if there are some results --%>
 	<c:when test="${not empty transactionIds and transactionIds.rowCount > 0}">
-		<%-- Load the config for the contact lead sender --%>
-		<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
-		
 		<c:forEach var="result" items="${transactionIds.rows}">
 			<%--
 				- Take each transaction ID
@@ -58,12 +61,19 @@
 				</c:when>
 				<%-- if there are some results --%>
 				<c:when test="${not empty transactionData and transactionData.rowCount > 0}">
-					<go:setData dataVar="data" xpath="life" value="*DELETE" />
-					
+					<settings:setVertical verticalCode="${fn:toUpperCase(vertical)}" />
+
+					<go:setData dataVar="data" xpath="${vertical}" value="*DELETE" />
+
+					<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="start" />
+
 					<c:forEach var="transactionDatum" items="${transactionData.rows}">
 						<go:setData dataVar="data" xpath="${transactionDatum.xpath}" value="${transactionDatum.textValue}" />
 					</c:forEach>
-					
+
+					<%-- Load the config for the contact lead sender --%>
+					<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
+
 					<go:soapAggregator 	config = "${config}"
 										transactionId = "${result.transaction_id}"
 										xml = "${go:getEscapedXml(data[fn:toLowerCase(vertical)])}"
@@ -73,9 +83,14 @@
 										configDbKey="quoteService"
 										styleCodeId="${pageSettings.getBrandId()}"
 										/>
-										
+
+					<go:setData dataVar="data" xpath="current/transactionId" value="${result.transaction_id}" />
+					
+					<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/firstPageDropOffLeadSentTo" value="lifebroker" />
+
 					<%-- Set the touch response as a variable so that we don't output to screen --%>
-					<c:set var="recordTouchResponse">${accessTouchService.recordTouch(result.transaction_id, "LF")}</c:set>
+					<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" />
+					<core:transaction touch="LF" noResponse="true" writeQuoteOverride="N" />
 				</c:when>
 			</c:choose>
 		</c:forEach>

@@ -9700,7 +9700,10 @@ Features = {
             selectedTextHTML = selectedTextHTML.substr(0, 20) + "...";
         }
         selectedTextHTML = "<span>" + selectedTextHTML + "</span>";
-        if ($selected.not("[readonly]").length && !$list.find('li:contains("' + selectedText + '")').length) {
+        var isAlreadySelected = $list.find("li span").filter(function() {
+            return optionSelectedIcon + $(this).text() === selectedText;
+        }).length;
+        if ($selected.not("[readonly]").length && !isAlreadySelected) {
             $select[0].selectedIndex = 0;
             $select.find('option[value="' + value + '"]').text(optionSelectedIcon + selectedText).attr("disabled", "disabled");
             setTimeout(function delayTagAppearance() {
@@ -9712,6 +9715,9 @@ Features = {
                     $(this).parents("li").removeClass("hover");
                 })).fadeIn(fadeSpeed, function() {
                     _updateHiddenInputs();
+                    if (!document.getElementById($select.attr("id")).options[0].selected) {
+                        document.getElementById($select.attr("id")).options[0].selected = true;
+                    }
                 }));
             }, 75);
         }

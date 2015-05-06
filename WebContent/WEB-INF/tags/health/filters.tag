@@ -16,6 +16,7 @@
 		</div>
 --%>
 
+<jsp:useBean id="healthApplicationService" class="com.ctm.services.health.HealthApplicationService" scope="page" />
 <div class="dropdown-container">
 	<form class="filters-component">
 		<div class="scrollable filters clearfix">
@@ -96,6 +97,7 @@
 			</c:if>
 
 			<%-- Brand/Provider --%>
+			<c:set var="providerList" value="${healthApplicationService.getAllProviders(styleCodeId)}"  scope="request"/>
 			<div class="filterProvider col-md-12" id="filter-provider" data-filter-type="checkbox" data-filter-serverside="true">
 				<div class="col-md-8 filter">
 					<div class="row">
@@ -109,7 +111,7 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-offset-3 col-sm-9 col-md-offset-2 col-md-10 notRestrictedBrands">
-							<health:filter_provider xpath="health/brandFilter" fundType="notRestricted" />
+							<health:filter_provider xpath="health/brandFilter" providersList="${providerList}"  fundType="notRestricted" />
 						</div>
 					</div>
 				</div>
@@ -125,7 +127,7 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-offset-3 col-sm-9 col-md-offset-4 col-md-8 col-lg-offset-3 col-lg-9 restrictedBrands">
-							<health:filter_provider xpath="health/brandFilter" fundType="restricted" />
+							<health:filter_provider xpath="health/brandFilter" providersList="${providerList}" fundType="restricted" />
 						</div>
 					</div>
 				</div>

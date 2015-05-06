@@ -174,11 +174,11 @@
 				meerkat.modules.travelCoverLevelTabs.initTravelCoverLevelTabs();
 			},
 			onBeforeEnter: function enterResultsStep(event) {
-				// Always force it to be a "Load" in travel, as currently, we always get a nwe tranid.
+				// Always force it to be a "Load" in travel, as currently, we always get a new tranid.
 				meerkat.modules.resultsTracking.setResultsEventMode('Load');
 				$('#resultsPage').addClass('hidden');
 				meerkat.modules.travelSummaryText.updateText();
-
+				meerkat.modules.travelSorting.resetToDefaultSort();
 				meerkat.modules.travelCoverLevelTabs.updateSettings();
 			},
 			onAfterEnter: function afterEnterResults(event) {

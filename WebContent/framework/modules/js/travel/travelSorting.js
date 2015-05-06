@@ -8,10 +8,7 @@
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
 		error = meerkat.logging.error,
-		exception = meerkat.logging.exception,
 		$sortElements,
-		activeSortBy,
-		activeSortDir,
 		defaultSortStates = {
 			'benefits.excess' : 'asc',
 			'benefits.medical' : 'desc',
@@ -19,8 +16,6 @@
 			'benefits.luggage' : 'desc',
 			'price.premium' : 'asc'
 		};
-	//$sortbarChildren,
-	//$sortbarParent,
 
 
 	//Sorting is a kind of filtering for now in the events
@@ -143,16 +138,28 @@
 			//Just a test for the obvious
 			if(typeof Results === 'undefined') {
 				meerkat.logging.exception('[travelSorting]','No Results Object Found!');
-			} else {
-				return;
 			}
 		});
+	}
+
+	function resetToDefaultSort() {
+		var $priceSortEl = $("[data-sort-type='price.premium']");
+		var sortBy = Results.getSortBy(),
+			price = 'price.premium';
+
+		if(sortBy != price || ($priceSortEl.attr('data-sort-dir') == 'desc' && sortBy == price)) {
+			$priceSortEl.parent('li').siblings().removeClass('active').end().addClass('active').end().attr('data-sort-dir', 'asc');
+			Results.setSortBy('price.premium');
+			Results.setSortDir('asc');
+		}
+
 	}
 
 	meerkat.modules.register('travelSorting', {
 		init: init,
 		initSorting: initSorting,
-		events: events
+		events: events,
+		resetToDefaultSort:resetToDefaultSort
 	});
 
 })(jQuery);

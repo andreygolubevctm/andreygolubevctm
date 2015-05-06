@@ -1,6 +1,8 @@
 package com.ctm.model.simples;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +18,7 @@ public class User extends AbstractJsonModel {
 	private Date modified;
 	private boolean available;
 	private boolean loggedIn;
+	private List<Role> roles;
 
 	//
 	// Accessors
@@ -70,8 +73,13 @@ public class User extends AbstractJsonModel {
 		this.loggedIn = loggedIn;
 	}
 
-
-
+	public List<Role> getRoles() {
+		if(roles == null) return new ArrayList<Role>();
+		return roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
 	@Override
 	protected JSONObject getJsonObject() throws JSONException {
 		JSONObject json = new JSONObject();
@@ -83,7 +91,6 @@ public class User extends AbstractJsonModel {
 		json.put("modified", getModified());
 		json.put("available", getAvailable());
 		json.put("loggedIn", getLoggedIn());
-
 		return json;
 	}
 }

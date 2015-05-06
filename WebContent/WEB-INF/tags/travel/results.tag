@@ -31,12 +31,17 @@
 			</div>
 		</div>
 
+
 		<div class="resultsOverflow">
 			<div class="results-table">
 				<%-- Prompt --%>
-				<div class="hidden-xs container morePromptContainer">
+				<div class="container morePromptContainer">
 					<span class="morePromptCell">
-						<a href="javascript:;" class="morePromptLink"><span class="icon icon-angle-down"></span><span class="morePromptLinkText">Go to Bottom</span><span class="icon icon-angle-down"></span></a>
+						<a href="javascript:;" class="morePromptLink">
+							<span class="icon icon-angle-down"></span>
+							<span class="morePromptLinkText hidden-xs">Go to Bottom</span>
+							<span class="icon icon-angle-down hidden-xs"></span>
+						</a>
 					</span>
 				</div>
 			</div>
@@ -46,6 +51,7 @@
 
 		<div class="featuresFooterPusher"></div>
 	</div>
+
 
 <%-- DEFAULT RESULT ROW --%>
 <core:js_template id="result-template">

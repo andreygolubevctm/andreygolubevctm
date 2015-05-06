@@ -3,6 +3,7 @@
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="utilities/countryMapping.xsl" />
+	<xsl:import href="utilities/bannedISOList.xsl" />
 
 <!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="partnerId" />
@@ -15,15 +16,32 @@
 	<xsl:template match="/travel">
 
 <!-- LOCAL VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<xsl:variable name="chooseNotToQuote">
+			<xsl:choose>
+				<xsl:when test="policyType = 'S'">
+					<xsl:call-template name="checkCountrySelectionIsOnBannedList">
+						<xsl:with-param name="providerCode">TINZ</xsl:with-param>
+						<xsl:with-param name="selectedRegions" select="destination" />
+					</xsl:call-template>
+				</xsl:when>
+				<xsl:otherwise>N</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
 		<!-- Order of regions of most expensive to cheapest below is correct-->
 		<xsl:variable name="region">
 			<xsl:choose>
-				<xsl:when test="policyType = 'S'">
-					<xsl:call-template name="getRegionMapping">
-						<xsl:with-param name="selectedRegions" select="mappedCountries/TINZ/regions" />
-					</xsl:call-template>
+				<xsl:when test="$chooseNotToQuote = 'N'">
+					<xsl:choose>
+						<xsl:when test="policyType = 'S'">
+							<xsl:call-template name="getRegionMapping">
+								<xsl:with-param name="selectedRegions" select="mappedCountries/TINZ/regions" />
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>R1</xsl:otherwise>
+					</xsl:choose>
 				</xsl:when>
-				<xsl:otherwise>R1</xsl:otherwise>
+				<xsl:otherwise>R20</xsl:otherwise> <!-- Send invalid code so no quote is done -->
 			</xsl:choose>
 		</xsl:variable>
 

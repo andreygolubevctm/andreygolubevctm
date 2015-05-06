@@ -2,6 +2,7 @@ package com.ctm.dao.health;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
+import com.ctm.model.Provider;
 import com.ctm.model.health.*;
 import org.apache.log4j.Logger;
 
@@ -10,9 +11,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class HealthPriceDao {
 	private static final String DISC_PREFIX = "disc";
@@ -389,7 +388,7 @@ public class HealthPriceDao {
 					.append( "LIMIT 1) results ")
 					.append( "GROUP by ProviderID ")
 					.append( "ORDER BY rank DESC, factoredPrice ASC ")
-					.append( "LIMIT 1 ");
+					.append("LIMIT 1 ");
 
 			PreparedStatement stmt = dbSource.getConnection().prepareStatement(sqlBuilder.toString());
 			populateParamsToFetchSingle(healthPriceRequest, stmt);
@@ -974,4 +973,51 @@ public class HealthPriceDao {
 		return healthPriceResult;
 	}
 
+	public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
+		List<Provider> providers = new ArrayList<>();
+		try {
+			PreparedStatement stmt;
+			stmt = dbSource.getConnection().prepareStatement(
+					"SELECT a.ProviderId, pp.Text AS FundCode, pp2.Status AS isRestricted, a.Name" +
+							" FROM stylecode_providers a" +
+							" LEFT JOIN provider_properties pp" +
+							" ON pp.providerId = a.ProviderId AND pp.PropertyId = 'FundCode'" +
+							" LEFT JOIN provider_properties pp2\n" +
+							" ON pp2.providerId = a.ProviderId AND pp2.PropertyId = 'RestrictedFund'" +
+							" WHERE a.styleCodeId = ?" +
+							" AND a.providerid NOT IN (" +
+							" SELECT spe.providerId FROM ctm.stylecode_provider_exclusions spe" +
+							" WHERE spe.verticalId = 4" +
+							" AND (spe.styleCodeId = a.styleCodeId OR spe.styleCodeId = 0)" +
+							" AND now() between spe.excludeDateFrom AND spe.excludeDateTo" +
+							" )" +
+							" AND a.providerid = (" +
+							" SELECT pm.providerid FROM ctm.product_master pm" +
+							" WHERE pm.providerid = a.providerid" +
+							" AND pm.productCat = 'HEALTH'" +
+							" LIMIT 1" +
+							" )" +
+							" GROUP BY a.ProviderId, a.Name" +
+							" ORDER BY a.Name;"
+			);
+			stmt.setInt(1, styleCodeId);
+
+			ResultSet result = stmt.executeQuery();
+			while (result.next()) {
+				Provider provider = new Provider();
+				provider.setId(result.getInt("ProviderId"));
+				provider.setCode(result.getString("FundCode"));
+				provider.setName(result.getString("Name"));
+				provider.setPropertyDetail("isRestricted",result.getString("isRestricted"));
+				providers.add(provider);
+			}
+
+		} catch (SQLException | NamingException e) {
+			logger.error("failed to set up Extra name" , e);
+			throw new DaoException(e.getMessage(), e);
+		} finally {
+			dbSource.closeConnection();
+		}
+		return  providers;
+	}
 }

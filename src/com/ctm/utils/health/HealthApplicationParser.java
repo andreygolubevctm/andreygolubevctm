@@ -1,23 +1,14 @@
 package com.ctm.utils.health;
 
-import java.util.Date;
-import java.util.List;
-
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.PaymentType;
 import com.ctm.model.request.Person;
-import com.ctm.model.request.health.Address;
-import com.ctm.model.request.health.Application;
-import com.ctm.model.request.health.Bank;
-import com.ctm.model.request.health.Credit;
-import com.ctm.model.request.health.Dependants;
-import com.ctm.model.request.health.Dependant;
-import com.ctm.model.request.health.Details;
-import com.ctm.model.request.health.HealthApplicationRequest;
-import com.ctm.model.request.health.Medicare;
-import com.ctm.model.request.health.Payment;
+import com.ctm.model.request.health.*;
 import com.ctm.utils.FormDateUtils;
 import com.disc_au.web.go.Data;
+
+import java.util.Date;
+import java.util.List;
 
 public class HealthApplicationParser {
 
@@ -68,7 +59,7 @@ public class HealthApplicationParser {
 		}
 		payment.gatewayNumber = data.getString(prefix + "gateway/number");
 		payment.gatewayName = data.getString(prefix + "gateway/name");
-		payment.creditName = data.getString(prefix + "credit/name");
+		payment.creditName = data.getString(prefix + "credit/name")!=null?data.getString(prefix + "credit/name").replaceAll("[^\\dA-Za-z ]", ""):null;
 
 		payment.medicare = parseMedicare(data, prefix);
 		return payment;

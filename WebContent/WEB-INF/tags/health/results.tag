@@ -31,6 +31,9 @@
 <field:hidden xpath="health/filter/providerExclude" />
 <field:hidden xpath="health/filter/priceMin" defaultValue="0" />
 <field:hidden xpath="health/filter/frequency" defaultValue="M" />
+<field:hidden xpath="health/fundData/hospitalPDF" defaultValue=""/>
+<field:hidden xpath="health/fundData/extrasPDF" defaultValue=""/>
+<field:hidden xpath="health/fundData/providerPhoneNumber" defaultValue=""/>
 		<c:if test="${callCentre}">
 	<field:hidden xpath="health/filter/tierHospital" />
 	<field:hidden xpath="health/filter/tierExtras" />

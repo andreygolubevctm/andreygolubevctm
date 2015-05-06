@@ -1,6 +1,0 @@
-CtM,provide_id,provider_name,provider_short_name,,,
-provider,297,Travel Insuranz,Travel Insuranz,,,
-products_headings,Product ID,ProductName,Is active?,Add?,Rename?,Include In Import?
-product,117,Classic,1,0,0,1
-product,118,Premier,1,0,0,1
-product,119,Deluxe,1,0,0,1
