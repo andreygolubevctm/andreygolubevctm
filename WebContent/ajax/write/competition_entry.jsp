@@ -26,30 +26,10 @@
 
 <%-- Param if coming from the health journey  --%>
 <c:choose>
-	<%-- HLT-608 --%>
-	<c:when test="${not empty param.secret and param.secret == '498j984j983j4f'}">
-		<c:set var="competition_id" value="${3}" />
-		<c:set var="source" value="OctPromo$1000" />
-	</c:when>
-	<%-- HLT-661 --%>
-	<c:when test="${not empty param.secret and param.secret == '879n5b5435fgxz'}">
-		<c:set var="competition_id" value="${4}" />
-		<c:set var="source" value="NovPromo$1000" />
-	</c:when>
-	<%-- HLT-1213 --%>
-	<c:when test="${not empty param.secret and param.secret == 'bRevefUM4Pruwr'}">
-		<c:set var="competition_id" value="${8}" />
-		<c:set var="source" value="June2014$1000" />
-	</c:when>
-	<%-- HLT-1415 --%>
-	<c:when test="${not empty param.secret and param.secret == 'QMx64uDQZ2D40raOR21G'}">
-		<c:set var="competition_id" value="${10}" />
-		<c:set var="source" value="AugustHealthPromo2014$1000" />
-	</c:when>
-	<%-- HLT-1597 --%>
-	<c:when test="${not empty param.secret and param.secret == 'p69u8voK30L8zuL5dJ5x'}">
-		<c:set var="competition_id" value="${12}" />
-		<c:set var="source" value="OctHealthPromo2014$1000" />
+	<%-- HLT-2221 --%>
+	<c:when test="${not empty param.secret and param.secret == 'C7F9FILY0qe02X98rXCH'}">
+		<c:set var="competition_id" value="${19}" />
+		<c:set var="source" value="MayHealthPromo2015$1000" />
 	</c:when>
 	<%-- HLT-1833 --%>
 	<c:when test="${not empty param.secret and param.secret == 'hVChRLoupPEFA6udMweD'}">

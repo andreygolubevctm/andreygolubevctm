@@ -9,7 +9,7 @@
 <c:set var="vertical" value="${fn:toLowerCase(vertical)}" />
 <c:set var="campaignIdXpath" value="${vertical}/tracking/cid" />
 <c:choose>
-	<c:when test="${productBrandCode eq 'NABA'}">
+	<c:when test="${productBrandCode eq 'NABA' or productBrandCode eq 'ANZ'}">
 		<c:set var="productHandoverUrlWithParams" value="${productHandoverUrlWithParams}/pubref:brand=${productBrandCode}|productID=${productID}|campaignID=${data[campaignIdXpath]}|transactionID=${data.current.transactionId}" />
 	</c:when>
 	<c:otherwise>

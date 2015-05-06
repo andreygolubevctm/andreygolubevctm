@@ -14,9 +14,10 @@
                 xpath="${xpath}/competition/optIn"
                 value="Y"
                 className="validate"
-                required="false"
+                required="true"
                 label="${true}"
-                title="${label}" />
+                title="${label}"
+                errorMsg="Please confirm you agree to the terms and conditions of the promotion" />
     </form_new:row>
 </c:if>
 
