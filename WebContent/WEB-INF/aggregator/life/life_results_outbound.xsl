@@ -22,7 +22,7 @@
 		<xsl:variable name="marketing"><xsl:value-of select="contactDetails/call" /></xsl:variable>
 		<xsl:variable name="phoneNo">
 			<xsl:choose>
-				<xsl:when test="sendRealData = 'true'"><xsl:value-of select="contactDetails/contactNumber" /></xsl:when>
+				<xsl:when test="sendRealData = 'true' and contactDetails/call != 'N'"><xsl:value-of select="contactDetails/contactNumber" /></xsl:when>
 				<xsl:otherwise>0000000000</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
