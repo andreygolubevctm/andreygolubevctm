@@ -279,7 +279,7 @@ var healthFunds_AUF = {
         creditCardDetails.config = {
             visa: true,
             mc: true,
-            amex: true,
+            amex: false,
             diners: false
         };
         creditCardDetails.render();
@@ -3772,6 +3772,7 @@ creditCardDetails = {
         healthPaymentGatewayNAB: {}
     }, moduleEvents = events.healthPaymentGatewayNAB;
     var $cardNumber;
+    var $cardName;
     var $crn;
     var $rescode;
     var $restext;
@@ -3796,6 +3797,7 @@ creditCardDetails = {
     function setup(instanceSettings) {
         settings = instanceSettings;
         $cardNumber = $("#" + settings.name + "_nab_cardNumber");
+        $cardName = $("#" + settings.name + "_nab_cardName");
         $crn = $("#" + settings.name + "_nab_crn");
         $rescode = $("#" + settings.name + "_nab_rescode");
         $restext = $("#" + settings.name + "_nab_restext");
@@ -3819,6 +3821,7 @@ creditCardDetails = {
     }
     function success(params) {
         $cardNumber.val(params.pan);
+        $cardName.val(params.cardName);
         $crn.val(params.CRN);
         $rescode.val(params.rescode);
         $restext.val(params.restext);
@@ -3833,6 +3836,7 @@ creditCardDetails = {
             $restext.val(params.restext);
         }
         $cardNumber.val("");
+        $cardName.val("");
         $crn.val("");
         $rescode.val("");
         $restext.val("");

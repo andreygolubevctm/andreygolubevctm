@@ -127,7 +127,6 @@ function init_address(name, defaultSuburbSeq) {
 
 	function resetElasticSearchFields() {
 			toggleValidationStyles(autofilllessSearchInput);
-			lastSearchHidden.val('');
 			autofilllessSearchInput.val('');
 			lookupStreetNameHidden.val('');
 			lookupStreetIdHidden.val('');
@@ -154,7 +153,6 @@ function init_address(name, defaultSuburbSeq) {
 				reset();
 				autofilllessSearchInput.val("");
 				nonStdStreetNameInput.val("");
-				lastSearchHidden.val("");
 				postCodeField.data('previous', postCodeField.val());
 				lookupPostCodeHidden.val(postCodeField.val());
 
@@ -307,7 +305,6 @@ function init_address(name, defaultSuburbSeq) {
 		lookupDpIdHidden.val(window.selectedAddressObj[getType()].dpId);
 		fullAddressHidden.val(window.selectedAddressObj[getType()].fullAddress);
 		fullAddressLineOneHidden.val(window.selectedAddressObj[getType()].fullAddressLineOne);
-		lastSearchHidden.val("");
 	};
 
 	var getFormattedStreet = function(street, convertToUppercase) {

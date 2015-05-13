@@ -50,7 +50,6 @@ public class ProviderRouter extends HttpServlet {
 			// Route the requests ////////////////
 
 			if (uri.endsWith("/provider/list.json")) {
-
 				ArrayList<Provider> providers = ProviderService.fetchProviders(request);
 				objectMapper = new ObjectMapper();
 				objectMapper.writeValue(writer, providers);

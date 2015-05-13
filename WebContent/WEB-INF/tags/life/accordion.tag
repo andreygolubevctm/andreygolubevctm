@@ -490,9 +490,10 @@ var LifeAccordion = function() {
 	}
 
 	.${quoteType} .accordion .button-row a {
-		float:					right;
+		float: left;
+		margin-left: 206px;
 	}
-
+	
 	.${quoteType} .button-wrapper {
 		display:				none;
 	}

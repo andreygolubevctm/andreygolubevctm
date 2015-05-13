@@ -9,6 +9,7 @@
 		<whatToCompare>EG</whatToCompare>
 		<howToEstimate>S</howToEstimate>
 		<tariff>8400</tariff>
+		<solarPanels>N</solarPanels>
 	</householdDetails>
 	<estimateDetails>
 		<spend>

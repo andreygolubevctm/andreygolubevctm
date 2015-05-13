@@ -310,7 +310,7 @@
 										<%-- Append a fullstop --%>
 										<x:if select="substring($condition, string-length($condition)) != '.'"><c:out value="." /></x:if>
 
-										<c:out value=" " />
+										<c:out value="<br/>" />
 									</x:forEach>
 								</c:set>
 							</x:when>

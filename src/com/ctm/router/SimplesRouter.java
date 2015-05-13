@@ -1,47 +1,35 @@
 package com.ctm.router;
 
-import static com.ctm.services.PhoneService.makeCall;
-import static java.lang.Integer.parseInt;
-import static java.util.Arrays.asList;
-import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
-import static javax.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
-import static javax.servlet.http.HttpServletResponse.SC_OK;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.List;
+import com.ctm.dao.UserDao;
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Error;
+import com.ctm.model.session.AuthenticatedData;
+import com.ctm.model.settings.PageSettings;
+import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.model.simples.Message;
+import com.ctm.services.*;
+import com.ctm.services.simples.*;
+import com.ctm.utils.RequestUtils;
+import com.ctm.web.validation.SchemaValidationError;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 
-import org.apache.log4j.Logger;
-
-import com.ctm.dao.UserDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.SessionException;
-import com.ctm.model.Error;
-import com.ctm.model.session.AuthenticatedData;
-import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.model.simples.Message;
-import com.ctm.services.AccessCheckService;
-import com.ctm.services.FatalErrorService;
-import com.ctm.services.SessionDataService;
-import com.ctm.services.SettingsService;
-import com.ctm.services.TransactionService;
-import com.ctm.services.simples.MessageConfigService;
-import com.ctm.services.simples.SimplesMessageService;
-import com.ctm.services.simples.SimplesTickleService;
-import com.ctm.services.simples.SimplesUserService;
-import com.ctm.utils.RequestUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import static com.ctm.services.PhoneService.makeCall;
+import static java.lang.Integer.parseInt;
+import static java.util.Arrays.asList;
+import static javax.servlet.http.HttpServletResponse.*;
 
 @WebServlet(urlPatterns = {
         "/simples/comments/list.json",
@@ -56,7 +44,22 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
         "/simples/phones/call",
         "/simples/hawking/unlock",
         "/simples/hawking/toggle",
-        "/simples/hawking/get.json"
+		"/simples/hawking/get.json",
+		"/simples/admin/openinghours/update.json",
+		"/simples/admin/openinghours/create.json",
+		"/simples/admin/openinghours/delete.json",
+		"/simples/admin/openinghours/getAllRecords.json",
+		"/simples/admin/offers/update.json",
+		"/simples/admin/offers/create.json",
+		"/simples/admin/offers/delete.json",
+		"/simples/admin/offers/getAllRecords.json",
+		// post
+		"/simples/admin/cappingLimits/update.json",
+		"/simples/admin/cappingLimits/create.json",
+		"/simples/admin/cappingLimits/delete.json",
+		"/simples/admin/cappingLimits.json",
+		//get
+		"/simples/admin/cappingLimits/getAllRecords.json"
 })
 public class SimplesRouter extends HttpServlet {
 	private static final long serialVersionUID = 13L;
@@ -75,7 +78,7 @@ public class SimplesRouter extends HttpServlet {
 	}
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		String uri = request.getRequestURI();
 		PrintWriter writer = response.getWriter();
 
@@ -147,23 +150,92 @@ public class SimplesRouter extends HttpServlet {
             toggleHawkingStatus(writer, authenticatedData, request, response);
         } else if (uri.endsWith("/simples/hawking/unlock")) {
             unlockHawkingMessage(writer, authenticatedData, request, response);
+        } else if (uri.endsWith("/simples/admin/openinghours/getAllRecords.json")) {
+            objectMapper.writeValue(writer, new OpeningHoursService().getAllHours(request));
+        } else if (uri.endsWith("/simples/admin/offers/getAllRecords.json")) {
+            objectMapper.writeValue(writer, new SpecialOffersService().getAllOffers());
+		} else if(uri.contains("/simples/admin/")){
+			AdminRouter adminRouter = new AdminRouter(request, response);
+			adminRouter.doGet(uri.split("/simples/admin/")[1]);
         } else {
             response.sendError(SC_NOT_FOUND);
         }
 
+
 	}
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String uri = request.getRequestURI();
-        if(uri.endsWith("/simples/openinghours/edit")){
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		String uri = request.getRequestURI();
+		PrintWriter writer = response.getWriter();
+		AuthenticatedData authenticatedData;
+		if (request.getSession() != null) {
+			authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
+		} else {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 
-        }else {
+		if(uri.endsWith("/simples/admin/openinghours/update.json")){
+			OpeningHoursService service = new OpeningHoursService();
+			List<SchemaValidationError> errors = service.validateOpeningHoursData(request);
+			if(errors==null || errors.isEmpty()){
+				objectMapper.writeValue(writer,service.updateOpeningHours(request,authenticatedData));
+			}else{
+				response.setStatus(400);
+				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
+			}
+		}else if(uri.endsWith("/simples/admin/openinghours/create.json")){
+			OpeningHoursService service = new OpeningHoursService();
+			List<SchemaValidationError> errors = service.validateOpeningHoursData(request);
+			if(errors==null || errors.isEmpty()){
+				objectMapper.writeValue(writer,service.createOpeningHours(request,authenticatedData));
+			}else{
+				response.setStatus(400);
+				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
+			}
+		} else if(uri.endsWith("/simples/admin/openinghours/delete.json")){
+            String result = new OpeningHoursService().deleteOpeningHours(request, authenticatedData);
+            if (!result.equalsIgnoreCase("success")) {
+				response.setStatus(400);
+                objectMapper.writeValue(writer, jsonObjectNode("error", result));
+            } else {
+                objectMapper.writeValue(writer, jsonObjectNode("result", result));
+			}
+		}else if(uri.endsWith("/simples/admin/offers/update.json")){
+			SpecialOffersService service = new SpecialOffersService();
+			List<SchemaValidationError> errors = service.validateSpecialOffersData(request);
+			if(errors==null || errors.isEmpty()){
+				objectMapper.writeValue(writer,service.updateSpecialOffers(request,authenticatedData));
+            } else {
+                response.setStatus(400);
+				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
+			}
+		}else if(uri.endsWith("/simples/admin/offers/create.json")){
+			SpecialOffersService service = new SpecialOffersService();
+			List<SchemaValidationError> errors = service.validateSpecialOffersData(request);
+			if(errors==null || errors.isEmpty()){
+				objectMapper.writeValue(writer,service.createSpecialOffers(request,authenticatedData));
+			}else{
+                response.setStatus(400);
+				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
+			}
+		} else if(uri.endsWith("/simples/admin/offers/delete.json")){
+            String result = new SpecialOffersService().deleteSpecialOffers(request, authenticatedData);
+            if (!result.equalsIgnoreCase("success")) {
+                response.setStatus(400);
+                objectMapper.writeValue(writer, jsonObjectNode("error", result));
+		}else {
+                objectMapper.writeValue(writer, jsonObjectNode("result", result));
+            }
+		} else if(uri.contains("/simples/admin/")){
+			AdminRouter adminRouter = new AdminRouter(request, response);
+			adminRouter.doPost(uri.split("/simples/admin/")[1]);
+        } else {
             response.sendError(SC_NOT_FOUND);
         }
 
-    }
 
-
+	}
 
 	private void doTickle(HttpServletRequest request, HttpServletResponse response, PrintWriter writer, Long transactionId, AuthenticatedData authenticatedData) throws ServletException, IOException {
 		setHeader(response);
@@ -209,7 +281,7 @@ public class SimplesRouter extends HttpServlet {
 			final SimplesMessageService simplesMessageService = new SimplesMessageService();
 			final List<Message> messages = simplesMessageService.postponedMessages(simplesUid);
 			objectMapper.writeValue(writer, jsonObjectNode("messages", messages));
-		} catch (final DaoException e) {
+        } catch (final DaoException e) {
 			objectMapper.writeValue(writer, errors(e));
 		}
 	}
@@ -219,10 +291,10 @@ public class SimplesRouter extends HttpServlet {
 			final int messageId = parseInt(request.getParameter("messageId"));
 			final SimplesMessageService simplesMessageService = new SimplesMessageService();
 			objectMapper.writeValue(writer, simplesMessageService.getMessage(request, messageId));
-		} catch (final DaoException e) {
+        } catch (final DaoException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			objectMapper.writeValue(writer, errors(e));
-		} catch (final NumberFormatException e) {
+        } catch (final NumberFormatException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			objectMapper.writeValue(writer, errors(new Exception("messageId was not provided or is invalid.")));
 		}
@@ -234,7 +306,7 @@ public class SimplesRouter extends HttpServlet {
 			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.SIMPLES.getCode());
 
 			final SimplesMessageService simplesMessageService = new SimplesMessageService();
-			objectMapper.writeValue(writer, simplesMessageService.getNextMessageForUser(request, simplesUid, authenticatedData.getSimplesUserRoles()));
+			objectMapper.writeValue(writer, simplesMessageService.getNextMessageForUser(request, simplesUid, authenticatedData.getSimplesUserRoles(), authenticatedData.getGetNextMessageRules()));
 		} catch (final DaoException | ConfigSettingException e) {
 			logger.error("Could not get next message for user '" + simplesUid + "'", e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -275,6 +347,7 @@ public class SimplesRouter extends HttpServlet {
 			objectMapper.writeValue(writer, errors(new Exception("status was not provided or is invalid.")));
 		}
 	}
+
 	private void getHawkingStatus(final PrintWriter writer, final HttpServletResponse response) throws IOException {
 		try {
 			objectMapper.writeValue(writer, jsonObjectNode("status", MessageConfigService.getHawkingStatus()));
@@ -293,7 +366,7 @@ public class SimplesRouter extends HttpServlet {
 			} catch (DaoException e) {
 				response.sendError(SC_INTERNAL_SERVER_ERROR);
 				objectMapper.writeValue(writer, errors(e));
-			} catch (final NumberFormatException e) {
+            } catch (final NumberFormatException e) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				objectMapper.writeValue(writer, errors(new Exception("messageId was not provided or is invalid.")));
 			}

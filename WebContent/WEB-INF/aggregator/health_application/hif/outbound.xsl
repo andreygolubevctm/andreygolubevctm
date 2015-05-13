@@ -562,7 +562,9 @@
 									<ExpiryMonth><xsl:value-of select="payment/gateway/nab/expiryMonth" /></ExpiryMonth>
 									<ExpiryYear><xsl:value-of select="payment/gateway/nab/expiryYear" /></ExpiryYear>
 									<AccountNumber><xsl:value-of select="payment/gateway/nab/cardNumber" /></AccountNumber>
-									<AccountName>NA</AccountName>
+									<xsl:if test="payment/gateway/nab/cardName != ''">
+										<AccountName><xsl:value-of select="payment/gateway/nab/cardName" /></AccountName>
+									</xsl:if>
 									<TempCRN><xsl:value-of select="payment/gateway/nab/crn" /></TempCRN>
 								</xsl:when>
 								<xsl:otherwise>

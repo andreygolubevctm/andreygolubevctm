@@ -108,31 +108,50 @@ public class ProviderDao {
 		return get(GetMethod.BY_CODE, providerCode, serverDate);
 	}
 
-	// TODO: Add styleCodeId and isActive and combine with ProviderCodes DAO in e.g. a get query string method.
-	// add to router as well
-	public ArrayList<Provider> getProviders(String verticalCode, int styleCodeId) throws DaoException{
+	/**
+	 * Returns all providers for a specified vertical (active or inactive)
+	 * @param verticalCode
+	 * @param styleCodeId
+	 * @return
+	 * @throws DaoException
+	 */
+	public ArrayList<Provider> getProviders(String verticalCode, int styleCodeId) throws DaoException {
+		return getProviders(verticalCode, styleCodeId, false);
+	}
 
+	/**
+	 * Returns all providers for a specified vertical
+	 *
+	 * TODO: We need to make use of the styleCodeId properly but our database structure doesn't currently support it
+	 *
+	 * @param verticalCode
+	 * @param styleCodeId
+	 * @param getOnlyActiveProviders
+	 * @return
+	 * @throws DaoException
+	 */
+	public ArrayList<Provider> getProviders(String verticalCode, int styleCodeId, Boolean getOnlyActiveProviders) throws DaoException{
 		SimpleDatabaseConnection dbSource = null;
 
 		ArrayList<Provider> providers = new ArrayList<Provider>();
 
 		try{
-
 			dbSource = new SimpleDatabaseConnection();
 			PreparedStatement stmt;
 
-			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT ProviderId, providerCode, Name " +
+			String statementSQL = "SELECT ProviderId, providerCode, Name " +
 				"FROM ctm.provider_master " +
-				"WHERE ProviderId IN (SELECT DISTINCT providerId FROM product_master WHERE productCat= ?) ORDER BY Name ASC"
-			);
+				"WHERE ProviderId IN (" +
+					"SELECT DISTINCT providerId " +
+					"FROM product_master " +
+					"WHERE productCat = ? ";
 
-			/*
-			 * when isActive = 1
-				stmt = dbSource.getConnection().prepareStatement(
-					"SELECT providerCode FROM ctm.stylecode_providers WHERE verticalCode = ? AND stylecodeId = ? AND providerId IN (SELECT DISTINCT (ProviderId) AS providerids FROM ctm.stylecode_products WHERE productCat = ?)"
-				);
-			 */
+			if(getOnlyActiveProviders)
+				statementSQL += "AND EffectiveEnd > CURDATE() ORDER BY EffectiveEnd DESC ";
+
+			statementSQL += ") ORDER BY Name ASC";
+
+			stmt = dbSource.getConnection().prepareStatement(statementSQL);
 
 			stmt.setString(1, verticalCode);
 

@@ -3668,6 +3668,49 @@ body[data-step="payment"].health .healthMoreInfoModel .jeepPromotion {
     background-size: 374px 124px;
   }
 }
+.all-opening-hours .opening-hours {
+  margin-top: 5px;
+}
+.all-opening-hours h1 {
+  font-size: 38px;
+  color: #333333;
+}
+.all-opening-hours h4,
+.all-opening-hours h3 {
+  color: #333333;
+}
+.all-opening-hours h3 {
+  font-weight: 600;
+}
+.all-opening-hours .day-description {
+  text-align: right;
+  font-weight: bold;
+}
+.all-opening-hours .call-details div .call-us h1 {
+  line-height: 50px;
+  text-align: left;
+  font-weight: 500;
+}
+.all-opening-hours .call-details div .call-us h1 span {
+  font-family: SourceSansProRegular, Helvetica, Arial, sans-serif;
+  font-size: 38px;
+  font-weight: 500;
+  height: auto;
+  text-align: left;
+  white-space: now;
+}
+.all-opening-hours .call-details div .call-us h4 {
+  line-height: 45px;
+  text-align: left;
+  display: inline-block;
+  color: #333;
+  float: left;
+  font-size: 18px;
+  font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
+}
+.all-opening-hours .special-hours {
+  margin-top: 30px;
+}
 /* TODO: to read the src from DB so we don't have to set this up for each promo */
 .health100eftpos {
   width: 280px;

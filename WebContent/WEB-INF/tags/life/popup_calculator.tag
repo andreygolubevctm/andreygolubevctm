@@ -26,11 +26,9 @@
 	
 .lb-calculator {
 	display: block;
-	position: absolute;
 	width: 128px;
+	margin-top: 10px;
 	height: 52px;
-	top: 15px;
-	right: 15px;
 	cursor: pointer;
 	background: transparent url(external/life/calculator/icon_calculator.png)  top left no-repeat;
 }	

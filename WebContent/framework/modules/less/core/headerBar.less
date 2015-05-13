@@ -65,6 +65,23 @@ body > div > header {
 				}
 			}
 		}
+		.opening-hours{
+			color: @theme-tertiary;
+			font-size: 91%;
+			font-weight: bold;
+			margin-top:-13px;
+			.tomorrow-hours { 
+				color: @opening-hours-grey-colour;
+				@media (max-width: 767px){
+					color: #fff;
+				}
+			}
+			@media (max-width: 767px){
+					a{
+						color: @theme-tertiary !important;
+					}
+				}
+		}
 		[data-livechat="button"] {
 			vertical-align: super;
 			margin-left: 20px;

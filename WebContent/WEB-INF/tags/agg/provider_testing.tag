@@ -11,7 +11,7 @@
 <%-- NOTE: a List of Provider Keys can be found in aggregator/health/phio_outbound for health --%>
 
 <%-- Make sure we're in a proper environment to test this --%>
-<c:if test="${environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI'  || environmentService.getEnvironmentAsString() == 'NXS'}">
+<c:if test="${environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI'  || environmentService.getEnvironmentAsString() == 'NXS'  || environmentService.getEnvironmentAsString() == 'NXQ'}">
 	<c:choose>
 		<c:when test="${empty param.providerKey}">
 			<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or pageContext.request.remoteAddr == '127.0.0.1'}">

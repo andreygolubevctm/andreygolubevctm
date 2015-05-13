@@ -1,7 +1,6 @@
 package com.ctm.dao;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.dao.transaction.DatabaseQueryMapping;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
@@ -43,8 +42,8 @@ public class TouchDao {
 				databaseMapping = new DatabaseQueryMapping<Touch>() {
 
 					@Override
-					public void handleParams(PreparedStatement stmt) throws SQLException {
-						stmt.setString(1, parameter);
+					public void mapParams() throws SQLException {
+						set(parameter);
 					}
 
 					@Override
@@ -62,9 +61,9 @@ public class TouchDao {
 			databaseMapping = new DatabaseQueryMapping<Touch>() {
 
 					@Override
-					public void handleParams(PreparedStatement stmt) throws SQLException {
-						stmt.setString(1, parameter);
-						stmt.setString(2, "online");
+					public void mapParams() throws SQLException {
+						set(parameter);
+						set("online");
 					}
 
 					@Override
@@ -88,8 +87,8 @@ public class TouchDao {
 		DatabaseQueryMapping<Touch> databaseMapping = new DatabaseQueryMapping<Touch>(){
 
 			@Override
-			public void handleParams(PreparedStatement stmt) throws SQLException {
-				stmt.setLong(1, transactionId);
+			public void mapParams() throws SQLException {
+				set(transactionId);
 			}
 
 			@Override

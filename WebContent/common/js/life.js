@@ -1010,60 +1010,6 @@ var LifeQuote = {
 		});
 	},
 
-	checkQuoteOwnership: function( callback ) {
-		var data = {
-				quoteType:LifeQuote._vertical,
-				transactionId:referenceNo.getTransactionID()
-		};
-		$.ajax({
-			url: "ajax/json/access_check.jsp",
-			data: data,
-			dataType: "json",
-			type: "POST",
-			async: true,
-			timeout:60000,
-			cache: false,
-			beforeSend : function(xhr,setting) {
-				var url = setting.url;
-				var label = "uncache",
-				url = url.replace("?_=","?" + label + "=");
-				url = url.replace("&_=","&" + label + "=");
-				setting.url = url;
-			},
-			success: function(jsonResult){
-				if( !Number(jsonResult.result.success) )
-				{
-					FatalErrorDialog.exec({
-						message:		jsonResult.result.message,
-						page:			"life.js",
-						description:	"LifeQuote.checkQuoteOwnership().  jsonResult contains error message: " + jsonResult.result.message,
-						data:			{sent:data,received:jsonResult}
-					});
-				}
-				else
-				{
-					if( typeof callback == "function" )
-					{
-						callback();
-					}
-				}
-
-				return false;
-			},
-			error: function(obj, txt, errorThrown) {
-				FatalErrorDialog.exec({
-					message:		"An undefined error has occured - please try again later.",
-					page:			"life.js",
-					description:	"LifeQuote.checkQuoteOwnership().  AJAX Request failed: " + txt + ' ' + errorThrown,
-					data:			data
-				});
-				return false;
-			}
-		});
-
-		return true;
-	},
-
 	restartQuote: function() {
 		Loading.show("Start New Quote...");
 		var data = {

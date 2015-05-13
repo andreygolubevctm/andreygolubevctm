@@ -5,7 +5,7 @@
 <form_new:fieldset legend="Our Lenders">
 <div class="row">
 	<div class="col-xs-12">
-		<p>Compare Home Loans from 29 lenders including...</p>
+		<p>Compare Home Loans from 30 lenders including...</p>
 	</div>
 
 	<c:set var="brands" value="${fn:split('ANZ,BOQ,CBA,MACQ,NAB,GEORGE,ING,SUNCORP,WESTPAC',',')}" />
@@ -17,7 +17,7 @@
 	</c:forEach>
 
 	<div class="col-xs-12">
-	<a href="javascript:;" class="btn-view-brands pull-right" >View all <strong>29 lenders</strong> here</a>
+	<a href="javascript:;" class="btn-view-brands pull-right" >View all <strong>30 lenders</strong> here</a>
 	</div>
 </div>
 </form_new:fieldset>

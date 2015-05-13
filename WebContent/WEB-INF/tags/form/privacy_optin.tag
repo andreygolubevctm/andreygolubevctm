@@ -129,7 +129,6 @@ Comparethemarket.com.au compares life insurance and income protection products f
 	<li>BT</li>
 	<li>CommInsure</li>
 	<li>Macquarie</li>
-	<li>Metlife</li>
 	<li>MLC</li>
 	<li>OnePath</li>
 	<c:if test="${vertical eq 'life'}">

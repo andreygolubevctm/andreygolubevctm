@@ -306,5 +306,4 @@ public class CallCenterHoursTest {
 		System.out.println("returnedResult " + returnedResult.getTime());
 		assertEquals(hour, returnedResult.get(Calendar.HOUR_OF_DAY));
 	}
-
 }

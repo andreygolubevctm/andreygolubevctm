@@ -270,7 +270,7 @@ var healthFunds_AUF = {
 		});
 
 		//credit card options
-		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':true, 'diners':false };
+		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
 		creditCardDetails.render();
 
 		//failed application

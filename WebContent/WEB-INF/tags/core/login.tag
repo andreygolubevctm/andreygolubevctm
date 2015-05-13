@@ -42,7 +42,7 @@
 				</c:if>
 				
 				<c:set var="supervisor" value="N" />
-				<c:if test="${ pageContext.request.isUserInRole('BD-HCC-MGR') or pageContext.request.isUserInRole('BC-IT-ECOM-RPT') or pageContext.request.isUserInRole('CTM-IT-USR') }">
+				<c:if test="${ pageContext.request.isUserInRole('BD-HCC-MGR') or pageContext.request.isUserInRole('BC-IT-ECOM-RPT') or pageContext.request.isUserInRole('CTM-IT-USR') or pageContext.request.isUserInRole('jira-ctm-projmgr') }">
 					<c:set var="supervisor" value="Y" />
 					<c:set var="securityDescLevel" value="Supervisor" />
 				</c:if>
@@ -106,6 +106,7 @@
 					<c:set var="simplesUser" value="${ simplesUserService.loginUser(sessionScope.userDetails['uid'], extension, sessionScope.userDetails['displayName'])  }" />
 					<go:setData dataVar="authenticatedData" xpath="login/user/simplesUid" value="${simplesUser.getId()}" />
 					${authenticatedData.setSimplesUserRoles(simplesUser.getRoles())}
+					${authenticatedData.setGetNextMessageRules(simplesUser.getRules())}
 				</c:if>
 
 				<c:set var="out" value="OK" />

@@ -159,7 +159,7 @@
 }
 
 #life-confirmation .wrapper .right-panel-middle .panel {
-    margin-bottom: 				0px;
+	margin-bottom: 				0px;
 }
 
 #life-confirmation .wrapper .head {
@@ -221,50 +221,43 @@ var LifeConfirmationPage = {
 	},
 
 	show: function(products) {
-		
-		<%-- LETO TODO Why is checkQuoteOwnership client side? Surely should be in life_submit_application --%>
-		LifeQuote.checkQuoteOwnership( function() {
+		// Shift progress bar to Confirmation stage
+		QuoteEngine.gotoSlide({noAnimation:true, index:3});
 
-			// Shift progress bar to Confirmation stage
-			QuoteEngine.gotoSlide({noAnimation:true, index:3});
+		if(products && typeof products == 'object') {
+			var $contactPanel = $('.lifebroker-contact-panel'),
+			productSelector = products.hasOwnProperty('primary') ? 'primary' : 'partner';
 
-			if(products && typeof products == 'object') {
-			
-				var $contactPanel = $('.lifebroker-contact-panel'),
-					productSelector = products.hasOwnProperty('primary') ? 'primary' : 'partner';
-				
-				$contactPanel
-					.find('.provider-phone-number').text(products[productSelector].insurer_contact).end()
-					.find('.call-provider-message span').text(products[productSelector].companyName);
-					
-				$('#reference_number h4 span').text(products[productSelector].lead_number);
+			$contactPanel
+				.find('.provider-phone-number').text(products[productSelector].insurer_contact).end()
+				.find('.call-provider-message span').text(products[productSelector].companyName);
+
+			$('#reference_number h4 span').text(products[productSelector].lead_number);
 
 			Track.onCallMeBackClick(Results.getSelectedProduct('primary'));
-			}
-			var link_labels = ['revise_link','save_link'];
-			var links = {};
-			
-			$('#summary-header').find("a").each(function(index){
-				links[link_labels[index]] = $(this).hide().detach();
-			});
-			
-			$('#summary-header').find("h2").first().css({backgroundImage:'none',paddingLeft:0,marginTop:11}).empty().append("Thank You...");
-			
-			for(var i in link_labels)
-			{
-				if( links.hasOwnProperty(link_labels[i]) )
-				{
-					$('#summary-header').find("h2").first().append(links[link_labels[i]]);
-				}
-			}
+		}
 
-			$('#start-new-quote').show();
-			$("#resultsPage").slideUp("fast", function(){
-				$("#life-confirmation").slideDown("fast");
-				});
-			});
+		var link_labels = ['revise_link','save_link'];
+		var links = {};
+
+		$('#summary-header').find("a").each(function(index){
+			links[link_labels[index]] = $(this).hide().detach();
+		});
+
+		$('#summary-header').find("h2").first().css({backgroundImage:'none',paddingLeft:0,marginTop:11}).empty().append("Thank You...");
+
+		for(var i in link_labels) {
+			if( links.hasOwnProperty(link_labels[i]) ) {
+				$('#summary-header').find("h2").first().append(links[link_labels[i]]);
+			}
+		}
+
+		$('#start-new-quote').show();
+		$("#resultsPage").slideUp("fast", function(){
+			$("#life-confirmation").slideDown("fast");
+		});
 	},
-	
+
 	callMeBack : function()
 	{
 		Track.onCallMeBackClick(Results.getSelectedProduct('primary'));

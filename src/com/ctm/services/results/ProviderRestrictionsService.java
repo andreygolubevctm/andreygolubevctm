@@ -22,7 +22,7 @@ public class ProviderRestrictionsService {
 		this.dbSource = new SimpleDatabaseConnection();
 	}
 
-	public List<Integer> getProvidersThatHaveExceededLimit(String state, String vertical, long transactionid) {
+	public List<Integer> getProvidersWithExceededSoftLimit(String state, String vertical, long transactionid) {
 		String selectStatement =
 				"SELECT providerId " +
 				"FROM ctm.vw_dailySalesCount " +
@@ -94,7 +94,7 @@ public class ProviderRestrictionsService {
 	 * @param transactionid
 	 * @return
 	 */
-	public List<Integer> getProvidersThatHaveExceededMonthlyLimit(String state, String vertical, long transactionid) {
+	public List<Integer> getProvidersWithExceededHardLimit(String state, String vertical, long transactionid) {
 		String selectStatement =
 				"SELECT providerId " +
 				"FROM ctm.vw_monthlySalesCount " +
@@ -111,6 +111,25 @@ public class ProviderRestrictionsService {
 						"SELECT rootid FROM aggregator.transaction_header th " +
 						"WHERE th.transactionid = ? " +
 					") " +
+				")" +
+				"UNION "+
+				"SELECT providerId FROM ctm.vw_dailySalesCount " +
+				"WHERE ( " +
+				"(limitValue = ? AND limitType = 'STATE') " +
+				"OR " +
+				"limitType = 'GENERAL' " +
+				") " +
+				"AND currentJoinCount >= maxJoins "+
+				"AND vertical = ? " +
+				"AND limitCategory = 'H' "+ //consider daily limits only when it has been marked as Hard Limit
+				"AND providerId NOT IN ( " +
+					"SELECT pm.providerId FROM `ctm`.`joins`  j " +
+							"INNER JOIN ctm.product_master pm " +
+							"on pm.productid = j.productid " +
+					"WHERE rootid in ( " +
+							"SELECT rootid FROM aggregator.transaction_header th " +
+							"WHERE th.transactionid = ? " +
+					") " +
 				");";
 
 
@@ -124,6 +143,9 @@ public class ProviderRestrictionsService {
 			stmt.setString(1, state);
 			stmt.setString(2, vertical);
 			stmt.setLong(3, transactionid);
+			stmt.setString(4, state);
+			stmt.setString(5, vertical);
+			stmt.setLong(6, transactionid);
 			results = stmt.executeQuery();
 			while(results.next()) {
 				restrictedProviders.add(results.getInt("providerId"));
@@ -157,10 +179,10 @@ public class ProviderRestrictionsService {
 
 		if (healthPriceRequest.isOnResultsPage()) {
 			// Check for soft limits
-			providersThatHaveExceededLimit = getProvidersThatHaveExceededLimit(healthPriceRequest.getState(),VerticalType.HEALTH.getCode(), transactionId);
+			providersThatHaveExceededLimit = getProvidersWithExceededSoftLimit(healthPriceRequest.getState(), VerticalType.HEALTH.getCode(), transactionId);
 		} else {
 			// Check for hard limits
-			providersThatHaveExceededLimit = getProvidersThatHaveExceededMonthlyLimit(healthPriceRequest.getState(),VerticalType.HEALTH.getCode(), transactionId);
+			providersThatHaveExceededLimit = getProvidersWithExceededHardLimit(healthPriceRequest.getState(), VerticalType.HEALTH.getCode(), transactionId);
 		}
 
 		// Add providers that have been excluded in the database

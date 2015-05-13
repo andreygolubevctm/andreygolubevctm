@@ -1,45 +1,89 @@
 package com.ctm.connectivity;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import org.apache.log4j.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
-import org.apache.log4j.Logger;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SimpleDatabaseConnection {
 
 	private static Logger logger = Logger.getLogger(SimpleDatabaseConnection.class.getName());
 
 	private Connection connection;
-	private DataSource ds;
+	private Map<String ,DataSource> dataSources = new HashMap<>();
+
+	private static SimpleDatabaseConnection instance;
+
+	public static SimpleDatabaseConnection getInstance() {
+		if(instance == null){
+			instance = new SimpleDatabaseConnection();
+		}
+		return instance;
+	}
 
 	public Connection getConnection() throws SQLException, NamingException {
 		return getConnection("jdbc/ctm");
 	}
+
+	public Connection getConnection(boolean fresh) throws SQLException, NamingException {
+		return getConnection("jdbc/ctm" , fresh);
+	}
 	
 	public Connection getConnection(String context) throws SQLException, NamingException {
-		if(ds == null) {
+		return getConnection(context , false);
+	}
+
+	public Connection getConnection(String context , boolean fresh) throws SQLException, NamingException {
+		if(dataSources.get(context) == null) {
 			Context initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			ds = (DataSource) envCtx.lookup(context);
+			dataSources.put(context ,(DataSource) envCtx.lookup(context));
 		}
-		if(connection == null || connection.isClosed()) {
-			setConnection(ds.getConnection());
+		if(fresh) {
+			return dataSources.get(context).getConnection();
+		} else {
+			if(connection == null || connection.isClosed()) {
+				setConnection(dataSources.get(context).getConnection());
+			}
+			return connection;
 		}
-		return connection;
 	}
 
 	public void closeConnection() {
+		try {
+			if(this.connection != null && !this.connection.isClosed()){
+				this.connection.close();
+			}
+		} catch (SQLException e) {
+			logger.error("failed to close connection", e);
+		}
+	}
+
+	public void closeConnection(Connection connection, Statement statement) {
+		closeStatement(statement);
 		try {
 			if(connection != null && !connection.isClosed()){
 				connection.close();
 			}
 		} catch (SQLException e) {
 			logger.error("failed to close connection", e);
+		}
+	}
+
+	public void closeStatement(Statement statement) {
+		try {
+			if(statement != null && !statement.isClosed()){
+				statement.close();
+			}
+		} catch (SQLException e) {
+			logger.error("failed to close statement", e);
 		}
 	}
 

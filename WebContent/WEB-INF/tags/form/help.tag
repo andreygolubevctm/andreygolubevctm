@@ -19,13 +19,13 @@
 <%-- CSS --%>
 <go:style marker="css-head">
 	#helpToolTip {
-		background:transparent url(common/images/help-tooltip.png) left top repeat-y;
+		background:transparent url(common/images/help-tooltip-thin.png) left top repeat-y;
 		display:none;
 		position:absolute;
-		width:282px;
+		width: 215px;
 		height:auto;		
 		z-index:200;
-		padding:17px 10px 3px 33px;
+		padding:17px 17px 3px 33px;
 		margin-top: -33px;
 		margin-left: 17px;
 		font-size:12px;
@@ -39,9 +39,9 @@
 		display:block;
 	}
 	#helpToolTipFooter {
-		width: 325px;
+		width: 265px;
 		height:7px;
-		background:transparent url(common/images/help-tooltip.png) left bottom no-repeat;
+		background:transparent url(common/images/help-tooltip-thin.png) left bottom no-repeat;
 		display:block;
 		float:left;
 		position:relative;

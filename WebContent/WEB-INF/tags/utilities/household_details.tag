@@ -112,6 +112,10 @@
 			<field:array_select items="=Please choose...,S=Yes - Use my $ spend to work out my usage,U=No&nbsp;&nbsp;&nbsp;- I will enter my usage in kWh/MJ from a recent bill(s)" xpath="${xpath}/howToEstimate" title="how to estimate how much energy you use" required="true" />&nbsp;
 		</form:row>
 		
+		<form:row label="Do you have solar panels installed on your property?">
+			<field:array_radio items="Y=Yes,N=No" id="${name}_solarPanels" xpath="${xpath}/solarPanels" title="if you have solar panels" required="true" />
+		</form:row>
+
 		<field:hidden xpath="${xpath}/tariff" required="false" />
 
 	</form:fieldset>		
@@ -169,7 +173,7 @@ AutoCompleteHandler = {
 
 var HouseholdDetailsHandler = {
 	init: function(){
-		$("#${name}_movingIn, #${name}_whatToCompare").buttonset();
+		$("#${name}_movingIn, #${name}_whatToCompare, #${name}_solarPanels").buttonset();
 	
 		if($("input[name=utilities_householdDetails_movingIn]:checked").val() == 'Y'){
 			$('#movingInContainer').show();

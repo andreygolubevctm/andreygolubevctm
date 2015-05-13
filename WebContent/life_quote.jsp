@@ -101,7 +101,8 @@
 					</div>
 					<form:help />
 					
-						</div>
+				<life:side_panel />
+			</div>
 
 				<%-- Quote results (default to be hidden) --%>  
 				<life:results />

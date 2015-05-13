@@ -19,6 +19,7 @@ public class User extends AbstractJsonModel {
 	private boolean available;
 	private boolean loggedIn;
 	private List<Role> roles;
+	private List<Rule> rules;
 
 	//
 	// Accessors
@@ -92,5 +93,13 @@ public class User extends AbstractJsonModel {
 		json.put("available", getAvailable());
 		json.put("loggedIn", getLoggedIn());
 		return json;
+	}
+
+	public List<Rule> getRules() {
+		return rules;
+	}
+
+	public void setRules(List<Rule> rules) {
+		this.rules = rules;
 	}
 }

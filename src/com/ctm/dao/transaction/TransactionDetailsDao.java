@@ -295,17 +295,22 @@ public class TransactionDetailsDao {
 		final Integer nextSequenceNo = getMaxSequenceNo(transactionId) + 1;
 		DatabaseUpdateMapping databaseMapping = new DatabaseUpdateMapping(){
 			@Override
-			public void handleParams(PreparedStatement stmt) throws SQLException {
-				stmt.setLong(1, transactionId);
-				stmt.setInt(2, nextSequenceNo);
-				stmt.setString(3, transactionDetail.getXPath());
-				stmt.setString(4, transactionDetail.getTextValue());
+			public void mapParams() throws SQLException {
+				set(transactionId);
+				set(nextSequenceNo);
+				set(transactionDetail.getXPath());
+				set(transactionDetail.getTextValue());
 			}
-		};
-		sqlDao.insert(databaseMapping, "INSERT INTO aggregator.transaction_details " +
-				"(transactionId, sequenceNo, xpath, textValue, dateValue) " +
-				"VALUES " +
-				"(?,?,?,?,CURDATE());");
+
+            @Override
+            public String getStatement() {
+                return "INSERT INTO aggregator.transaction_details " +
+                        "(transactionId, sequenceNo, xpath, textValue, dateValue) " +
+                        "VALUES " +
+                        "(?,?,?,?,CURDATE());";
+            }
+        };
+		sqlDao.update(databaseMapping);
 		
 	}
 

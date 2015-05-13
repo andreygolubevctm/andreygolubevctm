@@ -1,5 +1,9 @@
 package com.disc_au.web.go;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,12 +15,22 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.dao.ContentDao;
 import com.ctm.dao.GeneralDao;
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.OpeningHours;
+import com.ctm.model.settings.PageSettings;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.SettingsService;
+import com.ctm.utils.common.utils.DateUtils;
 
 public class CallCenterHours {
-
 
 	private static Logger logger = Logger.getLogger(GeneralDao.class.getName());
 
@@ -29,20 +43,26 @@ public class CallCenterHours {
 	public CallCenterHours(String vertical, GeneralDao generalDao) {
 		setupOpenHours(generalDao, vertical);
 	}
+
 	public CallCenterHours(String vertical) {
 		GeneralDao generalDao = new GeneralDao();
 		setupOpenHours(generalDao, vertical);
 	}
 
+	public CallCenterHours() {
+	}
+
 	private void setupOpenHours(GeneralDao generalDao, String vertical) {
-		Map<String, String> values = generalDao.getValues(vertical + "CallCentreHours");
+		Map<String, String> values = generalDao.getValues(vertical
+				+ "CallCentreHours");
 		for (Entry<String, String> value : values.entrySet()) {
 			List<Date> hours = new ArrayList<Date>();
 			String dayOfWeek = value.getKey();
 			String[] times = value.getValue().split(",");
-			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm",
+					Locale.ENGLISH);
 			try {
-				if(times.length > 1) {
+				if (times.length > 1) {
 					Date opening = dateFormat.parse(times[0]);
 					Date closing = dateFormat.parse(times[1]);
 					hours.add(opening);
@@ -55,7 +75,6 @@ public class CallCenterHours {
 		}
 	}
 
-
 	public Date getCallCentreClosure() {
 		Calendar now = Calendar.getInstance();
 		Date closureTime = getDateRange(now).get(1);
@@ -65,13 +84,14 @@ public class CallCenterHours {
 	public Calendar getCallCentreClosure(Calendar cal) {
 		Calendar closureTime = (Calendar) cal.clone();
 		List<Date> dateRange = getDateRange(cal);
-		if(dateRange != null && dateRange.size() > 1) {
+		if (dateRange != null && dateRange.size() > 1) {
 			closureTime.setTime(dateRange.get(1));
 			closureTime.set(Calendar.YEAR, cal.get(Calendar.YEAR));
 			closureTime.set(Calendar.MONTH, cal.get(Calendar.MONTH));
-			closureTime.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+			closureTime.set(Calendar.DAY_OF_MONTH,
+					cal.get(Calendar.DAY_OF_MONTH));
 		} else {
-			closureTime =  null;
+			closureTime = null;
 		}
 		return closureTime;
 	}
@@ -80,34 +100,34 @@ public class CallCenterHours {
 		int currentDate = date.get(Calendar.DAY_OF_WEEK);
 		List<Date> range = null;
 		switch (currentDate) {
-			case Calendar.SUNDAY:
-				range = openingHours.get("Sun");
-				break;
-			case Calendar.MONDAY:
-				range = openingHours.get("Mon");
-				break;
-			case Calendar.TUESDAY:
-				range = openingHours.get("Tues");
-				break;
-			case Calendar.WEDNESDAY:
-				range = openingHours.get("Wed");
-				break;
-			case Calendar.THURSDAY:
-				range = openingHours.get("Thurs");
-				break;
-			case Calendar.FRIDAY:
-				range = openingHours.get("Fri");
-				break;
-			case Calendar.SATURDAY:
-				range = openingHours.get("Sat");
-				break;
+		case Calendar.SUNDAY:
+			range = openingHours.get("Sun");
+			break;
+		case Calendar.MONDAY:
+			range = openingHours.get("Mon");
+			break;
+		case Calendar.TUESDAY:
+			range = openingHours.get("Tues");
+			break;
+		case Calendar.WEDNESDAY:
+			range = openingHours.get("Wed");
+			break;
+		case Calendar.THURSDAY:
+			range = openingHours.get("Thurs");
+			break;
+		case Calendar.FRIDAY:
+			range = openingHours.get("Fri");
+			break;
+		case Calendar.SATURDAY:
+			range = openingHours.get("Sat");
+			break;
 		}
 		return range;
 	}
 
-	public Date getNextAvailableDate(Calendar avaliableDateCal , int count) {
+	public Date getNextAvailableDate(Calendar avaliableDateCal, int count) {
 		Calendar closure = getCallCentreClosure(avaliableDateCal);
-		if(count <= 7 && (closure == null || avaliableDateCal.after(closure)) ) {
+		if (count <= 7 && (closure == null || avaliableDateCal.after(closure))) {
 			avaliableDateCal.add(Calendar.DATE, 1);
 			return getNextAvailableDate(avaliableDateCal, count++);
 		} else {
@@ -117,10 +137,10 @@ public class CallCenterHours {
 
 	public Date getNextAvailableDate(int hour) {
 		Calendar now = Calendar.getInstance();
-		return getNextAvailableDate(hour , now);
+		return getNextAvailableDate(hour, now);
 	}
 
-	public Date getNextAvailableDate(int hour , Calendar now) {
+	public Date getNextAvailableDate(int hour, Calendar now) {
 		Calendar avaliableDateCal = (Calendar) now.clone();
 
 		avaliableDateCal.clear(Calendar.MINUTE);
@@ -129,27 +149,27 @@ public class CallCenterHours {
 
 		Calendar closure = getCallCentreClosure(avaliableDateCal);
 		boolean inTimeRange = true;
-		if(avaliableDateCal.before(now)) {
-			int closureHour = closure == null ? 0 : closure.get(Calendar.HOUR_OF_DAY);
-			if(hour == MORNING_HOUR && now.get(Calendar.HOUR_OF_DAY) > 12) {
+		if (avaliableDateCal.before(now)) {
+			int closureHour = closure == null ? 0 : closure
+					.get(Calendar.HOUR_OF_DAY);
+			if (hour == MORNING_HOUR && now.get(Calendar.HOUR_OF_DAY) > 12) {
 				inTimeRange = false;
 			}
-			if(hour == AFTERNOON_HOUR && now.get(Calendar.HOUR_OF_DAY) > 18 || (now.get(Calendar.HOUR_OF_DAY) > closureHour)) {
+			if (hour == AFTERNOON_HOUR && now.get(Calendar.HOUR_OF_DAY) > 18
+					|| (now.get(Calendar.HOUR_OF_DAY) > closureHour)) {
 				inTimeRange = false;
 			}
 		}
-		if(!inTimeRange|| closure == null || avaliableDateCal.after(closure) ) {
+		if (!inTimeRange || closure == null || avaliableDateCal.after(closure)) {
 			avaliableDateCal.add(Calendar.DATE, 1);
 			/* Return calculated date and calculated time */
-			return getNextAvailableDate(avaliableDateCal , 0);
-		} else if(avaliableDateCal.after(now)) {
+			return getNextAvailableDate(avaliableDateCal, 0);
+		} else if (avaliableDateCal.after(now)) {
 			/* Return current date and calculated time */
 			return avaliableDateCal.getTime();
 		} else {
 			/* Return current date and time */
 			return now.getTime();
 		}
-	}
-
-
+	}	
 }

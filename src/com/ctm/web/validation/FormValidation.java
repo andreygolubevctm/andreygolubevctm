@@ -25,7 +25,7 @@ public class FormValidation {
 		final Set<ConstraintViolation<T>> violations = validator.validate(request);
 		for(ConstraintViolation<T> violation : violations) {
 			SchemaValidationError error = new SchemaValidationError();
-			error.setElementXpath(vertical + "/" + violation.getPropertyPath().toString().replace(".", "/"));
+			error.setElementXpath((vertical==null || vertical.trim().equals("")?"":(vertical + "/")) + violation.getPropertyPath().toString().replace(".", "/"));
 
 			// we don't want travel's destination erroneous value to appear. Just alert the user the the destination is invalid.
 			errorValue = violation.getPropertyPath().toString().equals("destination") ? "" : " value= '" + violation.getInvalidValue() + "'";

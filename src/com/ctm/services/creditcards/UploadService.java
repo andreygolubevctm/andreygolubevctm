@@ -104,6 +104,7 @@ public class UploadService {
 				int PROPERTY_MINIMUM_MONTHLY_REPAYMENT_COLUMN_NUMBER = 41;
 				int PROPERTY_CATEGORIES_COLUMN_NUMBER = 42;
 				int PROPERTY_HANDOVER_URL_COLUMN_NUMBER = 43;
+				int PROPERTY_BONUS_POINTS_TYPE = 44;
 
 					BufferedReader in = new BufferedReader(new InputStreamReader(file.uploadedStream));
 
@@ -232,6 +233,8 @@ public class UploadService {
 									map.put("rewards-standard-card-points",PROPERTY_REWARDS_STANDARD_POINTS_COLUMN_NUMBER);
 									map.put("rewards-amex-card-points",PROPERTY_REWARDS_AMEX_POINTS_COLUMN_NUMBER);
 									map.put("rewards-bonus-points",PROPERTY_BONUS_POINTS_COLUMN_NUMBER);
+									map.put("rewards-bonus-points-type",PROPERTY_BONUS_POINTS_TYPE);
+
 									map.put("terms-interest-rate",PROPERTY_INTEREST_RATE_TERMS_COLUMN_NUMBER);
 									map.put("terms-rewards",PROPERTY_REWARDS_TERMS_COLUMN_NUMBER);
 									map.put("terms-balance-transfer",PROPERTY_BALANCE_TRANSFER_TERMS_COLUMN_NUMBER);

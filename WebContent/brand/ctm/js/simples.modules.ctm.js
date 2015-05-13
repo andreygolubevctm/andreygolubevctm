@@ -6,6 +6,692 @@
 
 (function($, undefined) {
     var meerkat = window.meerkat, log = meerkat.logging.info;
+    var rowTemplate, noResultsTemplate;
+    function init() {
+        $(document).ready(function() {
+            rowTemplate = $("#opening-hours-row-template").html();
+            noResultsTemplate = $("#opening-hours-row-noresults-template").html();
+            _loadHoursInformation();
+            $(document).on("click", ".opening-hours-refresh", _loadHoursInformation).on("click", ".opening-hours-new", function simplesOpeningHoursNewClick() {
+                _showNewOpeningHoursInputs(this);
+            }).on("click", ".opening-hours-table .edit, .opening-hours-table .cancel", function simplesOpeningHoursEditClick() {
+                _toggleHiddenInputsOnClick(this);
+            }).on("click", ".opening-hours-table .save", function simplesOpeningHoursEditClick() {
+                _saveHours(this);
+            }).on("click", ".opening-hours-table .delete", function simplesOpeningHoursDeleteClick() {
+                _deleteHours(this);
+            });
+        });
+    }
+    function _showNewOpeningHoursInputs(clickedButton) {
+        var $this = $(clickedButton), $row = $this.closest(".row"), $table = $row.find("table");
+        if (!$table.find("#opening-hours-new").length) {
+            $table.find("#opening-hours-noresults").remove();
+            var date = new Date(), formattedDate = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
+            var data = {
+                openingHoursId: "new",
+                hoursType: $table.data("hourstype"),
+                effectiveStart: formattedDate,
+                effectiveEnd: formattedDate,
+                startTime: "08:00",
+                endTime: "22:00",
+                description: "Monday",
+                verticalId: 4
+            };
+            if (data.hoursType === "S") {
+                data.date = formattedDate;
+            } else if (data.hoursType === "N") {
+                data.daySequence = 0;
+            }
+            var rowHtml = _getHoursRowHtml(data), $tr = $(rowHtml).prependTo($table.find("tbody"));
+            _toggleHiddenInputs($tr);
+        }
+    }
+    function _toggleHiddenInputsOnClick(clickedButton) {
+        var $this = $(clickedButton), $tr = $this.closest("tr");
+        if ($tr.data("id") === "new") {
+            _removeRow($tr);
+        } else {
+            _toggleHiddenInputs($tr);
+            $tr.find("input").each(function() {
+                this.value = this.defaultValue;
+            }).end().find("select").each(function() {
+                $(this).find("option").prop("selected", function() {
+                    return this.defaultSelected;
+                });
+            });
+        }
+    }
+    function _removeRow($tr) {
+        var $tbody = $tr.closest("tbody");
+        $tr.find("td").addClass("danger").end().fadeOut(400, function() {
+            $(this).remove();
+            if (!$tbody.find("tr").length) $tbody.append(_.template(noResultsTemplate));
+        });
+    }
+    function _getHoursType(type) {
+        return type === "N" ? "Normal" : "Special";
+    }
+    function _toggleHiddenInputs($tableRow) {
+        var $elements = $tableRow.find("input, span, button, select");
+        $elements.each(function() {
+            var $el = $(this);
+            if ($el.hasClass("hidden")) $el.removeClass("hidden"); else $el.addClass("hidden");
+        });
+    }
+    function _loadHoursInformation() {
+        if (rowTemplate) {
+            var allRecordsUrl = "getAllRecords", $openingHours = _getAjaxPromise(allRecordsUrl, {
+                hoursType: "N"
+            }, "get"), $specialHours = _getAjaxPromise(allRecordsUrl, {
+                hoursType: "S"
+            }, "get");
+            var setUpTable = function simplesOpeningHoursSetUpTable($table, response) {
+                $table.find("tbody").html(_getHoursAllHtml(response));
+                if ($table.data("hourstype") === "N") {
+                    $table.rowSorter({
+                        handler: "td.sorter span",
+                        onDrop: function(tbody, row, newIndex, oldIndex) {
+                            if (newIndex < oldIndex) {
+                                _saveHoursFromSort($table, newIndex);
+                            } else {
+                                _saveHoursFromSort($table, oldIndex);
+                            }
+                        }
+                    });
+                }
+            };
+            $openingHours.done(function(response) {
+                setUpTable($("#hours-normal-row-container"), response);
+            });
+            $specialHours.done(function(response) {
+                setUpTable($("#hours-special-row-container"), response);
+            });
+        }
+    }
+    function _getDataToSave($tableRow) {
+        return {
+            description: $tableRow.find(".description input, .description select").val(),
+            startTime: $tableRow.find(".startTime input").val(),
+            effectiveStart: $tableRow.find(".effectiveStart input").val(),
+            endTime: $tableRow.find(".endTime input").val(),
+            effectiveEnd: $tableRow.find(".effectiveEnd input").val(),
+            hoursType: $tableRow.data("hourstype"),
+            verticalId: $tableRow.find(".verticalId select").val()
+        };
+    }
+    function _saveHoursFromSort($tbody, startPosition) {
+        var $trs = $tbody.find("tr:gt(" + startPosition + ")");
+        $trs.each(function() {
+            var $tr = $(this);
+            var data = _getDataToSave($tr);
+            data.openingHoursId = $tr.data("id");
+            if (data.hoursType === "S") {
+                data.date = $tr.find(".date input").val();
+            } else if (data.hoursType === "N") {
+                data.daySequence = $tr.index() + 1;
+            }
+            var $setHours = _getAjaxPromise("update", data);
+            $setHours.done(function(response) {
+                if (typeof response === "string") response = JSON.parse(response);
+                if (response) $tr.replaceWith(_getHoursRowHtml(response));
+            });
+        });
+    }
+    function _saveHours(clickedButton) {
+        var $this = $(clickedButton), $tr = $this.closest("tr"), $tbody = $this.closest("tbody");
+        var data = _getDataToSave($tr);
+        if (data.hoursType === "S") {
+            data.date = $tr.find(".date input").val();
+        }
+        var $setHours;
+        if ($this.data("id") === "new") {
+            data.daySequence = 1;
+            $setHours = _getAjaxPromise("create", data);
+        } else {
+            data.openingHoursId = $this.data("id");
+            data.daySequence = $tr.index() + 1;
+            $setHours = _getAjaxPromise("update", data);
+        }
+        $setHours.done(function(response) {
+            if (typeof response === "string") response = JSON.parse(response);
+            $tr.replaceWith(_getHoursRowHtml(response));
+            if ($this.data("id") === "new") {
+                $this.data("id", response.daySequence);
+                if ($tr.data("hourstype") === "N") _saveHoursFromSort($tbody, 0);
+            }
+        });
+    }
+    function _deleteHours(clickedButton) {
+        var $this = $(clickedButton), id = $this.data("id"), $tr = $this.closest("tr"), $tbody = $this.closest("tbody");
+        var message = [ "Do you really want to delete the opening hours:", "Day: " + $tr.find(".description input, .description select").val(), "Start: " + $tr.find(".startTime input").val() + " " + $tr.find(".effectiveStart input").val(), "End: " + $tr.find(".endTime input").val() + " " + $tr.find(".effectiveEnd input").val(), "Hours Type: " + _getHoursType($tr.data("hourstype")) ].join("\n");
+        if (confirm(message)) {
+            $deleteHours = _getAjaxPromise("delete", {
+                openingHoursId: id
+            });
+            $deleteHours.done(function(response) {
+                if (typeof response === "string" && response !== "success") response = JSON.parse(response);
+                if (response === "success" || typeof response.result !== "undefined" && response.result === "success") {
+                    _removeRow($this.closest("tr"));
+                    if ($tr.data("hourstype") === "N") _saveHoursFromSort($tbody, 0);
+                }
+            });
+        }
+    }
+    function _getAjaxPromise(url, data, method) {
+        method = method || "post";
+        url = "admin/openinghours/" + url + ".json";
+        return meerkat.modules.comms[method]({
+            url: url,
+            data: data,
+            errorLevel: "warning",
+            onErrorDefaultHandling: function(jqXHR, textStatus, errorThrown, settings, data) {
+                if (typeof jqXHR.responseText === "string") jqXHR.responseText = JSON.parse(jqXHR.responseText);
+                var errorObject = {
+                    errorLevel: settings.errorLevel,
+                    message: jqXHR.responseText,
+                    page: "simplesCallCentreHours.js",
+                    description: "Error loading url: " + settings.url + " : " + textStatus + " " + errorThrown,
+                    data: data
+                };
+                if (!meerkat.modules.dialogs.isDialogOpen("openingHoursErrorDialog")) {
+                    meerkat.modules.errorHandling.error(errorObject);
+                }
+            }
+        });
+    }
+    function _getHoursAllHtml(rowArray) {
+        if (typeof rowArray === "string") rowArray = JSON.parse(rowArray);
+        var rowHtml = [];
+        for (var i = 0; i < rowArray.length; i++) {
+            rowHtml.push(_getHoursRowHtml(rowArray[i]));
+        }
+        if (rowHtml.length) {
+            return rowHtml.join("");
+        } else {
+            return _.template(noResultsTemplate);
+        }
+    }
+    function _getHoursRowHtml(rowData) {
+        return _.template(rowTemplate, rowData);
+    }
+    meerkat.modules.register("adminCallCentreHours", {
+        init: init
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, log = meerkat.logging.info;
+    var loadingOverlayHTML = [ "<div id='crud-loading-overlay'>", "<div class='spinner'>", "<div class='bounce1'></div>", "<div class='bounce2'></div>", "<div class='bounce3'></div>", "</div>", "<p></p>", "</div>" ], $loadingOverlay, blurElements = "#page, #dynamic_dom";
+    var dataSetModule;
+    function init() {
+        dataSetModule = meerkat.modules.adminDataSet;
+        $loadingOverlay = $(loadingOverlayHTML.join("")).appendTo("body");
+    }
+    function _showLoading(text) {
+        $loadingOverlay.find("p").text(text).end().stop().fadeIn();
+        $(blurElements).addClass("blur");
+    }
+    function _hideLoading() {
+        $(blurElements).removeClass("blur");
+        $loadingOverlay.stop().fadeOut();
+    }
+    function dataCRUD(settings) {
+        var that = this;
+        this.dataSet = new dataSetModule.dataSet();
+        this.modalId = "";
+        this.models = {};
+        for (var i in settings) {
+            this[i] = settings[i];
+        }
+        if (!this.renderResults) {
+            this.renderResults = function() {
+                var results = that.dataSet.get(), resultsHTML = "";
+                for (var i = 0; i < results.length; i++) {
+                    resultsHTML += results[i].html;
+                }
+                $(".sortable-results-table").html(resultsHTML).closest(".row").find("h1 small").text("(" + results.length + ")");
+            };
+        }
+        if (!this.views) {
+            this.views = {
+                row: $(".crud-row-template").html(),
+                modal: $(".crud-modal-template").html()
+            };
+        }
+        $(document).on("click", ".crud-results-toggle", function() {
+            var $this = $(this), $container = $this.closest(".row").find(".sortable-results-table");
+            if ($this.hasClass("table-hidden")) {
+                $container.slideDown(400, function() {
+                    $this.removeClass("table-hidden");
+                });
+            } else {
+                $container.slideUp(400, function() {
+                    $this.addClass("table-hidden");
+                });
+            }
+        }).on("click", ".crud-new-entry", function() {
+            that.openModal();
+        }).on("click", ".crud-edit-entry", function() {
+            var $row = $(this).closest(".sortable-results-row");
+            that.openModal($row);
+        }).on("click", ".crud-clone-entry", function() {
+            var $row = $(this).closest(".sortable-results-row");
+            that.openModal($row, true);
+        }).on("click", ".crud-delete-entry", function() {
+            var doDelete = confirm("Do you want to delete the record?");
+            if (doDelete) {
+                var $row = $(this).closest(".sortable-results-row");
+                that.destroy($row);
+            }
+        });
+    }
+    dataCRUD.prototype.openModal = function($targetRow, isClone) {
+        isClone = isClone || false;
+        var that = this, m, modalHTML;
+        if ($targetRow) {
+            var searchId = $targetRow.data("id");
+            m = this.dataSet.get(searchId).data;
+        } else {
+            m = new dataSetModule.dbModel(this.models.db);
+        }
+        if (isClone) m.modalAction = "clone"; else if ($targetRow) m.modalAction = "edit"; else m.modalAction = "create";
+        modalHTML = _.template(this.views.modal, m, {
+            variable: "data"
+        });
+        this.modalId = meerkat.modules.dialogs.show({
+            htmlContent: modalHTML
+        });
+        var $textAreas = $("#" + this.modalId + " textarea.form-control");
+        if ($textAreas.length) {
+            $textAreas.trumbowyg({
+                fullscreenable: false,
+                removeformatPasted: true,
+                resetCss: true,
+                btns: [ "strong", "em", "underline", "|", "unorderedList", "orderedList", "|", "link" ]
+            });
+        }
+        $(document).on("click", "#" + that.modalId + " .crud-save-entry", function() {
+            var $modal = $("#" + that.modalId), $inputs = $modal.find("input, textarea, select"), data = {};
+            for (var i = 0; i < $inputs.length; i++) {
+                var $input = $($inputs[i]);
+                data[$input.attr("name")] = $input.val();
+            }
+            if (isClone) that.save(data); else that.save(data, $targetRow);
+        });
+    };
+    dataCRUD.prototype.sortRenderResults = function() {
+        var $sortElement = $(document).find(".sort-by"), key = $sortElement.data("sortkey"), direction = $sortElement.data("sortdir");
+        this.dataSet.sort(key, direction, this.renderResults);
+    };
+    dataCRUD.prototype.dataSet = function() {
+        return this.dataSet;
+    };
+    dataCRUD.prototype.get = function() {
+        this.dataSet.empty();
+        var that = this, onSuccess = function(data) {
+            if (typeof data === "string") data = JSON.parse(data);
+            if (data.length) {
+                for (var i = 0; i < data.length; i++) {
+                    var datum = data[i], obj = new dataSetModule.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
+                    that.dataSet.push(obj);
+                }
+            }
+            that.sortRenderResults();
+        };
+        return this.promise("getAllRecords", {}, onSuccess, "get");
+    };
+    dataCRUD.prototype.save = function(data, $targetRow) {
+        var that = this, onSuccess = function(response) {
+            if (typeof response === "string") response = JSON.parse(response);
+            var responseObject = new dataSetModule.datumModel(that.primaryKey, that.models.datum, response, that.views.row);
+            if ($targetRow) {
+                var index = that.dataSet.getIndex(responseObject.id);
+                if (index !== -1) {
+                    that.dataSet.updateIndex(index, responseObject);
+                } else {
+                    that.dataSet.push(responseObject);
+                }
+            } else {
+                that.dataSet.push(responseObject);
+            }
+            that.sortRenderResults();
+            meerkat.modules.dialogs.close(that.modalId);
+        };
+        $targetRow ? this.update(data, onSuccess) : this.create(data, onSuccess);
+    };
+    dataCRUD.prototype.create = function(data, onSuccess) {
+        return this.promise("create", data, onSuccess);
+    };
+    dataCRUD.prototype.update = function(data, onSuccess) {
+        return this.promise("update", data, onSuccess);
+    };
+    dataCRUD.prototype.getDeleteRequestData = function($row) {
+        var data = {}, deleteKey = this.primaryKey, deleteId = $row.data("id");
+        data[deleteKey] = deleteId;
+        return data;
+    };
+    dataCRUD.prototype.destroy = function($row) {
+        var that = this;
+        data = this.getDeleteRequestData($row), deleteKey = this.primaryKey;
+        var index = this.dataSet.getIndex(data[deleteKey]), onSuccess = function() {
+            $row.animate({
+                opacity: 0
+            }, 400, "swing", function() {
+                if (index !== -1) that.dataSet.splice(index);
+                that.sortRenderResults();
+            });
+        };
+        return this.promise("delete", data, onSuccess);
+    };
+    dataCRUD.prototype.promise = function(action, data, onSuccess, method) {
+        method = method || "post";
+        var finalURL = this.baseURL + "/" + action + ".json";
+        var loadingText;
+        switch (action) {
+          case "getAllRecords":
+            loadingText = "Fetching Records";
+            break;
+
+          case "create":
+            loadingText = "Creating Record";
+            break;
+
+          case "update":
+            loadingText = "Updating Record";
+            break;
+
+          case "delete":
+            loadingText = "Deleting Record";
+            break;
+
+          default:
+            loadingText = "Loading";
+        }
+        _showLoading(loadingText);
+        return meerkat.modules.comms[method]({
+            url: finalURL,
+            data: data,
+            errorLevel: "warning",
+            onSuccess: function(data, textStatus, jqXHR) {
+                if (typeof data === "string" && data !== "success") data = JSON.parse(data);
+                if (!data.error) {
+                    if (onSuccess) onSuccess(data);
+                } else {
+                    _handleErrorObject(data.error);
+                }
+            },
+            onComplete: function() {
+                _hideLoading();
+            },
+            onErrorDefaultHandling: _handleAJAXError
+        });
+    };
+    function _handleErrorObject(error) {
+        var errorList = [];
+        for (var i = 0; i < error.length; i++) {
+            var err = error[i], $formGroup = $(".modal").find("[name='" + err.elementXpath + "']").closest(".form-group");
+            $formGroup.addClass("has-error");
+            errorList.push(err.message);
+        }
+        var errorListHTML = "<li>" + errorList.join("</li><li>") + "</li>";
+        $(".modal").find(".error-list").html(errorListHTML);
+    }
+    function _handleAJAXError(jqXHR, textStatus, errorThrown, settings, data) {
+        var errorObj;
+        if (jqXHR && typeof jqXHR.responseText === "string") {
+            jqXHR.responseText = JSON.parse(jqXHR.responseText);
+            errorObj = jqXHR.responseText.error;
+        }
+        if (errorObj) {
+            _handleErrorObject(errorObj);
+        } else {
+            var errorObject = {
+                errorLevel: settings.errorLevel,
+                message: jqXHR.responseText,
+                page: "adminDataCRUD.js",
+                description: "Error loading url: " + settings.url + " : " + textStatus + " " + errorThrown,
+                data: data
+            };
+            if (!meerkat.modules.dialogs.isDialogOpen("dataObjectDialog")) {
+                meerkat.modules.errorHandling.error(errorObject);
+            }
+        }
+    }
+    meerkat.modules.register("adminDataCRUD", {
+        init: init,
+        newCRUD: dataCRUD
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, log = meerkat.logging.info;
+    function datumModel(idKey, datumAdditionalFields, response, templateHTML) {
+        this.id = response[idKey];
+        this.data = new dbModel(response);
+        if (datumAdditionalFields) {
+            var data = datumAdditionalFields(response);
+            for (var i in data) {
+                if (i === "extraData") {
+                    var extraData = data[i];
+                    for (var j in extraData) {
+                        var field = extraData[j];
+                        this.data[j] = typeof field === "function" ? field() : field;
+                    }
+                } else {
+                    this[i] = data[i];
+                }
+            }
+        }
+        this.html = _.template(templateHTML, this.data, {
+            variable: "data"
+        });
+        return this;
+    }
+    function dbModel(data) {
+        var date = new Date(), formattedDate = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
+        this.effectiveStart = formattedDate;
+        this.effectiveEnd = formattedDate;
+        for (var i in data) {
+            this[i] = data[i];
+        }
+        return this;
+    }
+    dbModel.prototype.setProperty = function(property, value) {
+        this[property] = value;
+    };
+    function dataSet() {
+        var that = this;
+        this.dataSet = [];
+        $(document).on("click", ".data-sorter .toggle", function() {
+            var $this = $(this), sortKey = $this.data("sortkey"), sortDir = $this.attr("data-sortdir"), callback = $this.closest(".data-sorter").data("refreshcallback");
+            $(".data-sorter .toggle").removeClass("sort-by").attr("data-sortdir", "desc");
+            $this.addClass("sort-by");
+            sortDir = sortDir === "asc" ? "desc" : "asc";
+            $this.attr("data-sortdir", sortDir);
+            that.sort(sortKey, sortDir, callback);
+        });
+    }
+    dataSet.prototype.empty = function() {
+        this.dataSet = [];
+    };
+    dataSet.prototype.set = function(dataSet) {
+        this.dataSet = dataSet;
+    };
+    dataSet.prototype.push = function(data) {
+        this.dataSet.push(data);
+    };
+    dataSet.prototype.get = function(id) {
+        if (id) {
+            return this.dataSet.filter(function(el) {
+                return el.id === id;
+            })[0];
+        } else {
+            return this.dataSet;
+        }
+    };
+    dataSet.prototype.getByType = function(type) {
+        return this.get().filter(function(el) {
+            if (el.data.type) return el.data.type === type; else return false;
+        });
+    };
+    dataSet.prototype.getIndex = function(objectId) {
+        var index = -1;
+        for (var j = 0; j < this.dataSet.length; j++) {
+            if (this.dataSet[j].id === objectId) {
+                index = j;
+            }
+        }
+        return index;
+    };
+    dataSet.prototype.updateIndex = function(index, data) {
+        this.dataSet[index] = data;
+    };
+    dataSet.prototype.splice = function(index, count) {
+        count = count || 1;
+        this.dataSet.splice(index, count);
+    };
+    dataSet.prototype.sort = function(key, direction, callback) {
+        var keyChain = key.split(".");
+        direction = direction || "asc";
+        var sort = function(a, b) {
+            for (var i = 0; i < keyChain.length; i++) {
+                var keyChainItem = keyChain[i];
+                a = a[keyChainItem];
+                b = b[keyChainItem];
+            }
+            if (typeof a === "string") a = a.toLowerCase();
+            if (typeof b === "string") b = b.toLowerCase();
+            if (a < b && direction === "asc" || a > b && direction === "desc") return -1;
+            if (a > b && direction === "asc" || a < b && direction === "desc") return 1;
+            return 0;
+        };
+        var sortedDataSet = this.dataSet.sort(sort);
+        this.set(sortedDataSet);
+        if (typeof callback === "string") _getObject(callback)(); else if (typeof callback === "function") callback();
+    };
+    var _getObject = function(methodPath) {
+        var keyChain = methodPath.split("."), object = window;
+        for (var i = 0; i < keyChain.length; i++) {
+            object = object[keyChain[i]];
+        }
+        return object;
+    };
+    meerkat.modules.register("adminDataSet", {
+        dataSet: dataSet,
+        dbModel: dbModel,
+        datumModel: datumModel
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat;
+    var CRUD;
+    function init() {
+        $(document).ready(function() {
+            if ($("#fund-capping-limits-container").length) {
+                CRUD = new meerkat.modules.adminDataCRUD.newCRUD({
+                    baseURL: "../../admin/cappingLimits",
+                    primaryKey: "cappingLimitsKey",
+                    models: {
+                        datum: function(data) {
+                            return {
+                                extraData: {
+                                    limitLeft: data.cappingAmount - data.currentJoinCount,
+                                    type: function() {
+                                        var curDate = new Date().setHours(0, 0, 0, 0);
+                                        if (new Date(data.effectiveEnd).setHours(0, 0, 0, 0) >= curDate) {
+                                            return "current";
+                                        } else {
+                                            return "past";
+                                        }
+                                    }
+                                }
+                            };
+                        }
+                    },
+                    renderResults: renderCappingsHTML
+                });
+                CRUD.getDeleteRequestData = function($row) {
+                    return CRUD.dataSet.get($row.data("id")).data;
+                };
+                CRUD.get();
+            }
+        });
+    }
+    function renderCappingsHTML() {
+        var types = [ "current", "past" ];
+        for (var i = 0; i < types.length; i++) {
+            var type = types[i], cappings = CRUD.dataSet.getByType(type), cappingHTML = "";
+            for (var j = 0; j < cappings.length; j++) {
+                cappingHTML += cappings[j].html;
+            }
+            $("#" + type + "-cappings-container").html(cappingHTML).closest(".row").find("h1 small").text("(" + cappings.length + ")");
+        }
+    }
+    function refresh() {
+        CRUD.renderResults();
+    }
+    meerkat.modules.register("adminFundCappingLimits", {
+        init: init,
+        refresh: refresh
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, log = meerkat.logging.info;
+    var CRUD;
+    function init() {
+        $(document).ready(function() {
+            if ($("#special-offers-container").length) {
+                CRUD = new meerkat.modules.adminDataCRUD.newCRUD({
+                    baseURL: "admin/offers",
+                    primaryKey: "offerId",
+                    models: {
+                        datum: function(offer) {
+                            return {
+                                extraData: {
+                                    type: function() {
+                                        var curDate = new Date(), startDate = new Date(offer.effectiveStart).setHours(0, 0, 0, 0), endDate = new Date(offer.effectiveEnd).setHours(23, 59, 59, 0);
+                                        if (startDate > curDate.setHours(0, 0, 0, 0)) {
+                                            return "future";
+                                        } else if (startDate <= curDate.setHours(0, 0, 0, 0) && endDate >= curDate.setHours(23, 59, 59, 0)) {
+                                            return "current";
+                                        } else {
+                                            return "past";
+                                        }
+                                    }
+                                }
+                            };
+                        }
+                    },
+                    renderResults: renderOffersHTML
+                });
+                CRUD.get();
+            }
+        });
+    }
+    function renderOffersHTML() {
+        var types = [ "current", "future", "past" ];
+        for (var i = 0; i < types.length; i++) {
+            var type = types[i], offers = CRUD.dataSet.getByType(type), offerHTML = "";
+            for (var j = 0; j < offers.length; j++) {
+                offerHTML += offers[j].html;
+            }
+            $("#" + type + "-special-offers-container").html(offerHTML).closest(".row").find("h1 small").text("(" + offers.length + ")");
+        }
+    }
+    function refresh() {
+        CRUD.renderResults();
+    }
+    meerkat.modules.register("adminSpecialOffers", {
+        init: init,
+        refresh: refresh
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, log = meerkat.logging.info;
     function getBaseUrl() {
         if (meerkat.site && typeof meerkat.site.urls !== "undefined") {
             if (typeof meerkat.site.urls.context !== "undefined") {

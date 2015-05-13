@@ -13,6 +13,7 @@
 
 <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
 <jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
+<jsp:useBean id="callCenterHours" class="com.disc_au.web.go.CallCenterHours" scope="page" />
 <c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('health')}" scope="request"  />
 <%--TODO: turn this on and off either in a settings file or in the database --%>
 <c:set var="showReducedHoursMessage" value="false" />
@@ -22,10 +23,8 @@
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
 <c:set var="callCentreHelpNumberApplication" scope="request"><content:get key="callCentreHelpNumberApplication"/></c:set>
 
-<%-- Call centre special hours --%>
-<c:set var="callCentreSpecialHoursLink" scope="request"><content:get key="healthCallCentreSpecialHoursLink"/></c:set>
-<c:set var="callCentreSpecialHoursContent" scope="request"><content:get key="healthCallCentreSpecialHoursContent"/></c:set>
-
+<c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
+<c:set var="callCentreAllHoursContent" scope="request"><content:getOpeningHoursOfTheWeek /></c:set>
 <%-- HTML --%>
 <layout:journey_engine_page title="Health Quote">
 
@@ -43,37 +42,24 @@
 		</button>
 	</jsp:attribute>
 
+
+
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
 		<ul class="nav navbar-nav navbar-right">
-				<c:if test="${not empty callCentreNumber}">				
+				<c:if test="${not empty callCentreNumber}">
 			<li>
 				<div class="navbar-text visible-xs">
 						<h4>Do you need a hand?</h4>
 							<h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></a></h1>
-
-					<p class="small">Our Australian based call centre hours are</p>
-						<p><form:scrape id='135'/></p>
-							${callCentreSpecialHoursContent}
+							${openingHoursHeader }
 				</div>
 				<div class="navbar-text hidden-xs" data-livechat="target">
 					<h4>Call us on</h4>
 							<h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
-							<c:if test="${not empty callCentreSpecialHoursLink and not empty callCentreSpecialHoursContent}">
-								${callCentreSpecialHoursLink}
-								<div id="healthCallCentreSpecialHoursContent" class="hidden">
-									<div class="row">
-										<div class="col-sm-6">
-											<h4>Normal Hours</h4>
-											<p><form:scrape id='135'/></p>
-				</div>
-										<div class="col-sm-6">
-											${callCentreSpecialHoursContent}
-										</div>
-									</div>
-								</div>
-							</c:if>					
+							${openingHoursHeader }
 						</div>
+						<div id="view_all_hours" class="hidden">${callCentreAllHoursContent}</div>
 						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
 			</li>
 				</c:if>

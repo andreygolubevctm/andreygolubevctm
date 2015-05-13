@@ -40,9 +40,9 @@ set: function () {
 		$('#update-premium').on('click.BUP', function() {
 			var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
 			if (freq == 'fortnightly') {
-				var deductionText = "Your initial payment will be one month's premium and a fortnightly amount thereafter. Your account will be debited within the next five working days.";
+				var deductionText = "Your initial payment will be one month's premium and a fortnightly amount thereafter. Your account will be debited within the next 24 hours.";
 			} else {
-				var deductionText = 'Your account will be debited within the next five working days.';
+				var deductionText = 'Your account will be debited within the next 24 hours.';
 			};
 
 			healthFunds._payments = { 'min':6, 'max':7, 'weekends':false };

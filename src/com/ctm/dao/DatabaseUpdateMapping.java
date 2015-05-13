@@ -1,8 +1,9 @@
 package com.ctm.dao;
 
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public interface DatabaseUpdateMapping {
-	public void handleParams(PreparedStatement stmt) throws SQLException;
+public abstract class DatabaseUpdateMapping extends DatabaseMapping {
+	private int count;
+	protected abstract void mapParams() throws SQLException;
+    public abstract String getStatement() ;
 }

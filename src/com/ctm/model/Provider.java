@@ -1,5 +1,6 @@
 package com.ctm.model;
 
+import org.hibernate.validator.constraints.Range;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,17 +11,20 @@ import java.util.Map;
 
 public class Provider extends AbstractJsonModel{
 
+	@Range(min=1, message="Provider ID must be positive Integer")
 	private int id;
 	private String code;
 	private String name;
 	Map<String, String> propertyDetails = new HashMap<>();
 
-	public Provider(){}
+	public Provider(){
 
-	public Provider(Integer id, String code, String name){
-		setId(id);
-		setCode(code);
-		setName(name);
+	}
+
+	public Provider(int id, String code, String name) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
 	}
 
 	public int getId() {

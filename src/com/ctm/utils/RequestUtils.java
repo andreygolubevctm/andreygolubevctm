@@ -5,15 +5,20 @@ import com.ctm.model.session.SessionData;
 import com.ctm.services.SessionDataService;
 import com.disc_au.web.go.Data;
 import org.apache.log4j.Logger;
-import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class RequestUtils {
 
     private static final Logger logger = Logger.getLogger(RequestUtils.class.getName());
     private final SessionDataService sessionDataService = new SessionDataService();
+
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public RequestUtils() {
 
@@ -87,35 +92,47 @@ public class RequestUtils {
     }
 
     public static <T extends Object> T createObjectFromRequest(HttpServletRequest request, T  object){
-        Class<?> type =null;
-        String paramName = "";
-        String paramValue ="";
-        for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
-            try {
-                paramName = entry.getKey();
-                Method method;
-                type = object.getClass().getField(paramName).getType();
-                Object value = null;
-                paramValue = entry.getValue()!=null?entry.getValue()[0].trim():"";
-                method = object.getClass().getMethod("set" + paramName.substring(0,1).toUpperCase()+  paramName.substring(1), type);
-                if( type == int.class || type == Integer.class){
-                    value =  Integer.parseInt(entry.getValue()!=null?entry.getValue()[0].trim():"0");
-                }else if( type == float.class  || type == Float.class){
-                    value =  Float.parseFloat(entry.getValue()!=null?entry.getValue()[0].trim():"0");
-                }else if( type == long.class  || type == Long.class){
-                    value =  Long.parseLong(entry.getValue()!=null?entry.getValue()[0].trim():"0");
-                }else {
-                    value =  entry.getValue()!=null?entry.getValue()[0].trim():null;
-                }
-                method.invoke(object,value);
-            }catch(NumberFormatException ne){
-                if(type!=null){
-                    throw new NumberFormatException("the type of " +object.getClass().getName()+"."+paramName +" is '"+ type.getName() + "' which is not suitable for value '"+paramValue+"'");
-                }
-            }catch (ReflectiveOperationException e) {
-                //not important to catch
+        Class<? extends Object> c = object.getClass();
+
+        for (Method method : c.getMethods()) {
+            String paramName = method.getName().replace("set", "");
+            paramName = paramName.substring(0, 1).toLowerCase() + paramName.substring(1);
+            String value = request.getParameter(paramName);
+            if (method.getName().startsWith("set") && value != null) {
+                callSetMethod(object, method, value);
             }
         }
         return object;
     }
+
+    private static <T extends Object> void callSetMethod(T object, Method method, String value) {
+        try {
+             method.invoke(object, convertValue(method.getParameterTypes()[0], value));
+        } catch (InvocationTargetException | IllegalAccessException | ParseException e) {}
+    }
+
+    private static Object convertValue(Class<?> type, String param) throws ParseException {
+        Object value = null;
+        try {
+            if( type == Date.class && param != null){
+                value = sdf.parse(param);
+            }  else if( type == Integer.class){
+                value =  !param.isEmpty() ? new Integer(param) : null;
+            } else if( type == int.class ){
+                value =  param != null && !param.isEmpty() ? Integer.parseInt(param) : 0;
+            }else if( type == float.class  || type == Float.class){
+                value =  Float.parseFloat(param);
+            }else if( type == long.class  || type == Long.class){
+                value =  Long.parseLong(param);
+            }else {
+                value =  param;
+            }
+        } catch(NumberFormatException ne){
+            if(type!=null){
+                throw new NumberFormatException("the type of " + type.getName()+"."+value +" is '"+ type.getName() + "' which is not suitable for value '"+value+"'");
+            }
+        }
+        return value;
+    }
+
 }

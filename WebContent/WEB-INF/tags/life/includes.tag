@@ -44,9 +44,7 @@
 			},
 
 			update : function(field_id, value) {
-				if( $('#' + field_id).is(":visible") ) {
-					$('#' + field_id).val( value ).trigger('blur');
-				}
+				$('#' + field_id).val( value ).trigger('blur');
 			},
 			
 			close : function() {

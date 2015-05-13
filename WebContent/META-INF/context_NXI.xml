@@ -64,8 +64,7 @@
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://appsdbserver:3306/ctm?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
-
-			initialSize="5"
+		initialSize="5"
 		maxActive="20"
 		maxTotal="20"
 		validationQuery="SELECT 1"

@@ -1,11 +1,11 @@
 package com.ctm.dao.transaction;
 
+import com.ctm.dao.DatabaseQueryMapping;
 import com.ctm.dao.DatabaseUpdateMapping;
 import com.ctm.dao.SqlDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.transaction.TransactionLock;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -15,18 +15,22 @@ public class TransactionLockDao {
     private final SqlDao<TransactionLock> sqlDao = new SqlDao<>();
 
     public void insert(final Long transactionId ,  final String operatorId) throws DaoException {
-        sqlDao.insert(
-                new DatabaseUpdateMapping(){
+        sqlDao.update(
+                new DatabaseUpdateMapping() {
                     @Override
-                    public void handleParams(PreparedStatement stmt) throws SQLException {
-                        stmt.setLong(1, transactionId);
-                        stmt.setString(2, operatorId);
+                    public void mapParams() throws SQLException {
+                        set(transactionId);
+                        set(operatorId);
                     }
-                },
-                "INSERT INTO `aggregator`.`transaction_locks` " +
-                "( `transactionId`, `operatorId`, lockDateTime) " +
-                "VALUES (?,?, now())" +
-                " ON DUPLICATE KEY UPDATE operatorId=VALUES(operatorId), lockDateTime=VALUES(lockDateTime);"
+
+                    @Override
+                    public String getStatement() {
+                        return  "INSERT INTO `aggregator`.`transaction_locks` " +
+                                "( `transactionId`, `operatorId`, lockDateTime) " +
+                                "VALUES (?,?, now())" +
+                                " ON DUPLICATE KEY UPDATE operatorId=VALUES(operatorId), lockDateTime=VALUES(lockDateTime);";
+                    }
+                }
         );
     }
 
@@ -34,8 +38,8 @@ public class TransactionLockDao {
         return sqlDao.get(
                 new DatabaseQueryMapping<TransactionLock> (){
                     @Override
-                    public void handleParams(PreparedStatement stmt) throws SQLException {
-                        stmt.setLong(1, transactionId);
+                    public void mapParams() throws SQLException {
+                        set(transactionId);
                     }
 
                     @Override

@@ -5,6 +5,7 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.simples.CallInfo;
 import com.ctm.model.simples.Role;
+import com.ctm.model.simples.Rule;
 import com.ctm.model.simples.User;
 import com.ctm.services.PhoneService;
 
@@ -212,6 +213,8 @@ public class UserDao {
 			//set user roles
 			setRolesForUser(user);
 
+			setRulesForUser(user);
+
 			logger.info("loginUser(): username:" + user.getUsername() + ", extension:" + user.getExtension() + ", displayName:" + user.getDisplayName() + " > uid:" + user.getId());
 		}
 		catch (SQLException | NamingException e) {
@@ -279,8 +282,7 @@ public class UserDao {
 		}
 	}
 
-	/**
-	 * Mark this user as not available. Remember that there may be other availability checks such as phone status.
+	/*** Mark this user as not available. Remember that there may be other availability checks such as phone status.
 	 * @param userId
 	 */
 	public void setToUnavailable(int userId) throws DaoException {
@@ -377,4 +379,56 @@ public class UserDao {
 		}
 	}
 
+	private void setRulesForUser(User user) throws DaoException {
+		SimpleDatabaseConnection dbSource = null;
+		ResultSet results = null;
+		PreparedStatement stmt = null;
+
+		try {
+			dbSource = new SimpleDatabaseConnection();
+			stmt = dbSource.getConnection().prepareStatement(
+					"SELECT rule.id as id, rule.description, rule.value\n" +
+					"FROM simples.user_role ur\n" +
+					"INNER JOIN simples.role r ON ur.roleId = r.id \n" +
+					"INNER JOIN simples.role_rule_set rrs ON rrs.roleId = r.id \n" +
+					"INNER JOIN simples.rule_set rs ON rs.id = rrs.ruleSetId\n" +
+					"INNER JOIN simples.rule_rule_set rule_rs ON rule_rs.ruleSetId = rs.id\n" +
+					"INNER JOIN simples.rule rule ON rule.id = rule_rs.ruleId\n" +
+					"WHERE userId = ?\n" +
+					"AND CURDATE() BETWEEN ur.effectiveStart AND ur.effectiveEnd \n" +
+					"AND CURDATE() BETWEEN rule_rs.effectiveStart AND rule_rs.effectiveEnd \n" +
+					"ORDER BY rrs.priority, rule_rs.priority"
+			);
+			stmt.setInt(1, user.getId());
+			results = stmt.executeQuery();
+
+			List<Rule> rules = new ArrayList<Rule>();
+
+			while (results.next()) {
+				Rule rule = new Rule();
+				rule.setId(results.getInt("id"));
+				rule.setDescription(results.getString("description"));
+				rule.setValue(results.getString("value"));
+				rules.add(rule);
+			}
+
+			user.setRules(rules);
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			try {
+				if(results != null) {
+					results.close();
+				}
+				if(stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+				throw new DaoException(e.getMessage(), e);
+			}
+			dbSource.closeConnection();
+		}
+	}
 }

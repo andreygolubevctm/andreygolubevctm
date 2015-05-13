@@ -5,25 +5,24 @@
 <%@ attribute name="providerId" 	required="true"	 rtexprvalue="true"	 description="Id of provider to link the promo content" %>
 <%@ attribute name="healthPriceService" type="com.ctm.services.health.HealthPriceService" required="true" rtexprvalue="true" description="service to get tranId and application date" %>
 
+<jsp:useBean id="specialOffersService" class="com.ctm.services.simples.SpecialOffersService" scope="page" />
 <%-- VARIABLES --%>
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${healthPriceService.getTransactionId()}" /></c:set>
 <c:set var="applicationDate" value="${healthPriceService.getApplicationDate()}" />
-
 <%-- XML START --%>
 <fmt:setLocale value="en_US" />
 <promoData>
-<%-- Retrieve and render the common promotext --%>
-<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("promoText", providerId, styleCodeId, applicationDate, true)}' />
-<c:forEach items="${contentItems}" var="item" varStatus="status">
-	<c:set var="summary" value="${item.getSupplementaryValueByKey('summary')}" />
-	<c:set var="dialog" value="${item.getSupplementaryValueByKey('dialog')}" />
-	<c:if test="${not empty summary}">
-	<promoText><![CDATA[
-		${fn:trim(summary)}
-		<c:if test="${not empty dialog}"><p><a class="dialogPop" data-content="${fn:trim(dialog)}" title="Conditions">^ Conditions</a></p></c:if>
-	]]></promoText>
-	</c:if>
-</c:forEach>
+	<c:set var="contentItems" value='${specialOffersService.getSpecialOffers(providerId, styleCodeId, applicationDate,healthPriceService)}' />
+	<c:forEach items="${contentItems}" var="item" varStatus="status">
+		<c:set var="summary" value="${item.content}" />
+		<c:set var="dialog" value="${item.terms}" />
+		<c:if test="${not empty summary}">
+			<promoText><![CDATA[
+					${fn:trim(summary)}
+				<c:if test="${not empty dialog}"><p><a class="dialogPop" data-content="${fn:escapeXml(fn:trim(dialog))}" title="Conditions">^ Conditions</a></p></c:if>
+				]]></promoText>
+		</c:if>
+	</c:forEach>
 
 	<%-- Retrieve and render the common discountText --%>
 	<c:set var="discountItems" value='${contentService.getMultipleContentValuesForProvider("discountText", providerId, styleCodeId, applicationDate, true)}' />
@@ -33,6 +32,7 @@
 			<discountText><c:out value="${fn:trim(content)}" /></discountText>
 		</c:if>
 	</c:forEach>
+
 
 	<%-- Retrieve and render the product specific promo content --%>
 	<c:set var="contentItems" value='${contentService.getMultipleContentValuesForProvider("promo", providerId, styleCodeId, applicationDate, true)}' />

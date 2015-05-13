@@ -4498,6 +4498,25 @@ body > div > header a.btn-success {
     color: #ffffff;
   }
 }
+.header-collapse-contact > ul li .opening-hours {
+  color: #1d4a82;
+  font-size: 91%;
+  font-weight: bold;
+  margin-top: -13px;
+}
+.header-collapse-contact > ul li .opening-hours .tomorrow-hours {
+  color: #7c7c7c;
+}
+@media (max-width: 767px) {
+  .header-collapse-contact > ul li .opening-hours .tomorrow-hours {
+    color: #fff;
+  }
+}
+@media (max-width: 767px) {
+  .header-collapse-contact > ul li .opening-hours a {
+    color: #1d4a82 !important;
+  }
+}
 .header-collapse-contact > ul li [data-livechat="button"] {
   vertical-align: super;
   margin-left: 20px;

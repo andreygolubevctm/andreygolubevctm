@@ -11,9 +11,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.naming.NamingException;
 
+import com.ctm.model.simples.*;
 import org.apache.log4j.Logger;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
@@ -21,102 +23,12 @@ import com.ctm.dao.CommentDao;
 import com.ctm.dao.UserDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Comment;
-import com.ctm.model.simples.Message;
-import com.ctm.model.simples.MessageAudit;
-import com.ctm.model.simples.MessageStatus;
-import com.ctm.model.simples.Role;
-import com.ctm.model.simples.User;
 
 public class MessageDao {
 	private static final Logger logger = Logger.getLogger(MessageDao.class.getName());
 
-	private final String MESSAGE_AVAILABLE_SELECT_FOR_UPDATE = "SELECT id FROM simples.message_queue_available avail ";
-
 	private final String MESSAGE_AVAILABLE_UPDATE = "UPDATE simples.message m, (";
 	private final String MESSAGE_AVAILABLE_UPDATE_SET = ") as t set m.userId = ? WHERE m.id = t.id ";
-
-	// -- Rule 0: Messages assigned to users, (InProgress, Postponed, Assigned, Unsuccessful), deal with your current message
-	private final String MESSAGE_AVAILABLE_RULE_0_FOR_UPDATE = MESSAGE_AVAILABLE_SELECT_FOR_UPDATE +
-			"WHERE userId = ? AND statusId IN (1, 3, 4, 5, 6) " +
-			"ORDER BY whenToAction ASC " +
-			"LIMIT 1";
-	// -- Rule 1: CTM fail joins, last in first out
-	private final String MESSAGE_AVAILABLE_RULE_1_FOR_UPDATE = MESSAGE_AVAILABLE_SELECT_FOR_UPDATE +
-			"WHERE avail.sourceId = 5 " +
-			"AND userId = 0 " +
-			"ORDER BY avail.created DESC, avail.id DESC " +
-			"LIMIT 1";
-	// -- Rule 2: WHITELABLE fail joins, last in first out
-	private final String MESSAGE_AVAILABLE_RULE_2_FOR_UPDATE = MESSAGE_AVAILABLE_SELECT_FOR_UPDATE +
-			"WHERE avail.sourceId = 8 " +
-			"AND userId = 0 " +
-			"ORDER BY avail.created DESC, avail.id DESC " +
-			"LIMIT 1";
-	// -- Rule 3: Messages assigned to users, (Personal Messages)
-	private final String MESSAGE_AVAILABLE_RULE_3_FOR_UPDATE = MESSAGE_AVAILABLE_SELECT_FOR_UPDATE +
-			"WHERE userId = ? AND statusId IN (31, 32) " +
-			"ORDER BY whenToAction ASC " +
-			"LIMIT 1";
-	// -- Rule 4: All other messages, Sort by dates THEN new THEN Postponed THEN Unsuccessful and Last In Last Out
-	private final String MESSAGE_AVAILABLE_RULE_4_FOR_UPDATE = MESSAGE_AVAILABLE_SELECT_FOR_UPDATE +
-			"WHERE userId = 0 " +
-			"ORDER BY date(created) DESC, " +
-			"TotalCalls ASC, " +
-			"callAttempts ASC, " +
-			"postponeCount ASC, " +
-			"created DESC, " +
-			"id DESC " +
-			"LIMIT 1";
-	private final String MESSAGE_AVAILABLE_RULES_FOR_UPDATE[] = new String[]{
-			MESSAGE_AVAILABLE_RULE_0_FOR_UPDATE,
-			MESSAGE_AVAILABLE_RULE_1_FOR_UPDATE,
-			MESSAGE_AVAILABLE_RULE_2_FOR_UPDATE,
-			MESSAGE_AVAILABLE_RULE_3_FOR_UPDATE,
-			MESSAGE_AVAILABLE_RULE_4_FOR_UPDATE
-	};
-
-	private final String MESSAGE_AVAILABLE_SELECT = "SELECT id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, canPostpone, whenToAction, created " +
-			"FROM simples.message_queue_available avail ";
-	// -- Rule 0: Messages assigned to users, (InProgress, Postponed, Assigned, Unsuccessful), deal with your current message
-	private final String MESSAGE_AVAILABLE_RULE_0 = MESSAGE_AVAILABLE_SELECT +
-			"WHERE userId = ? AND statusId IN (1, 3, 4, 5, 6) " +
-			"ORDER BY whenToAction ASC " +
-			"LIMIT 1";
-	// -- Rule 1: CTM fail joins, last in first out
-	private final String MESSAGE_AVAILABLE_RULE_1 = MESSAGE_AVAILABLE_SELECT +
-			"WHERE avail.sourceId = 5 " +
-			"AND userId = ? " +
-			"ORDER BY avail.created DESC, avail.id DESC " +
-			"LIMIT 1";
-	// -- Rule 2: WHITELABLE fail joins, last in first out
-	private final String MESSAGE_AVAILABLE_RULE_2 = MESSAGE_AVAILABLE_SELECT +
-			"WHERE avail.sourceId = 8 " +
-			"AND userId = ? " +
-			"ORDER BY avail.created DESC, avail.id DESC " +
-			"LIMIT 1";
-	// -- Rule 3: Messages assigned to users, (Personal Messages)
-	private final String MESSAGE_AVAILABLE_RULE_3 = MESSAGE_AVAILABLE_SELECT +
-			"WHERE userId = ? AND statusId IN (31, 32) " +
-			"ORDER BY whenToAction ASC " +
-			"LIMIT 1";
-	// -- Rule 4: All other messages, Sort by dates THEN new THEN Postponed THEN Unsuccessful and Last In Last Out
-	private final String MESSAGE_AVAILABLE_RULE_4 = MESSAGE_AVAILABLE_SELECT +
-			"WHERE userId = ? " +
-			"ORDER BY date(created) DESC, " +
-			"TotalCalls ASC, " +
-			"callAttempts ASC, " +
-			"postponeCount ASC, " +
-			"created DESC, " +
-			"id DESC " +
-			"LIMIT 1";
-	private final String MESSAGE_AVAILABLE_RULES[] = new String[]{
-			MESSAGE_AVAILABLE_RULE_0,
-			MESSAGE_AVAILABLE_RULE_1,
-			MESSAGE_AVAILABLE_RULE_2,
-			MESSAGE_AVAILABLE_RULE_3,
-			MESSAGE_AVAILABLE_RULE_4
-	};
-
 
 	public Message getMessage(final int messageId) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
@@ -178,26 +90,10 @@ public class MessageDao {
 	 * @return Message model
 	 * @throws DaoException
 	 */
-	public Message getNextMessage(int userId, List<Role> userRoles) throws DaoException {
+	public Message getNextMessage(int userId, List<Rule> getNextMessageRules) throws DaoException {
 
 		if (userId <= 0) {
 			throw new DaoException("userId must be greater than zero.");
-		}
-
-		// switch available view to expired view for bottom performance call centre users
-		String rule_0 = MESSAGE_AVAILABLE_RULE_0_FOR_UPDATE;
-		String rule_3 = MESSAGE_AVAILABLE_RULE_3_FOR_UPDATE;
-
-		for (Role userRole : userRoles) {
-			if (userRole.getId() == Role.ROLE_CONSULTANT_OUTBOUND_BOTTOM) {
-				for (int i=0; i < MESSAGE_AVAILABLE_RULES_FOR_UPDATE.length; i++) {
-					MESSAGE_AVAILABLE_RULES_FOR_UPDATE[i] = MESSAGE_AVAILABLE_RULES_FOR_UPDATE[i].replace("available", "expired");
-					MESSAGE_AVAILABLE_RULES[i] = MESSAGE_AVAILABLE_RULES[i].replace("available", "expired");
-					rule_0 = rule_0.replace("available", "expired");
-					rule_3 = rule_3.replace("available", "expired");
-				}
-				break;
-			}
 		}
 
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
@@ -207,10 +103,11 @@ public class MessageDao {
 		ResultSet resultSet = null;
 		try {
 			int i = 0;
-			for(String rule : MESSAGE_AVAILABLE_RULES_FOR_UPDATE) {
-				// rule_0 and rule_3 only need to select as they have already been assigned
-				if (rule.equals(rule_0) || rule.equals(rule_3)) {
-					stmtSelect = dbSource.getConnection().prepareStatement(MESSAGE_AVAILABLE_RULES[i]);
+			for(Rule rule : getNextMessageRules) {
+				// - rule_0 and rule_3 only need to select as they have already been assigned
+				// - regular expression to match userid=?, userid = ?, userid   =? (zero or more space before and after = sign with x number of characters before it)
+				if(Pattern.matches(".* userid\\s*=\\s*\\?\\s*.*", rule.getValue().toLowerCase())) {
+					stmtSelect = dbSource.getConnection().prepareStatement(rule.getValue());
 					stmtSelect.setInt(1, userId);
 
 					resultSet = stmtSelect.executeQuery();
@@ -223,14 +120,16 @@ public class MessageDao {
 						return message;
 					}
 				} else {
-				stmtUpdate = dbSource.getConnection().prepareStatement(MESSAGE_AVAILABLE_UPDATE + rule + MESSAGE_AVAILABLE_UPDATE_SET);
+					stmtUpdate = dbSource.getConnection().prepareStatement(MESSAGE_AVAILABLE_UPDATE + rule.getValue() + MESSAGE_AVAILABLE_UPDATE_SET);
 
 				stmtUpdate.setInt(1, userId);
 
-				int numberOfRows = stmtUpdate.executeUpdate();
-				if(numberOfRows > 0) {
-					stmtSelect = dbSource.getConnection().prepareStatement(MESSAGE_AVAILABLE_RULES[i]);
-					stmtSelect.setInt(1, userId);
+					int numberOfRows = stmtUpdate.executeUpdate();
+					if(numberOfRows > 0) {
+						// - regular expression to match userid=0, userid = 0, userid   =0 (zero or more space before and after = sign)
+						// We run an update on select before, so changing userId = 0 to userId = ? to get what was assigned.
+						stmtSelect = dbSource.getConnection().prepareStatement(rule.getValue().toLowerCase().replaceAll("userid\\s*=\\s*0", "userId = ?"));
+						stmtSelect.setInt(1, userId);
 
 					resultSet = stmtSelect.executeQuery();
 					Message message = mapFieldsFromResultsToMessage(resultSet).get(0);
@@ -272,22 +171,34 @@ public class MessageDao {
 	public boolean useNewMethodToGetNexMessage() throws DaoException {
 
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		PreparedStatement stmt = null;
+		ResultSet results = null;
 
 		try {
-			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-					"SELECT isNew, isNew2 FROM simples.next_message_flag;"
+			stmt = dbSource.getConnection().prepareStatement(
+					"SELECT value FROM simples.settings WHERE `key` = 'oldGetNextMessage';"
 			);
 
-			final ResultSet results = stmt.executeQuery();
+			results = stmt.executeQuery();
 
 			while (results.next()) {
-				return results.getBoolean("isNew") || results.getBoolean("isNew2");
+				return !results.getBoolean("value");
 			}
 		}
 		catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
 		}
 		finally {
+			try {
+				if(results != null) {
+					results.close();
+				}
+				if(stmt != null) {
+					stmt.close();
+				}
+			} catch (SQLException e) {
+				throw new DaoException(e.getMessage(), e);
+			}
 			dbSource.closeConnection();
 		}
 

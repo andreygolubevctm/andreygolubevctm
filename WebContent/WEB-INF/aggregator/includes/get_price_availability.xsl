@@ -17,6 +17,7 @@
 					<xsl:choose>
 						<xsl:when test="$productId = 'BUDD-05-01'">Y</xsl:when>
 						<xsl:when test="$productId = 'BUDD-05-04'">Y</xsl:when>
+						<xsl:when test="$productId = 'BUDD-05-15'">Y</xsl:when>
 						<xsl:when test="$productId = 'VIRG-05-17'">Y</xsl:when>
 						<xsl:when test="$productId = 'IECO-05-09'">Y</xsl:when>
 						<xsl:when test="$productId = 'IHAF-05-13'">Y</xsl:when>
@@ -48,6 +49,7 @@
 				<xsl:choose>
 					<xsl:when test="$productId = 'BUDD-05-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'BUDD-05-04'">Y</xsl:when>
+					<xsl:when test="$productId = 'BUDD-05-15'">Y</xsl:when>
 					<xsl:when test="$productId = 'VIRG-05-17'">Y</xsl:when>
 					<xsl:when test="$productId = 'IECO-05-09'">Y</xsl:when>
 					<xsl:when test="$productId = 'EXPO-05-16'">Y</xsl:when>

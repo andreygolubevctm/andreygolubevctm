@@ -3,6 +3,7 @@ package com.ctm.model.session;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ctm.model.simples.Rule;
 import org.apache.log4j.Logger;
 
 import com.ctm.model.simples.Role;
@@ -19,6 +20,7 @@ public class AuthenticatedData extends Data {
 
 	// store the roles in java instead of data bucket
 	private List<Role> simplesUserRoles;
+	private List<Rule> getNextMessageRules;
 
 	public AuthenticatedData(){
 		super();
@@ -78,4 +80,12 @@ public class AuthenticatedData extends Data {
 	}
 
 
+	public List<Rule> getGetNextMessageRules() {
+		if(getNextMessageRules == null) return new ArrayList<Rule>();
+		return getNextMessageRules;
+	}
+
+	public void setGetNextMessageRules(List<Rule> getNextMessageRules) {
+		this.getNextMessageRules = getNextMessageRules;
+	}
 }

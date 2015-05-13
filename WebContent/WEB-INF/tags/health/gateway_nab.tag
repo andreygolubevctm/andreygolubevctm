@@ -9,6 +9,7 @@
 	<c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 	<field:hidden xpath="${xpath}/nab/cardNumber" />
+	<field:hidden xpath="${xpath}/nab/cardName" />
 	<field:hidden xpath="${xpath}/nab/crn" />
 	<field:hidden xpath="${xpath}/nab/rescode" />
 	<field:hidden xpath="${xpath}/nab/restext" />

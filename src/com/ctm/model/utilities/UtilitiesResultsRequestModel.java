@@ -52,6 +52,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 	private Date connectionDate; // date moving to the property
 	private FuelType fuelType;
 	private String tariff;
+	private boolean solarPanels;
 
 	// The following is only required if the user is not moving
 	private Duration electricityDuration;
@@ -127,6 +128,14 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 
 	public void setTariff(String tariff) {
 		this.tariff = tariff;
+	}
+
+	public boolean getSolarPanels() {
+		return solarPanels;
+	}
+
+	public void setSolarPanels(boolean solarPanels) {
+		this.solarPanels = solarPanels;
 	}
 
 	public Duration getElectricityDuration() {
@@ -222,6 +231,7 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 			json.put("connection_date", "0000-00-00");
 		}
 		json.put("fuel_type", getFuelType());
+		json.put("solar_panels", convertBooleanToString(getSolarPanels()));
 
 		if(getHowToEstimate().equals("U")){
 
@@ -323,6 +333,8 @@ public class UtilitiesResultsRequestModel  extends AbstractJsonModel {
 		if(request.getParameter("utilities_householdDetails_movingInDate")!= null){
 			setConnectionDate(FormDateUtils.parseDateFromForm(request.getParameter("utilities_householdDetails_movingInDate")));
 		}
+
+		setSolarPanels(convertStringToBoolean(request.getParameter("utilities_householdDetails_solarPanels")));
 
 		String whatToCompare = request.getParameter("utilities_householdDetails_whatToCompare");
 		if(whatToCompare.equals("EG")){

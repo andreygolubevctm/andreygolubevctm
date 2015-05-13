@@ -8,6 +8,7 @@ public class Rewards {
 	private Double standardCardPoints;
 	private Double amexCardPoints;
 	private Double bonusPoints;
+	private String bonusPointsType;
 
 	/**
 	 * @return the standardCardClass
@@ -65,13 +66,22 @@ public class Rewards {
 		this.standardCardPoints = standardCardPoints;
 	}
 
+
+	public String getBonusPointsType() {
+		return bonusPointsType;
+	}
+
+	public void setBonusPointsType(String bonusPointsType) {
+		this.bonusPointsType = bonusPointsType;
+	}
+
 	public void importFromProduct(Product product){
 
 		setStandardCardClass(product.getPropertyAsString("rewards-standard-card-class"));
 		setStandardCardPoints(product.getPropertyAsDouble("rewards-standard-card-points"));
 		setAmexCardPoints(product.getPropertyAsDouble("rewards-amex-card-points"));
 		setBonusPoints(product.getPropertyAsDouble("rewards-bonus-points"));
+		setBonusPointsType(product.getPropertyAsString("rewards-bonus-points-type"));
 
 	}
-
 }

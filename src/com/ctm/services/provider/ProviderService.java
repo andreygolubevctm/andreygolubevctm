@@ -16,11 +16,15 @@ public class ProviderService {
 	private static Logger logger = Logger.getLogger(ProviderService.class.getName());
 
 	public static ArrayList<Provider> fetchProviders(HttpServletRequest request) {
+		Boolean getOnlyActiveProviders = false;
+
+		if(request.getParameter("getActiveProviders") == "true")
+			getOnlyActiveProviders = true;
 
 		ProviderDao providerDao = new ProviderDao();
 		try {
 			PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-			return providerDao.getProviders(pageSettings.getVertical().getCode(), pageSettings.getBrandId());
+			return providerDao.getProviders(pageSettings.getVertical().getCode(), pageSettings.getBrandId(), getOnlyActiveProviders);
 		}
 		catch (Exception e) {
 			logger.error(e);
@@ -31,11 +35,14 @@ public class ProviderService {
 	}
 
 	public static String fetchProviders(String vertical, int brandId) {
+		return fetchProviders(vertical, brandId, false);
+	}
 
+	public static String fetchProviders(String vertical, int brandId, Boolean getOnlyActiveProviders) {
 		StringBuilder providerDropdown = new StringBuilder();
 		ProviderDao providerDao = new ProviderDao();
 		try {
-			ArrayList<Provider> providers = providerDao.getProviders(vertical, brandId);
+			ArrayList<Provider> providers = providerDao.getProviders(vertical, brandId, getOnlyActiveProviders);
 
 			for (Provider entry : providers) {
 

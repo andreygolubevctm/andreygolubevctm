@@ -61,8 +61,6 @@
 
 		<field:hidden xpath="${xpath}${primary_xpath}/type" defaultValue="S" constantValue="S" />
 
-		<life:popup_calculator />
-
 	</form:fieldset>
 </div>
 

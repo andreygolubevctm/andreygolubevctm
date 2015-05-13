@@ -136,6 +136,8 @@ public class Touch extends AbstractJsonModel {
 		}
 		json.put("type", typeCode);
 		json.put("datetime", getDatetime());
+		// TODO: JSON Object for touchProperties
+//		json.put("description", description);
 		return json;
 	}
 }
