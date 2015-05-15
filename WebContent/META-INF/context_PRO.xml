@@ -9,6 +9,7 @@
 
 	<Resource name="jdbc/test" auth="Container"
 		type="javax.sql.DataSource"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://appsdbserver:3306/test?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
@@ -27,6 +28,7 @@
 
 	<Resource name="jdbc/aggregator" auth="Container"
 		type="javax.sql.DataSource"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://appsdbserver:3306/aggregator?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
@@ -45,6 +47,7 @@
 
 	<Resource name="jdbc/ctm" auth="Container"
 		type="javax.sql.DataSource"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://appsdbserver:3306/ctm?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
@@ -63,6 +66,7 @@
 
 	<Resource name="jdbc/disc" auth="Container"
 		type="javax.sql.DataSource"
+		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		username="ecomsql" password="ec0msql"
 		driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://appsdbserver:3306/disc"
