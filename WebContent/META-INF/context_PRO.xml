@@ -17,6 +17,7 @@
 		maxActive="100"
 		maxTotal="100"
 		validationQuery="SELECT 1"
+		validationInterval="34000"
 		maxWait="3000"
 		maxWaitMillis="3000"
 		removeAbandoned="true"
@@ -24,6 +25,7 @@
 		minIdle="10"
 		removeAbandonedTimeout="60"
 		logAbandoned="true"
+		testOnBorrow="true"
 	/>
 
 	<Resource name="jdbc/aggregator" auth="Container"
@@ -36,6 +38,7 @@
 		maxActive="100"
 		maxTotal="100"
 		validationQuery="SELECT 1"
+		validationInterval="34000"
 		maxWait="3000"
 		maxWaitMillis="3000"
 		removeAbandoned="true"
@@ -43,6 +46,7 @@
 		minIdle="10"
 		removeAbandonedTimeout="60"
 		logAbandoned="true"
+		testOnBorrow="true"
 	/>
 
 	<Resource name="jdbc/ctm" auth="Container"
@@ -55,6 +59,7 @@
 		maxActive="100"
 		maxTotal="100"
 		validationQuery="SELECT 1"
+		validationInterval="34000"
 		maxWait="3000"
 		maxWaitMillis="3000"
 		removeAbandoned="true"
@@ -62,6 +67,7 @@
 		minIdle="10"
 		removeAbandonedTimeout="60"
 		logAbandoned="true"
+		testOnBorrow="true"
 	/>
 
 	<Resource name="jdbc/disc" auth="Container"
@@ -73,12 +79,14 @@
 		maxActive="10"
 		maxTotal="10"
 		validationQuery="SELECT 1"
+		validationInterval="34000"
 		maxWait="2000"
 		maxWaitMillis="2000"
 		removeAbandoned="true"
 		maxIdle="10"
 		removeAbandonedTimeout="60"
 		logAbandoned="true"
+		testOnBorrow="true"
 	/>
 
 <!--
