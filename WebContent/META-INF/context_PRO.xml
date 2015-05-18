@@ -9,7 +9,6 @@
 
 	<Resource name="jdbc/test" auth="Container"
 		type="javax.sql.DataSource"
-		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://appsdbserver:3306/test?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
@@ -17,7 +16,6 @@
 		maxActive="100"
 		maxTotal="100"
 		validationQuery="SELECT 1"
-		validationInterval="34000"
 		maxWait="3000"
 		maxWaitMillis="3000"
 		removeAbandoned="true"
@@ -25,12 +23,10 @@
 		minIdle="10"
 		removeAbandonedTimeout="60"
 		logAbandoned="true"
-		testOnBorrow="true"
 	/>
 
 	<Resource name="jdbc/aggregator" auth="Container"
 		type="javax.sql.DataSource"
-		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://appsdbserver:3306/aggregator?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
@@ -38,7 +34,6 @@
 		maxActive="100"
 		maxTotal="100"
 		validationQuery="SELECT 1"
-		validationInterval="34000"
 		maxWait="3000"
 		maxWaitMillis="3000"
 		removeAbandoned="true"
@@ -46,12 +41,10 @@
 		minIdle="10"
 		removeAbandonedTimeout="60"
 		logAbandoned="true"
-		testOnBorrow="true"
 	/>
 
 	<Resource name="jdbc/ctm" auth="Container"
 		type="javax.sql.DataSource"
-		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		username="server" password="server"
 		driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://appsdbserver:3306/ctm?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
@@ -59,7 +52,6 @@
 		maxActive="100"
 		maxTotal="100"
 		validationQuery="SELECT 1"
-		validationInterval="34000"
 		maxWait="3000"
 		maxWaitMillis="3000"
 		removeAbandoned="true"
@@ -67,26 +59,22 @@
 		minIdle="10"
 		removeAbandonedTimeout="60"
 		logAbandoned="true"
-		testOnBorrow="true"
 	/>
 
 	<Resource name="jdbc/disc" auth="Container"
 		type="javax.sql.DataSource"
-		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		username="ecomsql" password="ec0msql"
 		driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://appsdbserver:3306/disc"
 		maxActive="10"
 		maxTotal="10"
 		validationQuery="SELECT 1"
-		validationInterval="34000"
 		maxWait="2000"
 		maxWaitMillis="2000"
 		removeAbandoned="true"
 		maxIdle="10"
 		removeAbandonedTimeout="60"
 		logAbandoned="true"
-		testOnBorrow="true"
 	/>
 
 <!--
