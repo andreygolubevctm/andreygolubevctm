@@ -23,14 +23,16 @@
 	<%-- NOTE: This is not ideal, as the phone details should be available from session and not specially pinged at this point. --%>
 	<c:if test="${not empty authenticatedData['login/user/extension']}">
 		<c:catch>
-			<c:set var="phoneVdn" value="${phoneService.getVdnByExtension(pageSettings, authenticatedData['login/user/extension'])}" />
-			<c:if test="${not empty phoneVdn}">
-				<c:set var="xpathVDN" value="${xpath}/VDN" />
-				<c:set var="ignore">${quoteService.writeSingle(data.current.transactionId, xpathVDN, phoneVdn)}</c:set>
+			<c:set var="callInfo" value="${phoneService.saveCallInfoForTransaction(pageSettings, authenticatedData['login/user/extension'],data.current.transactionId,xpath)}" />
+			<c:if test="${callInfo!=null}">
+				<field:hidden xpath="${xpath}/callId" constantValue="${callInfo.getCallId()}" />
+				<field:hidden xpath="${xpath}/direction" constantValue="${callInfo.getDirection()}" />
+				<field:hidden xpath="${xpath}/customerPhoneNo" constantValue="${callInfo.getCustomerPhoneNo()}" />
+				<field:hidden xpath="${xpath}/VDN" constantValue="${callInfo.getVdns().get(0)}" />
 			</c:if>
+
 		</c:catch>
 	</c:if>
-	<field:hidden xpath="${xpath}/VDN" constantValue="${phoneVdn}" />
 
 	<%-- Form stuff --%>
 	<c:set var="id" value="${go:nameFromXpath(xpath)}" />

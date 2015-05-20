@@ -138,6 +138,32 @@ public class PhoneService {
 	}
 
 	/**
+     * Function saves call information of supplied extension against supplied transaction ID into transaction_details table
+     * @param settings
+     * @param extension
+     * @param transactionId
+     * @param xpath
+     * @return
+     * @throws EnvironmentException
+     * @throws ConfigSettingException
+     */
+    public static CallInfo saveCallInfoForTransaction(PageSettings settings, String extension, long transactionId, String xpath) throws ConfigSettingException {
+        CallInfo callInfo = getCallInfoByExtension(settings, extension);
+        if(callInfo.getCallId()!=null && !callInfo.getCallId().equals("") && !callInfo.getCallId().equals("0")) {
+            QuoteService quoteService = new QuoteService();
+            quoteService.writeSingle(transactionId, xpath + "/callId", callInfo.getCallId());
+            quoteService.writeSingle(transactionId, xpath + "/direction", callInfo.getDirection());
+            quoteService.writeSingle(transactionId, xpath + "/customerPhoneNo", callInfo.getCustomerPhoneNo());
+            if (!callInfo.getVdns().isEmpty() && callInfo.getVdns().get(0) != null && !callInfo.getVdns().get(0).equals("")) {
+                quoteService.writeSingle(transactionId, xpath + "/VDN", callInfo.getVdns().get(0));
+            }
+        }else{
+            return null;
+        }
+        return callInfo;
+    }
+
+    /**
 	 * Uses the CTI service from Auto&General to get the top level VDN for the specified extension.
 	 * Technically there can be multiple VDNs but we are interested in the top level VDN as that is where the call first hit our call centre.
 	 *
@@ -218,7 +244,10 @@ public class PhoneService {
 			else {
 				callInfo.setState(STATE_INACTIVE);
 			}
+			callInfo.setCallId(information.getString("callId"));
 
+			JSONObject otherParty = information.getJSONObject("otherParty");
+			callInfo.setCustomerPhoneNo(otherParty.getString("telephoneNumber"));
 		}
 		catch (JSONException e) {
 			logger.error(e);

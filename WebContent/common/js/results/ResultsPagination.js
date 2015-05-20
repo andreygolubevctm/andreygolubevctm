@@ -280,24 +280,53 @@ ResultsPagination = {
 
 	// These values can not be cached as they change when the breakpoint changes.
 	calculatePageMeasurements:function(){
-
-		var viewableArea = Results.view.$containerElement.parent().width();
-		var $rows = Results.view.$containerElement.find(Results.settings.elements.rows+'.notfiltered');
-		if($rows.length == 0 ) return null; // called too early.
+		var $container = Results.view.$containerElement;
+		var viewableArea = $container.parent().width();
+		var $rows = $container.find(Results.settings.elements.rows+'.notfiltered');
+		if($rows.length == 0) return null; // called too early.
 		var numberOfColumns = $rows.length;
-		var columnWidth =  $rows.outerWidth(true);
-		var columnsPerPage = Math.round(viewableArea/columnWidth);
+		// As the column widths are defined in the LESS let's save time interrogating the DOM
+		// objects and simply check the applicable class defined in the .resultsContainer
+		var columnWidth = 0;
+		var columnsPerPage = 0;
+		var mediaState = typeof meerkat != 'undefined' ? meerkat.modules.deviceMediaState.get().toLowerCase() : false;
+		if(mediaState !== false && mediaState !== "xs" && Results.pagination.hasLessDrivenColumns(mediaState)) {
+			columnsPerPage = Results.pagination.getColumnCountFromContainer(mediaState);
+			columnWidth = Math.round(viewableArea / columnsPerPage);
+		} else {
+			columnWidth =  $rows.outerWidth(true);
+			columnsPerPage = Math.round(viewableArea/columnWidth);
+		}
+
 		var pageWidth = columnWidth*columnsPerPage;
 
 		var obj = {
 			pageWidth: pageWidth,
 			columnsPerPage:columnsPerPage,
 			numberOfColumns:numberOfColumns,
-			numberOfPages: Math.ceil((numberOfColumns*columnWidth) / (pageWidth))
-		}
+			numberOfPages: Math.ceil(numberOfColumns/columnsPerPage)
+		};
 
 		Results.pagination.currentPageMeasurements = obj;
 		return obj;
+	},
+
+	hasLessDrivenColumns: function(mediaState) {
+		return $('.resultsContainer[class*="results-columns-' + mediaState + '-"]').length > 0;
+	},
+
+	getColumnCountFromContainer: function(mediaState) {
+		var noColumns = 0;
+		var $container = $('.resultsContainer');
+		if($container.length) {
+			var classes = $container[0].className.split(" ");
+			for(var i=0; i<classes.length; i++) {
+				if(!_.isEmpty(classes[i]) && classes[i].indexOf("results-columns-" + mediaState + "-") === 0) {
+					noColumns = Number(classes[i].replace( /^\D+/g, ''));
+				}
+			}
+		}
+		return noColumns;
 	},
 
 	gotoStart: function(invalidate){

@@ -353,11 +353,12 @@
 				if(typeof data === "string" && data !== "success")
 					data = JSON.parse(data);
 
-				if(!data.error) {
+				if(data && !data.hasOwnProperty("error")) {
 					if(onSuccess)
 						onSuccess(data);
 				} else {
-					_handleErrorObject(data.error);
+					var error = (typeof data !== "undefined" && data !== null && typeof data.error !== "undefined") ? data.error : [];
+					_handleErrorObject(error);
 				}
 			},
 			onComplete: function() {

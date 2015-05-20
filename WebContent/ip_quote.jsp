@@ -53,19 +53,9 @@
 							<%-- INITIAL: stage, set from parameters --%>
 							<slider:slide id="slide0" title="Your Details">
 								<h2><span>Step 1.</span> Your Details</h2>
-								
-								<c:choose>
-									<c:when test="${not empty param.j and param.j eq '1'}">
 										<ip:insurance xpath="${xpath}/primary/insurance" />
 										<life:questionset xpath="${xpath}" />
 								<life:contact_details xpath="${xpath}/contactDetails" />
-									</c:when>
-									<c:otherwise>
-										<life:contact_details xpath="${xpath}/contactDetails" />
-								<life:questionset xpath="${xpath}" />
-								<ip:insurance xpath="${xpath}/primary/insurance" />
-									</c:otherwise>
-								</c:choose>
 							</slider:slide>
 							
 							<slider:slide id="slide1" title="Compare">

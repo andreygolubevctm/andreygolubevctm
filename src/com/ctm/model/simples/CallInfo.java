@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 public class CallInfo {
 	private ArrayList<String> vdns = new ArrayList<String>();
-	private int direction;
+	private String direction;
 	private int state = -1;
+	private String callId;
+	private String customerPhoneNo;
 
-	public static final int DIRECTION_INBOUND = 1;
-	public static final int DIRECTION_OUTBOUND = 2;
-	public static final int DIRECTION_INTERNAL = 3;
+	public static final String DIRECTION_INBOUND = "I";
+	public static final String DIRECTION_OUTBOUND = "O";
+	public static final String DIRECTION_INTERNAL = "N";
 
 	public static final int STATE_INACTIVE = 0;
 	public static final int STATE_ACTIVE = 1;
@@ -24,10 +26,10 @@ public class CallInfo {
 		this.vdns.add(vdn);
 	}
 
-	public int getDirection() {
+	public String getDirection() {
 		return direction;
 	}
-	public void setDirection(int direction) {
+	public void setDirection(String direction) {
 		this.direction = direction;
 	}
 
@@ -36,5 +38,21 @@ public class CallInfo {
 	}
 	public void setState(int state) {
 		this.state = state;
+	}
+
+	public String getCustomerPhoneNo() {
+		return customerPhoneNo;
+	}
+
+	public void setCustomerPhoneNo(String customerPhoneNo) {
+		this.customerPhoneNo = customerPhoneNo;
+	}
+
+	public String getCallId() {
+		return callId;
+	}
+
+	public void setCallId(String callId) {
+		this.callId = callId;
 	}
 }

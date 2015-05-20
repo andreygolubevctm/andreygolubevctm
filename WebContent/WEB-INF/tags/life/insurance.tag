@@ -17,11 +17,9 @@
 <div id="${name}_insurance" class="${name}_insurance_details">
 	<form:fieldset legend="Life Insurance Details">
 
-		<c:if test="${not empty param.j and param.j eq '1'}">
-			<form:row label="Who is the cover for?" id="${name}${primary_label}_partner_group" >
-				<field:array_radio items="N=Just for you,Y=You &amp; your partner" id="${name}${primary_label}_partner" xpath="${xpath}${primary_xpath}/partner" title="who the cover is for" required="true" className="" />
-			</form:row>
-		</c:if>
+		<form:row label="Who is the cover for?" id="${name}${primary_label}_partner_group" >
+			<field:array_radio items="N=Just for you,Y=You &amp; your partner" id="${name}${primary_label}_partner" xpath="${xpath}${primary_xpath}/partner" title="who the cover is for" required="true" className="" />
+		</form:row>
 
 		<div id="${name}_same_cover_group">
 			<form:row label="Would you like to be covered<br>for the same amount?">
@@ -253,12 +251,12 @@ $.validator.addMethod("minPartnerInsuranceSelected",
 		});
 	}
 
-	<c:set var="tooltipInitialValue">
-		<c:choose>
-			<c:when test="${not empty param.j and param.j eq '1'}">0</c:when>
-			<c:otherwise>2</c:otherwise>
-		</c:choose>
-	</c:set>
+	<%--
+	Start index for help tooltips.
+	If we ever need to shuffle the accordion around in future,
+	this will let us make one change instead of 6.
+	--%>
+	<c:set var="tooltipInitialValue">0</c:set>
 
 	$('#${name}${primary_label}_termentry').on('focus', function(e){
 		<%-- This delay is needed to circumvent the document click action which hides it. --%>

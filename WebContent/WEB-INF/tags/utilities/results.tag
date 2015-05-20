@@ -278,7 +278,7 @@
 		font-size:13px;
 		font-weight:bold;
 		height:40px;
-		width: 100px;
+		width: 80px;
 		font-family:"SunLT Bold",Arial,Helvetica,sans-serif;
 		position:relative;
 	}
@@ -288,6 +288,7 @@
 	}
 	.utilities .result-row > div {
 		height:50px;
+		width:80px;
 		border-bottom: 1px solid #DAE0E4;
     	border-left: 1px solid #DAE0E4;	
 	}			
@@ -351,20 +352,12 @@
 			text-decoration: underline;
 		}
 
-	.utilities #results-container .contract_period {
-		width:75px;	
-	}	
-	.utilities #results-container .green_rating {
-		width:75px;	
-	}	
 	.utilities #results-container .green_rating p {
 		color: #0CB24F;
 	}
 
-	.utilities  #results-container .estimated_saving {
-		width:75px;
-	}
-		.utilities .result-row .estimated_saving {
+		.utilities .result-row .estimated_saving,
+		.utilities .result-row .total_discounts {
 			background-color:#f8f9fa;
 			text-align: center;
 			color: #0CB04D;
@@ -374,12 +367,6 @@
 			.utilities .result-row .estimated_saving span{
 				display: inline-block;
 			}
-	.utilities #results-container .max_cancellation_fee {
-		width:75px;
-	}
-	.utilities #results-container .estimated_cost {
-		width:75px;
-	}
 		.utilities #results-container .result-row.unavailable .max_cancellation_fee {
 			width:799px;
 			line-height:50px;
@@ -409,6 +396,7 @@
 	p.results-rows-footer {
 		display:none;
 		text-align:center;
+		margin-bottom: 10px;
 	}
 
 	.promo-container label {
@@ -507,6 +495,16 @@ Results = {
 		});
 	},
 	
+	viewDiscount : function( product_id )
+	{
+		no_apply_btn = false;
+		Track.onMoreInfoClick( product_id );
+		var product = Results.getProductByID( product_id );
+		UtilitiesQuote.fetchProductDetail( product, function(){
+			DiscountDialog.init( product, no_apply_btn );
+		});
+	},
+
 	showErrors : function( msgs, transaction_id )
 	{
 		Results.init();
@@ -573,7 +571,7 @@ Results = {
 			$('.estcost').removeClass('bestdeal');
 			
 			$('.estimated_saving, .bestdeal').hide();
-			$('.supplier_and_plan').css('width', '440px');
+			$('.supplier_and_plan').css('width', '468px');
 			
 			$('.estimated_cost').addClass('estimated_saving');
 			$('.estcost').addClass('bestdeal');
@@ -585,12 +583,18 @@ Results = {
 			$('.estcost').removeClass('bestdeal');
 			
 			$('.estimated_saving, .bestdeal').show();
-			$('.supplier_and_plan').css('width', '365px');
+			$('.supplier_and_plan').css('width', '367px');
 			
 			Results._sortBy = 'estimated_saving';
 			Results._sortDir = 'asc';
 		}
 		
+		if($("input[name=utilities_householdDetails_whatToCompare]:checked").val() == "EG") {
+			$('.total_discounts').hide();
+			var supplier_width = $('.supplier_and_plan').width() + 91;
+			$('.supplier_and_plan').css('width', supplier_width);
+		}
+
 		Results.init();
 				
 		$('#page').hide();
@@ -929,6 +933,10 @@ Results = {
 		{
 			sortedPrices = $(prices).sort(Results._sortSupplierAndPlan);
 		}
+		else if( Results._sortBy == "total_discounts" )
+		{
+			sortedPrices = $(prices).sort(Results._sortTotalDiscount);
+		}
 		else if( Results._sortBy == "green_rating" )
 		{
 			sortedPrices = $(prices).sort(Results._sortGreenRating);
@@ -1033,6 +1041,27 @@ Results = {
 		}
 		
 		return Results._sortDir=='asc'?rtn*-1:rtn;
+	},
+	_sortTotalDiscount : function(priceA, priceB){
+
+		if (isNaN(priceA.totalDiscount)){
+			return 1;
+		}
+		if (isNaN(priceB.totalDiscount)){
+			return -1;
+		}
+		if (priceA.sortValue < priceB.sortValue){
+			rtn = 1;
+
+		} else if (priceA.sortValue > priceB.sortValue){
+			rtn = -1;
+
+		// No clear winner by score.. default to sort by Estimated Cost
+		} else {
+			rtn = (priceA.price - priceB.price);
+		}
+
+		return Results._sortDir=='desc'?rtn*-1:rtn;
 	},
 	_sortEstimatedSaving : function(priceA, priceB){
 	
@@ -1151,6 +1180,8 @@ Results = {
 			price.sortValue=price.yearlySavings;
 		} else if (sortBy=='estimated_cost'){
 			price.sortValue=price.price;
+		} else if (sortBy=='total_discounts'){
+			price.sortValue=price.totalDiscount;
 		} else if(sortBy=='green_rating') {
 			price.sortValue=price.info.GreenPercent;
 		} else if(sortBy=='supplier_and_plan') {
@@ -1182,13 +1213,24 @@ Results = {
 		$("#results-table").html("");
 		
 		Results._priceCount = 0;
-		var topPos = 0; 
-		var rowHeight = 70+1;  			
-		
+		var topPos = 0;
+		var rowHeight = 70+1;
+		var product = $("input[name=utilities_householdDetails_whatToCompare]:checked").val();
+
 		if (prices != undefined) {
 			$.each(prices, function() {
 				
+				if( product == "E" ) {
+					this.totalDiscount = (Number(this.payontimeDiscounts) + 
+												Number(this.ebillingDiscounts) +
+												Number(this.guaranteedDiscounts) +
+												Number(this.otherDiscounts));
+
 				this.formatted = {
+						totalDiscounts:			(Number(this.payontimeDiscounts) + 
+												Number(this.ebillingDiscounts) +
+												Number(this.guaranteedDiscounts) +
+												Number(this.otherDiscounts)) + '%',
 					cancellationFees:		'$' + Number(this.cancellationFees).toFixed(2),
 					currentEstimatedCost:	'$' + Number(this.currentEstimatedCost).toFixed(2),
 					previousPrice:			'$' + Number(this.previousPrice).toFixed(2),
@@ -1196,6 +1238,37 @@ Results = {
 					yearlySavings:			'$' + Number(this.yearlySavings).toFixed(2)
 				}
 
+				} else if( product == "G" ) {
+					this.totalDiscount = (Number(this.payontimeDiscounts) + 
+												Number(this.ebillingDiscounts) +
+												Number(this.guaranteedDiscounts) +
+												Number(this.otherDiscounts));
+
+					this.formatted = {
+						totalDiscounts:			(Number(this.payontimeDiscounts) + 
+												Number(this.ebillingDiscounts) +
+												Number(this.guaranteedDiscounts) +
+												Number(this.otherDiscounts)) + '%',
+						cancellationFees:		'$' + Number(this.cancellationFees).toFixed(2),
+						currentEstimatedCost:	'$' + Number(this.currentEstimatedCost).toFixed(2),
+						previousPrice:			'$' + Number(this.previousPrice).toFixed(2),
+						price:					'$' + Number(this.price).toFixed(2),
+						yearlySavings:			'$' + Number(this.yearlySavings).toFixed(2)
+					}
+
+				} else {
+					this.totalDiscount = 0;
+
+					this.formatted = {
+						totalDiscounts:			'',
+						cancellationFees:		'$' + Number(this.cancellationFees).toFixed(2),
+						currentEstimatedCost:	'$' + Number(this.currentEstimatedCost).toFixed(2),
+						previousPrice:			'$' + Number(this.previousPrice).toFixed(2),
+						price:					'$' + Number(this.price).toFixed(2),
+						yearlySavings:			'$' + Number(this.yearlySavings).toFixed(2)
+					}
+
+				}
 				var newRow = $(parseTemplate(resultTemplate, this));
 				Results._priceCount++;				  					
 				
@@ -1361,6 +1434,10 @@ $(document).on('click','a[data-viewproduct=true]',function(){
 	Results.viewProduct($(this).data('id'));
 });
 	
+$(document).on('click','a[data-viewdiscount=true]',function(){
+	Results.viewDiscount($(this).data('id'));
+});
+
 </go:script>
 
 
@@ -1381,13 +1458,12 @@ $(document).on('click','a[data-viewproduct=true]',function(){
 		<div class="clear" style="width:100%"><!-- empty --></div>
 		<div id='sort-icon'></div>
 		<div id="results-header">
-			<div class="supplier_and_plan sortable">Supplier and Plan</div>
-
+			<div class="supplier_and_plan sortable">Retailer and Plan</div>
+			<div class="total_discounts sortable">Total Available<br />Discounts</div>
+			<div>Discount Details</div>
+			<div class="estimated_saving sortable">Savings<br>upto</div>
 			<div class="contract_period sortable">Contract Period</div>
-			<div class="max_cancellation_fee sortable">Maximum Cancellation Fee</div>
-			<div class="estimated_cost sortable">Estimated Cost<br />(1st Year)</div>
-			<div class="estimated_saving sortable">Estimated Savings<br />(1st Year)</div>				
-			<div class="link"><!-- empty --></div>					
+			<div class="link"><!-- empty --></div>
 		</div>
 	
 		<%-- The results table will be inserted here --%>
@@ -1409,17 +1485,18 @@ $(document).on('click','a[data-viewproduct=true]',function(){
 					</div>
 				</div>			
 
-				<div class="contract_period">
-					<p id="contractLength_[#= planId #]">[#= contractPeriod #]</p>
+				<div class="total_discounts">
+					<p id="totalDiscounts_[#= planId #]">[#= formatted.totalDiscounts #]</p>
 				</div>
-				<div class="max_cancellation_fee">
-					<p id="maxCancellationFee_[#= planId #]">[#= formatted.cancellationFees #]</p>
+				<div class="other_discounts">
+					<a id="viewdiscountbtn_[#= planId #]" href="javascript:void(0);" data-viewdiscount="true" data-id="[#= planId #]" data-retailerid="[#= retailerId #]">View Discounts</a>
 				</div>
-				<div class="estimated_cost" id="price_[#= planId #]">
-					<p id="price_[#= planId #]">[#= formatted.price #]</p>
-				</div>
+
 				<div class="estimated_saving">
 					<p id="estimatedSaving_[#= planId #]">[#= formatted.yearlySavings #]</p>
+				</div>
+				<div class="contract_period">
+					<p id="contractLength_[#= planId #]">[#= contractPeriod #]</p>
 				</div>
 				<div class="link"><!-- injected dynamically --></div>
 				</div>

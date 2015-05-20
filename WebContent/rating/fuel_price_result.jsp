@@ -4,7 +4,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 
-
 <%-- 
 	The data will arrive in a single parameter called QuoteData 
 	Containing the xml for the request in the structure:
@@ -23,40 +22,15 @@
 <c:set var="suburb" value="" />
 
 <x:parse var="fuel" xml="${param.QuoteData}" />
-	<c:set var="fuels"><x:out select="$fuel/request/details/fuels" /></c:set>
-	<c:set var="location"><x:out select="$fuel/request/details/location" /></c:set>	
-	<c:set var="ip"><x:out select="$fuel/request/header/clientIpAddress" /></c:set>
+<c:set var="fuels"><x:out select="$fuel/request/details/fuels" /></c:set>
+<c:set var="location"><x:out select="$fuel/request/details/location" /></c:set>
 
 <%-- When regular diesel selected - always include premium diesel in the results (FUE-21)--%>
 <c:if test="${fn:contains(fuels, '3') and not fn:contains(fuels, '9')}">
 	<c:set var="fuels"><c:out value="${fuels}" />,9</c:set>
 </c:if>
-<%-- TEST: user search limits: 0 = a failed or blocked user --%>
-<c:set var="limit"><core:ip_check service="FUEL" ip="${ip}" /></c:set>
 
-<c:choose>
-	<c:when test="${limit == 0}">
-
-	
-<%-- Build the xml data for each row --%>
-<results type="metro">
-	<error>limit</error>
-	<time>0</time>
-	<result>
-		<siteid></siteid>
-		<name></name>
-		<fuelid></fuelid>
-	</result>
-</results>		
-	
-	
-	</c:when>
-	<c:otherwise>
-	
-	
 <sql:setDataSource dataSource="jdbc/aggregator"/>
-
-
 
 <%-- MAKE the postcode, suburb and state variables by splitting the location string (Suburb PCODE STATE) --%>
 <c:forTokens items="${location}" delims=" " var="locationToken">
@@ -199,10 +173,4 @@ MAIN METRO SEARCH
 			<fuelid></fuelid>
 		</result>		
 	</c:if>
-</results>	
-	
-	
-	
-	
-	</c:otherwise>
-</c:choose>
+</results>

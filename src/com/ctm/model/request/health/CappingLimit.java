@@ -21,14 +21,21 @@ public class CappingLimit {
         }
 
     }
+    public enum CappingLimitCategory {
+        Hard("H") , Soft("S");
 
+        public final String text;
+        CappingLimitCategory(String text){
+            this.text = text;
+        }
+
+    }
     @Range(min=1, message="Provider ID must be positive Integer")
     private int providerId;
 
-    @NotNull(message="CappingLimitType can not be null")
+    @NotNull(message="CappingLimitType can not be empty and must be either 'Daily' or 'Monthly'")
     private CappingLimitType limitType;
 
-    @Range(min=1, message="Provider ID must be positive Integer")
     private Integer cappingAmount;
 
     @NotNull(message="Effective Start date can not be empty")
@@ -37,7 +44,8 @@ public class CappingLimit {
     @NotNull(message="Effective end date can not be empty")
     private Date effectiveEnd;
 
-    private Integer status;
+    @NotNull(message="Capping limit Category can not be empty and must be either Hard 'H' or Soft 'S'")
+    private CappingLimitCategory cappingLimitCategory;
 
     private Integer sequenceNo;
 
@@ -73,7 +81,7 @@ public class CappingLimit {
     public void setLimitType(String limitType) {
         if(CappingLimitType.Monthly.toString().equals(limitType)){
             this.limitType = CappingLimitType.Monthly;
-        } else {
+        } else if(CappingLimitType.Daily.toString().equals(limitType)){
             this.limitType = CappingLimitType.Daily;
         }
     }
@@ -94,11 +102,16 @@ public class CappingLimit {
         this.effectiveEnd = effectiveEnd;
     }
 
-    public Integer getStatus() {
-        return status;
+    public String getCappingLimitCategory() {
+        return cappingLimitCategory.text;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setCappingLimitCategory(String limitCategory) {
+        if(CappingLimitCategory.Hard.text.equals(limitCategory)){
+            this.cappingLimitCategory = CappingLimitCategory.Hard;
+        } else if(CappingLimitCategory.Soft.text.equals(limitCategory)){
+            this.cappingLimitCategory = CappingLimitCategory.Soft;
+        }
     }
+
 }

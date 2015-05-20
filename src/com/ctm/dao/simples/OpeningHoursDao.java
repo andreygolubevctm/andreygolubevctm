@@ -307,8 +307,20 @@ public class OpeningHoursDao {
     public String getOpeningHoursForDisplay(String dayDescription, Date effectiveDate) throws DaoException {
         String openingHours = null;
         ResultSet resultSet;
+        SimpleDatabaseConnection dbSource = null;
         try {
-            resultSet = searchOpeningHoursOfTheDay(dayDescription, effectiveDate);
+            dbSource = new SimpleDatabaseConnection();
+            PreparedStatement stmt;
+            stmt = dbSource.getConnection().prepareStatement(
+                    "SELECT startTime,endTime,description, date FROM ctm.opening_hours "
+                            + "WHERE lower(description) = ? OR date = ? AND hoursType IN ('N','S') ORDER BY date DESC  LIMIT 1;");
+            String day = new SimpleDateFormat("EEEE").format(
+                    dayDescription.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1) : effectiveDate).toLowerCase();
+            java.sql.Date sqlEffectiveDate = new java.sql.Date((dayDescription.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1)
+                    : effectiveDate).getTime());
+            stmt.setString(1, day);
+            stmt.setDate(2, sqlEffectiveDate);
+            resultSet= stmt.executeQuery();
 
             while (resultSet.next()) {
                 String startTime, endTime;
@@ -321,75 +333,14 @@ public class OpeningHoursDao {
                 }
             }
             return openingHours;
-        } catch (SQLException e) {
+        } catch (SQLException   | NamingException e) {
             logger.error("Failed while getting Opening Hours For Website display", e);
             throw new DaoException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * This method will return current status of the call center
-     *
-     * @param effectiveDate
-     * @return String
-     * @throws DaoException
-     */
-    public String getCurrentStatusOfCallCenter(Date effectiveDate) throws DaoException {
-        String status = null;
-        ResultSet resultSet;
-        try {
-            resultSet = searchOpeningHoursOfTheDay("today", effectiveDate);
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-            while (resultSet.next()) {
-                String startTime, endTime;
-                startTime = resultSet.getString("startTime");
-                endTime = resultSet.getString("endTime");
-                if (startTime != null
-                        && endTime != null
-                        && DateUtils.isDateInRange(DateUtils.timeToDateTime(dateFormat.format(effectiveDate)), DateUtils.timeToDateTime(startTime),
-                        DateUtils.timeToDateTime(endTime))) {
-                    return "Open";
-                } else {
-                    return "Closed";
-                }
-            }
-        } catch (SQLException e) {
-            logger.error("Failed while getting current status of call center", e);
-            throw new DaoException(e.getMessage(), e);
-        }
-        return status;
-    }
-
-    /**
-     * This method will return result set of records based on parameters
-     *
-     * @param dayType       : can only be either "today" or "tomorrow",if not set it will return blank
-     * @param effectiveDate : server date
-     * @return ResultSet
-     * @throws DaoException
-     */
-    private ResultSet searchOpeningHoursOfTheDay(String dayType, Date effectiveDate) throws DaoException {
-        SimpleDatabaseConnection dbSource = null;
-        try {
-            dbSource = new SimpleDatabaseConnection();
-            PreparedStatement stmt;
-            stmt = dbSource.getConnection().prepareStatement(
-                    "SELECT startTime,endTime,description, date FROM ctm.opening_hours "
-                            + "WHERE lower(description) = ? OR date = ? AND hoursType IN ('N','S') ORDER BY date DESC  LIMIT 1;");
-            String day = new SimpleDateFormat("EEEE").format(
-                    dayType.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1) : effectiveDate).toLowerCase();
-            java.sql.Date sqlEffectiveDate = new java.sql.Date((dayType.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1)
-                    : effectiveDate).getTime());
-            stmt.setString(1, day);
-            stmt.setDate(2, sqlEffectiveDate);
-            return stmt.executeQuery();
-        } catch (SQLException | NamingException e) {
-            logger.error("Failed while calling searchOpeningHoursOfTheDay()", e);
-            throw new DaoException(e.getMessage(), e);
-        } finally {
+        }finally {
             dbSource.closeConnection();
         }
     }
+
 
     /**
      * This method will roleback the changes made via connection in supplied SimpleDatabaseConnection

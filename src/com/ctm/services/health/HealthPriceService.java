@@ -1,7 +1,12 @@
 package com.ctm.services.health;
 
-import static com.ctm.model.health.Frequency.ANNUALLY;
-import static com.ctm.model.health.Frequency.HALF_YEARLY;
+import com.ctm.dao.StyleCodeDao;
+import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.health.*;
+import com.ctm.services.results.ProviderRestrictionsService;
+import com.ctm.utils.FormDateUtils;
+import org.apache.log4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,14 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.ctm.model.health.*;
-import org.apache.log4j.Logger;
-
-import com.ctm.dao.StyleCodeDao;
-import com.ctm.dao.health.HealthPriceDao;
-import com.ctm.exceptions.DaoException;
-import com.ctm.services.results.ProviderRestrictionsService;
-import com.ctm.utils.FormDateUtils;
+import static com.ctm.model.health.Frequency.ANNUALLY;
+import static com.ctm.model.health.Frequency.HALF_YEARLY;
 
 public class HealthPriceService {
 
@@ -313,4 +312,7 @@ public class HealthPriceService {
 
 	public boolean hasDiscountRates(String provider, String paymentType) {
 		return hasDiscountRates(healthPriceRequest.getPaymentFrequency(), provider, PaymentType.findByCode(paymentType), healthPriceRequest.isOnResultsPage());
-	}}
+	}
+
+
+}

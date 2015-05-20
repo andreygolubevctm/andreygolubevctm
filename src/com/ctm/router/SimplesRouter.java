@@ -53,6 +53,10 @@ import static javax.servlet.http.HttpServletResponse.*;
 		"/simples/admin/offers/create.json",
 		"/simples/admin/offers/delete.json",
 		"/simples/admin/offers/getAllRecords.json",
+		"/simples/admin/fundwarning/getAllRecords.json",
+		"/simples/admin/fundwarning/update.json",
+		"/simples/admin/fundwarning/create.json",
+		"/simples/admin/fundwarning/delete.json",
 		// post
 		"/simples/admin/cappingLimits/update.json",
 		"/simples/admin/cappingLimits/create.json",
@@ -227,7 +231,7 @@ public class SimplesRouter extends HttpServlet {
 		}else {
                 objectMapper.writeValue(writer, jsonObjectNode("result", result));
             }
-		} else if(uri.contains("/simples/admin/")){
+		}else if(uri.contains("/simples/admin/")){
 			AdminRouter adminRouter = new AdminRouter(request, response);
 			adminRouter.doPost(uri.split("/simples/admin/")[1]);
         } else {

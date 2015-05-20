@@ -1,9 +1,8 @@
 package com.ctm.dao;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import com.ctm.utils.common.utils.DateUtils;
+
+import java.sql.*;
 
 public abstract class DatabaseMapping {
 	private int count;
@@ -25,7 +24,11 @@ public abstract class DatabaseMapping {
 		} else if(value instanceof String){
 			stmt.setString(++count, (String) value);
 		} else if(value instanceof java.util.Date){
-			setDate(stmt, (java.util.Date) value);
+			if(value instanceof Timestamp){
+				setTimeStamp(stmt,(java.util.Date)value);
+			}else {
+				setDate(stmt, (java.util.Date) value);
+			}
 		}else if(value instanceof Long){
 			stmt.setLong(++count, (Long) value);
 		}
@@ -34,5 +37,8 @@ public abstract class DatabaseMapping {
 
 	private void setDate(PreparedStatement stmt, java.util.Date value) throws SQLException {
 		stmt.setDate(++count, new Date(value.getTime()));
+	}
+	private void setTimeStamp(PreparedStatement stmt, java.util.Date value) throws SQLException {
+		stmt.setTimestamp(++count, DateUtils.toSqlTimestamp(value));
 	}
 }

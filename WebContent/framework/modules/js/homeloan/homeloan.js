@@ -59,6 +59,22 @@
 				// Init the results objects required for next step
 				meerkat.modules.homeloanResults.initPage();
 				meerkat.modules.currencyField.initCurrency();
+
+				// Hook up privacy optin to Email Quote button
+				var $emailQuoteBtn = $(".slide-feature-emailquote");
+				var $privacyOptin = $("#homeloan_privacyoptin");
+				// Initial value from preload/load quote
+				if ($privacyOptin.is(':checked')) {
+					$emailQuoteBtn.addClass("privacyOptinChecked");
+				}
+
+				$privacyOptin.on('change', function(event){
+					if ($(this).is(':checked')) {
+						$emailQuoteBtn.addClass("privacyOptinChecked");
+					} else {
+						$emailQuoteBtn.removeClass("privacyOptinChecked");
+					}
+				});
 			},
 			onBeforeLeave: function(event) {
 			}

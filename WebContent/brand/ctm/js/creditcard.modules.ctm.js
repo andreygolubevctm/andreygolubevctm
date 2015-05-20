@@ -16,6 +16,16 @@
             if (product === null) {
                 return false;
             }
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: "trackQuoteForms",
+                object: {
+                    actionStep: "creditcard transfer ONLINE",
+                    productID: product.code,
+                    productBrandCode: product.provider.code,
+                    productName: product.shortDescription,
+                    type: "ONLINE"
+                }
+            });
             if (meerkat.modules.tracking.getCurrentJourney() == "2") {
                 trackTransfer();
                 setTimeout(function() {
@@ -145,11 +155,13 @@
     }
     function trackTransfer() {
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-            method: "trackQuoteTransfer",
+            method: "trackQuoteHandoverClick",
             object: {
+                actionStep: "creditcard transfer ONLINE",
                 productID: product.code,
                 productBrandCode: product.provider.code,
-                productName: product.shortDescription
+                productName: product.shortDescription,
+                type: "ONLINE"
             }
         });
     }

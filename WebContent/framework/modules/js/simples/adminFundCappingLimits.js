@@ -17,6 +17,9 @@
 							return {
 								extraData: {
 									limitLeft: data.cappingAmount - data.currentJoinCount,
+									category: function() {
+										return data.cappingLimitCategory === "H" ? "Hard" : "Soft";
+									},
 									type: function(){
 										var curDate = new Date().setHours(0,0,0,0);
 
@@ -38,6 +41,20 @@
 				};
  
 				CRUD.get();
+
+				$(document).on("change", "#modal-limit-type", function() {
+					var $this = $(this),
+						val = $this.val(),
+						$category = $("#modal-category");
+
+					if(val === "Monthly") {
+						$category
+							.attr("disabled", "disabled")
+							.val("H");
+					} else {
+						$category.removeAttr("disabled");
+					}
+				});
 			}
 		});
 	}

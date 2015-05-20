@@ -13,6 +13,8 @@ public class AuditTableDao {
     public final static String CREATE = "CREATE";
     public final static String UPDATE = "UPDATE";
     private final String auditTablePrefix = "audit_";
+    private String tableName;
+    private String primaryColumnName ;
     private final String loggingSchema = "logging";
     private static final Logger logger = Logger.getLogger(AuditTableDao.class.getName());
 

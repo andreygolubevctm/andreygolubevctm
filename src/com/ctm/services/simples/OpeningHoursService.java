@@ -94,8 +94,4 @@ public class OpeningHoursService {
 		return openingHoursDao.getOpeningHoursForDisplay(dayType, serverDate);
 	}
 
-	public String getCurrentStatusOfCallCenter(HttpServletRequest request) throws DaoException {
-		Date serverDate = ApplicationService.getApplicationDate(request);
-		return openingHoursDao.getCurrentStatusOfCallCenter( serverDate);
-	}
 }

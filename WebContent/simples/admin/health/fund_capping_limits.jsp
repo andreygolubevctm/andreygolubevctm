@@ -12,7 +12,7 @@
 			<div class="container">
 				<div class="row">
 					<ul>
-						<li class="col-lg-3">
+						<li class="col-lg-2">
 							<a href="javascript:;" class="toggle sort-by" data-sortkey="data.providerName" data-sortdir="asc">
 								<span class="icon"></span>
 								<span>Provider</span>
@@ -52,6 +52,12 @@
 							<a href="javascript:;" class="toggle" data-sortkey="data.effectiveEnd" data-sortdir="asc">
 								<span class="icon"></span>
 								<span>Effective End</span>
+							</a>
+						</li>
+						<li class="col-lg-1">
+							<a href="javascript:;" class="toggle" data-sortkey="data.category" data-sortdir="asc">
+								<span class="icon"></span>
+								<span>Category</span>
 							</a>
 						</li>
 						<li class="col-lg-2">
@@ -127,7 +133,7 @@
 		</div>
 		<div class="form-group col-sm-4">
 			<label>Limit Type</label>
-			<select name="limitType" class="form-control">
+			<select name="limitType" class="form-control" id="modal-limit-type" {{= data.modalAction === "edit" ? "disabled" : "" }}>
 				<option>Select a Limit Type</option>
 				<option value="Daily" {{= data.limitType === "Daily" ? "selected" : "" }}>Daily</option>
 				<option value="Monthly" {{= data.limitType === "Monthly" ? "selected" : "" }}>Monthly</option>
@@ -139,11 +145,19 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="form-group col-sm-6">
+		<div class="form-group col-sm-4">
+			<label>Category</label>
+			<select name="cappingLimitCategory" class="form-control" id="modal-category" {{= data.limitType === "Monthly" ? "disabled" : "" }}>
+				<option>Select a Category</option>
+				<option value="S" {{= data.cappingLimitCategory === "S" ? "selected" : "" }}>Soft</option>
+				<option value="H" {{= data.cappingLimitCategory === "H" || data.limitType === "Monthly" ? "selected" : "" }}>Hard</option>
+			</select>
+		</div>
+		<div class="form-group col-sm-4">
 			<label>Effective Start</label>
 			<input type="date" name="effectiveStart" class="form-control" value="{{= data.modalAction === "edit" ? data.effectiveStart : "" }}">
 		</div>
-		<div class="form-group col-sm-6">
+		<div class="form-group col-sm-4">
 			<label>Effective End</label>
 			<input type="date" name="effectiveEnd" class="form-control" value="{{= data.modalAction === "edit" ? data.effectiveEnd : "" }}">
 		</div>
@@ -155,7 +169,7 @@
 
 <script class="crud-row-template" type="text/html">
 	<div class="sortable-results-row row" data-id="{{= data.cappingLimitsKey }}">
-		<div class="col-lg-3">
+		<div class="col-lg-2">
 			{{= data.providerName }}
 		</div>
 		<div class="col-lg-2">
@@ -175,6 +189,9 @@
 		</div>
 		<div class="col-lg-1">
 			{{= new Date(data.effectiveEnd).toLocaleDateString('en-GB') }}
+		</div>
+		<div class="col-lg-1">
+			{{= data.category }}
 		</div>
 		<div class="col-lg-2">
 			<button type="button" class="crud-clone-entry btn btn-secondary btn-sm">Clone</button>

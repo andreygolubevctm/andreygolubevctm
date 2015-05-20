@@ -10,7 +10,20 @@
 <jsp:useBean id="travelService" class="com.ctm.services.travel.TravelService" scope="page" />
 <c:set var="serviceResponse" value="${travelService.validateFields(pageContext.request)}" />
 
+<jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
 <c:choose>
+	<c:when test="${!ipCheckService.isPermittedAccess(pageContext.request, pageSettings)}">
+		<c:set var="resultXml"><results>
+			<result>
+				<provider></provider>
+				<name></name>
+				<des></des>
+				<premium></premium>
+			</result>
+			</results>
+		</c:set>
+		${go:XMLtoJSON(resultXml)}
+	</c:when>
 	<c:when test="${travelService.isValid()}">
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />

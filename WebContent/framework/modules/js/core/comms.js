@@ -9,6 +9,7 @@
 
 	var cache = [];
 
+	var AJAX_REQUEST_ABORTED = "abort";
 	var CHECK_AUTHENTICATED_LABEL = "checkAuthenticated";
 
 	var requestPool = [];
@@ -28,7 +29,7 @@
 		//    fatal (visible to user and forces page refresh)
 		errorLevel: null,
 		// useDefaultErrorHandling: By default allow comms to handle errors. Set to false to do your own error handling.
-		useDefaultErrorHandling:true,
+		useDefaultErrorHandling: true,
 		// returnAjaxObject: By default the comms.ajax() function will return the Deferred .then object. Set this to true to return the parent ajax object.
 		returnAjaxObject: true,
 		onSuccess: function(result, textStatus, jqXHR){
@@ -42,65 +43,66 @@
 		},
 		onErrorDefaultHandling: function(jqXHR, textStatus, errorThrown, settings, data) {
 
-			var statusMap = {
-				'400': "There was a problem with the last request to the server [400]. Please try again.",
-				'401': "There was a problem accessing the data for the last request [401].",
-				'403': "There was a problem accessing the data for the last request [403].",
-				'404': "The requested page could not be found [404]. Please try again.",
-				'412': "Supplied parameters failed to meet preconditions [412].",
-				'500': "There was a problem with your last request to the server [500]. Please try again.",
-				'503': "There was a problem with your last request to the server [503]. Please try again."
-			};
+			if(textStatus !== AJAX_REQUEST_ABORTED) { // Don't throw error for aborted requests
+				var statusMap = {
+					'400': "There was a problem with the last request to the server [400]. Please try again.",
+					'401': "There was a problem accessing the data for the last request [401].",
+					'403': "There was a problem accessing the data for the last request [403].",
+					'404': "The requested page could not be found [404]. Please try again.",
+					'412': "Supplied parameters failed to meet preconditions [412].",
+					'500': "There was a problem with your last request to the server [500]. Please try again.",
+					'503': "There was a problem with your last request to the server [503]. Please try again."
+				};
 
-			var message = '';
+				var message = '';
 
-			var errorObject = {
-					errorLevel:		settings.errorLevel,
-					message:		message,
-					page:			'comms.js',
-					description:	"Error loading url: " + settings.url + ' : ' + textStatus + ' ' + errorThrown,
-					data:			data
-			};
+				var errorObject = {
+					errorLevel: settings.errorLevel,
+					message: message,
+					page: 'comms.js',
+					description: "Error loading url: " + settings.url + ' : ' + textStatus + ' ' + errorThrown,
+					data: data
+				};
 
-			if(jqXHR.status && jqXHR.status != 200){
-				message = statusMap[jqXHR.status];
-			}else if(textStatus=='parsererror'){
-				message += "There was a problem handling the response from the server [parsererror]. Please try again.";
-			}else if(textStatus=='timeout'){
-				message += "There was a problem connecting to the server. Please check your internet connection and try again. [Request Time out].";
-			}else if(textStatus=='abort'){
-				message += "There was a problem handling the response from the server [abort]. Please try again.";
-			}
-
-			if((!message || message === '') && errorThrown == CHECK_AUTHENTICATED_LABEL) {
-
-				message="Your Simples login session has been lost. Please open Simples in a separate tab, login, then you can continue with this quote.";
-
-				if(!meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL)) {
-					// Take user back to previous step
-					meerkat.modules.journeyEngine.gotoPath('previous');
+				if (jqXHR.status && jqXHR.status != 200) {
+					message = statusMap[jqXHR.status];
+				} else if (textStatus == 'parsererror') {
+					message += "There was a problem handling the response from the server [parsererror]. Please try again.";
+				} else if (textStatus == 'timeout') {
+					message += "There was a problem connecting to the server. Please check your internet connection and try again. [Request Time out].";
+				} else if (textStatus == 'abort') {
+					message += "There was a problem handling the response from the server [abort]. Please try again.";
 				}
 
-				$.extend(errorObject, {
-					errorLevel:'warning',
-					id:CHECK_AUTHENTICATED_LABEL
-				});
-			} else if(!message || message === ''){
-				message="Unknown Error";
+				if ((!message || message === '') && errorThrown == CHECK_AUTHENTICATED_LABEL) {
+
+					message = "Your Simples login session has been lost. Please open Simples in a separate tab, login, then you can continue with this quote.";
+
+					if (!meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL)) {
+						// Take user back to previous step
+						meerkat.modules.journeyEngine.gotoPath('previous');
+					}
+
+					$.extend(errorObject, {
+						errorLevel: 'warning',
+						id: CHECK_AUTHENTICATED_LABEL
+					});
+				} else if (!message || message === '') {
+					message = "Unknown Error";
+				}
+
+				$.extend(errorObject, {message: message});
+
+				if (errorThrown != CHECK_AUTHENTICATED_LABEL || (errorThrown == CHECK_AUTHENTICATED_LABEL && !meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL))) {
+					meerkat.modules.errorHandling.error(errorObject);
+				}
 			}
-
-			$.extend(errorObject, {message:message});
-
-			if(errorThrown != CHECK_AUTHENTICATED_LABEL || (errorThrown == CHECK_AUTHENTICATED_LABEL && !meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL))) {
-				meerkat.modules.errorHandling.error(errorObject);
-			}
-
 		}
 	};
 
 	function post(instanceSettings){
 		return getAndPost('POST', instanceSettings);
-		}
+	}
 
 	function get(instanceSettings){
 		return getAndPost('GET', instanceSettings);
@@ -316,21 +318,23 @@
 
 	function handleError(jqXHR, textStatus, errorThrown, settings, data, ajaxProperties){
 
-		if(settings.numberOfAttempts > settings.attemptsCounter++) {
-			ajax(settings, ajaxProperties);
-		} else {
-		if (typeof settings === 'undefined') {
-			settings = {};
-		}
+		if(textStatus !== AJAX_REQUEST_ABORTED) { // Don't proceed with aborted requests
+			if (settings.numberOfAttempts > settings.attemptsCounter++) {
+				ajax(settings, ajaxProperties);
+			} else {
+				if (typeof settings === 'undefined') {
+					settings = {};
+				}
 
-		if(settings.useDefaultErrorHandling){
-			settings.onErrorDefaultHandling(jqXHR, textStatus, errorThrown, settings, data);
-		}
+				if (settings.useDefaultErrorHandling) {
+					settings.onErrorDefaultHandling(jqXHR, textStatus, errorThrown, settings, data);
+				}
 
-		if (settings.onError != null) {
-			settings.onError(jqXHR, textStatus, errorThrown, settings, data);
+				if (settings.onError != null) {
+					settings.onError(jqXHR, textStatus, errorThrown, settings, data);
+				}
+			}
 		}
-	}
 	}
 
 	function getCheckAuthenticatedLabel() {

@@ -9,6 +9,8 @@
 <core:quote_check quoteType="homeloan" />
 <core_new:load_preload />
 
+<%-- Initialise Save Quote --%>
+<c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 
 <%-- HTML --%>
 <layout:journey_engine_page title="Home Loan Quote">
@@ -43,13 +45,14 @@
 				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
 
-			<%-- Save quote for off canvas menu --%>
-			<li class="slide-feature-emailquote hidden-lg hidden-md hidden-sm" data-openSaveQuote="true">
-				<a href="javascript:;" class="save-quote-openAsModal"><span class="icon icon-envelope"></span> <span><c:choose>
-							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
-							<c:otherwise>Save Quote</c:otherwise>
-						</c:choose></span> <b class="caret"></b></a>
-			</li>
+			<c:if test="${saveQuoteEnabled == 'Y'}">
+				<li class="slide-feature-emailquote hidden-lg hidden-md hidden-sm" data-openSaveQuote="true">
+					<a href="javascript:;" class="save-quote-openAsModal"><span class="icon icon-envelope"></span> <span><c:choose>
+						<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
+						<c:otherwise>Save Quote</c:otherwise>
+					</c:choose></span> <b class="caret"></b></a>
+				</li>
+			</c:if>
 
 			<li class="dropdown dropdown-interactive slide-feature-emailquote hidden-xs" id="email-quote-dropdown">
 				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose>

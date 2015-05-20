@@ -2,10 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-
 <%-- Load the params into data --%>
-
-
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="vertical" 	required="false"  rtexprvalue="true"	 description="results page vertical name (life or ip)" %>
@@ -22,20 +19,9 @@
 	</c:otherwise>
 </c:choose>
 
-<c:choose>
-	<%-- Set to split test  --%>
-	<c:when test="${not empty param.j}">
-		<c:set var="splitTestingJourney"><c:out value="${param.j}" escapeXml="true" /></c:set>
-	</c:when>
-	<%-- No results journey --%>
-	<c:when test="${not empty param.jrny}">
-		<c:set var="splitTestingJourney"><c:out value="${param.jrny}" escapeXml="true" /></c:set>
-	</c:when>
-	<%-- Standard journey --%>
-	<c:otherwise>
-		<c:set var="splitTestingJourney" value="0" />
-	</c:otherwise>
-</c:choose>
+<%-- Wrap this declaration with a <c:choose /> if you need to add split testing functionality to this page --%>
+<%-- Standard journey --%>
+<c:set var="splitTestingJourney" value="0" />
 
 <%-- CSS --%>
 <go:style marker="css-head">
@@ -1163,10 +1149,8 @@ Results = {
 
 		Results.init();		
 		
-		if(Results._splitTestingJourney != "noresults") {
 		Results._updateQuoteCount();
 		Results._updateClientSummary();
-		}
 
 		var business = function() {
 
@@ -1281,12 +1265,10 @@ Results = {
 				compare.show(function(){
 					$('#results-mast-wrapper').slideDown(300, function(){
 						$('#results-rows-wrapper').slideDown(400, function() {
-							if(Results._splitTestingJourney != "noresults") {
 							if( $.browser.msie && parseInt($.browser.version, 10) < 8 ) {
 								Results.forceShowAllProducts();
 							} else {
 								business();
-							}
 							}
 					});
 				});
@@ -2364,7 +2346,6 @@ var highlightMeTextObj = new HighlightMeText();
 	
 		<div id="summary-header">
 			<div>
-			<c:if test="${splitTestingJourney != 'noresults'}">
 				<c:choose>
 					<c:when test="${vertical eq 'life'}">
 						<h2 class="success">We have found <strong><!-- empty --></strong><span>These quotes have been provided by Comparethemarket.com.au's trusted partners.</span></h2>
@@ -2373,7 +2354,6 @@ var highlightMeTextObj = new HighlightMeText();
 						<h2 class="success">We have found <strong><!-- empty --></strong><span>These quotes have been provided by Lifebroker, a trusted partner of Comparethemarket.com.au.</span></h2>
 					</c:otherwise>
 				</c:choose>
-			</c:if>
 			<h2 class="error">We apologise for the inconvenience</h2>
 			<a href="javascript:void(0);" data-savequote="true" id="save-my-quote" class="new-btn btn-primary" title="Save your quote"><span><!-- icon --></span>Save Quote</a>
 			<a href="javascript:void(0);" data-revisedetails="true" id="revise-quote" class="new-btn btn-tertiary" title="Revise your details"><span><!-- icon --></span>Edit Details</a>
@@ -2521,35 +2501,9 @@ var highlightMeTextObj = new HighlightMeText();
 		</div>
 	
 	<div id="what-happens-next-container">
-		<c:if test="${splitTestingJourney eq 'noresults'}">
-			<div class="lbPartnerWrapper">
-				<div class="text"><div>Brands You Can Trust</div></div>
-				<div class="providers">
-					<img src="common/images/logos/life/noResultsJourney/aia.png" alt="client">
-					<img src="common/images/logos/life/noResultsJourney/AMP.png" alt="client">
-					<img src="common/images/logos/life/noResultsJourney/Asteron-Life.png" alt="client">
-					<img src="common/images/logos/life/noResultsJourney/BT-Australia-Logo.png" alt="client">
-					<img src="common/images/logos/life/noResultsJourney/comminsure.png" alt="client">
-					<img src="common/images/logos/life/noResultsJourney/macquarie.png" alt="client">
-					<img src="common/images/logos/life/noResultsJourney/MetLife.png" alt="client">
-					<img src="common/images/logos/life/noResultsJourney/MLC-Logo.png" alt="client">
-					<img src="common/images/logos/life/noResultsJourney/OnePath.png" alt="client">
-					<img src="common/images/logos/life/noResultsJourney/TAL.png" alt="client">
-					<img src="common/images/logos/life/noResultsJourney/Zurich.png" alt="client">
-				</div>
-			</div>
-		</c:if>
-	
 		<div class="what-next">
 			<span id="what-happens-next-text" class="col text">What happens next?</span>
-			<c:choose>
-				<c:when test="${splitTestingJourney eq 'noresults'}">
-					<p>A <span class="company_reference_replace">Lifebroker</span> consultant can call you or you can call <span class="company_reference_replace">Lifebroker</span> to discuss options and process your insurance policy.</p>
-				</c:when>
-				<c:otherwise>
 					<p>A <span class="company_reference_replace">Lifebroker</span> consultant can call you or you can call <span class="company_reference_replace">Lifebroker</span> to discuss this option and process your insurance policy.</p>
-				</c:otherwise>
-			</c:choose>
 
 			<div class="left">
 				<p>Call us on <span class="icon"></span><span class="phone-no-replace">1800 204 124</span></p>

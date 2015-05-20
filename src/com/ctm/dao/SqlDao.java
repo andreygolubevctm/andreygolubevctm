@@ -5,10 +5,7 @@ import com.ctm.exceptions.DaoException;
 import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -217,5 +214,82 @@ public class SqlDao<T> {
             cleanup(autoCommit);
         }
         super.finalize();
+    }
+
+    public T getAll(DatabaseQueryMapping<T> databaseMapping, String sql) throws DaoException {
+        long startTime = System.currentTimeMillis();
+        T value = null;
+        try {
+            ResultSet rs = executeQuery(databaseMapping, sql);
+            value = databaseMapping.handleResult(rs);
+            rs.close();
+        } catch (SQLException  e) {
+            logger.error(e);
+            throw new DaoException("failed to getResult " + sql, e);
+        } finally {
+            cleanup();
+        }
+        logger.debug("Total execution time: " + (System.currentTimeMillis() - startTime) + "ms");
+        return value;
+    }
+
+    /**
+     * This function will execute update/create/delete statement and also
+     * create audit record in respective audit table in logging schema.
+     * @param databaseMapping
+     * @param sql
+     * @param userName
+     * @param ipAddress
+     * @param action
+     * @param tableName
+     * @param primaryColumnName
+     * @param primaryColumnValue : must be present while updating and deleting record , can be 0 for create
+     * @return
+     * @throws DaoException
+     */
+    public int executeUpdateAudit(DatabaseUpdateMapping databaseMapping,
+                                  String sql,
+                                  String userName,
+                                  String ipAddress,
+                                  String action,
+                                  String tableName,
+                                  String primaryColumnName,
+                                  int primaryColumnValue) throws DaoException {
+        AuditTableDao auditTableDao = new AuditTableDao();
+        try {
+            int id=primaryColumnValue;
+            ResultSet selectResultSet ;
+            conn = databaseConnection.getConnection(context);
+            autoCommit = conn.getAutoCommit();
+            conn.setAutoCommit(false);
+            //if action is delete log audit history before record gets deleted
+            if(action.equalsIgnoreCase(AuditTableDao.DELETE)){
+                auditTableDao.auditAction(tableName,primaryColumnName,id,userName,ipAddress,action,conn);
+            }
+            stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            databaseMapping.handleParams(stmt);
+            stmt.executeUpdate();
+            if(action.equalsIgnoreCase(AuditTableDao.CREATE)){
+                selectResultSet = stmt.getGeneratedKeys();
+                if(selectResultSet.next()) {
+                    id = selectResultSet.getInt(1);
+                }
+            }
+            if(!action.equalsIgnoreCase(AuditTableDao.DELETE)) {
+                auditTableDao.auditAction(tableName, primaryColumnName, id, userName, ipAddress, action, conn);
+            }
+            commitTransaction();
+            return id;
+        } catch (Exception e) {
+            rollback();
+            logger.error(e);
+            throw new DaoException("Error on "+action+" execute update" , e);
+        }finally {
+            try {
+                finalize();
+            }catch (Throwable throwable) {
+                throw new DaoException("Connection reset failed sql " + sql , throwable);
+            }
+        }
     }
 }

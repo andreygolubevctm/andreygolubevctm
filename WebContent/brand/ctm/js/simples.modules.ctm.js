@@ -415,10 +415,11 @@
             errorLevel: "warning",
             onSuccess: function(data, textStatus, jqXHR) {
                 if (typeof data === "string" && data !== "success") data = JSON.parse(data);
-                if (!data.error) {
+                if (data && !data.hasOwnProperty("error")) {
                     if (onSuccess) onSuccess(data);
                 } else {
-                    _handleErrorObject(data.error);
+                    var error = typeof data !== "undefined" && data !== null && typeof data.error !== "undefined" ? data.error : [];
+                    _handleErrorObject(error);
                 }
             },
             onComplete: function() {
@@ -598,6 +599,9 @@
                             return {
                                 extraData: {
                                     limitLeft: data.cappingAmount - data.currentJoinCount,
+                                    category: function() {
+                                        return data.cappingLimitCategory === "H" ? "Hard" : "Soft";
+                                    },
                                     type: function() {
                                         var curDate = new Date().setHours(0, 0, 0, 0);
                                         if (new Date(data.effectiveEnd).setHours(0, 0, 0, 0) >= curDate) {
@@ -616,6 +620,14 @@
                     return CRUD.dataSet.get($row.data("id")).data;
                 };
                 CRUD.get();
+                $(document).on("change", "#modal-limit-type", function() {
+                    var $this = $(this), val = $this.val(), $category = $("#modal-category");
+                    if (val === "Monthly") {
+                        $category.attr("disabled", "disabled").val("H");
+                    } else {
+                        $category.removeAttr("disabled");
+                    }
+                });
             }
         });
     }

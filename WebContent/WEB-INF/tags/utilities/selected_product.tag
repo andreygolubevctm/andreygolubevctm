@@ -9,7 +9,7 @@
 <table class="selectedProductTable">
 	<tr>
 		<th class="onepixel"></th>
-		<th class="selectedProductSupplierColumn">Supplier &amp; Plan</th>
+		<th class="selectedProductSupplierColumn">Retailer &amp; Plan</th>
 		<th class="onepixel"></th>
 		
 		<th class="selectedProductContractPeriodColumn">Contract Period</th>
@@ -18,7 +18,7 @@
 		<th class="onepixel"></th>
 		<th class="selectedProductEstimatedCostsColumn">Estimated Costs (1st Year)</th>
 		<th class="onepixel estSavings"></th>
-		<th class="selectedProductEstimatedSavingsColumn estSavings">Estimated Savings (1st Year)</th>
+		<th class="selectedProductEstimatedSavingsColumn estSavings">Savings upto</th>
 		<th class="onepixel"></th>
 		<th class="selectedProductModifyPlanColumn">&nbsp;</th>
 		<th class="onepixel"></th>

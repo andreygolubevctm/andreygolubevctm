@@ -77,6 +77,7 @@
 				</restrictedFund>
 			<provider>${active_fund}</provider>
 			<providerName>${row.getFundName()}</providerName>
+			<providerId>${row.getProviderId()}</providerId>
 			<productCode><c:out value="${row.getProductCode()}" escapeXml="true"/></productCode>
 			<name><c:out value="${row.getLongTitle()}" escapeXml="true"/></name>
 			<des><c:out value="${row.getLongTitle()}" escapeXml="true"/></des>

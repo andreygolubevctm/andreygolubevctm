@@ -1,18 +1,15 @@
 .coverLevelTabs {
-	color: @gray-darker;
 
 	.clt-action {
-		font-family: @font-family-theme-bold;
-		line-height: 14px;
-		padding: 10px 0;
-	}
-	.clt-action {
+		padding: 12px 0;
 		cursor: pointer;
-		font-size: 12px;
-		text-transform: uppercase;
-		border: 1px solid #fff;
+		font-size: 14px;
+	  	line-height: 14px;
+	  	border-radius: 20px 20px 0 0;
+	  	border: 1px solid #fff;
 		border-top: none;
 		background-color: @clt-inactive-bg-color;
+	  	color: @clt-inactive-color;
 	}
 	.active, .clt-action:hover {
 		background-color: @clt-active-bg;
@@ -32,6 +29,7 @@
 			padding: 10px 5px;
 			border: 1px solid #fff;
 			border-bottom: none;
+		  	font-size: 12px;
 			/* not ideal */
 			white-space: nowrap;
 		}

@@ -12,7 +12,8 @@ CREATE DEFINER=`server`@`%` PROCEDURE `message_handle_duplicates`(
 	IN _contactName VARCHAR(255),
 	IN _phoneNumber1 VARCHAR(15),
 	IN _phoneNumber2 VARCHAR(15),
-	IN _state VARCHAR(3)
+	IN _state VARCHAR(3),
+	IN _hawkingOptin CHAR(1)
 )
 BEGIN
 -- -----------------------------
@@ -37,14 +38,15 @@ BEGIN
 	WHERE messageId = _activeMessageId;
 
 	--
-	-- Update message to latest transaction: contactName, phone number alternatives and State
+	-- Update message to latest transaction: contactName, phone number alternatives, state, and hawkingOptin
 	--
 	IF _tranId > _activeMessageTranId AND (_maxDupeTranId IS NULL OR _tranId > _maxDupeTranId ) THEN
 		UPDATE message
 		SET contactName = _contactName, 
 			phoneNumber1 = _phoneNumber1,
 			phoneNumber2 = _phoneNumber2,
-			state = _state
+			state = _state,
+			hawkingOptin = _hawkingOptin
 		WHERE id = _activeMessageId;
 	END IF;
 

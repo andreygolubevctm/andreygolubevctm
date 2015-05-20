@@ -19,6 +19,7 @@ public class CrudRouter {
     public static final String UPDATE = "update" ;
     public static final String DELETE =  "delete";
     public static final String LIST =  "getAllRecords";
+    public static final String EMPTY =  "";
 
     private final HttpServletRequest request;
     private final HttpServletResponse response;
@@ -28,64 +29,59 @@ public class CrudRouter {
         this.response= response;
     }
 
+    /**
+     * Based on action value this router function will call the curd service method to service GET request
+     * @param writer
+     * @param action
+     * @param crudService
+     * @throws DaoException
+     * @throws IOException
+     */
     public void routGetRequest(PrintWriter writer, String action, final CrudService crudService) throws DaoException, IOException {
-        if(LIST.equals(action)){
-            write(writer, crudService.getAll());
-        }else  if(request.getParameterMap().size() > 0){
-            route(writer, new Action() {
-                @Override
-                public Object perform() throws DaoException, CrudValidationException {
-                    return crudService.get(request);
-                }
-            });
-        } else {
-            write(writer, crudService.getAll());
-        }
-    }
-
-
-    public void routePostRequest(PrintWriter writer, String action, final CrudService crudService) throws IOException, DaoException {
-        switch (action) {
-            case UPDATE:
-                route(writer, new Action() {
-                    @Override
-                    public Object perform() throws DaoException, CrudValidationException {
-                        return crudService.update(request);
-                    }
-                });
-                break;
-            case CREATE:
-                route(writer, new Action() {
-                    @Override
-                    public Object perform() throws DaoException, CrudValidationException {
-                        return crudService.create(request);
-                    }
-                });
-                break;
-            case DELETE:
-                route(writer, new Action() {
-                    @Override
-                    public Object perform() throws DaoException, CrudValidationException {
-                        return crudService.delete(request);
-                    }
-                });
-                break;
-            default:
-                response.sendError(SC_NOT_FOUND);
-                break;
-        }
-    }
-
-    private interface Action {
-        Object perform() throws DaoException, CrudValidationException;
-    }
-
-    private void route(PrintWriter writer, Action action) throws IOException, DaoException {
-        try {
-            write(writer, action.perform());
-        } catch (CrudValidationException e) {
+        try{
+            switch (action) {
+                case LIST:
+                    write(writer, crudService.getAll());
+                    break;
+                case EMPTY:
+                    write(writer, crudService.get(request));
+                    break;
+                default:
+                    response.sendError(SC_NOT_FOUND);
+                    break;
+            }
+        } catch(CrudValidationException e) {
             writeErrors(writer, response, e.getValidationErrors());
         }
     }
 
+
+    /**
+     * Based on action value this router function will call the curd service method to service POST request
+     * @param writer
+     * @param action
+     * @param crudService
+     * @throws DaoException
+     * @throws IOException
+     */
+    public void routePostRequest(PrintWriter writer, String action, final CrudService crudService) throws IOException, DaoException {
+        try {
+            switch (action) {
+                case UPDATE:
+                    write(writer, crudService.update(request));
+                    break;
+                case CREATE:
+                    write(writer, crudService.create(request));
+                    break;
+                case DELETE:
+                    write(writer, crudService.delete(request));
+                    break;
+                default:
+                    response.sendError(SC_NOT_FOUND);
+                    break;
+            }
+        } catch (CrudValidationException e) {
+            writeErrors(writer, response, e.getValidationErrors());
+        }
+    }
 }

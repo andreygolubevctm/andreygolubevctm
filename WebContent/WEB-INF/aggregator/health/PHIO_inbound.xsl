@@ -70,6 +70,7 @@
 						<restrictedFund><xsl:value-of select="restrictedFund"/></restrictedFund>
 						<provider><xsl:value-of select="provider"/></provider>
 						<providerName><xsl:value-of select="providerName"/></providerName>
+						<providerId><xsl:value-of select="providerId"/></providerId>
 						<productCode><xsl:value-of select="productCode"/></productCode>
 						<productTitle><xsl:value-of select="name"/></productTitle>
 						<trackCode>UNKNOWN</trackCode>

@@ -82,6 +82,10 @@ public class DateUtils {
 		return new java.sql.Timestamp(today.getTime());
 	}
 
+	/*Function returns  SQL timestamp from java date Object- majorly used in prepared statements */
+	public static Timestamp toSqlTimestamp(Date date){
+		return new java.sql.Timestamp(date.getTime());
+	}
 	/*Function converts and returns SQL date - majorly used in prepared statements */
 	public static java.sql.Date toSQLDate(Date date){
 		return new java.sql.Date(date.getTime());
@@ -91,4 +95,24 @@ public class DateUtils {
     public static  java.util.Date getUtilDate(java.sql.Date date) throws SQLException {
         return date != null ? new java.util.Date(date.getTime()) : null;
     }
+
+
+
+	/**
+	 * This function sets hours,minuets and seconds in the date supplied
+	 *
+	 * @param date    : Date object where time needs to be set
+	 * @param hours   : hours must be within 0 to 23
+	 * @param minutes : minuets must be between 0 to 59
+	 * @param seconds : seconds must be between 0 to 59
+	 */
+	public static Date setTimeInDate(Date date, int hours, int minutes, int seconds) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, hours);
+		cal.set(Calendar.MINUTE, minutes);
+		cal.set(Calendar.SECOND, seconds);
+		date = cal.getTime();
+		return date;
+	}
 }

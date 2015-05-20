@@ -46,7 +46,7 @@
 
 		<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
 		
-		<form:form action="retrieve_quotes.jsp" method="POST" id="retrieveQuoteForm" name="retrieveQuoteForm" autoComplete="off">
+		<form:form action="retrieve_quotes.jsp" method="POST" id="retrieveQuoteForm" name="retrieveQuoteForm" autoComplete="on">
 		
 			<div id="wrapper">		
 				<form:header quoteType="false" hasReferenceNo="false" />
@@ -218,6 +218,28 @@
 
 										<div class="quote-options">
 											<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest Results</span></a></div>
+											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
+										</div>
+									</div>
+								</core:js_template>
+
+								<core:js_template id="homeloan_quote">
+									<div class="quote-row" id="homeloan_quote_[#=id#]">
+										<div class="quote-date-time">
+											<span class="quote-date">[#= quoteDate #]</span>
+											<span class="quote-time">[#= quoteTime #]</span>
+											<span class="transactionId">Ref: [#= id #]</span>
+										</div>
+
+										<div class="quote-details">
+											<span class="title">Homeloan Quote</span>
+											<span class="address">Address: [#=details.location#]</span>
+											<span class="address">[#=details.situationText#] looking to [#=details.goalText#]</span>
+											<span class="address">Purchase Price: [#=loanDetails.purchasePriceentry#]</span>
+											<span class="address">Loan Amount: [#=loanDetails.loanAmountentry#]</span>
+										</div>
+
+										<div class="quote-options">
 											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
 										</div>
 									</div>

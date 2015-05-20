@@ -955,16 +955,13 @@ div[class*="ToggleArea"].show_Y {
 .homeloan .slide-feature-pagination {
   display: none;
 }
-.homeloan[data-step="situation"] .slide-feature-emailquote.privacyOptinChecked {
-  display: block;
-}
 .homeloan[data-step="results"] .blank-enquire,
 .homeloan[data-step="results"] .slide-feature-back,
 .homeloan[data-step="results"] .slide-feature-emailquote.privacyOptinChecked,
-.homeloan[data-step="results"] .slide-edit-quote-dropdown,
 .homeloan[data-step="results"] .slide-feature-filters {
   display: block;
 }
+.homeloan[data-step="results"] .slide-edit-quote-dropdown,
 .homeloan[data-step="results"] .slide-feature-pagination {
   display: block;
 }

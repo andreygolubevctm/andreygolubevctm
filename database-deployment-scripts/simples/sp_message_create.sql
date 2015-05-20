@@ -25,6 +25,7 @@ BEGIN
 	DECLARE _activeMessageStatusId INT;
 	DECLARE _activeMessageTranId  INT;
 	DECLARE _dupeTranIdExists INT;
+	DECLARE _hawkingOptin CHAR(1);
 
 	--
 	-- Calculate when this message should be actioned
@@ -81,15 +82,28 @@ BEGIN
 	-- Add message to the queue
 	--
 	IF _tranIdExists = 0 AND _doNotContact = 0 AND _dupeTranIdExists = 0 THEN
+		--
+		-- Get Hawking optin from latestTranId for each rootId
+		--
+		SELECT td.textValue
+		INTO _hawkingOptin
+		FROM aggregator.transaction_details td
+		INNER JOIN aggregator.transaction_header th
+		ON th.transactionId = td.transactionId
+		AND th.rootId = _tranId
+		WHERE td.xpath = 'health/contactDetails/hawkingOptin'
+		ORDER BY td.transactionId DESC, td.sequenceNo DESC
+		LIMIT 1;
+		
 		IF _activeMessageId IS NULL OR _activeMessageStatusId = 2 /* Completed */ OR _activeMessageStatusId = 33 /* Removed from PM */ THEN
 			INSERT INTO message
-			(transactionId, sourceId, statusId, created, whenToAction, contactName, phoneNumber1, phoneNumber2, state)
+			(transactionId, sourceId, statusId, created, whenToAction, contactName, phoneNumber1, phoneNumber2, state, hawkingOptin)
 			VALUES
-			(_tranId, _sourceId, 1/*New*/, NOW(), _whenToAction, _contactName, _phoneNumber1, _phoneNumber2, _state);
+			(_tranId, _sourceId, 1/*New*/, NOW(), _whenToAction, _contactName, _phoneNumber1, _phoneNumber2, _state, _hawkingOptin);
 
 			SET _inserted = 1;
 		ELSE
-			CALL simples.message_handle_duplicates (_activeMessageId, _activeMessageTranId, _activeMessageStatusId, _tranId, _whenToAction, _contactName, _phoneNumber1, _phoneNumber2, _state);
+			CALL simples.message_handle_duplicates (_activeMessageId, _activeMessageTranId, _activeMessageStatusId, _tranId, _whenToAction, _contactName, _phoneNumber1, _phoneNumber2, _state, _hawkingOptin);
 			SET _inserted = 0;
 		END IF;
 	ELSE

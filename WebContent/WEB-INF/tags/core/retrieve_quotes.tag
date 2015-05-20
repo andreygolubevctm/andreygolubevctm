@@ -133,7 +133,7 @@
 	Retrieve = {
 		_currentPanel : "",
 		_origZ : 0,
-		verticals : ["quote", "health", "ip", "life", "home", "utilities"],
+		verticals : ["quote", "health", "ip", "life", "home", "utilities", "homeloan"],
 		
 		showPanel : function(panel){
 			
@@ -288,6 +288,7 @@
 				ip:		$("#ip_quote").html(),
 				life:	$("#life_quote").html(),
 				home:	$("#home_contents_quote").html(),
+				homeloan: $("#homeloan_quote").html(),
 				utilities: $("#utilities_quote").html()
 			};
 			$("#quote-list").html("");
@@ -364,6 +365,8 @@
 				return this._drawCarQuote(quote, templates.quote);
 			} else if( quote.hasOwnProperty("home") ){
 				return this._drawHomeQuote(quote, templates.home);
+			} else if( quote.hasOwnProperty("homeloan") ){
+				return this._drawHomeloanQuote(quote, templates.homeloan);
 			} else if( quote.hasOwnProperty("utilities") ) {
 				return this._drawUtilitiesQuote(quote, templates.utilities);
 			} else {
@@ -452,7 +455,7 @@
 			return false;
 		},
 		
-		_drawHealthQuote : function(quote, templateHtml){
+		_drawHealthQuote : function(quote, templateHtml) {
 
 			if(quote.health.hasOwnProperty('healthCover')) {
 				var hasDependents = quote.health.healthCover.hasOwnProperty('dependants') && quote.health.healthCover.dependants != '';
@@ -761,12 +764,64 @@
 
 			return false;
 		},
+		_drawHomeloanQuote : function(quote, templateHtml){
+
+			// Get the word representation of a given situation
+			var getHomeloanSituation = function(situation) {
+				switch(situation) {
+					case "F":
+						return "A First Home Buyer";
+						break;
+					case "E":
+						return "An Existing Home Owner";
+						break;
+				}
+			};
+
+			// Get the word representation of a given situation
+			var getHomeloanGoal = function(goal) {
+				switch(goal) {
+					case "FH":
+						return "Buy my first home";
+						break;
+					case "APL":
+						return "Buy another property to live in";
+						break;
+					case "IP":
+						return "Buy an investment property";
+						break;
+					case "REP":
+						return "Renovate my existing property";
+						break;
+					case "CD":
+						return "Consolidate my debt";
+						break;
+					case "CL":
+						return "Compare better home loan options";
+						break;
+				}
+			};
+
+			quote.homeloan.details.situationText = getHomeloanSituation(quote.homeloan.details.situation);
+			quote.homeloan.details.goalText = getHomeloanGoal(quote.homeloan.details.goal);
+
+			var newRow = $(parseTemplate(templateHtml, quote.homeloan));
+			var t = $(newRow).text();
+			if (t.indexOf("ERROR") == -1) {
+
+				$("#quote-list").append(newRow);
+
+				return true;
+			}
+
+			return false;
+		},
 		error : function(message){
 			$("#retrieve-error-message").html(message);
 			Popup.show("#retrieve-error");
 		},
 
-		_initRowButtons : function(){			
+		_initRowButtons: function() {
 			$(".quote-amend a").click(function(){
 				var pieces = $(this).closest(".quote-row").attr("id").split("_");
 				var vert =	pieces[0];
@@ -1162,6 +1217,7 @@
 	div#retrieveQuoteErrors div#errorContainer {
 		top: 20px;
 		right: 0px;
+
 	}
 	
 	#new-date-button {
@@ -1175,12 +1231,12 @@
 	#new-date-button:hover {
 		background: transparent url("common/images/dialog/ok-on.gif") no-repeat;
 	}
-		#retrieve-error p, 
+	#retrieve-error p,
 		#new-date p{
 		font-size:13px;
 		margin:15px 0px;
 	}
-		#retrieve-error .content, 
+	#retrieve-error .content,
 		#new-date .content{
 		padding:10px 20px;
 	}

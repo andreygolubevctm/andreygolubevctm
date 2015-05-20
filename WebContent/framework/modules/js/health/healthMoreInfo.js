@@ -507,6 +507,15 @@
 				onSuccess: function whatHappensNextSuccess(result) {
 					product.whatHappensNext = result;
 				}
+			}),
+			meerkat.modules.comms.get({
+				url: "health/quote/dualPrising/getFundWarning.json",
+				data: {providerId: product.info.providerId},
+				cache: true,
+				errorLevel: "silent",
+				onSuccess: function warningAlertSuccess(result) {
+					product.warningAlert = result.warningMessage;
+				}
 			})
 		)
 		.then(

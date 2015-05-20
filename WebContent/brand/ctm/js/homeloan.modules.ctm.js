@@ -48,6 +48,18 @@
             onInitialise: function initStartStep(event) {
                 meerkat.modules.homeloanResults.initPage();
                 meerkat.modules.currencyField.initCurrency();
+                var $emailQuoteBtn = $(".slide-feature-emailquote");
+                var $privacyOptin = $("#homeloan_privacyoptin");
+                if ($privacyOptin.is(":checked")) {
+                    $emailQuoteBtn.addClass("privacyOptinChecked");
+                }
+                $privacyOptin.on("change", function(event) {
+                    if ($(this).is(":checked")) {
+                        $emailQuoteBtn.addClass("privacyOptinChecked");
+                    } else {
+                        $emailQuoteBtn.removeClass("privacyOptinChecked");
+                    }
+                });
             },
             onBeforeLeave: function(event) {}
         };

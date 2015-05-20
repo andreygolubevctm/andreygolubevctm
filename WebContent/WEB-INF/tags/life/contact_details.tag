@@ -22,74 +22,19 @@
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionEnabled" value="${competitionEnabledSetting == 'Y'}" />
 
-<c:choose>
-	<%-- Set to split test  --%>
-	<c:when test="${not empty param.j}">
-		<c:set var="splitTestingJourney"><c:out value="${param.j}" escapeXml="true" /></c:set>
-	</c:when>
-	<%-- No results journey --%>
-	<c:when test="${not empty param.jrny}">
-		<c:set var="splitTestingJourney"><c:out value="${param.jrny}" escapeXml="true" /></c:set>
-	</c:when>
-	<%-- Standard journey --%>
-	<c:otherwise>
-		<c:set var="splitTestingJourney" value="0" />
-	</c:otherwise>
-</c:choose>
+<%-- Wrap this declaration with a <c:choose /> if you need to add split testing functionality to this page --%>
+<%-- Standard journey --%>
+<c:set var="splitTestingJourney" value="0" />
+
 
 <%-- HTML --%>
 <div id="${name}-selection" class="${name}">
-
-	<c:set var="contactDetailsLegend">
-		<c:choose>
-			<c:when test="${not empty param.j and param.j eq '1'}">
-				Contact Details
-			</c:when>
-			<c:otherwise>
-				Your Contact Details
-			</c:otherwise>
-		</c:choose>
-	</c:set>
-
-	<form:fieldset legend="${contactDetailsLegend}">
-
-		<c:if test="${empty param.j or param.j ne '1'}">
-			<life:name xpath="${vertical}/primary" vertical="${vertical}" />
-		
-			<form:row label="Surname" className="clear">
-				<field:input xpath="${vertical}/primary/lastname" title="${error_phrase}surname" required="true" size="13" />
-			</form:row>
-		
-			<go:validate selector="${vertical}_primary_lastname" rule="personName" parm="true" />
-		</c:if>
-
-		<c:set var="emailAddressLegend">
-			<c:choose>
-				<c:when test="${not empty param.j and param.j eq '1'}">
-					Email address
-				</c:when>
-				<c:otherwise>
-					Your email address
-				</c:otherwise>
-			</c:choose>
-		</c:set>
-
-		<form:row label="${emailAddressLegend}" className="clear email-row">
+	<form:fieldset legend="Contact Details">
+		<form:row label="Email address" className="clear email-row">
 			<field:contact_email xpath="${xpath}/email" title="your email address" required="true" size="40"/><span id="email_note">For confirming quote and transaction details</span>
 		</form:row>
-		
-		<c:set var="phoneNumberLegend">
-			<c:choose>
-				<c:when test="${not empty param.j and param.j eq '1'}">
-					Phone number
-				</c:when>
-				<c:otherwise>
-					Your phone number
-				</c:otherwise>
-			</c:choose>
-		</c:set>
 
-		<form:row label="${phoneNumberLegend}">
+		<form:row label="Phone number">
 			<field:contact_telno xpath="${xpath}/contactNumber" required="false" title="phone number"  />
 		</form:row>
 

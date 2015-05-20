@@ -49,7 +49,9 @@
 	var resultLabels = ${jsonString};
 </script>
 
-
+<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+<div id="deviceType" data-deviceType="${deviceType}"></div>
 
 <div class="resultsHeadersBg">
 </div>

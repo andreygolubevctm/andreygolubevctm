@@ -8,6 +8,9 @@
 <%-- Apply Online Popup --%>
 <utilities:apply_online />
 
+<%-- Discount Popup --%>
+<utilities:discount />
+
 <%--Dialog panel for editing provider plan --%>
 <utilities:popup_providerplans />
 

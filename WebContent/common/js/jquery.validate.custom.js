@@ -1,6 +1,10 @@
+if(typeof window.$ == 'undefined' && typeof window.jQuery !== 'undefined') {
+	window.$ = jQuery;
+}
+
 $.validator.addMethod('regex', function(value, element, param) {
-	return value.match(new RegExp('^' + param + '$'));
-});
+		return value.match(new RegExp('^' + param + '$'));
+	});
 
 $.validator.addMethod('min_DateOfBirth', function(value, element, params) {
 	if (typeof params === 'undefined' || !params.hasOwnProperty('ageMin')) return false;

@@ -586,7 +586,16 @@
 	function gotoPath(path, $target){
 
 		if (typeof $target !== 'undefined' && $target.hasClass('show-loading')) {
-			meerkat.modules.loadingAnimation.showAfter($target);
+			var spinnerPos = $target.attr("data-loadinganimation");
+			if(!_.isUndefined(spinnerPos) && !_.isEmpty(spinnerPos)) {
+				if(spinnerPos === "inside") {
+					meerkat.modules.loadingAnimation.showInside($target);
+				} else {
+					meerkat.modules.loadingAnimation.showAfter($target);
+				}
+			} else {
+				meerkat.modules.loadingAnimation.showAfter($target);
+			}
 		}
 
 		// Validate current slide before updating hash.

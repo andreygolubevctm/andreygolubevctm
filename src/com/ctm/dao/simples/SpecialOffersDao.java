@@ -10,11 +10,13 @@ import com.mysql.jdbc.Statement;
 import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -107,7 +109,7 @@ public class SpecialOffersDao {
             stmt.setInt(1, providerId);
             stmt.setInt(2, styleCodeId);
             stmt.setString(3, state.trim().toUpperCase());
-            stmt.setTimestamp(4,  new java.sql.Timestamp(applicationDate.getTime()));
+            stmt.setTimestamp(4, new java.sql.Timestamp(applicationDate.getTime()));
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 SpecialOffers specialOffers = helper.createSpecialOffersObject(0,
@@ -179,8 +181,8 @@ public class SpecialOffersDao {
         try {
             autoCommit = dbSource.getConnection().getAutoCommit();
             dbSource.getConnection().setAutoCommit(false);
-            java.sql.Timestamp startDate = new java.sql.Timestamp(setTimeInDate(sdf.parse(specialOffersParams.getEffectiveStart()),  0, 0, 1).getTime());
-            java.sql.Timestamp endDate = new java.sql.Timestamp(setTimeInDate(sdf.parse(specialOffersParams.getEffectiveEnd()), 23, 59, 59).getTime());
+            java.sql.Timestamp startDate = new java.sql.Timestamp(DateUtils.setTimeInDate(sdf.parse(specialOffersParams.getEffectiveStart()), 0, 0, 1).getTime());
+            java.sql.Timestamp endDate = new java.sql.Timestamp(DateUtils.setTimeInDate(sdf.parse(specialOffersParams.getEffectiveEnd()), 23, 59, 59).getTime());
             offerId = specialOffersParams.getOfferId();
             if (offerId == 0) {
                 throw new DaoException("failed : offerId is null");
@@ -217,23 +219,6 @@ public class SpecialOffersDao {
         return specialOffers;
     }
 
-    /**
-     * This function sets hours,minuets and seconds in the date supplied
-     *
-     * @param date    : Date object where time needs to be set
-     * @param hours   : hours must be within 0 to 23
-     * @param minutes : minuets must be between 0 to 59
-     * @param seconds : seconds must be between 0 to 59
-     */
-    private Date setTimeInDate(Date date, int hours, int minutes, int seconds) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.set(Calendar.HOUR_OF_DAY, hours);
-        cal.set(Calendar.MINUTE, minutes);
-        cal.set(Calendar.SECOND, seconds);
-        date = cal.getTime();
-        return date;
-    }
 
     /**
      * This method will create new record in the table and also returns the
@@ -252,8 +237,8 @@ public class SpecialOffersDao {
 
             autoCommit = dbSource.getConnection().getAutoCommit();
             dbSource.getConnection().setAutoCommit(false);
-            java.sql.Timestamp startDate = new java.sql.Timestamp(setTimeInDate(sdf.parse(specialOffersParams.getEffectiveStart()), 0, 0, 1).getTime());
-            java.sql.Timestamp endDate = new java.sql.Timestamp(setTimeInDate(sdf.parse(specialOffersParams.getEffectiveEnd()), 23, 59, 59).getTime());
+            java.sql.Timestamp startDate = new java.sql.Timestamp(DateUtils.setTimeInDate(sdf.parse(specialOffersParams.getEffectiveStart()), 0, 0, 1).getTime());
+            java.sql.Timestamp endDate = new java.sql.Timestamp(DateUtils.setTimeInDate(sdf.parse(specialOffersParams.getEffectiveEnd()), 23, 59, 59).getTime());
 
             stmt = dbSource.getConnection().prepareStatement(
                     " INSERT INTO ctm.hlt_specialoffer_master " +

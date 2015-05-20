@@ -1,17 +1,15 @@
 package com.ctm.dao;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import org.apache.log4j.Logger;
+
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.naming.NamingException;
-
-import org.apache.log4j.Logger;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
 
 public class GeneralDao {
 

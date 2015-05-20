@@ -1883,21 +1883,46 @@ ResultsPagination = {
         return Results.pagination.currentPageMeasurements;
     },
     calculatePageMeasurements: function() {
-        var viewableArea = Results.view.$containerElement.parent().width();
-        var $rows = Results.view.$containerElement.find(Results.settings.elements.rows + ".notfiltered");
+        var $container = Results.view.$containerElement;
+        var viewableArea = $container.parent().width();
+        var $rows = $container.find(Results.settings.elements.rows + ".notfiltered");
         if ($rows.length == 0) return null;
         var numberOfColumns = $rows.length;
-        var columnWidth = $rows.outerWidth(true);
-        var columnsPerPage = Math.round(viewableArea / columnWidth);
+        var columnWidth = 0;
+        var columnsPerPage = 0;
+        var mediaState = typeof meerkat != "undefined" ? meerkat.modules.deviceMediaState.get().toLowerCase() : false;
+        if (mediaState !== false && mediaState !== "xs" && Results.pagination.hasLessDrivenColumns(mediaState)) {
+            columnsPerPage = Results.pagination.getColumnCountFromContainer(mediaState);
+            columnWidth = Math.round(viewableArea / columnsPerPage);
+        } else {
+            columnWidth = $rows.outerWidth(true);
+            columnsPerPage = Math.round(viewableArea / columnWidth);
+        }
         var pageWidth = columnWidth * columnsPerPage;
         var obj = {
             pageWidth: pageWidth,
             columnsPerPage: columnsPerPage,
             numberOfColumns: numberOfColumns,
-            numberOfPages: Math.ceil(numberOfColumns * columnWidth / pageWidth)
+            numberOfPages: Math.ceil(numberOfColumns / columnsPerPage)
         };
         Results.pagination.currentPageMeasurements = obj;
         return obj;
+    },
+    hasLessDrivenColumns: function(mediaState) {
+        return $('.resultsContainer[class*="results-columns-' + mediaState + '-"]').length > 0;
+    },
+    getColumnCountFromContainer: function(mediaState) {
+        var noColumns = 0;
+        var $container = $(".resultsContainer");
+        if ($container.length) {
+            var classes = $container[0].className.split(" ");
+            for (var i = 0; i < classes.length; i++) {
+                if (!_.isEmpty(classes[i]) && classes[i].indexOf("results-columns-" + mediaState + "-") === 0) {
+                    noColumns = Number(classes[i].replace(/^\D+/g, ""));
+                }
+            }
+        }
+        return noColumns;
     },
     gotoStart: function(invalidate) {
         if (invalidate) {
@@ -4237,6 +4262,7 @@ Features = {
 (function($, undefined) {
     var meerkat = window.meerkat;
     var cache = [];
+    var AJAX_REQUEST_ABORTED = "abort";
     var CHECK_AUTHENTICATED_LABEL = "checkAuthenticated";
     var requestPool = [];
     var defaultSettings = {
@@ -4254,49 +4280,51 @@ Features = {
         onError: function(jqXHR) {},
         onComplete: function(jqXHR, textStatus) {},
         onErrorDefaultHandling: function(jqXHR, textStatus, errorThrown, settings, data) {
-            var statusMap = {
-                "400": "There was a problem with the last request to the server [400]. Please try again.",
-                "401": "There was a problem accessing the data for the last request [401].",
-                "403": "There was a problem accessing the data for the last request [403].",
-                "404": "The requested page could not be found [404]. Please try again.",
-                "412": "Supplied parameters failed to meet preconditions [412].",
-                "500": "There was a problem with your last request to the server [500]. Please try again.",
-                "503": "There was a problem with your last request to the server [503]. Please try again."
-            };
-            var message = "";
-            var errorObject = {
-                errorLevel: settings.errorLevel,
-                message: message,
-                page: "comms.js",
-                description: "Error loading url: " + settings.url + " : " + textStatus + " " + errorThrown,
-                data: data
-            };
-            if (jqXHR.status && jqXHR.status != 200) {
-                message = statusMap[jqXHR.status];
-            } else if (textStatus == "parsererror") {
-                message += "There was a problem handling the response from the server [parsererror]. Please try again.";
-            } else if (textStatus == "timeout") {
-                message += "There was a problem connecting to the server. Please check your internet connection and try again. [Request Time out].";
-            } else if (textStatus == "abort") {
-                message += "There was a problem handling the response from the server [abort]. Please try again.";
-            }
-            if ((!message || message === "") && errorThrown == CHECK_AUTHENTICATED_LABEL) {
-                message = "Your Simples login session has been lost. Please open Simples in a separate tab, login, then you can continue with this quote.";
-                if (!meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL)) {
-                    meerkat.modules.journeyEngine.gotoPath("previous");
+            if (textStatus !== AJAX_REQUEST_ABORTED) {
+                var statusMap = {
+                    "400": "There was a problem with the last request to the server [400]. Please try again.",
+                    "401": "There was a problem accessing the data for the last request [401].",
+                    "403": "There was a problem accessing the data for the last request [403].",
+                    "404": "The requested page could not be found [404]. Please try again.",
+                    "412": "Supplied parameters failed to meet preconditions [412].",
+                    "500": "There was a problem with your last request to the server [500]. Please try again.",
+                    "503": "There was a problem with your last request to the server [503]. Please try again."
+                };
+                var message = "";
+                var errorObject = {
+                    errorLevel: settings.errorLevel,
+                    message: message,
+                    page: "comms.js",
+                    description: "Error loading url: " + settings.url + " : " + textStatus + " " + errorThrown,
+                    data: data
+                };
+                if (jqXHR.status && jqXHR.status != 200) {
+                    message = statusMap[jqXHR.status];
+                } else if (textStatus == "parsererror") {
+                    message += "There was a problem handling the response from the server [parsererror]. Please try again.";
+                } else if (textStatus == "timeout") {
+                    message += "There was a problem connecting to the server. Please check your internet connection and try again. [Request Time out].";
+                } else if (textStatus == "abort") {
+                    message += "There was a problem handling the response from the server [abort]. Please try again.";
+                }
+                if ((!message || message === "") && errorThrown == CHECK_AUTHENTICATED_LABEL) {
+                    message = "Your Simples login session has been lost. Please open Simples in a separate tab, login, then you can continue with this quote.";
+                    if (!meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL)) {
+                        meerkat.modules.journeyEngine.gotoPath("previous");
+                    }
+                    $.extend(errorObject, {
+                        errorLevel: "warning",
+                        id: CHECK_AUTHENTICATED_LABEL
+                    });
+                } else if (!message || message === "") {
+                    message = "Unknown Error";
                 }
                 $.extend(errorObject, {
-                    errorLevel: "warning",
-                    id: CHECK_AUTHENTICATED_LABEL
+                    message: message
                 });
-            } else if (!message || message === "") {
-                message = "Unknown Error";
-            }
-            $.extend(errorObject, {
-                message: message
-            });
-            if (errorThrown != CHECK_AUTHENTICATED_LABEL || errorThrown == CHECK_AUTHENTICATED_LABEL && !meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL)) {
-                meerkat.modules.errorHandling.error(errorObject);
+                if (errorThrown != CHECK_AUTHENTICATED_LABEL || errorThrown == CHECK_AUTHENTICATED_LABEL && !meerkat.modules.dialogs.isDialogOpen(CHECK_AUTHENTICATED_LABEL)) {
+                    meerkat.modules.errorHandling.error(errorObject);
+                }
             }
         }
     };
@@ -4443,17 +4471,19 @@ Features = {
         }
     }
     function handleError(jqXHR, textStatus, errorThrown, settings, data, ajaxProperties) {
-        if (settings.numberOfAttempts > settings.attemptsCounter++) {
-            ajax(settings, ajaxProperties);
-        } else {
-            if (typeof settings === "undefined") {
-                settings = {};
-            }
-            if (settings.useDefaultErrorHandling) {
-                settings.onErrorDefaultHandling(jqXHR, textStatus, errorThrown, settings, data);
-            }
-            if (settings.onError != null) {
-                settings.onError(jqXHR, textStatus, errorThrown, settings, data);
+        if (textStatus !== AJAX_REQUEST_ABORTED) {
+            if (settings.numberOfAttempts > settings.attemptsCounter++) {
+                ajax(settings, ajaxProperties);
+            } else {
+                if (typeof settings === "undefined") {
+                    settings = {};
+                }
+                if (settings.useDefaultErrorHandling) {
+                    settings.onErrorDefaultHandling(jqXHR, textStatus, errorThrown, settings, data);
+                }
+                if (settings.onError != null) {
+                    settings.onError(jqXHR, textStatus, errorThrown, settings, data);
+                }
             }
         }
     }
@@ -7145,7 +7175,16 @@ Features = {
     }
     function gotoPath(path, $target) {
         if (typeof $target !== "undefined" && $target.hasClass("show-loading")) {
-            meerkat.modules.loadingAnimation.showAfter($target);
+            var spinnerPos = $target.attr("data-loadinganimation");
+            if (!_.isUndefined(spinnerPos) && !_.isEmpty(spinnerPos)) {
+                if (spinnerPos === "inside") {
+                    meerkat.modules.loadingAnimation.showInside($target);
+                } else {
+                    meerkat.modules.loadingAnimation.showAfter($target);
+                }
+            } else {
+                meerkat.modules.loadingAnimation.showAfter($target);
+            }
         }
         try {
             if (isLocked()) {

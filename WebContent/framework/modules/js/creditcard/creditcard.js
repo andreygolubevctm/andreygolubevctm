@@ -27,6 +27,18 @@
 				return false;
 			}
 
+			// Always run, as in journeys where we collect details, they may not continue.
+			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+				method: 'trackQuoteForms',
+				object: {
+					actionStep: "creditcard transfer ONLINE",
+					productID: product.code,
+					productBrandCode: product.provider.code,
+					productName: product.shortDescription,
+					type: "ONLINE"
+				}
+			});
+
 			// Journey 2 ONLY needs to do this when directly transferring.
 			if(meerkat.modules.tracking.getCurrentJourney() == "2") {
 				trackTransfer();
@@ -190,11 +202,13 @@
 
 	function trackTransfer() {
 		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-			method: 'trackQuoteTransfer',
+			method: 'trackQuoteHandoverClick',
 			object: {
+				actionStep: "creditcard transfer ONLINE",
 				productID: product.code,
 				productBrandCode: product.provider.code,
-				productName: product.shortDescription
+				productName: product.shortDescription,
+				type: "ONLINE"
 			}
 		});
 	}

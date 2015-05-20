@@ -9165,21 +9165,16 @@ body.modal-open .edit-details-wrapper.expired-quote .panel.accordion-panel.expir
 .btn-fat {
   width: 315px;
 }
-.coverLevelTabs {
-  color: #222222;
-}
 .coverLevelTabs .clt-action {
-  font-family: 'SourceSansProBold';
-  line-height: 14px;
-  padding: 10px 0;
-}
-.coverLevelTabs .clt-action {
+  padding: 12px 0;
   cursor: pointer;
-  font-size: 12px;
-  text-transform: uppercase;
+  font-size: 14px;
+  line-height: 14px;
+  border-radius: 20px 20px 0 0;
   border: 1px solid #fff;
   border-top: none;
   background-color: #333333;
+  color: #ffffff;
 }
 .coverLevelTabs .active,
 .coverLevelTabs .clt-action:hover {
@@ -9198,6 +9193,7 @@ body.modal-open .edit-details-wrapper.expired-quote .panel.accordion-panel.expir
     padding: 10px 5px;
     border: 1px solid #fff;
     border-bottom: none;
+    font-size: 12px;
     /* not ideal */
     white-space: nowrap;
   }

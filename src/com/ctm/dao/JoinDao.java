@@ -1,16 +1,14 @@
 package com.ctm.dao;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.services.confirmation.JoinService;
+import org.apache.log4j.Logger;
+
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.naming.NamingException;
-
-import org.apache.log4j.Logger;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.services.confirmation.JoinService;
 
 public class JoinDao {
 
@@ -46,14 +44,13 @@ public class JoinDao {
 			}
 
 			stmt = conn.prepareStatement(
-				"INSERT INTO `ctm`.`joins` " +
-				"VALUES (?,?,CURDATE()) " +
-				"ON DUPLICATE KEY UPDATE productId=?;"
+				"INSERT INTO `ctm`.`joins` (rootId, productId, joinDate) " +
+				"VALUES (?,?,CURDATE())" +
+				"ON DUPLICATE KEY UPDATE rootId=rootId,productId=productId ;"
 			);
 
 			stmt.setLong(1, rootid);
 			stmt.setString(2, productId);
-			stmt.setString(3, productId);
 			stmt.executeUpdate();
 		}catch (NamingException e) {
 			logger.error("failed to get connection" , e);

@@ -22,6 +22,12 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 	private String contractPeriod;
 	private String cancellationFees;
 
+	private String payontimeDiscounts = "0";
+	private String ebillingDiscounts = "0";
+	private String guaranteedDiscounts = "0";
+	private String otherDiscounts = "0";
+	private String discountDetails = "0";
+
 	private double quarterlyEnergySavings = 0;
 	private double quarterlyGasSavings = 0;
 	private double percentageElectricitySavings = 0;
@@ -89,6 +95,46 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 
 	public void setCancellationFees(String cancellationFees) {
 		this.cancellationFees = cancellationFees;
+	}
+
+	public String getPayontimeDiscounts() {
+		return payontimeDiscounts;
+	}
+
+	public void setPayontimeDiscounts(String payontimeDiscounts) {
+		this.payontimeDiscounts = payontimeDiscounts;
+	}
+
+	public String getEbillingDiscounts() {
+		return ebillingDiscounts;
+	}
+
+	public void setEbillingDiscounts(String ebillingDiscounts) {
+		this.ebillingDiscounts = ebillingDiscounts;
+	}
+
+	public String getGuaranteedDiscounts() {
+		return guaranteedDiscounts;
+	}
+
+	public void setGuaranteedDiscounts(String guaranteedDiscounts) {
+		this.guaranteedDiscounts = guaranteedDiscounts;
+	}
+
+	public String getOtherDiscounts() {
+		return otherDiscounts;
+	}
+
+	public void setOtherDiscounts(String otherDiscounts) {
+		this.otherDiscounts = otherDiscounts;
+	}
+
+	public String getDiscountDetails() {
+		return discountDetails;
+	}
+
+	public void setDiscountDetails(String discountDetails) {
+		this.discountDetails = discountDetails;
 	}
 
 	public double getQuarterlyEnergySavings() {
@@ -173,6 +219,12 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 		json.put("contractPeriod", getContractPeriod());
 		json.put("cancellationFees", getCancellationFees());
 
+		json.put("payontimeDiscounts", getPayontimeDiscounts());
+		json.put("ebillingDiscounts", getEbillingDiscounts());
+		json.put("guaranteedDiscounts", getGuaranteedDiscounts());
+		json.put("otherDiscounts", getOtherDiscounts());
+		json.put("discountDetails", getDiscountDetails());
+
 		BigDecimal bd = new BigDecimal(getYearlyElectricitySavings() + getYearlyGasSavings());
 		bd = bd.setScale(2, RoundingMode.HALF_UP);
 
@@ -185,7 +237,6 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 	public Boolean populateFromThoughtWorldJson(JSONObject json){
 		try {
 
-
 			setCancellationFees(json.getString("cancellation_fees"));
 			setContractPeriod(json.getString("contract_period"));
 			setOfferType(json.getString("offer_type"));
@@ -194,6 +245,12 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 
 			setPlanName(json.getString("plan_name"));
 			setProductId(json.getInt("product_id"));
+
+			if(json.isNull("payontime_discounts") == false) setPayontimeDiscounts(json.getString("payontime_discounts"));
+			if(json.isNull("ebilling_discounts") == false) setEbillingDiscounts(json.getString("ebilling_discounts"));
+			if(json.isNull("guaranteed_discounts") == false) setGuaranteedDiscounts(json.getString("guaranteed_discounts"));
+			if(json.isNull("other_discounts") == false) setOtherDiscounts(json.getString("other_discounts"));
+			if(json.isNull("discount_details") == false) setDiscountDetails(json.getString("discount_details"));
 
 			if(json.isNull("percentage_elec_savings") == false) setPercentageElectricitySavings(json.getDouble("percentage_elec_savings"));
 			if(json.isNull("percentage_gas_savings") == false) setPercentageGasSavings(json.getDouble("percentage_gas_savings"));

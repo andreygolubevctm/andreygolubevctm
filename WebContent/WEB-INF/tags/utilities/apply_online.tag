@@ -345,7 +345,6 @@
 
 				<div id="aol-features" class="aol-features">
 					<h5>Plan Features</h5>
-					[#= planDetails #]
 					[#= contractDetails #]
 					[#= billingOptions #]
 				</div>
