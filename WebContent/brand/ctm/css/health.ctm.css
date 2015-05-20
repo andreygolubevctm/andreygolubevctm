@@ -1269,6 +1269,10 @@ So it's going to be done progressively. Include this file in your framework.buil
 .policySummaryContainer .productSummary.compressed .companyLogo.THF {
   background-position: -1170px -45px;
 }
+.featuresMode .productSummary.compressed .companyLogo.QCH,
+.policySummaryContainer .productSummary.compressed .companyLogo.QCH {
+  background-position: -1260px -45px;
+}
 .featuresMode .productSummary.compressed .lhcText,
 .policySummaryContainer .productSummary.compressed .lhcText,
 .featuresMode .productSummary.compressed .rounding,
@@ -1416,6 +1420,9 @@ So it's going to be done progressively. Include this file in your framework.buil
 }
 .companyLogo.THF {
   background-position: -1170px top;
+}
+.companyLogo.QCH {
+  background-position: -1260px top;
 }
 .more-info-promotion {
   color: #1c3e93;

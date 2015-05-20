@@ -1233,6 +1233,10 @@ body > div > header a.bottombar .btn-call:hover {
 .policySummaryContainer .productSummary.compressed .companyLogo.THF {
   background-position: -1170px -45px;
 }
+.featuresMode .productSummary.compressed .companyLogo.QCH,
+.policySummaryContainer .productSummary.compressed .companyLogo.QCH {
+  background-position: -1260px -45px;
+}
 .featuresMode .productSummary.compressed .lhcText,
 .policySummaryContainer .productSummary.compressed .lhcText,
 .featuresMode .productSummary.compressed .rounding,
@@ -1380,6 +1384,9 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .companyLogo.THF {
   background-position: -1170px top;
+}
+.companyLogo.QCH {
+  background-position: -1260px top;
 }
 .more-info-promotion {
   color: #333333;
