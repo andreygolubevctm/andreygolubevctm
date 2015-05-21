@@ -16,13 +16,13 @@ public class ProviderRestrictionsService {
 
     private static Logger logger = Logger.getLogger(ProviderRestrictionsService.class.getName());
 
-    private SimpleDatabaseConnection dbSource;
 
     public ProviderRestrictionsService() {
-        this.dbSource = new SimpleDatabaseConnection();
+
     }
 
     private int getProviderOfLatestAppliedProduct(long transactionId) {
+        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         int providerID = 0;
         String selectStatement =
                 "SELECT pm.providerId \n" +
@@ -64,6 +64,7 @@ public class ProviderRestrictionsService {
     }
 
     public List<Integer> getProvidersWithExceededSoftLimit(String state, String vertical, long transactionid) {
+        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         String selectStatement =
                 "SELECT providerId \n" +
                         "FROM ctm.vw_dailySalesCount \n" +
@@ -146,6 +147,7 @@ public class ProviderRestrictionsService {
      * @return
      */
     public List<Integer> getProvidersWithExceededHardLimit(String state, String vertical, long transactionid) {
+        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         String selectStatement =
                 "SELECT providerId " +
                         "FROM ctm.vw_monthlySalesCount " +

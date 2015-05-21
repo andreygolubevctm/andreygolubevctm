@@ -11,11 +11,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.naming.NamingException;
 
-import com.ctm.model.simples.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
@@ -23,6 +24,11 @@ import com.ctm.dao.CommentDao;
 import com.ctm.dao.UserDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Comment;
+import com.ctm.model.simples.Message;
+import com.ctm.model.simples.MessageAudit;
+import com.ctm.model.simples.MessageStatus;
+import com.ctm.model.simples.Rule;
+import com.ctm.model.simples.User;
 
 public class MessageDao {
 	private static final Logger logger = Logger.getLogger(MessageDao.class.getName());
@@ -90,7 +96,7 @@ public class MessageDao {
 	 * @return Message model
 	 * @throws DaoException
 	 */
-	public Message getNextMessage(int userId, List<Rule> getNextMessageRules) throws DaoException {
+	public Message getNextMessage(int userId, List<Rule> getNextMessageRules, Map<String, List<String>> statesMapForHawkingTime) throws DaoException {
 
 		if (userId <= 0) {
 			throw new DaoException("userId must be greater than zero.");
@@ -101,13 +107,22 @@ public class MessageDao {
 		PreparedStatement stmtUpdate = null;
 		PreparedStatement stmtSelect = null;
 		ResultSet resultSet = null;
+
+		String statesOutOfHawkingPeriodSQL = StringUtils.join(statesMapForHawkingTime.get("statesOutOfHawkingPeriod"), "','");
+		String statesInHawkingPeriodSQL = StringUtils.join(statesMapForHawkingTime.get("statesInHawkingPeriod"), "','");
+
 		try {
-			int i = 0;
 			for(Rule rule : getNextMessageRules) {
+
+				String ruleString = rule.getValue();
+
+				ruleString = ruleString.replaceAll("#outHawkingStates#", statesOutOfHawkingPeriodSQL);
+				ruleString = ruleString.replaceAll("#inHawkingStates#", statesInHawkingPeriodSQL);
+
 				// - rule_0 and rule_3 only need to select as they have already been assigned
 				// - regular expression to match userid=?, userid = ?, userid   =? (zero or more space before and after = sign with x number of characters before it)
-				if(Pattern.matches(".* userid\\s*=\\s*\\?\\s*.*", rule.getValue().toLowerCase())) {
-					stmtSelect = dbSource.getConnection().prepareStatement(rule.getValue());
+				if(Pattern.matches(".* userid\\s*=\\s*\\?\\s*.*", ruleString.toLowerCase())) {
+					stmtSelect = dbSource.getConnection().prepareStatement(ruleString);
 					stmtSelect.setInt(1, userId);
 
 					resultSet = stmtSelect.executeQuery();
@@ -120,25 +135,24 @@ public class MessageDao {
 						return message;
 					}
 				} else {
-					stmtUpdate = dbSource.getConnection().prepareStatement(MESSAGE_AVAILABLE_UPDATE + rule.getValue() + MESSAGE_AVAILABLE_UPDATE_SET);
+					stmtUpdate = dbSource.getConnection().prepareStatement(MESSAGE_AVAILABLE_UPDATE + ruleString + MESSAGE_AVAILABLE_UPDATE_SET);
 
-				stmtUpdate.setInt(1, userId);
+					stmtUpdate.setInt(1, userId);
 
 					int numberOfRows = stmtUpdate.executeUpdate();
 					if(numberOfRows > 0) {
 						// - regular expression to match userid=0, userid = 0, userid   =0 (zero or more space before and after = sign)
 						// We run an update on select before, so changing userId = 0 to userId = ? to get what was assigned.
-						stmtSelect = dbSource.getConnection().prepareStatement(rule.getValue().toLowerCase().replaceAll("userid\\s*=\\s*0", "userId = ?"));
+						stmtSelect = dbSource.getConnection().prepareStatement(ruleString.toLowerCase().replaceAll("userid\\s*=\\s*0", "userId = ?"));
 						stmtSelect.setInt(1, userId);
 
-					resultSet = stmtSelect.executeQuery();
-					Message message = mapFieldsFromResultsToMessage(resultSet).get(0);
-					message.setUserId(userId);
+						resultSet = stmtSelect.executeQuery();
+						Message message = mapFieldsFromResultsToMessage(resultSet).get(0);
+						message.setUserId(userId);
 
-					return message;
+						return message;
+					}
 				}
-				}
-				i++;
 			}
 
 			return new Message();
@@ -519,7 +533,7 @@ public class MessageDao {
 				default:
 					delay = attemptDelay3;
 					break;
-		}
+			}
 
 			stmtUpdate = dbSource.getConnection().prepareStatement(
 				"UPDATE simples.message " +

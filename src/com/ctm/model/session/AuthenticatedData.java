@@ -1,13 +1,13 @@
 package com.ctm.model.session;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.ctm.model.MessageConfig;
+import com.ctm.model.simples.Role;
 import com.ctm.model.simples.Rule;
+import com.disc_au.web.go.Data;
 import org.apache.log4j.Logger;
 
-import com.ctm.model.simples.Role;
-import com.disc_au.web.go.Data;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Extends the DATA object with some quick methods to return and set common values via xpath.
@@ -21,7 +21,7 @@ public class AuthenticatedData extends Data {
 	// store the roles in java instead of data bucket
 	private List<Role> simplesUserRoles;
 	private List<Rule> getNextMessageRules;
-
+	private List<MessageConfig> hawkingHours;
 	public AuthenticatedData(){
 		super();
 	}
@@ -87,5 +87,18 @@ public class AuthenticatedData extends Data {
 
 	public void setGetNextMessageRules(List<Rule> getNextMessageRules) {
 		this.getNextMessageRules = getNextMessageRules;
+	}
+
+	public List<MessageConfig> getHawkingHours() {
+		if(hawkingHours == null)
+		{
+			hawkingHours = new ArrayList<>();
+		}
+		return hawkingHours;
+	}
+
+	public void setHawkingHours(List<MessageConfig> hawkingHours) {
+
+		this.hawkingHours = hawkingHours;
 	}
 }

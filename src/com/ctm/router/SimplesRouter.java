@@ -15,6 +15,7 @@ import com.ctm.web.validation.SchemaValidationError;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -22,8 +23,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
 import java.util.List;
 
 import static com.ctm.services.PhoneService.makeCall;
@@ -37,7 +40,7 @@ import static javax.servlet.http.HttpServletResponse.*;
         "/simples/messages/next.json",
         "/simples/messages/postponed.json",
         "/simples/tickle.json",
-        "/simples/transactions/lock.json",
+		"/simples/transactions/lock.json",
         "/simples/transactions/details.json",
         "/simples/users/list_online.json",
         "/simples/users/stats_today.json",
@@ -310,8 +313,8 @@ public class SimplesRouter extends HttpServlet {
 			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.SIMPLES.getCode());
 
 			final SimplesMessageService simplesMessageService = new SimplesMessageService();
-			objectMapper.writeValue(writer, simplesMessageService.getNextMessageForUser(request, simplesUid, authenticatedData.getSimplesUserRoles(), authenticatedData.getGetNextMessageRules()));
-		} catch (final DaoException | ConfigSettingException e) {
+			objectMapper.writeValue(writer, simplesMessageService.getNextMessageForUser(request, simplesUid, authenticatedData.getSimplesUserRoles(), authenticatedData.getGetNextMessageRules(), authenticatedData.getHawkingHours()));
+		} catch (final DaoException | ConfigSettingException | ParseException e) {
 			logger.error("Could not get next message for user '" + simplesUid + "'", e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			objectMapper.writeValue(writer, errors(e));

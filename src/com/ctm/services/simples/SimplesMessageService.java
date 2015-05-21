@@ -8,18 +8,22 @@ import com.ctm.dao.simples.MessageDaoOld;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
+import com.ctm.model.MessageConfig;
 import com.ctm.model.Transaction;
 import com.ctm.model.simples.*;
 import com.ctm.services.TransactionService;
+
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class SimplesMessageService {
 	private static final Logger logger = Logger.getLogger(SimplesMessageService.class.getName());
@@ -53,18 +57,23 @@ public class SimplesMessageService {
 	 * Get a message from the message queue. The provided User ID may be used to target specific messages, and they will be assigned the message.
 	 *
 	 * @param userId ID of the user who is getting the message
+	 * @throws ParseException
 	 */
-	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId, final List<Role> userRoles, final List<Rule> getNextMessageRules) throws ConfigSettingException, DaoException {
+	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId, final List<Role> userRoles, final List<Rule> getNextMessageRules, final List<MessageConfig> hawkingHours) throws ConfigSettingException, DaoException, ParseException {
 		MessageDetail messageDetail = new MessageDetail();
 		Message message = null;
 
 		final MessageDao messageDao = new MessageDao();
 		final MessageDaoOld messageDaoOld = new MessageDaoOld();
 
+		MessageConfigService messageConfigService = new MessageConfigService();
+		Map<String, List<String>> statesMapForHawkingTime = messageConfigService.getStatesMapForHawkingTime(request, hawkingHours);
+
+		// TODO: remove once new hawking solution is tested in PROD
 		if (messageDao.useNewMethodToGetNexMessage()){
-			message = messageDao.getNextMessage(userId, getNextMessageRules);
+			message = messageDao.getNextMessage(userId, getNextMessageRules, statesMapForHawkingTime);
 		}else{
-			message = messageDaoOld.getNextMessage(userId, userRoles);
+			message = messageDaoOld.getNextMessage(userId, getNextMessageRules);
 		}
 
 		if (message.getMessageId() == 0) {
@@ -78,9 +87,12 @@ public class SimplesMessageService {
 			messageDetail = messageDetailService.getMessageDetail(message);
 
 			// Check Anti Hawking, if true, than defer the message to next Monday and skip to the next one
-			if (checkHawking(request, message, messageDetailService, transactionService)) {
-				messageDao.deferMessage(userId, message.getMessageId(), message.getStatusId(), convertToNextMonday(message.getWhenToAction()), canUnassign(message.getStatusId()));
-				return getNextMessageForUser(request, userId, userRoles, getNextMessageRules);
+			// TODO: remove once new hawking solution is tested in PROD
+			if (!messageDao.useNewMethodToGetNexMessage()){
+				if (checkHawking(request, message, messageDetailService, transactionService)) {
+					messageDao.deferMessage(userId, message.getMessageId(), message.getStatusId(), convertToNextMonday(message.getWhenToAction()), canUnassign(message.getStatusId()));
+					return getNextMessageForUser(request, userId, userRoles, getNextMessageRules, hawkingHours);
+				}
 			}
 
 			// If message's phone number is in the blacklist, set the message to Complete + Do Not Contact
@@ -91,7 +103,7 @@ public class SimplesMessageService {
 
 				setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_DONOTCONTACT);
 
-				return getNextMessageForUser(request, userId, userRoles, getNextMessageRules);
+				return getNextMessageForUser(request, userId, userRoles, getNextMessageRules, hawkingHours);
 			}
 
 			// If any transaction in the chain is confirmed, set the message to Complete
@@ -108,7 +120,7 @@ public class SimplesMessageService {
 					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_ALREADYCUSTOMER);
 				}
 
-				return getNextMessageForUser(request, userId, userRoles, getNextMessageRules);
+				return getNextMessageForUser(request, userId, userRoles, getNextMessageRules, hawkingHours);
 			}
 
 			// If the message is new or is a different user, assign it to our user.
