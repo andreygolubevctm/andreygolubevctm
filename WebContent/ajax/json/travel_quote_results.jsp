@@ -71,7 +71,8 @@
 
 		<c:catch var="mappingError">
 		    <jsp:useBean id="countryMapping" class="com.ctm.services.CountryMappingService" scope="page" />
-			<c:set var="mapping" value="${countryMapping.getCountryMapping(pageContext.request, data.travel.destination)}" />
+			<c:set var="updatedData" value="${countryMapping.getCountryMapping(data)}" />
+			<go:setData dataVar="data" xpath="travel" value="${updatedData}" />
 		</c:catch>
 		<c:if test="${not empty mappingError}">
 			<go:log level="ERROR">Country Mapping Error: ${mappingError}</go:log>
