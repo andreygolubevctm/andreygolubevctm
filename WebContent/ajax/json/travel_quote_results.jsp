@@ -9,8 +9,9 @@
 <jsp:useBean id="travelService" class="com.ctm.services.travel.TravelService" scope="page" />
 <c:set var="serviceResponse" value="${travelService.validateFields(pageContext.request)}" />
 
+<%-- Keeping the value 8 for Ali's tests. 81 & 83 is for production. TRV-817 for reference --%>
 <jsp:useBean id="splitTests" class="com.ctm.services.tracking.SplitTestService" />
-<c:set var="trvberSplitTest" value="${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 8)}" />
+<c:set var="trvberSplitTest" value="${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 8) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 81) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 83)}" />
 
 <jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
 <c:choose>

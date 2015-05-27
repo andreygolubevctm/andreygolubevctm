@@ -77,7 +77,7 @@
 
 		// Remove this after A/B test
 		var currentJourney = meerkat.modules.tracking.getCurrentJourney();
-		if(currentJourney != 2 && currentJourney != 3 && currentJourney != 4) {
+		if(currentJourney != 2 && currentJourney != 3 && currentJourney != 4 &&  currentJourney != 83) {
 			return;
 		}
 
@@ -125,6 +125,7 @@
 				singleTripTabs[0].defaultTab = true;
 				break;
 			case "3":
+			case "83":
 				singleTripTabs[1].defaultTab = true;
 				break;
 			case "4":

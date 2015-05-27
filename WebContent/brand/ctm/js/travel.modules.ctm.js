@@ -700,7 +700,7 @@
     } ], $policyType;
     function initTravelCoverLevelTabs() {
         var currentJourney = meerkat.modules.tracking.getCurrentJourney();
-        if (currentJourney != 2 && currentJourney != 3 && currentJourney != 4) {
+        if (currentJourney != 2 && currentJourney != 3 && currentJourney != 4 && currentJourney != 83) {
             return;
         }
         setupABTestParameters(currentJourney);
@@ -733,6 +733,7 @@
             break;
 
           case "3":
+          case "83":
             singleTripTabs[1].defaultTab = true;
             break;
 
@@ -1438,7 +1439,7 @@
         $(document).ready(function() {
             $component = $("#resultsPage");
             var currentJourney = meerkat.modules.tracking.getCurrentJourney();
-            if (currentJourney != 2 && currentJourney != 3 && currentJourney != 4) {
+            if (currentJourney != 2 && currentJourney != 3 && currentJourney != 4 && currentJourney != 83) {
                 meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
             }
         });
