@@ -1,12 +1,5 @@
 package com.ctm.services;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import com.ctm.dao.ProviderFilterDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
@@ -14,22 +7,25 @@ import com.ctm.exceptions.SessionException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.model.settings.Vertical.VerticalType;
+import com.disc_au.web.go.Data;
 import org.custommonkey.xmlunit.XMLUnit;
-import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
-
 import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.disc_au.web.go.Data;
-
-import java.io.IOException;
-
 import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.xml.sax.SAXException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
+import static junit.framework.Assert.assertEquals;
+import static org.custommonkey.xmlunit.XMLAssert.assertXMLEqual;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(PowerMockRunner.class)
@@ -137,7 +133,7 @@ public class ProviderFilterTest {
 		data.put("travel/filter/providerKey", "virg_eZ45QZm7Y2");
 		data.put("travel/transactionId", transactionIdString);
 
-		when(providerFilterDAO.getProviderDetails("virg_eZ45QZm7Y2", "providerCode")).thenReturn("VIRG");
+		when(providerFilterDAO.getProviderDetails("virg_eZ45QZm7Y2")).thenReturn("VIRG");
 
 		// execute the call to parse the XML Config
 		ProviderFilter pf = new ProviderFilter(pageSettings, sessionDataService, providerFilterDAO);
@@ -165,4 +161,30 @@ public class ProviderFilterTest {
 		// run the assertion
 		assertXMLEqual(expectedResult, actualResult);
 	}
+
+    @Test
+    public void testShouldRetrieveProviderCode() throws DaoException {
+        when(providerFilterDAO.getProviderDetails("virg_eZ45QZm7Y2")).thenReturn("VIRG");
+        ProviderFilter pf = new ProviderFilter(pageSettings, sessionDataService, providerFilterDAO);
+
+        data.put("travel/filter/providerKey", "virg_eZ45QZm7Y2");
+        assertEquals("only providerKey", "VIRG", pf.getProviderCode(request));
+
+        data.clear();
+        data.put("travel/filter/singleProvider", "FAST");
+        assertEquals("only singleProvider", "FAST", pf.getProviderCode(request));
+
+        data.clear();
+        data.put("travel/filter/providerKey", "virg_eZ45QZm7Y2");
+        data.put("travel/filter/singleProvider", "FAST");
+        assertEquals("bot providerKey and singleProvider", "VIRG", pf.getProviderCode(request));
+
+        data.clear();
+        assertEquals("no provider filter", "", pf.getProviderCode(request));
+
+        data.clear();
+        data.put("travel/filter/providerKey", "virg_hacking_the_mainframe");
+        assertEquals("invalid provider key", "", pf.getProviderCode(request));
+    }
+
 }

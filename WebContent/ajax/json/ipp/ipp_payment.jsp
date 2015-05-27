@@ -5,8 +5,9 @@
 <c:set var="verticalCode" value="HEALTH" />
 <session:get settings="true" verticalCode="${verticalCode}" />
 
+
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
-<c:set var="clientIpAddress" value="${sessionScope.userIP }" />
+<c:set var="clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:import var="config" url="/WEB-INF/aggregator/health_application/bup/config_token.xml" />
 

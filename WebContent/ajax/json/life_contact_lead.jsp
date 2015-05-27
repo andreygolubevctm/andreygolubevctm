@@ -28,14 +28,11 @@
 				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 			</c:when>
 			<c:otherwise>
-		<%-- Load the params into data --%>
-		<security:populateDataFromParams rootPath="${vertical}" />
-
-		<%-- add external testing ip address checking and loading correct config and send quotes --%>
-		<c:set var="clientIpAddress" value="${sessionScope.userIP}" />
-
-		<c:set var="tranId" value="${data.current.transactionId}" />
-
+				<%-- Load the params into data --%>
+				<security:populateDataFromParams rootPath="${vertical}" />
+		
+				<c:set var="tranId" value="${data.current.transactionId}" />
+		
 				<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="start" />
 
 				<%-- Load the config and send quotes to the aggregator gadget --%>

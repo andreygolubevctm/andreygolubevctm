@@ -10,9 +10,6 @@
 
 <%-- Variables --%>
 <fmt:formatDate var="date" value="${now}" pattern="YYYY-MM-dd"/>
-
-<%-- add external testing ip address checking and loading correct config and send quotes --%>
-<c:set var="clientIpAddress" value="${sessionScope.userIP }" />
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:import var="config" url="/WEB-INF/aggregator/health_application/bup/config_log.xml" />
 
@@ -21,7 +18,7 @@ We will need to complete the xml data here for sending through
 --%>
 <c:set var="xmlData"><request>
 	<transactionId>${tranId}</transactionId>
-	<ipAddress>${clientIpAddress}</ipAddress>
+	<ipAddress>${pageContext.request.remoteAddr}</ipAddress>
 	<sst><c:out value="${param.sst}" escapeXml="true" /></sst>
 	<cardType><c:out value="${param.cardtype}" escapeXml="true" /></cardType>
 	<token><c:out value="${param.token}" escapeXml="true" /></token>

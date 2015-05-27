@@ -37,9 +37,6 @@
 			lastName="${data['utilities/application/details/lastName']}"
 			items="marketing=${data['utilities/application/thingsToKnow/receiveInfo']}" />
 
-		<%-- add external testing ip address checking and loading correct config and send quotes --%>
-		<c:set var="clientIpAddress" value="${ sessionScope.userIP }" />
-
 		<go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${data['current/transactionId']}</go:log>
 		<c:set var="tranId" value="${data['current/transactionId']}" />
 

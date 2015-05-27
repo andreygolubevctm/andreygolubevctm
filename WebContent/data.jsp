@@ -121,10 +121,6 @@
 				<td>${pageContext.request.remoteAddr}</td>
 			</tr>
 			<tr>
-					<td>Session userIp</td>
-					<td>${sessionScope.userIP }</td>
-				</tr>
-				<tr>
 				<td>Client remoteHost</td>
 				<td>${pageContext.request.remoteHost}</td>
 			</tr>

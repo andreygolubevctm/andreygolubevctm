@@ -14,7 +14,7 @@ public class ProviderFilterDao {
 	/**
 	 * Get the provider's id and providerCode
 	 */
-	public String getProviderDetails(String key, String column) throws DaoException {
+	public String getProviderDetails(String key) throws DaoException {
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		String code = "invalid";
 
@@ -28,7 +28,7 @@ public class ProviderFilterDao {
 				ResultSet results = stmt.executeQuery();
 
 				while (results.next()) {
-					code = results.getString(column);
+					code = results.getString("providerCode");
 				}
 			}
 		} catch (SQLException | NamingException e) {

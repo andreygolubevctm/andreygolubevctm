@@ -27,9 +27,6 @@
 	lastName="${data['utilities/leadFeed/lastName']}"
 	items="marketing=Y,okToCall=Y" />
 
-<%-- add external testing ip address checking and loading correct config and send quotes --%>
-<c:set var="clientIpAddress" value="${ sessionScope.userIP }" />
-
 <go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${data['current/transactionId']}</go:log>
 <c:set var="tranId" value="${data['current/transactionId']}" />
 

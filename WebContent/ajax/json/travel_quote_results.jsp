@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/json; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="TRAVEL" />
@@ -9,6 +8,9 @@
 
 <jsp:useBean id="travelService" class="com.ctm.services.travel.TravelService" scope="page" />
 <c:set var="serviceResponse" value="${travelService.validateFields(pageContext.request)}" />
+
+<jsp:useBean id="splitTests" class="com.ctm.services.tracking.SplitTestService" />
+<c:set var="trvberSplitTest" value="${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 8)}" />
 
 <jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
 <c:choose>
@@ -94,9 +96,6 @@
 		<%-- Save Client Data --%>
 		<core:transaction touch="R" noResponse="true" />
 
-<%-- add external testing ip address checking and loading correct config and send quotes --%>
-<c:set var="clientIpAddress" value="${sessionScope.userIP }" />
-
 <%--<c:set var="amexIpAddress" value="10.132.168.247" />--%>
 
 <%-- for declans home ip address --%>
@@ -117,6 +116,26 @@
 
 		<c:set var="tranId" value="${data['current/transactionId']}" />
 		<go:setData dataVar="data" xpath="travel/transactionId" value="${tranId}" />
+
+		<%-- Split test --%>
+		<%-- 'configBER' runs the new TRVBER service --%>
+		<%-- 'config' is the normal 'legacy' Travel config --%>
+		<c:choose>
+			<c:when test="${trvberSplitTest eq true}">
+				<c:import var="config" url="/WEB-INF/aggregator/travel/configBER.xml" />
+			</c:when>
+			<c:otherwise>
+				<c:import var="config" url="/WEB-INF/aggregator/travel/config.xml" />
+			</c:otherwise>
+		</c:choose>
+
+		<%-- Get the providerCode to pass through to travel-quote service (CTMT) --%>
+		<%--
+		Travel pod have commented out their provider filter, so commenting out ours too...
+        <c:set var="filterProviderCode" value="${providerFilter.getProviderCode(pageContext.getRequest())}" />
+        <go:setData dataVar="data" xpath="travel/filter/providerFilterCode" value="${filterProviderCode}" />
+		--%>
+
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
 <go:soapAggregator config = "${config}"

@@ -14,6 +14,4 @@
 
 <session:core />
 
-<core:client_ip clientIP="<%= request.getHeader("X-FORWARDED-FOR") %>" /> <%-- legacy from load_settings.tag --%>
-
 <c:set var="pageSettings" value="${settingsService.setVerticalAndGetSettingsForPage(pageContext.getRequest(), verticalCode)}" scope="request"  />

@@ -219,7 +219,7 @@
 							<xsl:otherwise>9999</xsl:otherwise>
 						</xsl:choose>
 					</vdn>
-					<openingHours><xsl:value-of select="insurerHours" /></openingHours>
+					<openingHours>Monday to Friday (8am-8pm EST) and Saturday (8am-5pm EST)</openingHours>
 
 					<pdsaUrl><xsl:value-of select="pdsaUrl" /></pdsaUrl>
 					<pdsaDesLong><xsl:value-of select="pdsaDesLong" /></pdsaDesLong>
@@ -267,8 +267,30 @@
 					</xsl:call-template>
 
 					<discount>
-						<online><xsl:value-of select="onlineDiscountPercent" /></online>
-						<offline><xsl:value-of select="offlineDiscountPercent" /></offline>
+						<online>
+							<xsl:choose>
+								<xsl:when test="$currentBrand = 'BUDD'">25</xsl:when>
+								<xsl:when test="$currentBrand = 'VIRG'">20</xsl:when>
+								<xsl:when test="$currentBrand = 'EXDD'">10</xsl:when>
+								<xsl:when test="$currentBrand = '1FOW'"></xsl:when>
+								<xsl:when test="$currentBrand = 'OZIC'"></xsl:when>
+								<xsl:when test="$currentBrand = 'EXPO'">20</xsl:when>
+								<xsl:when test="$currentBrand = 'IECO'"></xsl:when>
+								<xsl:otherwise></xsl:otherwise>
+							</xsl:choose>
+						</online>
+						<offline>
+							<xsl:choose>
+								<xsl:when test="$currentBrand = 'BUDD'">10</xsl:when>
+								<xsl:when test="$currentBrand = 'VIRG'">10</xsl:when>
+								<xsl:when test="$currentBrand = 'EXDD'">10</xsl:when>
+								<xsl:when test="$currentBrand = '1FOW'"></xsl:when>
+								<xsl:when test="$currentBrand = 'OZIC'"></xsl:when>
+								<xsl:when test="$currentBrand = 'EXPO'">10</xsl:when>
+								<xsl:when test="$currentBrand = 'IECO'"></xsl:when>
+								<xsl:otherwise></xsl:otherwise>
+							</xsl:choose>
+						</offline>
 					</discount>
 
 				</xsl:element>

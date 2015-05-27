@@ -104,7 +104,6 @@ public class SOAPClientThread implements Runnable {
 	 * @param xmlData the xml data
 	 * @param threadName identifier for this thread
 	 * @param soapConfiguration global config
-	 * @param debugPath location to log soap call if logging is enabled
 	 */
 	public SOAPClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
 			String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration) {
@@ -358,9 +357,9 @@ public class SOAPClientThread implements Runnable {
 			writer.writeXmlToFile(maskXml(this.xml , configuration.getMaskReqInXSL()) , REQ_IN);
 		}
 
-		Map<String , Object> params = new HashMap<String , Object>();
-		if (this.tranId!=null){
-			params.put("transactionId",this.tranId);
+		Map<String, Object> params = new HashMap<>();
+		if (this.tranId != null) {
+			params.put("transactionId", this.tranId);
 		}
 
 		// Set the soap action (if supplied)
@@ -372,15 +371,16 @@ public class SOAPClientThread implements Runnable {
 		}
 
 		// Translate the page xml to be suitable for the client
-		String soapRequest = translator.translate(configuration.getOutboundXsl(), this.xml, configuration.getOutboundParms() , params , true);
+		String soapRequest = translator.translate(configuration.getOutboundXsl(), this.xml, configuration.getOutboundParms(), params, true);
 
 		if(soapConfiguration.isWriteToFile()){
 			writer.writeXmlToFile(maskXml(soapRequest , configuration.getMaskReqInXSL()), REQ_OUT);
 		}
 
 		// Determine if the only thing written to the soapRequest is the header
+		// 2015-01-15 LK This check for the < is from the original commit in 2012. Keeping it as legacy just so we don't break anything.
 		int i = soapRequest.indexOf('<',2);
-		if (i > -1 ) {
+		if (i > -1 || soapRequest.trim().startsWith("{")) {
 
 			// Send the soap request off for processing
 			String soapResponse = processRequest(soapRequest);
@@ -433,13 +433,10 @@ public class SOAPClientThread implements Runnable {
 						soapResponse = soapResponse.substring(0,startIdx)
 									+ unescapeData
 									+ soapResponse.substring(endIdx);
-
 					}
-
-
 				}
 
-				if (this.xml!=null) {
+				if (this.xml != null) {
 					NodeList req = createRequestNodeList(this.xml);
 					params.put("request", req);
 				}

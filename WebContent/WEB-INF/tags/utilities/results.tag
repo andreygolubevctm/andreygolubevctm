@@ -105,9 +105,9 @@
 		z-index: 0;
 	}
 	div#results-summary h3{
-		position: absolute;
+		position: relative;
 		top: 5px;
-		left: 0;
+		float: left;
 		color: #0CB04D;
 	}
 	div#results-summary h3 span{
@@ -170,9 +170,10 @@
 		}
 
 	div#results-summary div.items{
-		float: right;
+		float: left;
 		height: 85px;
 		margin-top: -10px;
+		margin-left: 10px
 	}
 	div#results-summary div.items .item{
 		position: relative;
@@ -802,7 +803,7 @@ Results = {
 		
 		// Finish with cost and best deal
 		//output.push("<div class='item estcost'><h5>est. cost p.a.</h5><p>" + details.estcost + "</p></div>");
-		output.push("<div class='item bestdeal'><h5>best deal</h5><p>" + details.bestdeal + "</p></div>");
+		//output.push("<div class='item bestdeal'><h5>best deal</h5><p>" + details.bestdeal + "</p></div>");
 		
 		var delimeter = "<div class='item delimeter'><!-- empty --></div>";
 		
@@ -1470,7 +1471,7 @@ $(document).on('click','a[data-viewdiscount=true]',function(){
 		
 		<div id="results-table"></div>
 		<core:clear/>
-		<p class="results-rows-footer">Search results do not include every offer from every retailer. Costs and savings include GST &amp; are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy" /></p>
+		<p class="results-rows-footer">Estimated annual savings are based upon you currently paying the standard rate on a peak meter within your postcode and energy network.<br>Costs and savings include GST &amp; are effective as at <fmt:formatDate value="${now}" pattern="dd/MM/yyyy" />.</p>
 		
 		
 		<%-- TEMPLATE FOR PRICE RESULTS --%>

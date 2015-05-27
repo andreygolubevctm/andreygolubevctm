@@ -1,6 +1,7 @@
 package com.ctm.services;
 
 import com.ctm.dao.ProviderFilterDao;
+import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
@@ -12,6 +13,8 @@ import javax.xml.stream.*;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+
+import static java.util.Arrays.asList;
 
 public class ProviderFilter {
 	private static final Logger logger = Logger.getLogger(ProviderFilter.class);
@@ -39,28 +42,31 @@ public class ProviderFilter {
 		return filterConfigByProvider(request, config);
 	}
 
+    public String getProviderCode(HttpServletRequest request) {
+        try {
+            String vertical = verticalCode(request);
+            Data data = getDataBucket(request, vertical);
+            final String code = providerCode(data, vertical);
+            return asList("invalid", null).contains(code) ? "" : code;
+        }
+        catch (Exception e) {
+            logger.error(e);
+        }
+
+        return "";
+    }
+
 	/**
 	 * filters the config by provider
 	 */
 	private String filterConfigByProvider(HttpServletRequest request, String config) {
 		// first validate the provider against a whitelist to make sure no hacks are happening
 		try {
-			// grab the vertical we're working on
-			if (this.pageSettings == null) {
-				// grab the vertical we're working on
-				pageSettings = SettingsService.getPageSettingsForPage(request); // grab this current page's settings
-			}
-
-			Vertical vert = pageSettings.getVertical(); // grab the vertical details
-			String vertical = vert.getType().toString().toLowerCase();
-
-			// grab the databucket details
+            String vertical = verticalCode(request);
 			Data data = getDataBucket(request, vertical);
-			// sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
 
 			// filter out the config based on either the provider key or partner id being sent
 			config = getFilteredConfig(data, config, vertical);
-
 		}
 		catch (Exception e) {
 			logger.error(e);
@@ -68,30 +74,24 @@ public class ProviderFilter {
 
 		return config;
 	}
-	/**
+
+    private String verticalCode(HttpServletRequest request) throws DaoException, ConfigSettingException {
+        if (this.pageSettings == null) {
+            // grab the vertical we're working on
+            pageSettings = SettingsService.getPageSettingsForPage(request); // grab this current page's settings
+        }
+
+        Vertical vert = pageSettings.getVertical(); // grab the vertical details
+        return vert.getType().toString().toLowerCase();
+    }
+
+    /**
 	 * retrieve the providerCode if it's an xml based config otherwise retrieve the id
 	 */
 	private String getFilteredConfig(Data data, String config, String vertical) throws DaoException, XMLStreamException {
-
 		// check if the filter node is set which means either it's a partner testing on NXS or a staff member has selected a partner from the dropdown
 		if (data.get(vertical + "/filter/") != null) {
-
-			String providerCode = "";
-			String dataColumn = "providerCode";
-			String providerKey = data.getString(vertical + "/filter/providerKey");
-
-			if (config != null) {
-				// this is an xml based config
-				if (providerKey == null) {
-					providerCode = data.getString(vertical + "/filter/singleProvider");
-					dataColumn = "providerCode";
-				}
-			}
-
-			// verify the provider key
-			if (providerKey != null) {
-				providerCode = getProviderDetails(providerKey, dataColumn);
-			}
+            String providerCode = providerCode(data, vertical);
 
 			// parse the xml config and return the new config
 			if (config != null) {
@@ -105,7 +105,22 @@ public class ProviderFilter {
 		return config;
 	}
 
-	/**
+    private String providerCode(Data data, String vertical) throws DaoException {
+        String providerCode = "";
+        String providerKey = data.getString(vertical + "/filter/providerKey");
+
+        if (providerKey == null) {
+            providerCode = data.getString(vertical + "/filter/singleProvider");
+        }
+
+        // verify the provider key
+        if (providerKey != null) {
+            providerCode = getProviderDetails(providerKey);
+        }
+        return providerCode;
+    }
+
+    /**
 	 * Traverse the xml config and create a new config with the matched service name via the passed in providerCode
 	 */
 	private static String filterXMLConfig(String config, String providerCode) throws XMLStreamException {
@@ -148,7 +163,7 @@ public class ProviderFilter {
 								case "service":
 										// check if the service name matches the providerCode and if so, signal the start of saving the child nodes
 										String serviceName = mapTravelProviderCodes(xmlReader.getAttributeValue("", "name"));
-										if (serviceName.equals(providerCode)) {
+										if (serviceName.equals(providerCode) || "CTMT".equals(serviceName)) {
 											serviceNodeFound = true;
 											writer.writeStartElement(xmlReader.getLocalName());
 											setNodeDetails(xmlReader, null, xmlReader.getAttributeCount());
@@ -239,12 +254,12 @@ public class ProviderFilter {
 	/**
 	 * Get the provider by brand code with
 	 */
-	private String getProviderDetails(String providerKey, String dataRequired) throws DaoException {
+	private String getProviderDetails(String providerKey) throws DaoException {
 		String providerCode = "";
 
 		if (providerKey != null) {
 			// if so grab check against the db if this key exists
-			providerCode = providerFilterDAO.getProviderDetails(providerKey, dataRequired);
+			providerCode = providerFilterDAO.getProviderDetails(providerKey);
 		}
 		return providerCode;
 	}

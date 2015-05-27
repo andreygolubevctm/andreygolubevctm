@@ -30,8 +30,6 @@
 		<sql:setDataSource dataSource="jdbc/aggregator"/>
 
 		<c:set var="sessionid" value="${pageContext.session.id}" />
-		<%-- AGG-1521 changed from to pageContext.request.remoteAddr to sessionScope set by core:client_ip --%>
-		<c:set var="ipaddress" value="${sessionScope.userIP}" />
 		<c:set var="stylecode" value="${pageSettings.getBrandCode()}" />
 		<c:set var="status" value="" />
 		<c:set var="prodtyp" value="${quoteType} ${quoteType}" />
