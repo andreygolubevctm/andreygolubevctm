@@ -70,9 +70,7 @@
 							<xsl:when test="$request/travel/policyType = 'S'">
 								<xsl:value-of select="pr:PlanName"/>
 							</xsl:when>
-							<xsl:otherwise>
-								AMT &lt;br&gt;Worldwide &lt;span class="daysPerTrip"&gt;(<xsl:value-of select="pr:MaxTripDuration"/> days)&lt;span&gt;
-							</xsl:otherwise>
+							<xsl:otherwise>AMT &lt;br&gt;Worldwide &lt;span class="daysPerTrip"&gt;(<xsl:value-of select="pr:MaxTripDuration"/> days)&lt;span&gt;</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
 					

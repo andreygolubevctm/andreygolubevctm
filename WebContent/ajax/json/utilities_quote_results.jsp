@@ -27,10 +27,11 @@
 <jsp:useBean id="quoteService" class="com.ctm.services.utilities.UtilitiesResultsService" scope="page" />
 <c:set var="results" value="${quoteService.getFromJsp(pageContext.getRequest())}" />
 
+
 <%-- COMPETITION APPLICATION START --%>
-<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>	
+<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="optedInForCompKey">${vertical}/resultsDisplayed/competition/optin</c:set>
-<c:set var="optedInForComp" value="${data[optedInForCompKey] == 'Y' }" />	
+<c:set var="optedInForComp" value="${data[optedInForCompKey] == 'Y' }" />
 
 <go:log>COMP: ${competitionEnabledSetting}</go:log>
 <go:log>COMPKEY: ${optedInForComp}</go:log>
@@ -50,7 +51,6 @@
 	</c:import>
 </c:if>
 <%-- COMPETITION APPLICATION END --%>
-
 <c:choose>
 	<c:when test="${empty results}">
 		<c:set var="json" value='{"info":{"transactionId":${tranId}}},"errors":[{"message":"getResults is empty"}]}' />

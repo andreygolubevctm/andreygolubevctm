@@ -9,14 +9,12 @@ import com.ctm.model.simples.Rule;
 import com.ctm.model.simples.User;
 import com.ctm.services.PhoneService;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.naming.NamingException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -347,22 +345,38 @@ public class UserDao {
 			);
 			stmt.setInt(1, user.getId());
 			results = stmt.executeQuery();
-
-			List<Role> userRoles = new ArrayList<Role>();
-
-			while (results.next()) {
-				Role role = new Role();
-				role.setId(results.getInt("id"));
-				role.setAdmin(results.getBoolean("admin"));
-				role.setCanSeeMessageQueue(results.getBoolean("messageQueue"));
-				role.setDeveloper(results.getBoolean("developer"));
-				userRoles.add(role);
-			}
-
-			user.setRoles(userRoles);
-		}
-		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+            List<Role> userRoles = new ArrayList<>();
+            while (results.next()) {
+                Role role = new Role();
+                role.setId(results.getInt("id"));
+                role.setAdmin(results.getBoolean("admin"));
+                role.setCanSeeMessageQueue(results.getBoolean("messageQueue"));
+                role.setDeveloper(results.getBoolean("developer"));
+                userRoles.add(role);
+            }
+            stmt.close();
+            // if no role found then set it to default role
+            if (userRoles.isEmpty()) {
+                stmt = dbSource.getConnection().prepareStatement(
+                        "SELECT r.id, r.admin, r.messageQueue, r.developer \n" +
+                                "FROM simples.role r \n" +
+                                "WHERE id = (SELECT s.value \n" +
+                                "			 FROM simples.settings s \n" +
+                                "			 WHERE s.key='defaultRoleId')"
+                );
+                results = stmt.executeQuery();
+                while (results.next()) {
+                    Role role = new Role();
+                    role.setId(results.getInt("id"));
+                    role.setAdmin(results.getBoolean("admin"));
+                    role.setCanSeeMessageQueue(results.getBoolean("messageQueue"));
+                    role.setDeveloper(results.getBoolean("developer"));
+                    userRoles.add(role);
+                }
+            }
+            user.setRoles(userRoles);
+        } catch (SQLException | NamingException e) {
+            throw new DaoException(e.getMessage(), e);
 		}
 		finally {
 			try {
@@ -386,20 +400,24 @@ public class UserDao {
 
 		try {
 			dbSource = new SimpleDatabaseConnection();
-			stmt = dbSource.getConnection().prepareStatement(
-					"SELECT rule.id as id, rule.description, rule.value\n" +
-					"FROM simples.user_role ur\n" +
-					"INNER JOIN simples.role r ON ur.roleId = r.id \n" +
-					"INNER JOIN simples.role_rule_set rrs ON rrs.roleId = r.id \n" +
-					"INNER JOIN simples.rule_set rs ON rs.id = rrs.ruleSetId\n" +
-					"INNER JOIN simples.rule_rule_set rule_rs ON rule_rs.ruleSetId = rs.id\n" +
-					"INNER JOIN simples.rule rule ON rule.id = rule_rs.ruleId\n" +
-					"WHERE userId = ?\n" +
-					"AND CURDATE() BETWEEN ur.effectiveStart AND ur.effectiveEnd \n" +
-					"AND CURDATE() BETWEEN rule_rs.effectiveStart AND rule_rs.effectiveEnd \n" +
-					"ORDER BY rrs.priority, rule_rs.priority"
-			);
-			stmt.setInt(1, user.getId());
+            stmt = dbSource.getConnection().prepareStatement(
+                    "SELECT rule.id AS id, rule.description, rule.value\n" +
+                            "FROM  simples.role r  \n" +
+                            "INNER JOIN simples.role_rule_set rrs ON rrs.roleId = r.id \n" +
+                            "INNER JOIN simples.rule_set rs ON rs.id = rrs.ruleSetId\n" +
+                            "INNER JOIN simples.rule_rule_set rule_rs ON rule_rs.ruleSetId = rs.id\n" +
+                            "INNER JOIN simples.rule rule ON rule.id = rule_rs.ruleId\n" +
+                            "WHERE r.id IN  (?)\n" +
+                            "AND CURDATE() BETWEEN rule_rs.effectiveStart AND rule_rs.effectiveEnd \n" +
+                            "ORDER BY rrs.priority, rule_rs.priority"
+            );
+			String[] roles = new String[user.getRoles().size()];
+			int i =0 ;
+			for (Role role : user.getRoles()) {
+				roles[i++] = role.getId()+"";
+			}
+			String rolesStr = StringUtils.join(roles, ",");
+			stmt.setString(1, rolesStr);
 			results = stmt.executeQuery();
 
 			List<Rule> rules = new ArrayList<Rule>();

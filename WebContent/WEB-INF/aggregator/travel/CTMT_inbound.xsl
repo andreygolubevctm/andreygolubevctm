@@ -93,7 +93,7 @@
 										<desc>
 											<xsl:choose>
 												<xsl:when test="string-length(description) > 0"><xsl:value-of select="description" /></xsl:when>
-												<xsl:otherwise>Excess on Claims</xsl:otherwise>
+												<xsl:otherwise>Excess</xsl:otherwise>
 											</xsl:choose>
 										</desc>
 										<value><xsl:value-of select="value"/></value>
