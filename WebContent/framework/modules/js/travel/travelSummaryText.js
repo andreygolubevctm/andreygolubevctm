@@ -42,7 +42,7 @@
 
 			// update the country text for single trip
 			if ($selectedTags.children().length == 1) {
-				txt += $selectedTags.find('.selected-tag span').text();
+				txt += $selectedTags.find('li:first-child').data("fulltext");
 			} else {
 				txt += "multiple destinations";
 			}

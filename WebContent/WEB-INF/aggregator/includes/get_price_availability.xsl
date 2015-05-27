@@ -31,6 +31,7 @@
 						
 						<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 						<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
+						<xsl:when test="$productId = 'AI-01-04'">Y</xsl:when>
 						
 						<xsl:when test="$productId = 'REIN-01-01'">N</xsl:when>
 						<xsl:when test="$productId = 'REIN-01-02'">N</xsl:when>
@@ -62,6 +63,7 @@
 					
 					<xsl:when test="$productId = 'AI-01-01'">Y</xsl:when>
 					<xsl:when test="$productId = 'AI-01-02'">Y</xsl:when>
+					<xsl:when test="$productId = 'AI-01-04'">Y</xsl:when>
 					
 					<xsl:when test="$productId = 'REIN-01-01'">N</xsl:when>
 					<xsl:when test="$productId = 'REIN-01-02'">N</xsl:when>

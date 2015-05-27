@@ -53,6 +53,7 @@
 		<c:set var="productBrandSlug" value="${fn:toLowerCase(fn:replace(go:replaceAll(productBrand, '[^a-zA-Z0-9- ]', ''), ' ', '-'))}" scope="request" />
 		<c:set var="productBrandCode" value="${product.provider.code}" scope="request" />
 		<c:set var="productHandoverUrl" value="${product.handoverUrl}" scope="request" />
+		<%-- Set product id so straight handover records it --%>
 		<go:setData xpath="creditcard/handover/productCode" dataVar="data" value="${productID}" />
 		<go:setData xpath="creditcard/trackingKey" dataVar="data" value="${trackingKey}" />
 	</c:otherwise>
@@ -114,6 +115,7 @@
 		<core_new:tracking_key />
 		<div class="hiddenFields">
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+			<field:hidden xpath="${pageSettings.getVerticalCode()}/handover/productCode" defaultValue="${productID}" />
 		</div>
 	</jsp:body>
 

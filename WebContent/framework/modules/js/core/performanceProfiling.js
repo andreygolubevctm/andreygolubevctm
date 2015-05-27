@@ -98,6 +98,13 @@
 		return false;
 	}
 
+	function isIE11(){
+		if(getIEVersion() === 11){
+			return true;
+		}
+		return false;
+	}
+
 	function isIos5(){
 		if(isIos()  && USER_AGENT.match(/os 5/)){
 			return true;
@@ -121,9 +128,16 @@
 
 	function getIEVersion(){
 		var ua = USER_AGENT;
-		var msie = ua.indexOf ( "msie " );
+		var msie = ((ua.indexOf ( "msie " ) > 0) || (ua.indexOf ( "trident" ) > 0));
 
-		if ( msie > 0 ){      // If Internet Explorer, return version number
+		if ( msie){      // If Internet Explorer, return version number
+			// MS 11 onwards. It doesn't use msie anymore
+			// http://msdn.microsoft.com/en-us/library/ie/bg182625(v=vs.110).aspx
+			if (ua.indexOf ( "msie" ) == -1) {
+				var version = ua.match(/trident.*rv[ :]*(11|12)\./i);
+				return parseInt(version[1]);
+
+			}
 			return parseInt (ua.substring (msie+5, ua.indexOf (".", msie )));
 		}else{
 			return null;
@@ -149,6 +163,7 @@
 		isIE8:isIE8,
 		isIE9:isIE9,
 		isIE10:isIE10,
+		isIE11:isIE11,
 		getIEVersion: getIEVersion
 	});
 

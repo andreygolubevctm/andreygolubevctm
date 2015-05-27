@@ -1,61 +1,45 @@
 package com.ctm.services;
 
-import com.ctm.dao.CountryMasterDao;
+import com.ctm.dao.IsoLocationsDao;
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.CountryMaster;
+import com.ctm.model.IsoLocations;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 
-public class LocationsService {
+public class IsoLocationsService {
 
-    public LocationsService() {
+    public IsoLocationsService() {
     }
 
-    private static Logger logger = Logger.getLogger(LocationsService.class.getName());
+    private static Logger logger = Logger.getLogger(IsoLocationsService.class.getName());
 
     public JSONObject fetchCountryList() throws DaoException {
 
-        CountryMasterDao countryMasterDao = new CountryMasterDao();
-        ArrayList<CountryMaster> countries = countryMasterDao.getCountries(null);
+        IsoLocationsDao isoLocationsDao = new IsoLocationsDao();
+        ArrayList<IsoLocations> countries = isoLocationsDao.getIsoLocations(null);
         JSONObject json = new JSONObject();
 
         try {
-            json.put("countries" , countries);
+            json.put("isoLocations" , countries);
         } catch (JSONException e) {
             logger.error(e);
         }
         return json;
     }
 
-    public void fetchCityList(HttpServletRequest request) {
+    public JSONObject fetchSearchResults(String searchTerm) throws DaoException {
 
-    }
-
-    public void fetchPlacesOfInterestList() {
-
-    }
-
-    public JSONObject fetchSearchResults(String countryNameLike) throws DaoException {
-
-        CountryMasterDao countryMasterDao = new CountryMasterDao();
-        ArrayList<CountryMaster> countries = countryMasterDao.getCountries(countryNameLike);
-
-        /*CityMasterDao cityMasterDao = new CityMasterDao();
-        ArrayList<CityMaster> cities = cityMasterDao.getCities(search);*/
+        IsoLocationsDao isoLocationsDao = new IsoLocationsDao();
+        ArrayList<IsoLocations> isoLocations = isoLocationsDao.getIsoLocations(searchTerm);
 
         JSONObject json = new JSONObject();
 
         try {
-            json.put("countries" , countries);
-            //For future searching:
-            //json.put("cities" , cities);
-            //json.put("poi" , poi);
-            //json.put("regions" , regions);
+            json.put("isoLocations" , isoLocations);
         } catch (JSONException e) {
             logger.error(e);
         }
@@ -81,8 +65,8 @@ public class LocationsService {
         list.add("GBR");
         list.add("USA");
 
-        CountryMasterDao countryMasterDao = new CountryMasterDao();
-        ArrayList<CountryMaster> topTen = countryMasterDao.getCountriesByIsoCodes(list);
+        IsoLocationsDao isoLocationsDao = new IsoLocationsDao();
+        ArrayList<IsoLocations> topTen = isoLocationsDao.getCountriesByIsoCodes(list);
 
         try {
             json.put("topTen" , topTen);

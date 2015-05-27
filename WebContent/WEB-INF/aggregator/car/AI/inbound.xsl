@@ -214,37 +214,67 @@
 
 					<excess>
 						<total><xsl:value-of select="ai:Excess"/></total>
-						<excess>
-							<description>Male driver, under the age of 30 or less than 2 years holding an Australian driving licence</description>
-							<amount>$1500</amount>
-						</excess>
-						<excess>
-							<description>Female driver under the age of 30 or less than 2 years holding an Australian driving licence</description>
-							<amount>$900</amount>
-						</excess>
-						<excess>
-							<description>Unlisted drivers</description>
-							<amount>$1000</amount>
-						</excess>
-						<excess>
-							<description>Single car accident excess</description>
-							<amount>$300</amount>
-						</excess>
-						<excess>
-							<description>Theft / Malicious Damage excess</description>
-							<amount>$1000</amount>
-						</excess>
-						<excess>
-							<description>Claim within first 6 months of policy inception</description>
-							<amount>$600</amount>
-						</excess>
+						<xsl:choose>
+							<xsl:when test="$productId='AI-01-04' or $productId='AI-01-05'">
+								<excess>
+									<description>Drivers under the age of 30 or less than 2 years holding an Australian driving licence</description>
+									<amount>$1000</amount>
+								</excess>
+								<excess>
+									<description>Unlisted drivers</description>
+									<amount>$600</amount>
+								</excess>
+								<excess>
+									<description>Single car accident excess</description>
+									<amount>$300</amount>
+								</excess>
+								<excess>
+									<description>Theft / Malicious Damage excess</description>
+									<amount>$1000</amount>
+								</excess>
+								<excess>
+									<description>Claim within first 6 months of policy inception</description>
+									<amount>$600</amount>
+								</excess>
+								<excess>
+									<description>Undisclosed parking excess</description>
+									<amount>$1000</amount>
+								</excess>
+							</xsl:when>
+							<xsl:otherwise>
+								<excess>
+									<description>Male driver, under the age of 30 or less than 2 years holding an Australian driving licence</description>
+									<amount>$1500</amount>
+								</excess>
+								<excess>
+									<description>Female driver under the age of 30 or less than 2 years holding an Australian driving licence</description>
+									<amount>$900</amount>
+								</excess>
+								<excess>
+									<description>Unlisted drivers</description>
+									<amount>$1000</amount>
+								</excess>
+								<excess>
+									<description>Single car accident excess</description>
+									<amount>$300</amount>
+								</excess>
+								<excess>
+									<description>Theft / Malicious Damage excess</description>
+									<amount>$1000</amount>
+								</excess>
+								<excess>
+									<description>Claim within first 6 months of policy inception</description>
+									<amount>$600</amount>
+								</excess>
 
-						<xsl:if test="$request/vehicle/parking = '1' or  $request/vehicle/parking = '7'">
-							<excess>
-								<description>Undisclosed parking excess</description>
-								<amount>$1000</amount>
-							</excess>
-						</xsl:if>
+								<xsl:if test="$request/vehicle/parking = '1' or  $request/vehicle/parking = '7'">
+									<excess>
+										<description>Undisclosed parking excess</description>
+										<amount>$1000</amount>
+									</excess>
+								</xsl:if>
+							</xsl:otherwise>
+						</xsl:choose>
 					</excess>
 
 					<conditions>
@@ -271,7 +301,14 @@
 						</xsl:when>
 
 						<xsl:otherwise>
-							<pdsaUrl>http://b2b.aiinsurance.com.au/SSPublicDocs/Comprehensive_Cover_PDS_02.pdf</pdsaUrl>
+							<xsl:choose>
+								<xsl:when test="$productId='AI-01-04' or $productId='AI-01-05'">
+									<pdsaUrl>http://b2b.aiinsurance.com.au/SSPublicDocs/Tradiesure_PDS_01.pdf</pdsaUrl>
+								</xsl:when>
+								<xsl:otherwise>
+									<pdsaUrl>http://b2b.aiinsurance.com.au/SSPublicDocs/Comprehensive_Cover_PDS_02.pdf</pdsaUrl>
+								</xsl:otherwise>
+							</xsl:choose>
 							<pdsaDesLong>Product Disclosure Statement</pdsaDesLong>
 							<pdsaDesShort>PDS</pdsaDesShort>
 							<pdsbUrl/>
@@ -474,6 +511,40 @@
 				<kms />
 
 			</xsl:when>
+
+			<xsl:when test="$productId = 'AI-01-04'">
+				<name>TradieSure Comprehensive Cover</name>
+				<des>A specialist car insurer which focuses on providing a wide range of uniquely tailored policies.</des>
+				<feature>Includes limited cover for trade tools and goods.</feature>
+				<info>
+					<![CDATA[]]>
+				</info>
+				<terms>
+					<![CDATA[
+						<p>Our TradieSure cover not only offers you comprehensive cover for your vehicle, it also includes trade tools and goods cover.</p>
+					]]>
+				</terms>
+				<carbonOffset />
+				<kms />
+
+			</xsl:when>
+
+			<xsl:when test="$productId = 'AI-01-05'">
+				<name>TradieSure Plus Comprehensive</name>
+				<des>A specialist car insurer which focuses on providing a wide range of uniquely tailored policies.</des>
+				<feature>Price shown includes 20% Online Discount</feature>
+				<info>
+					<![CDATA[]]>
+				</info>
+				<terms>
+					<![CDATA[
+						<p>The discount applies to AI comprehensive car insurance policies purchased online and initiated after 4th September 2014, and is applicable to premium only - not fees and statutory charges - and does not extend to renewal of a policy. AI Insurance reserves the right to amend the discount amount and/or the period and base rate premiums are subject to change at their discretion.</p>
+					]]>
+				</terms>
+				<carbonOffset />
+				<kms />
+
+			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
 
@@ -483,6 +554,8 @@
 			<xsl:when test="ai:Product = 'CLASSIC'">AI-01-01</xsl:when>
 			<xsl:when test="ai:Product = 'CLASSICSB'">AI-01-02</xsl:when>
 			<xsl:when test="ai:Product = 'CLASSICPL'">AI-01-03</xsl:when>
+			<xsl:when test="ai:Product = 'TRADIESURE'">AI-01-04</xsl:when>
+			<xsl:when test="ai:Product = 'TRADIESUREPL'">AI-01-05</xsl:when>
 			<xsl:otherwise>ERROR</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>

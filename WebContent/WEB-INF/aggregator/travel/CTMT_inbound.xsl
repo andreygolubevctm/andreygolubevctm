@@ -3,8 +3,9 @@
 	<xsl:import href="utilities/unavailable.xsl" />
 
 	<!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<xsl:param name="service"></xsl:param>
+	<xsl:param name="service" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
+	<xsl:param name="request" />
 
 	<!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
@@ -22,6 +23,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
 
 	<!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/response">
@@ -47,13 +49,43 @@
 					</xsl:if>
 					<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 					<trackCode><xsl:value-of select="./@trackCode" /></trackCode>
-					<name><xsl:value-of select="product/shortTitle"/></name>
-					<des><xsl:value-of select="product/longTitle"/></des>
+
+					<xsl:variable name="planDescription">
+						<xsl:choose>
+							<xsl:when test="@service='1FOW'">
+								<xsl:value-of select="product/longTitle"/>
+								<xsl:choose>
+									<xsl:when test="$request/travel/policyType = 'A'"> &lt;span class="daysPerTrip"&gt;(30 Days)&lt;/span&gt;</xsl:when>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:when test="@service='VIRG'">
+								<xsl:choose>
+									<xsl:when test="$request/travel/policyType = 'S'">
+										Virgin Money <xsl:value-of select="product/longTitle"/>
+									</xsl:when>
+									<xsl:otherwise>
+										Virgin Money AMT &lt;br&gt;Worldwide &lt;span class="daysPerTrip"&gt;(<xsl:value-of select="product/maxTripDuration"/> days)&lt;span&gt;
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:when test="@service='ZUJI'">
+								<xsl:value-of select="product/longTitle"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="product/longTitle"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+
+					<name> <xsl:value-of select="product/shortTitle"/></name>
+					<des><xsl:value-of select="$planDescription"/></des>
 					<price><xsl:value-of select="price"/></price>
 					<priceText><xsl:value-of select="priceText"/></priceText>
 
+
 					<info>
-						<xsl:for-each select="benefit[not(@type='CUSTOM')]">
+						<xsl:for-each select="benefit">
+
 							<xsl:choose>
 								<xsl:when test="@type='EXCESS'">
 									<excess>
@@ -111,22 +143,21 @@
 										<order/>
 									</luggage>
 								</xsl:when>
+								<xsl:otherwise>
+									<xsl:element name="benefit_{position()}">
+										<label><xsl:value-of select="label" /></label>
+										<desc><xsl:value-of select="description" /></desc>
+										<value><xsl:value-of select="value" /></value>
+										<text><xsl:value-of select="text" /></text>
+										<order/>
+									</xsl:element>
+								</xsl:otherwise>
 							</xsl:choose>
-						</xsl:for-each>
-
-						<xsl:for-each select="benefit[@type='CUSTOM']">
-							<xsl:element name="benefit_{position()}">
-								<label><xsl:value-of select="label" /></label>
-								<desc><xsl:value-of select="description" /></desc>
-								<value><xsl:value-of select="value" /></value>
-								<text><xsl:value-of select="text" /></text>
-								<order/>
-							</xsl:element>
 						</xsl:for-each>
 					</info>
 
 					<infoDes><xsl:value-of select="product/description"/></infoDes>
-					<subtitle><xsl:value-of select="product/pdsUrl"/></subtitle>
+					<subTitle><xsl:value-of select="product/pdsUrl"/></subTitle>
 					<quoteUrl><xsl:value-of select="quoteUrl"/></quoteUrl>
 					<encodeUrl>
 						<xsl:choose>

@@ -7,8 +7,7 @@
 		$travel_dates_fromDate_button,
 		$travel_dates_fromDate,
 		$travel_dates_toDate_button,
-		$travel_adults,
-		$travel_destinations_do_do;
+		$travel_adults;
 
 	var moduleEvents = {
 			traveldetails: {
@@ -30,8 +29,7 @@
 			$travel_dates_fromDate = $("#travel_dates_fromDate"),
 			$travel_dates_toDate_button = $('#travel_dates_toDate_button').trigger("click"),
 			$travel_adults = $('#travel_adults'),
-			$travel_dates_toDate = $("#travel_dates_toDate"),
-			$travel_destinations = $('#travel_destinations');
+			$travel_dates_toDate = $("#travel_dates_toDate");
 
 
 			$policyTypeBtn = $("input[name=travel_policyType]");
@@ -108,8 +106,7 @@
 
 				var currentJourney = meerkat.modules.tracking.getCurrentJourney();
 
-				if (typeof currentJourney !== 'undefined' && (currentJourney === 5 || currentJourney === 6))
-				{
+				if (typeof currentJourney !== 'undefined' && (currentJourney === 5 || currentJourney === 6)) {
 					$('#travel_location').on('blur',function() {
 						meerkat.modules.travelContactDetails.setLocation($(this).val());
 					});
@@ -138,15 +135,6 @@
 				$travel_adults.focus(function hideCalendar() {
 					$travel_dates_toDate.datepicker('hide');
 				});
-
-				if(meerkat.site.countrySelectionDefaults.length) {
-					var countries = meerkat.site.countrySelectionDefaults.split(',');
-					for(var i = 0; i < countries.length; i++) {
-						if(countries[i].length) {
-						$travel_destinations.val(countries[i]).change();
-					}
-				}
-				}
 
 			},
 			onBeforeEnter: function(event) {
@@ -187,7 +175,7 @@
 			onAfterLeave: function(event) {
 				if(event.isBackward) {
 					meerkat.modules.travelMorePrompt.disablePromptBar();
-			}
+				}
 			}
 		};
 
@@ -210,11 +198,11 @@
 		return vf;
 	}
 
+
 	// Build an object to be sent by SuperTag tracking.
 	function getTrackingFieldsObject(){
 		try{
 
-		var ok_to_call = $('input[name=travel_marketing]', '#mainform').val() === "Y" ? "Y" : "N";
 		var mkt_opt_in = $('input[name=travel_marketing]:checked', '#mainform').val() === "Y" ? "Y" : "N";
 
 		var transactionId = meerkat.modules.transactionId.get();
@@ -274,7 +262,6 @@
 				email:			email,
 				destinationCountry: dest,
 				travelInsuranceType: insType,
-				//okToCall:		ok_to_call
 				marketOptIn:	mkt_opt_in,
 				leaveDate:		leaveDate,
 				returnDate:		returnDate,

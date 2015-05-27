@@ -3,7 +3,7 @@
 
 <session:get settings="true" verticalCode="${fn:toUpperCase(param.quoteType)}"/>
 <security:populateDataFromParams rootPath="${pageSettings.getVerticalCode()}" />
-<core:transaction touch="A" noResponse="true" writeQuoteOverride="Y" />
+<core:transaction touch="A" noResponse="true" writeQuoteOverride="Y" productId="${data[pageSettings.getVerticalCode()].handover.productCode}" />
 
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled" /></c:set>
 <c:set var="optedInForComp" value="${data['creditcard/competition/optIn'] eq 'Y' }" />

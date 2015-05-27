@@ -61,9 +61,10 @@
 
 				<%-- COUNTRY SECTION --%>
 				<form_new:fieldset showHelpText="true" legend="Where are you going?" className="travel_details_destinations" id="destinationsfs">
-					<jsp:useBean id="locationsService" class="com.ctm.services.LocationsService" scope="page" />
+					<jsp:useBean id="locationsService" class="com.ctm.services.IsoLocationsService" scope="page" />
 					<core:select_tags 
-						variableListName="countrySelectionList" 
+						variableListName="countrySelectionList"
+						fieldType="autocomplete"
 						variableListArray="${locationsService.getCountrySelectionList()}"
 						xpath="travel/destinations" 
 						xpathhidden="travel/destination" 
@@ -71,7 +72,9 @@
 						title="Where are you travelling?"
 						validationErrorPlacementSelector=".travel_details_destinations"
 						helpId="213"
+						source="/ctm/isolocations/search.json?search="
 						/>
+					<field:hidden xpath="travel/unknownDestinations" />
 				</form_new:fieldset>
 				<go:log>PRELOAD IS ${param.preload}</go:log>
 				<%-- DATES AND TRAVELLERS SECTION --%>

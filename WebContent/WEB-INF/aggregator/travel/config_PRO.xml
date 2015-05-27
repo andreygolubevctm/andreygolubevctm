@@ -250,6 +250,15 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+	<service name="TICK" type="soap">
+		<soap-url>https://ctmservice.insureandgo.com.au/QuotesAPI</soap-url>
+		<outbound-xsl>TICK_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>SPName=au.com.Compare</outbound-xsl-parms>
+		<inbound-xsl>TICK_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=TICK</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
 	<service name="WEBJ" type="soap">
 		<soap-url>https://pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
 		<soap-user>CtM</soap-user>

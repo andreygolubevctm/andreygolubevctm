@@ -207,6 +207,16 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+
+	<service name="TICK" type="soap">
+		<soap-url>http://devausctmservice.insureandgo.com/QuotesAPI</soap-url>
+		<outbound-xsl>TICK_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>SPName=au.com.Compare</outbound-xsl-parms>
+		<inbound-xsl>TICK_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=TICK</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
 	<service name="CLBS" type="soap">
 		<soap-url>http://trips.ecgid.net/xmlReceive.cfm?dbType=cti</soap-url>
 		<outbound-xsl>CLBS_outbound.xsl</outbound-xsl>

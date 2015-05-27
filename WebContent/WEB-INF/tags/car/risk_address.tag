@@ -49,14 +49,7 @@
 				</form_new:row>
 			</c:if>
 
-			<c:choose>
-				<c:when test="${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 1003)}">
-					<group_new:address xpath="${xpath}" type="R" showTitle="false" />
-				</c:when>
-				<c:otherwise>
-					<group_new:elastic_address xpath="${xpath}" type="R" />
-				</c:otherwise>
-			</c:choose>
+			<group_new:elastic_address xpath="${xpath}" type="R" />
 
 			<c:if test="${addressSplitTest eq false}">
 				<form_new:row label="Where is the car parked at night" helpId="7">

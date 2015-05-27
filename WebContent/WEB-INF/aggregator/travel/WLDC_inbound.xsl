@@ -112,7 +112,7 @@
 
 					<acn></acn>
 					<afsLicenceNo></afsLicenceNo>
-					<quoteUrl>https://www.worldcare.com.au/?affid=ctm%26destination=<xsl:value-of select="$region" />%26startdate=<xsl:value-of select="$startDateFormatted" />%26enddate=<xsl:value-of select="$endDateFormatted" />%26adults=<xsl:value-of select="$adults" />%26children=<xsl:value-of select="$children" /></quoteUrl>
+					<quoteUrl>https://www.worldcare.com.au/affiliate/ctm?destination=<xsl:value-of select="$region" />%26startdate=<xsl:value-of select="$startDateFormatted" />%26enddate=<xsl:value-of select="$endDateFormatted" />%26adults=<xsl:value-of select="$adults" />%26children=<xsl:value-of select="$children" /></quoteUrl>
 				</xsl:element>
 			</xsl:for-each>
 

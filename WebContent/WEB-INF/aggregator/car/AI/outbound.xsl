@@ -69,15 +69,52 @@
 			</xsl:choose>
 		</xsl:variable>
 
+		<xsl:variable name="isToolUse">
+			<xsl:choose>
+				<xsl:when test="vehicle/use = '14'">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
+		<xsl:variable name="isBusinessUse">
+			<xsl:choose>
+				<xsl:when test="vehicle/use = '11' or vehicle/use = '12' or vehicle/use = '14'">true</xsl:when>
+				<xsl:otherwise>false</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+
 		<xsl:variable name="excess">
 			<xsl:choose>
-				<xsl:when test="$baseExcessToTest &gt;= 1200">1200</xsl:when>
-				<xsl:when test="$baseExcessToTest &gt;= 800">800</xsl:when>
-				<xsl:when test="$baseExcessToTest &gt;= 600">600</xsl:when>
-				<!-- AI has not default response so need to send valid excess as
-					last resort to avoid service errors being returned. Front-end
-					with knock out the quote if excess invalid.-->
-				<xsl:otherwise><xsl:value-of select="baseExcess" /></xsl:otherwise>
+				<xsl:when test="$isBusinessUse = 'true'">
+					<xsl:choose>
+						<xsl:when test="$baseExcessToTest &gt;= 1800">1800</xsl:when>
+						<xsl:when test="$baseExcessToTest &gt;= 1200">1200</xsl:when>
+						<xsl:when test="$baseExcessToTest &gt;= 850">
+							<xsl:choose>
+								<xsl:when test="$isToolUse = 'true'">850</xsl:when>
+								<xsl:otherwise>800#850</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:when test="$baseExcessToTest &gt;= 650">
+							<xsl:choose>
+								<xsl:when test="$isToolUse = 'true'">650</xsl:when>
+								<xsl:otherwise>600#650</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise><xsl:value-of select="baseExcess" /></xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:choose>
+						<xsl:when test="$baseExcessToTest &gt;= 1200">1200</xsl:when>
+						<xsl:when test="$baseExcessToTest &gt;= 800">800</xsl:when>
+						<xsl:when test="$baseExcessToTest &gt;= 600">600</xsl:when>
+						<!-- AI has not default response so need to send valid excess as
+                            last resort to avoid service errors being returned. Front-end
+                            with knock out the quote if excess invalid.-->
+						<xsl:otherwise><xsl:value-of select="baseExcess" /></xsl:otherwise>
+					</xsl:choose>
+				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 
@@ -109,7 +146,15 @@
 						<AgentRefNo><xsl:value-of select="transactionId" /></AgentRefNo>
 						<Comments></Comments>
 						<PremiumQuoted>0</PremiumQuoted>
-						<ExcessQuoted><xsl:value-of select="$excess" /></ExcessQuoted>
+						<xsl:choose>
+							<xsl:when test="contains($excess, '#')">
+								<ExcessQuoted>-2</ExcessQuoted>
+								<MultiExcess><xsl:value-of select="$excess" /></MultiExcess>
+							</xsl:when>
+							<xsl:otherwise>
+								<ExcessQuoted><xsl:value-of select="$excess" /></ExcessQuoted>
+							</xsl:otherwise>
+						</xsl:choose>
 						<ProductQuoted><xsl:value-of select="$productQuoted" /></ProductQuoted>
 						<CampaignID>1</CampaignID>
 						<QuoteAccepted>true</QuoteAccepted>
@@ -183,9 +228,10 @@
 							<VehicleUse>
 								<xsl:choose>
 									<xsl:when test="vehicle/use='02'">PrivateUse</xsl:when> <!-- Private/Commuting -->
-									<xsl:when test="vehicle/use='11'">PrivateUse</xsl:when> <!-- Private/Occ Business -->
+									<xsl:when test="vehicle/use='11'">BusinessUse</xsl:when> <!-- Private/Occ Business -->
 									<xsl:when test="vehicle/use='12'">BusinessUse</xsl:when> <!-- Private & Business -->
-									<xsl:when test="vehicle/use='13'">GOODS</xsl:when> <!-- Carrying goods -->
+									<xsl:when test="vehicle/use='14'">BusinessUse</xsl:when> <!-- Carry Goods/Tools -->
+									<xsl:when test="vehicle/use='13'">GOODS</xsl:when> <!-- Carrying passengers for reward -->
 								</xsl:choose>
 							</VehicleUse>
 							<VehicleColour>Unknown</VehicleColour>

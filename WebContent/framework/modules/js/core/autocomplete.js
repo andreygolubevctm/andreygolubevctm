@@ -37,8 +37,9 @@
 		var params = null;
 		$typeAheads.each(function eachTypeaheadElement() {
 			var $component = $(this);
+			var url;
 			if (elasticSearch) {
-				var url = 'address/search.json';
+				url = 'address/search.json';
 				params = {
 					name: $component.attr('name'),
 					remote: {
@@ -71,11 +72,14 @@
 							// Tick non-std box.
 							$('#' + addressFieldId + '_nonStd').trigger('click').prop('checked', true);
 							autocompleteComplete($component);
-						},
+						}
 					},
 					limit: 150
 				};
+			} else if($component.attr('data-varname') == 'countrySelectionList') {
+				params = meerkat.modules.travelCountrySelector.getCountrySelectorParams($component);
 			} else {
+				url = $component.attr('data-source-url');
 				params = {
 					name: $component.attr('name'),
 					remote: {
@@ -212,7 +216,9 @@
 
 	meerkat.modules.register("autocomplete", {
 		init: initAutoComplete,
-		events: events
+		events: events,
+		autocompleteBeforeSend: autocompleteBeforeSend,
+		autocompleteComplete: autocompleteComplete
 	});
 
 })(jQuery);

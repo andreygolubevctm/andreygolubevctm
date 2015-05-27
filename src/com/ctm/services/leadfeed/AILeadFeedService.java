@@ -21,7 +21,8 @@ public abstract class AILeadFeedService implements IProviderLeadFeedService {
 			leadData.getProductId() != null &&
 			(
 				leadData.getProductId().equalsIgnoreCase("AI-01-01") ||
-				leadData.getProductId().equalsIgnoreCase("AI-01-02")
+				leadData.getProductId().equalsIgnoreCase("AI-01-02") ||
+				leadData.getProductId().equalsIgnoreCase("AI-01-04")
 			)
 		) {
 			return LeadResponseStatus.SUCCESS;

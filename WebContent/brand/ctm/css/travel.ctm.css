@@ -583,6 +583,15 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
   border-color: #ff5f5f;
   background-color: #ffefef;
 }
+.tt-suggestion p {
+  color: #000;
+}
+.tt-suggestion p .selected {
+  color: #777;
+}
+.tt-suggestion.tt-is-under-cursor p {
+  color: #fff;
+}
 #travel_email_note_row_legend {
   display: block;
   padding-top: 6px;
@@ -1004,6 +1013,14 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
   .logo_TSAV {
     background-image: url("../../../common/images/logos/travel/travelinsurancesaver@2x.png");
+  }
+}
+.logo_TICK {
+  background-image: url("../../../common/images/logos/travel/ticktravelinsurance.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .logo_TICK {
+    background-image: url("../../../common/images/logos/travel/ticktravelinsurance@2x.png");
   }
 }
 .logo_TINZ {

@@ -33,18 +33,37 @@
             <timeoutMillis>20000</timeoutMillis>
 	</service>
 -->
-	<service name="OTIS" type="soap">
-		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
-		<soap-user>CtM</soap-user>
-		<soap-password>F7AT8v57udgE5rx</soap-password>
-		<outbound-xsl>FPE_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms></outbound-xsl-parms>
-		<inbound-xsl>FPE_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS,quoteUrl=https://uat-oti.agaassistance.com.au</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-		<content-type>text/xml</content-type>
-		<accept>text/xml</accept>
-	</service>
+	<!--<service name="OTIS" type="soap">-->
+		<!--<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>-->
+		<!--<soap-user>CtM</soap-user>-->
+		<!--<soap-password>F7AT8v57udgE5rx</soap-password>-->
+		<!--<outbound-xsl>FPE_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms></outbound-xsl-parms>-->
+		<!--<inbound-xsl>FPE_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=OTIS,quoteUrl=https://uat-oti.agaassistance.com.au</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+		<!--<content-type>text/xml</content-type>-->
+		<!--<accept>text/xml</accept>-->
+	<!--</service>-->
+
+	<!--<service name="WLDC" type="url-encoded">-->
+		<!--<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=283</soap-url>-->
+		<!--<outbound-xsl>WLDC_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>-->
+		<!--<inbound-xsl>WLDC_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WLDC</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
+
+	<!--<service name="1FOW" type="soap">-->
+		<!--<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-url>-->
+		<!--<soap-action>https://nxq.ecommerce.disconline.com.au/services/3.1/getTravelQuotes</soap-action>-->
+		<!--<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CTM0000200,sourceId=0000000002</outbound-xsl-parms>-->
+		<!--<inbound-xsl>1FOW_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
 
 	<service name="AMEX" type="soap">
 		<soap-url>http://btsws.atuat.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>
@@ -56,6 +75,24 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+	<!--<service name="EASY" type="url-encoded">-->
+		<!--<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=285</soap-url>-->
+		<!--<outbound-xsl>EASY_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>-->
+		<!--<inbound-xsl>EASY_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=EASY</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
+
+	<service name="FAST" type="soap">
+		<soap-url>http://test.fastcover.com.au/Other/CtmWebService</soap-url>
+		<outbound-xsl>FAST_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
+		<inbound-xsl>FAST_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=FAST</inbound-xsl-parms>
+		<timeoutMillis>200000</timeoutMillis>
+	</service>
+
 	<service name="DUIN" type="soap">
 		<soap-url>http://www.duinsure.com.au/sites/duinsureaus.nsf/quoteEngineXMLSnow</soap-url>
 		<outbound-xsl>DUIN_outbound.xsl</outbound-xsl>
@@ -65,19 +102,53 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
-	<service name="VIRG" type="soap">
-		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
-		<soap-user>CtM</soap-user>
-		<soap-password>F7AT8v57udgE5rx</soap-password>
-		<outbound-xsl>VIRG_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms></outbound-xsl-parms>
-		<inbound-xsl>VIRG_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=VIRG,quoteUrl=https://uat-aspire.agaassistance.com.au/virginmoney/</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-		<content-type>text/xml</content-type>
-		<accept>text/xml</accept>
-	</service>
+	<!--<service name="INGO" type="url-encoded">-->
+		<!--<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=295</soap-url>-->
+		<!--<outbound-xsl>INGO_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>-->
+		<!--<inbound-xsl>INGO_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=INGO</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
+	<!--<service name="VIRG" type="soap">-->
+		<!--<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>-->
+		<!--<soap-user>CtM</soap-user>-->
+		<!--<soap-password>F7AT8v57udgE5rx</soap-password>-->
+		<!--<outbound-xsl>VIRG_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms></outbound-xsl-parms>-->
+		<!--<inbound-xsl>VIRG_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=VIRG,quoteUrl=https://uat-aspire.agaassistance.com.au/virginmoney/</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+		<!--<content-type>text/xml</content-type>-->
+		<!--<accept>text/xml</accept>-->
+	<!--</service>-->
 
+	<!--<service name="I4LS" type="url-encoded">-->
+		<!--<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=296</soap-url>-->
+		<!--<outbound-xsl>I4LS_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>-->
+		<!--<inbound-xsl>I4LS_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=I4LS</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
+
+	<!--<service name="TINZ" type="url-encoded">-->
+		<!--<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=297</soap-url>-->
+		<!--<outbound-xsl>TINZ_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>-->
+		<!--<inbound-xsl>TINZ_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=TINZ</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
+
+	<!--<service name="STIN" type="url-encoded">-->
+		<!--<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=298</soap-url>-->
+		<!--<outbound-xsl>STIN_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>-->
+		<!--<inbound-xsl>STIN_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=STIN,quoteUrl=uat.simplytravelinsurance.com.au</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
 	<!-- The reference to travel_price_service_1COV.jsp below must not be removed as 1COV has some special rules in place (travel_price_service_1COV) waiting for updated algorithm from partners before re-instating the file
 	To be used for 1Cov, SKII, 30UN & ITRK -->
 	<service name="1COV" type="soap">
@@ -149,6 +220,16 @@
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
+
+	<service name="TICK" type="soap">
+		<soap-url>http://devausctmservice.insureandgo.com/QuotesAPI</soap-url>
+		<outbound-xsl>TICK_outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>SPName=au.com.Compare</outbound-xsl-parms>
+		<inbound-xsl>TICK_inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=TICK</inbound-xsl-parms>
+		<timeoutMillis>20000</timeoutMillis>
+	</service>
+
 	<service name="CLBS" type="soap">
 		<soap-url>http://trips.ecgid.net/xmlReceive.cfm?dbType=cti</soap-url>
 		<outbound-xsl>CLBS_outbound.xsl</outbound-xsl>
@@ -157,6 +238,33 @@
 		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=CLBS,agentCode=COZ</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
+
+	<!--<service name="REAL" type="url-encoded">-->
+		<!--<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=71</soap-url>-->
+		<!--<outbound-xsl>REAL_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>-->
+		<!--<inbound-xsl>REAL_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=REAL</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
+
+	<!--<service name="WOOL" type="url-encoded">-->
+		<!--<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=80</soap-url>-->
+		<!--<outbound-xsl>WOOL_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>-->
+		<!--<inbound-xsl>WOOL_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=WOOL</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
+
+	<!--<service name="SCTI" type="url-encoded">-->
+		<!--<soap-url>http://localhost:8080/ctm/rating/travel_price_result.jsp?providerId=304</soap-url>-->
+		<!--<outbound-xsl>SCTI_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>-->
+		<!--<inbound-xsl>SCTI_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=SCTI,rootURL=http://pp1.scti.com.au/979230</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
 
 	<service name="WEBJ" type="soap">
 		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
@@ -171,18 +279,18 @@
 		<accept>text/xml</accept>
 	</service>
 
-	<service name="ZUJI" type="soap">
-		<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>
-		<soap-user>CtM</soap-user>
-		<soap-password>F7AT8v57udgE5rx</soap-password>
-		<outbound-xsl>ZUJI_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms></outbound-xsl-parms>
-		<inbound-xsl>ZUJI_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ZUJI,quoteUrl=https://uat-zuji.agaassistance.com.au</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-		<content-type>text/xml</content-type>
-		<accept>text/xml</accept>
-	</service>
+	<!--<service name="ZUJI" type="soap">-->
+		<!--<soap-url>https://uat-pricingapi.agaassistance.com.au/api/QuickQuote</soap-url>-->
+		<!--<soap-user>CtM</soap-user>-->
+		<!--<soap-password>F7AT8v57udgE5rx</soap-password>-->
+		<!--<outbound-xsl>ZUJI_outbound.xsl</outbound-xsl>-->
+		<!--<outbound-xsl-parms></outbound-xsl-parms>-->
+		<!--<inbound-xsl>ZUJI_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=ZUJI,quoteUrl=https://uat-zuji.agaassistance.com.au</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+		<!--<content-type>text/xml</content-type>-->
+		<!--<accept>text/xml</accept>-->
+	<!--</service>-->
 
 	<service name="PPTI" type="soap">
 		<soap-url>http://btsws.atuat.acegroup.com/CRS_ACORD_WS/ACORDService.asmx</soap-url>

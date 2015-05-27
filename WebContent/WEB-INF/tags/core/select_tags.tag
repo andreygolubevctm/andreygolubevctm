@@ -10,6 +10,11 @@
 <%@ attribute name="variableListName" required="true" rtexprvalue="false" description="Name of variable to contain a JS array of objects" %>
 <%@ attribute name="variableListArray" required="true" rtexprvalue="true" description="JS array of objects to use in the select" %>
 <%@ attribute name="helpId" required="false" rtexprvalue="true" description="Optional help Id" %>
+<%@ attribute name="fieldType" required="false" rtexprvalue="true" description="Which field type to use. Default is select" %>
+<%@ attribute name="source" required="false" rtexprvalue="true" description="The URL for the Ajax call or a function that will handle the call (and potentially a callback) for autocomplete types only" %>
+<c:if test="${empty fieldType}">
+	<c:set var="fieldType" value="select" />
+</c:if>
 
 <script type="text/javascript">
 	var ${variableListName} = ${variableListArray};
@@ -17,7 +22,17 @@
 
 <%-- HTML --%>
 <form_new:row label="${label}" className="clear select-tags-row" helpId="${helpId}">
-	<field_new:array_select items="" xpath="${xpath}" title="${title}" required="true" className="select-tags" extraDataAttributes="data-varname='${variableListName}'" />
+
+	<c:choose>
+		<c:when test="${fieldType eq 'autocomplete'}">
+			<field_new:autocomplete xpath="${xpath}" className="blur-on-select show-loading select-tags" title="Postcode/Suburb" required="${required}" source="${source}" placeholder="${placeholder}" extraDataAttributes="data-varname='${variableListName}' data-transactionid='true'" />
+		</c:when>
+		<c:otherwise>
+			<field_new:array_select items="" xpath="${xpath}" title="${title}" required="true" className="select-tags" extraDataAttributes="data-varname='${variableListName}'" />
+		</c:otherwise>
+	</c:choose>
+
+
 	<field_new:validatedHiddenField xpath="${xpathhidden}" className="" title="${title}" validationErrorPlacementSelector=".content ${validationErrorPlacementSelector}" />
 </form_new:row>
 

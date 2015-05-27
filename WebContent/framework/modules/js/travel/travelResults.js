@@ -134,48 +134,58 @@
 	 */
 	function massageResultsObject(products) {
 
-		if(meerkat.modules.coverLevelTabs.isEnabled() !== true) {
-			return products;
-		}
-
-		var policyType = meerkat.modules.travel.getVerticalFilter();
+		var policyType = meerkat.modules.travel.getVerticalFilter(),
+			destinations = $('#travel_destination').val(),
+			isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled();
 		_.each(products, function massageJson(result, index) {
+
 			if(typeof result.info !== 'object') {
 				return;
 			}
 
 			var obj = result.info;
-			if(policyType == 'Single Trip') {
+			// TRV-667: replace any non digit words with $0 e.g. Optional Extra 
+			if(typeof obj.luggage !== 'undefined' && obj.luggage.value  <= 0 ) {
+				obj.luggage.text = "$0"
+			}
+			// TRV-769 Set value and text to $0 for quotes for JUST Australia.
+			if(destinations == 'AUS') {
+				obj.medical.value = 0;
+				obj.medical.text = "N/A";
+			}
+			if(isCoverLevelTabsEnabled === true) {
 
-				/**
-				 * Currently ignore medical if destination country is JUST AU.
-				 */
-				var medical = 5000000,
-				countryList = $('#travel_destinations').val();
-				if(countryList == "AUS") {
-					medical = 0;
-				}
+				if (policyType == 'Single Trip') {
 
-				if(obj.excess.value <= 250 && obj.medical.value >= medical
+					/**
+					 * Currently ignore medical if destination country is JUST AU.
+					 */
+					var medical = 5000000;
+					if (destinations == "AUS") {
+						medical = 0;
+					}
+
+					if (obj.excess.value <= 250 && obj.medical.value >= medical
 						&& obj.cxdfee.value >= 7500 && obj.luggage.value >= 7500) {
-					obj.coverLevel = 'C';
-					meerkat.modules.coverLevelTabs.incrementCount("C");
-				} else if (obj.excess.value <= 250 && obj.medical.value >= medical
+						obj.coverLevel = 'C';
+						meerkat.modules.coverLevelTabs.incrementCount("C");
+					} else if (obj.excess.value <= 250 && obj.medical.value >= medical
 						&& obj.cxdfee.value >= 2500
 						&& obj.luggage.value >= 2500) {
-					obj.coverLevel = 'M';
-					meerkat.modules.coverLevelTabs.incrementCount("M");
+						obj.coverLevel = 'M';
+						meerkat.modules.coverLevelTabs.incrementCount("M");
+					} else {
+						obj.coverLevel = 'B';
+						meerkat.modules.coverLevelTabs.incrementCount("B");
+					}
 				} else {
-					obj.coverLevel = 'B';
-					meerkat.modules.coverLevelTabs.incrementCount("B");
-				}
-			} else {
-				if(result.des.indexOf('Australia') == -1) {
-					obj.coverLevel = 'I';
-					meerkat.modules.coverLevelTabs.incrementCount("I");
-				} else {
-					obj.coverLevel = 'D';
-					meerkat.modules.coverLevelTabs.incrementCount("D");
+					if (result.des.indexOf('Australia') == -1) {
+						obj.coverLevel = 'I';
+						meerkat.modules.coverLevelTabs.incrementCount("I");
+					} else {
+						obj.coverLevel = 'D';
+						meerkat.modules.coverLevelTabs.incrementCount("D");
+					}
 				}
 			}
 		});

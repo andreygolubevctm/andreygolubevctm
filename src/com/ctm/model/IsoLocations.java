@@ -1,9 +1,6 @@
 package com.ctm.model;
 
-/**
- * Created by bthompson on 24/03/2015.
- */
-public class CountryMaster {
+public class IsoLocations {
 
     private String isoCode = "";
     private String countryName = "";
@@ -23,6 +20,5 @@ public class CountryMaster {
     public void setIsoCode(String isoCode) {
         this.isoCode = isoCode;
     }
-
 
 }

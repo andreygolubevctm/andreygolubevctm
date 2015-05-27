@@ -13,7 +13,7 @@
 		</c:when>
 		<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">
 			<%-- Also do A touch --%>
-			<core:transaction touch="A" noResponse="true" writeQuoteOverride="Y" />
+			<core:transaction touch="A" noResponse="true" writeQuoteOverride="Y" productId="${productID}"/>
 			<div id="loading">
 				<img src="brand/ctm/graphics/spinner-burp.gif" alt="Loading" />
 				<h4>Securely transferring you to <c:out value="${productBrand}" />...</h4>

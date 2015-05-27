@@ -213,7 +213,7 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, templateMoreInfo, $travel_dates_toDate, $travel_dates_fromDate_button, $travel_dates_fromDate, $travel_dates_toDate_button, $travel_adults, $travel_destinations_do_do;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, templateMoreInfo, $travel_dates_toDate, $travel_dates_fromDate_button, $travel_dates_fromDate, $travel_dates_toDate_button, $travel_adults;
     var moduleEvents = {
         traveldetails: {
             COVER_TYPE_CHANGE: "COVER_TYPE_CHANGE"
@@ -226,8 +226,7 @@
         $(document).ready(function() {
             $travel_dates_toDate = $("#travel_dates_toDate"), $travel_dates_fromDate_button = $("#travel_dates_fromDate_button"), 
             $travel_dates_fromDate = $("#travel_dates_fromDate"), $travel_dates_toDate_button = $("#travel_dates_toDate_button").trigger("click"), 
-            $travel_adults = $("#travel_adults"), $travel_dates_toDate = $("#travel_dates_toDate"), 
-            $travel_destinations = $("#travel_destinations");
+            $travel_adults = $("#travel_adults"), $travel_dates_toDate = $("#travel_dates_toDate");
             $policyTypeBtn = $("input[name=travel_policyType]");
             meerkat.modules.travelYourCover.initTravelCover();
             setJourneyEngineSteps();
@@ -305,14 +304,6 @@
                 $travel_adults.focus(function hideCalendar() {
                     $travel_dates_toDate.datepicker("hide");
                 });
-                if (meerkat.site.countrySelectionDefaults.length) {
-                    var countries = meerkat.site.countrySelectionDefaults.split(",");
-                    for (var i = 0; i < countries.length; i++) {
-                        if (countries[i].length) {
-                            $travel_destinations.val(countries[i]).change();
-                        }
-                    }
-                }
             },
             onBeforeEnter: function(event) {},
             onBeforeLeave: function(event) {}
@@ -364,7 +355,6 @@
     }
     function getTrackingFieldsObject() {
         try {
-            var ok_to_call = $("input[name=travel_marketing]", "#mainform").val() === "Y" ? "Y" : "N";
             var mkt_opt_in = $("input[name=travel_marketing]:checked", "#mainform").val() === "Y" ? "Y" : "N";
             var transactionId = meerkat.modules.transactionId.get();
             var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
@@ -504,6 +494,150 @@
     meerkat.modules.register("travelContactDetails", {
         init: init,
         setLocation: setLocation
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var events = {
+        travelCountrySelector: {}
+    }, moduleEvents = events.travelCountrySelector;
+    var $countrySelector, $unknownDestinations, selectedCountryObj = {}, selectedTextHTML, showingError = false;
+    function findCountryNameByIsoCode(isoCode) {
+        var countryList = window.countrySelectionList.isoLocations;
+        for (var i = 0; i < countryList.length; i++) {
+            if (countryList[i].isoCode == isoCode) {
+                return countryList[i].countryName;
+            }
+        }
+    }
+    function initTravelCountrySelector() {
+        $(document).ready(function() {
+            $countrySelector = $("#travel_destinations");
+            $unknownDestinations = $("#travel_unknownDestinations");
+            applyEventListeners();
+            setDefaultsFromDataBucket();
+        });
+    }
+    function setDefaultsFromDataBucket() {
+        if (meerkat.site.countrySelectionDefaults && meerkat.site.countrySelectionDefaults.length) {
+            var locations = meerkat.site.countrySelectionDefaults.split(",");
+            var $list = meerkat.modules.selectTags.getListElement($countrySelector);
+            for (var i = 0; i < locations.length; i++) {
+                if (locations[i].length) {
+                    var locationName = findCountryNameByIsoCode(locations[i]);
+                    var selectedLocation = locationName.length > 25 ? locationName.substr(0, 20) + "..." : locationName;
+                    meerkat.modules.selectTags.appendToTagList($list, selectedLocation, locationName, locations[i]);
+                    $countrySelector.val("");
+                }
+            }
+        }
+    }
+    function applyEventListeners() {
+        $countrySelector.on("keydown", function() {
+            $countrySelector.data("ttView").datasets[0].valueKey = "countryName";
+        }).on("typeahead:opened", function() {
+            selectedCountryObj = {};
+            $countrySelector.val("");
+        }).on("typeahead:selected", function typeAheadSelected(obj, datum, name) {
+            selectedCountryObj = datum;
+            var $list = meerkat.modules.selectTags.getListElement($(this));
+            if (typeof datum.countryName !== "undefined" && !meerkat.modules.selectTags.isAlreadySelected($list, datum.isoCode)) {
+                selectedTextHTML = datum.countryName;
+                var selectedLocation = selectedTextHTML.length > 25 ? selectedTextHTML.substr(0, 20) + "..." : selectedTextHTML;
+                meerkat.modules.selectTags.appendToTagList($list, selectedLocation, datum.countryName, datum.isoCode);
+            }
+            showingError = false;
+        }).on("click focus", function(event) {
+            $countrySelector.data("ttView").datasets[0].valueKey = "id";
+            $countrySelector.val("").typeahead("setQuery", "1").val("");
+            $(".tt-hint").hide();
+        }).on("blur", function(event) {
+            $countrySelector.val("");
+            if (!selectedCountryObj) $countrySelector.typeahead("setQuery", "").val("");
+        }).attr("placeholder", "Please type in your destination");
+    }
+    function addValueToCountriesForDefaultFocusEvent() {
+        var countries = countrySelectionList.countries;
+        if (typeof countries === "object" && countries.length) {
+            for (var i = 0; i < countries.length; i++) {
+                countries[i].id = "1";
+            }
+        } else {
+            countries = [];
+        }
+        return countries;
+    }
+    function getCountrySelectorParams($component) {
+        var localCountries = meerkat.modules.performanceProfiling.isIE11() ? [] : addValueToCountriesForDefaultFocusEvent();
+        var url = $component.attr("data-source-url"), urlAppend = (url.indexOf("?") == -1 ? "?" : "&") + "transactionId=" + meerkat.modules.transactionId.get(), $list = meerkat.modules.selectTags.getListElement($component);
+        return {
+            cache: true,
+            name: $component.attr("name"),
+            valueKey: "id",
+            template: function(data) {
+                var isSelected = meerkat.modules.selectTags.isAlreadySelected($list, data.isoCode);
+                if (isSelected && data.isoCode != "0000") {
+                    return "<del class='selected'>" + data.countryName + "</del>";
+                }
+                if (data.isoCode == "0000") {
+                    $unknownDestinations.val($unknownDestinations.val() + ($unknownDestinations.val().length ? "," : "") + $countrySelector.data("ttView").inputView.query);
+                }
+                return "<p>" + data.countryName + "</p>";
+            },
+            local: localCountries,
+            remote: {
+                maxParallelRequests: 1,
+                rateLimitWait: 500,
+                beforeSend: function(xhr, opts) {
+                    if ($countrySelector.data("ttView").inputView.getQuery() == 1) {
+                        xhr.abort();
+                        return false;
+                    }
+                    meerkat.modules.autocomplete.autocompleteBeforeSend($component);
+                },
+                filter: function(parsedResponse) {
+                    meerkat.modules.autocomplete.autocompleteComplete($component);
+                    var collection = parsedResponse.isoLocations;
+                    if (!collection.length) {
+                        return [ {
+                            id: 1,
+                            isoCode: "0000",
+                            countryName: "Sorry, we could not find that location..."
+                        } ];
+                    }
+                    return $.map(collection, function(country) {
+                        return {
+                            id: 1,
+                            isoCode: country.isoCode,
+                            countryName: country.countryName
+                        };
+                    });
+                },
+                url: url + "%QUERY" + urlAppend,
+                error: function(xhr, status) {
+                    if (!showingError) {
+                        meerkat.modules.errorHandling.error({
+                            page: "travelCountrySelector.js",
+                            errorLevel: "silent",
+                            title: "An error occurred...",
+                            message: "Sorry, an error occurred while finding the country you are looking for. Please try again or reload the page.",
+                            description: "Could not complete lookup: " + status,
+                            data: xhr
+                        });
+                        meerkat.modules.session.poke();
+                        showingError = true;
+                    }
+                    meerkat.modules.autocomplete.autocompleteComplete($component);
+                }
+            },
+            limit: 300
+        };
+    }
+    meerkat.modules.register("travelCountrySelector", {
+        init: initTravelCountrySelector,
+        events: events,
+        getCountrySelectorParams: getCountrySelectorParams
     });
 })(jQuery);
 
@@ -1130,37 +1264,43 @@
         }
     }
     function massageResultsObject(products) {
-        if (meerkat.modules.coverLevelTabs.isEnabled() !== true) {
-            return products;
-        }
-        var policyType = meerkat.modules.travel.getVerticalFilter();
+        var policyType = meerkat.modules.travel.getVerticalFilter(), destinations = $("#travel_destination").val(), isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled();
         _.each(products, function massageJson(result, index) {
             if (typeof result.info !== "object") {
                 return;
             }
             var obj = result.info;
-            if (policyType == "Single Trip") {
-                var medical = 5e6, countryList = $("#travel_destinations").val();
-                if (countryList == "AUS") {
-                    medical = 0;
-                }
-                if (obj.excess.value <= 250 && obj.medical.value >= medical && obj.cxdfee.value >= 7500 && obj.luggage.value >= 7500) {
-                    obj.coverLevel = "C";
-                    meerkat.modules.coverLevelTabs.incrementCount("C");
-                } else if (obj.excess.value <= 250 && obj.medical.value >= medical && obj.cxdfee.value >= 2500 && obj.luggage.value >= 2500) {
-                    obj.coverLevel = "M";
-                    meerkat.modules.coverLevelTabs.incrementCount("M");
+            if (typeof obj.luggage !== "undefined" && obj.luggage.value <= 0) {
+                obj.luggage.text = "$0";
+            }
+            if (destinations == "AUS") {
+                obj.medical.value = 0;
+                obj.medical.text = "N/A";
+            }
+            if (isCoverLevelTabsEnabled === true) {
+                if (policyType == "Single Trip") {
+                    var medical = 5e6;
+                    if (destinations == "AUS") {
+                        medical = 0;
+                    }
+                    if (obj.excess.value <= 250 && obj.medical.value >= medical && obj.cxdfee.value >= 7500 && obj.luggage.value >= 7500) {
+                        obj.coverLevel = "C";
+                        meerkat.modules.coverLevelTabs.incrementCount("C");
+                    } else if (obj.excess.value <= 250 && obj.medical.value >= medical && obj.cxdfee.value >= 2500 && obj.luggage.value >= 2500) {
+                        obj.coverLevel = "M";
+                        meerkat.modules.coverLevelTabs.incrementCount("M");
+                    } else {
+                        obj.coverLevel = "B";
+                        meerkat.modules.coverLevelTabs.incrementCount("B");
+                    }
                 } else {
-                    obj.coverLevel = "B";
-                    meerkat.modules.coverLevelTabs.incrementCount("B");
-                }
-            } else {
-                if (result.des.indexOf("Australia") == -1) {
-                    obj.coverLevel = "I";
-                    meerkat.modules.coverLevelTabs.incrementCount("I");
-                } else {
-                    obj.coverLevel = "D";
-                    meerkat.modules.coverLevelTabs.incrementCount("D");
+                    if (result.des.indexOf("Australia") == -1) {
+                        obj.coverLevel = "I";
+                        meerkat.modules.coverLevelTabs.incrementCount("I");
+                    } else {
+                        obj.coverLevel = "D";
+                        meerkat.modules.coverLevelTabs.incrementCount("D");
+                    }
                 }
             }
         });
@@ -1417,7 +1557,7 @@
             $summaryHeader.html("Your quote is based on");
             txt += '</span> <span class="optional">travelling</span> <span class="sm-md-block">to <span class="highlight">';
             if ($selectedTags.children().length == 1) {
-                txt += $selectedTags.find(".selected-tag span").text();
+                txt += $selectedTags.find("li:first-child").data("fulltext");
             } else {
                 txt += "multiple destinations";
             }

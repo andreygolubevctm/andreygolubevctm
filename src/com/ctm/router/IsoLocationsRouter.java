@@ -4,7 +4,7 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.Error;
 import com.ctm.services.FatalErrorService;
-import com.ctm.services.LocationsService;
+import com.ctm.services.IsoLocationsService;
 import com.ctm.utils.RequestUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -25,14 +25,14 @@ import java.io.PrintWriter;
  * Other calls may be required at different times, so examples have been provided for later use. *
  */
 @WebServlet(urlPatterns = {
-        "/locations/search.json",
-        "/locations/countries.json",
-        //"/locations/cities.json",
-        //"/locations/regions.json",
-        //"/locations/poi.json"
+        "/isolocations/search.json",
+        "/isolocations/countries.json",
+        //"/isolocations/cities.json",
+        //"/isolocations/regions.json",
+        //"/isolocations/poi.json"
 })
-public class LocationsRouter extends HttpServlet {
-    private static Logger logger = Logger.getLogger(LogRouter.class.getName());
+public class IsoLocationsRouter extends HttpServlet {
+    private static Logger logger = Logger.getLogger(IsoLocationsRouter.class.getName());
     private static final long serialVersionUID = 73L;
 
     @Override
@@ -47,20 +47,20 @@ public class LocationsRouter extends HttpServlet {
         }
 
         // Route the requests ///////////////////////////////////////////////////////////////////////////////
-        LocationsService locations = new LocationsService();
+        IsoLocationsService isoLocations = new IsoLocationsService();
 
-        if (uri.endsWith("/locations/search.json")) {
+        if (uri.endsWith("/isolocations/search.json")) {
             String search = request.getParameter("search");
 
             if (search != null) {
-                search = search.toLowerCase() + "%";
+                search = search.toLowerCase().trim() + "%";
             }
 
             JSONObject json = null;
 
             try {
                 RequestUtils.checkForTransactionIdInDataBucket(request);
-                json = locations.fetchSearchResults(search);
+                json = isoLocations.fetchSearchResults(search);
             } catch (DaoException | SessionException e) {
 
                 logger.error(e);
@@ -73,14 +73,14 @@ public class LocationsRouter extends HttpServlet {
             }
 
             writer.print(json.toString());
-        } else if (uri.endsWith("/locations/countries.json")) {
+        } else if (uri.endsWith("/isolocations/countries.json")) {
 
             JSONObject json = null;
             try {
                 RequestUtils.checkForTransactionIdInDataBucket(request);
-                json = locations.fetchCountryList();
+                json = isoLocations.fetchCountryList();
                 if(request.getParameter("showTopTen") != null && request.getParameter("showTopTen").equals("true")) {
-                    json = locations.addTopTenTravelDestinations(json);
+                    json = isoLocations.addTopTenTravelDestinations(json);
                 }
             } catch (DaoException | SessionException e) {
                 logger.error(e);

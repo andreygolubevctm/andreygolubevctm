@@ -49,6 +49,7 @@
 			applyEventListeners();
 	}
 
+
 	function applyEventListeners() {
 
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
