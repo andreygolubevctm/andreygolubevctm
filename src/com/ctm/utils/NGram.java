@@ -18,9 +18,6 @@ public class NGram {
 	private int patternsScore = 0;
 	private int reversePatternsScore = 0;
 
-	private int givenNamesScore = 0;
-	private int englishLanguageScore = 0;
-
 	private final int n;
 	private String text;
 
