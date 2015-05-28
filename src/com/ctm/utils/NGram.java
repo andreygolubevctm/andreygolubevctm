@@ -6,6 +6,13 @@ import java.util.List;
 
 public class NGram {
 
+	private static final String[] triple = new String[]{"111", "222", "333", "444", "555",
+			"666",
+			"777", "888", "999", "000", "aaa", "bbb", "ccc", "ddd", "eee", "fff",
+			"ggg", "hhh", "iii", "jjj", "kkk", "lll", "mmm", "nnn", "ooo", "ppp",
+			"qqq", "rrr", "sss", "ttt", "uuu", "vvv", "www", "xxx", "yyy", "zzz"};
+	
+
 	private int sequencesScore = 1;
 	private int triplesScore = 1;
 	private int patternsScore = 1;
@@ -62,12 +69,12 @@ public class NGram {
 		}
 		push();
 		while(++index < text.length()) {
-				found++;
-				if (found<n) {
-					push();
-				} else {
-					return true;
-				}
+			found++;
+			if (found<n) {
+				push();
+			} else {
+				return true;
+			}
 		}
 		return true;
 	}
@@ -99,12 +106,7 @@ public class NGram {
 
 		NGram ngram_s = new NGram("012345678909876543210abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcbasdfghjklkjhgfdsaqwertyuiopoiuytrewqzxcvbnmnbvcxz",n-1);
 		List<String> sequence = ngram_s.split();
-
-		List<String> triple = Arrays.asList("111", "222", "333", "444", "555", "666",
-			"777", "888", "999", "000", "aaa", "bbb", "ccc", "ddd", "eee", "fff",
-			"ggg", "hhh", "iii", "jjj", "kkk", "lll", "mmm", "nnn", "ooo", "ppp",
-			"qqq", "rrr", "sss", "ttt", "uuu", "vvv", "www", "xxx", "yyy", "zzz");
-
+		
 		while (seek()) {
 			String item = get();
 			String reverse = new StringBuilder(item).reverse().toString();
@@ -120,7 +122,7 @@ public class NGram {
 
 			// Evaluate for triples
 			if(getTriplesScore() > 0) {
-				if(triple.contains(item)) {
+				if(contains(triple, item)) {
 					ngrams.add("t:" + item);
 					score = calculate(score,getTriplesScore());
 					continue;
@@ -162,12 +164,7 @@ public class NGram {
 
 		NGram ngram_s = new NGram("012345678909876543210abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcbasdfghjklkjhgfdsaqwertyuiopoiuytrewqzxcvbnmnbvcxz",n-1);
 		List<String> sequence = ngram_s.split();
-
-		List<String> triple = Arrays.asList("111", "222", "333", "444", "555", "666",
-			"777", "888", "999", "000", "aaa", "bbb", "ccc", "ddd", "eee", "fff",
-			"ggg", "hhh", "iii", "jjj", "kkk", "lll", "mmm", "nnn", "ooo", "ppp",
-			"qqq", "rrr", "sss", "ttt", "uuu", "vvv", "www", "xxx", "yyy", "zzz");
-
+		
 		while (seek()) {
 			String item = get();
 			String reverse = new StringBuilder(item).reverse().toString();
@@ -182,7 +179,7 @@ public class NGram {
 
 			// Evaluate for triples
 			if(getTriplesScore() > 0) {
-				if(triple.contains(item)) {
+				if(contains(triple, item)) {
 					ngrams.add("t:" + item);
 					continue;
 				}
@@ -217,4 +214,9 @@ public class NGram {
 	private String get() {
 		return text.substring(indexes[0], index);
 	}
+
+	private boolean contains(String[] array , String item){
+		return Arrays.binarySearch(array, item) > -1;
+	}
+	
 }
