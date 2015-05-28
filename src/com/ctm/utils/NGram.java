@@ -6,17 +6,20 @@ import java.util.List;
 
 public class NGram {
 
-	private static final String[] triple = new String[]{"111", "222", "333", "444", "555",
-			"666",
-			"777", "888", "999", "000", "aaa", "bbb", "ccc", "ddd", "eee", "fff",
+
+	private static final String[] TRIPLE = new String[]{"111", "222", "333", "444", "555",
+			"666", "777", "888", "999", "000", "aaa", "bbb", "ccc", "ddd", "eee", "fff",
 			"ggg", "hhh", "iii", "jjj", "kkk", "lll", "mmm", "nnn", "ooo", "ppp",
 			"qqq", "rrr", "sss", "ttt", "uuu", "vvv", "www", "xxx", "yyy", "zzz"};
 	
+	
+	private int sequencesScore = 0;
+	private int triplesScore = 0;
+	private int patternsScore = 0;
+	private int reversePatternsScore = 0;
 
-	private int sequencesScore = 1;
-	private int triplesScore = 1;
-	private int patternsScore = 1;
-	private int reversePatternsScore = 1;
+	private int givenNamesScore = 0;
+	private int englishLanguageScore = 0;
 
 	private final int n;
 	private String text;
@@ -122,8 +125,7 @@ public class NGram {
 
 			// Evaluate for triples
 			if(getTriplesScore() > 0) {
-				if(contains(triple, item)) {
-					ngrams.add("t:" + item);
+				if(contains(TRIPLE, item)) {
 					score = calculate(score,getTriplesScore());
 					continue;
 				}
@@ -164,7 +166,9 @@ public class NGram {
 
 		NGram ngram_s = new NGram("012345678909876543210abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcbasdfghjklkjhgfdsaqwertyuiopoiuytrewqzxcvbnmnbvcxz",n-1);
 		List<String> sequence = ngram_s.split();
-		
+
+
+
 		while (seek()) {
 			String item = get();
 			String reverse = new StringBuilder(item).reverse().toString();
@@ -179,7 +183,7 @@ public class NGram {
 
 			// Evaluate for triples
 			if(getTriplesScore() > 0) {
-				if(contains(triple, item)) {
+				if(contains(TRIPLE, item)) {
 					ngrams.add("t:" + item);
 					continue;
 				}

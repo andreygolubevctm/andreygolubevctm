@@ -14,8 +14,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import static java.util.Arrays.asList;
-
 public class ProviderFilter {
 	private static final Logger logger = Logger.getLogger(ProviderFilter.class);
 	private static XMLStreamWriter writer;
@@ -46,7 +44,7 @@ public class ProviderFilter {
         try {
 
             final String code = providerCode(data, vertical);
-            return asList("invalid", null).contains(code) ? "" : code;
+            return code == null || code.equals("invalid") ? "" : code;
         }
         catch (Exception e) {
             logger.error(e);
