@@ -74,6 +74,8 @@
 					<%-- Load the config for the contact lead sender --%>
 					<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
 
+					<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", "lifebroker")}</c:set>
+
 					<go:soapAggregator 	config = "${config}"
 										transactionId = "${result.transaction_id}"
 										xml = "${go:getEscapedXml(data[fn:toLowerCase(vertical)])}"
@@ -83,8 +85,6 @@
 										configDbKey="quoteService"
 										styleCodeId="${pageSettings.getBrandId()}"
 										/>
-
-					<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", "lifebroker")}</c:set>
 				</c:when>
 			</c:choose>
 		</c:forEach>
