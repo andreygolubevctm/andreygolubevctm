@@ -3336,6 +3336,34 @@ body.THF #employmentRow,
 body.THF #thf_ineligible {
   display: none;
 }
+body.QCH .health-credit_card_details .fieldrow.health_credit-card-details_policyDay-group .row-content .select,
+body.QCH .health-credit_card_details .fieldrow.health_credit-card-details_policyDay-group label,
+body.QCH .health-credit_card_details .fieldrow.health_credit-card-details_paymentDay_group,
+body.QCH .health-credit_card_details .fieldrow.health_credit-card-details_day_group,
+body.QCH .health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+body.QCH .health-credit_card_details .fieldrow.health_credit-card-details_name,
+body.QCH .health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+body.QCH .health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+body.QCH .health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+body.QCH .health-credit_card_details .fieldrow.payment_assurance_message {
+  display: none;
+}
+body.QCH #health_medicareDetails_message,
+body.QCH .health_bank-details_day-group {
+  display: none !important;
+}
+body.QCH .health_bank-details_policyDay-group label {
+  visibility: hidden;
+}
+body.QCH .health_bank-details_policyDay-group,
+body.QCH .health_credit-card-details_policyDay-group,
+body.QCH .health_bank-details_policyDay-message,
+body.QCH .health_credit-card-details_policyDay-message {
+  display: block !important;
+}
+body.QCH .health_bank-details_policyDay-group .select {
+  display: none !important;
+}
 .health_declaration a {
   text-decoration: underline;
 }

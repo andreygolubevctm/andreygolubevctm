@@ -1318,7 +1318,8 @@ var healthDependents = {
             schoolDateMandatory: false,
             defacto: false,
             defactoMin: 21,
-            defactoMax: 24
+            defactoMax: 24,
+            apprentice: false
         };
         healthDependents.maxAge = 25;
     },
@@ -1420,6 +1421,7 @@ var healthDependents = {
         healthDependents.addFulltime(index, age);
         healthDependents.addSchool(index, age);
         healthDependents.addDefacto(index, age);
+        healthDependents.addApprentice(index, age);
     },
     getAge: function(dob) {
         var dob_pieces = dob.split("/");
@@ -1485,6 +1487,17 @@ var healthDependents = {
             }
         } else {
             $("#health_application_dependants-selection").find(".dependant" + index).find(".health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup").hide();
+        }
+    },
+    addApprentice: function(index, age) {
+        if (healthDependents.config.apprentice !== true) {
+            $("#health_application_dependants-selection").find(".health_dependant_details_apprenticeGroup").hide();
+            return false;
+        }
+        if (age >= healthDependents.config.schoolMin && age <= healthDependents.config.schoolMax) {
+            $("#health_application_dependants-selection").find(".dependant" + index).find(".health_dependant_details_apprenticeGroup").show();
+        } else {
+            $("#health_application_dependants-selection").find(".dependant" + index).find(".health_dependant_details_apprenticeGroup").hide();
         }
     },
     addDefacto: function(index, age) {
@@ -2054,7 +2067,7 @@ creditCardDetails = {
                     if ($firstnameField.val() === "") $firstnameField.val($("#health_application_primary_firstname").val());
                     if ($surnameField.val() === "") $surnameField.val($("#health_application_primary_surname").val());
                     var product = meerkat.modules.healthResults.getSelectedProduct();
-                    var mustShowList = [ "GMHBA", "Frank", "Budget Direct", "Bupa", "HIF" ];
+                    var mustShowList = [ "GMHBA", "Frank", "Budget Direct", "Bupa", "HIF", "QCHF" ];
                     if ($("input[name=health_healthCover_rebate]:checked").val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
                         $("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
                     } else {

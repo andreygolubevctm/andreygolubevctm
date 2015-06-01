@@ -14,10 +14,11 @@
 
 	<simples:dialogue id="30" vertical="health" mandatory="true" />
 
-	<form_new:fieldset legend="Medicare Details" >
+	<form_new:fieldset legend="Medicare Details" id="medicare_details" className="medicare_details">
 
 		<c:set var="fieldXpath" value="${xpath}/cover" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Are all people to be included on this policy covered by a green or blue Medicare card?" id="medicareCoveredRow" helpId="291">
+			<p id="health_medicareDetails_coverMessage"></p>
 			<field_new:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover"/>
 		</form_new:row>
 

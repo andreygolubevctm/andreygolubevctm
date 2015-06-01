@@ -464,7 +464,37 @@ body{
 			display:none;
 		}
 	}
-
+	&.QCH {
+		.health-credit_card_details .fieldrow.health_credit-card-details_policyDay-group .row-content .select,
+		.health-credit_card_details .fieldrow.health_credit-card-details_policyDay-group label,
+		.health-credit_card_details .fieldrow.health_credit-card-details_paymentDay_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_day_group,
+		.health-credit_card_details .fieldrow.health_credit-card_details_type_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_name,
+		.health-credit_card_details .fieldrow.health_credit-card-details_expiry_group,
+		.health-credit_card_details .fieldrow.health_credit-card-details_ccv,
+		.health-credit_card_details .fieldrow.health_credit-card-details_number_group,
+		.health-credit_card_details .fieldrow.payment_assurance_message
+		{
+			display:none;
+		}
+		#health_medicareDetails_message,
+		.health_bank-details_day-group {
+			display:none !important;
+		}
+		.health_bank-details_policyDay-group label {
+			visibility: hidden;
+		}
+		.health_bank-details_policyDay-group,
+		.health_credit-card-details_policyDay-group,
+		.health_bank-details_policyDay-message,
+		.health_credit-card-details_policyDay-message{
+			display:block !important;
+		}
+		.health_bank-details_policyDay-group .select {
+			display:none !important;
+		}
+	}
 }
 
 .health_declaration {

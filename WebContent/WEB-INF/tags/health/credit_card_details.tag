@@ -21,12 +21,12 @@
 		<health:payment_external xpath="${gatewayXpath}" />
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Credit Card Type" className="health-credit_card_details-type-group">
+		<form_new:row fieldXpath="${fieldXpath}" label="Credit Card Type" className="health_credit-card_details_type_group">
 			<field_new:array_select xpath="${fieldXpath}" required="true" delims="||" className="health-credit_card_details-type" title="type of credit card" items="=Please choose...||v=Visa||m=Mastercard||a=AMEX" />
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}/name" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Name on Credit Card">
+		<form_new:row fieldXpath="${fieldXpath}" label="Name on Credit Card" className="health_credit-card-details_name">
 			<field_new:input xpath="${fieldXpath}"
 						title="account name" required="true"
 						className="health-credit_card_details-name sessioncamexclude" />
@@ -35,12 +35,12 @@
 		<field:credit_card_validation />
 		
 		<c:set var="fieldXpath" value="${xpath}/number" />
-		<form_new:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number">
+		<form_new:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number_group">
 			<field_new:creditcard_number xpath="${fieldXpath}" title="Credit card number" required="true" className="health-credit_card_details-number sessioncamexclude" />
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}/expiry" />
-		<form_new:row fieldXpath="${fieldXpath}_cardExpiryMonth" label="Credit Card Expiry" id="${name}_expiry">
+		<form_new:row fieldXpath="${fieldXpath}_cardExpiryMonth" label="Credit Card Expiry" id="${name}_expiry" className="health_credit-card-details_expiry_group">
 			<field:cards_expiry rule="ccExp" xpath="${fieldXpath}" title="Credit card expiry date" required="true" className="health-credit_card_details-expiry sessioncamexclude" maxYears="7"/>
 		</form_new:row>
 		
