@@ -14,7 +14,6 @@
 	<xsl:param name="today" />
 	<xsl:param name="transactionId">*NONE</xsl:param>
 	<xsl:param name="fundid">qch</xsl:param>
-	<xsl:param name="bccEmail" />
 
 <!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:variable name="fundErrors">
@@ -43,8 +42,6 @@
 				<policyNo>
 					<xsl:value-of select="b:TransactionID" />
 				</policyNo>
-
-				<bccEmail><xsl:value-of select="$bccEmail" /></bccEmail>
 
 				<errors>
 					<xsl:if test="$errorCount &gt; 0">

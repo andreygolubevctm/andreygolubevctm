@@ -21,7 +21,6 @@
 		<outbound-xsl>qch/outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>keyname=CTM,keycode=CTMtest</outbound-xsl-parms>
 		<inbound-xsl>qch/inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>bccEmail=ctm.test@qchfund.com.au</inbound-xsl-parms>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
 		<timeoutMillis>240000</timeoutMillis>

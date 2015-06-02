@@ -21,7 +21,6 @@
 		<outbound-xsl>qch/outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>keyname=CompareTM,keycode=Compare456</outbound-xsl-parms>
 		<inbound-xsl>qch/inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>bccEmail=ctm@qchfund.com.au</inbound-xsl-parms>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
 		<timeoutMillis>240000</timeoutMillis>

@@ -28,8 +28,8 @@ var healthFunds_QCH = {
 			$('#QCH_questionset input').trigger('change');
 		}
 		else {
-			
-			
+
+
 
 			<c:set var="html">
 				<div id="QCH_questionset">
@@ -131,7 +131,7 @@ var healthFunds_QCH = {
 			"name" : 'health_payment_gateway',
 			"src": '${ctmSettings.getBaseUrl()}', <%-- the CTM iframe source URL --%>
 			"origin": '${hostOrigin}', <%-- the CTM host origin --%>
-			"providerCode": 'QCH',
+			"providerCode": 'qch',
 			"brandCode": '${pageSettings.getBrandCode()}',
 			"handledType" :  {
 				"credit" : true,

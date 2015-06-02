@@ -8,8 +8,6 @@
 		<domain>https://testservices.qchfund.com.au</domain>
 	</nabGateway>
 
-	<wsdl>https://testservices.qchfund.com.au/service.svc?wsdl</wsdl>
-
 	<merge-root>soap-response</merge-root>
 	<merge-xsl>merge-results.xsl</merge-xsl>
 	<config-dir>aggregator/health_application</config-dir>
@@ -23,7 +21,6 @@
 		<outbound-xsl>qch/outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>keyname=CTM,keycode=compare2015</outbound-xsl-parms>
 		<inbound-xsl>qch/inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>bccEmail=ctm.test@qchfund.com.au</inbound-xsl-parms>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
 		<timeoutMillis>240000</timeoutMillis>
