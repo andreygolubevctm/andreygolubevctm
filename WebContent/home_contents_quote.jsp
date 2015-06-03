@@ -37,35 +37,6 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<%-- Kitchen Sink Comment: If your vertical has no intention of having a call centre,
-		empty the contents of this fragment. --%>
-		<div class="navbar-collapse header-collapse-contact collapse">
-			<ul class="nav navbar-nav navbar-right">
-				<c:if test="${not empty callCentreNumber}">
-					<li>
-						<div class="navbar-text visible-xs">
-							<h4>Do you need a hand?</h4>
-							<h1>
-								<a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span></a>
-							</h1>
-							<p class="small">Our Australian based call centre hours are</p>
-							<p>
-								<%-- Global chat open hours. Use content control if you wish to override. --%>
-								<form:scrape id='135' />
-							</p>
-							${callCentreSpecialHoursContent}
-						</div>
-						<div class="navbar-text hidden-xs" data-livechat="target">
-							<h4>Call us on</h4>
-							<h1>
-								<span class="noWrap callCentreNumber">${callCentreNumber}</span>
-							</h1>
-						</div>
-						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
-					</li>
-				</c:if>
-			</ul>
-		</div>
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar">

@@ -72,7 +72,8 @@
 		<field:hidden xpath="${xpath}/productId" className="health_application_details_productId" />
 		<field:hidden xpath="${xpath}/productName" className="health_application_details_productNumber" />
 		<field:hidden xpath="${xpath}/productTitle" className="health_application_details_productTitle" />
-	
+		<field:hidden xpath="${xpath}/providerName" className="health_application_details_providerName" />
+
 	</form_new:fieldset>
 
 </div>

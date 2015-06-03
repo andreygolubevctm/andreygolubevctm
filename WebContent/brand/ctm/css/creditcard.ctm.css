@@ -106,8 +106,8 @@ body > div > header a.bottombar .btn-call:hover {
   color: #ffffff;
 }
 .creditcard strong {
-  font-family: 'SourceSansProBold';
   font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .creditcard #navbar-main {
   box-shadow: inset 0 5px 5px -5px rgba(0, 0, 0, 0.22);

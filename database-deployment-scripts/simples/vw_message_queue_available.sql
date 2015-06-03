@@ -19,7 +19,6 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_available` AS
 		-- Has the message expired? (created + source expiry)
 		AND (
 			NOW() <  DATE_ADD(created,INTERVAL src.messageExpiry DAY)
-			OR statusId = 4 /*Postponed*/
 			OR statusId = 31 /*Completed as PM*/
 			OR statusId = 32 /*Changed Time for PM*/
 		)

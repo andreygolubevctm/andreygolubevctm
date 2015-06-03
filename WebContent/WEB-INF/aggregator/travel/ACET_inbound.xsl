@@ -183,7 +183,7 @@
 						<xsl:value-of select="$urlToYear" />
 					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:text>%26brokerCode=citictm</xsl:text>
+				<xsl:text>%26brokerCode=citictm%26cid=AF-Insurance-CTM-INS22015</xsl:text>
 			</xsl:variable>
 
 			<xsl:variable name="travelDuration"><xsl:value-of select="$request/travel/soapDuration"></xsl:value-of></xsl:variable>

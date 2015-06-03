@@ -45,9 +45,9 @@
   font-style: normal;
 }
 @font-face {
-  font-family: SourceSansProBold;
+  font-family: SourceSansProSemiBold;
   src: url('../../../framework/fonts/SourceSansPro-Semibold.eot');
-  src: url('../../../framework/fonts/SourceSansPro-Semibold.eot?#iefix') format('embedded-opentype'), url('../../../framework/fonts/SourceSansPro-Semibold.woff') format('woff'), url('../../../framework/fonts/SourceSansPro-Semibold.ttf') format('truetype'), url('../../../framework/fonts/SourceSansPro-Semibold.svg#SourceSansProBold') format('svg');
+  src: url('../../../framework/fonts/SourceSansPro-Semibold.eot?#iefix') format('embedded-opentype'), url('../../../framework/fonts/SourceSansPro-Semibold.woff') format('woff'), url('../../../framework/fonts/SourceSansPro-Semibold.ttf') format('truetype'), url('../../../framework/fonts/SourceSansPro-Semibold.svg#SourceSansProSemiBold') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -355,7 +355,8 @@ abbr[title] {
 }
 b,
 strong {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 dfn {
   font-style: italic;
@@ -475,7 +476,8 @@ textarea {
   overflow: auto;
 }
 optgroup {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 table {
   border-collapse: collapse;
@@ -657,8 +659,8 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: 'SourceSansProBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
-  font-weight: 500;
+  font-family: 'SourceSansProSemiBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
+  font-weight: normal;
   line-height: 1.1;
   color: #417fd0;
 }
@@ -1899,7 +1901,8 @@ legend {
 label {
   display: inline-block;
   margin-bottom: 5px;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProRegular';
 }
 input[type="search"] {
   -webkit-box-sizing: border-box;
@@ -3873,7 +3876,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   display: inline;
   padding: .2em .6em .3em;
   font-size: 75%;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
   line-height: 1;
   color: #ffffff;
   text-align: center;
@@ -3947,7 +3951,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   color: inherit;
 }
 .alert .alert-link {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .alert > p,
 .alert > ul {
@@ -4063,7 +4068,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .close {
   float: right;
   font-size: 21px;
-  font-weight: bold;
+  font-weight: normal;
   line-height: 1;
   color: #000000;
   text-shadow: 0 1px 0 #ffffff;
@@ -4443,6 +4448,12 @@ body > div > header a {
 body > div > header a:hover {
   color: #2b6ec1;
 }
+body > div > header .well-chatty a {
+  color: white;
+}
+body > div > header .well-chatty a:hover {
+  color: #ffffff;
+}
 body > div > header a.btn-form,
 body > div > header a.bottombar .btn-call {
   color: #ffffff;
@@ -4501,7 +4512,8 @@ body > div > header a.btn-success {
 .header-collapse-contact > ul li .opening-hours {
   color: #1d4a82;
   font-size: 91%;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
   margin-top: -13px;
 }
 .header-collapse-contact > ul li .opening-hours .tomorrow-hours {
@@ -4793,7 +4805,8 @@ body > div > header a.btn-success {
   .navMenu-offcanvas .navMenu-contents .navbar-inverse .navbar-nav .active a,
   .navMenu-offcanvas .navMenu-contents .navbar-default .navbar-nav .active a {
     color: #ffdc11;
-    font-weight: bold;
+    font-weight: normal;
+    font-family: 'SourceSansProSemiBold';
   }
   .navMenu-offcanvas .navMenu-row-fixed {
     position: fixed;
@@ -4839,7 +4852,8 @@ body > div > header a.btn-success {
     background-color: #ffdc11;
     box-shadow: inset 0px -1px 0px 0px #ddbd00;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: normal;
+    font-family: 'SourceSansProSemiBold';
     margin-bottom: 18px;
   }
   .navMenu-offcanvas .navMenu-backdrop-underlay {
@@ -5566,7 +5580,7 @@ select[multiple].hint-lg.tt-hint {
 /** Styles for confirmation on HML */
 #confirmation strong {
   font-weight: normal;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
 }
 #health_confirmation-warning ul {
   padding-left: 40px;
@@ -5684,7 +5698,7 @@ select[multiple].hint-lg.tt-hint {
   border: none;
 }
 .datepicker table tr th {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   font-weight: normal;
   font-color: #333333;
 }
@@ -6267,7 +6281,8 @@ fieldset[disabled] .datepicker table tr td.selected.disabled:hover.active {
   padding: 5px 35px 5px 10px;
   overflow: hidden;
   border-width: 0 0 1px;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
   font-size: 16px;
   border-radius: 5px 5px 0 0;
 }
@@ -7616,12 +7631,12 @@ body.simples .health .resultsHeadersBg {
 }
 .compareBar .comparisonInactive strong {
   font-weight: normal;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   color: #417fd0;
 }
 .compareBar .comparisonInactive em {
   font-weight: normal;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   color: #417fd0;
   font-style: normal;
 }
@@ -7637,7 +7652,7 @@ body.simples .health .resultsHeadersBg {
 .compareBar .comparisonInactive .productCount {
   color: #1d4a82;
   font-weight: normal;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   font-size: 1.4em;
   white-space: nowrap;
 }
@@ -7663,7 +7678,7 @@ body.simples .health .resultsHeadersBg {
 }
 .compareBar .comparisonActive {
   display: none;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
 }
 .compareBar .comparisonActive h3 {
   font-family: 'SourceSansProLight';
@@ -7853,7 +7868,7 @@ body.simples .health .resultsHeadersBg {
   margin-bottom: 10px;
 }
 .filters-component .filter-label {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   min-height: 36px;
   display: table;
 }
@@ -8252,7 +8267,7 @@ fieldset[disabled] .checkbox input + label:before {
   padding-right: 15px;
   margin-bottom: 6px;
   font-size: 80%;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   color: #868780;
 }
 .slider-control .slider-legends {
@@ -8473,6 +8488,14 @@ fieldset h2 .icon-text {
   line-height: 14px;
   margin-top: 0.5em;
 }
+#mailCheckOutput {
+  font-size: 12px;
+  margin-top: 0.5em;
+}
+#mailCheckOutput a {
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
+}
 .call-me-back-form .well {
   margin-top: 37px;
 }
@@ -8648,7 +8671,8 @@ fieldset h2 .icon-text {
 }
 #sessionModalCountDown {
   text-align: center;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
   margin: 0 0 14px 0;
   font-size: 32px;
   color: #1d4a82;
@@ -8664,7 +8688,7 @@ fieldset h2 .icon-text {
 #confirmation-compare-options a {
   display: inline-block;
   width: 100%;
-  font-family: 'SourceSansProBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
+  font-family: 'SourceSansProSemiBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
   color: #333333;
   font-size: 23px;
   text-align: center;
@@ -8824,7 +8848,7 @@ fieldset h2 .icon-text {
   position: relative;
 }
 .featuresMode .compare-basket .compared-products-list .name {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   text-overflow: ellipsis;
   width: 50%;
   top: 3px;
@@ -9031,7 +9055,7 @@ fieldset h2 .icon-text {
   font-size: 12px;
   text-transform: uppercase;
   white-space: nowrap;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
 }
 @media (min-width: 1200px) {
   .edit-details-wrapper .icon {
@@ -9114,7 +9138,8 @@ body.modal-open .edit-details-wrapper.expired-quote .panel.accordion-panel.expir
   display: block;
 }
 body.modal-open .edit-details-wrapper.expired-quote .panel.accordion-panel.expired-panel .column p {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
   text-align: right;
 }
 @media (min-width: 768px) {
@@ -9363,12 +9388,12 @@ fieldset[disabled] .radioCustom input + label:before {
 }
 #results_v3 .headers.featuresNormalHeader .compare-basket .compare-max-count-label {
   font-weight: normal;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   white-space: nowrap;
 }
 #results_v3 .headers.featuresNormalHeader .compare-basket .products-returned-count {
   font-weight: normal;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   white-space: nowrap;
 }
 #results_v3 .compareButtonsContainer {
@@ -10345,7 +10370,8 @@ ul.themed > li:before {
   color: #dfdfdf;
 }
 .text-bold {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .text-italic {
   font-style: italic;
@@ -11138,7 +11164,8 @@ fieldset[disabled] .form-control {
 }
 .has-switch span.switch-small {
   width: 40%;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .has-switch span.switch-right {
   width: 40%;
@@ -11401,7 +11428,7 @@ select + .spinner {
   color: #333333;
 }
 .journeyEngineLoader {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
 }
 .journeyEngineLoader .loading-logo {
   margin: 0 auto 10px;

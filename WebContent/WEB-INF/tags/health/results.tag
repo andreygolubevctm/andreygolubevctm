@@ -4,6 +4,7 @@
 
 <%-- Setup variables needed for dual pricing --%>
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.services.health.HealthPriceDetailService" scope="page" />
+<jsp:useBean id="openingHoursService" class="com.ctm.services.simples.OpeningHoursService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 <c:if test="${healthAlternatePricingActive eq true}">
 	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
@@ -66,12 +67,15 @@
 				<p class="larger">
 					Call <em class="noWrap callCentreNumber">${callCentreNumber}</em>
 				</p>
-				<p class="smaller">
-					Our Australian based call centre hours are
-				</p>
-				<p class="smaller">
-					<strong><form:scrape id='135'/></strong><%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
-				</p>
+				<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
+					<div class="opening-hours">
+						<a href="javascript:;" data-toggle="dialog"
+							data-content="#view_all_hours"
+							data-dialog-hash-id="view_all_hours"
+							data-title="Call Centre Hours" data-cache="true">View our Australian based call centre hours
+						</a>
+					</div>
+				</c:if>
 			</div>
 		</div>
 	</c:if>

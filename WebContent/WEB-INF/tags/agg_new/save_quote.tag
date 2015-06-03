@@ -4,6 +4,8 @@
 
 <%@ attribute name="includeCallMeback"	required="false"	description="display call back after save quote"%>
 
+<jsp:useBean id="openingHoursService" class="com.ctm.services.simples.OpeningHoursService" scope="page" />
+
 <c:if test="${not empty authenticatedData.userData && not empty authenticatedData.userData.emailAddress}">
 	<c:set var="savedEmail" value="${authenticatedData.userData.emailAddress}" />
 </c:if>
@@ -93,14 +95,22 @@
 		</div>
 
 		<%-- RIGHT COLUMN --%>
-		<c:if test="${not empty callCentreNumber}">		
-		<div class="col-sm-4 hidden-xs">
-			<ui:bubble variant="chatty">
-				<p>Please be aware that product availability may change from time to time, so buy today to ensure you lock in your first choice!</p>
+		<c:if test="${not empty callCentreNumber}">
+			<div class="col-sm-4 hidden-xs">
+				<ui:bubble variant="chatty">
+					<p>Please be aware that product availability may change from time to time, so buy today to ensure you lock in your first choice!</p>
 					<p><strong>Buy online or call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></strong></p>
-				<p><small>Our Australian based call centre hours are<br><strong><form:scrape id='135'/></strong></small></p>
-			</ui:bubble>
-		</div>
+					<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
+						<div class="opening-hours">
+							<a href="javascript:;" data-toggle="dialog"
+								data-content="#view_all_hours"
+								data-dialog-hash-id="view_all_hours"
+								data-title="Call Centre Hours" data-cache="true">View our Australian based call centre hours
+							</a>
+						</div>
+					</c:if>
+				</ui:bubble>
+			</div>
 		</c:if>
 
 	</div>
@@ -117,7 +127,7 @@
 	</div>
 </form>
 
-<div class="hidden-xs"> 
+<div class="hidden-xs">
 	<%-- CALL BACK FORM --%>
 	<c:if test="${includeCallMeback eq true}">
 

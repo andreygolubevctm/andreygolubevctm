@@ -141,7 +141,7 @@
 	<c:when test="${touch_with_productId and not empty productId}">
 		<jsp:useBean id="touchService" class="com.ctm.services.AccessTouchService" scope="page" />
 		<c:catch var="error">
-			<c:set var="ignore" value="${touchService.recordTouch(transactionId, touch , operator, productId)}" />
+			<c:set var="ignore" value="${touchService.recordTouchWithProductCode(transactionId, touch , operator, productId)}" />
 		</c:catch>
 		<c:if test="${not empty error}">
 			<go:log level="ERROR">

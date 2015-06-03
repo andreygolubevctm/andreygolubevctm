@@ -5,6 +5,8 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
+<c:set var="callCentreHoursBubble" scope="request"><content:getOpeningHoursBubble /></c:set>
+
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
@@ -37,22 +39,8 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 		<jsp:attribute name="rightColumn">
 			<c:if test="${not empty callCentreNumber}">
 				<ui:bubble variant="info">
-					<h4>Do you need a hand?</h4>
-					<p>Let's face it, health insurance can be complicated. If you need a hand, here's why you should call us:</p>
-					<ul class="themed">
-						<li>You get personal service from our experienced and friendly staff</li>
-						<li>We help you through each step of the process</li>
-						<li>We answer any questions you may have along the way</li>
-						<li>We can help you find the right cover for your needs</li>
-					</ul>
-					<h4>Call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h4>
-					<p>Our Australian-based call centre hours are:</p>
-					<p>
-						<strong><form:scrape id='135'/></strong><%-- Get the Call Centre Hours from Scrapes Table HLT-832 --%>
-					</p>
-					<c:if test="${not empty callCentreSpecialHoursLink and not empty callCentreSpecialHoursContent}">
-						${callCentreSpecialHoursLink}
-					</c:if>
+					<health_content:call_centre_help />
+					${callCentreHoursBubble}
 				</ui:bubble>
 			</c:if>
 		</jsp:attribute>

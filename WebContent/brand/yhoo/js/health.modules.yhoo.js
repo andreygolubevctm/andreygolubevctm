@@ -5178,6 +5178,7 @@ creditCardDetails = {
             $_main.find(".health_application_details_productId").val(selectedProduct.productId);
             $_main.find(".health_application_details_productNumber").val(selectedProduct.info.productCode);
             $_main.find(".health_application_details_productTitle").val(selectedProduct.info.productTitle);
+            $_main.find(".health_application_details_providerName").val(selectedProduct.info.providerName);
             if (premiumChangeEvent === true) {
                 meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct);
             } else {

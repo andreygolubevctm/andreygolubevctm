@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
+
 <session:get settings="true" authenticated="true" />
 <c:set var="vertical">${pageSettings.getVerticalCode()}</c:set>
 <c:set var="continueOnValidationError" value="${false}" />
@@ -159,10 +161,9 @@
 		</c:choose>
 		
 		<c:set var="leadSentTo" value="${param.company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
-		<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/callBackLeadSentTo" value="${leadSentTo}" />
 		<go:setData dataVar="data" xpath="current/transactionId" value="${data.current.transactionId}" />
 		<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" /></c:set>
-		<core:transaction touch="C" noResponse="true" writeQuoteOverride="N" />
+		<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(data.current.transactionId, "C", leadSentTo)}</c:set>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

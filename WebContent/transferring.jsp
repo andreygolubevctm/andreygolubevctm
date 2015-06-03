@@ -12,7 +12,7 @@
 
 <jsp:useBean id="resultsService" class="com.ctm.services.ResultsService" scope="request" />
 
-<c:set var="quoteUrl" value="${resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl') }" />
+<c:set var="quoteUrl" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl'),'%26','&') }" />
 
 <%-- HTML --%>
 <layout:generic_page title="Transferring you...">

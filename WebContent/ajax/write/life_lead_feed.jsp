@@ -84,13 +84,7 @@
 										styleCodeId="${pageSettings.getBrandId()}"
 										/>
 
-					<go:setData dataVar="data" xpath="current/transactionId" value="${result.transaction_id}" />
-					
-					<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/firstPageDropOffLeadSentTo" value="lifebroker" />
-
-					<%-- Set the touch response as a variable so that we don't output to screen --%>
-					<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" />
-					<core:transaction touch="LF" noResponse="true" writeQuoteOverride="N" />
+					<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", "lifebroker")}</c:set>
 				</c:when>
 			</c:choose>
 		</c:forEach>

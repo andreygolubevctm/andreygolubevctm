@@ -5,6 +5,7 @@ import com.ctm.dao.TouchDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
+import com.ctm.model.TouchCommentProperty;
 import com.ctm.model.TouchProductProperty;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.router.IncomingEmailRouter;
@@ -32,7 +33,7 @@ public class AccessTouchService {
 		this.sessionDataService = new SessionDataService();
 	}
 
-	// Don't reorder any of the recordTouch methods.
+	// Don't reorder any of the recordTouch(*) methods.
 	// Doing so will cause hell to break loose.
 	// JSP tries to 'best match' calls to overloaded methods
 	// and does so on a first-come first-served basis. This results
@@ -42,65 +43,75 @@ public class AccessTouchService {
 		return recordTouch(transactionId,  type , null);
 	}
 
-	public Boolean recordTouch(Long transactionId, String type , String operatorId, String productCode) {
+	public Boolean recordTouch(long transactionId, String type , String operatorId) {
+		Touch touch = createTouchObject(transactionId, type, operatorId);
+		return recordTouch(touch);
+	}
+
+	public Boolean recordTouch(Touch touch){
 		if (request != null && request.getSession() != null) {
 			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
 			if(authenticatedData != null) {
-				operatorId = authenticatedData.getUid();
+				touch.setOperator(authenticatedData.getUid());
 			}
 		}
+
 		try {
-			Touch touch = new Touch();
-			touch.setTransactionId(transactionId);
-			touch.setType(TouchType.findByCode(type));
-			touch.setOperator(operatorId);
-			if (StringUtils.isNotBlank(productCode)) {
-				TouchProductProperty touchProductProperty = new TouchProductProperty();
-				touchProductProperty.setProductCode(productCode);
-				touch.setTouchProductProperty(touchProductProperty);
-			}
 			dao.record(touch);
 			return true;
 		} catch(DaoException e) {
 			// Failing to write the touch shouldn't be fatal - let's just log an error
-			String message = "Failed to record touch (" + type + ") against transaction [" + transactionId + "].";
+			String message = "Failed to record touch (" + touch.getType() + ") against transaction [" + touch.getTransactionId() + "].";
 			logger.error(message, e);
 			return false;
 		}
 	}
 
-	public Boolean recordTouch(long transactionId, String type , String operatorId) {
-		if (request != null && request.getSession() != null) {
-			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
-			if(authenticatedData != null) {
-				operatorId = authenticatedData.getUid();
-	}
-		}
-
-		try {
-			dao.record(transactionId, type, operatorId);
-			return true;
-		} catch(DaoException e) {
-			// Failing to write the touch shouldn't be fatal - let's just log an error
-			logger.error("Failed to record touch (" + type + ") against transaction [" + transactionId + "].");
-			logger.error(e);
-			return false;
-		}
-	}
-
 	public Boolean recordTouchWithProductCode(long transactionId, String type, String productCode) {
-		// Set operator to null - the TouchDao will use this as 'ONLINE' if not superseded
-		String operator = null;
-		// Populate operator from authenticated data if available
-		if (request.getSession() != null) {
-			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
-			if(authenticatedData != null) {
-				operator = authenticatedData.getUid();
-		}
+		return recordTouchWithProductCode(transactionId, type, null, productCode);
 	}
 
-		return recordTouch(transactionId,  type , operator, productCode);
+	public Boolean recordTouchWithProductCode(long transactionId, String type, String operatorId, String productCode) {
+		Touch touch = createTouchObject(transactionId, type, operatorId);
 
+		if (StringUtils.isNotBlank(productCode)) {
+			TouchProductProperty touchProductProperty = new TouchProductProperty();
+			touchProductProperty.setProductCode(productCode);
+			touch.setTouchProductProperty(touchProductProperty);
+		}
+
+		return recordTouch(touch);
+	}
+
+	public Boolean recordTouchWithComment(long transactionId, String type, String comment) {
+		return recordTouchWithComment(transactionId, type, null, comment);
+	}
+
+	public Boolean recordTouchWithComment(long transactionId, String type, String operatorId, String comment) {
+		Touch touch = createTouchObject(transactionId, type, operatorId);
+
+		if (StringUtils.isNotBlank(comment)) {
+			TouchCommentProperty touchCommentProperty = new TouchCommentProperty();
+			touchCommentProperty.setComment(comment);
+			touch.setTouchCommentProperty(touchCommentProperty);
+		}
+
+		return recordTouch(touch);
+	}
+
+	public static Touch createTouchObject(Long transactionId, String type) {
+		return createTouchObject(transactionId, type, null);
+	}
+
+	public static Touch createTouchObject(Long transactionId, String type, String operatorId) {
+		Touch touch = new Touch();
+		touch.setTransactionId(transactionId);
+		touch.setType(TouchType.findByCode(type));
+
+		if(StringUtils.isNotEmpty(operatorId))
+			touch.setOperator(operatorId);
+
+		return touch;
 	}
 
 	public boolean hasTouch(final long transactionId, final TouchType touchType) throws DaoException {

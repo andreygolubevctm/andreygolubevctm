@@ -1081,14 +1081,14 @@ div[class*="ToggleArea"].show_Y {
   width: 84%;
 }
 .homeloan strong {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
 }
 .homeloan #navbar-compare.navbar-affix.affix {
   top: 41px;
 }
 .homeloan .btn-view-brands strong {
   font-size: 1.2em;
-  font-weight: 400;
+  font-weight: normal;
 }
 .homeloan .confirmation .btn-cta {
   border: none;

@@ -5,7 +5,7 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.Touch.TouchType;
 import com.ctm.model.TouchProductProperty;
-import org.apache.commons.lang3.StringUtils;
+import com.ctm.services.AccessTouchService;
 
 import javax.naming.NamingException;
 import java.sql.*;
@@ -323,28 +323,8 @@ public class TouchDao {
 	 * @throws DaoException
 	 */
 	public Touch record(Long transactionId, String type, String operator) throws DaoException {
-		Touch touch = createTouchObject( transactionId,  type,  operator,  null);
+		Touch touch = AccessTouchService.createTouchObject(transactionId, type, operator);
 		return record(touch);
-	}
-
-	/**
-	 * record() records a touch event against a transaction
-	 *
-	 * @param transactionId
-	 * @param type
-	 * @throws DaoException
-	 */
-	private Touch createTouchObject(Long transactionId, String type, String operator, String productCode) throws DaoException {
-		Touch touch = new Touch();
-		touch.setTransactionId(transactionId);
-		touch.setType(TouchType.findByCode(type));
-		touch.setOperator(operator);
-		if (StringUtils.isNotBlank(productCode)) {
-			TouchProductProperty touchProductProperty = new TouchProductProperty();
-			touchProductProperty.setProductCode(productCode);
-			touch.setTouchProductProperty(touchProductProperty);
-		}
-		return touch;
 	}
 
 	/***
@@ -391,6 +371,23 @@ public class TouchDao {
 				rs = stmt.getGeneratedKeys();
 				if (rs != null && rs.next()) {
 					touch.getTouchProductProperty().setId(rs.getLong(1));
+				}
+			}
+
+			if (touch.getTouchCommentProperty() != null) {
+				stmt = dbSource.getConnection().prepareStatement(
+						"INSERT INTO ctm.touches_comments (touchesId, comment) " +
+								"VALUES (?, ?);" , Statement.RETURN_GENERATED_KEYS
+				);
+
+				stmt.setLong(1, touch.getId());
+				stmt.setString(2, touch.getTouchCommentProperty().getComment());
+
+				stmt.executeUpdate();
+				// Update the comment model with the insert ID
+				rs = stmt.getGeneratedKeys();
+				if (rs != null && rs.next()) {
+					touch.getTouchCommentProperty().setId(rs.getLong(1));
 				}
 			}
 		}

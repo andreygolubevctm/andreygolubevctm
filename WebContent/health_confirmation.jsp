@@ -7,9 +7,10 @@
 
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
-<%-- Call centre special hours --%>
-<c:set var="callCentreSpecialHoursLink"><content:get key="healthCallCentreSpecialHoursLink"/></c:set>
-<c:set var="callCentreSpecialHoursContent"><content:get key="healthCallCentreSpecialHoursContent"/></c:set>
+
+<jsp:useBean id="callCenterHours" class="com.disc_au.web.go.CallCenterHours" scope="page" />
+<c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
+<c:set var="callCentreAllHoursContent" scope="request"><content:getOpeningHoursModal /></c:set>
 
 <core:quote_check quoteType="health" />
 
@@ -30,27 +31,15 @@
 							<h4>Do you need a hand?</h4>
 							<h1><a class="needsclick callCentreNumberClick" href="tel:${callCentreNumberApplication}">Call <span class="callCentreNumber">${callCentreNumberApplication}</span></a></h1>
 							<p class="small">Our Australian based call centre hours are</p>
-							<p><form:scrape id='135'/></p>
-							${callCentreSpecialHoursContent}
+							${openingHoursHeader }
 						</div>
 						<div class="navbar-text hidden-xs" data-livechat="target" data-livechat-fire='{"step":7,"confirmation":true,"navigationId":"confirmation"}'>
 							<h4>Call us on</h4>
 							<h1><span class="noWrap callCentreNumber">${callCentreNumberApplication}</span></h1>
-							<c:if test="${not empty callCentreSpecialHoursLink and not empty callCentreSpecialHoursContent}">
-								${callCentreSpecialHoursLink}
-								<div id="healthCallCentreSpecialHoursContent" class="hidden">
-									<div class="row">
-										<div class="col-sm-6">
-											<h4>Normal Hours</h4>
-											<p><form:scrape id='135'/></p>
+							${openingHoursHeader }
 						</div>
-										<div class="col-sm-6">
-											${callCentreSpecialHoursContent}
-										</div>
-									</div>
-								</div>
-							</c:if>			
-						</div>
+						<div id="view_all_hours" class="hidden">${callCentreAllHoursContent}</div>
+						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
 					</li>
 				</c:if>
 			</ul>

@@ -199,7 +199,7 @@ body > div > header a.bottombar .btn-call:hover {
 .quoteNumber {
   color: #00afd8;
   font-size: 21px;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
 }
 @media (min-width: 768px) {
   .quoteNumber {
@@ -725,6 +725,8 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .result .promotion strong {
   text-transform: uppercase;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 @media (min-width: 992px) {
   .result .promotion {
@@ -1006,7 +1008,7 @@ body > div > header a.bottombar .btn-call:hover {
 .quote-summary-table th {
   color: #064667;
   padding-top: 10px;
-  font-weight: 500;
+  font-weight: normal;
   width: 50%;
 }
 .home .no-bottom-margin {

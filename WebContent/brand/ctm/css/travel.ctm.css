@@ -106,8 +106,8 @@ body > div > header a.bottombar .btn-call:hover {
   color: #ffffff;
 }
 .travel strong {
-  font-family: 'SourceSansProBold';
-  font-weight: 400;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 @media (min-width: 768px) {
   .travel label.btn {
@@ -451,7 +451,8 @@ body > div > header a.bottombar .btn-call:hover {
   text-align: right;
 }
 .benefitsContainer tr td + td {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .headerBar > div > .logoContainer {
   padding: 0;
@@ -742,7 +743,7 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
 }
 .resultsSummaryPlaceholder .highlight {
   color: #1c3e93;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .optional {
@@ -1076,6 +1077,8 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
 }
 .underwriter-link strong {
   font-size: 1.2em;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 @media (min-width: 992px) {
   .travel-brands-modal .modal-body {

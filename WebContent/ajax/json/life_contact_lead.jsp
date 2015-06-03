@@ -54,8 +54,10 @@
 				<c:if test="${not empty clientRef}">
 					<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/api/reference" value="${clientRef}" />
 				</c:if>
-		
-				<core:transaction touch="LF" noResponse="true" />
+
+				<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="request" />
+				<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" />
+				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "LF", "lifebroker")}</c:set>
 			</c:otherwise>
 		</c:choose>
 	</c:when>

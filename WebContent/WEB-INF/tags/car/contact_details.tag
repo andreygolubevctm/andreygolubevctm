@@ -34,7 +34,14 @@
 	</form_new:row>
 
 	<form_new:row label="Email Address" id="contactEmailRow">
-		<field_new:email xpath="${xpath}/email" required="${mandatoryFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" />
+		<c:choose>
+			<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 21)}">
+				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" />
+			</c:when>
+			<c:otherwise>
+				<field_new:email xpath="${xpath}/email" required="${mandatoryFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" />
+			</c:otherwise>
+		</c:choose>
 	</form_new:row>
 
 	<form_new:row label="Contact Number" id="contactNoRow">

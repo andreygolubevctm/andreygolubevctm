@@ -1395,7 +1395,8 @@ body.car[data-step="results"] .more-info-content .price-promise-panel h6 {
   font-size: 17px;
 }
 body.car[data-step="results"] .more-info-content .price-promise-panel strong {
-  font-weight: normal !important;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 body.car[data-step="results"] .more-info-content .price-promise-panel a {
   color: #ffffff;

@@ -171,5 +171,5 @@ public class CallCenterHours {
 			/* Return current date and time */
 			return now.getTime();
 		}
-	}	
+	}
 }

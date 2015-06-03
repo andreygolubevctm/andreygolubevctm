@@ -20,6 +20,13 @@ body > div > header {
 		color: @header-link-color;
 		&:hover{ color: @header-link-hover-color }
 	}
+	.well-chatty {
+		a {
+			color: white;
+			&:hover{ color: white }
+		}
+	}
+
 
 	//but the buttons are getting overriden by accident due to their lower specificity.
 	a.btn-form {
@@ -65,12 +72,14 @@ body > div > header {
 				}
 			}
 		}
+
 		.opening-hours{
 			color: @theme-tertiary;
 			font-size: 91%;
-			font-weight: bold;
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
 			margin-top:-13px;
-			.tomorrow-hours { 
+			.tomorrow-hours {
 				color: @opening-hours-grey-colour;
 				@media (max-width: 767px){
 					color: #fff;
@@ -82,6 +91,7 @@ body > div > header {
 					}
 				}
 		}
+
 		[data-livechat="button"] {
 			vertical-align: super;
 			margin-left: 20px;

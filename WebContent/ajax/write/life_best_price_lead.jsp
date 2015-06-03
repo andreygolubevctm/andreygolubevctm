@@ -138,11 +138,10 @@
 					</c:choose>
 					
 					<c:set var="leadSentTo" value="${company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
-					<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/bestPriceLeadSentTo" value="${leadSentTo}" />
 					<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/emailSentBy" value="${leadSentTo}" />
 					<go:setData dataVar="data" xpath="current/transactionId" value="${result.transaction_id}" />
 					<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" />
-					<core:transaction touch="LF" noResponse="true" writeQuoteOverride="N" />
+					<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", leadSentTo)}</c:set>
 				</c:when>
 			</c:choose>
 		</c:forEach>

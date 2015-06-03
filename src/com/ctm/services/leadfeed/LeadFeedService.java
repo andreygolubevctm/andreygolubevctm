@@ -108,7 +108,11 @@ public abstract class LeadFeedService {
 
 	protected Boolean recordTouch(String touchType, LeadFeedData leadData) {
 		AccessTouchService touchService = new AccessTouchService();
-		return touchService.recordTouch(leadData.getTransactionId(), touchType, Touch.ONLINE_USER, leadData.getProductId());
+
+		if(!leadData.getProductId().isEmpty())
+			return touchService.recordTouchWithProductCode(leadData.getTransactionId(), touchType, Touch.ONLINE_USER, leadData.getProductId());
+		else
+			return touchService.recordTouch(leadData.getTransactionId(), touchType, Touch.ONLINE_USER);
 	}
 
 	/**

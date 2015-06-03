@@ -20,6 +20,7 @@ public class Touch extends AbstractJsonModel {
 	public static final String ONLINE_USER = "ONLINE";
 
 	private TouchProductProperty touchProductProperty;
+	private TouchCommentProperty touchCommentProperty;
 
 	public TouchProductProperty getTouchProductProperty() {
 		return touchProductProperty;
@@ -27,6 +28,14 @@ public class Touch extends AbstractJsonModel {
 
 	public void setTouchProductProperty(TouchProductProperty touchProductProperty) {
 		this.touchProductProperty = touchProductProperty;
+	}
+
+	public TouchCommentProperty getTouchCommentProperty() {
+		return touchCommentProperty;
+	}
+
+	public void setTouchCommentProperty(TouchCommentProperty touchCommentProperty) {
+		this.touchCommentProperty = touchCommentProperty;
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)

@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
+
 <jsp:useBean id="lifeService" class="com.ctm.services.life.LifeService" scope="page" />
 <c:set var="serviceRespone" value="${lifeService.contactLead(pageContext.request)}" />
 <c:choose>
@@ -98,10 +100,9 @@
 						</c:choose>
 
 						<c:set var="leadSentTo" value="${not empty param.company and param.company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
-						<go:setData dataVar="data" xpath="${fn:toLowerCase(vertical)}/callBackLeadSentTo" value="${leadSentTo}" />
 						<go:setData dataVar="data" xpath="current/transactionId" value="${data.current.transactionId}" />
 						<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" /></c:set>
-						<core:transaction touch="CB" noResponse="true" writeQuoteOverride="N" />
+						<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "CB", leadSentTo)}</c:set>
 	</c:when>
 	<c:otherwise>
 				<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>

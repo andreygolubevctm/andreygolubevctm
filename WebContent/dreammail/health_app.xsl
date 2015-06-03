@@ -178,7 +178,7 @@
 				</Attributes>
 				<Attributes>
 					<Name>HealthFund</Name>
-					<Value><xsl:value-of select="health/application/provider"/></Value>
+					<Value><xsl:value-of select="health/application/providerName"/></Value>
 				</Attributes>
 				<Attributes>
 					<Name>HealthFundPhoneNo</Name>

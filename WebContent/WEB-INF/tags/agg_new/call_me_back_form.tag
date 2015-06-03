@@ -2,6 +2,8 @@
 <%@ tag description="Call Me Back form"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="openingHoursService" class="com.ctm.services.simples.OpeningHoursService" scope="page" />
+
 <%@ attribute name="id" required="true" rtexprvalue="true"	description="ID to assign to the form" %>
 <%@ attribute name="displayBubble" required="false" rtexprvalue="true"	description="Whether to display the right hand side column with the speech bubble" %>
 
@@ -84,7 +86,15 @@
 				<ui:bubble variant="info">
 					<h1>Do you need a hand?</h1>
 					<h6>Call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h6>
-					<p><small>Our Australian based call centre hours are<br><strong><form:scrape id='135'/></strong></small></p>
+					<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
+						<div class="opening-hours">
+							<a href="javascript:;" data-toggle="dialog"
+								data-content="#view_all_hours"
+								data-dialog-hash-id="view_all_hours"
+								data-title="Call Centre Hours" data-cache="true">View our Australian based call centre hours
+							</a>
+						</div>
+					</c:if>
 				</ui:bubble>
 			</div>
 		</c:if>

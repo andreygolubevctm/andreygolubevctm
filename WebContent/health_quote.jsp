@@ -24,7 +24,7 @@
 <c:set var="callCentreHelpNumberApplication" scope="request"><content:get key="callCentreHelpNumberApplication"/></c:set>
 
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
-<c:set var="callCentreAllHoursContent" scope="request"><content:getOpeningHoursOfTheWeek /></c:set>
+<c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 <%-- HTML --%>
 <layout:journey_engine_page title="Health Quote">
 
@@ -59,7 +59,7 @@
 							<h1><span class="noWrap callCentreNumber">${callCentreNumber}</span></h1>
 							${openingHoursHeader }
 						</div>
-						<div id="view_all_hours" class="hidden">${callCentreAllHoursContent}</div>
+						<div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
 						<div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
 			</li>
 				</c:if>

@@ -171,7 +171,8 @@ body.simples .navbar-link {
 }
 body.simples .dropdown-header {
   color: #1c3e93;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 body.simples .dropdown-menu {
   color: #333333;

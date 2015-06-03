@@ -383,7 +383,7 @@ So it's going to be done progressively. Include this file in your framework.buil
   padding-right: 20px;
 }
 .health .featuresMode  .result-row .category > .content {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   text-align: center;
   padding: 5px 10px;
 }
@@ -417,7 +417,7 @@ So it's going to be done progressively. Include this file in your framework.buil
   padding-right: 20px;
 }
 .health .featuresMode .extrasCover .result-row .category > .content {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   text-align: center;
   padding: 5px 10px;
 }
@@ -528,7 +528,8 @@ So it's going to be done progressively. Include this file in your framework.buil
   text-align: left;
 }
 .health .featuresMode  .result-row .section .feature .labelInColumn > .content {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .health .featuresMode  .compared .category > .content {
   background-color: #ebece0;
@@ -609,7 +610,7 @@ So it's going to be done progressively. Include this file in your framework.buil
 .health .featuresMode .promosFeature > .labelInColumn > .content,
 .health .featuresMode .featuresHeaders .ambulanceSection > .content,
 .health .featuresMode .ambulanceSection > .labelInColumn > .content {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   font-size: 18px;
   line-height: 22px;
   font-weight: normal;
@@ -676,8 +677,8 @@ So it's going to be done progressively. Include this file in your framework.buil
 .health .featuresMode .promosFeature > .labelInColumn > .content .extraText strong,
 .health .featuresMode .featuresHeaders .ambulanceSection > .content .extraText strong,
 .health .featuresMode .ambulanceSection > .labelInColumn > .content .extraText strong {
-  font-family: 'SourceSansProBold';
   font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .health .featuresMode .section[data-skey="GeneralHealth"] .extraText,
 .health .featuresMode .featuresHeaders .promosFeature[data-skey="GeneralHealth"] .extraText,
@@ -768,7 +769,8 @@ So it's going to be done progressively. Include this file in your framework.buil
   background: none;
 }
 .health .featuresMode .featuresHeaders .children .feature {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .health .featuresMode .featuresHeaders .featuresList > .feature > .content {
   padding-right: 5px;
@@ -1058,7 +1060,7 @@ So it's going to be done progressively. Include this file in your framework.buil
 }
 .featuresMode .productSummary .frequency .frequencyAmount,
 .policySummaryContainer .productSummary .frequency .frequencyAmount {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   color: #0db14b;
   font-size: 16px;
   text-align: center;
@@ -1087,7 +1089,8 @@ So it's going to be done progressively. Include this file in your framework.buil
   color: #333333;
   font-size: 10px;
   font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
   margin-left: -2px;
   letter-spacing: -0.06em;
 }
@@ -1314,7 +1317,7 @@ So it's going to be done progressively. Include this file in your framework.buil
 .policySummaryContainer .priceItemisation .item.totalPremium {
   border-top: solid 1px;
   border-color: #f1f1f1;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   color: #0db14b;
   padding-top: 10px;
 }
@@ -1331,7 +1334,8 @@ So it's going to be done progressively. Include this file in your framework.buil
   color: #333333;
   font-size: 10px;
   font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
   margin-top: 5px;
   letter-spacing: -0.06em;
   display: block;
@@ -1492,7 +1496,7 @@ So it's going to be done progressively. Include this file in your framework.buil
 }
 .more-info-content h2,
 .more-info-content .btn-download {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
 }
 @media (max-width: 767px) {
   .more-info-content {
@@ -1545,8 +1549,8 @@ So it's going to be done progressively. Include this file in your framework.buil
   }
 }
 .more-info-content .transactionID {
-  font-family: 'SourceSansProBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
-  font-weight: 500;
+  font-family: 'SourceSansProSemiBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
+  font-weight: normal;
   line-height: 1.1;
   color: #1c3e93;
   margin-top: 18px;
@@ -1616,8 +1620,8 @@ So it's going to be done progressively. Include this file in your framework.buil
 }
 .more-info-content .moreInfoBubble .moreInfoOr {
   margin-top: 10px;
-  font-family: 'SourceSansProBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
-  font-weight: 500;
+  font-family: 'SourceSansProSemiBold', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
+  font-weight: normal;
   line-height: 1.1;
   color: #1c3e93;
   margin-top: 9px;
@@ -1653,7 +1657,7 @@ So it's going to be done progressively. Include this file in your framework.buil
   }
 }
 .more-info-content .moreInfoReferenceNoText {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
   font-size: 14px;
 }
 .more-info-content .moreInfoRightColumn,
@@ -1717,6 +1721,8 @@ So it's going to be done progressively. Include this file in your framework.buil
 }
 .more-info-content .pricepromise strong {
   color: #1c3e93;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .more-info-content .pricepromise a {
   color: #333333;
@@ -1756,7 +1762,7 @@ So it's going to be done progressively. Include this file in your framework.buil
   }
 }
 #confirmation .btn-download {
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
 }
 @media (min-width: 768px) and (max-width: 991px) {
   #confirmation .btn-download {
@@ -1852,7 +1858,8 @@ So it's going to be done progressively. Include this file in your framework.buil
 }
 .restrictedTooltips {
   font-size: 12px;
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .restrictedTooltips .qtip-titlebar {
   color: #1c3e93;
@@ -1880,7 +1887,8 @@ So it's going to be done progressively. Include this file in your framework.buil
   color: #333333;
 }
 .priceTooltips .qtip-content span.highlighted {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
   font-size: 110%;
   color: #485f94;
 }
@@ -1954,7 +1962,7 @@ So it's going to be done progressively. Include this file in your framework.buil
 .resultsMarketingMessage .insert .larger,
 .resultsLowNumberMessage .insert .larger {
   font-size: 30px;
-  font-family: 'SourceSansProBold';
+  font-family: 'SourceSansProSemiBold';
 }
 .resultsMarketingMessage .insert em,
 .resultsLowNumberMessage .insert em {
@@ -2019,7 +2027,7 @@ So it's going to be done progressively. Include this file in your framework.buil
   }
 }
 .resultsMarketingMessages {
-  z-index: 12;
+  z-index: 18;
 }
 .resultsMarketingMessages .resultsMarketingMessage {
   top: 0;
@@ -2257,7 +2265,7 @@ So it's going to be done progressively. Include this file in your framework.buil
   color: #fff;
 }
 .dualPricing .frequency .frequencyAmount {
-  font: 28px/18px 'SourceSansProBold';
+  font: 28px/18px 'SourceSansProSemiBold';
   color: #0db14b;
 }
 .dualPricing .frequency .frequencyTitle {
@@ -2329,7 +2337,8 @@ So it's going to be done progressively. Include this file in your framework.buil
   color: inherit;
 }
 .simples-dialogue .alert-link {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 .simples-dialogue > p,
 .simples-dialogue > ul {
@@ -2532,7 +2541,7 @@ button .simples-dialogue h3:after {
     margin-bottom: 10px;
   }
   .benefits-component .title h3 {
-    font-family: 'SourceSansProBold';
+    font-family: 'SourceSansProSemiBold';
     font-size: 14px;
     margin: 0;
     vertical-align: middle;
@@ -3204,7 +3213,8 @@ body.BUP .health_credit-card-details_policyDay-group .control_label {
 }
 body.CUA .ifExpectingMessage {
   color: #0C4DA2;
-  font-weight: 600;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
 }
 body.CUA .ifExpectingMessage .fieldrow_label {
   float: left;
@@ -3269,7 +3279,8 @@ body.HIF .health_credit-card-details_policyDay-group {
   display: block !important;
 }
 body.HIF .payment-deduction-about {
-  font-weight: bold;
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
   margin-top: 1em;
 }
 body.THF .health-payment_details-claims-group {
@@ -3366,28 +3377,78 @@ a.healthPremiumIncreaseContent:hover {
   color: #333333;
   margin-left: 105px;
 }
-.healthCallCentreSpecialHoursLink {
-  text-decoration: underline;
-}
-header .healthCallCentreSpecialHoursLink {
-  position: absolute;
-  right: 0;
-  bottom: -6px;
-}
-@media (min-width: 992px) {
-  header .healthCallCentreSpecialHoursLink {
-    bottom: 5px;
-  }
-}
-[data-livechat-state="true"] .healthCallCentreSpecialHoursLink {
-  right: 145px;
-}
-.well-info .healthCallCentreSpecialHoursLink {
-  color: #ffffff;
-}
 @media (min-width: 768px) {
   .navbar-text {
     position: relative;
+  }
+}
+.all-opening-hours .day_row {
+  margin-top: 5px;
+}
+.all-opening-hours h1 {
+  font-size: 38px;
+  color: #0db14b;
+}
+.all-opening-hours h4,
+.all-opening-hours h3 {
+  color: #1c3e93;
+}
+.all-opening-hours h3 {
+  font-weight: normal;
+  font-family: 'SourceSansProSemiBold';
+}
+.all-opening-hours .day-description {
+  text-align: right;
+  font-weight: bold;
+  font-family: 'SourceSansProSemiBold';
+}
+.all-opening-hours .call-details div .call-us {
+  text-align: left;
+}
+.all-opening-hours .call-details div .call-us h1 {
+  line-height: 50px;
+  font-weight: normal;
+  font-family: 'SourceSansProRegular';
+}
+.all-opening-hours .call-details div .call-us h1 span {
+  font-family: SourceSansProRegular, Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-family: 'SourceSansProRegular';
+  font-size: 38px;
+  font-weight: normal;
+  height: auto;
+  text-align: left;
+  white-space: now;
+}
+.all-opening-hours .call-details div .call-us h4 {
+  line-height: 45px;
+  display: inline-block;
+  font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
+  color: #333;
+  float: left;
+  font-size: 18px;
+  font-family: 'SourceSansProRegular';
+}
+.all-opening-hours .special-hours {
+  margin-top: 30px;
+}
+.header-collapse-contact > ul li .opening-hours {
+  color: #1c3e93;
+  font-size: 91%;
+  font-weight: bold;
+  margin-top: -13px;
+}
+.header-collapse-contact > ul li .opening-hours .tomorrow-hours {
+  color: #999999;
+}
+@media (max-width: 767px) {
+  .header-collapse-contact > ul li .opening-hours .tomorrow-hours {
+    color: #fff;
+  }
+}
+@media (max-width: 767px) {
+  .header-collapse-contact > ul li .opening-hours a {
+    color: #1c3e93 !important;
   }
 }
 .compareCheckbox {
@@ -3703,49 +3764,6 @@ body[data-step="payment"].health .healthMoreInfoModel .jeepPromotion {
     background-image: url("../competition/health/jeep-promo/jeep-confirm-sidebar@2x.jpg");
     background-size: 374px 124px;
   }
-}
-.all-opening-hours .opening-hours {
-  margin-top: 5px;
-}
-.all-opening-hours h1 {
-  font-size: 38px;
-  color: #0db14b;
-}
-.all-opening-hours h4,
-.all-opening-hours h3 {
-  color: #1c3e93;
-}
-.all-opening-hours h3 {
-  font-weight: 600;
-}
-.all-opening-hours .day-description {
-  text-align: right;
-  font-weight: bold;
-}
-.all-opening-hours .call-details div .call-us h1 {
-  line-height: 50px;
-  text-align: left;
-  font-weight: 500;
-}
-.all-opening-hours .call-details div .call-us h1 span {
-  font-family: SourceSansProRegular, Helvetica, Arial, sans-serif;
-  font-size: 38px;
-  font-weight: 500;
-  height: auto;
-  text-align: left;
-  white-space: now;
-}
-.all-opening-hours .call-details div .call-us h4 {
-  line-height: 45px;
-  text-align: left;
-  display: inline-block;
-  color: #333;
-  float: left;
-  font-size: 18px;
-  font-family: 'SourceSansProRegular', Helvetica, Arial, sans-serif;
-}
-.all-opening-hours .special-hours {
-  margin-top: 30px;
 }
 /* TODO: to read the src from DB so we don't have to set this up for each promo */
 .health100eftpos {
