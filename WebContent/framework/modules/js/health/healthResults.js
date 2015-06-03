@@ -707,6 +707,7 @@
 			$_main.find('.health_application_details_productId').val("");
 			$_main.find('.health_application_details_productNumber').val("");
 			$_main.find('.health_application_details_productTitle').val("");
+			$_main.find('.health_application_details_providerName').val("");
 		}else{
 			$_main.find('.health_application_details_provider').val(selectedProduct.info.provider);
 			$_main.find('.health_application_details_productId').val(selectedProduct.productId);

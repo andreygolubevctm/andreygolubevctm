@@ -30,7 +30,7 @@ public class AddressDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			sqlStatement = dbSource.getConnection().prepareStatement(
-				"SELECT * FROM aggregator.vw_elastic_street_address " +
+				"SELECT unitType, unitNo, houseNo, FloorNo, street, suburb, postCode, state, dpId, streetId FROM aggregator.vw_elastic_street_address " +
 				"WHERE dpId = ? " +
 				"LIMIT 0,1"
 			);

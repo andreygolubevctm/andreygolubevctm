@@ -208,7 +208,7 @@
 	</service>
 
 	<service name="CLBS" type="soap">
-		<soap-url>http://trips.ecgid.net/xmlReceive.cfm?dbType=cti</soap-url>
+		<soap-url>http://staging.ecgid.net/trips/xmlReceive.cfm?dbType=CTI</soap-url>
 		<outbound-xsl>CLBS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001,username=CTMAUUSER,password=DU5CE87WO2XFQ1Y,agentCode=COZ</outbound-xsl-parms>
 		<inbound-xsl>CLBS_inbound.xsl</inbound-xsl>

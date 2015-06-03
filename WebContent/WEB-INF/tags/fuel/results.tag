@@ -371,6 +371,9 @@
 			color:#808080;
 			margin-top:10px;
 		}
+	#time {
+		display:none;
+	}
 
 	#mapDialog{
 		display: none;

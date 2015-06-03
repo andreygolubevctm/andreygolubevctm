@@ -61,7 +61,7 @@ public class OpeningHoursService {
 			openingHours = RequestUtils.createObjectFromRequest(request, openingHours);
 			final String userName = authenticatedData.getUid();
 			final String ipAddress = request.getRemoteAddr();
-			return openingHoursDao.createOpeningHours(openingHours,userName,ipAddress);
+			return openingHoursDao.createOpeningHours(openingHours, userName, ipAddress);
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
 		}
@@ -71,7 +71,7 @@ public class OpeningHoursService {
 		try {
 			final String userName = authenticatedData.getUid();
 			final String ipAddress = request.getRemoteAddr();
-			return openingHoursDao.deleteOpeningHours(request.getParameter("openingHoursId"),userName,ipAddress);
+			return openingHoursDao.deleteOpeningHours(request.getParameter("openingHoursId"), userName, ipAddress);
 		} catch (DaoException d) {
 			throw new RuntimeException(d);
 		}
@@ -94,4 +94,13 @@ public class OpeningHoursService {
 		return openingHoursDao.getOpeningHoursForDisplay(dayType, serverDate);
 	}
 
+    public String getCurrentOpeningHoursForEmail(HttpServletRequest request) throws DaoException, ConfigSettingException {
+        String currentOpeningHours;
+        PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
+        int verticalId = pageSettings.getVertical().getId();
+        Date serverDate = ApplicationService.getApplicationDate(request);
+        List<OpeningHours> openingHoursList = openingHoursDao.getCurrentNormalOpeningHoursForEmail(verticalId, serverDate);
+        currentOpeningHours = openingHoursDao.toHTMLString(openingHoursList);
+        return currentOpeningHours;
+    }
 }

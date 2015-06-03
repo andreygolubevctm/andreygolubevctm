@@ -73,6 +73,9 @@
 			<c:when test="${competition_id == '17'}">
 				<c:set var="source" value="Life$1000CashPromoFeb2015" />
 			</c:when>
+			<c:when test="${competition_id == '22'}">
+				<c:set var="source" value="Life$1000CashPromoJune2015" />
+			</c:when>
 		</c:choose>
 	</c:if>
 </c:if>

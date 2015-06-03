@@ -1,0 +1,51 @@
+<ExportList><Quest.Toad.ImportExport.ExportEngine><FileConfiguration FileFormatType="CommaSeperatedValues" ExcelFile="False" Clipboard="False" FileName="Non-Health_Rate_Rise_Data_Extract_Template_Cold" FileOverwrite="False" FileSuffix="yyyy-MM-dd HH-mm-ss" FileDirectory="H:\__Extracts\" FileExtension="csv" Delimiter="," QuoteChar="&quot;" HeaderRow="True" AlwaysQuoteString="True" RowsIncrement="5000" LineFeed="Windows" Width="60" OnlyQuoteWhenNeeded="False" UpperKeywords="False" TableScript="False" IncludeSQL="False" AppendDelimiterAtEnd="False" UseCurrentLocale="False" SchemaAppend="False" Encoding="Unicode (UTF-8)" BlockInsert="False" BlockInsertValue="500" IdentityInsert="False" Overwrite="False" ExcelUseOpen="True" AddExcelWorksheetsAsNeeded="True" HeaderBackColor="LightGray" ExcelAutoFitColumns="True" ExcelBeforeExportMacros="" ExcelAfterExportMacros="" ExcelAtType="ActiveCell" ExcelAtLocation="" ClearWorksheet="True" AppendTimeStampToNamedWorksheet="False" AppendExistingAccessTable="False" SingleAccessTableName="" AccessRecreate="False" AccessTruncate="False" SPListName="" CreateNewSPList="False" DeleteSPList="False" ExportSPListBlockSize="0" AllowAppend="False" /><Queries ConnectionTypeTrl="mysql://itdevro@ctmprdslave1/"><Query DefaultSchema=""><![CDATA[/*
+DBA-249
+Non-Health Rate Rise - extract of verticals that have an email address (and current opt-in) PART 1
+*/
+
+SELECT
+	-- tdEmail.fieldId,
+	`tdEmail`.`textValue` AS EmailAddress,
+	-- tdFirstName.fieldId,
+	`tdFirstName`.`textValue` AS FirstName,
+	`th2c`.`transactionId` AS transactionId,
+	`vm`.`verticalCode` AS vertical,
+	`sc`.`styleCode` AS brand,
+	`moi`.`optInStatus`,
+	CONCAT('https://secure.comparethemarket.com.au/ctm/unsubscribe.jsp?vertical=',
+		LCASE(`vm`.`verticalCode`),
+		'&email=',tdEmail.textValue,'&unsubscribe_email=',emHash.hashedEmail,
+		CASE th2c.styleCodeId
+			WHEN 2 THEN '&brand=meer'
+			ELSE ''
+			END
+		) AS unsubscribeURL
+		FROM aggregator.transaction_header2_cold th2c
+	-- ADDING IN ALL OF THE JOINS FOR THE ADDITIONAL DATA, ensuring there is only one as often there are multiple variants
+	-- Brand
+	JOIN ctm.stylecodes sc USING(styleCodeId)
+	-- Email
+	JOIN aggregator.transaction_details2_cold tdEmail ON th2c.TransactionId = tdEmail.transactionId
+		AND tdEmail.fieldId = (SELECT fieldId FROM aggregator.transaction_details2_cold
+							WHERE transactionId = th2c.transactionId
+							AND fieldId IN(531,664,770,857,1439,1740,22,245,411,620,680,709,786,1058,1519,1523,1585,1622,1738,1774,1839,1878,2102,2202,2272,2402)
+							AND (textValue LIKE('%@%') AND textValue !='preload.testing@comparethemarket.com.au' AND textValue != 'gomez.testing@aihco.com.au')
+							-- ordering by the field ensures we have the correct hierarchy, making it descending adds default values to the end, e.g. reversed
+							ORDER BY FIELD(fieldId,fieldId,411,1519,1523,531,664,770,1439,1740,857,2102,245) DESC
+							LIMIT 1)
+	-- OptIn
+	JOIN ctm.marketingOptIn moi ON th2c.styleCodeId = moi.styleCodeID AND moi.fieldCategory = 1 AND moi.optInTarget = tdEmail.textValue AND moi.optInStatus = 1
+	-- Product Type
+	JOIN ctm.vertical_master vm ON th2c.verticalId = vm.verticalId
+	-- First Name
+	LEFT JOIN aggregator.transaction_details2_cold tdFirstName ON tdEmail.TransactionId = tdFirstName.transactionId
+		AND tdFirstName.fieldId = (SELECT fieldId FROM aggregator.transaction_details2_cold
+							WHERE transactionId = tdEmail.transactionId
+							AND fieldId IN(393,416,473,477,487,504,1787,2282,2312,28,294,414,621,681,713,742,793,828,1070,1586,1623,1778,2273,2251,2179,2170,2103,1988)
+							ORDER BY FIELD(fieldId,1623,2179,742,828,681,2103,621,1070,416,414,294) DESC
+							LIMIT 1)
+	JOIN aggregator.email_master emHash ON tdEmail.textValue = emHash.emailAddress AND emHash.StyleCodeId = th2c.styleCodeId
+	WHERE th2c.styleCodeId = 1 -- IN (1,2)
+	AND th2c.transactionStartDateTime != CURDATE()
+	AND th2c.verticalId != 4
+;]]></Query></Queries><Options><TableOption TableLocation="mysql://itdevro@ctmprdslave1/QUERY" ColumnOrders=""><Fields><Field ColumnName="EmailAddress" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/EmailAddress" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="0" ColumnOrderID="0" /><Field ColumnName="FirstName" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/FirstName" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="1" ColumnOrderID="1" /><Field ColumnName="transactionId" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/transactionId" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="INT" ColumnOriginalOrderID="2" ColumnOrderID="2" /><Field ColumnName="vertical" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/vertical" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="3" ColumnOrderID="3" /><Field ColumnName="brand" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/brand" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="4" ColumnOrderID="4" /><Field ColumnName="optInStatus" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/optInStatus" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="TINYINT" ColumnOriginalOrderID="5" ColumnOrderID="5" /><Field ColumnName="unsubscribeURL" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/unsubscribeURL" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="6" ColumnOrderID="6" /></Fields></TableOption></Options></Quest.Toad.ImportExport.ExportEngine></ExportList>

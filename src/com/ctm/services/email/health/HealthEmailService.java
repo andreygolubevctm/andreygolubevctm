@@ -20,8 +20,8 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.ApplicationService;
-import com.ctm.services.ScrapesService;
 import com.ctm.services.email.*;
+import com.ctm.services.simples.OpeningHoursService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,7 +82,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailDetails.setSource("QUOTE");
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  request.getRemoteAddr());
 			if(!isTestEmailAddress) {
-				emailSender.sendToExactTarget(new HealthBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));
+				emailSender.sendToExactTarget(new HealthBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId,request));
 			}
 		} catch (EmailDetailsException e) {
 			throw new SendEmailException("failed to handleReadAndWriteEmailDetails emailAddress:" + emailAddress +
@@ -126,12 +126,13 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		}
 	}
 
-	private HealthBestPriceEmailModel buildBestPriceEmailModel(EmailMaster emailDetails, long transactionId) throws SendEmailException {
+	private HealthBestPriceEmailModel buildBestPriceEmailModel(EmailMaster emailDetails, long transactionId,HttpServletRequest  request) throws SendEmailException {
 		boolean optedIn = emailDetails.getOptedInMarketing(VERTICAL);
 		HealthBestPriceEmailModel emailModel = new HealthBestPriceEmailModel();
 		buildEmailModel(emailDetails, emailModel);
+		OpeningHoursService openingHoursService = new OpeningHoursService();
 		try {
-			emailModel.setCallcentreHours(ScrapesService.getCallCentreHours());
+			emailModel.setCallcentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
 			emailModel.setFirstName(emailDetails.getFirstName());
 			emailModel.setOptIn(optedIn);
 			emailModel.setPhoneNumber(getCallCentreNumber());
@@ -158,11 +159,12 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		buildEmailModel(emailDetails, emailModel);
 		String productId = request.getParameter("productId");
 		boolean optedIn = emailDetails.getOptedInMarketing(VERTICAL);
+		OpeningHoursService openingHoursService = new OpeningHoursService();
 
 		try {
 			emailModel.setPhoneNumber(getCallCentreNumber());
 			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailBrochureRequest.transactionId, "bestprice", productId, emailBrochureRequest.productName));
-			emailModel.setCallcentreHours(ScrapesService.getCallCentreHours());
+			emailModel.setCallcentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
 			emailModel.setTransactionId(emailBrochureRequest.transactionId);
 			emailModel.setFirstName(emailDetails.getFirstName());
 			emailModel.setLastName(emailDetails.getLastName());

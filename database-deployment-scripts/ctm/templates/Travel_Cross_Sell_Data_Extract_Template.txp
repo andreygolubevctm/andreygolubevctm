@@ -1,0 +1,75 @@
+<ExportList><Quest.Toad.ImportExport.ExportEngine><FileConfiguration FileFormatType="CommaSeperatedValues" ExcelFile="False" Clipboard="False" FileName="Travel_Cross_Sell_Data_Extract_Template" FileOverwrite="False" FileSuffix="yyyy-MM-dd HH-mm-ss" FileDirectory="H:\__Extracts\" FileExtension="csv" Delimiter="," QuoteChar="&quot;" HeaderRow="True" AlwaysQuoteString="True" RowsIncrement="500" LineFeed="Windows" Width="60" OnlyQuoteWhenNeeded="False" UpperKeywords="False" TableScript="False" IncludeSQL="False" AppendDelimiterAtEnd="False" UseCurrentLocale="False" SchemaAppend="False" Encoding="Unicode (UTF-8)" BlockInsert="False" BlockInsertValue="500" IdentityInsert="False" Overwrite="False" ExcelUseOpen="True" AddExcelWorksheetsAsNeeded="True" HeaderBackColor="LightGray" ExcelAutoFitColumns="True" ExcelBeforeExportMacros="" ExcelAfterExportMacros="" ExcelAtType="ActiveCell" ExcelAtLocation="" ClearWorksheet="True" AppendTimeStampToNamedWorksheet="False" AppendExistingAccessTable="False" SingleAccessTableName="" AccessRecreate="False" AccessTruncate="False" SPListName="" CreateNewSPList="False" DeleteSPList="False" ExportSPListBlockSize="0" AllowAppend="False" /><Queries ConnectionTypeTrl="mysql://itdevro@ctmprdslave1/"><Query DefaultSchema=""><![CDATA[/*
+Travel Cross-Sell - Extract of specific verticals for 'user' information and email address where opted in.
+*/
+
+SELECT
+-- tdEmail.xpath,
+tdEmail.textValue AS EmailAddress,
+-- tdFirstName.xpath,
+tdFirstName.textValue AS FirstName,
+-- tdSuburb.xpath,
+tdSuburb.textValue AS Suburb,
+-- tdState.xpath,
+tdState.textValue AS State,
+-- tdPostCode.xpath,
+tdPostCode.textValue AS PostCode,
+-- tdDOB.xpath,
+tdDOB.textValue AS DOB,
+th.transactionId,
+th.productType AS vertical,
+sc.styleCode AS brand,
+moi.optInStatus
+	FROM aggregator.transaction_header th
+
+
+-- ADDING IN ALL OF THE JOINS FOR THE ADDITIONAL DATA, ensuring there is only one as often there are multiple variants
+-- Brand
+JOIN ctm.stylecodes sc USING(styleCodeId)
+-- Email
+JOIN aggregator.transaction_details tdEmail ON th.TransactionId = tdEmail.transactionId 
+	AND tdEmail.sequenceNo = (SELECT sequenceNo FROM aggregator.transaction_details
+						WHERE transactionId = th.transactionId
+                        AND xpath LIKE('%/email') AND textValue LIKE('%@%')
+                        -- ordering by the field ensures we have the correct hierarchy, making it descending adds default values to the end, e.g. reversed
+                        ORDER BY FIELD(xpath,'health/contactDetails/email','save/email','saved/email','life/sendEmail','homeloan/enquiry/contact/email','health/application/email') DESC
+                        LIMIT 1)
+-- OptIn
+JOIN ctm.marketingOptIn moi ON th.styleCodeId = moi.styleCodeID AND moi.fieldCategory = 1 AND moi.optInTarget = tdEmail.textValue AND moi.optInStatus = 1
+ -- First Name
+ LEFT JOIN aggregator.transaction_details tdFirstName ON tdEmail.TransactionId = tdFirstName.transactionId 
+	AND tdFirstName.sequenceNo = (SELECT sequenceNo FROM aggregator.transaction_details
+						WHERE transactionId = tdEmail.transactionId
+                        AND (xpath like '%/name' OR xpath like '%/firstname')
+                        ORDER BY FIELD(xpath,'ip/primary/firstName','life/primary/firstName','homeloan/contact/firstName','homeloan/enquiry/contact/firstName','home/policyHolder/firstName','quote/drivers/regular/firstname','health/contact/details/firstName','health/contactDetails/name','health/application/partner/firstname') DESC
+                        LIMIT 1)
+-- SUBURB
+ LEFT JOIN aggregator.transaction_details tdSuburb ON tdEmail.TransactionId = tdSuburb.transactionId 
+	AND tdSuburb.sequenceNo = (SELECT sequenceNo FROM aggregator.transaction_details
+						WHERE transactionId = tdEmail.transactionId
+                        AND xpath LIKE('%/suburb%')
+                        ORDER BY FIELD(xpath,'home/property/address/suburbName','quote/riskAddress/suburbName','health/situation/suburb','health/application/address/suburbName') DESC
+                        LIMIT 1)
+-- STATE
+ LEFT JOIN aggregator.transaction_details tdState ON tdEmail.TransactionId = tdState.transactionId 
+	AND tdState.sequenceNo = (SELECT sequenceNo FROM aggregator.transaction_details
+						WHERE transactionId = tdEmail.transactionId
+                        AND xpath LIKE('%/state')
+                        ORDER BY FIELD(xpath,'home/property/address/state','health/situation/state','health/application/address/state') DESC
+                        LIMIT 1)                        
+-- PostCode
+LEFT JOIN aggregator.transaction_details tdPostCode ON tdEmail.TransactionId = tdPostCode.transactionId
+	AND tdPostCode.sequenceNo = (SELECT sequenceNo FROM aggregator.transaction_details
+						WHERE transactionId = tdEmail.transactionId
+                        AND xpath LIKE('%/postcode')
+                        LIMIT 1)
+ -- DOB
+ LEFT JOIN aggregator.transaction_details tdDOB ON tdEmail.TransactionId = tdDOB.transactionId 
+	AND tdDOB.sequenceNo = (SELECT sequenceNo FROM aggregator.transaction_details
+						WHERE transactionId = tdEmail.transactionId
+                        AND xpath LIKE('%/dob')
+                        ORDER BY FIELD(xpath,'ip/primary/dob','life/primary/dob','quote/drivers/regular/dob','health/healthCover/primary/dob','health/application/primary/dob') DESC
+                        LIMIT 1)
+WHERE th.styleCodeId = 1
+AND th.startDate != CURDATE()
+AND th.productType IN ('CAR','QUOTE','HEALTH','LIFE','IP','HOME','HOMELOAN')
+;]]></Query></Queries><Options><TableOption TableLocation="mysql://itdevro@ctmprdslave1/QUERY" ColumnOrders=""><Fields><Field ColumnName="EmailAddress" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/EmailAddress" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="0" ColumnOrderID="0" /><Field ColumnName="FirstName" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/FirstName" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="1" ColumnOrderID="1" /><Field ColumnName="Suburb" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/Suburb" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="2" ColumnOrderID="2" /><Field ColumnName="State" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/State" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="3" ColumnOrderID="3" /><Field ColumnName="PostCode" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/PostCode" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="4" ColumnOrderID="4" /><Field ColumnName="DOB" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/DOB" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="5" ColumnOrderID="5" /><Field ColumnName="transactionId" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/transactionId" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="INT" ColumnOriginalOrderID="6" ColumnOrderID="6" /><Field ColumnName="vertical" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/vertical" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="7" ColumnOrderID="7" /><Field ColumnName="brand" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/brand" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="8" ColumnOrderID="8" /><Field ColumnName="optInStatus" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/optInStatus" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="TINYINT" ColumnOriginalOrderID="9" ColumnOrderID="9" /></Fields></TableOption></Options></Quest.Toad.ImportExport.ExportEngine></ExportList>

@@ -119,7 +119,6 @@ public class CouponRouter extends HttpServlet {
 
 	private void getCouponByVdn(CouponRequest couponRequest, final PrintWriter writer, final HttpServletRequest request, final HttpServletResponse response) {
 		couponRequest.vdn = request.getParameter("vdn");
-		logger.debug(couponRequest.vdn);
 		try {
 			writer.print(couponService.getCouponByVdn(couponRequest).toJson());
 		} catch (DaoException e) {

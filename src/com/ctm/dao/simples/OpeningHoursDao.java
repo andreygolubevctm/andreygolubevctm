@@ -24,6 +24,7 @@ public class OpeningHoursDao {
     private final AuditTableDao auditTableDao = new AuditTableDao();
     private static boolean autoCommit = true;
     private final SimpleDateFormat sdfUI = new SimpleDateFormat("yyyy-MM-dd");
+
     /**
      * this method will return single record if ID exist else return null
      *
@@ -247,10 +248,9 @@ public class OpeningHoursDao {
      * @throws DaoException
      */
     public List<OpeningHours> getAllOpeningHoursForDisplay(int verticalId, Date effectiveDate, boolean isSpecial) throws DaoException {
-        SimpleDatabaseConnection dbSource = null;
+        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
         List<OpeningHours> mapOpeningHoursDetails = new ArrayList<>();
         try {
-            dbSource = new SimpleDatabaseConnection();
             PreparedStatement stmt;
             String sql = "SELECT daySequence, startTime,endTime,description, date FROM ctm.opening_hours "
                     + "where ? between effectiveStart and effectiveEnd and verticalId=? ";
@@ -307,20 +307,19 @@ public class OpeningHoursDao {
     public String getOpeningHoursForDisplay(String dayDescription, Date effectiveDate) throws DaoException {
         String openingHours = null;
         ResultSet resultSet;
-        SimpleDatabaseConnection dbSource = null;
+        SimpleDatabaseConnection dbSource =  new SimpleDatabaseConnection();
         try {
-            dbSource = new SimpleDatabaseConnection();
             PreparedStatement stmt;
             stmt = dbSource.getConnection().prepareStatement(
                     "SELECT startTime,endTime,description, date FROM ctm.opening_hours "
-                            + "WHERE lower(description) = ? OR date = ? AND hoursType IN ('N','S') ORDER BY date DESC  LIMIT 1;");
+                            + "WHERE (lower(description) = ?  AND hoursType  ='N') or (date = ? AND hoursType  ='S') ORDER BY date DESC  LIMIT 1;");
             String day = new SimpleDateFormat("EEEE").format(
                     dayDescription.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1) : effectiveDate).toLowerCase();
             java.sql.Date sqlEffectiveDate = new java.sql.Date((dayDescription.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1)
                     : effectiveDate).getTime());
             stmt.setString(1, day);
             stmt.setDate(2, sqlEffectiveDate);
-            resultSet= stmt.executeQuery();
+            resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
                 String startTime, endTime;
@@ -333,17 +332,123 @@ public class OpeningHoursDao {
                 }
             }
             return openingHours;
-        } catch (SQLException   | NamingException e) {
+        } catch (SQLException | NamingException e) {
             logger.error("Failed while getting Opening Hours For Website display", e);
             throw new DaoException(e.getMessage(), e);
-        }finally {
+        } finally {
             dbSource.closeConnection();
         }
     }
 
+    /**
+     * This method returns compact list of all current opening hours objects
+     * and is being used in E-mails right now
+     *
+     * @param verticalId
+     * @param effectiveDate
+     * @return
+     * @throws DaoException #example
+     *                      Consider the openinghours table has following normal hours
+     *                      Day         StartTime   EndTime
+     *                      Monday	    08:00:00	22:00:00
+     *                      Tuesday	    08:00:00	22:00:00
+     *                      Wednesday	08:00:00	22:00:00
+     *                      Thursday	08:00:00	22:00:00
+     *                      Friday	    09:00:00	23:00:00
+     *                      Saturday	10:00:00	24:00:00
+     *                      Sunday	    10:00:00	24:00:00
+     *                      <p/>
+     *                      then function will return a compact list like below     *
+     *                      Day         StartTime   EndTime
+     *                      Mon-Thu	    08:00:00	22:00:00
+     *                      Fri 	    09:00:00	23:00:00
+     *                      Sat-Sun	    10:00:00	24:00:00
+     */
+    public List<OpeningHours> getCurrentNormalOpeningHoursForEmail(int verticalId, Date effectiveDate) throws DaoException {
+        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+        List<OpeningHours> openingHoursList = new ArrayList<>();
+        try {
+            PreparedStatement stmt;
+            String sql = "SELECT SUBSTR(description, 1, 3) description, " +
+                    "        daysequence,\n" +
+                    "        startTime,\n" +
+                    "        endTime,\n" +
+                    "        date\n" +
+                    " FROM   ctm.opening_hours\n" +
+                    " WHERE  ? BETWEEN effectiveStart AND effectiveEnd\n" +
+                    "        AND verticalId = ? " +
+                    " AND date IS NULL AND hourstype='N' ORDER BY daysequence";
+
+            stmt = dbSource.getConnection().prepareStatement(sql);
+            stmt.setDate(1, new java.sql.Date(effectiveDate.getTime()));
+            stmt.setInt(2, verticalId);
+            ResultSet resultSet = stmt.executeQuery();
+
+            String startTime, endTime, dayDesc, firstDayDesc = "",
+                    startTimePrev = "", endTimePrev = "", dayDescPrev = "", description;
+            boolean isFirstRec = true;
+            while (resultSet.next()) {
+                startTime = helper.getFormattedHours(resultSet.getString("startTime"));
+                endTime = helper.getFormattedHours(resultSet.getString("endTime"));
+                dayDesc = resultSet.getString("description");
+                if (isFirstRec) {
+                    firstDayDesc = dayDesc;
+                    isFirstRec = false;
+                } else {
+                    if (!(startTime.equalsIgnoreCase(startTimePrev) && endTime.equalsIgnoreCase(endTimePrev))) {
+                        OpeningHours openingHours;
+                        if (firstDayDesc.equalsIgnoreCase(dayDescPrev)) {
+                            description = firstDayDesc;
+                        } else {
+                            description = firstDayDesc + " - " + dayDescPrev;
+                        }
+                        firstDayDesc = dayDesc;
+                        openingHours = helper.createOpeningHoursObject(0, null, null, description, null, null, endTimePrev.equals("") ? null : endTimePrev, null,
+                                startTimePrev.equals("") ? null : startTimePrev, 0);
+                        openingHoursList.add(openingHours);
+                    }
+                }
+                startTimePrev = startTime;
+                endTimePrev = endTime;
+                dayDescPrev = dayDesc;
+            }
+            //add the last record in the list
+            OpeningHours openingHours;
+            if (!firstDayDesc.equals("")) {
+                if (firstDayDesc.equalsIgnoreCase(dayDescPrev)) {
+                    description = firstDayDesc.length() > 3 ? firstDayDesc.substring(0, 3) : firstDayDesc;
+                } else {
+                    description = firstDayDesc + " - " + dayDescPrev;
+                }
+                openingHours = helper.createOpeningHoursObject(0, null, null, description, null, null, endTimePrev.equals("") ? null : endTimePrev, null,
+                        startTimePrev.equals("") ? null : startTimePrev, 0);
+                openingHoursList.add(openingHours);
+            }
+            return openingHoursList;
+        } catch (SQLException | NamingException e) {
+            logger.error("Failed while executing getCurrentNormalOpeningHoursForEmail()", e);
+            throw new DaoException(e.getMessage(), e);
+        } finally {
+            dbSource.closeConnection();
+        }
+    }
+
+    public String toHTMLString(List<OpeningHours> openingHoursList) {
+        String str = "";
+        for (OpeningHours openingHours : openingHoursList) {
+            if((openingHours.getStartTime()==null || openingHours.getStartTime().equals("")) ||
+               (openingHours.getEndTime()==null || openingHours.getEndTime().equals(""))){
+                str += openingHours.getDescription() + ": Closed <br>";
+            }else {
+                str += openingHours.getDescription() + ": " + openingHours.getStartTime() + " - " + openingHours.getEndTime() + "<br>";
+            }
+        }
+        return str;
+    }
 
     /**
-     * This method will roleback the changes made via connection in supplied SimpleDatabaseConnection
+     * This method will rollback the changes made via connection in supplied SimpleDatabaseConnection
+     *
      * @param dbSource
      * @throws DaoException
      */
@@ -358,6 +463,7 @@ public class OpeningHoursDao {
 
     /**
      * This method will reset autocommit option to the default value and also commit changes and close the connection
+     *
      * @param dbSource
      * @throws DaoException
      */

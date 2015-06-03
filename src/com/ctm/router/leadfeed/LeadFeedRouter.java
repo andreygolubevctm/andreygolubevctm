@@ -40,7 +40,6 @@ public class LeadFeedRouter extends HttpServlet {
 		response.setContentType("application/json");
 
 		try {
-
 			LeadResponseStatus output = LeadResponseStatus.FAILURE;
 
 			if (uri.endsWith("/leadfeed/car/getacall.json")) {
@@ -60,6 +59,9 @@ public class LeadFeedRouter extends HttpServlet {
 				case GET_CALLBACK:
 					output = service.callMeBack(leadDataPack);
 					break;
+				case NOSALE_CALL:
+					output = service.noSaleCall(leadDataPack);
+					break;
 				}
 
 			} else if (uri.endsWith("/leadfeed/homecontents/getacall.json")) {
@@ -78,6 +80,9 @@ public class LeadFeedRouter extends HttpServlet {
 					break;
 				case GET_CALLBACK:
 					output = service.callMeBack(leadDataPack);
+					break;
+				case NOSALE_CALL:
+					output = service.noSaleCall(leadDataPack);
 					break;
 				}
 			}
@@ -119,6 +124,9 @@ public class LeadFeedRouter extends HttpServlet {
 			}
 			if(CallType.GET_CALLBACK.equals(calltype)){
 				lead.setCallType(CallType.GET_CALLBACK);
+			}
+			if(CallType.NOSALE_CALL.equals(calltype)){
+				lead.setCallType(CallType.NOSALE_CALL);
 			}
 		}
 

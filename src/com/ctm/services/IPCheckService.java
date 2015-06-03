@@ -1,9 +1,11 @@
 package com.ctm.services;
 
 import com.ctm.dao.IpAddressDao;
+import com.ctm.dao.transaction.TransactionDetailsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.IpAddress;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.utils.RequestUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +43,10 @@ public class IPCheckService {
                     // If they have hit more than the limit for their role, they are NOT permitted access.
                     if (ipAddressModel.getNumberOfHits() > limit) {
                         logger.warn("User's IP Address (" + getIPAddress(request) + ") has been blocked after reaching " + limit + " requests on " + ipAddressModel.getService());
+
+                        // log an entry into the transaction_details table so we know this particular quote is a blocked quote
+                        TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
+                        transactionDetailsDao.insertOrUpdate("travel/blockedQuote", "true", RequestUtils.getTransactionIdFromRequest(request));
                         return false;
                     }
                 }

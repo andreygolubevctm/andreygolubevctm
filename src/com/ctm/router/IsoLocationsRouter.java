@@ -59,9 +59,10 @@ public class IsoLocationsRouter extends HttpServlet {
             JSONObject json = null;
 
             try {
-                RequestUtils.checkForTransactionIdInDataBucket(request);
+                // added this instead as the RequestUtils call doesn't cater for when a session loss occurs
+                response.setHeader("Access-Control-Allow-Origin", "*");
                 json = isoLocations.fetchSearchResults(search);
-            } catch (DaoException | SessionException e) {
+            } catch (DaoException e) {
 
                 logger.error(e);
                 FatalErrorService.logFatalError(e, 0, uri, request.getSession().getId(), true);

@@ -1607,7 +1607,7 @@ creditCardDetails = {
         },
         WEBAPP_LOCK: "WEBAPP_LOCK",
         WEBAPP_UNLOCK: "WEBAPP_UNLOCK"
-    }, hasSeenResultsScreen = false, rates = null, steps = null, stateSubmitInProgress = false, isInAntiHawkingTimeframe = false;
+    }, hasSeenResultsScreen = false, rates = null, steps = null, stateSubmitInProgress = false;
     function initJourneyEngine() {
         if (meerkat.site.pageAction === "confirmation") {
             meerkat.modules.journeyEngine.configure(null);
@@ -1711,28 +1711,6 @@ creditCardDetails = {
                         toggleDialogueInChatCallback();
                     });
                 }
-            },
-            onBeforeLeave: function(event) {
-                meerkat.modules.comms.get({
-                    url: "health/optin/isInAntiHawkingTimeframe.json",
-                    cache: true,
-                    data: {
-                        state: $("#health_situation_state").val()
-                    },
-                    errorLevel: "silent",
-                    onSuccess: function(result) {
-                        isInAntiHawkingTimeframe = result.isInAntiHawkingTimeframe;
-                        $hawkingOptinTextPlaceholder = $(".hawkingOptinTextPlaceholder");
-                        if (isInAntiHawkingTimeframe === true) {
-                            $hawkingOptinTextPlaceholder.html(meerkat.site.content.hawkingOptinText);
-                        } else {
-                            $hawkingOptinTextPlaceholder.html("");
-                        }
-                    },
-                    onAfterEnter: function(event) {
-                        meerkat.modules.healthPhoneNumber.changePhoneNumber(steps.startStep.navigationId);
-                    }
-                });
             }
         };
         var detailsStep = {
@@ -2546,9 +2524,6 @@ creditCardDetails = {
                 var optinVal = $(this).is(":checked") ? "Y" : "N";
                 $("#health_contactDetails_optInEmail").val(optinVal);
                 $("#health_contactDetails_call").val(optinVal);
-                if (isInAntiHawkingTimeframe === true) {
-                    $("#health_contactDetails_hawkingOptin").val(optinVal);
-                }
             });
             if ($('input[name="health_directApplication"]').val() === "Y") {
                 $("#health_application_productId").val(meerkat.site.loadProductId);
@@ -5173,6 +5148,7 @@ creditCardDetails = {
             $_main.find(".health_application_details_productId").val("");
             $_main.find(".health_application_details_productNumber").val("");
             $_main.find(".health_application_details_productTitle").val("");
+            $_main.find(".health_application_details_providerName").val("");
         } else {
             $_main.find(".health_application_details_provider").val(selectedProduct.info.provider);
             $_main.find(".health_application_details_productId").val(selectedProduct.productId);

@@ -35,7 +35,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/roadside"				prefix="roadside" %>
 <%@ taglib tagdir="/WEB-INF/tags/life"					prefix="life" %>
 <%@ taglib tagdir="/WEB-INF/tags/ip"					prefix="ip" %>
-<%@ taglib tagdir="/WEB-INF/tags/home"					prefix="home" %>
 <%@ taglib tagdir="/WEB-INF/tags/home_new"				prefix="home_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/home_new/layout"		prefix="home_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/homeloan"				prefix="homeloan" %>

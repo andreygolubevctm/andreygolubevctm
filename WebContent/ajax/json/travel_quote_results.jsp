@@ -17,6 +17,9 @@
 <c:choose>
 	<c:when test="${!ipCheckService.isPermittedAccess(pageContext.request, pageSettings)}">
 		<c:set var="resultXml"><results>
+			<info>
+				<blocked>true</blocked>
+			</info>
 			<result>
 				<provider></provider>
 				<name></name>

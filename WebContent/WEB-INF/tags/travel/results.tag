@@ -277,6 +277,12 @@
 		</div>
 	</div>
 </core:js_template>
+<%-- BLOCKED QUOTES --%>
+<div class="hidden">
+	<c:set var="heading"><content:get key="blockedIPHeading" /></c:set>
+	<c:set var="copy"><content:get key="blockedIPCopy" /></c:set>
+	<confirmation:other_products heading="${heading}" copy="${copy}" id="blocked-ip-address" />
+</div>
 
 <%-- NO RESULTS --%>
 <div class="hidden">

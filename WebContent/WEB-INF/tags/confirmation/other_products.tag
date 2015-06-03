@@ -2,8 +2,19 @@
 <%@ tag description="Other Products Renderer"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<%@ attribute name="id" required="false" rtexprvalue="true" description="id of the fieldset" %>
+<%@ attribute name="heading" required="false" rtexprvalue="true" description="Heading for the popup" %>
+<%@ attribute name="copy" required="false" rtexprvalue="true" description="Extra copy if required" %>
+
+<c:set var="fieldSetID">
+	<c:choose>
+		<c:when test="${not empty id}">${id}</c:when>
+		<c:otherwise>confirmation-compare-options</c:otherwise>
+	</c:choose>
+</c:set>
+
 <%-- HTML --%>
-<fieldset id="confirmation-compare-options">
+<fieldset id="${fieldSetID}">
 
 	<c:set var="currentVertical" value="${pageSettings.getVerticalCode()}"/>
 
@@ -13,8 +24,14 @@
 
 	<%-- Ideally this would come from a database or config/settings to identify all verticals enabled for current brand. --%>
 	<c:set var="brand" value="${applicationService.getBrandFromRequest(pageContext.getRequest())}" />
+	<c:if test="${not empty heading}">
+	<h3>${heading}</h3>
 
-	<div class="options-list clearfix">
+	<c:if test="${not empty copy}">
+		${copy}
+	</c:if>
+	</c:if>
+	<div class="options-list clearfix verticalButtons">
 	<c:forEach items="${brand.getVerticals()}" var="vertical" varStatus="loop">
 		<c:set var="verticalSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), fn:toUpperCase(vertical.getCode()))}" scope="page"  />
 

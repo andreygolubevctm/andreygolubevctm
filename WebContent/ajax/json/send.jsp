@@ -12,8 +12,8 @@
 <c:if test ="${not empty param.emailAddress && (empty hashedEmail or empty emailSubscribed)}">
 	<security:authentication emailAddress="${param.emailAddress}" justChecking="true" />
 	<c:if test="${empty hashedEmail}">
-	<c:set var="hashedEmail" value="${userData.hashedEmail}" />
-</c:if>
+		<c:set var="hashedEmail" value="${userData.hashedEmail}" />
+	</c:if>
 	<c:if test="${empty emailSubscribed}">
 		<c:set var="emailSubscribed" value="${userData.optInMarketing}" />
 	</c:if>
@@ -39,74 +39,106 @@
 	</c:when>
 	<c:otherwise>
 
-<%-- Choose which specific settings to pull out --%>
-<%-- Best price will have an additional mailing name --%>
-<c:set var="OptInMailingName" value=""/>
+		<%-- Choose which specific settings to pull out --%>
+		<%-- Best price will have an additional mailing name --%>
+		<c:set var="OptInMailingName" value=""/>
 
-<c:choose>
-	<%-- Mode is the "type of mailout" in concert with a template --%>
-	<c:when test="${param.mode == 'quote'}"> <%-- Used for saved quote --%>
-		<c:set var="MailingName" value="${pageSettings.getSetting('sendQuoteMailingName')}" />
-		<c:set var="tmpl" value="${pageSettings.getSetting('sendQuoteTmpl')}" />
-	</c:when>
-	<c:when test="${param.mode == 'app'}"> <%-- Used for confirmation --%>
-		<c:set var="MailingName" value="${pageSettings.getSetting('sendAppMailingName')}" />
-		<c:set var="tmpl" value="${pageSettings.getSetting('sendAppTmpl')}" />
-	</c:when>
-	<c:when test="${param.mode == 'edm'}"> <%-- travel uses this for best price too --%>
-		<c:set var="MailingName" value="${pageSettings.getSetting('sendEdmMailingName')}" />
-		<c:set var="tmpl" value="${pageSettings.getSetting('sendEdmTmpl')}" />
-	</c:when>
-	<c:when test="${param.mode == 'bestprice'}"> <%-- Health's best price email and future ones too --%>
-		<c:set var="MailingName" value="${pageSettings.getSetting('sendBestPriceMailingName')}" />
-		<c:set var="OptInMailingName" value="${pageSettings.getSetting('sendBestPriceOptInMailingName')}"/>
-		<c:set var="tmpl" value="${pageSettings.getSetting('sendBestPriceTmpl')}" />
-				<go:log level="INFO" source="send_jsp">[Email] Mode: ${param.mode}, MailingName: ${MailingName}, OptInMailingName: ${OptInMailingName}, tmpl: ${tmpl}, <c:choose><c:when test="${not empty param.emailAddress}">emailAddress was passed</c:when><c:otherwise>emailAddress not passed</c:otherwise></c:choose>, <c:choose><c:when test="${not empty hashedEmail}">hashedEmail is available</c:when><c:otherwise>hashedEmail NOT available!</c:otherwise></c:choose></go:log>
-	</c:when>
-	<%-- Reset password, called from forgotten_password.jsp --%>
-	<c:otherwise>
+		<c:choose>
+			<%-- Mode is the "type of mailout" in concert with a template --%>
+			<c:when test="${param.mode == 'quote'}"> <%-- Used for saved quote --%>
+				<c:choose>
+					<c:when test="${pageSettings.hasSetting('sendQuoteMailingName') and pageSettings.hasSetting('sendQuoteTmpl')}">
+						<c:set var="MailingName" value="${pageSettings.getSetting('sendQuoteMailingName')}" />
+						<c:set var="tmpl" value="${pageSettings.getSetting('sendQuoteTmpl')}" />
+						<go:log level="INFO" source="send_jsp">[Email] Mode: ${param.mode}, MailingName: ${MailingName}, tmpl: ${tmpl}</go:log>
+					</c:when>
+					<c:otherwise>
+						<go:log level="WARN" source="send_jsp">[Email] Mode (${param.mode}) passed but missing required page settings</go:log>
+					</c:otherwise>
+				</c:choose>
+			</c:when>
+			<c:when test="${param.mode == 'app'}"> <%-- Used for confirmation --%>
+				<c:choose>
+					<c:when test="${pageSettings.hasSetting('sendAppMailingName') and pageSettings.hasSetting('sendAppTmpl')}">
+						<c:set var="MailingName" value="${pageSettings.getSetting('sendAppMailingName')}" />
+						<c:set var="tmpl" value="${pageSettings.getSetting('sendAppTmpl')}" />
+						<go:log level="INFO" source="send_jsp">[Email] Mode: ${param.mode}, MailingName: ${MailingName}, tmpl: ${tmpl}</go:log>
+					</c:when>
+					<c:otherwise>
+						<go:log level="WARN" source="send_jsp">[Email] Mode (${param.mode}) passed but missing required page settings</go:log>
+					</c:otherwise>
+				</c:choose>
+			</c:when>
+			<c:when test="${param.mode == 'edm'}"> <%-- travel uses this for best price too --%>
+				<c:choose>
+					<c:when test="${pageSettings.hasSetting('sendEdmMailingName') and pageSettings.hasSetting('sendEdmTmpl')}">
+						<c:set var="MailingName" value="${pageSettings.getSetting('sendEdmMailingName')}" />
+						<c:set var="tmpl" value="${pageSettings.getSetting('sendEdmTmpl')}" />
+						<go:log level="INFO" source="send_jsp">[Email] Mode: ${param.mode}, MailingName: ${MailingName}, tmpl: ${tmpl}</go:log>
+					</c:when>
+					<c:otherwise>
+						<go:log level="WARN" source="send_jsp">[Email] Mode (${param.mode}) passed but missing required page settings</go:log>
+					</c:otherwise>
+				</c:choose>
+			</c:when>
+			<c:when test="${param.mode == 'bestprice'}"> <%-- Health's best price email and future ones too --%>
+				<c:choose>
+					<c:when test="${pageSettings.hasSetting('sendBestPriceMailingName') and pageSettings.hasSetting('sendBestPriceOptInMailingName') and pageSettings.hasSetting('sendBestPriceTmpl')}">
+						<c:set var="MailingName" value="${pageSettings.getSetting('sendBestPriceMailingName')}" />
+						<c:set var="OptInMailingName" value="${pageSettings.getSetting('sendBestPriceOptInMailingName')}"/>
+						<c:set var="tmpl" value="${pageSettings.getSetting('sendBestPriceTmpl')}" />
+						<go:log level="INFO" source="send_jsp">[Email] Mode: ${param.mode}, MailingName: ${MailingName}, OptInMailingName: ${OptInMailingName}, tmpl: ${tmpl}, <c:choose><c:when test="${not empty param.emailAddress}">emailAddress was passed</c:when><c:otherwise>emailAddress not passed</c:otherwise></c:choose>, <c:choose><c:when test="${not empty hashedEmail}">hashedEmail is available</c:when><c:otherwise>hashedEmail NOT available!</c:otherwise></c:choose></go:log>
+					</c:when>
+					<c:otherwise>
+						<go:log level="WARN" source="send_jsp">[Email] Mode (${param.mode}) passed but missing required page settings</go:log>
+					</c:otherwise>
+				</c:choose>
+			</c:when>
+			<%-- Reset password, called from forgotten_password.jsp --%>
+			<c:otherwise>
 				<go:log level="WARN" source="send_jsp">[Email] No matching mode passed. param.mode was: ${param.mode}</go:log>
-	</c:otherwise>
-</c:choose>
+			</c:otherwise>
+		</c:choose>
 
 
-<c:set var="xSQL" value=""/>
+		<c:set var="xSQL" value=""/>
 
-<c:choose> <%-- CHECK / TODO: Would this work reliably? we just defined the verticalCode on settings as something passed by param at page top! --%>
+		<c:choose> <%-- CHECK / TODO: Would this work reliably? we just defined the verticalCode on settings as something passed by param at page top! --%>
 			<c:when test="${verticalCode == 'travel' and param.mode == 'edm'}">
-		<c:set var="xSQL" value="${pageSettings.getSetting('sendEdmxSQL')}"/>
-	</c:when>
+				<c:set var="xSQL" value="${pageSettings.getSetting('sendEdmxSQL')}"/>
+			</c:when>
 			<c:when test="${verticalCode == 'health' and param.mode == 'bestprice'}">
-		<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
-	</c:when>
+				<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
+			</c:when>
 			<c:when test="${verticalCode == 'home' and param.mode == 'bestprice'}">
-		<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
-	</c:when>
+				<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
+			</c:when>
 			<c:when test="${verticalCode == 'car' and param.mode == 'bestprice'}">
-		<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
-	</c:when>
-</c:choose>
+				<c:set var="xSQL" value="${pageSettings.getSetting('sendBestPricexSQL')}"/>
+			</c:when>
+		</c:choose>
 
 		<c:choose>
 			<c:when test="${empty MailingName}">
 				<go:log level="WARN" source="send_jsp">[Email] No email found to be sent</go:log>
 			</c:when>
 			<c:otherwise>
-<%-- Dial into the send script --%>
-<c:import url="${pageSettings.getSetting('sendUrl')}">
-<%-- The URL building details --%>
-	<c:param name="MailingName" value="${MailingName}" />
-	<c:param name="OptInMailingName" value="${OptInMailingName}" />
-	<c:param name="tmpl" value="${tmpl}" />
-	<c:param name="server" value="${pageSettings.getRootUrl()}" />
-	<c:param name="env" value="${pageSettings.getSetting('sendUrlEnv')}" />
-	<c:param name="send" value="${pageSettings.getSetting('sendYN')}" />
-	<c:param name="xSQL" value="${xSQL}" />
-	<c:param name="SessionId" value="${pageContext.session.id}-${data.current.transactionId}" />
-	<c:param name="tranId" value="${data.current.transactionId}" />
-	<c:param name="hashedEmail" value="${hashedEmail}" />
-	<c:param name="emailAddress" value="${emailAddress}" />
-	<c:param name="emailSubscribed" value="${emailSubscribed}" />
+				<%-- Dial into the send script --%>
+				<c:import url="${pageSettings.getSetting('sendUrl')}">
+				<%-- The URL building details --%>
+					<c:param name="MailingName" value="${MailingName}" />
+					<c:param name="OptInMailingName" value="${OptInMailingName}" />
+					<c:param name="tmpl" value="${tmpl}" />
+					<c:param name="server" value="${pageSettings.getRootUrl()}" />
+					<c:param name="env" value="${pageSettings.getSetting('sendUrlEnv')}" />
+					<c:param name="send" value="${pageSettings.getSetting('sendYN')}" />
+					<c:param name="xSQL" value="${xSQL}" />
+					<c:param name="SessionId" value="${pageContext.session.id}-${data.current.transactionId}" />
+					<c:param name="tranId" value="${data.current.transactionId}" />
+					<c:param name="hashedEmail" value="${hashedEmail}" />
+					<c:param name="emailAddress" value="${emailAddress}" />
+					<c:param name="emailSubscribed" value="${emailSubscribed}" />
+					<c:param name="bccEmail" value="${param.bccEmail}" />
 				</c:import>
 			</c:otherwise>
 		</c:choose>

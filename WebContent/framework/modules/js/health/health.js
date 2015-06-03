@@ -12,8 +12,7 @@
 	hasSeenResultsScreen = false,
 	rates = null,
 	steps = null,
-	stateSubmitInProgress = false,
-	isInAntiHawkingTimeframe = false;
+	stateSubmitInProgress = false;
 
 	function initJourneyEngine(){
 
@@ -160,32 +159,6 @@
 						toggleDialogueInChatCallback();
 					});
 				}
-
-			},
-			onBeforeLeave: function(event){
-				
-				meerkat.modules.comms.get({
-					url: "health/optin/isInAntiHawkingTimeframe.json",
-					cache: true,
-					data: {
-						state: $('#health_situation_state').val()
-					},
-					errorLevel: "silent",
-					onSuccess: function (result) {
-						isInAntiHawkingTimeframe = result.isInAntiHawkingTimeframe;
-
-						$hawkingOptinTextPlaceholder = $(".hawkingOptinTextPlaceholder");
-						if( isInAntiHawkingTimeframe === true ){
-							$hawkingOptinTextPlaceholder.html( meerkat.site.content.hawkingOptinText );
-						} else {
-							$hawkingOptinTextPlaceholder.html("");
-						}
-
-			},
-			onAfterEnter: function(event) {
-					meerkat.modules.healthPhoneNumber.changePhoneNumber(steps.startStep.navigationId);
-					}
-				});
 
 			}
 		};
@@ -1268,10 +1241,6 @@
 
 				$("#health_contactDetails_optInEmail").val(optinVal);
 				$("#health_contactDetails_call").val(optinVal);
-
-				if(isInAntiHawkingTimeframe === true){
-					$("#health_contactDetails_hawkingOptin").val(optinVal);
-				}
 			});
 
 			if ($('input[name="health_directApplication"]').val() === 'Y') {

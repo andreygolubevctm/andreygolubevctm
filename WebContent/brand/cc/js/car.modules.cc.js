@@ -1411,13 +1411,34 @@
             });
             return false;
         }
+        var leadFeedInfoArr = product.leadfeedinfo.split("||");
+        var leadFeed = false;
+        if (!_.isEmpty(leadFeedInfoArr[0])) {
+            leadFeed = {
+                data: {
+                    vertical: meerkat.site.vertical,
+                    phonecallme: "NoSaleCall",
+                    productId: product.productId,
+                    clientName: leadFeedInfoArr[0],
+                    phoneNumber: leadFeedInfoArr[1],
+                    clientNumber: product.leadNo,
+                    partnerReference: meerkat.modules.transactionId.get(),
+                    brand: product.productId.split("-")[0],
+                    state: $("#quote_riskAddress_state").val()
+                },
+                settings: {
+                    errorLevel: "silent"
+                }
+            };
+        }
         meerkat.modules.partnerTransfer.transferToPartner({
             encodeTransferURL: true,
             product: product,
             applyNowCallback: applyNowCallback,
             productName: product.headline.name,
             productBrandCode: product.brandCode,
-            brand: product.productDes
+            brand: product.productDes,
+            noSaleLead: leadFeed
         });
         return true;
     }

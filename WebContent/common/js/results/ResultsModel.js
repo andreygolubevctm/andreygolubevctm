@@ -3,7 +3,7 @@ ResultsModel = {
 	ajaxRequest: false,
 
 	returnedGeneral: false,
-
+	isBlockedQuote: false,
 	returnedProducts: false,
 	filteredProducts: false,
 	sortedProducts: false,
@@ -99,6 +99,7 @@ ResultsModel = {
 				if( typeof meerkat != 'undefined') {
 					if (jsonResult.hasOwnProperty('results')) {
 						if(jsonResult.results.hasOwnProperty('info')) {
+							Results.model.isBlockedQuote = (typeof jsonResult.results.info !== "undefined" && typeof jsonResult.results.info.blocked === "boolean" && jsonResult.results.info.blocked === true);
 							meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_UPDATED_INFO_RECEIVED, jsonResult.results.info);
 						}
 					}

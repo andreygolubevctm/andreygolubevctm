@@ -166,6 +166,10 @@
 				});
 			}
 
+			if(_.has(settings, "noSaleLead") && !_.isEmpty(settings.noSaleLead)) {
+				meerkat.modules.leadFeed.generate(settings.noSaleLead.data, settings.noSaleLead.settings);
+			}
+
 			// finally publish an event
 			meerkat.messaging.publish(moduleEvents.partnerTransfer.TRANSFER_TO_PARTNER, {
 				transactionID: settings.tracking.transactionID,

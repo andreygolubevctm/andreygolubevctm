@@ -1176,6 +1176,7 @@ var ResultsModel = new Object();
 ResultsModel = {
     ajaxRequest: false,
     returnedGeneral: false,
+    isBlockedQuote: false,
     returnedProducts: false,
     filteredProducts: false,
     sortedProducts: false,
@@ -1254,6 +1255,7 @@ ResultsModel = {
                 if (typeof meerkat != "undefined") {
                     if (jsonResult.hasOwnProperty("results")) {
                         if (jsonResult.results.hasOwnProperty("info")) {
+                            Results.model.isBlockedQuote = typeof jsonResult.results.info !== "undefined" && typeof jsonResult.results.info.blocked === "boolean" && jsonResult.results.info.blocked === true;
                             meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_UPDATED_INFO_RECEIVED, jsonResult.results.info);
                         }
                     }
@@ -5313,22 +5315,30 @@ Features = {
     var events = {
         coupon: {}
     };
-    var $couponIdField, $couponCodeField, $couponOptinField, $couponOptinGroup, $couponErrorContainer, $couponSuccessContainer, currentCoupon = false, hasAutoPoped = false;
+    var $couponIdField, $couponCodeField, $couponOptinField, $couponOptinGroup, $couponErrorContainer, $couponSuccessContainer, currentCoupon = false, hasAutoPoped = false, isAvailable = false;
     function init() {
         $(document).ready(function() {
-            $couponIdField = $(".coupon-id-field"), $couponCodeField = $(".coupon-code-field"), 
-            $couponOptinField = $(".coupon-optin-field"), $couponOptinGroup = $(".coupon-optin-group"), 
-            $couponErrorContainer = $(".coupon-error-container"), $couponSuccessContainer = $(".coupon-success-container");
-            preload();
-            _.defer(function() {
-                eventSubscriptions();
-            });
+            checkCouponsAvailability();
+            if (isAvailable === true) {
+                $couponIdField = $(".coupon-id-field"), $couponCodeField = $(".coupon-code-field"), 
+                $couponOptinField = $(".coupon-optin-field"), $couponOptinGroup = $(".coupon-optin-group"), 
+                $couponErrorContainer = $(".coupon-error-container"), $couponSuccessContainer = $(".coupon-success-container");
+                preload();
+                _.defer(function() {
+                    eventSubscriptions();
+                });
+            }
         });
     }
     function eventSubscriptions() {
         meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function() {
             resetWhenChangeStep();
         });
+    }
+    function checkCouponsAvailability() {
+        if ($(".coupon-id-field").length > 0) {
+            isAvailable = true;
+        }
     }
     function preload() {
         if (meerkat.site.isCallCentreUser && meerkat.site.vdn !== "") {
@@ -5338,6 +5348,7 @@ Features = {
         }
     }
     function loadCoupon(type, dataParam, successCallBack) {
+        if (isAvailable !== true) return;
         if (!type) return;
         var url = "", data = {};
         data.transactionId = meerkat.modules.transactionId.get();
@@ -5383,6 +5394,7 @@ Features = {
         });
     }
     function validateCouponCode(couponCode) {
+        if (isAvailable !== true) return;
         var transactionId = meerkat.modules.transactionId.get();
         meerkat.modules.comms.get({
             url: "coupon/code/validate.json",
@@ -7551,6 +7563,32 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, events = {};
+    function init() {}
+    function generate(data, settings) {
+        settings = settings || {};
+        var request_obj = {
+            url: "leadfeed/" + data.vertical + "/getacall.json",
+            data: data,
+            dataType: "json",
+            cache: false,
+            useDefaultErrorHandling: false,
+            numberOfAttempts: 3,
+            errorLevel: "silent"
+        };
+        if (!_.isObject(settings) && !_.isEmpty(settings)) {
+            request_obj = $.extend(request_obj, settings);
+        }
+        meerkat.modules.comms.post(request_obj);
+    }
+    meerkat.modules.register("leadFeed", {
+        init: init,
+        events: events,
+        generate: generate
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         leavePageWarning: {}
@@ -8352,6 +8390,9 @@ Features = {
                     productId: settings.product.productId,
                     comment: "Apply Online"
                 });
+            }
+            if (_.has(settings, "noSaleLead") && !_.isEmpty(settings.noSaleLead)) {
+                meerkat.modules.leadFeed.generate(settings.noSaleLead.data, settings.noSaleLead.settings);
             }
             meerkat.messaging.publish(moduleEvents.partnerTransfer.TRANSFER_TO_PARTNER, {
                 transactionID: settings.tracking.transactionID,
@@ -9663,7 +9704,7 @@ Features = {
             }
             var dat = [];
             var sendConfirm;
-            if ($.inArray(meerkat.site.vertical, [ "car", "ip", "life" ]) !== -1) {
+            if ($.inArray(meerkat.site.vertical, [ "home", "car", "ip", "life" ]) !== -1) {
                 sendConfirm = "no";
             } else {
                 sendConfirm = "yes";

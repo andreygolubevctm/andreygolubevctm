@@ -53,7 +53,7 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 			if(leadType == LeadType.CALL_DIRECT) {
 				// Return OK as we still want to record touches etc
 				feedResponse = LeadResponseStatus.SUCCESS;
-				logger.info("[Lead feed] Skipped sending lead to service as overridden in content control");
+				logger.info("[Lead feed] Skipped sending lead to service as flagged to be ignored");
 			} else {
 				// Generate the lead feed model
 				AGISLeadFeedRequest leadModel = getModel(leadType, leadData);
@@ -90,6 +90,8 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 			serviceCode = LeadType.CALL_ME_BACK.getServiceUrlFlag();
 		} else if(leadType == LeadType.BEST_PRICE){
 			serviceCode = LeadType.BEST_PRICE.getServiceUrlFlag();
+		} else if(leadType == LeadType.NOSALE_CALL){
+			serviceCode = LeadType.NOSALE_CALL.getServiceUrlFlag();
 		}
 
 		try {

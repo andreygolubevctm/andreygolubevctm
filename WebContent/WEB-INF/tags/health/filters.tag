@@ -97,7 +97,7 @@
 			</c:if>
 
 			<%-- Brand/Provider --%>
-			<c:set var="providerList" value="${healthApplicationService.getAllProviders(styleCodeId)}"  scope="request"/>
+			<c:set var="providerList" value="${healthApplicationService.getAllProviders(pageSettings.getBrandId())}"  scope="request"/>
 			<div class="filterProvider col-md-12" id="filter-provider" data-filter-type="checkbox" data-filter-serverside="true">
 				<div class="col-md-8 filter">
 					<div class="row">

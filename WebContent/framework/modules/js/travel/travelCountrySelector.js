@@ -122,7 +122,7 @@
         var localCountries = meerkat.modules.performanceProfiling.isIE11() ? [] : addValueToCountriesForDefaultFocusEvent();
 
         var url = $component.attr('data-source-url'),
-            urlAppend = (url.indexOf('?') == -1 ? '?' : '&') + 'transactionId=' + meerkat.modules.transactionId.get(),
+            urlAppend = (url.indexOf('?') == -1 ? '?' : '&') + 'transactionId='+ meerkat.modules.transactionId.get(),
             $list = meerkat.modules.selectTags.getListElement($component);
         return {
             cache: true,
@@ -148,6 +148,10 @@
                         xhr.abort();
                         return false;
                     }
+
+                    // replace the old transactionid with a new one
+                    opts.url =  opts.url.replace( /\btransactionId\b[=]\d+/g, 'transactionId=' + meerkat.modules.transactionId.get());
+
                     meerkat.modules.autocomplete.autocompleteBeforeSend($component);
                 },
                 filter: function (parsedResponse) {
@@ -169,6 +173,7 @@
                         };
                     });
                 },
+                // it is duplication but this allows the typeahead library to do a proper search rather than defaulting to the value 1. it's something that's inherint this typeahead version.
                 url: url + '%QUERY' + urlAppend,
                 error: function (xhr, status) {
                     if (!showingError) {

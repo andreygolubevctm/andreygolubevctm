@@ -268,10 +268,14 @@
 				}
 			});
 
-			if (availableCounts === 0 && !Results.model.hasValidationErrors) {
-				showNoResults();
+			if (availableCounts === 0 && !Results.model.hasValidationErrors ) {
+				if (Results.model.isBlockedQuote) {
+					// show the custom popup
+					showBlockedResults();
+				} else {
+					showNoResults();
+				}
 			}
-
 		});
 
 		// Handle result row click
@@ -377,6 +381,12 @@
 	function showNoResults() {
 		meerkat.modules.dialogs.show({
 			htmlContent: $('#no-results-content')[0].outerHTML
+		});
+	}
+
+	function showBlockedResults() {
+		meerkat.modules.dialogs.show({
+			htmlContent: $('#blocked-ip-address')[0].outerHTML
 		});
 	}
 

@@ -9718,6 +9718,30 @@ ul.selected-tags li button:focus {
   padding: 0;
   display: block;
 }
+#blocked-ip-address .verticalButtons {
+  text-align: center;
+}
+#blocked-ip-address .verticalButtons a {
+  display: block;
+  color: #1d4a82;
+  height: 130px;
+  text-decoration: none;
+}
+#blocked-ip-address .verticalButtons a:hover {
+  color: #2859d3;
+}
+#blocked-ip-address .verticalButtons a .icon {
+  display: block;
+  color: #1d4a82;
+  font-size: 450%;
+  text-decoration: none;
+}
+#blocked-ip-address .verticalButtons a .icon:hover {
+  color: #2859d3;
+}
+#blocked-ip-address .verticalButtons a span {
+  display: block;
+}
 /**
 	* [NOTE]
 	* This file was copied from the default bootstrap

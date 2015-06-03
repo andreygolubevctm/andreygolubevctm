@@ -25,7 +25,8 @@ public abstract class LeadFeedService {
 	public static enum LeadType{
 		CALL_DIRECT("callDirectLeadFeedService"),
 		CALL_ME_BACK("getACallLeadFeedService"),
-		BEST_PRICE("bestPriceLeadFeedService");
+		BEST_PRICE("bestPriceLeadFeedService"),
+		NOSALE_CALL("noSaleCallLeadFeedService");
 
 		private final String serviceUrlFlag;
 
@@ -50,6 +51,25 @@ public abstract class LeadFeedService {
 
 	public LeadResponseStatus callMeBack(LeadFeedData leadData) throws LeadFeedException {
 		return processGateway(LeadType.CALL_ME_BACK, leadData, Touch.TouchType.LEAD_CALL_ME_BACK);
+	}
+
+	public LeadResponseStatus noSaleCall(LeadFeedData leadData) throws LeadFeedException {
+
+		Content content = null;
+		try {
+			ContentService contentService = new ContentService();
+			content = contentService.getContent("noSaleLeadOn", 0, leadData.getVerticalId(), leadData.getEventDate(), false);
+		} catch(Exception e) {
+			logger.error("[Lead feed] Exception checking noSaleLead is turned on in content_control",e);
+			return LeadResponseStatus.SKIPPED;
+		}
+
+		if(content != null && content.getContentValue() == null || content.getContentValue().equalsIgnoreCase("Y")) {
+			return processGateway(LeadType.NOSALE_CALL, leadData, Touch.TouchType.NOSALE_CALL);
+		} else {
+			logger.info("[Lead feed] Skipped noSaleLead as feed not turned on in content_control");
+			return LeadResponseStatus.SKIPPED;
+		}
 	}
 
 	public LeadResponseStatus bestPrice(LeadFeedData leadData) throws LeadFeedException {

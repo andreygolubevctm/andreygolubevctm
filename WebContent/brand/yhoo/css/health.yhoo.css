@@ -3741,6 +3741,28 @@ body[data-step="payment"].health .healthMoreInfoModel .jeepPromotion {
     background-size: 280px 175px;
   }
 }
+.health200eftpos {
+  width: 280px;
+  height: 177px;
+  background-image: url("../coupon/200-eftpos-card.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .health200eftpos {
+    background-image: url("../coupon/200-eftpos-card@2x.png");
+    background-size: 280px 177px;
+  }
+}
+.healthX00eftpos {
+  width: 280px;
+  height: 177px;
+  background-image: url("../coupon/blank-eftpos-card.png");
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (-o-min-device-pixel-ratio: 3/2), only screen and (min-device-pixel-ratio: 1.5), only screen and (min-resolution: 1.5dppx), only screen and (min-resolution: 144dpi) {
+  .healthX00eftpos {
+    background-image: url("../coupon/blank-eftpos-card@2x.png");
+    background-size: 280px 177px;
+  }
+}
 .btn-more-info {
   background-color: #333333;
   color: #ffffff;

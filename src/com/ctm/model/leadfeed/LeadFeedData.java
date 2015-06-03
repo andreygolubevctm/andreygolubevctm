@@ -12,7 +12,8 @@ public class LeadFeedData {
 
 	public enum CallType {
 		CALL_DIRECT("CallDirect"),
-		GET_CALLBACK("GetaCall");
+		GET_CALLBACK("GetaCall"),
+		NOSALE_CALL("NoSaleCall");
 
 		private String callType;
 

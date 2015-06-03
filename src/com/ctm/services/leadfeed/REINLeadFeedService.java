@@ -16,14 +16,18 @@ public abstract class REINLeadFeedService implements IProviderLeadFeedService {
 	 */
 	public LeadResponseStatus process(LeadType leadType, LeadFeedData leadData) throws LeadFeedException {
 
-		if(
-			leadType == LeadType.BEST_PRICE &&
-			leadData.getProductId() != null &&
-			leadData.getProductId().equalsIgnoreCase("REIN-01-01")
-		) {
-			return LeadResponseStatus.SUCCESS;
+		if(leadType == LeadType.BEST_PRICE) {
+			if (
+				leadData.getProductId() != null &&
+				leadData.getProductId().equalsIgnoreCase("REIN-01-01")
+			) {
+				return LeadResponseStatus.SUCCESS;
+			} else {
+				logger.debug("[Lead feed] Lead failed custom validation and has been skipped");
+				return LeadResponseStatus.SKIPPED;
+			}
 		} else {
-			logger.debug("[Lead feed] Lead failed custom validation and has been skipped");
+			logger.debug("[Lead feed] No " + leadType + " lead exists for WOOL");
 			return LeadResponseStatus.SKIPPED;
 		}
 	}

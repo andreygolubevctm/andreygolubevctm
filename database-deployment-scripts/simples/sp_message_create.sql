@@ -83,17 +83,10 @@ BEGIN
 	--
 	IF _tranIdExists = 0 AND _doNotContact = 0 AND _dupeTranIdExists = 0 THEN
 		--
-		-- Get Hawking optin from latestTranId for each rootId
+		-- EVERY MESSAGE IS HAWKING NOW 
+		-- TODO: remove when tested in PROD
 		--
-		SELECT td.textValue
-		INTO _hawkingOptin
-		FROM aggregator.transaction_details td
-		INNER JOIN aggregator.transaction_header th
-		ON th.transactionId = td.transactionId
-		AND th.rootId = _tranId
-		WHERE td.xpath = 'health/contactDetails/hawkingOptin'
-		ORDER BY td.transactionId DESC, td.sequenceNo DESC
-		LIMIT 1;
+		SET _hawkingOptin = 'Y';
 		
 		IF _activeMessageId IS NULL OR _activeMessageStatusId = 2 /* Completed */ OR _activeMessageStatusId = 33 /* Removed from PM */ THEN
 			INSERT INTO message

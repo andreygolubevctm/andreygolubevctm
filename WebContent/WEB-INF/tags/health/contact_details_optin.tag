@@ -102,7 +102,7 @@
 					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
 					I understand <content:get key="brandDisplayName" /> compares health insurance policies from a range of
 					<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
-					By providing my contact details I agree that comparethemarket.com.au may contact me<span class="hawkingOptinTextPlaceholder"></span> about the services they provide.
+					By providing my contact details I agree that comparethemarket.com.au may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
 					I confirm that I have read the <form:link_privacy_statement />.
 				</c:set>
 				
@@ -116,8 +116,6 @@
 						label="${true}"
 						title="${termsAndConditions}"
 						errorMsg="Please agree to the Terms &amp; Conditions" />
-
-					<field:hidden xpath="${xpath}/hawkingOptin" defaultValue="N" />
 				</form_new:row>
 
 			</form_new:fieldset>

@@ -1,0 +1,57 @@
+<ExportList><Quest.Toad.ImportExport.ExportEngine><FileConfiguration FileFormatType="CommaSeperatedValues" ExcelFile="False" Clipboard="False" FileName="Home_Comments_Rate_Reduction_Template" FileOverwrite="False" FileSuffix="yyyy-MM-dd HH-mm-ss" FileDirectory="H:\__Extracts\" FileExtension="csv" Delimiter="," QuoteChar="&quot;" HeaderRow="True" AlwaysQuoteString="True" RowsIncrement="2000" LineFeed="Windows" Width="60" OnlyQuoteWhenNeeded="False" UpperKeywords="False" TableScript="False" IncludeSQL="False" AppendDelimiterAtEnd="False" UseCurrentLocale="False" SchemaAppend="False" Encoding="Unicode (UTF-8)" BlockInsert="False" BlockInsertValue="500" IdentityInsert="False" Overwrite="False" ExcelUseOpen="True" AddExcelWorksheetsAsNeeded="True" HeaderBackColor="LightGray" ExcelAutoFitColumns="True" ExcelBeforeExportMacros="" ExcelAfterExportMacros="" ExcelAtType="ActiveCell" ExcelAtLocation="" ClearWorksheet="True" AppendTimeStampToNamedWorksheet="False" AppendExistingAccessTable="False" SingleAccessTableName="" AccessRecreate="False" AccessTruncate="False" SPListName="" CreateNewSPList="False" DeleteSPList="False" ExportSPListBlockSize="0" AllowAppend="False" /><Queries ConnectionTypeTrl="mysql://itdevro@ctmprdslave1/"><Query DefaultSchema=""><![CDATA[SELECT
+-- tdEmail.xpath,
+tdEmail.textValue AS EmailAddress,
+-- tdFirstName.xpath,
+CONCAT(UCASE(SUBSTRING(`tdFirstName`.`textValue`, 1, 1)),LOWER(SUBSTRING(`tdFirstName`.`textValue`, 2))) AS FirstName,
+-- tdPostCode.xpath,
+tdPostCode.textValue AS PostCode,
+th.transactionId,
+th.productType AS vertical,
+sc.styleCode AS brand,
+moi.optInStatus,
+CONCAT('https://secure.comparethemarket.com.au/ctm/unsubscribe.jsp?vertical=',
+	CASE th.productType
+		WHEN 'QUOTE' THEN 'car'
+		ELSE LCASE(th.productType)
+		END,
+	'&email=',tdEmail.textValue,'&unsubscribe_email=',emHash.hashedEmail,
+	CASE th.styleCodeId
+		WHEN 2 THEN '&brand=meer'
+		ELSE ''
+		END
+	) AS unsubscribeURL
+	FROM aggregator.transaction_header th
+
+
+-- ADDING IN ALL OF THE JOINS FOR THE ADDITIONAL DATA, ensuring there is only one as often there are multiple variants
+-- Brand
+JOIN ctm.stylecodes sc USING(styleCodeId)
+-- Email
+JOIN aggregator.transaction_details tdEmail ON th.TransactionId = tdEmail.transactionId
+	AND tdEmail.sequenceNo = (SELECT sequenceNo FROM aggregator.transaction_details
+						WHERE transactionId = th.transactionId
+						AND xpath LIKE('%/email') AND textValue LIKE('%@%.%')
+						-- ordering by the field ensures we have the correct hierarchy, making it descending adds default values to the end, e.g. reversed
+						ORDER BY FIELD(xpath,'health/contactDetails/email','save/email','saved/email','life/sendEmail','homeloan/enquiry/contact/email','health/application/email') DESC
+						LIMIT 1)
+-- OptIn
+JOIN ctm.marketingOptIn moi ON th.styleCodeId = moi.styleCodeID AND moi.fieldCategory = 1 AND moi.optInTarget = tdEmail.textValue AND moi.optInStatus = 1
+-- First Name
+LEFT JOIN aggregator.transaction_details tdFirstName ON tdEmail.TransactionId = tdFirstName.transactionId
+	AND tdFirstName.sequenceNo = (SELECT sequenceNo FROM aggregator.transaction_details
+						WHERE transactionId = tdEmail.transactionId
+						AND (xpath like '%/name' OR xpath like '%/firstname')
+						ORDER BY FIELD(xpath,'utilities/application/details/firstName','ip/primary/firstName','life/primary/firstName','homeloan/contact/firstName','homeloan/enquiry/contact/firstName','home/policyHolder/firstName','quote/drivers/regular/firstname','health/contact/details/firstName','health/contactDetails/name','health/application/partner/firstname') DESC
+						LIMIT 1)
+-- PostCode
+LEFT JOIN aggregator.transaction_details tdPostCode ON tdEmail.TransactionId = tdPostCode.transactionId
+	AND tdPostCode.sequenceNo = (SELECT sequenceNo FROM aggregator.transaction_details
+						WHERE transactionId = tdEmail.transactionId
+						AND xpath LIKE('%/postcode')
+						LIMIT 1)
+LEFT JOIN aggregator.email_master emHash ON tdEmail.textValue = emHash.emailAddress AND emHash.StyleCodeId = th.styleCodeId
+WHERE th.styleCodeId = 1 -- IN (1,2)
+AND th.startDate != CURDATE()
+AND th.startDate >= CURDATE() - INTERVAL 6 MONTH
+AND th.productType = 'HOME'
+;]]></Query></Queries><Options><TableOption TableLocation="mysql://itdevro@ctmprdslave1/QUERY" ColumnOrders=""><Fields><Field ColumnName="EmailAddress" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/EmailAddress" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="0" ColumnOrderID="0" /><Field ColumnName="FirstName" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/FirstName" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="1" ColumnOrderID="1" /><Field ColumnName="PostCode" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/PostCode" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="2" ColumnOrderID="2" /><Field ColumnName="transactionId" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/transactionId" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="INT" ColumnOriginalOrderID="3" ColumnOrderID="3" /><Field ColumnName="vertical" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/vertical" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="4" ColumnOrderID="4" /><Field ColumnName="brand" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/brand" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="5" ColumnOrderID="5" /><Field ColumnName="optInStatus" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/optInStatus" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="TINYINT" ColumnOriginalOrderID="6" ColumnOrderID="6" /><Field ColumnName="unsubscribeURL" ColumnLocation="mysql://itdevro@ctmprdslave1/QUERY/COLUMNS/unsubscribeURL" Include="True" FixedWidth="60" AlwaysSupport="False" DataType="VARCHAR" ColumnOriginalOrderID="7" ColumnOrderID="7" /></Fields></TableOption></Options></Quest.Toad.ImportExport.ExportEngine></ExportList>

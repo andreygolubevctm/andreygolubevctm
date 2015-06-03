@@ -594,6 +594,7 @@
                         xhr.abort();
                         return false;
                     }
+                    opts.url = opts.url.replace(/\btransactionId\b[=]\d+/g, "transactionId=" + meerkat.modules.transactionId.get());
                     meerkat.modules.autocomplete.autocompleteBeforeSend($component);
                 },
                 filter: function(parsedResponse) {
@@ -1350,7 +1351,11 @@
                 }
             });
             if (availableCounts === 0 && !Results.model.hasValidationErrors) {
-                showNoResults();
+                if (Results.model.isBlockedQuote) {
+                    showBlockedResults();
+                } else {
+                    showNoResults();
+                }
             }
         });
         $(Results.settings.elements.resultsContainer).on("click", ".result-row", resultRowClick);
@@ -1424,6 +1429,11 @@
     function showNoResults() {
         meerkat.modules.dialogs.show({
             htmlContent: $("#no-results-content")[0].outerHTML
+        });
+    }
+    function showBlockedResults() {
+        meerkat.modules.dialogs.show({
+            htmlContent: $("#blocked-ip-address")[0].outerHTML
         });
     }
     function publishExtraSuperTagEvents(additionalData) {

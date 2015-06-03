@@ -16,18 +16,22 @@ public abstract class AILeadFeedService implements IProviderLeadFeedService {
 	 */
 	public LeadResponseStatus process(LeadType leadType, LeadFeedData leadData) throws LeadFeedException {
 
-		if(
-			leadType == LeadType.CALL_ME_BACK &&
-			leadData.getProductId() != null &&
-			(
-				leadData.getProductId().equalsIgnoreCase("AI-01-01") ||
-				leadData.getProductId().equalsIgnoreCase("AI-01-02") ||
-				leadData.getProductId().equalsIgnoreCase("AI-01-04")
-			)
-		) {
-			return LeadResponseStatus.SUCCESS;
+		if(leadType == LeadType.CALL_ME_BACK) {
+			if (
+				leadData.getProductId() != null &&
+				(
+					leadData.getProductId().equalsIgnoreCase("AI-01-01") ||
+					leadData.getProductId().equalsIgnoreCase("AI-01-02") ||
+					leadData.getProductId().equalsIgnoreCase("AI-01-04")
+				)
+			) {
+				return LeadResponseStatus.SUCCESS;
+			} else {
+				logger.debug("[Lead feed] Lead failed custom validation and has been skipped");
+				return LeadResponseStatus.SKIPPED;
+			}
 		} else {
-			logger.debug("[Lead feed] Lead failed custom validation and has been skipped");
+			logger.debug("[Lead feed] No " + leadType + " lead exists for AI");
 			return LeadResponseStatus.SKIPPED;
 		}
 	}

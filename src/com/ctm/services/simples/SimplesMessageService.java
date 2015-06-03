@@ -1,5 +1,16 @@
 package com.ctm.services.simples;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+
 import com.ctm.dao.BlacklistDao;
 import com.ctm.dao.UserDao;
 import com.ctm.dao.simples.MessageAuditDao;
@@ -10,20 +21,16 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.MessageConfig;
 import com.ctm.model.Transaction;
-import com.ctm.model.simples.*;
+import com.ctm.model.simples.BlacklistChannel;
+import com.ctm.model.simples.ConfirmationOperator;
+import com.ctm.model.simples.Message;
+import com.ctm.model.simples.MessageAudit;
+import com.ctm.model.simples.MessageDetail;
+import com.ctm.model.simples.MessageStatus;
+import com.ctm.model.simples.Role;
+import com.ctm.model.simples.Rule;
+import com.ctm.model.simples.User;
 import com.ctm.services.TransactionService;
-
-import org.apache.log4j.Logger;
-
-import javax.servlet.http.HttpServletRequest;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 public class SimplesMessageService {
 	private static final Logger logger = Logger.getLogger(SimplesMessageService.class.getName());
@@ -46,7 +53,6 @@ public class SimplesMessageService {
 			return messageDetail;
 		}
 		else {
-			message.setHawking(checkHawking(request, message));
 			final MessageDetailService messageDetailService = new MessageDetailService();
 			return messageDetailService.getMessageDetail(message);
 		}
@@ -66,14 +72,13 @@ public class SimplesMessageService {
 		final MessageDao messageDao = new MessageDao();
 		final MessageDaoOld messageDaoOld = new MessageDaoOld();
 
-		MessageConfigService messageConfigService = new MessageConfigService();
-		Map<String, List<String>> statesMapForHawkingTime = messageConfigService.getStatesMapForHawkingTime(request, hawkingHours);
-
 		// TODO: remove once new hawking solution is tested in PROD
 		if (messageDao.useNewMethodToGetNexMessage()){
-			message = messageDao.getNextMessage(userId, getNextMessageRules, statesMapForHawkingTime);
+			message = messageDao.getNextMessage(userId, getNextMessageRules);
 		}else{
-			message = messageDaoOld.getNextMessage(userId, getNextMessageRules);
+			MessageConfigService messageConfigService = new MessageConfigService();
+			Map<String, List<String>> statesMapForHawkingTime = messageConfigService.getStatesMapForHawkingTime(request, hawkingHours);
+			message = messageDaoOld.getNextMessage(userId, getNextMessageRules, statesMapForHawkingTime);
 		}
 
 		if (message.getMessageId() == 0) {
@@ -85,15 +90,6 @@ public class SimplesMessageService {
 			MessageDetailService messageDetailService = new MessageDetailService();
 			TransactionService transactionService = new TransactionService();
 			messageDetail = messageDetailService.getMessageDetail(message);
-
-			// Check Anti Hawking, if true, than defer the message to next Monday and skip to the next one
-			// TODO: remove once new hawking solution is tested in PROD
-			if (!messageDao.useNewMethodToGetNexMessage()){
-				if (checkHawking(request, message, messageDetailService, transactionService)) {
-					messageDao.deferMessage(userId, message.getMessageId(), message.getStatusId(), convertToNextMonday(message.getWhenToAction()), canUnassign(message.getStatusId()));
-					return getNextMessageForUser(request, userId, userRoles, getNextMessageRules, hawkingHours);
-				}
-			}
 
 			// If message's phone number is in the blacklist, set the message to Complete + Do Not Contact
 			int styleCodeId = messageDetail.getTransaction().getStyleCodeId();
@@ -131,77 +127,6 @@ public class SimplesMessageService {
 		}
 
 		return messageDetail;
-	}
-
-	private boolean checkHawking(final HttpServletRequest request, final Message message) throws DaoException{
-		MessageDetailService messageDetailService = new MessageDetailService();
-		TransactionService transactionService = new TransactionService();
-		return checkHawking(request, message, messageDetailService, transactionService);
-	}
-
-	private boolean checkHawking(final HttpServletRequest request, final Message message, final MessageDetailService messageDetailService, final TransactionService transactionService) throws DaoException{
-
-		MessageConfigService messageConfigService = new MessageConfigService();
-		MessageDetail messageDetail = messageDetailService.getMessageDetail(message);
-
-		// Anti Hawking optin logic
-		if (messageConfigService.isInAntiHawkingTimeframe(request, message.getState())) {
-			if (!isDateInCurrentWeek(message.getCreated()) || !messageConfigService.isInAntiHawkingTimeframe(message.getCreated(), message.getState())) {
-				return true;
-			}else{
-				Long lastestTransactionId = messageDetail.getTransaction().getNewestTransactionId();
-				String hawkingOptin = transactionService.getHawkingOptinForTransaction(lastestTransactionId);
-				return !hawkingOptin.equals("Y");
-			}
-		}
-		return false;
-
-	}
-
-	private static boolean isDateInCurrentWeek(Date date) {
-		Locale locale = new Locale("en", "GB"); // so first day of week can be Monday...
-		Calendar currentCalendar = Calendar.getInstance(locale);
-		int week = currentCalendar.get(Calendar.WEEK_OF_YEAR);
-		int year = currentCalendar.get(Calendar.YEAR);
-		Calendar targetCalendar = Calendar.getInstance(locale);
-		targetCalendar.setTime(date);
-		int targetWeek = targetCalendar.get(Calendar.WEEK_OF_YEAR);
-		int targetYear = targetCalendar.get(Calendar.YEAR);
-		return week == targetWeek && year == targetYear;
-	}
-
-	private static Date convertToNextMonday(Date date){
-		Calendar currentCalendar = Calendar.getInstance();
-		currentCalendar.setTime(date);
-
-		Calendar targetCalendar = Calendar.getInstance();
-		while( targetCalendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY ){
-			targetCalendar.add( Calendar.DATE, 1 );
-		}
-		// set to call centre opening hour to the 1:00am
-		targetCalendar.set(Calendar.HOUR_OF_DAY, 1);
-		targetCalendar.set(Calendar.MINUTE, 0);
-		targetCalendar.set(Calendar.SECOND, 0);
-
-		return targetCalendar.getTime();
-	}
-
-	private static boolean canUnassign(int statusId){
-		switch (statusId) {
-		case MessageStatus.STATUS_NEW:
-		case MessageStatus.STATUS_POSTPONED:
-		case MessageStatus.STATUS_UNSUCCESSFUL:
-			return true;
-		case MessageStatus.STATUS_ASSIGNED:
-		case MessageStatus.STATUS_INPROGRESS:
-		case MessageStatus.STATUS_COMPLETED_AS_PM:
-		case MessageStatus.STATUS_CHANGED_TIME_FOR_PM:
-		case MessageStatus.STATUS_REMOVED_FROM_PM:
-		case MessageStatus.STATUS_COMPLETED:
-			return false;
-		default:
-			return false;
-		}
 	}
 
 	/**

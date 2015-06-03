@@ -55,6 +55,7 @@ public class Touch extends AbstractJsonModel {
 		TRANSFERRING ("Transferring", "T"),
 		LEAD_CALL_ME_BACK("Call me back", "CB"),
 		CALL_DIRECT("Call direct", "CD"),
+		NOSALE_CALL("No Sale Call", "NS"),
 		LEAD_BEST_PRICE("Best price", "BP"),
 		LEAD_FEED("Lead feed", "LF"),
 		CONTACT_DETAILS_COLLECTED("Contact details collected", "CDC"),

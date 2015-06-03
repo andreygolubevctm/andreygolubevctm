@@ -8,12 +8,14 @@
 
 <security:populateDataFromParams rootPath="roadside" />
 
-<c:set var="continueOnValidationError" value="${true}" />
+<c:set var="continueOnValidationError" value="${false}" />
 
 <c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
+<jsp:useBean id="roadsideService" class="com.ctm.services.roadside.RoadsideService" scope="page" />
+<c:set var="serviceRespone" value="${roadsideService.validate(pageContext.request)}" />
 <c:choose>
 <%-- RECOVER: if things have gone pear shaped --%>
 	<c:when test="${empty data.current.transactionId}">
@@ -36,7 +38,7 @@
 
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
-<c:if test="${not empty tranId}">
+<c:if test="${not empty tranId && roadsideService.isValid()}">
 			<%-- Load the config and send quotes to the aggregator gadget --%>
 	<c:import var="config" url="/WEB-INF/aggregator/roadside/config.xml" />
 			<go:soapAggregator config = "${config}"
@@ -53,7 +55,7 @@
 </c:if>
 
 <c:choose>
-	<c:when test="${not empty tranId and (isValid || continueOnValidationError)}">
+	<c:when test="${not empty tranId and (isValid || continueOnValidationError) && roadsideService.isValid()}">
 		<c:if test="${!isValid}">
 			<c:forEach var="validationError"  items="${validationErrors}">
 				<error:non_fatal_error origin="sar_quote_results.jsp"

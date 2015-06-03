@@ -18,23 +18,29 @@
 		$couponErrorContainer,
 		$couponSuccessContainer,
 		currentCoupon = false,
-		hasAutoPoped = false;
+		hasAutoPoped = false,
+		isAvailable = false;
 
 	function init() {
 
 		$(document).ready(function() {
-			$couponIdField = $('.coupon-id-field'),
-			$couponCodeField = $('.coupon-code-field'),
-			$couponOptinField = $('.coupon-optin-field'),
-			$couponOptinGroup = $('.coupon-optin-group'),
-			$couponErrorContainer = $('.coupon-error-container'),
-			$couponSuccessContainer = $('.coupon-success-container');
 
-			preload();
+			checkCouponsAvailability();
 
-			_.defer(function() {
-				eventSubscriptions();
-			});
+			if (isAvailable === true) {
+				$couponIdField = $('.coupon-id-field'),
+				$couponCodeField = $('.coupon-code-field'),
+				$couponOptinField = $('.coupon-optin-field'),
+				$couponOptinGroup = $('.coupon-optin-group'),
+				$couponErrorContainer = $('.coupon-error-container'),
+				$couponSuccessContainer = $('.coupon-success-container');
+
+				preload();
+
+				_.defer(function() {
+					eventSubscriptions();
+				});
+			}
 		});
 	}
 
@@ -42,6 +48,12 @@
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function() {
 			resetWhenChangeStep();
 		});
+	}
+
+	function checkCouponsAvailability() {
+		if ($('.coupon-id-field').length > 0) {
+			isAvailable = true;
+		}
 	}
 
 	function preload() {
@@ -54,6 +66,7 @@
 	}
 
 	function loadCoupon(type, dataParam, successCallBack) {
+		if (isAvailable !== true) return;
 		if (!type) return;
 
 		var url = '',
@@ -106,6 +119,8 @@
 
 
 	function validateCouponCode(couponCode) {
+		if (isAvailable !== true) return;
+		
 		var transactionId = meerkat.modules.transactionId.get();
 
 		meerkat.modules.comms.get({

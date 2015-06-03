@@ -11,12 +11,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.naming.NamingException;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
@@ -96,7 +94,7 @@ public class MessageDao {
 	 * @return Message model
 	 * @throws DaoException
 	 */
-	public Message getNextMessage(int userId, List<Rule> getNextMessageRules, Map<String, List<String>> statesMapForHawkingTime) throws DaoException {
+	public Message getNextMessage(int userId, List<Rule> getNextMessageRules) throws DaoException {
 
 		if (userId <= 0) {
 			throw new DaoException("userId must be greater than zero.");
@@ -108,21 +106,13 @@ public class MessageDao {
 		PreparedStatement stmtSelect = null;
 		ResultSet resultSet = null;
 
-		String statesOutOfHawkingPeriodSQL = StringUtils.join(statesMapForHawkingTime.get("statesOutOfHawkingPeriod"), "','");
-		String statesInHawkingPeriodSQL = StringUtils.join(statesMapForHawkingTime.get("statesInHawkingPeriod"), "','");
-
 		try {
 			for(Rule rule : getNextMessageRules) {
 
-				String ruleString = rule.getValue();
-
-				ruleString = ruleString.replaceAll("#outHawkingStates#", statesOutOfHawkingPeriodSQL);
-				ruleString = ruleString.replaceAll("#inHawkingStates#", statesInHawkingPeriodSQL);
-
 				// - rule_0 and rule_3 only need to select as they have already been assigned
 				// - regular expression to match userid=?, userid = ?, userid   =? (zero or more space before and after = sign with x number of characters before it)
-				if(Pattern.matches(".* userid\\s*=\\s*\\?\\s*.*", ruleString.toLowerCase())) {
-					stmtSelect = dbSource.getConnection().prepareStatement(ruleString);
+				if(Pattern.matches(".* userid\\s*=\\s*\\?\\s*.*", rule.getValue().toLowerCase())) {
+					stmtSelect = dbSource.getConnection().prepareStatement(rule.getValue());
 					stmtSelect.setInt(1, userId);
 
 					resultSet = stmtSelect.executeQuery();
@@ -135,7 +125,7 @@ public class MessageDao {
 						return message;
 					}
 				} else {
-					stmtUpdate = dbSource.getConnection().prepareStatement(MESSAGE_AVAILABLE_UPDATE + ruleString + MESSAGE_AVAILABLE_UPDATE_SET);
+					stmtUpdate = dbSource.getConnection().prepareStatement(MESSAGE_AVAILABLE_UPDATE + rule.getValue() + MESSAGE_AVAILABLE_UPDATE_SET);
 
 					stmtUpdate.setInt(1, userId);
 
@@ -143,7 +133,7 @@ public class MessageDao {
 					if(numberOfRows > 0) {
 						// - regular expression to match userid=0, userid = 0, userid   =0 (zero or more space before and after = sign)
 						// We run an update on select before, so changing userId = 0 to userId = ? to get what was assigned.
-						stmtSelect = dbSource.getConnection().prepareStatement(ruleString.toLowerCase().replaceAll("userid\\s*=\\s*0", "userId = ?"));
+						stmtSelect = dbSource.getConnection().prepareStatement(rule.getValue().toLowerCase().replaceAll("userid\\s*=\\s*0", "userId = ?"));
 						stmtSelect.setInt(1, userId);
 
 						resultSet = stmtSelect.executeQuery();
@@ -671,56 +661,6 @@ public class MessageDao {
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			simpleDatabaseConnection.closeConnection();
-		}
-	}
-
-	/**
-	 * Defer a new message, just to get the message out of the queue
-	 *
-	 * @param actionIsPerformedByUserId User ID of user performing this action
-	 * @param messageId ID of message
-	 * @param statusId ID of status
-	 * @param deferTo
-	 * @param unassign Set to true to assign the message to nobody
-	 */
-	public void deferMessage(int actionIsPerformedByUserId, int messageId, int statusId, Date deferTo, boolean unassign) throws DaoException {
-
-		// Get the message so we can use some of its details
-		Message message = getMessage(messageId);
-
-		// Audit this action
-		MessageAudit messageAudit = new MessageAudit();
-		messageAudit.setMessageId(messageId);
-		messageAudit.setUserId(actionIsPerformedByUserId);
-		messageAudit.setStatusId(statusId);
-		messageAudit.setReasonStatusId(MessageStatus.STATUS_SKIP_AND_DEFER);
-		messageAudit.setComment("Skipped and deferred by userId '" + actionIsPerformedByUserId + "' (message.userId=" + message.getUserId() + ") until " + deferTo.toString() + ", unassign=" + unassign);
-
-		MessageAuditDao messageAuditDao = new MessageAuditDao();
-		messageAuditDao.addMessageAudit(messageAudit);
-
-		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-
-		int userId = actionIsPerformedByUserId;
-		if (unassign) userId = 0;
-
-		try {
-			final PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-				"UPDATE simples.message " +
-				"SET userId = ?, whenToAction = ? " +
-				"WHERE id = ?;"
-			);
-			stmt.setInt(1, userId);
-			stmt.setTimestamp(2, new java.sql.Timestamp(deferTo.getTime()));
-			stmt.setInt(3, messageId);
-
-			stmt.executeUpdate();
-		}
-		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		finally {
-			dbSource.closeConnection();
 		}
 	}
 }

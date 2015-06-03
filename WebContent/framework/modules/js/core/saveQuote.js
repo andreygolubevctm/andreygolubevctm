@@ -383,7 +383,7 @@
 			var dat = [];
 			var sendConfirm;
 			// @FIXME = the list of vertical that have a send confirmation should be a setting against each vertical, not a list stored here
-			if( $.inArray(meerkat.site.vertical, ['car','ip','life']) !== -1 ){
+			if( $.inArray(meerkat.site.vertical, ['home','car','ip','life']) !== -1 ){
 				sendConfirm = "no";
 			} else {
 				sendConfirm = "yes";

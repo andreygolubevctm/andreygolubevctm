@@ -18,7 +18,12 @@
 
 	<%-- STREET-SEARCH (ELASTIC) --%>
 	<!-- Since Chrome now ignores the autofill="off" param we can't have address or street in the name/id of the search field. Thanks Chrome... -->
-	<c:set var="fieldXpath" value="${autofilllessSearchXpath}/autofilllessSearch" />
+	<c:set var="fieldXpath" value="${xpath}/autofilllessSearch" />
+	<c:set var="fullAddressFieldXpath" value="${xpath}/fullAddress" />
+	<%-- Update the search field with the full address xpath value if available --%>
+	<c:if test="${not empty data[fullAddressFieldXpath]}">
+		<go:setData dataVar="data" xpath="${fieldXpath}" value="${data[fullAddressFieldXpath]}" />
+	</c:if>
 	<form_new:row fieldXpath="${fieldXpath}" label="Street Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
 		<c:set var="placeholder" value="e.g. 5/20 Sample St" />
 		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address" placeHolder="${placeholder}" required="false" />
