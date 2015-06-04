@@ -91,22 +91,22 @@
 							<type>ADULT</type>
 							<age><xsl:value-of select="oldest" /></age>
 						</traveller>
+						<xsl:if test="adults = 2">
+							<traveller>
+								<line_id>2</line_id>
+								<type>ADULT</type>
+								<age><xsl:value-of select="oldest" /></age>
+							</traveller>
+						</xsl:if>
+						<xsl:choose>
+							<xsl:when test="children != 0">
+								<xsl:call-template name="printChildren">
+									<xsl:with-param name="i" select="adults" />
+									<xsl:with-param name="count" select="children" />
+								</xsl:call-template>
+							</xsl:when>
+						</xsl:choose>
 					</travellers>
-					<xsl:if test="adults = 2">
-						<traveller>
-							<line_id>2</line_id>
-							<type>ADULT</type>
-							<age><xsl:value-of select="oldest" /></age>
-						</traveller>
-					</xsl:if>
-					<xsl:choose>
-						<xsl:when test="children != 0">
-							<xsl:call-template name="printChildren">
-								<xsl:with-param name="i" select="adults" />
-								<xsl:with-param name="count" select="children" />
-							</xsl:call-template>
-						</xsl:when>
-					</xsl:choose>
 				</policy_request>
 			</Input>
 		</QuoteRequest>
