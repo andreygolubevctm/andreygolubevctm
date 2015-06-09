@@ -7,6 +7,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 
+import com.ctm.dao.car.CarRegoLookupDao;
+import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RegoLookupException;
 import com.ctm.model.car.CarDetails;
 import com.ctm.model.car.CarModel;
@@ -32,19 +34,29 @@ public class RegoLookupRouter {
     @GET
     @Path("/lookup/list.json")
     @Produces("application/json")
-    public Map<String, Object> getRegolookup(@Context MessageContext context, @QueryParam("plateNumber") String plateNumber, @QueryParam("state") String stateIn) {
+    public Map<String, Object> getRegolookup(@Context MessageContext context, @QueryParam("transactionId") Long transactionId, @QueryParam("plateNumber") String plateNumber, @QueryParam("state") String state) {
         Map<String, Object> result = new HashMap<>();
+        String request_status = RegoLookupService.RegoLookupStatus.SUCCESS.getLabel();
         try {
             RegoLookupService regoLookupService = new RegoLookupService();
             HttpServletRequest request = context.getHttpServletRequest();
             ApplicationService.setVerticalCodeOnRequest(request, Vertical.VerticalType.CAR.getCode());
-            Map<String, Object> carDetails = regoLookupService.execute(context.getHttpServletRequest(), plateNumber, stateIn);
+            Map<String, Object> carDetails = regoLookupService.execute(context.getHttpServletRequest(), plateNumber, state);
             result.put(COLLECTION_LABEL, carDetails);
         } catch(RegoLookupException e) {
             Map<String, String> error = new LinkedHashMap<>();
             error.put("exception", e.getMessage());
             result.put(COLLECTION_LABEL, error);
+            request_status = e.getStatus().getLabel();
         }
+
+        // Log the lookup attempt
+        try {
+            CarRegoLookupDao.logLookup(transactionId, plateNumber, state, request_status);
+        } catch(DaoException e) {
+            logger.error("[rego lookup] Error adding request to log: " + e.getMessage());
+        }
+
         return result;
     }
 }

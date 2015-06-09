@@ -37,7 +37,8 @@ public class RegoLookupService {
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-    public static enum RegoLookupError{
+    public static enum RegoLookupStatus{
+        SUCCESS("success"),
         INVALID_STATE("invalid_state"),
         REGO_NOT_FOUND("rego_not_found"),
         SERVICE_ERROR("service_error"),
@@ -46,14 +47,14 @@ public class RegoLookupService {
         SERVICE_TURNED_OFF("service_turned_off"),
         SERVICE_TOGGLE_UNDEFINED("service_toggle_undefined");
 
-        private final String error;
+        private final String status;
 
-        RegoLookupError(String error) {
-            this.error = error;
+        RegoLookupStatus(String status) {
+            this.status = status;
         }
 
-        public String getError() {
-            return error;
+        public String getLabel() {
+            return status;
         }
     };
 
@@ -67,7 +68,7 @@ public class RegoLookupService {
             }
         } catch(DaoException | ConfigSettingException e) {
             logger.debug("[rego lookup] Exception: " + e.getMessage());
-            throw new RegoLookupException(RegoLookupError.SERVICE_TOGGLE_UNDEFINED.getError(), e);
+            throw new RegoLookupException(RegoLookupStatus.SERVICE_TOGGLE_UNDEFINED, e);
         }
     };
 
@@ -84,7 +85,7 @@ public class RegoLookupService {
                     state = JurisdictionEnum.fromValue(stateIn);
                 } catch (Exception e) {
                     logger.debug("[rego lookup] Exception: " + e.getMessage());
-                    throw new RegoLookupException(RegoLookupError.INVALID_STATE.getError(), e);
+                    throw new RegoLookupException(RegoLookupStatus.INVALID_STATE, e);
                 }
 
                 String redbookCode = null;
@@ -94,10 +95,10 @@ public class RegoLookupService {
                     redbookCode = getRedbookCode(plateNumber, state);
                 } catch (Exception e) {
                     logger.debug("[rego lookup] Exception: " + e.getMessage());
-                    throw new RegoLookupException(RegoLookupError.SERVICE_ERROR.getError(), e);
+                    throw new RegoLookupException(RegoLookupStatus.SERVICE_ERROR, e);
                 }
                 if (redbookCode == null) {
-                    throw new RegoLookupException(RegoLookupError.REGO_NOT_FOUND.getError());
+                    throw new RegoLookupException(RegoLookupStatus.REGO_NOT_FOUND);
                 } else {
                     // Step 2 - get vehicle details from dao
                     CarRedbookDao redbookDao = new CarRedbookDao();
@@ -113,7 +114,7 @@ public class RegoLookupService {
                         carDetailsJSON = carDetails.getSimple();
                     } catch (DaoException e) {
                         logger.debug("[rego lookup] Exception: " + e.getMessage());
-                        throw new RegoLookupException(RegoLookupError.DAO_ERROR.getError(), e);
+                        throw new RegoLookupException(RegoLookupStatus.DAO_ERROR, e);
                     }
                     // Step 3 - get data for vehicle selection fields
                     Map<String, Object> vehicleLists = CarVehicleSelectionService.getVehicleSelectionMap(
@@ -130,10 +131,10 @@ public class RegoLookupService {
                     return carDetailsJSON;
                 }
             } else {
-                throw new RegoLookupException(RegoLookupError.REQUEST_LIMIT_EXCEEDED.getError());
+                throw new RegoLookupException(RegoLookupStatus.REQUEST_LIMIT_EXCEEDED);
             }
         } else {
-            throw new RegoLookupException(RegoLookupError.SERVICE_TURNED_OFF.getError());
+            throw new RegoLookupException(RegoLookupStatus.SERVICE_TURNED_OFF);
         }
     }
 
