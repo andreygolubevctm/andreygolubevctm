@@ -16,13 +16,8 @@ import com.ctm.services.IPCheckService;
 import com.ctm.services.ServiceConfigurationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
-
 import static com.ctm.webservice.motorweb.MotorWebProvider.createClient;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.QueryParam;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
