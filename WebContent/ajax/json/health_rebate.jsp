@@ -38,6 +38,12 @@ COVER TYPE
 **********
 --%>
 <c:choose>
+	<c:when test="${cover == 'SM'}">
+		<c:set var="cover" value="singles" />
+	</c:when>
+	<c:when test="${cover == 'SF'}">
+		<c:set var="cover" value="singles" />
+	</c:when>
 	<c:when test="${cover == 'S'}">
 		<c:set var="cover" value="singles" />
 	</c:when>

@@ -8725,13 +8725,14 @@ Features = {
     }
     function getIEVersion() {
         var ua = USER_AGENT;
-        var msie = ua.indexOf("msie ") > 0 || ua.indexOf("trident") > 0;
-        if (msie) {
-            if (ua.indexOf("msie") == -1) {
+        var isIE = ua.indexOf("msie ") > 0 || ua.indexOf("trident") > 0;
+        if (isIE) {
+            var msieIndex = ua.indexOf("msie");
+            if (msieIndex == -1) {
                 var version = ua.match(/trident.*rv[ :]*(11|12)\./i);
                 return parseInt(version[1]);
             }
-            return parseInt(ua.substring(msie + 5, ua.indexOf(".", msie)));
+            return parseInt(ua.substring(msieIndex + 5, ua.indexOf(".", msieIndex)));
         } else {
             return null;
         }
@@ -9736,7 +9737,7 @@ Features = {
                 });
             } else {
                 meerkat.modules.comms.post({
-                    url: "ajax/json/save_email_quote_mysql.jsp",
+                    url: "ajax/json/save_email_quote.jsp",
                     data: dat,
                     dataType: "json",
                     cache: false,

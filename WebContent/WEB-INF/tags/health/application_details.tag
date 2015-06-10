@@ -40,7 +40,7 @@
 		
 		<c:set var="fieldXpath" value="${xpath}/email" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Email Address" id="${name}_emailGroup">
-			<field_new:email xpath="${fieldXpath}" title="your email address" required="true" size="40" className="sessioncamexclude" />
+			<field_new:email xpath="${fieldXpath}" title="your email address" required="true" size="40" />
 			<span class="fieldrow_legend" id="${name}_emailMessage">(we'll send your confirmation here)</span>
 			<field:hidden xpath="${xpath}/emailsecondary" />
 			<field:hidden xpath="${xpath}/emailhistory" />

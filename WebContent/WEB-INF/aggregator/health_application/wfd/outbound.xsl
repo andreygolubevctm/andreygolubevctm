@@ -156,6 +156,8 @@
 	<xsl:variable name="situation">
 		<xsl:choose>
 			<xsl:when test="/health/situation/healthCvr = 'S'">Single</xsl:when>
+			<xsl:when test="/health/situation/healthCvr = 'SM'">Single</xsl:when>
+			<xsl:when test="/health/situation/healthCvr = 'SF'">Single</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'F'">Family</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'C'">Couple</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'SPF'">SingleParent</xsl:when>
@@ -300,6 +302,8 @@
 		<SingleFamily name="Single/Family">
 			<xsl:choose>
 				<xsl:when test="situation/healthCvr = 'S'">Single</xsl:when>
+				<xsl:when test="situation/healthCvr = 'SM'">Single</xsl:when>
+				<xsl:when test="situation/healthCvr = 'SF'">Single</xsl:when>
 				<xsl:otherwise>Family</xsl:otherwise>
 			</xsl:choose>
 		</SingleFamily>

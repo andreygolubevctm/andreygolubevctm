@@ -1991,7 +1991,7 @@ body > div > header a.bottombar .btn-call:hover {
   }
 }
 .resultsMarketingMessages {
-  z-index: 18;
+  z-index: 12;
 }
 .resultsMarketingMessages .resultsMarketingMessage {
   top: 0;

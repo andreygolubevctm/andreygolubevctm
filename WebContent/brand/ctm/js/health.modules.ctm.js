@@ -880,7 +880,7 @@ var healthCoverDetails = {
         return $("#health_healthCover-selection").find(".health_cover_details_rebate :checked").val();
     },
     setIncomeBase: function(initMode) {
-        if (healthChoices._cover == "S" && healthCoverDetails.getRebateChoice() == "Y") {
+        if ((healthChoices._cover == "S" || healthChoices._cover == "SM" || healthChoices._cover == "SF") && healthCoverDetails.getRebateChoice() == "Y") {
             if (initMode) {
                 $("#health_healthCover-selection").find(".health_cover_details_incomeBasedOn").show();
             } else {
@@ -1808,6 +1808,9 @@ creditCardDetails = {
                         meerkat.modules.healthBenefits.open("journey-mode");
                     });
                 }
+                _.delay(function() {
+                    meerkat.modules.healthSegment.filterSegments();
+                }, 1e3);
             },
             onAfterLeave: function(event) {
                 var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
@@ -2755,7 +2758,7 @@ creditCardDetails = {
         var cover = $("#health_situation_healthCvr").val(), primary_dob = $("#health_healthCover_primary_dob").val(), partner_dob = $("#health_healthCover_partner_dob").val(), primary_age = 0, partner_age = 0, ageAverage = 0, healthSituCvr = "";
         if (cover === "F" || cover === "SPF") {
             healthSituCvr = "FAM";
-        } else if (cover === "S" && primary_dob !== "") {
+        } else if ((cover === "S" || cover === "SM" || cover === "SF") && primary_dob !== "") {
             ageAverage = returnAge(primary_dob, true);
             healthSituCvr = getAgeBands(ageAverage);
         } else if (cover === "C" && primary_dob !== "" && partner_dob !== "") {
@@ -3409,6 +3412,7 @@ creditCardDetails = {
                 }
             }, totalDuration);
             meerkat.modules.healthPhoneNumber.changePhoneNumber();
+            meerkat.modules.healthSegment.hideBySegment();
             meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                 method: "trackProductView",
                 object: {
@@ -5477,6 +5481,61 @@ creditCardDetails = {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, debug = meerkat.logging.debug, exception = meerkat.logging.exception;
+    var currentSegments = false;
+    function filterSegments() {
+        meerkat.modules.comms.get({
+            url: "segment/filter.json",
+            cache: false,
+            errorLevel: "silent",
+            dataType: "json",
+            useDefaultErrorHandling: false
+        }).done(function onSuccess(json) {
+            setCurrentSegments(json);
+            hideBySegment();
+        }).fail(function onError(obj, txt, errorThrown) {
+            exception(txt + ": " + errorThrown);
+        });
+    }
+    function hideBySegment() {
+        if (currentSegments.hasOwnProperty("segments") && currentSegments.segments.length > 0) {
+            _.each(currentSegments.segments, function(segment) {
+                if (canHide(segment) === true) {
+                    $("." + segment.classToHide).css("visibility", "hidden");
+                }
+            });
+        }
+    }
+    function isSegmentsValid(segment) {
+        if (!segment.hasOwnProperty("segmentId") || isNaN(segment.segmentId) || segment.segmentId <= 0) {
+            debug("Segment is not valid");
+            return false;
+        }
+        if (segment.hasOwnProperty("errors") && segment.errors.length > 0) {
+            debug(segment.errors[0].message);
+            return false;
+        }
+        return true;
+    }
+    function canHide(segment) {
+        if (isSegmentsValid(segment) !== true) return false;
+        if (!segment.hasOwnProperty("canHide") || segment.canHide !== true) return false;
+        if (!segment.hasOwnProperty("classToHide") || segment.classToHide.length === 0 || !segment.classToHide.trim()) return false;
+        return true;
+    }
+    function getCurrentSegments() {
+        return currentSegments;
+    }
+    function setCurrentSegments(segments) {
+        currentSegments = segments;
+    }
+    meerkat.modules.register("healthSegment", {
+        filterSegments: filterSegments,
+        hideBySegment: hideBySegment
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, rebateTiers = {
         single: {
             incomeBaseTier: 9e4,
@@ -5535,7 +5594,7 @@ creditCardDetails = {
             } else {
                 _ageBonus = parseInt(meerkat.modules.health.getRates().ageBonus);
             }
-            if (_cover === "S" || _cover === "") {
+            if (_cover === "S" || _cover === "SM" || _cover === "SF" || _cover === "") {
                 switch (_value) {
                   case "0":
                     _text = "$" + formatMoney(rebateTiers.single.incomeBaseTier + _allowance) + " or less";

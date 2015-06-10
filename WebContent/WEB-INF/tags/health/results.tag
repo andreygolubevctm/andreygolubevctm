@@ -61,23 +61,14 @@
 	</div>
 </div>
 	<c:if test="${not empty callCentreNumber}">	
-		<div class="resultsMarketingMessage" >
+		<div class="resultsMarketingMessage callCentreNumberSection" >
 			<div class="insert">
 				<h4>Do you need a hand?</h4>
 				<p class="larger">
 					Call <em class="noWrap callCentreNumber">${callCentreNumber}</em>
 				</p>
-				<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
-					<div class="opening-hours">
-						<a href="javascript:;" data-toggle="dialog"
-							data-content="#view_all_hours"
-							data-dialog-hash-id="view_all_hours"
-							data-title="Call Centre Hours" data-cache="true">View our Australian based call centre hours
-						</a>
 					</div>
-				</c:if>
 			</div>
-		</div>
 	</c:if>
 </div>
 <div class="resultsHeadersBg affixOnScroll">
@@ -85,7 +76,7 @@
 
 <agg_new_results:results vertical="${pageSettings.getVerticalCode()}">
 	<c:if test="${not empty callCentreNumber}">	
-	<div class="resultsMarketingMessage" >
+		<div class="resultsMarketingMessage callCentreNumberSection" >
 			<div class="insert">
 				<ul>
 					<li>You get personal service from our experienced and friendly staff.</li>

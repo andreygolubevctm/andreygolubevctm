@@ -189,6 +189,8 @@
 	<!-- Single/Couple/Family/SingleParent -->
 	<xsl:variable name="situation">
 		<xsl:choose>
+			<xsl:when test="/health/situation/healthCvr = 'SM'">Sgl</xsl:when>
+			<xsl:when test="/health/situation/healthCvr = 'SF'">Sgl</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'S'">Sgl</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'F'">Fam</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'C'">Cpl</xsl:when>

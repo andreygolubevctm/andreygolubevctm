@@ -121,7 +121,7 @@
 					<c:set var="fieldXpath" value="${xpath}/CrClientName" />
 					<label for="quote_CrClientName" class="col-lg-4 col-sm-4 col-xs-12 control-label">Your Name</label>
 					<div class="col-lg-8 col-sm-8 col-xs-12  row-content">
-						<field:person_name xpath="${fieldXpath}" required="true" title="Your name" className="contactField sessioncamexclude" />
+						<field:person_name xpath="${fieldXpath}" required="true" title="Your name" className="contactField" />
 						<div class="fieldrow_legend" id="_row_legend"></div>
 					</div>
 				</div>
@@ -129,7 +129,7 @@
 					<c:set var="fieldXpath" value="${xpath}/CrClientTel" />
 					<label for="quote_CrClientTelinput" class="col-lg-4 col-sm-4 col-xs-12 control-label">Your Contact Number</label>
 					<div class="col-lg-8 col-sm-8 col-xs-12  row-content">
-						<field:contact_telno xpath="${fieldXpath}" required="true" title="Your contact number" className="contactField sessioncamexclude" />
+						<field:contact_telno xpath="${fieldXpath}" required="true" title="Your contact number" className="contactField" />
 						<div class="fieldrow_legend" id="_row_legend"></div>
 					</div>
 				</div>

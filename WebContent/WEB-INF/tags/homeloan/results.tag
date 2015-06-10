@@ -317,6 +317,7 @@
 	{{ if (obj.lender === 'La Trobe Financial') img = 'LATROBE'; }}
 	{{ if (obj.lender === 'Liberty Financial') img = 'LIBERTY'; }}
 	{{ if (obj.lender === 'Macquarie Bank') img = 'MACQ'; }}
+	{{ if (obj.lender === 'ME') img = 'ME'; }}
 	{{ if (obj.lender === 'ME Bank') img = 'ME'; }}
 	{{ if (obj.lender === 'MKM Capital Pty Ltd') img = 'MKM'; }}
 	{{ if (obj.lender === 'NAB Broker') img = 'NABBROKER'; }}

@@ -363,6 +363,8 @@
 						<EffDate><xsl:value-of select="$startDate" /></EffDate>
 						<Class>
 							<xsl:choose>
+								<xsl:when test="situation/healthCvr = 'SM'">Sgl</xsl:when>
+								<xsl:when test="situation/healthCvr = 'SF'">Sgl</xsl:when>
 								<xsl:when test="situation/healthCvr = 'S'">Sgl</xsl:when>
 								<xsl:when test="situation/healthCvr = 'C'">Cpl</xsl:when>
 								<xsl:when test="situation/healthCvr = 'SPF'">SPFam</xsl:when>

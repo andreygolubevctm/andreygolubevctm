@@ -44,7 +44,7 @@
 					<c:set var="fieldXpath" value="save/email" />
 					<field_new:label value="Email address" xpath="${fieldXpath}" className="col-lg-2 col-md-3 col-sm-4" />
 					<div class="row-content col-lg-10 col-md-9 col-sm-8">
-						<field_new:email xpath="${fieldXpath}" required="true" placeHolder="${emailPlaceHolder}" className="sessioncamexclude" />
+						<field_new:email xpath="${fieldXpath}" required="true" placeHolder="${emailPlaceHolder}" />
 					</div>
 				</div>
 
@@ -97,7 +97,7 @@
 		<%-- RIGHT COLUMN --%>
 		<c:if test="${not empty callCentreNumber}">
 			<div class="col-sm-4 hidden-xs">
-				<ui:bubble variant="chatty">
+				<ui:bubble variant="chatty" className="callCentreNumberSection">
 					<p>Please be aware that product availability may change from time to time, so buy today to ensure you lock in your first choice!</p>
 					<p><strong>Buy online or call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></strong></p>
 					<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">

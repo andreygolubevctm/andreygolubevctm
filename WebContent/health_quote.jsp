@@ -46,7 +46,7 @@
 
 	<jsp:attribute name="header">
 		<div class="navbar-collapse header-collapse-contact collapse">
-		<ul class="nav navbar-nav navbar-right">
+			<ul class="nav navbar-nav navbar-right callCentreNumberSection">
 				<c:if test="${not empty callCentreNumber}">
 			<li>
 				<div class="navbar-text visible-xs">

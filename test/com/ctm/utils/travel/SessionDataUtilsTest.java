@@ -4,7 +4,7 @@ import com.ctm.utils.SessionDataUtils;
 import com.disc_au.web.go.Data;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Created by lbuchanan on 19/12/2014.
@@ -21,7 +21,7 @@ public class SessionDataUtilsTest {
         data = new Data();
         data.put("current/transactionId" , "meerkat");
         result = SessionDataUtils.getTransactionIdFromTransactionSessionData(data);
-        assertEquals(Long.valueOf(0L) , Long.valueOf(result));
+        assertNull(result);
     }
 
 }

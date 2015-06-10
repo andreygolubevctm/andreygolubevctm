@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ========================================== -->
+<!-- ========  AGH Compare The Market  ======== -->
+<!-- CTM Web Application Buildment Ant Build
+<!   $Id: build.xml 20641 2015-05-07 22:50:19Z kvanderbek $
+<! ©2013 Australian Insurance Holdings Pty Ltd  -->
+
+<project name="web_ctm" default="usage">
+
+	<!-- Requires: Ant 1.8 or greater -->
+
+
+
+	<!-- ============================================================ -->
+	<!-- Build-Wide Properties -->
+	<!-- ============================================================ -->
+
+	<!-- Properties for this application -->
+	<description>web_ctm: Compare The Market Online Aggregator</description>
+	<property name="war.context" value="ctm" />
+
+	<!-- Common and/or derived properties -->
+	<property name="webinf.dir" value="${web.dir}/WEB-INF" />
+	<property name="classes.dir" value="${webinf.dir}/classes"/>
+	<property name="aggregator.dir" value="${webinf.dir}/aggregator"/>
+
+	<!-- ============================================================ -->
+	<!-- External (Public-Facing) Targets -->
+	<!-- ============================================================ -->
+
+	<target name="usage" description="Display a build process usage message">
+		<echo message="" />
+		<echo message="Ant Builder for Project: ${war.context}" />
+		<echo message="--------------------------------------------" />
+		<echo message="" />
+		<echo message="Build to various target environments." />
+		<echo message="Available targets:" />
+		<echo message="  usage	   Display this help message" />
+		<echo message="  build.NXI      Build new WAR to NXI environment" />
+		<echo message="      (every 2 hours via cron on svn server, as required)" />
+		<echo message="  build.NXS      Build new WAR to NXS environment" />
+		<echo message="      (auto on svn server, automatically on svn commit to build_NXS)" />
+		<echo message="  build.NXQ      Build new WAR to NXQ environment" />
+		<echo message="		    (auto on svn server, automatically on svn commit to build_NXQ)" />
+		<echo message="  build.PRELIVE  Build new WAR to PRELIVE environment" />
+		<echo message="		    (auto on svn server, automatically on svn commit to build_PRO)" />
+		<!-- echo message="  build.PRO      Build last PRELIVE environment WAR to PRO environment," />
+		<echo message="		    backing up the current PRO environment WAR as a rollback state" / -->
+		<echo message="" />
+	</target>
+
+	<target name="build.NXI" depends="_init" description="Build new WAR to NXI environment (every 2 hours via cron on svn server, as required)">
+		<property name="target.prefix" value="NXI" />
+
+		<antcall target="_enableConfigs" />
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="NXS" />
+		</antcall>
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="NXQ" />
+		</antcall>
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="PRO" />
+		</antcall>
+
+		<!-- Build Classes, Make WAR, and Build -->
+		<antcall target="_makewar">
+			<param name="JVM.version" value="1.7" />
+		</antcall>
+
+		<echo message="Build to ${target.prefix} environment SUCCESSFUL!" />
+	</target>
+
+
+	<!-- NXS environment authorised 16/10 -->
+	<target name="build.NXS" depends="_init" description="Build new WAR to NXS environment">
+		<property name="target.prefix" value="NXS" />
+		<antcall target="_enableConfigs" />
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="NXI" />
+		</antcall>
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="NXQ" />
+		</antcall>
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="PRO" />
+		</antcall>
+
+		<!-- Build Classes, Make WAR, and Build -->
+		<antcall target="_makewar">
+			<param name="JVM.version" value="1.7" />
+		</antcall>
+
+		<echo message="Build to ${target.prefix} environment SUCCESSFUL!" />
+	</target>
+
+	<target name="build.NXQ" depends="_init" description="Build new WAR to NXQ environment (on svn server, automatically on svn commit to build_NXQ)">
+		<property name="target.prefix" value="NXQ" />
+		<antcall target="_enableConfigs" />
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="NXI" />
+		</antcall>
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="NXS" />
+		</antcall>
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="PRO" />
+		</antcall>
+
+		<!-- Build Classes, Make WAR, and Build -->
+		<antcall target="_makewar">
+			<param name="JVM.version" value="1.7" />
+		</antcall>
+
+		<echo message="Build to ${target.prefix} environment SUCCESSFUL!" />
+	</target>
+
+	<target name="build.PRELIVE" depends="_init" description="Build new WAR to PRELIVE environment (on svn server, automatically on svn commit to build_PRO)">
+		<!-- :NOTE: The “prelive” build is effectively a “production” build,
+		<!   so shares its “target prefix” of “PRO”,
+		<!   but uses a different SSH destination -->
+
+		<!-- :NOTE: Custom prefix: PRELIVE uses PRO configs and ID (for Manifest file etc) -->
+		<property name="target.prefix" value="PRO" />
+
+		<antcall target="_enableConfigs" />
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="NXI" />
+		</antcall>
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="NXS" />
+		</antcall>
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="NXQ" />
+		</antcall>
+
+		<!-- Build Classes, Make WAR, and Build -->
+		<antcall target="_makewar">
+			<param name="JVM.version" value="1.7" />
+		</antcall>
+
+		<echo message="Build to PRELIVE environment SUCCESSFUL!" />
+	</target>
+
+
+	<!-- ============================================================ -->
+	<!-- Internal Processing Targets -->
+	<!-- ============================================================ -->
+
+	<target name="_init" description="Initialise date properties">
+		<echo message="Initialising date properties" />
+		<tstamp prefix="build-info">
+			<format property="datestamp" pattern="yyyy-MM-dd HH:mm:ss z" locale="en,AU" />
+			<format property="release" pattern="yyyyMMdd.HHmm" locale="en,AU" />
+		</tstamp>
+	</target>
+
+	<target name="_confirm.go" description="Prompt the user to perform the build and release process">
+		<condition property="go.abort">
+			<or>
+				<not><isset property="target.prefix" /></not>
+				<not><isset property="war.context" /></not>
+				<not><isset property="build-info.release" /></not>
+			</or>
+		</condition>
+		<fail if="go.abort">Build configuration prompt is missing one or more required properties, and the build cannot continue.</fail>
+
+		<input message="Really build ${war.context} app to ${target.prefix} environment (enter “yes” to continue)? " addproperty="go.input" />
+		<condition property="go.abort">
+			<not>
+				<equals arg1="yes" arg2="${go.input}" casesensitive="false" trim="true" forcestring="true" />
+			</not>
+		</condition>
+		<fail if="go.abort">Aborting as requested.</fail>
+	</target>
+
+	<target name="_enableConfigs" description="Rename any environment-specific override files (settings etc) to enable them for the given environment prefix">
+		<condition property="enableConfigs.abort">
+			<or>
+				<not><isset property="target.prefix" /></not>
+				<not><isset property="web.dir" /></not>
+			</or>
+		</condition>
+		<fail if="enableConfigs.abort">enableConfigs is missing one or more required properties, and the build cannot continue.</fail>
+
+		<echo message="Renaming any environment-specific override files (settings etc) to enable them for the ${target.prefix} environment prefix" />
+
+		<move todir="${web.dir}" overwrite="true">
+			<fileset dir="${web.dir}" />
+			<regexpmapper from="(.+)_${target.prefix}(\..+)?" to="\1\2" />
+		</move>
+
+		<echo message="${target.prefix} environment config files enabled successfully." />
+	</target>
+
+	<target name="_removeConfigs" description="Remove config files meant for the given environment prefix">
+		<condition property="removeConfigs.abort">
+			<or>
+				<not><isset property="destroy.prefix" /></not>
+				<not><isset property="web.dir" /></not>
+			</or>
+		</condition>
+		<fail if="removeConfigs.abort">removeConfigs is missing one or more required properties, and the build cannot continue.</fail>
+
+		<echo message="Removing config files meant for the ${destroy.prefix} environment prefix" />
+
+		<delete>
+			<fileset dir="${web.dir}" includes="**/*_${destroy.prefix}*" />
+		</delete>
+		<echo message="${destroy.prefix} environment config files removed successfully." />
+	</target>
+
+	<target name="_cleanclasses" description="Clean up (delete) existing Java classes and empty build directories">
+		<echo message="Cleaning up (deleting) existing Java classes and empty build/logs directories" />
+		<!-- Clean “app-logs-” prefixed directories (leaving “autobuild” files) -->
+		<delete>
+			<fileset dir="${web.dir}">
+				<include name="**/app-logs-*/*" />
+				<exclude name="**/autobuild" />
+			</fileset>
+		</delete>
+
+		<echo message="Java classes and empty build/logs directories cleaned up successfully." />
+	</target>
+
+	<target name="_build" depends="_copyProperties" description="build java and copy files to classes folder"/>
+
+	<target name="_copyProperties" description="copy property files to the classes folder" >
+		<echo message="copy properties from ${deploy.config.dir}/${target.prefix}" />
+		<copy todir="${classes.dir}" overwrite="true">
+			<fileset dir="${deploy.config.dir}/${target.prefix}"/>
+		</copy>
+	</target>
+
+	<target name="_makewar" depends="_build" description="Build new WAR to given environment">
+		<condition property="makewar.abort">
+			<or>
+				<not><isset property="target.prefix" /></not>
+				<not><isset property="war.context" /></not>
+				<not><isset property="war.filename" /></not>
+				<not><isset property="web.dir" /></not>
+				<not><isset property="webinf.dir" /></not>
+				<not><isset property="classes.dir" /></not>
+				<not><isset property="svn.revision" /></not>
+				<not><isset property="build-info.release" /></not>
+				<not><isset property="build-info.datestamp" /></not>
+			</or>
+		</condition>
+		<fail if="makewar.abort">Make WAR is missing one or more required properties, and the build cannot continue.</fail>
+
+		<echo message="Making WAR file of ${war.context} app release ${build-info.release} (r${svn.revision}) for the ${target.prefix} environment -- started ${build-info.datestamp}" />
+		<property name="war.id" value="${war.context}-${target.prefix}-${build-info.release}-r${svn.revision}" />
+
+		<copy todir="${classes.dir}/aggregator" includeemptydirs="false">
+			<fileset dir="${aggregator.dir}" />
+		</copy>
+		<war destfile="${war.dir}/${war.filename}" webxml="${webinf.dir}/web.xml" filesetmanifest="merge" duplicate="preserve">
+			<classes dir="${classes.dir}" />
+			<fileset dir="${web.dir}">
+				<include name="**/*.*" />
+				<include name="**/app-logs-*/**/autobuild" />
+				<include name="WEB-INF/aggregator/certs/jssecacerts" />
+				<exclude name="WEB-INF/web.xml" />
+				<exclude name="WEB-INF/classes/**/*.class" />
+				<exclude name="WEB-INF/classes/**/*.properties" />
+				<exclude name="WEB-INF/classes/aggregator/**/*" />
+			</fileset>
+			<manifest>
+				<section name="AGH-Build">
+					<attribute name="App" value="${war.context}" />
+					<attribute name="Target" value="${target.prefix}" />
+					<attribute name="Revision" value="${svn.revision}" />
+					<attribute name="Release" value="${build-info.release}" />
+					<attribute name="Built-On" value="${build-info.datestamp}" />
+					<attribute name="Identifier" value="${war.id}" />
+				</section>
+			</manifest>
+		</war>
+
+		<echo message="WAR created successfully." />
+	</target>
+
+</project>

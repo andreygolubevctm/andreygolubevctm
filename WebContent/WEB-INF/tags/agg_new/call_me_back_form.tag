@@ -83,7 +83,7 @@
 
 		<c:if test="${displayBubble eq true }">
 			<div class="${rightColumnWidthClass} hidden-xs">
-				<ui:bubble variant="info">
+				<ui:bubble variant="info" className="callCentreNumberSection">
 					<h1>Do you need a hand?</h1>
 					<h6>Call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h6>
 					<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">

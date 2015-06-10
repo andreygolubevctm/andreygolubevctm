@@ -106,7 +106,8 @@
 						</c:choose>
 					</c:when>
 					<c:otherwise>
-						<error>Database error while locating historical fuel prices.</error>
+						<go:log level="ERROR" source="fuel_price_monthly_averages_jsp" error="${error}" >Database error while locating historical fuel prices.</go:log>
+						<error>MK-20004</error>
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -116,7 +117,8 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<error>Database error while locating fuel sites for the selected postcode/suburb.${error.rootCause}</error>
+		<go:log level="ERROR" source="fuel_price_monthly_averages_jsp" error="${error}" >Database error while locating historical fuel prices.</go:log>
+		<error>MK-20004</error>
 	</c:otherwise>
 </c:choose>
 </results>

@@ -1,35 +1,32 @@
 package com.ctm.services.creditcards;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-
 import com.ctm.dao.ProductDao;
 import com.ctm.exceptions.CreditCardServiceException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Product;
 import com.ctm.model.creditcards.CreditCardProduct;
 import com.ctm.model.settings.Vertical.VerticalType;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ProductService.class)
 public class ProductServiceTest {
-	/*
+
 	private HttpServletRequest request;
 	private ProductDao productDao;
 	private String verticalCode;
@@ -38,7 +35,7 @@ public class ProductServiceTest {
 		request = mock(HttpServletRequest.class);
 		productDao = mock(ProductDao.class);
 		verticalCode = VerticalType.CREDITCARD.getCode();
-		request.setAttribute("verticalCode", verticalCode);
+		when(request.getAttribute("verticalCode")).thenReturn(verticalCode);
 	}
 
 	@Test
@@ -55,7 +52,7 @@ public class ProductServiceTest {
 		products.add(new Product());
 		products.add(new Product());
 
-		when(productDao.getByCategoryCode(eq(verticalCode), eq(categoryCode), (Date) anyObject(), (String) anyObject())).thenReturn(products);
+		when(productDao.getByCategoryCode(eq(verticalCode), eq(categoryCode), (Date) anyObject(), (String) anyObject(), anyBoolean() ,anyBoolean())).thenReturn(products);
 
 		ArrayList<CreditCardProduct> productsReturned = productService.getProducts(request, categoryCode, providerCode, numberOfProductsToReturn);
 
@@ -79,7 +76,8 @@ public class ProductServiceTest {
 			x++;
 		}
 
-		when(productDao.getByCategoryCode(eq(verticalCode), eq(categoryCode), (Date) anyObject(), (String) anyObject())).thenReturn(products);
+		when(productDao.getByCategoryCode(eq(verticalCode), eq(categoryCode), (Date) anyObject(),
+				(String) anyObject(), anyBoolean() , anyBoolean())).thenReturn(products);
 		ArrayList<CreditCardProduct> productsReturned = productService.getProducts(request, categoryCode, providerCode, numberOfProductsToReturn);
 
 		assertEquals(max, productsReturned.size());
@@ -99,7 +97,8 @@ public class ProductServiceTest {
 		ArrayList<CreditCardProduct> productsReturned;
 
 		try {
-			when(productDao.getByCategoryCode(eq(verticalCode), eq(categoryCode), (Date) anyObject(), (String) anyObject())).thenReturn(products);
+			when(productDao.getByCategoryCode(eq(verticalCode), eq(categoryCode), (Date) anyObject(),
+					(String) anyObject(), anyBoolean() ,anyBoolean())).thenReturn(products);
 			productsReturned = productService.getProducts(request, categoryCode, providerCode, numberOfProductsToReturn);
 			fail("CreditCardServiceException expected.");
 		} catch (DaoException e) {
@@ -121,7 +120,7 @@ public class ProductServiceTest {
 		products.add(new Product());
 		products.add(new Product());
 
-		when(productDao.getByProviderCode(eq(verticalCode), eq(providerCode), (Date) anyObject())).thenReturn(products);
+		when(productDao.getByProviderCode(eq(verticalCode), eq(providerCode), (Date) anyObject() , anyBoolean() ,anyBoolean())).thenReturn(products);
 		ArrayList<CreditCardProduct> productsReturned = productService.getProducts(request, categoryCode, providerCode, numberOfProductsToReturn);
 
 		assertEquals(numberOfProductsToReturn, productsReturned.size());
@@ -143,10 +142,12 @@ public class ProductServiceTest {
 			x++;
 		}
 
-		when(productDao.getByCategoryCode(eq(verticalCode), eq(categoryCode), (Date) anyObject(), eq(providerCode))).thenReturn(products);
+		when(productDao.getByCategoryCode(eq(verticalCode), eq(categoryCode), (Date) anyObject(),
+				eq(providerCode), anyBoolean() ,anyBoolean())).thenReturn(products);
+
 		ArrayList<CreditCardProduct> productsReturned = productService.getProducts(request, categoryCode, providerCode, numberOfProductsToReturn);
 
 		assertEquals(max, productsReturned.size());
 	}
-*/
+
 }

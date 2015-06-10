@@ -142,6 +142,9 @@ public class HealthPriceService {
 	public void setMembership(String membership) {
 		if(membership.equalsIgnoreCase("SPF")){
 			membership = "SP";
+		} else if (membership.equalsIgnoreCase("SM")
+				|| membership.equalsIgnoreCase("SF")) {
+			membership = "S";
 		}
 		healthPriceRequest.setMembership(Membership.findByCode(membership));
 	}

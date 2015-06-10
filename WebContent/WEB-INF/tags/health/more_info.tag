@@ -39,7 +39,7 @@
 				<div class="visible-xs">
 					{{ if (showApply === true) { }}<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Online</a>{{ } }}
 					<c:if test="${not empty callCentreNumber}">
-					<a href="tel:${callCentreNumber}" class="needsclick btn btn-form btn-block phone" data-productId="{{= productId }}">
+					<a href="tel:${callCentreNumber}" class="needsclick btn btn-form btn-block phone callCentreNumberSection" data-productId="{{= productId }}">
 						<h5 class="moreInfoCallUs">Call us now on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
 						<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
 					</a>
@@ -87,7 +87,7 @@
 								<a href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply ${oldCtaClass}" data-productId="{{= productId }}">Apply Now<span class="icon-arrow-right" /></a>
 				</div>
 							<c:if test="${not empty callCentreNumber}">
-								<div class="col-xs-6">
+								<div class="col-xs-6 callCentreNumberSection">
 									<h5 class="moreInfoCallUs">Or call <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
 									<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
 								</div>
@@ -110,7 +110,7 @@
 					<ui:bubble variant="info" className="moreInfoBubble hidden-xs">
 						<div class="row">
 							<c:if test="${not empty callCentreNumber}">
-							<div class="col-xs-6">
+							<div class="col-xs-6 callCentreNumberSection">
 								<h5 class="moreInfoCallUs">Call us now on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
 								<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
 							</div>
@@ -131,7 +131,7 @@
 				<c:otherwise>
 				<div class="row moreInfoCallUsContainer hidden-xs">
 					<c:if test="${not empty callCentreNumber}">
-					<div class="col-xs-6">
+						<div class="col-xs-6 callCentreNumberSection">
 						<h5 class="moreInfoCallUs">Call us now on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h5>
 						<span class="moreInfoReferenceNoText">Quote your reference number <span class="moreInfoReferenceNo">{{= transactionId }}</span></span>
 					</div>
@@ -183,7 +183,7 @@
 					<div class="row row-content formInput">
 						<div class="col-sm-7 col-xs-12">
 							<field_new:email xpath="emailAddress"  required="true"
-									className="sessioncamexclude sendBrochureEmailAddress"
+									className="sendBrochureEmailAddress"
 									placeHolder="${emailPlaceHolder}" />
 						</div>
 						<div class="col-sm-5 hidden-xs">

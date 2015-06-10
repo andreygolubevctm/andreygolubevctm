@@ -52,7 +52,7 @@
 			<p>Did you know, if you buy now and <strong>pay up to 12 months in advance</strong> before the rate rise applies, you can <strong>lock in the current price.</strong></p>
 			<c:if test="${not empty callCentreNumber}">
 				<p class="datesDetail">Please note: cut off dates for each fund may vary.
-				<br/>Call <span class="noWrap callCentreNumber">${callCentreNumber}</span> and select Option 2 for more information</p>
+				<br/><span class="callCentreNumberSection">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span> and select Option 2 for more information</span></p>
 			</c:if>
 		</div>
 	</div>

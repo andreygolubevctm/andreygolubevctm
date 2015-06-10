@@ -84,7 +84,6 @@ FROM
 	LEFT JOIN aggregator.transaction_details AS situation
 		ON H.TransactionId = situation.transactionId
 		AND situation.xpath = 'health/situation/healthCvr'
-		AND situation.textValue IN ('S', 'C')
 
 	-- Under 30s
 	LEFT JOIN aggregator.transaction_details AS age
@@ -118,10 +117,13 @@ WHERE
 	-- Exclude this if the customer requested a call back
 	(callMeBack.textValue IS NULL OR callMeBack.textValue = '')
 
+	-- Restrict by cover type: Singles and couples
+	AND situation.textValue IN ('S', 'SM', 'SF', 'C')
+
 	-- Restrict by age
 	AND age.textValue IS NOT NULL
 	AND age.textValue != ''
- 	AND TIMESTAMPDIFF(YEAR, STR_TO_DATE(age.textValue, '%d/%m/%Y'), CURDATE()) < 30
+ 	AND TIMESTAMPDIFF(YEAR, STR_TO_DATE(age.textValue, '%d/%m/%Y'), CURDATE()) <= 30
 
 -- -----------------------------
 -- END QUERY

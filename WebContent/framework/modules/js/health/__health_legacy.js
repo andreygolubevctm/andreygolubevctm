@@ -334,7 +334,7 @@ var healthCoverDetails = {
 	},
 
 	setIncomeBase: function(initMode){
-		if(healthChoices._cover == 'S' && healthCoverDetails.getRebateChoice() == 'Y'){
+		if((healthChoices._cover == 'S' || healthChoices._cover == 'SM' || healthChoices._cover == 'SF') && healthCoverDetails.getRebateChoice() == 'Y'){
 			if(initMode){
 				$('#health_healthCover-selection').find('.health_cover_details_incomeBasedOn').show();
 			}else{

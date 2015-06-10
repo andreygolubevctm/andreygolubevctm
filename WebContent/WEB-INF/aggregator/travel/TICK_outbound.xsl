@@ -101,7 +101,7 @@
 						<xsl:choose>
 							<xsl:when test="children != 0">
 								<xsl:call-template name="printChildren">
-									<xsl:with-param name="i" select="adults" />
+									<xsl:with-param name="i">1</xsl:with-param>
 									<xsl:with-param name="count" select="children" />
 								</xsl:call-template>
 							</xsl:when>

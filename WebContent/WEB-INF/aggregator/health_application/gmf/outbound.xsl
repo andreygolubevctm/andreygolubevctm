@@ -377,6 +377,8 @@
     					<Class>
     						<xsl:choose>
     							<xsl:when test="situation/healthCvr = 'S'">Sgl</xsl:when>
+								<xsl:when test="situation/healthCvr = 'SM'">Sgl</xsl:when>
+								<xsl:when test="situation/healthCvr = 'SF'">Sgl</xsl:when>
     							<xsl:otherwise>Fam</xsl:otherwise>
     						</xsl:choose>
     					</Class>

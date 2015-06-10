@@ -48,7 +48,7 @@ set: function () {
 		creditCardDetails.config = { 'visa': true, 'mc': true, 'amex':false, 'diners':false };
 		creditCardDetails.render();
 
-		<c:if test="${data.health.situation.healthCvr == 'S'}">
+		<c:if test="${data.health.situation.healthCvr == 'S' || data.health.situation.healthCvr == 'SM' || data.health.situation.healthCvr == 'SF'}">
 			<c:set var="htmlPrimary">
 				<form:row label="" className="ifExpectingMessage" id="ifExpectingMessage">
 					<div>
@@ -175,7 +175,7 @@ set: function () {
 		$("#applicationForm_1").validate().settings.messages.health_application_primary_dob.max_DateOfBirth = "primary applicant's age cannot be over 120";
 		$("#applicationForm_1").validate().settings.messages.health_application_partner_dob.max_DateOfBirth = "applicant's partner's age cannot be over 120";
 
-		<c:if test="${datahealth.situation.healthCvr == 'S'}">
+		<c:if test="${data.health.situation.healthCvr == 'S' || data.health.situation.healthCvr == 'SM' || data.health.situation.healthCvr == 'SF'}">
 			$('#health_application_primary_genderRow .ifExpectingMessage').remove();
 			$('#health_application_primary_gender').unbind('change');
 		</c:if>

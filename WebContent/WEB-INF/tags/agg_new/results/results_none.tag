@@ -45,6 +45,12 @@
 			</div>
 		</c:if>
 
+		<c:if test="${vertical != 'homeloan'}">
+			<div class="col-xs-6 col-sm-3">
+				<a href="${brochurewareUrl}home-loans"><span class="icon icon-homeloan"></span>Home Loans</a>
+			</div>
+		</c:if>
+
 		<div class="col-xs-6 col-sm-3">
 			<a  href="${brochurewareUrl}life-insurance/"><span class="icon icon-life"></span>Life Insurance</a>
 		</div>

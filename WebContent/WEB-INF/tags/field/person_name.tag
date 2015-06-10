@@ -36,7 +36,7 @@
 </c:if>
 
 <%-- HTML --%>
-<input type="text" name="${name}" id="${name}" class="form-control person_name ${className}"
+<input type="text" name="${name}" id="${name}" class="form-control person_name sessioncamexclude ${className}"
 	   value="${value}" ${sizeAttribute}${requiredAttribute}${placeHolderAttribute} ${maxlengthAttribute}
 					data-msg-required="Please enter ${title}">
 

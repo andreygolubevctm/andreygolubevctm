@@ -2,9 +2,11 @@ package com.ctm.services;
 
 import com.ctm.dao.IpAddressDao;
 import com.ctm.dao.transaction.TransactionDetailsDao;
+import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.IpAddress;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.model.settings.Vertical;
 import com.ctm.utils.RequestUtils;
 import org.apache.log4j.Logger;
 
@@ -15,6 +17,22 @@ public class IPCheckService {
     private static final Logger logger = Logger.getLogger(IPCheckService.class.getName());
 
     private IpAddressDao ipAddressDao;
+
+    public static enum IPCheckStatus{
+        OVER(1),
+        LIMIT(0),
+        UNDER(-1);
+
+        private final Integer status;
+
+        IPCheckStatus(Integer status) {
+            this.status = status;
+        }
+
+        public Integer getLabel() {
+            return status;
+        }
+    };
 
     public IPCheckService() {
         ipAddressDao = new IpAddressDao();
@@ -27,6 +45,8 @@ public class IPCheckService {
     /**
      * Are they permitted access based on their IP Address, role and number of hits?
      *
+     * Increments the count of IP attempts
+     *
      * @param request
      * @param pageSettings
      * @return
@@ -34,25 +54,88 @@ public class IPCheckService {
     public boolean isPermittedAccess(HttpServletRequest request, PageSettings pageSettings) {
 
         try {
+            // Get status before adding new request
+            IPCheckStatus permitted = isWithinLimit(request, pageSettings);
+
+            // Insert/Update IP request
             Long ipAddress = getIPAddressAsLong(request);
             if (ipAddress != 0) {
                 IpAddress ipAddressModel = ipAddressDao.findMatch(pageSettings, ipAddress);
                 if (ipAddressModel != null) {
                     ipAddressDao.insertOrUpdateRecord(ipAddressModel);
+                    }
+                }
+
+            // Write to travel session when limit reached
+            if (permitted == IPCheckStatus.LIMIT && pageSettings.getVerticalCode() == "travel") {
+                TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
+                transactionDetailsDao.insertOrUpdate("travel/blockedQuote", "true", RequestUtils.getTransactionIdFromRequest(request));
+            }
+
+            // Fail if limit reached/exceeded
+            if(permitted == IPCheckStatus.LIMIT || permitted == IPCheckStatus.OVER) {
+                return false;
+            }
+        } catch (DaoException e) {
+            logger.error("An error occurred while logging the user's IP Address", e);
+        }
+        return true;
+    }
+
+    /**
+     * isWithinLimit - does a passive check of current IP request count without
+     * incrementing the counter
+     *
+     * @param request
+     * @param pageSettings
+     * @return
+     */
+    public IPCheckStatus isWithinLimit(HttpServletRequest request, PageSettings pageSettings) {
+        try {
+            Long ipAddress = getIPAddressAsLong(request);
+            if (ipAddress != 0) {
+                IpAddress ipAddressModel = ipAddressDao.findMatch(pageSettings, ipAddress);
+                if (ipAddressModel != null) {
                     int limit = ipAddressModel.getRole().getLimit(pageSettings);
                     // If they have hit more than the limit for their role, they are NOT permitted access.
                     if (ipAddressModel.getNumberOfHits() > limit) {
-                        logger.warn("User's IP Address (" + getIPAddress(request) + ") has been blocked after reaching " + limit + " requests on " + ipAddressModel.getService());
-
-                        // log an entry into the transaction_details table so we know this particular quote is a blocked quote
-                        TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
-                        transactionDetailsDao.insertOrUpdate("travel/blockedQuote", "true", RequestUtils.getTransactionIdFromRequest(request));
-                        return false;
+                        logger.warn("[IPCheckService] User's IP Address (" + getIPAddress(request) + ") has been blocked after exceeding " + limit + " requests on " + ipAddressModel.getService());
+                        return IPCheckStatus.OVER;
+                    } else if (ipAddressModel.getNumberOfHits() == limit) {
+                        logger.warn("[IPCheckService] User's IP Address (" + getIPAddress(request) + ") has been blocked after reaching " + limit + " requests on " + ipAddressModel.getService());
+                        return IPCheckStatus.LIMIT;
                     }
                 }
             }
         } catch (DaoException e) {
-            logger.error("An error occurred while logging the user's IP Address", e);
+            logger.error("[IPCheckService] An error occurred while checking the count of requests from the user's IP Address", e);
+        }
+        return IPCheckStatus.UNDER;
+    }
+
+    /**
+     * isWithinLimitAlt - overloaded the standard isWithinLimit method to allow it to be called
+     * via ajax requests to routing end points (which won't be able to send pageSettings object)
+     * Does a passive check of current IP request count without incrementing the counter
+     *
+     * @param request
+     * @param vertical
+     * @return
+     */
+    public IPCheckStatus isWithinLimitAlt(HttpServletRequest request, Vertical.VerticalType vertical) {
+        try {
+            PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical.getCode());
+            return isWithinLimit(request, pageSettings);
+        } catch(ConfigSettingException | DaoException e) {
+            logger.error("[IPCheckService] An exception was thrown getting the pageSettings object", e);
+        }
+        return IPCheckStatus.UNDER;
+    }
+
+    public Boolean isWithinLimitAsBoolean(HttpServletRequest request, PageSettings pageSettings) {
+        IPCheckStatus status = isWithinLimit(request, pageSettings);
+        if(status == IPCheckStatus.LIMIT || status == IPCheckStatus.OVER) {
+            return false;
         }
         return true;
     }

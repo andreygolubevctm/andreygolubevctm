@@ -11,17 +11,17 @@
 	<c:set var="required" value="true" />
 </c:if>
 <form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear">
-	<field:person_name xpath="${fieldXpath}" title="first name" required="${required}" className="sessioncamexclude" />
+	<field:person_name xpath="${fieldXpath}" title="first name" required="${required}" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="travel/surname" />
 <form_new:row fieldXpath="${fieldXpath}" label="Last Name" className="clear" >
-	<field:person_name xpath="${fieldXpath}" required="${required}" title="${title} last name" className="contactField sessioncamexclude" />
+	<field:person_name xpath="${fieldXpath}" required="${required}" title="${title} last name" className="contactField" />
 </form_new:row>
 
 <c:set var="fieldXpath" value="travel/email" />
 <form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear" id="travel_email_note" legend="For confirming quote and transaction details.">
-	<field_new:email xpath="${fieldXpath}" title="your email address" required="true" className="sessioncamexclude" />
+	<field_new:email xpath="${fieldXpath}" title="your email address" required="true" />
 	<field:hidden xpath="travel/emailsecondary" />
 	<field:hidden xpath="travel/emailhistory" />
 </form_new:row>

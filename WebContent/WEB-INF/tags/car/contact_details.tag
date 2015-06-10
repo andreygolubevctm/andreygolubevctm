@@ -25,12 +25,12 @@
 
 	<form_new:row label="First Name" id="firstName">
 		<field:person_name xpath="quote/drivers/regular/firstname"
-			required="${mandatoryFieldsSplitTest}" title="the policy holder's first name" className="sessioncamexclude" />
+			required="${mandatoryFieldsSplitTest}" title="the policy holder's first name" />
 	</form_new:row>
 
 	<form_new:row label="Last Name" id="lastName">
 		<field:person_name xpath="quote/drivers/regular/surname"
-			required="${mandatoryFieldsSplitTest}" title="the policy holder's last name" className="sessioncamexclude" />
+			required="${mandatoryFieldsSplitTest}" title="the policy holder's last name" />
 	</form_new:row>
 
 	<form_new:row label="Email Address" id="contactEmailRow">
@@ -39,14 +39,14 @@
 				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" />
 			</c:when>
 			<c:otherwise>
-				<field_new:email xpath="${xpath}/email" required="${mandatoryFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" />
+				<field_new:email xpath="${xpath}/email" required="${mandatoryFieldsSplitTest}" title="the policy holder's email address" />
 			</c:otherwise>
 		</c:choose>
 	</form_new:row>
 
 	<form_new:row label="Contact Number" id="contactNoRow">
 		<field:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
-			className="bestNumber sessioncamexclude"
+			className="bestNumber"
 			labelName="best number" />
 	</form_new:row>
 

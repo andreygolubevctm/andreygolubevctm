@@ -23,7 +23,7 @@
 			</form_new:row>
 
 			<form_new:row label="Date of Birth">
-				<field_new:person_dob xpath="${xpath}/dob" title="primary person's" required="true" ageMin="16" ageMax="120" className="sessioncamexclude" />
+				<field_new:person_dob xpath="${xpath}/dob" title="primary person's" required="true" ageMin="16" ageMax="120" />
 			</form_new:row>
 
 			<form_new:row label="Employment status" helpId="27">

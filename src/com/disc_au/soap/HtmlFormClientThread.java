@@ -113,6 +113,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 				default: {
 					StringBuffer errorData = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+
 					String line;
 					while ((line = reader.readLine()) != null) {
 						errorData.append(line);
@@ -146,15 +147,9 @@ public class HtmlFormClientThread extends SOAPClientThread {
 			this.responseTime = System.currentTimeMillis() - startTime;
 
 		} catch (MalformedURLException e) {
-			logger.error("failed to processRequest" , e);
-			e.printStackTrace();
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
-			returnData.append(err.getXMLDoc());
-
+			handleException(returnData, startTime, e);
 		} catch (IOException e) {
-			logger.error("failed to processRequest" , e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), "IOException", (System.currentTimeMillis() - startTime));
-			returnData.append(err.getXMLDoc());
+			handleException(returnData, startTime, e);
 		}
 
 		this.responseTime = System.currentTimeMillis() - startTime;

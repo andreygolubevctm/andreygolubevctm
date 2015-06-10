@@ -6329,7 +6329,7 @@ meerkat.logging.init = function() {
                 });
             } else {
                 meerkat.modules.comms.post({
-                    url: "ajax/json/save_email_quote_mysql.jsp",
+                    url: "ajax/json/save_email_quote.jsp",
                     data: dat,
                     dataType: "json",
                     cache: false,

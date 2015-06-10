@@ -34,7 +34,7 @@
 	<%-- PRJWHL-261 YAHOO --%>
 	<c:when test="${not empty param.secret and param.secret == '1NjmJ507mwUnX81Lj96b'}">
 		<c:set var="competition_id" value="${20}" />
-		<c:set var="source" value="YHOO-MayHealthPromo2015$1000" />
+		<c:set var="source" value="YHOO-MayPromo2015$1000" />
 	</c:when>
 	<%-- HLT-1737 --%>
 	<c:when test="${not empty param.secret and param.secret == '1F6F87144375AD8BAED4D53F8CF5B'}">
@@ -51,7 +51,7 @@
 			<c:choose>
 			<c:when test="${competition_id == '9'}">
 				<%-- CAR-553 --%>
-				<c:set var="source" value="AugustFuelPromo2014$1000" />
+				<c:set var="source" value="AugFuelPromo2014$1000" />
 			</c:when>
 			<c:when test="${competition_id == '11'}">
 				<%-- CAR-710 --%>
@@ -68,13 +68,10 @@
 		<c:set var="competition_id" value="${param.competitionId}" />
 		<c:choose>
 			<c:when test="${competition_id == '13'}">
-				<c:set var="source" value="Life$1000CashPromoNov2014" />
+				<c:set var="source" value="Life$1000CashNov2014" />
 			</c:when>
 			<c:when test="${competition_id == '17'}">
-				<c:set var="source" value="Life$1000CashPromoFeb2015" />
-			</c:when>
-			<c:when test="${competition_id == '22'}">
-				<c:set var="source" value="Life$1000CashPromoJune2015" />
+				<c:set var="source" value="Life$1000CashFeb2015" />
 			</c:when>
 		</c:choose>
 	</c:if>
@@ -86,10 +83,10 @@
 		<c:set var="competition_id" value="${param.competitionId}" />
 		<c:choose>
 			<c:when test="${competition_id == '14'}">
-				<c:set var="source" value="Energy$1000CashPromoJan2015" />
+				<c:set var="source" value="Energy$1000CashJan2015" />
 			</c:when>
 			<c:when test="${competition_id == '21'}">
-				<c:set var="source" value="Energy$1000CashPromoMay2015" />
+				<c:set var="source" value="Energy$1000CashMay2015" />
 			</c:when>
 		</c:choose>
 	</c:if>
@@ -98,7 +95,7 @@
 <%-- Credit Cards promo --%>
 <c:if test="${not empty param.secret and param.secret == 'yfIOyxdBzXw7CjVcNWuX'}">
 	<c:set var="competition_id" value="${18}" />
-	<c:set var="source" value="CreditCard$1000PromotionApril2015" />
+	<c:set var="source" value="CC$1000CashApril2015" />
 </c:if>
 
 <%-- STEP 1: Validate the input received before proceeding --%>

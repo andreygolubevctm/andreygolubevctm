@@ -144,13 +144,29 @@ fuel = {
 			dataType: "json",
 			error: function(obj, txt, errorThrown) {
 				fuel.ajaxPending = false;
-				Loading.hide();
-				FatalErrorDialog.exec({
-					message:		"An error occurred when fetching prices: " + txt,
-					page:			"common/fuel.js:fetchPrices()",
-					description:	"An error occurred when trying to successfully call or parse the fuel results: " + txt + ' ' + errorThrown,
-					data:			dat
-				});
+				if(obj.status === 429) {
+					var response = {
+							error: "limit",
+							time: 0,
+							result: {
+								siteid: null,
+								name: null,
+								fuelid: null
+							}
+					};
+					Results.update(response);
+					Results.show();
+					Results._revising = true;
+					Loading.hide();
+				} else {
+					Loading.hide();
+					FatalErrorDialog.exec({
+						message: "An error occurred when fetching prices: " + txt,
+						page: "common/fuel.js:fetchPrices()",
+						description: "An error occurred when trying to successfully call or parse the fuel results: " + txt + ' ' + errorThrown,
+						data: dat
+					});
+				}
 			},
 			timeout:60000,
 			complete: function() {

@@ -3,11 +3,11 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <form_new:row label="Full Name" hideHelpIconCol="true" labelAbove="${true}">
-    <field:person_name xpath="${xpath}/name" title="your full name" required="true" placeholder="Your full name" className="sessioncamexclude" />
+    <field:person_name xpath="${xpath}/name" title="your full name" required="true" placeholder="Your full name" />
 </form_new:row>
 
 <form_new:row label="Email Address" hideHelpIconCol="true" labelAbove="${true}">
-    <field_new:email xpath="${xpath}/email" title="your email" placeHolder="Your email address" required="true" className="sessioncamexclude" />
+    <field_new:email xpath="${xpath}/email" title="your email" placeHolder="Your email address" required="true" />
 </form_new:row>
 
 <form_new:row label="Postcode / Suburb" className="postcodeDetails" hideHelpIconCol="true" labelAbove="${true}">

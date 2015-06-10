@@ -84,7 +84,7 @@ public class IPCheckServiceTest {
     @Test
     public void testIsPermittedAccessWhenTempUserAtLimit() throws Exception {
 
-        IpAddress ipAddressModel = new IpAddress(3232238418L, 3232238418L, "travel", IpAddress.IpCheckRole.TEMPORARY_USER, 10, styleCodeId);
+        IpAddress ipAddressModel = new IpAddress(3232238418L, 3232238418L, "travel", IpAddress.IpCheckRole.TEMPORARY_USER, 9, styleCodeId);
 
         when(request.getRemoteAddr()).thenReturn("192.168.11.82");
         when(ipAddressDao.findMatch(pageSettings, 3232238418L)).thenReturn(ipAddressModel);

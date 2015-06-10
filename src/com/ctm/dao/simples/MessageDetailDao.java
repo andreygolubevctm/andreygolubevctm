@@ -37,6 +37,8 @@ public class MessageDetailDao {
 				if (key.equals("health/situation/healthCvr")) {
 					switch(value) {
 						case "S": coverValue = "Single"; break;
+						case "SM": coverValue = "Single - Male"; break;
+						case "SF": coverValue = "Single - Female"; break;
 						case "C": coverValue = "Couple"; break;
 						case "F": coverValue = "Family"; break;
 						case "SPF": coverValue = "Single Parent Family"; break;

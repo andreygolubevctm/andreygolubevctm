@@ -295,6 +295,8 @@
 				</EmailAddress>
 				<MaritalStatus>
 					<xsl:choose>
+						<xsl:when test="$healthCvr='SM'">S</xsl:when>
+						<xsl:when test="$healthCvr='SF'">S</xsl:when>
 						<xsl:when test="$healthCvr='S'">S</xsl:when>
 						<xsl:when test="$healthCvr='C'">F</xsl:when>
 						<xsl:when test="$healthCvr='F'">F</xsl:when>
@@ -305,7 +307,7 @@
 				<NumDependants>
 					<xsl:choose>
 						<!--No dependents if Single or Couple -->
-						<xsl:when test="$healthCvr = 'S' or $healthCvr = 'C'">0</xsl:when>
+						<xsl:when test="$healthCvr = 'S' or $healthCvr = 'SM' or $healthCvr = 'SF' or $healthCvr = 'C'">0</xsl:when>
 						<!-- Calculate the number of dependents based on the field count -->
 						<xsl:when test="healthCover/rebate = 'N'"><xsl:value-of select="count(application/dependants/*)" /></xsl:when>
 						<!-- Calculate the dependants question -->
@@ -372,7 +374,7 @@
 					<xsl:choose>
 					<xsl:when test="healthCover/partner/healthCoverLoading='Y'">Y</xsl:when>
 					<xsl:when test="healthCover/partner/healthCoverLoading=''">Y</xsl:when>
-					<xsl:when test="$healthCvr = 'S' or $healthCvr='SPF'">N</xsl:when>
+					<xsl:when test="$healthCvr = 'S' or $healthCvr = 'SM' or $healthCvr = 'SF' or $healthCvr='SPF'">N</xsl:when>
 					<xsl:otherwise>N</xsl:otherwise>
 					</xsl:choose>
 				</PartnerContinuousCover>

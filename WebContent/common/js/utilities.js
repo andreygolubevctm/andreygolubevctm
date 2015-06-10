@@ -370,6 +370,13 @@ var UtilitiesQuote = {
 						});
 						return false;
 					}
+
+					try {
+						Track.transfer('',referenceNo.getTransactionID(),product.planId,product.retailerName,product.planName);
+					} catch(e) {
+					// ignore
+					}
+
 					Loading.hide();
 
 					UtilitiesConfirmationPage.show(json);

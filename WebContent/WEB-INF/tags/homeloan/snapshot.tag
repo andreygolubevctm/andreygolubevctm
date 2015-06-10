@@ -121,8 +121,10 @@
 <form_new:fieldset legend="Snapshot of Your Details" className="quoteSnapshot">
 	<div class="row snapshot">
 		<div class="col-sm-12 snapshot-title">
+			<!-- SessionCam:Hide -->
 			<span data-source="#homeloan_enquiry_contact_firstName" data-alternate-source="#homeloan_contact_firstName" ></span>
 			<span data-source="#homeloan_enquiry_contact_lastName" data-alternate-source="#homeloan_contact_lastName"></span>
+			<!-- /SessionCam:Hide -->
 		</div>
 		<div class="col-sm-12">
 			<p data-source="#homeloan_details_location"></p>

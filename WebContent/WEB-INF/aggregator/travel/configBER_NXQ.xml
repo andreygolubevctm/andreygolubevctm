@@ -83,8 +83,8 @@
 		<!--<timeoutMillis>20000</timeoutMillis>-->
 	<!--</service>-->
 
-	<service name="FAST" type="url-encoded">
-		<soap-url>http://192.168.149.45/ctm/rating/travel_price_result.jsp?providerId=290</soap-url>
+	<service name="FAST" type="soap">
+		<soap-url>http://test.fastcover.com.au/Other/CtmWebService</soap-url>
 		<outbound-xsl>FAST_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>FAST_inbound.xsl</inbound-xsl>

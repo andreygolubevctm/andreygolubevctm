@@ -166,7 +166,7 @@
 					<headlineOffer>ONLINE</headlineOffer>
 					<onlineAvailable>Y</onlineAvailable>
 					<xsl:choose>
-						<xsl:when test="$productId = 'AI-01-03'">
+						<xsl:when test="$productId = 'AI-01-03' or $productId = 'AI-01-05'">
 							<offlineAvailable>N</offlineAvailable>
 						</xsl:when>
 						<xsl:otherwise>
@@ -229,7 +229,7 @@
 									<amount>$300</amount>
 								</excess>
 								<excess>
-									<description>Theft / Malicious Damage excess</description>
+									<description>Theft/Malicious Damage excess</description>
 									<amount>$1000</amount>
 								</excess>
 								<excess>
@@ -243,12 +243,8 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<excess>
-									<description>Male driver, under the age of 30 or less than 2 years holding an Australian driving licence</description>
-									<amount>$1500</amount>
-								</excess>
-								<excess>
-									<description>Female driver under the age of 30 or less than 2 years holding an Australian driving licence</description>
-									<amount>$900</amount>
+									<description>Inexperienced driver, under the age of 30 or less than 2 years holding an Australian driving licence</description>
+									<amount>$1250</amount>
 								</excess>
 								<excess>
 									<description>Unlisted drivers</description>
@@ -266,13 +262,10 @@
 									<description>Claim within first 6 months of policy inception</description>
 									<amount>$600</amount>
 								</excess>
-
-								<xsl:if test="$request/vehicle/parking = '1' or  $request/vehicle/parking = '7'">
-									<excess>
-										<description>Undisclosed parking excess</description>
-										<amount>$1000</amount>
-									</excess>
-								</xsl:if>
+								<excess>
+									<description>Undisclosed parking excess</description>
+									<amount>$1000</amount>
+								</excess>
 							</xsl:otherwise>
 						</xsl:choose>
 					</excess>
@@ -306,7 +299,7 @@
 									<pdsaUrl>http://b2b.aiinsurance.com.au/SSPublicDocs/Tradiesure_PDS_01.pdf</pdsaUrl>
 								</xsl:when>
 								<xsl:otherwise>
-									<pdsaUrl>http://b2b.aiinsurance.com.au/SSPublicDocs/Comprehensive_Cover_PDS_02.pdf</pdsaUrl>
+									<pdsaUrl>http://b2b.aiinsurance.com.au/SSPublicDocs/Comprehensive_Cover_PDS_04.pdf</pdsaUrl>
 								</xsl:otherwise>
 							</xsl:choose>
 							<pdsaDesLong>Product Disclosure Statement</pdsaDesLong>
@@ -427,29 +420,11 @@
 		<xsl:choose>
 
 			<xsl:when test="$productId = 'AI-01-01'">
-				<name>Classic Comprehensive Cover</name>
+				<name>Elegant Comprehensive Cover</name>
 				<des>A specialist car insurer which focuses on providing a wide range of uniquely tailored policies.</des>
-				<feature>Includes 65% Maximum No Claim Discount &amp; a Reducible Basic Excess structure</feature>
-				<info>
-					<![CDATA[
-					<p>AI Insurance provides comprehensive car insurance which includes cover for younger drivers and non standard vehicles.
-					<br>Features and benefits include:</p>
-					<li style="font-size:11px;"><strong>Lifetime Protected 65% No Claims Discount</strong> (NCD) provided with each policy</li>
-					<li style="font-size:11px;"><strong>Excess free windscreen cover</strong> (limited to one excess free claim per period)*</li>
-					<li style="font-size:11px;"><strong>Faultless excess</strong> - no excess payable for accident claims where the driver is not at fault and the at fault drivers details have been provided to AI Insurance*</li>
-					<li style="font-size:11px;"><strong>Reducible basic excess</strong> - AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
-					<li style="font-size:11px;"><strong>Client choice of repairer</strong> - AI Insurance allows clients to select their repairer of choice*<br>
-					*Refer to the Product Disclosure Statement for more information.</li>
-					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by The Hollard Insurance Company Pty Ltd. Hollard is a member of the international Hollard Insurance Group which provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
-					<p>Hollard has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
-					]]>
-				</info>
-				<terms>
-					<![CDATA[
-						<p><b>Maximum No Claims discount:</b></p>
-						<p>With AI Insurance you will automatically receive a 65% maximum no claims discount and Rating 1 protection.</p>
-					]]>
-				</terms>
+				<feature>Comprehensive car insurance with the option to add extra cover</feature>
+				<terms />
+				<info />
 				<carbonOffset />
 				<kms />
 
@@ -459,54 +434,28 @@
 				<name>Smart-Box Comprehensive Cover</name>
 				<des>One of only a few telematics based insurance products available in the Australian market.</des>
 				<feature>Insurance telematics is the use of a black box device in a car to record driving related behaviors for individualised premium</feature>
-				<info>
-					<![CDATA[
-					<p>AI Insurance provides comprehensive car insurance which includes cover for younger drivers and non standard vehicles.
-					<br>Features and benefits include:</p>
-					<li style="font-size:11px;"><strong>Lifetime Protected 65% No Claims Discount</strong> (NCD) provided with each policy</li>
-					<li style="font-size:11px;"><strong>Excess free windscreen cover</strong> (limited to one excess free claim per period)*</li>
-					<li style="font-size:11px;"><strong>Faultless excess</strong> - no excess payable for accident claims where the driver is not at fault and the at fault drivers details have been provided to AI Insurance*</li>
-					<li style="font-size:11px;"><strong>Reducible basic excess</strong> - AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
-					<li style="font-size:11px;"><strong>Client choice of repairer</strong> - AI Insurance allows clients to select their repairer of choice*<br>
-					*Refer to the Product Disclosure Statement for more information.</li>
-					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by The Hollard Insurance Company Pty Ltd. Hollard is a member of the international Hollard Insurance Group which provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
-					<p>Hollard has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
-					]]>
-				</info>
 				<terms>
 					<![CDATA[
 						<p><b>Telematics device installation requirement:</b></p>
 						<p>If you think that you are a "safer and better" driver than most other road users, here’s your chance to demonstrate your driving behavior to us – more accurate, individualized and cheaper premiums being your objective.</p>
 					]]>
 				</terms>
+				<info />
 				<carbonOffset />
 				<kms />
 			</xsl:when>
 
 			<xsl:when test="$productId = 'AI-01-03'">
-				<name>Classic Plus Comprehensive Cover</name>
+				<name>Elegant Plus Comprehensive Cover</name>
 				<des>A specialist car insurer which focuses on providing a wide range of uniquely tailored policies.</des>
-				<feature>Price shown includes 20% Online Discount</feature>
-				<info>
-					<![CDATA[
-					<p>AI Insurance provides comprehensive car insurance which includes cover for younger drivers and non standard vehicles.
-					<br>Features and benefits include:</p>
-					<li style="font-size:11px;"><strong>Lifetime Protected 65% No Claims Discount</strong> (NCD) provided with each policy</li>
-					<li style="font-size:11px;"><strong>Excess free windscreen cover</strong> (limited to one excess free claim per period)*</li>
-					<li style="font-size:11px;"><strong>Faultless excess</strong> - no excess payable for accident claims where the driver is not at fault and the at fault drivers details have been provided to AI Insurance*</li>
-					<li style="font-size:11px;"><strong>Reducible basic excess</strong> - AI Insurance rewards you for each year that you don't make a claim by reducing your excess*</li>
-					<li style="font-size:11px;"><strong>Client choice of repairer</strong> - AI Insurance allows clients to select their repairer of choice*<br>
-					*Refer to the Product Disclosure Statement for more information.</li>
-					<p style="margin-top:5px;">AI Insurance comprehensive car policies are underwritten by The Hollard Insurance Company Pty Ltd. Hollard is a member of the international Hollard Insurance Group which provides a wide range of insurance products and services to more than 6.5 million policyholders worldwide.</p>
-					<p>Hollard has won the Australian Banking and Finance Magazine's awards for Best General Insurance Product (2008) and Nice Insurer of the Year (2007).</p>
-					]]>
-				</info>
+				<feature>Price shown includes an online discount</feature>
 				<terms>
 					<![CDATA[
-						<p><b>Terms of the 20% online discount promotion:</b></p>
+						<p><b>Terms of the online discount promotion:</b></p>
 						<p>The discount applies to AI comprehensive car insurance policies purchased online and initiated after 4th September 2014, and is applicable to premium only - not fees and statutory charges - and does not extend to renewal of a policy. AI Insurance reserves the right to amend the discount amount and/or the period and base rate premiums are subject to change at their discretion.</p>
 					]]>
 				</terms>
+				<info />
 				<carbonOffset />
 				<kms />
 
@@ -516,14 +465,12 @@
 				<name>TradieSure Comprehensive Cover</name>
 				<des>A specialist car insurer which focuses on providing a wide range of uniquely tailored policies.</des>
 				<feature>Includes limited cover for trade tools and goods.</feature>
-				<info>
-					<![CDATA[]]>
-				</info>
 				<terms>
 					<![CDATA[
 						<p>Our TradieSure cover not only offers you comprehensive cover for your vehicle, it also includes trade tools and goods cover.</p>
 					]]>
 				</terms>
+				<info />
 				<carbonOffset />
 				<kms />
 
@@ -532,15 +479,13 @@
 			<xsl:when test="$productId = 'AI-01-05'">
 				<name>TradieSure Plus Comprehensive</name>
 				<des>A specialist car insurer which focuses on providing a wide range of uniquely tailored policies.</des>
-				<feature>Price shown includes 20% Online Discount</feature>
-				<info>
-					<![CDATA[]]>
-				</info>
+				<feature>Price shown includes an Online Discount</feature>
 				<terms>
 					<![CDATA[
 						<p>The discount applies to AI comprehensive car insurance policies purchased online and initiated after 4th September 2014, and is applicable to premium only - not fees and statutory charges - and does not extend to renewal of a policy. AI Insurance reserves the right to amend the discount amount and/or the period and base rate premiums are subject to change at their discretion.</p>
 					]]>
 				</terms>
+				<info />
 				<carbonOffset />
 				<kms />
 
@@ -551,9 +496,9 @@
 <!-- GET THE PRODUCT ID ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template name="getProductId">
 		<xsl:choose>
-			<xsl:when test="ai:Product = 'CLASSIC'">AI-01-01</xsl:when>
+			<xsl:when test="ai:Product = 'ELEGANT'">AI-01-01</xsl:when>
 			<xsl:when test="ai:Product = 'CLASSICSB'">AI-01-02</xsl:when>
-			<xsl:when test="ai:Product = 'CLASSICPL'">AI-01-03</xsl:when>
+			<xsl:when test="ai:Product = 'ELEGANTPL'">AI-01-03</xsl:when>
 			<xsl:when test="ai:Product = 'TRADIESURE'">AI-01-04</xsl:when>
 			<xsl:when test="ai:Product = 'TRADIESUREPL'">AI-01-05</xsl:when>
 			<xsl:otherwise>ERROR</xsl:otherwise>

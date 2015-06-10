@@ -450,7 +450,7 @@ SaveQuote = {
 			SaveQuote._callback( $("input[name='save_marketing']:checked", "#userSaveForm").val() );
 		}
 		var dat = "";
-		var url = "ajax/json/save_email_quote_mysql.jsp";
+		var url = "ajax/json/save_email_quote.jsp";
 		
 		if($('#saved_email').size() == 0) {
 			var savedEmailEl = document.createElement("input");

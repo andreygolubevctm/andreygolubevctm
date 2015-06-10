@@ -79,6 +79,8 @@
 
 	<xsl:variable name="familyType">
 		<xsl:choose>
+			<xsl:when test="/health/situation/healthCvr = 'SM'">S</xsl:when>
+			<xsl:when test="/health/situation/healthCvr = 'SF'">S</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'S'">S</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'C'">C</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'SPF'">U</xsl:when>

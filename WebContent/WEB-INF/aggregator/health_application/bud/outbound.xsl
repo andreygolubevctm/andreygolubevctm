@@ -369,6 +369,8 @@
 						<EffDate><xsl:value-of select="$startDate" /></EffDate>
 						<Class>
 							<xsl:choose>
+								<xsl:when test="situation/healthCvr = 'SM'">Sgl</xsl:when>
+								<xsl:when test="situation/healthCvr = 'SF'">Sgl</xsl:when>
 								<xsl:when test="situation/healthCvr = 'S'">Sgl</xsl:when>
 								<xsl:when test="situation/healthCvr = 'C'">Cpl</xsl:when>
 								<xsl:when test="situation/healthCvr = 'SPF'">SPFam</xsl:when>
@@ -389,7 +391,7 @@
 						<CoverRateSelection><xsl:value-of select="fundData/fundCode" /></CoverRateSelection>
 						<Account>
 							<AccountType>credit</AccountType>
-							<DebitCreditID>Bank</DebitCreditID>
+							<DebitCreditID>CBank</DebitCreditID>
 							<xsl:choose>
 							<xsl:when test="payment/details/type='cc' or payment/bank/claims!='Y'">
 								<BSB><xsl:value-of select="concat(substring(payment/bank/claim/bsb,1,3),'-',substring(payment/bank/claim/bsb,4,3))" /></BSB>
@@ -453,7 +455,7 @@
 									<AccountName><xsl:value-of select="payment/credit/name" /></AccountName>
 								</xsl:when>
 								<xsl:otherwise>
-									<DebitCreditID>Bank</DebitCreditID>
+									<DebitCreditID>CBank</DebitCreditID>
 									<BSB><xsl:value-of select="concat(substring(payment/bank/bsb,1,3),'-',substring(payment/bank/bsb,4,3))" /></BSB>
 									<AccountNumber><xsl:value-of select="translate(payment/bank/number,' ','')" /></AccountNumber>
 									<AccountName><xsl:value-of select="payment/bank/account" /></AccountName>

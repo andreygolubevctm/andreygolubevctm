@@ -530,6 +530,8 @@
 					<!-- TODO: HOW TO PERFORM CHECK FOR +18? IS IT WHEN ALL DEPENDANTS ARE 18 OR OLDER? -->
 					<b:ScaleCode>
 						<xsl:choose>
+							<xsl:when test="situation/healthCvr = 'SM'">S</xsl:when>
+							<xsl:when test="situation/healthCvr = 'SF'">S</xsl:when>
 							<xsl:when test="situation/healthCvr = 'S'">S</xsl:when>
 							<xsl:when test="situation/healthCvr = 'F'">F</xsl:when>
 							<xsl:when test="situation/healthCvr = 'C'">

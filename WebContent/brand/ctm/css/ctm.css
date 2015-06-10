@@ -649,6 +649,9 @@ hr {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+body {
+  -ms-overflow-style: scrollbar;
+}
 h1,
 h2,
 h3,

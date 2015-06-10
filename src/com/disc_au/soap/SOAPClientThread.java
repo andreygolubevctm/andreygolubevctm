@@ -36,6 +36,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.ctm.constants.ErrorCode;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
@@ -94,6 +95,10 @@ public class SOAPClientThread implements Runnable {
 
 	public static final String DEFAULT_CONTENT_TYPE = "text/xml; charset=\"utf-8\"";
 	public static final String DEFAULT_ENCODING = "UTF-8";
+
+	private String[] keywords = {"XML Parsing Error", "ValidatorException", "SOAPException", "XML Validation Exception", "Connection refused",
+			"Read timed outIOException", "Invalid Agent Customer Id", "Invalid Agent Payment Id", "Invalid Previous Health Fund ID",
+			"Invalid Partner Previous Health Fund ID", "Non-user related error"};
 
 	/**
 	 * Instantiates a new SOAP client thread.
@@ -291,6 +296,7 @@ public class SOAPClientThread implements Runnable {
 
 					StringBuffer errorData = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(((HttpURLConnection)connection).getErrorStream()));
+
 					String line;
 					while ((line = reader.readLine()) != null) {
 						errorData.append(line);
@@ -322,20 +328,46 @@ public class SOAPClientThread implements Runnable {
 			((HttpURLConnection)connection).disconnect();
 
 		} catch (MalformedURLException e) {
-			logger.error("failed to process request" , e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
-			returnData.append(err.getXMLDoc());
-
+			handleException(returnData, startTime, e);
 		} catch (IOException e) {
-			logger.error("failed to process request" , e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "IOException", (System.currentTimeMillis() - startTime));
-			returnData.append(err.getXMLDoc());
+			handleException(returnData, startTime, e);
 		}
 
 		this.responseTime = System.currentTimeMillis() - startTime;
 		
 		// Return the result
 		return returnData.toString();
+	}
+
+	protected void handleException(StringBuffer returnData, long startTime, Exception e) {
+		logger.error("failed to process request" , e);
+		SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, ErrorCode.MK_20004.getErrorCode(), configuration.getName(), "", (System.currentTimeMillis() - startTime));
+		returnData.append(err.getXMLDoc());
+	}
+
+	private String matchKeywords(String soapResponse) {
+		String errorData = "";
+		for(String keyword : keywords) {
+			if (soapResponse.toLowerCase().indexOf(keyword.toLowerCase()) != -1) {
+				SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
+						500,
+						ErrorCode.MK_20004.getErrorCode(),
+						configuration.getName(),
+						"",
+						0);
+
+				logger.debug("[SOAP Response] "+this.name + " MK-20004:" + soapResponse);
+
+				errorData = err.getXMLDoc();
+
+				break;
+			}
+		}
+
+		if(errorData.isEmpty()) {
+			return soapResponse;
+		}
+		return errorData;
 	}
 
 	private String maskXml(String xml, String maskingXslt) {
@@ -397,6 +429,8 @@ public class SOAPClientThread implements Runnable {
 			if(soapConfiguration.isWriteToFile()){
 				writer.writeXmlToFile(maskXml(soapResponse , configuration.getMaskReqInXSL()), RESP_IN);
 			}
+
+			soapResponse = matchKeywords(soapResponse);
 
 			// do we need to translate it?
 			if (configuration.getInboundXSL() != null) {

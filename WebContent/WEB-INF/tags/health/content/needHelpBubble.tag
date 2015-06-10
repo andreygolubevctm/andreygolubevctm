@@ -5,7 +5,7 @@
 
 
 <c:if test="${not empty callCentreNumber}">
-	<ui:bubble variant="info">
+	<ui:bubble variant="info" className="callCentreNumberSection">
 		<h4>Do you need a hand?</h4>
 		<p class="larger">
 			Call <span class="noWrap callCentreNumber">${callCentreNumber}</span>

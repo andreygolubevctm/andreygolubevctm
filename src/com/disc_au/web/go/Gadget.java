@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.text.NumberFormat;
@@ -488,9 +489,17 @@ public class Gadget {
 
 
 	/*
+	 * This is used by the jsp
+	 * Use formatCurrency(BigDecimal value, boolean showSymbol, boolean groupingUsed) as there is no loss of precision
+	 */
+	public static String formatCurrency(String value, boolean showSymbol, boolean groupingUsed) {
+		return formatCurrency(new BigDecimal(value),  showSymbol,  groupingUsed);
+	}
+
+ /*
 	 * Format currency using half up
 	 */
-	public static String formatCurrency(double value, boolean showSymbol, boolean groupingUsed) {
+	public static String formatCurrency(BigDecimal value, boolean showSymbol, boolean groupingUsed) {
 		NumberFormat form;
 		if(showSymbol) {
 			form = NumberFormat.getCurrencyInstance();

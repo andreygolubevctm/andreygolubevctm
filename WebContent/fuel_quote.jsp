@@ -9,6 +9,12 @@
 	<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 </c:if>
 
+<%-- Check requests from IP and throw 429 if limit exceeded. --%>
+<jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
+<c:if test="${!ipCheckService.isWithinLimitAsBoolean(pageContext.request, pageSettings)}">
+	<%	response.sendError(429, "Number of requests exceeded!" ); %>
+</c:if>
+
 
 <%-- PRELOAD DATA --%>
 

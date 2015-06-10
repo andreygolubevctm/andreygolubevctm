@@ -15,7 +15,7 @@
 
 <c:set var="fieldXpath" value="${xpath}/other" />
 <form_new:row label="Other Number" fieldXpath="${fieldXpath}input">
-	<field:contact_telno xpath="${fieldXpath}" size="15" required="false" isLandline="true" title="The other number" labelName="other number" className="sessioncamexclude" />
+	<field:contact_telno xpath="${fieldXpath}" size="15" required="false" isLandline="true" title="The other number" labelName="other number" />
 </form_new:row>
 
 <c:if test="${required}" >

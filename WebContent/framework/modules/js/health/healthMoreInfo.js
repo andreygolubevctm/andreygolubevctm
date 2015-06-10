@@ -256,6 +256,9 @@
 			// Set the correct phone number
 			meerkat.modules.healthPhoneNumber.changePhoneNumber();
 
+			// hide elements based on marketing segments
+			meerkat.modules.healthSegment.hideBySegment();
+
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 				method:'trackProductView',
 				object:{

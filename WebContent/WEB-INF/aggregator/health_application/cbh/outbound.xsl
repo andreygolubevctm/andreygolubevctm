@@ -411,6 +411,8 @@
 				<coverDetails>
 					<xsl:attribute name="coverType">
 						<xsl:choose>
+							<xsl:when test="/health/situation/healthCvr = 'SM'">S</xsl:when>
+							<xsl:when test="/health/situation/healthCvr = 'SF'">S</xsl:when>
 							<xsl:when test="/health/situation/healthCvr = 'S'">S</xsl:when>
 							<xsl:when test="/health/situation/healthCvr = 'F'">F</xsl:when>
 							<xsl:when test="/health/situation/healthCvr = 'C'">C</xsl:when>

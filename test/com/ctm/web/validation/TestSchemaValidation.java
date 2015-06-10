@@ -1,123 +1,161 @@
 package com.ctm.web.validation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.w3c.dom.ls.LSResourceResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import javax.servlet.ServletContext;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
+import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.stax.StAXSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
 
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.xml.sax.SAXException;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(SchemaValidation.class)
 public class TestSchemaValidation {
 
 	private SchemaValidation validationTag;
+	private PageContext pageContext = mock(PageContext.class);
+	private String xsd = "/WebContent/WEB-INF/xsd/roadside/roadsidePriceResult.xsd";
+	private Schema schema;
+	private XMLStreamReader reader;
+
+	@Before
+	public void setup() throws Exception {
+		reader = mock(XMLStreamReader.class);
+		StAXSource staxReader = mock(StAXSource.class);
+		PowerMockito.whenNew(StAXSource.class).withArguments(reader).thenReturn(staxReader);
+
+		SchemaFactory factory = mock(SchemaFactory.class);
+		schema = mock(Schema.class);
+		URL url = new URL("http://test1");
+		when(factory.newSchema(url)).thenReturn(schema);
+		XMLInputFactory xmlInputFactory = mock(XMLInputFactory.class);
+		when(xmlInputFactory.createXMLStreamReader((Source) anyObject())).thenReturn(reader);
+		validationTag = new SchemaValidation(factory, xmlInputFactory);
+		ServletContext value = mock(ServletContext.class);
+		when(pageContext.getServletContext()).thenReturn(value);
+		when(value.getResource(xsd)).thenReturn(url);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testShouldValidateRoadside() throws IOException, SAXException, XMLStreamException, FactoryConfigurationError, JspException {
-		validationTag = new SchemaValidation();
-		String xsd = "/WebContent/WEB-INF/xsd/roadside/roadsidePriceResult.xsd";
+	public void testShouldValidateValidXml() throws MalformedURLException, JspException {
+		when(schema.newValidator()).thenReturn(new Validator(){
 
-		String validRoadSideXML =
-				"<?xml version='1.0' encoding='UTF-8' ?>" +
-				"<roadside>" +
-					"<vehicle>" +
-						"<make>AUDI</make><makeDes/><vehicle><odometer>N</odometer><commercial>N</commercial></vehicle><year>2013</year>" +
-					"</vehicle>" +
-					"<riskAddress>" +
-						"<state>QLD</state>" +
-					"</riskAddress>" +
-					"<transactionId>2029535</transactionId>" +
-				"</roadside>";
-		PageContext pageContext = mock(PageContext.class);
-		ServletContext value = mock(ServletContext.class);
+			public VerboseErrorHandler errorHandler;
 
-		when(pageContext.getServletContext()).thenReturn(value);
-		URL url = new URL("file:///C:/Dev/web_ctm" + xsd);
-		when(value.getResource(xsd)).thenReturn(url);
+			@Override
+			public void reset() {
+			}
+
+			@Override
+			public void validate(Source source, Result result) throws SAXException, IOException {
+			}
+
+			@Override
+			public void setErrorHandler(ErrorHandler errorHandler) {
+				this.errorHandler = (VerboseErrorHandler) errorHandler;
+			}
+
+			@Override
+			public ErrorHandler getErrorHandler() {
+				return null;
+			}
+
+			@Override
+			public void setResourceResolver(LSResourceResolver resourceResolver) {
+
+			}
+
+			@Override
+			public LSResourceResolver getResourceResolver() {
+				return null;
+			}
+		});
 
 
 		validationTag.setValidationErrorsVar("test1");
-		boolean valid = validationTag.validateSchema(pageContext, validRoadSideXML, xsd);
+		boolean valid = validationTag.validateSchema(pageContext, "", xsd);
 		assertTrue(valid);
+	}
 
-		String inValidRoadSideXML =
-				"<?xml version='1.0' encoding='UTF-8'?>" +
-				"<roadside>" +
-					"<vehicle>" +
-						"<make>AUDI</make>" +
-						"<makeDes/>" +
-						"<vehicle>" +
-							"<odometer>N</odometer>" +
-							"<commercial>N</commercial>" +
-						"</vehicle>" +
-						"<year>2013</year>" +
-					"</vehicle>" +
-					"<riskAddress>" +
-						"<state>APPLE</state>" +
-					"</riskAddress>" +
-					"<transactionId>2029535</transactionId>" +
-				"</roadside>";
+	@Test
+	public void testShouldValidateInvalidXml() throws JspException, IOException, SAXException, XMLStreamException {
+		when(schema.newValidator()).thenReturn(new Validator(){
 
-		ArgumentCaptor<Object> peopleCaptor = ArgumentCaptor.forClass(Object.class);
+			public VerboseErrorHandler errorHandler;
+
+			@Override
+			public void reset() {
+			}
+
+			@Override
+			public void validate(Source source, Result result) throws SAXException, IOException {
+				when(reader.isStartElement()).thenReturn(true);
+				QName name = new QName("http://test", "state", "test");
+				when(reader.getName()).thenReturn(name);
+						//check there is an error to validate
+						SAXParseException e = new SAXParseException("of element 'state' is not valid.", "state", "state",
+								1, 1);
+				errorHandler.warning(e);
+			}
+
+			@Override
+			public void setErrorHandler(ErrorHandler errorHandler) {
+				this.errorHandler = (VerboseErrorHandler) errorHandler;
+			}
+
+			@Override
+			public ErrorHandler getErrorHandler() {
+				return null;
+			}
+
+			@Override
+			public void setResourceResolver(LSResourceResolver resourceResolver) {
+
+			}
+
+			@Override
+			public LSResourceResolver getResourceResolver() {
+				return null;
+			}
+		});
+		boolean valid;
+
+		ArgumentCaptor<Object> attributeCaptor = ArgumentCaptor.forClass(Object.class);
 
 		validationTag.setValidationErrorsVar("test2");
-		valid = validationTag.validateSchema(pageContext, inValidRoadSideXML, xsd);
-		verify(pageContext, times(2)).setAttribute(anyString(), peopleCaptor.capture(), anyInt());
-		List<Object> validationErrors = peopleCaptor.getAllValues();
-		assertInvalid(SchemaValidationError.INVALID, "state", valid, (List<SchemaValidationError>)validationErrors.get(1));
+		valid = validationTag.validateSchema(pageContext, "", xsd);
+		verify(pageContext, times(1)).setAttribute(eq("test2"), attributeCaptor.capture(), anyInt());
+		List<SchemaValidationError> validationErrors = (List<SchemaValidationError>) attributeCaptor.getValue();
+		assertInvalid(SchemaValidationError.INVALID, "state", valid, validationErrors);
 	}
 
-	@SuppressWarnings("unchecked")
-	@Test
-	public void testShouldValidateRoadsideMissingMake() throws IOException, SAXException, XMLStreamException, FactoryConfigurationError, JspException {
-		validationTag = new SchemaValidation();
-		String xsd = "/WebContent/WEB-INF/xsd/roadside/roadsidePriceResult.xsd";
-
-		PageContext pageContext = mock(PageContext.class);
-		ServletContext value = mock(ServletContext.class);
-
-		when(pageContext.getServletContext()).thenReturn(value);
-		URL url = new URL("file:///C:/Dev/web_ctm" + xsd);
-		when(value.getResource(xsd)).thenReturn(url);
-		validationTag.setValidationErrorsVar("test1");
-
-		validationTag = new SchemaValidation();
-		String inValidRoadSideXML = "<roadside>" +
-				"<vehicle>" +
-					"<makeDes>foo</makeDes>" +
-					"<year>2007</year>" +
-				"</vehicle>" +
-				"<riskAddress>" +
-					"<state>QLD</state>" +
-				"</riskAddress>" +
-				"<clientIpAddress>0:0:0:0:0:0:0:1</clientIpAddress>" +
-				"<clientUserAgent>Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.69 Safari/537.36</clientUserAgent>" +
-				"<transactionId>2030500</transactionId>" +
-		"</roadside>";
-		validationTag.setValidationErrorsVar("test3");
-		Boolean valid = validationTag.validateSchema(pageContext, inValidRoadSideXML, xsd);
-		ArgumentCaptor<Object> peopleCaptor = ArgumentCaptor.forClass(Object.class);
-		verify(pageContext, times(1)).setAttribute(anyString(), peopleCaptor.capture(), anyInt());
-		List<Object> validationErrors = peopleCaptor.getAllValues();
-		assertInvalid(SchemaValidationError.REQUIRED, valid, (List<SchemaValidationError>)validationErrors.get(0));
-	}
 
 	private void assertInvalid(String expectedMessage, String expectedElement, boolean valid, List<SchemaValidationError> validationErrors) throws IOException, SAXException, XMLStreamException, FactoryConfigurationError, JspException {
 		assertTrue(validationErrors.size() > 0);
@@ -125,13 +163,6 @@ public class TestSchemaValidation {
 		assertEquals(expectedMessage,message);
 		String element = validationErrors.get(0).getElementXpath();
 		assertEquals(expectedElement,element);
-		assertFalse(valid);
-	}
-
-	private void assertInvalid(String expectedMessage, boolean valid, List<SchemaValidationError> validationErrors) throws IOException, SAXException, XMLStreamException, FactoryConfigurationError, JspException {
-		assertTrue(validationErrors.size() > 0);
-		String message = validationErrors.get(0).getMessage();
-		assertEquals(expectedMessage,message);
 		assertFalse(valid);
 	}
 

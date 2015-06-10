@@ -18,7 +18,7 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_expired` AS
 
 		-- Has the message expired? (created + source expiry)
 		AND (
-			NOW() >=  DATE_ADD(created,INTERVAL src.messageExpiry DAY)
+			(NOW() <  DATE_ADD(created,INTERVAL src.messageExpiry DAY) AND created > '2015-06-09 00:00:00')
 			OR statusId = 31 /*Completed as PM*/
 			OR statusId = 32 /*Changed Time for PM*/
 		)
@@ -39,8 +39,10 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_expired` AS
 			OR (msg.state = 'ACT' AND TIME(CONVERT_TZ(NOW(), '+10:00', 'Australia/Canberra')) BETWEEN `src_avail`.`availableFrom` AND `src_avail`.`availableTo`)
 		)
 
-		-- Have too many attempts been made?
-		AND callAttempts < src.maxAttempts
+		-- Over maxAttempts
+		AND callAttempts >= src.maxAttempts
+		-- hard coded new max attempts for expired leads for now
+		AND callAttempts < 6
 
 		AND postponeCount <= src.maxPostpones
 

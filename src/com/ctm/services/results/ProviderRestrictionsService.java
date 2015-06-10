@@ -105,7 +105,16 @@ public class ProviderRestrictionsService {
                         "                                                   FROM aggregator.transaction_header th \n" +
                         "                                                   WHERE th.transactionid = ? \n" +
                         "                                               ) \n" +
-                        "                             );";
+                        "                             )" +
+                        "union " +
+                        "select \n" +
+                        "    distinct ProviderId\n" +
+                        "from\n" +
+                        "    ctm.provider_properties\n" +
+                        "where\n" +
+                        "    (propertyId = 'MonthlyLimit' or (propertyId = 'DailyLimit' and status='H'))\n" +
+                        "        and text = '0'\n" +
+                        "        and curdate() between EffectiveStart and EffectiveEnd;";
 
         List<Integer> restrictedProviders = new ArrayList<Integer>();
         try {
@@ -185,7 +194,16 @@ public class ProviderRestrictionsService {
                         "SELECT rootid FROM aggregator.transaction_header th " +
                         "WHERE th.transactionid = ? " +
                         ") " +
-                        ");";
+                        ")"+
+                        "union " +
+                        "select \n" +
+                        "    distinct ProviderId\n" +
+                        "from\n" +
+                        "    ctm.provider_properties\n" +
+                        "where\n" +
+                        "   (propertyId = 'MonthlyLimit' or (propertyId = 'DailyLimit' and status='H'))\n" +
+                        "        and text = '0'\n" +
+                        "        and curdate() between EffectiveStart and EffectiveEnd;";
 
 
         List<Integer> restrictedProviders = new ArrayList<Integer>();

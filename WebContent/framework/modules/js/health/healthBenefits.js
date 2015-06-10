@@ -267,7 +267,7 @@
 
 		if(cover === 'F' || cover === 'SPF'){
 			healthSituCvr = 'FAM';
-		} else if(cover === 'S' && primary_dob !== '') {
+		} else if((cover === 'S' || cover === 'SM' || cover === 'SF') && primary_dob !== '') {
 			ageAverage = returnAge(primary_dob, true);
 			healthSituCvr = getAgeBands(ageAverage);
 		} else if(cover === 'C' && primary_dob !== '' && partner_dob !== '') {

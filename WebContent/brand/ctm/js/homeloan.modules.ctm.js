@@ -1546,7 +1546,7 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $firstname, $surname, $email, $marketing, $iAm, $lookingTo, $currentHomeLoan, $purchasePrice, $purchasePriceHidden, $loanAmount, $amountOwing, $amountOwingHidden, $currentLoanPanel, $existingOwnerPanel, $purchasePricePanel;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $firstname, $surname, $email, $marketing, $iAm, $lookingTo, $currentHomeLoan, $purchasePrice, $purchasePriceHidden, $loanAmount, $amountOwing, $amountOwingHidden, $currentLoanPanel, $existingOwnerPanel, $purchasePricePanel, sessionCamStep = null;
     function applyEventListeners() {
         $(document.body).on("click", ".btn-view-brands", displayBrandsModal);
         $marketing.on("change", function() {
@@ -1603,6 +1603,9 @@
             if (currLookingToValue && currOpts.indexOf(currLookingToValue) != -1) {
                 $lookingTo.val(currLookingToValue).change();
             }
+            var sessionCamStep = getSessionCamStep();
+            sessionCamStep.navigationId += "-iAm-" + $iAm.val();
+            meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
         });
         if ($iAm.val() !== "") {
             $iAm.change();
@@ -1629,6 +1632,9 @@
                 $purchasePrice.val("");
                 $purchasePriceHidden.val("");
             }
+            var sessionCamStep = getSessionCamStep();
+            sessionCamStep.navigationId += "-iAm-" + $iAm.val() + "-lookingTo-" + $lookingTo.val();
+            meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
         });
         $currentHomeLoan.on("change", function() {
             if ($("#homeloan_details_currentLoan_Y").is(":checked") && $lookingTo.val() != "CD" && $lookingTo.val() != "CL") {
@@ -1638,6 +1644,9 @@
             }
             $amountOwing.val("");
             $amountOwingHidden.val("");
+            var sessionCamStep = getSessionCamStep();
+            sessionCamStep.navigationId += "-iAm-" + $iAm.val() + "-lookingTo-" + $lookingTo.val() + "-currentLoan-" + $currentHomeLoan.val();
+            meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
         });
         $purchasePrice.on("blur.hmlValidate", function() {
             if ($loanAmount.val().length === 0) {
@@ -1693,6 +1702,12 @@
             openOnHashChange: false
         });
         return false;
+    }
+    function getSessionCamStep() {
+        if (sessionCamStep == null) {
+            sessionCamStep = meerkat.modules.journeyEngine.getCurrentStep();
+        }
+        return _.extend({}, sessionCamStep);
     }
     meerkat.modules.register("homeloanStart", {
         init: init

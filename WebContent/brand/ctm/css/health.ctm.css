@@ -2027,7 +2027,7 @@ So it's going to be done progressively. Include this file in your framework.buil
   }
 }
 .resultsMarketingMessages {
-  z-index: 18;
+  z-index: 12;
 }
 .resultsMarketingMessages .resultsMarketingMessage {
   top: 0;

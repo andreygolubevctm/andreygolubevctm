@@ -39,7 +39,7 @@ public class HealthApplicationServiceTest {
 		healthPriceDao = mock(HealthPriceDao.class);
 		data.put(PREFIX + "/application/productId", "PHIO-HEALTH-545038");
 		data.put(PREFIX + "/payment/details/frequency", Frequency.MONTHLY.getDescription());
-		data.put(PREFIX + "/situation/healthCvr", "S");
+		data.put(PREFIX + "/situation/healthCvr", "SM");
 		data.put(PREFIX + "/payment/details/start", "27/11/2014");
 		data.put(PREFIX + "/application/provider", "AUF");
 		HealthPricePremium premiums = new HealthPricePremium();

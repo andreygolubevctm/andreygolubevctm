@@ -70,7 +70,7 @@
 						<Comments></Comments>
 						<PremiumQuoted><xsl:value-of select="ai/PremiumQuoted"/></PremiumQuoted>
 						<ExcessQuoted><xsl:value-of select="ai/ExcessQuoted"/></ExcessQuoted>
-						<ProductQuoted>CLASSIC</ProductQuoted>
+						<ProductQuoted>ELEGANT</ProductQuoted>
 						<CampaignID>1</CampaignID>
 						<QuoteAccepted>true</QuoteAccepted>
 						<InsuredDetail>

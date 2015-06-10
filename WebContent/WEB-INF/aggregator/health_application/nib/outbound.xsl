@@ -234,9 +234,9 @@
 			<xsl:when test="$hopName='Mid Hospital' and $extName='Top Extras'">118</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Extras'">120</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Extras Plus'">121</xsl:when>
-			<xsl:when test="$hopName='Basic Hospital' and $extName='Core and Family Extras'">122</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='CoreY and Family Extras'">122</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus and Family Extras'">123</xsl:when>
-			<xsl:when test="$hopName='Basic Hospital' and $extName='Core, Family and Young at Heart Extras'">124</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core, Family and oung at Heart Extras'">124</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus, Family and Young at Heart Extras'">125</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core, Family and Wellbeing Extras'">126</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus, Family and Wellbeing Extras'">127</xsl:when>
@@ -268,6 +268,8 @@
 			<xsl:when test="$extName='Core and Wellbeing Extras'">69</xsl:when>
 			<xsl:when test="$extName='Core Plus and Wellbeing Extras'">70</xsl:when>
 			<xsl:when test="$extName='Top Extras'">71</xsl:when>
+			<xsl:when test="$extName='KickS'">151</xsl:when>
+			<xsl:when test="$extName='KickSPlus'">152</xsl:when>
 			
 			<xsl:otherwise>0</xsl:otherwise>
 		</xsl:choose>
@@ -278,6 +280,8 @@
 		<xsl:choose>
 			<xsl:when test="/health/situation/healthCvr = 'SPF'">P</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'C'">D</xsl:when>
+			<xsl:when test="/health/situation/healthCvr = 'SM'">S</xsl:when>
+			<xsl:when test="/health/situation/healthCvr = 'SF'">S</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="/health/situation/healthCvr" />
 			</xsl:otherwise>

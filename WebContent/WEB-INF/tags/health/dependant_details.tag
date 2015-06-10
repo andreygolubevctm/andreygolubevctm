@@ -43,7 +43,7 @@
 		
 		<c:set var="fieldXpath" value="${xpath}${count}/dob" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Date of Birth" >
-			<field_new:person_dob xpath="${fieldXpath}" title="dependant ${count}'s date of birth" required="true" ageMin="0" className="sessioncamexclude"  />
+			<field_new:person_dob xpath="${fieldXpath}" title="dependant ${count}'s date of birth" required="true" ageMin="0" />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}${count}/fulltime" />

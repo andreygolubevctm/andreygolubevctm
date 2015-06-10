@@ -128,17 +128,18 @@
 
 	function getIEVersion(){
 		var ua = USER_AGENT;
-		var msie = ((ua.indexOf ( "msie " ) > 0) || (ua.indexOf ( "trident" ) > 0));
+		var isIE = ((ua.indexOf ( "msie " ) > 0) || (ua.indexOf ( "trident" ) > 0));
 
-		if ( msie){      // If Internet Explorer, return version number
+		if (isIE){      // If Internet Explorer, return version number
+			var msieIndex = ua.indexOf ( "msie" );
 			// MS 11 onwards. It doesn't use msie anymore
 			// http://msdn.microsoft.com/en-us/library/ie/bg182625(v=vs.110).aspx
-			if (ua.indexOf ( "msie" ) == -1) {
+			if (msieIndex == -1) {
 				var version = ua.match(/trident.*rv[ :]*(11|12)\./i);
 				return parseInt(version[1]);
 
 			}
-			return parseInt (ua.substring (msie+5, ua.indexOf (".", msie )));
+			return parseInt (ua.substring (msieIndex+5, ua.indexOf (".", msieIndex )));
 		}else{
 			return null;
 		}

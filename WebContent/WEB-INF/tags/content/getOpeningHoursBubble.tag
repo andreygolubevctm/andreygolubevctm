@@ -5,7 +5,7 @@
 <jsp:useBean id="openingHoursService" class="com.ctm.services.simples.OpeningHoursService" scope="page" />
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 
-<div class="opening-hours-bubble">
+<div class="opening-hours-bubble callCentreNumberSection">
 	<h6>Call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span></h6>
 	<c:if test="${not empty openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
 		<a href="javascript:;" data-toggle="dialog"

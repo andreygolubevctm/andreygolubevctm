@@ -3,6 +3,8 @@ package com.ctm.model.health;
 
 public enum Membership {
 
+	SINGLE_MALE ("SM"),
+	SINGLE_FEMALE ("SF"),
 	SINGLE ("S"),
 	COUPLE ("C"),
 	SINGLE_PARENT ("SP"),

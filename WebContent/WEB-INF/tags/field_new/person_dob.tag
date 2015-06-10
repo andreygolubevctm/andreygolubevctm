@@ -34,13 +34,13 @@
 <div class="dateinput_container" data-provide="dateinput">
 	<div class="row dateinput-tripleField">
 		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-4">
-			<field_new:input type="text" className="dateinput-day dontSubmit ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="false" requiredMessage="Please enter the day" />
+			<field_new:input type="text" className="sessioncamexclude dateinput-day dontSubmit ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="false" requiredMessage="Please enter the day" />
 		</div>
 		<div class="col-lg-4 col-md-4 col-sm-3 col-xs-4">
-			<field_new:input type="text" className="dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="false" requiredMessage="Please enter the month" />
+			<field_new:input type="text" className="sessioncamexclude dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="false" requiredMessage="Please enter the month" />
 		</div>
 		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-4">
-			<field_new:input type="text" className="dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="false" requiredMessage="Please enter the year" />
+			<field_new:input type="text" className="sessioncamexclude dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="false" requiredMessage="Please enter the year" />
 		</div>
 	</div>
 	<div class="hidden select dateinput-nativePicker">

@@ -59,7 +59,7 @@
 
 <%-- HTML --%>
 <span>
-	<input name="${name}" id="${name}" class="form-control ${className}" value="${value}" size="${size}" ${placeHolderAttribute}${tabIndexValue}${requiredAttribute} type="email" data-msg-required="Please enter ${titleText}" />
+	<input name="${name}" id="${name}" class="sessioncamexclude form-control ${className}" value="${value}" size="${size}" ${placeHolderAttribute}${tabIndexValue}${requiredAttribute} type="email" data-msg-required="Please enter ${titleText}" />
 </span>
 <c:if test="${not empty helptext}">
 	<i class="helptext">${helptext}</i>

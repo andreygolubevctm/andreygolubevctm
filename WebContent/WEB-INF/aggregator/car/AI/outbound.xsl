@@ -63,9 +63,10 @@
 				<xsl:when test="excess != ''">
 					<xsl:value-of select="excess" />
 				</xsl:when>
-				<xsl:otherwise>
+				<xsl:otherwise>850</xsl:otherwise>
+				<!--<xsl:otherwise>
 					<xsl:value-of select="baseExcess" />
-				</xsl:otherwise>
+				</xsl:otherwise>-->
 			</xsl:choose>
 		</xsl:variable>
 
@@ -85,36 +86,13 @@
 
 		<xsl:variable name="excess">
 			<xsl:choose>
-				<xsl:when test="$isBusinessUse = 'true'">
-					<xsl:choose>
-						<xsl:when test="$baseExcessToTest &gt;= 1800">1800</xsl:when>
-						<xsl:when test="$baseExcessToTest &gt;= 1200">1200</xsl:when>
-						<xsl:when test="$baseExcessToTest &gt;= 850">
-							<xsl:choose>
-								<xsl:when test="$isToolUse = 'true'">850</xsl:when>
-								<xsl:otherwise>800#850</xsl:otherwise>
-							</xsl:choose>
-						</xsl:when>
-						<xsl:when test="$baseExcessToTest &gt;= 650">
-							<xsl:choose>
-								<xsl:when test="$isToolUse = 'true'">650</xsl:when>
-								<xsl:otherwise>600#650</xsl:otherwise>
-							</xsl:choose>
-						</xsl:when>
-						<xsl:otherwise><xsl:value-of select="baseExcess" /></xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:choose>
-						<xsl:when test="$baseExcessToTest &gt;= 1200">1200</xsl:when>
-						<xsl:when test="$baseExcessToTest &gt;= 800">800</xsl:when>
-						<xsl:when test="$baseExcessToTest &gt;= 600">600</xsl:when>
-						<!-- AI has not default response so need to send valid excess as
-                            last resort to avoid service errors being returned. Front-end
-                            with knock out the quote if excess invalid.-->
-						<xsl:otherwise><xsl:value-of select="baseExcess" /></xsl:otherwise>
-					</xsl:choose>
-				</xsl:otherwise>
+				<xsl:when test="$baseExcessToTest &gt;= 1800">1800</xsl:when>
+				<xsl:when test="$baseExcessToTest &gt;= 1200">1200</xsl:when>
+				<xsl:when test="$baseExcessToTest &gt;= 850">850</xsl:when>
+				<xsl:when test="$baseExcessToTest &gt;= 650">650</xsl:when>
+				<!-- CAR-1007 base excess for AI is to be 850 -->
+				<xsl:otherwise>850</xsl:otherwise>
+				<!--<xsl:otherwise><xsl:value-of select="baseExcess" /></xsl:otherwise>-->
 			</xsl:choose>
 		</xsl:variable>
 
@@ -230,7 +208,7 @@
 									<xsl:when test="vehicle/use='02'">PrivateUse</xsl:when> <!-- Private/Commuting -->
 									<xsl:when test="vehicle/use='11'">BusinessUse</xsl:when> <!-- Private/Occ Business -->
 									<xsl:when test="vehicle/use='12'">BusinessUse</xsl:when> <!-- Private & Business -->
-									<xsl:when test="vehicle/use='14'">BusinessUse</xsl:when> <!-- Carry Goods/Tools -->
+									<xsl:when test="vehicle/use='14'">Courier</xsl:when> <!-- Carry Goods/Tools -->
 									<xsl:when test="vehicle/use='13'">GOODS</xsl:when> <!-- Carrying passengers for reward -->
 								</xsl:choose>
 							</VehicleUse>

@@ -1207,10 +1207,20 @@
 	<function>
 		<name>formatCurrency</name>
 		<function-class>com.disc_au.web.go.Gadget</function-class>
-		<function-signature>String formatCurrency(double , boolean, boolean)</function-signature>
+		<function-signature>String formatCurrency(java.lang.String , boolean, boolean)</function-signature>
 		<example>
 			<![CDATA[
-				${go:formatCurrency(float , showSymbol, true)}
+				${go:formatCurrency('100.05' , showSymbol, true)}
+			]]>
+		</example>
+	</function>
+	<function>
+		<name>formatCurrencyPrecise</name>
+		<function-class>com.disc_au.web.go.Gadget</function-class>
+		<function-signature>String formatCurrency(java.math.BigDecimal , boolean, boolean)</function-signature>
+		<example>
+			<![CDATA[
+				${go:formatCurrencyPrecise(java.math.BigDecimal , showSymbol, true)}
 			]]>
 		</example>
 	</function>

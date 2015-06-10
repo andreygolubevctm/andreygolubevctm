@@ -500,7 +500,7 @@ public class MessageDao {
 			int callAttempts = resultSetSelectMessage.getInt("callAttempts");
 
 			stmtSelectMessageSource = dbSource.getConnection().prepareStatement(
-					"SELECT attemptDelay1, attemptDelay2, attemptDelay3 " +
+					"SELECT attemptDelay1, attemptDelay2, attemptDelay3, attemptDelay4, attemptDelay5 " +
 					"FROM simples.message_source " +
 					"WHERE id = ? "
 			);
@@ -511,6 +511,8 @@ public class MessageDao {
 			long attemptDelay1 = resultSetSelectMessageSource.getLong(1);
 			long attemptDelay2 = resultSetSelectMessageSource.getLong(2);
 			long attemptDelay3 = resultSetSelectMessageSource.getLong(3);
+			long attemptDelay4 = resultSetSelectMessageSource.getLong(4);
+			long attemptDelay5 = resultSetSelectMessageSource.getLong(5);
 
 			long delay = -1;
 			switch ((callAttempts + 1)) {
@@ -520,8 +522,14 @@ public class MessageDao {
 				case 2:
 					delay = attemptDelay2;
 					break;
-				default:
+				case 3:
 					delay = attemptDelay3;
+					break;
+				case 4:
+					delay = attemptDelay4;
+					break;
+				default:
+					delay = attemptDelay5;
 					break;
 			}
 
