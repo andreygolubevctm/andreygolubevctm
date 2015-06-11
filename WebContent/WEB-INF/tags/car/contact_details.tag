@@ -62,8 +62,7 @@
 			required="false"
 			items="Y=Yes,N=No"
 			title="if OK to email" />
-
-		<p class="optinText"><content:get key="okToEmail" /></p>
+		<content:optin key="okToEmail"/>
 	</form_new:row>
 
 	<form_new:row label="OK to call" className="">

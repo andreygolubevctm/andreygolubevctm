@@ -17,8 +17,9 @@
 <c:choose>
 	<c:when test="${vertical eq 'utilities'}">
 		<c:set var="label_text">
-			I understand comparethemarket.com.au compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that comparethemarket.com.au and its partner Thought World may contact me about the services they provide. I confirm that I have read the ${privacyLink}.
-		</c:set>
+			<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
+			I understand ${brandedName} compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide. I confirm that I have read the ${privacyLink}.
+	</c:set>
 	</c:when>
 
 	<c:otherwise>
@@ -114,12 +115,13 @@ Your personal information (but not your sensitive information) may be held by so
 </ui:dialog>
 
 <ui:dialog id="participatingSuppliers" width="400" titleDisplay="false">
+	<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 <c:choose>
 <c:when test="${vertical eq 'life'}">
-	Comparethemarket.com.au compares life insurance products from the following brands:
+	${brandedName} compares life insurance products from the following brands:
 </c:when>
 <c:otherwise>
-Comparethemarket.com.au compares life insurance and income protection products from the following insurers:
+	${brandedName} compares life insurance and income protection products from the following insurers:
 </c:otherwise>
 </c:choose>
 <ul>

@@ -65,21 +65,22 @@
 		<%-- COMPETITION END--%>
 		
 		<form:row label="" className="clear">
-			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from <strong>Compare</strong>the<strong>market</strong>.com.au" required="false" label="true"/>
+			<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
+			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" required="false" label="true"/>
 		</form:row>
 		
 		<form:row label="" className="clear closer">
 			<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${vertical}_privacyoptinInfoDialog.open()'>privacy statement</a>" />
-			
+			<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 			<c:choose>
 				<c:when test="${vertical eq 'life'}">
 					<c:set var="label_text">
-						I understand comparethemarket.com.au compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker and/or Auto and General Services, Compare the Market&#39;s trusted life insurance partners may contact me to further assist with my life insurance needs. I confirm that I have read the ${privacyLink}.
+						I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker and/or Auto and General Services, Compare the Market&#39;s trusted life insurance partners may contact me to further assist with my life insurance needs. I confirm that I have read the ${privacyLink}.
 					</c:set>
 				</c:when>
 				<c:when test="${vertical eq 'ip'}">
 					<c:set var="label_text">
-						I understand comparethemarket.com.au compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance and income protection partner may contact me to further assist with my life insurance and income protection needs. I confirm that I have read the ${privacyLink}.
+						I understand ${brandedName} compares life insurance policies from a range of <a href="javascript:void(0);" onclick="participatingSuppliersDialog.open();">participating suppliers</a>. By entering my telephone number I agree that Lifebroker, Compare the Market&#39;s trusted life insurance and income protection partner may contact me to further assist with my life insurance and income protection needs. I confirm that I have read the ${privacyLink}.
 					</c:set>
 				</c:when>
 			</c:choose>

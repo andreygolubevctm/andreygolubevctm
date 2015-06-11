@@ -399,7 +399,9 @@
 					</div>
 
 					<div id="aol-partners" class="rounded-corners">
-						<p><strong>compare</strong>the<strong>market</strong>.com.au is an online comparison website. Energy product information is provided by our trusted affiliate, Thought World.</p>
+						<%-- for some reason JS is not getting run when the modal opens --%>
+						<c:set var="brandedName"><content:optin content="<strong>compare</strong>the<strong>market</strong>.com.au" useSpan="true"/></c:set>
+						<p>${brandedName} is an online comparison website. Energy product information is provided by our trusted affiliate, Thought World.</p>
 
 						<core:clear />
 					</div>

@@ -29,7 +29,8 @@
 
 			</div>
 			<agg:panel>
-				<p><strong>Compare</strong>the<strong>market</strong>.com.au is an online comparison website.</p>
+				<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
+				<p>${brandedName} is an online comparison website.</p>
 				<core:clear />
 			</agg:panel>
 
