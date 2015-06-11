@@ -43,10 +43,8 @@
 		<echo message="      (auto on svn server, automatically on svn commit to build_NXS)" />
 		<echo message="  build.NXQ      Build new WAR to NXQ environment" />
 		<echo message="		    (auto on svn server, automatically on svn commit to build_NXQ)" />
-		<echo message="  build.PRELIVE  Build new WAR to PRELIVE environment" />
+		<echo message="  build.PRO  Build new WAR to PRO environment" />
 		<echo message="		    (auto on svn server, automatically on svn commit to build_PRO)" />
-		<!-- echo message="  build.PRO      Build last PRELIVE environment WAR to PRO environment," />
-		<echo message="		    backing up the current PRO environment WAR as a rollback state" / -->
 		<echo message="" />
 	</target>
 
@@ -116,12 +114,7 @@
 		<echo message="Build to ${target.prefix} environment SUCCESSFUL!" />
 	</target>
 
-	<target name="build.PRELIVE" depends="_init" description="Build new WAR to PRELIVE environment (on svn server, automatically on svn commit to build_PRO)">
-		<!-- :NOTE: The “prelive” build is effectively a “production” build,
-		<!   so shares its “target prefix” of “PRO”,
-		<!   but uses a different SSH destination -->
-
-		<!-- :NOTE: Custom prefix: PRELIVE uses PRO configs and ID (for Manifest file etc) -->
+	<target name="build.PRO" depends="_init" description="Build new WAR using Production config">
 		<property name="target.prefix" value="PRO" />
 
 		<antcall target="_enableConfigs" />
@@ -140,7 +133,7 @@
 			<param name="JVM.version" value="1.7" />
 		</antcall>
 
-		<echo message="Build to PRELIVE environment SUCCESSFUL!" />
+		<echo message="Build to PRO environment SUCCESSFUL!" />
 	</target>
 
 
