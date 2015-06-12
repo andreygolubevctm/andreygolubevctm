@@ -40,7 +40,7 @@
                 <field_new:input xpath="${xpath}/searchRego" includeInForm="false" required="false" title="vehicle registration number" className="rego-lookup-number" placeHolder="eg. 123ABC" />
             </div>
             <div class="col-xs-12 col-sm-6 rego-lookup-btn-col">
-                <a href="#lookuprego" class="btn btn-default rego-lookup-button">Find Car<span class="icon icon-arrow-right"><!-- empty --></span></a>
+                <a href="#lookuprego" class="btn btn-next rego-lookup-button">Find Car<span class="icon icon-arrow-right"><!-- empty --></span></a>
             </div>
         </form_new:row>
         <div class="rego-lookup-feedback"><!-- populate by module --></div>

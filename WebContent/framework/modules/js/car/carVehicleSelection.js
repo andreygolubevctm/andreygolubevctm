@@ -409,6 +409,9 @@
 									value:''
 								}).append(snippets.resetOptionHTML)
 							);
+							if(i >= 3) {
+								$e.closest('.fieldrow').addClass('hidden');
+							}
 						}
 					stripValidationStyles($e);
 						$e.prop("disabled", true);
@@ -437,6 +440,14 @@
 		stripValidationStyles($el);
 		$el.prop('selectedIndex', 0);
 		enableDisablePreviousSelectors(activeSelector, false);
+	}
+
+	function hardResetSelectors() {
+		activeSelector = selectorOrder[0];
+		var $el = $(elements[activeSelector]);
+		$el.prop('selectedIndex', 0);
+		stripValidationStyles($el);
+		disableFutureSelectors(activeSelector);
 	}
 
 	function selectionChanged(data) {
@@ -547,7 +558,7 @@
 		}
 	}
 
-	function prepareSelectors(selectionDefaults) {
+	function prepareSelectors(selectionDefaults, callback) {
 
 		useSessionDefaults = true; // important, must be set to ensure preselection (is reset on change)
 
@@ -580,12 +591,17 @@
 				// make it reset
 			});
 		}
+
+		if(_.isFunction(callback)) {
+			callback();
+		}
 	}
 
 	function initCarVehicleSelection() {
 
 		var self = this;
 
+		meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_FORM_IN_USE, hardResetSelectors);
 		meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_STARTED, abortGetVehicleData);
 		meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_COMPLETE, prepareSelectors);
 

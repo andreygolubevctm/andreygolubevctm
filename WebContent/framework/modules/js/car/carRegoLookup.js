@@ -9,11 +9,18 @@
 
     var events = {
             regoLookup: {
+                REGO_LOOKUP_FORM_IN_USE: 'REGO_LOOKUP_FORM_IN_USE',
                 REGO_LOOKUP_STARTED: 'REGO_LOOKUP_STARTED',
                 REGO_LOOKUP_COMPLETE: 'REGO_LOOKUP_COMPLETE'
             }
         },
         moduleEvents = events.regoLookup;
+
+    var input_states = {
+        NEUTRAL :   0,
+        PASS :      true,
+        FAIL :      false
+    };
 
     var $elements = {
         container : null,
@@ -27,6 +34,7 @@
 
 
     function init(){
+        meerkat.messaging.subscribe(meerkatEvents.car.DROPDOWN_CHANGED, reset);
         $(document).ready(function(){
             $elements.container = $('#rego-lookup-form');
             if(!_.isUndefined(meerkat.modules.regoLookup) && $elements.container) {
@@ -38,27 +46,33 @@
                 $elements.feedback = $elements.container.find('.rego-lookup-feedback').first();
 
                 // Listeners
-                $elements.state.off().on("change blur", validateState);
-                $elements.rego.off().on("change blur", validateRego);
+                $elements.state.off().on("change", validateState);
+                $elements.rego.off().on("keyup", validateRego);
                 $elements.button.off().on("click", lookup);
             }
         });
     }
 
-    function validateState() {
+    function reset() {
+        renderError(false);
+        $elements.state.prop("selectedIndex",0);
+        $elements.rego.val("");
+        toggleStyle($elements.state,$elements.stateRow,input_states.NEUTRAL);
+        toggleStyle($elements.rego,$elements.regoRow,input_states.NEUTRAL);
+    }
+
+    function validateState(hard) {
+        hard = hard || false;
+
+        meerkat.messaging.publish(moduleEvents.REGO_LOOKUP_FORM_IN_USE);
+
         var state = $elements.state.val();
         var valid = true;
         if(_.isEmpty(state)) {
-            $elements.state.removeClass('has-success');
-            $elements.stateRow.removeClass('has-success');
-            $elements.state.addClass('has-error');
-            $elements.stateRow.addClass('has-error');
+            toggleStyle($elements.state,$elements.stateRow,hard === true ? input_states.FAIL : input_states.NEUTRAL);
             valid = false;
         } else {
-            $elements.state.addClass('has-success');
-            $elements.stateRow.addClass('has-success');
-            $elements.state.removeClass('has-error');
-            $elements.stateRow.removeClass('has-error');
+            toggleStyle($elements.state,$elements.stateRow,input_states.PASS);
         }
 
         if(valid === true) {
@@ -68,20 +82,18 @@
         }
     }
 
-    function validateRego() {
+    function validateRego(hard) {
+        hard = hard || false;
+
+        meerkat.messaging.publish(moduleEvents.REGO_LOOKUP_FORM_IN_USE);
+
         var rego = $.trim($elements.rego.val());
         var valid = true;
         if(_.isEmpty(rego)) {
-            $elements.rego.removeClass('has-success');
-            $elements.regoRow.removeClass('has-success');
-            $elements.rego.addClass('has-error');
-            $elements.regoRow.addClass('has-error');
+            toggleStyle($elements.rego,$elements.regoRow,hard === true ? input_states.FAIL : input_states.NEUTRAL);
             valid = false;
         } else {
-            $elements.rego.addClass('has-success');
-            $elements.regoRow.addClass('has-success');
-            $elements.rego.removeClass('has-error');
-            $elements.regoRow.removeClass('has-error');
+            toggleStyle($elements.rego,$elements.regoRow,input_states.PASS);
         }
 
         if(valid === true) {
@@ -92,10 +104,11 @@
     }
 
     function validate() {
-        var state = validateState();
-        var rego = validateRego();
+        var state = validateState(true);
+        var rego = validateRego(true);
 
         if(state !== false && rego !== false) {
+            renderError(false);
             return _.extend({},state,rego);
         } else {
             return false;
@@ -148,7 +161,11 @@
                         break
                 }
             } else {
-                meerkat.messaging.publish(moduleEvents.REGO_LOOKUP_COMPLETE, json);
+                meerkat.messaging.publish(
+                    moduleEvents.REGO_LOOKUP_COMPLETE,
+                    json,
+                    _.bind(meerkat.modules.journeyEngine.gotoPath, this, "options")
+                );
             }
         }
     }
@@ -165,6 +182,25 @@
             data:data,
             id: meerkat.modules.transactionId.get()
         });
+    }
+
+    function toggleStyle($input, $row, state) {
+        if(state === input_states.NEUTRAL || state === input_states.PASS) {
+            $input.removeClass("has-error");
+            $row.removeClass("has-error");
+        }
+        if(state === input_states.NEUTRAL || state === input_states.FAIL) {
+            $input.removeClass("has-success");
+            $row.removeClass("has-success");
+        }
+        if(state === input_states.FAIL) {
+            $input.addClass("has-error");
+            $row.addClass("has-error");
+        }
+        if(state === input_states.PASS) {
+            $input.addClass("has-success");
+            $row.addClass("has-success");
+        }
     }
 
     function renderError(copy) {
