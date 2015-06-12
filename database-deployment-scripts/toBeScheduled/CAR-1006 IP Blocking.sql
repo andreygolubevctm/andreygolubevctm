@@ -1,6 +1,6 @@
 /** Updater **/
 -- Adding limits to configuration settings
-INSERT INTO ctm.configuration (configCode, environmentCode, styleCodeId, verticalId, configValue) VALUES ('blockUserAfterXRequestsFromIP', 'PRO', '1', '3', '10');
+INSERT INTO ctm.configuration (configCode, environmentCode, styleCodeId, verticalId, configValue) VALUES ('blockUserAfterXRequestsFromIP', 'PRO', '1', '3', '3');
 -- Adding extra "admin" roles
 INSERT INTO aggregator.ip_address (ipStart, ipEnd, Date, Service, Role, Total, styleCodeId) VALUES ('0', '0', '2015-06-03', 'car', 'A', '0', '1');
 INSERT INTO aggregator.ip_address (ipStart, ipEnd, Date, Service, Role, Total, styleCodeId) VALUES ('0', '1', '2015-06-03', 'car', 'A', '0', '1');
