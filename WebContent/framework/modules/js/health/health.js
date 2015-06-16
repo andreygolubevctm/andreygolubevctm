@@ -149,6 +149,7 @@
 					// Handle pre-filled 
 					toggleInboundOutbound();
 					toggleDialogueInChatCallback();
+					meerkat.modules.application_date.setApplicationDateDropdown();
 
 					// Handle toggle inbound/outbound
 					$('input[name=health_simples_contactType]').on('change', function() {

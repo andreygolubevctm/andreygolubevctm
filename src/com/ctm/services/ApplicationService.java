@@ -286,6 +286,20 @@ public class ApplicationService {
 	 * @return Server's datetime, or configured override datetime.
 	 */
 	public static Date getApplicationDate(HttpServletRequest request) {
+		Date date = getApplicationDateIfSet(request);
+		if(date == null){
+			return new Date();
+		}
+		else {
+			return date;
+		}
+	}
+
+	/**
+	 * Get  the request session contains an override. Don't return a default
+	 * @return configured override datetime.
+	 */
+	public static Date getApplicationDateIfSet(HttpServletRequest request) {
 		if (request != null) {
 			// Check if the session contains an override of the server's date
 			HttpSession session = request.getSession();
@@ -297,8 +311,7 @@ public class ApplicationService {
 				}
 			}
 		}
-
-		return new Date();
+		return null;
 	}
 
 	/**

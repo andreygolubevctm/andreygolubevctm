@@ -46,7 +46,7 @@
 	</c:otherwise>
 </c:choose>
 
-<c:set var="days">=Please choose...
+<c:set var="days">0=Please choose...
 	<c:forEach step="1" begin="1" end="${days}" var="itemArray" varStatus="status">
 		<fmt:formatDate value="${now}" pattern="d" var="nowDate" />
 		<fmt:formatDate value="${now}" pattern="${displayDatePattern}" var="displayDate" />

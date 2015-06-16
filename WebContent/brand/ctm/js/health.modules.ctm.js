@@ -1682,6 +1682,7 @@ creditCardDetails = {
                 if (meerkat.site.isCallCentreUser === true) {
                     toggleInboundOutbound();
                     toggleDialogueInChatCallback();
+                    meerkat.modules.application_date.setApplicationDateDropdown();
                     $("input[name=health_simples_contactType]").on("change", function() {
                         toggleInboundOutbound();
                     });
