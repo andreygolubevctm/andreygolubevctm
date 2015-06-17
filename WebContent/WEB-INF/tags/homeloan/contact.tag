@@ -30,8 +30,7 @@
 
 		<form_new:row label="Your contact number" className="clear">
 			<field:contact_telno xpath="${xpath}/contactNumber" title="your contact number" required="false" size="40"/>
-			<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
-			<p class="optinText">By entering my telephone number I agree that an authorised broker from AFG, ${brandedName}'s approved supplier of home loans, may contact me to further assist with my home loan needs.</p>
+			<p class="optinText">By entering my telephone number I agree that an authorised broker from AFG, <content:optin key="brandDisplayName" useSpan="true"/>'s approved supplier of home loans, may contact me to further assist with my home loan needs.</p>
 		</form_new:row>
 
 		<form_new:row label="" className="email-optin-row clear closer">

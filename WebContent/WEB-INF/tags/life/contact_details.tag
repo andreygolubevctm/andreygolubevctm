@@ -11,6 +11,7 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
 <c:set var="optIn"	value="${go:nameFromXpath(xpath)}_call" />
+<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 
 <c:set var="vertical">
 	<c:choose>
@@ -65,13 +66,11 @@
 		<%-- COMPETITION END--%>
 		
 		<form:row label="" className="clear">
-			<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 			<field:checkbox xpath="${xpath}/optIn" value="Y" title="I agree to receive news &amp; offer emails from ${brandedName}" required="false" label="true"/>
 		</form:row>
 		
 		<form:row label="" className="clear closer">
 			<c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${vertical}_privacyoptinInfoDialog.open()'>privacy statement</a>" />
-			<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 			<c:choose>
 				<c:when test="${vertical eq 'life'}">
 					<c:set var="label_text">

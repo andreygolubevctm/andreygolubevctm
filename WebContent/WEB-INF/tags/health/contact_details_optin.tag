@@ -107,9 +107,8 @@
 				</c:choose>
 
 				<c:set var="termsAndConditions">
-					<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
-					I understand ${brandedName} compares health insurance policies from a range of
+					I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
 					<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
 					By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
 					I confirm that I have read the <form:link_privacy_statement />.

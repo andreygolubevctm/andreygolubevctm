@@ -29,8 +29,7 @@
 
 			</div>
 			<agg:panel>
-				<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
-				<p>${brandedName} is an online comparison website.</p>
+				<p><content:optin key="brandDisplayName" useSpan="true"/> is an online comparison website.</p>
 				<core:clear />
 			</agg:panel>
 

@@ -29,8 +29,7 @@
 				<div class="right-panel-top"><!-- empty --></div>
 				<div class="right-panel-middle">
 					<div class="panel nopad nobdr">
-						<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
-						<p>${brandedName} is an online comparison website aimed at delivering our clients competitively priced yet comprehensive policies.  Information and quotes are provided by our trusted partners, Lifebroker Pty Ltd and Auto and General Services.</p>
+						<p><content:optin key="brandDisplayName" useSpan="true"/> is an online comparison website aimed at delivering our clients competitively priced yet comprehensive policies.  Information and quotes are provided by our trusted partners, Lifebroker Pty Ltd and Auto and General Services.</p>
 					</div>
 				</div>
 				<div class="right-panel-bottom"><!-- empty --></div>

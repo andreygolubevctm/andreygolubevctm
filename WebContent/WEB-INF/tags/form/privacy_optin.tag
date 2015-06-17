@@ -13,7 +13,7 @@
 <c:set var="xpath"  value="${vertical}/${suffix}" />
 <c:set var="error_text" value="Please confirm you have read the privacy statement" />
 <c:set var="privacyLink" value="<a href='javascript:void(0);' onclick='${name}InfoDialog.open()'>privacy statement</a>" />
-
+<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 <c:choose>
 	<c:when test="${vertical eq 'utilities'}">
 		<c:set var="label_text">
@@ -115,7 +115,6 @@ Your personal information (but not your sensitive information) may be held by so
 </ui:dialog>
 
 <ui:dialog id="participatingSuppliers" width="400" titleDisplay="false">
-	<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 <c:choose>
 <c:when test="${vertical eq 'life'}">
 	${brandedName} compares life insurance products from the following brands:

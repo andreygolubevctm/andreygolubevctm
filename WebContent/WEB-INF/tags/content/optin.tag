@@ -13,21 +13,19 @@
 <c:set var="currentBrand" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
 
 <%-- Selecting what is your current brand --%>
-<c:if test="${currentBrand eq 'ctm'}">
-    <c:set var="brandurl" value='comparethemarket.com.au' />
-</c:if>
-<c:if test="${currentBrand eq 'cc'}">
-    <c:set var="brandurl" value='Captaincompare.com.au' />
-</c:if>
-<c:if test="${currentBrand eq 'choo'}">
-    <c:set var="brandurl" value='Choosi' />
-</c:if>
-<c:if test="${currentBrand eq 'yhoo'}">
-    <c:set var="brandurl" value='Yahoo7' />
-</c:if>
-
-
+<c:choose>
+    <c:when test="${currentBrand eq 'cc'}">
+        <c:set var="brandurl" value='Captaincompare.com.au' />
+    </c:when>
+    <c:when test="${currentBrand eq 'choo'}">
+        <c:set var="brandurl" value='Choosi' />
+    </c:when>
+    <c:when test="${currentBrand eq 'yhoo'}">
+        <c:set var="brandurl" value='Yahoo7' />
+    </c:when>
+</c:choose>
 <%-- HTML --%>
+
 <c:choose>
     <c:when test="${empty useSpan}">
         <p class="optinText">
@@ -40,18 +38,6 @@
                 </c:otherwise>
             </c:choose>
         </p>
-    </c:when>
-    <c:when test="${useSpan eq 'true'}">
-        <span class="optinText">
-            <c:choose>
-                <c:when test="${not empty key}">
-                    <content:get key="${key}"/>
-                </c:when>
-                <c:otherwise>
-                    ${content}
-                </c:otherwise>
-            </c:choose>
-        </span>
     </c:when>
     <c:otherwise >
         <span class="optinText">
