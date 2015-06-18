@@ -17,7 +17,6 @@
 <c:choose>
 	<c:when test="${vertical eq 'utilities'}">
 		<c:set var="label_text">
-			<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 			I understand ${brandedName} compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide. I confirm that I have read the ${privacyLink}.
 	</c:set>
 	</c:when>
