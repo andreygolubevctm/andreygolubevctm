@@ -471,6 +471,8 @@
 						<EffDate><xsl:value-of select="$startDate" /></EffDate>
 						<Class>
 							<xsl:choose>
+								<xsl:when test="situation/healthCvr = 'SM'">Sgl</xsl:when>
+								<xsl:when test="situation/healthCvr = 'SF'">Sgl</xsl:when>
 								<xsl:when test="situation/healthCvr = 'S'">Sgl</xsl:when>
 								<xsl:when test="situation/healthCvr = 'C'">Cpl</xsl:when>
 								<xsl:when test="situation/healthCvr = 'SPF'">SPFam</xsl:when>
@@ -582,6 +584,21 @@
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<AgencyID>CTM</AgencyID>
 						</Agency>
+						<Group>
+							<EffDate><xsl:value-of select="$startDate" /></EffDate>
+							<GroupID>
+								<xsl:choose>
+									<xsl:when test="payment/details/type='ba'">G0030</xsl:when>
+									<xsl:otherwise>G0099</xsl:otherwise>
+								</xsl:choose>
+							</GroupID>
+							<PayrollNo></PayrollNo>
+						</Group>
+						<Site>
+							<EffDate><xsl:value-of select="$startDate" /></EffDate>
+							<LocationID>HOML</LocationID>
+							<SiteID>Main</SiteID>
+						</Site>
 					</Membership>
 				</MembershipApplication>
 				<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
