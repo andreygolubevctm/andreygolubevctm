@@ -507,7 +507,7 @@
 		    						<AccountName><xsl:value-of select="payment/credit/name" /></AccountName>    							
     							</xsl:when>
     							<xsl:otherwise>
-									<DebitCreditID>CBank</DebitCreditID>
+									<DebitCreditID>Bank</DebitCreditID>
 		    						<BSB><xsl:value-of select="concat(substring(payment/bank/bsb,1,3),'-',substring(payment/bank/bsb,4,3))" /></BSB>
 		    						<AccountNumber><xsl:value-of select="translate(payment/bank/number,' ','')" /></AccountNumber>
 		    						<AccountName><xsl:value-of select="payment/bank/account" /></AccountName> 		    						   							
