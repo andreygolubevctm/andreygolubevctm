@@ -9,21 +9,10 @@
 
 
 <%-- Variables --%>
-<c:set var="brandurl" value="comparethemarket.com.au" />
-<c:set var="currentBrand" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
 
-<%-- Selecting what is your current brand --%>
-<c:choose>
-    <c:when test="${currentBrand eq 'cc'}">
-        <c:set var="brandurl" value='Captaincompare.com.au' />
-    </c:when>
-    <c:when test="${currentBrand eq 'choo'}">
-        <c:set var="brandurl" value='Choosi' />
-    </c:when>
-    <c:when test="${currentBrand eq 'yhoo'}">
-        <c:set var="brandurl" value='Yahoo7' />
-    </c:when>
-</c:choose>
+<c:set var="ctmNameToModify" value="comparethemarket.com.au"/>
+<c:set var="ccNameToModify" value="Captaincompare.com.au"/>
+
 <%-- HTML --%>
 
 <c:choose>
@@ -56,13 +45,11 @@
 
 <%-- JQUERY on ready --%>
 <go:script marker="onready">
-    var currentBrand = "${currentBrand}";
-    $('.optinText:contains(${brandurl})').html(
+    //if we want to format other brands just use the appropriate variable eg ctmNameToModify, ccNameToModify etc..
+    $('.optinText:contains(${ctmNameToModify})').html(
         function(i,h){
-            if(currentBrand === 'ctm') {
-                return h.replace(/(${brandurl})/g,'<strong>compare</strong>the<strong>market</strong>.com.au');
-              }
-           /*** implement rules on how to display other brands here */
+                return h.replace(/(${ctmNameToModify})/g,'<strong>compare</strong>the<strong>market</strong>.com.au');
+      });
 
-    });
+
 </go:script>
