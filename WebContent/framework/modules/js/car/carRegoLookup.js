@@ -155,8 +155,12 @@
                     case "service_error":
                     case "dao_error":
                     case "request_limit_exceeded":
+                    case "daily_limit_exceeded":
+                    case "daily_limit_undefined":
+                    case "daily_usage_error":
                     case "service_turned_off":
                     case "service_toggle_undefined":
+                    case "transaction_unverified":
                         renderError("Sorry, this service is presently unavailable. Please locate your vehicle using the options below.")
                         break
                 }
