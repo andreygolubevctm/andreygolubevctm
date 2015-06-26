@@ -1667,3 +1667,6 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
     font-size: 11pt;
   }
 }
+body.car[data-step=start] .snapshot .btn {
+  display: none;
+}

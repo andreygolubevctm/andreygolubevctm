@@ -16,30 +16,26 @@
 	<c:set var="competitionEnabled" value="${true}" />
 </c:if>
 
-<%-- Var for mandatory fields --%>
-<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
-<c:set var="mandatoryFieldsSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" />
-
 <%-- HTML --%>
 <form_new:fieldset legend="Contact Details" id="${name}FieldSet">
 
 	<form_new:row label="First Name" id="firstName">
 		<field:person_name xpath="quote/drivers/regular/firstname"
-			required="${mandatoryFieldsSplitTest}" title="the policy holder's first name" />
+			required="${mandatoryContactFieldsSplitTest}" title="the policy holder's first name" />
 	</form_new:row>
 
 	<form_new:row label="Last Name" id="lastName">
 		<field:person_name xpath="quote/drivers/regular/surname"
-			required="${mandatoryFieldsSplitTest}" title="the policy holder's last name" />
+			required="${mandatoryContactFieldsSplitTest}" title="the policy holder's last name" />
 	</form_new:row>
 
 	<form_new:row label="Email Address" id="contactEmailRow">
 		<c:choose>
-			<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 21)}">
-				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" />
+			<c:when test="${emailHelperSplitTest eq true}">
+				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" />
 			</c:when>
 			<c:otherwise>
-				<field_new:email xpath="${xpath}/email" required="${mandatoryFieldsSplitTest}" title="the policy holder's email address" />
+				<field_new:email xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" />
 			</c:otherwise>
 		</c:choose>
 	</form_new:row>

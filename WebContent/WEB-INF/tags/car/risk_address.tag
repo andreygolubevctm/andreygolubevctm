@@ -6,15 +6,11 @@
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
 
 <%-- VARIABLES --%>
-<jsp:useBean id="splitTests" class="com.ctm.services.tracking.SplitTestService" />
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
-
-<%-- Set label for fields --%>
-<c:set var="addressSplitTest" value="${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 32)}" />
 
 <c:set var="fieldGroupLabel">
 	<c:choose>
-		<c:when test="${addressSplitTest eq true}">
+		<c:when test="${addressFormSplitTest eq true}">
 			<c:out value="Where is the car parked at night"/>
 		</c:when>
 		<c:otherwise>
@@ -27,7 +23,7 @@
 <form_new:fieldset_columns sideHidden="false">
 
 	<jsp:attribute name="rightColumn">
-		<c:if test="${addressSplitTest eq true}">
+		<c:if test="${addressFormSplitTest eq true}">
 			<ui:bubble variant="info" className="cantFindAddressHelper">
 				<h4>Can&#39;t find your address?</h4>
 				<p>If you cannot find the address in our drop down, just tick the &quot;Unable to find address&quot; box and manually enter your address.</p>
@@ -39,7 +35,7 @@
 
 		<form_new:fieldset legend="${fieldGroupLabel}" id="${name}FieldSet">
 
-			<c:if test="${addressSplitTest eq true}">
+			<c:if test="${addressFormSplitTest eq true}">
 				<form_new:row label="Where is the car kept at night" helpId="7">
 					<field_new:import_select xpath="quote/vehicle/parking"
 										url="/WEB-INF/option_data/parking_location.html"
@@ -51,7 +47,7 @@
 
 			<group_new:elastic_address xpath="${xpath}" type="R" />
 
-			<c:if test="${addressSplitTest eq false}">
+			<c:if test="${addressFormSplitTest eq false}">
 				<form_new:row label="Where is the car parked at night" helpId="7">
 					<field_new:import_select xpath="quote/vehicle/parking"
 										url="/WEB-INF/option_data/parking_location.html"

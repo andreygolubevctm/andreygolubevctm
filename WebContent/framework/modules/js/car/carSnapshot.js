@@ -11,21 +11,27 @@
 
 	var events = {
 			carSnapshot: {
+				RENDER_CAR_SNAPSHOT : "RENDER_CAR_SNAPSHOT"
 			}
 		},
 		moduleEvents = events.carSnapshot;
 
 	function initCarSnapshot() {
-		meerkat.messaging.subscribe(meerkatEvents.car.DROPDOWN_CHANGED, function renderSnapshotSubscription() {
-			renderSnapshot();
+		meerkat.messaging.subscribe(meerkatEvents.car.DROPDOWN_CHANGED, function renderSnapshotOnDropdownChangeSubscription() {
+			_.defer(renderSnapshot);
+		});
+		meerkat.messaging.subscribe(moduleEvents.RENDER_CAR_SNAPSHOT, function renderSnapshotSubscription() {
+			_.defer(renderSnapshot);
 		});
 	}
 
 	function renderSnapshot() {
 		var carMake = $('#quote_vehicle_make');
+		var $snapshotBox = $(".quoteSnapshot");
 		if (carMake.val() !== '') {
-			var $snapshotBox = $(".quoteSnapshot");
 			$snapshotBox.removeClass('hidden');
+		} else {
+			$snapshotBox.addClass('hidden')
 		}
 		meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(0) .snapshot');
 	}

@@ -30,14 +30,14 @@ public class CarRegoLookupDao {
             dbSource = new SimpleDatabaseConnection();
 
             stmt = dbSource.getConnection().prepareStatement(
-                "SELECT COUNT(regoLookup_id) AS usage FROM " + LOG_TABLE + " " +
+                "SELECT COUNT(regoLookup_id) AS dailyCount FROM " + LOG_TABLE + " " +
                 "WHERE Date(regoLookup_datetime) = CURRENT_DATE"
             );
 
             ResultSet results = stmt.executeQuery();
 
             if (results.next()) {
-                usage = results.getInt("usage");
+                usage = results.getInt("dailyCount");
             }
         }
         catch (SQLException | NamingException e) {
