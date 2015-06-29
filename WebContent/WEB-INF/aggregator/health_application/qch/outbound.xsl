@@ -584,7 +584,7 @@
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<AgencyID>CTM</AgencyID>
 						</Agency>
-						<Group>
+						<!--<Group>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<GroupID>
 								<xsl:choose>
@@ -593,7 +593,7 @@
 								</xsl:choose>
 							</GroupID>
 							<PayrollNo></PayrollNo>
-						</Group>
+						</Group>-->
 						<Site>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<LocationID>HOML</LocationID>
@@ -603,7 +603,7 @@
 				</MembershipApplication>
 				<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 				</hsl:xmlFile>
-				<hsl:BrokerID>CTM1</hsl:BrokerID>
+				<hsl:BrokerID>CTM</hsl:BrokerID>
 				</hsl:SubmitMembership>
 			</soap:Body>
 		</soap:Envelope>

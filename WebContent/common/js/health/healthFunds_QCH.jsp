@@ -116,6 +116,16 @@ var healthFunds_QCH = {
 
 				$('.health_bank-details_policyDay-message').html('');
 				$('.health_credit-card-details_policyDay-message').html('');
+
+				$('#health_payment_bank_policyDay').attr('type','hidden');
+				$('#health_payment_credit_policyDay').attr('type','hidden');
+
+				var startDate = $('#health_payment_details_start').val();
+				var policyStart = healthFunds._setPolicyDate(startDate);
+
+				$('#health_payment_credit_policyDay option[value='+policyStart+']').attr('selected','selected');
+				$('#health_payment_bank_policyDay option[value='+policyStart+']').attr('selected','selected');
+
 				if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
 					$('.health_bank-details_policyDay-message').html('Your payment will be deducted 7 days after your policy start date');
 				}
@@ -173,6 +183,9 @@ var healthFunds_QCH = {
 			<%-- Enable bank account payment option --%>
 			$('#health_payment_details_type_ba').prop('disabled', false);
 			$('#health_payment_details_type_ba').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
+
+			$('#health_payment_bank_policyDay').attr('type','');
+			$('#health_payment_credit_policyDay').attr('type','');
 
 			$('#update-premium').off('click.QCH');
 			meerkat.modules.paymentGateway.reset();
