@@ -271,14 +271,17 @@
                 meerkat.modules.journeyProgressBar.hide();
                 $("#resultsPage").addClass("hidden");
                 meerkat.modules.carFilters.updateFilters();
+                meerkat.modules.contentPopulation.render(".header-wrap .snapshot");
             },
             onAfterEnter: function afterEnterResults(event) {
                 meerkat.modules.carResults.get();
                 meerkat.modules.carFilters.show();
+                $(".header-wrap .quoteSnapshot").removeClass("hidden");
             },
             onBeforeLeave: function(event) {
                 if (event.isBackward === true) {
                     meerkat.modules.transactionId.getNew(3);
+                    $(".header-wrap .quoteSnapshot").addClass("hidden");
                 }
             },
             onAfterLeave: function(event) {

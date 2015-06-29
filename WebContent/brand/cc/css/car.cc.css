@@ -1670,3 +1670,16 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
 body.car[data-step=start] .snapshot .btn {
   display: none;
 }
+.header-wrap .quoteSnapshot {
+  position: absolute;
+  right: 0;
+  top: 0.9em;
+  margin-bottom: 0;
+  display: none;
+}
+.header-wrap .quoteSnapshot h2 {
+  margin-bottom: 9px;
+}
+body.car[data-step=results] .header-wrap .quoteSnapshot {
+  display: block;
+}

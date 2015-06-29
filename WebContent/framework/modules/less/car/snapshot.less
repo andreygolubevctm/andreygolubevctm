@@ -5,3 +5,24 @@ body.car[data-step=start] {
 		}
 	}
 }
+
+.header-wrap {
+	.quoteSnapshot {
+		position:absolute;
+		right:0;
+		top:0.9em;
+		margin-bottom:0;
+		display:none;
+		h2 {
+			margin-bottom:9px;
+		}
+	}
+}
+
+body.car[data-step=results] {
+	.header-wrap {
+		.quoteSnapshot {
+			display: block;
+		}
+	}
+}
