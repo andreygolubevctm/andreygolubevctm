@@ -19,7 +19,7 @@
 		<soap-url>https://testservices.qchfund.com.au/Service.svc</soap-url>
 		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembership</soap-action>
 		<outbound-xsl>qch/outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>keyname=CTM,keycode=CTMtesting</outbound-xsl-parms>
+		<outbound-xsl-parms>keyname=CTM,keycode=compare2015</outbound-xsl-parms>
 		<inbound-xsl>qch/inbound.xsl</inbound-xsl>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
