@@ -68,6 +68,7 @@
 				<cardExpiryMonth>10</cardExpiryMonth>
 				<cardExpiryYear>18</cardExpiryYear>
 			</expiry>
+			<cardPosition>1</cardPosition>
 		</medicare>
 	</payment>
 	<previousfund>
