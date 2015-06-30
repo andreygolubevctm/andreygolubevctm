@@ -47,7 +47,7 @@
 			// the given dpId
 			if(typeof dpId !== "undefined" && dpId !== "") {
 				$currentAjaxRequest = meerkat.modules.comms.post({
-					url: "/ctm/address/get.json",
+					url: "address/get.json",
 					errorLevel: "mandatory",
 					data: {
 						dpId: dpId

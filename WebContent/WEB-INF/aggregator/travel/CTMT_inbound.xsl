@@ -72,7 +72,7 @@
 								<xsl:value-of select="product/longTitle"/>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:value-of select="product/longTitle"/>
+								<xsl:value-of select="product/longTitle"/> <xsl:if test="product/maxTripDuration > 0"> &lt;span class="daysPerTrip"&gt;(<xsl:value-of select="product/maxTripDuration"/> days)&lt;span&gt;</xsl:if>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
@@ -158,13 +158,52 @@
 
 					<infoDes><xsl:value-of select="product/description"/></infoDes>
 					<subTitle><xsl:value-of select="product/pdsUrl"/></subTitle>
-					<quoteUrl><xsl:value-of select="quoteUrl"/></quoteUrl>
+					<xsl:choose>
+						<xsl:when test="methodType = 'GET'">
+							<quoteUrl><xsl:value-of select="quoteUrl"/></quoteUrl>
+						</xsl:when>
+						<xsl:otherwise>
+							<handoverType>post</handoverType>
+							<handoverUrl><xsl:value-of select="quoteUrl"/></handoverUrl>
+							<xsl:for-each select="quoteData/child::*" >
+								<handoverVar><xsl:value-of select="name()"/></handoverVar>
+								<handoverData><xsl:value-of select="."/></handoverData>
+							</xsl:for-each>
+						</xsl:otherwise>
+					</xsl:choose>
 					<encodeUrl>
 						<xsl:choose>
 							<xsl:when test="encodeQuoteUrl='true'">Y</xsl:when>
 							<xsl:otherwise>N</xsl:otherwise>
 						</xsl:choose>
 					</encodeUrl>
+
+					<xsl:if test="benefit/exempted = 'true'">
+						<exemptedBenefits>
+							<xsl:for-each select="benefit">
+								<xsl:if test="exempted = 'true'">
+									<xsl:choose>
+										<xsl:when test="@type='EXCESS'">
+											<benefit>excess</benefit>
+										</xsl:when>
+										<xsl:when test="@type='CXDFEE'">
+											<benefit>cxdfee</benefit>
+										</xsl:when>
+										<xsl:when test="@type='MEDICAL'">
+											<benefit>medical</benefit>
+										</xsl:when>
+										<xsl:when test="@type='LUGGAGE'">
+											<benefit>luggage</benefit>
+										</xsl:when>
+										<xsl:otherwise>
+											<benefit>benefit_<xsl:value-of select="position()"/></benefit>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:if>
+							</xsl:for-each>
+						</exemptedBenefits>
+					</xsl:if>
+
 				</price>
 			</xsl:for-each>
 		</results>

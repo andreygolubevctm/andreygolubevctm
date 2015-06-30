@@ -9,7 +9,7 @@
 			<traveller>
 				<line_id><xsl:value-of select="$i + 1"/></line_id>
 				<type>CHILD</type>
-				<age>18</age>
+				<age>10</age>
 			</traveller>
 				
 			<xsl:call-template name="printChildren">

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
@@ -8,10 +9,18 @@
 
 <jsp:useBean id="travelService" class="com.ctm.services.travel.TravelService" scope="page" />
 <c:set var="serviceResponse" value="${travelService.validateFields(pageContext.request)}" />
+<c:set var="defaultToTravelQuote"><content:get key="makeTravelQuoteMainJourney" /></c:set>
 
-<%-- Keeping the value 8 for Ali's tests. 81 & 83 is for production. TRV-817 for reference --%>
-<jsp:useBean id="splitTests" class="com.ctm.services.tracking.SplitTestService" />
-<c:set var="trvberSplitTest" value="${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 8) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 81) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 83)}" />
+<c:set var="trvberSplitTest">
+	<c:choose>
+		<c:when test="${defaultToTravelQuote eq true}">true</c:when>
+		<c:otherwise>
+			<%-- Keeping the value 8 for Ali's tests. 81 & 83 is for production. TRV-817 for reference --%>
+			<jsp:useBean id="splitTests" class="com.ctm.services.tracking.SplitTestService" />
+			${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 8) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 81) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 83)}
+		</c:otherwise>
+	</c:choose>
+</c:set>
 
 <jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
 <c:choose>
@@ -157,7 +166,11 @@
 					</c:forEach>
 				</c:if>
 				<%-- Write to the stats database --%>
-				<agg:write_stats rootPath="travel" tranId="${tranId}" debugXml="${debugXml}" />
+				<c:choose>
+					<c:when test="${trvberSplitTest eq false}">
+						<agg:write_stats rootPath="travel" tranId="${tranId}" debugXml="${debugXml}" />
+					</c:when>
+				</c:choose>
 
 
 				<%-- Add the results to the current session data --%>
