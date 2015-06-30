@@ -11555,3 +11555,11 @@ header .transactionIdContainer.small {
   font-family: 'SourceSansProLight';
   font-size: 14px;
 }
+.header-wrap .quoteSnapshot {
+  top: 1.25em !important;
+}
+@media (min-width: 992px) {
+  .header-wrap .quoteSnapshot {
+    top: 1.25em !important;
+  }
+}

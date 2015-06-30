@@ -11560,3 +11560,11 @@ header .transactionIdContainer.small {
 .navbar-nav > li > .dropdown-menu {
   border-top: 0px;
 }
+.header-wrap .quoteSnapshot {
+  top: 0.85em !important;
+}
+@media (min-width: 992px) {
+  .header-wrap .quoteSnapshot {
+    top: 0.85em !important;
+  }
+}
