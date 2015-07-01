@@ -9021,6 +9021,7 @@ fieldset h2 .icon-text {
 }
 .snapshot .snapshot-title {
   font-size: 21px;
+  line-height: 21px;
 }
 .snapshot.bubble .icon {
   font-size: 2.5em;
