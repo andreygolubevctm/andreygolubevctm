@@ -11,7 +11,7 @@
 	<c:set var="setResult" value="${applicationService.setApplicationDateOnSession(pageContext.getRequest(), param.applicationDateOverrideValue)}" />
 
 	<c:set var="retrieveDate" value="${applicationService.getApplicationDateIfSet(pageContext.getRequest())}" />
-	<go:log>APPLiCATION DATE CHANGED: ${retrieveDate }</go:log>
+	<go:log>APPLICATION DATE CHANGED: ${retrieveDate }</go:log>
 	${retrieveDate}
 
 </c:if>

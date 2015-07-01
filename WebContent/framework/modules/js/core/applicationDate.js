@@ -17,7 +17,7 @@
 	function changeApplicationDate() {
 
 		selectedDate = $('#health_searchDate :selected').val();
-		postData.applicationDateOverrideValue = (selectedDate !== '0' ? selectedDate + " 00:00:01" : null);
+		postData.applicationDateOverrideValue = (selectedDate !== '' ? selectedDate + " 00:00:01" : null);
 
 		meerkat.modules.comms.post({
 			url:"ajax/write/setApplicationDate.jsp",
