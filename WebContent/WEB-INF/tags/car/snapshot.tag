@@ -25,7 +25,7 @@
 	<c:when test="${asBubble eq true}">
 		<ui:bubble variant="chatty" className="quoteSnapshot ${className}">
 			<div class="row snapshot bubble">
-				<div class="col-xs-3 col-md-2 col-lg-1">
+				<div class="col-xs-3 col-sm-2 col-md-2 col-lg-1">
 					<div class="icon icon-car"></div>
 				</div>
 				<div class="col-xs-9 col-sm-6 col-md-7 col-lg-8">
