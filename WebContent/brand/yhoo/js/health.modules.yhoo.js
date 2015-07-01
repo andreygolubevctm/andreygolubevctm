@@ -4190,6 +4190,7 @@ creditCardDetails = {
         $paymentContainer.hide();
         $("#health_declaration-selection").hide();
         $("#confirm-step").hide();
+        $(".simples-dialogue-31").hide();
         $("#update-premium").removeClass("hasAltPremium");
     }
     function resetSettings() {
@@ -4353,6 +4354,7 @@ creditCardDetails = {
                     toggleClaimsBankAccountQuestion();
                     updatePaymentDayOptions();
                     $("#confirm-step").show();
+                    $(".simples-dialogue-31").show();
                 }
                 meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {
                     source: "healthPaymentStep"
