@@ -23,12 +23,12 @@
 
 <c:choose>
 	<c:when test="${asBubble eq true}">
-		<ui:bubble variant="chatty" className="quoteSnapshot hidden ${className}">
+		<ui:bubble variant="chatty" className="quoteSnapshot ${className}">
 			<div class="row snapshot bubble">
-				<div class="col-xs-3 col-sm-3 col-md-2">
+				<div class="col-xs-3 col-md-2 col-lg-1">
 					<div class="icon icon-car"></div>
 				</div>
-				<div class="col-xs-9 col-sm-5 col-md-7">
+				<div class="col-xs-9 col-sm-6 col-md-7 col-lg-8">
 					<div class="row">
 						<div class="col-sm-12">
 							<span class="snapshot-title">

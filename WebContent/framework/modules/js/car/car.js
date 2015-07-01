@@ -197,7 +197,6 @@
 				meerkat.modules.carYoungDrivers.initCarYoungDrivers();
 			},
 			onAfterEnter: function onOptionsEnter(event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(1) .snapshot');
 				// Bind the annual kilometers to format numbers.
 				$annualKilometers = $('.annual_kilometres_number');
 
@@ -233,7 +232,6 @@
 				includeFormData:true
 			},
 			onAfterEnter: function onDetailsEnter(event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(2) .snapshot');
 				// Bind the annual kilometers to format numbers.
 				$annualKilometersYoungest = $('.annual_kilometres_number_youngest');
 
@@ -298,8 +296,36 @@
 				});
 				}
 			},
-			onAfterEnter : function (event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(3) .snapshot');
+			onAfterEnter : function onDetailsEnter(event) {
+				$telNumber = $('.contact_telno');
+				$streetNo = $('.typeahead-streetNum');
+				$postcode = $('#quote_riskAddress_nonStdPostCode');
+
+				$postcode.on('keyup',function(){
+					if($postcode.length > 0) {
+						//var numberVal = trimNonNumbers($(this).val());
+						$(this).val(trimNonNumbers($(this).val()));
+						//$postcode.val(trimNonNumbers($postcode.val()));
+					}
+				});
+
+				$telNumber.on('keyup',function(event,input) {
+					if($telNumber.length > 0) {
+						$(this).val(trimNonPhoneNumbers($(this).val()));
+						//$telNumber.val(trimNonPhoneNumbers($telNumber.val()));
+					}
+				});
+
+				$streetNo.on('keyup',function() {
+					if($streetNo.length > 0) {
+						//$streetNo.val(trimNonNumbers($streetNo.val()));
+						$(this).val(trimNonNumbers($(this).val()));
+					}
+
+				});
+				$postcode.trigger('keyup');
+				$telNumber.trigger('keyup');
+				$streetNo.trigger("keyup");
 			},
 			onBeforeLeave : function(event) {
 			}
@@ -324,7 +350,6 @@
 				// show disclaimer here.
 				// Sync the filters to the results engine
 				meerkat.modules.carFilters.updateFilters();
-				meerkat.modules.contentPopulation.render('.header-wrap .snapshot');
 			},
 			onAfterEnter: function afterEnterResults(event) {
 					meerkat.modules.carResults.get();

@@ -8,7 +8,7 @@
 
     <jsp:body>
         <layout:slide_content>
-            <car:snapshot asBubble="true" />
+            <car:snapshot asBubble="true" className="quoteSnapshotV2"/>
         </layout:slide_content>
     </jsp:body>
 

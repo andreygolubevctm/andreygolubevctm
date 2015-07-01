@@ -450,7 +450,6 @@
 		disableFutureSelectors(activeSelector);
 		_.defer(function(){
 			meerkat.messaging.publish(meerkatEvents.carSnapshot.RENDER_CAR_SNAPSHOT);
-			meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(0) .snapshot');
 		});
 	}
 

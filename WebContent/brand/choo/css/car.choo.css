@@ -1626,13 +1626,13 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
 }
 .car #rego-lookup-form .rego-lookup-divider {
   position: relative;
-  margin: 2em 0 2em 0;
+  margin: 6em 0 3em 0;
 }
 .car #rego-lookup-form .rego-lookup-divider span {
   position: relative;
   background: #fff;
   color: #1c3e93;
-  font-family: 'SourceSansProSemiBold';
+  font-family: 'SourceSansProRegular';
   font-size: 13pt;
   padding: 0 10px 0 10px;
   margin-left: 15px;
@@ -1645,9 +1645,9 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
   top: 47%;
   left: 0;
 }
-@media (min-width: 992px) and (max-width: 1199px) {
+@media (min-width: 768px) and (max-width: 991px) {
   .car #rego-lookup-form .rego-lookup-divider {
-    margin-top: 2.4em;
+    margin-top: 5.75em;
   }
 }
 @media (max-width: 767px) {
@@ -1661,13 +1661,16 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
     margin-top: 1.5em;
   }
   .car #rego-lookup-form .rego-lookup-divider {
-    margin-top: 3em;
+    margin-top: 6.1em;
   }
   .car #rego-lookup-form .rego-lookup-divider span {
     font-size: 11pt;
   }
 }
 body.car[data-step=start] .snapshot .btn {
+  display: none;
+}
+body.car[data-step=start] .quoteSnapshotV2 {
   display: none;
 }
 .header-wrap .quoteSnapshot {

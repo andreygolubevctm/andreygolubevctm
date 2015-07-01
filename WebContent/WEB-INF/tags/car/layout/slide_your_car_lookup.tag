@@ -8,8 +8,6 @@
 
     <layout:slide_content>
 
-        <car:snapshot_row />
-
         <car:vehicle_selection_lookup xpath="${xpath}/vehicle" />
 
     </layout:slide_content>
