@@ -9025,7 +9025,7 @@ fieldset h2 .icon-text {
 }
 .snapshot.bubble .icon {
   font-size: 2.5em;
-  padding-top: 7px;
+  padding-top: 3px;
   color: #ffffff;
 }
 @media (max-width: 767px) {

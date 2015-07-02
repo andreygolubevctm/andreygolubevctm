@@ -1649,6 +1649,9 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
   .car #rego-lookup-form .rego-lookup-divider {
     margin-top: 5.75em;
   }
+  .car #rego-lookup-form .rego-entry-row label {
+    padding-top: 0.2em;
+  }
 }
 @media (max-width: 767px) {
   .car #rego-lookup-form .rego-lookup-number-col {
@@ -1661,7 +1664,7 @@ body.car[data-step="results"] .more-info-content .price-promise-panel.inverted s
     margin-top: 1.5em;
   }
   .car #rego-lookup-form .rego-lookup-divider {
-    margin-top: 6.1em;
+    margin-top: 4.2em;
   }
   .car #rego-lookup-form .rego-lookup-divider span {
     font-size: 11pt;
