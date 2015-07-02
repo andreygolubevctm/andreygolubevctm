@@ -23,7 +23,11 @@
 	</c:when>
 	<%-- Only proceed if number of requests not exceeded --%>
 	<c:otherwise>
-		<core_new:load_preload />
+		<%-- PRELOAD DATA --%>
+		<c:if test="${empty param.action && param.preload == '2'}">
+			<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
+			<c:import url="test_data/preload_fuel.xml" var="fuelXml" />
+		</c:if>
 
 		<%-- HTML --%>
 		<layout:journey_engine_page title="Fuel Quote">
