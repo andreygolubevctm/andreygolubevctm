@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS ctm.rego_lookup_usage (
   regoLookup_id int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   regoLookup_datetime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  regoLookup_rego varchar(7) NOT NULL,
+  regoLookup_rego varchar(10) NOT NULL,
   regoLookup_state varchar(3) NOT NULL,
   regoLookup_transactionId int(11) UNSIGNED NOT NULL,
   regoLookup_status varchar(45) NOT NULL,
