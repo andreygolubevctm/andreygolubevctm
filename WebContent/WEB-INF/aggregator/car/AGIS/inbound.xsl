@@ -343,10 +343,6 @@
 					<validationError>MISSING: onlineprice</validationError>
 				</xsl:when>
 
-				<!--<xsl:when test="not(/soapenv:Envelope/soapenv:Body/response/quoteList/quote/offlinePrice)">
-					<validationError>MISSING: offlineprice</validationError>
-				</xsl:when>-->
-
 				<xsl:otherwise>
 					<xsl:if test="/soapenv:Envelope/soapenv:Body/response/quoteList/quote/headlineOffer = 'ONLINE'">
 
