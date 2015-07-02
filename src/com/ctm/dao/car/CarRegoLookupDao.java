@@ -30,8 +30,8 @@ public class CarRegoLookupDao {
             dbSource = new SimpleDatabaseConnection();
 
             stmt = dbSource.getConnection().prepareStatement(
-                "SELECT COUNT(regoLookup_id) AS dailyCount FROM " + LOG_TABLE + " " +
-                "WHERE Date(regoLookup_datetime) = CURRENT_DATE"
+                "SELECT COUNT(regoLookupId) AS dailyCount FROM " + LOG_TABLE + " " +
+                "WHERE Date(regoLookupDatetime) = CURRENT_DATE"
             );
 
             ResultSet results = stmt.executeQuery();
@@ -69,7 +69,7 @@ public class CarRegoLookupDao {
 
             stmt = dbSource.getConnection().prepareStatement(
                     "INSERT INTO " + LOG_TABLE + " " +
-                    "(regoLookup_rego,regoLookup_state,regoLookup_transactionId,regoLookup_status) " +
+                    "(regoLookupPlate,regoLookupState,regoLookupTransactionId,regoLookupStatus) " +
                     "VALUES(?,?,?,?)"
             );
 

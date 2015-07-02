@@ -1,16 +1,16 @@
 /** Updater **/
-CREATE TABLE IF NOT EXISTS ctm.rego_lookup_usage (
-  regoLookup_id int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  regoLookup_datetime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  regoLookup_rego varchar(10) NOT NULL,
-  regoLookup_state varchar(3) NOT NULL,
-  regoLookup_transactionId int(11) UNSIGNED NOT NULL,
-  regoLookup_status varchar(45) NOT NULL,
-  PRIMARY KEY (regoLookup_id),
-  KEY regoLookup_transactionId (regoLookup_transactionId),
-  KEY regoLookup_datetime (regoLookup_datetime),
-  KEY regoLookup_status (regoLookup_status)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Stores basic information on registration lookups performed';
+CREATE TABLE `rego_lookup_usage` (
+  `regoLookupId` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `regoLookupDatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `regoLookupPlate` varchar(10) NOT NULL,
+  `regoLookupState` varchar(3) NOT NULL,
+  `regoLookupTransactionId` int(11) unsigned NOT NULL,
+  `regoLookupStatus` varchar(45) NOT NULL,
+  PRIMARY KEY (`regoLookupId`),
+  KEY `regoLookup_transactionId` (`regoLookupTransactionId`),
+  KEY `regoLookup_datetime` (`regoLookupDatetime`),
+  KEY `regoLookup_status` (`regoLookupStatus`)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1 COMMENT='Stores basic information on registration lookups performed';
 
 /** Checker **/
 SHOW TABLES FROM `ctm` LIKE 'rego_lookup_usage';
