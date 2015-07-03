@@ -561,6 +561,15 @@
 			<xsl:when test="$fundName='TFS'">TFS</xsl:when>
 			<xsl:when test="$fundName='UAOD'">UAD</xsl:when>
 			<xsl:when test="$fundName='WDHF'">WFD</xsl:when>
+			<xsl:when test="$fundName='CWH'">CWH</xsl:when>
+			<xsl:when test="$fundName='CUA'">CPS</xsl:when>
+			<xsl:when test="$fundName='DOC">IMA</xsl:when>
+			<xsl:when test="$fundName='HBFSA">SPS</xsl:when>
+			<xsl:when test="$fundName='HEA'">HEA</xsl:when>
+			<xsl:when test="$fundName='IMAN'">IMN</xsl:when>
+			<xsl:when test="$fundName='MU'">MU</xsl:when>
+			<xsl:when test="$fundName='SAPOL'">SPE</xsl:when>
+			<xsl:when test="$fundName='TFHS'">NTF</xsl:when>
 			<xsl:otherwise>ZZZ</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
