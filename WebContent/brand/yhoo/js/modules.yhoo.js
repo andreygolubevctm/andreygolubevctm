@@ -6703,7 +6703,7 @@ Features = {
         if (redrawFixedHeader) {
             var cellFeatureWidth = $(".cell.feature").width() + 2 + "px", dockedHeaderHeight = "100px";
             if ($currentPage.length >= 1) {
-                dockedHeaderHeight = $(".resultInsert.featuresMode:visible").first().innerHeight() + 1 + "px";
+                dockedHeaderHeight = $(".currentPage .resultInsert.featuresMode:visible").first().innerHeight() + 1 + "px";
             }
             $fixedDockedHeader.css({
                 top: topPosition,
