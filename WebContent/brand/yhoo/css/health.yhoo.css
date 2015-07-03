@@ -529,17 +529,17 @@ body > div > header a.bottombar .btn-call:hover {
 }
 @media (min-width: 768px) {
   .health .featuresMode .resultsOverflow {
-    width: 536px;
+    width: 535px;
   }
 }
 @media (min-width: 992px) {
   .health .featuresMode .resultsOverflow {
-    width: 779px;
+    width: 778px;
   }
 }
 @media (min-width: 1200px) {
   .health .featuresMode .resultsOverflow {
-    width: 949px;
+    width: 948px;
   }
 }
 .health .featuresMode .labelInColumn {
