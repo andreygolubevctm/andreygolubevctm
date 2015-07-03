@@ -471,12 +471,12 @@
 						<EffDate><xsl:value-of select="$startDate" /></EffDate>
 						<Class>
 							<xsl:choose>
-								<xsl:when test="situation/healthCvr = 'SM'">Sgl</xsl:when>
-								<xsl:when test="situation/healthCvr = 'SF'">Sgl</xsl:when>
-								<xsl:when test="situation/healthCvr = 'S'">Sgl</xsl:when>
-								<xsl:when test="situation/healthCvr = 'C'">Cpl</xsl:when>
-								<xsl:when test="situation/healthCvr = 'SPF'">SPFam</xsl:when>
-								<xsl:when test="situation/healthCvr = 'F'">Fam</xsl:when>
+								<xsl:when test="situation/healthCvr = 'SM'">S</xsl:when>
+								<xsl:when test="situation/healthCvr = 'SF'">S</xsl:when>
+								<xsl:when test="situation/healthCvr = 'S'">S</xsl:when>
+								<xsl:when test="situation/healthCvr = 'C'">C</xsl:when>
+								<xsl:when test="situation/healthCvr = 'SPF'">SP</xsl:when>
+								<xsl:when test="situation/healthCvr = 'F'">F</xsl:when>
 								<xsl:otherwise>
 									<xsl:message terminate="yes">
 										situation/healthCvr is invalid
