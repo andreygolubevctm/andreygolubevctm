@@ -604,6 +604,7 @@
 				<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 				</hsl:xmlFile>
 				<hsl:BrokerID>CTM</hsl:BrokerID>
+				<hsl:AgentID>CTMOMS</hsl:AgentID>
 				</hsl:SubmitMembership>
 			</soap:Body>
 		</soap:Envelope>
