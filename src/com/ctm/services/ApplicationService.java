@@ -82,7 +82,6 @@ public class ApplicationService {
 	 * Looks at the pageContext for the brand code - this should be a param brandCode=xxx set by the F5 server's rewrite rules.
 	 * In Localhost and NXI, we have to depend on the data bucket as we don't have rewrite logic on these environments.
 	 *
-	 * @param session
 	 * @param request
 	 */
 	public static Brand getBrandFromRequest(HttpServletRequest request) throws DaoException {
