@@ -488,9 +488,41 @@ var healthFunds_NIB = {
 			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
 			healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
 		});
+
+		function onChangeNoEmailChkBox(){
+			if( $("#health_application_no_email").is(":checked") ) {
+				$("#health_application_email").val('');
+				$("#health_application_email").prop('required', false);
+				$("#health_application_email").parents().first().parents().first().removeClass("has-success");
+				$("#health_application_email").parents().first().parents().first().removeClass("has-error");
+				$("#health_application_email").parents().first().parents().first().find('.error-field').remove();
+				$("#health_application_email").removeClass("has-error");
+				$("#health_application_email").prop('disabled', true);
+				$("#health_application_contactPoint_P").prop("checked",true);
+				$("#health_application_contactPoint_E").attr('disabled', true);
+				$("#health_application_contactPoint_E").parents().first().attr('disabled',true);
+				$("#health_application_contactPoint_P").parents().first().addClass("active") ;
+				$("#health_application_contactPoint_E").parents().first().removeClass("active");
+			}else{
+				$("#health_application_email").prop('required', true);
+				$("#health_application_email").prop('disabled', false);
+				$("#health_application_contactPoint_E").parents().first().attr('disabled',false);
+				$("#health_application_contactPoint_E").prop('disabled', false);
+			}
+		}
+		onChangeNoEmailChkBox();
+		$("#health_application_no_email").on("click.NIB",function() {onChangeNoEmailChkBox();});
+
 	},
 	unset: function(){
 		$('#update-premium').off('click.NIB');
+
+		$("#health_application_email").prop('required', true);
+		$("#health_application_email").prop('disabled', false);
+		$("#health_application_contactPoint_E").prop('disabled', false);
+		$("#health_application_contactPoint_E").parents().first().attr('disabled',false);
+
+		$('#health_application_no_email').off('click.NIB');
 		healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
 		healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
 
