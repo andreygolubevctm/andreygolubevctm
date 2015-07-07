@@ -56,7 +56,7 @@
 		<li>Walkie talkies</li>
 		<li>Stethoscopamajig</li>
 		<li>“World’s greatest spykat” mug</li>
-		<li>Spy costume</li>
+		<li>Spy bow tie</li>
 		<li>Fancy video recording pen</li>
 		<li>Tiny safe, for safe keeping</li>
 	</ul>
@@ -80,7 +80,7 @@
 			<field:person_name xpath="${xpath}/lastName" title="last name" required="true" />
 		</form_new:row>
 
-		<form_new:row label="Your email address" className="clear email-row">
+		<form_new:row label="Email" className="clear email-row">
 			<field_new:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>
 		</form_new:row>
 
@@ -110,7 +110,7 @@
 				required="true"
 				label="${true}"
 				title="${label}"
-				errorMsg="Please confirm you have read the privacy policy" />
+				errorMsg="Please confirm you have read the T&Cs and privacy policy" />
 		</form_new:row>
 		<%--	</c:otherwise>
 		</c:choose>--%>
