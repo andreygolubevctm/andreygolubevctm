@@ -1000,7 +1000,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,N
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-No foreign transaction fees on online and overseas purchases
 -Complimentary Credit Card Travel Insurance for you and the family^
 -Up to 12 months extra warranty on top of the manufacturer''s warranty^
--�Purchase security cover. 3 months of free insurance against loss, theft or accidental damage on personal goods purchased anywhere in the world^','2015-07-06','2040-12-31','');
+-Purchase security cover. 3 months of free insurance against loss, theft or accidental damage on personal goods purchased anywhere in the world^','2015-07-06','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate',0,0.0,'0%',NULL,'2015-07-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'maximum-credit-limit',0,0.0,'0',NULL,'2015-07-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-amex-card-points',0,NULL,'',NULL,'2015-07-06','2040-12-31','',0);
@@ -1030,7 +1030,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'handover-url',0,0,'http:/
 INSERT INTO ctm.product_properties VALUES(@product_id,'additional-card-holder',0,1,'Yes',NULL,'2015-07-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'balance-transfer-rate',0,NULL,'',NULL,'2015-07-06','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate-period',0,NULL,'',NULL,'2015-07-06','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'terms-general',0,'-^Applicable for purchases made on or after 1 October2014. Limitations and exclusions apply. See Complimentary Credit Card Insurance booklet for details.
+INSERT INTO ctm.product_properties_text VALUES(@product_id,'terms-general',0,'-^Applicable for purchases made on or after 1 October 2014. Limitations and exclusions apply. See Complimentary Credit Card Insurance booklet for details.
 -Lending criteria, fees and charges apply. Terms and conditions apply and are available on request. Rates are subject to change Overseas ATM access fee may apply. One Bankwest Breeze MasterCard per customer.
 -Introductory rate on eligible purchases available to new Bankwest Breeze MasterCard customers who apply and are approved for a Bankwest Breeze MasterCard from 6 July 2015 to 30 September 2015. Introductory rate on purchases excludes cash advances and balance transfers and applies from the date the card is opened, regardless of when any purchase is processed by Bankwest. After the introductory period, the standard purchase rate will apply.
 -Annual fee is waived for the first year for new Bankwest Breeze MasterCard applications received from 6 July 2015 to 30 September 2015 (annual fee will apply to applications received outside these dates). Annual fee will be payable after the first year and in subsequent years after the anniversary of the card opening.','2015-07-06','2040-12-31','');
