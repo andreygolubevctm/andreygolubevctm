@@ -3,7 +3,7 @@
 
 <session:get />
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- XML --%>
 <?xml version="1.0" encoding="UTF-8"?>

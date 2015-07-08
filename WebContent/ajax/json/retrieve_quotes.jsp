@@ -52,7 +52,7 @@
 			<c:set var="emailAddress" value="${authenticatedData.userData.authentication.emailAddress}" />
 			<go:log source="retrieve_quotes_jsp" level="INFO">After ${loginAttempts} login attempts, login of ${emailAddress} successful</go:log>
 			<c:set var="password"><go:HmacSHA256 username="${authenticatedData.userData.authentication.emailAddress}" password="${authenticatedData.userData.authentication.password}" brand="${pageSettings.getBrandCode()}" /></c:set>
-			<sql:setDataSource dataSource="jdbc/aggregator" />
+			<sql:setDataSource dataSource="jdbc/ctm" />
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />
 
 			<%-- Load in quotes from MySQL --%>

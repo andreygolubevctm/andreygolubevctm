@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="unitNo" value="${fn:toUpperCase(param.unitNo)}" />
 <c:set var="unitNo" value="${go:replaceAll( unitNo, '[^A-Z0-9-]', '' )}"/>

@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.util.Calendar"%>
+<%@ page import="java.util.GregorianCalendar" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
@@ -14,16 +15,17 @@
 	|--postcode
 --%>
 
-
-<c:set var="current_year"><%= String.format("%4d",Calendar.getInstance().get(Calendar.YEAR)) %></c:set>
-<c:set var="current_month"><%= String.format("%02d",Calendar.getInstance().get(Calendar.MONTH) + 1) %></c:set>
-<c:set var="previous_year"><%= String.format("%4d",Calendar.getInstance().get(Calendar.YEAR) - 1) %></c:set>
+<jsp:useBean id="nowMinusSixWeeks" class="java.util.GregorianCalendar" />
+<% nowMinusSixWeeks.add(GregorianCalendar.DAY_OF_YEAR, -42); %>
+<fmt:formatDate var="nowMinusSixWeeks_Date" pattern="yyyyMMdd" value="${nowMinusSixWeeks.time}" />
 
 <x:parse var="fuel" xml="${param.QuoteData}" />
 <c:set var="fuels"><x:out select="$fuel/request/fuels" /></c:set>
 <c:set var="postcode"><x:out select="$fuel/request/postcode" /></c:set>
-
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<c:if test="${fn:contains(fuels, '3') and not fn:contains(fuels, '9')}">
+	<c:set var="fuels"><c:out value="${fuels}" />,9</c:set>
+</c:if>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- Retrieve the list of sites for the postcodes provided --%>
 <c:catch var="error">
@@ -57,7 +59,7 @@
 					<c:set var="siteids"><c:if test="${not empty siteids}">${siteids},</c:if>${site.SiteId}</c:set>
 				</c:forEach>
 					<go:log level="DEBUG" source="fuel_price_monthly_averages">
-						SELECT AVG(r.Price) AS amount, r.FuelId AS type, CAST(CONCAT_WS('-', YEAR(u.Time), LPAD(MONTH(u.time), 2, '0')) AS CHAR(7)) AS period
+						SELECT ROUND(AVG(r.Price)) AS amount, r.FuelId AS type, CAST(CONCAT_WS('-', YEAR(u.Time), LPAD(MONTH(u.time), 2, '0'), LPAD(DAYOFMONTH(u.time), 2, '0') ) AS CHAR(10)) AS period
 						FROM `aggregator`.`fuel_results` AS r
 						LEFT JOIN `aggregator`.`fuel_updates` AS u
 							ON u.UpdateId = r.UpdateId
@@ -65,7 +67,7 @@
 							u.Status = 200 AND
 							u.Type = 'M' AND
 							r.SiteId IN (${siteids}) AND
-							CAST(CONCAT_WS('', YEAR(u.Time), LPAD(MONTH(u.time), 2, '0')) AS UNSIGNED) > ${previous_year}${current_month} AND
+							CAST(CONCAT(YEAR(u.Time), LPAD(MONTH(u.time), 2, '0'), LPAD(DAYOFMONTH(u.time), 2, '0')  ) AS UNSIGNED) > ${nowMinusSixWeeks_Date} AND
 							r.FuelId IN (${fuels})
 						GROUP BY period, r.FuelId
 						ORDER BY u.UpdateId DESC, FuelId DESC;
@@ -73,7 +75,7 @@
 
 				<c:catch var="error">
 					<sql:query var="fuelprices">
-						SELECT AVG(r.Price) AS amount, r.FuelId AS type, CAST(CONCAT_WS('-', YEAR(u.Time), LPAD(MONTH(u.time), 2, '0')) AS CHAR(7)) AS period
+						SELECT ROUND(AVG(r.Price)) AS amount, r.FuelId AS type, CAST(CONCAT_WS('-', YEAR(u.Time), LPAD(MONTH(u.time), 2, '0'), LPAD(DAYOFMONTH(u.time), 2, '0') ) AS CHAR(10)) AS period
 						FROM `aggregator`.`fuel_results` AS r
 						LEFT JOIN `aggregator`.`fuel_updates` AS u
 							ON u.UpdateId = r.UpdateId
@@ -81,7 +83,7 @@
 							u.Status = 200 AND
 							u.Type = 'M' AND
 							r.SiteId IN (${siteids}) AND
-							CAST(CONCAT_WS('', YEAR(u.Time), LPAD(MONTH(u.time), 2, '0')) AS UNSIGNED) > ${previous_year}${current_month} AND
+						CAST(CONCAT(YEAR(u.Time), LPAD(MONTH(u.time), 2, '0'), LPAD(DAYOFMONTH(u.time), 2, '0')  ) AS UNSIGNED) > ${nowMinusSixWeeks_Date} AND
 							r.FuelId IN (${fuels})
 						GROUP BY period, r.FuelId
 						ORDER BY u.UpdateId DESC, FuelId DESC;

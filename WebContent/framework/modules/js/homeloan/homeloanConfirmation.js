@@ -11,7 +11,7 @@
 
 	function init() {
 
-		jQuery(document).ready(function($) {
+		$(document).ready(function() {
 
 			if (typeof meerkat.site === 'undefined') return;
 			if (meerkat.site.pageAction !== 'confirmation') return;

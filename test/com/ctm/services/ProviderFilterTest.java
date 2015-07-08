@@ -103,7 +103,7 @@ public class ProviderFilterTest {
 
 		// execute the call to parse the XML Config
 		ProviderFilter pf = new ProviderFilter(pageSettings, sessionDataService, providerFilterDAO);
-		String actualResult = pf.getXMLConfig(request, config);
+		String actualResult = pf.getXMLConfig(data, config, "travel");
 
 		// setup what the xmlConfig should be
 		String expectedResult = "<?xml version='1.0' encoding='UTF-8'?>\n" +
@@ -137,7 +137,7 @@ public class ProviderFilterTest {
 
 		// execute the call to parse the XML Config
 		ProviderFilter pf = new ProviderFilter(pageSettings, sessionDataService, providerFilterDAO);
-		String actualResult = pf.getXMLConfig(request, config);
+		String actualResult = pf.getXMLConfig(data, config, "travel");
 
 		// setup what the xmlConfig should be
 		String expectedResult = "<?xml version='1.0' encoding='UTF-8'?>\n" +
@@ -166,25 +166,26 @@ public class ProviderFilterTest {
     public void testShouldRetrieveProviderCode() throws DaoException {
         when(providerFilterDAO.getProviderDetails("virg_eZ45QZm7Y2")).thenReturn("VIRG");
         ProviderFilter pf = new ProviderFilter(pageSettings, sessionDataService, providerFilterDAO);
+		String vertical = "travel";
 
         data.put("travel/filter/providerKey", "virg_eZ45QZm7Y2");
-        assertEquals("only providerKey", "VIRG", pf.getProviderCode(request));
+        assertEquals("only providerKey", "VIRG", pf.getProviderCode(data, vertical));
 
         data.clear();
         data.put("travel/filter/singleProvider", "FAST");
-        assertEquals("only singleProvider", "FAST", pf.getProviderCode(request));
+        assertEquals("only singleProvider", "FAST", pf.getProviderCode(data, vertical));
 
         data.clear();
         data.put("travel/filter/providerKey", "virg_eZ45QZm7Y2");
         data.put("travel/filter/singleProvider", "FAST");
-        assertEquals("bot providerKey and singleProvider", "VIRG", pf.getProviderCode(request));
+        assertEquals("bot providerKey and singleProvider", "VIRG", pf.getProviderCode(data, vertical));
 
         data.clear();
-        assertEquals("no provider filter", "", pf.getProviderCode(request));
+        assertEquals("no provider filter", "", pf.getProviderCode(data, vertical));
 
         data.clear();
         data.put("travel/filter/providerKey", "virg_hacking_the_mainframe");
-        assertEquals("invalid provider key", "", pf.getProviderCode(request));
+        assertEquals("invalid provider key", "", pf.getProviderCode(data, vertical));
     }
 
 }

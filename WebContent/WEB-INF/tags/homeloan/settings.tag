@@ -30,7 +30,10 @@
 		type: 'offcanvas',
 		direction: 'right'
 	},
-	pageAction: '<c:out value="${pageAction}"/>'
+	pageAction: '<c:out value="${pageAction}"/>',
+	session: {
+		firstPokeEnabled: <c:choose><c:when test="${pageAction eq 'confirmation'}">false</c:when><c:otherwise>true</c:otherwise></c:choose>
+	}
 }
 
 <c:if test="${not empty cover || not empty situation || not empty location}">

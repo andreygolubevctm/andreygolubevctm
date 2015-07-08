@@ -1,143 +1,154 @@
+<%--
+	UTILITIES quote page
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<session:new verticalCode="UTILITIES" />
+<session:new verticalCode="UTILITIES" authenticated="true"/>
 
-<%-- Redirect to lead site if flagged --%>
-<c:if test="${contentService.getContentValue(pageContext.getRequest(), 'redirectToLeadFeed') eq 'Y'}">
-	<c:redirect url="${pageSettings.getBaseUrl()}utilities_lead.jsp" />
-</c:if>
+<core_new:quote_check quoteType="utilities"/>
+<core_new:load_preload/>
 
-<c:if test="${empty param.action}">
-	<go:setData dataVar="data" value="*DELETE" xpath="utilities" />
-</c:if>
+<%-- Call centre numbers --%>
+<c:set var="callCentreNumber" scope="request"><content:get key="genericCallCentreNumber"/></c:set>
+<c:set var="callCentreHelpNumber" scope="request"><content:get key="genericCallCentreHelpNumber"/></c:set>
 
-<c:if test="${param.preload == '2'}">  
-			<go:setData dataVar="data" value="*DELETE" xpath="utilities" />		
-			<c:import url="test_data/preload_utilities.xml" var="utilitiesXml" />
-			<go:setData dataVar="data" xml="${utilitiesXml}" />		
-</c:if>
 
-<c:set var="hasBill" value="${param.has_bill}" />
+<%-- HTML --%>
+<layout:journey_engine_page title="Utilities Quote">
 
-<c:set var="xpath" value="utilities" scope="session" />
-<c:set var="name"  value="${go:nameFromXpath(xpath)}" />
+	<jsp:attribute name="head">
+	</jsp:attribute>
 
-<core:doctype />
-<go:html>
-	<core:head title="Utilities Insurance Quote Capture" mainCss="common/utilities.css" mainJs="common/js/utilities.js" quoteType="${xpath}" />
+	<jsp:attribute name="head_meta">
+	</jsp:attribute>
 	
-	<body class="utilities stage-0">
+	<jsp:attribute name="header">
+		<div class="navbar-collapse header-collapse-contact collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <c:if test="${not empty callCentreNumber}">
+                    <li>
+                        <div class="navbar-text hidden-xs" data-livechat="target">
+                            <h4>Call us on</h4>
 
-		<%-- SuperTag Top Code --%>
-		<agg:supertag_top type="Utilities"/>		
+                            <h1><span class="noWrap">${callCentreNumber}</span></h1>
+                            <%-- This was hard-coded here instead of using health's opening hours tag
+                                 as Guilly suggested he didn't want to show other verticals opening hours in Simples and open it up to other users at this time.
+                                 Maybe one day, but its either this or nothing.
+                                 --%>
+                            <div class="opening-hours">
+                            <span>
+                                <span class="today-hours"><content:get key="utilitiesOpeningHours" /></span>
+                            </span>
+                            </div>
+                        </div>
+                        <div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
+                    </li>
+                </c:if>
+            </ul>
+        </div>
+	</jsp:attribute>
 
-		<%-- History handler --%>
-		<utilities:history />
+	<jsp:attribute name="navbar">
 
-		<form:form action="utilities_quote_results.jsp" method="POST" id="mainform" name="frmMain">
+		<ul class="nav navbar-nav" role="menu">
+            <li class="visible-xs">
+                <span class="navbar-text-block navMenu-header">Menu</span>
+            </li>
 					
-			<%-- Fields to store Switchwise specific data --%>
-			<field:hidden xpath="utilities/order/receiptid" defaultValue="" />
-			<field:hidden xpath="utilities/order/productid" defaultValue="" />
-			<field:hidden xpath="utilities/order/estimatedcosts" defaultValue="" />
-			<field:hidden xpath="utilities/partner/uniqueCustomerId" defaultValue="" />
+            <li class="slide-feature-phone hidden-sm hidden-md hidden-lg">
+                <a class="needsclick" href="tel:${callCentreNumber}"><span class="icon icon-phone"></span> <span
+                        class="noWrap">${callCentreNumber}</span></a>
+            </li>
+            <li class="navbar-text slide-reference-number hidden-sm hidden-md hidden-lg">
+                <div class="thoughtWorldRefNoContainer"></div>
+            </li>
+            <li class="slide-feature-back">
+                <a href="javascript:;" data-slide-control="previous" class="btn-back"><span
+                        class="icon icon-arrow-left"></span> <span>Back</span></a>
+            </li>
+            <li class="navbar-text slide-reference-number hidden-xs">
+                <div class="thoughtWorldRefNoContainer"></div>
+            </li>
+        </ul>
 					
-	<c:choose>
-		<c:when test="${hasBill == 'yes'}">
-			<field:hidden xpath="utilities/hasBill" defaultValue="Y" />
-		</c:when>
-		<c:otherwise>
-			<field:hidden xpath="utilities/hasBill" defaultValue="N" />
-		</c:otherwise>
-		</c:choose>
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right results-summary-container">
+            <li id="results-summary-container"></li>
+        </ul>
+    </div>
+	</jsp:attribute>
 
-			<form:operator_id xpath="${xpath}/operatorid" />
+		<jsp:attribute name="navbar_outer">
 			
-			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
-			<core:referral_tracking vertical="${xpath}" />
-			<utilities:progress_bar />
+		<div class="row sortbar-container navbar-inverse">
+            <div class="container">
+                <ul class="sortbar-parent nav navbar-nav navbar-inverse col-sm-12 row">
+                    <li class="visible-xs">
+                        <a href="javascript:;" class="">
+                            <span class="icon icon-filter"></span> <span>Sort Results By</span>
+                        </a>
+                    </li>
+                    <li class="container row sortbar-children">
+                        <ul class="nav navbar-nav navbar-inverse col-sm-12">
+                            <li class="hidden-xs col-sm-2 col-lg-5">
+                                <span class="navbar-brand">Sort <span class="optional-lg">your</span> <span
+                                        class="optional-md">results</span> by</span>
+                            </li>
+                            <li class="col-sm-3 col-lg-1 colContractPeriod">
+                                <a href="javascript:;" data-sort-type="contractPeriodValue" data-sort-dir="asc">
+                                    <span class="icon"></span> <span>Contract <br class="hidden-sm hidden-md" />period</span>
+                                </a>
+                            </li>
+                            <li class="col-sm-3 col-lg-2 colYearlySavings">
+                                <a href="javascript:;" data-sort-type="yearlySavingsValue" data-sort-dir="desc">
+                                    <span class="icon"></span> <span>Savings <br class="hidden-sm hidden-md" />up to</span>
+                                </a>
+                            </li>
+                            <li class="col-sm-4 col-lg-2 active colTotalDiscounts">
+                                <a href="javascript:;" data-sort-type="totalDiscountValue" data-sort-dir="desc">
+                                    <span class="icon"></span> <span>Total Available <br class="hidden-sm hidden-md" />Discounts</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+	</jsp:attribute>
 
-			<div id="wrapper">
-				<div id="page">
+	<jsp:attribute name="results_loading_message">
+	</jsp:attribute>
 				
-					<div id="content">
 					
-						<utilities:choices
-							xpathHouseholdDetails="${xpath}/householdDetails"
-							xpathEstimateDetails="${xpath}/estimateDetails"
-							xpathResultsDisplayed="${xpath}/resultsDisplayed"
-							xpathApplicationDetails="${xpath}/application/details"
-							xpathApplicationSituation="${xpath}/application/situation"
-							xpathApplicationPaymentInformation="${xpath}/application/paymentInformation"
-							xpathApplicationOptions="${xpath}/application/options"
-							xpathApplicationThingsToKnow="${xpath}/application/thingsToKnow"
-							xpathSummary="${xpath}/summary"
-							/>
+	<jsp:attribute name="form_bottom">
+	</jsp:attribute>
 
-						<!-- Main Quote Engine content -->
-						<slider:slideContainer className="sliderContainer">
+	<jsp:attribute name="footer">
+		<core:whitelabeled_footer/>
+	</jsp:attribute>
 						
-							<%-- INITIAL: stage, set from parameters --%>
-							<slider:slide id="slide0" title="Household details">
-								<h2><span>Step 1.</span> Household details</h2>
-								<utilities:household_details xpath="${xpath}/householdDetails" />
-								<utilities:estimate_details xpath="${xpath}/estimateDetails" />
-								<utilities:results_displayed xpath="${xpath}/resultsDisplayed" />
-							</slider:slide>
+	<jsp:attribute name="vertical_settings">
+		<utilities_new:settings/>
+	</jsp:attribute>
 							
-							<slider:slide id="slide1" title="Choose a plan">
-								<h2><span>Step 2.</span> Choose a plan</h2>
+	<jsp:attribute name="body_end">
+	</jsp:attribute>
 								
-							</slider:slide>
+    <jsp:body>
 							
-							<slider:slide id="slide2" title="Fill out your details">
-								<utilities:selected_product />
-								<h2><span>Step 3.</span> Fill out your details</h2>
-								<utilities:application_details xpath="${xpath}/application/details" />
-								<utilities:things_to_know xpath="${xpath}/application/thingsToKnow" />
-							</slider:slide>
+        <%-- Slides --%>
+        <utilities_new_layout:slide_your_details/>
+        <utilities_new_layout:slide_results/>
+        <utilities_new_layout:slide_enquiry/>
 							
-							<slider:slide id="slide3" title="Confirmation">
-								<%-- Confirmation is loaded outside of the slider --%>
-							</slider:slide>
-																					
-						</slider:slideContainer>
-						
-						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="68" />
-						
-						<!-- Bottom "step" buttons -->
-						<slider:slideController id="sliderController" />
-						 
-					<!-- End main QE content -->
+        <div class="hiddenFields">
+            <form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
+            <core:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
 					</div>
-					<form:help />
+        <input type="hidden" name="transcheck" id="transcheck" value="1"/>
+        <input type="hidden" name="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" id="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" value="" />
 					
-					<div style="height:67px"><!--  empty --></div>
+    </jsp:body>
 					
-					
-
-					<utilities:side_panel />
-					
-				</div>
-
-				<%-- Quote results (default to be hidden) --%>  
-				<utilities:results />
-								
-				<%-- Confirmation content (default to be hidden) --%>  
-				<utilities:confirmation />		
-			</div>
-				
-				
-		</form:form>
-				
-	<utilities:lead_footer />
-						
-		<core:closing_body>
-			<agg:includes supertag="true" />
-		<utilities:includes />
-		</core:closing_body>
-
-	</body>
-	
-</go:html>
+</layout:journey_engine_page>

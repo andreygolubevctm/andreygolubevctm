@@ -53,12 +53,12 @@
 <%-- COMPETITION APPLICATION END --%>
 <c:choose>
 	<c:when test="${empty results}">
-		<c:set var="json" value='{"info":{"transactionId":${tranId}}},"errors":[{"message":"getResults is empty"}]}' />
+		<c:set var="json" value='{"info":{"transactionId":${tranId}},"errors":[{"message":"getResults is empty"}]}' />
 	</c:when>
 	<c:otherwise>
-		<%-- crappy hack to inject the tranId --%>
+		<%-- crappy hack to inject the tranId and tracking key. --%>
 		<c:set var="json" value="${fn:substringAfter(results.toString(), '{')}" />
-		<c:set var="json" value='{"info":{"transactionId":${tranId}},${json}' />
+		<c:set var="json" value='{"results":{"info":{"trackingKey": "${data.utilities.trackingKey}", "transactionId":${tranId}},${json}}' />
 	</c:otherwise>
 </c:choose>
 

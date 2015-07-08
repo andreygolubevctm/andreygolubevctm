@@ -8,19 +8,8 @@
 <security:populateDataFromParams rootPath="travel" />
 
 <jsp:useBean id="travelService" class="com.ctm.services.travel.TravelService" scope="page" />
-<c:set var="serviceResponse" value="${travelService.validateFields(pageContext.request)}" />
+<c:set var="serviceResponse" value="${travelService.validateFields(pageContext.request, data)}" />
 <c:set var="defaultToTravelQuote"><content:get key="makeTravelQuoteMainJourney" /></c:set>
-
-<c:set var="trvberSplitTest">
-	<c:choose>
-		<c:when test="${defaultToTravelQuote eq true}">true</c:when>
-		<c:otherwise>
-			<%-- Keeping the value 8 for Ali's tests. 81 & 83 is for production. TRV-817 for reference --%>
-			<jsp:useBean id="splitTests" class="com.ctm.services.tracking.SplitTestService" />
-			${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 8) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 81) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 83)}
-		</c:otherwise>
-	</c:choose>
-</c:set>
 
 <jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
 <c:choose>
@@ -39,12 +28,12 @@
 		</c:set>
 		${go:XMLtoJSON(resultXml)}
 	</c:when>
+
 	<c:when test="${travelService.isValid()}">
 
 		<jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
 		<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
-
 
 		<c:set var="continueOnValidationError" value="${true}" />
 
@@ -67,6 +56,7 @@
 		</c:set>
 
 		<go:setData dataVar="data" xpath="travel/soapDuration" value="${duration}" />
+		<go:setData dataVar="data" xpath="travel/unknownDestinations" value="${fn:escapeXml(data.travel.unknownDestinations)}" />
 
 		<%-- Test and or Increment ID if required --%>
 		<c:choose>
@@ -94,6 +84,16 @@
 		</c:if>
 
 		<%-- Split test --%>
+        <c:set var="trvberSplitTest">
+            <c:choose>
+                <c:when test="${defaultToTravelQuote eq true}">true</c:when>
+                <c:otherwise>
+                    <%-- Keeping the value 8 for Ali's tests. 81 & 83 is for production. TRV-817 for reference --%>
+                    <jsp:useBean id="splitTests" class="com.ctm.services.tracking.SplitTestService" />
+                    ${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 8) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 81) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 83)}
+                </c:otherwise>
+            </c:choose>
+        </c:set>
 		<%-- 'configBER' runs the new TRVBER service --%>
 		<%-- 'config' is the normal 'legacy' Travel config --%>
 		<c:choose>
@@ -106,11 +106,11 @@
 		</c:choose>
 
 		<jsp:useBean id="providerFilter" class="com.ctm.services.ProviderFilter" scope="page" />
-		<c:set var="config" value="${providerFilter.getXMLConfig(pageContext.getRequest(), config)}" />
+		<c:set var="config" value="${providerFilter.getXMLConfig(data, config, 'travel')}" />
 
 		<%-- Get the providerCode to pass through to travel-quote service (CTMT) --%>
-        <c:set var="filterProviderCode" value="${providerFilter.getProviderCode(pageContext.getRequest())}" />
-        <go:setData dataVar="data" xpath="travel/filter/providerFilterCode" value="${filterProviderCode}" />
+		<c:set var="filterProviderCode" value="${providerFilter.getProviderCode(data, 'travel')}" />
+		<go:setData dataVar="data" xpath="travel/filter/providerFilterCode" value="${filterProviderCode}" />
 
 		<%-- Dirty hack for travel as we're using both the db and config*.xml files at the same time. I need a shower.
         removed authToken until CAR-863 goes into NXQ --%>
@@ -143,7 +143,7 @@
 
 		<c:set var="tranId" value="${data['current/transactionId']}" />
 		<go:setData dataVar="data" xpath="travel/transactionId" value="${tranId}" />
-
+		
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 		<go:soapAggregator config = "${config}"
 							configDbKey="quoteService"

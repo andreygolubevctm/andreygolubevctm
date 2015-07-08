@@ -32,11 +32,7 @@ public class MessageStatus extends AbstractJsonModel {
 	public final static int STATUS_ALREADYCUSTOMER = 16;
 	public final static int STATUS_DUPLICATELEAD = 24;
 	public final static int STATUS_OVERSEASCOVER = 25;
-
-	//skip and defer, not in mapping table
-	public final static int STATUS_SKIP_AND_DEFER = 34;
-	//confirm and unlock for hawking message, not in mapping table
-	public final static int STATUS_HAWKING_UNLOCK = 35;
+	public final static int STATUS_INVALID_FAILJOIN = 34;
 
 	private int id;
 	private String status;

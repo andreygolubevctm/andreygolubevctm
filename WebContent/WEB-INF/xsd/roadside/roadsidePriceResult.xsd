@@ -36,6 +36,15 @@
 			</xs:element>
 			<xs:element name="clientUserAgent" maxOccurs="1" minOccurs="0" />
 			<xs:element name="clientIpAddress" maxOccurs="1" minOccurs="0" />
+			<xs:element name="renderingMode" maxOccurs="1" minOccurs="0" />
+			<xs:element name="lastFieldTouch" maxOccurs="1" minOccurs="0" />
+			<xs:element name="journey" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="stage" type="xs:string" maxOccurs="1" minOccurs="0" />
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="transactionId" maxOccurs="1" minOccurs="0" />
 			<xs:element name="tracking" maxOccurs="1" minOccurs="0" />
 			</xs:all>

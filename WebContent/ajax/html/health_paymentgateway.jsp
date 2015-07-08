@@ -33,7 +33,7 @@
 	<x:out select="$configXml/aggregator/westpacGateway/cd_supplier_business" />
 </c:set>
 <c:set var="returnURL">
-	${pageSettings.getRootUrl()}ctm/ajax/html/health_paymentgateway_return.jsp
+	${pageSettings.getBaseUrl()}ajax/html/health_paymentgateway_return.jsp
 </c:set>
 
 <go:log source="health_paymentgateway_jsp" >health_paymentgateway: ID=${id}, ${tokenUrl}</go:log>

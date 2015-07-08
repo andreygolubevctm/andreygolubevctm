@@ -66,7 +66,7 @@
 		
 		// initialise from/leave date datepicker
 		$fromDateInput.datepicker(
-			{ startDate: fromDate_StartDateRange, endDate: fromDate_EndDateRange }
+			{ startDate: fromDate_StartDateRange, endDate: fromDate_EndDateRange}
 		);
 		//update the native picker range checking
 		$fromDateInput.siblings(".dateinput-nativePicker").find("input")
@@ -183,8 +183,8 @@
 			$fromDateInput = $("#travel_dates_fromDate");
 			$toDateInput = $("#travel_dates_toDate");
 
-			$fromDateInput.datepicker({ orientation: "top right" });
-			$toDateInput.datepicker({ orientation: "top right" });
+			$fromDateInput.datepicker({ orientation: "top right", numberOfMonths: 2});
+			$toDateInput.datepicker({ orientation: "top right", numberOfMonths: 2 });
 
 			initDatePickers();
 			initDateEvents();

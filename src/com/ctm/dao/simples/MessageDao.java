@@ -30,7 +30,7 @@ public class MessageDao {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		try {
 			final PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-				"SELECT msg.id, transactionId, userId, msg.statusId, stat.status, contactName, phoneNumber1, phoneNumber2, state, whenToAction, created " +
+				"SELECT msg.id, transactionId, userId, msg.statusId, stat.status, sourceId, contactName, phoneNumber1, phoneNumber2, state, whenToAction, created " +
 				", IF(msg.postponeCount < src.maxPostpones, 1, 0) AS canPostpone " +
 				"FROM simples.message msg " +
 				"INNER JOIN simples.message_source src ON src.id = msg.sourceId " +
@@ -625,6 +625,7 @@ public class MessageDao {
 		message.setUserId(results.getInt("userId"));
 		message.setStatusId(results.getInt("statusId"));
 		message.setStatus(results.getString("status"));
+		message.setSourceId(results.getInt("sourceId"));
 		message.setContactName(results.getString("contactName"));
 		message.setPhoneNumber1(results.getString("phoneNumber1"));
 		message.setPhoneNumber2(results.getString("phoneNumber2"));
@@ -645,7 +646,7 @@ public class MessageDao {
 		try {
 			final Connection connection = simpleDatabaseConnection.getConnection();
 			final PreparedStatement statement = connection.prepareStatement(
-				"SELECT msg.id, transactionId, userId, statusId, status, contactName, phoneNumber1, phoneNumber2, state, whenToAction, created " +
+				"SELECT msg.id, transactionId, userId, statusId, status, sourceId, contactName, phoneNumber1, phoneNumber2, state, whenToAction, created " +
 				"FROM simples.message msg " +
 				"LEFT JOIN simples.message_status stat ON stat.id = msg.statusId " +
 				"WHERE statusId IN (?, ?, ?) AND userId = ? " +

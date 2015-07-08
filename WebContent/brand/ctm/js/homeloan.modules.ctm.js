@@ -304,7 +304,7 @@
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     function init() {
-        jQuery(document).ready(function($) {
+        $(document).ready(function() {
             if (typeof meerkat.site === "undefined") return;
             if (meerkat.site.pageAction !== "confirmation") return;
             if (confirmationData.hasOwnProperty("confirmation") === false || confirmationData.confirmation.hasOwnProperty("flexOpportunityId") === false) {
@@ -709,20 +709,7 @@
                 }
             });
             $component.find(".checkbox input").change();
-            $component.on("focus", "#homeloan_filter_results_loanTerm", function() {
-                var el = $(this);
-                el.data("width", el.width());
-                el.width("auto");
-                el.data("width-auto", $(this).width());
-                if (el.data("width-auto") < el.data("width")) {
-                    el.width(el.data("width"));
-                } else {
-                    el.width(el.data("width-auto") + 15);
-                }
-            }).on("blur", "#homeloan_filter_results_loanTerm", function() {
-                var el = $(this);
-                el.width(el.data("width"));
-            });
+            meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($component, "#homeloan_filter_results_loanTerm");
         }
     }
     function close() {

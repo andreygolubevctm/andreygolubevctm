@@ -23,6 +23,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import com.ctm.services.EnvironmentService;
 import org.apache.log4j.Logger;
 import org.xml.sax.SAXException;
 
@@ -32,6 +33,10 @@ import com.ctm.soap.SoapConfiguration;
 import com.ctm.web.validation.SchemaValidation;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
+
+import static com.ctm.services.EnvironmentService.Environment.LOCALHOST;
+import static com.ctm.services.EnvironmentService.Environment.NXI;
+import static com.ctm.services.EnvironmentService.Environment.NXS;
 
 /**
  * The Class SOAPAggregatorTag with WAR compatibility.
@@ -106,8 +111,18 @@ public class SOAPAggregatorTag extends TagSupport {
 			HashMap<Thread, SOAPClientThread> threads = new HashMap<Thread, SOAPClientThread>();
 				for (SoapClientThreadConfiguration serviceItemConfig : configuration.getServices()) {
 
-				// Give each one a meaningful name
-					String threadName = this.transactionId + " " + serviceItemConfig.getName();
+						// Replace ctm with real context path (for feature branches)
+						if (!"ctm/".equals(EnvironmentService.getContextPath())
+								&& (EnvironmentService.getEnvironment() == LOCALHOST
+								|| EnvironmentService.getEnvironment() == NXI
+								|| EnvironmentService.getEnvironment() == NXS)
+								&& serviceItemConfig.getUrl().contains("/ctm/")) {
+							serviceItemConfig.setUrl(serviceItemConfig.getUrl().replaceFirst("(https?\\://[^/]+)/ctm/", "$1/" + EnvironmentService.getContextPath()));
+							logger.debug("Modified '" + serviceItemConfig.getName() + "' service URL to: " + serviceItemConfig.getUrl());
+						}
+
+						// Give each one a meaningful name
+						String threadName = this.transactionId + " " + serviceItemConfig.getName();
 
 				SOAPClientThread client;
 

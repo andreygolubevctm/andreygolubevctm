@@ -4,22 +4,28 @@
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info;
 
-	var moduleEvents = {
-		HIDDEN_FIELDS_POPULATED: 'HIDDEN_FIELDS_POPULATED'
+	var events = {
+		address_lookup : {
+			HIDDEN_FIELDS_POPULATED: 'HIDDEN_FIELDS_POPULATED'
+		}
 	};
+
+	var moduleEvents = events.address_lookup;
 
 	var $currentAjaxRequest = null,
 		dpIdCache = {},
-		addressFieldId = null;
+		addressFieldId;
 
 	function initAddressLookup() {
 		meerkat.messaging.subscribe(meerkatEvents.autocomplete.ELASTIC_SEARCH_COMPLETE, function elasticAddress(data) {
-			addressFieldId = data.addressFieldId;
-			getAddressData(data.dpid);
+			getAddressData(data);
 		});
 	}
 
-	function getAddressData(dpId) {
+	function getAddressData(addressFieldData) {
+		addressFieldId = addressFieldData.addressFieldId;
+		dpId = addressFieldData.dpid;
+
 		// If a get details request takes too long and the user reselects cached address data, it will load in the ajax's
 		// response instead of the cached data.
 		// Here, we abort that request.
@@ -55,6 +61,7 @@
 					onSuccess: function ajaxGetTypeaheadAddressDataSuccess(data) {
 						dpIdCache[dpId] = data;
 						setAddressDataFields(data);
+
 						if(typeof data.dpId === "undefined" || data.dpId === "") {
 							meerkat.modules.errorHandling.error({
 								page: "elastic_search.js",
@@ -62,6 +69,8 @@
 								description: "Could not find address with dpId of " + dpId,
 								data: data
 							});
+						} else {
+							meerkat.messaging.publish(moduleEvents.HIDDEN_FIELDS_POPULATED, { addressData: data });
 						}
 					},
 					onError: function ajaxGetTypeaheadAddressDataError(xhr, status) {
@@ -95,13 +104,13 @@
 	function setAddressDataFields(data) {
 		for (var addressItem in data) {
 			var $hiddenAddressElement = $('#' + addressFieldId + '_'+addressItem);
-			$hiddenAddressElement.val(data[addressItem]);
+			$hiddenAddressElement.val(data[addressItem]).trigger("change");
 		}
 	}
 
 	meerkat.modules.register("address_lookup", {
 		init: initAddressLookup,
-		events: moduleEvents
+		events: events
 	});
 
 })(jQuery);

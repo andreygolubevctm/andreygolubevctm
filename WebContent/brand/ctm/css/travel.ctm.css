@@ -613,6 +613,12 @@ fieldset.travel_details_destinations .content .error-field + .row input.destchec
   bottom: 0;
   top: auto;
 }
+.datepicker div.datepicker-days.calSeperator {
+  border-left: 1px solid #b2b2b2;
+}
+.datepicker div.datepicker-days.calSeperator {
+  border-left: 1px solid #b2b2b2;
+}
 .sortbar-children .icon {
   display: inline-block;
   width: 14px;

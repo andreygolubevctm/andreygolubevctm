@@ -178,32 +178,10 @@ var healthFunds_AHM = {
         };
         creditCardDetails.render();
         $("#update-premium").on("click.AHM", function() {
-            var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-            if (freq == "weekly" || freq == "fortnightly") {
-                healthFunds._payments = {
-                    min: 3,
-                    max: 8,
-                    weekends: false
-                };
+            if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == "cc") {
+                meerkat.modules.healthPaymentDate.populateFuturePaymentDays($("#health_payment_details_start").val(), 3, false, false);
             } else {
-                healthFunds._payments = {
-                    min: 3,
-                    max: 32,
-                    weekends: true
-                };
-            }
-            var _html = healthFunds._paymentDays($("#health_payment_details_start").val());
-            healthFunds._paymentDaysRender($(".health-bank_details-policyDay"), _html);
-            healthFunds._paymentDaysRender($(".health-credit-card_details-policyDay"), _html);
-            if (freq == "monthly" || freq == "annually") {
-                $(".health-bank_details-policyDay option, .health-credit-card_details-policyDay option").each(function(index) {
-                    if (this.value.length >= 3) {
-                        var end = this.value.substring(this.value.length - 3);
-                        if (end == "-29" || end == "-30" || end == "-31") {
-                            $(this).remove();
-                        }
-                    }
-                });
+                meerkat.modules.healthPaymentDate.populateFuturePaymentDays($("#health_payment_details_start").val(), 3, false, true);
             }
         });
         $(".health-credit_card_details .fieldrow").hide();
@@ -219,7 +197,7 @@ var healthFunds_AHM = {
             clearValidationSelectors: $("#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type"),
             getSelectedPaymentMethod: meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
         });
-        meerkat.modules.healthPaymentStep.setCoverStartRange(1, 28);
+        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
     },
     unset: function() {
         healthFunds._reset();
@@ -2525,6 +2503,7 @@ creditCardDetails = {
             }
             $("#health_contactDetails_optin").on("click", function() {
                 var optinVal = $(this).is(":checked") ? "Y" : "N";
+                $("#health_privacyoptin").val(optinVal);
                 $("#health_contactDetails_optInEmail").val(optinVal);
                 $("#health_contactDetails_call").val(optinVal);
             });

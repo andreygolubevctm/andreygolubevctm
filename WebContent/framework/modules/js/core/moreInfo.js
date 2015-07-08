@@ -153,7 +153,6 @@
 		if(typeof settings.onBeforeShowBridgingPage == 'function') {
 			settings.onBeforeShowBridgingPage();
 		}
-
 		var productId = $this.attr("data-productId"),
 			showApply = $this.hasClass('more-info-showapply');
 
@@ -392,6 +391,11 @@
 	}
 
 	function setProduct(productToParse, showApply) {
+
+		if(typeof productToParse !== 'undefined' && typeof productToParse.productId !== 'undefined') {
+			Results.setSelectedProduct(productToParse.productId);
+		}
+
 		product = productToParse;
 		if (product !== false) {
 			if (showApply === true) {
@@ -456,6 +460,10 @@
 		jsonResult = result;
 	}
 
+	function getDataResult() {
+		return jsonResult;
+	}
+
 	/**
 	 * Allows other verticals to update the settings object.
 	 */
@@ -493,6 +501,7 @@
 		getOpenProduct: getOpenProduct,
 		setProduct: setProduct,
 		setDataResult: setDataResult,
+		getDataResult: getDataResult,
 		applyCallback: applyCallback,
 		updateSettings: updateSettings
 	});

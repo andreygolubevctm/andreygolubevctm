@@ -19,8 +19,8 @@
 	</form_new:row>
 
 	<div id="${name}Selections">
-		<label class="col-lg-3 col-sm-4 col-xs-10"><!-- empty --></label>
-		<div class="col-lg-9 col-sm-8 col-xs-12 added-items">
+		<label class="col-sm-4 col-xs-10"><!-- empty --></label>
+		<div class="col-sm-8 col-xs-12 added-items">
 			<ul><!-- empty --></ul>
 		</div>
 	</div>

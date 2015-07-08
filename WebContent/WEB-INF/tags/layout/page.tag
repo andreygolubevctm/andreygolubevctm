@@ -39,15 +39,25 @@
 
 <!DOCTYPE html>
 <go:html>
-	<head >
-		<title>${title} - ${pageSettings.getSetting('brandName')}</title>
-		<meta charset='utf-8'>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><%-- 'maximum-scale' will disable zooming but also assists with iOS Viewport Scaling Bug on rotation --%><%-- user-scalable=no--%>
-		<jsp:invoke fragment="head_meta" />
+<head>
+	<title>${title} - ${pageSettings.getSetting('brandName')}</title>
+	<meta charset='utf-8'>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"><%-- 'maximum-scale' will disable zooming but also assists with iOS Viewport Scaling Bug on rotation --%><%-- user-scalable=no--%>
+	<jsp:invoke fragment="head_meta" />
 
 	<link rel="shortcut icon" type="image/x-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/favicon.ico">
 
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+	<c:if test="${pageSettings.getSetting('appleTouchIconsEnabled') eq 'Y'}">
+		<link rel="apple-touch-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/tablet.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone@2x.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/tablet@2x.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone@3x.png">
+	</c:if>
 <c:choose>
 	<c:when test="${empty skipJSCSS}">
 
@@ -296,9 +306,9 @@
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId},</c:if>
 						<%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
 						urls:{
-							base: '${fn:toLowerCase(pageSettings.getBaseUrl())}',
+							base: '${pageSettings.getBaseUrl()}',
 							exit: '${exitUrl}',
-							context: '${fn:toLowerCase(pageSettings.getContextFolder())}'
+							context: '${pageSettings.getContextFolder()}'
 						},
 						watchedFields: '<content:get key="watchedFields"/>',
 						content:{

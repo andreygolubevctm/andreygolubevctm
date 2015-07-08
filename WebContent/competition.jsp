@@ -1,22 +1,42 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<settings:setVertical verticalCode="GENERIC" />
+<session:new verticalCode="COMPETITION" authenticated="true" />
 
-<c:choose>
-	<c:when test="${param.id eq 'robe'}">
-		<%-- <c:redirect url="${pageSettings.getBaseUrl()}robe_competition.jsp" /> --%>
-		<c:redirect url="${pageSettings.getSetting('exitUrl')}" />
-	</c:when>
-	<c:when test="${param.id eq 'grub'}">
-		<%--<c:redirect url="${pageSettings.getBaseUrl()}competition_entry.jsp" /> --%>
-		<c:redirect url="${pageSettings.getSetting('exitUrl')}" />
-	</c:when>
-	<c:when test="${param.id eq 'christmas'}">
-		<c:redirect url="${pageSettings.getBaseUrl()}christmas_promo.jsp?firstname=${param.firstname}&email=${param.email}&postcode=${param.postcode}&marketing=${param.marketing}" />
-<%-- 		<c:redirect url="${pageSettings.getSetting('exitUrl')}" /> --%>
-	</c:when>
-	<c:otherwise>
-		<c:redirect url="${pageSettings.getSetting('exitUrl')}" />
-	</c:otherwise>
-</c:choose>
+<core_new:quote_check quoteType="competition" />
+
+<layout:journey_engine_page title="Competition">
+	<jsp:attribute name="head">
+	</jsp:attribute>
+
+	<jsp:attribute name="head_meta">
+	</jsp:attribute>
+
+	<jsp:attribute name="header">
+	</jsp:attribute>
+
+	<jsp:attribute name="navbar">
+		<competition:navigation />
+	</jsp:attribute>
+
+	<jsp:attribute name="form_bottom">
+	</jsp:attribute>
+
+	<jsp:attribute name="footer">
+	</jsp:attribute>
+
+	<jsp:attribute name="body_end">
+	</jsp:attribute>
+
+	<jsp:attribute name="vertical_settings">
+		<competition:settings />
+	</jsp:attribute>
+
+	<jsp:body>
+		<%-- Slides --%>
+		<competition_layout:slide_entry cid="${param['cid']}" reference="${param['ref']}" />
+
+		<input type="hidden" name="transcheck" id="transcheck" value="1" />
+	</jsp:body>
+
+</layout:journey_engine_page>

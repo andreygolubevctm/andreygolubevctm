@@ -199,7 +199,7 @@ CompareView = {
 IconsModeCompareBarRenderer = {
 
 	add:function(productId){
-		var origin = $( Results.settings.elements.rows + "[data-productId=" + productId + "]" ).find( Compare.settings.elements.companyImage );
+		var origin = $( Results.settings.elements.rows + "[data-productId='" + productId + "']" ).find( Compare.settings.elements.companyImage );
 		var destination = $(Compare.settings.elements.boxes).eq( Compare.model.products.length - 1 );
 
 		var sizeAndPos = IconsModeCompareBarRenderer.getCompareSizeAndPos(origin, destination);

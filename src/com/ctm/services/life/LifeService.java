@@ -24,10 +24,10 @@ public class LifeService {
 	 * @param request
 	 * @return
 	 */
-	public String contactLead(HttpServletRequest request) {
+	public String contactLead(HttpServletRequest request, Data data) {
 		vertical = request.getParameter("vertical");
-		RequestService fromFormService = new RequestService(request, vertical);
-		Data data = fromFormService.getRequestData();
+		RequestService fromFormService = new RequestService(request, vertical, data);
+
 		LifeRequest lifeRequest = LifeRequestParser.parseRequest(data, vertical);
 		List<SchemaValidationError> errors = contactLead(lifeRequest, vertical);
 		if(!valid) {

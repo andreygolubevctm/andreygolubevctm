@@ -36,12 +36,11 @@ public class MessageDetailService {
 		transaction.setTransactionId(Collections.max(transactionIds));
 		transactionDao.getCoreInformation(transaction);
 
-
 		CommentDao comments = new CommentDao();
 		messageDetail.setComments(comments.getCommentsForTransactionId(message.getTransactionId()));
 
 		TouchDao touches = new TouchDao();
-		messageDetail.setTouches(touches.getTouchesForTransactionIds(transactionIds));
+		messageDetail.setTouches(touches.getTouchesForRootIds(transactionIds));
 
 		MessageAuditDao messageAuditDao = new MessageAuditDao();
 		messageDetail.setAudits(messageAuditDao.getMessageAudits(message.getMessageId()));

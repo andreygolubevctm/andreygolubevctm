@@ -49,32 +49,34 @@
 
 	function configure( contactDetailsFields ){
 
-		// record provided fields in module
-		$.extend(fields, contactDetailsFields);
+		$(document).ready(function() {
+			// record provided fields in module
+			$.extend(fields, contactDetailsFields);
 
-		// run through all field type (name, phone, email, etc.)
-		_.each(fields, function(fieldTypeEntities, fieldType){
+			// run through all field type (name, phone, email, etc.)
+			_.each(fields, function(fieldTypeEntities, fieldType){
 
-			// run through all fields in a type
-			_.each(fieldTypeEntities, function(fieldTypeEntity, index){
+				// run through all fields in a type
+				_.each(fieldTypeEntities, function(fieldTypeEntity, index){
 
-				var fieldDetails = $.extend( fieldTypeEntity, {index: index, type: fieldType, fieldIndex: 1} );
+					var fieldDetails = $.extend( fieldTypeEntity, {index: index, type: fieldType, fieldIndex: 1} );
 
-				// set change events on provided field and optin fields
-				setFieldChangeEvent( fieldDetails );
-				setOptinFieldChangeEvent( fieldDetails );
-
-				// if otherField exists (i.e. for combined fields like "first name" and "last name"), the second field also needs the change event
-				if( typeof fieldDetails.$otherField !== "undefined" ){
-					fieldDetails = $.extend({}, fieldDetails, { alternateOtherField: true, fieldIndex: 2 } );
+					// set change events on provided field and optin fields
 					setFieldChangeEvent( fieldDetails );
-				}
+					setOptinFieldChangeEvent( fieldDetails );
+
+					// if otherField exists (i.e. for combined fields like "first name" and "last name"), the second field also needs the change event
+					if( typeof fieldDetails.$otherField !== "undefined" ){
+						fieldDetails = $.extend({}, fieldDetails, { alternateOtherField: true, fieldIndex: 2 } );
+						setFieldChangeEvent( fieldDetails );
+					}
+
+				});
 
 			});
 
+			prefillLaterFields = true; // turn on the prefilling once all the change events have been set up (allows to not prefill on preload/retrive quotes)
 		});
-
-		prefillLaterFields = true; // turn on the prefilling once all the change events have been set up (allows to not prefill on preload/retrive quotes)
 
 	}
 
@@ -345,7 +347,14 @@
 					var splitName = updatedElementValue.split(" ");
 					$fieldElement.val(splitName[0]);
 					laterFieldDetails.$otherField.val( splitName.slice(1).join(" ") );
-				} else {
+				} else if(fieldDetails.type === "alternatePhone" && typeof laterFieldDetails.$otherField !== "undefined") {
+					var testableNumber = updatedElementValue.replace(/\D/g, "");
+					if(testableNumber.match(/^(04|614|6104)/g)) {
+						$fieldElement.val(updatedElementValue);
+					} else {
+						laterFieldDetails.$otherField.val(updatedElementValue);
+					}
+				} else  {
 					$fieldElement.val( updatedElementValue ).attr("data-previous-value", updatedElementValue);
 				}
 

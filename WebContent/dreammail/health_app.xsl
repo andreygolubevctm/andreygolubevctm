@@ -108,18 +108,16 @@
 				<SubscriberKey><xsl:value-of select="$EmailAddress" /></SubscriberKey>
 				<EmailAddress><xsl:value-of select="$EmailAddress" /></EmailAddress>
 
-				<xsl:if test="$EmailAddress != ''">
-					<Attributes>
-						<Name>SubscriberKey</Name>
-						<Value><xsl:value-of select="$EmailAddress" /></Value>
-					</Attributes>
-				</xsl:if>
-				<xsl:if test="$EmailAddress != ''">
-					<Attributes>
-						<Name>EmailAddr</Name>
-						<Value><xsl:value-of select="$EmailAddress" /></Value>
-					</Attributes>
-				</xsl:if>
+				<Attributes>
+					<Name>SubscriberKey</Name>
+					<Value><xsl:value-of select="$EmailAddress" /></Value>
+				</Attributes>
+
+				<Attributes>
+					<Name>EmailAddr</Name>
+					<Value><xsl:value-of select="$EmailAddress" /></Value>
+				</Attributes>
+
 				<Attributes>
 					<Name>FirstName</Name>
 					<Value>

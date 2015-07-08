@@ -4,7 +4,7 @@
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%@ attribute name="email" 		required="true"	 	rtexprvalue="true"	 description="The email coming from an unsubscribe link" %>
 <%@ attribute name="brand"		required="true"		rtexprvalue="true"	 description="The brand to check against (ie. CTM, CC, etc.)" %>

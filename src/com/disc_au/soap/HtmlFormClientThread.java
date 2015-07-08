@@ -19,9 +19,9 @@ import com.ctm.model.settings.SoapClientThreadConfiguration;
 public class HtmlFormClientThread extends SOAPClientThread {
 
 	public HtmlFormClientThread(String tranId, String configRoot,
-			SoapClientThreadConfiguration configuration, String xmlData,
-			String name,
-			SoapAggregatorConfiguration soapConfiguration) {
+								SoapClientThreadConfiguration configuration, String xmlData,
+								String name,
+								SoapAggregatorConfiguration soapConfiguration) {
 		super(tranId, configRoot, configuration, xmlData, name,
 				soapConfiguration);
 	}
@@ -129,11 +129,11 @@ public class HtmlFormClientThread extends SOAPClientThread {
 					else {
 						logger.error("Error Data: " + errorData);
 						SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
-									connection.getResponseCode(),
-									connection.getResponseMessage(),
-									getConfiguration().getName(),
-									errorData.toString(),
-									(System.currentTimeMillis() - startTime));
+								connection.getResponseCode(),
+								connection.getResponseMessage(),
+								getConfiguration().getName(),
+								errorData.toString(),
+								(System.currentTimeMillis() - startTime));
 
 						returnData.append(err.getXMLDoc());
 					}
@@ -147,9 +147,15 @@ public class HtmlFormClientThread extends SOAPClientThread {
 			this.responseTime = System.currentTimeMillis() - startTime;
 
 		} catch (MalformedURLException e) {
-			handleException(returnData, startTime, e);
+			logger.error("failed to processRequest" , e);
+			e.printStackTrace();
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
+			returnData.append(err.getXMLDoc());
+
 		} catch (IOException e) {
-			handleException(returnData, startTime, e);
+			logger.error("failed to processRequest" , e);
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), "IOException", (System.currentTimeMillis() - startTime));
+			returnData.append(err.getXMLDoc());
 		}
 
 		this.responseTime = System.currentTimeMillis() - startTime;

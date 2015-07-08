@@ -6,7 +6,7 @@
 <c:set var="token"><c:out value="${param.token}" escapeXml="true" /></c:set>
 <c:set var="PendingTranID" value="${fn:substringAfter(token, '-')}" />
 
-<sql:setDataSource dataSource="jdbc/aggregator" />
+<sql:setDataSource dataSource="jdbc/ctm" />
 
 <go:log>Load PendingID:${token}, PendingTranID:${PendingTranID}, CallCentre:${callCentre}</go:log>
 

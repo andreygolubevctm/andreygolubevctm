@@ -32,7 +32,7 @@
 	</c:otherwise>
 </c:choose>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 <c:set var="brand" value="${pageSettings.getBrandCode()}" />
 <c:set var="source">
 	<c:choose>
@@ -101,99 +101,45 @@
 		</c:if>
 	</c:when>
 	<c:when test="${rootPath eq 'utilities'}">
-		
-		<c:choose>
-		<c:when test="${not empty data['utilities/privacyoptin'] and data['utilities/privacyoptin'] eq 'Y'}">
+		<c:if test="${not empty data['utilities/privacyoptin'] and data['utilities/privacyoptin'] eq 'Y'}">
 			<c:set var="hasPrivacyOptin">${true}</c:set>
-		</c:when>
-		<c:when test="${not empty data['utilities/leadFeed/privacyoptin'] and data['utilities/leadFeed/privacyoptin'] eq 'Y'}">
-			<c:set var="hasPrivacyOptin">${true}</c:set>
-		</c:when>
-		</c:choose>
-		
+		</c:if>
+
 		<c:set var="emailAddress">
 			<c:choose>
 				<c:when test="${not empty data['utilities/application/details/email']}">${data['utilities/application/details/email']}</c:when>
-				<c:when test="${not empty data['utilities/leadFeed/email']}">${data['utilities/leadfeed/email']}</c:when>
 				<c:otherwise>${data['utilities/resultsDisplayed/email']}</c:otherwise>
 			</c:choose>
 		</c:set>
 		
-		<c:set var="firstName">
-			<c:choose>
-				<c:when test="${not empty data['utilities/leadFeed/firstName']}">${data['utilities/leadfeed/firstName']}</c:when>
-				<c:otherwise>${data['utilities/application/details/firstName']}</c:otherwise>
-			</c:choose>
-		</c:set>
+		<c:set var="firstName">${data['utilities/application/details/firstName']}</c:set>
 
-		<c:set var="lastName">
-			<c:choose>
-				<c:when test="${not empty data['utilities/leadFeed/lastName']}">${data['utilities/leadfeed/lastName']}</c:when>
-				<c:otherwise>${data['utilities/application/details/lastName']}</c:otherwise>
-			</c:choose>
-		</c:set>
+		<c:set var="lastName">${data['utilities/application/details/lastName']}</c:set>
 
-
-			<c:choose>
-			<c:when test="${not empty data['utilities/leadFeed/privacyoptin'] and data['utilities/leadfeed/privacyoptin'] eq 'Y'}">
-				
-				<%-- This is a leed feed page --%>
-				<c:choose>
-				<c:when test="${not empty data['utilities/leadFeed/mobile']}">
-					<c:set var="optinPhone" value=",okToCall=${data['utilities/leadFeed/mobile']}" />
-				</c:when>
-				<c:when test="${not empty data['utilities/leadFeed/otherPhone']}">
-					<c:set var="optinPhone" value=",okToCall=${data['utilities/leadFeed/otherPhone']}" />
-				</c:when>
-			</c:choose>
-
-		<c:if test="${empty optinMarketing}">
-			<c:set var="optinMarketing">
-				<c:choose>
-					<c:when test="${not empty data['utilities/leadFeed/privacyoptin'] and data['utilities/leadFeed/privacyoptin'] eq 'Y'}">marketing=Y</c:when>
-							<c:otherwise>marketing=N</c:otherwise>
-				</c:choose>
-			</c:set>
+		<c:if test="${empty optinPhone}">
+			<c:set var="optinPhone" value=",okToCall=${data['utilities/resultsDisplayed/optinPhone']}" />
 		</c:if>
 
-	</c:when>
-			<c:otherwise>
-
-				<%-- This is a quote page --%>
-
-				<c:if test="${empty optinPhone}">
-					<c:set var="optinPhone" value=",okToCall=${data['utilities/resultsDisplayed/optinPhone']}" />
-				</c:if>
-
-		
-
-				<c:set var="step1Email" value="${data['utilities/resultsDisplayed/email']}"/>
-				<c:set var="step3Email" value="${data['utilities/application/details/email']}"/>
-
-				<c:set var="optinMarketing">
+		<c:set var="step1Email" value="${data['utilities/resultsDisplayed/email']}"/>
+		<c:set var="step3Email" value="${data['utilities/application/details/email']}"/>
+				
+		<c:set var="optinMarketing">
+			<c:choose>
+				<c:when test="${emailAddress eq step1Email}">
 					<c:choose>
-						<c:when test="${emailAddress eq step1Email}">
-							<c:choose>
-								<c:when test="${data['utilities/resultsDisplayed/optinMarketing'] eq 'Y'}">marketing=Y</c:when>
-								<c:otherwise>marketing=N</c:otherwise>
-							</c:choose>
-						</c:when>
-						<c:when test="${emailAddress eq step3Email}">
-							<c:choose>
-								<c:when test="${data['utilities/application/thingsToKnow/receiveInfo'] eq 'Y'}">marketing=Y</c:when>
-								<c:otherwise>marketing=N</c:otherwise>
-							</c:choose>
-						</c:when>
+						<c:when test="${data['utilities/resultsDisplayed/optinMarketing'] eq 'Y'}">marketing=Y</c:when>
 						<c:otherwise>marketing=N</c:otherwise>
 					</c:choose>
-				</c:set>
-
-
-
-			</c:otherwise>
-		</c:choose>
-		
-	
+				</c:when>
+				<c:when test="${emailAddress eq step3Email}">
+					<c:choose>
+						<c:when test="${data['utilities/application/thingsToKnow/receiveInfo'] eq 'Y'}">marketing=Y</c:when>
+						<c:otherwise>marketing=N</c:otherwise>
+					</c:choose>
+				</c:when>
+				<c:otherwise>marketing=N</c:otherwise>
+			</c:choose>
+		</c:set>
 
 	</c:when>
 	<c:when test="${rootPath eq 'life'}">
@@ -372,7 +318,17 @@
 			<c:set var="optinMarketing" value ="marketing=${data['creditcard/marketing']}" />
 		</c:if>
 	</c:when>
-
+	<c:when test="${rootPath eq 'competition'}">
+		<c:if test="${not empty data['competition/privacyoptin'] and data['competition/privacyoptin'] eq 'Y'}">
+			<c:set var="hasPrivacyOptin">${true}</c:set>
+		</c:if>
+		<c:set var="emailAddress" value="${data['competition/email']}" />
+		<c:set var="firstName" value="${data['competition/firstName']}" />
+		<c:set var="lastName" value="${data['competition/lastName']}" />
+		<c:if test="${not empty data['competition/optIn']}">
+			<c:set var="optinMarketing" value ="marketing=${data['competition/marketing']}"/>
+		</c:if>
+	</c:when>
 	<c:otherwise>
 		<c:set var="firstName" value="" />
 		<c:set var="lastName" value="" />
@@ -708,20 +664,6 @@
 			FAILED: A fatal database error occurred - we hope to resolve this soon.
 		</c:if>
 
-		<%--TODO: remove this once we are off disc --%>
-		<%-- Set data from the form and call AGGTIC to write the client data to tables --%>
-		<%-- Note, we do not wait for it to return - this is a "fire and forget" request --%>
-		<c:if test="${rootPath == 'car'}">
-			<go:log level="DEBUG" source="agg:write_quote">Writing quote to DISC: ${go:getEscapedXml(data['quote'])}</go:log>
-			<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
-			<go:call pageId="AGGTIC"
-				xmlVar="${go:getEscapedXml(data['quote'])}"
-				transactionId="${transactionId}"
-				mode="P"
-				wait="FALSE"
-				style="${AGIS_leadFeedCode}"
-				/>
-		</c:if>
 	</c:when>
 	<c:when test="${empty transactionId}">
 		<go:log level="INFO"  source="agg:write_quote" >write_quote: No transaction ID.</go:log>

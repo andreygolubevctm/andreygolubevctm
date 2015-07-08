@@ -36,16 +36,15 @@ public class TravelService {
 	 * @param request
 	 * @return
 	 */
-	public String validateFields(HttpServletRequest request) {
+	public String validateFields(HttpServletRequest request, Data data) {
 
 		try {
 			PageSettings pageSettings = SettingsService.getPageSettingsForPage(request); // grab this current page's settings
 			Vertical vert = pageSettings.getVertical(); // grab the vertical details
 			vertical = vert.getType().toString().toLowerCase();
 
-			RequestService fromFormService = new RequestService(request, vertical);
+			RequestService fromFormService = new RequestService(request, vertical, data);
 			SessionDataService sessionDataService = new SessionDataService();
-			data = sessionDataService.getDataForTransactionId(request, String.valueOf(fromFormService.transactionId), false);
 
 			// remove anything that is not a numeric value and just let it continue as per normal. If they enter crap like bob, then they get bounced out of the A/B test
 			String prefix = vertical.toLowerCase() + "/";

@@ -345,23 +345,7 @@
 			});
 			$component.find('.checkbox input').change();
 
-			$component.on('focus', '#homeloan_filter_results_loanTerm', function() {
-				var el = $(this);
-				el.data('width', el.width());
-				el.width('auto');
-				el.data('width-auto', $(this).width());
-				// if "auto" width < start width, set to start width, otherwise set to new width
-				if(el.data('width-auto') < el.data('width')) {
-					el.width(el.data('width'));
-				} else {
-					el.width(el.data('width-auto')+15);
-				}
-			}).on('blur', '#homeloan_filter_results_loanTerm', function() {
-				var el = $(this);
-				el.width(el.data('width'));
-				// make it reset
-			});
-
+			meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($component, '#homeloan_filter_results_loanTerm');
 
 		}
 	}
@@ -457,13 +441,13 @@
 						label: 'Back',
 						icon: '',
 						className: 'btn-sm btn-close-dialog',
-						callback: afterClose, // fix this
+						callback: afterClose // fix this
 					},
 					rightBtn: {
 						label: 'Save Changes',
 						icon: '',
 						className: 'btn-sm',
-						callback: saveSelection,
+						callback: saveSelection
 					},
 					onOpen: function() {
 						afterOpen();

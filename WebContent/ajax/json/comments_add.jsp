@@ -15,7 +15,7 @@
 
 <go:log level="INFO" source="comments_add_jsp" >Add Comment TransactionId: ${transactionId}</go:log>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
 <go:log>isOperator: ${isOperator}</go:log>

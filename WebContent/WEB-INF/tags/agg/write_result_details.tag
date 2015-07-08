@@ -7,7 +7,7 @@
 <%@ attribute name="baseXmlNode" 			required="true"	 rtexprvalue="true"	 description="The base xml node that is wrapped around each result." %>
 <%@ attribute name="sessionXPaths" 			required="false"	 rtexprvalue="true"	 description="A comma delimetered list of xpaths which are to be written to the session object - eg premiums" %>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <jsp:useBean id="insertParams" class="java.util.ArrayList" scope="request" />
 <c:set var="sandbox">${insertParams.clear()}</c:set>

@@ -88,8 +88,10 @@ public class ConfirmationService {
 				switch (details.getVerticalCode()) {
 					case "health":
 					case "homeloan":
+					case "utilities":
 						confirmationUrl.append(details.getVerticalCode());
 						confirmationUrl.append("_confirmation.jsp?action=confirmation");
+						confirmationUrl.append("&transactionId=" + details.getTransactionId());
 						confirmationUrl.append("&token=").append(URLEncoder.encode(confirmationKey, "UTF-8"));
 						break;
 				}

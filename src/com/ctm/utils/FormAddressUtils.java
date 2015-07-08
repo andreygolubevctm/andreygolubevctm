@@ -30,7 +30,7 @@ public class FormAddressUtils {
 
 		}else{
 			logger.debug("Type ahead address on "+xPathPrefix);
-			address.setUnitNo(request.getParameter(xPathPrefix+"_unitShop"));
+			address.setUnitNo(request.getParameter(xPathPrefix+"_unitSel"));
 			address.setUnitType(request.getParameter(xPathPrefix+"_unitType"));
 
 			address.setHouseNo(request.getParameter(xPathPrefix+"_houseNoSel"));

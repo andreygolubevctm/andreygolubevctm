@@ -22,4 +22,4 @@
 	<c:set var="requiredAttr" value=" required " />
 </c:if>
 
-<input type="text" id="${name}" name="${name}" class="validate ${className}" value="${value}" data-validation-placement="${validationErrorPlacementSelector}" style="visibility:hidden;height:0;" tabindex="-1" readonly ${requiredAttr} ${title} ${attributeInjection} />
+<input type="text" id="${name}" name="${name}" class="validate ${className}" value="${value}" data-validation-placement="${validationErrorPlacementSelector}" style="visibility:hidden;height:0;display:block;" tabindex="-1" readonly ${requiredAttr} ${title} ${attributeInjection} />

@@ -21,7 +21,9 @@
 <%@ attribute name="formattedDecimal"       required="false" rtexprvalue="true"   description="Live number formatting applied to field (2 decimal places) - use true/false or the number of decimal places to use." %>
 <%@ attribute name="formattedInteger"       required="false" rtexprvalue="true"   description="Live number formatting applied to field (NO decimal places) - use true/false" %>
 <%@ attribute name="includeInForm"          required="false" rtexprvalue="true"   description="Force attribute to include value in data bucket - use true/false" %>
-<%@ attribute name="defaultValue" 			required="false"	rtexprvalue="true"  description="An optional default value for the field" %>
+<%@ attribute name="defaultValue" 			required="false" rtexprvalue="true"  description="An optional default value for the field" %>
+<%@ attribute name="inputGroupText" 	required="false" rtexprvalue="true"  description="Optional inputgroup text" %>
+<%@ attribute name="inputGroupTextPosition" 	required="false" rtexprvalue="true"  description="left or right. Position of group text element specified by inputGroupText" %>
 
 <%-- VARIABLES --%>
 <c:if test="${readOnly}">
@@ -104,7 +106,21 @@
 <c:choose>
 	<c:when test="${!readOnly}">
 		<%-- HTML --%>
+		<c:if test="${not empty inputGroupText}">
+			<div class="input-group">
+				<c:if test="${inputGroupTextPosition eq 'left'}">
+					<span class="input-group-addon">${inputGroupText}</span>
+				</c:if>
+		</c:if>
+
 		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" value="${value}" ${maxlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}>
+
+		<c:if test="${not empty inputGroupText}">
+				<c:if test="${empty inputGroupTextPosition or inputGroupTextPosition eq 'right'}">
+					<span class="input-group-addon">${inputGroupText}</span>
+				</c:if>
+			</div>
+		</c:if>
 	</c:when>
 	<c:otherwise>
 		<input type="hidden" name="${name}" id="${name}" class="${className}" value="${value}">

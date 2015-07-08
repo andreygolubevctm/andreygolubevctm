@@ -14,30 +14,36 @@
 
 	var moduleEvents = events.autocomplete;
 
-	var elasticSearch = false;
-
-	var addressFieldId = false;
-
 	function initAutoComplete() {
 		$(document).ready(function(){
-			if($("#autoCompleteModuleFieldPrefix").length) {
-				setAddressFieldId($("#autoCompleteModuleFieldPrefix").val());
-			}
-			elasticSearch = addressFieldId !== false;
-			setTypeahead(elasticSearch);
+			setTypeahead();
 		});
 	}
 
-	function setAddressFieldId(id) {
-		addressFieldId = id;
+	/**
+	 * Checks if the provided field is an elasticsearch lookup
+	 * @param addressFieldId
+	 * @returns {boolean}
+	 * @private
+	 */
+	function _isElasticSearch(addressFieldId) {
+		return $("#" + addressFieldId + "_elasticSearch").val() === "Y";
 	}
 
-	function setTypeahead(elasticSearch) {
-		var $typeAheads = $('input.typeahead');
-		var params = null;
+	function setTypeahead() {
+		var $typeAheads = $('input.typeahead'),
+			params = null;
+
 		$typeAheads.each(function eachTypeaheadElement() {
-			var $component = $(this);
-			var url;
+			var $component = $(this),
+				fieldId = $component.attr("id"),
+				fieldIdEnd = fieldId.match(/(_)[a-zA-Z]{1,}$/g),
+				addressFieldId = fieldId.replace(fieldIdEnd, ""),
+				elasticSearch = _isElasticSearch(addressFieldId),
+				url;
+
+			$component.data("addressfieldid", addressFieldId);
+
 			if (elasticSearch) {
 				url = 'address/search.json';
 				params = {
@@ -144,6 +150,9 @@
 	//
 	function checkIfAddressSearch($element, typeaheadParams) {
 		if ($element && $element.hasClass('typeahead-address')) {
+			var addressFieldId = $element.data("addressfieldid"),
+				elasticSearch = _isElasticSearch(addressFieldId);
+
 			typeaheadParams.remote.url = $element.attr('id');
 			typeaheadParams.remote.replace = addressSearch;
 

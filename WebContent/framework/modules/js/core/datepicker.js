@@ -79,6 +79,7 @@
 			$.fn.datepicker.defaults.todayHighlight = true;
 			$.fn.datepicker.defaults.clearBtn = false;
 			$.fn.datepicker.defaults.keyboardNavigation = false;
+
 		} else {
 			//This will log (as with the other exception) if you have a datepicker on the page but no library in place. It should only log the first error instead of the second.
 			exception('core/datepicker:(lib-defaults-not-setable)');

@@ -38,14 +38,13 @@ public class ProviderFilter {
 	/**
 	 * Used for the xml based configs
 	 */
-	public String getXMLConfig(HttpServletRequest request, String config) {
-		return filterConfigByProvider(request, config);
+	public String getXMLConfig(Data data, String config, String vertical) {
+		return filterConfigByProvider(data, config, vertical);
 	}
 
-    public String getProviderCode(HttpServletRequest request) {
+    public String getProviderCode(Data data, String vertical) {
         try {
-            String vertical = verticalCode(request);
-            Data data = getDataBucket(request, vertical);
+
             final String code = providerCode(data, vertical);
             return asList("invalid", null).contains(code) ? "" : code;
         }
@@ -59,12 +58,9 @@ public class ProviderFilter {
 	/**
 	 * filters the config by provider
 	 */
-	private String filterConfigByProvider(HttpServletRequest request, String config) {
+	private String filterConfigByProvider(Data data, String config, String vertical) {
 		// first validate the provider against a whitelist to make sure no hacks are happening
 		try {
-            String vertical = verticalCode(request);
-			Data data = getDataBucket(request, vertical);
-
 			// filter out the config based on either the provider key or partner id being sent
 			config = getFilteredConfig(data, config, vertical);
 		}
@@ -264,20 +260,5 @@ public class ProviderFilter {
 		return providerCode;
 	}
 
-	/**
-	 * Get the details from the data bucket for this current transaction
-	 */
-	private Data getDataBucket(HttpServletRequest request, String vertical) {
-		Data data = new Data();
 
-		try {
-			RequestService fromFormService = new RequestService(request, vertical);
-			data = sessionDataService.getDataForTransactionId(request, String.valueOf(fromFormService.transactionId), true);
-		}
-		catch (Exception e) {
-			logger.error(e);
-		}
-
-		return data;
-	}
 }

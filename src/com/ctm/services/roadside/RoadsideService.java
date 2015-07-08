@@ -17,19 +17,19 @@ public class RoadsideService {
     private boolean valid = false;
     private String vertical = "ROADSIDE";
 
-    public String validate(HttpServletRequest request) {
-        RequestService fromFormService = new RequestService(request, vertical);
-        Data data = fromFormService.getRequestData();
+    public String validate(HttpServletRequest request, Data data) {
+        RequestService fromFormService = new RequestService(request, vertical, data);
+
         RoadsideRequest roadsideRequest = RoadsideRequestParser.parseRequest(data, vertical);
-        List<SchemaValidationError> errors = validate(roadsideRequest, vertical);
+        List<SchemaValidationError> errors = validate(roadsideRequest);
         if(!valid) {
             return outputErrors(fromFormService, errors);
         }
         return "";
     }
 
-    public List<SchemaValidationError> validate(RoadsideRequest lifeRequest, String vertical) {
-        List<SchemaValidationError> errors = FormValidation.validate(lifeRequest, vertical);
+    private List<SchemaValidationError> validate(RoadsideRequest roadsideRequest) {
+        List<SchemaValidationError> errors = FormValidation.validate(roadsideRequest, "");
         valid = errors.isEmpty();
         return errors;
     }

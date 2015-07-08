@@ -14,7 +14,7 @@
 <jsp:useBean id="fatalErrorService" class="com.ctm.services.FatalErrorService" scope="page" />
 
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
@@ -201,18 +201,6 @@
 			</c:if>
 
 			</c:forEach>
-
-				<go:log level="DEBUG">Writing Results to iSeries [AGGTRK] ${data.xml['ranking']}</go:log>
-
-			<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
-			<go:call pageId="AGGTRK" transactionId="${data.text['current/transactionId']}" xmlVar="${data.xml['ranking']}" style="${AGIS_leadFeedCode}" />
-
-				<c:set var="useDISCFlag" scope="request"><content:get key="bestPriceCallDisc"/></c:set>
-				<c:if test="${not empty useDISCFlag and useDISCFlag eq 'Y'}">
-					<%-- Only write the BP touch if we are using DISC for lead feed population. --%>
-					<agg:write_touch transaction_id="${data.current.transactionId }" touch="BP" />
-				</c:if>
-				<%-- END DISC STUFF --%>
 
 		</c:when>
 

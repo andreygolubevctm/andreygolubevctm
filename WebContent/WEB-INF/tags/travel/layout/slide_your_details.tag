@@ -72,11 +72,11 @@
 						title="Where are you travelling?"
 						validationErrorPlacementSelector=".travel_details_destinations"
 						helpId="213"
-						source="/ctm/isolocations/search.json?search="
+						source="/${pageSettings.getContextFolder()}isolocations/search.json?search="
 						/>
 					<field:hidden xpath="travel/unknownDestinations" />
 				</form_new:fieldset>
-				<go:log>PRELOAD IS ${param.preload}</go:log>
+
 				<%-- DATES AND TRAVELLERS SECTION --%>
 				<form_new:fieldset legend="Dates &amp; Travellers" className="travel_details_datesTravellers" id="datestravellersfs">
 					<field_new:date_range xpath="travel/dates" required="true" labelFrom="When do you leave?" labelTo="When do you return?" titleFrom="departure" titleTo="return" minDateFrom="${now_Date}" maxDateFrom="${nowPlusYear_Date}" minDateTo="${now_Date}" maxDateTo="${nowPlusYear_Date}" offsetText="up to 1 year" helpIdFrom="214" helpIdTo="215" />

@@ -8,6 +8,7 @@ import com.ctm.model.TouchProductProperty;
 import com.ctm.services.AccessTouchService;
 
 import javax.naming.NamingException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,10 +133,17 @@ public class TouchDao {
 		touches.add(touch);
 	}
 
+
+	public ArrayList<Touch> getTouchesForRootId(long transactionId) throws DaoException {
+		List<Long> transactionIds = new ArrayList<Long>();
+		transactionIds.add(transactionId);
+		return getTouchesForRootIds(transactionIds);
+	}
+
 	/**
 	 *
 	 */
-	public ArrayList<Touch> getTouchesForRootId(long transactionId) throws DaoException {
+	public ArrayList<Touch> getTouchesForRootIds(List<Long> transactionIds) throws DaoException {
 
 		String sql = " SELECT" +
 				" 	DISTINCT t.touchId, t.transaction_id, t.dateTime, t.operator_id, t.type,  " +
@@ -148,7 +156,7 @@ public class TouchDao {
 				" 		ctm.touches AS t " +
 				" 		INNER JOIN aggregator.transaction_header2_cold  AS th  " +
 				" 		ON t.transaction_id = th.transactionid" +
-				" 	WHERE th.rootId  = ?" +
+				" 	WHERE th.rootId IN ( " + questionMarksBuilder(transactionIds.size()) + ")" +
 				" 	UNION ALL" +
 				" 	SELECT " +
 				" 		DISTINCT t.id as touchId, t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
@@ -156,7 +164,7 @@ public class TouchDao {
 				" 	FROM aggregator.transaction_header AS th  " +
 				" 		INNER JOIN ctm.touches AS t " +
 				" 		ON t.transaction_id = th.transactionid" +
-				" 	WHERE th.rootId  = ?" +
+				" 	WHERE th.rootId IN ( " + questionMarksBuilder(transactionIds.size()) + ") " +
 				" 	) AS t" +
 				" 	LEFT OUTER JOIN ctm.touches_products AS tp " +
 				" 	ON t.touchId = tp.touchesId " +
@@ -175,78 +183,12 @@ public class TouchDao {
 			// Get the touches on the provided transaction and others related by root ID
 			//
 
-			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-					sql
-			);
-			stmt.setLong(1, transactionId);
-			stmt.setLong(2, transactionId);
-
-			ResultSet results = stmt.executeQuery();
-
-			while (results.next()) {
-				mapResult(touches, results);
-			}
-			stmt.close();
-		}
-		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		finally {
-			dbSource.closeConnection();
-		}
-
-		return touches;
-	}
-
-	public ArrayList<Touch> getTouchesForTransactionId(long transactionId) throws DaoException {
-		List<Long> transactionIds = new ArrayList<Long>();
-		transactionIds.add(transactionId);
-		return getTouchesForTransactionIds(transactionIds);
-	}
-
-	/**
-	 *
-	 */
-	public ArrayList<Touch> getTouchesForTransactionIds(List<Long> transactionIds) throws DaoException {
-		SimpleDatabaseConnection dbSource = null;
-		ArrayList<Touch> touches = new ArrayList<Touch>();
-
-		try {
-			PreparedStatement stmt;
-			dbSource = new SimpleDatabaseConnection();
-
-			//
-			// Get the touches on the provided transaction and others related by root ID
-			//
-
-			stmt = dbSource.getConnection().prepareStatement(
-					"SELECT DISTINCT t.id, t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
-							"t.operator_id, t.type, tp.productCode, pm.shortTitle as productName, " +
-							"pp.providerCode, pp.name as providerName " +
-
-							"FROM aggregator.transaction_header AS th  " +
-
-							"	INNER JOIN aggregator.transaction_header AS th2 " +
-							"	ON th.rootId = th2.rootId " +
-
-							"	INNER JOIN ctm.touches AS t " +
-							"	ON t.transaction_id = th2.transactionid " +
-
-							"	LEFT OUTER JOIN ctm.touches_products AS tp " +
-							"	ON t.id = tp.touchesId " +
-
-							"	LEFT OUTER JOIN ctm.product_master AS pm " +
-							"	ON pm.productCode = tp.productCode and CURDATE() BETWEEN pm.effectiveStart and pm.effectiveEnd " +
-
-							"	LEFT OUTER JOIN ctm.provider_master AS pp " +
-							"	ON pm.providerId = pp.providerId " +
-
-							"	WHERE th.transactionId  IN ( " + questionMarksBuilder(transactionIds.size()) + ") " +
-
-							"	ORDER BY t.id DESC, t.date DESC, t.time DESC LIMIT 50"
-			);
-
+			PreparedStatement stmt = dbSource.getConnection().prepareStatement(sql);
 			int i = 1;
+
+			for(long transactionId : transactionIds){
+				stmt.setLong(i++, transactionId);
+			}
 
 			for(long transactionId : transactionIds){
 				stmt.setLong(i++, transactionId);
@@ -257,11 +199,9 @@ public class TouchDao {
 			while (results.next()) {
 				mapResult(touches, results);
 			}
+			stmt.close();
 		}
-		catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		catch (NamingException e) {
+		catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
 		}
 		finally {

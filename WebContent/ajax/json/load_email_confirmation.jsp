@@ -6,7 +6,7 @@
 </c:set>
 
 <c:if test="${not empty transactionid}">	
-	<sql:setDataSource dataSource="jdbc/aggregator"/>			    
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 	<c:catch var="error">
 		<sql:query var="getCode">
 			SELECT textValue 

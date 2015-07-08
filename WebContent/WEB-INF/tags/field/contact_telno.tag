@@ -12,6 +12,7 @@
 <%@ attribute name="size"					required="false" rtexprvalue="true"	 description="size of the input" %>
 <%@ attribute name="isLandline"				required="false" rtexprvalue="true"	 description="Flag to require number to be landline" %>
 <%@ attribute name="labelName"				required="false" rtexprvalue="true"	 description="the label to display for validation" %>
+<%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="Placeholder text" %>
 <%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
 
 <%-- VARIABLES --%>
@@ -19,21 +20,22 @@
 <c:set var="dummyname" value="${name}input" />
 <c:set var="id" value="${name}" />
 <c:if test="${not empty maxlength}"><c:set var="maxlength">maxlength="${maxlength}"</c:set></c:if>
-<c:choose>
-	<c:when test="${isLandline eq true}">
-		<c:set var="allowMobile" value="false"/>
-		<c:set var="placeHolder">(00) 0000 0000</c:set>
-		<c:if test="${pageSettings.getVerticalCode() == 'health'}">
-			<c:set var="placeHolder">(0X) XXXX XXXX</c:set>
-		</c:if>
-	</c:when>
-	<c:otherwise>
-		<c:set var="isLandline" value="false"/>
-		<c:set var="allowMobile" value="true"/>
-		<c:set var="placeHolder">(0x)xxx or 04xxx</c:set>
-	</c:otherwise>
-</c:choose>
-
+<c:if test="${empty placeHolder}">
+	<c:choose>
+		<c:when test="${isLandline eq true}">
+			<c:set var="allowMobile" value="false"/>
+			<c:set var="placeHolder">(00) 0000 0000</c:set>
+			<c:if test="${pageSettings.getVerticalCode() == 'health'}">
+				<c:set var="placeHolder">(0X) XXXX XXXX</c:set>
+			</c:if>
+		</c:when>
+		<c:otherwise>
+			<c:set var="isLandline" value="false"/>
+			<c:set var="allowMobile" value="true"/>
+			<c:set var="placeHolder">(0x)xxx or 04xxx</c:set>
+		</c:otherwise>
+	</c:choose>
+</c:if>
 
 <c:set var="labelText">
 	<c:choose>

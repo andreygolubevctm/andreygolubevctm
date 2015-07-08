@@ -4,7 +4,7 @@
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- Import request data from quote page --%>
 <c:set var="param_QuoteData" value="${param.QuoteData}" />

@@ -29,6 +29,8 @@ public class SimplesSearchService {
                  transactionId = (Long) id;
             } else if(id instanceof String){
                 transactionId = Long.parseLong((String) id);
+            }else {
+                transactionId = Long.parseLong(id.toString());
             }
             if (hasHotAndCold) {
                 if(row.get("tableType").equals("COLD")) {

@@ -100,10 +100,6 @@
 				}
 
 			}
-//			$('#simplesiframe').contents().find('input[name="health_simples_hawking"]:checked').val();
-			$('input[name="health_simples_hawking"]').on('change', function() {
-				toggleHawking($('input[name="health_simples_hawking"]:checked').val());
-			});
 		});
 	}
 
@@ -218,9 +214,14 @@
 			type = 'complete';
 		}
 
+		var isFailJoin = false;
+		if (currentMessage.message.sourceId === 5 || currentMessage.message.sourceId === 8) {
+			isFailJoin = true;
+		}
+
 		modalId = meerkat.modules.dialogs.show({
 			title: ' ',
-			url: 'simples/ajax/message_statuses.html.jsp?parentStatusId=' + parentStatusId,
+			url: 'simples/ajax/message_statuses.html.jsp?parentStatusId=' + parentStatusId + '&isFailJoin=' + isFailJoin,
 			buttons: [{
 				label: 'Cancel',
 				className: 'btn-cancel',
@@ -501,62 +502,8 @@
 		}
 	}
 
-	function toggleHawking(status) {
-		if(status == 'ON') {
-			status = 1;
-		} else {
-			status = 0;
-		}
-		meerkat.modules.comms.get({
-			url: 'hawking/toggle', //  ==  simples/hawking/toggle
-			cache: false,
-			errorLevel: 'silent',
-			data: {
-				status: status
-			},
-			onSuccess: function onSuccess() {
-				console.log("Hawking Changed to "+status);
-			},
-			onError: function onError(obj, txt, errorThrown) {
-				console.log("Hawking Status update FAILED for "+status);
-			}
-		});
-	}
-	function getHawking() {
-		meerkat.modules.comms.get({
-			url: 'simples/hawking/get.json',
-			cache: false,
-			errorLevel: 'silent',
-			onSuccess: function onSuccess(result) {
-				setHawkingInput (result.status);
-			},
-			onError: function onError(obj, txt, errorThrown) {
-				console.log("Failed to get Hawking Status");
-			}
-		});
-	}
-	function initiateHawkingInput () {
-		getHawking();
-	}
-	function setHawkingInput (status) {
-		if (status === 1) {
-			$('#simplesiframe').contents().find('input[name="health_simples_hawking"]').filter('[value=ON]').parent().addClass('active');
-			$('#simplesiframe').contents().find('input[name="health_simples_hawking"]').filter('[value=OFF]').parent().removeClass('active');
-		}
-		else if (status === 0) {
-			$('#simplesiframe').contents().find('input[name="health_simples_hawking"]').filter('[value=ON]').parent().removeClass('active');
-			$('#simplesiframe').contents().find('input[name="health_simples_hawking"]').filter('[value=OFF]').parent().addClass('active');
-		}
-		else {
-			console.log("Failed to set Hawking Input");
-		}
-	}
-
-
-
 	meerkat.modules.register('simplesActions', {
-		init: init,
-		setHawkingInput : initiateHawkingInput
+		init: init
 	});
 
 })(jQuery);

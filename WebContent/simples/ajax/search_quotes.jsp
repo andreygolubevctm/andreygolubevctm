@@ -5,7 +5,7 @@
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 <jsp:useBean id="searchService" class="com.ctm.services.simples.SimplesSearchService" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 <go:setData dataVar="data" xpath="search_results" value="*DELETE" />
 
 <c:set var="searchPhrase" value="${fn:trim(param.search_terms)}" />
@@ -56,128 +56,59 @@
 			</c:choose>
 		</c:set>
 
-		<%-- Setting a MySQL cache date --%>
-		<c:set var="startDate">
-			<c:choose>
-				<c:when test="${simplesMode eq 'TRANS'}">
-					<read:return_date addDays="-91" />
-				</c:when>
-				<c:otherwise>
-					<read:return_date addDays="-31" />
-				</c:otherwise>
-			</c:choose>
-		</c:set>
-
-		<%-- Getting a MySQL TransactionID limiter, which will be cached --%>
-		<sql:query var="limitIdSQL">
-			SELECT MIN(transactionId) AS id
-			FROM aggregator.transaction_header
-			WHERE startDate > ?
-			<c:if test="${simplesMode eq 'TRANS'}">
-				UNION ALL
-				SELECT MIN(transactionId) AS id
-				FROM aggregator.transaction_header2_cold
-				WHERE transactionStartDateTime > ?
-			</c:if>;
-			<sql:param>${startDate}</sql:param>
-			<c:if test="${simplesMode eq 'TRANS'}">
-				<sql:param>${startDate}</sql:param>
-			</c:if>
-		</sql:query>
-		<c:set var="limitId">
-			<c:choose>
-				<c:when test="${not empty limitIdSQL.rows[1]['id']}">${limitIdSQL.rows[1]['id']}</c:when>
-				<c:when test="${not empty limitIdSQL.rows[0]['id']}">${limitIdSQL.rows[0]['id']}</c:when>
-				<c:otherwise>0</c:otherwise>
-			</c:choose>
-		</c:set>
-
 		<c:choose>
-			<c:when test="${simplesMode eq 'MOBILE'}">
+			<c:when test="${simplesMode eq 'MOBILE' or simplesMode eq 'PHONE'}">
 				<go:log level="INFO" >SIMPLES SEARCH: MOBILE MODE</go:log>
 				<sql:query var="transactions">
-					SELECT th.transactionID AS id, td.xpath
-					FROM aggregator.transaction_details td
-					JOIN aggregator.transaction_header th ON td.transactionId = th.transactionID
-					AND th.productType = 'HEALTH'
-					WHERE td.xpath IN(
-					'health/application/mobile',
-					'health/application/other',
-					'health/contactDetails/contactNumber',
-					'health/contactDetails/contactNumber/mobile'
-					)
-					AND td.textValue = ?
-					GROUP BY th.transactionId DESC
-					LIMIT 25;
-					<sql:param value="${searchPhrase}" />
-				</sql:query>
-			</c:when>
-
-			<c:when test="${simplesMode eq 'PHONE'}">
-				<go:log level="INFO" >SIMPLES SEARCH: PHONE MODE</go:log>
-				<sql:query var="transactions">
-					SELECT th.transactionID AS id
-					FROM aggregator.transaction_details td
-					JOIN aggregator.transaction_header th ON td.transactionId = th.transactionID
-					AND th.productType = 'HEALTH'
-					WHERE td.xpath IN(
-					'health/contactDetails/contactNumber',
-					'health/contactDetails/contactNumber/other',
-					'health/application/other'
-					)
-					AND td.textValue = ?
-					GROUP BY th.transactionId DESC
-					LIMIT 25;
+					SELECT distinct transactionId as id
+					FROM aggregator.phone_lookup
+					where PhoneNumber =  ?
+					order by transactionid desc  LIMIT 25;
 					<sql:param value="${searchPhrase}" />
 				</sql:query>
 			</c:when>
 
 			<c:when test="${simplesMode eq 'TRANS'}">
-				<go:log level="INFO" >SIMPLES SEARCH: TRANSACTION ID NODE</go:log>
-				<sql:query var="transactions">
-					SELECT 'HOT' as tableType , transactionId AS id
+				<sql:query var="rootIDSQL">
+					SELECT rootId AS id
 					FROM aggregator.transaction_header
-					WHERE transactionId > '${limitId}'
+					WHERE  TransactionID = ?
 					AND productType = 'HEALTH'
-					AND ? IN (rootId,TransactionID,PreviousId)
 					UNION ALL
-					SELECT 'COLD' as tableType , transactionId AS id
+					SELECT  rootId AS id
 					FROM aggregator.transaction_header2_cold
-					WHERE transactionId > '${limitId}'
-					AND verticalId = 4
-					AND ? IN (rootId,TransactionID,PreviousId);
+					WHERE  TransactionID = ?
+					AND verticalId = 4;
 					<sql:param value="${searchPhrase}" />
 					<sql:param value="${searchPhrase}" />
 				</sql:query>
+				<c:set var="rootId">
+					${rootIDSQL.rows[0]['id']}
+				</c:set>
+				<go:log level="INFO" >SIMPLES SEARCH: TRANSACTION ID NODE</go:log>
+				<c:if test="${not empty rootId}">
+					<sql:query var="transactions">
+						SELECT 'HOT' as tableType , transactionId AS id
+						FROM aggregator.transaction_header
+						where rootId = ?
+						UNION ALL
+						SELECT 'COLD' as tableType , transactionId AS id
+						FROM aggregator.transaction_header2_cold
+						WHERE rootId = ?
+						<sql:param value="${rootId}" />
+						<sql:param value="${rootId}" />
+					</sql:query>
+
+				</c:if>
 			</c:when>
 
 			<c:when test="${simplesMode eq 'EMAIL'}">
 				<go:log level="INFO" >SIMPLES SEARCH: EMAIL MODE</go:log>
 				<sql:query var="transactions">
-					SELECT id FROM
-					(
-					(SELECT th.transactionId AS id
-					FROM aggregator.transaction_header th
-					WHERE th.productType = 'HEALTH'
-					AND th.emailAddress = ?
-					GROUP BY id DESC
-					LIMIT 25)
-					UNION ALL
-					(SELECT th.transactionID AS id
-					FROM aggregator.transaction_details td
-					JOIN aggregator.transaction_header th ON td.transactionId = th.transactionID
-					AND th.productType = 'HEALTH'
-					WHERE td.xpath IN(
-					'health/contactDetails/email',
-					'health/application/email'
-					)
-					AND td.textValue = ?
-					GROUP BY id DESC
-					LIMIT 25)
-					) AS results
-					GROUP BY id DESC
-					LIMIT 25;
-					<sql:param value="${searchPhrase}" />
+					SELECT distinct transactionId as id
+					FROM aggregator.email_lookup
+					where emailAddress =  ?
+					order by transactionid desc  LIMIT 25;
 					<sql:param value="${searchPhrase}" />
 				</sql:query>
 			</c:when>
@@ -191,25 +122,16 @@
 						<c:set var="searchPhraseFirstName" value="${fn:substringBefore(searchPhrase, ' ')}" />
 
 						<sql:query var="transactions">
-							SELECT th.transactionId AS id
-							FROM aggregator.transaction_details td
-							JOIN aggregator.transaction_header th ON td.transactionId = th.transactionID
-							AND th.productType = 'HEALTH'
-							LEFT JOIN aggregator.transaction_details td2 ON td.transactionId = td2.transactionId
-							AND td2.xpath IN('health/application/primary/surname','health/contactDetails/lastname')
-							AND (
-							(td.xpath = 'health/application/primary/firstname' AND td2.xpath = 'health/application/primary/surname')
-							OR
-							(td.xpath = 'health/contactDetails/firstname' AND td2.xpath = 'health/contactDetails/lastname')
-							)
-							WHERE td.xpath IN('health/contactDetails/name','health/application/primary/firstname','health/contactDetails/firstname')
-							AND (
-							(td.xpath = 'health/contactDetails/name' AND td.textValue LIKE(?))
-							OR
-							(td.xpath != 'health/contactDetails/name' AND td.textValue LIKE(?) AND td2.textValue LIKE(?))
-							)
-							GROUP BY th.transactionId DESC
-							LIMIT 25;
+							SELECT distinct p1.transactionId as id
+							FROM aggregator.person_lookup p1
+							JOIN aggregator.person_lookup p2
+							ON 	p1.transactionid = p2.transactionid
+							and p2.surname is not null
+							and p1.firstname is not null
+							where p1.firstname like ? or
+							(p1.firstname like ? and
+							p2.surname like ?)
+							order by p1.transactionid desc LIMIT 25;
 							<sql:param>${searchPhraseFirstName}%${searchPhraseLastName}%</sql:param>
 							<sql:param>${searchPhraseFirstName}%</sql:param>
 							<sql:param>${searchPhraseLastName}%</sql:param>
@@ -220,21 +142,10 @@
 						<go:log level="INFO" >SIMPLES SEARCH: SURNAME MODE</go:log>
 
 						<sql:query var="transactions">
-							SELECT th.transactionId AS id
-							FROM aggregator.transaction_details td
-							JOIN aggregator.transaction_header th ON td.transactionId = th.transactionID
-							AND th.productType = 'HEALTH'
-							WHERE td.xpath IN(
-							'health/contactDetails/name',
-							'health/application/primary/surname',
-							'health/contactDetails/lastname'
-							)
-							AND (
-							(td.xpath = 'health/contactDetails/name' AND td.textValue LIKE ?)
-							OR td.textValue LIKE ?
-							)
-							GROUP BY th.transactionId DESC
-							LIMIT 25;
+							SELECT distinct transactionId as id
+							FROM aggregator.person_lookup
+							where firstname like ? or surname like ?
+							order by transactionid desc  LIMIT 25;
 							<sql:param>%${searchPhrase}%</sql:param>
 							<sql:param>${searchPhrase}%</sql:param>
 						</sql:query>
@@ -269,11 +180,10 @@
 						END AS editable,
 						COALESCE(MAX(th2.transactionid),th.TransactionId) AS latestID
 						FROM aggregator.transaction_header th
-						LEFT JOIN ctm.touches t1 ON (t1.transaction_Id > ?) AND (th.TransactionId = t1.transaction_id) AND (t1.type = 'C')
-						LEFT JOIN ctm.touches t2 ON (t2.transaction_Id > ?) AND (th.TransactionId = t2.transaction_id) AND (t2.type = 'F')
+						LEFT JOIN ctm.touches t1 ON  (th.TransactionId = t1.transaction_id) AND (t1.type = 'C')
+						LEFT JOIN ctm.touches t2 ON  (th.TransactionId = t2.transaction_id) AND (t2.type = 'F')
 						LEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId
 						WHERE th.TransactionId IN (${searchService.getHotTransactionIdsCsv()})
-						AND th.transactionId > ?
 						GROUP BY id
 					</c:if>
 					<c:if test="${searchService.hasHotTransactions() && searchService.hasColdTransactions()}">
@@ -293,31 +203,20 @@
 						FROM aggregator.transaction_header2_cold th
 						LEFT JOIN aggregator.transaction_emails te USING(transactionId)
 						LEFT JOIN aggregator.email_master AS em ON em.emailId = te.emailId
-						LEFT JOIN ctm.touches t1 ON (t1.transaction_Id > ?) AND (th.TransactionId = t1.transaction_id) AND (t1.type = 'C')
-						LEFT JOIN ctm.touches t2 ON (t2.transaction_Id > ?) AND (th.TransactionId = t2.transaction_id) AND (t2.type = 'F')
+						LEFT JOIN ctm.touches t1 ON (th.TransactionId = t1.transaction_id) AND (t1.type = 'C')
+						LEFT JOIN ctm.touches t2 ON (th.TransactionId = t2.transaction_id) AND (t2.type = 'F')
 						LEFT JOIN aggregator.transaction_header2_cold th2 ON th2.rootId = th.rootId
 						WHERE th.TransactionId IN (${searchService.getColdTransactionIdsCsv()})
-						AND th.transactionId > ?
 						GROUP BY id
 					</c:if>
 					ORDER BY id DESC;
-					<c:if test="${searchService.hasHotTransactions()}">
-						<sql:param>${limitId}</sql:param>
-						<sql:param>${limitId}</sql:param>
-						<sql:param>${limitId}</sql:param>
-					</c:if>
-					<c:if test="${searchService.hasColdTransactions()}">
-						<sql:param>${limitId}</sql:param>
-						<sql:param>${limitId}</sql:param>
-						<sql:param>${limitId}</sql:param>
-					</c:if>
 				</sql:query>
 			</c:when>
 			<c:otherwise>
 				<c:set var="errorPool">${errorPool}{"message":"Pre-Qualifying search has found no results"}</c:set>
 			</c:otherwise>
 		</c:choose>
-</c:otherwise>
+	</c:otherwise>
 </c:choose>
 
 <%-- Now Check if we can continue with creating the search --%>

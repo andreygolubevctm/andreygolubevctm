@@ -7,7 +7,7 @@
 <%@ attribute name="rankSequence"	required="true"	 rtexprvalue="true"	 description="Rank Sequence from WriteRank" %>
 <%@ attribute name="rankPosition"	required="true"	 rtexprvalue="true"	 description="Rank Position from WriteRank" %>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="best_price_param_name">best_price${rankPosition}</c:set>
 <%-- Left this line below in as removing prevents the price from being picked up and sent. Quite possibly due to the permissions system  --%>
@@ -15,7 +15,7 @@
 	<%-- Used by dreammail/send.jsp xmlForOtherQuery call ---%>
 	<go:setData dataVar="data" xpath="travel/bestPricePosition" value="${rankPosition}" />
 
-	<sql:setDataSource dataSource="jdbc/aggregator"/>
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 
 	<c:set var="prefix" value="best_price_" />
 	<c:set var="suffixes" value="productId,providerName,service,productName,excess,medical,cxdfee,luggage,price,url,coverLevelType" />

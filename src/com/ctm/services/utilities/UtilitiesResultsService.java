@@ -18,7 +18,9 @@ public class UtilitiesResultsService extends UtilitiesBaseService{
 		UtilitiesResultsService service = new UtilitiesResultsService();
 
 		UtilitiesResultsModel returnedModel = service.getResults(request, model);
-
+		if(returnedModel == null) {
+			return "";
+		}
 		return returnedModel.toJson();
 
 	}

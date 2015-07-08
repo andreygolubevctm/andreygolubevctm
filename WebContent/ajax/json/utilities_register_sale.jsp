@@ -42,7 +42,7 @@
 			items="marketing=${receiveInfo}" />
 
 		<%-- Inject the order date into the transaction details --%>
-		<sql:setDataSource dataSource="jdbc/aggregator"/>
+		<sql:setDataSource dataSource="jdbc/ctm"/>
 		<c:set var="tranID" value="${data.current.transactionId}" />
 
 		<sql:transaction>

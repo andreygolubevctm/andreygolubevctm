@@ -143,9 +143,10 @@ fieldset{
 	}
 
 	.serialise{
-		position: absolute;
-		top:0;
-		left:0;
+	  position: relative;
+	  top: 0;
+	  left: 0;
+	  display: block;
 	}
 }
 
@@ -162,6 +163,10 @@ fieldset{
 	}
 }
 .dateinput-tripleField .form-control { padding: 10px 10px; text-align: center; }
+
+.datepicker {
+	z-index: (@zindex-modal - 10) !important;
+}
 
 /* Ensure first letter of validation error is uppercase */
 .error-field label.has-error:first-letter {

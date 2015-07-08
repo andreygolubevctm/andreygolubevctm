@@ -59,7 +59,7 @@
 
 				<c:set var="requestedTransaction" value="${id_for_access_check}" />
 
-				<sql:setDataSource dataSource="jdbc/aggregator"/>
+		<sql:setDataSource dataSource="jdbc/ctm"/>
 
 				<%-- 30/1/13: Increment TranID when 'ANYONE' opens a quote --%>
 				<c:set var="id_handler" value="increment_tranId" />

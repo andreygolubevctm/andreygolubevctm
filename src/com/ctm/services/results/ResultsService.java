@@ -31,9 +31,9 @@ public class ResultsService {
 			initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 			// Look up our data source
-			ds = (DataSource) envCtx.lookup("jdbc/aggregator");
+			ds = (DataSource) envCtx.lookup("jdbc/ctm");
 		} catch (NamingException e) {
-			logger.error("Failed to get InitialContext for jdbc/aggregator" , e);
+			logger.error("Failed to get InitialContext for jdbc/ctm" , e);
 		}
 	}
 

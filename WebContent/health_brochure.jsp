@@ -8,7 +8,10 @@
 
 <c:set var="pdf" 			value="${fn:replace(param.pdf, ' ', '%20')}" />
 <c:set var="brand"			value="${pageSettings.getBrandId()}" />
-<c:set var="url_prefix"		value="${pageSettings.getBaseUrl()}health_fund_info/brochures/" />
+<c:set var="url_prefix"		value="${pageSettings.getSetting('staticAssetUrl')}health/brochures/" />
+<c:if test='${!fn:startsWith(url_prefix, "http") && !fn:startsWith(url_prefix, "//")}'>
+	<c:set var="url_prefix" value="${pageSettings.getRootUrl()}${url_prefix}" />
+</c:if>
 <c:set var="url_branded" 	value="${url_prefix}${brand}${pdf}" />
 <c:set var="url_default" 	value="${url_prefix}0${pdf}" />
 

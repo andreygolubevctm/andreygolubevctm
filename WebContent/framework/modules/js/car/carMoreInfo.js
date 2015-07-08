@@ -182,29 +182,20 @@
 				productId: product.productId
 		};
 
-		if(meerkat.site.leadfeed[data.phonecallme].use_disc_props) {
-			$.extend(defaultData, {
-				source: currentBrandCode+'CAR',
-				leadNo: product.leadNo,
-				client: $('#quote_CrClientName').val() || '',
-				clientTel: $('#quote_CrClientTelinput').val() || '',
-				transactionId: meerkat.modules.transactionId.get()
-			});
-		} else {
-			$.extend(defaultData, {
-				clientNumber: product.leadNo,
-				clientName: $('#quote_CrClientName').val() || '',
-				phoneNumber: $('#quote_CrClientTelinput').val() || '',
-				partnerReference: meerkat.modules.transactionId.get()
-			});
-		}
+        $.extend(defaultData, {
+            clientNumber: product.leadNo,
+            clientName: $('#quote_CrClientName').val() || '',
+            phoneNumber: $('#quote_CrClientTelinput').val() || '',
+            partnerReference: meerkat.modules.transactionId.get()
+        });
+
 
 		var allData = $.extend(defaultData, data);
 
 		var $element = $(event.target);
 		meerkat.modules.loadingAnimation.showInside($element, true);
 		return meerkat.modules.comms.post({
-			url: meerkat.site.leadfeed[data.phonecallme].url,
+			url: 'leadfeed/car/getacall.json',
 			data: allData,
 			dataType: 'json',
 			cache: false,

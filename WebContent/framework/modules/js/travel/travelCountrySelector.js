@@ -63,8 +63,13 @@
 
     function applyEventListeners() {
 
-        $countrySelector.on('keydown', function () {
-            $countrySelector.data('ttView').datasets[0].valueKey = 'countryName';
+        $countrySelector.on('keydown', function (e) {
+            if (e.which == 13) { // if it's the enter key
+                $(".tt-suggestion:first-child").trigger('click'); // select the first item in the dropdown
+                $countrySelector.focus(); // reset the focus back on the input field
+            } else {
+                $countrySelector.data('ttView').datasets[0].valueKey = 'countryName';
+            }
         }).on('typeahead:opened', function () {
             selectedCountryObj = {};
             $countrySelector.val("")

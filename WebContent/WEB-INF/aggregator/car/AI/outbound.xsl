@@ -7,6 +7,9 @@
 	<xsl:import href="../../includes/get_street_name.xsl"/>
 
 	<xsl:param name="quoteType" />
+	<xsl:param name="partnerCode" />
+	<xsl:param name="username" />
+	<xsl:param name="password" />
 	<xsl:param name="subPartnerCode" />
 	<xsl:param name="agentCode" />
 	<xsl:param name="productQuoted" />
@@ -118,7 +121,7 @@
 				<GetMultiPremium xmlns="http://www.softsure.co.za/">
 					<QuoteDetails>
 						<RequestType>NewQuote</RequestType>
-						<PartnerCode>AUTOANDGEN</PartnerCode>
+						<PartnerCode><xsl:value-of select="$partnerCode" /></PartnerCode>
 						<SubPartnerCode><xsl:value-of select="$subPartnerCode" /></SubPartnerCode>
 						<AgentCode><xsl:value-of select="$agentCode" /></AgentCode>
 						<AgentRefNo><xsl:value-of select="transactionId" /></AgentRefNo>
@@ -325,8 +328,8 @@
 							</xsl:if>
 						</CarDetail>
 					</QuoteDetails>
-					<Username>AUTOANDGEN</Username>
-					<Password>Aut0andG3n</Password>
+					<Username><xsl:value-of select="$username" /></Username>
+					<Password><xsl:value-of select="$password" /></Password>
 				</GetMultiPremium>
 			</soap:Body>
 		</soap:Envelope>

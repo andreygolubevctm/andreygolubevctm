@@ -100,6 +100,22 @@
 			this.component = false;
 
 		this.picker = $(DPGlobal.template);
+
+		// if there's more than 1 month, append extra months
+		if (this.o.numberOfMonths > 1)
+		{
+			// create a template copy of the month0 style
+			var tempPicker = $(DPGlobal.template).find('.month0').addClass('calSeperator');
+			for (var i = 1; i < this.o.numberOfMonths; i++)
+			{
+				// alter this template and attach it to the picker object
+				this.picker.find('.month'+(i-1)).after(tempPicker.removeClass('month'+(i-1)).addClass('month'+i).closest('.month'+i).clone());
+			}
+
+			// cleanup
+			delete tempPicker;
+		}
+		
 		this._buildEvents();
 		this._attachEvents();
 
@@ -411,6 +427,7 @@
 		show: function(){
 			if (!this.isInline)
 				this.picker.appendTo('body');
+
 			this.picker.show();
 			this.place();
 			this._attachSecondaryEvents();
@@ -556,7 +573,6 @@
 			var width = this.component ? this.component.outerWidth(true) : this.element.outerWidth(false);
 			var left = offset.left,
 				top = offset.top;
-
 			this.picker.removeClass(
 				'datepicker-orient-top datepicker-orient-bottom '+
 				'datepicker-orient-right datepicker-orient-left'
@@ -564,8 +580,13 @@
 
 			if (this.o.orientation.x !== 'auto'){
 				this.picker.addClass('datepicker-orient-' + this.o.orientation.x);
-				if (this.o.orientation.x === 'right')
+				if (this.o.orientation.x === 'right') {
 					left -= calendarWidth - width;
+
+					if (left < 0) {
+						left = 0;
+					}
+				}
 			}
 			// auto x orientation is best-placement: if it crosses a window
 			// edge, fudge it sideways
@@ -595,6 +616,7 @@
 				top += height;
 			else
 				top -= calendarHeight + parseInt(this.picker.css('padding-top'));
+
 
 			this.picker.css({
 				top: top,
@@ -685,6 +707,7 @@
 			while (i < 12){
 				html += '<span class="month">'+dates[this.o.language].monthsShort[i++]+'</span>';
 			}
+			
 			this.picker.find('.datepicker-months td').html(html);
 		},
 
@@ -718,10 +741,18 @@
 				date.getUTCDate() === today.getDate()){
 				cls.push('today');
 			}
-			if (this.dates.contains(date) !== -1)
+
+			// only add the active class if the numberOfMonths is set to 1 and the dates array does not contain the passed in date 
+			// OR 
+			// if the numberOfMonths is greater than 1 and the dates array does not contain the passed in date and the new class doesn't exist and the old class doesn't exist
+			if ((this.o.numberOfMonths == 1 && this.dates.contains(date) !== -1) || (this.o.numberOfMonths > 1 && this.dates.contains(date) !== -1) && $.inArray('new', cls) == -1 && $.inArray('old', cls) == -1) 
 				cls.push('active');
-			if (date.valueOf() < this.o.startDate || date.valueOf() > this.o.endDate ||
-				$.inArray(date.getUTCDay(), this.o.daysOfWeekDisabled) !== -1){
+			
+			// disable the extra dates if the date is less than the start date or greater than the end date or the day of week value is not found
+			// OR
+			// numberOfMonths is greater than 1 and the old or new class has been added to the cls array
+			if ((date.valueOf() < this.o.startDate || date.valueOf() > this.o.endDate ||
+				$.inArray(date.getUTCDay(), this.o.daysOfWeekDisabled) !== -1) || (this.o.numberOfMonths > 1 && ($.inArray('old', cls) > -1 || $.inArray('new', cls) > -1))) {
 				cls.push('disabled');
 			}
 			if (this.range){
@@ -732,6 +763,7 @@
 					cls.push('selected');
 				}
 			}
+			
 			return cls;
 		},
 
@@ -745,9 +777,9 @@
 				endMonth = this.o.endDate !== Infinity ? this.o.endDate.getUTCMonth() : Infinity,
 				todaytxt = dates[this.o.language].today || dates['en'].today || '',
 				cleartxt = dates[this.o.language].clear || dates['en'].clear || '',
-				tooltip;
-			this.picker.find('.datepicker-days thead th.datepicker-switch')
-						.text(dates[this.o.language].months[month]+' '+year);
+				tooltip,
+				origEndDate = this.o.endDate;
+
 			this.picker.find('tfoot th.today')
 						.text(todaytxt)
 						.toggle(this.o.todayBtn !== false);
@@ -755,62 +787,108 @@
 						.text(cleartxt)
 						.toggle(this.o.clearBtn !== false);
 			this.updateNavArrows();
-			this.fillMonths();
-			var prevMonth = UTCDate(year, month-1, 28),
-				day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
-			prevMonth.setUTCDate(day);
-			prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.o.weekStart + 7)%7);
-			var nextMonth = new Date(prevMonth);
-			nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
-			nextMonth = nextMonth.valueOf();
-			var html = [];
-			var clsName;
-			while (prevMonth.valueOf() < nextMonth){
-				if (prevMonth.getUTCDay() === this.o.weekStart){
-					html.push('<tr>');
-					if (this.o.calendarWeeks){
-						// ISO 8601: First week contains first thursday.
-						// ISO also states week starts on Monday, but we can be more abstract here.
-						var
-							// Start of current week: based on weekstart/current date
-							ws = new Date(+prevMonth + (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5),
-							// Thursday of this week
-							th = new Date(Number(ws) + (7 + 4 - ws.getUTCDay()) % 7 * 864e5),
-							// First Thursday of year, year from thursday
-							yth = new Date(Number(yth = UTCDate(th.getUTCFullYear(), 0, 1)) + (7 + 4 - yth.getUTCDay())%7*864e5),
-							// Calendar week: ms between thursdays, div ms per day, div 7 days
-							calWeek =  (th - yth) / 864e5 / 7 + 1;
-						html.push('<td class="cw">'+ calWeek +'</td>');
 
-					}
-				}
-				clsName = this.getClassNames(prevMonth);
-				clsName.push('day');
-
-				if (this.o.beforeShowDay !== $.noop){
-					var before = this.o.beforeShowDay(this._utc_to_local(prevMonth));
-					if (before === undefined)
-						before = {};
-					else if (typeof(before) === 'boolean')
-						before = {enabled: before};
-					else if (typeof(before) === 'string')
-						before = {classes: before};
-					if (before.enabled === false)
-						clsName.push('disabled');
-					if (before.classes)
-						clsName = clsName.concat(before.classes.split(/\s+/));
-					if (before.tooltip)
-						tooltip = before.tooltip;
-				}
-
-				clsName = $.unique(clsName);
-				html.push('<td class="'+clsName.join(' ')+'"' + (tooltip ? ' title="'+tooltip+'"' : '') + '>'+prevMonth.getUTCDate() + '</td>');
-				if (prevMonth.getUTCDay() === this.o.weekEnd){
-					html.push('</tr>');
-				}
-				prevMonth.setUTCDate(prevMonth.getUTCDate()+1);
+			if (endMonth == month && endYear == year) {
+				month = month - (this.o.numberOfMonths - 1);
 			}
-			this.picker.find('.datepicker-days tbody').empty().append(html.join(''));
+
+			this.fillMonths();
+
+			for (i = 0; i < this.o.numberOfMonths; i++)
+			{
+				this.picker.find('.datepicker-days.month'+i+' thead th.datepicker-switch').text(dates[this.o.language].months[month]+' '+year);
+				
+				var prevMonth = UTCDate(year, month-1, 28),
+				day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
+				prevMonth.setUTCDate(day);
+				prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.o.weekStart + 7)%7);
+				
+				var nextMonth = new Date(prevMonth);
+				nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
+				var nextMonth = nextMonth.valueOf();
+				var html = [];
+				var clsName;
+				
+				while (prevMonth.valueOf() < nextMonth){
+					if (prevMonth.getUTCDay() === this.o.weekStart){
+						html.push('<tr>');
+						if (this.o.calendarWeeks){
+							// ISO 8601: First week contains first thursday.
+							// ISO also states week starts on Monday, but we can be more abstract here.
+							var
+								// Start of current week: based on weekstart/current date
+								ws = new Date(+prevMonth + (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5),
+								// Thursday of this week
+								th = new Date(Number(ws) + (7 + 4 - ws.getUTCDay()) % 7 * 864e5),
+								// First Thursday of year, year from thursday
+								yth = new Date(Number(yth = UTCDate(th.getUTCFullYear(), 0, 1)) + (7 + 4 - yth.getUTCDay())%7*864e5),
+								// Calendar week: ms between thursdays, div ms per day, div 7 days
+								calWeek =  (th - yth) / 864e5 / 7 + 1;
+							html.push('<td class="cw">'+ calWeek +'</td>');
+
+						}
+					}
+
+					clsName = this.getClassNames(prevMonth);
+
+					// disable any days that are greater than the original end date
+					if (this.o.numberOfMonths > 1 && prevMonth.valueOf() > origEndDate.valueOf())
+					{
+						clsName.push('disabled');
+					}
+					
+					clsName.push('day');
+
+					if (this.o.beforeShowDay !== $.noop){
+						var before = this.o.beforeShowDay(this._utc_to_local(prevMonth));
+						if (before === undefined)
+							before = {};
+						else if (typeof(before) === 'boolean')
+							before = {enabled: before};
+						else if (typeof(before) === 'string')
+							before = {classes: before};
+						if (before.enabled === false)
+							clsName.push('disabled');
+						if (before.classes)
+							clsName = clsName.concat(before.classes.split(/\s+/));
+						if (before.tooltip)
+							tooltip = before.tooltip;
+					}
+
+					clsName = $.unique(clsName);
+
+					html.push('<td class="'+clsName.join(' ')+'"' + (tooltip ? ' title="'+tooltip+'"' : '') + '>'+ prevMonth.getUTCDate() + '</td>');
+					if (prevMonth.getUTCDay() === this.o.weekEnd){
+						html.push('</tr>');
+					}
+					prevMonth.setUTCDate(prevMonth.getUTCDate()+1);
+				}
+
+				this.picker.find('.datepicker-days.month'+i+' tbody').empty().append(html.join(''));
+
+				if (this.o.numberOfMonths > 1)
+				{
+					// update the new end date
+					this.o.endDate = this.moveYear(this.o.endDate, 1);
+
+					// update the current view date.
+					this.viewDate = this.moveMonth(this.viewDate, 1);
+
+					
+					// update the current month & year we're wanting to render
+					year = this.viewDate.getUTCFullYear();
+					month = this.viewDate.getUTCMonth();
+				}
+			}
+
+			// reset the end date
+			this.o.endDate = origEndDate;
+
+			if (this.o.numberOfMonths > 1)
+			{
+				// reset the view date to the current date
+				 this.viewDate = this.moveMonth(this.viewDate, (-1 * this.o.numberOfMonths));
+			}
 
 			var months = this.picker.find('.datepicker-months')
 						.find('th:eq(1)')
@@ -868,19 +946,54 @@
 			var d = new Date(this.viewDate),
 				year = d.getUTCFullYear(),
 				month = d.getUTCMonth();
+
+				var tempEndDate = new Date(this.o.endDate);
+				var endMonth = tempEndDate.getUTCMonth(),
+				endYear =  tempEndDate.getUTCFullYear();
+
 			switch (this.viewMode){
 				case 0:
-					if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear() && month <= this.o.startDate.getUTCMonth()){
-						this.picker.find('.prev').css({visibility: 'hidden'});
+					var endMonthId = this.o.numberOfMonths - 1,  // zero based
+						monthEnd = 0;
+
+					endMonth -= endMonthId;
+
+					// hacky solution but using setUTCMonth/getUTCMonth combos broke the calendar despite reseting the enddate immediately
+					if (this.o.numberOfMonths > 1) {
+						switch (this.o.endDate.getUTCMonth())
+						{
+							case 0:
+									// this.o.numberofMonths - 1 because we've manually moved to december by one
+									monthEnd = 11 - (this.o.numberOfMonths - 1);
+								break;
+							case 1:
+								// this.o.numberofMonths - 2 because we've manually moved to december by two
+								monthEnd = 11 - (this.o.numberOfMonths - 2);
+								break;
+							default:
+								monthEnd = monthEnd - this.o.numberOfMonths;
+								break;
+						}
 					}
-					else {
-						this.picker.find('.prev').css({visibility: 'visible'});
-					}
-					if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear() && month >= this.o.endDate.getUTCMonth()){
-						this.picker.find('.next').css({visibility: 'hidden'});
-					}
-					else {
-						this.picker.find('.next').css({visibility: 'visible'});
+
+					for (var i = 0; i < this.o.numberOfMonths; i++) {
+
+						if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear() && month <= this.o.startDate.getUTCMonth() || (this.o.numberOfMonths > 1 && i != 0)){
+							this.picker.find('.month'+i+' .prev').css({visibility: 'hidden'});
+						}
+						else {
+							this.picker.find('.month'+i+' .prev').css({visibility: 'visible'});
+						}
+
+						// || (this.o.numberOfMonths > 1 && (i != endMonthId) || (this.o.endDate !== Infinity && (viewDateEndMonth == monthEnd)))
+						// the additional code will shorten the month by the number of months in numberOfMonths - 1 since we'll always have at least 1 calendar showing
+						if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear() && month >= this.o.endDate.getUTCMonth()
+						|| (endMonth == month && endYear == year) || (i  != this.o.numberOfMonths - 1)){
+							this.picker.find('.month'+i+' .next').css({visibility: 'hidden'});
+						}
+						else {
+							this.picker.find('.month'+i+' .next').css({visibility: 'visible'});
+						}
 					}
 					break;
 				case 1:
@@ -911,6 +1024,7 @@
 						switch (target[0].className){
 							case 'datepicker-switch':
 								this.showMode(1);
+								this.place();
 								break;
 							case 'prev':
 							case 'next':
@@ -959,7 +1073,22 @@
 								day = 1;
 								month = target.parent().find('span').index(target);
 								year = this.viewDate.getUTCFullYear();
+
+								// if a user goes into the month mode
+								// and we're in multi month mode
+								// and they've selected the very last month
+								// adjust the month and year accordingly so we don't show an undefined month
+								if (this.o.numberOfMonths > 1 && (month == this.o.endDate.getUTCMonth())) {
+									if (year == this.o.endDate.getUTCFullYear()) {
+										year = month == 0 ? year - 1  : year;
+										this.viewDate.setUTCFullYear(year);
+										this._trigger('changeYear', this.viewDate);
+									}
+									month = month == 0 ? 11 : month - 1;
+								}
+
 								this.viewDate.setUTCMonth(month);
+
 								this._trigger('changeMonth', this.viewDate);
 								if (this.o.minViewMode === 1){
 									this._setDate(UTCDate(year, month, day));
@@ -977,13 +1106,23 @@
 							}
 							this.showMode(-1);
 							this.fill();
+							this.place();
 						}
 						break;
 					case 'td':
 						if (target.is('.day') && !target.is('.disabled')){
 							day = parseInt(target.text(), 10)||1;
+
+							// grab the month index so we know how far ahead we need to set the viewDate object
+							var matches = (" " + target.closest('.datepicker-days').attr('class') + " ").match(/\smonth(\d+)\s/);
+							if (matches) {
+							    var monthIndex = parseInt(matches[1], 10);
+							    this.viewDate = this.moveMonth(this.viewDate, monthIndex);
+							}
+
 							year = this.viewDate.getUTCFullYear();
 							month = this.viewDate.getUTCMonth();
+
 							if (target.is('.old')){
 								if (month === 0){
 									month = 11;
@@ -1002,6 +1141,7 @@
 									month += 1;
 								}
 							}
+
 							this._setDate(UTCDate(year, month, day));
 						}
 						break;
@@ -1035,6 +1175,20 @@
 			if (!which || which  === 'view')
 				this.viewDate = date && new Date(date);
 
+			// this seems to be the only solid place where I can update the view correctly when using multiple calendars
+			if (this.o.numberOfMonths > 1) {
+				var selectedDate = this.viewDate,
+					// http://stackoverflow.com/questions/4312825/javascript-month-difference
+					// getMonth minus getMonth gives you the month difference between the dates two months.
+					// We then multiply 12 by the number of years difference and add this to the result giving us the full month span.
+				monthDiff = this.o.endDate.getMonth() - selectedDate.getMonth() + (12 * (this.o.endDate.getFullYear() - selectedDate.getFullYear())),
+				displayOffset = monthDiff == 0 && this.o.numberOfMonths > 2 ? (this.o.numberOfMonths - 1) : 1,
+				displayOffset = monthDiff == 12 ? 0 : displayOffset; // if it's the first month within the 12 month range, just display as per normal
+
+				// reset the view date so if a date is selected in the last month, the calendar will correctly display the selectable months
+				this.viewDate.setMonth(this.viewDate.getMonth()- displayOffset);
+			}
+
 			this.fill();
 			this.setValue();
 			this._trigger('changeDate');
@@ -1051,6 +1205,7 @@
 			if (this.o.autoclose && (!which || which === 'date')){
 				this.hide();
 			}
+
 		},
 
 		moveMonth: function(date, dir){
@@ -1063,6 +1218,8 @@
 				month = new_date.getUTCMonth(),
 				mag = Math.abs(dir),
 				new_month, test;
+
+			var origDir = dir;
 			dir = dir > 0 ? 1 : -1;
 			if (mag === 1){
 				test = dir === -1
@@ -1087,6 +1244,7 @@
 				for (var i=0; i < mag; i++)
 					// ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
 					new_date = this.moveMonth(new_date, dir);
+
 				// ...then reset the day, keeping it in the new month
 				new_month = new_date.getUTCMonth();
 				new_date.setUTCDate(day);
@@ -1238,7 +1396,7 @@
 				.find('>div')
 				.hide()
 				.filter('.datepicker-'+DPGlobal.modes[this.viewMode].clsName)
-					.css('display', 'block');
+					.css('display', 'inline-block');
 			this.updateNavArrows();
 		}
 	};
@@ -1403,6 +1561,7 @@
 		minViewMode: 0,
 		multidate: false,
 		multidateSeparator: ',',
+		numberOfMonths: 1,
 		orientation: "auto",
 		rtl: false,
 		startDate: -Infinity,
@@ -1615,7 +1774,7 @@
 						'</tfoot>'
 	};
 	DPGlobal.template = '<div class="datepicker">'+
-							'<div class="datepicker-days">'+
+							'<div class="datepicker-days month0">'+
 								'<table class=" table-condensed">'+
 									DPGlobal.headTemplate+
 									'<tbody></tbody>'+

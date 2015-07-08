@@ -21,9 +21,17 @@ public class MessageDetailDao {
 				"SELECT xpath, textValue FROM aggregator.transaction_details WHERE " +
 					"(xpath LIKE 'health/benefits/benefitsExtras/%' OR xpath IN ('health/situation/healthCvr', 'health/situation/healthSitu', 'health/healthCover/primary/dob', 'health/healthCover/incomelabel')) " +
 					"AND transactionId = ? " +
-					"ORDER BY xpath"
+				"UNION ALL " +
+				"SELECT tf.fieldCode as xpath, textValue FROM aggregator.transaction_details2_cold tdc " +
+				"INNER JOIN aggregator.transaction_fields tf ON tf.fieldId = tdc.fieldId " +
+				"WHERE " +
+					"(tf.fieldCode LIKE 'health/benefits/benefitsExtras/%' OR tf.fieldCode IN ('health/situation/healthCvr', 'health/situation/healthSitu', 'health/healthCover/primary/dob', 'health/healthCover/incomelabel')) " +
+					"AND transactionId = ? " +
+				"ORDER BY xpath"
 			);
 			stmt.setLong(1, transactionId);
+			stmt.setLong(2, transactionId);
+
 			final ResultSet results = stmt.executeQuery();
 
 			String situationValue = "";

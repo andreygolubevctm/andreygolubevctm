@@ -6,7 +6,6 @@
 	<security:populateDataFromParams rootPath="signup" />
 
 	<go:log>${data}</go:log>
-	<go:call pageId="AGGNLS" xmlVar="${data.xml['signup']}"	resultVar="result"/>
 
 	<c:set var="fuelSignup" value="${data['signup/fuel']}"/>
 	<c:if test="${fuelSignup == 'Y'}">

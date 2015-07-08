@@ -16,8 +16,9 @@
 	<c:set var="isPhoneRequired" value="${false}" />
 </c:if>
 
+
 <%-- Variables --%>
-<c:set var="database" value="aggregator" />
+<c:set var="database" value="ctm" />
 <c:set var="competition_id" value="${2}" /><%-- 1=Robe, 2=1000grubs, 3=1000dollars --%>
 <c:set var="brand" value="CTM" />
 <c:set var="vertical" value="COMPETITION" />
@@ -72,6 +73,9 @@
 			</c:when>
 			<c:when test="${competition_id == '17'}">
 				<c:set var="source" value="Life$1000CashFeb2015" />
+			</c:when>
+			<c:when test="${competition_id == '22'}">
+				<c:set var="source" value="Life$1000CashJune2015" />
 			</c:when>
 		</c:choose>
 	</c:if>
@@ -128,7 +132,7 @@
 		<sql:setDataSource dataSource="jdbc/${database}"/>
 		<sql:query var="emailMaster">
 			SELECT emailId
-				FROM `${database}`.email_master
+				FROM aggregator.email_master
 				WHERE emailAddress = ?
 				AND styleCodeId = ?
 				LIMIT 1;

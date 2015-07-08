@@ -15,7 +15,7 @@
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
 <jsp:useBean id="roadsideService" class="com.ctm.services.roadside.RoadsideService" scope="page" />
-<c:set var="serviceRespone" value="${roadsideService.validate(pageContext.request)}" />
+<c:set var="serviceRespone" value="${roadsideService.validate(pageContext.request, data)}" />
 <c:choose>
 <%-- RECOVER: if things have gone pear shaped --%>
 	<c:when test="${empty data.current.transactionId}">
@@ -65,21 +65,24 @@
 		<%-- Write to the stats database --%>
 		<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" rootPath="roadside" />
 
-		<%-- Add the results to the current session data --%>
-		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-
+		<%-- Build a response object and send it through! --%>
 		<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
+		<%-- !!IMPORTANT!! - ensure the trackingKey is passed back with results --%>
+		<go:setData dataVar="soapdata" xpath="soap-response/results/info/trackingKey" value="${data.roadside.trackingKey}" />
+		<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${data.current.transactionId}" />
 
 		<agg:write_result_details transactionId="${tranId}" recordXPaths="quoteUrl" baseXmlNode="soap-response/results/price"/>
 
-		${go:XMLtoJSON(resultXml)}
+		${go:XMLtoJSON(go:getEscapedXml(soapdata["soap-response/results"]))}
 	</c:when>
 	<c:when test="${empty tranId}">
 		{"errorType":"NO_TRAN_ID"}
 		<error:non_fatal_error origin="sar_quote_results.jsp"
 					errorMessage="transactionId is missing" errorCode="NO_TRAN_ID" />
+	</c:when>
+	<c:when test="${!roadsideService.isValid()}">
+		${serviceRespone}
 	</c:when>
 	<c:otherwise>
 		<agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="sar_quote_results.jsp" />

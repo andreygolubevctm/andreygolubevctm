@@ -65,7 +65,9 @@ Results = {
 				// i.e. Results.settings.paths = "path.to.name.property.in.result.object" then change Results.settings.sort.sortBy = "name"
 				// same goes for filtering by some field
 				sortBy: "price.annually",
+				sortByMethod: Results.model.defaultSortMethod,
 				sortDir: "asc"
+
 			},
 			frequency: "annually",
 			displayMode: "price",
@@ -288,7 +290,9 @@ Results = {
 	// i.e. Results.settings.paths = "path.to.name.property.in.result.object" then change Results.settings.sort.sortBy = "name"
 	sortBy: function( sortBy, sortDir ){
 		if (Results.setSortBy(sortBy)) {
-			if (sortDir) Results.setSortDir(sortDir);
+			if (sortDir) {
+				Results.setSortDir(sortDir);
+			}
 			Results.model.sort();
 			return true;
 		} else {
@@ -298,6 +302,10 @@ Results = {
 
 	getSortBy: function(){
 		return Results.settings.sort.sortBy;
+	},
+
+	getSortByMethod: function(){
+		return Results.settings.sort.sortByMethod;
 	},
 
 	getSortDir: function(){
@@ -313,7 +321,17 @@ Results = {
 		console.log("Results.setSortBy() has been called but it could not find the path to the property it should be sorted by: sortBy=", sortBy);
 		return false;
 	},
-
+	setSortByMethod: function( sortByMethod ){
+		if( typeof sortByMethod === 'function' ) {
+			Results.settings.sort.sortByMethod = sortByMethod;
+			return true;
+		}
+		if(sortByMethod === null) {
+			Results.settings.sort.sortByMethod = Results.model.defaultSortMethod;
+		}
+		console.log("Results.setSortByMethod() has been called but the parameter is not a function.", sortByMethod);
+		return false;
+	},
 	setSortDir: function( sortDir ){
 		if( sortDir && sortDir.length > 0 && $.inArray(sortDir, ["asc","desc"]) != -1 ) {
 			Results.settings.sort.sortDir = sortDir;

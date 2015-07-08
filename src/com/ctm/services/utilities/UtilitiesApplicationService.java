@@ -1,5 +1,6 @@
 package com.ctm.services.utilities;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONObject;
@@ -15,6 +16,7 @@ public class UtilitiesApplicationService extends UtilitiesBaseService {
 	 * @param request
 	 * @return
 	 */
+	@SuppressWarnings("unused") // Used by JSP
 	public static String submitFromJsp(HttpServletRequest request){
 
 		UtilitiesApplicationRequestModel model = new UtilitiesApplicationRequestModel();
@@ -24,6 +26,10 @@ public class UtilitiesApplicationService extends UtilitiesBaseService {
 
 		UtilitiesApplicationModel returnedModel = service.doSubmit(request, model);
 
+		// Validate response. Create an empty model so it can be run through toJson.
+		if (returnedModel == null) {
+			return "";
+		}
 		return returnedModel.toJson();
 
 	}
@@ -34,6 +40,7 @@ public class UtilitiesApplicationService extends UtilitiesBaseService {
 	 * @param model
 	 * @return
 	 */
+	@Nullable
 	public UtilitiesApplicationModel doSubmit(HttpServletRequest request, UtilitiesApplicationRequestModel model){
 
 		try {

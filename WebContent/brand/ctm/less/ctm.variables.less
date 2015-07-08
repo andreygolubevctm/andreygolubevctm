@@ -72,7 +72,6 @@
 
 
 
-
 //== Common Journey Elements & Scaffolding (scaffolding.less)
 //
 // ## Settings for some of the most global styles.
@@ -451,6 +450,8 @@
 @btn-features-compare-active-bg-color: @theme-tertiary;
 @btn-features-compare-active-color: contrast(@btn-features-compare-active-bg-color);
 @btn-features-compare-active-border-color: @btn-features-compare-active-bg-color;
+
+@results-no-quote-text: @theme-tertiary;
 
 
 // Results (health)
@@ -907,6 +908,9 @@
 @navbar-inverse-brand-color:                @navbar-inverse-link-color;
 @navbar-inverse-brand-hover-color:          @navbar-inverse-link-hover-bg;
 @navbar-inverse-brand-hover-bg:             transparent;
+
+// Standard for sort bar
+@navbar-inverse-sortbar-border-color: #097d35;
 
 // Inverted navbar toggle
 @navbar-inverse-toggle-hover-bg:            #333;
@@ -1809,23 +1813,6 @@
 // Snapshot specific
 @snapshot-icon: @headings-color;
 
-// Travel specidic
-@travel-navbar-inverse-border: #097d35;
-
-// Car specific
-@car-quote-number: @theme-secondary;
-@car-call-number: @theme-secondary;
-@car-results-minor-text: @gray-light;
-@car-results-no-quote-text: @theme-tertiary;
-@car-call-modal-border-top: @theme-default;
-
-// Home & Contents
-@hnc-results-no-quote-text: @theme-tertiary;
-@home-quote-number: @gray-light;
-@home-call-number: @theme-tertiary;
-@home-call-modal-border-top: @theme-default;
-@home-update-btn-border: #fff;
-
 // ctm has no iframe up top
 @page-offset-xs : 0px;
 
@@ -1864,3 +1851,7 @@
 @clt-border-bottom: @clt-active-bg;
 @clt-inactive-bg-color: @theme-tertiary;
 @clt-inactive-color: #fff;
+
+// Call Modal
+@call-modal-phone-number-color: @theme-secondary;
+@call-modal-border-top-color:  @theme-default;

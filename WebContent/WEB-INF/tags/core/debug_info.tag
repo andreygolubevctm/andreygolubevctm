@@ -56,15 +56,19 @@
 		<%-- Monitor ajaxComplete of access_touch, which returns updated transactionId fields. --%>
 		<go:script>
 			$(document).ajaxComplete(function (event, xhr, settings) {
-				if (settings.url == "ajax/json/access_touch.jsp" && xhr && typeof xhr.responseText !== 'undefined' && xhr.responseText.length > 0) {
+				if ((settings.url == "ajax/json/access_touch.jsp" || settings.url.indexOf('results') != -1) && xhr && typeof xhr.responseText !== 'undefined' && xhr.responseText.length > 0) {
 					var obj = JSON.parse(xhr.responseText);
-					if (typeof obj.result != 'undefined' && typeof obj.result.transactionId != 'undefined') {
-						$('#js-debugTxId').html(obj.result.transactionId);
-						var d = new Date(),
-							m = d.getMonth() + 1,
-							day = d.getDate();
-						$('#js-debugCurTime').html((day < 10 ? '0' + day : day) + '/' + (m < 10 ? '0' + m : m) + '/' + (d.getFullYear() + "").substring(2) + ' ' + d.getHours() + ':' + d.getMinutes())
-					}
+                    setTimeout(function() {
+                        var tranId = typeof meerkat !== 'undefined' ? meerkat.modules.transactionId.get() : (typeof obj.result != 'undefined' && typeof obj.result.transactionId != 'undefined' ? obj.result.transactionId : "");
+                        if(tranId == "") {
+                            return;
+                        }
+                        $('#js-debugTxId').html(tranId);
+                        var d = new Date(),
+                            m = d.getMonth() + 1,
+                            day = d.getDate();
+                        $('#js-debugCurTime').html((day < 10 ? '0' + day : day) + '/' + (m < 10 ? '0' + m : m) + '/' + (d.getFullYear() + "").substring(2) + ' ' + d.getHours() + ':' + d.getMinutes());
+                    }, 300);
 				}
 			}).ready(function() {
 				$('.closeDevEnvDialog').on('click', function() {

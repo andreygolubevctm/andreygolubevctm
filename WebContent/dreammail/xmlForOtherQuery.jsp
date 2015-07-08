@@ -6,7 +6,7 @@
 	<go:setData dataVar="data" value="*DELETE" xpath="quote" />
 
 	<%-- You should already have this bit --%>
-	<sql:setDataSource dataSource="jdbc/aggregator"/>
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 
 	<%-- sql:param value="${param.sqlSelect}" /--%>
 

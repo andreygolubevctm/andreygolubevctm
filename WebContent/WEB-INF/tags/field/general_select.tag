@@ -29,7 +29,7 @@
 </c:if>
 
 <%-- HTML --%>
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:choose>
 	<c:when test="${not empty type && type eq 'occupation'}">
@@ -153,7 +153,7 @@
 		<c:if test="${not empty hannoverName}">
 			.on('select2-selecting', function(e) {
 				$('#${hannoverName}').val(e.choice.hannoverCode);
-				$('#${occupationTitle}').val(e.choice.text.trim());
+				$('#${occupationTitle}').val($.trim(e.choice.text));
 			})
 		</c:if>
 		;

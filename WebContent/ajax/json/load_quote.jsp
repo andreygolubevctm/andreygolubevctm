@@ -80,7 +80,7 @@
 				<go:log level="INFO" source="load_quote">requested TranID: ${requestedTransaction}</go:log>
 				<go:log level="DEBUG" source="load_quote">params: ${param}</go:log>
 
-				<sql:setDataSource dataSource="jdbc/aggregator"/>
+				<sql:setDataSource dataSource="jdbc/ctm"/>
 
 				<%-- If is Simples Operator opening quote owned by a client then will need
 					to duplicate the transaction and make the operator the owner --%>
@@ -117,17 +117,6 @@
 
 						<c:catch var="error">
 					<c:choose>
-						<c:when test="${param.fromDisc}">
-							<%--TODO: remove this once off Hybrid Mode --%>
-							<go:log  level="INFO" >Loading AGGTXR for transID: ${requestedTransaction}</go:log>
-							<%-- DISC requires the transId to be padded with zeros --%>
-							<fmt:formatNumber pattern="000000000" value="${requestedTransaction}" var="requestedTransaction" />
-							<go:call pageId="AGGTXR" resultVar="quoteXml" transactionId="${requestedTransaction}" xmlVar="parm" mode="P" />
-							<go:log level="DEBUG">${quoteXml}</go:log>
-							<%-- Remove the previous CAR data --%>
-							<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
-							<go:setData dataVar="data" xml="${quoteXml}" />
-						</c:when>
 						<c:when test="${not empty isOperator}">
 							<sql:query var="details">
 								SELECT td.transactionId, xpath, textValue

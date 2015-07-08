@@ -55,15 +55,15 @@
 }
 @font-face {
   font-family: 'framework_font';
-  src: url('../../../framework/fonts/CTM.eot?20150316');
-  src: url('../../../framework/fonts/CTM.eot?#iefix20150316') format('embedded-opentype'), url('../../../framework/fonts/CTM.woff?20150316') format('woff'), url('../../../framework/fonts/CTM.ttf?20150316') format('truetype'), url('../../../framework/fonts/CTM.svg?20150316#CTM') format('svg');
+  src: url('../../../framework/fonts/CTM.eot?20150629');
+  src: url('../../../framework/fonts/CTM.eot?#iefix20150629') format('embedded-opentype'), url('../../../framework/fonts/CTM.woff?20150629') format('woff'), url('../../../framework/fonts/CTM.ttf?20150629') format('truetype'), url('../../../framework/fonts/CTM.svg?20150629#CTM') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
   @font-face {
     font-family: 'framework_font';
-    src: url('../../../framework/fonts/CTM.svg?20150316#CTM') format('svg');
+    src: url('../../../framework/fonts/CTM.svg?20150629#CTM') format('svg');
   }
 }
 .icon,
@@ -300,6 +300,9 @@ button [class*=" icon-"] {
 }
 .icon-arrow-thick-right:before {
   content: "\e62e";
+}
+.icon-location-pin:before {
+  content: "\e62f";
 }
 @-ms-viewport {
   width: device-width;
@@ -4518,7 +4521,12 @@ body > div > header a.btn-success {
   font-size: 91%;
   font-weight: normal;
   font-family: 'SourceSansProSemiBold';
-  margin-top: -13px;
+  margin-top: -20px;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .header-collapse-contact > ul li .opening-hours {
+    margin-top: -13px;
+  }
 }
 .header-collapse-contact > ul li .opening-hours .tomorrow-hours {
   color: #7c7c7c;
@@ -5565,19 +5573,19 @@ select[multiple].hint-lg.tt-hint {
 .tt-dropdown-menu .tt-suggestion p {
   margin: 0;
 }
-#elasticSearchTypeaheadComponent .tt-dropdown-menu {
+.elasticSearchTypeaheadComponent .tt-dropdown-menu {
   max-height: none;
 }
-#elasticSearchTypeaheadComponent .tt-hint {
+.elasticSearchTypeaheadComponent .tt-hint {
   visibility: hidden;
 }
-#elasticSearchTypeaheadComponent .tt-dropdown-menu {
+.elasticSearchTypeaheadComponent .tt-dropdown-menu {
   width: auto;
 }
-#elasticSearchTypeaheadComponent .tt-dropdown-menu .tt-suggestion p {
+.elasticSearchTypeaheadComponent .tt-dropdown-menu .tt-suggestion p {
   white-space: nowrap !important;
 }
-#elasticSearchTypeaheadComponent div[class$="_nonStdFieldRow"] {
+.elasticSearchTypeaheadComponent div[class$="_nonStdFieldRow"] {
   display: none;
 }
 /** Styles for confirmation on HML */
@@ -5680,6 +5688,9 @@ select[multiple].hint-lg.tt-hint {
 }
 .datepicker.years div.datepicker-years {
   display: block;
+}
+.datepicker div.datepicker-days.calSeperator {
+  border-left: 1px solid #333;
 }
 .datepicker table {
   margin: 0;
@@ -8465,9 +8476,10 @@ fieldset h2 .icon-text {
   text-align: center;
 }
 .dateinput_container .serialise {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
+  display: block;
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .dateinput_container .dateinput-tripleField .col-sm-3 {
@@ -8480,6 +8492,9 @@ fieldset h2 .icon-text {
 .dateinput-tripleField .form-control {
   padding: 10px 10px;
   text-align: center;
+}
+.datepicker {
+  z-index: 1040 !important;
 }
 /* Ensure first letter of validation error is uppercase */
 .error-field label.has-error:first-letter {

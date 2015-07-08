@@ -19,7 +19,7 @@
 	</c:forEach>
 
 	<div class="col-xs-12 underwriter-link">
-		<a href="javascript:;" class="btn-view-brands pull-right" >View all <strong>27 brands</strong> and their underwriters here</a>
+		<a href="javascript:;" class="btn-view-brands pull-right" ><content:get key="briefInsurerCopyLink"/></a>
 	</div>
 </div>
 </form_new:fieldset>

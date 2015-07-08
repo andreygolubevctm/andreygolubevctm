@@ -45,6 +45,26 @@
 		onAfterEnter: null,
 		onBeforeLeave: null,
 		onAfterLeave: null,
+		/*
+		 * Set this as a method which returns additional hash information to include
+		 * in the URL. e.g.:
+		 *
+		 * function() {
+		 *     return "one/two/three";
+		 * }
+		 *
+		 * These values can be set based on form values (see fuel.js for the results step).
+		 * Entering that step will cause the URL to not only include the step, but the additional
+		 * information e.g:
+		 *
+		 * #results/Toowong+4066+QLD/5,2
+		 *
+		 * To access this information on page load, you can use meerkat.modules.address.getHashAsArray() right before
+		 * the journey engine initialises.
+		 *
+		 * For an example, Fuel implements this using the prefill module. It's pretty neat.
+		 */
+		additionalHashInfo: null,
 		validation: {
 			validate: true,
 			customValidation: null
@@ -148,12 +168,16 @@
 					onShowNextStep(eventObject, null, false);
 				}
 
+				var startStepId = settings.startStepId;
+				if(typeof step !== "undefined" && typeof step.additionalHashInfo === "function")
+					startStepId += "/" + step.additionalHashInfo();
+
 				// Trigger initial navigation change event, either directly or by changing the hash to the correct value.
-				if(meerkat.modules.address.getWindowHash() !== "" && meerkat.modules.address.getWindowHash() !== settings.startStepId){
-					meerkat.modules.address.setHash(settings.startStepId);
+				if(meerkat.modules.address.getWindowHash() !== "" && meerkat.modules.address.getWindowHash() !== startStepId){
+					meerkat.modules.address.setHash(startStepId);
 				}else{
-					meerkat.modules.address.setStartHash(settings.startStepId); // so the address module knows what the hash should be
-					onNavigationChange({navigationId:settings.startStepId});
+					meerkat.modules.address.setStartHash(startStepId); // so the address module knows what the hash should be
+					onNavigationChange({ navigationId: settings.startStepId });
 				}
 
 			});
@@ -218,7 +242,6 @@
 	/* Navigation change - do not call directly, update window hash to trigger this event */
 	function onNavigationChange(eventObject){
 		try{
-
 			eventObject.isStartMode = false;
 
 			if(eventObject.navigationId === "") eventObject.navigationId = settings.startStepId; // assume it is the start step if blank
@@ -227,7 +250,6 @@
 				step = getStep(0);
 			}
 			step.stepIndex = getStepIndex(step.navigationId); //Also return the index on the event.
-
 
 			if(currentStep === null){
 
@@ -584,7 +606,6 @@
 
 	// Goto either a navigation id or 'next' or 'previous'. Target is optional and will add loading statuses to the object.
 	function gotoPath(path, $target){
-
 		if (typeof $target !== 'undefined' && $target.hasClass('show-loading')) {
 			var spinnerPos = $target.attr("data-loadinganimation");
 			if(!_.isUndefined(spinnerPos) && !_.isEmpty(spinnerPos)) {
@@ -609,7 +630,7 @@
 
 			var navigationId = path;
 
-			if(currentStep.navigationId !== navigationId) {
+			if(currentStep !== null && currentStep.navigationId !== navigationId) {
 				var direction;
 
 				// handle dynamically name
@@ -634,12 +655,17 @@
 					// Get the actual navigation id.
 					navigationId = settings.steps[newStepIndex].navigationId;
 
+					if(typeof settings.steps[newStepIndex].additionalHashInfo === "function") {
+						navigationId += "/" + settings.steps[newStepIndex].additionalHashInfo();
+					}
+
 				}
 
 				// validate current step
 				if(getStepIndex(navigationId) == getStepIndex(currentStep.navigationId)+1 && direction == 'forward'){
 					validateStep(currentStep, function(){
 						$(settings.slideContainer).attr('data-prevalidation-completed','1');
+
 						meerkat.modules.address.setHash(navigationId);
 						if(typeof $target !== 'undefined') meerkat.modules.loadingAnimation.hide($target);
 					}, logValidationErrors);

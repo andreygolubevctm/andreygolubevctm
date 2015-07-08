@@ -421,7 +421,7 @@ car.vehicleSelect.getActionsForField = function($thisSelect, $prevSelects, $cont
 	//ajaxData['transactionId'] = referenceNo.getTransactionID();
 
 	var ajaxOptions = {
-		url: "/ctm/rest/car/" + requestLabel + "/list.json", /*yeah*/
+		url: car.vehicleSelect.fields.context + "rest/car/" + requestLabel + "/list.json",
 		dataType: dataType,
 		context: $contextTarget,
 		async: true,

@@ -61,7 +61,7 @@
 		initHomeloanSnapshot: initHomeloanSnapshot,
 		events: events,
 		renderSnapshot: renderSnapshot,
-		onEnter: onEnter,
+		onEnter: onEnter
 	});
 
 })(jQuery);

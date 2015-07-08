@@ -8,7 +8,7 @@
     <go:setData dataVar="data" value="*DELETE" xpath="quote" />
 
 	<%-- You should already have this bit --%>
-	<sql:setDataSource dataSource="jdbc/aggregator"/>
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 
 	<%-- fetch the data --%>
 	<sql:query var="details">

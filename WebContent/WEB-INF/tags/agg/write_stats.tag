@@ -14,7 +14,7 @@
 		<agg:get_soap_response_stats debugXml="${debugXml}" />
 	</c:if>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 
 	<jsp:useBean id="statisticsService" class="com.ctm.statistics.StatisticsService" scope="request" />
 	<c:catch var="error">
@@ -31,11 +31,5 @@
 		</c:import>
 	</c:if>
 
-<%--TODO: CAR-29 remove this once we are off disc --%>
-	<c:if test="${rootPath == 'quote'}">
-		<go:log>Writing Results to iSeries [AGGTRS]</go:log>
-		<c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
-		<go:call pageId="AGGTRS"  xmlVar="${debugXml}" wait="FALSE" transactionId="${tranId}" style="${AGIS_leadFeedCode}" />
-	</c:if>
 	${statisticDetailsResults.clear()}
 </c:set>

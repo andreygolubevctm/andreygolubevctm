@@ -13,6 +13,26 @@
              check response and display applicable error --%>
         <%	response.sendError(429, "Number of requests exceeded!" ); %>
     </c:when>
+    <c:when test="${empty data.current.transactionId}">
+        <%-- If no transaction ID then don't attempt to recover the session - just
+             return a canned response --%>
+        <c:set var="resultXml">
+            <results>
+                <source>metro</source>
+                <error>session</error>
+                <timeDiff>0</timeDiff>
+                <price></price>
+            </results>
+        </c:set>
+
+        <%-- Add the results to the current session data --%>
+        <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
+        <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}"/>
+        <go:log level="DEBUG">${resultXml}</go:log>
+
+        ${go:XMLtoJSON(resultXml)}
+
+    </c:when>
     <c:otherwise>
 
         <c:set var="continueOnValidationError" value="${true}"/>
@@ -22,22 +42,13 @@
 
         <c:set var="fetch_count"><c:out value="${param.fetchcount}" escapeXml="true" /></c:set>
 
-        <c:choose>
-            <%-- RECOVER: if things have gone pear shaped --%>
-            <c:when test="${empty data.current.transactionId}">
-                <error:recover origin="ajax/json/fuel_price_results.jsp" quoteType="fuel"/>
-            </c:when>
-            <%-- Increment tranId if fetching results again (not the first) --%>
-            <c:when test="${fetch_count > 0}">
-                <c:set var="ignoreme">
-                    <core:get_transaction_id
-                            quoteType="fuel"
-                            id_handler="increment_tranId"/>
-                </c:set>
-            </c:when>
-            <%-- Otherwise ignore - no action required --%>
-            <c:otherwise></c:otherwise>
-        </c:choose>
+        <c:if test="${fetch_count > 0}">
+            <c:set var="ignoreme">
+                <core:get_transaction_id
+                        quoteType="fuel"
+                        id_handler="increment_tranId"/>
+            </c:set>
+        </c:if>
 
         <%-- Capture the Client IP and User Agent used later to check limits--%>
         <go:setData dataVar="data" xpath="fuel/clientIpAddress" value="${pageContext.request.remoteAddr}"/>

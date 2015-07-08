@@ -78,7 +78,12 @@ body > div > header {
 			font-size: 91%;
 			font-weight: normal;
 			font-family: @font-family-theme-bold;
-			margin-top:-13px;
+			margin-top:-20px;
+
+		  	@media(@sm-only) {
+			  margin-top: -13px;
+			}
+
 			.tomorrow-hours {
 				color: @opening-hours-grey-colour;
 				@media (max-width: 767px){

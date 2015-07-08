@@ -337,10 +337,10 @@
 			border-right:none;
 			border-left:none;
 		}
-		.error-limit .limit.message, .metro .metro.message, .regional .regional.message {
+		.error-limit .limit.message, .error-session .session.message, .metro .metro.message, .regional .regional.message {
 			display:block;
 		}	
-		.error-limit .metro.message, .error-limit .regional.message {
+		.error-limit .metro.message, .error-limit .regional.message, .error-session .metro.message, .error-session .regional.message {
 			display:none;
 		}
 		.regional .metro, .metro .regional {
@@ -708,6 +708,12 @@ Results = {
 			$('#results-container').removeClass('error-limit');
 		}
 		
+		if(prices.error == 'session') {
+			$('#results-container').addClass('error-session');
+		} else {
+			$('#results-container').removeClass('error-session');
+		}
+
 			if(prices.timeDiff != undefined){
 				$('#time').html('Prices updated <strong>' + prices.timeDiff + '</strong> ago');
 			} else {
@@ -1161,6 +1167,10 @@ function format_results_filter(){
 				<p><strong>Sorry, you have reached your daily limit for searches.</strong></p>
 				<p>Please come back tomorrow.</p>
 			</div>		
+			<div class="session message">
+				<p><strong>Sorry, we are experiencing some technical difficulties.</strong></p>
+				<p>Please try again later.</p>
+			</div>
 			<div class="metro message">
 				<p><strong>Sorry, there is currently no data available for your search.</strong></p>
 				<p>Please try again.</p>

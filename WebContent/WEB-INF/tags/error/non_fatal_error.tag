@@ -26,7 +26,7 @@
 	<c:set var="property" value="CTM" />
 </c:if>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <go:log level="WARN" source="error:non_fatal_error">
 	property: ${property}

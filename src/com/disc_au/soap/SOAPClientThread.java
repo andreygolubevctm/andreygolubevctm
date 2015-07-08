@@ -98,7 +98,7 @@ public class SOAPClientThread implements Runnable {
 
 	private String[] keywords = {"XML Parsing Error", "ValidatorException", "SOAPException", "XML Validation Exception", "Connection refused",
 			"Read timed outIOException", "Invalid Agent Customer Id", "Invalid Agent Payment Id", "Invalid Previous Health Fund ID",
-			"Invalid Partner Previous Health Fund ID", "Non-user related error"};
+			"Invalid Partner Previous Health Fund ID", "Non-user related error", "MalformedURLException", "IOException"};
 
 	/**
 	 * Instantiates a new SOAP client thread.
@@ -111,7 +111,7 @@ public class SOAPClientThread implements Runnable {
 	 * @param soapConfiguration global config
 	 */
 	public SOAPClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
-			String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration) {
+							String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration) {
 
 		this.configuration = configuration;
 
@@ -150,7 +150,7 @@ public class SOAPClientThread implements Runnable {
 	}
 
 	private void logTime(String msg, long timer) {
-		logger.info(this.name + ": " + msg + ": " + (System.currentTimeMillis() - timer) + "ms ");
+		//logger.info(this.name + ": " + msg + ": " + (System.currentTimeMillis() - timer) + "ms ");
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class SOAPClientThread implements Runnable {
 									return true;
 								}
 
-					});
+							});
 				}
 
 				u = new URL(configuration.getUrl());
@@ -310,12 +310,12 @@ public class SOAPClientThread implements Runnable {
 					}
 					// Unhandled error, wrap it in our own XML
 					else {
-					SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
-												((HttpURLConnection)connection).getResponseCode(),
-												((HttpURLConnection)connection).getResponseMessage(),
-							configuration.getName(),
-							errorData.toString(),
-							(System.currentTimeMillis() - startTime));
+						SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
+								((HttpURLConnection)connection).getResponseCode(),
+								((HttpURLConnection)connection).getResponseMessage(),
+								configuration.getName(),
+								errorData.toString(),
+								(System.currentTimeMillis() - startTime));
 
 					returnData.append(err.getXMLDoc());
 					}
@@ -328,21 +328,20 @@ public class SOAPClientThread implements Runnable {
 			((HttpURLConnection)connection).disconnect();
 
 		} catch (MalformedURLException e) {
-			handleException(returnData, startTime, e);
+			logger.error("failed to process request" , e);
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
+			returnData.append(err.getXMLDoc());
+
 		} catch (IOException e) {
-			handleException(returnData, startTime, e);
+			logger.error("failed to process request: "+getConfiguration().getUrl() , e);
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "IOException", (System.currentTimeMillis() - startTime));
+			returnData.append(err.getXMLDoc());
 		}
 
 		this.responseTime = System.currentTimeMillis() - startTime;
 		
 		// Return the result
 		return returnData.toString();
-	}
-
-	protected void handleException(StringBuffer returnData, long startTime, Exception e) {
-		logger.error("failed to process request" , e);
-		SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, ErrorCode.MK_20004.getErrorCode(), configuration.getName(), "", (System.currentTimeMillis() - startTime));
-		returnData.append(err.getXMLDoc());
 	}
 
 	private String matchKeywords(String soapResponse) {
@@ -454,9 +453,9 @@ public class SOAPClientThread implements Runnable {
 						String unescapeData = soapResponse.substring(startIdx,endIdx);
 
 						unescapeData = unescapeData.replaceAll("&lt;", "<")
-												.replaceAll("&gt;", ">")
-												.replaceAll("&quot;", "\"")
-												.replaceAll("&amp;", "&");
+								.replaceAll("&gt;", ">")
+								.replaceAll("&quot;", "\"")
+								.replaceAll("&amp;", "&");
 						if (unescapeData.startsWith("<?")){
 							int endOfHeader = unescapeData.indexOf("?>");
 							if (endOfHeader > -1) {
@@ -465,8 +464,8 @@ public class SOAPClientThread implements Runnable {
 						}
 
 						soapResponse = soapResponse.substring(0,startIdx)
-									+ unescapeData
-									+ soapResponse.substring(endIdx);
+								+ unescapeData
+								+ soapResponse.substring(endIdx);
 					}
 				}
 

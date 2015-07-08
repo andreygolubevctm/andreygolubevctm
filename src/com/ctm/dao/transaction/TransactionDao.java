@@ -6,6 +6,7 @@ import com.ctm.model.Transaction;
 import com.ctm.model.simples.ConfirmationOperator;
 
 import javax.naming.NamingException;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,6 +24,8 @@ public class TransactionDao {
 			throw new DaoException("Please specify a transactionId on your model.");
 		}
 
+		transaction.setRootId(getRootIdOfTransactionId(transaction.getTransactionId()));
+
 		SimpleDatabaseConnection dbSource = null;
 
 		try {
@@ -30,33 +33,29 @@ public class TransactionDao {
 			dbSource = new SimpleDatabaseConnection();
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT th.rootId, LOWER(th.ProductType) AS vertical, th.styleCodeId, style.styleCode AS styleCodeName, " +
-				"th.EmailAddress, MAX(th2.transactionId) AS newestTransactionId " +
+				"SELECT LOWER(th.ProductType) AS vertical, th.styleCodeId, style.styleCode AS styleCodeName, " +
+				"th.EmailAddress, MAX(th.transactionId) AS newestTransactionId " +
 				"FROM aggregator.transaction_header th " +
 				"LEFT JOIN ctm.stylecodes style ON style.styleCodeId = th.styleCodeId " +
-				"LEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId " +
-				"WHERE th.TransactionId = ? " +
-				"HAVING rootId IS NOT NULL " +
+				"WHERE th.rootId = ? " +
 				"UNION ALL " +
-				"SELECT th.rootId, LOWER(vm.verticalCode) AS vertical, th.styleCodeId, style.styleCode AS styleCodeName, " +
-				"em.emailAddress, MAX(th2.transactionId) AS newestTransactionId " +
+				"SELECT LOWER(vm.verticalCode) AS vertical, th.styleCodeId, style.styleCode AS styleCodeName, " +
+				"em.emailAddress, MAX(th.transactionId) AS newestTransactionId " +
 				"FROM aggregator.transaction_header2_cold th " +
 				"LEFT JOIN ctm.vertical_master vm ON vm.verticalId = th.verticalId " +
 				"LEFT JOIN ctm.stylecodes style ON style.styleCodeId = th.styleCodeId " +
-				"LEFT JOIN aggregator.transaction_header2_cold th2 ON th2.rootId = th.rootId " +
 				"LEFT JOIN aggregator.transaction_emails te ON te.TransactionId = th.TransactionId " +
 				"LEFT JOIN aggregator.email_master em ON em.emailId = te.emailId " +
-				"WHERE th.TransactionId = ? " +
-				"HAVING rootId IS NOT NULL;"
+				"WHERE th.rootId = ? " +
+				"ORDER BY newestTransactionId ASC;"
 			);
-			stmt.setLong(1, transaction.getTransactionId());
-			stmt.setLong(2, transaction.getTransactionId());
+			stmt.setLong(1, transaction.getRootId());
+			stmt.setLong(2, transaction.getRootId());
 
 			ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
 				transaction.setNewestTransactionId(results.getLong("newestTransactionId"));
-				transaction.setRootId(results.getLong("rootId"));
 				transaction.setVerticalCode(results.getString("vertical"));
 				transaction.setStyleCodeId(results.getInt("styleCodeId"));
 				transaction.setStyleCodeName(results.getString("styleCodeName"));

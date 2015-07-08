@@ -813,6 +813,7 @@ Results = {
             },
             sort: {
                 sortBy: "price.annually",
+                sortByMethod: Results.model.defaultSortMethod,
                 sortDir: "asc"
             },
             frequency: "annually",
@@ -973,7 +974,9 @@ Results = {
     },
     sortBy: function(sortBy, sortDir) {
         if (Results.setSortBy(sortBy)) {
-            if (sortDir) Results.setSortDir(sortDir);
+            if (sortDir) {
+                Results.setSortDir(sortDir);
+            }
             Results.model.sort();
             return true;
         } else {
@@ -982,6 +985,9 @@ Results = {
     },
     getSortBy: function() {
         return Results.settings.sort.sortBy;
+    },
+    getSortByMethod: function() {
+        return Results.settings.sort.sortByMethod;
     },
     getSortDir: function() {
         return Results.settings.sort.sortDir;
@@ -992,6 +998,17 @@ Results = {
             return true;
         }
         console.log("Results.setSortBy() has been called but it could not find the path to the property it should be sorted by: sortBy=", sortBy);
+        return false;
+    },
+    setSortByMethod: function(sortByMethod) {
+        if (typeof sortByMethod === "function") {
+            Results.settings.sort.sortByMethod = sortByMethod;
+            return true;
+        }
+        if (sortByMethod === null) {
+            Results.settings.sort.sortByMethod = Results.model.defaultSortMethod;
+        }
+        console.log("Results.setSortByMethod() has been called but the parameter is not a function.", sortByMethod);
         return false;
     },
     setSortDir: function(sortDir) {
@@ -1171,9 +1188,7 @@ Results = {
     }
 };
 
-var ResultsModel = new Object();
-
-ResultsModel = {
+var ResultsModel = {
     ajaxRequest: false,
     returnedGeneral: false,
     isBlockedQuote: false,
@@ -1299,7 +1314,9 @@ ResultsModel = {
             },
             error: function(jqXHR, txt, errorThrown) {
                 Results.model.ajaxRequest = false;
-                if (jqXHR.status !== 0 && jqXHR.readyState !== 0 || txt == "timeout") {
+                if (jqXHR.status === 429) {
+                    Results.model.isBlockedQuote = true;
+                } else if (jqXHR.status !== 0 && jqXHR.readyState !== 0 || txt == "timeout") {
                     Results.model.handleFetchError(data, "AJAX request failed: " + txt + " " + errorThrown);
                 }
             },
@@ -1333,7 +1350,7 @@ ResultsModel = {
                 newTranID = jsonResult.results.noresults.transactionId;
             }
         }
-        if (newTranID !== 0) {
+        if (Number(newTranID) > 0) {
             if (typeof meerkat !== "undefined") {
                 meerkat.modules.transactionId.set(newTranID);
             } else if (typeof referenceNo !== "undefined") {
@@ -1435,49 +1452,51 @@ ResultsModel = {
                 var previousSortedResults = Results.model.sortedProducts.slice();
             }
             var results = Results.model.returnedProducts.slice();
-            Results.model.sortedProducts = results.sort(function(resultA, resultB) {
-                var valueA = Object.byString(resultA, Object.byString(Results.settings.paths, Results.settings.sort.sortBy));
-                var valueB = Object.byString(resultB, Object.byString(Results.settings.paths, Results.settings.sort.sortBy));
-                if (isNaN(valueA) || isNaN(valueB)) {
-                    valueA = String(valueA).toLowerCase();
-                    valueB = String(valueB).toLowerCase();
-                }
-                var frequencyPriceAvailability = Results.settings.paths.availability.price[Results.settings.frequency];
-                if (frequencyPriceAvailability && frequencyPriceAvailability != "") {
-                    var availabilityA = Object.byString(resultA, frequencyPriceAvailability);
-                    var availabilityB = Object.byString(resultB, frequencyPriceAvailability);
-                    if (availabilityB == "N" || !valueB || valueB == "") {
-                        return -1;
-                    }
-                    if (availabilityA == "N" || !valueA || valueA == "") {
-                        return 1;
-                    }
-                }
-                if (valueA < valueB) {
-                    returnValue = -1;
-                } else if (valueA > valueB) {
-                    returnValue = 1;
-                } else if (Results.settings.sort.sortBy.indexOf("price.") == -1) {
-                    var currentFrequencyPricePath = Object.byString(Results.settings.paths, "price." + Results.settings.frequency);
-                    valueA = Object.byString(resultA, currentFrequencyPricePath);
-                    valueB = Object.byString(resultB, currentFrequencyPricePath);
-                    if (valueA == null || valueB == null) {
-                        return 0;
-                    }
-                    return valueA - valueB;
-                } else {
-                    returnValue = valueA - valueB;
-                }
-                if (Results.settings.sort.sortDir == "desc") {
-                    returnValue *= -1;
-                }
-                return returnValue;
-            });
+            var sortByMethod = typeof Results.getSortByMethod() === "function" ? Results.getSortByMethod() : Results.model.defaultSortMethod();
+            Results.model.sortedProducts = results.sort(sortByMethod);
             if (typeof previousSortedResults != "undefined" && renderView !== false) {
                 Results.view.shuffle(previousSortedResults);
             }
             Results.pagination.gotoStart(true);
         }
+    },
+    defaultSortMethod: function(resultA, resultB) {
+        var valueA = Object.byString(resultA, Object.byString(Results.settings.paths, Results.settings.sort.sortBy));
+        var valueB = Object.byString(resultB, Object.byString(Results.settings.paths, Results.settings.sort.sortBy));
+        if (isNaN(valueA) || isNaN(valueB)) {
+            valueA = String(valueA).toLowerCase();
+            valueB = String(valueB).toLowerCase();
+        }
+        var frequencyPriceAvailability = Results.settings.paths.availability.price[Results.settings.frequency];
+        if (frequencyPriceAvailability && frequencyPriceAvailability != "") {
+            var availabilityA = Object.byString(resultA, frequencyPriceAvailability);
+            var availabilityB = Object.byString(resultB, frequencyPriceAvailability);
+            if (availabilityB == "N" || !valueB || valueB == "") {
+                return -1;
+            }
+            if (availabilityA == "N" || !valueA || valueA == "") {
+                return 1;
+            }
+        }
+        if (valueA < valueB) {
+            returnValue = -1;
+        } else if (valueA > valueB) {
+            returnValue = 1;
+        } else if (Results.settings.sort.sortBy.indexOf("price.") == -1) {
+            var currentFrequencyPricePath = Object.byString(Results.settings.paths, "price." + Results.settings.frequency);
+            valueA = Object.byString(resultA, currentFrequencyPricePath);
+            valueB = Object.byString(resultB, currentFrequencyPricePath);
+            if (valueA == null || valueB == null) {
+                return 0;
+            }
+            return valueA - valueB;
+        } else {
+            returnValue = valueA - valueB;
+        }
+        if (Results.settings.sort.sortDir == "desc") {
+            returnValue *= -1;
+        }
+        return returnValue;
     },
     addFilter: function(filterBy, condition, options) {
         if (typeof filterBy !== "undefined" && typeof condition !== "undefined" && typeof options !== "undefined" && filterBy !== "" && condition !== "") {
@@ -1526,7 +1545,7 @@ ResultsModel = {
     },
     filter: function(renderView) {
         var initialProducts = Results.model.sortedProducts.slice();
-        var finalProducts = new Array();
+        var finalProducts = [];
         var valid, value;
         $.each(initialProducts, function(productIndex, product) {
             valid = true;
@@ -1589,11 +1608,7 @@ ResultsModel = {
             console.log("Check the parameters passed to Results.model.filterByRange()");
             return true;
         } else if (options.hasOwnProperty("min") || options.hasOwnProperty("max")) {
-            if (options.hasOwnProperty("min") && value < options.min || options.hasOwnProperty("max") && value > options.max) {
-                return false;
-            } else {
-                return true;
-            }
+            return !(options.hasOwnProperty("min") && value < options.min || options.hasOwnProperty("max") && value > options.max);
         } else {
             console.log("Options from this range filter are incorrect and have not been applied: ", value, options);
             return true;
@@ -1606,7 +1621,6 @@ ResultsModel = {
                 product: product
             });
         } else {
-            Results.model.currentProduct = new Object();
             Results.model.currentProduct = {
                 product: product
             };
@@ -1619,7 +1633,6 @@ ResultsModel = {
                 value: currentProduct
             });
         } else {
-            Results.model.currentProduct = new Object();
             Results.model.currentProduct = {
                 path: Object.byString(Results.settings.paths, identifierPathName),
                 value: currentProduct
@@ -2727,7 +2740,7 @@ ResultsView = {
                         return false;
                     }
                 });
-                var currentResult = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + Object.byString(sortedResult, "productId") + "]");
+                var currentResult = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + Object.byString(sortedResult, "productId") + "']");
                 var posDifference = sortedIndex - previousIndex;
                 var shuffleOptions = false;
                 if (Results.settings.animation.shuffle.active === true) {
@@ -2784,7 +2797,7 @@ ResultsView = {
             for (var i = 0; i < Results.model.filteredProducts.length; i++) {
                 var product = Results.model.filteredProducts[i];
                 var productId = Object.byString(product, Results.settings.paths.productId);
-                items.push(Results.settings.elements.rows + "[data-productId=" + productId + "].filtered");
+                items.push(Results.settings.elements.rows + "[data-productId='" + productId + "'].filtered");
             }
             if (items.length > 0) {
                 $items = $(items.join(","));
@@ -2797,7 +2810,7 @@ ResultsView = {
         }
         $.each(Results.model.sortedProducts, function iterateSortedProducts(sortedIndex, product) {
             var productId = Object.byString(product, Results.settings.paths.productId);
-            var currentResult = $(Results.settings.elements.rows + "[data-productId=" + productId + "]");
+            var currentResult = $(Results.settings.elements.rows + "[data-productId='" + productId + "']");
             if ($.inArray(product, Results.model.filteredProducts) == -1) {
                 Results.view.fadeResultOut(currentResult, Results.settings.animation.filter.active);
                 countFadedOut++;
@@ -3490,17 +3503,21 @@ Features = {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-    var moduleEvents = {
-        HIDDEN_FIELDS_POPULATED: "HIDDEN_FIELDS_POPULATED"
+    var events = {
+        address_lookup: {
+            HIDDEN_FIELDS_POPULATED: "HIDDEN_FIELDS_POPULATED"
+        }
     };
-    var $currentAjaxRequest = null, dpIdCache = {}, addressFieldId = null;
+    var moduleEvents = events.address_lookup;
+    var $currentAjaxRequest = null, dpIdCache = {}, addressFieldId;
     function initAddressLookup() {
         meerkat.messaging.subscribe(meerkatEvents.autocomplete.ELASTIC_SEARCH_COMPLETE, function elasticAddress(data) {
-            addressFieldId = data.addressFieldId;
-            getAddressData(data.dpid);
+            getAddressData(data);
         });
     }
-    function getAddressData(dpId) {
+    function getAddressData(addressFieldData) {
+        addressFieldId = addressFieldData.addressFieldId;
+        dpId = addressFieldData.dpid;
         if ($currentAjaxRequest) {
             $currentAjaxRequest.abort();
             $currentAjaxRequest = null;
@@ -3532,6 +3549,10 @@ Features = {
                                 description: "Could not find address with dpId of " + dpId,
                                 data: data
                             });
+                        } else {
+                            meerkat.messaging.publish(moduleEvents.HIDDEN_FIELDS_POPULATED, {
+                                addressData: data
+                            });
                         }
                     },
                     onError: function ajaxGetTypeaheadAddressDataError(xhr, status) {
@@ -3562,12 +3583,12 @@ Features = {
     function setAddressDataFields(data) {
         for (var addressItem in data) {
             var $hiddenAddressElement = $("#" + addressFieldId + "_" + addressItem);
-            $hiddenAddressElement.val(data[addressItem]);
+            $hiddenAddressElement.val(data[addressItem]).trigger("change");
         }
     }
     meerkat.modules.register("address_lookup", {
         init: initAddressLookup,
-        events: moduleEvents
+        events: events
     });
 })(jQuery);
 
@@ -3629,6 +3650,74 @@ Features = {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var postData = {}, elements = {
+        applicationDate: $(".applicationDate"),
+        applicationDateContainer: $(".applicationDateContainer")
+    }, selectedDate, moduleEvents = {};
+    function changeApplicationDate() {
+        selectedDate = $("#health_searchDate :selected").val();
+        postData.applicationDateOverrideValue = selectedDate !== "0" ? selectedDate + " 00:00:01" : null;
+        meerkat.modules.comms.post({
+            url: "ajax/write/setApplicationDate.jsp",
+            data: postData,
+            cache: false,
+            errorLevel: "warning",
+            onSuccess: function onApplicationUpdateSuccess(data) {
+                updateDisplay(data);
+                toggleDisplay();
+            }
+        });
+    }
+    function setApplicationDateDropdown() {
+        meerkat.modules.comms.post({
+            url: "ajax/load/getApplicationDate.jsp",
+            cache: false,
+            errorLevel: "warning",
+            onSuccess: function onApplicationUpdateSuccess(dateResult) {
+                updateDropdown(dateResult);
+            }
+        });
+    }
+    function updateDropdown(dateResult) {
+        if (dateResult !== null) {
+            var date = new Date(dateResult);
+            var newDate = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
+            if ($("#health_searchDate option[value=" + newDate + "]").length > 0) {
+                $("#health_searchDate").val(newDate);
+            }
+        }
+    }
+    function updateDisplay(data) {
+        elements.applicationDate.html(data);
+    }
+    function toggleDisplay() {
+        if (elements.applicationDate.html() === "") {
+            elements.applicationDateContainer.hide();
+        } else {
+            elements.applicationDateContainer.show();
+        }
+    }
+    function initApplicationDate() {
+        jQuery(document).ready(function($) {
+            if ($(".simples").length === 0) {
+                setApplicationDateDropdown();
+            }
+            $("#health_searchDate").on("change", function() {
+                changeApplicationDate();
+            });
+            toggleDisplay();
+        });
+    }
+    meerkat.modules.register("application_date", {
+        init: initApplicationDate,
+        events: moduleEvents,
+        changeApplicationDate: changeApplicationDate,
+        setApplicationDateDropdown: setApplicationDateDropdown
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         autocomplete: {
             CANT_FIND_ADDRESS: "EVENT_CANT_FIND_ADDRESS",
@@ -3637,26 +3726,19 @@ Features = {
         }
     };
     var moduleEvents = events.autocomplete;
-    var elasticSearch = false;
-    var addressFieldId = false;
     function initAutoComplete() {
         $(document).ready(function() {
-            if ($("#autoCompleteModuleFieldPrefix").length) {
-                setAddressFieldId($("#autoCompleteModuleFieldPrefix").val());
-            }
-            elasticSearch = addressFieldId !== false;
-            setTypeahead(elasticSearch);
+            setTypeahead();
         });
     }
-    function setAddressFieldId(id) {
-        addressFieldId = id;
+    function _isElasticSearch(addressFieldId) {
+        return $("#" + addressFieldId + "_elasticSearch").val() === "Y";
     }
-    function setTypeahead(elasticSearch) {
-        var $typeAheads = $("input.typeahead");
-        var params = null;
+    function setTypeahead() {
+        var $typeAheads = $("input.typeahead"), params = null;
         $typeAheads.each(function eachTypeaheadElement() {
-            var $component = $(this);
-            var url;
+            var $component = $(this), fieldId = $component.attr("id"), fieldIdEnd = fieldId.match(/(_)[a-zA-Z]{1,}$/g), addressFieldId = fieldId.replace(fieldIdEnd, ""), elasticSearch = _isElasticSearch(addressFieldId), url;
+            $component.data("addressfieldid", addressFieldId);
             if (elasticSearch) {
                 url = "address/search.json";
                 params = {
@@ -3745,6 +3827,7 @@ Features = {
     }
     function checkIfAddressSearch($element, typeaheadParams) {
         if ($element && $element.hasClass("typeahead-address")) {
+            var addressFieldId = $element.data("addressfieldid"), elasticSearch = _isElasticSearch(addressFieldId);
             typeaheadParams.remote.url = $element.attr("id");
             typeaheadParams.remote.replace = addressSearch;
             typeaheadParams.valueKey = "value";
@@ -4110,6 +4193,31 @@ Features = {
     }
     meerkat.modules.register("callMeBackTab", {
         init: init
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
+    function init() {
+        $(document).ready(support);
+    }
+    function support() {
+        $forms = $("html.lt-ie9 form, html.lt-ie9 #dynamic_dom");
+        if ($forms.length) {
+            $forms.off("change.checkedForIE").on("change.checkedForIE", ".checkbox input, .compareCheckbox input", function applyCheckboxClicks() {
+                var $this = $(this);
+                if ($this.is(":checked")) {
+                    $this.addClass("checked");
+                } else {
+                    $this.removeClass("checked");
+                }
+            });
+            $forms.find(".checkbox input").change();
+        }
+    }
+    meerkat.modules.register("checkboxIE8", {
+        init: init,
+        support: support
     });
 })(jQuery);
 
@@ -4872,26 +4980,28 @@ Features = {
     prefillLaterFields = true;
     function init() {}
     function configure(contactDetailsFields) {
-        $.extend(fields, contactDetailsFields);
-        _.each(fields, function(fieldTypeEntities, fieldType) {
-            _.each(fieldTypeEntities, function(fieldTypeEntity, index) {
-                var fieldDetails = $.extend(fieldTypeEntity, {
-                    index: index,
-                    type: fieldType,
-                    fieldIndex: 1
-                });
-                setFieldChangeEvent(fieldDetails);
-                setOptinFieldChangeEvent(fieldDetails);
-                if (typeof fieldDetails.$otherField !== "undefined") {
-                    fieldDetails = $.extend({}, fieldDetails, {
-                        alternateOtherField: true,
-                        fieldIndex: 2
+        $(document).ready(function() {
+            $.extend(fields, contactDetailsFields);
+            _.each(fields, function(fieldTypeEntities, fieldType) {
+                _.each(fieldTypeEntities, function(fieldTypeEntity, index) {
+                    var fieldDetails = $.extend(fieldTypeEntity, {
+                        index: index,
+                        type: fieldType,
+                        fieldIndex: 1
                     });
                     setFieldChangeEvent(fieldDetails);
-                }
+                    setOptinFieldChangeEvent(fieldDetails);
+                    if (typeof fieldDetails.$otherField !== "undefined") {
+                        fieldDetails = $.extend({}, fieldDetails, {
+                            alternateOtherField: true,
+                            fieldIndex: 2
+                        });
+                        setFieldChangeEvent(fieldDetails);
+                    }
+                });
             });
+            prefillLaterFields = true;
         });
-        prefillLaterFields = true;
     }
     function setFieldChangeEvent(fieldDetails) {
         var $fieldElement = getInputField(fieldDetails);
@@ -5089,6 +5199,13 @@ Features = {
                     var splitName = updatedElementValue.split(" ");
                     $fieldElement.val(splitName[0]);
                     laterFieldDetails.$otherField.val(splitName.slice(1).join(" "));
+                } else if (fieldDetails.type === "alternatePhone" && typeof laterFieldDetails.$otherField !== "undefined") {
+                    var testableNumber = updatedElementValue.replace(/\D/g, "");
+                    if (testableNumber.match(/^(04|614|6104)/g)) {
+                        $fieldElement.val(updatedElementValue);
+                    } else {
+                        laterFieldDetails.$otherField.val(updatedElementValue);
+                    }
                 } else {
                     $fieldElement.val(updatedElementValue).attr("data-previous-value", updatedElementValue);
                 }
@@ -5780,7 +5897,7 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, isXS;
     var windowCounter = 0, dialogHistory = [], openedDialogs = [], defaultSettings = {
         title: "",
         htmlContent: null,
@@ -5803,11 +5920,12 @@ Features = {
         tabs: [],
         htmlHeaderContent: "",
         hashId: null,
+        destroyOnClose: true,
         closeOnHashChange: false,
         openOnHashChange: true,
         fullHeight: false,
         templates: {
-            dialogWindow: '<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>\n						<div class="modal-dialog {{= className }}">\n\n							<div class="modal-content">\n								<div class="modal-closebar">\n									<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>\n								</div>\n\n								<div class="navbar navbar-default xs-results-pagination visible-xs">\n									<div class="container">\n										<ul class="nav navbar-nav">\n											<li>\n												<button data-button="leftBtn" class="btn btn-back {{= leftBtn.className }}">{{= leftBtn.icon }} {{= leftBtn.label }}</button>\n											</li>\n											<li class="navbar-text modal-title-label">\n												{{= title }}\n											</li>\n											{{ if(rightBtn.label != "" || rightBtn.icon != "") { }}\n												<li class="right">\n													<button data-button="rightBtn" class="btn btn-save {{= rightBtn.className }}">{{= rightBtn.label }} {{= rightBtn.icon }}</button>\n												</li>\n								{{ } }}\n										</ul>\n									</div>\n								</div>\n\n								<!-- title OR tab list OR htmlHeaderContent e.g. search box -->\n								{{ if(title != "" || tabs.length > 0 || htmlHeaderContent != "" ) { }}\n								<div class="modal-header">\n									{{ if (tabs.length > 0) { }}\n										<ul class="nav nav-tabs tab-count-{{= tabs.length }}">\n											{{ _.each(tabs, function(tab, iterator) { }}\n												<li><a href="javascript:;" data-target="{{= tab.targetSelector }}" title="{{= tab.xsTitle }}">{{= tab.title }}</a></li>\n											{{ }); }}\n										</ul>\n									{{ } else if(title != "" ){ }}\n										<h4 class="modal-title hidden-xs" id="{{= id }}_title">{{= title }}</h4>\n									{{ } else if(htmlHeaderContent != "") { }}\n										{{= htmlHeaderContent }}\n									{{ } }}\n								</div>\n								{{ } }}\n\n								<div class="modal-body">\n									{{= htmlContent }}\n								</div>\n								{{ if(typeof buttons !== "undefined" && buttons.length > 0 ){ }}\n									<div class="modal-footer {{ if(buttons.length > 1 ){ }} mustShow {{ } }}">\n										{{ _.each(buttons, function(button, iterator) { }}\n											<button data-index="{{= iterator }}" type="button" class="btn {{= button.className }} ">{{= button.label }}</button>\n										{{ }); }}\n									</div>\n								{{ } }}\n							</div>\n						</div>\n					</div>'
+            dialogWindow: '<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>' + '<div class="modal-dialog {{= className }}">' + '<div class="modal-content">' + '<div class="modal-closebar">' + '	<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>' + "</div>" + '<div class="navbar navbar-default xs-results-pagination visible-xs">' + '<div class="container">' + '<ul class="nav navbar-nav">' + "<li>" + '<button data-button="leftBtn" class="btn btn-back {{= leftBtn.className }}">{{= leftBtn.icon }} {{= leftBtn.label }}</button>' + "</li>" + '<li class="navbar-text modal-title-label">' + "	{{= title }}" + "</li>" + '{{ if(rightBtn.label != "" || rightBtn.icon != "") { }}' + '<li class="right">' + '<button data-button="rightBtn" class="btn btn-save {{= rightBtn.className }}">{{= rightBtn.label }} {{= rightBtn.icon }}</button>' + "</li>" + "{{ } }}" + "</ul>" + "</div>" + "</div>" + '{{ if(title != "" || tabs.length > 0 || htmlHeaderContent != "" ) { }}' + '<div class="modal-header">' + "{{ if (tabs.length > 0) { }}" + '<ul class="nav nav-tabs tab-count-{{= tabs.length }}">' + "{{ _.each(tabs, function(tab, iterator) { }}" + '<li><a href="javascript:;" data-target="{{= tab.targetSelector }}" title="{{= tab.xsTitle }}">{{= tab.title }}</a></li>' + "{{ }); }}" + "</ul>" + '{{ } else if(title != "" ){ }}' + '<h4 class="modal-title hidden-xs" id="{{= id }}_title">{{= title }}</h4>' + '{{ } else if(htmlHeaderContent != "") { }}' + "{{= htmlHeaderContent }}" + "{{ } }}" + "</div>" + "{{ } }}" + '<div class="modal-body">' + "{{= htmlContent }}" + "</div>" + '{{ if(typeof buttons !== "undefined" && buttons.length > 0 ){ }}' + '<div class="modal-footer {{ if(buttons.length > 1 ){ }} mustShow {{ } }}">' + "{{ _.each(buttons, function(button, iterator) { }}" + '<button data-index="{{= iterator }}" type="button" class="btn {{= button.className }} ">{{= button.label }}</button>' + "{{ }); }}" + "</div>" + "{{ } }}" + "</div>" + "</div>" + "</div>"
         },
         onOpen: function(dialogId) {},
         onClose: function(dialogId) {},
@@ -5904,7 +6022,11 @@ Features = {
         }
         var settings = getSettings(dialogId);
         if (settings !== null && typeof settings.onClose === "function") settings.onClose(dialogId);
-        destroyDialog(dialogId);
+        if (settings.destroyOnClose === true) {
+            destroyDialog(dialogId);
+        } else {
+            meerkat.modules.address.removeFromHash(settings.hashId);
+        }
     }
     function calculateLayout(eventObject) {
         $("#dynamic_dom .modal").each(function resizeModalItem(index, element) {
@@ -5941,13 +6063,14 @@ Features = {
             content_height -= $dialog.find(".modal-closebar").outerHeight(true);
             if (isXS) {
                 $modalContent.css("height", viewport_height);
-                $dialog.find(".modal-body").css("height", content_height);
+                $dialog.find(".modal-body").css("max-height", "none").css("height", content_height);
                 dialogTop = 0;
                 $modalDialog.css("top", dialogTop);
             } else {
                 $modalContent.css("max-height", viewport_height);
                 if ($dialog.attr("data-fullheight") === "true") {
                     $modalContent.css("height", viewport_height);
+                    $modalBody.css("height", content_height);
                 } else {
                     $modalContent.css("height", "auto");
                     $modalBody.css("height", "auto");
@@ -5964,8 +6087,7 @@ Features = {
     function destroyDialog(dialogId) {
         if (!dialogId || dialogId.length === 0) return;
         var $dialog = $("#" + dialogId);
-        $dialog.find("button").unbind();
-        $dialog.remove();
+        $dialog.find("button").off().end().remove();
         var settings = getSettings(dialogId);
         if (settings != null) {
             if (settings.hashId != null) {
@@ -6403,7 +6525,7 @@ Features = {
             } catch (e) {}
         }
         meerkat.modules.comms.post({
-            url: "ajax/write/register_fatal_error.jsp",
+            url: meerkat.site.urls.base + "ajax/write/register_fatal_error.jsp",
             data: settings,
             useDefaultErrorHandling: false,
             errorLevel: "silent",
@@ -6613,7 +6735,7 @@ Features = {
         return filterData($element).serialize();
     }
     function filterData($element) {
-        return $element.find(":input:visible, input[type=hidden], :input[data-visible=true], :input[data-initValue=true], :input[data-attach=true]").filter(function() {
+        return $element.find(":input:visible, input[type=hidden], select[type=hidden], :input[data-visible=true], :input[data-initValue=true], :input[data-attach=true]").filter(function() {
             return $(this).val() !== "" && $(this).val() !== "Please choose...";
         });
     }
@@ -6676,6 +6798,9 @@ Features = {
         });
     }
     function populate($component, value) {
+        if (typeof value !== "string") {
+            value = "";
+        }
         var parts = value.split("/"), nativeValue = "";
         if ($component.attr("data-locked") == 1) return;
         $component.attr("data-locked", 1);
@@ -6827,6 +6952,34 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat;
+    function initIe8SelectMenuAutoExpand() {}
+    function bindEvents($parent, selector) {
+        if (!meerkat.modules.performanceProfiling.isIE8()) {
+            return;
+        }
+        $parent.on("focus", selector, function() {
+            var el = $(this);
+            el.data("width", el.width());
+            el.width("auto");
+            el.data("width-auto", $(this).width());
+            if (el.data("width-auto") < el.data("width")) {
+                el.width(el.data("width"));
+            } else {
+                el.width(el.data("width-auto") + 15);
+            }
+        }).on("blur", selector, function() {
+            var el = $(this);
+            el.width(el.data("width"));
+        });
+    }
+    meerkat.modules.register("ie8SelectMenuAutoExpand", {
+        init: initIe8SelectMenuAutoExpand,
+        bindEvents: bindEvents
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         journeyEngine: {
@@ -6857,6 +7010,7 @@ Features = {
         onAfterEnter: null,
         onBeforeLeave: null,
         onAfterLeave: null,
+        additionalHashInfo: null,
         validation: {
             validate: true,
             customValidation: null
@@ -6916,10 +7070,12 @@ Features = {
                     showSlide(currentStep, false, null);
                     onShowNextStep(eventObject, null, false);
                 }
-                if (meerkat.modules.address.getWindowHash() !== "" && meerkat.modules.address.getWindowHash() !== settings.startStepId) {
-                    meerkat.modules.address.setHash(settings.startStepId);
+                var startStepId = settings.startStepId;
+                if (typeof step !== "undefined" && typeof step.additionalHashInfo === "function") startStepId += "/" + step.additionalHashInfo();
+                if (meerkat.modules.address.getWindowHash() !== "" && meerkat.modules.address.getWindowHash() !== startStepId) {
+                    meerkat.modules.address.setHash(startStepId);
                 } else {
-                    meerkat.modules.address.setStartHash(settings.startStepId);
+                    meerkat.modules.address.setStartHash(startStepId);
                     onNavigationChange({
                         navigationId: settings.startStepId
                     });
@@ -7000,8 +7156,10 @@ Features = {
             }
         } catch (e) {
             unlock();
-            meerkat.modules.address.setHash(currentStep.navigationId);
             meerkat.logging.info("[journeyEngine]", e);
+            if (currentStep != null) {
+                meerkat.modules.address.setHash(currentStep.navigationId);
+            }
             return false;
         }
         return true;
@@ -7211,7 +7369,7 @@ Features = {
                 lock();
             }
             var navigationId = path;
-            if (currentStep.navigationId !== navigationId) {
+            if (currentStep !== null && currentStep.navigationId !== navigationId) {
                 var direction;
                 if (navigationId == "next" || navigationId == "previous") {
                     var currentStepIndex = getStepIndex(currentStep.navigationId);
@@ -7230,6 +7388,9 @@ Features = {
                         }
                     }
                     navigationId = settings.steps[newStepIndex].navigationId;
+                    if (typeof settings.steps[newStepIndex].additionalHashInfo === "function") {
+                        navigationId += "/" + settings.steps[newStepIndex].additionalHashInfo();
+                    }
                 }
                 if (getStepIndex(navigationId) == getStepIndex(currentStep.navigationId) + 1 && direction == "forward") {
                     validateStep(currentStep, function() {
@@ -7459,6 +7620,23 @@ Features = {
             meerkat.messaging.publish(moduleEvents.INIT);
         }
     }
+    function showSteps() {
+        return progressBarSteps;
+    }
+    function checkLabel(labelToCheck) {
+        _.each(progressBarSteps, function(progressBarStep, index) {
+            if (progressBarStep.label === labelToCheck) {
+                return true;
+            }
+        });
+    }
+    function addAdditionalStep(labelToCheck, navigationId) {
+        _.each(progressBarSteps, function(progressBarStep, index) {
+            if (progressBarStep.label === labelToCheck) {
+                progressBarStep.matchAdditionalSteps = [ navigationId ];
+            }
+        });
+    }
     function setComplete() {
         currentStepNavigationId = "complete";
         $target.addClass("complete");
@@ -7489,7 +7667,10 @@ Features = {
         enable: enable,
         show: show,
         hide: hide,
-        setComplete: setComplete
+        setComplete: setComplete,
+        showSteps: showSteps,
+        checkLabel: checkLabel,
+        addAdditionalStep: addAdditionalStep
     });
 })(jQuery);
 
@@ -7695,6 +7876,29 @@ Features = {
         showAfter: showAfter,
         showInside: showInside,
         getTemplate: getTemplate
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
+    function init() {
+        $(document).ready(support);
+    }
+    function support() {
+        $logo = $("html.lt-ie9 #logo");
+        if ($logo.length) {
+            var url = $logo.css("background-image").slice(5, -2);
+            var brand = $logo.text();
+            $logo.css("background-image", "none");
+            $img = $("<img/>", {
+                src: url,
+                alt: brand
+            }).attr("style", "width:100%;height:100%");
+            $logo.empty().append($img);
+        }
+    }
+    meerkat.modules.register("logoIE8", {
+        init: init
     });
 })(jQuery);
 
@@ -8039,6 +8243,9 @@ Features = {
         });
     }
     function setProduct(productToParse, showApply) {
+        if (typeof productToParse !== "undefined" && typeof productToParse.productId !== "undefined") {
+            Results.setSelectedProduct(productToParse.productId);
+        }
         product = productToParse;
         if (product !== false) {
             if (showApply === true) {
@@ -8082,6 +8289,9 @@ Features = {
     function setDataResult(result) {
         jsonResult = result;
     }
+    function getDataResult() {
+        return jsonResult;
+    }
     function updateSettings(updatedSettings) {
         if (typeof updatedSettings !== "object") {
             return;
@@ -8115,6 +8325,7 @@ Features = {
         getOpenProduct: getOpenProduct,
         setProduct: setProduct,
         setDataResult: setDataResult,
+        getDataResult: getDataResult,
         applyCallback: applyCallback,
         updateSettings: updateSettings
     });
@@ -9018,6 +9229,36 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, events = {};
+    function init() {}
+    function get(data, settings) {
+        data = _.extend({
+            plateNumber: null,
+            state: null
+        }, data);
+        settings = settings || {};
+        var request_obj = {
+            url: "rest/rego/lookup/list.json",
+            data: data,
+            dataType: "json",
+            cache: true,
+            useDefaultErrorHandling: true,
+            numberOfAttempts: 3,
+            errorLevel: "fatal"
+        };
+        if (_.isObject(settings) && !_.isEmpty(settings)) {
+            request_obj = $.extend(request_obj, settings);
+        }
+        meerkat.modules.comms.get(request_obj);
+    }
+    meerkat.modules.register("regoLookup", {
+        init: init,
+        events: events,
+        get: get
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $renderingModeFld;
     function init() {
         if (typeof meerkat.site === "undefined") {
@@ -9773,7 +10014,7 @@ Features = {
                 $dropdown.find(".activator span:not([class])").html("Save Quote");
                 $auxilleryActivator.find("span:not([class])").html("Save Quote");
             }
-            if (typeof transactionId !== "undefined") {
+            if (typeof transactionId !== "undefined" && Number(transactionId) > 0) {
                 meerkat.modules.transactionId.set(transactionId);
             }
             if ($.inArray(meerkat.site.vertical, [ "car", "ip", "life", "health", "home" ]) !== -1) {
@@ -10122,7 +10363,7 @@ Features = {
                 cache: false,
                 errorLevel: "warning",
                 onSuccess: function emailResultsSuccess(result) {
-                    if (typeof result.transactionId !== "undefined" && result.transactionId !== "") {
+                    if (typeof result.transactionId !== "undefined" && Number(result.transactionId) > 0) {
                         meerkat.modules.transactionId.set(result.transactionId);
                     }
                     if (typeof settings.emailResultsSuccessCallback === "function") {
@@ -10448,7 +10689,7 @@ Features = {
         }
     }
     function updateVirtualPageFromJourneyEngine(step, delay) {
-        if (!_.isArray(skipStepForSessionCam) || _.indexOf(skipStepForSessionCam, step.navigationId) === -1) {
+        if (!_.isArray(skipStepForSessionCam) || step !== null && _.indexOf(skipStepForSessionCam, step.navigationId) === -1) {
             updateVirtualPage(step, delay);
         }
     }
@@ -11144,7 +11385,7 @@ Features = {
                 id_handler: actionId
             },
             onSuccess: function fetchTransactionIdSuccess(msg) {
-                if (msg.transactionId !== transactionId) {
+                if (msg.transactionId !== transactionId && Number(msg.transactionId) > 0) {
                     set(msg.transactionId, msg.rootId);
                 }
                 if (typeof callback === "function") {
@@ -11382,6 +11623,20 @@ Features = {
         }
         return fromDate;
     }
+    function getTimeAgo(date) {
+        if (date instanceof Date === false) date = new Date(date);
+        var seconds = Math.floor((new Date() - date) / 1e3), interval = Math.floor(seconds / 31536e3);
+        if (interval > 1) return interval + " years";
+        interval = Math.floor(seconds / 2592e3);
+        if (interval > 1) return interval + " months";
+        interval = Math.floor(seconds / 86400);
+        if (interval > 1) return interval + " days";
+        interval = Math.floor(seconds / 3600);
+        if (interval > 1) return interval + " hours";
+        interval = Math.floor(seconds / 60);
+        if (interval > 1) return interval + " minutes";
+        return Math.floor(seconds) + " seconds";
+    }
     meerkat.modules.register("utils", {
         slugify: slugify,
         scrollPageTo: scrollPageTo,
@@ -11392,7 +11647,8 @@ Features = {
         invertDate: invertDate,
         returnDateValue: returnDateValue,
         pluginReady: pluginReady,
-        calcWorkingDays: calcWorkingDays
+        calcWorkingDays: calcWorkingDays,
+        getTimeAgo: getTimeAgo
     });
 })(jQuery);
 
@@ -11411,11 +11667,7 @@ jQuery.fn.extend({
     var events = {
         validation: {}
     };
-    var $form = null;
     function init() {
-        jQuery(document).ready(function($) {
-            $form = $("#mainform");
-        });
         $.validator.addMethod("personName", validatePersonName, "Please enter alphabetic characters only. " + "Unfortunately, international alphabetic characters, numbers and symbols are not " + "supported by many of our partners at this time.");
     }
     var validNameCharsRegex = /^([a-zA-Z .'\-,]*)$/;
@@ -11435,10 +11687,13 @@ jQuery.fn.extend({
         });
     }
     function isValid($element, displayErrors) {
-        if (displayErrors) {
-            return $element.valid();
+        if (displayErrors) return $element.valid();
+        var $form = $(document).find(".journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).children("form");
+        try {
+            return $form.validate().check($element);
+        } catch (e) {
+            return true;
         }
-        return $form.validate().check($element);
     }
     function setupDefaultValidationOnForm($formElement) {
         $formElement.validate({

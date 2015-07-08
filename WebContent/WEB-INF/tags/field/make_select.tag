@@ -16,7 +16,7 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <sql:query var="result">
 	(SELECT code, description FROM aggregator.general WHERE type = ? ORDER BY orderSeq LIMIT 16)

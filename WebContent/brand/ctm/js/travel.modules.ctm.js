@@ -177,42 +177,6 @@
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-    function callFunctions() {
-        log("[handoverCookieSetup]", "Running the onready code");
-        if (meerkat.site.environment != "pro" && meerkat.site.environment != "prelive") {
-            log("[handoverCookieSetup]", "_CtMH setting test options now");
-            _CtMH.setOpts({
-                debug: meerkat.site.showLogging,
-                asTest: true,
-                endp: meerkat.site.ctmh.fBase + "handover/confirm"
-            });
-        }
-        log("[handoverCookieSetup]", "_CtMH running start now");
-        _CtMH.start(meerkat.modules.transactionId.get(), meerkat.site.vertical);
-    }
-    function init() {
-        log("[handoverCookieSetup]", "Initialised");
-        meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, function resultsCallback() {
-            log("[handoverCookieSetup]", "RESULTS_DATA_READY", "Triggered");
-            if (typeof _CtMH !== "undefined") {
-                log("[handoverCookieSetup]", "_CtMH is defined");
-                _CtMH.onready(callFunctions());
-            }
-        });
-        meerkat.messaging.subscribe(meerkatEvents.partnerTransfer.TRANSFER_TO_PARTNER, function partnerTransferCallback(data) {
-            log("[handoverCookieSetup]", "partnerTransfer.TRANSFER_TO_PARTNER", "Triggered");
-            if (typeof _CtMH !== "undefined") {
-                _CtMH.add(data.transactionID, data.partnerID, data.productDescription);
-            }
-        });
-    }
-    meerkat.modules.register("handoverCookieSetup", {
-        init: init
-    });
-})(jQuery);
-
-(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, templateMoreInfo, $travel_dates_toDate, $travel_dates_fromDate_button, $travel_dates_fromDate, $travel_dates_toDate_button, $travel_adults;
     var moduleEvents = {
         traveldetails: {
@@ -532,8 +496,13 @@
         }
     }
     function applyEventListeners() {
-        $countrySelector.on("keydown", function() {
-            $countrySelector.data("ttView").datasets[0].valueKey = "countryName";
+        $countrySelector.on("keydown", function(e) {
+            if (e.which == 13) {
+                $(".tt-suggestion:first-child").trigger("click");
+                $countrySelector.focus();
+            } else {
+                $countrySelector.data("ttView").datasets[0].valueKey = "countryName";
+            }
         }).on("typeahead:opened", function() {
             selectedCountryObj = {};
             $countrySelector.val("");
@@ -834,10 +803,12 @@
             $fromDateInput = $("#travel_dates_fromDate");
             $toDateInput = $("#travel_dates_toDate");
             $fromDateInput.datepicker({
-                orientation: "top right"
+                orientation: "top right",
+                numberOfMonths: 2
             });
             $toDateInput.datepicker({
-                orientation: "top right"
+                orientation: "top right",
+                numberOfMonths: 2
             });
             initDatePickers();
             initDateEvents();

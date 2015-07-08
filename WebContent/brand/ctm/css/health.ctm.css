@@ -2732,7 +2732,7 @@ button .simples-dialogue h3:after {
 }
 .payment_assurance_message {
   position: absolute;
-  right: 0;
+  right: -130px;
   padding-right: 0;
   top: 0;
 }
@@ -3024,17 +3024,19 @@ body.AHM .ausgovtrebateform em.AHM {
 body.AHM .health-credit_card_details .fieldrow {
   display: none;
 }
-body.AHM .health-credit_card_details .health_credit-card-details_day_group {
-  display: block;
+body.AHM .health_bank-details_paymentDay_group,
+body.AHM .health_credit-card-details_paymentDay_group {
+  display: block !important;
 }
 body.AHM .health_credit-card-details_day_group,
 body.AHM .health_payment_bank_policyDay,
-body.AHM .health_bank-details_day-group {
-  display: none !important;
-}
+body.AHM .health_bank-details_day-group,
 body.AHM .health_bank-details_policyDay-group,
 body.AHM .health_credit-card-details_policyDay-group {
-  display: block !important;
+  display: none !important;
+}
+body.AHM .health_payment-day_message {
+  display: none !important;
 }
 body.AHM .health_dependant_details_schoolGroup input {
   display: none !important;
@@ -3436,7 +3438,12 @@ a.healthPremiumIncreaseContent:hover {
   color: #1c3e93;
   font-size: 91%;
   font-weight: bold;
-  margin-top: -13px;
+  margin-top: -21px;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .header-collapse-contact > ul li .opening-hours {
+    margin-top: -13px;
+  }
 }
 .header-collapse-contact > ul li .opening-hours .tomorrow-hours {
   color: #999999;

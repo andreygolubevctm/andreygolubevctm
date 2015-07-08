@@ -25,6 +25,7 @@
 <%-- The server URL is taken from a settings file rather than using "<%=request.getLocalAddr()%>" as the f5 returns ecommerce.disconline.com.au rather than secure.comparethemarket.com.au --%>
 <c:set var="server_real_url">${pageSettings.getServerUrl()}</c:set>
 <c:set var="server_url">${pageSettings.getRootUrl()}</c:set>
+<c:set var="server_base_url">${pageSettings.getBaseUrl()}</c:set>
 
 var allowExternal = 1; // 1 = on, 0 = off
 var uri = window.location.host;
@@ -48,7 +49,7 @@ if ((allowExternal == 0 && uri.indexOf("secure") != -1) || (allowExternal == 1))
 			_counter2 : 0,
 			_ext_code : [],
 			_css_code : '',
-			_server : "${server_url}ctm/",
+			_server : "${server_base_url}",
 			_ext_css_count : 0,
 			_ext_script_id : 0,
 			_currentType : '',

@@ -43,7 +43,7 @@ ROLES
 
 <c:set var="ipInteger"><field:ip_number ip="${ip}" /></c:set>
 <c:if test="${not empty ipInteger && ipInteger > 0}">
-	<sql:setDataSource dataSource="jdbc/aggregator"/>
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 	<%-- Look for a match --%>
 	<sql:query var="getSQL">
 		SELECT styleCodeId,ipStart,ipEnd,`Role`,

@@ -496,7 +496,7 @@ ResultsView = {
 				});
 
 				// which property to animate
-				var currentResult = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + Object.byString( sortedResult, "productId") + "]" );
+				var currentResult = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + Object.byString( sortedResult, "productId") + "']" );
 
 				var posDifference = sortedIndex - previousIndex;
 
@@ -586,7 +586,7 @@ ResultsView = {
 			for(var i=0;i< Results.model.filteredProducts.length;i++){
 				var product = Results.model.filteredProducts[i];
 				var productId = Object.byString( product, Results.settings.paths.productId );
-				items.push(Results.settings.elements.rows +"[data-productId=" + productId + "].filtered");
+				items.push(Results.settings.elements.rows +"[data-productId='" + productId + "'].filtered");
 			}
 			if(items.length > 0){
 				$items = $( items.join(','));
@@ -600,7 +600,7 @@ ResultsView = {
 		$.each(Results.model.sortedProducts, function iterateSortedProducts(sortedIndex, product){
 
 			var productId = Object.byString( product, Results.settings.paths.productId );
-			var currentResult = $( Results.settings.elements.rows + "[data-productId=" + productId + "]" );
+			var currentResult = $( Results.settings.elements.rows + "[data-productId='" + productId + "']" );
 			// result has been filtered, so fades out
 			if( $.inArray( product, Results.model.filteredProducts ) == -1 ){
 

@@ -27,7 +27,7 @@
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		<go:log source="write_quote_jsp">WRITE QUOTE PROCEEDINATOR PASSED</go:log>
 
-		<sql:setDataSource dataSource="jdbc/aggregator"/>
+		<sql:setDataSource dataSource="jdbc/ctm"/>
 
 		<c:set var="sessionid" value="${pageContext.session.id}" />
 		<c:set var="stylecode" value="${pageSettings.getBrandCode()}" />

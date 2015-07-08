@@ -30,7 +30,7 @@
 	<c:set var="fuels"><c:out value="${fuels}" />,9</c:set>
 </c:if>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- MAKE the postcode, suburb and state variables by splitting the location string (Suburb PCODE STATE) --%>
 <c:forTokens items="${location}" delims=" " var="locationToken">
@@ -131,11 +131,11 @@ MAIN METRO SEARCH
 
 <%-- RUN: the main search with all the results --%>
 <sql:query var="result">
-   SELECT * 
-	FROM aggregator.fuel_rates 	
-		WHERE FIND_IN_SET(FuelId, ? )
-		AND FIND_IN_SET(PostCode, ? )
-		ORDER BY Price LIMIT 25;
+	SELECT *
+	FROM aggregator.fuel_rates
+	WHERE FIND_IN_SET(FuelId, ? )
+	AND FIND_IN_SET(PostCode, ? )
+	ORDER BY Price LIMIT 25;
 	<sql:param value="${fuels}" />
 	<sql:param value="${PostcodeList}" />
 </sql:query>
@@ -164,6 +164,12 @@ MAIN METRO SEARCH
 			<premium>${row.Price}</premium>
 			<fuelid>${row.FuelId}</fuelid>
 			<created>${row.RecordedTime}</created>
+
+			<%-- Format recorded time as American date so JavaScript can parse it --%>
+			<fmt:setLocale value="en_AU" scope="page" />
+			<fmt:parseDate var="parsedRecordedTime" pattern="dd/MM/yyyy hh:mm:ss a" value="${row.RecordedTime}" />
+			<fmt:formatDate var="formattedRecordedTime" value="${parsedRecordedTime}" pattern="MM/dd/yyyy hh:mm a"/>
+			<createdFormatted>${formattedRecordedTime}</createdFormatted>
 		</result>
 	</c:forEach>
 	<c:if test="result.rowCount == 0">

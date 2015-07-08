@@ -6,6 +6,8 @@
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath" %>
 <%@ attribute name="type" required="true" rtexprvalue="true" description="the address type R=Residential P=Postal" %>
 
+<c:set var="isPostal" value="${type eq 'P'}" />
+
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="postcode" value="${name}_postcode" />
@@ -14,7 +16,10 @@
 
 <go:script href="common/javascript/elastic_address.js" marker="js-href"/>
 
-<div id="elasticSearchTypeaheadComponent">
+<div class="elasticSearchTypeaheadComponent elasticsearch_container_${name}">
+	<form_new:row id="${name}_error_container">
+		<div class="error-field"></div>
+	</form_new:row>
 
 	<%-- STREET-SEARCH (ELASTIC) --%>
 	<!-- Since Chrome now ignores the autofill="off" param we can't have address or street in the name/id of the search field. Thanks Chrome... -->
@@ -40,7 +45,7 @@
 	<form_new:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStdFieldRow">
 		<c:choose>
 			<c:when test="${not empty address.postCode}">
-				<sql:query var="result" dataSource="jdbc/aggregator">
+				<sql:query var="result" dataSource="jdbc/ctm">
 					SELECT suburb, count(street) as streetCount, suburbSeq, state, street
 					FROM aggregator.streets
 					WHERE postCode = ?
@@ -91,9 +96,21 @@
 
 	<%-- STREET NUMBER --%>
 	<c:set var="fieldXpath" value="${xpath}/streetNum" />
-	<form_new:row fieldXpath="${fieldXpath}" label="Street No." id="${name}_streetNumRow" className="${name}_nonStdFieldRow">
+	<c:set var="streetNoLabel" value="Street No." />
+	<c:if test="${isPostal}">
+		<c:set var="streetNoLabel" value="${streetNoLabel} or PO Box" />
+	</c:if>
+
+	<form_new:row fieldXpath="${fieldXpath}" label="${streetNoLabel}" id="${name}_streetNumRow" className="${name}_nonStdFieldRow">
 		<div class="${name}_streetNum_container">
-			<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" />
+			<c:choose>
+				<c:when test="${isPostal}">
+					<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" />
+				</c:when>
+				<c:otherwise>
+					<field:street_no xpath="${fieldXpath}" includeInForm="true" required="true" title="the street no." className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" />
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</form_new:row>
 
@@ -113,13 +130,20 @@
 	<!-- NON STANDARD CHECKBOX -->
 	<c:set var="fieldXpath" value="${xpath}/nonStd" />
 	<form_new:row fieldXpath="${fieldXpath}" label="" id="${name}_nonStd_row" className="nonStd">
-		<field_new:checkbox xpath="${fieldXpath}" value="Y" title="Tick here if you are unable to find the address" label="true" required="false" />
+		<c:set var="unableToFindCheckboxText" value="Tick here if you are unable to find the address" />
+
+		<c:if test="${isPostal}">
+			<c:set var="unableToFindCheckboxText" value="${unableToFindCheckboxText} or your address is a PO Box" />
+		</c:if>
+
+		<field_new:checkbox xpath="${fieldXpath}" value="Y" title="${unableToFindCheckboxText}" label="true" required="false" />
 	</form_new:row>
 
 	<core:clear />
 
 	<!-- HIDDEN FIELDS (Populated in autocomplete.js or elastic_search.js) -->
-	<field:hidden xpath="${xpath}/type" defaultValue="R" />
+	<c:set var="errorPlacementSelector" value="#${name}_error_container .error-field" />
+	<field:hidden xpath="${xpath}/type" defaultValue="${type}" />
 	<field:hidden xpath="${xpath}/elasticSearch" defaultValue="Y" />
 	<field:hidden xpath="${xpath}/lastSearch" />
 	<field:hidden xpath="${xpath}/fullAddressLineOne" />
@@ -132,12 +156,9 @@
 	<field:hidden xpath="${xpath}/floorNo" />
 	<field:hidden xpath="${xpath}/streetName" />
 	<field:hidden xpath="${xpath}/streetId" />
-	<field:hidden xpath="${xpath}/suburbName" />
-	<field:hidden xpath="${xpath}/postCode" />
+	<field_new:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" />
+	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" />
 	<field:hidden xpath="${xpath}/state" />
-
-	<%-- Hidden field for autocomplete.js to use --%>
-	<field:hidden xpath="autoCompleteModuleFieldPrefix" defaultValue="${name}" />
 </div>
 
 <%-- Custom validation for address --%>

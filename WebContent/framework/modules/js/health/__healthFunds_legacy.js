@@ -164,24 +164,11 @@ var healthFunds_AHM = {
 
 		//selections for payment date
 		$('#update-premium').on('click.AHM', function() {
-			var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-			if (freq == 'weekly' || freq == 'fortnightly') {
-				healthFunds._payments = { 'min':3, 'max':8, 'weekends':false };
-			} else {
-				healthFunds._payments = { 'min':3, 'max':32, 'weekends':true };
+			if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
+				meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, false);
 			}
-			var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
-			healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
-			healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
-			if (freq == 'monthly' || freq == 'annually') {
-				$('.health-bank_details-policyDay option, .health-credit-card_details-policyDay option').each(function (index) {
-					if (this.value.length >= 3) {
-						var end = this.value.substring(this.value.length - 3);
-						if (end=='-29' || end=='-30' || end=='-31') {
-							$(this).remove();
-						}
-					}
-				});
+			else {
+				meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, true);
 			}
 		});
 
@@ -200,7 +187,7 @@ var healthFunds_AHM = {
 		});
 
 		//calendar for start cover
-		meerkat.modules.healthPaymentStep.setCoverStartRange(1, 28);
+		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
 	},
 	unset: function(){
 		healthFunds._reset();

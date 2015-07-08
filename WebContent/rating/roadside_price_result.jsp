@@ -26,36 +26,6 @@
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
-
-<go:log level="DEBUG" source="roadside_price_result">
-SELECT
-		rr.ProductId AS productid,
-		rr.SequenceNo,
-		rr.propertyid,
-		rr.value,
-		prodm.productCat,
-		prodm.longTitle AS des,
-		prodm.shortTitle AS name,
-		prodm.providerId AS provider,
-		pm.Name AS provider,
-		rr.value AS premium,
-		rr.text AS premiumText
-	FROM ctm.roadside_rates rr
-		INNER JOIN ctm.stylecode_products prodm on rr.ProductId = prodm.ProductId
-		INNER JOIN ctm.provider_master pm  on pm.providerId = prodm.providerId
-		INNER JOIN ctm.roadside_rates rra on rr.ProductId = rra.ProductId
-		INNER JOIN ctm.roadside_rates rrb on rr.ProductId = rrb.ProductId
-		INNER JOIN ctm.roadside_rates rrc on rr.ProductId = rrc.ProductId
-	WHERE prodm.styleCodeId = ${styleCodeId}
-		AND prodm.providerId = ${providerId}
-		AND rr.propertyid = ${state}
-		AND NOT (rra.propertyid = 'commercial' and rra.value = 0 and ${commercial} = 1)
-		AND NOT (rrb.propertyid = 'maxKm' and rrb.value = 1 and ${odometer} = 1)
-		AND rrc.propertyid = 'carAgeMax' and rrc.value >= (year(CURRENT_TIMESTAMP ) - ${year})
-	GROUP BY rr.ProductId, rr.SequenceNo;
-</go:log>
-
-
 <%-- Get products that match the passed criteria --%>
 <%-- StyleCode is referenced once in the parent roadside_rates to knockout disabled products --%>
 <sql:query var="result">

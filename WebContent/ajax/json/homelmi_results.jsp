@@ -3,7 +3,7 @@
 
 <session:get settings="true" authenticated="true" verticalCode="HOMELMI" />
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:choose>
 	<c:when test="${not empty param.action and param.action == 'latest'}">

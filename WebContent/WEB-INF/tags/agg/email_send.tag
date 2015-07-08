@@ -16,7 +16,7 @@
 <%-- Need to guarantee that the transaction header record has the current email address.
 	Is needed for the quote url to link the transaction with the hashed email. --%>
 <c:if test="${not empty data.current.transactionId}">
-	<sql:setDataSource dataSource="jdbc/aggregator"/>
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 	<c:catch var="ignoreable_error">
 		<sql:update var="result">
 			UPDATE aggregator.transaction_header

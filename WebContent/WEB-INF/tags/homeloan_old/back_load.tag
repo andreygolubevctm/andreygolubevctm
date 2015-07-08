@@ -55,7 +55,7 @@
 
 						<c:catch var="error">
 
-							<sql:setDataSource dataSource="jdbc/aggregator"/>
+							<sql:setDataSource dataSource="jdbc/ctm"/>
 
 							<%-- ATTEMPT TO LOAD THE TRANSACTION DATA --%>
 							<sql:query var="transactionQuery">

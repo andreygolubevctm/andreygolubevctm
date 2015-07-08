@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <settings:setVertical verticalCode="GENERIC" />
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 

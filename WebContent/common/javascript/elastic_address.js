@@ -76,6 +76,8 @@ function init_address(name, defaultSuburbSeq) {
 	}
 
 	function swapInputsCleanValidation() {
+		var $errorContainer = $("#elasticsearch-std-error-container");
+
 		if ($(this).is(':checked')) {
 			// Hide street search fields
 			autofilllessSearchFieldRow.hide();
@@ -86,6 +88,7 @@ function init_address(name, defaultSuburbSeq) {
 			resetNonStdFields(true, false);
 			resetElasticSearchFields();
 
+			$errorContainer.hide();
 		} else {
 			// Show street search fields
 			autofilllessSearchFieldRow.show();
@@ -96,6 +99,7 @@ function init_address(name, defaultSuburbSeq) {
 			resetNonStdFields(true, false);
 			resetElasticSearchFields();
 
+			$errorContainer.show();
 		}
 	}
 

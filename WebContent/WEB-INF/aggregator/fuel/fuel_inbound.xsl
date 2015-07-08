@@ -44,16 +44,20 @@
 <!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template name="metro">
 		<results>
-			<source>metro</source>		
+			<general>
+				<source>metro</source>
+				<xsl:if test='//time'>
+					<timeDiff><xsl:value-of select='//time' /></timeDiff>
+				</xsl:if>
+				<xsl:if test='//update'>
+					<update><xsl:value-of select='//update' /></update>
+				</xsl:if>
+			</general>
+
 			<xsl:if test='//error'>
 				<error><xsl:value-of select='//error' /></error>
 			</xsl:if>
-			<xsl:if test='//time'>
-				<timeDiff><xsl:value-of select='//time' /></timeDiff>
-			</xsl:if>
-			<xsl:if test='//update'>
-				<update><xsl:value-of select='//update' /></update>
-			</xsl:if>
+
 			<results><xsl:value-of select="count(//result)" /></results>
 			<xsl:for-each select="//result">						
 			
@@ -98,6 +102,7 @@
 					<fuelText><xsl:value-of select="$fuelText" /></fuelText>
 
 					<created><xsl:value-of select="created" /></created>
+					<createdFormatted><xsl:value-of select="createdFormatted" /></createdFormatted>
 				</xsl:element>
 			</xsl:for-each>
 						
@@ -139,22 +144,24 @@
 		</xsl:variable>						
 	
 		<results>
-			<source>regional</source>
-			
-			<fuel1><xsl:value-of select='//fuel1' /></fuel1>
-			<fuel2><xsl:value-of select='//fuel2' /></fuel2>
-			<fuel1Text><xsl:value-of select='$fuel1' /></fuel1Text>
-			<fuel2Text><xsl:value-of select='$fuel2' /></fuel2Text>
+			<general>
+				<source>regional</source>
+				<fuel1><xsl:value-of select='//fuel1' /></fuel1>
+				<fuel2><xsl:value-of select='//fuel2' /></fuel2>
+				<fuel1Text><xsl:value-of select='$fuel1' /></fuel1Text>
+				<fuel2Text><xsl:value-of select='$fuel2' /></fuel2Text>
+				<xsl:if test='//time'>
+					<timeDiff><xsl:value-of select='//time' /></timeDiff>
+				</xsl:if>
+				<xsl:if test='//update'>
+					<update><xsl:value-of select='//update' /></update>
+				</xsl:if>
+			</general>
 			
 			<xsl:if test='//error'>
 				<error><xsl:value-of select='//error' /></error>
 			</xsl:if>
-			<xsl:if test='//time'>
-				<timeDiff><xsl:value-of select='//time' /></timeDiff>
-			</xsl:if>
-			<xsl:if test='//update'>
-				<update><xsl:value-of select='//update' /></update>
-			</xsl:if>
+
 			<results><xsl:value-of select="count(//result)" /></results>
 			
 			<xsl:for-each select="//result">

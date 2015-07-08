@@ -525,6 +525,29 @@
 				meerkat.messaging.publish(moduleEvents.car.VEHICLE_CHANGED);
 		}
 	}
+
+	function prepareSelectors(selectionDefaults, callback) {
+
+		useSessionDefaults = true; // important, must be set to ensure preselection (is reset on change)
+
+		flushSelectorData();
+
+		defaults = _.extend({}, selectionDefaults);
+		selectorData = _.extend({}, selectionDefaults.data);
+
+		addChangeListeners();
+
+		renderVehicleSelectorData('makes');
+
+		checkAndNotifyOfVehicleChange();
+
+		if(!isSplitTest()) {
+			meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($(document), '#quote_vehicle_redbookCode');
+		}
+
+		if(_.isFunction(callback)) {
+			callback();
+		}
 	}
 
 	function initCarVehicleSelection() {

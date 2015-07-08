@@ -69,12 +69,16 @@ public class UtilitiesProviderServiceModel extends AbstractJsonModel {
 	 * @param json
 	 * @return
 	 */
-	public Boolean populateFromThoughtWorldJson(JSONObject json){
-		try {
+	public Boolean populateFromThoughtWorldJson(JSONObject json) throws JSONException {
 
-			setElectricityTariff(json.getString("el_tariff"));
+			if(json.has("el_tariff") && json.isNull("el_tariff") == false) {
+				setElectricityTariff(json.getString("el_tariff"));
+			}
 
-			JSONArray fuels = json.getJSONArray("fuel_type");
+			JSONArray fuels = new JSONArray();
+			if(json.has("fuel_type") && json.isNull("fuel_type") == false) {
+				fuels = json.getJSONArray("fuel_type");
+			}
 
 			boolean hasElec = false;
 			boolean hasGas = false;
@@ -105,7 +109,7 @@ public class UtilitiesProviderServiceModel extends AbstractJsonModel {
 				setServiceType(ServiceType.Gas);
 			}
 
-			if(json.isNull("elec_retailers") == false){
+			if(json.has("elec_retailers") && json.isNull("elec_retailers") == false) {
 				JSONArray elecRetailers = json.getJSONArray("elec_retailers");
 
 				for(int i = 0; i < elecRetailers.length(); i++){
@@ -117,7 +121,7 @@ public class UtilitiesProviderServiceModel extends AbstractJsonModel {
 				}
 			}
 
-			if(json.isNull("gas_retailers") == false){
+			if(json.has("gas_retailers") && json.isNull("gas_retailers") == false) {
 				JSONArray gasRetailers = json.getJSONArray("gas_retailers");
 				for(int i = 0; i < gasRetailers.length(); i++){
 					JSONObject tempJson = gasRetailers.getJSONObject(i);
@@ -127,14 +131,6 @@ public class UtilitiesProviderServiceModel extends AbstractJsonModel {
 					gasProviders.add(provider);
 				}
 			}
-
-
-
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return false;
-		}
 
 		return true;
 

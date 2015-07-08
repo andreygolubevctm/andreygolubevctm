@@ -65,17 +65,23 @@
 			<a  href="${brochurewareUrl}income-protection/"><span class="icon icon-ip"></span>Income Protection</a>
 		</div>
 
-		<div class="col-xs-6 col-sm-3">
-			<a  href="${brochurewareUrl}roadside-assistance/"><span class="icon icon-roadside"></span>Roadside Assistance</a>
-		</div>
+		<c:if test="${vertical != 'roadside'}">
+			<div class="col-xs-6 col-sm-3">
+				<a  href="${brochurewareUrl}roadside-assistance/"><span class="icon icon-roadside"></span>Roadside Assistance</a>
+			</div>
+		</c:if>
 
-		<div class="col-xs-6 col-sm-3">
-			<a  href="${brochurewareUrl}energy/"><span class="icon icon-energy"></span>Energy Comparison</a>
-		</div>
+		<c:if test="${vertical != 'utilities'}">
+			<div class="col-xs-6 col-sm-3">
+				<a  href="${brochurewareUrl}energy/"><span class="icon icon-energy"></span>Energy Comparison</a>
+			</div>
+		</c:if>
 
-		<div class="col-xs-6 col-sm-3">
-			<a  href="${brochurewareUrl}fuel/"><span class="icon icon-fuel"></span>Fuel Prices</a>
-		</div>
+		<c:if test="${vertical != 'fuel'}">
+			<div class="col-xs-6 col-sm-3">
+				<a  href="${brochurewareUrl}fuel/"><span class="icon icon-fuel"></span>Fuel Prices</a>
+			</div>
+		</c:if>
 	</div>
 
 </div>

@@ -47,12 +47,12 @@
 
 	<c:choose>
 		<c:when test="${empty hideHelpIconCol}">
-			<c:set var="toggleHelpColLarge" value="5" />
+			<c:set var="toggleHelpColLarge" value="6" />
 			<c:set var="toggleHelpColSmall" value="6" />
 			<c:set var="toggleHelpColMobile" value="10" />
 		</c:when>
 		<c:otherwise>
-			<c:set var="toggleHelpColLarge" value="9" />
+			<c:set var="toggleHelpColLarge" value="8" />
 			<c:set var="toggleHelpColSmall" value="8" />
 			<c:set var="toggleHelpColMobile" value="12" />
 		</c:otherwise>
@@ -63,7 +63,7 @@
 			<c:set var="labelClassName" value="col-xs-${toggleHelpColMobile} col-sm-12" />
 		</c:when>
 		<c:otherwise>
-			<c:set var="labelClassName" value="col-lg-3 col-sm-4 col-xs-${toggleHelpColMobile}" />
+			<c:set var="labelClassName" value="col-sm-4 col-xs-${toggleHelpColMobile}" />
 		</c:otherwise>
 	</c:choose>
 
@@ -81,7 +81,7 @@
 
 		</c:when>
 		<c:otherwise>
-			<c:set var="offset" value="col-lg-offset-3 col-sm-offset-4" />
+			<c:set var="offset" value="col-sm-offset-4" />
 			<c:set var="helpIconCol" value="col-xs-2" />
 			<c:set var="fieldCol" value="col-xs-${toggleHelpColMobile}" />
 		</c:otherwise>
@@ -89,13 +89,13 @@
 
 
 
-	<div class="col-lg-${toggleHelpColLarge} col-sm-<c:out value="${toggleHelpColSmall} " /> ${fieldCol} <c:out value=" ${offset}" /> row-content">
+	<div class="col-sm-<c:out value="${toggleHelpColSmall} " /> ${fieldCol} <c:out value=" ${offset}" /> row-content">
 		<jsp:doBody />
 		<div class="fieldrow_legend"<c:if test="${not empty id}"> id="${id}_row_legend"</c:if>>${legend}</div>
 	</div>
 
 	<c:if test="${empty hideHelpIconCol}">
-		<div class="col-lg-4 col-sm-2 ${helpIconCol}">
+		<div class="col-sm-2 ${helpIconCol}">
 			<field_new:help_icon helpId="${helpId}" showText="${showHelpText}"/>
 		</div>
 	</c:if>

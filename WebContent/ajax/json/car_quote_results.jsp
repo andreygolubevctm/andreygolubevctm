@@ -5,7 +5,7 @@
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="continueOnValidationError" value="${true}" />
 
@@ -14,12 +14,10 @@
 
 	Main workhorse for writing quotes and getting prices.
 	It does the following:
-	 - Gets a new transaction id (passing the old one if it exists so we can link the old and new quotes)
-	 - Calls NTAGGTIC to write the client's data in AGGDTL detail file (and create the AGMHDR header record)   
-	 - Initialises the SOAP Aggregator gadget
-	 - Passes the client information to the SOAP Aggregator gadget to fetch prices 
-	 - Calls AGGTRS to write the initial stats (passing the SOAP response data)
-	 - Returns the SOAP response to the page as a JSON object
+	- Gets a new transaction id (passing the old one if it exists so we can link the old and new quotes)
+	- Initialises the SOAP Aggregator gadget
+	- Passes the client information to the SOAP Aggregator gadget to fetch prices
+	- Returns the SOAP response to the page as a JSON object
 
 	@param quote_*	- Full car quote values
 	
@@ -35,8 +33,6 @@
 		<c:set var="writeQuoteOverride" value="Y" />
 	</c:when>
 	<c:otherwise>
-	<%-- Set data from the form and call AGGTIC to write the client data to tables --%>
-	<%-- Note, we do not wait for it to return - this is a "fire and forget" request --%>
 		<security:populateDataFromParams rootPath="quote" />
 		<c:set var="writeQuoteOverride" value="" />
 	</c:otherwise>

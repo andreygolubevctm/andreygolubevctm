@@ -98,12 +98,14 @@ public class SchemaValidation {
 						this.validationErrors = errorHandler.validationErrors;
 						this.valid = errorHandler.valid;
 					} catch (SAXParseException ex) {
+						logger.error("[SchemaValidationError]", ex);
 						this.valid = false;
 					}
 				if(validationErrorsVar != null) {
 					pageContext.setAttribute(validationErrorsVar, errorHandler.validationErrors, PageContext.PAGE_SCOPE);
 				}
 			} catch (Exception e) {
+				logger.error("[SchemaValidationError]", e);
 				throw new JspException(e);
 			}
 		return valid;

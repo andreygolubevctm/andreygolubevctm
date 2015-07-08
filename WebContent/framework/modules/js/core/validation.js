@@ -8,12 +8,7 @@
 		}
 	};
 
-	var $form= null;
-
 	function init(){
-		jQuery(document).ready(function($) {
-			$form = $("#mainform");
-		});
 		$.validator
 			.addMethod(
 			"personName", validatePersonName, "Please enter alphabetic characters only. " +
@@ -46,10 +41,16 @@
 	}
 
 	function isValid( $element, displayErrors ){
-		if( displayErrors ){
+		if( displayErrors )
 			return $element.valid();
+
+		var $form = $(document).find(".journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).children("form");
+		try {
+			return $form.validate().check( $element );
+		} catch(e) {
+			return true;
 		}
-		return $form.validate().check( $element );
+
 	}
 
 	function setupDefaultValidationOnForm( $formElement ){

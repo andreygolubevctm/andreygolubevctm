@@ -162,10 +162,12 @@ ResultsModel = {
 
 				
 			},
-			error: function(jqXHR, txt, errorThrown){
+			error: function(jqXHR, txt, errorThrown) {
 				Results.model.ajaxRequest = false;
 				// status/readyState can be 0 if abort OR if timeout, so check for timeout only.
-				if ((jqXHR.status !== 0 && jqXHR.readyState !== 0) || txt == 'timeout') { // is an error or timeout
+				if (jqXHR.status === 429) {
+					Results.model.isBlockedQuote = true;
+				} else if ((jqXHR.status !== 0 && jqXHR.readyState !== 0) || txt == 'timeout') { // is an error or timeout
 					Results.model.handleFetchError( data, "AJAX request failed: " + txt + " " + errorThrown );
 				}
 			},
@@ -352,59 +354,9 @@ ResultsModel = {
 			}
 
 			var results = Results.model.returnedProducts.slice(); // slice forces the copy instead of referencing it
+			var sortByMethod = typeof Results.getSortByMethod() === 'function' ? Results.getSortByMethod() : Results.model.defaultSortMethod();
 
-			Results.model.sortedProducts = results.sort( function( resultA, resultB ) {
-
-				var valueA = Object.byString(resultA, Object.byString( Results.settings.paths, Results.settings.sort.sortBy) ) ;
-				var valueB = Object.byString(resultB, Object.byString( Results.settings.paths, Results.settings.sort.sortBy) ) ;
-
-				if(isNaN(valueA) || isNaN(valueB)){
-					valueA = String(valueA).toLowerCase();
-					valueB = String(valueB).toLowerCase();
-				}
-
-				// if availability needs to be checked during sorting
-				var frequencyPriceAvailability = Results.settings.paths.availability.price[ Results.settings.frequency ];
-				if( frequencyPriceAvailability && frequencyPriceAvailability != '' ){
-
-					var availabilityA = Object.byString( resultA, frequencyPriceAvailability );
-					var availabilityB = Object.byString( resultB, frequencyPriceAvailability );
-
-					if( availabilityB == 'N' || !valueB || valueB == "" ){
-						return -1;
-					}
-
-					if( availabilityA == 'N' || !valueA || valueA == "" ){
-						return 1;
-					}
-				}
-
-				if (valueA < valueB){
-					returnValue = -1;
-				} else if (valueA > valueB){
-					returnValue = 1;
-				} else if( Results.settings.sort.sortBy.indexOf("price.") == -1 ) {
-
-					var currentFrequencyPricePath = Object.byString( Results.settings.paths, "price." + Results.settings.frequency );
-
-					// values are the same and sortBy != "price", then sort on price
-					valueA = Object.byString(resultA, currentFrequencyPricePath );
-					valueB = Object.byString(resultB, currentFrequencyPricePath );
-
-					if(valueA == null || valueB == null){
-						return 0;
-					}
-					return valueA - valueB; // return early to avoid the sort direction impact, we sort by asc price by default
-
-				} else {
-					returnValue = valueA - valueB;
-				}
-
-				if( Results.settings.sort.sortDir == 'desc' ){
-					returnValue *= -1;
-				}
-				return returnValue;
-			} );
+			Results.model.sortedProducts = results.sort(sortByMethod);
 
 			if( typeof(previousSortedResults) != "undefined" && renderView !== false){
 				Results.view.shuffle( previousSortedResults );
@@ -416,6 +368,59 @@ ResultsModel = {
 
 	},
 
+	defaultSortMethod: function(resultA, resultB) {
+
+
+		var valueA = Object.byString(resultA, Object.byString( Results.settings.paths, Results.settings.sort.sortBy) ) ;
+		var valueB = Object.byString(resultB, Object.byString( Results.settings.paths, Results.settings.sort.sortBy) ) ;
+
+		if(isNaN(valueA) || isNaN(valueB)){
+			valueA = String(valueA).toLowerCase();
+			valueB = String(valueB).toLowerCase();
+		}
+
+		// if availability needs to be checked during sorting
+		var frequencyPriceAvailability = Results.settings.paths.availability.price[ Results.settings.frequency ];
+		if( frequencyPriceAvailability && frequencyPriceAvailability != '' ) {
+
+			var availabilityA = Object.byString( resultA, frequencyPriceAvailability );
+			var availabilityB = Object.byString( resultB, frequencyPriceAvailability );
+
+			if( availabilityB == 'N' || !valueB || valueB == "" ){
+				return -1;
+			}
+
+			if( availabilityA == 'N' || !valueA || valueA == "" ){
+				return 1;
+			}
+		}
+
+		if (valueA < valueB){
+			returnValue = -1;
+		} else if (valueA > valueB){
+			returnValue = 1;
+		} else if( Results.settings.sort.sortBy.indexOf("price.") == -1 ) {
+
+			var currentFrequencyPricePath = Object.byString( Results.settings.paths, "price." + Results.settings.frequency );
+
+			// values are the same and sortBy != "price", then sort on price
+			valueA = Object.byString(resultA, currentFrequencyPricePath );
+			valueB = Object.byString(resultB, currentFrequencyPricePath );
+
+			if(valueA == null || valueB == null){
+				return 0;
+			}
+			return valueA - valueB; // return early to avoid the sort direction impact, we sort by asc price by default
+
+		} else {
+			returnValue = valueA - valueB;
+		}
+
+		if( Results.settings.sort.sortDir == 'desc' ){
+			returnValue *= -1;
+		}
+		return returnValue;
+	},
 	addFilter: function( filterBy, condition, options ){
 
 		if(

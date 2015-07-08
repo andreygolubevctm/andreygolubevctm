@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<sql:setDataSource dataSource="jdbc/aggregator"/>
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 
 	<%--Fetch all records that have been affected --%>
 	<sql:query var="result">

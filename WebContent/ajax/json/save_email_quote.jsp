@@ -152,17 +152,7 @@
 					<%--TODO: Remove this once off DISC --%>
 					<go:setData dataVar="userData" xpath="password" value="${emailPassword}" />
 				</c:if>
-				<%--TODO: remove this once we are off DISC --%>
-				<c:if test="${not empty userData.password && param.vertical == 'CAR'}">
-					<go:log source="save_email_quote_mysql_jsp">save quote to DISC </go:log>
-					<c:set var="saveData" value="<data><email>${userData.emailAddress}</email><password>${userData.password}</password></data>" />
-					<go:call pageId="AGGTSQ"
-						xmlVar="${saveData}"
-						transactionId="${data['current/transactionId']}"
-						mode="P"
-						wait="FALSE"
-					/>
-				</c:if>
+
 			</c:catch>
 
 			<%-- Test for DB issue and handle - otherwise move on --%>

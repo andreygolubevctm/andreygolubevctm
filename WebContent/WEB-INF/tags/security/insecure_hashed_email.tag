@@ -8,7 +8,7 @@
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%@ attribute name="email" 			required="true"	 	rtexprvalue="true"	 description="plain text email coming from an unsubscribe link" %>
 <%@ attribute name="unsubscribe"	type="com.ctm.model.Unsubscribe"	required="true"		rtexprvalue="true"  %>

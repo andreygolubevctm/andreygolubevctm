@@ -235,7 +235,7 @@
 
 </go:script>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <sql:query var="results">
 	SELECT DISTINCT

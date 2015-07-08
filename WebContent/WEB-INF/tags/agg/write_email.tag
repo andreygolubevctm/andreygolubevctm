@@ -12,7 +12,7 @@
 <%@ attribute name="updateName"	 	required="false" rtexprvalue="true"	 description="Whether to update the first and last name when the email already exists" %>
 <%@ attribute name="items" 			required="true"  rtexprvalue="true"  description="comma seperated list of values in value=description format" %>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
 
@@ -23,6 +23,11 @@
 <c:if test="${empty updateName}"><c:set var="updateName" value="${true}"/></c:if>
 
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
+
+<%-- SORRY - this is a nasty hack for meerkat competitions --%>
+<c:if test="${brand=='meer'}">
+    <c:set var="styleCodeId">2</c:set>
+</c:if>
 
 <%-- Trim contact name because the firstName field is only Char(15) in Production --%>
 <c:if test="${fn:length(firstName) > 15}">

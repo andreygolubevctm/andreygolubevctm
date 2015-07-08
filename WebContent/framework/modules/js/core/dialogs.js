@@ -32,7 +32,7 @@ USAGE EXAMPLE: Call directly
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
-		isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false;
+		isXS;
 
 	var windowCounter = 0,
 		dialogHistory = [],
@@ -54,74 +54,69 @@ USAGE EXAMPLE: Call directly
 				label: '',
 				icon: '',
 				className: '',
-				callback: null,
+				callback: null
 			},
 			tabs: [],
 			htmlHeaderContent: '',
 			hashId: null,
+			destroyOnClose: true,
 			closeOnHashChange: false,
 			openOnHashChange: true,
 			fullHeight: false, // By default, a modal shorter than the viewport will be centred. Set to true to vertically fill the viewport.
-			/*jshint -W112 */
-
 			templates: {
-				dialogWindow:
-					'<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>
-						<div class="modal-dialog {{= className }}">
+				dialogWindow: '<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>' +
+						'<div class="modal-dialog {{= className }}">' +
 
-							<div class="modal-content">
-								<div class="modal-closebar">
-									<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>
-								</div>
-
-								<div class="navbar navbar-default xs-results-pagination visible-xs">
-									<div class="container">
-										<ul class="nav navbar-nav">
-											<li>
-												<button data-button="leftBtn" class="btn btn-back {{= leftBtn.className }}">{{= leftBtn.icon }} {{= leftBtn.label }}</button>
-											</li>
-											<li class="navbar-text modal-title-label">
-												{{= title }}
-											</li>
-											{{ if(rightBtn.label != "" || rightBtn.icon != "") { }}
-												<li class="right">
-													<button data-button="rightBtn" class="btn btn-save {{= rightBtn.className }}">{{= rightBtn.label }} {{= rightBtn.icon }}</button>
-												</li>
-								{{ } }}
-										</ul>
-									</div>
-								</div>
-
-								<!-- title OR tab list OR htmlHeaderContent e.g. search box -->
-								{{ if(title != "" || tabs.length > 0 || htmlHeaderContent != "" ) { }}
-								<div class="modal-header">
-									{{ if (tabs.length > 0) { }}
-										<ul class="nav nav-tabs tab-count-{{= tabs.length }}">
-											{{ _.each(tabs, function(tab, iterator) { }}
-												<li><a href="javascript:;" data-target="{{= tab.targetSelector }}" title="{{= tab.xsTitle }}">{{= tab.title }}</a></li>
-											{{ }); }}
-										</ul>
-									{{ } else if(title != "" ){ }}
-										<h4 class="modal-title hidden-xs" id="{{= id }}_title">{{= title }}</h4>
-									{{ } else if(htmlHeaderContent != "") { }}
-										{{= htmlHeaderContent }}
-									{{ } }}
-								</div>
-								{{ } }}
-
-								<div class="modal-body">
-									{{= htmlContent }}
-								</div>
-								{{ if(typeof buttons !== "undefined" && buttons.length > 0 ){ }}
-									<div class="modal-footer {{ if(buttons.length > 1 ){ }} mustShow {{ } }}">
-										{{ _.each(buttons, function(button, iterator) { }}
-											<button data-index="{{= iterator }}" type="button" class="btn {{= button.className }} ">{{= button.label }}</button>
-										{{ }); }}
-									</div>
-								{{ } }}
-							</div>
-						</div>
-					</div>'},
+							'<div class="modal-content">' +
+								'<div class="modal-closebar">' +
+								'	<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>' +
+								'</div>' +
+								'<div class="navbar navbar-default xs-results-pagination visible-xs">' +
+									'<div class="container">' +
+										'<ul class="nav navbar-nav">' +
+											'<li>' +
+												'<button data-button="leftBtn" class="btn btn-back {{= leftBtn.className }}">{{= leftBtn.icon }} {{= leftBtn.label }}</button>' +
+											'</li>' +
+											'<li class="navbar-text modal-title-label">' +
+											'	{{= title }}' +
+											'</li>' +
+											'{{ if(rightBtn.label != "" || rightBtn.icon != "") { }}' +
+												'<li class="right">' +
+													'<button data-button="rightBtn" class="btn btn-save {{= rightBtn.className }}">{{= rightBtn.label }} {{= rightBtn.icon }}</button>' +
+												'</li>' +
+											'{{ } }}' +
+										'</ul>' +
+									'</div>' +
+								'</div>' +
+								'{{ if(title != "" || tabs.length > 0 || htmlHeaderContent != "" ) { }}' +
+								'<div class="modal-header">' +
+									'{{ if (tabs.length > 0) { }}' +
+										'<ul class="nav nav-tabs tab-count-{{= tabs.length }}">' +
+											'{{ _.each(tabs, function(tab, iterator) { }}' +
+												'<li><a href="javascript:;" data-target="{{= tab.targetSelector }}" title="{{= tab.xsTitle }}">{{= tab.title }}</a></li>' +
+											'{{ }); }}' +
+										'</ul>' +
+									'{{ } else if(title != "" ){ }}' +
+										'<h4 class="modal-title hidden-xs" id="{{= id }}_title">{{= title }}</h4>' +
+									'{{ } else if(htmlHeaderContent != "") { }}' +
+										'{{= htmlHeaderContent }}' +
+									'{{ } }}' +
+								'</div>' +
+								'{{ } }}' +
+								'<div class="modal-body">' +
+									'{{= htmlContent }}' +
+								'</div>' +
+								'{{ if(typeof buttons !== "undefined" && buttons.length > 0 ){ }}' +
+									'<div class="modal-footer {{ if(buttons.length > 1 ){ }} mustShow {{ } }}">' +
+										'{{ _.each(buttons, function(button, iterator) { }}' +
+											'<button data-index="{{= iterator }}" type="button" class="btn {{= button.className }} ">{{= button.label }}</button>' +
+										'{{ }); }}' +
+									'</div>' +
+								'{{ } }}' +
+							'</div>' +
+						'</div>' +
+					'</div>'
+					},
 			/*jshint +W112 */
 			onOpen: function(dialogId) {},
 			onClose: function(dialogId) {},
@@ -150,7 +145,7 @@ USAGE EXAMPLE: Call directly
 
 		var htmlTemplate = _.template(settings.templates.dialogWindow);
 
-		if(settings.url != null || settings.externalUrl != null){
+		if(settings.url != null || settings.externalUrl != null) {
 			// Load content from dynamic source, insert loading icon until content loads
 			settings.htmlContent = meerkat.modules.loadingAnimation.getTemplate();
 		}
@@ -280,8 +275,11 @@ USAGE EXAMPLE: Call directly
 		// Run the callback
 		var settings = getSettings(dialogId);
 		if (settings !== null && typeof settings.onClose === 'function') settings.onClose( dialogId );
-
-		destroyDialog(dialogId);
+		if(settings.destroyOnClose === true) {
+			destroyDialog(dialogId);
+		} else {
+			meerkat.modules.address.removeFromHash(settings.hashId);
+		}
 	}
 
 	function calculateLayout(eventObject){
@@ -337,7 +335,7 @@ USAGE EXAMPLE: Call directly
 			// Put the modals to the top of XS so the "X" close icon overlaps the navbar correctly.
 			if (isXS) {
 				$modalContent.css('height', viewport_height);
-				$dialog.find(".modal-body").css('height', content_height);
+				$dialog.find(".modal-body").css('max-height', 'none').css('height', content_height);
 
 				dialogTop = 0;
 				$modalDialog.css('top', dialogTop);
@@ -349,6 +347,7 @@ USAGE EXAMPLE: Call directly
 				// If specified, default the modal to vertically fill the viewport
 				if ($dialog.attr('data-fullheight') === "true") {
 					$modalContent.css('height', viewport_height);
+					$modalBody.css('height', content_height);
 				} else {
 					// Reset the forced height applied when in XS
 					$modalContent.css('height', 'auto');
@@ -376,8 +375,7 @@ USAGE EXAMPLE: Call directly
 		if (!dialogId || dialogId.length === 0) return;
 
 		var $dialog = $("#" + dialogId);
-			$dialog.find('button').unbind();
-			$dialog.remove();
+		$dialog.find('button').off().end().remove();
 
 		var settings = getSettings(dialogId);
 
@@ -488,7 +486,6 @@ USAGE EXAMPLE: Call directly
 
 		// Listen for hash changes and close any dialog which requested to be closed on hash change.
 		meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function dialogHashChange(event){
-
 			// find windows which need to be closed.
 			for(var i=openedDialogs.length-1;i>=0;i--){
 				var dialog = openedDialogs[i];

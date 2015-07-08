@@ -19,6 +19,6 @@
 		direction: 'right'
 	},
 	ctmh: {
-		fBase: "${pageSettings.getSetting("handoverRootUrl")}${pageSettings.getSetting("contextFolder")}"
+		fBase: "${pageSettings.getSetting("handoverRootUrl")}${pageSettings.getContextFolder()}"
 	}
 }

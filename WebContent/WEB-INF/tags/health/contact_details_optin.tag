@@ -138,7 +138,6 @@
 	var contactEmailElement = $('#health_contactDetails_email');
 	var contactMobileElementInput = $('#${contactNumber}_mobileinput');
 	var contactOtherElementInput = $('#${contactNumber}_otherinput');
-	var privacyStatementOptinElement = $('#health_privacyoptin');
 
 	phoneNumberInteractFunction = function(){
 
@@ -175,7 +174,6 @@
 			contactEmailElement.trigger('blur');
 			contactOtherElementInput.trigger('blur');
 			contactMobileElementInput.trigger('blur');
-			privacyStatementOptinElement.val( $(this).is(':checked') ? 'Y' : '' );
 		});
 	}
 

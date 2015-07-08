@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roadside>
+	<vehicle>
+		<vehicle>
+			<commercial>N</commercial>
+			<odometer>N</odometer>
+		</vehicle>
+		<make>BMW</make>
+		<year>2012</year>
+	</vehicle>
+	<riskAddress>
+		<state>QLD</state>
+	</riskAddress>
+</roadside>

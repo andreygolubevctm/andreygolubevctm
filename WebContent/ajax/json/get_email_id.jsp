@@ -8,7 +8,7 @@
 
 <session:get settings="true"/>
 
-<sql:setDataSource dataSource="jdbc/aggregator" />
+<sql:setDataSource dataSource="jdbc/ctm" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 

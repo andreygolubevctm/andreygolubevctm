@@ -12,6 +12,11 @@
 
 <%@ attribute name="prevStepId" 	required="false"	description="Step ID that the previous button should point to"%>
 <%@ attribute name="nextStepId" 	required="false"	description="Step ID that the next button should point to"%>
+<%@ attribute name="offsetRight" 	required="false"	description="Full width slide offset button to right"%>
+
+<c:if test="${offsetRight == true}">
+	<c:set var="offset" value="col-sm-offset-4 " />
+</c:if>
 
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionEnabled" value="${false}" />
@@ -34,9 +39,9 @@
 
 	<c:if test="${not empty nextLabel}">
 		<div class="row">
-			<div class="col-sm-8">
+			<div class="${offset}col-sm-8">
 				<div class="row slideAction">
-					<div class="col-sm-offset-4 col-lg-offset-3 col-xs-12 col-sm-6 col-md-4">
+					<div class="col-sm-offset-4 col-xs-12 col-sm-6 col-md-4">
 						<a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton" data-slide-control="${nextStepId}" href="javascript:;" ><c:out value='${nextLabel} ' /> <span class="icon icon-arrow-right"></span></a>
 					</div>
 				</div>
@@ -45,7 +50,7 @@
 					<c:set var="competitionPromoImage"><content:get key="competitionPromoImage"/></c:set>
 					<c:if test="${not empty competitionPromoImage && firstSlide eq true}">
 						<div class="row">
-							<div class="col-sm-offset-4 col-lg-offset-3 col-xs-12 col-sm-6 col-md-4">
+							<div class="col-xs-12 col-md-offset-4 col-md-8">
 								<c:out value="${competitionPromoImage}" escapeXml="false" />
 							</div>
 						</div>

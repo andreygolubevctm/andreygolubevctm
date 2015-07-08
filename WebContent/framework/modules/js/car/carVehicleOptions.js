@@ -400,6 +400,8 @@
 			$li.data('info', item);
 			$li.find('a:first').on('click', _.bind(onRemoveAccessoriesItem, this, item));
 		}
+
+		meerkat.modules.checkboxIE8.support();
 	}
 
 	function getAddedAccessoryItemHTML(item) {
@@ -731,12 +733,12 @@
 			var accessoriesToSave = [];
 			var validationPasses = true;
 			// Get all the selected items, validate then and create the accessory object.
-			$('.nonStandardAccessoryCheckbox:checked').each(function(index, checkedBox) {
+			$('.nonStandardAccessoryCheckbox:checked').each(function () {
 				// We need to use this element as a jQuery object.
-				checkedBox = $(this);
+				var checkedBox = $(this);
 				var itemIndex = checkedBox.attr('itemIndex');
 				var labelText = checkedBox.siblings().text()
-				var $relatedPriceSelect = $('select[itemIndex="'+itemIndex+'"]');
+				var $relatedPriceSelect = $('select[itemIndex="' + itemIndex + '"]');
 				var itemPrice = $relatedPriceSelect.val();
 
 				// If there is no price validation fails
@@ -763,7 +765,7 @@
 				savedSelections[data.type] = [];
 				$(elements[data.type].inputs).empty();
 				$(elements[data.type].saveditems).empty();
-				accessoriesToSave.forEach(function(accessory) {
+				_.each(accessoriesToSave, function(accessory) {
 					savedSelections.accessories.push(accessory);
 					addSavedAccessoryHTML(accessory);
 				});

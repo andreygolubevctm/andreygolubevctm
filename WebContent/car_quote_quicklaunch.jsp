@@ -4,10 +4,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<session:core />
 <settings:setVertical verticalCode="GENERIC" />
+<c:set var="pageSettings" value="${settingsService.getPageSettingsForPage(pageContext.getRequest())}" scope="request"  />
 
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
-
 <jsp:useBean id="service" class="com.ctm.services.car.CarVehicleSelectionService" scope="request" />
 <c:set var="json" value="${service.getVehicleSelection('', '', '', '', '', '') }" />
 
@@ -25,7 +26,8 @@
 					button  : "#quote_vehicle_button",
 					year    : "#quote_vehicle_year",
 					make    : "#quote_vehicle_make",
-					model   : "#quote_vehicle_model"
+					model   : "#quote_vehicle_model",
+					context : "/${pageSettings.getContextFolder()}"
 				};
 				<c:if test="${not empty json}">
 				var vehicleData = ${json};

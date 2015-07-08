@@ -385,7 +385,7 @@ public class UtilitiesApplicationRequestModel extends AbstractJsonModel {
 					newBillingStreetName +=  " " + billingStreetComponents[i];
 				}
 				setBillingStreetName(newBillingStreetName);
-				setBillingStreetType(streetComponents[billingStreetComponents.length-1]);
+				setBillingStreetType(billingStreetComponents[billingStreetComponents.length-1]);
 			}else{
 				setBillingStreetName(billingAddress.getStreet());
 			}

@@ -20,6 +20,7 @@ public class Message extends AbstractJsonModel {
 	private int userId;
 	private int statusId;
 	private String status;
+	private int sourceId;
 	private String contactName;
 	private String phoneNumber1;
 	private String phoneNumber2;
@@ -29,7 +30,6 @@ public class Message extends AbstractJsonModel {
 	private Date created;
 	private boolean canPostpone;
 	private List<Long> dupeTransactionIds = new ArrayList<Long>();
-	private boolean isHawking;
 
 
 	public int getMessageId() {
@@ -68,6 +68,12 @@ public class Message extends AbstractJsonModel {
 		this.status = status;
 	}
 
+	public int getSourceId() {
+		return sourceId;
+	}
+	public void setSourceId(int sourceId) {
+		this.sourceId = sourceId;
+	}
 	public String getContactName() {
 		return contactName;
 	}
@@ -127,12 +133,6 @@ public class Message extends AbstractJsonModel {
 			this.dupeTransactionIds.add(transactionId);
 		}
 	}
-	public boolean isHawking() {
-		return isHawking;
-	}
-	public void setHawking(boolean isHawking) {
-		this.isHawking = isHawking;
-	}
 
 	@Override
 	protected JSONObject getJsonObject() throws JSONException {
@@ -148,7 +148,6 @@ public class Message extends AbstractJsonModel {
 		json.put("phoneNumber2", getPhoneNumber2());
 		json.put("state", getState());
 		json.put("canPostpone", getCanPostpone());
-		json.put("hawking", isHawking());
 		return json;
 	}
 

@@ -18,7 +18,7 @@
 <div>
 	<div class="floatLeft">
 		<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
-		<field_new:input type="text" xpath="${xpath}" required="${required}" className="age_licence numeric ${classname}" maxlength="${2}" title="${title}" size="2" pattern="[0-9]*" />
+		<field_new:input type="text" xpath="${xpath}" required="${required}" className="age_licence numeric ${classname}" maxlength="${2}" title="${title}" size="2" formattedInteger="true" pattern="[0-9]*" />
 	</div>
 
 	<c:if test="${helpId != null && helpId != ''}">

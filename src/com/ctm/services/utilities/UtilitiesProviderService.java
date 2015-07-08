@@ -10,6 +10,16 @@ import com.ctm.model.utilities.UtilitiesProviderServiceRequest;
 
 public class UtilitiesProviderService extends UtilitiesBaseService {
 
+	public UtilitiesProviderServiceModel getResults(HttpServletRequest request, String postCode, String suburb) {
+		UtilitiesProviderServiceRequest model = new UtilitiesProviderServiceRequest();
+		model.setPostcode(postCode);
+		model.setSuburb(suburb);
+
+		UtilitiesProviderServiceModel providerServiceModel = getResults(request, model);
+
+		return providerServiceModel;
+	}
+
 	/**
 	 * Get a list of Services available along with providers for a given postcode/suburb
 	 * @param request Required to look up service configuration
@@ -30,9 +40,9 @@ public class UtilitiesProviderService extends UtilitiesBaseService {
 			boolean success = responseModel.populateFromThoughtWorldJson(responseJson);
 
 			// Validate response
-			if (success == false || !responseJson.has("fuel_type") || responseJson.isNull("fuel_type")) {
-				throw new UtilitiesWebServiceException("Parse problem or missing mandatory field: 'unique_purchase_id' in "+responseJson);
-			}
+			//if (success == false || !responseJson.has("fuel_type") || responseJson.isNull("fuel_type")) {
+			//	throw new UtilitiesWebServiceException("Parse problem or missing mandatory field: 'unique_purchase_id' in "+responseJson);
+			//}
 
 			return responseModel;
 

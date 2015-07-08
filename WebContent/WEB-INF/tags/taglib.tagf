@@ -34,9 +34,15 @@
 <%@ taglib tagdir="/WEB-INF/tags/travel"				prefix="travel" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel/layout"			prefix="travel_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/fuel"					prefix="fuel" %>
+<%@ taglib tagdir="/WEB-INF/tags/fuel_new"				prefix="fuel_new" %>
+<%@ taglib tagdir="/WEB-INF/tags/fuel_new/layout"		prefix="fuel_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/roadside"				prefix="roadside" %>
+<%@ taglib tagdir="/WEB-INF/tags/roadside_new"			prefix="roadside_new" %>
+<%@ taglib tagdir="/WEB-INF/tags/roadside_new/layout"	prefix="roadside_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/life"					prefix="life" %>
 <%@ taglib tagdir="/WEB-INF/tags/ip"					prefix="ip" %>
+<%@ taglib tagdir="/WEB-INF/tags/competition"			prefix="competition" %>
+<%@ taglib tagdir="/WEB-INF/tags/competition/layout"	prefix="competition_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/home_new"				prefix="home_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/home_new/layout"		prefix="home_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/homeloan"				prefix="homeloan" %>
@@ -45,6 +51,9 @@
 <%@ taglib tagdir="/WEB-INF/tags/css"					prefix="css" %>
 <%@ taglib tagdir="/WEB-INF/tags/security"				prefix="security" %>
 <%@ taglib tagdir="/WEB-INF/tags/utilities"				prefix="utilities" %>
+<%@ taglib tagdir="/WEB-INF/tags/utilities_new"			prefix="utilities_new" %>
+<%@ taglib tagdir="/WEB-INF/tags/utilities_new/layout"	prefix="utilities_new_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/utilities_new/fieldset" prefix="utilities_new_fieldset" %>
 <%@ taglib tagdir="/WEB-INF/tags/social"				prefix="social" %>
 <%@ taglib tagdir="/WEB-INF/tags/read"					prefix="read" %>
 <%@ taglib tagdir="/WEB-INF/tags/meerkatrewards"		prefix="meerkatrewards" %>

@@ -73,9 +73,9 @@
 		<go:setData dataVar="data" value="${requestedTransaction}" xpath="current/previousTransactionId" />
 
 		<%-- Start by getting the transaction in question --%>
-		<sql:setDataSource dataSource="jdbc/aggregator"/>
+		<sql:setDataSource dataSource="jdbc/ctm"/>
 
-		<sql:query var="getTransaction" dataSource="jdbc/aggregator">
+		<sql:query var="getTransaction" dataSource="jdbc/ctm">
 			SELECT `ProductType`,`EmailAddress`,`styleCodeId`,`styleCode`,`rootId`
 			FROM aggregator.transaction_header
 			WHERE TransactionId = ? AND styleCodeId = ?
@@ -104,44 +104,44 @@
 
 			<go:log source="core:get_transactionid" >[with id_handler] Found transactionId in db. IDs for Get TransactionID = ipAddress: ${pageContext.request.remoteAddr}, sessionID = ${pageContext.session.id}</go:log>
 
-			<c:catch var="error">
-				<%-- New Transaction Header using the older values to help populate--%>
-				<sql:update dataSource="jdbc/aggregator">
-						INSERT INTO aggregator.transaction_header
-						(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId, styleCode, advertKey,sessionId,status)
-						values (
-							0,?,?,?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?
-						);
-						<sql:param value="${getTransaction.rows[0].rootId}" />
-						<sql:param value="${requestedTransaction}" />
-						<sql:param value="${getTransaction.rows[0].ProductType}" />
+				<c:catch var="error">
+					<%-- New Transaction Header using the older values to help populate--%>
+					<sql:update dataSource="jdbc/ctm">
+							INSERT INTO aggregator.transaction_header
+							(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId, styleCode, advertKey,sessionId,status)
+							values (
+								0,?,?,?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?
+							);
+							<sql:param value="${getTransaction.rows[0].rootId}" />
+							<sql:param value="${requestedTransaction}" />
+							<sql:param value="${getTransaction.rows[0].ProductType}" />
+						<c:choose>
+							<c:when test="${not empty emailAddress}">
+								<sql:param value="${emailAddress}" />
+							</c:when>
+							<c:otherwise>
+								<sql:param value="${getTransaction.rows[0].EmailAddress}" />
+							</c:otherwise>
+						</c:choose>
+						<sql:param value="${ipAddress}" />
+						<sql:param value="${getTransaction.rows[0].styleCodeId}" />
+						<sql:param value="${getTransaction.rows[0].styleCode}" />
+						<sql:param value="${sessionId}" />
+						<sql:param value="${status}" />
+					</sql:update>
+
+					<%-- Retrieve the last result --%>
+
+					<c:set var="rootId" value="${getTransaction.rows[0].rootId}"/>
+					<sql:query var="results">
+						SELECT transactionID
+						FROM aggregator.transaction_header
+						WHERE rootId = ?
+						ORDER BY transactionID DESC
+						LIMIT 1
+						<sql:param value="${rootId}" />
+					</sql:query>
 					<c:choose>
-						<c:when test="${not empty emailAddress}">
-							<sql:param value="${emailAddress}" />
-						</c:when>
-						<c:otherwise>
-							<sql:param value="${getTransaction.rows[0].EmailAddress}" />
-						</c:otherwise>
-					</c:choose>
-					<sql:param value="${ipAddress}" />
-					<sql:param value="${getTransaction.rows[0].styleCodeId}" />
-					<sql:param value="${getTransaction.rows[0].styleCode}" />
-					<sql:param value="${sessionId}" />
-					<sql:param value="${status}" />
-				</sql:update>
-
-				<%-- Retrieve the last result --%>
-
-				<c:set var="rootId" value="${getTransaction.rows[0].rootId}"/>
-				<sql:query var="results">
-					SELECT transactionID
-					FROM aggregator.transaction_header
-					WHERE rootId = ?
-					ORDER BY transactionID DESC
-					LIMIT 1
-					<sql:param value="${rootId}" />
-				</sql:query>
-				<c:choose>
 					<c:when test="${results.rowCount == 0 || empty results.rows[0].transactionID}">
 						<c:set var="method" value="ERROR: INCREMENT" />
 						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
@@ -174,9 +174,6 @@
 
 						<%-- Finally we'll replace the requestedTransaction var with the new ID --%>
 						<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
-						<go:setData dataVar="data" value="${rootId}" xpath="current/rootId" />
-						<c:set var="method" value="INCREMENT" />
-						<go:log  source="core:get_transactionid">CHOSEN TRANS ID = ${tranId}, DATA.CURRENT.TRANID = ${data.current.transactionId}</go:log>
 					</c:otherwise>
 				</c:choose>
 			</c:catch>
@@ -222,7 +219,7 @@
 		<c:set var="sessionId" 		value="${pageContext.session.id}" />
 		<c:set var="status" 		value="" />
 		<c:catch var="error">
-			<sql:update dataSource="jdbc/aggregator">
+			<sql:update dataSource="jdbc/ctm">
 				INSERT INTO aggregator.transaction_header
 				(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId,styleCode,advertKey,sessionId,status,prevRootId)
 				values (
@@ -246,7 +243,7 @@
 			</sql:update>
 
 			<%-- Retrieve the last result to update rootId with the transaction id --%>
-			<sql:query var="results" dataSource="jdbc/aggregator">
+			<sql:query var="results" dataSource="jdbc/ctm">
 				SELECT transactionID
 				FROM aggregator.transaction_header
 				WHERE sessionid = ?
@@ -268,7 +265,7 @@
 				</c:when>
 				<c:otherwise>
 					<c:set var="tranId" value="${results.rows[0].transactionID}" />
-					<sql:update dataSource="jdbc/aggregator">
+					<sql:update dataSource="jdbc/ctm">
 						UPDATE aggregator.transaction_header
 						SET rootId = ?
 						WHERE TransactionId = ?;
@@ -299,12 +296,6 @@
 			<c:otherwise>
 				<c:set var="method" value="NEW" />
 				<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
-				<c:if test="${fn:toLowerCase(quoteType) == 'car' || fn:toLowerCase(data.current.vertical) == 'car'}">
-					<c:set var="ignoreMe">
-						<core:save_transaction_to_disc
-							previousTransactionId="${data['current/transactionId']}"/>
-					</c:set>
-				</c:if>
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>

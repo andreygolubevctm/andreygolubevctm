@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/aggregator" />
+<sql:setDataSource dataSource="jdbc/ctm" />
 
 <c:set var="type">${fn:trim(param.type)}</c:set>
 <c:set var="callback">${fn:trim(param.callback)}</c:set>

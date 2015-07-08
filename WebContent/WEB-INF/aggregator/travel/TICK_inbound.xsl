@@ -60,10 +60,59 @@
 					<trackCode>66</trackCode>
 					<name>Tick Travel Insurance <xsl:value-of select="$productName" /></name>
 					<des>Tick Travel Insurance <xsl:value-of select="$productName" /></des>
-					<price><xsl:value-of select="format-number(premium,'#.00')"/></price>
-					<priceText>$<xsl:value-of select="format-number(premium,'#.00')"/></priceText>
+					<price><xsl:value-of select="format-number(price,'#.00')"/></price>
+					<priceText>$<xsl:value-of select="format-number(price,'#.00')"/></priceText>
 
 					<info>
+						<!-- MUST HAVE EXCESS, MEDICAL, CANCELLATION AND LUGGAGE AS THEY ARE REQUIRED FIELDS FOR THE PRICE PRESENTATION PAGE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+						<!-- Check if we have any excess values -->
+						<xsl:choose>
+							<xsl:when test="benefits/excess/id/text() = '11'"></xsl:when>
+							<xsl:otherwise><excess>
+								<label>Excess</label>
+								<desc>Excess on Claims</desc>
+								<value>0</value>
+								<text>$0</text>
+								<order/>
+								</excess></xsl:otherwise>
+						</xsl:choose>
+
+						<!-- Check if we have any overseas medical fees -->
+						<xsl:choose>
+							<xsl:when test="benefits/medical/id/text() = '22'"></xsl:when>
+							<xsl:otherwise><medical>
+								<label>Overseas Medical</label>
+								<desc>Overseas Medical and Hospital Expenses</desc>
+								<value>0</value>
+								<text>N/A</text>
+								<order/>
+							</medical></xsl:otherwise>
+						</xsl:choose>
+
+						<!-- Check if we have any cancellation fees -->
+						<xsl:choose>
+							<xsl:when test="benefits/cancellation_fee/id/text() = '21'"></xsl:when>
+							<xsl:otherwise><cxdfee>
+								<label>Cancellation Fees</label>
+								<desc>Cancellation and Amendment Fees</desc>
+								<value>0</value>
+								<text>N/A</text>
+								<order/>
+							</cxdfee></xsl:otherwise>
+						</xsl:choose>
+
+						<!-- Check if we have any luggage and personal effects fees -->
+						<xsl:choose>
+							<xsl:when test="benefits/luggage/id/text() = '29'"></xsl:when>
+							<xsl:otherwise><luggage>
+								<label>Luggage and PE Delay</label>
+								<desc>Delayed Luggage Allowance</desc>
+								<value>0</value>
+								<text>N/A</text>
+								<order/>
+							</luggage></xsl:otherwise>
+						</xsl:choose>
+
 						<xsl:for-each select="benefits/node()">
 							<xsl:if test="name() != ''">
 								<xsl:variable name="nodeName">

@@ -77,9 +77,6 @@
 						<xsl:when test="@productId = 'TRAVEL-75'">6</xsl:when>
 						<xsl:when test="@productId = 'TRAVEL-78'">6</xsl:when>
 
-						<!-- DOMESTIC -->
-						<xsl:when test="@productId = 'TRAVEL-79'">7</xsl:when>
-
 						<!-- BARE ESSENTIALS + WINTER SPORTS -->
 						<xsl:when test="@productId = 'TRAVEL-167'">8</xsl:when>
 

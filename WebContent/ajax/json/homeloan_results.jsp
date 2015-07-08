@@ -31,7 +31,7 @@
 
 <c:choose>
 	<c:when test="${empty results}">
-		<c:set var="json" value='{"info":{"transactionId":${tranId}}},"errors":[{"message":"getResults is empty"}]}' />
+		<c:set var="json" value='{"info":{"transactionId":${tranId}},"errors":[{"message":"getResults is empty"}]}' />
 	</c:when>
 	<c:otherwise>
 		<%-- crappy hack to inject the tranId --%>

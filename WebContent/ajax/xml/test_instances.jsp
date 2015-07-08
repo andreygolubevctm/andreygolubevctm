@@ -4,7 +4,7 @@
 <go:setData dataVar="data" value="*DELETE" xpath="settings" />
 <go:setData dataVar="data" value="*PARAMS" xpath="testData" />
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%-- get test instances from db --%>
 <sql:query var="result">

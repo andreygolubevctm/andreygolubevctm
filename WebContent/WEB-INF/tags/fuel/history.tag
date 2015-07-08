@@ -177,7 +177,7 @@ var FuelPriceHistory = function() {
 
 		$.ajax({
 			url: "ajax/json/fuel_price_monthly_averages.jsp",
-			data: data,
+			data: meerkat.modules.form.getSerializedData($('#mainform')),
 			type: "POST",
 			async: true,
 			dataType: "json",

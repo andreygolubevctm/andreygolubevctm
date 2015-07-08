@@ -3,7 +3,7 @@
 
 <%  response.setHeader("Content-Disposition","attachment; filename=" + "cc_fuel_maximums.csv" ); %>
 
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%--
 PROCESS:

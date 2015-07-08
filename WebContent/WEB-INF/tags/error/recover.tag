@@ -30,7 +30,7 @@
 
 <%-- Log the error into the database, as this is an error recovery --%>
 <c:catch var="error">
-	<sql:update var="results" dataSource="jdbc/aggregator">
+	<sql:update var="results" dataSource="jdbc/ctm">
 		INSERT INTO aggregator.error_log
 		  (styleCodeId,id, property, origin, message, code, datetime)
 		VALUES

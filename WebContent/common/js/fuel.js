@@ -147,12 +147,9 @@ fuel = {
 				if(obj.status === 429) {
 					var response = {
 							error: "limit",
-							time: 0,
-							result: {
-								siteid: null,
-								name: null,
-								fuelid: null
-							}
+							source: "metro",
+							timeDiff: 0,
+							price: {}
 					};
 					Results.update(response);
 					Results.show();

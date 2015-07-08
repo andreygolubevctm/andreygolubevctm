@@ -1,14 +1,12 @@
 package com.ctm.services;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
-
+import com.ctm.exceptions.EnvironmentException;
 import org.apache.log4j.Logger;
 
-import com.ctm.exceptions.EnvironmentException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 public class EnvironmentService {
 	private static Logger logger = Logger.getLogger(EnvironmentService.class.getName());
@@ -16,6 +14,7 @@ public class EnvironmentService {
 	private static Environment currentEnvironment;
 	private static String buildIdentifier = "";
 	private static String buildRevision = "";
+	private static String contextPath = "";
 
 	public enum Environment {
 		LOCALHOST {
@@ -42,7 +41,7 @@ public class EnvironmentService {
 			public String toString() {
 				return "PRO";
 			}
-		};
+		}
 	}
 	
 	public enum BIGIPCookieId {
@@ -70,7 +69,7 @@ public class EnvironmentService {
 			public String toString() {
 				return "BIGipServerPool_HTTPS_Ecommerce_DISCOnline_XS";
 			}
-		};
+		}
 	}
 
 	public static void setEnvironment(String envCode) throws Exception{
@@ -102,9 +101,6 @@ public class EnvironmentService {
 	 * Whether the environment needs a brand code parameter. Typically this should be local and some test environments only.
 	 * The F5 gateway should automatically add a brandCode param based on the domain name.
 	 * Developers should NEVER specific a brand code param on an environment controlled by the F5 gateway!
-	 *
-	 * @return
-	 * @throws Exception
 	 */
 	public static boolean needsManuallyAddedBrandCodeParam() throws EnvironmentException {
 		return getEnvironment() == Environment.LOCALHOST || 
@@ -129,11 +125,11 @@ public class EnvironmentService {
 			Attributes attr = manifest.getAttributes("AGH-Build");
 
 			if (attr != null) {
-				for (Iterator<?> it = attr.keySet().iterator(); it.hasNext();) {
-				Attributes.Name attrName = (Attributes.Name) it.next();
-				String attrValue = attr.getValue(attrName);
-				logger.debug("    " + attrName + ": " + attrValue);
-			}
+				for (Object o : attr.keySet()) {
+					Attributes.Name attrName = (Attributes.Name) o;
+					String attrValue = attr.getValue(attrName);
+					logger.debug("    " + attrName + ": " + attrValue);
+				}
 
 				if (attr.getValue("Identifier") != null) {
 					buildIdentifier = attr.getValue("Identifier");
@@ -176,4 +172,17 @@ public class EnvironmentService {
 		return buildRevision;
 	}
 
+	/**
+	 * Get the servlet context path
+	 */
+	public static String getContextPath() {
+		return contextPath;
+	}
+	public static void setContextPath(String contextPath) {
+		// Move a prefix slash to the end to conform with legacy "contextFolder" configuration
+		contextPath = contextPath.replaceAll("/(.+)", "$1/");
+
+		logger.info("Context Path set to " + contextPath);
+		EnvironmentService.contextPath = contextPath;
+	}
 }

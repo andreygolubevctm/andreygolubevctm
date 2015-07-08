@@ -86,7 +86,7 @@ FROM
 		AND detailsPhoneMobile.xpath = 'health/application/mobile'
 	LEFT JOIN aggregator.transaction_details detailsPhoneOther
 		ON H.transactionId = detailsPhoneOther.transactionid
-		AND detailsPhoneOther.xpath = 'health/contactDetails/contactNumber/other'
+		AND detailsPhoneOther.xpath = 'health/application/other'
 
 	-- Contact name
 	LEFT JOIN aggregator.transaction_details AS detailsName

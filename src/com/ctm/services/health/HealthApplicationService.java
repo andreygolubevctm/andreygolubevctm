@@ -56,7 +56,7 @@ public class HealthApplicationService {
 	public JSONObject setUpApplication(Data data, HttpServletRequest httpRequest, Date changeOverDate) throws JspException {
 		// TODO: refactor this when are away from jsp
 		if(requestService == null) {
-			requestService = new RequestService(httpRequest, "HEALTH");
+			requestService = new RequestService(httpRequest, "HEALTH", data);
 		}
 		List<SchemaValidationError> validationErrors;
 		try {

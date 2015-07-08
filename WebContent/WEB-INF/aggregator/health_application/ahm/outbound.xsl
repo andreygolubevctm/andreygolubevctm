@@ -131,8 +131,8 @@
 	<!-- NOMINATED DAY -->
 	<xsl:variable name="nominated_date">
 		<xsl:choose>
-			<xsl:when test="/health/payment/credit/policyDay != ''"><xsl:value-of select="/health/payment/credit/policyDay" /></xsl:when>
-			<xsl:when test="/health/payment/bank/policyDay != ''"><xsl:value-of select="/health/payment/bank/policyDay" /></xsl:when>
+			<xsl:when test="/health/payment/credit/paymentDay != ''"><xsl:value-of select="/health/payment/credit/paymentDay" /></xsl:when>
+			<xsl:when test="/health/payment/bank/paymentDay != ''"><xsl:value-of select="/health/payment/bank/paymentDay" /></xsl:when>
 		</xsl:choose>
 	</xsl:variable>
 
@@ -374,7 +374,7 @@
 						<b:DirectDRInstitution><xsl:value-of select="payment/bank/name" /></b:DirectDRInstitution>
 						<b:DirectDRStart>
 							<xsl:call-template name="format_date_to_slashes">
-								<xsl:with-param name="date" select="payment/bank/policyDay" />
+								<xsl:with-param name="date" select="payment/bank/paymentDay" />
 							</xsl:call-template>
 						</b:DirectDRStart>
 					</xsl:if>
@@ -396,7 +396,7 @@
 						<!-- dd/mm/yyyy -->
 						<b:DirectDRStart>
 							<xsl:call-template name="format_date_to_slashes">
-								<xsl:with-param name="date" select="payment/credit/policyDay" />
+								<xsl:with-param name="date" select="payment/credit/paymentDay" />
 							</xsl:call-template>
 						</b:DirectDRStart>
 					</xsl:if>

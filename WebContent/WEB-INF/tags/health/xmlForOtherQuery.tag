@@ -12,7 +12,7 @@
 
 
 	<%-- You should already have this bit --%>
-	<sql:setDataSource dataSource="jdbc/aggregator"/>
+	<sql:setDataSource dataSource="jdbc/ctm"/>
 
 	<%-- Get the tranId from the query string params --%>
 	<c:set var="myTranId" value="${tranId}" />

@@ -15,7 +15,7 @@
 
 
 <%-- HTML --%>
-<sql:setDataSource dataSource="jdbc/aggregator"/>
+<sql:setDataSource dataSource="jdbc/ctm"/>
 
 
 

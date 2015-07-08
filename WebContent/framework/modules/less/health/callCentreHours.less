@@ -67,7 +67,12 @@
 			color: @theme-tertiary;
 			font-size: 91%;
 			font-weight: bold;
-			margin-top:-13px;
+			margin-top:-21px;
+
+			@media(@sm-only) {
+			  margin-top: -13px;
+			}
+
 			.tomorrow-hours {
 				color: lighten(@gray-dark, 40%);
 				@media (max-width: 767px){

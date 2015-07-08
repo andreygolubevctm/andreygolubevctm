@@ -1,80 +1,110 @@
+<%--
+	ROADSIDE quote page
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<session:new verticalCode="ROADSIDE" />
+<session:new verticalCode="ROADSIDE" authenticated="true"/>
 
-<c:set var="xpath" value="roadside" scope="session" />
-
-<c:if test="${empty param.action}">
-	<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
-</c:if>
-
-<%-- PRELOAD DATA --%>
-<c:if test="${empty param.action && param.preload == '2'}">
-<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
-			<c:import url="test_data/preload_roadside.xml" var="roadsideXml" />
-			<go:setData dataVar="data" xml="${roadsideXml}" />
-</c:if>
+<core_new:quote_check quoteType="roadside"/>
+<core_new:load_preload/>
 
 
-<core:doctype />
-<go:html>
-	<core:head quoteType="${xpath}" title="Roadside Assistance Quote Capture" mainCss="common/roadside.css" mainJs="common/js/roadside.js" />
+<%-- HTML --%>
+<layout:journey_engine_page title="Roadside Assistance Quote">
 
-	<body class="roadside stage-0">
+	<jsp:attribute name="head">
+	</jsp:attribute>
 
-		<agg:supertag_top type="Roadside"/>
+	<jsp:attribute name="head_meta">
+	</jsp:attribute>
 
-		<form:form action="javascript:void(0);" method="GET" id="mainform" name="frmMain">
+	<jsp:attribute name="header">
+	</jsp:attribute>
 
-			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false"/>
-			<core:referral_tracking vertical="${xpath}/vehicle" />
-			<roadside:progress_bar />
-			<div id="wrapper" class="clearfix">
+	<jsp:attribute name="navbar">
 
-				<div id="page" class="clearfix">
+		<ul class="nav navbar-nav" role="menu">
+            <li class="visible-xs">
+                <span class="navbar-text-block navMenu-header">Menu</span>
+            </li>
+            <li class="slide-feature-back">
+                <a href="javascript:;" data-slide-control="previous" class="btn-back"><span
+                        class="icon icon-arrow-left"></span> <span>Revise Details</span></a>
+            </li>
+        </ul>
+	</jsp:attribute>
 
-					<div id="content">
+	<jsp:attribute name="navbar_outer">
+        <div class="row sortbar-container navbar-inverse">
+            <div class="container">
+                <ul class="sortbar-parent nav navbar-nav navbar-inverse col-sm-12 row">
+                    <li class="visible-xs">
+                        <a href="javascript:;" class="">
+                            <span class="icon icon-filter"></span> <span>Sort Results By</span>
+                        </a>
+                    </li>
+                    <li class="container row sortbar-children">
+                        <ul class="nav navbar-nav navbar-inverse col-sm-12">
+                            <li class="hidden-xs col-sm-2 col-lg-4">
+                        <%--<span class="navbar-brand">Sort <span class="optional-lg">your</span> <span
+                                class="optional-md">results</span> by</span>--%>
+                            </li>
+                            <li class="col-sm-3 col-lg-2 hidden-xs">
+                                <a href="javascript:;" class="sortbar-title force-no-hover">
+                                    <span class="icon"></span> <span>Towing <br class="hidden-sm hidden-md"/>Limits</span>
+                                </a>
+                            </li>
+                            <li class="col-sm-2 col-lg-1">
+                                <a href="javascript:;" data-sort-type="info.roadCall" data-sort-dir="desc" class="sortbar-title">
+                                    <span class="icon"></span> <span>Annual <br class="hidden-sm hidden-md"/>Callouts</span>
+                                </a>
+                            </li>
+                            <li class="col-sm-2 col-lg-1">
+                                <a href="javascript:;" data-sort-type="info.keyService" data-sort-dir="desc" class="sortbar-title">
+                                    <span class="icon"></span> <span>Emergency <br class="hidden-sm hidden-md"/>Key Service</span>
+                                </a>
+                            </li>
+                            <li class="col-sm-3 col-lg-2 active">
+                                <a href="javascript:;" data-sort-type="price.premium" data-sort-dir="asc" class="sortbar-title">
+                                    <span class="icon"></span> <span>Annual <br class="hidden-sm hidden-md"/>Price</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+	</jsp:attribute>
 
-						<!-- Main Quote Engine content -->
-						<slider:slideContainer className="sliderContainer">
-							<slider:slide id="slide0" title="Car Capture">
-								<roadside:car />
-							</slider:slide>
-						</slider:slideContainer>
+    <jsp:attribute name="results_loading_message"></jsp:attribute>
 
-						<form:error id="slideErrorContainer" className="slideErrorContainer" errorOffset="42" />
 
-						<!-- Bottom "step" buttons -->
-						<div class="button-wrapper">
-							<a href="javascript:void(0);" class="button next" id="next-step"><span>Next step</span></a>
-						</div>
+    <jsp:attribute name="form_bottom"></jsp:attribute>
 
-						<!-- End main QE content -->
+	<jsp:attribute name="footer">
+		<core:whitelabeled_footer/>
+	</jsp:attribute>
 
-					</div>
+	<jsp:attribute name="vertical_settings">
+		<roadside_new:settings/>
+	</jsp:attribute>
 
-					<form:help />
+	<jsp:attribute name="body_end">
+	</jsp:attribute>
 
-					<div class="right-panel">
-						
-						</div>
-					<div class="clearfix"></div>
-				</div>
+    <jsp:body>
 
-				<%-- Quote results (default to be hidden) --%>
-				<roadside:results />
-			</div>
+        <%-- Slides --%>
+        <roadside_new_layout:slide_your_car/>
+        <roadside_new_layout:slide_results/>
 
-		</form:form>
+        <div class="hiddenFields">
+            <form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
+            <core:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
+        </div>
+        <input type="hidden" name="transcheck" id="transcheck" value="1"/>
 
-		<roadside:footer />
+    </jsp:body>
 
-		<core:closing_body>
-			<agg:includes supertag="true" />
-			<roadside:includes />
-		</core:closing_body>
-
-	</body>
-
-</go:html>
+</layout:journey_engine_page>

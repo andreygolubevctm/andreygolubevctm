@@ -62,25 +62,3 @@
 
 	<go:validate selector="${name}" rule="required" parm="true" message="${errorMsg}"/>
 </c:if>
-
-<%-- JS --%>
-<go:script marker="onready">
-	<%--
-	JS for IE support [Remove this if you're not supporting IE 8 and below]
-	IE 8 doesn't support :checked, so give it the 'checked' class for our styles to work
-	--%>
-	$(function() {
-		$('html.lt-ie9 form').on('change.checkedForIE', '.checkbox input, .compareCheckbox input', function applyCheckboxClicks() {
-			var $this = $(this);
-			if($this.is(':checked')) {
-				$this.addClass('checked');
-			}
-			else {
-				$this.removeClass('checked');
-			}
-		});
-
-		<%-- Trigger now to set initial state --%>
-		$('html.lt-ie9 form .checkbox input').change();
-	});
-</go:script>

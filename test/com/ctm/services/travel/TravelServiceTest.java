@@ -26,6 +26,11 @@ public class TravelServiceTest {
 	@Test
 	public void testShouldValidateName() throws SQLException, DaoException {
 
+		// Set defaults for mandatory fields
+		travelRequest.adults = "1";
+		travelRequest.children = "1";
+		travelRequest.oldest = "30";
+
 		travelRequest.firstName = null;
 		travelRequest.surname = null;
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
@@ -70,12 +75,18 @@ public class TravelServiceTest {
 
 	@Test
 	public void testShouldValidatePassengerCount() throws SQLException, DaoException {
+
+		// Set defaults
+		travelRequest.children = "1";
+		travelRequest.oldest = "30";
+
 		travelRequest.adults = "adult";
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
 		assertFalse(travelService.isValid());
 
 		travelRequest.adults = "1";
+		travelRequest.children = "1";
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
 		assertTrue(travelService.isValid());
 
@@ -91,6 +102,10 @@ public class TravelServiceTest {
 
 	@Test
 	public void testShouldValidateOldestAge() throws SQLException, DaoException {
+
+		// Set defaults
+		travelRequest.adults = "1";
+		travelRequest.children = "1";
 
 		travelRequest.oldest = "ff";
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
@@ -110,8 +125,13 @@ public class TravelServiceTest {
 	@Test
 	public void testShouldValidateDestination() throws SQLException, DaoException {
 
-/*		TODO: fix this test
-        travelRequest.destination = "bob";
+		// Set defaults
+		travelRequest.adults = "1";
+		travelRequest.children = "1";
+		travelRequest.oldest = "30";
+
+		// Destination field only accepts 3 letter characters
+        travelRequest.destination = "BOB";
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
 		assertFalse(travelService.isValid());*/
@@ -123,6 +143,11 @@ public class TravelServiceTest {
 
 	@Test
 	public void testShouldValidateCurrentJourney() throws SQLException, DaoException {
+
+		// Set defaults
+		travelRequest.adults = "1";
+		travelRequest.children = "1";
+		travelRequest.oldest = "30";
 
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
@@ -141,6 +166,24 @@ public class TravelServiceTest {
 		assertTrue(travelService.isValid());
 
 		travelRequest.currentJourney = "36";
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertTrue(travelService.isValid());
+
+
+	}
+
+	@Test
+	public void testShouldCheckForMandatoryValues() throws SQLException, DaoException {
+
+		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertFalse(travelService.isValid());
+
+		// Set defaults
+		travelRequest.adults = "1";
+		travelRequest.children = "1";
+		travelRequest.oldest = "30";
+
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
 		assertTrue(travelService.isValid());
 

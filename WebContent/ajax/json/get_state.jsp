@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<sql:setDataSource dataSource="jdbc/aggregator" />
+<sql:setDataSource dataSource="jdbc/ctm" />
 
 <c:set var="postCode">${fn:trim(param.postCode)}</c:set>
 
 <%-- SQL CALL --%>
 <sql:query var="result">
-	SELECT state FROM `suburb_search` WHERE postCode = ? GROUP BY state ORDER BY state;
+	SELECT state FROM aggregator.`suburb_search` WHERE postCode = ? GROUP BY state ORDER BY state;
 	<sql:param value="${postCode}" />
 </sql:query>
 
