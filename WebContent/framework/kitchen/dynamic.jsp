@@ -539,13 +539,13 @@
 		<go:script marker="onready">meerkat.modules.currencyField.initCurrency();</go:script>
 	</form_new:row>
 
-	<form_new:row label="filter_excess (health_new)">
+	<form_new:row label="filter_excess ">
 		<health:filter_excess xpath="${xpath}/new/filterExcess" />
 		<%-- <field:hidden xpath="health/excess" defaultValue="3" /> --%>
 		<input type="hidden" value="3" class="" id="health_excess" name="health_excess">
 	</form_new:row>
 
-	<form_new:row label="filter_price (health_new)">
+	<form_new:row label="filter_price">
 		<health:filter_price xpath="${xpath}/new/filterPrice" />
 	</form_new:row>
 
@@ -629,15 +629,15 @@
 	<form_new:row label="lookup_suburb_postcode">
 		<field_new:lookup_suburb_postcode xpath="${xpath}/new/location" required="true" placeholder="Suburb / Postcode" />
 	</form_new:row>
-	
-	<core:select_tags 
-		variableListName="countrySelectionList" 
-		variableListArray="{ 'options': [{ 'value': 'VAL', 'text': 'Hello' }, { 'value': 'VAL2', 'text': 'Hello2' }, { 'value': 'VAL3', 'text': 'Hello3' }] }" 
-		xpath="travel/destinations" 
-		xpathhidden="travel/destination" 
+
+	<core:select_tags
+		variableListName="countrySelectionList"
+		variableListArray="{ 'options': [{ 'value': 'VAL', 'text': 'Hello' }, { 'value': 'VAL2', 'text': 'Hello2' }, { 'value': 'VAL3', 'text': 'Hello3' }] }"
+		xpath="travel/destinations"
+		xpathhidden="travel/destination"
 		label="Country"
-		title="Where are you travelling?" 
-		validationErrorPlacementSelector=".travel_details_destinations" 
+		title="Where are you travelling?"
+		validationErrorPlacementSelector=".travel_details_destinations"
 		/>
 
 	<form_new:row label="slider">

@@ -24,7 +24,7 @@ public class LifeService {
 	 * @param request
 	 * @return
 	 */
-	public String contactLead(HttpServletRequest request, Data data) {
+	public String contactLeadViaJSP(HttpServletRequest request, Data data) {
 		vertical = request.getParameter("vertical");
 		RequestService fromFormService = new RequestService(request, vertical, data);
 

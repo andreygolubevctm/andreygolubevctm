@@ -9,7 +9,7 @@ public class LifeRequestParser {
 	public static LifeRequest parseRequest(Data data, String vertical) {
 		LifeRequest request = new LifeRequest();
 		request.primary = parsePerson(data, request, vertical.toLowerCase() + "/primary/");
-		if(data.getString(vertical.toLowerCase() + "/primary/insurance/partner").equals("Y")) {
+		if("Y".equals(data.getString(vertical.toLowerCase() + "/primary/insurance/partner"))) {
 			request.partner = parsePerson(data, request, vertical.toLowerCase() + "/partner/");
 		}
 		return request;

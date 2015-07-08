@@ -21,7 +21,7 @@ public class AuthenticatedData extends Data {
 	// store the roles in java instead of data bucket
 	private List<Role> simplesUserRoles;
 	private List<Rule> getNextMessageRules;
-	private List<MessageConfig> hawkingHours;
+
 	public AuthenticatedData(){
 		super();
 	}
@@ -87,18 +87,5 @@ public class AuthenticatedData extends Data {
 
 	public void setGetNextMessageRules(List<Rule> getNextMessageRules) {
 		this.getNextMessageRules = getNextMessageRules;
-	}
-
-	public List<MessageConfig> getHawkingHours() {
-		if(hawkingHours == null)
-		{
-			hawkingHours = new ArrayList<>();
-		}
-		return hawkingHours;
-	}
-
-	public void setHawkingHours(List<MessageConfig> hawkingHours) {
-
-		this.hawkingHours = hawkingHours;
 	}
 }

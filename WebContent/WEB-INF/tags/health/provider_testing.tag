@@ -7,11 +7,13 @@
 <%-- NOTE: a List of Provider Keys can be found in aggregator/health/phio_outbound --%>
 
 <%-- Make sure we're in a proper environment to test this --%>
+<go:log>ENVIRONMENT: ${environmentService.getEnvironmentAsString()}</go:log>
+<go:log>remoteaddr: ${pageContext.request.remoteAddr}</go:log>
 <c:if test="${environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI'  || environmentService.getEnvironmentAsString() == 'NXS'}">
 
 	<c:choose>
 		<c:when test="${empty param.providerKey}">
-			<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:')}">
+			<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or fn:startsWith(pageContext.request.remoteAddr,'127.0.0.1')}">
 
 				<form_new:fieldset_columns>
 					<jsp:attribute name="rightColumn">

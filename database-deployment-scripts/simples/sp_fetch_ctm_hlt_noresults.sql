@@ -37,18 +37,18 @@ SELECT
 	detailsName.textValue AS contactName,
 	detailsState.textValue AS state
 
-FROM 
-	(	
+FROM
+	(
 		SELECT
 			MAX(header.transactionId) AS transactionId,
 			header.rootId
- 
+
 		FROM aggregator.transaction_header AS header
 
 			-- Transactions will be INCLUDED if they have these touches
 			-- ONLINE restriction is used to knock out call centre transactions.
 			LEFT JOIN ctm.touches AS touchInclude ON touchInclude.transaction_id = header.TransactionId
-			AND touchInclude.type IN ('HLT detail')
+			AND touchInclude.type IN ('HLT detail', 'HLT contac', 'HLT benefi')
 			AND touchInclude.operator_id = 'ONLINE'
 
 			-- Transactions will be EXCLUDED if they have these touches
@@ -56,9 +56,9 @@ FROM
 			AND touchExclude.type IN ('R', 'C')
 
 		WHERE
-			-- limit to 2 days to improve the query speed, as well as handle the case 
+			-- limit to 2 days to improve the query speed, as well as handle the case
 			-- where we could miss the quote e.g. created at 23:57:00, because we fetch in 10 mins interval,
-			-- if only use CURDATE() and we fetchs at 23:55:00 and 00:05:00, 
+			-- if only use CURDATE() and we fetchs at 23:55:00 and 00:05:00,
 			-- we could miss all quotes created from 23:55:01 to 23:59:59
 			header.startDate >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
 

@@ -3,8 +3,9 @@
 
 <%@ attribute name="showProductDetails" rtexprvalue="true"	 description="Display the additional product details?" %>
 
-<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
-<c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" />
+<!-- This is a deactivated split test as it is likely to be run again in the future -->
+<%-- <jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" /> --%>
+<%-- <c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" /> --%>
 
 <%-- Setup variables needed for dual pricing --%>
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.services.health.HealthPriceDetailService" scope="page" />

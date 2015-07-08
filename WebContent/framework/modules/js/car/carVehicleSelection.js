@@ -523,6 +523,7 @@
 				});
 			} else {
 				meerkat.messaging.publish(moduleEvents.car.VEHICLE_CHANGED);
+			}
 		}
 	}
 

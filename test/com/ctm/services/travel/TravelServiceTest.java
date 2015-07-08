@@ -133,12 +133,45 @@ public class TravelServiceTest {
 		// Destination field only accepts 3 letter characters
         travelRequest.destination = "BOB";
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertTrue(travelService.isValid());
+
+		travelRequest.destination = "BOB,ABC";
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertFalse(travelService.isValid());*/
+		assertTrue(travelService.isValid());
+
+		travelRequest.destination = "BOB,ABC,TED";
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertTrue(travelService.isValid());
+
+		/** INVALID TEST CASES **/
+		travelRequest.destination = "bob";
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertFalse(travelService.isValid());
+
+		travelRequest.destination = "BOB,TED,";
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertFalse(travelService.isValid());
+
+		travelRequest.destination = "BOB,TED, HI";
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertFalse(travelService.isValid());
+
+		travelRequest.destination = "bob,bob1-sfhs3-dfk";
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertFalse(travelService.isValid());
 
 		travelRequest.destination = "1";
-		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
-		assertTrue(travelService.isValid());
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertFalse(travelService.isValid());
+
+		// check for blank fields
+		travelRequest.destination = "";
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertFalse(travelService.isValid());
+
+		travelRequest.destination = " ";
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertFalse(travelService.isValid());
 	}
 
 	@Test

@@ -72,12 +72,17 @@
                     <div class="row column-banded-row vertical-center-row hidden-xs">
                         <div class="col-sm-12 hidden-lg productTitleCell">
 
-                            <div class="col-sm-8">
+                            <div class="col-sm-9">
                                 <h2 class="productTitle">{{= productBrand }}</h2>
 
                                 <div class="productSubTitle">{{= productTitle }}</div>
+                                <div class="additionalBenefits"><span class="benefitsTitle">Additional Benefits (*See <a href="javascript:;" class="btn-more-info"
+                                                                                                                         data-available="{{= obj.available }}"
+                                                                                                                         data-productId="{{= obj.productId }}">More Info</a>):</span>
+                                    {{= obj.additionalBenefits }}
+                                </div>
                             </div>
-                            <div class="col-sm-3 col-sm-offset-1 cta">
+                            <div class="col-sm-3 cta">
                                 <div class="buyNow">
                                     <a class="btn btn-primary btn-block btn-apply" href="javascript:;"
                                        data-productId="{{= obj.productId }}">
@@ -100,6 +105,10 @@
                                 <h2 class="productTitle">{{= productBrand }}</h2>
 
                                 <div class="productSubTitle">{{= productTitle }}</div>
+                                <div class="additionalBenefits"><span class="benefitsTitle">Additional Benefits (*See <a href="javascript:;" class="btn-more-info"
+                                                                                                                         data-available="{{= obj.available }}"
+                                                                                                                         data-productId="{{= obj.productId }}">More Info</a>): </span>
+                                    {{= additionalBenefits }}</div>
                             </div>
                         </div>
                         <div class="col-sm-3 col-lg-2">
@@ -133,7 +142,7 @@
                                         Info</a>
                                 </div>
                                 <div class="col-sm-4 col-sm-pull-4 col-lg-pull-0 col-lg-6 termsLink">
-                                    {{= obj.subTitle.replace('& Conditions', '') }}<%--<a href="{{=obj.subTitle}}" target="_blank" class="showDoc">Terms</a>--%>
+                                    {{= obj.subTitle.replace('& Conditions', '') }}
                                 </div>
 
                             </div>

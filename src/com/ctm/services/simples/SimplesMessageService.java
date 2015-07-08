@@ -1,26 +1,31 @@
 package com.ctm.services.simples;
 
-import com.ctm.dao.BlacklistDao;
-import com.ctm.dao.UserDao;
-import com.ctm.dao.simples.MessageAuditDao;
-import com.ctm.dao.simples.MessageDao;
-import com.ctm.dao.simples.MessageDaoOld;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.Error;
-import com.ctm.model.MessageConfig;
-import com.ctm.model.Transaction;
-import com.ctm.model.simples.*;
-import com.ctm.services.TransactionService;
-import org.apache.log4j.Logger;
-
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+
+import com.ctm.dao.BlacklistDao;
+import com.ctm.dao.UserDao;
+import com.ctm.dao.simples.MessageDao;
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Error;
+import com.ctm.model.Transaction;
+import com.ctm.model.simples.BlacklistChannel;
+import com.ctm.model.simples.ConfirmationOperator;
+import com.ctm.model.simples.Message;
+import com.ctm.model.simples.MessageDetail;
+import com.ctm.model.simples.MessageStatus;
+import com.ctm.model.simples.Role;
+import com.ctm.model.simples.Rule;
+import com.ctm.model.simples.User;
+import com.ctm.services.TransactionService;
 
 public class SimplesMessageService {
 	private static final Logger logger = Logger.getLogger(SimplesMessageService.class.getName());
@@ -55,12 +60,12 @@ public class SimplesMessageService {
 	 * @param userId ID of the user who is getting the message
 	 * @throws ParseException
 	 */
-	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId, final List<Role> userRoles, final List<Rule> getNextMessageRules, final List<MessageConfig> hawkingHours) throws ConfigSettingException, DaoException, ParseException {
+	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId, final List<Role> userRoles, final List<Rule> getNextMessageRules) throws ConfigSettingException, DaoException, ParseException {
 		MessageDetail messageDetail = new MessageDetail();
 		Message message = null;
 
 		final MessageDao messageDao = new MessageDao();
-		final MessageDaoOld messageDaoOld = new MessageDaoOld();
+
 		/* This is only for testing at DEV's machine to generate deadlock
 		MessageDaoDeadLock daodd = new MessageDaoDeadLock();
 		try {
@@ -68,14 +73,8 @@ public class SimplesMessageService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}*/
-		// TODO: remove once new hawking solution is tested in PROD
-		if (messageDao.useNewMethodToGetNexMessage()){
-			message = MessageDao.getNextMessage(userId, getNextMessageRules);
-		}else{
-			MessageConfigService messageConfigService = new MessageConfigService();
-			Map<String, List<String>> statesMapForHawkingTime = messageConfigService.getStatesMapForHawkingTime(request, hawkingHours);
-			message = messageDaoOld.getNextMessage(userId, getNextMessageRules, statesMapForHawkingTime);
-		}
+
+		message = MessageDao.getNextMessage(userId, getNextMessageRules);
 
 		if (message.getMessageId() == 0) {
 			// No message available
@@ -87,15 +86,18 @@ public class SimplesMessageService {
 			TransactionService transactionService = new TransactionService();
 			messageDetail = messageDetailService.getMessageDetail(message);
 
-			// If message's phone number is in the blacklist, set the message to Complete + Do Not Contact
-			int styleCodeId = messageDetail.getTransaction().getStyleCodeId();
-			final BlacklistDao blacklistDao = new BlacklistDao();
-			if (blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber1()) ||
-				blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber2())) {
+			// if a failed join, do not check blacklist
+			if (message.getSourceId() != 5 && message.getSourceId() != 8) {
+				// If message's phone number is in the blacklist, set the message to Complete + Do Not Contact
+				int styleCodeId = messageDetail.getTransaction().getStyleCodeId();
+				final BlacklistDao blacklistDao = new BlacklistDao();
+				if (blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber1()) ||
+					blacklistDao.isBlacklisted(styleCodeId, BlacklistChannel.PHONE, message.getPhoneNumber2())) {
 
-				setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_DONOTCONTACT);
+					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_DONOTCONTACT);
 
-				return getNextMessageForUser(request, userId, userRoles, getNextMessageRules, hawkingHours);
+					return getNextMessageForUser(request, userId, userRoles, getNextMessageRules);
+				}
 			}
 
 			// If any transaction in the chain is confirmed, set the message to Complete
@@ -112,7 +114,7 @@ public class SimplesMessageService {
 					setMessageToComplete(request, userId, message.getMessageId(), MessageStatus.STATUS_COMPLETED, MessageStatus.STATUS_ALREADYCUSTOMER);
 				}
 
-				return getNextMessageForUser(request, userId, userRoles, getNextMessageRules, hawkingHours);
+				return getNextMessageForUser(request, userId, userRoles, getNextMessageRules);
 			}
 
 			// If the message is new or is a different user, assign it to our user.
@@ -248,24 +250,5 @@ public class SimplesMessageService {
 		}
 
 		return details.toJson();
-	}
-
-	/**
-	 * add message audit entry when user confirm and unlock hawking message, Personal message only
-	 * @throws DaoException
-	 */
-	public void addHawkingConfirmationAudit(int messageId) throws DaoException{
-		final MessageDao messageDao = new MessageDao();
-		final MessageAuditDao messageAuditDao = new MessageAuditDao();
-		final Message message = messageDao.getMessage(messageId);
-
-		MessageAudit messageAudit = new MessageAudit();
-		messageAudit.setMessageId(messageId);
-		messageAudit.setUserId(message.getUserId());
-		messageAudit.setStatusId(message.getStatusId());
-		messageAudit.setReasonStatusId(MessageStatus.STATUS_HAWKING_UNLOCK);
-		messageAudit.setComment("Hawking message confirmed and unlocked by userId '" + message.getUserId());
-
-		messageAuditDao.addMessageAudit(messageAudit);
 	}
 }

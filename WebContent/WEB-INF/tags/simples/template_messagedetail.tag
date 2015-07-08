@@ -23,14 +23,6 @@
 	{{ } else { }}
 
 		<h2>Current Message</h2>
-		{{ var disableAttr = ''; }}
-		{{ if (obj.message.hawking === true) { }}
-			<div class="alert alert-warning hawking-warning-container row">
-				<div class="col-sm-9">Please note: this customer may not have agreed to Sunday phone calls.</div>
-				<div class="col-sm-3"><button class="btn btn-form" data-provide="simples-hawking-unlock">Confirm &amp; Unlock</button></div>
-			</div>
-			{{ disableAttr = 'disabled'; }}
-		{{ } }}
 
 		<table class="table table-condensed table-hover">
 			<tbody>
@@ -54,9 +46,9 @@
 					<th>Numbers to call</th>
 					<td>
 						{{ if (obj.message.phoneNumber1 && obj.message.phoneNumber1 != '') { }}
-						<button data-phone="{{= obj.message.phoneNumber1 }}" class="btn btn-form" {{= disableAttr }}><span class="icon icon-phone"></span> {{= obj.message.phoneNumber1 }}</button>
+						<button data-phone="{{= obj.message.phoneNumber1 }}" class="btn btn-form"><span class="icon icon-phone"></span> {{= obj.message.phoneNumber1 }}</button>
 						{{ } if (obj.message.phoneNumber2 && obj.message.phoneNumber2 != '') { }}
-						<button data-phone="{{= obj.message.phoneNumber2 }}" class="btn btn-form" {{= disableAttr }}><span class="icon icon-phone"></span> {{= obj.message.phoneNumber2 }}</span></button>
+						<button data-phone="{{= obj.message.phoneNumber2 }}" class="btn btn-form"><span class="icon icon-phone"></span> {{= obj.message.phoneNumber2 }}</button>
 						{{ } }}
 						<button class="btn btn-tertiary messagedetail-loadbutton">Amend quote <span class="icon icon-arrow-right"></span></button>
 					</td>

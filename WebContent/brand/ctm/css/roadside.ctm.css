@@ -337,21 +337,33 @@ body > div > header a.bottombar .btn-call:hover {
   .vertical-center-row > div.productTitleCell div:before {
     margin-right: 0;
   }
+  .vertical-center-row > div.productTitleCell .additionalBenefits span {
+    display: inline-block;
+    padding-right: 7px;
+    font-size: 12px;
+    color: #1c3e93;
+  }
 }
 @media (min-width: 768px) and (max-width: 1199px) {
   .vertical-center-row > div.productTitleCell {
     height: 100px;
   }
+  .vertical-center-row > div.productTitleCell .additionalBenefits {
+    margin-top: 10px;
+  }
 }
 @media (min-width: 1200px) {
   .vertical-center-row > div {
-    height: 100px;
+    height: 120px;
   }
   .vertical-center-row > div.cta {
     text-align: center;
   }
   .vertical-center-row > div.cta div:before {
     height: auto;
+  }
+  .vertical-center-row > div .benefitsTitle {
+    display: block;
   }
 }
 @media (min-width: 768px) {
@@ -567,6 +579,14 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .headerBar > div > .verticalCenterContainer br {
   display: none;
+}
+@media (max-width: 767px) {
+  .headerBar > div .additionalBenefits span {
+    display: inline-block;
+    padding-right: 7px;
+    font-size: 12px;
+    color: #1c3e93;
+  }
 }
 h2.price {
   font-family: 'SourceSansProRegular';

@@ -204,7 +204,7 @@
 				$('#health_healthCover-selection').find(':input').on('change', function(event) {
 					var $this = $(this);
 
-					// Don't action on the DOB input fields; wait until it's serliased to the hidden field.
+					// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
 					if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year')) return;
 
 					healthCoverDetails.setHealthFunds();
@@ -300,11 +300,44 @@
 				meerkat.modules.navMenu.enable();
 			}
 		};
+		var contactStep = {
+				title: 'Your Contact Details',
+				navigationId: 'contact',
+				slideIndex: 2,
+				tracking: {
+					touchType: 'H',
+					touchComment: 'HLT contac',
+					includeFormData: true
+				},
+				externalTracking:{
+					method:'trackQuoteForms',
+					object:meerkat.modules.health.getTrackingFieldsObject
+				},
+				validation:{
+					validate: true
+				},
+				onInitialise: function onContactInit(event){
+				},
+				onBeforeEnter:function enterContactStep(event) {
+				},
+				onAfterEnter: function enteredContactStep(event) {
+					meerkat.modules.navMenu.enable();
+
+				},
+				onAfterLeave:function leaveContactStep(event){
+					/*
+					This is here because for some strange reason the benefits slide dropdown disables the tracking touch on the contact
+					slide. Manually forcing it to run so that the contact details are saved into the session and subsequently to
+					the transaction_details table.
+					 */
+					meerkat.messaging.publish(meerkat.modules.tracking.events.tracking.TOUCH, this);
+				}
+			};
 
 		var resultsStep = {
 			title: 'Your Results',
 			navigationId: 'results',
-			slideIndex: 2,
+			slideIndex: meerkat.modules.splitTest.isActive(99) ? 3: 2,
 			validation: {
 				validate: false,
 				customValidation: function validateSelection(callback) {
@@ -374,7 +407,7 @@
 		var applyStep = {
 			title: 'Your Application',
 			navigationId: 'apply',
-			slideIndex:3,
+			slideIndex: meerkat.modules.splitTest.isActive(99) ? 4: 3,
 			tracking:{
 				touchType:'A'
 			},
@@ -505,7 +538,7 @@
 		var paymentStep = {
 			title: 'Your Payment',
 			navigationId: 'payment',
-			slideIndex:4,
+			slideIndex: meerkat.modules.splitTest.isActive(99) ? 5: 4,
 			tracking:{
 				touchType:'H',
 				touchComment: 'HLT paymnt',
@@ -604,7 +637,9 @@
 			applyStep: applyStep,
 			paymentStep: paymentStep
 		}
-
+		if(meerkat.modules.splitTest.isActive(99)){
+			steps.contactStep = contactStep;
+		}
 	}
 
 	function configureProgressBar(){
@@ -631,6 +666,9 @@
 				navigationId: steps.paymentStep.navigationId
 			}
 		]);
+		if(meerkat.modules.splitTest.isActive(99)){
+			meerkat.modules.journeyProgressBar.addAdditionalStep('Your Cover', steps.contactStep.navigationId );
+		}
 	}
 
 	function configureContactDetails(){
@@ -889,25 +927,52 @@
 		//@TODO @FIXME - In the review with Rebecca, Tim, Kevin, on 24th of Feb 2014, it's likely that this lookup table wont be required anymore, and we can pass through the name of the journey engine step directly.
 		//Update 1: Looks like nobody really knows or considered which calls are required. Also, the current code is basically magical (not understood), so without further review of what they want, the original stages will be logged. Hence this mapping here is still required. The livechat stats will still report the exact journey step names instead. Eg. the below mappings could be replaced by 'start', 'details', 'benefits', 'results', 'apply', 'payment', 'confirmation'.
 		var actionStep='';
-		switch(current_step) {
-			case 0:
-				actionStep = "health situation";
-				break;
-			case 1:
-				actionStep = 'health details';
-				break;
-			case 2:
-				actionStep = 'health cover';
-				break;
-			case 4:
-				actionStep = 'health application';
-				break;
-			case 5:
-				actionStep = 'health payment';
-				break;
-			case 6:
-				actionStep = 'health confirmation';
-				break;
+
+		if(meerkat.modules.splitTest.isActive(99)) {
+			switch (current_step) {
+				case 0:
+					actionStep = "health situation";
+					break;
+				case 1:
+					actionStep = 'health details';
+					break;
+				case 2:
+					actionStep = 'health cover';
+					break;
+				case 3:
+					actionStep = 'health cover contact';
+					break;
+				case 5:
+					actionStep = 'health application';
+					break;
+				case 6:
+					actionStep = 'health payment';
+					break;
+				case 7:
+					actionStep = 'health confirmation';
+					break;
+			}
+		} else {
+			switch (current_step) {
+				case 0:
+					actionStep = "health situation";
+					break;
+				case 1:
+					actionStep = 'health details';
+					break;
+				case 2:
+					actionStep = 'health cover';
+					break;
+				case 4:
+					actionStep = 'health application';
+					break;
+				case 5:
+					actionStep = 'health payment';
+					break;
+				case 6:
+					actionStep = 'health confirmation';
+					break;
+			}
 		}
 
 		var response =  {

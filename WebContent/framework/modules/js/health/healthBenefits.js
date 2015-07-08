@@ -205,7 +205,8 @@
 		var navigationId = '';
 		if (meerkat.modules.journeyEngine.getCurrentStep()) navigationId = meerkat.modules.journeyEngine.getCurrentStep().navigationId;
 
-		if (navigationId === 'benefits' || navigationId === 'results') {
+		//if (navigationId === 'benefits' || navigationId === 'results') {
+		if (navigationId === 'results' || (meerkat.modules.splitTest.isActive(1) && navigationId === 'benefits')) {
 			meerkat.modules.journeyEngine.loadingShow('getting your quotes', true);
 		}
 		

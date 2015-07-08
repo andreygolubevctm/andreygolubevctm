@@ -1188,7 +1188,9 @@ Results = {
     }
 };
 
-var ResultsModel = {
+var ResultsModel = new Object();
+
+ResultsModel = {
     ajaxRequest: false,
     returnedGeneral: false,
     isBlockedQuote: false,
@@ -1350,7 +1352,7 @@ var ResultsModel = {
                 newTranID = jsonResult.results.noresults.transactionId;
             }
         }
-        if (Number(newTranID) > 0) {
+        if (newTranID !== 0) {
             if (typeof meerkat !== "undefined") {
                 meerkat.modules.transactionId.set(newTranID);
             } else if (typeof referenceNo !== "undefined") {
@@ -1545,7 +1547,7 @@ var ResultsModel = {
     },
     filter: function(renderView) {
         var initialProducts = Results.model.sortedProducts.slice();
-        var finalProducts = [];
+        var finalProducts = new Array();
         var valid, value;
         $.each(initialProducts, function(productIndex, product) {
             valid = true;
@@ -1608,7 +1610,11 @@ var ResultsModel = {
             console.log("Check the parameters passed to Results.model.filterByRange()");
             return true;
         } else if (options.hasOwnProperty("min") || options.hasOwnProperty("max")) {
-            return !(options.hasOwnProperty("min") && value < options.min || options.hasOwnProperty("max") && value > options.max);
+            if (options.hasOwnProperty("min") && value < options.min || options.hasOwnProperty("max") && value > options.max) {
+                return false;
+            } else {
+                return true;
+            }
         } else {
             console.log("Options from this range filter are incorrect and have not been applied: ", value, options);
             return true;
@@ -1621,6 +1627,7 @@ var ResultsModel = {
                 product: product
             });
         } else {
+            Results.model.currentProduct = new Object();
             Results.model.currentProduct = {
                 product: product
             };
@@ -1633,6 +1640,7 @@ var ResultsModel = {
                 value: currentProduct
             });
         } else {
+            Results.model.currentProduct = new Object();
             Results.model.currentProduct = {
                 path: Object.byString(Results.settings.paths, identifierPathName),
                 value: currentProduct
@@ -3645,74 +3653,6 @@ Features = {
     meerkat.modules.register("affix", {
         init: init,
         events: events
-    });
-})(jQuery);
-
-(function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-    var postData = {}, elements = {
-        applicationDate: $(".applicationDate"),
-        applicationDateContainer: $(".applicationDateContainer")
-    }, selectedDate, moduleEvents = {};
-    function changeApplicationDate() {
-        selectedDate = $("#health_searchDate :selected").val();
-        postData.applicationDateOverrideValue = selectedDate !== "0" ? selectedDate + " 00:00:01" : null;
-        meerkat.modules.comms.post({
-            url: "ajax/write/setApplicationDate.jsp",
-            data: postData,
-            cache: false,
-            errorLevel: "warning",
-            onSuccess: function onApplicationUpdateSuccess(data) {
-                updateDisplay(data);
-                toggleDisplay();
-            }
-        });
-    }
-    function setApplicationDateDropdown() {
-        meerkat.modules.comms.post({
-            url: "ajax/load/getApplicationDate.jsp",
-            cache: false,
-            errorLevel: "warning",
-            onSuccess: function onApplicationUpdateSuccess(dateResult) {
-                updateDropdown(dateResult);
-            }
-        });
-    }
-    function updateDropdown(dateResult) {
-        if (dateResult !== null) {
-            var date = new Date(dateResult);
-            var newDate = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2);
-            if ($("#health_searchDate option[value=" + newDate + "]").length > 0) {
-                $("#health_searchDate").val(newDate);
-            }
-        }
-    }
-    function updateDisplay(data) {
-        elements.applicationDate.html(data);
-    }
-    function toggleDisplay() {
-        if (elements.applicationDate.html() === "") {
-            elements.applicationDateContainer.hide();
-        } else {
-            elements.applicationDateContainer.show();
-        }
-    }
-    function initApplicationDate() {
-        jQuery(document).ready(function($) {
-            if ($(".simples").length === 0) {
-                setApplicationDateDropdown();
-            }
-            $("#health_searchDate").on("change", function() {
-                changeApplicationDate();
-            });
-            toggleDisplay();
-        });
-    }
-    meerkat.modules.register("application_date", {
-        init: initApplicationDate,
-        events: moduleEvents,
-        changeApplicationDate: changeApplicationDate,
-        setApplicationDateDropdown: setApplicationDateDropdown
     });
 })(jQuery);
 
@@ -6525,7 +6465,7 @@ Features = {
             } catch (e) {}
         }
         meerkat.modules.comms.post({
-            url: meerkat.site.urls.base + "ajax/write/register_fatal_error.jsp",
+            url: "ajax/write/register_fatal_error.jsp",
             data: settings,
             useDefaultErrorHandling: false,
             errorLevel: "silent",
@@ -6735,7 +6675,7 @@ Features = {
         return filterData($element).serialize();
     }
     function filterData($element) {
-        return $element.find(":input:visible, input[type=hidden], select[type=hidden], :input[data-visible=true], :input[data-initValue=true], :input[data-attach=true]").filter(function() {
+        return $element.find(":input:visible, input[type=hidden], :input[data-visible=true], :input[data-initValue=true], :input[data-attach=true]").filter(function() {
             return $(this).val() !== "" && $(this).val() !== "Please choose...";
         });
     }
@@ -6798,9 +6738,6 @@ Features = {
         });
     }
     function populate($component, value) {
-        if (typeof value !== "string") {
-            value = "";
-        }
         var parts = value.split("/"), nativeValue = "";
         if ($component.attr("data-locked") == 1) return;
         $component.attr("data-locked", 1);
@@ -7156,10 +7093,8 @@ Features = {
             }
         } catch (e) {
             unlock();
+            meerkat.modules.address.setHash(currentStep.navigationId);
             meerkat.logging.info("[journeyEngine]", e);
-            if (currentStep != null) {
-                meerkat.modules.address.setHash(currentStep.navigationId);
-            }
             return false;
         }
         return true;
@@ -9229,36 +9164,6 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, events = {};
-    function init() {}
-    function get(data, settings) {
-        data = _.extend({
-            plateNumber: null,
-            state: null
-        }, data);
-        settings = settings || {};
-        var request_obj = {
-            url: "rest/rego/lookup/list.json",
-            data: data,
-            dataType: "json",
-            cache: true,
-            useDefaultErrorHandling: true,
-            numberOfAttempts: 3,
-            errorLevel: "fatal"
-        };
-        if (_.isObject(settings) && !_.isEmpty(settings)) {
-            request_obj = $.extend(request_obj, settings);
-        }
-        meerkat.modules.comms.get(request_obj);
-    }
-    meerkat.modules.register("regoLookup", {
-        init: init,
-        events: events,
-        get: get
-    });
-})(jQuery);
-
-(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $renderingModeFld;
     function init() {
         if (typeof meerkat.site === "undefined") {
@@ -10014,7 +9919,7 @@ Features = {
                 $dropdown.find(".activator span:not([class])").html("Save Quote");
                 $auxilleryActivator.find("span:not([class])").html("Save Quote");
             }
-            if (typeof transactionId !== "undefined" && Number(transactionId) > 0) {
+            if (typeof transactionId !== "undefined") {
                 meerkat.modules.transactionId.set(transactionId);
             }
             if ($.inArray(meerkat.site.vertical, [ "car", "ip", "life", "health", "home" ]) !== -1) {
@@ -10363,7 +10268,7 @@ Features = {
                 cache: false,
                 errorLevel: "warning",
                 onSuccess: function emailResultsSuccess(result) {
-                    if (typeof result.transactionId !== "undefined" && Number(result.transactionId) > 0) {
+                    if (typeof result.transactionId !== "undefined" && result.transactionId !== "") {
                         meerkat.modules.transactionId.set(result.transactionId);
                     }
                     if (typeof settings.emailResultsSuccessCallback === "function") {
@@ -10689,7 +10594,7 @@ Features = {
         }
     }
     function updateVirtualPageFromJourneyEngine(step, delay) {
-        if (!_.isArray(skipStepForSessionCam) || step !== null && _.indexOf(skipStepForSessionCam, step.navigationId) === -1) {
+        if (!_.isArray(skipStepForSessionCam) || _.indexOf(skipStepForSessionCam, step.navigationId) === -1) {
             updateVirtualPage(step, delay);
         }
     }
@@ -11385,7 +11290,7 @@ Features = {
                 id_handler: actionId
             },
             onSuccess: function fetchTransactionIdSuccess(msg) {
-                if (msg.transactionId !== transactionId && Number(msg.transactionId) > 0) {
+                if (msg.transactionId !== transactionId) {
                     set(msg.transactionId, msg.rootId);
                 }
                 if (typeof callback === "function") {

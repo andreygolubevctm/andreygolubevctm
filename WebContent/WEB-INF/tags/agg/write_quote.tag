@@ -68,8 +68,8 @@
 <%-- Capture the essential fields to update email table --%>
 <c:choose>
 	<c:when test="${fn:contains(param.quoteType, 'reminder')}">
+		<c:set var="emailAddress" value="${data['reminder/email']}" />
 		<c:set var="firstName" value="${data['reminder/firstName']}" />
-		<c:set var="lastName" value="${data['reminder/lastName']}" />
 		<c:set var="lastName" value="${data['reminder/lastName']}" />
 		<c:set var="optinPhone" value="" />
 		<c:set var="optinMarketing">

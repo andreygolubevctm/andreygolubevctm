@@ -195,9 +195,6 @@
 				</c:when>
 				<c:otherwise>
 					<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
-					<c:if test="${fn:toLowerCase(quoteType) == 'car' || fn:toLowerCase(data.current.vertical) == 'car'}">
-						<c:set var="method"><core:save_transaction_to_disc previousTransactionId="${requestedTransaction}" /></c:set>
-					</c:if>
 				</c:otherwise>
 			</c:choose>
 	</c:when>

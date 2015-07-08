@@ -1,8 +1,9 @@
 package com.ctm.router.database;
 
-import com.ctm.dao.simples.MessageDeferDao;
-import com.ctm.dao.transaction.TransactionLockDao;
-import com.ctm.exceptions.DaoException;
+import static com.ctm.utils.ResponseUtils.handleError;
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,14 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-
-import static com.ctm.utils.ResponseUtils.handleError;
-import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+import com.ctm.dao.transaction.TransactionLockDao;
+import com.ctm.exceptions.DaoException;
 
 @WebServlet(urlPatterns = {
-		"/cron/database/transactionLockTable/cleanup.json",
-		"/cron/database/message/defer.json"
+		"/cron/database/transactionLockTable/cleanup.json"
 })
 public class DatabaseCleanupRouter extends HttpServlet {
 
@@ -32,13 +30,6 @@ public class DatabaseCleanupRouter extends HttpServlet {
 						new TransactionLockDao().cleanupOldLocks();
 					} catch (DaoException e) {
 						handleError(uri, e, response, "Failed to clean up transaction locks table");
-					}
-					break;
-				case "message/defer.json":
-					try {
-						new MessageDeferDao().deferAll();
-					} catch (DaoException e) {
-						handleError(uri, e, response, "Failed to defer messages to Monday");
 					}
 					break;
 				default:

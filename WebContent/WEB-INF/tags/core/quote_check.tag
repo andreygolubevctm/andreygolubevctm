@@ -22,7 +22,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<%-- This rubbish dumps into the page above the DOCTYPE. It is now stored on meerkat.site.isNewQuote (health_new/settings.tag) --%>
+	<%-- This rubbish dumps into the page above the DOCTYPE. It is now stored on meerkat.site.isNewQuote (settings.tag) --%>
 	<script type="text/javascript">
 		var quoteCheck = new Object();
 		quoteCheck = {

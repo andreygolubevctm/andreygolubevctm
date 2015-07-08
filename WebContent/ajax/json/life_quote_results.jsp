@@ -2,13 +2,23 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<session:get settings="true" authenticated="true" verticalCode="${fn:trim(fn:toUpperCase(param.vertical))}" />
+
+<%-- Load the params into data --%>
+<c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
+<security:populateDataFromParams rootPath="${vertical}" />
+
+<%-- RECOVER: if things have gone pear shaped --%>
+<c:if test="${empty data.current.transactionId}">
+	<error:recover origin="ajax/json/life_quote_results.jsp" quoteType="${vertical}" />
+</c:if>
+
 <jsp:useBean id="lifeService" class="com.ctm.services.life.LifeService" scope="page" />
-<c:set var="serviceRespone" value="${lifeService.contactLead(pageContext.request)}" />
+<c:set var="serviceRespone" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
+
 <c:choose>
 	<c:when test="${lifeService.isValid()}">
-		<session:get settings="true" authenticated="true" verticalCode="${fn:trim(fn:toUpperCase(param.vertical))}" />
 		<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
-		<c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
 		<c:set var="continueOnValidationError" value="${false}" />
 
 		<%-- First check owner of the quote --%>
@@ -16,14 +26,6 @@
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
 				<go:log source="life_quote_results_jsp" level="INFO" >PROCEEDINATOR PASSED</go:log>
-
-				<%-- Load the params into data --%>
-				<security:populateDataFromParams rootPath="${vertical}" />
-
-				<%-- RECOVER: if things have gone pear shaped --%>
-				<c:if test="${empty data.current.transactionId}">
-					<error:recover origin="ajax/json/life_quote_results.jsp" quoteType="${vertical}" />
-				</c:if>
 
 				<%-- add external testing ip address checking and loading correct config and send quotes --%>
 

@@ -30,7 +30,6 @@
 //-------------------------------------------------------------------------------------------
 //XS ONLY breakpoints
 
-
 @media (@xs-only) {
 
   @priceSize: @font-size-h4;
@@ -59,7 +58,7 @@
     padding: 7px 0 7px 0;
   }
 
-  .priceContainer .price  {
+  .priceContainer .price {
     font-size: @savingsSize;
     line-height: @savingsSize;
   }
@@ -202,23 +201,35 @@
       div:before {
         margin-right: 0;
       }
+      .additionalBenefits span {
+        display: inline-block;
+        padding-right: 7px;
+        font-size: @font-size-small;
+        color: @moreInfo-contentRow-promotion-color;
+      }
     }
   }
 
   @media (@sm-md-only) {
     &.productTitleCell {
       height: 100px;
+      .additionalBenefits {
+        margin-top: 10px;
+      }
     }
   }
 
   @media (@lg) {
 
-    height: 100px;
+    height: 120px;
     &.cta {
       text-align: center;
       div:before {
         height: auto;
       }
+    }
+    .benefitsTitle {
+      display: block;
     }
   }
 }

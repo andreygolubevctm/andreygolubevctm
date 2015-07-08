@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<switchwise>
-	<url>http://preprod.switchwise.com.au/switchwise1_5_13/SwitchwiseSearchService.svc</url>
-	<user>webtest</user>
-	<pwd>web#1test</pwd>
-</switchwise>

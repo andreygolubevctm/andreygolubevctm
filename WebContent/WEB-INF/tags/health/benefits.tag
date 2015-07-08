@@ -43,7 +43,12 @@
 		<div class=" footer">
 			<button type="button" class="btn btn-cancel popover-mode">Cancel</button>
 			<button type="button" class="btn btn-save popover-mode">Save changes</button>
-			<a type="button" class="btn btn-save journey-mode" href="javascript:;">Get Prices <span class="icon icon-arrow-right"></span></a>
+			<a type="button" class="btn btn-save journey-mode" href="javascript:;">
+			<c:choose>
+				<c:when test="${contactSplitTest}">Continue </c:when>
+				<c:otherwise>Get Prices </c:otherwise>
+			</c:choose>
+			<span class="icon icon-arrow-right"></span></a>
 		</div>
 
 	</form>

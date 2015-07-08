@@ -13,6 +13,10 @@
             <div class="col-xs-12 col-sm-9">
                 <div class="col-xs-3 col-sm-2 logoContainer">{{= companyLogo }}</div>
                 <div class="col-xs-9 col-sm-7 verticalCenterContainer"><h2>{{= obj.des.replace('<br>',' ') }}</h2></div>
+                <div style="clear:both;" class="hidden-sm hidden-md hidden-lg"></div>
+                <div class="col-xs-8 hidden-sm hidden-md hidden-lg">
+                    <div class="additionalBenefits"><span>Additional Benefits{{ if(obj.additionalBenefits.indexOf('*') != -1) { }} (*See Below){{ } }}:</span><br /> {{= obj.additionalBenefits }}</div>
+                </div>
                 <div class="col-xs-4 col-sm-3 priceColumn">
                     <h2 class="price">{{= obj.priceText }}</h2>
                     <div class="small-heading">Per Year</div>
@@ -47,7 +51,7 @@
             <%-- About Provider --%>
         <div class="row about">
             <div class="col-xs-12">
-                <p>{{= obj.infoDes}}</p>
+                <p>{{= obj.infoDes }}</p>
             </div>
         </div>
     </div>

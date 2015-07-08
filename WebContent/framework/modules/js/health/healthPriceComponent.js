@@ -96,12 +96,13 @@
 
 		$policySummaryDualPricing.find('.Premium').html(htmlString);
 
+//		This is a deactivated split test as it is likely to be run again in the future
 		// A/B testing price itemisation
-		if (meerkat.modules.splitTest.isActive(2)) {
-			var htmlTemplate_B = _.template($("#price-itemisation-template").html());
-			var htmlString_B = htmlTemplate_B(product);
-			$(".priceItemisationTemplateHolder").html(htmlString_B);
-		}
+//		if (meerkat.modules.splitTest.isActive(2)) {
+//			var htmlTemplate_B = _.template($("#price-itemisation-template").html());
+//			var htmlString_B = htmlTemplate_B(product);
+//			$(".priceItemisationTemplateHolder").html(htmlString_B);
+//		}
 
 		$policySummaryContainer.find(".policyPriceWarning").hide();
 
@@ -142,10 +143,11 @@
 			$policySummaryDetailsComponents.find(".copayment").parent().addClass('hidden');
 		}
 
-		if (meerkat.modules.splitTest.isActive(2)) {
-			$policySummaryDetailsComponents.find(".companyLogo").attr('class', 'companyLogo hidden-sm'); //reset class
-			$policySummaryDetailsComponents.find(".companyLogo").addClass(product.info.provider);
-		}
+//		This is a deactivated split test as it is likely to be run again in the future
+//		if (meerkat.modules.splitTest.isActive(2)) {
+//			$policySummaryDetailsComponents.find(".companyLogo").attr('class', 'companyLogo hidden-sm'); //reset class
+//			$policySummaryDetailsComponents.find(".companyLogo").addClass(product.info.provider);
+//		}
 	}
 
 	function applyEventListeners() {

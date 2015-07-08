@@ -4,7 +4,7 @@
 
 <%@ attribute name="showCreditCards" required="true" rtexprvalue="true"	%>
 
-<div class="payment_assurance_message col-lg-4 col-sm-2 col-xs-1 fieldrow">
+<div class="payment_assurance_message col-sm-4 col-xs-1 fieldrow">
 	<c:if test="${showCreditCards == true}">
 		<div class="cards">
 			<div class="amex"></div>

@@ -58,7 +58,7 @@
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/howToEstimate" />
-    <form_new:row label="How would you like us to estimate how much energy you use?" fieldXpath="${fieldXPath}" className="clear" helpId="526">
+    <form_new:row label="Would you like us to estimate how much energy you use?" fieldXpath="${fieldXPath}" className="clear" helpId="526">
         <field_new:array_select xpath="${fieldXPath}"
                                 required="true"
                                 className="how-to-estimate"

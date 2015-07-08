@@ -125,6 +125,24 @@
 		}
 
 	}
+	function showSteps() {
+		return progressBarSteps;
+	}
+
+	function checkLabel(labelToCheck) {
+		_.each( progressBarSteps, function(progressBarStep, index){
+			if (progressBarStep.label === labelToCheck){
+				return true;
+			}
+		});
+	}
+	function addAdditionalStep(labelToCheck, navigationId){
+		_.each( progressBarSteps, function(progressBarStep, index){
+			if (progressBarStep.label === labelToCheck){
+				progressBarStep.matchAdditionalSteps = [navigationId];
+			}
+		});
+	}
 
 	function setComplete(){
 		currentStepNavigationId = 'complete';
@@ -161,7 +179,10 @@
 		enable: enable,
 		show: show,
 		hide: hide,
-		setComplete: setComplete
+		setComplete: setComplete,
+		showSteps: showSteps,
+		checkLabel: checkLabel,
+		addAdditionalStep: addAdditionalStep
 	});
 
 })(jQuery);

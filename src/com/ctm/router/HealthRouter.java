@@ -1,83 +1,68 @@
 package com.ctm.router;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.Error;
-import com.ctm.services.simples.FundWarningService;
-import com.ctm.services.simples.MessageConfigService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+
+import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Error;
+import com.ctm.services.simples.FundWarningService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @WebServlet(urlPatterns = {
-        "/health/optin/isInAntiHawkingTimeframe.json",
-        "/health/quote/dualPrising/getFundWarning.json"
+		"/health/quote/dualPrising/getFundWarning.json"
 })
 public class HealthRouter extends HttpServlet {
 
-    @SuppressWarnings("unused")
-    private static Logger logger = Logger.getLogger(HealthRouter.class.getName());
-    private static final long serialVersionUID = 5468545645645645644L;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+	@SuppressWarnings("unused")
+	private static Logger logger = Logger.getLogger(HealthRouter.class.getName());
+	private static final long serialVersionUID = 5468545645645645644L;
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String uri = request.getRequestURI();
-        PrintWriter writer = response.getWriter();
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		String uri = request.getRequestURI();
+		PrintWriter writer = response.getWriter();
 
-        // Automatically set content type based on request extension ////////////////////////////////////////
+		// Automatically set content type based on request extension ////////////////////////////////////////
 
-        if (uri.endsWith(".json")) {
-            response.setContentType("application/json");
-        }
+		if (uri.endsWith(".json")) {
+			response.setContentType("application/json");
+		}
 
-        JSONObject json = new JSONObject();
-        // Route the requests ///////////////////////////////////////////////////////////////////////////////
+		JSONObject json = new JSONObject();
+		// Route the requests ///////////////////////////////////////////////////////////////////////////////
+		if (uri.endsWith("/health/quote/dualPrising/getFundWarning.json")) {
+			FundWarningService fundWarningService = new FundWarningService();
+			try {
+				json.put("warningMessage", fundWarningService.getFundWarningMessage(request));
+			} catch (final DaoException | JSONException | ConfigSettingException e) {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				objectMapper.writeValue(writer, errors(e));
+			}
+			writer.print(json.toString());
+		}
+	}
 
-        if (uri.endsWith("/health/optin/isInAntiHawkingTimeframe.json")) {
+	private ObjectNode errors(final Exception e) {
+		final Error error = new Error(e.getMessage());
+		return jsonObjectNode("errors", error);
+	}
 
-            MessageConfigService service = new MessageConfigService();
-            try {
-                String state = request.getParameter("state");
-                json.put("isInAntiHawkingTimeframe", service.isInAntiHawkingTimeframe(request, state));
-
-            } catch (DaoException | JSONException e) {
-                Error error = new Error("Failed to check Anti Hawking time frame");
-                json = error.toJsonObject(true);
-                logger.error("/health/optin/isInAntiHawkingTimeframe.json failed: ", e);
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            }
-            writer.print(json.toString());
-        } else if (uri.endsWith("/health/quote/dualPrising/getFundWarning.json")) {
-            FundWarningService fundWarningService = new FundWarningService();
-            try {
-                json.put("warningMessage", fundWarningService.getFundWarningMessage(request));
-            } catch (final DaoException | JSONException | ConfigSettingException e) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                objectMapper.writeValue(writer, errors(e));
-            }
-            writer.print(json.toString());
-        }
-    }
-
-    private ObjectNode errors(final Exception e) {
-        final Error error = new Error(e.getMessage());
-        return jsonObjectNode("errors", error);
-    }
-
-    private <T> ObjectNode jsonObjectNode(final String name, final T value) {
-        final ObjectNode objectNode = objectMapper.createObjectNode();
-        objectNode.putPOJO(name, value);
-        return objectNode;
-    }
+	private <T> ObjectNode jsonObjectNode(final String name, final T value) {
+		final ObjectNode objectNode = objectMapper.createObjectNode();
+		objectNode.putPOJO(name, value);
+		return objectNode;
+	}
 }

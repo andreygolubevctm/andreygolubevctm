@@ -1796,10 +1796,35 @@ creditCardDetails = {
                 meerkat.modules.navMenu.enable();
             }
         };
+        var contactStep = {
+            title: "Your Contact Details",
+            navigationId: "contact",
+            slideIndex: 2,
+            tracking: {
+                touchType: "H",
+                touchComment: "HLT contac",
+                includeFormData: true
+            },
+            externalTracking: {
+                method: "trackQuoteForms",
+                object: meerkat.modules.health.getTrackingFieldsObject
+            },
+            validation: {
+                validate: true
+            },
+            onInitialise: function onContactInit(event) {},
+            onBeforeEnter: function enterContactStep(event) {},
+            onAfterEnter: function enteredContactStep(event) {
+                meerkat.modules.navMenu.enable();
+            },
+            onAfterLeave: function leaveContactStep(event) {
+                meerkat.messaging.publish(meerkat.modules.tracking.events.tracking.TOUCH, this);
+            }
+        };
         var resultsStep = {
             title: "Your Results",
             navigationId: "results",
-            slideIndex: 2,
+            slideIndex: meerkat.modules.splitTest.isActive(99) ? 3 : 2,
             validation: {
                 validate: false,
                 customValidation: function validateSelection(callback) {
@@ -1852,7 +1877,7 @@ creditCardDetails = {
         var applyStep = {
             title: "Your Application",
             navigationId: "apply",
-            slideIndex: 3,
+            slideIndex: meerkat.modules.splitTest.isActive(99) ? 4 : 3,
             tracking: {
                 touchType: "A"
             },
@@ -1941,7 +1966,7 @@ creditCardDetails = {
         var paymentStep = {
             title: "Your Payment",
             navigationId: "payment",
-            slideIndex: 4,
+            slideIndex: meerkat.modules.splitTest.isActive(99) ? 5 : 4,
             tracking: {
                 touchType: "H",
                 touchComment: "HLT paymnt",
@@ -2016,6 +2041,9 @@ creditCardDetails = {
             applyStep: applyStep,
             paymentStep: paymentStep
         };
+        if (meerkat.modules.splitTest.isActive(99)) {
+            steps.contactStep = contactStep;
+        }
     }
     function configureProgressBar() {
         meerkat.modules.journeyProgressBar.configure([ {
@@ -2035,6 +2063,9 @@ creditCardDetails = {
             label: "Your Payment",
             navigationId: steps.paymentStep.navigationId
         } ]);
+        if (meerkat.modules.splitTest.isActive(99)) {
+            meerkat.modules.journeyProgressBar.addAdditionalStep("Your Cover", steps.contactStep.navigationId);
+        }
     }
     function configureContactDetails() {
         var contactDetailsOptinField = $("#health_contactDetails_optin");
@@ -2211,30 +2242,62 @@ creditCardDetails = {
             var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
             var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
             var actionStep = "";
-            switch (current_step) {
-              case 0:
-                actionStep = "health situation";
-                break;
+            if (meerkat.modules.splitTest.isActive(99)) {
+                switch (current_step) {
+                  case 0:
+                    actionStep = "health situation";
+                    break;
 
-              case 1:
-                actionStep = "health details";
-                break;
+                  case 1:
+                    actionStep = "health details";
+                    break;
 
-              case 2:
-                actionStep = "health cover";
-                break;
+                  case 2:
+                    actionStep = "health cover";
+                    break;
 
-              case 4:
-                actionStep = "health application";
-                break;
+                  case 3:
+                    actionStep = "health cover contact";
+                    break;
 
-              case 5:
-                actionStep = "health payment";
-                break;
+                  case 5:
+                    actionStep = "health application";
+                    break;
 
-              case 6:
-                actionStep = "health confirmation";
-                break;
+                  case 6:
+                    actionStep = "health payment";
+                    break;
+
+                  case 7:
+                    actionStep = "health confirmation";
+                    break;
+                }
+            } else {
+                switch (current_step) {
+                  case 0:
+                    actionStep = "health situation";
+                    break;
+
+                  case 1:
+                    actionStep = "health details";
+                    break;
+
+                  case 2:
+                    actionStep = "health cover";
+                    break;
+
+                  case 4:
+                    actionStep = "health application";
+                    break;
+
+                  case 5:
+                    actionStep = "health payment";
+                    break;
+
+                  case 6:
+                    actionStep = "health confirmation";
+                    break;
+                }
             }
             var response = {
                 vertical: "Health",
@@ -2700,7 +2763,7 @@ creditCardDetails = {
     function saveSelection() {
         var navigationId = "";
         if (meerkat.modules.journeyEngine.getCurrentStep()) navigationId = meerkat.modules.journeyEngine.getCurrentStep().navigationId;
-        if (navigationId === "benefits" || navigationId === "results") {
+        if (navigationId === "results" || meerkat.modules.splitTest.isActive(1) && navigationId === "benefits") {
             meerkat.modules.journeyEngine.loadingShow("getting your quotes", true);
         }
         close();
@@ -4459,11 +4522,6 @@ creditCardDetails = {
         var htmlString = htmlTemplate(product);
         $policySummaryTemplateHolder.html(htmlString);
         $policySummaryDualPricing.find(".Premium").html(htmlString);
-        if (meerkat.modules.splitTest.isActive(2)) {
-            var htmlTemplate_B = _.template($("#price-itemisation-template").html());
-            var htmlString_B = htmlTemplate_B(product);
-            $(".priceItemisationTemplateHolder").html(htmlString_B);
-        }
         $policySummaryContainer.find(".policyPriceWarning").hide();
         if ($policySummaryDualPricing.length > 0) {
             product.showAltPremium = true;
@@ -4494,10 +4552,6 @@ creditCardDetails = {
         }
         if (typeof product.hospital.inclusions === "undefined" || product.hospital.inclusions.copayment === "") {
             $policySummaryDetailsComponents.find(".copayment").parent().addClass("hidden");
-        }
-        if (meerkat.modules.splitTest.isActive(2)) {
-            $policySummaryDetailsComponents.find(".companyLogo").attr("class", "companyLogo hidden-sm");
-            $policySummaryDetailsComponents.find(".companyLogo").addClass(product.info.provider);
         }
     }
     function applyEventListeners() {

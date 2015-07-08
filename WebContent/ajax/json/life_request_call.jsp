@@ -2,14 +2,19 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
+
+<%-- Clear data and load the params into data --%>
+<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
+<security:populateDataFromParams rootPath="${vertical}" />
+
 <jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
 
 <jsp:useBean id="lifeService" class="com.ctm.services.life.LifeService" scope="page" />
-<c:set var="serviceRespone" value="${lifeService.contactLead(pageContext.request)}" />
+<c:set var="serviceRespone" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
 <c:choose>
 	<c:when test="${lifeService.isValid()}">
-<c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
-<session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
+		<c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
 
 <%-- First check owner of the quote --%>
 <c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
@@ -17,10 +22,6 @@
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
 		<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
 
-				<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-
-		<%-- Load the params into data --%>
-		<security:populateDataFromParams rootPath="${vertical}" />
 				<c:set var="tranId" value="${data.current.transactionId}" />
 
 		<c:choose>

@@ -48,5 +48,3 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_expired` AS
 
 		-- Status check 2=Completed 7=Abandoned 33=Removed from PM
 		AND msg.statusId NOT IN (2, 7, 33)
-
-		AND msg.hawkingOptin = 'Y'

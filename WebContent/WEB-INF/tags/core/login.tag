@@ -3,8 +3,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <jsp:useBean id="simplesUserService" class="com.ctm.services.simples.SimplesUserService" scope="application" />
 <jsp:useBean id="phoneService" class="com.ctm.services.PhoneService" scope="page" />
-<jsp:useBean id="messageConfigService" class="com.ctm.services.simples.MessageConfigService" scope="page" />
-
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="uid" 		required="true"	rtexprvalue="true"	description="The user id" %>
@@ -108,7 +106,6 @@
 					<go:setData dataVar="authenticatedData" xpath="login/user/simplesUid" value="${simplesUser.getId()}" />
 					${authenticatedData.setSimplesUserRoles(simplesUser.getRoles())}
 					${authenticatedData.setGetNextMessageRules(simplesUser.getRules())}
-					${authenticatedData.setHawkingHours(messageConfigService.getCurrentMessageConfigList())}
 				</c:if>
 
 				<c:set var="out" value="OK" />

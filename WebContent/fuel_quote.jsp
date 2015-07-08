@@ -126,7 +126,6 @@
 				<fuel_new:settings />
 			</jsp:attribute>
 						 
-
 			<jsp:attribute name="body_end">
 				<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 			</jsp:attribute>
@@ -135,8 +134,6 @@
 				<%-- Slides --%>
 				<fuel_new_layout:slide_details />
 				<fuel_new_layout:slide_results />
-					
-					<form:help />
 
 				<div class="hiddenFields">
 					<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />

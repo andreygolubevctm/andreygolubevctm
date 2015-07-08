@@ -108,7 +108,7 @@
 					<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" />
 				</c:when>
 				<c:otherwise>
-					<field:street_no xpath="${fieldXpath}" includeInForm="true" required="true" title="the street no." className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" />
+					<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" />
 				</c:otherwise>
 			</c:choose>
 		</div>

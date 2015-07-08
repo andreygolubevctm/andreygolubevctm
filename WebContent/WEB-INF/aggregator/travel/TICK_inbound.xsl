@@ -60,8 +60,8 @@
 					<trackCode>66</trackCode>
 					<name>Tick Travel Insurance <xsl:value-of select="$productName" /></name>
 					<des>Tick Travel Insurance <xsl:value-of select="$productName" /></des>
-					<price><xsl:value-of select="format-number(price,'#.00')"/></price>
-					<priceText>$<xsl:value-of select="format-number(price,'#.00')"/></priceText>
+					<price><xsl:value-of select="format-number(premium,'#.00')"/></price>
+					<priceText>$<xsl:value-of select="format-number(premium,'#.00')"/></priceText>
 
 					<info>
 						<!-- MUST HAVE EXCESS, MEDICAL, CANCELLATION AND LUGGAGE AS THEY ARE REQUIRED FIELDS FOR THE PRICE PRESENTATION PAGE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

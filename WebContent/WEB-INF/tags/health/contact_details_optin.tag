@@ -4,7 +4,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
-<%@ attribute name="required" 	required="false"	 rtexprvalue="true"	 description="field group's xpath" %>
+<%@ attribute name="required" 	required="false"	rtexprvalue="true"	 description="Whether these are mandatory" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
@@ -22,6 +22,14 @@
 <c:if test="${competitionEnabledSetting == 'Y'}">
 	<c:set var="competitionEnabled" value="${true}" />
 	</c:if>
+
+<!-- Name needs to mandatory for either the split test or the callcentre -->
+<c:if test="${callCentre or required}">
+	<c:set var="requiredCC" value="${true}" />
+</c:if>
+<c:if test="${empty required}">
+	<c:set var="required" value="${false}" />
+</c:if>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-your_details">
@@ -53,17 +61,17 @@
 
 				<c:set var="fieldXpath" value="${xpath}/name" />
 				<form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear">
-					<field:person_name xpath="${fieldXpath}" title="name" required="${callCentre}" placeholder="${firstNamePlaceHolder}" />
+					<field:person_name xpath="${fieldXpath}" title="name" required="${requiredCC}" placeholder="${firstNamePlaceHolder}" />
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
 				<form_new:row label="Email Address" fieldXpath="${fieldXpath}" className="clear">
-					<field_new:email xpath="${fieldXpath}" title="your email address" required="false" placeHolder="${emailPlaceHolder}" />
+					<field_new:email xpath="${fieldXpath}" title="your email address" required="${required}" placeHolder="${emailPlaceHolder}" />
 					<field:hidden xpath="${xpath}/emailsecondary" />
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>
 
-				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="false" helptext="${contactNumberText}" />
+				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" helptext="${contactNumberText}" />
 
 				<%-- COMPETITION START --%>
 				<c:if test="${competitionEnabled == true}">
@@ -191,15 +199,16 @@
 				});
 		}
 		else {
-			<c:if test="${empty callCentre}">$('#${contactName}').rules('remove', 'required');</c:if>
-			<c:if test="${not empty callCentre}">$('#${contactName}').rules('add', {required:true, messages:{required:'Please enter name'}});</c:if>
-			contactEmailElement.rules('remove', 'required');
-					contactMobileElementInput.rules('remove', 'requiredOneContactNumber');
-
-			$('#${contactName}').valid();
-			contactEmailElement.valid();
-			contactMobileElementInput.valid();
-			contactOtherElementInput.valid();
+			<c:if test="${empty callCentre and required == false}">$('#${contactName}').rules('remove', 'required');</c:if>
+			<c:if test="${not empty callCentre or required}">$('#${contactName}').rules('add', {required:true, messages:{required:'Please enter name'}});</c:if>
+			<c:if test="${required == false}">
+				contactEmailElement.rules('remove', 'required');
+				contactMobileElementInput.rules('remove', 'requiredOneContactNumber');
+				$('#${contactName}').valid();
+				contactEmailElement.valid();
+				contactMobileElementInput.valid();
+				contactOtherElementInput.valid();
+			</c:if>
 		}
 	});
 	<%-- COMPETITION END --%>

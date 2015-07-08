@@ -2732,13 +2732,27 @@ button .simples-dialogue h3:after {
 }
 .payment_assurance_message {
   position: absolute;
-  right: -130px;
   padding-right: 0;
   top: 0;
 }
 @media (max-width: 767px) {
   .payment_assurance_message {
     display: none;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .payment_assurance_message {
+    right: -84px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  .payment_assurance_message {
+    right: -100px;
+  }
+}
+@media (min-width: 1200px) {
+  .payment_assurance_message {
+    right: -130px;
   }
 }
 .payment_assurance_message .cards img {
@@ -2911,6 +2925,10 @@ button .simples-dialogue h3:after {
 }
 .health[data-step="benefits"] .slide-feature-back,
 .health[data-step="benefits"] .slide-feature-benefits {
+  display: block;
+}
+.health[data-step="contact"] .slide-feature-back,
+.health[data-step="contact"] .slide-feature-emailquote.privacyOptinChecked {
   display: block;
 }
 .health[data-step="results"] .slide-feature-back,

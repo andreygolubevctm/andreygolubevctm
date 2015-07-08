@@ -2,12 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
+
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
+<security:populateDataFromParams rootPath="${vertical}" />
 
 <jsp:useBean id="lifeService" class="com.ctm.services.life.LifeService" scope="page" />
-<c:set var="serviceResponse" value="${lifeService.contactLead(pageContext.request)}" />
+<c:set var="serviceResponse" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
 
-<c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
 <c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
 <c:choose>
 	<c:when test="${lifeService.isValid() and not empty proceedinator and proceedinator > 0}">
@@ -15,7 +17,6 @@
 
 		<c:choose>
 			<c:when test="${param.softLead eq 'true'}">
-				<security:populateDataFromParams rootPath="${vertical}" />
 				<core:transaction touch="CDC" noResponse="true" />
 				<c:set var="resultXml">
 					<results><success>true</success></results>
@@ -23,9 +24,6 @@
 				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 			</c:when>
 			<c:otherwise>
-				<%-- Load the params into data --%>
-				<security:populateDataFromParams rootPath="${vertical}" />
-		
 				<c:set var="tranId" value="${data.current.transactionId}" />
 
 				<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="start" />

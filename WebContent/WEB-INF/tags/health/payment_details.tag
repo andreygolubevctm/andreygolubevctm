@@ -11,8 +11,9 @@
 <c:set var="field_frequency" value="${go:nameFromXpath(field_frequency)}" />
 <c:set var="disclaimer_content"><content:get key="paymentDisclaimer" /></c:set>
 
-<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
-<c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" />
+<!-- This is a deactivated split test as it is likely to be run again in the future -->
+<%-- <jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" /> --%>
+<%-- <c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" /> --%>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-payment_details">
