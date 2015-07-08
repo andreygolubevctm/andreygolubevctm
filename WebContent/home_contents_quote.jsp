@@ -17,9 +17,7 @@
 	</c:if>
 </c:if>
 
-<c:set var="xpath" value="home" scope="session" />
-
-<core:quote_check quoteType="home" />
+<core_new:quote_check quoteType="home" />
 <core_new:load_preload />
 
 <%-- Call centre numbers --%>

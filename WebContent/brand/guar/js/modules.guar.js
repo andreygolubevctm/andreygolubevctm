@@ -3920,7 +3920,7 @@ meerkat.logging.init = function() {
         if (currentStep.title != null) title = currentStep.title + " - " + title;
         window.document.title = title;
         if (currentStep.slideScrollTo && currentStep.slideScrollTo !== null) {
-            meerkat.modules.utilities.scrollPageTo(currentStep.slideScrollTo);
+            meerkat.modules.utils.scrollPageTo(currentStep.slideScrollTo);
         }
         if (triggerEnterMethod === true) {
             if (currentStep.onAfterEnter != null) currentStep.onAfterEnter(eventObject);
@@ -4655,7 +4655,7 @@ meerkat.logging.init = function() {
                 });
                 totalDuration = animDuration;
             } else {
-                meerkat.modules.utilities.scrollPageTo(".resultsHeadersBg", scrollToTopDuration, -$("#navbar-main").height(), function() {
+                meerkat.modules.utils.scrollPageTo(".resultsHeadersBg", scrollToTopDuration, -$("#navbar-main").height(), function() {
                     if (typeof updatePosition == "function") {
                         updatePosition();
                         moreInfoContainer.css({
@@ -6815,7 +6815,7 @@ meerkat.logging.init = function() {
     function redirect(reload) {
         meerkat.modules.leavePageWarning.disable();
         hideModal();
-        meerkat.modules.utilities.scrollPageTo("body");
+        meerkat.modules.utils.scrollPageTo("body");
         if (typeof reload === "boolean" && reload) {
             meerkat.modules.journeyEngine.loadingShow("Reloading...");
             window.location.reload();
@@ -7295,7 +7295,7 @@ meerkat.logging.init = function() {
         $(document).ready(function() {
             initLastFieldTracking();
             if (typeof meerkat !== "undefined" && typeof meerkat.site !== "undefined" && typeof meerkat.site.tracking !== "undefined" && meerkat.site.tracking.userTrackingEnabled === true) {
-                meerkat.modules.utilities.pluginReady("sessionCamRecorder").done(function() {
+                meerkat.modules.utils.pluginReady("sessionCamRecorder").done(function() {
                     initUserTracking();
                 });
             }
@@ -7769,7 +7769,7 @@ jQuery.fn.extend({
                 }
                 if ($parent.length > 0) $ele = $parent;
                 jQuery.validator.scrollingInProgress = true;
-                meerkat.modules.utilities.scrollPageTo($ele, 500, -50, function() {
+                meerkat.modules.utils.scrollPageTo($ele, 500, -50, function() {
                     jQuery.validator.scrollingInProgress = false;
                 });
             },

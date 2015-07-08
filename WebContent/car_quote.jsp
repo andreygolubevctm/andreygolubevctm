@@ -6,7 +6,7 @@
 
 <session:new verticalCode="CAR" authenticated="true" />
 
-<core:quote_check quoteType="car" />
+<core_new:quote_check quoteType="car" />
 <core_new:load_preload />
 
 <c:set var="trackLmiConversion" value="${data.carlmi.trackConversion}" />

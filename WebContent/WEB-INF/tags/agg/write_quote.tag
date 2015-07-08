@@ -47,7 +47,7 @@
 
 <%-- Capture the Client IP and User Agent AGG-1439 for any vertical--%>
 <go:setData dataVar="data" xpath="${rootPathData}/clientIpAddress" value="${pageContext.request.remoteAddr}" />
-<go:setData dataVar="data" xpath="${rootPathData}/clientUserAgent" value="<%=request.getHeader("user-agent")%>" />
+<go:setData dataVar="data" xpath="${rootPathData}/clientUserAgent" value='<%=request.getHeader("user-agent")%>' />
 
 
 <c:set var="operator">

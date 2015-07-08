@@ -40,7 +40,7 @@ public class SessionDataService {
 	/**
 	 * Return the authenticated session from the session object.
 	 *
-	 * @param session
+	 * @param request
 	 */
 	public AuthenticatedData getAuthenticatedSessionData(HttpServletRequest request) {
 		SessionData sessionData = getSessionDataFromSession(request);
@@ -54,7 +54,7 @@ public class SessionDataService {
 	/**
 	 * Get the SessionData object from an HTTP session.
 	 *
-	 * @param session
+	 * @param request
 	 */
 	public SessionData getSessionDataFromSession(HttpServletRequest request) {
 		return getSessionDataFromSession(request, true);
@@ -63,7 +63,7 @@ public class SessionDataService {
 	/**
 	 * Get the SessionData object from an HTTP session.
 	 *
-	 * @param session
+	 * @param request
 	 * @param touchSession
 	 */
 	private SessionData getSessionDataFromSession(HttpServletRequest request, boolean touchSession) {
@@ -81,7 +81,7 @@ public class SessionDataService {
 	/**
 	 * Set the sessionData param of the session to a new SessionData object.
 	 *
-	 * @param session
+	 * @param request
 	 */
 	private void setSessionDataToNewSession(HttpServletRequest request) {
 		request.getSession().setAttribute("sessionData", new SessionData());
@@ -90,7 +90,6 @@ public class SessionDataService {
 	/**
 	 * Add a new transaction id to the session object. (should only be called from quote start pages)
 	 *
-	 * @param session
 	 * @param request
 	 * @return newSession
 	 */
@@ -126,62 +125,108 @@ public class SessionDataService {
 	/**
 	 * Get the Data object for the specified transaction id (searching either current or previous transaction id)
 	 *
-	 * @param session
+	 * @param request
 	 * @param transactionId
 	 * @param searchPreviousIds
 	 * @throws SessionException
 	 */
 	public Data getDataForTransactionId(HttpServletRequest request, String transactionId, boolean searchPreviousIds) throws DaoException, SessionException {
 
+		SessionData sessionData = getSessionDataForTransactionId(request, transactionId);
+
+		Data data = sessionData.getSessionDataForTransactionId(transactionId);
+		if (data == null) {
+			// Check for previous id as the transaction might have been incremented (should only be true when called from get_transaction_id.jsp)
+			data = sessionData.getSessionDataForPreviousTransactionId(Long.parseLong(transactionId));
+		}
+
+		if (data == null && searchPreviousIds == true) {
+			// Check for previous id as the transaction might have been incremented (should only be true when called from get_transaction_id.jsp)
+			data = sessionData.getSessionDataForPreviousTransactionId(Long.parseLong(transactionId));
+		}
+
+		return getProcessedDataForTransactionId(request, transactionId, data);
+	}
+
+	/**
+	 * Get the Data object for the most recent transaction directly related to the
+	 * specified transaction id
+	 *
+	 * @param request
+	 * @param transactionId
+	 * @throws SessionException
+	 */
+	public Data getDataForMostRecentRelatedTransactionId(HttpServletRequest request, String transactionId) throws DaoException, SessionException {
+
+		SessionData sessionData = getSessionDataForTransactionId(request, transactionId);
+
+		Data data = sessionData.getSessionDataForMostRecentRelatedTransactionId(Long.parseLong(transactionId));
+
+		return getProcessedDataForTransactionId(request, transactionId, data);
+	}
+
+	/**
+	 * Helper for getData methods above - provides codes common to both
+	 *
+	 * @param request
+	 * @param transactionId
+	 * @return
+	 * @throws SessionException
+	 */
+	private SessionData getSessionDataForTransactionId(HttpServletRequest request, String transactionId) throws SessionException {
 		SessionData sessionData = getSessionDataFromSession(request);
 		if (sessionData == null ) {
 			throw new SessionException("session has expired");
 		}
-
 		if (transactionId == null || transactionId.equals("")) {
 			throw new SessionException("Transaction Id not provided");
-		} else {
-
-			Data data = sessionData.getSessionDataForTransactionId(transactionId);
-
-			if (data == null && searchPreviousIds == true) {
-				// Check for previous id as the transaction might have been incremented (should only be true when called from get_transaction_id.jsp)
-				data = sessionData.getSessionDataForPreviousTransactionId(Long.parseLong(transactionId));
-			}
-
-			if (data == null) {
-				logger.warn("Unable to find matching data object in session for "+transactionId);
-
-				// Data object not found, create a new version (this is to assist with recovery).
-				data = addNewTransactionDataToSession(request);
-			}
-
-			data.setLastSessionTouch(new Date());
-
-			// If localhost or NXI, the URL writing is not in place, therefore we have fall back logic...
-			if (EnvironmentService.needsManuallyAddedBrandCodeParam() == false) {
-				// Extra safety check, verify the brand code on the transaction object with the current brand code for this session.
-				String dataBucketBrand = (String) data.get("current/brandCode");
-				String applicationBrand = ApplicationService.getBrandCodeFromRequest(request);
-
-				if (dataBucketBrand != null && dataBucketBrand.equals("") == false && applicationBrand != null && dataBucketBrand.equalsIgnoreCase(applicationBrand) == false) {
-					logger.error("Transaction doesn't match brand: " + dataBucketBrand + "!=" + applicationBrand);
-					throw new BrandException("Transaction doesn't match brand");
-				}
-			}
-
-			// Set the vertical code on the request scope so settings can be loaded correctly.
-			String dataBucketVerticalCode = (String) data.get("current/verticalCode");
-			ApplicationService.setVerticalCodeOnRequest(request, dataBucketVerticalCode);
-
-			return data;
 		}
+		return sessionData;
+	}
+
+	/**
+	 * Helper for getData methods above - provides codes common to both
+	 *
+	 * @param request
+	 * @param transactionId
+	 * @param data
+	 * @return
+	 * @throws DaoException
+	 * @throws SessionException
+	 */
+	private Data getProcessedDataForTransactionId(HttpServletRequest request, String transactionId, Data data) throws DaoException, SessionException {
+		if (data == null) {
+			logger.warn("Unable to find matching data object in session for "+transactionId);
+
+			// Data object not found, create a new version (this is to assist with recovery).
+			data = addNewTransactionDataToSession(request);
+		}
+
+		data.setLastSessionTouch(new Date());
+
+		// If localhost or NXI, the URL writing is not in place, therefore we have fall back logic...
+		if (EnvironmentService.needsManuallyAddedBrandCodeParam() == false) {
+			// Extra safety check, verify the brand code on the transaction object with the current brand code for this session.
+			String dataBucketBrand = (String) data.get("current/brandCode");
+			String applicationBrand = ApplicationService.getBrandCodeFromRequest(request);
+
+			if (dataBucketBrand != null && dataBucketBrand.equals("") == false && applicationBrand != null && dataBucketBrand.equalsIgnoreCase(applicationBrand) == false) {
+				logger.error("Transaction doesn't match brand: " + dataBucketBrand + "!=" + applicationBrand);
+				throw new BrandException("Transaction doesn't match brand");
+			}
+		}
+
+		// Set the vertical code on the request scope so settings can be loaded correctly.
+		String dataBucketVerticalCode = (String) data.get("current/verticalCode");
+		ApplicationService.setVerticalCodeOnRequest(request, dataBucketVerticalCode);
+
+		return data;
 	}
 	/**
 	 * Remove the specified transaction from the session. (usually called when restarting a quote)
 	 * used by delete.tag
 	 *
-	 * @param session
+	 * @param request
 	 * @param transactionId
 	 */
 	public void removeSessionForTransactionId(HttpServletRequest request, String transactionId) {
@@ -226,7 +271,6 @@ public class SessionDataService {
 	/**
 	 * Return the last session touch as an epoch timestamp
 	 * @param request
-	 * @param transactionId
 	 * @return Date
 	 */
 	private long getLastSessionTouchTimestamp(HttpServletRequest request) {
@@ -300,7 +344,6 @@ public class SessionDataService {
 	 * used in session_pop.tag
 	 * page.tag
 	 * @param request
-	 * @param shouldEnd
 	 */
 	public long getClientDefaultExpiryTimeout(HttpServletRequest request) {
 		return ((request.getSession(false).getMaxInactiveInterval() / 60) - SESSION_EXPIRY_DIFFERENCE) * 60 * 1000;

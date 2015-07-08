@@ -177,7 +177,7 @@
 		settings.maxStartDateOffset = max;
 
 		// Get today's date in UTC timezone
-		var today = meerkat.modules.utilities.getUTCToday(),
+		var today = meerkat.modules.utils.getUTCToday(),
 			start = 0,
 			end = 0,
 			hourAsMs = 60 * 60 * 1000;

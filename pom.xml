@@ -16,7 +16,9 @@
     <packaging>war</packaging>
 
     <properties>
-        <requires.maven.version>3.3.1</requires.maven.version>
+        <!-- Overridden in bamboo builds -->
+        <build.environment>localhost</build.environment>
+
         <powermock.version>1.6.2</powermock.version>
         <cxf.version>3.0.1</cxf.version>
         <spring.version>4.0.5.RELEASE</spring.version>
@@ -32,6 +34,7 @@
         <mysql.connector.version>5.1.29</mysql.connector.version>
         <!-- Compile as this version -->
         <java.version>1.7</java.version>
+        <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -230,13 +233,6 @@
             <version>1.4.0</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>annotations</artifactId>
-            <version>9.0.4</version>
-        </dependency>
-
         <dependency>
             <groupId>com.fasterxml</groupId>
             <artifactId>classmate</artifactId>
@@ -370,6 +366,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.ctm.webservices</groupId>
+            <artifactId>motorweb</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.taglibs</groupId>
             <artifactId>taglibs-standard-impl</artifactId>
             <version>1.2.1</version>
@@ -385,6 +387,33 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.jasig.mojo.jspc</groupId>
+                <artifactId>jspc-maven-plugin</artifactId>
+                <version>${jspc-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <defaultSourcesDirectory>${project.basedir}/WebContent</defaultSourcesDirectory>
+                            <inputWebXml>${project.basedir}/WebContent/WEB-INF/web.xml</inputWebXml>
+                            <outputWebXml>${project.build.directory}/web-jsp-compiled.xml</outputWebXml>
+                            <compile>false</compile>
+                        </configuration>
+                    </execution>
+                </executions>
+                <!-- Use the Tomcat 7 JSP compiler -->
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jasig.mojo.jspc</groupId>
+                        <artifactId>jspc-compiler-tomcat7</artifactId>
+                        <version>${jspc-maven-plugin.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -436,15 +465,8 @@
                     </execution>
                 </executions>
             </plugin>
-			<plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <version>${maven-install-plugin.version}</version>
-                <configuration>
-					<filename>${project.build.finalName}.war</filename>
-                </configuration>
-            </plugin>
         </plugins>
+
         <testSourceDirectory>${project.basedir}/test</testSourceDirectory>
         <sourceDirectory>${project.basedir}/src</sourceDirectory>
 

@@ -1,15 +1,14 @@
 package com.disc_au.web.go;
 
-import java.util.ArrayList;
-import java.util.Date;
-
+import com.disc_au.web.go.xml.XmlNode;
+import com.disc_au.web.go.xml.XmlParser;
 import org.apache.log4j.Logger;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.util.NumberUtils;
 import org.xml.sax.SAXException;
 
-import com.disc_au.web.go.xml.XmlNode;
-import com.disc_au.web.go.xml.XmlParser;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Date;
 
 // TODO: Auto-generated Javadoc
 /**

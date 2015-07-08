@@ -41,7 +41,7 @@
 
         <%-- Capture the Client IP and User Agent used later to check limits--%>
         <go:setData dataVar="data" xpath="fuel/clientIpAddress" value="${pageContext.request.remoteAddr}"/>
-        <go:setData dataVar="data" xpath="fuel/clientUserAgent" value="<%=request.getHeader("user-agent")%>" />
+        <go:setData dataVar="data" xpath="fuel/clientUserAgent" value='<%=request.getHeader("user-agent")%>' />
 
         <%-- Save Client Data --%>
         <core:transaction touch="R" noResponse="true" />

@@ -19,7 +19,7 @@ public class FundWarningMessage {
 	@NotNull(message="Effective End date  can not be empty")
 	private Date effectiveEnd;
 
-	@Range(min=1, message="Provider ID must be positive Integer")
+	@Range(min=0, message="Provider ID must be provided")
 	private int providerId;
 
 	@Range(min=1, message="Vertical ID must be positive Integer")

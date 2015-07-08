@@ -29,7 +29,7 @@
 		if (typeof euroDate === "undefined" || euroDate === "") {
 			earliestDate = new Date();
 		} else {
-			earliestDate = meerkat.modules.utilities.returnDate(euroDate);
+			earliestDate = meerkat.modules.utils.returnDate(euroDate);
 		}
 
 		// creating the base date from the exclusion
@@ -43,7 +43,7 @@
 			foundMatch = _.contains(daysMatch, earliestDate.getDate());
 			i++;
 		}
-		$policyDateHiddenField.val(meerkat.modules.utilities.returnDateValue(earliestDate));
+		$policyDateHiddenField.val(meerkat.modules.utils.returnDateValue(earliestDate));
 		$message.text( 'Your payment will be deducted on: ' + healthFunds._getNiceDate(earliestDate) );
 
 	}
@@ -64,7 +64,7 @@
 		if (typeof euroDate === "undefined" || euroDate === "") {
 			startDate = new Date(); // default to use today
 		} else {
-			startDate = meerkat.modules.utilities.returnDate(euroDate);
+			startDate = meerkat.modules.utils.returnDate(euroDate);
 			}
 
 		if (typeof exclusion === "undefined") exclusion = 7; // default a week buffer
@@ -79,7 +79,7 @@
 
 		minimumDate = new Date(startDate);
 		if (excludeWeekend) {
-			minimumDate = meerkat.modules.utilities.calcWorkingDays(minimumDate, exclusion);
+			minimumDate = meerkat.modules.utils.calcWorkingDays(minimumDate, exclusion);
 		} else {
 			minimumDate.setDate(minimumDate.getDate() + exclusion);
 		}
@@ -88,7 +88,7 @@
 			if ($(this).val() !== '') {
 				childDateOriginal = new Date($(this).val());
 				childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
-				$(this).val(meerkat.modules.utilities.returnDateValue(childDateNew));
+				$(this).val(meerkat.modules.utils.returnDateValue(childDateNew));
 			}
 		});
 	}

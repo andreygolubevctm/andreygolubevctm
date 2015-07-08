@@ -10,30 +10,26 @@
 </c:if>
 
 <%-- Check requests from IP and throw 429 if limit exceeded. --%>
+<jsp:useBean id="sessionDataService" class="com.ctm.services.SessionDataService" />
 <jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
-<c:if test="${!ipCheckService.isWithinLimitAsBoolean(pageContext.request, pageSettings)}">
+<c:choose>
+	<%-- Remove session and throw 429 error if request limit exceeded --%>
+	<c:when test="${!ipCheckService.isWithinLimitAsBoolean(pageContext.request, pageSettings)}">
+		<c:set var="removeSession" value="${sessionDataService.removeSessionForTransactionId(pageContext.request, data.current.transactionId)}" />
 	<%	response.sendError(429, "Number of requests exceeded!" ); %>
-</c:if>
-
-
+	</c:when>
+	<%-- Only proceed if number of requests not exceeded --%>
+	<c:otherwise>
 <%-- PRELOAD DATA --%>
-
 <c:if test="${empty param.action && param.preload == '2'}">
 <go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 			<c:import url="test_data/preload_fuel.xml" var="fuelXml" />
 			<go:setData dataVar="data" xml="${fuelXml}" />
 </c:if>
 
-
-
-
-
-
-
-
 <core:doctype />
 <go:html>
-	<core:head quoteType="${xpath}" title="Fuel Price Checker" mainCss="common/fuel.css" mainJs="common/js/fuel.js" />
+			<core:head quoteType="${xpath}" title="Fuel Price Checker" mainCss="common/fuel.css" mainJs="common/js/fuel.js"/>
 
 	<body class="fuel stage-0">
 	
@@ -44,7 +40,7 @@
 		
 			<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
 			<core:referral_tracking vertical="${xpath}" />
-			<fuel:progress_bar />	
+				<fuel:progress_bar />
 			<div id="wrapper" class="clearfix">
 				
 				<div id="page" class="clearfix">
@@ -55,7 +51,7 @@
 						<slider:slideContainer className="sliderContainer">
 							<slider:slide id="slide0" title="FuelSearch">
 								<fuel:fuel_form />
-							</slider:slide>																							
+								</slider:slide>
 						</slider:slideContainer>
 						
 						<form:error id="slideErrorContainer" className="slideErrorContainer fuel" errorOffset="45" />
@@ -75,7 +71,7 @@
 					<div class="clearfix"></div>
 				</div>
 				
-				<%-- Quote results (default to be hidden) --%> 
+						<%-- Quote results (default to be hidden) --%>
 				<fuel:results />
 			</div>
 			
@@ -91,4 +87,6 @@
 		
 	</body>
 	
-</go:html>
+		</go:html>
+	</c:otherwise>
+</c:choose>

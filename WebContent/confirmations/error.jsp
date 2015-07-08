@@ -14,6 +14,10 @@
 
 	<jsp:attribute name="body_end">
 	</jsp:attribute>
+
+	<jsp:attribute name="vertical_settings">
+	</jsp:attribute>
+
 	<jsp:body>
 		<c:choose>
 		    <c:when test="${pageSettings.getVerticalCode() == 'generic'}">

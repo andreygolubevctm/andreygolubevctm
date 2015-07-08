@@ -7046,7 +7046,7 @@ Features = {
         if (currentStep.title != null) title = currentStep.title + " - " + title;
         window.document.title = title;
         if (currentStep.slideScrollTo && currentStep.slideScrollTo !== null) {
-            meerkat.modules.utilities.scrollPageTo(currentStep.slideScrollTo);
+            meerkat.modules.utils.scrollPageTo(currentStep.slideScrollTo);
         }
         if (triggerEnterMethod === true) {
             if (currentStep.onAfterEnter != null) currentStep.onAfterEnter(eventObject);
@@ -7906,7 +7906,7 @@ Features = {
                 });
                 totalDuration = animDuration;
             } else {
-                meerkat.modules.utilities.scrollPageTo(".resultsHeadersBg", scrollToTopDuration, -$("#navbar-main").height(), function() {
+                meerkat.modules.utils.scrollPageTo(".resultsHeadersBg", scrollToTopDuration, -$("#navbar-main").height(), function() {
                     if (typeof updatePosition == "function") {
                         updatePosition();
                         moreInfoContainer.css({
@@ -10337,7 +10337,7 @@ Features = {
     function redirect(reload) {
         meerkat.modules.leavePageWarning.disable();
         hideModal();
-        meerkat.modules.utilities.scrollPageTo("body");
+        meerkat.modules.utils.scrollPageTo("body");
         if (typeof reload === "boolean" && reload) {
             meerkat.modules.journeyEngine.loadingShow("Reloading...");
             window.location.reload();
@@ -10907,7 +10907,7 @@ Features = {
         $(document).ready(function() {
             initLastFieldTracking();
             if (typeof meerkat !== "undefined" && typeof meerkat.site !== "undefined" && typeof meerkat.site.tracking !== "undefined" && meerkat.site.tracking.userTrackingEnabled === true) {
-                meerkat.modules.utilities.pluginReady("sessionCamRecorder").done(function() {
+                meerkat.modules.utils.pluginReady("sessionCamRecorder").done(function() {
                     initUserTracking();
                 });
             }
@@ -11382,7 +11382,7 @@ Features = {
         }
         return fromDate;
     }
-    meerkat.modules.register("utilities", {
+    meerkat.modules.register("utils", {
         slugify: slugify,
         scrollPageTo: scrollPageTo,
         getUTCToday: UTCToday,
@@ -11455,7 +11455,7 @@ jQuery.fn.extend({
                 }
                 if ($parent.length > 0) $ele = $parent;
                 jQuery.validator.scrollingInProgress = true;
-                meerkat.modules.utilities.scrollPageTo($ele, 500, -50, function() {
+                meerkat.modules.utils.scrollPageTo($ele, 500, -50, function() {
                     jQuery.validator.scrollingInProgress = false;
                 });
             },

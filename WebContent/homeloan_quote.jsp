@@ -6,7 +6,7 @@
 
 <session:new verticalCode="HOMELOAN" authenticated="true" />
 
-<core:quote_check quoteType="homeloan" />
+<core_new:quote_check quoteType="homeloan" />
 <core_new:load_preload />
 
 <%-- Initialise Save Quote --%>

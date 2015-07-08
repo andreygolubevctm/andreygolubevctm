@@ -206,7 +206,7 @@
 	}
 
 
-	meerkat.modules.register('utilities', {
+	meerkat.modules.register('utils', {
 		slugify: slugify,
 		scrollPageTo: scrollPageTo,
 		getUTCToday: UTCToday,

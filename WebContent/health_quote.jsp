@@ -8,7 +8,7 @@
 
 <session:new verticalCode="HEALTH" authenticated="true" />
 
-<core:quote_check quoteType="health" />
+<core_new:quote_check quoteType="health" />
 <core_new:load_preload />
 
 <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>

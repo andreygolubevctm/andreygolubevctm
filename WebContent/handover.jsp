@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:new verticalCode="CREDITCARD" />
-<core:quote_check quoteType="CREDITCARD" />
+<core_new:quote_check quoteType="CREDITCARD" />
 
 <jsp:useBean id="productService" class="com.ctm.services.creditcards.ProductService" scope="page" />
 <c:set var="tmpProductCode">

@@ -11,7 +11,6 @@
 	<c:when test="${ login == 'OK' }">
 		<c:set var="loginData" value="${authenticatedData.login}" />
 		<c:set var="pageTitle" value="User Details" />
-		<%@ include file="/WEB-INF/security/pageHeader.jsp" %>
 		<div class="fieldrow"><div class="fieldrow_label"></div><div class="fieldrow_value">You are currently logged in as:</div></div>
 		<ul>
 			<li class="fieldrow"><strong class="fieldrow_label">Real Name </strong><span class="fieldrow_value"><c:out value="${loginData.user.displayName}" /></span></li>
@@ -44,7 +43,6 @@
 		</ul>
 		<div class="clearfix"></div>
 		<div class="fieldrow button-wrapper"><a id="next-step" href="${pageSettings.getBaseUrl()}security/simples_logout.jsp"><span>Log Out</span></a></div>
-		<%@ include file="/WEB-INF/security/pageFooter.jsp" %>
 	</c:when>
 
 	<c:otherwise>

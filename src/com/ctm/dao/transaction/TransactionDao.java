@@ -190,4 +190,40 @@ public class TransactionDao {
 		}
 	}
 
+	public Long getMostRecentRelatedTransactionId(long transactionId) throws DaoException {
+		long relatedTransactionId = 0;
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		try {
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+					"SELECT MAX(TransactionId) AS transactionId " +
+					"FROM aggregator.transaction_header " +
+					"WHERE PreviousId=?;"
+			);
+			stmt.setLong(1, transactionId);
+			ResultSet results = stmt.executeQuery();
+
+			while (results.next()) {
+				long relatedTransactionIdTemp = results.getLong("transactionId");
+				if(relatedTransactionIdTemp != 0 && relatedTransactionIdTemp != relatedTransactionId) {
+					relatedTransactionId = relatedTransactionIdTemp;
+					stmt.setLong(1, relatedTransactionId);
+					results = stmt.executeQuery();
+				}
+			}
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e.getMessage(), e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+		if(relatedTransactionId == 0) {
+			relatedTransactionId = transactionId;
+		}
+
+		return relatedTransactionId;
+	}
+
 }

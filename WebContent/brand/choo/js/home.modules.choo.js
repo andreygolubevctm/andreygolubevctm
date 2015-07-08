@@ -2152,7 +2152,7 @@
         });
         $(document).on("resultsLoaded", onResultsLoaded);
         $(document).on("resultsReturned", function() {
-            meerkat.modules.utilities.scrollPageTo($("header"));
+            meerkat.modules.utils.scrollPageTo($("header"));
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
         });
         $(document).on("resultsFetchStart", function onResultsFetchStart() {

@@ -28,8 +28,8 @@
 
 	function updateRestrictAgeSelector() {
 
-		var ageRegular = meerkat.modules.utilities.returnAge($(elements.reg_dob).val(), true);
-		var ageYoungest = meerkat.modules.utilities.returnAge($(elements.yng_dob).val(), true);
+		var ageRegular = meerkat.modules.utils.returnAge($(elements.reg_dob).val(), true);
+		var ageYoungest = meerkat.modules.utils.returnAge($(elements.yng_dob).val(), true);
 
 		var age = Math.min(ageRegular,ageYoungest);
 

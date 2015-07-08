@@ -201,7 +201,7 @@
 				});
 				totalDuration = animDuration;
 			} else {
-				meerkat.modules.utilities.scrollPageTo('.resultsHeadersBg', scrollToTopDuration, -$("#navbar-main").height(), function () {
+				meerkat.modules.utils.scrollPageTo('.resultsHeadersBg', scrollToTopDuration, -$("#navbar-main").height(), function () {
 
 					// Should this come from health?
 					if(typeof updatePosition == 'function') {

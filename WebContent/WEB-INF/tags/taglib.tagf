@@ -9,11 +9,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql"		prefix="sql"%>
 <%@ taglib tagdir="/WEB-INF/tags/error"					prefix="error" %>
 <%@ taglib tagdir="/WEB-INF/tags/field" 				prefix="field" %>
+<%@ taglib tagdir="/WEB-INF/tags/field_new"				prefix="field_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/form" 					prefix="form" %>
 <%@ taglib tagdir="/WEB-INF/tags/form_new"				prefix="form_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/car"					prefix="car" %>
 <%@ taglib tagdir="/WEB-INF/tags/car/layout"			prefix="car_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/core"					prefix="core" %>
+<%@ taglib tagdir="/WEB-INF/tags/core_new"				prefix="core_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/creditcard"			prefix="creditcard" %>
 <%@ taglib tagdir="/WEB-INF/tags/creditcard/layout"		prefix="creditcard_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/group"					prefix="group" %>
@@ -52,8 +54,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/features"				prefix="features" %>
 <%@ taglib tagdir="/WEB-INF/tags/confirmation"			prefix="confirmation" %>
 <%@ taglib tagdir="/WEB-INF/tags/layout"				prefix="layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/core_new"				prefix="core_new" %>
-<%@ taglib tagdir="/WEB-INF/tags/field_new"				prefix="field_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/session"				prefix="session" %>
 <%@ taglib tagdir="/WEB-INF/tags/settings"				prefix="settings" %>
 <%@ taglib tagdir="/WEB-INF/tags/content"				prefix="content" %>

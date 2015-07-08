@@ -155,7 +155,7 @@
 		meerkat.modules.leavePageWarning.disable();
 		
 		hideModal();
-		meerkat.modules.utilities.scrollPageTo("body");
+		meerkat.modules.utils.scrollPageTo("body");
 		
 		if(typeof reload === "boolean" && reload) {
 			meerkat.modules.journeyEngine.loadingShow("Reloading...");

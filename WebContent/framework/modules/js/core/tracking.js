@@ -180,7 +180,7 @@
 			initLastFieldTracking();
 			if(typeof meerkat !== 'undefined' && typeof meerkat.site !== 'undefined' && typeof meerkat.site.tracking !== 'undefined'
 				&& meerkat.site.tracking.userTrackingEnabled === true) {
-				meerkat.modules.utilities.pluginReady('sessionCamRecorder').done(function() {
+				meerkat.modules.utils.pluginReady('sessionCamRecorder').done(function() {
 					initUserTracking();
 				});
 			}

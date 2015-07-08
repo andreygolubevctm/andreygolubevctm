@@ -220,12 +220,14 @@
 											errorMessage="failed to writeAllowableErrors tranId:${tranId} allowedErrors:${allowedErrors}" errorCode="DATABASE" />
 								</c:if>
 
-				<%-- Save confirmation record/snapshot --%>
-				<c:import var="saveConfirmation" url="/ajax/write/save_health_confirmation.jsp">
-					<c:param name="policyNo"><x:out select="$resultOBJ//*[local-name()='policyNo']" /></c:param>
-					<c:param name="startDate" value="${data['health/payment/details/start']}" />
-					<c:param name="frequency" value="${data['health/payment/details/frequency']}" />
-				</c:import>
+								<%-- Save confirmation record/snapshot --%>
+								<c:import var="saveConfirmation" url="/ajax/write/save_health_confirmation.jsp">
+									<c:param name="policyNo"><x:out select="$resultOBJ//*[local-name()='policyNo']" /></c:param>
+									<c:param name="startDate" value="${data['health/payment/details/start']}" />
+									<c:param name="frequency" value="${data['health/payment/details/frequency']}" />
+									<c:param name="frequency" value="${data['health/payment/details/frequency']}" />
+									<c:param name="bccEmail"><x:out select="$resultOBJ//*[local-name()='bccEmail']" /></c:param>
+								</c:import>
 
 				<%-- Check outcome was ok --%>
 				<x:parse doc="${saveConfirmation}" var="saveConfirmationXml" />

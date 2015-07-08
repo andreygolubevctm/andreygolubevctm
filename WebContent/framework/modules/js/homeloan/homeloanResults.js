@@ -248,7 +248,7 @@
 
 		// Scroll to the top when results come back
 		$(document).on("resultsReturned", function() {
-			meerkat.modules.utilities.scrollPageTo($("header"));
+			meerkat.modules.utils.scrollPageTo($("header"));
 			$('.morePromptContainer, .comparison-rate-disclaimer').removeClass('hidden');
 			// Reset the feature header to match the new column content.
 			$(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
@@ -555,7 +555,7 @@
 
 		event.preventDefault();
 
-		var $enquireNow = $(event.target);
+		var $enquireNow = $(event.target).closest("a[data-productId]");
 		if($enquireNow.attr("data-productId")) {
 			Results.setSelectedProduct($enquireNow.attr("data-productId"));
 		}

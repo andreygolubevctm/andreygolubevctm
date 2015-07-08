@@ -106,7 +106,7 @@ function setupDefaultValidationOnForm( $formElement ){
 	    	<%-- If the element has a row parent (where the error message gets inserted to), then scroll to that instead --%>
 	    	if ($parent.length > 0) $ele = $parent;
 	    	jQuery.validator.scrollingInProgress = true;
-	        meerkat.modules.utilities.scrollPageTo($ele,500,-50, function(){
+	        meerkat.modules.utils.scrollPageTo($ele,500,-50, function(){
 	        	jQuery.validator.scrollingInProgress = false;
 	        });
 	    },

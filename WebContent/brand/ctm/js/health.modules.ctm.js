@@ -156,16 +156,16 @@ var healthFunds_AHM = {
             weekly: true,
             fortnightly: true,
             monthly: true,
-            quarterly: false,
-            halfyearly: false,
+            quarterly: true,
+            halfyearly: true,
             annually: true
         });
         meerkat.modules.healthPaymentStep.overrideSettings("credit", {
             weekly: true,
             fortnightly: true,
             monthly: true,
-            quarterly: false,
-            halfyearly: false,
+            quarterly: true,
+            halfyearly: true,
             annually: true
         });
         meerkat.modules.healthPaymentStep.overrideSettings("creditBankSupply", true);
@@ -1798,7 +1798,7 @@ creditCardDetails = {
             },
             onAfterEnter: function(event) {
                 if (meerkat.modules.deviceMediaState.get() === "xs") {
-                    meerkat.modules.utilities.scrollPageTo("html", 0, 1);
+                    meerkat.modules.utils.scrollPageTo("html", 0, 1);
                 }
                 if (meerkat.site.isCallCentreUser === true) {
                     $("#journeyEngineSlidesContainer .journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find(".simples-dialogue").hide();
@@ -3394,7 +3394,7 @@ creditCardDetails = {
                 target.find(".more-info-content").fadeIn(animDuration);
                 totalDuration = animDuration;
             } else {
-                meerkat.modules.utilities.scrollPageTo(".resultsHeadersBg", scrollToTopDuration, -$("#navbar-main").height(), function() {
+                meerkat.modules.utils.scrollPageTo(".resultsHeadersBg", scrollToTopDuration, -$("#navbar-main").height(), function() {
                     target.find(".more-info-content").slideDown(animDuration);
                 });
                 totalDuration = animDuration + scrollToTopDuration;
@@ -3697,7 +3697,7 @@ creditCardDetails = {
         if (typeof euroDate === "undefined" || euroDate === "") {
             earliestDate = new Date();
         } else {
-            earliestDate = meerkat.modules.utilities.returnDate(euroDate);
+            earliestDate = meerkat.modules.utils.returnDate(euroDate);
         }
         earliestDate = new Date(earliestDate.getTime() + exclusion * 24 * 60 * 60 * 1e3);
         var i = 0;
@@ -3707,7 +3707,7 @@ creditCardDetails = {
             foundMatch = _.contains(daysMatch, earliestDate.getDate());
             i++;
         }
-        $policyDateHiddenField.val(meerkat.modules.utilities.returnDateValue(earliestDate));
+        $policyDateHiddenField.val(meerkat.modules.utils.returnDateValue(earliestDate));
         $message.text("Your payment will be deducted on: " + healthFunds._getNiceDate(earliestDate));
     }
     function populateFuturePaymentDays(euroDate, exclusion, excludeWeekend, isBank) {
@@ -3715,7 +3715,7 @@ creditCardDetails = {
         if (typeof euroDate === "undefined" || euroDate === "") {
             startDate = new Date();
         } else {
-            startDate = meerkat.modules.utilities.returnDate(euroDate);
+            startDate = meerkat.modules.utils.returnDate(euroDate);
         }
         if (typeof exclusion === "undefined") exclusion = 7;
         if (typeof excludeWeekend === "undefined") excludeWeekend = false;
@@ -3727,7 +3727,7 @@ creditCardDetails = {
         }
         minimumDate = new Date(startDate);
         if (excludeWeekend) {
-            minimumDate = meerkat.modules.utilities.calcWorkingDays(minimumDate, exclusion);
+            minimumDate = meerkat.modules.utils.calcWorkingDays(minimumDate, exclusion);
         } else {
             minimumDate.setDate(minimumDate.getDate() + exclusion);
         }
@@ -3735,7 +3735,7 @@ creditCardDetails = {
             if ($(this).val() !== "") {
                 childDateOriginal = new Date($(this).val());
                 childDateNew = compareAndAddMonth(childDateOriginal, minimumDate);
-                $(this).val(meerkat.modules.utilities.returnDateValue(childDateNew));
+                $(this).val(meerkat.modules.utils.returnDateValue(childDateNew));
             }
         });
     }
@@ -4200,7 +4200,7 @@ creditCardDetails = {
     function setCoverStartRange(min, max) {
         settings.minStartDateOffset = min;
         settings.maxStartDateOffset = max;
-        var today = meerkat.modules.utilities.getUTCToday(), start = 0, end = 0, hourAsMs = 60 * 60 * 1e3;
+        var today = meerkat.modules.utils.getUTCToday(), start = 0, end = 0, hourAsMs = 60 * 60 * 1e3;
         today += 10 * hourAsMs;
         start = today;
         if (min > 0) {
@@ -4903,7 +4903,7 @@ creditCardDetails = {
         $(document).on("resultsLoaded", onResultsLoaded);
         $(document).on("resultsReturned", function() {
             Compare.reset();
-            meerkat.modules.utilities.scrollPageTo($("header"));
+            meerkat.modules.utils.scrollPageTo($("header"));
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
             if (premiumIncreaseContent.length > 0) {
                 _.defer(function() {

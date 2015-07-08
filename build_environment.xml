@@ -37,13 +37,14 @@
 		<echo message="Build to various target environments." />
 		<echo message="Available targets:" />
 		<echo message="  usage	   Display this help message" />
-		<echo message="  build.NXI      Build new WAR to NXI environment" />
+		<echo message="  build.localhost Build new WAR to localhost environment" />
+		<echo message="      (developer use)" />
+		<echo message="  build.NXI       Build new WAR to NXI environment" />
 		<echo message="      (every 2 hours via cron on svn server, as required)" />
-		<echo message="  build.NXS      Build new WAR to NXS environment" />
-		<echo message="      (auto on svn server, automatically on svn commit to build_NXS)" />
-		<echo message="  build.NXQ      Build new WAR to NXQ environment" />
+
+		<echo message="  build.NXQ       Build new WAR to NXQ environment" />
 		<echo message="		    (auto on svn server, automatically on svn commit to build_NXQ)" />
-		<echo message="  build.PRO  Build new WAR to PRO environment" />
+		<echo message="  build.PRO       Build new WAR to PRO environment" />
 		<echo message="		    (auto on svn server, automatically on svn commit to build_PRO)" />
 		<echo message="" />
 	</target>
@@ -71,12 +72,15 @@
 	</target>
 
 
-	<!-- NXS environment authorised 16/10 -->
-	<target name="build.NXS" depends="_init" description="Build new WAR to NXS environment">
-		<property name="target.prefix" value="NXS" />
+	<target name="build.localhost" depends="_init" description="Build new WAR to localhost environment (Developer use)">
+		<property name="target.prefix" value="localhost" />
+
 		<antcall target="_enableConfigs" />
 		<antcall target="_removeConfigs">
 			<param name="destroy.prefix" value="NXI" />
+		</antcall>
+		<antcall target="_removeConfigs">
+			<param name="destroy.prefix" value="NXS" />
 		</antcall>
 		<antcall target="_removeConfigs">
 			<param name="destroy.prefix" value="NXQ" />
@@ -92,15 +96,16 @@
 
 		<echo message="Build to ${target.prefix} environment SUCCESSFUL!" />
 	</target>
+	
 
 	<target name="build.NXQ" depends="_init" description="Build new WAR to NXQ environment (on svn server, automatically on svn commit to build_NXQ)">
 		<property name="target.prefix" value="NXQ" />
 		<antcall target="_enableConfigs" />
 		<antcall target="_removeConfigs">
-			<param name="destroy.prefix" value="NXI" />
+			<param name="destroy.prefix" value="localhost" />
 		</antcall>
 		<antcall target="_removeConfigs">
-			<param name="destroy.prefix" value="NXS" />
+			<param name="destroy.prefix" value="NXI" />
 		</antcall>
 		<antcall target="_removeConfigs">
 			<param name="destroy.prefix" value="PRO" />
@@ -119,10 +124,10 @@
 
 		<antcall target="_enableConfigs" />
 		<antcall target="_removeConfigs">
-			<param name="destroy.prefix" value="NXI" />
+			<param name="destroy.prefix" value="localhost" />
 		</antcall>
 		<antcall target="_removeConfigs">
-			<param name="destroy.prefix" value="NXS" />
+			<param name="destroy.prefix" value="NXI" />
 		</antcall>
 		<antcall target="_removeConfigs">
 			<param name="destroy.prefix" value="NXQ" />

@@ -9,7 +9,7 @@
 <c:choose>
 	<%-- Attempt to load existing quote into session if data param provided --%>
 	<c:when test="${not empty param.data}">
-		<homeloan:back_load />
+		<homeloan_old:back_load />
 	</c:when>
 	<%-- Otherwise attempt to use the preload --%>
 	<c:otherwise>
@@ -51,7 +51,7 @@
 	<jsp:body>
 
 		<%-- Slides --%>
-		<homeloan_layout:slide_details />
+		<homeloan_old_layout:slide_details />
 
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 

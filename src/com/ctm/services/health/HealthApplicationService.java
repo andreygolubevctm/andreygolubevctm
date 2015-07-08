@@ -8,7 +8,6 @@ import com.ctm.model.health.HealthPricePremium;
 import com.ctm.model.request.health.HealthApplicationRequest;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.RequestService;
-import com.ctm.utils.FormDateUtils;
 import com.ctm.utils.health.HealthApplicationParser;
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
@@ -152,9 +151,6 @@ public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
 		data.putDouble(LOADING_XPATH, request.loadingValue);
 		data.put(REBATE_XPATH, request.hasRebate ? "Y" : "N");
 
-		if(request.payment.details.start != null){
-			data.put(PREFIX + "/payment/details/start ", FormDateUtils.convertDateToFormFormat(request.payment.details.start));
-		}
 	}
 
 	private JSONObject handleValidationResult(RequestService requestService, List<SchemaValidationError> validationErrors) {

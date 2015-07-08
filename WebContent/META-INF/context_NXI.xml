@@ -7,32 +7,6 @@
 
 <Context>
 
-	<!-- NXI uses appsdbserver -->
-	<Resource name="jdbc/test" auth="Container"
-		type="javax.sql.DataSource"
-		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-		username="server" password="server"
-		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://appsdbserver:3306/test?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
-
-			initialSize="5"
-		maxActive="20"
-		maxTotal="20"
-		validationQuery="SELECT 1"
-		validationInterval="34000"
-		maxWait="6000"
-		maxWaitMillis="6000"
-		removeAbandoned="true"
-		maxIdle="15"
-		minIdle="8"
-		removeAbandonedTimeout="54"
-		timeBetweenEvictionRunsMillis="34000"
-		minEvictableIdleTimeMillis="55000"
-		logAbandoned="true"
-		testOnBorrow="true"
-		defaultAutoCommit="true"
-	/>
-
 	<Resource name="jdbc/aggregator" auth="Container"
 		type="javax.sql.DataSource"
 		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
@@ -82,7 +56,7 @@
 		defaultAutoCommit="true"
 	/>
 
-	<Resource name="jdbc/disc" auth="Container"
+	<Resource name="jdbc/simples" auth="Container"
 		type="javax.sql.DataSource"
 		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
 		username="server" password="server"

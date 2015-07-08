@@ -365,7 +365,7 @@
 
 		// If defined, scroll to an element
 		if (currentStep.slideScrollTo && currentStep.slideScrollTo !== null) {
-			meerkat.modules.utilities.scrollPageTo(currentStep.slideScrollTo);
+			meerkat.modules.utils.scrollPageTo(currentStep.slideScrollTo);
 		}
 
 		// Run callbacks

@@ -26,7 +26,7 @@
 
 		<jsp:attribute name="rightColumn">
 			<ui:bubble variant="help">
-				<h4>Lifetime Hospital Cover Loading</h4>
+				<h4>Lifetime Health Cover Loading</h4>
 				<p>The Government may charge a levy known as the <strong>Lifetime Health Cover</strong> (LHC) loading.</p>
 				<p>The levy is based on a number of factors including your age and the number of years you have held private health cover.</p>
 				<p>By filling in these details, we can work out what your LHC loading will be when you are comparing health insurance quotes.</p>

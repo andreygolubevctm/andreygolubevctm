@@ -5,6 +5,7 @@
 <%@ attribute name="authenticated" required="false" rtexprvalue="true"  %>
 <%@ attribute name="settings" required="false" rtexprvalue="true"  %>
 <%@ attribute name="searchPreviousIds" required="false" rtexprvalue="true"  %>
+<%@ attribute name="searchLatestRelatedIds" required="false" rtexprvalue="true"  %>
 <%@ attribute name="throwCheckAuthenticatedError" required="false" rtexprvalue="true"  %>
 <%@ attribute name="transactionId" required="false" rtexprvalue="true"  %>
 
@@ -21,12 +22,27 @@
 	<c:set var="searchPreviousIds" value="false" />
 </c:if>
 
+<c:if test="${empty searchLatestRelatedIds}">
+	<%-- This is to support quotes that are loaded either from retrieve quotes page or from
+	 emails where the transactionId is in the URL and the quote is loaded into the session.
+	 When the page is refreshed the transactionId is incremented however the transactionId
+	 remains fixed in the URL. This allows the most recent related session to be found. --%>
+	<c:set var="searchLatestRelatedIds" value="false" />
+</c:if>
+
 <c:if test="${not empty verticalCode}">
 	<%-- This is only for session recovery - if the data bucket is emptied, then this can be used to repopulate it correctly and load the correct application settings if required --%>
 	<c:set var="recoveryVerticalSet" value="${applicationService.setVerticalCodeOnRequest(pageContext.getRequest(), verticalCode)}" scope="page"  />
 </c:if>
 
-<c:set var="data" value="${sessionDataService.getDataForTransactionId(pageContext.getRequest(), transactionId, searchPreviousIds)}" scope="request"  />
+<c:choose>
+	<c:when test="${searchLatestRelatedIds eq true}">
+		<c:set var="data" value="${sessionDataService.getDataForMostRecentRelatedTransactionId(pageContext.getRequest(), transactionId)}" scope="request"  />
+	</c:when>
+	<c:otherwise>
+		<c:set var="data" value="${sessionDataService.getDataForTransactionId(pageContext.getRequest(), transactionId, searchPreviousIds)}" scope="request"  />
+	</c:otherwise>
+</c:choose>
 
 <c:if test="${authenticated == true or not empty param.checkAuthenticated}">
 	<session:getAuthenticated  />

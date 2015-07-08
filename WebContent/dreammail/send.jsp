@@ -157,7 +157,8 @@
 				<x:param name="emailSubscribed">${param.emailSubscribed}</x:param>
 					<x:param name="contextFolder">${pageSettings.getSetting('contextFolder')}</x:param>
 					<x:param name="token">${param.token}</x:param>
-				<c:if test="${fn:contains(param.tmpl,'health_')}">
+						<x:param name="bccEmail">${param.bccEmail}</x:param>
+						<c:if test="${fn:contains(param.tmpl,'health_')}">
 							<x:param name="callCentrePhone"><content:get key="callCentreNumber"/></x:param>
 					</c:if>
 						<c:if test="${fn:contains(param.tmpl,'car_')}">

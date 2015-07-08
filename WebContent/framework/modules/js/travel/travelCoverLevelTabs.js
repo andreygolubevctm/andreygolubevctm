@@ -76,12 +76,11 @@
 	function initTravelCoverLevelTabs() {
 
 		// Remove this after A/B test
-		var currentJourney = meerkat.modules.tracking.getCurrentJourney();
-		if(currentJourney != 2 && currentJourney != 3 && currentJourney != 4 &&  currentJourney != 83) {
+		if(!meerkat.modules.splitTest.isActive([2,3,4,83])) {
 			return;
 		}
 
-		setupABTestParameters(currentJourney);
+		setupABTestParameters();
 		// end AB test code
 
 		var options = {
@@ -114,23 +113,18 @@
 	 * J3 [1]: Mid Range
 	 * J4 [2]: Basic
 	 */
-	function setupABTestParameters(currentJourney) {
+	function setupABTestParameters() {
 
 		singleTripTabs[0].defaultTab = false;
 		singleTripTabs[1].defaultTab = false;
 		singleTripTabs[2].defaultTab = false;
 
-		switch(currentJourney) {
-			case "2":
-				singleTripTabs[0].defaultTab = true;
-				break;
-			case "3":
-			case "83":
-				singleTripTabs[1].defaultTab = true;
-				break;
-			case "4":
-				singleTripTabs[2].defaultTab = true;
-				break;
+		if(meerkat.modules.splitTest.isActive(2)) {
+			singleTripTabs[0].defaultTab = true;
+		} else if(meerkat.modules.splitTest.isActive([3,83])) {
+			singleTripTabs[1].defaultTab = true;
+		} else if(meerkat.modules.splitTest.isActive(4)) {
+			singleTripTabs[2].defaultTab = true;
 		}
 	}
 	/**

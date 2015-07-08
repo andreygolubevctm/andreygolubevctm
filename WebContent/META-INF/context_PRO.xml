@@ -7,30 +7,6 @@
 
 <Context>
 
-	<Resource name="jdbc/test" auth="Container"
-		type="javax.sql.DataSource"
-		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-		username="server" password="server"
-		driverClassName="com.mysql.jdbc.Driver"
-		url="jdbc:mysql://appsdbserver:3306/test?useOldAliasMetadataBehavior=true&amp;zeroDateTimeBehavior=convertToNull"
-		initialSize="10"
-		maxActive="100"
-		maxTotal="100"
-		validationQuery="SELECT 1"
-		validationInterval="34000"
-		maxWait="3000"
-		maxWaitMillis="3000"
-		removeAbandoned="true"
-		maxIdle="20"
-		minIdle="10"
-		removeAbandonedTimeout="60"
-		timeBetweenEvictionRunsMillis="34000"
-		minEvictableIdleTimeMillis="55000"
-		logAbandoned="true"
-		testOnBorrow="true"
-		defaultAutoCommit="true"
-	/>
-
 	<Resource name="jdbc/aggregator" auth="Container"
 		type="javax.sql.DataSource"
 		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"

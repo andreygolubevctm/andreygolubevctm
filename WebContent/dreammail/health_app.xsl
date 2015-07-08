@@ -29,6 +29,7 @@
 	<xsl:param name="callCentrePhone"></xsl:param>
 	<xsl:param name="ClientId"></xsl:param>
 	<xsl:param name="baseURL"></xsl:param>
+	<xsl:param name="bccEmail"></xsl:param>
 
 	<xsl:template match="/">
 			<xsl:apply-templates select="/tempSQL"/>
@@ -107,14 +108,18 @@
 				<SubscriberKey><xsl:value-of select="$EmailAddress" /></SubscriberKey>
 				<EmailAddress><xsl:value-of select="$EmailAddress" /></EmailAddress>
 
-				<Attributes>
-					<Name>SubscriberKey</Name>
-					<Value><xsl:value-of select="$EmailAddress" /></Value>
-				</Attributes>
-				<Attributes>
-					<Name>EmailAddr</Name>
-					<Value><xsl:value-of select="$EmailAddress" /></Value>
-				</Attributes>
+				<xsl:if test="$EmailAddress != ''">
+					<Attributes>
+						<Name>SubscriberKey</Name>
+						<Value><xsl:value-of select="$EmailAddress" /></Value>
+					</Attributes>
+				</xsl:if>
+				<xsl:if test="$EmailAddress != ''">
+					<Attributes>
+						<Name>EmailAddr</Name>
+						<Value><xsl:value-of select="$EmailAddress" /></Value>
+					</Attributes>
+				</xsl:if>
 				<Attributes>
 					<Name>FirstName</Name>
 					<Value>
@@ -128,6 +133,12 @@
 						</xsl:choose>
 					</Value>
 				</Attributes>
+				<xsl:if test="$bccEmail != ''">
+					<Attributes>
+						<Name>BCC_email</Name>
+						<Value><xsl:value-of select="$bccEmail" /></Value>
+					</Attributes>
+				</xsl:if>
 				<Attributes>
 					<Name>OptIn</Name>
 					<Value>

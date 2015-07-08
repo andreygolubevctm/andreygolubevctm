@@ -15,7 +15,15 @@
 
 <c:choose>
 	<c:when test="${not empty param.transactionId && forceNew == false}">
-		<session:get />
+		<c:choose>
+			<c:when test="${not empty param.action and not empty param.transactionId and (param.action eq 'amend' or param.action eq 'latest' or param.action eq 'confirmation' or param.action eq 'start-again' or param.action eq 'load' or param.action eq 'expired' or param.action eq 'promotion')}">
+				<session:get searchLatestRelatedIds="true" />
+			</c:when>
+			<c:otherwise>
+				<session:get />
+			</c:otherwise>
+		</c:choose>
+
 	</c:when>
 	<c:otherwise>
 		<c:set var="data" value="${sessionDataService.addNewTransactionDataToSession(pageContext.getRequest())}" scope="request"  />

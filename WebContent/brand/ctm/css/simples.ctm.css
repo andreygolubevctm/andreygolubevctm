@@ -371,9 +371,9 @@ body.simples table.table td {
   display: block;
   position: relative;
   border: 1px solid #DDD;
-  width: 96%;
+  width: 100%;
   min-height: 160px;
-  margin: 17px auto;
+  margin: 0 auto;
 }
 .trumbowyg-box .trumbowyg-editor {
   margin: 0 auto;

@@ -1,9 +1,14 @@
 package com.ctm.dao.simples;
 
-import static com.ctm.model.simples.MessageStatus.STATUS_CHANGED_TIME_FOR_PM;
-import static com.ctm.model.simples.MessageStatus.STATUS_COMPLETED_AS_PM;
-import static com.ctm.model.simples.MessageStatus.STATUS_POSTPONED;
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.dao.CommentDao;
+import com.ctm.dao.UserDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Comment;
+import com.ctm.model.simples.*;
+import org.apache.log4j.Logger;
 
+import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,26 +18,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import javax.naming.NamingException;
-
-import org.apache.log4j.Logger;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.dao.CommentDao;
-import com.ctm.dao.UserDao;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.Comment;
-import com.ctm.model.simples.Message;
-import com.ctm.model.simples.MessageAudit;
-import com.ctm.model.simples.MessageStatus;
-import com.ctm.model.simples.Rule;
-import com.ctm.model.simples.User;
+import static com.ctm.model.simples.MessageStatus.*;
 
 public class MessageDao {
 	private static final Logger logger = Logger.getLogger(MessageDao.class.getName());
 
-	private final String MESSAGE_AVAILABLE_UPDATE = "UPDATE simples.message m, (";
-	private final String MESSAGE_AVAILABLE_UPDATE_SET = ") as t set m.userId = ? WHERE m.id = t.id ";
+	private final static String MESSAGE_AVAILABLE_UPDATE = "UPDATE simples.message m, (";
+	private final static String MESSAGE_AVAILABLE_UPDATE_SET = ") as t set m.userId = ? WHERE m.id = t.id ";
 
 	public Message getMessage(final int messageId) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
@@ -94,7 +86,7 @@ public class MessageDao {
 	 * @return Message model
 	 * @throws DaoException
 	 */
-	public Message getNextMessage(int userId, List<Rule> getNextMessageRules) throws DaoException {
+	public  static synchronized Message getNextMessage(int userId, List<Rule> getNextMessageRules) throws DaoException {
 
 		if (userId <= 0) {
 			throw new DaoException("userId must be greater than zero.");
@@ -618,7 +610,7 @@ public class MessageDao {
 	 * Internal method to pull the fields from a resultset and put into a Message model.
 	 * @param results Result set
 	 */
-	private List<Message> mapFieldsFromResultsToMessage(final ResultSet results) throws SQLException {
+	private static List<Message> mapFieldsFromResultsToMessage(final ResultSet results) throws SQLException {
 		final List<Message> messages = new ArrayList<>();
 		while (results.next()) {
 			messages.add(message(results));
@@ -626,7 +618,7 @@ public class MessageDao {
 		return messages;
 	}
 
-	private Message message(final ResultSet results) throws SQLException {
+	private static Message message(final ResultSet results) throws SQLException {
 		final Message message = new Message();
 		message.setMessageId(results.getInt("id"));
 		message.setTransactionId(results.getLong("transactionId"));

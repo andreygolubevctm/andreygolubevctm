@@ -3,7 +3,7 @@
 
 <session:new verticalCode="TRAVEL" authenticated="true" />
 
-<core:quote_check quoteType="travel" />
+<core_new:quote_check quoteType="travel" />
 <core_new:load_preload />
 
 <%-- HTML --%>

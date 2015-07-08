@@ -1714,7 +1714,7 @@
         });
         $(document).on("resultsLoaded", onResultsLoaded);
         $(document).on("resultsReturned", function() {
-            meerkat.modules.utilities.scrollPageTo($("header"));
+            meerkat.modules.utils.scrollPageTo($("header"));
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
         });
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
@@ -3332,8 +3332,8 @@
     var selectorHTML = null;
     var sessionCamStep = null;
     function updateRestrictAgeSelector() {
-        var ageRegular = meerkat.modules.utilities.returnAge($(elements.reg_dob).val(), true);
-        var ageYoungest = meerkat.modules.utilities.returnAge($(elements.yng_dob).val(), true);
+        var ageRegular = meerkat.modules.utils.returnAge($(elements.reg_dob).val(), true);
+        var ageYoungest = meerkat.modules.utils.returnAge($(elements.yng_dob).val(), true);
         var age = Math.min(ageRegular, ageYoungest);
         if (age <= 20) {
             $(elements.age_row).slideUp();

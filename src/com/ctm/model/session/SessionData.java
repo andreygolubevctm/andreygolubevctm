@@ -11,6 +11,8 @@ package com.ctm.model.session;
  *
  */
 
+import com.ctm.dao.transaction.TransactionDao;
+import com.ctm.exceptions.DaoException;
 import com.disc_au.web.go.Data;
 
 import java.util.ArrayList;
@@ -97,6 +99,39 @@ public class SessionData {
 			}
 			if(sessionTransactionId > 0 && sessionTransactionId == previousTransactionId){
 				return session;
+			}
+		}
+
+		return null;
+
+	}
+
+	/**
+	 *
+	 * @param transactionId previously known transaction id
+	 * @return Data null if cannot be found
+	 */
+	public Data getSessionDataForMostRecentRelatedTransactionId(long transactionId){
+
+		long latestTransactionId = 0;
+		TransactionDao tranDao = new TransactionDao();
+		try {
+			latestTransactionId = tranDao.getMostRecentRelatedTransactionId(transactionId);
+		} catch (DaoException e) {}
+
+		if(latestTransactionId > 0) {
+			ArrayList<Data> sessions = getTransactionSessionData();
+			long sessionTransactionId = 0;
+
+			for (Data session : sessions) {
+				try {
+					sessionTransactionId = session.getLong("current/transactionId");
+				} catch (Exception e) {
+
+				}
+				if (sessionTransactionId > 0 && sessionTransactionId == latestTransactionId) {
+					return session;
+				}
 			}
 		}
 

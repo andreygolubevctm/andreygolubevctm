@@ -26,7 +26,7 @@ public class FundWarningDao {
      * The function uses the ctm.provider_warning_message which doesn't mean that it stores all the warning messages.Right now
      * there can be only one message per provider during same period of the time if multiple found it will only return first one
      *
-     * @param providerId   must not be blank or 0
+     * @param providerId   must not be blank
      * @param verticalCode must not be blank or 0
      * @param currentDate  must not be null
      * @return String
@@ -37,9 +37,9 @@ public class FundWarningDao {
         DatabaseQueryMapping mapping = new DatabaseQueryMapping() {
             @Override
             public void mapParams() throws SQLException {
-                set( providerId);
+                set(providerId);
                 set(verticalCode);
-                set(currentDate);
+                set( new java.sql.Timestamp(currentDate.getTime()));
             }
 
             @Override
@@ -51,9 +51,9 @@ public class FundWarningDao {
                         "FROM       ctm.provider_warning_message msg " +
                         "INNER JOIN ctm.vertical_master vm  ON   msg.verticalId = vm.verticalId " +
                         "WHERE " +
-                        "msg.providerId=? AND  " +
+                        "(msg.providerId=? OR msg.providerId='0' ) AND  " +
                         "vm.verticalCode =? AND " +
-                        "? between effectiveStart AND effectiveEnd " +
+                        "? between effectiveStart AND effectiveEnd order by providerId desc " +
                         "limit 1";
         //noinspection unchecked
         return (String) sqlDao.get(mapping, sql);

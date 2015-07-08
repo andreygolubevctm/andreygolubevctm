@@ -228,7 +228,7 @@
 
 		// Scroll to the top when results come back
 		$(document).on("resultsReturned", function(){
-			meerkat.modules.utilities.scrollPageTo($("header"));
+			meerkat.modules.utils.scrollPageTo($("header"));
 
 			// Reset the feature header to match the new column content.
 			$(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
@@ -407,8 +407,7 @@
 	function init(){
 		$(document).ready(function() {
 			$component = $("#resultsPage");
-			var currentJourney = meerkat.modules.tracking.getCurrentJourney();
-			if(currentJourney != 2 && currentJourney != 3 && currentJourney != 4 && currentJourney != 83) {
+			if(!meerkat.modules.splitTest.isActive([2,3,4,83])) {
 				meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
 			}
 		});

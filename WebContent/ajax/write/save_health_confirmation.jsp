@@ -99,6 +99,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 				<c:param name="vertical" value="HEALTH" />
 				<c:param name="mode" value="app" />
 				<c:param name="emailAddress" value="${data['health/application/email']}" />
+				<c:param name="bccEmail" value="${param.bccEmail}" />
 			</c:import>
 		</c:set>
 		

@@ -8,7 +8,7 @@
 	<%-- You should already have this bit --%>
 	<sql:setDataSource dataSource="jdbc/aggregator"/>
 
-	<sql:param value="${param.sqlSelect}" />
+	<%-- sql:param value="${param.sqlSelect}" /--%>
 
 	<%-- fetch the data --%>
 	<sql:query var="details">${param.sqlSelect}

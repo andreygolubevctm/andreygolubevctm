@@ -72,8 +72,8 @@
 
 <c:set var="keyPressLimit">
 	<c:choose>
-		<c:when test="${not empty integerKeyPressLimit}"> onKeyPress="return meerkat.modules.utilities.isValidNumericKeypressEvent(event, false)"</c:when>
-		<c:when test="${not empty decimalKeyPressLimit}"> onKeyPress="return meerkat.modules.utilities.isValidNumericKeypressEvent(event, true)"</c:when>
+		<c:when test="${not empty integerKeyPressLimit}"> onKeyPress="return meerkat.modules.utils.isValidNumericKeypressEvent(event, false)"</c:when>
+		<c:when test="${not empty decimalKeyPressLimit}"> onKeyPress="return meerkat.modules.utils.isValidNumericKeypressEvent(event, true)"</c:when>
 		<c:otherwise></c:otherwise>
 	</c:choose>
 </c:set>

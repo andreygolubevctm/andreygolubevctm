@@ -128,7 +128,7 @@ function setupDefaultValidationOnForm( $formElement ){
 
 			if ($parent.length > 0) $ele = $parent;
 			jQuery.validator.scrollingInProgress = true;
-			meerkat.modules.utilities.scrollPageTo($ele,500,-50, function(){
+			meerkat.modules.utils.scrollPageTo($ele,500,-50, function(){
 				jQuery.validator.scrollingInProgress = false;
 			});
 		},

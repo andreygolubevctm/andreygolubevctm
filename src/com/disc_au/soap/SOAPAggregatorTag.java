@@ -15,10 +15,9 @@ import java.util.HashMap;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.BodyTagSupport;
+import javax.servlet.jsp.tagext.TagSupport;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -41,7 +40,7 @@ import com.disc_au.web.go.xml.XmlParser;
  * @version 1.1
  */
 @SuppressWarnings("serial")
-public class SOAPAggregatorTag extends BodyTagSupport {
+public class SOAPAggregatorTag extends TagSupport {
 
 	Logger logger = Logger.getLogger(SOAPAggregatorTag.class.getName());
 
@@ -50,31 +49,14 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	private int styleCodeId;
 	private String verticalCode;
 	private String manuallySetProviderIds = "";
-
-	/** The xml. */
 	private String xml;
-
 	/** The variable that will hold the result */
 	private String var;
-
-	/** The transaction id. */
 	private String transactionId;
-
-	/** The parser. */
-	private XmlParser parser = new XmlParser();
-
-	/** The timer. */
 	private long timer; // debug timer
-
-	/** The trans factory. */
-	private TransformerFactory transFactory;
-
 	private String debugVar;
-
 	private SchemaValidation schemaValidation = new SchemaValidation();
-
 	private String isValidVar;
-
 	private String authToken = null;
 
 	private boolean continueOnValidationError;
@@ -96,11 +78,12 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	}
 
 	/* (non-Javadoc)
-	 * @see javax.servlet.jsp.tagext.BodyTagSupport#doStartTag()
+	 * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
 	 */
 	@Override
-	public int doStartTag() throws JspException {
-
+	public int doEndTag() throws JspException {
+		try {
+			XmlParser parser = new XmlParser();
 		setUpConfiguration();
 
 		/* validate the xml if a xsd has been specified in the config */
@@ -210,8 +193,8 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			}
 
 			// If we have results, run them through the merge xsl
-				if (configuration.getMergeXsl() != null && configuration.getMergeXsl() != "") {
-				resultNode = processMergeXSL(resultNode);
+					if (configuration.getMergeXsl() != null && !configuration.getMergeXsl().isEmpty()) {
+						resultNode = processMergeXSL(resultNode, parser);
 			}
 
 			// If result var was passed - put the resulting xml in the pagecontext's
@@ -225,11 +208,13 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+					logger.error(e);
 		}
 		}
-		reset();
-		return super.doStartTag();
+			return super.doEndTag();
+		} finally {
+			cleanUp();
+	}
 	}
 
 	private void setUpConfiguration() {
@@ -240,11 +225,18 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		SoapConfiguration.setUpConfigurationFromDatabase(configDbKey, configuration, styleCodeId, verticalCode, manuallySetProviderIds, authToken);
 	}
 
-	private void reset() {
-		isValidVar = null;
-		continueOnValidationError = false;
+	private void cleanUp() {
 		configuration = null;
 		configDbKey = null;
+		verticalCode = null;
+		manuallySetProviderIds = "";
+		xml = null;
+		var = null;
+		transactionId = null;
+		debugVar = null;
+		schemaValidation = new SchemaValidation();
+		isValidVar = null;
+		continueOnValidationError = false;
 	}
 
 	/**
@@ -287,7 +279,7 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 	 */
 	public void setConfig(String configXmlString) throws JspException {
 		try {
-			configuration = SoapConfiguration.setUpConfigurationFromXml(configXmlString, this.parser);
+			configuration = SoapConfiguration.setUpConfigurationFromXml(configXmlString, new XmlParser());
 		} catch (SAXException e) {
 			throw new JspException(e);
 		}
@@ -324,9 +316,9 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 		this.xml = xml;
 	}
 
-	private XmlNode processMergeXSL(XmlNode resultNode){
+	private XmlNode processMergeXSL(XmlNode resultNode, XmlParser parser){
 		try {
-			this.transFactory = TransformerFactory.newInstance();
+			TransformerFactory transFactory = TransformerFactory.newInstance();
 			// Make the transformer for out-bound data.
 			// First, try on the classpath (assume given path has no leading slash)
 			InputStream xsltSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getRootPath() + '/' + configuration.getMergeXsl());
@@ -348,12 +340,8 @@ public class SOAPAggregatorTag extends BodyTagSupport {
 			Writer resultXML = new StringWriter();
 			outboundTrans.transform(xmlSource, new StreamResult(resultXML));
 
-			return this.parser.parse(resultXML.toString());
-		} catch (TransformerConfigurationException e) {
-			logger.error(e);
-		} catch (TransformerException e) {
-			logger.error(e);
-		} catch (SAXException e) {
+			return parser.parse(resultXML.toString());
+		} catch (TransformerException | SAXException e) {
 			logger.error(e);
 		}
 		return resultNode;

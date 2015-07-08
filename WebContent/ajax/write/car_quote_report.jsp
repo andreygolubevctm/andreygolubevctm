@@ -9,7 +9,7 @@
 <security:populateDataFromParams rootPath="quote" delete="false" />
 <go:log level="DEBUG" source="ajax_write_car_quote_report">Calling AGGTRP, transid: ${data.text['current/transactionId']}, xmlval: ${go:getEscapedXml(data['quote'])}</go:log>
 <c:set var="AGIS_leadFeedCode" scope="request"><content:get key="AGIS_leadFeedCode"/></c:set>
-<go:call pageId="AGGTRP"transactionId="${data.text['current/transactionId']}" xmlVar="${go:getEscapedXml(data['quote'])}" style="${AGIS_leadFeedCode}" />
+<go:call pageId="AGGTRP" transactionId="${data.text['current/transactionId']}" xmlVar="${go:getEscapedXml(data['quote'])}" style="${AGIS_leadFeedCode}" />
 
 <%-- Touch types: A = Apply now,  CB = Call me back,  CD = Call direct --%>
 <c:set var="touch" value="${param.touch}"/>

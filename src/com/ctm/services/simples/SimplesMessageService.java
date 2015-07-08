@@ -1,16 +1,5 @@
 package com.ctm.services.simples;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-
 import com.ctm.dao.BlacklistDao;
 import com.ctm.dao.UserDao;
 import com.ctm.dao.simples.MessageAuditDao;
@@ -21,16 +10,17 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.MessageConfig;
 import com.ctm.model.Transaction;
-import com.ctm.model.simples.BlacklistChannel;
-import com.ctm.model.simples.ConfirmationOperator;
-import com.ctm.model.simples.Message;
-import com.ctm.model.simples.MessageAudit;
-import com.ctm.model.simples.MessageDetail;
-import com.ctm.model.simples.MessageStatus;
-import com.ctm.model.simples.Role;
-import com.ctm.model.simples.Rule;
-import com.ctm.model.simples.User;
+import com.ctm.model.simples.*;
 import com.ctm.services.TransactionService;
+import org.apache.log4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class SimplesMessageService {
 	private static final Logger logger = Logger.getLogger(SimplesMessageService.class.getName());
@@ -71,10 +61,16 @@ public class SimplesMessageService {
 
 		final MessageDao messageDao = new MessageDao();
 		final MessageDaoOld messageDaoOld = new MessageDaoOld();
-
+		/* This is only for testing at DEV's machine to generate deadlock
+		MessageDaoDeadLock daodd = new MessageDaoDeadLock();
+		try {
+			daodd.testGetNextMessage(logger);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
 		// TODO: remove once new hawking solution is tested in PROD
 		if (messageDao.useNewMethodToGetNexMessage()){
-			message = messageDao.getNextMessage(userId, getNextMessageRules);
+			message = MessageDao.getNextMessage(userId, getNextMessageRules);
 		}else{
 			MessageConfigService messageConfigService = new MessageConfigService();
 			Map<String, List<String>> statesMapForHawkingTime = messageConfigService.getStatesMapForHawkingTime(request, hawkingHours);

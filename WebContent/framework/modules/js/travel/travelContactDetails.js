@@ -20,7 +20,7 @@
 
 	function applyEventListeners(){
 
-		if (currentJourney != 7) {
+		if (!meerkat.modules.splitTest.isActive(7)) {
 			$marketing.on('change', function () {
 
 				if ($(this).is(':checked')) {
@@ -38,7 +38,7 @@
 
 	function showHidePostcodeField()
 	{
-		if (currentJourney == 5 || currentJourney == 6)
+		if (meerkat.modules.splitTest.isActive([5,6]))
 		{
 			if ($marketing.is(':checked') && $email.valid()) {
 				if ($email.val().trim().length > 0) {
@@ -86,8 +86,7 @@
 			$marketing = $('#travel_marketing');
 			$postcodeDetails = $('.postcodeDetails');
 			$productDetailsField = $postcodeDetails.find('#travel_location');
-			currentJourney = meerkat.modules.tracking.getCurrentJourney();
-			if (currentJourney != 7) {
+			if (!meerkat.modules.splitTest.isActive(7)) {
 				$email.removeAttr('required');
 			}
 			applyEventListeners();

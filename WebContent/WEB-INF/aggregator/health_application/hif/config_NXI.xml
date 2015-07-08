@@ -21,6 +21,7 @@
 		<outbound-xsl>hif/outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>keyname=CompareTM,keycode=Compare</outbound-xsl-parms>
 		<inbound-xsl>hif/inbound.xsl</inbound-xsl>
+		<inbound-xsl-parms>bccEmail=ctm.test@hif.com.au</inbound-xsl-parms>
 		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
 		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
 		<timeoutMillis>240000</timeoutMillis>

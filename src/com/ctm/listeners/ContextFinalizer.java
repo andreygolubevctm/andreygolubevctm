@@ -1,5 +1,17 @@
 package com.ctm.listeners;
 
+import ch.qos.logback.classic.LoggerContext;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.EnvironmentService;
+import com.ctm.services.elasticsearch.AddressSearchService;
+import com.mysql.jdbc.AbandonedConnectionCleanupThread;
+import org.apache.log4j.Logger;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Driver;
@@ -7,21 +19,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Properties;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
-
-import org.apache.log4j.Logger;
-import org.slf4j.ILoggerFactory;
-import org.slf4j.LoggerFactory;
-
-import ch.qos.logback.classic.LoggerContext;
-
-import com.ctm.services.ApplicationService;
-import com.ctm.services.EnvironmentService;
-import com.ctm.services.elasticsearch.AddressSearchService;
-import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 
 /** adding this to debug threads **/
 
@@ -45,6 +42,9 @@ public class ContextFinalizer implements ServletContextListener {
 
 			// Initialise the CTM environment and application objects
 			String envVariable = (String) properties.get("environment");
+			if(envVariable == null || envVariable.isEmpty()){
+				 envVariable =  System.getProperty("spring.profiles.active", "localhost");
+			}
 			EnvironmentService.setEnvironment(envVariable);
 			ApplicationService.getBrands();
 

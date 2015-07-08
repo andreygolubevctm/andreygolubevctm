@@ -85,7 +85,7 @@
                 if (!hasTrackedThisTab) {
                     hasRunTrackingCall.push(getRankingFilter());
                 }
-                meerkat.modules.utilities.scrollPageTo("html body", 350, 0, function() {
+                meerkat.modules.utils.scrollPageTo("html body", 350, 0, function() {
                     meerkat.modules.journeyEngine.sessionCamRecorder({
                         navigationId: "CoverLevel" + getRankingFilter()
                     });
@@ -281,8 +281,7 @@
                 object: meerkat.modules.travel.getTrackingFieldsObject
             },
             onInitialise: function onStartInit(event) {
-                var currentJourney = meerkat.modules.tracking.getCurrentJourney();
-                if (typeof currentJourney !== "undefined" && (currentJourney === 5 || currentJourney === 6)) {
+                if (meerkat.modules.splitTest.isActive([ 5, 6 ])) {
                     $("#travel_location").on("blur", function() {
                         meerkat.modules.travelContactDetails.setLocation($(this).val());
                     });
@@ -431,7 +430,7 @@
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info, $firstname, $surname, $email, $postcodeDetails, $productDetailsField, $marketing, currentJourney;
     function applyEventListeners() {
-        if (currentJourney != 7) {
+        if (!meerkat.modules.splitTest.isActive(7)) {
             $marketing.on("change", function() {
                 if ($(this).is(":checked")) {
                     $email.attr("required", "required").valid();
@@ -446,7 +445,7 @@
         });
     }
     function showHidePostcodeField() {
-        if (currentJourney == 5 || currentJourney == 6) {
+        if (meerkat.modules.splitTest.isActive([ 5, 6 ])) {
             if ($marketing.is(":checked") && $email.valid()) {
                 if ($email.val().trim().length > 0) {
                     $postcodeDetails.slideDown();
@@ -484,8 +483,7 @@
             $marketing = $("#travel_marketing");
             $postcodeDetails = $(".postcodeDetails");
             $productDetailsField = $postcodeDetails.find("#travel_location");
-            currentJourney = meerkat.modules.tracking.getCurrentJourney();
-            if (currentJourney != 7) {
+            if (!meerkat.modules.splitTest.isActive(7)) {
                 $email.removeAttr("required");
             }
             applyEventListeners();
@@ -700,11 +698,10 @@
         }
     } ], $policyType;
     function initTravelCoverLevelTabs() {
-        var currentJourney = meerkat.modules.tracking.getCurrentJourney();
-        if (currentJourney != 2 && currentJourney != 3 && currentJourney != 4 && currentJourney != 83) {
+        if (!meerkat.modules.splitTest.isActive([ 2, 3, 4, 83 ])) {
             return;
         }
-        setupABTestParameters(currentJourney);
+        setupABTestParameters();
         var options = {
             enabled: true,
             tabCount: 3,
@@ -724,23 +721,16 @@
             D: "Domestic"
         };
     }
-    function setupABTestParameters(currentJourney) {
+    function setupABTestParameters() {
         singleTripTabs[0].defaultTab = false;
         singleTripTabs[1].defaultTab = false;
         singleTripTabs[2].defaultTab = false;
-        switch (currentJourney) {
-          case "2":
+        if (meerkat.modules.splitTest.isActive(2)) {
             singleTripTabs[0].defaultTab = true;
-            break;
-
-          case "3":
-          case "83":
+        } else if (meerkat.modules.splitTest.isActive([ 3, 83 ])) {
             singleTripTabs[1].defaultTab = true;
-            break;
-
-          case "4":
+        } else if (meerkat.modules.splitTest.isActive(4)) {
             singleTripTabs[2].defaultTab = true;
-            break;
         }
     }
     function getActiveTabSet() {
@@ -1328,7 +1318,7 @@
             }, 1e3);
         });
         $(document).on("resultsReturned", function() {
-            meerkat.modules.utilities.scrollPageTo($("header"));
+            meerkat.modules.utils.scrollPageTo($("header"));
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
         });
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
@@ -1448,8 +1438,7 @@
     function init() {
         $(document).ready(function() {
             $component = $("#resultsPage");
-            var currentJourney = meerkat.modules.tracking.getCurrentJourney();
-            if (currentJourney != 2 && currentJourney != 3 && currentJourney != 4 && currentJourney != 83) {
+            if (!meerkat.modules.splitTest.isActive([ 2, 3, 4, 83 ])) {
                 meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
             }
         });

@@ -104,9 +104,7 @@
 			},
 			onInitialise : function onStartInit(event) {
 
-				var currentJourney = meerkat.modules.tracking.getCurrentJourney();
-
-				if (typeof currentJourney !== 'undefined' && (currentJourney === 5 || currentJourney === 6)) {
+				if (meerkat.modules.splitTest.isActive([5,6])) {
 					$('#travel_location').on('blur',function() {
 						meerkat.modules.travelContactDetails.setLocation($(this).val());
 					});

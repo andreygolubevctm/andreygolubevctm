@@ -275,7 +275,7 @@
 			onAfterEnter: function(event) {
 				//Because it has no idea where the #navbar-main is on mobile because it's hidden and position: fixed... we force it to the top.
 				if (meerkat.modules.deviceMediaState.get() === 'xs'){
-					meerkat.modules.utilities.scrollPageTo('html',0,1);
+					meerkat.modules.utils.scrollPageTo('html',0,1);
 				}
 				// Hide any Simples dialogues
 				if (meerkat.site.isCallCentreUser === true) {
