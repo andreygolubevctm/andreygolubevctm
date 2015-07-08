@@ -3690,9 +3690,8 @@ Features = {
     }
     function updateCalendar(dateResult) {
         if (dateResult !== null && dateResult !== "") {
-            var date = new Date(dateResult.replace(" EST", ""));
+            var date = new Date(dateResult.replace(/ [A]?EST/, ""));
             var newDate = meerkat.modules.utils.returnDateValueFormFormat(date);
-            console.log(newDate);
             $("#health_searchDate").val(newDate);
         }
     }
