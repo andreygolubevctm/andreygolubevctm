@@ -3689,9 +3689,10 @@ Features = {
         });
     }
     function updateCalendar(dateResult) {
-        if (dateResult !== null) {
-            var date = new Date(dateResult);
-            var newDate = ("0" + date.getDate()).slice(-2) + "/" + ("0" + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear();
+        if (dateResult !== null && dateResult !== "") {
+            var date = new Date(dateResult.replace(" EST", ""));
+            var newDate = meerkat.modules.utils.returnDateValueFormFormat(date);
+            console.log(newDate);
             $("#health_searchDate").val(newDate);
         }
     }
@@ -11574,6 +11575,11 @@ Features = {
         var _monthString = leadingZero(_date.getMonth() + 1);
         return _date.getFullYear() + "-" + _monthString + "-" + _dayString;
     }
+    function returnDateValueFormFormat(_date) {
+        var _dayString = leadingZero(_date.getDate());
+        var _monthString = leadingZero(_date.getMonth() + 1);
+        return _dayString + "/" + _monthString + "/" + _date.getFullYear();
+    }
     function invertDate(dt, del) {
         del = del || "/";
         return dt.split(del).reverse().join(del);
@@ -11649,6 +11655,7 @@ Features = {
         isValidNumericKeypressEvent: isValidNumericKeypressEvent,
         invertDate: invertDate,
         returnDateValue: returnDateValue,
+        returnDateValueFormFormat: returnDateValueFormFormat,
         pluginReady: pluginReady,
         calcWorkingDays: calcWorkingDays,
         getTimeAgo: getTimeAgo

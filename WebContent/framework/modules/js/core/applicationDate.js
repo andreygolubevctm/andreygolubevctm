@@ -44,9 +44,10 @@
 		});
 	}
 	function updateCalendar (dateResult) {
-		if (dateResult !== null){
-			var date = new Date(dateResult);
-			var newDate = ("0" + date.getDate()).slice(-2)+"/"+("0" + (date.getMonth() + 1)).slice(-2)+"/"+date.getFullYear();
+		if (dateResult !== null && dateResult !== ''){
+			var date = new Date(dateResult.replace(' EST', ''));
+			var newDate = meerkat.modules.utils.returnDateValueFormFormat(date);
+			console.log(newDate);
 			$('#health_searchDate').val(newDate);
 		}
 	}
