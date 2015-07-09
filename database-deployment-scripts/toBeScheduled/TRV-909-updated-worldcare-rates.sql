@@ -5954,14 +5954,3 @@ INSERT INTO ctm.product_properties VALUES( 9, 'R4-SIN', 1, 38.17, '$38.17', NULL
 -- SELECT * FROM ctm.product_properties WHERE ProductId IN(9,10,11,12,39) AND SequenceNo > 0 LIMIT 999999;
 -- ================ =====================
 
-
-
--- TEST BEFORE
--- SELECT count(productId) AS total FROM `ctm`.`product_master` WHERE EffectiveEnd = '2040-12-31' AND providerid = 283;
--- RESULT: 3
-
-UPDATE `ctm`.`product_master` SET `EffectiveEnd`='2040-12-31' WHERE `ProductId` IN (12, 39);
-
--- TEST AFTER
--- SELECT count(productId) AS total FROM `ctm`.`product_master` WHERE EffectiveEnd = '2040-12-31' AND providerid = 283;
--- RESULT: 5
