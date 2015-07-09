@@ -321,9 +321,6 @@ body.competition .navbar ul li a:hover {
   height: 62px;
 }
 @media (max-width: 767px) {
-  .competition-header {
-    margin-top: 40px;
-  }
   body.competition h1 {
     font-size: 20px;
     padding: 20px 0px 20px;
@@ -334,6 +331,11 @@ body.competition .navbar ul li a:hover {
     display: block;
     padding: 5px 15px 5px 15px;
     width: 100%;
+  }
+}
+@media (min-width: 461px) and (max-width: 767px) {
+  .competition-header {
+    margin-top: 40px;
   }
 }
 @media (max-width: 460px) {
