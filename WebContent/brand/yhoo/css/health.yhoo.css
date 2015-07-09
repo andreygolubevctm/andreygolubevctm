@@ -2976,6 +2976,9 @@ body.health_payment_gateway-active #health_payment_gateway-content {
 .health_dependant_details_maritalincomestatus {
   display: none;
 }
+#health_application_noEmailGroup {
+  display: none;
+}
 /* HEALTH FUND SPECIFIC CSS CODES */
 body {
   /* AHM */
@@ -3113,10 +3116,8 @@ body.NIB .health_previous_fund_authority,
 body.NIB .health_person-details_authority_group,
 body.NIB .health_bank-details_policyDay-group,
 body.NIB .health_credit-card-details_policyDay-group,
-body.NIB .health-payment_details-claims-group {
-  display: block !important;
-}
-body.NIB .health_application_no_email {
+body.NIB .health-payment_details-claims-group,
+body.NIB #health_application_noEmailGroup {
   display: block !important;
 }
 body.NIB .health_declaration,

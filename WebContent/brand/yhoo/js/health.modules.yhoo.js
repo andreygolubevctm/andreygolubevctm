@@ -483,24 +483,23 @@ var healthFunds_NIB = {
             healthFunds._paymentDaysRender($(".health-credit-card_details-policyDay"), _html);
         });
         function onChangeNoEmailChkBox() {
+            var $applicationEmailGroup = $("#health_application_emailGroup"), $applicationEmailField = $("#health_application_email"), $contactPointPost = $("#health_application_contactPoint_P"), $contactPointEmail = $("#health_application_contactPoint_E");
             if ($("#health_application_no_email").is(":checked")) {
-                $("#health_application_email").val("");
-                $("#health_application_email").prop("required", false);
-                $("#health_application_email").parents().first().parents().first().removeClass("has-success");
-                $("#health_application_email").parents().first().parents().first().removeClass("has-error");
-                $("#health_application_email").parents().first().parents().first().find(".error-field").remove();
-                $("#health_application_email").removeClass("has-error");
-                $("#health_application_email").prop("disabled", true);
-                $("#health_application_contactPoint_P").prop("checked", true);
-                $("#health_application_contactPoint_E").attr("disabled", true);
-                $("#health_application_contactPoint_E").parents().first().attr("disabled", true);
-                $("#health_application_contactPoint_P").parents().first().addClass("active");
-                $("#health_application_contactPoint_E").parents().first().removeClass("active");
+                $applicationEmailGroup.find("*").removeClass("has-success").removeClass("has-error");
+                $applicationEmailGroup.find(".error-field").remove();
+                $applicationEmailField.val("");
+                $applicationEmailField.prop("required", false);
+                $applicationEmailField.prop("disabled", true);
+                $contactPointPost.prop("checked", true);
+                $contactPointPost.parents().first().addClass("active");
+                $contactPointEmail.attr("disabled", true);
+                $contactPointEmail.parents(".btn-form-inverse").removeClass("active").attr("disabled", true);
+                $("#health_application_optInEmail-group").slideUp();
             } else {
-                $("#health_application_email").prop("required", true);
-                $("#health_application_email").prop("disabled", false);
-                $("#health_application_contactPoint_E").parents().first().attr("disabled", false);
-                $("#health_application_contactPoint_E").prop("disabled", false);
+                $applicationEmailField.prop("required", true);
+                $applicationEmailField.prop("disabled", false);
+                $contactPointEmail.parents(".btn-form-inverse").attr("disabled", false);
+                $contactPointEmail.prop("disabled", false);
             }
         }
         onChangeNoEmailChkBox();
@@ -513,7 +512,7 @@ var healthFunds_NIB = {
         $("#health_application_email").prop("required", true);
         $("#health_application_email").prop("disabled", false);
         $("#health_application_contactPoint_E").prop("disabled", false);
-        $("#health_application_contactPoint_E").parents().first().attr("disabled", false);
+        $("#health_application_contactPoint_E").parents(".btn-form-inverse").attr("disabled", false);
         $("#health_application_no_email").off("click.NIB");
         healthFunds._paymentDaysRender($(".health-credit-card_details-policyDay"), false);
         healthFunds._paymentDaysRender($(".health-bank_details-policyDay"), false);

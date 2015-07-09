@@ -42,14 +42,16 @@
 		<form_new:row fieldXpath="${fieldXpath}" label="Email Address" id="${name}_emailGroup">
 			<field_new:email xpath="${fieldXpath}" title="your email address" required="true" size="40" />
 			<span class="fieldrow_legend" id="${name}_emailMessage">(we'll send your confirmation here)</span>
-			<span class="health_application_no_email" style='display:none;'>
-			<field_new:checkbox xpath="${xpath}_no_email" value="N" theme=""
-								title="No email address"
-								required="false"
-								label="true" />
-
-			</span>			<field:hidden xpath="${xpath}/emailsecondary" />
+			<field:hidden xpath="${xpath}/emailsecondary" />
 			<field:hidden xpath="${xpath}/emailhistory" />
+		</form_new:row>
+
+		<c:set var="fieldXpath" value="${xpath}_no_email" />
+		<form_new:row fieldXpath="${fieldXpath}" id="${name}_noEmailGroup">
+			<field_new:checkbox xpath="${fieldXpath}" value="N"
+				title="No email address"
+				required="false"
+				label="true" />
 		</form_new:row>
 		
 		<form_new:row id="${name}_optInEmail-group" hideHelpIconCol="true">
