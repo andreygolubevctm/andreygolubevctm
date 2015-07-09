@@ -44,7 +44,8 @@
 	<div id="${name}-selection" class="${name}">
 
 	    <div class="competition-header">
-			<img src="brand/ctm/meerkat/spy_kit_banner.jpg"/>
+			<img src="brand/ctm/meerkat/spy_kit_banner.jpg" class="banner" />
+			<img src="brand/ctm/meerkat/spy_kit_banner_mobile.jpg" class="mobile-banner" />
 		</div>
 
 <div class="col-md-6 col-lg-4">
