@@ -44,17 +44,10 @@ public class SessionDataService {
 	 */
 	public AuthenticatedData getAuthenticatedSessionData(HttpServletRequest request) {
 		SessionData sessionData = getSessionDataFromSession(request);
-		if(sessionData != null){
-		return sessionData.getAuthenticatedSessionData();
+		if (sessionData != null) {
+			return sessionData.getAuthenticatedSessionData();
 		} else {
 			return null;
-	}
-	}
-
-	public void resetAuthenticatedSessionData(HttpServletRequest request) {
-		SessionData sessionData = getSessionDataFromSession(request);
-		if(sessionData != null) {
-			sessionData.resetAuthenticatedSessionData();
 		}
 	}
 
