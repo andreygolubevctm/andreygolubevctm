@@ -43,13 +43,11 @@
 	<%-- HTML --%>
 	<div id="${name}-selection" class="${name}">
 
-	<c:if test="${contentService.getContentValue(pageContext.getRequest(), 'competitionBanner') != ''}">
 	    <div class="competition-header">
-			<img src="${contentService.getContentValue(pageContext.getRequest(), 'competitionBanner')}" />
+			<img src="brand/ctm/meerkat/spy_kit_banner.jpg"/>
 		</div>
-	</c:if>
 
-<div class="col-lg-4">
+<div class="col-md-6 col-lg-4">
 	<p style="font-size:16px;line-height:22px;">Spy kit includes many devices Sergei used during mission, which can now be yours. Including:</p>
 	<ul class="items">
 		<li>One-of-a-kind decoy Sergei toy</li>
@@ -63,7 +61,7 @@
 	<p style="font-size:16px;line-height:22px;padding-bottom:20px;">If you would like to win Sergei’s old spy kit, please fill in forms.</p>
 
 </div>
-<div class="col-lg-8">
+<div class="col-md-6 col-lg-8">
 
 	<form_new:fieldset legend="">
 		<field:hidden xpath="${xpath}/cId" constantValue="${cid}" />

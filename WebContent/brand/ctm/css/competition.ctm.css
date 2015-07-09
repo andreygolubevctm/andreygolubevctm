@@ -311,6 +311,12 @@ body.competition .navbar ul li a:hover {
   text-decoration: none;
   cursor: pointer;
 }
+#logo {
+  background-image: url(../meerkat/meerkat-logo.png);
+  background-size: 432px 62px;
+  width: 432px;
+  height: 62px;
+}
 @media (max-width: 767px) {
   body.competition h1 {
     font-size: 20px;
@@ -318,32 +324,26 @@ body.competition .navbar ul li a:hover {
     border-bottom: 3px solid #000;
     margin-bottom: 20px;
   }
-  #logo img {
-    width: 260px;
-    padding-top: 10px;
-  }
   #menu-footer-menu li {
     display: block;
     padding: 5px 15px 5px 15px;
     width: 100%;
   }
 }
-#logo img {
-  background-image: url(../meerkat/meerkat-logo.png);
-  background-size: 432px 62px;
-  width: 432px;
-  height: 62px;
-}
-@media (max-width: 340px) {
+@media (max-width: 460px) {
   body.competition h1 {
     font-size: 18px;
     padding: 20px 0px 20px;
     border-bottom: 3px solid #000;
     margin-bottom: 20px;
   }
-  #logo img {
+  .navbar-header {
+    text-align: center;
+  }
+  #logo {
     width: 240px;
-    padding-top: 10px;
+    height: 34px;
+    background-size: 240px 34px;
   }
   #menu-footer-menu li {
     display: block;
