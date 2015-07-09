@@ -580,11 +580,7 @@
 						</Account>
 					</Contributions>
 					<Membership>
-						<Agency>
-							<EffDate><xsl:value-of select="$startDate" /></EffDate>
-							<AgencyID>CTM</AgencyID>
-						</Agency>
-						<!--<Group>
+						<Group>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<GroupID>
 								<xsl:choose>
@@ -593,7 +589,11 @@
 								</xsl:choose>
 							</GroupID>
 							<PayrollNo></PayrollNo>
-						</Group>-->
+						</Group>
+						<Agency>
+							<EffDate><xsl:value-of select="$startDate" /></EffDate>
+							<AgencyID>CTM</AgencyID>
+						</Agency>
 						<Site>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
 							<LocationID>HOML</LocationID>
