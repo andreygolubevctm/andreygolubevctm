@@ -656,7 +656,7 @@ function initializeNewLogging() {
     };
     window.onerror = function(message, file, line, column, error) {
         var column = column || window.event && window.event.errorCharacter;
-        var stack;
+        var stack = "";
         var url = file.substring(file.lastIndexOf("/ctm"), file.length);
         url = file.substring(file.lastIndexOf("/app"), file.length);
         if (!error) {
@@ -5729,6 +5729,7 @@ Features = {
     }
     meerkat.modules.register("datepicker", {
         init: init,
+        initModule: initDatepickerModule,
         initSeparated: initSeparatedDatepicker,
         initComponent: initComponentDatepicker,
         setDefaults: setDefaultSettings
@@ -7471,7 +7472,8 @@ Features = {
         loadingHide: loadingHide,
         gotoPath: gotoPath,
         getPreviousStepId: getPreviousStepId,
-        sessionCamRecorder: sessionCamRecorder
+        sessionCamRecorder: sessionCamRecorder,
+        unlockJourney: unlock
     });
 })(jQuery);
 
@@ -11528,6 +11530,14 @@ Features = {
         }
         return fromDate;
     }
+    function formatUKToUSDate(date) {
+        var delimiter = date.match(/(-)/) ? "-" : "/";
+        date = date.split(delimiter);
+        var day = date[0];
+        date[0] = date[1];
+        date[1] = day;
+        return date.join(delimiter);
+    }
     function getTimeAgo(date) {
         if (date instanceof Date === false) date = new Date(date);
         var seconds = Math.floor((new Date() - date) / 1e3), interval = Math.floor(seconds / 31536e3);
@@ -11553,7 +11563,8 @@ Features = {
         returnDateValue: returnDateValue,
         pluginReady: pluginReady,
         calcWorkingDays: calcWorkingDays,
-        getTimeAgo: getTimeAgo
+        getTimeAgo: getTimeAgo,
+        formatUKToUSDate: formatUKToUSDate
     });
 })(jQuery);
 
@@ -11593,7 +11604,8 @@ jQuery.fn.extend({
     }
     function isValid($element, displayErrors) {
         if (displayErrors) return $element.valid();
-        var $form = $(document).find(".journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).children("form");
+        var $journeyEngineForm = $(document).find(".journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).children("form");
+        if ($journeyEngineForm.length) $form = $journeyEngineForm; else $form = $("#mainForm");
         try {
             return $form.validate().check($element);
         } catch (e) {

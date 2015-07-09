@@ -12,6 +12,7 @@
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
 <%@ attribute fragment="true" required="true" name="body_end" %>
+<%@ attribute fragment="true" required="false" name="additional_meerkat_scripts" %>
 
 <%@ attribute fragment="true" required="false" name="header" %>
 <%@ attribute fragment="true" required="false" name="header_button_left" %>
@@ -278,6 +279,8 @@
 			</c:when>
 		</c:choose>
 
+		<%-- Additional Meerkat Scripts --%>
+		<jsp:invoke fragment="additional_meerkat_scripts" />
 		<!-- CouponId from either brochure site cookies or direct query string -->
 		<c:choose>
 			<c:when test="${not empty param.couponid}">
@@ -364,18 +367,18 @@
 
 				})(window.meerkat);
 
-				_.templateSettings = {
-				evaluate:    /\{\{(.+?)\}\}/g, // {{= console.log("blah") }}
-				interpolate: /\{\{=(.+?)\}\}/g, // {{ title }}
-				escape:      /\{\{-(.+?)\}\}/g // {{{ title }}}
-				};
+			_.templateSettings = {
+				evaluate:    /\{\{(.+?)\}\}/g, <%-- {{= console.log("blah") }} --%>
+				interpolate: /\{\{=(.+?)\}\}/g, <%-- {{ title }} --%>
+				escape:      /\{\{-(.+?)\}\}/g <%-- {{{ title }}} --%>
+			};
 
 			</script>
 
 </c:if>
 
-		<!-- Body End Fragment -->
-			<jsp:invoke fragment="body_end" />
+		<%-- Body End Fragment --%>
+		<jsp:invoke fragment="body_end" />
 		<%-- Generally VerticalSettings should be declared in a <vertical>/settings.tag file placed in the body_end fragment space. --%>
 		<script>
 

@@ -10157,6 +10157,51 @@ ul.themed > li:before {
   background-color: #ffdc11;
   color: #000000;
 }
+.btn-unsubscribe {
+  background-color: #417fd0;
+  color: #ffffff;
+}
+.btn-unsubscribe:hover,
+.btn-unsubscribe:focus {
+  background-color: #2a61aa;
+  color: #ffffff;
+  outline: 0;
+}
+.btn-unsubscribe:active,
+.btn-unsubscribe.active {
+  background-color: #1d4a82;
+  color: #ffffff;
+}
+.btn-unsubscribe-cancel {
+  background-color: #1d4a82;
+  color: #ffffff;
+}
+.btn-unsubscribe-cancel:hover,
+.btn-unsubscribe-cancel:focus {
+  background-color: #122e50;
+  color: #ffffff;
+  outline: 0;
+}
+.btn-unsubscribe-cancel:active,
+.btn-unsubscribe-cancel.active {
+  background-color: #417fd0;
+  color: #ffffff;
+}
+.btn-login {
+  background-color: #417fd0;
+  color: #ffffff;
+}
+.btn-login:hover,
+.btn-login:focus {
+  background-color: #2a61aa;
+  color: #ffffff;
+  outline: 0;
+}
+.btn-login:active,
+.btn-login.active {
+  background-color: #1d4a82;
+  color: #ffffff;
+}
 .btn-shortlist,
 .compareBar .comparisonActive .btn.compareBtn {
   background-color: #417fd0;

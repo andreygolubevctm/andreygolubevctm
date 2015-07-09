@@ -51,6 +51,20 @@ public class SessionDataService {
 	}
 	}
 
+	public void resetAuthenticatedSessionData(HttpServletRequest request) {
+		SessionData sessionData = getSessionDataFromSession(request);
+		if(sessionData != null) {
+			sessionData.resetAuthenticatedSessionData();
+		}
+	}
+
+	public void resetAuthenticatedSessionData(HttpServletRequest request) {
+		SessionData sessionData = getSessionDataFromSession(request);
+		if(sessionData != null) {
+			sessionData.resetAuthenticatedSessionData();
+		}
+	}
+
 	/**
 	 * Get the SessionData object from an HTTP session.
 	 *

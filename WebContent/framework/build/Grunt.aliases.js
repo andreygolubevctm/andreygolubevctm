@@ -1,4 +1,4 @@
-module.exports = function(grunt,brandMapping){
+module.exports = function(grunt,tools,brandMapping){
 	"use strict";
 
 /**---------------------------------------------------------------------------
@@ -67,6 +67,33 @@ module.exports = function(grunt,brandMapping){
 					/*Notification only after minified version*/ 'notify:'+brand+'_less',
 					'less:'+brand+'_notmin',
 					'less:'+brand+'_'+vertical+'_notmin'
+				]
+			);
+		});
+
+		// --------------------------------------------
+		// Component dependent actions, looped per component folder
+		// --------------------------------------------
+		tools.getComponents().forEach(function(folder) {
+			folder = "components_" + folder;
+
+			// Component JS build task.
+			grunt.registerTask('build_'+brand+'_'+folder+'_js',
+				[
+					'uglify:'+brand+'_'+folder+'_modules',
+					/*Notification only after minified version*/ 'notify:'+brand+'_js',
+					'uglify:'+brand+'_'+folder+'_modules_notmin'
+				]
+			);
+
+			// Component CSS build task.
+			grunt.registerTask('build_'+brand+'_'+folder+'_css',
+				[
+					'less:'+brand+'_'+folder,
+					'cssmetrics:'+brand+'_'+folder,
+					'csslint:'+brand+'_'+folder,
+					/*Notification only after minified version*/ 'notify:'+brand+'_less',
+					'less:'+brand+'_'+folder+'_notmin'
 				]
 			);
 		});

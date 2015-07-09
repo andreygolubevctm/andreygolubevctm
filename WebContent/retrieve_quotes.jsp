@@ -1,292 +1,124 @@
+<%--
+	Retrieve Quotes Page
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<settings:setVertical verticalCode="GENERIC" />
-<session:getAuthenticated />
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<%-- Set authenticatedData to scope of request --%>
+<session:new verticalCode="GENERIC" authenticated="${true}"/>
 
-<c:set var="xpath" value="retrieve_quotes" scope="request" />
-
-<c:set var="_hashedEmail"><c:out value="${param.hashedEmail}" escapeXml="true"/></c:set>
-<c:set var="_email"><c:out value="${param.email}" escapeXml="true"/></c:set>
+<%-- Block Save/Retrieve if it is not enabled for a brand --%>
 <c:set var="saveQuoteEnabled" scope="request">${pageSettings.getSetting('saveQuote')}</c:set>
 <c:if test="${saveQuoteEnabled == 'N'}">
-	<% response.sendError(404); %>
+    <%
+        response.sendError(404);
+        if (true) {
+            return;
+        }
+    %>
 </c:if>
 
+<%-- VARS --%>
+<c:set var="paramHashedEmail"><c:out value="${param.hashedEmail}" escapeXml="true"/></c:set>
+<c:set var="paramEmail"><c:out value="${param.email}" escapeXml="true"/></c:set>
 
-<c:if test="${not empty _hashedEmail}">
-	<security:authentication
-		emailAddress="${_email}"
-		password="${param.password}"
-		hashedEmail="${_hashedEmail}" />
+<%-- HTML --%>
+<c:choose>
+    <c:when test="${not empty paramHashedEmail}">
+        <%-- Sets userData to session scope --%>
+        <security:authentication
+                emailAddress="${paramEmail}"
+                password="${param.password}"
+                hashedEmail="${paramHashedEmail}"/>
+        <retrievequotes:redirect_with_details/>
+    </c:when>
+    <c:otherwise>
 
-	<go:setData dataVar="authenticatedData" xpath="userData/authentication/validCredentials" value="${userData.validCredentials}" />
-	<go:setData dataVar="authenticatedData" xpath="userData/authentication/emailAddress" value="${userData.emailAddress}" />
-	<go:setData dataVar="authenticatedData" xpath="userData/emailAddress" value="${userData.emailAddress}" />
-	<%--TODO: remove this once we are away from disc --%>
-	<go:setData dataVar="authenticatedData" xpath="userData/authentication/password" value="${userData.password}" />
-	<c:if test="${not empty userData && userData.validCredentials}">
-		<c:redirect url="${pageSettings.getBaseUrl()}retrieve_quotes.jsp"/>
-	</c:if>
-</c:if>
+        <%-- Are we already logged in? --%>
+        <c:set var="responseJson" scope="request" value="{}" />
+        <c:set var="isLoggedIn" value="false" scope="request" />
+        <c:if test="${not empty authenticatedData.userData && not empty authenticatedData.userData.authentication && authenticatedData.userData.authentication.validCredentials}">
+            <c:import var="responseJson" url="ajax/json/retrieve_quotes.jsp" scope="request" />
+            <c:set var="isLoggedIn" value="true" scope="request" />
+        </c:if>
 
-<core:doctype />
-<go:html>
+        <layout:journey_engine_page title="Retrieve Your Quotes">
 
+        <jsp:attribute name="head">
+            <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/components/retrievequotes.${pageSettings.getBrandCode()}.css?${revision}" media="all">
+        </jsp:attribute>
 
-	<core:head quoteType="false" title="Retrieve Your Quotes" nonQuotePage="${true}" form="retrieveQuoteForm" errorContainer="#errorContainer"/>
+        <jsp:attribute name="head_meta">
+        </jsp:attribute>
 
+        <jsp:attribute name="header">
+            <div class="navbar-collapse header-collapse-contact collapse">
+                <ul class="nav navbar-nav navbar-right">
+                </ul>
+            </div>
+        </jsp:attribute>
 
-	<body class="retrieve">
+        <jsp:attribute name="navbar">
 
-		<%-- Retrieve Quotes is not vertical specific so will remove for now until
-			Retrieve Quotes specific tagging is implemented --%>
-		<%--<agg:supertag_top type="Car" initialPageName="Retrieve Your Quotes"/>--%>
+            <ul class="nav navbar-nav" role="menu">
+                <li class="visible-xs">
+                    <span class="navbar-text-block navMenu-header">Menu</span>
+                </li>
+                <li class="slide-feature-my-quotes">
+                    <a href="javascript:;" class="btn-email"><span>My Quotes</span></a>
+                </li>
+                <li class="slide-feature-start-new-quote">
+                    <a href="javascript:;" class="btn-cta" id="new-quote"><span>Start a New Quote</span></a>
+                </li>
+            </ul>
 
-		<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
-		
-		<form:form action="retrieve_quotes.jsp" method="POST" id="retrieveQuoteForm" name="retrieveQuoteForm" autoComplete="on">
-		
-			<div id="wrapper">		
-				<form:header quoteType="false" hasReferenceNo="false" />
-				<core:referral_tracking vertical="${xpath}" />
-				<div id="headerShadow"></div>
-				
-				<div id="page">
-					<div id="content">
-						<c:choose>
-							<c:when test="${not empty authenticatedData.userData && not empty authenticatedData.userData.authentication && authenticatedData.userData.authentication.validCredentials}">
-								<c:import var="QUOTE_RESULTS_JSON" url="ajax/json/retrieve_quotes.jsp" />
-								<c:if test="${empty QUOTE_RESULTS_JSON}">
-									<core:retrieve_quotes_login/>
-								</c:if>
-							</c:when>
-							<c:otherwise>
-								<core:retrieve_quotes_login/>
-							</c:otherwise>
-						</c:choose>
-								
-						<div class="side-image"></div>
-						
-						<div id="retrieveQuoteErrors">
-							<form:error id="errorContainer" className="errorContainer" errorOffset="24" />
-						</div>
-						
-						
-						<div id="quotes" style="display:none;">
-							<h3><span id="quotesTitle">Your Quotes</span></h3>
-							<div class="full-width">
-								<div class="header">
-									<div class="quote-date-time">Quote Date</div>
-									<div class="quote-details">Details</div>
-									<div class="quote-options">Quote Options</div>
-								</div>
-								
-								<%-- AGG-818: modify to car_quote --%>
-								<core:js_template id="quote_quote">
-									<div class="quote-row" id="car_quote_[#=id#]_[#=fromDisc#]">
-										<div class="quote-date-time">
-											<span class="quote-date">[#= quoteDate #]</span>
-											<span class="quote-time">[#= quoteTime #]</span>
-											<span class="transactionId">Ref: [#= id #]</span>
-										</div>
-										
-										<div class="quote-details">
-											<span class="vehicle">[#=vehicle.year#] [#=vehicle.makeDes#] [#=vehicle.modelDes#] </span>
-											<span class="regDriver"><span class="label">Regular Driver: </span>[#=drivers.regular.name#][#=drivers.regular.age#] year old [#=drivers.regular.gender#]</span>
-											<span class="regDriverYoungest">Youngest driver is regular driver. </span>
-											<span class="youngDriver" ><span class="label">Youngest Driver Age: </span>[#=drivers.young.age#] year old [#=drivers.young.gender#]</span>
-											<span class="ncd"><span class="label">No Claims Discount: </span>[#=drivers.regular.ncd#]</span>
-										</div>
-										
-										<div class="quote-options">
-											<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest Results</span></a></div>
-											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
-										</div>
-									</div>
-								</core:js_template>
-								
-								<core:js_template id="health_quote">
-									<div class="quote-row editable[#=editable#]" id="health_quote_[#=id#]" data-pendingid="[#=pendingID#]">
-										<div class="quote-date-time">
-											<span class="quote-date">[#= quoteDate #]</span>
-											<span class="quote-time">[#= quoteTime #]</span>
-											<span class="transactionId">Ref: [#= id #]</span>
-										</div>
-										
-										<div class="quote-details">
-											<span class="title">Health Insurance Quote</span>
-											<span class="situation">Situation: [#=situation.healthCvr#] - [#=situation.healthSitu#] </span>
-											<span class="benefits"><span class="label">Benefits: </span>[#=benefits.list#]</span>
-											<span class="dependants" ><span class="label">Dependants: </span>[#=healthCover.dependants#]</span>
-											<span class="income"><span class="label">Income : </span>[#=healthCover.income#]</span>
-										</div>
-										
-										<div class="quote-options">
-											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
-											<div class="quote-start-again"><a href="javascript:void(0);" class="quote-start-again tinybtn"><span>Start Again</span></a></div>
-											<div class="quote-pending"><a href="javascript:void(0);" class="tinybtn"><span>In processing</span></a></div>
-										</div>
-									</div>
-								</core:js_template>
-								
-								<core:js_template id="life_quote">
-									<div class="quote-row" id="life_quote_[#=id#]">
-										<div class="quote-date-time">
-											<span class="quote-date">[#= quoteDate #]</span>
-											<span class="quote-time">[#= quoteTime #]</span>
-											<span class="transactionId">Ref: [#= id #]</span>
-										</div>
-										
-										<div class="quote-details">
-											<span class="title">Life Insurance Quote</span>
-											<span class="situation">Situation: [#=content.situation#]</span>
-											<span class="term"><span class="label">Term Life Cover: $</span>[#=content.term#]</span>
-											<span class="tpd"><span class="label">TPD Cover: $</span>[#=content.tpd#]</span>
-											<span class="trauma"><span class="label">Trauma Cover: $</span>[#=content.trauma#]</span>
-											<span class="premium"><span class="label">Premium: </span>[#=content.premium#]</span>
-										</div>
-										
-										<div class="quote-options">
-											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest Results</span></a></div> -->
-											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
-										</div>
-									</div>
-								</core:js_template>
-								
-								<core:js_template id="ip_quote">
-									<div class="quote-row" id="ip_quote_[#=id#]">
-										<div class="quote-date-time">
-											<span class="quote-date">[#= quoteDate #]</span>
-											<span class="quote-time">[#= quoteTime #]</span>
-											<span class="transactionId">Ref: [#= id #]</span>
-										</div>
-										
-										<div class="quote-details">
-											<span class="title">Income Protection Insurance Quote</span>
-											<span class="situation">Situation: [#=content.situation#]</span>
-											<span class="income"><span class="label">Income: $</span>[#=content.income#]</span>
-											<span class="amount"><span class="label">Benefit Amount: $</span>[#=content.amount#]</span>
-											<span class="premium"><span class="label">Premium: </span>[#=content.premium#]</span>
-										</div>
-										
-										<div class="quote-options">
-											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest Results</span></a></div> -->
-											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
-										</div>
-									</div>
-								</core:js_template>
-								
-								<core:js_template id="utilities_quote">
-									<div class="quote-row" id="utilities_quote_[#=id#]">
-										<div class="quote-date-time">
-											<span class="quote-date">[#= quoteDate #]</span>
-											<span class="quote-time">[#= quoteTime #]</span>
-											<span class="transactionId">Ref: [#= id #]</span>
-										</div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="slide-feature-logout ">
+                    <a href="javascript:;" class="btn-cta" id="logout-user"><span>Logout</span></a>
+                </li>
+            </ul>
 
-										<div class="quote-details">
-											<span class="title">Energy Comparison</span>
-											<span class="quote-postcode"><span class="label">Postcode: </span>[#=estimateDetails.estimateLocation#]</span>
-											<span class="quote-comparing"><span class="label">Comparing: </span>[#=estimateDetails.estimateType#]</span>
-											<span class="quote-estimated-using"><span class="label">Estimated using: </span>[#=estimateDetails.howEstimated#]</span>
-										</div>
-
-										<div class="quote-options">
-											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest Results</span></a></div> -->
-											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
-										</div>
-									</div>
-								</core:js_template>
-
-								<core:js_template id="home_contents_quote">
-									<div class="quote-row" id="home_quote_[#=id#]">
-										<div class="quote-date-time">
-											<span class="quote-date">[#= quoteDate #]</span>
-											<span class="quote-time">[#= quoteTime #]</span>
-											<span class="transactionId">Ref: [#= id #]</span>
-										</div>
-
-										<div class="quote-details">
-											<span class="title">Home and Contents Insurance Quote</span>
-											<span class="address">Address: [#=property.address.fullAddress#]</span>
-											<span class="homeValue"><span class="label">Home Value: </span>[#=coverAmounts.rebuildCostentry#]</span>
-											<span class="contentsValue"><span class="label">Contents Value: </span>[#=coverAmounts.replaceContentsCostentry#]</span>
-<!-- 											<span class="premium"><span class="label">Premium: </span>[#=content.premium#]</span> -->
-										</div>
-
-										<div class="quote-options">
-											<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest Results</span></a></div>
-											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
-										</div>
-									</div>
-								</core:js_template>
-
-								<core:js_template id="homeloan_quote">
-									<div class="quote-row" id="homeloan_quote_[#=id#]">
-										<div class="quote-date-time">
-											<span class="quote-date">[#= quoteDate #]</span>
-											<span class="quote-time">[#= quoteTime #]</span>
-											<span class="transactionId">Ref: [#= id #]</span>
-										</div>
-
-										<div class="quote-details">
-											<span class="title">Homeloan Quote</span>
-											<span class="address">Address: [#=details.location#]</span>
-											<span class="address">[#=details.situationText#] looking to [#=details.goalText#]</span>
-											<span class="address">Purchase Price: [#=loanDetails.purchasePriceentry#]</span>
-											<span class="address">Loan Amount: [#=loanDetails.loanAmountentry#]</span>
-										</div>
-
-										<div class="quote-options">
-											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
-										</div>
-									</div>
-								</core:js_template>
-
-								<div class="content">
-									<div id="quote-list"></div>	
-									<div id="quote-list-empty" style="display:none">Unfortunately we cannot find any saved quotes for your email address</div>
-								</div>
-								<div class="footer"> </div>
-							</div>
-							<div class="side-image-results"></div>
-						</div>		
-					</div>			
-				</div>
-				 
-				
-			</div>
-			
-		</form:form>
-		
-		<agg:generic_footer />
-
-		<core:closing_body>
-			<agg:includes kampyle="false" sessionPop="false" supertag="false" />
-			<core:retrieve_quotes/>
-							
-		<go:script marker="onready">
+        </jsp:attribute>
 
 
+        <jsp:attribute name="form_bottom">
+        </jsp:attribute>
 
-			<c:choose>
-				<c:when test="${not empty QUOTE_RESULTS_JSON}">
+        <jsp:attribute name="footer">
+            <core:whitelabeled_footer />
+        </jsp:attribute>
 
-					var jsonResult = ${QUOTE_RESULTS_JSON};
-					Retrieve.handleJSONResults(jsonResult);
-				</c:when>
-				<c:otherwise>
+        <jsp:attribute name="vertical_settings">
+            <retrievequotes:settings />
+        </jsp:attribute>
 
+            <jsp:attribute name="body_end"></jsp:attribute>
 
-					Retrieve.showPanel("login");
+            <jsp:attribute name="additional_meerkat_scripts">
+                <script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/components/retrievequotes.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+        </jsp:attribute>
 
-				</c:otherwise>
-			</c:choose>
-		</go:script>
+            <jsp:body>
 
-		</core:closing_body>
+                <retrievequotes_layout:slide_login />
+                <retrievequotes_layout:slide_quotes />
 
-	</body>
-</go:html>
+                <div class="hiddenFields">
+                    <form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
+                    <core:referral_tracking vertical="retrieve_quotes"/>
+                </div>
+
+                <input type="hidden" name="transcheck" id="transcheck" value="1"/>
+
+            </jsp:body>
+
+        </layout:journey_engine_page>
+
+    </c:otherwise>
+</c:choose>
+
+<core:js_template id="new-quote-template">
+    <h2>Start a New Quote</h2>
+    <br>
+    <confirmation:other_products />
+</core:js_template>

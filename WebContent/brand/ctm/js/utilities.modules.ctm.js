@@ -285,9 +285,9 @@
         });
     }
     function fillTemplate(obj) {
-        var confirmationTemplate = $("#confirmation-template").html();
+        var confirmationTemplate = $("#confirmation-template");
         if (confirmationTemplate.length) {
-            var htmlTemplate = _.template(confirmationTemplate);
+            var htmlTemplate = _.template(confirmationTemplate.html());
             var htmlString = htmlTemplate(obj);
             $("#confirmation").html(htmlString);
         }
