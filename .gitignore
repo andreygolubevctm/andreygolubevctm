@@ -1,0 +1,17 @@
+/*.sublime-project
+/*.sublime-workspace
+/.classpath
+/.externalToolBuilders
+/.idea
+/.project
+/.settings
+/build
+/lib
+/log
+/node_modules
+/out
+/target
+/*.eml
+/*.iml
+
+*.Thumbs.db
