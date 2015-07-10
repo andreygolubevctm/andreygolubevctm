@@ -120,8 +120,8 @@
 	}
 
 	function returnDateValue(_date){
-		var _dayString = leadingZero( _date.getDate() );
-		var _monthString = leadingZero( _date.getMonth() + 1 );
+		var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
+		var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
 		return _date.getFullYear() +'-'+ _monthString +'-'+ _dayString;
 	}
 

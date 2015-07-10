@@ -6,26 +6,26 @@
 ////////////////////////////////////////////////////////////
 /*
 
-USAGE EXAMPLE: Call directly
+ USAGE EXAMPLE: Call directly
 
-		// Open the modal
-		var modalId = meerkat.modules.dialogs.show({
-			htmlContent: '<p>Hello!</p>',
-			buttons: [{
-				label: 'Close',
-				className: 'btn-cancel',
-				closeWindow: true
-			}],
-			onOpen: function(id) {
-				// Switch content
-				meerkat.modules.dialogs.changeContent(id, '<iframe src="ajax/html/example.jsp"></iframe>');
-			}
-		});
+ // Open the modal
+ var modalId = meerkat.modules.dialogs.show({
+ htmlContent: '<p>Hello!</p>',
+ buttons: [{
+ label: 'Close',
+ className: 'btn-cancel',
+ closeWindow: true
+ }],
+ onOpen: function(id) {
+ // Switch content
+ meerkat.modules.dialogs.changeContent(id, '<iframe src="ajax/html/example.jsp"></iframe>');
+ }
+ });
 
-		// Close and destroy the modal
-		meerkat.modules.dialogs.close(modalId);
+ // Close and destroy the modal
+ meerkat.modules.dialogs.close(modalId);
 
-*/
+ */
 
 ;(function($, undefined){
 
@@ -64,59 +64,8 @@ USAGE EXAMPLE: Call directly
 			openOnHashChange: true,
 			fullHeight: false, // By default, a modal shorter than the viewport will be centred. Set to true to vertically fill the viewport.
 			templates: {
-				dialogWindow: '<div id="{{= id }}" class="modal" tabindex="-1" role="dialog" aria-labelledby="{{= id }}_title" aria-hidden="true"{{ if(fullHeight===true){ }} data-fullheight="true"{{ } }}>' +
-						'<div class="modal-dialog {{= className }}">' +
-
-							'<div class="modal-content">' +
-								'<div class="modal-closebar">' +
-								'	<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>' +
-								'</div>' +
-								'<div class="navbar navbar-default xs-results-pagination visible-xs">' +
-									'<div class="container">' +
-										'<ul class="nav navbar-nav">' +
-											'<li>' +
-												'<button data-button="leftBtn" class="btn btn-back {{= leftBtn.className }}">{{= leftBtn.icon }} {{= leftBtn.label }}</button>' +
-											'</li>' +
-											'<li class="navbar-text modal-title-label">' +
-											'	{{= title }}' +
-											'</li>' +
-											'{{ if(rightBtn.label != "" || rightBtn.icon != "") { }}' +
-												'<li class="right">' +
-													'<button data-button="rightBtn" class="btn btn-save {{= rightBtn.className }}">{{= rightBtn.label }} {{= rightBtn.icon }}</button>' +
-												'</li>' +
-											'{{ } }}' +
-										'</ul>' +
-									'</div>' +
-								'</div>' +
-								'{{ if(title != "" || tabs.length > 0 || htmlHeaderContent != "" ) { }}' +
-								'<div class="modal-header">' +
-									'{{ if (tabs.length > 0) { }}' +
-										'<ul class="nav nav-tabs tab-count-{{= tabs.length }}">' +
-											'{{ _.each(tabs, function(tab, iterator) { }}' +
-												'<li><a href="javascript:;" data-target="{{= tab.targetSelector }}" title="{{= tab.xsTitle }}">{{= tab.title }}</a></li>' +
-											'{{ }); }}' +
-										'</ul>' +
-									'{{ } else if(title != "" ){ }}' +
-										'<h4 class="modal-title hidden-xs" id="{{= id }}_title">{{= title }}</h4>' +
-									'{{ } else if(htmlHeaderContent != "") { }}' +
-										'{{= htmlHeaderContent }}' +
-									'{{ } }}' +
-								'</div>' +
-								'{{ } }}' +
-								'<div class="modal-body">' +
-									'{{= htmlContent }}' +
-								'</div>' +
-								'{{ if(typeof buttons !== "undefined" && buttons.length > 0 ){ }}' +
-									'<div class="modal-footer {{ if(buttons.length > 1 ){ }} mustShow {{ } }}">' +
-										'{{ _.each(buttons, function(button, iterator) { }}' +
-											'<button data-index="{{= iterator }}" type="button" class="btn {{= button.className }} ">{{= button.label }}</button>' +
-										'{{ }); }}' +
-									'</div>' +
-								'{{ } }}' +
-							'</div>' +
-						'</div>' +
-					'</div>'
-					},
+				dialogWindow:
+					''},
 			/*jshint +W112 */
 			onOpen: function(dialogId) {},
 			onClose: function(dialogId) {},
@@ -413,10 +362,12 @@ USAGE EXAMPLE: Call directly
 	}
 
 	// Initialise Dev helpers
+	// Set up touch events on touch devices
 	function initDialogs() {
-
-		// Set up touch events on touch devices
 		$(document).ready(function() {
+			$.get('common/templates/core/dialogs.mst', function(template) {
+				defaultSettings.templates.dialogWindow = template;
+			});
 
 			// Bind the default close button
 			$(document).on('click', '.btn-close-dialog', function() {
