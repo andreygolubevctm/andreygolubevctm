@@ -27,6 +27,9 @@
 <c:set var="quoteAuthor" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "quoteAuthor")}' />
 <c:set var="quoteAuthor" value="${quoteAuthor.getSupplementaryValueByKey(selectQuote)}" />
 
+<%-- Set global variable to flags for active split tests --%>
+<car:splittest_helper />
+
 <%-- HTML --%>
 <layout:journey_engine_page title="Car Quote">
 
@@ -37,6 +40,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
+		<car:snapshot label="Vehicle Quoted" className="hidden-xs"/>
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar">
@@ -197,10 +201,20 @@
 		</div>
 	
 		<%-- Slides --%>
-		<car_layout:slide_your_car />
-		<car_layout:slide_options />
-		<car_layout:slide_your_details />
-		<car_layout:slide_your_address />
+		<c:choose>
+			<c:when test="${showRegoLookupContent eq true}">
+				<car_layout:slide_your_car_lookup />
+				<car_layout:slide_options_lookup />
+				<car_layout:slide_your_details_lookup />
+				<car_layout:slide_your_address_lookup />
+			</c:when>
+			<c:otherwise>
+				<car_layout:slide_your_car />
+				<car_layout:slide_options />
+				<car_layout:slide_your_details />
+				<car_layout:slide_your_address />
+			</c:otherwise>
+		</c:choose>
 		<car_layout:slide_results />
 
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />

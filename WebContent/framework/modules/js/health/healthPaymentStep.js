@@ -116,6 +116,7 @@
 		$paymentContainer.hide();
 		$("#health_declaration-selection").hide();
 		$("#confirm-step").hide();
+		$(".simples-dialogue-31").hide();
 
 		$('#update-premium').removeClass("hasAltPremium"); // TODO WORK OUT ALT PREMIUM STUFF
 
@@ -362,6 +363,7 @@
 					updatePaymentDayOptions();
 
 					$("#confirm-step").show();
+					$(".simples-dialogue-31").show();
 
 					// TODO work out this: //Results._refreshSimplesTooltipContent($('#update-premium .premium'));
 				}
