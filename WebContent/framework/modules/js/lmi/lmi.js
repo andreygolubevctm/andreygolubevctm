@@ -138,6 +138,7 @@
             slideIndex : 1,
             onInitialise: function onResultsInit(event) {
                 meerkat.modules.lmiResults.initPage();
+                meerkat.modules.showMoreQuotesPrompt.initPromptBar();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 // shouldn't do much of this when returning from enquire
@@ -150,6 +151,10 @@
             onAfterEnter: function afterEnterResults(event) {
                 if (event.isForward === true) {
                     meerkat.modules.lmiResults.get();
+                }
+            }, onAfterLeave: function(event) {
+                if(event.isBackward) {
+                    meerkat.modules.showMoreQuotesPrompt.disablePromptBar();
                 }
             }
         };

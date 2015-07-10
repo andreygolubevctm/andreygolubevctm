@@ -43,7 +43,9 @@
         </div>
 
         <div class="resultsOverflow">
-            <div class="results-table"></div>
+            <div class="results-table">
+                <core_new:show_more_quotes_button />
+            </div>
         </div>
 
         <core:clear />

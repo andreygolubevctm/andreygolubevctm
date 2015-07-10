@@ -81,6 +81,7 @@
             onInitialise: function onResultsInit(event) {
                 meerkat.modules.roadsideResults.initPage();
                 meerkat.modules.roadsideMoreInfo.initMoreInfo();
+                meerkat.modules.showMoreQuotesPrompt.initPromptBar();
                 meerkat.modules.roadsideSorting.initSorting();
                 meerkat.modules.partnerTransfer.initTransfer();
             },
@@ -95,7 +96,11 @@
                     meerkat.modules.roadsideResults.get();
                 }
             },
-            onAfterLeave: function(event) {}
+            onAfterLeave: function(event) {
+                if (event.isBackward) {
+                    meerkat.modules.showMoreQuotesPrompt.disablePromptBar();
+                }
+            }
         };
         steps = {
             startStep: startStep,

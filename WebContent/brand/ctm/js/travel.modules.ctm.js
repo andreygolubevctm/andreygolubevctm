@@ -283,7 +283,7 @@
                 meerkat.modules.travelResults.initPage();
                 meerkat.modules.travelSummaryText.initSummaryText();
                 meerkat.modules.travelMoreInfo.initMoreInfo();
-                meerkat.modules.travelMorePrompt.initTravelMorePrompt();
+                meerkat.modules.showMoreQuotesPrompt.initPromptBar();
                 meerkat.modules.travelSorting.initSorting();
                 meerkat.modules.partnerTransfer.initTransfer();
                 meerkat.modules.travelCoverLevelTabs.initTravelCoverLevelTabs();
@@ -300,7 +300,7 @@
             },
             onAfterLeave: function(event) {
                 if (event.isBackward) {
-                    meerkat.modules.travelMorePrompt.disablePromptBar();
+                    meerkat.modules.showMoreQuotesPrompt.disablePromptBar();
                 }
             }
         };
@@ -679,6 +679,15 @@
             verticalMapping: tabMapping()
         };
         meerkat.modules.coverLevelTabs.initCoverLevelTabs(options);
+        $(document).ready(function() {
+            meerkat.messaging.subscribe(meerkatEvents.coverLevelTabs.CHANGE_COVER_TAB, function onTabChange(eventObject) {
+                if (eventObject.activeTab == "D") {
+                    meerkat.modules.showMoreQuotesPrompt.disableForCoverLevelTabs();
+                } else {
+                    meerkat.modules.showMoreQuotesPrompt.resetForCoverLevelTabs();
+                }
+            });
+        });
     }
     function tabMapping() {
         return {
@@ -942,134 +951,6 @@
         events: events,
         runDisplayMethod: runDisplayMethod,
         arraySort: arraySort
-    });
-})(jQuery);
-
-(function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $morePrompt, $morePromptLink, $morePromptIcons, $morePromptTextLink, promptInit = false, goToBottomText = "Go to Bottom", goToTopText = "Go to Top", scrollTo = "bottom", scrollBottomAnchor, disablePrompt = false, isXs = false;
-    function initPrompt() {
-        scrollTo = "bottom";
-        isXs = meerkat.modules.deviceMediaState.get() == "xs";
-        $(document).ready(function() {
-            if (!promptInit) {
-                applyEventListeners();
-            }
-            eventSubscriptions();
-            resetMorePromptBar();
-        });
-    }
-    function applyEventListeners() {
-        $morePrompt.fadeIn("slow");
-        promptInit = true;
-        $(document.body).on("click", ".morePromptLink", function() {
-            var $footer = $("#footer"), contentBottom = 0;
-            if (scrollTo == "bottom") {
-                contentBottom = $footer.offset().top - $(window).height();
-            }
-            resetScrollBottomAnchorElement();
-            $("body,html").stop(true, true).animate({
-                scrollTop: contentBottom
-            }, 1e3, "linear");
-        });
-    }
-    function eventSubscriptions() {
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function breakPointChange() {
-            isXs = meerkat.modules.deviceMediaState.get() == "xs";
-            if (!disablePrompt) {
-                resetMorePromptBar();
-                _.defer(setPromptBottomPx);
-            }
-        });
-        if (typeof meerkatEvents.coverLevelTabs !== "undefined") {
-            meerkat.messaging.subscribe(meerkatEvents.coverLevelTabs.CHANGE_COVER_TAB, function onTabChange(eventObject) {
-                if (eventObject.activeTab == "D") {
-                    $morePrompt.hide();
-                    disablePrompt = true;
-                } else {
-                    resetScrollBottomAnchorElement();
-                    resetMorePromptBar();
-                    $morePrompt.removeAttr("style");
-                    disablePrompt = false;
-                    setPromptBottomPx();
-                }
-            });
-        }
-        $(document).on("results.view.animation.end", function() {
-            resetScrollBottomAnchorElement();
-        });
-        meerkat.messaging.subscribe(meerkatEvents.RESIZE_DEBOUNCED, function(obj) {
-            resetScrollBottomAnchorElement();
-        });
-        $(window).off("scroll.viewMorePrompt").on("scroll.viewMorePrompt", function() {
-            setPromptBottomPx();
-        });
-    }
-    function setPromptBottomPx() {
-        if (disablePrompt || typeof scrollBottomAnchor == "undefined" || !scrollBottomAnchor.length) {
-            return;
-        }
-        var docHeight = $(document).height(), windowHeight = $(window).height();
-        var anchorOffsetTop = scrollBottomAnchor.offset().top + scrollBottomAnchor.outerHeight(true) + 15;
-        var anchorViewportOffsetTop = anchorOffsetTop - $(document).scrollTop();
-        var anchorFromBottom = docHeight - (docHeight - anchorOffsetTop);
-        var currentHeight = anchorFromBottom - windowHeight;
-        if (currentHeight <= $(this).scrollTop()) {
-            if (!isXs) {
-                var setHeightFromBottom = windowHeight - anchorViewportOffsetTop;
-                $(".morePromptLink").css("bottom", setHeightFromBottom + "px");
-            }
-            if (scrollTo != "top") {
-                toggleArrow("up");
-            }
-        } else {
-            $(".morePromptLink").css("bottom", 0);
-            if (scrollTo != "bottom") {
-                toggleArrow("down");
-            }
-        }
-    }
-    function resetScrollBottomAnchorElement() {
-        scrollBottomAnchor = $("div.results-table .available.notfiltered").last();
-    }
-    function resetMorePromptBar() {
-        _.defer(function() {
-            resetScrollBottomAnchorElement();
-            toggleArrow("down");
-            $morePrompt.removeAttr("style");
-        });
-    }
-    function toggleArrow(direction) {
-        switch (direction) {
-          case "up":
-            scrollTo = "top";
-            $morePromptTextLink.html(goToTopText);
-            $morePromptIcons.removeClass("icon-angle-down").addClass("icon-angle-up");
-            break;
-
-          default:
-            scrollTo = "bottom";
-            $morePromptTextLink.html(goToBottomText);
-            $morePromptIcons.removeClass("icon-angle-up").addClass("icon-angle-down");
-            break;
-        }
-    }
-    function disablePromptBar() {
-        $(window).off("scroll.viewMorePrompt");
-        $morePrompt.hide();
-    }
-    function initTravelMorePrompt() {
-        $morePrompt = $(".morePromptContainer");
-        $morePromptLink = $(".morePromptContainer");
-        $morePromptIcons = $morePrompt.find(".icon");
-        $morePromptTextLink = $morePrompt.find(".morePromptLinkText");
-        meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, function morePromptCallBack() {
-            initPrompt();
-        });
-    }
-    meerkat.modules.register("travelMorePrompt", {
-        initTravelMorePrompt: initTravelMorePrompt,
-        resetMorePromptBar: resetMorePromptBar,
-        disablePromptBar: disablePromptBar
     });
 })(jQuery);
 
