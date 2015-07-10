@@ -15,26 +15,27 @@
 <c:choose>
 	<c:when test="${lifeService.isValid()}">
 		<c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
-
-<%-- First check owner of the quote --%>
-<c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
-<c:choose>
-	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
+		
+		<%-- First check owner of the quote --%>
+		<c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
+		<c:choose>
+			<c:when test="${not empty proceedinator and proceedinator > 0}">
+				<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
 
 				<c:set var="tranId" value="${data.current.transactionId}" />
 
-		<c:choose>
+				<c:choose>
 					<c:when test="${lifeService.isValid()}">
-		<%-- Save client data --%>
+						<%-- Save client data --%>
 						<c:choose>
 							<c:when test="${not empty param.company and param.company eq 'ozicare'}">
-								
 								<jsp:useBean id="AGISLeadFromRequest" class="com.ctm.services.life.AGISLeadFromRequest" scope="page" />
 								<c:set var="paramCompany"><c:out value="${param.company}" /></c:set>
 								<go:setData dataVar="data" xpath="lead/company" value="${paramCompany}" />
 								<c:set var="paramLeadNumber"><c:out value="${param.lead_number}" /></c:set>
 								<go:setData dataVar="data" xpath="lead/leadNumber" value="${paramLeadNumber}" />
+								<c:set var="paramPartnerBrand"><c:out value="${param.partnerBrand}" /></c:set>
+								<go:setData dataVar="data" xpath="lead/brand" value="${paramPartnerBrand}" />
 								<c:set var="leadResultStatus" value="${AGISLeadFromRequest.newLeadFeed(pageContext.request, pageSettings, data.current.transactionId)}" />
 								
 								<c:if test="${leadResultStatus eq 'OK'}">
@@ -94,6 +95,9 @@
 						
 								<%-- Add the results to the current session data --%>
 								<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+
+								<%-- Record lead feed touch event --%>
+								<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "CB", leadSentTo)}</c:set>
 						
 								<go:log level="DEBUG" source="life_request_call">${resultXml}</go:log>
 								<go:log level="DEBUG" source="life_request_call">${debugXml}</go:log>
@@ -103,21 +107,20 @@
 						<c:set var="leadSentTo" value="${not empty param.company and param.company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
 						<go:setData dataVar="data" xpath="current/transactionId" value="${data.current.transactionId}" />
 						<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" /></c:set>
-						<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "CB", leadSentTo)}</c:set>
-	</c:when>
-	<c:otherwise>
-				<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
+					</c:when>
+					<c:otherwise>
+						<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
+					</c:otherwise>
+				</c:choose>
+			</c:when>
+			<c:otherwise>
+				<c:set var="resultXml">
+					<error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
+				</c:set>
+				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 			</c:otherwise>
 		</c:choose>
-	</c:when>
-	<c:otherwise>
-		<c:set var="resultXml">
-			<error><core:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
-		</c:set>
-		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-	</c:otherwise>
-</c:choose>
-${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 	</c:when>
 	<c:otherwise>
 		${serviceRespone}
