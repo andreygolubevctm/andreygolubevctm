@@ -140,9 +140,9 @@
 (function($, undefined) {
     var $checkboxes;
     function initLmiForm() {
-        _registerEventListeners();
         $(document).ready(function() {
             $checkboxes = $("#startForm input[type='checkbox']");
+            _registerEventListeners();
         });
     }
     function _registerEventListeners() {
