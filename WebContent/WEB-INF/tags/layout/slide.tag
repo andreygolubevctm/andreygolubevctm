@@ -14,9 +14,14 @@
 <%@ attribute name="nextStepId" 	required="false"	description="Step ID that the next button should point to"%>
 <%@ attribute name="offsetRight" 	required="false"	description="Full width slide offset button to right"%>
 
-<c:if test="${offsetRight == true}">
-	<c:set var="offset" value="col-sm-offset-4 " />
-</c:if>
+<c:choose>
+<c:when test="${offsetRight == true}">
+	<c:set var="offset" value="col-sm-offset-1 col-md-offset-4 " />
+</c:when>
+<c:otherwise>
+	<c:set var="offset" value="" />
+</c:otherwise>
+</c:choose>
 
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionEnabled" value="${false}" />
