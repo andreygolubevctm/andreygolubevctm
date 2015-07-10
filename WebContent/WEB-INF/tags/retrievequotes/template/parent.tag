@@ -16,8 +16,6 @@
 
     {{ var quotesList = obj.previousQuotes.result; }}
 
-    {{ console.log(quotesList) }}
-
     <%-- For each saved quote, render the template --%>
     {{ for(var i = 0; i < quotesList.length; i++) { }}
 
