@@ -1,5 +1,5 @@
 /** Updater **/
-CREATE TABLE `rego_lookup_usage` (
+CREATE TABLE ctm.`rego_lookup_usage` (
   `regoLookupId` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `regoLookupDatetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `regoLookupPlate` varchar(10) NOT NULL,
@@ -16,4 +16,8 @@ CREATE TABLE `rego_lookup_usage` (
 SHOW TABLES FROM `ctm` LIKE 'rego_lookup_usage';
 
 /** Rollback **/
+/*
+
 DROP TABLE IF EXISTS ctm.rego_lookup_usage;
+
+*/
