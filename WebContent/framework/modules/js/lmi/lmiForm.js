@@ -3,10 +3,11 @@
     var $checkboxes;
 
     function initLmiForm() {
-        _registerEventListeners();
+
 
         $(document).ready(function() {
             $checkboxes = $("#startForm input[type='checkbox']");
+            _registerEventListeners();
         });
     }
 

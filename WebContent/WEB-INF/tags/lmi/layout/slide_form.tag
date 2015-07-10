@@ -31,9 +31,10 @@
                 <h4>Compare features</h4>
 
                 <p>Simply select the Insurance providers you want to compare products for and start comparing features.
-                    <br/>You can choose up to <strong>12 providers</strong> to compare.</p>
+                 </p>
+                <p>You can choose up to <strong>12 providers</strong> to compare.</p>
 
-                <p>&nbsp;</p>
+                <p class="hidden-xs hidden-sm">&nbsp;</p>
             </ui:bubble>
         </jsp:body>
 
@@ -41,7 +42,7 @@
     <div class="row brand-selector">
         <layout:slide_content>
             <div class="col-xs-12 col-md-4 brand-compare-price">
-                <h2>Brands we compare on price & features</h2>
+                <h2>Brands we compare on price & features<span class="hidden-lg hidden-md"><br />&nbsp;</span></h2>
 
                 <div class="children">
                     <lmi:brand_selections comparePrice="${true}"/>
