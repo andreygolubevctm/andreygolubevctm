@@ -278,7 +278,6 @@
 			return ((dateValueA < dateValueB) ? 1 : ((dateValueA > dateValueB) ? -1 : 0));
 		},
 		showQuotes : function(quotes) {
-			// quotes=jsonResult.previousQuotes.result
 			if(quotes.sort) {
 				quotes.sort(Retrieve._compareDateTime);
 			}

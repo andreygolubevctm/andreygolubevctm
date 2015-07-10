@@ -43,27 +43,26 @@
 	<%-- HTML --%>
 	<div id="${name}-selection" class="${name}">
 
-	<c:if test="${contentService.getContentValue(pageContext.getRequest(), 'competitionBanner') != ''}">
 	    <div class="competition-header">
-			<img src="${contentService.getContentValue(pageContext.getRequest(), 'competitionBanner')}" />
+			<img src="brand/ctm/meerkat/spy_kit_banner.jpg" class="banner" />
+			<img src="brand/ctm/meerkat/spy_kit_banner_mobile.jpg" class="mobile-banner" />
 		</div>
-	</c:if>
 
-<div class="col-lg-4">
+<div class="col-md-6 col-lg-4">
 	<p style="font-size:16px;line-height:22px;">Spy kit includes many devices Sergei used during mission, which can now be yours. Including:</p>
 	<ul class="items">
 		<li>One-of-a-kind decoy Sergei toy</li>
 		<li>Walkie talkies</li>
 		<li>Stethoscopamajig</li>
 		<li>“World’s greatest spykat” mug</li>
-		<li>Spy costume</li>
+		<li>Spy bow tie</li>
 		<li>Fancy video recording pen</li>
 		<li>Tiny safe, for safe keeping</li>
 	</ul>
 	<p style="font-size:16px;line-height:22px;padding-bottom:20px;">If you would like to win Sergei’s old spy kit, please fill in forms.</p>
 
 </div>
-<div class="col-lg-8">
+<div class="col-md-6 col-lg-8">
 
 	<form_new:fieldset legend="">
 		<field:hidden xpath="${xpath}/cId" constantValue="${cid}" />
@@ -80,7 +79,7 @@
 			<field:person_name xpath="${xpath}/lastName" title="last name" required="true" />
 		</form_new:row>
 
-		<form_new:row label="Your email address" className="clear email-row">
+		<form_new:row label="Email" className="clear email-row">
 			<field_new:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>
 		</form_new:row>
 
@@ -110,7 +109,7 @@
 				required="true"
 				label="${true}"
 				title="${label}"
-				errorMsg="Please confirm you have read the privacy policy" />
+				errorMsg="Please confirm you have read the T&Cs and privacy policy" />
 		</form_new:row>
 		<%--	</c:otherwise>
 		</c:choose>--%>
