@@ -30,7 +30,7 @@
 			className="pretty_buttons"
 			id="marketing"
 			title="if you would like to be informed via email of news and other offers" />
-		<p class="optinText"><content:get key="okToEmail" /></p>
+		<content:optin key="okToEmail"/>
 	</form_new:row>
 
 	<%-- Best Contact Number --%>

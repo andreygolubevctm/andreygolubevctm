@@ -565,17 +565,17 @@ So it's going to be done progressively. Include this file in your framework.buil
 }
 @media (min-width: 768px) {
   .health .featuresMode .resultsOverflow {
-    width: 536px;
+    width: 535px;
   }
 }
 @media (min-width: 992px) {
   .health .featuresMode .resultsOverflow {
-    width: 779px;
+    width: 778px;
   }
 }
 @media (min-width: 1200px) {
   .health .featuresMode .resultsOverflow {
-    width: 949px;
+    width: 948px;
   }
 }
 .health .featuresMode .labelInColumn {
@@ -2959,6 +2959,7 @@ button .simples-dialogue h3:after {
 .health-bank_details,
 #update-content,
 #confirm-step,
+.simples-dialogue-31,
 .health-payment-details_premium,
 .health_declaration,
 .health-payment-details_update,
@@ -3009,6 +3010,9 @@ body.health_payment_gateway-active #health_payment_gateway-content {
   display: none !important;
 }
 .health_dependant_details_maritalincomestatus {
+  display: none;
+}
+#health_application_noEmailGroup {
   display: none;
 }
 /* HEALTH FUND SPECIFIC CSS CODES */
@@ -3148,7 +3152,8 @@ body.NIB .health_previous_fund_authority,
 body.NIB .health_person-details_authority_group,
 body.NIB .health_bank-details_policyDay-group,
 body.NIB .health_credit-card-details_policyDay-group,
-body.NIB .health-payment_details-claims-group {
+body.NIB .health-payment_details-claims-group,
+body.NIB #health_application_noEmailGroup {
   display: block !important;
 }
 body.NIB .health_declaration,

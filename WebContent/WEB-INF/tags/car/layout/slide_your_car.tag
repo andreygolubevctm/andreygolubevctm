@@ -13,13 +13,9 @@
 		</jsp:attribute>
 
 		<jsp:body>
-
 			<layout:slide_content>
-
 				<car:vehicle_selection xpath="${xpath}/vehicle" />
-
 			</layout:slide_content>
-
 		</jsp:body>
 
 	</layout:slide_columns>

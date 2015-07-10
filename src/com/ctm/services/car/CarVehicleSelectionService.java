@@ -32,6 +32,29 @@ public class CarVehicleSelectionService {
 	 * @return JSON string
 	 */
 	public static JSONObject getVehicleSelection(String makeCode, String modelCode, String yearCode, String bodyCode, String transmissionCode, String fuelCode) {
+		try {
+			return new JSONObject(objectMapper.writeValueAsString(
+				getVehicleSelectionMap(makeCode, modelCode, yearCode, bodyCode, transmissionCode, fuelCode)
+			));
+		} catch (JsonProcessingException | JSONException e) {
+			String message = "Could not get VehicleSelection for make:" + makeCode + " + model:" + modelCode + " + year:" + yearCode + " + body:" + bodyCode + " + trans:" + transmissionCode + " + fuel:" + fuelCode;
+			logger.error(message, e);
+			throw new ServiceException(message, e);
+		}
+	}
+
+	/**
+	 * Build up a full dataset to populate vehicle selection.
+	 *
+	 * @param makeCode Make code e.g. HOLD
+	 * @param modelCode Model code e.g. FORESTE
+	 * @param yearCode Year code e.g. 2005
+	 * @param bodyCode Body code e.g. 2CPE
+	 * @param transmissionCode Transmission code e.g. M
+	 * @param fuelCode Fuel code e.g. P
+	 * @return JSON string
+	 */
+	public static Map<String, Object> getVehicleSelectionMap(String makeCode, String modelCode, String yearCode, String bodyCode, String transmissionCode, String fuelCode) {
 		Map<String, Object> result = new LinkedHashMap<>();
 		ArrayList<CarMake> carMakes = new ArrayList<CarMake>();
 		ArrayList<CarModel> carModels = new ArrayList<CarModel>();
@@ -76,13 +99,7 @@ public class CarVehicleSelectionService {
 		result.put(CarFuel.JSON_COLLECTION_NAME, carFuels);
 		result.put(CarType.JSON_COLLECTION_NAME, carTypes);
 
-		try {
-			return new JSONObject(objectMapper.writeValueAsString(result));
-		} catch (JsonProcessingException | JSONException e) {
-			String message = "Could not get VehicleSelection for make:" + makeCode + " + model:" + modelCode + " + year:" + yearCode + " + body:" + bodyCode + " + trans:" + transmissionCode + " + fuel:" + fuelCode;
-			logger.error(message, e);
-			throw new ServiceException(message, e);
-		}
+		return result;
 	}
 
 	/**

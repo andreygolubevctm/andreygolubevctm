@@ -23,6 +23,7 @@
 	</c:when>
 	<%-- Only proceed if number of requests not exceeded --%>
 	<c:otherwise>
+		<%-- PRELOAD DATA --%>
 		<core_new:load_preload />
 
 		<%-- HTML --%>
