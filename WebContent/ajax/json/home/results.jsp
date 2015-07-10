@@ -10,11 +10,14 @@
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
-<c:set var="continueOnValidationError" value="${true}" />
+<c:set var="continueOnValidationError" value="${false}" />
 
 <c:set var="vertical" value="home" />
 <c:set var="touch" value="R" />
 <c:set var="valid" value="true" />
+
+<jsp:useBean id="homeService" class="com.ctm.services.home.HomeService" scope="page" />
+<c:set var="serviceRespone" value="${homeService.validate(pageContext.request, data)}" />
 
 <%--
 	home/results.jsp
@@ -55,6 +58,9 @@
 <c:choose>
 	<c:when test="${valid == false}">
 		<agg:outputValidationFailureJSON validationErrors="${sessionError}"  origin="home/results_jsp"/>
+	</c:when>
+	<c:when test="${!homeService.isValid()}">
+		${serviceRespone}
 	</c:when>
 	<c:otherwise>
 		<c:if test="${empty data.home.property.address.streetNum && empty data.home.property.address.houseNoSel}">
