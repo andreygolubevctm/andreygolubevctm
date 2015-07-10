@@ -83,6 +83,11 @@
             slideIndex: 1,
             onBeforeEnter: function () {
                 meerkat.modules.retrievequotesListQuotes.renderQuotes();
+            },
+            onAfterEnter: function() {
+                if($.trim($("#quote-result-list").html()) === "") {
+                    meerkat.modules.retrievequotesListQuotes.noResults();
+                }
             }
         };
 

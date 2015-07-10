@@ -11,44 +11,46 @@
 <retrievequotes_template:homeloan/>
 
 <core:js_template id="retrieve-quotes-container-template">
-    {{ var actionButtonTemplate = $("#action-button-template").html(); }}
-    {{ obj.actionButtonTmpl = _.template(actionButtonTemplate); }}
+    {{ if(typeof obj.previousQuotes !== "undefined") { }}
+        {{ var actionButtonTemplate = $("#action-button-template").html(); }}
+        {{ obj.actionButtonTmpl = _.template(actionButtonTemplate); }}
 
-    {{ var quotesList = obj.previousQuotes.result; }}
+        {{ var quotesList = obj.previousQuotes.result; }}
 
-    <%-- For each saved quote, render the template --%>
-    {{ for(var i = 0; i < quotesList.length; i++) { }}
+        <%-- For each saved quote, render the template --%>
+        {{ for(var i = 0; i < quotesList.length; i++) { }}
 
-        {{ var vertical = meerkat.modules.retrievequotesListQuotes.getVerticalFromObject(quotesList[i]); }}
+            {{ var vertical = meerkat.modules.retrievequotesListQuotes.getVerticalFromObject(quotesList[i]); }}
 
-        {{ quotesList[i].verticalCode = vertical; }}
-        {{ quotesList[i].transactionId = quotesList[i].id; }}
+            {{ quotesList[i].verticalCode = vertical; }}
+            {{ quotesList[i].transactionId = quotesList[i].id; }}
 
-        {{ var quoteHTML = meerkat.modules.retrievequotesListQuotes.renderTemplate(quotesList[i].verticalCode, quotesList[i][vertical]); }}
+            {{ var quoteHTML = meerkat.modules.retrievequotesListQuotes.renderTemplate(quotesList[i].verticalCode, quotesList[i][vertical]); }}
 
-        {{ if(quotesList[i].verticalCode && quoteHTML !== "") { }}
-            {{ var current = quotesList[i]; }}
-            <div class="clearfix quote-row">
-                <div class="col-xs-4 col-sm-2">
-                    <p class="text-center">
-                        <span class="icon icon-{{= current.verticalCode }}"></span>
-                    </p>
+            {{ if(quotesList[i].verticalCode && quoteHTML !== "") { }}
+                {{ var current = quotesList[i]; }}
+                <div class="clearfix quote-row">
+                    <div class="col-xs-4 col-sm-2">
+                        <p class="text-center">
+                            <span class="icon icon-{{= current.verticalCode }}"></span>
+                        </p>
 
-                    {{ var verticalInfo = current[current.verticalCode] }}
-                    <p class="time-ago">
-                        <strong>{{= meerkat.modules.utils.getTimeAgo(meerkat.modules.utils.formatUKToUSDate(verticalInfo.quoteDate) + " " + verticalInfo.quoteTime) }} ago</strong>
-                        <br>{{= verticalInfo.quoteDate }}
-                    </p>
+                        {{ var verticalInfo = current[current.verticalCode] }}
+                        <p class="time-ago">
+                            <strong>{{= meerkat.modules.utils.getTimeAgo(meerkat.modules.utils.formatUKToUSDate(verticalInfo.quoteDate) + " " + verticalInfo.quoteTime) }} ago</strong>
+                            <br>{{= verticalInfo.quoteDate }}
+                        </p>
 
-                    <div class="visible-xs">{{= obj.actionButtonTmpl(current) }}</div>
+                        <div class="visible-xs">{{= obj.actionButtonTmpl(current) }}</div>
+                    </div>
+                    <div class="col-xs-8 col-sm-7">
+                        {{= quoteHTML }}
+                    </div>
+                    <div class="hidden-xs col-sm-3">
+                        {{= obj.actionButtonTmpl(current) }}
+                    </div>
                 </div>
-                <div class="col-xs-8 col-sm-7">
-                    {{= quoteHTML }}
-                </div>
-                <div class="hidden-xs col-sm-3">
-                    {{= obj.actionButtonTmpl(current) }}
-                </div>
-            </div>
+            {{ } }}
         {{ } }}
     {{ } }}
 </core:js_template>

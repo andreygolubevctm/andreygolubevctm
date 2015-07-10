@@ -719,9 +719,7 @@ function initializeNewLogging() {
 }
 
 meerkat.logging.init = function() {
-    if (meerkat.site.useNewLogging) {
-        initializeNewLogging();
-    }
+    if (meerkat.site.useNewLogging) {}
     var theAppName = "";
     if (meerkat.site.vertical !== "") {
         theAppName = "[" + meerkat.site.vertical + "]";
