@@ -17,6 +17,8 @@
 
         {{ var quotesList = obj.previousQuotes.result; }}
 
+        {{ if(typeof quotesList === "object") quotesList = [quotesList]; }}
+
         <%-- For each saved quote, render the template --%>
         {{ for(var i = 0; i < quotesList.length; i++) { }}
 
