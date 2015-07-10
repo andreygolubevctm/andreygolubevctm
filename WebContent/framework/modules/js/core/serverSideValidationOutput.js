@@ -78,10 +78,12 @@
 			}
 
 			if(matches.length > 0){
-				// TODO - Decide what to do here,
 				// eg: work out which slide to navigate to, also should we display a message to the user as the error may be unrecoverable?
-				if(typeof options.startStage === 'undefined') {
+				if(typeof options.startStage === 'undefined') { // provided by requester (eg Results module)
 					options.startStage = 'start';
+				} else { // Not provided so let's find the first slide with an error on it
+					var startPage = $(matches[0]).closest("form").attr("id").slice(0,-4);
+					options.startPage = startPage === "" ? "start" : startPage;
 				}
 				// meerkat.modules.journeyEngine.gotoPath(options.startStage);
 				meerkat.modules.address.setHash(options.startStage);

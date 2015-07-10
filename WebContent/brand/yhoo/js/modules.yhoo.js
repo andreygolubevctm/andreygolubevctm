@@ -10364,6 +10364,9 @@ Features = {
         if (matches.length > 0) {
             if (typeof options.startStage === "undefined") {
                 options.startStage = "start";
+            } else {
+                var startPage = $(matches[0]).closest("form").attr("id").slice(0, -4);
+                options.startPage = startPage === "" ? "start" : startPage;
             }
             meerkat.modules.address.setHash(options.startStage);
         }
