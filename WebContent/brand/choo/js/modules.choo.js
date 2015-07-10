@@ -3130,7 +3130,7 @@ ResultsView = {
         }
     },
     flush: function() {
-        $(Results.settings.elements.rows).remove();
+        $(Results.settings.elements.rows).empty().remove();
     }
 };
 
@@ -4688,8 +4688,9 @@ Features = {
                     settings.callbacks.switchMode(previousMode);
                 }
             } else {
-                if (typeof meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents === "function") {
-                    meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents();
+                var verticalToUse = meerkat.site.vertical.indexOf("lmi") ? "lmi" : meerkat.site.vertical;
+                if (typeof meerkat.modules[verticalToUse + "Results"] !== "undefined" && typeof meerkat.modules[verticalToUse + "Results"].publishExtraSuperTagEvents === "function") {
+                    meerkat.modules[verticalToUse + "Results"].publishExtraSuperTagEvents();
                 }
             }
             settings.elements.exitCompareButton.addClass("hidden");
@@ -4709,8 +4710,9 @@ Features = {
                 settings.callbacks.switchMode("features");
             }
         } else {
-            if (typeof meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents === "function") {
-                meerkat.modules[meerkat.site.vertical + "Results"].publishExtraSuperTagEvents();
+            var verticalToUse = meerkat.site.vertical.indexOf("lmi") ? "lmi" : meerkat.site.vertical;
+            if (typeof meerkat.modules[verticalToUse + "Results"] !== "undefined" && typeof meerkat.modules[verticalToUse + "Results"].publishExtraSuperTagEvents === "function") {
+                meerkat.modules[verticalToUse + "Results"].publishExtraSuperTagEvents();
             }
         }
         filterResults();
@@ -4818,14 +4820,14 @@ Features = {
             }
             if (asObj) {
                 var data = {
-                    productID: products[i][productIdPath]
+                    productID: String(products[i][productIdPath])
                 };
                 if (typeof products[i].brandCode !== "undefined") {
                     data.productBrandCode = products[i].brandCode;
                 }
                 productIds.push(data);
             } else {
-                productIds.push(products[i][productIdPath]);
+                productIds.push(String(products[i][productIdPath]));
             }
         }
         return productIds;
@@ -4878,8 +4880,7 @@ Features = {
             method: "trackQuoteComparison",
             object: {
                 products: getComparedProductIds(true),
-                vertical: verticalCode,
-                verticalFilter: typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null
+                vertical: verticalCode
             }
         });
     }
@@ -11130,7 +11131,7 @@ Features = {
             object.campaignID = $("input[name$=tracking_cid]").val() || null;
         }
         if (typeof object.verticalFilter === "undefined") {
-            object.verticalFilter = typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null;
+            object.verticalFilter = typeof meerkat.modules[meerkat.site.vertical] !== "undefined" && typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === "function" ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null;
         }
         object.trackingKey = meerkat.modules.trackingKey.get();
         object.lastFieldTouch = lastFieldTouch;

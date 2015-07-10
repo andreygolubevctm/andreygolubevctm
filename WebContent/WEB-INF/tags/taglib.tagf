@@ -67,3 +67,5 @@
 <%@ taglib tagdir="/WEB-INF/tags/settings"				prefix="settings" %>
 <%@ taglib tagdir="/WEB-INF/tags/content"				prefix="content" %>
 <%@ taglib tagdir="/WEB-INF/tags/coupon"				prefix="coupon" %>
+<%@ taglib tagdir="/WEB-INF/tags/lmi" 	                prefix="lmi" %>
+<%@ taglib tagdir="/WEB-INF/tags/lmi/layout" 	        prefix="lmi_layout" %>

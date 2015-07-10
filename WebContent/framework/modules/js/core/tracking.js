@@ -293,7 +293,7 @@
 		}
 
 		if (typeof object.verticalFilter === "undefined") {
-			object.verticalFilter = (typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === 'function' ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null);
+			object.verticalFilter = (typeof meerkat.modules[meerkat.site.vertical] !== 'undefined' && typeof meerkat.modules[meerkat.site.vertical].getVerticalFilter === 'function' ? meerkat.modules[meerkat.site.vertical].getVerticalFilter() : null);
 		}
 
 		// Always ensure the tracking key exists

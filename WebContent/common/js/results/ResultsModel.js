@@ -540,7 +540,7 @@ ResultsModel = {
 
 		if( typeof Compare !== "undefined" ) Compare.applyFilters();
 
-		if( renderView !== false ){
+		if( renderView !== false ) {
 			if(Results.getFilteredResults().length === 0){
 				Results.view.showNoFilteredResults();
 				$(Results.settings.elements.resultsContainer).trigger("noFilteredResults");

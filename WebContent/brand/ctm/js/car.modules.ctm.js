@@ -1765,7 +1765,7 @@
             var freeColumns = columnsPerPage * pageData.measurements.numberOfPages - items;
         });
         $(document).on("FeaturesRendered", function() {
-            $(Features.target + " .expandable > " + Results.settings.elements.features.values).on("mouseenter", function() {
+            $(Features.target + " .expandable > " + Results.settings.elements.features.values).off("mouseenter mouseleave").on("mouseenter", function() {
                 var featureId = $(this).attr("data-featureId");
                 var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
                 $hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ""));

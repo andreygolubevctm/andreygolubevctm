@@ -1,94 +1,93 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%--
+	HOMELMI quote page
+--%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<session:new verticalCode="HOMELMI" />
+<session:new verticalCode="HOMELMI" authenticated="true" />
 
-<c:set var="verticalFeatures" value="home" />
-<c:set var="xpath" value="${verticalFeatures}lmi" />
-<c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<core_new:quote_check quoteType="homelmi" />
+<core_new:load_preload />
 
+<%-- HTML --%>
+<layout:journey_engine_page title="Home & Contents Insurance Brand Comparison">
 
+	<jsp:attribute name="head">
+	</jsp:attribute>
 
-<agg:page vertical="${xpath}" formAction="home_brands.jsp">
+	<jsp:attribute name="head_meta">
+	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<core:head quoteType="${xpath}" title="${go:TitleCase(verticalFeatures)} Compare Features" mainCss="common/base.css" mainJs="common/js/features/FeaturesResults.js" />
+		<div class="navbar-collapse header-collapse-contact collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="navbar-text push-top slide-feature-back compare-prices-cta">
+					<div class="hidden-xs">
+						<h5>Compare Prices From<br />Our Participating Providers</h5>
+					</div>
+				</li>
+				<li class="navbar-text slide-feature-back">
+					<a href="${pageSettings.getBaseUrl()}home_contents_quote.jsp" class="btn btn-next">
+						<span>Get a Quote</span> <span class="icon icon-arrow-right"></span>
+					</a>
+				</li>
+			</ul>
+		</div>
 	</jsp:attribute>
 
-	<jsp:attribute name="body_start">
-		<%-- SuperTag Top Code --%>
-		<agg:supertag_top type="Features" initVertical="${xpath}" initialPageName="ctm:${go:TitleCase(verticalFeatures)}:LMI:Select" loadExternalJs="true"/>
+	<jsp:attribute name="navbar">
+
+		<ul class="nav navbar-nav" role="menu">
+			<li class="visible-xs">
+				<span class="navbar-text-block navMenu-header">Menu</span>
+			</li>
+
+			<li class="slide-feature-back">
+				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+			</li>
+		</ul>
+
+		<div class="collapse navbar-collapse">
+			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
+		</div>
+
 	</jsp:attribute>
 
-	<jsp:attribute name="form_top">
-		<form:header quoteType="${xpath}" hasReferenceNo="true" showReferenceNo="false" />
-		<core:referral_tracking vertical="${xpath}" />
+	<jsp:attribute name="navbar_additional">
+	</jsp:attribute>
+
+	<jsp:attribute name="navbar_outer">
+	</jsp:attribute>
+
+	<jsp:attribute name="results_loading_message">
 	</jsp:attribute>
 
 
 	<jsp:attribute name="form_bottom">
-		<features:results vertical="${xpath}">
-			<jsp:attribute name="topLeftCorner">
-				<ui:speechbubble colour="blue" arrowPosition="left" width="200">
-					<h6>Compare Prices From Our Participating Providers</h6>
-					<a class="btn orange arrow-right block" href="home_contents_quote.jsp">Get a Quote</a>
-				</ui:speechbubble>
-			</jsp:attribute>
-		</features:results>
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
+		<core:whitelabeled_footer />
+	</jsp:attribute>
 
-		<homelmi:footer />
+	<jsp:attribute name="vertical_settings">
+		<lmi:settings />
+	</jsp:attribute>
 
-<%-- 		TEMPORARY CHANGE TO CALL TO ACTION FOR COMPLIANCE. THIS WILL BE REVERSED--%>
-<%-- 			title="Thank you for using our features comparison" --%>
-<%-- 			sub="Now compare prices from our participating insurance providers" --%>
-		<ui:call_to_action_bar
-			title="Thank you for using our features comparison."
-			sub="Now compare prices from our participating insurance providers"
-			disclaimer="Each product in this list may offer different features. This information has been supplied by an independent third party. Please always consider the policy wording and product disclosure statement for each product before making a decision to buy. For more information about our features comparison tool, <a href='#footer'>please see our disclaimer</a>."
-			disclosure="<span class='greyBg'><span class='arrowImg'></span></span> Click the arrows for more information about this feature"
-			moreBtn="true"
-			hiddenInitially="true"
-		>
-			<jsp:attribute name="callToAction">
-				<a class="btn green arrow-right" id="${xpath}_signup" href="home_contents_quote.jsp">Get a Quote</a>
-			</jsp:attribute>
-		</ui:call_to_action_bar>
-
-		<agg:includes supertag="true" />
-
-		<go:script marker="onready">
-			Track._transactionID = '${data.current.transactionId}';
-		</go:script>
-
-		<go:script marker="js-href"	href="common/js/jquery.ba-hashchange.min.js"/>
-
-		<go:script marker="onready">
-			// If the user is clicking browser back button, ensure that the navigation is showing
-			// TODO: make this generic across verticals
-			$(window).hashchange( function() {
-				if (QuoteEngine.getOnResults() && $.address.parameter("stage") == 'start'){
-					$('.compareBackButton').click();
-				}
-				QuoteEngine.setOnResults(location.hash.indexOf("result") > -1);
-			})
-
-
-
-		</go:script>
-
-		<%-- Record a variable in the data bucket so that if the user goes to the home vertical we can track a conversion. --%>
-		<go:setData dataVar="data" value="true" xpath="${xpath}/trackConversion" />
+	<jsp:attribute name="body_end">
 	</jsp:attribute>
 
 	<jsp:body>
-		<slider:slideContainer className="sliderContainer">
-			<homelmi:brand_selection_step />
-		</slider:slideContainer>
+		<%-- Slides --%>
+		<lmi_layout:slide_form />
+		<lmi_layout:slide_results />
+
+		<div class="hiddenFields">
+			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
+			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+		</div>
+
+		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 	</jsp:body>
 
-</agg:page>
-
+</layout:journey_engine_page>

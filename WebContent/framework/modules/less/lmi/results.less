@@ -1,0 +1,85 @@
+//------------------------------
+
+.resultsContainer.featuresMode {
+  .generate-default-result-column-widths();
+}
+
+//------------------------------
+
+.journeyEngineSlide.resultsSlide {
+  padding-top: 0;
+}
+
+//-------------------------------------------------------------------------------------
+// General result styling
+//-------------------------------------------------------------------------------------
+
+.result {
+  small {
+    font-style: italic;
+  }
+}
+
+//
+// Feature mode styling
+//
+.featuresMode {
+
+  .compare-toggle-wrapper {
+    margin-bottom: 0;
+  }
+  .controlContainer {
+    position: relative;
+    height: 100%;
+  }
+  .productSummary {
+    text-align: center;
+  }
+
+  .icon-tick {
+    color: @theme-secondary;
+  }
+
+  .icon-cross {
+    color: @cross-color;
+  }
+
+  .result,
+  .productSummary {
+    height: 182px;
+  }
+
+  @media(@xs-only) {
+    .result,
+    .productSummary {
+      height: 150px;
+    }
+
+    .productSummary {
+      padding: (@results-feature-cell-padding * 2) @results-feature-cell-padding;
+
+      // Using .content to pick up normal feature row styling
+      // Needs -margin to combat the padding on .productSummary
+      .content {
+        margin: 0 -@results-feature-cell-padding;
+      }
+
+    }
+
+    // Normal heading
+    .labelInColumn {
+      .content {
+        color: contrast(@feature-odd-bg-color);
+        background: @feature-odd-bg-color;
+      }
+    }
+
+    // Special feature row with "inverse" colouring. Note this should be same specificity or less as expanded row.
+    .inverseRow.labelInColumn {
+      .content {
+        color: @feature-inverse-color;
+        background: @feature-inverse-bg-color;
+      }
+    }
+  }
+}
