@@ -85,12 +85,14 @@ BEGIN
 			AND contactName NOT LIKE '% O\'User-User'
 	)
 	AS `filtered`
+	INNER JOIN simples.message_source ms ON ms.id = filtered.sourceId
 	WHERE phoneNumber1 IS NOT NULL OR phoneNumber2 IS NOT NULL
 
 	-- Grouping will de-duplicate same details that are on different root IDs
 	GROUP BY sourceId, phoneNumber1, phoneNumber2, contactName, state
 	-- Ordering will make sure lower transactionId gets created first, ensure last in first out later
-	ORDER BY transactionId ASC
+	-- secondary order by will make sure higher fetchOrder gets inserted first
+	ORDER BY transactionId ASC, ms.fetchOrder ASC
 	;
 
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET bDone = 1;
@@ -104,7 +106,7 @@ BEGIN
 	FROM ctm.stored_procedure_status
 	WHERE spName = 'simples.fetch_execute';
 
-	-- if the status is inProgress for longer than 30 minutes, set back to 'N' 
+	-- if the status is inProgress for longer than 30 minutes, set back to 'N'
 	-- to prevent it from never gets running again, also send a warning to logging table.
 	IF _inProgress = 'Y' AND MINUTE(TIMEDIFF(NOW(),  _lastExecutedStart)) >= 30 THEN
 
