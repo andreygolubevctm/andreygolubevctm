@@ -17,6 +17,8 @@
 
 <form_new:fieldset legend="Your Car" id="${name}_selection">
 
+	<car:rego_lookup xpath="${xpath}/vehicle" />
+
 	<form_new:row label="Make" id="${name}_makeRow" className="initial" helpId="3">
 		<field_new:general_select xpath="${xpath}/make" title="vehicle manufacturer" required="true" initialText="&nbsp;" />
 		<field:hidden xpath="${xpath}/makeDes"></field:hidden>

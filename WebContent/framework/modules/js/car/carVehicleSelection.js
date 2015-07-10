@@ -65,6 +65,15 @@
 
 	var isSplitTestFlag = false;
 
+	var ajaxRequest = false;
+
+	function abortGetVehicleData() {
+		if(ajaxRequest !== false) {
+			ajaxRequest.abort();
+			enableResetActiveAndEnablePreviousSelectors();
+		}
+	}
+
 	function getVehicleData( type ) {
 
 		if( ajaxInProgress === false ) {
@@ -109,32 +118,35 @@
 			ajaxInProgress = true;
 
 			_.defer(function() {
-			meerkat.modules.comms.get({
+				ajaxRequest = meerkat.modules.comms.get({
 					url: "rest/car/" + type + "/list.json",
-				data: data,
-				cache: true,
-				useDefaultErrorHandling: false,
-				numberOfAttempts: 3,
-				errorLevel: "fatal",
-				onSuccess: function onSubmitSuccess(resultData) {
-					populateSelectorData(type, resultData);
-					renderVehicleSelectorData(type);
-					return true;
-				},
-				onError: onGetVehicleSelectorDataError,
-				onComplete: function onSubmitComplete() {
-					ajaxInProgress = false;
-					meerkat.modules.loadingAnimation.hide($loadingIconElement);
-					checkAndNotifyOfVehicleChange();
-					disableFutureSelectors(type);
-					return true;
-				}
-			});
+					data: data,
+					cache: true,
+					useDefaultErrorHandling: false,
+					numberOfAttempts: 3,
+					errorLevel: "fatal",
+					onSuccess: function onSubmitSuccess(resultData) {
+						ajaxRequest = false;
+						populateSelectorData(type, resultData);
+						renderVehicleSelectorData(type);
+						return true;
+					},
+					onError: onGetVehicleSelectorDataError,
+					onComplete: function onSubmitComplete() {
+						ajaxRequest = false;
+						ajaxInProgress = false;
+						meerkat.modules.loadingAnimation.hide($loadingIconElement);
+						checkAndNotifyOfVehicleChange();
+						disableFutureSelectors(type);
+						return true;
+					}
+				});
 			});
 		}
 	}
 
 	function onGetVehicleSelectorDataError(jqXHR, textStatus, errorThrown, settings, resultData) {
+		ajaxRequest = false;
 		ajaxInProgress = false;
 		meerkat.modules.loadingAnimation.hide($(elements[activeSelector]));
 		var previous = getPreviousSelector(activeSelector);
@@ -419,6 +431,14 @@
 		}
 	}
 
+	function enableResetActiveAndEnablePreviousSelectors() {
+		activeSelector = getPreviousSelector(activeSelector);
+		$el = $(elements[activeSelector]);
+		stripValidationStyles($el);
+		$el.prop('selectedIndex', 0);
+		enableDisablePreviousSelectors(activeSelector, false);
+	}
+
 	function selectionChanged(data) {
 		useSessionDefaults = false;
 		var next = getNextSelector(data.field);
@@ -527,7 +547,7 @@
 		}
 	}
 
-	function prepareSelectors(selectionDefaults, callback) {
+	function prepareSelectors(selectionDefaults) {
 
 		useSessionDefaults = true; // important, must be set to ensure preselection (is reset on change)
 
@@ -542,12 +562,23 @@
 
 		checkAndNotifyOfVehicleChange();
 
-		if(!isSplitTest()) {
-			meerkat.modules.ie8SelectMenuAutoExpand.bindEvents($(document), '#quote_vehicle_redbookCode');
-		}
-
-		if(_.isFunction(callback)) {
-			callback();
+		if(!isSplitTest() && meerkat.modules.performanceProfiling.isIE8()) {
+			$(document).on('focus', '#quote_vehicle_redbookCode', function() {
+				var el = $(this);
+				el.data('width', el.width());
+				el.width('auto');
+				el.data('width-auto', $(this).width());
+				// if "auto" width < start width, set to start width, otherwise set to new width
+				if(el.data('width-auto') < el.data('width')) {
+					el.width(el.data('width'));
+				} else {
+					el.width(el.data('width-auto')+15);
+				}
+			}).on('blur', '#quote_vehicle_redbookCode', function() {
+				var el = $(this);
+				el.width(el.data('width'));
+				// make it reset
+			});
 		}
 	}
 
@@ -555,7 +586,9 @@
 
 		var self = this;
 
-		//meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function() {
+		meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_STARTED, abortGetVehicleData);
+		meerkat.messaging.subscribe(meerkatEvents.regoLookup.REGO_LOOKUP_COMPLETE, prepareSelectors);
+
 		$(document).ready(function() {
 
 			// Only init if health... obviously...
@@ -567,35 +600,7 @@
 				$(elements[selectorOrder[i]]).attr('tabindex', i + 1);
 			}
 
-			flushSelectorData();
-
-			_.extend(defaults, meerkat.site.vehicleSelectionDefaults);
-			_.extend(selectorData, meerkat.site.vehicleSelectionDefaults.data);
-
-			addChangeListeners();
-
-			renderVehicleSelectorData('makes');
-
-			checkAndNotifyOfVehicleChange();
-
-			if(!isSplitTest() && meerkat.modules.performanceProfiling.isIE8()) {
-				$(document).on('focus', '#quote_vehicle_redbookCode', function() {
-					var el = $(this);
-					el.data('width', el.width());
-					el.width('auto');
-					el.data('width-auto', $(this).width());
-					// if "auto" width < start width, set to start width, otherwise set to new width
-					if(el.data('width-auto') < el.data('width')) {
-						el.width(el.data('width'));
-					} else {
-						el.width(el.data('width-auto')+15);
-					}
-				}).on('blur', '#quote_vehicle_redbookCode', function() {
-					var el = $(this);
-					el.width(el.data('width'));
-					// make it reset
-		});
-			}
+			prepareSelectors(meerkat.site.vehicleSelectionDefaults);
 		});
 
 	}

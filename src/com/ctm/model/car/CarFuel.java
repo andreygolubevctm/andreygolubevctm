@@ -2,6 +2,7 @@ package com.ctm.model.car;
 
 public class CarFuel {
 	public static final String JSON_COLLECTION_NAME = "fuels";
+	public static final String JSON_SINGLE_NAME = "fuel";
 
 
 	public static enum FuelType {

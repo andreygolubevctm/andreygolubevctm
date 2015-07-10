@@ -9164,6 +9164,36 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, events = {};
+    function init() {}
+    function get(data, settings) {
+        data = _.extend({
+            plateNumber: null,
+            state: null
+        }, data);
+        settings = settings || {};
+        var request_obj = {
+            url: "rest/rego/lookup/list.json",
+            data: data,
+            dataType: "json",
+            cache: true,
+            useDefaultErrorHandling: true,
+            numberOfAttempts: 3,
+            errorLevel: "fatal"
+        };
+        if (_.isObject(settings) && !_.isEmpty(settings)) {
+            request_obj = $.extend(request_obj, settings);
+        }
+        meerkat.modules.comms.get(request_obj);
+    }
+    meerkat.modules.register("regoLookup", {
+        init: init,
+        events: events,
+        get: get
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $renderingModeFld;
     function init() {
         if (typeof meerkat.site === "undefined") {
