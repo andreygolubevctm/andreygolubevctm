@@ -192,6 +192,13 @@ body.competition .navbar-default {
 .competition-header {
   padding-bottom: 40px;
 }
+.competition-header img {
+  width: 100%;
+  height: auto;
+}
+.mobile-banner {
+  display: none;
+}
 body.competition,
 body.competition p,
 body.competition label,
@@ -307,6 +314,12 @@ body.competition .navbar ul li a:hover {
   text-decoration: none;
   cursor: pointer;
 }
+#logo {
+  background-image: url(../meerkat/meerkat-logo.png);
+  background-size: 432px 62px;
+  width: 432px;
+  height: 62px;
+}
 @media (max-width: 767px) {
   body.competition h1 {
     font-size: 20px;
@@ -314,31 +327,42 @@ body.competition .navbar ul li a:hover {
     border-bottom: 3px solid #000;
     margin-bottom: 20px;
   }
-  #logo img {
-    width: 260px;
-    padding-top: 10px;
-  }
   #menu-footer-menu li {
     display: block;
     padding: 5px 15px 5px 15px;
     width: 100%;
   }
 }
-@media (max-width: 340px) {
+@media (min-width: 461px) and (max-width: 767px) {
+  .competition-header {
+    margin-top: 40px;
+  }
+}
+@media (max-width: 460px) {
+  .navbar-header {
+    text-align: center;
+  }
+  #logo {
+    width: 240px;
+    height: 34px;
+    background-size: 240px 34px;
+  }
   body.competition h1 {
     font-size: 18px;
     padding: 20px 0px 20px;
     border-bottom: 3px solid #000;
     margin-bottom: 20px;
   }
-  #logo img {
-    width: 240px;
-    padding-top: 10px;
-  }
   #menu-footer-menu li {
     display: block;
     padding: 5px 15px 5px 15px;
     width: 100%;
+  }
+  .banner {
+    display: none;
+  }
+  .mobile-banner {
+    display: block;
   }
 }
 @media (max-width: 1023px) {
@@ -369,7 +393,7 @@ body.competition .navbar ul li a:hover {
   font-family: "meerkat";
   font-style: normal;
   font-weight: normal;
-  src: url("../fonts/meerkat.eot?#iefix-x57mlr") format("embedded-opentype"), url("../fonts/meerkat.woff?-x57mlr") format("woff"), url("../fonts/meerkat.ttf?-x57mlr") format("truetype"), url("../fonts/meerkat.svg?-x57mlr#meerkat") format("svg");
+  src: url("../fonts/meerkat.eot?#iefix") format("embedded-opentype"), url("../fonts/meerkat.woff?") format("woff"), url("../fonts/meerkat.ttf?") format("truetype"), url("../fonts/meerkat.svg?#meerkat") format("svg");
 }
 [class^="meerkat-"],
 [class*=" meerkat-"] {
@@ -379,12 +403,6 @@ body.competition .navbar ul li a:hover {
   font-weight: normal;
   line-height: 1;
   text-transform: none;
-}
-#logo {
-  background-image: url(../meerkat/meerkat-logo.png);
-  background-size: 432px 62px;
-  width: 432px;
-  height: 62px;
 }
 .meerkat-briefcase::before {
   content: "";
