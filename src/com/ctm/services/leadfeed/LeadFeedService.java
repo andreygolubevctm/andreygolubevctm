@@ -26,7 +26,8 @@ public abstract class LeadFeedService {
 		CALL_DIRECT("callDirectLeadFeedService"),
 		CALL_ME_BACK("getACallLeadFeedService"),
 		BEST_PRICE("bestPriceLeadFeedService"),
-		NOSALE_CALL("noSaleCallLeadFeedService");
+		NOSALE_CALL("noSaleCallLeadFeedService"),
+		FOLLOWUP_CALL("followupLeadFeedService");
 
 		private final String serviceUrlFlag;
 

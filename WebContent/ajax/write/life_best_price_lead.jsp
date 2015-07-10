@@ -134,6 +134,9 @@
 												configDbKey="leadfeedService"
 												styleCodeId="${pageSettings.getBrandId()}"
 												/>
+
+							<c:set var="leadSentTo" value="${company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
+							<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", leadSentTo)}</c:set>
 						</c:otherwise>
 					</c:choose>
 					

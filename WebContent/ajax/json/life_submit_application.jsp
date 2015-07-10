@@ -29,6 +29,8 @@
 				<go:setData dataVar="data" xpath="lead/company" value="${paramCompany}" />
 				<c:set var="paramLeadNumber"><c:out value="${param.lead_number}" /></c:set>
 				<go:setData dataVar="data" xpath="lead/leadNumber" value="${paramLeadNumber}" />
+				<c:set var="paramPartnerBrand"><c:out value="${param.partnerBrand}" /></c:set>
+				<go:setData dataVar="data" xpath="lead/brand" value="${paramPartnerBrand}" />
 
 				<c:set var="leadResultStatus" value="${AGISLeadFromRequest.newLeadFeed(pageContext.request, pageSettings, tranId)}" />
 
@@ -96,6 +98,9 @@
 									verticalCode="${fn:toUpperCase(vertical)}"
 									configDbKey="quoteService"
 									styleCodeId="${pageSettings.getBrandId()}"  />
+
+				<%-- Record lead feed touch event --%>
+				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(data.current.transactionId, "C", leadSentTo)}</c:set>
 				
 				<x:parse xml="${newQuoteResults}" var="newQuoteResultsOutput" />
 				<c:set var="apiReference"><x:out select="$newQuoteResultsOutput/results/client/reference" /></c:set>
@@ -163,7 +168,6 @@
 		<c:set var="leadSentTo" value="${param.company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
 		<go:setData dataVar="data" xpath="current/transactionId" value="${data.current.transactionId}" />
 		<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" /></c:set>
-		<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(data.current.transactionId, "C", leadSentTo)}</c:set>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">
