@@ -894,7 +894,7 @@ a{
 
 .well {
 	border: 0;
-	padding: 10px 20px;
+	padding: 20px 20px;
 	border-radius: @border-radius-large;
 	margin-bottom: 28px;
 
@@ -943,6 +943,18 @@ a{
 		&.btn { text-decoration: none; }
 		}
 	}
+
+.well-info {
+	&.point-left {
+		margin-left:20px;
+		margin-bottom: 0px;
+		&:after {
+			border-width: 20px 0 0 15px;
+			left: -15px;
+			top: 20px;
+		}
+	}
+}
 
 //** Known as inline message to UI/UX
 .well-chatty {

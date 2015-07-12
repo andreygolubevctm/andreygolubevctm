@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="rightColumn" fragment="true" required="true"%>
-<%@ attribute name="sideHidden" 	required="false" rtexprvalue="false" description="Hide the side column when collapsing to XS" %>
+<%@ attribute name="sideHidden" 	required="false" rtexprvalue="true" description="Hide the side column when collapsing to XS" %>
 <%@ attribute name="sideAbove" 	required="false" rtexprvalue="false" description="Enable to render the fieldset-column-side above the main area in XS instead "%>
 <%@ attribute name="fullWidthSm" 	required="false" rtexprvalue="false" description="Use this to allow the body to be full width on SM"%>
 

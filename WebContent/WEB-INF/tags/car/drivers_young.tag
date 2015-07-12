@@ -9,12 +9,15 @@
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="displaySuffix"><c:out value="${data[xpath].exists}" escapeXml="true"/></c:set>
+<c:set var="bubbleClass">
+	<c:if test="${showRegoLookupContent eq true}">point-left</c:if>
+</c:set>
 
 <%-- HTML --%>
 <form_new:fieldset_columns sideHidden="false">
 
 	<jsp:attribute name="rightColumn">
-		<ui:bubble variant="info">
+		<ui:bubble variant="info" className="${bubbleClass}">
 			<h4>Want to add other drivers?</h4>
 			<p>At this stage we only want to know about the youngest driver of the car. You'll be able to add other drivers to your policy during the application stage.</p>
 		</ui:bubble>
