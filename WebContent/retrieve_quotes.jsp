@@ -96,7 +96,7 @@
 
             <jsp:attribute name="additional_meerkat_scripts">
                 <script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/components/retrievequotes.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-        </jsp:attribute>
+            </jsp:attribute>
 
             <jsp:body>
 

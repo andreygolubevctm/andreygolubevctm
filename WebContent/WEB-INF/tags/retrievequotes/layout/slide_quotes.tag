@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <layout:slide formId="quotesForm">
-    <layout:slide_columns>
+    <layout:slide_columns fullWidthSm="true">
         <jsp:attribute name="rightColumn">
 
         </jsp:attribute>

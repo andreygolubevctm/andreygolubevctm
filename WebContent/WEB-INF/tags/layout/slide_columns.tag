@@ -5,11 +5,13 @@
 <%@ attribute name="rightColumn" fragment="true" required="true"%>
 <%@ attribute name="sideHidden" 	required="false" rtexprvalue="false" description="Hide the side column when collapsing to XS" %>
 <%@ attribute name="sideAbove" 	required="false" rtexprvalue="false" description="Enable to render the fieldset-column-side above the main area in XS instead "%>
+<%@ attribute name="fullWidthSm" 	required="false" rtexprvalue="false" description="Use this to allow the body to be full width on SM"%>
+
 
 <div class="row">
 
 	<c:if test="${empty sideAbove}">
-		<div class="col-sm-8">
+		<div class="${not empty fullWidthSm && fullWidthSm eq 'true' ? 'col-sm-12 col-md-8' : 'col-sm-8'}">
 			<jsp:doBody />
 		</div>
 	</c:if>
@@ -17,10 +19,11 @@
 	<div class="fieldset-column-side col-sm-4<c:if test="${not empty sideAbove}"> col-sm-push-8</c:if><c:if test="${not empty sideHidden}"> hidden-xs</c:if>">
 		<jsp:invoke fragment="rightColumn" />
 	</div>
-	
+
 	<c:if test="${not empty sideAbove}">
 		<div class="col-sm-8 col-sm-pull-4">
 			<jsp:doBody />
 		</div>
 	</c:if>
+
 </div>
