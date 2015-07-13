@@ -51,6 +51,14 @@
     color: @cross-color;
   }
 
+  .expander{
+    display: none;
+  }
+  .expandable {
+    .expander{
+      display: block;
+    }
+  }
   .result,
   .productSummary {
     height: 182px;
@@ -87,6 +95,10 @@
         color: @feature-inverse-color;
         background: @feature-inverse-bg-color;
       }
+    }
+
+    .inverseRow .content {
+      display: none;
     }
   }
 }

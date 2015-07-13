@@ -45,15 +45,15 @@ Features = {
 
 		// prep of feature template
 		Features.template = $(Results.settings.elements.templates.feature).html();
+		//var htmlTemplate = _.template(Features.template);
+		//Features.template = htmlTemplate({});
 
 		if (Features.template == "") {
 			console.log("The comparison feature template could not be found: templateSelector=", Compare.settings.elements.templates.feature, "This template is mandatory, make sure to pass the correct selector to the Compare.settings.elements.templates.feature user setting when calling Compare.init()");
 		} else {
 			$(Results.settings.elements.resultsContainer).trigger("populateFeaturesStart");
 			Features.populateHeaders();
-
 			Features.populateFeatures();
-
 			Features.setExpandableRows();
 
 			_.defer(function(){
@@ -92,7 +92,6 @@ Features = {
 				if( productAvailability == "Y" || typeof(productAvailability) == "undefined" ) {
 
 					var features = Object.byString( result, Results.settings.paths.features );
-
 					if( typeof(features) != "undefined" && features.length > 0 ){
 
 						var currentCategory = "";
@@ -105,7 +104,6 @@ Features = {
 							if( $.inArray( feature.featureId, featuresIds ) == -1 ){
 
 								featuresIds.push(feature.featureId);
-
 								if( Results.settings.show.featuresCategories && currentCategory != feature.categoryId ){
 									parsedCategory = Results.view.parseTemplate( Features.template, { value: feature.categoryName, featureId: "category-"+feature.categoryId, extra: "", cellType: "category" } );
 									html += parsedCategory;
@@ -135,8 +133,8 @@ Features = {
 
 	},
 
-	populateFeatures: function(){
-
+	populateFeatures: function() {
+		
 		// population of features into product columns
 		$.each( Features.results, function(index, product) {
 
@@ -176,8 +174,7 @@ Features = {
 		// this is a custom case/hack for the Additional Info category
 		// when none of the displayed products have any additional info
 		if( Features.emptyAdditionalInfoCategory ){
-			$(Features.target + " [data-featureId=category-9]").next().remove();
-			$(Features.target + " [data-featureId=category-9]").remove();
+			$(Features.target + " [data-featureId=category-9]").next().remove().end().remove();
 		}
 
 
@@ -276,8 +273,8 @@ Features = {
 	},
 
 	applyExpandableEvents: function(){
-
-		$(document.body).on('click', Features.target + " .expandable > " + Results.settings.elements.features.values ,function(e){
+		var selector = Features.target + " .expandable > " + Results.settings.elements.features.values;
+		$(document.body).off('click', selector).on('click', selector ,function(e){
 
 			var featureId = $(this).attr("data-featureId");
 
@@ -314,7 +311,7 @@ Features = {
 
 			_.defer(function(){
 
-				Features.sameHeightRows( $extras.find(Results.settings.elements.features.values +":visible" ) ); // Removed .filter(":visible") because IE couldn't handle it.
+				Features.sameHeightRows( $extras.find(Results.settings.elements.features.values ) ); // Removed .filter(":visible") because IE couldn't handle it.
 				$parents.removeClass("expanding").addClass("expanded");
 			});
 
@@ -342,7 +339,7 @@ Features = {
 
 		elements.each(function elementsEach(elementIndex, element){
 
-			$e = $(element);
+			var $e = $(element);
 
 			var featureId = $e.attr("data-featureId");
 
@@ -402,23 +399,42 @@ Features = {
 		}
 	},
 
-	hideEmptyRows: function(){
-
+	hideEmptyRows: function() {
+		var $container = $(Features.target);
 		// hides rows without any values (mostly for the "Additional Information" category)
 		$.each( Features.featuresIds, function( featureIdIndex, featureId ){
 			var found = false;
-			$currentRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+			var $currentRow = $('[data-featureId="' + featureId + '"]', $container);
 
-			$currentRow.each(
-				function(){
-					var value = $(this).html();
+			$currentRow.each(function(){
+					var value = $.trim($(this).text());
 					if( !found && value != '' && value != "&nbsp;" ){
 						found = true;
+						return; //break out
 					}
-				}
-			);
+			});
 			if(!found){
 				$currentRow.parent().hide();
+			}
+		});
+
+	},
+
+	removeEmptyDropdowns: function() {
+		var $container = $(Features.target);
+		// hides rows without any values (mostly for the "Additional Information" category)
+		$.each( Features.featuresIds, function( featureIdIndex, featureId ){
+			var found = false;
+			var $currentRow = $('.children[data-fid="' + featureId + '"]', $container);
+			$currentRow.each(function(){
+					var value = $.trim($(this).text());
+					if( !found && value != '' && value != "&nbsp;" ){
+						found = true;
+						return; //break out
+					}
+			});
+			if(!found) {
+				$currentRow.closest('.cell').off('mousenter mousemove').removeClass('expandable').end().remove();
 			}
 		});
 

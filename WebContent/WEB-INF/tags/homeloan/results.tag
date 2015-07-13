@@ -179,11 +179,11 @@
 </core:js_template>
 
 <%-- FEATURE TEMPLATE --%>
-	<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
+	<core:js_template id="feature-template">
 		<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
 			<features:resultsItem item="${selectedValue}" labelMode="false" index="${status.index}"/>
 		</c:forEach>
-	</div>
+	</core:js_template>
 
 <%-- UNAVAILABLE ROW --%>
 <core:js_template id="unavailable-template">
@@ -293,11 +293,8 @@
 <core:js_template id="provider-logo-template">
 	{{ var img = ''; }}
 	{{ if (obj.lender === 'Adelaide Bank') img = 'ADLB'; }}
-	{{ if (obj.lender === 'AFG Home Loans - ABL') img = 'AFG'; }}
-	{{ if (obj.lender === 'AFG Home Loans - Direct') img = 'AFG'; }}
+ 	{{ if (obj.lender.indexOf('AFG Home Loans') === 0) img = 'AFG'; }}
 	{{ if (obj.lender === 'AFG Home Loans - Edge') img = 'AFG_GREEN'; }}
-	{{ if (obj.lender === 'AFG Home Loans - Options') img = 'AFG'; }}
-	{{ if (obj.lender === 'AFG Home Loans - Precision') img = 'AFG'; }}
 	{{ if (obj.lender === 'AMP Bank') img = 'AMP'; }}
 	{{ if (obj.lender === 'ANZ') img = 'ANZ'; }}
 	{{ if (obj.lender === 'Auswide Bank') img = 'AUSWIDE'; }}

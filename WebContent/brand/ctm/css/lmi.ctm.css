@@ -371,6 +371,12 @@ body > div > header a.bottombar .btn-call:hover {
 .featuresMode .icon-cross {
   color: #ff5f5f;
 }
+.featuresMode .expander {
+  display: none;
+}
+.featuresMode .expandable .expander {
+  display: block;
+}
 .featuresMode .result,
 .featuresMode .productSummary {
   height: 182px;
@@ -393,6 +399,9 @@ body > div > header a.bottombar .btn-call:hover {
   .featuresMode .inverseRow.labelInColumn .content {
     color: #ffffff;
     background: #1c3e93;
+  }
+  .featuresMode .inverseRow .content {
+    display: none;
   }
 }
 .logoContainer {

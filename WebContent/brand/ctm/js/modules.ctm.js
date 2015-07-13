@@ -3251,8 +3251,7 @@ Features = {
             }
         });
         if (Features.emptyAdditionalInfoCategory) {
-            $(Features.target + " [data-featureId=category-9]").next().remove();
-            $(Features.target + " [data-featureId=category-9]").remove();
+            $(Features.target + " [data-featureId=category-9]").next().remove().end().remove();
         }
     },
     populateTemplate: function(product) {
@@ -3327,7 +3326,8 @@ Features = {
         }
     },
     applyExpandableEvents: function() {
-        $(document.body).on("click", Features.target + " .expandable > " + Results.settings.elements.features.values, function(e) {
+        var selector = Features.target + " .expandable > " + Results.settings.elements.features.values;
+        $(document.body).off("click", selector).on("click", selector, function(e) {
             var featureId = $(this).attr("data-featureId");
             var $extras = $(Features.target + ' .children[data-fid="' + featureId + '"]');
             var $parents = $extras.parent();
@@ -3355,7 +3355,7 @@ Features = {
         _.defer(function() {
             $parents.removeClass("collapsed").addClass("expanding");
             _.defer(function() {
-                Features.sameHeightRows($extras.find(Results.settings.elements.features.values + ":visible"));
+                Features.sameHeightRows($extras.find(Results.settings.elements.features.values));
                 $parents.removeClass("expanding").addClass("expanded");
             });
         });
@@ -3376,7 +3376,7 @@ Features = {
     sameHeightRows: function(elements) {
         var featureRowCache = [];
         elements.each(function elementsEach(elementIndex, element) {
-            $e = $(element);
+            var $e = $(element);
             var featureId = $e.attr("data-featureId");
             var item = _.findWhere(featureRowCache, {
                 featureId: featureId
@@ -3419,17 +3419,36 @@ Features = {
         }
     },
     hideEmptyRows: function() {
+        var $container = $(Features.target);
         $.each(Features.featuresIds, function(featureIdIndex, featureId) {
             var found = false;
-            $currentRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+            var $currentRow = $('[data-featureId="' + featureId + '"]', $container);
             $currentRow.each(function() {
-                var value = $(this).html();
+                var value = $.trim($(this).text());
                 if (!found && value != "" && value != "&nbsp;") {
                     found = true;
+                    return;
                 }
             });
             if (!found) {
                 $currentRow.parent().hide();
+            }
+        });
+    },
+    removeEmptyDropdowns: function() {
+        var $container = $(Features.target);
+        $.each(Features.featuresIds, function(featureIdIndex, featureId) {
+            var found = false;
+            var $currentRow = $('.children[data-fid="' + featureId + '"]', $container);
+            $currentRow.each(function() {
+                var value = $.trim($(this).text());
+                if (!found && value != "" && value != "&nbsp;") {
+                    found = true;
+                    return;
+                }
+            });
+            if (!found) {
+                $currentRow.closest(".cell").off("mousenter mousemove").removeClass("expandable").end().remove();
             }
         });
     },
@@ -3653,6 +3672,74 @@ Features = {
     meerkat.modules.register("affix", {
         init: init,
         events: events
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var postData = {}, elements = {
+        applicationDate: $(".applicationDate"),
+        applicationDateContainer: $(".applicationDateContainer")
+    }, selectedDate, moduleEvents = {};
+    function changeApplicationDate() {
+        selectedDate = $("#health_searchDate").val();
+        var date = selectedDate.split("/");
+        var newDate = date[2] + "-" + date[1] + "-" + date[0];
+        postData.applicationDateOverrideValue = selectedDate !== "" ? newDate + " 00:00:01" : null;
+        meerkat.modules.comms.post({
+            url: "ajax/write/setApplicationDate.jsp",
+            data: postData,
+            cache: false,
+            errorLevel: "warning",
+            onSuccess: function onApplicationUpdateSuccess(data) {
+                updateDisplay(data);
+                toggleDisplay();
+            }
+        });
+    }
+    function setApplicationDateCalendar() {
+        meerkat.modules.comms.post({
+            url: "ajax/load/getApplicationDate.jsp",
+            cache: false,
+            errorLevel: "warning",
+            onSuccess: function onApplicationUpdateSuccess(dateResult) {
+                updateCalendar(dateResult);
+            }
+        });
+    }
+    function updateCalendar(dateResult) {
+        if (dateResult !== null && dateResult !== "") {
+            var date = new Date(dateResult.replace(/ [A]?EST/, ""));
+            var newDate = meerkat.modules.utils.returnDateValueFormFormat(date);
+            $("#health_searchDate").val(newDate);
+        }
+    }
+    function updateDisplay(data) {
+        elements.applicationDate.html(data);
+    }
+    function toggleDisplay() {
+        if (elements.applicationDate.html() === "") {
+            elements.applicationDateContainer.hide();
+        } else {
+            elements.applicationDateContainer.show();
+        }
+    }
+    function initApplicationDate() {
+        jQuery(document).ready(function($) {
+            if ($(".simples").length === 0) {
+                setApplicationDateCalendar();
+            }
+            $("#health_searchDate").on("change", function() {
+                changeApplicationDate();
+            });
+            toggleDisplay();
+        });
+    }
+    meerkat.modules.register("application_date", {
+        init: initApplicationDate,
+        events: moduleEvents,
+        changeApplicationDate: changeApplicationDate,
+        setApplicationDateCalendar: setApplicationDateCalendar
     });
 })(jQuery);
 
@@ -6636,7 +6723,7 @@ Features = {
         if (redrawFixedHeader) {
             var cellFeatureWidth = $(".cell.feature").width() + 2 + "px", dockedHeaderHeight = "100px";
             if ($currentPage.length >= 1) {
-                dockedHeaderHeight = $(".resultInsert.featuresMode:visible").first().innerHeight() + 1 + "px";
+                dockedHeaderHeight = $(".currentPage .resultInsert.featuresMode:visible").first().innerHeight() + 1 + "px";
             }
             $fixedDockedHeader.css({
                 top: topPosition,
@@ -9165,6 +9252,36 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, events = {};
+    function init() {}
+    function get(data, settings) {
+        data = _.extend({
+            plateNumber: null,
+            state: null
+        }, data);
+        settings = settings || {};
+        var request_obj = {
+            url: "rest/rego/lookup/list.json",
+            data: data,
+            dataType: "json",
+            cache: true,
+            useDefaultErrorHandling: true,
+            numberOfAttempts: 3,
+            errorLevel: "fatal"
+        };
+        if (_.isObject(settings) && !_.isEmpty(settings)) {
+            request_obj = $.extend(request_obj, settings);
+        }
+        meerkat.modules.comms.get(request_obj);
+    }
+    meerkat.modules.register("regoLookup", {
+        init: init,
+        events: events,
+        get: get
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $renderingModeFld;
     function init() {
         if (typeof meerkat.site === "undefined") {
@@ -11477,6 +11594,11 @@ Features = {
         var _monthString = leadingZero(_date.getMonth() + 1);
         return _date.getFullYear() + "-" + _monthString + "-" + _dayString;
     }
+    function returnDateValueFormFormat(_date) {
+        var _dayString = leadingZero(_date.getDate());
+        var _monthString = leadingZero(_date.getMonth() + 1);
+        return _dayString + "/" + _monthString + "/" + _date.getFullYear();
+    }
     function invertDate(dt, del) {
         del = del || "/";
         return dt.split(del).reverse().join(del);
@@ -11552,6 +11674,7 @@ Features = {
         isValidNumericKeypressEvent: isValidNumericKeypressEvent,
         invertDate: invertDate,
         returnDateValue: returnDateValue,
+        returnDateValueFormFormat: returnDateValueFormFormat,
         pluginReady: pluginReady,
         calcWorkingDays: calcWorkingDays,
         getTimeAgo: getTimeAgo
