@@ -25,7 +25,9 @@
 							<form_new:row label="Provider" fieldXpath="${fieldXpath}">
 								<field:provider_select productCategories="HEALTH" xpath="${fieldXpath}" />
 							</form_new:row>
-
+							<form_new:row label="ProductName" fieldXpath="${xpath}/productTitleSearch">
+								<field:input required="false" className="form-control" title="Product Name" xpath="${xpath}/productTitleSearch" />
+							</form_new:row>
 							<c:set var="fieldXpath" value="${xpath}/searchResults" />
 							<form_new:row label="Number of results" fieldXpath="${fieldXpath}">
 								<field_new:count_select max="36" xpath="${fieldXpath}" min="12" title="Number of Results" required="false" step="12"/>
