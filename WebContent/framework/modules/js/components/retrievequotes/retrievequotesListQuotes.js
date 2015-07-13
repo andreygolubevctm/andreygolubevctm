@@ -88,6 +88,16 @@
             })
     }
 
+    function noResults() {
+        meerkat.modules.dialogs.show({
+            htmlContent: $("#new-quote-template").html(),
+            buttons: [false],
+            onOpen: function(dialogId) {
+                $("#" + dialogId).find(".btn-close-dialog, .modal-footer").remove();
+            }
+        });
+    }
+
     function _onClickNewQuote(e) {
         meerkat.modules.dialogs.show({
            htmlContent: $("#new-quote-template").html()
@@ -336,6 +346,7 @@
         renderQuotes: renderQuotes,
         renderTemplate: renderTemplate,
         getVerticalFromObject: getVerticalFromObject,
+        noResults: noResults,
 
         getGenderString: getGenderString,
         carFormatNcd: carFormatNcd,

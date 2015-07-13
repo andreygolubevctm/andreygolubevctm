@@ -96,7 +96,7 @@
 
             <jsp:attribute name="additional_meerkat_scripts">
                 <script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/components/retrievequotes.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-        </jsp:attribute>
+            </jsp:attribute>
 
             <jsp:body>
 
@@ -110,15 +110,14 @@
 
                 <input type="hidden" name="transcheck" id="transcheck" value="1"/>
 
+                <core:js_template id="new-quote-template">
+                    <h2>Start a New Quote</h2>
+                    <br>
+                    <confirmation:other_products />
+                </core:js_template>
             </jsp:body>
 
         </layout:journey_engine_page>
 
     </c:otherwise>
 </c:choose>
-
-<core:js_template id="new-quote-template">
-    <h2>Start a New Quote</h2>
-    <br>
-    <confirmation:other_products />
-</core:js_template>

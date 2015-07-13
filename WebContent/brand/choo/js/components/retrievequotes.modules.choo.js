@@ -65,6 +65,11 @@
             slideIndex: 1,
             onBeforeEnter: function() {
                 meerkat.modules.retrievequotesListQuotes.renderQuotes();
+            },
+            onAfterEnter: function() {
+                if ($.trim($("#quote-result-list").html()) === "") {
+                    meerkat.modules.retrievequotesListQuotes.noResults();
+                }
             }
         };
         steps = {
@@ -233,6 +238,15 @@
             onFail();
         }).fail(function() {
             onFail();
+        });
+    }
+    function noResults() {
+        meerkat.modules.dialogs.show({
+            htmlContent: $("#new-quote-template").html(),
+            buttons: [ false ],
+            onOpen: function(dialogId) {
+                $("#" + dialogId).find(".btn-close-dialog, .modal-footer").remove();
+            }
         });
     }
     function _onClickNewQuote(e) {
@@ -447,6 +461,7 @@
         renderQuotes: renderQuotes,
         renderTemplate: renderTemplate,
         getVerticalFromObject: getVerticalFromObject,
+        noResults: noResults,
         getGenderString: getGenderString,
         carFormatNcd: carFormatNcd,
         healthBenefitsList: healthBenefitsList,

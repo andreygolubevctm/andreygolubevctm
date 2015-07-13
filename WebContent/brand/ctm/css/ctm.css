@@ -9010,6 +9010,24 @@ fieldset h2 .icon-text {
 }
 .snapshot .snapshot-title {
   font-size: 21px;
+  line-height: 21px;
+}
+.snapshot.bubble .icon {
+  font-size: 2.5em;
+  padding-top: 3px;
+  color: #ffffff;
+}
+@media (max-width: 767px) {
+  .snapshot.bubble .change-car-button-row {
+    margin-top: 0.5em;
+  }
+}
+.snapshot.bubble .btn {
+  display: block;
+  width: auto;
+}
+.snapshot.bubble .snapshot-items span {
+  margin-left: 1em;
 }
 .edit-details-modal .modal-body,
 .edit-details-form {
@@ -11000,7 +11018,7 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
 }
 .well {
   border: 0;
-  padding: 10px 20px;
+  padding: 20px 20px;
   border-radius: 10px;
   margin-bottom: 28px;
 }
@@ -11080,6 +11098,15 @@ fieldset[disabled] .btn-cancel.saved-continue-link:focus {
 }
 .well-info a.btn {
   text-decoration: none;
+}
+.well-info.point-left {
+  margin-left: 20px;
+  margin-bottom: 0px;
+}
+.well-info.point-left:after {
+  border-width: 20px 0 0 15px;
+  left: -15px;
+  top: 20px;
 }
 .well-chatty {
   background-color: #1c3e93;

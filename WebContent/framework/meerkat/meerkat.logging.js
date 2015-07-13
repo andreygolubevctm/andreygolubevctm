@@ -535,7 +535,7 @@ meerkat.logging.init = function () {
 	//
 	// One day we will remove the old code in favour of this...
 	if(meerkat.site.useNewLogging) {
-		initializeNewLogging();
+		//initializeNewLogging();
 	}
 
 	var theAppName = '';
