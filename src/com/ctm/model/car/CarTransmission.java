@@ -2,6 +2,7 @@ package com.ctm.model.car;
 
 public class CarTransmission {
 	public static final String JSON_COLLECTION_NAME = "transmissions";
+	public static final String JSON_SINGLE_NAME = "transmission";
 
 
 	public static enum TransmissionType {

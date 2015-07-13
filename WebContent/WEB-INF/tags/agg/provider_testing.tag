@@ -60,7 +60,7 @@
 
 			<form_new:fieldset legend="">
 				<c:set var="fieldXpath" value="${xpath}/searchDate" />
-				<form_new:row label="Expected Cover Date" fieldXpath="${fieldXpath}">
+				<form_new:row label="Application Date" fieldXpath="${fieldXpath}">
 					<field:payment_day xpath="${fieldXpath}" title="searchDate" required="false" days="90" exclude="32" buffer="0"/>
 					For testing future product searches
 				</form_new:row>

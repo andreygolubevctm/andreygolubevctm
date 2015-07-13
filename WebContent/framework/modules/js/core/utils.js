@@ -119,10 +119,18 @@
 		return new Date(_dateString.substring(6,10), _dateString.substring(3,5) - 1, _dateString.substring(0,2));
 	}
 
+	// return date string in YYYY-MM-DD
 	function returnDateValue(_date){
 		var _dayString = leadingZero( _date.getDate() );
 		var _monthString = leadingZero( _date.getMonth() + 1 );
 		return _date.getFullYear() +'-'+ _monthString +'-'+ _dayString;
+	}
+
+	// return date string in DD/MM/YYYY
+	function returnDateValueFormFormat(_date){
+		var _dayString = leadingZero( _date.getDate() );
+		var _monthString = leadingZero( _date.getMonth() + 1 );
+		return _dayString+'/'+_monthString+'/'+_date.getFullYear();
 	}
 
 	function invertDate(dt, del) {
@@ -252,6 +260,7 @@
 		isValidNumericKeypressEvent: isValidNumericKeypressEvent,
 		invertDate: invertDate,
 		returnDateValue : returnDateValue,
+		returnDateValueFormFormat: returnDateValueFormFormat,
 		pluginReady: pluginReady,
 		calcWorkingDays: calcWorkingDays,
 		getTimeAgo: getTimeAgo

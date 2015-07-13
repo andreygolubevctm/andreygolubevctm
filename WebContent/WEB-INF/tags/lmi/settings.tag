@@ -5,5 +5,9 @@
 {
     journeyStage: "<c:out value="${data[pageSettings.getVerticalCode()]['/journey/stage']}"/>",
     pageAction: '<c:out value="${param.action}"  escapeXml="true"/>',
-    brands: '<c:out value="${data[pageSettings.getVerticalCode()]['brand']}" />'
+    brands: '<c:out value="${data[pageSettings.getVerticalCode()]['brand']}" />',
+    navMenu: {
+        type: 'offcanvas',
+        direction: 'right'
+    },
 }
