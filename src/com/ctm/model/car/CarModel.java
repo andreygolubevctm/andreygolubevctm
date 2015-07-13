@@ -2,6 +2,8 @@ package com.ctm.model.car;
 
 public class CarModel {
 	public static final String JSON_COLLECTION_NAME = "models";
+	public static final String JSON_DESCRIPTION_NAME = "modelDes";
+	public static final String JSON_SINGLE_NAME = "model";
 
 	private String code;
 	private String label;

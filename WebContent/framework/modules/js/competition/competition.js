@@ -33,7 +33,8 @@
 				object: {
 					action: 'Start',
 					transactionID: parseInt(transaction_id, 10),
-					vertical: meerkat.site.vertical
+					vertical: 'meerkat',
+					verticalFilter: 'competition'
 				}
 			});
 		}
@@ -140,8 +141,9 @@
 				break;
 		}
 
-		var response =  {
-				vertical:				meerkat.site.vertical,
+		var response = {
+				vertical:				'meerkat',
+				verticalFilter:			'competition',
 				actionStep:				actionStep,
 				transactionID:			transactionId,
 				quoteReferenceNumber:	transactionId,
