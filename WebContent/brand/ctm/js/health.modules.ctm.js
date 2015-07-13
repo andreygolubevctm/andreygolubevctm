@@ -1944,7 +1944,7 @@ creditCardDetails = {
                         $("#health_application-warning").find(".fundWarning").hide().empty();
                     }
                     this.tracking.touchComment = selectedProduct.info.provider + " " + selectedProduct.info.des;
-                    this.tracking.productId = selectedProduct.info.productCode;
+                    this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
                     healthFunds.load(selectedProduct.info.provider);
                     var $slide = $("#journeyEngineSlidesContainer .journeyEngineSlide").slice(meerkat.modules.journeyEngine.getCurrentStepIndex() - 1);
                     $slide.find(".error-field").remove();
