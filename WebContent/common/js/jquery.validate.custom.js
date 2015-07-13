@@ -1038,13 +1038,12 @@ var ServerSideValidation = {
 			}
 
 			if(matches.length > 0){
-				// TODO - Decide what to do here,
 				// eg: work out which slide to navigate to, also should we display a message to the user as the error may be unrecoverable?
-				var firstSlide = $(matches[0]).parents(".journeyEngineSlide").first();
+				var errorSlide = $(matches[0]).closest("form").attr("id").slice(0,-4); // trim off "Form"
 
 				// adding defer allows the setHash to actually affect the journeyEngine
 				_.defer(function deferSetHash() {
-					meerkat.modules.address.setHash("start");
+					meerkat.modules.address.setHash(errorSlide === "" ? "start" : errorSlide);
 				});
 			}
 
