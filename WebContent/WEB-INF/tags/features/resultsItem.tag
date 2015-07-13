@@ -45,7 +45,7 @@
 					<c:when test="${item.getResultPath() != null && item.getResultPath() != ''}">
 						<c:forTokens delims="," items="${item.getResultPath()}" var="splitPath">
 							{{ var pathValue = Object.byString( obj, '${splitPath}' ) }}
-							{{ var displayValue = Features.parseFeatureValue( pathValue ) }}
+							{{ var displayValue = Features.parseFeatureValue( pathValue, true ) }}
 
 							<%-- This will be fixed/moved during the refactor. In reality this model should be complete before we need to render these items. --%>
 							<c:if test="${vertical eq 'car'}">

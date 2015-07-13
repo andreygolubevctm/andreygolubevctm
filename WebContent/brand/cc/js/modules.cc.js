@@ -3306,7 +3306,8 @@ Features = {
         });
         return html;
     },
-    parseFeatureValue: function(value) {
+    parseFeatureValue: function(value, decode) {
+        decode = decode || false;
         if (typeof value === "undefined" || value === "") {
             value = "&nbsp;";
         } else {
@@ -3317,7 +3318,12 @@ Features = {
                 value = obj.value;
             }
         }
-        return value;
+        return decode === true ? Features.simpleDecodeHTML(value) : value;
+    },
+    simpleDecodeHTML: function(input) {
+        input = input.replace(/&lt;/gi, "<");
+        input = input.replace(/&gt;/gi, ">");
+        return input;
     },
     setExpandableRows: function() {
         if ($(Features.target + " .expandable").length == 0) {

@@ -210,47 +210,6 @@
 					<%-- Add homeProductId to resultset to use for tracking --%>
 					<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="<trackingProductId>${homeProductId}</trackingProductId>" />
 
-					<%-- OLD style features (decommission this once we no longer need to support non-AMS vertical) --%>
-					<c:set var="features">
-						<compareFeatures>
-							<c:if test="${not empty homeExcess}">
-								<features featureId="homeExcess" desc="Home Excess" value="$${homeExcess}" extra="" />
-							</c:if>
-							<c:if test="${not empty contentsExcess}">
-								<features featureId="contentsExcess" desc="Contents Excess" value="$${contentsExcess}" extra="" />
-							</c:if>
-
-					<features featureId="coverType" desc="Cover Type" value="${coverType}" extra="" />
-					<features featureId="product" desc="Product" value="${productName}" extra="" />
-
-					<c:forEach var="feature" items="${featureResult.rowsByIndex}" varStatus='status'>
-
-						<c:set var="value">${feature[2]}</c:set>
-						<c:set var="extra">${fn:escapeXml(feature[1])}</c:set>
-
-								<c:choose>
-									<c:when test="${value == 'S' and isHollard eq false}">
-							<c:set var="value">${feature[1]}</c:set>
-							<c:set var="extra">${terms}</c:set>
-									</c:when>
-									<%-- Special Offer content for Hollard is taken from the service --%>
-									<c:when test="${value == 'S' and isHollard eq true}">
-										<c:set var="value"><x:out select="$resultXml/result/feature" /></c:set>
-										<c:set var="extra"><x:out select="$resultXml/result/terms" /></c:set>
-									</c:when>
-								</c:choose>
-
-						<features featureId="${feature[0]}" desc="${feature[0]}" value="${fn:escapeXml(value)}" extra="${extra}" />
-
-					</c:forEach>
-
-							<c:if test="${isHollard eq true}">
-								<features featureId="${feature[0]}" desc="${feature[0]}" value="${fn:escapeXml(value)}" extra="${extra}" />
-							</c:if>
-				</compareFeatures>
-			</c:set>
-			<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]" xml="${features}" />
-
 					<%-- NEW style features --%>
 					<c:set var="featuresXml">
 						<features>
@@ -269,14 +228,7 @@
 								<c:set var="code">${feature[3]}</c:set>
 
 								<c:if test="${value == 'S'}">
-									<c:choose>
-										<c:when test="${fn:contains(productId, 'BUDD')}">
-											<c:set var="value">${feature[1]}</c:set>
-										</c:when>
-										<c:otherwise>
 									<c:set var="value">${offer}</c:set>
-										</c:otherwise>
-									</c:choose>
 									<c:set var="extra">${terms}</c:set>
 								</c:if>
 
