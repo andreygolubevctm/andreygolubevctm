@@ -100,13 +100,14 @@
 							styleCodeId="${pageSettings.getBrandId()}"
 							verticalCode="${verticalCode}"
 							configDbKey="homeQuoteService"
-					transactionId = "${tranId}"
-					xml = "${go:getEscapedXml(data['home'])}"
-					var = "resultXml"
+							transactionId = "${tranId}"
+							xml = "${go:getEscapedXml(data['home'])}"
+							var = "resultXml"
 							authToken = "${param.home_authToken}"
-					debugVar="debugXml"
-					validationErrorsVar="validationErrors"
-							continueOnValidationError="${continueOnValidationError}" />
+							debugVar="debugXml"
+							validationErrorsVar="validationErrors"
+							continueOnValidationError="${continueOnValidationError}"
+							isValidVar="isValid"/>
 
 		<c:choose>
 	<c:when test="${isValid || continueOnValidationError}" >
