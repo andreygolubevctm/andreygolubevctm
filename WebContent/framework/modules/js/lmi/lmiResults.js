@@ -1,4 +1,4 @@
-;(function($){
+;(function ($) {
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
@@ -19,7 +19,7 @@
     var previousBreakpoint;
     var needToBuildFeatures = false;
 
-    function initPage(){
+    function initPage() {
 
         initResults();
         Features.init();
@@ -28,7 +28,7 @@
         breakpointTracking();
     }
 
-    function onReturnToPage(){
+    function onReturnToPage() {
         breakpointTracking();
         if (previousBreakpoint !== meerkat.modules.deviceMediaState.get()) {
             Results.view.calculateResultsContainerWidth();
@@ -38,7 +38,7 @@
         Results.pagination.refresh();
     }
 
-    function initResults(){
+    function initResults() {
 
         try {
 
@@ -82,7 +82,7 @@
                     touchEnabled: Modernizr.touch
                 },
                 sort: {
-                    sortBy: 'productName'
+                    sortBy: 'policyName'
                 },
                 animation: {
                     results: {
@@ -111,64 +111,64 @@
                     }
                 },
                 elements: {
-                    features:{
+                    features: {
                         values: ".content",
                         extras: ".children"
                     }
                 },
-                templates:{
-                    pagination:{
+                templates: {
+                    pagination: {
                         pageText: 'Product {{=currentPage}} of {{=totalPages}}'
                     }
                 },
                 dictionary: {
-                    valueMap:[
+                    valueMap: [
                         {
-                            key:'Y',
+                            key: 'Y',
                             value: "<span class='icon icon-tick'></span>"
                         },
                         {
-                            key:'N',
+                            key: 'N',
                             value: "<span class='icon icon-cross'></span>"
                         },
                         {
-                            key:'R',
+                            key: 'R',
                             value: "Restricted / Conditional"
                         },
                         {
-                            key:'AI',
+                            key: 'AI',
                             value: "Additional Information"
                         },
                         {
-                            key:'O',
+                            key: 'O',
                             value: "Optional"
                         },
                         {
-                            key:'L',
+                            key: 'L',
                             value: "Limited"
                         },
                         {
-                            key:'SCH',
+                            key: 'SCH',
                             value: "As shown in schedule"
                         },
                         {
-                            key:'NA',
+                            key: 'NA',
                             value: "Non Applicable"
                         },
                         {
-                            key:'E',
+                            key: 'E',
                             value: "Excluded"
                         },
                         {
-                            key:'NE',
+                            key: 'NE',
                             value: "No Exclusion"
                         },
                         {
-                            key:'NS',
+                            key: 'NS',
                             value: "No Sub Limit"
                         },
                         {
-                            key:'OTH',
+                            key: 'OTH',
                             value: ""
                         }
                     ]
@@ -177,13 +177,13 @@
                     paths: {
                         rank_productId: "productId"
                     },
-                    filterUnavailableProducts : false
+                    filterUnavailableProducts: false
                 },
-                incrementTransactionId : false
+                incrementTransactionId: false
             });
         }
-        catch(e) {
-            Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.lmiResults.initResults(); '+e.message, e);
+        catch (e) {
+            Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.lmiResults.initResults(); ' + e.message, e);
         }
 
     }
@@ -201,29 +201,27 @@
         });
 
         // If error occurs, go back in the journey
-        meerkat.messaging.subscribe(events.RESULTS_ERROR, function() {
+        meerkat.messaging.subscribe(events.RESULTS_ERROR, function () {
             // Delayed to allow journey engine to unlock
-            _.delay(function() {
+            _.delay(function () {
                 meerkat.modules.journeyEngine.gotoPath('previous');
             }, 1000);
         });
 
-        $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){
-            console.log('BUILDING HERE');
-
+        $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
             Features.buildHtml();
         });
 
         // Run the show method even when there are no available products
         // This will render the unavailable combined template
-        $(Results.settings.elements.resultsContainer).on("noFilteredResults", function() {
+        $(Results.settings.elements.resultsContainer).on("noFilteredResults", function () {
             Results.view.show();
         });
 
         $(document).on("resultsLoaded", onResultsLoaded);
 
         // Scroll to the top when results come back
-        $(document).on("resultsReturned", function(){
+        $(document).on("resultsReturned", function () {
             meerkat.modules.utils.scrollPageTo($("header"));
 
             // Reset the feature header to match the new column content.
@@ -249,22 +247,30 @@
             Results.pagination.show();
 
             /*// If no providers opted to show results, display the no results modal.
-            var availableCounts = 0;
-            $.each(Results.model.returnedProducts, function() {
-                if (this.available === 'Y' && this.productId !== 'CURR') {
-                    availableCounts++;
-                }
-            });
-            // Check products length in case the reason for no results is an error e.g. 500
-            if (availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
-                showNoResults();
-            }
-            */
+             var availableCounts = 0;
+             $.each(Results.model.returnedProducts, function() {
+             if (this.available === 'Y' && this.productId !== 'CURR') {
+             availableCounts++;
+             }
+             });
+             // Check products length in case the reason for no results is an error e.g. 500
+             if (availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
+             showNoResults();
+             }
+             */
 
         });
 
         $(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
             meerkat.modules.performanceProfiling.startTest('results');
+            // Create the featureIds here as new framework doesn't use populateHeader
+            Features.featuresIds = [];
+            $('.featuresTemplateComponent > .cell > .h.content').each(function () {
+                var fid = $(this).attr('data-featureid');
+                if ($.inArray(fid, Features.featuresIds) == -1) {
+                    Features.featuresIds.push(fid);
+                }
+            });
         });
 
         $(Results.settings.elements.resultsContainer).on("populateFeaturesEnd", function onPopulateFeaturesEnd() {
@@ -272,11 +278,11 @@
             var time = meerkat.modules.performanceProfiling.endTest('results');
 
             var score
-            if(time < 800){
+            if (time < 800) {
                 score = meerkat.modules.performanceProfiling.PERFORMANCE.HIGH;
-            }else if (time < 8000 && meerkat.modules.performanceProfiling.isIE8() === false){
+            } else if (time < 8000 && meerkat.modules.performanceProfiling.isIE8() === false) {
                 score = meerkat.modules.performanceProfiling.PERFORMANCE.MEDIUM;
-            }else{
+            } else {
                 score = meerkat.modules.performanceProfiling.PERFORMANCE.LOW;
             }
 
@@ -284,9 +290,9 @@
 
         });
 
-        $(document).on("resultPageChange", function(event) {
+        $(document).on("resultPageChange", function (event) {
             var pageData = event.pageData;
-            if(pageData.measurements === null) return false;
+            if (pageData.measurements === null) return false;
 
             var items = Results.getFilteredResults().length;
             var columnsPerPage = pageData.measurements.columnsPerPage;
@@ -294,36 +300,37 @@
         });
 
         // Hovering a row cell adds a class to the whole row to make it highlightable
-        $(document).on("FeaturesRendered", function(){
+        $(document).on("FeaturesRendered", function () {
 
-            $(Features.target + " .expandable > " + Results.settings.elements.features.values).on("mouseenter", function(){
+            Features.removeEmptyDropdowns();
+            $(Features.target + " .expandable > " + Results.settings.elements.features.values).off('mouseenter mouseleave').on("mouseenter", function () {
                 var featureId = $(this).attr("data-featureId");
-                var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+                var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-                $hoverRow.addClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
-            }).on("mouseleave", function(){
-                    var featureId = $(this).attr("data-featureId");
-                    var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+                $hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+            }).on("mouseleave", function () {
+                var featureId = $(this).attr("data-featureId");
+                var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-                    $hoverRow.removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
-                });
+                $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+            });
         });
 
         //meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
         //meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
     }
 
-    function breakpointTracking(){
+    function breakpointTracking() {
 
         startColumnWidthTracking();
 
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter(){
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
             if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
                 startColumnWidthTracking();
             }
         });
 
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave(){
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave() {
             stopColumnWidthTracking();
             Results.pagination.setCurrentPageNumber(1);
             Results.pagination.resync();
@@ -333,7 +340,7 @@
 
     function startColumnWidthTracking() {
         if (meerkat.modules.deviceMediaState.get() === 'xs' && Results.getDisplayMode() === 'features') {
-            Results.view.startColumnWidthTracking( $(window), Results.settings.render.features.numberOfXSColumns, false );
+            Results.view.startColumnWidthTracking($(window), Results.settings.render.features.numberOfXSColumns, false);
             Results.pagination.setCurrentPageNumber(1);
             Results.pagination.resync();
         }
@@ -343,7 +350,7 @@
         Results.view.stopColumnWidthTracking();
     }
 
-    function recordPreviousBreakpoint(){
+    function recordPreviousBreakpoint() {
         previousBreakpoint = meerkat.modules.deviceMediaState.get();
     }
 
@@ -369,9 +376,7 @@
 
 
         meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
-            additionalData: {
-
-            },
+            additionalData: {},
             onAfterEventMode: 'Load'
         });
     }
@@ -383,13 +388,13 @@
      * loading the page with a pre-set default display mode e.g. ?display=features
      */
     function switchToFeaturesMode(doTracking) {
-        if(typeof doTracking == 'undefined') {
+        if (typeof doTracking == 'undefined') {
             doTracking = true;
         }
         // Confirm results is inited
         if (Results.getDisplayMode() === null) return;
 
-        if(Results.getDisplayMode() !== 'features') {
+        if (Results.getDisplayMode() !== 'features') {
 
             // Force a refresh if we need to rebuild the features. Would be needed if the results were initially loaded in Price mode.
             var forceRefresh = (needToBuildFeatures === true);
@@ -401,7 +406,7 @@
 
             // Double check that features mode fits into viewport
 
-            _.defer(function() {
+            _.defer(function () {
                 Results.pagination.gotoPage(1);
                 if (meerkat.modules.deviceMediaState.get() === 'xs') {
                     Results.view.setColumnWidth($(window), Results.settings.render.features.numberOfXSColumns, false);
@@ -416,14 +421,14 @@
             needToBuildFeatures = false;
             $(document.body).removeClass('priceMode');
             $(window).scrollTop(0);
-            if(doTracking) {
+            if (doTracking) {
                 meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
                 publishExtraSuperTagEvents();
             }
         }
     }
 
-    function init(){
+    function init() {
 
         $component = $("#resultsPage");
 

@@ -3167,6 +3167,8 @@ Features = {
             Features.results = results;
         }
         Features.template = $(Results.settings.elements.templates.feature).html();
+        var htmlTemplate = _.template(Features.template);
+        Features.template = htmlTemplate({});
         if (Features.template == "") {
             console.log("The comparison feature template could not be found: templateSelector=", Compare.settings.elements.templates.feature, "This template is mandatory, make sure to pass the correct selector to the Compare.settings.elements.templates.feature user setting when calling Compare.init()");
         } else {
@@ -3251,8 +3253,7 @@ Features = {
             }
         });
         if (Features.emptyAdditionalInfoCategory) {
-            $(Features.target + " [data-featureId=category-9]").next().remove();
-            $(Features.target + " [data-featureId=category-9]").remove();
+            $(Features.target + " [data-featureId=category-9]").next().remove().end().remove();
         }
     },
     populateTemplate: function(product) {
@@ -3327,7 +3328,7 @@ Features = {
         }
     },
     applyExpandableEvents: function() {
-        $(document.body).on("click", Features.target + " .expandable > " + Results.settings.elements.features.values, function(e) {
+        $(document.body).off("click").on("click", Features.target + " .expandable > " + Results.settings.elements.features.values, function(e) {
             var featureId = $(this).attr("data-featureId");
             var $extras = $(Features.target + ' .children[data-fid="' + featureId + '"]');
             var $parents = $extras.parent();
@@ -3355,7 +3356,7 @@ Features = {
         _.defer(function() {
             $parents.removeClass("collapsed").addClass("expanding");
             _.defer(function() {
-                Features.sameHeightRows($extras.find(Results.settings.elements.features.values + ":visible"));
+                Features.sameHeightRows($extras.find(Results.settings.elements.features.values));
                 $parents.removeClass("expanding").addClass("expanded");
             });
         });
@@ -3376,7 +3377,7 @@ Features = {
     sameHeightRows: function(elements) {
         var featureRowCache = [];
         elements.each(function elementsEach(elementIndex, element) {
-            $e = $(element);
+            var $e = $(element);
             var featureId = $e.attr("data-featureId");
             var item = _.findWhere(featureRowCache, {
                 featureId: featureId
@@ -3419,17 +3420,36 @@ Features = {
         }
     },
     hideEmptyRows: function() {
+        var $container = $(Features.target);
         $.each(Features.featuresIds, function(featureIdIndex, featureId) {
             var found = false;
-            $currentRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
+            var $currentRow = $('[data-featureId="' + featureId + '"]', $container);
             $currentRow.each(function() {
-                var value = $(this).html();
+                var value = $.trim($(this).text());
                 if (!found && value != "" && value != "&nbsp;") {
                     found = true;
+                    return;
                 }
             });
             if (!found) {
                 $currentRow.parent().hide();
+            }
+        });
+    },
+    removeEmptyDropdowns: function() {
+        var $container = $(Features.target);
+        $.each(Features.featuresIds, function(featureIdIndex, featureId) {
+            var found = false;
+            var $currentRow = $('.children[data-fid="' + featureId + '"]', $container);
+            $currentRow.each(function() {
+                var value = $.trim($(this).text());
+                if (!found && value != "" && value != "&nbsp;") {
+                    found = true;
+                    return;
+                }
+            });
+            if (!found) {
+                $currentRow.closest(".cell").off("mousenter mousemove").removeClass("expandable").end().remove();
             }
         });
     },

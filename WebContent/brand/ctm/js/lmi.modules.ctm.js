@@ -229,7 +229,7 @@
                     touchEnabled: Modernizr.touch
                 },
                 sort: {
-                    sortBy: "productName"
+                    sortBy: "policyName"
                 },
                 animation: {
                     results: {
@@ -332,7 +332,6 @@
             }, 1e3);
         });
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function() {
-            console.log("BUILDING HERE");
             Features.buildHtml();
         });
         $(Results.settings.elements.resultsContainer).on("noFilteredResults", function() {
@@ -355,6 +354,13 @@
         });
         $(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
             meerkat.modules.performanceProfiling.startTest("results");
+            Features.featuresIds = [];
+            $(".featuresTemplateComponent > .cell > .h.content").each(function() {
+                var fid = $(this).attr("data-featureid");
+                if ($.inArray(fid, Features.featuresIds) == -1) {
+                    Features.featuresIds.push(fid);
+                }
+            });
         });
         $(Results.settings.elements.resultsContainer).on("populateFeaturesEnd", function onPopulateFeaturesEnd() {
             var time = meerkat.modules.performanceProfiling.endTest("results");
@@ -375,7 +381,8 @@
             var columnsPerPage = pageData.measurements.columnsPerPage;
         });
         $(document).on("FeaturesRendered", function() {
-            $(Features.target + " .expandable > " + Results.settings.elements.features.values).on("mouseenter", function() {
+            Features.removeEmptyDropdowns();
+            $(Features.target + " .expandable > " + Results.settings.elements.features.values).off("mouseenter mouseleave").on("mouseenter", function() {
                 var featureId = $(this).attr("data-featureId");
                 var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
                 $hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ""));
