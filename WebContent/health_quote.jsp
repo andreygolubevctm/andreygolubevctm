@@ -17,8 +17,10 @@
 <jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" scope="request" />
 
 <c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('health')}" scope="request"  />
+
 <%--TODO: turn this on and off either in a settings file or in the database --%>
 <c:set var="showReducedHoursMessage" value="false" />
+
 <%-- Call centre numbers --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 <c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
@@ -140,7 +142,8 @@
 	</jsp:attribute>
 
 	<jsp:body>
-						
+		<core:application_date />
+
 		<%-- Product summary header for mobile --%>
 		<div class="row productSummary-parent visible-xs">
 			<div class="productSummary-affix affix-top visible-xs">

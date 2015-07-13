@@ -62,8 +62,8 @@
 
 					<c:if test="${not empty param.applicationDateOverride && param.applicationDateOverride == 'yes'}">
 						<c:set var="outcome" value="${applicationService.setApplicationDateOnSession(pageContext.getRequest(), param.applicationDateOverrideValue)}" />
-						<br><strong style="color:red">DATE SET (check "Applcation date" below)</strong>
-			</c:if>
+						<br><strong style="color:red">DATE SET (check "Application date" below)</strong>
+					</c:if>
 				</form>
 			</p>
 			<%-- /APPLICATION DATE OVERRIDE --%>

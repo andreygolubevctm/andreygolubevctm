@@ -3658,6 +3658,74 @@ Features = {
 
 (function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var postData = {}, elements = {
+        applicationDate: $(".applicationDate"),
+        applicationDateContainer: $(".applicationDateContainer")
+    }, selectedDate, moduleEvents = {};
+    function changeApplicationDate() {
+        selectedDate = $("#health_searchDate").val();
+        var date = selectedDate.split("/");
+        var newDate = date[2] + "-" + date[1] + "-" + date[0];
+        postData.applicationDateOverrideValue = selectedDate !== "" ? newDate + " 00:00:01" : null;
+        meerkat.modules.comms.post({
+            url: "ajax/write/setApplicationDate.jsp",
+            data: postData,
+            cache: false,
+            errorLevel: "warning",
+            onSuccess: function onApplicationUpdateSuccess(data) {
+                updateDisplay(data);
+                toggleDisplay();
+            }
+        });
+    }
+    function setApplicationDateCalendar() {
+        meerkat.modules.comms.post({
+            url: "ajax/load/getApplicationDate.jsp",
+            cache: false,
+            errorLevel: "warning",
+            onSuccess: function onApplicationUpdateSuccess(dateResult) {
+                updateCalendar(dateResult);
+            }
+        });
+    }
+    function updateCalendar(dateResult) {
+        if (dateResult !== null && dateResult !== "") {
+            var date = new Date(dateResult.replace(/ [A]?EST/, ""));
+            var newDate = meerkat.modules.utils.returnDateValueFormFormat(date);
+            $("#health_searchDate").val(newDate);
+        }
+    }
+    function updateDisplay(data) {
+        elements.applicationDate.html(data);
+    }
+    function toggleDisplay() {
+        if (elements.applicationDate.html() === "") {
+            elements.applicationDateContainer.hide();
+        } else {
+            elements.applicationDateContainer.show();
+        }
+    }
+    function initApplicationDate() {
+        jQuery(document).ready(function($) {
+            if ($(".simples").length === 0) {
+                setApplicationDateCalendar();
+            }
+            $("#health_searchDate").on("change", function() {
+                changeApplicationDate();
+            });
+            toggleDisplay();
+        });
+    }
+    meerkat.modules.register("application_date", {
+        init: initApplicationDate,
+        events: moduleEvents,
+        changeApplicationDate: changeApplicationDate,
+        setApplicationDateCalendar: setApplicationDateCalendar
+    });
+})(jQuery);
+
+(function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
     var events = {
         autocomplete: {
             CANT_FIND_ADDRESS: "EVENT_CANT_FIND_ADDRESS",
@@ -6635,7 +6703,7 @@ Features = {
         if (redrawFixedHeader) {
             var cellFeatureWidth = $(".cell.feature").width() + 2 + "px", dockedHeaderHeight = "100px";
             if ($currentPage.length >= 1) {
-                dockedHeaderHeight = $(".resultInsert.featuresMode:visible").first().innerHeight() + 1 + "px";
+                dockedHeaderHeight = $(".currentPage .resultInsert.featuresMode:visible").first().innerHeight() + 1 + "px";
             }
             $fixedDockedHeader.css({
                 top: topPosition,
@@ -9164,6 +9232,36 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, events = {};
+    function init() {}
+    function get(data, settings) {
+        data = _.extend({
+            plateNumber: null,
+            state: null
+        }, data);
+        settings = settings || {};
+        var request_obj = {
+            url: "rest/rego/lookup/list.json",
+            data: data,
+            dataType: "json",
+            cache: true,
+            useDefaultErrorHandling: true,
+            numberOfAttempts: 3,
+            errorLevel: "fatal"
+        };
+        if (_.isObject(settings) && !_.isEmpty(settings)) {
+            request_obj = $.extend(request_obj, settings);
+        }
+        meerkat.modules.comms.get(request_obj);
+    }
+    meerkat.modules.register("regoLookup", {
+        init: init,
+        events: events,
+        get: get
+    });
+})(jQuery);
+
+(function($, undefined) {
     var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $renderingModeFld;
     function init() {
         if (typeof meerkat.site === "undefined") {
@@ -11479,6 +11577,11 @@ Features = {
         var _monthString = leadingZero(_date.getMonth() + 1);
         return _date.getFullYear() + "-" + _monthString + "-" + _dayString;
     }
+    function returnDateValueFormFormat(_date) {
+        var _dayString = leadingZero(_date.getDate());
+        var _monthString = leadingZero(_date.getMonth() + 1);
+        return _dayString + "/" + _monthString + "/" + _date.getFullYear();
+    }
     function invertDate(dt, del) {
         del = del || "/";
         return dt.split(del).reverse().join(del);
@@ -11554,6 +11657,7 @@ Features = {
         isValidNumericKeypressEvent: isValidNumericKeypressEvent,
         invertDate: invertDate,
         returnDateValue: returnDateValue,
+        returnDateValueFormFormat: returnDateValueFormFormat,
         pluginReady: pluginReady,
         calcWorkingDays: calcWorkingDays,
         getTimeAgo: getTimeAgo

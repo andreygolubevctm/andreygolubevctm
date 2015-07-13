@@ -13,5 +13,6 @@
 /target
 /*.eml
 /*.iml
+/WebContent/META-INF/context.xml
 
 *.Thumbs.db
