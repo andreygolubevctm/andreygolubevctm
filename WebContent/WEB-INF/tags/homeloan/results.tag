@@ -293,11 +293,8 @@
 <core:js_template id="provider-logo-template">
 	{{ var img = ''; }}
 	{{ if (obj.lender === 'Adelaide Bank') img = 'ADLB'; }}
-	{{ if (obj.lender === 'AFG Home Loans - ABL') img = 'AFG'; }}
-	{{ if (obj.lender === 'AFG Home Loans - Direct') img = 'AFG'; }}
+ 	{{ if (obj.lender.indexOf('AFG Home Loans') === 0) img = 'AFG'; }}
 	{{ if (obj.lender === 'AFG Home Loans - Edge') img = 'AFG_GREEN'; }}
-	{{ if (obj.lender === 'AFG Home Loans - Options') img = 'AFG'; }}
-	{{ if (obj.lender === 'AFG Home Loans - Precision') img = 'AFG'; }}
 	{{ if (obj.lender === 'AMP Bank') img = 'AMP'; }}
 	{{ if (obj.lender === 'ANZ') img = 'ANZ'; }}
 	{{ if (obj.lender === 'Auswide Bank') img = 'AUSWIDE'; }}

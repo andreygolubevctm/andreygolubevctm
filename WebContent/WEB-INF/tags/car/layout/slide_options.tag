@@ -12,7 +12,9 @@
 	<layout:slide_columns sideHidden="false">
 
 		<jsp:attribute name="rightColumn">
-			<car:snapshot />
+			<c:if test="${showRegoLookupContent eq false}">
+				<car:snapshot />
+			</c:if>
 		</jsp:attribute>
 
 		<jsp:body>

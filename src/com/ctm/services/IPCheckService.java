@@ -141,6 +141,24 @@ public class IPCheckService {
     }
 
     /**
+     * isPermittedAccessAlt - overloaded the standard isPermittedAccess method to allow it to be called
+     * via ajax requests to routing end points (which won't be able to send pageSettings object)
+     *
+     * @param request
+     * @param vertical
+     * @return
+     */
+    public boolean isPermittedAccessAlt(HttpServletRequest request, Vertical.VerticalType vertical) {
+        try {
+            PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical.getCode());
+            return isPermittedAccess(request, pageSettings);
+        } catch(ConfigSettingException | DaoException e) {
+            logger.error("[IPCHeckService] An exception was thrown getting the pageSettings object", e);
+        }
+        return true;
+    }
+
+    /**
      * Get the REMOTE_ADDR header.
      *
      * @param request
