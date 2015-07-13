@@ -441,7 +441,7 @@
     }
     function _setLocation() {
         var location;
-        if (typeof hashArray[1] !== "undefined") location = hashArray[1].replace(/\+/g, " "); else if (typeof meerkat.site.formData !== "undefined" && typeof meerkat.site.formData.location !== "undefined") location = meerkat.site.formData.location;
+        if (typeof hashArray[1] !== "undefined" && hashArray[1].substr(0, 7) !== "?stage=") location = hashArray[1].replace(/\+/g, " "); else if (typeof meerkat.site.formData !== "undefined" && typeof meerkat.site.formData.location !== "undefined") location = meerkat.site.formData.location;
         if (location !== "undefined") $("#fuel_location").val(location);
     }
     meerkat.modules.register("fuelPrefill", {
@@ -781,16 +781,24 @@
     function plotMarkers() {
         var results = filterDuplicatesOut(Results.getFilteredResults());
         var bounds = new google.maps.LatLngBounds();
+        var focusMarker, focusCoords, focusInfo;
         for (var selectedProduct = Results.getSelectedProduct(), i = 0; i < results.length; i++) {
             var latLng = createLatLng(results[i].lat, results[i].long);
             var marker = createMarker(latLng, results[i]);
             markers[results[i].siteid] = marker;
             if (results[i].siteid == selectedProduct.siteid) {
                 openInfoWindow(marker, results[i]);
+                focusMarker = marker;
+                focusCoords = latLng;
+                focusInfo = results[i];
             }
             bounds.extend(latLng);
         }
         map.fitBounds(bounds);
+        if (focusMarker && focusCoords && focusInfo) {
+            centerMap(focusCoords);
+            openInfoWindow(focusMarker, focusInfo);
+        }
     }
     function filterDuplicatesOut(results) {
         return results.filter(function(element, index, array) {

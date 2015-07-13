@@ -100,7 +100,7 @@
      */
     function _setLocation() {
         var location;
-        if(typeof hashArray[1] !== "undefined")
+        if(typeof hashArray[1] !== "undefined" && hashArray[1].substr(0,7) !== "?stage=")
             location = hashArray[1].replace(/\+/g, " ");
         else if(typeof meerkat.site.formData !== "undefined" && typeof meerkat.site.formData.location !== "undefined")
             location = meerkat.site.formData.location;
