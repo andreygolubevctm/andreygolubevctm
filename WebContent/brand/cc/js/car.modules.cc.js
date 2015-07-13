@@ -247,29 +247,7 @@
                     });
                 }
             },
-            onAfterEnter: function onDetailsEnter(event) {
-                $telNumber = $(".contact_telno");
-                $streetNo = $(".typeahead-streetNum");
-                $postcode = $("#quote_riskAddress_nonStdPostCode");
-                $postcode.on("keyup", function() {
-                    if ($postcode.length > 0) {
-                        $(this).val(trimNonNumbers($(this).val()));
-                    }
-                });
-                $telNumber.on("keyup", function(event, input) {
-                    if ($telNumber.length > 0) {
-                        $(this).val(trimNonPhoneNumbers($(this).val()));
-                    }
-                });
-                $streetNo.on("keyup", function() {
-                    if ($streetNo.length > 0) {
-                        $(this).val(trimNonNumbers($(this).val()));
-                    }
-                });
-                $postcode.trigger("keyup");
-                $telNumber.trigger("keyup");
-                $streetNo.trigger("keyup");
-            },
+            onAfterEnter: function(event) {},
             onBeforeLeave: function(event) {}
         };
         var resultsStep = {
