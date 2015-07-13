@@ -40,8 +40,4 @@
 					configDbKey="quoteService"
 					styleCodeId="${pageSettings.getBrandId()}" />
 
-<%-- Add the results to the current session data --%>
-<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-
-${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+${go:XMLtoJSON(resultXml)}

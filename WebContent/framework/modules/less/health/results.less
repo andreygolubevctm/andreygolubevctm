@@ -75,6 +75,10 @@
 		}
 	}
 
+	// override because of the zoom out issue
+	.resultsOverflowWidth(@columnWidth, @columnsNumber, @columnGutterWidth, @containerBorderWidth){
+		width: ( ( @columnWidth * @columnsNumber ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @columnGutterWidth - @containerBorderWidth - 1);
+	}
 
 	// special cases / overrrides
 	.featuresMode {
