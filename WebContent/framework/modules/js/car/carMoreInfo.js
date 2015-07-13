@@ -177,7 +177,7 @@
 		var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
 
 		var quoteNumber;
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
 			quoteNumber = product.quoteNumber;
 		} else {
 			quoteNumber = product.leadNo;
@@ -470,7 +470,7 @@
 	 * Retrieves the data used for the bridging page.
 	 */
 	function retrieveExternalCopy(product) {
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
 			return meerkat.modules.comms.get({
 				url: "rest/car/more_info/get.json",
 				cache: true,
@@ -508,7 +508,7 @@
 	function onClickApplyNow(product, applyNowCallback) {
 
 		var is_autogeneral = false;
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
 			is_autogeneral = product.serviceName.search(/agis_/i) === 0;
 		} else {
 			is_autogeneral = product.service.search(/agis_/i) === 0;
@@ -560,7 +560,7 @@
 	 */
 	function proceedToInsurer(product, modalId, applyNowCallback) {
 
-		var toogleNewWebService = meerkat.modules.splitTest.isActive(40);
+		var toogleNewWebService = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote;
 
 		if (modalId) {
 			$('#'+modalId).modal('hide');
@@ -690,7 +690,7 @@
 	function trackCallEvent(type, product) {
 
 
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
 			meerkat.modules.partnerTransfer.trackHandoverEvent({
 				product: product,
 				type: type,
@@ -725,7 +725,7 @@
 	function requestTracking() {
 
 		var settings;
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
 			settings = {
 				additionalTrackingData: {
 					productName: meerkat.modules.moreInfo.getOpenProduct().productName
@@ -750,7 +750,7 @@
 	 */
 	function renderScrapes(data) {
 
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
 
 			product = data;
 			$("#inclusions").html(product.inclusions);

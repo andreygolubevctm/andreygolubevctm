@@ -61,7 +61,7 @@
 			};
 			var rank_premium = "headline.lumpSumTotal";
 			var carQuoteResultsUrl = "ajax/json/car_quote_results.jsp";
-			if (meerkat.modules.splitTest.isActive(40)) {
+			if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
 				price = {
 					annually: "price.annualPremium",
 					annual: "price.annualPremium",
