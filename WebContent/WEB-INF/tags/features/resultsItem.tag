@@ -130,7 +130,7 @@
 									{{ pathValue = true }}
 									{{  displayValue = '<div class="btnContainer"><a class="btn-more-info" href="javascript:;" data-productId="'+obj.productId+'">view more info</a></div>' }}
 								{{ } }}
-							</c:if>{{ if( pathValue ) { }}<div>{{= displayValue || '&nbsp;' }}</div>{{ } else { }}{{= "&nbsp;" }}{{ } }}
+							</c:if>{{ if( pathValue ) { }}<div>{{= displayValue }}</div>{{ } else { }}{{= "&nbsp;" }}{{ } }}
 						</c:forTokens>
 					</c:when>
 					<c:otherwise>&nbsp;</c:otherwise>

@@ -45,8 +45,8 @@ Features = {
 
 		// prep of feature template
 		Features.template = $(Results.settings.elements.templates.feature).html();
-		var htmlTemplate = _.template(Features.template);
-		Features.template = htmlTemplate({});
+		//var htmlTemplate = _.template(Features.template);
+		//Features.template = htmlTemplate({});
 
 		if (Features.template == "") {
 			console.log("The comparison feature template could not be found: templateSelector=", Compare.settings.elements.templates.feature, "This template is mandatory, make sure to pass the correct selector to the Compare.settings.elements.templates.feature user setting when calling Compare.init()");
@@ -273,8 +273,8 @@ Features = {
 	},
 
 	applyExpandableEvents: function(){
-
-		$(document.body).off('click').on('click', Features.target + " .expandable > " + Results.settings.elements.features.values ,function(e){
+		var selector = Features.target + " .expandable > " + Results.settings.elements.features.values;
+		$(document.body).off('click', selector).on('click', selector ,function(e){
 
 			var featureId = $(this).attr("data-featureId");
 
