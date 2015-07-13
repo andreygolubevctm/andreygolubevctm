@@ -10697,16 +10697,19 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $morePrompt, $morePromptLink, $morePromptIcons, $morePromptTextLink, promptInit = false, scrollBottomAnchor, disablePrompt = false, isXs = false, settings = {}, defaults = {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $morePrompt, $morePromptLink, $morePromptIcons, $morePromptTextLink, promptInit = false, $extraDockedItem, scrollBottomAnchor, moreLinkPositionOffset, disablePrompt = false, isXs = false, settings = {}, defaults = {
         anchorPosition: "div.results-table .available.notfiltered",
         goToBottomText: "Go to Bottom",
         goToTopText: "Go to Top",
         scrollTo: "bottom",
+        stationaryDockingOffset: 0,
         arrowsEnabled: true
     };
     function initPrompt() {
         isXs = meerkat.modules.deviceMediaState.get() == "xs";
         $(document).ready(function() {
+            moreLinkPositionOffset = $extraDockedItem.length > 0 ? $extraDockedItem.outerHeight() : 0;
+            $(".morePromptLink").css("bottom", moreLinkPositionOffset);
             if (!promptInit) {
                 applyEventListeners();
             }
@@ -10754,6 +10757,7 @@ Features = {
         setPromptBottomPx();
     }
     function setPromptBottomPx() {
+        moreLinkPositionOffset = $extraDockedItem.length > 0 ? $extraDockedItem.outerHeight() : 0;
         if (disablePrompt || typeof scrollBottomAnchor == "undefined" || !scrollBottomAnchor.length) {
             return;
         }
@@ -10765,13 +10769,19 @@ Features = {
         if (currentHeight <= $(this).scrollTop()) {
             if (!isXs) {
                 var setHeightFromBottom = windowHeight - anchorViewportOffsetTop;
-                $(".morePromptLink").css("bottom", setHeightFromBottom + "px");
+                $(".morePromptLink").css("bottom", setHeightFromBottom - settings.stationaryDockingOffset + "px");
+                if ($extraDockedItem.length > 0) {
+                    $extraDockedItem.css("bottom", setHeightFromBottom - moreLinkPositionOffset - settings.stationaryDockingOffset + "px");
+                }
             }
             if (settings.scrollTo != "top") {
                 toggleArrow("up");
             }
         } else {
-            $(".morePromptLink").css("bottom", 0);
+            $(".morePromptLink").css("bottom", moreLinkPositionOffset);
+            if ($extraDockedItem.length > 0) {
+                $extraDockedItem.css("bottom", 0);
+            }
             if (settings.scrollTo != "bottom") {
                 toggleArrow("down");
             }
@@ -10824,6 +10834,7 @@ Features = {
             $morePromptIcons.removeClass("icon-angle-down");
         }
         meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, function morePromptCallBack() {
+            $extraDockedItem = $(settings.extraDockedItem);
             initPrompt();
         });
     }
