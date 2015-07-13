@@ -369,7 +369,7 @@
         }
     }
     function getVerticalFromObject(obj) {
-        var keys = Object.keys(obj);
+        var keys = _.keys(obj);
         for (var k = 0; k < keys.length; k++) {
             if (keys[k] != "id") {
                 return keys[k];
