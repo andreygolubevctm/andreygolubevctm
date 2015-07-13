@@ -4354,6 +4354,8 @@ Features = {
                     description: "Error loading url: " + settings.url + " : " + textStatus + " " + errorThrown,
                     data: data
                 };
+                console.log("jqXHR.status:" + jqXHR.status);
+                console.log("textStatus:" + textStatus);
                 if (jqXHR.status && jqXHR.status != 200) {
                     message = statusMap[jqXHR.status];
                 } else if (textStatus == "parsererror") {
