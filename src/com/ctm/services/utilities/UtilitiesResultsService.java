@@ -2,6 +2,7 @@ package com.ctm.services.utilities;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.disc_au.web.go.Data;
 import org.json.JSONArray;
 
 import com.ctm.exceptions.UtilitiesWebServiceException;
@@ -10,19 +11,25 @@ import com.ctm.model.utilities.UtilitiesResultsRequestModel;
 
 public class UtilitiesResultsService extends UtilitiesBaseService{
 
-	public static String getFromJsp(HttpServletRequest request){
+	public String getFromJsp(HttpServletRequest request, Data data){
+		String validationResult = validate(request, data);
 
-		UtilitiesResultsRequestModel model = new UtilitiesResultsRequestModel();
-		model.populateFromRequest(request);
+		if(isValid()) {
+			UtilitiesResultsRequestModel model = new UtilitiesResultsRequestModel();
+			model.populateFromRequest(request);
 
-		UtilitiesResultsService service = new UtilitiesResultsService();
+			UtilitiesResultsService service = new UtilitiesResultsService();
 
-		UtilitiesResultsModel returnedModel = service.getResults(request, model);
-		if(returnedModel == null) {
-			return "";
+			UtilitiesResultsModel returnedModel = service.getResults(request, model);
+
+			if(returnedModel == null) {
+				return "";
+			}
+
+			return returnedModel.toJson();
+		} else {
+			return validationResult;
 		}
-		return returnedModel.toJson();
-
 	}
 
 	public UtilitiesResultsModel getResults(HttpServletRequest request, UtilitiesResultsRequestModel model){

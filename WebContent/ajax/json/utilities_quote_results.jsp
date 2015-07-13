@@ -21,12 +21,9 @@
 <c:set var="tranId" value="${data['current/transactionId']}" />
 <c:if test="${empty tranId}"><c:set var="tranId" value="0" /></c:if>
 
-
-
 <%-- Execute the results service --%>
 <jsp:useBean id="quoteService" class="com.ctm.services.utilities.UtilitiesResultsService" scope="page" />
-<c:set var="results" value="${quoteService.getFromJsp(pageContext.getRequest())}" />
-
+<c:set var="results" value="${quoteService.getFromJsp(pageContext.getRequest(), data)}" />
 
 <%-- COMPETITION APPLICATION START --%>
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
@@ -52,6 +49,9 @@
 </c:if>
 <%-- COMPETITION APPLICATION END --%>
 <c:choose>
+	<c:when test="${!quoteService.isValid()}">
+		<c:set var="json" value='${results}' />
+	</c:when>
 	<c:when test="${empty results}">
 		<c:set var="json" value='{"info":{"transactionId":${tranId}},"errors":[{"message":"getResults is empty"}]}' />
 	</c:when>

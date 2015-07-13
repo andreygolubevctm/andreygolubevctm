@@ -4,19 +4,20 @@ import com.ctm.connectivity.JsonConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.UtilitiesWebServiceException;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.ConfigSetting;
-import com.ctm.model.settings.ServiceConfiguration;
-import com.ctm.model.settings.ServiceConfigurationProperty;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.FatalErrorService;
-import com.ctm.services.ServiceConfigurationService;
+import com.ctm.model.request.roadside.RoadsideRequest;
+import com.ctm.model.request.utilities.UtilitiesRequest;
+import com.ctm.model.settings.*;
+import com.ctm.services.*;
+import com.ctm.utils.utilities.UtilitiesRequestParser;
+import com.ctm.web.validation.FormValidation;
+import com.ctm.web.validation.SchemaValidationError;
+import com.disc_au.web.go.Data;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Common functions for the Utilities Services
@@ -24,6 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 public class UtilitiesBaseService {
 
 	private static Logger logger = Logger.getLogger(UtilitiesBaseService.class.getName());
+
+	private boolean valid = false;
+	private String vertical = Vertical.VerticalType.UTILITIES.getCode();
 
 	/**
 	 * Simple wrapper to get a config value
@@ -141,5 +145,32 @@ public class UtilitiesBaseService {
 
 		logger.error("UTL: Error: ", e);
 
+	}
+
+	public String validate(HttpServletRequest request, Data data) {
+		RequestService fromFormService = new RequestService(request, vertical, data);
+		UtilitiesRequest utilitiesRequest = UtilitiesRequestParser.parseRequest(data, vertical);
+		List<SchemaValidationError> errors = validate(utilitiesRequest);
+		if(!valid) {
+			return outputErrors(fromFormService, errors);
+		}
+		return "";
+	}
+
+	public List<SchemaValidationError> validate(UtilitiesRequest utilitiesRequest) {
+		List<SchemaValidationError> errors = FormValidation.validate(utilitiesRequest, vertical.toLowerCase());
+		valid = errors.isEmpty();
+		return errors;
+	}
+
+	private String outputErrors(RequestService fromFormService, List<SchemaValidationError> errors) {
+		String response;
+		FormValidation.logErrors(fromFormService.sessionId, fromFormService.transactionId, fromFormService.styleCodeId, errors, "UtilitiesBaseService.java:validate");
+		response = FormValidation.outputToJson(fromFormService.transactionId, errors).toString();
+		return response;
+	}
+
+	public boolean isValid() {
+		return valid;
 	}
 }

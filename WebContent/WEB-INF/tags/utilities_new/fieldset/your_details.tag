@@ -12,12 +12,12 @@
 
     <c:set var="fieldXPath" value="${xpath}/firstName" />
     <form_new:row label="First name" fieldXpath="${fieldXPath}" className="clear">
-        <field_new:input xpath="${fieldXPath}" required="true" />
+        <field:person_name xpath="${fieldXPath}" required="true" title="First Name"/>
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/lastName" />
     <form_new:row label="Last name" fieldXpath="${fieldXPath}" className="clear">
-        <field_new:input xpath="${fieldXPath}" required="true" />
+        <field:person_name xpath="${fieldXPath}" required="true" title="Last Name"/>
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/dob" />
