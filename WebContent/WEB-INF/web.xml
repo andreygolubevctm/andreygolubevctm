@@ -30,13 +30,19 @@
 		<servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
 		<init-param>
 			<param-name>jaxrs.serviceClasses</param-name>
-			<param-value>com.ctm.router.CarRouter,com.ctm.router.car.RegoLookupRouter</param-value>
+			<param-value>com.ctm.router.CarRouter,com.ctm.router.CarQuoteRouter,com.ctm.router.car.RegoLookupRouter</param-value>
 		</init-param>
 		<init-param>
 			<param-name>jaxrs.providers</param-name>
 			<param-value>
-				com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider,
+				com.ctm.router.RouterJacksonJsonProvider,
 				com.ctm.router.exceptionhandlers.ServiceExceptionHandler
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jaxrs.inInterceptors</param-name>
+			<param-value>
+				com.ctm.soap.FormParamMapInInterceptor
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>

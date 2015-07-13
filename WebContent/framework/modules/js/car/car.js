@@ -555,6 +555,12 @@
 		return string.replace(/\D/g,'');
 	}
 
+
+	function trimNonPhoneNumbers(string) {
+		//allowing () and numbers
+		return string.replace(/[^0-9^(^)^\s]/g,'');
+	}
+
 	meerkat.modules.register("car", {
 		init: initCar,
 		events: moduleEvents,

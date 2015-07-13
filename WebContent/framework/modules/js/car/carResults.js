@@ -51,29 +51,38 @@
 				displayMode = 'features';
 			}
 
+			var price = {
+				annually: "headline.lumpSumTotal",
+				/* The annual property is here as a hack because Payment Type (#quote_paymentType) is configured incorrectly.
+					When upgrading Car, someone should reconfigure the sort to be 'annually'. We haven't done so due to potential impact on reporting etc.
+				 */
+				annual: "headline.lumpSumTotal",
+				monthly: "headline.instalmentTotal"
+			};
+			var rank_premium = "headline.lumpSumTotal";
+			var carQuoteResultsUrl = "ajax/json/car_quote_results.jsp";
+			if (meerkat.modules.splitTest.isActive(40)) {
+				price = {
+					annually: "price.annualPremium",
+					annual: "price.annualPremium",
+					monthly: "price.monthlyPremium"
+				};
+				rank_premium = "price.annualPremium";
+				carQuoteResultsUrl = "ajax/json/car_quote_results_ws.jsp";
+			}
+
 			// Init the main Results object
 			Results.init({
-				url: "ajax/json/car_quote_results.jsp",
+				url: carQuoteResultsUrl,
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
 					productId: "productId",
 					productName: "headline.name",
 					productBrandCode: "brandCode",
-					price: {
-						annually: "headline.lumpSumTotal",
-						/* The annual property is here as a hack because Payment Type (#quote_paymentType) is configured incorrectly.
-						When upgrading Car, someone should reconfigure the sort to be 'annually'. We haven't done so due to potential impact on reporting etc.
-						*/
-						annual: "headline.lumpSumTotal",
-						monthly: "headline.instalmentTotal"
-					},
+					price: price,
 					availability: {
 						product: "available",
-						price: {
-							annually: "headline.lumpSumTotal",
-							annual: "headline.lumpSumTotal",
-							monthly: "headline.instalmentTotal"
-						}
+						price: price
 					}
 				},
 				show: {
@@ -199,8 +208,8 @@
 				rankings: {
 					paths: {
 						rank_productId: "productId",
-						rank_premium: "headline.lumpSumTotal"
-				},
+						rank_premium: rank_premium
+					},
 					filterUnavailableProducts : false
 				},
 				incrementTransactionId : false
@@ -510,21 +519,21 @@
 
 		if(Results.getDisplayMode() !== 'price') {
 
-		Results.pagination.hide();
-		$('header .xs-results-pagination').addClass('hidden');
+			Results.pagination.hide();
+			$('header .xs-results-pagination').addClass('hidden');
 
-		Results.setDisplayMode('price');
+			Results.setDisplayMode('price');
 
-		stopColumnWidthTracking();
+			stopColumnWidthTracking();
 
-		$(document.body).addClass('priceMode');
-		$(window).scrollTop(0);
+			$(document.body).addClass('priceMode');
+			$(window).scrollTop(0);
 
-		if(doTracking) {
+			if(doTracking) {
 				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
-			publishExtraSuperTagEvents();
+				publishExtraSuperTagEvents();
+			}
 		}
-	}
 	}
 
 	/**
@@ -542,36 +551,36 @@
 
 		if(Results.getDisplayMode() !== 'features') {
 
-		// Force a refresh if we need to rebuild the features. Would be needed if the results were initially loaded in Price mode.
-		var forceRefresh = (needToBuildFeatures === true);
+			// Force a refresh if we need to rebuild the features. Would be needed if the results were initially loaded in Price mode.
+			var forceRefresh = (needToBuildFeatures === true);
 
-		Results.setDisplayMode('features', forceRefresh);
+			Results.setDisplayMode('features', forceRefresh);
 
-		// On XS this will make the columns fit into the viewport. Necessary to do before pagination calculations.
-		startColumnWidthTracking();
+			// On XS this will make the columns fit into the viewport. Necessary to do before pagination calculations.
+			startColumnWidthTracking();
 
-		// Double check that features mode fits into viewport
+			// Double check that features mode fits into viewport
 
-		_.defer(function() {
-			Results.pagination.gotoPage(1);
-			if (meerkat.modules.deviceMediaState.get() === 'xs') {
-				Results.view.setColumnWidth($(window), Results.settings.render.features.numberOfXSColumns, false);
-			}
-			Results.pagination.setupNativeScroll();
-		});
+			_.defer(function() {
+				Results.pagination.gotoPage(1);
+				if (meerkat.modules.deviceMediaState.get() === 'xs') {
+					Results.view.setColumnWidth($(window), Results.settings.render.features.numberOfXSColumns, false);
+				}
+				Results.pagination.setupNativeScroll();
+			});
 
-		// Refresh XS pagination
-		Results.pagination.show(true);
-		$('header .xs-results-pagination').removeClass('hidden');
+			// Refresh XS pagination
+			Results.pagination.show(true);
+			$('header .xs-results-pagination').removeClass('hidden');
 
-		needToBuildFeatures = false;
-		$(document.body).removeClass('priceMode');
-		$(window).scrollTop(0);
-		if(doTracking) {
+			needToBuildFeatures = false;
+			$(document.body).removeClass('priceMode');
+			$(window).scrollTop(0);
+			if(doTracking) {
 				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
-			publishExtraSuperTagEvents();
+				publishExtraSuperTagEvents();
+			}
 		}
-	}
 	}
 
 	function resultRowClick(event) {

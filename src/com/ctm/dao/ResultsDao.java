@@ -1,15 +1,15 @@
 package com.ctm.dao;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.results.ResultProperty;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javax.naming.NamingException;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.results.ResultProperty;
+import java.util.List;
 
 public class ResultsDao {
 
@@ -179,5 +179,37 @@ public class ResultsDao {
 		}
 
 		return propertyValue;
+	}
+
+	public void saveResultsProperties(List<ResultProperty> resultProperties) {
+
+		try (SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection()) {
+
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+					"INSERT INTO aggregator.results_properties (transactionId,productId,property,value) " +
+							"VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE `value`='DUPLICATE'"
+			);
+
+			for (ResultProperty resultProperty : resultProperties) {
+				stmt.setLong(1, resultProperty.getTransactionId());
+				stmt.setString(2, resultProperty.getProductId());
+				stmt.setString(3, resultProperty.getProperty());
+				stmt.setString(4, resultProperty.getValue());
+				stmt.addBatch();
+			}
+
+			stmt.executeBatch();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (NamingException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
 	}
 }
