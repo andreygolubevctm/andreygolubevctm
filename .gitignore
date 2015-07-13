@@ -14,6 +14,8 @@
 /*.eml
 /*.iml
 /WebContent/META-INF/context.xml
+/WebContent/brand/*/js
+/WebContent/brand/*/css
 *.Thumbs.db
 test/javascript/node
 test/javascript/node_modules
