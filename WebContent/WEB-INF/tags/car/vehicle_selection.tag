@@ -44,10 +44,8 @@
 		<field_new:general_select xpath="${xpath}/fuel" title="fuel type" required="true" initialText="&nbsp;" />
 	</form_new:row>
 
-	<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
-
 	<c:choose>
-		<c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 8)}">
+		<c:when test="${editDetailsRedbookCodeSplitTest eq true}">
 			<form_new:row label="Please select your car type" hideHelpIconCol="true" id="${name}_redbookCodeRow" className="${name}_redbookCodeRow radio-button-group-row hidden">
 				<div id="${name}_redbookCode" class="radio-button-group"><!-- to be populated --></div>
 				<field:hidden xpath="${xpath}/marketValue"></field:hidden>
