@@ -3,7 +3,7 @@ $(function () {
 // file:///C:/Dev/web_ctm/WebContent/framework/modules/js/tests/index.html?notrycatch=true
 
 
-	meerkat.modules.utilities = {
+	meerkat.modules.utils = {
 		scrollPageTo : function(a1,a2,a3, f1){
 
 		}
