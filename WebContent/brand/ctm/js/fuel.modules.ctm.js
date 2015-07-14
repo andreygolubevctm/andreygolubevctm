@@ -394,7 +394,7 @@
     function _findMap() {
         if (mapLoaded === false && hashArray.length >= 4 && hashArray[3].match(/^(map-)/g)) {
             var siteId = hashArray[3].replace("map-", "");
-            $(document).find("a[data-siteid='" + siteId + "']").first().trigger("click");
+            meerkat.modules.fuelResultsMap.openMap($(document).find("a[data-siteid='" + siteId + "']").first());
             mapLoaded = true;
         }
     }
