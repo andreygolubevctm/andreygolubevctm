@@ -388,12 +388,13 @@
          <profile>
             <id>build-frontend</id>
             <activation>
-                    <!-- grunt watcher should be running so maven doesn't need to run grunt -->
-                    <property>
-                        <name>build.environment</name>
-                        <value>!localhost</value>
-                    </property>
-                </activation>
+                <!-- only activate if build.environment set. for local development this will not be set.
+                 in local the grunt watcher should be running so maven doesn't need to run grunt -->
+                <property>
+                    <name>build.environment</name>
+                </property>
+                <activeByDefault>false</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
