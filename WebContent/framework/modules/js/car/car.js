@@ -197,7 +197,6 @@
 				meerkat.modules.carYoungDrivers.initCarYoungDrivers();
 			},
 			onAfterEnter: function onOptionsEnter(event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(1) .snapshot');
 				// Bind the annual kilometers to format numbers.
 				$annualKilometers = $('.annual_kilometres_number');
 
@@ -233,7 +232,6 @@
 				includeFormData:true
 			},
 			onAfterEnter: function onDetailsEnter(event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(2) .snapshot');
 				// Bind the annual kilometers to format numbers.
 				$annualKilometersYoungest = $('.annual_kilometres_number_youngest');
 
@@ -299,7 +297,6 @@
 				}
 			},
 			onAfterEnter : function (event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(3) .snapshot');
 			},
 			onBeforeLeave : function(event) {
 			}
@@ -329,11 +326,13 @@
 					meerkat.modules.carResults.get();
 				// Show the filters bar
 				meerkat.modules.carFilters.show();
+				$('.header-wrap .quoteSnapshot').removeClass("hidden");
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId
 				if(event.isBackward === true) {
 					meerkat.modules.transactionId.getNew(3);
+					$('.header-wrap .quoteSnapshot').addClass("hidden");
 				}
 			},
 			onAfterLeave: function(event) {

@@ -483,6 +483,9 @@ public class HealthPriceDao {
 				.append(questionMarksBuilder(excludedProductIds))
 				.append(", 0) ");
 		}
+		if(healthPriceRequest.getProductTitleSearch()!=null && !healthPriceRequest.getProductTitleSearch().trim().equals("")) {
+			sqlBuilder.append(" AND lower(product.LongTitle) like  lower(?) ");
+		}
 			sqlBuilder
 				.append("GROUP BY search.ProductId ")
 				.append("ORDER BY rank DESC, factoredPrice ASC ");
@@ -621,7 +624,10 @@ public class HealthPriceDao {
 				stmt.setString(index++, excludedProductId);
 			}
 		}
+		if (!isSingle && healthPriceRequest.getProductTitleSearch() != null && !healthPriceRequest.getProductTitleSearch().trim().equals("")) {
+			stmt.setString(index++, "%" + healthPriceRequest.getProductTitleSearch() + "%");
 
+		}
 		return index;
 }
 
@@ -696,9 +702,9 @@ public class HealthPriceDao {
 
 			if (isDiscountRates) {
 				sqlBuilder
-					.append(", ")
-					.append("'grossAnnualPremium', ")
-					.append("'grossFortnightlyPremium', ")
+						.append(", ")
+						.append("'grossAnnualPremium', ")
+						.append("'grossFortnightlyPremium', ")
 					.append("'grossMonthlyPremium', ")
 					.append("'grossQuarterlyPremium', ")
 					.append("'grossWeeklyPremium', ")

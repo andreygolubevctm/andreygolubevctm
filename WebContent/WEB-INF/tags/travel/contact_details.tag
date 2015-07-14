@@ -1,4 +1,4 @@
-<%@ tag description="Travel Single Signup Form"%>
+ <%@ tag description="Travel Single Signup Form"%>
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 <security:populateDataFromParams rootPath="travel" delete="false"/>
@@ -42,7 +42,7 @@
 
 <form_new:row className="travel-contact-details-optin-sgroup">
 	<%-- Mandatory agreement to privacy policy --%>
-	<c:set var="brandedName"><content:get key="boldedBrandDisplayName" /></c:set>
+	<c:set var="brandedName"><content:optin key="brandDisplayName"/></c:set>
 	<field_new:checkbox xpath="travel/marketing" value="Y" required="false" label="true" title="I agree to receive news &amp; offer emails from ${brandedName}" />
 </form_new:row>
 

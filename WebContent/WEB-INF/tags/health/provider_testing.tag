@@ -25,7 +25,9 @@
 							<form_new:row label="Provider" fieldXpath="${fieldXpath}">
 								<field:provider_select productCategories="HEALTH" xpath="${fieldXpath}" />
 							</form_new:row>
-
+							<form_new:row label="ProductName" fieldXpath="${xpath}/productTitleSearch">
+								<field:input required="false" className="form-control" title="Product Name" xpath="${xpath}/productTitleSearch" />
+							</form_new:row>
 							<c:set var="fieldXpath" value="${xpath}/searchResults" />
 							<form_new:row label="Number of results" fieldXpath="${fieldXpath}">
 								<field_new:count_select max="36" xpath="${fieldXpath}" min="12" title="Number of Results" required="false" step="12"/>
@@ -51,7 +53,6 @@
 		</c:otherwise>
 	</c:choose>
 
-
 	<%-- This is separate and always available to internal and external --%>
 	<form_new:fieldset_columns>
 		<jsp:attribute name="rightColumn">
@@ -59,8 +60,8 @@
 		<jsp:body>
 			<form_new:fieldset legend="">
 				<c:set var="fieldXpath" value="${xpath}/searchDate" />
-				<form_new:row label="Expected Cover Date" fieldXpath="${fieldXpath}">
-					<field:payment_day xpath="${fieldXpath}" title="searchDate" required="false" days="90" exclude="32" buffer="0"/>
+				<form_new:row label="Application/Cover Date" fieldXpath="${fieldXpath}">
+					<field_new:calendar validateMinMax="false" xpath="${fieldXpath}" required="false" title="searchDate" startView="0" nonLegacy="true"/>
 					For testing future product searches
 				</form_new:row>
 			</form_new:fieldset>

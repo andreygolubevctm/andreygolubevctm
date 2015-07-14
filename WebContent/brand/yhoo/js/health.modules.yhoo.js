@@ -482,9 +482,38 @@ var healthFunds_NIB = {
             healthFunds._paymentDaysRender($(".health-bank_details-policyDay"), _html);
             healthFunds._paymentDaysRender($(".health-credit-card_details-policyDay"), _html);
         });
+        function onChangeNoEmailChkBox() {
+            var $applicationEmailGroup = $("#health_application_emailGroup"), $applicationEmailField = $("#health_application_email"), $contactPointPost = $("#health_application_contactPoint_P"), $contactPointEmail = $("#health_application_contactPoint_E");
+            if ($("#health_application_no_email").is(":checked")) {
+                $applicationEmailGroup.find("*").removeClass("has-success").removeClass("has-error");
+                $applicationEmailGroup.find(".error-field").remove();
+                $applicationEmailField.val("");
+                $applicationEmailField.prop("required", false);
+                $applicationEmailField.prop("disabled", true);
+                $contactPointPost.prop("checked", true);
+                $contactPointPost.parents().first().addClass("active");
+                $contactPointEmail.attr("disabled", true);
+                $contactPointEmail.parents(".btn-form-inverse").removeClass("active").attr("disabled", true);
+                $("#health_application_optInEmail-group").slideUp();
+            } else {
+                $applicationEmailField.prop("required", true);
+                $applicationEmailField.prop("disabled", false);
+                $contactPointEmail.parents(".btn-form-inverse").attr("disabled", false);
+                $contactPointEmail.prop("disabled", false);
+            }
+        }
+        onChangeNoEmailChkBox();
+        $("#health_application_no_email").on("click.NIB", function() {
+            onChangeNoEmailChkBox();
+        });
     },
     unset: function() {
         $("#update-premium").off("click.NIB");
+        $("#health_application_email").prop("required", true);
+        $("#health_application_email").prop("disabled", false);
+        $("#health_application_contactPoint_E").prop("disabled", false);
+        $("#health_application_contactPoint_E").parents(".btn-form-inverse").attr("disabled", false);
+        $("#health_application_no_email").off("click.NIB");
         healthFunds._paymentDaysRender($(".health-credit-card_details-policyDay"), false);
         healthFunds._paymentDaysRender($(".health-bank_details-policyDay"), false);
         healthApplicationDetails.hideHowToSendInfo();
@@ -1682,6 +1711,7 @@ creditCardDetails = {
                 if (meerkat.site.isCallCentreUser === true) {
                     toggleInboundOutbound();
                     toggleDialogueInChatCallback();
+                    meerkat.modules.application_date.setApplicationDateCalendar();
                     $("input[name=health_simples_contactType]").on("change", function() {
                         toggleInboundOutbound();
                     });
@@ -2823,7 +2853,17 @@ creditCardDetails = {
             return "";
         }
     }
+    function resetBenefitsForProductTitleSearch() {
+        if (meerkat.site.environment === "localhost" || meerkat.site.environment === "nxi" || meerkat.site.environment === "nxs") {
+            if ($("#health_productTitleSearch").val().trim() !== "") {
+                resetHiddenFields();
+                $("#mainform input[name='health_benefits_benefitsExtras_Hospital'].benefit-item").val("Y");
+                $("#mainform input[name='health_benefits_benefitsExtras_GeneralHealth'].benefit-item").val("Y");
+            }
+        }
+    }
     function open(modeParam) {
+        resetBenefitsForProductTitleSearch();
         mode = modeParam;
         meerkat.modules.navMenu.open();
         if ($dropdown.hasClass("open") === false) {
@@ -4189,6 +4229,7 @@ creditCardDetails = {
         $paymentContainer.hide();
         $("#health_declaration-selection").hide();
         $("#confirm-step").hide();
+        $(".simples-dialogue-31").hide();
         $("#update-premium").removeClass("hasAltPremium");
     }
     function resetSettings() {
@@ -4352,6 +4393,7 @@ creditCardDetails = {
                     toggleClaimsBankAccountQuestion();
                     updatePaymentDayOptions();
                     $("#confirm-step").show();
+                    $(".simples-dialogue-31").show();
                 }
                 meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, {
                     source: "healthPaymentStep"
