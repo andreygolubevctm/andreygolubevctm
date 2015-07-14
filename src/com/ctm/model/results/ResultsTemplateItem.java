@@ -42,7 +42,7 @@ public class ResultsTemplateItem implements Comparable<ResultsTemplateItem> {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.replaceAll("([a-zA-Z0-9])/([a-zA-Z0-9])", "$1 / $2");
 	}
 
 	public String getType() {
