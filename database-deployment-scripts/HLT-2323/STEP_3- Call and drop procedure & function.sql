@@ -1,4 +1,4 @@
-call `aggregator`.`aggregator.update_productCode_hlt_touchTable_procedure()`;
+call aggregator.update_productCode_hlt_touchTable_procedure();
 /*TEst
   If below query returns any record then let me know the o/p via comment
 */
