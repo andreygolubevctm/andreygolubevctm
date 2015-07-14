@@ -43,12 +43,37 @@
         </div>
 
         <div class="resultsOverflow">
-            <div class="results-table"></div>
+            <div class="results-table">
+
+            </div>
+
+
         </div>
+        <core_new:show_more_quotes_button />
+
 
         <core:clear />
 
         <div class="featuresFooterPusher"></div>
+
+
+    </div>
+    <div class="comparisonFeaturesDisclosure row">
+        <div class="col-sm-5 disclaimer">
+            <p>Each product in this list may offer different features. This information has been supplied by an independent third party. Please always consider the policy wording and product disclosure statement for each product before making a decision to buy.  For more information about our features comparison tool, <a href="#footer">please see our disclaimer</a>.</p>
+        </div>
+        <div class="col-sm-5">
+            <h4>Thank you for using our features comparison</h4>
+            <p>Now compare prices from our participating insurance providers</p>
+        </div>
+        <div class="col-sm-2">
+            <a href="${pageSettings.getBaseUrl()}car_quote.jsp" class="btn btn-next">
+                <span>Get a Quote</span> <span class="icon icon-arrow-right"></span>
+            </a>
+        </div>
+        <div class="col-sm-12 disclosure">
+            <p><span class="icon-arrow-right"></span> Click the arrows for more information about this feature</p>
+        </div>
     </div>
 
     <%-- DEFAULT RESULT ROW --%>

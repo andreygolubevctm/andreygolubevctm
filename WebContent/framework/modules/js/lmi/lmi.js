@@ -138,6 +138,12 @@
             slideIndex : 1,
             onInitialise: function onResultsInit(event) {
                 meerkat.modules.lmiResults.initPage();
+                var options = {
+                    anchorPosition: '#results_v3 > div.featuresHeaders > div.featuresList',
+                    extraDockedItem: 'div.comparisonFeaturesDisclosure',
+                    stationaryDockingOffset: 40
+                };
+                meerkat.modules.showMoreQuotesPrompt.initPromptBar(options);
             },
             onBeforeEnter: function enterResultsStep(event) {
                 // shouldn't do much of this when returning from enquire
@@ -150,6 +156,10 @@
             onAfterEnter: function afterEnterResults(event) {
                 if (event.isForward === true) {
                     meerkat.modules.lmiResults.get();
+                }
+            }, onAfterLeave: function(event) {
+                if(event.isBackward) {
+                    meerkat.modules.showMoreQuotesPrompt.disablePromptBar();
                 }
             }
         };

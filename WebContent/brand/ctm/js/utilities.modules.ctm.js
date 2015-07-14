@@ -110,6 +110,7 @@
                 meerkat.modules.utilitiesResults.initPage();
                 meerkat.modules.utilitiesSorting.initSorting();
                 meerkat.modules.utilitiesMoreInfo.initMoreInfo();
+                meerkat.modules.showMoreQuotesPrompt.initPromptBar();
                 meerkat.modules.utilitiesSnapshot.initUtilitiesSnapshot();
             },
             onBeforeEnter: function enterResultsStep(event) {
@@ -127,7 +128,11 @@
                     meerkat.modules.utilitiesResults.get();
                 }
             },
-            onAfterLeave: function(event) {}
+            onAfterLeave: function(event) {
+                if (event.isBackward) {
+                    meerkat.modules.showMoreQuotesPrompt.disablePromptBar();
+                }
+            }
         };
         var enquiryStep = {
             title: "Fill out your details",

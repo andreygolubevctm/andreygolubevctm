@@ -9778,6 +9778,54 @@ ul.selected-tags li button:focus {
 #blocked-ip-address .verticalButtons a span {
   display: block;
 }
+.morePromptContainer {
+  z-index: 1000;
+  position: fixed;
+  bottom: 0px;
+  left: 50%;
+  right: inherit;
+  margin-left: -131px;
+}
+@media (max-width: 767px) {
+  .morePromptContainer {
+    left: inherit;
+    right: 10px;
+    margin: 10px;
+  }
+}
+.morePromptCell {
+  text-align: center;
+  line-height: 31px;
+}
+@media (max-width: 767px) {
+  .morePromptCell {
+    line-height: 35px;
+  }
+}
+.morePromptCell a {
+  text-decoration: none;
+}
+.morePromptCell .icon-angle-down,
+.morePromptCell .icon-angle-up {
+  color: #fff;
+  vertical-align: middle;
+  margin: 0 8px;
+}
+.morePromptCell .morePromptLink {
+  background: #1c3e93;
+  width: 262px;
+  height: 31px;
+  color: #FFF;
+  display: inline-block;
+  bottom: 0;
+  position: fixed;
+}
+@media (max-width: 767px) {
+  .morePromptCell .morePromptLink {
+    width: 35px;
+    height: 35px;
+  }
+}
 small,
 .small {
   font-size: 12px;
