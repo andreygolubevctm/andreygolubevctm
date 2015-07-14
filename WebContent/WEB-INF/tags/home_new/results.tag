@@ -113,6 +113,8 @@
 	{{ var htmlTemplate = _.template(template); }}
 	{{ obj.annualPriceTemplate = htmlTemplate(obj); }}
 
+	{{ var specialOfferPrefix = _.indexOf(["REIN","WOOL"], obj.service) >= 0 ? "<strong>Special offer:</strong> " : ""; }}
+
 	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
 
 		<div class="result featuresDockedHeader">
@@ -169,7 +171,7 @@
 
 						{{ if (promotionText.length > 0) { }}
 						<div class="promotion small visible-sm">
-							<span class="icon icon-tag"></span><strong>Special offer:</strong> {{= promotionText }}
+							<span class="icon icon-tag"></span>{{= specialOfferPrefix}}{{= promotionText }}
 							{{ if (offerTermsContent.length > 0) { }}
 								<a class="small offerTerms" href="javascript:;">Offer terms</a>
 								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
@@ -219,7 +221,7 @@
 							{{ if (promotionText.length > 0) { }}
 								<div class="col-xs-12 col-md-9 col-lg-8">
 									<div class="promotion small hidden-sm">
-										<span class="icon icon-tag"></span><strong>Special offer:</strong> {{= promotionText }}
+										<span class="icon icon-tag"></span>{{=specialOfferPrefix}}{{= promotionText }}
 										{{ if (offerTermsContent.length > 0) { }}
 											<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
 											<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
