@@ -26,7 +26,7 @@
 			</c:otherwise>
 		</c:choose>
 		<health:medicare_details xpath="${xpath}/medicare" />
-		<simples:dialogue id="31" vertical="health" mandatory="true" />
+
 	</div>
 	 
 </div>

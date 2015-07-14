@@ -82,7 +82,6 @@ public class ApplicationService {
 	 * Looks at the pageContext for the brand code - this should be a param brandCode=xxx set by the F5 server's rewrite rules.
 	 * In Localhost and NXI, we have to depend on the data bucket as we don't have rewrite logic on these environments.
 	 *
-	 * @param session
 	 * @param request
 	 */
 	public static Brand getBrandFromRequest(HttpServletRequest request) throws DaoException {
@@ -286,6 +285,20 @@ public class ApplicationService {
 	 * @return Server's datetime, or configured override datetime.
 	 */
 	public static Date getApplicationDate(HttpServletRequest request) {
+		Date date = getApplicationDateIfSet(request);
+		if(date == null){
+			return new Date();
+		}
+		else {
+			return date;
+		}
+	}
+
+	/**
+	 * Get  the request session contains an override. Don't return a default
+	 * @return configured override datetime.
+	 */
+	public static Date getApplicationDateIfSet(HttpServletRequest request) {
 		if (request != null) {
 			// Check if the session contains an override of the server's date
 			HttpSession session = request.getSession();
@@ -297,8 +310,7 @@ public class ApplicationService {
 				}
 			}
 		}
-
-		return new Date();
+		return null;
 	}
 
 	/**
