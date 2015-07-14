@@ -1,0 +1,7 @@
+UPDATE `ctm`.`coupons` SET `contentBanner`='<a href=\"javascript:;\" class=\"coupon-banner\" data-toggle=\"dialog\" data-content=\"#coupon-modal-content\" data-dialog-hash-id=\"coupon-more-info\" data-class=\"coupon-more-info-modal\"><span class=\"link\">Click here</span> to learn more about the $50 eftpos card offer.</a><div class=\"hidden\" id=\"coupon-modal-content\"><div class=\"row\"><div class=\"col-sm-5 col-xs-12\"><div class=\"coupon-modal-image healthX00eftpos\"></div></div><div class=\"col-sm-7 col-xs-12\"><h4>Get a $50 eftpos card when you call us</h4><p>Buy a hospital and extras policy through our call centre and mention this offer and we\'ll give you a $50 eftpos card. Promotion ends 16 August 2015.</p><p><h4>Call <span class=\"noWrap callCentreNumber\">1800 613 681</span></h4></p><p>View <a href=\"http://www.comparethemarket.com.au/competition/50eftpos-july.pdf\" target=\"_blank\">terms and conditions</a>. Frank, GMHBA and Budget Direct policies are not available through the call centre and are excluded from offer.</p></div></div></div>' WHERE `couponId`='22';
+
+UPDATE `ctm`.`coupons` SET `isExclusive`='1', `canPrePopulate`='1', `vdn`='7437' WHERE `couponId`='26';
+
+
+INSERT INTO `ctm`.`coupon_rules` (`couponId`, `xpath`, `filterBy`, `option`, `value`, `isHard`) VALUES ('22', 'health/contactDetails/contactNumber/mobile', 'value', 'equals', '', '0');
+INSERT INTO `ctm`.`coupon_rules` (`couponId`, `xpath`, `filterBy`, `option`, `value`, `isHard`) VALUES ('22', 'health/contactDetails/contactNumber/other', 'value', 'equals', '', '0');
