@@ -355,18 +355,6 @@
 
         <dependency>
             <groupId>com.ctm.webservices</groupId>
-            <artifactId>aglead_ws</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.exacttarget.wsdl</groupId>
-            <artifactId>exact-target-api-v6-client</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ctm.webservices</groupId>
             <artifactId>motorweb</artifactId>
             <version>1.0</version>
         </dependency>
@@ -465,10 +453,60 @@
                     </execution>
                 </executions>
             </plugin>
+			            <plugin>
+                <groupId>org.jvnet.jax-ws-commons</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>${jaxws-maven-plugin.version}</version>
+                <executions>
+                    <!-- For each provider you have to provide new execution -->
+                    <execution>
+                        <id>exacttarget</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <packageName>com.exacttarget.wsdl.partnerapi</packageName>
+                            <wsdlDirectory>${project.basedir}/main/resources/webservice-api/exacttarget/</wsdlDirectory>
+                            <wsdlLocation>/webservice-api/exacttarget/wsdl/etframework.wsdl</wsdlLocation>
+                            <wsdlFiles>
+                                <wsdlFile>wsdl/etframework.wsdl</wsdlFile>
+                            </wsdlFiles>
+                        </configuration>
+                    </execution>
+                   <execution>
+                        <id>aglead_ws</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <packageName>com.ctm.aglead.ws</packageName>
+                            <wsdlDirectory>${project.basedir}/main/resources/webservice-api/aglead_ws/</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>wsdl/messageCentreCreateMessage.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <wsdlLocation>/webservice-api/aglead_ws/wsdl/messageCentreCreateMessage.wsdl</wsdlLocation>
+                            <bindingFiles>
+                                <bindingFiles>${project.basedir}/main/resources/webservice-api/aglead_ws/bindings.xml</bindingFiles>
+                            </bindingFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
         <testSourceDirectory>${project.basedir}/test</testSourceDirectory>
         <sourceDirectory>${project.basedir}/src</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>main/resources</directory>
+            </resource>
+        </resources>
 
     </build>
 
