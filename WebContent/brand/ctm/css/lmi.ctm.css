@@ -405,10 +405,6 @@ body > div > header a.bottombar .btn-call:hover {
 .result small {
   font-style: italic;
 }
-.h.content,
-.c.content {
-  font-size: 12px;
-}
 .featuresMode .compare-toggle-wrapper {
   margin-bottom: 0;
 }
