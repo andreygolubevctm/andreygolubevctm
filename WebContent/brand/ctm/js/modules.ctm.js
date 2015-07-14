@@ -10883,6 +10883,7 @@ Features = {
         var anchorViewportOffsetTop = anchorOffsetTop - $(document).scrollTop();
         var anchorFromBottom = docHeight - (docHeight - anchorOffsetTop);
         var currentHeight = anchorFromBottom - windowHeight;
+        console.log("HEEEEE2", currentHeight, $(this).scrollTop(), settings.scrollTo);
         if (currentHeight <= $(this).scrollTop()) {
             if (!isXs) {
                 var setHeightFromBottom = windowHeight - anchorViewportOffsetTop;
@@ -10893,6 +10894,10 @@ Features = {
             }
             if (settings.scrollTo != "top") {
                 toggleArrow("up");
+            } else {
+                if (currentHeight < 0 && isXs) {
+                    toggleArrow("down");
+                }
             }
         } else {
             $(".morePromptLink").css("bottom", moreLinkPositionOffset);

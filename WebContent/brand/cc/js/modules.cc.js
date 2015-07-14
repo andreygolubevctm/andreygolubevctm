@@ -10893,6 +10893,10 @@ Features = {
             }
             if (settings.scrollTo != "top") {
                 toggleArrow("up");
+            } else {
+                if (currentHeight < 0 && isXs) {
+                    toggleArrow("down");
+                }
             }
         } else {
             $(".morePromptLink").css("bottom", moreLinkPositionOffset);

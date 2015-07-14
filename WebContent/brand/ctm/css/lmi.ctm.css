@@ -153,6 +153,10 @@ body > div > header a.bottombar .btn-call:hover {
 .homelmi .comparisonFeaturesDisclosure div p span.icon-arrow-right {
   margin-top: 2px;
 }
+.carlmi .comparisonFeaturesDisclosure .hidden-xs a,
+.homelmi .comparisonFeaturesDisclosure .hidden-xs a {
+  text-decoration: underline;
+}
 .carlmi .disclaimer,
 .homelmi .disclaimer,
 .carlmi .disclosure,

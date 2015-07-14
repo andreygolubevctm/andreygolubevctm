@@ -129,6 +129,11 @@
             }
             if(settings.scrollTo != 'top') {
                 toggleArrow("up");
+            } else {
+                // for XS, this isn't being reset so have added this condition in
+                if (currentHeight < 0 && isXs) {
+                    toggleArrow("down");
+                }
             }
         } else {
 
