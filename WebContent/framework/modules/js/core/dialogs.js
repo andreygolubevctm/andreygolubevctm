@@ -6,26 +6,26 @@
 ////////////////////////////////////////////////////////////
 /*
 
- USAGE EXAMPLE: Call directly
+USAGE EXAMPLE: Call directly
 
- // Open the modal
- var modalId = meerkat.modules.dialogs.show({
- htmlContent: '<p>Hello!</p>',
- buttons: [{
- label: 'Close',
- className: 'btn-cancel',
- closeWindow: true
- }],
- onOpen: function(id) {
- // Switch content
- meerkat.modules.dialogs.changeContent(id, '<iframe src="ajax/html/example.jsp"></iframe>');
- }
- });
+		// Open the modal
+		var modalId = meerkat.modules.dialogs.show({
+			htmlContent: '<p>Hello!</p>',
+			buttons: [{
+				label: 'Close',
+				className: 'btn-cancel',
+				closeWindow: true
+			}],
+			onOpen: function(id) {
+				// Switch content
+				meerkat.modules.dialogs.changeContent(id, '<iframe src="ajax/html/example.jsp"></iframe>');
+			}
+		});
 
- // Close and destroy the modal
- meerkat.modules.dialogs.close(modalId);
+		// Close and destroy the modal
+		meerkat.modules.dialogs.close(modalId);
 
- */
+*/
 
 ;(function($, undefined){
 
@@ -415,7 +415,7 @@
 	// Initialise Dev helpers
 	function initDialogs() {
 
-	// Set up touch events on touch devices
+		// Set up touch events on touch devices
 		$(document).ready(function() {
 
 			// Bind the default close button
