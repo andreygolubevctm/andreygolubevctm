@@ -442,6 +442,9 @@ body > div > header a.bottombar .btn-call:hover {
   .featuresMode .productSummary .content {
     margin: 0 -12px;
   }
+  .featuresMode .labelInColumn.expandable .content {
+    padding-right: 38px;
+  }
   .featuresMode .labelInColumn .content {
     color: #000000;
     background: #f1f1f1;
