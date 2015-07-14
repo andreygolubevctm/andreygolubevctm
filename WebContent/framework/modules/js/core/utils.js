@@ -128,8 +128,8 @@
 
 	// return date string in DD/MM/YYYY
 	function returnDateValueFormFormat(_date){
-		var _dayString = leadingZero( _date.getDate() );
-		var _monthString = leadingZero( _date.getMonth() + 1 );
+		var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
+		var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
 		return _dayString+'/'+_monthString+'/'+_date.getFullYear();
 	}
 
