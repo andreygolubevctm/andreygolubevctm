@@ -69,6 +69,7 @@
 
         var responseText = jqXHR.responseText;
         if(!responseText) {
+            _submitError({url: jqXHR.url}, "No responseText for request");
             return false;
         }
         var responseJson = {};
@@ -82,9 +83,9 @@
     }
 
     function _submitError(exception, errorThrown) {
-        meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source:'retrievequotesLogin'});
+        meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK, { source:'retrievequotesLogin'});
         meerkat.modules.errorHandling.error({
-            message:		"An error occurred when attempting to login.",
+            message:		"An error occurred when attempting to login. Please try again.",
             page:			"retrievequotesLogin.js:doLoginAndRetrieve()",
             errorLevel:		"warning",
             description:	errorThrown,
