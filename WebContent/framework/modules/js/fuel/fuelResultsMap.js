@@ -122,7 +122,7 @@
             initGoogleAPI();
         } else {
             // If no markers (resets in fuel:onAfterEnter for results step.
-            if (!Object.keys(markers).length) {
+            if (!_.keys(markers).length) {
                 plotMarkers();
             }
             $('#' + modalId).modal('show');
@@ -327,7 +327,7 @@
     }
 
     function _clearMarkers() {
-        var keys = Object.keys(markers);
+        var keys = _.keys(markers);
         if (!keys.length) {
             return;
         }

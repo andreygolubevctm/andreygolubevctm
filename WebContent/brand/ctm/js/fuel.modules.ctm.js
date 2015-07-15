@@ -754,7 +754,7 @@
         if (typeof map === "undefined") {
             initGoogleAPI();
         } else {
-            if (!Object.keys(markers).length) {
+            if (!_.keys(markers).length) {
                 plotMarkers();
             }
             $("#" + modalId).modal("show");
@@ -893,7 +893,7 @@
         _clearMarkers();
     }
     function _clearMarkers() {
-        var keys = Object.keys(markers);
+        var keys = _.keys(markers);
         if (!keys.length) {
             return;
         }
