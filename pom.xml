@@ -419,7 +419,6 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <warSourceDirectory>WebContent</warSourceDirectory>
-                    <warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
                 </configuration>
                 <executions>
                     <!-- creating the artifact is done by ant -->
