@@ -6,6 +6,13 @@
 				<xs:element name="streetName" type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="nonStd" type="Y" maxOccurs="1" minOccurs="0" />
 				<xs:element name="nonStdStreet" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="nonStdPostCode" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="([0-9]{4})"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
 				<xs:element name="type" type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="lastSearch" type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="postCode" maxOccurs="1" minOccurs="0" >
@@ -28,6 +35,7 @@
 				<xs:element name="streetSearch" type="xs:string" maxOccurs="1" minOccurs="0" />
 				<xs:element name="fullAddress" type="nonEmptyString" maxOccurs="1" minOccurs="0" />
 				<xs:element name="fullAddressLineOne" type="nonEmptyString" maxOccurs="1" minOccurs="0" />
+				<xs:element name="elasticSearch" type="YN" maxOccurs="1" minOccurs="0" />
 			</xs:all>
 	</xs:complexType>
 </xs:schema>
