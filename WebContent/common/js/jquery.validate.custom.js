@@ -1201,6 +1201,12 @@ $.validator.addMethod('regex', function(value, element, param) {
 					message = "Please check " + missingFieldText + ".";
 				} else if(value.message != '') {
 					message = value.message;
+					var hasOmittableCopy = message.indexOf("value= '");
+					// This additional text has been removed for UTL but need
+					// to cater for other verticals
+					if(hasOmittableCopy > 0) {
+						message = message.substring(0, hasOmittableCopy);
+					}
 				} else {
 					message = "It looks like something has gone wrong when filling out the form. Please check that you've entered the right details into each section.";
 					displayGenericMessage = true;
@@ -1232,7 +1238,7 @@ $.validator.addMethod('regex', function(value, element, param) {
 						var errorLabel = insertTarget.prev('.error-field').find('label.has-error');
 						if (errorLabel.length == 0)
 						{
-							insertTarget.addClass('has-error').prev('.error-field').html("<label for='"+field+"' class='has-error'>" + value.message + "</label>");
+							insertTarget.addClass('has-error').prev('.error-field').html("<label for='"+field+"' class='has-error'>" + message + "</label>");
 
 							if (insertTarget.hasClass('select')) {
 								// this step is required otherwise we'll display a green field with a red error message
@@ -1240,10 +1246,10 @@ $.validator.addMethod('regex', function(value, element, param) {
 								insertTarget.parent('.row-content').removeClass('has-success');
 							}
 						} else {
-							errorLabel.text(value.message);
+							errorLabel.text(message);
 						}
 					} else {
-						$("<div class='error-field' style='display: block;'><label for='"+field+"' class='has-error'>" + value.message + "</label></div>").insertBefore(insertTarget);
+						$("<div class='error-field' style='display: block;'><label for='"+field+"' class='has-error'>" + message + "</label></div>").insertBefore(insertTarget);
 					}
 				}
 			}
