@@ -163,8 +163,10 @@ var UtilitiesQuote = {
 					if (json && json.results) {
 						json = json.results; //for convenience
 					}
-					if(typeof json.errors != 'undefined' && json.errors.length > 0) {
+					if((typeof json.errors != 'undefined' && json.errors.length > 0 ||
+						(typeof json.error != 'undefined' && json.error.type == "validation"))) {
 						Loading.hide();
+
 						ServerSideValidation.outputValidationErrors({
 							validationErrors: json.error.errorDetails.validationErrors,
 							startStage: 0,
