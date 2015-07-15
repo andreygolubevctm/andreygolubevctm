@@ -1040,7 +1040,7 @@ $.validator.addMethod('regex', function(value, element, param) {
 				if(matches.length > 0){
 					// eg: work out which slide to navigate to, also should we display a message to the user as the error may be unrecoverable?
 					var errorSlide = $(matches[0]).closest("form").attr("id").slice(0,-4); // trim off "Form"
-alert(errorSlide);
+
 					// adding defer allows the setHash to actually affect the journeyEngine
 					_.defer(function deferSetHash() {
 						meerkat.modules.address.setHash(errorSlide === "" ? "start" : errorSlide);
