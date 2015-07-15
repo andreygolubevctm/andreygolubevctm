@@ -71,4 +71,9 @@ public class ResultsService {
 
 	}
 
+    public static void saveResultsProperties(List<ResultProperty> resultProperties) {
+        ResultsDao resultsDao = new ResultsDao();
+        resultsDao.saveResultsProperties(resultProperties);
+    }
+
 }

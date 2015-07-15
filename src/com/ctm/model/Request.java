@@ -2,7 +2,7 @@ package com.ctm.model;
 
 public interface Request<QUOTE> {
 
-    String getTransactionId();
+    Long getTransactionId();
 
     QUOTE getQuote();
 }
