@@ -8,7 +8,6 @@
 
     function initRetrievequotesListQuotes() {
         _registerEventListeners();
-
         $(document).ready(function() {
             var $resultsTemplate = $("#retrieve-quotes-container-template");
             if ($resultsTemplate.length) {
@@ -17,6 +16,7 @@
 
             // to enable a new vertical to save quotes, create a new template_vertical.tag
             // and also include it in template_rows.tag.
+            // TODO: Generate this object dynamically so all we have to do is include the tag in JSP
             verticalTemplates = {
                 quote: $("#retrieve-car-template").html(),
                 health: $("#retrieve-health-template").html(),
@@ -25,7 +25,6 @@
                 homeloan: $("#retrieve-homeloan-template").html(),
                 home: $("#retrieve-home-template").html()
             };
-
         });
     }
 

@@ -66,6 +66,13 @@
 	<c:set var="sessionPop" value="${false}" />
 
 	<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+	<c:choose>
+		<c:when test="${pageSettings.getVerticalCode() == 'generic'}">
+		</c:when>
+		<c:otherwise>
+			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		</c:otherwise>
+	</c:choose>
 
 	<!--  Modernizr -->
 	<c:if test="${isDev eq false}">

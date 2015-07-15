@@ -6,8 +6,10 @@
 
 <h3>Please log in to view your insurance quotes</h3>
 
-<p>&nbsp;</p>
-<go:setData dataVar="data" xpath="email" value="benno_007@hotmail.com"></go:setData>
+<c:if test="${not empty param.email}">
+    <c:set var="email"><c:out value="${param.email}" escapeXml="true" /></c:set>
+    <go:setData dataVar="data" xpath="${xpath}/email" value="${email}" />
+</c:if>
 
 <form_new:row label="Your email address" className="clear email-row">
     <field_new:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>

@@ -20,6 +20,7 @@ BEGIN
 	DECLARE _whenToAction DATETIME;
 	DECLARE _messageDelay INT;
 	DECLARE _tranIdExists INT;
+	DECLARE _tranIdExistsArchived INT;
 	DECLARE _doNotContact INT;
 	DECLARE _activeMessageId INT;
 	DECLARE _activeMessageStatusId INT;
@@ -39,7 +40,12 @@ BEGIN
 	--
 	SELECT COUNT(transactionId)
 	INTO _tranIdExists
-	FROM simples.message msg
+	FROM simples.message
+	WHERE transactionId = _tranId;
+
+	SELECT COUNT(transactionId)
+	INTO _tranIdExistsArchived
+	FROM simples.message_archived
 	WHERE transactionId = _tranId;
 
 	-- Blacklist, Do not contact
@@ -51,9 +57,10 @@ BEGIN
 	AND mb.channel = 'phone'
 	AND mb.`value` IN (_phoneNumber1, _phoneNumber2);
 	
-	-- This is a bit rubbish, but ignore the blacklist for the failed joins.
-	IF _sourceId = 5 THEN
+	-- This is a bit rubbish, but ignore the blacklist OR archive for the failed joins.
+	IF _sourceId IN (5, 8) THEN
 		SET _doNotContact = 0;
+		SET _tranIdExistsArchived = 0;
 	END IF;
 
 	--
@@ -80,7 +87,7 @@ BEGIN
 	--
 	-- Add message to the queue
 	--
-	IF _tranIdExists = 0 AND _doNotContact = 0 AND _dupeTranIdExists = 0 THEN
+	IF _tranIdExists = 0 AND _tranIdExistsArchived = 0 AND _doNotContact = 0 AND _dupeTranIdExists = 0 THEN
 		IF _activeMessageId IS NULL OR _activeMessageStatusId = 2 /* Completed */ OR _activeMessageStatusId = 33 /* Removed from PM */ THEN
 			INSERT INTO message
 			(transactionId, sourceId, statusId, created, whenToAction, contactName, phoneNumber1, phoneNumber2, state)
