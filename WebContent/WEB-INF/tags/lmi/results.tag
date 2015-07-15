@@ -199,7 +199,7 @@
         {{ if(comparedResultsCount === 0) { }}
         <p>
             Click the <input type="checkbox" class="compare-tick"><label></label> to add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist.
-            We've found <span class="products-returned-count">{{= resultsCount }} products</span> matching your needs.
+            We've found <span class="products-returned-count">{{= resultsCount }} products</span> matching your selection.
         </p>
         {{ }  else { }}
 
