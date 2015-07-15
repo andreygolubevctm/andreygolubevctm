@@ -18,6 +18,10 @@ public class FormValidation {
 	private static Logger logger = Logger.getLogger(FormValidation.class.getName());
 
 	public static <T> List<SchemaValidationError> validate(T request , String vertical) {
+		return validate(request, vertical, true);
+	}
+
+	public static <T> List<SchemaValidationError> validate(T request , String vertical, boolean outputErrorValue) {
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 		List<SchemaValidationError> validationErrors = new ArrayList<SchemaValidationError>();
 		String errorValue = "";
@@ -28,7 +32,11 @@ public class FormValidation {
 			error.setElementXpath((vertical==null || vertical.trim().equals("")?"":(vertical + "/")) + violation.getPropertyPath().toString().replace(".", "/"));
 
 			// we don't want travel's destination erroneous value to appear. Just alert the user the the destination is invalid.
-			errorValue = violation.getPropertyPath().toString().equals("destination") ? "" : " value= '" + violation.getInvalidValue() + "'";
+			if(outputErrorValue) {
+				errorValue = violation.getPropertyPath().toString().equals("destination") ? "" : " value= '" + violation.getInvalidValue() + "'";
+			} else {
+				errorValue = "";
+			}
 
 			error.setMessage(violation.getMessage() + errorValue);
 			validationErrors.add(error);
@@ -36,7 +44,6 @@ public class FormValidation {
 
 		return validationErrors;
 	}
-
 
 	public static JSONObject outputToJson(String transactionId, List<SchemaValidationError> errors) {
 		JSONObject reponse = new JSONObject();

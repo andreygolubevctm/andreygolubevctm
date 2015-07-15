@@ -158,7 +158,7 @@ public class UtilitiesBaseService {
 	}
 
 	public List<SchemaValidationError> validate(UtilitiesRequest utilitiesRequest) {
-		List<SchemaValidationError> errors = FormValidation.validate(utilitiesRequest, vertical.toLowerCase());
+		List<SchemaValidationError> errors = FormValidation.validate(utilitiesRequest, vertical.toLowerCase(), false);
 		valid = errors.isEmpty();
 		return errors;
 	}
