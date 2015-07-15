@@ -31,9 +31,15 @@
 
   margin-bottom: 25px;
 
-  @media (@xs-sm-only) {
+  @media (@xs-only) {
     .children {
       .content-columns(2, 10);
+    }
+  }
+
+  @media (@sm-only) {
+    .children {
+      .content-columns(3, 10);
     }
   }
 
