@@ -7,7 +7,9 @@
 	var postData = {},
 		elements = {
 			applicationDate: $('.applicationDate'),
-			applicationDateContainer: $('.applicationDateContainer')
+			applicationDateContainer: $('.applicationDateContainer'),
+			productTitleSearchContainer: $('.productTitleSearchContainer'),
+			productTitleSearch:$(".productTitleSearch")
 		},
 		selectedDate,
 		moduleEvents = {
@@ -63,6 +65,15 @@
 		}
 	}
 
+	function toggleDisplayProductTitle () {
+		if ($("#health_productTitleSearch").val() === ""){
+			elements.productTitleSearchContainer.hide();
+		}
+		else {
+			elements.productTitleSearch.html($("#health_productTitleSearch").val());
+			elements.productTitleSearchContainer.show();
+		}
+	}
 	/**
 	 * Initialise
 	 */
@@ -75,8 +86,12 @@
 			$('#health_searchDate').on('change',function() {
 				changeApplicationDate();
 			});
-
 			toggleDisplay ();
+
+			$('#health_productTitleSearch').on('change',function() {
+				toggleDisplayProductTitle();
+			});
+
 		});
 	}
 
