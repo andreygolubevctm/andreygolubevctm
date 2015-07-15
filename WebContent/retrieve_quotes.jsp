@@ -74,7 +74,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="slide-feature-logout ">
-                    <a href="javascript:;" class="btn-cta" id="logout-user"><span>Logout</span></a>
+                    <a href="javascript:;" class="btn-back" id="logout-user"><span>Logout</span></a>
                 </li>
             </ul>
 
