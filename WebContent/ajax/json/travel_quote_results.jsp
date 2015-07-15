@@ -3,13 +3,12 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="TRAVEL" />
-
-<%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="travel" />
 
 <jsp:useBean id="travelService" class="com.ctm.services.travel.TravelService" scope="page" />
 <c:set var="serviceResponse" value="${travelService.validateFields(pageContext.request, data)}" />
-<c:set var="defaultToTravelQuote"><content:get key="makeTravelQuoteMainJourney" /></c:set>
+
+<%-- TODO remove makeTravelQuoteMainJourney in content control --%>
 
 <jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
 <c:choose>
@@ -74,36 +73,8 @@
 			</c:otherwise>
 		</c:choose>
 
-		<c:catch var="mappingError">
-		    <jsp:useBean id="countryMapping" class="com.ctm.services.CountryMappingService" scope="page" />
-			<c:set var="updatedData" value="${countryMapping.getCountryMapping(data)}" />
-			<go:setData dataVar="data" xpath="travel" value="${updatedData}" />
-		</c:catch>
-		<c:if test="${not empty mappingError}">
-			<go:log level="ERROR">Country Mapping Error: ${mappingError}</go:log>
-		</c:if>
+        <c:import var="config" url="/WEB-INF/aggregator/travel/configBER.xml" />
 
-		<%-- Split test --%>
-        <c:set var="trvberSplitTest">
-            <c:choose>
-                <c:when test="${defaultToTravelQuote eq true}">true</c:when>
-                <c:otherwise>
-                    <%-- Keeping the value 8 for Ali's tests. 81 & 83 is for production. TRV-817 for reference --%>
-                    <jsp:useBean id="splitTests" class="com.ctm.services.tracking.SplitTestService" />
-                    ${splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 8) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 81) || splitTests.isActive(pageContext.getRequest(), data.current.transactionId, 83)}
-                </c:otherwise>
-            </c:choose>
-        </c:set>
-		<%-- 'configBER' runs the new TRVBER service --%>
-		<%-- 'config' is the normal 'legacy' Travel config --%>
-		<c:choose>
-			<c:when test="${trvberSplitTest eq true}">
-				<c:import var="config" url="/WEB-INF/aggregator/travel/configBER.xml" />
-			</c:when>
-			<c:otherwise>
-				<c:import var="config" url="/WEB-INF/aggregator/travel/config.xml" />
-			</c:otherwise>
-		</c:choose>
 
 		<jsp:useBean id="providerFilter" class="com.ctm.services.ProviderFilter" scope="page" />
 		<c:set var="config" value="${providerFilter.getXMLConfig(data, config, 'travel')}" />
@@ -123,23 +94,7 @@
 		<%-- Save Client Data --%>
 		<core:transaction touch="R" noResponse="true" />
 
-		<%--<c:set var="amexIpAddress" value="10.132.168.247" />--%>
 
-		<%-- for declans home ip address --%>
-		<c:set var="amexIpAddress" value="10.132.168.247" />
-
-		<c:set var="wldcIpAddress1" value="203.42.115.13" />
-		<c:set var="wldcIpAddress2" value="203.42.119.13" />
-		<c:set var="wldcIpAddress3" value="61.88.76.13" />
-
-		<c:set var="otisIpAddress1" value="203.42.115.13" />
-		<c:set var="otisIpAddress2" value="203.42.119.13" />
-		<c:set var="otisIpAddress3" value="61.88.76.13" />
-
-		<c:set var="easyIpAddress" value="49.177.87.252" />
-
-		<c:set var="onefowIpAddress" value="0:0:0:0:0:0:0:2" />
-		<c:set var="agisIpAddress" value="0:0:0:0:0:0:0:2" />
 
 		<c:set var="tranId" value="${data['current/transactionId']}" />
 		<go:setData dataVar="data" xpath="travel/transactionId" value="${tranId}" />
@@ -165,12 +120,6 @@
 											errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
 					</c:forEach>
 				</c:if>
-				<%-- Write to the stats database --%>
-				<c:choose>
-					<c:when test="${trvberSplitTest eq false}">
-						<agg:write_stats rootPath="travel" tranId="${tranId}" debugXml="${debugXml}" />
-					</c:when>
-				</c:choose>
 
 
 				<%-- Add the results to the current session data --%>
@@ -178,10 +127,9 @@
 				<go:setData dataVar="soapdata" xpath="soap-response" value="*DELETE" />
 				<go:setData dataVar="soapdata" xpath="soap-response" xml="${resultXml}" />
 				<go:setData dataVar="soapdata" xpath="soap-response/results/info/transactionId" value="${tranId}" />
-				<%-- !!IMPORTANT!! - ensure the trackingKey is passed back with results --%>
+
 				<go:setData dataVar="soapdata" xpath="soap-response/results/info/trackingKey" value="${data.travel.trackingKey}" />
-				<go:log level="TRACE" source="travel_quote_results_jsp">${resultXml}</go:log>
-				<go:log level="TRACE" source="travel_quote_results_jsp">${debugXml}</go:log>
+
 
 				<agg:write_result_details transactionId="${tranId}" recordXPaths="quoteUrl" baseXmlNode="soap-response/results/price"/>
 					

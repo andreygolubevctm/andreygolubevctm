@@ -11,6 +11,8 @@ public class TravelRequest {
 	and surname (travel/surname), it had to be done this way. Same with the numeric fields.
 	 */
 
+    // TODO Deprecate
+
 	@Name
 	public String firstName;
 
