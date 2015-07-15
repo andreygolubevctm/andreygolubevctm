@@ -105,13 +105,34 @@
 
     function onSubmitError(jqXHR, textStatus, errorThrown, settings, resultData) {
         meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source:'utilitiesEnquiry'});
-        meerkat.modules.errorHandling.error({
-            message:		"<p>An error occurred when attempting to submit your enquiry.</p><p>Please click OK to try again, or call <strong>" + meerkat.site.content.callCentreNumber + "</strong> quoting your reference number <strong>" + meerkat.modules.utilitiesResults.getThoughtWorldReferenceNumber() + "</strong>.</p>",
-            page:			"utilitiesEnquirySubmit.js:submitEnquiry()",
-            errorLevel:		"warning",
-            description:	"Ajax request to " + settings.url + " failed to return a valid response: " + errorThrown,
-            data: resultData
-        });
+        var validationErrors = false;
+        if(_.has(jqXHR, "responseJSON")) {
+            var response = jqXHR.responseJSON;
+            if (response.hasOwnProperty("error") && typeof response.error == "object") {
+                error = response.error;
+                if (_.has(error, "errorDetails") && _.isObject(error.errorDetails)) {
+                    var details = error.errorDetails;
+                    if (_.has(details, "validationErrors") && _.isArray(details.validationErrors)) {
+                        validationErrors = details.validationErrors;
+                    }
+                }
+            }
+        }
+
+        if(validationErrors !== false) {
+            meerkat.modules.serverSideValidationOutput.outputValidationErrors({
+                validationErrors: error.errorDetails.validationErrors,
+                startPage: null // let outputValidationErrorsn decide the step
+            });
+        } else {
+            meerkat.modules.errorHandling.error({
+                message: "<p>An error occurred when attempting to submit your enquiry.</p><p>Please click OK to try again, or call <strong>" + meerkat.site.content.callCentreNumber + "</strong> quoting your reference number <strong>" + meerkat.modules.utilitiesResults.getThoughtWorldReferenceNumber() + "</strong>.</p>",
+                page: "utilitiesEnquirySubmit.js:submitEnquiry()",
+                errorLevel: "warning",
+                description: "Ajax request to " + settings.url + " failed to return a valid response: " + errorThrown,
+                data: resultData
+            });
+        }
     }
 
     meerkat.modules.register("utilitiesEnquirySubmit", {
