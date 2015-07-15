@@ -10448,8 +10448,16 @@ Features = {
                 if (parent.length === 0) parent = $element.parent();
                 var errorContainer = parent.children(".error-field");
                 var message = "invalid field";
-                if (error.message === "ELEMENT REQUIRED") {
-                    message = "This field is required.";
+                if (_.has(error, "message") && !_.isEmpty(error.message)) {
+                    if (error.message === "ELEMENT REQUIRED") {
+                        message = "This field is required.";
+                    } else {
+                        message = error.message;
+                        var hasOmittableCopy = message.indexOf("value= '");
+                        if (hasOmittableCopy > 0) {
+                            message = message.substring(0, hasOmittableCopy);
+                        }
+                    }
                 }
                 if (errorContainer.length === 0) {
                     parent.prepend('<div class="error-field"></div>');
@@ -10460,8 +10468,11 @@ Features = {
             }
         }
         if (matches.length > 0) {
-            if (typeof options.startStage === "undefined") {
-                options.startStage = "start";
+            if (!_.has(options, "startStage") || !_.isEmpty(options.startStage)) {
+                options.startPage = $(matches[0]).closest("form").attr("id").slice(0, -4);
+            }
+            if (_.isUndefined(meerkat.modules.journeyEngine.getStepIndex(options.startPage))) {
+                options.startPage = "start";
             }
             meerkat.modules.address.setHash(options.startStage);
         }
