@@ -227,7 +227,13 @@
             // Reset the feature header to match the new column content.
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
 
+
         });
+
+        meerkat.messaging.subscribe(meerkatEvents.FEATURE_TOGGLED, function updateDisclaimerPosition(featureObject){
+            meerkat.modules.showMoreQuotesPrompt.updateBarPosition(featureObject.element, featureObject.isOpening);
+        });
+
 
         // Start fetching results
         $(document).on("resultsFetchStart", function onResultsFetchStart() {

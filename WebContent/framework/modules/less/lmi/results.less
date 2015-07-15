@@ -20,6 +20,55 @@
   }
 }
 
+#results_v3 {
+  @media(@lg-only) {
+    margin-bottom: 190px;
+  }
+
+  @media(@md-only) {
+    margin-bottom: 210px;
+  }
+
+  @media(@sm-only) {
+    margin-bottom: 260px;
+  }
+}
+
+//
+// Comparison features disclosure
+//
+
+.comparisonFeaturesDisclosure {
+  max-width:100%;
+  left:0;
+  background: @theme-tertiary;
+  position: fixed;
+  bottom: 0;
+  margin: 0;
+  padding: 10px 0px;
+  border-top: 1px solid white;
+
+  h4, a, p {
+    color: white;
+  }
+
+  h4 {
+    margin-top: 5px;
+  }
+
+  div p span.icon-arrow-right {
+    margin-top:2px;
+  }
+
+  .hidden-xs a {
+    text-decoration: underline;
+  }
+}
+
+.disclaimer, .disclosure {
+  font-size: 11px;
+}
+
 //
 // Feature mode styling
 //

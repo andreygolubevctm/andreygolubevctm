@@ -109,60 +109,6 @@ body > div > header a.bottombar .btn-call:hover {
 .homelmi .compare-prices-cta {
   text-align: right;
 }
-@media (min-width: 1200px) {
-  .carlmi #results_v3,
-  .homelmi #results_v3 {
-    margin-bottom: 190px;
-  }
-}
-@media (min-width: 992px) and (max-width: 1199px) {
-  .carlmi #results_v3,
-  .homelmi #results_v3 {
-    margin-bottom: 210px;
-  }
-}
-@media (min-width: 768px) and (max-width: 991px) {
-  .carlmi #results_v3,
-  .homelmi #results_v3 {
-    margin-bottom: 260px;
-  }
-}
-.carlmi .comparisonFeaturesDisclosure,
-.homelmi .comparisonFeaturesDisclosure {
-  max-width: 100%;
-  left: 0;
-  background: #1c3e93;
-  position: fixed;
-  bottom: 0;
-  margin: 0;
-  padding: 10px 0px;
-}
-.carlmi .comparisonFeaturesDisclosure h4,
-.homelmi .comparisonFeaturesDisclosure h4,
-.carlmi .comparisonFeaturesDisclosure a,
-.homelmi .comparisonFeaturesDisclosure a,
-.carlmi .comparisonFeaturesDisclosure p,
-.homelmi .comparisonFeaturesDisclosure p {
-  color: white;
-}
-.carlmi .comparisonFeaturesDisclosure h4,
-.homelmi .comparisonFeaturesDisclosure h4 {
-  margin-top: 5px;
-}
-.carlmi .comparisonFeaturesDisclosure div p span.icon-arrow-right,
-.homelmi .comparisonFeaturesDisclosure div p span.icon-arrow-right {
-  margin-top: 2px;
-}
-.carlmi .comparisonFeaturesDisclosure .hidden-xs a,
-.homelmi .comparisonFeaturesDisclosure .hidden-xs a {
-  text-decoration: underline;
-}
-.carlmi .disclaimer,
-.homelmi .disclaimer,
-.carlmi .disclosure,
-.homelmi .disclosure {
-  font-size: 11px;
-}
 .carlmi .slide-feature-back,
 .carlmi .resultsSummaryContainer {
   display: none;
@@ -404,6 +350,49 @@ body > div > header a.bottombar .btn-call:hover {
 }
 .result small {
   font-style: italic;
+}
+@media (min-width: 1200px) {
+  #results_v3 {
+    margin-bottom: 190px;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  #results_v3 {
+    margin-bottom: 210px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #results_v3 {
+    margin-bottom: 260px;
+  }
+}
+.comparisonFeaturesDisclosure {
+  max-width: 100%;
+  left: 0;
+  background: #1c3e93;
+  position: fixed;
+  bottom: 0;
+  margin: 0;
+  padding: 10px 0px;
+  border-top: 1px solid white;
+}
+.comparisonFeaturesDisclosure h4,
+.comparisonFeaturesDisclosure a,
+.comparisonFeaturesDisclosure p {
+  color: white;
+}
+.comparisonFeaturesDisclosure h4 {
+  margin-top: 5px;
+}
+.comparisonFeaturesDisclosure div p span.icon-arrow-right {
+  margin-top: 2px;
+}
+.comparisonFeaturesDisclosure .hidden-xs a {
+  text-decoration: underline;
+}
+.disclaimer,
+.disclosure {
+  font-size: 11px;
 }
 .featuresMode .compare-toggle-wrapper {
   margin-bottom: 0;

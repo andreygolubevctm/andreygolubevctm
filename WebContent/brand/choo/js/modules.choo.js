@@ -3142,6 +3142,9 @@ Features = {
     results: false,
     featuresIds: false,
     emptyAdditionalInfoCategory: true,
+    moduleEvents: {
+        FEATURE_TOGGLED: "FEATURE_TOGGLED"
+    },
     init: function(target) {
         if (typeof target === "undefined") {
             Features.target = Results.settings.elements.resultsContainer;
@@ -3330,12 +3333,18 @@ Features = {
         $(document.body).off("click", selector).on("click", selector, function(e) {
             var featureId = $(this).attr("data-featureId");
             var $extras = $(Features.target + ' .children[data-fid="' + featureId + '"]');
-            var $parents = $extras.parent();
+            var $parents = $extras.parent(), opening;
             if ($parents.hasClass("expanded") === false) {
                 Features.toggleOpen($extras, $parents);
+                opening = true;
             } else {
                 Features.toggleClose($parents);
+                opening = false;
             }
+            meerkat.messaging.publish(Results.moduleEvents.FEATURE_TOGGLED, {
+                element: $extras.eq(0),
+                isOpening: opening
+            });
         }).on("click", ".expandAllFeatures, .collapseAllFeatures", function(e) {
             e.preventDefault();
             $(this).parent().find(".active").removeClass("active");
@@ -10814,7 +10823,7 @@ Features = {
 })(jQuery);
 
 (function($, undefined) {
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $morePrompt, $morePromptLink, $morePromptIcons, $morePromptTextLink, promptInit = false, $extraDockedItem, scrollBottomAnchor, moreLinkPositionOffset, disablePrompt = false, isXs = false, settings = {}, defaults = {
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, $morePrompt, $morePromptLink, $morePromptIcons, $morePromptTextLink, promptInit = false, $extraDockedItem, scrollBottomAnchor, oldScrollBottomAnchor, moreLinkPositionOffset, disablePrompt = false, isXs = false, settings = {}, defaults = {
         anchorPosition: "div.results-table .available.notfiltered",
         goToBottomText: "Go to Bottom",
         goToTopText: "Go to Top",
@@ -10959,12 +10968,23 @@ Features = {
             initPrompt();
         });
     }
+    function updateBarPosition(newBottomAnchor, isOpening) {
+        if (isOpening) {
+            oldScrollBottomAnchor = scrollBottomAnchor;
+            scrollBottomAnchor = newBottomAnchor;
+        } else {
+            scrollBottomAnchor = typeof oldScrollBottomAnchor !== "undefined" ? oldScrollBottomAnchor : $(settings.anchorPosition).last();
+        }
+        var delay = meerkat.modules.performanceProfiling.isIE8() ? 220 : 80;
+        _.delay(setPromptBottomPx, delay);
+    }
     meerkat.modules.register("showMoreQuotesPrompt", {
         initPromptBar: initMoreQuotesPrompt,
         resetPromptBar: resetMorePromptBar,
         disablePromptBar: disablePromptBar,
         disableForCoverLevelTabs: disableForCoverLevelTabs,
-        resetForCoverLevelTabs: resetForCoverLevelTabs
+        resetForCoverLevelTabs: resetForCoverLevelTabs,
+        updateBarPosition: updateBarPosition
     });
 })(jQuery);
 

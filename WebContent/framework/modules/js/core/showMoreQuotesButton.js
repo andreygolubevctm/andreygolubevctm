@@ -13,6 +13,7 @@
         promptInit = false,
         $extraDockedItem,
         scrollBottomAnchor,
+        oldScrollBottomAnchor,
         moreLinkPositionOffset,
         disablePrompt = false,
         isXs = false,
@@ -94,6 +95,7 @@
     }
 
     function setPromptBottomPx() {
+
         moreLinkPositionOffset = ($extraDockedItem.length > 0 ? $extraDockedItem.outerHeight() : 0);
 
         // we only want this to happen when the results are rendered otherwise it will appear when the loading screen appears
@@ -214,12 +216,26 @@
         });
     }
 
+    function updateBarPosition(newBottomAnchor, isOpening) {
+        if (isOpening) {
+            oldScrollBottomAnchor = scrollBottomAnchor;
+            scrollBottomAnchor = newBottomAnchor;
+        } else {
+            scrollBottomAnchor = typeof oldScrollBottomAnchor !== 'undefined' ? oldScrollBottomAnchor : $(settings.anchorPosition).last();
+        }
+
+        // IE8 was returning up to 196ms hence this check. It tends to fluctuate as another test returns numbers around 50ms so leaving it on the high side for now
+        var delay = meerkat.modules.performanceProfiling.isIE8() ? 220 : 80;
+        _.delay(setPromptBottomPx, delay);
+    }
+
     meerkat.modules.register('showMoreQuotesPrompt', {
         initPromptBar: initMoreQuotesPrompt,
         resetPromptBar: resetMorePromptBar,
         disablePromptBar: disablePromptBar,
         disableForCoverLevelTabs: disableForCoverLevelTabs,
-        resetForCoverLevelTabs: resetForCoverLevelTabs
+        resetForCoverLevelTabs: resetForCoverLevelTabs,
+        updateBarPosition: updateBarPosition
     });
 
 })(jQuery);
