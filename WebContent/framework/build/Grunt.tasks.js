@@ -26,8 +26,7 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		less = {},
 		clean = {},
 		watch = {},
-		notify = {},
-		qunit = {};
+		notify = {};
 
 	var brand = brandMapping.brandcode; //string we'll get this from the main grunt task
 	var verticals = brandMapping.verticals; //Array we'll get this from the main grunt task
@@ -266,20 +265,6 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		];
 	});
 
-
-//----------------------------------------------------------------------
-// QUNIT: Runs javascript unit tests with the help of phantomJS
-//----------------------------------------------------------------------
-
-	// Defines required options for the js unit test runner
-	qunit =  {
-		files: [tools.getFrameworkPath('modules','js') + 'tests/*.html'],
-		options: {
-			inject: tools.getFrameworkPath('bootstrap','js') + 'tests/unit/phantom.js'
-		}
-	};
-
-
 //----------------------------------------------------------------------
 // WATCH: Defines all the automatic build and watch tasks.
 //----------------------------------------------------------------------
@@ -434,7 +419,6 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		cssmetrics: cssmetrics,
 		csslint: csslint,
 		less: less,
-		qunit: qunit,
 		clean: clean,
 		watch: watch,
 		notify: notify

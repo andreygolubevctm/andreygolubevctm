@@ -622,8 +622,8 @@ var healthFunds_WFD = {
 			$('.health_credit-card-details_policyDay-message').text( deductionText);
 			$('.health_bank-details_policyDay-message').text(deductionText);
 
-			var _dayString = leadingZero(deductionDate.getDate() );
-			var _monthString = leadingZero(deductionDate.getMonth() + 1 );
+			var _dayString = meerkat.modules.numberUtils.leadingZero(deductionDate.getDate() );
+			var _monthString = meerkat.modules.numberUtils.leadingZero(deductionDate.getMonth() + 1 );
 			var deductionDateValue = deductionDate.getFullYear() +'-'+ _monthString +'-'+ _dayString;
 
 			$('.health-credit-card_details-policyDay option').val(deductionDateValue);

@@ -101,7 +101,6 @@ module.exports = function(grunt,brandMapping){
 				'cssmetrics',
 				'csslint',
 				'notify:all_less',
-				'test',
 				'jshint',
 				'uglify',
 				'notify:all_js',
@@ -122,9 +121,6 @@ module.exports = function(grunt,brandMapping){
 	grunt.registerTask('default', ['build_all']);
 	//grunt.registerTask('default', ['notify:startup','build']);
 
-	// Test task.
-	grunt.registerTask('test', ['qunit']);
-
 	// The docs for Grunt Notify tell me this is required if you use any options.
 	//grunt.task.run('notify_hooks');
 
@@ -135,7 +131,7 @@ module.exports = function(grunt,brandMapping){
 	);
 	grunt.registerTask('js_all_brands',
 		[
-			'jshint', 'test','cssmetrics','csslint','notify:all_less'
+			'jshint','cssmetrics','csslint','notify:all_less'
 		]
 	);
 
