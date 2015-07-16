@@ -36,12 +36,12 @@ public class StatisticsService {
 
 	/**
 	 * Write statistics to statistic_master, statistic_details, and statistic_description
-	 * @param statisticDetailsResults
-	 * @param tranId the transaction that these statistic will be written against
+	 * @param statisticDetailsResults The statistics details to write
+	 * @param transactionId the transaction that these statistic will be written against
 	 * @return calcSequence that was created in aggregator.statistic_master
 	 * @throws SQLException
 	 **/
-	public int writeStatistics(List<StatisticDetail> statisticDetailsResults , int tranId) throws SQLException {
+	public int writeStatistics(List<StatisticDetail> statisticDetailsResults, long transactionId) throws SQLException {
 		Connection conn = null;
 		int calcSequence = 1;
 		try {
@@ -50,11 +50,11 @@ public class StatisticsService {
 			stmt = conn.prepareStatement(
 				"SELECT max(CalcSequence) AS calcSequence " +
 				"FROM aggregator.statistic_master " +
-				"WHERE TransactionId=?;" ,
+				"WHERE TransactionId=?;",
 				java.sql.Statement.RETURN_GENERATED_KEYS
 			);
 
-			stmt.setInt(1, tranId);
+			stmt.setLong(1, transactionId);
 			ResultSet result = stmt.executeQuery();
 
 			while (result.next()) {
@@ -67,23 +67,19 @@ public class StatisticsService {
 				, java.sql.Statement.RETURN_GENERATED_KEYS
 			);
 
-			stmt.setInt(1, tranId);
+			stmt.setLong(1, transactionId);
 			stmt.setInt(2, calcSequence);
 			stmt.executeUpdate();
 
-
 			if (statisticDetailsResults != null) {
-				PreparedStatement stmtDetails = null;
 				PreparedStatement stmtDescription = null;
-
-				stmtDetails = conn.prepareStatement(
+				PreparedStatement stmtDetails = conn.prepareStatement(
 						"INSERT INTO aggregator.statistic_details (TransactionId,CalcSequence,ServiceId,ProductId,ResponseTime,ResponseMessage) " +
 						"VALUES (?,?,?,?,?,?)"
 					);
 
-				for(StatisticDetail statisticDetail : statisticDetailsResults) {
-
-					stmtDetails.setInt(1, tranId);
+				for (StatisticDetail statisticDetail : statisticDetailsResults) {
+					stmtDetails.setLong(1, transactionId);
 					stmtDetails.setInt(2, calcSequence);
 					stmtDetails.setString(3, statisticDetail.getServiceId());
 					stmtDetails.setString(4, statisticDetail.getProductId());
@@ -96,15 +92,14 @@ public class StatisticsService {
 					if (statisticDetail.getStatisticDescription() != null) {
 						StatisticDescription statisticDescription = statisticDetail.getStatisticDescription();
 
-						if (stmtDescription == null)
-						{
+						if (stmtDescription == null) {
 							stmtDescription = conn.prepareStatement(
-									"INSERT INTO aggregator.statistic_description (TransactionId,CalcSequence,ServiceId,ErrorType, ErrorMessage, ErrorDetail) " +
-									"VALUES (?,?,?,?,?,?)"
+								"INSERT INTO aggregator.statistic_description (TransactionId,CalcSequence,ServiceId,ErrorType, ErrorMessage, ErrorDetail) " +
+								"VALUES (?,?,?,?,?,?)"
 							);
 						}
 
-						stmtDescription.setInt(1, tranId);
+						stmtDescription.setLong(1, transactionId);
 						stmtDescription.setInt(2, calcSequence);
 						stmtDescription.setString(3, statisticDetail.getServiceId());
 						stmtDescription.setString(4, statisticDescription.getErrorType());
@@ -118,12 +113,15 @@ public class StatisticsService {
 
 				stmtDetails.executeBatch();
 
-				if (stmtDescription != null)
-				{
+				if (stmtDescription != null) {
 					stmtDescription.executeBatch();
 				}
 			}
-		} finally {
+		}
+		catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+		finally {
 			if(conn != null) {
 				conn.close();
 			}
