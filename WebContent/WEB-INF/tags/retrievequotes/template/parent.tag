@@ -74,6 +74,7 @@
             <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-start-again"><span>Start Again</span></a>
         {{ } }}
 
+        <%-- NOTE: IF UTILITIES EVER ADDS RETRIEVE QUOTES AGAIN, WE NEED TO UPDATE THIS TO USE THE PROPER BUTTONS --%>
         {{ if(obj.verticalCode === "utilities") { }}
             <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-start-again-fresh"><span>Start Again</span></a>
         {{ } }}
