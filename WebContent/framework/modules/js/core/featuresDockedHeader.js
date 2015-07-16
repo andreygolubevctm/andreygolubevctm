@@ -161,7 +161,7 @@
 				dockedHeaderHeight = '100px';
 			if ($currentPage.length >= 1) {
 				// Calculate the hight of the fixed header based off the docked header hight.
-				dockedHeaderHeight = $('.resultInsert.featuresMode:visible').first().innerHeight() + 1 + 'px';
+				dockedHeaderHeight = $('.currentPage .resultInsert.featuresMode:visible').first().innerHeight() + 1 + 'px';
 			}
 			$fixedDockedHeader.css({'top': topPosition, 'width': cellFeatureWidth, 'height': dockedHeaderHeight}).show();
 		}

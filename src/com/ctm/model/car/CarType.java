@@ -2,6 +2,9 @@ package com.ctm.model.car;
 
 public class CarType {
 	public static final String JSON_COLLECTION_NAME = "types";
+	public static final String JSON_MARKETVALUE_NAME = "marketValue";
+	public static final String JSON_VARIANT_NAME = "variant";
+	public static final String JSON_SINGLE_NAME = "type";
 
 	private String code;
 	private String label;

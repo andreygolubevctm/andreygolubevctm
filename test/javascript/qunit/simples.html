@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>CTM Test Suite</title>
+
+	<script src="../../../WebContent/common/js/ipp/jquery.min.js"></script>
+	<script src="../../../WebContent/framework/lib/js/underscore-1.5.2.min.js"></script>
+
+	<!-- qunit -->
+	<link rel="stylesheet" href="vendor/qunit.css" media="screen">
+	<script src="vendor/qunit.js"></script>
+
+	<script>
+		// See https://github.com/axemclion/grunt-saucelabs#test-result-details-with-qunit
+		QUnit.done(function(results) {
+			window.global_test_results = results
+		});
+	</script>
+
+	<!--  plugin sources -->
+	<script src="../../../WebContent/framework/meerkat/meerkat.js"></script>
+	<script src="../../../WebContent/framework/meerkat/meerkat.logging.js"></script>
+	<script src="../../../WebContent/framework/meerkat/meerkat.modules.js"></script>
+	<script src="../../../WebContent/framework/modules/js/core/comms.js"></script>
+	<script src="../../../WebContent/framework/modules/js/simples/simples.js"></script>
+	<script src="../../../WebContent/framework/modules/js/simples/simplesUserStats.js"></script>
+	
+
+	<!-- default site config -->
+	<script>
+			;(function (meerkat) {
+
+				var siteConfig = {
+						title: 'Simples - Compare The Market Australia',
+						name: 'Compare the Market',
+						vertical: 'simples',
+						isDev: true,
+						isCallCentreUser: true,
+						showLogging: true,
+						environment: 'nxi',
+
+						urls:{
+							base: 'http://nxi.secure.comparethemarket.com.au/ctm/',
+							exit: 'http://int.comparethemarket.com.au/',
+							context: '/ctm/'
+						},
+						watchedFields: '',
+						content:{
+							brandDisplayName: 'comparethemarket.com.au'
+						},
+
+						tracking:{
+							brandCode: 'ctm',
+							superTagEnabled: false,
+							DTMEnabled: true,
+							userTrackingEnabled: false
+						},
+						leavePageWarning: {
+							enabled: false,
+							defaultMessage: "You're leaving!? Are you sure?",
+							message: ""
+
+						},
+						liveChat: {
+							config: {},
+							instance: {},
+							enabled: false
+						},
+						session: {
+							windowTimeout: 3300000,
+							deferredPokeDuration: 300000,
+							firstPokeEnabled: true,
+							bigIP: "7547C3BF461AF2B4CADFAC9D6F2EDF68.taws01_ass3"
+						},
+						navMenu: {
+							type: 'default',
+							direction: 'right'
+						},
+						useNewLogging: true
+					};
+
+					var options = {};
+					meerkat != null && meerkat.init(siteConfig, options);
+
+			})(window.meerkat);
+
+			_.templateSettings = {
+				evaluate:    /\{\{(.+?)\}\}/g, // {{= console.log("blah") }}
+				interpolate: /\{\{=(.+?)\}\}/g, // {{ title }}
+				escape:      /\{\{-(.+?)\}\}/g // {{{ title }}}
+			};
+	</script>
+
+	<!-- unit tests -->
+	<script src="unit/simples/simplesUserStats.js"></script>
+</head>
+<body>
+<div>
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+	<div id="testBody"></div>
+</div>
+</body>
+</html>

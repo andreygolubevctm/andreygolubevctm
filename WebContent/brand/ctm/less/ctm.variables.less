@@ -388,6 +388,45 @@
 @btn-next-active-color: contrast(@btn-next-active-bg-color);
 @btn-next-active-border-color: @btn-next-active-bg-color;
 
+// Unsubscribe action buttons
+@btn-unsubscribe-bg-color: @theme-secondary;
+@btn-unsubscribe-color: contrast(@btn-unsubscribe-bg-color);
+@btn-unsubscribe-border-color: @btn-unsubscribe-bg-color;
+
+@btn-unsubscribe-hover-bg-color: darken(@btn-unsubscribe-bg-color, 12%);
+@btn-unsubscribe-hover-color: contrast(@btn-unsubscribe-hover-bg-color);
+@btn-unsubscribe-hover-border-color: @btn-unsubscribe-hover-bg-color;
+
+@btn-unsubscribe-active-bg-color: @theme-tertiary;
+@btn-unsubscribe-active-color: contrast(@btn-unsubscribe-active-bg-color);
+@btn-unsubscribe-active-border-color: @btn-unsubscribe-active-bg-color;
+
+@btn-unsubscribe-cancel-bg-color: @theme-tertiary;
+@btn-unsubscribe-cancel-color: contrast(@btn-unsubscribe-cancel-bg-color);
+@btn-unsubscribe-cancel-border-color: @btn-unsubscribe-cancel-bg-color;
+
+@btn-unsubscribe-cancel-hover-bg-color: darken(@btn-unsubscribe-cancel-bg-color, 12%);
+@btn-unsubscribe-cancel-hover-color: contrast(@btn-unsubscribe-cancel-hover-bg-color);
+@btn-unsubscribe-cancel-hover-border-color: @btn-unsubscribe-cancel-hover-bg-color;
+
+@btn-unsubscribe-cancel-active-bg-color: @theme-secondary;
+@btn-unsubscribe-cancel-active-color: contrast(@btn-unsubscribe-cancel-active-bg-color);
+@btn-unsubscribe-cancel-active-border-color: @btn-unsubscribe-cancel-active-bg-color;
+
+
+// Login button
+@btn-login-bg-color: @theme-secondary;
+@btn-login-color: contrast(@btn-login-bg-color);
+@btn-login-border-color: @btn-login-bg-color;
+
+@btn-login-hover-bg-color: darken(@btn-login-bg-color, 12%);
+@btn-login-hover-color: contrast(@btn-login-hover-bg-color);
+@btn-login-hover-border-color: @btn-login-hover-bg-color;
+
+@btn-login-active-bg-color: @theme-tertiary;
+@btn-login-active-color: contrast(@btn-login-active-bg-color);
+@btn-login-active-border-color: @btn-login-active-bg-color;
+
 //.form-inverse used for mixin use of button styles on toggles - because the active state in toggles should reflect the inputs, we have specific variables for the inverse mixin's active state variables.
 @btn-form-inverse-hover-bg-color: @input-bg;
 @btn-form-inverse-hover-color: @input-color;
@@ -1812,6 +1851,7 @@
 
 // Snapshot specific
 @snapshot-icon: @headings-color;
+@snapshot-icon-inverted: #fff;
 
 // ctm has no iframe up top
 @page-offset-xs : 0px;

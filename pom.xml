@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.ctm.pom</groupId>
         <artifactId>uber-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.1</version>
     </parent>
 
     <groupId>com.ctm.web</groupId>
@@ -33,7 +33,7 @@
         <javax.jsp.version>2.2</javax.jsp.version>
         <mysql.connector.version>5.1.29</mysql.connector.version>
         <!-- Compile as this version -->
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
     </properties>
 
@@ -384,6 +384,70 @@
         </dependency>
 
     </dependencies>
+    <profiles>
+         <profile>
+            <id>build-frontend</id>
+            <activation>
+                <!-- only activate if build.environment set. for local development this will not be set.
+                 in local the grunt watcher should be running so maven doesn't need to run grunt -->
+                <property>
+                    <name>build.environment</name>
+                </property>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>${frontend-maven-plugin.version}</version>
+                        <executions>
+
+                            <execution>
+                                <id>install node and npm</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v0.12.2</nodeVersion>
+                                    <npmVersion>1.4.12</npmVersion>
+                                    <nodeDownloadRoot>${node.download.root}/</nodeDownloadRoot>
+                                    <npmDownloadRoot>${node.download.root}/npm/</npmDownloadRoot>
+                                    <workingDirectory>${basedir}</workingDirectory>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>npm install</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install</arguments>
+                                    <workingDirectory>${basedir}</workingDirectory>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>grunt build</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>grunt</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>build_all_nowatch</arguments>
+                                    <workingDirectory>${basedir}</workingDirectory>
+                                </configuration>
+                            </execution>
+
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
@@ -417,6 +481,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <warSourceDirectory>WebContent</warSourceDirectory>
+                </configuration>
                 <executions>
                     <!-- creating the artifact is done by ant -->
                     <execution>
@@ -433,10 +500,6 @@
                         <goals>
                             <goal>exploded</goal>
                         </goals>
-						<configuration>
-							<warSourceDirectory>WebContent</warSourceDirectory>
-							<warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
-						</configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -465,9 +528,77 @@
                     </execution>
                 </executions>
             </plugin>
+			<plugin>
+                    <groupId>com.github.klieber</groupId>
+                    <artifactId>phantomjs-maven-plugin</artifactId>
+                    <version>0.5</version>
+                    <executions>
+                        <execution>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>install</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <version>1.9.7</version>
+                        <outputDirectory>${project.build.directory}/phantomjs-install/</outputDirectory>
+                        <skip>${maven.test.skip}</skip>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>${frontend-maven-plugin.version}</version>
+
+                    <executions>
+
+                        <execution>
+                            <id>install node and npm test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>install-node-and-npm</goal>
+                            </goals>
+                            <configuration>
+                                <nodeVersion>v0.12.2</nodeVersion>
+                                <npmVersion>1.4.12</npmVersion>
+                                <nodeDownloadRoot>${node.download.root}/</nodeDownloadRoot>
+                                <npmDownloadRoot>${node.download.root}/npm/</npmDownloadRoot>
+                                <workingDirectory>test/javascript</workingDirectory>
+                                <skip>${maven.test.skip}</skip>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>npm install test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>install</arguments>
+                                <workingDirectory>test/javascript</workingDirectory>
+                            </configuration>
+                        </execution>
+
+
+                        <execution>
+                            <id>grunt build test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>grunt</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>--phantomPath=${phantomjs.binary}</arguments>
+                                <workingDirectory>test/javascript</workingDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+            </plugin>
         </plugins>
 
-        <testSourceDirectory>${project.basedir}/test</testSourceDirectory>
+        <testSourceDirectory>${project.basedir}/test/java</testSourceDirectory>
         <sourceDirectory>${project.basedir}/src</sourceDirectory>
 
     </build>

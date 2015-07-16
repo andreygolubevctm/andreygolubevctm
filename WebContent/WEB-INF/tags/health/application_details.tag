@@ -45,6 +45,14 @@
 			<field:hidden xpath="${xpath}/emailsecondary" />
 			<field:hidden xpath="${xpath}/emailhistory" />
 		</form_new:row>
+
+		<c:set var="fieldXpath" value="${xpath}_no_email" />
+		<form_new:row fieldXpath="${fieldXpath}" id="${name}_noEmailGroup">
+			<field_new:checkbox xpath="${fieldXpath}" value="N"
+				title="No email address"
+				required="false"
+				label="true" />
+		</form_new:row>
 		
 		<form_new:row id="${name}_optInEmail-group" hideHelpIconCol="true">
 			<field_new:checkbox xpath="${xpath}/optInEmail" value="Y"

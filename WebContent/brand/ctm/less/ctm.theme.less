@@ -199,10 +199,30 @@ ul.themed {
 
 //Call to actions.
 .btn-cta {
-	.btn-styles(@btn-cta-bg-color, @btn-cta-color,
-	@btn-cta-active-bg-color, @btn-cta-active-color,
-	@btn-cta-hover-bg-color, @btn-cta-hover-color,
-	@btn-cta-border-color, @btn-cta-active-border-color, @btn-cta-hover-border-color); }
+  .btn-styles(@btn-cta-bg-color, @btn-cta-color,
+  @btn-cta-active-bg-color, @btn-cta-active-color,
+  @btn-cta-hover-bg-color, @btn-cta-hover-color,
+  @btn-cta-border-color, @btn-cta-active-border-color, @btn-cta-hover-border-color); }
+
+// Unsubscribe action buttons
+.btn-unsubscribe {
+  .btn-styles(@btn-unsubscribe-bg-color, @btn-unsubscribe-color,
+  @btn-unsubscribe-active-bg-color, @btn-unsubscribe-active-color,
+  @btn-unsubscribe-hover-bg-color, @btn-unsubscribe-hover-color,
+  @btn-unsubscribe-border-color, @btn-unsubscribe-active-border-color, @btn-unsubscribe-hover-border-color); }
+
+.btn-unsubscribe-cancel {
+  .btn-styles(@btn-unsubscribe-cancel-bg-color, @btn-unsubscribe-cancel-color,
+  @btn-unsubscribe-cancel-active-bg-color, @btn-unsubscribe-cancel-active-color,
+  @btn-unsubscribe-cancel-hover-bg-color, @btn-unsubscribe-cancel-hover-color,
+  @btn-unsubscribe-cancel-border-color, @btn-unsubscribe-cancel-active-border-color, @btn-unsubscribe-cancel-hover-border-color); }
+
+// Login action button
+.btn-login {
+  .btn-styles(@btn-login-bg-color, @btn-login-color,
+  @btn-login-active-bg-color, @btn-login-active-color,
+  @btn-login-hover-bg-color, @btn-login-hover-color,
+  @btn-login-border-color, @btn-login-active-border-color, @btn-login-hover-border-color); }
 
 //Special actions
 .btn-shortlist {
@@ -874,7 +894,7 @@ a{
 
 .well {
 	border: 0;
-	padding: 10px 20px;
+	padding: 20px 20px;
 	border-radius: @border-radius-large;
 	margin-bottom: 28px;
 
@@ -923,6 +943,18 @@ a{
 		&.btn { text-decoration: none; }
 		}
 	}
+
+.well-info {
+	&.point-left {
+		margin-left:20px;
+		margin-bottom: 0px;
+		&:after {
+			border-width: 20px 0 0 15px;
+			left: -15px;
+			top: 20px;
+		}
+	}
+}
 
 //** Known as inline message to UI/UX
 .well-chatty {
