@@ -77,14 +77,14 @@ CREATE TABLE `ctm`.`car_product_disclosure_statements` (
 
 
 -- rollback
-# DROP TABLE `ctm`.`car_product_disclosure_statements`;
-#
-# DROP TABLE `ctm`.`car_product_features`;
-#
-# DROP TABLE `ctm`.`car_product_additional_excesses`;
-#
-# DROP TABLE `ctm`.`car_product_content`;
-#
-# DROP TABLE `ctm`.`car_product`;
+-- DROP TABLE `ctm`.`car_product_disclosure_statements`;
+--
+-- DROP TABLE `ctm`.`car_product_features`;
+--
+-- DROP TABLE `ctm`.`car_product_additional_excesses`;
+--
+-- DROP TABLE `ctm`.`car_product_content`;
+--
+-- DROP TABLE `ctm`.`car_product`;
 
 

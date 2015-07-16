@@ -8,7 +8,7 @@ public class CarRequest implements Request<CarQuote> {
 
     private CarQuote quote;
 
-    private String transactionId;
+    private Long transactionId;
 
     public String getClientIpAddress() {
         return clientIpAddress;
@@ -28,11 +28,11 @@ public class CarRequest implements Request<CarQuote> {
     }
 
     @Override
-    public String getTransactionId() {
+    public Long getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(String transactionId) {
+    public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
     }
 }

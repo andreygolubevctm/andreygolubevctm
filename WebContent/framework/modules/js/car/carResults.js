@@ -65,7 +65,7 @@
 				price = {
 					annually: "price.annualPremium",
 					annual: "price.annualPremium",
-					monthly: "price.monthlyPremium"
+					monthly: "price.annualisedMonthlyPremium"
 				};
 				rank_premium = "price.annualPremium";
 				carQuoteResultsUrl = "ajax/json/car_quote_results_ws.jsp";
@@ -259,6 +259,11 @@
 			_.delay(function() {
 				meerkat.modules.journeyEngine.gotoPath('previous');
 			}, 1000);
+		});
+
+		// Model updated, make changes before rendering
+		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
+			massageResultsObject();
 		});
 
 		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){
@@ -455,6 +460,18 @@
 			break;
 		}
 
+	}
+
+	function massageResultsObject(products) {
+		products = products || Results.model.returnedProducts;
+
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
+			_.each(products, function massageJson(result, index) {
+				if (result.excess != null && !_.isUndefined(result.excess)) {
+					result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
+				}
+			});
+		}
 	}
 
 	function showNoResults() {

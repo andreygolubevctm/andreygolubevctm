@@ -44,4 +44,4 @@ INSERT INTO `aggregator`.`features_details` (`name`,`type`,`status`,`categoryId`
 INSERT INTO `aggregator`.`features_details` (`name`,`type`,`status`,`categoryId`,`sequence`,`parentId`,`resultPath`,`vertical`,`expanded`,`multiRow`,`className`,`extraText`,`helpId`,`shortlistKey`) VALUES ('Product Disclosure Statement','feature',1,0,10,0,'action.pds','carws_',0,1,NULL,NULL,0,NULL);
 
 -- Rollback
-# DELETE FROM `aggregator`.`features_details` WHERE vertical = 'carws_';
+-- DELETE FROM `aggregator`.`features_details` WHERE vertical = 'carws_';

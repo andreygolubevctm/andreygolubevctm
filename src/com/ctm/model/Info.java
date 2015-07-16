@@ -4,7 +4,7 @@ public class Info {
 
     private String trackingKey;
 
-    private String transactionId;
+    private Long transactionId;
 
     public String getTrackingKey() {
         return trackingKey;
@@ -14,11 +14,11 @@ public class Info {
         this.trackingKey = trackingKey;
     }
 
-    public String getTransactionId() {
+    public Long getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(String transactionId) {
+    public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
     }
 }

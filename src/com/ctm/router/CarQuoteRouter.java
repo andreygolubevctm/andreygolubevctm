@@ -2,6 +2,7 @@ package com.ctm.router;
 
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
+import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.AvailableType;
 import com.ctm.model.Info;
@@ -14,9 +15,7 @@ import com.ctm.model.car.form.CarQuote;
 import com.ctm.model.car.form.CarRequest;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.session.SessionData;
-import com.ctm.model.settings.Brand;
-import com.ctm.model.settings.ConfigSetting;
-import com.ctm.model.settings.Vertical;
+import com.ctm.model.settings.*;
 import com.ctm.providers.Request;
 import com.ctm.providers.ResultPropertiesBuilder;
 import com.ctm.providers.car.carquote.RequestAdapter;
@@ -25,6 +24,7 @@ import com.ctm.providers.car.carquote.model.request.CarQuoteRequest;
 import com.ctm.providers.car.carquote.model.response.CarResponse;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.ResultsService;
+import com.ctm.services.ServiceConfigurationService;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.car.CarVehicleSelectionService;
 import com.ctm.services.tracking.TrackingKeyService;
@@ -37,8 +37,11 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.ext.MessageContext;
+import org.apache.cxf.transport.common.gzip.GZIPInInterceptor;
+import org.apache.cxf.transport.common.gzip.GZIPOutInterceptor;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -51,12 +54,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.ctm.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
 import static java.util.Arrays.asList;
 
 @Path("/car")
 public class CarQuoteRouter {
 
-    public static final String QUOTE_URL = "quoteBackendUrl";
+    public static final String SERVICE_URL = "serviceUrl";
 
     @POST
     @Path("/quote/get.json")
@@ -70,14 +74,17 @@ public class CarQuoteRouter {
         SessionDataService service = new SessionDataService();
 
         Brand brand;
+        ServiceConfiguration serviceConfiguration;
         try {
             // Update the transactionId with the current transactionId from the session
-            Data dataForTransactionId = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId(), true);
-            data.setTransactionId(dataForTransactionId.getString("current/transactionId"));
+            Data dataForTransactionId = service.getDataForTransactionId(context.getHttpServletRequest(), Long.toString(data.getTransactionId()), true);
+            data.setTransactionId(Long.parseLong(dataForTransactionId.getString("current/transactionId")));
             brand = ApplicationService.getBrandFromRequest(context.getHttpServletRequest());
-        } catch (DaoException e) {
-            throw new RouterException(e);
-        } catch (SessionException e) {
+
+            final Vertical vertical = brand.getVerticalByCode(Vertical.VerticalType.CAR.getCode());
+
+            serviceConfiguration = ServiceConfigurationService.getServiceConfiguration("carQuoteServiceBER", vertical.getId(), brand.getId());
+        } catch (DaoException | SessionException | ServiceConfigurationException e) {
             throw new RouterException(e);
         }
 
@@ -124,18 +131,21 @@ public class CarQuoteRouter {
         Request request = new Request();
         request.setBrandCode(brand.getCode());
         request.setClientIp(clientIpAddress);
-        request.setTransactionId(Long.parseLong(data.getTransactionId()));
+        request.setTransactionId(data.getTransactionId());
         final CarQuoteRequest carQuoteRequest = RequestAdapter.adapt(data);
         request.setPayload(carQuoteRequest);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-        final Vertical vertical = brand.getVerticalByCode(Vertical.VerticalType.CAR.getCode());
+        final String url = serviceConfiguration.getPropertyValueByKey(SERVICE_URL, 0, 0, SERVICE);
 
-        final ConfigSetting configSetting = vertical.getSettingForName(QUOTE_URL);
+        final WebClient client = WebClient.create(url, asList(new JacksonJsonProvider(objectMapper)), true);
+        final ClientConfiguration config = client.getConfig(client);
+        config.getInInterceptors().add(new GZIPInInterceptor());
+        config.getOutInterceptors().add(new GZIPOutInterceptor());
 
-        final Response response = WebClient.create(configSetting.getValue(), asList(new JacksonJsonProvider(objectMapper)))
+        final Response response = client
                 .path("quote")
                 .type(MediaType.APPLICATION_JSON_TYPE)
                 .accept(MediaType.APPLICATION_JSON_TYPE)

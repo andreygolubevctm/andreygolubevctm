@@ -14,8 +14,8 @@ public class ResultPropertiesBuilder {
 
     private List<ResultProperty> resultProperties = new ArrayList<>();
 
-    public ResultPropertiesBuilder(String transactionId, String productId) {
-        this.transactionId = new Long(transactionId);
+    public ResultPropertiesBuilder(Long transactionId, String productId) {
+        this.transactionId = transactionId;
         this.productId = productId;
     }
 

@@ -190,22 +190,13 @@
 			productId: product.productId
 		};
 
-		if(meerkat.site.leadfeed[data.phonecallme].use_disc_props) {
-			$.extend(defaultData, {
-				source: currentBrandCode+'CAR',
-				leadNo: quoteNumber,
-				client: $('#quote_CrClientName').val() || '',
-				clientTel: $('#quote_CrClientTelinput').val() || '',
-				transactionId: meerkat.modules.transactionId.get()
-			});
-		} else {
-			$.extend(defaultData, {
-				clientNumber: quoteNumber,
-				clientName: $('#quote_CrClientName').val() || '',
-				phoneNumber: $('#quote_CrClientTelinput').val() || '',
-				partnerReference: meerkat.modules.transactionId.get()
-			});
-		}
+		$.extend(defaultData, {
+			clientNumber: quoteNumber,
+			clientName: $('#quote_CrClientName').val() || '',
+			phoneNumber: $('#quote_CrClientTelinput').val() || '',
+			partnerReference: meerkat.modules.transactionId.get()
+		});
+
 
 		var allData = $.extend(defaultData, data);
 
