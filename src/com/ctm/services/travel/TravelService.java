@@ -2,10 +2,6 @@ package com.ctm.services.travel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -13,10 +9,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.TravelServiceException;
 import com.ctm.model.AvailableType;
-import com.ctm.model.request.travel.TravelRequest;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.settings.*;
-import com.ctm.model.travel.TravelAggregatorRequestModel;
 import com.ctm.model.travel.TravelResult;
 import com.ctm.model.travel.form.TravelQuote;
 import com.ctm.providers.Request;
@@ -25,7 +19,6 @@ import com.ctm.providers.travel.travelquote.model.ResponseAdapter;
 import com.ctm.providers.travel.travelquote.model.request.TravelQuoteRequest;
 import com.ctm.providers.travel.travelquote.model.response.TravelResponse;
 import com.ctm.services.*;
-import com.ctm.utils.travel.TravelRequestParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
@@ -55,10 +48,11 @@ public class TravelService {
 
 	/**
 	 * Used by JSP
-	 * @param request
+	 *
 	 * @return
 	 */
-	public String validateFields(HttpServletRequest request, Data data) {
+	/*
+    public String validateFields(HttpServletRequest request, Data data) {
         // TODO DEPRECATE
 		try {
 			PageSettings pageSettings = SettingsService.getPageSettingsForPage(request); // grab this current page's settings
@@ -96,6 +90,7 @@ public class TravelService {
 		}
 		return "";
 	}
+	*/
 
 
 	public List<SchemaValidationError> validateRequest(com.ctm.model.travel.form.TravelRequest travelRequest, String vertical) {
@@ -142,7 +137,7 @@ public class TravelService {
         String serviceUrl = null;
         try {
             ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("carQuote", brand.getVerticalByCode(verticalCode).getId(), brand.getId());
-            serviceUrl = serviceConfig.getPropertyValueByKey("serviceUrl", ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE)
+            serviceUrl = serviceConfig.getPropertyValueByKey("serviceUrl", ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
         }catch (DaoException | ServiceConfigurationException e ){
             throw new TravelServiceException("TravelQuote config error", e);
         }

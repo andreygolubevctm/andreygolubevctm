@@ -3,6 +3,7 @@ package com.ctm.router.travel;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
 import com.ctm.exceptions.SessionException;
+import com.ctm.exceptions.TravelServiceException;
 import com.ctm.model.Info;
 import com.ctm.model.Results;
 import com.ctm.model.ResultsWrapper;
@@ -120,26 +121,32 @@ public class TravelRouter extends HttpServlet {
         }
 
         // Get quotes
-        List<TravelResult> travelQuoteResults = travelService.getQuotes(brand, verticalCode, data);
-
-
-        // Generate the Tracking Key for Omniture tracking
-        Info info = new Info();
-        info.setTransactionId(data.getTransactionId());
         try {
-            String trackingKey = TrackingKeyService.generate(
-                    context.getHttpServletRequest(), new Long(data.getTransactionId()));
-            info.setTrackingKey(trackingKey);
-        } catch (Exception e) {
-            throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
+            List<TravelResult> travelQuoteResults = travelService.getQuotes(brand, verticalCode, data);
+
+
+            // Generate the Tracking Key for Omniture tracking
+            Info info = new Info();
+            info.setTransactionId(data.getTransactionId());
+            try {
+                String trackingKey = TrackingKeyService.generate(
+                        context.getHttpServletRequest(), new Long(data.getTransactionId()));
+                info.setTrackingKey(trackingKey);
+            } catch (Exception e) {
+                throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
+            }
+
+            // Build the JSON object for the front end.
+            Results<TravelResult> results = new Results<>();
+            results.setInfo(info);
+            results.setResult(travelQuoteResults);
+
+            return new ResultsWrapper(results);
+
+        }catch (TravelServiceException e){
+            throw new RouterException(e);
         }
 
-        // Build the JSON object for the front end.
-        Results<TravelResult> results = new Results<>();
-        results.setInfo(info);
-        results.setResult(travelQuoteResults);
-
-        return new ResultsWrapper(results);
 
     }
 

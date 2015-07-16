@@ -8,8 +8,6 @@ import java.util.Date;
  */
 public class TravelQuoteRequest {
 
-    // TODO Source from Travel-quote project
-
     private String policyType;
     private String mobileUrls;
     private int numberOfAdults;
