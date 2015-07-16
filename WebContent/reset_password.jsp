@@ -1,81 +1,65 @@
+<%--
+	Reset Password Page
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<settings:setVertical verticalCode="GENERIC" />
+<%-- Set authenticatedData to scope of request --%>
+<session:new verticalCode="GENERIC" authenticated="${true}"/>
 
-<jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
+<layout:journey_engine_page title="Reset Password" sessionPop="false">
 
+	<jsp:attribute name="head">
+		<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/components/resetpassword.${pageSettings.getBrandCode()}.css?${revision}" media="all">
+	</jsp:attribute>
 
-<c:set var="_reset_id"><c:out value="${param.id}" escapeXml="true"/></c:set>
+	<jsp:attribute name="head_meta"></jsp:attribute>
 
+	<jsp:attribute name="header">
+		<div class="navbar-collapse header-collapse-contact collapse">
+			<ul class="nav navbar-nav navbar-right">
+			</ul>
+		</div>
+	</jsp:attribute>
 
-<core:doctype />
-<go:html>
+	<jsp:attribute name="navbar">
 
-	<core:head title="Reset your password" form="resetPasswordForm" errorContainer="#errorContainer" quoteType="Generic" />
+		<ul class="nav navbar-nav" role="menu">
+			<li class="visible-xs">
+				<span class="navbar-text-block navMenu-header">Menu</span>
+			</li>
+		</ul>
 
-	<go:style marker="css-href" href="common/reset_password.css" />
-	<go:script marker="js-href" href="common/js/reset_password.js" />
-
-	<body>
-
-		<form:form action="/generic/reset_password.json" method="POST" id="resetPasswordForm" name="resetPasswordForm">
-
-			<div id="wrapper">
-				<form:header hasReferenceNo="false" />
-				<div id="headerShadow"></div>
-
-				<div id="page">
-					<div id="reset" class="panel">
-						<div class="qe-window">
-							<h4>Please enter a new password</h4>
-
-							<div class="content">
-
-								<group:password_entry xpath="reset" required="true" />
-
-								<a href="javascript:void(0);" class="bigbtn" id="reset-button"><span>Next step</span></a>
-
-								<input type="hidden" name="reset_id" value="${_reset_id}" />
-							</div>
-							<div class="footer"></div>
-						</div>
-					</div>
+	</jsp:attribute>
 
 
-					<div id="resetPasswordErrors">
-						<form:error id="errorContainer" className="errorContainer"/>
-					</div>
-				</div>
+	<jsp:attribute name="form_bottom"></jsp:attribute>
 
-			</div>
+	<jsp:attribute name="footer">
+		<core:whitelabeled_footer />
+	</jsp:attribute>
 
-			<agg:generic_footer />
+	<jsp:attribute name="vertical_settings">
+		<resetpassword:settings />
+	</jsp:attribute>
 
-			<core:closing_body>
-				<agg:includes kampyle="false" loading="false" sessionPop="false" supertag="false" />
+	<jsp:attribute name="body_end"></jsp:attribute>
 
-				<core:popup id="reset-confirm" title="Password Change Successful">
-					<p>Your password was successfully changed!</p>
-					<p>Click the button below to return the "Retrieve Your Insurance Quotes" page and login using your new password, to gain access to your previous quotes.</p>
+	<jsp:attribute name="additional_meerkat_scripts">
+		<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/components/resetpassword.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+	</jsp:attribute>
 
-					<div class="popup-buttons">
-						<a href="javascript:void(0);" class="bigbtn" id="return-to-login"><span>OK</span></a>
-					</div>
-				</core:popup>
+	<jsp:body>
 
-				<core:popup id="reset-error" title="Password Change Failed">
-					<p>Your password was not changed</p>
-					<p id="reset-error-message"></p>
-					<p>Please click the button below to return to the "Reset Your Password" page, to request an email with a new reset password link.</p>
+		<resetpassword_layout:slide_form />
 
-					<div class="popup-buttons">
-						<a href="javascript:void(0);" class="bigbtn" id="try-again"><span>Try Again</span></a>
-					</div>
-				</core:popup>
-			</core:closing_body>
+		<div class="hiddenFields">
+			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
+			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
+		</div>
 
-		</form:form>
+		<input type="hidden" name="transcheck" id="transcheck" value="1"/>
 
-	</body>
-</go:html>
+	</jsp:body>
+
+</layout:journey_engine_page>
