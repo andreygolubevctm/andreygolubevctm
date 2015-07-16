@@ -1,0 +1,24 @@
+.generic {
+  // Add your slide feature here to be hidden by default
+  .slide-feature-my-quotes,
+  .slide-feature-start-new-quote,
+  .slide-feature-logout {
+    .slide-feature-hidden();
+  }
+
+  // Add your slide feature to the particular step that it needs to be visible
+  &[data-step="quotes"] {
+    //put the sorting/filtering bar here to be shown once it exists.
+    .slide-feature-my-quotes,
+    .slide-feature-start-new-quote,
+    .slide-feature-logout {
+      .slide-feature-is-visible();
+    }
+
+    @media screen and (@sm) {
+      #navbar-main {
+        max-height: 100px;
+      }
+    }
+  }
+}

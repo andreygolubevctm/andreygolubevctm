@@ -1,4 +1,4 @@
-module.exports = function(grunt,brandMapping){
+module.exports = function(grunt,tools,brandMapping){
 	"use strict";
 
 /**---------------------------------------------------------------------------
@@ -71,6 +71,33 @@ module.exports = function(grunt,brandMapping){
 			);
 		});
 
+		// --------------------------------------------
+		// Component dependent actions, looped per component folder
+		// --------------------------------------------
+		tools.getComponents().forEach(function(folder) {
+			folder = "components_" + folder;
+
+			// Component JS build task.
+			grunt.registerTask('build_'+brand+'_'+folder+'_js',
+				[
+					'uglify:'+brand+'_'+folder+'_modules',
+					/*Notification only after minified version*/ 'notify:'+brand+'_js',
+					'uglify:'+brand+'_'+folder+'_modules_notmin'
+				]
+			);
+
+			// Component CSS build task.
+			grunt.registerTask('build_'+brand+'_'+folder+'_css',
+				[
+					'less:'+brand+'_'+folder,
+					'cssmetrics:'+brand+'_'+folder,
+					'csslint:'+brand+'_'+folder,
+					/*Notification only after minified version*/ 'notify:'+brand+'_less',
+					'less:'+brand+'_'+folder+'_notmin'
+				]
+			);
+		});
+
 		// branded build without watch task.
 		grunt.registerTask('build_'+brand+'_nowatch',
 			[
@@ -101,7 +128,6 @@ module.exports = function(grunt,brandMapping){
 				'cssmetrics',
 				'csslint',
 				'notify:all_less',
-				'test',
 				'jshint',
 				'uglify',
 				'notify:all_js',
@@ -122,9 +148,6 @@ module.exports = function(grunt,brandMapping){
 	grunt.registerTask('default', ['build_all']);
 	//grunt.registerTask('default', ['notify:startup','build']);
 
-	// Test task.
-	grunt.registerTask('test', ['qunit']);
-
 	// The docs for Grunt Notify tell me this is required if you use any options.
 	//grunt.task.run('notify_hooks');
 
@@ -135,7 +158,7 @@ module.exports = function(grunt,brandMapping){
 	);
 	grunt.registerTask('js_all_brands',
 		[
-			'jshint', 'test','cssmetrics','csslint','notify:all_less'
+			'jshint','cssmetrics','csslint','notify:all_less'
 		]
 	);
 
