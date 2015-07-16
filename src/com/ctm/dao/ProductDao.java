@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -43,8 +44,7 @@ public class ProductDao {
 
 	/**
 	 * Returns a a collection of products by vertical
-	 *
-	 * @param productCode
+	 * @param verticalCode
 	 * @param effectiveDate
 	 * @param getExtendedProperties
 	 * @param getTextProperties
@@ -109,8 +109,10 @@ public class ProductDao {
 	/**
 	 * Method to query Database for different types of product searches.
 	 *
-	 * @param categoryCode
-	 * @param providerCode
+	 * @param verticalCode
+	 * @param searchType
+	 * @param primaryValue
+	 * @param secondaryValue
 	 * @param effectiveDate
 	 * @param getExtendedProperties
 	 * @param getTextProperties
@@ -122,6 +124,9 @@ public class ProductDao {
 		ArrayList<Product> products = new ArrayList<Product>();
 
 		SimpleDatabaseConnection dbSource = null;
+		java.sql.Date date = new java.sql.Date(effectiveDate.getTime());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String effectiveDateStr = dateFormat.format(date);
 		Timestamp effectiveDateTime = new Timestamp(effectiveDate.getTime());
 
 		try {
@@ -210,7 +215,7 @@ public class ProductDao {
 					);
 
 					stmt.setString(1, idList);
-					stmt.setTimestamp(2, effectiveDateTime);
+					stmt.setString(2, effectiveDateStr);
 
 					results = stmt.executeQuery();
 
@@ -352,13 +357,11 @@ public class ProductDao {
 	}
 
 
-
 	/**
 	 * Generate SQL to populate the Product models.
 	 *
-	 * @param categorySearch
-	 * @param providerSearch
-	 * @param productCodeSearch
+	 * @param searchType
+	 * @param productDaoBuilder
 	 * @return
 	 */
 	private String generateProductQueryString(SearchType searchType, ProductDaoBuilder productDaoBuilder){
@@ -412,9 +415,8 @@ public class ProductDao {
 	/**
 	 * Generate SQL to populate the Product Property models.
 	 *
-	 * @param categorySearch
-	 * @param providerSearch
-	 * @param productCodeSearch
+	 * @param searchType
+	 * @param productDaoBuilder
 	 * @return
 	 */
 	private String generatePropertiesQueryString(SearchType searchType, ProductDaoBuilder productDaoBuilder){
