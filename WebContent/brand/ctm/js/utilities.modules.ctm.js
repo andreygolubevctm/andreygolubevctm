@@ -1274,8 +1274,9 @@
         utilitiesSortings: {
             CHANGED: "UTILITIES_SORTING_CHANGED"
         }
-    }, moduleEvents = events.utilitiesSorting;
+    }, performanceScore;
     function setSortFromTarget($elem) {
+        meerkat.modules.performanceProfiling.startTest("utilitiesSorting");
         var sortType = $elem.attr("data-sort-type");
         var sortDir = $elem.attr("data-sort-dir");
         if (typeof sortType !== "undefined" && typeof sortDir !== "undefined") {
@@ -1303,6 +1304,19 @@
     function initSorting() {
         meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, function sortedCallback(obj) {
             meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK);
+            var time = meerkat.modules.performanceProfiling.endTest("utilitiesSorting");
+            var score;
+            if (time < 1200) {
+                score = meerkat.modules.performanceProfiling.PERFORMANCE.HIGH;
+            } else if (time < 1500 && meerkat.modules.performanceProfiling.isIE8() === false) {
+                score = meerkat.modules.performanceProfiling.PERFORMANCE.MEDIUM;
+            } else {
+                score = meerkat.modules.performanceProfiling.PERFORMANCE.LOW;
+            }
+            if (performanceScore !== meerkat.modules.performanceProfiling.PERFORMANCE.HIGH) {
+                Results.setPerformanceMode(score);
+            }
+            performanceScore = score;
         });
         $sortElements.on("click", function sortingClickHandler(event) {
             var $clicked = $(event.target);

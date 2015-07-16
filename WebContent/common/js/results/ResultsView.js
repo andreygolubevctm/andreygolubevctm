@@ -465,7 +465,7 @@ ResultsView = {
 		// position all elements absolutely for the time of the animation
 		var allRows = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows );
 		if(Results.settings.animation.shuffle.active === true) {
-		ResultsUtilities.position("absolute", allRows, Results.view.orientation);
+			ResultsUtilities.position("absolute", allRows, Results.view.orientation);
 		}
 
 		// wait for the next tick so that DOM is ready

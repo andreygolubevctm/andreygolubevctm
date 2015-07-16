@@ -312,7 +312,7 @@ Results = {
 		return Results.settings.sort.sortDir;
 	},
 
-	setSortBy: function( sortBy ){
+	setSortBy: function( sortBy ) {
 		// check that we know the path to the sortBy property in the result object
 		if( typeof Object.byString( Results.settings.paths, sortBy) !== "undefined" ) {
 			Results.settings.sort.sortBy = sortBy;
@@ -321,7 +321,7 @@ Results = {
 		console.log("Results.setSortBy() has been called but it could not find the path to the property it should be sorted by: sortBy=", sortBy);
 		return false;
 	},
-	setSortByMethod: function( sortByMethod ){
+	setSortByMethod: function( sortByMethod ) {
 		if( typeof sortByMethod === 'function' ) {
 			Results.settings.sort.sortByMethod = sortByMethod;
 			return true;

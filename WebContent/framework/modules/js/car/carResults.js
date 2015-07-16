@@ -334,7 +334,7 @@
 
 			var time = meerkat.modules.performanceProfiling.endTest('results');
 
-			var score
+			var score;
 			if(time < 800){
 				score = meerkat.modules.performanceProfiling.PERFORMANCE.HIGH;
 			}else if (time < 8000 && meerkat.modules.performanceProfiling.isIE8() === false){
