@@ -12,8 +12,7 @@ import com.ctm.exceptions.BrandException;
 import com.ctm.model.*;
 import com.ctm.model.Error;
 import com.ctm.model.settings.Brand;
-import com.ctm.services.ApplicationService;
-import com.ctm.services.FatalErrorService;
+import com.ctm.services.*;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -21,10 +20,12 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.services.ResetPasswordService;
-import com.ctm.services.SettingsService;
 
 @WebServlet(urlPatterns = {
+		// GET
+		"/generic/logout_user.json",
+
+		// POST
 		"/generic/reset_password.json"
 })
 public class GenericRouter extends HttpServlet {
@@ -32,6 +33,32 @@ public class GenericRouter extends HttpServlet {
 	private static Logger logger = Logger.getLogger(GenericRouter.class.getName());
 
 	private static final long serialVersionUID = 6314229727186633148L;
+
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+		String uri = request.getRequestURI();
+
+		// Automatically set content type based on request extension ////////////////////////////////////////
+		if (uri.endsWith(".json")) {
+			response.setContentType("application/json");
+		}
+
+		// Route the requests ///////////////////////////////////////////////////////////////////////////////
+		if (uri.endsWith("/logout_user.json")) {
+			try {
+				SessionDataService sessionDataService = new SessionDataService();
+				sessionDataService.resetAuthenticatedSessionData(request);
+
+				JSONObject jsonResponse = new JSONObject();
+				jsonResponse.put("success", true);
+				response.getWriter().print(jsonResponse.toString());
+			} catch (Exception e) {
+				logger.error("Could not log out user", e);
+				response.getWriter().print("{ \"success\": false }");
+			}
+		}
+	}
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

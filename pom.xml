@@ -33,7 +33,7 @@
         <javax.jsp.version>2.2</javax.jsp.version>
         <mysql.connector.version>5.1.29</mysql.connector.version>
         <!-- Compile as this version -->
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
     </properties>
 
