@@ -47,6 +47,16 @@ public class LifeLeadFeedService extends LeadFeedService {
 		return responseStatus;
 	}
 
+	/**
+	 * Override the default so that we can pass a different touch type for Life/IP
+	 * @param leadData
+	 * @return
+	 * @throws LeadFeedException
+	 */
+	public LeadResponseStatus bestPrice(LeadFeedData leadData) throws LeadFeedException {
+		return processGateway(LeadType.BEST_PRICE, leadData, TouchType.LEAD_FEED);
+	}
+
 	protected Boolean recordTouch(String touchType, LeadFeedData leadData) {
 		AccessTouchService touchService = new AccessTouchService();
 

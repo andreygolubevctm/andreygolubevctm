@@ -26,8 +26,7 @@ public abstract class LeadFeedService {
 		CALL_DIRECT("callDirectLeadFeedService"),
 		CALL_ME_BACK("getACallLeadFeedService"),
 		BEST_PRICE("bestPriceLeadFeedService"),
-		NOSALE_CALL("noSaleCallLeadFeedService"),
-		FOLLOWUP_CALL("followupLeadFeedService");
+		NOSALE_CALL("noSaleCallLeadFeedService");
 
 		private final String serviceUrlFlag;
 
@@ -87,7 +86,7 @@ public abstract class LeadFeedService {
 	 * @return
 	 * @throws LeadFeedException
 	 */
-	private LeadResponseStatus processGateway(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException {
+	protected LeadResponseStatus processGateway(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException {
 		if(isTestOnlyLead(leadData)) {
 			// Don't process or record touch for test data - simply return success
 			return LeadResponseStatus.SUCCESS;

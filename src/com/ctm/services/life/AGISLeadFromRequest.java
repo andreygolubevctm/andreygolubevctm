@@ -44,11 +44,12 @@ public class AGISLeadFromRequest {
 			lead.setBrandId(brand.getId());
 			lead.setVerticalCode(verticalCode);
 			lead.setVerticalId(brand.getVerticalByCode(verticalCode).getId());
-;
+
 			lead.setCallType(LeadFeedData.CallType.GET_CALLBACK);
 
 			lead.setTransactionId(Long.parseLong(transactionId));
-			lead.setClientName(data.get(vertical + "/primary/firstName").toString() + " " + data.get(vertical + "/primary/lastname").toString().trim());
+			String clientName = data.get(vertical + "/primary/firstName").toString() + " " + data.get(vertical + "/primary/lastname").toString();
+			lead.setClientName(clientName.trim());
 			lead.setPhoneNumber(data.get(vertical + "/contactDetails/contactNumber").toString().trim());
 			lead.setState(data.get(vertical + "/primary/state") != null ? data.get(vertical + "/primary/state").toString() : "");
 			lead.setPartnerBrand(data.get("lead/brand").toString());

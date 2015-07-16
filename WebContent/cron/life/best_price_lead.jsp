@@ -91,9 +91,6 @@
 					</c:forEach>
 					
 					<go:setData dataVar="data" xpath="transactionId" value="${result.transaction_id}" />
-					
-					<c:set var="leadSentTo" value="${company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
-					<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", leadSentTo)}</c:set>
 
 					<c:choose>
 						<c:when test="${company eq 'ozicare'}">
