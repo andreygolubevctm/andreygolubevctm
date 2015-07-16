@@ -73,4 +73,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/retrievequotes/layout"	prefix="retrievequotes_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/retrievequotes/template" prefix="retrievequotes_template" %>
 <%@ taglib tagdir="/WEB-INF/tags/resetpassword"		    prefix="resetpassword" %>
-<%@ taglib tagdir="/WEB-INF/tags/resetpassword/layout"	prefix="resetpassword_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/resetpassword/layout"	prefix="resetpassword_layout" %><%@ taglib tagdir="/WEB-INF/tags/coupon"				prefix="coupon" %>
+<%@ taglib tagdir="/WEB-INF/tags/lmi" 	                prefix="lmi" %>
+<%@ taglib tagdir="/WEB-INF/tags/lmi/layout" 	        prefix="lmi_layout" %>
