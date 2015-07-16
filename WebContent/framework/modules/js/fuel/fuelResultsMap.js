@@ -57,7 +57,7 @@
         '&signed_in=false&callback=meerkat.modules.fuelResultsMap.initCallback';
         script.onerror = function (msg, url, linenumber) {
             _handleError(msg + ':' + linenumber, "fuelResultsMap.js:initGoogleAPI");
-        }
+        };
         document.body.appendChild(script);
     }
 
@@ -122,7 +122,7 @@
             initGoogleAPI();
         } else {
             // If no markers (resets in fuel:onAfterEnter for results step.
-            if (!Object.keys(markers).length) {
+            if (!_.keys(markers).length) {
                 plotMarkers();
             }
             $('#' + modalId).modal('show');
@@ -168,9 +168,10 @@
      * The markers are reset
      */
     function plotMarkers() {
-
         var results = filterDuplicatesOut(Results.getFilteredResults());
         var bounds = new google.maps.LatLngBounds();
+
+        var focusMarker, focusCoords, focusInfo;
 
         for (var selectedProduct = Results.getSelectedProduct(),
                  i = 0; i < results.length; i++) {
@@ -179,10 +180,19 @@
             markers[results[i].siteid] = marker;
             if (results[i].siteid == selectedProduct.siteid) {
                 openInfoWindow(marker, results[i]);
+                focusMarker = marker;
+                focusCoords = latLng;
+                focusInfo = results[i];
             }
             bounds.extend(latLng);
         }
+
         map.fitBounds(bounds);
+
+        if (focusMarker && focusCoords && focusInfo) {
+            centerMap(focusCoords);
+            openInfoWindow(focusMarker, focusInfo);
+        }
     }
 
     /**
@@ -317,7 +327,7 @@
     }
 
     function _clearMarkers() {
-        var keys = Object.keys(markers);
+        var keys = _.keys(markers);
         if (!keys.length) {
             return;
         }
