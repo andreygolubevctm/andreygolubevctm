@@ -214,8 +214,22 @@
 	}
 
 	/**
-	 * Returns a "time ago" formatted string
+	 * Formats a UK date as a US date
 	 * @param date
+	 * @returns {string}
+	 */
+	function formatUKToUSDate(date) {
+		var delimiter = date.match(/(-)/) ? "-" : "/";
+		date = date.split(delimiter);
+		var day = date[0];
+		date[0] = date[1];
+		date[1] = day;
+		return date.join(delimiter);
+	}
+
+	/**
+	 * Returns a "time ago" formatted string
+	 * @param date (mm/dd/yyyy format)
 	 * @returns {string}
 	 */
 	function getTimeAgo(date) {
@@ -263,7 +277,8 @@
 		returnDateValueFormFormat: returnDateValueFormFormat,
 		pluginReady: pluginReady,
 		calcWorkingDays: calcWorkingDays,
-		getTimeAgo: getTimeAgo
+		getTimeAgo: getTimeAgo,
+		formatUKToUSDate: formatUKToUSDate
 	});
 
 })(jQuery);
