@@ -62,10 +62,10 @@
 				<ul class="nav navbar-nav navbar-inverse col-sm-12 row">
 					<li class="container row">
 						<ul class="nav navbar-nav navbar-inverse col-sm-12">
-							<li class="visible-xs compareCopyXS">
+							<li class="visible-xs">
 								<span><content:get key="lmiCompareCopy" /></span>
 							</li>
-							<li>
+							<li class="visible-xs">
 								<a href="${pageSettings.getBaseUrl()}home_contents_quote.jsp" class="btn btn-next getQuote">
 									<span>Get a Quote</span> <span class="icon icon-arrow-right"></span>
 								</a>
