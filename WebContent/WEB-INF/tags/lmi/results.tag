@@ -51,11 +51,11 @@
             <div class="col-sm-5 disclaimer">
                <content:get key="lmiDisclaimer" />
             </div>
-            <div class="col-sm-5">
+            <div class="col-sm-5 hidden-xs">
                 <content:get key="lmiCompareCopy" />
             </div>
-            <div class="col-sm-2">
-                <a href="${pageSettings.getBaseUrl()}car_quote.jsp" class="btn btn-next">
+            <div class="col-sm-2 hidden-xs">
+                <a href="${pageSettings.getBaseUrl()} ${pageSettings.getVerticalCode() == 'carlmi' ? 'car': 'home_contents'}_quote.jsp" class="btn btn-next">
                     <span>Get a Quote</span> <span class="icon icon-arrow-right"></span>
                 </a>
             </div>
