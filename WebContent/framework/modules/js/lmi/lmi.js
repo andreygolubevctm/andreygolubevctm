@@ -190,4 +190,5 @@
         events: moduleEvents,
         initProgressBar: initProgressBar
     });
+
 })(jQuery);

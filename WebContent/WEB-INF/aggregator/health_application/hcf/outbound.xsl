@@ -608,7 +608,7 @@
 										previousfund/partner/fundName!=''">				
 							<xsl:variable name="partnerFund">
 								<xsl:call-template name="get-fund-name">
-									<xsl:with-param name="fundName" select="previousfund/primary/fundName" />
+									<xsl:with-param name="fundName" select="previousfund/partner/fundName" />
 								</xsl:call-template>
 							</xsl:variable>
 							<OldPartnerFundId><xsl:value-of select="$partnerFund" /></OldPartnerFundId>
