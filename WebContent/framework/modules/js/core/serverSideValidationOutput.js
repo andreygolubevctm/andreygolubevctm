@@ -63,8 +63,18 @@
 
 					// FYI error.message == "ELEMENT REQUIRED" || INVALID VALUE
 					var message = "invalid field";
-					if(error.message === "ELEMENT REQUIRED") {
-						message = "This field is required.";
+					if(_.has(error,"message") && !_.isEmpty(error.message)) {
+						if (error.message === "ELEMENT REQUIRED") {
+							message = "This field is required.";
+						} else { // Otherwise use the message provided
+							message = error.message;
+							var hasOmittableCopy = message.indexOf("value= '");
+							// This additional text has been removed for UTL but need
+							// to cater for other verticals
+							if(hasOmittableCopy > 0) {
+								message = message.substring(0, hasOmittableCopy);
+							}
+						}
 					}
 					if (errorContainer.length === 0) {
 						parent.prepend('<div class="error-field"></div>');
@@ -78,14 +88,16 @@
 			}
 
 			if(matches.length > 0){
-				// eg: work out which slide to navigate to, also should we display a message to the user as the error may be unrecoverable?
-				if(typeof options.startStage === 'undefined') { // provided by requester (eg Results module)
-					options.startStage = 'start';
-				} else { // Not provided so let's find the first slide with an error on it
-					var startPage = $(matches[0]).closest("form").attr("id").slice(0,-4);
-					options.startPage = startPage === "" ? "start" : startPage;
+				// eg: work out which slide to navigate to - will be the start or the slide with the first error field
+				if(!_.has(options,"startStage") || !_.isEmpty(options.startStage)) {
+					// If not provided then work out from the elements parent form
+					options.startPage = $(matches[0]).closest("form").attr("id").slice(0,-4);
 				}
-				// meerkat.modules.journeyEngine.gotoPath(options.startStage);
+				// If startPage doesn't represent a genuine slide then simply revert to Start
+				if(_.isUndefined(meerkat.modules.journeyEngine.getStepIndex(options.startPage))){
+					options.startPage = "start";
+				}
+				// Jump to the slide
 				meerkat.modules.address.setHash(options.startStage);
 			}
 	};

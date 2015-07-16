@@ -44,7 +44,12 @@
 		if( displayErrors )
 			return $element.valid();
 
-		var $form = $(document).find(".journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).children("form");
+		var $journeyEngineForm = $(document).find(".journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).children("form");
+		if($journeyEngineForm.length)
+			$form = $journeyEngineForm;
+		else
+			$form = $("#mainForm");
+
 		try {
 			return $form.validate().check( $element );
 		} catch(e) {

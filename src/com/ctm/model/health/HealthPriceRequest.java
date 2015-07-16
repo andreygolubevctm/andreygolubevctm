@@ -33,6 +33,7 @@ public class HealthPriceRequest {
 	private String selectedProductId;
 	private String productTitle;
 	private boolean onResultsPage;
+	private String productTitleSearch;
 	private boolean directApplication;
 	private boolean simples;
 	private boolean pricesHaveChanged;
@@ -320,5 +321,14 @@ public class HealthPriceRequest {
 
 	public List<Integer> getProvidersThatHaveExceededLimit() {
 		return providersThatHaveExceededLimit;
+	}
+
+
+	public String getProductTitleSearch() {
+		return productTitleSearch;
+	}
+
+	public void setProductTitleSearch(String productTitleSearch) {
+		this.productTitleSearch = productTitleSearch;
 	}
 }
