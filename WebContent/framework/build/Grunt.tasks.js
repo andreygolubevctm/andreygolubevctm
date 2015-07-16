@@ -31,6 +31,9 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 	var brand = brandMapping.brandcode; //string we'll get this from the main grunt task
 	var verticals = brandMapping.verticals; //Array we'll get this from the main grunt task
 
+	tools.getComponents().forEach(function(folder) {
+		tools.writeComponentLess(folder, brand);
+	});
 
 //----------------------------------------------------------------------
 // UGLIFY: Takes a source and minifies it for smaller file sizes
@@ -117,6 +120,31 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		};
 	});
 
+	tools.getComponents().forEach(function(folder) {
+		folder = "components_" + folder;
+		var folderPath = folder.replace("_", "/");
+
+		uglify[brand+'_'+folder+'_modules'] = {
+			src: [tools.getFrameworkPath('modules','js/'+folderPath) + '*.js'],
+			dest: tools.getBrandFile(brand,'js','dest',folderPath+'.modules'),
+			options: {
+				sourceMap: tools.getBrandFile(brand,'js','dest',folderPath+'.modules') + '.map',
+				sourceMappingURL: tools.relativizer(tools.getBrandFile(folder,'js','dest','modules.'+folderPath) + '.map','../../../')//override - fine grained control - use a function. NOTE: Fixes insane relative root magic with the ../'s
+			}
+		};
+
+		uglify[brand+'_'+folder+'_modules_notmin'] = {
+			src: '<%= uglify.'+brand+'_'+folder+'_modules.src %>',
+			dest: tools.getBrandFile(brand,'js','source',folderPath+'.modules'),
+			options: {
+				mangle: false,
+				compress: false,
+				beautify: true
+			}
+		};
+	});
+
+
 
 //----------------------------------------------------------------------
 // JSHINT: Lets us know about JS issues and style problems.
@@ -137,6 +165,13 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 	verticals.forEach(function(vertical) {
 		jshint['modules_'+vertical] = {
 			src: [tools.getFrameworkPath('modules','js/'+vertical) + '*.js']
+		}; // Source files to be JSHint validated
+	});
+
+	tools.getComponents().forEach(function(folder) {
+		folder = "components_" + folder;
+		jshint['modules_' + folder] = {
+			src: [tools.getFrameworkPath('modules','js/' + folder.replace("_", "/")) + '*.js']
 		}; // Source files to be JSHint validated
 	});
 	//Seriously, we don't need to check the bootstrap source too, it's done upstream.
@@ -160,6 +195,12 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 			src: [tools.getBrandFile(brand,'css','dest',vertical)]
 		};
 	});
+	tools.getComponents().forEach(function(folder) {
+		folder = "components_" + folder;
+		cssmetrics[brand+'_'+folder] = {
+			src: [tools.getBrandFile(brand,'css','dest',folder.replace("_", "/"))]
+		};
+	});
 
 
 //----------------------------------------------------------------------
@@ -180,7 +221,12 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 			src: [tools.getBrandFile(brand,'css','dest',vertical)]
 		};
 	});
-	
+	tools.getComponents().forEach(function(folder) {
+		folder = "components_" + folder;
+		csslint[brand+'_'+folder] = {
+			src: [tools.getBrandFile(brand,'css','dest',folder.replace("_", "/"))]
+		};
+	});
 
 //----------------------------------------------------------------------
 // LESS: Compile LESS to CSS
@@ -237,6 +283,22 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		};
 	});
 
+	tools.getComponents().forEach(function(folder) {
+		folder = "components_" + folder;
+
+		less[brand+'_'+folder] = {
+			files: tools.getLessPathObj(brand,'css','dest','less','source',folder),
+			options: {
+				sourceMapFilename: tools.getBrandFile(brand,'css','dest',folder) + '.map'
+			}
+		};
+		//Because NXI and NXS do not yet support building minified files, and we don't want to commit them due to constant conflicts on update, these files will be built and committed too.
+		less[brand+'_'+folder+'_notmin'] = {
+			files: tools.getLessPathObj(brand,'css','source','less','source',folder.replace("_","/")),
+			options: { compress: false, sourceMap: false }
+		};
+	});
+
 
 //----------------------------------------------------------------------
 // CLEAN: Nuke previous build output.
@@ -262,6 +324,19 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 			'<%= uglify.'+brand+'_'+vertical+'_modules.dest %>',
 			'<%= uglify.'+brand+'_'+vertical+'_modules_notmin.dest %>',
 			'<%= uglify.'+brand+'_'+vertical+'_modules.options.sourceMap %>'
+		];
+	});
+	tools.getComponents().forEach(function(folder) {
+		folder = "components_" + folder;
+		var folderPath = folder.replace("_", "/");
+
+		clean[brand+'_'+folder] = [
+			tools.getBrandFile(brand,'css','source',folderPath),
+			tools.getBrandFile(brand,'css','dest',folderPath),
+			'<%= less.'+brand+'_'+folder+'.options.sourceMapFilename %>',
+			'<%= uglify.'+brand+'_'+folder+'_modules.dest %>',
+			'<%= uglify.'+brand+'_'+folder+'_modules_notmin.dest %>',
+			'<%= uglify.'+brand+'_'+folder+'_modules.options.sourceMap %>'
 		];
 	});
 
@@ -299,6 +374,14 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 			tasks: ['jshint:modules_'+vertical,'build_'+brand+'_'+vertical+'_js']
 		};
 	});
+	tools.getComponents().forEach(function(folder) {
+		folder = "components_" + folder;
+
+        watch[brand + "_" + folder + "_modules"] = {
+			files: ['<%= uglify.' + brand + '_' + folder + '_modules.src %>'],
+			tasks: ['jshint:modules_' + folder, 'build_' + brand + '_' + folder + '_js']
+		};
+	});
 
 	//LESS TASKS
 	watch[brand+'_less'] = {
@@ -317,7 +400,23 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 				tools.getFrameworkPath('modules','less/'+vertical) + '*.less'
 			],
 			//tasks: ['concurrent:less_brand']
-			tasks: ['build_'+brand+'_css'] // You could run a notification here if you like
+			tasks: ['build_'+brand+'_'+vertical+'_css'] // You could run a notification here if you like
+		};
+	});
+
+	tools.getComponents().forEach(function(folder) {
+		var task = "components_" + folder;
+		var folderPath = task.replace("_", "/");
+
+		watch[brand+'_'+task+'_less'] = {
+			files: [
+				tools.getBrandPath(brand,'less') + '*.*.' + folder + '.less',
+				tools.getBrandPath(brand,'less') + 'components/*.*.' + folder + '.less',
+				tools.getBrandPath(brand,'less') + 'framework.build.'+brand+'.*.less',
+				tools.getFrameworkPath('modules','less/' + folderPath) + '*.less'
+			],
+			//tasks: ['concurrent:less_brand']
+			tasks: ['build_'+brand+'_'+task+'_css'] // You could run a notification here if you like
 		};
 	});
 
