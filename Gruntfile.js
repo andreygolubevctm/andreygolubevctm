@@ -83,8 +83,8 @@ module.exports = function(grunt) {
 		},
 		{
 			brandcode : 'ctm',
-			verticals : ['health','car','travel','home','homeloan','simples','creditcard','utilities','roadside','competition','fuel'] //ctm will use the old platform code for it's generic.
-			}
+			verticals : ['health','car','travel','home','homeloan','simples','creditcard','utilities','roadside','competition','fuel','carlmi', 'homelmi', 'lmi'] //ctm will use the old platform code for it's generic.
+		}
 	];
 
 	//Our internal functions are brought in
