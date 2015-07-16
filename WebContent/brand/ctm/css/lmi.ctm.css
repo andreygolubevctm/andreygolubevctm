@@ -114,6 +114,17 @@ body > div > header a.bottombar .btn-call:hover {
   .homelmi .morePromptContainer {
     z-index: 395;
   }
+  .carlmi ul.navbar-nav li span h4,
+  .homelmi ul.navbar-nav li span h4,
+  .carlmi ul.navbar-nav li span p,
+  .homelmi ul.navbar-nav li span p {
+    color: white;
+  }
+  .carlmi ul.navbar-nav li a.getQuote,
+  .homelmi ul.navbar-nav li a.getQuote {
+    float: right;
+    padding-right: 10px;
+  }
 }
 .carlmi .slide-feature-back,
 .carlmi .resultsSummaryContainer {
@@ -398,7 +409,7 @@ body > div > header a.bottombar .btn-call:hover {
 .comparisonFeaturesDisclosure div p span.icon-arrow-right {
   margin-top: 2px;
 }
-.comparisonFeaturesDisclosure .hidden-xs a {
+.comparisonFeaturesDisclosure .hidden-xs .disclaimer a {
   text-decoration: underline;
 }
 .disclaimer,
