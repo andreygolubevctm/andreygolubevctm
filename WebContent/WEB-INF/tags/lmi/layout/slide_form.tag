@@ -11,7 +11,7 @@
         <c:otherwise>home_contents_quote.jsp</c:otherwise>
     </c:choose>
 </c:set>
-<layout:slide formId="startForm" firstSlide="true" nextLabel="Compare Features">
+<layout:slide formId="startForm" firstSlide="true">
 
     <layout:slide_columns>
         <jsp:attribute name="rightColumn">
@@ -57,5 +57,11 @@
                 </div>
             </div>
         </layout:slide_content>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-4 col-sm-push-4">
+            <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton" data-slide-control="next" href="javascript:;" >Compare Features <span class="icon icon-arrow-right"></span></a>
+            <br>
+        </div>
     </div>
 </layout:slide>
