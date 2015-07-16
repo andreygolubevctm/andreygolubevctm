@@ -5,9 +5,12 @@
  */
 
 (function($, undefined) {
-    function init() {}
+    function getVerticalFilter() {
+        return meerkat.site.vertical;
+    }
     meerkat.modules.register("homelmi", {
-        init: init,
-        events: {}
+        init: function() {},
+        events: {},
+        getVerticalFilter: getVerticalFilter
     });
 })(jQuery);
