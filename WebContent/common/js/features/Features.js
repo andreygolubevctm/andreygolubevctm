@@ -292,7 +292,12 @@ Features = {
 				opening = false;
 			}
 
-			meerkat.messaging.publish(Results.moduleEvents.FEATURE_TOGGLED, {element: $extras.eq(0), isOpening: opening} );
+			if(typeof meerkat !== "undefined") {
+				meerkat.messaging.publish(Results.moduleEvents.FEATURE_TOGGLED, {
+					element: $extras.eq(0),
+					isOpening: opening
+				});
+			}
 
 		}).on('click', '.expandAllFeatures, .collapseAllFeatures', function(e) {
 			e.preventDefault();
