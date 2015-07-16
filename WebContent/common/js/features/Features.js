@@ -6,6 +6,9 @@ Features = {
 	results: false,
 	featuresIds: false,
 	emptyAdditionalInfoCategory: true,
+	moduleEvents: {
+		FEATURE_TOGGLED: 'FEATURE_TOGGLED'
+	},
 
 	init: function(target){
 
@@ -279,12 +282,17 @@ Features = {
 			var featureId = $(this).attr("data-featureId");
 
 			var $extras = $(Features.target+' .children[data-fid="' + featureId + '"]');
-			var $parents = $extras.parent();
+			var $parents = $extras.parent(),
+				opening;
 			if ( $parents.hasClass("expanded") === false ) {
 				Features.toggleOpen($extras, $parents);
+				opening = true;
 			} else {
 				Features.toggleClose($parents);
+				opening = false;
 			}
+
+			meerkat.messaging.publish(Results.moduleEvents.FEATURE_TOGGLED, {element: $extras.eq(0), isOpening: opening} );
 
 		}).on('click', '.expandAllFeatures, .collapseAllFeatures', function(e) {
 			e.preventDefault();

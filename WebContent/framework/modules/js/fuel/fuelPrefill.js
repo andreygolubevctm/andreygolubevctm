@@ -31,7 +31,7 @@
     function _findMap() {
         if(mapLoaded === false && hashArray.length >= 4 && hashArray[3].match(/^(map-)/g)) {
             var siteId = hashArray[3].replace("map-", "");
-            $(document).find("a[data-siteid='" + siteId + "']").first().trigger("click");
+            meerkat.modules.fuelResultsMap.openMap($(document).find("a[data-siteid='" + siteId + "']").first());
             mapLoaded = true;
         }
     }
@@ -100,7 +100,7 @@
      */
     function _setLocation() {
         var location;
-        if(typeof hashArray[1] !== "undefined")
+        if(typeof hashArray[1] !== "undefined" && hashArray[1].substr(0,7) !== "?stage=")
             location = hashArray[1].replace(/\+/g, " ");
         else if(typeof meerkat.site.formData !== "undefined" && typeof meerkat.site.formData.location !== "undefined")
             location = meerkat.site.formData.location;

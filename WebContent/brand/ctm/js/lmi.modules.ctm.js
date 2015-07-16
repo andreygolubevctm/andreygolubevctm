@@ -353,6 +353,9 @@
             meerkat.modules.utils.scrollPageTo($("header"));
             $(".featuresHeaders .expandable.expanded").removeClass("expanded").addClass("collapsed");
         });
+        meerkat.messaging.subscribe(meerkatEvents.FEATURE_TOGGLED, function updateDisclaimerPosition(featureObject) {
+            meerkat.modules.showMoreQuotesPrompt.updateBarPosition(featureObject.element, featureObject.isOpening);
+        });
         $(document).on("resultsFetchStart", function onResultsFetchStart() {
             meerkat.modules.journeyEngine.loadingShow("getting your quotes");
             $("#resultsPage").removeClass("hidden");
