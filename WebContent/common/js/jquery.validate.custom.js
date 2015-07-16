@@ -1175,79 +1175,87 @@ var ServerSideValidation = {
 		}
 	},
 
-	_addErrorMessage: function(value,invalidField,genericMessageDisplayed) {
-		var displayGenericMessage = false;
-		var message = "";
+		_addErrorMessage: function(value,invalidField,genericMessageDisplayed) {
+			var displayGenericMessage = false;
+			var message = "";
 			var missingFieldText = value.elementXpath.replace("/", " ");
 
-		if (value.message == "INVALID VALUE") {
+			if (value.message == "INVALID VALUE") {
 				if (UserData.callCentre) {
-				message = "Please enter a valid value for " + missingFieldText + ".";
-			} else {
-				message = "It looks like you've missed something when filling out the form. Please check that you've entered the right details into each section.";
-				displayGenericMessage = true;
-			}
-		} else if (value.message == "ELEMENT REQUIRED") {
-			if ((typeof invalidField != 'undefined' && invalidField.length != 0) && invalidField.attr("data-msg-required") != "" && invalidField.prop("data-msg-required")) {
-				message = invalidField.attr("data-msg-required");
+					message = "Please enter a valid value for " + missingFieldText + ".";
+				} else {
+					message = "It looks like you've missed something when filling out the form. Please check that you've entered the right details into each section.";
+					displayGenericMessage = true;
+				}
+			} else if (value.message == "ELEMENT REQUIRED") {
+				if ((typeof invalidField != 'undefined' && invalidField.length != 0) && invalidField.attr("data-msg-required") != "" && invalidField.prop("data-msg-required")) {
+					message = invalidField.attr("data-msg-required");
 				} else if (UserData.callCentre) {
-				message = "Please enter the " + missingFieldText + ".";
+					message = "Please enter the " + missingFieldText + ".";
+				} else {
+					message = "It looks like you've missed something when filling out the form. Please check that you've entered your details into each section.";
+					displayGenericMessage = true;
+				}
 			} else {
-				message = "It looks like you've missed something when filling out the form. Please check that you've entered your details into each section.";
-				displayGenericMessage = true;
-			}
-		} else {
-			if (typeof UserData !== 'undefined' && UserData.callCentre) {
-				message = "Please check " + missingFieldText + ".";
-			} else {
-				message = "It looks like something has gone wrong when filling out the form. Please check that you've entered the right details into each section.";
-				displayGenericMessage = true;
-			}
-		}
-		if(!genericMessageDisplayed) {
-			// pre-AMS verticals
-			if ($('#slideErrorContainer').length > 0)
-			{
-					$('#slideErrorContainer ul').append(
-					"<li><label class='error'>" + message + "</label></li>");
-			} else {
-				// AMS verticals
-				var field = value.elementXpath.replace("/", "_");
-				// this is done so that if an error message needs to be placed when it involves a dropdown, we need to do the insertion before the select field
-				// otherwise the dropdown arrows don't move down with the actual field. JS validation correctly hides this error field in this new position if the values are correct.
-				//
-
-				var insertTarget = invalidField.parent('.select').length == 1 ? invalidField.parent('.select') : invalidField;
-				if (typeof invalidField.attr('data-validation-placement') !== 'undefined')
-				{
-					insertTarget = $(invalidField.attr('data-validation-placement'));
-					}
-
-
-				// need to add this check so that we don't continuously add new error field divs
-				if (insertTarget.prev('.error-field').hasClass('error-field'))
-				{
-					var errorLabel = insertTarget.prev('.error-field').find('label.has-error');
-					if (errorLabel.length == 0)
-					{
-						insertTarget.addClass('has-error').prev('.error-field').html("<label for='"+field+"' class='has-error'>" + value.message + "</label>");
-
-						if (insertTarget.hasClass('select')) {
-							// this step is required otherwise we'll display a green field with a red error message
-							insertTarget.children('select').removeClass('has-success').addClass('has-error');
-							insertTarget.parent('.row-content').removeClass('has-success');
-						}
-					} else {
-						errorLabel.text(value.message);
+				if (typeof UserData !== 'undefined' && UserData.callCentre) {
+					message = "Please check " + missingFieldText + ".";
+				} else if(value.message != '') {
+					message = value.message;
+					var hasOmittableCopy = message.indexOf("value= '");
+					// This additional text has been removed for UTL but need
+					// to cater for other verticals
+					if(hasOmittableCopy > 0) {
+						message = message.substring(0, hasOmittableCopy);
 					}
 				} else {
-					$("<div class='error-field' style='display: block;'><label for='"+field+"' class='has-error'>" + value.message + "</label></div>").insertBefore(insertTarget);
+					message = "It looks like something has gone wrong when filling out the form. Please check that you've entered the right details into each section.";
+					displayGenericMessage = true;
 				}
 			}
+			if(!genericMessageDisplayed) {
+				// pre-AMS verticals
+				if ($('#slideErrorContainer').length > 0)
+				{
+					$('#slideErrorContainer ul').append(
+						"<li><label class='error'>" + message + "</label></li>");
+				} else {
+					// AMS verticals
+					var field = value.elementXpath.replace("/", "_");
+					// this is done so that if an error message needs to be placed when it involves a dropdown, we need to do the insertion before the select field
+					// otherwise the dropdown arrows don't move down with the actual field. JS validation correctly hides this error field in this new position if the values are correct.
+					//
+
+					var insertTarget = invalidField.parent('.select').length == 1 ? invalidField.parent('.select') : invalidField;
+					if (typeof invalidField.attr('data-validation-placement') !== 'undefined')
+					{
+						insertTarget = $(invalidField.attr('data-validation-placement'));
+					}
+
+
+					// need to add this check so that we don't continuously add new error field divs
+					if (insertTarget.prev('.error-field').hasClass('error-field'))
+					{
+						var errorLabel = insertTarget.prev('.error-field').find('label.has-error');
+						if (errorLabel.length == 0)
+						{
+							insertTarget.addClass('has-error').prev('.error-field').html("<label for='"+field+"' class='has-error'>" + message + "</label>");
+
+							if (insertTarget.hasClass('select')) {
+								// this step is required otherwise we'll display a green field with a red error message
+								insertTarget.children('select').removeClass('has-success').addClass('has-error');
+								insertTarget.parent('.row-content').removeClass('has-success');
+							}
+						} else {
+							errorLabel.text(message);
+						}
+					} else {
+						$("<div class='error-field' style='display: block;'><label for='"+field+"' class='has-error'>" + message + "</label></div>").insertBefore(insertTarget);
+					}
+				}
+			}
+			return genericMessageDisplayed || displayGenericMessage;
 		}
-		return genericMessageDisplayed || displayGenericMessage;
-	}
-};
+	};
 
 $.validator.addMethod('checkPrefix', function (value) {
 	var tmpVal = value.replace(/[^0-9]+/g, '');

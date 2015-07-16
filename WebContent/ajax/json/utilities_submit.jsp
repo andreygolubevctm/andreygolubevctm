@@ -53,10 +53,13 @@
 
         <%-- SUBMIT TO PARTNER --%>
         <jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request"/>
-        <c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest())}" scope="request" />
+        <c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest(), data)}" scope="request" />
 
         <%-- TESTING IF REQUEST FAILED --%>
         <c:choose>
+            <c:when test="${!utilitiesApplicationService.isValid()}">
+                <c:set var="json" value='${results}' />
+            </c:when>
             <c:when test="${empty results}">
                 <% response.setStatus(500); /* Internal Server Error */ %>
                 <c:set var="json" value='{"info":{"transactionId":${tranId}}},"errors":[{"message":"submitFromJsp returned empty"}]}'/>
