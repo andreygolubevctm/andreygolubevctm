@@ -95,7 +95,7 @@
 		});
 	}
 
-	meerkat.modules.register("application_date", {
+	meerkat.modules.register("provider_testing", {
 		init: initApplicationDate,
 		events: moduleEvents,
 		changeApplicationDate: changeApplicationDate,
