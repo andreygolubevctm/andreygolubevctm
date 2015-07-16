@@ -80,8 +80,13 @@
 			e.preventDefault();
 			var $el = $(this);
 			if(isValid()) {
-				saveDetails($el).done(function() {
-					redirectTo(product, "submitDetails");
+				saveDetails($el).done(function(data) {
+					if (hasServerValidationErrors(data) === false) {
+						redirectTo(product, "submitDetails");
+					} else {
+						meerkat.modules.loadingAnimation.hide($el);
+						$('.cc-just-continue, .cc-submit-details').removeClass('disabled');
+					}
 				});
 			} else {
 				meerkat.modules.loadingAnimation.hide($el);
@@ -185,7 +190,8 @@
 		return meerkat.modules.comms.post({
 			url: 'ajax/write/creditcard_submit.jsp',
 			data: data,
-			errorLevel: "silent"
+			errorLevel: "silent",
+			useDefaultErrorHandling: false
 		});
 
 	}
@@ -240,6 +246,19 @@
 		}
 		return false;
 	}
+
+	function hasServerValidationErrors(resultData) {
+		if (resultData.hasOwnProperty('error') && typeof resultData.error == "object") {
+			var error = resultData.error;
+			if (error && error.hasOwnProperty("type") && error.type === 'validation') {
+				meerkat.modules.serverSideValidationOutput.outputValidationErrors({
+					validationErrors: error.errorDetails.validationErrors
+				});
+				return true;
+			}
+		}
+		return false;
+    }
 
 	meerkat.modules.register("creditcard", {
 		init: initCreditCard,
