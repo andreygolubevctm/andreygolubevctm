@@ -163,6 +163,9 @@
             resetScrollBottomAnchorElement();
             toggleArrow("down");
             $morePrompt.removeAttr('style');
+            if($extraDockedItem.length) {
+                $extraDockedItem.removeAttr('style');
+            }
         });
     }
 
@@ -194,6 +197,9 @@
     function disablePromptBar() {
         $(window).off('scroll.viewMorePrompt');
         $morePrompt.hide();
+        if($extraDockedItem.length) {
+            $extraDockedItem.hide();
+        }
     }
 
     function initMoreQuotesPrompt(options) {
