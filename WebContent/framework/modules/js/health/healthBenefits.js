@@ -295,9 +295,20 @@
 			return '';
 		}
 	}
-
+	function resetBenefitsForProductTitleSearch() {
+		if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi' || meerkat.site.environment === 'nxs'){
+			if ($('#health_productTitleSearch').val().trim() !== ''){
+				resetHiddenFields();
+				$("#mainform input[name='health_benefits_benefitsExtras_Hospital'].benefit-item").val('Y');
+				$("#mainform input[name='health_benefits_benefitsExtras_GeneralHealth'].benefit-item").val('Y');
+			}
+		}
+	}
 	// Open the dropdown with code (public method). Specify a 'mode' of 'journey-mode' to apply different UI options.
 	function open(modeParam) {
+
+		// reset benefits for devs when use product title to search
+		resetBenefitsForProductTitleSearch();
 		mode = modeParam;
 
 		// Open the menu on mobile too.
