@@ -23,7 +23,7 @@ import static com.ctm.utils.SessionDataUtils.getTransactionIdFromTransactionSess
 public class SessionData {
 
 	final private ArrayList<Data> transactionSessionData;
-	final private AuthenticatedData authenticatedSessionData;
+	private AuthenticatedData authenticatedSessionData;
 
 	private Date lastSessionTouch;
 	private boolean shouldEndSession = false;
@@ -146,6 +146,10 @@ public class SessionData {
 
 	public AuthenticatedData getAuthenticatedSessionData() {
 		return authenticatedSessionData;
+	}
+
+	public void resetAuthenticatedSessionData() {
+		authenticatedSessionData = new AuthenticatedData();
 	}
 
 	public Date getLastSessionTouch() {

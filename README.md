@@ -35,7 +35,7 @@ Run `grunt` to run tests locally and compile the CSS and JavaScript into the app
 #### Only compile CSS and JavaScript - `grunt build`
 `grunt build` creates the `WebContent/framework/build` directory with compiled files. **Uses [recess](http://twitter.github.io/recess/) and [UglifyJS](http://lisperator.net/uglifyjs/) for compilation and minification respectively.**
 
-#### Tests - `grunt test`
+#### Tests - test/javascript `grunt test`
 Runs [JSHint](http://jshint.com) and [QUnit](http://qunitjs.com/) tests headlessly in [PhantomJS](http://phantomjs.org/) (used for CI).
 
 #### Watch - `grunt watch`

@@ -4,7 +4,6 @@
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-
 <settings:setVertical verticalCode="GENERIC" />
 <session:getAuthenticated />
 
@@ -21,7 +20,7 @@
 --%>
 <c:set var="validCredentials" value="${not empty authenticatedData.userData && not empty authenticatedData.userData.authentication && authenticatedData.userData.authentication.validCredentials}" />
 <c:set var="maxLoginAttempts" value="${pageSettings.getSettingAsInt('maxLoginAttempts')}" />
-<c:set var="loginAttempts"><security:log_audit identity="${param.email}" result="" action="" method="loginattempts"></security:log_audit></c:set>
+<c:set var="loginAttempts"><security:log_audit identity="${param.login_email}" result="" action="" method="loginattempts"></security:log_audit></c:set>
 <c:choose>
 	<c:when test="${loginAttempts >= maxLoginAttempts}">
 		[{"error":"exceeded-attempts"}]
@@ -29,19 +28,18 @@
 	<c:otherwise>
 
 	<c:if test="${!validCredentials}">
-			<go:log source="retrieve_quotes_jsp" level="INFO">Authenticating for: ${param.email}</go:log>
-			<c:set var="password"><go:HmacSHA256 username="${param.email}" password="${param.password}" brand="${pageSettings.getBrandCode()}" /></c:set>
+			<go:log source="retrieve_quotes_jsp" level="INFO">Authenticating for: ${param.login_email}</go:log>
+			<c:set var="password"><go:HmacSHA256 username="${param.login_email}" password="${param.login_password}" brand="${pageSettings.getBrandCode()}" /></c:set>
 			<go:log source="retrieve_quotes_jsp" level="INFO">password: ${password}</go:log>
 			<security:authentication
-				emailAddress="${param.email}"
+				emailAddress="${param.login_email}"
 				password="${password}"
 				hashedEmail="${param.hashedEmail}"
 				/>
 			<go:setData dataVar="authenticatedData" xpath="userData/authentication/validCredentials" value="${userData.validCredentials}" />
 			<go:setData dataVar="authenticatedData" xpath="userData/authentication/emailAddress" value="${userData.emailAddress}" />
 			<go:setData dataVar="authenticatedData" xpath="userData/emailAddress" value="${userData.emailAddress}" />
-			<%--TODO: remove this once we are away from disc --%>
-			<go:setData dataVar="authenticatedData" xpath="userData/authentication/password" value="${userData.password}" />
+			
 			<c:set var="validCredentials" value="${userData.validCredentials}" />
 	</c:if>
 
@@ -337,7 +335,7 @@
 							<c:set var="attemptsMessage" value="You have ${maxLoginAttempts - loginAttempts} attempts remaining." />
 						</c:otherwise>
 					</c:choose>
-					[{"error":"The email address or password that you entered was incorrect.&emsp;&emsp;${attemptsMessage}"}]
+					[{"error":"The email address or password that you entered was incorrect. ${attemptsMessage}"}]
 				</c:when>
 			</c:choose>
 		</c:otherwise>

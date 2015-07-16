@@ -851,7 +851,8 @@
 		loadingHide: loadingHide,
 		gotoPath: gotoPath,
 		getPreviousStepId: getPreviousStepId,
-		sessionCamRecorder: sessionCamRecorder
+		sessionCamRecorder: sessionCamRecorder,
+		unlockJourney: unlock
 	});
 
 })(jQuery);

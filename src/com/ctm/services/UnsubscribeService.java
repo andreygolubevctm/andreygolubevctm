@@ -23,19 +23,24 @@ public class UnsubscribeService {
 		this.hashedEmailService = new HashedEmailService();
 	}
 
+	/**
+	 * Constructor for unit tests/Java usage
+	 * @param emailDao
+	 */
 	public UnsubscribeService(EmailMasterDao emailDao) {
 		this.hashedEmailService  = new HashedEmailService(emailDao);
 		this.emailDao = emailDao;
 	}
 
 	/**
-	 * Sets the vertical code for the page request scope and loads the settings object.
-	 * This method also checks to see if the vertical is enabled for the brand. (and by extension that the brand code is set)
-	 * Call this on vertical start pages like health_quote.jsp
-	 *
-	 * @param pageContext
-	 * @param verticalCode
-	 * @return mapping including boolean is the details are valid
+	 * Retrieve the necessary customer details
+	 * @param vertical
+	 * @param hashedEmail
+	 * @param email
+	 * @param isDisc
+	 * @param pageSettings
+	 * @param request
+	 * @return
 	 */
 	public Unsubscribe getUnsubscribeDetails(String vertical,
 			String hashedEmail, String email, boolean isDisc, PageSettings pageSettings, HttpServletRequest request) {
@@ -54,6 +59,12 @@ public class UnsubscribeService {
 		return unsubscribe;
 	}
 
+	/**
+	 *
+	 * @param pageSettings
+	 * @param unsubscribe
+	 * @throws DaoException
+	 */
 	public void unsubscribe(PageSettings pageSettings, Unsubscribe unsubscribe) throws DaoException {
 		int brandId = pageSettings.getBrandId();
 		if(emailDao == null){

@@ -3,6 +3,7 @@ package com.ctm.services.utilities;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
+import com.disc_au.web.go.Data;
 import org.json.JSONObject;
 
 import com.ctm.exceptions.UtilitiesWebServiceException;
@@ -17,21 +18,22 @@ public class UtilitiesApplicationService extends UtilitiesBaseService {
 	 * @return
 	 */
 	@SuppressWarnings("unused") // Used by JSP
-	public static String submitFromJsp(HttpServletRequest request){
+	public String submitFromJsp(HttpServletRequest request, Data data){
+		String validationResult = validate(request, data);
 
-		UtilitiesApplicationRequestModel model = new UtilitiesApplicationRequestModel();
-		model.populateFromRequest(request);
+		if(isValid()) {
+			UtilitiesApplicationRequestModel model = new UtilitiesApplicationRequestModel();
+			model.populateFromRequest(request);
 
-		UtilitiesApplicationService service = new UtilitiesApplicationService();
+			UtilitiesApplicationModel returnedModel = doSubmit(request, model);
 
-		UtilitiesApplicationModel returnedModel = service.doSubmit(request, model);
-
-		// Validate response. Create an empty model so it can be run through toJson.
-		if (returnedModel == null) {
-			return "";
+			// Validate response. Create an empty model so it can be run through toJson.
+			if (returnedModel == null) {
+				return "";
+			}
+			return returnedModel.toJson();
 		}
-		return returnedModel.toJson();
-
+		return validationResult;
 	}
 
 	/**
