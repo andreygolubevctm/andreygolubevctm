@@ -9,6 +9,7 @@
 <retrievequotes_template:health/>
 <retrievequotes_template:home/>
 <retrievequotes_template:homeloan/>
+<retrievequotes_template:utilities/>
 
 <core:js_template id="retrieve-quotes-container-template">
     {{ if(typeof obj.previousQuotes !== "undefined") { }}
@@ -61,15 +62,20 @@
     {{ if(verticalData.pendingID && verticalData.pendingID.length) { }}
         <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" data-pendingid="{{= verticalData.pendingID }}" class="btn btn-block btn-tertiary btn-pending"><span>In Processing</span></a>
     {{ } else { }}
-        {{ if(verticalData.inPast) { }}
-            <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" data-inpast="{{= verticalData.inPast }}" class="btn btn-block btn-secondary btn-latest"><span>Get Latest Results</span></a>
+        {{ if(obj.verticalCode !== "utilities") { }}
+            {{ if(verticalData.inPast) { }}
+                <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" data-inpast="{{= verticalData.inPast }}" class="btn btn-block btn-secondary btn-latest"><span>Get Latest Results</span></a>
+            {{ } }}
+
+            <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-amend"><span>Amend Quote</span></a>
         {{ } }}
 
-        <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-amend"><span>Amend Quote</span></a>
-
-        <%-- For now this only applies to HEALTH. Will need to be reconsidered should we want this functionality on other verticals. --%>
         {{ if(obj.verticalCode === "health") { }}
             <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-start-again"><span>Start Again</span></a>
+        {{ } }}
+
+        {{ if(obj.verticalCode === "utilities") { }}
+            <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-start-again-fresh"><span>Start Again</span></a>
         {{ } }}
     {{ } }}
 </core:js_template>

@@ -23,7 +23,8 @@
                 life: $("#retrieve-life-template").html(),
                 ip: $("#retrieve-ip-template").html(),
                 homeloan: $("#retrieve-homeloan-template").html(),
-                home: $("#retrieve-home-template").html()
+                home: $("#retrieve-home-template").html(),
+                utilities: $("#retrieve-utilities-template").html()
             };
         });
     }
@@ -35,7 +36,8 @@
             .on("click", ".btn-latest", _onClickLatest)
             .on("click", ".btn-amend", _onClickAmend)
             .on("click", ".btn-pending", _onClickPending)
-            .on("click", ".btn-start-again", _onClickStartAgain);
+            .on("click", ".btn-start-again", _onClickStartAgain)
+            .on("click", ".btn-start-again-fresh", _onClickStartAgainFresh);
     }
 
     function _onClickPending(e) {
@@ -99,7 +101,8 @@
 
     function _onClickNewQuote(e) {
         meerkat.modules.dialogs.show({
-           htmlContent: $("#new-quote-template").html()
+            htmlContent: $("#new-quote-template").html(),
+            className: "new-quote-dialog"
         });
     }
 
@@ -150,6 +153,11 @@
                 });
             }
         });
+    }
+
+    function _onClickStartAgainFresh(e) {
+        var data = _getClickElementData(e.target);
+        _retrieveQuote(data.vertical, "start-again-fresh", data.transactionId);
     }
 
     function _onClickStartAgain(e) {
