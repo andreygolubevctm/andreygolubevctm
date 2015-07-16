@@ -4,7 +4,6 @@ import com.ctm.dao.ContentDao;
 import com.ctm.dao.RankingDetailsDao;
 import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.*;
-import com.ctm.model.content.Content;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.Touch;
@@ -98,9 +97,10 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		emailBrochureRequest.productName = request.getParameter("productName");
 		emailBrochureRequest.transactionId = transactionId;
 		accessTouchService.setRequest(request);
+		String productID = request.getParameter("productId");
+		productID = productID==null?"":productID.replaceAll("PHIO-HEALTH-","");
 		accessTouchService.recordTouchWithProductCode(emailBrochureRequest.transactionId,
-				Touch.TouchType.BROCHURE.getCode(),
-				request.getParameter("productCode"));
+				Touch.TouchType.BROCHURE.getCode(),productID);
 
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(ProductBrochuresEmailHandler.MAILING_NAME_KEY);
