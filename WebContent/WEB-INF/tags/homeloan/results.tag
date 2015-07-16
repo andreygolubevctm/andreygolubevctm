@@ -179,11 +179,11 @@
 </core:js_template>
 
 <%-- FEATURE TEMPLATE --%>
-	<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
+	<core:js_template id="feature-template">
 		<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
 			<features:resultsItem item="${selectedValue}" labelMode="false" index="${status.index}"/>
 		</c:forEach>
-	</div>
+	</core:js_template>
 
 <%-- UNAVAILABLE ROW --%>
 <core:js_template id="unavailable-template">

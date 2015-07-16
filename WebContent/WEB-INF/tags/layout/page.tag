@@ -69,6 +69,12 @@
 	<c:choose>
 		<c:when test="${pageSettings.getVerticalCode() == 'generic'}">
 		</c:when>
+		<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
+		<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">
+			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/lmi.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		</c:when>
+		<%-- END HACK FOR LMI --%>
 		<c:otherwise>
 			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 		</c:otherwise>
@@ -272,10 +278,16 @@
 <script src="${assetUrl}common/javascript/utilities.js?${revision}"></script>
 
 		<!--  Meerkat -->
-<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}.js?${revision}"></script>
+		<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 		<c:choose>
+			<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
+			<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">
+				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/lmi.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+			</c:when>
+			<%-- END HACK FOR LMI --%>
 			<c:when test="${pageSettings.getVerticalCode() != 'generic'}">
-<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}.js?${revision}"></script>
+				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 			</c:when>
 		</c:choose>
 
