@@ -154,7 +154,7 @@
                 meerkat.modules.utilitiesResults.initPage();
                 meerkat.modules.utilitiesSorting.initSorting();
                 meerkat.modules.utilitiesMoreInfo.initMoreInfo();
-                // meerkat.modules.travelMorePrompt.initTravelMorePrompt();
+                meerkat.modules.showMoreQuotesPrompt.initPromptBar();
                 meerkat.modules.utilitiesSnapshot.initUtilitiesSnapshot();
             },
             onBeforeEnter: function enterResultsStep(event) {
@@ -174,12 +174,10 @@
                     meerkat.modules.utilitiesResults.get();
                 }
             },
-            onAfterLeave: function (event) {
-                //TODO
-                // implement
-                /*if(event.isBackward) {
-                 meerkat.modules.travelMorePrompt.disablePromptBar();
-                 }*/
+            onAfterLeave: function(event) {
+                if(event.isBackward) {
+                    meerkat.modules.showMoreQuotesPrompt.disablePromptBar();
+                }
             }
         };
 

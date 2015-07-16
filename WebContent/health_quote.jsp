@@ -142,6 +142,7 @@
 	</jsp:attribute>
 
 	<jsp:body>
+		<health:product_title_search />
 		<core:application_date />
 
 		<%-- Product summary header for mobile --%>

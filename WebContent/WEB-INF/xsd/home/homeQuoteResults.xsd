@@ -24,6 +24,57 @@
 							<xs:element name="jointDob" type="date" maxOccurs="1" minOccurs="0" />
 							<xs:element name="marketing" type="YN" maxOccurs="1" minOccurs="0" />
 							<xs:element name="oktocall" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="oldestPersonDobInputY" type="xs:string" maxOccurs="1" minOccurs="0"/>
+							<xs:element name="oldestPersonDobInputM" maxOccurs="1" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="1" />
+										<xs:maxInclusive value="12" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="oldestPersonDobInputD" maxOccurs="1" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="1" />
+										<xs:maxInclusive value="31" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="dobInputY" type="xs:string" maxOccurs="1" minOccurs="0"/>
+							<xs:element name="dobInputM" maxOccurs="1" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="1" />
+										<xs:maxInclusive value="12" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="dobInputD" maxOccurs="1" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="1" />
+										<xs:maxInclusive value="31" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="jointDobInputY" type="xs:string" maxOccurs="1" minOccurs="0"/>
+							<xs:element name="jointDobInputM" maxOccurs="1" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="1" />
+										<xs:maxInclusive value="12" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="jointDobInputD" maxOccurs="1" minOccurs="0">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="1" />
+										<xs:maxInclusive value="31" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
@@ -114,12 +165,29 @@
 							<xs:element name="coverLength" type="xs:integer" maxOccurs="1" minOccurs="0" />
 							<xs:element name="claims" type="YN" maxOccurs="1" minOccurs="0" />
 							<xs:element name="insurer" type="xs:string" maxOccurs="1" minOccurs="0" />
+							<xs:element name="expiryInputY" type="xs:string" maxOccurs="1" minOccurs="0"/>
+							<xs:element name="expiryInputM" maxOccurs="1" minOccurs="0" >
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="1" />
+										<xs:maxInclusive value="12" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="expiryInputD" maxOccurs="1" minOccurs="0" >
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+										<xs:minInclusive value="1" />
+										<xs:maxInclusive value="31" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="coverType" type="xs:string" maxOccurs="1" minOccurs="1" />
 				<xs:element name="startDate" type="date" maxOccurs="1" minOccurs="1" />
-				<xs:element name="privacyOptin" type="YN" maxOccurs="1" minOccurs="1" />
+				<xs:element name="privacyoptin" type="YN" maxOccurs="1" minOccurs="1" />
 				<xs:element name="occupancy" maxOccurs="1" minOccurs="0">
 					<xs:complexType>
 						<xs:all>
@@ -158,6 +226,38 @@
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="termsAccepted" type="YN" maxOccurs="1" minOccurs="1" />
+				<xs:element name="journey" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="stage" type="xs:string" maxOccurs="1" minOccurs="0" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="renderingMode" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="paymentType" type="xs:string" maxOccurs="1" minOccurs="0" />
+				<xs:element name="terms" type="YN" maxOccurs="1" minOccurs="0" />
+				<xs:element name="startDateInputY" type="xs:string" maxOccurs="1" minOccurs="0"/>
+				<xs:element name="startDateInputM" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:minInclusive value="1" />
+							<xs:maxInclusive value="12" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="startDateInputD" maxOccurs="1" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:integer">
+							<xs:minInclusive value="1" />
+							<xs:maxInclusive value="31" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="lastFieldTouch" maxOccurs="1" minOccurs="0" />
+				<xs:element name="clientIpAddress" minOccurs="0" />
+				<xs:element name="clientUserAgent" minOccurs="0" />
+				<xs:element name="trackingKey" minOccurs="0" />
+				<xs:element name="transactionId" type="xs:integer" maxOccurs="1" minOccurs="1" />
 			</xs:all>
 		</xs:complexType>
 	</xs:element>

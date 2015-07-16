@@ -83,8 +83,8 @@ module.exports = function(grunt) {
 		},
 		{
 			brandcode : 'ctm',
-			verticals : ['health','car','travel','home','homeloan','simples','creditcard','utilities','roadside','competition','fuel'] //ctm will use the old platform code for it's generic.
-			}
+			verticals : ['health','car','travel','home','homeloan','simples','creditcard','utilities','roadside','competition','fuel','carlmi', 'homelmi', 'lmi'] //ctm will use the old platform code for it's generic.
+		}
 	];
 
 	//Our internal functions are brought in
@@ -113,7 +113,7 @@ module.exports = function(grunt) {
 
 	//This throws the task alias's in - they are normally what we run things from.
 	//We do some loops INSIDE this file with the original brandMapping obj.
-	require('./WebContent/framework/build/Grunt.aliases')(grunt,brandMapping);
+	require('./WebContent/framework/build/Grunt.aliases')(grunt,tools,brandMapping);
 
 	//In future, it would be nice to break up the gruntfiles even further (by task) and have https://github.com/firstandthird/load-grunt-config do the heavy lifting as per it's example. This also supports load-grunt-tasks as a dep, so no need to use it above anymore. http://firstandthird.github.io/load-grunt-config/ is more docco.
 

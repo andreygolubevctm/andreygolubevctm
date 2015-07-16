@@ -7,15 +7,21 @@
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="utilities" />
 
-<c:set var="continueOnValidationError" value="${true}" />
+<c:set var="continueOnValidationError" value="${false}" />
 
 <c:if test="${empty data.utilities.application.details.address.streetNum && empty data.utilities.application.details.address.houseNoSel}">
 	<go:setData dataVar="data" xpath="utilities/application/details/address/streetNum" value="0" />
 </c:if>
 
+<jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request" />
+<c:set var="serviceResponse" value="${utilitiesApplicationService.validate(pageContext.request, data)}" />
+
 <c:choose>
 	<c:when test="${empty data.utilities.application.thingsToKnow.termsAndConditions != 'Y'}">
 		ERROR - NO TERMS AND CONDITIONS
+	</c:when>
+	<c:when test="${!utilitiesApplicationService.isValid()}">
+		<c:out value="${serviceResponse}" escapeXml="false" />
 	</c:when>
 	<c:otherwise>
 		<%-- RECOVER: if things have gone pear shaped --%>
@@ -40,8 +46,7 @@
 		<go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${data['current/transactionId']}</go:log>
 		<c:set var="tranId" value="${data['current/transactionId']}" />
 
-		<jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request" />
-		<c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest())}" scope="request"  />
+		<c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest(), data)}" scope="request"  />
 
 		<c:choose>
 			<c:when test="${empty results}">

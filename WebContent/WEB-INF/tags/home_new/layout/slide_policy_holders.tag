@@ -11,7 +11,7 @@
 	<c:set var="buttonLabel" value="Get Quotes" />
 </c:if>
 
-<layout:slide formId="policyHoldersForm" nextLabel="${buttonLabel}">
+<layout:slide formId="policyHolderForm" nextLabel="${buttonLabel}">
 
 	<layout:slide_columns sideHidden="false">
 

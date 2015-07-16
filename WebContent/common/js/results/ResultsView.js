@@ -1087,7 +1087,7 @@ ResultsView = {
 
 	//Remove all results
 	flush: function(){
-		$(Results.settings.elements.rows).remove();		
+		$(Results.settings.elements.rows).empty().remove();
 	}
 
 };
