@@ -37,8 +37,8 @@ UPDATE ctm.country_provider_mapping SET regionValue='WORLD' WHERE providerId=282
 UPDATE ctm.country_provider_mapping SET regionValue='PACIF' WHERE providerId=78 AND countryValue='TAH';
 UPDATE ctm.country_provider_mapping SET regionValue='PACIF' WHERE providerId=282 AND countryValue='TAH';
 
-UPDATE ctm.country_provider_mapping SET regionValue='ZASI' WHERE providerId=78 AND countryValue='TLS';
-UPDATE ctm.country_provider_mapping SET regionValue='ZASI' WHERE providerId=282 AND countryValue='TLS';
+UPDATE ctm.country_provider_mapping SET regionValue='ZASI' WHERE providerId=78 AND countryValue='TP';
+UPDATE ctm.country_provider_mapping SET regionValue='ZASI' WHERE providerId=282 AND countryValue='TP';
 
 UPDATE ctm.country_provider_mapping SET regionValue='AMS' WHERE providerId=78 AND countryValue='TTO';
 UPDATE ctm.country_provider_mapping SET regionValue='AMS' WHERE providerId=282 AND countryValue='TTO';
