@@ -75,7 +75,9 @@
     <%-- DEFAULT RESULT ROW --%>
     <core:js_template id="result-template">
         {{ var productTitle = (typeof obj.brandCode !== 'undefined') ? obj.brandCode : 'Unknown product name'; }}
+        {{ var productTitleCut = productTitle.length > 22 ? productTitle.substring(0,22) + '...' : productTitle; }}
         {{ var productDescription = (typeof obj.policyName !== 'undefined') ? obj.policyName : 'Unknown product name'; }}
+        {{ var productDescriptionCut = productDescription.length > 43 ? obj.policyName.substring(0,43) + '...' : productDescription; }}
         {{ obj.verticalLogo = meerkat.site.vertical == 'carlmi' ? 'car' : 'home' }}
 
         {{ var template = $("#provider-logo-template").html(); }}
@@ -94,8 +96,8 @@
                         <div class="logoContainer">
                             {{= logo }}
                         </div>
-                        <h2>{{= productTitle }}</h2>
-                        <strong>{{= productDescription }}</strong>
+                        <h2 title="{{= productTitle }}">{{= productTitleCut }}</h2>
+                        <strong title="{{= productDescription }}">{{= productDescriptionCut }}</strong>
                     </div>
                     <div class="productSummary results visible-xs">
                         <div class="logoContainer">
