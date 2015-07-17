@@ -127,29 +127,24 @@ body > div > header a.bottombar .btn-call:hover {
   }
 }
 .carlmi .slide-feature-back,
-.carlmi .resultsSummaryContainer {
+.homelmi .slide-feature-back {
   display: none;
 }
 .carlmi .slide-feature-back a,
-.carlmi .resultsSummaryContainer a,
-.carlmi .slide-feature-back .resultsSummaryPlaceholder,
-.carlmi .resultsSummaryContainer .resultsSummaryPlaceholder {
+.homelmi .slide-feature-back a {
   white-space: nowrap;
 }
-.carlmi .sortbar-container {
+.carlmi .slide-feature-pagination,
+.homelmi .slide-feature-pagination {
   display: none;
 }
 .carlmi[data-step="results"] .slide-feature-back,
-.carlmi[data-step="results"] .resultsSummaryContainer {
+.homelmi[data-step="results"] .slide-feature-back {
   display: block;
 }
-.carlmi[data-step="results"] .sortbar-container {
+.carlmi[data-step="results"] .slide-feature-pagination,
+.homelmi[data-step="results"] .slide-feature-pagination {
   display: block;
-}
-@media screen and (min-width: 768px) {
-  .carlmi[data-step="results"] #navbar-main {
-    max-height: 100px;
-  }
 }
 .brand-selector {
   margin-bottom: 25px;
