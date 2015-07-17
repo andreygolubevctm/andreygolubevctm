@@ -3,13 +3,17 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="rightColumn" fragment="true" required="true"%>
-<%@ attribute name="sideHidden" 	required="false" rtexprvalue="true" description="Hide the side column when collapsing to XS" %>
+<%@ attribute name="sideHidden" 	required="false" rtexprvalue="false" description="Hide the side column when collapsing to XS" %>
 <%@ attribute name="sideAbove" 	required="false" rtexprvalue="false" description="Enable to render the fieldset-column-side above the main area in XS instead "%>
+<%@ attribute name="colSize" 	required="false" rtexprvalue="false" description="Override the column width"%>
+<c:if test="${empty colSize}">
+	<c:set var="colSize" value="8" />
+</c:if>
 
 <div class="row">
 
 	<c:if test="${empty sideAbove}">
-		<div class="col-sm-8">
+		<div class="col-sm-${colSize}">
 			<jsp:doBody />
 		</div>
 	</c:if>
