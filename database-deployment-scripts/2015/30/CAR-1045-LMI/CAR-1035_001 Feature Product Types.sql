@@ -1,3 +1,7 @@
+ALTER TABLE `aggregator`.`features_product_type`
+DROP INDEX `code_UNIQUE` ,
+ADD UNIQUE INDEX `code_UNIQUE` (`code` ASC, `Vertical` ASC);
+
 /*
 -- Query: SELECT * FROM aggregator.features_product_type where vertical='carlmi'
 LIMIT 0, 1000
