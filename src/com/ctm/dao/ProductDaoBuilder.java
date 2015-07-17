@@ -12,7 +12,7 @@ import java.util.List;
  * Created by lbuchanan on 18/02/2015.
  */
 public class ProductDaoBuilder {
-	private String effectiveDate;
+	private Date effectiveDate;
 	private List<Object> productParams  = new ArrayList<>();
 	private String categoryCode;
 	private String providerCode;
@@ -20,9 +20,7 @@ public class ProductDaoBuilder {
 	private String productCat;
 
 	public ProductDaoBuilder withTimeStamp(Timestamp effectiveDateTime) {
-		Date date = new Date(effectiveDateTime.getTime());
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		this.effectiveDate = dateFormat.format(date);
+		this.effectiveDate = new Date(effectiveDateTime.getTime());
 		return this;
 	}
 
@@ -73,6 +71,8 @@ public class ProductDaoBuilder {
 				stmt.setString(paramCount, (String) param);
 			} else if(param instanceof Integer){
 				stmt.setInt(paramCount, (Integer) param);
+			} else if(param instanceof Date){
+				stmt.setDate(paramCount, (Date) param);
 			}
 			paramCount++;
 		}

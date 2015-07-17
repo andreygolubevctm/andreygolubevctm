@@ -124,9 +124,7 @@ public class ProductDao {
 		ArrayList<Product> products = new ArrayList<Product>();
 
 		SimpleDatabaseConnection dbSource = null;
-		java.sql.Date date = new java.sql.Date(effectiveDate.getTime());
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String effectiveDateStr = dateFormat.format(date);
+		java.sql.Date effectiveDateSQL = new java.sql.Date(effectiveDate.getTime());
 		Timestamp effectiveDateTime = new Timestamp(effectiveDate.getTime());
 
 		try {
@@ -215,7 +213,7 @@ public class ProductDao {
 					);
 
 					stmt.setString(1, idList);
-					stmt.setString(2, effectiveDateStr);
+					stmt.setDate(2, effectiveDateSQL);
 
 					results = stmt.executeQuery();
 
