@@ -35,7 +35,7 @@
 <c:set var="searchResults"><x:out select="$healthXML/request/details/searchResults" /></c:set>
 <c:set var="retrieveSavedResults"><x:out select="$healthXML/request/header/retrieve/savedResults = 'Y'" /></c:set>
 <c:set var="savedTransactionId"><x:out select="$healthXML/request/header/retrieve/transactionId" /></c:set>
-
+<c:set var="productTitleSearch"><x:out select="$healthXML/request/header/productTitleSearch" escapeXml="false" /></c:set>
 <c:set var="productTitle"><x:out select="$healthXML/request/header/productTitle" escapeXml="false" /></c:set>
 <%-- Unencode apostrophes --%>
 <c:set var="productTitle" value="${fn:replace(productTitle, '&#039;', '\\'')}" />
@@ -55,6 +55,7 @@
 ${healthPriceRequest.setPriceMinimum(priceMinimum)}
 ${healthPriceRequest.setProductTitle(productTitle)}
 ${healthPriceRequest.setDirectApplication(directApplication)}
+${healthPriceRequest.setProductTitleSearch(productTitleSearch)}
 ${healthPriceRequest.setPaymentFrequency(paymentFrequency)}
 ${healthPriceRequest.setState(state)}
 ${healthPriceRequest.setProductType(productType)}
@@ -92,7 +93,7 @@ ${healthPriceService.setup()}
 		<c:set var="resultsList" value="${healthPriceResultsService.fetchSingleHealthResult(healthPriceService.getHealthPriceRequest())}" scope="request"/>
 				</c:otherwise>
 			</c:choose>
-	
+
 			<c:choose>
 	<%--fail because we don't know which product is valid --%>
 	<c:when test="${resultsList.size() > 1 && !onResultsPage}">

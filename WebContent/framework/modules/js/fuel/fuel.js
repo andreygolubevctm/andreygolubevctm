@@ -140,6 +140,7 @@
             },
             onInitialise: function onResultsInit(event) {
                 meerkat.modules.fuelResults.initPage();
+                meerkat.modules.showMoreQuotesPrompt.initPromptBar();
                 meerkat.modules.fuelSorting.initSorting();
                 meerkat.modules.fuelResultsMap.initFuelResultsMap();
                 meerkat.modules.fuelCharts.initFuelCharts();
@@ -147,6 +148,11 @@
             onAfterEnter: function afterEnterResults(event) {
                 meerkat.modules.fuelResults.get();
                 meerkat.modules.fuelResultsMap.resetMap();
+            },
+            onAfterLeave: function(event) {
+                if(event.isBackward) {
+                    meerkat.modules.showMoreQuotesPrompt.disablePromptBar();
+                }
             }
         };
 

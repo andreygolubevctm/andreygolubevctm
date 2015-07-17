@@ -26,11 +26,11 @@ public class ProviderRestrictionsService {
         int providerID = 0;
         String selectStatement =
                 "SELECT pm.providerId \n" +
-                        "FROM   product_master pm\n" +
-                        "INNER JOIN vw_dailySalesCount pp ON pp.providerId= pm.ProviderId  \n" +
-                        "WHERE  pm.productCode = (SELECT tp.productCode \n" +
-                        "                          FROM   touches t \n" +
-                        "                          INNER JOIN touches_products tp \n" +
+                        "FROM   ctm.product_master pm\n" +
+                        "INNER JOIN ctm.vw_dailySalesCount pp ON pp.providerId= pm.ProviderId  \n" +
+                        "WHERE  pm.productId = (SELECT tp.productCode \n" +
+                        "                          FROM   ctm.touches t \n" +
+                        "                          INNER JOIN ctm.touches_products tp \n" +
                         "                                     ON t.id = tp.touchesId \n" +
                         "                          WHERE  t.transaction_id IN (SELECT transactionId \n" +
                         "                                                      FROM   aggregator.transaction_header th \n" +

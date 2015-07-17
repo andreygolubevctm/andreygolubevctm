@@ -13,49 +13,49 @@
 				<div class="row">
 					<ul>
 						<li class="col-lg-2">
-							<a href="javascript:;" class="toggle sort-by" data-sortkey="data.providerName" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Provider</span>
 							</a>
 						</li>
 						<li class="col-lg-2">
-							<a href="javascript:;" class="toggle" data-sortkey="data.limitType" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Limit Type</span>
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle" data-sortkey="data.cappingAmount" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Capping Amount</span>
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle" data-sortkey="data.currentJoinCount" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Current Progress</span>
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle" data-sortkey="data.limitLeft" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Limit Left</span>
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle" data-sortkey="data.effectiveStart" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Effective Start</span>
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle" data-sortkey="data.effectiveEnd" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Effective End</span>
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle" data-sortkey="data.category" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Category</span>
 							</a>

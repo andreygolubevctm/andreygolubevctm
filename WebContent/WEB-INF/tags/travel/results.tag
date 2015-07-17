@@ -34,16 +34,7 @@
 
 		<div class="resultsOverflow">
 			<div class="results-table">
-				<%-- Prompt --%>
-				<div class="container morePromptContainer">
-					<span class="morePromptCell">
-						<a href="javascript:;" class="morePromptLink">
-							<span class="icon icon-angle-down"></span>
-							<span class="morePromptLinkText hidden-xs">Go to Bottom</span>
-							<span class="icon icon-angle-down hidden-xs"></span>
-						</a>
-					</span>
-				</div>
+				<core_new:show_more_quotes_button />
 			</div>
 		</div>
 

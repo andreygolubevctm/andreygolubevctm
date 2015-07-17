@@ -17,7 +17,7 @@
 				<div class="row">
 					<ul>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle sort-by" data-sortkey="data.providerName" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Fund</span>
 							</a>
@@ -35,25 +35,25 @@
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle" data-sortkey="data.state" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>State</span>
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle" data-sortkey="data.styleCode" data-sortdir="asc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Brand Code</span>
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle" data-sortkey="data.effectiveStart" data-sortdir="desc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Start Date</span>
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;" class="toggle" data-sortkey="data.effectiveEnd" data-sortdir="desc">
+							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>End Date</span>
 							</a>
