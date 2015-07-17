@@ -121,15 +121,15 @@
 
 	// return date string in YYYY-MM-DD
 	function returnDateValue(_date){
-		var _dayString = leadingZero( _date.getDate() );
-		var _monthString = leadingZero( _date.getMonth() + 1 );
+		var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
+		var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
 		return _date.getFullYear() +'-'+ _monthString +'-'+ _dayString;
 	}
 
 	// return date string in DD/MM/YYYY
 	function returnDateValueFormFormat(_date){
-		var _dayString = leadingZero( _date.getDate() );
-		var _monthString = leadingZero( _date.getMonth() + 1 );
+		var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
+		var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
 		return _dayString+'/'+_monthString+'/'+_date.getFullYear();
 	}
 
@@ -214,8 +214,22 @@
 	}
 
 	/**
-	 * Returns a "time ago" formatted string
+	 * Formats a UK date as a US date
 	 * @param date
+	 * @returns {string}
+	 */
+	function formatUKToUSDate(date) {
+		var delimiter = date.match(/(-)/) ? "-" : "/";
+		date = date.split(delimiter);
+		var day = date[0];
+		date[0] = date[1];
+		date[1] = day;
+		return date.join(delimiter);
+	}
+
+	/**
+	 * Returns a "time ago" formatted string
+	 * @param date (mm/dd/yyyy format)
 	 * @returns {string}
 	 */
 	function getTimeAgo(date) {
@@ -263,7 +277,8 @@
 		returnDateValueFormFormat: returnDateValueFormFormat,
 		pluginReady: pluginReady,
 		calcWorkingDays: calcWorkingDays,
-		getTimeAgo: getTimeAgo
+		getTimeAgo: getTimeAgo,
+		formatUKToUSDate: formatUKToUSDate
 	});
 
 })(jQuery);

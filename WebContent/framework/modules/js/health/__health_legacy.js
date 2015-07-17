@@ -95,14 +95,6 @@ function resetRadio($_obj, value){
 
 };
 
-//return a number with a leading zero if required
-function leadingZero(value){
-	if(value < 10){
-		value = '0' + value;
-	};
-	return value;
-}
-
 //return a number with comma for thousands
 function formatMoney(value){
 	var parts = value.toString().split(".");
@@ -732,8 +724,8 @@ var healthFunds = {
 			} else if( !healthFunds._payments.weekends && ( _day == 0 || _day == 6 ) ){
 				_days++;
 			} else {
-				var _dayString = leadingZero( _date.getDate() );
-				var _monthString = leadingZero( _date.getMonth() + 1 );
+				var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
+				var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
 				_html += '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'">'+ healthFunds._getNiceDate(_date) +'</option>';
 				_days++;
 				_count++;
@@ -761,8 +753,8 @@ var healthFunds = {
 				// Loop through the selected days and attempt a match
 				for(a=0; a < a_Match.length; a++) {
 					if(a_Match[a] == _date.getDate() ){
-						var _dayString = leadingZero( _date.getDate() );
-						var _monthString = leadingZero( _date.getMonth() + 1 );
+						var _dayString = meerkat.modules.numberUtils.leadingZero( _date.getDate() );
+						var _monthString = meerkat.modules.numberUtils.leadingZero( _date.getMonth() + 1 );
 						/*var*/ _html = '<option value="'+ _date.getFullYear() +'-'+ _monthString +'-'+ _dayString +'" selected="selected">'+ healthFunds._getNiceDate(_date) +'</option>';
 						i = 99;
 						break;

@@ -12,7 +12,8 @@
 <form_new:fieldset legend="Your Contact Details" className="contact-details">
     <c:set var="fieldXPath" value="${xpath}/firstName" />
     <form_new:row label="First name" fieldXpath="${fieldXPath}" className="clear">
-        <field_new:input xpath="${fieldXPath}" required="false"/>
+        <%--<field_new:input xpath="${fieldXPath}" required="false"/>--%>
+        <field:person_name xpath="${fieldXPath}" required="false" title="First Name"/>
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/email"/>

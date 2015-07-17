@@ -91,7 +91,16 @@
 			verticalMapping : tabMapping()
 		};
 		meerkat.modules.coverLevelTabs.initCoverLevelTabs(options);
-
+		
+		$(document).ready(function () {
+			meerkat.messaging.subscribe(meerkatEvents.coverLevelTabs.CHANGE_COVER_TAB, function onTabChange(eventObject) {
+				if (eventObject.activeTab == "D") {
+					meerkat.modules.showMoreQuotesPrompt.disableForCoverLevelTabs();
+				} else {
+					meerkat.modules.showMoreQuotesPrompt.resetForCoverLevelTabs();
+				}
+			});
+		});
 	}
 
 	/* This maps the shortcuts (eg C, M, B etc... ) to an actual tab */

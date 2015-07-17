@@ -149,7 +149,7 @@
 					// Handle pre-filled 
 					toggleInboundOutbound();
 					toggleDialogueInChatCallback();
-					meerkat.modules.application_date.setApplicationDateCalendar();
+					meerkat.modules.provider_testing.setApplicationDateCalendar();
 
 					// Handle toggle inbound/outbound
 					$('input[name=health_simples_contactType]').on('change', function() {
@@ -499,7 +499,7 @@
 						$("#health_application-warning").find(".fundWarning").hide().empty();
 					}
 					this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
-					this.tracking.productId = selectedProduct.info.productCode;
+					this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
 
 					// Load the selected product details.
 					healthFunds.load(selectedProduct.info.provider);
