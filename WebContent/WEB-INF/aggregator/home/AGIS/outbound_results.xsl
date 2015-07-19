@@ -64,15 +64,22 @@
 		</xsl:variable>
 
 		<xsl:variable name="excessHomeCode">
-			<!-- Codes as per A&G Rules -->
-			<!-- Code	 Description -->
-			<!-- P	 $100 EXCESS -->
-			<!-- Q	 $200 EXCESS -->
-			<!-- W	 $300 EXCESS -->
-			<!-- Y	 $400 EXCESS -->
-			<!-- 0	 $500 EXCESS - DEFAULT -->
-			<!-- 5	 $750 EXCESS -->
-			<!-- A	 $1000 EXCESS -->
+			<!-- Codes as per A&G Rules based on $500 excess -->
+			<!-- Code	 Description 	Base Offset
+				 P	 	$100 EXCESS 		-400
+				 Q	 	$200 EXCESS 		-300
+				 W	 	$300 EXCESS 		-200
+				 Y	 	$400 EXCESS 		-100
+				 0	 	$500 EXCESS 		0
+				 5	 	$750 EXCESS 		+250
+				 A	 	$1000 EXCESS 		+500
+				 R	 	$1500 EXCESS 		+1000
+				 S	 	$2000 EXCESS 		+1500
+				 T		$3000 EXCESS		+2500
+				 U		$4000 EXCESS		+3500
+				 V		$5000 EXCESS		+4500
+			-->
+
 			<xsl:choose>
 				<xsl:when test="$homeExcessToUse = 100">P</xsl:when>
 				<xsl:when test="$homeExcessToUse = 200">Q</xsl:when>
@@ -81,6 +88,11 @@
 				<xsl:when test="$homeExcessToUse = 500">0</xsl:when>
 				<xsl:when test="$homeExcessToUse = 750">5</xsl:when>
 				<xsl:when test="$homeExcessToUse = 1000">A</xsl:when>
+				<xsl:when test="$homeExcessToUse = 1500">R</xsl:when>
+				<xsl:when test="$homeExcessToUse = 2000">S</xsl:when>
+				<xsl:when test="$homeExcessToUse = 3000">T</xsl:when>
+				<xsl:when test="$homeExcessToUse = 4000">U</xsl:when>
+				<xsl:when test="$homeExcessToUse = 5000">V</xsl:when>
 				<xsl:otherwise>0</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -97,15 +109,21 @@
 		</xsl:variable>
 
 		<xsl:variable name="excessContentsCode">
-			<!-- Codes as per A&G Rules -->
-			<!-- Code	 Description -->
-			<!-- P	 $100 EXCESS -->
-			<!-- Q	 $200 EXCESS -->
-			<!-- W	 $300 EXCESS -->
-			<!-- Y	 $400 EXCESS -->
-			<!-- 0	 $500 EXCESS - DEFAULT -->
-			<!-- 5	 $750 EXCESS -->
-			<!-- A	 $1000 EXCESS -->
+			<!-- Codes as per A&G Rules based on $500 excess -->
+			<!-- Code	 Description 	Base Offset
+				 P	 	$100 EXCESS 		-400
+				 Q	 	$200 EXCESS 		-300
+				 W	 	$300 EXCESS 		-200
+				 Y	 	$400 EXCESS 		-100
+				 0	 	$500 EXCESS 		0
+				 5	 	$750 EXCESS 		+250
+				 A	 	$1000 EXCESS 		+500
+				 R	 	$1500 EXCESS 		+1000
+				 S	 	$2000 EXCESS 		+1500
+				 T		$3000 EXCESS		+2500
+				 U		$4000 EXCESS		+3500
+				 V		$5000 EXCESS		+4500
+			-->
 			<xsl:choose>
 				<xsl:when test="$contentsExcessToUse = 100">P</xsl:when>
 				<xsl:when test="$contentsExcessToUse = 200">Q</xsl:when>
