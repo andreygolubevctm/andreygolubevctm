@@ -47,7 +47,7 @@ public class RequestAdapter {
         Vehicle vehicle = new Vehicle();
         vehicle.setMake(quoteVehicle.getMake());
         vehicle.setModel(quoteVehicle.getModel());
-        vehicle.setYear(quoteVehicle.getYear());
+        vehicle.setYear(Integer.parseInt(quoteVehicle.getYear()));
         vehicle.setBody(quoteVehicle.getBody());
         vehicle.setTransmission(quoteVehicle.getTrans());
         vehicle.setFuelType(quoteVehicle.getFuel());

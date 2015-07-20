@@ -42,6 +42,8 @@ import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.apache.cxf.transport.common.gzip.GZIPInInterceptor;
 import org.apache.cxf.transport.common.gzip.GZIPOutInterceptor;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -53,6 +55,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.ctm.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
 import static java.util.Arrays.asList;
@@ -61,6 +64,7 @@ import static java.util.Arrays.asList;
 public class CarQuoteRouter {
 
     public static final String SERVICE_URL = "serviceUrl";
+    public static final String TIMEOUT_MILLIS = "timeoutMillis";
 
     @POST
     @Path("/quote/get.json")
@@ -139,11 +143,17 @@ public class CarQuoteRouter {
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         final String url = serviceConfiguration.getPropertyValueByKey(SERVICE_URL, 0, 0, SERVICE);
+        final long timeout = Long.parseLong(serviceConfiguration.getPropertyValueByKey(TIMEOUT_MILLIS, 0, 0, SERVICE));
 
         final WebClient client = WebClient.create(url, asList(new JacksonJsonProvider(objectMapper)), true);
         final ClientConfiguration config = client.getConfig(client);
         config.getInInterceptors().add(new GZIPInInterceptor());
         config.getOutInterceptors().add(new GZIPOutInterceptor());
+        HTTPConduit httpConduit = (HTTPConduit)config.getConduit();
+        HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+        httpClientPolicy.setConnectionTimeout(TimeUnit.MILLISECONDS.toMillis(timeout));
+        httpClientPolicy.setReceiveTimeout(TimeUnit.MILLISECONDS.toMillis(timeout));
+        httpConduit.setClient(httpClientPolicy);
 
         final Response response = client
                 .path("quote")

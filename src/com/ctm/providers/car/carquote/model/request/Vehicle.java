@@ -10,7 +10,7 @@ public class Vehicle {
 
     private String model;
 
-    private String year;
+    private Integer year;
 
     private String body;
 
@@ -56,11 +56,11 @@ public class Vehicle {
         this.model = model;
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
