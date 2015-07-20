@@ -136,7 +136,11 @@
 
 		var policyType = meerkat.modules.travel.getVerticalFilter(),
 			destinations = $('#travel_destination').val(),
-			isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled();
+			isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled(),
+			currentProduct,
+			previousProduct;
+
+		console.log("ZZZZZZZZZZZZ", products);
 		_.each(products, function massageJson(result, index) {
 
 			if(typeof result.info !== 'object') {
@@ -188,6 +192,16 @@
 					}
 				}
 			}
+
+			// alternate any pricing results if two or more results have the exact same price
+			previousProduct = currentProduct;
+			currentProduct = result;
+			if ((typeof previousProduct.available !== 'undefined' && typeof currentProduct.available !== 'undefined') && (previousProduct.available == 'Y' && currentProduct.available == 'Y') && (previousProduct.service != currentProduct.service) && (previousProduct.price == currentProduct.price) && (meerkat.modules.transactionId.get() % 2 === 0)) {
+				// swap the products around
+				result[index] = previousProduct;
+				result[index - 1] = currentProduct;
+			}
+
 		});
 		return products;
 	}
