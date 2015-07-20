@@ -11,7 +11,7 @@
 
 <div id="rego-lookup-form">
     <form_new:row label="State">
-        <field_new:array_select xpath="${xpath}/searchState" includeInForm="false" items="=Please choose...,ACT=Canberra,NT=Northern Territory,NSW=New South Wales,QLD=Queensland,SA=South Australia,TAS=Tasmania,VIC=Victoria,WA=Western Australia" title="state vehicle registered" required="false" className="rego-lookup-state sessioncamexclude" />
+        <field_new:array_select xpath="${xpath}/searchState" includeInForm="false" items="=Please choose...,ACT=Australian Capital Territory,NT=Northern Territory,NSW=New South Wales,QLD=Queensland,SA=South Australia,TAS=Tasmania,VIC=Victoria,WA=Western Australia" title="state vehicle registered" required="false" className="rego-lookup-state sessioncamexclude" />
     </form_new:row>
     <form_new:row label="Enter your car's registration no." className="rego-entry-row">
         <div class="col-xs-12 col-sm-6 rego-lookup-number-col">
