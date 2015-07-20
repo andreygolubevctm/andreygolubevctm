@@ -5,7 +5,7 @@
 		<postCode>4066</postCode>
 		<contactNumber>0400123123</contactNumber>
 		<contactNumberinput>(0400) 123 123</contactNumberinput>
-		<email>kram@kram.com</email>
+		<email>preload.testing@comparethemarket.com.au</email>
 		<call>N</call>
 	</contactDetails>
 	<primary>
@@ -15,11 +15,11 @@
 			<trauma>150000</trauma>
 			<frequency>M</frequency>
 			<type>S</type>
-			<partner>N</partner>
+			<partner>Y</partner>
 			<samecover>Y</samecover>
 		</insurance>
-		<firstName>Joe Blogs</firstName>
-		<lastname>Nodrems</lastname>
+		<firstName>Joe</firstName>
+		<lastname>Blogs</lastname>
 		<gender>M</gender>
 		<dob>25/01/1967</dob>
 		<smoker>N</smoker>
@@ -35,8 +35,8 @@
 			<tpd>125000</tpd>
 			<trauma>75000</trauma>
 		</insurance>
-		<firstName>Kramette</firstName>
-		<lastname>Nodrems</lastname>
+		<firstName>Josephine</firstName>
+		<lastname>Bloggs</lastname>
 		<gender>F</gender>
 		<dob>11/07/1971</dob>
 		<smoker>N</smoker>
