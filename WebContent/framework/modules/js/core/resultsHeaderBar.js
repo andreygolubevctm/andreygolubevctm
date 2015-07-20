@@ -113,18 +113,14 @@
 		if(isContentAffixed() && contentAnimating === false){
 			contentAnimating = true;
 			var top = $(window).scrollTop()+navBarHeight-$resultsContainer.offset().top;			
-			$resultsContainer.find(".result").css("top", top+'px');
-			$resultsContainer.removeClass("affixed");
-			$resultsContainer.addClass("affixed-absoluted");
+			$resultsContainer.find(".result").css("top", top+'px').removeClass("affixed").addClass("affixed-absoluted");
 		}
 	}
 
 	function onAnimationEnd(){
 		if(isContentAffixedForPagination() && contentAnimating === true){
 			contentAnimating = false;
-			$resultsContainer.removeClass("affixed-absoluted");
-			$resultsContainer.addClass("affixed");
-			$resultsContainer.find(".result").css("top", '');
+			$resultsContainer.removeClass("affixed-absoluted").addClass("affixed").find(".result").css("top", '');
 		}
 	}
 
@@ -183,12 +179,11 @@
 		}
 
 		// when repositioning the results (i.e. breakpoint change), this event is triggered. Fixed headers don't reposition so we force them to
-		$(Results.settings.elements.resultsContainer).off("pagination.instantScroll").on("pagination.instantScroll", refreshHeadersLayout);
-		$(Results.settings.elements.resultsContainer).off("pagination.scrolling.start").on("pagination.scrolling.start", onAnimationStart);
-		$(Results.settings.elements.resultsContainer).off("pagination.scrolling.end").on("pagination.scrolling.end",onAnimationEnd);
-
-		$(Results.settings.elements.resultsContainer).off("results.view.animation.start").on("results.view.animation.start", onAnimationStart);
-		$(Results.settings.elements.resultsContainer).off("results.view.animation.end").on("results.view.animation.end",onAnimationEnd);
+		$(Results.settings.elements.resultsContainer).off("pagination.instantScroll").on("pagination.instantScroll", refreshHeadersLayout)
+			.off("pagination.scrolling.start").on("pagination.scrolling.start", onAnimationStart)
+			.off("pagination.scrolling.end").on("pagination.scrolling.end",onAnimationEnd)
+			.off("results.view.animation.start").on("results.view.animation.start", onAnimationStart)
+			.off("results.view.animation.end").on("results.view.animation.end",onAnimationEnd);
 
 		// opening any of the Simples dialogue needs to refresh the header bar top offset value
 		$resultsHeaderBg.prevAll(".simples-dialogue.toggle").off("click.updateHeaderBarOffset").on("click.updateHeaderBarOffset",function(){
