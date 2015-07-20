@@ -956,10 +956,10 @@ public class HealthPriceDao {
 		try {
 			PreparedStatement stmt;
 			stmt = dbSource.getConnection().prepareStatement(
-					"SELECT text "
+					"SELECT Text "
 					+ "FROM ctm.product_properties_ext "
-					+ "WHERE productid = ? "
-					+ "AND type = 'M'"
+					+ "WHERE ProductId = ? "
+					+ "AND Type = 'M'"
 			);
 			stmt.setString(1, healthPriceResult.getProductId());
 
@@ -985,22 +985,22 @@ public class HealthPriceDao {
 			PreparedStatement stmt;
 			stmt = dbSource.getConnection().prepareStatement(
 					"SELECT a.ProviderId, pp.Text AS FundCode, pp2.Status AS isRestricted, a.Name" +
-							" FROM stylecode_providers a" +
-							" LEFT JOIN provider_properties pp" +
-							" ON pp.providerId = a.ProviderId AND pp.PropertyId = 'FundCode'" +
-							" LEFT JOIN provider_properties pp2\n" +
-							" ON pp2.providerId = a.ProviderId AND pp2.PropertyId = 'RestrictedFund'" +
+							" FROM ctm.stylecode_providers a" +
+							" LEFT JOIN ctm.provider_properties pp" +
+							" ON pp.ProviderId = a.ProviderId AND pp.PropertyId = 'FundCode'" +
+							" LEFT JOIN ctm.provider_properties pp2\n" +
+							" ON pp2.ProviderId = a.ProviderId AND pp2.PropertyId = 'RestrictedFund'" +
 							" WHERE a.styleCodeId = ?" +
-							" AND a.providerid NOT IN (" +
+							" AND a.ProviderId NOT IN (" +
 							" SELECT spe.providerId FROM ctm.stylecode_provider_exclusions spe" +
 							" WHERE spe.verticalId = 4" +
 							" AND (spe.styleCodeId = a.styleCodeId OR spe.styleCodeId = 0)" +
 							" AND now() between spe.excludeDateFrom AND spe.excludeDateTo" +
 							" )" +
-							" AND a.providerid = (" +
-							" SELECT pm.providerid FROM ctm.product_master pm" +
-							" WHERE pm.providerid = a.providerid" +
-							" AND pm.productCat = 'HEALTH'" +
+							" AND a.ProviderId = (" +
+							" SELECT pm.ProviderId FROM ctm.product_master pm" +
+							" WHERE pm.ProviderId = a.ProviderId" +
+							" AND pm.ProductCat = 'HEALTH'" +
 							" LIMIT 1" +
 							" )" +
 							" GROUP BY a.ProviderId, a.Name" +
