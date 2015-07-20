@@ -12,6 +12,7 @@
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
 <%@ attribute fragment="true" required="true" name="body_end" %>
+<%@ attribute fragment="true" required="false" name="additional_meerkat_scripts" %>
 
 <%@ attribute fragment="true" required="false" name="header" %>
 <%@ attribute fragment="true" required="false" name="header_button_left" %>
@@ -66,10 +67,16 @@
 
 	<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 	<c:choose>
-		<c:when test="${pageSettings.getVerticalCode() == 'generic' and pageSettings.getBrandCode() == 'ctm'}">
+		<c:when test="${pageSettings.getVerticalCode() == 'generic'}">
 		</c:when>
+		<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
+		<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">
+			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/lmi.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		</c:when>
+		<%-- END HACK FOR LMI --%>
 		<c:otherwise>
-	<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 		</c:otherwise>
 	</c:choose>
 
@@ -271,13 +278,21 @@
 <script src="${assetUrl}common/javascript/utilities.js?${revision}"></script>
 
 		<!--  Meerkat -->
-<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+		<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 		<c:choose>
+			<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
+			<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">
+				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/lmi.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+			</c:when>
+			<%-- END HACK FOR LMI --%>
 			<c:when test="${pageSettings.getVerticalCode() != 'generic'}">
-<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 			</c:when>
 		</c:choose>
 
+		<%-- Additional Meerkat Scripts --%>
+		<jsp:invoke fragment="additional_meerkat_scripts" />
 		<!-- CouponId from either brochure site cookies or direct query string -->
 		<c:choose>
 			<c:when test="${not empty param.couponid}">
@@ -364,18 +379,18 @@
 
 				})(window.meerkat);
 
-				_.templateSettings = {
-				evaluate:    /\{\{(.+?)\}\}/g, // {{= console.log("blah") }}
-				interpolate: /\{\{=(.+?)\}\}/g, // {{ title }}
-				escape:      /\{\{-(.+?)\}\}/g // {{{ title }}}
-				};
+			_.templateSettings = {
+				evaluate:    /\{\{(.+?)\}\}/g, <%-- {{= console.log("blah") }} --%>
+				interpolate: /\{\{=(.+?)\}\}/g, <%-- {{ title }} --%>
+				escape:      /\{\{-(.+?)\}\}/g <%-- {{{ title }}} --%>
+			};
 
 			</script>
 
 </c:if>
 
-		<!-- Body End Fragment -->
-			<jsp:invoke fragment="body_end" />
+		<%-- Body End Fragment --%>
+		<jsp:invoke fragment="body_end" />
 		<%-- Generally VerticalSettings should be declared in a <vertical>/settings.tag file placed in the body_end fragment space. --%>
 		<script>
 

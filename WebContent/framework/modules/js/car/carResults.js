@@ -373,7 +373,7 @@
 		// Hovering a row cell adds a class to the whole row to make it highlightable
 		$(document).on("FeaturesRendered", function(){
 
-			$(Features.target + " .expandable > " + Results.settings.elements.features.values).on("mouseenter", function(){
+			$(Features.target + " .expandable > " + Results.settings.elements.features.values).off('mouseenter mouseleave').on("mouseenter", function(){
 				var featureId = $(this).attr("data-featureId");
 				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
 

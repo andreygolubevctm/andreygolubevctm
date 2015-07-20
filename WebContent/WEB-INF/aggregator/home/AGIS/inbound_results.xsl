@@ -313,20 +313,8 @@
 			<xsl:otherwise><xsl:value-of select="$price/name" /></xsl:otherwise>
 		</xsl:choose>
 	</name>
-	<des><xsl:value-of select="$price/des" /></des>
-	<description>
-		<!-- This is a temporary measure until the service can dynamically pass the product description -->
-		<xsl:call-template name="description" >
-			<xsl:with-param name="productId" select="$productId" />
-			<xsl:with-param name="productType" select="$productType" />
-		</xsl:call-template>
-	</description>
-	<offer>
-		<xsl:call-template name="offer" >
-			<xsl:with-param name="productId" select="$productId" />
-			<xsl:with-param name="productType" select="$productType" />
-		</xsl:call-template>
-	</offer>
+	<description><xsl:value-of select="$price/des" /></description>
+	<offer><xsl:value-of select="$price/feature" /></offer>
 	<info><xsl:value-of select="$price/info" /></info>
 	<terms><xsl:value-of select="$price/terms" /></terms>
 </xsl:template>
