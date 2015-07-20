@@ -5,6 +5,7 @@ package com.ctm.services;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import eu.bitwalker.useragentutils.UserAgent;
@@ -14,6 +15,8 @@ import eu.bitwalker.useragentutils.OperatingSystem;
 
 
 public class UserAgentSniffer {
+
+	 	final static Logger logger = Logger.getLogger(UserAgentSniffer.class);
 	/**
 	 * Retrieve the browser's top level name e.g. CHROME, OPERA, IE, SAFARI,
 	 * @param userAgent
@@ -21,7 +24,11 @@ public class UserAgentSniffer {
 	 */
 	public static String getBrowserName(String userAgent) {
 		Browser ua = Browser.parseUserAgentString(userAgent);
-		String browserName = ua.getGroup().toString();
+		String browserName = "";
+		if(ua != null) {
+			browserName = ua.getGroup().toString();
+		}
+		logger.info("BrowserName:"+browserName);
 		return browserName;
 	}
 	/**
@@ -31,8 +38,14 @@ public class UserAgentSniffer {
 	 */
 	public static Integer getBrowserVersion(String userAgent) {
 		UserAgent ua = UserAgent.parseUserAgentString(userAgent);
-		Version browserVersion = ua.getBrowserVersion();
-		int majVersion = Integer.parseInt(browserVersion.getMajorVersion());
+		int majVersion = 0;
+		if(ua != null ) {
+			Version browserVersion = ua.getBrowserVersion();
+			if(browserVersion != null) {
+				majVersion = Integer.parseInt(browserVersion.getMajorVersion());
+			}
+		}
+		logger.info("BrowserVersion:"+majVersion);
 		return majVersion;
 	}
 	/**
@@ -43,6 +56,7 @@ public class UserAgentSniffer {
 	public static String getOperatingSystem(String userAgent) {
 		OperatingSystem ua = OperatingSystem.parseUserAgentString(userAgent);
 		String group = ua.getGroup().toString();
+		logger.info("OSi:"+group);
 		return group;
 	}
 	/**
@@ -52,7 +66,11 @@ public class UserAgentSniffer {
 	 */
 	public static String getDeviceType(String userAgent) {
 		OperatingSystem ua = OperatingSystem.parseUserAgentString(userAgent);
-		String deviceType = ua.getDeviceType().toString();
+		String deviceType = "";
+		if(ua != null) {
+			deviceType = ua.getDeviceType().toString();
+		}
+		logger.info("DeviceType:"+deviceType);
 		return deviceType;
 	}
 	/**
