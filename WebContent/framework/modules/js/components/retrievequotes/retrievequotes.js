@@ -72,6 +72,8 @@
                         }
                         meerkat.modules.retrievequotesLogin.handleLoginFailure(jqXHR, textStatus, errorThrown);
                         return;
+                    }).always(function() {
+                        meerkat.modules.loadingAnimation.hide($(".btn-login"));
                     });
                 }
             }
