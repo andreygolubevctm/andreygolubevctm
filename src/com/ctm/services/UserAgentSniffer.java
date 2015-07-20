@@ -16,7 +16,7 @@ import eu.bitwalker.useragentutils.OperatingSystem;
 
 public class UserAgentSniffer {
 
-	 	final static Logger logger = Logger.getLogger(UserAgentSniffer.class);
+
 	/**
 	 * Retrieve the browser's top level name e.g. CHROME, OPERA, IE, SAFARI,
 	 * @param userAgent
@@ -28,7 +28,7 @@ public class UserAgentSniffer {
 		if(ua != null) {
 			browserName = ua.getGroup().toString();
 		}
-		logger.info("BrowserName:"+browserName);
+
 		return browserName;
 	}
 	/**
@@ -45,7 +45,7 @@ public class UserAgentSniffer {
 				majVersion = Integer.parseInt(browserVersion.getMajorVersion());
 			}
 		}
-		logger.info("BrowserVersion:"+majVersion);
+
 		return majVersion;
 	}
 	/**
@@ -56,7 +56,7 @@ public class UserAgentSniffer {
 	public static String getOperatingSystem(String userAgent) {
 		OperatingSystem ua = OperatingSystem.parseUserAgentString(userAgent);
 		String group = ua.getGroup().toString();
-		logger.info("OSi:"+group);
+
 		return group;
 	}
 	/**
@@ -70,7 +70,7 @@ public class UserAgentSniffer {
 		if(ua != null) {
 			deviceType = ua.getDeviceType().toString();
 		}
-		logger.info("DeviceType:"+deviceType);
+
 		return deviceType;
 	}
 	/**
