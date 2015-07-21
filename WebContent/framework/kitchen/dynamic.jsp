@@ -250,11 +250,6 @@
 		<field:button xpath="quote_go" title="Search">Go</field:button>
 	</form_new:row>
 
-	<form_new:row label="captcha_code">
-		Disabled
-		<%-- <field:captcha_code required="true" /> --%>
-	</form_new:row>
-
 	<form_new:row label="cards_expiry">
 		<field:cards_expiry rule="ccExp" xpath="${xpath}/expiry" title="cards_expiry" required="true" />
 	</form_new:row>
@@ -308,22 +303,8 @@
 		<field:customisable-checkbox xpath="${xpath}/optin" theme="replicaLarge" value="Y" required="true" label="true" title="field:customisable-checkbox" errorMsg="field:customisable-checkbox errorMsg" />
 	</form_new:row>
 
-	<form_new:row label="date_range">
-		TODO Broken js
-		<%--
-		<field:date_range minDate="today" maxDate="21/01/2015" maxDateValidity="1y" showIcon="true" helpIdFrom="214" helpIdTo="215" xpath="travel/dates" inputClassName="basicDate narrow_input" labelFrom="labelFrom" labelTo="labelTo" titleFrom="titleFrom" titleTo="titleTo" required="true" />
-		--%>
-	</form_new:row>
-
 	<form_new:row label="date_text_entry">
 		<field:date_text_entry xpath="${xpath}/date" title="field:date_text_entry" required="true" />
-	</form_new:row>
-
-	<form_new:row label="driver_ncdpro (not used?)">
-		TODO Broken js
-		<%--
-		<field:driver_ncdpro xpath="" required="true" />
-		--%>
 	</form_new:row>
 
 	<form_new:row label="filler_row (not used?)">
@@ -349,14 +330,7 @@
 	</form_new:row>
 
 	<form_new:row label="<del>input_age</del>">
-		<field_new:input_age validationNoun="traveller" maxlength="2" xpath="travel/oldest" title="field:input_age" required="true" />
-	</form_new:row>
-
-	<form_new:row label="input_alphanumeric" className="wide_label">
-		TODO Broken js
-		<%--
-		<field:input_alphanumeric xpath="quote/avea/regoNumber" maxlength="10" title="field:input_alphanumeric" required="true" />
-		--%>
+		<field_new:input_age validationNoun="traveller" maxlength="2" xpath="travel/oldest" title="field_news:input_age" required="true" />
 	</form_new:row>
 
 	<form_new:row label="input_numeric">
@@ -420,39 +394,12 @@
 		<field:provider_select productCategories="HEALTH" xpath="${xpath}/singleProvider" />
 	</form_new:row>
 
-	<form_new:row label="radio_slider">
-		<%-- <field:radio_slider helpIds="1" items="1=One,2=Two,3=Three" xpath="foo" /> --%>
-		DISABLED
-	</form_new:row>
-
-	<form_new:row label="recaptcha_code">
-		Disabled
-		<%-- <field:recaptcha_code required="true" /> --%>
-	</form_new:row>
-
-	<form_new:row label="recaptcha_input">
-		Disabled
-		<%-- <field:recaptcha_input xpath="foooo" title="field:recaptcha_input" required="true" /> --%>
-	</form_new:row>
-
-	<form_new:row label="sar_captcha_code">
-		Disabled
-		<%-- <field:sar_captcha_code required="true" /> --%>
-	</form_new:row>
-
 	<form_new:row label="slider">
 		<field:slider helpId="16" title="Excess: " id="health_excess2" value="4" />
 	</form_new:row>
 
 	<form_new:row label="state_select">
 		<field:state_select xpath="${xpath}/identification/state" useFullNames="true" title="field:state_select" required="true" />
-	</form_new:row>
-
-	<form_new:row label="suburb_postcode (not used?)">
-		Replaced with field_new:lookup_suburb_postcode
-		<%--
-		<field:suburb_postcode xpath="foooo" placeholder="Placeholder" id="suburb_postcode" />
-		--%>
 	</form_new:row>
 
 	<form_new:row label="textarea">
@@ -598,7 +545,7 @@
 	</form_new:row>
 
 	<form_new:row label="input_age">
-		<field_new:input_age validationNoun="traveller" maxlength="2" xpath="${xpath}/new/inputAge" title="field:input_age" required="true" />
+		<field_new:input_age validationNoun="traveller" maxlength="2" xpath="${xpath}/new/inputAge" title="field_new:input_age" required="true" />
 	</form_new:row>
 
 	<form_new:row label="medicare_number">
