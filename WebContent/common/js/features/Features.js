@@ -267,8 +267,10 @@ Features = {
 	},
 
 	simpleDecodeHTML: function(input) {
-		input = input.replace(/&lt;/gi,"<");
-		input = input.replace(/&gt;/gi,">");
+		if(typeof input === "string") {
+			input = input.replace(/&lt;/gi, "<");
+			input = input.replace(/&gt;/gi, ">");
+		}
 		return input;
 	},
 
@@ -426,12 +428,11 @@ Features = {
 		$.each( Features.featuresIds, function( featureIdIndex, featureId ){
 			var found = false;
 			var $currentRow = $('[data-featureId="' + featureId + '"]', $container);
-
 			$currentRow.each(function(){
 					var value = $.trim($(this).text());
 					if( !found && value != '' && value != "&nbsp;" ){
 						found = true;
-						return; //break out
+						return false; //break out
 					}
 			});
 			if(!found){
@@ -451,7 +452,7 @@ Features = {
 					var value = $.trim($(this).text());
 					if( !found && value != '' && value != "&nbsp;" ){
 						found = true;
-						return; //break out
+						return false; //break out
 					}
 			});
 			if(!found) {
