@@ -24,7 +24,7 @@
     <form_new:row label="Postcode / Suburb" fieldXpath="${fieldXPath}" className="clear">
         <field_new:lookup_suburb_postcode xpath="${fieldXPath}" placeholder="Your postcode / suburb." required="true" />
 
-        <go:validate selector="${go:nameFromXpath(fieldXPath)}" rule="validateLocation" parm="true" message="Please select a valid postcode" />
+        <go:validate selector="${go:nameFromXpath(fieldXPath)}" rule="validateLocation" parm="true" message="Please select a valid location" />
 
         <field:hidden xpath="${xpath}/postcode" defaultValue="N" />
         <field:hidden xpath="${xpath}/suburb" defaultValue="N" />
@@ -83,16 +83,13 @@
 
 <go:script marker="js-head">
     $.validator.addMethod("validateLocation", function(value, element) {
-        var postcode_match = new RegExp(/^(\s)*\d{4}(\s)*$/),
-            search_match = new RegExp(/^((\s)*[\w\-]+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
+        var search_match = new RegExp(/^((\s)*[\w\-]+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
 
         value = $.trim(String(value));
         value = value.replace("'","");
 
-        if( value != '' ) {
-            if(value.match(postcode_match) || value.match(search_match)) {
-                return true;
-            }
+        if(value != '' && value.match(search_match)) {
+            return true;
         }
 
         return false;
