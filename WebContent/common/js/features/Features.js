@@ -250,9 +250,7 @@ Features = {
 		return html;
 	},
 
-	parseFeatureValue: function(value, decode) {
-
-		decode = decode || false;
+	parseFeatureValue: function(value) {
 
 		if (typeof value === 'undefined' || value === '') {
 			value = "&nbsp;";
@@ -263,13 +261,7 @@ Features = {
 			}
 		}
 
-		return decode === true ? Features.simpleDecodeHTML(value) : value;
-	},
-
-	simpleDecodeHTML: function(input) {
-		input = input.replace(/&lt;/gi,"<");
-		input = input.replace(/&gt;/gi,">");
-		return input;
+		return value;
 	},
 
 	setExpandableRows: function(){
