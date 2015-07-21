@@ -592,7 +592,7 @@
 						</Group>
 						<Agency>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
-							<AgencyID>CTM</AgencyID>
+							<AgencyID>CTMOMS</AgencyID>
 						</Agency>
 						<Site>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
@@ -604,7 +604,7 @@
 				<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 				</hsl:xmlFile>
 				<hsl:BrokerID>CTM</hsl:BrokerID>
-				<hsl:AgentID>CTMOMS</hsl:AgentID>
+				<hsl:AgentID>CTM</hsl:AgentID>
 				</hsl:SubmitMembership>
 			</soap:Body>
 		</soap:Envelope>
