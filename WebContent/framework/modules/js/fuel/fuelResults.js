@@ -240,7 +240,7 @@
     }
 
     function init() {
-
+        meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
     }
 
     function _openRegionalModal() {

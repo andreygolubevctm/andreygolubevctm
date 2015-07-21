@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="https://ecommerce.disconline.com.au/services/schema/3.1/message_centre_create_message_wsdl" xmlns="https://ecommerce.disconline.com.au/services/schema/3.1/message_centre_create_message_wsdl" xmlns:mccm="https://ecommerce.disconline.com.au/services/schema/3.1/message_centre_create_message" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	
+	 <wsdl:types>
+
+		  <xs:schema targetNamespace="https://ecommerce.disconline.com.au/services/schema/3.1/message_centre_create_message_wsdl">
+
+			   <xs:import namespace="https://ecommerce.disconline.com.au/services/schema/3.1/message_centre_create_message" schemaLocation="message_centre_create_message.xsd"/>
+
+		  </xs:schema>
+
+	 </wsdl:types>
+
+
+	 <wsdl:message name="messageCentreRequest">
+
+	  <wsdl:part element="mccm:request" name="body"/>
+	
+	 </wsdl:message>
+
+	 <wsdl:message name="messageCentreResponse">
+
+		  <wsdl:part element="mccm:response" name="body"/>
+
+	 </wsdl:message>
+
+
+	 <wsdl:portType name="messageCentrePort">
+
+		  <wsdl:operation name="messageCentre">
+
+			   <wsdl:input message="messageCentreRequest" name="request"/>
+
+			   <wsdl:output message="messageCentreResponse" name="response"/>
+
+		  </wsdl:operation>
+
+	 </wsdl:portType>
+
+
+	 <wsdl:binding name="messageCentreBinding" type="messageCentrePort">
+
+		  <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+		  <wsdl:operation name="messageCentre">
+
+			   <soap:operation soapAction="messageCentre"/>
+
+			   <wsdl:input>
+
+				    <soap:body use="literal"/>
+
+			   </wsdl:input>
+
+			   <wsdl:output>
+
+				    <soap:body use="literal"/>
+
+			   </wsdl:output>
+
+		  </wsdl:operation>
+
+	 </wsdl:binding>
+
+
+	 <wsdl:service name="messageCentre">
+
+		  <wsdl:port binding="messageCentreBinding" name="messageCentrePort">
+
+			   <soap:address location="https://nxq.ecommerce.disconline.com.au/services/3.1/messageCentreCreateMessage"/>
+
+		  </wsdl:port>
+
+	 </wsdl:service>
+
+
+</wsdl:definitions>
