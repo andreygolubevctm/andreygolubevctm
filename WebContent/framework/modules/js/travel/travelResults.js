@@ -88,7 +88,8 @@
 				},
 				sort: { // check in health
 					sortBy: 'price.premium',
-					sortDir: 'asc'
+					sortDir: 'asc',
+					randomizeMatchingPremiums: true
 				},
 				frequency: "premium",
 				animation: {

@@ -315,6 +315,37 @@ ResultsModel = {
 					Results.model.addFilter( "availability.price." + Results.settings.frequency, "value", options );
 				}
 
+				if (Results.settings.sort.randomizeMatchingPremiums === true) {
+					// do a pre-sort first as working on the returned products won't work because all the products are returned grouped by provider
+					Results.model.sort(false);
+
+					var  currentProduct,
+						previousProduct,
+						newProductOrder = [];
+
+					// loop through all the sorted products
+					_.each(Results.model.sortedProducts, function massageSortedProducts(result, index){
+
+						// alternate any pricing results if two or more results have the exact same price
+						previousProduct = currentProduct;
+						currentProduct = result;
+
+						if ((typeof previousProduct !== 'undefined' && typeof currentProduct !== 'undefined')  && (previousProduct.available == 'Y' && currentProduct.available == 'Y')
+							&& (previousProduct.service != currentProduct.service) && (previousProduct.price == currentProduct.price) && (meerkat.modules.transactionId.get() % 2 === 0)
+						) {
+							// swap the products around
+							newProductOrder[index] = previousProduct;
+							newProductOrder[index - 1] = currentProduct;
+						} else {
+							// otherwise just add the products as per normal
+							newProductOrder[index] = result;
+						}
+					});
+
+					Results.model.returnedProducts = newProductOrder; // set the new order (if there was a re-order)
+					Results.model.sortedProducts = []; // reset the sortedProducts array
+				}
+
 				Results.model.filterAndSort(false);
 
 				Results.view.show();
