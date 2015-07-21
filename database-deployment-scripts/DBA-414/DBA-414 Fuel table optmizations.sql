@@ -29,7 +29,7 @@ ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE `state` `state` ENUM('ACT','
 ALTER ONLINE TABLE `aggregator`.`fuel_sites` ADD INDEX `postcode_idx` (`PostCode`);
 ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE PostCode PostCode SMALLINT NOT NULL;
 ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE Lat Lat FLOAT DEFAULT NULL;
-ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE Lon Lon FLOAT DEFAULT NULL;
+ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE `Long` `Long` FLOAT DEFAULT NULL;
 ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE Name Name VARCHAR(255) NOT NULL;
 
 
