@@ -78,10 +78,11 @@
 
         // If the residential and postal addresses are the same on entering this page, tick the postal match checkbox
         var residentialAddressValues = _getSerializedAddressValues($(".elasticsearch_container_utilities_application_details_address")),
-            postalAddressValues = _getSerializedAddressValues($(".elasticsearch_container_utilities_application_details_postal")),
-            isPostalMatch = (residentialAddressValues == postalAddressValues);
+            postalAddressValues = _getSerializedAddressValues($(".elasticsearch_container_utilities_application_details_postal"));
 
-        $("#utilities_application_details_postalMatch").prop("checked", isPostalMatch).trigger("change");
+        if(residentialAddressValues == postalAddressValues) {
+            $("#utilities_application_details_postalMatch").prop("checked", true).trigger("change");
+        }
     }
 
     function _getSerializedAddressValues($el) {
