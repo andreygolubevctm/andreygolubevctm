@@ -57,6 +57,16 @@ public class LifeLeadFeedService extends LeadFeedService {
 		return processGateway(LeadType.BEST_PRICE, leadData, TouchType.LEAD_FEED);
 	}
 
+	/**
+	 * New lead request - mirrors callback lead but uses different touch type
+	 * @param leadData
+	 * @return
+	 * @throws LeadFeedException
+	 */
+	public LeadResponseStatus policySold(LeadFeedData leadData) throws LeadFeedException {
+		return processGateway(LeadType.CALL_ME_BACK, leadData, TouchType.SOLD);
+	}
+
 	protected Boolean recordTouch(String touchType, LeadFeedData leadData) {
 		AccessTouchService touchService = new AccessTouchService();
 

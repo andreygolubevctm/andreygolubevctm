@@ -30,7 +30,7 @@
 				<go:setData dataVar="data" xpath="lead/brand" value="${paramPartnerBrand}" />
 
 				<jsp:useBean id="AGISLeadFromRequest" class="com.ctm.services.life.AGISLeadFromRequest" scope="page" />
-				<c:set var="leadResultStatus" value="${AGISLeadFromRequest.newLeadFeed(pageContext.request, pageSettings, tranId)}" />
+				<c:set var="leadResultStatus" value="${AGISLeadFromRequest.newPolicySold(pageContext.request, pageSettings, tranId)}" />
 
 				<c:choose>
 					<c:when test="${leadResultStatus eq 'OK'}">
@@ -99,7 +99,7 @@
 
 				<%-- Record lead feed touch event --%>
 				<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="page" />
-				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(data.current.transactionId, "C", leadSentTo)}</c:set>
+				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(data.current.transactionId, "C", "lifebroker")}</c:set>
 				
 				<x:parse xml="${newQuoteResults}" var="newQuoteResultsOutput" />
 				<c:set var="apiReference"><x:out select="$newQuoteResultsOutput/results/client/reference" /></c:set>
@@ -164,9 +164,8 @@
 			</c:otherwise>
 		</c:choose>
 		
-		<c:set var="leadSentTo" value="${param.company eq 'ozicare' ? 'ozicare' : 'lifebroker'}" />
 		<go:setData dataVar="data" xpath="current/transactionId" value="${data.current.transactionId}" />
-		<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data.life}" /></c:set>
+		<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data[vertical]}" /></c:set>
 	</c:when>
 	<c:otherwise>
 		<c:set var="resultXml">

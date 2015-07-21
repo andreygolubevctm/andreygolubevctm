@@ -18,8 +18,16 @@ import com.disc_au.web.go.Data;
 public class AGISLeadFromRequest {
 
 	private Logger logger = Logger.getLogger(AGISLeadFromRequest.class);
-	
+
+	public String newPolicySold(HttpServletRequest request, PageSettings pageSettings, String transactionId) {
+		return process(request, pageSettings, transactionId, true);
+	}
+
 	public String newLeadFeed(HttpServletRequest request, PageSettings pageSettings, String transactionId) {
+		return process(request, pageSettings, transactionId, false);
+	}
+	
+	public String process(HttpServletRequest request, PageSettings pageSettings, String transactionId, Boolean policySold) {
 
 		LeadFeedService.LeadResponseStatus output = LeadFeedService.LeadResponseStatus.FAILURE;
 
@@ -60,7 +68,11 @@ public class AGISLeadFromRequest {
 			// Call Lead Feed Service
 			LeadFeedData leadDataPack = lead;
 			LifeLeadFeedService service = new LifeLeadFeedService();
-			output = service.callMeBack(leadDataPack);
+			if(policySold == true) {
+				output = service.policySold(leadDataPack);
+			} else {
+				output = service.callMeBack(leadDataPack);
+			}
 		} catch (Exception e) {
 			logger.error("[lead feed] Exception thrown: " + e.getMessage(), e);
 		}

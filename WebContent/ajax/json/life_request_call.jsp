@@ -100,7 +100,7 @@
 								<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 
 								<%-- Record lead feed touch event --%>
-								<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "CB", leadSentTo)}</c:set>
+								<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "CB", "lifebroker")}</c:set>
 
 								<go:log level="DEBUG" source="life_request_call">${resultXml}</go:log>
 								<go:log level="DEBUG" source="life_request_call">${debugXml}</go:log>
@@ -108,7 +108,7 @@
 						</c:choose>
 
 						<go:setData dataVar="data" xpath="current/transactionId" value="${data.current.transactionId}" />
-						<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data.life}" /></c:set>
+						<c:set var="writeQuoteResponse"><agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data[vertical]}" /></c:set>
 					</c:when>
 					<c:otherwise>
 						<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
