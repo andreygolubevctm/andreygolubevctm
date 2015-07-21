@@ -29,7 +29,7 @@
                     <%-- This will be fixed/moved during the refactor. In reality this model should be complete before we need to render these items. --%>
 					<c:when test="${item.getResultPath() != null && item.getResultPath() != ''}">
 						<c:forTokens delims="," items="${item.getResultPath()}" var="splitPath">
-							{{ var pathValue = Object.byString( obj, '${splitPath}' ), displayValue = Features.parseFeatureValue( pathValue, true ); }}
+							{{ var pathValue = Object.byString( obj, '${splitPath}' ), displayValue = Features.parseFeatureValue( pathValue ); }}
 							<c:if test="${vertical eq 'car'}">
 								{{ var parsedValue = '' }}
 
