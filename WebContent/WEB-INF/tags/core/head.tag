@@ -83,7 +83,7 @@
 			<link rel="shortcut icon" type="image/x-icon" href="brand/${pageSettings.getBrandCode()}/graphics/favicon.ico">
 			<%-- Duplicated because of the IF --%>
 			<c:if test="${loadjQuery == true}">
-			<go:style marker="css-href" href='common/js/qtip/jquery.qtip.min.css'></go:style>
+			<go:style marker="css-href" href='framework/jquery/plugins/qtip2/jquery.qtip.min.css'></go:style>
 			</c:if>
 
 			<go:style marker="css-href" href="brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css"></go:style>
@@ -95,7 +95,7 @@
 	<go:style marker="css-href" href='common/reset.css'></go:style>
 	<go:style marker="css-href" href='common/base.css'></go:style>
 	<c:if test="${loadjQuery == true}">
-	<go:style marker="css-href" href='common/js/qtip/jquery.qtip.min.css'></go:style>
+	<go:style marker="css-href" href='framework/jquery/plugins/qtip2/jquery.qtip.min.css'></go:style>
 	</c:if>
 	<c:if test="${loadjQueryUI == true}">
 		<c:if test="${pageSettings.getSetting('jqueryStylesheet') != ''}">
@@ -165,7 +165,7 @@
 		<go:script href="common/js/jquery.titlecase.js" marker="js-href" />
 		<go:script href="common/js/jquery.aihcustom.js" marker="js-href" />
 		<go:script href="common/js/jquery.pngFix.pack.js" marker="js-href" />
-		<go:script href="common/js/qtip/jquery.qtip.min.js" marker="js-href" />
+		<go:script href="framework/jquery/plugins/qtip2/jquery.qtip.js" marker="js-href" />
 	</c:if>
 
 	<go:script href="common/js/logging.js" marker="js-href" />
