@@ -6,7 +6,7 @@ public class TravelRequest implements Request<TravelQuote> {
 
     private String clientIpAddress;
 
-    private TravelQuote quote;
+    private TravelQuote travel;
 
     private Long transactionId;
 
@@ -20,11 +20,15 @@ public class TravelRequest implements Request<TravelQuote> {
 
     @Override
     public TravelQuote getQuote() {
-        return quote;
+        return travel;
     }
 
-    public void setQuote(TravelQuote quote) {
-        this.quote = quote;
+    public void setTravel(TravelQuote quote) {
+        this.travel = quote;
+    }
+
+    public TravelQuote getTravel() {
+        return travel;
     }
 
     @Override

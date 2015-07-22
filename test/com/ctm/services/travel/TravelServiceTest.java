@@ -1,7 +1,6 @@
 package com.ctm.services.travel;
 
 import com.ctm.exceptions.DaoException;
-import com.ctm.model.request.travel.TravelRequest;
 import com.ctm.web.validation.SchemaValidationError;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +11,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class TravelServiceTest {
-
+/*
 	private static final String vertical = "travel";
 	private TravelService travelService;
 	private TravelRequest travelRequest;
@@ -24,7 +23,7 @@ public class TravelServiceTest {
 	}
 
     // TODO FIX
-/*
+
 	@Test
 	public void testShouldValidateName() throws SQLException, DaoException {
 

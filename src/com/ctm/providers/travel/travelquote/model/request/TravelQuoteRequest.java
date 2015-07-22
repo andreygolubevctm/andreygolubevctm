@@ -1,35 +1,33 @@
 package com.ctm.providers.travel.travelquote.model.request;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by twilson on 13/07/2015.
  */
 public class TravelQuoteRequest {
 
-    private String policyType;
+    private PolicyType policyType;
     private String mobileUrls;
     private int numberOfAdults;
-    private int numerOfChildren;
+    private int numberOfChildren;
     private int oldestPerson;
-    private ArrayList<String> providerFilter;
+    private ArrayList<String> providerFilter = new ArrayList<String>();
 
-    private ArrayList<String> detinations;
-    private Date fromDate;
-    private Date toDate;
+    private SingleTripDetails singleTripDetails;
+
 
     public TravelQuoteRequest(){
-
     }
 
-    public String getPolicyType() {
+    public PolicyType getPolicyType() {
         return policyType;
     }
 
-    public void setPolicyType(String policyType) {
+    public void setPolicyType(PolicyType policyType) {
         this.policyType = policyType;
     }
+
 
     public String getMobileUrls() {
         return mobileUrls;
@@ -39,6 +37,7 @@ public class TravelQuoteRequest {
         this.mobileUrls = mobileUrls;
     }
 
+
     public int getNumberOfAdults() {
         return numberOfAdults;
     }
@@ -47,12 +46,12 @@ public class TravelQuoteRequest {
         this.numberOfAdults = numberOfAdults;
     }
 
-    public int getNumerOfChildren() {
-        return numerOfChildren;
+    public int getNumberOfChildren() {
+        return numberOfChildren;
     }
 
-    public void setNumerOfChildren(int numerOfChildren) {
-        this.numerOfChildren = numerOfChildren;
+    public void setNumberOfChildren(int nubmerOfChildren) {
+        this.numberOfChildren = numberOfChildren;
     }
 
     public int getOldestPerson() {
@@ -71,27 +70,11 @@ public class TravelQuoteRequest {
         this.providerFilter = providerFilter;
     }
 
-    public ArrayList<String> getDetinations() {
-        return detinations;
+    public SingleTripDetails getSingleTripDetails() {
+        return singleTripDetails;
     }
 
-    public void setDetinations(ArrayList<String> detinations) {
-        this.detinations = detinations;
-    }
-
-    public Date getFromDate() {
-        return fromDate;
-    }
-
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public Date getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
+    public void setSingleTripDetails(SingleTripDetails singleTripDetails) {
+        this.singleTripDetails = singleTripDetails;
     }
 }

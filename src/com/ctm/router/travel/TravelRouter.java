@@ -8,7 +8,7 @@ import com.ctm.model.Info;
 import com.ctm.model.Results;
 import com.ctm.model.ResultsWrapper;
 import com.ctm.model.settings.*;
-import com.ctm.model.travel.TravelResult;
+import com.ctm.model.travel.results.TravelResult;
 import com.ctm.model.travel.form.TravelRequest;
 import com.ctm.services.*;
 import com.ctm.services.tracking.TrackingKeyService;
@@ -46,8 +46,9 @@ public class TravelRouter extends HttpServlet {
         SessionDataService service = new SessionDataService();
         String clientIpAddress = null;
         try {
+            logger.info("TRAN ID: "+data.getTransactionId());
             Data dataForTransactionId = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
-            // TODO CAN THIS HANDLE SESSION RECOVERY?
+            // TODO CAN THIS HANDLE SESSION RECOVERY? ANSWER IS NO!
             data.setTransactionId(Long.parseLong(dataForTransactionId.getString("current/transactionId")));
             clientIpAddress = (String) dataForTransactionId.get("quote/clientIpAddress");
             if (StringUtils.isBlank(clientIpAddress)) {
@@ -109,8 +110,11 @@ public class TravelRouter extends HttpServlet {
         ipCheckService.isPermittedAccess(context.getHttpServletRequest(), pageSettings);
 
         // Validate request
-        if (data == null || data.getQuote() == null) {
+        if (data == null) {
             throw new RouterException("Data quote is missing");
+        }
+        if(data.getQuote() == null){
+            throw new RouterException("Data quote is missing (2)");
         }
 
         TravelService travelService = new TravelService();
