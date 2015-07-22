@@ -431,7 +431,7 @@
 							<xsl:when test="fundData/hospitalCoverName = 'Limited Hospital 100'">20</xsl:when>
 							<xsl:when test="fundData/hospitalCoverName = 'Basic Hospital'">21</xsl:when>
 							<xsl:when test="fundData/hospitalCoverName = 'Basic Hospital Excess 500'">35</xsl:when>
-							<xsl:when test="fundData/hospitalCoverName = 'FlexiSaver'">36</xsl:when>
+							<xsl:when test="starts-with(fundData/hospitalCoverName, 'FlexiSaver')">36</xsl:when><!-- Flexisaver -->
 							<xsl:when test="starts-with(fundData/hospitalCoverName, 'Kick')">22</xsl:when><!-- Kickstart -->
 							<xsl:when test="starts-with(fundData/hospitalCoverName, 'Step')">26</xsl:when><!-- Stepup -->
 							<xsl:when test="fundData/hospitalCoverName = 'CBHS Prestige'">31</xsl:when>
@@ -448,7 +448,7 @@
 							<xsl:when test="starts-with(fundData/extrasCoverName, 'Step')">27</xsl:when><!-- Stepup -->
 							<xsl:when test="fundData/extrasCoverName = 'CBHS Prestige'">32</xsl:when>
 							<xsl:when test="starts-with(fundData/extrasCoverName, 'CBHS Prestige (')">34</xsl:when><!-- CBHS Prestige (with non-student dependant/s) -->
-							<xsl:when test="fundData/extrasCoverName = 'FlexiSaver'">37</xsl:when>
+							<xsl:when test="starts-with(fundData/hospitalCoverName, 'FlexiSaver')">37</xsl:when><!-- Flexisaver -->
 						</xsl:choose>
 					</xsl:attribute>
 					<xsl:attribute name="coverStartType">3</xsl:attribute>
