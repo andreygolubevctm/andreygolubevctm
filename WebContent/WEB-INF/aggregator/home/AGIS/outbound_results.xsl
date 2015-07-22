@@ -132,6 +132,11 @@
 				<xsl:when test="$contentsExcessToUse = 500">0</xsl:when>
 				<xsl:when test="$contentsExcessToUse = 750">5</xsl:when>
 				<xsl:when test="$contentsExcessToUse = 1000">A</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 1500">R</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 2000">S</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 3000">T</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 4000">U</xsl:when>
+				<xsl:when test="$contentsExcessToUse = 5000">V</xsl:when>
 				<xsl:otherwise>0</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
