@@ -21,7 +21,7 @@ UPDATE ctm.configuration SET configValue = 'N' WHERE configCode LIKE 'DTMEnabled
 -- Shouldn't need to be run.
 
 -- DISABLING DTM FROM 22/07/2015
--- TEST
+-- WHAT WAS RUN BY LETO IN PROD
 -- To disable DTM on Production, due to an internal network problem (see AGG-2490)
 -- INSERT INTO `ctm`.`configuration` (`configCode`, `environmentCode`, `styleCodeId`, `verticalId`, `configValue`) VALUES ('DTMEnabled', 'PRO', '1', '4', 'N');
 -- INSERT INTO `ctm`.`configuration` (`configCode`, `environmentCode`, `styleCodeId`, `verticalId`, `configValue`) VALUES ('DTMEnabled', 'PRO', '1', '14', 'N');
