@@ -59,6 +59,9 @@ public class SpecialOffersDao {
             if (offerId != 0) {
                 sql.append(" where offerId = ?  ");
             }
+
+            sql.append(" ORDER BY providerName, so.styleCodeId, so.state, so.effectiveStart, so.effectiveEnd");
+
             stmt = dbSource.getConnection().prepareStatement(sql.toString());
             if (offerId != 0) {
                 stmt.setInt(1, offerId);

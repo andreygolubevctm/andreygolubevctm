@@ -231,6 +231,11 @@
 							<error>Transaction ID is empty. Your session may have been lost; please log in again.</error>
 						</c:when>
 
+						<%-- START AGAIN FRESH (NO PRELOAD) - USED TO GET THE PROPER QUOTE ENDPOINT --%>
+						<c:when test="${param.action=='start-again-fresh'}">
+							<destUrl>${pageName}?</destUrl>
+						</c:when>
+
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES (HEALTH)--%>
 						<c:when test="${param.action=='amend' && param.vertical=='health' && data.health.privacyoptin!='Y'}">
 							<core:transaction touch="L" noResponse="true" />

@@ -177,6 +177,7 @@
 
 	meerkat.modules.register('datepicker', {
 		init: init,
+		initModule: initDatepickerModule,
 		initSeparated: initSeparatedDatepicker,
 		initComponent: initComponentDatepicker,
 		setDefaults: setDefaultSettings
