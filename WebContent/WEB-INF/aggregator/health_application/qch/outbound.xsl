@@ -486,7 +486,13 @@
 						</Class>
 
 						<!-- set to blank because of CoverRateSelection -->
-						<CoverType>BLANK</CoverType>
+						<CoverType>
+							<xsl:choose>
+								<xsl:when test="fundData/hospitalCoverName != '' and fundData/extrasCoverName!=''">C</xsl:when>
+								<xsl:when test="fundData/hospitalCoverName != ''">H</xsl:when>
+								<xsl:when test="fundData/extrasCoverName!=''">A</xsl:when>
+							</xsl:choose>
+						</CoverType>
 						<ProductSelection>BLANK</ProductSelection>
 
 						<AccountIgnored>false</AccountIgnored>
