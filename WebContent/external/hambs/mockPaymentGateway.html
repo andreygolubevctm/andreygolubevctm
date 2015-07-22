@@ -1,0 +1,286 @@
+
+
+
+<!DOCTYPE html>
+
+
+
+<html>
+<head>
+	<script type="text/javascript" src="http://nxi.secure.comparethemarket.com.au/ctm/common/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="http://nxi.secure.comparethemarket.com.au/ctm/common/js/jquery.validate-1.11.1.min.js"></script>
+	<script type="text/javascript" src="https://testservices.cua.com.au/Resources/Shared/scripts/CardValidations.js"></script>
+	<script type="text/javascript" src="https://testservices.cua.com.au/Resources/Shared/scripts/jquery/jquery.mask.js"></script>
+	<link rel="stylesheet" href="http://nxi.secure.comparethemarket.com.au/ctm/common/hambs/paymentGateway.css" />
+	<!--[if lte IE 8]>
+		<link rel="stylesheet" type="text/css" href="http://nxi.secure.comparethemarket.com.au/ctm/common/hambs/paymentGatewayNoMediaQuery.css" />
+	<![endif]-->
+
+	<title>
+	IFrame content for styling
+</title></head>
+<body>
+	<form method="post" id="theForm">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwULLTE5MTczMjI0MzFkZA==" />
+</div>
+
+
+			<input type="hidden" name="EPS_MERCHANT" id="EPS_MERCHANT" value="KNR0010" />
+			<input type="hidden" name="EPS_TYPE" id="EPS_TYPE" value="CRN" />
+			<input type="hidden" name="EPS_ACTION" id="EPS_ACTION" value="ADDCRN" />
+			<input type="hidden" name="EPS_FINGERPRINT" id="EPS_FINGERPRINT" value="dbf05cb1c883bcf3701499764c502a459ecc82ba" />
+			<input type="hidden" name="EPS_TIMESTAMP" id="EPS_TIMESTAMP" value="20140402015618" />
+			<input type="hidden" name="EPS_REDIRECT" id="EPS_REDIRECT" value="TRUE" />
+			<input type="hidden" name="EPS_CRN" id="EPS_CRN" value="MemAp020414122618152" />
+			<input type="hidden" name="EPS_RESULTPARAMS" id="EPS_RESULTPARAMS" value="TRUE" />
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-7">
+					<h2>Register your credit card details</h2>
+				</div>
+				<div class="col-sm-3" style="text-align:right; line-height:23px">Powered by NAB</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<label for="CCType">Card type</label>
+				</div>
+				<div class="col-sm-7">
+					<!-- Start error -->
+					<div class="error-field"><label for="CCType" class="has-error" style="display:none;">Please select card type</label></div>
+					<!-- End error -->
+					<select name="CCType" id="CCType" class="form-control">
+	<option value="">Please choose...</option>
+	<option value="Mcard">Mastercard</option>
+	<option value="Visa ">Visa</option>
+
+</select><br />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-4">
+					<label for="EPS_CARDNUMBER">Credit card number</label>
+				</div>
+				<div class="col-sm-7">
+					<!-- Start error -->
+					<div class="error-field"><label for="EPS_CARDNUMBER" class="has-error" style="display:none;">Please enter a valid card number</label></div>
+					<!-- End error -->
+					<input name="EPS_CARDNUMBER" type="text" id="EPS_CARDNUMBER" class="form-control" /><br />
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-4">
+					<label for="EPS_EXPIRYMONTH">Expiry date (mm/yyyy)</label>
+				</div>
+				<!-- Start error -->
+				<div class="error-field error-expirydate">
+					<label for="EPS_EXPIRYMONTH" class="has-error" style="display:none;">Please choose valid expiry date</label>
+				</div>
+				<!-- End error -->
+				<div class="col-sm-2 col-xs-6">
+					<select name="EPS_EXPIRYMONTH" id="EPS_EXPIRYMONTH" class="form-control">
+	<option value=""></option>
+	<option value="01">01</option>
+	<option value="02">02</option>
+	<option value="03">03</option>
+	<option value="04">04</option>
+	<option value="05">05</option>
+	<option value="06">06</option>
+	<option value="07">07</option>
+	<option value="08">08</option>
+	<option value="09">09</option>
+	<option value="10">10</option>
+	<option value="11">11</option>
+	<option value="12">12</option>
+
+</select>
+				</div>
+				<div class="col-sm-3 col-xs-6">
+					<select name="EPS_EXPIRYYEAR" id="EPS_EXPIRYYEAR" class="form-control">
+	<option value=""></option>
+	<option value="14">2014</option>
+	<option value="15">2015</option>
+	<option value="16">2016</option>
+	<option value="17">2017</option>
+	<option value="18">2018</option>
+	<option value="19">2019</option>
+	<option value="20">2020</option>
+	<option value="21">2021</option>
+	<option value="22">2022</option>
+	<option value="23">2023</option>
+	<option value="24">2024</option>
+
+</select><br />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-3">
+					<input type="submit" name="btnSubmit" value="Save Changes" id="btnSubmit" class="btn btn-save" />
+				</div>
+			</div>
+
+	</form>
+</body>
+	<script>
+
+	$( document ).ready(function() {
+		$('#btnSubmit').click(function (e) {
+			console.log("btnsubmit");
+			window.parent.postMessage("message", '*');
+			var data = {
+				"pan" : "5105********5100",
+				"CRN" : "12345678",
+				"rescode" : "success",
+				"restext" : "",
+				"expMonth" : $("#EPS_EXPIRYMONTH").val(),
+				"expYear" : $("#EPS_EXPIRYYEAR").val(),
+				"cardType" : $("#CCType").val()
+			}
+			window.parent.postMessage(JSON.stringify(data), "*");
+			e.preventDefault();
+		});
+	});
+
+		$(function () {
+			init();
+		});
+
+
+		function init() {
+			var hostOrigin = '*';
+			var rescode = '';
+			var restext = '';
+			var mcn = '';
+			var crn = '';
+			var expiryMonth = '';
+			var expiryYear = '';
+			var cardType = '';
+
+			parent.postMessage("page loaded", hostOrigin);
+
+			if (rescode != '') {
+				$('#EPS_EXPIRYYEAR').val(expiryYear);
+				$('#EPS_EXPIRYMONTH').val(expiryMonth);
+				$('#CCType').val(cardType);
+				SendToHost();
+			}
+
+			setValidation();
+			$('#CCType').change(maskChanged);
+			setCardMask();
+		}
+
+		function removeViewState() {
+			var vs = document.getElementById('__VIEWSTATE');
+			if (vs != null) {
+				var parentNode = vs.parentNode;
+				parentNode.removeChild(vs);
+			}
+		}
+
+		function setCardMask() {
+			var cn = $('#EPS_CARDNUMBER');
+			var em = $('#EPS_EXPIRYMONTH');
+			var ey = $('#EPS_EXPIRYYEAR');
+			cn.removeAttr('disabled');
+			em.removeAttr('disabled');
+			ey.removeAttr('disabled');
+			switch ($('#CCType').val()) {
+				case "Amex ":
+					cn.mask("9999-999999-99999");
+					break;
+				case "Diner":
+					cn.mask("9999-999999-9999");
+					break;
+				case "Mcard":
+				case "Visa ":
+				case "Bcard":
+					cn.mask("9999-9999-9999-9999");
+					break;
+				default:
+					cn.attr('disabled', 'disabled');
+					em.attr('disabled', 'disabled');
+					ey.attr('disabled', 'disabled');
+					break;
+			}
+		}
+
+		function maskChanged() {
+			setCardMask();
+			//$('#EPS_CARDNUMBER').val('');
+			//$('#EPS_EXPIRYMONTH').val('');
+			//$('#EPS_EXPIRYYEAR').val('');
+		}
+
+		function setValidation() {
+			jQuery.validator.addMethod("messages", function (value, element) {
+				return true;
+			});
+			jQuery.validator.addMethod("HAMBSCreditCardValidation", function (value, element) {
+				return ValidateCreditCard(value, $('#CCType').val());
+			});
+			jQuery.validator.addMethod("DateValidation", function (value, element) {
+				return DateValidation(value, $('#EPS_EXPIRYYEAR').val());
+			});
+			validator = $("form").validate({
+				onfocusout: false,
+				onkeyup: false,
+				onclick: false,
+				submitHandler: function (form) {
+					removeViewState();
+					var cn = $('#EPS_CARDNUMBER');
+					cn.val(cn.val().replace(/-/g, ''));
+					form.submit();
+				},
+				showErrors: function (errorMap, errorList) {
+				// reset the errors to not show on load
+					$("label.has-error").attr('style', "display:none;");
+					if (errorList.length > 0) {
+					// $debugger; will put everything in debug mode so you can see what is happening.
+					//display the error message
+						$(errorList).each(function ()
+						{
+							$("label.has-error[for='" + this.element.id + "']").attr('style', "display:block;");
+						});
+					}
+					//this.defaultShowErrors();
+				},
+				errorPlacement: function (error, element) {
+					alert($(error).text());
+				}
+			});
+			$('#EPS_CARDNUMBER').rules("add", {
+				required: true,
+				HAMBSCreditCardValidation: true,
+				messages: {
+					required: "Please specify the Card Number",
+					HAMBSCreditCardValidation: "Invalid card number based on the selected Card Type"
+				}
+			}),
+			$('#CCType').rules("add", {
+				required: true,
+				messages: {
+					required: "Please specify the Credit Card Type"
+				}
+			}),
+			$('#EPS_EXPIRYMONTH').rules("add", {
+				required: true,
+				DateValidation: true,
+				messages: {
+					required: "Please specify the Card Expiry Month",
+					DateValidation: "Please specify a valid Expiry Date"
+				}
+			}),
+			$('#EPS_EXPIRYYEAR').rules("add", {
+				required: true,
+				messages: {
+					required: "Please specify the Card Expiry Year"
+				}
+			})
+		}
+
+	</script>
+</html>

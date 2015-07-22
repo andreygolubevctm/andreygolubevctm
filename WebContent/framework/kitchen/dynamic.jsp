@@ -207,10 +207,6 @@
 		<field:additional_excess increment="100" minVal="500" xpath="quote/excess" maxCount="16" title="additional excess" required="true" omitPleaseChoose="Y" />
 	</form_new:row>
 
-	<form_new:row label="<del>group:address</del>">
-		<%-- <group:address xpath="group/Address" type="R" /> --%>
-	</form_new:row>
-
 	<form_new:row label="age">
 		<field:age dob="22/08/1970" />
 	</form_new:row>

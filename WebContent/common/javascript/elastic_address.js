@@ -422,7 +422,7 @@ function init_address(name, defaultSuburbSeq) {
 					meerkat.modules.errorHandling.error({
 						message:		"An error occurred checking the address: " + txt + ' ' + errorThrown,
 						page:			"ajax/json/address/get_address.jsp",
-						description:	"legacy_address:populateFullAddress(): " + txt + ' ' + errorThrown,
+						description:	"elastic_address:populateFullAddress(): " + txt + ' ' + errorThrown,
 						errorLevel: 	"silent"
 					});
 				},
