@@ -316,12 +316,14 @@ ResultsModel = {
 				}
 
 				if (Results.settings.sort.randomizeMatchingPremiums === true) {
+
 					// do a pre-sort first as working on the returned products won't work because all the products are returned grouped by provider
-					Results.model.sort(false);
+					//Results.model.sort(false);
 
 					var  currentProduct,
 						previousProduct,
-						newProductOrder = [];
+						newProductOrder = [],
+						transactionId = meerkat.modules.transactionId.get();
 
 					// loop through all the sorted products
 					_.each(Results.model.sortedProducts, function massageSortedProducts(result, index){
@@ -331,7 +333,7 @@ ResultsModel = {
 						currentProduct = result;
 
 						if ((typeof previousProduct !== 'undefined' && typeof currentProduct !== 'undefined')  && (previousProduct.available == 'Y' && currentProduct.available == 'Y')
-							&& (previousProduct.service != currentProduct.service) && (previousProduct.price == currentProduct.price) && (meerkat.modules.transactionId.get() % 2 === 0)
+							&& (previousProduct.service != currentProduct.service) && (previousProduct.price == currentProduct.price) && (transactionId % 2 === 0)
 						) {
 							// swap the products around
 							newProductOrder[index] = previousProduct;
