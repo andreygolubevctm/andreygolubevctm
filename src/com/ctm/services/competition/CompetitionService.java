@@ -25,7 +25,7 @@ public class CompetitionService {
 
 		try {
 			Brand brand = ApplicationService.getBrandFromRequest(request);
-			compActive = CompetitionDao.isActive(brand.getId(), competitionId);
+			compActive = CompetitionDao.isActive(brand.getId(), competitionId, request);
 
 		} catch (DaoException e) {
 			logger.error(e);
