@@ -151,7 +151,7 @@ public class SimplesSearchService {
                 return rs.getLong(1);
             }
         };
-        final long rootID = (long) sqlDao.get(mapping, sql);
+        final Long rootID = (Long) sqlDao.get(mapping, sql);
         if (rootID != 0) {
             sql = "SELECT 'HOT' as tableType , transactionId AS id\n" +
                     "\t\t\t\t\t\tFROM aggregator.transaction_header\n" +

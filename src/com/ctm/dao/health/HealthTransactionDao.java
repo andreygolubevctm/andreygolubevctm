@@ -137,7 +137,7 @@ public class HealthTransactionDao {
 	 * @param transactionId
 	 * @param errors value to write
 	 */
-	public void writeAllowableErrors(long transactionId , String errors) throws DaoException {
+	public void writeAllowableErrors(Long transactionId , String errors) throws DaoException {
 
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		PreparedStatement stmt = null;
@@ -148,7 +148,7 @@ public class HealthTransactionDao {
 				"(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) " +
 				"values (?, ?, ?, ?,default, now()); "
 			);
-			stmt.setLong(1, transactionId);
+			stmt.setLong(1, transactionId!=null?0:transactionId);
 			stmt.setInt(2, HealthTransactionSequenceNo.ALLOWABLE_ERRORS);
 			stmt.setString (3, "health/allowedErrors");
 			stmt.setString(4, errors);
