@@ -7,6 +7,7 @@ SET @SERVICE_MASTER_ID = (SELECT serviceMasterId FROM ctm.service_master WHERE v
 -- First for Women
 SET @PROVIDER_ID = (SELECT ProviderId FROM ctm.provider_master WHERE providerCode='1FOW' AND status<>'X');
 INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode, styleCodeId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
+  (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'serviceType','soap','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'serviceName','AGIS_1FOW','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'soapUrl','https://nxq.ecommerce.disconline.com.au/services/3.2/getCarQuotes','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'errorProductCode','1FOW-05-02','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
@@ -21,6 +22,7 @@ INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode
 -- AI
 SET @PROVIDER_ID = (SELECT ProviderId FROM ctm.provider_master WHERE providerCode='AI' AND status<>'X');
 INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode, styleCodeId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
+  (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'serviceType','soap','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'outboundParams','quoteType=GetMultiPremium,subPartnerCode=CTM,agentCode=CTM,productQuoted=ELEGANT;CLASSICSB;ELEGANTPL;TRADIESURE;TRADIESUREPL','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'inboundParams','quoteURL=https://dev.aiinsurance.com.au/buy/disclosure/','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'errorProductCode','AI-01-01','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
@@ -112,6 +114,7 @@ INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode
 -- REAL
 SET @PROVIDER_ID = (SELECT ProviderId FROM ctm.provider_master WHERE providerCode='REAL' AND status<>'X');
 INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode, styleCodeId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
+  (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'serviceType','soap','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'soapUrl','https://everyonesit.realinsurance.com.au/v2/AggregatorService.svc','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'serviceName','REIN','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'errorProductCode','REIN-01-02','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
@@ -154,6 +157,7 @@ INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode
 -- WOOL
 SET @PROVIDER_ID = (SELECT ProviderId FROM ctm.provider_master WHERE providerCode='WOOL' AND status<>'X');
 INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode, styleCodeId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
+  (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'serviceType','soap','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'errorProductCode','WOOL-01-02','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'soapUrl','https://everyonesit.realinsurance.com.au/v2/AggregatorService.svc','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'serviceName','WOOL','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
@@ -187,8 +191,6 @@ INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode
   (@SERVICE_MASTER_ID, @PROVIDER_ID, 'NXS',8,'soapUrl','https://services-nxq.ecommerce.disconline.com.au/services/3.2/getCarQuotes','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, 'NXQ',8,'soapUrl','https://services-nxq.ecommerce.disconline.com.au/services/3.2/getCarQuotes','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, 'PRO',8,'soapUrl','https://ecommerce.disconline.com.au/services/3.2/getCarQuotes','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE');
-
-
 
 -- ServiceUrl for web_ctm
 
