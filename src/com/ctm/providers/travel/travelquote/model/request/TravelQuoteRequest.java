@@ -3,7 +3,10 @@ package com.ctm.providers.travel.travelquote.model.request;
 import java.util.ArrayList;
 
 /**
- * Created by twilson on 13/07/2015.
+ * The request model for calling CtM's travel-quote application.
+ *
+ * Future note: This should be automatically generated from a travel-quote API.
+ *
  */
 public class TravelQuoteRequest {
 
@@ -13,9 +16,7 @@ public class TravelQuoteRequest {
     private int numberOfChildren;
     private int oldestPerson;
     private ArrayList<String> providerFilter = new ArrayList<String>();
-
     private SingleTripDetails singleTripDetails;
-
 
     public TravelQuoteRequest(){
     }
@@ -28,7 +29,6 @@ public class TravelQuoteRequest {
         this.policyType = policyType;
     }
 
-
     public String getMobileUrls() {
         return mobileUrls;
     }
@@ -36,7 +36,6 @@ public class TravelQuoteRequest {
     public void setMobileUrls(String mobileUrls) {
         this.mobileUrls = mobileUrls;
     }
-
 
     public int getNumberOfAdults() {
         return numberOfAdults;
