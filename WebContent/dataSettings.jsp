@@ -4,29 +4,9 @@
 <core:doctype />
 <html>
 	<head>
-		<link rel='stylesheet' type='text/css' href='common/js/treeview/jquery.treeview.css' />
-		<link rel='stylesheet' type='text/css' href='common/js/treeview/screen.css' />
 		<link rel='stylesheet' type='text/css' href='common/data.css' />
-		<script type="text/javascript" src="common/js/jquery-1.4.2.min.js"></script>
-		<script type="text/javascript" src="common/js/jquery.treeview.js"></script>
-		<style type="text/css">
-			#buildIdentifierRow { margin:0; padding:0.5em 1em; }
-			#buildIdentifier { color:#930; }
-			h1,h2{
-				padding: 10px 0px;
-			}
-			table{
-				border-collapse: collapse;
-				width: 100%;
-			}
-			table td{
-				border:1px solid #ccc;
-				padding:4px;
-				font-family: monospace;
-			}
-		</style>
 	</head>
-	<body>
+	<body class="dataSettings">
 	
 		<%-- SECURITY FEATURE --%>
 		<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:')}">
