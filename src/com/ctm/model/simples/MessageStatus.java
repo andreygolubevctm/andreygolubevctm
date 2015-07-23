@@ -23,6 +23,7 @@ public class MessageStatus extends AbstractJsonModel {
 	public final static int STATUS_COMPLETED_AS_PM = 31;
 	public final static int STATUS_CHANGED_TIME_FOR_PM = 32;
 	public final static int STATUS_REMOVED_FROM_PM = 33;
+	public final static int STATUS_INPROGRESS_FOR_PM = 35;
 
 	//common sub statues
 	public final static int STATUS_DONOTCONTACT = 9;
