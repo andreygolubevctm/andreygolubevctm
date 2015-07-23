@@ -166,8 +166,6 @@
 		<go:script href="framework/jquery/plugins/qtip2/jquery.qtip.js" marker="js-href" />
 	</c:if>
 
-	<go:script href="common/js/logging.js" marker="js-href" />
-
 	<c:if test="${loadjQueryUI == true}">
 		<go:script href="common/js/jquery-ui-1.8.22.custom.min.js" marker="js-href" />
 	</c:if>
@@ -194,6 +192,7 @@
 	</c:if>
 
 	<%-- External (href) javascript files included with tags --%>
+	<go:script marker="js-href" href="common/js/template.js" />
 	<go:insertmarker format="HTML" name="js-href" />
 
 	<%-- Remove any pre-existing hashes from the URL unless --%>
