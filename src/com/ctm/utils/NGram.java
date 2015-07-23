@@ -11,21 +11,21 @@ public class NGram {
 			"666", "777", "888", "999", "000", "aaa", "bbb", "ccc", "ddd", "eee", "fff",
 			"ggg", "hhh", "iii", "jjj", "kkk", "lll", "mmm", "nnn", "ooo", "ppp",
 			"qqq", "rrr", "sss", "ttt", "uuu", "vvv", "www", "xxx", "yyy", "zzz"};
-	
-	
-	private int sequencesScore = 0;
-	private int triplesScore = 0;
-	private int patternsScore = 0;
-	private int reversePatternsScore = 0;
+
+
+	private int sequencesScore = 1;
+	private int triplesScore = 1;
+	private int patternsScore = 1;
+	private int reversePatternsScore = 1;
 
 	private final int n;
-	private String text;
+	private final String text;
 
 	private final int[] indexes;
 	private int index = -1;
 	private int found = 0;
 
-	public int getSequencesScore() {
+	private int getSequencesScore() {
 		return this.sequencesScore;
 	}
 
@@ -33,7 +33,7 @@ public class NGram {
 		this.sequencesScore = score;
 	}
 
-	public int getTriplesScore() {
+	private int getTriplesScore() {
 		return this.triplesScore;
 	}
 
@@ -41,7 +41,7 @@ public class NGram {
 		this.triplesScore = score;
 	}
 
-	public int getPatternsScore() {
+	private int getPatternsScore() {
 		return this.patternsScore;
 	}
 
@@ -49,7 +49,7 @@ public class NGram {
 		this.patternsScore = score;
 	}
 
-	public int getReversePatternsScore() {
+	private int getReversePatternsScore() {
 		return this.reversePatternsScore;
 	}
 
@@ -90,8 +90,8 @@ public class NGram {
 		return score + value;
 	}
 
-	public List<String> split() {
-		List<String> ngrams = new ArrayList<String>();
+	private List<String> split() {
+		List<String> ngrams = new ArrayList<>();
 		while (seek()) {
 			ngrams.add(get());
 		}
@@ -100,9 +100,9 @@ public class NGram {
 
 	public Integer score() {
 		Integer score = 0;
-		List<String> ngrams = new ArrayList<String>();
-		List<String> previous = new ArrayList<String>();
-		List<String> reversed = new ArrayList<String>();
+		List<String> ngrams = new ArrayList<>();
+		List<String> previous = new ArrayList<>();
+		List<String> reversed = new ArrayList<>();
 
 		NGram ngram_s = new NGram("012345678909876543210abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcbasdfghjklkjhgfdsaqwertyuiopoiuytrewqzxcvbnmnbvcxz",n-1);
 		List<String> sequence = ngram_s.split();
@@ -122,7 +122,8 @@ public class NGram {
 
 			// Evaluate for triples
 			if(getTriplesScore() > 0) {
-				if(contains(TRIPLE, item)) {
+				if(containsTriple(item)) {
+					ngrams.add("t:" + item);
 					score = calculate(score,getTriplesScore());
 					continue;
 				}
@@ -157,9 +158,9 @@ public class NGram {
 	}
 
 	public String list() {
-		List<String> ngrams = new ArrayList<String>();
-		List<String> previous = new ArrayList<String>();
-		List<String> reversed = new ArrayList<String>();
+		List<String> ngrams = new ArrayList<>();
+		List<String> previous = new ArrayList<>();
+		List<String> reversed = new ArrayList<>();
 
 		NGram ngram_s = new NGram("012345678909876543210abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcbasdfghjklkjhgfdsaqwertyuiopoiuytrewqzxcvbnmnbvcxz",n-1);
 		List<String> sequence = ngram_s.split();
@@ -180,7 +181,7 @@ public class NGram {
 
 			// Evaluate for triples
 			if(getTriplesScore() > 0) {
-				if(contains(TRIPLE, item)) {
+				if(containsTriple(item)) {
 					ngrams.add("t:" + item);
 					continue;
 				}
@@ -216,8 +217,8 @@ public class NGram {
 		return text.substring(indexes[0], index);
 	}
 
-	private boolean contains(String[] array , String item){
-		return Arrays.binarySearch(array, item) > -1;
+	private boolean containsTriple(String item){
+		return Arrays.binarySearch(NGram.TRIPLE, item) > -1;
 	}
 	
 }
