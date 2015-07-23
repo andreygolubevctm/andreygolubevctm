@@ -109,6 +109,21 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
+	<xsl:variable name="situation">
+		<xsl:choose>
+			<xsl:when test="health/situation/healthCvr = 'SM'">S</xsl:when>
+			<xsl:when test="health/situation/healthCvr = 'SF'">S</xsl:when>
+			<xsl:when test="health/situation/healthCvr = 'S'">S</xsl:when>
+			<xsl:when test="health/situation/healthCvr = 'C'">C</xsl:when>
+			<xsl:when test="health/situation/healthCvr = 'SPF'">SP</xsl:when>
+			<xsl:when test="health/situation/healthCvr = 'F'">F</xsl:when>
+			<xsl:otherwise>
+				<xsl:message terminate="yes">
+					situation/healthCvr is invalid
+				</xsl:message>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
 
 	<!-- MAIN TEMPLATE -->
@@ -470,36 +485,18 @@
 					<Cover>
 						<EffDate><xsl:value-of select="$startDate" /></EffDate>
 						<Class>
-							<xsl:choose>
-								<xsl:when test="situation/healthCvr = 'SM'">S</xsl:when>
-								<xsl:when test="situation/healthCvr = 'SF'">S</xsl:when>
-								<xsl:when test="situation/healthCvr = 'S'">S</xsl:when>
-								<xsl:when test="situation/healthCvr = 'C'">C</xsl:when>
-								<xsl:when test="situation/healthCvr = 'SPF'">SP</xsl:when>
-								<xsl:when test="situation/healthCvr = 'F'">F</xsl:when>
-								<xsl:otherwise>
-									<xsl:message terminate="yes">
-										situation/healthCvr is invalid
-									</xsl:message>
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:value-of select="$situation" />
 						</Class>
 
 						<!-- set to blank because of CoverRateSelection -->
-						<CoverType>
-							<xsl:choose>
-								<xsl:when test="fundData/hospitalCoverName != '' and fundData/extrasCoverName!=''">C</xsl:when>
-								<xsl:when test="fundData/hospitalCoverName != ''">H</xsl:when>
-								<xsl:when test="fundData/extrasCoverName!=''">A</xsl:when>
-							</xsl:choose>
-						</CoverType>
+						<CoverType>BLANK</CoverType>
 						<ProductSelection>BLANK</ProductSelection>
 
 						<AccountIgnored>false</AccountIgnored>
 						<xsl:if test="payment/details/claims='Y'">
 							<BenefitPaymentMethod>D/Cr</BenefitPaymentMethod>
 						</xsl:if>
-						<CoverRateSelection><xsl:value-of select="fundData/fundCode" /></CoverRateSelection>
+						<CoverRateSelection><xsl:value-of select="$situation" /><xsl:value-of select="fundData/fundCode" /></CoverRateSelection>
 						<xsl:if test="payment/details/claims='Y'">
 							<Account>
 								<AccountType>credit</AccountType>
@@ -598,7 +595,7 @@
 						</Group>
 						<Agency>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
-							<AgencyID>CTMOMS</AgencyID>
+							<AgencyID>CTM</AgencyID>
 						</Agency>
 						<Site>
 							<EffDate><xsl:value-of select="$startDate" /></EffDate>
@@ -610,7 +607,7 @@
 				<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 				</hsl:xmlFile>
 				<hsl:BrokerID>CTM</hsl:BrokerID>
-				<hsl:AgentID>CTM</hsl:AgentID>
+				<hsl:AgentID>CTMOMS</hsl:AgentID>
 				</hsl:SubmitMembership>
 			</soap:Body>
 		</soap:Envelope>
