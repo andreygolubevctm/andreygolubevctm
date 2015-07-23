@@ -45,25 +45,3 @@
 <go:script marker="js-href"	href="common/js/jquery.metadata.js"/>
 
 <go:script marker="js-href"	href="common/js/jquery.bgiframe.js"/>
-
-<go:script marker="onready">
-				
-	$('.shelp_hover').tooltip({
-		track: true, 
-	    delay: 0, 
-	    showURL: false, 
-	    showBody: " - ", 
-	    fade: 250 
-	});	
-	$('.help_hover').tooltip({
-    	delay: 100, 
-    	fade: 300,
-    	showURL: false,
-    	top: -25,
-    	left: 'auto',
-    	bodyHandler: function() { 
-	        return $(this).next().html(); 
-    	},
-    	extraClass: "help_text ui-widget ui-dialog ui-corner-all ui-widget-content" 
-	});
-</go:script>

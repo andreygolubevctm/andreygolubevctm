@@ -155,14 +155,12 @@
 
 	<c:if test="${loadjQuery == true}">
 		<go:script href="common/js/jquery-${jqueryVersion}.js" marker="js-href" />
-		<go:script href="common/js/jquery.address-1.3.2.js" marker="js-href" />
-		<go:script href="common/js/jquery.tooltip.min.js" marker="js-href" />
+		<go:script href="common/js/jquery.address-1.3.2.min.js" marker="js-href" />
 		<go:script href="common/js/jquery.corner-2.11.js" marker="js-href" />
 		<go:script href="common/js/jquery.numeric.pack.js" marker="js-href" />
-		<go:script href="common/js/jquery.scrollTo.js" marker="js-href" />
+		<go:script href="framework/jquery/plugins/jquery.scrollTo.min.js" marker="js-href" />
 		<go:script href="common/js/jquery.maxlength.js" marker="js-href" />
 		<go:script href="common/js/jquery.number.format.js" marker="js-href" />
-		<go:script href="common/js/jquery.titlecase.js" marker="js-href" />
 		<go:script href="common/js/jquery.aihcustom.js" marker="js-href" />
 		<go:script href="common/js/jquery.pngFix.pack.js" marker="js-href" />
 		<go:script href="framework/jquery/plugins/qtip2/jquery.qtip.js" marker="js-href" />
