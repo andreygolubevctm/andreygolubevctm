@@ -67,7 +67,8 @@ Results = {
 				sortBy: "price.annually",
 				sortByMethod: Results.model.defaultSortMethod,
 				sortDir: "asc",
-				randomizeMatchingPremiums: false
+				randomizeMatchingPremiums: false,
+				coverLevelTabsUsed: false
 			},
 			frequency: "annually",
 			displayMode: "price",

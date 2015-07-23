@@ -317,8 +317,22 @@ ResultsModel = {
 
 				if (Results.settings.sort.randomizeMatchingPremiums === true) {
 
-					// do a pre-sort first as working on the returned products won't work because all the products are returned grouped by provider
-					//Results.model.sort(false);
+					// if cover level tabs is used for another vertical, we sort and arrange price according to group.
+					if (Results.settings.sort.coverLevelTabsUsed) {
+						var priceNode = typeof Results.settings.paths.price.premium !== 'undefined' ? Results.settings.paths.price.premium : Results.settings.paths.price.annually;
+
+						Results.model.sortedProducts = Results.model.returnedProducts;
+						Results.model.sortedProducts.sort(function(a, b) {
+							if (a.available === 'Y' && b.available === 'Y') {
+								return a.info.coverLevel.localeCompare(b.info.coverLevel) || a[priceNode] - b[priceNode];
+							}
+
+							return 0;
+						});
+					} else {
+						// do a pre-sort first as working on the returned products won't work because all the products are returned grouped by provider
+						Results.model.sort(false);
+					}
 
 					var  currentProduct,
 						previousProduct,
