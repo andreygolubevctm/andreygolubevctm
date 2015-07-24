@@ -89,8 +89,7 @@
 				sort: { // check in health
 					sortBy: 'price.premium',
 					sortDir: 'asc',
-					randomizeMatchingPremiums: true,
-					coverLevelTabsUsed: true
+					randomizeMatchingPremiums: true
 				},
 				frequency: "premium",
 				animation: {
