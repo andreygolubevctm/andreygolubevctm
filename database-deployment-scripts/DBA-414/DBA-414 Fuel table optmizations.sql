@@ -28,7 +28,7 @@ ALTER ONLINE TABLE `aggregator`.`fuel_updates` ADD INDEX `type_idx` (`type`);
 ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE SiteId SiteId MEDIUMINT UNSIGNED NOT NULL;
 ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE `state` `state` ENUM('ACT','NSW','NT','QLD','SA','UNK','VIC','WA') NOT NULL DEFAULT 'UNK';
 ALTER ONLINE TABLE `aggregator`.`fuel_sites` ADD INDEX `postcode_idx` (`PostCode`);
-ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE PostCode PostCode SMALLINT(4) NOT NULL;
+ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE PostCode PostCode SMALLINT(4) ZEROFILL NOT NULL;
 ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE Lat Lat FLOAT DEFAULT NULL;
 ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE `Long` `Long` FLOAT DEFAULT NULL;
 ALTER ONLINE TABLE `aggregator`.`fuel_sites` CHANGE Name Name VARCHAR(255) NOT NULL;
