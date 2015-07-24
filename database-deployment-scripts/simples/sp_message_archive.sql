@@ -18,6 +18,7 @@ BEGIN
 	DECLARE totalUnassginedCount INT;
 
 	DECLARE _failedJoinExists BOOLEAN;
+	DECLARE _isInvalidFailedJoin BOOLEAN;
 	DECLARE _canArchive BOOLEAN;
 	DECLARE _messageId INT UNSIGNED;
 	DECLARE _tranId INT UNSIGNED;
@@ -62,6 +63,7 @@ BEGIN
 			END IF;
 
 			SET _failedJoinExists = FALSE;
+			SET _isInvalidFailedJoin = FALSE;
 			SET _canArchive = FALSE;
 
 			BEGIN
@@ -212,13 +214,22 @@ BEGIN
 					IF _failedJoinExists THEN
 
 						SET totalFailedJoinsCount = totalFailedJoinsCount + 1;
-						SET totalFailedJoinsCreatedCount = totalFailedJoinsCreatedCount + 1;
 
-						INSERT INTO simples.message 
-						(transactionId, sourceId, userId, statusId, created, whenToAction, contactName, phoneNumber1, phoneNumber2, state) 
-						SELECT _tranId, _sourceId, _userId, _statusId, NOW(), NOW(), contactName, _phoneNumber1, _phoneNumber2, state
-						FROM simples.message_archived 
-						WHERE id = _messageId;
+						SELECT IF(COUNT(id) > 0, TRUE, FALSE)
+						INTO _isInvalidFailedJoin
+						FROM simples.message_audit
+						WHERE messageId = _messageId
+						AND reasonStatusId = 34; /* invalid failed join sub status */
+
+						IF NOT _isInvalidFailedJoin THEN
+							SET totalFailedJoinsCreatedCount = totalFailedJoinsCreatedCount + 1;
+
+							INSERT INTO simples.message
+							(transactionId, sourceId, userId, statusId, created, whenToAction, contactName, phoneNumber1, phoneNumber2, state)
+							SELECT _tranId, _sourceId, _userId, _statusId, NOW(), NOW(), contactName, _phoneNumber1, _phoneNumber2, state
+							FROM simples.message_archived
+							WHERE id = _messageId;
+						END IF;
 
 					END IF;
 

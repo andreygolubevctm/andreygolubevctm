@@ -1,7 +1,7 @@
 <%@ tag description="Business Activity" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-
+<jsp:useBean id="quoteService" class="com.ctm.services.QuoteService" scope="application" />
 <%--
 
 This tag populates the form with a hidden element containing a
@@ -30,4 +30,8 @@ Usage: to confirm whether split test 2 is applicable
 	<c:set var="journeyVertical" value="quote" />
 </c:if>
 
-<field:hidden xpath="${journeyVertical}/currentJourney" defaultValue="${journey}" />
+<c:set var="xpath" value="${journeyVertical}/currentJourney" />
+<c:if test="${not empty journey}">
+	<c:set var="ignore">${quoteService.writeSingle(data.current.transactionId, xpath, journey)}</c:set>
+</c:if>
+<field:hidden xpath="${xpath}" defaultValue="${journey}" />
