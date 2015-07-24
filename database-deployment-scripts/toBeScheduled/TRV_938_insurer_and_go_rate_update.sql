@@ -1,6 +1,6 @@
 -- ================ TESTS =====================
 -- ========= BEFORE INSERT TESTS ==============
--- When this is run before anything else on the ctm.product_properties table, query should return 17352 rows
+-- When this is run before anything else on the ctm.product_properties table, query should return 18990 rows
 SELECT count(*) FROM ctm.product_properties WHERE ProductId IN(70,71,72,73,74,75,76,77,78,79,167,168,169,170,171,172,173,174,175,176,207,208,209) AND SequenceNo > 0 LIMIT 999999;
 
 /* Delete existing prices in product properties */
