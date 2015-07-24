@@ -284,11 +284,11 @@
 </core:js_template>
 
 <%-- FEATURE TEMPLATE --%>
-	<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
+	<core:js_template id="feature-template">
 		<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
 			<car:resultsItem_ws item="${selectedValue}" labelMode="false" index="${status.index}"/>
 		</c:forEach>
-	</div>
+	</core:js_template>
 
 <%-- UNAVAILABLE COMBINED ROW --%>
 <core:js_template id="unavailable-combined-template">
@@ -450,7 +450,7 @@
 		{{ if ((typeof img === 'undefined' || img === '') && products[i].hasOwnProperty('productId') && products[i].productId.length > 1) img = products[i].productId.substring(0, products[i].productId.indexOf('-')); }}
 
 			<li class="compare-item">
-				<span class="companyLogo logo_{{= img }}" title="{{= products[i].name }}"></span>
+				<span class="carCompanyLogo logo_{{= img }}" title="{{= products[i].name }}"></span>
 				<span class="price">
 					<span class="frequency annual annually {{= annualHidden }}">
 						{{= '$' }}{{= products[i].price.annualPremium }} <span class="small hidden-sm">annually</span>
@@ -498,7 +498,7 @@
 			{{ if (comparedResultsCount > 1) { }}
 				<div class="compareButtonsContainer">
 					{{ if(meerkat.modules.compare.isCompareOpen() === true) { }}
-						<a class="btn btn-compare-clear clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
+						<a class="btn btn-features-compare clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
 					{{ } else { }}
 						<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;">Compare Products<span class="icon icon-arrow-right"></span></a>
 					{{ } }}
