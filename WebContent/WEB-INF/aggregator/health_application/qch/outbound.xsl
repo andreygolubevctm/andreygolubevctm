@@ -529,7 +529,7 @@
 								<xsl:when test="payment/details/frequency='A'">Yrly</xsl:when>
 							</xsl:choose>
 						</ContribFreq>
-						<ContribRateSelection><xsl:value-of select="fundData/fundCode" /></ContribRateSelection>
+						<ContribRateSelection><xsl:value-of select="$situation" /><xsl:value-of select="fundData/fundCode" /></ContribRateSelection>
 						<Rebate>
 							<xsl:choose>
 								<xsl:when test="healthCover/rebate='Y'">true</xsl:when>
@@ -606,7 +606,7 @@
 				</MembershipApplication>
 				<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 				</hsl:xmlFile>
-				<hsl:BrokerID>CTM</hsl:BrokerID>
+				<hsl:BrokerID>CTMOMS</hsl:BrokerID>
 				<hsl:AgentID>CTMOMS</hsl:AgentID>
 				</hsl:SubmitMembership>
 			</soap:Body>
