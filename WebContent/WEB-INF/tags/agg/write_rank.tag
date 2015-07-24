@@ -23,7 +23,7 @@
 <c:set var="transactionId" value="${data['current/transactionId']}" />
 <c:set var="calcSequence" value="${data[calcSequence]}" />
 
-<c:if test="${transactionId == null}">
+<c:if test="${empty transactionId}">
 	<%-- If the transactionId is empty, revert back to the param.transactionId otherwise it fails to write to the fatal_error_log table --%>
 	${fatalErrorService.logFatalError(0,  pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, param.transactionId)}
 
