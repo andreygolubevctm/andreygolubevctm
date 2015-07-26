@@ -15,20 +15,20 @@
 
 
 	<sql:setDataSource dataSource="jdbc/ctm"/>
-
+<c:set var="transactionId" value="${data['current/transactionId']}" />
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
 <c:set var="calcSequence" value="${prefix}${calcSequenceSUFF}" />
 
-<c:set var="transactionId" value="${data['current/transactionId']}" />
+
 <c:set var="calcSequence" value="${data[calcSequence]}" />
 
 <c:if test="${empty transactionId}">
 	<%-- If the transactionId is empty, revert back to the param.transactionId otherwise it fails to write to the fatal_error_log table --%>
-	${fatalErrorService.logFatalError(0,  pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, param.transactionId)}
+	${fatalErrorService.logFatalError(0,  pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
 
 	<%-- Set the new transaction id so we can write to the ranking tables --%>
-	<c:set var="transactionId" value="${param.transactionId}" />
+	<c:set var="transactionId" value="${transactionId}" />
 </c:if>
 
 <c:if test="${calcSequence == null}">
