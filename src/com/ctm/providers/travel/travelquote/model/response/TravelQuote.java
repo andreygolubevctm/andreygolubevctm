@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The response model from calling CtM's travel-quote application.
+ *
+ * This data model holds an individual quote for a product.
+ */
 public class TravelQuote {
 
 

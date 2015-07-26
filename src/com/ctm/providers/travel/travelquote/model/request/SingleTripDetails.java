@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Part of the request model for calling CtM's travel-quote application.
+ *
+ * Data model representing data unique to a single trip
+ */
 public class SingleTripDetails {
 
     private List<String> destinations = new ArrayList<>();

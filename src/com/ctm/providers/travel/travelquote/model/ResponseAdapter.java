@@ -1,13 +1,18 @@
 package com.ctm.providers.travel.travelquote.model;
 
 import com.ctm.model.AvailableType;
+import com.ctm.model.travel.results.ExemptedBenefit;
 import com.ctm.model.travel.results.TravelResult;
 import com.ctm.providers.QuoteResponse;
+import com.ctm.providers.travel.travelquote.model.request.TravelQuoteRequest;
+import com.ctm.providers.travel.travelquote.model.response.Benefit;
 import com.ctm.providers.travel.travelquote.model.response.TravelQuote;
 import com.ctm.providers.travel.travelquote.model.response.TravelResponse;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class ResponseAdapter {
 
@@ -18,7 +23,7 @@ public class ResponseAdapter {
      * @param response
      * @return
      */
-    public static List<TravelResult> adapt(TravelResponse response) {
+    public static List<TravelResult> adapt(TravelQuoteRequest request, TravelResponse response) {
 
         List<TravelResult> results = new ArrayList<>();
         final QuoteResponse<TravelQuote> quoteResponse = response.getPayload();
@@ -28,7 +33,15 @@ public class ResponseAdapter {
                 TravelResult result = new TravelResult();
                 result.setAvailable(travelQuote.isAvailable() ? AvailableType.Y : AvailableType.N);
                 result.setServiceName(travelQuote.getService());
+                result.setService(travelQuote.getService());
                 result.setProductId(travelQuote.getProductId());
+                result.setTrackCode(String.valueOf(travelQuote.getTrackCode()));
+
+                result.setName(travelQuote.getProduct().getShortTitle());
+                result.setPrice(travelQuote.getPrice());
+                result.setPriceText(travelQuote.getPriceText());
+                result.setInfoDes(travelQuote.getProduct().getDescription());
+                result.setSubTitle(travelQuote.getProduct().getPdsUrl());
 
                 String planDescription = "";
 
@@ -48,68 +61,71 @@ public class ResponseAdapter {
                     planDescription = travelQuote.getProduct().getLongTitle();
                 }else{
                     planDescription = travelQuote.getProduct().getLongTitle();
-                    if(travelQuote.getProduct().getMaxTripDuration() > 0){
+                    if(travelQuote.getProduct().getMaxTripDuration() != null && travelQuote.getProduct().getMaxTripDuration() > 0){
                         planDescription += " &lt;span class=\"daysPerTrip\"&gt;("+travelQuote.getProduct().getMaxTripDuration()+" days)&lt;span&gt;";
                     }
                 }
                 result.setDes(planDescription);
 
 
-                result.setName(travelQuote.getProduct().getShortTitle());
-                result.setPrice(travelQuote.getPrice());
-                result.setPriceName(travelQuote.getPriceText());
-                result.setInfoDes(travelQuote.getProduct().getDescription());
-                result.setSubTitle(travelQuote.getProduct().getPdsUrl());
 
-                /*
-                <xsl:choose>
-						<xsl:when test="methodType = 'GET'">
-							<quoteUrl><xsl:value-of select="quoteUrl"/></quoteUrl>
-						</xsl:when>
-						<xsl:otherwise>
-							<handoverType>post</handoverType>
-							<handoverUrl><xsl:value-of select="quoteUrl"/></handoverUrl>
-							<xsl:for-each select="quoteData/child::*" >
-								<handoverVar><xsl:value-of select="name()"/></handoverVar>
-								<handoverData><xsl:value-of select="."/></handoverData>
-							</xsl:for-each>
-						</xsl:otherwise>
-					</xsl:choose>
-					<encodeUrl>
-						<xsl:choose>
-							<xsl:when test="encodeQuoteUrl='true'">Y</xsl:when>
-							<xsl:otherwise>N</xsl:otherwise>
-						</xsl:choose>
-					</encodeUrl>
-                 */
+                for(Benefit benefit : travelQuote.getBenefits()){
+                    com.ctm.model.travel.results.Benefit benefitResult = new com.ctm.model.travel.results.Benefit();
+                    int count = 0;
+                    if(benefit.isExempted()){
 
-                /*
-                <xsl:if test="benefit/exempted = 'true'">
-						<exemptedBenefits>
-							<xsl:for-each select="benefit">
-								<xsl:if test="exempted = 'true'">
-									<xsl:choose>
-										<xsl:when test="@type='EXCESS'">
-											<benefit>excess</benefit>
-										</xsl:when>
-										<xsl:when test="@type='CXDFEE'">
-											<benefit>cxdfee</benefit>
-										</xsl:when>
-										<xsl:when test="@type='MEDICAL'">
-											<benefit>medical</benefit>
-										</xsl:when>
-										<xsl:when test="@type='LUGGAGE'">
-											<benefit>luggage</benefit>
-										</xsl:when>
-										<xsl:otherwise>
-											<benefit>benefit_<xsl:value-of select="position()"/></benefit>
-										</xsl:otherwise>
-									</xsl:choose>
-								</xsl:if>
-							</xsl:for-each>
-						</exemptedBenefits>
-					</xsl:if>
-                 */
+                        ExemptedBenefit exemptedBenefit = new ExemptedBenefit();
+
+                        if(benefit.getType().equals("EXCESS")){
+                            exemptedBenefit.setBenefit("excess");
+                        }else if(benefit.getType().equals("CXDFEE")){
+                            exemptedBenefit.setBenefit("cxdfee");
+                        }else if(benefit.getType().equals("MEDICAL")){
+                            exemptedBenefit.setBenefit("medical");
+                        }else if(benefit.getType().equals("LUGGAGE")){
+                            exemptedBenefit.setBenefit("luggage");
+                        }else {
+                            exemptedBenefit.setBenefit("benefit_"+count);//<benefit>benefit_<xsl:value-of select="position()"/></benefit>
+                        }
+
+                        result.addExemptedBenefit(exemptedBenefit);
+
+
+                    }else{
+                        benefitResult.setDesc(benefit.getDescription());
+                        benefitResult.setLabel(benefit.getLabel());
+                        benefitResult.setText(benefit.getText());
+                        benefitResult.setOrder("");
+                        result.addBenefit(benefitResult);
+                    }
+
+                    count++;
+
+
+                }
+
+                if(travelQuote.getMethodType().equals("GET")){
+                    result.setQuoteUrl(travelQuote.getQuoteUrl());
+                }else{
+                    result.setHandoverType("post");
+                    result.setHandoverUrl(travelQuote.getQuoteUrl());
+
+                    String handoverDataString = "";
+                    Iterator it = travelQuote.getQuoteData().entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry pair = (Map.Entry)it.next();
+                        handoverDataString += "<handoverVar>"+pair.getKey()+"</handoverVar>";
+                        handoverDataString += "<handoverData>"+pair.getValue()+"</handoverData>";
+                        it.remove();
+                    }
+
+                    result.setHandoverData(handoverDataString);
+
+                }
+
+                result.setEncodeUrl(travelQuote.isEncodeQuoteUrl() ? "Y" : "N");
+
+
 
 /*
 <info>

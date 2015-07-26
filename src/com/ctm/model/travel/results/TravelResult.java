@@ -2,6 +2,9 @@ package com.ctm.model.travel.results;
 
 import com.ctm.model.Result;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+
 /**
  * Java model which will build the travel result sent to the front end.
  * This model is converted to JSON.
@@ -15,14 +18,19 @@ public class TravelResult extends Result {
     private String des;
     private String subTitle;
     private String service;
-    private Double price;
+    private BigDecimal price;
     private String name;
-    private String priceName;
+    private String priceText;
     private String encodeUrl;
-    private Info info;
+    private String handoverUrl;
+    private String handoverType;
+    private String handoverData;
+    private ArrayList<Benefit> benefits;
+    private ArrayList<ExemptedBenefit> exemptedBenefits;
 
     public TravelResult(){
-
+        benefits = new ArrayList<Benefit>();
+        exemptedBenefits = new ArrayList<ExemptedBenefit>();
     }
 
     public String getTrackCode() {
@@ -81,11 +89,11 @@ public class TravelResult extends Result {
         this.service = service;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -97,12 +105,12 @@ public class TravelResult extends Result {
         this.name = name;
     }
 
-    public String getPriceName() {
-        return priceName;
+    public String getPriceText() {
+        return priceText;
     }
 
-    public void setPriceName(String priceName) {
-        this.priceName = priceName;
+    public void setPriceText(String priceText) {
+        this.priceText = priceText;
     }
 
     public String getEncodeUrl() {
@@ -113,12 +121,51 @@ public class TravelResult extends Result {
         this.encodeUrl = encodeUrl;
     }
 
-    public Info getInfo() {
-        return info;
+    public ArrayList<Benefit> getBenefits() {
+        return benefits;
     }
 
-    public void setInfo(Info info) {
-        this.info = info;
+    public void setBenefits(ArrayList<Benefit> benefits) {
+        this.benefits = benefits;
     }
 
+    public void addBenefit(Benefit benefit){
+        benefits.add(benefit);
+    }
+
+    public void addExemptedBenefit(ExemptedBenefit benefit){
+        exemptedBenefits.add(benefit);
+    }
+
+    public String getHandoverUrl() {
+        return handoverUrl;
+    }
+
+    public void setHandoverUrl(String handoverUrl) {
+        this.handoverUrl = handoverUrl;
+    }
+
+    public String getHandoverType() {
+        return handoverType;
+    }
+
+    public void setHandoverType(String handoverType) {
+        this.handoverType = handoverType;
+    }
+
+    public String getHandoverData() {
+        return handoverData;
+    }
+
+    public void setHandoverData(String handoverData) {
+        this.handoverData = handoverData;
+    }
+
+    public ArrayList<ExemptedBenefit> getExemptedBenefits() {
+        return exemptedBenefits;
+    }
+
+    public void setExemptedBenefits(ArrayList<ExemptedBenefit> exemptedBenefits) {
+        this.exemptedBenefits = exemptedBenefits;
+    }
 }

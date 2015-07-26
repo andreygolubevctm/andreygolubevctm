@@ -3,6 +3,7 @@ package com.ctm.providers.travel.travelquote.model.response;
 import java.math.BigDecimal;
 
 public class Benefit {
+
     public static final BigDecimal UNLIMITED = BigDecimal.valueOf(999999999);
     public static final BigDecimal NIL = BigDecimal.valueOf(0);
     public static final String NOT_AVAILABLE = "N/A";
@@ -11,7 +12,6 @@ public class Benefit {
 
 
     private String type; // was BenefitType
-
 
     private String code;
     private boolean override;

@@ -4,12 +4,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class Product {
-    @NotNull
-    @Size(min=1)
+
     public final String shortTitle;
 
-    @NotNull
-    @Size(min=1)
     public final String longTitle;
 
     @NotNull
@@ -21,7 +18,7 @@ public class Product {
     public final String pdsUrl;
 
     @NotNull
-    public final String maxTripDuration;
+    public final Integer maxTripDuration;
 
     // empty constructor needed by jackson
     @SuppressWarnings("UnusedDeclaration")
@@ -30,25 +27,9 @@ public class Product {
         this.longTitle = "";
         this.description = "";
         this.pdsUrl = "";
-        this.maxTripDuration = "";
+        this.maxTripDuration = null;
     }
 
-    public Product(final String shortTitle, final String longTitle, final String description, final String pdsUrl) {
-        this.shortTitle = shortTitle;
-        this.longTitle = longTitle;
-        this.description = description;
-        this.pdsUrl = pdsUrl;
-        this.maxTripDuration = "";
-    }
-
-    public Product(final String shortTitle, final String longTitle, final String description, final String pdsUrl,
-                   final String maxTripDuration ) {
-        this.shortTitle = shortTitle;
-        this.longTitle = longTitle;
-        this.description = description;
-        this.pdsUrl = pdsUrl;
-        this.maxTripDuration = maxTripDuration;
-    }
 
     @Override
     @SuppressWarnings("RedundantIfStatement")
@@ -105,7 +86,7 @@ public class Product {
         return pdsUrl;
     }
 
-    public String getMaxTripDuration() {
+    public Integer getMaxTripDuration() {
         return maxTripDuration;
     }
 }

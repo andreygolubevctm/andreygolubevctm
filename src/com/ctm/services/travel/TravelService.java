@@ -85,6 +85,7 @@ logger.info("ABOUT TO ADAPT FORM DATA TO TRAVEL-QUOTE REQUEST");
         request.setPayload(travelQuoteRequest);
         logger.info("ABOUT TO PREPARE OBJECT MAPPER");
         // Prepare objectmapper to map java model to JSON
+        // TODO use response utils
         ObjectMapper objectMapper = new ObjectMapper();
         //objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -116,26 +117,9 @@ logger.info("ABOUT TO ADAPT FORM DATA TO TRAVEL-QUOTE REQUEST");
             TravelResponse travelResponse = objectMapper.readValue(response, TravelResponse.class);
 
 
-
-        /*
-        // Connect to travel-quote
-        final Response response = WebClient.create(serviceUrl, asList(new JacksonJsonProvider(objectMapper)))
-                .path("quote")
-                .type(MediaType.APPLICATION_JSON_TYPE)
-                .accept(MediaType.APPLICATION_JSON_TYPE)
-                .post(request);
-
-        // Convert JSON response from travel-quote to java model
-
-
-        logger.debug("DEBUGs2: " +   response.readEntity(String.class));
-        final TravelResponse travelResponse = response.readEntity(TravelResponse.class);
-        */
-
-
         logger.info("ABOUT TO ADAPT RESPONSE"+travelResponse.getTransactionId());
         // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
-        final List<TravelResult> travelResults = ResponseAdapter.adapt(travelResponse);
+        final List<TravelResult> travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);
 
         // Write to Results properties for EDM purposes
         LocalDate validUntil = new LocalDate().plusDays(30);

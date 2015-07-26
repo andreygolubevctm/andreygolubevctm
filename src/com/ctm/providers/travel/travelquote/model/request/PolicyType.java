@@ -1,8 +1,12 @@
 package com.ctm.providers.travel.travelquote.model.request;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
+/**
+ * Part of the request model for calling CtM's travel-quote application.
+ *
+ * Data model representing if the trip is Single or annual multi-trip
+ */
 public enum PolicyType {
+
 	SINGLE ("SINGLE"),
 	MULTI ("MULTI");
 
@@ -12,7 +16,6 @@ public enum PolicyType {
 		this.code = code;
 	}
 
-	@JsonValue
 	public String getCode() {
 		return code;
 	}
