@@ -86,7 +86,7 @@ public abstract class LeadFeedService {
 	 * @return
 	 * @throws LeadFeedException
 	 */
-	private LeadResponseStatus processGateway(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException {
+	protected LeadResponseStatus processGateway(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException {
 		if(isTestOnlyLead(leadData)) {
 			// Don't process or record touch for test data - simply return success
 			return LeadResponseStatus.SUCCESS;

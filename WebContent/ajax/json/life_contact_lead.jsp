@@ -54,7 +54,7 @@
 				</c:if>
 
 				<jsp:useBean id="accessTouchService" class="com.ctm.services.AccessTouchService" scope="request" />
-				<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data}" />
+				<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="REQUEST-CALL" dataObject="${data[vertical]}" />
 				<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "LF", "lifebroker")}</c:set>
 			</c:otherwise>
 		</c:choose>
