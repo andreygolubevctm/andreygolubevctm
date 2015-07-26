@@ -32,7 +32,8 @@
         isXs = meerkat.modules.deviceMediaState.get() == "xs";
         $(document).ready(function () {
             // update the docked position if there is an extra docked item that needs to sit at the bottom of the page
-            moreLinkPositionOffset = ($extraDockedItem.length > 0 ? $extraDockedItem.outerHeight() : 0);
+
+            moreLinkPositionOffset = (typeof $extraDockedItem !== 'undefined' && $extraDockedItem.length > 0 ? $extraDockedItem.outerHeight() : 0);
             $(".morePromptLink").css("bottom", moreLinkPositionOffset);
 
             if (!promptInit) {
@@ -96,7 +97,7 @@
 
     function setPromptBottomPx() {
 
-        moreLinkPositionOffset = ($extraDockedItem.length > 0 ? $extraDockedItem.outerHeight() : 0);
+        moreLinkPositionOffset = (typeof $extraDockedItem !== 'undefined' && $extraDockedItem.length > 0 ? $extraDockedItem.outerHeight() : 0);
 
         // we only want this to happen when the results are rendered otherwise it will appear when the loading screen appears
         if(disablePrompt || typeof scrollBottomAnchor == 'undefined' || !scrollBottomAnchor.length) {
@@ -125,7 +126,7 @@
             if(!isXs) {
                 var setHeightFromBottom = windowHeight - anchorViewportOffsetTop;
                 $(".morePromptLink").css("bottom", (setHeightFromBottom - settings.stationaryDockingOffset)+ 'px');
-                if ($extraDockedItem.length > 0) {
+                if (typeof $extraDockedItem !== 'undefined' && $extraDockedItem.length > 0) {
                     $extraDockedItem.css("bottom", (setHeightFromBottom - moreLinkPositionOffset - settings.stationaryDockingOffset) + 'px');
                 }
             }
@@ -141,7 +142,7 @@
 
             // during scrolling up and down the page
             $(".morePromptLink").css("bottom", moreLinkPositionOffset);
-            if ($extraDockedItem.length > 0) {
+            if (typeof $extraDockedItem !== 'undefined' && $extraDockedItem.length > 0) {
                 $extraDockedItem.css("bottom", 0);
             }
             if(settings.scrollTo != 'bottom') {
@@ -163,7 +164,7 @@
             resetScrollBottomAnchorElement();
             toggleArrow("down");
             $morePrompt.removeAttr('style');
-            if($extraDockedItem.length) {
+            if(typeof $extraDockedItem !== 'undefined' && $extraDockedItem.length) {
                 $extraDockedItem.removeAttr('style');
             }
         });
@@ -197,7 +198,7 @@
     function disablePromptBar() {
         $(window).off('scroll.viewMorePrompt');
         $morePrompt.hide();
-        if($extraDockedItem.length) {
+        if(typeof $extraDockedItem !== 'undefined' && $extraDockedItem.length) {
             $extraDockedItem.hide();
         }
     }
