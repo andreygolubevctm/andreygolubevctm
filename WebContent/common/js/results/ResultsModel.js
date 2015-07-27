@@ -267,7 +267,6 @@ ResultsModel = {
 	},
 
 	update: function( jsonResult ) {
-		var transactionId = meerkat.modules.transactionId.get();
 
 		try{
 
@@ -316,7 +315,7 @@ ResultsModel = {
 					Results.model.addFilter( "availability.price." + Results.settings.frequency, "value", options );
 				}
 
-				if ((Results.settings.sort.randomizeMatchingPremiums === true) && (transactionId % 2 === 0)) {
+				if ((Results.settings.sort.randomizeMatchingPremiums === true)) {
 
 					// do a pre-sort first as working on the returned products won't work because all the products are returned grouped by provider
 					// this is done to sort by price
