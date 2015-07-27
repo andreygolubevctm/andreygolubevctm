@@ -1,10 +1,10 @@
 -- ================ TESTS =====================
 -- ========= BEFORE INSERT TESTS ==============
--- When this is run before anything else on the ctm.product_properties table, query should return 18990 rows
-SELECT count(*) FROM ctm.product_properties WHERE ProductId IN(70,71,72,73,74,75,76,77,78,79,167,168,169,170,171,172,173,174,175,176,207,208,209) AND SequenceNo > 0 LIMIT 999999;
+-- When this is run before anything else on the ctm.product_properties table, query should return 17352 rows
+SELECT count(*) FROM ctm.product_properties WHERE ProductId IN(70,71,72,73,74,75,76,77,78,167,168,169,171,172,173,174,175,176,207,208,209) AND SequenceNo > 0 LIMIT 999999;
 
 /* Delete existing prices in product properties */
-DELETE FROM ctm.product_properties WHERE ProductId IN(70,71,72,73,74,75,76,77,78,79,167,168,169,170,171,172,173,174,175,176,207,208,209) AND SequenceNo > 0 LIMIT 17352;
+DELETE FROM ctm.product_properties WHERE ProductId IN(70,71,72,73,74,75,76,77,78,167,168,169,171,172,173,174,175,176,207,208,209) AND SequenceNo > 0 LIMIT 17352;
 
 /* Insert product properties pricing*/
 INSERT INTO ctm.product_properties VALUES ( 70, 'R2-SIN', 1, 356.32, '$356.32', NULL, CURDATE(), '2040-12-31', '', 0 ) ,
@@ -17141,6 +17141,6 @@ INSERT INTO ctm.product_properties VALUES ( 70, 'R2-SIN', 1, 356.32, '$356.32', 
 
 -- ========= AFTER INSERT TESTS ==============
 -- When this is run after the insert statements on the ctm.product_properties table, query should return 17130 rows
-SELECT count(*) FROM ctm.product_properties WHERE ProductId IN(70,71,72,73,74,75,76,77,78,79,167,168,169,170,171,172,173,174,175,176,207,208,209) AND SequenceNo > 0 LIMIT 999999;
+SELECT count(*) FROM ctm.product_properties WHERE ProductId IN(70,71,72,73,74,75,76,77,78,167,168,169,171,172,173,174,175,176,207,208,209) AND SequenceNo > 0 LIMIT 999999;
 -- ================ =====================
 
