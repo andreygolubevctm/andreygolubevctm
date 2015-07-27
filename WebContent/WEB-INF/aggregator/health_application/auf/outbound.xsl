@@ -14,21 +14,7 @@
 	<!-- IMPORTS -->
 	<xsl:include href="../utils.xsl"/>
 
-
-	<xsl:variable name="todays_date">
-		<xsl:variable name="year" 	select="substring($today,1,4)" />
-		<xsl:variable name="month" 	select="substring($today,6,2)" />
-		<xsl:variable name="day" 	select="substring($today,9,2)" />
-
-		<xsl:value-of select="$year" />
-		<xsl:text>-</xsl:text>
-		<xsl:value-of select="format-number($month,'00')" />
-		<xsl:text>-</xsl:text>
-		<xsl:value-of select="format-number($day,'00')" />
-	</xsl:variable>
-
 	<xsl:variable name="address" select="/health/application/address" />
-
 	<xsl:variable name="suburbName" select="$address/suburbName" />
 	<xsl:variable name="state" select="$address/state" />
 
@@ -352,7 +338,12 @@
 								<CoverPeriod><xsl:value-of select="$coverPeriod"/></CoverPeriod>
 							</QuotedPremium>
 
-							<StartDate><xsl:value-of select="$todays_date" /><xsl:text>T00:00:00</xsl:text></StartDate>
+							<StartDate>
+								<xsl:call-template name="format_date">
+									<xsl:with-param name="eurDate" select="payment/details/start" />
+								</xsl:call-template>
+								<xsl:text>T00:00:00</xsl:text>
+							</StartDate>
 
 							<!-- <CommunicationPreferences>
 								<CommunicationPreference>
