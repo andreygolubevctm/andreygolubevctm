@@ -17,7 +17,7 @@
         _registerEventListeners();
 
         $(document).ready(function () {
-            $competitionRequiredElems = $('#utilities_resultsDisplayed_phoneinput, #utilities_resultsDisplayed_phone, #utilities_resultsDisplayed_email');
+            $competitionRequiredElems = $('#utilities_resultsDisplayed_firstName, #utilities_resultsDisplayed_phoneinput, #utilities_resultsDisplayed_phone, #utilities_resultsDisplayed_email');
 
             _toggleMovingInDate();
             _toggleAdditionalEstimateDetails();

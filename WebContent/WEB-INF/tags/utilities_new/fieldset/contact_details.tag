@@ -13,7 +13,7 @@
     <c:set var="fieldXPath" value="${xpath}/firstName" />
     <form_new:row label="First name" fieldXpath="${fieldXPath}" className="clear">
         <%--<field_new:input xpath="${fieldXPath}" required="false"/>--%>
-        <field:person_name xpath="${fieldXPath}" required="false" title="First Name"/>
+        <field:person_name xpath="${fieldXPath}" required="${true}" title="your first name${competitionValidationText}" />
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/email"/>
