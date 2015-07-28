@@ -238,4 +238,32 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template name="description">
+		<xsl:param name="productId" />
+		<xsl:if test="$productId = 'BUDD-05-29'">
+			<xsl:text>&lt;strong&gt;Save up to 35% online.&lt;/strong&gt; Budget Direct is Money Magazine's 2015 Insurer Of The Year and Winner of ServiceRage Australia's Happiest Car &amp; Home Insurance Customers Award 2014.</xsl:text>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="offer">
+		<xsl:param name="productId" />
+		<xsl:param name="productType" />
+
+		<xsl:choose>
+			<xsl:when test="$productId = 'BUDD-05-29'">
+				<xsl:choose>
+					<xsl:when test="$productType = 'HHB'">
+						&lt;strong&gt;SPECIAL OFFER:&lt;/strong&gt; Price includes &lt;strong&gt;20% Discount on  Smart Home Insurance&lt;/strong&gt; when you buy online from Money Magazine's Insurer of the Year.
+					</xsl:when>
+					<xsl:when test="$productType = 'HHC'">
+						&lt;strong&gt;SPECIAL OFFER:&lt;/strong&gt; Price includes &lt;strong&gt;20% on Smart Contents Insurance&lt;/strong&gt; when you buy online from Money Magazine's Insurer of the Year.
+					</xsl:when>
+					<xsl:when test="$productType = 'HHZ'">
+						&lt;strong&gt;SPECIAL OFFER:&lt;/strong&gt; Price includes &lt;strong&gt;35% Discount on combined Smart Home &amp; Contents Insurance&lt;/strong&gt; when you buy online from Money Magazine's Insurer of the Year.
+					</xsl:when>
+				</xsl:choose>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
+
 </xsl:stylesheet>
