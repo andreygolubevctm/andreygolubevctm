@@ -1,9 +1,5 @@
 package com.ctm.constants;
 
-import static java.util.Arrays.asList;
-
-import java.util.ArrayList;
-
 /**
  * Collection of personally identifiable information constants
  */
@@ -15,7 +11,7 @@ public final class PrivacyBlacklist {
 	 * It is a PCI Compliance issue to store certain credit card fields.
 	 * It is a OWASP Security issue to store passwords in plain text.
 	 */
-	public static final ArrayList<String> COMPLIANCE_BLACKLIST = new ArrayList<String>(asList(
+	public static final String[] COMPLIANCE_BLACKLIST  = new String[]{
 			"credit/ccv",
 			"maskedNumber", // payment_ipp
 			"credit/number",
@@ -26,12 +22,12 @@ public final class PrivacyBlacklist {
 			"payment/details/type",
 			// necessary for write quote lite, but don't want to save.
 			"hasPrivacyOptin"
-			));
+	};
 	/**
 	 * Fields in the journey that contain personally identifiable information.
 	 * This should be updated as part of journey development.
 	 */
-	public static final ArrayList<String> PERSONALLY_IDENTIFIABLE_INFORMATION_BLACKLIST = new ArrayList<String>(asList(
+	public static final String[] PERSONALLY_IDENTIFIABLE_INFORMATION_BLACKLIST = new String[]{
 			/**
 			 * Retrieve quote passwords.
 			 */
@@ -85,7 +81,7 @@ public final class PrivacyBlacklist {
 			 * Fund membership Id
 			 */
 			"/memberID"
-			));
+	};
 
 
 	// PRIVATE //
