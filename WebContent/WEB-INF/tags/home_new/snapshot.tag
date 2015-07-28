@@ -15,11 +15,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-12">
-					<span data-source="#home_property_address_streetNum"></span>
-					<span data-source="#home_property_address_streetName"></span><br />
-					<span data-source="#home_property_address_suburb"></span><br />
-					<span data-source="#home_property_address_state"></span>
-					<span data-source="#home_property_address_postCode"></span>
+					<span data-source="#home_property_address_fullAddress" data-callback="meerkat.modules.homeSnapshot.getAddress"></span>
 				</div>
 			</div>
 		</div>

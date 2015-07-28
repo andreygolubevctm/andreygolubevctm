@@ -41,6 +41,11 @@ public class ResultsTemplateItem implements Comparable<ResultsTemplateItem> {
 		return name;
 	}
 
+	public String getSafeName() {
+		String name = getName();
+		return name.matches("\\d+") ? "" : name;
+	}
+
 	public void setName(String name) {
 		this.name = name.replaceAll("/", " / ");
 	}
