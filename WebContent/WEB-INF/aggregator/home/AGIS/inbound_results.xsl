@@ -318,7 +318,6 @@
 			<xsl:when test="$brandCode = 'BUDD'">
 				<xsl:call-template name="description" >
 					<xsl:with-param name="productId" select="$productId" />
-					<xsl:with-param name="productType" select="$productType" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
