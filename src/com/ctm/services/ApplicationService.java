@@ -9,6 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.ctm.services.car.RegoLookupService;
 import org.apache.log4j.Logger;
 
 import com.ctm.dao.BrandsDao;
