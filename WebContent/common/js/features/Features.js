@@ -267,8 +267,10 @@ Features = {
 	},
 
 	simpleDecodeHTML: function(input) {
-		input = input.replace(/&lt;/gi,"<");
-		input = input.replace(/&gt;/gi,">");
+		if(typeof input === "string") {
+			input = input.replace(/&lt;/gi, "<");
+			input = input.replace(/&gt;/gi, ">");
+		}
 		return input;
 	},
 
