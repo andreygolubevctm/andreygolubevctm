@@ -11,7 +11,7 @@ var LifeQuote = {
 	_tempFields : {},
 
 	_contactLeadSent: false,
-
+	
 	cache_active : true,
 
 	cache_age_limit : (60 * 1000 * 10), // 10 minutes
@@ -103,23 +103,23 @@ var LifeQuote = {
 							.find('h2.success').show();
 						$('#save-my-quote').show();
 						if(Results._splitTestingJourney != "noresults") {
-						if( LifeQuote.responseContainsProducts(jsonResult) ) {
-							// Update form with client/product data
+							if( LifeQuote.responseContainsProducts(jsonResult) ) {
+								// Update form with client/product data
 								LifebrokerRef.updateAPIFormFields(jsonResult.results.api.reference, null);
 
-							var clean_data = LifeQuote.sanitiseResults(jsonResult.results, jsonResult.results.api.reference, jsonResult.results.transactionId);
+								var clean_data = LifeQuote.sanitiseResults(jsonResult.results, jsonResult.results.api.reference, jsonResult.results.transactionId);
 
 								Results.update(clean_data, jsonResult.results.transactionId);
-							Results.show();
-							Results._revising = true;
+								Results.show();
+								Results._revising = true;
 	
-							// Form updated with client reference now so update databucket again
-							LifebrokerRef.updateDataBucket();
-						}
-						else
-						{
-							Results.showErrors(["No results found, please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>."]);
-						}
+								// Form updated with client reference now so update databucket again
+								LifebrokerRef.updateDataBucket();
+							}
+							else
+							{
+								Results.showErrors(["No results found, please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>."]);
+							}
 						} else {
 							$('#resultsPage').addClass("noResultsJourney");
 							
@@ -139,7 +139,7 @@ var LifeQuote = {
 								noAnimation: true, 
 								index: 2
 							});
-					}
+						}
 					}
 					else
 					{
@@ -201,12 +201,12 @@ var LifeQuote = {
 		if( typeof json.results.client == "object" && json.results.client.hasOwnProperty("premium") && typeof json.results.client.premium == "object" && json.results.client.premium instanceof Array && json.results.client.premium.length ) {
 			if( atLeastOneProductExists(json.results.client.premium) ) {
 				is_valid.client = true;
-		}
+			}
 		}
 
 		// Then test the response contains ANY partner products, if necessary
 		if( Results._partnerQuote && typeof json.results.partner == "object" && json.results.partner.hasOwnProperty("premium") && typeof json.results.partner.premium == "object" && json.results.partner.premium instanceof Array && json.results.partner.premium.length ) {
-			if( atLeastOneProductExists(json.results.partner.premium) ) {
+			if (atLeastOneProductExists(json.results.partner.premium)) {
 				is_valid.partner = true;
 			}
 		}
@@ -248,11 +248,11 @@ var LifeQuote = {
 				prod.thumb = prod.company.toLowerCase().replace(" ", "_") + ".png";
 				
 				if(prod.company !== "ozicare") {
-				prod.pds = "pds/life/" + decodeURI(prod.pds.split("/").pop()).replace(/ /g, "_");
+					prod.pds = "pds/life/" + decodeURI(prod.pds.split("/").pop()).replace(/ /g, "_");
 				}
 
 				return prod;
-				}
+			}
 
 			return false;
 		};
@@ -262,8 +262,8 @@ var LifeQuote = {
 			var clean_product = getProduct( results.client.premium[i] );
 			if( clean_product !== false ) {
 				output.primary.push(clean_product);
-				}
 			}
+		}
 
 		if( Results._partnerQuote ) {
 			for(var i=0; i < results.partner.premium.length; i++)
@@ -271,7 +271,7 @@ var LifeQuote = {
 				var clean_product = getProduct( results.partner.premium[i] );
 				if( clean_product !== false ) {
 					output.partner.push(clean_product);
-		}
+				}
 			}
 		}
 
@@ -374,7 +374,7 @@ var LifeQuote = {
 				callback();
 			}
 		} else {
-		$.ajax({
+			$.ajax({
 				url: "ajax/json/life_product_details.jsp",
 				data: data,
 				type: "POST",
@@ -435,18 +435,18 @@ var LifeQuote = {
 					}
 					return false;
 				},
-				error: function(obj, txt, errorThrown) {
+				error: function(obj,txt){
 					// Remove the loading icon on error
 					$('#result_' + data.client_type + '_' + data.product_id).removeClass('pending');
 
 					FatalErrorDialog.exec({
 						message:		"An error occurred when fetching the product:" + txt,
 						page:			"life.js",
-						description:	"LifeQuote.fetchProductDetails().  AJAX Request failed: " + txt + ' ' + errorThrown,
+						description:	"LifeQuote.fetchProductDetails().  AJAX Request failed: " + txt,
 						data:			data
-				});
-			}
-		});
+					});
+				}
+			});
 		}
 	},
 
@@ -738,52 +738,52 @@ var LifeQuote = {
 			if( typeof callback == 'function' )
 				callback();
 		} else {
-		var data = {
-			request_type:			'REQUEST-INFO',
-			api_ref:				product.api_ref,
-			vertical:				LifeQuote._vertical,
-			partner_quote:			Results._partnerQuote ? 'Y' : 'N',
-			transactionId: 			referenceNo.getTransactionID()
-		};
+			var data = {
+				request_type:			'REQUEST-INFO',
+				api_ref:				product.api_ref,
+				vertical:				LifeQuote._vertical,
+				partner_quote:			Results._partnerQuote ? 'Y' : 'N',
+				transactionId: 			referenceNo.getTransactionID()
+			};
 
-		if( type == 'partner' ) {
-			data.partner_product_id = product.product_id;
-			data.client_product_id = Results._selectedProduct.primary ? Results._selectedProduct.primary.product_id : '';
-		} else {
-			data.client_product_id = product.product_id;
-			data.partner_product_id = Results._selectedProduct.partner ? Results._selectedProduct.partner.product_id : '';
-		}
-
-		$.ajax({
-			url: "ajax/json/life_product_select.jsp",
-			data: data,
-			type: "POST",
-			async: true,
-			dataType: "json",
-			timeout:60000,
-			cache: false,
-			beforeSend : function(xhr,setting) {
-				var url = setting.url;
-				var label = "uncache",
-				url = url.replace("?_=","?" + label + "=");
-				url = url.replace("&_=","&" + label + "=");
-				setting.url = url;
-			},
-			success: function(jsonResult){
-				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
-					Results.hideResults();
-					ServerSideValidation.outputValidationErrors({
-						validationErrors: jsonResult.error.errorDetails.validationErrors,
-						startStage: 0,
-						singleStage: true,
-						isAccordian: LifeQuote._vertical === 'life'
-					});
-					if (typeof jsonResult.error.transactionId != 'undefined') {
-						referenceNo.setTransactionId(jsonResult.error.transactionId);
-					}
-				}else if( jsonResult.results.success ) {
-					product.transaction_id = jsonResult.results.transactionId;
-
+			if( type == 'partner' ) {
+				data.partner_product_id = product.product_id;
+				data.client_product_id = Results._selectedProduct.primary ? Results._selectedProduct.primary.product_id : '';
+			} else {
+				data.client_product_id = product.product_id;
+				data.partner_product_id = Results._selectedProduct.partner ? Results._selectedProduct.partner.product_id : '';
+			}
+			
+			$.ajax({
+				url: "ajax/json/life_product_select.jsp",
+				data: data,
+				type: "POST",
+				async: true,
+				dataType: "json",
+				timeout:60000,
+				cache: false,
+				beforeSend : function(xhr,setting) {
+					var url = setting.url;
+					var label = "uncache",
+					url = url.replace("?_=","?" + label + "=");
+					url = url.replace("&_=","&" + label + "=");
+					setting.url = url;
+				},
+				success: function(jsonResult){
+					if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+						Results.hideResults();
+						ServerSideValidation.outputValidationErrors({
+							validationErrors: jsonResult.error.errorDetails.validationErrors,
+							startStage: 0,
+							singleStage: true,
+							isAccordian: LifeQuote._vertical === 'life'
+						});
+						if (typeof jsonResult.error.transactionId != 'undefined') {
+							referenceNo.setTransactionId(jsonResult.error.transactionId);
+						}
+					}else if( jsonResult.results.success ) {
+						product.transaction_id = jsonResult.results.transactionId;
+	
 						// Update form with client/product data
 						LifebrokerRef.updateAPIFormFields( product.api_ref, type, product.product_id );
 
@@ -792,37 +792,37 @@ var LifeQuote = {
 
 						if( typeof callback == 'function' )
 							callback();
-				} else {
+					} else {
+						// Remove the loading icon on error
+						$('#addtocart_' + type + '_' + product.product_id).removeClass('adding');
+	
+						var msg = "This service is temporarily unavailable. Please try again later.";
+						FatalErrorDialog.exec({
+							message:		msg,
+							page:			"life.js",
+							description:	"LifeQuote.selectProduct().  Service is currently unavailable.",
+							data:			{
+									sent:		data,
+									received:	jsonResult,
+									errors:		jsonResult.results.error
+							}
+						});
+					}
+	
+					return false;
+				},
+				error: function(obj,txt){
 					// Remove the loading icon on error
 					$('#addtocart_' + type + '_' + product.product_id).removeClass('adding');
-
-					var msg = "This service is temporarily unavailable. Please try again later.";
+	
 					FatalErrorDialog.exec({
-						message:		msg,
+						message:		"An error occurred when fetching the product:" + txt,
 						page:			"life.js",
-						description:	"LifeQuote.selectProduct().  Service is currently unavailable.",
-						data:			{
-								sent:		data,
-								received:	jsonResult,
-								errors:		jsonResult.results.error
-						}
+						description:	"LifeQuote.fetchProductDetails().  AJAX Request failed: " + txt,
+						data:			data
 					});
 				}
-
-				return false;
-			},
-			error: function(obj, txt, errorThrown) {
-				// Remove the loading icon on error
-				$('#addtocart_' + type + '_' + product.product_id).removeClass('adding');
-
-				FatalErrorDialog.exec({
-					message:		"An error occurred when fetching the product:" + txt,
-					page:			"life.js",
-					description:	"LifeQuote.fetchProductDetails().  AJAX Request failed: " + txt + ' ' + errorThrown,
-					data:			data
-				});
-			}
-		});
+			});
 		}
 	},
 
@@ -830,13 +830,13 @@ var LifeQuote = {
 
 		// Update form with client/product data
 		for(var i in products) {
-			LifebrokerRef.updateAPIFormFields( products[i].api_ref, i, products[i].product_id );
+			LifebrokerRef.updateAPIFormFields(products[i].api_ref, i, products[i].product_id);
 		}
 
 		var submit = function() {
-				Loading.show("Submitting application...");
+			Loading.show("Submitting application...");
 			var data = {
-					request_type:	"REQUEST-CALL",
+				request_type:			"REQUEST-CALL",
 				client_product_id:		products.hasOwnProperty('primary') ? products.primary.product_id : "",
 				partner_product_id:		products.hasOwnProperty('partner') ? products.partner.product_id : "",
 				api_ref:				products.hasOwnProperty('primary') ? products.primary.api_ref : products.partner.api_ref,
@@ -844,8 +844,13 @@ var LifeQuote = {
 				partner_quote:			Results._partnerQuote ? 'Y' : 'N',
 				transactionId: 			referenceNo.getTransactionID(),
 				lead_number:			products.hasOwnProperty('primary') ? products.primary.lead_number : products.partner.lead_number,
-				company:				products.hasOwnProperty('primary') ? products.primary.company : products.partner.company
-				};
+				company:				products.hasOwnProperty('primary') ? products.primary.company : products.partner.company,
+				partnerBrand:			products.primary.company
+			};
+
+			if(data.company.toLowerCase() == "ozicare") {
+				data.partnerBrand = "OZIC";
+			}
 
 			$.ajax({
 				url: "ajax/json/life_submit_application.jsp",
@@ -892,7 +897,7 @@ var LifeQuote = {
 					}
 					return false;
 				},
-				error: function(obj, txt, errorThrown) {
+				error: function(obj, txt, errorThrown){
 					Loading.hide();
 					Write.touchQuote("E", function() {
 						FatalErrorDialog.exec({
@@ -1050,12 +1055,12 @@ var LifeQuote = {
 
 				return false;
 			},
-			error: function(obj, txt, errorThrown) {
+			error: function(obj,txt){
 				Loading.hide();
 				FatalErrorDialog.exec({
 					message:		"Sorry, an error occurred trying to start a new quote.",
 					page:			"life.js",
-					description:	"LifeQuote.restartQuote().  AJAX request failed: " + txt + ' ' + errorThrown,
+					description:	"LifeQuote.restartQuote().  AJAX request failed: " + txt,
 					data:			data
 				});
 			}
@@ -1119,7 +1124,7 @@ var LifeQuote = {
 			}
 		});
 	},
-
+	
 	requestCallback: function() {
 
 		Loading.show("Requesting Callback...");
@@ -1129,11 +1134,11 @@ var LifeQuote = {
 
 		if(this._contactLeadSent)
 			data = data + "&" + LifeQuote._vertical + "_contactLeadSent=Y";
-
+		
 		var primaryProduct = Results.getPrimarySelectedProduct();
 		
 		if(primaryProduct.service_provider == "Ozicare") {
-			data = data + "&company=ozicare&lead_number=" + primaryProduct.lead_number;
+			data = data + "&partnerBrand=OZIC&company=ozicare&lead_number=" + primaryProduct.lead_number;
 		}
 
 		// Force this field to be updated - actual change would have occured after
@@ -1200,18 +1205,18 @@ var LifeQuote = {
 
 				return false;
 			},
-			error: function(obj, txt, errorThrown) {
+			error: function(obj,txt){
 				Loading.hide();
 
 				FatalErrorDialog.exec({
 					message:		"An error occurred when submitting your request:" + txt,
 					page:			"life.js",
-					description:	"LifeQuote.requestCallBack().  AJAX request failed: " + txt + ' ' + errorThrown,
+					description:	"LifeQuote.requestCallBack().  AJAX request failed: " + txt,
 					data:			data
 				});
 			}
 		});
-		}
+	}
 };
 
 LifeQuote._init();

@@ -11,6 +11,7 @@
 <%@ attribute fragment="true" required="true" name="form_bottom" %>
 <%@ attribute fragment="true" required="true" name="footer" %>
 <%@ attribute fragment="true" required="true" name="body_end" %>
+<%@ attribute fragment="true" required="false" name="additional_meerkat_scripts" %>
 
 <%@ attribute fragment="true" required="false" name="header" %>
 <%@ attribute fragment="true" required="false" name="header_button_left" %>
@@ -88,6 +89,10 @@
 
 		<jsp:invoke fragment="body_end" />
 
+	</jsp:attribute>
+
+	<jsp:attribute name="additional_meerkat_scripts">
+		<jsp:invoke fragment="additional_meerkat_scripts" />
 	</jsp:attribute>
 
 	<jsp:attribute name="before_close_body">

@@ -20,6 +20,12 @@
 
 		var self = this;
 
+		meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function(){
+			meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, _.bind(toggleManualAddressEntry,this));
+			toggleManualAddressEntry();
+		});
+
+
 		$(document).ready(function() {
 
 			// Only init if car
@@ -52,9 +58,22 @@
 			if ($e.length > 0) {
 				templateCallDirect = _.template($e.html());
 			}
-
 		});
 
+	}
+
+	function toggleManualAddressEntry() {
+		var deviceType = $('#deviceType').attr('data-deviceType');
+		if(meerkat.modules.splitTest.isActive(15) && (deviceType == 'TABLET' || meerkat.modules.deviceMediaState.get() == 'xs')) {
+			$('#quote_riskAddress_nonStd_row').hide();
+			if(meerkat.modules.splitTest.isActive(32)) {
+				$('#addressForm').find('.cantFindAddressHelper').hide();
+			} else {
+				$('#addressForm').find('.cantFindAddressHelper').show();
+			}
+		} else {
+			$('#quote_riskAddress_nonStd_row').show();
+		}
 	}
 
 	function eventDelegates() {
@@ -197,7 +216,6 @@
 				meerkat.modules.carYoungDrivers.initCarYoungDrivers();
 			},
 			onAfterEnter: function onOptionsEnter(event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(1) .snapshot');
 				// Bind the annual kilometers to format numbers.
 				$annualKilometers = $('.annual_kilometres_number');
 
@@ -233,7 +251,6 @@
 				includeFormData:true
 			},
 			onAfterEnter: function onDetailsEnter(event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(2) .snapshot');
 				// Bind the annual kilometers to format numbers.
 				$annualKilometersYoungest = $('.annual_kilometres_number_youngest');
 
@@ -299,7 +316,6 @@
 				}
 			},
 			onAfterEnter : function (event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(3) .snapshot');
 			},
 			onBeforeLeave : function(event) {
 			}
@@ -329,11 +345,13 @@
 					meerkat.modules.carResults.get();
 				// Show the filters bar
 				meerkat.modules.carFilters.show();
+				$('.header-wrap .quoteSnapshot').removeClass("hidden");
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId
 				if(event.isBackward === true) {
 					meerkat.modules.transactionId.getNew(3);
+					$('.header-wrap .quoteSnapshot').addClass("hidden");
 				}
 			},
 			onAfterLeave: function(event) {

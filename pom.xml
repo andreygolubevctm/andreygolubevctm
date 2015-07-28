@@ -33,7 +33,7 @@
         <javax.jsp.version>2.2</javax.jsp.version>
         <mysql.connector.version>5.1.29</mysql.connector.version>
         <!-- Compile as this version -->
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
     </properties>
 
@@ -361,18 +361,6 @@
 
         <dependency>
             <groupId>com.ctm.webservices</groupId>
-            <artifactId>aglead_ws</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.exacttarget.wsdl</groupId>
-            <artifactId>exact-target-api-v6-client</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ctm.webservices</groupId>
             <artifactId>motorweb</artifactId>
             <version>1.0</version>
         </dependency>
@@ -390,6 +378,70 @@
         </dependency>
 
     </dependencies>
+    <profiles>
+         <profile>
+            <id>build-frontend</id>
+            <activation>
+                <!-- only activate if build.environment set. for local development this will not be set.
+                 in local the grunt watcher should be running so maven doesn't need to run grunt -->
+                <property>
+                    <name>build.environment</name>
+                </property>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>${frontend-maven-plugin.version}</version>
+                        <executions>
+
+                            <execution>
+                                <id>install node and npm</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v0.12.2</nodeVersion>
+                                    <npmVersion>1.4.12</npmVersion>
+                                    <nodeDownloadRoot>${node.download.root}/</nodeDownloadRoot>
+                                    <npmDownloadRoot>${node.download.root}/npm/</npmDownloadRoot>
+                                    <workingDirectory>${basedir}</workingDirectory>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>npm install</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install</arguments>
+                                    <workingDirectory>${basedir}</workingDirectory>
+                                </configuration>
+                            </execution>
+
+                            <execution>
+                                <id>grunt build</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>grunt</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>build_all_nowatch</arguments>
+                                    <workingDirectory>${basedir}</workingDirectory>
+                                </configuration>
+                            </execution>
+
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
@@ -423,6 +475,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <warSourceDirectory>WebContent</warSourceDirectory>
+                </configuration>
                 <executions>
                     <!-- creating the artifact is done by ant -->
                     <execution>
@@ -439,10 +494,6 @@
                         <goals>
                             <goal>exploded</goal>
                         </goals>
-						<configuration>
-							<warSourceDirectory>WebContent</warSourceDirectory>
-							<warSourceExcludes>WEB-INF/lib/*.jar</warSourceExcludes>
-						</configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -471,10 +522,128 @@
                     </execution>
                 </executions>
             </plugin>
+			<plugin>
+                <groupId>org.jvnet.jax-ws-commons</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>${jaxws-maven-plugin.version}</version>
+                <executions>
+                    <!-- For each provider you have to provide new execution -->
+                    <execution>
+                        <id>exacttarget</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <packageName>com.exacttarget.wsdl.partnerapi</packageName>
+                            <wsdlDirectory>${project.basedir}/main/resources/webservice-api/exacttarget/</wsdlDirectory>
+                            <wsdlLocation>/webservice-api/exacttarget/wsdl/etframework.wsdl</wsdlLocation>
+                            <wsdlFiles>
+                                <wsdlFile>wsdl/etframework.wsdl</wsdlFile>
+                            </wsdlFiles>
+                        </configuration>
+                    </execution>
+                   <execution>
+                        <id>aglead_ws</id>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <packageName>com.ctm.aglead.ws</packageName>
+                            <wsdlDirectory>${project.basedir}/main/resources/webservice-api/aglead_ws/</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>wsdl/messageCentreCreateMessage.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <wsdlLocation>/webservice-api/aglead_ws/wsdl/messageCentreCreateMessage.wsdl</wsdlLocation>
+                            <bindingFiles>
+                                <bindingFiles>${project.basedir}/main/resources/webservice-api/aglead_ws/bindings.xml</bindingFiles>
+                            </bindingFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
+                    <groupId>com.github.klieber</groupId>
+                    <artifactId>phantomjs-maven-plugin</artifactId>
+                    <version>0.5</version>
+                    <executions>
+                        <execution>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>install</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <version>1.9.7</version>
+                        <outputDirectory>${project.build.directory}/phantomjs-install/</outputDirectory>
+                        <skip>${maven.test.skip}</skip>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.github.eirslett</groupId>
+                    <artifactId>frontend-maven-plugin</artifactId>
+                    <version>${frontend-maven-plugin.version}</version>
+
+                    <executions>
+
+                        <execution>
+                            <id>install node and npm test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>install-node-and-npm</goal>
+                            </goals>
+                            <configuration>
+                                <nodeVersion>v0.12.2</nodeVersion>
+                                <npmVersion>1.4.12</npmVersion>
+                                <nodeDownloadRoot>${node.download.root}/</nodeDownloadRoot>
+                                <npmDownloadRoot>${node.download.root}/npm/</npmDownloadRoot>
+                                <workingDirectory>test/javascript</workingDirectory>
+                                <skip>${maven.test.skip}</skip>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>npm install test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>npm</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>install</arguments>
+                                <workingDirectory>test/javascript</workingDirectory>
+                            </configuration>
+                        </execution>
+
+
+                        <execution>
+                            <id>grunt build test</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>grunt</goal>
+                            </goals>
+                            <configuration>
+                                <arguments>--phantomPath=${phantomjs.binary}</arguments>
+                                <workingDirectory>test/javascript</workingDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+            </plugin>
         </plugins>
 
-        <testSourceDirectory>${project.basedir}/test</testSourceDirectory>
+        <testSourceDirectory>${project.basedir}/test/java</testSourceDirectory>
         <sourceDirectory>${project.basedir}/src</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>main/resources</directory>
+            </resource>
+        </resources>
 
     </build>
 

@@ -449,7 +449,7 @@ function initializeNewLogging() {
 
 	window.onerror = function(message, file, line, column, error) {
 		var column = column || (window.event && window.event.errorCharacter);
-		var stack;
+		var stack = "";
 		// Used to trim CTM urls.
 		var url = file.substring(file.lastIndexOf('/ctm'), file.length);
 		// Used to trim WHITELABEL urls.
@@ -535,7 +535,7 @@ meerkat.logging.init = function () {
 	//
 	// One day we will remove the old code in favour of this...
 	if(meerkat.site.useNewLogging) {
-		initializeNewLogging();
+		//initializeNewLogging();
 	}
 
 	var theAppName = '';

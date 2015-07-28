@@ -59,6 +59,9 @@ public class SpecialOffersDao {
             if (offerId != 0) {
                 sql.append(" where offerId = ?  ");
             }
+
+            sql.append(" ORDER BY providerName, so.styleCodeId, so.state, so.effectiveStart, so.effectiveEnd");
+
             stmt = dbSource.getConnection().prepareStatement(sql.toString());
             if (offerId != 0) {
                 stmt.setInt(1, offerId);
@@ -105,7 +108,7 @@ public class SpecialOffersDao {
         try {
             stmt = dbSource.getConnection().prepareStatement(
                     "SELECT content, terms FROM ctm.hlt_specialoffer_master WHERE providerId=? AND  (styleCodeId=?  OR styleCodeId = 0) " +
-                            "AND (state=? OR state='0')AND ? BETWEEN effectiveStart AND effectiveEnd ");
+                            "AND (state=? OR state='0')AND ? BETWEEN effectiveStart AND effectiveEnd order by state DESC limit 1");
             stmt.setInt(1, providerId);
             stmt.setInt(2, styleCodeId);
             stmt.setString(3, state.trim().toUpperCase());

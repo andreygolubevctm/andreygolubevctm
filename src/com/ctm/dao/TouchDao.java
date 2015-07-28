@@ -169,7 +169,7 @@ public class TouchDao {
 				" 	LEFT OUTER JOIN ctm.touches_products AS tp " +
 				" 	ON t.touchId = tp.touchesId " +
 				" 	LEFT OUTER JOIN ctm.product_master AS pm " +
-				" 	ON pm.productCode = tp.productCode and CURDATE() BETWEEN pm.effectiveStart and pm.effectiveEnd " +
+				" 	ON pm.productId = tp.productCode and CURDATE() BETWEEN pm.effectiveStart and pm.effectiveEnd " +
 				" 	LEFT OUTER JOIN ctm.provider_master AS pp " +
 				" 	ON pm.providerId = pp.providerId" +
 				" ORDER BY " +

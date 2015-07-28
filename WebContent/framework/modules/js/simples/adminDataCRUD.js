@@ -187,7 +187,11 @@
 			key = $sortElement.data("sortkey"),
 			direction = $sortElement.data("sortdir");
 
-		this.dataSet.sort(key, direction, this.renderResults);
+		if (typeof key === 'string' && key.match('/./')) {
+			this.dataSet.sort(key, direction, this.renderResults);
+		} else {
+			this.renderResults();
+		}
 	};
 	
 	/**
