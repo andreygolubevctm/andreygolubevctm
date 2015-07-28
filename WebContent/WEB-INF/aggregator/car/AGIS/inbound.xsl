@@ -201,7 +201,9 @@
 
 					<quoteUrl><xsl:value-of select="onlinePrice/quoteUrl" /></quoteUrl>
 
-					<telNo><xsl:value-of select="insurerContact" /></telNo>
+					<telNo>
+						<xsl:if test="offlinePrice/leadNumber"><xsl:value-of select="insurerContact" /></xsl:if>
+					</telNo>
 					<vdn>
 						<xsl:choose>
 							<xsl:when test="insurerContact='1800 042 783'">1648</xsl:when>
@@ -219,7 +221,9 @@
 							<xsl:otherwise>9999</xsl:otherwise>
 						</xsl:choose>
 					</vdn>
-					<openingHours><xsl:value-of select="insurerHours" /></openingHours>
+					<openingHours>
+						<xsl:if test="offlinePrice/leadNumber"><xsl:value-of select="insurerHours" /></xsl:if>
+					</openingHours>
 
 					<pdsaUrl><xsl:value-of select="pdsaUrl" /></pdsaUrl>
 					<pdsaDesLong><xsl:value-of select="pdsaDesLong" /></pdsaDesLong>
