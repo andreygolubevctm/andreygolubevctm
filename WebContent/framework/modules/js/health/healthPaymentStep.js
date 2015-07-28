@@ -308,6 +308,16 @@
 			return false;
 		}
 
+		console.log("Updating Premium")
+		// fire the tracking call
+		var data = {
+			actionStep: ' health application premium update'
+		};
+		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+			method:	'trackQuoteForms',
+			object:	data
+		});
+
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthPaymentStep', disableFields:true });
 
 		// Defer so we don't lock up the browser

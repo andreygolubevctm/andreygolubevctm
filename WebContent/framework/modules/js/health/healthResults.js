@@ -542,20 +542,32 @@
 			var items = Results.getFilteredResults().length;
 			var columnsPerPage = pageData.measurements.columnsPerPage;
 			var freeColumns = (columnsPerPage*numberOfPages)-items;
+			var pageNumber = pageData.pageNumber;
+
+			meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+				additionalData: {
+					pageNumber: pageNumber,
+					numberOfPages: numberOfPages
+				},
+				onAfterEventMode: 'Load'
+			});
 
 			if(freeColumns > 1 && numberOfPages === 1) {
 				toggleResultsLowNumberMessage(true);
 				toggleMarketingMessage(false);
+
 			}else {
 				toggleResultsLowNumberMessage(false);
-			if(Compare.view.resultsFiltered === false) {
-				if(pageData.pageNumber === pageData.measurements.numberOfPages && freeColumns > 2){
+				if(Compare.view.resultsFiltered === false) {
+
+					if(pageNumber === pageData.measurements.numberOfPages && freeColumns > 2){
 						toggleMarketingMessage(true, freeColumns);
 						return true;
 					}
-				toggleMarketingMessage(false);
+					toggleMarketingMessage(false);
+				}
 			}
-			}
+
 		});
 
 		$(document).on("FeaturesRendered", function(){
