@@ -3,6 +3,7 @@ package com.ctm.dao.competition;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ public class CompetitionDao {
 	public static Boolean isActive(Integer styleCodeId, Integer competitionId, HttpServletRequest request) throws DaoException{
 
 		SimpleDatabaseConnection dbSource = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		Boolean compActive = false;
 
@@ -32,12 +34,14 @@ public class CompetitionDao {
 					"SELECT competitionName FROM ctm.competition " +
 							"WHERE competitionId = ? " +
 							"	AND styleCodeId = ? " +
-							"	AND effectiveStart <= serverDate " +
-							"	AND effectiveEnd >= serverDate " +
+							"	AND effectiveStart <= ? " +
+							"	AND effectiveEnd >= ? " +
 							"LIMIT 1;"
 			);
 			stmt.setInt(1, competitionId);
 			stmt.setInt(2, styleCodeId);
+			stmt.setString(3, String.valueOf(sdf.format(serverDate)));
+			stmt.setString(4, String.valueOf(sdf.format(serverDate)));
 			ResultSet resultSet = stmt.executeQuery();
 
 			if (resultSet.next()) {
