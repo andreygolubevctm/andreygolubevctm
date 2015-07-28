@@ -13,3 +13,7 @@ VALUES
 
 /* Test */
 SELECT * FROM `ctm`.`service_properties` WHERE `serviceMasterId` = @SERVICE_MASTER_ID and `servicePropertyKey` = 'certificate';
+
+/* Update flag to enable motorweb */
+UPDATE `ctm`.`content_control` SET `contentValue` = 'Y' WHERE contentKey = 'regoLookupIsAvailable';
+select * from ctm.content_control where contentKey = 'regoLookupIsAvailable';
