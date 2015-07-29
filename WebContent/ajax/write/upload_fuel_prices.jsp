@@ -227,7 +227,7 @@ XML PARSE AND SQL UPDATE
 		
 		
 		<%-- Send an Update to the server --%>
-		<% System.out.println( "ResultsObj for " + pageContext.getAttribute("token") + " = " + pageContext.getAttribute("sqlCount") ); %>
+		<% System.out.println( "Results for " + pageContext.getAttribute("token") + " = " + pageContext.getAttribute("sqlCount") ); %>
 		
 		
 		<%--

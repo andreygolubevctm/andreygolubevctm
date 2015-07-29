@@ -70,7 +70,7 @@ public class FeaturesService {
 	protected String convetRStoXMLString(ResultSet rs)
 			throws SQLException {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<ResultsObj>");
+		sb.append("<Results>");
 		while (rs.next()) {
 			Data data = new Data();
 			data.put("result/providerName", rs.getString("providerName"));
@@ -80,7 +80,7 @@ public class FeaturesService {
 			data.put("result/features", rs.getString("features"));
 			sb.append(data.getXML(false));
 		}
-		sb.append("</ResultsObj>");
+		sb.append("</Results>");
 		return sb.toString();
 	}
 }

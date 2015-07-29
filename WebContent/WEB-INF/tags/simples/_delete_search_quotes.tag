@@ -81,7 +81,7 @@
 			<span class="premium"><span class="label">Premium: </span>[#=content.premium#]</span>
 		</div>
 		<div class="quote-options">
-			<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn blue"><span>Get Latest ResultsObj</span></a></div>-->
+			<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn blue"><span>Get Latest Results</span></a></div>-->
 			<div class="quote-amend [#=available#]"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
 		</div>
 	</div>
@@ -106,7 +106,7 @@
 			<span class="premium"><span class="label">Premium: </span>[#=content.premium#]</span>
 		</div>
 		<div class="quote-options">
-			<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn blue"><span>Get Latest ResultsObj</span></a></div>-->
+			<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn blue"><span>Get Latest Results</span></a></div>-->
 			<div class="quote-amend [#=available#]"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
 		</div>
 	</div>

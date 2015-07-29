@@ -30,7 +30,7 @@
 		</div>
 		--%>
 
-		<%-- ResultsObj --%>
+		<%-- Results --%>
 		<div class="search-quotes-results">
 			{{ if (typeof errorMessage !== 'undefined' && errorMessage.length > 0) { }}
 				<div class="alert alert-danger">{{= errorMessage }}</div>

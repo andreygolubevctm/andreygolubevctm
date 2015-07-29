@@ -152,7 +152,7 @@
 										</div>
 
 										<div class="quote-options">
-											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest ResultsObj</span></a></div> -->
+											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest Results</span></a></div> -->
 											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
 										</div>
 									</div>
@@ -175,7 +175,7 @@
 										</div>
 
 										<div class="quote-options">
-											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest ResultsObj</span></a></div> -->
+											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest Results</span></a></div> -->
 											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
 										</div>
 									</div>
@@ -197,7 +197,7 @@
 										</div>
 
 										<div class="quote-options">
-											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest ResultsObj</span></a></div> -->
+											<!--<div class="quote-latest"><a href="javascript:void(0);" class="quote-latest-button tinybtn altbtn"><span>Get Latest Results</span></a></div> -->
 											<div class="quote-amend"><a href="javascript:void(0);" class="quote-amend-button tinybtn"><span>Amend this Quote</span></a></div>
 										</div>
 									</div>

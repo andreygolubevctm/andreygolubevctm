@@ -192,7 +192,7 @@ XML PARSE AND SQL UPDATE
 
 
 		<%-- Send an Update to the server --%>
-		<% System.out.println( "ResultsObj for " + pageContext.getAttribute("stateToken") + " / " + pageContext.getAttribute("fuelToken") + " = " + pageContext.getAttribute("sqlCount") ); %>
+		<% System.out.println( "Results for " + pageContext.getAttribute("stateToken") + " / " + pageContext.getAttribute("fuelToken") + " = " + pageContext.getAttribute("sqlCount") ); %>
 
 	</c:forTokens>
 	</c:if>

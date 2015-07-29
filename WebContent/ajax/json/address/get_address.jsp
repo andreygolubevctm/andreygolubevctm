@@ -73,7 +73,7 @@
 	</c:otherwise>
 </c:choose>
 
-<%-- Export the JSON ResultsObj --%>
+<%-- Export the JSON Results --%>
 <c:choose>
 	<c:when test="${result.rowCount > 0 }">
 		<c:set var="hasUnits" value = "${false}" />
