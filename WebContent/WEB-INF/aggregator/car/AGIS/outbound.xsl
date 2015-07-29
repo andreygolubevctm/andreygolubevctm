@@ -67,15 +67,20 @@
 		</xsl:variable>
 
 		<xsl:variable name="excessCode">
-			<!-- Codes as per A&G Rules -->
-			<!-- Code	 Description -->
-			<!-- 0	 $600 EXCESS -->
-			<!-- 2	 $700 EXCESS -->
-			<!-- 4	 $800 EXCESS -->
-			<!-- 6	 $900 EXCESS -->
-			<!-- 8	 $1000 EXCESS -->
-			<!-- A	 $1100 EXCESS -->
+			<!-- Codes as per A&G Rules based on $600 excess -->
+			<!-- Code	 Description	Base Offset
+				 0	 	$600 EXCESS 	0
+				 2	 	$700 EXCESS 	+100
+				 4	 	$800 EXCESS 	+200
+				 6	 	$900 EXCESS 	+300
+				 8	 	$1000 EXCESS 	+400
+				 A	 	$1100 EXCESS 	+500
+				 C	 	$1200 EXCESS	+600
+				 O		$1800 EXCESS	+1200
+			-->
 			<xsl:choose>
+				<xsl:when test="$excessToTestWith >= 1800">O</xsl:when>
+				<xsl:when test="$excessToTestWith >= 1200">C</xsl:when>
 				<xsl:when test="$excessToTestWith >= 1100">A</xsl:when>
 				<xsl:when test="$excessToTestWith >= 1000">8</xsl:when>
 				<xsl:when test="$excessToTestWith >= 900">6</xsl:when>

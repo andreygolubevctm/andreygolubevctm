@@ -113,6 +113,8 @@ function init_address(name, defaultSuburbSeq) {
 			toggleValidationStyles(nonStdStreetNumInput.val(''));
 			toggleValidationStyles(nonStdUnitShopInput.val(''));
 			toggleValidationStyles(nonStdUnitTypeInput.val(''));
+			fullAddressLineOneHidden.val('');
+			fullAddressHidden.val('');
 
 		} else {
 			toggleValidationStyles(nonStdPostCodeInput);
@@ -361,7 +363,7 @@ function init_address(name, defaultSuburbSeq) {
 		if(name != fieldName) return;
 
 		window.selectedAddressObj[getType()].unitNo = $.trim(nonStdUnitShopInput.val().toUpperCase().replace(/\s{2,}/g," "));
-		if(nonStdCheckbox.is(":checked")) {
+		if(nonStdChecked()) {
 			window.selectedAddressObj[getType()].unitType = $.trim(nonStdUnitTypeInput.val());
 		}
 		setUnitType();
@@ -369,7 +371,7 @@ function init_address(name, defaultSuburbSeq) {
 		setSuburbName();
 		window.selectedAddressObj[getType()].state = lookupStateHidden.val().toUpperCase();
 		window.selectedAddressObj[getType()].houseNo =$.trim(nonStdStreetNumInput.val().toUpperCase().replace(/\s{2,}/g," "));
-		if(nonStdCheckbox.is(":checked")) {
+		if(nonStdChecked()) {
 			window.selectedAddressObj[getType()].streetName = getFormattedStreet(nonStdStreetNameInput.val() , false);
 		} else {
 			window.selectedAddressObj[getType()].streetName = getFormattedStreet(lookupStreetNameHidden.val() , false);
@@ -457,7 +459,7 @@ function init_address(name, defaultSuburbSeq) {
 
 	nonStdStreetNumInput.on('getSearchURL', function(event, callback) {
 		var url = "";
-		if (!nonStdCheckbox.is(":checked")) {
+		if (!nonStdChecked()) {
 			url = "ajax/json/address_street_number.jsp?" +
 						"streetId=" + lookupStreetIdHidden.val() +
 						"&search=" + nonStdStreetNumInput.val() +
@@ -504,7 +506,7 @@ function init_address(name, defaultSuburbSeq) {
 	});
 
 	nonStdStreetNumInput.on("change blur", function() {
-		if (!nonStdCheckbox.is(":checked")){
+		if (!nonStdChecked()){
 			nonStdUnitShopInput.val("");
 			window.selectedAddressObj[getType()].unitType = "";
 			setUnitType();
@@ -518,13 +520,13 @@ function init_address(name, defaultSuburbSeq) {
 				toggleValidationStyles(nonStdStreetNumInput);
 			}
 		} else {
-			window.selectedAddressObj[getType()].houseNo = nonStdStreetNumInput.val();
 			lookupHouseNoSelHidden.val("");
+			nonStdAddressUpdate();
 		}
 	});
 
 	nonStdUnitShopInput.on('getSearchURL' , function(event, callback) {
-		if (nonStdCheckbox.is(":checked")) {
+		if (nonStdChecked()) {
 			if (typeof callback === 'function') {
 				callback("");
 			}
@@ -548,6 +550,24 @@ function init_address(name, defaultSuburbSeq) {
 			}
 		}
 	});
+
+	var nonStdAddressUpdate = function(){
+		if (nonStdChecked()) {
+			populateStreetAndHouseNum();
+			window.selectedAddressObj[getType()] = _.extend(
+				window.selectedAddressObj[getType()], {
+					unitNo: nonStdUnitShopInput.val(),
+					unitType: nonStdUnitTypeInput.val(),
+					unitTypeText: nonStdUnitTypeInput.find('option[value="' + nonStdUnitTypeInput.val() + '"]').text()
+				}
+			);
+			fullAddressHidden.val(getFullAddress(window.selectedAddressObj[getType()]));
+			fullAddressLineOneHidden.val(window.selectedAddressObj[getType()].fullAddressLineOne);
+		}
+	}
+
+	nonStdUnitShopInput.on('change blur' , nonStdAddressUpdate);
+	nonStdUnitTypeInput.on('change blur' , nonStdAddressUpdate);
 
 	var resetSelectAddress = function() {
 		window.selectedAddressObj[getType()].dpId = "";
@@ -575,7 +595,9 @@ function init_address(name, defaultSuburbSeq) {
 	};
 
 	var getFullAddressLineOne = function() {
-		if(typeof(window.selectedAddressObj[getType()].streetName) == 'undefined') {
+		if(nonStdChecked()) {
+			populateStreetAndHouseNum();
+		} else if(typeof(window.selectedAddressObj[getType()].streetName) == 'undefined') {
 			window.selectedAddressObj[getType()].streetName = "";
 		}
 		var fullAddressLineOneValue  = "";
@@ -598,7 +620,7 @@ function init_address(name, defaultSuburbSeq) {
 
 		window.selectedAddressObj[getType()] = _.extend(window.selectedAddressObj[getType()], jsonAddress);
 		var fullAddressLineOne = jsonAddress.fullAddressLineOne;
-		if(typeof fullAddressLineOne == 'undefined' || fullAddressLineOne == "") {
+		if(nonStdChecked() || typeof fullAddressLineOne == 'undefined' || fullAddressLineOne == "") {
 			fullAddressLineOne  = getFullAddressLineOne();
 		}
 
@@ -639,11 +661,19 @@ function init_address(name, defaultSuburbSeq) {
 		lookupHouseNoSelHidden.val(window.selectedAddressObj[getType()].houseNo);
 	};
 
-	if(nonStdCheckbox.is(":checked")) {
-		window.selectedAddressObj[getType()].streetName = getFormattedStreet(nonStdStreetNameInput.val() , false);
-		window.selectedAddressObj[getType()].houseNo = nonStdStreetNumInput.val();
-	} else {
-		window.selectedAddressObj[getType()].streetName = getFormattedStreet(lookupStreetNameHidden.val() , false);
-		window.selectedAddressObj[getType()].houseNo = lookupHouseNoSelHidden.val();
+	var populateStreetAndHouseNum = function() {
+		if (nonStdChecked()) {
+			window.selectedAddressObj[getType()].streetName = getFormattedStreet(nonStdStreetNameInput.val(), false);
+			window.selectedAddressObj[getType()].houseNo = nonStdStreetNumInput.val();
+		} else {
+			window.selectedAddressObj[getType()].streetName = getFormattedStreet(lookupStreetNameHidden.val(), false);
+			window.selectedAddressObj[getType()].houseNo = lookupHouseNoSelHidden.val();
+		}
 	}
+
+	var nonStdChecked = function() {
+		return nonStdCheckbox.is(":checked");
+	}
+
+	populateStreetAndHouseNum();
 }
