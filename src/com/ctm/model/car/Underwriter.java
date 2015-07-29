@@ -4,11 +4,11 @@ public class Underwriter {
 
     private String name;
 
-    private String ABN;
+    private String abn;
 
-    private String ACN;
+    private String acn;
 
-    private String AFSLicenceNo;
+    private String afsLicenceNo;
 
     public String getName() {
         return name;
@@ -18,27 +18,27 @@ public class Underwriter {
         this.name = name;
     }
 
-    public String getABN() {
-        return ABN;
+    public String getAbn() {
+        return abn;
     }
 
-    public void setABN(String ABN) {
-        this.ABN = ABN;
+    public void setAbn(String abn) {
+        this.abn = abn;
     }
 
-    public String getACN() {
-        return ACN;
+    public String getAcn() {
+        return acn;
     }
 
-    public void setACN(String ACN) {
-        this.ACN = ACN;
+    public void setAcn(String acn) {
+        this.acn = acn;
     }
 
-    public String getAFSLicenceNo() {
-        return AFSLicenceNo;
+    public String getAfsLicenceNo() {
+        return afsLicenceNo;
     }
 
-    public void setAFSLicenceNo(String AFSLicenceNo) {
-        this.AFSLicenceNo = AFSLicenceNo;
+    public void setAfsLicenceNo(String afsLicenceNo) {
+        this.afsLicenceNo = afsLicenceNo;
     }
 }

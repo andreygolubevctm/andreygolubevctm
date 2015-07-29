@@ -39,8 +39,6 @@ public class CarQuote {
 
     private Price price;
 
-    private Discount discount;
-
     private List<AdditionalExcess> additionalExcesses;
 
     private List<Feature> features;
@@ -129,14 +127,6 @@ public class CarQuote {
 
     public void setPrice(Price price) {
         this.price = price;
-    }
-
-    public Discount getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Discount discount) {
-        this.discount = discount;
     }
 
     public List<Feature> getFeatures() {

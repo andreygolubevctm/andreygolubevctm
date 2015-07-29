@@ -35,8 +35,6 @@ public class CarResult extends Result {
 
     private Price price;
 
-    private Discount discount;
-
     @JsonSerialize(using = AdditionalExcessesSerializer.class)
     private List<AdditionalExcess> additionalExcesses;
 
@@ -109,14 +107,6 @@ public class CarResult extends Result {
 
     public void setPrice(Price price) {
         this.price = price;
-    }
-
-    public Discount getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Discount discount) {
-        this.discount = discount;
     }
 
     public List<Feature> getFeatures() {

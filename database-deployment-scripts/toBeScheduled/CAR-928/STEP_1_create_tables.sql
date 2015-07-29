@@ -26,8 +26,6 @@ CREATE TABLE `ctm`.`car_product_content` (
   `allowCallDirect`	char(1),
   `callCentreHours`	varchar(100),
   `phoneNumber` varchar(50),
-  `offlineDiscount` varchar(10),
-  `onlineDiscount` varchar(10),
   `inclusions` text,
   `optionalExtras` text,
   `benefits` text,
