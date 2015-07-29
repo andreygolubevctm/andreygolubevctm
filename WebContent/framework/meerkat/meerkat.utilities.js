@@ -15,6 +15,7 @@ window.parseTemplate = function(str, data) {
     /// that object's properties are visible as variables.
     /// </param>
     /// <returns type="string" />
+    /// http://ejohn.org/blog/javascript-micro-templating/
     var err = "";
     try {
         var func = _tmplCache[str];
@@ -27,11 +28,11 @@ window.parseTemplate = function(str, data) {
                     .split("'").join("\\'")
                     .split("\t").join("'")
                     .replace(/\[#=(.+?)#\]/g, "',$1,'")
-                    .split("\[#").join("');")
-                    .split("#\]").join("p.push('")
+                    .split("[#").join("');")
+                    .split("#]").join("p.push('")
                 + "');}return p.join('');";
 
-            //alert(strFunc);
+            /*jshint -W054 */
             func = new Function("obj", strFunc);
             _tmplCache[str] = func;
         }
