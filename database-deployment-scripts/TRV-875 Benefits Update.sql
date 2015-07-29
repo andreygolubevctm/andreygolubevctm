@@ -1,17 +1,17 @@
 -- UPDATER
--- INSERT INTO `ctm`.`travel_benefit_master` (`benefitId`, `benefitName`, `effectiveStart`, `effectiveEnd`) VALUES ('', 'CDXHOLIDAYFEE', '2015-07-24 00:00:00', '2040-12-31 23:59:59');
+INSERT INTO `ctm`.`travel_benefit_master` (`benefitId`, `benefitName`, `effectiveStart`, `effectiveEnd`) VALUES ('', 'CDXHOLIDAYFEE', '2015-07-24 00:00:00', '2040-12-31 23:59:59');
 
-SET @BUD_DOME = (SELECT productId FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-7');
-SET @BUD_ESSE = (SELECT productId FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-8');
-SET @BUD_COMP = (SELECT productId FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-9');
-SET @BUD_LAST = (SELECT productId FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-10');
-SET @BUD_AMT = (SELECT productId FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-11');
+SET @BUD_DOME = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-7');
+SET @BUD_ESSE = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-8');
+SET @BUD_COMP = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-9');
+SET @BUD_LAST = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-10');
+SET @BUD_AMT = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-11');
 
-SET @FOW_DOME = (SELECT productId FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-19');
-SET @FOW_ESSE = (SELECT productId FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-20');
-SET @FOW_COMP = (SELECT productId FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-21');
-SET @FOW_LAST = (SELECT productId FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-22');
-SET @FOW_AMT = (SELECT productId FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-23');
+SET @FOW_DOME = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-19');
+SET @FOW_ESSE = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-20');
+SET @FOW_COMP = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-21');
+SET @FOW_LAST = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-22');
+SET @FOW_AMT = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-23');
 
 SET @START_DATE = ("2015-07-24 00:00:00");
 SET @END_DATE = ("2040-12-31 23:59:59");
@@ -246,16 +246,16 @@ INSERT INTO ctm.travel_product_benefits (id,providerId,productId,benefitId,label
 	(null,44,@BUD_AMT,@TRAVEL_DOCS,@COPY,@COPY,5000,'$5,000',0,@START_DATE,@END_DATE);
 
 -- CHECKER
-SET @BUD_DOME = (SELECT productId FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-7');
-SET @BUD_ESSE = (SELECT productId FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-8');
-SET @BUD_COMP = (SELECT productId FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-9');
-SET @BUD_LAST = (SELECT productId FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-10');
-SET @BUD_AMT = (SELECT productId FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-11');
-SET @FOW_DOME = (SELECT productId FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-19');
-SET @FOW_ESSE = (SELECT productId FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-20');
-SET @FOW_COMP = (SELECT productId FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-21');
-SET @FOW_LAST = (SELECT productId FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-22');
-SET @FOW_AMT = (SELECT productId FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-23');
+SET @BUD_DOME = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-7');
+SET @BUD_ESSE = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-8');
+SET @BUD_COMP = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-9');
+SET @BUD_LAST = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-10');
+SET @BUD_AMT = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-11');
+SET @FOW_DOME = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-19');
+SET @FOW_ESSE = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-20');
+SET @FOW_COMP = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-21');
+SET @FOW_LAST = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-22');
+SET @FOW_AMT = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-23');
 
 SET @DEATH = (SELECT benefitId FROM ctm.travel_benefit_master WHERE benefitName='DEATH');
 SELECT * FROM ctm.travel_product_benefits WHERE productId IN (@BUD_DOME,@BUD_ESSE,@BUD_COMP,@BUD_LAST,@BUD_AMT,@FOW_DOME,@FOW_ESSE,@FOW_COMP,@FOW_LAST,@FOW_AMT) AND benefitId=@DEATH;
@@ -305,6 +305,17 @@ SELECT * FROM ctm.travel_product_benefits WHERE productId IN (@BUD_DOME,@BUD_ESS
 
 -- ROLLBACK
 /*
+SET @BUD_DOME = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-7');
+SET @BUD_ESSE = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-8');
+SET @BUD_COMP = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-9');
+SET @BUD_LAST = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-10');
+SET @BUD_AMT = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 54 AND productCode='AGIS-TRAVEL-11');
+SET @FOW_DOME = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-19');
+SET @FOW_ESSE = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-20');
+SET @FOW_COMP = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-21');
+SET @FOW_LAST = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-22');
+SET @FOW_AMT = (SELECT providerProductCode FROM ctm.travel_product WHERE providerId = 44 AND productCode='1FOW-TRAVEL-23');
+
 SET @DEATH = (SELECT benefitId FROM ctm.travel_benefit_master WHERE benefitName='DEATH');
 DELETE FROM ctm.travel_product_benefits WHERE productId IN (@BUD_DOME,@BUD_ESSE,@BUD_COMP,@BUD_LAST,@BUD_AMT,@FOW_DOME,@FOW_ESSE,@FOW_COMP,@FOW_LAST,@FOW_AMT) AND benefitId=@DEATH;
 SET @EXPENSES = (SELECT benefitId FROM ctm.travel_benefit_master WHERE benefitName='EXPENSES');
