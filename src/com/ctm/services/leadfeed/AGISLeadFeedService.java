@@ -57,10 +57,8 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 			} else {
 				// Generate the lead feed model
 				AGISLeadFeedRequest leadModel = getModel(leadType, leadData);
-
 				// Get the relevant brand+vertical settings
 				PageSettings pageSettings = SettingsService.getPageSettings(leadData.getBrandId(), leadData.getVerticalCode());
-
 				Request feedRequest = createRequest(leadModel);
 				Response response = this.request(pageSettings, feedRequest, leadModel.getServiceUrl(), leadData.getTransactionId());
 				MessageResponseDetails responseDetails = response.getDetails();
