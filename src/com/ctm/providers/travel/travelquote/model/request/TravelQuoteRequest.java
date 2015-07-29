@@ -49,7 +49,7 @@ public class TravelQuoteRequest {
         return numberOfChildren;
     }
 
-    public void setNumberOfChildren(int nubmerOfChildren) {
+    public void setNumberOfChildren(int numberOfChildren) {
         this.numberOfChildren = numberOfChildren;
     }
 
