@@ -12,7 +12,7 @@
 </sql:query>
 
 
-<%-- Export the JSON Results --%>
+<%-- Export the JSON ResultsObj --%>
 <c:choose>
 	<c:when test="${(empty result) || (result.rowCount == 0) }">
 		[{"count":0}]

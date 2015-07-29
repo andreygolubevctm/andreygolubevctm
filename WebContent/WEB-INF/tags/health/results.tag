@@ -10,7 +10,7 @@
 	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
 </c:if>
 
-<%-- Hidden fields necessary for Results page --%>
+<%-- Hidden fields necessary for ResultsObj page --%>
 <input type="hidden" name="health_showAll" value="Y" />
 <input type="hidden" name="health_onResultsPage" value="Y" />
 <input type="hidden" name="health_incrementTransactionId" value="Y" />

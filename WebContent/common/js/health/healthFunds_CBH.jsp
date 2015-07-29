@@ -324,7 +324,7 @@ var healthFunds_CBH = {
 			case 'grandchild':
 			case 'niece':
 			case 'nephew':
-				var msg = 'Unfortunately due to your situation your partner and/or dependants are not eligible for CBHS products. You could <a href="javascript:void(0);" onclick="Results.startOver();" style="color:inherit;font-weight:inherit;font-size:inherit;">start again</a> and select "Single" cover for just yourself, or <a href="javascript:;" data-slide-control="previous" >select a different product</a>.';
+				var msg = 'Unfortunately due to your situation your partner and/or dependants are not eligible for CBHS products. You could <a href="javascript:void(0);" onclick="ResultsObj.startOver();" style="color:inherit;font-weight:inherit;font-size:inherit;">start again</a> and select "Single" cover for just yourself, or <a href="javascript:;" data-slide-control="previous" >select a different product</a>.';
 				$.validator.messages.validateCBHEligibility = msg;
 				$('#cbh_ineligible span').html(msg);
 				$('#cbh_ineligible').slideDown(200, function() {

@@ -223,7 +223,7 @@
 
 
 
-			<%-- XS Results Pagination --%>
+			<%-- XS ResultsObj Pagination --%>
 			<div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
 				<jsp:invoke fragment="xs_results_pagination" />
 			</div>

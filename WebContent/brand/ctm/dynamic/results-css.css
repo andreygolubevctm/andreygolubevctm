@@ -534,7 +534,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FF00B14B', e
 	}
 */
 
-	/* Results table */
+	/* ResultsObj table */
 	.results-header {
 		width: auto;
 		text-align: center;
@@ -556,7 +556,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FF00B14B', e
 		font-family: Arial, Helvetica, sans-serif;
 	}
 
-	/* Results table */
+	/* ResultsObj table */
 	.results-header a{
 		font-size: 0.8em;
 	}

@@ -4,7 +4,7 @@
 <%-- Product Information --%>
 <agg:product_info />
 
-<%-- Results none popup --%>
+<%-- ResultsObj none popup --%>
 <agg:results_none providerType="Roadside assistance" />
 
 

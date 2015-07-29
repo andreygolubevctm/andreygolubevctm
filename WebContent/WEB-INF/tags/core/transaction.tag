@@ -37,8 +37,8 @@
 	LF = Lead feed (currently only used in Life/IP, for when we send a lead feed to Lifebroker)
 	N = New quote
 	P = Processing/submitting application
-	Q = Results single e.g. for 'update premium'
-	R = Results page
+	Q = ResultsObj single e.g. for 'update premium'
+	R = ResultsObj page
 	S = Save quote
 	T = Transferring quote to a 3rd party (eg AFG for Home Loans vertical)
 	X = Unlock quote

@@ -22,7 +22,7 @@
 		<error:recover origin="ajax/json/health_quote_results.jsp" quoteType="health" />
 	</c:when>
 	<%--
-	This is now getting triggered by the new Results.js code which adds the querystring params.
+	This is now getting triggered by the new ResultsObj.js code which adds the querystring params.
 	Increment is already done in core:transaction below.
 
 	<c:when test="${param.health_incrementTransactionId}">

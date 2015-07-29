@@ -60,7 +60,7 @@
 							
 							<slider:slide id="slide1" title="Compare">
 								<h2><span>Step 2.</span> Compare</h2>
-								<%-- Results are loaded outside of the slider --%>						
+								<%-- ResultsObj are loaded outside of the slider --%>
 							</slider:slide>
 							
 							<slider:slide id="slide2" title="Apply">

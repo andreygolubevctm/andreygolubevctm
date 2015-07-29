@@ -47,7 +47,7 @@
     <c:otherwise></c:otherwise>
 </c:choose>
 
-<%-- Get Results --%>
+<%-- Get ResultsObj --%>
 <sql:query var="featureResult">
     SELECT
     fd.id AS featureId,
