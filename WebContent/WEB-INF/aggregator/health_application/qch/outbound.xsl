@@ -216,6 +216,8 @@
 							</xsl:variable>
 							<IsMember>true</IsMember>
 							<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
+							<PreviousFund><xsl:value-of select="$primaryFund" /></PreviousFund>
+							<PreviousFundMemberNo><xsl:value-of select="previousfund/primary/memberID" /></PreviousFundMemberNo>
 							<Properties>
 								<!-- emigrate to australia -->
 								<xsl:if test="application/qch/emigrate = 'Y'">
@@ -231,14 +233,6 @@
 										<Value>callback required </Value>
 									</Property>
 								</xsl:if>
-								<!-- your current health fund - member & membership number -->
-								<xsl:if test="$primaryFund !='NONE' and $primaryFund !=''">
-									<Property>
-										<Name>TrnWT</Name>
-										<Value><xsl:value-of select="concat($primaryFund, ' ' ,previousfund/primary/memberID)" /></Value>
-									</Property>
-								</xsl:if>
-
 								<xsl:if test="healthCover/rebate='Y'">
 									<Property>
 										<Name>RebTr</Name>
@@ -250,6 +244,9 @@
 									<Name>AgtRf</Name>
 									<Value>CTM<xsl:value-of select="$transactionId" /></Value>
 								</Property>
+
+
+
 							</Properties>
 						</Person>
 						<xsl:if test="application/partner/firstname != ''">
@@ -299,22 +296,16 @@
 								</xsl:variable>
 								<IsMember>false</IsMember>
 								<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
+								<PreviousFund><xsl:value-of select="$partnerFund" /></PreviousFund>
+								<PreviousFundMemberNo><xsl:value-of select="previousfund/partner/memberID" /></PreviousFundMemberNo>
 								<Properties>
-									<!-- emigrate to australia -->
 									<!-- Spouse Authority -->
 									<xsl:if test="previousfund/partner/authority = 'Y'">
 										<Property>
 												<Name>AUTSP</Name>
 												<Value><xsl:value-of select="concat($partnerFirstname, ' ' ,$partnerSurname)" /></Value>
 										</Property>
-									</xsl:if>
-									<!-- your current health fund - spouse & membership number -->
-									<xsl:if test="$partnerFund !='NONE'">
-										<Property>
-											<Name>TrWT2</Name>
-											<Value><xsl:value-of select="concat($partnerFund, ' ' , previousfund/partner/memberID)" /></Value>
-										</Property>
-									</xsl:if>
+
 								</Properties>
 							</Person>
 						</xsl:if>
@@ -606,6 +597,9 @@
 							<SiteID>Main</SiteID>
 						</Site>
 					</Membership>
+					<!-- Do you want to be contacted?  -->
+					<!--<OMS><xsl:value-of select="payment/bank/account" /></OMS>-->
+					<Where>Internet</Where>
 				</MembershipApplication>
 				<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 				</hsl:xmlFile>
