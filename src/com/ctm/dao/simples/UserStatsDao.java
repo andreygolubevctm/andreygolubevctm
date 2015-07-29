@@ -127,7 +127,7 @@ public class UserStatsDao {
 
 			/* getting remaining leads */
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT COUNT(id) as remainingLeads FROM simples.message_queue_available WHERE userId IN (0,?) AND statusId NOT IN (?, ?, ? /*PMs are not active leads*/)"
+				"SELECT COUNT(id) as remainingLeads FROM simples.message_queue_available WHERE userId IN (0,?) AND statusId NOT IN (?, ?, ?, ? /*PMs are not active leads*/)"
 			);
 
 			stmt.setInt(1, userId);
@@ -135,6 +135,7 @@ public class UserStatsDao {
 			stmt.setInt(2, MessageStatus.STATUS_NEW);
 			stmt.setInt(3, MessageStatus.STATUS_COMPLETED_AS_PM);
 			stmt.setInt(4, MessageStatus.STATUS_CHANGED_TIME_FOR_PM);
+			stmt.setInt(5, MessageStatus.STATUS_INPROGRESS_FOR_PM);
 
 			results = stmt.executeQuery();
 			if (results != null && results.next()) {
@@ -143,7 +144,7 @@ public class UserStatsDao {
 
 			/* getting future leads */
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT COUNT(id) as futureLeads FROM simples.message WHERE userId IN (0,?) AND whenToAction > NOW() AND statusId NOT IN (?, ?, ?, ? /*PMs and Completed*/)"
+				"SELECT COUNT(id) as futureLeads FROM simples.message WHERE userId IN (0,?) AND whenToAction > NOW() AND statusId NOT IN (?, ?, ?, ?, ? /*PMs and Completed*/)"
 			);
 
 			stmt.setInt(1, userId);
@@ -152,6 +153,7 @@ public class UserStatsDao {
 			stmt.setInt(3, MessageStatus.STATUS_COMPLETED_AS_PM);
 			stmt.setInt(4, MessageStatus.STATUS_REMOVED_FROM_PM);
 			stmt.setInt(5, MessageStatus.STATUS_CHANGED_TIME_FOR_PM);
+			stmt.setInt(6, MessageStatus.STATUS_INPROGRESS_FOR_PM);
 
 			results = stmt.executeQuery();
 			if (results != null && results.next()) {

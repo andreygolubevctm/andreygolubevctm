@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <life>
+	<privacyoptin>Y</privacyoptin>
 	<contactDetails>
 		<postCode>4066</postCode>
 		<contactNumber>0400123123</contactNumber>
@@ -18,7 +19,7 @@
 			<samecover>Y</samecover>
 		</insurance>
 		<firstName>Joe</firstName>
-		<lastname>Bloggs</lastname>
+		<lastname>Blogs</lastname>
 		<gender>M</gender>
 		<dob>25/01/1967</dob>
 		<smoker>N</smoker>

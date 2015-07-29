@@ -165,16 +165,23 @@
 			<health:competition_jeep />
 
 			<div class="row row-content brochureButtons">
-				{{ if(typeof hospitalCover !== 'undefined') { }}
+				{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
 					<div class="col-sm-6 col-xs-12">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download col-xs-12">Download Hospital <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download col-xs-12">Download <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
 					</div>
-				{{ } }}
+				{{ } else { }}
 
-				{{ if(typeof extrasCover !== 'undefined') { }}
-					<div class="col-sm-6 col-xs-12 ">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
-					</div>
+					{{ if(typeof hospitalCover !== 'undefined') { }}
+						<div class="col-sm-6 col-xs-12">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download col-xs-12">Download Hospital <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+						</div>
+					{{ } }}
+
+					{{ if(typeof extrasCover !== 'undefined') { }}
+						<div class="col-sm-6 col-xs-12 ">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
+						</div>
+					{{ } }}
 				{{ } }}
 			</div>
 

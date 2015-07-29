@@ -1298,9 +1298,10 @@ Results = {
 			
 			if(product.hasOwnProperty('companyName') && product.companyName == "Ozicare") {
 				qs += "&rank_callCentreHours" + i + "=" + product.call_centre_hours;
-		}
+				qs += "&rank_partnerBrand" + i + "=" + "OZIC";
+			}
 			
-			if(typeof product.lead_number !== "undefined") {
+			if(product.hasOwnProperty("lead_number")) {
 				qs += "&rank_leadNumber" + i + "=" + product.lead_number;
 			}
 		}

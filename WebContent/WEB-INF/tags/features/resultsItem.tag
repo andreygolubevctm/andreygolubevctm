@@ -14,13 +14,13 @@
 		<div class="content" data-featureId="${item.getId()}">
 			<div class="contentInner">
 				<field_new:help_icon helpId="${item.getHelpId()}" position="${helpPopoverPosition}" />
-				<c:out value="${item.getName()}" escapeXml="false" /><c:if test="${item.getChildren().size() > 0 }"><span class="icon expander"></span></c:if>
+				<c:out value="${item.getSafeName()}" escapeXml="false" /><c:if test="${item.getChildren().size() > 0 }"><span class="icon expander"></span></c:if>
 			</div></div></div>
 	<div class="${labelMode? 'h': 'c'} content ${item.getContentClassString()}" data-featureId="${item.getId()}" >
 		<c:choose>
 			<c:when test="${labelMode}">
 				<field_new:help_icon helpId="${item.getHelpId()}" position="${helpPopoverPosition}" tooltipClassName="resultsHelpTooltips"/>
-				<c:out value="${item.getName()}" escapeXml="false" />
+				<c:out value="${item.getSafeName()}" escapeXml="false" />
 				<c:if test="${item.getExtraText() != null && item.getExtraText() != ''}"><span class="extraText">${item.getExtraText()}</span></c:if>
 				<c:if test="${item.getChildren().size() > 0 }"><span class="icon expander"></span></c:if>
 			</c:when>
@@ -29,7 +29,7 @@
                     <%-- This will be fixed/moved during the refactor. In reality this model should be complete before we need to render these items. --%>
 					<c:when test="${item.getResultPath() != null && item.getResultPath() != ''}">
 						<c:forTokens delims="," items="${item.getResultPath()}" var="splitPath">
-							{{ var pathValue = Object.byString( obj, '${splitPath}' ), displayValue = Features.parseFeatureValue( pathValue, true ); }}
+							{{ var pathValue = Object.byString( obj, '${splitPath}' ), displayValue = Features.parseFeatureValue( pathValue ); }}
 							<c:if test="${vertical eq 'car'}">
 								{{ var parsedValue = '' }}
 
