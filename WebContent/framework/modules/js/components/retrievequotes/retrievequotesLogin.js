@@ -43,6 +43,7 @@
      * Simply responsible for the AJAX request
      */
     function doLoginAndRetrieve() {
+        meerkat.modules.loadingAnimation.showInside($(".btn-login"), true);
         var data = meerkat.modules.form.getData($('#loginForm'));
         return meerkat.modules.comms.post({
             url: "ajax/json/retrieve_quotes.jsp",

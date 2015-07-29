@@ -1,0 +1,1537 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="https://ecommerce.disconline.com.au/services/schema/3.1/codes"
+	targetNamespace="https://ecommerce.disconline.com.au/services/schema/3.1/codes"
+	elementFormDefault="unqualified">
+
+	<xsd:simpleType name="yesNo">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Y"/> <!-- Yes -->
+			<xsd:enumeration value="N"/> <!-- No -->
+		</xsd:restriction>
+
+	</xsd:simpleType>
+
+	<xsd:simpleType name="yesNoDontKnow">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Y"/> <!-- Yes -->
+			<xsd:enumeration value="N"/> <!-- No -->
+			<xsd:enumeration value="U"/> <!-- Don't Know -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="yes">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Y"/> <!-- Yes -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="no">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="N"/> <!-- Yes -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="empty">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value=""/> <!-- Empty String -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="gender">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="M"/> <!-- Male -->
+			<xsd:enumeration value="F"/> <!-- Female -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="cover">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A"/> <!-- Full Comprehensive -->
+			<xsd:enumeration value="B"/> <!-- Third Party, Fire and Theft-->
+			<xsd:enumeration value="C"/> <!-- Third Party Only -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="headlineOffer">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ONLINE"/> <!-- onlineQuote is headline offer -->
+			<xsd:enumeration value="OFFLINE"/> <!-- offlineQuote is headline offer -->
+			<xsd:enumeration value=""/> <!-- No headline offer -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Composite type of all ncd rating classifications -->
+	<xsd:simpleType name="ncdRating">
+		<xsd:union memberTypes="noNcdRating midNcdRating maxNcdRating">
+		</xsd:union>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="accessoryCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="7"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="noNcdRating">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0"/> <!-- Zero (Rating 6) -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="midNcdRating">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/> <!-- 1 Year (Rating 5) -->
+			<xsd:enumeration value="2"/> <!-- 2 Years (Rating 4) -->
+			<xsd:enumeration value="3"/> <!-- 3 Years (Rating 3) -->
+			<xsd:enumeration value="4"/> <!-- 4 Years (Rating 2) -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="maxNcdRating">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="5"/> <!-- 5 Years (Rating 1) -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="ageRestriction">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="3"/> <!-- No - I want anybody to drive the car -->
+			<xsd:enumeration value="H"/> <!-- Yes - I am happy for all drivers to be 21 and over -->
+			<xsd:enumeration value="4"/> <!-- Yes - I am happy for all drivers to be 25 and over -->
+			<xsd:enumeration value="7"/> <!-- Yes - I am happy for all drivers to be 25 and over -->
+			<xsd:enumeration value="A"/> <!-- Yes - I am happy for all drivers to be 30 and over -->
+			<xsd:enumeration value="D"/> <!-- Yes - I am happy for all drivers to be 40 and over -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="parkingLocation">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/> <!-- Garaged -->
+			<xsd:enumeration value="2"/> <!-- Street -->
+			<xsd:enumeration value="3"/> <!-- Driveway -->
+			<xsd:enumeration value="4"/> <!-- On Private Property -->
+			<xsd:enumeration value="5"/> <!-- Car Park -->
+			<xsd:enumeration value="6"/> <!-- Lot -->
+			<xsd:enumeration value="7"/> <!-- Locked Compound -->
+			<xsd:enumeration value="8"/> <!-- Carport -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="maritalStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A"/> <!-- Separated -->
+			<xsd:enumeration value="D"/> <!-- Divorced -->
+			<xsd:enumeration value="M"/> <!-- Married -->
+			<xsd:enumeration value="P"/> <!-- Cohabiting/Partnered -->
+			<xsd:enumeration value="S"/> <!-- Single -->
+			<xsd:enumeration value="W"/> <!-- Widowed -->
+			<xsd:enumeration value="U"/> <!-- Unknown -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="vehicleUse">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="02"/> <!-- Private and Commuting to work -->
+			<xsd:enumeration value="11"/> <!-- Private and Occasional Business -->
+			<xsd:enumeration value="12"/> <!-- Private and Business -->
+			<xsd:enumeration value="13"/> <!-- Goods Carrying for Reward -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="state">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ACT"/> <!-- Australian Capital Territory -->
+			<xsd:enumeration value="NSW"/> <!-- New South Wales -->
+			<xsd:enumeration value="NT"/> <!-- Northern Territory -->
+			<xsd:enumeration value="QLD"/> <!-- Queensland -->
+			<xsd:enumeration value="SA"/> <!-- South Australia -->
+			<xsd:enumeration value="TAS"/> <!-- Tasmania -->
+			<xsd:enumeration value="VIC"/> <!-- Victoria -->
+			<xsd:enumeration value="WA"/> <!-- Western Australia -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="finance">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="HP"/> <!-- Finance/Hire Purchase -->
+			<xsd:enumeration value="LE"/> <!-- Lease -->
+			<xsd:enumeration value="NO"/> <!-- None -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="employmentStatus">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="E"/> <!-- Employed - Full Time -->
+			<xsd:enumeration value="P"/> <!-- Employed - Part Time -->
+			<xsd:enumeration value="U"/> <!-- Unemployed -->
+			<xsd:enumeration value="S"/> <!-- Self-Employed -->
+			<xsd:enumeration value="H"/> <!-- House Wife/Husband -->
+			<xsd:enumeration value="F"/> <!-- Full/Part Time Education -->
+			<xsd:enumeration value="R"/> <!-- Retired -->
+			<xsd:enumeration value="N"/> <!-- Unemployed - Disability/Illness -->
+			<xsd:enumeration value="M"/> <!-- Unemployed - Pension -->
+			<xsd:enumeration value="C"/> <!-- Carer -->
+			<xsd:enumeration value="A"/> <!-- Sole Parent -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="suspensionReason">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AP"/> <!-- Accumulated demerit points -->
+			<xsd:enumeration value="SO"/> <!-- Single offence - alcohol, drugs, dangerous driving -->
+			<xsd:enumeration value="CC"/> <!-- Conviction - alcohol, drugs, dangerous driving -->
+			<xsd:enumeration value="ST"/> <!-- Single offence - other -->
+			<xsd:enumeration value="FD"/> <!-- Fine default only -->
+			<xsd:enumeration value="MD"/> <!-- Medical reasons -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="relationship">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="S"/> <!-- Spouse -->
+			<xsd:enumeration value="W"/> <!-- Cohabitee/Partner -->
+			<xsd:enumeration value="OD"/> <!-- Daughter -->
+			<xsd:enumeration value="OS"/> <!-- Son -->
+			<xsd:enumeration value="M"/> <!-- Parent -->
+			<xsd:enumeration value="F"/> <!-- Other Family -->
+			<xsd:enumeration value="E"/> <!-- Employee -->
+			<xsd:enumeration value="B"/> <!-- Employer -->
+			<xsd:enumeration value="C"/> <!-- Business Partner -->
+			<xsd:enumeration value="U"/> <!-- Unrelated -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="suspensionLength">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/> <!-- Up to 1 month -->
+			<xsd:enumeration value="3"/> <!-- Up to 3 month -->
+			<xsd:enumeration value="6"/> <!-- Up to 6 month -->
+			<xsd:enumeration value="12"/> <!-- Up to 12 month -->
+			<xsd:enumeration value="18"/> <!-- More than 12 months -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="drivingConviction">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AL"/> <!-- Alcohol -->
+			<xsd:enumeration value="DD"/> <!-- Dangerous Driving -->
+			<xsd:enumeration value="DR"/> <!-- Drugs -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="claimType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AD"/> <!-- Accident Damage -->
+			<xsd:enumeration value="SC"/> <!-- Stolen Vehicle -->
+			<xsd:enumeration value="TD"/> <!-- Attempted Theft Dmg -->
+			<xsd:enumeration value="MD"/> <!-- Malicious Damage -->
+			<xsd:enumeration value="OR"/> <!-- Riot -->
+			<xsd:enumeration value="FD"/> <!-- Fire Damage -->
+			<xsd:enumeration value="OS"/> <!-- Storm Damage -->
+			<xsd:enumeration value="OL"/> <!-- Lightning Damage -->
+			<xsd:enumeration value="OX"/> <!-- Explosion -->
+			<xsd:enumeration value="WD"/> <!-- Window Damage/Loss -->
+			<xsd:enumeration value="OT"/> <!-- Other -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="claimTypeBasic">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SC"/> <!-- Stolen Vehicle -->
+			<xsd:enumeration value="OR"/> <!-- Riot -->
+			<xsd:enumeration value="FD"/> <!-- Fire Damage -->
+			<xsd:enumeration value="OS"/> <!-- Storm Damage -->
+			<xsd:enumeration value="OL"/> <!-- Lightning Damage -->
+			<xsd:enumeration value="OX"/> <!-- Explosion -->
+			<xsd:enumeration value="WD"/> <!-- Window Damage/Loss -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="claimTypeDamage">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="TD"/> <!-- Attempted Theft Dmg -->
+			<xsd:enumeration value="MD"/> <!-- Malicious Damage -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="claimTypeAccident">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AD"/> <!-- Accident Damage -->
+			<xsd:enumeration value="OT"/> <!-- Other -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="reasonForNoInsurance">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="01"/> <!-- Just Purchased Used From Dealer - Still At Dealer -->
+			<xsd:enumeration value="02"/> <!-- Just Purchased Used From Dealer - Taken From Dealer -->
+			<xsd:enumeration value="03"/> <!-- Just Purchased Used From Private Person -->
+			<xsd:enumeration value="04"/> <!-- Extended Travel or Illness -->
+			<xsd:enumeration value="05"/> <!-- Car Never Used Before -->
+			<xsd:enumeration value="06"/> <!-- Couldn't Afford Insurance -->
+			<xsd:enumeration value="07"/> <!-- Car Has Not Been Driveable -->
+			<xsd:enumeration value="08"/> <!-- Insurance Cancelled or Refused By Insurance Co. -->
+			<xsd:enumeration value="09"/> <!-- Just Purchased New - Still at Dealer -->
+			<xsd:enumeration value="10"/> <!-- Just Purchased New - Taken From Dealer -->
+			<xsd:enumeration value="11"/> <!-- Insurance Not Renewed In Time -->
+			<xsd:enumeration value="12"/> <!-- Insurance Cancelled By Policy Holder -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="marketAgreedValue">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="M"/> <!-- Market Value -->
+			<xsd:enumeration value="A"/> <!-- Agreed Value -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="paymentPlan">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/> <!-- Annual Lump Sum -->
+			<xsd:enumeration value="10"/> <!-- Installments -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="damageLevel">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/> <!-- No Damage -->
+			<xsd:enumeration value="2"/> <!-- Write-Off -->
+			<xsd:enumeration value="3"/> <!-- Unknown -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="atFault">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="N"/> <!-- claimDriver Person (no other party Involved) -->
+			<xsd:enumeration value="C"/> <!-- claimDriver Person (other party Involved) -->
+			<xsd:enumeration value="O"/> <!-- Other Party - Identified -->
+			<xsd:enumeration value="I"/> <!-- Other Party - Not Identified -->
+			<xsd:enumeration value="K"/> <!-- Both Parties -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="otherDriver">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="O"/> <!-- Other Driver -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="notDriven">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="N"/> <!-- Not Driven -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="title">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="MR"/> <!-- Mr -->
+			<xsd:enumeration value="MS"/> <!-- Ms -->
+			<xsd:enumeration value="MISS"/> <!-- Miss -->
+			<xsd:enumeration value="MRS"/> <!-- Mrs -->
+			<xsd:enumeration value="BARO"/> <!-- Baron -->
+			<xsd:enumeration value="BISH"/> <!-- Bishop -->
+			<xsd:enumeration value="CANO"/> <!-- Canon -->
+			<xsd:enumeration value="CAPT"/> <!-- Captain -->
+			<xsd:enumeration value="COUN"/> <!-- Count -->
+			<xsd:enumeration value="DAME"/> <!-- Dame -->
+			<xsd:enumeration value="DR"/> <!-- Dr -->
+			<xsd:enumeration value="DUKE"/> <!-- Duke -->
+			<xsd:enumeration value="FATH"/> <!-- Father -->
+			<xsd:enumeration value="JUDG"/> <!-- Judge -->
+			<xsd:enumeration value="LADY"/> <!-- Lady -->
+			<xsd:enumeration value="LORD"/> <!-- Lord -->
+			<xsd:enumeration value="LT-COL"/> <!-- Lt-Col -->
+			<xsd:enumeration value="MADA"/> <!-- Madam -->
+			<xsd:enumeration value="PRIN"/> <!-- Prince -->
+			<xsd:enumeration value="PROF"/> <!-- Prof -->
+			<xsd:enumeration value="RABB"/> <!-- Rabbi -->
+			<xsd:enumeration value="REV"/> <!-- Rev -->
+			<xsd:enumeration value="SIGN"/> <!-- Signor -->
+			<xsd:enumeration value="SIR"/> <!-- Sir -->
+			<xsd:enumeration value="SIST"/> <!-- Sister -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="licenceType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="2"/> <!-- Full Australian Licence- 2 or more years -->
+			<xsd:enumeration value="3"/> <!-- Provisional Licence -->
+			<xsd:enumeration value="7"/> <!-- Learner's licence/permit -->
+			<xsd:enumeration value="C"/> <!-- No drivers licence - cancelled or withdrawn -->
+			<xsd:enumeration value="0"/> <!-- No drivers licence- never held or medically unfit -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="recentLicence">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/>      <!-- Full Australian Licence- less than 2 years -->
+			<xsd:enumeration value="8"/>      <!-- Full Australian licence- less than 2 years (foreign transfer) -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="foreignLicence">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="4"/> <!-- Foreign licence (resident visa) -->
+			<xsd:enumeration value="F"/>    <!-- Foreign licence (tourist/working visa) -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="optionalExcess">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0"/>    <!-- No Optional Excess -->
+			<xsd:enumeration value="2"/>    <!-- $100 Optional Excess -->
+			<xsd:enumeration value="4"/>    <!-- $200 Optional Excess -->
+			<xsd:enumeration value="6"/>    <!-- $300 Optional Excess -->
+			<xsd:enumeration value="8"/>    <!-- $400 Optional Excess -->
+			<xsd:enumeration value="A"/>    <!-- $500 Optional Excess -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="creditCardtype">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="999998"/> <!-- MasterCard -->
+			<xsd:enumeration value="999999"/> <!-- Visa -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="phoneNumberType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="M"/> <!-- Mobile -->
+			<xsd:enumeration value="F"/> <!-- Fax -->
+			<xsd:enumeration value="O"/> <!-- Other -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="insuranceCompany">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="7111"/> <!-- AAMI-->
+			<xsd:enumeration value="7637"/> <!-- Acedrift Insurance Brokers P/L-->
+			<xsd:enumeration value="7627"/> <!-- Affinity Risk Partners-->
+			<xsd:enumeration value="7112"/> <!-- AIG (Australia)-->
+			<xsd:enumeration value="7113"/> <!-- Aim Insurance-->
+			<xsd:enumeration value="7649"/> <!-- Aioi Insurance Co Ltd-->
+			<xsd:enumeration value="7359"/> <!-- All States Auto-->
+			<xsd:enumeration value="7316"/> <!-- Allianz-->
+			<xsd:enumeration value="7171"/> <!-- Allianz (MMI)-->
+			<xsd:enumeration value="7662"/> <!-- Allsafe Insurance Brokers P/L-->
+			<xsd:enumeration value="7400"/> <!-- Alphera Insurance Brokers-->
+			<xsd:enumeration value="7322"/> <!-- ALR Lawyers-->
+			<xsd:enumeration value="7114"/> <!-- American Home Assurance Co -->
+			<xsd:enumeration value="7115"/> <!-- Amev Insurance -->
+			<xsd:enumeration value="7116"/> <!-- Amp Claims -->
+			<xsd:enumeration value="7652"/> <!-- Ansvar Insurance -->
+			<xsd:enumeration value="7368"/> <!-- Aon Risk Services -->
+			<xsd:enumeration value="7367"/> <!-- Aon Rural -->
+			<xsd:enumeration value="7326"/> <!-- APIA -->
+			<xsd:enumeration value="7633"/> <!-- Arista Underwriting Agency-->
+			<xsd:enumeration value="7117"/> <!-- Atia Insurance Service Limited-->
+			<xsd:enumeration value="7629"/> <!-- Aust Insurance Soloutions-->
+			<xsd:enumeration value="7615"/> <!-- Austbrokers -->
+			<xsd:enumeration value="7377"/> <!-- Austral Mercantile Collections -->
+			<xsd:enumeration value="7430"/> <!-- Australia Fleet Management-->
+			<xsd:enumeration value="7379"/> <!-- Australia Post-->
+			<xsd:enumeration value="7378"/> <!-- Australia Post Risk Mgmt-->
+			<xsd:enumeration value="7442"/> <!-- Australian Accident Mngt-->
+			<xsd:enumeration value="7118"/> <!-- Australian Alliance Ins Co -->
+			<xsd:enumeration value="7119"/> <!-- Australian Bus & Coach-->
+			<xsd:enumeration value="7120"/> <!-- Australian General Ins Co-->
+			<xsd:enumeration value="7405"/> <!-- Australian Insurance Corp-->
+			<xsd:enumeration value="7353"/> <!-- Australian International Ins -->
+			<xsd:enumeration value="7121"/> <!-- Australian Internet. Ins Ltd  -->
+			<xsd:enumeration value="7643"/> <!-- Australian Receivables Limited-->
+			<xsd:enumeration value="7122"/> <!-- Australian U/W Agencies -->
+			<xsd:enumeration value="7123"/> <!-- Australian Unity General Ins -->
+			<xsd:enumeration value="7446"/> <!-- Australian Christian Services -->
+			<xsd:enumeration value="7124"/> <!-- Avco Insurance Services  -->
+			<xsd:enumeration value="7327"/> <!-- Avis Australia -->
+			<xsd:enumeration value="7125"/> <!-- Axa Ins Australia Ltd-->
+			<xsd:enumeration value="7628"/> <!-- Barleen Holdings Pty Ltd -->
+			<xsd:enumeration value="7619"/> <!-- Barrie Macdonald & Associates -->
+			<xsd:enumeration value="7391"/> <!-- Best Buy -->
+			<xsd:enumeration value="7656"/> <!-- Blackburn Insurance Brokers  -->
+			<xsd:enumeration value="7126"/> <!-- Booker International Pty Ltd-->
+			<xsd:enumeration value="7387"/> <!-- Budget Direct-->
+			<xsd:enumeration value="7358"/> <!-- Budget Rent A Car -->
+			<xsd:enumeration value="7381"/> <!-- Cabcover Pty Ltd -->
+			<xsd:enumeration value="7397"/> <!-- Capricorn Mutual-->
+			<xsd:enumeration value="7373"/> <!-- Car Rental Insurance Pty Ltd -->
+			<xsd:enumeration value="7324"/> <!-- Carma Claims Recoveries&Mgmt-->
+			<xsd:enumeration value="7614"/> <!-- Carriers Insurance Brokers P/L -->
+			<xsd:enumeration value="7389"/> <!-- Cashback Insurance -->
+			<xsd:enumeration value="7128"/> <!-- Catholic Church Insurances Ltd-->
+			<xsd:enumeration value="7129"/> <!-- Ce Heath Internet Holdings Ltd-->
+			<xsd:enumeration value="7414"/> <!-- Centro Group Pty Ltd -->
+			<xsd:enumeration value="7130"/> <!-- CGU Insurance-->
+			<xsd:enumeration value="7333"/> <!-- CGU Insurance - Cpf Claims -->
+			<xsd:enumeration value="7131"/> <!-- Chiyoda Fire&Marine Ins Co Ltd -->
+			<xsd:enumeration value="7132"/> <!-- Chu U/W Agencies Pty Ltd -->
+			<xsd:enumeration value="7133"/> <!-- Chubb Ins Co Of Australia Ltd-->
+			<xsd:enumeration value="7134"/> <!-- Cic / Allianz Insurance -->
+			<xsd:enumeration value="7135"/> <!-- Cigna Ins Asia Pacific Ltd -->
+			<xsd:enumeration value="7340"/> <!-- Cil Insurances -->
+			<xsd:enumeration value="7383"/> <!-- Cla Trading Pty Ltd-->
+			<xsd:enumeration value="7642"/> <!-- Claims Management Services-->
+			<xsd:enumeration value="7370"/> <!-- Claims Services Australia -->
+			<xsd:enumeration value="7136"/> <!-- Claremount U/W Agency-->
+			<xsd:enumeration value="7423"/> <!-- Club Marine -->
+			<xsd:enumeration value="7654"/> <!-- Club Marine Insurance -->
+			<xsd:enumeration value="7369"/> <!-- Cmt : City Motor Transport -->
+			<xsd:enumeration value="7342"/> <!-- Collection House Limited -->
+			<xsd:enumeration value="7137"/> <!-- Colonial Mutual Gen Ins Co -->
+			<xsd:enumeration value="7431"/> <!-- Comcover -->
+			<xsd:enumeration value="7402"/> <!-- Comminsure-->
+			<xsd:enumeration value="7332"/> <!-- Complete Recovery Service-->
+			<xsd:enumeration value="7361"/> <!-- Complete Taxi Management-->
+			<xsd:enumeration value="7138"/> <!-- Concord Underwriting Agency-->
+			<xsd:enumeration value="7350"/> <!-- Corporate Fleet-->
+			<xsd:enumeration value="7139"/> <!-- Coselco Insurance Pty Ltd -->
+			<xsd:enumeration value="7635"/> <!-- Country Wide Insurance Brokers -->
+			<xsd:enumeration value="7363"/> <!-- Courier Taxi Club-->
+			<xsd:enumeration value="7613"/> <!-- CPE Insurance Agencies-->
+			<xsd:enumeration value="7441"/> <!-- Crawford &Company Aust P/L-->
+			<xsd:enumeration value="7140"/> <!-- Cumis-->
+			<xsd:enumeration value="7398"/> <!-- Cuna Mutual Group-->
+			<xsd:enumeration value="7412"/> <!-- Custom Service Leasing Pty Ltd-->
+			<xsd:enumeration value="7141"/> <!-- Dawes Underwriting Australia-->
+			<xsd:enumeration value="7142"/> <!-- Defence Service Homes Ins-->
+			<xsd:enumeration value="7632"/> <!-- Dept Of Treasury & Finance-->
+			<xsd:enumeration value="7392"/> <!-- Diamond-->
+			<xsd:enumeration value="7143"/> <!-- Direct Dial (Allianz)-->
+			<xsd:enumeration value="7362"/> <!-- Direct Underwriting Agencies-->
+			<xsd:enumeration value="7631"/> <!-- Dun & Bradstreet-->
+			<xsd:enumeration value="7144"/> <!-- East West Insurance Agency-->
+			<xsd:enumeration value="7634"/> <!-- Eastern Equity Insurance-->
+			<xsd:enumeration value="7436"/> <!-- Ebm Insurance-->
+			<xsd:enumeration value="7445"/> <!-- Echelon Insurance Services-->
+			<xsd:enumeration value="7145"/> <!-- Eig-Ansvar Ltd-->
+			<xsd:enumeration value="7323"/> <!-- Elders Insurance-->
+			<xsd:enumeration value="7417"/> <!-- Energex Limited-->
+			<xsd:enumeration value="7319"/> <!-- Exclusive Mercantile Agency-->
+			<xsd:enumeration value="7146"/> <!-- Fai Insurances Ltd-->
+			<xsd:enumeration value="7396"/> <!-- Famous Classic Car Insurance-->
+			<xsd:enumeration value="7147"/> <!-- Farmers Mutual Group-->
+			<xsd:enumeration value="7347"/> <!-- Fast Track Australia Group-->
+			<xsd:enumeration value="7375"/> <!-- Fastrack Claims Management-->
+			<xsd:enumeration value="7394"/> <!-- First For Women-->
+			<xsd:enumeration value="7439"/> <!-- Fleet Risk Technologies-->
+			<xsd:enumeration value="7420"/> <!-- Fleet Sa-->
+			<xsd:enumeration value="7395"/> <!-- Ford Insure-->
+			<xsd:enumeration value="7640"/> <!-- Ford Kinter & Associates P/L-->
+			<xsd:enumeration value="7148"/> <!-- Fortis Australia Ltd-->
+			<xsd:enumeration value="7357"/> <!-- Fortron Insurance Agency-->
+			<xsd:enumeration value="7351"/> <!-- Freemans Claims & Ins Services-->
+			<xsd:enumeration value="7661"/> <!-- Gardiner Insurance Brokers-->
+			<xsd:enumeration value="7366"/> <!-- Ge Fleet Services-->
+			<xsd:enumeration value="7349"/> <!-- Ge Insurance Services-->
+			<xsd:enumeration value="7320"/> <!-- Gerling Australia Insurance-->
+			<xsd:enumeration value="7149"/> <!-- GIO Australia Holdings Ltd-->
+			<xsd:enumeration value="7315"/> <!-- GIO General Limited-->
+			<xsd:enumeration value="7150"/> <!-- Global Motor U/W Agency-->
+			<xsd:enumeration value="7345"/> <!-- Global Transport-->
+			<xsd:enumeration value="7644"/> <!-- Grenda Transit Management-->
+			<xsd:enumeration value="7655"/> <!-- Griffiths Goodall Ins Brokers-->
+			<xsd:enumeration value="7151"/> <!-- Guild Insurance Ltd-->
+			<xsd:enumeration value="7152"/> <!-- Hallmark General Insurance Co-->
+			<xsd:enumeration value="7154"/> <!-- Hannan Home & Car-->
+			<xsd:enumeration value="7155"/> <!-- Harbour Pacific Holdings-->
+			<xsd:enumeration value="7156"/> <!-- Hba General Insurance-->
+			<xsd:enumeration value="7157"/> <!-- Hbf Insurance Pty Ltd-->
+			<xsd:enumeration value="7337"/> <!-- Hertz-->
+			<xsd:enumeration value="7158"/> <!-- HIH Insurance-->
+			<xsd:enumeration value="7406"/> <!-- Hollard Insurance Company-->
+			<xsd:enumeration value="7616"/> <!-- Honan Insurance Brokers-->
+			<xsd:enumeration value="7444"/> <!-- Insight Litigation-Legal Serv-->
+			<xsd:enumeration value="7416"/> <!-- Insurance Advisernet Aust P/L-->
+			<xsd:enumeration value="7646"/> <!-- Insurance Brokers Of Nsw P/L-->
+			<xsd:enumeration value="7658"/> <!-- Insurance Brokers Of Sa P/L-->
+			<xsd:enumeration value="7159"/> <!-- Insurance Commission Of W.A-->
+			<xsd:enumeration value="7365"/> <!-- Insurance Manufacturers Aust-->
+			<xsd:enumeration value="7639"/> <!-- Insuremyride Pty Ltd-->
+			<xsd:enumeration value="7127"/> <!-- Auto &amp; General Services-->
+			<xsd:enumeration value="7371"/> <!-- Insurserv Australia-->
+			<xsd:enumeration value="7160"/> <!-- Interpacific Underwriting-->
+			<xsd:enumeration value="7161"/> <!-- Jardine Lloyd Thompson U/W-->
+			<xsd:enumeration value="7325"/> <!-- Jardines Underwriting Agency-->
+			<xsd:enumeration value="7624"/> <!-- Johansen Insurance Brokers P/L-->
+			<xsd:enumeration value="7335"/> <!-- Just Car Insurance-->
+			<xsd:enumeration value="7399"/> <!-- Ken Tame & Associates-->
+			<xsd:enumeration value="7162"/> <!-- Key Insurance Company Pty Ltd-->
+			<xsd:enumeration value="7163"/> <!-- Koa Fire & Marine Insurance Co-->
+			<xsd:enumeration value="7404"/> <!-- Liberty International U/W-->
+			<xsd:enumeration value="7164"/> <!-- Lionheart Insurance Pty Ltd-->
+			<xsd:enumeration value="7165"/> <!-- Lumley General Insurance Ltd-->
+			<xsd:enumeration value="7166"/> <!-- Mansions Of Australia-->
+			<xsd:enumeration value="7167"/> <!-- Manufactured Homes Insurance-->
+			<xsd:enumeration value="7651"/> <!-- Mark Prolisko Insurance Agency-->
+			<xsd:enumeration value="7355"/> <!-- Marsh Pty Ltd-->
+			<xsd:enumeration value="7168"/> <!-- Mb Insurance Group Pty Ltd-->
+			<xsd:enumeration value="7437"/> <!-- Mclarens Young International-->
+			<xsd:enumeration value="7664"/> <!-- Mecon Insurance-->
+			<xsd:enumeration value="7418"/> <!-- Melbourne Taxi Club-->
+			<xsd:enumeration value="7321"/> <!-- Mendelsons Solicitors-->
+			<xsd:enumeration value="7401"/> <!-- Mercedes Benz Insurance-->
+			<xsd:enumeration value="7419"/> <!-- Metropolitan Taxi Club Inc-->
+			<xsd:enumeration value="7364"/> <!-- Mills Oakley Lawyers T/A-->
+			<xsd:enumeration value="7170"/> <!-- Mitsui Marine & Fire Insurance-->
+			<xsd:enumeration value="7413"/> <!-- Mitsui Sumitomo-->
+			<xsd:enumeration value="7374"/> <!-- MI Investigations-->
+			<xsd:enumeration value="7443"/> <!-- Most Wanted Agency Pty Ltd-->
+			<xsd:enumeration value="7172"/> <!-- Municipal Mutual Insurance-->
+			<xsd:enumeration value="7173"/> <!-- Mutual Community General Ins-->
+			<xsd:enumeration value="7174"/> <!-- National Commercial Ins Agents-->
+			<xsd:enumeration value="7425"/> <!-- National Credit Management Ltd-->
+			<xsd:enumeration value="7175"/> <!-- National Transport Ins Ltd-->
+			<xsd:enumeration value="7435"/> <!-- Northern Taxi Club-->
+			<xsd:enumeration value="7176"/> <!-- Nrma Insurance-->
+			<xsd:enumeration value="7612"/> <!-- Nsw Treasury Managed Fund-->
+			<xsd:enumeration value="7329"/> <!-- Oamps Insurance Brokers-->
+			<xsd:enumeration value="7177"/> <!-- Oamps International Insurance-->
+			<xsd:enumeration value="7178"/> <!-- Oceanic Underwriting-->
+			<xsd:enumeration value="7330"/> <!-- Orix Australia-->
+			<xsd:enumeration value="7824"/> <!-- Other-->
+			<xsd:enumeration value="7382"/> <!-- Owners Association Pty Ltd-->
+			<xsd:enumeration value="7390"/> <!-- Ozicare-->
+			<xsd:enumeration value="7179"/> <!-- Parks Insurance-->
+			<xsd:enumeration value="7630"/> <!-- Pb Broking Pty Ltd-->
+			<xsd:enumeration value="7393"/> <!-- Platinum-->
+			<xsd:enumeration value="7180"/> <!-- Prestige Car Ins Australia-->
+			<xsd:enumeration value="7657"/> <!-- Proclaim-->
+			<xsd:enumeration value="7894"/> <!-- Progressive-->
+			<xsd:enumeration value="7181"/> <!-- QBE-->
+			<xsd:enumeration value="7421"/> <!-- QBE Commercial-->
+			<xsd:enumeration value="7169"/> <!-- QBE Mercantile Mutual-->
+			<xsd:enumeration value="7182"/> <!-- Queensland Rugby League Ins-->
+			<xsd:enumeration value="7183"/> <!-- RAA Insurance-->
+			<xsd:enumeration value="7184"/> <!-- RAC Insurance Ltd-->
+			<xsd:enumeration value="7219"/> <!-- RACQ Insurance Ltd-->
+			<xsd:enumeration value="7185"/> <!-- RACT-->
+			<xsd:enumeration value="7314"/> <!-- RACV Insurance Pty Ltd-->
+			<xsd:enumeration value="7344"/> <!-- RCL Mercantile-->
+			<xsd:enumeration value="7352"/> <!-- Ready Plan Insurance-->
+			<xsd:enumeration value="7663"/> <!-- Real Insurance-->
+			<xsd:enumeration value="7339"/> <!-- Recoveries Corporation Pty Ltd-->
+			<xsd:enumeration value="7407"/> <!-- Rent Sure-->
+			<xsd:enumeration value="7388"/> <!-- Retirease-->
+			<xsd:enumeration value="7186"/> <!-- Reward Insurance Pty Ltd-->
+			<xsd:enumeration value="7422"/> <!-- Riskcover-->
+			<xsd:enumeration value="7411"/> <!-- Rmi Australia-->
+			<xsd:enumeration value="7408"/> <!-- Roadside Assistence-->
+			<xsd:enumeration value="7318"/> <!-- Rogers & Gaylard Lawyers-->
+			<xsd:enumeration value="7317"/> <!-- Royal & Sun Alliance Insurance-->
+			<xsd:enumeration value="7187"/> <!-- Royal&Sun Alliance Global Ptyl-->
+			<xsd:enumeration value="7653"/> <!-- Ryno Insurance-->
+			<xsd:enumeration value="7191"/> <!-- S Aust. Gov Captive Ins Corp-->
+			<xsd:enumeration value="7427"/> <!-- S.E. Doyle & Associates-->
+			<xsd:enumeration value="7338"/> <!-- Savings & Loans Credit Union-->
+			<xsd:enumeration value="7188"/> <!-- Sentinel Underwriting Agencies-->
+			<xsd:enumeration value="7189"/> <!-- SGIC-->
+			<xsd:enumeration value="7190"/> <!-- SGIO Insurance Ltd-->
+			<xsd:enumeration value="7334"/> <!-- Shannons-->
+			<xsd:enumeration value="7617"/> <!-- Shortland Insurance Brokers-->
+			<xsd:enumeration value="7376"/> <!-- Sompo Japan Insurance Inc-->
+			<xsd:enumeration value="7192"/> <!-- Southern Cross U/W Pty Ltd-->
+			<xsd:enumeration value="7193"/> <!-- Specialist U/W Agencies Ptyltd-->
+			<xsd:enumeration value="7611"/> <!-- Sportscover Australia Pty Ltd-->
+			<xsd:enumeration value="7403"/> <!-- Srs Underwriting Agency-->
+			<xsd:enumeration value="7194"/> <!-- St George Underwriting-->
+			<xsd:enumeration value="7346"/> <!-- Statewide Mercantile Services-->
+			<xsd:enumeration value="7440"/> <!-- Stewart Lawson & Associates-->
+			<xsd:enumeration value="7195"/> <!-- Stirling Risk Services-->
+			<xsd:enumeration value="7196"/> <!-- Sumitomo Marine & Fire Ins-->
+			<xsd:enumeration value="7197"/> <!-- Suncorp Insurance-->
+			<xsd:enumeration value="7331"/> <!-- Sureplan-->
+			<xsd:enumeration value="7432"/> <!-- Swann-->
+			<xsd:enumeration value="7198"/> <!-- Swann Insurance-->
+			<xsd:enumeration value="7428"/> <!-- Taxi Care Club Ltd-->
+			<xsd:enumeration value="7199"/> <!-- Taxi Insurance Co-Operative-->
+			<xsd:enumeration value="7384"/> <!-- Taxi Owners Association-->
+			<xsd:enumeration value="7200"/> <!-- Territory Insurance Office-->
+			<xsd:enumeration value="7201"/> <!-- Tgio Insurance-->
+			<xsd:enumeration value="7620"/> <!-- The Arms Global Group Pty Ltd-->
+			<xsd:enumeration value="7341"/> <!-- Thrifty Car Rentals Insurance-->
+			<xsd:enumeration value="7360"/> <!-- Tnt Risk Management-->
+			<xsd:enumeration value="7202"/> <!-- Tokio Nichido Marine & Fire-->
+			<xsd:enumeration value="7203"/> <!-- Torque Underwriting-->
+			<xsd:enumeration value="7626"/> <!-- Trans-West Insurance Brokers-->
+			<xsd:enumeration value="7385"/> <!-- Transcorp-->
+			<xsd:enumeration value="7650"/> <!-- Transport & General-->
+			<xsd:enumeration value="7204"/> <!-- Transport Industries Ins Co-->
+			<xsd:enumeration value="7610"/> <!-- Transport Insurance Specialist-->
+			<xsd:enumeration value="7623"/> <!-- Treasury Managed Fund-->
+			<xsd:enumeration value="7205"/> <!-- Triton Underwriting Insurance-->
+			<xsd:enumeration value="7206"/> <!-- UAP-->
+			<xsd:enumeration value="7207"/> <!-- Underwriting Agencies Of Aus-->
+			<xsd:enumeration value="7208"/> <!-- Underwriting Marketing Service-->
+			<xsd:enumeration value="7209"/> <!--Unique Car Insurance-->
+			<xsd:enumeration value="7348"/> <!-- United Underwriting Agencies-->
+			<xsd:enumeration value="7210"/> <!-- Universal Specialist U/W-->
+			<xsd:enumeration value="7211"/> <!-- Vacc Insurance-->
+			<xsd:enumeration value="7386"/> <!-- Vero Insurance Limited-->
+			<xsd:enumeration value="7438"/> <!-- Vero Insurance Nz Ltd-->
+			<xsd:enumeration value="7212"/> <!-- Vigil Underwriting Agencies-->
+			<xsd:enumeration value="7429"/> <!-- Vision Claims-->
+			<xsd:enumeration value="7354"/> <!-- Waterman Receivables Mgmt-->
+			<xsd:enumeration value="7213"/> <!-- Wesfarmers Federation Ins-->
+			<xsd:enumeration value="7214"/> <!-- Western Qbe Insurance-->
+			<xsd:enumeration value="7415"/> <!-- Western United Financial Svcs-->
+			<xsd:enumeration value="7434"/> <!-- Westpac General Insurance-->
+			<xsd:enumeration value="7647"/> <!-- Wickett Insurance Broking-->
+			<xsd:enumeration value="7215"/> <!-- Winterthur International In-->
+			<xsd:enumeration value="7433"/> <!-- Workcover Nsw-->
+			<xsd:enumeration value="7216"/> <!-- World Marine & General Ins-->
+			<xsd:enumeration value="7343"/> <!-- Wyatt Gallagher Basset-->
+			<xsd:enumeration value="7217"/> <!-- Yasuda Fire & Marine Ins-->
+			<xsd:enumeration value="7426"/> <!-- Young And Cool-->
+			<xsd:enumeration value="7218"/> <!-- Zurich Australian Insurance-->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="refusalReason">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0C"/> <!-- Underwriters - Unacceptable Risk -->
+			<xsd:enumeration value="11"/> <!-- Group Scheme Cancelled -->
+			<xsd:enumeration value="12"/> <!-- Non Payment Of Premium -->
+			<xsd:enumeration value="13"/> <!-- Bad Claims Experience -->
+			<xsd:enumeration value="14"/> <!-- Other -->
+			<xsd:enumeration value="16"/> <!-- Non Disclosure -->
+			<xsd:enumeration value="17"/> <!-- Claim Rejected -->
+			<xsd:enumeration value="18"/> <!-- Fraud -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="securityDevice">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A"/> <!-- Alarm -->
+			<xsd:enumeration value="I"/> <!-- Immobilser Only -->
+			<xsd:enumeration value="B"/> <!-- Both alarm and Immobiliser -->
+			<xsd:enumeration value="N"/> <!-- None -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="country">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A1"/> <!-- Afghanistan -->
+			<xsd:enumeration value="A2"/> <!-- Albania -->
+			<xsd:enumeration value="A3"/> <!-- Algeria -->
+			<xsd:enumeration value="AS"/> <!-- American Samoa -->
+			<xsd:enumeration value="A4"/> <!-- Andorra -->
+			<xsd:enumeration value="A5"/> <!-- Angola -->
+			<xsd:enumeration value="A6"/> <!-- Anguilla -->
+			<xsd:enumeration value="A7"/> <!-- Antarctica -->
+			<xsd:enumeration value="A8"/> <!-- Antigua -->
+			<xsd:enumeration value="AG"/> <!-- Antigua And Barbuda -->
+			<xsd:enumeration value="A9"/> <!-- Antilles -->
+			<xsd:enumeration value="AA"/> <!-- Argentina -->
+			<xsd:enumeration value="AM"/> <!-- Armenia -->
+			<xsd:enumeration value="AB"/> <!-- Aruba -->
+			<xsd:enumeration value="AC"/> <!-- Ascension Island -->
+			<xsd:enumeration value="02"/> <!-- Australia -->
+			<xsd:enumeration value="AD"/> <!-- Austria -->
+			<xsd:enumeration value="AZ"/> <!-- Azerbaijan -->
+			<xsd:enumeration value="AE"/> <!-- Azores -->
+			<xsd:enumeration value="B1"/> <!-- Bahamas -->
+			<xsd:enumeration value="B2"/> <!-- Bahrain -->
+			<xsd:enumeration value="B3"/> <!-- Bangladesh -->
+			<xsd:enumeration value="B4"/> <!-- Barbados -->
+			<xsd:enumeration value="BY"/> <!-- Belarus -->
+			<xsd:enumeration value="32"/> <!-- Belgium -->
+			<xsd:enumeration value="B5"/> <!-- Belize -->
+			<xsd:enumeration value="B6"/> <!-- Benin -->
+			<xsd:enumeration value="B7"/> <!-- Bermuda -->
+			<xsd:enumeration value="B8"/> <!-- Bhutan -->
+			<xsd:enumeration value="BO"/> <!-- Bolivia -->
+			<xsd:enumeration value="BG"/> <!-- Bosnia-Herzogovina -->
+			<xsd:enumeration value="B9"/> <!-- Botswana -->
+			<xsd:enumeration value="BV"/> <!-- Bouvet Island -->
+			<xsd:enumeration value="BA"/> <!-- Brazil -->
+			<xsd:enumeration value="IO"/> <!-- British Indian Ocean Territory -->
+			<xsd:enumeration value="VG"/> <!-- British Virgin Island -->
+			<xsd:enumeration value="BB"/> <!-- Brunei Darussalam -->
+			<xsd:enumeration value="BC"/> <!-- Bulgaria -->
+			<xsd:enumeration value="BD"/> <!-- Burkina Faso -->
+			<xsd:enumeration value="BE"/> <!-- Burma -->
+			<xsd:enumeration value="BF"/> <!-- Burundi -->
+			<xsd:enumeration value="C1"/> <!-- Cambodia -->
+			<xsd:enumeration value="C2"/> <!-- Cameroon -->
+			<xsd:enumeration value="C3"/> <!-- Canada -->
+			<xsd:enumeration value="C4"/> <!-- Canary Islands -->
+			<xsd:enumeration value="CV"/> <!-- Cape Verde -->
+			<xsd:enumeration value="C5"/> <!-- Cape Verde Islands -->
+			<xsd:enumeration value="C6"/> <!-- Cayman Islands -->
+			<xsd:enumeration value="C7"/> <!-- Central African Republic -->
+			<xsd:enumeration value="C8"/> <!-- Chad -->
+			<xsd:enumeration value="C9"/> <!-- Chatham Islands -->
+			<xsd:enumeration value="CA"/> <!-- Chile -->
+			<xsd:enumeration value="86"/> <!-- China -->
+			<xsd:enumeration value="CB"/> <!-- Christmas Islands -->
+			<xsd:enumeration value="CC"/> <!-- Cocos Island -->
+			<xsd:enumeration value="CD"/> <!-- Colombia -->
+			<xsd:enumeration value="CE"/> <!-- Comores -->
+			<xsd:enumeration value="CF"/> <!-- Congo -->
+			<xsd:enumeration value="CG"/> <!-- Cook Islands -->
+			<xsd:enumeration value="CH"/> <!-- Costa Rica -->
+			<xsd:enumeration value="CK"/> <!-- Cote D'ivoire -->
+			<xsd:enumeration value="HR"/> <!-- Croatia -->
+			<xsd:enumeration value="CI"/> <!-- Cuba -->
+			<xsd:enumeration value="CJ"/> <!-- Cyprus -->
+			<xsd:enumeration value="42"/> <!-- Czech Republic -->
+			<xsd:enumeration value="YD"/> <!-- Democratic Yemen -->
+			<xsd:enumeration value="45"/> <!-- Denmark -->
+			<xsd:enumeration value="D1"/> <!-- Djibouti -->
+			<xsd:enumeration value="D2"/> <!-- Dominica -->
+			<xsd:enumeration value="D3"/> <!-- Dominican Republic -->
+			<xsd:enumeration value="TP"/> <!-- East Timor -->
+			<xsd:enumeration value="E1"/> <!-- Ecuador -->
+			<xsd:enumeration value="E2"/> <!-- Egypt -->
+			<xsd:enumeration value="E3"/> <!-- El Salvador -->
+			<xsd:enumeration value="E4"/> <!-- Equatorial Guinea -->
+			<xsd:enumeration value="EE"/> <!-- Estonia -->
+			<xsd:enumeration value="E5"/> <!-- Ethiopia -->
+			<xsd:enumeration value="F1"/> <!-- Falkland Islands -->
+			<xsd:enumeration value="F2"/> <!-- Faroe Islands -->
+			<xsd:enumeration value="F3"/> <!-- Fiji -->
+			<xsd:enumeration value="F4"/> <!-- Finland -->
+			<xsd:enumeration value="33"/> <!-- France -->
+			<xsd:enumeration value="F5"/> <!-- French Guiana -->
+			<xsd:enumeration value="F6"/> <!-- French Polynesia -->
+			<xsd:enumeration value="TF"/> <!-- French Southern Territories -->
+			<xsd:enumeration value="G1"/> <!-- Gabon -->
+			<xsd:enumeration value="G2"/> <!-- Gambia -->
+			<xsd:enumeration value="GE"/> <!-- Georgia -->
+			<xsd:enumeration value="37"/> <!-- Germany -->
+			<xsd:enumeration value="G3"/> <!-- Ghana -->
+			<xsd:enumeration value="G4"/> <!-- Gibraltar -->
+			<xsd:enumeration value="30"/> <!-- Greece -->
+			<xsd:enumeration value="G5"/> <!-- Greenland -->
+			<xsd:enumeration value="G6"/> <!-- Grenada -->
+			<xsd:enumeration value="G7"/> <!-- Guadeloupe -->
+			<xsd:enumeration value="G8"/> <!-- Guam -->
+			<xsd:enumeration value="G9"/> <!-- Guatemala -->
+			<xsd:enumeration value="GA"/> <!-- Guinea -->
+			<xsd:enumeration value="GB"/> <!-- Guinea - Bissau -->
+			<xsd:enumeration value="GC"/> <!-- Guyana -->
+			<xsd:enumeration value="H1"/> <!-- Haiti -->
+			<xsd:enumeration value="HM"/> <!-- Heard And Mcdonald Island -->
+			<xsd:enumeration value="H2"/> <!-- Honduras -->
+			<xsd:enumeration value="H3"/> <!-- Hong Kong -->
+			<xsd:enumeration value="H4"/> <!-- Hungary -->
+			<xsd:enumeration value="I1"/> <!-- Ibiza -->
+			<xsd:enumeration value="I2"/> <!-- Iceland -->
+			<xsd:enumeration value="I3"/> <!-- India -->
+			<xsd:enumeration value="I4"/> <!-- Indonesia -->
+			<xsd:enumeration value="I5"/> <!-- Inmarsat -->
+			<xsd:enumeration value="I6"/> <!-- Iran -->
+			<xsd:enumeration value="I7"/> <!-- Iraq -->
+			<xsd:enumeration value="I8"/> <!-- Ireland,Republic Of -->
+			<xsd:enumeration value="I9"/> <!-- Israel & Occupied Territories -->
+			<xsd:enumeration value="39"/> <!-- Italy -->
+			<xsd:enumeration value="IA"/> <!-- Ivory Coast -->
+			<xsd:enumeration value="J1"/> <!-- Jamaica -->
+			<xsd:enumeration value="81"/> <!-- Japan -->
+			<xsd:enumeration value="J2"/> <!-- Jordan -->
+			<xsd:enumeration value="K1"/> <!-- Kampuchea -->
+			<xsd:enumeration value="KZ"/> <!-- Kazakhstan -->
+			<xsd:enumeration value="K2"/> <!-- Kenya -->
+			<xsd:enumeration value="K3"/> <!-- Kiribati -->
+			<xsd:enumeration value="K4"/> <!-- Korea -->
+			<xsd:enumeration value="K5"/> <!-- Kuwait -->
+			<xsd:enumeration value="KG"/> <!-- Kyrgyztan -->
+			<xsd:enumeration value="LA"/> <!-- Lao People's Democratic Republic -->
+			<xsd:enumeration value="L1"/> <!-- Laos -->
+			<xsd:enumeration value="LV"/> <!-- Latvia -->
+			<xsd:enumeration value="L2"/> <!-- Lebanon -->
+			<xsd:enumeration value="L3"/> <!-- Lesotho -->
+			<xsd:enumeration value="L4"/> <!-- Liberia -->
+			<xsd:enumeration value="L5"/> <!-- Libya -->
+			<xsd:enumeration value="L6"/> <!-- Liechtenstein -->
+			<xsd:enumeration value="LT"/> <!-- Lithuania -->
+			<xsd:enumeration value="52"/> <!-- Luxembourg -->
+			<xsd:enumeration value="M1"/> <!-- Macao -->
+			<xsd:enumeration value="M2"/> <!-- Madagascar -->
+			<xsd:enumeration value="M3"/> <!-- Madeira -->
+			<xsd:enumeration value="M4"/> <!-- Malawi -->
+			<xsd:enumeration value="M5"/> <!-- Malaysia -->
+			<xsd:enumeration value="M6"/> <!-- Maldives -->
+			<xsd:enumeration value="M7"/> <!-- Mali -->
+			<xsd:enumeration value="M8"/> <!-- Malta -->
+			<xsd:enumeration value="M9"/> <!-- Marshall Islands -->
+			<xsd:enumeration value="MA"/> <!-- Martinique -->
+			<xsd:enumeration value="MB"/> <!-- Mauritania -->
+			<xsd:enumeration value="MC"/> <!-- Mauritius -->
+			<xsd:enumeration value="MD"/> <!-- Mayotte -->
+			<xsd:enumeration value="ME"/> <!-- Mexico -->
+			<xsd:enumeration value="MF"/> <!-- Micronesia -->
+			<xsd:enumeration value="MG"/> <!-- Midway Island -->
+			<xsd:enumeration value="MH"/> <!-- Minorca -->
+			<xsd:enumeration value="MO"/> <!-- Moldova -->
+			<xsd:enumeration value="MI"/> <!-- Monaco -->
+			<xsd:enumeration value="MJ"/> <!-- Mongolia -->
+			<xsd:enumeration value="MK"/> <!-- Montserrat -->
+			<xsd:enumeration value="ML"/> <!-- Morocco -->
+			<xsd:enumeration value="MM"/> <!-- Mozambique -->
+			<xsd:enumeration value="MN"/> <!-- Myanmar -->
+			<xsd:enumeration value="N1"/> <!-- Namibia -->
+			<xsd:enumeration value="N2"/> <!-- Nauru -->
+			<xsd:enumeration value="N3"/> <!-- Nepal -->
+			<xsd:enumeration value="31"/> <!-- Netherlands -->
+			<xsd:enumeration value="AN"/> <!-- Netherlands Antilles -->
+			<xsd:enumeration value="NT"/> <!-- Neutral Zone -->
+			<xsd:enumeration value="N4"/> <!-- Nevis -->
+			<xsd:enumeration value="N5"/> <!-- New Caledonia -->
+			<xsd:enumeration value="N6"/> <!-- New Zealand -->
+			<xsd:enumeration value="N7"/> <!-- Nicaragua -->
+			<xsd:enumeration value="N8"/> <!-- Niger -->
+			<xsd:enumeration value="N9"/> <!-- Nigeria -->
+			<xsd:enumeration value="NA"/> <!-- Niue -->
+			<xsd:enumeration value="NB"/> <!-- Norfolk Island -->
+			<xsd:enumeration value="MP"/> <!-- Northern Mariana Island -->
+			<xsd:enumeration value="ND"/> <!-- Norway -->
+			<xsd:enumeration value="NC"/> <!-- Nothern Marianas -->
+			<xsd:enumeration value="O1"/> <!-- Oman -->
+			<xsd:enumeration value="P1"/> <!-- Pakistan -->
+			<xsd:enumeration value="P2"/> <!-- Palau -->
+			<xsd:enumeration value="P3"/> <!-- Panama -->
+			<xsd:enumeration value="P4"/> <!-- Papau New Guinea -->
+			<xsd:enumeration value="P5"/> <!-- Paraguay -->
+			<xsd:enumeration value="P6"/> <!-- Peru -->
+			<xsd:enumeration value="P7"/> <!-- Philippines -->
+			<xsd:enumeration value="P8"/> <!-- Pitcairn Island -->
+			<xsd:enumeration value="P9"/> <!-- Poland -->
+			<xsd:enumeration value="PA"/> <!-- Portugal -->
+			<xsd:enumeration value="PB"/> <!-- Puerto Rico -->
+			<xsd:enumeration value="Q1"/> <!-- Qatar -->
+			<xsd:enumeration value="R1"/> <!-- Reunion -->
+			<xsd:enumeration value="R2"/> <!-- Rodriguez Island -->
+			<xsd:enumeration value="R3"/> <!-- Romania -->
+			<xsd:enumeration value="RU"/> <!-- Russia -->
+			<xsd:enumeration value="R4"/> <!-- Rwanda -->
+			<xsd:enumeration value="S6"/> <!-- Saipan -->
+			<xsd:enumeration value="S7"/> <!-- Samoa -->
+			<xsd:enumeration value="S8"/> <!-- San Marino -->
+			<xsd:enumeration value="S9"/> <!-- Sao Tome & Principe -->
+			<xsd:enumeration value="SA"/> <!-- Saudia Arabia -->
+			<xsd:enumeration value="SB"/> <!-- Senegal -->
+			<xsd:enumeration value="SC"/> <!-- Seychelles -->
+			<xsd:enumeration value="SD"/> <!-- Sierra Leone -->
+			<xsd:enumeration value="SE"/> <!-- Singapore -->
+			<xsd:enumeration value="97"/> <!-- Slovak Republic -->
+			<xsd:enumeration value="SO"/> <!-- Slovenia -->
+			<xsd:enumeration value="SF"/> <!-- Solomon Islands -->
+			<xsd:enumeration value="SG"/> <!-- Somalia -->
+			<xsd:enumeration value="27"/> <!-- South Africa -->
+			<xsd:enumeration value="34"/> <!-- Spain -->
+			<xsd:enumeration value="SH"/> <!-- Sri Lanka -->
+			<xsd:enumeration value="S1"/> <!-- St Helena -->
+			<xsd:enumeration value="S2"/> <!-- St Kitts & Nevis -->
+			<xsd:enumeration value="S3"/> <!-- St Lucia -->
+			<xsd:enumeration value="S4"/> <!-- St Pierre & Miquelon -->
+			<xsd:enumeration value="S5"/> <!-- St Vincent & The Grenadines -->
+			<xsd:enumeration value="SI"/> <!-- Sudan -->
+			<xsd:enumeration value="SJ"/> <!-- Surinam -->
+			<xsd:enumeration value="SP"/> <!-- Svalbard And Jan Amyen Islands -->
+			<xsd:enumeration value="SK"/> <!-- Swaziland -->
+			<xsd:enumeration value="SL"/> <!-- Sweden -->
+			<xsd:enumeration value="SM"/> <!-- Switzerland -->
+			<xsd:enumeration value="SN"/> <!-- Syria -->
+			<xsd:enumeration value="T1"/> <!-- Taiwan -->
+			<xsd:enumeration value="TJ"/> <!-- Tajikistan -->
+			<xsd:enumeration value="T2"/> <!-- Tanzania -->
+			<xsd:enumeration value="T3"/> <!-- Thailand -->
+			<xsd:enumeration value="T4"/> <!-- Togo -->
+			<xsd:enumeration value="TK"/> <!-- Tokelau -->
+			<xsd:enumeration value="T5"/> <!-- Tonga -->
+			<xsd:enumeration value="T6"/> <!-- Trinidad & Tobago -->
+			<xsd:enumeration value="T7"/> <!-- Tristan Da Cunha -->
+			<xsd:enumeration value="T8"/> <!-- Tunisia -->
+			<xsd:enumeration value="T9"/> <!-- Turkey -->
+			<xsd:enumeration value="TM"/> <!-- Turkmenistan -->
+			<xsd:enumeration value="TA"/> <!-- Turks & Caicos Islands -->
+			<xsd:enumeration value="TB"/> <!-- Tuvala -->
+			<xsd:enumeration value="U1"/> <!-- Uganda -->
+			<xsd:enumeration value="UA"/> <!-- Ukraine -->
+			<xsd:enumeration value="U2"/> <!-- United Arab Emirates -->
+			<xsd:enumeration value="00"/> <!-- United Kingdom -->
+			<xsd:enumeration value="UM"/> <!-- United States Minor Outlying Islands -->
+			<xsd:enumeration value="01"/> <!-- United States Of America -->
+			<xsd:enumeration value="U3"/> <!-- Uruguay -->
+			<xsd:enumeration value="U4"/> <!-- Ussr -->
+			<xsd:enumeration value="UZ"/> <!-- Uzbekistan -->
+			<xsd:enumeration value="V1"/> <!-- Vanuata -->
+			<xsd:enumeration value="V2"/> <!-- Vatican City -->
+			<xsd:enumeration value="V3"/> <!-- Venezuela -->
+			<xsd:enumeration value="V4"/> <!-- Vietnam -->
+			<xsd:enumeration value="V5"/> <!-- Virgin Islands -->
+			<xsd:enumeration value="V6"/> <!-- Virgin Islands (Us) -->
+			<xsd:enumeration value="W1"/> <!-- Wake Island -->
+			<xsd:enumeration value="W2"/> <!-- Wallis & Futuna -->
+			<xsd:enumeration value="EH"/> <!-- Western Sahara -->
+			<xsd:enumeration value="Y1"/> <!-- Yemen -->
+			<xsd:enumeration value="Y2"/> <!-- Yugoslavia -->
+			<xsd:enumeration value="Z1"/> <!-- Zaire -->
+			<xsd:enumeration value="Z2"/> <!-- Zambia -->
+			<xsd:enumeration value="Z3"/> <!-- Zimbabwe -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="dayOfWeek">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Monday"/>
+			<xsd:enumeration value="Tuesday"/>
+			<xsd:enumeration value="Wednesday"/>
+			<xsd:enumeration value="Thursday"/>
+			<xsd:enumeration value="Friday"/>
+			<xsd:enumeration value="Saturday"/>
+			<xsd:enumeration value="Sunday"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="dayOrdinal">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1st"/>
+			<xsd:enumeration value="2nd"/>
+			<xsd:enumeration value="3rd"/>
+			<xsd:enumeration value="4th"/>
+			<xsd:enumeration value="5th"/>
+			<xsd:enumeration value="6th"/>
+			<xsd:enumeration value="7th"/>
+			<xsd:enumeration value="8th"/>
+			<xsd:enumeration value="9th"/>
+			<xsd:enumeration value="10th"/>
+			<xsd:enumeration value="11th"/>
+			<xsd:enumeration value="12th"/>
+			<xsd:enumeration value="13th"/>
+			<xsd:enumeration value="14th"/>
+			<xsd:enumeration value="15th"/>
+			<xsd:enumeration value="16th"/>
+			<xsd:enumeration value="17th"/>
+			<xsd:enumeration value="18th"/>
+			<xsd:enumeration value="19th"/>
+			<xsd:enumeration value="20th"/>
+			<xsd:enumeration value="21st"/>
+			<xsd:enumeration value="22nd"/>
+			<xsd:enumeration value="23rd"/>
+			<xsd:enumeration value="24th"/>
+			<xsd:enumeration value="25th"/>
+			<xsd:enumeration value="26th"/>
+			<xsd:enumeration value="27th"/>
+			<xsd:enumeration value="28th"/>
+			<xsd:enumeration value="29th"/>
+			<xsd:enumeration value="30th"/>
+			<xsd:enumeration value="31st"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="reasonForExclusion">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="3"/> <!-- Excluded due to age -->
+			<xsd:enumeration value="4"/> <!-- Excluded by choice -->
+			<xsd:enumeration value="6"/> <!-- Excluded due to underwriting criteria -->
+			<xsd:enumeration value="7"/> <!-- Excluded due to driver age restriction -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="criminalConviction">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="01"/> <!-- Abduction -->
+			<xsd:enumeration value="02"/> <!-- Aiding / abetting -->
+			<xsd:enumeration value="33"/> <!-- Arson -->
+			<xsd:enumeration value="03"/> <!-- Bodily harm -->
+			<xsd:enumeration value="08"/> <!-- Breaking and entering -->
+			<xsd:enumeration value="09"/> <!-- Contamination of goods -->
+			<xsd:enumeration value="10"/> <!-- Death -->
+			<xsd:enumeration value="11"/> <!-- Demanding money by threats -->
+			<xsd:enumeration value="12"/> <!-- Dishonesty (other) -->
+			<xsd:enumeration value="30"/> <!-- Drug related offence -->
+			<xsd:enumeration value="13"/> <!-- Embezzelment -->
+			<xsd:enumeration value="15"/> <!-- Endangering life -->
+			<xsd:enumeration value="16"/> <!-- Escape from custody -->
+			<xsd:enumeration value="17"/> <!-- False pretences -->
+			<xsd:enumeration value="18"/> <!-- Firearms (use of) -->
+			<xsd:enumeration value="19"/> <!-- Forgery -->
+			<xsd:enumeration value="20"/> <!-- Fraud -->
+			<xsd:enumeration value="21"/> <!-- Larceny -->
+			<xsd:enumeration value="22"/> <!-- Malicious destruction -->
+			<xsd:enumeration value="31"/> <!-- Miscellaneous -->
+			<xsd:enumeration value="23"/> <!-- Obtaining money by deception -->
+			<xsd:enumeration value="24"/> <!-- Receiving stolen goods -->
+			<xsd:enumeration value="25"/> <!-- Robbery -->
+			<xsd:enumeration value="32"/> <!-- Sexual offence -->
+			<xsd:enumeration value="26"/> <!-- Stealing -->
+			<xsd:enumeration value="27"/> <!-- Threatening bodily harm -->
+			<xsd:enumeration value="28"/> <!-- Threatening death -->
+			<xsd:enumeration value="29"/> <!-- Threatening to contaminate goods -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="underwritingResult">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="A"/> <!-- Acceptable -->
+			<xsd:enumeration value="U"/> <!-- Unacceptable -->
+			<xsd:enumeration value="M"/> <!-- Referred to the Underwriters -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="noCover">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="No Cover"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="annualKilometres">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="K"/><!-- less than 5000 km per annum -->
+			<xsd:enumeration value="L"/><!-- 5001  -  8000 km per annum -->
+			<xsd:enumeration value="M"/><!-- 8001 - 10000 km per annum -->
+			<xsd:enumeration value="N"/><!-- 10001 - 12000 km per annum -->
+			<xsd:enumeration value="O"/><!-- 12501 - 15000 km per annum -->
+			<xsd:enumeration value="P"/><!-- 15001 - 17500 km per annum -->
+			<xsd:enumeration value="Q"/><!-- 17501 - 20000 km per annum -->
+			<xsd:enumeration value="R"/><!-- 20001 - 25000 km per annum -->
+			<xsd:enumeration value="S"/><!-- 25001 - 30000 km per annum -->
+			<xsd:enumeration value="T"/><!-- more than 30000 km per annum -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="coverType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="HHB"/><!-- Buildings Cover Only -->
+			<xsd:enumeration value="HHC"/><!-- Contents Cover Only -->
+			<xsd:enumeration value="HHZ"/><!-- Building & Contents Cover -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="buildingType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="08"/><!-- Apartment -->
+			<xsd:enumeration value="06"/><!-- Duplex -->
+			<xsd:enumeration value="07"/><!-- Flat -->
+			<xsd:enumeration value="01"/><!-- Freestanding Home -->
+			<xsd:enumeration value="02"/><!-- Home Unit -->
+			<xsd:enumeration value="18"/><!-- Semi-Detached house -->
+			<xsd:enumeration value="04"/><!-- Terrace House -->
+			<xsd:enumeration value="03"/><!-- Townhouse -->
+			<xsd:enumeration value="05"/><!-- Villa -->
+			<xsd:enumeration value="09"/><!-- Boarding House -->
+			<xsd:enumeration value="14"/><!-- Caravan -->
+			<xsd:enumeration value="10"/><!-- Dormitory -->
+			<xsd:enumeration value="12"/><!-- Granny Flat -->
+			<xsd:enumeration value="11"/><!-- Mobile Home -->
+			<xsd:enumeration value="13"/><!-- Shed -->
+			<xsd:enumeration value="17"/><!-- Shipping container -->
+			<xsd:enumeration value="15"/><!-- Storage facility -->
+			<xsd:enumeration value="16"/><!-- Warehouse -->
+			<xsd:enumeration value="99"/><!-- Other -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="buildingMaterialWalls">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="04"/><!-- Cladding -->
+			<xsd:enumeration value="07"/><!-- Besser Block/Cement -->
+			<xsd:enumeration value="06"/><!-- Brick Veneer -->
+			<xsd:enumeration value="02"/><!-- Brick -->
+			<xsd:enumeration value="03"/><!-- Fibro -->
+			<xsd:enumeration value="05"/><!-- Stone -->
+			<xsd:enumeration value="01"/><!-- Timber/Weatherboard -->
+			<xsd:enumeration value="99"/><!-- Other -->
+
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="buildingMaterialRoof">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="01"/><!-- Cement Tiles -->
+			<xsd:enumeration value="04"/><!-- Clay/Terracotta Tiles -->
+			<xsd:enumeration value="02"/><!-- Colourbond -->
+			<xsd:enumeration value="03"/><!-- Metal Other -->
+			<xsd:enumeration value="05"/><!-- Slate -->
+			<xsd:enumeration value="TH"/><!-- Thatch -->
+			<xsd:enumeration value="99"/><!-- Other -->
+
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="residenceUse">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="LO"/><!-- Rented to tenants -->
+			<xsd:enumeration value="HR"/><!-- Holiday home (may be rented out) -->
+			<xsd:enumeration value="HH"/><!-- Holiday home (not rented out) -->
+			<xsd:enumeration value="UN"/><!-- Unoccupied (to be Depricated)-->
+			<xsd:enumeration value="UO"/><!-- Unoccupied (to be Owner Occupied) -->
+			<xsd:enumeration value="UL"/><!-- Unoccupied (to be Rented to Tennant) -->
+			<xsd:enumeration value="OT"/><!-- Other -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="businessActivity">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="03"/><!-- Bed & breakfast -->
+			<xsd:enumeration value="04"/><!-- Commercial Farming -->
+			<xsd:enumeration value="05"/><!-- Hairdresser/beauty therapist -->
+			<xsd:enumeration value="06"/><!-- Photography studio -->
+			<xsd:enumeration value="08"/><!-- Food preparation/catering -->
+			<xsd:enumeration value="09"/><!-- Mechanical workshop -->
+			<xsd:enumeration value="99"/><!-- Other -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="previousInsurance">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="7111"/><!-- AAMI -->
+			<xsd:enumeration value="7773"/><!-- AI Insurance -->
+			<xsd:enumeration value="7316"/><!-- Allianz -->
+			<xsd:enumeration value="7778"/><!-- ANZ -->
+			<xsd:enumeration value="7326"/><!-- APIA -->
+			<xsd:enumeration value="7127"/><!-- Auto &amp; General -->
+			<xsd:enumeration value="7379"/><!-- Australia Post Insurance -->
+			<xsd:enumeration value="8040"/><!-- Bank of Queensland Insurance -->
+			<xsd:enumeration value="7669"/><!-- Bingle -->
+			<xsd:enumeration value="7387"/><!-- Budget Direct -->
+			<xsd:enumeration value="7941"/><!-- BUPA Insurance -->
+			<xsd:enumeration value="7130"/><!-- CGU -->
+			<xsd:enumeration value="7875"/><!-- Coles Insurance -->
+			<xsd:enumeration value="7402"/><!-- Comminsure -->
+			<xsd:enumeration value="7323"/><!-- Elders Insurance -->
+			<xsd:enumeration value="7315"/><!-- GIO -->
+			<xsd:enumeration value="7157"/><!-- HBF Insurance -->
+			<xsd:enumeration value="7406"/><!-- Hollard -->
+			<xsd:enumeration value="7800"/><!-- iSelect -->
+			<xsd:enumeration value="7335"/><!-- Just Car Insurance -->
+			<xsd:enumeration value="7874"/><!-- Kmart Insurance -->
+			<xsd:enumeration value="7165"/><!-- Lumley -->
+			<xsd:enumeration value="7786"/><!-- NAB -->
+			<xsd:enumeration value="7176"/><!-- NRMA -->
+			<xsd:enumeration value="7824"/><!-- Other -->
+			<xsd:enumeration value="7894"/><!-- Progressive -->
+			<xsd:enumeration value="7181"/><!-- QBE -->
+			<xsd:enumeration value="7183"/><!-- RAA -->
+			<xsd:enumeration value="7219"/><!-- RACQ -->
+			<xsd:enumeration value="7314"/><!-- RACV -->
+			<xsd:enumeration value="7184"/><!-- RACW -->
+			<xsd:enumeration value="7663"/><!-- Real Insurance -->
+			<xsd:enumeration value="7189"/><!-- SGIC -->
+			<xsd:enumeration value="7190"/><!-- SGIO -->
+			<xsd:enumeration value="7334"/><!-- Shannons -->
+			<xsd:enumeration value="7197"/><!-- Suncorp -->
+			<xsd:enumeration value="7825"/><!-- The Buzz -->
+			<xsd:enumeration value="7386"/><!-- Vero -->
+			<xsd:enumeration value="7808"/><!-- Virgin Money Insurance -->
+			<xsd:enumeration value="7213"/><!-- Wesfarmers -->
+			<xsd:enumeration value="7434"/><!-- Westpac -->
+			<xsd:enumeration value="8026"/><!-- Woolworths Insurance -->
+			<xsd:enumeration value="7766"/><!-- YOUI -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="yearBuilt">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="2011"/><!-- 2011+ -->
+			<xsd:enumeration value="2000"/><!-- 2000 - 2010 -->
+			<xsd:enumeration value="1990"/><!-- 1990 - 1999 -->
+			<xsd:enumeration value="1980"/><!-- 1980 - 1989 -->
+			<xsd:enumeration value="1970"/><!-- 1970 - 1979 -->
+			<xsd:enumeration value="1960"/><!-- 1960 - 1969 -->
+			<xsd:enumeration value="1945"/><!-- 1945 - 1959 -->
+			<xsd:enumeration value="1940"/><!-- 1940 - 1945 -->
+			<xsd:enumeration value="1914"/><!-- 1914 - 1940 -->
+			<xsd:enumeration value="1900"/><!-- 1900 - 1913 -->
+			<xsd:enumeration value="1891"/><!-- 1891 - 1899 -->
+			<xsd:enumeration value="1840"/><!-- 1840 - 1890 -->
+			<xsd:enumeration value="1839"/><!-- Pre 1840 -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="yearsInsured">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1"/><!-- 1 Year -->
+			<xsd:enumeration value="2"/><!-- 2 Years -->
+			<xsd:enumeration value="3"/><!-- 3 Years -->
+			<xsd:enumeration value="4"/><!-- 4 Years -->
+			<xsd:enumeration value="5"/><!-- 5 Years -->
+			<xsd:enumeration value="6"/><!-- More than 5 Years -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="unspecifiedCover">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="0"/><!-- No Cover -->
+			<xsd:enumeration value="1000"/><!-- $1,000 -->
+			<xsd:enumeration value="2000"/><!-- $2,000 -->
+			<xsd:enumeration value="3000"/><!-- $3,000 -->
+			<xsd:enumeration value="4000"/><!-- $4,000 -->
+			<xsd:enumeration value="5000"/><!-- $5,000 -->
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="riskClasses">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="HHA" />
+			<xsd:enumeration value="HHB" />
+			<xsd:enumeration value="HHC" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="additionalExcessCodesHH">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="E" />
+			<xsd:enumeration value="W" />
+			<xsd:enumeration value="Y" />
+			<xsd:enumeration value="0" />
+			<xsd:enumeration value="1" />
+			<xsd:enumeration value="4" />
+			<xsd:enumeration value="9" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="claimsHistory">
+		<xsd:restriction base="xsd:string">
+		<xsd:enumeration value="Y"/> <!-- Yes, previous claims were made in the last 5 years -->
+		<xsd:enumeration value="N"/> <!-- No claims made in the last 5 years -->
+		<xsd:enumeration value="U"/> <!-- Unsure whether claims were made in the last 5 years -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="countryCodes">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ABW"/> <!-- Aruba                                         -->
+			<xsd:enumeration value="AF"/> <!-- Africa                                        -->
+			<xsd:enumeration value="AFG"/> <!-- Afghanistan                                   -->
+			<xsd:enumeration value="AGO"/> <!-- Angola                                        -->
+			<xsd:enumeration value="ALB"/> <!-- Albania                                       -->
+			<xsd:enumeration value="AND"/> <!-- Andorra                                       -->
+			<xsd:enumeration value="ARE"/> <!-- United Arab Emirates                          -->
+			<xsd:enumeration value="ARG"/> <!-- Argentina                                     -->
+			<xsd:enumeration value="ARM"/> <!-- Armenia                                       -->
+			<xsd:enumeration value="AS"/> <!-- Asia                                          -->
+			<xsd:enumeration value="ASM"/> <!-- American Samoa                                -->
+			<xsd:enumeration value="ATA"/> <!-- Antarctica                                    -->
+			<xsd:enumeration value="ATF"/> <!-- French Southern Territories                   -->
+			<xsd:enumeration value="ATG"/> <!-- Antigua and Barbuda                           -->
+			<xsd:enumeration value="AUS"/> <!-- Australia                                     -->
+			<xsd:enumeration value="AUT"/> <!-- Austria                                       -->
+			<xsd:enumeration value="AUW"/> <!-- Australian Waters                             -->
+			<xsd:enumeration value="AZE"/> <!-- Azerbaijan                                    -->
+			<xsd:enumeration value="BAL"/> <!-- Bali                                          -->	
+			<xsd:enumeration value="BDI"/> <!-- Burundi                                       -->
+			<xsd:enumeration value="BEL"/> <!-- Belgium                                       -->
+			<xsd:enumeration value="BEN"/> <!-- Benin                                         -->
+			<xsd:enumeration value="BFA"/> <!-- Burkina Faso                                  -->
+			<xsd:enumeration value="BGD"/> <!-- Bangladesh                                    -->
+			<xsd:enumeration value="BGR"/> <!-- Bulgaria                                      -->
+			<xsd:enumeration value="BHR"/> <!-- Bahrain                                       -->
+			<xsd:enumeration value="BHS"/> <!-- Bahamas                                       -->
+			<xsd:enumeration value="BIH"/> <!-- Bosnia and Herzegovina                        -->
+			<xsd:enumeration value="BLR"/> <!-- Belarus                                       -->
+			<xsd:enumeration value="BLZ"/> <!-- Belize                                        -->
+			<xsd:enumeration value="BMU"/> <!-- Bermuda                                       -->
+			<xsd:enumeration value="BOL"/> <!-- Bolivia                                       -->
+			<xsd:enumeration value="BRA"/> <!-- Brazil                                        -->
+			<xsd:enumeration value="BRB"/> <!-- Barbados                                      -->
+			<xsd:enumeration value="BRN"/> <!-- Brunei                                        -->
+			<xsd:enumeration value="BTN"/> <!-- Bhutan                                        -->
+			<xsd:enumeration value="BWA"/> <!-- Botswana                                      -->
+			<xsd:enumeration value="CAF"/> <!-- Central African Republic                      -->
+			<xsd:enumeration value="CAI"/> <!-- Canary Islands                                -->
+			<xsd:enumeration value="CAN"/> <!-- Canada                                        -->
+			<xsd:enumeration value="CCK"/> <!-- Cocos (Keeling) Islands                       -->
+			<xsd:enumeration value="CHA"/> <!-- Ghana                                         -->
+			<xsd:enumeration value="CHE"/> <!-- Switzerland                                   -->
+			<xsd:enumeration value="CHL"/> <!-- Chile                                         -->
+			<xsd:enumeration value="CHN"/> <!-- China                                         -->
+			<xsd:enumeration value="CIV"/> <!-- Ivory Coast                                   -->
+			<xsd:enumeration value="CMR"/> <!-- Cameroon                                      -->
+			<xsd:enumeration value="COD"/> <!-- Republic of the Congo                         -->
+			<xsd:enumeration value="COG"/> <!-- Democratic Republic of the Congo              -->
+			<xsd:enumeration value="COK"/> <!-- Cook Islands                                  -->
+			<xsd:enumeration value="COL"/> <!-- Colombia                                      -->
+			<xsd:enumeration value="COM"/> <!-- Comoros                                       -->
+			<xsd:enumeration value="CPV"/> <!-- Cape Verde                                    -->
+			<xsd:enumeration value="CRI"/> <!-- Costa Rica                                    -->
+			<xsd:enumeration value="CUB"/> <!-- Cuba                                          -->
+			<xsd:enumeration value="CUW"/> <!-- Curacao                                       -->
+			<xsd:enumeration value="CYM"/> <!-- Cayman Islands                                -->
+			<xsd:enumeration value="CYP"/> <!-- Cyprus                                        -->
+			<xsd:enumeration value="CZE"/> <!-- Czech Republic                                -->
+			<xsd:enumeration value="DEU"/> <!-- Germany                                       -->
+			<xsd:enumeration value="DJI"/> <!-- Djibouti                                      -->
+			<xsd:enumeration value="DMA"/> <!-- Dominica                                      -->
+			<xsd:enumeration value="DNK"/> <!-- Denmark                                       -->
+			<xsd:enumeration value="DOM"/> <!-- Dominican Republic                            -->
+			<xsd:enumeration value="DZA"/> <!-- Algeria                                       -->
+			<xsd:enumeration value="ECU"/> <!-- Ecuador                                       -->
+			<xsd:enumeration value="EGY"/> <!-- Egypt                                         -->
+			<xsd:enumeration value="ERI"/> <!-- Eritrea                                       -->
+			<xsd:enumeration value="ESP"/> <!-- Spain                                         -->
+			<xsd:enumeration value="EST"/> <!-- Estonia                                       -->
+			<xsd:enumeration value="ETH"/> <!-- Ethiopia                                      -->
+			<xsd:enumeration value="EU"/> <!-- Europe                                        -->
+			<xsd:enumeration value="FIN"/> <!-- Finland                                       -->
+			<xsd:enumeration value="FJI"/> <!-- Fiji                                          -->
+			<xsd:enumeration value="FLK"/> <!-- Falkland Islands                              -->
+			<xsd:enumeration value="FRA"/> <!-- France                                        -->
+			<xsd:enumeration value="FRO"/> <!-- Faroe Islands                                 -->
+			<xsd:enumeration value="FSM"/> <!-- Micronesia, Federated States of               -->
+			<xsd:enumeration value="GAB"/> <!-- Gabon                                         -->
+			<xsd:enumeration value="GAL"/> <!-- Galapagos Islands                             -->
+			<xsd:enumeration value="GBR"/> <!-- United Kingdom                                -->
+			<xsd:enumeration value="GEO"/> <!-- Georgia                                       -->
+			<xsd:enumeration value="GIB"/> <!-- Gibraltar                                     -->
+			<xsd:enumeration value="GIN"/> <!-- Guinea                                        -->
+			<xsd:enumeration value="GLP"/> <!-- Guadeloupe                                    -->
+			<xsd:enumeration value="GMB"/> <!-- Gambia                                        -->
+			<xsd:enumeration value="GNB"/> <!-- Guinea-Bissau                                 -->
+			<xsd:enumeration value="GNQ"/> <!-- Equatorial Guinea                             -->
+			<xsd:enumeration value="GRC"/> <!-- Greece                                        -->
+			<xsd:enumeration value="GRD"/> <!-- Grenada                                       -->
+			<xsd:enumeration value="GRL"/> <!-- Greenland                                     -->
+			<xsd:enumeration value="GTM"/> <!-- Guatemala                                     -->
+			<xsd:enumeration value="GUF"/> <!-- French Guiana                                 -->
+			<xsd:enumeration value="GUM"/> <!-- Guam                                          -->
+			<xsd:enumeration value="GUY"/> <!-- Guyana                                        -->
+			<xsd:enumeration value="HKG"/> <!-- Hong Kong                                     -->
+			<xsd:enumeration value="HND"/> <!-- Honduras                                      -->
+			<xsd:enumeration value="HRV"/> <!-- Croatia                                       -->
+			<xsd:enumeration value="HTI"/> <!-- Haiti                                         -->
+			<xsd:enumeration value="HUN"/> <!-- Hungary                                       -->
+			<xsd:enumeration value="IDN"/> <!-- Indonesia                                     -->
+			<xsd:enumeration value="IND"/> <!-- India                                         -->
+			<xsd:enumeration value="IOT"/> <!-- British Indian Ocean Territory                -->
+			<xsd:enumeration value="IRL"/> <!-- Ireland                                       -->
+			<xsd:enumeration value="IRN"/> <!-- Iran                                          -->
+			<xsd:enumeration value="IRQ"/> <!-- Iraq                                          -->
+			<xsd:enumeration value="ISL"/> <!-- Iceland                                       -->
+			<xsd:enumeration value="ISR"/> <!-- Israel                                        -->
+			<xsd:enumeration value="ITA"/> <!-- Italy                                         -->
+			<xsd:enumeration value="JAM"/> <!-- Jamaica                                       -->
+			<xsd:enumeration value="JOR"/> <!-- Jordan                                        -->
+			<xsd:enumeration value="JPN"/> <!-- Japan                                         -->
+			<xsd:enumeration value="KAZ"/> <!-- Kazakhstan                                    -->
+			<xsd:enumeration value="KEN"/> <!-- Kenya                                         -->
+			<xsd:enumeration value="KGZ"/> <!-- Kyrgyzstan                                    -->
+			<xsd:enumeration value="KHM"/> <!-- Cambodia                                      -->
+			<xsd:enumeration value="KIR"/> <!-- Kiribati                                      -->
+			<xsd:enumeration value="KNA"/> <!-- Saint Kitts and Nevis                         -->
+			<xsd:enumeration value="KOR"/> <!-- South Korea                                   -->
+			<xsd:enumeration value="KWT"/> <!-- Kuwait                                        -->
+			<xsd:enumeration value="LAO"/> <!-- Laos                                          -->
+			<xsd:enumeration value="LBN"/> <!-- Lebanon                                       -->
+			<xsd:enumeration value="LBR"/> <!-- Liberia                                       -->
+			<xsd:enumeration value="LBY"/> <!-- Libya                                         -->
+			<xsd:enumeration value="LCA"/> <!-- Saint Lucia                                   -->
+			<xsd:enumeration value="LIE"/> <!-- Liechtenstein                                 -->
+			<xsd:enumeration value="LKA"/> <!-- Sri Lanka                                     -->
+			<xsd:enumeration value="LSO"/> <!-- Lesotho                                       -->
+			<xsd:enumeration value="LTU"/> <!-- Lithuania                                     -->
+			<xsd:enumeration value="LUX"/> <!-- Luxembourg                                    -->
+			<xsd:enumeration value="LVA"/> <!-- Latvia                                        -->
+			<xsd:enumeration value="MAC"/> <!-- Macau                                         -->
+			<xsd:enumeration value="MAR"/> <!-- Morocco                                       -->
+			<xsd:enumeration value="MCO"/> <!-- Monaco                                        --> 
+			<xsd:enumeration value="MDA"/> <!-- Moldova                                       --> 
+			<xsd:enumeration value="MDG"/> <!-- Madagascar                                    --> 
+			<xsd:enumeration value="MDV"/> <!-- Maldives                                      --> 
+			<xsd:enumeration value="MEX"/> <!-- Mexico                                        --> 
+			<xsd:enumeration value="MHL"/> <!-- Marshall Islands                              --> 
+			<xsd:enumeration value="MKD"/> <!-- Macedonia                                     --> 
+			<xsd:enumeration value="MLI"/> <!-- Mali                                          --> 
+			<xsd:enumeration value="MMR"/> <!-- Burma                                         --> 
+			<xsd:enumeration value="MNE"/> <!-- Montenegro                                    --> 
+			<xsd:enumeration value="MNG"/> <!-- Mongolia                                      --> 
+			<xsd:enumeration value="MNP"/> <!-- Northern Mariana Islands                      --> 
+			<xsd:enumeration value="MOZ"/> <!-- Mozambique                                    --> 
+			<xsd:enumeration value="MRT"/> <!-- Mauritania                                    --> 
+			<xsd:enumeration value="MSR"/> <!-- Montserrat                                    --> 
+			<xsd:enumeration value="MTL"/> <!-- Malta                                         --> 
+			<xsd:enumeration value="MTQ"/> <!-- Martinique                                    --> 
+			<xsd:enumeration value="MUS"/> <!-- Mauritius                                     --> 
+			<xsd:enumeration value="MWI"/> <!-- Malawi                                        --> 
+			<xsd:enumeration value="MYS"/> <!-- Malaysia                                      -->
+			<xsd:enumeration value="NAM"/> <!-- Namibia                                       -->
+			<xsd:enumeration value="NCL"/> <!-- New Caledonia                                 -->
+			<xsd:enumeration value="NER"/> <!-- Niger                                         -->
+			<xsd:enumeration value="NFK"/> <!-- Norfolk Island                                -->
+			<xsd:enumeration value="NGA"/> <!-- Nigeria                                       -->
+			<xsd:enumeration value="NIC"/> <!-- Nicaragua                                     -->
+			<xsd:enumeration value="NIU"/> <!-- Niue                                          -->
+			<xsd:enumeration value="NLD"/> <!-- Netherlands, Kingdom of the                   -->
+			<xsd:enumeration value="NOR"/> <!-- Norway                                        -->
+			<xsd:enumeration value="NPL"/> <!-- Nepal                                         -->
+			<xsd:enumeration value="NUR"/> <!-- Nauru                                         -->
+			<xsd:enumeration value="NZL"/> <!-- New Zealand                                   -->
+			<xsd:enumeration value="OMN"/> <!-- Oman                                          -->
+			<xsd:enumeration value="PAK"/> <!-- Pakistan                                      -->
+			<xsd:enumeration value="PAN"/> <!-- Panama                                        -->
+			<xsd:enumeration value="PC"/> <!-- Pacific                                       -->
+			<xsd:enumeration value="PCN"/> <!-- Pitcairn Islands                              -->
+			<xsd:enumeration value="PER"/> <!-- Peru                                          -->
+			<xsd:enumeration value="PHL"/> <!-- Philippines                                   --> 
+			<xsd:enumeration value="PLW"/> <!-- Palau                                         --> 
+			<xsd:enumeration value="PNG"/> <!-- Papua New Guinea                              --> 
+			<xsd:enumeration value="POL"/> <!-- Poland                                        --> 
+			<xsd:enumeration value="PRI"/> <!-- Puerto Rico                                   --> 
+			<xsd:enumeration value="PRK"/> <!-- Democratic People's Republic of Korea         --> 
+			<xsd:enumeration value="PRT"/> <!-- Portugal                                      --> 
+			<xsd:enumeration value="PRY"/> <!-- Paraguay                                      --> 
+			<xsd:enumeration value="PSE"/> <!-- Palestine                                     --> 
+			<xsd:enumeration value="PYF"/> <!-- French Polynesia                              --> 
+			<xsd:enumeration value="QAT"/> <!-- Qatar                                         --> 
+			<xsd:enumeration value="REU"/> <!-- Reunion Islands                               --> 
+			<xsd:enumeration value="ROU"/> <!-- Romania                                       --> 
+			<xsd:enumeration value="RUS"/> <!-- Russia                                        --> 
+			<xsd:enumeration value="RWA"/> <!-- Rwanda                                        --> 
+			<xsd:enumeration value="SA"/> <!-- South America                                 --> 
+			<xsd:enumeration value="SAU"/> <!-- Saudi Arabia                                  --> 
+			<xsd:enumeration value="SDN"/> <!-- Sudan                                         --> 
+			<xsd:enumeration value="SEN"/> <!-- Senegal                                       --> 
+			<xsd:enumeration value="SGP"/> <!-- Singapore                                     -->
+			<xsd:enumeration value="SGS"/> <!-- South Georgia and the South Sandwich Islands  -->
+			<xsd:enumeration value="SLB"/> <!-- Solomon Islands                               -->
+			<xsd:enumeration value="SLE"/> <!-- Sierra Leone                                  -->
+			<xsd:enumeration value="SLV"/> <!-- El Salvador                                   -->
+			<xsd:enumeration value="SMR"/> <!-- San Marino                                    -->
+			<xsd:enumeration value="SOM"/> <!-- Somalia                                       -->
+			<xsd:enumeration value="SRB"/> <!-- Serbia                                        -->
+			<xsd:enumeration value="STP"/> <!-- Sao Tome and Principe                         -->
+			<xsd:enumeration value="SUR"/> <!-- Suriname                                      -->
+			<xsd:enumeration value="SVK"/> <!-- Slovakia                                      -->
+			<xsd:enumeration value="SVN"/> <!-- Slovenia                                      -->
+			<xsd:enumeration value="SWE"/> <!-- Sweden                                        -->
+			<xsd:enumeration value="SWZ"/> <!-- Swaziland                                     -->
+			<xsd:enumeration value="SXM"/> <!-- Sint Maarten                                  -->
+			<xsd:enumeration value="SYC"/> <!-- Seychelles                                    -->
+			<xsd:enumeration value="SYR"/> <!-- Syria                                         -->
+			<xsd:enumeration value="TAH"/> <!-- Tahiti                                        -->
+			<xsd:enumeration value="TCD"/> <!-- Chad                                          -->
+			<xsd:enumeration value="TGO"/> <!-- Togo                                          -->       
+			<xsd:enumeration value="THA"/> <!-- Thailand                                      -->       
+			<xsd:enumeration value="TJK"/> <!-- Tajikistan                                    -->       
+			<xsd:enumeration value="TKM"/> <!-- Turkmenistan                                  -->       
+			<xsd:enumeration value="TLS"/> <!-- East Timor                                    -->       
+			<xsd:enumeration value="TON"/> <!-- Tonga                                         -->       
+			<xsd:enumeration value="TTO"/> <!-- Trinidad and Tobago                           -->       
+			<xsd:enumeration value="TUN"/> <!-- Tunisia                                       -->       
+			<xsd:enumeration value="TUR"/> <!-- Turkey                                        -->       
+			<xsd:enumeration value="TUV"/> <!-- Tuvalu                                        -->       
+			<xsd:enumeration value="TWN"/> <!-- Taiwan, Province of China                     -->       
+			<xsd:enumeration value="TZA"/> <!-- Tanzania                                      -->       
+			<xsd:enumeration value="UGA"/> <!-- Uganda                                        -->       
+			<xsd:enumeration value="UKR"/> <!-- Ukraine                                       -->       
+			<xsd:enumeration value="URY"/> <!-- Uruguay                                       -->       
+			<xsd:enumeration value="USA"/> <!-- United States of America                      -->       
+			<xsd:enumeration value="UZB"/> <!-- Uzbekistan                                    -->       
+			<xsd:enumeration value="VCT"/> <!-- Saint Vincent and the Grenadines              -->       
+			<xsd:enumeration value="VEN"/> <!-- Venezuela                                     -->       
+			<xsd:enumeration value="VGB"/> <!-- British Virgin Islands                        --> 
+			<xsd:enumeration value="VIR"/> <!-- United States Virgin Islands                  --> 
+			<xsd:enumeration value="VNM"/> <!-- Vietnam                                       --> 
+			<xsd:enumeration value="VUT"/> <!-- Vanuatu                                       --> 
+			<xsd:enumeration value="WLF"/> <!-- Wallis and Futuna                             --> 
+			<xsd:enumeration value="WSM"/> <!-- Samoa                                         --> 
+			<xsd:enumeration value="WW"/> <!-- World Wide                                    --> 
+			<xsd:enumeration value="YEM"/> <!-- Yemen                                         --> 
+			<xsd:enumeration value="ZAF"/> <!-- South Africa                                  --> 
+			<xsd:enumeration value="ZMB"/> <!-- Zambia                                        --> 
+			<xsd:enumeration value="ZWE"/> <!-- Zimbabwe                                      --> 
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
