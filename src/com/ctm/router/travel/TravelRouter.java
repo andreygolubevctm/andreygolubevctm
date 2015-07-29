@@ -43,12 +43,15 @@ public class TravelRouter extends HttpServlet {
     }
 
     private String updateClientIP(MessageContext context, TravelRequest data){
+
         SessionDataService service = new SessionDataService();
         String clientIpAddress = null;
+
         try {
-            logger.info("TRAN ID: "+data.getTransactionId());
             Data dataForTransactionId = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
+
             // TODO CAN THIS HANDLE SESSION RECOVERY? ANSWER IS NO!
+
             data.setTransactionId(Long.parseLong(dataForTransactionId.getString("current/transactionId")));
             clientIpAddress = (String) dataForTransactionId.get("quote/clientIpAddress");
             if (StringUtils.isBlank(clientIpAddress)) {

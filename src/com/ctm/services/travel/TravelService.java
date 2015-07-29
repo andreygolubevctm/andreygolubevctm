@@ -21,6 +21,7 @@ import com.ctm.providers.travel.travelquote.model.ResponseAdapter;
 import com.ctm.providers.travel.travelquote.model.request.TravelQuoteRequest;
 import com.ctm.providers.travel.travelquote.model.response.TravelResponse;
 import com.ctm.services.*;
+import com.ctm.utils.ResponseUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.log4j.Logger;
@@ -32,11 +33,6 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-/**
- * TODO: once away from jsp create a router for this
- * @author adiente
- *
- */
 public class TravelService {
 
 	private static final Logger logger = Logger.getLogger(TravelService.class.getName());
@@ -44,20 +40,10 @@ public class TravelService {
 	private String vertical;
 	private Data data;
 
-
-
-
 	public List<SchemaValidationError> validateRequest(com.ctm.model.travel.form.TravelRequest travelRequest, String vertical) {
 		List<SchemaValidationError> errors = FormValidation.validate(travelRequest, vertical);
 		valid = errors.isEmpty();
 		return errors;
-	}
-
-	private String outputErrors(RequestService fromFormService, List<SchemaValidationError> errors) {
-		String response;
-		FormValidation.logErrors(fromFormService.sessionId, fromFormService.transactionId, fromFormService.styleCodeId, errors, "TravelService.java:validateRequest");
-		response = FormValidation.outputToJson(fromFormService.transactionId, errors).toString();
-		return response;
 	}
 
     /**
@@ -77,20 +63,18 @@ public class TravelService {
         Request request = new Request();
         request.setBrandCode(brand.getCode());
         request.setClientIp(data.getClientIpAddress());
-
         request.setTransactionId(data.getTransactionId());
-logger.info("ABOUT TO ADAPT FORM DATA TO TRAVEL-QUOTE REQUEST");
+
         // Convert posted data from form into a Travel-quote request
         final TravelQuoteRequest travelQuoteRequest = RequestAdapter.adapt(data);
         request.setPayload(travelQuoteRequest);
-        logger.info("ABOUT TO PREPARE OBJECT MAPPER");
+
         // Prepare objectmapper to map java model to JSON
-        // TODO use response utils
         ObjectMapper objectMapper = new ObjectMapper();
-        //objectMapper.configure(SerializationConfig.Feature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         objectMapper.setDateFormat(df);
+
         // Get URL of travel-quote service
         String serviceUrl = null;
         try {
@@ -99,10 +83,12 @@ logger.info("ABOUT TO ADAPT FORM DATA TO TRAVEL-QUOTE REQUEST");
         }catch (DaoException | ServiceConfigurationException e ){
             throw new TravelServiceException("TravelQuote config error", e);
         }
-        logger.info("ABOUT TO CALL TRAVEL QUOTE");
 
+        // Call travel-quote
         try{
+
             String jsonRequest = objectMapper.writeValueAsString(request);
+
             SimpleConnection connection = new SimpleConnection();
             connection.setRequestMethod("POST");
             connection.setConnectTimeout(30000);
@@ -110,25 +96,15 @@ logger.info("ABOUT TO ADAPT FORM DATA TO TRAVEL-QUOTE REQUEST");
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
-            //logger.debug("Message to "+serviceUrl+": "+jsonRequest);
             String response = connection.get(serviceUrl+"/quote");
-            //logger.debug("Message from "+serviceUrl+": "+response);
             TravelResponse travelResponse = objectMapper.readValue(response, TravelResponse.class);
 
+            // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
+            final List<TravelResult> travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);
 
-        logger.info("ABOUT TO ADAPT RESPONSE"+travelResponse.getTransactionId());
-        // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
-        final List<TravelResult> travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);
-
-        // Write to ResultsObj properties for EDM purposes
-        LocalDate validUntil = new LocalDate().plusDays(30);
-
-        DateTimeFormatter emailDateFormat = DateTimeFormat.forPattern("dd MMMMM yyyy");
-        DateTimeFormatter normalFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
-
-        List<ResultProperty> resultProperties = new ArrayList<>();
-        for (TravelResult result : travelResults) {
-            if (AvailableType.Y.equals(result.getAvailable())) {
+            List<ResultProperty> resultProperties = new ArrayList<>();
+            for (TravelResult result : travelResults) {
+                if (AvailableType.Y.equals(result.getAvailable())) {
 
 /*
                 ResultPropertiesBuilder builder = new ResultPropertiesBuilder(request.getTransactionId(),
@@ -151,11 +127,14 @@ logger.info("ABOUT TO ADAPT FORM DATA TO TRAVEL-QUOTE REQUEST");
             }
         }
 
-        ResultsService.saveResultsProperties(resultProperties);
+            ResultsService.saveResultsProperties(resultProperties);
+
             return travelResults;
+
         }catch(IOException e){
-            logger.error("CONNECTION AND PARSING PROBLEM", e);
+            logger.error("Error parsing or connecting to travel-quote", e);
         }
+
         return null;
 
     }

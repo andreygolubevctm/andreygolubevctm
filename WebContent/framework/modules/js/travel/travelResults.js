@@ -41,7 +41,7 @@
 
 			// Init the main Results object
 			Results.init({
-				url: "ajax/json/travel_quote_results_ws.jsp",
+				url: "ajax/json/travel_quote_results.jsp",
 				//url: 'zzz_travel_results.json',
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
