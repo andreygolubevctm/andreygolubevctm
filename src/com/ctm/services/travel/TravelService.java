@@ -91,7 +91,6 @@ logger.info("ABOUT TO ADAPT FORM DATA TO TRAVEL-QUOTE REQUEST");
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         objectMapper.setDateFormat(df);
-        logger.info("ABOUT TO GET CONFIG");
         // Get URL of travel-quote service
         String serviceUrl = null;
         try {
@@ -111,7 +110,7 @@ logger.info("ABOUT TO ADAPT FORM DATA TO TRAVEL-QUOTE REQUEST");
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
-            logger.debug("Message to "+serviceUrl+": "+jsonRequest);
+            //logger.debug("Message to "+serviceUrl+": "+jsonRequest);
             String response = connection.get(serviceUrl+"/quote");
             //logger.debug("Message from "+serviceUrl+": "+response);
             TravelResponse travelResponse = objectMapper.readValue(response, TravelResponse.class);
@@ -121,7 +120,7 @@ logger.info("ABOUT TO ADAPT FORM DATA TO TRAVEL-QUOTE REQUEST");
         // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
         final List<TravelResult> travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);
 
-        // Write to Results properties for EDM purposes
+        // Write to ResultsObj properties for EDM purposes
         LocalDate validUntil = new LocalDate().plusDays(30);
 
         DateTimeFormatter emailDateFormat = DateTimeFormat.forPattern("dd MMMMM yyyy");

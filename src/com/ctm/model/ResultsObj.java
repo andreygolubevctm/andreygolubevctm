@@ -8,7 +8,7 @@ import java.util.List;
 
 @JsonTypeName("results")
 @JsonRootName("results")
-public class Results<R extends Result> {
+public class ResultsObj<R extends Result> {
 
     private Info info;
 

@@ -2,8 +2,10 @@ package com.ctm.providers.travel.travelquote.model;
 
 import com.ctm.model.AvailableType;
 import com.ctm.model.travel.results.ExemptedBenefit;
+import com.ctm.model.travel.results.Info;
 import com.ctm.model.travel.results.TravelResult;
 import com.ctm.providers.QuoteResponse;
+import com.ctm.providers.travel.travelquote.model.request.PolicyType;
 import com.ctm.providers.travel.travelquote.model.request.TravelQuoteRequest;
 import com.ctm.providers.travel.travelquote.model.response.Benefit;
 import com.ctm.providers.travel.travelquote.model.response.TravelQuote;
@@ -27,7 +29,9 @@ public class ResponseAdapter {
 
         List<TravelResult> results = new ArrayList<>();
         final QuoteResponse<TravelQuote> quoteResponse = response.getPayload();
+
         if (quoteResponse != null) {
+
             for (TravelQuote travelQuote : quoteResponse.getQuotes()) {
 
                 TravelResult result = new TravelResult();
@@ -43,31 +47,34 @@ public class ResponseAdapter {
                 result.setInfoDes(travelQuote.getProduct().getDescription());
                 result.setSubTitle(travelQuote.getProduct().getPdsUrl());
 
-                String planDescription = "";
 
+                // Override product names based on arbitrary rules.
+
+                String planDescription = "";
                 if(travelQuote.getService().equals("1FOW")){
                     planDescription = travelQuote.getProduct().getLongTitle();
                     if(request.getPolicyType().equals("A")){
-                        planDescription += " &lt;span class=\"daysPerTrip\"&gt;(30 Days)&lt;/span&gt;";
+                        planDescription += " <span class=\"daysPerTrip\">(30 Days)</span>";
                     }
                 }else if(travelQuote.getService().equals("VIRG")){
                     planDescription = "Virgin Money";
-                    if(request.getPolicyType().equals("S")){
-                        planDescription += " ";
+                    if(request.getPolicyType() == PolicyType.SINGLE){
+                        planDescription += " "+travelQuote.getProduct().getLongTitle();
                     }else{
-                        planDescription += " AMT &lt;br&gt;Worldwide &lt;span class=\"daysPerTrip\"&gt;(<xsl:value-of select=\"product/maxTripDuration\"/> days)&lt;span&gt;";
+                        planDescription += " AMT <br>Worldwide <span class=\"daysPerTrip\">"+travelQuote.getProduct().getMaxTripDuration()+"</span>";
                     }
                 }else if(travelQuote.getService().equals("ZUJI")){
                     planDescription = travelQuote.getProduct().getLongTitle();
                 }else{
                     planDescription = travelQuote.getProduct().getLongTitle();
                     if(travelQuote.getProduct().getMaxTripDuration() != null && travelQuote.getProduct().getMaxTripDuration() > 0){
-                        planDescription += " &lt;span class=\"daysPerTrip\"&gt;("+travelQuote.getProduct().getMaxTripDuration()+" days)&lt;span&gt;";
+                        planDescription += " <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
                     }
                 }
                 result.setDes(planDescription);
 
 
+                // Import benefits - separate the exempt benefits.
 
                 for(Benefit benefit : travelQuote.getBenefits()){
                     com.ctm.model.travel.results.Benefit benefitResult = new com.ctm.model.travel.results.Benefit();
@@ -90,11 +97,51 @@ public class ResponseAdapter {
 
                         result.addExemptedBenefit(exemptedBenefit);
 
-
                     }else{
-                        benefitResult.setDesc(benefit.getDescription());
-                        benefitResult.setLabel(benefit.getLabel());
+
+                        if(benefit.getType().equals("EXCESS")){
+
+                            if(benefit.getDescription() == null || benefit.getDescription().equals("")) {
+                                benefitResult.setDesc("Excess");
+                            }else{
+                                benefitResult.setDesc(benefit.getDescription());
+                            }
+                            benefitResult.setLabel("Excess");
+
+                        }else if(benefit.getType().equals("CXDFEE")){
+
+                            if(benefit.getDescription() == null || benefit.getDescription().equals("")){
+                                benefitResult.setDesc("Cancellation Fees and Lost Deposits");
+                            }else{
+                                benefitResult.setDesc(benefit.getDescription());
+                            }
+                            benefitResult.setLabel("Cancellation Fees");
+
+                        }else if(benefit.getType().equals("MEDICAL")){
+
+                            if(benefit.getDescription() == null || benefit.getDescription().equals("")){
+                                benefitResult.setDesc("Overseas Emergency Medicals");
+                            }else{
+                                benefitResult.setDesc(benefit.getDescription());
+                            }
+                            benefitResult.setLabel("Overseas Medical");
+
+                        }else if(benefit.getType().equals("LUGGAGE")){
+
+                            if(benefit.getDescription() == null || benefit.getDescription().equals("")){
+                                benefitResult.setDesc("Luggage and Personal Effects");
+                            }else{
+                                benefitResult.setDesc(benefit.getDescription());
+                            }
+                            benefitResult.setLabel("Luggage and PE");
+
+                        }else {
+                            benefitResult.setDesc(benefit.getDescription());
+                            benefitResult.setLabel(benefit.getLabel());
+                        }
                         benefitResult.setText(benefit.getText());
+                        benefitResult.setType(benefit.getType());
+                        benefitResult.setValue(benefit.getValue());
                         benefitResult.setOrder("");
                         result.addBenefit(benefitResult);
                     }
@@ -103,6 +150,23 @@ public class ResponseAdapter {
 
 
                 }
+
+                //Create info object for results grid
+
+                Info info = new Info();
+                info.setCxdfee(result.getBenefit("cxdfee"));
+                info.setCxdfeeValue(result.getBenefitValue("cxdfee"));
+                info.setExcess(result.getBenefit("excess"));
+                info.setExcessValue(result.getBenefitValue("excess"));
+                info.setLuggage(result.getBenefit("luggage"));
+                info.setLuggageValue(result.getBenefitValue("luggage"));
+                info.setMedical(result.getBenefit("medical"));
+                info.setMedicalValue(result.getBenefitValue("medical"));
+
+                result.setInfo(info);
+
+
+                // Handle handover url quirks
 
                 if(travelQuote.getMethodType().equals("GET")){
                     result.setQuoteUrl(travelQuote.getQuoteUrl());
@@ -124,88 +188,6 @@ public class ResponseAdapter {
                 }
 
                 result.setEncodeUrl(travelQuote.isEncodeQuoteUrl() ? "Y" : "N");
-
-
-
-/*
-<info>
-						<xsl:for-each select="benefit">
-
-							<xsl:choose>
-								<xsl:when test="@type='EXCESS'">
-									<excess>
-										<label>Excess</label>
-										<desc>
-											<xsl:choose>
-												<xsl:when test="string-length(description) > 0"><xsl:value-of select="description" /></xsl:when>
-												<xsl:otherwise>Excess</xsl:otherwise>
-											</xsl:choose>
-										</desc>
-										<value><xsl:value-of select="value"/></value>
-										<text><xsl:value-of select="text"/></text>
-										<order/>
-									</excess>
-								</xsl:when>
-								<xsl:when test="@type='CXDFEE'">
-									<cxdfee>
-										<label>Cancellation Fees</label>
-										<desc>
-											<xsl:choose>
-												<xsl:when test="string-length(description) > 0"><xsl:value-of select="description" /></xsl:when>
-												<xsl:otherwise>Cancellation Fees and Lost Deposits</xsl:otherwise>
-											</xsl:choose>
-										</desc>
-										<value><xsl:value-of select="value"/></value>
-										<text><xsl:value-of select="text"/></text>
-										<order/>
-									</cxdfee>
-								</xsl:when>
-								<xsl:when test="@type='MEDICAL'">
-									<medical>
-										<label>Overseas Medical</label>
-										<desc>
-											<xsl:choose>
-												<xsl:when test="string-length(description) > 0"><xsl:value-of select="description" /></xsl:when>
-												<xsl:otherwise>Overseas Emergency Medical</xsl:otherwise>
-											</xsl:choose>
-										</desc>
-										<value><xsl:value-of select="value"/></value>
-										<text><xsl:value-of select="text"/></text>
-										<order/>
-									</medical>
-								</xsl:when>
-								<xsl:when test="@type='LUGGAGE'">
-									<luggage>
-										<label>Luggage and PE</label>
-										<desc>
-											<xsl:choose>
-												<xsl:when test="string-length(description) > 0"><xsl:value-of select="description" /></xsl:when>
-												<xsl:otherwise>Luggage and Personal Effects</xsl:otherwise>
-											</xsl:choose>
-										</desc>
-										<value><xsl:value-of select="value"/></value>
-										<text><xsl:value-of select="text"/></text>
-										<order/>
-									</luggage>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:element name="benefit_{position()}">
-										<label><xsl:value-of select="label" /></label>
-										<desc><xsl:value-of select="description" /></desc>
-										<value><xsl:value-of select="value" /></value>
-										<text><xsl:value-of select="text" /></text>
-										<order/>
-									</xsl:element>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:for-each>
-					</info>
- */
-                //
-
-
-
-                // TODO Complete adapter
 
                 results.add(result);
             }

@@ -56,10 +56,10 @@
 						premium: "price"
 					},
 					benefits: {
-						cxdfee: "info.cxdfee.value",
-						excess: "info.excess.value",
-						medical: "info.medical.value",
-						luggage: "info.luggage.value"
+						cxdfee: "info.cxdfeeValue",
+						excess: "info.excesValue",
+						medical: "info.medicalValue",
+						luggage: "info.luggageValue"
 					},
 					availability: {
 						product: "available"

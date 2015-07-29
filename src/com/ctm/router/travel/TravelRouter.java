@@ -5,7 +5,7 @@ import com.ctm.exceptions.RouterException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.exceptions.TravelServiceException;
 import com.ctm.model.Info;
-import com.ctm.model.Results;
+import com.ctm.model.ResultsObj;
 import com.ctm.model.ResultsWrapper;
 import com.ctm.model.settings.*;
 import com.ctm.model.travel.results.TravelResult;
@@ -141,7 +141,7 @@ public class TravelRouter extends HttpServlet {
             }
 
             // Build the JSON object for the front end.
-            Results<TravelResult> results = new Results<>();
+            ResultsObj<TravelResult> results = new ResultsObj<>();
             results.setInfo(info);
             results.setResult(travelQuoteResults);
 

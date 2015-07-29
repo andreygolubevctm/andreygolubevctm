@@ -2,13 +2,13 @@ package com.ctm.model;
 
 public class ResultsWrapper {
 
-    private final Results results;
+    private final ResultsObj results;
 
-    public ResultsWrapper(Results results) {
+    public ResultsWrapper(ResultsObj results) {
         this.results = results;
     }
 
-    public Results getResults() {
+    public ResultsObj getResults() {
         return results;
     }
 
