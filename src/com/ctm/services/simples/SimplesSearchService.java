@@ -320,7 +320,7 @@ public class SimplesSearchService {
      * @param request
      */
     private void readRequestParams(HttpServletRequest request) {
-        searchString = request.getParameter("search_terms");
+        searchString = request.getParameter("search_terms") != null ? request.getParameter("search_terms").trim() : null;
     }
 
     /**
