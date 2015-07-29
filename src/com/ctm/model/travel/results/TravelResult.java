@@ -27,6 +27,7 @@ public class TravelResult extends Result {
     private String handoverData;
     private ArrayList<Benefit> benefits;
     private ArrayList<ExemptedBenefit> exemptedBenefits;
+    private Info info;
 
     public TravelResult(){
         benefits = new ArrayList<Benefit>();
@@ -167,5 +168,30 @@ public class TravelResult extends Result {
 
     public void setExemptedBenefits(ArrayList<ExemptedBenefit> exemptedBenefits) {
         this.exemptedBenefits = exemptedBenefits;
+    }
+
+    public String getBenefit(String type){
+        for(Benefit benefit : benefits){
+            if(benefit.getType().equalsIgnoreCase(type)){
+                return benefit.getText();
+            }
+        }
+        return "";
+    }
+    public BigDecimal getBenefitValue(String type){
+        for(Benefit benefit : benefits){
+            if(benefit.getType().equalsIgnoreCase(type)){
+                return benefit.getValue();
+            }
+        }
+        return new BigDecimal(0);
+    }
+
+    public Info getInfo() {
+        return info;
+    }
+
+    public void setInfo(Info info) {
+        this.info = info;
     }
 }
