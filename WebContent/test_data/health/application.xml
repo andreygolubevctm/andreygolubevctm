@@ -145,4 +145,5 @@
 		</dependants>
 	</application>
 	<declaration>Y</declaration>
+	<contactAuthority>Y</contactAuthority>
 </health>
