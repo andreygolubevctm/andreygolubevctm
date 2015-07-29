@@ -132,6 +132,7 @@ var healthFunds_QCH = {
 				else if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
 					$('.health_credit-card-details_policyDay-message').html('Your payment will be deducted 7 days after your policy start date');
 				}
+				$('.health_contact_authority').slideDown();
 			});
 			/*$('#health_payment_medicare_cover').rules('add', {required:true});*/
 
@@ -177,6 +178,9 @@ var healthFunds_QCH = {
 			healthFunds._previousfund_authority(false);
 
 			healthFunds._reset();
+
+			//Hide Authority question which is selectively used by funds
+			$('.health_contact_authority').hide();
 
 			<%-- Remove message --%>
 			$('#health_payment_details-selection p.QCH').remove();

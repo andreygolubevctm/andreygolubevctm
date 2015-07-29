@@ -244,9 +244,6 @@
 									<Name>AgtRf</Name>
 									<Value>CTM<xsl:value-of select="$transactionId" /></Value>
 								</Property>
-
-
-
 							</Properties>
 						</Person>
 						<xsl:if test="application/partner/firstname != ''">
@@ -305,7 +302,7 @@
 												<Name>AUTSP</Name>
 												<Value><xsl:value-of select="concat($partnerFirstname, ' ' ,$partnerSurname)" /></Value>
 										</Property>
-
+									</xsl:if>
 								</Properties>
 							</Person>
 						</xsl:if>
@@ -598,7 +595,11 @@
 						</Site>
 					</Membership>
 					<!-- Do you want to be contacted?  -->
-					<!--<OMS><xsl:value-of select="payment/bank/account" /></OMS>-->
+					<OMS><xsl:choose>
+						<xsl:when test="contactAuthority='Y'">Yes</xsl:when>
+						<xsl:otherwise>No</xsl:otherwise>
+					</xsl:choose>
+					</OMS>
 					<Where>Internet</Where>
 				</MembershipApplication>
 				<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>

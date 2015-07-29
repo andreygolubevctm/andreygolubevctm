@@ -610,6 +610,8 @@
 
 					// Insert fund into checkbox label
 					$('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
+					// Insert fund into Contact Authority
+					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
 					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
 					var $firstnameField = $("#health_payment_medicare_firstName");
