@@ -48,7 +48,7 @@ public class Touch extends AbstractJsonModel {
 		FAIL ("Join failed" , "F"),
 		SOLD ("Policy sold" , "C"),
 		LOAD ("Load quote" , "L"),
-		RESULTS_SINGLE ("ResultsObj single", "Q"),
+		RESULTS_SINGLE ("Results single", "Q"),
 		SAVE ("Saved quote" , "S"),
 		GENERAL_HIT ("General hit", "H"),
 		ERROR ("General error", "E"),
