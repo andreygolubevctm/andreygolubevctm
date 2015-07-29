@@ -420,8 +420,7 @@
 			</xsl:when>
 			<xsl:when test="contactDetails/email != ''">
 				<xsl:value-of select="contactDetails/email" />
-			</xsl:when>    							
-			<xsl:otherwise>andrew.buckley@aihco.com.au</xsl:otherwise>
+			</xsl:when>
 			</xsl:choose>          
           </gat:Email>
 			<xsl:if test="healthCover/rebate = 'Y'">
