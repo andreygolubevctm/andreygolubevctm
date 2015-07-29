@@ -41,7 +41,7 @@ public class TravelService {
 	private Data data;
 
 	public List<SchemaValidationError> validateRequest(com.ctm.model.travel.form.TravelRequest travelRequest, String vertical) {
-		List<SchemaValidationError> errors = FormValidation.validate(travelRequest, vertical);
+		List<SchemaValidationError> errors = FormValidation.validate(travelRequest.getQuote(), vertical);
 		valid = errors.isEmpty();
 		return errors;
 	}

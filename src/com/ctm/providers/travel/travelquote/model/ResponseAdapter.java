@@ -77,7 +77,7 @@ public class ResponseAdapter {
                 // Import benefits - separate the exempt benefits.
 
                 for(Benefit benefit : travelQuote.getBenefits()){
-                    com.ctm.model.travel.results.Benefit benefitResult = new com.ctm.model.travel.results.Benefit();
+
                     int count = 0;
                     if(benefit.isExempted()){
 
@@ -98,6 +98,8 @@ public class ResponseAdapter {
                         result.addExemptedBenefit(exemptedBenefit);
 
                     }else{
+
+                        com.ctm.model.travel.results.Benefit benefitResult = new com.ctm.model.travel.results.Benefit();
 
                         if(benefit.getType().equals("EXCESS")){
 

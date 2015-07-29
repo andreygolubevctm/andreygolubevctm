@@ -3,6 +3,8 @@ package com.ctm.model.travel.form;
 import com.ctm.web.validation.Destinations;
 import com.ctm.web.validation.Name;
 import com.ctm.web.validation.Numeric;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -22,8 +24,12 @@ public class TravelQuote {
     private String lastFieldTouch;
     private String email;
     private String currentJourney; // if A/B test parameter is present
+
     private ArrayList<String> providerFilter; // NXI only: allow user to select to view single provider only.
     private String unknownDestinations; // For logging destinations the user has entered which did not match any
+
+
+    @Destinations
     private String destination; // comma delimited list.
 
     // Specific to getting a travel quote:
@@ -38,18 +44,14 @@ public class TravelQuote {
     private String surname;
 
     @NotNull(message = "Please choose how many adults")
-    @Numeric
-    private int adults;
+    private Integer adults;
 
     @NotNull(message = "Please choose how many children")
-    @Numeric
-    private int children;
+    private Integer children;
 
     @NotNull(message = "Please enter a valid number")
-    @Numeric
-    private int oldest;
+    private Integer oldest;
 
-    @Destinations
     private ArrayList<String> destinations;
 
 
@@ -76,19 +78,19 @@ public class TravelQuote {
         this.policyType = policyType;
     }
 
-    public int getAdults() {
+    public Integer getAdults() {
         return adults;
     }
 
-    public void setAdults(int adults) {
+    public void setAdults(Integer adults) {
         this.adults = adults;
     }
 
-    public int getOldest() {
+    public Integer getOldest() {
         return oldest;
     }
 
-    public void setOldest(int oldest) {
+    public void setOldest(Integer oldest) {
         this.oldest = oldest;
     }
 
@@ -124,11 +126,11 @@ public class TravelQuote {
         this.surname = surname;
     }
 
-    public int getChildren() {
+    public Integer getChildren() {
         return children;
     }
 
-    public void setChildren(int children) {
+    public void setChildren(Integer children) {
         this.children = children;
     }
 
