@@ -23,7 +23,12 @@ public class ResponseAdapter {
                 result.setServiceName(carQuote.getService());
                 result.setProviderProductName(carQuote.getProviderProductName());
                 result.setProductId(carQuote.getProductId());
-                result.setBrandCode(carQuote.getBrandCode());
+                // check if BrandCode is REAL
+                if ("REAL".equals(carQuote.getBrandCode())) {
+                    result.setBrandCode("REIN");
+                } else {
+                    result.setBrandCode(carQuote.getBrandCode());
+                }
                 result.setQuoteNumber(carQuote.getQuoteNumber());
                 result.setQuoteUrl(carQuote.getQuoteUrl());
                 result.setProductName(carQuote.getProductName());
