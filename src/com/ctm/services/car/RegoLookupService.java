@@ -15,18 +15,26 @@ import com.ctm.model.settings.Vertical;
 import com.ctm.services.ContentService;
 import com.ctm.services.IPCheckService;
 import com.ctm.services.ServiceConfigurationService;
-import com.ctm.services.SessionDataService;
 import com.ctm.utils.RequestUtils;
-import com.disc_au.web.go.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
-import static com.ctm.webservice.motorweb.MotorWebProvider.createClient;
+
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.ctm.webservice.motorweb.MotorWebProvider.createClient;
+
 /**
- * Created by msmerdon on 28/05/2015.
+ * Rego look up service
+ * Calls MotorWeb's API with Registration Number and State
+ * MotorWeb returns with a Redbook code
+ *
+ * This service can be turned off by a configuration setting
+ * There are daily caps on the number of requests that can be made
+ * Daily requests are limited by IP address
  */
 public class RegoLookupService {
 
@@ -39,6 +47,7 @@ public class RegoLookupService {
     final String SERVICE_LABEL = "motorwebRegoLookupService";
 
     private static ObjectMapper objectMapper = new ObjectMapper();
+
 
     public static enum RegoLookupStatus{
         SUCCESS("success"),
@@ -238,10 +247,29 @@ public class RegoLookupService {
         }
 
         try {
+
+
+            String certificate = serviceConfig.getPropertyValueByKey("certificate", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
+
+            InputStream certificateFile = null;
+
+            if(certificate.contains("WEB-INF/classes")){
+                // Read certificate from WAR (test envs)
+                certificate = certificate.replace("WEB-INF/classes", "");
+                certificateFile =  getClass().getResourceAsStream(certificate);
+            }else{
+                // Read certificate from file system (should be Prod only)
+                certificateFile =  new FileInputStream(certificate);
+            }
+
+            if(certificateFile == null){
+                throw new RegoLookupException("MotorWeb Certificate not found: "+certificate);
+            }
+
             String url = serviceConfig.getPropertyValueByKey("serviceUrl", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
             String password = serviceConfig.getPropertyValueByKey("password", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
-            String certificate = serviceConfig.getPropertyValueByKey("certificate", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
-            AutoId client = createClient(url, getClass().getResourceAsStream(certificate), password);
+
+            AutoId client = createClient(url, certificateFile, password);
 
             AutoIdRequest autoIdRequest = new AutoIdRequest();
             PlateType plateType = new PlateType();

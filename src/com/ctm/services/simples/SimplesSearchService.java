@@ -128,8 +128,8 @@ public class SimplesSearchService {
         String sql;
         SqlDao<Object> sqlDao = new SqlDao<>();
         DatabaseQueryMapping<Object> mapping;
-        final List<Integer> transactionIDsHot = new ArrayList<>();
-        final List<Integer> transactionIDsCold = new ArrayList<>();
+        final List<Long> transactionIDsHot = new ArrayList<>();
+        final List<Long> transactionIDsCold = new ArrayList<>();
         sql = "SELECT rootId AS id\n" +
                 "\t\t\t\t\tFROM aggregator.transaction_header\n" +
                 "\t\t\t\t\tWHERE  TransactionID = ?\n" +
@@ -148,10 +148,10 @@ public class SimplesSearchService {
 
             @Override
             public Object handleResult(ResultSet rs) throws SQLException {
-                return rs.getInt(1);
+                return rs.getLong(1);
             }
         };
-        final int rootID = (int) sqlDao.get(mapping, sql);
+        final Long rootID = (Long) sqlDao.get(mapping, sql);
         if (rootID != 0) {
             sql = "SELECT 'HOT' as tableType , transactionId AS id\n" +
                     "\t\t\t\t\t\tFROM aggregator.transaction_header\n" +
@@ -171,9 +171,9 @@ public class SimplesSearchService {
                 public Object handleResult(ResultSet rs) throws SQLException {
                     while (rs.next()) {
                         if (rs.getString("tableType") != null && rs.getString("tableType").equalsIgnoreCase("hot"))
-                            transactionIDsHot.add(rs.getInt("id"));
+                            transactionIDsHot.add(rs.getLong("id"));
                         else
-                            transactionIDsCold.add(rs.getInt("id"));
+                            transactionIDsCold.add(rs.getLong("id"));
                     }
                     return null;
                 }
@@ -192,7 +192,7 @@ public class SimplesSearchService {
         String sql;
         SqlDao<Object> sqlDao = new SqlDao<>();
         DatabaseQueryMapping<Object> mapping;
-        List<Integer> transactionIDs;
+        List<Long> transactionIDs;
         sql = "SELECT distinct transactionId as id\n" +
                 "\t\t\t\t\tFROM aggregator.phone_lookup\n" +
                 "\t\t\t\t\twhere PhoneNumber =  ?\n" +
@@ -205,14 +205,14 @@ public class SimplesSearchService {
 
             @Override
             public Object handleResult(ResultSet rs) throws SQLException {
-                List<Integer> transactionIDs = new ArrayList<>();
+                List<Long> transactionIDs = new ArrayList<>();
                 while (rs.next()) {
-                    transactionIDs.add(rs.getInt(1));
+                    transactionIDs.add(rs.getLong(1));
                 }
                 return transactionIDs;
             }
         };
-        transactionIDs = (List<Integer>) sqlDao.getAll(mapping, sql);
+        transactionIDs = (List<Long>) sqlDao.getAll(mapping, sql);
         hotTransactionIdsCsv = StringUtils.join(transactionIDs, ",");
     }
 
@@ -224,7 +224,7 @@ public class SimplesSearchService {
         String sql;
         SqlDao<Object> sqlDao = new SqlDao<>();
         DatabaseQueryMapping<Object> mapping;
-        List<Integer> transactionIDs;
+        List<Long> transactionIDs;
         sql = "\tSELECT distinct transactionId as id\n" +
                 "\t\t\t\t\tFROM aggregator.email_lookup\n" +
                 "\t\t\t\t\twhere emailAddress =  ?\n" +
@@ -237,14 +237,14 @@ public class SimplesSearchService {
 
             @Override
             public Object handleResult(ResultSet rs) throws SQLException {
-                List<Integer> transactionIDs = new ArrayList<>();
+                List<Long> transactionIDs = new ArrayList<>();
                 while (rs.next()) {
-                    transactionIDs.add(rs.getInt("id"));
+                    transactionIDs.add(rs.getLong("id"));
                 }
                 return transactionIDs;
             }
         };
-        transactionIDs = (List<Integer>) sqlDao.getAll(mapping, sql);
+        transactionIDs = (List<Long>) sqlDao.getAll(mapping, sql);
         hotTransactionIdsCsv = StringUtils.join(transactionIDs, ",");
     }
 
@@ -256,7 +256,7 @@ public class SimplesSearchService {
         String sql;
         SqlDao<Object> sqlDao = new SqlDao<>();
         DatabaseQueryMapping<Object> mapping;
-        List<Integer> transactionIDs;
+        List<Long> transactionIDs;
         if (searchString.split(" ").length > 1) {
             final String firstName = searchString.split(" ")[0];
             final String lastName = searchString.split(" ")[1];
@@ -280,14 +280,14 @@ public class SimplesSearchService {
 
                 @Override
                 public Object handleResult(ResultSet rs) throws SQLException {
-                    List<Integer> transactionIDs = new ArrayList<>();
+                    List<Long> transactionIDs = new ArrayList<>();
                     while (rs.next()) {
-                        transactionIDs.add(rs.getInt(1));
+                        transactionIDs.add(rs.getLong(1));
                     }
                     return transactionIDs;
                 }
             };
-            transactionIDs = (List<Integer>) sqlDao.getAll(mapping, sql);
+            transactionIDs = (List<Long>) sqlDao.getAll(mapping, sql);
         } else {
 
             sql = "SELECT distinct transactionId as id\n" +
@@ -303,14 +303,14 @@ public class SimplesSearchService {
 
                 @Override
                 public Object handleResult(ResultSet rs) throws SQLException {
-                    List<Integer> transactionIDs = new ArrayList<>();
+                    List<Long> transactionIDs = new ArrayList<>();
                     while (rs.next()) {
-                        transactionIDs.add(rs.getInt(1));
+                        transactionIDs.add(rs.getLong(1));
                     }
                     return transactionIDs;
                 }
             };
-            transactionIDs = (List<Integer>) sqlDao.getAll(mapping, sql);
+            transactionIDs = (List<Long>) sqlDao.getAll(mapping, sql);
         }
         hotTransactionIdsCsv = StringUtils.join(transactionIDs, ",");
     }
