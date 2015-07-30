@@ -25,13 +25,9 @@
 
 		$(document).on('results.view.animation.start, pagination.scrolling.start', function onAnimationStart() {
 			calculateDockedHeader('startPaginationScroll');
-		});
-
-		$(document).on('pagination.scrolling.end', function onPaginationEnd() {
+		}).on('pagination.scrolling.end', function onPaginationEnd() {
 			calculateDockedHeader('endPaginationScroll');
-		});
-
-		$(document).on('results.view.animation.end', function onAnimationEnd() {
+		}).on('results.view.animation.end', function onAnimationEnd() {
 			// Remove the "position:relative" from the result-row, otherwise Chrome will not render the
 			// docked header correctly when the animation finishes after a shuffle.
 			$('.result-row').css({'position': ''});
