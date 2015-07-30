@@ -204,6 +204,7 @@
 							</xsl:variable>
 
 							<MediCardNo><xsl:value-of select="translate(payment/medicare/number,' ','')" /></MediCardNo>
+							<MediCardSubnumerate><xsl:value-of select="payment/medicare/cardPosition" /></MediCardSubnumerate>
 							<MediCardExpDate>
 								<xsl:text>20</xsl:text><xsl:value-of select="payment/medicare/expiry/cardExpiryYear" />-<xsl:value-of select="payment/medicare/expiry/cardExpiryMonth" /><xsl:text>-01</xsl:text>
 							</MediCardExpDate>
@@ -212,6 +213,7 @@
 								<MediCardSecondName><xsl:value-of select="payment/medicare/middleInitial" /></MediCardSecondName>
 							</xsl:if>
 							<MediCardSurname><xsl:value-of select="$medicareSurname" /></MediCardSurname>
+
 
 							<IsRebateApplicant>
 								<xsl:choose>
@@ -229,10 +231,11 @@
 									<xsl:with-param name="fundName" select="previousfund/primary/fundName" />
 								</xsl:call-template>
 							</xsl:variable>
-							<IsMember>true</IsMember>
-							<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
 							<PreviousFund><xsl:value-of select="$primaryFund" /></PreviousFund>
 							<PreviousFundMemberNo><xsl:value-of select="previousfund/primary/memberID" /></PreviousFundMemberNo>
+							<IsMember>true</IsMember>
+							<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
+
 							<Properties>
 								<!-- emigrate to australia -->
 								<xsl:if test="application/qch/emigrate = 'Y'">
@@ -258,6 +261,29 @@
 								<Property>
 									<Name>AgtRf</Name>
 									<Value>CTM<xsl:value-of select="$transactionId" /></Value>
+								</Property>
+								<!--Authority to transfer-->
+								<Property>
+									<Name>OMSC</Name>
+									<Value>
+										<xsl:choose>
+											<xsl:when test="previousfund/primary/authority = 'Y'">Yes</xsl:when>
+											<xsl:otherwise>No</xsl:otherwise>
+										</xsl:choose>
+									</Value>
+								</Property>
+								<Property>
+									<Name>Where</Name>
+									<Value>Internet</Value>
+								</Property>
+								<Property>
+									<Name>OMS</Name>
+									<Value>
+										<xsl:choose>
+											<xsl:when test="contactAuthority='Y'">Yes</xsl:when>
+											<xsl:otherwise>No</xsl:otherwise>
+										</xsl:choose>
+									</Value>
 								</Property>
 							</Properties>
 						</Person>
@@ -306,10 +332,11 @@
 										<xsl:with-param name="fundName" select="previousfund/partner/fundName" />
 									</xsl:call-template>
 								</xsl:variable>
-								<IsMember>false</IsMember>
-								<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
 								<PreviousFund><xsl:value-of select="$partnerFund" /></PreviousFund>
 								<PreviousFundMemberNo><xsl:value-of select="previousfund/partner/memberID" /></PreviousFundMemberNo>
+								<IsMember>false</IsMember>
+								<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
+
 								<Properties>
 									<!-- Spouse Authority -->
 									<xsl:if test="previousfund/partner/authority = 'Y'">
@@ -318,6 +345,16 @@
 												<Value><xsl:value-of select="concat($partnerFirstname, ' ' ,$partnerSurname)" /></Value>
 										</Property>
 									</xsl:if>
+									<!--Authority to transfer-->
+									<Property>
+										<Name>OMSC</Name>
+										<Value>
+											<xsl:choose>
+												<xsl:when test="previousfund/partner/authority = 'Y'">Yes</xsl:when>
+												<xsl:otherwise>No</xsl:otherwise>
+											</xsl:choose>
+										</Value>
+									</Property>
 								</Properties>
 							</Person>
 						</xsl:if>
@@ -591,13 +628,6 @@
 							<SiteID>Main</SiteID>
 						</Site>
 					</Membership>
-					<!-- Do you want to be contacted?  -->
-					<OMS><xsl:choose>
-						<xsl:when test="contactAuthority='Y'">Yes</xsl:when>
-						<xsl:otherwise>No</xsl:otherwise>
-					</xsl:choose>
-					</OMS>
-					<Where>Internet</Where>
 				</MembershipApplication>
 				<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 				</hsl:xmlFile>

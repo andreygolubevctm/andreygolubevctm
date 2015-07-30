@@ -35,6 +35,7 @@
 					<xsl:choose>
 						<xsl:when test="not(b:TransactionID) or b:TransactionID='' or b:TransactionID='0'">false</xsl:when>
 						<xsl:when test="$errorCount!=0">false</xsl:when>
+						<xsl:when test="b:Status='' or b:Status='Pending'">false</xsl:when>
 						<xsl:otherwise>true</xsl:otherwise>
 					</xsl:choose>
 				</success>

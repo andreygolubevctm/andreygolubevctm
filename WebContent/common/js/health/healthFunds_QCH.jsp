@@ -33,7 +33,7 @@ var healthFunds_QCH = {
 
 			<c:set var="html">
 				<div id="QCH_questionset">
-					<c:set var="fieldXpath" value="health/application/QCH/cardPosition" />
+					<c:set var="fieldXpath" value="health/payment/medicare/cardPosition" />
 					<form_new:row fieldXpath="${fieldXpath}" label="Position you appear on your medicare card">
 						<field_new:count_select xpath="${fieldXpath}" min="1" max="5" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition"/>
 					</form_new:row>
@@ -132,7 +132,6 @@ var healthFunds_QCH = {
 				else if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
 					$('.health_credit-card-details_policyDay-message').html('Your payment will be deducted 7 days after your policy start date');
 				}
-				$('.health_contact_authority').slideDown();
 			});
 			/*$('#health_payment_medicare_cover').rules('add', {required:true});*/
 
@@ -178,9 +177,6 @@ var healthFunds_QCH = {
 			healthFunds._previousfund_authority(false);
 
 			healthFunds._reset();
-
-			//Hide Authority question which is selectively used by funds
-			$('.health_contact_authority').hide();
 
 			<%-- Remove message --%>
 			$('#health_payment_details-selection p.QCH').remove();
