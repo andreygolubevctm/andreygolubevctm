@@ -6,6 +6,8 @@
 
 <security:populateDataFromParams rootPath="competition" />
 
+<go:log>SET TID: ${param.transactionId}</go:log>
+
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
 

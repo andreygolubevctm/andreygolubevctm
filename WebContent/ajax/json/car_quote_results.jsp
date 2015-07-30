@@ -449,6 +449,7 @@
 				<c:param name="competition_firstname" value="${fn:trim(data['quote/drivers/regular/firstname'])}" />
 				<c:param name="competition_lastname" value="${fn:trim(data['quote/drivers/regular/surname'])}" />
 				<c:param name="competition_phone" value="${contactPhone}" />
+				<c:param name="transactionId" value="${tranId}" />
 			</c:import>
 		</c:if>
 	</c:otherwise>

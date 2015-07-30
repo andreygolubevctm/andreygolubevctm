@@ -145,6 +145,7 @@
 				<c:param name="competition_firstname" value="${firstname}" />
 				<c:param name="competition_lastname" value="${lastname}" />
 				<c:param name="competition_phone" value="${contactPhone}" />
+				<c:param name="transactionId" value="${tranId}" />
 			</c:import>
 			<go:setData dataVar="data" xpath="health/contactDetails/competition/previous" value="${concat}" />
 		</c:if>
