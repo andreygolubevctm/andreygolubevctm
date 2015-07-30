@@ -1,4 +1,4 @@
--- UPDATE - Remove special feature entries for selected A&G products
+-- UPDATE - Remove special feature entries for selected Budget, Virgin and (historical Dodo) products
 UPDATE aggregator.features SET description='** from service **' WHERE productId REGEXP ('BUDD-05-29|VIRG-05-26|EXDD-05-21') AND code='speFea' AND field_value = 'S';
 
 -- CHECKER - Should be 9 rows with the new copy above (or old copy below if an uhoh occured)
