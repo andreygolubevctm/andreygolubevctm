@@ -41,7 +41,7 @@ public class RegoLookupRouter {
             RegoLookupService regoLookupService = new RegoLookupService();
             HttpServletRequest request = context.getHttpServletRequest();
             ApplicationService.setVerticalCodeOnRequest(request, Vertical.VerticalType.CAR.getCode());
-            Map<String, Object> carDetails = regoLookupService.execute(context.getHttpServletRequest(), plateNumber, state);
+            Map<String, Object> carDetails = regoLookupService.execute(context.getHttpServletRequest(), plateNumber.toUpperCase(), state);
             result.put(COLLECTION_LABEL, carDetails);
         } catch(RegoLookupException e) {
             Map<String, String> error = new LinkedHashMap<>();
