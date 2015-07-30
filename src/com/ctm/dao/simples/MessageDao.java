@@ -389,11 +389,20 @@ public class MessageDao {
 		// Get the message so we can use some of its details
 		Message message = getMessage(messageId);
 
+		// Set statusId, if current message is PM, set status to 'In Progress for PM'.
+		int targetStatusId = MessageStatus.STATUS_INPROGRESS;
+		switch (message.getStatusId()) {
+			case MessageStatus.STATUS_COMPLETED_AS_PM:
+			case MessageStatus.STATUS_CHANGED_TIME_FOR_PM:
+				targetStatusId = MessageStatus.STATUS_INPROGRESS_FOR_PM;
+				break;
+		}
+
 		// Audit this action
 		MessageAudit messageAudit = new MessageAudit();
 		messageAudit.setMessageId(messageId);
 		messageAudit.setUserId(actionIsPerformedByUserId);
-		messageAudit.setStatusId(MessageStatus.STATUS_INPROGRESS);
+		messageAudit.setStatusId(targetStatusId);
 
 		if (actionIsPerformedByUserId != message.getUserId()) {
 			messageAudit.setComment("In Progress by userId '" + actionIsPerformedByUserId + "' (message.userId=" + message.getUserId() + ")");
@@ -403,13 +412,7 @@ public class MessageDao {
 		messageAuditDao.addMessageAudit(messageAudit);
 
 		// Change the status
-		if (message.getStatusId() == STATUS_POSTPONED) {
-			// Do not change the status if the message is postponed, because it could be past the
-			// configured expiry time (postponed is a special status that will always keep the message available).
-		}
-		else {
-			updateUserAndStatus(messageId, message.getUserId(), MessageStatus.STATUS_INPROGRESS);
-		}
+		updateUserAndStatus(messageId, message.getUserId(), targetStatusId);
 
 		// User is now busy with this message
 		UserDao userDao = new UserDao();
@@ -649,12 +652,13 @@ public class MessageDao {
 				"SELECT msg.id, transactionId, userId, statusId, status, sourceId, contactName, phoneNumber1, phoneNumber2, state, whenToAction, created " +
 				"FROM simples.message msg " +
 				"LEFT JOIN simples.message_status stat ON stat.id = msg.statusId " +
-				"WHERE statusId IN (?, ?, ?) AND userId = ? " +
+				"WHERE statusId IN (?, ?, ?, ?) AND userId = ? " +
 				"ORDER BY whenToAction ASC");
 			statement.setInt(1, STATUS_POSTPONED);
 			statement.setInt(2, STATUS_COMPLETED_AS_PM);
 			statement.setInt(3, STATUS_CHANGED_TIME_FOR_PM);
-			statement.setInt(4, userId);
+			statement.setInt(4, STATUS_INPROGRESS_FOR_PM);
+			statement.setInt(5, userId);
 			final ResultSet results = statement.executeQuery();
 			return mapFieldsFromResultsToMessage(results);
 		} catch (SQLException | NamingException e) {

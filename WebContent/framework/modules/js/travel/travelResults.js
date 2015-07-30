@@ -88,7 +88,8 @@
 				},
 				sort: { // check in health
 					sortBy: 'price.premium',
-					sortDir: 'asc'
+					sortDir: 'asc',
+					randomizeMatchingPremiums: true
 				},
 				frequency: "premium",
 				animation: {
@@ -144,7 +145,7 @@
 			}
 
 			var obj = result.info;
-			// TRV-667: replace any non digit words with $0 e.g. Optional Extra 
+			// TRV-667: replace any non digit words with $0 e.g. Optional Extra
 			if(typeof obj.luggage !== 'undefined' && obj.luggage.value  <= 0 ) {
 				obj.luggage.text = "$0"
 			}
@@ -188,6 +189,8 @@
 					}
 				}
 			}
+
+
 		});
 		return products;
 	}
@@ -260,6 +263,24 @@
 				$(document.body).removeClass('priceMode').addClass('priceMode');
 			}
 
+			var  currentProduct,
+				previousProduct;
+			$.each(Results.model.sortedProducts, function massageSortedProducts(index, result){
+				// alternate any pricing results if two or more results have the exact same price
+				previousProduct = currentProduct;
+				currentProduct = result;
+				if ((typeof previousProduct !== 'undefined' && typeof currentProduct !== 'undefined')  && (previousProduct.available == 'Y' && currentProduct.available == 'Y')
+					&& (previousProduct.service != currentProduct.service) && (previousProduct.price == currentProduct.price) && (meerkat.modules.transactionId.get() % 2 === 0)
+				) {
+					// swap the products around
+					result[index] = previousProduct;
+					result[index - 1] = currentProduct;
+				}
+			});
+
+			// resort again
+			Results.model.sort(true);
+
 			// If no providers opted to show results, display the no results modal.
 			var availableCounts = 0;
 			$.each(Results.model.returnedProducts, function(){
@@ -292,7 +313,7 @@
 		if (typeof product.info.coverLevel !== 'undefined' && position === 0)
 		{
 			data["coverLevelType" + position] = product.info.coverLevel;
-		} 
+		}
 
 		if( _.isNumber(best_price_count) && position < best_price_count) {
 			data["best_price" + position] = 1;

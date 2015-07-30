@@ -12,7 +12,8 @@
 			}
 		},
 		$coverType = $('#home_coverType'),
-		$quoteSnapshot = $(".quoteSnapshot");
+		$quoteSnapshot = $(".quoteSnapshot"),
+		$nonStdToggle = $("#home_property_address_nonStd");
 
 	function initHomeSnapshot() {
 
@@ -24,14 +25,20 @@
 			renderSnapshot(getIcon());
 		});
 
+		$nonStdToggle.on('change', function toggleNonStd() {
+			_.defer(function(){
+				renderSnapshot(getIcon());
+			});
+		});
+
 		/**
 		 * Legacy address search sucks. Can't properly listen to change events on the hidden inputs
 		 * that I wanted to use to render the snapshot.
 		 */
-		$('#home_property_address_streetSearch, #home_property_address_streetNum, #home_property_address_postCode, #home_property_address_suburb, #home_property_address_nonStdStreet').on('blur', function() {
-			setTimeout(function() {
-				renderSnapshot();
-			}, 50);
+		$('#home_property_address_autofilllessSearch, #home_property_address_streetSearch, #home_property_address_streetNum, #home_property_address_nonStdPostCode, #home_property_address_suburb, #home_property_address_nonStdStreet, #home_property_address_unitShop, #home_property_address_nonStdUnitType').on('change blur', function() {
+			_.defer(function(){
+				renderSnapshot(getIcon());
+			});
 		});
 	}
 
@@ -64,10 +71,29 @@
 		return icon;
 	}
 
+	function getAddress($element) {
+		var address = "";
+		if($element) {
+			address = $element.val();
+			if (address.indexOf(",") > 0) {
+				// Had much nicer regex for this but didn't work in IE8 :(
+				var pieces = address.split(/,/g);
+				address = $.trim(pieces[0]) + "<br/>";
+				var remainder = pieces.slice(1);
+				for(var i=0; i<remainder.length; i++) {
+					address += i > 0 ? " " : "";
+					address += $.trim(remainder[i]);
+				}
+			}
+		}
+		return address;
+	}
+
 	meerkat.modules.register('homeSnapshot', {
 		init: initHomeSnapshot,
 		events: events,
-		getIcon: getIcon
+		getIcon: getIcon,
+		getAddress: getAddress
 	});
 
 })(jQuery);

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:fields="https://ecommerce.disconline.com.au/services/schema/3.1/fields"
+	xmlns:ds="https://ecommerce.disconline.com.au/services/schema/3.1/data_structures"
+
+	xmlns="https://ecommerce.disconline.com.au/services/schema/3.1/message_centre_create_message"
+	targetNamespace="https://ecommerce.disconline.com.au/services/schema/3.1/message_centre_create_message"
+	elementFormDefault="unqualified">
+
+	<xs:import
+		namespace="https://ecommerce.disconline.com.au/services/schema/3.1/fields"
+		schemaLocation="fields.xsd" />
+	<xs:import
+		namespace="https://ecommerce.disconline.com.au/services/schema/3.1/data_structures"
+		schemaLocation="data_structures.xsd" />
+
+	<!-- REQUEST DEFINITIONS -->
+	<xs:element name="request">
+		<xs:complexType>
+			<xs:all>
+				<!-- Header -->
+				<xs:element name="header" type="ds:partnerHeader" />
+				<!-- Details -->
+				<xs:element name="details" type="message_request_service" />
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+
+
+	<!-- RESPONSE: Basic structure of the response xml. -->
+	<xs:element name="response">
+		<xs:complexType>
+			<xs:all>
+				<!-- Header -->
+				<xs:element name="header" type="ds:partnerHeader" />
+
+				<!-- Service -->
+				<xs:element name="details" type="message_response_details" />
+
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- request service -->
+	<xs:complexType name="message_request_service">
+		<xs:sequence>
+			<xs:element name="requestMessages">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="requestMessage" maxOccurs="10">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="callBackDate" type="xs:date" />
+									<xs:element name="callBackTime" type="xs:time" />
+									<xs:element name="clientName" type="fields:fullName" />
+									<xs:element name="phoneNumber" type="fields:longPhoneNumber" />
+									<xs:element name="clientNumber" type="fields:leadNumber" /> 
+									<xs:element name="messageText" type="xs:string" minOccurs="0"/>
+									<xs:element name="messageSource" type="xs:string" minOccurs="0"/>
+									<xs:element name="brand" type="xs:string" minOccurs="0"/>
+									<xs:element name="vdn" type="xs:string" minOccurs="0"/>
+									<xs:element name="state" type="xs:string" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- response service -->
+	<xs:complexType name="message_response_details">
+		<xs:sequence>
+		    <xs:element name="messages" type="ds:messages" minOccurs="0"/>
+			<xs:element name="status" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

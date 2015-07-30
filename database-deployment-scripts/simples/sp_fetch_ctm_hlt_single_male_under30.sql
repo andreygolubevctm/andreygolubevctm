@@ -52,11 +52,8 @@ FROM
 	 		AND touchExclude.type IN ('C')
 
 		WHERE
-			-- limit to 2 days to improve the query speed, as well as handle the case 
-			-- where we could miss the quote e.g. created at 23:57:00, because we fetch in 10 mins interval,
-			-- if only use CURDATE() and we fetchs at 23:55:00 and 00:05:00, 
-			-- we could miss all quotes created from 23:55:01 to 23:59:59
-			header.startDate >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+			-- limit to current date and 1 hour of previous day to avoid leads missing due to the time interval between fetches
+			header.startDate >= DATE_SUB(CURDATE(), INTERVAL 1 HOUR)
 
 			-- CTM Health only
 			AND header.ProductType = 'HEALTH'

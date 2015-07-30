@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:codes="https://ecommerce.disconline.com.au/services/schema/3.1/codes"
+	xmlns:fields="https://ecommerce.disconline.com.au/services/schema/3.1/fields"
+	xmlns:ds="https://ecommerce.disconline.com.au/services/schema/3.1/data_structures"
+
+	xmlns="https://ecommerce.disconline.com.au/services/schema/3.1/data_structures"
+	targetNamespace="https://ecommerce.disconline.com.au/services/schema/3.1/data_structures"
+
+	elementFormDefault="unqualified">
+
+	<xsd:annotation>
+		<xsd:documentation>This schema contains definitions for common structures</xsd:documentation>
+	</xsd:annotation>
+
+<!-- IMPORTS -->
+	<xsd:import namespace="https://ecommerce.disconline.com.au/services/schema/3.1/codes" schemaLocation="codes.xsd"/>
+	<xsd:import namespace="https://ecommerce.disconline.com.au/services/schema/3.1/fields" schemaLocation="fields.xsd"/>
+
+
+<!-- ADDRESS TYPES -->
+
+	<!-- Home Cover -->
+	<xsd:group name="address">
+		<xsd:sequence>
+			<xsd:element name="streetName" type="fields:streetName"/>
+			<xsd:element name="suburbName" type="fields:suburbName"/>
+			<xsd:element name="state" type="codes:state"/>
+			<xsd:element name="postCode" type="fields:postCode"/>
+		</xsd:sequence>
+	</xsd:group>
+
+	<!-- Basic Address -->
+	<xsd:complexType name="address">
+		<xsd:sequence>
+			<xsd:element name="streetName" type="fields:streetName"/>
+			<xsd:element name="suburbName" type="fields:suburbName"/>
+			<xsd:element name="state" type="codes:state"/>
+			<xsd:element name="postCode" type="fields:postCode"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!-- Address where the vehicle is kept -->
+	<xsd:complexType name="riskAddress">
+		<xsd:sequence>
+			<xsd:element name="unitLevel" type="fields:unitLevel" minOccurs="0"/>
+			<xsd:element name="streetNumber" type="fields:streetNumber"/>
+			<xsd:group ref="address"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+	<!-- Postal Correspondence Address -->
+	<xsd:complexType name="postalAddress">
+		<xsd:sequence>
+			<xsd:element name="unitLevel" type="fields:unitLevel" minOccurs="0"/>
+			<xsd:element name="poBox" type="fields:unitLevel" minOccurs="0"/>
+			<xsd:element name="streetNumber" type="fields:streetNumber"/>
+			<xsd:group ref="address"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+<!-- PHONE TYPES -->
+
+	<!-- Phone Number -->
+	<xsd:complexType name="homePhoneNumber">
+		<xsd:sequence>
+			<xsd:element name="code" type="fields:areaCode"/>
+			<xsd:element name="number" type="fields:phoneNumber"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="workPhoneNumber">
+		<xsd:sequence>
+		    <xsd:element name="code" type="fields:areaCode"/>
+	        <xsd:element name="number" type="fields:phoneNumber"/>
+			<xsd:element name="extn" type="fields:phoneExtension"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+
+	<!-- Other/Mobile Phone Number -->
+	<xsd:complexType name="otherPhoneNumber">
+		<xsd:sequence>
+			<xsd:element name="number" type="fields:longPhoneNumber"/>
+			<xsd:element name="type" type="codes:phoneNumberType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+
+<!-- DATE -->
+
+	<!-- Optional Year-Month or Year Only Date Field. (Month only required when in the last 2 years) -->
+	<xsd:simpleType name="yearMonth">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="\d\d\d\d(\-\d\d)?"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+
+<!-- COMMUNICATION -->
+
+	<!-- Partner Header - required for all request types -->
+	<xsd:complexType name="partnerHeader">
+		<xsd:all>
+			<xsd:element name="partnerId" type="fields:partnerId"/>
+			<xsd:element name="sourceId" type="fields:partnerId"/>
+			<xsd:element name="schemaVersion" type="fields:schemaVersion"/>
+			<xsd:element name="partnerReference" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="extension" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:any processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="clientIpAddress" type="xsd:string"/>
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="marketingOptions">
+		<xsd:sequence>
+			<xsd:element name = "linkId" type="fields:linkId" minOccurs="0" />
+			<xsd:element name = "brokerReference" type="xsd:string" minOccurs="0" />
+			<xsd:choice>
+			  <xsd:element name = "additionalInformation" type="xsd:string" minOccurs="0"/>
+			  <xsd:element name = "additionalInformation1" type="xsd:string" minOccurs="0"/>
+			</xsd:choice>
+			<xsd:element name = "additionalInformation2" type="xsd:string" minOccurs="0"/>
+			<xsd:element name = "additionalInformation3" type="xsd:string" minOccurs="0"/>
+			<xsd:element name = "additionalInformation4" type="xsd:string" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+<!-- INSTALLMENTS -->
+	<xsd:group name="installments">
+		<xsd:sequence>
+			<xsd:element name="firstPaymentAmount" type="fields:currency"/>
+			<xsd:element name="numberOfPayments" type="xsd:positiveInteger"/>
+			<xsd:element name="paymentAmount" type="fields:currency"/>
+			<xsd:element name="totalAmount" type="fields:currency"/>
+		</xsd:sequence>
+	</xsd:group>
+
+<!-- FORTNIGHTLY INSTALLMENTS -->
+	<xsd:group name="fortnightlyInstallments">
+		<xsd:sequence>
+			<xsd:element name="fortnightlyFirstPaymentAmount" type="fields:currency" minOccurs="0" />
+			<xsd:element name="fortnightlyNumberOfPayments" type="xsd:positiveInteger" minOccurs="0" />
+			<xsd:element name="fortnightlyPaymentAmount" type="fields:currency" minOccurs="0" />
+			<xsd:element name="fortnightlyTotalAmount" type="fields:currency" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:group>
+
+<!-- VALIDATION/DATA ERRORS -->
+	<xsd:complexType name="errorList">
+		<xsd:sequence>
+			<xsd:element name="error" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="category" type="fields:errorCategory"/>
+						<xsd:element name="element" type="xsd:string"/>
+						<xsd:element name="personNumber" type="fields:personNumber" minOccurs="0"/>
+						<xsd:element name="code" type="xsd:positiveInteger"/>
+						<xsd:element name="message" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	
+	<xsd:complexType name="messages">
+		<xsd:sequence>
+			<xsd:element name="message" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="code" type="xsd:string"/>
+						<xsd:element name="severity" type="xsd:string"/>
+						<xsd:element name="text" type="xsd:string"/>
+						<xsd:element name="shortText" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>
+
