@@ -231,6 +231,12 @@
 									<xsl:with-param name="fundName" select="previousfund/primary/fundName" />
 								</xsl:call-template>
 							</xsl:variable>
+							<Transferring>
+								<xsl:choose>
+									<xsl:when test="$primaryFund != ''">true</xsl:when>
+									<xsl:otherwise>false</xsl:otherwise>
+								</xsl:choose>
+							</Transferring>
 							<PreviousFund><xsl:value-of select="$primaryFund" /></PreviousFund>
 							<PreviousFundMemberNo><xsl:value-of select="previousfund/primary/memberID" /></PreviousFundMemberNo>
 							<IsMember>true</IsMember>
