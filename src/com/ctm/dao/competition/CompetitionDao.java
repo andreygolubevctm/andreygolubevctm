@@ -6,9 +6,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
 
-import com.ctm.services.ApplicationService;
 import org.apache.log4j.Logger;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -17,17 +15,15 @@ public class CompetitionDao {
 
 	private static Logger logger = Logger.getLogger(CompetitionDao.class.getName());
 
-	public static Boolean isActive(Integer styleCodeId, Integer competitionId, HttpServletRequest request) throws DaoException{
+	public static Boolean isActive(Integer styleCodeId, Integer competitionId, Date serverDate) throws DaoException{
 
-		SimpleDatabaseConnection dbSource = null;
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 		Boolean compActive = false;
 
-		Date serverDate = ApplicationService.getApplicationDate(request);
-
 		try{
-			dbSource = new SimpleDatabaseConnection();
+
 			PreparedStatement stmt;
 
 			stmt = dbSource.getConnection().prepareStatement(
