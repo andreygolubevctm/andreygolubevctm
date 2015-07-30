@@ -113,7 +113,7 @@
 		if(isContentAffixed() && contentAnimating === false){
 			contentAnimating = true;
 			var top = $(window).scrollTop()+navBarHeight-$resultsContainer.offset().top;			
-			$resultsContainer.find(".result").css("top", top+'px').removeClass("affixed").addClass("affixed-absoluted");
+			$resultsContainer.find(".result").css("top", top+'px').end().removeClass("affixed").addClass("affixed-absoluted");
 		}
 	}
 
