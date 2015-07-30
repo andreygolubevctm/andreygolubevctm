@@ -19,7 +19,8 @@
 		$couponSuccessContainer,
 		currentCoupon = false,
 		hasAutoPoped = false,
-		isAvailable = false;
+		isAvailable = false,
+		isCouponValidAndSubmitted = false;
 
 	function init() {
 
@@ -217,6 +218,8 @@
 				// if no checkbox required, still insert optin=Y in DB so we know it is a confirmed coupon
 				$couponOptinField.prop('type', 'hidden');
 			}
+
+			isCouponValidAndSubmitted = true;
 		}
 	}
 
@@ -226,9 +229,12 @@
 		$couponOptinField.prop('type', 'checkbox');
 		$couponOptinField.attr('checked', false);
 		$couponOptinGroup.addClass('hidden');
+		isCouponValidAndSubmitted = false;
 	}
 
 	function resetWhenChangeStep() {
+		// do not reset if coupon has been validated and submitted
+		if (isCouponValidAndSubmitted === true) return;
 		$couponCodeField.parent().removeClass('has-custom-error');
 		$couponSuccessContainer.addClass('hidden');
 		$couponErrorContainer.addClass('hidden');
