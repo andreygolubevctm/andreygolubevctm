@@ -275,8 +275,18 @@
 					</conditions>
 
 					<leadNo><xsl:value-of select="$referenceNumber"/></leadNo>
-					<telNo>1300 284 875</telNo>
-					<openingHours>Monday to Friday (9am-7pm EST)</openingHours>
+					<telNo>
+						<xsl:choose>
+							<xsl:when test="$productId = 'AI-01-03' or $productId = 'AI-01-05'"></xsl:when>
+							<xsl:otherwise>1300 284 875</xsl:otherwise>
+						</xsl:choose>
+					</telNo>
+					<openingHours>
+						<xsl:choose>
+							<xsl:when test="$productId = 'AI-01-03' or $productId = 'AI-01-05'"></xsl:when>
+							<xsl:otherwise>Monday to Friday (9am-7pm EST)</xsl:otherwise>
+						</xsl:choose>
+					</openingHours>
 					<quoteUrl><xsl:value-of select="$quoteURL" /><xsl:value-of select="$referenceNumber"/></quoteUrl>
 					<refnoUrl/>
 
