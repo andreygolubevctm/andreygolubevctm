@@ -163,7 +163,15 @@
         var $element = $(this),
             eventType,
             productId = $element.attr('data-productId');
-        if ($element.is(':checked')) {
+
+        // In case it lags, to prevent it from running twice.
+        if($element.prop('disabled')) {
+            return;
+        }
+
+        $element.prop('disabled',true);
+
+        if ($element.prop('checked')) {
             eventType = moduleEvents.ADD_PRODUCT;
             $element.addClass('checked');
         } else {
@@ -177,6 +185,10 @@
             product: Results.getResult("productId", productId)
         });
 
+        // 300ms timeout should cater to double clickers, who would otherwise click, then unclick.
+        setTimeout(function() {
+            $element.prop('disabled',false);
+        }, 300);
     }
 
     /**
