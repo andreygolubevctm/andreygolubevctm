@@ -307,8 +307,6 @@
 		if( meerkat.modules.journeyEngine.isCurrentStepValid() === false){
 			return false;
 		}
-
-		console.log("Updating Premium")
 		// fire the tracking call
 		var data = {
 			actionStep: ' health application premium update'
