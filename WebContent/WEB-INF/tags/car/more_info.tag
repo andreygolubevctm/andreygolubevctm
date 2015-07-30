@@ -179,14 +179,21 @@
 						{{ }  else { }}
 							{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
 						{{ } }}
-						{{ if(typeof excess != 'undefined' && typeof excess.excess != 'undefined' && excess.excess.length > 0) { }}
-						<div id="car-additional-excess-conditions">
-							<h5>Additional Excess</h5>
-							<ul>
-								{{ for(var i = 0; i < excess.excess.length; i++) { }}
-								<li>{{= excess.excess[i].description }} {{= excess.excess[i].amount }}</li> {{ } }}
-							</ul>
-						</div>
+						{{ if(_.indexOf(["REIN","WOOL"], brandCode) === -1) { }}
+							{{ if(typeof excess != 'undefined' && typeof excess.excess != 'undefined' && (excess.excess.hasOwnProperty("description") || excess.excess.length > 0)) { }}
+							<div id="car-additional-excess-conditions">
+								<h5>Additional Excess</h5>
+								<ul>
+									{{ if(excess.excess.hasOwnProperty("description")) { }}
+										<li>{{= excess.excess.description }} {{= excess.excess.amount }}</li>
+									{{ } else { }}
+										{{ for(var i = 0; i < excess.excess.length; i++) { }}
+										<li>{{= excess.excess[i].description }} {{= excess.excess[i].amount }}</li>
+										{{ } }}
+									{{ } }}
+								</ul>
+							</div>
+							{{ } }}
 						{{ } }}
 						<h5>Optional Extras</h5>
 						<div id="extras"></div>
