@@ -15,16 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
 public class StartQuoteService {
-    private static Logger logger = Logger.getLogger(StartQuoteService.class.getName());
-    SettingsService settingsService;
-    ApplicationService applicationService;
-    CallCentreService callCentreService;
-    HttpServletRequest request;
-    HttpServletResponse response;
-    String verticalCode;
+    private static final Logger logger = Logger.getLogger(StartQuoteService.class.getName());
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+    private String verticalCode;
 
     public void init(PageContext context) {
-        settingsService = new SettingsService();
         response = (HttpServletResponse) context.getResponse();
         request = (HttpServletRequest) context.getRequest();
         verticalCode = request.getParameter("verticalCode");
@@ -35,8 +31,8 @@ public class StartQuoteService {
         InboundPhoneNumber phoneDetails = null;
         try {
 
-            settingsService.setVerticalAndGetSettingsForPage(request, StringUtils.isEmpty(verticalCode) ? "SIMPLES" : verticalCode.toUpperCase());
-            phoneDetails = callCentreService.getInboundPhoneDetails(request);
+            SettingsService.setVerticalAndGetSettingsForPage(request, StringUtils.isEmpty(verticalCode) ? "SIMPLES" : verticalCode.toUpperCase());
+            phoneDetails = CallCentreService.getInboundPhoneDetails(request);
 
         } catch (DaoException | ConfigSettingException | RuntimeException e) {
             logger.error("ERROR While get inbound phone details : "+e.getMessage());
@@ -48,8 +44,8 @@ public class StartQuoteService {
                 response.sendRedirect("selectBrand.jsp?verticalCode=" + verticalCode);
             }
             if (phoneDetails != null) {
-                brand = applicationService.getBrandById(phoneDetails.getStyleCodeId());
-                if(StringUtils.isEmpty(verticalCode))
+                brand = ApplicationService.getBrandById(phoneDetails.getStyleCodeId());
+                if(StringUtils.isEmpty(verticalCode) && brand!=null)
                     verticalCode = brand.getVerticalById(phoneDetails.getVerticalId()).getCode();
             }
             if (StringUtils.isEmpty(verticalCode)) {
@@ -57,7 +53,7 @@ public class StartQuoteService {
             } else if (brand == null) {
                 response.sendRedirect("selectBrand.jsp?verticalCode=" + verticalCode + "&vdn=" + phoneDetails.getVdn());
             } else {
-                response.sendRedirect(callCentreService.createHandoverUrl(request, phoneDetails.getStyleCodeId(), verticalCode, null, phoneDetails.getVdn() + ""));
+                response.sendRedirect(CallCentreService.createHandoverUrl(request, phoneDetails.getStyleCodeId(), verticalCode, null, phoneDetails.getVdn() + ""));
             }
 
         } catch (Exception e) {
