@@ -1,5 +1,6 @@
 package com.ctm.model.travel.form;
 
+import com.ctm.providers.travel.travelquote.model.request.Filter;
 import com.ctm.web.validation.Destinations;
 import com.ctm.web.validation.Name;
 import com.ctm.web.validation.Numeric;
@@ -24,8 +25,7 @@ public class TravelQuote {
     private String lastFieldTouch;
     private String email;
     private String currentJourney; // if A/B test parameter is present
-
-    private ArrayList<String> providerFilter; // NXI only: allow user to select to view single provider only.
+    private Filter filter;
     private String unknownDestinations; // For logging destinations the user has entered which did not match any
 
 
@@ -58,7 +58,7 @@ public class TravelQuote {
 
 
     public TravelQuote(){
-
+        filter = new Filter();
     }
 
 
@@ -92,14 +92,6 @@ public class TravelQuote {
 
     public void setOldest(Integer oldest) {
         this.oldest = oldest;
-    }
-
-    public ArrayList<String> getProviderFilter() {
-        return providerFilter;
-    }
-
-    public void setProviderFilter(ArrayList<String> providerFilter) {
-        this.providerFilter = providerFilter;
     }
 
     public String getCurrentJourney() {
@@ -201,5 +193,13 @@ public class TravelQuote {
 
     public void setUnknownDestinations(String unknownDestinations) {
         this.unknownDestinations = unknownDestinations;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 }

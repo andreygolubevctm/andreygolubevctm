@@ -10,6 +10,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 
 public class RequestAdapter {
@@ -54,7 +55,14 @@ public class RequestAdapter {
             quoteRequest.setPolicyType(PolicyType.MULTI);
         }
 
+        if(quote.getFilter().getSingleProvider() != null && quote.getFilter().getSingleProvider().equals("") == false){
+            quoteRequest.setProviderFilter(new ArrayList<String>());
+            quoteRequest.getProviderFilter().add(quote.getFilter().getSingleProvider());
+        }
 
+        if(quote.getRenderingMode().equalsIgnoreCase("XS")){
+            quoteRequest.setMobileUrls(true);
+        }
 
         return quoteRequest;
 

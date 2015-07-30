@@ -16,12 +16,14 @@ import com.ctm.model.settings.*;
 import com.ctm.model.travel.results.TravelResult;
 import com.ctm.model.travel.form.TravelQuote;
 import com.ctm.providers.Request;
+import com.ctm.providers.ResultPropertiesBuilder;
 import com.ctm.providers.travel.travelquote.model.RequestAdapter;
 import com.ctm.providers.travel.travelquote.model.ResponseAdapter;
 import com.ctm.providers.travel.travelquote.model.request.TravelQuoteRequest;
 import com.ctm.providers.travel.travelquote.model.response.TravelResponse;
 import com.ctm.services.*;
 import com.ctm.utils.ResponseUtils;
+import com.ctm.xml.XMLOutputWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.log4j.Logger;
@@ -32,6 +34,9 @@ import com.disc_au.web.go.Data;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import static com.ctm.xml.XMLOutputWriter.REQ_IN;
+import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
 
 public class TravelService {
 
@@ -77,9 +82,11 @@ public class TravelService {
 
         // Get URL of travel-quote service
         String serviceUrl = null;
+        String debugPath = null;
         try {
             ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("travelQuoteService", brand.getVerticalByCode(verticalCode).getId(), brand.getId());
             serviceUrl = serviceConfig.getPropertyValueByKey("serviceUrl", ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
+            debugPath = serviceConfig.getPropertyValueByKey("debugPath", ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
         }catch (DaoException | ServiceConfigurationException e ){
             throw new TravelServiceException("TravelQuote config error", e);
         }
@@ -89,15 +96,22 @@ public class TravelService {
 
             String jsonRequest = objectMapper.writeValueAsString(request);
 
+            // Log Request
+            XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_TRAVEL-QUOTE" , debugPath);
+            writer.writeXmlToFile(jsonRequest , REQ_OUT);
+
             SimpleConnection connection = new SimpleConnection();
             connection.setRequestMethod("POST");
-            connection.setConnectTimeout(30000);
-            connection.setReadTimeout(30000);
+            connection.setConnectTimeout(32000);
+            connection.setReadTimeout(32000);
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
             String response = connection.get(serviceUrl+"/quote");
             TravelResponse travelResponse = objectMapper.readValue(response, TravelResponse.class);
+
+            // Log response
+            writer.lastWriteXmlToFile(response);
 
             // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
             final List<TravelResult> travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);
@@ -106,26 +120,12 @@ public class TravelService {
             for (TravelResult result : travelResults) {
                 if (AvailableType.Y.equals(result.getAvailable())) {
 
-/*
-                ResultPropertiesBuilder builder = new ResultPropertiesBuilder(request.getTransactionId(),
-                        result.getProductId());
+                    ResultPropertiesBuilder builder = new ResultPropertiesBuilder(request.getTransactionId(), result.getProductId());
+                    builder.addResult("quoteUrl", result.getQuoteUrl());
+                    resultProperties.addAll(builder.getResultProperties());
 
-                builder.addResult("validateDate/display", emailDateFormat.print(validUntil))
-                        .addResult("validateDate/normal", normalFormat.print(validUntil))
-                        .addResult("productId", result.getProductId())
-                        .addResult("productDes", result.getProviderProductName())
-                        .addResult("excess/total", result.getExcess())
-                        .addResult("headline/name", result.getProductName())
-                        .addResult("quoteUrl", result.getQuoteUrl())
-                        .addResult("telNo", result.getContact().getPhoneNumber())
-                        .addResult("openingHours", result.getContact().getCallCentreHours())
-                        .addResult("leadNo", result.getQuoteNumber())
-                        .addResult("brandCode", result.getBrandCode());
-
-                resultProperties.addAll(builder.getResultProperties());
-                */
+                }
             }
-        }
 
             ResultsService.saveResultsProperties(resultProperties);
 

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class TravelQuoteRequest {
 
     private PolicyType policyType;
-    private String mobileUrls;
+    private boolean mobileUrls = false;
     private int numberOfAdults;
     private int numberOfChildren;
     private int oldestPerson;
@@ -29,11 +29,11 @@ public class TravelQuoteRequest {
         this.policyType = policyType;
     }
 
-    public String getMobileUrls() {
+    public boolean getMobileUrls() {
         return mobileUrls;
     }
 
-    public void setMobileUrls(String mobileUrls) {
+    public void setMobileUrls(boolean mobileUrls) {
         this.mobileUrls = mobileUrls;
     }
 

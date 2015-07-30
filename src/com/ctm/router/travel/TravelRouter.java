@@ -48,12 +48,12 @@ public class TravelRouter extends HttpServlet {
         String clientIpAddress = null;
 
         try {
-            Data dataForTransactionId = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
+            Data dataBucket = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
 
-            // TODO CAN THIS HANDLE SESSION RECOVERY? ANSWER IS NO!
-
-            data.setTransactionId(Long.parseLong(dataForTransactionId.getString("current/transactionId")));
-            clientIpAddress = (String) dataForTransactionId.get("quote/clientIpAddress");
+            if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
+                data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
+                clientIpAddress = (String) dataBucket.get("quote/clientIpAddress");
+            }
             if (StringUtils.isBlank(clientIpAddress)) {
                 clientIpAddress = context.getHttpServletRequest().getRemoteAddr();
             }

@@ -319,10 +319,10 @@
 			data["best_price" + position] = 1;
 			data["best_price_providerName" + position] = product.provider;
 			data["best_price_productName" + position] = product.name;
-			data["best_price_excess" + position] = typeof product.info.excess !== 'undefined' ? product.info.excess.text : 0;
-			data["best_price_medical" + position] = typeof product.info.medical !== 'undefined' ? product.info.medical.text : 0;
-			data["best_price_cxdfee" + position] = typeof product.info.cxdfee !== 'undefined' ? product.info.cxdfee.text : 0;
-			data["best_price_luggage" + position] = typeof product.info.luggage !== 'undefined' ? product.info.luggage.text : 0;
+			data["best_price_excess" + position] = typeof product.info.excess !== 'undefined' ? product.info.excess : 0;
+			data["best_price_medical" + position] = typeof product.info.medical !== 'undefined' ? product.info.medical : 0;
+			data["best_price_cxdfee" + position] = typeof product.info.cxdfee !== 'undefined' ? product.info.cxdfee : 0;
+			data["best_price_luggage" + position] = typeof product.info.luggage !== 'undefined' ? product.info.luggage : 0;
 			data["best_price_price" + position] = product.priceText;
 			data["best_price_service" + position] = product.service;
 			data["best_price_url" + position] = product.quoteUrl;

@@ -19,7 +19,7 @@ public class TravelQuote {
     private BigDecimal price;
     private String priceText;
     private String quoteUrl;
-    private QuoteMethodType methodType;
+    private String methodType;
     private Map<String, String> quoteData;
     private boolean encodeQuoteUrl;
     private Product product;
@@ -85,11 +85,11 @@ public class TravelQuote {
         this.quoteUrl = quoteUrl;
     }
 
-    public QuoteMethodType getMethodType() {
+    public String getMethodType() {
         return methodType;
     }
 
-    public void setMethodType(QuoteMethodType methodType) {
+    public void setMethodType(String methodType) {
         this.methodType = methodType;
     }
 
