@@ -10,7 +10,7 @@ import com.ctm.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.TravelServiceException;
-import com.ctm.model.AvailableType;
+import com.ctm.model.resultsData.AvailableType;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.settings.*;
 import com.ctm.model.travel.results.TravelResult;
@@ -22,7 +22,6 @@ import com.ctm.providers.travel.travelquote.model.ResponseAdapter;
 import com.ctm.providers.travel.travelquote.model.request.TravelQuoteRequest;
 import com.ctm.providers.travel.travelquote.model.response.TravelResponse;
 import com.ctm.services.*;
-import com.ctm.utils.ResponseUtils;
 import com.ctm.xml.XMLOutputWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -31,11 +30,7 @@ import org.apache.log4j.Logger;
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
 import com.disc_au.web.go.Data;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import static com.ctm.xml.XMLOutputWriter.REQ_IN;
 import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
 
 public class TravelService {

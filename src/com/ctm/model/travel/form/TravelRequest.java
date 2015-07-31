@@ -1,6 +1,6 @@
 package com.ctm.model.travel.form;
 
-import com.ctm.model.Request;
+import com.ctm.model.formData.Request;
 
 public class TravelRequest implements Request<TravelQuote> {
 

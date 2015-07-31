@@ -1,7 +1,13 @@
-package com.ctm.model;
+package com.ctm.model.resultsData;
 
-import static com.ctm.model.AvailableType.Y;
+import com.ctm.model.resultsData.AvailableType;
 
+import static com.ctm.model.resultsData.AvailableType.Y;
+
+/**
+ * This class is used to hold the results java classes when returning to the front end
+ * It assists by ensuring the JSON structure matches what the front end expects.
+ */
 public class Result {
 
     private AvailableType available = Y;

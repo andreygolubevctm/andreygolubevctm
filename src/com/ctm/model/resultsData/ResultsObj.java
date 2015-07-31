@@ -1,10 +1,16 @@
-package com.ctm.model;
+package com.ctm.model.resultsData;
 
+import com.ctm.model.resultsData.Info;
+import com.ctm.model.resultsData.Result;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.List;
+
+/**
+ * This class is used to hold the results java classes when returning to the front end
+ * It assists by ensuring the JSON structure matches what the front end expects.
+ */
 
 @JsonTypeName("results")
 @JsonRootName("results")
