@@ -1,3 +1,5 @@
+use ctm;
+/*
 SELECT * FROM ctm.provider_properties WHERE providerId IN (SELECT providerId FROM product_master WHERE productCat='UTILITIES');
 SELECT * FROM ctm.provider_master WHERE providerId IN (SELECT providerId FROM product_master WHERE productCat='UTILITIES');
 SELECT * FROM ctm.product_properties WHERE productId IN (SELECT productId FROM product_master WHERE productCat='UTILITIES');
@@ -5,6 +7,7 @@ SELECT * FROM ctm.product_master where productCat='UTILITIES';
 SELECT * FROM ctm.configuration WHERE configCode='emailCode';
 SELECT * FROM ctm.configuration WHERE verticalId=5 AND configCode='switchwiseWebService';
 SELECT * FROM ctm.configuration WHERE verticalId=5 AND configCode='useLocalDataSource';
+*/
 
 DELETE FROM ctm.provider_properties WHERE providerId IN (SELECT providerId FROM product_master WHERE productCat='UTILITIES');
 
