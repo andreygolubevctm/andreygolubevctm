@@ -3,11 +3,6 @@
 
 <session:new verticalCode="UTILITIES" />
 
-<%-- Redirect to lead site if flagged --%>
-<c:if test="${contentService.getContentValue(pageContext.getRequest(), 'redirectToLeadFeed') eq 'Y'}">
-	<c:redirect url="${pageSettings.getBaseUrl()}utilities_lead.jsp" />
-</c:if>
-
 <c:if test="${empty param.action}">
 	<go:setData dataVar="data" value="*DELETE" xpath="utilities" />
 </c:if>

@@ -49,7 +49,7 @@
 			}
 			// Init the main Results object
 			Results.init({
-				url: "ajax/json/home/results.jsp",
+				url: "ajax/json/home_results.jsp",
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
 					price: {

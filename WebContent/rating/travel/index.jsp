@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Import Travel Partner Regions</title>
 <link rel="stylesheet" href="/ctm/brand/ctm/css/ctm.css" media="all">
-<script type="text/javascript" src="../../common/js/jquery-1.8.3.min.js?rev="></script>
+<script type="text/javascript" src="../../common/js/jquery-1.10.1.min.js?rev="></script>
 </head>
 <body>
 <jsp:useBean id="environmentService" class="com.ctm.services.EnvironmentService" scope="request" />
