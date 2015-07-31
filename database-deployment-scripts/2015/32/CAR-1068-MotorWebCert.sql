@@ -3,7 +3,7 @@ SET @SERVICE_MASTER_ID = (SELECT `serviceMasterId` FROM `ctm`.`service_master` W
 
 /* Update Dev certificate location */
 UPDATE `ctm`.`service_properties` SET `servicePropertyValue` = 'WEB-INF/classes/motorweb-certificate-testEnv.p12'
-  WHERE `serviceMasterId` = @SERVICE_MASTER_ID AND servicePropertyKey = 'certificate' AND `environmentCode` = 0;
+  WHERE `serviceMasterId` = @SERVICE_MASTER_ID AND servicePropertyKey = 'certificate' AND `environmentCode` = '0';
 
 /* Insert prod certificate location */
 INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`)
