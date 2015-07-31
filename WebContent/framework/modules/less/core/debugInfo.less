@@ -1,53 +1,76 @@
-/**
- * Used to style the debug_info.tag.
-*/
-.fixedDevEnvDialog {
-	background:#F5F5F5;
-	color:#888;
-	font-family:"Trebuchet MS", Helvetica, sans-serif;
-	font-size:10px;
-	left:1px;
-	padding:3px;
-	bottom: 1px;
-	position:fixed;
-	z-index: 10005;
-	width:220px;
 
-	&.secondaryDevEnvDialog {
-		bottom:28px;
-	}
+.buildEnvInfo_div{
+  font-family: "SourceSansProSemiBold","SourceSansProRegular",Helvetica,Arial,sans-serif;
+  background-color: #222;
+  border-top:1px solid #111;
+  padding:4px;
+  color:#555;
+  overflow:hidden;
+  font-size: 12px;
+  text-transform:Uppercase;
 
-	&.warning {
-		background:#000;
-		color:#fff;
-	}
+  ul{
+    list-style: none;
+    margin:0;
+    padding:0;
+    li{
+      float:left;
+      line-height: 20px;
+      margin-right:8px;
+      padding-right:8px;
+      border-right:1px solid #000;
+      border-radius: 2px;
+      span{
+        color:rgba(255, 255, 255, 0.4);
+        padding:2px 6px;
+        background-color:#1c3e93;
+        border-radius: 3px;
+        text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
 
-	&.debugInfoHidden {
-		width:auto;
-	}
+      }
+      &.devEnv {
+        padding-left:8px;
+        color: #fff;
+        border-bottom:1px solid #000;
+        font-weight:bold;
+        letter-spacing: 0.05em;
 
-	@media (max-width: @screen-xs-max) {
-		opacity:0.8;
-		color:#555;
-	}
 
-	.closeDevEnvDialog {
-		width:20px;
-		height:30px;
-		position:absolute;
-		right:-4px;
-		top:-8px;
-		cursor: pointer;
-		img {
-			position:absolute;
-			width:20px;
-			right:-3px;
-		}
-	}
-	@media print {
-		display: none !important;
-	}
+        text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
+
+        &.localhost {
+          background-color: #0db14b;
+        }
+        &.nxi {
+          background-color: #ff312f;
+        }
+        &.nxq {
+          background-color: #c2a300;
+        }
+      }
+    }
+  }
 }
+
 #aggTimer.debugInfoHidden {
-	display:none;
+  display:none;
+}
+.fixedDevEnvDialog .closeDevEnvDialog {
+  width:20px;
+  height:30px;
+  position:absolute;
+  right:-4px;
+  top:-8px;
+  cursor: pointer;
+}
+.closeDevEnvDialog img {
+  position:absolute;
+  width:20px;
+  right:-3px;
+}
+@media (max-width:768px) {
+  .fixedDevEnvDialog {
+    opacity:0.8;
+    color:#555;
+  }
 }
