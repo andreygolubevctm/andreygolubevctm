@@ -58,9 +58,7 @@ public class RequestAdapter {
         vehicle.setMarketValue(quoteVehicle.getMarketValue());
         vehicle.setHasModifications(convertToBoolean(quoteVehicle.getModifications()));
         vehicle.setRegistrationYear(quoteVehicle.getRegistrationYear());
-        if (convertToBoolean(quoteVehicle.getSecurityOptionCheck())) {
-            vehicle.setSecurityOption(quoteVehicle.getSecurityOption());
-        }
+        vehicle.setSecurityOption(quoteVehicle.getSecurityOption());
         vehicle.setUse(quoteVehicle.getUse());
         vehicle.setNonStandardAccessories(createNonStandardAccessories(carQuote));
         vehicle.setFactoryOptions(createFactoryOptions(carQuote));

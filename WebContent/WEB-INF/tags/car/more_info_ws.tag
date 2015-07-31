@@ -166,14 +166,16 @@
 						{{ }  else { }}
 							{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
 						{{ } }}
-						{{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
-						<div id="car-additional-excess-conditions">
-							<h5>Additional Excess</h5>
-							<ul>
-								{{ for(var i = 0; i < additionalExcesses.list.length; i++) { }}
-								<li>{{= additionalExcesses.list[i].description }} {{= additionalExcesses.list[i].amount }}</li> {{ } }}
-							</ul>
-						</div>
+						{{ if (serviceName != 'REIN' && serviceName != 'WOOL') { }}
+							{{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
+							<div id="car-additional-excess-conditions">
+								<h5>Additional Excess</h5>
+								<ul>
+									{{ for(var i = 0; i < additionalExcesses.list.length; i++) { }}
+									<li>{{= additionalExcesses.list[i].description }} {{= additionalExcesses.list[i].amount }}</li> {{ } }}
+								</ul>
+							</div>
+							{{ } }}
 						{{ } }}
 						<h5>Optional Extras</h5>
 						<div id="extras"></div>
