@@ -146,13 +146,13 @@
 
 			var obj = result.info;
 			// TRV-667: replace any non digit words with $0 e.g. Optional Extra
-			if(typeof obj.luggage !== 'undefined' && obj.luggage.value  <= 0 ) {
-				obj.luggage.text = "$0"
+			if(typeof obj.luggage !== 'undefined' && obj.luggageValue  <= 0 ) {
+				obj.luggage = "$0"
 			}
 			// TRV-769 Set value and text to $0 for quotes for JUST Australia.
 			if(destinations == 'AUS') {
-				obj.medical.value = 0;
-				obj.medical.text = "N/A";
+				obj.medicalValue = 0;
+				obj.medical = "N/A";
 			}
 			if(isCoverLevelTabsEnabled === true) {
 
@@ -166,13 +166,13 @@
 						medical = 0;
 					}
 
-					if (obj.excess.value <= 250 && obj.medical.value >= medical
-						&& obj.cxdfee.value >= 7500 && obj.luggage.value >= 7500) {
+					if (obj.excessValue <= 250 && obj.medicalValue >= medical
+						&& obj.cxdfeeValue >= 7500 && obj.luggageValue >= 7500) {
 						obj.coverLevel = 'C';
 						meerkat.modules.coverLevelTabs.incrementCount("C");
-					} else if (obj.excess.value <= 250 && obj.medical.value >= medical
-						&& obj.cxdfee.value >= 2500
-						&& obj.luggage.value >= 2500) {
+					} else if (obj.excessValue <= 250 && obj.medicalValue >= medical
+						&& obj.cxdfeeValue >= 2500
+						&& obj.luggageValue >= 2500) {
 						obj.coverLevel = 'M';
 						meerkat.modules.coverLevelTabs.incrementCount("M");
 					} else {

@@ -4,30 +4,14 @@ import java.math.BigDecimal;
 
 public class Benefit {
 
-    public static final BigDecimal UNLIMITED = BigDecimal.valueOf(999999999);
     public static final BigDecimal NIL = BigDecimal.valueOf(0);
-    public static final String NOT_AVAILABLE = "N/A";
     public static final String DESCRIPTION = "infoDes";
-    public static final String PDS_URL = "subTitle";
 
-
-    private String type; // was BenefitType
-
-    private String code;
-    private boolean override;
-
-
-    private String description; // optional
-
-
-    private String label; // optional
-
-
+    private String type;
+    private String description;
+    private String label;
     private String text;
-
-
     private BigDecimal value;
-
     private boolean exempted;
 
     public Benefit(){
@@ -40,22 +24,6 @@ public class Benefit {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public boolean isOverride() {
-        return override;
-    }
-
-    public void setOverride(boolean override) {
-        this.override = override;
     }
 
     public String getDescription() {

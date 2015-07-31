@@ -214,8 +214,9 @@ public class ResultsDao {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            dbSource.closeConnection();
         }
-
 
     }
 }
