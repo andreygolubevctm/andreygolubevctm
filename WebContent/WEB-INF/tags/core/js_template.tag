@@ -6,8 +6,6 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="id" 		required="true" rtexprvalue="true"	 description="The js-template's Id"%>
 
-<go:script marker="js-href" href="common/js/template.js" />
-
 <%-- HTML --%>
 <jsp:element name="script">
 	<jsp:attribute name="id" trim="true">${id}</jsp:attribute>

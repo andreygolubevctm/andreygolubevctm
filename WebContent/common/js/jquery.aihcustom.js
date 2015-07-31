@@ -4,5 +4,3 @@ jQuery.fn.center = function () {
     this.css("left", ( $(window).width() - this.width() ) / 2+$(window).scrollLeft() + "px");
     return this;
 };
-
-

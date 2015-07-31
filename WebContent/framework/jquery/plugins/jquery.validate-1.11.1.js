@@ -17,9 +17,11 @@ $.extend($.fn, {
 
 		// if nothing is selected, return nothing; can't chain anyway
 		if ( !this.length ) {
+			try {
 			if ( options && options.debug && window.console ) {
 				console.warn( "Nothing selected, can't validate, returning nothing." );
 			}
+			}catch(e){/* IGNORE */}
 			return;
 		}
 
@@ -551,9 +553,11 @@ $.extend($.validator, {
 					}
 					else {
 						result = false;
-						if ( this.settings.debug && window.console ) {
-							console.log('Method does not exist: %s on %s', method, element.id);
-						}
+						try {
+							if ( this.settings.debug && window.console ) {
+								console.log('Method does not exist: %s on %s', method, element.id);
+							}
+						} catch(e) { /* IGNORE */ }
 					}
 
 					// if a method indicates that the field is optional and therefore valid,

@@ -129,10 +129,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
-		<%-- Call me back tab --%>
-		<%--
-		<agg_new:call_me_back_tab className="callmeback" />
-		 --%>
+
 		<script src="framework/jquery/plugins/jquery.scrollTo.min.js"></script>
 		<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 		<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />

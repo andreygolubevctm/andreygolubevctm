@@ -12,39 +12,7 @@
 <core:doctype />
 <html>
 	<head>
-		<link rel='stylesheet' type='text/css' href='common/js/treeview/jquery.treeview.css' />
-		<link rel='stylesheet' type='text/css' href='common/js/treeview/screen.css' />
 		<link rel='stylesheet' type='text/css' href='common/data.css' />
-		<script type="text/javascript" src="common/js/jquery-1.4.2.min.js"></script>
-		<script type="text/javascript" src="common/js/jquery.treeview.js"></script>
-		<style type="text/css">
-			#buildIdentifierRow {
-				margin-top: 0;
-			}
-			#buildIdentifier {
-				color: #930;
-			}
-			body {
-				padding: 20px;
-			}
-			h1 {
-				padding: 10px 0px;
-			}
-
-			table {
-				border-collapse: collapse;
-			}
-			table th {
-				background-color: #666;
-				border: 1px solid #333;
-				color: #fff;
-				padding: 3px 5px;
-			}
-			table td {
-				border: 1px solid #ccc;
-				padding: 3px 5px;
-			}
-		</style>
 	</head>
 	<body>
 			<p id="buildIdentifierRow"><strong>Build Identifier: </strong><span id="buildIdentifier"><c:out value="${buildIdentifier}" /></span></p>
