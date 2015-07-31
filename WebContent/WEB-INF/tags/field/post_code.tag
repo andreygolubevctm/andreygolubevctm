@@ -8,9 +8,18 @@
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="the subject of the field" %>
 
+<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+<c:set var="inputType">
+	<c:choose>
+		<c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>tel</c:when>
+		<c:otherwise>text</c:otherwise>
+	</c:choose>
+</c:set>
 
 <c:if test="${required}">
 	<c:set var="requiredAttribute" value=' required="required" data-msg-required="Please enter ${title}"' />
@@ -18,7 +27,7 @@
 
 
 <%-- HTML --%>
-<input type="text"${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4">
+<input type="${inputType}" ${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4">
 
 
 <%-- VALIDATION --%>

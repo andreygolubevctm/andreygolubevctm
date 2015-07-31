@@ -15,10 +15,19 @@
 <%@ attribute name="allowMobile"	required="true" rtexprvalue="true"	 description="?" %>
 <%@ attribute name="labelName"		required="false" rtexprvalue="true"	 description="the label to display for validation" %>
 
+<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="nameInput" value="${name}input" />
 <c:set var="xpathInput">${xpath}input</c:set>
+<c:set var="inputType">
+	<c:choose>
+		<c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>tel</c:when>
+		<c:otherwise>text</c:otherwise>
+	</c:choose>
+</c:set>
 
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:set var="valueInput"><c:out value="${data[xpathInput]}" escapeXml="true"/></c:set>
@@ -66,7 +75,7 @@
 
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" class="" value="${value}" >
-<input type="text" name="${nameInput}" id="${nameInput}" title="${title}"
+<input type="${inputType}" name="${nameInput}" id="${nameInput}" title="${title}"
 		class="sessioncamexclude form-control contact_telno phone ${className} ${phoneTypeClassName} ${name}"
 		value="${valueInput}" pattern="[0-9]*" ${sizeAttribute}${placeHolderAttribute}${requiredAttribute}
 		data-msg-required="Please enter the ${labelName}"

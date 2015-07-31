@@ -10,6 +10,21 @@
 <%@ attribute name="inputGroupText" required="true" rtexprvalue="true" description="Input group text" %>
 <%@ attribute name="inputGroupTextPosition" required="false" rtexprvalue="true" description="Position of input group text" %>
 
+<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+<c:set var="inputFieldType">
+    <c:choose>
+        <c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>tel</c:when>
+        <c:otherwise>text</c:otherwise>
+    </c:choose>
+</c:set>
+<c:set var="formatNum">
+    <c:choose>
+        <c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>false</c:when>
+        <c:otherwise>true</c:otherwise>
+    </c:choose>
+</c:set>
+
 <c:set var="lowerCaseUtilityType" value="${fn:toLowerCase(utilityType)}" />
 
 <c:choose>
@@ -30,7 +45,7 @@
 <div class="row clear ${lowerCaseUtilityType}">
     <h5 class="col-lg-12">${utilityType} ${headingHelp}</h5>
     <div class="col-md-6 row-content">
-        <field_new:input xpath="${xpath}/amount" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="true" />
+        <field_new:input type="${inputFieldType}" xpath="${xpath}/amount" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="${formatNum}" />
     </div>
     <div class="col-md-6 row-content">
         <c:choose>
