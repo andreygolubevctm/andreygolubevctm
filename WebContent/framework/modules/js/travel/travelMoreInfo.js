@@ -90,28 +90,9 @@
 	function retrieveExternalCopy(product) {
 
 		return $.Deferred(function(dfd) {
-			var objectArray = [],
-				orderArray = {},
-				exemptedBenefits = [];
-
-			// grab the exempted benefits (if any)
-			exemptedBenefits = benefitException(product);
-
-			// set the ordering in alphabetical order
-			$.each(product.info, function(a){
-				if(this.order !== ''){
-					orderArray[this.order] = a;
-				}
-
-				// check if the current benefit is meant to be exempted
-				if ($.inArray(a, exemptedBenefits) == -1)
-				{
-					objectArray.push( [product.info[a].desc, a] );
-				}
-			});
 
 			// assign the sort results to a new 'sorting' object
-			product.sorting = meerkat.modules.travelMoreInfo.arraySort(orderArray, objectArray);
+			product.sorting = _.sortBy(product.benefits, 'desc');
 
 			meerkat.modules.moreInfo.setDataResult(product);
 			return dfd.resolveWith(this, [product]).promise();
@@ -152,28 +133,12 @@
 		});
 	}
 
-	function arraySort(orderArray, objectArray){
-		var sortedArray = [];
-		if(orderArray.length > 0){
-			$.each(orderArray, function(a){
-				$.each(objectArray, function(b){
-					if(orderArray[a] == objectArray[b][1]){
-						sortedArray.push( [objectArray[b][0], objectArray[b][1]]);
-					}
-				})
-			})
-			return sortedArray;
-		} else {
-			objectArray.sort();
-			return objectArray;
-		}
-	}
+
 
 	meerkat.modules.register("travelMoreInfo", {
 		initMoreInfo: initMoreInfo,
 		events: events,
-		runDisplayMethod: runDisplayMethod,
-		arraySort: arraySort
+		runDisplayMethod: runDisplayMethod
 	});
 
 })(jQuery);
