@@ -48,7 +48,6 @@
 	</div>
 </div>
 <life:compare_benefits />
-<%-- NOT IN THIS BUILD <life:compare_graph />--%>
 
 <go:script marker="js-head">
 

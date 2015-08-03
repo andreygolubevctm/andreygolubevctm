@@ -46,7 +46,7 @@
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
 					results: {
-						list: "results.price"
+						list: "results.result"
 					},
 					productId: "productId",
 					productName: "name",
@@ -56,10 +56,10 @@
 						premium: "price"
 					},
 					benefits: {
-						cxdfee: "info.cxdfee.value",
-						excess: "info.excess.value",
-						medical: "info.medical.value",
-						luggage: "info.luggage.value"
+						cxdfee: "info.cxdfeeValue",
+						excess: "info.excesValue",
+						medical: "info.medicalValue",
+						luggage: "info.luggageValue"
 					},
 					availability: {
 						product: "available"
@@ -146,13 +146,13 @@
 
 			var obj = result.info;
 			// TRV-667: replace any non digit words with $0 e.g. Optional Extra
-			if(typeof obj.luggage !== 'undefined' && obj.luggage.value  <= 0 ) {
-				obj.luggage.text = "$0"
+			if(typeof obj.luggage !== 'undefined' && obj.luggageValue  <= 0 ) {
+				obj.luggage = "$0"
 			}
 			// TRV-769 Set value and text to $0 for quotes for JUST Australia.
 			if(destinations == 'AUS') {
-				obj.medical.value = 0;
-				obj.medical.text = "N/A";
+				obj.medicalValue = 0;
+				obj.medical = "N/A";
 			}
 			if(isCoverLevelTabsEnabled === true) {
 
@@ -166,13 +166,13 @@
 						medical = 0;
 					}
 
-					if (obj.excess.value <= 250 && obj.medical.value >= medical
-						&& obj.cxdfee.value >= 7500 && obj.luggage.value >= 7500) {
+					if (obj.excessValue <= 250 && obj.medicalValue >= medical
+						&& obj.cxdfeeValue >= 7500 && obj.luggageValue >= 7500) {
 						obj.coverLevel = 'C';
 						meerkat.modules.coverLevelTabs.incrementCount("C");
-					} else if (obj.excess.value <= 250 && obj.medical.value >= medical
-						&& obj.cxdfee.value >= 2500
-						&& obj.luggage.value >= 2500) {
+					} else if (obj.excessValue <= 250 && obj.medicalValue >= medical
+						&& obj.cxdfeeValue >= 2500
+						&& obj.luggageValue >= 2500) {
 						obj.coverLevel = 'M';
 						meerkat.modules.coverLevelTabs.incrementCount("M");
 					} else {
@@ -319,10 +319,10 @@
 			data["best_price" + position] = 1;
 			data["best_price_providerName" + position] = product.provider;
 			data["best_price_productName" + position] = product.name;
-			data["best_price_excess" + position] = typeof product.info.excess !== 'undefined' ? product.info.excess.text : 0;
-			data["best_price_medical" + position] = typeof product.info.medical !== 'undefined' ? product.info.medical.text : 0;
-			data["best_price_cxdfee" + position] = typeof product.info.cxdfee !== 'undefined' ? product.info.cxdfee.text : 0;
-			data["best_price_luggage" + position] = typeof product.info.luggage !== 'undefined' ? product.info.luggage.text : 0;
+			data["best_price_excess" + position] = typeof product.info.excess !== 'undefined' ? product.info.excess : 0;
+			data["best_price_medical" + position] = typeof product.info.medical !== 'undefined' ? product.info.medical : 0;
+			data["best_price_cxdfee" + position] = typeof product.info.cxdfee !== 'undefined' ? product.info.cxdfee : 0;
+			data["best_price_luggage" + position] = typeof product.info.luggage !== 'undefined' ? product.info.luggage : 0;
 			data["best_price_price" + position] = product.priceText;
 			data["best_price_service" + position] = product.service;
 			data["best_price_url" + position] = product.quoteUrl;

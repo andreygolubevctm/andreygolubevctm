@@ -1,14 +1,14 @@
 package com.ctm.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.ctm.dao.RankingDetailsDao;
 import com.ctm.dao.ResultsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.results.ResultRanking;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ResultsService {
 
@@ -71,9 +71,9 @@ public class ResultsService {
 
 	}
 
-	public static void saveResultsProperties(List<ResultProperty> resultProperties) {
-		ResultsDao resultsDao = new ResultsDao();
-		resultsDao.saveResultsProperties(resultProperties);
-	}
+    public static void saveResultsProperties(List<ResultProperty> resultProperties) {
+        ResultsDao resultsDao = new ResultsDao();
+        resultsDao.saveResultsProperties(resultProperties);
+    }
 
 }

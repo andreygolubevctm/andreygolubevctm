@@ -64,24 +64,27 @@
 					<div class="col-lg-3 visible-lg productTitle">
 						<div><span>{{= productTitle }}</span></div>
 					</div>
-					<div class="col-sm-2 col-lg-1 excessAmount">
-						<div><span>{{= obj.info.excess.text }}</span></div>
+
+                   	<div class="col-sm-2 col-lg-1 excessAmount">
+						<div><span>{{= obj.info.excess }}</span></div>
 					</div>
 					<div class="col-sm-2 col-lg-1 medicalAmount">
-						<div><span>{{= obj.info.medical.text }}</span></div>
+						<div><span>{{= obj.info.medical }}</span></div>
 					</div>
 					<div class="col-sm-2 col-lg-1 cdxfeeAmount">
-						<div><span>{{= obj.info.cxdfee.text }}</span></div>
+						<div><span>{{= obj.info.cxdfee }}</span></div>
 					</div>
 					<div class="col-sm-2 col-lg-1 luggageAmount">
-						<div><span>{{= obj.info.luggage.text }}</span></div>
+						<div><span>{{= obj.info.luggage }}</span></div>
 					</div>
+
 					<div class="col-sm-2 col-lg-2 priceAmount">
 						<div><span>{{= obj.priceText }}</span></div>
 					</div>
 					<div class="col-sm-12 hidden-lg productTitle">
 						<div><span>{{= productTitle }}</span></div>
 					</div>
+
 					<div class="col-sm-12 col-lg-2 cta">
 						<div class="row">
 							<div class="col-sm-4 col-sm-push-8 col-lg-push-0 col-lg-12 buyNow">

@@ -13,23 +13,42 @@
 <core:doctype />
 <html>
 	<head>
-		<link rel='stylesheet' type='text/css' href='common/js/treeview/jquery.treeview.css' />
-		<link rel='stylesheet' type='text/css' href='common/js/treeview/screen.css' />
-		<link rel='stylesheet' type='text/css' href='common/data.css' />
-		<script type="text/javascript" src="common/js/jquery-1.4.2.min.js"></script>
-		<script type="text/javascript" src="common/js/jquery.treeview.js"></script>
+		<title>Deleting your session data</title>
+		<style>
+			@font-face {
+				font-family: SourceSansProRegular;
+				src:url('framework/fonts/SourceSansPro-Regular.eot');
+				src:url('framework/fonts/SourceSansPro-Regular.eot?#iefix') format('embedded-opentype'),
+				url('framework/fonts/SourceSansPro-Regular.woff') format('woff'),
+				url('framework/fonts/SourceSansPro-Regular.ttf') format('truetype'),
+				url('framework/fonts/SourceSansPro-Regular.svg#SourceSansProRegular') format('svg');
+				font-weight: normal;
+				font-style: normal;
+			}
+			body {
+				color: #fff;
+				background-color: #1c3e93;
+				text-align: center;
+				font-family: SourceSansProRegular, Arial, Helvetica, San-serif;
+			}
+			#center {
+				background-color: #0db14b;
+				width: 80%;
+				margin: 0 auto;
+				height: 400px;
+				padding: 20px 0;
+			}
+			a:visited {
+				color: #1c3e93;
+			}
+		</style>
 	</head>
 	<body>
-		<c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
-		<c:forEach items="${data['*']}" var="node">
-			<c:set var="tempXml" value="${go:getXml(node)}" />
-			<c:set var="tempXml" value="${fn:replace(tempXml,'&','&amp;')}" />
-
-			<x:transform xml="${tempXml}" xslt="${prettyXml}"/>
-		</c:forEach>
-		<go:style marker="css-href" href="" />
-		<go:style marker="css-href" href="" />
-		<go:style marker="css-href" href="" />
-		<go:script marker="js-href" href="" />
+	<div id="center">
+		<h1>Sergei has cleaned up your session</h1>
+		<img src="common/images/Sergei.jpg" alt="Sergei" />
+		<h2><a href="data.jsp">Visit Data Bucket</a></h2>
+		<p>(in case he didn't do it properly)</p>
+	</div>
 	</body>
 </html>

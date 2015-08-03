@@ -26,17 +26,14 @@
 <%@ taglib tagdir="/WEB-INF/tags/agg_new"				prefix="agg_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg/results"			prefix="agg_results" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg_new/results"		prefix="agg_new_results" %>
-<%@ taglib tagdir="/WEB-INF/tags/aggTester"				prefix="aggTester" %>
 <%@ taglib tagdir="/WEB-INF/tags/health"				prefix="health" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/layout"			prefix="health_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/content"		prefix="health_content" %>
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel"				prefix="travel" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel/layout"			prefix="travel_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/fuel"					prefix="fuel" %>
 <%@ taglib tagdir="/WEB-INF/tags/fuel_new"				prefix="fuel_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/fuel_new/layout"		prefix="fuel_new_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/roadside"				prefix="roadside" %>
 <%@ taglib tagdir="/WEB-INF/tags/roadside_new"			prefix="roadside_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/roadside_new/layout"	prefix="roadside_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/life"					prefix="life" %>
@@ -57,9 +54,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/social"				prefix="social" %>
 <%@ taglib tagdir="/WEB-INF/tags/read"					prefix="read" %>
 <%@ taglib tagdir="/WEB-INF/tags/meerkatrewards"		prefix="meerkatrewards" %>
-<%@ taglib tagdir="/WEB-INF/tags/meerkat"				prefix="meerkat" %>
-<%@ taglib tagdir="/WEB-INF/tags/carlmi"				prefix="carlmi" %>
-<%@ taglib tagdir="/WEB-INF/tags/homelmi"				prefix="homelmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/features"				prefix="features" %>
 <%@ taglib tagdir="/WEB-INF/tags/confirmation"			prefix="confirmation" %>
 <%@ taglib tagdir="/WEB-INF/tags/layout"				prefix="layout" %>
@@ -73,6 +67,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/retrievequotes/layout"	prefix="retrievequotes_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/retrievequotes/template" prefix="retrievequotes_template" %>
 <%@ taglib tagdir="/WEB-INF/tags/resetpassword"		    prefix="resetpassword" %>
-<%@ taglib tagdir="/WEB-INF/tags/resetpassword/layout"	prefix="resetpassword_layout" %><%@ taglib tagdir="/WEB-INF/tags/coupon"				prefix="coupon" %>
+<%@ taglib tagdir="/WEB-INF/tags/resetpassword/layout"	prefix="resetpassword_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/lmi" 	                prefix="lmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/lmi/layout" 	        prefix="lmi_layout" %>

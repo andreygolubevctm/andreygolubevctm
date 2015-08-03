@@ -103,7 +103,7 @@ MAIN METRO SEARCH
 =================
 --%>
 
-<c:set var="update"><fuel:schedule type="metro" /></c:set>
+<c:set var="update"><fuel_new:schedule type="metro" /></c:set>
 
 
 <%-- Get the time difference --%>	

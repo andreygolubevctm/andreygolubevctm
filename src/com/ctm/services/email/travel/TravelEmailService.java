@@ -29,7 +29,6 @@ import com.ctm.model.email.TravelBestPriceRanking;
 import com.ctm.model.formatter.email.travel.TravelBestPriceExactTargetFormatter;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.model.travel.Destination;
 import com.ctm.services.email.BestPriceEmailHandler;
 import com.ctm.services.email.EmailDetailsService;
 import com.ctm.services.email.EmailServiceHandler;

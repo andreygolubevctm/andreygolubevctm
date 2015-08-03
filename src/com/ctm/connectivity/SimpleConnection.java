@@ -80,13 +80,13 @@ public class SimpleConnection {
 			}
 		}
 		catch (MalformedURLException e) {
-			logger.error(url+": "+e);
+			logger.error(url+": "+e, e);
 		}
 		catch (IOException e) {
-			logger.error(url+": "+e);
+			logger.error(url+": "+e, e);
 		}
 		catch (Exception e){
-			logger.error(url+": "+e);
+			logger.error(url+": "+e, e);
 		}
 		return null;
 	}

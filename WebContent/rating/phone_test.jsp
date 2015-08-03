@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Phone Number Spam Test</title>
 <link rel="stylesheet" href="/ctm/brand/ctm/css/ctm.css" media="all">
-<script type="text/javascript" src="/ctm/common/js/jquery-1.8.3.min.js?rev="></script>
+<script type="text/javascript" src="/ctm/common/js/jquery-1.10.1.min.js?rev="></script>
 </head>
 <body>
 <div class="container"><div class="row" style="padding-top: 80px;">

@@ -268,14 +268,13 @@
 
 		<!-- Fastclick -->
 			<c:if test="${isDev eq false}">
-				<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js"></script>
+				<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js" async defer></script>
 			</c:if>
-<script>window.FastClick || document.write('<script src="${assetUrl}framework/lib/js/fastclick-0.6.11.min.js">\x3C/script>')</script>
+<script>window.FastClick || document.write('<script src="${assetUrl}framework/lib/js/fastclick-0.6.11.min.js" async defer>\x3C/script>')</script>
 
 		<!-- Extras -->
 <script type="text/javascript" src="${assetUrl}framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
 <script type="text/javascript" src="${assetUrl}framework/jquery/plugins/qtip2/jquery.qtip.js"></script>
-<script src="${assetUrl}common/javascript/utilities.js?${revision}"></script>
 
 		<!--  Meerkat -->
 		<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>

@@ -927,7 +927,7 @@
 
 			});
 		}catch(e){
-			Results.onError('Sorry, an error occurred processing results', 'results.tag', 'FeaturesResults.setResultsActions(); '+e.message, e);
+			Results.onError('Sorry, an error occurred processing results', 'results.tag', 'healthResults.onResultsLoaded(); '+e.message, e);
 		}
 		if( meerkat.site.isCallCentreUser ){
 			createPremiumsPopOver();
