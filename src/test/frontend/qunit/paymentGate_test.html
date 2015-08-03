@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Payment Gateway test &amp; new - Compare The Market</title>
+<meta charset='utf-8'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="vendor/qunit.css">
+
+<!--[if gte IE 9]><!-->
+<script src="../../../main/webapp\common\js\ipp\jquery.min.js"></script>
+	<script src="unit/testBoilerPlate.js"></script>
+<script src="../../../main/webapp\framework/modules\js\core/paymentGateway.js"></script>
+<script src="../../../main/webapp\framework/modules\js\health/healthPaymentGatewayNAB.js"></script>
+<script src="vendor/qunit.js"></script>
+<script src="unit/paymentGatewayTest.js"></script>
+</head>
+
+<body class="jeinit default">
+	<!-- qunit -->
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+
+		<form id="mainform" name="frmMain">
+			<div id="health_payment_gateway-content"
+				data-provide="paymentGateway"
+				class="health_payment_gateway-launchers health_payment_gateway-credit health_payment_gateway">
+
+				<div class="success alert alert-success"><span class="gatewayProvider"></span></div>
+
+				<div class="fail alert alert-danger"></div>
+
+				<p class="launcher"> <span class="gatewayProvider"></span></p>
+
+				<p class="launcher row-content">
+					<button data-gateway="launcher" type="button"
+						class="btn btn-cta btn-lg">Register</button>
+				</p>
+
+				<input type="text" id="health_payment_gateway-registered"
+					name="health_payment_gateway-registered" class="validate " value=""
+					data-validation-placement="button[data-gateway='launcher']:visible"
+					style="visibility: hidden; height: 0;" tabindex="-1" readonly
+					required /><input type="hidden" id="health_payment_gateway_number"
+					name="health_payment_gateway_number" value="" /> <input
+					type="hidden" id="health_payment_gateway_type"
+					name="health_payment_gateway_type" value="" /> <input
+					type="hidden" id="health_payment_gateway_expiry"
+					name="health_payment_gateway_expiry" value="" /> <input
+					type="hidden" id="health_payment_gateway_name"
+					name="health_payment_gateway_name" value="" /><input type="hidden"
+					name="health_payment_gateway_nab_cardNumber"
+					id="health_payment_gateway_nab_cardNumber" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_crn"
+					id="health_payment_gateway_nab_crn" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_rescode"
+					id="health_payment_gateway_nab_rescode" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_restext"
+					id="health_payment_gateway_nab_restext" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_expiryMonth"
+					id="health_payment_gateway_nab_expiryMonth" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_expiryYear"
+					id="health_payment_gateway_nab_expiryYear" class="" value="" /> <input
+					type="hidden" name="health_payment_gateway_nab_cardType"
+					id="health_payment_gateway_nab_cardType" class="" value="" />
+			</div>
+		</form>
+</body>
+</html>
