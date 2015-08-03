@@ -1,16 +1,15 @@
 package com.ctm.dao;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.results.ResultProperty;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.naming.NamingException;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.results.ResultProperty;
 
 public class ResultsDao {
 
@@ -184,13 +183,8 @@ public class ResultsDao {
 
     public void saveResultsProperties(List<ResultProperty> resultProperties) {
 
-        SimpleDatabaseConnection dbSource = null;
+        try (SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection()) {
 
-        String propertyValue = "";
-
-        try{
-
-            dbSource = new SimpleDatabaseConnection();
             PreparedStatement stmt;
 
             stmt = dbSource.getConnection().prepareStatement(
@@ -214,8 +208,6 @@ public class ResultsDao {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            dbSource.closeConnection();
         }
 
     }

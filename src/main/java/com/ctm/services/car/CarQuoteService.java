@@ -9,6 +9,7 @@ import com.ctm.model.car.form.CarQuote;
 import com.ctm.model.car.form.CarRequest;
 import com.ctm.model.car.results.CarResult;
 import com.ctm.model.results.ResultProperty;
+import com.ctm.model.resultsData.AvailableType;
 import com.ctm.model.settings.*;
 import com.ctm.providers.Request;
 import com.ctm.providers.ResultPropertiesBuilder;
@@ -131,7 +132,7 @@ public class CarQuoteService {
 
         List<ResultProperty> resultProperties = new ArrayList<>();
         for (CarResult result : results) {
-            if (com.ctm.model.AvailableType.Y.equals(result.getAvailable())) {
+            if (AvailableType.Y.equals(result.getAvailable())) {
                 result.setLeadfeedinfo(leadFeedInfo);
 
                 ResultPropertiesBuilder builder = new ResultPropertiesBuilder(request.getTransactionId(),

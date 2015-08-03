@@ -13,7 +13,7 @@ import java.util.Date;
 public class CarProductDao {
 
     public CarProduct getCarProduct(Date effectiveDate, String productId, int styleCodeId) throws DaoException {
-        try ( SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection(); ) {
+        try ( SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection() ) {
             PreparedStatement stmt;
 
 
@@ -48,6 +48,8 @@ public class CarProductDao {
             }
         }
         catch (SQLException | NamingException e) {
+            throw new DaoException(e.getMessage(), e);
+        } catch (Exception e) {
             throw new DaoException(e.getMessage(), e);
         }
 
