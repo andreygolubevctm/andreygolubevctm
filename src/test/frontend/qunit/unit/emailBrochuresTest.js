@@ -1,6 +1,6 @@
 $(function () {
 // to test open the following in your browser
-// file:///C:/Dev/web_ctm/WebContent/framework/modules/js/tests/index.html?notrycatch=true
+// file:///C:/Dev/web_ctm/main/webapp/framework/modules/js/tests/index.html?notrycatch=true
 
 	//Setup the DOM elements
 	var $form = $("<form id='email-brochure-component' class='form-horizontal' novalidate='novalidate'></form>");

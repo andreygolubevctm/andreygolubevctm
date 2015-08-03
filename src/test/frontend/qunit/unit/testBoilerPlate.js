@@ -1,19 +1,19 @@
 	window.jQuery
 			&& window.jQuery.each
 			|| document
-		.write('<script src="../../../WebContent/framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/meerkat/meerkat.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/meerkat/meerkat.logging.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/meerkat/meerkat.modules.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/modules/js/core/comms.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/modules/js/core/numberUtils.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/modules/js/core/utils.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/modules/js/core/transactionId.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/modules/js/core/tracking.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/modules/js/core/deviceMediaState.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/modules/js/core/dialogs.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/modules/js/core/loadingAnimation.js">\x3C/script>');
-	document.write('<script src="../../../WebContent/framework/bootstrap/js/modal.js">\x3C/script>');
+		.write('<script src="../../../main/webapp/framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/meerkat/meerkat.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/meerkat/meerkat.logging.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/meerkat/meerkat.modules.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/modules/js/core/comms.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/modules/js/core/numberUtils.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/modules/js/core/utils.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/modules/js/core/transactionId.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/modules/js/core/tracking.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/modules/js/core/deviceMediaState.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/modules/js/core/dialogs.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/modules/js/core/loadingAnimation.js">\x3C/script>');
+	document.write('<script src="../../../main/webapp/framework/bootstrap/js/modal.js">\x3C/script>');
 ;(function(meerkat) {
 
 			var siteConfig = {
@@ -223,7 +223,7 @@ function setupDefaultValidationOnForm( $formElement ){
 
 window._
 				|| document
-	.write('<script src="../../../WebContent/framework/lib/js/underscore-1.5.2.min.js">\x3C/script>')
+	.write('<script src="../../../main/webapp/framework/lib/js/underscore-1.5.2.min.js">\x3C/script>')
 
 $(document).ready( function(){
 	var vertical = "health";
