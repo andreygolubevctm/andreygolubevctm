@@ -257,8 +257,8 @@
 				border-right: none;
 			}
 			&:last-of-type:not(.active) .featuresElements{
-			  border-right: @results-column-border-width solid @gray-lighter;
-		 	}
+			border-right: @results-column-border-width solid @gray-lighter;
+		}
 			&.active {
 				.featuresElements,
 				.result{
@@ -268,17 +268,12 @@
 				+ div .featuresElements {
 					border-left: none;
 				}
-			}
-			.excessSection {
-			  >.h,
-			  >.c,
-			  >.labelInColumn {
-				display:none;
-			  }
+
 			}
 		}
+
 		.featuresHeaders {
-		  background: none; //Override CORE
+			background: none; //Override CORE
 			.children .feature {
 				font-weight: normal;
 				font-family: @font-family-theme-bold;
