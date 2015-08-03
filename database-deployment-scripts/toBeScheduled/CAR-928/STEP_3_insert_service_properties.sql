@@ -204,7 +204,9 @@ INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode
   (@SERVICE_MASTER_ID, 0, 'NXS', 0, 'serviceUrl','http://127.0.0.1:8080/car-quote','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, 0, 'NXQ', 0, 'serviceUrl','http://taws01_ass2:8080/car-quote','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, 0, 'PRO', 0, 'serviceUrl','http://ecommerce.disconline.com.au:8080/car-quote','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-  (@SERVICE_MASTER_ID, 0, '0', 0, 'timeoutMillis','40000','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+  (@SERVICE_MASTER_ID, 0, '0', 0, 'timeoutMillis','40000','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+  (@SERVICE_MASTER_ID, 0, '0', 0, 'debugPath','car/debug','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+  (@SERVICE_MASTER_ID, 0, 'PRO', 0, 'debugPath','car/app-logs-debug','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
   ;
 
 -- Rollback
