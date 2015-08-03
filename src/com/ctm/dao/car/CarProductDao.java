@@ -56,34 +56,9 @@ public class CarProductDao {
 
     private CarProduct createCarProduct(ResultSet results) throws SQLException {
         CarProduct product = new CarProduct();
-        product.setCode(results.getString("code"));
-        product.setProviderProductName(results.getString("providerProductName"));
-        product.setBrandCode(results.getString("brandCode"));
-        product.setDisclaimer(results.getString("disclaimer"));
-        product.setName(results.getString("name"));
-        product.setDescription(results.getString("description"));
-        product.setDiscountOffer(results.getString("discountOffer"));
-        product.setDiscountOfferTerms(results.getString("discountOfferTerms"));
-        product.setUnderwriterName(results.getString("underwriterName"));
-        product.setUnderwriterABN(results.getString("underwriterABN"));
-        product.setUnderwriterACN(results.getString("underwriterACN"));
-        product.setUnderwriterAFSLicenceNo(results.getString("underwriterAFSLicenceNo"));
-        boolean allowCallMeBack = results.getBoolean("allowCallMeBack");
-        if (!results.wasNull()) {
-            product.setAllowCallMeBack(allowCallMeBack);
-        }
-        boolean allowCallDirect = results.getBoolean("allowCallDirect");
-        if (!results.wasNull()) {
-            product.setAllowCallDirect(allowCallDirect);
-        }
-        product.setCallCentreHours(results.getString("callCentreHours"));
-        product.setPhoneNumber(results.getString("phoneNumber"));
-        product.setOfflineDiscount(results.getString("offlineDiscount"));
-        product.setOnlineDiscount(results.getString("onlineDiscount"));
         product.setBenefits(results.getString("benefits"));
         product.setInclusions(results.getString("inclusions"));
         product.setOptionalExtras(results.getString("optionalExtras"));
-        product.setSpecialConditions(results.getString("specialConditions"));
         return product;
     }
 

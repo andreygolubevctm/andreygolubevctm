@@ -1,4 +1,4 @@
-package com.ctm.model.car;
+package com.ctm.model.car.results;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;

@@ -1,11 +1,15 @@
-package com.ctm.providers.car.carquote;
+package com.ctm.providers.car.carquote.model;
 
-import com.ctm.model.AvailableType;
-import com.ctm.model.Feature;
-import com.ctm.model.car.*;
+import com.ctm.model.car.results.*;
+import com.ctm.model.car.results.AdditionalExcess;
+import com.ctm.model.car.results.Contact;
+import com.ctm.model.car.results.Feature;
+import com.ctm.model.car.results.Price;
+import com.ctm.model.car.results.ProductDisclosure;
+import com.ctm.model.car.results.Underwriter;
+import com.ctm.model.resultsData.AvailableType;
 import com.ctm.providers.QuoteResponse;
-import com.ctm.providers.car.carquote.model.response.CarQuote;
-import com.ctm.providers.car.carquote.model.response.CarResponse;
+import com.ctm.providers.car.carquote.model.response.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

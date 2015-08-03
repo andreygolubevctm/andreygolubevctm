@@ -1,7 +1,6 @@
-package com.ctm.model.car;
+package com.ctm.model.car.results;
 
-import com.ctm.model.Feature;
-import com.ctm.model.Result;
+import com.ctm.model.resultsData.Result;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;

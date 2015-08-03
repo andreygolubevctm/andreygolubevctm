@@ -1,4 +1,4 @@
-package com.ctm.providers.car.carquote;
+package com.ctm.providers.car.carquote.model;
 
 import com.ctm.model.car.form.*;
 import com.ctm.providers.car.carquote.model.request.*;

@@ -1,4 +1,4 @@
-package com.ctm.model.car;
+package com.ctm.model.car.results;
 
 public class AdditionalExcess {
 
