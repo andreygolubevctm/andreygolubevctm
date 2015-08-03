@@ -61,7 +61,9 @@ public class ResponseAdapter {
                     if(request.getPolicyType() == PolicyType.SINGLE){
                         planDescription += " "+travelQuote.getProduct().getLongTitle();
                     }else{
-                        planDescription += " AMT <br>Worldwide <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
+                        //planDescription += " AMT <br>Worldwide <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
+                        planDescription += " AMT <br>"+travelQuote.getProduct().getLongTitle()+
+                                " <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
                     }
                 }else if(travelQuote.getService().equals("ZUJI")){
                     planDescription = travelQuote.getProduct().getLongTitle();
