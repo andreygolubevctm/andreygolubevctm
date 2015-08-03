@@ -49,7 +49,7 @@ $.validator.addMethod('max_DateOfBirth', function(value, element, params) {
 });
 
 $.validator.addMethod("dateOfBirthEUR", function(value, element, params) {
-	console.info("dateOfBirthEUR", element);
+
 	if (typeof params !== 'undefined' && params.selector) {
 		value = $(params.selector).val() || value;
 	}
