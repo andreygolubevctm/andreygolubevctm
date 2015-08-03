@@ -58,8 +58,8 @@
             long newResultCount = 0;
 
             // Get data from meta file
-            String metaFileLocation = "C:/dev/web_ctm/WebContent/rating/travel_rates_generator/travel_rates_"+fileName+"_meta.csv";
-            String metaFileLocation2 = "C:/Dev/web_ctm/WebContent/rating/travel_rates_generator/travel_rates_"+fileName+"_meta.csv";
+            String metaFileLocation = "C:/dev/web_ctm/src/main/webapp/rating/travel_rates_generator/travel_rates_"+fileName+"_meta.csv";
+            String metaFileLocation2 = "C:/Dev/web_ctm/src/main/webapp/rating/travel_rates_generator/travel_rates_"+fileName+"_meta.csv";
 
 
             System.out.println("the metaFileLocation is:"+metaFileLocation);
@@ -264,8 +264,8 @@
         <%
             }
 
-            String fileLocation = "C:/dev/web_ctm/WebContent/rating/travel_rates_generator/travel_rates_"+fileName+".csv";
-            String fileLocation2 = "C:/Dev/web_ctm/WebContent/rating/travel_rates_generator/travel_rates_"+fileName+".csv";
+            String fileLocation = "C:/dev/web_ctm/src/main/webapp/rating/travel_rates_generator/travel_rates_"+fileName+".csv";
+            String fileLocation2 = "C:/Dev/web_ctm/src/main/webapp/rating/travel_rates_generator/travel_rates_"+fileName+".csv";
             BufferedReader in = null;
             FileReader freader = null;
             try {

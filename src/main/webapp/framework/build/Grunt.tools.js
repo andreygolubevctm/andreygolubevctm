@@ -140,7 +140,7 @@ module.exports = function(grunt,rootOverride){
 		},
 
 		//For the grunt-contrib-less package, it's a config requirement to build the source file path into the JSON key of the files object reference, which means it needs a whole object built instead of passing a function as the JSON key (since that's illegal JSON).
-		//Eg to achieve: { 'WebContent/brand/ctm/css/ctm.css' : [this.getBrandFile('ctm','less','source')] }
+		//Eg to achieve: { 'src/main/webapp/brand/ctm/css/ctm.css' : [this.getBrandFile('ctm','less','source')] }
 		getLessPathObj: function(brand,fileType1,sourceOrDest1,fileType2,sourceOrDest2,verticalIn) {
 			//pass through vertical's lack of existance when we're not compiling vertical specific less build files.
 			var vertical;

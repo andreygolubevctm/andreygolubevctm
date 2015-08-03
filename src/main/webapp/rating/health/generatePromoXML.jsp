@@ -65,52 +65,52 @@ this was made for CUA so it may not work for other provider use and your own ris
 					<c:set var="coverNames" value="hospital=${quote}${rr.hospitalCoverName}${quote} extras=${quote}${rr.extrasCoverName}${quote}" />
 					<c:set var="hospitalPDF" value="health_fund_info/${providerName}/${coverNameSplit[1]}/Combined/${situation}/${fileName}.pdf" />
 					<c:set var="possiableHospitalPDF" value="${hospitalPDF}" />
-											<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+											<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(hospitalPDF, '_With_', '')}" />
 						</c:if>
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(hospitalPDF, '_Percent250_', '_Percent_250_')}" />
 						</c:if>
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_With_', '')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_Percent_', '_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(hospitalPDF, '_Percent_', '_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_With_', '_Percent_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false && coverNameSplit[1] == 'NSW'}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, 'NSW', 'ACT')}" />
 						</c:if>
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_And_', '_Percent_And_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<go:log>cannot find ${possiableHospitalPDF}</go:log>
 						</c:if>
 						<c:set var="hospitalPDF" value="${possiableHospitalPDF}" />
 					<c:set var="extrasPDF" value="health_fund_info/${providerName}/${coverNameSplit[1]}/Combined/${situation}/${fileName}.pdf" />
-					<c:set var="path" value="c:/Dev/web_ctm/WebContent/${extrasPDF}" />
+					<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${extrasPDF}" />
 					<c:if test="${file:exists(path) == false}">
 						<c:set var="extrasPDF" value="${fn:replace(extrasPDF, 'Silver_Extras', 'Gold_Silver')}" />
 					</c:if>
@@ -139,7 +139,7 @@ this was made for CUA so it may not work for other provider use and your own ris
 
 						<c:set var="coverNames" value="hospital=${quote}${rr.hospitalCoverName}${quote} extras=${quote}${rr.extrasCoverName}${quote}" />
 						<c:set var="extrasPDF" value="health_fund_info/${providerName}/${coverNameSplit[1]}/Extras/${situation}/${fileName}.pdf" />
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${extrasPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${extrasPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="extrasPDF" value="${fn:replace(extrasPDF, 'Silver_Extras', 'Gold_Silver')}" />
 						</c:if>
@@ -147,46 +147,46 @@ this was made for CUA so it may not work for other provider use and your own ris
 						<c:set var="hospitalPDF" value="health_fund_info/${providerName}/${coverNameSplit[1]}/Hospital/${situation}/${hospitalFileName}.pdf" />
 
 						<c:set var="possiableHospitalPDF" value="${hospitalPDF}" />
-											<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+											<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(hospitalPDF, '_With_', '')}" />
 						</c:if>
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(hospitalPDF, '_Percent250_', '_Percent_250_')}" />
 						</c:if>
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_With_', '')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_Percent_', '_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(hospitalPDF, '_Percent_', '_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_With_', '_Percent_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false && coverNameSplit[1] == 'NSW'}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, 'NSW', 'ACT')}" />
 						</c:if>
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_And_', '_Percent_And_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<go:log>cannot find ${possiableHospitalPDF}</go:log>
 						</c:if>
@@ -214,46 +214,46 @@ this was made for CUA so it may not work for other provider use and your own ris
 						<c:set var="coverNames" value="hospital=${quote}${rr.hospitalCoverName}${quote}" />
 						<c:set var="hospitalPDF" value="health_fund_info/${providerName}/${coverNameSplit[1]}/Hospital/${situation}/${fileName}.pdf" />
 						<c:set var="possiableHospitalPDF" value="${hospitalPDF}" />
-												<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+												<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(hospitalPDF, '_With_', '')}" />
 						</c:if>
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(hospitalPDF, '_Percent250_', '_Percent_250_')}" />
 						</c:if>
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_With_', '')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_Percent_', '_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(hospitalPDF, '_Percent_', '_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_With_', '_Percent_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false && coverNameSplit[1] == 'NSW'}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, 'NSW', 'ACT')}" />
 						</c:if>
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="possiableHospitalPDF" value="${fn:replace(possiableHospitalPDF, '_And_', '_Percent_And_')}" />
 						</c:if>
 
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${possiableHospitalPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<go:log>cannot find ${possiableHospitalPDF}</go:log>
 						</c:if>
@@ -280,7 +280,7 @@ this was made for CUA so it may not work for other provider use and your own ris
 
 						<c:set var="coverNames" value="extras=${quote}${rr.extrasCoverName}${quote}" />
 						<c:set var="extrasPDF" value="health_fund_info/${providerName}/${coverNameSplit[1]}/Extras/${situation}/${fileName}.pdf" />
-						<c:set var="path" value="c:/Dev/web_ctm/WebContent/${extrasPDF}" />
+						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${extrasPDF}" />
 						<c:if test="${file:exists(path) == false}">
 							<c:set var="extrasPDF" value="${fn:replace(extrasPDF, 'Silver_Extras', 'Gold_Silver')}" />
 						</c:if>
