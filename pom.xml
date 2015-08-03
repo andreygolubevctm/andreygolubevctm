@@ -634,7 +634,7 @@
         <resources>
             <resource>
                 <directory>src/main/resources/${build.environment}/classes</directory>
-                <targetPath>${basedir}/target/classes</targetPath>
+                <targetPath>${project.build.directory}/target/classes</targetPath>
             </resource>
         </resources>
     </build>
