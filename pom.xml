@@ -471,6 +471,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <warSourceDirectory>src/main/webapp</warSourceDirectory>
+                    <warSourceExcludes>WEB-INF/classes/log4j.properties,WEB-INF/classes/environment.properties</warSourceExcludes>
                 </configuration>
                 <executions>
                     <!-- creating the artifact is done by ant -->
@@ -634,8 +635,7 @@
         <resources>
             <resource>
                 <directory>src/main/resources/${build.environment}/classes</directory>
-                <targetPath>${project.build.directory}/classes</targetPath>
-            </resource>
+              </resource>
         </resources>
     </build>
 </project>
