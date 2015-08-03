@@ -3,17 +3,18 @@
  */
 package com.ctm.services;
 
-import javax.servlet.http.HttpServletRequest;
-
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.OperatingSystem;
+import eu.bitwalker.useragentutils.UserAgent;
+import eu.bitwalker.useragentutils.Version;
 import org.json.JSONObject;
 
-import eu.bitwalker.useragentutils.UserAgent;
-import eu.bitwalker.useragentutils.Browser;
-import eu.bitwalker.useragentutils.Version;
-import eu.bitwalker.useragentutils.OperatingSystem;
+import javax.servlet.http.HttpServletRequest;
 
 
 public class UserAgentSniffer {
+
+
 	/**
 	 * Retrieve the browser's top level name e.g. CHROME, OPERA, IE, SAFARI,
 	 * @param userAgent
@@ -21,7 +22,11 @@ public class UserAgentSniffer {
 	 */
 	public static String getBrowserName(String userAgent) {
 		Browser ua = Browser.parseUserAgentString(userAgent);
-		String browserName = ua.getGroup().toString();
+		String browserName = "";
+		if(ua != null) {
+			browserName = ua.getGroup().toString();
+		}
+
 		return browserName;
 	}
 	/**
@@ -31,8 +36,14 @@ public class UserAgentSniffer {
 	 */
 	public static Integer getBrowserVersion(String userAgent) {
 		UserAgent ua = UserAgent.parseUserAgentString(userAgent);
-		Version browserVersion = ua.getBrowserVersion();
-		int majVersion = Integer.parseInt(browserVersion.getMajorVersion());
+		int majVersion = 0;
+		if(ua != null ) {
+			Version browserVersion = ua.getBrowserVersion();
+			if(browserVersion != null) {
+				majVersion = Integer.parseInt(browserVersion.getMajorVersion());
+			}
+		}
+
 		return majVersion;
 	}
 	/**
@@ -43,6 +54,7 @@ public class UserAgentSniffer {
 	public static String getOperatingSystem(String userAgent) {
 		OperatingSystem ua = OperatingSystem.parseUserAgentString(userAgent);
 		String group = ua.getGroup().toString();
+
 		return group;
 	}
 	/**
@@ -52,7 +64,11 @@ public class UserAgentSniffer {
 	 */
 	public static String getDeviceType(String userAgent) {
 		OperatingSystem ua = OperatingSystem.parseUserAgentString(userAgent);
-		String deviceType = ua.getDeviceType().toString();
+		String deviceType = "";
+		if(ua != null) {
+			deviceType = ua.getDeviceType().toString();
+		}
+
 		return deviceType;
 	}
 	/**
