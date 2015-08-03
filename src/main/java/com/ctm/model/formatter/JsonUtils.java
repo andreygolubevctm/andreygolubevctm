@@ -1,0 +1,48 @@
+package com.ctm.model.formatter;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.JSONArray;
+
+import com.ctm.model.AbstractJsonModel;
+
+public class JsonUtils {
+	private static Logger logger = Logger.getLogger(JsonUtils.class.getName());
+
+	/**
+	 * Adds a list of {@link AbstractJsonModel} to a provided JSON Object.
+	 *
+	 * If the list is empty, a property will be created on the json object with an empty array value.
+	 *
+	 * If an item in the list has an error (AbstractJsonModel.getErrors), the errors will be collected onto the root of the json object.
+	 *
+	 * @param json The JSON Object to append the list to.
+	 * @param keyName JSON property under which the list will sit. For example, "errors" would produce {"errors":[...]}
+	 * @param list A list of {@link AbstractJsonModel}
+	 */
+	public static <T extends AbstractJsonModel> void addListToJsonObject(JSONObject json, String keyName, List<T> list) {
+		try {
+			if (list.size() == 0) {
+				if (!json.has(keyName)) {
+					json.put(keyName, new JSONArray());
+				}
+			}
+			else {
+				for (AbstractJsonModel obj : list) {
+
+					json.append(keyName, obj.toJsonObject());
+
+					if (obj.getErrors().size() > 0) {
+						JsonUtils.addListToJsonObject(json, "errors", obj.getErrors());
+					}
+				}
+			}
+		}
+		catch (JSONException e) {
+			logger.error("Failed to produce JSON object", e);
+		}
+	}
+}
