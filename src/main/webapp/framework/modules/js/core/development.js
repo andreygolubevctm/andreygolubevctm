@@ -43,7 +43,10 @@
         $("#copyright").after('<div class="buildEnvInfo_div">' +
             '<ul><li class="devEnv"></li><li>Transaction ID: <span class="devTransactionId"></span></li>' +
             '<li class="devService"></li><li>Revision #: <span class="devRevisionId"></span></li>' +
-            '<li class="devService"><a href="data.jsp" target="_blank">View data bucket</a></li></ul></div>');
+            '<li class="devService"><a href="data.jsp" target="_blank">View data bucket</a></li>' +
+            '<li class="devService aggEngine">Unable to change aggregation engine</li>' +
+            '</ul></div>');
+
         // $(".navMenu-row").before
         $transactionIdHolder = $(".devTransactionId");
         $environmentHolder = $(".devEnv");
@@ -54,6 +57,38 @@
         $environmentHolder.addClass(meerkat.site.environment);
         $revisionHolder.text(meerkat.site.revision);
 
+
+
+        if(meerkat.site.vertical === 'travel'){
+            $aggEngineContainer = $('.aggEngine');
+
+            $aggEngineContainer.html('Loading aggregators...');
+
+            meerkat.modules.comms.get({
+                url: "http://taws01_ass3:8080/launcher/wars",
+                cache: false,
+                useDefaultErrorHandling: false,
+                errorLevel: "fatal",
+                onSuccess: function onSubmitSuccess(resultData) {
+
+                    var select = 'Aggregation engine: <select><option value="">Default</option>';
+
+                    for(var i = 0; i<resultData.NXI.length; i++){
+                        var obj = resultData.NXI[i];
+                        if(obj.context.lastIndexOf("travel-quote", 0) !== -1){
+                            select += '<option value="'+obj.context+'">'+obj.context+'</option>';
+                        }
+                    }
+
+                    select += '</select>';
+                    $aggEngineContainer.html(select);
+                }
+            });
+
+
+
+        }
+
         meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateDevTransId(eventObject) {
             $transactionIdHolder.text(eventObject.transactionId);
         });
@@ -63,8 +98,9 @@
     function initDevelopment() {
         if(meerkat.site.isDev === true){
             initRefreshCSS();
-
-            initEnvironmentMonitor();
+            jQuery(document).ready(function($) {
+                initEnvironmentMonitor();
+            });
         }
     }
 
