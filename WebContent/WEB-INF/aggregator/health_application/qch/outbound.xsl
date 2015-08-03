@@ -658,6 +658,7 @@
 				<xsl:when test="$fundName='DHBS'">AHB</xsl:when>
 				<xsl:when test="$fundName='AHM'">GEH</xsl:when>
 				<!-- The Doctors Health Fund -->
+				<xsl:when test="$fundName='DOC'">DOC</xsl:when>
 				<xsl:when test="$fundName='AMA'">AMA</xsl:when>
 				<xsl:when test="$fundName='UAOD'">Oth</xsl:when>
 				<!--  Australian Unity Health Limited -->
@@ -669,25 +670,31 @@
 				<!--  CUA Health Limited -->
 				<xsl:when test="$fundName='CUA'">CPS</xsl:when>
 				<!--  FRANK Health Insurance -->
-				<xsl:when test="$fundName='FRANK'">FHI</xsl:when>
+				<xsl:when test="$fundName='FRANK'">GHM</xsl:when>
 				<!--  GMF Health -->
 				<xsl:when test="$fundName='GMF'">GMF</xsl:when>
 				<!--  Grand United Corporate Health -->
 				<xsl:when test="$fundName='GMHBA'">GMH</xsl:when>
-				<xsl:when test="$fundName='GU'">GU</xsl:when>
-				<!--<xsl:when test="$fundName='GU'">GUC</xsl:when>-->
+				<xsl:when test="$fundName='GU'">GUC</xsl:when>
+				<xsl:when test="$fundName='HBA'">HBA</xsl:when>
 				<!--  HBF Health Limited -->
 				<xsl:when test="$fundName='HBF'">HBF</xsl:when>
 				<xsl:when test="$fundName='HCF'">HCF</xsl:when>
 				<xsl:when test="$fundName='HCI'">HCI</xsl:when>
 				<!-- health.com.au -->
-				<xsl:when test="$fundName='HEA'">HEA</xsl:when>
+				<xsl:when test="$fundName='HEA'">NIA</xsl:when>
 				<xsl:when test="$fundName='HIF'">HIF</xsl:when>
-				<xsl:when test="$fundName='LHMC'">LHM</xsl:when>
+				<!--Independ Order of rechabites-->
+				<xsl:when test="$fundName='IOR'">IOR</xsl:when>
+				<xsl:when test="$fundName='LHMC'">PC</xsl:when>
 				<xsl:when test="$fundName='LVHHS'">LHS</xsl:when>
+				<xsl:when test="$fundName='MBF'">MBF</xsl:when>
 				<xsl:when test="$fundName='MDHF'">MDH</xsl:when>
 				<xsl:when test="$fundName='MEDIBK'">MP</xsl:when>
+				<!--Manchester Unity Australia-->
+				<xsl:when test="$fundName='MU'">MU</xsl:when>
 				<xsl:when test="$fundName='NHBS'">NHB</xsl:when>
+				<xsl:when test="$fundName='NRMA'">NRMA</xsl:when>
 				<xsl:when test="$fundName='NIB'">NIB</xsl:when>
 				<xsl:when test="$fundName='TFHS'">NTF</xsl:when>
 				<xsl:when test="$fundName='SAPOL'">PHF</xsl:when>
@@ -695,17 +702,19 @@
 				<xsl:when test="$fundName='QCH'">MIM</xsl:when>
 				<xsl:when test="$fundName='RBHS'">RBH</xsl:when>
 				<xsl:when test="$fundName='RTEHF'">RTE</xsl:when>
+				<xsl:when test="$fundName='SAPOL'">SPE</xsl:when>
 				<xsl:when test="$fundName='SLHI'">SL</xsl:when>
 				<xsl:when test="$fundName='HBFSA'">SPS</xsl:when>
 				<xsl:when test="$fundName='FI'">TFS</xsl:when>
 				<!-- Westfund Health Insurance -->
 				<xsl:when test="$fundName='WDHF'">WDH</xsl:when>
 				<xsl:when test="$fundName='NONE'">NONE</xsl:when>
-				<!-- Hmmmm -->
-				<xsl:when test="$fundName='QTUHS'">TUH</xsl:when>
+				<!-- Queensland Teachers Union Health -->
+				<xsl:when test="$fundName='QTUHS'">QTH</xsl:when>
+				<xsl:when test="$fundName='QCH'">QCH</xsl:when>
 				<xsl:when test="$fundName='WDHF'">WDH</xsl:when>
 				<!-- All other funds in our list -->
-				<xsl:when test="$fundName != ''">Oth</xsl:when>
+				<xsl:when test="$fundName != ''">UNK</xsl:when>
 				<xsl:otherwise>NONE</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
