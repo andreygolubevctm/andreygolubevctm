@@ -1,0 +1,73 @@
+/*
+-- Query: SELECT * FROM aggregator.features_brands where id > 3000
+LIMIT 0, 1000
+
+-- Date: 2015-07-17 14:13
+*/
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3284,'1st For Women','1st For Women','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3285,'AAMI','AAMI','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3286,'AI Insurance','AI Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3287,'Allianz','Allianz','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3288,'ANZ','ANZ','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3289,'APIA','APIA','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3290,'Australia Post','Australia Post','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3291,'Australian Seniors Insurance Agency','Australian Seniors Insurance Agency','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3292,'Bingle','Bingle.com Pty Ltd','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3293,'Budget Direct','Budget Direct','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3294,'Cashback','Cashback','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3295,'CGU Insurance Ltd','CGU Insurance Ltd','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3296,'Coles Insurance','Coles Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3297,'CommInsure','CommInsure','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3298,'Dodo Insurance','Dodo Insurance Pty Ltd','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3299,'GIO','GIO General Limited','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3300,'ibuyeco','ibuyeco','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3301,'Just Car Insurance','Just Car Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3302,'NRMA Insurance','NRMA Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3303,'Ozicare','Ozicare','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3304,'Progressive Direct','Progressive Direct','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3305,'QBE Insurance','QBE Insurance Australia Ltd','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3306,'RAA','RAA','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3307,'RACQI','RACQI','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3308,'RACT Insurance Pty Ltd','RACT Insurance Pty Ltd','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3309,'RACV','RACV','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3310,'RACWA','RACWA','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3311,'Real Insurance','Real Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3312,'Resilium','Resilium','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3313,'Retirease','Retirease','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3314,'SGIC','SGIC','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3315,'SGIO','SGIO','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3316,'Shannons','Shannons','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3317,'Suncorp','Suncorp Metway Insurance Limited','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3318,'Vero','Vero (Australia)','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3319,'Virgin Money','Virgin Money','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3320,'Westpac','Westpac (Australia)','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3321,'Woolworths Insurance','Woolworths Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3322,'Youi Insurance','Youi Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3547,'1st For Women','1st For Women','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3548,'AAMI','AAMI','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3549,'Allianz','Allianz','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3550,'ANZ','ANZ','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3551,'APIA','APIA','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3552,'Australian Unity','Australian Unity Personal Financial Services Ltd','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3553,'Budget Direct','Budget Direct','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3554,'Calliden Insurance','Calliden Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3555,'CGU Insurance','CGU Insurance Ltd','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3556,'Coles Insurance','Coles Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3557,'CommInsure','CommInsure','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3558,'Dodo','Dodo Insurance Pty Ltd','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3559,'GIO','GIO General Limited','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3560,'National Australia Bank','National Australia Bank Limited','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3561,'NRMA Insurance','NRMA Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3562,'Ozicare','Ozicare','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3563,'QBE Insurance','QBE Insurance Australia Ltd','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3564,'RAA','RAA','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3565,'RACQI','RACQI','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3566,'RACV','RACV','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3567,'RACWA','RACWA','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3568,'Real Insurance','Real Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3569,'Shannons','Shannons','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3570,'Suncorp','Suncorp Metway Insurance Limited','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3571,'Virgin Money','Virgin Money','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3572,'Westpac','Westpac (Australia)','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3573,'Woolworths Insurance','Woolworths Insurance','Y');
+INSERT INTO `features_brands` (`id`,`displayName`,`realName`,`status`) VALUES (3574,'Youi Insurance','Youi Insurance','Y');

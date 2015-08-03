@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+
+	xmlns="https://ecommerce.disconline.com.au/services/schema/3.1/fields"
+	targetNamespace="https://ecommerce.disconline.com.au/services/schema/3.1/fields"
+
+	elementFormDefault="unqualified">
+
+	<xsd:annotation>
+		<xsd:documentation>This schema contains definitions for common fields</xsd:documentation>
+	</xsd:annotation>
+
+	<!-- Areas code (for phone number) -->
+	<xsd:simpleType name="areaCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]+"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Brand Code -->
+	<xsd:simpleType name="brandCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Company Name -->
+	<xsd:simpleType name="companyName">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="50"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Credit Card Number -->
+	<xsd:simpleType name="creditCardNumber">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]*"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="19"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Currency field -->
+	<xsd:simpleType name="currency">
+		<xsd:restriction base="xsd:decimal">
+			<xsd:totalDigits value="15"/>
+			<xsd:fractionDigits value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Email Address -->
+	<xsd:simpleType name="emailAddress">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="50"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Error Category -->
+	<xsd:simpleType name="errorCategory">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="10"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Factory Option Code -->
+	<xsd:simpleType name="factoryOptionCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="8"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- First Name of Person -->
+	<xsd:simpleType name="firstName">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="15"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Full Name of Person -->
+	<xsd:simpleType name="fullName">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="30"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Inspection Centre Code -->
+	<xsd:simpleType name="inspectionCentreCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Input Tax Credit Percentage -->
+	<xsd:simpleType name="inputTaxCreditPercentage">
+		<xsd:restriction base="xsd:integer">
+			<xsd:minInclusive value="1"/>
+			<xsd:maxInclusive value="100"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Lead Number -->
+	<xsd:simpleType name="leadNumber">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z][0-9][A-Z][0-9]{6}"/>
+			<xsd:minLength value="0"/>
+			<xsd:maxLength value="9"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Long Description -->
+	<xsd:simpleType name="longDescription">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="200"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Long Phone Number -->
+	<xsd:simpleType name="longPhoneNumber">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]+"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="12"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Medium Description -->
+	<xsd:simpleType name="mediumDescription">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="50"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Partner Id -->
+	<xsd:simpleType name="partnerId">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="10"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Percentage -->
+	<xsd:simpleType name="percentage">
+		<xsd:restriction base="xsd:integer">
+			<xsd:minInclusive value="1"/>
+			<xsd:maxInclusive value="100"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Person Number -->
+	<xsd:simpleType name="personNumber">
+		<xsd:restriction base="xsd:integer">
+			<xsd:minInclusive value="1"/>
+			<xsd:maxInclusive value="16"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Phone Extension -->
+	<xsd:simpleType name="phoneExtension">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]+"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Phone Number (Normal) -->
+	<xsd:simpleType name="phoneNumber">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]+"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="8"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Policy Number -->
+	<xsd:simpleType name="polNumber">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="0"/>
+			<xsd:maxLength value="9"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Post code -->
+	<xsd:simpleType name="postCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]{4}"/>
+			<xsd:minLength value="4"/>
+			<xsd:maxLength value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Purchase Price -->
+	<xsd:simpleType name="purchasePrice">
+		<xsd:restriction base="xsd:integer">
+			<xsd:maxInclusive value="9999999999"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Redbook code -->
+	<xsd:simpleType name="redbookCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="8"/>
+			<xsd:maxLength value="8"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Registration Number -->
+	<xsd:simpleType name="registrationNumber">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="9"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Schema Version -->
+	<xsd:simpleType name="schemaVersion">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="3.1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Small Description -->
+	<xsd:simpleType name="smallDescription">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="20"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Street Name -->
+	<xsd:simpleType name="streetName">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="50"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Street Number -->
+	<xsd:simpleType name="streetNumber">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="50"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Suburb Name -->
+	<xsd:simpleType name="suburbName">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="50"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Suburb/Street Name -->
+	<xsd:simpleType name="suburbStreetName">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="35"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Surname of Person -->
+	<xsd:simpleType name="surname">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="20"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<!-- Unit/Level -->
+	<xsd:simpleType name="unitLevel">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="50"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Underwriter Company -->
+	<xsd:simpleType name="underwriterCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Underwriter Product -->
+	<xsd:simpleType name="underwriterProduct">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="2"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Link ID -->
+	<xsd:simpleType name="linkId">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[0-9]{5}"/>
+			<xsd:minLength value="5"/>
+			<xsd:maxLength value="5"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- Inspection Centre Code -->
+	<xsd:simpleType name="year">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="4"/>
+			<xsd:maxLength value="4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<!-- Age -->
+	<xsd:simpleType name="age">
+		<xsd:restriction base="xsd:integer">
+			<xsd:minInclusive value="0"/>
+			<xsd:maxInclusive value="120"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<!-- validDate -->
+	<xsd:simpleType name="validDate">
+		<xsd:restriction base="xsd:date">
+			<xsd:minInclusive value="1770-04-19"/>
+			<xsd:maxInclusive value="2200-01-01"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
