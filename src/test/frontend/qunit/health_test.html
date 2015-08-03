@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html class="no-js ie lt-ie10 lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>   <html class="no-js ie ie7 lt-ie10 lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>   <html class="no-js ie ie8 lt-ie10 lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>   <html class="no-js ie ie9 lt-ie10" lang="en"> <![endif]-->
+<!--[if !IE]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+<head>
+<title>Health Payment Test</title>
+<meta charset='utf-8'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="shortcut icon" type="image/x-icon"
+	href="brand/ctm/graphics/favicon.ico">
+<link rel="stylesheet" href="vendor/qunit.css">
+
+<script src="../../../WebContent\common\js\jquery-1.10.1.min.js"></script>
+<!--  Modernizr -->
+<script>
+	window.Modernizr
+			|| document
+					.write('<script src="../../../WebContent/framework/lib/js/modernizr-2.7.1.min.js">\x3C/script>')
+</script>
+
+<!--[if lt IE 9]>
+			<script src="../../../WebContent\framework/lib/js/respond.ctm.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="../../../WebContent\framework/jquery/lib/jquery-1.10.2.min.js"><\/script>')</script>
+		<![endif]-->
+<!--[if gte IE 9]><!-->
+<script>
+	window.jQuery
+			&& window.jQuery.each
+			|| document
+					.write('<script src="../../../WebContent/framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>')
+</script>
+<!--<![endif]-->
+<script	src="../../../WebContent/framework/jquery/plugins/jquery.validate-1.11.1.js"></script>
+
+
+<!--INSERT:js-href-->
+<link rel="stylesheet"
+	href="../../../WebContent/framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.css">
+<script src="vendor/qunit.js"></script>
+<!-- default site config -->
+<script src="unit/testBoilerPlate.js"></script>
+<script src="../../../WebContent/framework/modules/js/health/healthPaymentDate.js"></script>
+	<script src="../../../WebContent/framework/modules/js/health/__health_legacy.js"></script>
+<script src="unit/healthPaymentDateTest.js"></script>
+</head>
+
+<body class="jeinit default">
+	<!-- qunit -->
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+
+	<!-- body content -->
+	<form id="mainform" name="frmMain">
+		<input type="hidden" name="health_payment_policyDate" id="health_payment_policyDate" class="health_details-policyDate" value="">
+		<p class="health_credit-card-details_policyDay-message">Your payment will be deducted on: Wednesday, 1 October 2014</p>
+	</form>
+
+	<!--  Includes -->
+	<!-- JS Libraries -->
+
+	<!--  Underscore -->
+	<script>
+		window._
+				|| document
+						.write('<script src="../../../WebContent/framework/lib/js/underscore-1.5.2.min.js">\x3C/script>')
+	</script>
+
+	<!-- Fastclick -->
+	<script>
+		window.FastClick
+				|| document
+						.write('<script src="../../../WebContent/framework/lib/js/fastclick-0.6.11.min.js">\x3C/script>')
+	</script>
+
+	<!-- Extras -->
+	<script type="text/javascript"
+		src="../../../WebContent\framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
+	<script type="text/javascript"
+		src="../../../WebContent\framework/jquery/plugins/qtip2/jquery.qtip.js"></script>
+	<script src="../../../WebContent/framework/meerkat/meerkat.utilities.js"></script>
+
+
+	<!-- Body End Fragment -->
+	<script
+		src="../../../WebContent\framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.min.js"></script>
+	<script
+		src="../../../WebContent\framework/jquery/plugins/bootstrap-switch-2.0.0.min.js"></script>
+
+	<div id="dynamic_dom"></div>
+
+</body>
+</html>
