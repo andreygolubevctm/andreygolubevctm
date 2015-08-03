@@ -12,8 +12,8 @@
   ],
   "private": true,
   "repository": {
-    "type": "svn",
-    "url": "http://itrepos/apps/web_ctm/trunk/"
+    "type": "git",
+    "url": "ssh://git@gitstash.budgetdirect.com.au:7999/cw/web_ctm.git"
   },
   "bugs": {
     "url": "http://itsupport.intranet:8080/secure/CreateIssue!default.jspa"
