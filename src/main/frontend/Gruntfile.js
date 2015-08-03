@@ -52,7 +52,7 @@ module.exports = function(grunt) {
 
 		/**
 		 * TASK CONFIG OPTIONS:
-	 * This sets up options for all the various task utilities; 
+	 * This sets up options for all the various task utilities;
 	 * aka Grunt plugins doing stuff for us.
 		 * Paths are relative to this Gruntfile.js
 		 */
