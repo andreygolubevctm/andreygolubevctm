@@ -5,11 +5,7 @@
 <layout:slide formId="detailsForm" nextLabel="Choose Your Cover">
 
 	<layout:slide_content>
-		<c:if test="${contactSplitTest == false}">
-			<health:contact_details_optin xpath="${pageSettings.getVerticalCode()}/contactDetails" required="false"/>
-		</c:if>
 		<health:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
-
 	</layout:slide_content>
 
 </layout:slide>
