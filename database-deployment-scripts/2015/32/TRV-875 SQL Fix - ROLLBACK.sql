@@ -16,10 +16,6 @@ SET @FOW_AMT = (SELECT providerProductCode FROM ctm.travel_product WHERE provide
 SET @START_DATE = ("2015-07-24 00:00:00");
 SET @END_DATE = ("2040-12-31 23:59:59");
 
-
- -- Remove new benefit type added to master
-DELETE FROM `ctm`.`travel_benefit_master` WHERE `benefitName`='CDXHOLIDAYFEE' AND `effectiveStart`=@START_DATE AND `effectiveEnd`=@END_DATE;
-
 -- Remove new benefits assigned to products
 SET @DEATH = (SELECT benefitId FROM ctm.travel_benefit_master WHERE benefitName='DEATH');
 DELETE FROM ctm.travel_product_benefits WHERE startDate=@START_DATE AND productId IN (@BUD_DOME,@BUD_ESSE,@BUD_COMP,@BUD_LAST,@BUD_AMT,@FOW_DOME,@FOW_ESSE,@FOW_COMP,@FOW_LAST,@FOW_AMT) AND benefitId=@DEATH;
@@ -53,3 +49,6 @@ SET @TRAVEL_DELAY_EXP = (SELECT benefitId FROM ctm.travel_benefit_master WHERE b
 DELETE FROM ctm.travel_product_benefits WHERE startDate=@START_DATE AND productId IN (@BUD_DOME,@BUD_ESSE,@BUD_COMP,@BUD_LAST,@BUD_AMT,@FOW_DOME,@FOW_ESSE,@FOW_COMP,@FOW_LAST,@FOW_AMT) AND benefitId=@TRAVEL_DELAY_EXP;
 SET @TRAVEL_DOCS = (SELECT benefitId FROM ctm.travel_benefit_master WHERE benefitName='TRAVEL_DOCS');
 DELETE FROM ctm.travel_product_benefits WHERE startDate=@START_DATE AND productId IN (@BUD_DOME,@BUD_ESSE,@BUD_COMP,@BUD_LAST,@BUD_AMT,@FOW_DOME,@FOW_ESSE,@FOW_COMP,@FOW_LAST,@FOW_AMT) AND benefitId=@TRAVEL_DOCS;
+
+ -- Remove new benefit type added to master
+DELETE FROM `ctm`.`travel_benefit_master` WHERE `benefitName`='CDXHOLIDAYFEE' AND `effectiveStart`=@START_DATE AND `effectiveEnd`=@END_DATE;
