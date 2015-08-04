@@ -17,7 +17,6 @@ SET @START_DATE = ("2015-07-24 00:00:00");
 SET @END_DATE = ("2040-12-31 23:59:59");
 
 -- Remove duplicates added to NXQ (will do nothing in PRO)
-DELETE FROM `ctm`.`travel_benefit_master` WHERE `benefitName`='CDXHOLIDAYFEE' AND `effectiveStart`=@START_DATE AND `effectiveEnd`=@END_DATE;
 SET @DEATH = (SELECT benefitId FROM ctm.travel_benefit_master WHERE benefitName='DEATH');
 DELETE FROM ctm.travel_product_benefits WHERE startDate=@START_DATE AND productId IN (@BUD_DOME,@BUD_ESSE,@BUD_COMP,@BUD_LAST,@BUD_AMT,@FOW_DOME,@FOW_ESSE,@FOW_COMP,@FOW_LAST,@FOW_AMT) AND benefitId=@DEATH;
 SET @EXPENSES = (SELECT benefitId FROM ctm.travel_benefit_master WHERE benefitName='EXPENSES');
@@ -61,7 +60,9 @@ DELETE FROM ctm.travel_product_benefits WHERE startDate=@START_DATE AND productI
 SET @TRAVEL_DELAY_EXP = (SELECT benefitId FROM ctm.travel_benefit_master WHERE benefitName='TRAVEL_DELAY_EXP');
 DELETE FROM ctm.travel_product_benefits WHERE startDate=@START_DATE AND productId IN (@BUD_DOME,@BUD_ESSE,@BUD_COMP,@BUD_LAST,@BUD_AMT,@FOW_DOME,@FOW_ESSE,@FOW_COMP,@FOW_LAST,@FOW_AMT) AND benefitId=@TRAVEL_DELAY_EXP;
 SET @TRAVEL_DOCS = (SELECT benefitId FROM ctm.travel_benefit_master WHERE benefitName='TRAVEL_DOCS');
-DELETE FROM ctm.travel_product_benefits WHER startDate=@START_DATE ANDE productId IN (@BUD_DOME,@BUD_ESSE,@BUD_COMP,@BUD_LAST,@BUD_AMT,@FOW_DOME,@FOW_ESSE,@FOW_COMP,@FOW_LAST,@FOW_AMT) AND benefitId=@TRAVEL_DOCS;
+DELETE FROM ctm.travel_product_benefits WHERE startDate=@START_DATE AND productId IN (@BUD_DOME,@BUD_ESSE,@BUD_COMP,@BUD_LAST,@BUD_AMT,@FOW_DOME,@FOW_ESSE,@FOW_COMP,@FOW_LAST,@FOW_AMT) AND benefitId=@TRAVEL_DOCS;
+
+DELETE FROM `ctm`.`travel_benefit_master` WHERE `benefitName`='CDXHOLIDAYFEE' AND `effectiveStart`=@START_DATE AND `effectiveEnd`=@END_DATE;
 
 -- Add new record to benefit_master
 INSERT INTO `ctm`.`travel_benefit_master` (`benefitId`, `benefitName`, `effectiveStart`, `effectiveEnd`) VALUES ('', 'CDXHOLIDAYFEE', '2015-07-24 00:00:00', '2040-12-31 23:59:59');
