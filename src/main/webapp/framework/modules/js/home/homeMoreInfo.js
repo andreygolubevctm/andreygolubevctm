@@ -80,8 +80,13 @@
 
 			// If its unavailable, don't do anything
 			// This is if someone tries to fake a bridging page for a "non quote" product.
-			if(obj.productAvailable !== "Y")
-				return;
+			if (meerkat.modules.splitTest.isActive(40)) {
+				if (obj.available != 'Y')
+					return;
+			} else {
+				if(obj.productAvailable !== "Y")
+					return;
+			}
 
 			var htmlContent = templateCallback(obj);
 			var modalOptions = {
@@ -122,16 +127,16 @@
 			var $el = $(this);
 
 			switch ($el.attr('data-callback-toggle')) {
-			case 'calldirect':
-				$('.callback').hide();
-				$('.calldirect').show();
-				recordCallDirect(event);
-				break;
-			case 'callback':
-				$('.calldirect').hide();
-				$('.callback').show();
-				trackCallBack();// Add CallBack request event to supertag
-				break;
+				case 'calldirect':
+					$('.callback').hide();
+					$('.calldirect').show();
+					recordCallDirect(event);
+					break;
+				case 'callback':
+					$('.calldirect').hide();
+					$('.callback').show();
+					trackCallBack();// Add CallBack request event to supertag
+					break;
 			}
 
 			// Fix the height of the sidebar
@@ -190,7 +195,7 @@
 	 */
 	function fixSidebarHeight(leftSelector, rightSelector, $container) {
 		if(meerkat.modules.deviceMediaState.get() != 'xs') {
-		/* match up sidebar's height with left side or vice versa */
+			/* match up sidebar's height with left side or vice versa */
 			if($(rightSelector, $container).length) {
 				var leftHeight = $(leftSelector, $container).outerHeight();
 				var rightHeight = $(rightSelector, $container).outerHeight();
@@ -261,13 +266,13 @@
 		}
 
 		var defaultData = {
-				state:				state,
-				brand:				currProduct.productId.split('-')[0],
-				productId:			currProduct.productId,
-				clientNumber:		currProduct.leadNo,
-				clientName:			clientName,
-				phoneNumber:		clientTel,
-				partnerReference:	meerkat.modules.transactionId.get()
+			state:				state,
+			brand:				currProduct.productId.split('-')[0],
+			productId:			currProduct.productId,
+			clientNumber:		currProduct.leadNo,
+			clientName:			clientName,
+			phoneNumber:		clientTel,
+			partnerReference:	meerkat.modules.transactionId.get()
 		};
 
 		var allData = $.extend(defaultData, data);
@@ -318,14 +323,14 @@
 
 			var tempHTML = [
 				'<tr>',
-					'<td>',
-						coverType,
-					'</td>',
-					'<td class="cover-amount">',
-						'$<span>',
-							coverAmount,
-						'</span>',
-					'</td>',
+				'<td>',
+				coverType,
+				'</td>',
+				'<td class="cover-amount">',
+				'$<span>',
+				coverAmount,
+				'</span>',
+				'</td>',
 				'</tr>'
 			].join('');
 
@@ -454,19 +459,35 @@
 	 */
 	function retrieveExternalCopy(product) {
 		setScrapeType ();
-		return meerkat.modules.comms.get({
-			url: "ajax/json/get_scrapes.jsp",
-			cache: true,
-			data: {
-				type: 'homeBrandScrapes',
-				code: product.productId,
-				group: 'home'
-			},
-			errorLevel: "silent",
-			onSuccess: function (result) {
-				meerkat.modules.moreInfo.setDataResult(result);
-			}
-		});
+
+		if (meerkat.modules.splitTest.isActive(40)) {
+			return meerkat.modules.comms.get({
+				url: "rest/home/more_info/get.json",
+				cache: true,
+				data: {
+					code: product.productId,
+					type: meerkat.modules.home.getCoverType()
+				},
+				errorLevel: "silent",
+				onSuccess: function (result) {
+					meerkat.modules.moreInfo.setDataResult(result);
+				}
+			});
+		} else {
+			return meerkat.modules.comms.get({
+				url: "ajax/json/get_scrapes.jsp",
+				cache: true,
+				data: {
+					type: 'homeBrandScrapes',
+					code: product.productId,
+					group: 'home'
+				},
+				errorLevel: "silent",
+				onSuccess: function (result) {
+					meerkat.modules.moreInfo.setDataResult(result);
+				}
+			});
+		}
 	}
 
 	/**
@@ -522,6 +543,8 @@
 	 */
 	function proceedToInsurer(product, modalId, applyNowCallback) {
 
+		var toogleNewWebService = meerkat.modules.splitTest.isActive(40);
+
 		if(modalId) {
 			$('#'+modalId).modal('hide');
 		}
@@ -531,13 +554,24 @@
 		}
 
 		if(_.isEmpty(product.quoteUrl)) {
-			meerkat.modules.errorHandling.error({
-				errorLevel:		'warning',
-				message:		"An error occurred. Sorry about that!<br /><br /> To purchase this policy, please contact the provider " + (product.telNo !== '' ? " on " + product.telNo : "directly") + " quoting " + product.leadNo + ", or select another policy.",
-				page:			'homeMoreInfo.js:proceedToInsurer',
-				description:	"Insurer did not provide quoteUrl in results object.",
-				data:			product
-			});
+
+			if (toogleNewWebService) {
+				meerkat.modules.errorHandling.error({
+					errorLevel: 'warning',
+					message: "An error occurred. Sorry about that!<br /><br /> To purchase this policy, please contact the provider " + (product.contact.phoneNumber !== '' ? " on " + product.contact.phoneNumber : "directly") + " quoting " + product.quoteNumber + ", or select another policy.",
+					page: 'homeMoreInfo.js:proceedToInsurer',
+					description: "Insurer did not provide quoteUrl in results object.",
+					data: product
+				});
+			} else {
+				meerkat.modules.errorHandling.error({
+					errorLevel: 'warning',
+					message: "An error occurred. Sorry about that!<br /><br /> To purchase this policy, please contact the provider " + (product.telNo !== '' ? " on " + product.telNo : "directly") + " quoting " + product.leadNo + ", or select another policy.",
+					page: 'homeMoreInfo.js:proceedToInsurer',
+					description: "Insurer did not provide quoteUrl in results object.",
+					data: product
+				});
+			}
 			// stops the propagation to the links event handler.
 			return false;
 		}
@@ -545,35 +579,66 @@
 		var leadFeedInfoArr = product.leadfeedinfo.split("||");
 		var leadFeed = false;
 		if(!_.isEmpty(leadFeedInfoArr[0])) { // if empty then user hasn't opted in for call
-			leadFeed = {
-				data:		{
-					vertical:			'homecontents',
-					phonecallme:		"NoSaleCall",
-					productId:			product.productId,
-					clientName:			leadFeedInfoArr[0],
-					phoneNumber:		leadFeedInfoArr[1],
-					clientNumber:		product.leadNo,
-					partnerReference:	meerkat.modules.transactionId.get(),
-					brand:				product.productId.split('-')[0],
-					state:				$('#home_property_address_state').val()
-				},
-				settings:	{
-					errorLevel:	"silent"
-				}
-			};
+			if (toogleNewWebService) {
+				leadFeed = {
+					data: {
+						vertical: 'homecontents',
+						phonecallme: "NoSaleCall",
+						productId: product.productId,
+						clientName: leadFeedInfoArr[0],
+						phoneNumber: leadFeedInfoArr[1],
+						clientNumber: product.quoteNumber,
+						partnerReference: meerkat.modules.transactionId.get(),
+						brand: product.productId.split('-')[0],
+						state: $('#home_property_address_state').val()
+					},
+					settings: {
+						errorLevel: "silent"
+					}
+				};
+			} else {
+				leadFeed = {
+					data: {
+						vertical: 'homecontents',
+						phonecallme: "NoSaleCall",
+						productId: product.productId,
+						clientName: leadFeedInfoArr[0],
+						phoneNumber: leadFeedInfoArr[1],
+						clientNumber: product.leadNo,
+						partnerReference: meerkat.modules.transactionId.get(),
+						brand: product.productId.split('-')[0],
+						state: $('#home_property_address_state').val()
+					},
+					settings: {
+						errorLevel: "silent"
+					}
+				};
+			}
 		}
 
-		meerkat.modules.partnerTransfer.transferToPartner({
-			encodeTransferURL:	true,
-			product:			product,
-			applyNowCallback:	applyNowCallback,
-			productName:		product.headline.name,
-			productBrandCode:	product.brandCode,
-			brand:				product.productDes,
-			verticalFilter:		meerkat.modules.home.getVerticalFilter(),
-			productID:			product.trackingProductId,
-			noSaleLead:			leadFeed
-		});
+		if (toogleNewWebService) {
+			meerkat.modules.partnerTransfer.transferToPartner({
+				encodeTransferURL: true,
+				product: product,
+				applyNowCallback: applyNowCallback,
+				productName: product.productName,
+				productBrandCode: product.brandCode,
+				brand: product.productDescription,
+				verticalFilter: meerkat.modules.home.getVerticalFilter(),
+				productID: product.productId
+			});
+		} else {
+			meerkat.modules.partnerTransfer.transferToPartner({
+				encodeTransferURL: true,
+				product: product,
+				applyNowCallback: applyNowCallback,
+				productName: product.headline.name,
+				productBrandCode: product.brandCode,
+				brand: product.productDes,
+				verticalFilter: meerkat.modules.home.getVerticalFilter(),
+				productID: product.trackingProductId
+			});
+		}
 
 		return true;
 	}
@@ -611,16 +676,29 @@
 	function trackCallEvent(type) {
 		var product = meerkat.modules.moreInfo.getOpenProduct();
 
-		meerkat.modules.partnerTransfer.trackHandoverEvent({
-			product:				product,
-			type:					type,
-			quoteReferenceNumber:	product.leadNo,
-			transactionID:			meerkat.modules.transactionId.get(),
-			productID:				product.productId,
-			productName:			product.headline.name,
-			verticalFilter:			meerkat.modules.home.getVerticalFilter(),
-			productBrandCode:		product.brandCode
-		}, false);
+		if (meerkat.modules.splitTest.isActive(40)) {
+			meerkat.modules.partnerTransfer.trackHandoverEvent({
+				product: product,
+				type: type,
+				quoteReferenceNumber: product.quoteNumber,
+				transactionID: meerkat.modules.transactionId.get(),
+				productID: product.productId,
+				productName: product.productName,
+				verticalFilter: meerkat.modules.home.getVerticalFilter(),
+				productBrandCode: product.brandCode
+			}, false);
+		} else {
+			meerkat.modules.partnerTransfer.trackHandoverEvent({
+				product: product,
+				type: type,
+				quoteReferenceNumber: product.leadNo,
+				transactionID: meerkat.modules.transactionId.get(),
+				productID: product.productId,
+				productName: product.headline.name,
+				verticalFilter: meerkat.modules.home.getVerticalFilter(),
+				productBrandCode: product.brandCode
+			}, false);
+		}
 	}
 
 	/**
@@ -655,29 +733,49 @@
 
 		var product = meerkat.modules.moreInfo.getOpenProduct();
 
-		var settings = {
-				additionalTrackingData : {
-					verticalFilter : meerkat.modules.home.getVerticalFilter(),
-					productName : product.headline.name,
-					productID : product.trackingProductId
+		var settings;
+		if (meerkat.modules.splitTest.isActive(40)) {
+			settings = {
+				additionalTrackingData: {
+					verticalFilter: meerkat.modules.home.getVerticalFilter(),
+					productName: product.productName,
+					productID: product.productId
 				}
-		};
+			};
+		} else {
+			settings = {
+				additionalTrackingData: {
+					verticalFilter: meerkat.modules.home.getVerticalFilter(),
+					productName: product.headline.name,
+					productID: product.trackingProductId
+				}
+			};
+		}
 
 		meerkat.modules.moreInfo.updateSettings(settings);
 
 		trackProductView();
 	}
 
-	function renderScrapes(scrapeData) {
+	function renderScrapes(data) {
 
 		updateQuoteSummaryTable();
 
-		if (typeof scrapeData != 'undefined' && typeof scrapeData.scrapes != 'undefined' && scrapeData.scrapes.length) {
-			$.each(scrapeData.scrapes, function (key, scrape) {
-				if (scrape.html !== '' && scrape.cssSelector.indexOf(scrapeType) != -1) {
-					$(scrape.cssSelector.replace('-'+scrapeType, '')).html( scrape.html );
-				}
-			});
+		if (meerkat.modules.splitTest.isActive(40)) {
+			product = data;
+			$("#inclusions").html(product.inclusions);
+			$("#extras").html(product.optionalExtras);
+			$("#benefits").html(product.benefits);
+
+		} else {
+			scrapeData = data;
+			if (typeof scrapeData != 'undefined' && typeof scrapeData.scrapes != 'undefined' && scrapeData.scrapes.length) {
+				$.each(scrapeData.scrapes, function (key, scrape) {
+					if (scrape.html !== '' && scrape.cssSelector.indexOf(scrapeType) != -1) {
+						$(scrape.cssSelector.replace('-' + scrapeType, '')).html(scrape.html);
+					}
+				});
+			}
 		}
 		// Add the icons, as we only receive li's in the scrape.
 		$('.contentRow li').each(function () {

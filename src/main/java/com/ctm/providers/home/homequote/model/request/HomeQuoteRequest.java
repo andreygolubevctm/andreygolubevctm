@@ -1,5 +1,7 @@
 package com.ctm.providers.home.homequote.model.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
 import org.joda.time.LocalDate;
 
 import java.util.List;
@@ -12,6 +14,7 @@ public class HomeQuoteRequest {
 
     private boolean contentsCover;
 
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate startDate;
 
     private Integer homeExcess;

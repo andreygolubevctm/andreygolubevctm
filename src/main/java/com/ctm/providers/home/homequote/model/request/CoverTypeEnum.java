@@ -2,9 +2,9 @@ package com.ctm.providers.home.homequote.model.request;
 
 public enum CoverTypeEnum {
 
-    HOME_CONTENTS("HC"),
-    CONTENTS("C"),
-    HOME("H");
+    HOME_CONTENTS("Home & Contents Cover"),
+    CONTENTS("Contents Cover Only"),
+    HOME("Home Cover Only");
 
     private String code;
 

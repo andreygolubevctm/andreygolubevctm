@@ -1,5 +1,7 @@
 package com.ctm.model.home.form;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class HomeQuote {
 
     private String contentsExcess;
@@ -230,6 +232,35 @@ public class HomeQuote {
 
     public void setTermsAccepted(String termsAccepted) {
         this.termsAccepted = termsAccepted;
+    }
+
+    public String createLeadFeedInfo() {
+        String separator = "||";
+        boolean okToCall = StringUtils.equals(policyHolder.getOktocall(), "Y");
+
+        // Create leadFeedInfo
+        StringBuilder sb = new StringBuilder();
+        if (okToCall && policyHolder != null) {
+            sb.append(fullName(policyHolder));
+        }
+        sb.append(separator);
+        if (okToCall && policyHolder != null) {
+            sb.append(StringUtils.trimToEmpty(policyHolder.getPhone()));
+        }
+        sb.append(separator);
+        if (okToCall && property != null && property.getAddress() != null) {
+            sb.append(StringUtils.trimToEmpty(property.getAddress().getDpId()));
+        }
+        sb.append(separator);
+        if (okToCall && property != null && property.getAddress() != null) {
+            sb.append(StringUtils.trimToEmpty(property.getAddress().getState()));
+        }
+        return sb.toString();
+    }
+
+    private String fullName(PolicyHolder policyHolder) {
+        if (policyHolder == null) return null;
+        return StringUtils.trimToEmpty(policyHolder.getFirstName() + " " + policyHolder.getLastName());
     }
 
 }

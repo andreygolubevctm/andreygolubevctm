@@ -1,4 +1,4 @@
-package com.ctm.model.home.results;
+package com.ctm.providers.home.homequote.model.response;
 
 public class Underwriter {
 

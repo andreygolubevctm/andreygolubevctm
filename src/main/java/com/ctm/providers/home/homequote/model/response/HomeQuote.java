@@ -1,11 +1,14 @@
-package com.ctm.model.home.results;
-
-import com.ctm.model.resultsData.Result;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+package com.ctm.providers.home.homequote.model.response;
 
 import java.util.List;
 
-public class HomeResult extends Result {
+public class HomeQuote {
+
+    public boolean available = true;
+
+    private String service;
+
+    private String productId;
 
     private String providerProductName;
 
@@ -35,17 +38,14 @@ public class HomeResult extends Result {
 
     private Price price;
 
-    @JsonSerialize(using = AdditionalExcessesSerializer.class)
     private List<AdditionalExcess> additionalExcesses;
 
-    @JsonSerialize(using = FeaturesSerializer.class)
     private List<Feature> features;
 
     private Underwriter underwriter;
 
     private String disclaimer;
 
-    @JsonSerialize(using = ProductDisclosuresSerializer.class)
     private List<ProductDisclosure> productDisclosures;
 
     private String inclusions;
@@ -56,7 +56,29 @@ public class HomeResult extends Result {
 
     private String vdn;
 
-    private String leadfeedinfo;
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
     public String getProviderProductName() {
         return providerProductName;
@@ -240,13 +262,5 @@ public class HomeResult extends Result {
 
     public void setVdn(String vdn) {
         this.vdn = vdn;
-    }
-
-    public String getLeadfeedinfo() {
-        return leadfeedinfo;
-    }
-
-    public void setLeadfeedinfo(String leadfeedinfo) {
-        this.leadfeedinfo = leadfeedinfo;
     }
 }

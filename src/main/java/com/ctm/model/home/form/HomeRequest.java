@@ -1,21 +1,21 @@
 package com.ctm.model.home.form;
 
-import com.ctm.model.Request;
+import com.ctm.model.formData.Request;
 
 public class HomeRequest implements Request<HomeQuote> {
 
-    private String transactionId;
+    private Long transactionId;
 
     private String clientIpAddress;
 
     private HomeQuote home;
 
     @Override
-    public String getTransactionId() {
+    public Long getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(String transactionId) {
+    public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
     }
 

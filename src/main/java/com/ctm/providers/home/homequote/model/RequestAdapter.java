@@ -1,10 +1,14 @@
 package com.ctm.providers.home.homequote.model;
 
-import com.ctm.model.home.form.CoverAmounts;
-import com.ctm.model.home.form.HomeQuote;
-import com.ctm.model.home.form.HomeRequest;
-import com.ctm.model.home.form.SpecifiedPersonalEffects;
+import com.ctm.model.home.form.*;
 import com.ctm.providers.home.homequote.model.request.*;
+import com.ctm.providers.home.homequote.model.request.Address;
+import com.ctm.providers.home.homequote.model.request.BusinessActivity;
+import com.ctm.providers.home.homequote.model.request.Occupancy;
+import com.ctm.providers.home.homequote.model.request.PolicyHolder;
+import com.ctm.providers.home.homequote.model.request.Property;
+import com.ctm.providers.home.homequote.model.request.SecurityFeatures;
+import com.ctm.providers.home.homequote.model.request.WhenMovedIn;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -25,6 +29,7 @@ public class RequestAdapter {
             quoteRequest.setHomeCover(true);
             quoteRequest.setContentsCover(true);
             isContentsCover = true;
+            isHomeCover = true;
         } else if (CoverTypeEnum.HOME.equals(coverType)) {
             quoteRequest.setHomeCover(true);
             isHomeCover = true;
@@ -66,10 +71,45 @@ public class RequestAdapter {
             quoteRequest.setJointPolicyHolder(createJointPolicyHolder(quote.getPolicyHolder()));
         }
 
-//        quoteRequest.setContact(createContact(quote.getc));
+        if (convertToBoolean(quote.getPolicyHolder().getAnyoneOlder())) {
+            quoteRequest.setOldestPolicyHolder(createOldestPolicyHolder(quote.getPolicyHolder()));
+        }
+
+        quoteRequest.setContact(createContact(quote.getPolicyHolder()));
+
+        quoteRequest.setPreviouslyCovered(convertToBoolean(quote.getDisclosures().getPreviousInsurance()));
+
+        if (quoteRequest.isPreviouslyCovered()) {
+            quoteRequest.setPreviousCover(createPreviousCover(quote.getDisclosures()));
+        }
+
+        quoteRequest.setHadClaims(convertToBoolean(quote.getDisclosures().getClaims()));
 
         return quoteRequest;
 
+    }
+
+    private static PreviousCover createPreviousCover(Disclosures disclosures) {
+        PreviousCover previousCover = new PreviousCover();
+        previousCover.setAtCurrentAddress(convertToBoolean(disclosures.getAtCurrentAddress()));
+        previousCover.setInsurer(disclosures.getInsurer());
+        previousCover.setExpiryDate(AUS_FORMAT.parseLocalDate(disclosures.getExpiry()));
+        previousCover.setCoverLength(Integer.parseInt(disclosures.getCoverLength()));
+        return previousCover;
+    }
+
+    private static Contact createContact(com.ctm.model.home.form.PolicyHolder formPolicyHolder) {
+        Contact contact = new Contact();
+        contact.setEmail(formPolicyHolder.getEmail());
+        contact.setPhone(formPolicyHolder.getPhone());
+        return contact;
+    }
+
+    private static PolicyHolder createOldestPolicyHolder(com.ctm.model.home.form.PolicyHolder formPolicyHolder) {
+        PolicyHolder policyHolder = new PolicyHolder();
+        policyHolder.setDateOfBirth(AUS_FORMAT.parseLocalDate(formPolicyHolder.getOldestPersonDob()));
+        policyHolder.setRetried(convertToOptionalBoolean(formPolicyHolder.getOver55()));
+        return policyHolder;
     }
 
     private static PolicyHolder createJointPolicyHolder(com.ctm.model.home.form.PolicyHolder formPolicyHolder) {
@@ -112,12 +152,12 @@ public class RequestAdapter {
         if (convertToBoolean(coverAmounts.getSpecifyPersonalEffects())) {
             final SpecifiedPersonalEffect specifiedPersonalEffects = new SpecifiedPersonalEffect();
             final SpecifiedPersonalEffects formSpecifiedPersonalEffects = coverAmounts.getSpecifiedPersonalEffects();
-            specifiedPersonalEffects.setBicycles(convertToBigDecimal(formSpecifiedPersonalEffects.getBicycleentry()));
-            specifiedPersonalEffects.setMusicalInstruments(convertToBigDecimal(formSpecifiedPersonalEffects.getMusicalentry()));
-            specifiedPersonalEffects.setClothing(convertToBigDecimal(formSpecifiedPersonalEffects.getClothingentry()));
-            specifiedPersonalEffects.setJewelleries(convertToBigDecimal(formSpecifiedPersonalEffects.getJewelleryentry()));
-            specifiedPersonalEffects.setSportingEquipment(convertToBigDecimal(formSpecifiedPersonalEffects.getSportingentry()));
-            specifiedPersonalEffects.setPhotographicEquipment(convertToBigDecimal(formSpecifiedPersonalEffects.getPhotoentry()));
+            specifiedPersonalEffects.setBicycles(convertToBigDecimal(formSpecifiedPersonalEffects.getBicycle()));
+            specifiedPersonalEffects.setMusicalInstruments(convertToBigDecimal(formSpecifiedPersonalEffects.getMusical()));
+            specifiedPersonalEffects.setClothing(convertToBigDecimal(formSpecifiedPersonalEffects.getClothing()));
+            specifiedPersonalEffects.setJewelleries(convertToBigDecimal(formSpecifiedPersonalEffects.getJewellery()));
+            specifiedPersonalEffects.setSportingEquipment(convertToBigDecimal(formSpecifiedPersonalEffects.getSporting()));
+            specifiedPersonalEffects.setPhotographicEquipment(convertToBigDecimal(formSpecifiedPersonalEffects.getPhoto()));
             personalEffects.setSpecifiedPersonalEffects(specifiedPersonalEffects);
         }
         return personalEffects;

@@ -1,6 +1,8 @@
 package com.ctm.providers.home.homequote.model.request;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
+import org.joda.time.LocalDate;
 
 public class PreviousCover {
 
@@ -8,6 +10,7 @@ public class PreviousCover {
 
     private String insurer;
 
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate expiryDate;
 
     private int coverLength;

@@ -1,5 +1,7 @@
 package com.ctm.providers.home.homequote.model.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
 import org.joda.time.LocalDate;
 
 public class PolicyHolder {
@@ -10,6 +12,7 @@ public class PolicyHolder {
 
     private String surname;
 
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateOfBirth;
 
     private Boolean retried;
