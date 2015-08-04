@@ -30,7 +30,7 @@
 			var success = false;
 
 			$.ajax({
-				url: "ajax/xml/verint_rcapi.jsp?action=" + action,
+				url: "ajax/xml/pauseResumeCall?action=" + action,
 				dataType: "xml",
 				type: "GET",
 				async: false,
@@ -38,13 +38,14 @@
 				isFatalError:false,
 				useDefaultErrorHandling:false,
 				success: function(){
+				alert(success);
 					success = true;
 					health_application_compliance.seize(isMuted);
 				},
 				error: function(obj, txt, errorThrown) {
 
 					meerkat.modules.errorHandling.error({
-						message:		"The recording could not be paused/started. Please notify your supervisor if this continues to occur: " + obj.responseText + ' ' + errorThrown,
+						message:		"The recording could not be paused/started. Please notify your supervisor if this continues to occur: "  + errorThrown,
 						page:			"application_compliance.tag",
 						description:	"health_application_compliance.callback().  AJAX Request failed: " + obj.responseText + ' ' + errorThrown,
 						data:			"state = " + isMuted,
