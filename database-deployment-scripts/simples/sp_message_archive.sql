@@ -75,9 +75,11 @@ BEGIN
 				INTO _failedJoinExists, _phoneNumber1, _phoneNumber2
 				FROM (
 					SELECT 
-						th.TransactionId AS transactionId, 
+						MAX(th.TransactionId) AS transactionId, 
 						MAX(detailsPhoneMobile.textValue) AS phoneNumber1, 
-						MAX(detailsPhoneOther.textValue) AS phoneNumber2
+						MAX(detailsPhoneOther.textValue) AS phoneNumber2,
+						COUNT(touchInclude.id) AS touchIncludeCount,
+						COUNT(touchExclude.id) AS touchEncludeCount
 					FROM aggregator.transaction_header AS th
 					LEFT JOIN ctm.touches AS touchInclude 
 						ON touchInclude.transaction_id = th.TransactionId
@@ -93,12 +95,13 @@ BEGIN
 						ON th.transactionId = detailsPhoneOther.transactionid
 						AND detailsPhoneOther.xpath = 'health/application/other'
 					WHERE th.rootId = _tranId
-					HAVING COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
 					UNION ALL
 					SELECT 
-						th.TransactionId AS transactionId, 
+						MAX(th.TransactionId) AS transactionId, 
 						MAX(detailsPhoneMobile.textValue) AS phoneNumber1, 
-						MAX(detailsPhoneOther.textValue) AS phoneNumber2
+						MAX(detailsPhoneOther.textValue) AS phoneNumber2,
+						COUNT(touchInclude.id) AS touchIncludeCount,
+						COUNT(touchExclude.id) AS touchEncludeCount
 					FROM aggregator.transaction_header2_cold AS th
 					LEFT JOIN ctm.touches AS touchInclude 
 						ON touchInclude.transaction_id = th.TransactionId
@@ -114,8 +117,8 @@ BEGIN
 						ON th.transactionId = detailsPhoneOther.transactionid
 						AND detailsPhoneOther.fieldId = 252
 					WHERE th.rootId = _tranId
-					HAVING COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
 				) AS t
+				HAVING SUM(touchIncludeCount) > 0 AND SUM(touchEncludeCount) = 0
 				ORDER BY transactionId DESC
 				LIMIT 1;
 
@@ -125,9 +128,11 @@ BEGIN
 					INTO _failedJoinExists, _phoneNumber1, _phoneNumber2
 					FROM (
 						SELECT 
-						th.TransactionId AS transactionId, 
+						MAX(th.TransactionId) AS transactionId, 
 						MAX(detailsPhoneMobile.textValue) AS phoneNumber1, 
-						MAX(detailsPhoneOther.textValue) AS phoneNumber2
+						MAX(detailsPhoneOther.textValue) AS phoneNumber2,
+						COUNT(touchInclude.id) AS touchIncludeCount,
+						COUNT(touchExclude.id) AS touchEncludeCount
 						FROM aggregator.transaction_header AS th
 						LEFT JOIN ctm.touches AS touchInclude 
 							ON touchInclude.transaction_id = th.TransactionId
@@ -147,13 +152,13 @@ BEGIN
 							FROM simples.message_duplicates
 							WHERE messageId = _messageId
 						)
-						GROUP BY th.rootId
-						HAVING COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
 						UNION ALL
 						SELECT 
-						th.TransactionId AS transactionId, 
+						MAX(th.TransactionId) AS transactionId, 
 						MAX(detailsPhoneMobile.textValue) AS phoneNumber1, 
-						MAX(detailsPhoneOther.textValue) AS phoneNumber2
+						MAX(detailsPhoneOther.textValue) AS phoneNumber2,
+						COUNT(touchInclude.id) AS touchIncludeCount,
+						COUNT(touchExclude.id) AS touchEncludeCount
 						FROM aggregator.transaction_header2_cold AS th
 						LEFT JOIN ctm.touches AS touchInclude 
 							ON touchInclude.transaction_id = th.TransactionId
@@ -173,9 +178,8 @@ BEGIN
 							FROM simples.message_duplicates
 							WHERE messageId = _messageId
 						)
-						GROUP BY th.rootId
-						HAVING COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
 					) AS t
+					HAVING SUM(touchIncludeCount) > 0 AND SUM(touchEncludeCount) = 0
 					ORDER BY transactionId DESC
 					LIMIT 1;
 					
@@ -208,9 +212,6 @@ BEGIN
 					DELETE FROM simples.message
 					WHERE id = _messageId;
 
-					DELETE FROM simples.message_duplicates
-					WHERE messageId = _messageId;
-
 					IF _failedJoinExists THEN
 
 						SET totalFailedJoinsCount = totalFailedJoinsCount + 1;
@@ -229,7 +230,15 @@ BEGIN
 							SELECT _tranId, _sourceId, _userId, _statusId, NOW(), NOW(), contactName, _phoneNumber1, _phoneNumber2, state
 							FROM simples.message_archived
 							WHERE id = _messageId;
+						ELSE
+							DELETE FROM simples.message_duplicates
+							WHERE messageId = _messageId;
 						END IF;
+
+					ELSE
+
+						DELETE FROM simples.message_duplicates
+						WHERE messageId = _messageId;
 
 					END IF;
 
