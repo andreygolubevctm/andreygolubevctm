@@ -80,12 +80,8 @@
 		</c:otherwise>
 	</c:choose>
 
-	<!--  Modernizr -->
-	<c:if test="${isDev eq false}">
-		<script src='//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js'></script>
-	</c:if>
-
-	<script>window.Modernizr || document.write('<script src="${assetUrl}framework/lib/js/modernizr-2.7.1.min.js">\x3C/script>')</script>
+		<%--  Modernizr --%>
+		<script src='${assetUrl}framework/lib/js/modernizr-2.8.3.min.js'></script>
 
 		<!--[if lt IE 9]>
 			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
