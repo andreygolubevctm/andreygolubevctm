@@ -1,0 +1,73 @@
+/**
+ * Styles for the data*.jsp pages.
+ */
+html, body {height:100%; margin: 0; padding: 0; }
+
+html>body {
+	font-size: 16px;
+	font-size: 68.75%;
+	overflow:scroll;
+}
+
+body, table, input, select  {
+	font-family: Verdana, helvetica, arial, sans-serif;
+	font-size: 11px;
+	background: #fff;
+	color: #333;
+}
+body, table {
+	padding: 20px;
+}
+h1, h2 {
+	font-family: 'trebuchet ms', verdana, arial;
+	padding: 10px;
+	margin: 0
+}
+h1 {
+	font-size: large;
+	padding: 10px 0px;
+}
+
+.element {
+	font-family:courier;
+	font-size:12px;
+	margin-left:20px;
+}
+.open  {
+	color:blue; 
+}
+.text {
+	color:black;
+}
+
+#buildIdentifierRow {
+	margin: 0;
+}
+#buildIdentifier {
+	color: #930;
+}
+
+table {
+	border-collapse: collapse;
+}
+table th {
+	background-color: #666;
+	border: 1px solid #333;
+	color: #fff;
+	padding: 3px 5px;
+}
+table td {
+	border: 1px solid #ccc;
+	padding: 3px 5px;
+}
+
+.dataSettings table,
+.dataConfig table {
+	width: 100%;
+}
+.dataConfig table td,
+.dataSettings table td,
+.dataConfig table th,
+.dataSettings table th {
+	font-family: monospace;
+}
