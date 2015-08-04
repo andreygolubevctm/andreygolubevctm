@@ -240,8 +240,19 @@
 
 	<xsl:template name="description">
 		<xsl:param name="productId" />
+		<xsl:param name="productType" />
 		<xsl:if test="$productId = 'BUDD-05-29'">
-			<xsl:text>&lt;strong&gt;Save up to 35% online.&lt;/strong&gt; Budget Direct is Money Magazine's 2015 Insurer Of The Year and Winner of ServiceRage Australia's Happiest Car &amp; Home Insurance Customers Award 2014.</xsl:text>
+			<xsl:variable name="percentage">
+				<xsl:choose>
+					<xsl:when test="$productType = 'HHZ'">
+						<xsl:text>35</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>20</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:text>&lt;b&gt;Save up to </xsl:text><xsl:value-of select="$percentage" /><xsl:text>% online.&lt;/b&gt; Budget Direct is Money Magazine's 2015 Insurer Of The Year and Winner of ServiceRage Australia's Happiest Car &amp; Home Insurance Customers Award 2014.</xsl:text>
 		</xsl:if>
 	</xsl:template>
 
@@ -253,13 +264,13 @@
 			<xsl:when test="$productId = 'BUDD-05-29'">
 				<xsl:choose>
 					<xsl:when test="$productType = 'HHB'">
-						&lt;strong&gt;SPECIAL OFFER:&lt;/strong&gt; Price includes &lt;strong&gt;20% Discount on  Smart Home Insurance&lt;/strong&gt; when you buy online from Money Magazine's Insurer of the Year.
+						<xsl:text>&lt;b&gt;SPECIAL OFFER:&lt;/b&gt; Price includes &lt;b&gt;20% Discount on  Smart Home Insurance&lt;/b&gt; when you buy online from Money Magazine's Insurer of the Year.</xsl:text>
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						&lt;strong&gt;SPECIAL OFFER:&lt;/strong&gt; Price includes &lt;strong&gt;20% on Smart Contents Insurance&lt;/strong&gt; when you buy online from Money Magazine's Insurer of the Year.
+						<xsl:text>&lt;b&gt;SPECIAL OFFER:&lt;/b&gt; Price includes &lt;b&gt;20% on Smart Contents Insurance&lt;/b&gt; when you buy online from Money Magazine's Insurer of the Year.</xsl:text>
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
-						&lt;strong&gt;SPECIAL OFFER:&lt;/strong&gt; Price includes &lt;strong&gt;35% Discount on combined Smart Home &amp; Contents Insurance&lt;/strong&gt; when you buy online from Money Magazine's Insurer of the Year.
+						<xsl:text>&lt;b&gt;SPECIAL OFFER:&lt;/b&gt; Price includes &lt;b&gt;35% Discount on combined Smart Home &amp; Contents Insurance&lt;/b&gt; when you buy online from Money Magazine's Insurer of the Year.</xsl:text>
 					</xsl:when>
 				</xsl:choose>
 			</xsl:when>
