@@ -14,15 +14,13 @@
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
-<jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDeta	ilsService" scope="page" />
+<jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
 
 <c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}" />
 <c:set var="sessionId" 		value="${pageContext.session.id}" />
 <c:set var="transactionId"	value="${data.current.transactionId}" />
 <c:set var="emailAddress" 	value="${fn:trim(emailAddress)}" />
 <c:if test="${empty updateName}"><c:set var="updateName" value="${true}"/></c:if>
-
-<go:log>TID: ${transactionId}</go:log>
 
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>
 
