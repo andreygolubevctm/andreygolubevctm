@@ -37,8 +37,7 @@
 				cache: false,
 				isFatalError:false,
 				useDefaultErrorHandling:false,
-				success: function(result){
-				alert(result);
+				success: function(){
 					success = true;
 					health_application_compliance.seize(isMuted);
 				},
