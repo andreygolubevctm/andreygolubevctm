@@ -30,22 +30,22 @@
 			var success = false;
 
 			$.ajax({
-				url: "ajax/xml/pauseResumeCall?action=" + action,
-				dataType: "xml",
+				url: "ajax/xml/pauseResumeCall.json?action=" + action,
+				dataType: "json",
 				type: "GET",
 				async: false,
 				cache: false,
 				isFatalError:false,
 				useDefaultErrorHandling:false,
-				success: function(){
-				alert(success);
+				success: function(result){
+				alert(result);
 					success = true;
 					health_application_compliance.seize(isMuted);
 				},
 				error: function(obj, txt, errorThrown) {
-
+					var errors=eval("(" + obj.responseText+ ')');
 					meerkat.modules.errorHandling.error({
-						message:		"The recording could not be paused/started. Please notify your supervisor if this continues to occur: "  + errorThrown,
+						message:		"The recording could not be paused/started. Please notify your supervisor if this continues to occur: "  + errors.errors[0].message,
 						page:			"application_compliance.tag",
 						description:	"health_application_compliance.callback().  AJAX Request failed: " + obj.responseText + ' ' + errorThrown,
 						data:			"state = " + isMuted,

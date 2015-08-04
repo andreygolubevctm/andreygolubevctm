@@ -1,13 +1,12 @@
 package com.ctm.router.health.simples;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
+import com.ctm.model.Error;
 import com.ctm.services.SessionDataService;
 import com.ctm.services.SettingsService;
 import com.ctm.services.simples.VerintService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,16 +14,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 @WebServlet(urlPatterns = {
-        "/ajax/xml/pauseResumeCall"
+        "/ajax/xml/pauseResumeCall.json"
 })
 public class PhoneRouter extends HttpServlet {
-
-    private static final long serialVersionUID = 13L;
-    private static final Logger logger = Logger.getLogger(PhoneRouter.class.getName());
 
     @SuppressWarnings("UnusedDeclaration")
     public PhoneRouter() {
@@ -40,6 +37,7 @@ public class PhoneRouter extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String uri = request.getRequestURI();
         VerintService verintService = new VerintService();
+        PrintWriter writer = response.getWriter();
      //Set content type based on extention
         if (uri.endsWith(".json")) {
             response.setContentType("application/json");
@@ -50,13 +48,13 @@ public class PhoneRouter extends HttpServlet {
 
         // Route the requests ///////////////////////////////////////////////////////////////////////////////
         try {
-            if (uri.endsWith("ajax/xml/pauseResumeCall")) {
-                verintService.pauseResumeRecording(request, response, SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH"));
+            if (uri.endsWith("ajax/xml/pauseResumeCall.json")) {
+                writer.write(verintService.pauseResumeRecording(request, response, SettingsService.setVerticalAndGetSettingsForPage(request, "HEALTH")));
             } else {
                 response.sendError(SC_NOT_FOUND);
             }
-        } catch (DaoException | ConfigSettingException e) {
-            throw new ServletException(e.getMessage());
+        } catch (Exception e) {
+            writeErrors(e,writer,response);
         }
 
     }
@@ -64,5 +62,11 @@ public class PhoneRouter extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
     }
-
+    private void writeErrors(final Exception e, final PrintWriter writer, final HttpServletResponse response) {
+        final com.ctm.model.Error error = new Error();
+        error.addError(new Error(e.getMessage()));
+        JSONObject json = error.toJsonObject(true);
+        response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        writer.print(json.toString());
+    }
 }

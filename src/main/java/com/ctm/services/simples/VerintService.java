@@ -15,7 +15,6 @@ import org.xml.sax.SAXException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class VerintService {
 
@@ -29,7 +28,7 @@ public class VerintService {
      * @throws EnvironmentException
      * @throws ConfigSettingException
      */
-    public static String getVerintResponse(PageSettings settings, String paramUrl) throws EnvironmentException, ConfigSettingException {
+    private static String getVerintResponse(PageSettings settings, String paramUrl) throws EnvironmentException, ConfigSettingException {
         String resultMaster,resultSlave, result;
         String masterUrl = settings.getSetting("verintMaster");
         String slaveUrl = settings.getSetting("verintSlave");
@@ -61,9 +60,9 @@ public class VerintService {
      * @return
      * @throws ServiceException
      */
-    public String pauseResumeRecording(HttpServletRequest request,HttpServletResponse response,PageSettings settings) throws IOException, ServletException {
+    public String pauseResumeRecording(HttpServletRequest request,HttpServletResponse response,PageSettings settings) throws  ServletException {
         XmlNode xmlNode;
-        String result = null;
+        String result;
         try {
             SessionDataService sessionDataService = new SessionDataService();
             AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
@@ -79,7 +78,7 @@ public class VerintService {
                     "agent.agent=" + agentId + "&" +
                     "responseType=XML&" +
                     "attribute.key=Contact.ContentType&" +
-                    "attribute.value= audio &" +
+                    "attribute.value=audio&" +
                     "attribute.key=Contact.Requestor&" +
                     "attribute.value=CTM";
             result  = getVerintResponse(settings, paramUrl);
@@ -90,22 +89,18 @@ public class VerintService {
                 XmlParser parser = new XmlParser();
                 xmlNode = parser.parse(result);
                 if(xmlNode.get("success/text()")==null ||  !xmlNode.get("success/text()").toString().equalsIgnoreCase("true") ){
-                    throw new ServletException("Failed response " +  xmlNode.get("errorMessage/text()").toString());
+                    throw new ServletException( xmlNode.get("errorMessage/text()").toString());
                 }
                 if(xmlNode.get("isMaster/text()")==null ||  !xmlNode.get("isMaster/text()").toString().equalsIgnoreCase("true") ){
                     throw new ServletException("Failed: Can not find Master server" + action);
                 }
             }
         }catch(SAXException se){
-            response.setStatus(405);
-            response.getWriter().write("<response><success>false</success>\n" +
-                    "<errorMessage>Invalid Response.</errorMessage></response>");
             logger.info("Failed response while calling Verint API");
+            throw new ServletException("Invalid Response.",se);
         }catch ( ConfigSettingException | ServletException | RuntimeException se){
-            response.setStatus(405);
-            response.getWriter().write("<response><success>false</success>\n" +
-                    "<errorMessage>"+se.getMessage()+"</errorMessage></response>");
             logger.info("Failed response while calling Verint API"+se.getMessage());
+            throw new ServletException(se.getMessage(),se);
         }
         return result;
     }
