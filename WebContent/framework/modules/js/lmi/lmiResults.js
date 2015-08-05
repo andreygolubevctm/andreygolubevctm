@@ -283,10 +283,10 @@
 
             var time = meerkat.modules.performanceProfiling.endTest('results');
 
-            var score
-            if (time < 800) {
+            var score;
+            if (time < 1000) {
                 score = meerkat.modules.performanceProfiling.PERFORMANCE.HIGH;
-            } else if (time < 8000 && meerkat.modules.performanceProfiling.isIE8() === false) {
+            } else if (time < 2000 && meerkat.modules.performanceProfiling.isIE8() === false) {
                 score = meerkat.modules.performanceProfiling.PERFORMANCE.MEDIUM;
             } else {
                 score = meerkat.modules.performanceProfiling.PERFORMANCE.LOW;
@@ -402,11 +402,6 @@
 
         if (Results.getDisplayMode() !== 'features') {
 
-            // Force a refresh if we need to rebuild the features. Would be needed if the results were initially loaded in Price mode.
-            var forceRefresh = (needToBuildFeatures === true);
-
-            Results.setDisplayMode('features', forceRefresh);
-
             // On XS this will make the columns fit into the viewport. Necessary to do before pagination calculations.
             startColumnWidthTracking();
 
@@ -423,8 +418,6 @@
             // Refresh XS pagination
             Results.pagination.show(true);
             $('header .xs-results-pagination').removeClass('hidden');
-
-            needToBuildFeatures = false;
             $(document.body).removeClass('priceMode');
             $(window).scrollTop(0);
             if (doTracking) {

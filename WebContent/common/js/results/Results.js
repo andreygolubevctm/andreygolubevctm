@@ -66,8 +66,8 @@ Results = {
 				// same goes for filtering by some field
 				sortBy: "price.annually",
 				sortByMethod: Results.model.defaultSortMethod,
-				sortDir: "asc"
-
+				sortDir: "asc",
+				randomizeMatchingPremiums: false
 			},
 			frequency: "annually",
 			displayMode: "price",

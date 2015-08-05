@@ -315,6 +315,94 @@ ResultsModel = {
 					Results.model.addFilter( "availability.price." + Results.settings.frequency, "value", options );
 				}
 
+				if ((Results.settings.sort.randomizeMatchingPremiums === true)) {
+
+					// do a pre-sort first as working on the returned products won't work because all the products are returned grouped by provider
+					// this is done to sort by price
+					Results.model.sort(false);
+
+					// if cover level tabs is used for another vertical, we sort and arrange price according to group.
+					if (meerkat.modules.coverLevelTabs.isEnabled()) {
+						var priceNode = typeof Results.settings.paths.price.premium !== 'undefined' ? Results.settings.paths.price.premium : Results.settings.paths.price.annually;
+
+						// sort the products by cover level first and if need be, sort by price
+						Results.model.sortedProducts = Results.model.sortedProducts.sort(function(a, b) {
+							if ((typeof a !== 'undefined' && typeof b !== 'undefined') && (a.available === 'Y' && b.available === 'Y')) {
+								return a.info.coverLevel.localeCompare(b.info.coverLevel) || a[priceNode] - b[priceNode];
+							}
+
+							return 0;
+						});
+					}
+
+					var  currentProduct,
+						previousProduct,
+						newProductOrder = [],
+						startIndex = 0,
+						endIndex = 0,
+						priceMatch = false,
+						tempProductOrder = [];
+
+					// loop through all the sorted products
+					_.each(Results.model.sortedProducts, function massageSortedProducts(result, index){
+
+						// alternate any pricing results if two or more results have the exact same price
+						previousProduct = currentProduct;
+						currentProduct = result;
+
+						if ((typeof previousProduct !== 'undefined' && typeof currentProduct !== 'undefined')  && (previousProduct.available == 'Y' && currentProduct.available == 'Y')
+							&& (previousProduct.service != currentProduct.service) && (previousProduct.price == currentProduct.price)
+						) {
+							if (!priceMatch) priceMatch = true;
+
+							// set the startIndex once
+							if (startIndex == 0) {
+								startIndex = index - 1;
+								tempProductOrder.push(previousProduct);
+							}
+
+							// keep updating the endIndex
+							endIndex = index;
+							tempProductOrder.push(currentProduct);
+						} else {
+							if (priceMatch) {
+								// Fisher-Yates (aka Knuth) Shuffle. Everyday shufflin' ...
+								var currentIndex = tempProductOrder.length, temporaryValue, randomIndex ;
+
+								// While there remain elements to shuffle...
+								while (0 !== currentIndex) {
+
+									// Pick a remaining element...
+									randomIndex = Math.floor(Math.random() * currentIndex);
+									currentIndex -= 1;
+
+									// And swap it with the current element.
+									temporaryValue = tempProductOrder[currentIndex];
+									tempProductOrder[currentIndex] = tempProductOrder[randomIndex];
+									tempProductOrder[randomIndex] = temporaryValue;
+								}
+
+								// put the sorted products into the newProductOrder array
+								for (var i = startIndex; i <= endIndex; i++) {
+									newProductOrder[i] = tempProductOrder.shift();
+								}
+
+								// reset the vars
+								startIndex = 0;
+								endIndex = 0;
+								priceMatch = false;
+								tempProductOrder = [];
+							}
+
+							// and add the current product as per normal
+							newProductOrder[index] = result;
+						}
+					});
+
+					Results.model.returnedProducts = newProductOrder; // set the new order (if there was a re-order)
+					Results.model.sortedProducts = []; // reset the sortedProducts array
+				}
+
 				Results.model.filterAndSort(false);
 
 				Results.view.show();

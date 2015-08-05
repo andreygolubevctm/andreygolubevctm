@@ -16,8 +16,8 @@
 <%-- EDIT THIS SHIT ONLY! --%>
 <%-- -------------------- --%>
 <%-- TODO: This would be CARLMI/HOMELMI in new version --%>
-<c:set var="vertical" value="Homelmi" /> <%-- 'Carlmi', 'Homelmi' --%>
-<c:set var="date" value="2015-06-15" /> <%-- Date in the file name --%>
+<c:set var="vertical" value="Carlmi" /> <%-- 'Carlmi', 'Homelmi' --%>
+<c:set var="date" value="2015-07-13" /> <%-- Date in the file name --%>
 <c:set var="debug" value="false"/> <%-- This will stop all Mysql transactions when true --%>
 <c:set var="restart" value="false"/> <%-- Doesn't do much anymore. Used to TRUNCATE TABLE, but was removed... --%>
 <c:set var="step_1" value="true"/>
@@ -759,17 +759,17 @@ body {
 					templateVar="%${col}%"
 					startRow="0" endRow="2"
 					encodeHtml="true"
-					/>
-					<c:if test="${featuresMainName[0] != badData }">
-						<c:set var="categoryName">'${fn:trim(featuresMainName[0])}'</c:set>
+				/>
+				<c:if test="${featuresMainName[0] != badData }">
+					<c:set var="categoryName">'${fn:trim(featuresMainName[0])}'</c:set>
+				</c:if>
+				<c:if test="${featuresMainName[1] != badData }">
+					<c:set var="featureName">${fn:trim(featuresMainName[1])}</c:set>
+					<c:if test="${fn:length(featureName) == 1 }"> <!-- Cater for additional information sorting (prevent ordering as 1, 10, 11, 12, 2, 3, 4) -->
+						<c:set var="featureName">0${featureName}</c:set>
 					</c:if>
-					<c:if test="${featuresMainName[1] != badData }">
-						<c:set var="featureName">${fn:trim(featuresMainName[1])}</c:set>
-						<c:if test="${fn:length(featureName) == 1 }"> <!-- Cater for additional information sorting (prevent ordering as 1, 10, 11, 12, 2, 3, 4) -->
-							<c:set var="featureName">0${featureName}</c:set>
-						</c:if>
-						<c:set var="featureName">'${featureName}'</c:set>
-					</c:if>
+					<c:set var="featureName">'${featureName}'</c:set>
+				</c:if>
 
 				<%-- Iterate for each row --%>
 				<c:forEach var="row" begin="2" end="${rowz}">
@@ -779,96 +779,96 @@ body {
 						templateVar="'%4%'${crazyDelim}'%3%'${crazyDelim}'%${col}%'${crazyDelim}'%${col+1}%'"
 						startRow="${row}" endRow="${row+1}"
 						encodeHtml="true"
-						/>
-						<c:set var="featuresMainClean1" value="${fn:replace(featuresMain, '[', '')}" />
-						<c:set var="featuresMainClean2" value="${fn:replace(featuresMainClean1, ']', '')}" />
-						<c:set var="featuresMainArray" value="${fn:split(featuresMainClean2, crazyDelim)}" />
+					/>
+					<c:set var="featuresMainClean1" value="${fn:replace(featuresMain, '[', '')}" />
+					<c:set var="featuresMainClean2" value="${fn:replace(featuresMainClean1, ']', '')}" />
+					<c:set var="featuresMainArray" value="${fn:split(featuresMainClean2, crazyDelim)}" />
 
-						<%-- Lettuce find the product ID for this --%>
-						<c:set var="productID">''</c:set>
-						<c:set var="detailsID">''</c:set>
-						<c:forEach var="product" items="${productsData.rows}" varStatus="status">
-							<c:set var="productRef">'${product.ref}'</c:set>
-							<c:set var="productName">'${product.name}'</c:set>
-							<c:if test="${featuresMainArray[0] eq productRef && featuresMainArray[1] eq productName}">
-								<c:set var="productID">${product.id}</c:set>
-							</c:if>
-						</c:forEach>
-						<c:set var="featureValue" value="'${fn:trim(fn:substring(featuresMainArray[2], 1, fn:length(featuresMainArray[2])-1))}'"/>
-						<c:set var="featureExtraValue" value="'${fn:trim(fn:substring(featuresMainArray[3], 1, fn:length(featuresMainArray[3])-1))}'"/>
-
-						<c:if test="${featureValue == badData2 }">
-							<c:set var="featureValue" value="''"/>
+					<%-- Lettuce find the product ID for this --%>
+					<c:set var="productID">''</c:set>
+					<c:set var="detailsID">''</c:set>
+					<c:forEach var="product" items="${productsData.rows}" varStatus="status">
+						<c:set var="productRef">'${product.ref}'</c:set>
+						<c:set var="productName">'${product.name}'</c:set>
+						<c:if test="${featuresMainArray[0] eq productRef && featuresMainArray[1] eq productName}">
+							<c:set var="productID">${product.id}</c:set>
 						</c:if>
-						<c:if test="${featureExtraValue == badData2 }">
-							<c:set var="featureExtraValue" value="''"/>
+					</c:forEach>
+					<c:set var="featureValue" value="'${fn:trim(fn:substring(featuresMainArray[2], 1, fn:length(featuresMainArray[2])-1))}'"/>
+					<c:set var="featureExtraValue" value="'${fn:trim(fn:substring(featuresMainArray[3], 1, fn:length(featuresMainArray[3])-1))}'"/>
+
+					<c:if test="${featureValue == badData2 }">
+						<c:set var="featureValue" value="''"/>
+					</c:if>
+					<c:if test="${featureExtraValue == badData2 }">
+						<c:set var="featureExtraValue" value="''"/>
+					</c:if>
+					<%-- Lettuce find the feature ID for this --%>
+					<c:forEach var="details" items="${detailsData.rows}" varStatus="status">
+						<c:set var="detailsName">${details.name}</c:set>
+						<c:if test="${fn:length(detailsName) == 1 }"> <!-- Cater for additional information sorting (prevent ordering as 1, 10, 11, 12, 2, 3, 4) -->
+							<c:set var="detailsName">0${detailsName}</c:set>
 						</c:if>
-						<%-- Lettuce find the feature ID for this --%>
-						<c:forEach var="details" items="${detailsData.rows}" varStatus="status">
-							<c:set var="detailsName">${details.name}</c:set>
-							<c:if test="${fn:length(detailsName) == 1 }"> <!-- Cater for additional information sorting (prevent ordering as 1, 10, 11, 12, 2, 3, 4) -->
-								<c:set var="detailsName">0${detailsName}</c:set>
-							</c:if>
-							<c:set var="detailsName">'${detailsName}'</c:set>
-							<c:set var="detailsCategory">'${details.category}'</c:set>
-							<c:set var="featureNameClean" value="${fn:replace(featureName, check, clean)}" />
-							<c:set var="categoryNameClean" value="${fn:replace(categoryName, check, clean)}" />
+						<c:set var="detailsName">'${detailsName}'</c:set>
+						<c:set var="detailsCategory">'${details.category}'</c:set>
+						<c:set var="featureNameClean" value="${fn:replace(featureName, check, clean)}" />
+						<c:set var="categoryNameClean" value="${fn:replace(categoryName, check, clean)}" />
 
-							<c:if test="${(featureNameClean eq detailsName) && categoryNameClean eq detailsCategory}">
-								<c:set var="detailsID">${details.id}</c:set>
-							</c:if>
-						</c:forEach>
-
-						<%-- Special case for Additional Information Section. If 'AI' is not specified for the value then default to it --%>
-						<c:set var="contains" value="false" />
-						<c:forEach var="item" items="${AICategoryIdList}">
-							<c:if test="${item eq detailsID}">
-								<c:set var="contains" value="true" />
-							</c:if>
-						</c:forEach>
-						<c:if test="${contains eq true && (featureValue == badData && featureExtraValue != badData)}">
-							<c:set var="featureValue" value="${defaultAI}"/>
+						<c:if test="${(featureNameClean eq detailsName) && categoryNameClean eq detailsCategory}">
+							<c:set var="detailsID">${details.id}</c:set>
 						</c:if>
+					</c:forEach>
 
-						<%-- Special case for Additional Information Section. If 'AI' IS specified for the value but has no ExtraValue then remove it --%>
-						<c:if test="${featureValue == defaultAI && featureExtraValue == badData }">
-							<c:set var="featureValue" value="''"/>
+					<%-- Special case for Additional Information Section. If 'AI' is not specified for the value then default to it --%>
+					<c:set var="contains" value="false" />
+					<c:forEach var="item" items="${AICategoryIdList}">
+						<c:if test="${item eq detailsID}">
+							<c:set var="contains" value="true" />
 						</c:if>
+					</c:forEach>
+					<c:if test="${contains eq true && (featureValue == badData && featureExtraValue != badData)}">
+						<c:set var="featureValue" value="${defaultAI}"/>
+					</c:if>
 
-						<%-- Temporary Truncation of data due to database size - Pending feedback 		--%>
-						<%-- -------------------------------------------------------------------------- --%>
-						<c:if test="${(fn:length(featureValue)) > 45 }">
-							<go:log>VALUE: ${fn:length(featureValue)} : ${featureValue}</go:log>
-							<c:set var="featureValue" value="${fn:substring(featureValue, 0, 43)}'"/>
-						</c:if>
+					<%-- Special case for Additional Information Section. If 'AI' IS specified for the value but has no ExtraValue then remove it --%>
+					<c:if test="${featureValue == defaultAI && featureExtraValue == badData }">
+						<c:set var="featureValue" value="''"/>
+					</c:if>
 
-						<c:if test="${(fn:length(featureExtraValue)) > 999 }">
-							<go:log>DESCRIPTION: ${fn:length(featureExtraValue)} : ${featureExtraValue}</go:log>
-							<c:set var="featureExtraValue" value="${fn:substring(featureExtraValue, 0, 997)}'"/>
-						</c:if>
-						<go:log>Done </go:log>
-						<%-- -------------------------------------------------------------------------- --%>
+					<%-- Temporary Truncation of data due to database size - Pending feedback 		--%>
+					<%-- -------------------------------------------------------------------------- --%>
+					<c:if test="${(fn:length(featureValue)) > 45 }">
+						<go:log>VALUE: ${fn:length(featureValue)} : ${featureValue}</go:log>
+						<c:set var="featureValue" value="${fn:substring(featureValue, 0, 43)}'"/>
+					</c:if>
 
-						<c:choose>
-							<c:when test="${detailsID eq badData || productID eq badData}">
-								<go:log>ERROR: Bad Data with DetailID or ProductID: OMITTING ${featureName} || ${featuresMainArray[0]} [ FID: ${detailsID} | PID: ${productID } ]</go:log>
-								<div class="error">ERROR: Bad Data (Row ${row}, Col ${col}) with DetailID or ProductID: OMITTING ${featureName } || ${featuresMainArray[0] } [ FID: ${detailsID } | PID: ${productID } ]</div>
-							</c:when>
-							<c:otherwise>
-								<%--<go:log>${featureName } || ${featuresMainArray[0] } [ FID: ${detailsID } | PID: ${productID } ]</go:log>--%>
-								${go:appendString(features_main , prefix)}
-								${go:appendString(features_main , prefixBracket)}
-								<c:set var="prefix" value="," />
-								${go:appendString(features_main , productID)}
-								${go:appendString(features_main , prefix)}
-								${go:appendString(features_main , detailsID)} <%-- FID --%>
-								${go:appendString(features_main , prefix)}
-								${go:appendString(features_main , featureValue)}
-								${go:appendString(features_main , prefix)}
-								${go:appendString(features_main , featureExtraValue)}
-								${go:appendString(features_main , ')')}
-							</c:otherwise>
-						</c:choose>
+					<c:if test="${(fn:length(featureExtraValue)) > 999 }">
+						<go:log>DESCRIPTION: ${fn:length(featureExtraValue)} : ${featureExtraValue}</go:log>
+						<c:set var="featureExtraValue" value="${fn:substring(featureExtraValue, 0, 997)}'"/>
+					</c:if>
+					<go:log>Done </go:log>
+					<%-- -------------------------------------------------------------------------- --%>
+
+					<c:choose>
+						<c:when test="${detailsID eq badData || productID eq badData}">
+							<go:log>ERROR: Bad Data with DetailID or ProductID: OMITTING ${featureName} || ${featuresMainArray[0]} [ FID: ${detailsID} | PID: ${productID } ]</go:log>
+							<div class="error">ERROR: Bad Data (Row ${row}, Col ${col}) with DetailID or ProductID: OMITTING ${featureName } || ${featuresMainArray[0] } [ FID: ${detailsID } | PID: ${productID } ]</div>
+						</c:when>
+						<c:otherwise>
+							<%--<go:log>${featureName } || ${featuresMainArray[0] } [ FID: ${detailsID } | PID: ${productID } ]</go:log>--%>
+							${go:appendString(features_main , prefix)}
+							${go:appendString(features_main , prefixBracket)}
+							<c:set var="prefix" value="," />
+							${go:appendString(features_main , productID)}
+							${go:appendString(features_main , prefix)}
+							${go:appendString(features_main , detailsID)} <%-- FID --%>
+							${go:appendString(features_main , prefix)}
+							${go:appendString(features_main , featureValue)}
+							${go:appendString(features_main , prefix)}
+							${go:appendString(features_main , featureExtraValue)}
+							${go:appendString(features_main , ')')}
+						</c:otherwise>
+					</c:choose>
 				</c:forEach>
 				<go:log>Done Col: ${featureName}</go:log>
 			</c:forEach>
