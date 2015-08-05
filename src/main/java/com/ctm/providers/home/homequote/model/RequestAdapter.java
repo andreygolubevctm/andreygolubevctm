@@ -36,7 +36,6 @@ public class RequestAdapter {
         } else if (CoverTypeEnum.CONTENTS.equals(coverType)) {
             quoteRequest.setContentsCover(true);
             isContentsCover = true;
-            isHomeCover = true;
         }
 
         quoteRequest.setStartDate(AUS_FORMAT.parseLocalDate(quote.getStartDate()));

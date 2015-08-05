@@ -27,8 +27,6 @@ CREATE TABLE `ctm`.`home_product_content` (
   `callCentreHours`	varchar(100),
   `phoneNumber` varchar(50),
   `coverType` char(2) NOT NULL,
-  `offlineDiscount` varchar(10),
-  `onlineDiscount` varchar(10),
   `inclusions` text,
   `optionalExtras` text,
   `benefits` text,

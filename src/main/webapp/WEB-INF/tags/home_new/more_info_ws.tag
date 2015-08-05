@@ -272,7 +272,7 @@
 						<div class="hidden-md hidden-lg">
 							<h4>&nbsp;</h4>
 							<p>Underwriter: {{= underwriter.name }}</p>
-							<p>AFS Licence No: {{= underwriter.afslicenceNo }}</p>
+							<p>AFS Licence No: {{= underwriter.afsLicenceNo }}</p>
 						</div>
 					</div>
 				</div>
@@ -315,7 +315,7 @@
 
 				<div class="push-top-15">
 					<p>Underwriter: {{= underwriter.name }}</p>
-					<p>AFS Licence No: {{= underwriter.afslicenceNo }}</p>
+					<p>AFS Licence No: {{= underwriter.afsLicenceNo }}</p>
 				</div>
 			</div>
 
