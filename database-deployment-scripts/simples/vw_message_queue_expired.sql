@@ -21,6 +21,7 @@ CREATE OR REPLACE VIEW `simples`.`message_queue_expired` AS
 			(NOW() <  DATE_ADD(created,INTERVAL src.messageExpiry DAY) AND created > '2015-06-09 00:00:00')
 			OR statusId = 31 /*Completed as PM*/
 			OR statusId = 32 /*Changed Time for PM*/
+			OR statusId = 35 /*In Progress for PM*/
 		)
 
 		-- Is the source available at the current time?
