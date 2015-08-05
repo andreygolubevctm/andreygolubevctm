@@ -267,7 +267,7 @@
 						<xsl:text>&lt;b&gt;SPECIAL OFFER:&lt;/b&gt; Price includes &lt;b&gt;20% Discount on  Smart Home Insurance&lt;/b&gt; when you buy online from Money Magazine's Insurer of the Year.</xsl:text>
 					</xsl:when>
 					<xsl:when test="$productType = 'HHC'">
-						<xsl:text>&lt;b&gt;SPECIAL OFFER:&lt;/b&gt; Price includes &lt;b&gt;20% on Smart Contents Insurance&lt;/b&gt; when you buy online from Money Magazine's Insurer of the Year.</xsl:text>
+						<xsl:text>&lt;b&gt;SPECIAL OFFER:&lt;/b&gt; Price includes &lt;b&gt;20% Discount on Smart Contents Insurance&lt;/b&gt; when you buy online from Money Magazine's Insurer of the Year.</xsl:text>
 					</xsl:when>
 					<xsl:when test="$productType = 'HHZ'">
 						<xsl:text>&lt;b&gt;SPECIAL OFFER:&lt;/b&gt; Price includes &lt;b&gt;35% Discount on combined Smart Home &amp; Contents Insurance&lt;/b&gt; when you buy online from Money Magazine's Insurer of the Year.</xsl:text>
