@@ -153,7 +153,7 @@
 				<wsa:Action><xsl:value-of select="$SoapAction" /></wsa:Action>
 			</soap:Header>
 			<soap:Body>
-				<hsl:SubmitMembership>
+				<hsl:SubmitMembershipSTP>
 				<hsl:xmlFile>
 				<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
 				<MembershipApplication xmlns="http://www.hambs.com.au/MemberServices/MemberServices.xsd">
@@ -645,7 +645,7 @@
 				</hsl:xmlFile>
 				<hsl:BrokerID>CTMOMS</hsl:BrokerID>
 				<hsl:AgentID>CTMOMS</hsl:AgentID>
-				</hsl:SubmitMembership>
+				</hsl:SubmitMembershipSTP>
 			</soap:Body>
 		</soap:Envelope>
 	</xsl:template>
