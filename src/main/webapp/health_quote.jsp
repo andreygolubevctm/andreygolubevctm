@@ -29,10 +29,6 @@
 
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
-<c:set var="contactSplitTest" scope="request" value="false" />
-<c:if test="${empty param.action}">
-	<c:set var="contactSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
-</c:if>
 
 <%-- HTML --%>
 <layout:journey_engine_page title="Health Quote">
@@ -171,9 +167,7 @@
 		<%-- Slides --%>
 		<health_layout:slide_all_about_you />
 		<health_layout:slide_your_details />
-		<c:if test="${contactSplitTest}">
-			<health_layout:slide_your_contact />
-		</c:if>
+		<health_layout:slide_your_contact />
 		<health_layout:slide_results />
 		<health_layout:slide_application_details />
 		<health_layout:slide_payment_details />
