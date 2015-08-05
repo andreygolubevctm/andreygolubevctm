@@ -248,21 +248,20 @@
 			<core_new:sessioncam />
 		</c:if>
 
-	<!-- JS Libraries -->
+		<%-- JS Libraries --%>
+		<%--  Underscore --%>
+		<c:if test="${isDev eq false}">
+			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+		</c:if>
+		<script>window._ || document.write('<script src="${assetUrl}framework/lib/js/underscore-1.8.3.min.js">\x3C/script>')</script>
 
-		<!--  Underscore -->
-			<c:if test="${isDev eq false}">
-				<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-			</c:if>
-<script>window._ || document.write('<script src="${assetUrl}framework/lib/js/underscore-1.8.3.min.js">\x3C/script>')</script>
+		<%-- Fastclick --%>
+		<c:if test="${isDev eq false}">
+			<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js" async defer></script>
+		</c:if>
+		<script>window.FastClick || document.write('<script src="${assetUrl}framework/lib/js/fastclick-1.0.6.min.js" async defer>\x3C/script>')</script>
 
-		<!-- Fastclick -->
-			<c:if test="${isDev eq false}">
-				<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js" async defer></script>
-			</c:if>
-<script>window.FastClick || document.write('<script src="${assetUrl}framework/lib/js/fastclick-0.6.11.min.js" async defer>\x3C/script>')</script>
-
-		<!-- Extras -->
+		<%-- Extras --%>
 <script type="text/javascript" src="${assetUrl}framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
 <script type="text/javascript" src="${assetUrl}framework/jquery/plugins/qtip2/jquery.qtip.min.js" async defer></script>
 
