@@ -108,22 +108,22 @@ var healthFunds_HIF = {
 				healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
 			});
 
+			meerkat.modules.paymentGateway.setup({
+				"paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
+				"name" : 'health_payment_gateway',
+				"src": '${ctmSettings.getBaseUrl()}', <%-- the CTM iframe source URL --%>
+				"origin": '${hostOrigin}', <%-- the CTM host origin --%>
+				"providerCode": 'hif',
+				"brandCode": '${pageSettings.getBrandCode()}',
+				"handledType" :  {
+					"credit" : true,
+					"bank" : false
+				},
+				"paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
+				"clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
+				"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
+			});
 		}<%-- not loading quote --%>
-		meerkat.modules.paymentGateway.setup({
-			"paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
-			"name" : 'health_payment_gateway',
-			"src": '${ctmSettings.getBaseUrl()}', <%-- the CTM iframe source URL --%>
-			"origin": '${hostOrigin}', <%-- the CTM host origin --%>
-			"providerCode": 'hif',
-			"brandCode": '${pageSettings.getBrandCode()}',
-			"handledType" :  {
-				"credit" : true,
-				"bank" : false
-			},
-			"paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
-			"clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
-			"getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
-		});
 	},
 	unset: function() {
 		$('#hif_questionset').hide();
