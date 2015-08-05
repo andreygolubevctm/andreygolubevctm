@@ -264,7 +264,7 @@
 
 		<!-- Extras -->
 <script type="text/javascript" src="${assetUrl}framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
-<script type="text/javascript" src="${assetUrl}framework/jquery/plugins/qtip2/jquery.qtip.js"></script>
+<script type="text/javascript" src="${assetUrl}framework/jquery/plugins/qtip2/jquery.qtip.min.js" async defer></script>
 
 		<!--  Meerkat -->
 		<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
