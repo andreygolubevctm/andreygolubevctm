@@ -241,12 +241,6 @@
 		<!--  Includes -->
 		<agg:includes kampyle="${kampyle}" newKampyle="${true}" supertag="${superTagEnabled}" sessionPop="${sessionPop}" loading="false" fatalError="false"/>
 
-		<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
-			<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
-				<script type="text/javascript">if(typeof _satellite !== 'undefined') {_satellite.pageBottom();}</script>
-			</c:if>
-		</c:if>
-
 <c:if test="${empty skipJSCSS}">
 
 		<%-- User Tracking --%>
@@ -404,5 +398,12 @@
 		</div>
 
 	<jsp:invoke fragment="before_close_body" />
+
+	<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
+		<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
+			<script type="text/javascript">if(typeof _satellite !== 'undefined') {_satellite.pageBottom();}</script>
+		</c:if>
+	</c:if>
+
 </body>
 </go:html>
