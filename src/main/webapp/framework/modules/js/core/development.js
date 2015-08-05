@@ -43,7 +43,6 @@
         if(meerkat.site.vertical === 'travel' || meerkat.site.vertical === 'car'){
             return true;
         }
-
         return false;
     }
 
