@@ -46,9 +46,10 @@
 					</c:if>
 				</div>
 			</div>
-
-			<h2 class="more-info-promotion">Promotions &amp; Offers</h2>
-			{{= promo.promoText }}
+			{{ if (promo.promoText !== ''){ }}
+				<h2 class="more-info-promotion">Promotions &amp; Offers</h2>
+				{{= promo.promoText }}
+			{{ } }}
 
 			<h2 class="more-info-about">About the fund</h2>
 			{{= aboutFund }}
