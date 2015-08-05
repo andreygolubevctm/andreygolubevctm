@@ -85,11 +85,12 @@
 
 		<!--[if lt IE 9]>
 			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.10.2.min.js"><\/script>')</script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
 		<![endif]-->
 		<!--[if gte IE 9]><!-->
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
 		<!--<![endif]-->
 
 			<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/bootstrap.${pageSettings.getBrandCode()}.min.js?${revision}"></script>
@@ -117,11 +118,12 @@
 	<c:otherwise>
 		<!--[if lt IE 9]>
 			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.10.2.min.js"><\/script>')</script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
 			<![endif]-->
 			<!--[if gte IE 9]><!-->
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+				<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+				<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
 			<!--<![endif]-->
 	</c:otherwise>
 </c:choose>
@@ -257,9 +259,9 @@
 
 		<%-- Fastclick --%>
 		<c:if test="${isDev eq false}">
-			<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js" async defer></script>
+			<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js"></script>
 		</c:if>
-		<script>window.FastClick || document.write('<script src="${assetUrl}framework/lib/js/fastclick-1.0.6.min.js" async defer>\x3C/script>')</script>
+		<script>window.FastClick || document.write('<script src="${assetUrl}framework/lib/js/fastclick-0.6.11.min.js">\x3C/script>')</script>
 
 		<%-- Extras --%>
 <script type="text/javascript" src="${assetUrl}framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
