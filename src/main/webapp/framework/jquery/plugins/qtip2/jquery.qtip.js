@@ -7,8 +7,8 @@
  * http://jquery.org/license
  *
  * Date: Sat Sep 6 2014 08:21 EDT-0400
- * Plugins: None
- * Styles: core
+ * Plugins: viewport (for mobile), tips (for the little arrow icon pointing to the info box)
+ * Styles: None used in CtM
  */
 /*global window: false, jQuery: false, console: false, define: false */
 
