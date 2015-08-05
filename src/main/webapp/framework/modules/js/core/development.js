@@ -39,18 +39,27 @@
         }
     }
 
+    function hasAggregationService(){
+        if(meerkat.site.vertical === 'travel' || meerkat.site.vertical === 'car'){
+            return true;
+        }
+
+        return false;
+    }
+
     function initEnvironmentMonitor(){
+
         $("#copyright").after('<div class="buildEnvInfo_div">' +
             '<ul><li class="devEnv"></li><li>Transaction ID: <span class="devTransactionId"></span></li>' +
             '<li class="devService"></li><li>Revision #: <span class="devRevisionId"></span></li>' +
             '<li class="devService"><a href="data.jsp" target="_blank">View data bucket</a></li>' +
-            '<li class="devService aggEngine">Unable to change aggregation engine</li>' +
+            '<li class="devService aggEngine"></li>' +
             '</ul></div>');
 
         // $(".navMenu-row").before
-        $transactionIdHolder = $(".devTransactionId");
-        $environmentHolder = $(".devEnv");
-        $revisionHolder = $(".devRevisionId");
+        var $transactionIdHolder = $(".devTransactionId");
+        var $environmentHolder = $(".devEnv");
+        var $revisionHolder = $(".devRevisionId");
 
         $transactionIdHolder.text(meerkat.modules.transactionId.get());
         $environmentHolder.text(meerkat.site.environment);
@@ -59,28 +68,35 @@
 
 
 
-        if(meerkat.site.vertical === 'travel'){
-            $aggEngineContainer = $('.aggEngine');
 
+
+        if(hasAggregationService() === true){
+
+            var $aggEngineContainer = $('.aggEngine');
             $aggEngineContainer.html('Loading aggregators...');
 
+            var aggregationBaseUrl = "http://taws01_ass3:8080"; // for NXI
+
+
             meerkat.modules.comms.get({
-                url: "http://taws01_ass3:8080/launcher/wars",
+                url: aggregationBaseUrl+"/launcher/wars",
                 cache: false,
                 useDefaultErrorHandling: false,
                 errorLevel: "fatal",
                 onSuccess: function onSubmitSuccess(resultData) {
 
-                    var select = 'Aggregation engine: <select><option value="">Default</option>';
+                    var select = '<label>Aggregation service: <select id="developmentAggregatorEnvironment"><option value="">'+meerkat.site.environment+'</option>';
 
                     for(var i = 0; i<resultData.NXI.length; i++){
                         var obj = resultData.NXI[i];
-                        if(obj.context.lastIndexOf("travel-quote", 0) !== -1){
-                            select += '<option value="'+obj.context+'">'+obj.context+'</option>';
+
+                        // Add any travel-quote branch to the list (except for the default if viewing this on NXI)
+                        if(obj.context.indexOf("/travel-quote") !== -1 && (obj.context === "/travel-quote" && meerkat.site.environment === 'nxi') === false){
+                            select += '<option value="'+aggregationBaseUrl+obj.context+'">NXI'+obj.context+'</option>';
                         }
                     }
 
-                    select += '</select>';
+                    select += '</select></label>';
                     $aggEngineContainer.html(select);
                 }
             });
