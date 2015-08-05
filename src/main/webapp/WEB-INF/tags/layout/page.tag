@@ -252,9 +252,9 @@
 
 		<!--  Underscore -->
 			<c:if test="${isDev eq false}">
-				<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+				<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 			</c:if>
-<script>window._ || document.write('<script src="${assetUrl}framework/lib/js/underscore-1.5.2.min.js">\x3C/script>')</script>
+<script>window._ || document.write('<script src="${assetUrl}framework/lib/js/underscore-1.8.3.min.js">\x3C/script>')</script>
 
 		<!-- Fastclick -->
 			<c:if test="${isDev eq false}">

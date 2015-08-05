@@ -26,7 +26,7 @@
     }
 
     function renderResultsSnapshot() {
-        var template = $("#results-summary-template").html(),
+        var template = _.template($("#results-summary-template").html()),
             data = {};
 
         data.postcode = "Postcode " + $("#utilities_householdDetails_location").val().match(/\d+/)[0];
@@ -65,7 +65,7 @@
         data.isSpendEstimate = isSpendEstimate;
         data.segmentClass = isSpendEstimate ? "spend" : "usage";
 
-        var html = _.template(template, data, { variable: "data" });
+        var html = template(data);
         $("#results-summary-container").html(html);
         return html;
     }

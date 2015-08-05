@@ -8,29 +8,29 @@
         <span class="hidden-lg">Quote</span> <span class="hidden-md">is</span> based on:
     </span>
     <span class="segment vertical-middle">
-        {{= data.postcode }}
+        {{= obj.postcode }}
     </span>
 
-    {{ var segmentClass = data.isSpendEstimate ? "vertical-middle" : data.segmentClass }}
+    {{ var segmentClass = obj.isSpendEstimate ? "vertical-middle" : obj.segmentClass }}
 
-    {{ if(data.electricitySpend || data.electricityPeak || data.electricityOffPeak) { }}
+    {{ if(obj.electricitySpend || obj.electricityPeak || obj.electricityOffPeak) { }}
         <span class="segment {{= segmentClass }} ">
-            {{ if(data.isSpendEstimate) { }}
-                Electricity spend of {{= data.electricitySpend }}
+            {{ if(obj.isSpendEstimate) { }}
+                Electricity spend of {{= obj.electricitySpend }}
             {{ } else { }}
-                Electricity peak usage {{= data.electricityPeak }} <br>
-                Electricity off-peak usage {{= data.electricityOffPeak }}
+                Electricity peak usage {{= obj.electricityPeak }} <br>
+                Electricity off-peak usage {{= obj.electricityOffPeak }}
             {{ } }}
         </span>
     {{ } }}
 
-    {{ if(data.gasSpend || data.gasPeak || data.gasOffPeak) { }}
+    {{ if(obj.gasSpend || obj.gasPeak || obj.gasOffPeak) { }}
         <span class="segment segment-last {{= segmentClass }}">
-            {{ if(data.isSpendEstimate) { }}
-                Gas spend of {{= data.gasSpend }}
+            {{ if(obj.isSpendEstimate) { }}
+                Gas spend of {{= obj.gasSpend }}
             {{ } else { }}
-                Gas peak usage {{= data.gasPeak }} <br>
-                Gas off-peak usage {{= data.gasOffPeak }}
+                Gas peak usage {{= obj.gasPeak }} <br>
+                Gas off-peak usage {{= obj.gasOffPeak }}
             {{ } }}
         </span>
     {{ } }}
