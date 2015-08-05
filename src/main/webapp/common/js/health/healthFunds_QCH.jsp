@@ -27,40 +27,6 @@ var healthFunds_QCH = {
 			<%-- Reflow questions --%>
 			$('#QCH_questionset input').trigger('change');
 		}
-		else {
-
-
-
-			<c:set var="html">
-				<div id="QCH_questionset">
-					<c:set var="fieldXpath" value="health/payment/medicare/cardPosition" />
-					<form_new:row fieldXpath="${fieldXpath}" label="Position you appear on your medicare card">
-						<field_new:count_select xpath="${fieldXpath}" min="1" max="5" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition"/>
-					</form_new:row>
-				</div>
-			</c:set>
-			$('#health_payment_medicare-selection .content').append('<c:out value="${html}" escapeXml="false" />');
-
-
-			$('#QCH_questionset input').on('change', function() {
-				switch ($(this).val()) {
-				case 'Y':
-					$('#QCH_questionset .QCH').slideDown(200);
-					break;
-				default:
-					$('#QCH_questionset .QCH').slideUp(200, function(){ $(this).hide(); });
-				}
-			});
-
-
-
-
-		}<%-- /injection --%>
-
-
-
-
-
 
 		<%-- Run these if not loading a quote --%>
 		if (!$('body').hasClass('injectingFund')) {
