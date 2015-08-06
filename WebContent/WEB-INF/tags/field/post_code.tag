@@ -14,12 +14,7 @@
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
-<c:set var="inputType">
-	<c:choose>
-		<c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>tel</c:when>
-		<c:otherwise>text</c:otherwise>
-	</c:choose>
-</c:set>
+<c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
 
 <c:if test="${required}">
 	<c:set var="requiredAttribute" value=' required="required" data-msg-required="Please enter ${title}"' />

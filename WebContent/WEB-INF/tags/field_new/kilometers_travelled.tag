@@ -20,15 +20,10 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:set var="maxLength" value="7" />
 <c:set var="error_message">Please enter the number of kilometres the vehicle is driven per year</c:set>
-<c:set var="inputType">
-    <c:choose>
-        <c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>tel</c:when>
-        <c:otherwise>text</c:otherwise>
-    </c:choose>
-</c:set>
+<c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
 <c:set var="formatNum">
     <c:choose>
-        <c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>false</c:when>
+        <c:when test='${inputType eq "text"}'>false</c:when>
         <c:otherwise>true</c:otherwise>
     </c:choose>
 </c:set>

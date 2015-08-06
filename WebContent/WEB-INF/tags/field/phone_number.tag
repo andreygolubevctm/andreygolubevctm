@@ -22,12 +22,7 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="nameInput" value="${name}input" />
 <c:set var="xpathInput">${xpath}input</c:set>
-<c:set var="inputType">
-	<c:choose>
-		<c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>tel</c:when>
-		<c:otherwise>text</c:otherwise>
-	</c:choose>
-</c:set>
+<c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
 
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:set var="valueInput"><c:out value="${data[xpathInput]}" escapeXml="true"/></c:set>

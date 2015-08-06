@@ -12,15 +12,10 @@
 
 <jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
 <c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
-<c:set var="inputFieldType">
-    <c:choose>
-        <c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>tel</c:when>
-        <c:otherwise>text</c:otherwise>
-    </c:choose>
-</c:set>
+<c:set var="inputFieldType"><field_new:get_numeric_input_type /></c:set>
 <c:set var="formatNum">
     <c:choose>
-        <c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>false</c:when>
+        <c:when test='${inputType eq "text"}'>false</c:when>
         <c:otherwise>true</c:otherwise>
     </c:choose>
 </c:set>
