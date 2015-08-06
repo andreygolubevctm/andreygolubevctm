@@ -15,8 +15,7 @@
 		jQuery(document).ready(function($) {
 			if($('#provider-testing-key-required').length) {
 				meerkat.modules.dialogs.show({
-					htmlContent: $('#provider-key-required').html(),
-					className: 'provider-testing-key-required',
+					htmlContent: $('#provider-testing-key-required').html(),
 					onOpen: function(modalId) {
 						$("#" + modalId).find('.modal-closebar').remove();
 						$("#" + modalId).off('click');
