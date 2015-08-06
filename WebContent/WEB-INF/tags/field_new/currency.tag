@@ -23,9 +23,6 @@
 <%@ attribute name="otherElementName" 	required="false"	rtexprvalue="true"	description="The other element display name. Used for Validation Message" %>
 <%@ attribute name="altTitle"		 	required="false"	rtexprvalue="true"	description="Alternative title for percentage rules" %>
 
-<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
-<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
-
 <go:script marker="js-href" href="common/js/jquery.formatCurrency-1.4.0.js" />
 
 <%-- VARIABLES --%>

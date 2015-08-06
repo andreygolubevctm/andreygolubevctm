@@ -10,8 +10,6 @@
 <%@ attribute name="inputGroupText" required="true" rtexprvalue="true" description="Input group text" %>
 <%@ attribute name="inputGroupTextPosition" required="false" rtexprvalue="true" description="Position of input group text" %>
 
-<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
-<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
 <c:set var="inputFieldType"><field_new:get_numeric_input_type /></c:set>
 <c:set var="formatNum">
     <c:choose>

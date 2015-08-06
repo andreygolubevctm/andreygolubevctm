@@ -10,9 +10,6 @@
 <%@ attribute name="title" 		required="true"  rtexprvalue="true"	 description="title of the radio buttons" %>
 <%@ attribute name="helpId" 	required="false" rtexprvalue="true"  description="The rows help id (if non provided, help is not shown)" %>
 
-<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
-<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
-
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="inputType"><field_new:get_numeric_input_type /></c:set>

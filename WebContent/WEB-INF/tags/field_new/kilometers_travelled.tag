@@ -11,9 +11,6 @@
 <%@ attribute name="title" 		required="false" rtexprvalue="true"  description="title of the element" %>
 <%@ attribute name="placeHolder" required="false" rtexprvalue="true"  description="placeholder of the element" %>
 
-<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
-<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
-
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="id" value="${name}" />

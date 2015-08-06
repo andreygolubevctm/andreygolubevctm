@@ -15,9 +15,6 @@
 <%@ attribute name="allowMobile"	required="true" rtexprvalue="true"	 description="?" %>
 <%@ attribute name="labelName"		required="false" rtexprvalue="true"	 description="the label to display for validation" %>
 
-<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
-<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
-
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="nameInput" value="${name}input" />
