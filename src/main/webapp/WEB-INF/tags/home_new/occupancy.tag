@@ -70,5 +70,10 @@
 			url="/WEB-INF/option_data/month_full.html"/>
 	</form_new:row>
 
+	<core:js_template id="cover-type-warning-template">
+		<content:get key="coverTypeWarningCopy"/>
+	</core:js_template>
+
+	<field:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>
 
 </form_new:fieldset>
