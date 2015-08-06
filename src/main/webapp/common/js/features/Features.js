@@ -137,7 +137,7 @@ Features = {
 	},
 
 	populateFeatures: function() {
-		
+
 		// population of features into product columns
 		$.each( Features.results, function(index, product) {
 
@@ -250,9 +250,7 @@ Features = {
 		return html;
 	},
 
-	parseFeatureValue: function(value, decode) {
-
-		decode = decode || false;
+	parseFeatureValue: function(value) {
 
 		if (typeof value === 'undefined' || value === '') {
 			value = "&nbsp;";
@@ -263,15 +261,7 @@ Features = {
 			}
 		}
 
-		return decode === true ? Features.simpleDecodeHTML(value) : value;
-	},
-
-	simpleDecodeHTML: function(input) {
-		if(typeof input === "string") {
-			input = input.replace(/&lt;/gi, "<");
-			input = input.replace(/&gt;/gi, ">");
-		}
-		return input;
+		return value;
 	},
 
 	setExpandableRows: function(){
@@ -314,7 +304,7 @@ Features = {
 			$(this).parent().find('.active').removeClass('active');
 			$(this).addClass('active');
 			var $extras = $(Features.target+' .children[data-fid]'),
-			$parents = $extras.parent();
+				$parents = $extras.parent();
 			if($(this).hasClass('expandAllFeatures')) {
 				Features.toggleOpen($extras, $parents);
 			} else {
@@ -429,11 +419,11 @@ Features = {
 			var found = false;
 			var $currentRow = $('[data-featureId="' + featureId + '"]', $container);
 			$currentRow.each(function(){
-					var value = $.trim($(this).text());
-					if( !found && value != '' && value != "&nbsp;" ){
-						found = true;
-						return false; //break out
-					}
+				var value = $.trim($(this).text());
+				if( !found && value != '' && value != "&nbsp;" ){
+					found = true;
+					return false; //break out
+				}
 			});
 			if(!found){
 				$currentRow.parent().hide();
@@ -449,11 +439,11 @@ Features = {
 			var found = false;
 			var $currentRow = $('.children[data-fid="' + featureId + '"]', $container);
 			$currentRow.each(function(){
-					var value = $.trim($(this).text());
-					if( !found && value != '' && value != "&nbsp;" ){
-						found = true;
-						return false; //break out
-					}
+				var value = $.trim($(this).text());
+				if( !found && value != '' && value != "&nbsp;" ){
+					found = true;
+					return false; //break out
+				}
 			});
 			if(!found) {
 				$currentRow.closest('.cell').off('mousenter mousemove').removeClass('expandable').end().remove();
