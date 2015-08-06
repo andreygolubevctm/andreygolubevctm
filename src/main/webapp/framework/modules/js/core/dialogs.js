@@ -69,20 +69,20 @@ USAGE EXAMPLE: Call directly
 
 							'<div class="modal-content">' +
 								'<div class="modal-closebar">' +
-								'	<a href="javascript:;" class="btn btn-close-dialog needsclick"><span class="icon icon-cross"></span></a>' +
+								'	<a href="javascript:;" class="btn btn-close-dialog"><span class="icon icon-cross"></span></a>' +
 								'</div>' +
 								'<div class="navbar navbar-default xs-results-pagination visible-xs">' +
 									'<div class="container">' +
 										'<ul class="nav navbar-nav">' +
 											'<li>' +
-												'<button data-button="leftBtn" class="btn btn-back {{= leftBtn.className }} needsclick">{{= leftBtn.icon }} {{= leftBtn.label }}</button>' +
+												'<button data-button="leftBtn" class="btn btn-back {{= leftBtn.className }}">{{= leftBtn.icon }} {{= leftBtn.label }}</button>' +
 											'</li>' +
 											'<li class="navbar-text modal-title-label">' +
 											'	{{= title }}' +
 											'</li>' +
 											'{{ if(rightBtn.label != "" || rightBtn.icon != "") { }}' +
 												'<li class="right">' +
-													'<button data-button="rightBtn" class="btn btn-save {{= rightBtn.className }} needsclick">{{= rightBtn.label }} {{= rightBtn.icon }}</button>' +
+													'<button data-button="rightBtn" class="btn btn-save {{= rightBtn.className }}">{{= rightBtn.label }} {{= rightBtn.icon }}</button>' +
 												'</li>' +
 											'{{ } }}' +
 										'</ul>' +
