@@ -1,0 +1,311 @@
+/*
+
+	INSTRUCTIONS FOR UPDATING
+
+	When receiving an update to the CTM icon font, follow these instructions to convert style.css into core.icon-font.less
+	(remember to copy the font files EOT, SVG, TTF, WOFF into src/main/webapp\brand\ctm\fonts)
+
+	1. Ensure path to font is ../../../framework/fonts/
+
+	3. Add '.icon,' to the selector '[class^="icon-"], [class*=" icon-"]'
+
+	4. Add rule to .icon, [class^="icon-"], [class*=" icon-"]
+			vertical-align: middle;
+
+	4. Run this regex:
+		FIND   : \:before \{\n\s*(.*)\n\}
+		REPLACE:  {\n\t&:before { $1 }\n}
+
+	5. Find in files any instances of:
+			'\e
+		or
+			"\e
+		and check that the unicode number maps to the correct icon font below.
+
+	6. Check below for .icon-info-icon and if exists change to .icon-info
+
+*/
+
+// Used to generate fonts.
+.include-custom-font(@family: arial, @file: @file, @weight: normal, @style: normal){
+	@font-face {
+		font-family: @family;
+		src:url('../../../framework/fonts/@{file}.eot');
+		src:url('../../../framework/fonts/@{file}.eot?#iefix') format('embedded-opentype'),
+			url('../../../framework/fonts/@{file}.woff') format('woff'),
+			url('../../../framework/fonts/@{file}.ttf') format('truetype'),
+			url('../../../framework/fonts/@{file}.svg#@{family}') format('svg');
+		font-weight: @weight;
+		font-style: @style;
+	}
+}
+
+//
+// Calls the above mixins to add fonts to each brands css.
+// ---------------------------------------------------------------------------
+.include-custom-font(SourceSansProLight, SourceSansPro-Light, normal, normal);
+.include-custom-font(SourceSansProRegular, SourceSansPro-Regular, normal, normal);
+.include-custom-font(SourceSansProSemiBold, SourceSansPro-Semibold, normal, normal);
+
+
+// Icon fonts below.
+// When updating the icon fonts change the date on the end of the file to bust the cache. (Recommend using the date i.e YYYYMMDD)
+// Also check the blurry rendering fix below this
+@font-face {
+	font-family: 'framework_font';
+	src:url('../../../framework/fonts/CTM.eot?20150629');
+	src:url('../../../framework/fonts/CTM.eot?#iefix20150629') format('embedded-opentype'),
+		url('../../../framework/fonts/CTM.woff?20150629') format('woff'),
+		url('../../../framework/fonts/CTM.ttf?20150629') format('truetype'),
+		url('../../../framework/fonts/CTM.svg?20150629#CTM') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+//Seems to fix a chrome blurry rendering issue, and the font unloading problem is resolved under chrome M33. Remove this when chrome has updated.
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	@font-face {
+		font-family: 'framework_font';
+		src: url('../../../framework/fonts/CTM.svg?20150629#CTM') format('svg');
+	}
+}
+
+.icon, [class^="icon-"], [class*=" icon-"] {
+	font-family: 'framework_font';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	vertical-align: text-top;
+	display:inline-block;
+
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	// When an icon is inside an anchor/link inherit the line height so it's positioned correctly.
+	a &,
+	button & {
+		line-height: inherit;
+	}
+}
+
+.icon-tick {
+	&:before { content: "\e600"; }
+}
+.icon-cross {
+	&:before { content: "\e601"; }
+}
+.icon-info {
+	&:before { content: "\e602"; }
+}
+.icon-circle-cut {
+	&:before { content: "\e603"; }
+}
+.icon-arrow-left {
+	&:before { content: "\e604"; }
+}
+.icon-arrow-right {
+	&:before { content: "\e605";}
+}
+.icon-arrow-down {
+	&:before { content: "\e606"; }
+}
+.icon-arrow-up {
+	&:before { content: "\e607"; }
+}
+.icon-phone {
+	&:before { content: "\e608"; }
+}
+.icon-phone-hollow {
+	&:before { content: "\e628"; }
+}
+.icon-car-solid {
+	&:before { content: "\e609"; }
+}
+.icon-car {
+	&:before { content: "\e60a"; }
+}
+.icon-plane-solid {
+	&:before { content: "\e60b"; }
+}
+.icon-plane {
+	&:before { content: "\e60c"; }
+}
+.icon-money-solid {
+	&:before { content: "\e60d"; }
+}
+.icon-money {
+	&:before { content: "\e60e"; }
+}
+.icon-heart-solid {
+	&:before { content: "\e60f"; }
+}
+.icon-heart {
+	&:before { content: "\e610"; }
+}
+.icon-house-solid {
+	&:before { content: "\e611"; }
+}
+.icon-house {
+	&:before { content: "\e612"; }
+}
+.icon-health-solid {
+	&:before { content: "\e613"; }
+}
+.icon-health {
+	&:before { content: "\e614"; }
+}
+.icon-travel {
+	&:before { content: "\e615"; }
+}
+.icon-roadside {
+	&:before { content: "\e616"; }
+}
+.icon-life {
+	&:before { content: "\e617"; }
+}
+.icon-ip {
+	&:before { content: "\e618"; }
+}
+.icon-homeloan,
+.icon-home-loans {
+	&:before { content: "\e619"; }
+}
+.icon-contents {
+	&:before { content: "\e61a"; }
+}
+.icon-fuel {
+	&:before { content: "\e61b"; }
+}
+.icon-utilities,
+.icon-energy {
+	&:before { content: "\e61c"; }
+}
+.icon-ctp {
+	&:before { content: "\e61d"; }
+}
+.icon-blog {
+	&:before { content: "\e61e"; }
+}
+.icon-more {
+	&:before { content: "\e61f"; }
+}
+.icon-devices {
+	&:before { content: "\e620"; }
+}
+.icon-print {
+	&:before { content: "\e621"; }
+}
+.icon-search {
+	&:before { content: "\e622"; }
+}
+.icon-clock {
+	&:before { content: "\e623"; }
+}
+.icon-tag {
+	&:before { content: "\e624"; }
+}
+.icon-computer {
+	&:before { content: "\e625"; }
+}
+.icon-tick-hollow {
+	&:before { content: "\e626"; }
+}
+.icon-home,
+.icon-home-contents {
+	&:before { content: "\e627"; }
+}
+
+.icon-undo {
+	&:before { content: "\e900"; }
+}
+.icon-trophy {
+	&:before { content: "\e901"; }
+}
+.icon-filter {
+	&:before { content: "\e902"; }
+}
+.icon-cog {
+	&:before { content: "\e903"; }
+}
+.icon-envelope-alt {
+	&:before { content: "\e904"; }
+}
+.icon-envelope {
+	&:before { content: "\e905"; }
+}
+.icon-credit {
+	&:before { content: "\e906"; }
+}
+.icon-star {
+	&:before { content: "\e907"; }
+}
+.icon-star-empty {
+	&:before { content: "\e908"; }
+}
+.icon-th-list {
+	&:before { content: "\e909"; }
+}
+.icon-th-vert {
+	&:before { content: "\e90a"; }
+}
+.icon-reorder {
+	&:before { content: "\e90b"; }
+}
+.icon-ellipsis-vertical {
+	&:before { content: "\e90c"; }
+}
+.icon-ellipsis-horizontal {
+	&:before { content: "\e90d"; }
+}
+.icon-sort {
+	&:before { content: "\e90e"; padding: 0 2px 0 3px; }
+}
+.icon-angle-left {
+	&:before { content: "\e90f"; }
+}
+.icon-angle-right {
+	&:before { content: "\e910"; }
+}
+.icon-angle-up {
+	&:before { content: "\e911"; }
+}
+.icon-angle-down {
+	&:before { content: "\e912"; }
+}
+.icon-calendar {
+	&:before { content: "\e913"; }
+}
+
+.icon-radio-empty {
+	&:before { content: "\e914"; }
+}
+.icon-radio-selected {
+	&:before { content: "\e915"; }
+}
+
+.icon-quote-start {
+	&:before { content: "\e629"; }
+}
+.icon-quote-end {
+	&:before { content: "\e62a"; }
+}
+.icon-arrow-thick-down {
+	&:before { content: "\e62b"; }
+}
+.icon-arrow-thick-up {
+	&:before { content: "\e62c";}
+}
+.icon-arrow-thick-left {
+	&:before { content: "\e62d"; }
+}
+.icon-arrow-thick-right {
+	&:before { content: "\e62e"; }
+}
+.icon-location-pin {
+  &:before { content: "\e62f"; }
+}

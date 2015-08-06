@@ -21,7 +21,7 @@ From the command line:
 
 0. You must have nodejs installed.
 1. Install `grunt-cli` globally with `npm install -g grunt-cli`.
-2. Navigate to the root directory of your checkout (trunk), then run `npm install`. npm will look at [package.json](package.json) and automatically install the necessary local dependencies listed there.
+2. Navigate to src/main/javascript of your checkout, then run `npm install`. npm will look at [package.json](package.json) and automatically install the necessary local dependencies listed there.
 
 When completed, you'll be able to run the various Grunt commands provided from the command line.
 
@@ -30,10 +30,10 @@ Notifications for builds, errors, task responses will be pushed through [grunt-n
 ### Available Grunt commands
 
 #### Build - `grunt`
-Run `grunt` to run tests locally and compile the CSS and JavaScript into the appropriate `WebContent/brand` subfolder (whitelabeling support) and common `WebContent/framework/build` folders for other shared resourced. **Uses [recess](http://twitter.github.io/recess/) and [UglifyJS](http://lisperator.net/uglifyjs/) for compilation and minification respectively.**
+Run `grunt` to run tests locally and compile the CSS and JavaScript into the appropriate `/src/main/webapp/brand` subfolder (whitelabeling support) and common `src/main/webapp/framework/build` folders for other shared resourced. **Uses [recess](http://twitter.github.io/recess/) and [UglifyJS](http://lisperator.net/uglifyjs/) for compilation and minification respectively.**
 
 #### Only compile CSS and JavaScript - `grunt build`
-`grunt build` creates the `WebContent/framework/build` directory with compiled files. **Uses [recess](http://twitter.github.io/recess/) and [UglifyJS](http://lisperator.net/uglifyjs/) for compilation and minification respectively.**
+`grunt build` creates the `/src/main/webapp/framework/build` directory with compiled files. **Uses [recess](http://twitter.github.io/recess/) and [UglifyJS](http://lisperator.net/uglifyjs/) for compilation and minification respectively.**
 
 #### Tests - test/javascript `grunt test`
 Runs [JSHint](http://jshint.com) and [QUnit](http://qunitjs.com/) tests headlessly in [PhantomJS](http://phantomjs.org/) (used for CI).

@@ -65,7 +65,6 @@
 
 		<!-- Build Classes, Make WAR, and Build -->
 		<antcall target="_makewar">
-			<param name="JVM.version" value="1.7" />
 		</antcall>
 
 		<echo message="Build to ${target.prefix} environment SUCCESSFUL!" />
@@ -91,12 +90,11 @@
 
 		<!-- Build Classes, Make WAR, and Build -->
 		<antcall target="_makewar">
-			<param name="JVM.version" value="1.7" />
 		</antcall>
 
 		<echo message="Build to ${target.prefix} environment SUCCESSFUL!" />
 	</target>
-	
+
 
 	<target name="build.NXQ" depends="_init" description="Build new WAR to NXQ environment (on svn server, automatically on svn commit to build_NXQ)">
 		<property name="target.prefix" value="NXQ" />
@@ -113,7 +111,6 @@
 
 		<!-- Build Classes, Make WAR, and Build -->
 		<antcall target="_makewar">
-			<param name="JVM.version" value="1.7" />
 		</antcall>
 
 		<echo message="Build to ${target.prefix} environment SUCCESSFUL!" />
@@ -135,7 +132,6 @@
 
 		<!-- Build Classes, Make WAR, and Build -->
 		<antcall target="_makewar">
-			<param name="JVM.version" value="1.7" />
 		</antcall>
 
 		<echo message="Build to PRO environment SUCCESSFUL!" />
@@ -152,25 +148,6 @@
 			<format property="datestamp" pattern="yyyy-MM-dd HH:mm:ss z" locale="en,AU" />
 			<format property="release" pattern="yyyyMMdd.HHmm" locale="en,AU" />
 		</tstamp>
-	</target>
-
-	<target name="_confirm.go" description="Prompt the user to perform the build and release process">
-		<condition property="go.abort">
-			<or>
-				<not><isset property="target.prefix" /></not>
-				<not><isset property="war.context" /></not>
-				<not><isset property="build-info.release" /></not>
-			</or>
-		</condition>
-		<fail if="go.abort">Build configuration prompt is missing one or more required properties, and the build cannot continue.</fail>
-
-		<input message="Really build ${war.context} app to ${target.prefix} environment (enter “yes” to continue)? " addproperty="go.input" />
-		<condition property="go.abort">
-			<not>
-				<equals arg1="yes" arg2="${go.input}" casesensitive="false" trim="true" forcestring="true" />
-			</not>
-		</condition>
-		<fail if="go.abort">Aborting as requested.</fail>
 	</target>
 
 	<target name="_enableConfigs" description="Rename any environment-specific override files (settings etc) to enable them for the given environment prefix">
@@ -222,14 +199,7 @@
 		<echo message="Java classes and empty build/logs directories cleaned up successfully." />
 	</target>
 
-	<target name="_build" depends="_copyProperties" description="build java and copy files to classes folder"/>
-
-	<target name="_copyProperties" description="copy property files to the classes folder" >
-		<echo message="copy properties from ${deploy.config.dir}/${target.prefix}" />
-		<copy todir="${classes.dir}" overwrite="true">
-			<fileset dir="${deploy.config.dir}/${target.prefix}"/>
-		</copy>
-	</target>
+	<target name="_build" description="build java and copy files to classes folder"/>
 
 	<target name="_makewar" depends="_build" description="Build new WAR to given environment">
 		<condition property="makewar.abort">
