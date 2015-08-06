@@ -31,22 +31,23 @@ public class SimplesBlacklistService {
 	 * @throws ConfigSettingException
 	 * @return Success true, otherwise false
 	 */
-	public boolean addToBlacklist(HttpServletRequest request, String channel, String value, String operator, String comment) throws DaoException, ConfigSettingException{
+	public String addToBlacklist(HttpServletRequest request, String channel, String value, String operator, String comment) throws DaoException, ConfigSettingException{
 		BlacklistDao blacklistDao = new BlacklistDao();
 		int styleCodeId = ApplicationService.getBrandFromRequest(request).getId();
-
+		String result = null;
 		try {
 			int outcome = blacklistDao.add(styleCodeId, BlacklistChannel.findByCode(channel), value);
 			if (outcome > 0) {
 				writeBlacklistStamp(request, channel, value, "on", operator, comment);
+				result="success";
 			}else{
-				return false;
+				result="Entry already exist.";
 			}
 		} catch (DaoException e) {
-			logger.error("Could not add to blacklist" , e);
-			return false;
+			logger.error("Could not add to blacklist");
+			result=e.getMessage();
 		}
-		return true;
+		return result;
 	}
 
 
@@ -62,23 +63,24 @@ public class SimplesBlacklistService {
 	 * @throws ConfigSettingException
 	 * @return Success true, otherwise false
 	 */
-	public boolean deleteFromBlacklist(HttpServletRequest request, String channel, String value, String operator, String comment) throws DaoException, ConfigSettingException{
+	public String deleteFromBlacklist(HttpServletRequest request, String channel, String value, String operator, String comment) throws DaoException, ConfigSettingException{
 		BlacklistDao blacklistDao = new BlacklistDao();
 		int styleCodeId = ApplicationService.getBrandFromRequest(request).getId();
-
+		String result = null;
 		try {
 			int outcome = blacklistDao.delete(styleCodeId, BlacklistChannel.findByCode(channel), value);
 			if (outcome > 0) {
 				writeBlacklistStamp(request, channel, value, "off", operator, comment);
+				result="success";
 			}else{
-				return false;
+				result="Entry does not exist.";
 			}
 		}
 		catch (DaoException e) {
 			logger.error("Could not delete from blacklist" , e);
-			return false;
+			result="Failed to delete."+e.getMessage();
 		}
-		return true;
+		return result;
 	}
 
 	/**
