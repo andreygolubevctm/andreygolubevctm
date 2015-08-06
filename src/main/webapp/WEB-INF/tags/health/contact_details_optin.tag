@@ -4,7 +4,6 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
-<%@ attribute name="required" 	required="false"	rtexprvalue="true"	 description="Whether these are mandatory" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
@@ -23,11 +22,9 @@
 	<c:set var="competitionEnabled" value="${true}" />
 	</c:if>
 
-<!-- Name needs to mandatory for either the split test or the callcentre -->
-<c:if test="${callCentre or required}">
-	<c:set var="requiredCC" value="${true}" />
-</c:if>
-<c:if test="${empty required}">
+<!-- Name is mandatory for both online and callcentre, other fields only mandatory for online -->
+<c:set var="required" value="${true}" />
+<c:if test="${callCentre}">
 	<c:set var="required" value="${false}" />
 </c:if>
 
@@ -61,7 +58,7 @@
 
 				<c:set var="fieldXpath" value="${xpath}/name" />
 				<form_new:row label="First Name" fieldXpath="${fieldXpath}" className="clear">
-					<field:person_name xpath="${fieldXpath}" title="name" required="${requiredCC}" placeholder="${firstNamePlaceHolder}" />
+					<field:person_name xpath="${fieldXpath}" title="name" required="true" placeholder="${firstNamePlaceHolder}" />
 				</form_new:row>
 
 				<c:set var="fieldXpath" value="${xpath}/email" />
