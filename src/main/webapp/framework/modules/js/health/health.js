@@ -398,9 +398,6 @@
 				meerkat.modules.healthResults.toggleMarketingMessage(false);
 				meerkat.modules.healthResults.toggleResultsLowNumberMessage(false);
 
-				// Close the more info and/or modal
-				meerkat.modules.healthMoreInfo.close();
-
 				meerkat.modules.resultsHeaderBar.removeEventListeners();
 			}
 		};
