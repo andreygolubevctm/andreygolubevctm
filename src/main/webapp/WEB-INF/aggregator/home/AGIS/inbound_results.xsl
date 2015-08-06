@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-	exclude-result-prefixes="soapenv">
+				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+				xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+				exclude-result-prefixes="soapenv">
 
-<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- IMPORTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:import href="../../includes/utils.xsl"/>
 	<xsl:import href="../includes/get_price_availability.xsl"/>
 	<xsl:import href="../includes/product_details.xsl"/>
 
-<!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- PARAMETERS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:param name="productId">*NONE</xsl:param>
 	<xsl:param name="defaultProductId"><xsl:value-of select="$productId" /></xsl:param>
 	<xsl:param name="service"></xsl:param>
@@ -26,7 +26,7 @@
 			<xsl:when test="$service = 'AGIS_EXDD'">Dodo Home Insurance</xsl:when>
 		</xsl:choose>
 	</xsl:variable>
-<!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- MAIN TEMPLATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template match="/">
 
 		<xsl:variable name="validationErrors">
@@ -37,25 +37,25 @@
 		<xsl:choose>
 			<!-- If we have a response loop through and do the normal stuff-->
 			<xsl:when test="$validationErrors = '' and /soapenv:Envelope/soapenv:Body/response">
-					<xsl:for-each select="/soapenv:Envelope/soapenv:Body/response">
-						<xsl:choose>
-							<xsl:when test="quotesList/quote/onlinePrice/price/lumpSumPayable">
-								<xsl:call-template name="priceAvailable" >
-									<xsl:with-param name="price" select="quotesList/quote/onlinePrice/price"/>
-								</xsl:call-template>
-							</xsl:when>
-							<xsl:when test="quotesList/quote/offlinePrice/price/lumpSumPayable">
-								<xsl:call-template name="priceAvailable" >
-									<xsl:with-param name="price" select="quotesList/quote/offlinePrice/price"/>
-								</xsl:call-template>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:call-template name="noQuote" >
-									<xsl:with-param name="validationErrors" select="$validationErrors" />
-								</xsl:call-template>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:for-each>
+				<xsl:for-each select="/soapenv:Envelope/soapenv:Body/response">
+					<xsl:choose>
+						<xsl:when test="quotesList/quote/onlinePrice/price/lumpSumPayable">
+							<xsl:call-template name="priceAvailable" >
+								<xsl:with-param name="price" select="quotesList/quote/onlinePrice/price"/>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:when test="quotesList/quote/offlinePrice/price/lumpSumPayable">
+							<xsl:call-template name="priceAvailable" >
+								<xsl:with-param name="price" select="quotesList/quote/offlinePrice/price"/>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="noQuote" >
+								<xsl:with-param name="validationErrors" select="$validationErrors" />
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:for-each>
 			</xsl:when>
 			<!-- Otherwise assume we have an error -->
 			<xsl:otherwise>
@@ -67,7 +67,7 @@
 	</xsl:template>
 
 
-<!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- PRICES AVAILABLE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<xsl:template name="priceAvailable">
 
 		<xsl:param name="price"/>
@@ -296,50 +296,62 @@
 
 	</xsl:template>
 
-<!-- SUPPORT TEMPLATES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- SUPPORT TEMPLATES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<xsl:template name="productInfo">
+	<xsl:template name="productInfo">
 
-	<xsl:param name="price"/>
-	<xsl:param name="productId"/>
-	<xsl:param name="productType"/>
-	<xsl:param name="brandCode"/>
+		<xsl:param name="price"/>
+		<xsl:param name="productId"/>
+		<xsl:param name="productType"/>
+		<xsl:param name="brandCode"/>
 
-	<information><xsl:value-of select="$price/information" /></information>
-	<name>
-		<xsl:choose>
-			<xsl:when test="$brandCode = 'BUDD' and $productType = 'HHB'"><xsl:text>Smart Home Insurance</xsl:text></xsl:when>
-			<xsl:when test="$brandCode = 'BUDD' and $productType = 'HHC'"><xsl:text>Smart Contents Insurance</xsl:text></xsl:when>
-			<xsl:otherwise><xsl:value-of select="$price/name" /></xsl:otherwise>
-		</xsl:choose>
-	</name>
-	<description><xsl:value-of select="$price/des" /></description>
-	<offer><xsl:value-of select="$price/feature" /></offer>
-	<info><xsl:value-of select="$price/info" /></info>
-	<terms><xsl:value-of select="$price/terms" /></terms>
-</xsl:template>
+		<information><xsl:value-of select="$price/information" /></information>
+		<name>
+			<xsl:choose>
+				<xsl:when test="$brandCode = 'BUDD' and $productType = 'HHB'"><xsl:text>Smart Home Insurance</xsl:text></xsl:when>
+				<xsl:when test="$brandCode = 'BUDD' and $productType = 'HHC'"><xsl:text>Smart Contents Insurance</xsl:text></xsl:when>
+				<xsl:otherwise><xsl:value-of select="$price/name" /></xsl:otherwise>
+			</xsl:choose>
+		</name>
+		<des><xsl:value-of select="$price/des" /></des>
+		<description>
+			<!-- This is a temporary measure until the service can dynamically pass the product description -->
+			<xsl:call-template name="description" >
+				<xsl:with-param name="productId" select="$productId" />
+				<xsl:with-param name="productType" select="$productType" />
+			</xsl:call-template>
+		</description>
+		<offer>
+			<xsl:call-template name="offer" >
+				<xsl:with-param name="productId" select="$productId" />
+				<xsl:with-param name="productType" select="$productType" />
+			</xsl:call-template>
+		</offer>
+		<info><xsl:value-of select="$price/info" /></info>
+		<terms><xsl:value-of select="$price/terms" /></terms>
+	</xsl:template>
 
-<xsl:template name="priceInfo">
-	<xsl:param name="price"/>
+	<xsl:template name="priceInfo">
+		<xsl:param name="price"/>
 
-	<annual>
-		<xsl:choose>
-			<xsl:when test="$price/lumpSumPayable">
-				<available>Y</available>
-				<total>
-					<xsl:call-template name="util_mathCeil">
-						<xsl:with-param name="num" select="$price/lumpSumPayable" />
-					</xsl:call-template>
-				</total>
-			</xsl:when>
-			<xsl:otherwise>
-				<available>N</available>
-			</xsl:otherwise>
-		</xsl:choose>
-	</annual>
-	<monthly>
-		<xsl:choose>
-			<xsl:when test="$price/firstPaymentAmount and
+		<annual>
+			<xsl:choose>
+				<xsl:when test="$price/lumpSumPayable">
+					<available>Y</available>
+					<total>
+						<xsl:call-template name="util_mathCeil">
+							<xsl:with-param name="num" select="$price/lumpSumPayable" />
+						</xsl:call-template>
+					</total>
+				</xsl:when>
+				<xsl:otherwise>
+					<available>N</available>
+				</xsl:otherwise>
+			</xsl:choose>
+		</annual>
+		<monthly>
+			<xsl:choose>
+				<xsl:when test="$price/firstPaymentAmount and
 							$price/numberOfPayments and
 							$price/paymentAmount and
 							$price/totalAmount and
@@ -348,29 +360,29 @@
 							$price/paymentAmount != '' and
 							$price/totalAmount != ''">
 
-				<available>Y</available>
+					<available>Y</available>
 
-				<firstPayment><xsl:value-of select="format-number($price/firstPaymentAmount,'#.00')" /></firstPayment>
-				<paymentNumber><xsl:value-of select="$price/numberOfPayments" /></paymentNumber>
-				<amount><xsl:value-of select="format-number($price/paymentAmount,'#.00')" /></amount>
-				<total><xsl:value-of select="format-number($price/totalAmount,'#.00')" /></total>
-			</xsl:when>
-			<xsl:otherwise>
-				<available>N</available>
-			</xsl:otherwise>
-		</xsl:choose>
+					<firstPayment><xsl:value-of select="format-number($price/firstPaymentAmount,'#.00')" /></firstPayment>
+					<paymentNumber><xsl:value-of select="$price/numberOfPayments" /></paymentNumber>
+					<amount><xsl:value-of select="format-number($price/paymentAmount,'#.00')" /></amount>
+					<total><xsl:value-of select="format-number($price/totalAmount,'#.00')" /></total>
+				</xsl:when>
+				<xsl:otherwise>
+					<available>N</available>
+				</xsl:otherwise>
+			</xsl:choose>
 
-	</monthly>
-	<fortnightly>
-		<available>N</available>
-	</fortnightly>
-</xsl:template>
+		</monthly>
+		<fortnightly>
+			<available>N</available>
+		</fortnightly>
+	</xsl:template>
 
-<xsl:template name="productType">
+	<xsl:template name="productType">
 
-	<xsl:param name="type"/>
-	<xsl:param name="component"/>
-	<xsl:variable name="checkType"><xsl:value-of select="$component/@type" /></xsl:variable>
+		<xsl:param name="type"/>
+		<xsl:param name="component"/>
+		<xsl:variable name="checkType"><xsl:value-of select="$component/@type" /></xsl:variable>
 		<xsl:choose>
 			<!-- EXISTS -->
 			<xsl:when test="$checkType = $type">
@@ -394,135 +406,135 @@
 				</xsl:element>
 			</xsl:otherwise>
 		</xsl:choose>
-</xsl:template>
+	</xsl:template>
 
-<!-- Provider chose not to quote row (also used when an error occurs) -->
-<xsl:template name="noQuote">
-	<xsl:param name="validationErrors"/>
-	<results>
-		<result productId="{$defaultProductId}" service="{$service}">
-			<productAvailable>N</productAvailable>
-			<transactionId><xsl:value-of select="$transactionId"/></transactionId>
-			<xsl:choose>
-				<xsl:when test="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring">
-					<xsl:call-template name="error_message">
-						<xsl:with-param name="service" select="$service"/>
-						<xsl:with-param name="error_type">returned_fault</xsl:with-param>
-						<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultcode[1]"/></xsl:with-param>
-						<xsl:with-param name="code"></xsl:with-param>
-						<xsl:with-param name="data"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring[1]"/></xsl:with-param>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="/soapenv:Envelope/soapenv:Body/response/errorList/error/element = 'underwriting'">
-					<xsl:call-template name="error_message">
-						<xsl:with-param name="service" select="$service"/>
-						<xsl:with-param name="error_type">knock_out</xsl:with-param>
-						<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/response/errorList/error/message"/></xsl:with-param>
-						<xsl:with-param name="code"></xsl:with-param>
-						<xsl:with-param name="data"></xsl:with-param>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:when test="$validationErrors != ''">
-					<xsl:call-template name="error_message">
-						<xsl:with-param name="service" select="$service"/>
-						<xsl:with-param name="error_type">invalid</xsl:with-param>
-						<xsl:with-param name="message">
-						<xsl:copy-of select="$validationErrors"></xsl:copy-of>
-						</xsl:with-param>
-						<xsl:with-param name="code"></xsl:with-param>
-						<xsl:with-param name="data"></xsl:with-param>
-					</xsl:call-template>
-				</xsl:when>
-				<xsl:otherwise>
-					<error service="{$service}" type="unavailable">
-						<code></code>
-						<message>unknown</message>
-						<data></data>
-					</error>
-				</xsl:otherwise>
-			</xsl:choose>
-
-			<headline>
-				<name><xsl:value-of select="$productName" /></name>
-				<feature/>
-			</headline>
-			<brandCode><xsl:value-of select="substring-after( $service, 'AGIS_')" /></brandCode>
-		</result>
-	</results>
-</xsl:template>
-
-
-
-<!-- VALIDATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-<xsl:template name="validateResponse">
-
-	<!-- Check that we have a quote, otherwise do nothing and let other -->
-	<!-- processes handle the error (since it's not a validation problem anymore). -->
-	<xsl:if test="/soapenv:Envelope/soapenv:Body/response">
-		<!-- This errorList node is for a known error, such as a knock out. So just bypass validation if this node appears and handle it later. -->
-		<xsl:if test="not(/soapenv:Envelope/soapenv:Body/response/errorList)">
-			<xsl:for-each select="/soapenv:Envelope/soapenv:Body/response">
-				<!-- ACCEPTABLE -->
+	<!-- Provider chose not to quote row (also used when an error occurs) -->
+	<xsl:template name="noQuote">
+		<xsl:param name="validationErrors"/>
+		<results>
+			<result productId="{$defaultProductId}" service="{$service}">
+				<productAvailable>N</productAvailable>
+				<transactionId><xsl:value-of select="$transactionId"/></transactionId>
 				<xsl:choose>
-					<xsl:when test="quotesList/quote/onlinePrice/price/lumpSumPayable">
-						<xsl:if test="quotesList/quote/onlinePrice/price/lumpSumPayable = ''">
-							<validationError>EMPTY: onlinePrice/price/lumpSumPayable <xsl:value-of select="position()" />,</validationError>
-						</xsl:if>
-						<xsl:if test="not(quotesList/quote/onlinePrice/price/leadNumber)">
-							<validationError>MISSING: onlinePrice/price/leadNumber <xsl:value-of select="position()" />,</validationError>
-						</xsl:if>
-						<xsl:if test="not(quotesList/quote/onlinePrice/price/quoteUrl)">
-							<validationError>MISSING: onlinePrice/price/quoteUrl <xsl:value-of select="position()" />,</validationError>
-						</xsl:if>
+					<xsl:when test="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring">
+						<xsl:call-template name="error_message">
+							<xsl:with-param name="service" select="$service"/>
+							<xsl:with-param name="error_type">returned_fault</xsl:with-param>
+							<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultcode[1]"/></xsl:with-param>
+							<xsl:with-param name="code"></xsl:with-param>
+							<xsl:with-param name="data"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/soapenv:Fault/faultstring[1]"/></xsl:with-param>
+						</xsl:call-template>
 					</xsl:when>
-					<xsl:when test="quotesList/quote/offlinePrice/price/lumpSumPayable">
-						<xsl:if test="quotesList/quote/offlinePrice/price/lumpSumPayable = ''">
-							<validationError>MISSING: offlinePrice/price/lumpSumPayable <xsl:value-of select="position()" />,</validationError>
-						</xsl:if>
-						<xsl:if test="not(quotesList/quote/offlinePrice/price/leadNumber)">
-							<validationError>MISSING: offlinePrice/price/leadNumber <xsl:value-of select="position()" />,</validationError>
-						</xsl:if>
-						<xsl:if test="not(quotesList/quote/offlinePrice/price/quoteUrl)">
-							<validationError>MISSING: offlinePrice/price/quoteUrl <xsl:value-of select="position()" />,</validationError>
-						</xsl:if>
+					<xsl:when test="/soapenv:Envelope/soapenv:Body/response/errorList/error/element = 'underwriting'">
+						<xsl:call-template name="error_message">
+							<xsl:with-param name="service" select="$service"/>
+							<xsl:with-param name="error_type">knock_out</xsl:with-param>
+							<xsl:with-param name="message"><xsl:value-of select="/soapenv:Envelope/soapenv:Body/response/errorList/error/message"/></xsl:with-param>
+							<xsl:with-param name="code"></xsl:with-param>
+							<xsl:with-param name="data"></xsl:with-param>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:when test="$validationErrors != ''">
+						<xsl:call-template name="error_message">
+							<xsl:with-param name="service" select="$service"/>
+							<xsl:with-param name="error_type">invalid</xsl:with-param>
+							<xsl:with-param name="message">
+								<xsl:copy-of select="$validationErrors"></xsl:copy-of>
+							</xsl:with-param>
+							<xsl:with-param name="code"></xsl:with-param>
+							<xsl:with-param name="data"></xsl:with-param>
+						</xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
-						<validationError>MISSING: online and offline price/lumpSumPayable <xsl:value-of select="position()" />,</validationError>
+						<error service="{$service}" type="unavailable">
+							<code></code>
+							<message>unknown</message>
+							<data></data>
+						</error>
 					</xsl:otherwise>
 				</xsl:choose>
 
-				<xsl:choose>
-					<xsl:when test="quotesList/quote/hbkfsUrl">
-						<xsl:if test="quotesList/quote/hbkfsUrl = ''">
-							<validationError>EMPTY: quotesList/quote/hbkfsUrl <xsl:value-of select="position()" />,</validationError>
-						</xsl:if>
-					</xsl:when>
-					<xsl:otherwise>
+				<headline>
+					<name><xsl:value-of select="$productName" /></name>
+					<feature/>
+				</headline>
+				<brandCode><xsl:value-of select="substring-after( $service, 'AGIS_')" /></brandCode>
+			</result>
+		</results>
+	</xsl:template>
+
+
+
+	<!-- VALIDATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+	<xsl:template name="validateResponse">
+
+		<!-- Check that we have a quote, otherwise do nothing and let other -->
+		<!-- processes handle the error (since it's not a validation problem anymore). -->
+		<xsl:if test="/soapenv:Envelope/soapenv:Body/response">
+			<!-- This errorList node is for a known error, such as a knock out. So just bypass validation if this node appears and handle it later. -->
+			<xsl:if test="not(/soapenv:Envelope/soapenv:Body/response/errorList)">
+				<xsl:for-each select="/soapenv:Envelope/soapenv:Body/response">
+					<!-- ACCEPTABLE -->
+					<xsl:choose>
+						<xsl:when test="quotesList/quote/onlinePrice/price/lumpSumPayable">
+							<xsl:if test="quotesList/quote/onlinePrice/price/lumpSumPayable = ''">
+								<validationError>EMPTY: onlinePrice/price/lumpSumPayable <xsl:value-of select="position()" />,</validationError>
+							</xsl:if>
+							<xsl:if test="not(quotesList/quote/onlinePrice/price/leadNumber)">
+								<validationError>MISSING: onlinePrice/price/leadNumber <xsl:value-of select="position()" />,</validationError>
+							</xsl:if>
+							<xsl:if test="not(quotesList/quote/onlinePrice/price/quoteUrl)">
+								<validationError>MISSING: onlinePrice/price/quoteUrl <xsl:value-of select="position()" />,</validationError>
+							</xsl:if>
+						</xsl:when>
+						<xsl:when test="quotesList/quote/offlinePrice/price/lumpSumPayable">
+							<xsl:if test="quotesList/quote/offlinePrice/price/lumpSumPayable = ''">
+								<validationError>MISSING: offlinePrice/price/lumpSumPayable <xsl:value-of select="position()" />,</validationError>
+							</xsl:if>
+							<xsl:if test="not(quotesList/quote/offlinePrice/price/leadNumber)">
+								<validationError>MISSING: offlinePrice/price/leadNumber <xsl:value-of select="position()" />,</validationError>
+							</xsl:if>
+							<xsl:if test="not(quotesList/quote/offlinePrice/price/quoteUrl)">
+								<validationError>MISSING: offlinePrice/price/quoteUrl <xsl:value-of select="position()" />,</validationError>
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>
+							<validationError>MISSING: online and offline price/lumpSumPayable <xsl:value-of select="position()" />,</validationError>
+						</xsl:otherwise>
+					</xsl:choose>
+
+					<xsl:choose>
+						<xsl:when test="quotesList/quote/hbkfsUrl">
+							<xsl:if test="quotesList/quote/hbkfsUrl = ''">
+								<validationError>EMPTY: quotesList/quote/hbkfsUrl <xsl:value-of select="position()" />,</validationError>
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>
 							<validationError>MISSING: quotesList/quote/hbkfsUrl <xsl:value-of select="position()" />,</validationError>
-					</xsl:otherwise>
-				</xsl:choose>
+						</xsl:otherwise>
+					</xsl:choose>
 
-				<xsl:choose>
-					<xsl:when test="quotesList/quote/hckfsUrl">
-						<xsl:if test="quotesList/quote/hckfsUrl = ''">
-							<validationError>EMPTY: quotesList/quote/hckfsUrl <xsl:value-of select="position()" />,</validationError>
-						</xsl:if>
-					</xsl:when>
-					<xsl:otherwise>
+					<xsl:choose>
+						<xsl:when test="quotesList/quote/hckfsUrl">
+							<xsl:if test="quotesList/quote/hckfsUrl = ''">
+								<validationError>EMPTY: quotesList/quote/hckfsUrl <xsl:value-of select="position()" />,</validationError>
+							</xsl:if>
+						</xsl:when>
+						<xsl:otherwise>
 							<validationError>MISSING: quotesList/quote/hckfsUrl <xsl:value-of select="position()" />,</validationError>
-					</xsl:otherwise>
-				</xsl:choose>
+						</xsl:otherwise>
+					</xsl:choose>
 
-				<xsl:if test="not(quotesList/quote/underwriter/description)">
-					<validationError>MISSING: quotesList/quote/underwriter/description,</validationError>
-				</xsl:if>
-				<xsl:if test="not(quotesList/quote/brand/code)">
-					<validationError>MISSING: quotesList/quote/brand/code,</validationError>
-				</xsl:if>
-			</xsl:for-each>
+					<xsl:if test="not(quotesList/quote/underwriter/description)">
+						<validationError>MISSING: quotesList/quote/underwriter/description,</validationError>
+					</xsl:if>
+					<xsl:if test="not(quotesList/quote/brand/code)">
+						<validationError>MISSING: quotesList/quote/brand/code,</validationError>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:if>
 		</xsl:if>
-	</xsl:if>
-</xsl:template>
+	</xsl:template>
 
 </xsl:stylesheet>
