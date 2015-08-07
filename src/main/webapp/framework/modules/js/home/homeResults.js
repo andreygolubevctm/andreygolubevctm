@@ -59,7 +59,7 @@
 				price = {
 					annual: "price.annualPremium",
 					annually: "price.annualPremium",
-					monthly: "price.monthlyPremium"
+					monthly: "price.annualisedMonthlyPremium"
 				};
 				productAvailable = "available";
 				productName = "productName";

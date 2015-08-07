@@ -405,7 +405,7 @@
 <%-- Logo template --%>
 <core:js_template id="provider-logo-template">
 	{{ var img = obj.brandCode; }}
-	{{ if ((typeof img === 'undefined' || img === '') && obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
+	{{ if ((typeof img === 'undefined' || img === '' || img === null) && obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
 	<div class="companyLogo logo_{{= img }}"></div>
 </core:js_template>
 
