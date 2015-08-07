@@ -23,7 +23,7 @@ INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode
 SET @PROVIDER_ID = (SELECT ProviderId FROM ctm.provider_master WHERE providerCode='AI' AND status<>'X');
 INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode, styleCodeId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'serviceType','soap','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-  (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'outboundParams','quoteType=GetMultiPremium,subPartnerCode=CTM,agentCode=CTM,productQuoted=ELEGANT;CLASSICSB;ELEGANTPL;TRADIESURE;TRADIESUREPL','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+  (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'outboundParams','quoteType=GetMultiPremium,partnerCode=AUTOANDGEN,subPartnerCode=CTM,agentCode=CTM,productQuoted=ELEGANT;CLASSICSB;ELEGANTPL;TRADIESURE;TRADIESUREPL','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'inboundParams','quoteURL=https://dev.aiinsurance.com.au/buy/disclosure/','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'errorProductCode','AI-01-01','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',0,'serviceName','AI','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
@@ -34,8 +34,8 @@ INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode
   (@SERVICE_MASTER_ID, @PROVIDER_ID, 'LOCALHOST',0,'sslNoHostVerify','N','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, 'PRO',0,'soapUrl','https://b2b.aiinsurance.com.au/SSGateway/SSGateway.asmx','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, 'PRO',0,'inboundParams','defaultProductId=AI-01-01,quoteURL=https://secure.aiinsurance.com.au/buy/disclosure/','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-  (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',3,'outboundParams','quoteType=GetMultiPremium,subPartnerCode=AUTOANDGENWEB,agentCode=AUTOANDGENWEB,productQuoted=ELEGANT;TRADIESURE;TRADIESUREPL','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-  (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',8,'outboundParams','quoteType=GetMultiPremium,subPartnerCode=CTM,agentCode=CTM,productQuoted=ELEGANT;CLASSICSB;ELEGANTPL;TRADIESURE;TRADIESUREPL','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+  (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',3,'outboundParams','quoteType=GetMultiPremium,partnerCode=AUTOANDGEN,subPartnerCode=AUTOANDGENWEB,agentCode=AUTOANDGENWEB,productQuoted=ELEGANT;TRADIESURE;TRADIESUREPL','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+  (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',8,'outboundParams','quoteType=GetMultiPremium,partnerCode=CHOOSI,subPartnerCode=CHOOSI,agentCode=CHOOSI,productQuoted=ELEGANT;CLASSICSB;ELEGANTPL;TRADIESURE;TRADIESUREPL','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',8,'user','CHOOSI','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
   (@SERVICE_MASTER_ID, @PROVIDER_ID, '0',8,'password','Ch0o51','2014-01-01 00:00:00', '2038-01-19 00:00:00', 'SERVICE');
 
