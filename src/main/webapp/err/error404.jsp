@@ -1,60 +1,74 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">
-	<session:core />
-	<c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}" />
-	<settings:setVertical verticalCode="GENERIC" />
-	<jsp:useBean id="date" class="java.util.Date" />
-	<c:set var="pageTitle" value="404" />
+	<settings:setVertical verticalCode="GENERIC"/>
+	<c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
+	<c:set var="pageTitle" value="404"/>
 </c:catch>
 
 <c:choose>
-	<c:when test="${empty brandCode}">
-		<div id="wrapper" class="clearfix">
-			<div id="page" class="clearfix">
-				<div id="content">
-					<h1 class="error_title">Whoops, sorry… </h1>
-					<div class="error_message">
-						<h2>looks like you're looking for something that isn't there!</h2>
-						<p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or deleted.</p>
-						<p>Try checking the URL you used for errors.</p>
-					</div>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-		</div>
+	<c:when test="${not empty error or empty brandCode}">
+		<h1>Whoops, sorry...</h1>
+		<h2>looks like you're looking for something that isn't there!</h2>
+		<p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or deleted.</p>
+		<p>Try checking the URL you used for errors.</p>
 	</c:when>
 	<c:otherwise>
+		<%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 		<c:catch var="error">
-			<%@ include file="/WEB-INF/err/errorHeader.jsp" %>
-					<div class="clearfix normal-header" id="header">
-						<div class="inner-header">
-							<h1>
-								<a title="${pageSettings.getSetting('brandName')}" href="${pageSettings.getSetting('exitUrl')}">${pageSettings.getSetting('brandName')}</a>
-							</h1>
-						</div>
-					</div>
-					<div id="wrapper" class="clearfix">
-						<div id="page" class="clearfix">
-							<div id="content">
-								<h1 class="error_title">Whoops, sorry… </h1>
-								<div class="error_message">
-									<h2>looks like you're looking for something that isn't there!</h2>
-									<p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or deleted.</p>
-									<p>Try checking the URL you used for errors.</p>
-								</div>
+
+			<go:log source="404" level="INFO">Request URI: ${requestScope["javax.servlet.forward.request_uri"]}, servletPath: ${pageContext.request.servletPath}</go:log>
+
+			<layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
+
+                <jsp:attribute name="head">
+					<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
+                    <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/components/unsubscribe.${pageSettings.getBrandCode()}.css?${revision}" media="all">
+                </jsp:attribute>
+
+				<jsp:attribute name="head_meta"></jsp:attribute>
+
+
+				<jsp:attribute name="header"></jsp:attribute>
+
+				<jsp:attribute name="form_bottom"></jsp:attribute>
+
+                <jsp:attribute name="footer">
+                    <core:whitelabeled_footer/>
+                </jsp:attribute>
+
+				<jsp:attribute name="vertical_settings">
+		{session: {firstPokeEnabled: false}}
+	</jsp:attribute>
+
+                <jsp:attribute name="body_end">
+                </jsp:attribute>
+
+				<jsp:body>
+
+					<div role="form" class="journeyEngineSlide active unsubscribeForm">
+						<layout:slide_center xsWidth="12" mdWidth="10" className="roundedContainer">
+							<h1 class="error_title">Whoops, sorry... </h1>
+
+							<div class="error_message">
+								<h2>looks like you're looking for something that isn't there!</h2>
+
+								<p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or
+									deleted.</p>
+
+								<p>Try checking the URL you used for errors, or continue browsing our range of comparison services below.</p>
 							</div>
-							<div class="clearfix"></div>
-						</div>
+
+							<confirmation:other_products/>
+						</layout:slide_center>
 					</div>
 
-					<agg:generic_footer />
 
-					<core:closing_body />
+				</jsp:body>
 
-			<%@ include file="/WEB-INF/err/errorFooter.jsp" %>
+			</layout:generic_page>
 		</c:catch>
-
 	</c:otherwise>
 </c:choose>
