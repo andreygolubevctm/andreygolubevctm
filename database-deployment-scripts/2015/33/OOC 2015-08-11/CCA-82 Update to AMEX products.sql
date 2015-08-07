@@ -12,7 +12,6 @@ DELETE FROM ctm.product_properties_text WHERE productId IN(SELECT productId FROM
 DELETE FROM ctm.product_master where productcat='CREDITCARD';
 
 
-
 INSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','AMEX-PE',284,'The American Express&reg; Platinum Edge Credit Card','The American Express&reg; Platinum Edge Credit Card','2015-08-05','2040-12-31','');
 SET @product_id = LAST_INSERT_ID();
 DELETE FROM ctm.product_properties WHERE productid = @product_id;
@@ -24,7 +23,8 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,NULL
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,10000.0,'10000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-Complimentary domestic return flight each year
 -Complimentary domestic and international Travel Insurance
--Receive 10,000 Membership Rewards points when you apply by 30 September 2015 are approved and spend $500 on your Card within the first 2 months of Card Membership. This introductory offer is available to new American Express Card Members only','2015-08-05','2040-12-31','');
+-Receive 10,000 Membership Rewards points when you apply by 30 September 2015 are approved and spend $500 on your Card within the first 2 months of Card Membership. This introductory offer is available to new American Express Card Members only
+-The maximum balance transfer that you can be approved for is $10,000 or 70% of your approved credit limit, whichever is less.','2015-08-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'maximum-credit-limit',0,50000.0,'$50000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-amex-card-points',0,1.0,'1',NULL,'2015-08-05','2040-12-31','',0);
@@ -45,7 +45,8 @@ INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT category
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,3000.0,'$3000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'american-express-platinum-edge',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'The maximum balance transfer that you can be approved for is *$10,000 or 70% of your approved credit limit, whichever is less.*',NULL,'2015-08-05','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'*The everyday spend Card with up to 3 points per $1 spent!*
+Enjoy a complimentary Virgin Australia domestic economy return flight every year, and up to 10,000 bonus Membership Reward points when you apply before 30 September 2015 are approved, and spend $500 in the first two months of Card Membership.',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'interest-free-days',0,55.0,'55',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-type',0,0,'Platinum',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'foreign-exchange-fees',0,1,'Yes',NULL,'2015-08-05','2040-12-31','',0);
@@ -71,7 +72,8 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'extended-warranty',0,1,'Y
 INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,7500.0,'7500',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-American Express will repair or refund the cost of an item bought using your Card if they are damaged or stolen within 90 days. Plus, if you have a change of heart and are refused a refund on an unused, eligible item within 90 days, Refund Protection will reimburse you
--Receive up to 7,500 bonus Velocity Points when you apply by the 30 September 2015, are approved and spend $300 on your Card within the first 3 months. This introductory offer is available to new American Express Card Members only','2015-08-05','2040-12-31','');
+-Receive up to 7,500 bonus Velocity Points when you apply by the 30 September 2015, are approved and spend $300 on your Card within the first 3 months. This introductory offer is available to new American Express Card Members only
+-The maximum balance transfer that you can be approved for is $10,000 or 70% of your approved credit limit, whichever is less.','2015-08-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'maximum-credit-limit',0,50000.0,'$50000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-amex-card-points',0,1.0,'1',NULL,'2015-08-05','2040-12-31','',0);
@@ -89,7 +91,8 @@ INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT category
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,2000.0,'$2000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'american-express-velocity-escape',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'The maximum balance transfer that you can be approved for is *$10,000 or 70% of your approved credit limit, whichever is less.*',NULL,'2015-08-05','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'*Escape Sooner*
+Receive 7,500 bonus Velocity Points when you apply by 30 September 2015, are approved and spend $300 in the first 3 months of Card Membership. Plus, get rewarded with up to 2 Velocity Points per $1 spent.',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'interest-free-days',0,55.0,'55',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-type',0,0,'Entry',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'foreign-exchange-fees',0,1,'Yes',NULL,'2015-08-05','2040-12-31','',0);
@@ -117,7 +120,8 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,1
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-Complimentary Virgin Australia return domestic flight every year after your first Card spend
 -Enjoy two complimentary Single Entry passes to the Virgin Australia lounge each year at selected domestic airports.
 -Domestic and International Travel Insurance when you pay for eligible travel on your Card
--Receive up to 100,000 bonus Velocity Points when you apply by the 30 September 2015, are approved and spend $1000 on your Card within the first 3 months. This introductory offer is available to new American Express Card Members only','2015-08-05','2040-12-31','');
+-Receive up to 100,000 bonus Velocity Points when you apply by the 30 September 2015, are approved and spend $1000 on your Card within the first 3 months. This introductory offer is available to new American Express Card Members only
+-The maximum balance transfer that you can be approved for is $10,000 or 70% of your approved credit limit, whichever is less.','2015-08-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'maximum-credit-limit',0,50000.0,'$50000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-amex-card-points',0,1.0,'1',NULL,'2015-08-05','2040-12-31','',0);
@@ -138,7 +142,8 @@ INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT category
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,3000.0,'$3000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'american-express-velocity-platinum',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'The maximum balance transfer that you can be approved for is *$10,000 or 70% of your approved credit limit, whichever is less.*',NULL,'2015-08-05','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'*Get the rewards you deserve faster*
+Receive up to 100,000 bonus Velocity Points when you apply by 30 September 2015, are approved and spend $1000 within 3 months.',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'interest-free-days',0,55.0,'55',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-type',0,0,'Platinum',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'foreign-exchange-fees',0,1,'Yes',NULL,'2015-08-05','2040-12-31','',0);
@@ -163,7 +168,8 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'card-class',0,0,'American
 INSERT INTO ctm.product_properties VALUES(@product_id,'extended-warranty',0,1,'Yes',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,7500.0,'7500',NULL,'2015-08-05','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-Earn up to 7,500 extra Qantas Frequent Flyer Points when you apply by 30 September 2015, are approved and meet the spend criteria. This introductory offer is available to new American Express Card members only.','2015-08-05','2040-12-31','');
+INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-Earn up to 7,500 extra Qantas Frequent Flyer Points when you apply by 30 September 2015, are approved and meet the spend criteria. This introductory offer is available to new American Express Card members only.
+-The maximum balance transfer that you can be approved for is $10,000 or 70% of your approved credit limit, whichever is less.','2015-08-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'maximum-credit-limit',0,50000.0,'$50000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-amex-card-points',0,1.0,'1',NULL,'2015-08-05','2040-12-31','',0);
@@ -182,7 +188,8 @@ INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT category
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,2000.0,'$2000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'qantas-american-express-discovery',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'The maximum balance transfer that you can be approved for is *$10,000 or 70% of your approved credit limit, whichever is less.*',NULL,'2015-08-05','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'*Broaden your travel*
+Receive up to 7,500 bonus Qantas Points when you apply by 30 September 2015, are approved and meet the spend criteria. Plus, get rewarded with up to 2 Qantas Points per $1 spent.',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'interest-free-days',0,55.0,'55',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-type',0,0,'Entry',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'foreign-exchange-fees',0,1,'Yes',NULL,'2015-08-05','2040-12-31','',0);
@@ -213,7 +220,8 @@ INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-
 --*2,500 points* after your first Card spend in  Australia on selected Qantas products and  services
 --This introductory offer is available to new American Express Card Members only.
 -Receive a complimentary Qantas domestic return economy flight every year after your first Card spend on selected Qantas products and services
--Look forward to complimentary domestic and overseas travel insurance','2015-08-05','2040-12-31','');
+-Look forward to complimentary domestic and overseas travel insurance
+-The maximum balance transfer that you can be approved for is $10,000 or 70% of your approved credit limit, whichever is less.','2015-08-05','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'maximum-credit-limit',0,50000.0,'$50000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-amex-card-points',0,1.0,'1',NULL,'2015-08-05','2040-12-31','',0);
@@ -234,7 +242,8 @@ INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT category
 INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,3000.0,'$3000',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'qantas-american-express-ultimate',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-08-05','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'The maximum balance transfer that you can be approved for is *$10,000 or 70% of your approved credit limit, whichever is less.*',NULL,'2015-08-05','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'*Go more places faster*
+Receive up to 50,000 extra Qantas Points when you apply by 30 September 2015, are approved and meet the spend criteria. Plus, earn up to 3 Qantas Points per $1 spent on eligible purchases.',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'interest-free-days',0,55.0,'55',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-type',0,0,'Platinum',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'foreign-exchange-fees',0,1,'Yes',NULL,'2015-08-05','2040-12-31','',0);
@@ -248,7 +257,6 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'handover-url',0,0,'http:/
 INSERT INTO ctm.product_properties VALUES(@product_id,'additional-card-holder',0,1,'Yes',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'balance-transfer-rate',0,20.74,'20.74%',NULL,'2015-08-05','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate-period',0,6.0,'6',NULL,'2015-08-05','2040-12-31','',0);
-
 
 
 INSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','ANZ-P',48,'ANZ Platinum','ANZ Platinum','2015-06-28','2040-12-31','');
@@ -737,7 +745,6 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-ra
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'terms-general',0,'Apply by 20th August 2015. Offer available on new and approved ANZ Frequent Flyer Black applications, once per eligible customer when $3000 purchases made within first 3 months. T&Cs, fees & charges apply, and are subject to change, available at anz.com/affoffer','2015-06-28','2040-12-31','');
 
 
-
 INSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','BNKW-FF',315,'Bankwest Qantas MasterCard','Bankwest Qantas MasterCard','2015-07-20','2040-12-31','');
 SET @product_id = LAST_INSERT_ID();
 DELETE FROM ctm.product_properties WHERE productid = @product_id;
@@ -1176,7 +1183,6 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'handover-url',0,0,'http:/
 INSERT INTO ctm.product_properties VALUES(@product_id,'additional-card-holder',0,1,'Yes',NULL,'2015-06-01','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'balance-transfer-rate',0,NULL,'',NULL,'2015-06-01','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate-period',0,NULL,'',NULL,'2015-06-01','2040-12-31','',0);
-
 
 
 INSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','NABA-LR',320,'NAB Low Rate Card','NAB Low Rate Card','2015-06-22','2040-12-31','');
