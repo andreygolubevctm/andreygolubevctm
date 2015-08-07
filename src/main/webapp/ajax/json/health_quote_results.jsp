@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="verticalCode" value="HEALTH" />
+
 <core_new:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
@@ -57,17 +59,32 @@
 		<c:import var="config" url="/WEB-INF/aggregator/health/config_ALL.xml" />
 
 		<%-- Load the config and send quotes to the aggregator gadget --%>
-		<go:soapAggregator config = "${config}"
-			transactionId = "${tranId}"
-			xml = "${go:getEscapedXml(data['health'])}"
-			var = "resultXml"
-			debugVar="debugXml"
-			validationErrorsVar="validationErrors"
-			continueOnValidationError="${continueOnValidationError}"
-							isValidVar="isValid"
-							verticalCode="HEALTH"
-							configDbKey="quoteService"
-							styleCodeId="${pageSettings.getBrandId()}" />
+		<%--<go:soapAggregator config = "${config}"--%>
+			<%--transactionId = "${tranId}"--%>
+			<%--xml = "${go:getEscapedXml(data['health'])}"--%>
+			<%--var = "resultXml"--%>
+			<%--debugVar="debugXml"--%>
+			<%--validationErrorsVar="validationErrors"--%>
+			<%--continueOnValidationError="${continueOnValidationError}"--%>
+							<%--isValidVar="isValid"--%>
+							<%--verticalCode="HEALTH"--%>
+							<%--configDbKey="quoteService"--%>
+							<%--styleCodeId="${pageSettings.getBrandId()}" />--%>
+
+		<%--Load results using Database--%>
+		<go:soapAggregator 	config = ""
+					  configDbKey="healthQuoteService"
+					  verticalCode="${verticalCode}"
+					  styleCodeId="${pageSettings.getBrandId()}"
+					  transactionId = "${data.text['current/transactionId']}"
+					  xml = "${go:getEscapedXml(data['health'])}"
+					  var = "resultXml"
+					  authToken = "${param.health_authToken}"
+					  debugVar="debugXml"
+					  validationErrorsVar="validationErrors"
+					  continueOnValidationError="${continueOnValidationError}"
+					  isValidVar="isValid" />
+
 
 		<c:if test="${isValid || continueOnValidationError}">
 			<c:if test="${!isValid}">

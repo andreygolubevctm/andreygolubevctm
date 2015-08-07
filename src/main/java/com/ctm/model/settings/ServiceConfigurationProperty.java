@@ -16,6 +16,11 @@ public class ServiceConfigurationProperty {
 			public String toString() {
 				return "SERVICE";
 			}
+		},
+		GATEWAY{
+			public String toString() {
+				return "GATEWAY";
+			}
 		};
 	}
 
