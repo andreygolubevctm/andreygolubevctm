@@ -26,7 +26,7 @@
 		required=""
 		omitPleaseChoose="Y"
 		className="hidden"
-		additionalValues="750,1000"/>
+		additionalValues="750,1000,1500,2000,3000,4000,5000"/>
 <field:additional_excess
 		defaultVal="500"
 		increment="100"
@@ -37,7 +37,7 @@
 		required=""
 		omitPleaseChoose="Y"
 		className="hidden"
-		additionalValues="750,1000"/>
+		additionalValues="750,1000,1500,2000,3000,4000,5000"/>
 
 <home_new:results_filterbar_xs />
 
