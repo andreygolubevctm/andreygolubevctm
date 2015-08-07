@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class HomeQuoteService {
 
@@ -43,6 +45,7 @@ public class HomeQuoteService {
     public static final String SERVICE_URL = "serviceUrl";
     public static final String TIMEOUT_MILLIS = "timeoutMillis";
     public static final String DEBUG_PATH = "debugPath";
+    public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 
     public List<HomeResult> getQuotes(Brand brand, HomeRequest data) {
 
@@ -142,15 +145,20 @@ public class HomeQuoteService {
                         .addResult("validateDate/normal", normalFormat.print(validUntil))
                         .addResult("productId", result.getProductId())
                         .addResult("productDes", result.getProviderProductName());
-                if (result.getHomeExcess() != null) {
-                    builder.addResult("HHB/excess/total", result.getHomeExcess().getAmount());
+                if (HOLLARD_PROVIDERS.contains(result.getBrandCode())) {
+                    builder.addResult("des", result.getProductDescription());
                 } else {
-                    builder.addResult("HHB/excess/total", "0");
+                    builder.addResult("des", EMPTY);
+                }
+                if (result.getHomeExcess() != null) {
+                    builder.addResult("HHB/excess/amount", result.getHomeExcess().getAmount());
+                } else {
+                    builder.addResult("HHB/excess/amount", "0");
                 }
                 if (result.getContentsExcess() != null) {
-                    builder.addResult("HHC/excess/total", result.getContentsExcess().getAmount());
+                    builder.addResult("HHC/excess/amount", result.getContentsExcess().getAmount());
                 } else {
-                    builder.addResult("HHC/excess/total", "0");
+                    builder.addResult("HHC/excess/amount", "0");
                 }
                 builder.addResult("headline/name", result.getProductName())
                         .addResult("quoteUrl", result.getQuoteUrl())

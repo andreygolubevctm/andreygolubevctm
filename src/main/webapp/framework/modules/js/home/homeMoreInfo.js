@@ -80,7 +80,7 @@
 
 			// If its unavailable, don't do anything
 			// This is if someone tries to fake a bridging page for a "non quote" product.
-			if (meerkat.modules.splitTest.isActive(40)) {
+			if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
 				if (obj.available != 'Y')
 					return;
 			} else {
@@ -460,7 +460,7 @@
 	function retrieveExternalCopy(product) {
 		setScrapeType ();
 
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
 			return meerkat.modules.comms.get({
 				url: "rest/home/more_info/get.json",
 				cache: true,
@@ -543,7 +543,7 @@
 	 */
 	function proceedToInsurer(product, modalId, applyNowCallback) {
 
-		var toogleNewWebService = meerkat.modules.splitTest.isActive(40);
+		var toogleNewWebService = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote;
 
 		if(modalId) {
 			$('#'+modalId).modal('hide');
@@ -676,7 +676,7 @@
 	function trackCallEvent(type) {
 		var product = meerkat.modules.moreInfo.getOpenProduct();
 
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
 			meerkat.modules.partnerTransfer.trackHandoverEvent({
 				product: product,
 				type: type,
@@ -734,7 +734,7 @@
 		var product = meerkat.modules.moreInfo.getOpenProduct();
 
 		var settings;
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
 			settings = {
 				additionalTrackingData: {
 					verticalFilter: meerkat.modules.home.getVerticalFilter(),
@@ -761,7 +761,7 @@
 
 		updateQuoteSummaryTable();
 
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
 			product = data;
 			$("#inclusions").html(product.inclusions);
 			$("#extras").html(product.optionalExtras);

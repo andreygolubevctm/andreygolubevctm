@@ -67,10 +67,13 @@ public class ResponseAdapter {
     }
 
     private static Excess createExcess(com.ctm.providers.home.homequote.model.response.Excess quoteExcess) {
-        Excess excess = new Excess();
-        excess.setAmount(quoteExcess.getAmount());
-        excess.setInsuredValue(quoteExcess.getInsuredValue());
-        return excess;
+        if (quoteExcess != null) {
+            Excess excess = new Excess();
+            excess.setAmount(quoteExcess.getAmount());
+            excess.setInsuredValue(quoteExcess.getInsuredValue());
+            return excess;
+        }
+        return null;
     }
 
     private static List<ProductDisclosure> createProductDisclosures(List<com.ctm.providers.home.homequote.model.response.ProductDisclosure> quoteProductDisclosures) {

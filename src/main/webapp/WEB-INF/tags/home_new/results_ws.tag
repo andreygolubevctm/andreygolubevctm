@@ -49,7 +49,9 @@
 	var resultLabels = ${jsonString};
 </script>
 
-
+<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
+<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+<div id="deviceType" data-deviceType="${deviceType}"></div>
 
 <div class="resultsHeadersBg">
 </div>
@@ -111,6 +113,8 @@
 	{{ var htmlTemplate = _.template(template); }}
 	{{ obj.annualPriceTemplate = htmlTemplate(obj); }}
 
+	{{ var specialOfferPrefix = _.indexOf(["REIN","WOOL"], obj.service) >= 0 ? "<strong>Special offer:</strong> " : ""; }}
+
 	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
 
 		<div class="result featuresDockedHeader">
@@ -167,7 +171,7 @@
 
 						{{ if (promotionText.length > 0) { }}
 						<div class="promotion small visible-sm">
-							<span class="icon icon-tag"></span><strong>Special offer:</strong> {{= promotionText }}
+							<span class="icon icon-tag"></span>{{= specialOfferPrefix}}{{= promotionText }}
 							{{ if (offerTermsContent.length > 0) { }}
 								<a class="small offerTerms" href="javascript:;">Offer terms</a>
 								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
@@ -217,7 +221,7 @@
 							{{ if (promotionText.length > 0) { }}
 								<div class="col-xs-12 col-md-9 col-lg-8">
 									<div class="promotion small hidden-sm">
-										<span class="icon icon-tag"></span><strong>Special offer:</strong> {{= promotionText }}
+										<span class="icon icon-tag"></span>{{=specialOfferPrefix}}{{= promotionText }}
 										{{ if (offerTermsContent.length > 0) { }}
 											<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
 											<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
@@ -284,11 +288,11 @@
 </core:js_template>
 
 <%-- FEATURE TEMPLATE --%>
-<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
+<core:js_template id="feature-template">
 	<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
 		<features:resultsItem item="${selectedValue}" labelMode="false" index="${status.index}"/>
 	</c:forEach>
-</div>
+</core:js_template>
 
 <%-- UNAVAILABLE ROW --%>
 <core:js_template id="unavailable-template">
@@ -400,8 +404,8 @@
 
 <%-- Logo template --%>
 <core:js_template id="provider-logo-template">
-	{{ var img = 'default_w'; }}
-	{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
+	{{ var img = obj.brandCode; }}
+	{{ if ((typeof img === 'undefined' || img === '') && obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
 	<div class="companyLogo logo_{{= img }}"></div>
 </core:js_template>
 

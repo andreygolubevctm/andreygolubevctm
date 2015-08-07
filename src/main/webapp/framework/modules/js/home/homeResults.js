@@ -55,7 +55,7 @@
 			var productAvailable = "productAvailable";
 			var productName = "headline.name";
 			var carQuoteResultsUrl = "ajax/json/home_results.jsp";
-			if (meerkat.modules.splitTest.isActive(40)) {
+			if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
 				price = {
 					annual: "price.annualPremium",
 					annually: "price.annualPremium",
@@ -310,7 +310,7 @@
 			// If no providers opted to show results, display the no results modal.
 			var availableCounts = 0;
 			$.each(Results.model.returnedProducts, function(){
-				if (meerkat.modules.splitTest.isActive(40)) {
+				if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
 					if (this.available === 'Y' && this.productId !== 'CURR') {
 						availableCounts++;
 					}
@@ -383,7 +383,7 @@
 	function massageResultsObject(products) {
 		products = products || Results.model.returnedProducts;
 
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
 
 			_.each(products, function massageJson(result, index) {
 				// Add properties

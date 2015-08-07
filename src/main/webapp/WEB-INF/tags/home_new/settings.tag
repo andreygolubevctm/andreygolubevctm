@@ -13,6 +13,7 @@
 <c:if test="${param.display eq 'features'}">
 	<c:set var="priceDisplayMode" value="features"/>
 </c:if>
+<c:set var="defaultToHomeQuote"><content:get key="makeHomeQuoteMainJourney" /></c:set>
 
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
@@ -23,6 +24,7 @@
 	previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",
 	isNewQuote: <c:out value="${isNewQuote eq true}" />,
 	userId: '<c:out value="${authenticatedData.login.user.uid}" />',
+	isDefaultToHomeQuote: ${defaultToHomeQuote},
 	content:{
 		callCentreNumber: '${callCentreNumber}',
 		callCentreHelpNumber: '${callCentreHelpNumber}'
