@@ -276,7 +276,7 @@ public class SimplesSearchService {
             mapping = new DatabaseQueryMapping<Object>() {
                 @Override
                 protected void mapParams() throws SQLException {
-                    set(firstName + "%" + lastName + "%");
+                    set(firstName + "% " + lastName + "%");
                     set(firstName + "%");
                     set(lastName + "%");
                 }
