@@ -122,11 +122,11 @@
 					<Name>FirstName</Name>
 					<Value>
 						<xsl:choose>
-							<xsl:when test="not(health/contactDetails/firstName)" >
+							<xsl:when test="not(health/application/primary/firstname)" >
 								<xsl:value-of select="health/contactDetails/name" />
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:value-of select="health/contactDetails/firstName" />
+								<xsl:value-of select="health/application/primary/firstname" />
 							</xsl:otherwise>
 						</xsl:choose>
 					</Value>

@@ -241,12 +241,6 @@
 		<!--  Includes -->
 		<agg:includes kampyle="${kampyle}" newKampyle="${true}" supertag="${superTagEnabled}" sessionPop="${sessionPop}" loading="false" fatalError="false"/>
 
-		<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
-			<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
-				<script type="text/javascript">if(typeof _satellite !== 'undefined') {_satellite.pageBottom();}</script>
-			</c:if>
-		</c:if>
-
 <c:if test="${empty skipJSCSS}">
 
 		<%-- User Tracking --%>
@@ -268,9 +262,9 @@
 
 		<!-- Fastclick -->
 			<c:if test="${isDev eq false}">
-				<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js" async defer></script>
+				<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js" defer></script>
 			</c:if>
-<script>window.FastClick || document.write('<script src="${assetUrl}framework/lib/js/fastclick-0.6.11.min.js" async defer>\x3C/script>')</script>
+<script>window.FastClick || document.write('<script src="${assetUrl}framework/lib/js/fastclick-0.6.11.min.js" defer>\x3C/script>')</script>
 
 		<!-- Extras -->
 <script type="text/javascript" src="${assetUrl}framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
@@ -403,5 +397,12 @@
 		</div>
 
 	<jsp:invoke fragment="before_close_body" />
+
+	<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
+		<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
+			<script type="text/javascript">if(typeof _satellite !== 'undefined') {_satellite.pageBottom();}</script>
+		</c:if>
+	</c:if>
+
 </body>
 </go:html>

@@ -32,6 +32,11 @@
 		<c:set var="competition_id" value="${19}" />
 		<c:set var="source" value="MayHealthPromo2015$1000" />
 	</c:when>
+	<%-- HLT-2229 --%>
+	<c:when test="${not empty param.secret and param.secret == 'kSdRdpu5bdM5UkKQ8gsK'}">
+		<c:set var="competition_id" value="${24}" />
+		<c:set var="source" value="AugustHealthPromo2015$1000" />
+	</c:when>
 	<%-- PRJWHL-261 YAHOO --%>
 	<c:when test="${not empty param.secret and param.secret == '1NjmJ507mwUnX81Lj96b'}">
 		<c:set var="competition_id" value="${20}" />
