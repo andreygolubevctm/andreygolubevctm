@@ -238,7 +238,9 @@
 								</xsl:choose>
 							</Transferring>
 							<PreviousFund><xsl:value-of select="$primaryFund" /></PreviousFund>
-							<PreviousFundMemberNo><xsl:value-of select="previousfund/primary/memberID" /></PreviousFundMemberNo>
+							<xsl:if test="$primaryFund != '' and $primaryFund != 'NONE' and $primaryFund != 'UNK'">
+								<PreviousFundMemberNo><xsl:value-of select="previousfund/primary/memberID" /></PreviousFundMemberNo>
+							</xsl:if>
 							<IsMember>true</IsMember>
 							<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
 
@@ -345,7 +347,9 @@
 									</xsl:choose>
 								</Transferring>
 								<PreviousFund><xsl:value-of select="$partnerFund" /></PreviousFund>
-								<PreviousFundMemberNo><xsl:value-of select="previousfund/partner/memberID" /></PreviousFundMemberNo>
+								<xsl:if test="$partnerFund != '' and $partnerFund != 'NONE' and $partnerFund != 'UNK'">
+									<PreviousFundMemberNo><xsl:value-of select="previousfund/partner/memberID" /></PreviousFundMemberNo>
+								</xsl:if>
 								<IsMember>false</IsMember>
 								<JoinDate><xsl:value-of select="$startDate" /></JoinDate>
 
