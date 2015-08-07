@@ -14,6 +14,19 @@
 <c:set var="autofilllessSearchXpath" value="${name}" />
 <c:set var="address" value="${data.node[xpath]}" />
 
+<%-- Fix PostCode Fields --%>
+<c:choose>
+	<c:when test="${empty address.postCode and not empty address.nonStdPostCode}">
+		<go:setData dataVar="data" value="${address.nonStdPostCode}" xpath="${xpath}/postCode" />
+		<c:set var="address" value="${data.node[xpath]}" />
+	</c:when>
+	<c:when test="${empty address.nonStdPostCode and not empty address.postCode}">
+		<go:setData dataVar="data" value="${address.postCode}" xpath="${xpath}/nonStdPostCode" />
+		<c:set var="address" value="${data.node[xpath]}" />
+	</c:when>
+	<c:otherwise></c:otherwise>
+</c:choose>
+
 <go:script href="common/javascript/elastic_address.js" marker="js-href"/>
 
 <div class="elasticSearchTypeaheadComponent elasticsearch_container_${name}">
@@ -44,7 +57,7 @@
 	<c:set var="fieldXpath" value="${xpath}/suburb" />
 	<form_new:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStdFieldRow">
 		<c:choose>
-			<c:when test="${not empty address.postCode}">
+			<c:when test="${not empty address.postCode or not empty address.nonStdPostCode}">
 				<sql:query var="result" dataSource="jdbc/ctm">
 					SELECT suburb, count(street) as streetCount, suburbSeq, state, street
 					FROM aggregator.streets
