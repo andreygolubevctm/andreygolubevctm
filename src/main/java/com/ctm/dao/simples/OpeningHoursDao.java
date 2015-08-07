@@ -304,7 +304,7 @@ public class OpeningHoursDao {
      * @return
      * @throws DaoException
      */
-    public String getOpeningHoursForDisplay(String dayDescription, Date effectiveDate) throws DaoException {
+    public String getOpeningHoursForDisplay(String dayDescription, Date effectiveDate, int verticalId) throws DaoException {
         String openingHours = null;
         ResultSet resultSet;
         SimpleDatabaseConnection dbSource =  new SimpleDatabaseConnection();
@@ -312,13 +312,20 @@ public class OpeningHoursDao {
             PreparedStatement stmt;
             stmt = dbSource.getConnection().prepareStatement(
                     "SELECT startTime,endTime,description, date FROM ctm.opening_hours "
-                            + "WHERE (lower(description) = ?  AND hoursType  ='N') or (date = ? AND hoursType  ='S') ORDER BY date DESC  LIMIT 1;");
+                            + "WHERE" +
+                            " ? between effectiveStart and effectiveEnd and" +
+                            " (lower(description) = ?  AND hoursType  ='N') or (date = ? AND hoursType  ='S') AND" +
+                            " verticalId = ?" +
+                            " ORDER BY date DESC  LIMIT 1;");
             String day = new SimpleDateFormat("EEEE").format(
                     dayDescription.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1) : effectiveDate).toLowerCase();
-            java.sql.Date sqlEffectiveDate = new java.sql.Date((dayDescription.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1)
+            java.sql.Date dayDate = new java.sql.Date((dayDescription.equalsIgnoreCase("tomorrow") ? DateUtils.addDays(effectiveDate, 1)
                     : effectiveDate).getTime());
-            stmt.setString(1, day);
-            stmt.setDate(2, sqlEffectiveDate);
+            java.sql.Date sqlEffectiveDate = new java.sql.Date(effectiveDate.getTime());
+            stmt.setDate(1, sqlEffectiveDate);
+            stmt.setString(2, day);
+            stmt.setDate(3, dayDate);
+            stmt.setInt(4, verticalId);
             resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
@@ -437,7 +444,7 @@ public class OpeningHoursDao {
         String str = "";
         for (OpeningHours openingHours : openingHoursList) {
             if((openingHours.getStartTime()==null || openingHours.getStartTime().equals("")) ||
-               (openingHours.getEndTime()==null || openingHours.getEndTime().equals(""))){
+                    (openingHours.getEndTime()==null || openingHours.getEndTime().equals(""))){
                 str += openingHours.getDescription() + ": Closed <br>";
             }else {
                 str += openingHours.getDescription() + ": " + openingHours.getStartTime() + " - " + openingHours.getEndTime() + "<br>";
@@ -477,4 +484,66 @@ public class OpeningHoursDao {
         dbSource.closeConnection();
     }
 
+
+    /**
+     * Method gets list of records with same description and clashing date range
+     * @param openingHours
+     * @return
+     * @throws DaoException
+     */
+    public List<OpeningHours> findClashingHoursCount(OpeningHours openingHours) throws DaoException {
+        List<OpeningHours> openingHoursList = new ArrayList<>();
+        ResultSet resultSet;
+        SimpleDatabaseConnection dbSource =  new SimpleDatabaseConnection();
+        try {
+            String sql= "SELECT openingHoursId, daySequence, startTime, endTime, hoursType, description, date, effectiveStart, effectiveEnd, verticalId " +
+                    "FROM ctm.opening_hours "+
+                    "WHERE" +
+                    "   ((? between effectiveStart and effectiveEnd) or (? between effectiveStart and effectiveEnd)) AND " ;
+            if(openingHours.getHoursType().equalsIgnoreCase("N")){
+                sql += " lower(description) = ? AND hoursType='N' AND ";
+            }else{
+                sql += " date = ?  AND hoursType='S' AND ";
+            }
+            sql += " verticalId = ?";
+            if(openingHours.getOpeningHoursId()!=0){
+                sql += "  AND  openingHoursId <> ?  ";
+            }
+            sql += "  ORDER BY date DESC  LIMIT 1;";
+            PreparedStatement stmt;
+            stmt = dbSource.getConnection().prepareStatement(sql);
+
+            stmt.setString(1, openingHours.getEffectiveStart());
+            stmt.setString(2, openingHours.getEffectiveEnd());
+            if(openingHours.getHoursType().equalsIgnoreCase("N"))
+                stmt.setString(3, openingHours.getDescription());
+            else {
+                if (openingHours.getDate() == null)
+                    stmt.setNull(3, Types.NULL);
+                else
+                    stmt.setString(3, openingHours.getDate());
+            }
+            stmt.setInt(4, openingHours.getVerticalId());
+            if(openingHours.getOpeningHoursId()!=0)
+                stmt.setInt(5, openingHours.getOpeningHoursId());
+            resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                OpeningHours openingHoursRec = helper.createOpeningHoursObject(resultSet.getInt("openingHoursId"),
+                        resultSet.getDate("date") != null ? sdfUI.format(resultSet.getDate("date")) : "", resultSet.getString("daySequence"),
+                        resultSet.getString("description"),
+                        resultSet.getDate("effectiveEnd") != null ? sdfUI.format(resultSet.getDate("effectiveEnd")) : "",
+                        resultSet.getDate("effectiveStart") != null ? sdfUI.format(resultSet.getDate("effectiveStart")) : "",
+                        resultSet.getString("endTime"), resultSet.getString("hoursType"), resultSet.getString("startTime"),
+                        resultSet.getInt("verticalId"));
+                openingHoursList.add(openingHoursRec);
+            }
+            return openingHoursList;
+        } catch (SQLException | NamingException e) {
+            logger.error("Failed while getting Opening Hours For Website display", e);
+            throw new DaoException(e.getMessage(), e);
+        } finally {
+            dbSource.closeConnection();
+        }
+    }
 }
