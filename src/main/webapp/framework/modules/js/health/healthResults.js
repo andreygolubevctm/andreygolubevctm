@@ -231,8 +231,8 @@
 		$compareBasket.on("compareAdded", function(event, productId ){
 
 			// Close the more info panel if open.
-			if(meerkat.modules.healthMoreInfo.getOpenProduct() !== null && meerkat.modules.healthMoreInfo.getOpenProduct().productId !== productId){
-				meerkat.modules.healthMoreInfo.close();
+			if(meerkat.modules.moreInfo.getOpenProduct() !== null && meerkat.modules.moreInfo.getOpenProduct().productId !== productId) {
+				meerkat.modules.moreInfo.close();
 			}
 
 			$compareBasket.addClass("active");
@@ -335,8 +335,8 @@
 					}
 
 					// Close the more info panel if open.
-					if(meerkat.modules.healthMoreInfo.getOpenProduct() !== null){
-						meerkat.modules.healthMoreInfo.close();
+					if(meerkat.modules.moreInfo.getOpenProduct() !== null){
+						meerkat.modules.moreInfo.close();
 					}
 
 					// Publish tracking events.
