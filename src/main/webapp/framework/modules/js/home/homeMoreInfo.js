@@ -623,9 +623,9 @@
 				applyNowCallback: applyNowCallback,
 				productName: product.productName,
 				productBrandCode: product.brandCode,
-				brand: product.productDescription,
+				brand: product.providerProductName,
 				verticalFilter: meerkat.modules.home.getVerticalFilter(),
-				productID: product.productId
+				productID: product.trackingProductId
 			});
 		} else {
 			meerkat.modules.partnerTransfer.transferToPartner({
@@ -739,7 +739,7 @@
 				additionalTrackingData: {
 					verticalFilter: meerkat.modules.home.getVerticalFilter(),
 					productName: product.productName,
-					productID: product.productId
+					productID: product.trackingProductId
 				}
 			};
 		} else {

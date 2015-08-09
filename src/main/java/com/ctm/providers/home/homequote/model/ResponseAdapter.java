@@ -1,16 +1,11 @@
 package com.ctm.providers.home.homequote.model;
 
 import com.ctm.model.home.results.*;
-import com.ctm.model.home.results.AdditionalExcess;
-import com.ctm.model.home.results.Contact;
-import com.ctm.model.home.results.Excess;
-import com.ctm.model.home.results.Feature;
-import com.ctm.model.home.results.Price;
-import com.ctm.model.home.results.ProductDisclosure;
-import com.ctm.model.home.results.Underwriter;
 import com.ctm.model.resultsData.AvailableType;
 import com.ctm.providers.QuoteResponse;
-import com.ctm.providers.home.homequote.model.response.*;
+import com.ctm.providers.home.homequote.model.request.HomeQuoteRequest;
+import com.ctm.providers.home.homequote.model.response.HomeQuote;
+import com.ctm.providers.home.homequote.model.response.HomeResponse;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +13,7 @@ import java.util.List;
 
 public class ResponseAdapter {
 
-    public static List<HomeResult> adapt(HomeResponse response) {
+    public static List<HomeResult> adapt(HomeQuoteRequest request, HomeResponse response) {
         
         List<HomeResult> results = new ArrayList<>();
         final QuoteResponse<HomeQuote> quoteResponse = response.getPayload();
@@ -30,6 +25,7 @@ public class ResponseAdapter {
                 result.setServiceName(homeQuote.getService());
                 result.setProviderProductName(homeQuote.getProviderProductName());
                 result.setProductId(homeQuote.getProductId());
+                result.setTrackingProductId(getTrackingProductId(request, homeQuote));
                 // check if BrandCode is REAL
                 if ("REAL".equals(homeQuote.getBrandCode())) {
                     result.setBrandCode("REIN");
@@ -64,6 +60,16 @@ public class ResponseAdapter {
             }
         }
         return results;
+    }
+
+    private static String getTrackingProductId(HomeQuoteRequest request, HomeQuote homeQuote) {
+        if (request.isHomeCover() && request.isContentsCover()) {
+            return homeQuote.getProductId() + "-" + "HHZ";
+        } else if (request.isHomeCover()) {
+            return homeQuote.getProductId() + "-" + "HHB";
+        } else {
+            return homeQuote.getProductId() + "-" + "HHC";
+        }
     }
 
     private static Excess createExcess(com.ctm.providers.home.homequote.model.response.Excess quoteExcess) {

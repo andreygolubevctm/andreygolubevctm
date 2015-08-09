@@ -111,7 +111,7 @@ public class HomeQuoteService {
             // Log response
             writer.lastWriteXmlToFile(response);
 
-            final List<HomeResult> homeResults = ResponseAdapter.adapt(homeResponse);
+            final List<HomeResult> homeResults = ResponseAdapter.adapt(homeQuoteRequest, homeResponse);
 
             saveResults(data, homeResults);
 

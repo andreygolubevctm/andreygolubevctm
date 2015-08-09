@@ -58,6 +58,8 @@ public class HomeResult extends Result {
 
     private String leadfeedinfo;
 
+    private String trackingProductId;
+
     public String getProviderProductName() {
         return providerProductName;
     }
@@ -248,5 +250,13 @@ public class HomeResult extends Result {
 
     public void setLeadfeedinfo(String leadfeedinfo) {
         this.leadfeedinfo = leadfeedinfo;
+    }
+
+    public String getTrackingProductId() {
+        return trackingProductId;
+    }
+
+    public void setTrackingProductId(String trackingProductId) {
+        this.trackingProductId = trackingProductId;
     }
 }
