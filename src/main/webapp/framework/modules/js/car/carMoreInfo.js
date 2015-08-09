@@ -630,7 +630,7 @@
 				applyNowCallback: applyNowCallback,
 				productName: product.productName,
 				productBrandCode: product.brandCode,
-				brand: product.productDescription,
+				brand: product.providerProductName,
 				noSaleLead: leadFeed
 			});
 		} else {
