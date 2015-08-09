@@ -132,23 +132,23 @@ select count(*) from ctm.country_provider_mapping where providerId = @PROVIDER_I
  SET @GOINTRAVEL = 'GOIN-TRAVEL-';
  SET @PROVIDER_CODE = 'GOIN';
 */
- delete from ctm.country_provider_mapping where providerId = @PROVIDER_ID_FOR_ROLLBACK;
+ delete from ctm.country_provider_mapping where providerId = @PROVIDER_ID_FOR_ROLLBACK LIMIT 253;
  select count(*) from ctm.country_provider_mapping where providerId = @PROVIDER_ID_FOR_ROLLBACK;
  -- expect 0
 
- delete from ctm.service_properties where providerId = @PROVIDER_ID_FOR_ROLLBACK;
+ delete from ctm.service_properties where providerId = @PROVIDER_ID_FOR_ROLLBACK LIMIT 9;
  select count(*) from ctm.service_properties where providerId = @PROVIDER_ID_FOR_ROLLBACK;
  -- expect 0
 
- delete from ctm.product_master where productcat = 'TRAVEL' and providerId = @PROVIDER_ID_FOR_ROLLBACK;
+ delete from ctm.product_master where productcat = 'TRAVEL' and providerId = @PROVIDER_ID_FOR_ROLLBACK LIMIT 18;
  select count(*) from ctm.product_master where productcat = 'TRAVEL' and providerId = @PROVIDER_ID_FOR_ROLLBACK;
  -- expect 0
 
- delete from ctm.travel_product where productCode = @GOINTRAVEL;
+ delete from ctm.travel_product where productCode = @GOINTRAVEL LIMIT 1;
  select count(*) from ctm.travel_product where productCode = @GOINTRAVEL;
  -- expect 0
 
- delete from ctm.provider_master where providerCode = @PROVIDER_CODE;
+ delete from ctm.provider_master where providerCode = @PROVIDER_CODE LIMIT 1;
  select count(*) from ctm.provider_master where providerCode = @PROVIDER_CODE;
  -- expect 0
 
