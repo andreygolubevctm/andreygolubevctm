@@ -178,7 +178,7 @@
 							</Attributes>
 							<Attributes>
 								<Name>VehicleMake</Name>
-								<Value><xsl:value-of disable-output-escaping="yes" select="quote/vehicle/make" /></Value>
+								<Value><xsl:value-of disable-output-escaping="yes" select="quote/vehicle/makeDes" /></Value>
 							</Attributes>
 							<Attributes>
 								<Name>VehicleModel</Name>
