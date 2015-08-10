@@ -58,7 +58,7 @@
 <%-- TEMPLATES --%>
 <core:js_template id="confirmation-template">
 	<ui:bubble variant="chatty">
-		<p>Thanks {{= obj.firstName }} for your Home Loans enquiry. We&#39;ll pass your details onto a broker who will be in touch with you within the next business day.</p>
+		<p>Thanks <!-- SessionCam:Hide -->{{= obj.firstName }}<!-- /SessionCam:Hide --> for your Home Loans enquiry. We&#39;ll pass your details onto a broker who will be in touch with you within the next business day.</p>
 		<p>Your reference number for your enquiry is <strong>{{= obj.flexOpportunityId }}</strong>. It&#39;s a good idea to keep this handy for future communications with your broker.</p>
 	</ui:bubble>
 </core:js_template>
