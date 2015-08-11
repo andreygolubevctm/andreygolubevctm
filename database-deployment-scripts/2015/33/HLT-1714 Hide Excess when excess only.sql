@@ -1,6 +1,5 @@
 -- Test = Should be 1 row
 SELECT * FROM aggregator.features_details where type = 'section' and name = 'Excess';
-6
 
 -- Perform update to class
 UPDATE `aggregator`.`features_details` SET `className`='excessSection selection_Hospital' WHERE type = 'section' and name = 'Excess';
