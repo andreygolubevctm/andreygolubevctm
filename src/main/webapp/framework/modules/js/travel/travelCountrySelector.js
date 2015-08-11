@@ -85,10 +85,6 @@
                     _.defer(function(){
                         if(!$countrySelector.is(':focus')) {
                             $countrySelector.focus();
-                            var deviceType = $('#deviceType').attr('data-deviceType');
-                            if(deviceType == 'TABLET' || meerkat.modules.deviceMediaState.get() == 'xs') {
-                                $countrySelector.click();
-                            }
                         }
                     });
                 }
