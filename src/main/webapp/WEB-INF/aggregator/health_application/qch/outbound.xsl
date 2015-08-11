@@ -233,7 +233,7 @@
 							</xsl:variable>
 							<Transferring>
 								<xsl:choose>
-									<xsl:when test="$primaryFund != ''">true</xsl:when>
+									<xsl:when test="$primaryFund != '' and $primaryFund != 'NONE'">true</xsl:when>
 									<xsl:otherwise>false</xsl:otherwise>
 								</xsl:choose>
 							</Transferring>
@@ -342,7 +342,7 @@
 								</xsl:variable>
 								<Transferring>
 									<xsl:choose>
-										<xsl:when test="$partnerFund != ''">true</xsl:when>
+										<xsl:when test="$partnerFund != '' and $partnerFund != 'NONE'">true</xsl:when>
 										<xsl:otherwise>false</xsl:otherwise>
 									</xsl:choose>
 								</Transferring>
