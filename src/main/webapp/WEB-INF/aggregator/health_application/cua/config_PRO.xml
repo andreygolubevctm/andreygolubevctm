@@ -4,10 +4,10 @@
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
 
-	<nabGateway>
-		<gatewayURL>https://onlineservices.cuahealth.com.au/NAB/CUA_CTM_Prod_IFrame.aspx</gatewayURL>
-		<domain>https://onlineservices.cuahealth.com.au</domain>
-	</nabGateway>
+	<!--<nabGateway>-->
+		<!--<gatewayURL>https://onlineservices.cuahealth.com.au/NAB/CUA_CTM_Prod_IFrame.aspx</gatewayURL>-->
+		<!--<domain>https://onlineservices.cuahealth.com.au</domain>-->
+	<!--</nabGateway>-->
 
 	<!--<merge-root>soap-response</merge-root>-->
 	<!--<merge-xsl>merge-results.xsl</merge-xsl>-->

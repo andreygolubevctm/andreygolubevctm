@@ -125,6 +125,14 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'maskRequestOutHSL.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
+-- GATEWAY
+INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`) VALUES
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'gatewayProvider', 'NAB', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'gatewayURL', 'https://testservices.gmfhealth.com.au/NAB/GMF_CTM_IFrame.aspx', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'gatewayURL', 'https://members.hif.com.au/NAB/HIF_CTM_Prod_IFrame.aspx', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'domain', 'https://online.gmfhealth.com.au/NAB/GMF_CTM_Prod_IFrame.aspx', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'domain', 'https://online.gmfhealth.com.au', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY')
+;
 --------------
 -- WestFund --
 ---------------
@@ -176,6 +184,20 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRespIn-xsl', 'ahm/maskRespIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
+-- GATEWAY
+INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`) VALUES
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'gatewayProvider', 'Westpac', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'tokenUrl', 'https://quickstream.support.qvalent.com/CommunityTokenRequestServlet', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'tokenUrl', 'https://ws.qvalent.com/services/quickweb/CommunityTokenRequestServlet', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'username', 'AHMG', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'password', 'AHMG', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'password', 'K47731xVM', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'registerUrl', 'https://quickstream.support.qvalent.com/AccountRegistrationServlet', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'registerUrl', 'https://quickweb.westpac.com.au/AccountRegistrationServlet', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'cd_community', 'AHMG', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'cd_supplier_business', 'CTM', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'cd_supplier_business', 'AGG', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY')
+;
 
 ----------
 -- CBHS --
@@ -212,6 +234,15 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'content-type', 'application/soap+xml; charset=utf-8', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
+-- GATEWAY
+INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`) VALUES
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'gatewayProvider', 'NAB', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'gatewayURL', 'https://testservices.hif.com.au/NAB/HIF_CTM_IFrame.aspx', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'gatewayURL', 'https://members.hif.com.au/NAB/HIF_CTM_Prod_IFrame.aspx', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'domain', 'https://testservices.hif.com.au', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'domain', 'https://members.hif.com.au', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY')
+;
+
 ---------
 -- CUA --
 ---------
@@ -223,12 +254,20 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'soap-action', 'http://HSL.OMS.Public.API.Service/IService/SubmitMembership', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'outbound-xsl', 'cua/outbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'outbound-xsl-parms', 'keyname=Choosi,keycode=Choosi17', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HOME_BASE_MASTER_ID, 'NXQ', 0, @PROVIDERID, 'outbound-xsl-parms', 'keyname=Choosi,keycode=CTM27ctm', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HOME_BASE_MASTER_ID, 'NXS', 0, @PROVIDERID, 'outbound-xsl-parms', 'keyname=Choosi,keycode=CTM27ctm', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'outbound-xsl-parms', 'keyname=CTM,keycode=CTM27ctm', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'inbound-xsl', 'cua/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'maskRequestOutHSL.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+;
+-- GATEWAY
+INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`) VALUES
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'gatewayProvider', 'NAB', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'gatewayURL', 'https://testservices.cuahealth.com.au/NAB/CUA_CTM_IFrame.aspx', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'gatewayURL', 'https://onlineservices.cuahealth.com.au/NAB/CUA_CTM_Prod_IFrame.aspx', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'domain', 'https://testservices.cuahealth.com.au', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'PRO', 0, @PROVIDERID, 'domain', 'https://onlineservices.cuahealth.com.au', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY')
 ;
 ---------
 -- THF --
@@ -261,6 +300,14 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HOME_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'maskRequestOut-xsl', 'ctm/maskRequestOut.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HOME_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+;
+-- GATEWAY
+INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`) VALUES
+(@HOME_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'gatewayProvider', 'NAB', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'gatewayURL', 'external/hambs/mockPaymentGateway.html', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'NXI', 0, @PROVIDERID, 'gatewayURL', 'external/hambs/mockPaymentGateway.html', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'domain', 'http://localhost:8080', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY'),
+(@HOME_BASE_MASTER_ID, 'NXI', 0, @PROVIDERID, 'domain', 'http://nxi.secure.comparethemarket.com.au', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GATEWAY')
 ;
 ----------
 -- Bupa --

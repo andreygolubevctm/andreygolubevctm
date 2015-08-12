@@ -3,10 +3,10 @@
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
 
-	<nabGateway>
-		<gatewayURL>https://testservices.gmfhealth.com.au/NAB/GMF_CTM_IFrame.aspx</gatewayURL>
-		<domain>https://testservices.gmfhealth.com.au</domain>
-	</nabGateway>
+	<!--<nabGateway>-->
+		<!--<gatewayURL>https://testservices.gmfhealth.com.au/NAB/GMF_CTM_IFrame.aspx</gatewayURL>-->
+		<!--<domain>https://testservices.gmfhealth.com.au</domain>-->
+	<!--</nabGateway>-->
 
 	<!--<merge-root>soap-response</merge-root>-->
 	<!--<merge-xsl>merge-results.xsl</merge-xsl>-->

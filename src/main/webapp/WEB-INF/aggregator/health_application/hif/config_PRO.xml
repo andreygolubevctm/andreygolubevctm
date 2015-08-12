@@ -3,10 +3,10 @@
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
 
-	<nabGateway>
-		<gatewayURL>https://members.hif.com.au/NAB/HIF_CTM_Prod_IFrame.aspx</gatewayURL>
-		<domain>https://members.hif.com.au</domain>
-	</nabGateway>
+	<!--<nabGateway>-->
+		<!--<gatewayURL>https://members.hif.com.au/NAB/HIF_CTM_Prod_IFrame.aspx</gatewayURL>-->
+		<!--<domain>https://members.hif.com.au</domain>-->
+	<!--</nabGateway>-->
 
 	<!--<merge-root>soap-response</merge-root>-->
 	<!--<merge-xsl>merge-results.xsl</merge-xsl>-->

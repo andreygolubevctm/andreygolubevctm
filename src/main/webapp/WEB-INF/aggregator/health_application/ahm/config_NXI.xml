@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <aggregator>
 
-	<westpacGateway>
+	<!--<westpacGateway>-->
 		<!-- You can find a test page at https://quickstream.support.qvalent.com/ahmg/prereg/ -->
-		<tokenUrl>https://quickstream.support.qvalent.com/CommunityTokenRequestServlet</tokenUrl>
-		<username>AHMG</username>
-		<password>AHMG</password>
-		<registerUrl>https://quickstream.support.qvalent.com/AccountRegistrationServlet</registerUrl>
-		<cd_community>AHMG</cd_community>
-		<cd_supplier_business>CTM</cd_supplier_business>
-	</westpacGateway>
+		<!--<tokenUrl>https://quickstream.support.qvalent.com/CommunityTokenRequestServlet</tokenUrl>-->
+		<!--<username>AHMG</username>-->
+		<!--<password>AHMG</password>-->
+		<!--<registerUrl>https://quickstream.support.qvalent.com/AccountRegistrationServlet</registerUrl>-->
+		<!--<cd_community>AHMG</cd_community>-->
+		<!--<cd_supplier_business>CTM</cd_supplier_business>-->
+	<!--</westpacGateway>-->
 
 	<!--<merge-root>soap-response</merge-root>-->
 	<!--<merge-xsl>merge-results.xsl</merge-xsl>-->
