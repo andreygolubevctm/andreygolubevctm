@@ -20,6 +20,8 @@ import com.ctm.providers.car.carquote.model.response.CarResponse;
 import com.ctm.services.ResultsService;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.web.validation.CommencementDateValidation;
+import com.ctm.web.validation.FormValidation;
+import com.ctm.web.validation.SchemaValidationError;
 import com.ctm.xml.XMLOutputWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -42,6 +44,13 @@ public class CarQuoteService {
     public static final String SERVICE_URL = "serviceUrl";
     public static final String TIMEOUT_MILLIS = "timeoutMillis";
     public static final String DEBUG_PATH = "debugPath";
+    private boolean valid = false;
+
+    public List<SchemaValidationError> validateRequest(CarRequest data, String vertical) {
+        List<SchemaValidationError> errors = FormValidation.validate(data.getQuote(), vertical);
+        valid = errors.isEmpty();
+        return errors;
+    }
 
     public List<CarResult> getQuotes(Brand brand, CarRequest data) {
 

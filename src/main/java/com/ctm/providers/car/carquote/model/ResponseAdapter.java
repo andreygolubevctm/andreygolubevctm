@@ -52,7 +52,6 @@ public class ResponseAdapter {
                 }
                 result.setContact(createContact(carQuote.getContact()));
                 result.setPrice(createPrice(carQuote.getPrice()));
-//                result.setDiscount(createDiscount(carQuote.getDiscount()));
                 result.setAdditionalExcesses(createAdditionalExcesses(carQuote.getAdditionalExcesses()));
                 result.setFeatures(createFeatures(carQuote.getFeatures()));
                 result.setUnderwriter(createUnderWriter(carQuote.getUnderwriter()));
@@ -114,14 +113,6 @@ public class ResponseAdapter {
         }
         return excesses;
     }
-
-//    private static Discount createDiscount(com.ctm.providers.car.carquote.model.response.Discount quoteDiscount) {
-//        if (quoteDiscount == null) return null;
-//        Discount discount = new Discount();
-//        discount.setOffline(discount.getOffline());
-//        discount.setOnline(discount.getOnline());
-//        return discount;
-//    }
 
     private static Price createPrice(com.ctm.providers.car.carquote.model.response.Price quotePrice) {
         if (quotePrice == null) return null;

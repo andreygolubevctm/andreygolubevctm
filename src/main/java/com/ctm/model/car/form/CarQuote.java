@@ -2,6 +2,7 @@ package com.ctm.model.car.form;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.validation.Valid;
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.TreeMap;
@@ -16,6 +17,7 @@ public class CarQuote {
 
     private Contact contact;
 
+    @Valid
     private Drivers drivers;
 
     private String fsg;

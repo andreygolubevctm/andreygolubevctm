@@ -1,5 +1,7 @@
 package com.ctm.model.car.form;
 
+import com.ctm.web.validation.Name;
+
 public class Regular {
 
     private String claims;
@@ -14,6 +16,7 @@ public class Regular {
 
     private String employmentStatus;
 
+    @Name
     private String firstname;
 
     private String gender;
@@ -24,6 +27,7 @@ public class Regular {
 
     private String ownsAnotherCar;
 
+    @Name
     private String surname;
 
     public String getClaims() {

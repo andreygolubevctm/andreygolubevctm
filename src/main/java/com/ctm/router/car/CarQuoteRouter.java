@@ -15,10 +15,8 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.car.CarQuoteService;
 import com.ctm.services.car.CarVehicleSelectionService;
 import com.ctm.services.tracking.TrackingKeyService;
+import com.ctm.web.validation.SchemaValidationError;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
 import javax.ws.rs.*;
@@ -47,23 +45,34 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
         }
 
         CarQuoteService carService = new CarQuoteService();
-        final List<CarResult> quotes = carService.getQuotes(brand, data);
+        final List<SchemaValidationError> errors = carService.validateRequest(data, "quote");
 
-        Info info = new Info();
-        info.setTransactionId(data.getTransactionId());
-        try {
-            String trackingKey = TrackingKeyService.generate(
-                    context.getHttpServletRequest(), new Long(data.getTransactionId()));
-            info.setTrackingKey(trackingKey);
-        } catch (Exception e) {
-            throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
+        if(errors.size() > 0){
+            throw new RouterException("Invalid request"); // TODO pass validation errors to client
         }
 
-        ResultsObj<CarResult> results = new ResultsObj<>();
-        results.setResult(quotes);
-        results.setInfo(info);
+        try {
+            final List<CarResult> quotes = carService.getQuotes(brand, data);
 
-        return new ResultsWrapper(results);
+            Info info = new Info();
+            info.setTransactionId(data.getTransactionId());
+            try {
+                String trackingKey = TrackingKeyService.generate(
+                        context.getHttpServletRequest(), new Long(data.getTransactionId()));
+                info.setTrackingKey(trackingKey);
+            } catch (Exception e) {
+                throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
+            }
+
+            ResultsObj<CarResult> results = new ResultsObj<>();
+            results.setResult(quotes);
+            results.setInfo(info);
+
+            return new ResultsWrapper(results);
+
+        } catch (Exception e) {
+            throw new RouterException(e);
+        }
     }
 
     @GET
@@ -85,17 +94,6 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
         }
 
         Date applicationDate = ApplicationService.getApplicationDate(context.getHttpServletRequest());
-        CarProduct carProduct = CarVehicleSelectionService.getCarProduct(applicationDate, productId, brand.getId());
-
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectWriter objectWriter = objectMapper.writerWithView(Views.MoreInfoView.class);
-
-        try {
-            System.out.println(objectWriter.writeValueAsString(carProduct));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return carProduct;
+        return CarVehicleSelectionService.getCarProduct(applicationDate, productId, brand.getId());
     }
 }

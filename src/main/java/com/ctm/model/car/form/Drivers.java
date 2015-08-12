@@ -1,7 +1,10 @@
 package com.ctm.model.car.form;
 
+import javax.validation.Valid;
+
 public class Drivers {
 
+    @Valid
     private Regular regular;
 
     private Spouse spouse;
