@@ -3,6 +3,11 @@
 -- INSERT INTO `ctm`.`service_master` (`verticalId`, `serviceCode`) VALUES ('4', 'appService');
 SELECT * FROM ctm.service_master where verticalid = 4
 
+--Need to add the ability to put in Gateway details
+ALTER TABLE `ctm`.`service_properties`
+CHANGE COLUMN `scope` `scope` ENUM('GLOBAL','SERVICE','GATEWAY') NOT NULL ;
+
+
 -- Set master id's to use for later inserts.
 SET @HOME_BASE_MASTER_ID = (SELECT `serviceMasterId` FROM `ctm`.`service_master` where `serviceCode` = 'appService' AND `verticalId` = '4');
 
