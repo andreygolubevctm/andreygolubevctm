@@ -35,7 +35,8 @@
 			}
 		}
 
-		this.html = _.template(templateHTML, this.data, { variable: "data" });
+		var htmlTemplate = _.template(templateHTML, { variable: "data" });
+		this.html = htmlTemplate(this.data);
 
 		return this;
 	}

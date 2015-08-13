@@ -58,11 +58,11 @@
             var onFail = function(message) {
                 message = message || genericFailMessage;
 
-                var successHTML = _.template($("#reset-fail-modal-template").html(), { message: message });
+                var successHTML = _.template($("#reset-fail-modal-template").html());
 
                 meerkat.modules.dialogs.show({
                     title: "Reset Password Error",
-                    htmlContent: successHTML,
+                    htmlContent: successHTML({ message: message }),
                     hashId: "forgot-password",
                     buttons: [{
                         label: 'OK',
@@ -83,13 +83,13 @@
                         var result = data.result;
 
                         if(result === "OK") {
-                            var successHTML = _.template($("#reset-success-modal-template").html())();
+                            var successHTML = _.template($("#reset-success-modal-template").html());
 
                             var emailAddress = data.email;
 
                             meerkat.modules.dialogs.show({
                                 title: "Password Change Successful",
-                                htmlContent: successHTML,
+                                htmlContent: successHTML({}),
                                 hashId: "forgot-password",
                                 buttons: [{
                                     label: 'OK',

@@ -379,7 +379,8 @@
 	 * Gets the HTML for a particular row using a template and specified data
 	 */
 	function _getHoursRowHtml(rowData) {
-		return _.template(rowTemplate, rowData);
+		var htmlTemplate = _.template(rowTemplate);
+		return htmlTemplate(rowData);
 	}
 	
 	meerkat.modules.register('adminCallCentreHours', {

@@ -172,6 +172,7 @@
 		$(document).ready(function() {
 			toggleAbovePolicyLimitsAmount(0);
 			togglePersonalEffectsFields(0);
+			updateTotalPersonalEffects();
 		});
 	}
 
