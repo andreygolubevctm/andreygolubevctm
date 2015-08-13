@@ -167,6 +167,14 @@
 				touchComment: 'Occupancy',
 				includeFormData: true
 			},
+			validation: {
+				validate: true,
+				customValidation: function (callback) {
+					// prevent from jumping to the next step if the selections are incorrect
+					var doContinue = meerkat.modules.homeCoverTypeWarning.validateSelections();
+					callback(doContinue);
+				}
+			},
 			externalTracking: externalTrackingSettings,
 			onInitialise: function() {
 				meerkat.modules.homeOccupancy.initHomeOccupancy();

@@ -1,0 +1,1 @@
+Create Index transactionid on aggregator.person_lookup(transactionid);
