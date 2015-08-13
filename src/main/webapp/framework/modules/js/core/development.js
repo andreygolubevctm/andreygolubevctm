@@ -65,10 +65,6 @@
         $environmentHolder.addClass(meerkat.site.environment);
         $revisionHolder.text(meerkat.site.revision);
 
-
-
-
-
         if(hasAggregationService() === true){
 
             var $aggEngineContainer = $('.aggEngine');
@@ -90,7 +86,8 @@
                         var obj = resultData.NXI[i];
 
                         // Add any travel-quote branch to the list (except for the default if viewing this on NXI)
-                        if(obj.context.indexOf("/travel-quote") !== -1 && (obj.context === "/travel-quote" && meerkat.site.environment === 'nxi') === false){
+                        var verticalQuoteAppPath = "/"+meerkat.site.vertical+"-quote";
+                        if(obj.context.indexOf(verticalQuoteAppPath) !== -1 && (obj.context === verticalQuoteAppPath && meerkat.site.environment === 'nxi') === false){
                             select += '<option value="'+aggregationBaseUrl+obj.context+'">NXI'+obj.context+'</option>';
                         }
                     }
