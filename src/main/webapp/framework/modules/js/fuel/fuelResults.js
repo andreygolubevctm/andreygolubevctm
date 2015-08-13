@@ -210,7 +210,7 @@
     }
 
     function get() {
-        Results.get();
+         Results.get();
         _updateSnapshot();
     }
 
@@ -222,21 +222,26 @@
     }
 
     function _updateSnapshot() {
-        var fuelTypeArray = [];
+        try {
+            var fuelTypeArray = [];
 
-        $("#checkboxes-all :checked").each(function() {
-            var pushValue = "<strong>" + $.trim($(this).next("label").text()) + "</strong>";
-            fuelTypeArray.push(pushValue);
-        });
+            $("#checkboxes-all :checked").each(function () {
+                var pushValue = "<strong>" + $.trim($(this).next("label").text()) + "</strong>";
+                fuelTypeArray.push(pushValue);
+            });
 
-        var fuelTypes = fuelTypeArray.join(" &amp; "),
-            location = $("#fuel_location").val(),
-            data = {
-                fuelTypes: fuelTypes,
-                location: location
-            },
-            template = _.template($("#snapshot-template").html(), data, { variable: "data" });
-        $("#resultsSummaryPlaceholder").html(template);
+            var fuelTypes = fuelTypeArray.join(" &amp; "),
+                location = $("#fuel_location").val(),
+                data = {
+                    fuelTypes: fuelTypes,
+                    location: location
+                };
+
+            var template = _.template($("#snapshot-template").html(), data, {variable: "data"});
+            $("#resultsSummaryPlaceholder").html(template);
+        } catch (e) {
+
+        }
     }
 
     function init() {
