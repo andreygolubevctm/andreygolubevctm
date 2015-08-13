@@ -84,7 +84,7 @@
                         var result = data.result;
 
                         if(result === "OK") {
-                            var successHTML = _.template($("#reset-password-success-template").html(),{variable: "data"});
+                            var successHTML = _.template($("#reset-password-success-template").html(), {variable: "data"});
 
                             meerkat.modules.dialogs.show({
                                 title: "Reset Password",
