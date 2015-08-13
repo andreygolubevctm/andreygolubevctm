@@ -635,7 +635,11 @@
         <resources>
             <resource>
                 <directory>src/main/resources/${build.environment}/classes</directory>
-              </resource>
+            </resource>
+            <resource>
+                <directory>src/main/resources/webservice-api</directory>
+                <targetPath>webservice-api</targetPath>
+            </resource>
         </resources>
     </build>
 </project>

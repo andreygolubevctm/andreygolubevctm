@@ -315,7 +315,7 @@
 		</name>
 		<description>
 			<xsl:choose>
-				<xsl:when test="$brandCode = 'BUDD'">
+				<xsl:when test="$brandCode = 'BUDD' or $brandCode = 'VIRG'">
 					<xsl:call-template name="description" >
 						<xsl:with-param name="productId" select="$productId" />
 						<xsl:with-param name="productType" select="$productType" />
@@ -328,7 +328,7 @@
 		</description>
 		<offer>
 			<xsl:choose>
-				<xsl:when test="$brandCode = 'BUDD'">
+				<xsl:when test="$brandCode = 'BUDD' or $brandCode = 'VIRG'">
 					<xsl:call-template name="offer" >
 						<xsl:with-param name="productId" select="$productId" />
 						<xsl:with-param name="productType" select="$productType" />
