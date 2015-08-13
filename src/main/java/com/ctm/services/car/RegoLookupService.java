@@ -1,9 +1,6 @@
 package com.ctm.services.car;
 
-import au.com.motorweb.schemas.soap.autoid._1.AutoIdRequest;
-import au.com.motorweb.schemas.soap.autoid._1.AutoIdResponse;
-import au.com.motorweb.schemas.soap.autoid._1.JurisdictionEnum;
-import au.com.motorweb.schemas.soap.autoid._1.PlateType;
+import au.com.motorweb.schemas.soap.autoid._1.*;
 import au.com.motorweb.schemas.soap.autoid._1_0.AutoId;
 import com.ctm.dao.car.CarRedbookDao;
 import com.ctm.dao.car.CarRegoLookupDao;
@@ -202,7 +199,7 @@ public class RegoLookupService {
                 logger.debug("[rego lookup] Exception: " + e.getMessage());
                 throw new RegoLookupException(RegoLookupStatus.SERVICE_ERROR, e);
             }
-            if (redbookCode == null) {
+            if (redbookCode == null || redbookCode.isEmpty()) {
                 throw new RegoLookupException(RegoLookupStatus.REGO_NOT_FOUND);
             } else {
                 // Step 2 - get vehicle details from dao
