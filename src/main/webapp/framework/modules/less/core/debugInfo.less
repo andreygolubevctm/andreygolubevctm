@@ -1,8 +1,12 @@
 
+@dev-background: #222;
+@dev-border: #111;
+@dev-highlight: #1c3e93;
+
 .buildEnvInfo_div{
   font-family: "SourceSansProSemiBold","SourceSansProRegular",Helvetica,Arial,sans-serif;
-  background-color: #222;
-  border-top:1px solid #111;
+  background-color: @dev-background;
+  border-top:1px solid @dev-border;
   padding:4px;
   color:#555;
   overflow:hidden;
@@ -18,12 +22,12 @@
       line-height: 20px;
       margin-right:8px;
       padding-right:8px;
-      border-right:1px solid #000;
-      border-radius: 2px;
+      border-right:1px solid @dev-border;
+
       span{
         color:rgba(255, 255, 255, 0.4);
         padding:2px 6px;
-        background-color:#1c3e93;
+        background-color:@dev-highlight;
         border-radius: 3px;
         text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
 
@@ -31,11 +35,8 @@
       &.devEnv {
         padding-left:8px;
         color: #fff;
-        border-bottom:1px solid #000;
         font-weight:bold;
         letter-spacing: 0.05em;
-
-
         text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
 
         &.localhost {
@@ -49,6 +50,54 @@
         }
       }
     }
+  }
+  /* The CSS */
+  select {
+    color:rgba(255, 255, 255, 0.4);
+    padding:2px 0px;
+    background-color:@dev-highlight;
+    border-radius: 3px;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.1);
+
+    box-shadow: 0 1px 0 @dev-border;
+    background: @dev-highlight;
+
+    border:none;
+    outline:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    cursor:pointer;
+    width: 180px;
+  }
+
+  /* Targetting Webkit browsers only. FF will show the dropdown arrow with so much padding. */
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+    select {padding-right:18px}
+  }
+
+  label {position:relative}
+  label:after {
+    content:'<>';
+    color:rgba(255, 255, 255, 0.4);
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    transform:rotate(90deg);
+    right:8px; top:0px;
+    padding:0 0 2px;
+    border-bottom:1px solid @dev-border;
+    position:absolute;
+    pointer-events:none;
+  }
+  label:before {
+    content:'';
+    right:6px; top:0px;
+    width:20px; height:20px;
+    background:@dev-highlight;
+    position:absolute;
+    pointer-events:none;
+    display:block;
   }
 }
 

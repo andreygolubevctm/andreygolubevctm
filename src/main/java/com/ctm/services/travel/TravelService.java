@@ -86,6 +86,14 @@ public class TravelService {
             throw new TravelServiceException("TravelQuote config error", e);
         }
 
+        EnvironmentService environmentService = new EnvironmentService();
+
+        if(environmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST || environmentService.getEnvironment() == EnvironmentService.Environment.NXI){
+            if(data.getEnvironmentOverride() != null && data.getEnvironmentOverride().equals("") == false) {
+                serviceUrl = data.getEnvironmentOverride();
+            }
+        }
+
         // Call travel-quote
         try{
 
