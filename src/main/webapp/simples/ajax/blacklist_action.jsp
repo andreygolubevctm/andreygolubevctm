@@ -25,7 +25,15 @@
 	<c:when test="${success.equalsIgnoreCase('success')}">
 		<%-- JSON RESPONSE SUCCESS--%>
 		<json:object>
-			<json:property name="successMessage" value="${action} in blacklist for ${value} [${channel}] successful" />
+			<c:choose>
+				<c:when test="${action == 'add'}">
+					<json:property name="successMessage" value="Success : ${value} [${channel}] added to Blacklist" />
+				</c:when>
+				<c:when test="${action == 'delete'}">
+					<json:property name="successMessage" value="Success : ${value} [${channel}] removed from Blacklist" />
+				</c:when>
+			</c:choose>
+
 		</json:object>
 	</c:when>
 	<c:otherwise>

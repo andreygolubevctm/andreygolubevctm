@@ -41,7 +41,7 @@ public class SimplesBlacklistService {
 				writeBlacklistStamp(request, channel, value, "on", operator, comment);
 				result="success";
 			}else{
-				result="Entry already exist.";
+				result="Entry "+ value +" ["+channel+"] already exists.";
 			}
 		} catch (DaoException e) {
 			logger.error("Could not add to blacklist");
@@ -73,12 +73,12 @@ public class SimplesBlacklistService {
 				writeBlacklistStamp(request, channel, value, "off", operator, comment);
 				result="success";
 			}else{
-				result="Entry does not exist.";
+				result="Entry "+ value +" ["+channel+"] does not exists.";
 			}
 		}
 		catch (DaoException e) {
 			logger.error("Could not delete from blacklist" , e);
-			result="Failed to delete."+e.getMessage();
+			result=e.getMessage();
 		}
 		return result;
 	}
