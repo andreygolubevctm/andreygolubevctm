@@ -237,8 +237,8 @@
                     location: location
                 };
 
-            var template = _.template($("#snapshot-template").html(), data, {variable: "data"});
-            $("#resultsSummaryPlaceholder").html(template);
+            var htmlTemplate = _.template($("#snapshot-template").html(), {variable: "data"});
+            $("#resultsSummaryPlaceholder").html(htmlTemplate(data));
         } catch (e) {
 
         }
