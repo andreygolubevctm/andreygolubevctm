@@ -61,8 +61,10 @@
             templateData[name] = current.value;
         }
 
-        var html = _.template($("#signup-success-template").html(), templateData, { variable: "data" });
-        $signUpForm.html(html);
+        var htmlTemplate = _.template($("#signup-success-template").html(), {
+            variable: "data"
+        });
+        $signUpForm.html(htmlTemplate(templateData));
     }
 
     function _signupFail() {
