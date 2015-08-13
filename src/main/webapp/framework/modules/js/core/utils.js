@@ -189,7 +189,7 @@
 		// give up after 10 seconds
 		setTimeout(function() {
 			clearInterval(pluginInterval);
-		}, 10000);
+		}, 15000);
 
 		$.when(pluginDef).then(function() {
 			clearInterval(pluginInterval);
