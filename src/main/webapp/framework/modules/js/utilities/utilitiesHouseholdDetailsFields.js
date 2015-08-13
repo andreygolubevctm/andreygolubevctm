@@ -5,24 +5,26 @@
         log = meerkat.logging.info;
 
     var useInitProviders,
-		$competitionRequiredElems;
+		$competitionRequiredElems,
+        providerResultsVar;
 
     function initUtilitiesHouseholdDetailsFields() {
+        if(meerkat.site.providerResults === null) {
+           providerResultsVar =  meerkat.site.providerResults = {
+                gasProviders : "",
+                electricityProviders : "",
+                errors : ""
+            };
+        }
         if(meerkat.site.pageAction === "confirmation") {
             return;
         }
-       if(meerkat.site.providerResults === null) {
-           meerkat.site.providerResults = {
-               gasProviders : "",
-               electricityProviders : "",
-               errors : ""
-           };
-        }
 
-        useInitProviders = ((typeof meerkat.site.providerResults.gasProviders !== "undefined" &&
-                                  meerkat.site.providerResults.gasProviders.length)
-                         || (typeof meerkat.site.providerResults.electricityProviders !== "undefined" &&
-                                  meerkat.site.providerResults.electricityProviders.length));
+
+        useInitProviders = ((typeof providerResultsVar.gasProviders !== "undefined" &&
+                                  providerResultsVar.gasProviders.length)
+                         || (typeof providerResultsVar.electricityProviders !== "undefined" &&
+                                 providerResultsVar.electricityProviders.length));
 
         _registerEventListeners();
 

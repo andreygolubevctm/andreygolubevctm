@@ -3,12 +3,13 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <c:set var="fromBrochure" scope="request" value="${false}"/>
 
-<jsp:useBean id="providerService" class="com.ctm.services.utilities.UtilitiesProviderService" />
 <c:set var="providerResults" value="null" />
-<c:set var="suburb" value="${data.utilities.householdDetails.suburb}" />
-<c:set var="postCode" value="${data.utilities.householdDetails.postcode}" />
+
 <c:choose>
     <c:when test="${( not empty suburb) and (not empty postcode) }">
+        <jsp:useBean id="providerService" class="com.ctm.services.utilities.UtilitiesProviderService" />
+        <c:set var="suburb" value="${data.utilities.householdDetails.suburb}" />
+        <c:set var="postCode" value="${data.utilities.householdDetails.postcode}" />
         <c:set var="providerResults" value="${providerService.getResults(pageContext.request, postCode, suburb).toJson()}" />
     </c:when>
 </c:choose>
