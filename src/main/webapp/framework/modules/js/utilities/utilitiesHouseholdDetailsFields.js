@@ -11,8 +11,18 @@
         if(meerkat.site.pageAction === "confirmation") {
             return;
         }
+       if(meerkat.site.providerResults === null) {
+           meerkat.site.providerResults = {
+               gasProviders : "",
+               electricityProviders : "",
+               errors : ""
+           };
+        }
 
-        useInitProviders = ((typeof providerResults.gasProviders !== "undefined" && providerResults.gasProviders.length) || (typeof providerResults.electricityProviders !== "undefined" && providerResults.electricityProviders.length));
+        useInitProviders = ((typeof meerkat.site.providerResults.gasProviders !== "undefined" &&
+                                  meerkat.site.providerResults.gasProviders.length)
+                         || (typeof meerkat.site.providerResults.electricityProviders !== "undefined" &&
+                                  meerkat.site.providerResults.electricityProviders.length));
 
         _registerEventListeners();
 
