@@ -73,7 +73,7 @@ public class SimplesBlacklistService {
 				writeBlacklistStamp(request, channel, value, "off", operator, comment);
 				result="success";
 			}else{
-				result="Entry "+ value +" ["+channel+"] does not exists.";
+				result="Entry "+ value +" ["+channel+"] does not exist.";
 			}
 		}
 		catch (DaoException e) {
