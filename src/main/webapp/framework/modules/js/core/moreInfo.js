@@ -5,521 +5,528 @@
  */
 (function ($, undefined) {
 
-	var meerkat = window.meerkat,
-		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info;
+    var meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
+        log = meerkat.logging.info;
 
-	var events = {
-			moreInfo: {
-				bridgingPage: {
-					CHANGE: "BRIDGINGPAGE_CHANGE", // only triggered when state changes from open to closed or closed to open
-					SHOW: "BRIDGINGPAGE_SHOW", // trigger on every show (i.e. even when switching from product to product => show to show)
-					HIDE: "BRIDGINGPAGE_HIDE" // triggers on close
-				}
-			}
-		},
-		moduleEvents = events.moreInfo;
+    var events = {
+            moreInfo: {
+                bridgingPage: {
+                    CHANGE: "BRIDGINGPAGE_CHANGE", // only triggered when state changes from open to closed or closed to open
+                    SHOW: "BRIDGINGPAGE_SHOW", // trigger on every show (i.e. even when switching from product to product => show to show)
+                    HIDE: "BRIDGINGPAGE_HIDE" // triggers on close
+                }
+            }
+        },
+        moduleEvents = events.moreInfo;
 
-	var product,
-		htmlTemplate,
-		isModalOpen = false,
-		isBridgingPageOpen = false,
-		modalId,
-		topPosition,// for Health's unique results view.
-		jsonResult,
-		defaults = {
-			container: $('.bridgingContainer'), // if the template fills a container. If modal, not used
-			template: $("#more-info-template").html(),
-			hideAction: 'slideUp',
-			showAction: 'slideDown',
-			updateTopPositionVariable: null, // For Health's unique results view.
-			modalOptions: false, // can be an object that is passed directly to meerkat.modules.dialogs.show
-			runDisplayMethod: null, // specify in your verticalMoreInfo.js file how to display, based on viewport etc.
-			onBeforeShowBridgingPage: null, // before bridging page is displayed (applies to all forms of display)
-			onBeforeShowTemplate: null, // before the "template" mode is displayed
-			onBeforeShowModal: null, // before the "modal" mode is displayed
-			onAfterShowTemplate: null, // after the "template" mode is displayed
-			onAfterShowModal: null, // after the "modal" mode is displayed
-			onBeforeHideTemplate: null, // before the template is hidden
-			onAfterHideTemplate: null, // after the template is hidden
-			onBeforeApply: null,
-			onClickApplyNow: null,
-			onApplySuccess: null,
-			prepareCover: null, // Function for Health. I tried to call in retrieveExternalCopy, but on healthConfirmation, it does prepareCover as a separate step.
-			retrieveExternalCopy: null, // could just return a simple javascript object, or a deferred promise (ajax request).
-			additionalTrackingData: null, // add an object of additional tracking data to pass to trackProductView.,
-			onBreakpointChangeCallback: null
-		},
-		settings = {},
-		visibleBodyClass = 'moreInfoVisible';
+    var product,
+        htmlTemplate,
+        isModalOpen = false,
+        isBridgingPageOpen = false,
+        modalId,
+        topPosition,// for Health's unique results view.
+        jsonResult,
+        triggerOnShowTimeout,
+        defaults = {
+            container: $('.bridgingContainer'), // if the template fills a container. If modal, not used
+            template: $("#more-info-template").html(),
+            hideAction: 'slideUp',
+            showAction: 'slideDown',
+            updateTopPositionVariable: null, // For Health's unique results view.
+            modalOptions: false, // can be an object that is passed directly to meerkat.modules.dialogs.show
+            runDisplayMethod: null, // specify in your verticalMoreInfo.js file how to display, based on viewport etc.
+            onBeforeShowBridgingPage: null, // before bridging page is displayed (applies to all forms of display)
+            onBeforeShowTemplate: null, // before the "template" mode is displayed
+            onBeforeShowModal: null, // before the "modal" mode is displayed
+            onAfterShowTemplate: null, // after the "template" mode is displayed
+            onAfterShowModal: null, // after the "modal" mode is displayed
+            onBeforeHideTemplate: null, // before the template is hidden
+            onAfterHideTemplate: null, // after the template is hidden
+            onBeforeApply: null,
+            onClickApplyNow: null,
+            onApplySuccess: null,
+            prepareCover: null, // Function for Health. I tried to call in retrieveExternalCopy, but on healthConfirmation, it does prepareCover as a separate step.
+            retrieveExternalCopy: null, // could just return a simple javascript object, or a deferred promise (ajax request).
+            additionalTrackingData: null, // add an object of additional tracking data to pass to trackProductView.,
+            onBreakpointChangeCallback: null
+        },
+        settings = {},
+        visibleBodyClass = 'moreInfoVisible';
 
-	/* Initialise the more info module with options passed from your vertical */
-	function initMoreInfo(options) {
+    /* Initialise the more info module with options passed from your vertical */
+    function initMoreInfo(options) {
 
-		settings = $.extend({}, defaults, options);
-		/* Disable on confirmation pages */
-		if (meerkat.site.pageAction === "confirmation")
-			return false;
-		jQuery(document).ready(function ($) {
-			// prepare compiled template
-			if (typeof (settings.template) != "undefined") {
-				htmlTemplate = _.template(settings.template);
-				applyEventListeners();
-				eventSubscriptions();
+        settings = $.extend({}, defaults, options);
+        /* Disable on confirmation pages */
+        if (meerkat.site.pageAction === "confirmation")
+            return false;
+        jQuery(document).ready(function ($) {
+            // prepare compiled template
+            if (typeof (settings.template) != "undefined") {
+                htmlTemplate = _.template(settings.template);
+                applyEventListeners();
+                eventSubscriptions();
 
-			}
+            }
 
-		});
+        });
 
-		meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, onBreakpointChange);
-	}
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, onBreakpointChange);
+    }
 
-	function applyEventListeners() {
+    function applyEventListeners() {
 
-		/* Show/Hide Bridging Page */
-		if (typeof Results.settings !== "undefined") {
-			// open bridging page
-			$(Results.settings.elements.page).on("click", ".btn-more-info", openBridgingPage);
-			// close bridging page
-			$(Results.settings.elements.page).on("click", ".btn-close-more-info", closeBridgingPage);
-		}
+        /* Show/Hide Bridging Page */
+        if (typeof Results.settings !== "undefined") {
+            // open bridging page
+            $(Results.settings.elements.page).on("click", ".btn-more-info", openBridgingPage);
+            // close bridging page
+            $(Results.settings.elements.page).on("click", ".btn-close-more-info", closeBridgingPage);
+        }
 
-		// Close any more info panels when fetching new results
-		$(document).on("resultsFetchStart", function onResultsFetchStart() {
-			closeBridgingPage();
-		});
+        // Close any more info panels when fetching new results
+        $(document).on("resultsFetchStart", function onResultsFetchStart() {
+            closeBridgingPage();
+        });
 
-		/* Other Methods */
-		// Apply button in bridging page
-		$(document.body).on("click", ".btn-more-info-apply", function applyClick(event) {
+        /* Other Methods */
+        // Apply button in bridging page
+        $(document.body).on("click", ".btn-more-info-apply", function applyClick(event) {
 
-			event.preventDefault();
+            event.preventDefault();
 
-			var $this = $(this);
-			$this.addClass('inactive').addClass('disabled');
-			meerkat.modules.loadingAnimation.showInside($this, true);
+            var $this = $(this);
+            $this.addClass('inactive').addClass('disabled');
+            meerkat.modules.loadingAnimation.showInside($this, true);
 
-			if(typeof settings.onBeforeApply == 'function') {
-				settings.onBeforeApply($this);
-			}
+            if (typeof settings.onBeforeApply == 'function') {
+                settings.onBeforeApply($this);
+            }
 
-			// Set selected product
-			Results.setSelectedProduct($this.attr("data-productId"));
-			var product = Results.getSelectedProduct();
+            // Set selected product
+            Results.setSelectedProduct($this.attr("data-productId"));
+            var product = Results.getSelectedProduct();
 
-			if (product) {
-				if (typeof settings.onClickApplyNow == 'function') {
-					return settings.onClickApplyNow(product, applyCallback);
-				}
-			} else {
-				applyCallback(false);
-				return false;
-			}
+            if (product) {
+                if (typeof settings.onClickApplyNow == 'function') {
+                    return settings.onClickApplyNow(product, applyCallback);
+                }
+            } else {
+                applyCallback(false);
+                return false;
+            }
 
-		});
+        });
 
-		// Add dialog on "promo conditions" links
-		$(document.body).on("click", ".dialogPop", function promoConditionsLinksClick() {
-			meerkat.modules.dialogs.show({
-				title: $(this).attr("title"),
-				htmlContent: $(this).attr("data-content")
-			});
-		});
+        // Add dialog on "promo conditions" links
+        $(document.body).on("click", ".dialogPop", function promoConditionsLinksClick() {
+            meerkat.modules.dialogs.show({
+                title: $(this).attr("title"),
+                htmlContent: $(this).attr("data-content")
+            });
+        });
 
-	}
+    }
 
-	function eventSubscriptions() {
+    function eventSubscriptions() {
 
-		// Close when results page changes
-		$(document).on("resultPageChange", function(){
-			if( isBridgingPageOpen ){
-				closeBridgingPage();
-			}
-		});
-	}
+        // Close when results page changes
+        $(document).on("resultPageChange", function () {
+            if (isBridgingPageOpen) {
+                closeBridgingPage();
+            }
+        });
+    }
 
-	/**
-	 * openBridgingPage is central, the show actions are separate and determined in the verticalMoreInfo.js file.
-	 */
-	function openBridgingPage(event) {
+    /**
+     * openBridgingPage is central, the show actions are separate and determined in the verticalMoreInfo.js file.
+     */
+    function openBridgingPage(event) {
 
-		var $this = $(this);
-		if(typeof $this === 'undefined') return;
-		if (typeof $this.attr('data-productId') === 'undefined') return;
-		if (typeof $this.attr('data-available') !== 'undefined' && $this.attr('data-available') !== 'Y') return;
+        var $this = $(this);
+        if (typeof $this === 'undefined') return;
+        if (typeof $this.attr('data-productId') === 'undefined') return;
+        if (typeof $this.attr('data-available') !== 'undefined' && $this.attr('data-available') !== 'Y') return;
 
-		if(typeof settings.onBeforeShowBridgingPage == 'function') {
-			settings.onBeforeShowBridgingPage($this);
-		}
-		var productId = $this.attr("data-productId"),
-			showApply = $this.hasClass('more-info-showapply');
+        if (typeof settings.onBeforeShowBridgingPage == 'function') {
+            settings.onBeforeShowBridgingPage($this);
+        }
+        var productId = $this.attr("data-productId"),
+            showApply = $this.hasClass('more-info-showapply');
 
-		setProduct(Results.getResult("productId", productId), showApply);
+        setProduct(Results.getResult("productId", productId), showApply);
 
-		// load, parse and show the bridging page
-		settings.runDisplayMethod(productId);
+        // load, parse and show the bridging page
+        settings.runDisplayMethod(productId);
 
-		// set virtual page in sessioncam
-		meerkat.modules.sessionCamHelper.setMoreInfoModal();
-	}
+        // set virtual page in sessioncam
+        meerkat.modules.sessionCamHelper.setMoreInfoModal();
+    }
 
-	/**
-	 * Calls prepareProduct, which requests the content, and performs the show success callback.
-	 * This function currently defaults to slideDown.
-	 */
-	function showTemplate(moreInfoContainer) {
+    /**
+     * Calls prepareProduct, which requests the content, and performs the show success callback.
+     * This function currently defaults to slideDown.
+     */
+    function showTemplate(moreInfoContainer) {
 
-		toggleBodyClass(true);
+        toggleBodyClass(true);
 
-		// show loading animation
-		moreInfoContainer.html(meerkat.modules.loadingAnimation.getTemplate()).show();
+        // show loading animation
+        moreInfoContainer.html(meerkat.modules.loadingAnimation.getTemplate()).show();
 
-		prepareProduct(function moreInfoShowSuccess() {
-			var htmlString = htmlTemplate(product);
-			// fade out loading anim
-			moreInfoContainer.find(".spinner").fadeOut();
+        prepareProduct(function moreInfoShowSuccess() {
+            var htmlString = htmlTemplate(product);
+            // fade out loading anim
+            moreInfoContainer.find(".spinner").fadeOut();
 
-			// append content
-			moreInfoContainer.html(htmlString);
+            // append content
+            moreInfoContainer.html(htmlString);
 
-			if(typeof settings.onBeforeShowTemplate == 'function') {
-				settings.onBeforeShowTemplate(jsonResult, moreInfoContainer);
-			}
+            if (typeof settings.onBeforeShowTemplate == 'function') {
+                settings.onBeforeShowTemplate(jsonResult, moreInfoContainer);
+            }
 
-			var animDuration = 400;
-			var scrollToTopDuration = 250;
+            var animDuration = 400;
+            var scrollToTopDuration = 250;
 			var totalDuration = 0;
 
-			if (isBridgingPageOpen) {
+            if (isBridgingPageOpen) {
 				moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, function() {
-					if(typeof settings.onAfterShowTemplate == 'function') {
-						settings.onAfterShowTemplate();
-					}
-				});
+                    if (typeof settings.onAfterShowTemplate == 'function') {
+                        settings.onAfterShowTemplate();
+                    }
+
+                });
 				totalDuration = animDuration;
-			} else {
-				meerkat.modules.utils.scrollPageTo('.resultsHeadersBg', scrollToTopDuration, -$("#navbar-main").height(), function () {
-					moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, showTemplateCallback);
-					isBridgingPageOpen = true;
-					if(typeof settings.onAfterShowTemplate == 'function') {
-						settings.onAfterShowTemplate();
-					}
+            } else {
+                meerkat.modules.utils.scrollPageTo('.resultsHeadersBg', scrollToTopDuration, -$("#navbar-main").height(), function () {
+                    moreInfoContainer.find(".more-info-content").stop(true, false)[settings.showAction](animDuration, showTemplateCallback);
+                    isBridgingPageOpen = true;
+                    if (typeof settings.onAfterShowTemplate == 'function') {
+                        settings.onAfterShowTemplate();
+                    }
 				});
 				totalDuration = animDuration + scrollToTopDuration;
 			}
 
-			_.delay(function () {
+			triggerOnShowTimeout = setTimeout(function () {
 				meerkat.messaging.publish(moduleEvents.bridgingPage.SHOW, {
 					isOpen: isBridgingPageOpen
-				});
+                });
 				if(!isBridgingPageOpen && typeof settings.updateTopPositionVariable == 'function') {
 					settings.updateTopPositionVariable();
 					//Set position from the global.
 					moreInfoContainer.css({
 						'top': topPosition
 					});
-				}
+            }
 			}, totalDuration);
 
-			var trackData = {
-					productID: product.productId
-			};
+            var trackData = {
+                productID: product.productId
+            };
 
-			if(settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === 'object') {
-				trackData = $.extend({}, trackData, settings.additionalTrackingData);
-			}
+            if (settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === 'object') {
+                trackData = $.extend({}, trackData, settings.additionalTrackingData);
+            }
 
-			/* This may need to be implemented differently if ever needed for verticals other than
-			 * car and the brandCode is stored differently eg Health product.info.FundCode */
-			if(product.hasOwnProperty("brandCode")) {
-				trackData.productBrandCode = product.brandCode;
-			}
+            /* This may need to be implemented differently if ever needed for verticals other than
+             * car and the brandCode is stored differently eg Health product.info.FundCode */
+            if (product.hasOwnProperty("brandCode")) {
+                trackData.productBrandCode = product.brandCode;
+            }
 
-			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-				method: 'trackProductView',
-				object: trackData
-			});
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: 'trackProductView',
+                object: trackData
+            });
 
-			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
-				touchType:'H',
-				touchComment:'MoreInfo'
-			});
+            meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+                touchType: 'H',
+                touchComment: 'MoreInfo'
+            });
 
-			// Instigate a session poke
-			meerkat.modules.session.poke();
+            // Instigate a session poke
+            meerkat.modules.session.poke();
 
-		});
+        });
 
-	}
-	/**
-	 * If there's a modal to show.
-	 */
-	function showModal(){
-		prepareProduct( function moreInfoShowModalSuccess(){
+    }
+    /**
+     * If there's a modal to show.
+     */
+    function showModal() {
+        prepareProduct(function moreInfoShowModalSuccess() {
 
-			toggleBodyClass(true);
+            toggleBodyClass(true);
 
-			var options = {
-				htmlContent: htmlTemplate(product),
-				hashId: 'moreinfo',
-				closeOnHashChange: true
-			};
+            var options = {
+                htmlContent: htmlTemplate(product),
+                hashId: 'moreinfo',
+                closeOnHashChange: true
+            };
 
-			if(typeof settings.onBeforeShowModal == 'function') {
-				options.onOpen = function(dialogId) {
-					settings.onBeforeShowModal(jsonResult, dialogId);
-				}
-			}
+            if (typeof settings.onBeforeShowModal == 'function') {
+                options.onOpen = function (dialogId) {
+                    settings.onBeforeShowModal(jsonResult, dialogId);
+                }
+            }
 
-			if(typeof settings.modalOptions == 'object') {
-				options = $.extend(options, settings.modalOptions);
-			}
-			modalId = meerkat.modules.dialogs.show(options);
-
-
-
-			isModalOpen = true;
-
-			settings.container.add(".more-info-content").show();
-
-			if(typeof settings.onAfterShowModal == 'function') {
-				settings.onAfterShowModal(product);
-			}
-
-			_.delay(function () {
-				meerkat.messaging.publish(moduleEvents.bridgingPage.SHOW, {
-					isOpen: isModalOpen
-				});
-			}, 0);
-
-			var trackData = {
-					productID: product.productId
-			};
-
-			if(settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === 'object') {
-				trackData = $.extend({}, trackData, settings.additionalTrackingData);
-			}
-
-			/* This may need to be implemented differently if ever needed for verticals other than
-			 * car and the brandCode is stored differently eg Health product.info.FundCode */
-			if(product.hasOwnProperty("brandCode")) {
-				trackData.productBrandCode = product.brandCode;
-			}
-
-			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-				method:'trackProductView',
-				object:trackData
-			});
-
-			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
-				touchType:'H',
-				touchComment:'MoreInfo'
-			});
-		});
-	}
-
-	/**
-	 * Funnel - determines whether to close a modal or template view.
-	 */
-	function closeBridgingPage() {
-
-		if (isModalOpen) {
-			hideModal();
-			meerkat.modules.address.removeFromHash('moreinfo');
-			meerkat.modules.sessionCamHelper.setResultsShownPage();
-		}
-
-		if(isBridgingPageOpen) {
-			hideTemplate(settings.container);
-			meerkat.modules.address.removeFromHash('moreinfo');
-			meerkat.modules.sessionCamHelper.setResultsShownPage();
-		}
-
-	}
-
-	/**
-	 * Pass in container, as it can be called externally
-	 * Define onBeforeHideTemplate in verticalMoreInfo.js e.g. remove faded classes etc.
-	 * Default action: slideUp the container.
-	 */
-	function hideTemplate(moreInfoContainer) {
-
-		if(typeof settings.onBeforeHideTemplate == 'function') {
-			settings.onBeforeHideTemplate();
-		}
-
-		moreInfoContainer[settings.hideAction](400, function() {
-			toggleBodyClass(false);
-			hideTemplateCallback(moreInfoContainer);
-			if(typeof settings.onAfterHideTemplate == 'function') {
-				settings.onAfterHideTemplate();
-			}
-		});
-	}
-
-	function hideModal() {
-		$('#'+modalId).modal('hide');
-		settings.container.add('.more-info-content').hide(function() {
-			toggleBodyClass(false);
-		});
-		isModalOpen = false;
-		// These are needed for health to reflow its "dropdown" area.
-		meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {isOpen:isModalOpen});
-		meerkat.messaging.publish(moduleEvents.bridgingPage.HIDE, {isOpen:isModalOpen});
-	}
+            if (typeof settings.modalOptions == 'object') {
+                options = $.extend(options, settings.modalOptions);
+            }
+            modalId = meerkat.modules.dialogs.show(options);
 
 
-	/**
-	 * Publish a bridging page change event to be 'open'
-	 */
-	function showTemplateCallback() {
-		meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {
-			isOpen: true
-		});
-	}
+            isModalOpen = true;
 
-	/**
-	 * Publish a bridging page change event to be 'closed'
-	 * Hide the container and empty it of DOM elements, data/event constructs
-	 */
-	function hideTemplateCallback(moreInfoContainer) {
-		moreInfoContainer.empty().hide();
-		isBridgingPageOpen = false;
-		meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {isOpen:isBridgingPageOpen});
-		meerkat.messaging.publish(moduleEvents.bridgingPage.HIDE, {isOpen:isBridgingPageOpen});
-	}
+            settings.container.add(".more-info-content").show();
 
-	function setProduct(productToParse, showApply) {
+            if (typeof settings.onAfterShowModal == 'function') {
+                settings.onAfterShowModal(product);
+            }
 
-		if(typeof productToParse !== 'undefined' && typeof productToParse.productId !== 'undefined') {
-			// Results is not initialised on confirmation page for HLT.
-			if(typeof Results.model != 'undefined' && typeof Results.model.setSelectedProduct != 'undefined') {
-				Results.setSelectedProduct(productToParse.productId);
-			}
-		}
+            _.delay(function () {
+                meerkat.messaging.publish(moduleEvents.bridgingPage.SHOW, {
+                    isOpen: isModalOpen
+                });
+            }, 0);
 
-		product = productToParse;
-		if (product !== false) {
-			if (showApply === true) {
-				product.showApply = true;
-			} else {
-				product.showApply = false;
-			}
-		}
+            var trackData = {
+                productID: product.productId
+            };
 
-		return product;
-	}
+            if (settings.additionalTrackingData !== null && typeof settings.additionalTrackingData === 'object') {
+                trackData = $.extend({}, trackData, settings.additionalTrackingData);
+            }
 
-	function getOpenProduct(){
-		if(isBridgingPageOpen === false && isModalOpen === false) return null;
-		return product;
-	}
+            /* This may need to be implemented differently if ever needed for verticals other than
+             * car and the brandCode is stored differently eg Health product.info.FundCode */
+            if (product.hasOwnProperty("brandCode")) {
+                trackData.productBrandCode = product.brandCode;
+            }
 
-	/**
-	 * Returns whatever is in the product object currently, regardless of whether the bridging page is open.
-	 * Needed for application in HLT.
-	 */
-	function getProduct() {
-		return product;
-	}
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: 'trackProductView',
+                object: trackData
+            });
 
-	/**
-	 * This is called from the showTemplate and showModal functions, which contain the successCallback.
-	 * This callback is passed through to the deferred promise result of the retrieveExternalCopy function.
-	 * @param successCallback
-	 */
-	function prepareProduct(successCallback) {
-		// health only at the moment.
-		if (typeof settings.prepareCover == 'function') {
-			settings.prepareCover();
-		}
+            meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
+                touchType: 'H',
+                touchComment: 'MoreInfo'
+            });
+        });
+    }
 
-		prepareExternalCopy(successCallback);
-	}
+    /**
+     * Funnel - determines whether to close a modal or template view.
+     */
+    function closeBridgingPage() {
 
-	function prepareExternalCopy(successCallback) {
-		// Retrieve the copy for the bridging page.
-		// settings.retrieveExternalCopy should return a deferred object, whether its externally requested or already existing.
-		$.when(settings.retrieveExternalCopy(product)).then(successCallback);
-	}
+        if (isModalOpen) {
+            hideModal();
+            meerkat.modules.address.removeFromHash('moreinfo');
+            meerkat.modules.sessionCamHelper.setResultsShownPage();
+        }
 
-	function applyCallback(success) {
+        if (isBridgingPageOpen) {
+            hideTemplate(settings.container);
+            meerkat.modules.address.removeFromHash('moreinfo');
+            meerkat.modules.sessionCamHelper.setResultsShownPage();
+        }
 
-		_.delay(function deferApplyCallback() {
-			$('.btn-more-info-apply').removeClass('inactive').removeClass('disabled');
-			meerkat.modules.loadingAnimation.hide($('.btn-more-info-apply'));
-		}, 1000);
+    }
 
-		if (success === true) {
-			if (typeof settings.onApplySuccess == 'function') {
-				// send to apply step or page, or load a transferring dialog etc.
-				settings.onApplySuccess();
-			}
-		}
-	}
+    /**
+     * Pass in container, as it can be called externally
+     * Define onBeforeHideTemplate in verticalMoreInfo.js e.g. remove faded classes etc.
+     * Default action: slideUp the container.
+     */
+    function hideTemplate(moreInfoContainer) {
 
-	/**
-	 * Helper function to access the state from meerkat.modules.verticalMoreInfo
-	 */
-	function getisBridgingPageOpen() {
-		return isBridgingPageOpen;
-	}
+        if (typeof settings.onBeforeHideTemplate == 'function') {
+            settings.onBeforeHideTemplate();
+        }
+        // Clear this timeout before hiding, so it doesn't run the show after hiding.
+        if(triggerOnShowTimeout) {
+            clearTimeout(triggerOnShowTimeout);
+        }
+        moreInfoContainer.stop(true, false)[settings.hideAction](400, function () {
+            toggleBodyClass(false);
+            hideTemplateCallback(moreInfoContainer);
+            if (typeof settings.onAfterHideTemplate == 'function') {
+                settings.onAfterHideTemplate();
+            }
+        });
+    }
 
-	function getisModalOpen() {
-		return isModalOpen;
-	}
-	/**
-	 * Sets a jsonResult to this module so it can be accessed in template callbacks.
-	 */
-	function setDataResult(result) {
-		jsonResult = result;
-	}
+    function hideModal() {
+        $('#' + modalId).modal('hide');
+        settings.container.add('.more-info-content').hide(function () {
+            toggleBodyClass(false);
+        });
+        isModalOpen = false;
+        // These are needed for health to reflow its "dropdown" area.
+        meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {isOpen: isModalOpen});
+        meerkat.messaging.publish(moduleEvents.bridgingPage.HIDE, {isOpen: isModalOpen});
+    }
 
-	function getDataResult() {
-		return jsonResult;
-	}
 
-	/**
-	 * Allows other verticals to update the settings object.
-	 */
-	function updateSettings(updatedSettings) {
-		if (typeof updatedSettings !== 'object') {return;}
-		settings = $.extend(true, {}, settings, updatedSettings);
-	}
+    /**
+     * Publish a bridging page change event to be 'open'
+     */
+    function showTemplateCallback() {
+        meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {
+            isOpen: true
+        });
+    }
 
-	function toggleBodyClass(show) {
-		show = show || false;
-		if(show) {
-			$('body').addClass(visibleBodyClass);
-		} else {
-			$('body').removeClass(visibleBodyClass);
-		}
-	}
+    /**
+     * Publish a bridging page change event to be 'closed'
+     * Hide the container and empty it of DOM elements, data/event constructs
+     */
+    function hideTemplateCallback(moreInfoContainer) {
+        moreInfoContainer.empty().hide();
+        isBridgingPageOpen = false;
+        meerkat.messaging.publish(moduleEvents.bridgingPage.CHANGE, {isOpen: isBridgingPageOpen});
+        meerkat.messaging.publish(moduleEvents.bridgingPage.HIDE, {isOpen: isBridgingPageOpen});
+    }
 
-	function onBreakpointChange() {
-		if(_.isFunction(settings.onBreakpointChangeCallback)) {
-			_.defer(settings.onBreakpointChangeCallback);
-		}
-	}
+    function setProduct(productToParse, showApply) {
 
-	meerkat.modules.register('moreInfo', {
-		initMoreInfo: initMoreInfo, // main entrypoint to be called.
-		events: events,
-		open: openBridgingPage,
-		close: closeBridgingPage,
-		showTemplate: showTemplate,
-		hideTemplate: hideTemplate,
-		showModal: showModal,
-		hideModal: hideModal,
-		isBridgingPageOpen: getisBridgingPageOpen,
-		isModalOpen: getisModalOpen,
-		getOpenProduct: getOpenProduct,
-		getProduct: getProduct,
-		setProduct: setProduct,
-		setDataResult: setDataResult,
-		getDataResult: getDataResult,
-		applyCallback: applyCallback,
-		updateSettings: updateSettings
-	});
+        if (typeof productToParse !== 'undefined' && typeof productToParse.productId !== 'undefined') {
+            // Results is not initialised on confirmation page for HLT.
+            if (typeof Results.model != 'undefined' && typeof Results.model.setSelectedProduct != 'undefined') {
+                Results.setSelectedProduct(productToParse.productId);
+            }
+        }
+
+        product = productToParse;
+        if (product !== false) {
+            if (showApply === true) {
+                product.showApply = true;
+            } else {
+                product.showApply = false;
+            }
+        }
+
+        return product;
+    }
+
+    function getOpenProduct() {
+        if (isBridgingPageOpen === false && isModalOpen === false) return null;
+        return product;
+    }
+
+    /**
+     * Returns whatever is in the product object currently, regardless of whether the bridging page is open.
+     * Needed for application in HLT.
+     */
+    function getProduct() {
+        return product;
+    }
+
+    /**
+     * This is called from the showTemplate and showModal functions, which contain the successCallback.
+     * This callback is passed through to the deferred promise result of the retrieveExternalCopy function.
+     * @param successCallback
+     */
+    function prepareProduct(successCallback) {
+        // health only at the moment.
+        if (typeof settings.prepareCover == 'function') {
+            settings.prepareCover();
+        }
+
+        prepareExternalCopy(successCallback);
+    }
+
+    function prepareExternalCopy(successCallback) {
+        // Retrieve the copy for the bridging page.
+        // settings.retrieveExternalCopy should return a deferred object, whether its externally requested or already existing.
+        $.when(settings.retrieveExternalCopy(product)).then(successCallback);
+    }
+
+    function applyCallback(success) {
+
+        _.delay(function deferApplyCallback() {
+            $('.btn-more-info-apply').removeClass('inactive').removeClass('disabled');
+            meerkat.modules.loadingAnimation.hide($('.btn-more-info-apply'));
+        }, 1000);
+
+        if (success === true) {
+            if (typeof settings.onApplySuccess == 'function') {
+                // send to apply step or page, or load a transferring dialog etc.
+                settings.onApplySuccess();
+            }
+        }
+    }
+
+    /**
+     * Helper function to access the state from meerkat.modules.verticalMoreInfo
+     */
+    function getisBridgingPageOpen() {
+        return isBridgingPageOpen;
+    }
+
+    function getisModalOpen() {
+        return isModalOpen;
+    }
+
+    /**
+     * Sets a jsonResult to this module so it can be accessed in template callbacks.
+     */
+    function setDataResult(result) {
+        jsonResult = result;
+    }
+
+    function getDataResult() {
+        return jsonResult;
+    }
+
+    /**
+     * Allows other verticals to update the settings object.
+     */
+    function updateSettings(updatedSettings) {
+        if (typeof updatedSettings !== 'object') {
+            return;
+        }
+        settings = $.extend(true, {}, settings, updatedSettings);
+    }
+
+    function toggleBodyClass(show) {
+        show = show || false;
+        if (show) {
+            $('body').addClass(visibleBodyClass);
+        } else {
+            $('body').removeClass(visibleBodyClass);
+        }
+    }
+
+    function onBreakpointChange() {
+        if (_.isFunction(settings.onBreakpointChangeCallback)) {
+            _.defer(settings.onBreakpointChangeCallback);
+        }
+    }
+
+    meerkat.modules.register('moreInfo', {
+        initMoreInfo: initMoreInfo, // main entrypoint to be called.
+        events: events,
+        open: openBridgingPage,
+        close: closeBridgingPage,
+        showTemplate: showTemplate,
+        hideTemplate: hideTemplate,
+        showModal: showModal,
+        hideModal: hideModal,
+        isBridgingPageOpen: getisBridgingPageOpen,
+        isModalOpen: getisModalOpen,
+        getOpenProduct: getOpenProduct,
+        getProduct: getProduct,
+        setProduct: setProduct,
+        setDataResult: setDataResult,
+        getDataResult: getDataResult,
+        applyCallback: applyCallback,
+        updateSettings: updateSettings
+    });
 
 })(jQuery);

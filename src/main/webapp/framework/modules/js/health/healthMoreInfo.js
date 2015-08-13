@@ -71,7 +71,6 @@
 
             $(this).attr('data-productId', product.productId).attr('data-available', product.available);
             // Need to pass the context of this click through.
-            // TODO: Hopefully works IE8
             meerkat.modules.moreInfo.open.apply(this, [event]);
         });
 
@@ -124,7 +123,7 @@
         });
 
         meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.SHOW, function (state) {
-            $(Results.settings.elements.page).css("overflow", "hidden").height($bridgingContainer.outerHeight());
+           $(Results.settings.elements.page).css("overflow", "hidden").height($bridgingContainer.outerHeight());
         });
         meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.HIDE, function (state) {
             $(Results.settings.elements.page).css("overflow", "visible").height("");
@@ -137,7 +136,6 @@
      */
     function runDisplayMethod(productId) {
         var currStep = meerkat.modules.journeyEngine.getCurrentStep().navigationId;
-        //TODO: better way to do this? It makes it do all the necessary before/after steps by going through here.
         if (meerkat.modules.deviceMediaState.get() != 'xs' &&  currStep != 'apply' && currStep != 'payment') {
             meerkat.modules.resultsHeaderBar.disableAffixMode();
             meerkat.modules.moreInfo.showTemplate($bridgingContainer);
@@ -151,7 +149,6 @@
     function onBeforeShowTemplate(jsonResult, moreInfoContainer) {
         if (meerkat.site.emailBrochures.enabled) {
             // initialise send brochure email button functionality
-            //TODO: Also ensure "product" is accessible.
             initialiseBrochureEmailForm(Results.getSelectedProduct(), moreInfoContainer, $('#resultsForm'));
             populateBrochureEmail();
         }
@@ -182,7 +179,6 @@
         if (meerkat.site.emailBrochures.enabled) {
             initialiseBrochureEmailForm(Results.getSelectedProduct(), $('#' + dialogId), $('#' + dialogId).find('.healthMoreInfoModel'));
         }
-        //TODO: this was AFTER the .show instead of onOpen, test!!!
         // Insert next_info_all_funds
         $('.more-info-content .next-info .next-info-all').html($('.more-info-content .next-steps-all-funds-source').html());
 
