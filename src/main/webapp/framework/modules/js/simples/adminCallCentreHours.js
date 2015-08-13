@@ -337,16 +337,18 @@
 			onErrorDefaultHandling: function(jqXHR, textStatus, errorThrown, settings, data) {
 				if(typeof jqXHR.responseText === "string")
 					jqXHR.responseText = JSON.parse(jqXHR.responseText);
-				
+
+				var errorMessage = (jqXHR.responseText.error[0] && jqXHR.responseText.error[0].message) ? jqXHR.responseText.error[0].message : false;
+
 				var errorObject = {
 					errorLevel:		settings.errorLevel,
-					message:		jqXHR.responseText,
+					message:		errorMessage,
 					page:			'simplesCallCentreHours.js',
 					description:	"Error loading url: " + settings.url + ' : ' + textStatus + ' ' + errorThrown,
 					data:			data
 				};
-				
-				if(!meerkat.modules.dialogs.isDialogOpen("openingHoursErrorDialog")) {
+
+				if(!meerkat.modules.dialogs.isDialogOpen("openingHoursErrorDialog") && errorMessage) {
 					meerkat.modules.errorHandling.error(errorObject);
 				}
 			}

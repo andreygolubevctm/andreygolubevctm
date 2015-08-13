@@ -6,7 +6,7 @@
 
 	<layout:slide_content>
 
-		<health:contact_details_optin xpath="${pageSettings.getVerticalCode()}/contactDetails" required="true"/>
+		<health:contact_details_optin xpath="${pageSettings.getVerticalCode()}/contactDetails" />
 
 	</layout:slide_content>
 
