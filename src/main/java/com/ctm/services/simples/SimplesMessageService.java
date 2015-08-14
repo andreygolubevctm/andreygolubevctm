@@ -1,31 +1,23 @@
 package com.ctm.services.simples;
 
+import com.ctm.dao.BlacklistDao;
+import com.ctm.dao.UserDao;
+import com.ctm.dao.simples.MessageDao;
+import com.ctm.dao.simples.MessageDuplicatesDao;
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Error;
+import com.ctm.model.Transaction;
+import com.ctm.model.simples.*;
+import com.ctm.services.TransactionService;
+import org.apache.log4j.Logger;
+
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-
-import com.ctm.dao.BlacklistDao;
-import com.ctm.dao.UserDao;
-import com.ctm.dao.simples.MessageDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.Error;
-import com.ctm.model.Transaction;
-import com.ctm.model.simples.BlacklistChannel;
-import com.ctm.model.simples.ConfirmationOperator;
-import com.ctm.model.simples.Message;
-import com.ctm.model.simples.MessageDetail;
-import com.ctm.model.simples.MessageStatus;
-import com.ctm.model.simples.Role;
-import com.ctm.model.simples.Rule;
-import com.ctm.model.simples.User;
-import com.ctm.services.TransactionService;
 
 public class SimplesMessageService {
 	private static final Logger logger = Logger.getLogger(SimplesMessageService.class.getName());
@@ -62,7 +54,7 @@ public class SimplesMessageService {
 	 */
 	public MessageDetail getNextMessageForUser(final HttpServletRequest request, final int userId, final List<Role> userRoles, final List<Rule> getNextMessageRules) throws ConfigSettingException, DaoException, ParseException {
 		MessageDetail messageDetail = new MessageDetail();
-		Message message = null;
+		Message message;
 
 		final MessageDao messageDao = new MessageDao();
 
@@ -99,9 +91,13 @@ public class SimplesMessageService {
 					return getNextMessageForUser(request, userId, userRoles, getNextMessageRules);
 				}
 			}
+			/* get all root Ids that has been created by same users and are queued in message table*/
+			MessageDuplicatesDao messageDuplicatesDao = new MessageDuplicatesDao();
+			List<Long> duplicateRootIds = messageDuplicatesDao.getTransactionIDs(message.getMessageId());
+			duplicateRootIds.add(message.getTransactionId());
 
 			// If any transaction in the chain is confirmed, set the message to Complete
-			ConfirmationOperator confirmationOperator = transactionService.findConfirmationByRootId(message.getTransactionId());
+			ConfirmationOperator confirmationOperator = transactionService.findConfirmationByRootId(duplicateRootIds);
 			if (confirmationOperator != null) {
 				UserDao userDao = new UserDao();
 				User user = userDao.getUser(userId);
@@ -146,20 +142,14 @@ public class SimplesMessageService {
 
 		try {
 			boolean unassign = false;
-			if (assignToUser == false) unassign = true;
+			if (!assignToUser) unassign = true;
 
 			Date postponeTo = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.ENGLISH).parse(postponeDate + " " + postponeTime + " " + postponeAMPM);
 
 			messageDao.postponeMessage(actionIsPerformedByUserId, messageId, statusId, reasonStatusId, postponeTo, comment, unassign);
 
 		}
-		catch (DaoException e) {
-			logger.error("Could not postpone message '"+messageId+"'", e);
-
-			Error error = new Error(e.getMessage());
-			details.addError(error);
-		}
-		catch (ParseException e) {
+		catch (DaoException | ParseException e) {
 			logger.error("Could not postpone message '"+messageId+"'", e);
 
 			Error error = new Error(e.getMessage());
