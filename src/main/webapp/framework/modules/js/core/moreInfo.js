@@ -33,6 +33,7 @@
             template: $("#more-info-template").html(),
             hideAction: 'slideUp',
             showAction: 'slideDown',
+            showActionWhenOpen: 'slideDown', // some verticals may have a different animation to run when a bridging page is already open.
             updateTopPositionVariable: null, // For Health's unique results view.
             modalOptions: false, // can be an object that is passed directly to meerkat.modules.dialogs.show
             runDisplayMethod: null, // specify in your verticalMoreInfo.js file how to display, based on viewport etc.
@@ -145,9 +146,11 @@
     function openBridgingPage(event) {
 
         var $this = $(this);
-        if (typeof $this === 'undefined') return;
+        if (typeof $this === 'undefined' || $this.hasClass('inactive') || $this.hasClass('disabled')) return;
         if (typeof $this.attr('data-productId') === 'undefined') return;
         if (typeof $this.attr('data-available') !== 'undefined' && $this.attr('data-available') !== 'Y') return;
+
+        $this.addClass('inactive disabled');
 
         if (typeof settings.onBeforeShowBridgingPage == 'function') {
             settings.onBeforeShowBridgingPage($this);
@@ -162,6 +165,9 @@
 
         // set virtual page in sessioncam
         meerkat.modules.sessionCamHelper.setMoreInfoModal();
+        setTimeout(function() {
+            $this.removeClass('inactive disabled');
+        }, 500);
     }
 
     /**
@@ -192,7 +198,7 @@
 			var totalDuration = 0;
 
             if (isBridgingPageOpen) {
-				moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, function() {
+				moreInfoContainer.find(".more-info-content")[settings.showActionWhenOpen](animDuration, function() {
                     if (typeof settings.onAfterShowTemplate == 'function') {
                         settings.onAfterShowTemplate();
                     }
@@ -201,7 +207,7 @@
 				totalDuration = animDuration;
             } else {
                 meerkat.modules.utils.scrollPageTo('.resultsHeadersBg', scrollToTopDuration, -$("#navbar-main").height(), function () {
-                    moreInfoContainer.find(".more-info-content").stop(true, false)[settings.showAction](animDuration, showTemplateCallback);
+                    moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, showTemplateCallback);
                     isBridgingPageOpen = true;
                     if (typeof settings.onAfterShowTemplate == 'function') {
                         settings.onAfterShowTemplate();
@@ -220,7 +226,7 @@
 					moreInfoContainer.css({
 						'top': topPosition
 					});
-            }
+                }
 			}, totalDuration);
 
             var trackData = {
@@ -324,6 +330,12 @@
      */
     function closeBridgingPage() {
 
+        var $this = $(this);
+        if (typeof $this === 'undefined' || $this.hasClass('inactive') || $this.hasClass('disabled')) return;
+
+        // Prevent double click - mostly an issue on HLT, or where the more info button remains displayed.
+        $this.addClass('inactive disabled');
+
         if (isModalOpen) {
             hideModal();
             meerkat.modules.address.removeFromHash('moreinfo');
@@ -336,6 +348,9 @@
             meerkat.modules.sessionCamHelper.setResultsShownPage();
         }
 
+        setTimeout(function() {
+            $this.removeClass('inactive disabled');
+        }, 500);
     }
 
     /**
@@ -345,14 +360,15 @@
      */
     function hideTemplate(moreInfoContainer) {
 
-        if (typeof settings.onBeforeHideTemplate == 'function') {
-            settings.onBeforeHideTemplate();
-        }
         // Clear this timeout before hiding, so it doesn't run the show after hiding.
         if(triggerOnShowTimeout) {
             clearTimeout(triggerOnShowTimeout);
         }
-        moreInfoContainer.stop(true, false)[settings.hideAction](400, function () {
+        if (typeof settings.onBeforeHideTemplate == 'function') {
+            settings.onBeforeHideTemplate();
+        }
+
+        moreInfoContainer[settings.hideAction](400, function () {
             toggleBodyClass(false);
             hideTemplateCallback(moreInfoContainer);
             if (typeof settings.onAfterHideTemplate == 'function') {

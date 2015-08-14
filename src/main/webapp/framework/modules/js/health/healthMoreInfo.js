@@ -17,6 +17,7 @@
         var options = {
             container: $bridgingContainer,
             updateTopPositionVariable: updateTopPositionVariable,
+            showActionWhenOpen: 'fadeIn',
             modalOptions: {
                 className: 'modal-breakpoint-wide modal-tight bridgingContainer',
                 openOnHashChange: false,
