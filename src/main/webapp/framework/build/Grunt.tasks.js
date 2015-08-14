@@ -50,7 +50,7 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		//Remember to update the brand's include of the LESS too
 		src: [
 			tools.getFrameworkPath('bootstrap','js') + 'transition.js',
-			tools.getFrameworkPath('bootstrap','js') + 'alert.js',
+			//tools.getFrameworkPath('bootstrap','js') + 'alert.js',
 			tools.getFrameworkPath('bootstrap','js') + 'button.js',
 			//tools.getFrameworkPath('bootstrap','js') + 'carousel.js',
 			tools.getFrameworkPath('bootstrap','js') + 'collapse.js',

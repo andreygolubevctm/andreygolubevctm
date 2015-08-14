@@ -58,7 +58,7 @@
 <core:js_template id="confirmation-template">
     <ui:bubble variant="chatty">
         <p>
-            Thank you {{= obj.firstName }} for choosing ${brandedName} (powered by Thought World) to compare your energy options and save on your energy bills. Thought World's energy specialists will be in contact shortly to discuss your application. Please print this page with your reference number for your records.
+            Thank you <!-- SessionCam:Hide -->{{= obj.firstName }}<!-- /SessionCam:Hide --> for choosing ${brandedName} (powered by Thought World) to compare your energy options and save on your energy bills. Thought World's energy specialists will be in contact shortly to discuss your application. Please print this page with your reference number for your records.
 
         </p>
         <p>If you have any questions about your energy application, please call our trusted partner Thought World on: ${callCentreNumber}</p>
