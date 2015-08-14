@@ -8,4 +8,41 @@
     width: 269px;
     height: 153px;
     .highResImg('../competition/energy-1000-offer.png'; '../competition/energy-1000-offer@2x.png'; 269px; 153px);
-  }
+}
+
+.promotion-201508-container {
+    padding: 0 15px 10px 15px;
+    @media (@xs) {
+        padding: 0 0 10px 0;
+    }
+    .promo-image {
+        background-repeat: no-repeat;
+        background-position: center center;
+        padding: 0;
+        display: block;
+        width: 269px;
+        height: 73px;
+        .highResImg('../competition/energy/5000-offer-xs.png'; '../competition/energy/5000-offer-xs@2x.png'; 269px; 73px);
+    }
+    @media (@sm) {
+        .promo-image {
+            width: 468px;
+            height: 113px;
+            .highResImg('../competition/energy/5000-offer-sm.png'; '../competition/energy/5000-offer-sm@2x.png'; 468px; 113px);
+        }
+    }
+    @media (@md) {
+        .promo-image {
+            width: 614px;
+            height: 145px;
+            .highResImg('../competition/energy/5000-offer-md.png'; '../competition/energy/5000-offer-md@2x.png'; 614px; 145px);
+        }
+    }
+    @media (@lg) {
+        .promo-image {
+            width: 750px;
+            height: 180px;
+            .highResImg('../competition/energy/5000-offer-lg.png'; '../competition/energy/5000-offer-lg@2x.png'; 750px; 180px);
+        }
+    }
+}
