@@ -77,6 +77,11 @@
 							<c:choose>
 								<c:when test="${row.suburbSeq == address.suburb || row.suburb == address.suburbName}">
 									<option value="${row.suburbSeq}" selected="selected">${row.suburb}</option>
+									<%-- Fix Suburb for really old quotes --%>
+									<c:if test="${empty address.suburb}">
+										<go:setData dataVar="data" value="${row.suburbSeq}" xpath="${xpath}/suburb" />
+										<c:set var="address" value="${data.node[xpath]}" />
+									</c:if>
 								</c:when>
 								<c:otherwise>
 									<option value="${row.suburbSeq}">${row.suburb}</option>
