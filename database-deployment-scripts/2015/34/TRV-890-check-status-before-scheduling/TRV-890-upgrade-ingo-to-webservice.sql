@@ -59,6 +59,6 @@ WHERE INGO.isoCode = TICK.isoCode AND providerId = 295;
 -- [TEST] SELECT count(mappingId) AS total FROM `ctm`.`country_provider_mapping` WHERE isoCode = 'AUS' AND countryValue = 'Dom';
 
 -- BEFORE UPDATE TEST RESULT: 0
-UPDATE `ctm`.`country_provider_mapping` SET `countryValue`='Dom', `priority`='5' WHERE WHERE providerId = 295 AND isoCode = 'AUS';
+UPDATE `ctm`.`country_provider_mapping` SET `countryValue`='Dom', `priority`='5' WHERE providerId = 295 AND isoCode = 'AUS';
 
 -- AFTER UPDATE TEST RESULT: 1
