@@ -15,6 +15,7 @@
 <c:if test="${param.display eq 'features'}">
 	<c:set var="priceDisplayMode" value="features"/>
 </c:if>
+<c:set var="defaultToCarQuote"><content:get key="makeCarQuoteMainJourney" /></c:set>
 
 <%-- Retrieve values passed from Brochure Site --%>
 <c:if test="${not empty param.action && param.action == 'ql'}">
@@ -46,6 +47,7 @@
 	previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",
 	isNewQuote: <c:out value="${isNewQuote eq true}" />,
 	userId: '<c:out value="${authenticatedData.login.user.uid}" />',
+	isDefaultToCarQuote: ${defaultToCarQuote},
 	content:{
 		callCentreNumber: '${callCentreNumber}',
 		callCentreHelpNumber: '${callCentreHelpNumber}'

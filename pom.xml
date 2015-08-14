@@ -212,6 +212,11 @@
             <version>${jackson.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -356,7 +361,7 @@
         <dependency>
             <groupId>com.ctm.webservices</groupId>
             <artifactId>motorweb</artifactId>
-            <version>1.2</version>
+            <version>1.3.0</version>
         </dependency>
 
         <dependency>
@@ -635,7 +640,11 @@
         <resources>
             <resource>
                 <directory>src/main/resources/${build.environment}/classes</directory>
-              </resource>
+            </resource>
+            <resource>
+                <directory>src/main/resources/webservice-api</directory>
+                <targetPath>webservice-api</targetPath>
+            </resource>
         </resources>
     </build>
 </project>
