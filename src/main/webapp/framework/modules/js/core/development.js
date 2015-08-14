@@ -48,14 +48,16 @@
 
     function initEnvironmentMonitor(){
 
+        // Build information bar
         $("#copyright").after('<div class="buildEnvInfo_div">' +
-            '<ul><li class="devEnv"></li><li>Transaction ID: <span class="devTransactionId"></span></li>' +
-            '<li class="devService"></li><li>Revision #: <span class="devRevisionId"></span></li>' +
+            '<ul><li class="devEnv"></li>' +
+            '<li>Transaction ID: <span class="devTransactionId"></span></li>' +
+            '<li>Revision #: <span class="devRevisionId"></span></li>' +
             '<li class="devService"><a href="data.jsp" target="_blank">View data bucket</a></li>' +
             '<li class="devService aggEngine"></li>' +
             '</ul></div>');
 
-        // $(".navMenu-row").before
+        // Populate information bar
         var $transactionIdHolder = $(".devTransactionId");
         var $environmentHolder = $(".devEnv");
         var $revisionHolder = $(".devRevisionId");
@@ -65,6 +67,7 @@
         $environmentHolder.addClass(meerkat.site.environment);
         $revisionHolder.text(meerkat.site.revision);
 
+        // Add aggregation service switcher (
         if(hasAggregationService() === true){
 
             var $aggEngineContainer = $('.aggEngine');
@@ -80,7 +83,7 @@
                 errorLevel: "fatal",
                 onSuccess: function onSubmitSuccess(resultData) {
 
-                    var select = '<label>Aggregation service: <select id="developmentAggregatorEnvironment"><option value="">'+meerkat.site.environment+'</option>';
+                    var select = '<label>Aggregation service: <select id="developmentAggregatorEnvironment"><option value="">'+meerkat.site.environment.toUpperCase()+'</option>';
 
                     for(var i = 0; i<resultData.NXI.length; i++){
                         var obj = resultData.NXI[i];
@@ -88,7 +91,7 @@
                         // Add any travel-quote branch to the list (except for the default if viewing this on NXI)
                         var verticalQuoteAppPath = "/"+meerkat.site.vertical+"-quote";
                         if(obj.context.indexOf(verticalQuoteAppPath) !== -1 && (obj.context === verticalQuoteAppPath && meerkat.site.environment === 'nxi') === false){
-                            select += '<option value="'+aggregationBaseUrl+obj.context+'">NXI'+obj.context+'</option>';
+                            select += '<option value="'+aggregationBaseUrl+obj.context+'">NXI'+obj.context.toUpperCase()+'</option>';
                         }
                     }
 
@@ -96,9 +99,6 @@
                     $aggEngineContainer.html(select);
                 }
             });
-
-
-
         }
 
         meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateDevTransId(eventObject) {
@@ -108,8 +108,11 @@
 
     // Initialise Dev helpers
     function initDevelopment() {
+
         if(meerkat.site.isDev === true){
+
             initRefreshCSS();
+
             jQuery(document).ready(function($) {
                 initEnvironmentMonitor();
             });

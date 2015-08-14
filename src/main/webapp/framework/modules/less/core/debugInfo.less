@@ -1,6 +1,7 @@
 
 @dev-background: #222;
 @dev-border: #111;
+@dev-border-light: #333;
 @dev-highlight: #1c3e93;
 
 .buildEnvInfo_div{
@@ -10,9 +11,11 @@
   padding:4px;
   color:#555;
   overflow:hidden;
-  font-size: 12px;
+  font-size: 11px;
   text-transform:Uppercase;
-
+  a{
+    color: #7187bb
+  }
   ul{
     list-style: none;
     margin:0;
@@ -20,9 +23,12 @@
     li{
       float:left;
       line-height: 20px;
-      margin-right:8px;
       padding-right:8px;
+      padding-left:8px;
+      padding-top: 3px;
+      padding-bottom:3px;
       border-right:1px solid @dev-border;
+      border-left:1px solid @dev-border-light;
 
       span{
         color:rgba(255, 255, 255, 0.4);
@@ -69,6 +75,7 @@
     appearance:none;
     cursor:pointer;
     width: 180px;
+    padding:0;
   }
 
   /* Targetting Webkit browsers only. FF will show the dropdown arrow with so much padding. */
@@ -76,7 +83,10 @@
     select {padding-right:18px}
   }
 
-  label {position:relative}
+  label {
+    position:relative;
+    margin:0;
+  }
   label:after {
     content:'<>';
     color:rgba(255, 255, 255, 0.4);
@@ -94,7 +104,6 @@
     content:'';
     right:6px; top:0px;
     width:20px; height:20px;
-    background:@dev-highlight;
     position:absolute;
     pointer-events:none;
     display:block;
