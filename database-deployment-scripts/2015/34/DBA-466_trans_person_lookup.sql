@@ -1,1 +1,2 @@
-Create Index transactionid on aggregator.person_lookup(transactionid);
+-- THIS JOB HAS ALREADY BEEN RUN ON PROD 11/08/2015
+-- Create Index transactionid on aggregator.person_lookup(transactionid);

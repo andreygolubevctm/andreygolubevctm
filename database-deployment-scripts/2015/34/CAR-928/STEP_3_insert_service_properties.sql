@@ -1,4 +1,3 @@
-UPDATE ctm.provider_master SET providerCode = 'AGCH' WHERE name = 'Auto and General Car Choosi';
 
 SET @CAR_VERTICAL_ID = (SELECT verticalId FROM ctm.vertical_master WHERE verticalCode = 'CAR');
 INSERT INTO ctm.service_master (verticalId, serviceCode) VALUES (@CAR_VERTICAL_ID, 'carServiceBER');

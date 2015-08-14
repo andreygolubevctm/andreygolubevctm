@@ -1,3 +1,4 @@
+UPDATE ctm.provider_master SET providerCode = 'AGCH' WHERE name = 'Auto and General Car Choosi';
 
 -- CAR_PROUDCT
 INSERT INTO ctm.`car_product` (`code`,`reportingLabel`,`providerId`) VALUES
