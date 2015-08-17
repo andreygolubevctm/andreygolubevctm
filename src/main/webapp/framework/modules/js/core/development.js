@@ -91,12 +91,25 @@
                         // Add any travel-quote branch to the list (except for the default if viewing this on NXI)
                         var verticalQuoteAppPath = "/"+meerkat.site.vertical+"-quote";
                         if(obj.context.indexOf(verticalQuoteAppPath) !== -1 && (obj.context === verticalQuoteAppPath && meerkat.site.environment === 'nxi') === false){
-                            select += '<option value="'+aggregationBaseUrl+obj.context+'">NXI'+obj.context.toUpperCase()+'</option>';
+
+                            var val = aggregationBaseUrl+obj.context;
+                            var selected = '';
+                            if(val === localStorage.getItem("aggregationService_"+meerkat.site.vertical)){
+                                selected = 'selected="true" ';
+                            }
+
+                            select += '<option value="'+val+'" '+selected+'>NXI'+obj.context.toUpperCase()+'</option>';
                         }
                     }
 
                     select += '</select></label>';
                     $aggEngineContainer.html(select);
+
+                    $("#developmentAggregatorEnvironment").change(function onDevEnvChange(eventObject){
+                        localStorage.setItem("aggregationService_"+meerkat.site.vertical, $("#developmentAggregatorEnvironment").val());
+                    });
+
+
                 }
             });
         }
