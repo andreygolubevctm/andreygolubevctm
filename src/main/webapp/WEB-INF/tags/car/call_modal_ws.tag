@@ -11,13 +11,8 @@
 	brands only have a generic offer which is online/offline agnostic -->
 	{{ obj.isAutoAndGeneralSpecialCase = obj.isAutoAndGeneral && _.indexOf(['BUDD','VIRG','EXPO','EXDD'], obj.brandCode) >= 0 }}
 
-	<%-- If there's a discount.offline e.g. of "10" (and is not an A&G brand),
-        display the static text of x% Discount included in price shown,
-        otherwise use headline feature. --%>
 	{{ obj.offlinePromotionText = ''; }}
-	{{ if(!obj.isAutoAndGeneral && typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0) { }}
-	{{ 	obj.offlinePromotionText = discount.offline + "% Discount included in price shown"; }}
-	{{ } else if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
+	{{ if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
 	{{ 	obj.offlinePromotionText = obj.discountOffer; }}
 	{{ } }}
 
@@ -27,7 +22,7 @@
 	<%-- This copy if bypassed if there's no copy above or it's a flagged A&G product --%>
 	{{ if (offlinePromotionText.length > 0 && !obj.isAutoAndGeneralSpecialCase) { }}
 	<h5>
-		{{ if(!availableOnline || (typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0)) { }}
+		{{ if(!availableOnline) { }}
 		Call Centre Offer
 		{{ } else { }}
 		Special Offer
@@ -45,12 +40,8 @@
 </core:js_template>
 
 <core:js_template id="car-online-discount-template">
-	<%-- If there's a discount.online of e.g. 10 or 20 (and is not an A&G brand),
-        show x% discount included in price shown. If not, show headline.feature --%>
 	{{ obj.onlinePromotionText = ''; }}
-	{{ if(!obj.isAutoAndGeneral && typeof obj.discount !== 'undefined' && typeof obj.discount.online !== 'undefined' && obj.discount.online > 0) { }}
-	{{ obj.onlinePromotionText = discount.online + "% Discount included in price shown"; }}
-	{{ } else if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
+	{{ if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
 	{{ obj.onlinePromotionText = obj.discountOffer; }}
 	{{ } }}
 
