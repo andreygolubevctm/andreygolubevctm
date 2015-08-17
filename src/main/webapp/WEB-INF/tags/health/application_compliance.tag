@@ -42,9 +42,13 @@
 					health_application_compliance.seize(isMuted);
 				},
 				error: function(obj, txt, errorThrown) {
-					var errors=eval("(" + obj.responseText+ ')');
+					var errorMessage = errorThrown;
+
+					if (obj.responseJSON.hasOwnProperty('errors') && obj.responseJSON.errors.length > 0) {
+						errorMessage = obj.responseJSON.errors[0].message
+					}
 					meerkat.modules.errorHandling.error({
-						message:		"The recording could not be paused/started. Please notify your supervisor if this continues to occur: "  + errors.errors[0].message,
+						message:		"The recording could not be paused/started. Please notify your supervisor if this continues to occur: "  + errorMessage,
 						page:			"application_compliance.tag",
 						description:	"health_application_compliance.callback().  AJAX Request failed: " + obj.responseText + ' ' + errorThrown,
 						data:			"state = " + isMuted,
