@@ -5,7 +5,7 @@ SET @BERServiceId := (SELECT serviceMasterId FROM ctm.service_master WHERE servi
 
 -- INGO
 UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='soap' WHERE providerId = 295 AND servicePropertyKey='serviceType';
-DELETE * FROM  `ctm`.`service_properties` WHERE  providerId = 295 AND `servicePropertyKey` IN ('serviceType', 'inboundParams', 'outboundParams', 'url') LIMIT 5;
+DELETE FROM  `ctm`.`service_properties` WHERE  providerId = 295 AND `servicePropertyKey` IN ('serviceType', 'inboundParams', 'outboundParams', 'url') LIMIT 5;
 
 -- RESULT UPDATE/INSERT TEST AFTER: 1
 
