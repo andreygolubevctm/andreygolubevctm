@@ -87,12 +87,14 @@
 			case 'mouseenter':
 				hideEvent = 'mouseleave';
 				break;
+			// This was used by Health, but the latest version of the plugin
+			// doesn't seem to support mouseenter and click events simultaneously.
 			case 'mouseenter click':
 			case 'click mouseenter':
 				hideEvent = 'mouseleave unfocus click';
 				break;
 			default:
-				hideEvent = 'unfocus click'
+				hideEvent = 'unfocus click';
 				break;
 		}
 
