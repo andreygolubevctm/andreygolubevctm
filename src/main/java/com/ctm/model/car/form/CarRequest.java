@@ -10,6 +10,16 @@ public class CarRequest implements Request<CarQuote> {
 
     private Long transactionId;
 
+    public String getEnvironmentOverride() {
+        return environmentOverride;
+    }
+
+    public void setEnvironmentOverride(String environmentOverride) {
+        this.environmentOverride = environmentOverride;
+    }
+
+    private String environmentOverride;
+
     public String getClientIpAddress() {
         return clientIpAddress;
     }
