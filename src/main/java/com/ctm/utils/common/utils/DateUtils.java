@@ -188,10 +188,13 @@ public class DateUtils {
     public static int getAgeFromDOB(String dob) throws Exception {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date dobObj =  df.parse(dob);
-        LocalDate birthdate = new LocalDate (dobObj);          //Birth date
-        LocalDate now = new LocalDate();                    //Today's date
+        return getAgeFromDOB(dobObj);
+    }
+
+    public static int getAgeFromDOB(Date dob) {
+        LocalDate birthdate = new LocalDate (dob);
+        LocalDate now = new LocalDate();
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-//Now access the values as below
         return period.getYears();
     }
 }
