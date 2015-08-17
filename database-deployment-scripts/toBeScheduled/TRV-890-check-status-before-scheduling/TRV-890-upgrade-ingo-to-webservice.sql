@@ -1,5 +1,9 @@
 SET @BERServiceId := (SELECT serviceMasterId FROM ctm.service_master WHERE serviceCode ='quoteServiceBER');
 
+/*
+SELECT * FROM `ctm`.`service_properties` WHERE providerId = 295 AND servicePropertyKey='serviceType';
+*/
+
 -- [TEST] SELECT count(servicePropertiesId) AS total FROM `ctm`.`service_properties` WHERE serviceMasterId = @BERServiceId AND providerId = 295 AND `servicePropertyKey` IN ('serviceType', 'inboundParams', 'outboundParams', 'url');
 -- BEFORE UPDATE/INSERT TEST RESULT: 0
 
