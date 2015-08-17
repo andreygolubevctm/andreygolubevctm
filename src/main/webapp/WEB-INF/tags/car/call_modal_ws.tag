@@ -5,69 +5,69 @@
 
 <%-- Smaller Templates to reduce duplicate code --%>
 <core:js_template id="car-offline-discount-template">
-<%-- Flag to identify Auto and General product (via the service property) --%>
-{{ obj.isAutoAndGeneral = obj.serviceName.search(/agis_/i) === 0 }}
-<!-- This flag is for specific A&G brands which only feature online products - the balance of
+	<%-- Flag to identify Auto and General product (via the service property) --%>
+	{{ obj.isAutoAndGeneral = obj.serviceName.search(/agis_/i) === 0 }}
+	<!-- This flag is for specific A&G brands which only feature online products - the balance of
 	brands only have a generic offer which is online/offline agnostic -->
-{{ obj.isAutoAndGeneralSpecialCase = obj.isAutoAndGeneral && _.indexOf(['BUDD','VIRG','EXPO','EXDD'], obj.brandCode) >= 0 }}
+	{{ obj.isAutoAndGeneralSpecialCase = obj.isAutoAndGeneral && _.indexOf(['BUDD','VIRG','EXPO','EXDD'], obj.brandCode) >= 0 }}
 
-<%-- If there's a discount.offline e.g. of "10" (and is not an A&G brand),
-	display the static text of x% Discount included in price shown,
-	otherwise use headline feature. --%>
-{{ obj.offlinePromotionText = ''; }}
-{{ if(!obj.isAutoAndGeneral && typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0) { }}
+	<%-- If there's a discount.offline e.g. of "10" (and is not an A&G brand),
+        display the static text of x% Discount included in price shown,
+        otherwise use headline feature. --%>
+	{{ obj.offlinePromotionText = ''; }}
+	{{ if(!obj.isAutoAndGeneral && typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0) { }}
 	{{ 	obj.offlinePromotionText = discount.offline + "% Discount included in price shown"; }}
-{{ } else if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
+	{{ } else if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
 	{{ 	obj.offlinePromotionText = obj.discountOffer; }}
-{{ } }}
-
-{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
-
-<%-- If not availableOnline (meaning you can't continue online), it should show "Call Centre" offer --%>
-<%-- This copy if bypassed if there's no copy above or it's a flagged A&G product --%>
-{{ if (offlinePromotionText.length > 0 && !obj.isAutoAndGeneralSpecialCase) { }}
-	<h5>
-	{{ if(!availableOnline || discount.offline > 0) { }}
-		Call Centre Offer
-	{{ } else { }}
-		Special Offer
 	{{ } }}
+
+	{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms !== null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+
+	<%-- If not availableOnline (meaning you can't continue online), it should show "Call Centre" offer --%>
+	<%-- This copy if bypassed if there's no copy above or it's a flagged A&G product --%>
+	{{ if (offlinePromotionText.length > 0 && !obj.isAutoAndGeneralSpecialCase) { }}
+	<h5>
+		{{ if(!availableOnline || (typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0)) { }}
+		Call Centre Offer
+		{{ } else { }}
+		Special Offer
+		{{ } }}
 	</h5>
 
 	<div class="promotion">
 		<span class="icon icon-tag"></span> {{= offlinePromotionText }}
 		{{ if (offerTermsContent.length > 0) { }}
-			<a class="small offerTerms" href="javascript:;">Offer terms</a>
-			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+		<a class="small offerTerms" href="javascript:;">Offer terms</a>
+		<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 		{{ } }}
 	</div>
-{{ } }}
+	{{ } }}
 </core:js_template>
 
 <core:js_template id="car-online-discount-template">
-<%-- If there's a discount.online of e.g. 10 or 20 (and is not an A&G brand),
-	show x% discount included in price shown. If not, show headline.feature --%>
-{{ obj.onlinePromotionText = ''; }}
-{{ if(!obj.isAutoAndGeneral && typeof obj.discount !== 'undefined' && typeof obj.discount.online !== 'undefined' && obj.discount.online > 0) { }}
+	<%-- If there's a discount.online of e.g. 10 or 20 (and is not an A&G brand),
+        show x% discount included in price shown. If not, show headline.feature --%>
+	{{ obj.onlinePromotionText = ''; }}
+	{{ if(!obj.isAutoAndGeneral && typeof obj.discount !== 'undefined' && typeof obj.discount.online !== 'undefined' && obj.discount.online > 0) { }}
 	{{ obj.onlinePromotionText = discount.online + "% Discount included in price shown"; }}
-{{ } else if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
+	{{ } else if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
 	{{ obj.onlinePromotionText = obj.discountOffer; }}
-{{ } }}
+	{{ } }}
 
-<%-- Copy bypassed if not online or there's no copy above and only show if it's an
-	A&G special case or the online/offline discount is different. --%>
-{{ if (obj.availableOnline == true && obj.onlinePromotionText.length > 0 && (obj.isAutoAndGeneralSpecialCase || obj.onlinePromotionText != obj.offlinePromotionText)) { }}
+	<%-- Copy bypassed if not online or there's no copy above and only show if it's an
+        A&G special case or the online/offline discount is different. --%>
+	{{ if (obj.availableOnline == true && obj.onlinePromotionText.length > 0 && (obj.isAutoAndGeneralSpecialCase || obj.onlinePromotionText != obj.offlinePromotionText)) { }}
 	<h5>
-	Special Online Offer
+		Special Online Offer
 	</h5>
 	<div class="promotion">
 		<span class="icon icon-tag"></span> {{= onlinePromotionText }}
 		{{ if (offerTermsContent.length > 0) { }}
-			<a class="small offerTerms" href="javascript:;">Offer terms</a>
-			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+		<a class="small offerTerms" href="javascript:;">Offer terms</a>
+		<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 		{{ } }}
 	</div>
-{{ } }}
+	{{ } }}
 </core:js_template>
 
 <core:js_template id="car-call-header-template">
@@ -178,14 +178,14 @@
 		</div>
 	</div>
 	{{ if(obj.contact.allowCallMeBack === true) { }}
-		<div class="row push-top-15">
-			<div class="col-xs-12 col-sm-6 prefer-callback-text">
-				Would you prefer to have the insurer call you?
-			</div>
-			<div class="col-xs-12 col-sm-6">
-				<a class="btn btn-call-inverse btn-block btn-call-actions btn-callback" data-productId="{{= obj.productId }}" href="javascript:;" data-callback-toggle="callback">Get a Call Back</a>
-			</div>
+	<div class="row push-top-15">
+		<div class="col-xs-12 col-sm-6 prefer-callback-text">
+			Would you prefer to have the insurer call you?
 		</div>
+		<div class="col-xs-12 col-sm-6">
+			<a class="btn btn-call-inverse btn-block btn-call-actions btn-callback" data-productId="{{= obj.productId }}" href="javascript:;" data-callback-toggle="callback">Get a Call Back</a>
+		</div>
+	</div>
 	{{ } }}
 </core:js_template>
 <core:js_template id="car-call-modal-template">
@@ -223,16 +223,16 @@
 
 	<div class="row">
 		<div class="col-xs-12 {{= paragraphedContentCols}} paragraphedContent border-top callback" style="display:none;">
-				{{= callBackTemplate }}
+			{{= callBackTemplate }}
 		</div>
 		<div class="col-xs-12 {{= paragraphedContentCols}} paragraphedContent border-top calldirect" style="display:none;">
-				{{= callDirectTemplate }}
+			{{= callDirectTemplate }}
 		</div>
 
 		{{ if(!offlineOnly) { }}
-			<div class="col-xs-12 col-sm-4 sidebar sidebar-right">
-				{{= rightTemplate }}
-			</div>
+		<div class="col-xs-12 col-sm-4 sidebar sidebar-right">
+			{{= rightTemplate }}
+		</div>
 		{{ } }}
 	</div>
 </core:js_template>
