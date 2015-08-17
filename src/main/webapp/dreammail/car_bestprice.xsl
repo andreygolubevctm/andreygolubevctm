@@ -178,11 +178,11 @@
 							</Attributes>
 							<Attributes>
 								<Name>VehicleMake</Name>
-								<Value><xsl:value-of disable-output-escaping="yes" select="quote/vehicle/make" /></Value>
+								<Value><xsl:value-of disable-output-escaping="yes" select="quote/vehicle/makeDes" /></Value>
 							</Attributes>
 							<Attributes>
 								<Name>VehicleModel</Name>
-								<Value><xsl:value-of disable-output-escaping="yes" select="quote/vehicle/model" /></Value>
+								<Value><xsl:value-of disable-output-escaping="yes" select="quote/vehicle/modelDes" /></Value>
 							</Attributes>
 							<Attributes>
 								<Name>VehicleVariant</Name>

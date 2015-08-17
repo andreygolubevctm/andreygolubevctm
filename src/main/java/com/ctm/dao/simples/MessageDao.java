@@ -394,6 +394,7 @@ public class MessageDao {
 		switch (message.getStatusId()) {
 			case MessageStatus.STATUS_COMPLETED_AS_PM:
 			case MessageStatus.STATUS_CHANGED_TIME_FOR_PM:
+			case MessageStatus.STATUS_INPROGRESS_FOR_PM:
 				targetStatusId = MessageStatus.STATUS_INPROGRESS_FOR_PM;
 				break;
 		}

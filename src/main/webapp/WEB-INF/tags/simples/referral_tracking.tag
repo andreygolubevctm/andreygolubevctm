@@ -22,15 +22,26 @@
 	<%-- NOTE: This is not ideal, as the phone details should be available from session and not specially pinged at this point. --%>
 	<c:if test="${not empty authenticatedData['login/user/extension']}">
 		<c:catch>
-			<c:set var="callInfo" value="${phoneService.saveCallInfoForTransaction(pageSettings, authenticatedData['login/user/extension'],data.current.transactionId,xpath)}" />
-			<c:if test="${callInfo!=null}">
-				<field:hidden xpath="${xpath}/callId" constantValue="${callInfo.getCallId()}" />
-				<field:hidden xpath="${xpath}/direction" constantValue="${callInfo.getDirection()}" />
-				<field:hidden xpath="${xpath}/customerPhoneNo" constantValue="${callInfo.getCustomerPhoneNo()}" />
-				<field:hidden xpath="${xpath}/VDN" constantValue="${callInfo.getVdns().get(0)}" />
+			<c:set var="callInfo" value="${phoneService.saveCallInfoForTransaction(pageSettings, authenticatedData['login/user/extension'], data.current.transactionId,xpath)}" />
+			<c:if test="${callInfo != null && callInfo.getCallId() != '0'}">
+				<c:set var="callId" value="${callInfo.getCallId()}" />
+				<c:set var="direction" value="${callInfo.getDirection()}" />
+				<c:set var="customerPhoneNo" value="${callInfo.getCustomerPhoneNo()}" />
+				<c:if test='${!callInfo.getVdns().isEmpty() && callInfo.getVdns().get(0) != null && !callInfo.getVdns().get(0).equals("")}'>
+					<c:set var="vdn" value="${callInfo.getVdns().get(0)}" />
+				</c:if>
 			</c:if>
-
 		</c:catch>
 	</c:if>
 
+	<%-- add input for call centre when it is inbound call --%>
+	<c:set var="fieldXpath" value="${xpath}/vdnInput" />
+	<form_new:row label="VDN" fieldXpath="${fieldXpath}" className="hidden" helpId="540">
+		<field:input_numeric xpath="${fieldXpath}" minValue="1000" maxValue="9999" title="Inbound VDN" required="true" id="${go:nameFromXpath(fieldXpath)}" maxLength="4" validationMessage="Please enter VDN correctly (4 digits)" className="form-control" />
+	</form_new:row>
+
+	<field:hidden xpath="${xpath}/callId" defaultValue="${callId}" />
+	<field:hidden xpath="${xpath}/direction" defaultValue="${direction}" />
+	<field:hidden xpath="${xpath}/customerPhoneNo" defaultValue="${customerPhoneNo}" />
+	<field:hidden xpath="${xpath}/VDN" defaultValue="${vdn}" />
 </c:if>
