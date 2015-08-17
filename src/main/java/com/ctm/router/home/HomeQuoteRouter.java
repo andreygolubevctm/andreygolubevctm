@@ -14,6 +14,7 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.home.HomeQuoteService;
 import com.ctm.services.home.HomeService;
 import com.ctm.services.tracking.TrackingKeyService;
+import com.ctm.web.validation.SchemaValidationError;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
 import javax.ws.rs.*;
@@ -40,23 +41,33 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
         }
 
         HomeQuoteService homeService = new HomeQuoteService();
-        final List<HomeResult> quotes = homeService.getQuotes(brand, data);
+        final List<SchemaValidationError> errors = homeService.validateRequest(data, "");
 
-        Info info = new Info();
-        info.setTransactionId(data.getTransactionId());
-        try {
-            String trackingKey = TrackingKeyService.generate(
-                    context.getHttpServletRequest(), new Long(data.getTransactionId()));
-            info.setTrackingKey(trackingKey);
-        } catch (Exception e) {
-            throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
+        if(errors.size() > 0){
+            throw new RouterException("Invalid request"); // TODO pass validation errors to client
         }
 
-        ResultsObj<HomeResult> results = new ResultsObj<>();
-        results.setResult(quotes);
-        results.setInfo(info);
+        try {
+            final List<HomeResult> quotes = homeService.getQuotes(brand, data);
 
-        return new ResultsWrapper(results);
+            Info info = new Info();
+            info.setTransactionId(data.getTransactionId());
+            try {
+                String trackingKey = TrackingKeyService.generate(
+                        context.getHttpServletRequest(), new Long(data.getTransactionId()));
+                info.setTrackingKey(trackingKey);
+            } catch (Exception e) {
+                throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
+            }
+
+            ResultsObj<HomeResult> results = new ResultsObj<>();
+            results.setResult(quotes);
+            results.setInfo(info);
+
+            return new ResultsWrapper(results);
+        } catch (Exception e) {
+            throw new RouterException(e);
+        }
     }
 
     @GET

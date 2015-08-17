@@ -2,6 +2,8 @@ package com.ctm.model.home.form;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.validation.Valid;
+
 public class HomeQuote {
 
     private String contentsExcess;
@@ -30,6 +32,7 @@ public class HomeQuote {
 
     private String paymentType;
 
+    @Valid
     private PolicyHolder policyHolder;
 
     private String privacyoptin;
