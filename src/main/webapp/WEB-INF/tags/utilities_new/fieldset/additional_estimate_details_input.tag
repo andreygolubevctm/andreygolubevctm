@@ -28,11 +28,14 @@
 </c:set>
 
 <div class="row clear ${lowerCaseUtilityType}">
-    <h5 class="col-lg-12">${utilityType} ${headingHelp}</h5>
     <div class="col-md-6 row-content">
+        <h5>${utilityType} ${headingHelp}</h5>
+        <div class="error-field" style="display:block;"><!-- empty --></div>
         <field_new:input xpath="${xpath}/amount" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="true" />
     </div>
     <div class="col-md-6 row-content">
+        <h5 class="structural">&nbsp;</h5>
+        <div class="error-field" style="display:block;"><!-- empty --></div>
         <c:choose>
             <c:when test="${inputType eq 'spend' and lowerCaseUtilityType eq 'gas'}">
                 <c:set var="items" value="=Period,M=Month,B=2 Months,Q=Quarter,Y=Year" />
