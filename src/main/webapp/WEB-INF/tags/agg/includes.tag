@@ -65,7 +65,3 @@
 	</c:otherwise>
 </c:choose>
 </c:if>
-
-<%-- NXI Build Warning Timer --%>
-<agg:timer />
-<core:debug_info />
