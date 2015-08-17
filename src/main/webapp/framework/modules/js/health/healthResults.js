@@ -969,7 +969,7 @@
 					element: $this,
 					contentValue: text,
 					contentType: 'content',
-					showEvent: 'mouseenter click',
+					showEvent: 'mouseenter',
 					position: {
 						my: 'top center',
 						at: 'bottom center'
