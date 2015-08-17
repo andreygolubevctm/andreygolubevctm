@@ -423,7 +423,11 @@ Features = {
 	},
 
 	hideEmptyRows: function() {
+		if(!Features.featuresIds) {
+			return;
+		}
 		var $container = $(Features.target);
+
 		// hides rows without any values (mostly for the "Additional Information" category)
 		$.each( Features.featuresIds, function( featureIdIndex, featureId ){
 			var found = false;
@@ -443,6 +447,9 @@ Features = {
 	},
 
 	removeEmptyDropdowns: function() {
+		if(!Features.featuresIds) {
+			return;
+		}
 		var $container = $(Features.target);
 		// hides rows without any values (mostly for the "Additional Information" category)
 		$.each( Features.featuresIds, function( featureIdIndex, featureId ){

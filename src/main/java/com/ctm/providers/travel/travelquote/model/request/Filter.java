@@ -6,10 +6,9 @@ package com.ctm.providers.travel.travelquote.model.request;
 public class Filter {
 
     private String singleProvider;
+    private String providerKey = null;
 
-    public Filter(){
-
-    }
+    public Filter(){}
 
     public String getSingleProvider() {
         return singleProvider;
@@ -17,5 +16,13 @@ public class Filter {
 
     public void setSingleProvider(String singleProvider) {
         this.singleProvider = singleProvider;
+    }
+
+    public String getProviderKey() {
+        return providerKey;
+    }
+
+    public void setProviderKey(String providerKey) {
+        this.providerKey = providerKey;
     }
 }

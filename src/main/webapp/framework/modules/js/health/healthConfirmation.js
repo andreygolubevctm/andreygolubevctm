@@ -76,7 +76,7 @@
 				}
 
 				// prepare hospital and extras covers inclusions, exclusions and restrictions
-				meerkat.modules.healthMoreInfo.setProduct(confirmationProduct);
+				meerkat.modules.moreInfo.setProduct(confirmationProduct);
 				
 				//Now prepare cover.
 				meerkat.modules.healthMoreInfo.prepareCover();
@@ -88,9 +88,8 @@
 				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
 
 				fillTemplate();
-
 				if(confirmationProduct.warningAlert === "" || confirmationProduct.warningAlert === undefined){
-					meerkat.modules.healthMoreInfo.prepareExternalCopy(function confirmationExternalCopySuccess(){
+					meerkat.modules.healthMoreInfo.retrieveExternalCopy(confirmationProduct).then(function confirmationExternalCopySuccess(){
 						// Show warning if applicable
 						if (typeof confirmationProduct.warningAlert !== 'undefined' && confirmationProduct.warningAlert !== '') {
 							$("#health_confirmation-warning").find(".fundWarning").show().html(confirmationProduct.warningAlert);
@@ -99,18 +98,16 @@
 						}
 					});
 				}
-
-				meerkat.modules.healthMoreInfo.applyEventListeners();
+				/// TODO: Fix this -why is it needed though?
+				//meerkat.modules.healthMoreInfo.applyEventListeners();
 
 				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
 					method:'completedApplication',
 					object:{
 						productID: confirmationProduct.productId,
-						vertical: meerkat.site.vertical,
 						productBrandCode: confirmationProduct.info.provider,
 						productName: confirmationProduct.info.productTitle,
 						quoteReferenceNumber: confirmationProduct.transactionId,
-						simplesUser: meerkat.site.isCallCentreUser,
 						reedemedCouponID: $('.coupon-confirmation').data('couponId')
 					}
 				});
@@ -136,7 +133,7 @@
 
 		// if pending, it might not have the about fund info so let's get it
 		if(confirmationProduct.about === ""){
-			meerkat.modules.healthMoreInfo.prepareExternalCopy(function confirmationExternalCopySuccess(){
+			meerkat.modules.healthMoreInfo.retrieveExternalCopy(confirmationProduct).then(function confirmationExternalCopySuccess(){
 				$(".aboutFund").append(confirmationProduct.aboutFund).parents(".displayNone").first().removeClass("displayNone");
 			});
 		}
