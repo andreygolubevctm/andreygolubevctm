@@ -3,7 +3,7 @@ INSERT INTO `ctm`.`stylecode_provider_exclusions` (`styleCodeId`, `verticalId`, 
 
 -- UPDATE THE FOOTER
 UPDATE ctm.content_control 
-SET contentValue = 'Frank, Australian Unity, HCF, GMF, GMHBA, nib, ahm, CBHS, HIF, QCHF, CUA, Bupa and Budget Direct'
+SET contentValue = 'ahm, Australian Unity, Budget Direct, Bupa, CBHS, QCHF, CUA, Frank, GMHBA, HCF, HIF and nib'
 where contentKey = 'footerParticipatingSuppliers' 
 and verticalid = 4
 AND styleCodeid = 1;
