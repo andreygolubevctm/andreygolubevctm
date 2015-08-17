@@ -105,7 +105,8 @@ $.extend($.fn, {
 			var valid = true;
 			var validator = $(this[0].form).validate();
 			this.each(function() {
-				valid = valid && validator.element(this);
+				// custom check for ctm- sometimes validator can be undefined if the dom element is deleted but this still runs.
+				valid = typeof validator == 'undefined' ? valid : (valid && validator.element(this));
 			});
 			return valid;
 		}

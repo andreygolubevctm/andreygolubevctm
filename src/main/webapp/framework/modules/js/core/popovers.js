@@ -53,7 +53,7 @@
 							html += $(this).text();
 						});
 
-						returnString = html
+						returnString = html;
 
 						api.set('content.text', html);
 						api.set('content.title', title);
@@ -135,7 +135,7 @@
 	// Initialise Dev helpers
 	function init() {
 
-		meerkat.messaging.subscribe('DYNAMIC_CONTENT_PARSED_POPOVER', function popoverDynamicCreation( event ){
+		meerkat.messaging.subscribe('DYNAMIC_CONTENT_PARSED_POPOVER', function popoverDynamicCreation( event ) {
 			if( !event.element.attr('data-hasqtip') ){
 				create(event);
 				event.element.qtip('toggle', true);

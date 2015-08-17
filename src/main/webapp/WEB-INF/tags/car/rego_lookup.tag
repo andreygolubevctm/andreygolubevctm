@@ -25,6 +25,6 @@
     <div class="rego-lookup-feedback"><!-- populate by module --></div>
     <div class="rego-lookup-divider">
         <div class="line"><!-- empty --></div>
-        <span>Or find you car by make and model</span>
+        <span>Or find your car by make and model</span>
     </div>
 </div>

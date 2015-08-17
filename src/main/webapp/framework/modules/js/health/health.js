@@ -245,6 +245,11 @@
 				// Store the text of the income question - for reports and audits.
 				var incomelabel = ($('#health_healthCover_income :selected').val().length > 0) ? $('#health_healthCover_income :selected').text() : '';
 				$('#health_healthCover_incomelabel').val( incomelabel );
+			},
+			onAfterEnter: function(event) {
+				if (event.isForward){
+					meerkat.modules.simplesCallInfo.fetchCallInfo();
+				}
 			}
 		};
 
@@ -294,6 +299,10 @@
 				_.delay(function() {
 				meerkat.modules.healthSegment.filterSegments();
 				}, 1000);
+
+				if (event.isForward){
+					meerkat.modules.simplesCallInfo.fetchCallInfo();
+				}
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
@@ -397,9 +406,6 @@
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
 				meerkat.modules.healthResults.toggleMarketingMessage(false);
 				meerkat.modules.healthResults.toggleResultsLowNumberMessage(false);
-
-				// Close the more info and/or modal
-				meerkat.modules.healthMoreInfo.close();
 
 				meerkat.modules.resultsHeaderBar.removeEventListeners();
 			}

@@ -116,9 +116,9 @@
         // Set the terms and conditions text
         var template = $("#terms-text-template").html(),
             product = Results.getSelectedProduct(),
-            termsHTML = _.template(template, product, { variable: "data" });
+            termsHTML = _.template(template, { variable: "data" });
 
-        $("#terms-text-container").html(termsHTML);
+        $("#terms-text-container").html(termsHTML(product));
     }
 
     meerkat.modules.register("utilitiesEnquiryFields", {
