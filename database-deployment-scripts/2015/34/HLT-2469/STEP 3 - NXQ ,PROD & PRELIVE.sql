@@ -46,6 +46,21 @@ UPDATE `ctm`.`product_master` pm
 AND pm.EffectiveEnd = @EffectiveEnd
 AND providerID = @providerID
  AND Status != 'X';
+ 
+ /* Need to also disable products that started on 2015-07-14 */
+ /* Should be 105 products */
+ SELECT * FROM`ctm`.`product_master` pm
+ WHERE pm.EffectiveStart = '2015-07-14'
+AND pm.EffectiveEnd = @EffectiveEnd
+AND providerID = @providerID
+ AND Status != 'X';
+ 
+ UPDATE `ctm`.`product_master` pm
+ SET STATUS = 'X'
+ WHERE pm.EffectiveStart = '2015-07-14'
+AND pm.EffectiveEnd = @EffectiveEnd
+AND providerID = @providerID
+ AND Status != 'X';
 
 
 /* INSERT product properties */
