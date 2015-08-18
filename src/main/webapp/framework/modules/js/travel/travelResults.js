@@ -57,7 +57,7 @@
 					},
 					benefits: {
 						cxdfee: "info.cxdfeeValue",
-						excess: "info.excesValue",
+						excess: "info.excessValue",
 						medical: "info.medicalValue",
 						luggage: "info.luggageValue"
 					},
