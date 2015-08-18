@@ -170,22 +170,7 @@ public class TravelResult extends Result {
         this.exemptedBenefits = exemptedBenefits;
     }
 
-    public String getBenefit(String type){
-        for(Benefit benefit : benefits){
-            if(benefit.getType().equalsIgnoreCase(type)){
-                return benefit.getText();
-            }
-        }
-        return "";
-    }
-    public BigDecimal getBenefitValue(String type){
-        for(Benefit benefit : benefits){
-            if(benefit.getType().equalsIgnoreCase(type)){
-                return benefit.getValue();
-            }
-        }
-        return new BigDecimal(0);
-    }
+
 
     public Info getInfo() {
         return info;

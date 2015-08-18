@@ -45,6 +45,7 @@ import static javax.servlet.http.HttpServletResponse.*;
 		"/simples/users/list_online.json",
 		"/simples/users/stats_today.json",
 		"/simples/phones/call",
+		"/simples/phones/callInfo/get.json",
 		"/simples/admin/openinghours/update.json",
 		"/simples/admin/openinghours/create.json",
 		"/simples/admin/openinghours/delete.json",
@@ -146,6 +147,24 @@ public class SimplesRouter extends HttpServlet {
 					}
 				} else {
 					response.sendError(SC_BAD_REQUEST);
+				}
+			}
+		} else if (uri.endsWith("/simples/phones/callInfo/get.json")) {
+			if (authenticatedData != null) {
+				final String ext = authenticatedData.getExtension();
+				final String xpath = request.getParameter("xpath");
+
+				if (xpath != null && !xpath.isEmpty() && ext != null) {
+					try {
+						objectMapper.writeValue(writer,PhoneService.saveCallInfoForTransaction(settings(), ext, transactionId, xpath));
+					}
+					catch (final ConfigSettingException e) {
+						logger.error("Could not get callInfo for extension '" + ext + "'", e);
+						response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+						objectMapper.writeValue(writer, errors(e));
+					}
+				}else {
+					objectMapper.writeValue(writer, jsonObjectNode("errors", asList(new Error("Could not get callInfo because missing either Xpath or Extension."))));
 				}
 			}
 		} else if (uri.endsWith("/simples/admin/openinghours/getAllRecords.json")) {

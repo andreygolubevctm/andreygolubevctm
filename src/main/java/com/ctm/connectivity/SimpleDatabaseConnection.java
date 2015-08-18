@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleDatabaseConnection {
+public class SimpleDatabaseConnection implements AutoCloseable {
 
 	private static Logger logger = Logger.getLogger(SimpleDatabaseConnection.class.getName());
 
@@ -54,6 +54,11 @@ public class SimpleDatabaseConnection {
 			}
 			return connection;
 		}
+	}
+
+	@Override
+	public void close() throws Exception {
+		closeConnection();
 	}
 
 	public void closeConnection() {

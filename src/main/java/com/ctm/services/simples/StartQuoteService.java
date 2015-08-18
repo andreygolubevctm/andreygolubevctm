@@ -3,6 +3,7 @@ package com.ctm.services.simples;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
+import com.ctm.model.settings.PageSettings;
 import com.ctm.model.simples.InboundPhoneNumber;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.CallCentreService;
@@ -26,22 +27,24 @@ public class StartQuoteService {
         verticalCode = request.getParameter("verticalCode");
     }
 
+    /**
+     * Redirects consultant to proper URL on clicking StartQuote button
+     * @throws Exception
+     */
     public void startQuote() throws Exception {
         Brand brand = null;
         InboundPhoneNumber phoneDetails = null;
+        PageSettings pageSettings =  SettingsService.setVerticalAndGetSettingsForPage(request, StringUtils.isEmpty(verticalCode) ? "SIMPLES" : verticalCode.toUpperCase());
         try {
-
-            SettingsService.setVerticalAndGetSettingsForPage(request, StringUtils.isEmpty(verticalCode) ? "SIMPLES" : verticalCode.toUpperCase());
             phoneDetails = CallCentreService.getInboundPhoneDetails(request);
-
         } catch (DaoException | ConfigSettingException | RuntimeException e) {
             logger.error("ERROR While get inbound phone details : "+e.getMessage());
-            response.sendRedirect("selectBrand.jsp?verticalCode=" + verticalCode);
+            response.sendRedirect(pageSettings.getBaseUrl()+"simples/selectBrand.jsp?verticalCode=" + verticalCode);
 
         }
         try {
             if (phoneDetails == null) {
-                response.sendRedirect("selectBrand.jsp?verticalCode=" + verticalCode);
+                response.sendRedirect(pageSettings.getBaseUrl()+"simples/selectBrand.jsp?verticalCode=" + verticalCode);
             }
             if (phoneDetails != null) {
                 brand = ApplicationService.getBrandById(phoneDetails.getStyleCodeId());
@@ -51,7 +54,7 @@ public class StartQuoteService {
             if (StringUtils.isEmpty(verticalCode)) {
                 response.getWriter().write("Unable to determine vertical from your phone call details.<br>Please choose <kbd>New > XXX quote</kbd> from the menu.");
             } else if (brand == null) {
-                response.sendRedirect("selectBrand.jsp?verticalCode=" + verticalCode + "&vdn=" + phoneDetails.getVdn());
+                response.sendRedirect(pageSettings.getBaseUrl()+"simples/selectBrand.jsp?verticalCode=" + verticalCode + "&vdn=" + phoneDetails.getVdn());
             } else {
                 response.sendRedirect(CallCentreService.createHandoverUrl(request, phoneDetails.getStyleCodeId(), verticalCode, null, phoneDetails.getVdn() + ""));
             }

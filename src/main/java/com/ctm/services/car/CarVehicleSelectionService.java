@@ -424,4 +424,15 @@ public class CarVehicleSelectionService {
 		}
 	}
 
+	public static CarProduct getCarProduct(Date date, String productId, int styleCodeId) {
+		CarProductDao dao = new CarProductDao();
+		try {
+			return dao.getCarProduct(date, productId, styleCodeId);
+		} catch (DaoException e) {
+			String message = "Could not get CarProduct for productId:" + productId;
+			logger.error(message, e);
+			throw new ServiceException(message, e);
+		}
+	}
+
 }

@@ -147,7 +147,7 @@ public class PhoneService {
      * @throws EnvironmentException
      * @throws ConfigSettingException
      */
-    public static CallInfo saveCallInfoForTransaction(PageSettings settings, String extension, long transactionId, String xpath) throws ConfigSettingException {
+    public static CallInfo saveCallInfoForTransaction(PageSettings settings, String extension, Long transactionId, String xpath) throws ConfigSettingException {
         CallInfo callInfo = getCallInfoByExtension(settings, extension);
         if(callInfo.getCallId()!=null && !callInfo.getCallId().equals("") && !callInfo.getCallId().equals("0")) {
             QuoteService quoteService = new QuoteService();
@@ -157,10 +157,9 @@ public class PhoneService {
             if (!callInfo.getVdns().isEmpty() && callInfo.getVdns().get(0) != null && !callInfo.getVdns().get(0).equals("")) {
                 quoteService.writeSingle(transactionId, xpath + "/VDN", callInfo.getVdns().get(0));
             }
-        }else{
-            return null;
         }
-        return callInfo;
+
+		return callInfo;
     }
 
     /**
