@@ -1218,7 +1218,7 @@ creditCardDetails = {
 			$_icons.find('.diners').show();
 		};
 
-		$_obj.html( _html ).find('option[value='+ _selected +']').attr('selected', 'selected');
+		$_obj.html( _html ).find('option[value="'+ _selected +'"]').attr('selected', 'selected');
 		return;
 	},
 

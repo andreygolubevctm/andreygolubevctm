@@ -252,7 +252,7 @@
 			_html += '<option id="health_payment_details_frequency_A" value="annually">Annually</option>';
 		}
 
-		$frequencySelect.html( _html ).find('option[value='+ selectedFrequency +']').attr('selected', 'SELECTED');
+		$frequencySelect.html( _html ).find('option[value="'+ selectedFrequency +'"]').attr('selected', 'SELECTED');
 	}
 
 
