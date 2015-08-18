@@ -10,9 +10,7 @@
 
 <c:choose>
     <c:when test="${not empty error}">
-        <h1>Whoops, sorry... 500 Internal server error.</h1>
-
-        <h2>looks like something went wrong.</h2>
+        <h1>Whoops, sorry... 500 Internal server error. Looks like something went wrong.</h1>
 
         <p>You have experienced a technical error. We apologise.</p>
 
