@@ -13,6 +13,7 @@
 <div class="health-payment ${className}" id="${id}">
 
 	<health:payment_details xpath="${xpath}/details" />
+	<div id="update-content">
 	<health:application_compliance xpath="${xpath}" />
 	<health:medicare_details xpath="${xpath}/medicare" />
 
