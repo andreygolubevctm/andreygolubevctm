@@ -3,20 +3,20 @@
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
 
-	<merge-root>soap-response</merge-root>
-	<config-dir>aggregator/health</config-dir>
-	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health/errors</error-dir>
-	<debug-dir>health/debug</debug-dir>
-	<validation-file>WEB-INF/xsd/health/healthQuoteResult.xsd</validation-file>
+	<!--<merge-root>soap-response</merge-root>-->
+	<!--<config-dir>aggregator/health</config-dir>-->
+	<!--<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health/errors</error-dir>-->
+	<!--<debug-dir>health/debug</debug-dir>-->
+	<!--<validation-file>WEB-INF/xsd/health/healthQuoteResult.xsd</validation-file>-->
 
-	<service name="PHIO" type="url-encoded">
-		<soap-url>http://192.168.149.45/ctm/rating/health_price_service_PHIO.jsp</soap-url>
-		<outbound-xsl>PHIO_outbound.xsl</outbound-xsl>
-		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
-		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
-		<inbound-xsl>PHIO_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=PHIO</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-	</service>
+	<!--<service name="PHIO" type="url-encoded">-->
+		<!--<soap-url>http://192.168.149.45/ctm/rating/health_price_service_PHIO.jsp</soap-url>-->
+		<!--<outbound-xsl>PHIO_outbound.xsl</outbound-xsl>-->
+		<!--<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>-->
+		<!--<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>-->
+		<!--<inbound-xsl>PHIO_inbound.xsl</inbound-xsl>-->
+		<!--<inbound-xsl-parms>defaultProductId=NODEFAULT,service=PHIO</inbound-xsl-parms>-->
+		<!--<timeoutMillis>20000</timeoutMillis>-->
+	<!--</service>-->
 
 </aggregator>
