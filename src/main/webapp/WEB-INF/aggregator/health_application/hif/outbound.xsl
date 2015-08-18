@@ -386,12 +386,6 @@
                                                     </Value>
                                                 </Property>
                                             </xsl:if>
-                                            <xsl:if test="healthCover/rebate='Y'">
-                                                <Property>
-                                                    <Name>FGR</Name>
-                                                    <Value><xsl:value-of select="$today"/></Value>
-                                                </Property>
-                                            </xsl:if>
                                         </Properties>
                                     </Person>
                                 </xsl:if>
