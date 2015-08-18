@@ -3,37 +3,38 @@
 
 <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">
-	<settings:setVertical verticalCode="GENERIC"/>
-	<c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
-	<c:set var="pageTitle" value="404"/>
+    <settings:setVertical verticalCode="GENERIC"/>
+    <c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
+    <c:set var="pageTitle" value="404"/>
 </c:catch>
 
 <c:choose>
-	<c:when test="${not empty error or empty brandCode}">
-		<h1>Whoops, sorry...</h1>
-		<h2>looks like you're looking for something that isn't there!</h2>
-		<p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or deleted.</p>
-		<p>Try checking the URL you used for errors.</p>
-	</c:when>
-	<c:otherwise>
-		<%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
-		<c:catch var="error">
+    <c:when test="${not empty error or empty brandCode}">
+        <h1>Whoops, sorry... looks like you're looking for something that isn't there!</h1>
 
-			<go:log source="404" level="INFO">Request URI: ${requestScope["javax.servlet.forward.request_uri"]}, servletPath: ${pageContext.request.servletPath}</go:log>
+        <p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or deleted.</p>
 
-			<layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
+        <p>Try checking the URL you used for errors.</p>
+    </c:when>
+    <c:otherwise>
+        <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
+        <c:catch var="error">
+
+            <go:log source="404" level="INFO">Request URI: ${requestScope["javax.servlet.forward.request_uri"]}, servletPath: ${pageContext.request.servletPath}</go:log>
+
+            <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 
                 <jsp:attribute name="head">
-					<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
+					<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}"/>
                     <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/components/unsubscribe.${pageSettings.getBrandCode()}.css?${revision}" media="all">
                 </jsp:attribute>
 
-				<jsp:attribute name="head_meta"></jsp:attribute>
+                <jsp:attribute name="head_meta"></jsp:attribute>
 
 
-				<jsp:attribute name="header"></jsp:attribute>
+                <jsp:attribute name="header"></jsp:attribute>
 
-				<jsp:attribute name="form_bottom"></jsp:attribute>
+                <jsp:attribute name="form_bottom"></jsp:attribute>
 
                 <jsp:attribute name="footer">
                     <core:whitelabeled_footer/>
@@ -46,29 +47,29 @@
                 <jsp:attribute name="body_end">
                 </jsp:attribute>
 
-				<jsp:body>
+                <jsp:body>
 
-					<div role="form" class="journeyEngineSlide active unsubscribeForm">
-						<layout:slide_center xsWidth="12" mdWidth="10" className="roundedContainer">
-							<h1 class="error_title">Whoops, sorry... </h1>
+                    <div role="form" class="journeyEngineSlide active unsubscribeForm">
+                        <layout:slide_center xsWidth="12" mdWidth="10" className="roundedContainer">
+                            <h1 class="error_title">Whoops, sorry... </h1>
 
-							<div class="error_message">
-								<h2>looks like you're looking for something that isn't there!</h2>
+                            <div class="error_message">
+                                <h2>looks like you're looking for something that isn't there!</h2>
 
-								<p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or
-									deleted.</p>
+                                <p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or
+                                    deleted.</p>
 
-								<p>Try checking the URL you used for errors, or continue browsing our range of comparison services below.</p>
-							</div>
+                                <p>Try checking the URL you used for errors, or continue browsing our range of comparison services below.</p>
+                            </div>
 
-							<confirmation:other_products/>
-						</layout:slide_center>
-					</div>
+                            <confirmation:other_products/>
+                        </layout:slide_center>
+                    </div>
 
 
-				</jsp:body>
+                </jsp:body>
 
-			</layout:generic_page>
-		</c:catch>
-	</c:otherwise>
+            </layout:generic_page>
+        </c:catch>
+    </c:otherwise>
 </c:choose>
