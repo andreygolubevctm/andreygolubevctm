@@ -50,7 +50,7 @@
                 <jsp:body>
 
                     <div role="form" class="journeyEngineSlide active unsubscribeForm">
-                        <layout:slide_center xsWidth="12" mdWidth="10" className="roundedContainer">
+                        <layout:slide_center xsWidth="12" mdWidth="10">
                             <h1 class="error_title">Whoops, sorry... </h1>
 
                             <div class="error_message">
