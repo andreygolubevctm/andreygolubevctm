@@ -113,13 +113,13 @@
 	function preselectDropdowns() {
 
 		$filterFrequency.find('li.active').removeClass("active");
-		$filterFrequency.find('a[data-value=' + currentValues.frequency + ']').each(function(){
+		$filterFrequency.find('a[data-value="' + currentValues.frequency + '"]').each(function(){
 			$(this).parent().addClass("active");
 		});
 
 		$filterExcess.find('li.active').removeClass("active");
 		if(!_.isEmpty(currentValues.excess)) {
-			$filterExcess.find('a[data-value=' + currentValues.excess + ']').each(function(){
+			$filterExcess.find('a[data-value="' + currentValues.excess + '"]').each(function(){
 				$(this).parent().addClass("active");
 			});
 		}

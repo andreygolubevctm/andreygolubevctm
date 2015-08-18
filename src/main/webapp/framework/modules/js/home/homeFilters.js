@@ -192,19 +192,19 @@
 	}
 	function preselectDropdowns() {
 		$filterFrequency.find('li.active').removeClass("active");
-		$filterFrequency.find('a[data-value=' + currentValues.frequency + ']').each(function(){
+		$filterFrequency.find('a[data-value="' + currentValues.frequency + '"]').each(function(){
 			$(this).parent().addClass("active");
 		});
 
 		$filterHomeExcess.find('li.active').removeClass("active");
 		$filterContentsExcess.find('li.active').removeClass("active");
 		if(!_.isEmpty(currentValues.homeExcess)) {
-			$filterHomeExcess.find('a[data-value=' + currentValues.homeExcess + ']').each(function(){
+			$filterHomeExcess.find('a[data-value="' + currentValues.homeExcess + '"]').each(function(){
 				$(this).parent().addClass("active");
 			});
 		}
 		if(!_.isEmpty(currentValues.contentsExcess)) {
-			$filterContentsExcess.find('a[data-value=' + currentValues.contentsExcess + ']').each(function(){
+			$filterContentsExcess.find('a[data-value="' + currentValues.contentsExcess + '"]').each(function(){
 				$(this).parent().addClass("active");
 			});
 		}
