@@ -4,7 +4,7 @@ SET @providerID = 1;
 
 /* -- BEGIN TEST -- */
 
-/* Test the products count matches expected Export = 1260 and Product = 1218*/
+/* Test the products count matches expected Export = 1260 and Product = 1260*/
 SELECT 'Export', count(epm.productId) AS 'Total'
 FROM `ctm`.`export_product_master` epm
 WHERE epm.providerID = @providerID
@@ -82,10 +82,21 @@ AND pm.EffectiveEnd = @EffectiveEnd
 and pps.productType in ('GeneralHealth','Combined')
 limit  9999;
 
-UPDATE `ctm`.`product_master` pm
- SET effectiveEnd='2015-09-11'
- WHERE pm.EffectiveStart = @EffectiveStart
-	AND pm.EffectiveEnd = @EffectiveEnd
+-- expire all super extras on 23:59:59 11/09/2015 
+-- this job has been done under HLT-2386 and have to redo it again
+-- that time below query run in the middle of the data migration process which was wrong now this job is gonna make all correct
+-- TEST count 98
+select count(*) from `ctm`.`product_master` pm
+ WHERE curdate() between pm.EffectiveStart AND pm.EffectiveEnd 
 	AND providerID = @providerID
 	AND Status != 'X'
+		 AND pm.ProductCat = 'HEALTH' 
+	AND LongTitle like '%Super Extras%';
+
+UPDATE `ctm`.`product_master` pm
+ SET effectiveEnd='2015-09-11'
+ WHERE curdate() between pm.EffectiveStart AND pm.EffectiveEnd 
+	AND providerID = @providerID
+	AND Status != 'X'
+		 AND pm.ProductCat = 'HEALTH' 
 	AND LongTitle like '%Super Extras%';
