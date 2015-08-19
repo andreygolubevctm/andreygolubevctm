@@ -33,7 +33,7 @@ public class AdditionalExcessesSerializer extends JsonSerializer<List<Additional
             jsonGenerator.writeEndArray();
         } else {
             jsonGenerator.writeStringField("value", "N");
-            jsonGenerator.writeStringField("extra", "<ul>&nbsp;</ul>");
+            jsonGenerator.writeStringField("extra", "");
         }
         jsonGenerator.writeEndObject();
     }
