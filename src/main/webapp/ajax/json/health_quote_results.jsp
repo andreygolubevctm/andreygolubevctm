@@ -57,34 +57,18 @@
 		<%-- Removed specific email writing operations from here as they're handled in core:transaction above --%>
 
 		<c:import var="config" url="/WEB-INF/aggregator/health/config_ALL.xml" />
-
-		<%-- Load the config and send quotes to the aggregator gadget --%>
-		<%--<go:soapAggregator config = "${config}"--%>
-			<%--transactionId = "${tranId}"--%>
-			<%--xml = "${go:getEscapedXml(data['health'])}"--%>
-			<%--var = "resultXml"--%>
-			<%--debugVar="debugXml"--%>
-			<%--validationErrorsVar="validationErrors"--%>
-			<%--continueOnValidationError="${continueOnValidationError}"--%>
-							<%--isValidVar="isValid"--%>
-							<%--verticalCode="HEALTH"--%>
-							<%--configDbKey="quoteService"--%>
-							<%--styleCodeId="${pageSettings.getBrandId()}" />--%>
-
-		<%--Load results using Database--%>
-		<go:soapAggregator 	config = ""
-					  configDbKey="healthQuoteService"
-					  verticalCode="${verticalCode}"
-					  styleCodeId="${pageSettings.getBrandId()}"
-					  transactionId = "${data.text['current/transactionId']}"
-					  xml = "${go:getEscapedXml(data['health'])}"
-					  var = "resultXml"
-					  authToken = "${param.health_authToken}"
-					  debugVar="debugXml"
-					  validationErrorsVar="validationErrors"
-					  continueOnValidationError="${continueOnValidationError}"
-					  isValidVar="isValid" />
-
+		 Load the config and send quotes to the aggregator gadget
+		<go:soapAggregator config = "${config}"
+			transactionId = "${tranId}"
+			xml = "${go:getEscapedXml(data['health'])}"
+			var = "resultXml"
+			debugVar="debugXml"
+			validationErrorsVar="validationErrors"
+			continueOnValidationError="${continueOnValidationError}"
+							isValidVar="isValid"
+							verticalCode="HEALTH"
+							configDbKey="quoteService"
+							styleCodeId="${pageSettings.getBrandId()}" />
 
 		<c:if test="${isValid || continueOnValidationError}">
 			<c:if test="${!isValid}">
