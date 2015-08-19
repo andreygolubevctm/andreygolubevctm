@@ -28,6 +28,7 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 0, 'debug-dir', 'health/debug', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GLOBAL'),
 (@HEALTH_QUOTE_BASE_MASTER_ID, 'LOCALHOST', 0, 0, 'debug-dir', 'health/app-logs-debug', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GLOBAL'),
 (@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 0, 'validation-file', 'WEB-INF/xsd/health/healthQuoteResult.xsd', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'GLOBAL')
+
 ;
 
 -- Service
@@ -43,7 +44,27 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 0, 'inbound-xsl', 'PHIO_inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 0, 'inbound-xsl-parms', 'defaultProductId=NODEFAULT,service=PHIO', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 0, 'timeoutMillis', '20000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_QUOTE_BASE_MASTER_ID, 'PRO', 0, 0, 'timeoutMillis', '60000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_QUOTE_BASE_MASTER_ID, 'PRO', 0, 0, 'timeoutMillis', '60000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 0, 'serviceType', 'url-encoded', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 0, 'serviceName', 'PHIO', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+
+-- This is to enable all of the providers
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 1, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 2, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 3, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 5, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 6, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 7, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 8, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 9, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 10, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 11, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 12, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 13, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 14, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 15, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 16, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_QUOTE_BASE_MASTER_ID, '0', 0, 54, 'status', 'Y', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 
 
@@ -84,7 +105,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'auf/maskRequestOut.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRespIn-xsl', 'ahm/maskRespIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'AUF', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 
 -- ------
@@ -103,7 +126,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'hcf/maskRequestOut.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'extract-element', 'GetHCFSaleInfo', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'extract-element', 'GetHCFSaleInfo', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'HCF', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 
 -- ------
@@ -122,7 +147,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'nib/maskRequestOut.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRespIn-xsl', 'nib/maskRespIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'NIB', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 
 -- ------------
@@ -145,7 +172,10 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'inbound-xsl', 'gmh/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'maskRequestOutHSL.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'GMHBA', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+
 ;
 
 -- ------
@@ -166,7 +196,10 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'inbound-xsl', 'gmf/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'maskRequestOutHSL.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'GMF', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+
 ;
 -- GATEWAY
 INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`) VALUES
@@ -191,7 +224,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'inbound-xsl', 'wfd/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'wfd/maskRequestOut.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'WFD', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 -- --------
 -- Frank --
@@ -208,7 +243,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'inbound-xsl', 'fra/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'maskRequestOutHSL.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'FRA', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 
 -- ------
@@ -225,7 +262,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'ahm/maskRequestOut.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRespIn-xsl', 'ahm/maskRespIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'AHM', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 -- GATEWAY
 INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`) VALUES
@@ -254,7 +293,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'inbound-xsl', 'cbh/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'cbh/maskRequestOut.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'CBH', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 
 -- ------
@@ -275,7 +316,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'maskRequestOutHSL.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'content-type', 'application/soap+xml; charset=utf-8', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'content-type', 'application/soap+xml; charset=utf-8', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'HIF', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 -- GATEWAY
 INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`) VALUES
@@ -302,7 +345,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'inbound-xsl', 'cua/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'maskRequestOutHSL.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'CUA', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 -- GATEWAY
 INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`) VALUES
@@ -327,7 +372,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'inbound-xsl', 'thf/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'maskRequestOutHSL.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'THF', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 
 -- ------
@@ -342,7 +389,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'inbound-xsl', 'ctm/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'maskRequestOut-xsl', 'ctm/maskRequestOut.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, 'LOCALHOST', 0, @PROVIDERID, 'serviceName', 'AUF', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 -- GATEWAY
 INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `styleCodeId`, `providerId`, `servicePropertyKey`, `servicePropertyValue`, `effectiveStart`, `effectiveEnd`, `scope`) VALUES
@@ -365,7 +414,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'inbound-xsl', 'bup/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'maskRequestOutHSL.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'BUP', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 
 -- -------
@@ -389,7 +440,9 @@ INSERT INTO `ctm`.`service_properties` (`serviceMasterId`, `environmentCode`, `s
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'inbound-xsl', 'bud/inbound.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestIn-xsl', 'maskRequestIn.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
 (@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'maskRequestOut-xsl', 'maskRequestOutHSL.xsl', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
-(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'timeoutMillis', '240000', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceType', 'soap', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE'),
+(@HEALTH_APP_BASE_MASTER_ID, '0', 0, @PROVIDERID, 'serviceName', 'BUD', '2015-08-06 00:00:00', '2038-01-19 00:00:00', 'SERVICE')
 ;
 
 
