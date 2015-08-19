@@ -84,17 +84,14 @@
 		$resultsContainer.attr('policytype', $("input[name=travel_policyType]:checked").val());
 		meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId": "PolicyType-"+$("input[name=travel_policyType]:checked").val()});
 		// single trip
-		if ($travel_policyType_S.is(":checked"))
-		{
+		var isIe8 = meerkat.modules.performanceProfiling.isIE8(), showMethod = isIe8 ? 'show' : 'slideDown', hideMethod = isIe8 ? 'hide' : 'slideUp';
+		if ($travel_policyType_S.prop('checked')) {
 			// show the green bubble and single trip blue bubble copy
 			$detailsForm.find('.well-info, .well-chatty > .single').show();
 			// hide the amt and default blue bubble copy
 			$detailsForm.find('.well-chatty > .amt, .well-chatty > .default').hide();
 
-			$destinationfs.slideDown();
-			$datestravellersfs.slideDown();
-			$travel_dates_fromDate_row.slideDown();
-			$travel_dates_toDate_row.slideDown();
+			$destinationfs.add($datestravellersfs).add($travel_dates_fromDate_row).add($travel_dates_toDate_row)[showMethod]();
 
 			// update section header name for dates & travellers section
 			$datestravellersfs.find('h2').text("Dates & Travellers");
@@ -110,9 +107,7 @@
 			// check if desination is visiable
 			if ($destinationfs.is(':visible'))
 			{
-				$destinationfs.slideUp();
-				$travel_dates_toDate_row.slideUp();
-				$travel_dates_fromDate_row.slideUp();
+				$destinationfs.add($travel_dates_toDate_row).add($travel_dates_fromDate_row)[hideMethod]();
 			} else {
 				// on first load
 				$datestravellersfs.slideDown();

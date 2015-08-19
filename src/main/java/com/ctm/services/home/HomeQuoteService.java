@@ -21,6 +21,8 @@ import com.ctm.services.ResultsService;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.utils.ObjectMapperUtil;
 import com.ctm.web.validation.CommencementDateValidation;
+import com.ctm.web.validation.FormValidation;
+import com.ctm.web.validation.SchemaValidationError;
 import com.ctm.xml.XMLOutputWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -46,6 +48,13 @@ public class HomeQuoteService {
     public static final String TIMEOUT_MILLIS = "timeoutMillis";
     public static final String DEBUG_PATH = "debugPath";
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
+    private boolean valid = false;
+
+    public List<SchemaValidationError> validateRequest(HomeRequest data, String vertical) {
+        List<SchemaValidationError> errors = FormValidation.validate(data.getQuote(), vertical);
+        valid = errors.isEmpty();
+        return errors;
+    }
 
     public List<HomeResult> getQuotes(Brand brand, HomeRequest data) {
 

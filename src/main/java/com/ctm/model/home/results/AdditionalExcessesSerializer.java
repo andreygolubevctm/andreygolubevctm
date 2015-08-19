@@ -20,7 +20,7 @@ public class AdditionalExcessesSerializer extends JsonSerializer<List<Additional
             for (AdditionalExcess additionalExcess : additionalExcesses) {
                 sb.append("<li>").append(additionalExcess.getDescription());
                 if (StringUtils.isNotBlank(additionalExcess.getAmount())) {
-                    sb.append(" ").append(additionalExcess.getAmount());
+                    sb.append(" - ").append(additionalExcess.getAmount());
                 }
                 sb.append("</li>");
             }
@@ -33,7 +33,7 @@ public class AdditionalExcessesSerializer extends JsonSerializer<List<Additional
             jsonGenerator.writeEndArray();
         } else {
             jsonGenerator.writeStringField("value", "N");
-            jsonGenerator.writeStringField("extra", "<ul>&nbsp;</ul>");
+            jsonGenerator.writeStringField("extra", "");
         }
         jsonGenerator.writeEndObject();
     }

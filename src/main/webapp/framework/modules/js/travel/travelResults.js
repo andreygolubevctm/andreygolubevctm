@@ -388,6 +388,10 @@
 
 	// Wrapper around results component, load results data
 	function get() {
+        var envParam = "";
+        if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
+            $("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
+        }
 		Results.get();
 	}
 

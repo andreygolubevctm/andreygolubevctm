@@ -80,20 +80,17 @@
 		</c:otherwise>
 	</c:choose>
 
-	<!--  Modernizr -->
-	<c:if test="${isDev eq false}">
-		<script src='//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js'></script>
-	</c:if>
-
-	<script>window.Modernizr || document.write('<script src="${assetUrl}framework/lib/js/modernizr-2.7.1.min.js">\x3C/script>')</script>
+		<%--  Modernizr --%>
+		<script src='${assetUrl}framework/lib/js/modernizr-2.8.3.min.js'></script>
 
 		<!--[if lt IE 9]>
 			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.10.2.min.js"><\/script>')</script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
 		<![endif]-->
 		<!--[if gte IE 9]><!-->
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
 		<!--<![endif]-->
 
 			<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/bootstrap.${pageSettings.getBrandCode()}.min.js?${revision}"></script>
@@ -121,11 +118,12 @@
 	<c:otherwise>
 		<!--[if lt IE 9]>
 			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.10.2.min.js"><\/script>')</script>
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
 			<![endif]-->
 			<!--[if gte IE 9]><!-->
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>')</script>
+				<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+				<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
 			<!--<![endif]-->
 	</c:otherwise>
 </c:choose>
@@ -252,23 +250,16 @@
 			<core_new:sessioncam />
 		</c:if>
 
-	<!-- JS Libraries -->
+		<%-- JS Libraries --%>
+		<%--  Underscore --%>
+		<c:if test="${isDev eq false}">
+			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+		</c:if>
+		<script>window._ || document.write('<script src="${assetUrl}framework/lib/js/underscore-1.8.3.min.js">\x3C/script>')</script>
 
-		<!--  Underscore -->
-			<c:if test="${isDev eq false}">
-				<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
-			</c:if>
-<script>window._ || document.write('<script src="${assetUrl}framework/lib/js/underscore-1.5.2.min.js">\x3C/script>')</script>
-
-		<!-- Fastclick -->
-			<c:if test="${isDev eq false}">
-				<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/0.6.11/fastclick.min.js" defer></script>
-			</c:if>
-<script>window.FastClick || document.write('<script src="${assetUrl}framework/lib/js/fastclick-0.6.11.min.js" defer>\x3C/script>')</script>
-
-		<!-- Extras -->
+		<%-- Extras --%>
 <script type="text/javascript" src="${assetUrl}framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
-<script type="text/javascript" src="${assetUrl}framework/jquery/plugins/qtip2/jquery.qtip.js"></script>
+<script type="text/javascript" src="${assetUrl}framework/jquery/plugins/qtip2/jquery.qtip.min.js" async defer></script>
 
 		<!--  Meerkat -->
 		<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
@@ -307,9 +298,10 @@
 						name: '${pageSettings.getSetting("brandName")}',
 						vertical: '${pageSettings.getVerticalCode()}',
 						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
-			isCallCentreUser: <c:out value="${not empty callCentre}"/>,
+                        isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
+                        revision: '<core:buildIdentifier />',
 						<%-- could be: localhost, integration, qa, staging, prelive, pro --%>
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId},</c:if>
 						<%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
@@ -397,6 +389,16 @@
 		</div>
 
 	<jsp:invoke fragment="before_close_body" />
+
+		<%-- Fastclick --%>
+	<c:choose>
+		<c:when test="${isDev eq false}">
+			<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js" async defer></script>
+		</c:when>
+		<c:otherwise>
+			<script src="${assetUrl}framework/lib/js/fastclick-1.0.6.min.js" async defer></script>
+		</c:otherwise>
+	</c:choose>
 
 	<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
 		<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">

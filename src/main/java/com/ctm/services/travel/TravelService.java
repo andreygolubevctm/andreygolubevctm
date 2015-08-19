@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ctm.connectivity.SimpleConnection;
+import com.ctm.dao.ProviderFilterDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.TravelServiceException;
@@ -65,7 +66,24 @@ public class TravelService {
         request.setClientIp(data.getClientIpAddress());
         request.setTransactionId(data.getTransactionId());
 
-        // Convert posted data from form into a Travel-quote request
+        // Check if Provider Key provided and use as filter if available
+        // It is acceptable to throw exceptions here as provider key is checked
+        // when page loaded so technically should not reach here otherwise.
+        String providerKey = quote.getFilter().getProviderKey();
+        if(providerKey != null) {
+            ProviderFilterDao providerFilterDAO = new ProviderFilterDao();
+            try {
+                String providerCode = providerFilterDAO.getProviderDetails(providerKey);
+                quote.getFilter().setSingleProvider(providerCode);
+            } catch(DaoException e) {
+                throw new TravelServiceException("Provider Key error", e);
+            }
+        // Provider Key is mandatory in NXS
+        } else if(EnvironmentService.getEnvironmentAsString().equalsIgnoreCase("nxs")) {
+            throw new TravelServiceException("Provider Key required in '" + EnvironmentService.getEnvironmentAsString() + "' environment");
+        }
+
+        // Convert post data from form into a Travel-quote request
         final TravelQuoteRequest travelQuoteRequest = RequestAdapter.adapt(data);
         request.setPayload(travelQuoteRequest);
 
@@ -84,6 +102,14 @@ public class TravelService {
             debugPath = serviceConfig.getPropertyValueByKey("debugPath", ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
         }catch (DaoException | ServiceConfigurationException e ){
             throw new TravelServiceException("TravelQuote config error", e);
+        }
+
+        EnvironmentService environmentService = new EnvironmentService();
+
+        if(environmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST || environmentService.getEnvironment() == EnvironmentService.Environment.NXI){
+            if(data.getEnvironmentOverride() != null && data.getEnvironmentOverride().equals("") == false) {
+                serviceUrl = data.getEnvironmentOverride();
+            }
         }
 
         // Call travel-quote

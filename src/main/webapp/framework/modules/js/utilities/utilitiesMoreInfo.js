@@ -24,6 +24,7 @@
             container: $bridgingContainer,
             hideAction: 'fadeOut',
             showAction: 'fadeIn',
+            showActionWhenOpen: 'fadeIn',
             modalOptions: {
                 className: 'modal-breakpoint-wide modal-tight bridgingContainer',
                 openOnHashChange: false,

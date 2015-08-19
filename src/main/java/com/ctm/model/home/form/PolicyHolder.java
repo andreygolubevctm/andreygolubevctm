@@ -1,5 +1,7 @@
 package com.ctm.model.home.form;
 
+import com.ctm.web.validation.Name;
+
 public class PolicyHolder {
 
     private String anyoneOlder;
@@ -14,6 +16,7 @@ public class PolicyHolder {
 
     private String email;
 
+    @Name
     private String firstName;
 
     private String jointDob;
@@ -24,12 +27,15 @@ public class PolicyHolder {
 
     private String jointDobInputY;
 
+    @Name
     private String jointFirstName;
 
+    @Name
     private String jointLastName;
 
     private String jointTitle;
 
+    @Name
     private String lastName;
 
     private String marketing;
