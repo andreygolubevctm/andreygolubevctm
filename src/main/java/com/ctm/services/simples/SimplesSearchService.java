@@ -152,6 +152,9 @@ public class SimplesSearchService {
             }
         };
         final Long rootID = (Long) sqlDao.get(mapping, sql);
+        if(rootID==null){
+            return;
+        }
         if (rootID != 0) {
             sql = "SELECT 'HOT' as tableType , transactionId AS id\n" +
                     "\t\t\t\t\t\tFROM aggregator.transaction_header\n" +
@@ -273,7 +276,7 @@ public class SimplesSearchService {
             mapping = new DatabaseQueryMapping<Object>() {
                 @Override
                 protected void mapParams() throws SQLException {
-                    set(firstName + "%" + lastName + "%");
+                    set(firstName + "% " + lastName + "%");
                     set(firstName + "%");
                     set(lastName + "%");
                 }
