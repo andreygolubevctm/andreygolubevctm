@@ -279,11 +279,3 @@
 <go:validate selector="${name}_usage_gas_offpeak_period" rule="amountPeriodRequired" parm="true"
              message="Please choose the gas offpeak usage period"/>
 
-<%-- Provider results for preloading things --%>
-<jsp:useBean id="providerService" class="com.ctm.services.utilities.UtilitiesProviderService" />
-<c:set var="suburb" value="${data.utilities.householdDetails.suburb}" />
-<c:set var="postCode" value="${data.utilities.householdDetails.postcode}" />
-<c:set var="providerResults" value="${providerService.getResults(pageContext.request, postCode, suburb).toJson()}" />
-<script>
-    var providerResults = ${providerResults};
-</script>

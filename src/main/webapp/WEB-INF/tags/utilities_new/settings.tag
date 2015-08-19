@@ -5,14 +5,12 @@
 
 <c:set var="providerResults" value="null" />
 
-<c:choose>
-    <c:when test="${( not empty suburb) and (not empty postcode) }">
-        <jsp:useBean id="providerService" class="com.ctm.services.utilities.UtilitiesProviderService" />
-        <c:set var="suburb" value="${data.utilities.householdDetails.suburb}" />
-        <c:set var="postCode" value="${data.utilities.householdDetails.postcode}" />
-        <c:set var="providerResults" value="${providerService.getResults(pageContext.request, postCode, suburb).toJson()}" />
-    </c:when>
-</c:choose>
+<c:if test="${( not empty data.utilities.householdDetails.suburb) and (not empty data.utilities.householdDetails.postcode) }">
+    <jsp:useBean id="providerService" class="com.ctm.services.utilities.UtilitiesProviderService" />
+    <c:set var="suburb" value="${data.utilities.householdDetails.suburb}" />
+    <c:set var="postCode" value="${data.utilities.householdDetails.postcode}" />
+    <c:set var="providerResults" value="${providerService.getResults(pageContext.request, postCode, suburb).toJson()}" />
+</c:if>
 
 {
     isFromBrochureSite: false,

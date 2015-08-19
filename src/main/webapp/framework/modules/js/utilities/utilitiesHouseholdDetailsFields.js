@@ -6,25 +6,23 @@
 
     var useInitProviders,
 		$competitionRequiredElems,
-        providerResultsVar;
+        providerResults;
+
+
 
     function initUtilitiesHouseholdDetailsFields() {
-        if(meerkat.site.providerResults === null) {
-           providerResultsVar =  meerkat.site.providerResults = {
-                gasProviders : "",
-                electricityProviders : "",
-                errors : ""
-            };
-        }
         if(meerkat.site.pageAction === "confirmation") {
             return;
         }
-
-
-        useInitProviders = ((typeof providerResultsVar.gasProviders !== "undefined" &&
-                                  providerResultsVar.gasProviders.length)
-                         || (typeof providerResultsVar.electricityProviders !== "undefined" &&
-                                 providerResultsVar.electricityProviders.length));
+        if(meerkat.site.providerResults != null &&  (
+                ( typeof meerkat.site.providerResults.gasProviders !== "undefined"
+                     && meerkat.site.providerResults.gasProviders.length )
+            || ( typeof meerkat.site.providerResults.electricityProviders !== "undefined"
+                     && meerkat.site.providerResults.electricityProviders.length )
+            )) {
+            providerResults = meerkat.site.providerResults;
+            useInitProviders = true;
+        }
 
         _registerEventListeners();
 
