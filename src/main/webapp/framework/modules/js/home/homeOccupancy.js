@@ -73,7 +73,7 @@
 			$(elements.whenMovedInMonthRow).slideDown(speed);
 			monthField.find('option').show();
 			for(var i = 12; i > numberOfMonths ; i--) {
-				monthField.find('[value='+i+']').hide();
+				monthField.find('[value="'+i+'"]').hide();
 			}
 		} else {
 			$(elements.whenMovedInMonthRow).slideUp(speed);

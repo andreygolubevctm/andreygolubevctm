@@ -123,6 +123,8 @@
 						errorMsg="Please agree to the Terms &amp; Conditions" />
 				</form_new:row>
 
+				<simples:referral_tracking vertical="health" />
+
 			</form_new:fieldset>
 
 		</jsp:body>

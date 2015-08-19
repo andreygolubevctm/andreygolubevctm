@@ -236,7 +236,7 @@
 			}
 
 			$compareBasket.addClass("active");
-			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).addClass('compared');
+			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']" ).addClass('compared');
 
 			if( Compare.view.resultsFiltered === false && (Compare.model.products.length === Compare.settings.maximum) ){
 				$(".compareBtn").addClass("compareInActive"); // disable the button straight away as slow devices still let you tap it.
@@ -252,7 +252,7 @@
 			if( Compare.view.resultsFiltered && (Compare.model.products.length >= Compare.settings.minimum) ){
 				compareResults();
 			}
-			$element = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" );
+			$element = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']" );
 			$element.removeClass('compared');
 			$element.find(".compareCheckbox input").prop("checked", false);
 
@@ -733,7 +733,7 @@
 				meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
 				$(Results.settings.elements.rows).removeClass("active");
 
-				var $targetProduct = $(Results.settings.elements.rows + "[data-productid=" + selectedProduct.productId + "]");
+				var $targetProduct = $(Results.settings.elements.rows + "[data-productid='" + selectedProduct.productId + "']");
 				var targetPosition = $targetProduct.data('position') + 1;
 				$targetProduct.addClass("active");
 				Results.pagination.gotoPosition(targetPosition, true, false);
@@ -969,7 +969,7 @@
 					element: $this,
 					contentValue: text,
 					contentType: 'content',
-					showEvent: 'mouseenter click',
+					showEvent: 'mouseenter',
 					position: {
 						my: 'top center',
 						at: 'bottom center'
