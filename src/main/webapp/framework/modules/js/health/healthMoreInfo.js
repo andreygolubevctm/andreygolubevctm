@@ -185,6 +185,7 @@
 
         // Move dual-pricing panel
         $('.more-info-content .moreInfoRightColumn > .dualPricing').insertAfter($('.more-info-content .moreInfoMainDetails'));
+        populateBrochureEmailForModel();
     }
 
     function onAfterShowModal() {
@@ -387,7 +388,17 @@
             $('#emailAddress').val(emailAddress).trigger('blur');
         }
     }
+    function populateBrochureEmailForModel() {
+        var emailContact = $('#health_contactDetails_email').val();
+        var emailApplication = $('#health_application_email').val();
+        var emailMoreInfo = $('#emailAddress');
+        if(emailApplication === "") {
+            emailMoreInfo.val(emailContact).trigger('blur');
+        }else{
 
+            emailMoreInfo.val(emailApplication).trigger('blur');
+        }
+    }
     function updateTopPositionVariable() {
         topPosition = $('.resultsHeadersBg').height();
     }
