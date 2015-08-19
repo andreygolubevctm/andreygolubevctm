@@ -1,25 +1,21 @@
 package com.ctm.router.home;
 
-import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
-import com.ctm.model.home.HomeProduct;
 import com.ctm.model.home.form.HomeRequest;
+import com.ctm.model.home.results.HomeMoreInfo;
 import com.ctm.model.home.results.HomeResult;
 import com.ctm.model.resultsData.Info;
 import com.ctm.model.resultsData.ResultsObj;
 import com.ctm.model.resultsData.ResultsWrapper;
 import com.ctm.model.settings.Brand;
 import com.ctm.router.CommonQuoteRouter;
-import com.ctm.services.ApplicationService;
 import com.ctm.services.home.HomeQuoteService;
-import com.ctm.services.home.HomeService;
 import com.ctm.services.tracking.TrackingKeyService;
 import com.ctm.web.validation.SchemaValidationError;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
-import java.util.Date;
 import java.util.List;
 
 @Path("/home")
@@ -73,25 +69,11 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
     @GET
     @Path("/more_info/get.json")
     @Produces("application/json")
-    public HomeProduct moreInfo(@Context MessageContext context, @QueryParam("code") String productId,
+    public HomeMoreInfo moreInfo(@Context MessageContext context, @QueryParam("code") String productId,
                                 @QueryParam("type") String type) {
-
-        if (productId == null) {
-            throw new RouterException("Expecting code");
-        }
-
-        Brand brand;
-        try {
-            // Update the transactionId with the current transactionId from the session
-            brand = ApplicationService.getBrandFromRequest(context.getHttpServletRequest());
-        } catch (DaoException e) {
-            throw new RouterException(e);
-        }
-
-        Date applicationDate = ApplicationService.getApplicationDate(context.getHttpServletRequest());
-        HomeProduct product = HomeService.getHomeProduct(applicationDate, productId, type, brand.getId());
-        return product;
+        Brand brand = initRouter(context);
+        HomeQuoteService homeService = new HomeQuoteService();
+        return homeService.getMoreInfo(brand, productId, type);
     }
-
 
 }

@@ -1,6 +1,7 @@
 package com.ctm.providers.home.homequote.model;
 
 import com.ctm.model.home.form.*;
+import com.ctm.model.settings.Brand;
 import com.ctm.providers.home.homequote.model.request.*;
 import com.ctm.providers.home.homequote.model.request.Address;
 import com.ctm.providers.home.homequote.model.request.BusinessActivity;
@@ -281,6 +282,14 @@ public class RequestAdapter {
             default:
                 throw new IllegalArgumentException("Can not convert [" + value + "] to boolean");
         }
+    }
+
+    public static MoreInfoRequest adapt(Brand brand, String productId, String coverType) {
+        MoreInfoRequest request = new MoreInfoRequest();
+        request.setBrandCode(brand.getCode());
+        request.setProductId(productId);
+        request.setCoverType(coverType);
+        return request;
     }
 
 

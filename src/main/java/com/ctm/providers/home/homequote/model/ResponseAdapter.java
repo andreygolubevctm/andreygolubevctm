@@ -6,6 +6,7 @@ import com.ctm.providers.QuoteResponse;
 import com.ctm.providers.home.homequote.model.request.HomeQuoteRequest;
 import com.ctm.providers.home.homequote.model.response.HomeQuote;
 import com.ctm.providers.home.homequote.model.response.HomeResponse;
+import com.ctm.providers.home.homequote.model.response.MoreInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -150,6 +151,14 @@ public class ResponseAdapter {
         contact.setCallCentreHours(quoteContact.getCallCentreHours());
         contact.setPhoneNumber(quoteContact.getPhoneNumber());
         return contact;
+    }
+
+    public static HomeMoreInfo adapt(MoreInfo moreInfo) {
+        HomeMoreInfo homeMoreInfo = new HomeMoreInfo();
+        homeMoreInfo.setBenefits(moreInfo.getBenefits());
+        homeMoreInfo.setInclusions(moreInfo.getInclusions());
+        homeMoreInfo.setOptionalExtras(moreInfo.getOptionalExtras());
+        return homeMoreInfo;
     }
 
 }

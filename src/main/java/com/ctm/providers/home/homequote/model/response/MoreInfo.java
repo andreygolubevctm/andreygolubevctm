@@ -1,6 +1,6 @@
-package com.ctm.model.home;
+package com.ctm.providers.home.homequote.model.response;
 
-public class HomeProduct {
+public class MoreInfo {
 
     private String inclusions;
 

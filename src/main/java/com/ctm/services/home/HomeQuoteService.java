@@ -7,6 +7,7 @@ import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.ServiceException;
 import com.ctm.model.home.form.HomeQuote;
 import com.ctm.model.home.form.HomeRequest;
+import com.ctm.model.home.results.HomeMoreInfo;
 import com.ctm.model.home.results.HomeResult;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.resultsData.AvailableType;
@@ -17,6 +18,7 @@ import com.ctm.providers.home.homequote.model.RequestAdapter;
 import com.ctm.providers.home.homequote.model.ResponseAdapter;
 import com.ctm.providers.home.homequote.model.request.HomeQuoteRequest;
 import com.ctm.providers.home.homequote.model.response.HomeResponse;
+import com.ctm.providers.home.homequote.model.response.MoreInfo;
 import com.ctm.services.ResultsService;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.utils.ObjectMapperUtil;
@@ -181,6 +183,43 @@ public class HomeQuoteService {
         }
 
         ResultsService.saveResultsProperties(resultProperties);
+    }
+
+    public HomeMoreInfo getMoreInfo(Brand brand, String productId, String type) {
+
+        // Get URL of home-quote service
+        String serviceUrl = null;
+        int timeout = 30;
+        try {
+            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("homeQuoteServiceBER", brand.getVerticalByCode(Vertical.VerticalType.HOME.getCode()).getId(), brand.getId());
+            serviceUrl = serviceConfig.getPropertyValueByKey(SERVICE_URL, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
+            timeout = Integer.parseInt(serviceConfig.getPropertyValueByKey(TIMEOUT_MILLIS, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE));
+        }catch (DaoException | ServiceConfigurationException e ){
+            throw new ServiceException("HomeQuote config error", e);
+        }
+
+        ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
+
+        try {
+            String jsonRequest = objectMapper.writeValueAsString(RequestAdapter.adapt(brand, productId, type));
+
+
+            SimpleConnection connection = new SimpleConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(timeout);
+            connection.setReadTimeout(timeout);
+            connection.setContentType("application/json");
+            connection.setPostBody(jsonRequest);
+
+            final String response = connection.get(serviceUrl + "/data/moreInfo");
+
+            MoreInfo moreInfoResponse = objectMapper.readValue(response, MoreInfo.class);
+
+            return ResponseAdapter.adapt(moreInfoResponse);
+        } catch (IOException e) {
+            logger.error("Error parsing or connecting to home-quote", e);
+        }
+        return null;
     }
 
 }

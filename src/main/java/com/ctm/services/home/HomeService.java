@@ -1,9 +1,5 @@
 package com.ctm.services.home;
 
-import com.ctm.dao.home.HomeProductDao;
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.ServiceException;
-import com.ctm.model.home.HomeProduct;
 import com.ctm.model.home.HomeRequest;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.RequestService;
@@ -14,7 +10,6 @@ import com.disc_au.web.go.Data;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,15 +50,4 @@ public class HomeService {
         return valid;
     }
 
-    public static HomeProduct getHomeProduct(Date date, String productId, String type, int styleCodeId) {
-        HomeProductDao dao = new HomeProductDao();
-        try {
-            return dao.getHomeProduct(date, productId, type, styleCodeId);
-        } catch (DaoException e) {
-            String message = "Could not get HomeProduct for productId:" + productId;
-            logger.error(message, e);
-            throw new ServiceException(message, e);
-        }
-
-    }
 }
