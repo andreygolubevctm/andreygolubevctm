@@ -36,7 +36,6 @@ import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
 public class TravelService extends CommonQuoteService<TravelQuote> {
 
 	private static final Logger logger = Logger.getLogger(TravelService.class.getName());
-	private boolean valid = false;
 	private String vertical;
 	private Data data;
 
@@ -135,12 +134,6 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
         return null;
 
     }
-
-
-
-	public boolean isValid() {
-		return valid;
-	}
 
 	public Data getGetData() {
 		return data;

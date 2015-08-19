@@ -63,4 +63,8 @@ public abstract class CommonQuoteService<T> {
 
     }
 
+    public boolean isValid() {
+        return valid;
+    }
+
 }
