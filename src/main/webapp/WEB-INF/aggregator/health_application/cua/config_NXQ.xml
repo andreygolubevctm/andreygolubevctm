@@ -3,27 +3,27 @@
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">
 
-	<!--<nabGateway>-->
-		<!--<gatewayURL>https://testservices.cuahealth.com.au/NAB/CUA_CTM_IFrame.aspx</gatewayURL>-->
-		<!--<domain>https://testservices.cuahealth.com.au</domain>-->
-	<!--</nabGateway>-->
+	<nabGateway>
+		<gatewayURL>https://testservices.cuahealth.com.au/NAB/CUA_CTM_IFrame.aspx</gatewayURL>
+		<domain>https://testservices.cuahealth.com.au</domain>
+	</nabGateway>
 
-	<!--<merge-root>soap-response</merge-root>-->
-	<!--<merge-xsl>merge-results.xsl</merge-xsl>-->
-	<!--<config-dir>aggregator/health_application</config-dir>-->
-	<!--<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/errors</error-dir>-->
-	<!--<debug-dir>health_application/debug</debug-dir>-->
-	<!--<validation-file>WEB-INF/xsd/health/CUA/healthApplication.xsd</validation-file>-->
+	<merge-root>soap-response</merge-root>
+	<merge-xsl>merge-results.xsl</merge-xsl>
+	<config-dir>aggregator/health_application</config-dir>
+	<error-dir>/usr/aih/app-logs/ctm/WEB-INF/aggregator/health_application/errors</error-dir>
+	<debug-dir>health_application/debug</debug-dir>
+	<validation-file>WEB-INF/xsd/health/CUA/healthApplication.xsd</validation-file>
 
-	<!--<service name="CUA" type="soap">-->
-		<!--<soap-url>https://testservices.cuahealth.com.au/Service.svc</soap-url>-->
-		<!--<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembership</soap-action>-->
-		<!--<outbound-xsl>cua/outbound.xsl</outbound-xsl>-->
-		<!--<outbound-xsl-parms>keyname=Choosi,keycode=Choosi17</outbound-xsl-parms>-->
-		<!--<inbound-xsl>cua/inbound.xsl</inbound-xsl>-->
-		<!--<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>-->
-		<!--<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>-->
-		<!--<timeoutMillis>240000</timeoutMillis>-->
+	<service name="CUA" type="soap">
+		<soap-url>https://testservices.cuahealth.com.au/Service.svc</soap-url>
+		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembership</soap-action>
+		<outbound-xsl>cua/outbound.xsl</outbound-xsl>
+		<outbound-xsl-parms>keyname=Choosi,keycode=Choosi17</outbound-xsl-parms>
+		<inbound-xsl>cua/inbound.xsl</inbound-xsl>
+		<maskRequestIn-xsl>maskRequestIn.xsl</maskRequestIn-xsl>
+		<maskRequestOut-xsl>maskRequestOutHSL.xsl</maskRequestOut-xsl>
+		<timeoutMillis>240000</timeoutMillis>
 	</service>
 
 </aggregator>
