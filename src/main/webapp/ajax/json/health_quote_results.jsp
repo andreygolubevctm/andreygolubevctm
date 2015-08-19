@@ -57,7 +57,7 @@
 		<%-- Removed specific email writing operations from here as they're handled in core:transaction above --%>
 
 		<c:import var="config" url="/WEB-INF/aggregator/health/config_ALL.xml" />
-		 Load the config and send quotes to the aggregator gadget
+		 <%--Load the config and send quotes to the aggregator gadget--%>
 		<go:soapAggregator config = "${config}"
 			transactionId = "${tranId}"
 			xml = "${go:getEscapedXml(data['health'])}"
