@@ -506,6 +506,11 @@
 			$component.addClass('coverTypeContents').removeClass('coverTypeHome');
 		}
 
+		var envParam = "";
+		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
+			$("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
+		}
+
 		// Fetch results
 		Results.get();
 	}

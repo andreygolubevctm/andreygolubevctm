@@ -17,6 +17,7 @@ import org.apache.cxf.jaxrs.ext.MessageContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/home")
 public class HomeQuoteRouter extends CommonQuoteRouter {
@@ -70,10 +71,10 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
     @Path("/more_info/get.json")
     @Produces("application/json")
     public HomeMoreInfo moreInfo(@Context MessageContext context, @QueryParam("code") String productId,
-                                @QueryParam("type") String type) {
+                                @QueryParam("type") String type, @QueryParam(value = "environmentOverride") String environmentOverride) {
         Brand brand = initRouter(context);
         HomeQuoteService homeService = new HomeQuoteService();
-        return homeService.getMoreInfo(brand, productId, type);
+        return homeService.getMoreInfo(brand, productId, type, Optional.ofNullable(environmentOverride));
     }
 
 }

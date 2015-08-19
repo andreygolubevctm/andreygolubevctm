@@ -1,17 +1,15 @@
 package com.ctm.services.home;
 
 import com.ctm.connectivity.SimpleConnection;
-import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
-import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.exceptions.ServiceException;
+import com.ctm.model.QuoteServiceProperties;
 import com.ctm.model.home.form.HomeQuote;
 import com.ctm.model.home.form.HomeRequest;
 import com.ctm.model.home.results.HomeMoreInfo;
 import com.ctm.model.home.results.HomeResult;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.resultsData.AvailableType;
-import com.ctm.model.settings.*;
+import com.ctm.model.settings.Brand;
 import com.ctm.providers.Request;
 import com.ctm.providers.ResultPropertiesBuilder;
 import com.ctm.providers.home.homequote.model.RequestAdapter;
@@ -19,12 +17,10 @@ import com.ctm.providers.home.homequote.model.ResponseAdapter;
 import com.ctm.providers.home.homequote.model.request.HomeQuoteRequest;
 import com.ctm.providers.home.homequote.model.response.HomeResponse;
 import com.ctm.providers.home.homequote.model.response.MoreInfo;
+import com.ctm.services.CommonQuoteService;
 import com.ctm.services.ResultsService;
-import com.ctm.services.ServiceConfigurationService;
 import com.ctm.utils.ObjectMapperUtil;
 import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.web.validation.FormValidation;
-import com.ctm.web.validation.SchemaValidationError;
 import com.ctm.xml.XMLOutputWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -37,26 +33,18 @@ import org.joda.time.format.DateTimeFormatter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static com.ctm.model.settings.Vertical.VerticalType.HOME;
 import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-public class HomeQuoteService {
+public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
 
     private static final Logger logger = Logger.getLogger(HomeQuoteService.class);
 
-    public static final String SERVICE_URL = "serviceUrl";
-    public static final String TIMEOUT_MILLIS = "timeoutMillis";
-    public static final String DEBUG_PATH = "debugPath";
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
-    private boolean valid = false;
-
-    public List<SchemaValidationError> validateRequest(HomeRequest data, String vertical) {
-        List<SchemaValidationError> errors = FormValidation.validate(data.getQuote(), vertical);
-        valid = errors.isEmpty();
-        return errors;
-    }
 
     public List<HomeResult> getQuotes(Brand brand, HomeRequest data) {
 
@@ -88,35 +76,24 @@ public class HomeQuoteService {
         ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
-        // Get URL of home-quote service
-        String serviceUrl = null;
-        String debugPath = null;
-        int timeout = 30;
-        try {
-            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("homeQuoteServiceBER", brand.getVerticalByCode(Vertical.VerticalType.HOME.getCode()).getId(), brand.getId());
-            serviceUrl = serviceConfig.getPropertyValueByKey(SERVICE_URL, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
-            debugPath = serviceConfig.getPropertyValueByKey(DEBUG_PATH, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
-            timeout = Integer.parseInt(serviceConfig.getPropertyValueByKey(TIMEOUT_MILLIS, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE));
-        }catch (DaoException | ServiceConfigurationException e ){
-            throw new ServiceException("HomeQuote config error", e);
-        }
+        QuoteServiceProperties serviceProperties = getQuoteServiceProperties("homeQuoteServiceBER", brand, HOME.getCode(), data);
 
         try{
 
             String jsonRequest = objectMapper.writeValueAsString(request);
 
             // Log Request
-            XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_HOME-QUOTE" , debugPath);
+            XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_HOME-QUOTE" , serviceProperties.getDebugPath());
             writer.writeXmlToFile(jsonRequest , REQ_OUT);
 
             SimpleConnection connection = new SimpleConnection();
             connection.setRequestMethod("POST");
-            connection.setConnectTimeout(timeout);
-            connection.setReadTimeout(timeout);
+            connection.setConnectTimeout(serviceProperties.getTimeout());
+            connection.setReadTimeout(serviceProperties.getTimeout());
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
-            String response = connection.get(serviceUrl+"/quote");
+            String response = connection.get(serviceProperties.getServiceUrl()+"/quote");
             HomeResponse homeResponse = objectMapper.readValue(response, HomeResponse.class);
 
             // Log response
@@ -185,18 +162,9 @@ public class HomeQuoteService {
         ResultsService.saveResultsProperties(resultProperties);
     }
 
-    public HomeMoreInfo getMoreInfo(Brand brand, String productId, String type) {
+    public HomeMoreInfo getMoreInfo(Brand brand, String productId, String type, Optional<String> environmentOverride) {
 
-        // Get URL of home-quote service
-        String serviceUrl = null;
-        int timeout = 30;
-        try {
-            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("homeQuoteServiceBER", brand.getVerticalByCode(Vertical.VerticalType.HOME.getCode()).getId(), brand.getId());
-            serviceUrl = serviceConfig.getPropertyValueByKey(SERVICE_URL, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
-            timeout = Integer.parseInt(serviceConfig.getPropertyValueByKey(TIMEOUT_MILLIS, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE));
-        }catch (DaoException | ServiceConfigurationException e ){
-            throw new ServiceException("HomeQuote config error", e);
-        }
+        QuoteServiceProperties serviceProperties = getQuoteServiceProperties("homeQuoteServiceBER", brand, HOME.getCode(), environmentOverride);
 
         ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
 
@@ -206,12 +174,12 @@ public class HomeQuoteService {
 
             SimpleConnection connection = new SimpleConnection();
             connection.setRequestMethod("GET");
-            connection.setConnectTimeout(timeout);
-            connection.setReadTimeout(timeout);
+            connection.setConnectTimeout(serviceProperties.getTimeout());
+            connection.setReadTimeout(serviceProperties.getTimeout());
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
-            final String response = connection.get(serviceUrl + "/data/moreInfo");
+            final String response = connection.get(serviceProperties.getServiceUrl() + "/data/moreInfo");
 
             MoreInfo moreInfoResponse = objectMapper.readValue(response, MoreInfo.class);
 

@@ -10,6 +10,8 @@ public class HomeRequest implements Request<HomeQuote> {
 
     private HomeQuote home;
 
+    private String environmentOverride;
+
     @Override
     public Long getTransactionId() {
         return transactionId;
@@ -42,5 +44,13 @@ public class HomeRequest implements Request<HomeQuote> {
 
     public void setHome(HomeQuote home) {
         this.home = home;
+    }
+
+    public String getEnvironmentOverride() {
+        return environmentOverride;
+    }
+
+    public void setEnvironmentOverride(String environmentOverride) {
+        this.environmentOverride = environmentOverride;
     }
 }

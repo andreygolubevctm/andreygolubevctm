@@ -467,7 +467,8 @@
 				cache: true,
 				data: {
 					code: product.productId,
-					type: meerkat.modules.home.getCoverType()
+					type: meerkat.modules.home.getCoverType(),
+					environmentOverride: $('#environmentOverride').val()
 				},
 				errorLevel: "silent",
 				onSuccess: function (result) {
