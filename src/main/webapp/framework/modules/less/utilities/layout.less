@@ -1,4 +1,3 @@
-
 fieldset {
   &.household-details {
     .btn-group {
@@ -31,4 +30,52 @@ fieldset {
 .additional-estimate-details,
 .additional-estimate-details-row {
   display: none;
+}
+
+.additional-estimate-details-row {
+  .row-content {
+    h5 {
+      line-height: 21px;
+      padding: 0px;
+      &.structural {
+        display:none;
+      }
+      .help-icon { /* Fix for Safari */
+        width:14px;
+        height:20px;
+      }
+    }
+  }
+}
+@media(min-width: @screen-md) {
+  .additional-estimate-details-row {
+    .electricity, .gas {
+      h5.structural {
+        display:block;
+      }
+      .has-error {
+        h5 {
+          visibility: hidden;
+        }
+        .error-field {
+          position: absolute;
+          top: 0px;
+          label {
+            line-height: 1em;
+          }
+        }
+      }
+    }
+  }
+}
+@media(@lg-only) {
+  .additional-estimate-details-row {
+    .electricity, .gas {
+      .has-error {
+        .error-field {
+          top: 10px;
+        }
+      }
+    }
+  }
 }
