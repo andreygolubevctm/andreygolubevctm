@@ -16,8 +16,7 @@ UNION ALL
 		 AND pm.providerID = @providerID 
 		 AND pm.productId > 0 
 		 AND pm.ProductCat = 'HEALTH' 
-		 AND pm.EffectiveStart = @EffectiveStart 
-		 AND pm.EffectiveEnd = @EffectiveEnd 
+		 AND curdate() between pm.EffectiveStart AND pm.EffectiveEnd 
 		and pps.productType in ('GeneralHealth','Combined')
 LIMIT 9999;
 
@@ -39,7 +38,7 @@ SELECT count(*) FROM `ctm`.`product_master`
 WHERE productId IN
 (SELECT product.productId FROM `ctm`.`export_product_master` product);
 
-/* Disable current products product master 1218 products will be changes*/
+/* Disable current products product master 1260 products will be changes*/
 UPDATE `ctm`.`product_master` pm
 join ctm.product_properties_search pps  on pm.productId = pps.productId 
  SET pm.STATUS = 'X'
@@ -47,8 +46,7 @@ join ctm.product_properties_search pps  on pm.productId = pps.productId
 		 AND pm.providerID = @providerID 
 		 AND pm.productId > 0 
 		 AND pm.ProductCat = 'HEALTH' 
-		 AND pm.EffectiveStart = @EffectiveStart 
-		 AND pm.EffectiveEnd = @EffectiveEnd 
+		 AND curdate() between pm.EffectiveStart AND pm.EffectiveEnd 
 		and pps.productType in ('GeneralHealth','Combined');
 
 /* INSERT product properties */
@@ -83,3 +81,11 @@ AND pm.EffectiveStart = @EffectiveStart
 AND pm.EffectiveEnd = @EffectiveEnd 
 and pps.productType in ('GeneralHealth','Combined')
 limit  9999;
+
+UPDATE `ctm`.`product_master` pm
+ SET effectiveEnd='2015-09-11'
+ WHERE pm.EffectiveStart = @EffectiveStart
+	AND pm.EffectiveEnd = @EffectiveEnd
+	AND providerID = @providerID
+	AND Status != 'X'
+	AND LongTitle like '%Super Extras%';
