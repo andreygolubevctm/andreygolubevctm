@@ -2,7 +2,7 @@
 <aggregator>
 
 	<westpacGateway>
-		<!-- You can find a test page at https://quickstream.support.qvalent.com/ahmg/prereg/ -->
+		 <!--You can find a test page at https://quickstream.support.qvalent.com/ahmg/prereg/ -->
 		<tokenUrl>https://ws.qvalent.com/services/quickweb/CommunityTokenRequestServlet</tokenUrl>
 		<username>AHMG</username>
 		<password>K47731xVM</password>
