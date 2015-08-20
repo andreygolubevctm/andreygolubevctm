@@ -57,7 +57,7 @@
 					},
 					benefits: {
 						cxdfee: "info.cxdfeeValue",
-						excess: "info.excesValue",
+						excess: "info.excessValue",
 						medical: "info.medicalValue",
 						luggage: "info.luggageValue"
 					},
@@ -388,6 +388,10 @@
 
 	// Wrapper around results component, load results data
 	function get() {
+        var envParam = "";
+        if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
+            $("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
+        }
 		Results.get();
 	}
 

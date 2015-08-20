@@ -42,7 +42,6 @@
 	}
 
 	function commencementDateUpdated( updatedDate ) {
-		alert(updatedDate);
 		$(settings.dateField).datepicker('update', updatedDate);
 		_.defer(function(){ // Give datepicker to do its thang
 			showSimpleModal(updatedDate);

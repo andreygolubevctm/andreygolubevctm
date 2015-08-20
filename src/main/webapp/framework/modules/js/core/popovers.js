@@ -53,7 +53,7 @@
 							html += $(this).text();
 						});
 
-						returnString = html
+						returnString = html;
 
 						api.set('content.text', html);
 						api.set('content.title', title);
@@ -87,12 +87,14 @@
 			case 'mouseenter':
 				hideEvent = 'mouseleave';
 				break;
+			// This was used by Health, but the latest version of the plugin
+			// doesn't seem to support mouseenter and click events simultaneously.
 			case 'mouseenter click':
 			case 'click mouseenter':
 				hideEvent = 'mouseleave unfocus click';
 				break;
 			default:
-				hideEvent = 'unfocus click'
+				hideEvent = 'unfocus click';
 				break;
 		}
 
@@ -135,7 +137,7 @@
 	// Initialise Dev helpers
 	function init() {
 
-		meerkat.messaging.subscribe('DYNAMIC_CONTENT_PARSED_POPOVER', function popoverDynamicCreation( event ){
+		meerkat.messaging.subscribe('DYNAMIC_CONTENT_PARSED_POPOVER', function popoverDynamicCreation( event ) {
 			if( !event.element.attr('data-hasqtip') ){
 				create(event);
 				event.element.qtip('toggle', true);

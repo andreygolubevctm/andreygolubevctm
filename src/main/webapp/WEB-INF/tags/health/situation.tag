@@ -107,8 +107,6 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
 
 				</form_new:fieldset>
 
-				<simples:referral_tracking vertical="health" />
-
 				<simples:dialogue id="22" vertical="health" />
 
 				<%-- Health benefits has simples messages --%>

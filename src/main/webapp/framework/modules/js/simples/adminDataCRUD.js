@@ -144,7 +144,8 @@
 		else
 			m.modalAction = "create";
 		
-		modalHTML = _.template(this.views.modal, m, { variable: "data" });
+		var modalHTMLTemplate = _.template(this.views.modal, { variable: "data" });
+		modalHTML = modalHTMLTemplate(m);
 		this.modalId = meerkat.modules.dialogs.show({
 			htmlContent: modalHTML
 		});

@@ -231,12 +231,12 @@
 		$compareBasket.on("compareAdded", function(event, productId ){
 
 			// Close the more info panel if open.
-			if(meerkat.modules.healthMoreInfo.getOpenProduct() !== null && meerkat.modules.healthMoreInfo.getOpenProduct().productId !== productId){
-				meerkat.modules.healthMoreInfo.close();
+			if(meerkat.modules.moreInfo.getOpenProduct() !== null && meerkat.modules.moreInfo.getOpenProduct().productId !== productId) {
+				meerkat.modules.moreInfo.close();
 			}
 
 			$compareBasket.addClass("active");
-			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" ).addClass('compared');
+			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']" ).addClass('compared');
 
 			if( Compare.view.resultsFiltered === false && (Compare.model.products.length === Compare.settings.maximum) ){
 				$(".compareBtn").addClass("compareInActive"); // disable the button straight away as slow devices still let you tap it.
@@ -252,7 +252,7 @@
 			if( Compare.view.resultsFiltered && (Compare.model.products.length >= Compare.settings.minimum) ){
 				compareResults();
 			}
-			$element = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId=" + productId + "]" );
+			$element = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']" );
 			$element.removeClass('compared');
 			$element.find(".compareCheckbox input").prop("checked", false);
 
@@ -335,8 +335,8 @@
 					}
 
 					// Close the more info panel if open.
-					if(meerkat.modules.healthMoreInfo.getOpenProduct() !== null){
-						meerkat.modules.healthMoreInfo.close();
+					if(meerkat.modules.moreInfo.getOpenProduct() !== null){
+						meerkat.modules.moreInfo.close();
 					}
 
 					// Publish tracking events.
@@ -733,7 +733,7 @@
 				meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
 				$(Results.settings.elements.rows).removeClass("active");
 
-				var $targetProduct = $(Results.settings.elements.rows + "[data-productid=" + selectedProduct.productId + "]");
+				var $targetProduct = $(Results.settings.elements.rows + "[data-productid='" + selectedProduct.productId + "']");
 				var targetPosition = $targetProduct.data('position') + 1;
 				$targetProduct.addClass("active");
 				Results.pagination.gotoPosition(targetPosition, true, false);
@@ -898,7 +898,7 @@
 		// If on the results step, reload the results data. Can this be more generic?
 
 		if(typeof callback === 'undefined'){
-			if(meerkat.modules.journeyEngine.getCurrentStepIndex() === 3){
+			if(meerkat.modules.journeyEngine.getCurrentStepIndex() === 4){
 				get();
 			}
 		}else{
@@ -969,7 +969,7 @@
 					element: $this,
 					contentValue: text,
 					contentType: 'content',
-					showEvent: 'mouseenter click',
+					showEvent: 'mouseenter',
 					position: {
 						my: 'top center',
 						at: 'bottom center'

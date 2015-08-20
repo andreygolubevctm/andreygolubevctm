@@ -169,6 +169,7 @@
 				type: "email",
 				value: emailAddress
 			},
+			cache: true,
 			onComplete: function(){
 				if(instanceSettings.lockoutOnCheckUserExists) {
 					meerkat.modules.loadingAnimation.hide( instanceSettings.emailInput );

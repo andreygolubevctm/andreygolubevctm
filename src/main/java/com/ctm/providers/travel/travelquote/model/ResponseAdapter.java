@@ -156,14 +156,14 @@ public class ResponseAdapter {
                 //Create info object for results grid
 
                 Info info = new Info();
-                info.setCxdfee(result.getBenefit("cxdfee"));
-                info.setCxdfeeValue(result.getBenefitValue("cxdfee"));
-                info.setExcess(result.getBenefit("excess"));
-                info.setExcessValue(result.getBenefitValue("excess"));
-                info.setLuggage(result.getBenefit("luggage"));
-                info.setLuggageValue(result.getBenefitValue("luggage"));
-                info.setMedical(result.getBenefit("medical"));
-                info.setMedicalValue(result.getBenefitValue("medical"));
+                info.setCxdfee(travelQuote.getBenefit("cxdfee"));
+                info.setCxdfeeValue(travelQuote.getBenefitValue("cxdfee"));
+                info.setExcess(travelQuote.getBenefit("excess"));
+                info.setExcessValue(travelQuote.getBenefitValue("excess"));
+                info.setLuggage(travelQuote.getBenefit("luggage"));
+                info.setLuggageValue(travelQuote.getBenefitValue("luggage"));
+                info.setMedical(travelQuote.getBenefit("medical"));
+                info.setMedicalValue(travelQuote.getBenefitValue("medical"));
 
                 result.setInfo(info);
 

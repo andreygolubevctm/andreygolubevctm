@@ -111,6 +111,7 @@
 		<%-- Hidden Fields --%>
 		<field:hidden xpath="transcheck" constantValue="1" />
 		<field:hidden xpath="travel/renderingMode" />
+        <field:hidden xpath="environmentOverride" />
 		<%-- generate the benefit fields (hidden) for form selection. --%>
 		<div class="hiddenFields">
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
