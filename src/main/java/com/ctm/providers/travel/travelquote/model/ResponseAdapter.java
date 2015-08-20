@@ -177,8 +177,8 @@ public class ResponseAdapter {
                     result.setHandoverUrl(travelQuote.getQuoteUrl());
 
                     String handoverDataString = "";
-                    Iterator it = travelQuote.getQuoteData().entrySet().iterator();
-                    while (it.hasNext()) {
+                        Iterator it = travelQuote.getQuoteData().entrySet().iterator();
+                        while (it.hasNext()) {
                         Map.Entry pair = (Map.Entry)it.next();
                         handoverDataString += "<handoverVar>"+pair.getKey()+"</handoverVar>";
                         handoverDataString += "<handoverData>"+pair.getValue()+"</handoverData>";
