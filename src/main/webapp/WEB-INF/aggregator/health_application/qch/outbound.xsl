@@ -237,7 +237,9 @@
 									<xsl:otherwise>false</xsl:otherwise>
 								</xsl:choose>
 							</Transferring>
-							<PreviousFund><xsl:value-of select="$primaryFund" /></PreviousFund>
+							<xsl:if test="$primaryFund != '' and $primaryFund != 'NONE'">
+								<PreviousFund><xsl:value-of select="$primaryFund" /></PreviousFund>
+							</xsl:if>
 							<xsl:if test="$primaryFund != '' and $primaryFund != 'NONE'">
 								<PreviousFundMemberNo><xsl:value-of select="previousfund/primary/memberID" /></PreviousFundMemberNo>
 							</xsl:if>
