@@ -895,8 +895,11 @@
 
 		});
 
-		// If on the results step, reload the results data. Can this be more generic?
+		// when hospital is set to off in [Customise Cover] hide the excess section
+		var $excessSection = $component.find('.cell.excessSection');
+		_.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
 
+		// If on the results step, reload the results data. Can this be more generic?
 		if(typeof callback === 'undefined'){
 			if(meerkat.modules.journeyEngine.getCurrentStepIndex() === 4){
 				get();
