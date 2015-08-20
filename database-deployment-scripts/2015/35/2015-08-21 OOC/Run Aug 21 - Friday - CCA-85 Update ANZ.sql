@@ -449,7 +449,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-standard-card-poi
 INSERT INTO ctm.product_properties VALUES(@product_id,'card-class',0,0,'Visa & American Express',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'extended-warranty',0,0,'No',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,20.99,'20.99%',NULL,'2015-08-20','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,50000.0,'50000',NULL,'2015-08-20','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,25000.0,'25000',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-Worldwide emergency credit card replacement for your ANZ Rewards cards.
 -As an ANZ Rewards account holder, you have access to a range of optional extra services including
 --eDine
@@ -544,7 +544,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-standard-card-poi
 INSERT INTO ctm.product_properties VALUES(@product_id,'card-class',0,0,'Visa & American Express',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'extended-warranty',0,1,'Yes',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,20.99,'20.99%',NULL,'2015-08-20','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,50000.0,'50000',NULL,'2015-08-20','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,75000.0,'75000',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-Unlimited access to participating airport lounges outside Australia
 -Comprehensive overseas travel and medical insurance
 -Visa entertainment- providing you with access to special events, exlusive merchandise packages and home entertainment products
@@ -597,7 +597,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-standard-card-poi
 INSERT INTO ctm.product_properties VALUES(@product_id,'card-class',0,0,'Visa & American Express',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'extended-warranty',0,0,'No',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,21.49,'21.49%',NULL,'2015-08-20','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,50000.0,'50000',NULL,'2015-08-20','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,25000.0,'25000',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-Complimentary Qantas Frequent Flyer membership','2015-08-20','2040-12-31','');
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate',0,NULL,'',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'maximum-credit-limit',0,0.0,'0',NULL,'2015-08-20','2040-12-31','',0);
@@ -692,7 +692,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-standard-card-poi
 INSERT INTO ctm.product_properties VALUES(@product_id,'card-class',0,0,'Visa & American Express',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'extended-warranty',0,1,'Yes',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,21.49,'21.49%',NULL,'2015-08-20','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,50000.0,'50000',NULL,'2015-08-20','2040-12-31','',0);
+INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,75000.0,'75000',NULL,'2015-08-20','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-Two complimentary Qantas club Lounge invitiations each year for use when flying on Qantas or Jetstart flights
 -Qantas Club Membership offer- you could save up to $455 in your first year of membership when you use your ANZ Frequent Flyer Black card to purchase your Qantas Club membership
 -Unlimited access to participating airport lounges outstide Australia, through Veloce
