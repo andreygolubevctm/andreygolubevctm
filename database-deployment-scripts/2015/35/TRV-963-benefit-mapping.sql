@@ -16,4 +16,4 @@ select count(*) from ctm.travel_provider_benefit_mapping where providerId = @GOI
 -- rollback
 -- uncomment below for rollback
 -- SET @GOINBACK = (select providerId from ctm.provider_master where providerCode = 'GOIN');
-delete from ctm.travel_provider_benefit_mapping where providerId = @GOINBACK LIMIT 4;
+-- delete from ctm.travel_provider_benefit_mapping where providerId = @GOINBACK LIMIT 4;
