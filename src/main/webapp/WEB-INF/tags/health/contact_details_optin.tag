@@ -73,9 +73,12 @@
 				<%-- COMPETITION START --%>
 				<c:if test="${competitionEnabled == true}">
 					<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
+					<c:if test="${!fn:contains(competitionPreCheckboxContainer, 'health1000promoImage')}">
+						<c:set var="offset_class" value=" no-offset"/>
+					</c:if>
 					<c:if test="${not empty competitionPreCheckboxContainer}">
-					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
-							<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+					<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
+						<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
 					</form_new:row>
 					</c:if>
 					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
