@@ -146,7 +146,7 @@ var ServerSideValidation = {
 											if(typeof field == 'undefined' || field.length == 0) {
 												field = $('input[id*="' + fieldName + '"]');
 											}
-											if((typeof field != 'undefined' && field.length != 0) && field.prop("required") && field.val() == "") {
+											if((typeof field != 'undefined' && field.length != 0) && field.prop("required") && field.val() === "") {
 												invalidField = field;
 											}
 										}

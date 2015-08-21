@@ -27,7 +27,7 @@ if (typeof meerkat === 'undefined' || typeof meerkat.modules.validation === 'und
 // Makes sure that checkbox for 'Y' is checked
 //
 $.validator.addMethod("agree", function (value, element) {
-    if (value == "Y") {
+    if (value === "Y") {
         return $(element).is(":checked");
     } else {
         return false;
@@ -61,8 +61,8 @@ $(function() {
 //Validates OK to email which ensure we have a email address if they select yes
 //
 $.validator.addMethod("marketing", function () {
-    if ($('input[name="quote_contact_marketing"]:checked').val() == "Y"
-        && $('input[name="quote_contact_email"]').val() == "") {
+    if ($('input[name="quote_contact_marketing"]:checked').val() === "Y"
+        && $('input[name="quote_contact_email"]').val() === "") {
         return false;
     } else {
         $('input[name="quote_contact_email"]').parent().removeClass('state-right state-error');

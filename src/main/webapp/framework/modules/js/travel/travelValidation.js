@@ -23,7 +23,7 @@ $.validator.addMethod("fromToDate", function(value, element, params){
     var fromDateVal = $('#'+params.fromDate).val();
     var toDateVal = $('#'+params.toDate).val();
 
-    if (fromDateVal != '' && toDateVal != '')
+    if (fromDateVal !== '' && toDateVal !== '')
     {
         return date_gt_date(toDateVal, fromDateVal)
     }

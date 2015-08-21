@@ -7,7 +7,7 @@
 //
 $.validator.addMethod("ncdValid", function(value, element) {
 
-    if (element.value == "")
+    if (element.value === "")
         return false;
 
     function getDateFullYear(v) {
@@ -45,7 +45,7 @@ $.validator.addMethod("youngRegularDriversAgeCheck", function (value, element) {
 
     // Rgd must be older than YngDrv
     if (yngDob < rgdDob) {
-        return (this.optional(element) != false) || false;
+        return (this.optional(element) !== false) || false;
     }
     return true;
 }, "Youngest driver should not be older than the regular driver.");
@@ -167,7 +167,7 @@ $.validator.addMethod("youngestDriverMinAge", function (value, element) {
     var yngFullYear = getDateFullYear($("#quote_drivers_young_dob").val());
     var yngAge = curYear - yngFullYear;
     if (yngAge < minAge) {
-        return (this.optional(element) != false) || false;
+        return (this.optional(element) !== false) || false;
     }
     return true;
 
@@ -200,7 +200,7 @@ $.validator.addMethod("ageLicenceObtained", function (value, element) {
     var curYear = d.getFullYear();
     var driverFullYear = getDateFullYear($(driver).val());
     var driverAge = curYear - driverFullYear;
-    if(this.optional(element) == false) {
+    if(this.optional(element) === false) {
         if(!isNaN(driverFullYear) ) {
             if (isNaN(driverAge) || value < 16 || value > driverAge) {
                 return false;
@@ -219,6 +219,6 @@ $.validator.addMethod("ageLicenceObtained", function (value, element) {
 //
 $.validator.addMethod("okToCall", function() {
     return !($('input[name="quote_contact_oktocall"]:checked').val() == "Y"
-    && $('input[name="quote_contact_phone"]').val() == "");
+    && $('input[name="quote_contact_phone"]').val() === "");
 
 }, "");
