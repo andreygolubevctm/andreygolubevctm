@@ -6,224 +6,136 @@
 // This is here to scope the CORE results to HLT for the duration of the CARAMS project.
 // When merging into trunk, we will move this into health/results.less
 //
-.health {
-	//
 
-	/*
-	Does not work currently work as LESS does not support generating properties dynamically :-/ Sass does
-	Keeping it here anyway as they seem to be working on it, so wait and see if that can be useful
-	*/
-	.media-variants(@property, @xs-value, @sm-value, @md-value, @lg-value){
-		@property: @xs-value;
-		@media (@sm) {
-			@property: @sm-value;
-		}
-		@media (@md) {
-			@property: @md-value;
-		}
-		@media (@lg) {
-			@property: @lg-value;
-		}
-	}
-
-	/* LESS */
-	#resultsPage {//CORE; remove from HLT
-		position: relative;
-
-		.clearfix();
-
-		// Hide results initially so we don't see the scaffolding after #benefits
-		// We show again in healthResults.onResultsFetchFinish
-		display: none;
-
-		// Removes the container padding/margins on XS
-		@media(@xs-only) {
-			margin: 0 (-@grid-gutter-width/2);
-		}
-	}
-
-	.resultsContainer{//CORE; remove from HLT
-		padding:0;
-		margin: 0;
-		position: relative;
-
-		// On XS the results scrolling area can go right to the edges (if it's not already)
-		@media (@xs-only) {
-			.resultsOverflow{
-				margin: 0;
-			}
-		}
-	}
-	.noResults{
-		margin-top: 60px;
-		width: 100%;
-
-		height:500px;
-		position: relative;
-		text-align: center;
-
-		@media (@sm) {
-			width: @container-sm;
-		}
-		@media (@md) {
-			width: @container-md;
-		}
-		@media (@lg) {
-			width: @container-lg;
-		}
-
-		.alert{
-			margin: 0 80px;
-		}
-
-	}
-	.result-row {//CORE; remove from HLT
-		opacity: 1;
-		&.filtered {
-			opacity: 0;
-		}
-		&.compared {
-			background-color: @compare-color;
-		}
-		//.frequency {
-		//	display: none;
-		//}
-		.result{
-			position: relative;
-		}
-		.compareCheckbox{
-			position: absolute;
-			right:(@results-column-side-padding-width+5);
-			top:10px;
-		}
-	}
-	.featuresElements{//CORE; remove from HLT
-		display: none;
-	}
-
-	/* FEATURES COMPARISON */
-	.featuresMode {//For HLT, review any crossover with CORE
-
-		&.resultsContainer,
-		.results-table{
-			float: left;
-			@media(@xs-only){
-				background-color: #ddd;
-				overflow: hidden;
-			}
-		}
-
-		.resultInsert.priceMode {
-			display: none;
-		}
-
-		.resultsOverflow{
-			overflow: hidden;
-			float: left;
-			width: 100%;
-			.touch & {
-				//overflow-x: scroll;
-				-webkit-overflow-scrolling: touch; //elastic scroll on.
-			}
-		}
-
-		/* Columns properties */
-		.featuresHeaders{
-			@media (@xs-only) {
-				display: none !important;
-			}
-
-		}
-
-		/* xs feature labels */
-		.labelInColumn{
-
-			display:none;
-			width: 200%;
-
-			@media (@xs-only){
-				display: block;
-			}
-
-			.content{
-				height: auto !important;
-			}
-		}
-
-		.expandable > .content{
-			cursor: pointer;
-		}
-		.expander{
-			.icon-arrow-right;
-			right: 5px;
-			top: 50%;
-			margin-top: -7px;
-			position: absolute;
-			font-size: 12px;
-		}
-		.expanded .labelInColumn > .content .expander,
-		.expanding .labelInColumn > .content .expander,
-		.expanded > .content .expander,
-		.expanding > .content .expander{
-			.icon-arrow-down;
-		}
-
-		.featuresHeaders,
-		.result-row {
-			float: left;
-
-			margin: 0 @xs-results-column-gutter-width;
-			width: @xs-results-column-width;
-
-			@media (@sm) {
-				margin: 0 @sm-results-column-gutter-width;
-				width: @sm-results-column-width;
-			}
-			@media (@md) {
-				margin: 0 @md-results-column-gutter-width;
-				width: @md-results-column-width;
-			}
-			@media (@lg) {
-				margin: 0 @lg-results-column-gutter-width;
-				width: @lg-results-column-width;
-			}
-
-		}
-
-		/* column content container */
-		.featuresList{
-			font-size: @results-font-size;
-			vertical-align: middle;
-		}
-		.content{
-			padding: 8px @results-column-side-padding-width;
-			position: relative;
-		}
-		.extraText{
-			display: block;
-		}
-		.collapsed > .children{
-			display: none;
-		}
-
-		.expanding > .children{
-			display: block;
-			& > .cell{
-				visibility: hidden;
-				height:30px;
-				overflow: hidden;
-			}
-		}
-
-		.expanded > .children{
-			display: block;
-		}
-
-	}
-
-	//-----
-	// end .health
+/*
+Does not work currently work as LESS does not support generating properties dynamically :-/ Sass does
+Keeping it here anyway as they seem to be working on it, so wait and see if that can be useful
+*/
+.media-variants(@property, @xs-value, @sm-value, @md-value, @lg-value) {
+  @property: @xs-value;
+  @media (@sm) {
+    @property: @sm-value;
+  }
+  @media (@md) {
+    @property: @md-value;
+  }
+  @media (@lg) {
+    @property: @lg-value;
+  }
 }
+
+.noResults {
+  margin-top: 60px;
+  width: 100%;
+
+  height: 500px;
+  position: relative;
+  text-align: center;
+
+  @media (@sm) {
+    width: @container-sm;
+  }
+  @media (@md) {
+    width: @container-md;
+  }
+  @media (@lg) {
+    width: @container-lg;
+  }
+
+  .alert {
+    margin: 0 80px;
+  }
+
+}
+
+.result-row {
+  &.compared {
+    background-color: @compare-color;
+  }
+  .compareCheckbox {
+    position: absolute;
+    right: (@results-column-side-padding-width+5);
+    top: 10px;
+  }
+}
+
+/* FEATURES COMPARISON */
+.featuresMode {
+  //For HLT, review any crossover with CORE
+
+  &.resultsContainer,
+  .results-table {
+    @media (@xs-only) {
+      background-color: #ddd;
+      overflow: hidden;
+    }
+  }
+
+  .resultInsert.priceMode {
+    display: none;
+  }
+
+  /* xs feature labels */
+  .labelInColumn {
+
+    display: none;
+
+    @media (@xs-only) {
+      display: block;
+    }
+
+    .content {
+      height: auto !important;
+    }
+  }
+
+  .expandable > .content {
+    cursor: pointer;
+  }
+  .expander {
+    .icon-arrow-right;
+    right: 5px;
+    top: 50%;
+    margin-top: -7px;
+    position: absolute;
+    font-size: 12px;
+  }
+  .expanded .labelInColumn > .content .expander,
+  .expanding .labelInColumn > .content .expander,
+  .expanded > .content .expander,
+  .expanding > .content .expander {
+    .icon-arrow-down;
+  }
+
+  .featuresHeaders,
+  .result-row {
+
+    margin: 0 @xs-results-column-gutter-width;
+    width: @xs-results-column-width;
+
+    @media (@sm) {
+      margin: 0 @sm-results-column-gutter-width;
+      width: @sm-results-column-width;
+    }
+    @media (@md) {
+      margin: 0 @md-results-column-gutter-width;
+      width: @md-results-column-width;
+    }
+    @media (@lg) {
+      margin: 0 @lg-results-column-gutter-width;
+      width: @lg-results-column-width;
+    }
+
+  }
+
+  /* column content container */
+  .content {
+    padding: 8px @results-column-side-padding-width;
+  }
+
+}
+
+//-----
 //
 
 //------------------------------------------------------------------------
@@ -235,599 +147,598 @@
   // sections mixin called
   .resultsFeaturesSections(@section-color, @section-odd-color);
 
-
   // xs specific section styling
-  @media(@xs-only){
-	// common
-	.featuresMode .hospitalCover .section.labelInColumn,
-	.featuresMode .extrasCover .section.labelInColumn{
-	  > .content{
-		color: @section-xs-text-color;
-	  }
-	}
-	// hospital
-	.featuresMode .hospitalCover .section.labelInColumn > .content{
-	  background-color: @section-xs-hospital-color;
-	}
-	// extras
-	.featuresMode .extrasCover .section.labelInColumn > .content{
-	  background-color: @section-xs-extras-color;
-	}
-  }
+  @media (@xs-only) {
+    // common
+    .featuresMode .hospitalCover .section.labelInColumn,
+    .featuresMode .extrasCover .section.labelInColumn {
+      > .content {
+        color: @section-xs-text-color;
+      }
+    }
 
+    // hospital
+    .featuresMode .hospitalCover .section.labelInColumn > .content {
+      background-color: @section-xs-hospital-color;
+    }
+
+    // extras
+    .featuresMode .extrasCover .section.labelInColumn > .content {
+      background-color: @section-xs-extras-color;
+    }
+  }
 
   //categories
   // common
   .resultsFeaturesCategories(@category-hospital-color, @category-hospital-odd-color, @feature-color);
   //hospital
-  .featuresMode .hospitalCover .category > .content{
-	color: @category-hospital-text-color;
+  .featuresMode .hospitalCover .category > .content {
+    color: @category-hospital-text-color;
   }
   // extras
   .resultsFeaturesCategories(@category-extras-color, @category-extras-odd-color, @feature-color, ~".extrasCover");
-  .featuresMode .extrasCover .category > .content{
-	color: @category-extras-text-color;
+  .featuresMode .extrasCover .category > .content {
+    color: @category-extras-text-color;
   }
 
   // xs specific category styling
-  @media(@xs-only){
+  @media (@xs-only) {
 
-	.featuresMode .hospitalCover .category{
-	  .xsSection(@hospital-color, @category-hospital-color, #FFF, @hospital-expanded-color);
-	}
+    .featuresMode .hospitalCover .category {
+      .xsSection(@hospital-color, @category-hospital-color, #FFF, @hospital-expanded-color);
+    }
 
-	.featuresMode .extrasCover .category{
-	  .xsSection(@extras-color, @category-extras-color, #FFF, @extras-expanded-color);
-	}
+    .featuresMode .extrasCover .category {
+      .xsSection(@extras-color, @category-extras-color, #FFF, @extras-expanded-color);
+    }
 
   }
-
 
   // rows mixin called
   .resultsFeaturesRows(@feature-color, @feature-odd-color);
 
-
   // alternate columns
-  @media (@xs-only){
-	.result-row:nth-child(2n+2) .labelInColumn {
-	  > .content{
-		background-color: transparent !important;
-	  }
-	  .contentInner{
-		visibility: hidden;
-	  }
-	}
+  @media (@xs-only) {
+    .result-row:nth-child(2n+2) .labelInColumn {
+      > .content {
+        background-color: transparent !important;
+      }
+      .contentInner {
+        visibility: hidden;
+      }
+    }
   }
 
   // override because of the zoom out issue
-  .resultsOverflowWidth(@columnWidth, @columnsNumber, @columnGutterWidth, @containerBorderWidth){
-	width: ( ( @columnWidth * @columnsNumber ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @columnGutterWidth - @containerBorderWidth - 1);
+  .resultsOverflowWidth(@columnWidth, @columnsNumber, @columnGutterWidth, @containerBorderWidth) {
+    width: ( ( @columnWidth * @columnsNumber ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @columnGutterWidth - @containerBorderWidth - 1);
   }
 
   // special cases / overrrides
   .featuresMode {
 
-	.resultsOverflow {
-	  @media (@sm) {
-		.resultsOverflowWidth(@sm-results-column-width, @sm-results-column-number, @sm-results-column-gutter-width, @results-page-border-width);
-	  }
-	  @media (@md) {
-		.resultsOverflowWidth(@md-results-column-width, @md-results-column-number, @md-results-column-gutter-width, @results-page-border-width);
-	  }
-	  @media (@lg) {
-		.resultsOverflowWidth(@lg-results-column-width, @lg-results-column-number, @lg-results-column-gutter-width, @results-page-border-width);
-	  }
-	}
+    .resultsOverflow {
+      @media (@sm) {
+        .resultsOverflowWidth(@sm-results-column-width, @sm-results-column-number, @sm-results-column-gutter-width, @results-page-border-width);
+      }
+      @media (@md) {
+        .resultsOverflowWidth(@md-results-column-width, @md-results-column-number, @md-results-column-gutter-width, @results-page-border-width);
+      }
+      @media (@lg) {
+        .resultsOverflowWidth(@lg-results-column-width, @lg-results-column-number, @lg-results-column-gutter-width, @results-page-border-width);
+      }
+    }
 
-	.labelInColumn {
-	  // I think this is for spreading the labels on XS across the two results columns.
-	  width: 200%;
-	}
+    .labelInColumn {
+      // I think this is for spreading the labels on XS across the two results columns.
+      width: 200%;
+    }
 
-	/** COLOURS **/
+    /** COLOURS **/
 
-	.help-icon{
-	  color: @feature-text-color;
-	}
+    .help-icon {
+      color: @feature-text-color;
+    }
 
-	.hospitalCover{
+    .hospitalCover {
 
-	  .category.expanded > .content > .help-icon,
-	  .category > .content.expandableHover > .help-icon{
-		color: #fff;
-	  }
-	}
+      .category.expanded > .content > .help-icon,
+      .category > .content.expandableHover > .help-icon {
+        color: #fff;
+      }
+    }
 
-	.extrasCover{
+    .extrasCover {
 
-	  .category.expanded > .content > .help-icon,
-	  .category > .content.expandableHover > .help-icon{
-		color: #fff;
-	  }
-	}
+      .category.expanded > .content > .help-icon,
+      .category > .content.expandableHover > .help-icon {
+        color: #fff;
+      }
+    }
 
-	.promosFeature{
-	  .labelInColumn,
-	  .content{
-		color: @results-features-promos-color;
-	  }
-	}
+    .promosFeature {
+      .labelInColumn,
+      .content {
+        color: @results-features-promos-color;
+      }
+    }
 
-	.section,
-	.featuresHeaders .ambulanceSection,
-	.ambulanceSection > .labelInColumn{
-	  > .content {
-		color: @section-text-color;
+    .section,
+    .featuresHeaders .ambulanceSection,
+    .ambulanceSection > .labelInColumn {
+      > .content {
+        color: @section-text-color;
 
-	  }
-	}
+      }
+    }
 
-	.content {
-	  font-size: 13px;
-	  padding: 8px @results-column-side-padding-width;
-	}
+    .content {
+      font-size: 13px;
+      padding: 8px @results-column-side-padding-width;
+    }
 
-	// make these look like section
-	.section,
-	.featuresHeaders .promosFeature,
-	.promosFeature > .labelInColumn,
-	.featuresHeaders .ambulanceSection,
-	.ambulanceSection > .labelInColumn{
-	  > .content {
+    // make these look like section
+    .section,
+    .featuresHeaders .promosFeature,
+    .promosFeature > .labelInColumn,
+    .featuresHeaders .ambulanceSection,
+    .ambulanceSection > .labelInColumn {
+      > .content {
 
-		font-family: @font-family-theme-bold;
-		font-size: 18px;
-		line-height: 22px;
-		font-weight: normal;
+        font-family: @font-family-theme-bold;
+        font-size: 18px;
+        line-height: 22px;
+        font-weight: normal;
 
-		@media (@sm){
-		  .expander{
-			display: none;
-		  }
-		}
-		.extraText{
-		  display: block;
+        @media (@sm) {
+          .expander {
+            display: none;
+          }
+        }
+        .extraText {
+          display: block;
 
-		  @media (@sm) {
-			width: ((@sm-results-column-width + @sm-results-column-gutter-width) * 3);
-		  }
-		  @media (@md) {
-			width: ((@md-results-column-width + @md-results-column-gutter-width) * 5);
-		  }
-		  @media (@lg) {
-			width: ((@lg-results-column-width + @lg-results-column-gutter-width) * 5);
-		  }
+          @media (@sm) {
+            width: ((@sm-results-column-width + @sm-results-column-gutter-width) * 3);
+          }
+          @media (@md) {
+            width: ((@md-results-column-width + @md-results-column-gutter-width) * 5);
+          }
+          @media (@lg) {
+            width: ((@lg-results-column-width + @lg-results-column-gutter-width) * 5);
+          }
 
-		  text-align: left;
-		  padding:0;
+          text-align: left;
+          padding: 0;
 
-		  font-size: 14px;
-		  overflow: hidden;
-		  .btn{
-			padding: 2px 5px;
-			margin-top:-2px;
-			font-size:12px;
-			font-family: @font-family-theme-light;
-		  }
+          font-size: 14px;
+          overflow: hidden;
+          .btn {
+            padding: 2px 5px;
+            margin-top: -2px;
+            font-size: 12px;
+            font-family: @font-family-theme-light;
+          }
 
-		  strong{
-			font-weight: normal;
-			font-family: @font-family-theme-bold;
-		  }
-		}
+          strong {
+            font-weight: normal;
+            font-family: @font-family-theme-bold;
+          }
+        }
 
+      }
+      &[data-skey="GeneralHealth"],
+      &[data-skey="Hospital"] {
+        .extraText {
+          display: block;
+          text-align: center;
+          line-height: 40px;
+        }
+      }
+      &.excessSection,
+      &.selection_GeneralHealth,
+      &.selection_Hospital {
+        .extraText {
+          // TEMP HIDING WHILE WE FIGURE OUR THE Z-INDEX ISSUE.
+          display: none;
+        }
+      }
 
-	  }
-	  &[data-skey="GeneralHealth"] ,
-	  &[data-skey="Hospital"]{
-		.extraText{
-		  display: block;
-		  text-align: center;
-		  line-height: 40px;
-		}
-	  }
-	  &.excessSection,
-	  &.selection_GeneralHealth  ,
-	  &.selection_Hospital {
-		.extraText{
-		  // TEMP HIDING WHILE WE FIGURE OUR THE Z-INDEX ISSUE.
-		  display: none;
-		}
-	  }
+      &.expanded {
+        &[data-skey="GeneralHealth"],
+        &[data-skey="Hospital"] {
+          .extraText {
+            display: none;
+          }
+        }
 
+      }
+    }
+    .promosFeature {
+      > .content,
+      &:nth-child(odd) > .content {
+        background-color: @section-color;
+      }
+    }
+    @media (@xs-only) {
+      .promosFeature {
+        text-align: left;
+        > .labelInColumn > .content {
+          background-color: @promos-xs-section-color;
+          color: white;
+        }
+      }
+    }
 
-	  &.expanded{
-		&[data-skey="GeneralHealth"] ,
-		&[data-skey="Hospital"]{
-		  .extraText{
-			display: none;
-		  }
-		}
+    // categories style
+    .category > .content {
+      font-family: @font-family-theme-light;
+      font-size: 14px;
+    }
+    .resultInsert,
+    .featuresList,
+    .result-row {
+      background: none; //Override CORE
+    }
 
-	  }
-	}
-	.promosFeature{
-	  > .content,
-	  &:nth-child(odd) > .content{
-		background-color: @section-color;
-	  }
-	}
-	@media(@xs-only){
-	  .promosFeature{
-		text-align: left;
-		> .labelInColumn > .content{
-		  background-color: @promos-xs-section-color;
-		  color: white;
-		}
-	  }
-	}
+    // features style
+    .featuresTemplateComponent,
+    .result-row {
+      .featuresElements {
+        border-left: @results-column-border-width solid @gray-lighter;
+        border-right: none;
+      }
+      &:last-of-type:not(.active) .featuresElements {
+        border-right: @results-column-border-width solid @gray-lighter;
+      }
+      &.active {
+        .featuresElements,
+        .result {
+          border-left: @results-page-border-width solid @theme-tertiary;
+          border-right: @results-page-border-width solid @theme-tertiary;
+        }
+        + div .featuresElements {
+          border-left: none;
+        }
+      }
+      .excessSection {
+        > .h,
+        > .c,
+        > .labelInColumn {
+          display: none;
+        }
+      }
+    }
 
-	// categories style
-	.category > .content{
-	  font-family: @font-family-theme-light;
-	  font-size: 14px;
-	}
-	.resultInsert,
-	.featuresList,
-	.result-row {
-	  background: none; //Override CORE
-	}
+    .featuresHeaders {
+      background: none; //Override CORE
+      .children .feature {
+        font-weight: normal;
+        font-family: @font-family-theme-bold;
+      }
+      .featuresList > .feature > .content {
+        padding-right: 5px;
+      }
+    }
+    .feature {
+      color: @feature-text-color;
+      padding: 0; //Override CORE
+      border-bottom: none; //Override CORE
+    }
 
-	// features style
-	.featuresTemplateComponent,
-	.result-row {
-	  .featuresElements{
-		border-left: @results-column-border-width solid @gray-lighter;
-		border-right: none;
-	  }
-	  &:last-of-type:not(.active) .featuresElements{
-		border-right: @results-column-border-width solid @gray-lighter;
-	  }
-	  &.active {
-		.featuresElements,
-		.result{
-		  border-left: @results-page-border-width solid @theme-tertiary;
-		  border-right: @results-page-border-width solid @theme-tertiary;
-		}
-		+ div .featuresElements {
-		  border-left: none;
-		}
-	  }
-	  .excessSection {
-		>.h,
-		>.c,
-		>.labelInColumn {
-		  display:none;
-		}
-	  }
-	}
+    // excess
+    @media (@sm) {
+      .excessSection .feature {
+        > .content {
+          background-color: @excess-color;
+        }
+        &:nth-child(odd) > .content {
+          background-color: @excess-odd-color;
+        }
+      }
+    }
+    @media (@xs-only) {
+      .excessSection {
+        .feature {
+          text-align: left;
+        }
+        > .labelInColumn > .content {
+          background-color: @excess-xs-section-color;
+          color: white;
+        }
+      }
+    }
 
-	.featuresHeaders {
-	  background: none; //Override CORE
-	  .children .feature {
-		font-weight: normal;
-		font-family: @font-family-theme-bold;
-	  }
-	  .featuresList > .feature > .content{
-		padding-right: 5px;
-	  }
-	}
-	.feature {
-	  color: @feature-text-color;
-	  padding: 0; //Override CORE
-	  border-bottom: none; //Override CORE
-	}
+    .compared {
+      .promosFeature,
+      .excessSection .feature {
+        .compareBackgroundColor;
+      }
+    }
 
+    // hospital sections
+    .hospitalCover {
+      > .content {
+        color: @hospital-color;
+      }
+      &.expanding > .children {
+        background-color: @category-hospital-color;
+      }
+    }
+    .featuresHeaders .hospitalCover {
+      > .content {
+        background-color: @category-hospital-color;
+        z-index: 1;
+        left: -1px;
+        margin-left: 1px;
+      }
+      &.expanded > .content,
+      &.expanding > .content {
+        background-color: @section-color;
+      }
 
-	// excess
-	@media (@sm){
-	  .excessSection .feature{
-		> .content{
-		  background-color: @excess-color;
-		}
-		&:nth-child(odd) > .content{
-		  background-color: @excess-odd-color;
-		}
-	  }
-	}
-	@media(@xs-only){
-	  .excessSection {
-		.feature{
-		  text-align: left;
-		}
-		> .labelInColumn > .content{
-		  background-color: @excess-xs-section-color;
-		  color: white;
-		}
-	  }
-	}
+    }
+    @media (@sm) {
+      .hospitalCover .category {
+        &.expanded > .content,
+        &.expanding > .content {
+          background-color: @hospital-expanded-color;
+          color: white;
+        }
+        > .content.expandableHover {
+          background-color: @hospital-hover-color;
+          color: white;
+        }
+      }
+    }
 
-	.compared  {
-	  .promosFeature,
-	  .excessSection .feature{
-		.compareBackgroundColor;
-	  }
-	}
+    // extras sections
+    .extrasCover {
+      > .content {
+        color: @extras-color;
+      }
+      &.expanding > .children {
+        background-color: @category-extras-color;
+      }
+    }
+    .featuresHeaders .extrasCover {
+      > .content {
+        background-color: @category-extras-odd-color;
+        z-index: 1;
+        left: -1px;
+        margin-left: 1px;
+      }
+      &.expanded > .content,
+      &.expanding > .content {
+        background-color: @section-color;
+      }
+    }
+    @media (@sm) {
+      .extrasCover .category {
+        &.expanded > .content,
+        &.expanding > .content {
+          background-color: @extras-expanded-color;
+          color: white;
+        }
+        > .content.expandableHover {
+          background-color: @extras-hover-color;
+          color: white;
+        }
+      }
+    }
 
-	// hospital sections
-	.hospitalCover{
-	  > .content{
-		color: @hospital-color;
-	  }
-	  &.expanding > .children{
-		background-color: @category-hospital-color;
-	  }
-	}
-	.featuresHeaders .hospitalCover{
-	  > .content{
-		background-color: @category-hospital-color;
-		z-index: 1;
-		left: -1px;
-		margin-left: 1px;
-	  }
-	  &.expanded > .content,
-	  &.expanding > .content{
-		background-color: @section-color;
-	  }
+    .compared {
+      .section.hospitalCover {
+        &.expandable.collapsed > .content {
+          background-color: @category-hospital-color;
+        }
+      }
+    }
 
-	}
-	@media (@sm){
-	  .hospitalCover .category{
-		&.expanded > .content,
-		&.expanding > .content{
-		  background-color: @hospital-expanded-color;
-		  color: white;
-		}
-		> .content.expandableHover{
-		  background-color: @hospital-hover-color;
-		  color: white;
-		}
-	  }
-	}
+    .compared {
+      .section.extrasCover {
+        &.expandable.collapsed > .content {
+          background-color: @category-extras-odd-color;
 
-	// extras sections
-	.extrasCover{
-	  > .content {
-		color: @extras-color;
-	  }
-	  &.expanding > .children{
-		background-color: @category-extras-color;
-	  }
-	}
-	.featuresHeaders .extrasCover{
-	  > .content{
-		background-color: @category-extras-odd-color;
-		z-index: 1;
-		left: -1px;
-		margin-left: 1px;
-	  }
-	  &.expanded > .content,
-	  &.expanding > .content{
-		background-color: @section-color;
-	  }
-	}
-	@media (@sm){
-	  .extrasCover .category {
-		&.expanded > .content,
-		&.expanding > .content{
-		  background-color: @extras-expanded-color;
-		  color: white;
-		}
-		> .content.expandableHover{
-		  background-color: @extras-hover-color;
-		  color: white;
-		}
-	  }
-	}
+        }
+      }
+    }
 
-	.compared  {
-	  .section.hospitalCover {
-		&.expandable.collapsed > .content{
-		  background-color: @category-hospital-color;
-		}
-	  }
-	}
+    // ambulance section
+    .ambulanceSection {
 
-	.compared  {
-	  .section.extrasCover {
-		&.expandable.collapsed > .content{
-		  background-color: @category-extras-odd-color;
+      border-top: 1px solid #fff;
+      border-bottom: 1px solid #fff;
 
-		}
-	  }
-	}
+      @media (@sm) {
+        &.expanded > .content,
+        > .content.expandableHover {
+          background-color: @ambulance-text-color;
+          color: white;
+        }
 
-	// ambulance section
-	.ambulanceSection{
+        &:nth-child(odd) {
+          &.expanded > .content,
+          > .content.expandableHover {
+            background-color: @ambulance-text-color;
+          }
+          > .content {
+            background-color: @ambulance-color;
+          }
+        }
+      }
 
-	  border-top:1px solid #fff;
-	  border-bottom:1px solid #fff;
+      @media (@xs-only) {
+        &.expanded > .labelInColumn > .content {
+          background-color: @ambulance-text-color;
+          color: white;
+        }
+      }
 
-	  @media (@sm){
-		&.expanded > .content,
-		> .content.expandableHover{
-		  background-color: @ambulance-text-color;
-		  color: white;
-		}
-		&:nth-child(odd) {
-		  &.expanded > .content,
-		  > .content.expandableHover{
-			background-color: @ambulance-text-color;
-		  }
-		  > .content{
-			background-color: @ambulance-color;
-		  }
-		}
-	  }
+      > .labelInColumn > .content,
+      > .content {
 
-	  @media(@xs-only){
-		&.expanded > .labelInColumn > .content{
-		  background-color: @ambulance-text-color;
-		  color: white;
-		}
-	  }
+        color: @ambulance-text-color;
+        background-color: @ambulance-color;
 
-	  > .labelInColumn > .content,
-	  > .content{
+        @media (@sm) {
+          width: (@sm-results-column-width - 1);
+        }
+        @media (@md) {
+          width: (@md-results-column-width - 3);
+        }
+        @media (@lg) {
+          width: (@lg-results-column-width - 2);
+        }
+      }
+    }
+    .featuresHeaders .ambulanceSection,
+    .result-row .ambulanceSection {
+      > .content {
+        padding-top: 10px;
+        padding-bottom: 6px;
+        @media (@sm) {
+          padding-right: (@results-column-side-padding-width + (@sm-results-column-gutter-width*2));
+        }
+        @media (@md) {
+          padding-right: (@results-column-side-padding-width + (@md-results-column-gutter-width*2));
+        }
+        @media (@lg) {
+          padding-right: (@results-column-side-padding-width + (@lg-results-column-gutter-width*2));
+        }
+      }
+    }
 
-		color: @ambulance-text-color;
-		background-color: @ambulance-color;
+    .featuresHeaders .ambulanceSection {
+      > .content {
+        @media (min-width: @screen-sm-min) {
+          padding-right: @results-section-fake-row-padding;
+        }
+      }
+    }
 
-		@media (@sm) {
-		  width: (@sm-results-column-width - 1);
-		}
-		@media (@md) {
-		  width: (@md-results-column-width - 3);
-		}
-		@media (@lg) {
-		  width: (@lg-results-column-width - 2);
-		}
-	  }
-	}
-	.featuresHeaders .ambulanceSection,
-	.result-row .ambulanceSection{
-	  > .content{
-		padding-top:10px;
-		padding-bottom: 6px;
-		@media (@sm) {
-		  padding-right: (@results-column-side-padding-width + (@sm-results-column-gutter-width*2));
-		}
-		@media (@md) {
-		  padding-right: (@results-column-side-padding-width + (@md-results-column-gutter-width*2));
-		}
-		@media (@lg) {
-		  padding-right: (@results-column-side-padding-width + (@lg-results-column-gutter-width*2));
-		}
-	  }
-	}
+    .featuresHeaders .ambulanceSection {
+      > .content {
+        padding-top: 8px;
+        color: @ambulance-text-color;
+      }
+      &.expanded > .content {
+        color: white;
+      }
+      > .content.expandableHover {
+        color: white;
+      }
+    }
+    .ambulanceSection > .labelInColumn {
+      > .content {
+        color: white;
+        background-color: @ambulance-text-color;
+      }
+      &.expanded > .content {
+        background-color: @ambulance-text-color;
+      }
+    }
 
-	.featuresHeaders .ambulanceSection{
-	  > .content{
-		@media (min-width: @screen-sm-min) {
-		  padding-right: @results-section-fake-row-padding;
-		}
-	  }
-	}
+    // selection holders
+    @media (@sm) {
+      .selectionHolder > .content {
+        //padding-top: 10px;
+      }
+    }
 
-	.featuresHeaders .ambulanceSection{
-	  > .content{
-		padding-top:8px;
-		color: @ambulance-text-color;
-	  }
-	  &.expanded > .content{
-		color: white;
-	  }
-	  > .content.expandableHover{
-		color: white;
-	  }
-	}
-	.ambulanceSection > .labelInColumn{
-	  > .content{
-		color: white;
-		background-color: @ambulance-text-color;
-	  }
-	  &.expanded > .content{
-		background-color: @ambulance-text-color;
-	  }
-	}
+    // expanded categories
+    .category.expanded {
+      border-bottom: 1px solid #FFFFFF;
+    }
 
-	// selection holders
-	@media (@sm){
-	  .selectionHolder > .content{
-		//padding-top: 10px;
-	  }
-	}
+    .featuresHeaders .content {
+      text-align: right;
+    }
 
-	// expanded categories
-	.category.expanded{
-	  border-bottom: 1px solid #FFFFFF;
-	}
-
-
-	.featuresHeaders .content{
-	  text-align: right;
-	}
-
-  }//featuresMode
+  }
+  //featuresMode
 
   // results
   #resultsPage {
-	background-color: white;
+    background-color: white;
 
-	@media(@sm) {
-	  border-left: @results-page-border-width solid @gray-lighter;
-	  border-right: @results-page-border-width solid @gray-lighter;
-	}
-	a.dialogPop {
-	  text-decoration: underline;
-	}
+    @media (@sm) {
+      border-left: @results-page-border-width solid @gray-lighter;
+      border-right: @results-page-border-width solid @gray-lighter;
+    }
+    a.dialogPop {
+      text-decoration: underline;
+    }
   }
   .resultsContainer {
 
-	.icon-tick,
-	.icon-cross{
-	  line-height: 18px;
-	  display: block;
-	  text-align: center;
-	}
+    .icon-tick,
+    .icon-cross {
+      line-height: 18px;
+      display: block;
+      text-align: center;
+    }
 
-	.icon-cross{
-	  color: @cross-color;
-	}
-	.compared .icon-tick,
-	.compared .icon-cross,
-	.compared .content{
-	  color:@compare-text-color;
-	}
-	@media (@sm){
-	  .expanded > .content,
-	  .expanding > .content{
-		.icon-tick,
-		.icon-cross{
-		  color: #FFFFFF;
-		}
-	  }
-	  .expandableHover {
-		.icon-tick,
-		.icon-cross{
-		  color: #FFFFFF;
-		}
-	  }
-	}
+    .icon-cross {
+      color: @cross-color;
+    }
+    .compared .icon-tick,
+    .compared .icon-cross,
+    .compared .content {
+      color: @compare-text-color;
+    }
+    @media (@sm) {
+      .expanded > .content,
+      .expanding > .content {
+        .icon-tick,
+        .icon-cross {
+          color: #FFFFFF;
+        }
+      }
 
-	// Leto: I moved these out of core/results.less; They seem to be combating some problem that does not exist...
-	@media (@sm) {
-	  padding: 0 10px;
-	  margin: 0 (-10px - @sm-results-column-gutter-width);
-	}
-	@media (@md) {
-	  padding: 0 10px;
-	  margin: 0 (-10px - @md-results-column-gutter-width);
-	}
-	@media (@lg) {
-	  padding: 0 10px;
-	  margin: 0 (-10px - @lg-results-column-gutter-width);
-	}
+      .expandableHover {
+        .icon-tick,
+        .icon-cross {
+          color: #FFFFFF;
+        }
+      }
+    }
 
-	// Moved from CORE
-	.result {
-	  .productSummary,
-	  .comparisonSummary{
-		padding-top: 10px;
-		margin-bottom: 5px;
-	  }
-	}
+    // Leto: I moved these out of core/results.less; They seem to be combating some problem that does not exist...
+    @media (@sm) {
+      padding: 0 10px;
+      margin: 0 (-10px - @sm-results-column-gutter-width);
+    }
+    @media (@md) {
+      padding: 0 10px;
+      margin: 0 (-10px - @md-results-column-gutter-width);
+    }
+    @media (@lg) {
+      padding: 0 10px;
+      margin: 0 (-10px - @lg-results-column-gutter-width);
+    }
+
+    // Moved from CORE
+    .result {
+      .productSummary,
+      .comparisonSummary {
+        padding-top: 10px;
+        margin-bottom: 5px;
+      }
+    }
   }
-} //.health
+}
 
-@media( @sm ){
-  .result-row.active{
-	.featuresList{
-	  > .section.collapsed,
-	  > .ambulanceSection.collapsed{
-		border-left: none;
-		border-right: none;
-	  }
-	}
+//.health
+
+@media ( @sm ) {
+  .result-row.active {
+    .featuresList {
+      > .section.collapsed,
+      > .ambulanceSection.collapsed {
+        border-left: none;
+        border-right: none;
+      }
+    }
   }
 }
