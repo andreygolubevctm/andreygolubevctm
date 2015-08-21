@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ========================================== -->
+<!-- ========  AGH Compare The Market  ======== -->
+<!-- CTM Web Application Deployment Descriptor
+<!   $Id$
+<! (c)2012 Auto & General Holdings Pty Ltd -->
+
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<!-- Tomcat Application Name -->
+	<display-name>web_ctm: Compare The Market Online Aggregator</display-name>
+
+	<!-- The environment variable component identifier for this application,
+	<!   i.e. "AIH_ISERIES_[iSeriesEnvAppPrefix]_[feature]"
+	<!   or "AIH_ISERIES_[iSeriesEnvAppPrefix]_[brandingCode]_[feature]"   -->
+	<context-param>
+		<param-name>iSeriesEnvAppPrefix</param-name>
+		<param-value>CTM</param-value>
+	</context-param>
+
+	<!-- SESSIONS: This over-rides the settings in Tomcat -->
+	<session-config>
+		<session-timeout>60</session-timeout><!-- Previous default in Tomcat is 30 -->
+	</session-config>
+
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>CXFServlet</servlet-name>
+		<servlet-class>org.apache.cxf.jaxrs.servlet.CXFNonSpringJaxrsServlet</servlet-class>
+		<init-param>
+			<param-name>jaxrs.serviceClasses</param-name>
+			<param-value>com.ctm.router.CarRouter,com.ctm.router.car.RegoLookupRouter,com.ctm.router.travel.TravelRouter,com.ctm.router.car.CarQuoteRouter</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jaxrs.providers</param-name>
+			<param-value>
+				com.ctm.router.RouterJacksonJsonProvider,
+				com.ctm.router.exceptionhandlers.ServiceExceptionHandler
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jaxrs.inInterceptors</param-name>
+			<param-value>
+				com.ctm.soap.FormParamMapInInterceptor,
+				org.apache.cxf.transport.common.gzip.GZIPInInterceptor
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jaxrs.outInterceptors</param-name>
+			<param-value>
+				org.apache.cxf.transport.common.gzip.GZIPOutInterceptor
+			</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CXFServlet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Required environment variables with sample (dev) values listed below:
+
+		#!/bin/bash
+		# ==================================================== #
+		# =========  AIH eBusiness Web Applications  ========= #
+		#   iSeries Connection Details Environment Variables
+		# (c)2013 Australian Insurance Holdings Pty Ltd        #
+
+		# web_ctm (Compare The Market Aggregator) iSeries definitions
+		export AIH_ISERIES_CTM__DEFAULT="DISCDEV:8011"
+		export AIH_ISERIES_CTM_CALLSERVLET="DISCPRO:8700"
+		export AIH_ISERIES_CTM_D3TSERVLET="DISCPRO:8056"
+		export AIH_ISERIES_CTM_TESTDISC="DISCDEV:8076"
+		export AIH_ISERIES_CTM_CTM_TRAVEL="DISCPRO:8700"
+		export AIH_ISERIES_CTM_CTM_ROADSIDE="DISCPRO:8700"
+		export AIH_ISERIES_CTM_CTM_FUEL="DISCPRO:8700"
+
+	-->
+
+	<!-- Welcome File -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- Error and Security Failure Handler Pages -->
+
+	<error-page>
+		<error-code>400</error-code>
+		<location>/security/simples_loginServerFail.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/security/simples_noaccess.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>408</error-code>
+		<location>/security/simples_loginTimeout.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/err/error404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/err/error500.jsp</location>
+	</error-page>
+
+
+
+	<!-- Tag Library Definitions, and Trim Whitespace from JSP Tag Output Preambles -->
+	<jsp-config>
+		<taglib>
+			<taglib-uri>go</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/go.tld</taglib-location>
+		</taglib>
+
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<trim-directive-whitespaces>true</trim-directive-whitespaces>
+		</jsp-property-group>
+	</jsp-config>
+
+
+
+
+	<!-- Path Poisoning Protection Filter -->
+	<!--
+	<filter>
+		<filter-name>pathProtectionFilter</filter-name>
+		<filter-class>com.disc_au.web.go.filter.PathProtectionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>pathProtectionFilter</filter-name>
+		<url-pattern>/ajax/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>pathProtectionFilter</filter-name>
+		<url-pattern>/dreammail/*</url-pattern>
+	</filter-mapping>
+	-->
+
+	<!-- Datasource References -->
+	<resource-ref>
+		<description>DB Connection</description>
+		<res-ref-name>jdbc/aggregator</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+
+	<!-- AGH Active Directory Login Security Constraints, Login Config, and Roles -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Compare The Market Private Use Area</web-resource-name>
+			<url-pattern>/simples.jsp</url-pattern>
+			<url-pattern>/simples/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>BD-CCP</role-name>
+			<role-name>BC-IT-ECOM</role-name>
+			<role-name>BC-IT-ECOM-RPT</role-name>
+			<role-name>BD-HCC-USR</role-name>
+			<role-name>BD-HCC-MGR</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>Compare The Market Private Use Area</realm-name>
+		<form-login-config>
+			<form-login-page>/security/simples_login.jsp</form-login-page>
+			<form-error-page>/security/simples_loginError.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+
+	<security-role>
+		<description>IT eBusiness Team Users</description>
+		<role-name>BC-IT-ECOM</role-name>
+	</security-role>
+	<security-role>
+		<description>IT eBusiness Team Reports Access (Managers)</description>
+		<role-name>BC-IT-ECOM-RPT</role-name>
+	</security-role>
+	<security-role>
+		<description>Simples Users</description>
+		<role-name>BD-CCP</role-name>
+	</security-role>
+	<security-role>
+		<description>Health Call Centre Users</description>
+		<role-name>BD-HCC-USR</role-name>
+	</security-role>
+	<security-role>
+		<description>Health Call Centre Managers</description>
+		<role-name>BD-HCC-MGR</role-name>
+	</security-role>
+
+	<context-param>
+		<param-name>environmentConfigLocation</param-name>
+		<param-value>environment.properties</param-value>
+	</context-param>
+
+	<!-- Ensure the locale has been set and is available everywhere -->
+	<context-param>
+		<param-name>javax.servlet.jsp.jstl.fmt.locale</param-name>
+		<param-value>en_AU</param-value>
+	</context-param>
+</web-app>
