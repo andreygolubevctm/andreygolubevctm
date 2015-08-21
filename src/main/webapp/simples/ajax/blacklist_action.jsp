@@ -12,21 +12,28 @@
 <c:set var="action" value="${param.action}" />
 <c:set var="success" value="false" />
 <c:set var="operator" value="${authenticatedData['login/user/uid']}" />
+	<c:choose>
+		<c:when test="${action == 'add'}">
+			<c:set var="success" value="${simplesService.addToBlacklist(pageContext.getRequest(), channel, value, operator, comment)}" />
+		</c:when>
+		<c:when test="${action == 'delete'}">
+			<c:set var="success" value="${simplesService.deleteFromBlacklist(pageContext.getRequest(), channel, value, operator, comment)}" />
+		</c:when>
+	</c:choose>
 
 <c:choose>
-	<c:when test="${action == 'add'}">
-		<c:set var="success" value="${simplesService.addToBlacklist(pageContext.getRequest(), channel, value, operator, comment)}" />
-	</c:when>
-	<c:when test="${action == 'delete'}">
-		<c:set var="success" value="${simplesService.deleteFromBlacklist(pageContext.getRequest(), channel, value, operator, comment)}" />
-	</c:when>
-</c:choose>
-
-<c:choose>
-	<c:when test="${success eq true}">
+	<c:when test="${success.equalsIgnoreCase('success')}">
 		<%-- JSON RESPONSE SUCCESS--%>
 		<json:object>
-			<json:property name="successMessage" value="${action} in blacklist for ${value} [${channel}] successful" />
+			<c:choose>
+				<c:when test="${action == 'add'}">
+					<json:property name="successMessage" value="Success : ${value} [${channel}] added to Blacklist" />
+				</c:when>
+				<c:when test="${action == 'delete'}">
+					<json:property name="successMessage" value="Success : ${value} [${channel}] removed from Blacklist" />
+				</c:when>
+			</c:choose>
+
 		</json:object>
 	</c:when>
 	<c:otherwise>
@@ -34,10 +41,10 @@
 		<json:object>
 			<c:choose>
 				<c:when test="${action == 'add'}">
-					<json:property name="errorMessage" value="${value} [${channel}] is already in the blacklist." />
+					<json:property name="errorMessage" value="Failed : ${success}" />
 				</c:when>
 				<c:when test="${action == 'delete'}">
-					<json:property name="errorMessage" value="Couldn't find ${value} [${channel}] in the blacklist." />
+					<json:property name="errorMessage" value="Failed : ${success}" />
 				</c:when>
 			</c:choose>
 		</json:object>

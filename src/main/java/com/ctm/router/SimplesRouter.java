@@ -45,7 +45,7 @@ import static javax.servlet.http.HttpServletResponse.*;
 		"/simples/users/list_online.json",
 		"/simples/users/stats_today.json",
 		"/simples/phones/call",
-		"/simples/phones/callInfo/get.json",
+		"/general/phones/callInfo/get.json",
 		"/simples/admin/openinghours/update.json",
 		"/simples/admin/openinghours/create.json",
 		"/simples/admin/openinghours/delete.json",
@@ -149,7 +149,7 @@ public class SimplesRouter extends HttpServlet {
 					response.sendError(SC_BAD_REQUEST);
 				}
 			}
-		} else if (uri.endsWith("/simples/phones/callInfo/get.json")) {
+		} else if (uri.endsWith("/general/phones/callInfo/get.json")) {
 			if (authenticatedData != null) {
 				final String ext = authenticatedData.getExtension();
 				final String xpath = request.getParameter("xpath");
