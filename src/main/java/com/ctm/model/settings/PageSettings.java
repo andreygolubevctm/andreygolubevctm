@@ -21,11 +21,12 @@ public class PageSettings {
 	 * @param name Setting key
 	 */
 	public String getSetting(String name) throws EnvironmentException, VerticalException, ConfigSettingException {
+
 		if(vertical == null){
 			throw new VerticalException("Vertical is null, environment: ["+getBrandCode()+":"+EnvironmentService.getEnvironmentAsString()+"]");
 		}
 		ConfigSetting setting = vertical.getSettingForName(name);
-		if (setting == null) {
+		if (setting == null && !name.equals("testad")) {
 			throw new ConfigSettingException("Unable to find setting '" + name+"' for this brand, vertical, environment: ["+getBrandCode()+":"+getVerticalCode()+":"+EnvironmentService.getEnvironmentAsString()+"]");
 		}
 		return setting.getValue();
