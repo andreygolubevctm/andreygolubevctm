@@ -2,6 +2,7 @@ package com.ctm.services.utilities;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
 import com.ctm.exceptions.UtilitiesWebServiceException;
@@ -12,11 +13,12 @@ public class UtilitiesProviderService extends UtilitiesBaseService {
 
 	public UtilitiesProviderServiceModel getResults(HttpServletRequest request, String postCode, String suburb) {
 		UtilitiesProviderServiceRequest model = new UtilitiesProviderServiceRequest();
-		model.setPostcode(postCode);
-		model.setSuburb(suburb);
-
-		UtilitiesProviderServiceModel providerServiceModel = getResults(request, model);
-
+		UtilitiesProviderServiceModel providerServiceModel = new UtilitiesProviderServiceModel();
+		if(StringUtils.isNotBlank(postCode) && StringUtils.isNotBlank(suburb)) {
+			model.setPostcode(postCode);
+			model.setSuburb(suburb);
+			providerServiceModel = getResults(request, model);
+		}
 		return providerServiceModel;
 	}
 
