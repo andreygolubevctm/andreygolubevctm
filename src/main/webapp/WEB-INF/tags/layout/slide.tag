@@ -30,9 +30,6 @@
 	<c:set var="competitionEnabled" value="${true}" />
 </c:if>
 
-<go:log>competitionSplitTestDisabled : ${competitionSplitTestDisabled}</go:log>
-<go:log>competitionEnabled : ${competitionEnabled}</go:log>
-
 <c:if test="${empty prevStepId}"><c:set var="prevStepId" value="previous" /></c:if>
 <c:if test="${empty nextStepId}"><c:set var="nextStepId" value="next" /></c:if>
 
