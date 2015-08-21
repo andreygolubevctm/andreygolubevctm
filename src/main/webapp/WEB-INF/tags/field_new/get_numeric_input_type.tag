@@ -3,7 +3,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <c:if test="${empty numberFieldInputType}">
-    <go:log>@@@@@@ TESTING NUMERIC INPUT TYPE @@@@@</go:log>
     <jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
     <c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
     <c:set var="numberFieldInputType" scope="request">
