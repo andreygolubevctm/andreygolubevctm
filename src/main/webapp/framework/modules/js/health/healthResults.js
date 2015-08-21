@@ -231,8 +231,8 @@
 		$compareBasket.on("compareAdded", function(event, productId ){
 
 			// Close the more info panel if open.
-			if(meerkat.modules.healthMoreInfo.getOpenProduct() !== null && meerkat.modules.healthMoreInfo.getOpenProduct().productId !== productId){
-				meerkat.modules.healthMoreInfo.close();
+			if(meerkat.modules.moreInfo.getOpenProduct() !== null && meerkat.modules.moreInfo.getOpenProduct().productId !== productId) {
+				meerkat.modules.moreInfo.close();
 			}
 
 			$compareBasket.addClass("active");
@@ -335,8 +335,8 @@
 					}
 
 					// Close the more info panel if open.
-					if(meerkat.modules.healthMoreInfo.getOpenProduct() !== null){
-						meerkat.modules.healthMoreInfo.close();
+					if(meerkat.modules.moreInfo.getOpenProduct() !== null){
+						meerkat.modules.moreInfo.close();
 					}
 
 					// Publish tracking events.
@@ -895,8 +895,11 @@
 
 		});
 
-		// If on the results step, reload the results data. Can this be more generic?
+		// when hospital is set to off in [Customise Cover] hide the excess section
+		var $excessSection = $component.find('.cell.excessSection');
+		_.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
 
+		// If on the results step, reload the results data. Can this be more generic?
 		if(typeof callback === 'undefined'){
 			if(meerkat.modules.journeyEngine.getCurrentStepIndex() === 4){
 				get();

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="verticalCode" value="HEALTH" />
+
 <core_new:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
@@ -55,8 +57,7 @@
 		<%-- Removed specific email writing operations from here as they're handled in core:transaction above --%>
 
 		<c:import var="config" url="/WEB-INF/aggregator/health/config_ALL.xml" />
-
-		<%-- Load the config and send quotes to the aggregator gadget --%>
+		 <%--Load the config and send quotes to the aggregator gadget--%>
 		<go:soapAggregator config = "${config}"
 			transactionId = "${tranId}"
 			xml = "${go:getEscapedXml(data['health'])}"
@@ -145,6 +146,7 @@
 				<c:param name="competition_firstname" value="${firstname}" />
 				<c:param name="competition_lastname" value="${lastname}" />
 				<c:param name="competition_phone" value="${contactPhone}" />
+				<c:param name="transactionId" value="${tranId}" />
 			</c:import>
 			<go:setData dataVar="data" xpath="health/contactDetails/competition/previous" value="${concat}" />
 		</c:if>

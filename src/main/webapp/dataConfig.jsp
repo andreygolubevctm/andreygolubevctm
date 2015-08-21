@@ -11,7 +11,7 @@
 <body class="dataConfig">
 
 <%-- SECURITY FEATURE --%>
-<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:')}">
+<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or fn:startsWith(pageContext.request.remoteAddr,'127.0.0.1')}">
     <c:import var="prettyXml" url="/WEB-INF/xslt/pretty_xml.xsl"/>
 
     <session:core/>

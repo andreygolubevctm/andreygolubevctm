@@ -17,6 +17,7 @@ import com.ctm.providers.car.carquote.model.RequestAdapter;
 import com.ctm.providers.car.carquote.model.ResponseAdapter;
 import com.ctm.providers.car.carquote.model.request.CarQuoteRequest;
 import com.ctm.providers.car.carquote.model.response.CarResponse;
+import com.ctm.services.EnvironmentService;
 import com.ctm.services.ResultsService;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.web.validation.CommencementDateValidation;
@@ -95,6 +96,14 @@ public class CarQuoteService {
             timeout = Integer.parseInt(serviceConfig.getPropertyValueByKey(TIMEOUT_MILLIS, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE));
         }catch (DaoException | ServiceConfigurationException e ){
             throw new ServiceException("CarQuote config error", e);
+        }
+
+        EnvironmentService environmentService = new EnvironmentService();
+
+        if(environmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST || environmentService.getEnvironment() == EnvironmentService.Environment.NXI){
+            if(data.getEnvironmentOverride() != null && data.getEnvironmentOverride().equals("") == false) {
+                serviceUrl = data.getEnvironmentOverride();
+            }
         }
 
         try{

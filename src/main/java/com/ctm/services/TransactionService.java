@@ -1,19 +1,20 @@
 package com.ctm.services;
 
-import com.ctm.dao.simples.MessageAuditDao;
-import com.ctm.dao.simples.MessageDao;
-import com.ctm.model.simples.ConfirmationOperator;
-import com.ctm.model.simples.Message;
-import org.apache.log4j.Logger;
-
 import com.ctm.dao.CommentDao;
 import com.ctm.dao.TouchDao;
-import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.dao.health.HealthTransactionDao;
+import com.ctm.dao.simples.MessageAuditDao;
+import com.ctm.dao.simples.MessageDao;
+import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.TransactionProperties;
 import com.ctm.model.health.HealthTransaction;
+import com.ctm.model.simples.ConfirmationOperator;
+import com.ctm.model.simples.Message;
+import org.apache.log4j.Logger;
+
+import java.util.List;
 
 public class TransactionService {
 
@@ -86,12 +87,12 @@ public class TransactionService {
 
 	/**
 	 * Find if any transaction chained from the provided Root ID is confirmed (sold).
-	 * @param rootId
+	 * @param rootIds
 	 * @return Not null if confirmed
 	 */
-	public ConfirmationOperator findConfirmationByRootId(long rootId) throws DaoException {
+	public ConfirmationOperator findConfirmationByRootId(List<Long> rootIds) throws DaoException {
 		TransactionDao transactionDao = new TransactionDao();
-		return transactionDao.getConfirmationFromTransactionChain(rootId);
+		return transactionDao.getConfirmationFromTransactionChain(rootIds);
 	}
 
 }

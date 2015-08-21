@@ -298,9 +298,10 @@
 						name: '${pageSettings.getSetting("brandName")}',
 						vertical: '${pageSettings.getVerticalCode()}',
 						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
-			isCallCentreUser: <c:out value="${not empty callCentre}"/>,
+                        isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
+                        revision: '<core:buildIdentifier />',
 						<%-- could be: localhost, integration, qa, staging, prelive, pro --%>
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId},</c:if>
 						<%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
