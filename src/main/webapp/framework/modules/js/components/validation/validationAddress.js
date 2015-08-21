@@ -113,7 +113,7 @@ $.validator.addMethod(
                     if ($streetNoElement.hasClass('canBeEmpty')) {
                         $unitShopElement.valid();
                         valid = true;
-                    } else if (houseNo != '') {
+                    } else if (houseNo !== '') {
 
                         if($streetNoElement.is(":visible")){
                             $streetNoElement.valid();
@@ -177,14 +177,14 @@ $.validator.addMethod(
                 case "_unitShop":
                     if(isNonStd || !_.isEmpty(selectedAddress.dpId)) {
                         valid = true;
-                    } else if(selectedAddress.hasEmptyUnits === false && selectedAddress.unitNo != '' && selectedAddress.unitNo != '0') {
+                    } else if(selectedAddress.hasEmptyUnits === false && selectedAddress.unitNo !== '' && selectedAddress.unitNo != '0') {
                         valid = true;
                     }
                     break;
                 case "_unitType":
                     if(isNonStd || !_.isEmpty(selectedAddress.dpId)) {
                         valid = true;
-                    } else if(selectedAddress.hasEmptyUnits === false && selectedAddress.unitType != '' && selectedAddress.unitType != '0') {
+                    } else if(selectedAddress.hasEmptyUnits === false && selectedAddress.unitType !== '' && selectedAddress.unitType != '0') {
                         valid = true;
                     }
                     break;

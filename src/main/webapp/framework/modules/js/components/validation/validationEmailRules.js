@@ -9,7 +9,7 @@ $.validator.addMethod('validateOkToEmail', function(value, element) {
 
 $.validator.addMethod('validateOkToCallRadio', function(value, element) {
     var $optin	= $("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked");
-    var noOptin = $optin.length == 0;
+    var noOptin = $optin.length === 0;
     var phone = $('#quote_contact_phone').val();
     if(!_.isEmpty(phone) && noOptin == true) {
         return false;
