@@ -128,6 +128,7 @@
 						<c:param name="competition_firstname" value="${fn:trim(data[competition_firstnameKey])}" />
 						<c:param name="competition_lastname" value="${fn:trim(data[competition_lastnameKey])}" />
 						<c:param name="competition_phone" value="${data[competition_phoneKey]}" />
+						<c:param name="transactionId" value="${tranId}" />
 					</c:import>
 				</c:if>
 				<%-- COMPETITION APPLICATION END --%>

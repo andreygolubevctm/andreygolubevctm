@@ -56,7 +56,7 @@
         data.xpath = 'health/tracking';
 
         meerkat.modules.comms.get({
-            url: 'simples/phones/callInfo/get.json',
+            url: 'general/phones/callInfo/get.json',
             cache: false,
             errorLevel: 'silent',
             dataType: 'json',

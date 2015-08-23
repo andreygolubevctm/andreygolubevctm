@@ -1,0 +1,147 @@
+/**********************************************
+	LESS PORTED FROM core/resultsHeaderBar.less
+**********************************************/
+
+.health{
+
+	.resultsHeadersBg, .resultsMarketingMessages , resultsLowNumberMessage , resultsMarketingMessage {
+		&.affixed{
+			position: fixed;
+			top:40px; // TODO MAKE VAR
+			height:172px; // TODO MAKE VAR
+
+		}
+
+		&.affixed-compact{
+			height:110px; // TODO MAKE VAR
+
+		}
+	}
+
+	.resultsHeadersBg , .resultsMarketingMessages {
+		display: none;
+		position: absolute;
+		left: 0;
+		right: 0;
+	}
+
+	.resultsHeadersBg {
+		width: 100%;
+		.fakeBannerStyle();
+		.headerBarTransition();
+		// Hide the thing in Simples until it's ever fixed
+		body.simples & {
+			height: 0;
+			border: none;
+		}
+		z-index: @results-zindex-resultsHeadersBg;
+	}
+
+	&[data-step="results"] .resultsHeadersBg , &[data-step="results"] .resultsMarketingMessages {
+		display: block;
+	}
+
+	.resultsContainer{
+		position: relative;
+		z-index: @results-zindex-resultItems;
+
+		.results-row,
+		.results-table{
+			position: relative;
+		}
+
+		.result{
+			.resultInsert{
+				padding: 0 6px;
+				height:172px;
+			}
+			position: relative;
+			z-index: (@results-zindex-resultsHeadersBg+1);
+			overflow: hidden;
+
+			.fakeBannerStyle();
+
+			@media (@sm) {
+				margin: 0 (0-@sm-results-column-gutter-width);
+				padding: 0 @sm-results-column-gutter-width;
+				width: (@sm-results-column-width+(@sm-results-column-gutter-width*2));
+			}
+			@media (@md) {
+				margin: 0 (0-@md-results-column-gutter-width);
+				padding: 0 @md-results-column-gutter-width;
+				width: (@md-results-column-width+(@md-results-column-gutter-width*2));
+			}
+			@media (@lg) {
+				margin: 0 (0-@lg-results-column-gutter-width);
+				padding: 0 @lg-results-column-gutter-width;
+				width: (@lg-results-column-width+(@lg-results-column-gutter-width*2));
+			}
+
+		}
+
+		&.affixed-settings{
+
+			.featuresHeaders,
+			.result-row{
+				// To make up for the space no longer consumed by the .result element.
+				padding-top: 172px;
+			}
+
+			.result{
+
+				top:40px;
+
+				&.headers {
+					z-index: (@results-zindex-resultItems+10);
+				}
+			}
+		}
+
+		&.affixed{
+
+			.result{
+				display:none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
+				position: fixed;
+
+				&.headers {
+					display:block;
+				}
+			}
+
+			.currentPage{
+				.result{
+					display:block;
+				}
+			}
+
+
+		}
+
+		&.affixed-compact{
+			.result{
+				.resultInsert{
+					height:110px;
+				}
+				.headerBarTransition();
+				height:110px;
+
+				.btn{
+					padding:5px;
+				}
+			}
+		}
+
+		&.affixed-absoluted{
+
+			.result{
+				position: absolute;
+			}
+		}
+
+		.result-row.compared{
+			.resultInsert{
+				background-color: @compare-section-bg-color;
+			}
+		}
+	}
+}

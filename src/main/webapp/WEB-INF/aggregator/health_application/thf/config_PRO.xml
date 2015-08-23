@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Place Holder File-->
 <aggregator xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://com.disc_au.soap.aggregator ../schema/config.xsd"
 			xmlns="http://com.disc_au.soap.aggregator">

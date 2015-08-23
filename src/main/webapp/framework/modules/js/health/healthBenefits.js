@@ -296,7 +296,7 @@
 	}
 	function resetBenefitsForProductTitleSearch() {
 		if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi' || meerkat.site.environment === 'nxs'){
-			if ($('#health_productTitleSearch').val().trim() !== ''){
+			if ($.trim($('#health_productTitleSearch').val()) !== ''){
 				resetHiddenFields();
 				$("#mainform input[name='health_benefits_benefitsExtras_Hospital'].benefit-item").val('Y');
 				$("#mainform input[name='health_benefits_benefitsExtras_GeneralHealth'].benefit-item").val('Y');
