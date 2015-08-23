@@ -58,8 +58,15 @@
 
                                 <p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or
                                     deleted.</p>
+                                <c:choose>
+                                    <c:when test="${pageSettings.getBrandCode() != 'ctm'}">
+                                        <p>Try checking the URL you used for errors, or continue browsing our comparison services below.</p>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <p>Try checking the URL you used for errors, or continue browsing our range of comparison services below.</p>
+                                    </c:otherwise>
+                                </c:choose>
 
-                                <p>Try checking the URL you used for errors, or continue browsing our range of comparison services below.</p>
                             </div>
 
                             <confirmation:other_products/>
