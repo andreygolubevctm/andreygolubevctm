@@ -172,9 +172,7 @@
 </core:js_template>
 
 <%-- FEATURE TEMPLATE --%>
-	<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
-
-	</div>
+	<core:js_template id="feature-template"></core:js_template>
 
 <%-- UNAVAILABLE ROW --%>
 <core:js_template id="unavailable-template">

@@ -13,7 +13,13 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
 import org.json.simple.JSONArray;
 
 import com.ctm.model.results.ResultsSimpleItem;
@@ -153,6 +159,13 @@ public class ResultsService {
 	public String getResultItemsAsJsonString(String vertical, String type) throws SQLException {
 		List<ResultsSimpleItem> list = getResultItemsAsList(vertical, type);
 		return JSONArray.toJSONString(list);
+	}
+
+	public String getPageStructureAsJsonString(String vertical) throws SQLException, JsonProcessingException, JSONException {
+		List<ResultsTemplateItem> results = getResultsPageStructure(vertical);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String string  = objectMapper.writeValueAsString(results);
+		return string;
 	}
 
 }
