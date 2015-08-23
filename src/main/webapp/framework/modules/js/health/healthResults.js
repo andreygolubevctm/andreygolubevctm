@@ -255,9 +255,6 @@
             $element = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']");
             $element.removeClass('compared');
             $element.find(".compareCheckbox input").prop("checked", false);
-			$element = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']" );
-			$element.removeClass('compared');
-			$element.find(".compareCheckbox input").prop("checked", false);
 
             if (Compare.model.products.length === 0) {
                 $(".compareBar").removeClass("active");
@@ -800,7 +797,6 @@
                 $(Results.settings.elements.rows).removeClass("active");
 
 				var $targetProduct = $(Results.settings.elements.rows + "[data-productid='" + selectedProduct.productId + "']");
-                var $targetProduct = $(Results.settings.elements.rows + "[data-productid='" + selectedProduct.productId + "']");
                 var targetPosition = $targetProduct.data('position') + 1;
                 $targetProduct.addClass("active");
                 Results.pagination.gotoPosition(targetPosition, true, false);
@@ -899,18 +895,6 @@
         } else {
             callback();
         }
-		// when hospital is set to off in [Customise Cover] hide the excess section
-		var $excessSection = $component.find('.cell.excessSection');
-		_.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
-
-		// If on the results step, reload the results data. Can this be more generic?
-		if(typeof callback === 'undefined'){
-			if(meerkat.modules.journeyEngine.getCurrentStepIndex() === 4){
-				get();
-			}
-		}else{
-			callback();
-		}
 
     }
 
