@@ -91,7 +91,7 @@ public class CappingLimitsDao {
                         "           pp.PropertyId, \n" +
                         "           pp.EffectiveStart, \n" +
                         "           pp.EffectiveEnd \n" +
-                        " LIMIT  999)  ");
+                        " LIMIT  999)  "); /* This limit isnt actually needed however without it the above ORDER BY clauses break */
 
     }
 
