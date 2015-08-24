@@ -48,7 +48,6 @@
                 // Listeners
                 $elements.state.off().on("change", validateState);
                 $elements.rego.off().on("keyup", validateRego);
-                $elements.rego.off().on("keydown",validateInput);
                 $elements.button.off().on("click", lookup);
             }
         });
@@ -83,29 +82,7 @@
         }
     }
 
-    function validateInput(event) {
-        var regexNoSlashes = new RegExp("[^0-9 ^A-Z ^a-z]","g");
-        var str = event.which || event.keyCode || event.charCode;
-        var strVal = String.fromCharCode(str);
-        var matches = regexNoSlashes.test(strVal);
-        if(specialChars(event)) {
-            return;
-        }
-        if(matches) {
-            event.preventDefault();
-            return false;
-        }
-    }
 
-    var specialChars = function(event) {
-        var key = event.which || event.keyCode || event.charCode;
-        if(key == 8 || key === 16 || key === 36 || key == 46 || key == 9) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
 
     function validateRego(hard) {
         hard = hard || false;
