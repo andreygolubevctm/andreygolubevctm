@@ -38,8 +38,4 @@
 <%-- HTML --%>
 <input type="text" name="${name}" id="${name}" class="form-control person_name sessioncamexclude ${className}"
 	   value="${value}" ${sizeAttribute}${requiredAttribute}${placeHolderAttribute} ${maxlengthAttribute}
-					data-msg-required="Please enter ${title}">
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="personName" parm="true" />
-
+					data-msg-required="Please enter ${title}" data-rule-personName="true">
