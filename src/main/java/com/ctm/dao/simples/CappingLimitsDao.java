@@ -86,12 +86,12 @@ public class CappingLimitsDao {
                         "        INNER JOIN ctm.provider_master pm \n" +
                         "                ON pm.providerID = pp.providerID \n" +
                         " WHERE  pp.propertyId IN ( 'DailyLimit', 'MonthlyLimit' ) \n" +
-                        "        AND pp.EffectiveEnd < curDate() \n" +
+                        "        AND pp.EffectiveStart > DATE_ADD(NOW(), INTERVAL -15 MONTH) \n" +
                         " ORDER  BY providerName, \n" +
                         "           pp.PropertyId, \n" +
                         "           pp.EffectiveStart, \n" +
                         "           pp.EffectiveEnd \n" +
-                        " LIMIT  20)  ");
+                        " LIMIT  999)  ");
 
     }
 
