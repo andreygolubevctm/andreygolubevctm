@@ -15,6 +15,18 @@ $.validator.addMethod("validateHealthPostcodeSuburb",
     }
 );
 
+//
+// Ensures that client agrees to the field
+// Makes sure that checkbox for 'Y' is checked
+//
+$.validator.addMethod("agree", function (value, element) {
+    if (value === "Y") {
+        return $(element).is(":checked");
+    } else {
+        return false;
+    }
+}, "");
+
 // from health/persons.tag
 $.validator.addMethod("genderTitle",
     function(value, element, param) {

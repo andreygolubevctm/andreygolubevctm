@@ -20,8 +20,6 @@ var validation = false;
 
             _overrideValidatorPrototypes();
 
-            initJourneyValidator();
-
         });
     }
 
@@ -42,20 +40,29 @@ var validation = false;
      */
     function _overrideValidatorPrototypes() {
 
+        String.prototype.startsWith = function(prefix) {
+            return (this.substr(0, prefix.length) === prefix);
+        };
+        String.prototype.endsWith = function(suffix) {
+            return (this.substr(this.length - suffix.length) === suffix);
+        };
+
         /**
          * Not sure why we need this one. TODO: test it
          */
-        jQuery.validator.prototype.hideErrors = function() {
+        $.validator.prototype.hideErrors = function() {
             this.addWrapper( this.toHide );
         };
 
         /**
          * CTM Custom Unhighlight function
+         * We define this as a prototype, so that the function only needs to be in memory once.
+         * Without this, it would be cloned on every init of the validator.
          * @param element
          * @param errorClass
          * @param validClass
          */
-        jQuery.validator.prototype.ctm_unhighlight = function( element, errorClass, validClass ) {
+        $.validator.prototype.ctm_unhighlight = function( element, errorClass, validClass ) {
             if (!element) return;
             errorClass = errorClass || this.settings.errorClass;
             validClass = validClass || this.settings.validClass;
@@ -97,9 +104,9 @@ var validation = false;
      */
     function setupDefaultValidationOnForm( $formElement ) {
 
+        var rules = {};
+
         $formElement.validate({
-            rules: {},
-            messages: {},
             submitHandler: function(form) {
                 form.submit();
             },
@@ -200,7 +207,6 @@ var validation = false;
                         errorContainer.stop();
                     }
                     errorContainer.delay(10).slideDown(100);
-                    /** console.log('error-field slideDown()'); **/
                 }
             },
             unhighlight: function( element, errorClass, validClass ) {
@@ -211,6 +217,7 @@ var validation = false;
 
 
     meerkat.modules.register('jqueryValidate', {
+        init: init,
         initJourneyValidator: initJourneyValidator,
         events: events
     });

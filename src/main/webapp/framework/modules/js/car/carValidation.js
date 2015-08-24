@@ -222,3 +222,17 @@ $.validator.addMethod("okToCall", function() {
     && $('input[name="quote_contact_phone"]').val() === "");
 
 }, "");
+
+//
+//Validates OK to email which ensure we have a email address if they select yes
+//
+$.validator.addMethod("marketing", function () {
+    if ($('input[name="quote_contact_marketing"]:checked').val() === "Y"
+        && $('input[name="quote_contact_email"]').val() === "") {
+        return false;
+    } else {
+        $('input[name="quote_contact_email"]').parent().removeClass('state-right state-error');
+        return true;
+    }
+
+}, "");
