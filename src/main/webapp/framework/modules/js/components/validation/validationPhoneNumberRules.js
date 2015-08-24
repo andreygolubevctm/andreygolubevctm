@@ -1,3 +1,27 @@
+$.validator.addMethod("validateMobileField",
+    function(value, element) {
+        var mobileField = $('#${name}_mobileNumber');
+        var phoneField = $('#${name}_otherPhoneNumberinput');
+
+        $("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").on("change", function(){
+            $("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").valid();
+        });
+
+        mobileField.val( String($(element).val()).replace(/[^0-9]/g, '') );
+
+        var mobile = mobileField.val();
+        var phone = phoneField.val();
+
+        if(mobile != '' && mobile.substring(0,2) == '04'){
+            return true;
+        } else {
+            return phone != '';
+        };
+
+    },
+    "Custom message"
+);
+
 $.validator.addMethod('confirmLandline', function (value) {
     var strippedValue = value.replace(/[^0-9]+/g, '');
     return strippedValue === '' || isLandLine(strippedValue);

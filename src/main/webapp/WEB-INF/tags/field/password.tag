@@ -8,7 +8,7 @@
 <%@ attribute name="required" 	required="true"	 rtexprvalue="true" description="is this field required?" %>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="true"  rtexprvalue="true"	 description="title of the password field" %>
-<%@ attribute name="minlength"	required="false" rtexprvalue="true"	 description="Minimum password length acceptable" %>
+<%@ attribute name="minLength"	required="false" rtexprvalue="true"	 description="Minimum password length acceptable" %>
 <%@ attribute name="onKeyUp" required="false" rtexprvalue="true"	 description="onKeyUp attribute" %>
 <%@ attribute name="placeHolder" required="false" rtexprvalue="true"  description="html5 placeholder" %>
 
@@ -32,10 +32,10 @@
 	<c:set var="onkeypressAttribute" value="onkeyup='${onKeyUp}'" />
 </c:if>
 
-<%-- HTML --%>
-<input type="password" class="form-control password ${className}" id="${name}" name="${name}" title="${title}" ${onkeypressAttribute}${placeHolderAttribute} />
-
-<%-- VALIDATION --%>
+<c:set var="validationAttributes" value="" />
 <c:if test="${required}">
-	<go:validate selector="${name}" rule="validateMinPasswordLength" parm="${required}" message="Please enter ${title} (min ${minLength} characters)" />
+	<c:set var="validationAttributes" value=" required data-rule-minlength='${minLength}' data-msg-minlength='Please enter ${title} (min ${minLength} characters)'" />
 </c:if>
+
+<%-- HTML --%>
+<input type="password" class="form-control password ${className}" id="${name}" name="${name}" title="${title}" ${onkeypressAttribute}${placeHolderAttribute}${validationAttributes} />

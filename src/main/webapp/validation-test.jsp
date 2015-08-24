@@ -68,13 +68,16 @@
 
                         <form_new:fieldset legend="Dates &amp; Travellers" className="travel_details_datesTravellers" id="datestravellersfs">
                             <form_new:row label="What type of cover are you looking for?" fieldXpath="utilities/test">
-                                <field:person_name xpath="utilities/test" required="true" title=" your last name" />
+                                <field:person_name xpath="utilities/test" required="true" title=" your last name"/>
                             </form_new:row>
 
                             <form_new:row fieldXpath="utilities/postcode" label="Postcode" id="test_postCode_suburb" className="test_nonStdFieldRow">
-                                <field:post_code xpath="utilities/postcode" required="true" title="your postcode" />
+                                <field:post_code xpath="utilities/postcode" required="true" title="your postcode"/>
                             </form_new:row>
-
+                            <form_new:row fieldXpath="password" label="Password" className="test_nonStdFieldRow">
+                                <field:password xpath="password" title="your password" required="true"/>
+                            </form_new:row>
+                            <resetpassword:fields/>
                         </form_new:fieldset>
                     </jsp:body>
                 </form_new:fieldset_columns>

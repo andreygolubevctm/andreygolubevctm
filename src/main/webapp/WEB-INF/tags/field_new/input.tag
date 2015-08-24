@@ -16,6 +16,7 @@
 <%@ attribute name="type"                   required="false" rtexprvalue="true"   description="Type attribute of the input e.g. HTML5 types like 'email'" %>
 <%@ attribute name="placeHolder"            required="false" rtexprvalue="true"   description="HTML5 placeholder" %>
 <%@ attribute name="pattern"                required="false" rtexprvalue="true"   description="HTML5 pattern attribute" %>
+<%@ attribute name="additionalAttributes"   required="false" rtexprvalue="true"   description="When you want to send in additional attributes" %>
 <%@ attribute name="integerKeyPressLimit"   required="false" rtexprvalue="true"   description="Limit kepresses to integer numeric keys" %>
 <%@ attribute name="decimalKeyPressLimit"   required="false" rtexprvalue="true"   description="Limit kepresses to decimal numeric keys" %>
 <%@ attribute name="formattedDecimal"       required="false" rtexprvalue="true"   description="Live number formatting applied to field (2 decimal places) - use true/false or the number of decimal places to use." %>
@@ -113,7 +114,7 @@
 				</c:if>
 		</c:if>
 
-		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" value="${value}" ${maxlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}>
+		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" value="${value}" ${maxlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}${additionalAttributes}>
 
 		<c:if test="${not empty inputGroupText}">
 				<c:if test="${empty inputGroupTextPosition or inputGroupTextPosition eq 'right'}">
@@ -123,7 +124,7 @@
 		</c:if>
 	</c:when>
 	<c:otherwise>
-		<input type="hidden" name="${name}" id="${name}" class="${className}" value="${value}">
+		<input type="hidden" name="${name}" id="${name}" class="${className}" value="${value}" ${additionalAttributes}>
 		<div class="field readonly" id="${name}-readonly">${data[xpath]}</div>
 	</c:otherwise>
 </c:choose>
