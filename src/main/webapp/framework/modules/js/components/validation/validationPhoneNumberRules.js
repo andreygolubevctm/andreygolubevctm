@@ -1,22 +1,3 @@
-$.validator.addMethod('validateOkToCall', function(value, element) {
-    var optin = ($("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked").val() === 'Y');
-    var phone = $('#quote_contact_phone').val();
-    if(optin === true && _.isEmpty(phone)) {
-        return false;
-    }
-    return true;
-});
-
-$.validator.addMethod('validateOkToCallRadio', function(value, element) {
-    var $optin	= $("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked");
-    var noOptin = $optin.length === 0;
-    var phone = $('#quote_contact_phone').val();
-    if(!_.isEmpty(phone) && noOptin === true) {
-        return false;
-    }
-    return true;
-});
-
 $.validator.addMethod('confirmLandline', function (value) {
     var strippedValue = value.replace(/[^0-9]+/g, '');
     return strippedValue === '' || isLandLine(strippedValue);
