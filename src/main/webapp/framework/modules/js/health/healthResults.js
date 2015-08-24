@@ -236,7 +236,6 @@
 
             $compareBasket.addClass("active");
             $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']").addClass('compared');
-			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']" ).addClass('compared');
 
             if (Compare.view.resultsFiltered === false && (Compare.model.products.length === Compare.settings.maximum)) {
                 $(".compareBtn").addClass("compareInActive"); // disable the button straight away as slow devices still let you tap it.
