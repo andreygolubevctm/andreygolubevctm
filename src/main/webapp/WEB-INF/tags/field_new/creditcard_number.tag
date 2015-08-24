@@ -19,22 +19,3 @@
 <%-- VALIDATION --%>
 <go:validate selector="${creditcardnumber}" rule="ccNumber" parm="${required}" message="Please enter a valid ${title}"/>
 
-<%-- JAVASCRIPT ONREADY --%>
-<go:script marker="onready">
-
-	$.validator.addMethod("ccNumber",
-			function(value, elem, parm) {
-
-				<%-- Strip non-numeric --%>
-				value = value.replace(/[^0-9]/g, '');
-
-				if(value.length == 16){
-					return true;
-				}else{
-					return false;
-				}
-			},
-			""
-	);
-
-</go:script>

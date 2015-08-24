@@ -115,3 +115,43 @@ $.validator.addMethod('max_DateOfBirth', function(value, element, params) {
 $.validator.addMethod("commencementDateMobileDropdownCheck", function (value, element) {
     return !(element.value === '' || element.value === null);
 }, "Please select a commencement date.");
+
+
+$.validator.addMethod("minDate",
+    function(value, element) {
+        var minDateAttr = $(element).datepicker("option", "minDate");
+        var datepicker = $(element).data("datepicker");
+        var minDate = $.datepicker._determineDate(datepicker, minDateAttr, new Date()); <%-- Handles dates like +1d, -3y, etc. --%>
+
+        var currentDate = $(element).datepicker("getDate");
+
+        return currentDate >= minDate;
+    },
+    "Custom message"
+);
+
+$.validator.addMethod("maxDate",
+    function(value, element) {
+        var maxDateAttr = $(element).datepicker("option", "maxDate");
+        var datepicker = $(element).data("datepicker");
+        var maxDate = $.datepicker._determineDate(datepicker, maxDateAttr, new Date()); <%-- Handles dates like +1d, -3y, etc. --%>
+
+        var currentDate = $(element).datepicker("getDate");
+        return currentDate <= maxDate;
+    },
+    "Custom message"
+);
+
+$.validator.addMethod("notWeekends",
+    function(value, element) {
+        return BasicDateHandler.isNotWeekEnd( $(element).datepicker("getDate") );
+    },
+    "Custom message"
+);
+
+$.validator.addMethod("${name}notPublicHolidays",
+    function(value, element) {
+        return ${name}Handler.isNotPublicHoliday( $(element).datepicker("getDate") )[0];
+    },
+    "Custom message"
+);

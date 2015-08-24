@@ -95,47 +95,7 @@
 				<field_new:input xpath="${fieldXpath}" required="true" readOnly="false" type="text" includeInForm="true" className="invisible no-height"/>
 			</form_new:row>
 
-			<%-- JAVASCRIPT HEAD --%>
-			<go:script marker="js-head">
-				$.validator.addMethod("${fieldXpathName}_percent",
-					function(value, elem, parm) {
-						var parmsArray = parm.split(",");
-						var percentage = parmsArray[1];
-						var percentRule = parmsArray[2];
-						var val = $(elem).val();
-						var thisVal = Number(val.replace(/[^0-9\.]+/g,""));
-						var parmVal = $('#'+parmsArray[0]).val();
-						var ratio = thisVal / parmVal;
-						var percent = ratio * 100;
-						if (percent >= percentage && percentRule == "GT" ) {
-							$('.specifiedValues').removeClass('has-error').addClass('has-success').parent().removeClass('has-error').addClass('has-success');
-							return true;
-						}
-						else if (percent <= percentage && percentRule == "LT" ) {
-							$('.specifiedValues').removeClass('has-error').addClass('has-success').parent().removeClass('has-error').addClass('has-success');
-							return true;
-						}
-						else {
-							$('.specifiedValues').addClass('has-error').removeClass('has-success').parent().addClass('has-error').removeClass('has-success');
-							return false;
-						}
-					},
-					"Custom message"
-				);
-				$.validator.addMethod("${fieldXpathName}_total",
-					function(value, elem) {
-						if ($(elem).val() === "0")  {
-							$('.specifiedValues').addClass('has-error').removeClass('has-success').parent().addClass('has-error').removeClass('has-success');
-							return false;
-						}
-						else {
-							$('.specifiedValues').removeClass('has-error').addClass('has-success').parent().removeClass('has-error').addClass('has-success');
-							return true;
-						}
-					},
-					"Custom message"
-				);
-			</go:script>
+
 			<c:set var="parms">"${name}_replaceContentsCost,100,LT"</c:set>
 			<go:validate selector="${fieldXpathName}" rule="${fieldXpathName}_percent" parm="${parms}" message="Total sum of the Specified Personal Effects must be less than the Total Contents Replacement Value"/>
 			<go:validate selector="${fieldXpathName}" rule="${fieldXpathName}_total" parm="''" message="Add specified personal effects amounts below or select No to the question above"/>

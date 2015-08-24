@@ -32,7 +32,6 @@
 						className="health-credit_card_details-name sessioncamexclude" />
 		</form_new:row>
 
-		<field:credit_card_validation />
 		
 		<c:set var="fieldXpath" value="${xpath}/number" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number">

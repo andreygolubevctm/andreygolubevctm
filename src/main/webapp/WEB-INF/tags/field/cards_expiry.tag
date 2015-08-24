@@ -53,41 +53,6 @@
 </div>
 
 					
-<%-- JAVASCRIPT ONREADY --%>
-<go:script marker="onready">
-
-	
-	$.validator.addMethod("${rule}",
-		function(value, elem, parm) {
-			if ($('#${cardExpiryYear}').val() != '' && $('#${cardExpiryMonth}').val() != '') {
-
-				var now_ym = parseInt(get_now_year() + '' + get_now_month());
-				var sel_ym = parseInt('20' + $('#${cardExpiryYear}').val() + '' + $('#${cardExpiryMonth}').val());
-			
-				if (sel_ym >= now_ym) {
-					return true;
-					<%--
-					Using this makes sense but breaks
-					var valid = $('#${cardExpiryMonth}').valid();
-					if (valid) {
-						$(elem).validate().ctm_unhighlight($('#${cardExpiryYear}').get(0), this.settings.errorClass, this.settings.validClass);
-					}
-					console.log('${rule} valid:', valid);
-					return valid;
-					--%>
-				}
-			}
-			return false;
-		}, ""
-	);
-
-	$("#${cardExpiryMonth}").on('change', function(){
-		var $year = $('#${cardExpiryYear}');
-		if ($year.hasClass('has-error') || $year.hasClass('has-success')) {
-			$('#${cardExpiryYear}').valid();
-		}
-	});
-</go:script>
 
 <go:script marker="js-head">
 	function get_now_month() {

@@ -30,3 +30,13 @@ $.validator.addMethod("fromToDate", function(value, element, params){
 
     return true;
 });
+
+// Validate age range 16-99
+$.validator.addMethod("ageRange",
+    function(value, element){
+        if(parseInt(value) >= 16 && parseInt(value) < 100){
+            return true;
+        }
+    },
+    "Adult${validationNoun}s must be aged 16 - 99."
+);

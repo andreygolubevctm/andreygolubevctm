@@ -53,26 +53,6 @@
 		<p class="optinText">I give permission for the insurance provider that presents the lowest price to call me within the next 2 business days to discuss my home &amp; contents insurance needs.</p>
 	</form_new:row>
 
-	<go:script marker="js-head">
-	$.validator.addMethod('validateOkToCall', function(value, element) {
-		var optin = ($("#${name}_FieldSet input[name='${name}_oktocall']:checked").val() === 'Y');
-		var phone = $('#${name}_phone').val();
-		if(optin === true && _.isEmpty(phone)) {
-			return false;
-		}
-		return true;
-	});
-
-	$.validator.addMethod('validateOkToEmail', function(value, element) {
-		var optin = ($("#${name}_FieldSet input[name='${name}_marketing']:checked").val() === 'Y');
-		var email = $('#${name}_email').val();
-		if(optin === true && _.isEmpty(email)) {
-			return false;
-		}
-		return true;
-	});
-	</go:script>
-
 	<%-- Mandatory agreement to privacy policy --%>
 	<form_new:privacy_optin vertical="home" />
 

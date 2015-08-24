@@ -71,43 +71,8 @@
 	</form_new:row>
 
 <go:script marker="js-head">
-$.validator.addMethod('validateOkToCall', function(value, element) {
-	var optin = ($("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked").val() === 'Y');
-	var phone = $('#quote_contact_phone').val();
-	if(optin === true && _.isEmpty(phone)) {
-		return false;
-	}
-	return true;
-});
 
-$.validator.addMethod('validateOkToEmail', function(value, element) {
-	var optin = ($("#quote_contactFieldSet input[name='quote_contact_marketing']:checked").val() === 'Y');
-	var email = $('#quote_contact_email').val();
-	if(optin === true && _.isEmpty(email)) {
-		return false;
-	}
-	return true;
-});
 
-$.validator.addMethod('validateOkToCallRadio', function(value, element) {
-	var $optin	= $("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked");
-	var noOptin = $optin.length == 0;
-	var phone = $('#quote_contact_phone').val();
-	if(!_.isEmpty(phone) && noOptin == true) {
-		return false;
-	}
-	return true;
-});
-
-$.validator.addMethod('validateOkToEmailRadio', function(value, element) {
-	var $optin = $("#quote_contactFieldSet input[name='quote_contact_marketing']:checked");
-	var noOptin = $optin.length == 0;
-	var email = $('#quote_contact_email').val();
-	if(!_.isEmpty(email) && noOptin == true) {
-		return false;
-	}
-	return true;
-});
 </go:script>
 
 	<go:validate selector="quote_contact_oktocall" rule="validateOkToCallRadio" parm="true"

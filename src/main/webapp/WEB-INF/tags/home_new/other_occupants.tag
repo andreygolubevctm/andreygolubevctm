@@ -46,28 +46,6 @@
 			</form_new:row>
 		</form_new:fieldset>
 
-		<%-- JAVASCRIPT --%>
-		<go:script marker="js-head">
-			$.validator.addMethod("oldestPersonOlderThanPolicyHolders",
-			function(value, element, param) {
-
-				var dob = $("#${name}_dob").val().split("/").reverse().join("");
-				var oldestPersonDob = $("#${name}_oldestPersonDob").val().split("/").reverse().join("");
-
-				var jointDobVis = $("#${name}_jointDob");
-				if (jointDobVis.is(":visible")){
-					var jointDob = $("#${name}_jointDob").val().split("/").reverse().join("");
-				}
-
-				if( oldestPersonDob > dob || (jointDobVis.is(":visible") && oldestPersonDob > jointDob)){
-					return false;
-				}
-				return true;
-
-			},
-			"Custom message"
-		);
-		</go:script>
 		<go:validate selector="${name}_oldestPersonDob" rule="oldestPersonOlderThanPolicyHolders" parm="true" message="Please confirm that the oldest person living at the home is older than the policy holder." />
 
 	</jsp:body>

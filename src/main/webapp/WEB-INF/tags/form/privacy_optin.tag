@@ -69,17 +69,6 @@
 
 		<%-- Validation --%>
 		<c:if test="${vertical eq 'health'}">
-			<go:script marker="js-head">
-				$.validator.addMethod('readPrivacyStatementMessage', function(value, element, param) {
-					if( $(element).is(':checked') ){
-						$('.readPrivacyStatementError').hide();
-						return true;
-					} else {
-						$('.readPrivacyStatementError').show();
-						return false;
-					};
-				});
-			</go:script>
 			<go:validate selector="${name}" rule="readPrivacyStatementMessage" parm="true" message="${error_text}" />
 		</c:if>
 	</c:when>

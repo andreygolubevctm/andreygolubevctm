@@ -28,18 +28,6 @@
 	<c:set var="className" value="${className} placeholder" />
 </c:if>
 
-
-
-<%-- JAVASCRIPT --%>
-<go:script marker="js-head">
-	$.validator.addMethod("validateMinPasswordLength",
-		function(value, element) {
-			return String(value).length >= ${minLength};
-		},
-		"Replace this message with something else"
-	);
-</go:script>
-
 <c:if test="${not empty onKeyUp}">
 	<c:set var="onkeypressAttribute" value="onkeyup='${onKeyUp}'" />
 </c:if>

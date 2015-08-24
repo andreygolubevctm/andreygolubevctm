@@ -28,15 +28,3 @@
 	<go:validate selector="${name}" rule="numericOnly" parm="true" />
 	<go:validate selector="${name}" rule="onkeyup" parm="false" message=" "/>
 </c:if>
-
-<go:script marker="onready">
-	// Validate age range 16-99
-	$.validator.addMethod("ageRange",
-		function(value, element){
-			if(parseInt(value) >= 16 && parseInt(value) < 100){
-				return true;
-			}
-		},
-		"Adult${validationNoun}s must be aged 16 - 99."
-	);
-</go:script>

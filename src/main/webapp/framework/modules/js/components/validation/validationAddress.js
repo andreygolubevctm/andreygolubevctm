@@ -490,3 +490,103 @@ $.validator.addMethod("checkPostBoxOnly",
     },
     "Please enter a valid street address. Unfortunately we cannot compare car insurance policies for vehicles parked at a PO Box address."
 );
+
+// similar named function in healthValidation.js
+$.validator.addMethod("matchStates",
+    function(value, element) {
+        if( $(element).val() !== utilitiesChoices._state ){
+            $('#${name}_address_postCode').addClass('error');
+            return false;
+        } else {
+            return true;
+        };
+    },
+    "Your address does not match the original state provided"
+);
+
+// from post_code_and_state.tag
+$.validator.addMethod("${name}__validateState",
+    function(value, element) {
+        var passed = true;
+
+        if( String(value).length > 3 && value != ${name}__PostCodeStateHandler.current_state )
+        {
+            $.ajax({
+                url: "ajax/json/get_state.jsp",
+                data: {postCode:value},
+                type: "POST",
+                async: false,
+                cache: true,
+                success: function(jsonResult){
+                    var count = Number(jsonResult[0].count);
+                    var state = jsonResult[0].state;
+                    ${name}__PostCodeStateHandler.current_state = state;
+                    switch( count )
+                    {
+                        case 2:
+                            if( $('#${parentName}_stateRefine').length == 0){
+                                if( $('#${name}').parents('.fieldrow').length != 0 ){
+                                    $('#${name}').parents('.fieldrow').after(${name}__PostCodeStateHandler.state_html);
+                                } else {
+                                    $('#${name}').after(${name}__PostCodeStateHandler.state_html);
+                                }
+                            }
+
+                            $("#${parentName}_stateRefine").parents(".fieldrow").show('fast', function(){
+                                $("#${parentName}_stateRefine").buttonset();
+                            });
+
+                            var states = state.split(", ");
+
+                            $("#${parentName}_stateRefine_A").val(states[0]);
+                            $('#${parentName}_stateRefine label:first span').empty().append(states[0]);
+
+                            $("#${parentName}_stateRefine_B").val(states[1]);
+                            $('#${parentName}_stateRefine label:last span').empty().append(states[1]);
+
+                            $("input[name=${parentName}_stateRefine]").on('change', function(){
+                                $("#${parentName}_state").val($(this).val()).trigger('change');
+                            });
+                            passed = true;
+                            break;
+                        case 1:
+                            $("#${parentName}_state").val( state );
+                            $("#${parentName}_stateRefine").parents(".fieldrow").hide();
+                            passed = true;
+                            break;
+                        default:
+                            $("#${parentName}_state").val("");
+                            $("#${parentName}_stateRefine").parents(".fieldrow").hide();
+                            passed = false;
+                            break;
+                    }
+                    $("#${parentName}_state").trigger('change');
+                },
+                dataType: "json",
+                error: function(obj,txt){
+                    passed = false;
+                },
+                timeout:60000
+            });
+        } else {
+            $("#${parentName}_stateRefine").parents(".fieldrow").hide();
+            $("#${parentName}_state").val("").trigger('change');
+        }
+
+        return passed;
+    },
+    "Replace this message with something else"
+);
+
+$.validator.addMethod("validateLocation", function(value, element) {
+    var search_match = new RegExp(/^((\s)*[\w\-]+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
+
+    value = $.trim(String(value));
+    value = value.replace("'","");
+
+    if(value != '' && value.match(search_match)) {
+        return true;
+    }
+
+    return false;
+}, "");

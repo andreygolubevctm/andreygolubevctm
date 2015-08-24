@@ -278,10 +278,6 @@
 		<field_new:count_select xpath="${xpath}/day" min="1" max="27" step="1" title="field:count_select" required="true" />
 	</form_new:row>
 
-	<form_new:row label="credit_card_validation">
-		<field:credit_card_validation />
-	</form_new:row>
-
 	<form_new:row label="creditcard_expiry">
 		<%-- <field:creditcard_expiry xpath="quote/avea/payment" required="true" title="field:creditcard_expiry"/> --%>
 		See 'cards_expiry'

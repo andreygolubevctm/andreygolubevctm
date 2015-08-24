@@ -184,53 +184,11 @@
 
 	};
 	
-	$.validator.addMethod("notMobile",
-		function(value, element) {
-			if($(element).val().substring(0,2) == '04'){
-				return false;
-			} else {
-				return true;
-			};
-			
-		},
-		"Custom message"
-	);
+
 	
-	$.validator.addMethod("matchStates",
-		function(value, element) {
-			if( $(element).val() !== utilitiesChoices._state ){
-				$('#${name}_address_postCode').addClass('error');
-				return false;
-			} else {
-				return true;
-			};		
-		},
-		"Your address does not match the original state provided"
-	);	
-	
-	$.validator.addMethod("validateMobileField",
-		function(value, element) {
-			var mobileField = $('#${name}_mobileNumber');
-			var phoneField = $('#${name}_otherPhoneNumberinput');
-			
-			$("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").on("change", function(){
-				$("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").valid();
-			});
-			
-			mobileField.val( String($(element).val()).replace(/[^0-9]/g, '') );
-			
-			var mobile = mobileField.val();
-			var phone = phoneField.val();
-			
-			if(mobile != '' && mobile.substring(0,2) == '04'){
-				return true;
-			} else {
-				return phone != '';
-			};
-			
-		},
-		"Custom message"
-	);
+
+
+
 	
 
 

@@ -82,42 +82,7 @@
 </form_new:fieldset>
 
 <go:script marker="js-head">
-    $.validator.addMethod('validateSelectedResidentialPostCode', function(value, element) {
-        var $element = $(element),
-            startPostCode = $("#utilities_householdDetails_postcode").val(),
-            enquiryPostCode = $element.val(),
-            isValid = (startPostCode === enquiryPostCode),
-            $errorFieldContainer = $("#utilities_application_details_address_error_container .error-field");
 
-        // We only need to show one error if the suburb name has already complained, so let's only show that:
-        if($errorFieldContainer.find("label[for='utilities_application_details_address_suburbName']").length)
-            isValid = true;
-
-        if(isValid)
-            $errorFieldContainer.find("label[for='" + $element.attr("name") + "']").remove();
-
-        return isValid;
-    });
-
-    $.validator.addMethod('validateSelectedResidentialSuburb', function(value, element) {
-        var $element = $(element),
-            startSuburb = $("#utilities_householdDetails_suburb").val(),
-            enquirySuburb = $element.find("option:selected").length ? $element.find("option:selected").text() : $element.val(),
-            isValid = (startSuburb === enquirySuburb),
-            $errorFieldContainer = $("#utilities_application_details_address_error_container .error-field");
-
-        if(isValid)
-            $errorFieldContainer.find("label[for='" + $element.attr("name") + "']").remove();
-
-        return isValid;
-    });
-
-    $.validator.addMethod('validateEnteredPhoneNumber', function(value, element) {
-        var mobileInput = $("#utilities_application_details_mobileNumberinput").val(),
-            otherInput = $("#utilities_application_details_otherPhoneNumberinput").val();
-
-        return !(!mobileInput && !otherInput);
-    });
 </go:script>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />

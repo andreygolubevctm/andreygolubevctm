@@ -18,14 +18,5 @@
     </form_new:fieldset>
 </div>
 
-<go:script marker="js-head">
-    $.validator.addMethod('validateMatchingPassword', function(value, element) {
-        return $("#reset_password").val() === $("#reset_confirm").val();
-    });
-
-    $.validator.addMethod('validatePasswordLength', function(value, element) {
-        return (value.length >= 6);
-    });
-</go:script>
 <go:validate selector="reset_confirm" rule="validateMatchingPassword" parm="true" message="The text you entered for the confirmation password did not match your password, please try again" />
 <go:validate selector="reset_password" rule="validatePasswordLength" parm="true" message="Please enter a password that is at least 6 characters long" />

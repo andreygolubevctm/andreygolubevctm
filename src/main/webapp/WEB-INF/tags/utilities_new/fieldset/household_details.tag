@@ -81,17 +81,3 @@
     <field:hidden xpath="${xpath}/tariff" required="false" />
 </form_new:fieldset>
 
-<go:script marker="js-head">
-    $.validator.addMethod("validateLocation", function(value, element) {
-    var search_match = new RegExp(/^((\s)*[\w\-]+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
-
-    value = $.trim(String(value));
-    value = value.replace("'","");
-
-    if(value != '' && value.match(search_match)) {
-    return true;
-    }
-
-    return false;
-    }, "");
-</go:script>

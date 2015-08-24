@@ -10,27 +10,6 @@
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
-<%-- JAVASCRIPT --%>
-<go:script marker="js-head">
-
-<%-- To proceed a user must select either a valid postcode or enter a suburb and
-	select a valid suburb/postcode/state value from the autocomplete. This is to
-	avoid suburbs that match multiple locations being sent with request only to be
-	returned empty because can only search a single location (FUE-23). --%>
-$.validator.addMethod("validateHealthPostcodeSuburb",
-	function(value, element) {
-
-		if( healthChoices.isValidLocation(value) ) {
-			healthChoices.setLocation(value);
-
-			return true;
-		}
-
-		return false;
-	}
-);
-</go:script>
-
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
 
