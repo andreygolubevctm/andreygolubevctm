@@ -18,19 +18,4 @@
 
 
 <%-- HTML --%>
-<input type="text"${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4">
-
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="minlength" parm="4" message="Postcode should be 4 characters long"/>
-<go:validate selector="${name}" rule="regex" parm="'[0-9]{4}'" message="Postcode must contain numbers only." />
-<%--
-<field:highlight_row name="${name}" inlineValidate="${required}" />
---%>
-
-<%-- JAVASCRIPT --%>
-<%--
-<go:script marker="jquery-ui">
-	$("#${name}").numeric();
-</go:script>
---%>
+<input type="text"${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4" data-rule-minlength="4" data-msg-minlength="Postcode should be 4 characters long" data-rule-number="true" data-msg-number="Postcode must contain numbers only.">
