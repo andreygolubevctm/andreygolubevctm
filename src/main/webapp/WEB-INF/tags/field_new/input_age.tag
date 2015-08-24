@@ -25,6 +25,5 @@
 <%-- VALIDATION --%>
 <c:if test="${required}">
 	<go:validate selector="${name}" rule="ageRange" parm="true" message="Please enter the age of the oldest Adult${validationNoun}. Adult${validationNoun}s must be aged 16 - 99."/>
-	<go:validate selector="${name}" rule="numericOnly" parm="true" />
 	<go:validate selector="${name}" rule="onkeyup" parm="false" message=" "/>
 </c:if>
