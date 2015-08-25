@@ -1719,12 +1719,19 @@ body.stage-0 #reference_number a {display:none;}
 	height: 100px;
 }
 
-.promo-image.ip {
+.promo-image.ip,
+.promo-image.ip-22 {
 	background-image: url("../brand/ctm/images/results_Life_IP/IP-Comp-journey-banner.png");
 }
 
-.promo-image.life {
+.promo-image.life,
+.promo-image.life-22 {
 	background-image: url("../brand/ctm/images/results_Life_IP/Life-Comp-journey-banner.png");
+}
+
+.promo-image.ip-27,
+.promo-image.life-27 {
+	background-image: url("../brand/ctm/images/results_Life_IP/5000-journey-banner-life.jpg");
 }
 
 .button-wrapper #next-step {
