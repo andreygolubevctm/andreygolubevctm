@@ -14,7 +14,7 @@ import com.ctm.web.validation.SchemaValidationError;
 import com.ctm.web.validation.health.HealthApplicationValidation;
 import com.disc_au.price.health.PremiumCalculator;
 import com.disc_au.web.go.Data;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ import java.util.List;
 
 public class HealthApplicationService {
 
-	private static final Logger logger = Logger.getLogger(HealthApplicationService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HealthApplicationService.class.getName());
 	private final FatalErrorService fatalErrorService;
 
 	private HealthApplicationRequest request = new HealthApplicationRequest();
@@ -68,7 +68,7 @@ public class HealthApplicationService {
 				updateDataBucket(data);
 			}
 		} catch (DaoException e) {
-			logger.error(e);
+			logger.error("{}",e);
 			fatalErrorService.logFatalError(e, 0, "HealthApplicationService", true, data.getString("current.transactionId"));
 			throw new JspException(e);
 		}

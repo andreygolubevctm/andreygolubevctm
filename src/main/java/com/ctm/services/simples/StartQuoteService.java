@@ -9,14 +9,14 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.CallCentreService;
 import com.ctm.services.SettingsService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
 public class StartQuoteService {
-    private static final Logger logger = Logger.getLogger(StartQuoteService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(StartQuoteService.class.getName());
     private HttpServletRequest request;
     private HttpServletResponse response;
     private String verticalCode;

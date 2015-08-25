@@ -7,11 +7,11 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 public class Dreammail {
 
-	static Logger logger = Logger.getLogger(Dreammail.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(Dreammail.class.getName());
 
 	public static String send(String username, String password, String servername, String rtm_url, String xml_content, String debugOn, Boolean is_exact_target) throws IOException{
 		if(xml_content == null || xml_content.isEmpty()) {

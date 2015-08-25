@@ -1,6 +1,6 @@
 package com.ctm.services.elasticsearch;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.elasticsearch.client.Client;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -9,7 +9,7 @@ import com.ctm.exceptions.ElasticSearchConfigurationException;
 
 public class AddressSearchService extends ElasticSearchService {
 
-	private static Logger logger = Logger.getLogger(AddressSearchService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AddressSearchService.class.getName());
 
 	private static Client elasticClient = null;
 	private static boolean initialised = false;

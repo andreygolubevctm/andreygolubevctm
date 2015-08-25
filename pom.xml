@@ -131,11 +131,11 @@
         </dependency>
 
         <!-- Log 4 J -->
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>log4j</groupId>-->
+            <!--<artifactId>log4j</artifactId>-->
+            <!--<version>1.2.17</version>-->
+        <!--</dependency>-->
 
         <!-- Apache Commons -->
         <dependency>
@@ -476,7 +476,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <warSourceDirectory>src/main/webapp</warSourceDirectory>
-                    <warSourceExcludes>WEB-INF/classes/log4j.properties,WEB-INF/classes/environment.properties</warSourceExcludes>
+                    <warSourceExcludes>WEB-INF/classes/logback.xml,WEB-INF/classes/environment.properties</warSourceExcludes>
                 </configuration>
                 <executions>
                     <!-- creating the artifact is done by ant -->

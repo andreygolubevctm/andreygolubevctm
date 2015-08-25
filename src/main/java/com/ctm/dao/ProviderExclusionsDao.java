@@ -8,7 +8,7 @@ import java.util.Date;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -16,7 +16,7 @@ import com.ctm.model.ProviderExclusion;
 
 public class ProviderExclusionsDao {
 
-	private static Logger logger = Logger.getLogger(ProviderExclusionsDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ProviderExclusionsDao.class.getName());
 
 	/**
 	 * Return a list of providers which have been disabled for a specific brand and vertical for the provided date.

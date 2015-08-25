@@ -17,7 +17,7 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.car.CarVehicleSelectionService;
 import com.ctm.services.car.RegoLookupService;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -27,7 +27,7 @@ import java.util.Map;
 
 @Path("/rego")
 public class RegoLookupRouter {
-    private static Logger logger = Logger.getLogger(RegoLookupRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(RegoLookupRouter.class.getName());
 
     private static final String COLLECTION_LABEL = "vehicle_data";
 

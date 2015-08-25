@@ -4,7 +4,7 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Provider;
 import com.ctm.model.health.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.Date;
@@ -16,7 +16,7 @@ import java.util.*;
 public class HealthPriceDao {
 	private static final String DISC_PREFIX = "disc";
 	private static final String GROSS_PREFIX = "gross";
-	private static Logger logger = Logger.getLogger(HealthPriceDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HealthPriceDao.class.getName());
 	private SimpleDatabaseConnection dbSource;
 
 	public HealthPriceDao() {

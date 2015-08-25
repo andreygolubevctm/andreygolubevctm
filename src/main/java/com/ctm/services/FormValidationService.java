@@ -5,7 +5,7 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.model.FormValidationLog;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.constants.PrivacyBlacklist;
 import com.ctm.dao.FormValidationDao;
@@ -15,7 +15,7 @@ import com.ctm.exceptions.DaoException;
 public class FormValidationService {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(FormValidationService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(FormValidationService.class.getName());
 
 
 	public FormValidationService() {

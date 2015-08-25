@@ -1,6 +1,6 @@
 package com.ctm.services.simples;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +13,7 @@ import com.ctm.model.simples.User;
 import com.ctm.model.simples.UserStats;
 
 public class SimplesUserService {
-	private static final Logger logger = Logger.getLogger(SimplesUserService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimplesUserService.class.getName());
 
 
 

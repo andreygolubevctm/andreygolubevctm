@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,7 +23,7 @@ import com.ctm.services.ServiceConfigurationService;
 import com.disc_au.web.go.Data;
 
 public class HomeLoanResultsService {
-	private static Logger logger = Logger.getLogger(HomeLoanResultsService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HomeLoanResultsService.class.getName());
 
 	private static BigDecimal months = new BigDecimal("12");
 	private static BigDecimal fortnights = new BigDecimal("26");

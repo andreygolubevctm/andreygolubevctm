@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -16,7 +16,7 @@ import com.ctm.model.car.CarMake;
 public class CarMakeDao {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(CarMakeDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CarMakeDao.class.getName());
 
 	public CarMakeDao() {
 	}

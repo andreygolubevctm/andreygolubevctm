@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
@@ -20,7 +20,7 @@ import com.ctm.services.EnvironmentService.Environment;
 
 public abstract class EmailServiceHandler {
 
-	private static Logger logger = Logger.getLogger(EmailServiceHandler.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(EmailServiceHandler.class.getName());
 
 
 	protected static final  List<String> testEmails = new ArrayList<String>() {

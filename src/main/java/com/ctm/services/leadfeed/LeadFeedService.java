@@ -1,7 +1,7 @@
 package com.ctm.services.leadfeed;
 
 import com.ctm.dao.leadfeed.BestPriceLeadsDao;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.ContentService;
@@ -17,7 +17,7 @@ import java.util.Date;
 
 public abstract class LeadFeedService {
 
-	private static Logger logger = Logger.getLogger(LeadFeedService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(LeadFeedService.class.getName());
 
 	protected Content ignoreBecauseOfField = null;
 	protected String ignorePhoneRule = null;

@@ -11,7 +11,7 @@ import com.ctm.model.Transaction;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.model.simples.Message;
 import com.ctm.model.simples.MessageDetail;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import java.util.Collections;
 public class MessageDetailService {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(MessageDetailService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(MessageDetailService.class.getName());
 
 
 

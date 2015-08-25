@@ -1,20 +1,15 @@
 package com.ctm.connectivity;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
-
 public class SimpleConnection {
 
-	private static Logger logger = Logger.getLogger(SimpleConnection.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimpleConnection.class.getName());
 
 	private int connectTimeout = 1000;
 	private int readTimeout = 1000;

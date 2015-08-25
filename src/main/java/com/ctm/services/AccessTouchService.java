@@ -10,13 +10,13 @@ import com.ctm.model.TouchProductProperty;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.router.IncomingEmailRouter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class AccessTouchService {
 
-	private static Logger logger = Logger.getLogger(IncomingEmailRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(IncomingEmailRouter.class.getName());
 
 	protected final SessionDataService sessionDataService;
 
@@ -130,7 +130,7 @@ public class AccessTouchService {
                 isBeingSubmitted = touch.getType() == Touch.TouchType.SUBMITTED;
             }
         } catch (DaoException e) {
-            logger.error(e);
+            logger.error("{}",e);
         }
         return isBeingSubmitted;
     }

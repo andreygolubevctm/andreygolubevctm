@@ -6,13 +6,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 public class FormDateUtils {
 
 	static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
-	private static Logger logger = Logger.getLogger(FormDateUtils.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(FormDateUtils.class.getName());
 
 	public static Date parseDateFromForm(String searchDate) {
 		Date searchDateValue = null;

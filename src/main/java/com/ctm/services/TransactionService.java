@@ -12,14 +12,14 @@ import com.ctm.model.TransactionProperties;
 import com.ctm.model.health.HealthTransaction;
 import com.ctm.model.simples.ConfirmationOperator;
 import com.ctm.model.simples.Message;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class TransactionService {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(TransactionService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(TransactionService.class.getName());
 
 	/**
 	 * Get all comments for a transaction ID and related (based on root ID).
@@ -77,7 +77,7 @@ public class TransactionService {
 			}
 		}
 		catch (DaoException e) {
-			logger.error(e);
+			logger.error("{}",e);
 			Error error = new Error(e.getMessage());
 			details.addError(error);
 		}

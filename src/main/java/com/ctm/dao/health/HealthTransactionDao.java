@@ -3,7 +3,7 @@ package com.ctm.dao.health;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.HealthTransaction;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
@@ -14,7 +14,7 @@ public class HealthTransactionDao {
 
 	private static final String PRODUCT_TITLE_XPATH = "health/application/productTitle";
 	public static final String PROVIDER_XPATH = "health/application/provider";
-	private static Logger logger = Logger.getLogger(HealthTransactionDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HealthTransactionDao.class.getName());
 
 
 	public static class HealthTransactionSequenceNo {
@@ -163,7 +163,7 @@ public class HealthTransactionDao {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					logger.error(e);
+					logger.error("{}",e);
 				}
 			}
 			dbSource.closeConnection();

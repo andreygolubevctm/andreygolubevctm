@@ -7,7 +7,7 @@ import com.ctm.model.settings.Brand;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.leadfeed.LeadFeedService;
 import com.ctm.services.leadfeed.life.LifeLeadFeedService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
@@ -17,7 +17,7 @@ import com.disc_au.web.go.Data;
 
 public class AGISLeadFromRequest {
 
-	private Logger logger = Logger.getLogger(AGISLeadFromRequest.class);
+	private static final Logger logger = LoggerFactory.getLogger(AGISLeadFromRequest.class);
 
 	public String newPolicySold(HttpServletRequest request, PageSettings pageSettings, String transactionId) {
 		return process(request, pageSettings, transactionId, true);

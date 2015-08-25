@@ -8,7 +8,7 @@ import java.util.Date;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -16,7 +16,7 @@ import com.ctm.model.CronJob;
 
 public class CronDao {
 
-	private static Logger logger = Logger.getLogger(CronDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CronDao.class.getName());
 
 	public ArrayList<CronJob> getJobs(String rootURL, String frequency) throws DaoException{
 

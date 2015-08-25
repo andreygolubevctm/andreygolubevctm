@@ -11,11 +11,11 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 public class StringEncryption {
 
-	private static Logger logger = Logger.getLogger(StringEncryption.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(StringEncryption.class.getName());
 
 	// TODO: Should we be using a Keystore for this? Unsure why it was first implemented like this?
 	// FYI There is duplicate use of the salt + key in another tag - maybe why it was implemented like this.
@@ -36,7 +36,7 @@ public class StringEncryption {
 		try {
 			output  = encryption.encrypt(theString);
 		} catch (GeneralSecurityException e) {
-			logger.error(e);
+			logger.error("{}",e);
 			throw e;
 		}
 		return output;

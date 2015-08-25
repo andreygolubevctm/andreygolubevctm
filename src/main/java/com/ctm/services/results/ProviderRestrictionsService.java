@@ -3,7 +3,7 @@ package com.ctm.services.results;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.model.health.HealthPriceRequest;
 import com.ctm.model.settings.Vertical.VerticalType;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ProviderRestrictionsService {
 
-    private static Logger logger = Logger.getLogger(ProviderRestrictionsService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ProviderRestrictionsService.class.getName());
 
 
     public ProviderRestrictionsService() {

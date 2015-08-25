@@ -2,7 +2,7 @@ package com.ctm.services;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.BrandException;
 import com.ctm.exceptions.ConfigSettingException;
@@ -13,7 +13,7 @@ import com.ctm.model.settings.PageSettings;
 public class SettingsService {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(SettingsService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SettingsService.class.getName());
 
 	/**
 	 * Sets the vertical code for the page request scope and loads the settings object.

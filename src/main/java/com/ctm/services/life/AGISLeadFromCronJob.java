@@ -9,13 +9,13 @@ import com.ctm.model.settings.Brand;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.leadfeed.LeadFeedService;
 import com.ctm.services.leadfeed.life.LifeLeadFeedService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.apache.taglibs.standard.tag.common.sql.ResultImpl;
 import com.ctm.model.settings.PageSettings;
 
 public class AGISLeadFromCronJob {
 
-	private Logger logger = Logger.getLogger(AGISLeadFromCronJob.class);
+	private static final Logger logger = LoggerFactory.getLogger(AGISLeadFromCronJob.class);
 	
 	public String newLeadFeed(String transactionId, ResultImpl transactionDetails, ResultImpl rankingDetails, PageSettings pageSettings) {
 

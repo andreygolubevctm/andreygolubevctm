@@ -1,6 +1,6 @@
 package com.ctm.services.leadfeed;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.leadfeed.LeadFeedData;
 import com.ctm.services.leadfeed.LeadFeedService.LeadType;
@@ -8,7 +8,7 @@ import com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus;
 
 public abstract class REINLeadFeedService implements IProviderLeadFeedService {
 
-	private static Logger logger = Logger.getLogger(REINLeadFeedService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(REINLeadFeedService.class.getName());
 
 	/**
 	 * isValidLead() tests valid lead data exists according to the lead type

@@ -20,11 +20,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 public class XsltTranslator {
 
-	Logger logger = Logger.getLogger(XsltTranslator.class.getName());
+	Logger logger = LoggerFactory.getLogger(XsltTranslator.class.getName());
 
 	/** The trans factory. */
 	protected TransformerFactory transFactory;

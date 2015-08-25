@@ -2,7 +2,7 @@ package com.ctm.model.formatter;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.JSONArray;
@@ -10,7 +10,7 @@ import org.json.simple.JSONArray;
 import com.ctm.model.AbstractJsonModel;
 
 public class JsonUtils {
-	private static Logger logger = Logger.getLogger(JsonUtils.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class.getName());
 
 	/**
 	 * Adds a list of {@link AbstractJsonModel} to a provided JSON Object.

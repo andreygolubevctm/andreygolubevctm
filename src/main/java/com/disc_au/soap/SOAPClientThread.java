@@ -38,7 +38,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.ctm.constants.ErrorCode;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -58,7 +58,7 @@ import static com.ctm.xml.XMLOutputWriter.*;
  */
 public class SOAPClientThread implements Runnable {
 
-	private Logger logger = Logger.getLogger(SOAPClientThread.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SOAPClientThread.class.getName());
 
 	public static final int HTTP_OK = 200;
 	public static final int HTTP_NOT_FOUND = 404;

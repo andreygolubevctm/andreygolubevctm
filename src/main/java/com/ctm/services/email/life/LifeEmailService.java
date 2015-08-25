@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.RankingDetailsDao;
 import com.ctm.dao.transaction.TransactionDao;
@@ -37,7 +37,7 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 	
 	private static final String VERTICAL = VerticalType.LIFE.getCode();
 	
-	private static final Logger logger = Logger.getLogger(LifeEmailService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(LifeEmailService.class.getName());
 	
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();

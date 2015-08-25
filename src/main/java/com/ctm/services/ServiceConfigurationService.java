@@ -6,7 +6,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.ProviderExclusionsDao;
 import com.ctm.dao.ServiceConfigurationDao;
@@ -21,7 +21,7 @@ import com.ctm.model.settings.Vertical;
 public class ServiceConfigurationService {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(ServiceConfigurationService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ServiceConfigurationService.class.getName());
 
 	private static ArrayList<ServiceConfiguration> services = new ArrayList<ServiceConfiguration>();
 	//private static ArrayList<ProviderExclusion> excludedProviders = null;

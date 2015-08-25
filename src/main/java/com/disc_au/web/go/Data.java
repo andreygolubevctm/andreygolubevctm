@@ -2,7 +2,7 @@ package com.disc_au.web.go;
 
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.springframework.util.NumberUtils;
 import org.xml.sax.SAXException;
 
@@ -20,7 +20,7 @@ import java.util.Date;
 
 public class Data extends XmlNode implements Comparable<Data> {
 
-	private static Logger logger = Logger.getLogger(Data.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(Data.class.getName());
 
 	/** The NODE. */
 	public static String NODE = "node";
@@ -313,7 +313,7 @@ public class Data extends XmlNode implements Comparable<Data> {
 				value = NumberUtils.parseNumber(getString(xpath), targetClass);
 			}
 		} catch (NumberFormatException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return value;
 	}

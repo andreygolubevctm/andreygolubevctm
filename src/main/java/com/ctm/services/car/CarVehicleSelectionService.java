@@ -7,7 +7,7 @@ import com.ctm.exceptions.ServiceException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import java.util.*;
 
 public class CarVehicleSelectionService {
-	private static Logger logger = Logger.getLogger(CarVehicleSelectionService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CarVehicleSelectionService.class.getName());
 
 	private static ObjectMapper objectMapper = new ObjectMapper();
 

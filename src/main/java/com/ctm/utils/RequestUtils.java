@@ -4,7 +4,7 @@ import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.SessionData;
 import com.ctm.services.SessionDataService;
 import com.disc_au.web.go.Data;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class RequestUtils {
 
-    private static final Logger logger = Logger.getLogger(RequestUtils.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(RequestUtils.class.getName());
     private final SessionDataService sessionDataService = new SessionDataService();
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
