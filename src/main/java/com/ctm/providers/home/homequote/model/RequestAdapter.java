@@ -174,6 +174,7 @@ public class RequestAdapter {
             if ("Home office".equals(formBusinessActivity.getBusinessType()) ||
                     "Surgery/consulting rooms".equals(formBusinessActivity.getBusinessType())) {
                 BusinessActivityWithRoomQuantity businessActivityWithRoomQuantity = new BusinessActivityWithRoomQuantity();
+                businessActivityWithRoomQuantity.setRoomsUsed(Integer.parseInt(formBusinessActivity.getRooms()));
                 if (StringUtils.isNotBlank(formBusinessActivity.getEmployeeAmount())) {
                     businessActivityWithRoomQuantity.setNumberOfEmployees(Integer.parseInt(formBusinessActivity.getEmployeeAmount()));
                 }
@@ -202,10 +203,15 @@ public class RequestAdapter {
     }
 
     private static WhenMovedIn createWhenMovedIn(com.ctm.model.home.form.WhenMovedIn formWhenMovedIn) {
-        WhenMovedIn whenMovedIn = new WhenMovedIn();
-        whenMovedIn.setYear(formWhenMovedIn.getYear());
-        if (StringUtils.isNotBlank(formWhenMovedIn.getMonth())) {
-            whenMovedIn.setMonth(Integer.parseInt(formWhenMovedIn.getMonth()));
+        WhenMovedIn whenMovedIn = null;
+        if (formWhenMovedIn != null) {
+            whenMovedIn = new WhenMovedIn();
+            if (StringUtils.isNotBlank(formWhenMovedIn.getYear())) {
+                whenMovedIn.setYear(formWhenMovedIn.getYear());
+            }
+            if (StringUtils.isNotBlank(formWhenMovedIn.getMonth())) {
+                whenMovedIn.setMonth(Integer.parseInt(formWhenMovedIn.getMonth()));
+            }
         }
         return whenMovedIn;
     }

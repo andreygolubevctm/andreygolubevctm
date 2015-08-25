@@ -34,6 +34,8 @@ public class HomeQuote {
 
     private Excess homeExcess;
 
+    private Discount discount;
+
     private Contact contact;
 
     private Price price;
@@ -174,6 +176,14 @@ public class HomeQuote {
 
     public void setHomeExcess(Excess homeExcess) {
         this.homeExcess = homeExcess;
+    }
+
+    public Discount getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Discount discount) {
+        this.discount = discount;
     }
 
     public Contact getContact() {

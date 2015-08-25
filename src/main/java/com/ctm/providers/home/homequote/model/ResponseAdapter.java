@@ -1,12 +1,18 @@
 package com.ctm.providers.home.homequote.model;
 
 import com.ctm.model.home.results.*;
+import com.ctm.model.home.results.AdditionalExcess;
+import com.ctm.model.home.results.Contact;
+import com.ctm.model.home.results.Discount;
+import com.ctm.model.home.results.Excess;
+import com.ctm.model.home.results.Feature;
+import com.ctm.model.home.results.Price;
+import com.ctm.model.home.results.ProductDisclosure;
+import com.ctm.model.home.results.Underwriter;
 import com.ctm.model.resultsData.AvailableType;
 import com.ctm.providers.QuoteResponse;
 import com.ctm.providers.home.homequote.model.request.HomeQuoteRequest;
-import com.ctm.providers.home.homequote.model.response.HomeQuote;
-import com.ctm.providers.home.homequote.model.response.HomeResponse;
-import com.ctm.providers.home.homequote.model.response.MoreInfo;
+import com.ctm.providers.home.homequote.model.response.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +47,7 @@ public class ResponseAdapter {
                 result.setDiscountOfferTerms(homeQuote.getDiscountOfferTerms());
                 result.setAvailableOnline(homeQuote.isAvailableOnline());
                 result.setHomeExcess(createExcess(homeQuote.getHomeExcess()));
+                result.setDiscount(createDiscount(homeQuote.getDiscount()));
                 result.setContentsExcess(createExcess(homeQuote.getContentsExcess()));
                 result.setDisclaimer(homeQuote.getDisclaimer());
                 result.setInclusions(homeQuote.getInclusions());
@@ -61,6 +68,16 @@ public class ResponseAdapter {
             }
         }
         return results;
+    }
+
+    private static Discount createDiscount(com.ctm.providers.home.homequote.model.response.Discount quoteDiscount) {
+        if (quoteDiscount != null) {
+            Discount discount = new Discount();
+            discount.setOffline(quoteDiscount.getOffline());
+            discount.setOnline(quoteDiscount.getOnline());
+            return discount;
+        }
+        return null;
     }
 
     private static String getTrackingProductId(HomeQuoteRequest request, HomeQuote homeQuote) {
