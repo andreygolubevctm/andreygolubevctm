@@ -34,7 +34,7 @@
 				<%-- WHITELABEL The overriding head inclusions --%>
 				<link rel="shortcut icon" type="image/x-icon" href="${baseUrl}brand/${pageSettings.getBrandCode()}/graphics/favicon.ico">
 
-				<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css" >
+				<link rel="stylesheet" href="${baseUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css">
 			</c:when>
 			<c:otherwise>
 				<link rel="shortcut icon" type="image/x-icon" href="${baseUrl}common/images/favicon.ico">

@@ -162,6 +162,7 @@
 					
 			<form:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 			<core:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
+			<core_new:authToken authToken="${param['authToken']}"/>
 		</div>
 
 		<%-- Slides --%>

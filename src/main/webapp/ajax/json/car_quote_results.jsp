@@ -245,6 +245,15 @@
 						</c:choose>
 					</c:set>
 
+					<%-- Knockout REAL when driver is Male, under 21 and REIN-01-02 (Comprehensive) --%>
+					<c:if test="${brandCode eq 'REIN' and productId eq 'REIN-01-02' and data.quote.drivers.regular.gender eq 'M'}">
+						<jsp:useBean id="dateUtils" class="com.ctm.utils.common.utils.DateUtils" scope="request" />
+						<c:set var="dob" value="${data.quote.drivers.regular.dob}" />
+						<c:if test="${dateUtils.getAgeFromDOB(dob) < 21}">
+							<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]/available" value="N" />
+						</c:if>
+					</c:if>
+
 					<%-- Set flag to indicate this is an Auto & General product. --%>
 					<c:set var="isAutoGeneral">
 						<c:choose>

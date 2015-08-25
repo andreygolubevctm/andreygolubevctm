@@ -89,6 +89,10 @@ public class ServiceConfiguration {
 		return getPropertyByScope(Scope.SERVICE);
 	}
 
+	public ArrayList<ServiceConfigurationProperty> getGatewayProperties(){
+		return getPropertyByScope(Scope.GATEWAY);
+	}
+
 	/**
 	 *
 	 * @param key
