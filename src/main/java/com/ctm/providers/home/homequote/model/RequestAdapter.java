@@ -233,12 +233,15 @@ public class RequestAdapter {
     }
 
     private static SecurityFeatures createSecurityFeatures(com.ctm.model.home.form.SecurityFeatures formSecurityFeatures) {
-        SecurityFeatures securityFeatures = new SecurityFeatures();
-        securityFeatures.setInternalSiren(convertToOptionalBoolean(formSecurityFeatures.getInternalSiren()));
-        securityFeatures.setExternalSiren(convertToOptionalBoolean(formSecurityFeatures.getExternalSiren()));
-        securityFeatures.setBackToBase(convertToOptionalBoolean(formSecurityFeatures.getBackToBase()));
-        securityFeatures.setStrobeLight(convertToOptionalBoolean(formSecurityFeatures.getStrobeLight()));
-        return securityFeatures;
+        if (formSecurityFeatures != null) {
+            SecurityFeatures securityFeatures = new SecurityFeatures();
+            securityFeatures.setInternalSiren(convertToOptionalBoolean(formSecurityFeatures.getInternalSiren()));
+            securityFeatures.setExternalSiren(convertToOptionalBoolean(formSecurityFeatures.getExternalSiren()));
+            securityFeatures.setBackToBase(convertToOptionalBoolean(formSecurityFeatures.getBackToBase()));
+            securityFeatures.setStrobeLight(convertToOptionalBoolean(formSecurityFeatures.getStrobeLight()));
+            return securityFeatures;
+        }
+        return null;
     }
 
     private static Address createAddress(com.ctm.model.home.form.Address formAddress) {
