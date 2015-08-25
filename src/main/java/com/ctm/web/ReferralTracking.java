@@ -4,7 +4,7 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.services.ContentService;
 import com.disc_au.web.go.Data;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -12,7 +12,7 @@ import java.net.URLDecoder;
 
 public class ReferralTracking {
 
-	private static final Logger logger = Logger.getLogger(ReferralTracking.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ReferralTracking.class.getName());
 
 	public String getAndSetUtmSource(HttpServletRequest request, Data data, String prefix) {
 		return getAndSetFromParam(request, data, "utm_source", prefix + "/sourceid");
@@ -33,7 +33,7 @@ public class ReferralTracking {
 				try {
 					value = URLDecoder.decode(value, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
-					logger.warn(e);
+					logger.warn("{}",e);
 				}
 				try {
 					valid = ContentService.getContentIsValid(request, key, value);
@@ -41,7 +41,7 @@ public class ReferralTracking {
 						data.put(xpath, value);
 					}
 				} catch (DaoException | ConfigSettingException e) {
-					logger.warn(e);
+					logger.warn("{}",e);
 				}
 
 				if(valid ){

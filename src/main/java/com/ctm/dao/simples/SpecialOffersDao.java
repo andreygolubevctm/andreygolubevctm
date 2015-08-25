@@ -7,7 +7,7 @@ import com.ctm.helper.simples.SpecialOffersHelper;
 import com.ctm.model.SpecialOffers;
 import com.ctm.utils.common.utils.DateUtils;
 import com.mysql.jdbc.Statement;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 public class SpecialOffersDao {
-    private final static Logger logger = Logger.getLogger(SpecialOffersDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SpecialOffersDao.class.getName());
     private final SpecialOffersHelper helper = new SpecialOffersHelper();
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private final AuditTableDao auditTableDao = new AuditTableDao();

@@ -2,7 +2,7 @@ package com.ctm.services;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
@@ -19,7 +19,7 @@ import com.ctm.xml.XMLOutputWriter;
  */
 public class AgLeadFeedService extends WebServiceGatewaySupport {
 
-    private Logger logger = Logger.getLogger(AgLeadFeedService.class);
+	private static final Logger logger = LoggerFactory.getLogger(AgLeadFeedService.class);
     
     private String transactionId;
     

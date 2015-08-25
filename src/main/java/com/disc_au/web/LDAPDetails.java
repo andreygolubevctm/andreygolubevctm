@@ -6,7 +6,7 @@
 
 package com.disc_au.web;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.Hashtable;
 
 public class LDAPDetails {
-	private final Logger logger = Logger.getLogger(Dreammail.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(Dreammail.class.getName());
 
 	protected Hashtable<String, String> userDetails = null;
 	protected String PROVIDER_URL            = "ldap://argon.budgetdirect.com.au:389";
@@ -92,7 +92,7 @@ public class LDAPDetails {
 					throw new Exception("Invalid User");
 				}
 			} catch (final Exception ex) {
-				logger.error(ex);
+				logger.error("{}",ex);
 			}
 		}
 

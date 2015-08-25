@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ctm.services.FatalErrorService;
 import com.ctm.utils.RequestUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.exceptions.DaoException;
@@ -33,7 +33,7 @@ import com.disc_au.web.go.Data;
 		"/quote/load.json"
 })
 public class QuoteRouter extends HttpServlet {
-	private static Logger logger = Logger.getLogger(QuoteRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(QuoteRouter.class.getName());
 	private static final long serialVersionUID = 69L;
 
 	private final SessionDataService sessionDataService = new SessionDataService();
@@ -78,7 +78,7 @@ public class QuoteRouter extends HttpServlet {
 					writer.print(new JSONObject().toString());
 				}
 			} catch (DaoException | SessionException e) {
-				logger.error(e);
+				logger.error("{}",e);
 				// Fails silently.
 
 				// Real write quote would need to throw exception

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import javax.naming.NamingException;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -30,7 +30,7 @@ public class ProviderCodesDao {
 	}
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(ProviderCodesDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ProviderCodesDao.class.getName());
 
 	public void setProviderCodes(String verticalType, int styleCodeId) throws DaoException {
 		try {

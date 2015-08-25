@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ctm.services.SettingsService;
 import com.ctm.services.elasticsearch.AddressSearchService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +27,7 @@ import com.ctm.model.settings.Vertical.VerticalType;
 		"/address/get.json"
 })
 public class AddressSearchRouter extends HttpServlet {
-	private static Logger logger = Logger.getLogger(AddressSearchRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AddressSearchRouter.class.getName());
 	private static final long serialVersionUID = 71L;
 
 	private AddressSearchService searchService;

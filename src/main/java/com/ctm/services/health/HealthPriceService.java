@@ -6,7 +6,7 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.*;
 import com.ctm.services.results.ProviderRestrictionsService;
 import com.ctm.utils.FormDateUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +20,7 @@ import static com.ctm.model.health.Frequency.HALF_YEARLY;
 
 public class HealthPriceService {
 
-	private static Logger logger = Logger.getLogger(HealthPriceService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HealthPriceService.class.getName());
 
 	private HealthPriceRequest healthPriceRequest;
 	private HealthPriceDao healthPriceDao;

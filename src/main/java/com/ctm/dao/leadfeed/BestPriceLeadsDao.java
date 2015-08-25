@@ -8,7 +8,7 @@ import java.util.Date;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.dao.VerticalsDao;
@@ -24,7 +24,7 @@ import com.ctm.services.ContentService;
 
 public class BestPriceLeadsDao {
 
-	private static Logger logger = Logger.getLogger(BestPriceLeadsDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(BestPriceLeadsDao.class.getName());
 
 	private ArrayList<LeadFeedRootTransaction> transactions = null;
 	private ArrayList<LeadFeedData> leads = null;

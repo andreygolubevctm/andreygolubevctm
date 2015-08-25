@@ -1,7 +1,7 @@
 package com.ctm.services;
 
 import com.ctm.exceptions.EnvironmentException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
 public class EnvironmentService {
-	private static Logger logger = Logger.getLogger(EnvironmentService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(EnvironmentService.class.getName());
 
 	private static Environment currentEnvironment;
 	private static String buildIdentifier = "";
@@ -140,7 +140,7 @@ public class EnvironmentService {
 			}
 		}
 		catch (IOException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		finally {
 			if (inputStream != null) inputStream.close();

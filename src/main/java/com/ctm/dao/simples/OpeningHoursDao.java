@@ -7,7 +7,7 @@ import com.ctm.helper.simples.OpeningHoursHelper;
 import com.ctm.model.OpeningHours;
 import com.ctm.utils.common.utils.DateUtils;
 import com.mysql.jdbc.Statement;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.*;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class OpeningHoursDao {
-    private final static Logger logger = Logger.getLogger(OpeningHoursDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(OpeningHoursDao.class.getName());
     private final OpeningHoursHelper helper = new OpeningHoursHelper();
     private final AuditTableDao auditTableDao = new AuditTableDao();
     private static boolean autoCommit = true;

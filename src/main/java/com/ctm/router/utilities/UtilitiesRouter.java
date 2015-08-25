@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.model.Error;
@@ -33,7 +33,7 @@ import com.ctm.services.utilities.UtilitiesResultsService;
 		"/utilities/application/submit.json"
 })
 public class UtilitiesRouter extends HttpServlet {
-	private static Logger logger = Logger.getLogger(UtilitiesRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(UtilitiesRouter.class.getName());
 	private static final long serialVersionUID = 70L;
 
 	@Override

@@ -3,7 +3,7 @@ package com.ctm.services;
 import com.ctm.dao.IsoLocationsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.IsoLocations;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +15,7 @@ public class IsoLocationsService {
     public IsoLocationsService() {
     }
 
-    private static Logger logger = Logger.getLogger(IsoLocationsService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(IsoLocationsService.class.getName());
 
     public JSONObject fetchCountryList() throws DaoException {
 
@@ -26,7 +26,7 @@ public class IsoLocationsService {
         try {
             json.put("isoLocations" , countries);
         } catch (JSONException e) {
-            logger.error(e);
+            logger.error("{}",e);
         }
         return json;
     }
@@ -41,7 +41,7 @@ public class IsoLocationsService {
         try {
             json.put("isoLocations" , isoLocations);
         } catch (JSONException e) {
-            logger.error(e);
+            logger.error("{}",e);
         }
         return json;
     }
@@ -71,7 +71,7 @@ public class IsoLocationsService {
         try {
             json.put("topTen" , topTen);
         } catch (JSONException e) {
-            logger.error(e);
+            logger.error("{}",e);
         }
 
         return json;

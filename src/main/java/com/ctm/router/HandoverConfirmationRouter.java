@@ -2,7 +2,7 @@ package com.ctm.router;
 
 import com.ctm.model.HandoverConfirmation;
 import com.ctm.services.HandoverConfirmationService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
 
 @WebServlet(asyncSupported = true, urlPatterns = {"/handover/confirm"})
 public class HandoverConfirmationRouter extends HttpServlet {
-    private final Logger logger = Logger.getLogger(HandoverConfirmationService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HandoverConfirmationService.class.getName());
     private final HandoverConfirmationService service = new HandoverConfirmationService();
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 

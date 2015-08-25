@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.StampingDao;
 import com.ctm.exceptions.DaoException;
@@ -13,7 +13,7 @@ public class StampingService {
 
 	private static final String MARKETING_ACTION = "toggle_marketing";
 
-	private static Logger logger = Logger.getLogger(StampingService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(StampingService.class.getName());
 	private StampingDao stampingDao;
 
 	public StampingService(StampingDao stampingDao){

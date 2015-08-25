@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 
@@ -19,7 +19,7 @@ import com.ctm.utils.FormDateUtils;
 import com.disc_au.web.go.Data;
 
 public class SegmentRulesService {
-	private static final Logger logger = Logger.getLogger(SegmentRulesService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SegmentRulesService.class.getName());
 
 	public boolean filter(Segment segment, List<SegmentRule> segmentRules, Data data) {
 		if(segmentRules != null && !segmentRules.isEmpty()){
@@ -80,7 +80,7 @@ public class SegmentRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return false;
 	}
@@ -100,7 +100,7 @@ public class SegmentRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return false;
 	}
@@ -122,7 +122,7 @@ public class SegmentRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return false;
 	}

@@ -1,14 +1,10 @@
 package com.disc_au.web.go.tags;
 
-import java.text.DateFormat;
-import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.JspException;
-
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -21,14 +17,14 @@ import org.apache.log4j.Priority;
 @SuppressWarnings("serial")
 public class LogTag extends BaseTag {
 
-	private Level defaultLevel = Level.INFO;
-	private Level level = defaultLevel;
+	private LogLevel defaultLevel = LogLevel.INFO;
+	private LogLevel level = defaultLevel;
 	private String source = "jsp";
 	private Exception error = null;
 
 	public void setLevel(String level) {
-		this.level = Level.toLevel(level);
-		if(this.level == null) {
+		this.level = LogLevel.valueOf(level);
+		if (this.level == null) {
 			this.level =  defaultLevel;
 		}
 	}
@@ -46,15 +42,51 @@ public class LogTag extends BaseTag {
 	 */
 	@Override
 	public int doAfterBody() throws JspException {
-		Logger logger = Logger.getLogger(source);
-		if(error != null) {
-			logger.log(level, bodyContent.getString(), error);
-		} else {
-			logger.log(level, bodyContent.getString());
+		Logger logger = LoggerFactory.getLogger(source);
+		switch (level) {
+			case DEBUG:
+				if(error != null) {
+					logger.debug(String.valueOf(bodyContent.getString()), error);
+				} else {
+					logger.debug(String.valueOf(bodyContent.getString()));
+				}
+				break;
+			case INFO:
+				if(error != null) {
+					logger.info(String.valueOf(bodyContent.getString()), error);
+				} else {
+					logger.info(String.valueOf(bodyContent.getString()));
+				}
+				break;
+			case WARN:
+				if(error != null) {
+					logger.warn(String.valueOf(bodyContent.getString()), error);
+				} else {
+					logger.warn(String.valueOf(bodyContent.getString()));
+				}
+				break;
+			case ERROR:
+				if(error != null) {
+					logger.error(String.valueOf(bodyContent.getString()), error);
+				} else {
+					logger.error(String.valueOf(bodyContent.getString()));
+				}
+				break;
+			default:
+				if(error != null) {
+					logger.debug(String.valueOf(bodyContent.getString()), error);
+				} else {
+					logger.debug(String.valueOf(bodyContent.getString()));
+				}
+				break;
 		}
 		level =  defaultLevel;
 		source = "jsp";
 		error = null;
 		return SKIP_BODY;
+	}
+
+	public enum Level {
+
 	}
 }

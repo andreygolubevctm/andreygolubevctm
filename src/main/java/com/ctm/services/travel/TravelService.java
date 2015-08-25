@@ -26,7 +26,7 @@ import com.ctm.services.*;
 import com.ctm.xml.XMLOutputWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
@@ -36,7 +36,7 @@ import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
 
 public class TravelService {
 
-	private static final Logger logger = Logger.getLogger(TravelService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(TravelService.class.getName());
 	private boolean valid = false;
 	private String vertical;
 	private Data data;

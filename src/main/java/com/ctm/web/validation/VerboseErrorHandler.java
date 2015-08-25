@@ -1,6 +1,6 @@
 package com.ctm.web.validation;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class VerboseErrorHandler implements ErrorHandler {
 
     private final String prefixXpath;
-    Logger logger = Logger.getLogger(VerboseErrorHandler.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(VerboseErrorHandler.class.getName());
 
     private XMLStreamReader reader;
     public boolean valid  = true;

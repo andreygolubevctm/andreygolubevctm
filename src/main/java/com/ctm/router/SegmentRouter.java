@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.exceptions.DaoException;
@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class SegmentRouter extends HttpServlet{
 	private static final long serialVersionUID = 5594038155613701793L;
-	private static Logger logger = Logger.getLogger(SegmentRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SegmentRouter.class.getName());
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final SegmentService segmentService = new SegmentService();
 

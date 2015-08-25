@@ -8,14 +8,14 @@ import java.io.InputStreamReader;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import com.ctm.dao.CronDao;
 import com.ctm.model.CronJob;
 import com.ctm.exceptions.DaoException;
 
 public abstract class CronService {
 
-	private static Logger logger = Logger.getLogger(CronService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CronService.class.getName());
 
 	public static void execute(HttpServletRequest request, String frequency) throws DaoException {
 

@@ -1,6 +1,6 @@
 package com.ctm.model.email;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,7 +8,7 @@ import com.ctm.model.AbstractJsonModel;
 
 public class EmailResponse extends AbstractJsonModel {
 
-	private static Logger logger = Logger.getLogger(EmailResponse.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(EmailResponse.class.getName());
 
 	private String requestID;
 	private String overallStatus;
@@ -102,7 +102,7 @@ public class EmailResponse extends AbstractJsonModel {
 			json.put("transactionId", transactionId);
 			json.put("message", message);
 		} catch (JSONException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 
 		return json;

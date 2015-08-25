@@ -3,7 +3,7 @@ package com.ctm.services.email;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.utils.RequestUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.dao.transaction.TransactionDao;
@@ -24,7 +24,7 @@ import com.disc_au.web.go.Data;
 
 public class EmailService {
 
-	private static final Logger logger = Logger.getLogger(EmailService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(EmailService.class.getName());
 
 	private final SessionDataService sessionDataService = new SessionDataService();
 	private final FatalErrorService fatalErrorService;

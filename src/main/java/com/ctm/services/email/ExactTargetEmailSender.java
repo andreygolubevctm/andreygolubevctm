@@ -14,7 +14,7 @@ import javax.xml.ws.Service;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.endpoint.Endpoint;
 import org.apache.cxf.frontend.ClientProxy;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
 
 import com.ctm.exceptions.ConfigSettingException;
@@ -58,7 +58,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 	private String WEBSERVICE_USER;
 	private String WEBSERVICE_PASSWORD;
 
-	static Logger logger = Logger.getLogger(ExactTargetEmailSender.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ExactTargetEmailSender.class.getName());
 
 	public ExactTargetEmailSender(PageSettings pageSettings) throws SendEmailException {
 		this.pageSettings = pageSettings;

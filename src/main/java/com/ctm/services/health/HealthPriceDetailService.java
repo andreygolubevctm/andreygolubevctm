@@ -12,7 +12,7 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.ContentService;
 import com.ctm.services.SettingsService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import java.util.Date;
 
 public class HealthPriceDetailService {
 
-	private static Logger logger = Logger.getLogger(HealthPriceDetailService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HealthPriceDetailService.class.getName());
 	private final ContentService contentService;
 
 	private HealthPriceDao healthPriceDao;

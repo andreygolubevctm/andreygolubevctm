@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.model.Error;
 import com.ctm.model.coupon.Coupon;
@@ -18,7 +18,7 @@ import com.ctm.utils.FormDateUtils;
 import com.disc_au.web.go.Data;
 
 public class CouponRulesService {
-	private static final Logger logger = Logger.getLogger(CouponRulesService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CouponRulesService.class.getName());
 
 	public boolean filterAllRules(Coupon coupon, Data data) {
 		return filter(coupon, coupon.getCouponRules(), data);
@@ -93,7 +93,7 @@ public class CouponRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return false;
 	}
@@ -113,7 +113,7 @@ public class CouponRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return false;
 	}

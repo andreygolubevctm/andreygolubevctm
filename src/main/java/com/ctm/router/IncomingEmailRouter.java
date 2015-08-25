@@ -5,7 +5,7 @@ import com.ctm.model.email.IncomingEmail;
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.email.EmailUrlService;
 import com.ctm.services.email.IncomingEmailService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +19,7 @@ import java.io.IOException;
 })
 public class IncomingEmailRouter extends HttpServlet {
 
-	private static Logger logger = Logger.getLogger(IncomingEmailRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(IncomingEmailRouter.class.getName());
 
 	private static final long serialVersionUID = 1L;
 

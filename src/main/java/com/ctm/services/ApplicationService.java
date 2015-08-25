@@ -9,7 +9,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.BrandsDao;
 import com.ctm.dao.ConfigSettingsDao;
@@ -24,7 +24,7 @@ import com.disc_au.web.go.Data;
 
 public class ApplicationService {
 
-	private static Logger logger = Logger.getLogger(ApplicationService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ApplicationService.class.getName());
 
 	private static ArrayList<Brand> brands = new ArrayList<Brand>(); // Note: always use the getBrands() method so the data is loaded from the DB
 	private static final String applicationDateSessionKey = "applicationDate";

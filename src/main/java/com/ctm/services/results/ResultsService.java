@@ -13,7 +13,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 import org.json.simple.JSONArray;
 
 import com.ctm.model.results.ResultsSimpleItem;
@@ -23,7 +23,7 @@ public class ResultsService {
 
 	private DataSource ds;
 	private ArrayList<ResultsTemplateItem> unorganisedList;
-	private static Logger logger = Logger.getLogger(ResultsService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ResultsService.class.getName());
 
 	public ResultsService() {
 		Context initCtx;

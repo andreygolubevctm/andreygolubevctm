@@ -13,7 +13,7 @@ import com.ctm.services.SettingsService;
 import com.ctm.services.health.HealthPriceService;
 import com.ctm.utils.RequestUtils;
 import com.ctm.web.validation.SchemaValidationError;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class SpecialOffersService {
 
-	private final static Logger logger = Logger.getLogger(SpecialOffersService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SpecialOffersService.class.getName());
 
 	private final SpecialOffersDao specialOffersDao = new SpecialOffersDao();
 	private final SpecialOffersHelper specialOffersHelper = new SpecialOffersHelper();
