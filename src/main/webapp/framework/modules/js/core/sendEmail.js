@@ -119,8 +119,8 @@
 			if (settings.form !== null && settings.form.length > 0) {
 				validEmailAddress = settings.emailInput.valid();
 			}
-			var hasCompared = settings.lastEmailChecked != settings.emailInput.val();
-			if(validEmailAddress && hasCompared) {
+			var hasChanged = settings.lastEmailChecked != settings.emailInput.val();
+			if(validEmailAddress && hasChanged) {
 				checkUserExists(settings);
 			}
 			if(settings.canEnableSubmit(settings)){
@@ -159,7 +159,7 @@
 		}
 
 		var emailAddress = instanceSettings.emailInput.val();
-		// set to last compared
+		// set to last changed
 		instanceSettings.lastEmailChecked = emailAddress;
 
 
