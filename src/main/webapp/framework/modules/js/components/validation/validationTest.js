@@ -95,7 +95,7 @@
             slideIndex: 0,
             onInitialise: function onStartInit(event) {
                 console.log("Initialising Validator Core");
-                meerkat.modules.jqueryValidate.initJourneyValidator({"utilities_test":{"personName":true}});
+                meerkat.modules.jqueryValidate.initJourneyValidator();
             }
         };
 

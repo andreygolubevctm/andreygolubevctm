@@ -73,7 +73,11 @@
 
                             <form_new:row fieldXpath="utilities/postcode" label="Postcode" id="test_postCode_suburb" className="test_nonStdFieldRow">
                                 <field:post_code xpath="utilities/postcode" required="true" title="your postcode"/>
+
                             </form_new:row>
+
+                            <group_new:contact_numbers xpath="testies/fishies" required="true" />
+
                             <form_new:row fieldXpath="password" label="Password" className="test_nonStdFieldRow">
                                 <field:password xpath="password" title="your password" required="true"/>
                             </form_new:row>

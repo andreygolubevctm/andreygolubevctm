@@ -1,72 +1,78 @@
-$.validator.addMethod("validateMobileField",
-    function(value, element) {
-        var mobileField = $('#${name}_mobileNumber');
-        var phoneField = $('#${name}_otherPhoneNumberinput');
+(function($) {
 
-        $("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").on("change", function(){
-            $("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").valid();
-        });
-
-        mobileField.val( String($(element).val()).replace(/[^0-9]/g, '') );
-
-        var mobile = mobileField.val();
-        var phone = phoneField.val();
-
-        if(mobile != '' && mobile.substring(0,2) == '04'){
-            return true;
-        } else {
-            return phone != '';
-        };
-
-    },
-    "Custom message"
-);
-
-$.validator.addMethod('confirmLandline', function (value) {
-    var strippedValue = value.replace(/[^0-9]+/g, '');
-    return strippedValue === '' || isLandLine(strippedValue);
-});
-
-$.validator.addMethod('validateTelNo', function (value) {
-    if (value.length === 0) return true;
-
-    var strippedValue = value.replace(/[^0-9]/g, '');
-    if (strippedValue.length === 0 && value.length > 0) {
-        return false;
-    }
-
-    var phoneRegex = new RegExp('^(0[234785]{1}[0-9]{8})$');
-    return phoneRegex.test(strippedValue);
-});
-
-$.validator.addMethod('validateMobile', function (value) {
-    if (value.length === 0) return true;
-
-    var valid = true;
-    var strippedValue = value.replace(/[^0-9]/g, '');
-    if (strippedValue.length === 0 && value.length > 0) {
-        return false;
-    }
-
-    var voipsNumber = strippedValue.indexOf('0500') === 0;
-    var phoneRegex = new RegExp('^(0[45]{1}[0-9]{8})$');
-    if (!phoneRegex.test(strippedValue) || voipsNumber) {
-        valid = false;
-    }
-    return valid;
-});
-
-$.validator.addMethod("requiredOneContactNumber", function(value, element) {
-    var nameSuffix = element.id.split(/[_]+/);
-    nameSuffix.pop();
-    nameSuffix = nameSuffix.join("_");
-    var mobileElement = $("#" + nameSuffix + "_mobile");
-    var otherElement = $("#" + nameSuffix + "_other");
-    return mobileElement.val() + otherElement.val() !== '';
-});
-
-isLandLine = function(number) {
     var mobileRegex = new RegExp("^(0[45]{1})");
-    var voipsNumber = number.indexOf("0500") === 0;
-    return !mobileRegex.test(number) || voipsNumber;
-};
+    var numericOnly = /[^0-9]+/g;
+
+    /**
+     * Validate if the field is a landline.
+     */
+    $.validator.addMethod('isLandLine', function (value) {
+        var strippedValue = value.replace(numericOnly, '');
+        return strippedValue === '' || isLandLine(strippedValue);
+    });
+
+
+    /**
+     * Determine if a phone number is a landline
+     * @param number
+     * @returns {boolean}
+     */
+    function isLandLine(number) {
+        var voipsNumber = number.indexOf("0500") === 0;
+        return !mobileRegex.test(number) || voipsNumber;
+    }
+
+    /**
+     * Validate telephone landline OR mobile numbers.
+     */
+    $.validator.addMethod('validateTelNo', function (value) {
+        if (value.length === 0) return true;
+
+        var strippedValue = value.replace(numericOnly, '');
+        if (strippedValue.length === 0 && value.length > 0) {
+            return false;
+        }
+
+        var phoneRegex = new RegExp('^(0[234785]{1}[0-9]{8})$');
+        return phoneRegex.test(strippedValue);
+    });
+
+    /**
+     * Validate mobile phone numbers.
+     */
+    $.validator.addMethod('validateMobile', function (value) {
+        if (value.length == 0) return true;
+
+        var valid = true;
+        var strippedValue = value.replace(numericOnly, '');
+        if (strippedValue.length == 0 && value.length > 0) {
+            return false;
+        }
+
+        var voipsNumber = strippedValue.indexOf('0500') == 0;
+        var phoneRegex = new RegExp('^(0[45]{1}[0-9]{8})$');
+        if (!phoneRegex.test(strippedValue) || voipsNumber) {
+            valid = false;
+        }
+        return valid;
+    });
+
+    /**
+     * Must have at least one number.
+     */
+    jQuery.validator.addMethod("requireOneContactNumber", function(value, element) {
+        var nameSuffix = element.id.split(/[_]+/);
+        nameSuffix.pop();
+        nameSuffix = nameSuffix.join("_");
+        var mobileElement = $("#" + nameSuffix + "_mobile");
+        var otherElement = $("#" + nameSuffix + "_other");
+        return mobileElement.val() + otherElement.val() !== '';
+    });
+
+})(jQuery);
+
+
+
+
+
+

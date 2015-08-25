@@ -54,6 +54,13 @@ var validation = false;
             this.addWrapper( this.toHide );
         };
 
+        /*$.validator.prototype.customMessage = function( name, method ) {
+            console.log($.validator.messages);
+            var m = this.settings.messages[ name ] || $.validator.messages[method];
+            console.log(m);
+            return m && ( m.constructor === String ? m : m[ method ]);
+        };*/
+
         /**
          * CTM Custom Unhighlight function
          * We define this as a prototype, so that the function only needs to be in memory once.
@@ -103,9 +110,6 @@ var validation = false;
      * @param $formElement
      */
     function setupDefaultValidationOnForm( $formElement ) {
-
-        var rules = {};
-
         $formElement.validate({
             submitHandler: function(form) {
                 form.submit();
