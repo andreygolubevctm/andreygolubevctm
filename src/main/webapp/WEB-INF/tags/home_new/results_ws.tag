@@ -296,8 +296,8 @@
 
 <%-- UNAVAILABLE ROW --%>
 <core:js_template id="unavailable-template">
-	{{ var productTitle = (typeof obj.headline !== 'undefined' && typeof obj.headline.name !== 'undefined') ? obj.headline.name : 'Unknown product name'; }}
-	{{ var productDescription = (typeof obj.headline !== 'undefined' && typeof obj.headline.des !== 'undefined') ? obj.headline.des : 'Unknown product name'; }}
+	{{ var productTitle = (typeof obj.productName !== 'undefined') ? obj.productName : 'Unknown product name'; }}
+	{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
 
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var logo = _.template(template); }}
@@ -445,7 +445,7 @@
 		</span>
 
 		<span class="name">
-			{{= products[i].headline.name }}
+			{{= products[i].productName }}
 		</span>
 		<span class="price">
 			<span class="frequency annual annually {{= annualHidden }}">
@@ -470,7 +470,7 @@
 {{ if ((typeof img === 'undefined' || img === '') && products[i].hasOwnProperty('productId') && products[i].productId.length > 1) img = products[i].productId.substring(0, products[i].productId.indexOf('-')); }}
 
 	<li class="compare-item">
-		<span class="companyLogo logo_{{= img }}" title="{{= products[i].headline.name }}"></span>
+		<span class="companyLogo logo_{{= img }}" title="{{= products[i].productName }}"></span>
 		<span class="price">
 			<span class="frequency annual annually {{= annualHidden }}">
 				{{= products[i].price.annualPremiumFormatted }} <span class="small hidden-sm">annually</span>
