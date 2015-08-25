@@ -12,22 +12,28 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.content.Content;
 import com.ctm.model.settings.PageSettings;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.Element;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 public class ContentService {
 
-
+    private static Logger logger = Logger.getLogger(ContentService.class.getName());
 	private static ContentService contentService = new ContentService();
+    private static final CacheManager cacheManager = CacheManager.newInstance();
+    private static Ehcache contentControlCache;
 
-	/**
-	 * Returns the value of the content key (as a string) this is the one that should be called by the JSP page.
-	 *
-	 * @param pageContext
-	 * @param contentCode
-	 * @return
-	 * @throws DaoException
-	 * @throws ConfigSettingException
-	 */
+    /**
+     * Returns the value of the content key (as a string) this is the one that should be called by the JSP page.
+     *
+     * @param request
+     * @param contentKey
+     * @return
+     * @throws DaoException
+     * @throws ConfigSettingException
+     */
 	public static String getContentValue(HttpServletRequest request, String contentKey) throws DaoException, ConfigSettingException {
 
 		Content content = getContent(request, contentKey);
@@ -58,9 +64,8 @@ public class ContentService {
 	/**
 	 * Returns the Content model if you need to work with the entire model and not just get hold of the value.
 	 * Uses the pageContext to automatically detect current brand id.
-	 *
-	 * @param pageContext
-	 * @param contentCode
+	 * @param request used for get brand and vertical to match in the database
+     * @param contentKey key that will match contentKey column in database must be comma separated list of valid values
 	 * @return
 	 * @throws DaoException
 	 * @throws ConfigSettingException
@@ -73,9 +78,8 @@ public class ContentService {
 
 	/**
 	 * Returns the Content model with the supplementary data
-	 *
-	 * @param pageContext
-	 * @param contentCode
+     * @param request used for get brand and vertical to match in the database
+     * @param contentKey key that will match contentKey column in database must be comma separated list of valid values
 	 * @return
 	 * @throws DaoException
 	 * @throws ConfigSettingException
@@ -88,9 +92,8 @@ public class ContentService {
 
 	/**
 	 * Private method to get content model with or with out supplementary data
-	 *
-	 * @param pageContext
-	 * @param contentCode
+     * @param request used for get brand and vertical to match in the database
+     * @param contentKey key that will match contentKey column in database must be comma separated list of valid values
 	 * @return
 	 * @throws DaoException
 	 * @throws ConfigSettingException
@@ -113,6 +116,7 @@ public class ContentService {
 	 *
 	 * @param contentKey
 	 * @param brandId
+     * @param verticalId
 	 * @param effectiveDate
 	 * @param includeSupplementary
 	 * @return
@@ -120,8 +124,24 @@ public class ContentService {
 	 */
 	public Content getContent(String contentKey, int brandId, int verticalId, Date effectiveDate, boolean includeSupplementary ) throws DaoException {
 
-		ContentDao contentDao = new ContentDao();
-		Content content = contentDao.getByKey(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
+        // Create a 'key' for the cache - this is based on the values used to call the DAO (excluding date)
+        String cacheKey = contentKey+"_"+brandId+"_"+verticalId+"_"+includeSupplementary;
+        Content content = null;
+
+        initCache();
+
+        if(contentControlCache.isKeyInCache(cacheKey)) {
+            logger.info("IN CACHE "+cacheKey);
+            Element ele = contentControlCache.get(cacheKey);
+            content = (Content) ele.getObjectValue();
+        }else{
+            logger.info("LOAD FROM DB "+cacheKey);
+            ContentDao contentDao = new ContentDao();
+            content = contentDao.getByKey(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
+
+            contentControlCache.put(new Element(cacheKey, content));
+        }
+
 
 		return content;
 
@@ -131,7 +151,7 @@ public class ContentService {
 	/**
 	 * Return a list of content items with the same key mapped to a provider id.
 	 *
-	 * @param pageContext
+     * @param request
 	 * @param contentCode
 	 * @param providerId
 	 * @return
@@ -147,7 +167,6 @@ public class ContentService {
 	 * Low level get content method for a list of content items with the same key mapped to a provider.
 	 * This method supports duplicate keys and returns a list of matching items.
 	 *
-	 * @param pageContext
 	 * @param contentCode
 	 * @param providerId
 	 * @param brandId
@@ -164,4 +183,14 @@ public class ContentService {
 		return contents;
 
 	}
+
+    /**
+     *
+     */
+    public static void initCache(){
+        if(contentControlCache == null) {
+            contentControlCache = cacheManager.getCache("contentControlCache");
+        }
+    }
+
 }
