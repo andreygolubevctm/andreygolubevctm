@@ -314,7 +314,7 @@ public class Data extends XmlNode implements Comparable<Data> {
 				value = NumberUtils.parseNumber(getString(xpath), targetClass);
 			}
 		} catch (NumberFormatException e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 		return value;
 	}

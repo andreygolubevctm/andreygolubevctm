@@ -265,7 +265,7 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 			if(json.isNull("annual_prev_cost") == false) setAnnualPreviousCost(json.getDouble("annual_prev_cost"));
 
 		} catch (JSONException e) {
-			logger.debug("{}",e);
+			logger.debug("{}",e.toString());
 			return false;
 		}
 

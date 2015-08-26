@@ -164,7 +164,7 @@ public class HealthTransactionDao {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					logger.error("{}",e);
+					logger.error("{}",e.toString());
 				}
 			}
 			dbSource.closeConnection();

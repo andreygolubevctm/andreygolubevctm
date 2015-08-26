@@ -71,7 +71,7 @@ public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<Tr
 				Date returnDate  = FormDateUtils.parseDateFromForm(date);
 				returnFormattedDate = new SimpleDateFormat("EEE, d MMM yyyy").format( returnDate );
 			} catch (Exception ex) {
-				logger.error("{}",ex);
+				logger.error("{}",ex.toString());
 			}
 		}
 

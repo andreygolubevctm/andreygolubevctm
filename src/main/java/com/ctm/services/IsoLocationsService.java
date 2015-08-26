@@ -27,7 +27,7 @@ public class IsoLocationsService {
         try {
             json.put("isoLocations" , countries);
         } catch (JSONException e) {
-            logger.error("{}",e);
+            logger.error("{}",e.toString());
         }
         return json;
     }
@@ -42,7 +42,7 @@ public class IsoLocationsService {
         try {
             json.put("isoLocations" , isoLocations);
         } catch (JSONException e) {
-            logger.error("{}",e);
+            logger.error("{}",e.toString());
         }
         return json;
     }
@@ -72,7 +72,7 @@ public class IsoLocationsService {
         try {
             json.put("topTen" , topTen);
         } catch (JSONException e) {
-            logger.error("{}",e);
+            logger.error("{}",e.toString());
         }
 
         return json;

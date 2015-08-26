@@ -85,7 +85,7 @@ public class ResetPasswordService {
 				response = createResponse("ERROR", "Oops, something seems to have gone wrong! - Please try the reset proceedure again later.");
 				logAudit.setResult(LogAudit.Result.FAIL);
 				metadata = "token: " + resetId + ", emailMasterId: " + emailMasterId + ", exception was thrown " + e.getMessage();
-				logger.error("{}",e);
+				logger.error("{}",e.toString());
 			}
 		} else {
 			// JSON result failure - no email master ID was returned

@@ -168,7 +168,7 @@ public class SetDataTag extends BaseTag {
 
 			} catch (SAXException e) {
 				logger.error("failed to setData xml:" + xml);
-				logger.error("{}",e);
+				logger.error("{}",e.toString());
 			}
 		}
 		this.init();

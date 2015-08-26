@@ -78,7 +78,7 @@ public class TransactionService {
 			}
 		}
 		catch (DaoException e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 			Error error = new Error(e.getMessage());
 			details.addError(error);
 		}

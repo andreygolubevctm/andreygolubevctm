@@ -23,7 +23,7 @@ public class CategoryService {
 			return categoryDao.getCategories(pageSettings.getVertical().getId(), pageSettings.getBrandId());
 		}
 		catch (Exception e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 
 		return null;

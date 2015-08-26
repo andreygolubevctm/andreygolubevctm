@@ -81,7 +81,7 @@ public class SegmentRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 		return false;
 	}
@@ -101,7 +101,7 @@ public class SegmentRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 		return false;
 	}
@@ -123,7 +123,7 @@ public class SegmentRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 		return false;
 	}

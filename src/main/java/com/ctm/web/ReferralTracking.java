@@ -34,7 +34,7 @@ public class ReferralTracking {
 				try {
 					value = URLDecoder.decode(value, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
-					logger.warn("{}",e);
+					logger.warn("{}",e.toString());
 				}
 				try {
 					valid = ContentService.getContentIsValid(request, key, value);
@@ -42,7 +42,7 @@ public class ReferralTracking {
 						data.put(xpath, value);
 					}
 				} catch (DaoException | ConfigSettingException e) {
-					logger.warn("{}",e);
+					logger.warn("{}",e.toString());
 				}
 
 				if(valid ){

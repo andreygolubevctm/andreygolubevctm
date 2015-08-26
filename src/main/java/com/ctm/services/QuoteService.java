@@ -47,7 +47,7 @@ public class QuoteService {
 			result.put("success", isSuccessful);
 			result.put("transactionId", transactionId);
 		} catch (JSONException e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 		return json;
 	}

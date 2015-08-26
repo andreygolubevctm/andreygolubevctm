@@ -60,7 +60,7 @@ public class AuditService {
 		try {
 			encryptedSessionId = StringEncryption.encrypt(secret_key, logAudit.getSessionId());
 		} catch (GeneralSecurityException e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 
 		/*Run the log */

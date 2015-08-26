@@ -33,7 +33,7 @@ public class RequestService {
             pageSettings = SettingsService.getPageSettingsForPage(request);
             styleCodeId = pageSettings.getBrandId();
         } catch (DaoException | ConfigSettingException e) {
-           logger.error("{}",e);
+           logger.error("{}",e.toString());
         }
     }
 

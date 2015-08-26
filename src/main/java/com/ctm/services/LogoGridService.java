@@ -23,7 +23,7 @@ public class LogoGridService {
 			providerCodes.setProviderCodes(vertical.getType().toString(), pageSettings.getBrandId()); // populate the
 		}
 		catch (Exception e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 	}
 

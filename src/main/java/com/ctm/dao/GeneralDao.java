@@ -36,7 +36,7 @@ public class GeneralDao {
 			}
 			rs.close();
 		} catch (SQLException | NamingException e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		} finally {
 			dbSource.closeConnection();
 		}

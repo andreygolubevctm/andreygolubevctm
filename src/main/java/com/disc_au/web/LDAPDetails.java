@@ -93,7 +93,7 @@ public class LDAPDetails {
 					throw new Exception("Invalid User");
 				}
 			} catch (final Exception ex) {
-				logger.error("{}",ex);
+				logger.error("{}",ex.toString());
 			}
 		}
 

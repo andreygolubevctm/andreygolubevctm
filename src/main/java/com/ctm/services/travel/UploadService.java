@@ -95,7 +95,7 @@ public class UploadService {
 
 		}
 		catch(IOException e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 
 		// close off the SQL statement

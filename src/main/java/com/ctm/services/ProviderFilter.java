@@ -48,7 +48,7 @@ public class ProviderFilter {
             return code == null || code.equals("invalid") ? "" : code;
         }
         catch (Exception e) {
-            logger.error("{}",e);
+            logger.error("{}",e.toString());
         }
 
         return "";
@@ -64,7 +64,7 @@ public class ProviderFilter {
 			config = getFilteredConfig(data, config, vertical);
 		}
 		catch (Exception e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 
 		return config;
@@ -212,7 +212,7 @@ public class ProviderFilter {
 			writer.close();
 
 		} catch (XMLStreamException e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 		return config;
 	}

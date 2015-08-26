@@ -30,7 +30,7 @@ public class UtilitiesApplicationModel extends AbstractJsonModel {
 		try {
 			setUniquePurchaseId(responseJson.getString("unique_purchase_id"));
 		} catch (JSONException e) {
-			logger.debug("{}",e);
+			logger.debug("{}",e.toString());
 			return false;
 		}
 

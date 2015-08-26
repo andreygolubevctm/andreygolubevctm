@@ -1,6 +1,8 @@
 package com.ctm.utils;
 
+import org.apache.log4j.spi.LoggerFactory;
 import org.junit.Test;
+import org.slf4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +14,7 @@ import static org.mockito.Mockito.when;
  * Created by lbuchanan on 18/12/2014.
  */
 public class RequestUtilsTest {
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(RequestUtilsTest.class);
 
     @Test
     public void shouldGetTransactionIdFromRequest(){
@@ -24,4 +27,5 @@ public class RequestUtilsTest {
         result =  RequestUtils.getTransactionIdFromRequest(request);
         assertEquals(Long.valueOf(-1L), result);
     }
+
 }

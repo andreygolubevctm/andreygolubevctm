@@ -28,7 +28,7 @@ public class ProviderService {
 			return providerDao.getProviders(pageSettings.getVertical().getCode(), pageSettings.getBrandId(), getOnlyActiveProviders);
 		}
 		catch (Exception e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 
 		return null;
@@ -52,7 +52,7 @@ public class ProviderService {
 
 		}
 		catch (Exception e) {
-			logger.error("{}",e);
+			logger.error("{}",e.toString());
 		}
 
 		return providerDropdown.toString();
