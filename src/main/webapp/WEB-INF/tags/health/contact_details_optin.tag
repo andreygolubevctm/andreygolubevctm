@@ -16,10 +16,10 @@
 <c:set var="val_optout"				value="N" />
 
 <%-- Vars for competition --%>
-<c:set var="competitionSplitTestDisabled" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
+<c:set var="competitionSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionEnabled" value="${false}" />
-<c:if test="${competitionEnabledSetting == 'Y' && competitionSplitTestDisabled eq false}">
+<c:if test="${competitionEnabledSetting == 'Y' && competitionSplitTest eq true}">
 	<c:set var="competitionEnabled" value="${true}" />
 	</c:if>
 
