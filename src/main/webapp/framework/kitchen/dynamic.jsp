@@ -378,10 +378,6 @@
 		<field:post_code xpath="${xpath}/postcode" title="field:post_code" required="true" />
 	</form_new:row>
 
-	<form_new:row label="post_code_and_state" legend="type 2611">
-		<field:post_code_and_state xpath="${xpath}/postcodeState" title="field:post_code_and_state" required="true" className="" />
-	</form_new:row>
-
 	<form_new:row label="provider_select">
 		<field:provider_select productCategories="HEALTH" xpath="${xpath}/singleProvider" />
 	</form_new:row>

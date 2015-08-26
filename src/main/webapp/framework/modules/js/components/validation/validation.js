@@ -145,12 +145,11 @@ var validation = false;
                  An error message placeholder will be injected above the form element, generally inside the parent .row-content
                  **/
                 var $referenceElement = $element;
-                if($element.attr('data-validation-placement') !== null && $element.attr('data-validation-placement') !== ''){
+                if(typeof $element.attr('data-validation-placement') !== 'undefined' &&
+                    $element.attr('data-validation-placement') !== null && $element.attr('data-validation-placement') !== ''){
                     $referenceElement = $($element.attr('data-validation-placement'));
                 }
-
                 var parent = $referenceElement.closest('.row-content, .fieldrow_value');
-
                 if(parent.length === 0) parent = $element.parent();
 
                 var errorContainer = parent.children('.error-field');
@@ -220,10 +219,36 @@ var validation = false;
     }
 
 
+    function isValid( $element, displayErrors ){
+        if( displayErrors )
+            return $element.valid();
+
+        var $journeyEngineForm = $(document).find(".journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).children("form");
+        if($journeyEngineForm.length)
+            $form = $journeyEngineForm;
+        else
+            $form = $("#mainForm");
+
+        try {
+            return $form.validate().check( $element );
+        } catch(e) {
+            return true;
+        }
+
+    }
+
     meerkat.modules.register('jqueryValidate', {
         init: init,
         initJourneyValidator: initJourneyValidator,
-        events: events
+        events: events,
+        isValid: isValid
+    });
+
+    $.fn.extend({
+        isValid: function( displayErrors ) {
+            return meerkat.modules.jqueryValidate.isValid( $(this), displayErrors );
+        }
     });
 
 })(jQuery);
+

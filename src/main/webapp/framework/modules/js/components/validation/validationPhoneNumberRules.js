@@ -60,7 +60,7 @@
     /**
      * Must have at least one number.
      */
-    jQuery.validator.addMethod("requireOneContactNumber", function(value, element) {
+    $.validator.addMethod("requireOneContactNumber", function(value, element) {
         var nameSuffix = element.id.split(/[_]+/);
         nameSuffix.pop();
         nameSuffix = nameSuffix.join("_");

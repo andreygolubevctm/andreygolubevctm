@@ -44,7 +44,7 @@
 	</c:if>
 	<form_new:row fieldXpath="${fieldXpath}" label="Street Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
 		<c:set var="placeholder" value="e.g. 5/20 Sample St" />
-		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address" placeHolder="${placeholder}" required="false" />
+		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address" placeHolder="${placeholder}" required="false" additionalAttributes=" data-rule-validAutofilllessSearch='${name}' "/>
 	</form_new:row>
 
 	<%-- POSTCODE --%>
@@ -69,7 +69,7 @@
 					<span class=" input-group-addon" data-target="${name}">
 						<i class="icon-sort"></i>
 					</span>
-					<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-attach="true">
+					<select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}">
 						<%-- Write the initial "Please select" option --%>
 						<option value="">Please select</option>
 						<%-- Write the options for each row --%>
@@ -96,7 +96,7 @@
 					<span class=" input-group-addon" data-target="${name}">
 						<i class="icon-sort"></i>
 					</span>
-					<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-msg-required="Please select a suburb" data-attach="true" disabled="disabled">
+					<select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}">
 						<option value=''>Enter Postcode</option>
 					</select>
 				</div>
@@ -109,7 +109,7 @@
 	<%-- STREET NAME --%>
 	<c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
 	<form_new:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStdFieldRow">
-		<field_new:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" />
+		<field_new:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes=" data-rule-validAddress='${name}' " />
 	</form_new:row>
 
 	<%-- STREET NUMBER --%>
@@ -123,10 +123,10 @@
 		<div class="${name}_streetNum_container">
 			<c:choose>
 				<c:when test="${isPostal}">
-					<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" />
+					<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false"  />
 				</c:when>
 				<c:otherwise>
-					<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" />
+					<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" />
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -175,18 +175,9 @@
 	<field:hidden xpath="${xpath}/streetName" />
 	<field:hidden xpath="${xpath}/streetId" />
 	<field_new:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" />
-	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" />
+	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" attributeInjection="data-rule-validAddress='${name}'" />
 	<field:hidden xpath="${xpath}/state" />
 </div>
-
-<%-- Custom validation for address --%>
-<go:validate selector="${autofilllessSearchXpath}_autofilllessSearch" rule="validAutofilllessSearch" parm="'${name}'" message="Please select a valid address"/>
-<go:validate selector="${name}_postCode" rule="validAddress" parm="'${name}'" message="Please enter a valid postcode"/>
-<go:validate selector="${name}_suburb" rule="validSuburb" parm="'${name}'" message="Please select a suburb"/>
-<go:validate selector="${name}_nonStdStreet" rule="validAddress" parm="'${name}'" message="Please enter the residential street"/>
-<go:validate selector="${name}_streetNum" rule="validAddress" parm="'${name}'" message="Please enter a valid street number"/>
-<go:validate selector="${name}_unitShop" rule="validAddress" parm="'${name}'" message="Please enter a valid unit/shop/level"/>
-<go:validate selector="${name}_unitType" rule="validAddress" parm="'${name}'" message="Please select a unit type"/>
 
 <go:script marker="onready">
 	<c:choose>
