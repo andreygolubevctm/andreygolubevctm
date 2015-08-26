@@ -24,6 +24,7 @@ public class TravelResult extends Result {
     private String encodeUrl;
     private String handoverUrl;
     private String handoverType;
+    private String handoverVar;
     private String handoverData;
     private ArrayList<Benefit> benefits;
     private ArrayList<ExemptedBenefit> exemptedBenefits;
@@ -152,6 +153,14 @@ public class TravelResult extends Result {
 
     public void setHandoverType(String handoverType) {
         this.handoverType = handoverType;
+    }
+
+    public String getHandoverVar() {
+        return handoverVar;
+    }
+
+    public void setHandoverVar(String handoverVar) {
+        this.handoverVar = handoverVar;
     }
 
     public String getHandoverData() {
