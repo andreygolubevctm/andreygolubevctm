@@ -24,5 +24,4 @@ public class RequestUtilsTest {
         result =  RequestUtils.getTransactionIdFromRequest(request);
         assertEquals(Long.valueOf(-1L), result);
     }
-
 }
