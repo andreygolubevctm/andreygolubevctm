@@ -23,9 +23,11 @@ public class LogTag extends BaseTag {
 	private Exception error = null;
 
 	public void setLevel(String level) {
-		this.level = LogLevel.valueOf(level);
-		if (this.level == null) {
-			this.level =  defaultLevel;
+		this.level = defaultLevel;
+		try {
+			this.level = LogLevel.valueOf(level);
+		} catch (Exception ex) {
+			// Invalid enum string passed in, will default to
 		}
 	}
 
