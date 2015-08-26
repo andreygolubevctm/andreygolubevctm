@@ -10,13 +10,14 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 public class CountryMappingService {
-    private static final Logger logger = Logger.getLogger(CountryMappingService.class);
+	private static final Logger logger = LoggerFactory.getLogger(CountryMappingService.class);
     private final SessionDataService sessionDataService = new SessionDataService();
     private static final long serialVersionUID = 69L;
 

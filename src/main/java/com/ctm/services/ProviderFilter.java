@@ -6,7 +6,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.disc_au.web.go.Data;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.stream.*;
@@ -15,7 +16,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 public class ProviderFilter {
-	private static final Logger logger = Logger.getLogger(ProviderFilter.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProviderFilter.class);
 	private static XMLStreamWriter writer;
 	private PageSettings pageSettings;
 	private SessionDataService sessionDataService;
@@ -47,7 +48,7 @@ public class ProviderFilter {
             return code == null || code.equals("invalid") ? "" : code;
         }
         catch (Exception e) {
-            logger.error(e);
+            logger.error("{}",e);
         }
 
         return "";
@@ -63,7 +64,7 @@ public class ProviderFilter {
 			config = getFilteredConfig(data, config, vertical);
 		}
 		catch (Exception e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 
 		return config;
@@ -211,7 +212,7 @@ public class ProviderFilter {
 			writer.close();
 
 		} catch (XMLStreamException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return config;
 	}

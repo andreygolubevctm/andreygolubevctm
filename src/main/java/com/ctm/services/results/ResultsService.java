@@ -16,7 +16,8 @@ import javax.sql.DataSource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
@@ -27,145 +28,145 @@ import com.ctm.model.results.ResultsTemplateItem;
 
 public class ResultsService {
 
-	private DataSource ds;
-	private ArrayList<ResultsTemplateItem> unorganisedList;
-	private static Logger logger = Logger.getLogger(ResultsService.class.getName());
+    private DataSource ds;
+    private ArrayList<ResultsTemplateItem> unorganisedList;
+    private static Logger logger = LoggerFactory.getLogger(ResultsService.class.getName());
 
-	public ResultsService() {
-		Context initCtx;
-		try {
-			initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			// Look up our data source
-			ds = (DataSource) envCtx.lookup("jdbc/ctm");
-		} catch (NamingException e) {
-			logger.error("Failed to get InitialContext for jdbc/ctm" , e);
-		}
-	}
+    public ResultsService() {
+        Context initCtx;
+        try {
+            initCtx = new InitialContext();
+            Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            // Look up our data source
+            ds = (DataSource) envCtx.lookup("jdbc/ctm");
+        } catch (NamingException e) {
+            logger.error("Failed to get InitialContext for jdbc/ctm" , e);
+        }
+    }
 
-	public List<ResultsTemplateItem> getResultsPageStructure(String vertical) throws SQLException {
+    public List<ResultsTemplateItem> getResultsPageStructure(String vertical) throws SQLException {
 
-		Connection conn = null;
+        Connection conn = null;
 
-		unorganisedList = new ArrayList<ResultsTemplateItem>();
+        unorganisedList = new ArrayList<ResultsTemplateItem>();
 
-		try{
-			PreparedStatement stmt;
-			conn = ds.getConnection();
-			stmt = conn.prepareStatement(
-					"SELECT * " +
-					"FROM aggregator.features_details " +
-					"WHERE vertical = ? " +
-					"ORDER BY parentId;"
-			);
-			stmt.setString(1, vertical);
-			ResultSet result = stmt.executeQuery();
+        try{
+            PreparedStatement stmt;
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(
+                    "SELECT * " +
+                            "FROM aggregator.features_details " +
+                            "WHERE vertical = ? " +
+                            "ORDER BY parentId;"
+            );
+            stmt.setString(1, vertical);
+            ResultSet result = stmt.executeQuery();
 
-			while (result.next()) {
+            while (result.next()) {
 
-				ResultsTemplateItem item = new ResultsTemplateItem();
-				item.setId(result.getInt("id"));
-				item.setName(result.getString("name"));
-				item.setType(result.getString("type"));
-				item.setStatus(result.getBoolean("status"));
-				item.setSequence(result.getInt("sequence"));
-				item.setParentId(result.getInt("parentId"));
-				item.setResultPath(result.getString("resultPath"));
-				item.setVertical(result.getString("vertical"));
-				item.setClassName(result.getString("className"));
-				item.setExtraText(result.getString("extraText"));
-				item.setMultiRow(result.getBoolean("multiRow"));
-				item.setExpanded(result.getBoolean("expanded"));
-				item.setHelpId(result.getInt("helpId"));
-				item.setShortlistKey(result.getString("shortlistKey"));
-				unorganisedList.add(item);
+                ResultsTemplateItem item = new ResultsTemplateItem();
+                item.setId(result.getInt("id"));
+                item.setName(result.getString("name"));
+                item.setType(result.getString("type"));
+                item.setStatus(result.getBoolean("status"));
+                item.setSequence(result.getInt("sequence"));
+                item.setParentId(result.getInt("parentId"));
+                item.setResultPath(result.getString("resultPath"));
+                item.setVertical(result.getString("vertical"));
+                item.setClassName(result.getString("className"));
+                item.setExtraText(result.getString("extraText"));
+                item.setMultiRow(result.getBoolean("multiRow"));
+                item.setExpanded(result.getBoolean("expanded"));
+                item.setHelpId(result.getInt("helpId"));
+                item.setShortlistKey(result.getString("shortlistKey"));
+                unorganisedList.add(item);
 
-			}
+            }
 
-		} finally {
-			if(conn != null) {
-				conn.close();
-			}
-		}
+        } finally {
+            if(conn != null) {
+                conn.close();
+            }
+        }
 
-		ArrayList<ResultsTemplateItem> list = new ArrayList<ResultsTemplateItem>();
-		list = findItemInList(0); // start at top level (0) and work recursively through the data.
-		Collections.sort(list);
+        ArrayList<ResultsTemplateItem> list = new ArrayList<ResultsTemplateItem>();
+        list = findItemInList(0); // start at top level (0) and work recursively through the data.
+        Collections.sort(list);
 
-		return list;
-	}
+        return list;
+    }
 
-	public ArrayList<ResultsTemplateItem> findItemInList(Number parentId){
+    public ArrayList<ResultsTemplateItem> findItemInList(Number parentId){
 
-		ArrayList<ResultsTemplateItem> returns = new ArrayList<ResultsTemplateItem>();
+        ArrayList<ResultsTemplateItem> returns = new ArrayList<ResultsTemplateItem>();
 
-		for (ResultsTemplateItem item : unorganisedList) {
-			if(item.getParentId().equals(parentId)){
-				returns.add(item);
-			}
-		}
+        for (ResultsTemplateItem item : unorganisedList) {
+            if(item.getParentId().equals(parentId)){
+                returns.add(item);
+            }
+        }
 
-		// remove found items.
-		unorganisedList.removeAll(returns);
+        // remove found items.
+        unorganisedList.removeAll(returns);
 
-		// look for children of found items
-		for (ResultsTemplateItem item : returns) {
-			ArrayList<ResultsTemplateItem> children = findItemInList(item.getId());
-			Collections.sort(children);
-			item.setChildren(children);
-		}
+        // look for children of found items
+        for (ResultsTemplateItem item : returns) {
+            ArrayList<ResultsTemplateItem> children = findItemInList(item.getId());
+            Collections.sort(children);
+            item.setChildren(children);
+        }
 
-		return returns;
-	}
+        return returns;
+    }
 
-	public List<ResultsSimpleItem> getResultItemsAsList(String vertical, String type) throws SQLException {
+    public List<ResultsSimpleItem> getResultItemsAsList(String vertical, String type) throws SQLException {
 
-		Connection conn = null;
+        Connection conn = null;
 
-		ArrayList<ResultsSimpleItem> list = new ArrayList<ResultsSimpleItem>();
+        ArrayList<ResultsSimpleItem> list = new ArrayList<ResultsSimpleItem>();
 
-		try{
-			PreparedStatement stmt;
-			conn = ds.getConnection();
-			stmt = conn.prepareStatement(
-				"SELECT name, resultPath " +
-				"FROM aggregator.features_details " +
-				"WHERE vertical = ? AND type = ? " +
-				"ORDER BY parentId;"
-			);
+        try{
+            PreparedStatement stmt;
+            conn = ds.getConnection();
+            stmt = conn.prepareStatement(
+                    "SELECT name, resultPath " +
+                            "FROM aggregator.features_details " +
+                            "WHERE vertical = ? AND type = ? " +
+                            "ORDER BY parentId;"
+            );
 
-			stmt.setString(1, vertical);
-			stmt.setString(2, type);
-			ResultSet result = stmt.executeQuery();
+            stmt.setString(1, vertical);
+            stmt.setString(2, type);
+            ResultSet result = stmt.executeQuery();
 
-			while (result.next()) {
+            while (result.next()) {
 
-				ResultsSimpleItem item = new ResultsSimpleItem();
-				item.setName(result.getString("name"));
-				item.setResultPath(result.getString("resultPath"));
-				list.add(item);
+                ResultsSimpleItem item = new ResultsSimpleItem();
+                item.setName(result.getString("name"));
+                item.setResultPath(result.getString("resultPath"));
+                list.add(item);
 
-			}
+            }
 
-		} finally {
-			if(conn != null) {
-				conn.close();
-			}
-		}
+        } finally {
+            if(conn != null) {
+                conn.close();
+            }
+        }
 
-		return list;
-	}
+        return list;
+    }
 
-	public String getResultItemsAsJsonString(String vertical, String type) throws SQLException {
-		List<ResultsSimpleItem> list = getResultItemsAsList(vertical, type);
-		return JSONArray.toJSONString(list);
-	}
+    public String getResultItemsAsJsonString(String vertical, String type) throws SQLException {
+        List<ResultsSimpleItem> list = getResultItemsAsList(vertical, type);
+        return JSONArray.toJSONString(list);
+    }
 
-	public String getPageStructureAsJsonString(String vertical) throws SQLException, JsonProcessingException, JSONException {
-		List<ResultsTemplateItem> results = getResultsPageStructure(vertical);
-		ObjectMapper objectMapper = new ObjectMapper();
-		String string  = objectMapper.writeValueAsString(results);
-		return string;
-	}
+    public String getPageStructureAsJsonString(String vertical) throws SQLException, JsonProcessingException, JSONException {
+        List<ResultsTemplateItem> results = getResultsPageStructure(vertical);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String string  = objectMapper.writeValueAsString(results);
+        return string;
+    }
 
 }

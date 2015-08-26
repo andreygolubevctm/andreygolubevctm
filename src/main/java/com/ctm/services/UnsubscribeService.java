@@ -2,7 +2,8 @@ package com.ctm.services;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.EmailMasterDao;
 import com.ctm.exceptions.DaoException;
@@ -12,7 +13,7 @@ import com.ctm.services.email.EmailUrlService;
 
 public class UnsubscribeService {
 	
-	private static Logger logger = Logger.getLogger(UnsubscribeService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(UnsubscribeService.class.getName());
 	private HashedEmailService hashedEmailService;
 	private EmailMasterDao emailDao;
 
@@ -55,7 +56,7 @@ public class UnsubscribeService {
 			try {
 				unsubscribe.setEmailDetails(hashedEmailService.getEmailDetails(hashedEmail, email, brandId));
 			} catch (DaoException e) {
-				logger.error(e);
+				logger.error("{}",e);
 				FatalErrorService.logFatalError(e, brandId, "failed to unsubscribe" , "", true);
 			}
 		}

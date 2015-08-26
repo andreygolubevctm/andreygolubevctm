@@ -12,7 +12,8 @@ import com.ctm.utils.utilities.UtilitiesRequestParser;
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
 import com.disc_au.web.go.Data;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,7 +25,7 @@ import java.util.List;
  */
 public class UtilitiesBaseService {
 
-	private static Logger logger = Logger.getLogger(UtilitiesBaseService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(UtilitiesBaseService.class.getName());
 
 	private boolean valid = false;
 	private String vertical = Vertical.VerticalType.UTILITIES.getCode();

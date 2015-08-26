@@ -12,7 +12,8 @@ import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,7 @@ public class SimplesSearchService {
     private final SimpleDatabaseConnection dbcon = new SimpleDatabaseConnection();
     private PageContext pageContext;
     private String error;
-    private static final Logger logger = Logger.getLogger(HealthPriceService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HealthPriceService.class.getName());
 
     public enum SearchMode {
         TRANS, PHONE, EMAIL, OTHER
@@ -84,7 +85,7 @@ public class SimplesSearchService {
             searchTransactionHeaderDetailsAndSave();
             searchTransactionDetailsAndSave();
         } catch (RuntimeException | DaoException e) {
-            logger.error(e);
+            logger.error("{}",e);
             error = e.getMessage();
             throw e;
         } finally {

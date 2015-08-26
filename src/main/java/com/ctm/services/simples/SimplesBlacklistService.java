@@ -2,7 +2,8 @@ package com.ctm.services.simples;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.BlacklistDao;
 import com.ctm.exceptions.ConfigSettingException;
@@ -15,7 +16,7 @@ import com.ctm.services.SettingsService;
 import com.ctm.services.StampingService;
 
 public class SimplesBlacklistService {
-	private static final Logger logger = Logger.getLogger(SimplesBlacklistService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimplesBlacklistService.class.getName());
 
 
 

@@ -27,7 +27,8 @@ import com.ctm.xml.XMLOutputWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -40,7 +41,7 @@ import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
 
 public class CarQuoteService {
 
-    private static final Logger logger = Logger.getLogger(CarQuoteService.class);
+	private static final Logger logger = LoggerFactory.getLogger(CarQuoteService.class);
 
     public static final String SERVICE_URL = "serviceUrl";
     public static final String TIMEOUT_MILLIS = "timeoutMillis";

@@ -7,7 +7,8 @@ import java.util.ArrayList;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -16,7 +17,7 @@ import com.ctm.services.EnvironmentService;
 
 public class ConfigSettingsDao {
 
-	private static Logger logger = Logger.getLogger(ConfigSettingsDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ConfigSettingsDao.class.getName());
 
 	/**
 	 * Returns all config settings for the current environment (handled automatically inside the function)

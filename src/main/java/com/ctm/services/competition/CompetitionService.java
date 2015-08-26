@@ -1,7 +1,8 @@
 package com.ctm.services.competition;
 
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.competition.CompetitionDao;
 import com.ctm.exceptions.DaoException;
@@ -12,7 +13,7 @@ import java.util.Date;
 
 public class CompetitionService {
 
-	private static Logger logger = Logger.getLogger(CompetitionService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CompetitionService.class.getName());
 
 	/**
 	 * isActive - returns whether the nominated competition exists and is active
@@ -32,7 +33,7 @@ public class CompetitionService {
 			compActive = CompetitionDao.isActive(brand.getId(), competitionId, serverDate);
 
 		} catch (DaoException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 
 		return compActive;

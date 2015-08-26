@@ -8,7 +8,8 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -20,7 +21,7 @@ import com.ctm.model.homeloan.HomeLoanModel.CustomerSituation;
 
 public class HomeloanUnconfirmedLeadsDao {
 
-	private static Logger logger = Logger.getLogger(HomeloanUnconfirmedLeadsDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HomeloanUnconfirmedLeadsDao.class.getName());
 
 	public HomeloanUnconfirmedLeadsDao() {
 	}

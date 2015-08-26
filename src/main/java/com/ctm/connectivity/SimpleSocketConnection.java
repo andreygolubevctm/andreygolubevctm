@@ -1,19 +1,16 @@
 package com.ctm.connectivity;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-
-import org.apache.log4j.Logger;
 
 
 public class SimpleSocketConnection {
 
-	private static Logger logger = Logger.getLogger(SimpleSocketConnection.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimpleSocketConnection.class.getName());
 
 	private String address;
 	private int port;
@@ -60,7 +57,7 @@ public class SimpleSocketConnection {
 			wr.close();
 
 		}catch(Exception e){
-			logger.error(e);
+			logger.error("{}",e);
 		}finally{
 
 			try {

@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.exceptions.ConfigSettingException;
@@ -31,7 +32,7 @@ import com.ctm.services.homeloan.HomeLoanService;
 		"/homeloan/opportunity/submit.json"
 })
 public class HomeLoanRouter extends HttpServlet {
-	private static Logger logger = Logger.getLogger(HomeLoanRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HomeLoanRouter.class.getName());
 	private static final long serialVersionUID = 70L;
 
 	@Override
