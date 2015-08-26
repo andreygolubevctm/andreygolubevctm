@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = {
-		"/health/quote/dualPrising/getFundWarning.json",
+		"/health/quote/dualPrising/getFundWarning.json"
 })
 public class HealthRouter extends HttpServlet {
 
