@@ -251,7 +251,9 @@
 				if(!isSplitTestOn()) {
 					meerkat.modules.homeResults.initPage();
 				}
+
 				meerkat.modules.homeHistory.initHomeHistory();
+				meerkat.modules.resultsFeatures.fetchStructure('hncams');
 			},
 			onAfterEnter: function onHistoryEnter(event) {
 				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(' + (isSplitTestOn() ? '3' : '4') + ') .snapshot');

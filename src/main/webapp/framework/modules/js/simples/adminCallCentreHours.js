@@ -79,7 +79,7 @@
 			
 			// Add the fields to the table as the first row
 			var rowHtml = _getHoursRowHtml(data),
-				$tr = $(rowHtml).prependTo(
+				$tr = $(rowHtml).appendTo(
 					$table.find("tbody")
 				);
 			
