@@ -51,7 +51,7 @@
 					</div>
 				</div>
 				<%-- COMPETITION START --%>
-				<c:if test="${competitionEnabled == true}">
+				<c:if test="${competitionEnabled == true and pageSettings.getVerticalCode() eq 'health'}">
 					<c:set var="competitionPromoImage"><content:get key="competitionPromoImage"/></c:set>
 					<c:if test="${not empty competitionPromoImage && firstSlide eq true}">
 						<div class="row">
