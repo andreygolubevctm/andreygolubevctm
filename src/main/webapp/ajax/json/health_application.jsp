@@ -37,13 +37,13 @@
 	<%-- check the if ONLINE user submitted more than 5 times [HLT-1092] --%>
 	<c:when test="${empty callCentre and not empty touch_count and touch_count > 5}">
 		<c:set var="errorMessage" value="You have attempted to submit this join more than 5 times." />
-		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
 		{ "error": { "type":"submission", "message":"${errorMessage}" } }
 	</c:when>
 	<%-- check the latest touch, to make sure a join is not already actively in progress [HLT-1092] --%>
 	<c:when test="${accessTouchService.isBeingSubmitted(tranId)}">
 		<c:set var="errorMessage" value="Your application is still being submitted. Please wait." />
-		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
 		{ "error": { "type":"submission", "message":"${errorMessage}" } }
 	</c:when>
 	<c:otherwise>
@@ -57,19 +57,19 @@
 <c:choose>
 	<c:when test="${ct_outcome == 'C'}">
 		<c:set var="errorMessage" value="Quote has already been submitted and confirmed." />
-		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}" />
 		{ "error": { "type":"confirmed", "message":"${errorMessage}" } }
 	</c:when>
 
 	<c:when test="${ct_outcome == 'V' or ct_outcome == 'I'}">
 		<c:set var="errorMessage" value="Important details are missing from your session. Your session may have expired." />
-		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
 		{ "error": { "type":"transaction", "message":"${errorMessage}" } }
 	</c:when>
 
 	<c:when test="${not empty ct_outcome}">
 		<c:set var="errorMessage" value="Application submit error. Code=${ct_outcome}" />
-		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
 		{ "error": { "type":"", "message":"${errorMessage}" } }
 	</c:when>
 
@@ -192,7 +192,7 @@
 		<%-- Set transaction to confirmed if application was successful --%>
 		<x:choose>
 			<x:when select="$resultOBJ//*[local-name()='success'] = 'true'">
-				<core:transaction touch="C" noResponse="true" />
+				<core:transaction touch="C" noResponse="true" productId="${productId}"/>
 
 						<c:set var="ignore">
 								<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="page" />
@@ -252,7 +252,7 @@
 									</c:when>
 									<%-- else just record a failure --%>
 									<c:when test="${empty errorMessage}">
-					<core:transaction touch="F" comment="Application success=false" noResponse="true" />
+					<core:transaction touch="F" comment="Application success=false" noResponse="true" productId="${productId}"/>
 										${go:XMLtoJSON(resultXml)}
 									</c:when>
 								</c:choose>
