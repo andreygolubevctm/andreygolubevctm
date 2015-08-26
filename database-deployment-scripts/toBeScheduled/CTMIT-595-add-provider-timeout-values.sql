@@ -66,22 +66,22 @@ SET @HEALTH_VERTICAL_ID = (SELECT verticalId FROM ctm.vertical_master WHERE vert
 SET @HEALTH_SERVICE_MASTER_ID = (SELECT serviceMasterId FROM ctm.service_master where verticalId = @HEALTH_VERTICAL_ID AND serviceCode = 'appService' );
 
 INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode, styleCodeId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'AHM'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'AUF'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'BUD'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'BUP'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'CBH'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'CUA'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'FRA'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'GMF'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'GMH'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'HCF'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'HIF'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'NIB'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'QCH'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE')
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'AHM'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'AUF'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'BUD'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'BUP'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'CBH'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'CUA'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'FRA'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'GMF'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'GMH'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'HCF'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'HIF'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'NIB'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'QCH'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE')
 ;
 
 -- Some environments have the CTM test brand
 INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode, styleCodeId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'CTM'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE')
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'CTM'), '0', 0, 'timeout','270',@START_DATE, @END_DATE, 'SERVICE')
 ;
