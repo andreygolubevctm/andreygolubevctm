@@ -10,12 +10,6 @@ public class Disclosures {
 
     private String expiry;
 
-    private String expiryInputD;
-
-    private String expiryInputM;
-
-    private String expiryInputY;
-
     private String insurer;
 
     private String previousInsurance;
@@ -50,30 +44,6 @@ public class Disclosures {
 
     public void setExpiry(String expiry) {
         this.expiry = expiry;
-    }
-
-    public String getExpiryInputD() {
-        return expiryInputD;
-    }
-
-    public void setExpiryInputD(String expiryInputD) {
-        this.expiryInputD = expiryInputD;
-    }
-
-    public String getExpiryInputM() {
-        return expiryInputM;
-    }
-
-    public void setExpiryInputM(String expiryInputM) {
-        this.expiryInputM = expiryInputM;
-    }
-
-    public String getExpiryInputY() {
-        return expiryInputY;
-    }
-
-    public void setExpiryInputY(String expiryInputY) {
-        this.expiryInputY = expiryInputY;
     }
 
     public String getInsurer() {

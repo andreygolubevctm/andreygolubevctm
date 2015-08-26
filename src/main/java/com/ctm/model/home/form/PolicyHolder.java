@@ -8,24 +8,12 @@ public class PolicyHolder {
 
     private String dob;
 
-    private String dobInputD;
-
-    private String dobInputM;
-
-    private String dobInputY;
-
     private String email;
 
     @Name
     private String firstName;
 
     private String jointDob;
-
-    private String jointDobInputD;
-
-    private String jointDobInputM;
-
-    private String jointDobInputY;
 
     @Name
     private String jointFirstName;
@@ -54,17 +42,7 @@ public class PolicyHolder {
 
     private String phone;
 
-    private String phoneinput;
-
     private String title;
-
-    public String getDobInputM() {
-        return dobInputM;
-    }
-
-    public void setDobInputM(String dobInputM) {
-        this.dobInputM = dobInputM;
-    }
 
     public String getAnyoneOlder() {
         return anyoneOlder;
@@ -80,22 +58,6 @@ public class PolicyHolder {
 
     public void setDob(String dob) {
         this.dob = dob;
-    }
-
-    public String getDobInputD() {
-        return dobInputD;
-    }
-
-    public void setDobInputD(String dobInputD) {
-        this.dobInputD = dobInputD;
-    }
-
-    public String getDobInputY() {
-        return dobInputY;
-    }
-
-    public void setDobInputY(String dobInputY) {
-        this.dobInputY = dobInputY;
     }
 
     public String getEmail() {
@@ -120,30 +82,6 @@ public class PolicyHolder {
 
     public void setJointDob(String jointDob) {
         this.jointDob = jointDob;
-    }
-
-    public String getJointDobInputD() {
-        return jointDobInputD;
-    }
-
-    public void setJointDobInputD(String jointDobInputD) {
-        this.jointDobInputD = jointDobInputD;
-    }
-
-    public String getJointDobInputM() {
-        return jointDobInputM;
-    }
-
-    public void setJointDobInputM(String jointDobInputM) {
-        this.jointDobInputM = jointDobInputM;
-    }
-
-    public String getJointDobInputY() {
-        return jointDobInputY;
-    }
-
-    public void setJointDobInputY(String jointDobInputY) {
-        this.jointDobInputY = jointDobInputY;
     }
 
     public String getJointFirstName() {
@@ -240,14 +178,6 @@ public class PolicyHolder {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getPhoneinput() {
-        return phoneinput;
-    }
-
-    public void setPhoneinput(String phoneinput) {
-        this.phoneinput = phoneinput;
     }
 
     public String getTitle() {

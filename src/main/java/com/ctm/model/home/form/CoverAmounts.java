@@ -10,11 +10,7 @@ public class CoverAmounts {
 
     private String rebuildCost;
 
-    private String rebuildCostentry;
-
     private String replaceContentsCost;
-
-    private String replaceContentsCostentry;
 
     private SpecifiedPersonalEffects specifiedPersonalEffects;
 
@@ -54,28 +50,12 @@ public class CoverAmounts {
         this.rebuildCost = rebuildCost;
     }
 
-    public String getRebuildCostentry() {
-        return rebuildCostentry;
-    }
-
-    public void setRebuildCostentry(String rebuildCostentry) {
-        this.rebuildCostentry = rebuildCostentry;
-    }
-
     public String getReplaceContentsCost() {
         return replaceContentsCost;
     }
 
     public void setReplaceContentsCost(String replaceContentsCost) {
         this.replaceContentsCost = replaceContentsCost;
-    }
-
-    public String getReplaceContentsCostentry() {
-        return replaceContentsCostentry;
-    }
-
-    public void setReplaceContentsCostentry(String replaceContentsCostentry) {
-        this.replaceContentsCostentry = replaceContentsCostentry;
     }
 
     public SpecifiedPersonalEffects getSpecifiedPersonalEffects() {
