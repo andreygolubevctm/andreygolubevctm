@@ -24,6 +24,7 @@ public class TravelQuote {
     private boolean encodeQuoteUrl;
     private Product product;
     private List<Benefit> benefits;
+    private Boolean isDomestic;
 
     public TravelQuote(){
 
@@ -140,5 +141,11 @@ public class TravelQuote {
 
     public void setBenefits(List<Benefit> benefits) {
         this.benefits = benefits;
+    }
+
+    public Boolean getIsDomestic() { return isDomestic; }
+
+    public void setIsDomestic(Boolean isDomestic) {
+        this.isDomestic = isDomestic;
     }
 }

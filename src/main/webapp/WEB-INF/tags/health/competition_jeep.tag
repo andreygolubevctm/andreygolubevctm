@@ -2,12 +2,11 @@
 <%@ tag description="Medicare details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:if test="${empty jeepCompetitionEnabledFlag}">
-	<jsp:useBean id="competitionService" class="com.ctm.services.competition.CompetitionService" />
-	<c:set var="jeepCompetitionEnabledFlag" scope="session" value="${competitionService.isActive(pageContext.getRequest(), 15)}" />
-</c:if>
+<jsp:useBean id="competitionService" class="com.ctm.services.competition.CompetitionService" />
+<c:set var="jeepCompetitionEnabledFlag" scope="session" value="${competitionService.isActive(pageContext.getRequest(), 15)}" />
 
 <c:if test="${jeepCompetitionEnabledFlag eq true}">
+
 	<div class="row row-content jeepPromotion">
 		<a href="<content:get key="febJeepPromoTNCs" />" title="Win a JEEP Compass Sport" target="_blank">
 			<div><!-- Win a JEEP Compass Sport --></div>

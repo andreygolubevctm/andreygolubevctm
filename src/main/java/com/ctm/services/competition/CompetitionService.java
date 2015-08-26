@@ -9,6 +9,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.services.ApplicationService;
 
+import java.util.Date;
+
 public class CompetitionService {
 
 	private static final Logger logger = LoggerFactory.getLogger(CompetitionService.class.getName());
@@ -24,9 +26,11 @@ public class CompetitionService {
 
 		Boolean compActive = false;
 
+		Date serverDate = ApplicationService.getApplicationDate(request);
+
 		try {
 			Brand brand = ApplicationService.getBrandFromRequest(request);
-			compActive = CompetitionDao.isActive(brand.getId(), competitionId);
+			compActive = CompetitionDao.isActive(brand.getId(), competitionId, serverDate);
 
 		} catch (DaoException e) {
 			logger.error("{}",e);
