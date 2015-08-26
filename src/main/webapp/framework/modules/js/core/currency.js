@@ -186,7 +186,7 @@
 			return num;
 		}
 
-		if (num.length == 0) {
+		if (num.length === 0) {
 			num = '0';
 		}
 

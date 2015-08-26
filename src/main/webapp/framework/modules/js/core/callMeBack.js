@@ -250,7 +250,7 @@
 	function setValidation(){
 
 		$forms.each(function(){
-			setupDefaultValidationOnForm($(this));
+			meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($(this));
 		});
 
 		if( $name.length > 0 ){

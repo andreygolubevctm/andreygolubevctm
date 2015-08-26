@@ -28,7 +28,7 @@
 
     $.validator.addMethod("validateLocation", function (value, element) {
         value = $.trim(String(value)).replace("'", "");
-        return value != '' && value.match(fullAddressRegex);
+        return value !== '' && value.match(fullAddressRegex);
     });
 
     /**

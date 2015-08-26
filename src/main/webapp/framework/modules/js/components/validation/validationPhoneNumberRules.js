@@ -26,10 +26,10 @@
      * Validate telephone landline OR mobile numbers.
      */
     $.validator.addMethod('validateTelNo', function (value) {
-        if (value.length === 0) return true;
+        if (!value.length) return true;
 
         var strippedValue = value.replace(numericOnly, '');
-        if (strippedValue.length === 0 && value.length > 0) {
+        if (!strippedValue.length && value.length > 0) {
             return false;
         }
 
@@ -41,15 +41,15 @@
      * Validate mobile phone numbers.
      */
     $.validator.addMethod('validateMobile', function (value) {
-        if (value.length == 0) return true;
+        if (!value.length) return true;
 
         var valid = true;
         var strippedValue = value.replace(numericOnly, '');
-        if (strippedValue.length == 0 && value.length > 0) {
+        if (!strippedValue.length && value.length > 0) {
             return false;
         }
 
-        var voipsNumber = strippedValue.indexOf('0500') == 0;
+        var voipsNumber = strippedValue.indexOf('0500') === 0;
         var phoneRegex = new RegExp('^(0[45]{1}[0-9]{8})$');
         if (!phoneRegex.test(strippedValue) || voipsNumber) {
             valid = false;

@@ -241,7 +241,8 @@ var validation = false;
         init: init,
         initJourneyValidator: initJourneyValidator,
         events: events,
-        isValid: isValid
+        isValid: isValid,
+        setupDefaultValidationOnForm: setupDefaultValidationOnForm
     });
 
     $.fn.extend({

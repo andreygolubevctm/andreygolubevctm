@@ -187,7 +187,7 @@
 			return;
 		}
 
-		setupDefaultValidationOnForm( $form );
+		meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $form );
 
 		if ($password.length > 0) {
 			$password.rules('add', {
@@ -195,7 +195,7 @@
 				minlength: 6,
 				messages:{
 					required: "Please enter a password",
-					minlength: jQuery.format("Password must be at least {0} characters")
+					minlength: $.validator.format("Password must be at least {0} characters")
 				}
 			});
 		}
@@ -206,7 +206,7 @@
 				equalTo: "#" + $password.attr("id"),
 				messages:{
 					required: "Please confirm your password",
-					equalTo: jQuery.format("Password and confirmation password must match")
+					equalTo: "Password and confirmation password must match"
 				}
 			});
 		}

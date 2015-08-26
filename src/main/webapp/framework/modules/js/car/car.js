@@ -167,7 +167,7 @@
 				object:meerkat.modules.car.getTrackingFieldsObject
 			},
 			onInitialise : function onStartInit(event) {
-
+				meerkat.modules.jqueryValidate.initJourneyValidator();
 				// Hook up privacy optin to Email Quote button
 				var $emailQuoteBtn = $(".slide-feature-emailquote");
 

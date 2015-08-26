@@ -8,7 +8,7 @@
             val = String(val).replace(nonDigitsRegex, '');
         }
 
-        if (val != '' && val > 0) {
+        if (val !== '' && val > 0) {
             return true;
         }
 
@@ -32,7 +32,7 @@
 
         var minCurrency = param.min ? Number(param.min) : 0,
             maxCurrency = param.max ? Number(param.max) : 0,
-            title = param["t"],
+            title = param.t,
             defaultValue = param.dV ? Number(param.dV) : 0;
 
         if(isNaN(value)) {
