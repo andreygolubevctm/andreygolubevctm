@@ -15,10 +15,6 @@ import com.ctm.exceptions.DaoException;
 
 public class FormValidationService {
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(FormValidationService.class.getName());
-
-
 	public FormValidationService() {
 	}
 

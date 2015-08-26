@@ -1,18 +1,14 @@
 package com.ctm.dao.car;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.naming.NamingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 
+import javax.naming.NamingException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class CarRegoLookupDao {
-    @SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(CarRegoLookupDao.class.getName());
     private static final String LOG_TABLE = "ctm.rego_lookup_usage";
 
     public CarRegoLookupDao(){}

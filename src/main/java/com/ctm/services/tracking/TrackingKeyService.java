@@ -18,8 +18,6 @@ import com.disc_au.web.go.Data;
 
 public class TrackingKeyService {
 
-	private static final Logger logger = LoggerFactory.getLogger(TrackingKeyService.class.getName());
-
 	public TrackingKeyService(){}
 
 	/**

@@ -1,19 +1,16 @@
 package com.ctm.dao.competition;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.naming.NamingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
 
 public class CompetitionDao {
-
-	private static final Logger logger = LoggerFactory.getLogger(CompetitionDao.class.getName());
 
 	public static Boolean isActive(Integer styleCodeId, Integer competitionId, Date serverDate) throws DaoException{
 

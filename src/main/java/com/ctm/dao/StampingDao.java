@@ -1,17 +1,13 @@
 package com.ctm.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Stamping;
+
+import javax.naming.NamingException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class StampingDao {
 
@@ -30,9 +26,6 @@ public class StampingDao {
 	public StampingDao() {
 		dbSource = new SimpleDatabaseConnection();
 	}
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(StampingDao.class.getName());
 
 	public void add(Stamping stamping) throws DaoException {
 		try {

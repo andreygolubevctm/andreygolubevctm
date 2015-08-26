@@ -21,9 +21,6 @@ import com.ctm.services.EnvironmentService;
 
 public class ServiceConfigurationDao {
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ServiceConfigurationDao.class.getName());
-
 	/**
 	 * Get the service configuration data and their properties from the database.
 	 *
