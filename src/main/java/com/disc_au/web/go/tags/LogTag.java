@@ -44,6 +44,13 @@ public class LogTag extends BaseTag {
 	public int doAfterBody() throws JspException {
 		Logger logger = LoggerFactory.getLogger(source);
 		switch (level) {
+			case TRACE:
+				if(error != null) {
+					logger.trace(String.valueOf(bodyContent.getString()), error);
+				} else {
+					logger.trace(String.valueOf(bodyContent.getString()));
+				}
+				break;
 			case DEBUG:
 				if(error != null) {
 					logger.debug(String.valueOf(bodyContent.getString()), error);
