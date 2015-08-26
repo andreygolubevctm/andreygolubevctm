@@ -100,6 +100,7 @@
 		meerkat.modules.loadingAnimation.showAfter(button);
 		meerkat.modules.comms.get({
 			url:  baseUrl + 'simples/phones/call.json?phone=' + phone,
+			dataType: 'text',
 			cache: false,
 			errorLevel: 'warning',
 			onComplete: function () {
