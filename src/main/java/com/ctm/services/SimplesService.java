@@ -1,13 +1,14 @@
 package com.ctm.services;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.CommentDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Comment;
 
 public class SimplesService {
-	private static final Logger logger = Logger.getLogger(SimplesService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimplesService.class.getName());
 
 	/**
 	 * Add a comment to a transaction ID.

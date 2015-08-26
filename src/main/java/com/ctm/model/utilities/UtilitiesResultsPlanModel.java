@@ -1,18 +1,18 @@
 package com.ctm.model.utilities;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
-import org.apache.log4j.Logger;
+import com.ctm.model.AbstractJsonModel;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.ctm.model.AbstractJsonModel;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 
-	private static Logger logger = Logger.getLogger(UtilitiesResultsPlanModel.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(UtilitiesResultsPlanModel.class.getName());
 
 	private String retailerId;
 	private String retailerName;
@@ -265,7 +265,7 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 			if(json.isNull("annual_prev_cost") == false) setAnnualPreviousCost(json.getDouble("annual_prev_cost"));
 
 		} catch (JSONException e) {
-			logger.debug(e);
+			logger.debug("{}",e);
 			return false;
 		}
 

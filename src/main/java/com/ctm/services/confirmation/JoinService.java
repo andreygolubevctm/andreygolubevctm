@@ -2,14 +2,15 @@ package com.ctm.services.confirmation;
 
 import java.sql.SQLException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.JoinDao;
 
 public class JoinService {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(JoinService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(JoinService.class.getName());
 
 	private JoinDao joinDao;
 

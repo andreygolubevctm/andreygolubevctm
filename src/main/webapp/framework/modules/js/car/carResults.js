@@ -447,7 +447,9 @@
             $("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
         }
 		meerkat.modules.carContactOptins.validateOptins();
-		Results.get();
+		meerkat.modules.resultsFeatures.fetchStructure('car_').done(function() {
+			Results.get();
+		});
 	}
 
 	function onResultsLoaded() {

@@ -18,7 +18,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.BrandException;
 import com.ctm.exceptions.DaoException;
@@ -31,7 +32,7 @@ import com.disc_au.web.go.Data;
 
 public class SessionDataService {
 
-	private static Logger logger = Logger.getLogger(SessionDataService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SessionDataService.class.getName());
 
 	private static int MAX_DATA_OBJECTS_IN_SESSION = 10;
 

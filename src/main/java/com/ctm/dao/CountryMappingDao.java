@@ -11,10 +11,11 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.CountryMapping;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CountryMappingDao {
-	private static Logger logger = Logger.getLogger(CountryMappingDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CountryMappingDao.class.getName());
 	// TODO: Add styleCodeId and isActive and combine with ProviderCodes DAO in e.g. a get query string method.
 	// add to router as well
 	public ArrayList<CountryMapping> getMapping(String selectedCountries) throws DaoException{
@@ -74,7 +75,7 @@ public class CountryMappingDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error(e);
+			logger.error("{}",e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();
@@ -116,7 +117,7 @@ public class CountryMappingDao {
 				userSelectedCountries.setSelectedCountries(countryMappingResult.getString("selectedCountries"));
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error(e);
+			logger.error("{}",e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();

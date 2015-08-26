@@ -18,7 +18,8 @@ import com.ctm.services.tracking.TrackingKeyService;
 import com.ctm.services.travel.TravelService;
 import com.ctm.web.validation.SchemaValidationError;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -27,7 +28,7 @@ import java.util.List;
 @Path("/travel")
 public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
 
-    private static Logger logger = Logger.getLogger(TravelRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(TravelRouter.class.getName());
 
     @GET
     @Path("/countrymapping/import")
