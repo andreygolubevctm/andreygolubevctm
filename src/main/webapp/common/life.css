@@ -1693,11 +1693,12 @@ body.stage-0 #reference_number a {display:none;}
 
 .promo-container {
 	width: 490px;
-	background: #162F8A;
 	margin-bottom: 10px;
-	padding-bottom: 5px;
 }
 
+.promo-row {
+    margin-left: -2px;
+}
 .promo-row .fieldrow_value input[type="checkbox"] {
 	margin: 10px 5px;
 	margin-left: 14px;
