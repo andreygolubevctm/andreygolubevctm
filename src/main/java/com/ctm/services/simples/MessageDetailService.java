@@ -11,7 +11,8 @@ import com.ctm.model.Transaction;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.model.simples.Message;
 import com.ctm.model.simples.MessageDetail;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Collections;

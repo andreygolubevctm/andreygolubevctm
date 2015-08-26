@@ -13,7 +13,8 @@ import com.ctm.model.*;
 import com.ctm.model.Error;
 import com.ctm.model.settings.Brand;
 import com.ctm.services.*;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.exceptions.ConfigSettingException;

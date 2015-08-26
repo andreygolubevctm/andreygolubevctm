@@ -6,7 +6,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.*;
 import com.ctm.services.results.ProviderRestrictionsService;
 import com.ctm.utils.FormDateUtils;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

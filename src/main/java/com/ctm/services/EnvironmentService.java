@@ -1,7 +1,8 @@
 package com.ctm.services;
 
 import com.ctm.exceptions.EnvironmentException;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;

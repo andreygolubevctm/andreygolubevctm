@@ -2,7 +2,8 @@ package com.ctm.soap;
 
 import java.util.ArrayList;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import com.ctm.exceptions.DaoException;

@@ -18,7 +18,8 @@ import com.ctm.services.tracking.TrackingKeyService;
 import com.ctm.services.travel.TravelService;
 import com.ctm.web.validation.SchemaValidationError;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;

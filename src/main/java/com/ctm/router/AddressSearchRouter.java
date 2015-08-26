@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ctm.services.SettingsService;
 import com.ctm.services.elasticsearch.AddressSearchService;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

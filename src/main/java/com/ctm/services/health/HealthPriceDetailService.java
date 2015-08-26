@@ -12,7 +12,8 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.ContentService;
 import com.ctm.services.SettingsService;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 
 import javax.servlet.http.HttpServletRequest;

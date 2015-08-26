@@ -7,7 +7,8 @@ import com.ctm.interceptors.SpringWSLoggingInterceptor;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.*;
 import com.ctm.xml.XMLOutputWriter;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 

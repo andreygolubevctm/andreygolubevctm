@@ -5,7 +5,8 @@ import com.ctm.router.core.CrudRouter;
 import com.ctm.services.simples.FundWarningService;
 import com.ctm.services.simples.admin.CappingLimitsService;
 import com.ctm.services.simples.admin.CrudService;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

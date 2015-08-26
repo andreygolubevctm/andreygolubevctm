@@ -12,7 +12,8 @@ import com.ctm.utils.utilities.UtilitiesRequestParser;
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
 import com.disc_au.web.go.Data;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

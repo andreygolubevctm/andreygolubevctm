@@ -7,7 +7,8 @@ import com.ctm.helper.simples.SpecialOffersHelper;
 import com.ctm.model.SpecialOffers;
 import com.ctm.utils.common.utils.DateUtils;
 import com.mysql.jdbc.Statement;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;

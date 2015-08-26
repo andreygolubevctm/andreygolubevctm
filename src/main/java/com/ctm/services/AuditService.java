@@ -12,7 +12,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import com.ctm.security.StringEncryption;
 import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.LogAuditDao;
 import com.ctm.model.LogAudit;

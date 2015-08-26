@@ -10,7 +10,8 @@ import com.ctm.model.TouchProductProperty;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.router.IncomingEmailRouter;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 

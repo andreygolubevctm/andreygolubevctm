@@ -10,7 +10,8 @@ import com.ctm.model.simples.User;
 import com.ctm.services.PhoneService;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 

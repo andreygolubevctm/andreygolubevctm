@@ -3,7 +3,8 @@ package com.ctm.services;
 import com.ctm.dao.IsoLocationsDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.IsoLocations;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 

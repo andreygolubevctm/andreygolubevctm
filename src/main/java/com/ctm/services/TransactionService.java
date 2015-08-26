@@ -12,7 +12,8 @@ import com.ctm.model.TransactionProperties;
 import com.ctm.model.health.HealthTransaction;
 import com.ctm.model.simples.ConfirmationOperator;
 import com.ctm.model.simples.Message;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 

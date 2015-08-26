@@ -21,7 +21,8 @@ import com.ctm.services.AccessTouchService;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.email.*;
 import com.ctm.services.simples.OpeningHoursService;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;

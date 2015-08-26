@@ -3,7 +3,8 @@ package com.ctm.services.results;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.model.health.HealthPriceRequest;
 import com.ctm.model.settings.Vertical.VerticalType;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.Connection;

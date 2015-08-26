@@ -2,7 +2,8 @@ package com.ctm.services.confirmation;
 
 import java.net.URLEncoder;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.ConfirmationDao;
 import com.ctm.dao.transaction.TransactionDao;

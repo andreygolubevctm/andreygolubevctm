@@ -2,7 +2,8 @@ package com.ctm.services.confirmation;
 
 import java.sql.SQLException;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.JoinDao;
 

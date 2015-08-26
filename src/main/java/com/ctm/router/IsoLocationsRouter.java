@@ -6,7 +6,8 @@ import com.ctm.model.Error;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.IsoLocationsService;
 import com.ctm.utils.RequestUtils;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;

@@ -8,7 +8,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.helper.simples.FundWarningHelper;
 import com.ctm.model.FundWarningMessage;
 import com.ctm.utils.common.utils.DateUtils;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

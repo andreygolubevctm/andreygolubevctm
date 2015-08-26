@@ -1,7 +1,8 @@
 package com.ctm.services.leadfeed.homecontents;
 
 import com.ctm.services.leadfeed.IProviderLeadFeedService;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.Touch.TouchType;

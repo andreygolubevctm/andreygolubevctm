@@ -14,7 +14,8 @@ import com.ctm.web.validation.SchemaValidationError;
 import com.ctm.web.validation.health.HealthApplicationValidation;
 import com.disc_au.price.health.PremiumCalculator;
 import com.disc_au.web.go.Data;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;

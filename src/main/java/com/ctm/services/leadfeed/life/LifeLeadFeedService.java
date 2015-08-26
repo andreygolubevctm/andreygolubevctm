@@ -8,7 +8,8 @@ import com.ctm.services.AccessTouchService;
 import com.ctm.services.leadfeed.IProviderLeadFeedService;
 import com.ctm.services.leadfeed.LeadFeedService;
 import com.ctm.services.leadfeed.life.AGIS.AGISLifeLeadFeedService;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class LifeLeadFeedService extends LeadFeedService {

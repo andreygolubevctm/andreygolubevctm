@@ -6,7 +6,8 @@ import com.ctm.dao.DatabaseUpdateMapping;
 import com.ctm.dao.SqlDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.TransactionDetail;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;

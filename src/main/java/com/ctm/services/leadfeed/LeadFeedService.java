@@ -1,7 +1,8 @@
 package com.ctm.services.leadfeed;
 
 import com.ctm.dao.leadfeed.BestPriceLeadsDao;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.ContentService;

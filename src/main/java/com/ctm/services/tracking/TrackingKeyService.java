@@ -3,7 +3,8 @@ package com.ctm.services.tracking;
 import java.util.List;
 import java.util.Arrays;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.security.StringEncryption;

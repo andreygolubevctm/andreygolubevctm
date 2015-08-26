@@ -2,7 +2,8 @@ package com.ctm.model.settings;
 
 import java.util.ArrayList;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
 

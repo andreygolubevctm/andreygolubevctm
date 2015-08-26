@@ -4,7 +4,8 @@ import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.SessionData;
 import com.ctm.services.SessionDataService;
 import com.disc_au.web.go.Data;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;

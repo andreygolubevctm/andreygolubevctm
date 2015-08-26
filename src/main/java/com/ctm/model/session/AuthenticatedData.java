@@ -4,7 +4,8 @@ import com.ctm.model.MessageConfig;
 import com.ctm.model.simples.Role;
 import com.ctm.model.simples.Rule;
 import com.disc_au.web.go.Data;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;

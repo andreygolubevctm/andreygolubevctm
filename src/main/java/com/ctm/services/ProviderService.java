@@ -2,7 +2,8 @@ package com.ctm.services;
 
 import com.ctm.dao.ProviderFilterDao;
 import com.ctm.exceptions.TravelServiceException;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.Date;
 import com.ctm.dao.ProviderDao;
 import com.ctm.model.Provider;

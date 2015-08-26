@@ -13,7 +13,8 @@ import com.ctm.services.SettingsService;
 import com.ctm.services.health.HealthPriceService;
 import com.ctm.utils.RequestUtils;
 import com.ctm.web.validation.SchemaValidationError;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

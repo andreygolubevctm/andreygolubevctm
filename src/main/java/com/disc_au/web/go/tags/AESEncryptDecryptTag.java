@@ -8,7 +8,8 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.jsp.JspException;
 
 import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.security.StringEncryption;
 

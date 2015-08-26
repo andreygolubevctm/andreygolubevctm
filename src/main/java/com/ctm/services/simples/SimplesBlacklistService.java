@@ -2,7 +2,8 @@ package com.ctm.services.simples;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.BlacklistDao;
 import com.ctm.exceptions.ConfigSettingException;

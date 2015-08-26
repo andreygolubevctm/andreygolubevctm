@@ -17,7 +17,8 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.car.CarVehicleSelectionService;
 import com.ctm.services.car.RegoLookupService;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import java.util.HashMap;

@@ -6,7 +6,8 @@ import com.ctm.dao.UserDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Comment;
 import com.ctm.model.simples.*;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.Connection;

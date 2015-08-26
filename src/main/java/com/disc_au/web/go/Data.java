@@ -2,7 +2,8 @@ package com.disc_au.web.go;
 
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.NumberUtils;
 import org.xml.sax.SAXException;
 

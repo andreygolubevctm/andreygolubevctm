@@ -1,6 +1,7 @@
 package com.ctm.services.leadfeed.homecontents.AGIS;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.leadfeed.AGISLeadFeedRequest;

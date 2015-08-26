@@ -11,7 +11,8 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.CountryMapping;
 
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CountryMappingDao {
 	private static final Logger logger = LoggerFactory.getLogger(CountryMappingDao.class.getName());

@@ -7,7 +7,8 @@ import com.ctm.model.settings.Brand;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.leadfeed.LeadFeedService;
 import com.ctm.services.leadfeed.life.LifeLeadFeedService;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;

@@ -12,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.exceptions.ConfigSettingException;

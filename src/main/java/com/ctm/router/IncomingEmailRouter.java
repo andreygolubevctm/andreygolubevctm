@@ -5,7 +5,8 @@ import com.ctm.model.email.IncomingEmail;
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.email.EmailUrlService;
 import com.ctm.services.email.IncomingEmailService;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

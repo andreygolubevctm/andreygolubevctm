@@ -10,7 +10,8 @@ import com.ctm.model.Error;
 import com.ctm.model.Transaction;
 import com.ctm.model.simples.*;
 import com.ctm.services.TransactionService;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;

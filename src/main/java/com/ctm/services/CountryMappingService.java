@@ -10,7 +10,8 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
-import org.slf4j.Logger; import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
