@@ -6,7 +6,8 @@ import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.SessionDataService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class SimplesTickleService {
 
-    private static Logger logger = Logger.getLogger(SimplesTickleService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimplesTickleService.class.getName());
     private final SessionDataService sessionDataService;
 
     public SimplesTickleService(SessionDataService sessionDataService) {
@@ -40,7 +41,7 @@ public class SimplesTickleService {
             }
         } catch (DaoException | SessionException e) {
             fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-            logger.error(e);
+            logger.error("{}",e);
             throw new ServletException(e);
         }
         return success;

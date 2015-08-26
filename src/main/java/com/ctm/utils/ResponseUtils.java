@@ -5,7 +5,8 @@ import com.ctm.services.FatalErrorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,7 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
 public class ResponseUtils {
 
-    private static final Logger logger = Logger.getLogger(ResponseUtils.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ResponseUtils.class.getName());
 
     public static ObjectNode errors(final Exception e, ObjectMapper objectMapper) {
         return jsonObjectNode("errors", asList(new Error(e.getMessage())), objectMapper);
@@ -67,7 +68,7 @@ public class ResponseUtils {
         try {
             response.getWriter().print(json.toString());
         } catch (IOException e) {
-            logger.error(e);
+            logger.error("{}",e);
         }
     }
 }

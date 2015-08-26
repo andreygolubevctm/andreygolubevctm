@@ -8,14 +8,15 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.HttpRequestHandler;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
 
 public class RequestService {
 
-    private static final Logger logger = Logger.getLogger(RequestService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(RequestService.class.getName());
 
     private final HttpServletRequest request;
     public int styleCodeId = 0;
@@ -32,7 +33,7 @@ public class RequestService {
             pageSettings = SettingsService.getPageSettingsForPage(request);
             styleCodeId = pageSettings.getBrandId();
         } catch (DaoException | ConfigSettingException e) {
-           logger.error(e);
+           logger.error("{}",e);
         }
     }
 

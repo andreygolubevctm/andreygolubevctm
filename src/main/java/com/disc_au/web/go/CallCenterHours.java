@@ -17,7 +17,8 @@ import java.util.Map.Entry;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.dao.ContentDao;
@@ -32,7 +33,7 @@ import com.ctm.utils.common.utils.DateUtils;
 
 public class CallCenterHours {
 
-	private static Logger logger = Logger.getLogger(GeneralDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(GeneralDao.class.getName());
 
 	public static final int MORNING_HOUR = 0;
 	public static final int AFTERNOON_HOUR = 12;
@@ -69,7 +70,7 @@ public class CallCenterHours {
 					hours.add(closing);
 				}
 			} catch (ParseException e) {
-				logger.error(e);
+				logger.error("{}",e);
 			}
 			openingHours.put(dayOfWeek, hours);
 		}

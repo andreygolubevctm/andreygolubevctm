@@ -2,13 +2,14 @@ package com.ctm.utils;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.model.Address;
 
 public class FormAddressUtils {
 
-	private static Logger logger = Logger.getLogger(FormAddressUtils.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(FormAddressUtils.class.getName());
 
 	public static Address parseAddressFromForm(HttpServletRequest request, String xPathPrefix){
 

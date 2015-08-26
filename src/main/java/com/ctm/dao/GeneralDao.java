@@ -1,7 +1,8 @@
 package com.ctm.dao;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 public class GeneralDao {
 
-	private static Logger logger = Logger.getLogger(GeneralDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(GeneralDao.class.getName());
 
 	public Map<String, String> getValues(String type){
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
@@ -35,7 +36,7 @@ public class GeneralDao {
 			}
 			rs.close();
 		} catch (SQLException | NamingException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		} finally {
 			dbSource.closeConnection();
 		}

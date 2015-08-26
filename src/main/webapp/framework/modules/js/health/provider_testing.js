@@ -29,10 +29,10 @@
 			cache: false,
 			errorLevel: "warning",
 			onSuccess:function onApplicationUpdateSuccess(data){
-				updateDisplay(data);
-				toggleDisplay ();
+				refreshPage();
 			}
 		});
+
 	}
 
 	function setApplicationDateCalendar() {
@@ -52,7 +52,10 @@
 			$('#health_searchDate').val(newDate);
 		}
 	}
-
+	function refreshPage () {
+		meerkat.modules.leavePageWarning.disable();
+		location.reload(true);
+	}
 	function updateDisplay (data) {
 		elements.applicationDate.html(data);
 	}

@@ -1,6 +1,7 @@
 package com.ctm.services;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.dao.transaction.TransactionDetailsDao;
@@ -14,7 +15,7 @@ import com.ctm.model.settings.Vertical.VerticalType;
 
 public class TransactionAccessService {
 
-	private static Logger logger = Logger.getLogger(TransactionAccessService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(TransactionAccessService.class.getName());
 
 	public static final String HEALTH_BEST_PRICE_EMAIL_XPATH = "health/contactDetails/email";
 
@@ -49,7 +50,7 @@ public class TransactionAccessService {
 					emailData.setEmailAddress(result.getEmailAddress());
 			}
 		} catch (DaoException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return valid;
 	}

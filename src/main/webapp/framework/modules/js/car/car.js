@@ -314,6 +314,7 @@
 					}
 				});
 				}
+				meerkat.modules.resultsFeatures.fetchStructure('car_');
 			},
 			onAfterEnter : function (event) {
 			},

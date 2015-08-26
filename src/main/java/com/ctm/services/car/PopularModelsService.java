@@ -1,12 +1,13 @@
 package com.ctm.services.car;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.ctm.exceptions.DaoException;
 import com.ctm.dao.car.CarModelDao;
 
 public class PopularModelsService {
 
-	private static Logger logger = Logger.getLogger(PopularModelsService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(PopularModelsService.class.getName());
 
 	/**
 	 * execute() calls the CarModelDao to execute the method which updates
@@ -25,7 +26,7 @@ public class PopularModelsService {
 			return lastUpdate;
 
 		} catch (DaoException e) {
-			logger.error(e);
+			logger.error("{}",e);
 
 			return e.getMessage();
 		}

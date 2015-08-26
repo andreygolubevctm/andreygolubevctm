@@ -6,7 +6,8 @@ import com.ctm.model.Error;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.IsoLocationsService;
 import com.ctm.utils.RequestUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -32,7 +33,7 @@ import java.io.PrintWriter;
         //"/isolocations/poi.json"
 })
 public class IsoLocationsRouter extends HttpServlet {
-    private static Logger logger = Logger.getLogger(IsoLocationsRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(IsoLocationsRouter.class.getName());
     private static final long serialVersionUID = 73L;
 
     @Override
@@ -64,7 +65,7 @@ public class IsoLocationsRouter extends HttpServlet {
                 json = isoLocations.fetchSearchResults(search);
             } catch (DaoException e) {
 
-                logger.error(e);
+                logger.error("{}",e);
                 FatalErrorService.logFatalError(e, 0, uri, request.getSession().getId(), true);
 
                 Error error = new Error();
@@ -84,7 +85,7 @@ public class IsoLocationsRouter extends HttpServlet {
                     json = isoLocations.addTopTenTravelDestinations(json);
                 }
             } catch (DaoException | SessionException e) {
-                logger.error(e);
+                logger.error("{}",e);
                 FatalErrorService.logFatalError(e, 0, uri, request.getSession().getId(), true);
 
                 Error error = new Error();

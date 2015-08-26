@@ -3,6 +3,15 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <c:set var="fromBrochure" scope="request" value="${false}"/>
 
+<c:set var="providerResults" value="null" />
+
+<c:if test="${( not empty data.utilities.householdDetails.suburb) and (not empty data.utilities.householdDetails.postcode) }">
+    <jsp:useBean id="providerService" class="com.ctm.services.utilities.UtilitiesProviderService" />
+    <c:set var="suburb" value="${data.utilities.householdDetails.suburb}" />
+    <c:set var="postCode" value="${data.utilities.householdDetails.postcode}" />
+    <c:set var="providerResults" value="${providerService.getResults(pageContext.request, postCode, suburb).toJson()}" />
+</c:if>
+
 {
     isFromBrochureSite: false,
     journeyStage: "<c:out value="${data['utilities/journey/stage']}"/>",
@@ -19,5 +28,6 @@
     },
     session: {
         firstPokeEnabled: <c:choose><c:when test="${param.action eq 'confirmation'}">false</c:when><c:otherwise>true</c:otherwise></c:choose>
-    }
+    },
+    providerResults: ${providerResults}
 }

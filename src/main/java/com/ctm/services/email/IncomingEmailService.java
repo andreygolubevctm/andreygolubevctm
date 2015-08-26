@@ -7,7 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.ResultsDao;
 import com.ctm.dao.transaction.TransactionDao;
@@ -25,7 +26,7 @@ import com.ctm.services.TransactionAccessService;
 
 public class IncomingEmailService {
 
-	private static Logger logger = Logger.getLogger(IncomingEmailService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(IncomingEmailService.class.getName());
 
 	/**
 	 * Create a URL for viewing a confirmation that is brand and vertical aware.
@@ -98,7 +99,7 @@ public class IncomingEmailService {
 				redirectionUrl.append(pageSettings.getSetting("exitUrl"));
 			}
 		} catch (DaoException | EnvironmentException | VerticalException | ConfigSettingException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 
 		return redirectionUrl.toString();
@@ -144,7 +145,7 @@ public class IncomingEmailService {
 			expiresCal.setTime(expires);
 			expired = expiresCal.compareTo(todayCal) >= 0;
 		} catch (ParseException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return expired;
 	}

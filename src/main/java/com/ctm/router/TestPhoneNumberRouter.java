@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 import com.ctm.utils.NGram;
 
@@ -18,7 +19,7 @@ import com.ctm.utils.NGram;
 })
 
 public class TestPhoneNumberRouter extends HttpServlet {
-	private static Logger logger = Logger.getLogger(TestPhoneNumberRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(TestPhoneNumberRouter.class.getName());
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -57,7 +58,7 @@ public class TestPhoneNumberRouter extends HttpServlet {
 			response.getWriter().print(json.toString());
 
 		} catch (JSONException | IOException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 	}
 }

@@ -1,7 +1,8 @@
 package com.ctm.web.validation;
 
 import com.ctm.services.FatalErrorService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +16,7 @@ import java.util.Set;
 
 public class FormValidation {
 
-	private static Logger logger = Logger.getLogger(FormValidation.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(FormValidation.class.getName());
 
 	public static <T> List<SchemaValidationError> validate(T request , String vertical) {
 		return validate(request, vertical, true);
@@ -63,7 +64,7 @@ public class FormValidation {
 			}
 			errorDetails.put("validationErrors", validationErrors );
 		} catch (JSONException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return reponse;
 	}
