@@ -1,5 +1,5 @@
 -- UPDATER
-INSERT INTO ctm.competition (competitionId, competitionName, effectiveStart, effectiveEnd, styleCodeId) VALUES ('26', '$5000 Health Promotion', '2015-08-27 09:00:00', '2015-11-30 08:59:59', '1');
+INSERT INTO ctm.competition (competitionId, competitionName, effectiveStart, effectiveEnd, styleCodeId) VALUES ('26', '$5000 Health Promotion', '2015-09-03 09:00:00', '2015-11-30 08:59:59', '1');
 
 INSERT INTO ctm.content_control (styleCodeId, verticalId, contentCode, contentKey, contentStatus, effectiveStart, effectiveEnd, contentValue) VALUES ('1', '4', 'Competition', 'competitionEnabled', '', '2015-09-03 09:00:00', '2015-11-30 08:59:59', 'Y');
 INSERT INTO ctm.content_control (styleCodeId, verticalId, contentCode, contentKey, contentStatus, effectiveStart, effectiveEnd, contentValue) VALUES ('1', '4', 'Competition', 'competitionSecret', '', '2015-09-03 09:00:00', '2015-11-30 08:59:59', 'vU9CD4NjT3S6p7a83a4t');
