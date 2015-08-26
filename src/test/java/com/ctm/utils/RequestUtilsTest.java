@@ -1,8 +1,6 @@
 package com.ctm.utils;
 
-import org.apache.log4j.spi.LoggerFactory;
 import org.junit.Test;
-import org.slf4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
