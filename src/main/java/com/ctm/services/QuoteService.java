@@ -2,7 +2,8 @@ package com.ctm.services;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,7 +17,7 @@ import com.disc_au.web.go.xml.HttpRequestHandler;
  */
 public class QuoteService {
 
-	private static Logger logger = Logger.getLogger(QuoteService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(QuoteService.class.getName());
 	/**
 	 * Constructor
 	 */
@@ -46,7 +47,7 @@ public class QuoteService {
 			result.put("success", isSuccessful);
 			result.put("transactionId", transactionId);
 		} catch (JSONException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 		return json;
 	}

@@ -2,7 +2,8 @@ package com.ctm.model.utilities;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +14,7 @@ import com.ctm.model.formatter.JsonUtils;
 
 public class UtilitiesResultsModel extends AbstractJsonModel {
 
-	private static Logger logger = Logger.getLogger(UtilitiesResultsModel.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(UtilitiesResultsModel.class.getName());
 
 	private ArrayList<UtilitiesResultsPlanModel> plans = new ArrayList<UtilitiesResultsPlanModel>();
 	private String uniqueCustomerId;

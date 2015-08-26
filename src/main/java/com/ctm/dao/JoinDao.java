@@ -2,7 +2,8 @@ package com.ctm.dao;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.services.confirmation.JoinService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 
 public class JoinDao {
 
-	private static Logger logger = Logger.getLogger(JoinService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(JoinService.class.getName());
 
 	private SimpleDatabaseConnection dbSource;
 

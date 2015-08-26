@@ -1,10 +1,5 @@
 package com.ctm.services.email;
 
-import java.security.GeneralSecurityException;
-
-import com.ctm.web.validation.EmailValidation;
-import org.apache.log4j.Logger;
-
 import com.ctm.dao.EmailMasterDao;
 import com.ctm.dao.StampingDao;
 import com.ctm.dao.transaction.TransactionDao;
@@ -15,7 +10,12 @@ import com.ctm.model.Transaction;
 import com.ctm.security.StringEncryption;
 import com.ctm.services.StampingService;
 import com.ctm.services.email.mapping.EmailDetailsMappings;
+import com.ctm.web.validation.EmailValidation;
 import com.disc_au.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.security.GeneralSecurityException;
 
 public class EmailDetailsService {
 
@@ -30,7 +30,7 @@ public class EmailDetailsService {
 
 	private String vertical;
 
-	private static Logger logger = Logger.getLogger(EmailDetailsService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(EmailDetailsService.class.getName());
 
 	/**
 	 * TODO used by JSP remove when jsp has been refactored
@@ -116,7 +116,7 @@ public class EmailDetailsService {
 			try {
 				emailMaster.setHashedEmail(StringEncryption.hash(emailAddress + SALT + brandCode.toUpperCase()));
 			} catch (GeneralSecurityException e) {
-				logger.error(e);
+				logger.error("{}",e);
 				throw new EmailDetailsException("failed to hash email", e);
 			}
 			long transId = 0L;
@@ -124,7 +124,7 @@ public class EmailDetailsService {
 				transId =  Long.parseLong(transactionId);
 			} catch (NumberFormatException e) {
 				//Session probably died recoverable
-				logger.warn(e);
+				logger.warn("{}",e);
 			}
 			emailMaster = writeNewEmailDetails(transId , emailMaster);
 		}

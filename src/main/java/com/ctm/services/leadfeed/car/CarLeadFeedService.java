@@ -3,7 +3,8 @@ package com.ctm.services.leadfeed.car;
 import java.util.ArrayList;
 
 import com.ctm.services.leadfeed.IProviderLeadFeedService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.Touch.TouchType;
@@ -16,7 +17,7 @@ import com.ctm.services.leadfeed.car.AI.AICarLeadFeedService;
 
 public class CarLeadFeedService extends LeadFeedService {
 
-	private static Logger logger = Logger.getLogger(CarLeadFeedService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CarLeadFeedService.class.getName());
 
 	protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) {
 

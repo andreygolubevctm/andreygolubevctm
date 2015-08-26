@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.exceptions.DaoException;
@@ -33,7 +34,7 @@ import com.disc_au.web.go.Data;
 })
 
 public class CouponRouter extends HttpServlet {
-	private static Logger logger = Logger.getLogger(CouponRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CouponRouter.class.getName());
 	private static final long serialVersionUID = 24L;
 	private final SessionDataService sessionDataService = new SessionDataService();
 	private final CouponService couponService = new CouponService();

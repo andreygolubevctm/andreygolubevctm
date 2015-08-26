@@ -10,13 +10,14 @@ import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.wss4j.dom.WSConstants;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
 
 public class WebServiceUtils {
 
-	static Logger logger = Logger.getLogger(WebServiceUtils.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(WebServiceUtils.class.getName());
 
 	public static void setWsSecurity(Endpoint cxfEndpoint, Map<String, Object> ctx, String username, String password) {
 		Map<String, Object> outProps = new HashMap<String, Object>();

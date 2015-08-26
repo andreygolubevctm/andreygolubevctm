@@ -10,7 +10,8 @@ import com.ctm.model.simples.User;
 import com.ctm.services.PhoneService;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class UserDao {
 
-	private static Logger logger = Logger.getLogger(UserDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(UserDao.class.getName());
 
 
 	/**
@@ -116,7 +117,7 @@ public class UserDao {
 						}
 					}
 					catch (Exception e) {
-						logger.error(e);
+						logger.error("{}",e);
 					}
 				}
 

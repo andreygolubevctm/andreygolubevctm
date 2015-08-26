@@ -75,6 +75,8 @@
 						$emailQuoteBtn.removeClass("privacyOptinChecked");
 					}
 				});
+
+				meerkat.modules.resultsFeatures.fetchStructure('hmlams');
 			},
 			onBeforeLeave: function(event) {
 			}

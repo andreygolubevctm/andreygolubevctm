@@ -6,12 +6,13 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.AccessTouch;
 import com.ctm.model.Touch;
 import com.ctm.model.transaction.TransactionLock;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class AccessCheckService {
 
-    private static final Logger logger = Logger.getLogger(AccessCheckService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AccessCheckService.class.getName());
 
     private final TransactionLockDao transactionLockDao;
 
@@ -60,7 +61,7 @@ public class AccessCheckService {
                     createOrUpdateTransactionLock(transactionId, operatorId);
                 }
             } catch (DaoException e) {
-                logger.error(e);
+                logger.error("{}",e);
             }
         }
         return isLocked;

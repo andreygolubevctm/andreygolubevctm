@@ -512,7 +512,9 @@
 		}
 
 		// Fetch results
-		Results.get();
+		meerkat.modules.resultsFeatures.fetchStructure('hncams').done(function() {
+			Results.get();
+		});
 	}
 
 

@@ -16,7 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -68,7 +69,7 @@ import static javax.servlet.http.HttpServletResponse.*;
 })
 public class SimplesRouter extends HttpServlet {
 	private static final long serialVersionUID = 13L;
-	private static final Logger logger = Logger.getLogger(SimplesRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimplesRouter.class.getName());
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final SessionDataService sessionDataService;
 
@@ -264,7 +265,7 @@ public class SimplesRouter extends HttpServlet {
 			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.SIMPLES.getCode());
 		} catch (DaoException | ConfigSettingException e) {
 			fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-			logger.error(e);
+			logger.error("{}",e);
 			throw new ServletException(e);
 		}
 		SimplesTickleService tickleService = new SimplesTickleService(sessionDataService);

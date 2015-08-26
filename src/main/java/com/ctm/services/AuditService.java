@@ -12,7 +12,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import com.ctm.security.StringEncryption;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.LogAuditDao;
 import com.ctm.model.LogAudit;
@@ -38,7 +39,7 @@ import com.ctm.model.LogAudit;
  */
 public class AuditService {
 	
-	private static Logger logger = Logger.getLogger(AuditService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AuditService.class.getName());
 	private String brandCode;
 	
 	public AuditService(String brandCode) {
@@ -59,7 +60,7 @@ public class AuditService {
 		try {
 			encryptedSessionId = StringEncryption.encrypt(secret_key, logAudit.getSessionId());
 		} catch (GeneralSecurityException e) {
-			logger.error(e);
+			logger.error("{}",e);
 		}
 
 		/*Run the log */

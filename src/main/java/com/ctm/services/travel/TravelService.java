@@ -23,7 +23,8 @@ import com.ctm.xml.XMLOutputWriter;
 import com.disc_au.web.go.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -134,6 +135,12 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
         return null;
 
     }
+
+
+
+	public boolean isValid() {
+		return valid;
+	}
 
 	public Data getGetData() {
 		return data;
