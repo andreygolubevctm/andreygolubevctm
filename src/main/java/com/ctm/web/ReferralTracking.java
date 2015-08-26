@@ -24,6 +24,9 @@ public class ReferralTracking {
 	public String getAndSetUtmCampaign(HttpServletRequest request, Data data, String prefix) {
 		return getAndSetFromParam(request, data, "utm_campaign", prefix + "/cid");
 	}
+	public String getRefererUrl(HttpServletRequest request) {
+		return request.getHeader("Referer");
+	}
 
 	private String getAndSetFromParam(HttpServletRequest request, Data data, String key, String xpath) {
 		String value = data.getString(xpath);
