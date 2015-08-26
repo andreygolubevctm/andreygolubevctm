@@ -33,8 +33,8 @@
 <c:set var="fromDate" value="${go:nameFromXpath(fromDateXpath)}" />
 <c:set var="toDate" value="${go:nameFromXpath(toDateXpath)}" />
 
-<c:set var="fromDateRule">data-rule-fromToDate='{"fromDate": "${fromDate}", "toDate":"${toDate}"}' data-msg-fromToDate='The ${titleFrom} date should be equal to, or before the ${titleTo} date.'</c:set>
-<c:set var="toDateRule">data-rule-fromToDate='{"fromDate": "${fromDate}", "toDate":"${toDate}"}' data-msg-fromToDate='The ${titleTo} date should be equal to or, ${offsetText} after the ${titleFrom} date.'</c:set>
+<c:set var="fromDateRule">data-rule-fromToDate="{'fromDate': '${fromDate}', 'toDate':'${toDate}'}" data-msg-fromToDate='The ${titleFrom} date should be equal to, or before the ${titleTo} date.'</c:set>
+<c:set var="toDateRule">data-rule-fromToDate="{'fromDate': '${fromDate}', 'toDate':'${toDate}'}" data-msg-fromToDate='The ${titleTo} date should be equal to or, ${offsetText} after the ${titleFrom} date.'</c:set>
 <%-- HTML --%>
 <form_new:row label="${labelFrom}" helpId="${helpIdFrom}" id="${fromDate}_row">
 	<field_new:calendar mode="separated" validateMinMax="true" xpath="${fromDateXpath}" required="${required}" title="${titleFrom}" minDate="${minDateFrom}" maxDate="${maxDateFrom}" startView="${startViewFrom}" calAdditionalAttributes="${fromDateRule}" />
