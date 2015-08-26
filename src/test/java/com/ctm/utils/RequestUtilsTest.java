@@ -14,7 +14,6 @@ import static org.mockito.Mockito.when;
  * Created by lbuchanan on 18/12/2014.
  */
 public class RequestUtilsTest {
-    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(RequestUtilsTest.class);
 
     @Test
     public void shouldGetTransactionIdFromRequest(){
