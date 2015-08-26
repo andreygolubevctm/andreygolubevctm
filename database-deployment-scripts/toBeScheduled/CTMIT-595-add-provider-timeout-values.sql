@@ -35,17 +35,17 @@ set @CAR_VERTICAL_ID = (SELECT verticalId FROM ctm.vertical_master WHERE vertica
 SET @CAR_SERVICE_MASTER_ID = (SELECT serviceMasterId FROM ctm.service_master WHERE verticalId=@CAR_VERTICAL_ID AND serviceCode='carServiceBER');
 
 INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode, styleCodeId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_1FOW'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_EXPO'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_BUDD'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_CBCK'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_IECO'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_OZIC'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_RETI'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_VIRG'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_EXDD'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_CHOO'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'REIN'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = '1FOW'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'BUDD'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'CBCK'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGCH'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'EXDD'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'EXPO'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'IECO'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'OZIC'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'RETI'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'VIRG'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'REAL'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
   (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'WOOL'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
   (@CAR_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AI'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE')
 ;
@@ -55,9 +55,9 @@ set @HNC_VERTICAL_ID = (SELECT verticalId FROM ctm.vertical_master WHERE vertica
 SET @HNC_SERVICE_MASTER_ID = (SELECT serviceMasterId FROM ctm.service_master WHERE verticalId=@HNC_VERTICAL_ID AND serviceCode='homeServiceBER');
 
 INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode, styleCodeId, servicePropertyKey, servicePropertyValue, effectiveStart, effectiveEnd, scope) VALUES
-  (@HNC_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_BUDD'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HNC_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'AGIS_VIRG'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HNC_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'REIN'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HNC_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'BUDD'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HNC_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'VIRG'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
+  (@HNC_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'REAL'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE'),
   (@HNC_SERVICE_MASTER_ID, (select providerId from ctm.provider_master where providerCode = 'WOOL'), '0', 0, 'timeout','35',@START_DATE, @END_DATE, 'SERVICE')
 ;
 
@@ -78,7 +78,7 @@ INSERT INTO ctm.service_properties (serviceMasterId, providerId, environmentCode
   (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'HCF'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
   (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'HIF'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
   (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'NIB'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE'),
-  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'QCF'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE')
+  (@HEALTH_SERVICE_MASTER_ID, (select providerId from ctm.provider_properties where PropertyId = 'FundCode' and Text = 'QCH'), '0', 0, 'timeout','2700',@START_DATE, @END_DATE, 'SERVICE')
 ;
 
 -- Some environments have the CTM test brand
