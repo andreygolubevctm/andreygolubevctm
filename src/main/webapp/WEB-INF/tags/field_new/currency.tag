@@ -24,8 +24,6 @@
 <%@ attribute name="altTitle"		 	required="false"	rtexprvalue="true"	description="Alternative title for percentage rules" %>
 
 
-<go:script marker="js-href" href="common/js/jquery.formatCurrency-1.4.0.js" />
-
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:if test="${not empty otherElement}">
@@ -66,6 +64,7 @@
 
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" value="${value}" class="currency"/>
+<c:set var="validationAttributes">data-rule-currencyrange='{<c:if test="${not empty minValue}">"min": "${minValue}",</c:if><c:if test="${not empty maxValue}">"max": "${maxValue}",</c:if><c:if test="${not empty defaultValue}">"dV": "${defaultValue}",</c:if>"t": "${title}"}' </c:set>
 
 	<field_new:input type="text"
 		xpath="${xpath}entry"
@@ -74,18 +73,5 @@
 		maxlength="${maxLength}"
 		title="${title}"
 		defaultValue="${value}"
-		pattern="${pattern}"
+		pattern="${pattern}" additionalAttributes=" data-rule-currency='${required}' data-msg-currency='${title} is not a valid amount' ${validationAttributes} "
 		/>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}entry" rule="validate_${name}" parm="${required}" message="${title} is not a valid amount"/>
-
-<c:if test="${not empty minValue}">
-	<fmt:formatNumber type="number" value="${minValue}" var="formattedMinValue"/>
-	<go:validate selector="${name}entry" rule="${name}_minCurrency" parm="${minValue}" message="${title} cannot be lower than $${formattedMinValue}"/>
-</c:if>
-
-<c:if test="${not empty maxValue}">
-	<fmt:formatNumber type="number" value="${maxValue}" var="formattedMaxValue"/>
-	<go:validate selector="${name}entry" rule="${name}_maxCurrency" parm="${maxValue}" message="${title} cannot be higher than $${formattedMaxValue}"/>
-</c:if>

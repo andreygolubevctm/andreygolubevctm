@@ -287,10 +287,6 @@
 		<field:creditcard_number xpath="quote/avea/payment/cardNumber" title="field:creditcard_number" required="true" />
 	</form_new:row>
 
-	<form_new:row label="currency" helpId="411">
-		<field:currency xpath="${xpath}/income" symbol="$" decimal="${true}" maxLength="10" title="field:currency" required="true" />
-	</form_new:row>
-
 	<form_new:row label="customisable-checkbox">
 		<field:customisable-checkbox xpath="${xpath}/optin" theme="replicaLarge" value="Y" required="true" label="true" title="field:customisable-checkbox" errorMsg="field:customisable-checkbox errorMsg" />
 	</form_new:row>

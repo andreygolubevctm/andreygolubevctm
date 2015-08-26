@@ -1,101 +1,59 @@
-$.validator.addMethod("validate_${name}",
-    function(value, elem, parm) {
-        try{
-            var val = $(elem).val();
+(function ($) {
 
-            if( isNaN(val) )
-            {
-                val = val.replace(/[^\d.-]/g, '');
-            }
-
-            if( val != '' && val > 0 )
-            {
-                return true;
-            }
-
-            return false;
-        }
-        catch(e)
-        {
-            return false;
-        }
-    },
-
-    $.validator.messages.currencyNumber = ' is not a valid number.'
-);
-
-$.validator.addMethod("${name}_minCurrency",
-    function(value, elem, parm) {
-
+    var nonDigitsRegex = /[^\d.-]/g;
+    $.validator.addMethod("currency", function (value, elem, param) {
         var val = $(elem).val();
 
-        if( isNaN(val) )
-        {
-            val = val.replace(/[^\d.-]/g, '');
+        if (isNaN(val)) {
+            val = String(val).replace(nonDigitsRegex, '');
         }
 
-        <c:if test="${not empty defaultValue}">
-            if( val == ${defaultValue} ){
-                return true;
-            }
-        </c:if>
+        if (val != '' && val > 0) {
+            return true;
+        }
 
-        if( val < parm){
+        return false;
+    });
+
+    /**
+     * Convert a value > 3 digits to ###,###,### etc.
+     * @param value
+     * @returns {string}
+     */
+    function formatSeparated(value) {
+        return String(value).length > 3 ? value.replace(/\B(?=(?:\d{3})+(?!\d))/g, ',') : value;
+    }
+
+    /**
+     * Example data-attribute rule:
+     *      data-rule-currencyrange="{&quot;max&quot;: &quot;100.50&quot;,&quot;t&quot;: &quot;Amount to borrow&quot;}"
+     */
+    $.validator.addMethod("currencyrange", function(value, elem, param) {
+
+        var minCurrency = param.min ? Number(param.min) : 0,
+            maxCurrency = param.max ? Number(param.max) : 0,
+            title = param["t"],
+            defaultValue = param.dV ? Number(param.dV) : 0;
+
+        if(isNaN(value)) {
+            value = String(value).replace(nonDigitsRegex, '');
+        }
+
+        if(defaultValue > 0 && value == defaultValue) {
+            return true;
+        }
+
+        if(minCurrency !== 0 && value < minCurrency) {
+            $.validator.messages.currencyrange = title + " cannot be lower than $" + formatSeparated(param.min);
+            return false;
+        }
+        if(maxCurrency !== 0 && value > maxCurrency) {
+            $.validator.messages.currencyrange = title + " cannot be higher than $" + formatSeparated(param.max);
             return false;
         }
 
         return true;
-    },
-    "Custom message"
-);
 
-$.validator.addMethod("${name}_maxCurrency",
-    function(value, elem, parm) {
+    });
 
-        var val = $(elem).val();
-
-        if( isNaN(val) )
-        {
-            val = val.replace(/[^\d.-]/g, '');
-        }
-
-        <c:if test="${not empty defaultValue}">
-            if( val == ${defaultValue} ){
-                return true;
-            }
-        </c:if>
-
-        if( val > parm){
-            return false;
-        }
-
-        return true;
-    },
-    "Custom message"
-);
-
-$.validator.addMethod("${name}_percent",
-    function(value, elem, parm) {
-
-        var parmsArray = parm.split(",");
-        var percentage = parmsArray[1];
-        var percentRule = parmsArray[2];
-        var val = $(elem).val();
-        var thisVal = Number(val.replace(/[^0-9\.]+/g,""));
-        var parmVal = $('#'+parmsArray[0]).val();
-        var ratio = thisVal / parmVal;
-        var percent = ratio * 100;
-
-        if (percent >= percentage && percentRule == "GT" ) {
-            return true;
-        }
-        else if (percent <= percentage && percentRule == "LT" ) {
-            return true;
-        }
-        else {
-            return false;
-        }
-
-    },
-    "Custom message"
-);
+})(jQuery);

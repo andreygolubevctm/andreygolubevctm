@@ -96,6 +96,7 @@
             onInitialise: function onStartInit(event) {
                 console.log("Initialising Validator Core");
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+                meerkat.modules.currencyField.initCurrency();
             }
         };
 
