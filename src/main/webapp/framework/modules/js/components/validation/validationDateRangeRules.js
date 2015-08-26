@@ -1,4 +1,6 @@
+(function($) {
 $.validator.addMethod("dateEUR", function(value, element, params) {
+    console.log("debug dateEUR");
     if (typeof params !== 'undefined' && params.selector) {
         value = $(params.selector).val() || value;
     }
@@ -13,13 +15,14 @@ $.validator.addMethod("dateEUR", function(value, element, params) {
         var m = parseInt(adata[1], 10);
         var y = parseInt(adata[2], 10);
         var xdata = new Date(y, m - 1, d);
-        check = (xdata.getFullYear() === y) && (xdata.getMonth() === m - 1)
+        check = (xdata.getFullYear() === y || String(xdata.getFullYear()).substring(2) === y) && (xdata.getMonth() === m - 1)
         && (xdata.getDate() === d);
     }
 
     return (this.optional(element) !== false) || check;
 }, "Please enter a date in dd/mm/yyyy format.");
 
+/*
 $.validator.addMethod("dateOfBirthEUR", function(value, element, params) {
 
     if (typeof params !== 'undefined' && params.selector) {
@@ -42,8 +45,9 @@ $.validator.addMethod("dateOfBirthEUR", function(value, element, params) {
 
     return (this.optional(element) !== false) || check;
 }, "Please enter a date in dd/mm/yyyy format.");
-
-$.validator.addMethod("minDateEUR", function(value, element, param) {
+*/
+$.validator.addMethod("earliestDateEUR", function(value, element, param) {
+    console.log("debug earliestDateEUR");
     function getDate(v) {
         var adata = v.split('/');
         return new Date(parseInt(adata[2], 10), parseInt(adata[1], 10) - 1,
@@ -53,7 +57,8 @@ $.validator.addMethod("minDateEUR", function(value, element, param) {
         || getDate(value) >= getDate(param);
 }, $.validator.format("Please enter a minimum of {0}."));
 
-$.validator.addMethod("maxDateEUR", function(value, element, param) {
+$.validator.addMethod("latestDateEUR", function(value, element, param) {
+    console.log("debug latestDateEUR");
     function getDate(v) {
         var adata = v.split('/');
         return new Date(parseInt(adata[2], 10), parseInt(adata[1], 10) - 1,
@@ -64,7 +69,7 @@ $.validator.addMethod("maxDateEUR", function(value, element, param) {
 }, $.validator.format("Please enter a maximum of {0}."));
 
 
-
+    /*
 
 $.validator.addMethod('min_DateOfBirth', function(value, element, params) {
     if (typeof params === 'undefined' || !params.hasOwnProperty('ageMin')) return false;
@@ -112,6 +117,7 @@ $.validator.addMethod('max_DateOfBirth', function(value, element, params) {
 //
 // Validates the dropdown for mobile commencement date.
 //
+
 $.validator.addMethod("commencementDateMobileDropdownCheck", function (value, element) {
     return !(element.value === '' || element.value === null);
 }, "Please select a commencement date.");
@@ -154,4 +160,5 @@ $.validator.addMethod("${name}notPublicHolidays",
         return ${name}Handler.isNotPublicHoliday( $(element).datepicker("getDate") )[0];
     },
     "Custom message"
-);
+);*/
+})(jQuery);

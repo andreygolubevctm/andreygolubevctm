@@ -7,6 +7,7 @@
 <%@ attribute name="xpath" 		            required="true"  rtexprvalue="true"   description="variable's xpath" %>
 <%@ attribute name="required" 	            required="true"  rtexprvalue="true"   description="is this field required?" %>
 <%@ attribute name="requiredMessage"        required="false"  rtexprvalue="true"  description="Validation message when field is required" %>
+<%@ attribute name="validationErrorPlacementSelector" required="false"  rtexprvalue="true"  description="where to place the error message" %>
 <%@ attribute name="className" 	            required="false" rtexprvalue="true"   description="additional css class attribute" %>
 <%@ attribute name="title" 		            required="false"  rtexprvalue="true"  description="The input field's title"%>
 <%@ attribute name="maxlength" 	            required="false" rtexprvalue="true"   description="The maximum length for the input field"%>
@@ -114,7 +115,7 @@
 				</c:if>
 		</c:if>
 
-		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" value="${value}" ${maxlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}${additionalAttributes}>
+		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}"  data-validation-placement="${validationErrorPlacementSelector}" value="${value}" ${maxlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}${additionalAttributes}>
 
 		<c:if test="${not empty inputGroupText}">
 				<c:if test="${empty inputGroupTextPosition or inputGroupTextPosition eq 'right'}">
