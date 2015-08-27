@@ -78,26 +78,34 @@ public class CarQuoteService {
         request.setClientIp(data.getClientIpAddress());
         request.setTransactionId(data.getTransactionId());
 
-        // Check if AuthToken provided and use as filter if available
-        // It is acceptable to throw exceptions here as provider key is checked
-        // when page loaded so technically should not reach here otherwise.
-        String authToken = quote.getFilter().getAuthToken();
+        EnvironmentService environmentService = new EnvironmentService();
 
-        if(authToken != null) {
-            ProviderFilterDao providerFilterDAO = new ProviderFilterDao();
-            try {
-                ArrayList<String> providerCode = providerFilterDAO.getProviderDetailsByAuthToken(authToken);
-                if(providerCode.isEmpty()) {
-                    throw new CarServiceException("Invalid Auth Token");
-                } else {
-                    quote.getFilter().setProviders(providerCode);
+        if(
+            environmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST ||
+            environmentService.getEnvironment() == EnvironmentService.Environment.NXI ||
+            environmentService.getEnvironment() == EnvironmentService.Environment.NXS
+        ) {
+            // Check if AuthToken provided and use as filter if available
+            // It is acceptable to throw exceptions here as provider key is checked
+            // when page loaded so technically should not reach here otherwise.
+            String authToken = quote.getFilter().getAuthToken();
+
+            if (authToken != null) {
+                ProviderFilterDao providerFilterDAO = new ProviderFilterDao();
+                try {
+                    ArrayList<String> providerCode = providerFilterDAO.getProviderDetailsByAuthToken(authToken);
+                    if (providerCode.isEmpty()) {
+                        throw new CarServiceException("Invalid Auth Token");
+                    } else {
+                        quote.getFilter().setProviders(providerCode);
+                    }
+                } catch (DaoException e) {
+                    throw new CarServiceException("Auth Token Error", e);
                 }
-            } catch(DaoException e) {
-                throw new CarServiceException("Auth Token Error", e);
+                // Provider Key is mandatory in NXS
+            } else if (EnvironmentService.getEnvironmentAsString().equalsIgnoreCase("nxs")) {
+                throw new CarServiceException("Provider Key required in '" + EnvironmentService.getEnvironmentAsString() + "' environment");
             }
-            // Provider Key is mandatory in NXS
-        } else if(EnvironmentService.getEnvironmentAsString().equalsIgnoreCase("nxs")) {
-            throw new CarServiceException("Provider Key required in '" + EnvironmentService.getEnvironmentAsString() + "' environment");
         }
 
         final CarQuoteRequest carQuoteRequest = RequestAdapter.adapt(data);
@@ -118,8 +126,6 @@ public class CarQuoteService {
         }catch (DaoException | ServiceConfigurationException e ){
             throw new ServiceException("CarQuote config error", e);
         }
-
-        EnvironmentService environmentService = new EnvironmentService();
 
         if(environmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST || environmentService.getEnvironment() == EnvironmentService.Environment.NXI){
             if(data.getEnvironmentOverride() != null && data.getEnvironmentOverride().equals("") == false) {

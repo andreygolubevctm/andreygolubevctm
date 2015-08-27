@@ -20,7 +20,7 @@
 </c:if>
 <%-- Make sure we're in a proper environment to test this --%>
 <c:choose>
-	<c:when test="${empty param[keyLabel] && (environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI'  || environmentService.getEnvironmentAsString() == 'NXQ')}">
+	<c:when test="${empty param[keyLabel] && (environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI')}">
 		<c:if test="${fn:startsWith(pageContext.request.remoteAddr,'192.168.') or fn:startsWith(pageContext.request.remoteAddr,'0:0:0:') or pageContext.request.remoteAddr == '127.0.0.1'}">
 			<c:if test="${hideSelector eq false}">
 				<form_new:fieldset_columns displayFullWidth="${displayFullWidth}">
@@ -38,7 +38,7 @@
 			</c:if>
 		</c:if>
 	</c:when>
-	<c:when test="${not empty param[keyLabel] || environmentService.getEnvironmentAsString() == 'NXS'}">
+	<c:when test="${(not empty param[keyLabel] && (environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI')) || environmentService.getEnvironmentAsString() == 'NXS'}">
 		<c:set var="providerKey"><c:out value="${param[keyLabel]}" escapeXml="true" /></c:set>
 		<jsp:useBean id="providerService" class="com.ctm.services.ProviderService" />
 		<c:choose>
