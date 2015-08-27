@@ -26,20 +26,20 @@
 		var isMobile = meerkat.modules.performanceProfiling.isMobile();
 		var isMDorLG = _.indexOf(['lg','md'], meerkat.modules.deviceMediaState.get()) !== -1;
 		if(!isMobile && isMDorLG) {
-			/*$(elements.marketing).rules('remove', 'validateOkToEmailRadio');
+			$(elements.marketing).rules('remove', 'validateOkToEmailRadio');
 			$(elements.marketing).rules('add', 'required');
 			$(elements.oktocall).rules('remove', 'validateOkToCallRadio');
-			$(elements.oktocall).rules('add', 'required');*/
+			$(elements.oktocall).rules('add', 'required');
 		}
 	}
 
 	function validateOptins() {
-		var $mkt = $(elements.marketing);
-		var $otc = $(elements.oktocall);
-		if(!$mkt.prop('checked')) {
+		$mkt = $(elements.marketing);
+		$otc = $(elements.oktocall);
+		if(!$mkt.is(':checked')) {
 			$mkt.filter("input[value=N]").prop("checked",true).change();
 		}
-		if(!$otc.prop('checked')) {
+		if(!$otc.is(':checked')) {
 			$otc.filter("input[value=N]").prop("checked",true).change();
 		}
 	}
