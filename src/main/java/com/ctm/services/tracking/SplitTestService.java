@@ -1,6 +1,7 @@
 package com.ctm.services.tracking;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import com.ctm.services.SettingsService;
 import com.ctm.model.settings.PageSettings;
@@ -11,7 +12,7 @@ import com.disc_au.web.go.Data;
 
 public class SplitTestService {
 
-	private static Logger logger = Logger.getLogger(SplitTestService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SplitTestService.class.getName());
 
 	static final String FIELD_LABEL = "currentJourney";
 

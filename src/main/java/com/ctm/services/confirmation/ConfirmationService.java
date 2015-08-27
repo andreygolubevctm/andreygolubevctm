@@ -2,7 +2,8 @@ package com.ctm.services.confirmation;
 
 import java.net.URLEncoder;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.ConfirmationDao;
 import com.ctm.dao.transaction.TransactionDao;
@@ -16,7 +17,7 @@ import com.ctm.services.EnvironmentService;
 import com.ctm.services.SettingsService;
 
 public class ConfirmationService {
-	private static Logger logger = Logger.getLogger(ConfirmationService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ConfirmationService.class.getName());
 
 	/**
 	 * Get confirmation record by the key with strict validation that the transaction is associated with the specified brand.
