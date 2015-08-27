@@ -127,7 +127,11 @@
 
     }, "Age licence obtained invalid due to driver's age.");
 
-    $.validator.addMethod('validateOkToEmail', function(value, element) {
+
+    /**
+     * These could be made core if we did these on other verticals. Would just have to pass in the element as a param
+     */
+    $.validator.addMethod('validateOkToEmail', function(value, element, param) {
         var optin = ($("#quote_contactFieldSet input[name='quote_contact_marketing']:checked").val() === 'Y');
         var email = $('#quote_contact_email').val();
         if(optin && _.isEmpty(email)) {
@@ -137,7 +141,7 @@
     });
 
 
-    $.validator.addMethod('validateOkToCall', function (value, element) {
+    $.validator.addMethod('validateOkToCall', function (value, element, param) {
         var optin = ($("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked").val() === 'Y');
         var phone = $('#quote_contact_phone').val();
         if (optin && _.isEmpty(phone)) {
@@ -146,7 +150,7 @@
         return true;
     }, "Please enter a contact number");
 
-    $.validator.addMethod('validateOkToCallRadio', function (value, element) {
+    $.validator.addMethod('validateOkToCallRadio', function (value, element, param) {
         var $optin = $("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked");
         var noOptin = $optin.length === 0;
         var phone = $('#quote_contact_phone').val();
@@ -156,7 +160,7 @@
         return true;
     }, "Please choose if OK to call");
 
-    $.validator.addMethod('validateOkToEmailRadio', function(value, element) {
+    $.validator.addMethod('validateOkToEmailRadio', function(value, element, param) {
         var $optin = $("#quote_contactFieldSet input[name='quote_contact_marketing']:checked");
         var noOptin = $optin.length === 0;
         var email = $('#quote_contact_email').val();

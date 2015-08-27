@@ -63,7 +63,7 @@
 			<%-- FOR GROUPED STYLE --%>
 			<c:when test="${style == 'group' or style == 'inline'}">
 				<label class="${classVar} ${active}">
-					<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute}>
+					<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
 					<c:out value="${des}" />
 				</label>
 			</c:when>
@@ -71,7 +71,7 @@
 			<c:otherwise>
 				<div class="${classVar} ${active}">
 					<label>
-						<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute}>
+						<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
 						<c:out value="${des}" />
 					</label>
 				</div>
