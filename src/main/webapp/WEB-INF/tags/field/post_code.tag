@@ -11,6 +11,7 @@
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+<c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
 
 <c:if test="${required}">
 	<c:set var="requiredAttribute" value=' required="required" data-msg-required="Please enter ${title}"' />
@@ -18,7 +19,7 @@
 
 
 <%-- HTML --%>
-<input type="text"${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4">
+<input type="${inputType}" ${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4">
 
 
 <%-- VALIDATION --%>
