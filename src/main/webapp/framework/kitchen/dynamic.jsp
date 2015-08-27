@@ -204,15 +204,11 @@
 	</form_new:row>
 
 	<form_new:row label="additional_excess">
-		<field:additional_excess increment="100" minVal="500" xpath="quote/excess" maxCount="16" title="additional excess" required="true" omitPleaseChoose="Y" />
+		<field:additional_excess increment="100" minVal="500" xpath="quote/excess" maxCount="16" title="additional excess" required="" omitPleaseChoose="Y" />
 	</form_new:row>
 
 	<form_new:row label="age">
 		<field:age dob="22/08/1970" />
-	</form_new:row>
-
-	<form_new:row label="age_licence">
-		<field:age_licence xpath="quote/drivers/regular/licenceAge" required="true" helpId="25" title="age_licence" />
 	</form_new:row>
 
 	<form_new:row label="<del>array_radio</del>">

@@ -32,10 +32,10 @@
 	<form_new:row label="Email Address" id="contactEmailRow">
 		<c:choose>
 			<c:when test="${emailHelperSplitTest eq true}">
-				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" />
+				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" additionalAttributes=" data-rule-validateOkToEmail='true' "/>
 			</c:when>
 			<c:otherwise>
-				<field_new:email xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" />
+				<field_new:email xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 			</c:otherwise>
 		</c:choose>
 	</form_new:row>
@@ -57,28 +57,23 @@
 		<field_new:array_radio xpath="quote/contact/marketing"
 			required="false"
 			items="Y=Yes,N=No"
-			title="if OK to email" />
-		<content:optin key="okToEmail"/>
+			title="if OK to email" additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
+		<content:optin key="okToEmail" />
 	</form_new:row>
 
 	<form_new:row label="OK to call" className="">
 		<field_new:array_radio xpath="quote/contact/oktocall"
 			required="false"
 			items="Y=Yes,N=No"
-			title="if OK to call" />
+			title="if OK to call" additionalAttributes=" data-rule-validateOkToCallRadio='true' " />
 
 		<p class="optinText">${okToCall}</p>
 	</form_new:row>
-
-<go:script marker="js-head">
-
-
-</go:script>
-
+<%--
 	<go:validate selector="quote_contact_oktocall" rule="validateOkToCallRadio" parm="true"
 				message="Please choose if OK to call"/>
 	<go:validate selector="quote_contact_marketing" rule="validateOkToEmailRadio" parm="true"
-				message="Please choose if OK to email"/>
+				message="Please choose if OK to email"/>--%>
 
 
 	<%-- COMPETITION START --%>

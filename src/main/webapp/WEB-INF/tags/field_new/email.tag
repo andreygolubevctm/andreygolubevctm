@@ -12,6 +12,7 @@
 <%@ attribute name="helptext" 	required="false" rtexprvalue="true"	 description="additional help text" %>
 <%@ attribute name="placeHolder" required="false" rtexprvalue="true"  description="html5 placeholder" %>
 <%@ attribute name="tabIndex"	required="false" rtexprvalue="true"  description="TabIndex of the field" %>
+<%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"  description="Additional Attributes" %>
 
 <c:choose>
 
@@ -59,12 +60,8 @@
 
 <%-- HTML --%>
 <span>
-	<input name="${name}" id="${name}" class="sessioncamexclude form-control ${className}" value="${value}" size="${size}" ${placeHolderAttribute}${tabIndexValue}${requiredAttribute} type="email" data-msg-required="Please enter ${titleText}" />
+	<input name="${name}" id="${name}" class="sessioncamexclude form-control ${className}" value="${value}" size="${size}" ${placeHolderAttribute}${tabIndexValue}${requiredAttribute} type="email" data-msg-required="Please enter ${titleText}" ${additionalAttributes} />
 </span>
 <c:if test="${not empty helptext}">
 	<i class="helptext">${helptext}</i>
 </c:if>
-
-<go:script marker="css-head">
-	.helptext { display:block;font-size:12px;font-family:Arial, sans-serif; color: #808080;margin-top:2px;margin-bottom: 10px; }
-</go:script>

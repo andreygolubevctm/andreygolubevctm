@@ -18,9 +18,9 @@
 <c:set var="error_message">Please enter the number of kilometres the vehicle is driven per year</c:set>
 
 <%-- HTML --%>
-<field_new:input type="tel" xpath="${xpath}" required="${required}" className="${className}" title="${title}" placeHolder="${placeHolder}" />
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="required" parm="${required}" message="${error_message}"/>
-<go:validate selector="${name}" rule="digitsIgnoreComma" parm="${required}" message="${error_message}"/>
-<go:validate selector="quote_drivers_young_annualKilometres" rule="youngRegularDriversAnnualKilometersCheck" parm="${required}" message="The annual kilometres driven by the youngest driver cannot exceed those of the regular driver."/>
+<c:set var="additionalAttributes">
+    <c:if test="${required}">
+        data-msg-required='${error_message}' data-rule-digitsIgnoreComma='true' data-msg-digitsIgnoreComma='${error_message}' <c:if test="${name eq 'quote_drivers_young_annualKilometres'}">data-rule-youngRegularDriversAnnualKilometersCheck='true'</c:if>
+    </c:if>
+</c:set>
+<field_new:input type="tel" xpath="${xpath}" required="${required}" className="${className}" title="${title}" placeHolder="${placeHolder}" additionalAttributes="${additionalAttributes}" />

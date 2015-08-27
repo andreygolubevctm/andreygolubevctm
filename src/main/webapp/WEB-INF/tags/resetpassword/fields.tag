@@ -17,5 +17,3 @@
         </form_new:row>
     </form_new:fieldset>
 </div>
-
-<go:validate selector="reset_password" rule="validatePasswordLength" parm="true" message="" />

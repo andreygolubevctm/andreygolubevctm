@@ -18,7 +18,11 @@
 <div>
 	<div class="floatLeft">
 		<c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
-		<field_new:input type="text" xpath="${xpath}" required="${required}" className="age_licence numeric ${classname}" maxlength="${2}" title="${title}" size="2" formattedInteger="true" pattern="[0-9]*" />
+		<c:set var="validationRules" value="" />
+		<c:if test="${required}">
+			<c:set var="validationRules">data-rule-ageLicenceObtained='${required}' data-msg-ageLicenceObtained="Age licence obtained invalid due to ${title} driver's age." data-rule-digits='${required}' data-msg-digits="Please enter the age the ${title} driver obtained a driver's licence"</c:set>
+		</c:if>
+		<field_new:input type="text" xpath="${xpath}" required="${required}" className="age_licence numeric ${classname}" maxlength="${2}" title="${title}" size="2" formattedInteger="true" pattern="[0-9]*" additionalAttributes="${validationRules}" />
 	</div>
 
 	<c:if test="${helpId != null && helpId != ''}">
@@ -27,7 +31,3 @@
 		</div>
 	</c:if>
 </div>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="digits" parm="${required}" message="Please enter the age the ${title} driver obtained a driver's licence"/>
-<go:validate selector="${name}" rule="ageLicenceObtained" parm="${required}" message="Age licence obtained invalid due to ${title} driver's age."/>

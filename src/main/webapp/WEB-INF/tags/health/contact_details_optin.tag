@@ -92,7 +92,7 @@
 				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
 				<field:hidden xpath="${xpath}/call" defaultValue="${val_optout}" />
 
-				<%-- form:privacy_optin --%>
+				<%-- form privacy_optin --%>
 				<c:choose>
 					<%-- Only render a hidden field when the checkbox has already been selected --%>
 					<c:when test="${data['health/privacyoptin'] eq 'Y'}">

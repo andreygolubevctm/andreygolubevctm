@@ -93,89 +93,80 @@
         return youngestAnnualKms < vehicleAnnualKms;
     }, "The annual kilometres driven by the youngest driver cannot exceed those of the regular driver.");
 
+//
+// Validates age licence obtained for regular driver
+//
+    $.validator.addMethod("ageLicenceObtained", function (value, element) {
+
+        var driver;
+        switch (element.name) {
+            case "quote_drivers_regular_licenceAge":
+                driver = "#quote_drivers_regular_dob";
+                break;
+            case "quote_drivers_young_licenceAge":
+                driver = "#quote_drivers_young_dob";
+                break;
+            default:
+                return false;
+        }
+
+        var d = new Date();
+        var curYear = d.getFullYear();
+        var driverFullYear = getDateFullYear($(driver).val());
+        var driverAge = curYear - driverFullYear;
+        if (this.optional(element) === false) {
+            if (!isNaN(driverFullYear)) {
+                if (isNaN(driverAge) || value < 16 || value > driverAge) {
+                    return false;
+                }
+            } else if (value < 16) {
+                return false;
+            }
+        }
+        return true;
+
+    }, "Age licence obtained invalid due to driver's age.");
+
+    $.validator.addMethod('validateOkToEmail', function(value, element) {
+        var optin = ($("#quote_contactFieldSet input[name='quote_contact_marketing']:checked").val() === 'Y');
+        var email = $('#quote_contact_email').val();
+        if(optin && _.isEmpty(email)) {
+            return false;
+        }
+        return true;
+    });
+
+
+    $.validator.addMethod('validateOkToCall', function (value, element) {
+        var optin = ($("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked").val() === 'Y');
+        var phone = $('#quote_contact_phone').val();
+        if (optin && _.isEmpty(phone)) {
+            return false;
+        }
+        return true;
+    }, "Please enter a contact number");
+
+    $.validator.addMethod('validateOkToCallRadio', function (value, element) {
+        var $optin = $("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked");
+        var noOptin = $optin.length === 0;
+        var phone = $('#quote_contact_phone').val();
+        if (!_.isEmpty(phone) && noOptin) {
+            return false;
+        }
+        return true;
+    }, "Please choose if OK to call");
+
+    $.validator.addMethod('validateOkToEmailRadio', function(value, element) {
+        var $optin = $("#quote_contactFieldSet input[name='quote_contact_marketing']:checked");
+        var noOptin = $optin.length === 0;
+        var email = $('#quote_contact_email').val();
+        if(!_.isEmpty(email) && noOptin) {
+            return false;
+        }
+        return true;
+    }, "Please choose if OK to email");
+
 
 })(jQuery);
 
 
-
-//
-// Validates age licence obtained for regular driver
-//
-$.validator.addMethod("ageLicenceObtained", function (value, element) {
-
-    var driver;
-    switch (element.name) {
-        case "quote_drivers_regular_licenceAge":
-            driver = "#quote_drivers_regular_dob";
-            break;
-        case "quote_drivers_young_licenceAge":
-            driver = "#quote_drivers_young_dob";
-            break;
-        default:
-            return false;
-    }
-
-    function getDateFullYear(v) {
-        var adata = v.split('/');
-        return parseInt(adata[2], 10);
-    }
-
-    var d = new Date();
-    var curYear = d.getFullYear();
-    var driverFullYear = getDateFullYear($(driver).val());
-    var driverAge = curYear - driverFullYear;
-    if (this.optional(element) === false) {
-        if (!isNaN(driverFullYear)) {
-            if (isNaN(driverAge) || value < 16 || value > driverAge) {
-                return false;
-            }
-        } else if (value < 16) {
-            return false;
-        }
-    }
-    return true;
-
-}, "Age licence obtained invalid due to driver's age.");
-
-
-//
-// Validates OK to call which ensure we have a phone number if they select yes
-//
-$.validator.addMethod("okToCall", function () {
-    return !($('input[name="quote_contact_oktocall"]:checked').val() == "Y"
-    && $('input[name="quote_contact_phone"]').val() === "");
-
-}, "");
-
-//
-//Validates OK to email which ensure we have a email address if they select yes
-//
-$.validator.addMethod("marketing", function () {
-    if ($('input[name="quote_contact_marketing"]:checked').val() === "Y"
-        && $('input[name="quote_contact_email"]').val() === "") {
-        return false;
-    } else {
-        $('input[name="quote_contact_email"]').parent().removeClass('state-right state-error');
-        return true;
-    }
-
-}, "");
-
-$.validator.addMethod('validateOkToCall', function (value, element) {
-    var optin = ($("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked").val() === 'Y');
-    var phone = $('#quote_contact_phone').val();
-    if (optin === true && _.isEmpty(phone)) {
-        return false;
-    }
-    return true;
-});
-
-$.validator.addMethod('validateOkToCallRadio', function (value, element) {
-    var $optin = $("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked");
-    var noOptin = $optin.length === 0;
-    var phone = $('#quote_contact_phone').val();
-    if (!_.isEmpty(phone) && noOptin === true) {
-        return false;
-    }
-    return true;
-});

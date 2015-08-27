@@ -11,6 +11,7 @@
 <%@ attribute name="url" 		required="true"	 rtexprvalue="true"	 description="url of import file containing options" %>
 <%@ attribute name="omitPleaseChoose" required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
 <%@ attribute name="validateRule" required="false"	rtexprvalue="true"	 description="specify your own validation rule" %>
+<%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
 
 
 <%-- VARIABLES --%>
@@ -39,7 +40,7 @@
 	<span class=" input-group-addon">
 		<i class="icon-sort"></i>
 	</span>
-	<select name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" id="${name}" class="form-control ${className}" >
+	<select name="${name}" ${requiredAttribute} data-msg-required="Please choose ${title}" id="${name}" class="form-control ${className}" ${additionalAttributes}>
 		<%-- Write the initial "please choose" option --%>
 		<c:choose>
 			<c:when test="${omitPleaseChoose == 'Y'}"></c:when>
