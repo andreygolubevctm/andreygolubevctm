@@ -266,11 +266,18 @@
 			clientTel = policyHolderPhone;
 		}
 
+		var quoteNumber;
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
+			quoteNumber = currProduct.quoteNumber;
+		} else {
+			quoteNumber = currProduct.leadNo;
+		}
+
 		var defaultData = {
 			state:				state,
 			brand:				currProduct.productId.split('-')[0],
 			productId:			currProduct.productId,
-			clientNumber:		currProduct.leadNo,
+			clientNumber:		quoteNumber,
 			clientName:			clientName,
 			phoneNumber:		clientTel,
 			partnerReference:	meerkat.modules.transactionId.get()
