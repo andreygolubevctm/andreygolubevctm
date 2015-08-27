@@ -200,11 +200,10 @@
 	
 </go:script>
 
-<%-- VALIDATION --%>
-<go:validate selector="${name}_mobileNumberinput" rule="validateMobileField" parm="true" message="You need to provide a mobile number or a landline number." />
+<%-- VALIDATION
 <go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="Your address does not match the original state provided. You can <span class='refineSearch'>refine your search</span> by changing the original state." />
 
 <jsp:useBean id="now" class="java.util.GregorianCalendar" scope="page" />
 <% now.add(java.util.GregorianCalendar.YEAR, -18); %>
 <fmt:formatDate value="${now.time}" pattern="dd/MM/yyyy" var="maxDate" />
-<go:validate selector="${name}_dob" rule="maxDateEUR" parm="'${maxDate}'" message="You need to be 18 years of age or older to switch your energy services"/>
+<go:validate selector="${name}_dob" rule="maxDateEUR" parm="'${maxDate}'" message="You need to be 18 years of age or older to switch your energy services"/>--%>
