@@ -32,7 +32,7 @@ TODO F=Looking to Re-enter the Market to be added post relaunch
 	</form_new:row>
 
 	<form_new:row label="I live in">
-		<field_new:lookup_suburb_postcode xpath="${xpath}/location" required="true" placeholder="Suburb / Postcode" />
+		<field_new:lookup_suburb_postcode xpath="${xpath}/location" required="true" placeholder="Suburb / Postcode" extraDataAttributes=" data-rule-validateSuburbPostcodeState='true' data-msg-validateSuburbPostcodeState='Please select a valid suburb / postcode'" />
 		<field:hidden xpath="${xpath}/suburb" defaultValue="" />
 		<field:hidden xpath="${xpath}/postcode" defaultValue="" />
 		<field:hidden xpath="${xpath}/state" defaultValue="" />
@@ -55,6 +55,3 @@ TODO F=Looking to Re-enter the Market to be added post relaunch
 
 
 </form_new:fieldset>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}_location" rule="validateSuburbPostcodeState" parm="true" message="Please select a valid suburb / postcode" />

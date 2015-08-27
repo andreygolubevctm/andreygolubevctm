@@ -26,9 +26,4 @@
 
 
 <%-- HTML --%>
-<input type="text" class="typeahead ${className}" id="${name}" name="${name}" value="${value}" ${placeHolderAttribute}${requiredAttribute} data-source-url="${source}" ${extraDataAttributes} />
-
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>
-
+<input type="text" class="typeahead ${className}" id="${name}" name="${name}" value="${value}" ${placeHolderAttribute}${requiredAttribute} data-rule-required="true" data-msg-required="Please enter the ${title}" data-source-url="${source}" ${extraDataAttributes} />

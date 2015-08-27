@@ -26,6 +26,10 @@
         }, "Please select a valid address"
     );
 
+    function validateLocation(value) {
+
+    }
+
     $.validator.addMethod("validateLocation", function (value, element) {
         value = $.trim(String(value)).replace("'", "");
         return value !== '' && value.match(fullAddressRegex);
