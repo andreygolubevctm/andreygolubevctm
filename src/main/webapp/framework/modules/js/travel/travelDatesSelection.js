@@ -151,7 +151,6 @@
 
 		$fromDateInput.on("hide serialised.meerkat.formDateInput", function updateToDateInput() {
 			syncToDateWithin1yearRange();
-			console.log("TDS SYNC");
 			syncToDateRanges();
 		});
 

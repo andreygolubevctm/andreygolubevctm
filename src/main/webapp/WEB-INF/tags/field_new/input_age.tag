@@ -19,11 +19,14 @@
 	<c:set var="validationNoun" value=" ${validationNoun}" />
 </c:if>
 
+<c:set var="ageRangeRule">
+	<c:if test="${required}">
+		data-rule-ageRange='true' data-msg-ageRange='Please enter the age of the oldest Adult${validationNoun}. Adult${validationNoun}s must be aged 16 - 99.'
+	</c:if>
+</c:set>
+
 <%-- HTML --%>
-<field_new:input type="text" xpath="${xpath}" className="${className}" maxlength="${maxlength}" required="false" title="${title}" pattern="[0-9]*" />
+<field_new:input type="text" xpath="${xpath}" className="${className}" maxlength="${maxlength}" required="false" title="${title}" pattern="[0-9]*" additionalAttributes=" ${ageRangeRule}" />
 
 <%-- VALIDATION --%>
-<c:if test="${required}">
-	<go:validate selector="${name}" rule="ageRange" parm="true" message="Please enter the age of the oldest Adult${validationNoun}. Adult${validationNoun}s must be aged 16 - 99."/>
-	<go:validate selector="${name}" rule="onkeyup" parm="false" message=" "/>
-</c:if>
+
