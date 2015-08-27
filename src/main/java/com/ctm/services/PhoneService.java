@@ -54,7 +54,7 @@ public class PhoneService {
 			XmlNode xmlNode = parser.parse(result);
 			return xmlNode;
 		} catch (SAXException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 
 		return null;
@@ -132,7 +132,7 @@ public class PhoneService {
 			}
 		}
 		catch (JSONException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 
 		return null;
@@ -250,7 +250,7 @@ public class PhoneService {
 			callInfo.setCustomerPhoneNo(otherParty.getString("telephoneNumber"));
 		}
 		catch (JSONException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 
 		return callInfo;

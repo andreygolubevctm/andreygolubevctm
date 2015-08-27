@@ -265,7 +265,7 @@ public class SimplesRouter extends HttpServlet {
 			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.SIMPLES.getCode());
 		} catch (DaoException | ConfigSettingException e) {
 			fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-			logger.error("{}",e);
+			logger.error("",e);
 			throw new ServletException(e);
 		}
 		SimplesTickleService tickleService = new SimplesTickleService(sessionDataService);

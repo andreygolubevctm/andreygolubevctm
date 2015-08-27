@@ -131,7 +131,7 @@ public class AccessTouchService {
                 isBeingSubmitted = touch.getType() == Touch.TouchType.SUBMITTED;
             }
         } catch (DaoException e) {
-            logger.error("{}",e);
+            logger.error("",e);
         }
         return isBeingSubmitted;
     }

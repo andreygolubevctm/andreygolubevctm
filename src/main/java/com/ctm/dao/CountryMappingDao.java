@@ -75,7 +75,7 @@ public class CountryMappingDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();
@@ -117,7 +117,7 @@ public class CountryMappingDao {
 				userSelectedCountries.setSelectedCountries(countryMappingResult.getString("selectedCountries"));
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();

@@ -58,7 +58,7 @@ public class TestPhoneNumberRouter extends HttpServlet {
 			response.getWriter().print(json.toString());
 
 		} catch (JSONException | IOException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 	}
 }
