@@ -5,7 +5,10 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath" %>
 <%@ attribute name="type" required="true" rtexprvalue="true" description="the address type R=Residential P=Postal" %>
-
+<%@ attribute name="suburbNameAdditionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
+<%@ attribute name="suburbAdditionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
+<%@ attribute name="postCodeNameAdditionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
+<%@ attribute name="postCodeAdditionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
 <c:set var="isPostal" value="${type eq 'P'}" />
 
 <%-- VARIABLES --%>
@@ -50,7 +53,7 @@
 	<%-- POSTCODE --%>
 	<c:set var="fieldXpath" value="${xpath}/nonStdPostCode" />
 	<form_new:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow">
-		<field:post_code xpath="${fieldXpath}" required="true" title="postcode" />
+		<field:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}" />
 	</form_new:row>
 
 	<%-- SUBURB DROPDOWN (populated from postcode) --%>
@@ -69,7 +72,7 @@
 					<span class=" input-group-addon" data-target="${name}">
 						<i class="icon-sort"></i>
 					</span>
-					<select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}">
+					<select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes}>
 						<%-- Write the initial "Please select" option --%>
 						<option value="">Please select</option>
 						<%-- Write the options for each row --%>
@@ -96,7 +99,7 @@
 					<span class=" input-group-addon" data-target="${name}">
 						<i class="icon-sort"></i>
 					</span>
-					<select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}">
+					<select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes}>
 						<option value=''>Enter Postcode</option>
 					</select>
 				</div>
@@ -174,8 +177,8 @@
 	<field:hidden xpath="${xpath}/floorNo" />
 	<field:hidden xpath="${xpath}/streetName" />
 	<field:hidden xpath="${xpath}/streetId" />
-	<field_new:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" />
-	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" attributeInjection="data-rule-validAddress='${name}'" />
+	<field_new:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" additionalAttributes="${suburbAdditionalAttributes}"/>
+	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" attributeInjection="data-rule-validAddress='${name}'" additionalAttributes="${postCodeAdditionalAttributes}" />
 	<field:hidden xpath="${xpath}/state" />
 </div>
 

@@ -201,6 +201,3 @@ var HouseholdDetailsHandler = {
 		}
 	});
 </go:script>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}_location" rule="validateLocation" parm="true" message="Please make sure that the format of the postcode/suburb field is &quotpostcode - suburb, state&quot" />
