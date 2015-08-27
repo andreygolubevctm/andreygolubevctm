@@ -6,7 +6,8 @@ import com.ctm.dao.DatabaseUpdateMapping;
 import com.ctm.dao.SqlDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.TransactionDetail;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +25,7 @@ import java.util.List;
  */
 public class TransactionDetailsDao {
 
-	private static Logger logger = Logger.getLogger(TransactionDetailsDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(TransactionDetailsDao.class.getName());
 	private final SqlDao sqlDao;
 
 	/**
@@ -99,7 +100,7 @@ public class TransactionDetailsDao {
 					updateTransactionDetails(transactionId, transactionDetailNew);
 				}
 			} catch (DaoException e) {
-				logger.error(e);
+				logger.error("",e);
 			}
 		}
 		return true;

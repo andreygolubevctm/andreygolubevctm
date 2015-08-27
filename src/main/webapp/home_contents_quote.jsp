@@ -201,6 +201,7 @@
 		</c:choose>
 		<home_new_layout:slide_results />
 
+		<field:hidden xpath="environmentOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 
 	</jsp:body>

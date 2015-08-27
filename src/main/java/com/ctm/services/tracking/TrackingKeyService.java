@@ -3,7 +3,8 @@ package com.ctm.services.tracking;
 import java.util.List;
 import java.util.Arrays;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.security.StringEncryption;
@@ -17,7 +18,7 @@ import com.disc_au.web.go.Data;
 
 public class TrackingKeyService {
 
-	private static Logger logger = Logger.getLogger(TrackingKeyService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(TrackingKeyService.class.getName());
 
 	public TrackingKeyService(){}
 

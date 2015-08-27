@@ -4,11 +4,12 @@ import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.leadfeed.LeadFeedData;
 import com.ctm.services.leadfeed.LeadFeedService.LeadType;
 import com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AILeadFeedService implements IProviderLeadFeedService {
 
-	private static Logger logger = Logger.getLogger(AILeadFeedService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AILeadFeedService.class.getName());
 
 	/**
 	 * isQualifiedLead() tests valid lead data exists according to the lead type

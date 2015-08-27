@@ -5,7 +5,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.segment.Segment;
@@ -13,7 +14,7 @@ import com.ctm.model.segment.SegmentRequest;
 import com.ctm.model.segment.SegmentRule;
 
 public class SegmentDao {
-	private final static Logger logger = Logger.getLogger(SegmentDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SegmentDao.class.getName());
 
 	public List<Segment> getAvailableSegments(SegmentRequest segmentRequest) throws DaoException {
 		return getAvailableSegments(segmentRequest.styleCodeId, segmentRequest.verticalId, segmentRequest.effectiveDate);

@@ -2,7 +2,8 @@ package com.ctm.services.utilities;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,7 +22,7 @@ import com.ctm.services.ServiceConfigurationService;
 
 public class UtilitiesLeadfeedService {
 
-	private static Logger logger = Logger.getLogger(UtilitiesLeadfeedService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(UtilitiesLeadfeedService.class.getName());
 
 	public static UtilitiesLeadfeedModel mapParametersToModel(HttpServletRequest request) {
 

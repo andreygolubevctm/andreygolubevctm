@@ -2,7 +2,8 @@ package com.ctm.services;
 
 import java.security.GeneralSecurityException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,7 +36,7 @@ public class ResetPasswordService {
 		this.auditService = auditService;
 	}
 	
-	private static Logger logger = Logger.getLogger(ResetPasswordService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ResetPasswordService.class.getName());
 	
 	/**
 	 * 	Calls the mysql database with the resetId code if found invalidate the token. If not found return an error message 
@@ -84,7 +85,7 @@ public class ResetPasswordService {
 				response = createResponse("ERROR", "Oops, something seems to have gone wrong! - Please try the reset proceedure again later.");
 				logAudit.setResult(LogAudit.Result.FAIL);
 				metadata = "token: " + resetId + ", emailMasterId: " + emailMasterId + ", exception was thrown " + e.getMessage();
-				logger.error(e);
+				logger.error("",e);
 			}
 		} else {
 			// JSON result failure - no email master ID was returned

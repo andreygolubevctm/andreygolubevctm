@@ -362,7 +362,9 @@
 
     // Wrapper around results component, load results data
     function get() {
-        Results.get();
+        meerkat.modules.resultsFeatures.fetchStructure(meerkat.site.vertical).done(function() {
+            Results.get();
+        });
     }
 
     function onResultsLoaded() {
