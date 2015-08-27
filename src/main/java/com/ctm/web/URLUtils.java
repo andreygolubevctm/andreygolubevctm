@@ -25,7 +25,7 @@ public class URLUtils {
 			return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
 		}
 		catch (Exception e) {
-			logger.error("{}",e);
+			logger.error("",e);
 			return false;
 		}
 	}

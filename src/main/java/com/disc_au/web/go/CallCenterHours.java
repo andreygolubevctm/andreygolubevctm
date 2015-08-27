@@ -70,7 +70,7 @@ public class CallCenterHours {
 					hours.add(closing);
 				}
 			} catch (ParseException e) {
-				logger.error("{}",e);
+				logger.error("",e);
 			}
 			openingHours.put(dayOfWeek, hours);
 		}

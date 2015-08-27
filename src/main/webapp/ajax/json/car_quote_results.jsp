@@ -246,10 +246,11 @@
 					</c:set>
 
 					<%-- Knockout REAL when driver is Male, under 21 and REIN-01-02 (Comprehensive) --%>
-					<c:if test="${brandCode eq 'REIN' and productId eq 'REIN-01-02' and data.quote.drivers.regular.gender eq 'M'}">
+					<c:if test="${brandCode eq 'REIN' and productId eq 'REIN-01-02'}">
 						<jsp:useBean id="dateUtils" class="com.ctm.utils.common.utils.DateUtils" scope="request" />
-						<c:set var="dob" value="${data.quote.drivers.regular.dob}" />
-						<c:if test="${dateUtils.getAgeFromDOB(dob) < 21}">
+						<c:set var="regDob" value="${data.quote.drivers.regular.dob}" />
+						<c:set var="yngDob" value="${data.quote.drivers.young.dob}" />
+						<c:if test="${(data.quote.drivers.regular.gender eq 'M' && dateUtils.getAgeFromDOB(regDob) < 21) || (not empty yngDob && data.quote.drivers.young.gender eq 'M' && dateUtils.getAgeFromDOB(yngDob) < 21)}">
 							<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]/available" value="N" />
 						</c:if>
 					</c:if>

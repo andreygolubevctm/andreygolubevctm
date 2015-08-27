@@ -155,7 +155,7 @@ public class SOAPAggregatorTag extends TagSupport {
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
-						logger.error("{}",e);
+						logger.error("",e);
 				}
 			}
 
@@ -224,7 +224,7 @@ public class SOAPAggregatorTag extends TagSupport {
 			}
 
 		} catch (IOException e) {
-					logger.error("{}",e);
+					logger.error("",e);
 		}
 		}
 			return super.doEndTag();
@@ -358,7 +358,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 			return parser.parse(resultXML.toString());
 		} catch (TransformerException | SAXException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 		return resultNode;
 	}

@@ -60,7 +60,7 @@ public class SqlDao<T> {
             stmt.close();
         } catch (Exception e) {
             rollback();
-            logger.error("{}",e);
+            logger.error("",e);
             throw new DaoException("Error when performing update" , e);
         }
     }
@@ -98,7 +98,7 @@ public class SqlDao<T> {
 			databaseMapping.handleParams(stmt);
 			return stmt.executeUpdate();
 		} catch (SQLException | NamingException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 			throw new DaoException("failed to executeUpdate " + databaseMapping.getStatement(), e);
 		} finally {
 			cleanup();
@@ -122,7 +122,7 @@ public class SqlDao<T> {
 			}
 			rs.close();
 		} catch (SQLException  e) {
-			logger.error("{}",e);
+			logger.error("",e);
 			throw new DaoException("failed to getResult " + sql, e);
 		} finally {
 			cleanup();
@@ -140,7 +140,7 @@ public class SqlDao<T> {
 			}
 			rs.close();
 		} catch (SQLException  e) {
-			logger.error("{}",e);
+			logger.error("",e);
 			throw new DaoException("failed to getResult " + sql, e);
 		} finally {
 			cleanup();
@@ -154,7 +154,7 @@ public class SqlDao<T> {
 			stmt = conn.prepareStatement(sql);
 			stmt.executeUpdate();
 		} catch (SQLException | NamingException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 			throw new DaoException("failed to executeUpdate " + sql, e);
 		} finally {
 			cleanup();
@@ -171,7 +171,7 @@ public class SqlDao<T> {
                 conn.setAutoCommit(autocommit);
             }
         } catch (SQLException e) {
-            logger.error("{}",e);
+            logger.error("",e);
         }
         cleanup();
     }
@@ -225,7 +225,7 @@ public class SqlDao<T> {
             value = databaseMapping.handleResult(rs);
             rs.close();
         } catch (SQLException  e) {
-            logger.error("{}",e);
+            logger.error("",e);
             throw new DaoException("failed to getResult " + sql, e);
         } finally {
             cleanup();
@@ -283,7 +283,7 @@ public class SqlDao<T> {
             return id;
         } catch (Exception e) {
             rollback();
-            logger.error("{}",e);
+            logger.error("",e);
             throw new DaoException("Error on "+action+" execute update" , e);
         }finally {
             try {

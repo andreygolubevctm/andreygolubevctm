@@ -45,7 +45,7 @@ import static javax.servlet.http.HttpServletResponse.*;
 		"/simples/transactions/details.json",
 		"/simples/users/list_online.json",
 		"/simples/users/stats_today.json",
-		"/simples/phones/call",
+		"/simples/phones/call.json",
 		"/general/phones/callInfo/get.json",
 		"/simples/admin/openinghours/update.json",
 		"/simples/admin/openinghours/create.json",
@@ -135,7 +135,7 @@ public class SimplesRouter extends HttpServlet {
 		} else if (uri.endsWith("/simples/users/stats_today.json")) {
 			int simplesUid = authenticatedData.getSimplesUid();
 			userStatsForToday(writer, simplesUid);
-		} else if (uri.endsWith("/simples/phones/call")) {
+		} else if (uri.endsWith("/simples/phones/call.json")) {
 			if (authenticatedData != null) {
 				final String ext = authenticatedData.getExtension();
 				final String phone = request.getParameter("phone");
@@ -265,7 +265,7 @@ public class SimplesRouter extends HttpServlet {
 			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.SIMPLES.getCode());
 		} catch (DaoException | ConfigSettingException e) {
 			fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-			logger.error("{}",e);
+			logger.error("",e);
 			throw new ServletException(e);
 		}
 		SimplesTickleService tickleService = new SimplesTickleService(sessionDataService);

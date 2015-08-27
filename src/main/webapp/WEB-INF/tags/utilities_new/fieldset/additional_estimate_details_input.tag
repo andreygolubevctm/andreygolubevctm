@@ -10,6 +10,14 @@
 <%@ attribute name="inputGroupText" required="true" rtexprvalue="true" description="Input group text" %>
 <%@ attribute name="inputGroupTextPosition" required="false" rtexprvalue="true" description="Position of input group text" %>
 
+<c:set var="inputFieldType"><field_new:get_numeric_input_type /></c:set>
+<c:set var="formatNum">
+    <c:choose>
+        <c:when test='${inputType eq "text"}'>false</c:when>
+        <c:otherwise>true</c:otherwise>
+    </c:choose>
+</c:set>
+
 <c:set var="lowerCaseUtilityType" value="${fn:toLowerCase(utilityType)}" />
 
 <c:choose>
@@ -31,7 +39,7 @@
     <div class="col-md-6 row-content">
         <h5>${utilityType} ${headingHelp}</h5>
         <div class="error-field" style="display:block;"><!-- empty --></div>
-        <field_new:input xpath="${xpath}/amount" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="true" />
+        <field_new:input type="${inputFieldType}" xpath="${xpath}/amount" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="true" />
     </div>
     <div class="col-md-6 row-content">
         <h5 class="structural">&nbsp;</h5>

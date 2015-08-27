@@ -23,11 +23,11 @@
 <%@ attribute name="otherElementName" 	required="false"	rtexprvalue="true"	description="The other element display name. Used for Validation Message" %>
 <%@ attribute name="altTitle"		 	required="false"	rtexprvalue="true"	description="Alternative title for percentage rules" %>
 
-
 <go:script marker="js-href" href="common/js/jquery.formatCurrency-1.4.0.js" />
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
 <c:if test="${not empty otherElement}">
 	<c:set var="otherElement" value="${go:nameFromXpath(otherElement)}" />
 </c:if>
@@ -67,7 +67,7 @@
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" value="${value}" class="currency"/>
 
-	<field_new:input type="text"
+	<field_new:input type="${inputType}"
 		xpath="${xpath}entry"
 		required="${required}"
 		className="${className}"

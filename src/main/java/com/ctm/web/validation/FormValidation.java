@@ -64,7 +64,7 @@ public class FormValidation {
 			}
 			errorDetails.put("validationErrors", validationErrors );
 		} catch (JSONException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 		return reponse;
 	}

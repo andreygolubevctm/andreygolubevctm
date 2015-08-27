@@ -38,6 +38,7 @@
 	<c:set var="fieldXpath" value="${xpath}/vdnInput" />
 	<form_new:row label="VDN" fieldXpath="${fieldXpath}" className="hidden" helpId="540">
 		<field:input_numeric xpath="${fieldXpath}" minValue="1000" maxValue="9999" title="Inbound VDN" required="true" id="${go:nameFromXpath(fieldXpath)}" maxLength="4" validationMessage="Please enter VDN correctly (4 digits)" className="form-control" />
+		<span class="fieldrow_legend" id="${name}_emailMessage">Enter "1000" if no VDN is displayed</span>
 	</form_new:row>
 
 	<field:hidden xpath="${xpath}/callId" defaultValue="${callId}" />
