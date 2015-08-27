@@ -81,23 +81,3 @@
         </div>
     </form_new:row>
 </form_new:fieldset>
-
-<%-- VALIDATION --%>
-<c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<%-- Usage Peak --%>
-<go:validate selector="${name}_spend_electricity_amount" rule="maximumSpend" parm="true"/>
-<go:validate selector="${name}_spend_gas_amount" rule="maximumSpend" parm="true"/>
-
-<go:validate selector="${name}_usage_electricity_peak_amount" rule="maximumUsage" parm="true"/>
-<go:validate selector="${name}_usage_gas_peak_amount" rule="maximumUsageGas" parm="true"/>
-
-<%-- Usage Electricity --%>
-<go:validate selector="${name}_usage_electricity_offpeak_amount" rule="maximumUsage" parm="true"/>
-<go:validate selector="${name}_usage_gas_offpeak_amount" rule="maximumUsageGas" parm="true"/>
-
-<go:validate selector="${name}_usage_electricity_offpeak_period" rule="amountPeriodRequired" parm="true"
-             message="Please choose the electricity offpeak usage period"/>
-
-<go:validate selector="${name}_usage_gas_offpeak_period" rule="amountPeriodRequired" parm="true"
-             message="Please choose the gas offpeak usage period"/>
-
