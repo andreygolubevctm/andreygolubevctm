@@ -204,11 +204,13 @@
 			// prepare data
 			var dat = settings.sendEmailDataFunction(settings);
 
+			dat = purgefromData('vertical', dat);
 			dat.push({
 				name:'vertical',
 				value: meerkat.site.vertical
 			});
 
+			dat = purgefromData('email', dat);
 			dat.push({
 				name:'email',
 				value: settings.emailInput.val()
@@ -242,6 +244,15 @@
 		}
 
 	}
+	function purgefromData(item, dat) {
+		var i;
+		for (i = 0; i < dat.length; i++) {
+			if (dat[i].name === item) {
+				dat.splice(i, 1);
+			}
+		}
+		return dat;
+	}
 
 	function defaultEmailResultsFail(settings){
 		enableSubmitButton(settings);
@@ -272,7 +283,8 @@
 		emailChanged : emailChanged,
 		enableSubmitButton : enableSubmitButton,
 		disableSubmitButton : disableSubmitButton,
-		checkUserExists : checkUserExists
+		checkUserExists : checkUserExists,
+		purgefromData : purgefromData
 	});
 
 })(jQuery);
