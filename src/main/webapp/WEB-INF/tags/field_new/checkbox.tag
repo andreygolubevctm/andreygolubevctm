@@ -39,18 +39,6 @@
 	<c:set var="id" value="${name}" />
 </c:if>
 
-<%-- HTML --%>
-<div class="checkbox">
-	<input type="checkbox" name="${name}" id="${id}" class="checkbox-custom ${className}" value="${value}"${checked} ${customAttribute}>
-
-	<label for="${id}">
-		<c:if test="${label!=null && not empty label}">${title}</c:if>
-		<c:if test="${not empty helpId}">
-		<field_new:help_icon helpId="${helpId}" position="${helpPosition}" tooltipClassName="${helpClassName}" />
-		</c:if>
-	</label>
-</div>
-
 <%-- VALIDATION --%>
 <c:if test="${required}">
 	<c:set var="errorMsg">
@@ -60,5 +48,19 @@
 		</c:choose>
 	</c:set>
 
-	<go:validate selector="${name}" rule="required" parm="true" message="${errorMsg}"/>
+	<c:set var="checkboxRule">
+		data-rule-required='true' data-msg-required='${errorMsg}'
+	</c:set>
 </c:if>
+
+<%-- HTML --%>
+<div class="checkbox">
+	<input type="checkbox" name="${name}" id="${id}" class="checkbox-custom ${className}" value="${value}"${checked} ${customAttribute} ${checkboxRule}>
+
+	<label for="${id}">
+		<c:if test="${label!=null && not empty label}">${title}</c:if>
+		<c:if test="${not empty helpId}">
+		<field_new:help_icon helpId="${helpId}" position="${helpPosition}" tooltipClassName="${helpClassName}" />
+		</c:if>
+	</label>
+</div>
