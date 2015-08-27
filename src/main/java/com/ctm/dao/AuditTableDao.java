@@ -14,8 +14,6 @@ public class AuditTableDao {
     public final static String CREATE = "CREATE";
     public final static String UPDATE = "UPDATE";
     private final String auditTablePrefix = "audit_";
-    private String tableName;
-    private String primaryColumnName ;
     private final String loggingSchema = "logging";
 	private static final Logger logger = LoggerFactory.getLogger(AuditTableDao.class.getName());
 
@@ -48,10 +46,10 @@ public class AuditTableDao {
             PreparedStatement ps = buildSQLStatement(columnValueMapMainTable, auditTableNameWithSchema,conn);
             ps.executeUpdate();
         } catch (SQLException e) {
-            logger.error("failed while ", e);
+            logger.error("audit action={} failed to insert into table={}", action, auditTableName, e);
             throw e;
         } finally {
-            logger.info("Event '" + action + "' has been logged into table '" + auditTableName + "'");
+            logger.debug("audit action={} logged to table={}", action, auditTableName);
         }
     }
 

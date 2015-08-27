@@ -75,8 +75,8 @@ public class CountryMappingDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("",e);
-			throw new DaoException(e.getMessage(), e);
+			logger.error("failed getting country mapping for selectedCountries=", selectedCountries, e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -117,7 +117,7 @@ public class CountryMappingDao {
 				userSelectedCountries.setSelectedCountries(countryMappingResult.getString("selectedCountries"));
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("",e);
+			logger.error("failed getting country mapping for selectedISOCodes={}", selectedISOCodes ,e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();

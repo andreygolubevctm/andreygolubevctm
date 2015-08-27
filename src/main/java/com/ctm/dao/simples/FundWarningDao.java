@@ -112,7 +112,7 @@ public class FundWarningDao {
             //noinspection unchecked
             return (List<FundWarningMessage>) sqlDao.getAll(mapping, sql.toString());
         } catch (DaoException e) {
-            logger.error("Failed to retrieve Fund Warning Message Record", e);
+            logger.error("Failed to retrieve Fund Warning Message Record messageId={}", messageId, e);
             throw e;
         }
     }
@@ -146,8 +146,8 @@ public class FundWarningDao {
             sqlDao.executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.DELETE, "provider_warning_message", "messageId", messageId);
             return "success";
         } catch (DaoException e) {
-            logger.error("Failed to delete Fund Warning Message Record", e);
-            throw new DaoException(e.getMessage(), e);
+            logger.error("Failed to delete Fund Warning Message Record messageId={} userName={} ipAddress={}", messageId, userName, ipAddress, e);
+            throw new DaoException(e);
         }
     }
 
@@ -196,7 +196,7 @@ public class FundWarningDao {
             sqlDao.executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.UPDATE, "provider_warning_message", "messageId", messageId);
             return fetchSingleRecFundWarningMessage(messageId);
         } catch (DaoException e) {
-            logger.error("Failed to update Fund Warning Message Record", e);
+            logger.error("Failed to update Fund Warning Message Record userName={} ipAddress={} fundWarningMessage={}", userName, ipAddress, fundWarningMessageParam, e);
             throw e;
         }
     }
@@ -238,8 +238,8 @@ public class FundWarningDao {
             int id = sqlDao.executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.CREATE, "provider_warning_message", "messageId", 0);
             return fetchSingleRecFundWarningMessage(id);
         } catch (DaoException e) {
-            logger.error("Failed to create Fund Warning Message Record", e);
-            throw new DaoException(e.getMessage(), e);
+            logger.error("Failed to create Fund Warning Message Record userName={} ipAddress={} fundWarningMessage={}", userName, ipAddress, fundWarningMessageParam, e);
+            throw new DaoException(e);
         }
     }
 

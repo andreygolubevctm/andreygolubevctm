@@ -46,7 +46,7 @@ public class MessageDao {
 			return messages.get(0);
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -73,7 +73,7 @@ public class MessageDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -141,7 +141,7 @@ public class MessageDao {
 			return new Message();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			try {
@@ -155,7 +155,7 @@ public class MessageDao {
 					stmtSelect.close();
 				}
 			} catch (SQLException e) {
-				throw new DaoException(e.getMessage(), e);
+				throw new DaoException(e);
 			}
 			dbSource.closeConnection();
 		}
@@ -183,7 +183,7 @@ public class MessageDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			try {
@@ -194,7 +194,7 @@ public class MessageDao {
 					stmt.close();
 				}
 			} catch (SQLException e) {
-				throw new DaoException(e.getMessage(), e);
+				throw new DaoException(e);
 			}
 			dbSource.closeConnection();
 		}
@@ -234,7 +234,7 @@ public class MessageDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -261,7 +261,7 @@ public class MessageDao {
 		// Perform the action
 		updateUserAndStatus(messageId, userId, MessageStatus.STATUS_ASSIGNED);
 
-		logger.debug("Message " + messageId + " ASSIGNED to user " + userId);
+		logger.debug("Assigning message to user messageId={} userId={}", messageId, userId);
 	}
 
 	/**
@@ -329,7 +329,7 @@ public class MessageDao {
 			stmt.executeUpdate();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -338,7 +338,7 @@ public class MessageDao {
 		// User is done with this message
 		userDao.setToAvailable(actionIsPerformedByUserId);
 
-		logger.debug("Message " + messageId + " POSTPONED by user " + actionIsPerformedByUserId);
+		logger.debug("Postponing message messageId={} userId={}", messageId, actionIsPerformedByUserId);
 	}
 
 	/**
@@ -375,7 +375,7 @@ public class MessageDao {
 		UserDao userDao = new UserDao();
 		userDao.setToAvailable(actionIsPerformedByUserId);
 
-		logger.debug("Message " + messageId + " COMPLETED by user " + actionIsPerformedByUserId);
+		logger.debug("Set message to complete messageId={} userId={} statusId={} reasonStatusId={}", messageId, actionIsPerformedByUserId, statusId, reasonStatusId);
 
 		return message;
 	}
@@ -420,7 +420,7 @@ public class MessageDao {
 		UserDao userDao = new UserDao();
 		userDao.setToUnavailable(message.getUserId());
 
-		logger.debug("Message " + messageId + " IN PROGRESS by user " + actionIsPerformedByUserId);
+		logger.debug("Set message to in progress messageId={} userId={}", messageId, actionIsPerformedByUserId);
 	}
 
 	/**
@@ -458,7 +458,7 @@ public class MessageDao {
 		UserDao userDao = new UserDao();
 		userDao.setToAvailable(actionIsPerformedByUserId);
 
-		logger.debug("Message " + messageId + " UNSUCCESSFUL by user " + actionIsPerformedByUserId);
+		logger.debug("Set message to unsuccessful messageId={} userId={} reasonStatusId={}", messageId, actionIsPerformedByUserId, reasonStatusId);
 	}
 
 
@@ -546,9 +546,9 @@ public class MessageDao {
 			try {
 				dbSource.getConnection().rollback();
 			} catch (SQLException | NamingException e1) {
-				throw new DaoException(e.getMessage(), e1);
+				throw new DaoException(e1);
 			}
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			try {
@@ -570,7 +570,7 @@ public class MessageDao {
 					resultSetSelectMessageSource.close();
 				}
 			} catch (SQLException | NamingException e) {
-				throw new DaoException(e.getMessage(), e);
+				throw new DaoException(e);
 			}
 			dbSource.closeConnection();
 		}
@@ -602,7 +602,7 @@ public class MessageDao {
 			outcome = stmt.executeUpdate();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -664,8 +664,8 @@ public class MessageDao {
 			final ResultSet results = statement.executeQuery();
 			return mapFieldsFromResultsToMessage(results);
 		} catch (SQLException | NamingException e) {
-			logger.error("unable to retrieve postponed messages for userId = " + userId, e);
-			throw new DaoException(e.getMessage(), e);
+			logger.error("unable to retrieve postponed messages for userId={}", userId, e);
+			throw new DaoException(e);
 		} finally {
 			simpleDatabaseConnection.closeConnection();
 		}

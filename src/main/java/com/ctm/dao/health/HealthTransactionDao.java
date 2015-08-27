@@ -64,7 +64,7 @@ public class HealthTransactionDao {
 			stmt.close();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -115,7 +115,7 @@ public class HealthTransactionDao {
 			stmt.close();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -155,16 +155,14 @@ public class HealthTransactionDao {
 			stmt.setString(4, errors);
 
 			stmt.executeUpdate();
-		} catch (NamingException e) {
-			throw new DaoException("Failed to write allowable errors. Errors: " + errors , e);
-		} catch (SQLException e) {
-			throw new DaoException("Failed to write allowable errors. Errors: " + errors , e);
+		} catch (NamingException | SQLException e) {
+			throw new DaoException("Failed to write health allowable errors. Errors: " + errors , e);
 		} finally {
 			if(stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					logger.error("",e);
+					logger.error("Failed to close health transaction db connection", e);
 				}
 			}
 			dbSource.closeConnection();

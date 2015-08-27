@@ -74,4 +74,16 @@ public class FundWarningMessage {
 	public void setVerticalId(int verticalId) {
 		this.verticalId = verticalId;
 	}
+
+	@Override
+	public String toString() {
+		return "FundWarningMessage{" +
+				"messageId=" + messageId +
+				", messageContent='" + messageContent + '\'' +
+				", effectiveStart=" + effectiveStart +
+				", effectiveEnd=" + effectiveEnd +
+				", providerId=" + providerId +
+				", verticalId=" + verticalId +
+				'}';
+	}
 }

@@ -70,7 +70,7 @@ public class MessageAuditDao {
 				}
 			} else {
 				String errorDesc = "[SIMPLES]: Duplicate audit";
-				String errorMsg = "[SIMPLES]: Duplicate audit detected for message "+messageAudit.getMessageId();
+				String errorMsg = "[SIMPLES]: Duplicate audit detected for message="+messageAudit.getMessageId();
 				logger.error(errorMsg);
 				fatalErrorService.property = "ctm";
 				fatalErrorService.logFatalError(0, "MessageAuditDao", false, errorDesc, errorMsg, 0L);
@@ -78,13 +78,9 @@ public class MessageAuditDao {
 
 			stmt.close();
 		}
-		catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		finally {
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e);
+		} finally {
 			dbSource.closeConnection();
 		}
 
@@ -134,13 +130,9 @@ public class MessageAuditDao {
 
 			stmt.close();
 		}
-		catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
-		}
-		finally {
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e);
+		} finally {
 			dbSource.closeConnection();
 		}
 

@@ -101,11 +101,11 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-				logger.error("There is no record of this content key: "+contentKey);
+				logger.debug("no content found for contentkey={}", contentKey);
 			}else{
 
 				if(contents.size() > 1){
-					logger.error("There is more than one content value for this content code: "+contentKey);
+					logger.error("more than one content value found for contentkey={}", contentKey);
 				}
 
 				content = contents.get(0);
@@ -121,7 +121,7 @@ public class ContentDao {
 
 					ResultSet resultSetSup = stmtSup.executeQuery();
 
-					content.setSupplementary(new ArrayList<ContentSupplement>());
+					content.setSupplementary(new ArrayList<>());
 
 					while (resultSetSup.next()) {
 
@@ -136,12 +136,9 @@ public class ContentDao {
 				}
 			}
 
-		} catch (SQLException e) {
-			logger.error("Failed to get content_supplementary for id:" + content.getId() , e);
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			logger.error("Failed to get content_supplementary for id:" + content.getId() , e);
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			logger.error("failed getting content for contentkey={}", contentKey, e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -209,7 +206,7 @@ public class ContentDao {
 				provider.setProviderId(resultSet.getInt("providerId"));
 				contentItem.setProvider(provider);
 
-				contentItem.setSupplementary(new ArrayList<ContentSupplement>());
+				contentItem.setSupplementary(new ArrayList<>());
 
 				contentIds.add(contentItem.getId());
 
@@ -218,11 +215,8 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-
-				logger.error("There is no record of this content key: "+contentKey + " and provider id: "+providerId);
-
-			}else{
-
+				logger.debug("no content found for contentkey={} providerid={}", contentKey, providerId);
+			} else {
 				if(includeSupplementary){
 
 					PreparedStatement stmtSup = dbSource.getConnection().prepareStatement(
@@ -232,8 +226,6 @@ public class ContentDao {
 							"ON cs.contentControlId = p.contentControlId " +
 						"WHERE cs.contentControlId IN ("+ SimpleDatabaseConnection.createSqlArrayParams(contentIds.size()) + ") ;"
 					);
-
-					//Array array = dbSource.getConnection().createArrayOf("INT", contentIds.toArray()); //--> Would like to use this but not supported by our driver
 
 					int counter = 1;
 					for(int contentId: contentIds){
@@ -250,24 +242,16 @@ public class ContentDao {
 						contentSupItem.setSupplementaryKey(resultSetSup.getString("supplementaryKey"));
 						contentSupItem.setSupplementaryValue(resultSetSup.getString("supplementaryValue"));
 
-						for(Content contentItem : contents){
-
-							if(contentItem.getId() == contentSupItem.getContentControlId()){
-								contentItem.getSupplementary().add(contentSupItem);
-							}
-						}
-
+						contents.stream().filter(contentItem -> contentItem.getId() == contentSupItem.getContentControlId()).forEach(contentItem -> {
+							contentItem.getSupplementary().add(contentSupItem);
+						});
 					}
-
 				}
 
 			}
 
-		} catch (SQLException e) {
-			logger.error("Failed to get content_supplementary" , e);
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			logger.error("Failed to get content_supplementary" , e);
+		} catch (SQLException | NamingException e) {
+			logger.error("failed getting content for contentkey={}", contentKey, e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();

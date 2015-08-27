@@ -18,7 +18,7 @@ public class GeneralDao {
 
 	public Map<String, String> getValues(String type){
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-		Map<String, String> values = new HashMap<String, String>();
+		Map<String, String> values = new HashMap<>();
 		Connection conn;
 		try {
 			// Allocate and use a connection from the pool
@@ -36,7 +36,7 @@ public class GeneralDao {
 			}
 			rs.close();
 		} catch (SQLException | NamingException e) {
-			logger.error("",e);
+			logger.error("failed retrieving value from general table type={}", type, e);
 		} finally {
 			dbSource.closeConnection();
 		}

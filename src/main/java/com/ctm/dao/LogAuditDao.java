@@ -62,7 +62,7 @@ public class LogAuditDao {
 			stmt.setString(10, logAudit.getIp());
 			stmt.executeUpdate();
 		} catch (NamingException | SQLException e) {
-			logger.error("failed to get connection" , e);
+			logger.error("failed to write log audit entry logAudit={} priority={} identity={} description={} finalData={} app_id={} session_id={}" , logAudit, priority, identity, description, finalData, app_id, session_id);
 		} finally {
 			dbSource.closeConnection();
 		}

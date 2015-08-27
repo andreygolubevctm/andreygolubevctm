@@ -254,8 +254,8 @@ public class CouponDao {
 				coupon.setCouponRules(couponRules);
 			}
 			catch (SQLException | NamingException e) {
-				logger.error("unable to get rules for couponId = " + coupon.getCouponId(), e);
-				throw new DaoException(e.getMessage(), e);
+				logger.error("unable to get coupon rules for couponId={}" + coupon.getCouponId(), e);
+				throw new DaoException(e);
 			}
 			finally {
 				dbSource.closeConnection();

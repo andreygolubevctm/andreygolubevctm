@@ -1,17 +1,15 @@
 package com.ctm.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.FatalError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.naming.NamingException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class FatalErrorDao {
 
@@ -43,7 +41,7 @@ public class FatalErrorDao {
 				stmt.executeUpdate();
 			}
 		} catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -53,7 +51,7 @@ public class FatalErrorDao {
 		String data = fatalError.getData();
 		// Max length for mysql text field is 65535
 		if(data != null && data.length() > 65535) {
-			logger.info("truncating data:" + data);
+			logger.warn("fatal error data too long truncating data={}", data);
 			data = data.substring(0, data.length() - 65535);
 		}
 		return data;

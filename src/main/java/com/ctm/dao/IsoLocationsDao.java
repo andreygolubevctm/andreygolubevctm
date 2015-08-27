@@ -58,13 +58,11 @@ public class IsoLocationsDao {
             }
 
             if (countries.size() == 0) {
-                logger.info("There are no countries available for: " + searchString);
+                logger.debug("No countries available for searchString={}" + searchString);
             }
 
-        } catch (SQLException e) {
-            throw new DaoException(e.getMessage(), e);
-        } catch (NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+        } catch (SQLException | NamingException e) {
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }
@@ -131,13 +129,11 @@ public class IsoLocationsDao {
             }
 
             if (countries.size() == 0) {
-                logger.info("There are no countries available");
+                logger.info("No countries available isoCodes={}", isoCodes);
             }
 
-        } catch (SQLException e) {
-            throw new DaoException(e.getMessage(), e);
-        } catch (NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+        } catch (SQLException | NamingException e) {
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }

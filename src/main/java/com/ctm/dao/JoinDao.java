@@ -30,7 +30,7 @@ public class JoinDao {
 	 **/
 	public void writeJoin(long transactionId, String productId) {
 		try {
-			logger.debug(transactionId + ": writing join");
+			logger.debug("writing join transactionId={} productId={}", transactionId, productId);
 			Connection conn = dbSource.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(
 				"SELECT rootid FROM aggregator.transaction_header " +
@@ -54,9 +54,9 @@ public class JoinDao {
 			stmt.setString(2, productId);
 			stmt.executeUpdate();
 		}catch (NamingException e) {
-			logger.error("failed to get connection" , e);
+			logger.error("failed to get db connection", e);
 		} catch (Exception e) {
-			logger.error(transactionId + ": failed to write to join" , e);
+			logger.error("failed to write join transactionId={} productId={}", transactionId, productId, e);
 		} finally {
 			dbSource.closeConnection();
 		}
