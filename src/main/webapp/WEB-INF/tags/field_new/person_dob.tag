@@ -14,6 +14,7 @@
 <%@ attribute name="ageMax" 			required="false"  	rtexprvalue="true"	 description="Min Age requirement for Person, e.g. 16" %>
 <%@ attribute name="ageMin" 			required="false"  	rtexprvalue="true"	 description="Max Age requirement for Person, e.g. 99" %>
 <%@ attribute name="validateYoungest" 	required="false"  	rtexprvalue="true"	 description="Add validation for youngest person" %>
+<%@ attribute name="additionalAttributes" 	required="false"  	rtexprvalue="true"	 description="Add additional attributes" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -61,7 +62,7 @@
 		<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="1895-01-01" max="${nowLessAgeMinYears}" data-msg-required="Please enter the ${title} date of birth" placeHolder="DD/MM/YYYY">
 	</div>
 
-	<field_new:validatedHiddenField xpath="${xpath}" required="${required}" className="serialise" title="Please enter ${title} date of birth" additionalAttributes=" data-rule-dateEUR='true' data-msg-dateEUR='Please enter a valid date in DD/MM/YYYY format' ${youngestDOB} ${oldestDOB} ${youngRegularDriversAgeCheck}" />
+	<field_new:validatedHiddenField xpath="${xpath}" required="${required}" className="serialise" title="Please enter ${title} date of birth" additionalAttributes=" ${additionalAttributes} data-rule-dateEUR='true' data-msg-dateEUR='Please enter a valid date in DD/MM/YYYY format' ${youngestDOB} ${oldestDOB} ${youngRegularDriversAgeCheck}" />
 </div>
 
 <%-- JAVASCRIPT --%>

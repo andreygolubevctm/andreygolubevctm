@@ -33,13 +33,13 @@
         var minCurrency = param.min ? Number(param.min) : 0,
             maxCurrency = param.max ? Number(param.max) : 0,
             title = param.t,
-            defaultValue = param.dV ? Number(param.dV) : 0;
+            defaultValue = param.dV ? Number(param.dV) : -1; //defaultValue can be 0.
 
         if(isNaN(value)) {
             value = String(value).replace(nonDigitsRegex, '');
         }
 
-        if(defaultValue > 0 && value == defaultValue) {
+        if(defaultValue >= 0 && value == defaultValue) {
             return true;
         }
 

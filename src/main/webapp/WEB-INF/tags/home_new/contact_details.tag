@@ -57,5 +57,6 @@
 	<form_new:privacy_optin vertical="home" />
 
 </form_new:fieldset>
+<%--
 <go:validate selector="${name}_phoneinput" rule="validateOkToCall" parm="true" message="Please enter a contact number" />
-<go:validate selector="${name}_email" rule="validateOkToEmail" parm="true" message="Please enter your email address" />
+<go:validate selector="${name}_email" rule="validateOkToEmail" parm="true" message="Please enter your email address" />--%>

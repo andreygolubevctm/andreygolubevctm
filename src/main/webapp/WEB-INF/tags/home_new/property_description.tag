@@ -52,7 +52,7 @@
 		<field_new:import_select xpath="${fieldXpath}"
 			required="true"
 			title="what year the home was built"
-			url="/WEB-INF/option_data/property_built_year.html"/>
+			url="/WEB-INF/option_data/property_built_year.html" additionalAttributes="data-rule-yearBuiltAfterMoveInYear='true' "/>
 	</form_new:row>
 
 	<%-- Heritage Listed --%>
@@ -76,6 +76,6 @@
 	</form_new:row>
 
 
-	<go:validate selector="${name}_yearBuilt" rule="yearBuiltAfterMoveInYear" parm="true" message="Please change the building year so that it is prior or equal to the year you moved in" />
+	<%--<go:validate selector="${name}_yearBuilt" rule="yearBuiltAfterMoveInYear" parm="true" message="Please change the building year so that it is prior or equal to the year you moved in" />--%>
 
 </form_new:fieldset>
