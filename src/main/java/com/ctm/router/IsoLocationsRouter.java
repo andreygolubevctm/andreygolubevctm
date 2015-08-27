@@ -65,7 +65,7 @@ public class IsoLocationsRouter extends HttpServlet {
                 json = isoLocations.fetchSearchResults(search);
             } catch (DaoException e) {
 
-                logger.error("{}",e.toString());
+                logger.error("",e);
                 FatalErrorService.logFatalError(e, 0, uri, request.getSession().getId(), true);
 
                 Error error = new Error();
@@ -85,7 +85,7 @@ public class IsoLocationsRouter extends HttpServlet {
                     json = isoLocations.addTopTenTravelDestinations(json);
                 }
             } catch (DaoException | SessionException e) {
-                logger.error("{}",e.toString());
+                logger.error("",e);
                 FatalErrorService.logFatalError(e, 0, uri, request.getSession().getId(), true);
 
                 Error error = new Error();

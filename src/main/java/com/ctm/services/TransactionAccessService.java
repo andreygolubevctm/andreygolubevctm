@@ -50,7 +50,7 @@ public class TransactionAccessService {
 					emailData.setEmailAddress(result.getEmailAddress());
 			}
 		} catch (DaoException e) {
-			logger.error("{}",e.toString());
+			logger.error("",e);
 		}
 		return valid;
 	}

@@ -199,7 +199,7 @@ public class CreditCardsRouter extends HttpServlet {
 
 
 			} catch (UploaderException e) {
-				logger.error("{}",e.toString());
+				logger.error("",e);
 			}
 		}
 	}

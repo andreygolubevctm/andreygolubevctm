@@ -54,7 +54,7 @@ public class AdminRouter {
                         response.sendError(SC_NOT_FOUND);
             }
         } catch (Exception e) {
-            logger.error("{}",e.toString());
+            logger.error("",e);
             writeError(writer,response, e);
         }
     }
@@ -80,7 +80,7 @@ public class AdminRouter {
                     response.sendError(SC_NOT_FOUND);
             }
         } catch (Exception e) {
-            logger.error("{}",e.toString());
+            logger.error("",e);
             writeError(writer,response, e);
         }
     }

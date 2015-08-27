@@ -100,7 +100,7 @@ public class TransactionDetailsDao {
 					updateTransactionDetails(transactionId, transactionDetailNew);
 				}
 			} catch (DaoException e) {
-				logger.error("{}",e.toString());
+				logger.error("",e);
 			}
 		}
 		return true;

@@ -117,7 +117,7 @@ public class UserDao {
 						}
 					}
 					catch (Exception e) {
-						logger.error("{}",e.toString());
+						logger.error("",e);
 					}
 				}
 

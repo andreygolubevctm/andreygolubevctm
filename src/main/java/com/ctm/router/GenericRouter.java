@@ -100,7 +100,7 @@ public class GenericRouter extends HttpServlet {
 		try {
 			response.getWriter().print(json.toString());
 		} catch (IOException e) {
-			logger.error("{}",e.toString());
+			logger.error("",e);
 		}
 	}
 

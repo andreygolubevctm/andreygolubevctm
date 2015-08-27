@@ -33,7 +33,7 @@ public class CompetitionService {
 			compActive = CompetitionDao.isActive(brand.getId(), competitionId, serverDate);
 
 		} catch (DaoException e) {
-			logger.error("{}",e.toString());
+			logger.error("",e);
 		}
 
 		return compActive;

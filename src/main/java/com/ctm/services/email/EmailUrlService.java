@@ -100,7 +100,7 @@ public class EmailUrlService {
 		try {
 			email= URLEncoder.encode(email , "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			logger.error("{}",e.toString());
+			logger.error("",e);
 		}
 		return "email=" + email;
 	}
@@ -112,7 +112,7 @@ public class EmailUrlService {
 				// + in the url gets converted to a space an email address will never have a space see http://en.wikipedia.org/wiki/Email_address#RFC_specification
 				email = URLDecoder.decode(email, "UTF-8").replace(" ", "+");
 			} catch (UnsupportedEncodingException e) {
-				logger.error("{}",e.toString());
+				logger.error("",e);
 			}
 		}
 		return email;

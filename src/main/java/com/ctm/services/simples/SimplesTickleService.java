@@ -41,7 +41,7 @@ public class SimplesTickleService {
             }
         } catch (DaoException | SessionException e) {
             fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-            logger.error("{}",e.toString());
+            logger.error("",e);
             throw new ServletException(e);
         }
         return success;

@@ -56,7 +56,7 @@ public class UnsubscribeService {
 			try {
 				unsubscribe.setEmailDetails(hashedEmailService.getEmailDetails(hashedEmail, email, brandId));
 			} catch (DaoException e) {
-				logger.error("{}",e.toString());
+				logger.error("",e);
 				FatalErrorService.logFatalError(e, brandId, "failed to unsubscribe" , "", true);
 			}
 		}

@@ -57,7 +57,7 @@ public class SimpleSocketConnection {
 			wr.close();
 
 		}catch(Exception e){
-			logger.error("{}",e.toString());
+			logger.error("",e);
 		}finally{
 
 			try {

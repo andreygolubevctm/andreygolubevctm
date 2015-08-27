@@ -37,7 +37,7 @@ public class StringEncryption {
 		try {
 			output  = encryption.encrypt(theString);
 		} catch (GeneralSecurityException e) {
-			logger.error("{}",e.toString());
+			logger.error("",e);
 			throw e;
 		}
 		return output;

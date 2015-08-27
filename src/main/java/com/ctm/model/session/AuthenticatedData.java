@@ -44,7 +44,7 @@ public class AuthenticatedData extends Data {
 			try {
 				simplesUid = Integer.parseInt(uid);
 			} catch (NumberFormatException e) {
-				logger.error("{}",e.toString());
+				logger.error("",e);
 			}
 		}
 		return simplesUid;

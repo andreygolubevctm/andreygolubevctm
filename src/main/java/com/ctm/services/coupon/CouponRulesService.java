@@ -94,7 +94,7 @@ public class CouponRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error("{}",e.toString());
+			logger.error("",e);
 		}
 		return false;
 	}
@@ -114,7 +114,7 @@ public class CouponRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error("{}",e.toString());
+			logger.error("",e);
 		}
 		return false;
 	}
