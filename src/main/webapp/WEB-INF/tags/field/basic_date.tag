@@ -38,8 +38,23 @@
 
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
+<%-- VALIDATION --%>
+<c:if test="${not empty minDate or not empty tomorrow}">
+	data-rule-earliestAvailableDate='${required}' data-msg-earliestAvailableDate="Please enter a valid date, use the date picker to see which dates are available"
+</c:if>
+<c:if test="${maxDate ne 'null'}">
+	data-rule-latestAvailableDate='${required}' data-msg-latestAvailableDate="Please enter a valid date, use the date picker to see which dates are available"
+</c:if>
+<c:if test="${disableWeekends eq 'true'}">
+	data-rule-notWeekends='${required}' data-msg-notWeekends="The ${title} has to be a business day (i.e. not on the weekend)"
+</c:if>
+<c:if test="${disablePublicHolidays eq 'true'}">
+	data-rule-notPublicHolidays='${required}' data-msg-notPublicHolidays="The ${title} has to be a business day (i.e. not a public holiday)"
+	<go:validate selector="${name}" rule="${name}notPublicHolidays" parm="${required}" message="The ${title} has to be a business day (i.e. not a public holiday)" />
+</c:if>
+
 <%-- HTML --%>
-<input type="text" name="${name}" id="${name}" class="basic_date ${className}" value="${value}" title="${title}" size="12">
+<input type="text" name="${name}" id="${name}" class="basic_date ${className}" value="${value}" title="${title}" size="12" required="${required}" data-rule-dateEUR='${required}' data-msg-dateEUR="Please enter a valid date in DD/MM/YYYY format">
 
 <%-- JQUERY UI --%>
 <go:script marker="js-head">
@@ -177,20 +192,3 @@ try {
 		margin-top:0px;
 	}
 </go:style>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="dateEUR" parm="${required}" message="Please enter a valid date in DD/MM/YYYY format"/>
-<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter ${title}"/>
-
-<c:if test="${not empty minDate or not empty tomorrow}">
-	<go:validate selector="${name}" rule="minDate" parm="${required}" message="Please enter a valid date, use the date picker to see which dates are available" />
-</c:if>
-<c:if test="${maxDate ne 'null'}">
-	<go:validate selector="${name}" rule="maxDate" parm="${required}" message="Please enter a valid date, use the date picker to see which dates are available" />
-</c:if>
-<c:if test="${disableWeekends eq 'true'}">
-	<go:validate selector="${name}" rule="notWeekends" parm="${required}" message="The ${title} has to be a business day (i.e. not on the weekend)" />
-</c:if>
-<c:if test="${disablePublicHolidays eq 'true'}">
-	<go:validate selector="${name}" rule="${name}notPublicHolidays" parm="${required}" message="The ${title} has to be a business day (i.e. not a public holiday)" />
-</c:if>

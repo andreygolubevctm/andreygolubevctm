@@ -46,5 +46,3 @@
 
 	</jsp:body>
 </form_new:fieldset_columns>
-
-<go:validate selector="${name}_loanAmountentry" rule="validateLoanAmount" parm="true" message="The amount you wish to borrow exceeds the value of the property. Please review the amounts before continuing." />

@@ -19,12 +19,10 @@
     };
 
     $.validator.addMethod("fromToDate", function(value, element, params){
-        console.log("params", params);
         if (typeof params === 'undefined' || (!params.hasOwnProperty('toDate') && !params.hasOwnProperty('fromDate'))) return false;
         var fromDateVal = $('#'+params.fromDate).val();
         var toDateVal = $('#'+params.toDate).val();
 
-        console.log("YOO", fromDateVal, toDateVal);
         if (fromDateVal !== '' && toDateVal !== '')
         {
             return date_gt_date(toDateVal, fromDateVal)

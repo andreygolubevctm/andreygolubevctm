@@ -49,6 +49,13 @@
 	</c:otherwise>
 </c:choose>
 
+<c:set var="fieldName">${go:nameFromXpath(xpath)}_entry</c:set>
+<c:set var="loanAmountEntryRule">
+	<c:if test="${fn:contains(fieldName, '_loanAmount_entry')}">
+		data-rule-validateLoanAmount="true" data-msg-validateLoanAmount="The amount you wish to borrow exceeds the value of the property. Please review the amounts before continuing."
+	</c:if>
+</c:set>
+
 <%-- The maxlength fails validation once formatting has been added.
 	maxLength provided should be the length without so need to
 	calculate a new length to include formatting. The maxLength
@@ -73,5 +80,5 @@
 		maxlength="${maxLength}"
 		title="${title}"
 		defaultValue="${value}"
-		pattern="${pattern}" additionalAttributes=" data-rule-currency='${required}' data-msg-currency='${title} is not a valid amount' ${validationAttributes} "
+		pattern="${pattern}" additionalAttributes=" data-rule-currency='${required}' data-msg-currency='${title} is not a valid amount' ${validationAttributes} ${loanAmountEntryRule}"
 		/>

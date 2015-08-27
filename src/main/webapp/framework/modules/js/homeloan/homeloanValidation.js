@@ -26,15 +26,17 @@
          if( LocationObj.is_valid(value) ) {
 
             /* Populate suburb, postcode, state fields */
-            /*var location = $.trim(String(value));
+            var location = $.trim(String(value));
             var pieces = location.split(' ');
             var state = pieces.pop();
             var postcode = pieces.pop();
-            var suburb = pieces.join(' ');
+            var suburb = pieces.join(' '),
+                fieldName =  $(element).attr('id').replace("_location", "");
 
-            $('#${name}_state').val(state);
-            $('#${name}_postcode').val(postcode);
-            $('#${name}_suburb').val(suburb);*/
+
+            $('#'+fieldName+'_state').val(state);
+            $('#'+fieldName+'_postcode').val(postcode);
+            $('#'+fieldName+'_suburb').val(suburb);
 
             return true;
         }
@@ -47,13 +49,16 @@
 
     $.validator.addMethod('validateLoanAmount', function(value, element) {
         /* Need to use the entry fields because validation fires before the currency plugin pushes the unformatted values into the hidden fields */
-  /*      var $loanAmount = $('#${name}_loanAmountentry'),
-            $purchasePrice = $('#${name}_purchasePriceentry'),
+
+
+        var fieldName = $(element).attr('id').replace("_loanAmountentry", ""),
+            $loanAmount = $('#'+fieldName+'_loanAmountentry'),
+            $purchasePrice = $('#'+fieldName+'_purchasePriceentry'),
             $propertyWorth = $('#homeloan_details_assetAmountentry'),
             $amountOwing = $('#homeloan_details_amountOwingentry');
-*/
+
         /* If the elements have the currency plugin applied */
-  /*      var loanAmount = typeof $loanAmount.asNumber === 'function' ? $loanAmount.asNumber() : 0,
+        var loanAmount = typeof $loanAmount.asNumber === 'function' ? $loanAmount.asNumber() : 0,
             purchasePrice = typeof $purchasePrice.asNumber === 'function' ? $purchasePrice.asNumber() : 0,
             propertyWorth = typeof $propertyWorth.asNumber === 'function' ? $propertyWorth.asNumber() : 0,
             amountOwing = typeof $amountOwing.asNumber === 'function' ? $amountOwing.asNumber() : 0;
@@ -62,7 +67,7 @@
             var lvr = ((loanAmount+amountOwing) / (purchasePrice+propertyWorth)) * 100;
             return lvr > 0 && lvr < 100;
         }
-*/
+
         return true;
     });
 })(jQuery);

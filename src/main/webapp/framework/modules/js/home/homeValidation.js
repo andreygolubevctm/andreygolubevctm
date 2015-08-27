@@ -1,4 +1,5 @@
-$.validator.addMethod("${fieldXpathName}_percent",
+(function($) {
+/*$.validator.addMethod("${fieldXpathName}_percent",
     function(value, elem, parm) {
         var parmsArray = parm.split(",");
         var percentage = parmsArray[1];
@@ -68,4 +69,5 @@ $.validator.addMethod("oldestPersonOlderThanPolicyHolders",
 
     },
     "Custom message"
-);
+);*/
+})(jQuery);

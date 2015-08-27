@@ -38,52 +38,56 @@
             || getDate(value) <= getDate(param);
     }, $.validator.format("Please enter a maximum of {0}."));
 
-/*
-//
-// Validates the dropdown for mobile commencement date.
-//
+     //
+     // Validates the dropdown for mobile commencement date.
+     //
 
-$.validator.addMethod("commencementDateMobileDropdownCheck", function (value, element) {
-    return !(element.value === '' || element.value === null);
-}, "Please select a commencement date.");
+     $.validator.addMethod("commencementDateMobileDropdownCheck", function (value, element) {
+        return !(element.value === '' || element.value === null);
+     }, "Please select a commencement date.");
 
 
-$.validator.addMethod("minDate",
-    function(value, element) {
-        var minDateAttr = $(element).datepicker("option", "minDate");
+    function checkDateAvailability(element, dateType) {
+        var dateAttr = $(element).datepicker("option", dateType);
         var datepicker = $(element).data("datepicker");
-        var minDate = $.datepicker._determineDate(datepicker, minDateAttr, new Date()); <%-- Handles dates like +1d, -3y, etc. --%>
+        var datePickerDate = $.datepicker._determineDate(datepicker, dateAttr, new Date()); /* Handles dates like +1d, -3y, etc. */
 
         var currentDate = $(element).datepicker("getDate");
 
-        return currentDate >= minDate;
-    },
-    "Custom message"
-);
+        if (dateType == 'minDate') {
+            return currentDate >= datePickerDate;
+        } else {
+            return currentDate <= datePickerDate;
+        }
 
-$.validator.addMethod("maxDate",
-    function(value, element) {
-        var maxDateAttr = $(element).datepicker("option", "maxDate");
-        var datepicker = $(element).data("datepicker");
-        var maxDate = $.datepicker._determineDate(datepicker, maxDateAttr, new Date()); <%-- Handles dates like +1d, -3y, etc. --%>
+    }
 
-        var currentDate = $(element).datepicker("getDate");
-        return currentDate <= maxDate;
-    },
-    "Custom message"
-);
+    $.validator.addMethod("earliestAvailableDate",
+        function(value, element) {
+            return checkDateAvailability(element, 'minDate');
+        },
+        "Custom message"
+    );
 
-$.validator.addMethod("notWeekends",
-    function(value, element) {
-        return BasicDateHandler.isNotWeekEnd( $(element).datepicker("getDate") );
-    },
-    "Custom message"
-);
+    $.validator.addMethod("latestAvailableDate",
+        function(value, element) {
+            return checkDateAvailability(element, 'maxDate');
+        },
+        "Custom message"
+    );
 
-$.validator.addMethod("${name}notPublicHolidays",
-    function(value, element) {
-        return ${name}Handler.isNotPublicHoliday( $(element).datepicker("getDate") )[0];
-    },
-    "Custom message"
-);*/
+    $.validator.addMethod("notWeekends",
+        function(value, element) {
+            return BasicDateHandler.isNotWeekEnd( $(element).datepicker("getDate") );
+        },
+        "Custom message"
+    );
+
+    $.validator.addMethod("${name}notPublicHolidays",
+        function(value, element) {
+            //return ${name}Handler.isNotPublicHoliday( $(element).datepicker("getDate") )[0];
+            return true;
+        },
+        "Custom message"
+    );
 })(jQuery);
