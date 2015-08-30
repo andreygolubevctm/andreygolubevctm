@@ -1,5 +1,8 @@
+<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("car_quote_results_jsp"));%>
 
 <session:get settings="true" authenticated="true" verticalCode="CAR" />
 
@@ -190,8 +193,7 @@
 				<%-- Write to the stats database --%>
 				<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
-				<go:log source="car_quote_results_jsp" level="DEBUG" >${tranId}: RESULTS ${resultXml}</go:log>
-				<go:log source="car_quote_results_jsp" >${tranId}: TRANSFER ${stats}</go:log>
+				${logger.debug('{}: RESULTS {} TRANSFER {}',tranId, resultXml,stats)}
 				<%-- Return the results as json --%>
 
 				<%-- Calculate the end valid date for these quotes --%>

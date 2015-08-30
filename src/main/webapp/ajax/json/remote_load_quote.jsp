@@ -1,8 +1,11 @@
+<%@ page import="org.slf4j.Logger" %>
+<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="${param.vertical}" />
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("remote_load_quote.jsp"));%>
 
 <%--
 	load_quote.jsp
@@ -28,7 +31,7 @@
 - need better handling for deleting the base xpath information (and better handling for save email etc.)
 --%>
 
-<go:log level="DEBUG" source="remote_load_quote_jsp">LOAD QUOTE: ${param}</go:log>
+${logger.debug('LOAD QUOTE: {}', param)}
 <c:set var="id_for_access_check">
 	<c:choose>
 		<c:when test="${not empty param.id}">${param.id}</c:when>

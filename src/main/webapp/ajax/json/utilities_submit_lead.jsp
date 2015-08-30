@@ -1,8 +1,10 @@
+<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("utilities_submit_lead.jsp"));%>
 
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="utilities" />
@@ -27,15 +29,14 @@
 	lastName="${data['utilities/leadFeed/lastName']}"
 	items="marketing=Y,okToCall=Y" />
 
-<go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${data['current/transactionId']}</go:log>
+${logger.info('Utilities Tran Id = {}',data['current/transactionId'])}
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
 <jsp:useBean id="leadfeedService" class="com.ctm.services.utilities.UtilitiesLeadfeedService" scope="page" />
 
 <c:set var="model" value="${leadfeedService.mapParametersToModel(pageContext.getRequest())}" />
 <c:set var="submitResult" value="${leadfeedService.submit(pageContext.getRequest(), model)}" />
-<c:if test="${not empty submitResult}"><go:log level="DEBUG" source="utilities_submit">${submitResult.toString()}</go:log></c:if>
-
+${logger.debug('submitResult = {}',submitResult.toString())}
 
 <c:choose>
 	<c:when test="${isValid || continueOnValidationError}">
@@ -52,7 +53,7 @@
 		--%>
 		<c:set var="xmlData" value="<data>${go:JSONtoXML(submitResult)}</data>" />
 		<x:parse var="parsedXml" doc="${xmlData}" />
-<go:log>${xmlData}</go:log>
+		${logger.debug('xmlData = {}',xmlData)}
 		<c:set var="uniqueId"><x:out select="$parsedXml/data/unique_id" /></c:set>
 		<go:setData dataVar="data" xpath="utilities/leadFeed/confirmationId" value="${uniqueId}" />
 

@@ -1,7 +1,9 @@
+<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("utilities_quote_results.jsp"));%>
 
 <%-- VARIABLES --%>
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
@@ -30,8 +32,8 @@
 <c:set var="optedInForCompKey">${vertical}/resultsDisplayed/competition/optin</c:set>
 <c:set var="optedInForComp" value="${data[optedInForCompKey] == 'Y' }" />
 
-<go:log>COMP: ${competitionEnabledSetting}</go:log>
-<go:log>COMPKEY: ${optedInForComp}</go:log>
+${logger.debug('COMP: {}',competitionEnabledSetting)}
+${logger.debug('COMPKEY: {}', optedInForComp)}
 
 <c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
 	<c:set var="competitionId"><content:get key="competitionId"/></c:set>

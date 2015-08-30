@@ -1,6 +1,8 @@
+<%@ tag import="org.slf4j.LoggerFactory" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Check whether is a new quote or existing and sets the isNEWQuote variable"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("core:quote_check"));%>
 
 <%@ attribute name="quoteType" 	required="true"		rtexprvalue="true"	description="The vertical this quote is for"%>
 
@@ -18,7 +20,7 @@
 			<core:transaction touch="N" noResponse="true" />
 		</c:when>
 		<c:otherwise>
-			<go:log source="core:quote_check">Treated as EXISTING quote</go:log>
+		${logger.debug('Treated as EXISTING quote')}
 		</c:otherwise>
 	</c:choose>
 

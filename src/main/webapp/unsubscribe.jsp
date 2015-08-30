@@ -1,8 +1,11 @@
+<%@ page import="org.slf4j.LoggerFactory" %>
 <%--
 	Unsubscribe Page
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("unsubscribe.jsp"));%>
 
 <session:new verticalCode="GENERIC"/>
 <%-- VARS --%>
@@ -78,6 +81,6 @@
         <unsubscribe:redirect_with_details/>
     </c:when>
     <c:otherwise>
-        <go:log level="ERROR" source="unsubscribe.jsp">Invalid Unsubscribe Parameters</go:log>
+        ${logger.error('Invalid Unsubscribe Parameters')}
     </c:otherwise>
 </c:choose>

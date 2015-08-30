@@ -1,5 +1,8 @@
+<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("comments_add_jsp"));%>
 
 <session:get authenticated="true" />
 
@@ -13,12 +16,12 @@
 	</c:choose>
 </c:set>
 
-<go:log level="INFO" source="comments_add_jsp" >Add Comment TransactionId: ${transactionId}</go:log>
+${logger.info('Add Comment TransactionId: {}', transactionId)}
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
-<go:log>isOperator: ${isOperator}</go:log>
+${logger.info('isOperator: {}', isOperator)}
 
 <c:choose>
 	<c:when test="${empty isOperator and empty param.userOverride}">
@@ -42,7 +45,7 @@
 	</c:catch>
 </c:if>
 
-<go:log level="INFO" source="comments_add_jsp" >Add Comment RootId: ${rootId}</go:log>
+${logger.info('Add Comment RootId: {}',rootId)}
 
 <c:choose>
 	<c:when test="${empty rootId}">
@@ -89,7 +92,7 @@
 			<c:if test="${not empty error}">
 				<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 				<c:set var="errorPool">${errorPool}{"error":"Failed to add comment: ${error.rootCause}"}</c:set>
-				<go:log source="comments_add_jsp" level="ERROR" error="${error}">Failed to add comment</go:log>
+				${logger.error('Failed to add comment', error)}"
 			</c:if>
 		</c:if>
 	</c:otherwise>
@@ -103,6 +106,6 @@
 	</c:when>
 	<c:otherwise>
 		{"errors":[${errorPool}]}
-		<go:log source="comments_add_jsp" level="INFO">{[${errorPool}]}</go:log>
+		${logger.info('{[' + errorPool + ']}')}
 	</c:otherwise>
 </c:choose>

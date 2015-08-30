@@ -1,17 +1,20 @@
+<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("signup.jsp"));%>
 
 <session:get />
 
 	<security:populateDataFromParams rootPath="signup" />
 
-	<go:log>${data}</go:log>
+	${logger.debug("Data: {}", data)}
 
 	<c:set var="fuelSignup" value="${data['signup/fuel']}"/>
 	<c:if test="${fuelSignup == 'Y'}">
-		<go:log>../write/fuel_signup.jsp?fuel_signup_name_first=${data['signup/firstname']}&fuel_signup_name_last=${data['signup/surname']}&fuel_signup_email=${data['signup/email']}&fuel_signup_terms=${data['signup/newsoffers']}</go:log>
+		${logger.debug('../write/fuel_signup.jsp?fuel_signup_name_first={}&fuel_signup_name_last={}&fuel_signup_email={}&fuel_signup_terms={}',data['signup/firstname'] , data['signup/surname'] ,  data['signup/email'] , data['signup/newsoffers'])}
 		<c:import url="../write/fuel_signup.jsp?fuel_signup_name_first=${data['signup/firstname']}&fuel_signup_name_last=${data['signup/surname']}&fuel_signup_email=${data['signup/email']}&fuel_signup_terms=${data['signup/newsoffers']}" var="tmpVar"/>
-		<go:log>${tmpVar}</go:log>
+		${logger.debug("tmpVar: {}", tmpVar)}
 	</c:if>
 
 

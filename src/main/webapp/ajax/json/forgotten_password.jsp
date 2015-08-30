@@ -1,7 +1,9 @@
+<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 <jsp:useBean id="authenticationService" class="com.ctm.services.AuthenticationService" scope="application" />
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("forgotten_password_jsp"));%>
 
 <settings:setVertical verticalCode="GENERIC" />
 
@@ -39,7 +41,7 @@
 		</sql:query>
 		<c:choose>
 			<c:when test="${not empty(emailMasterRecord) and emailMasterRecord.rowCount == 1}">
-				<go:log>Reset Email: MYSQL - Found! - Sending now...</go:log>
+				${logger.debug('Reset Email: MYSQL - Found! - Sending now...')}
 				<%-- Send off the Email response via dreammail/send.jsp instead of json/ajax/send.jsp. Everything here is sufficient. --%>
 				<c:catch var="error">
 					<%-- Dial into the send script --%>
@@ -65,17 +67,17 @@
 						<c:param name="token" value="${tokenUrl}" />
 					</c:import>
 				</c:catch>
-				<c:if test="error">
-					<go:log>Reset Email Error: ${error}</go:log>
+				<c:if test="${error}">
+					${logger.error('Reset Email Error: ' , error)}
 				</c:if>
-				<go:log>Reset Email: MYSQL - Code for send run.</go:log>
+				${logger.debug('Reset Email: MYSQL - Code for send run.')}
 				<%-- JSON result success --%>
 				<json:object>
 					<json:property name="result" value="OK"/>
 				</json:object>
 			</c:when>
 			<c:otherwise>
-				<go:log>Reset Email: Email Not Found</go:log>
+				${logger.debug('Reset Email: Email Not Found')}
 				<%-- JSON result failure --%>
 				<json:object>
 					<json:property name="result" value="INVALID_EMAIL"/>

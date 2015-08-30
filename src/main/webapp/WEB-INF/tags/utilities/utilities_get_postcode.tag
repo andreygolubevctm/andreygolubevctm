@@ -1,6 +1,8 @@
+<%@ tag import="org.slf4j.LoggerFactory" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Displays the root postcode for a given state."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("utilities\\utilities_get_postcode.tag"));%>
 
 <%@ attribute name="state" required="true" description="The state abbreviation to search."%>
 
@@ -17,6 +19,6 @@
 	</c:choose>
 </c:set>
 
-<go:log>GET POSTCODE: ${postcode}</go:log>
+${logger.debug('GET POSTCODE: {}',postcode )}
 
 ${postcode}

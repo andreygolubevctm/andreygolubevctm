@@ -1,5 +1,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
+<%@ tag import="org.slf4j.LoggerFactory" %>
+
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("health:write_optins"));%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -32,7 +35,7 @@
 	is added again in the application phase --%>
 <c:if test="${not empty qs_optOutEmailHistory}">
 	<c:forTokens items="${qs_optOutEmailHistory}" delims="," var="email">
-		<go:log level="INFO" source="health:write_optins">################ Questionset Email History Optout: ${email}</go:log>
+		${logger.info('################ Questionset Email History Optout: ${email}')}
 		<c:catch var="error">
 			<agg:write_email
 				brand="${brand}"
@@ -47,7 +50,7 @@
 </c:if>
 <c:if test="${not empty app_optOutEmailHistory}">
 	<c:forTokens items="${app_optOutEmailHistory}" delims="," var="email">
-		<go:log level="INFO" source="health:write_optins">################ Application Email History Optout: ${email}</go:log>
+		${logger.info('################ Application Email History Optout: ${email}')}
 		<c:catch var="error">
 			<agg:write_email
 				brand="${brand}"
@@ -63,7 +66,7 @@
 
 <%-- 2nd step - Add optins for secondary email fields --%>
 <c:if test="${not empty qs_emailAddressSecondary}">
-	<go:log level="INFO" source="health:write_optins">################ Questionset Secondary Optin: ${qs_emailAddressSecondary}</go:log>
+	${logger.info('################ Questionset Secondary Optin: ${qs_emailAddressSecondary}')}
 	<c:catch var="error">
 		<agg:write_email
 			brand="${brand}"
@@ -76,7 +79,7 @@
 	</c:catch>
 </c:if>
 <c:if test="${not empty app_emailAddressSecondary}">
-	<go:log level="INFO" source="health:write_optins">################ Application Secondary Email Optin: ${app_emailAddressSecondary}</go:log>
+	${logger.info('################ Application Secondary Email Optin: ${app_emailAddressSecondary}')}
 	<c:catch var="error">
 		<agg:write_email
 			brand="${brand}"
@@ -91,7 +94,7 @@
 
 <%-- 3rd step - Add primary email fields --%>
 <c:if test="${not empty qs_emailAddress}">
-	<go:log level="INFO" source="health:write_optins">################ Questionset Email ${qs_emailAddress}: marketing=${qs_optinEmailAddress},okToCall=${qs_okToCall}</go:log>
+	${logger.info('################ Questionset Email ${qs_emailAddress}: marketing=${qs_optinEmailAddress},okToCall=${qs_okToCall}')}
 	<c:catch var="error">
 		<agg:write_email
 			brand="${brand}"
@@ -104,7 +107,7 @@
 	</c:catch>
 </c:if>
 <c:if test="${not empty app_emailAddress}">
-	<go:log level="INFO" source="health:write_optins">################ Application Email ${app_emailAddress}: marketing=${app_optinEmailAddress},okToCall=${app_okToCall}</go:log>
+	${logger.info('################ Application Email ${app_emailAddress}: marketing=${app_optinEmailAddress},okToCall=${app_okToCall}')}
 	<c:catch var="error">
 		<agg:write_email
 			brand="${brand}"
@@ -168,25 +171,24 @@
 	/>
 </c:if>
 
-<go:log level="DEBUG" source="health:write_optins">=============================================</go:log>
-<go:log level="DEBUG" source="health:write_optins">brand:${brand}</go:log>
-<go:log level="DEBUG" source="health:write_optins">rootPath:${rootPath}</go:log>
+${logger.debug('brand:{}', brand)}
+${logger.debug('rootPath:{}', rootPath)}
 
-<go:log level="DEBUG" source="health:write_optins">qs_emailAddress:${qs_emailAddress}</go:log>
-<go:log level="DEBUG" source="health:write_optins">qs_optinEmailAddress:${qs_optinEmailAddress}</go:log>
-<go:log level="DEBUG" source="health:write_optins">qs_emailAddressSecondary:${qs_emailAddressSecondary}</go:log>
-<go:log level="DEBUG" source="health:write_optins">qs_optOutEmailHistory:${qs_optOutEmailHistory}</go:log>
-<go:log level="DEBUG" source="health:write_optins">qs_phoneOther:${qs_phoneOther}</go:log>
-<go:log level="DEBUG" source="health:write_optins">qs_phoneMobile:${qs_phoneMobile}</go:log>
-<go:log level="DEBUG" source="health:write_optins">qs_okToCall:${qs_okToCall}</go:log>
+${logger.debug('qs_emailAddress:{}', qs_emailAddress)}
+${logger.debug('qs_optinEmailAddress:{}', qs_optinEmailAddress)}
+${logger.debug('qs_emailAddressSecondary:${qs_emailAddressSecondary}')}
+${logger.debug('qs_optOutEmailHistory:${qs_optOutEmailHistory}')}
+${logger.debug('qs_phoneOther:${qs_phoneOther}')}
+${logger.debug('qs_phoneMobile:${qs_phoneMobile}')}
+${logger.debug('qs_okToCall:${qs_okToCall}')}
 
-<go:log level="DEBUG" source="health:write_optins">app_emailAddress:${app_emailAddress}</go:log>
-<go:log level="DEBUG" source="health:write_optins">app_optinEmailAddress:${app_optinEmailAddress}</go:log>
-<go:log level="DEBUG" source="health:write_optins">app_emailAddressSecondary:${app_emailAddressSecondary}</go:log>
-<go:log level="DEBUG" source="health:write_optins">app_optOutEmailHistory:${app_optOutEmailHistory}</go:log>
-<go:log level="DEBUG" source="health:write_optins">app_phoneOther:${app_phoneOther}</go:log>
-<go:log level="DEBUG" source="health:write_optins">app_phoneMobile:${app_phoneMobile}</go:log>
-<go:log level="DEBUG" source="health:write_optins">app_okToCall:${app_okToCall}</go:log>
+${logger.debug('app_emailAddress:${app_emailAddress}')}
+${logger.debug('app_optinEmailAddress:${app_optinEmailAddress}')}
+${logger.debug('app_emailAddressSecondary:${app_emailAddressSecondary}')}
+${logger.debug('app_optOutEmailHistory:{}', app_optOutEmailHistory)}
+${logger.debug('app_phoneOther:{}', app_phoneOther)}
+${logger.debug('app_phoneMobile:{}', app_phoneMobile)}
+${logger.debug('app_okToCall:{}', app_okToCall)}
 
-<go:log level="DEBUG" source="health:write_optins">firstname:${firstname}</go:log>
-<go:log level="DEBUG" source="health:write_optins">lastname:${lastname}</go:log>
+${logger.debug('firstname:{}', firstname)}
+${logger.debug('lastname:{}', lastname)}

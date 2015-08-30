@@ -1,7 +1,9 @@
+<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="HEALTH" />
+<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("health_paymentgateway_jsp"));%>
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
 <x:parse doc="${config}" var="configXml" />
@@ -36,7 +38,7 @@
 	${pageSettings.getBaseUrl()}ajax/html/health_paymentgateway_return.jsp
 </c:set>
 
-<go:log source="health_paymentgateway_jsp" >health_paymentgateway: ID=${id}, ${tokenUrl}</go:log>
+${logger.debug('health_paymentgateway: ID={}, {}', id, tokenUrl)}
 
 <c:choose>
 	<c:when test="${empty tokenUrl or empty username or empty password or empty id or empty registerUrl or empty comm or empty supp}">
@@ -57,8 +59,7 @@
 				<c:param name="CP_cancelURL" value="${returnURL}" />
 			</c:import>
 		</c:catch>
-		<go:log source="health_paymentgateway_jsp" >    Response: ${output}</go:log>
-
+		${logger.debug('Response: {}', output)}
 		<c:choose>
 			<c:when test="${fn:startsWith(output, 'token=')}">
 				<c:redirect url="${registerUrl}">
