@@ -1,5 +1,5 @@
 SET @providerID = 2;
-
+/* This SQL has been written just to fix crapped data created due to previous failed deployment of ratesheet*/
 /* 560 records  to be updates */
 UPDATE `ctm`.`product_master` pm
 SET STATUS = 'X'
