@@ -44,8 +44,8 @@ var healthFunds_GMH = {
         meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
         <%--credit card options--%>
-        creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
-        creditCardDetails.render();
+        meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
+        meerkat.modules.healthCreditCard.render();
 
         <%--calendar for start cover--%>
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
@@ -79,8 +79,8 @@ var healthFunds_GMH = {
         $('#mainform').find('.health_dependant_details_schoolGroup').find('.control-label').text( healthFunds._schoolLabel );
 
         <%--credit card options--%>
-        creditCardDetails.resetConfig();
-        creditCardDetails.render();
+        meerkat.modules.healthCreditCard.resetConfig();
+        meerkat.modules.healthCreditCard.render();
         <%--selections for payment date--%>
         $('#update-premium').off('click.GMH');
 

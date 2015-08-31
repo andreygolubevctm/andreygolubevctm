@@ -68,8 +68,8 @@ var healthFunds_GMF = {
 		meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
 		<%-- credit card options --%>
-		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex': false, 'diners': false };
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex': false, 'diners': false });
+		meerkat.modules.healthCreditCard.render();
 
 		$('.health-credit_card_details .fieldrow').hide();
 		meerkat.modules.paymentGateway.setup({
@@ -101,8 +101,8 @@ var healthFunds_GMF = {
 		delete healthFunds_GMF.$_medicareMessage;
 
 		<%-- credit card options --%>
-		creditCardDetails.resetConfig();
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.resetConfig();
+		meerkat.modules.healthCreditCard.render();
 
 		meerkat.modules.paymentGateway.reset();
 	}

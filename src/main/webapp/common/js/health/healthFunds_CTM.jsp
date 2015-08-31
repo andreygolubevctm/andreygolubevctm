@@ -75,8 +75,8 @@ set: function () {
 		meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
 		<%--credit card options --%>
-		creditCardDetails.config = { 'visa': true, 'mc': true, 'amex':false, 'diners':false };
-		creditCardDetails.render();
+	meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa': true, 'mc': true, 'amex':false, 'diners':false });
+		meerkat.modules.healthCreditCard.render();
 
 		$('#update-premium').on('click.CTM', function() {
 
@@ -185,8 +185,8 @@ set: function () {
 		</c:if>
 
 		<%--credit card options--%>
-		creditCardDetails.resetConfig();
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.resetConfig();
+		meerkat.modules.healthCreditCard.render();
 		$('#medicareCoveredRow .control-label').text(healthFunds._medicareCoveredText);
 		$('#medicareCoveredRow .help_icon').attr("id",healthFunds._medicareCoveredHelpId);
 		meerkat.modules.paymentGateway.reset();

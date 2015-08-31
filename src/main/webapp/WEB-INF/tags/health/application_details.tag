@@ -95,4 +95,4 @@
 
 <input type="hidden" id="contactPointValue" value="${contactPointValue}"/>
 
-<go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="Health product details, prices and availability are based on the state in which you reside. The postcode entered here does not match the original state provided at the start of the search. If you have made a mistake with the postcode on this page please rectify it before continuing. Otherwise please <a href='#results' class='changeStateAndQuote'>carry out the quote again</a> using this state." />
+<go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="" />

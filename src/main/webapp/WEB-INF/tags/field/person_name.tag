@@ -9,9 +9,8 @@
 <%@ attribute name="className"   required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		 required="true"  rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
 <%@ attribute name="size" 		 required="false" rtexprvalue="true"	 description="the size attribute of this input"%>
-<%@ attribute name="placeholder" required="false" rtexprvalue="true"  description="HTML5 placeholder" %>
-<%@ attribute name="maxlength" required="false" rtexprvalue="true"
-			  description="The maximum length for the input field" %>
+<%@ attribute name="placeholder" required="false" rtexprvalue="true"  	 description="HTML5 placeholder" %>
+<%@ attribute name="maxlength" required="false" rtexprvalue="true"    	 description="The maximum length for the input field" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -36,6 +35,9 @@
 </c:if>
 
 <%-- HTML --%>
+<c:set var="validationAttributes" value="" />
+<c:if test="${required}">
+	<c:set var="validationAttributes" value=" data-msg-required='Please enter ${title}' data-rule-personName='true' " />
+</c:if>
 <input type="text" name="${name}" id="${name}" class="form-control person_name sessioncamexclude ${className}"
-	   value="${value}" ${sizeAttribute}${requiredAttribute}${placeHolderAttribute} ${maxlengthAttribute}
-					data-msg-required="Please enter ${title}" data-rule-personName="true">
+	   value="${value}" ${sizeAttribute}${requiredAttribute}${placeHolderAttribute} ${maxlengthAttribute} ${validationAttributes}>

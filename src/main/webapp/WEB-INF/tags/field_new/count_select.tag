@@ -26,7 +26,7 @@
 	<span class=" input-group-addon" >
 		<i class="icon-sort"></i>
 	</span>
-	<select class="form-control field-count_select ${className}" id="${name}" name="${name}" >
+	<select class="form-control field-count_select ${className}" id="${name}" name="${name}" <c:if test="${required}">required data-msg-required="Please choose ${title}"</c:if>>
 		<c:if test="${empty omitPleaseChoose || omitPleaseChoose == 'N'}">
 			<option id="${name}_" value="">Please choose&hellip;</option>
 		</c:if>
@@ -43,7 +43,8 @@
 	</select>
 </div>
 
-<%-- VALIDATION --%>
+<%--
+ VALIDATION
 <c:if test="${required}">
-	<go:validate selector="${name}" rule="required" parm="${required}" message="Please choose ${title}"/>
-</c:if>
+	<go:validate selector="${name}" rule="required" parm="${required}" message=""/>
+</c:if>--%>

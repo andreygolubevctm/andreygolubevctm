@@ -67,8 +67,8 @@ set: function () {
 		});
 
 		<%-- credit card options --%>
-		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':true, 'diners':false };
-		creditCardDetails.render();
+	meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':true, 'diners':false });
+		meerkat.modules.healthCreditCard.render();
 
 		meerkat.modules.healthPaymentIPP.show();
 
@@ -101,8 +101,8 @@ set: function () {
 		$('#health_previousfund_partner_fundName').attr('required', 'required');
 
 		<%-- credit card options --%>
-		creditCardDetails.resetConfig();
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.resetConfig();
+		meerkat.modules.healthCreditCard.render();
 
 		meerkat.modules.healthPaymentIPP.hide();
 

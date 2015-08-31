@@ -32,47 +32,10 @@
 	<c:when test="${vertical eq 'life' or vertical eq 'ip'}">
 		<%-- This is here to prevent Life/IP from using the checkbox here because we have to position it elsewhere on the form. --%>
 	</c:when>
-
 	<%-- Only render a hidden field when the checkbox has already been selected --%>
 	<c:when test="${data[xpath] eq 'Y'}">
 		<field:hidden xpath="${xpath}" defaultValue="Y" constantValue="Y" />
 	</c:when>
-
-	<%-- FUEL --%>
-	<c:when test="${vertical eq 'fuel'}">
-		<div class="terms ${suffix}">
-			<field:checkbox xpath="${xpath}" className="required validate" label="true" value="Y" title="${label_text} *" errorMsg="${error_text}" required="true" />
-		</div>
-	</c:when>
-
-	<%-- HEALTH --%>
-	<c:when test="${vertical eq 'health'}">
-
-		<form:row label="" className="health-privacy-statement-group">
-			<c:set var="label_text_health">
-				<div class="readPrivacyStatementLabel">${label_text}</div>
-			</c:set>
-			<div class="readPrivacyStatementError">
-				<span>${error_text}</span>
-			</div>
-			<field:customisable-checkbox
-				xpath="${xpath}"
-				theme="replicaLarge"
-				value="Y"
-				className="validate"
-				required="false"
-				label="${true}"
-				title="${label_text_health}"
-				errorMsg="${error_text}"
-			/>
-		</form:row>
-
-		<%-- Validation --%>
-		<c:if test="${vertical eq 'health'}">
-			<go:validate selector="${name}" rule="readPrivacyStatementMessage" parm="true" message="${error_text}" />
-		</c:if>
-	</c:when>
-
 	<%-- OTHERS --%>
 	<c:otherwise>
 		<form:row label="" id="${name}-row">

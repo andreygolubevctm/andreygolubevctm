@@ -33,7 +33,7 @@
     $.validator.addMethod("validateLocation", function (value, element) {
         value = $.trim(String(value)).replace("'", "");
         return value !== '' && value.match(fullAddressRegex);
-    });
+    }, "Please select a valid suburb / postcode");
 
     /**
      * Used by autofilllessSearch to validate the separate fullAddress element input.

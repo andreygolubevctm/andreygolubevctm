@@ -104,7 +104,9 @@
 				object:meerkat.modules.travel.getTrackingFieldsObject
 			},
 			onInitialise : function onStartInit(event) {
+
 				meerkat.modules.jqueryValidate.initJourneyValidator();
+
 				if (meerkat.modules.splitTest.isActive([5,6])) {
 					$('#travel_location').on('blur',function() {
 						meerkat.modules.travelContactDetails.setLocation($(this).val());

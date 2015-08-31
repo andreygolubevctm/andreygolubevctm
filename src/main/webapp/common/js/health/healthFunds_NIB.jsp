@@ -42,8 +42,8 @@ var healthFunds_NIB = {
         meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
         <%--credit card options--%>
-        creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':true, 'diners':false };
-        creditCardDetails.render();
+        meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':true, 'diners':false });
+        meerkat.modules.healthCreditCard.render();
 
         $('#update-premium').on('click.NIB', function() {
             var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
@@ -113,8 +113,8 @@ var healthFunds_NIB = {
         healthFunds._dependants(false);
 
         <%--credit card options--%>
-        creditCardDetails.resetConfig();
-        creditCardDetails.render();
+        meerkat.modules.healthCreditCard.resetConfig();
+        meerkat.modules.healthCreditCard.render();
     }
 };
 </c:set>

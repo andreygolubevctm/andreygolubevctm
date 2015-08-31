@@ -11,6 +11,7 @@
 <%@ attribute name="className" 	            required="false" rtexprvalue="true"   description="additional css class attribute" %>
 <%@ attribute name="title" 		            required="false"  rtexprvalue="true"  description="The input field's title"%>
 <%@ attribute name="maxlength" 	            required="false" rtexprvalue="true"   description="The maximum length for the input field"%>
+<%@ attribute name="minlength" 	            required="false" rtexprvalue="true"   description="The minimum length for the input field"%>
 <%@ attribute name="size" 	                required="false" rtexprvalue="true"   description="The maximum size for the input field"%>
 <%@ attribute name="readOnly" 	            required="false" rtexprvalue="true"   description="readOnly true or otherwise" %>
 <%@ attribute name="tabIndex"	            required="false" rtexprvalue="true"   description="TabIndex of the field" %>
@@ -47,6 +48,10 @@
 
 <c:if test="${not empty maxlength}">
 	<c:set var="maxlength" value=' maxlength="${maxlength}"' />
+</c:if>
+
+<c:if test="${not empty minlength}">
+	<c:set var="minlength" value=' minlength="${minlength}"' />
 </c:if>
 
 <c:if test="${not empty tabIndex}">
@@ -115,7 +120,7 @@
 				</c:if>
 		</c:if>
 
-		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" <c:if test="not empty validationErrorPlacementSelector">data-validation-placement="${validationErrorPlacementSelector}"</c:if> value="${value}" ${maxlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}${additionalAttributes}>
+		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" <c:if test="not empty validationErrorPlacementSelector">data-validation-placement="${validationErrorPlacementSelector}"</c:if> value="${value}" ${maxlength}${minlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}${additionalAttributes}>
 
 		<c:if test="${not empty inputGroupText}">
 				<c:if test="${empty inputGroupTextPosition or inputGroupTextPosition eq 'right'}">

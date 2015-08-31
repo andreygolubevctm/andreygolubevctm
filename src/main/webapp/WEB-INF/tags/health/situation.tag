@@ -59,7 +59,7 @@
 							<field:state_select xpath="${xpath}/state" useFullNames="true" title="State" required="true" />
 						</c:when>
 						<c:otherwise>
-							<field_new:lookup_suburb_postcode xpath="${fieldXpath}" required="true" placeholder="Suburb / Postcode" />
+							<field_new:lookup_suburb_postcode xpath="${fieldXpath}" required="true" placeholder="Suburb / Postcode" extraDataAttributes=" data-rule-validateLocation='true' " />
 							<field:hidden xpath="${xpath}/state" />
 						</c:otherwise>
 					</c:choose>
@@ -79,9 +79,8 @@
 				<c:if test="${callCentre}">
 					<c:set var="fieldXpath" value="${xpath}/cover" />
 					<form_new:row label="Do all people to be covered on this policy have a green or blue Medicare card?" fieldXpath="${fieldXpath}" className="health_situation_medicare">
-						<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover"/>
+						<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Unfortunately we cannot continue with your quote'" />
 					</form_new:row>
-					<go:validate selector="${name}_cover" rule="agree" parm="true" message="Unfortunately we cannot continue with your quote"/>
 				</c:if>
 
 				</form_new:fieldset>
@@ -99,6 +98,3 @@
 
 	</form_new:fieldset_columns>
 </div>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}_location" rule="validateHealthPostcodeSuburb" parm="true" message="Please select a valid suburb / postcode" />

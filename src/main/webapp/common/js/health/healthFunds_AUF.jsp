@@ -37,8 +37,8 @@ var healthFunds_AUF = {
     });
 
     <%--credit card options--%>
-    creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
-    creditCardDetails.render();
+    meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
+    meerkat.modules.healthCreditCard.render();
 
     <%--failed application--%>
     healthFunds.applicationFailed = function(){
@@ -51,8 +51,8 @@ var healthFunds_AUF = {
     healthFunds._dependants(false);
 
     <%--credit card options--%>
-    creditCardDetails.resetConfig();
-    creditCardDetails.render();
+    meerkat.modules.healthCreditCard.resetConfig();
+    meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
     healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);

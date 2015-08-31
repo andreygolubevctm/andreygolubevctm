@@ -145,8 +145,8 @@ var healthFunds_AHM = {
     meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
     <%--credit card options--%>
-    creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
-    creditCardDetails.render();
+    meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
+    meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
     $('#update-premium').on('click.AHM', function() {
@@ -198,8 +198,8 @@ var healthFunds_AHM = {
     healthFunds._previousfund_authority(false);
 
     <%--credit card options--%>
-    creditCardDetails.resetConfig();
-    creditCardDetails.render();
+    meerkat.modules.healthCreditCard.resetConfig();
+    meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
     healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);

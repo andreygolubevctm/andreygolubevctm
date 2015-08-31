@@ -10,3 +10,7 @@ $.validator.addMethod("digitsIgnoreComma", function(value, element, params) {
     // Do the normal digit check.
     return this.optional(element) || /^\d+$/.test(value);
 });
+
+ $.validator.addMethod("isCheckedYes", function(value, element, params) {
+    return value == "Y" && $(element).prop("checked") === true;
+ });

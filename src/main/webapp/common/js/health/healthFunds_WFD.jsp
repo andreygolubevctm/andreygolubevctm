@@ -47,8 +47,8 @@ var healthFunds_WFD = {
         meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
         <%--credit card options--%>
-        creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
-        creditCardDetails.render();
+        meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
+        meerkat.modules.healthCreditCard.render();
 
         <%--selections for payment date--%>
         $('#update-premium').on('click.WFD', function() {

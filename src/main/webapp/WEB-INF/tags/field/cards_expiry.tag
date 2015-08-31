@@ -37,6 +37,8 @@
 	</c:forEach>
 </c:set>
 
+<c:set var="validationAttributes"> data-rule-cardExpiry='{"prefix":"${go:nameFromXpath(xpath)}"}' data-msg-cardExpiry='Please choose a valid ${title}' </c:set>
+
 <%-- HTML --%>
 <div class="row">
 	<div class="col-xs-6 col-md-5">
@@ -48,7 +50,7 @@
 			xpath="${xpath}/cardExpiryYear"
 			title="expiry year"
 			className="${className}"
-			required="true" />
+			required="true" extraDataAttributes="${validationAttributes}" />
 	</div>
 </div>
 
@@ -68,10 +70,3 @@
 		return MyDateString;
 	}
 </go:script>
-
-<c:if test="${rule == 'ccExp'}">
-	<go:validate selector="${cardExpiryYear}" rule="${rule}" parm="true" message="Please choose a valid credit card expiry date" />
-</c:if>
-<c:if test="${rule == 'mcExp'}">
-	<go:validate selector="${cardExpiryYear}" rule="${rule}" parm="true" message="Please choose a valid Medicare card expiry date" />
-</c:if>
