@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.transaction.TransactionDetailsDao;
 import com.ctm.dao.homeloan.HomeloanUnconfirmedLeadsDao;
@@ -42,7 +43,7 @@ import com.ctm.services.homeloan.HomeLoanService;
 })
 public class CronRouter extends HttpServlet {
 
-	private static Logger logger = Logger.getLogger(CronRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CronRouter.class.getName());
 
 	private static final long serialVersionUID = 18L;
 

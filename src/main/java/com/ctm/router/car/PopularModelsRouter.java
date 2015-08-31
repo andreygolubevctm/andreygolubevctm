@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +22,7 @@ import com.ctm.services.car.PopularModelsService;
 })
 public class PopularModelsRouter extends HttpServlet {
 	private static final long serialVersionUID = 66L;
-	private static Logger logger = Logger.getLogger(PopularModelsRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(PopularModelsRouter.class.getName());
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

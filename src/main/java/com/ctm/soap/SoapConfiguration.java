@@ -2,7 +2,8 @@ package com.ctm.soap;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import com.ctm.exceptions.DaoException;
@@ -22,7 +23,7 @@ import com.disc_au.web.go.xml.XmlParser;
 
 public class SoapConfiguration {
 
-	static Logger logger = Logger.getLogger(SoapConfiguration.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SoapConfiguration.class.getName());
 
 	public static void setUpConfigurationFromDatabase(String configDbKey , SoapAggregatorConfiguration configuration, int styleCodeId,
 			String verticalCode, String manuallySetProviderIds, String authToken) {

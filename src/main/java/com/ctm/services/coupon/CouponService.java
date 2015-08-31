@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.CouponDao;
 import com.ctm.exceptions.ConfigSettingException;
@@ -19,7 +20,7 @@ import com.ctm.services.SettingsService;
 import com.disc_au.web.go.Data;
 
 public class CouponService {
-	private static Logger logger = Logger.getLogger(CouponService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CouponService.class.getName());
 	private CouponDao couponDao;
 
 	public CouponService(){

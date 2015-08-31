@@ -7,7 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +30,7 @@ import com.ctm.services.ServiceConfigurationService;
 
 public class HomeLoanOpportunityService {
 
-	private static Logger logger = Logger.getLogger(HomeLoanOpportunityService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HomeLoanOpportunityService.class.getName());
 	public static final String SECRET_KEY = "kD0axgKXQ5HixuWsJ8-2BA";
 	private String transactionId;
 	private String sessionId;

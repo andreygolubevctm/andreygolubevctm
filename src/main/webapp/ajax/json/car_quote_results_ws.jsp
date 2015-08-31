@@ -19,6 +19,16 @@
 
 --%>
 
+<c:choose>
+	<c:when test="${not empty param.action and param.action == 'latest'}">
+		<c:set var="writeQuoteOverride" value="N" />
+	</c:when>
+	<c:otherwise>
+		<security:populateDataFromParams rootPath="quote" />
+		<c:set var="writeQuoteOverride" value="Y" />
+	</c:otherwise>
+</c:choose>
+
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">
 	<error:recover origin="ajax/json/car_quote_results_ws.jsp" quoteType="car" />

@@ -1,19 +1,19 @@
 package com.ctm.model.formatter.email.travel;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.apache.log4j.Logger;
-
 import com.ctm.model.email.ExactTargetEmailModel;
 import com.ctm.model.email.TravelBestPriceEmailModel;
 import com.ctm.model.email.TravelBestPriceRanking;
 import com.ctm.model.formatter.email.ExactTargetFormatter;
 import com.ctm.utils.FormDateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<TravelBestPriceEmailModel> {
 
-	private static final Logger logger = Logger.getLogger(TravelBestPriceExactTargetFormatter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(TravelBestPriceExactTargetFormatter.class.getName());
 
 	@Override
 	protected ExactTargetEmailModel formatXml(TravelBestPriceEmailModel model) {
@@ -70,8 +70,8 @@ public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<Tr
 			try {
 				Date returnDate  = FormDateUtils.parseDateFromForm(date);
 				returnFormattedDate = new SimpleDateFormat("EEE, d MMM yyyy").format( returnDate );
-			} catch (Exception ex) {
-				logger.error(ex);
+			} catch (Exception e) {
+				logger.error("",e);
 			}
 		}
 
