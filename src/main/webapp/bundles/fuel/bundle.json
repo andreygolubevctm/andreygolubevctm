@@ -1,0 +1,4 @@
+{
+  "brandCodes": ["ctm"],
+  "dependencies": ["core", "shared/generic_module"]
+}
