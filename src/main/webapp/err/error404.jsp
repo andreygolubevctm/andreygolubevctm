@@ -3,6 +3,7 @@
 
 <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">
+    <c:set var="logger" value="${go:getLogger('error404_jsp')}" />
     <settings:setVertical verticalCode="GENERIC"/>
     <c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
     <c:set var="pageTitle" value="404"/>
@@ -19,8 +20,7 @@
     <c:otherwise>
         <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
         <c:catch var="error">
-
-            <go:log source="404" level="INFO">Request URI: ${requestScope["javax.servlet.forward.request_uri"]}, servletPath: ${pageContext.request.servletPath}</go:log>
+            ${logger.info('Request URI: {}, servletPath: {}', requestScope["javax.servlet.forward.request_uri"], pageContext.request.servletPath)}
 
             <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 

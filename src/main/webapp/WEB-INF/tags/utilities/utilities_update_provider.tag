@@ -2,6 +2,8 @@
 <%@ tag description="Updates Utilities provider master and properties records."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('utilities:utilities_update_provider')}" />
+
 <%@ attribute name="provider_id" 	required="true"	 rtexprvalue="true"	 description="The Switchwise Provider ID" %>
 <%@ attribute name="provider_code" 	required="true"	 rtexprvalue="true"	 description="The Switchwise Provider Code" %>
 <%@ attribute name="provider_name" 	required="true"	 rtexprvalue="true"	 description="The Provider's Name" %>
@@ -10,10 +12,7 @@
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="alt_table" value="" />
-
-<go:log>PI: ${provider_id}</go:log>
-<go:log>PC: ${provider_code}</go:log>
-<go:log>PN: ${provider_name}</go:log>
+${logger.info('provider_id={},provider_code={},provider_name={}', provider_id,provider_code,provider_name)}
 
 <%-- 1] First - get the ID of the provider (either an existing one or a new ID from the range) --%>
 <%-- ========================================================================================= --%>
@@ -54,12 +53,12 @@
 									<c:out value="${find_available.rows[0].id}" />
 								</c:when>
 								<c:otherwise>
-									<go:log>There are no empty provider records to store (${provider_id})</go:log>
+									${logger.info('There are no empty provider records to store ({})', provider_id)}
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							<go:log>Database error locating empty provider record (${provider_id}): ${error.rootCause}</go:log>
+							${logger.warn('Database error locating empty provider record ({})', provider_id, error)}
 						</c:otherwise>
 					</c:choose>
 				</c:otherwise>
@@ -142,8 +141,8 @@
 		</c:if>
 	</c:when>
 	<c:otherwise>
-		<go:log>Database error selecting provider (${provider_id}): ${error.rootCause}</go:log>
+		${logger.warn('Database error selecting provider ({})', provider_id, error)}
 	</c:otherwise>
 </c:choose>
-<go:log>######## PROVIDER ID: ${ctm_provider_id} ########</go:log>
+${logger.debug('PROVIDER ID: ${ctm_provider_id}', ctm_provider_id)}
 <c:out value="${ctm_provider_id}" />

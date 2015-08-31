@@ -17,6 +17,9 @@
 		<c:if test="${empty error && locationToken != ''}">
 			<go:setData dataVar="data" xpath="fuel/postcode" value="${locationToken}" />
 		</c:if>
+			<c:if test="${error}">
+				${logger.warn('', error)}
+			</c:if>
 </c:forTokens>
 
 <%-- RECOVER: if things have gone pear shaped --%>

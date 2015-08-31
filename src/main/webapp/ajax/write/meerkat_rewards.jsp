@@ -1,7 +1,8 @@
-<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<c:set var="logger" value="${go:getLogger('home_quote_report_jsp')}" />
 
 <session:get settings="true" />
 
@@ -90,11 +91,11 @@
 
 		</c:when>
 		<c:when test="${empty error and (empty emailId or emailId.rowCount == 0)}">
-			<go:log>Failed to locate emailId for ${param.email}</go:log>
+			${logger.warn('Failed to locate emailId for {}', param.email)}
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'" />
 		</c:when>
 		<c:otherwise>
-			<go:log>Database Error2: ${error}</go:log>
+			${logger.error('Database Error2:  {}', error)}
 			<c:set var="errorPool" value="{error:'${error}'" />
 		</c:otherwise>
 	</c:choose>
@@ -103,7 +104,7 @@
 <%-- JSON RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log>ENTRY ERRORS: ${errorPool}</go:log>
+		${logger.warn('ENTRY ERRORS:  {}', errorPool)}
 		{[${errorPool}]}
 	</c:when>
 	<c:otherwise>

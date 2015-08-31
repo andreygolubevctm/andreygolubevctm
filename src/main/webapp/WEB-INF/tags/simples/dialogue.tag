@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Places dialogue markers for call center staff"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<c:set var="logger" value="${go:getLogger('simples:dialogue')}" />
 <jsp:useBean id="date" class="java.util.Date" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
@@ -35,6 +36,9 @@
 		<c:set var="dialogueText" value="${result.rows[0]['text']}" />
 		<c:set var="dialogueText" value="${fn:replace(dialogueText, '%10YEARSAGO%', continuousCoverYear)}" />
 	</c:catch>
+	<c:if test="${error}">
+		${logger.warn('', error)}
+	</c:if>
 
 	<%-- OUTPUT: display and test for additional flags --%>
 	<div class="simples-dialogue-${id} simples-dialogue row-content ${className}<c:if test="${not empty mandatory && mandatory == true}"> mandatory</c:if>">

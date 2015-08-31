@@ -52,7 +52,7 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-<c:catch>
+<c:catch var="error">
 	<%-- Export the results, even an empty JSON --%>
 	<c:choose>
 		<c:when test="${(empty result) || (result.rowCount == 0) }">[<%-- {"label":"We can't find a match. Please check your postcode/suburb","value":""} --%>]</c:when>
@@ -60,3 +60,6 @@
 		<c:otherwise>${callback_start}[ <c:forEach var="row" varStatus="status" items="${result.rows}">"<c:out value='${row.suburb} ${row.postCode} ${row.state}' escapeXml="false" />"<c:if test="${!status.last}">, </c:if></c:forEach> ]${callback_end}</c:otherwise>
 	</c:choose>
 </c:catch>
+<c:if test="${error}">
+	${logger.warn('', error)}
+</c:if>

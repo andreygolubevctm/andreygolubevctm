@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="HEALTH" />
-<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("health_paymentgateway_jsp"));%>
+<c:set var="logger"  value="${go:getLogger('health_paymentgateway_jsp')}" />
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
 <x:parse doc="${config}" var="configXml" />
@@ -59,6 +59,9 @@ ${logger.debug('health_paymentgateway: ID={}, {}', id, tokenUrl)}
 				<c:param name="CP_cancelURL" value="${returnURL}" />
 			</c:import>
 		</c:catch>
+		<c:if test="${gatewayError}">
+			${logger.error('', gatewayError)}
+		</c:if>
 		${logger.debug('Response: {}', output)}
 		<c:choose>
 			<c:when test="${fn:startsWith(output, 'token=')}">

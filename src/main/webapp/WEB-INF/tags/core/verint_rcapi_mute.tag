@@ -3,6 +3,8 @@
 <%@ tag description="This uses the Verint RCAPI service to talk to the phone system. Note this can affect compliance greatly."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${go:getLogger('verint_rcapi_mute_jsp')}" />
+
 <%-- ATTRIBUTES --%>
 <%@ attribute name="action" 		required="true"		rtexprvalue="true"	description="The recorder action: PauseRecord or ResumeRecord"%>
 <%@ attribute name="agentId" 		required="true"		rtexprvalue="true"	description="The operator's agentId: ####"%>
@@ -14,7 +16,7 @@
 	response.setContentType("text/plain");
 	response.setCharacterEncoding("UTF-8");
 %>
-<go:log>action: ${action}</go:log>
+${logger.info('action: {}', action)}
 <%-- THIS IS THE SYSTEM to TURN ON/OFF Recording --%>
 <c:catch var="packetError">
 	<c:set var="xmlResponse" value="${phoneService.pauseResumeRecording(pageSettings, agentId, contentType, action)}" />

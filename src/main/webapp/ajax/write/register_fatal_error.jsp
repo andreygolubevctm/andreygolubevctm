@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('register_fatal_error_jsp')}" />
+
 <core_new:no_cache_header/>
 
 <c:set var="page"><c:out value="${param.page}" escapeXml="true" /></c:set>
@@ -35,10 +37,10 @@
 <%-- Test for DB issue and handle - otherwise move on --%>
 <c:choose>
 	<c:when test="${not empty error}">
-		<go:log level="ERROR">[ERROR] Fatal Error Log: ${error}</go:log>
+		${logger.error('[ERROR] Fatal Error Log:' , error)}
 	</c:when>
 	<c:otherwise>
 		<%-- Important keep this as debug as there may be credit card details in the params--%>
-		<go:log level="DEBUG">Fatal Error Log: ${param}</go:log>
+		${logger.debug('Fatal Error Log:' , param)}
 	</c:otherwise>
 </c:choose>

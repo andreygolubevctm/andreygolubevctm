@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 <jsp:useBean id="authenticationService" class="com.ctm.services.AuthenticationService" scope="application" />
-<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("forgotten_password_jsp"));%>
+<c:set var="logger" value="${go:getLogger('forgotten_password_jsp')}" />
 
 <settings:setVertical verticalCode="GENERIC" />
 

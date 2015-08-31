@@ -1,10 +1,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
-<%@ tag import="org.slf4j.LoggerFactory" %>
-
-<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("health:write_optins"));%>
-
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<c:set var="logger" value="${go:getLogger('health:write_optins')}" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
 
@@ -35,7 +33,7 @@
 	is added again in the application phase --%>
 <c:if test="${not empty qs_optOutEmailHistory}">
 	<c:forTokens items="${qs_optOutEmailHistory}" delims="," var="email">
-		${logger.info('################ Questionset Email History Optout: ${email}')}
+		${logger.info('Questionset Email History Optout: email={}', email)}
 		<c:catch var="error">
 			<agg:write_email
 				brand="${brand}"
@@ -46,11 +44,14 @@
 				lastName="${lastname}"
 				items="marketing=N" />
 		</c:catch>
+		<c:if test="${error}">
+			${logger.warn('', error)}
+		</c:if>
 	</c:forTokens>
 </c:if>
 <c:if test="${not empty app_optOutEmailHistory}">
 	<c:forTokens items="${app_optOutEmailHistory}" delims="," var="email">
-		${logger.info('################ Application Email History Optout: ${email}')}
+		${logger.info('Application Email History Optout: email={}', email)}
 		<c:catch var="error">
 			<agg:write_email
 				brand="${brand}"
@@ -61,12 +62,15 @@
 				lastName="${lastname}"
 				items="marketing=N" />
 		</c:catch>
+		<c:if test="${error}">
+			${logger.warn('', error)}
+		</c:if>
 	</c:forTokens>
 </c:if>
 
 <%-- 2nd step - Add optins for secondary email fields --%>
 <c:if test="${not empty qs_emailAddressSecondary}">
-	${logger.info('################ Questionset Secondary Optin: ${qs_emailAddressSecondary}')}
+	${logger.info('Questionset Secondary Optin: {}', qs_emailAddressSecondary)}
 	<c:catch var="error">
 		<agg:write_email
 			brand="${brand}"
@@ -77,9 +81,12 @@
 			lastName="${lastname}"
 			items="marketing=Y" />
 	</c:catch>
+	<c:if test="${error}">
+		${logger.warn('', error)}
+	</c:if>
 </c:if>
 <c:if test="${not empty app_emailAddressSecondary}">
-	${logger.info('################ Application Secondary Email Optin: ${app_emailAddressSecondary}')}
+	${logger.info('Application Secondary Email Optin: app_emailAddressSecondary={}', app_emailAddressSecondary)}
 	<c:catch var="error">
 		<agg:write_email
 			brand="${brand}"
@@ -90,11 +97,14 @@
 			lastName="${lastname}"
 			items="marketing=Y" />
 	</c:catch>
+	<c:if test="${error}">
+		${logger.warn('', error)}
+	</c:if>
 </c:if>
 
 <%-- 3rd step - Add primary email fields --%>
 <c:if test="${not empty qs_emailAddress}">
-	${logger.info('################ Questionset Email ${qs_emailAddress}: marketing=${qs_optinEmailAddress},okToCall=${qs_okToCall}')}
+	${logger.info('Questionset emailAddress={},marketing={},okToCall={}',qs_emailAddress, qs_optinEmailAddress,qs_okToCall)}
 	<c:catch var="error">
 		<agg:write_email
 			brand="${brand}"
@@ -105,9 +115,12 @@
 			lastName="${lastname}"
 			items="marketing=${qs_optinEmailAddress},okToCall=${qs_okToCall}" />
 	</c:catch>
+	<c:if test="${error}">
+		${logger.warn('', error)}
+	</c:if>
 </c:if>
 <c:if test="${not empty app_emailAddress}">
-	${logger.info('################ Application Email ${app_emailAddress}: marketing=${app_optinEmailAddress},okToCall=${app_okToCall}')}
+	${logger.info('Application emailAddress=${app_emailAddress},marketing={},okToCall={}', app_emailAddress,app_optinEmailAddress,app_okToCall)}
 	<c:catch var="error">
 		<agg:write_email
 			brand="${brand}"
@@ -118,6 +131,9 @@
 			lastName="${lastname}"
 			items="marketing=${app_optinEmailAddress},okToCall=${app_okToCall}" />
 	</c:catch>
+	<c:if test="${error}">
+		${logger.warn('', error)}
+	</c:if>
 </c:if>
 
 <%-- 4th step - Write phone optins to stamping table --%>
@@ -171,24 +187,8 @@
 	/>
 </c:if>
 
-${logger.debug('brand:{}', brand)}
-${logger.debug('rootPath:{}', rootPath)}
-
-${logger.debug('qs_emailAddress:{}', qs_emailAddress)}
-${logger.debug('qs_optinEmailAddress:{}', qs_optinEmailAddress)}
-${logger.debug('qs_emailAddressSecondary:${qs_emailAddressSecondary}')}
-${logger.debug('qs_optOutEmailHistory:${qs_optOutEmailHistory}')}
-${logger.debug('qs_phoneOther:${qs_phoneOther}')}
-${logger.debug('qs_phoneMobile:${qs_phoneMobile}')}
-${logger.debug('qs_okToCall:${qs_okToCall}')}
-
-${logger.debug('app_emailAddress:${app_emailAddress}')}
-${logger.debug('app_optinEmailAddress:${app_optinEmailAddress}')}
-${logger.debug('app_emailAddressSecondary:${app_emailAddressSecondary}')}
-${logger.debug('app_optOutEmailHistory:{}', app_optOutEmailHistory)}
-${logger.debug('app_phoneOther:{}', app_phoneOther)}
-${logger.debug('app_phoneMobile:{}', app_phoneMobile)}
-${logger.debug('app_okToCall:{}', app_okToCall)}
-
-${logger.debug('firstname:{}', firstname)}
-${logger.debug('lastname:{}', lastname)}
+${logger.debug('brand={} rootPath={} qs_emailAddress={} qs_optinEmailAddress={} qs_emailAddressSecondary={}', brand , rootPath, qs_emailAddress, qs_optinEmailAddress)}
+${logger.debug('qs_optOutEmailHistory={} qs_phoneOther={} qs_phoneMobile={} qs_okToCall={}', qs_optOutEmailHistory,qs_phoneOther,qs_phoneMobile, qs_okToCall)}
+${logger.debug('app_emailAddress={} app_optinEmailAddress={} app_emailAddressSecondary={} app_optOutEmailHistory={}', app_emailAddress, app_optinEmailAddress,app_emailAddressSecondary,app_optOutEmailHistory)}
+${logger.debug('app_phoneOther={} app_phoneMobile={} app_okToCall={}', app_phoneOther,app_phoneMobile, app_okToCall)}
+${logger.debug('firstname={} lastname={}', firstname ,lastname)}

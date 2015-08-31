@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('error500_jsp')}" />
+
 <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">
     <settings:setVertical verticalCode="GENERIC"/>
@@ -24,9 +26,7 @@
     <c:otherwise>
         <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
         <c:catch var="error">
-
-            <go:log source="500" level="ERROR">Request URI: ${requestScope["javax.servlet.forward.request_uri"]}, servletPath: ${pageContext.request.servletPath}</go:log>
-
+            ${logger.error('Request URI: {}, servletPath: {}', requestScope["javax.servlet.forward.request_uri"], pageContext.request.servletPath)}
             <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 
                 <jsp:attribute name="head">
@@ -82,7 +82,7 @@
                 </jsp:body>
 
             </layout:generic_page>
+            ${logger.error("500 Error Hit" , error )}
         </c:catch>
-        <go:log>500 Error Hit: "${error}"</go:log>
     </c:otherwise>
 </c:choose>

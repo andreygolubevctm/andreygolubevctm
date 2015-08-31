@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${go:getLogger('verint_rcapi_jsp')}" />
+
 <session:getAuthenticated  />
 
 <%
@@ -24,7 +26,7 @@
 
 <c:set var="action"><c:out value="${param.action}" escapeXml="true" /></c:set>
 
-<go:log>action: ${action}</go:log>
+${logger.debug('action: {}', action)}
 
 <c:choose>
 	<c:when test="${empty isOperator}">

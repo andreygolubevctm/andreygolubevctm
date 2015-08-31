@@ -2,6 +2,8 @@
 <%@ tag description="Preloading form data." %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('core_new:load_preload')}" />
+
 <c:if test="${empty param.action && not empty param.preload && not fn:contains(param.preload, '/') &&  not fn:contains(param.preload, '/\') }">
 
 	<c:choose>
@@ -15,6 +17,9 @@
 			<c:catch var="error">
 				<c:import url="test_data/${pageSettings.getVerticalCode()}/application.xml" var="xmlDoc" />
 			</c:catch>
+			<c:if test="${error}">
+				${logger.warn('', error)}
+			</c:if>
 		</c:otherwise>
 	</c:choose>
 

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('setApplicationDate_jsp')}" />
+
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
 <c:set var="remoteAddr" value="${pageContext.request.remoteAddr}" />
 
@@ -11,7 +13,6 @@
 	<c:set var="setResult" value="${applicationService.setApplicationDateOnSession(pageContext.getRequest(), param.applicationDateOverrideValue)}" />
 
 	<c:set var="retrieveDate" value="${applicationService.getApplicationDateIfSet(pageContext.getRequest())}" />
-	<go:log>APPLICATION DATE CHANGED: ${retrieveDate }</go:log>
+	${logger.debug('APPLICATION DATE CHANGED: {}',retrieveDate )}
 	${retrieveDate}
-
 </c:if>

@@ -128,13 +128,6 @@
 					<go:log>Writing to: ${zipFilenameWithPath}</go:log>
 					<c:set var="writeSuccess" value="${go:writeToEncZipFile(zipFilenameWithPath, output, internalName, zipPassword)}" />
 				</c:if>
-				<%--
-				WAITING ON PRJAGGH-599
-				<c:if test="${not empty exportHost}">
-					<go:log>Uploading ${zipFilename} to ${exportHost}</go:log>
-					<c:set var="writeSuccess" value="${go:writeToEncZipToSftp(zipFilename, output, internalName, zipPassword, exportHost, exportUsername, exportPassword)}" />
-				</c:if>
-				--%>
 			</c:catch>
 
 			<c:choose>

@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("handover.jsp"));%>
+<c:set var="logger" value="${go:getLogger('handover_jsp')}" />
 
 <session:new verticalCode="CREDITCARD" />
 <core_new:quote_check quoteType="CREDITCARD" />
@@ -25,6 +25,9 @@
 				<c:set var="product" value ="${products[0]}" />
 			</c:if>
 		</c:catch>
+		<if test="${error}">
+			${logger.warn('', error)}
+		</if>
 	</c:when>
 	<c:otherwise>
 		${logger.error('Credit Cards Handover error: No Product Passed. Product Code: {}. Product Result: {}', tmpProductCode, product)}
@@ -43,7 +46,7 @@
 		%>
 	</c:when>
 	<c:when test="${empty product}">
-		${logger.error('Credit Cards Handover error: Product Not Found. Product Code: ${tmpProductCode}. Product Result: ${product}')}
+		${logger.error('Credit Cards Handover error: Product Not Found. Product Code: {}. Product Result: {}', tmpProductCode, product)}
 		<%
 		// Set error code and reason.
 		response.sendError(500, "No Product Found." );

@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${go:getLogger('health_application_jsp')}" />
+
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true"/>
 
 <%-- Load the params into data --%>
@@ -49,8 +51,7 @@
 	<c:otherwise>
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>
-
-<go:log level="INFO" source="health_application_jsp">transactionId : ${tranId} , Product Id : ${productId}</go:log>
+${logger.info('transactionId : {} , Product Id : {}', tranId, productId)}
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -130,7 +131,7 @@
 </c:if>
 		</sql:transaction>
 
-		<go:log level="INFO" source="health_application_jsp" >transactionId : ${tranId} , Fund=${fund}</go:log>
+		${logger.info('transactionId : {} , Fund={}', tranId, fund)}
 
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />
@@ -146,7 +147,7 @@
 						configDbKey="appService"
 						styleCodeId="${pageSettings.getBrandId()}"
 						/>
-				<go:log level="DEBUG">${resultXml}</go:log>
+				${logger.debug('{}', resultXml)}
 		<c:choose>
 					<c:when test="${isValid || continueOnAggregatorValidationError}">
 				<c:if test="${!isValid}">
@@ -215,7 +216,7 @@
 									</c:if>
 								</c:catch>
 								<c:if test="${not empty writeAllowableErrorsException}">
-									<go:log error="${writeAllowableErrorsException}" source="health_application_jsp" level="WARN" />
+									${logger.warn('', writeAllowableErrorsException)}
 									<error:non_fatal_error origin="health_application.jsp"
 											errorMessage="failed to writeAllowableErrors tranId:${tranId} allowedErrors:${allowedErrors}" errorCode="DATABASE" />
 								</c:if>
@@ -237,7 +238,7 @@
 					</x:when>
 					<x:otherwise></x:otherwise>
 				</x:choose>
-						<go:log level="INFO" source="health_application_jsp" >transactionId : ${tranId} , Saved confirmationID: ${confirmationID}</go:log>
+				${logger.info('transactionId : {} , Saved confirmationID: {}', tranId, confirmationID)}
 				<c:set var="confirmationID"><confirmationID><c:out value="${confirmationID}" /></confirmationID></result></c:set>
 				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', confirmationID)}" />
 								${go:XMLtoJSON(resultXml)}
@@ -258,10 +259,7 @@
 								</c:choose>
 			</x:otherwise>
 		</x:choose>
-
-				<go:log source="health_application_jsp" level="DEBUG">transactionId : ${tranId}, ${resultXml}</go:log>
-				<go:log level="DEBUG" source="health_application_jsp">transactionId : ${tranId}, ${debugXml}</go:log>
-
+		${logger.debug('transactionId={}, resultXml={}, debugXml={}', tranId, resultXml, debugXml)}
 			</c:when>
 			<c:otherwise>
 						<c:choose>

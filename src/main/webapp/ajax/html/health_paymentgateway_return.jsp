@@ -1,9 +1,8 @@
-<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
-<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("health_paymentgateway_return_jsp"));%>
+<c:set var="logger" value="${go:getLogger('health_paymentgateway_return_jsp')}" />
 
 <x:parse doc="${config}" var="configXml" />
 

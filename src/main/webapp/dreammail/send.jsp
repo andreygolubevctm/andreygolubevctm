@@ -2,6 +2,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
+<c:set var="logger" value="${go:getLogger('send_jsp')}" />
+
 <c:choose>
 	<c:when test="${not empty param.transactionId}">
 		<session:get settings="true" />
@@ -209,13 +211,13 @@
 								<c:param name="description" value="Email response failure" />
 								<c:param name="data" value="PARAMS: ${param} RESPONSE:${emailResponseXML}" />
 							</c:import>
-							<go:log>Email response failure occured. Did not send</go:log>
+							${logger.info('Email response failure occured. Did not send')}
 						</c:if>
 				</c:otherwise>
 			</c:choose>
 			</c:when>
 			<c:otherwise>
-				<go:log>No content for email - not sending.</go:log>
+				${logger.info('No content for email - not sending.')}
 	</c:otherwise>
 		</c:choose>
 	</c:otherwise>

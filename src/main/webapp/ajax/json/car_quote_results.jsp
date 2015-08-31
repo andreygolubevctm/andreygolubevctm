@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("car_quote_results_jsp"));%>
+<c:set var="logger" value="${go:getLogger('car_quote_results_jsp')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="CAR" />
 
@@ -114,6 +114,7 @@
 
 <%-- If single accessory failed above then simply parse the object rather than iterating over it --%>
 <c:if test="${not empty error}">
+	${logger.warn('' ,error)}
 	<c:set var="accs" value="${accsList}" />
 	<c:set var="accDesc" value=""/>
 	<x:parse doc="${go:getEscapedXml(accs)}" var="accsXML" />

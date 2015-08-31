@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('save_health_confirmation_jsp')}" />
+
 <session:get />
 
 <%--
@@ -138,10 +140,10 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		</c:catch>
 		<c:choose>
 			<c:when test="${empty storeEmailResponse}">
-				<go:log source="save_health_confirmation_jsp">Updated transaction details with record of email provider's confirmation code: ${confirmationCode}</go:log>
+				${logger.info('Updated transaction details with record of email provider\'s confirmation code: {}', confirmationCode)}
 			</c:when>
 			<c:otherwise>
-				<go:log>Failed to Update transaction details with record of confirmation code: ${storeEmailResponse}</go:log>
+				${logger.info('Failed to Update transaction details with record of confirmation code: {}', storeEmailResponse)}
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>

@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("comments_add_jsp"));%>
+<c:set var="logger" value="${go:getLogger('comments_add_jsp')}" />
 
 <session:get authenticated="true" />
 
@@ -43,6 +43,9 @@ ${logger.info('isOperator: {}', isOperator)}
 			<c:set var="rootId">${rootid.rows[0].rootId}</c:set>
 		</c:if>
 	</c:catch>
+	<c:if test="${not empty error}">
+		${logger.error('', error)}
+	</c:if>
 </c:if>
 
 ${logger.info('Add Comment RootId: {}',rootId)}

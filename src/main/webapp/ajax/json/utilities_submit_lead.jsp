@@ -4,7 +4,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
-<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("utilities_submit_lead.jsp"));%>
+<c:set var="logger" value="${go:getLogger('utilities_submit_lead_jsp')}" />
 
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="utilities" />

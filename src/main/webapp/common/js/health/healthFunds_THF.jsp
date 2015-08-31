@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<c:set var="logger" value="${go:getLogger('healthFunds_THF_jsp')}" />
 <session:get settings="true" />
 
 <c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
@@ -11,7 +12,7 @@
 	</c:if>
 	<c:set var="dependentText">${dependentText} to discuss your health cover needs.</c:set>
 </c:if>
-<go:log>pageSettings.getSetting('liveChatEnabled'): ${pageSettings.getSetting('liveChatEnabled')}</go:log>
+${logger.debug('pageSettings.getSetting(\'liveChatEnabled\'): {}', pageSettings.getSetting('liveChatEnabled'))}
 <c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
 <c:set var="content">
 <%--Important use JSP comments as whitespace is being removed--%>

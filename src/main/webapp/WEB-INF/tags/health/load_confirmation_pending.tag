@@ -2,13 +2,15 @@
 <%@ tag description="Load the confirmation page info based on the key passed in the URL"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('verint_rcapi_mute_jsp')}" />
+
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="token"><c:out value="${param.token}" escapeXml="true" /></c:set>
 <c:set var="PendingTranID" value="${fn:substringAfter(token, '-')}" />
 
 <sql:setDataSource dataSource="jdbc/ctm" />
 
-<go:log>Load PendingID:${token}, PendingTranID:${PendingTranID}, CallCentre:${callCentre}</go:log>
+	${logger.info('Load PendingID:{}, PendingTranID:{}, CallCentre:{}' , token, PendingTranID, callCentre)}
 
 	<c:choose>
 		<c:when test="${empty PendingTranID}">
@@ -106,7 +108,7 @@
 
 <c:choose>
 	<c:when test="${not empty errors}">
-		<go:log>Load Pending Errors = ${errors}</go:log>
+		${logger.info('Load Pending Errors = {}', errors)}
 		<c:set var="xmlData">
 			<?xml version="1.0" encoding="UTF-8"?>
 			<data>

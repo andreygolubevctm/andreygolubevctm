@@ -2,6 +2,9 @@
 <%@ tag description="How customer heard about us"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<c:set var="logger" value="${go:getLogger('simples:referral_tracking')}" />
+
 <jsp:useBean id="phoneService" class="com.ctm.services.PhoneService" scope="application" />
 <jsp:useBean id="quoteService" class="com.ctm.services.QuoteService" scope="application" />
 
@@ -21,7 +24,7 @@
 	<%-- If operator has an extension, get their phone call details. --%>
 	<%-- NOTE: This is not ideal, as the phone details should be available from session and not specially pinged at this point. --%>
 	<c:if test="${not empty authenticatedData['login/user/extension']}">
-		<c:catch>
+		<c:catch var="error">
 			<c:set var="callInfo" value="${phoneService.saveCallInfoForTransaction(pageSettings, authenticatedData['login/user/extension'], data.current.transactionId,xpath)}" />
 			<c:if test="${callInfo != null && callInfo.getCallId() != '0'}">
 				<c:set var="callId" value="${callInfo.getCallId()}" />
@@ -32,6 +35,10 @@
 				</c:if>
 			</c:if>
 		</c:catch>
+		<c:if test="${error}">
+			${logger.warn('', error)}
+		</c:if>
+
 	</c:if>
 
 	<%-- add input for call centre when it is inbound call --%>

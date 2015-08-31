@@ -5,7 +5,7 @@
 
 <session:get settings="true" verticalCode="${param.vertical}" />
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
-<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("remote_load_quote.jsp"));%>
+<c:set var="logger" value="${go:getLogger('remote_load_quote.jsp')}" />
 
 <%--
 	load_quote.jsp
