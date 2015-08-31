@@ -156,13 +156,13 @@ public class HealthTransactionDao {
 
 			stmt.executeUpdate();
 		} catch (NamingException | SQLException e) {
-			throw new DaoException("Failed to write health allowable errors. Errors: " + errors , e);
+			throw new DaoException(e);
 		} finally {
 			if(stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					logger.error("Failed to close health transaction db connection", e);
+					logger.error("Failed to close health transaction db connection errors={}", errors, e);
 				}
 			}
 			dbSource.closeConnection();

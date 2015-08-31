@@ -44,8 +44,8 @@ public class BestPriceLeadsDao {
 
 		SimpleDatabaseConnection dbSource = null;
 
-		transactions = new ArrayList<LeadFeedRootTransaction>();
-		leads = new ArrayList<LeadFeedData>();
+		transactions = new ArrayList<>();
+		leads = new ArrayList<>();
 
 		Integer minutes_max = (minutes * 2) + 5; // Add 5 minutes to allow for timing issues with running of cron job
 		Integer minutes_min = minutes;
@@ -168,10 +168,10 @@ public class BestPriceLeadsDao {
 												searching = false;
 											}
 										} else {
-											logger.info("[Lead info] Skipped " + transactionId + " as no optin for call");
+											logger.debug("[Lead info] lead skipped as no optin for call transactionId={} brandCodeId={} verticalCode={} minutes={} serverDate={}", transactionId, brandCodeId, verticalCode, minutes, serverDate);
 										}
 									} else {
-										logger.error("leadInfo field in results properties (for " + transactionId + ") has an invalid number of elements (" + leadConcat.length + ")");
+										logger.error("[Lead info] lead info has invalid number of elements transactionId={} leadConcat.length={} brandCodeId={} verticalCode={} minutes={} serverDate={}", transactionId, leadConcat.length, brandCodeId, verticalCode, minutes, serverDate);
 									}
 								}
 
@@ -183,16 +183,16 @@ public class BestPriceLeadsDao {
 						}
 					}
 				} else {
-					logger.error("Failed to retrieve any active best price lead feed providers for (" + verticalCode + ")");
-					throw new DaoException("Failed to retrieve any active best price lead feed providers for (" + verticalCode + ")");
+					logger.error("Failed to retrieve any active best price lead feed providers verticalCode={} brandCodeId={} minutes={} serverDate={}", verticalCode, brandCodeId, minutes, serverDate);
+					throw new DaoException("Failed to retrieve any active best price lead feed providers verticalCode=" + verticalCode);
 				}
 			} else {
-				logger.error("Failed to retrieve vertical data for id (" + verticalCode + ") for last " + minutes + " minutes");
+				logger.error("Failed to retrieve lead feed verticalCode={} brandCodeId={} minutes={} serverDate={}", verticalCode, brandCodeId, minutes, serverDate);
 				throw new DaoException("Failed to retrieve vertical data for id (" + verticalCode + ")");
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to get lead feed transactions for vertical (" + verticalCode + ") for last " + minutes + " minutes" , e);
-			throw new DaoException(e.getMessage(), e);
+			logger.error("Failed to get lead feed transactions verticalCode={} minutes={}", verticalCode, minutes);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

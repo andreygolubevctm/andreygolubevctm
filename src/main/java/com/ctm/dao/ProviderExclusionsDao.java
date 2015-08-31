@@ -66,12 +66,9 @@ public class ProviderExclusionsDao {
 			}
 
 
-		} catch (SQLException e) {
-			logger.error("Failed to get ctm.stylecode_provider_exclusions for:" + brandId+":"+verticalId , e);
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			logger.error("Failed to get ctm.stylecode_provider_exclusions for:" + brandId+":"+verticalId , e);
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed to retrieve excluded providers brandId={} verticalId={} effectiveDate={}", brandId, verticalId, effectiveDate, e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

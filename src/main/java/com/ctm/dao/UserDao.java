@@ -117,7 +117,7 @@ public class UserDao {
 						}
 					}
 					catch (Exception e) {
-						logger.error("",e);
+						logger.error("Failed to get user list settings={} onlyLoggedInUsers={}", settings, onlyLoggedInUsers, e);
 					}
 				}
 
@@ -126,7 +126,7 @@ public class UserDao {
 
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();

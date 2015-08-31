@@ -219,7 +219,7 @@ public class EmailMasterDao {
 			}
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to write email details", e);
+			logger.error("failed to write email details emailDetails={}", emailDetails, e);
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
@@ -269,7 +269,7 @@ public class EmailMasterDao {
 				writeToEmailProperties(emailDetails, conn);
 			}
 		} catch (NamingException | SQLException e) {
-			logger.error("failed to write to email properties to verticals" , e);
+			logger.error("failed to write to email properties for all verticals emailDetails={}" , emailDetails, e);
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {

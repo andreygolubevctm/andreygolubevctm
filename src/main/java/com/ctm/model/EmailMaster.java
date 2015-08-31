@@ -129,4 +129,20 @@ public class EmailMaster implements Cloneable {
 		emailDetails.setPassword(password);
 		return emailDetails;
 	}
+
+	@Override
+	public String toString() {
+		return "EmailMaster{" +
+				"lastName='" + lastName + '\'' +
+				", firstName='" + firstName + '\'' +
+				", emailId=" + emailId +
+				", emailAddress='" + emailAddress + '\'' +
+				", valid=" + valid +
+				", hashedEmail='" + hashedEmail + '\'' +
+				", marketingOptIn=" + marketingOptIn +
+				", transactionId=" + transactionId +
+				", source='" + source + '\'' +
+				", password='" + password + '\'' +
+				'}';
+	}
 }

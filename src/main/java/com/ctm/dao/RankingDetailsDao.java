@@ -67,11 +67,8 @@ public class RankingDetailsDao {
 					rankingDetail.addProperty(resultSet.getString("Property") , resultSet.getString("Value"));
 				}
 			}
-		} catch (SQLException e) {
-			logger.error("failed to get ranking details" , e);
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			logger.error("failed to get ranking details" , e);
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed to get ranking details by property value transactionId={} property={} value={}", transactionId, property, value, e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			if(dbSource != null) {
@@ -130,11 +127,8 @@ public class RankingDetailsDao {
 					rankingDetail.addProperty(resultSet.getString("Property") , resultSet.getString("Value"));
 				}
 			}
-		} catch (SQLException e) {
-			logger.error("failed to get ranking details" , e);
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			logger.error("failed to get ranking details" , e);
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed to get latest top ranking details transactionId={} numberOfRankingsToReturn={}", transactionId, numberOfRankingsToReturn, e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			if(dbSource != null) {

@@ -100,7 +100,7 @@ public class TransactionDetailsDao {
 					updateTransactionDetails(transactionId, transactionDetailNew);
 				}
 			} catch (DaoException e) {
-				logger.error("",e);
+				logger.error("Transaction details for all request params insert or update failed request.parameterMap={} transactionId={}", request.getParameterMap(), e);
 			}
 		}
 		return true;
@@ -258,8 +258,8 @@ public class TransactionDetailsDao {
 		SimpleDatabaseConnection dbSource = null;
 		Integer maxSequenceNo = 1;
 		try {
-			PreparedStatement stmt;
 			dbSource = new SimpleDatabaseConnection();
+			PreparedStatement stmt;
 
 			stmt = dbSource.getConnection().prepareStatement(
 					"SELECT MAX(sequenceNo) AS `maxSequenceNo`"
@@ -351,14 +351,10 @@ public class TransactionDetailsDao {
 					transactionDetails.add(transactionDetail);
 					transactionDetails.add(transactionDetail);
 				}
-		} catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			throw new DaoException(e);
 		} finally {
-			if(dbSource != null) {
-				dbSource.closeConnection();
-			}
+			dbSource.closeConnection();
 		}
 		return transactionDetails;
 	}
@@ -384,7 +380,7 @@ public class TransactionDetailsDao {
 				updateTransactionDetails(transactionId, transactionDetailNew);
 			}
 		} catch (DaoException e) {
-			logger.error("failed to write transaction details for transactionId: " + transactionId, e);
+			logger.error("Transaction details insert or update failed xpath={} textValue={} transactionId={}", xpath, textValue, transactionId, e);
 		}
 	}
 

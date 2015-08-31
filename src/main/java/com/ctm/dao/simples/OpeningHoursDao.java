@@ -79,8 +79,8 @@ public class OpeningHoursDao {
             }
             return openingHoursList;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed to retrieve Opening Hours", e);
-            throw new DaoException(e.getMessage(), e);
+            logger.error("Failed to retrieve Opening Hours isSpecial={} openingHoursId={}", isSpecial, openingHoursId, e);
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }
@@ -110,7 +110,7 @@ public class OpeningHoursDao {
             dbSource.getConnection().commit();
             return "success";
         } catch (SQLException | NamingException e) {
-            logger.error("Failed to delete Opening Hours", e);
+            logger.error("Failed to delete Opening Hours openingHoursId={} userName={} ipAddress={}", openingHoursId, userName, ipAddress, e);
             rollbackTransaction(dbSource);
             throw new DaoException(e.getMessage(), e);
         } finally {
@@ -168,9 +168,9 @@ public class OpeningHoursDao {
             dbSource.getConnection().commit();
             openingHours = fetchSingleRecOpeningHours(openingHoursId);
         } catch (SQLException | NamingException | ParseException e) {
-            logger.error("Failed to update Opening Hours", e);
+            logger.error("Failed to update Opening Hours openingHoursParams={} userName={} ipAddress={}", openingHoursParams, userName, ipAddress, e);
             rollbackTransaction(dbSource);
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             resetDefaultsAndCloseConnection(dbSource);
         }
@@ -227,9 +227,9 @@ public class OpeningHoursDao {
             dbSource.getConnection().commit();
             openingHours = fetchSingleRecOpeningHours(openingHoursId);
         } catch (SQLException | NamingException | ParseException e) {
-            logger.error("Failed to create Opening Hours", e);
+            logger.error("Failed to create Opening Hours openingHoursParams={} userName={} ipAddress={}", openingHoursParams, userName, ipAddress, e);
             rollbackTransaction(dbSource);
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             resetDefaultsAndCloseConnection(dbSource);
         }
@@ -289,8 +289,8 @@ public class OpeningHoursDao {
             }
             return mapOpeningHoursDetails;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed to delete Opening Hours", e);
-            throw new DaoException(e.getMessage(), e);
+            logger.error("Failed to get opening hours for display verticalId={} effectiveDate={} isSpecial={}", verticalId, effectiveDate, isSpecial, e);
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }
@@ -341,8 +341,8 @@ public class OpeningHoursDao {
             }
             return openingHours;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed while getting Opening Hours For Website display", e);
-            throw new DaoException(e.getMessage(), e);
+            logger.error("Failed while getting opening hours for display dayDescription={} effectiveDate={} verticalId={}", e);
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }
@@ -434,8 +434,8 @@ public class OpeningHoursDao {
             }
             return openingHoursList;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed while executing getCurrentNormalOpeningHoursForEmail()", e);
-            throw new DaoException(e.getMessage(), e);
+            logger.error("Failed while executing getting current normal opening hours for email verticalId={} effectiveDate={}", e);
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }
@@ -462,10 +462,10 @@ public class OpeningHoursDao {
      */
     private void rollbackTransaction(SimpleDatabaseConnection dbSource) throws DaoException {
         try {
-            logger.error("Transaction is being rolled back");
+            logger.debug("Transaction is being rolled back");
             dbSource.getConnection().rollback();
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
     }
 
@@ -480,7 +480,7 @@ public class OpeningHoursDao {
             dbSource.getConnection().commit();
             dbSource.getConnection().setAutoCommit(autoCommit);
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
         dbSource.closeConnection();
     }
@@ -541,8 +541,8 @@ public class OpeningHoursDao {
             }
             return openingHoursList;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed while getting Opening Hours For Website display", e);
-            throw new DaoException(e.getMessage(), e);
+            logger.error("Failed finding clashing hours count openingHours={}", e);
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }

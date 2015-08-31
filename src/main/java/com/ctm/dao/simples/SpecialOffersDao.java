@@ -85,8 +85,8 @@ public class SpecialOffersDao {
             }
             return specialOffersList;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed to retrieve Special Offers", e);
-            throw new DaoException(e.getMessage(), e);
+            logger.error("Failed to retrieve Special Offers offerId={}", offerId, e);
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }
@@ -122,8 +122,8 @@ public class SpecialOffersDao {
             }
             return specialOffersList;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed to retrieve Special Offers", e);
-            throw new DaoException(e.getMessage(), e);
+            logger.error("Failed to retrieve Special Offers providerId={} styleCodeId={} applicationDate={} state={} verticalId={}", providerId, styleCodeId, applicationDate, state, verticalId, e);
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }
@@ -162,9 +162,9 @@ public class SpecialOffersDao {
             dbSource.getConnection().commit();
             return "success";
         } catch (SQLException | NamingException | ParseException e) {
-            logger.error("Failed to delete Special Offers", e);
+            logger.error("Failed to delete Special Offers offerId={} serverDate={} userName={} ipAddress={}", offerId, serverDate, userName, ipAddress, e);
             rollbackTransaction(dbSource);
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             resetDefaultsAndCloseConnection(dbSource);
         }
@@ -214,9 +214,9 @@ public class SpecialOffersDao {
             dbSource.getConnection().commit();
             specialOffers = fetchSingleRecSpecialOffers(offerId);
         } catch (SQLException | NamingException | ParseException e) {
-            logger.error("Failed to update Special Offers", e);
+            logger.error("Failed to update Special Offers specialOffersParams={} userName={} ipAddress={}", specialOffersParams, userName, ipAddress, e);
             rollbackTransaction(dbSource);
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             resetDefaultsAndCloseConnection(dbSource);
         }
@@ -271,9 +271,9 @@ public class SpecialOffersDao {
             dbSource.getConnection().commit();
             specialOffers = fetchSingleRecSpecialOffers(offerId);
         } catch (SQLException | NamingException | ParseException e) {
-            logger.error("Failed to create Special Offers", e);
+            logger.error("Failed to create Special Offers specialOffersParams={} userName={} ipAddress={}", specialOffersParams, userName, ipAddress, e);
             rollbackTransaction(dbSource);
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             resetDefaultsAndCloseConnection(dbSource);
         }

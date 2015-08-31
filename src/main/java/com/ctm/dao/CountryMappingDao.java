@@ -75,7 +75,7 @@ public class CountryMappingDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed getting country mapping for selectedCountries=", selectedCountries, e);
+			logger.error("failed getting country mapping for selectedCountries={}", selectedCountries, e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
