@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${go:getLogger('life_contact_lead_jsp')}" />
+
 <c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
@@ -13,8 +15,7 @@
 <c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
 <c:choose>
 	<c:when test="${lifeService.isValid() and not empty proceedinator and proceedinator > 0}">
-		<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
-
+		${logger.debug('PROCEEDINATOR PASSED proceedinator={}' , proceedinator)}
 		<c:choose>
 			<c:when test="${param.softLead eq 'true'}">
 				<core:transaction touch="CDC" noResponse="true" />
@@ -43,10 +44,7 @@
 				<%-- Add the results to the current session data --%>
 				<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-		
-				<go:log level="DEBUG" source="life_contact_lead">${resultXml}</go:log>
-				<go:log level="DEBUG" source="life_contact_lead">${debugXml}</go:log>
-		
+				${logger.debug('resultXml={} debugXml={}' , resultXml, debugXml)}
 				<%-- Save client data --%>
 				<c:set var="clientRef">${data["soap-response/results/client/reference"]}</c:set>
 				<c:if test="${not empty clientRef}">

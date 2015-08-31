@@ -95,6 +95,9 @@ public class JspLogger {
         logger.warn( format,  arg1,  arg2,  arg3, arg4);
     }
 
+    public void warn(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5) {
+        logger.warn( format,  arg1,  arg2,  arg3, arg4, arg5);
+    }
 
     public void warn(String format, Object arg1, Object arg2) {
         logger.warn( format,  arg1,  arg2);

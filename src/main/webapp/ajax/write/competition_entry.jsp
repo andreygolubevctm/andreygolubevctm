@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('competition_entry_jsp')}" />
+
 <session:get settings="true" />
 
 <security:populateDataFromParams rootPath="competition" />
@@ -190,11 +192,11 @@
 
 		</c:when>
 		<c:when test="${empty error and (empty emailMaster or emailMaster.rowCount == 0)}">
-			<go:log level="ERROR">Failed to locate emailId for ${data['competition/email']}</go:log>
+			${logger.error('Failed to locate emailId for competition/email={}}', data['competition/email'])}
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'}" />
 		</c:when>
 		<c:otherwise>
-			<go:log level="ERROR" error="${error}">Database Error2: ${error}</go:log>
+			${logger.error('Database Error2: error={}', error)}
 			<c:set var="errorPool" value="{error:'${error}'}" />
 		</c:otherwise>
 	</c:choose>
@@ -203,7 +205,7 @@
 <%-- JSON RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log source="competition_entry_jsp">ENTRY ERRORS: ${errorPool}</go:log>
+		${logger.info('ENTRY ERRORS: errorPool={}', errorPool)}
 		{[${errorPool}]}
 
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">

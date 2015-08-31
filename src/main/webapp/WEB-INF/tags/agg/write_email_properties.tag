@@ -2,6 +2,9 @@
 <%@ tag description="Stamp an action in the database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+
+<c:set var="logger" value="${go:getLogger('agg:write_email_properties')}" />
+
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="brand">${pageSettings.getBrandCode()}</c:set>
 
@@ -53,13 +56,7 @@
 					<sql:param value="${propertyId}" />
 					<sql:param value="${brand}" />
 				</sql:query>
-
-				<go:log level="INFO" source="agg:write_email_properties">
-					propertyId value="${propertyId}" />
-					emailId value="${emailId}" />
-					brand value="${brand}" />
-				</go:log>
-
+				${logger.info('propertyId={} emailId={} brand={}' , propertyId, emailId, brand)}
 				<c:choose>
 					<c:when test="${results.rowCount > 0}">${true}</c:when>
 					<c:otherwise>${false}</c:otherwise>

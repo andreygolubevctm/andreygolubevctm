@@ -2,9 +2,9 @@
 <%@ tag description="Wrapper for all transaction touching and quote writes." %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${go:getLogger('core:transaction')}" />
+
 <core_new:no_cache_header/>
-
-
 
 <%@ attribute name="touch" 				required="true"		description="Touch type (single character) e.g. N, R" %>
 <%@ attribute name="comment"			required="false"	description="If this is a fail touch (F), optional comment/error message can be specified" %>
@@ -84,14 +84,14 @@
 </c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">
-		<go:log level="ERROR" source="core:transaction">Touch type is invalid or unsupported: "${touch}"</go:log>
+		${logger.error('Touch type is invalid or unsupported: "{}"', touch)}
 		<c:set var="response" value="T" />
 		<c:set var="write_quote" value="N" />
 		<c:set var="touch" value="" /><%-- unset --%>
 	</c:when>
 
 	<c:when test="${empty vertical}">
-		<go:log level="ERROR" source="core:transaction">Vertical setting can not be empty</go:log>
+		${logger.error('Vertical setting can not be empty')}
 		<c:set var="response" value="V" />
 		<c:set var="write_quote" value="N" />
 		<c:set var="touch" value="" /><%-- unset --%>
@@ -144,12 +144,7 @@
 			<c:set var="ignore" value="${touchService.recordTouchWithProductCode(transactionId, touch , operator, productId)}" />
 		</c:catch>
 		<c:if test="${not empty error}">
-			<go:log level="ERROR">
-				Failed to record touch
-				touch: ${touch}
-				productId: ${productId}
-				error: ${error}
-			</go:log>
+			${logger.error('Failed to record touch touch={} productId={} error={}', touch , productId, error)}
 		</c:if>
 	</c:when>
 	<c:otherwise>
@@ -165,9 +160,7 @@
 			<sql:param value="${operator}" />
 			<sql:param value="${type}" />
 		</sql:update>
-
-		<go:log source="core:transaction" >Record touch: ${touch}</go:log>
-
+		${logger.info('Record touch: {}',touch)}
 		<%-- SUBMIT FAIL: add error to comments table --%>
 		<c:if test="${touch != 'H' and not empty comment}">
 			<c:catch var="error">
@@ -205,13 +198,13 @@
 			<c:when test="${confirmationQuery.rows[0]['editable'] == 'F' and operator == 'ONLINE'}">
 			<c:set var="write_quote" value="N" />
 				<c:set var="response" value="F" />
-				<go:log source="core:transaction" >WRITE QUOTE NO: Transaction is failed/pending.</go:log>
+				${logger.info('WRITE QUOTE NO: Transaction is failed/pending.')}
 			</c:when>
 
 			<c:when test="${confirmationQuery.rows[0]['editable'] == 'C'}">
 				<c:set var="write_quote" value="N" />
 			<c:set var="response" value="C" />
-				<go:log source="core:transaction">WRITE QUOTE NO: Transaction is already confirmed.</go:log>
+				${logger.info('WRITE QUOTE NO: Transaction is already confirmed.')}
 			</c:when>
 		</c:choose>
 		</c:if>
@@ -232,7 +225,7 @@
 		<%-- This is a hidden field at the end of the form:form tag. It ensures that we've collected the form contents. --%>
 		<c:when test="${param.transcheck != '1'}">
 			<c:out value="N" />
-			<go:log source="core:transaction">WRITE QUOTE NO, transcheck form element missing (touch: ${touch})</go:log>
+			${logger.info('WRITE QUOTE NO, transcheck form element missing (touch: {})', touch)}
 		</c:when>
 
 		<c:otherwise>Y</c:otherwise>
@@ -243,7 +236,9 @@
 <c:if test="${touch eq 'R'}">
 	<jsp:useBean id="trackingKeyService" class="com.ctm.services.tracking.TrackingKeyService" scope="request" />
 	<c:catch var="trackingKeyError">
-		<go:log source="core:transaction">trackingKey: ${trackingKeyService.generate(pageContext.getRequest(), data.current.transactionId)}</go:log>
+		<c:set var="ignore">
+			${trackingKeyService.generate(pageContext.getRequest(), data.current.transactionId)}
+		</c:set>
 	</c:catch>
 </c:if>
 
@@ -253,7 +248,7 @@
 
 		<%-- WRITE QUOTE ................................................................. --%>
 		<c:set var="response">${response}<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="${comment}" /></c:set>
-		<go:log source="core:transaction" >WRITE QUOTE YES</go:log>
+		${logger.info('WRITE QUOTE YES')}
 
 		<c:choose>
 			<c:when test="${vertical eq 'car'}">
