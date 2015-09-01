@@ -11,8 +11,8 @@ var concat = require('gulp-concat'),
 // TODO: Add .map files
 // TODO: Build .tpl file which includes references to <script src=""></script> for each individual file
 
-function BuildJSTasks(gulp, bundles) {
-    var taskPrefix = "build_js_",
+function JSTasks(gulp, bundles) {
+    var taskPrefix = "js:",
         targetDirectory = gulp.pipelineConfig.target.dir + "/js";
 
     var bundleTasks = [];
@@ -33,8 +33,8 @@ function BuildJSTasks(gulp, bundles) {
     for(var bundle in bundles.collection) {
         (function(bundle) {
             var bundleTask = taskPrefix + bundle,
-                bundleTaskOnLoad = bundleTask + "_onload",
-                bundleTaskAsync = bundleTask + "_async";
+                bundleTaskOnLoad = bundleTask + ":onload",
+                bundleTaskAsync = bundleTask + ":async";
 
             // Tasks to be run on watch of bundle file change
             var watchTasks = [];
@@ -97,9 +97,7 @@ function BuildJSTasks(gulp, bundles) {
     }
 
     // Run it!
-    gulp.task("build_js", function() {
-        gulp.start(bundleTasks);
-    });
+    gulp.task("js", bundleTasks);
 }
 
-module.exports = BuildJSTasks;
+module.exports = JSTasks;

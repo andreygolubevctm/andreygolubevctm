@@ -1,0 +1,52 @@
+#confirmation-compare-options {
+	.options-list > div {
+		min-height: 180px;
+	}
+	@media print {
+		display: none !important;
+	}
+}
+
+#confirmation-compare-options a {
+	display:inline-block;
+	width:100%;
+	font-family:@font-family-theme-bold, @font-family-sans-serif;
+	color:@text-color;
+	font-size:@font-size-h2;
+	text-align:center;
+	text-decoration:none;
+	text-transform:uppercase;
+	zoom:1;
+	margin-bottom:15px;
+
+	span {
+		display:block;
+		font-size:@font-size-base;
+	}
+
+	.icon {
+	background-color: @related-icon-bg-color;
+	color: @related-icon-color;
+	width: 96px;
+	height: 96px;
+	border-radius: 96px;
+	padding: 8px;
+	font-size: 48px;
+	line-height: 82px;
+	margin: 0 auto;
+	display:block;
+	}
+
+	&[href]:after {
+		content: "";
+	}
+	&:hover {
+		color: @headings-color;
+
+		.icon {
+			color: @related-icon-color;
+			background-color: @related-icon-active-bg-color;
+		}
+
+	}
+}

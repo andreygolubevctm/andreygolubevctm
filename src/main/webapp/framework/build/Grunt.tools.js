@@ -148,6 +148,7 @@ module.exports = function(grunt,rootOverride){
 
 			var pathObj = {};
 			pathObj['' + this.getBrandFile(brand,fileType1,sourceOrDest1,vertical)] = ['' + this.getBrandFile(brand,fileType2,sourceOrDest2,vertical)];
+			console.log(pathObj);
 			//grunt.log.writeflags(pathObj);
 			return pathObj;
 		}

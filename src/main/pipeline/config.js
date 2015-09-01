@@ -1,18 +1,24 @@
 "use strict";
 
 module.exports = {
+    pipeline: {
+        dir: __dirname
+    },
     tasks: {
-        dir: "./tasks",
+        dir: __dirname + "/tasks",
         entryPoint: "gulpfile.js"
     },
     brandFiles: {
-        dir: "./../brand"
+        dir: __dirname + "/../webapp/brand"
     },
     bundles: {
-        dir: "./../webapp/bundles",
+        dir: __dirname + "/../webapp/bundles",
         entryPoint: "bundle.json"
     },
+    bootstrap: {
+        dir: __dirname + "/../webapp/framework/bootstrap"
+    },
     target: {
-        dir: "./../webapp/assets"
+        dir: __dirname + "/../webapp/assets"
     }
 };
