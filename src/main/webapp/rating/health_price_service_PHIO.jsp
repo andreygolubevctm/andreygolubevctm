@@ -1,7 +1,9 @@
-<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/xml; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<c:set var="logger" value="${go:getLogger('jsp:rating.health_price_service')}" />
+
 <jsp:useBean id="resultsList" class="java.util.ArrayList" scope="request" />
 <jsp:useBean id="healthPriceService" class="com.ctm.services.health.HealthPriceService" scope="page" />
 <jsp:useBean id="healthPriceResultsService" class="com.ctm.services.health.HealthPriceResultsService" scope="page" />
@@ -82,8 +84,7 @@ ${healthPriceService.getHealthPriceRequest().setIsSimples(isSimples)}
 ${healthPriceService.setShowAll(showAll)}
 ${healthPriceService.setApplicationDate(applicationDate)}
 ${healthPriceService.setup()}
-
-<go:log source="health_price_service_PHIO_jsp" level="DEBUG">QuoteData: ${param.QuoteData}</go:log>
+${logger.debug('QuoteData={}', param.QuoteData)}
 
 			<c:choose>
 	<c:when test="${showAll}">
