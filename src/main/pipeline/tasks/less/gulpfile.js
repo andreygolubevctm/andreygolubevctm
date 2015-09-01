@@ -6,12 +6,16 @@
 
 var less = require("gulp-less"),
     intercept = require("gulp-intercept"),
-    concat = require('gulp-concat'),
+    concat = require("gulp-concat"),
+    minifyCSS = require("gulp-minify-css"),
+    rename = require("gulp-rename"),
     path = require("path");
 
 function LessTasks(gulp, bundles) {
     var taskPrefix = "less:",
         lessTasks = [];
+
+    var targetDir = gulp.pipelineConfig.target.dir + "/css";
 
     for(var bundle in bundles.collection) {
         if(bundle !== "core") {
@@ -27,13 +31,23 @@ function LessTasks(gulp, bundles) {
                             brandCodeBundleSrcPath = path.join(gulp.pipelineConfig.brand.dir, brandCode, "less", "framework.build." + bundle + "." + brandCode + ".less");
 
                         gulp.task(brandCodeTask, function () {
+                            var fileName = bundle + "." + brandCode;
+
                             return gulp.src([
                                     brandCodeSrcPath,
                                     brandCodeBundleSrcPath
                                 ])
-                                .pipe(less({paths: [gulp.pipelineConfig.build.dir]}))
-                                .pipe(concat(bundle + "." + brandCode + ".css"))
-                                .pipe(gulp.dest(gulp.pipelineConfig.target.dir + "/css"));
+                                .pipe(less({
+                                    paths: [gulp.pipelineConfig.build.dir]
+                                }))
+                                .pipe(concat(fileName + ".css"))
+                                .pipe(gulp.dest(targetDir))
+                                .pipe(minifyCSS({
+                                    advanced: true,
+                                    aggressiveMerging: true
+                                }))
+                                .pipe(rename(fileName + ".min.css"))
+                                .pipe(gulp.dest(targetDir));
                         });
 
                         lessTasks.push(brandCodeTask);
@@ -44,7 +58,6 @@ function LessTasks(gulp, bundles) {
     }
 
     gulp.task("less", lessTasks);
-
 };
 
 module.exports = LessTasks;
