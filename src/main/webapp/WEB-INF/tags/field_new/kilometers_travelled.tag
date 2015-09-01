@@ -32,4 +32,4 @@
     </c:if>
 </c:set>
 
-<field_new:input type="text" xpath="${xpath}" required="${required}" className="numeric ${className}" maxlength="${maxLength}" title="${title}" pattern="[0-9]*" placeHolder="${placeHolder}" formattedInteger="true" additionalAttributes="${additionalAttributes}" />
+<field_new:input type="${inputType}" xpath="${xpath}" required="${required}" className="numeric ${className}" maxlength="${maxLength}" title="${title}" pattern="[0-9]*" placeHolder="${placeHolder}" formattedInteger="true" additionalAttributes="${additionalAttributes}" />
