@@ -65,7 +65,20 @@
 	<%-- Disable session_pop on new journeys --%>
 	<c:set var="sessionPop" value="${false}" />
 
-	<link rel="stylesheet" href="${assetUrl}assets/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}.min.css?${revision}" media="all">
+	<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+	<c:choose>
+		<c:when test="${pageSettings.getVerticalCode() == 'generic'}">
+		</c:when>
+		<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
+		<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">
+			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/lmi.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		</c:when>
+		<%-- END HACK FOR LMI --%>
+		<c:otherwise>
+			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		</c:otherwise>
+	</c:choose>
 
 		<%--  Modernizr --%>
 		<script src='${assetUrl}framework/lib/js/modernizr-2.8.3.min.js'></script>
