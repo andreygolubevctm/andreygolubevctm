@@ -40,7 +40,7 @@
     }
 
     function hasAggregationService(){
-        if(meerkat.site.vertical === 'travel' || meerkat.site.vertical === 'car'){
+        if(meerkat.site.vertical === 'travel' || meerkat.site.vertical === 'car' || meerkat.site.vertical === 'home'){
             return true;
         }
         return false;
@@ -89,7 +89,13 @@
                         var obj = resultData.NXI[i];
 
                         // Add any travel-quote branch to the list (except for the default if viewing this on NXI)
-                        var verticalQuoteAppPath = "/"+meerkat.site.vertical+"-quote";
+
+                        var vertical = meerkat.site.vertical;
+                        if (vertical === 'home') {
+                            vertical = 'homecontents';
+                        }
+
+                        var verticalQuoteAppPath = "/"+ vertical +"-quote";
                         if(obj.context.indexOf(verticalQuoteAppPath) !== -1 && (obj.context === verticalQuoteAppPath && meerkat.site.environment === 'nxi') === false){
 
                             var val = aggregationBaseUrl+obj.context;

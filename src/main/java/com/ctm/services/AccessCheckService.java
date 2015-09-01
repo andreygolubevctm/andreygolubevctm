@@ -61,7 +61,7 @@ public class AccessCheckService {
                     createOrUpdateTransactionLock(transactionId, operatorId);
                 }
             } catch (DaoException e) {
-                logger.error("{}",e);
+                logger.error("",e);
             }
         }
         return isLocked;

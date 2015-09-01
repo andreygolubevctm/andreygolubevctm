@@ -59,7 +59,7 @@ public class ContextFinalizer implements ServletContextListener {
 			AddressSearchService.init();
 		}
 		catch (Exception e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 
 	}
@@ -85,7 +85,7 @@ public class ContextFinalizer implements ServletContextListener {
 		try {
 			AbandonedConnectionCleanupThread.shutdown();
 		} catch (InterruptedException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 
 

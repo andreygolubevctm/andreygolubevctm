@@ -99,7 +99,7 @@ public class IncomingEmailService {
 				redirectionUrl.append(pageSettings.getSetting("exitUrl"));
 			}
 		} catch (DaoException | EnvironmentException | VerticalException | ConfigSettingException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 
 		return redirectionUrl.toString();
@@ -145,7 +145,7 @@ public class IncomingEmailService {
 			expiresCal.setTime(expires);
 			expired = expiresCal.compareTo(todayCal) >= 0;
 		} catch (ParseException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 		return expired;
 	}

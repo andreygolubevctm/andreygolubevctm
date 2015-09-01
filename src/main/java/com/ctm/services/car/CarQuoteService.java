@@ -1,28 +1,23 @@
 package com.ctm.services.car;
 
 import com.ctm.connectivity.SimpleConnection;
-import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
-import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.exceptions.ServiceException;
+import com.ctm.model.QuoteServiceProperties;
 import com.ctm.model.car.form.CarQuote;
 import com.ctm.model.car.form.CarRequest;
 import com.ctm.model.car.results.CarResult;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.resultsData.AvailableType;
-import com.ctm.model.settings.*;
+import com.ctm.model.settings.Brand;
 import com.ctm.providers.Request;
 import com.ctm.providers.ResultPropertiesBuilder;
 import com.ctm.providers.car.carquote.model.RequestAdapter;
 import com.ctm.providers.car.carquote.model.ResponseAdapter;
 import com.ctm.providers.car.carquote.model.request.CarQuoteRequest;
 import com.ctm.providers.car.carquote.model.response.CarResponse;
-import com.ctm.services.EnvironmentService;
+import com.ctm.services.CommonQuoteService;
 import com.ctm.services.ResultsService;
-import com.ctm.services.ServiceConfigurationService;
 import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.web.validation.FormValidation;
-import com.ctm.web.validation.SchemaValidationError;
 import com.ctm.xml.XMLOutputWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -37,22 +32,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.model.settings.Vertical.VerticalType.CAR;
 import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
 
-public class CarQuoteService {
+public class CarQuoteService extends CommonQuoteService<CarQuote> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CarQuoteService.class);
-
-    public static final String SERVICE_URL = "serviceUrl";
-    public static final String TIMEOUT_MILLIS = "timeoutMillis";
-    public static final String DEBUG_PATH = "debugPath";
-    private boolean valid = false;
-
-    public List<SchemaValidationError> validateRequest(CarRequest data, String vertical) {
-        List<SchemaValidationError> errors = FormValidation.validate(data.getQuote(), vertical);
-        valid = errors.isEmpty();
-        return errors;
-    }
 
     public List<CarResult> getQuotes(Brand brand, CarRequest data) {
 
@@ -87,42 +72,24 @@ public class CarQuoteService {
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         // Get URL of car-quote service
-        String serviceUrl = null;
-        String debugPath = null;
-        int timeout = 30;
-        try {
-            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("carQuoteServiceBER", brand.getVerticalByCode(Vertical.VerticalType.CAR.getCode()).getId(), brand.getId());
-            serviceUrl = serviceConfig.getPropertyValueByKey(SERVICE_URL, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
-            debugPath = serviceConfig.getPropertyValueByKey(DEBUG_PATH, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
-            timeout = Integer.parseInt(serviceConfig.getPropertyValueByKey(TIMEOUT_MILLIS, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE));
-        }catch (DaoException | ServiceConfigurationException e ){
-            throw new ServiceException("CarQuote config error", e);
-        }
-
-        EnvironmentService environmentService = new EnvironmentService();
-
-        if(environmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST || environmentService.getEnvironment() == EnvironmentService.Environment.NXI){
-            if(data.getEnvironmentOverride() != null && data.getEnvironmentOverride().equals("") == false) {
-                serviceUrl = data.getEnvironmentOverride();
-            }
-        }
+        QuoteServiceProperties serviceProperties = getQuoteServiceProperties("carQuoteServiceBER", brand, CAR.getCode(), data);
 
         try{
 
             String jsonRequest = objectMapper.writeValueAsString(request);
 
             // Log Request
-            XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_CAR-QUOTE" , debugPath);
+            XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_CAR-QUOTE" , serviceProperties.getDebugPath());
             writer.writeXmlToFile(jsonRequest , REQ_OUT);
 
             SimpleConnection connection = new SimpleConnection();
             connection.setRequestMethod("POST");
-            connection.setConnectTimeout(timeout);
-            connection.setReadTimeout(timeout);
+            connection.setConnectTimeout(serviceProperties.getTimeout());
+            connection.setReadTimeout(serviceProperties.getTimeout());
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
-            String response = connection.get(serviceUrl+"/quote");
+            String response = connection.get(serviceProperties.getServiceUrl()+"/quote");
             CarResponse carResponse = objectMapper.readValue(response, CarResponse.class);
 
             // Log response
