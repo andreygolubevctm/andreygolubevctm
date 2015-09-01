@@ -49,13 +49,15 @@
 	</c:set>
 
 	<c:set var="checkboxRule">
-		data-rule-required='true' data-msg-required='${errorMsg}'
+		data-msg-required='${errorMsg}'
 	</c:set>
+
+	<c:set var="requiredAttr" value=" required " />
 </c:if>
 
 <%-- HTML --%>
 <div class="checkbox">
-	<input type="checkbox" name="${name}" id="${id}" class="checkbox-custom ${className}" value="${value}"${checked} ${customAttribute} ${checkboxRule}>
+	<input type="checkbox" name="${name}" id="${id}" class="checkbox-custom ${className}" value="${value}"${checked} ${customAttribute} ${requiredAttr} ${checkboxRule}>
 
 	<label for="${id}">
 		<c:if test="${label!=null && not empty label}">${title}</c:if>

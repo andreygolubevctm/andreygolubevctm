@@ -28,7 +28,7 @@
 
 <c:set var="isRequired">
 	<c:if test="${required eq true}">
-	data-rule-required='true'  data-msg-required='Please enter ${fn:escapeXml(title)} date of birth'
+		data-msg-required='Please enter ${fn:escapeXml(title)} date of birth'
 	</c:if>
 </c:set>
 <c:set var="youngestDOB">
