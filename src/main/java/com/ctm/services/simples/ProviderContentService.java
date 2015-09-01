@@ -1,11 +1,11 @@
 package com.ctm.services.simples;
 
-import com.ctm.dao.simples.FundWarningDao;
+import com.ctm.dao.simples.ProviderContentDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.CrudValidationException;
 import com.ctm.exceptions.DaoException;
-import com.ctm.helper.simples.FundWarningHelper;
-import com.ctm.model.FundWarningMessage;
+import com.ctm.helper.simples.ProviderContentHelper;
+import com.ctm.model.ProviderContent;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.SessionDataService;
@@ -16,40 +16,35 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
-public class FundWarningService implements CrudService{
+public class ProviderContentService implements CrudService{
 
-    private final FundWarningDao fundWarningDao = new FundWarningDao();
-    private final FundWarningHelper fundWarningHelper = new FundWarningHelper();
+    private final ProviderContentDao providerContentDao = new ProviderContentDao();
+    private final ProviderContentHelper providerContentHelper = new ProviderContentHelper();
 
-    public FundWarningService() {
+    public ProviderContentService() {
     }
 
-    public String getFundWarningMessage(HttpServletRequest request) throws DaoException, ConfigSettingException {
+    public String getProviderContentText(HttpServletRequest request) throws DaoException, ConfigSettingException {
         int providerId = Integer.parseInt(request.getParameter("providerId"));
+        String providerContentTypeCode = request.getParameter("providerContentTypeCode");
         Date currDate = ApplicationService.getApplicationDate(request);
-        return fundWarningDao.getFundWarningMessage(providerId, "HEALTH", currDate);
+        return providerContentDao.getProviderContentText(providerId, providerContentTypeCode, "HEALTH", currDate);
     }
 
     @Override
-    public List<?> getAll() throws DaoException {
-        try {
-            List<FundWarningMessage> fundWarningMessage;
-            fundWarningMessage = fundWarningDao.fetchFundWarningMessage(0);
-            return fundWarningMessage;
-        } catch (DaoException d) {
-            throw new RuntimeException(d);
-        }
+    public List<?> getAll(HttpServletRequest request) throws DaoException {
+        return providerContentDao.fetchProviderContents(request.getParameter("providerContentTypeCode"));
     }
 
     @Override
     public Object update(HttpServletRequest request) throws DaoException, CrudValidationException {
         try {
-            FundWarningMessage fundWarningMessage = RequestUtils.createObjectFromRequest(request, new FundWarningMessage());
-            fundWarningHelper.validate(fundWarningMessage);
-            fundWarningMessage = RequestUtils.createObjectFromRequest(request, fundWarningMessage);
+            ProviderContent providerContent = RequestUtils.createObjectFromRequest(request, new ProviderContent());
+            providerContentHelper.validate(providerContent);
+            providerContent = RequestUtils.createObjectFromRequest(request, providerContent);
             final String userName = getAuthenticatedData(request).getUid();
             final String ipAddress = request.getRemoteAddr();
-            return fundWarningDao.updateFundWarningMessage(fundWarningMessage, userName, ipAddress);
+            return providerContentDao.updateProviderContent(providerContent, userName, ipAddress);
         } catch (DaoException d) {
             throw new RuntimeException(d);
         }
@@ -58,12 +53,12 @@ public class FundWarningService implements CrudService{
     @Override
     public Object create(HttpServletRequest request) throws DaoException, CrudValidationException {
         try {
-            FundWarningMessage fundWarningMessage = RequestUtils.createObjectFromRequest(request, new FundWarningMessage());
-            fundWarningHelper.validate(fundWarningMessage);
-            fundWarningMessage = RequestUtils.createObjectFromRequest(request, fundWarningMessage);
+            ProviderContent providerContent = RequestUtils.createObjectFromRequest(request, new ProviderContent());
+            providerContentHelper.validate(providerContent);
+            providerContent = RequestUtils.createObjectFromRequest(request, providerContent);
             final String userName = getAuthenticatedData(request).getUid();
             final String ipAddress = request.getRemoteAddr();
-            return fundWarningDao.createFundWarningMessage(fundWarningMessage, userName, ipAddress);
+            return providerContentDao.createProviderContent(providerContent, userName, ipAddress);
         } catch (DaoException d) {
             throw new RuntimeException(d);
         }
@@ -74,7 +69,7 @@ public class FundWarningService implements CrudService{
         try {
             final String userName = getAuthenticatedData(request).getUid();
             final String ipAddress = request.getRemoteAddr();
-            return fundWarningDao.deleteFundWarningMessage(Integer.parseInt(request.getParameter("messageId")), userName, ipAddress);
+            return providerContentDao.deleteProviderContent(Integer.parseInt(request.getParameter("providerContentId")), userName, ipAddress);
         } catch (DaoException d) {
             throw new RuntimeException(d);
         }
@@ -83,9 +78,9 @@ public class FundWarningService implements CrudService{
     @Override
     public Object get(HttpServletRequest request) throws DaoException, CrudValidationException {
         try {
-            if(request.getParameter("messageId")==null)
+            if(request.getParameter("providerContentId")==null)
                 return null;
-            return fundWarningDao.fetchSingleRecFundWarningMessage(Integer.parseInt(request.getParameter("messageId")));
+            return providerContentDao.fetchSingleProviderContent(Integer.parseInt(request.getParameter("providerContentId")));
         } catch (DaoException d) {
             throw new RuntimeException(d);
         }

@@ -2,7 +2,7 @@ package com.ctm.router;
 
 import com.ctm.dao.simples.CappingLimitsDao;
 import com.ctm.router.core.CrudRouter;
-import com.ctm.services.simples.FundWarningService;
+import com.ctm.services.simples.ProviderContentService;
 import com.ctm.services.simples.admin.CappingLimitsService;
 import com.ctm.services.simples.admin.CrudService;
 import org.apache.log4j.Logger;
@@ -25,7 +25,7 @@ public class AdminRouter {
     CrudService crudService = null;
     //mention your Interface name here that has been used in CMS URL
     private static final String CAPPING_LIMIT = "cappingLimits";
-    private static final String FUND_WARNING = "fundwarning";
+    private static final String PROVIDER_CONTENT = "providerContent";
 
     public AdminRouter(HttpServletRequest request , HttpServletResponse response) {
         this.response= response;
@@ -45,8 +45,8 @@ public class AdminRouter {
                         crudService = new CappingLimitsService(new CappingLimitsDao());
                         crudRouter.routePostRequest(writer, getAction(uri), crudService);
                         break;
-                case FUND_WARNING :
-                        crudService = new FundWarningService();
+                case PROVIDER_CONTENT:
+                        crudService = new ProviderContentService();
                         crudRouter.routePostRequest(writer, getAction(uri), crudService);
                         break;
                 default:
@@ -71,8 +71,8 @@ public class AdminRouter {
                     crudService = new CappingLimitsService(new CappingLimitsDao());
                     crudRouter.routGetRequest(writer, getAction(uri), crudService);
                     break;
-                case FUND_WARNING :
-                    crudService = new FundWarningService();
+                case PROVIDER_CONTENT:
+                    crudService = new ProviderContentService();
                     crudRouter.routGetRequest(writer, getAction(uri), crudService);
                     break;
                 default:

@@ -559,9 +559,23 @@
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
-					meerkat.modules.dialogs.show({
-						title: 'Declaration',
-						url: "health_fund_info/"+selectedProduct.info.provider.toUpperCase()+"/declaration.html"
+					var data = {};
+					data.providerId = selectedProduct.info.providerId;
+					data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
+
+					meerkat.modules.comms.get({
+						url: "health/provider/content/get.json",
+						data: data,
+						cache: true,
+						errorLevel: "silent",
+						onSuccess: function getProviderContentSuccess(result) {
+							if (result.hasOwnProperty('providerContentText')) {
+								meerkat.modules.dialogs.show({
+									title: 'Declaration',
+									htmlContent : result.providerContentText
+								});
+							}
+						}
 					});
 
 					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
