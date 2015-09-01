@@ -3,7 +3,7 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('simples:referral_tracking')}" />
+<c:set var="logger" value="${go:getLogger('tag:simples:referral_tracking')}" />
 
 <jsp:useBean id="phoneService" class="com.ctm.services.PhoneService" scope="application" />
 <jsp:useBean id="quoteService" class="com.ctm.services.QuoteService" scope="application" />

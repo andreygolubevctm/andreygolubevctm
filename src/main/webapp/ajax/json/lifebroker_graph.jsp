@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-
+<c:set var="logger" value="${go:getLogger('lifebroker_graph_jsp')}" />
 <session:get  />
 
 <%-- Build XML required for Life Broker request --%>
@@ -32,7 +32,5 @@
 <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 <go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${data.current.transactionId}" />
 
-<go:log level="DEBUG" source="lifebroker_graph">${resultXml}</go:log>
-<go:log level="DEBUG" source="lifebroker_graph">${debugXml}</go:log>
-
+${logger.debug('resultXml={} debugXml={}',resultXml, debugXml)}
 ${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}

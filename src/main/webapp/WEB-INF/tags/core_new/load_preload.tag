@@ -2,7 +2,7 @@
 <%@ tag description="Preloading form data." %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('core_new:load_preload')}" />
+<c:set var="logger" value="${go:getLogger('tag:core_new.load_preload')}" />
 
 <c:if test="${empty param.action && not empty param.preload && not fn:contains(param.preload, '/') &&  not fn:contains(param.preload, '/\') }">
 

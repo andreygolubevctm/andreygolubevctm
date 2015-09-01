@@ -80,5 +80,5 @@
 	</c:choose>
 </c:catch>
 <c:if test="${error}">
-	${logger.warn('', error)}
+	${logger.warn('result={}', result,  error)}
 </c:if>

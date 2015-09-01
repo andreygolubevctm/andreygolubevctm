@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('landing_jsp')}" />
+<c:set var="logger" value="${go:getLogger('jsp:landing')}" />
 
 <c:set var="redirectURL" value="" />
 <c:set var="verticalName" value="" />
@@ -23,7 +23,7 @@
 		</c:catch>
 		<c:if test="${not empty error}">
 			<settings:setVertical verticalCode="GENERIC" />
-			${logger.warn('', error)}
+			${logger.warn('param.vert={}', param.vert, error)}
 		</c:if>
 	</c:when>
 	<c:otherwise>

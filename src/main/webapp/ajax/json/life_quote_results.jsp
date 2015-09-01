@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${go:getLogger('life_quote_result_jsp')}" />
+
 <session:get settings="true" authenticated="true" verticalCode="${fn:trim(fn:toUpperCase(param.vertical))}" />
 
 <%-- Load the params into data --%>
@@ -25,7 +27,7 @@
 		<c:set var="proceedinator"><core:access_check quoteType="${vertical}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
-				<go:log source="life_quote_results_jsp" level="INFO" >PROCEEDINATOR PASSED</go:log>
+				${logger.debug('PROCEEDINATOR PASSED')}
 
 				<%-- add external testing ip address checking and loading correct config and send quotes --%>
 
@@ -93,8 +95,7 @@
 								<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 								<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 
-								<go:log source="life_quote_results_jsp" level="DEBUG">${resultXml}</go:log>
-								<go:log source="life_quote_results_jsp" level="DEBUG">${debugXml}</go:log>
+								${logger.debug('resultXml={} debugXml={}',resultXml, debugXml)}
 								${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 							</x:when>
 							<x:otherwise>

@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('ajax/write/competition_jsp')}" />
+<c:set var="logger" value="${go:getLogger('jsp:ajax.write.competition')}" />
 
 <session:get settings="true" />
 
@@ -84,7 +84,7 @@
 
 		</c:when>
 		<c:when test="${empty error and (empty emailMaster or emailMaster.rowCount == 0)}">
-			${logger.error('Failed to locate emailId for competition/email={}', data['competition/email'])}
+			${logger.warn('Failed to locate emailId for competition/email={}', data['competition/email'])}
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'}" />
 		</c:when>
 		<c:otherwise>

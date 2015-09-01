@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${go:getLogger('lifebroker_benefits_jsp')}" />
+
 <session:get />
 
 <c:set var="tranId" value="${data.current.transactionId}" />
@@ -36,7 +38,5 @@
 <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 <go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${data.current.transactionId}" />
 
-<go:log level="DEBUG" source="lifebroker_benefits">${resultXml}</go:log>
-<go:log level="DEBUG" source="lifebroker_benefits">${debugXml}</go:log>
-
+${logger.debug('resultXml={} debugXml={}',resultXml, debugXml)}
 ${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}

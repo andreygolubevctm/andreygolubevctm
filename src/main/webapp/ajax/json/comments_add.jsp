@@ -16,12 +16,12 @@
 	</c:choose>
 </c:set>
 
-${logger.info('Add Comment TransactionId: {}', transactionId)}
+${logger.info('Add Comment TransactionId: transactionId={}', transactionId)}
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
-${logger.info('isOperator: {}', isOperator)}
+${logger.info('isOperator: isOperator={}', isOperator)}
 
 <c:choose>
 	<c:when test="${empty isOperator and empty param.userOverride}">
@@ -44,11 +44,11 @@ ${logger.info('isOperator: {}', isOperator)}
 		</c:if>
 	</c:catch>
 	<c:if test="${not empty error}">
-		${logger.error('', error)}
+		${logger.error('Failed to get rootid transactionId={}', transactionId, error)}
 	</c:if>
 </c:if>
 
-${logger.info('Add Comment RootId: {}',rootId)}
+${logger.info('Add Comment RootId: rootId={}',rootId)}
 
 <c:choose>
 	<c:when test="${empty rootId}">
@@ -95,7 +95,7 @@ ${logger.info('Add Comment RootId: {}',rootId)}
 			<c:if test="${not empty error}">
 				<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 				<c:set var="errorPool">${errorPool}{"error":"Failed to add comment: ${error.rootCause}"}</c:set>
-				${logger.error('Failed to add comment', error)}"
+				${logger.error('Failed to add comment operatorId={} comment={}', operatorId, comment , error)}"
 			</c:if>
 		</c:if>
 	</c:otherwise>
@@ -109,6 +109,6 @@ ${logger.info('Add Comment RootId: {}',rootId)}
 	</c:when>
 	<c:otherwise>
 		{"errors":[${errorPool}]}
-		${logger.info('{[' + errorPool + ']}')}
+		${logger.info('errorPool={}', errorPool)}
 	</c:otherwise>
 </c:choose>

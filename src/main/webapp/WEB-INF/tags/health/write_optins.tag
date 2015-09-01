@@ -2,7 +2,7 @@
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('health:write_optins')}" />
+<c:set var="logger" value="${go:getLogger('tag:health.write_optins')}" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
 

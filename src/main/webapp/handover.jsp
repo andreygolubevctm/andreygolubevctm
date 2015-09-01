@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('handover_jsp')}" />
+<c:set var="logger" value="${go:getLogger('jsp.handover')}" />
 
 <session:new verticalCode="CREDITCARD" />
 <core_new:quote_check quoteType="CREDITCARD" />
@@ -26,11 +26,11 @@
 			</c:if>
 		</c:catch>
 		<if test="${error}">
-			${logger.warn('', error)}
+			${logger.warn('tmpProductCode={}', tmpProductCode,  error)}
 		</if>
 	</c:when>
 	<c:otherwise>
-		${logger.error('Credit Cards Handover error: No Product Passed. Product Code: {}. Product Result: {}', tmpProductCode, product)}
+		${logger.error('Credit Cards Handover error: No Product Passed. tmpProductCode={} product={}', tmpProductCode, product)}
 		<%
 		// Set error code and reason.
 		response.sendError(500, "No Product Code Passed." );
@@ -39,14 +39,14 @@
 </c:choose>
 <c:choose>
 	<c:when test="${not empty error}">
-		${logger.error('Credit Cards Handover error: ${error}. Product Code: {}. Product Result: {}', tmpProductCode, product)}
+		${logger.error('Credit Cards Handover error. tmpProductCode={} product={}', tmpProductCode, product, error)}
 		<%
 		// Set error code and reason.
 		response.sendError(500, "An error occurred." );
 		%>
 	</c:when>
 	<c:when test="${empty product}">
-		${logger.error('Credit Cards Handover error: Product Not Found. Product Code: {}. Product Result: {}', tmpProductCode, product)}
+		${logger.error('Credit Cards Handover error: Product Not Found. tmpProductCode={} product={}', tmpProductCode, product)}
 		<%
 		// Set error code and reason.
 		response.sendError(500, "No Product Found." );

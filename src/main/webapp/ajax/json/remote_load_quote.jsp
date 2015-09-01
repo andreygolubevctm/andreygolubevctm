@@ -1,11 +1,9 @@
-<%@ page import="org.slf4j.Logger" %>
-<%@ page import="org.slf4j.LoggerFactory" %>
-<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
+<<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="${param.vertical}" />
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
-<c:set var="logger" value="${go:getLogger('remote_load_quote.jsp')}" />
+<c:set var="logger" value="${go:getLogger('remote_load_quote_jsp')}" />
 
 <%--
 	load_quote.jsp
@@ -58,9 +56,8 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 <c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log level="INFO" source="remote_load_quote_jsp">PROCEEDINATOR PASSED for quoteType:${quoteType} tranId:${id_for_access_check}</go:log>
-
-				<c:set var="requestedTransaction" value="${id_for_access_check}" />
+		${logger.info('PROCEEDINATOR PASSED for quoteType={} tranId={}',quoteType,id_for_access_check)}
+		<c:set var="requestedTransaction" value="${id_for_access_check}" />
 
 		<sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -75,8 +72,7 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 				</c:set>
 
 		<go:setData dataVar="data" xpath="previous/transactionId" value="${requestedTransaction}" />
-		<%--<c:set var="requestedTransaction" value="${data.current.transactionId}" />--%>
-		<go:log level="INFO" source="remote_load_quote_jsp">TRAN ID NOW (data.current.transactionId): ${data.current.transactionId}</go:log>
+		${logger.info('TRAN ID NOW data.current.transactionId={}',data.current.transactionId)}
 		<%-- Now we get back to basics and load the data for the requested transaction --%>
 		<jsp:useBean id="remoteLoadQuoteService" class="com.ctm.services.RemoteLoadQuoteService" scope="page" />
 
@@ -86,15 +82,14 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 
 				<c:choose>
 					<c:when test="${not empty error}">
-						<go:log level="ERROR" error="${error}">${error}</go:log>
+						${logger.error("Failed to get transaction details quoteType={} param.type={} param.email={} styleCodeId={}", quoteType, param.type,  param.email , styleCodeId, error)}
 						<c:set var="result"><result><error>Error loading quote data: ${error.rootCause}</error></result></c:set>
 					</c:when>
 			<c:when test="${empty details}">
 						<c:set var="result"><result><error>No transaction data exists for transaction [${requestedTransaction}] and hash [${emailHash}] combination.</error></result></c:set>
 			</c:when>
 			<c:otherwise>
-				<go:log level="DEBUG" source="remote_load_quote_jsp">About to delete the vertical information for: ${quoteType} ${requestedTransaction}</go:log>
-
+				${logger.debug('About to delete the vertical information for: quoteType={} requestedTransaction={}', quoteType, requestedTransaction)}
 				<%-- //FIX: need to delete the bucket of information here --%>
 				<go:setData dataVar="data" value="*DELETE" xpath="${xpathQuoteType}" />
 
@@ -103,12 +98,9 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 						<c:if test="${!fn:contains(detail.getTextValue(),'Please choose')}">${detail.getTextValue()}</c:if>
 							</c:set>
 					<go:setData dataVar="data" xpath="${detail.getXPath()}" value="${textVal}" />
-					</c:forEach>
-
+				</c:forEach>
 				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>
-				<go:log level="DEBUG" source="remote_load_quote_jsp">Setting data.current.transactionId back to ${requestedTransaction}</go:log>
-				<go:log level="DEBUG" source="remote_load_quote_jsp">data[xpathQuoteType].privacyoptin: ${data[xpathQuoteType].privacyoptin}</go:log>
-
+				${logger.debug('Setting data.current.transactionId back to requestedTransaction={} data[xpathQuoteType].privacyoptin=[]', requestedTransaction,data[xpathQuoteType].privacyoptin)}
 				<%-- Add CampaignId to the databucket if provided --%>
 				<c:if test="${not empty param.campaignId}">
 					<go:setData dataVar="data" xpath="${xpathQuoteType}/tracking/cid" value="${param.campaignId}" />
@@ -213,14 +205,12 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-		<go:log level="WARN" source="remote_load_quote_jsp">Proceedinator:${proceedinator}</go:log>
+				${logger.warn('Proceedinator={}', proceedinator)}
 				<c:set var="result">
 					<result><error>This quote has been reserved by another user. Please try again later.</error></result>
 				</c:set>
 			</c:otherwise>
 		</c:choose>
-<go:log level="DEBUG" source="remote_load_quote_jsp">${result}</go:log>
-<go:log level="DEBUG" source="remote_load_quote_jsp">End Load Quote</go:log>
-<go:log level="DEBUG" source="remote_load_quote_jsp">LOAD RESULT: ${result}</go:log>
+${logger.debug('End Load Quote result={}',result)}
 <%-- Return the results as json --%>
 ${go:XMLtoJSON(result)}

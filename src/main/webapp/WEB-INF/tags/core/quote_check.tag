@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Check whether is a new quote or existing and sets the isNEWQuote variable"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<c:set var="logger"  value="${go:getLogger('core:quote_check')}" />
+<c:set var="logger"  value="${go:getLogger('core:core.quote_check')}" />
 
 <%@ attribute name="quoteType" 	required="true"		rtexprvalue="true"	description="The vertical this quote is for"%>
 

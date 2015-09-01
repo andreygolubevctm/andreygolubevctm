@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('fuel_price_results_regional_jsp')}" />
+<c:set var="logger" value="${go:getLogger('jsp:rating.fuel_price_results_regional')}" />
 
 <%--
 	The data will arrive in a single parameter called QuoteData

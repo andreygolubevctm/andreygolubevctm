@@ -3,6 +3,8 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('tag:agg.write_quote')}" />
+
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
 <jsp:useBean id="tranDao" class="com.ctm.dao.transaction.TransactionDetailsDao" scope="request" />
 
@@ -443,7 +445,7 @@
 	<c:if test="${not empty errorPool}">
 		<c:set var="errorPool">${errorPool},</c:set>
 	</c:if>
-	<go:log level="ERROR"  source="agg:write_quote" >Failed to update transaction_header: ${error.rootCause}</go:log>
+	${logger.error('Failed to update transaction_header transactionId={}' , transactionId, error)}
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 		<c:param name="transactionId" value="${transactionId}" />
 		<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -639,7 +641,7 @@
 				</c:if>
 					</c:when>
 					<c:otherwise>
-						<go:log level="ERROR" source="agg:write_quote" error="${error}">WRITE_QUOTE FAILED</go:log>
+						${logger.error('WRITE_QUOTE FAILED transactionId={}',transactionId, error)}
 						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 							<c:param name="transactionId" value="${transactionId}" />
 							<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -653,7 +655,7 @@
 			</sql:transaction>
 		</c:catch>
 		<c:if test="${not empty error}">
-			<go:log level="ERROR" source="agg:write_quote" error="${error}">WRITE_QUOTE FAILED</go:log>
+			${logger.error('WRITE_QUOTE FAILED transactionId={}', transactionId, error)}
 			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 				<c:param name="transactionId" value="${transactionId}" />
 				<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -666,7 +668,7 @@
 
 	</c:when>
 	<c:when test="${empty transactionId}">
-		<go:log level="INFO"  source="agg:write_quote" >write_quote: No transaction ID.</go:log>
+		${logger.info('write_quote: No transaction ID.')}
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 			<c:param name="transactionId" value="${transactionId}" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -677,7 +679,7 @@
 		FAILED: No transaction ID.
 	</c:when>
 	<c:when test="${confirmationResult == 'F'}">
-		<go:log level="INFO"  source="agg:write_quote" >write_quote: No because pending/failed</go:log>
+		${logger.info('write_quote: No because pending/failed')}
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 			<c:param name="transactionId" value="${transactionId}" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -688,7 +690,7 @@
 		FAILED: Quote is pending/failed and operator=ONLINE.
 	</c:when>
 	<c:otherwise>
-		<go:log level="INFO"  source="agg:write_quote">write_quote: No because this quote is already confirmed.</go:log>
+		${logger.info('write_quote: No because this quote is already confirmed.')}
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 			<c:param name="transactionId" value="${transactionId}" />
 			<c:param name="page" value="${pageContext.request.servletPath}" />

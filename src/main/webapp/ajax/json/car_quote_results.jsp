@@ -114,7 +114,7 @@
 
 <%-- If single accessory failed above then simply parse the object rather than iterating over it --%>
 <c:if test="${not empty error}">
-	${logger.warn('' ,error)}
+	${logger.warn('accsList={}', accsList, error)}
 	<c:set var="accs" value="${accsList}" />
 	<c:set var="accDesc" value=""/>
 	<x:parse doc="${go:getEscapedXml(accs)}" var="accsXML" />
@@ -194,7 +194,7 @@
 				<%-- Write to the stats database --%>
 				<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
-				${logger.debug('{}: RESULTS {} TRANSFER {}',tranId, resultXml,stats)}
+				${logger.debug('tranId={} resultXml={} stats={}',tranId, resultXml,stats)}
 				<%-- Return the results as json --%>
 
 				<%-- Calculate the end valid date for these quotes --%>

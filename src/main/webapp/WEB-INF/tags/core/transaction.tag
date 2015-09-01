@@ -2,7 +2,7 @@
 <%@ tag description="Wrapper for all transaction touching and quote writes." %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('core:transaction')}" />
+<c:set var="logger" value="${go:getLogger('tag:core.transaction')}" />
 
 <core_new:no_cache_header/>
 
@@ -84,14 +84,14 @@
 </c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">
-		${logger.error('Touch type is invalid or unsupported: "{}"', touch)}
+		${logger.error('Touch type is invalid or unsupported: touch={}', touch)}
 		<c:set var="response" value="T" />
 		<c:set var="write_quote" value="N" />
 		<c:set var="touch" value="" /><%-- unset --%>
 	</c:when>
 
 	<c:when test="${empty vertical}">
-		${logger.error('Vertical setting can not be empty')}
+		${logger.error('Vertical setting can not be empty param.vertical={}', param.vertical)}
 		<c:set var="response" value="V" />
 		<c:set var="write_quote" value="N" />
 		<c:set var="touch" value="" /><%-- unset --%>
@@ -160,7 +160,7 @@
 			<sql:param value="${operator}" />
 			<sql:param value="${type}" />
 		</sql:update>
-		${logger.info('Record touch: {}',touch)}
+		${logger.info('Record touch: touch={}',touch)}
 		<%-- SUBMIT FAIL: add error to comments table --%>
 		<c:if test="${touch != 'H' and not empty comment}">
 			<c:catch var="error">
@@ -225,7 +225,7 @@
 		<%-- This is a hidden field at the end of the form:form tag. It ensures that we've collected the form contents. --%>
 		<c:when test="${param.transcheck != '1'}">
 			<c:out value="N" />
-			${logger.info('WRITE QUOTE NO, transcheck form element missing (touch: {})', touch)}
+			${logger.info('WRITE QUOTE NO, transcheck form element missing touch={}', touch)}
 		</c:when>
 
 		<c:otherwise>Y</c:otherwise>

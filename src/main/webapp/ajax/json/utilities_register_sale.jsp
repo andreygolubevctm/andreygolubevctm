@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${go:getLogger('jsp:ajax.json.utilities_register_sale')}" />
+
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
@@ -14,8 +16,7 @@
 <c:set var="proceedinator"><core:access_check quoteType="utilities" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log level="DEBUG" source="utilities_register_sale">PROCEEDINATOR PASSED</go:log>
-
+		${logger.debug('PROCEEDINATOR PASSED')}
 		<%-- Load the params into data --%>
 
 		<security:populateDataFromParams rootPath="utilities" />

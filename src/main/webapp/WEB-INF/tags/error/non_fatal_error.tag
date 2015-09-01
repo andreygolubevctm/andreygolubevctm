@@ -2,7 +2,7 @@
 <%@ tag description="Record non fatal error in database."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('error:non_fatal_error')}" />
+<c:set var="logger" value="${go:getLogger('tag:error.non_fatal_error')}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="transactionId" required="false" rtexprvalue="true"  %>

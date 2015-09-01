@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="HEALTH" />
-<c:set var="logger"  value="${go:getLogger('health_paymentgateway_jsp')}" />
+<c:set var="logger"  value="${go:getLogger('jsp:ajax.html.health_paymentgateway')}" />
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
 <x:parse doc="${config}" var="configXml" />
@@ -38,7 +38,7 @@
 	${pageSettings.getBaseUrl()}ajax/html/health_paymentgateway_return.jsp
 </c:set>
 
-${logger.debug('health_paymentgateway: ID={}, {}', id, tokenUrl)}
+${logger.debug('health_paymentgateway: id={} tokenUrl={}', id, tokenUrl)}
 
 <c:choose>
 	<c:when test="${empty tokenUrl or empty username or empty password or empty id or empty registerUrl or empty comm or empty supp}">
@@ -60,9 +60,9 @@ ${logger.debug('health_paymentgateway: ID={}, {}', id, tokenUrl)}
 			</c:import>
 		</c:catch>
 		<c:if test="${gatewayError}">
-			${logger.error('', gatewayError)}
+			${logger.error('Error importing url tokenUrl={} username={} id={} returnURL={}', tokenUrl, username, id, returnURL , gatewayError)}
 		</c:if>
-		${logger.debug('Response: {}', output)}
+		${logger.debug('Response: output={}', output)}
 		<c:choose>
 			<c:when test="${fn:startsWith(output, 'token=')}">
 				<c:redirect url="${registerUrl}">

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('home_quote_report_jsp')}" />
+<c:set var="logger" value="${go:getLogger('jsp:ajax.write.home_quote_report')}" />
 
 <session:get settings="true" />
 
@@ -95,7 +95,7 @@
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'" />
 		</c:when>
 		<c:otherwise>
-			${logger.error('Database Error2:  {}', error)}
+			${logger.error('Database Error2:  param.email={}', param.email, error)}
 			<c:set var="errorPool" value="{error:'${error}'" />
 		</c:otherwise>
 	</c:choose>

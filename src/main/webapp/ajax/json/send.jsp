@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('ajax\json\send_jsp')}" />
+
 <session:get settings="true" verticalCode="${fn:toUpperCase(param.vertical)}" />
 
 
@@ -35,7 +37,7 @@
 
 <c:choose>
 	<c:when test="${ignoreEmailSendToUnsubscribed eq true}">
-		<go:log level="INFO" source="send_jsp">[Email] Email skipped as user not subscribed</go:log>
+		${logger.info('Email skipped as user not subscribed param.emailAddress={}', param.emailAddress)}
 	</c:when>
 	<c:otherwise>
 
@@ -50,10 +52,10 @@
 					<c:when test="${pageSettings.hasSetting('sendQuoteMailingName') and pageSettings.hasSetting('sendQuoteTmpl')}">
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendQuoteMailingName')}" />
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendQuoteTmpl')}" />
-						<go:log level="INFO" source="send_jsp">[Email] Mode: ${param.mode}, MailingName: ${MailingName}, tmpl: ${tmpl}</go:log>
+						${logger.info('[Email] Mode: param.mode={} MailingName={} tmpl={}', param.mode, MailingName, tmpl)}
 					</c:when>
 					<c:otherwise>
-						<go:log level="WARN" source="send_jsp">[Email] Mode (${param.mode}) passed but missing required page settings</go:log>
+						${logger.info('param.mode passed but missing required page settings param.mode={}', param.mode)}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -62,10 +64,10 @@
 					<c:when test="${pageSettings.hasSetting('sendAppMailingName') and pageSettings.hasSetting('sendAppTmpl')}">
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendAppMailingName')}" />
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendAppTmpl')}" />
-						<go:log level="INFO" source="send_jsp">[Email] Mode: ${param.mode}, MailingName: ${MailingName}, tmpl: ${tmpl}</go:log>
+						${logger.debug('[Email] Mode: param.mode={} MailingName={} tmpl={}', param.mode, MailingName, tmpl)}
 					</c:when>
 					<c:otherwise>
-						<go:log level="WARN" source="send_jsp">[Email] Mode (${param.mode}) passed but missing required page settings</go:log>
+						${logger.warn('[Email] Mode passed but missing required page settings param.mode={}', param.mode)}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -74,10 +76,10 @@
 					<c:when test="${pageSettings.hasSetting('sendEdmMailingName') and pageSettings.hasSetting('sendEdmTmpl')}">
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendEdmMailingName')}" />
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendEdmTmpl')}" />
-						<go:log level="INFO" source="send_jsp">[Email] Mode: ${param.mode}, MailingName: ${MailingName}, tmpl: ${tmpl}</go:log>
+						${logger.info('[Email] Mode: param.mode={} MailingName={} tmpl={}', param.mode, MailingName, tmpl)}
 					</c:when>
 					<c:otherwise>
-						<go:log level="WARN" source="send_jsp">[Email] Mode (${param.mode}) passed but missing required page settings</go:log>
+						${logger.warn('Mode passed but missing required page settings param.mode={}', param.mode)}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -87,16 +89,16 @@
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendBestPriceMailingName')}" />
 						<c:set var="OptInMailingName" value="${pageSettings.getSetting('sendBestPriceOptInMailingName')}"/>
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendBestPriceTmpl')}" />
-						<go:log level="INFO" source="send_jsp">[Email] Mode: ${param.mode}, MailingName: ${MailingName}, OptInMailingName: ${OptInMailingName}, tmpl: ${tmpl}, <c:choose><c:when test="${not empty param.emailAddress}">emailAddress was passed</c:when><c:otherwise>emailAddress not passed</c:otherwise></c:choose>, <c:choose><c:when test="${not empty hashedEmail}">hashedEmail is available</c:when><c:otherwise>hashedEmail NOT available!</c:otherwise></c:choose></go:log>
+						${logger.debug('[Email] Mode: param.mode={} MailingName={} OptInMailingName={} tmpl={} param.emailAddress={}', param.mode , MailingName, OptInMailingName,  tmpl, param.emailAddress)}
 					</c:when>
 					<c:otherwise>
-						<go:log level="WARN" source="send_jsp">[Email] Mode (${param.mode}) passed but missing required page settings</go:log>
+						${logger.warn('[Email] Mode passed but missing required page settings. param.mode={}', param.mode)})}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
 			<%-- Reset password, called from forgotten_password.jsp --%>
 			<c:otherwise>
-				<go:log level="WARN" source="send_jsp">[Email] No matching mode passed. param.mode was: ${param.mode}</go:log>
+				${logger.warn('[Email] No matching mode passed. param.mode={}', param.mode)}
 			</c:otherwise>
 		</c:choose>
 
@@ -120,7 +122,7 @@
 
 		<c:choose>
 			<c:when test="${empty MailingName}">
-				<go:log level="WARN" source="send_jsp">[Email] No email found to be sent</go:log>
+				${logger.warn('[Email] No email found to be sent emailAddress={}', emailAddress)}
 			</c:when>
 			<c:otherwise>
 				<%-- Dial into the send script --%>

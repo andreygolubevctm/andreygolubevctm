@@ -280,7 +280,7 @@ ${logger.info('isOperator={}',isOperator)}
 				</c:set>
 			</c:when>
 			<c:otherwise>
-				<go:log  level="WARN" >Proceedinator:${proceedinator}</go:log>
+				${logger.warn('Proceedinator={}',proceedinator )}
 				<c:set var="reservedName" value="another user" />
 				<c:set var="result">
 					<result>
@@ -303,7 +303,7 @@ ${logger.info('isOperator={}',isOperator)}
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-<go:log level="DEBUG" source="load_quote">### ${result}</go:log>
+${logger.debug('result={}', result)}
 <%-- Log any errors --%>
 <c:if test="${fn:contains(result, '<error>')}">
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">

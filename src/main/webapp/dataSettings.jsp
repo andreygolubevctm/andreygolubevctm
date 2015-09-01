@@ -76,7 +76,7 @@
 			</c:forEach>
 		</c:catch>
 		<c:if test="${not empty error}">
-			${logger.warn('', error)}
+			${logger.warn('serverIp={}', serverIp, error)}
 			<p>Could not list brand information due to server exception.</p>
 		</c:if>
 				

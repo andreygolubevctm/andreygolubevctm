@@ -3,6 +3,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${go:getLogger('jsp:ajax.write.write_quote')}" />
+
 <core_new:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(param.quoteType)}" />
@@ -25,7 +27,7 @@
 
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log source="write_quote_jsp">WRITE QUOTE PROCEEDINATOR PASSED</go:log>
+		${logger.debug('WRITE QUOTE PROCEEDINATOR PASSED')}
 
 		<sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -35,7 +37,7 @@
 		<c:set var="prodtyp" value="${quoteType} ${quoteType}" />
 
 		<%-- Ensure the current transactionID is set --%>
-		<go:log source="write_quote_jsp">write quote getTransactionId ${data.current.verticalCode}</go:log>
+		${logger.debug('write quote getTransactionId verticalCode={}', data.current.verticalCode)}
 		<c:set var="sandpit">
 			<core:get_transaction_id id_handler="preserve_tranId" quoteType="${quoteType}" />
 		</c:set>
@@ -48,7 +50,7 @@
 		</c:if>
 
 		<c:if test="${not empty emailAddress}">
-			<go:log source="write_quote_jsp">Email: ${emailAddress}</go:log>
+			${logger.debug('Email: emailAddress={}', emailAddress)}
 			<%-- Add/Update the user record in email_master --%>
 			<c:catch var="error">
 				<agg:write_email
@@ -61,7 +63,7 @@
 					lastName="${lastName}"
 					items="${optinMarketing}${optinPhone}" />
 			</c:catch>
-			<go:log source="write_quote_jsp">ERROR: ${error}</go:log>
+			${logger.error('ERROR: brand={} vertical={} source={} emailAddress={}', brand, vertical, source, emailAddress, error)}
 
 			<%--Update the transaction header record with the user current email address --%>
 
@@ -80,8 +82,8 @@
 			<c:if test="${not empty errorPool}">
 				<c:set var="errorPool">${errorPool},</c:set>
 			</c:if>
-			<go:log error="${error}" level="ERROR" source="write_quote_jsp">Failed to update transaction_header: ${error.rootCause}</go:log>
-			<c:set var="errorPool">${errorPool}{"error":"A fatal database error occurred - we hope to resolve this soon."}</c:set>
+			${logger.error('Failed to update transaction_header: emailAddress={}', emailAddress, error)}
+				<c:set var="errorPool">${errorPool}{"error":"A fatal database error occurred - we hope to resolve this soon."}</c:set>
 		</c:if>
 
 		<%-- Write transaction details table --%>
@@ -118,7 +120,7 @@
 <%-- JSON RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		<go:log level="ERROR" source="write_quote_jsp">SAVE ERRORS: ${errorPool}</go:log>
+		${logger.error('SAVE ERRORS: errorPool={}', errorPool)}
 		{"result":"FAIL", "errors":[${errorPool}]}
 	</c:when>
 	<c:otherwise>

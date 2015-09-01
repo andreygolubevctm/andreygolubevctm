@@ -29,7 +29,7 @@
         <%-- Add the results to the current session data --%>
         <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
         <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}"/>
-        ${logger.debug('${resultXml}')}
+        ${logger.debug('resultXml={}', resultXml)}
 
         ${go:XMLtoJSON(resultXml)}
 
@@ -88,8 +88,7 @@
 
                 <%-- Add the results to the current session data --%>
                 <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
-                ${logger.debug('${resultXml}')}
-                ${logger.debug('${debugXml}')}
+                ${logger.debug('resultXml={} debugXml={}', resultXml, debugXml)}
 
                 ${go:XMLtoJSON(resultXml)}
             </c:when>

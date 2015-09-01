@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${go:getLogger('life_product_select_jsp')}" />
+
 <c:set var="continueOnValidationError" value="${false}" />
 <c:set var="vertical" value="${fn:toUpperCase(param.vertical)}" />
 <session:get settings="true" authenticated="true" verticalCode="${vertical}" />
@@ -48,10 +50,7 @@
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
-		
-		<go:log level="DEBUG" source="life_product_select">${resultXml}</go:log>
-		<go:log level="DEBUG" source="life_product_select">${debugXml}</go:log>
-		
+		${logger.debug('resultXml={} debugXml={}',resultXml, debugXml)}
 		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 	</c:when>
 	<c:otherwise>

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('upload_occupations_jsp')}" />
+<c:set var="logger" value="${go:getLogger('jsp:ajax.write.upload_occupations')}" />
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -56,7 +56,7 @@ Process:
 	<c:set var="counter" value="${counter + 1}" />
 
 	<c:if test="${not empty error}">
-		${logger.error('rootCause: {} ', error.rootCause, error)}
+		${logger.error('failed to insert into aggregator.general value={} counter={} id={}', value, counter, error, id)}
 	</c:if>
 </x:forEach>
 

@@ -3,7 +3,7 @@
 <%@ tag description="This uses the Verint RCAPI service to talk to the phone system. Note this can affect compliance greatly."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('verint_rcapi_mute_jsp')}" />
+<c:set var="logger" value="${go:getLogger('tag:verint_rcapi_mute')}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="action" 		required="true"		rtexprvalue="true"	description="The recorder action: PauseRecord or ResumeRecord"%>

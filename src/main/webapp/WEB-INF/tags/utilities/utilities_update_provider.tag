@@ -2,7 +2,7 @@
 <%@ tag description="Updates Utilities provider master and properties records."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('utilities:utilities_update_provider')}" />
+<c:set var="logger" value="${go:getLogger('tag:utilities.utilities_update_provider')}" />
 
 <%@ attribute name="provider_id" 	required="true"	 rtexprvalue="true"	 description="The Switchwise Provider ID" %>
 <%@ attribute name="provider_code" 	required="true"	 rtexprvalue="true"	 description="The Switchwise Provider Code" %>
@@ -12,7 +12,7 @@
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="alt_table" value="" />
-${logger.info('provider_id={},provider_code={},provider_name={}', provider_id,provider_code,provider_name)}
+${logger.info('provider_id={} provider_code={} provider_name={}', provider_id,provider_code,provider_name)}
 
 <%-- 1] First - get the ID of the provider (either an existing one or a new ID from the range) --%>
 <%-- ========================================================================================= --%>
@@ -141,8 +141,8 @@ ${logger.info('provider_id={},provider_code={},provider_name={}', provider_id,pr
 		</c:if>
 	</c:when>
 	<c:otherwise>
-		${logger.warn('Database error selecting provider ({})', provider_id, error)}
+		${logger.warn('Database error selecting provider provider_id={}', provider_id, error)}
 	</c:otherwise>
 </c:choose>
-${logger.debug('PROVIDER ID: ${ctm_provider_id}', ctm_provider_id)}
+${logger.debug('PROVIDER ID: ctm_provider_id={}', ctm_provider_id)}
 <c:out value="${ctm_provider_id}" />

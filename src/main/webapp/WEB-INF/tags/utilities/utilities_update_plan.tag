@@ -2,7 +2,7 @@
 <%@ tag description="Updates Utilities provider master and properties records."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('utilities:utilities_update_plan')}" />
+<c:set var="logger" value="${go:getLogger('tag:utilities.utilities_update_plan')}" />
 
 <%@ attribute name="provider_id" 			required="true"	 rtexprvalue="true"	 description="CTM's internal ID for the provider" %>
 <%@ attribute name="product_state" 			required="true"	 rtexprvalue="true"	 description="The State this product is associated with" %>
@@ -70,12 +70,12 @@ ${logger.info('provider_id={},product_class={},product_code={},product_short_tit
 									<c:out value="${find_available.rows[0].id}" />
 								</c:when>
 								<c:otherwise>
-									${logger.info('There are no empty product records to store ({})', product_code)}
+									${logger.info('There are no empty product records to store product_code={}', product_code)}
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							${logger.error('Database error locating empty product record ({})', provider_id, error)}
+							${logger.error('Database error locating empty product record provider_id={}', provider_id, error)}
 						</c:otherwise>
 					</c:choose>
 				</c:otherwise>
@@ -147,8 +147,8 @@ ${logger.info('provider_id={},product_class={},product_code={},product_short_tit
 		</c:if>
 	</c:when>
 	<c:otherwise>
-		${logger.error('DB Error searching for existing product provider_id={}, product_code={}', provider_id, product_code, error)}
+		${logger.error('DB Error searching for existing product provider_id={} product_code={}', provider_id, product_code, error)}
 	</c:otherwise>
 </c:choose>
-${logger.info('PRODUCT ID: {}', ctm_product_id)}
+${logger.info('PRODUCT ID: ctm_product_id={}', ctm_product_id)}
 <c:out value="${ctm_product_id}" />

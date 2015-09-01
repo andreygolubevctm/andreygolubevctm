@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${go:getLogger('fuel_price_monthly_averages_jsp')}" />
+<c:set var="logger" value="${go:getLogger('jsp:rating.fuel_price_monthly_averages')}" />
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
@@ -94,7 +94,7 @@
 						</c:choose>
 					</c:when>
 					<c:otherwise>
-						${logger.error('Database error while locating historical fuel prices',error)}
+						${logger.error('Database error while locating historical fuel prices siteids={} fuels={}', siteids, fuels , error)}
 						<error>MK-20004</error>
 					</c:otherwise>
 				</c:choose>
@@ -105,7 +105,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		${logger.error('Database error while locating historical fuel prices.',error)}
+		${logger.error('Database error while locating historical fuel prices. postcode={}', postcode, error)}
 		<error>MK-20004</error>
 	</c:otherwise>
 </c:choose>

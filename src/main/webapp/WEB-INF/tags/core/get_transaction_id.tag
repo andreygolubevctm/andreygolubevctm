@@ -2,7 +2,7 @@
 <%@ tag description="Form to searching/displaying saved quotes"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('core:get_transactionid')}" />
+<c:set var="logger" value="${go:getLogger('tag:core.get_transactionid')}" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
@@ -182,7 +182,7 @@
 			<%-- ERROR CHECK --%>
 			<c:choose>
 				<c:when test="${not empty error}">
-					${logger.error('',error)}
+					${logger.error('requestedTransaction={}', requestedTransaction, error)}
 					<c:set var="method" value="ERROR: INCREMENT" />
 
 					<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">

@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('competition_entry_jsp')}" />
+<c:set var="logger" value="${go:getLogger('jsp:competition_entry')}" />
 
 <session:get settings="true" />
 

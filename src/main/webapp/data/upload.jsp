@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-	import="java.io.*,java.util.*,java.text.*,java.math.*,au.com.bytecode.opencsv.CSVParser,com.disc_au.web.go.xml.*"%>
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<c:set var="logger" value="${go:getLogger('upload_jsp')}" />
+<c:set var="logger" value="${go:getLogger('jsp:data.upload')}" />
 <fmt:parseDate var="startDate" value="${param.startDate}" type="DATE" pattern="dd/MM/yyyy"/>
 <fmt:parseDate var="endDate" value="${param.endDate}" type="DATE" pattern="dd/MM/yyyy"/>
 
