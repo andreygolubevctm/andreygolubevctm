@@ -191,9 +191,9 @@
 			contactEmailElement.rules('add', {required:true, messages:{required:'Please enter your email address to be eligible for the competition'}});
 
 				contactMobileElementInput.rules('add', {
-					requiredOneContactNumber:true,
+					requireOneContactNumber:true,
 					messages:{
-						requiredOneContactNumber:'Please enter your phone number to be eligible for the competition'
+						requireOneContactNumber:'Please enter your phone number to be eligible for the competition'
 					}
 				});
 		}
@@ -202,7 +202,7 @@
 			<c:if test="${not empty callCentre or required}">$('#${contactName}').rules('add', {required:true, messages:{required:'Please enter name'}});</c:if>
 			<c:if test="${required == false}">
 				contactEmailElement.rules('remove', 'required');
-				contactMobileElementInput.rules('remove', 'requiredOneContactNumber');
+				contactMobileElementInput.rules('remove', 'requireOneContactNumber');
 				$('#${contactName}').valid();
 				contactEmailElement.valid();
 				contactMobileElementInput.valid();
