@@ -1,24 +1,29 @@
 "use strict";
 
+var rootDir = __dirname;
+
 module.exports = {
     pipeline: {
-        dir: __dirname
+        dir: rootDir
     },
     tasks: {
-        dir: __dirname + "/tasks",
+        dir: rootDir + "/tasks",
         entryPoint: "gulpfile.js"
     },
-    brandFiles: {
-        dir: __dirname + "/../webapp/brand"
+    build: {
+        dir: rootDir + "/../webapp/framework/build"
+    },
+    brand: {
+        dir: rootDir + "/../webapp/brand"
     },
     bundles: {
-        dir: __dirname + "/../webapp/bundles",
+        dir: rootDir + "/../webapp/bundles",
         entryPoint: "bundle.json"
     },
     bootstrap: {
-        dir: __dirname + "/../webapp/framework/bootstrap"
+        dir: rootDir + "/../webapp/framework/bootstrap"
     },
     target: {
-        dir: __dirname + "/../webapp/assets"
+        dir: rootDir + "/../webapp/assets"
     }
 };

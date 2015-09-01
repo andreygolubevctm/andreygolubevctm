@@ -13,6 +13,8 @@
 /out
 /WebContent
 /src/main/webapp/META-INF/context.xml
+/src/main/webapp/assets/js
+/src/main/webapp/assets/css
 /src/main/webapp/brand/*/js
 /src/main/webapp/brand/*/css
 /src/main/frontend/node

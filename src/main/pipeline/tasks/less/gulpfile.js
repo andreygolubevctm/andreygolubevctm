@@ -4,56 +4,40 @@
  */
 "use strict";
 
-var less = require("gulp-less");
+var less = require("gulp-less"),
+    intercept = require("gulp-intercept"),
+    concat = require('gulp-concat'),
+    path = require("path");
 
 function LessTasks(gulp, bundles) {
     var taskPrefix = "less:",
         lessTasks = [];
-
-    var coreSrcPath = [
-            gulp.pipelineConfig.bundles.dir,
-            "core/less/*.less"
-        ].join("/"),
-        bootstrapSrcPath = [
-            gulp.pipelineConfig.bootstrap.dir,
-            "less/*.less"
-        ].join("/");
 
     for(var bundle in bundles.collection) {
         if(bundle !== "core") {
             (function (bundle) {
                 var brandCodes = bundles.getBundleBrandCodes(bundle);
 
-                var bundleSrcPath = [
-                    gulp.pipelineConfig.bundles.dir,
-                    bundle,
-                    "less/*.less"
-                ].join("/");
-
                 for (var i = 0; i < brandCodes.length; i++) {
-                    var brandCode = brandCodes[i],
-                        brandCodeTask = taskPrefix + bundle + ":" + brandCode,
-                        brandSrcPath = [
-                            gulp.pipelineConfig.brandFiles.dir,
-                            brandCode,
-                            "less",
-                            "framework.build." + brandCode + "." + bundle + ".less"
-                        ].join("/");
+                    var brandCode = brandCodes[i];
 
-                    // TODO: Remove and replace if necessary
-                    var buildSrcPath = [
-                            gulp.pipelineConfig.bootstrap.dir,
-                            "..",
-                            "build/*.less",
-                        ].join("/");
+                    (function(brandCode) {
+                        var brandCodeTask = taskPrefix + bundle + ":" + brandCode,
+                            brandCodeSrcPath = path.join(gulp.pipelineConfig.brand.dir, brandCode, "less", "framework.build." + brandCode + ".less"),
+                            brandCodeBundleSrcPath = path.join(gulp.pipelineConfig.brand.dir, brandCode, "less", "framework.build." + bundle + "." + brandCode + ".less");
 
-                    gulp.task(brandCodeTask, function () {
-                        return gulp.src([brandSrcPath, buildSrcPath, bootstrapSrcPath, coreSrcPath, bundleSrcPath])
-                            .pipe(less())
-                            .pipe(gulp.dest(gulp.pipelineConfig.target.dir + "/css"));
-                    });
+                        gulp.task(brandCodeTask, function () {
+                            return gulp.src([
+                                    brandCodeSrcPath,
+                                    brandCodeBundleSrcPath
+                                ])
+                                .pipe(less({paths: [gulp.pipelineConfig.build.dir]}))
+                                .pipe(concat(bundle + "." + brandCode + ".css"))
+                                .pipe(gulp.dest(gulp.pipelineConfig.target.dir + "/css"));
+                        });
 
-                    lessTasks.push(brandCodeTask);
+                        lessTasks.push(brandCodeTask);
+                    })(brandCode);
                 }
             })(bundle);
         }
