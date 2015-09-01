@@ -10,7 +10,6 @@
 <%@ attribute name="title" 		required="true"	 rtexprvalue="true"	 description="subject of the select box" %>
 <%@ attribute name="url" 		required="true"	 rtexprvalue="true"	 description="url of import file containing options" %>
 <%@ attribute name="omitPleaseChoose" required="false"	rtexprvalue="true"	 description="should 'please choose' be omitted?" %>
-<%@ attribute name="validateRule" required="false"	rtexprvalue="true"	 description="specify your own validation rule" %>
 <%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
 
 
@@ -25,7 +24,7 @@
 <c:set var="findVal" 	value="value=\"${value}\"" />
 <c:set var="replaceVal" value="value='${value}' selected='selected'" />
 
-<c:if test="${required && validateRule == null}">
+<c:if test="${required}">
 	<c:set var="titleText">
 		<c:choose>
 			<c:when test="${not empty title}">${title}</c:when>
@@ -54,9 +53,3 @@
 		${fn:replace(optionData,findVal,replaceVal)}
 	</select>
 </div>
-
-<%-- VALIDATION --%>
-<c:if test="${validateRule != null}">
-	<go:validate selector="${name}" rule="${validateRule}" parm="${required}" message="Please choose a valid ${title}"/>
-</c:if>
-

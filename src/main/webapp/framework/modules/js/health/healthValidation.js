@@ -108,96 +108,59 @@
         }
     );
 
-})(jQuery);
 
+    /**
+     * Credit Card Validation
+     */
 
-
-
-// similar named function in validationAddress.js
-$.validator.addMethod("matchStates",
-    function (value, element) {
-        return healthApplicationDetails.testStatesParity();
-    },
-    "Health product details, prices and availability are based on the state in which you reside. The postcode entered here does not match the original state provided at the start of the search. If you have made a mistake with the postcode on this page please rectify it before continuing. Otherwise please <a href='#results' class='changeStateAndQuote'>carry out the quote again</a> using this state."
-);
-
-/* Masking sequences */
-
-
-/* Validation for Mastercard credit cards */
-$.validator.addMethod("ccv", function (value, element) {
+    $.validator.addMethod("ccv", function (value, element) {
         var len = $(element).attr('maxlength') || 4;
         var regex = '^\\d{' + len + '}$';
         return value.search(regex) != -1;
-    },
-    $.validator.messages.ccv = 'Please enter a valid CCV number'
-);
+    }, 'Please enter a valid CCV number');
 
-/* Validation for Mastercard credit cards */
-$.validator.addMethod("ccNumberMC",
-    function (value, element) {
-        var regex = '^5[1-5][0-9]{14}$';
-        return String(value.replace(/\s/g, '')).search(regex) != -1;
-        /* Will return true if card passes regex */
-    },
-    $.validator.messages.ccNumberMC = 'Please enter a valid Mastercard card number'
-);
+    var creditCardRules = {
+        "a": new RegExp('^3[47][0-9]{13}$'),
+        "d": new RegExp('^3(?:0[0-5]|[68][0-9])[0-9]{11}$'),
+        "m": new RegExp('^5[1-5][0-9]{14}$'),
+        "v": new RegExp('^4[0-9]{12}(?:[0-9]{3})?$')
+    };
 
-/* Validation for Visa credit cards */
-$.validator.addMethod("ccNumberVisa",
-    function (value, element) {
-        var regex = '^4[0-9]{12}(?:[0-9]{3})?$';
-        return String(value.replace(/\s/g, '')).search(regex) != -1;
-        /* Will return true if card passes regex */
-    },
-    $.validator.messages.ccNumberVisa = 'Please enter a valid Visa card number'
-);
+    //TODO: test if we can change the data-rule init value after its been initialised, so we don't need to add/remove rules.
+    $.validator.addMethod("creditCardNumber", function (value, elem, param) {
 
-/* Validation for Amex credit cards */
-$.validator.addMethod("ccNumberAmex",
-    function (value, element) {
-        var regex = '^3[47][0-9]{13}$';
-        return String(value.replace(/\s/g, '')).search(regex) != -1;
-        /* Will return true if card passes regex */
-    },
-    $.validator.messages.ccNumberAmex = 'Please enter a valid American Express card number'
-);
+            /* Strip non-numeric */
+            value = value.replace(/[^0-9]/g, '');
 
-/* Validation for Diners credit cards */
-$.validator.addMethod("ccNumberDiners",
-    function (value, element) {
-        var regex = '^3(?:0[0-5]|[68][0-9])[0-9]{11}$';
-        return String(value.replace(/\s/g, '')).search(regex) != -1;
-        /* Will return true if card passes regex */
-    },
-    $.validator.messages.ccNumberDiners = 'Please enter a valid Diners Club card number'
-);
+            var message;
+            switch (param.cardType) {
+                case 'm':
+                    message = 'Please enter a valid Mastercard card number';
+                    break;
+                case 'v':
+                    message = 'Please enter a valid Visa card number';
+                    break;
+                case 'a':
+                    message = 'Please enter a valid American Express card number';
+                    break;
+                case 'd':
+                    message = 'Please enter a valid Diners Club card number';
+                    break;
+                default:
+                    $.validator.messages.creditCardNumber = "Please enter a valid credit card number";
+                    return value.length == 16;
+            }
+            $.validator.messages.creditCardNumber = message;
 
-$.validator.addMethod("ccNumber",
-    function (value, elem, parm) {
+            return value.search(creditCardRules[param.cardType]) !== -1;
+        },
+        "Please enter a valid credit card number"
+    );
 
-        /* Strip non-numeric */
-        value = value.replace(/[^0-9]/g, '');
+    $.validator.addMethod("matchStates", function (value, element) {
+            return healthApplicationDetails.testStatesParity();
+        },
+        "Health product details, prices and availability are based on the state in which you reside. The postcode entered here does not match the original state provided at the start of the search. If you have made a mistake with the postcode on this page please rectify it before continuing. Otherwise please <a href='#results' class='changeStateAndQuote'>carry out the quote again</a> using this state."
+    );
 
-        if (value.length == 16) {
-            return true;
-        } else {
-            return false;
-        }
-    },
-    ""
-);
-
-$.validator.addMethod("ccNumber",
-    function (value, elem, parm) {
-
-        /* Strip non-numeric */
-        value = value.replace(/[^0-9]/g, '');
-
-        if (value.length == 16) {
-            return true;
-        } else {
-            return false;
-        }
-    });
-
+})(jQuery);
