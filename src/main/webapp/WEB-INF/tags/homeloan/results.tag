@@ -286,7 +286,6 @@
 	{{ var img = ''; }}
 	{{ if (obj.lender === 'Adelaide Bank') img = 'ADLB'; }}
  	{{ if (obj.lender.indexOf('AFG Home Loans') === 0) img = 'AFG'; }}
-	{{ if (obj.lender === 'AFG Home Loans - Edge') img = 'AFG_GREEN'; }}
 	{{ if (obj.lender === 'AMP Bank') img = 'AMP'; }}
 	{{ if (obj.lender === 'ANZ') img = 'ANZ'; }}
 	{{ if (obj.lender === 'Auswide Bank') img = 'AUSWIDE'; }}
