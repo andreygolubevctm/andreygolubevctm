@@ -26,7 +26,8 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		less = {},
 		clean = {},
 		watch = {},
-		notify = {};
+		notify = {},
+		sprite = {}
 
 	var brand = brandMapping.brandcode; //string we'll get this from the main grunt task
 	var verticals = brandMapping.verticals; //Array we'll get this from the main grunt task
@@ -503,6 +504,43 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 	};
 
 
+//----------------------------------------------------------------------------
+// SPRITE: Grunt Notify - uses growl or snarl - toast popups for grunt events
+//-----------------------------------------------------------------------------
+
+	var getSpriteObject = function(label) {
+		var graphicsFolder = tools.getAssetsPath("graphics/logos/" + label + "/");
+		var lessFolder = tools.getFrameworkPath('modules','less/' + label);
+		return {
+			less_retina:true,
+			src: graphicsFolder + 'src/*.png',
+			dest: graphicsFolder + 'spritesheet.png',
+			imgPath: "../../../" + graphicsFolder + 'spritesheet.png',
+			retinaSrcFilter: graphicsFolder + 'src/' + ['*@2x.png'],
+			retinaDest: graphicsFolder + 'spritesheet@2x.png',
+			retinaImgPath: "../../../" + graphicsFolder + 'spritesheet@2x.png',
+			destCss: lessFolder + 'logos_sprites.less',
+			cssVarMap: function(sprite) {
+				sprite.name = label + '-logo-' + sprite.name;
+			},
+			cssSpritesheetName:label + '-logo',
+			cssRetinaSpritesheetName:label + '-logo-2x',
+			cssOpts: {
+				functions: false,
+				variableNameTransforms: []
+			}
+		}
+	};
+
+	sprite.car = getSpriteObject('car');
+
+	sprite.home = getSpriteObject('home');
+
+	sprite.utilities = getSpriteObject('utilities');
+
+	sprite.travel = getSpriteObject('travel');
+
+
 	/********************************************************************************
 	 * Return dynamic grunt tasks to be loaded in the gruntfile.
 	 */
@@ -520,7 +558,8 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		less: less,
 		clean: clean,
 		watch: watch,
-		notify: notify
+		notify: notify,
+		sprite: sprite
 	}
 
 };

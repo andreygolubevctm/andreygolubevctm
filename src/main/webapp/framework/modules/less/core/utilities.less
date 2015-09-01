@@ -66,6 +66,25 @@
 	}
 }
 
+.highResSpriteImg(@width-1x; @height-1x; @file-1x; @posx-1x; @posy-1x; @bkg-width-1x; @bkg-height-1x; @file-2x; @posx-2x; @posy-2x; @bkg-width-2x; @bkg-height-2x; @only-screen:~"only screen and") {
+	width:@width-1x;
+	height:@height-1x;
+	background-image: url("@{file-1x}");
+	background-size: @bkg-width-1x @bkg-height-1x;
+	background-position: @posx-1x @posy-1x;
+	@media
+	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
+	@only-screen (min--moz-device-pixel-ratio: 1.5),
+	@only-screen (-o-min-device-pixel-ratio: 3/2),
+	@only-screen (min-device-pixel-ratio: 1.5),
+	@only-screen (min-resolution: 1.5dppx),
+	@only-screen (min-resolution: 144dpi) {
+		background-image: url("@{file-2x}");
+		background-size: @bkg-width-2x @bkg-height-2x;
+		background-position: @posx-2x @posy-2x;
+	}
+}
+
 .highResImg(@file-1x; @file-2x; @only-screen:~"only screen and") {
 	background-image: url("@{file-1x}");
 	@media

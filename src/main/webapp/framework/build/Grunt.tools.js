@@ -38,6 +38,11 @@ module.exports = function(grunt,rootOverride){
 			return '' + root + 'framework/' + component + subPath;
 		},
 
+		getAssetsPath: function(subpath,rootOverride) {
+			var root = (typeof rootOverride !== 'undefined') ? '/' : rt;
+			return '' + root + 'assets/' + subpath;
+		},
+
 		componentFolderPath: "framework/modules/js/components",
 
 		writeComponentLess: function(component, brand) {
