@@ -5,11 +5,11 @@
 "use strict";
 
 var less = require("gulp-less"),
-    intercept = require("gulp-intercept"),
     concat = require("gulp-concat"),
     minifyCSS = require("gulp-minify-css"),
     rename = require("gulp-rename"),
     insert = require("gulp-insert"),
+    watchLess = require("gulp-watch-less"),
     path = require("path");
 
 function LessTasks(gulp, bundles) {
@@ -31,10 +31,11 @@ function LessTasks(gulp, bundles) {
                         var targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
 
                         gulp.task(brandCodeTask, function () {
-                            return gulp.src([
-                                    brandCodeBundleSrcPath
-                                ])
+                            return gulp.src(brandCodeBundleSrcPath)
                                 .pipe(insert.prepend("@import '../../build/brand/" + brandCode + "/build.less';\r\n"))
+                                .pipe(watchLess(brandCodeBundleSrcPath, null, function(events, done){
+                                    gulp.start(brandCodeTask, done);
+                                }))
                                 .pipe(less({
                                     paths: [
                                         gulp.pipelineConfig.build.dir + "/../**"
