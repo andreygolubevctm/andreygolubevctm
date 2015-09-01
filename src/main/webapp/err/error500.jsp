@@ -4,13 +4,12 @@
 <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">
     <c:set var="requestUri" value="${requestScope['javax.servlet.forward.request_uri']}" />
-    <go:log source="/err/error500.jsp"
-            level="ERROR"
-            error="${pageContext.exception}">500 Error Page Hit, Request URI: ${requestUri}</go:log>
     <settings:setVertical verticalCode="GENERIC"/>
     <c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
     <c:set var="pageTitle" value="500"/>
-    <go:log source="error500.jsp" level="ERROR">BrandCode: ${brandCode}</go:log>
+</c:catch>
+<c:catch var="error">
+    <go:log source="jsp:err.error500" level="ERROR" error="${pageContext.exception}">Error Page Hit, requestUri=${requestUri} brandCode=${brandCode}</go:log>
 </c:catch>
 
 <c:choose>
