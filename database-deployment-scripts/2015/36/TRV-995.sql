@@ -1,1 +1,1 @@
-UPDATE ctm.country_provider_mapping SET countryValue='IDN' WHERE isoCode='BAL' AND providerid=324;
+UPDATE ctm.country_provider_mapping SET countryvalue='IDN' WHERE isocode='BAL' AND providerid=(SELECT providerid from ctm.provider_master WHERE ProviderCode='GOIN');
