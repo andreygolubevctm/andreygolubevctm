@@ -52,13 +52,13 @@ $(function () {
 	function enterValidDetails() {
 		$emailInput.val(email);
 		$emailInput.change();
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		$password.val(password);
 		$password.change();
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		$confirmationPassword.val(password);
 		$confirmationPassword.change();
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 	}
 
 	QUnit.test( "should validate email", function(assert) {
@@ -72,7 +72,7 @@ $(function () {
 		$password.val('password1');
 		$confirmationPassword.val('password1');
 
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		ok($submitButton.hasClass( "disabled" ), "email button should be disabled");
 	});
 
@@ -85,7 +85,7 @@ $(function () {
 		$password.val('password1');
 		$confirmationPassword.val('password2');
 		$password.change();
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		ok($submitButton.hasClass( "disabled" ), "email button should be disabled");
 
 	});
@@ -95,7 +95,7 @@ $(function () {
 		enterValidDetails();
 
 		// wait for event
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		// mock out send email call
 		var emailSent = false;
 		var data = null;
@@ -104,7 +104,7 @@ $(function () {
 					console.log("post recieved");
 					data = request.data;
 					var result = {
-						transactionId : 100000000,
+						transactionId : 100000000
 					};
 					request.onSuccess(result);
 					request.onComplete(result);
@@ -114,7 +114,7 @@ $(function () {
 		console.log("$submitButton.click()");
 		$submitButton.click();
 		// wait for fake email send
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		ok(emailSent, "email should have been send");
 
 		var returnedEmail = null;

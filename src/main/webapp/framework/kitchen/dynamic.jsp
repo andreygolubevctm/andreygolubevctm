@@ -299,7 +299,7 @@
 	</form_new:row>
 
 	<form_new:row label="password">
-		<field:password xpath="save/password" required="true" title="field:password" minlength="6" onKeyUp="getElementById(\"field_password_test\").innerText=this.value;" />
+		<field:password xpath="save/password" required="true" title="field:password" minLength="6" onKeyUp="getElementById(\"field_password_test\").innerText=this.value;" />
 		<span id="field_password_test" class="help-block">Type password; will appear here</span>
 	</form_new:row>
 
