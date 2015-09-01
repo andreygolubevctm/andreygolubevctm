@@ -178,7 +178,7 @@
 	<field:hidden xpath="${xpath}/streetName" />
 	<field:hidden xpath="${xpath}/streetId" />
 	<field_new:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" additionalAttributes="${suburbAdditionalAttributes}"/>
-	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" attributeInjection="data-rule-validAddress='${name}'" additionalAttributes="${postCodeAdditionalAttributes}" />
+	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" additionalAttributes="${postCodeAdditionalAttributes} data-rule-validAddress='${name}'" />
 	<field:hidden xpath="${xpath}/state" />
 </div>
 

@@ -14,8 +14,4 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<field_new:input pattern="[0-9]*" xpath="${xpath}" className="creditcard_number ${className}" maxlength="21" required="${required}" title="${title}" />
-
-<%-- VALIDATION --%>
-<go:validate selector="${creditcardnumber}" rule="ccNumber" parm="${required}" message="Please enter a valid ${title}"/>
-
+<field_new:input pattern="[0-9]*" xpath="${xpath}" className="creditcard_number ${className}" maxlength="21" required="${required}" title="${title}" additionalAttributes=" data-rule-creditCardNumber='${required}' " />

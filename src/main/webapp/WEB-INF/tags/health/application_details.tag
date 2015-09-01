@@ -95,4 +95,5 @@
 
 <input type="hidden" id="contactPointValue" value="${contactPointValue}"/>
 
-<go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="" />
+<%--
+<go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="" />--%>
