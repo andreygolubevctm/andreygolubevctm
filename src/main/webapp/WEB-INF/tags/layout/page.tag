@@ -94,8 +94,8 @@
 		<!--<![endif]-->
 
 			<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/bootstrap.${pageSettings.getBrandCode()}.min.js?${revision}"></script>
-
-			<script src="${assetUrl}framework/jquery/plugins/jquery.number.js?${revision}"></script>
+		
+			<script src="${assetUrl}framework/jquery/plugins/jquery.number-2.1.5.js?${revision}"></script>
 
 
 		<go:insertmarker format="HTML" name="js-href" />

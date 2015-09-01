@@ -68,7 +68,7 @@ public class ResponseUtils {
         try {
             response.getWriter().print(json.toString());
         } catch (IOException e) {
-            logger.error("{}",e);
+            logger.error("",e);
         }
     }
 }

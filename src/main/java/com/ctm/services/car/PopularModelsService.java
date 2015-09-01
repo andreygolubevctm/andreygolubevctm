@@ -26,7 +26,7 @@ public class PopularModelsService {
 			return lastUpdate;
 
 		} catch (DaoException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 
 			return e.getMessage();
 		}

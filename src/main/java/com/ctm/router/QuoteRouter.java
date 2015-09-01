@@ -79,7 +79,7 @@ public class QuoteRouter extends HttpServlet {
 					writer.print(new JSONObject().toString());
 				}
 			} catch (DaoException | SessionException e) {
-				logger.error("{}",e);
+				logger.error("",e);
 				// Fails silently.
 
 				// Real write quote would need to throw exception

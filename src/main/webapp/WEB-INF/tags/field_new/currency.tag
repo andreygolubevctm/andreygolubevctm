@@ -26,6 +26,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
 <c:if test="${not empty otherElement}">
 	<c:set var="otherElement" value="${go:nameFromXpath(otherElement)}" />
 </c:if>
@@ -73,7 +74,7 @@
 <input type="hidden" name="${name}" id="${name}" value="${value}" class="currency"/>
 <c:set var="validationAttributes">data-rule-currencyrange='{<c:if test="${not empty minValue}">"min": "${minValue}",</c:if><c:if test="${not empty maxValue}">"max": "${maxValue}",</c:if><c:if test="${not empty defaultValue}">"dV": "${defaultValue}",</c:if>"t": "${title}"}' </c:set>
 
-	<field_new:input type="text"
+	<field_new:input type="${inputType}"
 		xpath="${xpath}entry"
 		required="${required}"
 		className="${className}"

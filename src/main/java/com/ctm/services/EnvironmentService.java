@@ -141,7 +141,7 @@ public class EnvironmentService {
 			}
 		}
 		catch (IOException e) {
-			logger.error("{}",e);
+			logger.error("",e);
 		}
 		finally {
 			if (inputStream != null) inputStream.close();

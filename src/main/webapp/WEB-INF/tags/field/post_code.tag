@@ -12,6 +12,7 @@
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+<c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
 
 <c:if test="${required}">
 	<c:set var="requiredAttribute" value=' required="required" data-msg-required="Please enter ${title}"' />
@@ -19,4 +20,4 @@
 
 
 <%-- HTML --%>
-<input type="text"${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4" data-rule-minlength="4" data-msg-minlength="Postcode should be 4 characters long" data-rule-number="true" data-msg-number="Postcode must contain numbers only." ${additionalAttributes} />
+<input type="${inputType}" ${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4" data-rule-minlength="4" data-msg-minlength="Postcode should be 4 characters long" data-rule-number="true" data-msg-number="Postcode must contain numbers only." ${additionalAttributes} />
