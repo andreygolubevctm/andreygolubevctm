@@ -4,6 +4,8 @@
  */
 "use strict";
 
+var path = require("path");
+
 var concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
     rename = require("gulp-rename");
@@ -13,7 +15,7 @@ var concat = require('gulp-concat'),
 
 function JSTasks(gulp, bundles) {
     var taskPrefix = "js:",
-        targetDirectory = gulp.pipelineConfig.target.dir + "/js";
+        targetDirectory = path.join(gulp.pipelineConfig.target.dir, "js");
 
     var bundleTasks = [];
 

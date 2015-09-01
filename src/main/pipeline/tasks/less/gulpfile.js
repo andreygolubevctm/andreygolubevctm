@@ -9,13 +9,12 @@ var less = require("gulp-less"),
     concat = require("gulp-concat"),
     minifyCSS = require("gulp-minify-css"),
     rename = require("gulp-rename"),
+    insert = require("gulp-insert"),
     path = require("path");
 
 function LessTasks(gulp, bundles) {
     var taskPrefix = "less:",
         lessTasks = [];
-
-    var targetDir = gulp.pipelineConfig.target.dir + "/css";
 
     for(var bundle in bundles.collection) {
         if(bundle !== "core") {
@@ -27,26 +26,27 @@ function LessTasks(gulp, bundles) {
 
                     (function(brandCode) {
                         var brandCodeTask = taskPrefix + bundle + ":" + brandCode,
-                            brandCodeSrcPath = path.join(gulp.pipelineConfig.brand.dir, brandCode, "less", "framework.build." + brandCode + ".less"),
-                            brandCodeBundleSrcPath = path.join(gulp.pipelineConfig.brand.dir, brandCode, "less", "framework.build." + bundle + "." + brandCode + ".less");
+                            brandCodeBundleSrcPath = path.join(gulp.pipelineConfig.bundles.dir, bundle, "less", "build.less");
+
+                        var targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
 
                         gulp.task(brandCodeTask, function () {
-                            var fileName = bundle + "." + brandCode;
-
                             return gulp.src([
-                                    brandCodeSrcPath,
                                     brandCodeBundleSrcPath
                                 ])
+                                .pipe(insert.prepend("@import '../../build/brand/" + brandCode + "/build.less';\r\n"))
                                 .pipe(less({
-                                    paths: [gulp.pipelineConfig.build.dir]
+                                    paths: [
+                                        gulp.pipelineConfig.build.dir + "/../**"
+                                    ]
                                 }))
-                                .pipe(concat(fileName + ".css"))
+                                .pipe(concat(bundle + ".css"))
                                 .pipe(gulp.dest(targetDir))
                                 .pipe(minifyCSS({
                                     advanced: true,
                                     aggressiveMerging: true
                                 }))
-                                .pipe(rename(fileName + ".min.css"))
+                                .pipe(rename(bundle + ".min.css"))
                                 .pipe(gulp.dest(targetDir));
                         });
 

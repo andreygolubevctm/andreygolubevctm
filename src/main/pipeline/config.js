@@ -11,7 +11,7 @@ module.exports = {
         entryPoint: "gulpfile.js"
     },
     build: {
-        dir: rootDir + "/../webapp/framework/build"
+        dir: rootDir + "/../webapp/bundles/build"
     },
     brand: {
         dir: rootDir + "/../webapp/brand"
@@ -21,7 +21,7 @@ module.exports = {
         entryPoint: "bundle.json"
     },
     bootstrap: {
-        dir: rootDir + "/../webapp/framework/bootstrap"
+        dir: rootDir + "/../webapp/libraries/bootstrap"
     },
     target: {
         dir: rootDir + "/../webapp/assets"
