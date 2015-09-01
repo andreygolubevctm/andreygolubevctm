@@ -67,7 +67,18 @@ public class ResponseAdapter {
                     }
                 }else if(travelQuote.getService().equals("ZUJI")){
                     planDescription = travelQuote.getProduct().getLongTitle();
-                }else{
+                }else if(travelQuote.getService().equals("WEBJ")) {
+                    planDescription = "Webjet";
+                    switch(request.getPolicyType()) {
+                        case MULTI:
+                            planDescription += " AMT <br>Worldwide <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
+                            break;
+                        case SINGLE:
+                            planDescription += " "+travelQuote.getProduct().getLongTitle();
+                            break;
+                    }
+                }
+                else{
                     planDescription = travelQuote.getProduct().getLongTitle();
                     if(travelQuote.getProduct().getMaxTripDuration() != null && travelQuote.getProduct().getMaxTripDuration() > 0){
                         planDescription += " <span class=\"daysPerTrip\">("+travelQuote.getProduct().getMaxTripDuration()+" days)</span>";
