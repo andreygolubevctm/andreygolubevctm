@@ -7,7 +7,8 @@ import com.ctm.exceptions.ServiceException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.LocalDate;
 import org.json.JSONException;
@@ -16,7 +17,7 @@ import org.json.JSONObject;
 import java.util.*;
 
 public class CarVehicleSelectionService {
-	private static Logger logger = Logger.getLogger(CarVehicleSelectionService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CarVehicleSelectionService.class.getName());
 
 	private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -419,6 +420,17 @@ public class CarVehicleSelectionService {
 			return dao.getGlassesCode(redbookCode, year);
 		} catch (DaoException e) {
 			String message = "Could not get vehicle non standard mappings for redbookCode:" + redbookCode + " year:" + year;
+			logger.error(message, e);
+			throw new ServiceException(message, e);
+		}
+	}
+
+	public static CarProduct getCarProduct(Date date, String productId, int styleCodeId) {
+		CarProductDao dao = new CarProductDao();
+		try {
+			return dao.getCarProduct(date, productId, styleCodeId);
+		} catch (DaoException e) {
+			String message = "Could not get CarProduct for productId:" + productId;
 			logger.error(message, e);
 			throw new ServiceException(message, e);
 		}

@@ -5,8 +5,13 @@
 <jsp:useBean id="unsubscribeService" class="com.ctm.services.UnsubscribeService" scope="request"/>
 
 <c:catch var="error">
+    <%-- #WHITELABEL: support meerkat brand--%>
+    <c:if test="${fn:toUpperCase(param.brand) == 'MEER'}">
+        <c:set var="brandId" value="2"/>
+    </c:if>
+
     <c:set var="unsubscribe"
-           value="${unsubscribeService.getUnsubscribeDetails(param.vertical , fn:substring(param.unsubscribe_email, 0, 256),param.email, false, pageSettings, pageContext.getRequest())}"
+           value="${unsubscribeService.getUnsubscribeDetails(param.vertical , brandId, fn:substring(param.unsubscribe_email, 0, 256),param.email, false, pageSettings, pageContext.getRequest())}"
            scope="session"/>
 
     <%-- #WHITELABEL TODO: support meerkat brand--%>

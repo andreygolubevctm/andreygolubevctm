@@ -90,7 +90,11 @@ public class BlacklistDao {
 				outcome = stmt.executeUpdate();
 			}
 		} catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
+			if (e.getSQLState().equalsIgnoreCase("23000")) {
+				outcome = 0;
+			} else {
+				throw new DaoException(e.getMessage(), e);
+			}
 		} catch (NamingException e) {
 			throw new DaoException(e.getMessage(), e);
 		} finally {

@@ -2,7 +2,8 @@ package com.ctm.services.simples;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.BlacklistDao;
 import com.ctm.exceptions.ConfigSettingException;
@@ -15,7 +16,7 @@ import com.ctm.services.SettingsService;
 import com.ctm.services.StampingService;
 
 public class SimplesBlacklistService {
-	private static final Logger logger = Logger.getLogger(SimplesBlacklistService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimplesBlacklistService.class.getName());
 
 
 
@@ -31,22 +32,23 @@ public class SimplesBlacklistService {
 	 * @throws ConfigSettingException
 	 * @return Success true, otherwise false
 	 */
-	public boolean addToBlacklist(HttpServletRequest request, String channel, String value, String operator, String comment) throws DaoException, ConfigSettingException{
+	public String addToBlacklist(HttpServletRequest request, String channel, String value, String operator, String comment) throws DaoException, ConfigSettingException{
 		BlacklistDao blacklistDao = new BlacklistDao();
 		int styleCodeId = ApplicationService.getBrandFromRequest(request).getId();
-
+		String result = null;
 		try {
 			int outcome = blacklistDao.add(styleCodeId, BlacklistChannel.findByCode(channel), value);
 			if (outcome > 0) {
 				writeBlacklistStamp(request, channel, value, "on", operator, comment);
+				result="success";
 			}else{
-				return false;
+				result="Entry "+ value +" ["+channel+"] already exists.";
 			}
 		} catch (DaoException e) {
-			logger.error("Could not add to blacklist" , e);
-			return false;
+			logger.error("Could not add to blacklist");
+			result=e.getMessage();
 		}
-		return true;
+		return result;
 	}
 
 
@@ -62,23 +64,24 @@ public class SimplesBlacklistService {
 	 * @throws ConfigSettingException
 	 * @return Success true, otherwise false
 	 */
-	public boolean deleteFromBlacklist(HttpServletRequest request, String channel, String value, String operator, String comment) throws DaoException, ConfigSettingException{
+	public String deleteFromBlacklist(HttpServletRequest request, String channel, String value, String operator, String comment) throws DaoException, ConfigSettingException{
 		BlacklistDao blacklistDao = new BlacklistDao();
 		int styleCodeId = ApplicationService.getBrandFromRequest(request).getId();
-
+		String result = null;
 		try {
 			int outcome = blacklistDao.delete(styleCodeId, BlacklistChannel.findByCode(channel), value);
 			if (outcome > 0) {
 				writeBlacklistStamp(request, channel, value, "off", operator, comment);
+				result="success";
 			}else{
-				return false;
+				result="Entry "+ value +" ["+channel+"] does not exist.";
 			}
 		}
 		catch (DaoException e) {
 			logger.error("Could not delete from blacklist" , e);
-			return false;
+			result=e.getMessage();
 		}
-		return true;
+		return result;
 	}
 
 	/**

@@ -16,11 +16,13 @@
 <c:set var="val_optout"				value="N" />
 
 <%-- Vars for competition --%>
+<c:set var="competitionSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
+<c:set var="competitionSecret"><content:get key="competitionSecret"/></c:set>
 <c:set var="competitionEnabled" value="${false}" />
-<c:if test="${competitionEnabledSetting == 'Y'}">
+<c:if test="${competitionEnabledSetting == 'Y' && (competitionSplitTest eq true or competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK')}"> <%--Split test needs to allow previous competition ($1000 promo) to remain active. TODO: Cleanup--%>
 	<c:set var="competitionEnabled" value="${true}" />
-	</c:if>
+</c:if>
 
 <!-- Name is mandatory for both online and callcentre, other fields only mandatory for online -->
 <c:set var="required" value="${true}" />
@@ -73,9 +75,12 @@
 				<%-- COMPETITION START --%>
 				<c:if test="${competitionEnabled == true}">
 					<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
+					<c:if test="${!fn:contains(competitionPreCheckboxContainer, 'health1000promoImage')}">
+						<c:set var="offset_class" value=" no-offset"/>
+					</c:if>
 					<c:if test="${not empty competitionPreCheckboxContainer}">
-					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
-							<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
+					<form_new:row className="competition-optin-group ${offset_class}" hideHelpIconCol="true">
+						<c:out value="${competitionPreCheckboxContainer}" escapeXml="false" />
 					</form_new:row>
 					</c:if>
 					<form_new:row className="competition-optin-group" hideHelpIconCol="true">
@@ -122,6 +127,8 @@
 						title="${termsAndConditions}"
 						errorMsg="Please agree to the Terms &amp; Conditions" />
 				</form_new:row>
+
+				<simples:referral_tracking vertical="health" />
 
 			</form_new:fieldset>
 

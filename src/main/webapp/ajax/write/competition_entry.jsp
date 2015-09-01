@@ -27,15 +27,20 @@
 
 <%-- Param if coming from the health journey  --%>
 <c:choose>
-	<%-- HLT-2221 --%>
-	<c:when test="${not empty param.secret and param.secret == 'C7F9FILY0qe02X98rXCH'}">
-		<c:set var="competition_id" value="${19}" />
-		<c:set var="source" value="MayHealthPromo2015$1000" />
+	<%-- HLT-2470 --%>
+	<c:when test="${not empty param.secret and param.secret == 'vU9CD4NjT3S6p7a83a4t'}">
+		<c:set var="competition_id" value="${26}" />
+		<c:set var="source" value="AugustHealthPromo2015$5000" />
 	</c:when>
 	<%-- HLT-2229 --%>
 	<c:when test="${not empty param.secret and param.secret == 'kSdRdpu5bdM5UkKQ8gsK'}">
 		<c:set var="competition_id" value="${24}" />
 		<c:set var="source" value="AugustHealthPromo2015$1000" />
+	</c:when>
+	<%-- HLT-2221 --%>
+	<c:when test="${not empty param.secret and param.secret == 'C7F9FILY0qe02X98rXCH'}">
+		<c:set var="competition_id" value="${19}" />
+		<c:set var="source" value="MayHealthPromo2015$1000" />
 	</c:when>
 	<%-- PRJWHL-261 YAHOO --%>
 	<c:when test="${not empty param.secret and param.secret == '1NjmJ507mwUnX81Lj96b'}">
@@ -82,6 +87,9 @@
 			<c:when test="${competition_id == '22'}">
 				<c:set var="source" value="Life$1000CashJune2015" />
 			</c:when>
+			<c:when test="${competition_id == '27'}">
+				<c:set var="source" value="Life$5000Cash2015" />
+			</c:when>
 		</c:choose>
 	</c:if>
 </c:if>
@@ -96,6 +104,9 @@
 			</c:when>
 			<c:when test="${competition_id == '21'}">
 				<c:set var="source" value="Energy$1000CashMay2015" />
+			</c:when>
+			<c:when test="${competition_id == '25'}">
+				<c:set var="source" value="Energy$5000CashAug2015" />
 			</c:when>
 		</c:choose>
 	</c:if>

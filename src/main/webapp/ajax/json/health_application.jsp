@@ -260,7 +260,7 @@
 		</x:choose>
 
 				<go:log source="health_application_jsp" level="DEBUG">transactionId : ${tranId}, ${resultXml}</go:log>
-				<go:log level="TRACE" source="health_application_jsp">transactionId : ${tranId}, ${debugXml}</go:log>
+				<go:log level="DEBUG" source="health_application_jsp">transactionId : ${tranId}, ${debugXml}</go:log>
 
 			</c:when>
 			<c:otherwise>

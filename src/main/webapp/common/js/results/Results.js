@@ -163,9 +163,9 @@ Results = {
 				}
 			},
 			render:{
-				templateEngine: 'microTemplate',
+				templateEngine: '_',
 				features: {
-					mode: 'build',
+					mode: 'populate',
 					headers: true,
 					expandRowsOnComparison: true,
 					numberOfXSColumns: 2

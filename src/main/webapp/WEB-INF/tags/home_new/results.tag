@@ -43,7 +43,6 @@
 
 <%-- Get data to build sections/categories/features --%>
 <jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
-<c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('hncams')}" scope="request"  />
 <c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('hncams', 'category')}" scope="request"  />
 <script>
 	var resultLabels = ${jsonString};
@@ -77,11 +76,8 @@
 			</div>
 
 			<%-- Feature headers --%>
-			<div class="featuresList featuresTemplateComponent">
-				<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
-					<features:resultsItem item="${selectedValue}" labelMode="true" index="${status.index}"/>
-				</c:forEach>
-			</div>
+			<features:resultsItemTemplate_labels />
+			<div class="featuresList featuresTemplateComponent"></div>
 		</div>
 
 		<div class="resultsOverflow">
@@ -288,11 +284,7 @@
 </core:js_template>
 
 <%-- FEATURE TEMPLATE --%>
-<core:js_template id="feature-template">
-	<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
-		<features:resultsItem item="${selectedValue}" labelMode="false" index="${status.index}"/>
-	</c:forEach>
-</core:js_template>
+<features:resultsItemTemplate />
 
 <%-- UNAVAILABLE ROW --%>
 <core:js_template id="unavailable-template">

@@ -4,7 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.model.EmailMaster;
@@ -14,7 +15,7 @@ import com.ctm.utils.FormDateUtils;
 
 public class EmailUrlService {
 
-	private static Logger logger = Logger.getLogger(EmailUrlService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(EmailUrlService.class.getName());
 
 	private VerticalType vertical;
 	private String baseUrl;
@@ -99,7 +100,7 @@ public class EmailUrlService {
 		try {
 			email= URLEncoder.encode(email , "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 		return "email=" + email;
 	}
@@ -111,7 +112,7 @@ public class EmailUrlService {
 				// + in the url gets converted to a space an email address will never have a space see http://en.wikipedia.org/wiki/Email_address#RFC_specification
 				email = URLDecoder.decode(email, "UTF-8").replace(" ", "+");
 			} catch (UnsupportedEncodingException e) {
-				logger.error(e);
+				logger.error("",e);
 			}
 		}
 		return email;
