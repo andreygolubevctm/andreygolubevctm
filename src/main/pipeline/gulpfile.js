@@ -7,29 +7,14 @@
 var fs = require("fs"),
     gulp = require("gulp");
 
+var BundlesHelper = require("./helpers/bundlesHelper");
+
 // Inject our config into the gulp object so that
 // we can use it easily in our bundles
 gulp.pipelineConfig = require("./config");
+gulp.bundles = new BundlesHelper(gulp.pipelineConfig);
 
-var BundlesHelper = require("./helpers/bundlesHelper");
-
-var bundles = new BundlesHelper(gulp.pipelineConfig),
-    tasks = {};
-
-// Find our bundles and read their bundle.json configurations
-fs.readdirSync(gulp.pipelineConfig.bundles.dir)
-    .forEach(function(folder) {
-        var bundleJSONPath = [
-                gulp.pipelineConfig.bundles.dir,
-                folder,
-                gulp.pipelineConfig.bundles.entryPoint
-            ].join("/");
-
-        if(fs.existsSync(bundleJSONPath)) {
-            var bundleJSON = fs.readFileSync(bundleJSONPath, "utf8");
-            bundles.addBundle(folder, bundleJSON);
-        }
-    });
+var tasks = {};
 
 // Load in our tasks
 fs.readdirSync(gulp.pipelineConfig.tasks.dir)
@@ -40,7 +25,7 @@ fs.readdirSync(gulp.pipelineConfig.tasks.dir)
                 gulp.pipelineConfig.tasks.entryPoint
             ].join("/");
 
-        tasks[folder] = require(entryPoint)(gulp, bundles);
+        tasks[folder] = require(entryPoint)(gulp);
     });
 
 gulp.task("default", Object.keys(tasks));

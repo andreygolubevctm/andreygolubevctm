@@ -12,7 +12,9 @@ var less = require("gulp-less"),
     watchLess = require("gulp-watch-less"),
     path = require("path");
 
-function LessTasks(gulp, bundles) {
+function LessTasks(gulp) {
+    var bundles = gulp.bundles;
+
     var taskPrefix = "less:",
         lessTasks = [];
 

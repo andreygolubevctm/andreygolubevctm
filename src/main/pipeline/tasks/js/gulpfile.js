@@ -13,7 +13,9 @@ var concat = require('gulp-concat'),
 // TODO: Add .map files
 // TODO: Build .tpl file which includes references to <script src=""></script> for each individual file
 
-function JSTasks(gulp, bundles) {
+function JSTasks(gulp) {
+    var bundles = gulp.bundles;
+
     var taskPrefix = "js:",
         targetDirectory = path.join(gulp.pipelineConfig.target.dir, "js");
 
@@ -22,7 +24,7 @@ function JSTasks(gulp, bundles) {
     // Generic Gulp action
     // - Combine files into single JS and write to target directory
     // - Uglify combined file and write to target directory
-    var gulpAction = function(fileArray, fileName) {
+    var gulpAction = function (fileArray, fileName) {
         return gulp.src(fileArray)
             .pipe(concat(fileName + ".js"))
             .pipe(gulp.dest(targetDirectory))
@@ -32,8 +34,8 @@ function JSTasks(gulp, bundles) {
     };
 
     // Iterate through provided bundles and create build JS tasks for each loaded bundle
-    for(var bundle in bundles.collection) {
-        (function(bundle) {
+    for (var bundle in bundles.collection) {
+        (function (bundle) {
             var bundleTask = taskPrefix + bundle,
                 bundleTaskOnLoad = bundleTask + ":onload",
                 bundleTaskAsync = bundleTask + ":async";
@@ -41,15 +43,15 @@ function JSTasks(gulp, bundles) {
             // Tasks to be run on watch of bundle file change
             var watchTasks = [];
 
-                // Array of dependencies file paths
+            // Array of dependencies file paths
             var dependenciesFileArray = bundles.getDependencyFiles(bundle),
-                // Array of bundle file paths
+            // Array of bundle file paths
                 bundleFileArray = bundles.getBundleFiles(bundle, "js"),
-                // All files living together happily
+            // All files living together happily
                 completeFileArray = dependenciesFileArray.concat(bundleFileArray),
-                // Array of files to be loaded on page load
+            // Array of files to be loaded on page load
                 onLoadFileArray = [],
-                // Array of files to be loaded after page load
+            // Array of files to be loaded after page load
                 deferredFileArray = [];
 
             // Total combined JS (ignoring before/after page load)
@@ -61,9 +63,9 @@ function JSTasks(gulp, bundles) {
             watchTasks.push(bundleTask);
 
             // Look for files that should be included on load and put their paths in the appropriate array
-            for(var i = 0; i < completeFileArray.length; i++) {
+            for (var i = 0; i < completeFileArray.length; i++) {
                 var filePath = completeFileArray[i];
-                if(filePath.match(/(\.onload\.js)/)) {
+                if (filePath.match(/(\.onload\.js)/)) {
                     onLoadFileArray.push(filePath);
                 } else {
                     deferredFileArray.push(filePath);
@@ -71,7 +73,7 @@ function JSTasks(gulp, bundles) {
             }
 
 
-            if(onLoadFileArray.length) {
+            if (onLoadFileArray.length) {
                 // JS loaded on page load
                 gulp.task(bundleTaskOnLoad, function () {
                     var fileName = bundle + ".onload";

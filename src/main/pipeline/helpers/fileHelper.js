@@ -3,7 +3,7 @@ var fs = require("fs"),
 
 var FileHelper = {
     /**
-     * Returns a list of all file paths for a given folder path
+     * Synchronously returns a list of all file paths for a given folder path
      * @param path
      * @returns {*}
      */

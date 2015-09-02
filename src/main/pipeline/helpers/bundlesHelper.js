@@ -1,8 +1,25 @@
+var fs = require("fs"),
+    path = require("path");
+
 var fileHelper = require("./fileHelper");
 
 function Bundles(config) {
     this.config = config;
     this.collection = {};
+
+    var instance = this,
+        config = this.config;
+
+    // Synchronously load in our bundles. This is necessary for gulp to initialise properly without race conditions.
+    fs.readdirSync(config.bundles.dir)
+        .forEach(function(folder) {
+            var bundleJSONPath = path.join(config.bundles.dir, folder, config.bundles.entryPoint);
+
+            if(fs.existsSync(bundleJSONPath)) {
+                var bundleJSON = fs.readFileSync(bundleJSONPath, "utf8");
+                instance.addBundle(folder, bundleJSON);
+            }
+        });
 }
 
 /**
