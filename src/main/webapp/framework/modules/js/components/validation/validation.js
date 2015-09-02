@@ -273,11 +273,13 @@ var validation = false;
          */
         setRequired: function (required, message) {
             return this.each(function () {
+
                 var $el = $(this);
                 $el[0].required = required;
                 $el.prop('required', required);
                 //$el.data('ruleRequired', required);
-                if(message) {
+                //console.log("DEBUG", this, $(this), $(this)[0], $(this)[0].required, $el.prop("required"), $el.attr("required"));
+                if(message && required) {
                     $el.data('msgRequired', message);
                 }
             });

@@ -198,7 +198,15 @@
 		}
 		else {
 			<c:if test="${empty callCentre and required == false}">$('#${contactName}').setRequired(false);</c:if>
-			<c:if test="${not empty callCentre or required}">$('#${contactName}').setRequired(true, 'Please enter name');</c:if>
+			<%-- This rule applies to both call center and non call center users --%>
+			<c:if test="${not empty callCentre or required}">
+				$('#${contactName}').setRequired(true, 'Please enter name');
+			</c:if>
+			<%-- These rules are separate to the callCenter one above as they only apply to non simples uers --%>
+			<c:if test="${required}">
+				contactEmailElement.setRequired(true, 'Please enter your email address');
+				contactMobileElementInput.addRule('requireOneContactNumber', true, 'Please include at least one phone number');
+			</c:if>
 			<c:if test="${required == false}">
 				contactEmailElement.setRequired(false);
 				contactMobileElementInput.removeRule('requireOneContactNumber');
