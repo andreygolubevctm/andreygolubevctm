@@ -146,7 +146,7 @@ Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath) {
     useFullPath = typeof useFullPath !== "undefined" ? useFullPath : true;
     fileType = fileType || "js";
 
-    var fileListCacheKey = bundle + ":" + fileType;
+    var fileListCacheKey = bundle + ":" + fileType + ":" + useFullPath;
 
     if(typeof this.fileListCache[fileListCacheKey] !== "undefined") {
         return this.fileListCache[fileListCacheKey];

@@ -5,7 +5,8 @@
 "use strict";
 
 var fs = require("fs"),
-    gulp = require("gulp");
+    gulp = require("gulp"),
+    path = require("path");
 
 var BundlesHelper = require("./helpers/bundlesHelper");
 
@@ -19,12 +20,7 @@ var tasks = {};
 // Load in our tasks
 fs.readdirSync(gulp.pipelineConfig.tasks.dir)
     .forEach(function(folder) {
-        var entryPoint = [
-                gulp.pipelineConfig.tasks.dir,
-                folder,
-                gulp.pipelineConfig.tasks.entryPoint
-            ].join("/");
-
+        var entryPoint = path.join(gulp.pipelineConfig.tasks.dir, folder, gulp.pipelineConfig.tasks.entryPoint);
         tasks[folder] = require(entryPoint)(gulp);
     });
 
