@@ -33,9 +33,7 @@
 	is added again in the application phase --%>
 <c:if test="${not empty qs_optOutEmailHistory}">
 	<c:forTokens items="${qs_optOutEmailHistory}" delims="," var="email">
-		${logger.info('Questionset Email History Optout: email={}', email)}
-		<c:catch var="error">
-			<agg:write_email
+		<agg:write_email
 				brand="${brand}"
 				vertical="${rootPath}"
 				source="QUOTE"
@@ -43,16 +41,10 @@
 				firstName="${firstname}"
 				lastName="${lastname}"
 				items="marketing=N" />
-		</c:catch>
-		<c:if test="${error}">
-			${logger.warn('Failed to write email with source QUOTE. {}', log:kv('emailAddress', email) , error)}
-		</c:if>
 	</c:forTokens>
 </c:if>
 <c:if test="${not empty app_optOutEmailHistory}">
 	<c:forTokens items="${app_optOutEmailHistory}" delims="," var="email">
-		${logger.info('Application Email History Optout: email={}', email)}
-		<c:catch var="error">
 			<agg:write_email
 				brand="${brand}"
 				vertical="${rootPath}"
@@ -61,18 +53,12 @@
 				firstName="${firstname}"
 				lastName="${lastname}"
 				items="marketing=N" />
-		</c:catch>
-		<c:if test="${error}">
-			${logger.warn('Failed to write email with source QUOTE. {}', log:kv('emailAddress', email) , error)}
-		</c:if>
 	</c:forTokens>
 </c:if>
 
 <%-- 2nd step - Add optins for secondary email fields --%>
 <c:if test="${not empty qs_emailAddressSecondary}">
-	${logger.info('Questionset Secondary Optin: {}', qs_emailAddressSecondary)}
-	<c:catch var="error">
-		<agg:write_email
+	<agg:write_email
 			brand="${brand}"
 			vertical="${rootPath}"
 			source="QUOTE"
@@ -80,15 +66,9 @@
 			firstName="${firstname}"
 			lastName="${lastname}"
 			items="marketing=Y" />
-	</c:catch>
-	<c:if test="${error}">
-		${logger.warn('Failed to write email with source QUOTE. {}', log:kv('emailAddress', qs_emailAddressSecondary) , error)}
-	</c:if>
 </c:if>
 <c:if test="${not empty app_emailAddressSecondary}">
-	${logger.info('Application Secondary Email Optin: app_emailAddressSecondary={}', app_emailAddressSecondary)}
-	<c:catch var="error">
-		<agg:write_email
+	<agg:write_email
 			brand="${brand}"
 			vertical="${rootPath}"
 			source="APPLICATION"
@@ -96,16 +76,10 @@
 			firstName="${firstname}"
 			lastName="${lastname}"
 			items="marketing=Y" />
-	</c:catch>
-	<c:if test="${error}">
-		${logger.warn('Failed to write email with source APPLICATION. {}', log:kv('emailAddress', app_emailAddressSecondary) , error)}
-	</c:if>
 </c:if>
 
 <%-- 3rd step - Add primary email fields --%>
 <c:if test="${not empty qs_emailAddress}">
-	${logger.info('Questionset emailAddress={},marketing={},okToCall={}',qs_emailAddress, qs_optinEmailAddress,qs_okToCall)}
-	<c:catch var="error">
 		<agg:write_email
 			brand="${brand}"
 			vertical="${rootPath}"
@@ -114,15 +88,9 @@
 			firstName="${firstname}"
 			lastName="${lastname}"
 			items="marketing=${qs_optinEmailAddress},okToCall=${qs_okToCall}" />
-	</c:catch>
-	<c:if test="${error}">
-		${logger.warn('Failed to write email with source QUOTE. {}', log:kv('emailAddress', qs_emailAddress) , error)}
-	</c:if>
 </c:if>
 <c:if test="${not empty app_emailAddress}">
-	${logger.info('Application emailAddress=${app_emailAddress},marketing={},okToCall={}', app_emailAddress,app_optinEmailAddress,app_okToCall)}
-	<c:catch var="error">
-		<agg:write_email
+	<agg:write_email
 			brand="${brand}"
 			vertical="${rootPath}"
 			source="APPLICATION"
@@ -130,10 +98,6 @@
 			firstName="${firstname}"
 			lastName="${lastname}"
 			items="marketing=${app_optinEmailAddress},okToCall=${app_okToCall}" />
-	</c:catch>
-	<c:if test="${error}">
-		${logger.warn('Failed to write email. {}', log:kv('emailAddress', app_emailAddress) , error)}
-	</c:if>
 </c:if>
 
 <%-- 4th step - Write phone optins to stamping table --%>

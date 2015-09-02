@@ -116,7 +116,7 @@ ${logger.debug('Got is uid from session. {}', log:kv('isOperator', isOperator))}
 						<jsp:useBean id="searchService" class="com.ctm.services.simples.SimplesSearchService" scope="page" />
 						${searchService.mapResults(findquote , true)}
 
-						${logger.info('TRAN IDS Hot  ={}, TRAN IDS Cold =', searchService.getHotTransactionIdsCsv(), searchService.getColdTransactionIdsCsv())}
+						${logger.debug('TRAN IDS found. {},{}', log:kv('transactionIdsHot', searchService.getHotTransactionIdsCsv()), log:kv('transactionIdsCold',searchService.getColdTransactionIdsCsv() ))}
 						<c:catch var="error">
 						<%-- Added extracting styleCodeId to allow setting branding off transaction --%>
 							<sql:query var="findquote">

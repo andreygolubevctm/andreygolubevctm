@@ -17,7 +17,7 @@ Example of tunneling, whether in Simples or not parent.parent will skip over the
 ]
 
 --%>
-${logger.info('IPP Tunnel being called. ' , log:kv('param.responsecode)',param.responsecode) )}
+${logger.info('IPP Tunnel being called. {}' , log:kv('param.responsecode)',param.responsecode) )}
 <html>
 	<head>
 		<title>IPP Tunnel</title>

@@ -20,7 +20,7 @@
     <c:otherwise>
         <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
         <c:catch var="error">
-            ${logger.info('Request URI: {}, servletPath: {}', requestScope["javax.servlet.forward.request_uri"], pageContext.request.servletPath)}
+            ${logger.info('Page not found. {},{}', log:kv('request_uri', requestScope["javax.servlet.forward.request_uri"]), log:kv('servletPath',pageContext.request.servletPath ))}
 
             <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 

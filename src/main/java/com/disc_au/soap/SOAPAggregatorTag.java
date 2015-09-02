@@ -35,10 +35,10 @@ import com.ctm.web.validation.SchemaValidation;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.services.EnvironmentService.Environment.LOCALHOST;
 import static com.ctm.services.EnvironmentService.Environment.NXI;
 import static com.ctm.services.EnvironmentService.Environment.NXS;
-import static net.logstash.logback.argument.StructuredArguments.kv;
 
 /**
  * The Class SOAPAggregatorTag with WAR compatibility.

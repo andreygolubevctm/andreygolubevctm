@@ -104,7 +104,7 @@
 			<c:set var="sessionId" 		value="${pageContext.session.id}" />
 			<c:set var="status" 		value="" />
 
-			${logger.info('[with id_handler] Found transactionId in db. IDs for Get TransactionID = ipAddress: {}, sessionID = {}',pageContext.request.remoteAddr,pageContext.session.id)}
+			${logger.info('[with id_handler] Found transactionId in db. IDs for Get TransactionID. {},{}',log:kv('ipAddress',ipAddress ),log:kv('requestedTransaction', requestedTransaction))}
 
 				<c:catch var="error">
 					<%-- New Transaction Header using the older values to help populate--%>
@@ -201,7 +201,7 @@
 			</c:choose>
 	</c:when>
 			<c:otherwise>
-				${logger.info('TRANSACTION ID NOT FOUND: \'{}\' EITHER THE TRANSACTION DOES NOT EXIST, OR NOT LINKED WITH THIS BRAND: \'{}\'', requestedTransaction, styleCodeId)}
+				${logger.info('TRANSACTION ID NOT FOUND EITHER THE TRANSACTION DOES NOT EXIST, OR NOT LINKED WITH THIS BRAND. {},{}', log:kv('requestedTransaction',requestedTransaction ), log:kv('styleCodeId',styleCodeId ))}
 				<go:setData dataVar="data" xpath="current" value="*DELETE" />
 			</c:otherwise>
 		</c:choose>
@@ -299,5 +299,5 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-${logger.info("Transaction ID outcome: transactionId={},rootId={},Method={}", data.current.transactionId, data.current.rootId, method)}
+${logger.info("Get transaction id complete. {},{},{}", log:kv('transactionId',data.current.transactionId ), log:kv('rootId', data.current.rootId), log:kv('method',method ))}
 {"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}

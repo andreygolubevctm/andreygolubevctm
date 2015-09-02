@@ -225,7 +225,7 @@
 		<%-- This is a hidden field at the end of the form:form tag. It ensures that we've collected the form contents. --%>
 		<c:when test="${param.transcheck != '1'}">
 			<c:out value="N" />
-			${logger.info('WRITE QUOTE NO, transcheck form element missing touch={}', touch)}
+			${logger.info('WRITE QUOTE NO, transcheck form element missing. {}', log:kv('touch',touch ))}
 		</c:when>
 
 		<c:otherwise>Y</c:otherwise>

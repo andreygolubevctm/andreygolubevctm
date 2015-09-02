@@ -9,7 +9,7 @@
 <%@ attribute name="quoteType" 	required="true" rtexprvalue="true" description="The vertical (Required: will attempt to load the settings file)" %>
 <%@ attribute name="origin"		required="true" rtexprvalue="true" description="Page/Tag where the recovery has been called" %>
 
-${logger.info('core:recover START... quoteType:{} origin:{}', quoteType, origin)}
+${logger.info('core:recover START. {},{}', log:kv('quoteType',quoteType ), log:kv('origin',origin ))}
 
 <c:set var="serverIp"><%
 	String ip = request.getLocalAddr();

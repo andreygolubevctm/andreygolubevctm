@@ -10,7 +10,7 @@
 
 <sql:setDataSource dataSource="jdbc/ctm" />
 
-	${logger.info('Load PendingID:{}, PendingTranID:{}, CallCentre:{}' , token, PendingTranID, callCentre)}
+	${logger.info('Beginning load. {},{},{}' , log:kv('token',token ), log:kv('PendingTranID',PendingTranID ), log:kv('CallCentre',CallCentre ))}
 
 	<c:choose>
 		<c:when test="${empty PendingTranID}">
@@ -108,7 +108,7 @@
 
 <c:choose>
 	<c:when test="${not empty errors}">
-		${logger.info('Load Pending Errors = {}', errors)}
+		${logger.info('Load Pending Errors. {}', log:kv('PendingTranID', PendingTranID), errors)}
 		<c:set var="xmlData">
 			<?xml version="1.0" encoding="UTF-8"?>
 			<data>
