@@ -78,12 +78,13 @@ function LessTasks(gulp) {
                                 .pipe(gulp.dest(targetDir));
                         });
 
-                        lessTasks.push(brandCodeTask);
                         bundleLessTasks.push(brandCodeTask);
                     })(brandCode);
                 }
 
-                gulp.task(taskPrefix + bundle, bundleLessTasks);
+                var bundleTaskName = taskPrefix + bundle;
+                gulp.task(bundleTaskName, bundleLessTasks);
+                lessTasks.push(bundleTaskName);
             })(bundle);
         }
     }
