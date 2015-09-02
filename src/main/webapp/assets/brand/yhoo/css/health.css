@@ -15654,3 +15654,35 @@ body[data-step="payment"].health .healthMoreInfoModel .jeepPromotion {
     background-size: 280px 177px;
   }
 }
+.btn-more-info {
+  background-color: #333333;
+  color: #ffffff;
+}
+.btn-more-info:hover,
+.btn-more-info:focus,
+.btn-more-info.focus {
+  background-color: #ab1d21;
+  color: #ffffff;
+  outline: 0;
+}
+.btn-more-info:active,
+.btn-more-info.active {
+  background-color: #ab1d21;
+  color: #ffffff;
+}
+.btn-close-more-info {
+  background-color: #ab1d21;
+  color: #ffffff;
+}
+.btn-close-more-info:hover,
+.btn-close-more-info:focus,
+.btn-close-more-info.focus {
+  background-color: #771417;
+  color: #ffffff;
+  outline: 0;
+}
+.btn-close-more-info:active,
+.btn-close-more-info.active {
+  background-color: #333333;
+  color: #ffffff;
+}

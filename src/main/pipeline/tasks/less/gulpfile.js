@@ -45,14 +45,12 @@ function LessTasks(gulp) {
                                 // Prepend generic brand build file
                                 .pipe(insert.prepend("@import '../../build/brand/" + brandCode + "/build.less';\r\n"))
                                 // Append brand specific theme less if file exists
-                                .pipe(gulpIf(fs.existsSync(path.join(gulp.pipelineConfig.bundles.dir, bundle, "less", brandThemeFileName)), insert.append("\r\n@import '" + brandThemeFileName + "'")))
+                                .pipe(gulpIf(fs.existsSync(path.join(gulp.pipelineConfig.bundles.dir, bundle, "less", brandThemeFileName)), insert.append("\r\n@import '" + brandThemeFileName + "';")))
                                 .pipe(watchLess(brandCodeBundleSrcPath, null, function(events, done){
                                     gulp.start(brandCodeTask, done);
                                 }))
                                 .pipe(less({
-                                    paths: [
-                                        gulp.pipelineConfig.build.dir + "/../**"
-                                    ]
+                                    paths: [gulp.pipelineConfig.build.dir + "/../**"]
                                 }))
                                 .pipe(concat(bundle + ".css"))
                                 .pipe(gulp.dest(targetDir))
