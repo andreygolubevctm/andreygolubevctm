@@ -15,7 +15,7 @@
 <c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
 
 <c:if test="${required}">
-	<c:set var="requiredAttribute" value=' required="required" data-msg-required="Please enter ${title}"' />
+	<c:set var="requiredAttribute" value=' required data-msg-required="Please enter ${title}"' />
 </c:if>
 
 

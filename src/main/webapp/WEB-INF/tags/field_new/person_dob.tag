@@ -28,7 +28,7 @@
 
 <c:set var="isRequired">
 	<c:if test="${required eq true}">
-	data-rule-required='true'  data-msg-required='Please enter ${fn:escapeXml(title)} date of birth'
+		required data-msg-required='Please enter ${fn:escapeXml(title)} date of birth'
 	</c:if>
 </c:set>
 <c:set var="youngestDOB">
@@ -67,7 +67,7 @@
 		<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="1895-01-01" max="${nowLessAgeMinYears}" data-msg-required="Please enter the ${title} date of birth" placeHolder="DD/MM/YYYY">
 	</div>
 
-	<field_new:validatedHiddenField xpath="${xpath}" className="serialise" additionalAttributes=" ${isRequired} ${additionalAttributes} data-rule-dateEUR='true' data-msg-dateEUR='Please enter a valid date in DD/MM/YYYY format' ${youngestDOB} ${oldestDOB} ${youngRegularDriversAgeCheck}" />
+	<field_new:validatedHiddenField xpath="${xpath}" className="serialise" additionalAttributes=" ${isRequired} ${additionalAttributes} data-rule-dateEUR='true'  ${youngestDOB} ${oldestDOB} ${youngRegularDriversAgeCheck}" />
 </div>
 
 <%-- JAVASCRIPT --%>

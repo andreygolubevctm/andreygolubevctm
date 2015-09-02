@@ -26,4 +26,4 @@
 
 
 <%-- HTML --%>
-<input type="text" class="typeahead ${className}" id="${name}" name="${name}" value="${value}" ${placeHolderAttribute}${requiredAttribute} data-rule-required="true" data-msg-required="Please enter the ${title}" data-source-url="${source}" ${extraDataAttributes} />
+<input type="text" class="typeahead ${className}" id="${name}" name="${name}" value="${value}" ${placeHolderAttribute}${requiredAttribute} data-msg-required="Please enter the ${title}" data-source-url="${source}" ${extraDataAttributes} />

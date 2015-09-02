@@ -20,7 +20,7 @@
         }
 
         return (this.optional(element) !== false) || check;
-    }, "Please enter a date in dd/mm/yyyy format.");
+    }, "Please enter a valid date in DD/MM/YYYY format.");
 
     function getDate(v) {
         var adata = v.split('/');
@@ -99,9 +99,14 @@
         var now = new Date();
         var temp = value.split('/');
         if(String(parseInt(temp[2], 10)).length === 4) {
-            var splitAge = age.split('.');
-            // this is because the variable passed into the param age is dynamically set by health via js
-            var ageDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- window[splitAge[0]][splitAge[1]]) );
+            var ageValue = Number(age);
+            if(isNaN(Number(age))) {
+                var splitAge = age.split('.');
+                ageValue = window[splitAge[0]][splitAge[1]];
+            }
+
+            // this is because the variable passed into the param age is dynamically set by health via js. It can be either an int, or an object string.
+            var ageDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- ageValue) );
 
             if (ageDate > now) {
                 return false;

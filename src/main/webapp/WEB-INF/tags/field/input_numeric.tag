@@ -21,19 +21,16 @@
 
 <%-- VALIDATION --%>
 <c:set var="validationAttributes" value=""/>
-<c:if test="${required == true}">
+<c:if test="${required}">
     <c:set var="validationAttributes"> required<c:if test="${not empty validationMessage}"> data-msg-required="${validationMessage}"</c:if> </c:set>
-    <%--<go:validate selector="${name}" rule="required" parm="${required}" message="${validationMessage}"/>--%>
 </c:if>
 
 <c:if test="${not empty maxValue}">
     <c:set var="validationAttributes">${validationAttributes} data-rule-max="${maxValue}" data-msg-max="The ${title} value cannot be higher than ${maxValue}" </c:set>
-    <%--<go:validate selector="${name}" rule="max" parm="${maxValue}" message="The ${title} value cannot be higher than ${maxValue}"/>--%>
 </c:if>
 
 <c:if test="${not empty minValue}">
     <c:set var="validationAttributes">${validationAttributes} data-rule-min="${minValue}" data-msg-min="The ${title} value cannot be lower than ${minValue}" </c:set>
-    <%--<go:validate selector="${name}" rule="min" parm="${minValue}" message="The ${title} value cannot be lower than ${minValue}"/>--%>
 </c:if>
 
 <%-- HTML --%>

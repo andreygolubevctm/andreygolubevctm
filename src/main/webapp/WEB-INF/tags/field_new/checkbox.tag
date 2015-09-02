@@ -49,7 +49,7 @@
 	</c:set>
 
 	<c:set var="checkboxRule">
-		data-rule-required='true' data-msg-required='${errorMsg}'
+		required data-msg-required='${errorMsg}'
 	</c:set>
 </c:if>
 
