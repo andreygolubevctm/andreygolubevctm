@@ -1,4 +1,10 @@
 {
   "brandCodes": ["ctm", "yhoo"],
-  "jsDependencies": ["core"]
+  "jsDependencies": [
+  	"meerkat", 
+  	"shared/results", 
+  	"shared/compare", 
+  	"shared/features", 
+  	"core"
+  ]
 }

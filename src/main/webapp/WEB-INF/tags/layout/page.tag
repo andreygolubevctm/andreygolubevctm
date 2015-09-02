@@ -250,18 +250,7 @@
 <script type="text/javascript" src="${assetUrl}../framework/jquery/plugins/qtip2/jquery.qtip.min.js" async defer></script>
 
 		<!--  Meerkat -->
-		<script src="${assetUrl}../brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-		<c:choose>
-			<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
-			<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">
-				<script src="${assetUrl}../brand/${pageSettings.getBrandCode()}/js/lmi.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-				<script src="${assetUrl}../brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-			</c:when>
-			<%-- END HACK FOR LMI --%>
-			<c:when test="${pageSettings.getVerticalCode() != 'generic'}">
-				<script src="${assetUrl}../brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-			</c:when>
-		</c:choose>
+		<script src="${assetUrl}js/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 
 		<%-- Additional Meerkat Scripts --%>
 		<jsp:invoke fragment="additional_meerkat_scripts" />

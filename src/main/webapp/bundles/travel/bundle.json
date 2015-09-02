@@ -1,4 +1,8 @@
 {
   "brandCodes": ["ctm"],
-  "jsDependencies": ["core"]
+  "jsDependencies": [
+    "meerkat",
+    "shared/results",
+    "core"
+  ]
 }
