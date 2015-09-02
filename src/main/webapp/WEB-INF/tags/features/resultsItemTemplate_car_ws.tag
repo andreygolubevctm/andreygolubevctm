@@ -26,8 +26,6 @@
     {{ } }}
 {{ } }}
 
-{{ } }}
-
 <%-- PDS buttons --%>
 {{ if (feature.resultPath == 'action.pds') { }}
 {{ pathValue = true }}
