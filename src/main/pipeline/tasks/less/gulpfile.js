@@ -28,6 +28,8 @@ function LessTasks(gulp) {
 
                 var fileList = bundles.getBundleFiles(bundle, "less", false);
 
+                var bundleLessTasks = [];
+
                 for (var i = 0; i < brandCodes.length; i++) {
                     var brandCode = brandCodes[i];
 
@@ -75,8 +77,11 @@ function LessTasks(gulp) {
                         });
 
                         lessTasks.push(brandCodeTask);
+                        bundleLessTasks.push(brandCodeTask);
                     })(brandCode);
                 }
+
+                gulp.task(taskPrefix + bundle, bundleLessTasks);
             })(bundle);
         }
     }
