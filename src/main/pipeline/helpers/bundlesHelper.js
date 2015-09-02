@@ -101,7 +101,7 @@ Bundles.prototype.getJSDependencies = function(bundle) {
  * @param fileType
  * @returns {Array}
  */
-Bundles.prototype.getDependencyFiles = function(bundle, fileType) {
+Bundles.prototype.getJSDependencyFiles = function(bundle, fileType) {
     fileType = fileType || "js";
 
     var dependencies = this.getJSDependencies(bundle),
@@ -124,7 +124,7 @@ Bundles.prototype.getDependencyFiles = function(bundle, fileType) {
  * @param fileType
  * @returns {*|Array}
  */
-Bundles.prototype.getWatchableBundlesFilePaths = function(bundle, fileType) {
+Bundles.prototype.getWatchableBundlesJSFilePaths = function(bundle, fileType) {
     fileType = fileType || "js";
 
     var dependencies = this.getJSDependencies(bundle);
