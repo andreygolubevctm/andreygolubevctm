@@ -93,19 +93,19 @@
         switch (_type) {
             case 'a':
                 $_obj.rules("add", "ccNumberAmex");
-                this._CCVmask($_objCCV, amexMaskCCV);
+                _CCVmask($_objCCV, amexMaskCCV);
                 break;
             case 'v':
                 $_obj.rules("add", "ccNumberVisa");
-                this._CCVmask($_objCCV, visaMaskCCV);
+                _CCVmask($_objCCV, visaMaskCCV);
                 break;
             case 'd':
                 $_obj.rules("add", "ccNumberDiners");
-                this._CCVmask($_objCCV, dinersMaskCCV);
+                _CCVmask($_objCCV, dinersMaskCCV);
                 break;
             case 'm':
                 $_obj.rules("add", "ccNumberMC");
-                this._CCVmask($_objCCV, mcMaskCCV);
+                _CCVmask($_objCCV, mcMaskCCV);
                 break;
             default:
                 return false;
