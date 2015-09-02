@@ -1,5 +1,9 @@
 /**
- * Build Less Tasks
+ * LESS Tasks
+ * Compiles LESS in bundles into CSS with minified versions for specified brand codes
+ * e.g.: `gulp less:health` will compile health's LESS for all brand codes
+ * e.g.: `gulp less:health:ctm` will compile health's LESS for the CTM brand code
+ *
  * @author Christopher Dingli <christopher.dingli@comparethemarket.com.au>
  */
 "use strict";
@@ -11,7 +15,6 @@ var less = require("gulp-less"),
     insert = require("gulp-insert"),
     watchLess = require("gulp-watch-less"),
     gulpIf = require("gulp-if"),
-    intercept = require("gulp-intercept"),
     fs = require("fs"),
     path = require("path");
 

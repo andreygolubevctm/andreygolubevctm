@@ -66,7 +66,9 @@
 	<%-- Disable session_pop on new journeys --%>
 	<c:set var="sessionPop" value="${false}" />
 
-		<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
+			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		</c:if>
 
 		<%--  Modernizr --%>
 		<script src='${assetUrl}../framework/lib/js/modernizr-2.8.3.min.js'></script>
@@ -250,7 +252,9 @@
 <script type="text/javascript" src="${assetUrl}../framework/jquery/plugins/qtip2/jquery.qtip.min.js" async defer></script>
 
 		<!--  Meerkat -->
-		<script src="${assetUrl}js/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
+			<script src="${assetUrl}js/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+		</c:if>
 
 		<%-- Additional Meerkat Scripts --%>
 		<jsp:invoke fragment="additional_meerkat_scripts" />

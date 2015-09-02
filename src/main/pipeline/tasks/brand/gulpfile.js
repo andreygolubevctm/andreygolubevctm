@@ -1,3 +1,10 @@
+/**
+ * Brand Tasks
+ * Runs tasks for a given brand
+ * e.g.: `gulp brand:ctm` will run all tasks related to the CTM brand
+ *
+ * @author Christopher Dingli <christopher.dingli@comparethemarket.com.au>
+ */
 function BrandTasks(gulp) {
     var bundles = gulp.bundles;
 

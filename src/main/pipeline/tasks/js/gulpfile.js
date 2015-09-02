@@ -1,5 +1,8 @@
 /**
- * Build JS Tasks
+ * JS Tasks
+ * Compiles a bundle's JS with a minified version
+ * e.g.: `gulp js:health` will compile the health bundle's JS
+ *
  * @author Christopher Dingli <christopher.dingli@comparethemarket.com.au>
  */
 "use strict";

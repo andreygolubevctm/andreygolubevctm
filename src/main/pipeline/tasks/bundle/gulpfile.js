@@ -1,3 +1,10 @@
+/**
+ * Bundle Tasks
+ * Helper task for grouping tasks by bundle
+ * e.g.: `gulp bundle:health` will run all health related bundle tasks
+ *
+ * @author Christopher Dingli <christopher.dingli@comparethemarket.com.au>
+ */
 function BundleTasks(gulp) {
     var bundles = gulp.bundles,
         bundlesCollection = bundles.collection;
