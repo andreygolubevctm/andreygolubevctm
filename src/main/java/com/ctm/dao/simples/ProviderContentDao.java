@@ -9,7 +9,8 @@ import com.ctm.helper.simples.ProviderContentHelper;
 import com.ctm.model.ProviderContent;
 import com.ctm.model.ProviderContentType;
 import com.ctm.utils.common.utils.DateUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ProviderContentDao {
-    private final static Logger logger = Logger.getLogger(ProviderContentDao.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(ProviderContentDao.class.getName());
     private final ProviderContentHelper helper = new ProviderContentHelper();
     private final SqlDao sqlDao = new SqlDao();
 
