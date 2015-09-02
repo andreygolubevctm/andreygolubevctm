@@ -53,10 +53,9 @@ set: function () {
 		</c:set>
 		$('head').append('<c:out value="${html}" escapeXml="false" />');
 		<%-- Previous fund authority --%>
-		$('#health_previousfund_primary_authority').rules('add', {required: true, messages: {required: 'CTM requires authorisation to contact your previous fund'}});
-		$('#health_previousfund_partner_authority').rules('add', {required: true, messages: {required: 'CTM requires authorisation to contact your partner\'s previous fund'}});
-		$('#health_previousfund_primary_memberID').attr('maxlength', '10');
-		$('#health_previousfund_partner_memberID').attr('maxlength', '10');
+		$('#health_previousfund_primary_authority').setRequired(true, 'CTM requires authorisation to contact your previous fund');
+		$('#health_previousfund_partner_authority').setRequired(true, 'CTM requires authorisation to contact your partner\'s previous fund');
+		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
 		healthFunds._previousfund_authority(true);
 
 		<%--dependant definition--%>
@@ -98,7 +97,7 @@ set: function () {
 			$.extend(healthDependents.config, { 'school': true, 'schoolMin': 23, 'schoolMax': 25, 'schoolID': true, 'schoolIDMandatory': true, 'schoolDate': true, 'schoolDateMandatory': true });
 
 			<%--School list--%>
-			var instituteElement =  '<select>
+			var instituteElement = '<select>
 				<option value="">Please choose...</option>
 				<c:import url="/WEB-INF/option_data/educationalInstitute.html" />
 			</select>';
@@ -106,13 +105,7 @@ set: function () {
 				var name = $(this).find('input').attr('name');
 				var id = $(this).find('input').attr('id');
 				$(this).append(instituteElement);
-				$(this).find('select').attr('name', name).attr('id', id + 'select');
-				$(this).find('select').rules('add', {
-						required: true,
-						messages: {
-							required: 'Please select dependant '+(i+1)+'\'s educational institute'
-							}
-						});
+				$(this).find('select').attr('name', name).attr('id', id + 'select').setRequired(true, 'Please select dependant '+(i+1)+'\'s educational institute');
 				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
 			});
 			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
@@ -131,8 +124,8 @@ set: function () {
 		dob_health_application_primary_dob.ageMax = 99;
 		dob_health_application_partner_dob.ageMax = 99;
 
-		$("#applicationForm_1").validate().settings.messages.health_application_primary_dob.max_DateOfBirth = "primary applicant's age cannot be over 99";
-		$("#applicationForm_1").validate().settings.messages.health_application_partner_dob.max_DateOfBirth = "applicant's partner's age cannot be over 99";
+		$('#health_application_primary_dob').addRule('oldestDOB', dob_health_application_primary_dob.ageMax, "primary applicant's age cannot be over 99");
+		$('#health_application_partner_dob').addRule('oldestDOB', dob_health_application_partner_dob.ageMax, "applicant's partner's age cannot be over 99");
 
 		healthFunds._medicareCoveredText = $('#medicareCoveredRow .control-label').text();
 		$('#medicareCoveredRow .control-label').text('Are all people to be included on this policy covered by a green Medicare card?');
@@ -165,14 +158,13 @@ set: function () {
 		healthFunds._reset();
 
 		healthFunds._previousfund_authority(false);
-		$('#health_previousfund_primary_authority').rules('remove', 'required');
-		$('#health_previousfund_partner_authority').rules('remove', 'required');
+		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
 
 		dob_health_application_primary_dob.ageMax = 120;
 		dob_health_application_partner_dob.ageMax = 120;
 
-		$("#applicationForm_1").validate().settings.messages.health_application_primary_dob.max_DateOfBirth = "primary applicant's age cannot be over 120";
-		$("#applicationForm_1").validate().settings.messages.health_application_partner_dob.max_DateOfBirth = "applicant's partner's age cannot be over 120";
+		$('#health_application_primary_dob').addRule('oldestDOB', dob_health_application_primary_dob.ageMax, "primary applicant's age cannot be over 120");
+		$('#health_application_partner_dob').addRule('oldestDOB', dob_health_application_partner_dob.ageMax, "applicant's partner's age cannot be over 120");
 
 		<c:if test="${data.health.situation.healthCvr == 'F' || data.health.situation.healthCvr == 'SPF' }">
 			$('.health_dependant_details_schoolGroup select').remove();

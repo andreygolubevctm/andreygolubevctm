@@ -276,8 +276,13 @@ var validation = false;
 
                 var $el = $(this);
                 $el[0].required = required;
-                $el.prop('required', required);
-                //$el.data('ruleRequired', required);
+                //$el.prop('required', required); ??
+                // For safety, lets remove or add attributes as well... (unless this is going to double up...?)
+                if(!required) {
+                    $el.removeAttr('required');
+                } else {
+                    $el.attr('required', 'required');
+                }
                 //console.log("DEBUG", this, $(this), $(this)[0], $(this)[0].required, $el.prop("required"), $el.attr("required"));
                 if(message && required) {
                     $el.data('msgRequired', message);

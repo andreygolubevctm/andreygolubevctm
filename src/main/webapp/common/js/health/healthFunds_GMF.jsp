@@ -40,8 +40,8 @@ var healthFunds_GMF = {
 		healthDependents.config = { 'school': false, 'defacto': true, 'defactoMin': 21, 'defactoMax': 24 };
 
 		<%-- fund ID's become optional --%>
-		$('#clientMemberID input').rules("remove", "required");
-		$('#partnerMemberID input').rules("remove", "required");
+		$('#clientMemberID').find('input').setRequired(false);
+		$('#partnerMemberID').find('input').setRequired(false);
 
 		<%-- medicare message - once a medicare number has been added - show the message (or if prefilled show the message) --%>
 		healthFunds_GMF.$_medicareMessage = $('#health_medicareDetails_message');

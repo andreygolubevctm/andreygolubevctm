@@ -25,8 +25,8 @@ var healthFunds_NIB = {
         healthDependents.config = { 'school':true, 'defacto':false, 'schoolMin':21, 'schoolMax':24 };
 
         <%--fund ID's become optional--%>
-        $('#clientMemberID input').rules("remove", "required");
-        $('#partnerMemberID input').rules("remove", "required");
+        $('#clientMemberID').find('input').setRequired(false);
+        $('#partnerMemberID').find('input').setRequired(false);
         healthFunds._previousfund_authority(true);
 
         <%--calendar for start cover--%>
@@ -92,10 +92,8 @@ var healthFunds_NIB = {
     unset: function(){
         $('#update-premium').off('click.NIB');
 
-        $("#health_application_email").prop('required', true);
-        $("#health_application_email").prop('disabled', false);
-        $("#health_application_contactPoint_E").prop('disabled', false);
-        $("#health_application_contactPoint_E").parents('.btn-form-inverse').attr('disabled',false);
+        $("#health_application_email").setRequired(true).prop('disabled', false);
+        $("#health_application_contactPoint_E").prop('disabled', false).parents('.btn-form-inverse').attr('disabled',false);
 
         $('#health_application_no_email').off('click.NIB');
         healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);

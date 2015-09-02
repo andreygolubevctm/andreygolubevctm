@@ -106,13 +106,12 @@ var healthFunds_CBH = {
 
 			$('#health_application').prepend('<c:out value="${html}" escapeXml="false" />');
 
-			$.validator.addMethod("validateCBHEligibility",
-				function(value, element) {
+			$.validator.addMethod("validateCBHEligibility", function(value, element) {
 					return !$("#cbh_ineligible").is(":visible");
 				}
 			);
 
-			$('#health_application_cbh_currentemployee').rules('add', {validateCBHEligibility:true});
+			$('#health_application_cbh_currentemployee').addRule("validateCBHEligibility");
 
 			$('#cbh_eligibility .cbhsub, #cbh_formeremployee, #cbh_familymember, #cbh_ineligible').hide();
 
@@ -220,8 +219,8 @@ var healthFunds_CBH = {
 			}
 
 			<%-- Fund IDs become optional --%>
-			$('#clientMemberID input').rules('remove', 'required');
-			$('#partnerMemberID input').rules('remove', 'required');
+			$('#clientMemberID').find('input').setRequired(false);
+			$('#partnerMemberID').find('input').setRequired(false);
 
 			<%-- Partner authority --%>
 			healthFunds._partner_authority(true);
