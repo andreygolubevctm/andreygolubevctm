@@ -510,9 +510,9 @@
 		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
 			$("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
 		}
-
+		var verticalToUse = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote ? 'hncamsws_' : 'hncams';
 		// Fetch results
-		meerkat.modules.resultsFeatures.fetchStructure('hncams').done(function() {
+		meerkat.modules.resultsFeatures.fetchStructure(verticalToUse).done(function() {
 			Results.get();
 		});
 	}
