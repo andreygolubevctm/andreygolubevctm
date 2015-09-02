@@ -1,0 +1,74 @@
+package com.ctm.model.health.form;
+
+public class Application {
+
+    private Address address;
+
+    private Postal postal;
+
+    private String mobile;
+
+    private String other;
+
+    private String optInEmail;
+
+    private String productTitle;
+
+    private String productId;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Postal getPostal() {
+        return postal;
+    }
+
+    public void setPostal(Postal postal) {
+        this.postal = postal;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
+    }
+
+    public String getOptInEmail() {
+        return optInEmail;
+    }
+
+    public void setOptInEmail(String optInEmail) {
+        this.optInEmail = optInEmail;
+    }
+
+    public String getProductTitle() {
+        return productTitle;
+    }
+
+    public void setProductTitle(String productTitle) {
+        this.productTitle = productTitle;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+}

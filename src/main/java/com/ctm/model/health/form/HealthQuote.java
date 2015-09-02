@@ -1,0 +1,154 @@
+package com.ctm.model.health.form;
+
+public class HealthQuote {
+
+    private Application application;
+
+    private Benefits benefits;
+
+    private Double rebate;
+
+    private Double rebateChangeover;
+
+    private Integer loading;
+
+    private Integer primaryCAE;
+
+    private Integer partnerCAE;
+
+    private Situation situation;
+
+    private HealthCover healthCover;
+
+    private ContactDetails contactDetails;
+
+    private String privacyoptin;
+
+    private String showAll;
+
+    private String onResultsPage;
+
+    private String excess;
+
+    private Filter filter;
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
+    }
+
+    public Benefits getBenefits() {
+        return benefits;
+    }
+
+    public void setBenefits(Benefits benefits) {
+        this.benefits = benefits;
+    }
+
+    public Double getRebate() {
+        return rebate;
+    }
+
+    public void setRebate(Double rebate) {
+        this.rebate = rebate;
+    }
+
+    public Double getRebateChangeover() {
+        return rebateChangeover;
+    }
+
+    public void setRebateChangeover(Double rebateChangeover) {
+        this.rebateChangeover = rebateChangeover;
+    }
+
+    public Integer getLoading() {
+        return loading;
+    }
+
+    public void setLoading(Integer loading) {
+        this.loading = loading;
+    }
+
+    public Integer getPrimaryCAE() {
+        return primaryCAE;
+    }
+
+    public void setPrimaryCAE(Integer primaryCAE) {
+        this.primaryCAE = primaryCAE;
+    }
+
+    public Integer getPartnerCAE() {
+        return partnerCAE;
+    }
+
+    public void setPartnerCAE(Integer partnerCAE) {
+        this.partnerCAE = partnerCAE;
+    }
+
+    public Situation getSituation() {
+        return situation;
+    }
+
+    public void setSituation(Situation situation) {
+        this.situation = situation;
+    }
+
+    public HealthCover getHealthCover() {
+        return healthCover;
+    }
+
+    public void setHealthCover(HealthCover healthCover) {
+        this.healthCover = healthCover;
+    }
+
+    public ContactDetails getContactDetails() {
+        return contactDetails;
+    }
+
+    public void setContactDetails(ContactDetails contactDetails) {
+        this.contactDetails = contactDetails;
+    }
+
+    public String getPrivacyoptin() {
+        return privacyoptin;
+    }
+
+    public void setPrivacyoptin(String privacyoptin) {
+        this.privacyoptin = privacyoptin;
+    }
+
+    public String getShowAll() {
+        return showAll;
+    }
+
+    public void setShowAll(String showAll) {
+        this.showAll = showAll;
+    }
+
+    public String getOnResultsPage() {
+        return onResultsPage;
+    }
+
+    public void setOnResultsPage(String onResultsPage) {
+        this.onResultsPage = onResultsPage;
+    }
+
+    public String getExcess() {
+        return excess;
+    }
+
+    public void setExcess(String excess) {
+        this.excess = excess;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
+    }
+}

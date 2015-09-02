@@ -30,6 +30,7 @@
 <%-- The following are hidden fields set by filters --%>
 <field:hidden xpath="health/excess" defaultValue="4" />
 <field:hidden xpath="health/filter/providerExclude" />
+<field:hidden xpath="health/filter/providerInclude" />
 <field:hidden xpath="health/filter/priceMin" defaultValue="0" />
 <field:hidden xpath="health/filter/frequency" defaultValue="M" />
 <field:hidden xpath="health/fundData/hospitalPDF" defaultValue=""/>
