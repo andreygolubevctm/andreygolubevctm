@@ -7,14 +7,13 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ctm.cache.ApplicationCacheManager;
+import com.ctm.cache.ContentControlCache;
 import com.ctm.dao.ContentDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.content.Content;
 import com.ctm.model.settings.PageSettings;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -22,8 +21,7 @@ public class ContentService {
 
     private static Logger logger = Logger.getLogger(ContentService.class.getName());
 	private static ContentService contentService = new ContentService();
-    private static final CacheManager cacheManager = CacheManager.newInstance();
-    private static Ehcache contentControlCache;
+
 
     /**
      * Returns the value of the content key (as a string) this is the one that should be called by the JSP page.
@@ -128,18 +126,14 @@ public class ContentService {
         String cacheKey = contentKey+"_"+brandId+"_"+verticalId+"_"+includeSupplementary;
         Content content = null;
 
-        initCache();
+        ContentControlCache contentControlCache = ApplicationCacheManager.getContentControlCache();
 
         if(contentControlCache.isKeyInCache(cacheKey)) {
-            logger.info("IN CACHE "+cacheKey);
-            Element ele = contentControlCache.get(cacheKey);
-            content = (Content) ele.getObjectValue();
+            content = (Content) contentControlCache.get(cacheKey);
         }else{
-            logger.info("LOAD FROM DB "+cacheKey);
             ContentDao contentDao = new ContentDao();
             content = contentDao.getByKey(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
-
-            contentControlCache.put(new Element(cacheKey, content));
+            contentControlCache.put(cacheKey, content);
         }
 
 
@@ -184,13 +178,5 @@ public class ContentService {
 
 	}
 
-    /**
-     *
-     */
-    public static void initCache(){
-        if(contentControlCache == null) {
-            contentControlCache = cacheManager.getCache("contentControlCache");
-        }
-    }
 
 }
