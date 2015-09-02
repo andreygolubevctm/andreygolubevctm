@@ -47,7 +47,7 @@
 	</c:if>
 	<form_new:row fieldXpath="${fieldXpath}" label="Street Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
 		<c:set var="placeholder" value="e.g. 5/20 Sample St" />
-		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address" placeHolder="${placeholder}" required="false" additionalAttributes=" data-rule-validAutofilllessSearch='${name}' "/>
+		<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address" placeHolder="${placeholder}" required="false" additionalAttributes=" data-rule-validAutofilllessSearch='${name}' data-msg-validAutofilllessSearch='Please select a valid address' "/>
 	</form_new:row>
 
 	<%-- POSTCODE --%>
@@ -112,7 +112,7 @@
 	<%-- STREET NAME --%>
 	<c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
 	<form_new:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStdFieldRow">
-		<field_new:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes=" data-rule-validAddress='${name}' " />
+		<field_new:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' " />
 	</form_new:row>
 
 	<%-- STREET NUMBER --%>
@@ -124,14 +124,7 @@
 
 	<form_new:row fieldXpath="${fieldXpath}" label="${streetNoLabel}" id="${name}_streetNumRow" className="${name}_nonStdFieldRow">
 		<div class="${name}_streetNum_container">
-			<c:choose>
-				<c:when test="${isPostal}">
-					<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false"  />
-				</c:when>
-				<c:otherwise>
-					<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" />
-				</c:otherwise>
-			</c:choose>
+			<field_new:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid street number'" />
 		</div>
 	</form_new:row>
 
@@ -178,7 +171,7 @@
 	<field:hidden xpath="${xpath}/streetName" />
 	<field:hidden xpath="${xpath}/streetId" />
 	<field_new:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" additionalAttributes="${suburbAdditionalAttributes}"/>
-	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" additionalAttributes="${postCodeAdditionalAttributes} data-rule-validAddress='${name}'" />
+	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" additionalAttributes="${postCodeAdditionalAttributes} data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode'" />
 	<field:hidden xpath="${xpath}/state" />
 </div>
 
