@@ -414,8 +414,9 @@
 	function get() {
 		// Reset page number
 		$('#homeloan_results_pageNumber').val('1');
-
-		Results.get();
+		meerkat.modules.resultsFeatures.fetchStructure('hmlams').done(function() {
+			Results.get();
+		});
 	}
 
 

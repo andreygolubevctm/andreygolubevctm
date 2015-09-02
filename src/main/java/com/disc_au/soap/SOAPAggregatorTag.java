@@ -24,7 +24,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import com.ctm.services.EnvironmentService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import com.ctm.model.settings.SoapAggregatorConfiguration;
@@ -47,7 +48,7 @@ import static com.ctm.services.EnvironmentService.Environment.NXS;
 @SuppressWarnings("serial")
 public class SOAPAggregatorTag extends TagSupport {
 
-	Logger logger = Logger.getLogger(SOAPAggregatorTag.class.getName());
+	Logger logger = LoggerFactory.getLogger(SOAPAggregatorTag.class.getName());
 
 	private SoapAggregatorConfiguration configuration;
 	private String configDbKey;
@@ -154,7 +155,7 @@ public class SOAPAggregatorTag extends TagSupport {
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
-						logger.error(e);
+						logger.error("",e);
 				}
 			}
 
@@ -223,7 +224,7 @@ public class SOAPAggregatorTag extends TagSupport {
 			}
 
 		} catch (IOException e) {
-					logger.error(e);
+					logger.error("",e);
 		}
 		}
 			return super.doEndTag();
@@ -357,7 +358,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 			return parser.parse(resultXML.toString());
 		} catch (TransformerException | SAXException e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 		return resultNode;
 	}

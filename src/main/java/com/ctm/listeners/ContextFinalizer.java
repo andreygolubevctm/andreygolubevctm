@@ -5,7 +5,8 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.elasticsearch.AddressSearchService;
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,7 @@ import java.util.Properties;
 @WebListener()
 public class ContextFinalizer implements ServletContextListener {
 
-	Logger logger = Logger.getLogger(ContextFinalizer.class.getName());
+	Logger logger = LoggerFactory.getLogger(ContextFinalizer.class.getName());
 
 	public void contextInitialized(ServletContextEvent sce) {
 
@@ -58,7 +59,7 @@ public class ContextFinalizer implements ServletContextListener {
 			AddressSearchService.init();
 		}
 		catch (Exception e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 
 	}
@@ -84,7 +85,7 @@ public class ContextFinalizer implements ServletContextListener {
 		try {
 			AbandonedConnectionCleanupThread.shutdown();
 		} catch (InterruptedException e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 
 

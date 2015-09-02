@@ -4,14 +4,15 @@ import com.ctm.dao.FatalErrorDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.FatalError;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Used to log errors to the database
  */
 public class FatalErrorService {
 
-	private static Logger logger = Logger.getLogger(FatalErrorService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(FatalErrorService.class.getName());
 	public String sessionId;
 	public String page;
 	public int styleCodeId;
@@ -70,7 +71,7 @@ public class FatalErrorService {
 		try {
 			fatalErrorDao.add(fatalError);
 		} catch (DaoException e) {
-			logger.fatal("cannot log to fatal error table" , e);
+			logger.error("cannot log to fatal error table" , e);
 		}
 	}
 

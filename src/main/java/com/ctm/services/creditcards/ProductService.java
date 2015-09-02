@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.ProductDao;
 import com.ctm.exceptions.ConfigSettingException;
@@ -22,7 +23,7 @@ public class ProductService {
 		productDao = new ProductDao();
 	}
 
-	private static Logger logger = Logger.getLogger(ProductService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ProductService.class.getName());
 	private ProductDao productDao;
 
 	public void setProductDao(ProductDao productDao) {

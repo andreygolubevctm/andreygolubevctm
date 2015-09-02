@@ -97,7 +97,7 @@
 
 			<script src="${assetUrl}framework/jquery/plugins/jquery.validate-1.11.1.js"></script>
 
-			<script src="${assetUrl}framework/jquery/plugins/jquery.number.js?${revision}"></script>
+			<script src="${assetUrl}framework/jquery/plugins/jquery.number-2.1.5.js?${revision}"></script>
 
 
 		<go:insertmarker format="HTML" name="js-href" />

@@ -29,6 +29,7 @@ public class TravelResult extends Result {
     private ArrayList<Benefit> benefits;
     private ArrayList<ExemptedBenefit> exemptedBenefits;
     private Info info;
+    private Boolean isDomestic;
 
     public TravelResult(){
         benefits = new ArrayList<Benefit>();
@@ -179,7 +180,8 @@ public class TravelResult extends Result {
         this.exemptedBenefits = exemptedBenefits;
     }
 
-
+    public Boolean getIsDomestic() { return isDomestic; }
+    public void setIsDomestic(Boolean isDomestic) { this.isDomestic = isDomestic; }
 
     public Info getInfo() {
         return info;

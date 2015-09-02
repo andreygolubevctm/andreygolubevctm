@@ -16,7 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.exceptions.UploaderException;
@@ -47,7 +48,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 		"/creditcards/products/import",
 })
 public class CreditCardsRouter extends HttpServlet {
-	private static Logger logger = Logger.getLogger(CreditCardsRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CreditCardsRouter.class.getName());
 	private static final long serialVersionUID = 70L;
 
 	@Override
@@ -198,7 +199,7 @@ public class CreditCardsRouter extends HttpServlet {
 
 
 			} catch (UploaderException e) {
-				logger.error(e);
+				logger.error("",e);
 			}
 		}
 	}
