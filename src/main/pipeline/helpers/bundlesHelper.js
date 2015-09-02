@@ -6,6 +6,7 @@ var fileHelper = require("./fileHelper");
 function Bundles(config) {
     this.config = config;
     this.collection = {};
+    this.fileListCache = {};
 
     var instance = this,
         config = this.config;
@@ -137,7 +138,6 @@ Bundles.prototype.getWatchableBundlesFilePaths = function(bundle, fileType) {
 
 /**
  * Gets a list of files for a specified bundle
- * @TODO Cache the response values so we aren't doing a lookup each time we use this
  * @param bundle
  * @param fileType
  * @returns {*}
@@ -145,13 +145,15 @@ Bundles.prototype.getWatchableBundlesFilePaths = function(bundle, fileType) {
 Bundles.prototype.getBundleFiles = function(bundle, fileType) {
     fileType = fileType || "js";
 
-    var path = [
-            this.config.bundles.dir,
-            bundle,
-            fileType
-        ].join("/");
+    var fileListCacheKey = bundle + ":" + fileType;
 
-    return fileHelper.getFilesFromFolderPath(path);
+    if(typeof this.fileListCache[fileListCacheKey] !== "undefined") {
+        return this.fileListCache[fileListCacheKey];
+    } else {
+        var filePath = path.join(this.config.bundles.dir, bundle, fileType);
+        this.fileListCache[fileListCacheKey] = fileHelper.getFilesFromFolderPath(filePath)
+        return this.fileListCache[fileListCacheKey];
+    }
 };
 
 module.exports = Bundles;
