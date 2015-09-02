@@ -192,22 +192,16 @@
 	<%-- COMPETITION START --%>
 	$('#health_contactDetails_competition_optin').on('change', function() {
 		if ($(this).is(':checked')) {
-			$('#${contactName}').rules('add', {required:true, messages:{required:'Please enter your name to be eligible for the competition'}});
-			contactEmailElement.rules('add', {required:true, messages:{required:'Please enter your email address to be eligible for the competition'}});
-
-				contactMobileElementInput.rules('add', {
-					requireOneContactNumber:true,
-					messages:{
-						requireOneContactNumber:'Please enter your phone number to be eligible for the competition'
-					}
-				});
+			$('#${contactName}').setRequired(true, 'Please enter your name to be eligible for the competition');
+			contactEmailElement.setRequired(true, 'Please enter your email address to be eligible for the competition');
+			contactMobileElementInput.addRule('requireOneContactNumber', true, 'Please enter your phone number to be eligible for the competition');
 		}
 		else {
-			<c:if test="${empty callCentre and required == false}">$('#${contactName}').rules('remove', 'required');</c:if>
-			<c:if test="${not empty callCentre or required}">$('#${contactName}').rules('add', {required:true, messages:{required:'Please enter name'}});</c:if>
+			<c:if test="${empty callCentre and required == false}">$('#${contactName}').setRequired(false);</c:if>
+			<c:if test="${not empty callCentre or required}">$('#${contactName}').setRequired(true, 'Please enter name');</c:if>
 			<c:if test="${required == false}">
-				contactEmailElement.rules('remove', 'required');
-				contactMobileElementInput.rules('remove', 'requireOneContactNumber');
+				contactEmailElement.setRequired(false);
+				contactMobileElementInput.removeRule('requireOneContactNumber');
 				$('#${contactName}').valid();
 				contactEmailElement.valid();
 				contactMobileElementInput.valid();
@@ -217,9 +211,3 @@
 	});
 	<%-- COMPETITION END --%>
 </go:script>
-
-
-
-<%-- VALIDATION --%>
-<%--
-<go:validate selector="${name}_optin" rule="required" parm="true" message="Please agree to the Terms &amp; Conditions" />--%>
