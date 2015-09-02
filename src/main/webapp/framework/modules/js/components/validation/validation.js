@@ -6,7 +6,7 @@ var validation = false;
 
 ;(function ($, undefined) {
     var meerkat = window.meerkat,
-        log = meerkat.logging.debug,
+        log = meerkat.logging.info,
         debug = meerkat.site.environment == "localhost" || meerkat.site.environment == "nxi";
 
     var events = {};
@@ -258,7 +258,7 @@ var validation = false;
      * @private
      */
     function _logDebug(element) {
-        log("No rule exists for this element: " + (element.attr('id') || element.attr('name')));
+        log("[Validator] Modifying Rule on Element: " + (element.attr('id') || element.attr('name')));
     }
 
     $.fn.extend({
@@ -269,12 +269,22 @@ var validation = false;
          * Required is a special case, as it is a property based rule.
          * If there is a data-rule-required attribute, it will be duplicated on an element, and thus have to be removed in both locations e.g. via $el.data().ruleRequired=false AND $el[0].required=false. Simply remove data-rule-required attribute instead.
          * @param required
+         * @param message
          */
-        setRequired: function (required) {
+        setRequired: function (required, message) {
             return this.each(function () {
-                $(this)[0].required = required;
+                var $el = $(this);
+                $el[0].required = required;
+                if(message) {
+                    $el.data('msgRequired', message);
+                }
             });
         },
+        /**
+         * Messages are ok to stay when removing a rule, as they are simply not used.
+         * @param ruleName
+         * @returns {*}
+         */
         removeRule: function (ruleName) {
             return this.each(function () {
                 // format is e.g. ruleRequired ruleYoungestdob (instead of ruleyoungestDOB)
@@ -283,7 +293,7 @@ var validation = false;
                     rule = "rule" + ruleString;
                 $el.data()[rule] = false;
                 $el.removeAttr('data-rule-' + ruleString);
-                if (debug && !$el.data()[rule]) {
+                if (debug/* && !$el.data()[rule]*/) {
                     _logDebug($el);
                 }
             });
@@ -296,14 +306,21 @@ var validation = false;
          * @param {String} ruleName
          * @param {String|Number|POJO} param
          */
-        addRule: function (ruleName, param) {
+        addRule: function (ruleName, param, message) {
             return this.each(function () {
                 var $el = $(this),
                     ruleString = ruleName.charAt(0).toUpperCase() + ruleName.substring(1).toLowerCase(),
                     rule = "rule" + ruleString;
                 $el.data()[rule] = param || true;
                 $el.attr('data-rule-' + ruleString, (param || true));
-                if (debug && !$el.data()[rule]) {
+                if(message && message.length) {
+                    var msg = "msg" + ruleString;
+                    $el.data()[msg] = message;
+                    $el.attr('data-msg-' + ruleString, message);
+                    $.validator.messages[ruleName] = message;
+                }
+
+                if (debug/* && !$el.data()[rule]*/) {
                     _logDebug($el);
                 }
             });

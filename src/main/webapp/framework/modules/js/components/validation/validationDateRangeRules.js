@@ -100,7 +100,7 @@
         var temp = value.split('/');
         if(String(parseInt(temp[2], 10)).length === 4) {
             var ageValue = Number(age);
-            if(isNaN(Number(age))) {
+            if(isNaN(ageValue)) {
                 var splitAge = age.split('.');
                 ageValue = window[splitAge[0]][splitAge[1]];
             }
@@ -116,13 +116,13 @@
     }
 
     $.validator.addMethod('youngestDOB', function(value, element, params) {
-        if (typeof params == 'undefined' || !params.hasOwnProperty('ageMin')) return false;
-        return checkDob(value, params.ageMin, params.selector);
+        if (typeof params == 'undefined') return false;
+        return checkDob(value, params.ageMin || params, params.selector || false);
     });
 
     $.validator.addMethod('oldestDOB', function(value, element, params) {
-        if (typeof params == 'undefined' || !params.hasOwnProperty('ageMax')) return false;
-        return !checkDob(value,  params.ageMax, params.selector);
+        if (typeof params == 'undefined') return false;
+        return !checkDob(value, params.ageMax || params, params.selector || false);
     });
 
 })(jQuery);

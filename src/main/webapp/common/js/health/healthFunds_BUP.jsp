@@ -16,8 +16,8 @@ set: function () {
 
 		<%-- Authority Fund Name --%>
 		healthFunds._previousfund_authority(true);
-		$('#health_previousfund_primary_authority').rules('add', {required:true, messages:{required:'Bupa requires authorisation to contact your previous fund'}});
-		$('#health_previousfund_partner_authority').rules('add', {required:true, messages:{required:'Bupa requires authorisation to contact your partner\'s previous fund'}});
+		$('#health_previousfund_primary_authority').setRequired(true, 'Bupa requires authorisation to contact your previous fund');
+		$('#health_previousfund_partner_authority').setRequired(true, 'Bupa requires authorisation to contact your partner\'s previous fund');
 
 		<%-- calendar for start cover --%>
 		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60);
@@ -25,12 +25,11 @@ set: function () {
 		<%-- Increase minimum age requirement for applicants from 16 to 17 --%>
 		healthFunds_BUP.$_dobPrimary = $('#health_application_primary_dob');
 		healthFunds_BUP.$_dobPartner = $('#health_application_partner_dob');
-		meerkat.modules.validation.setMinAgeValidation(healthFunds_BUP.$_dobPrimary, 17 , "primary person's");
-		meerkat.modules.validation.setMinAgeValidation(healthFunds_BUP.$_dobPartner, 17, "partner's");
+		healthFunds_BUP.$_dobPrimary.addRule('youngestDOB', 17, "primary person's age cannot be under 17");
+		healthFunds_BUP.$_dobPartner.addRule('youngestDOB', 17, "partner's age cannot be under 17");
 
 		<%-- fund IDs become optional --%>
-		$('#clientMemberID input').rules("remove", "required");
-		$('#partnerMemberID input').rules("remove", "required");
+		$('#clientMemberID input, #partnerMemberID input').setRequired(false);
 
 		<%-- Payment Options --%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
@@ -83,22 +82,21 @@ set: function () {
 
 		<%-- Authority Fund Name --%>
 		healthFunds._previousfund_authority(false);
-		$('#health_previousfund_primary_authority').rules('remove', 'required');
-		$('#health_previousfund_partner_authority').rules('remove', 'required');
+		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
 
 		<%-- Dependants --%>
 		healthFunds._dependants(false);
 
 		<%-- Age requirements for applicants (back to default) --%>
-		meerkat.modules.validation.setMinAgeValidation(healthFunds_BUP.$_dobPrimary, dob_health_application_primary_dob.ageMin , "primary person's");
-		meerkat.modules.validation.setMinAgeValidation(healthFunds_BUP.$_dobPartner, dob_health_application_partner_dob.ageMin, "partner's");
+
+		healthFunds_BUP.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
+		healthFunds_BUP.$_dobPartner.addRule('youngestDOB', dob_health_application_partner_dob.ageMin, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
 		healthFunds_BUP.$_dobPrimary = undefined;
 		healthFunds_BUP.$_dobPartner = undefined;
 
 		<%-- fund Name's become mandatory (back to default) --%>
-		$('#health_previousfund_primary_fundName').attr('required', 'required');
-		$('#health_previousfund_partner_fundName').attr('required', 'required');
+		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(true);
 
 		<%-- credit card options --%>
 		meerkat.modules.healthCreditCard.resetConfig();
