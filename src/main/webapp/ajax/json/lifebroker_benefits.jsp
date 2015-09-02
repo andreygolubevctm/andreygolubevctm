@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('lifebroker_benefits_jsp')}" />
+<c:set var="logger" value="${log:getLogger('lifebroker_benefits_jsp')}" />
 
 <session:get />
 

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
-<c:set var="logger" value="${go:getLogger('jsp:ajax.html.health_paymentgateway_return')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.html.health_paymentgateway_return')}" />
 
 <x:parse doc="${config}" var="configXml" />
 

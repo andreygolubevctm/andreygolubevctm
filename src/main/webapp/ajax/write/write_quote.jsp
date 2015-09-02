@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('jsp:ajax.write.write_quote')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.write.write_quote')}" />
 
 <core_new:no_cache_header/>
 
@@ -120,7 +120,7 @@
 <%-- JSON RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		${logger.error('SAVE ERRORS: errorPool={}', errorPool)}
+		${logger.info('Returning errors to the browser', log:kv('errorPool', errorPool))}
 		{"result":"FAIL", "errors":[${errorPool}]}
 	</c:when>
 	<c:otherwise>

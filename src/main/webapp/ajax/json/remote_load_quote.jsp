@@ -3,7 +3,7 @@
 
 <session:get settings="true" verticalCode="${param.vertical}" />
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
-<c:set var="logger" value="${go:getLogger('remote_load_quote_jsp')}" />
+<c:set var="logger" value="${log:getLogger('remote_load_quote_jsp')}" />
 
 <%--
 	load_quote.jsp

@@ -3,7 +3,7 @@
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
-<c:set var="logger" value="${go:getLogger('jsp:rating.health.generatePromoXML')}" />
+<c:set var="logger" value="${log:getLogger('jsp:rating.health.generatePromoXML')}" />
 
 <%--
 

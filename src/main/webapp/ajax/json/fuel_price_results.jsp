@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${go:getLogger('fuel_price_results_jsp')}" />
+<c:set var="logger" value="${log:getLogger('fuel_price_results_jsp')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="FUEL"/>
 
@@ -29,10 +29,8 @@
         <%-- Add the results to the current session data --%>
         <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
         <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}"/>
-        ${logger.debug('resultXml={}', resultXml)}
-
+        ${logger.debug('Invalid transaction id returning called response.{}', log:kv('resultXml',resultXml))}
         ${go:XMLtoJSON(resultXml)}
-
     </c:when>
     <c:otherwise>
 
@@ -88,7 +86,7 @@
 
                 <%-- Add the results to the current session data --%>
                 <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
-                ${logger.debug('resultXml={} debugXml={}', resultXml, debugXml)}
+                ${logger.debug('Return results to user. {},{}', log:kv('resultXml', resultXml),  log:kv('debugXml', debugXml))}
 
                 ${go:XMLtoJSON(resultXml)}
             </c:when>

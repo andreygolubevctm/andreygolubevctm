@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('get_email_id_jsp')}" />
+<c:set var="logger" value="${log:getLogger('get_email_id_jsp')}" />
 
 <jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
 
@@ -80,5 +80,5 @@
 	</c:choose>
 </c:catch>
 <c:if test="${error}">
-	${logger.warn('result={}', result,  error)}
+	${logger.warn('Exception passing results.{}',log:kv('result',result ),  error)}
 </c:if>

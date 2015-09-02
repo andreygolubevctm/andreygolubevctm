@@ -2,6 +2,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('tag:form.header')}" />
+
 <%-- ATTRIBUTES --%>
 <%@ attribute name="quoteType" 			required="false"	 rtexprvalue="true"	description="The vertical this quote is associated with" %>
 <%@ attribute name="hasReferenceNo" 	required="false" rtexprvalue="true"	description="Flag whether to create a reference number" %>
@@ -21,7 +23,7 @@
 	<div class="inner-header">
 		<h1><a href="${pageSettings.getSetting('exitUrl')}" title="${pageSettings.getSetting('brandName')}">${pageSettings.getSetting('brandName')}</a></h1>
 		<c:if test="${not empty hasReferenceNo and hasReferenceNo != false}">
-			<go:log source="form:header">${quoteType} header param: ${param}</go:log>
+			${logger.debug('Creating header html {} {}',log:kv('quoteType',quoteType),log:kv('param',param))}
 			<%-- ID being sorted in core:quote_check so just use current one --%>
 			<form:reference_number quoteType="${quoteType}" showReferenceNo="${showReferenceNo}" />
 		</c:if>

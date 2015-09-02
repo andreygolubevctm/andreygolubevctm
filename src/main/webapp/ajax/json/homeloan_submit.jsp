@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('homeloan_submit_jsp')}" />
+<c:set var="logger" value="${log:getLogger('homeloan_submit_jsp')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="HOMELOAN" />
 
@@ -57,7 +57,7 @@
 <c:set var="model" value="${homeloanService.mapParametersToModel(pageContext.getRequest())}" />
 <c:set var="submitResult" value="${appService.submitOpportunity(pageContext.getRequest(), model)}" />
 
-${logger.debug('submitResult={}', submitResult)}
+${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResult ))}
 
 <c:choose>
 	<c:when test="${empty submitResult}">

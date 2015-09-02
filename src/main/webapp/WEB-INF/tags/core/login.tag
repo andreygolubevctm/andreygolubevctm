@@ -4,6 +4,8 @@
 <jsp:useBean id="simplesUserService" class="com.ctm.services.simples.SimplesUserService" scope="application" />
 <jsp:useBean id="phoneService" class="com.ctm.services.PhoneService" scope="page" />
 
+<c:set var="logger" value="${log:getLogger('tag:core.login')}" />
+
 <%-- ATTRIBUTES --%>
 <%@ attribute name="uid" 		required="true"	rtexprvalue="true"	description="The user id" %>
 
@@ -48,12 +50,8 @@
 				
 
 				<c:set var="securityDesc" value="${securityDescGroup} ${securityDescLevel}" />
-
-
-
-
-				<go:log source="core:login">CTM Simples login success: ${userId} (${securityDesc}) - ${sessionScope.userDetails['distinguishedName']}</go:log>
-
+				${logger.info('CTM Simples login success: {},{},{}',
+				 log:kv('userId', userId), log:kv('securityDesc', securityDesc), log:kv('distinguishedName',sessionScope.userDetails['distinguishedName'])}
 				<%-- Set up the user, roles and security data XML fragments --%>
 				<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
 

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('home_results_jsp')}" />
+<c:set var="logger" value="${log:getLogger('home_results_jsp')}" />
 
 <c:set var="verticalCode" value="HOME" />
 

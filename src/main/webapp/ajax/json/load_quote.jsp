@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('load_quote_jsp')}" />
+<c:set var="logger" value="${log:getLogger('load_quote_jsp')}" />
 
 <session:new verticalCode="${fn:toUpperCase(param.vertical)}" forceNew="true" authenticated="true" />
 

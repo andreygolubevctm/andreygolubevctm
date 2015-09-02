@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('jsp:cron.life.best_price_lead')}" />
+<c:set var="logger" value="${log:getLogger('jsp:cron.life.best_price_lead')}" />
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 

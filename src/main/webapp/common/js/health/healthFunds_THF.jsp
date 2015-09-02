@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${go:getLogger('jsp:common.js.health.healthFunds_THF')}" />
+<c:set var="logger" value="${log:getLogger('jsp:common.js.health.healthFunds_THF')}" />
 <session:get settings="true" />
 
 <c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>

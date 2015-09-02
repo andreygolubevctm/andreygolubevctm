@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('jsp:ajax.json.write_reminder')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.json.write_reminder')}" />
 
 
 <c:choose>
@@ -75,7 +75,7 @@
 <%-- JSON/JSONP RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		${logger.error('SAVE ERRORS: errorPool={}', errorPool)}
+		${logger.info('Returning errors to the browser', log:kv('errorPool', errorPool))}
 		<c:choose>
 			<c:when test="${fn:contains(callback,'jsonp')}">
 				${callback}({error:${errorPool}});

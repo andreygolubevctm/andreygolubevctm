@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('health_application_jsp')}" />
+<c:set var="logger" value="${log:getLogger('health_application_jsp')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true"/>
 
@@ -51,7 +51,7 @@
 	<c:otherwise>
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>
-${logger.info('transactionId={} productId={}', tranId, productId)}
+${logger.info('Application has been set to pending. {},{}', log:kv('transactionId', tranId), log:kv('productId', productId))}
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -131,7 +131,7 @@ ${logger.info('transactionId={} productId={}', tranId, productId)}
 </c:if>
 		</sql:transaction>
 
-		${logger.info('transactionId={} Fund={}', tranId, fund)}
+		${logger.info('Queried product properties. {},{}', log:kv('tranId', tranId), log:kv('fund', fund))}
 
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />
@@ -147,7 +147,7 @@ ${logger.info('transactionId={} productId={}', tranId, productId)}
 						configDbKey="appService"
 						styleCodeId="${pageSettings.getBrandId()}"
 						/>
-				${logger.debug('resultXml={}', resultXml)}
+				${logger.debug('Results returned from soapAggregator.{}',log:kv('resultXml',resultXml ))}
 		<c:choose>
 					<c:when test="${isValid || continueOnAggregatorValidationError}">
 				<c:if test="${!isValid}">
@@ -216,7 +216,7 @@ ${logger.info('transactionId={} productId={}', tranId, productId)}
 									</c:if>
 								</c:catch>
 								<c:if test="${not empty writeAllowableErrorsException}">
-									${logger.warn('$resultOBJ={}', $resultOBJ, writeAllowableErrorsException)}
+									${logger.warn('Exception thrown writing allowable errors. {}', log:kv('resultOBJ', $resultOBJ), writeAllowableErrorsException)}
 									<error:non_fatal_error origin="health_application.jsp"
 											errorMessage="failed to writeAllowableErrors tranId:${tranId} allowedErrors:${allowedErrors}" errorCode="DATABASE" />
 								</c:if>
@@ -238,7 +238,7 @@ ${logger.info('transactionId={} productId={}', tranId, productId)}
 					</x:when>
 					<x:otherwise></x:otherwise>
 				</x:choose>
-				${logger.info('transactionId={} confirmationID={}', tranId, confirmationID)}
+				${logger.info('Transaction has been set to confirmed. {},{}', log:kv('transactionId' , tranId), log:kv('confirmationID',confirmationID ))}
 				<c:set var="confirmationID"><confirmationID><c:out value="${confirmationID}" /></confirmationID></result></c:set>
 				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', confirmationID)}" />
 								${go:XMLtoJSON(resultXml)}
@@ -259,7 +259,7 @@ ${logger.info('transactionId={} productId={}', tranId, productId)}
 								</c:choose>
 			</x:otherwise>
 		</x:choose>
-		${logger.debug('transactionId={} resultXml={} debugXml={}', tranId, resultXml, debugXml)}
+		${logger.debug('Health application complete.{},{},{}', log:kv('transactionId',tranId), log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
 			</c:when>
 			<c:otherwise>
 						<c:choose>

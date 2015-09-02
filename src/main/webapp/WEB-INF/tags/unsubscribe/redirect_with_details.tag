@@ -2,6 +2,8 @@
 <%@ tag description="Redirects back to unsubscribe.jsp with details"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('jsp:unsubscribe.redirect_with_details')}" />
+
 <jsp:useBean id="unsubscribeService" class="com.ctm.services.UnsubscribeService" scope="request"/>
 
 <c:catch var="error">
@@ -34,5 +36,5 @@
 </c:if>
 
 <%-- Redirect --%>
-<go:log level="DEBUG">redirect to ${pageSettings.getBaseUrl()}unsubscribe.jsp"</go:log>
+${logger.debug('Redirecting user {}', go:kv('redirectionUrl' , pageSettings.getBaseUrl() + "unsubscribe.jsp"))}
 <c:redirect url="${pageSettings.getBaseUrl()}unsubscribe.jsp"/>

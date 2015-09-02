@@ -2,6 +2,7 @@
 <%@ tag import="java.net.Socket,java.io.*" %>
 <%@ tag description="This uses the Verint RCAPI service to talk to the phone system to retrieve an extension. The function returns an http error or a #### number"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+<c:set var="logger" value="${log:getLogger('tag:core.verint_rcapi_extension')}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="agentId" 	required="true"		rtexprvalue="true"	description="The agent ID, typically a four digit code"%>
@@ -28,7 +29,7 @@
 <%-- Socket Test --%>
 <c:choose>
 	<c:when test="${not empty socketError}">
-		<go:log level="ERROR" source="core:verint_rcapi_extension" error="${socketError}" />
+		${logger.error('SocketError', socketError)}
 		<c:set var="error" scope="request" value="${socketError}" />
 		<%  response.sendError(412, "Could not connect to the socket: " + request.getAttribute("error") ); if(true) return; %>
 	</c:when>
@@ -83,14 +84,10 @@
 				System.out.println("Socket Disconnected: " + socket);
 			%>
 		</c:catch>
-		<c:if test="${not empty socketClose}" >
-			<go:log level="ERROR" source="core:verint_rcapi_extension" error="${socketClose}" />
-		</c:if>
 
 		<%-- Deliver the packet message --%>
 		<c:choose>
 			<c:when test="${not empty soapError}">
-				<go:log level="ERROR" source="core:verint_rcapi_extension" error="${soapError}" />
 				<c:set var="error" scope="request" value="${soapError}" />
 				<%  response.sendError(412, "Packet was not successfully delivered and returned: " + request.getAttribute("error") ); if(true) return; %>
 			</c:when>

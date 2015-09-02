@@ -2,7 +2,7 @@
 <%@ tag description="Updates Utilities provider master and properties records."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('tag:utilities.utilities_update_provider')}" />
+<c:set var="logger" value="${log:getLogger('tag:utilities.utilities_update_provider')}" />
 
 <%@ attribute name="provider_id" 	required="true"	 rtexprvalue="true"	 description="The Switchwise Provider ID" %>
 <%@ attribute name="provider_code" 	required="true"	 rtexprvalue="true"	 description="The Switchwise Provider Code" %>
@@ -144,5 +144,5 @@ ${logger.info('provider_id={} provider_code={} provider_name={}', provider_id,pr
 		${logger.warn('Database error selecting provider provider_id={}', provider_id, error)}
 	</c:otherwise>
 </c:choose>
-${logger.debug('PROVIDER ID: ctm_provider_id={}', ctm_provider_id)}
+${logger.debug('completed updating provider. {}', log:kv('ctm_provider_id', ctm_provider_id))}
 <c:out value="${ctm_provider_id}" />

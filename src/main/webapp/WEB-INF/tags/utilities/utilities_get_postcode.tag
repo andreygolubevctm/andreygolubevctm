@@ -19,6 +19,6 @@
 	</c:choose>
 </c:set>
 
-${logger.debug('GET POSTCODE: postcode={}',postcode )}
+${logger.debug('Returning postcode {}', log:kv('postcode', postcode) )}
 
 ${postcode}

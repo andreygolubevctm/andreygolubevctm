@@ -2,7 +2,7 @@
 <%@ tag description="Updates Utilities provider master and properties records."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('tag:utilities.utilities_update_plan')}" />
+<c:set var="logger" value="${log:getLogger('tag:utilities.utilities_update_plan')}" />
 
 <%@ attribute name="provider_id" 			required="true"	 rtexprvalue="true"	 description="CTM's internal ID for the provider" %>
 <%@ attribute name="product_state" 			required="true"	 rtexprvalue="true"	 description="The State this product is associated with" %>
@@ -150,5 +150,5 @@ ${logger.info('provider_id={},product_class={},product_code={},product_short_tit
 		${logger.error('DB Error searching for existing product provider_id={} product_code={}', provider_id, product_code, error)}
 	</c:otherwise>
 </c:choose>
-${logger.info('PRODUCT ID: ctm_product_id={}', ctm_product_id)}
+${logger.debug('completed updating plan. {}', log:kv('ctm_product_id', ctm_product_id))}
 <c:out value="${ctm_product_id}" />

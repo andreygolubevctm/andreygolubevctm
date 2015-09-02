@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
-<c:set var="logger" value="${go:getLogger('utilities_quote_results_jsp')}" />
+<c:set var="logger" value="${log:getLogger('utilities_quote_results_jsp')}" />
 
 <%-- VARIABLES --%>
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}" />

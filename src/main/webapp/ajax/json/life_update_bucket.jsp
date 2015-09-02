@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('life_update_bucket_jsp')}" />
+<c:set var="logger" value="${log:getLogger('life_update_bucket_jsp')}" />
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 <c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>

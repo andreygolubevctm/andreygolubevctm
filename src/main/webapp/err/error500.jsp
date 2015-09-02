@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('jsp:err.error500')}" />
+<c:set var="logger" value="${log:getLogger('jsp:err.error500')}" />
 
 <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">

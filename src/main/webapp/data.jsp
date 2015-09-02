@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('jsp:data_jsp')}" />
+<c:set var="logger" value="${log:getLogger('jsp:data_jsp')}" />
 
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
 <c:set var="buildIdentifier"><core:buildIdentifier></core:buildIdentifier></c:set>
@@ -164,7 +164,7 @@
 								<x:transform xml="${data.getXML()}" xslt="${prettyXml}"/>
 							</c:when>
 							<c:otherwise>
-								${logger.warn('node={}', node , catchException)}
+								${logger.warn('Exception thrown transforming xml. {}', log:kv('node', node) , catchException)}
 							</c:otherwise>
 						</c:choose>
 

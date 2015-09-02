@@ -2,7 +2,7 @@
 <%@ tag description="Wrapper for all transaction touching and quote writes." %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('tag:core.transaction')}" />
+<c:set var="logger" value="${log:getLogger('tag:core.transaction')}" />
 
 <core_new:no_cache_header/>
 

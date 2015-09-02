@@ -345,13 +345,6 @@
 		</example>
 	</tag>
 
-	<function>
-		<description>Get Logger</description>
-		<name>getLogger</name>
-		<function-class>com.ctm.utils.jsp.JspLoggerFactory</function-class>
-		<function-signature>com.ctm.utils.jsp.JspLogger getLogger(java.lang.String)</function-signature>
-	</function>
-
 	<!-- Set Data Tag-->
 	<tag>
 		<description>Set a value in the request's data object</description>

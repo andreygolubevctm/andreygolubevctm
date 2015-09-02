@@ -18,7 +18,7 @@
 			<go:setData dataVar="data" xpath="fuel/postcode" value="${locationToken}" />
 		</c:if>
 			<c:if test="${error}">
-				${logger.warn('locationToken={}', locationToken, error)}
+				${logger.warn('Exception formatting locationToken to number. {}', log:kv('locationToken',locationToken), error)}
 			</c:if>
 </c:forTokens>
 

@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('jsp:competition_entry')}" />
+<c:set var="logger" value="${log:getLogger('jsp:competition_entry')}" />
 
 <session:get settings="true" />
 
@@ -205,7 +205,7 @@
 <%-- JSON RESPONSE --%>
 <c:choose>
 	<c:when test="${not empty errorPool}">
-		${logger.info('ENTRY ERRORS: errorPool={}', errorPool)}
+		${logger.info('Returning errors to the browser', log:kv('errorPool', errorPool))}
 		{[${errorPool}]}
 
 		<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('jsp:ajax.xml.verint_rcapi')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.xml.verint_rcapi')}" />
 
 <session:getAuthenticated  />
 

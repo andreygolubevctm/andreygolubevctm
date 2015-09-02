@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${go:getLogger('jsp:rating.roadside_price_result')}" />
+<c:set var="logger" value="${log:getLogger('jsp:rating.roadside_price_result')}" />
 
 <x:parse var="roadside" xml="${param.QuoteData}" />
 ${logger.debug('param.QuoteData=param.QuoteData', param.QuoteData )}
