@@ -13,7 +13,8 @@ import com.ctm.model.*;
 import com.ctm.model.Error;
 import com.ctm.model.settings.Brand;
 import com.ctm.services.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.exceptions.ConfigSettingException;
@@ -30,7 +31,7 @@ import com.ctm.model.settings.Vertical.VerticalType;
 })
 public class GenericRouter extends HttpServlet {
 	
-	private static Logger logger = Logger.getLogger(GenericRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(GenericRouter.class.getName());
 
 	private static final long serialVersionUID = 6314229727186633148L;
 
@@ -99,7 +100,7 @@ public class GenericRouter extends HttpServlet {
 		try {
 			response.getWriter().print(json.toString());
 		} catch (IOException e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 	}
 

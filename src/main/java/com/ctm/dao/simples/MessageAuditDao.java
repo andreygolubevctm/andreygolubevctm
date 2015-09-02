@@ -1,6 +1,7 @@
 package com.ctm.dao.simples;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public class MessageAuditDao {
 	/**
 	 *
 	 */
-	private static Logger logger = Logger.getLogger(MessageAuditDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(MessageAuditDao.class.getName());
 	private final FatalErrorService fatalErrorService = new FatalErrorService();
 
 	public MessageAudit addMessageAudit(MessageAudit messageAudit) throws DaoException {

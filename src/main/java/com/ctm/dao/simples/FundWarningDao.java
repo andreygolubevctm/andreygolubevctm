@@ -8,7 +8,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.helper.simples.FundWarningHelper;
 import com.ctm.model.FundWarningMessage;
 import com.ctm.utils.common.utils.DateUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 public class FundWarningDao {
-    private final static Logger logger = Logger.getLogger(FundWarningDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(FundWarningDao.class.getName());
     private final FundWarningHelper helper = new FundWarningHelper();
     private final SqlDao sqlDao = new SqlDao();
 

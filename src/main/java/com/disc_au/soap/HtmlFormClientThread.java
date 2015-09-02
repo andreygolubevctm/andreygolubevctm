@@ -11,7 +11,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
@@ -26,7 +27,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 				soapConfiguration);
 	}
 
-	private Logger logger = Logger.getLogger(HtmlFormClientThread.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HtmlFormClientThread.class.getName());
 
 	/**
 	 * Process request.

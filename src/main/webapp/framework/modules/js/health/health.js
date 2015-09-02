@@ -327,6 +327,7 @@
 					validate: true
 				},
 				onInitialise: function onContactInit(event){
+					meerkat.modules.resultsFeatures.fetchStructure('health');
 				},
 				onBeforeEnter:function enterContactStep(event) {
 				},

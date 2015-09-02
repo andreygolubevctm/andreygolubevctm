@@ -180,12 +180,18 @@
 						meerkat.modules.coverLevelTabs.incrementCount("B");
 					}
 				} else {
-					if (result.des.indexOf('Australia') == -1) {
-						obj.coverLevel = 'I';
-						meerkat.modules.coverLevelTabs.incrementCount("I");
+					if(_.isBoolean(result.isDomestic)) {
+						var level = result.isDomestic === true ? "D" : "I";
+						obj.coverLevel = level;
+						meerkat.modules.coverLevelTabs.incrementCount(level);
 					} else {
-						obj.coverLevel = 'D';
-						meerkat.modules.coverLevelTabs.incrementCount("D");
+						if (result.des.indexOf('Australia') == -1) {
+							obj.coverLevel = 'I';
+							meerkat.modules.coverLevelTabs.incrementCount("I");
+						} else {
+							obj.coverLevel = 'D';
+							meerkat.modules.coverLevelTabs.incrementCount("D");
+						}
 					}
 				}
 			}

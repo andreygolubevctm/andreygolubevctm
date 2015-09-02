@@ -79,27 +79,27 @@
 	}
 }
 
-.highResBgSize(@1xWidth; @1xHeight) {
-	background-size: @1xWidth @1xHeight;
+.highResBgSize(@OnexWidth; @OnexHeight) {
+	background-size: @OnexWidth @OnexHeight;
 	@media (-webkit-min-device-pixel-ratio: 1.5),
 		(min--moz-device-pixel-ratio: 1.5),
 		(-o-min-device-pixel-ratio: 3/2),
 		(min-device-pixel-ratio: 1.5),
 		(min-resolution: 1.5dppx),
 		(min-resolution: 144dpi) {
-		background-size: (@1xWidth/2) (@1xHeight/2);
+		background-size: (@OnexWidth/2) (@OnexHeight/2);
 	}
 }
 
-.highResBgPosition(@1xLeft, @1xTop,@2xLeft, @2xTop) {
-	background-position: @1xLeft @1xTop;
+.highResBgPosition(@OnexLeft, @OnexTop,@TwoxLeft, @TwoxTop) {
+	background-position: @OnexLeft @OnexTop;
 	@media (-webkit-min-device-pixel-ratio: 1.5),
 		(min--moz-device-pixel-ratio: 1.5),
 		(-o-min-device-pixel-ratio: 3/2),
 		(min-device-pixel-ratio: 1.5),
 		(min-resolution: 1.5dppx),
 		(min-resolution: 144dpi) {
-		background-position: @2xLeft @2xTop;
+		background-position: @TwoxLeft @TwoxTop;
 	}
 }
 

@@ -3,7 +3,8 @@ package com.ctm.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.transaction.TransactionDetailsDao;
 import com.ctm.exceptions.DaoException;
@@ -18,7 +19,7 @@ public class RemoteLoadQuoteService {
 	private final TransactionDetailsDao transactionDetailsDao;
 	private final TransactionAccessService transactionAccessService;
 
-	private static Logger logger = Logger.getLogger(RemoteLoadQuoteService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(RemoteLoadQuoteService.class.getName());
 
 	// do not remove as used by the jsp
 	public RemoteLoadQuoteService(){

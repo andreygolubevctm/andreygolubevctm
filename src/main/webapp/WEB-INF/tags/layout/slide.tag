@@ -23,9 +23,11 @@
 </c:otherwise>
 </c:choose>
 
+<c:set var="competitionSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 99)}" />
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
+<c:set var="competitionSecret"><content:get key="competitionSecret"/></c:set>
 <c:set var="competitionEnabled" value="${false}" />
-<c:if test="${competitionEnabledSetting == 'Y'}">
+<c:if test="${competitionEnabledSetting == 'Y' && (competitionSplitTest eq true or competitionSecret == 'kSdRdpu5bdM5UkKQ8gsK')}"> <%--Split test needs to allow previous competition ($1000 promo) to remain active. TODO: Cleanup--%>
 	<c:set var="competitionEnabled" value="${true}" />
 </c:if>
 
@@ -53,9 +55,12 @@
 				<%-- COMPETITION START --%>
 				<c:if test="${competitionEnabled == true and pageSettings.getVerticalCode() eq 'health'}">
 					<c:set var="competitionPromoImage"><content:get key="competitionPromoImage"/></c:set>
+					<c:if test="${fn:contains(competitionPromoImage, 'health1000promoImage')}">
+						<c:set var="offset_class" value="col-md-offset-4"/>
+					</c:if>
 					<c:if test="${not empty competitionPromoImage && firstSlide eq true}">
 						<div class="row">
-							<div class="col-xs-12 col-md-offset-4 col-md-8">
+							<div class="col-xs-12 ${offset_class} col-md-8">
 								<c:out value="${competitionPromoImage}" escapeXml="false" />
 							</div>
 						</div>

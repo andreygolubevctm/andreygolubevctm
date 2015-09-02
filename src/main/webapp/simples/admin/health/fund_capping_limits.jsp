@@ -81,10 +81,10 @@
 			<div class="row">
 				<div class="col-sm-12 header">
 					<h1>History <small></small></h1>
-					<button type="button" class="btn btn-tertiary btn-sm crud-results-toggle"><span></span></button>
+					<button type="button" class="btn btn-tertiary btn-sm crud-results-toggle table-hidden"><span></span></button>
 				</div>
 				<div class="col-sm-12">
-					<div id="past-cappings-container" class="sortable-results-table"></div>
+					<div id="past-cappings-container" class="sortable-results-table hidden"></div>
 				</div>
 			</div>
 		</div>

@@ -47,14 +47,7 @@
 				<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
 
 				<form_new:row label="Approximate annual kilometres driven by the youngest driver">
-					<c:choose>
-						<c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>
-							<field_new:kilometers_travelled_number xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres annual_kilometres_number_youngest" placeHolder="Example: 20000" required="true" />
-						</c:when>
-						<c:otherwise>
-							<field_new:kilometers_travelled xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres" placeHolder="Example: 20000" required="true" />
-						</c:otherwise>
-					</c:choose>
+					<field_new:kilometers_travelled xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres" placeHolder="Example: 20000" required="true" />
 				</form_new:row>
 
 				<form_new:row label="Gender" id="${name}_genderRow">

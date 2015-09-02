@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class HealthRouter extends HttpServlet {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(HealthRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HealthRouter.class.getName());
 	private static final long serialVersionUID = 5468545645645645644L;
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
