@@ -1,0 +1,9 @@
+{
+  "brandCodes": ["ctm", "choo"],
+  "jsDependencies": [
+    "meerkat",
+    "shared/results",
+    "shared/features",
+    "core"
+  ]
+}
