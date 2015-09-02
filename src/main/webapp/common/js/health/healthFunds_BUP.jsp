@@ -96,7 +96,7 @@ set: function () {
 		healthFunds_BUP.$_dobPartner = undefined;
 
 		<%-- fund Name's become mandatory (back to default) --%>
-		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(true);
+		$('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').setRequired(true);
 
 		<%-- credit card options --%>
 		meerkat.modules.healthCreditCard.resetConfig();
