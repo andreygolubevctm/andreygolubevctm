@@ -136,7 +136,8 @@ Bundles.prototype.getWatchableBundlesFilePaths = function(bundle, fileType) {
 };
 
 /**
- *
+ * Gets a list of files for a specified bundle
+ * @TODO Cache the response values so we aren't doing a lookup each time we use this
  * @param bundle
  * @param fileType
  * @returns {*}
