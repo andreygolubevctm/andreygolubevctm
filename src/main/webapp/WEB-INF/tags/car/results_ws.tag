@@ -417,7 +417,7 @@
 			</span>
 
 			<span class="name">
-				{{= products[i].name }}
+				{{= products[i].productName }}
 			</span>
 			<span class="price">
 				<span class="frequency annual annually {{= annualHidden }}">
