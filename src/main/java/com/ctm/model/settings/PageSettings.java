@@ -26,7 +26,7 @@ public class PageSettings {
 			throw new VerticalException("Vertical is null, environment: ["+getBrandCode()+":"+EnvironmentService.getEnvironmentAsString()+"]");
 		}
 		ConfigSetting setting = vertical.getSettingForName(name);
-		if (setting == null && !name.equals("testad")) {
+		if (setting == null) {
 			throw new ConfigSettingException("Unable to find setting '" + name+"' for this brand, vertical, environment: ["+getBrandCode()+":"+getVerticalCode()+":"+EnvironmentService.getEnvironmentAsString()+"]");
 		}
 		return setting.getValue();
