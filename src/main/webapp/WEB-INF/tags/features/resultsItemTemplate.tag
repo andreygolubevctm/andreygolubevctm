@@ -7,32 +7,32 @@
 
     {{ for(var i = 0; i < featureIterator.length; i++) { }}
 
-    {{ var feature = featureIterator[i]; }}
+    {{ var ft = featureIterator[i]; }}
     <%-- In health, we need to do this check, as we apply a property to the child object of the initial structure,
     when copying it to the 'your selected benefits'. --%>
-    {{ if(feature.doNotRender === true) { continue; } }}
+    {{ if(ft.doNotRender === true) { continue; } }}
 
 
-    {{ var dataSKey = typeof feature.shortlistKey != 'undefined' && feature.shortlistKey != '' ? 'data-skey="'+feature.shortlistKey + '"' : ''; }}
-    {{ var dataSKeyParent = typeof feature.shortlistKeyParent != 'undefined' && feature.shortlistKeyParent != '' ? 'data-par-skey="'+feature.shortlistKeyParent + '"' : ''; }}
-    <div class="cell {{= feature.classString }}" data-index="{{= i }}" {{= dataSKey }} {{= dataSKeyParent }}>
-        <div class="labelInColumn {{= feature.classStringForInlineLabel }}{{ if (feature.name == '') { }} noLabel{{ } }}">
-            <div class="content" data-featureId="{{= feature.id }}">
+    {{ var dataSKey = typeof ft.shortlistKey != 'undefined' && ft.shortlistKey != '' ? 'data-skey="'+ft.shortlistKey + '"' : ''; }}
+    {{ var dataSKeyParent = typeof ft.shortlistKeyParent != 'undefined' && ft.shortlistKeyParent != '' ? 'data-par-skey="'+ft.shortlistKeyParent + '"' : ''; }}
+    <div class="cell {{= ft.classString }}" data-index="{{= i }}" {{= dataSKey }} {{= dataSKeyParent }}>
+        <div class="labelInColumn {{= ft.classStringForInlineLabel }}{{ if (ft.name == '') { }} noLabel{{ } }}">
+            <div class="content" data-featureId="{{= ft.id }}">
                 <div class="contentInner">
-                    {{ if(feature.helpId != '' && feature.helpId != '0') { }}
-                        <field_new:help_icon helpId="{{= feature.helpId }}" position="left"/>
+                    {{ if(ft.helpId != '' && ft.helpId != '0') { }}
+                        <field_new:help_icon helpId="{{= ft.helpId }}" position="left"/>
                     {{ } }}
-                    {{= feature.safeName }}
-                    {{ if(typeof feature.children !== 'undefined') { }}
+                    {{= ft.safeName }}
+                    {{ if(typeof ft.children !== 'undefined') { }}
                     <span class="icon expander"></span>
                     {{ } }}
                 </div>
             </div>
         </div>
 
-        <div class="c content {{= feature.contentClassString }}" data-featureId="{{= feature.id }}">
-            {{ if(feature.resultPath != null && feature.resultPath != '') { }}
-                {{ var pathValue = Object.byString( obj, feature.resultPath ); }}
+        <div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">
+            {{ if(ft.resultPath != null && ft.resultPath != '') { }}
+                {{ var pathValue = Object.byString( obj, ft.resultPath ); }}
                 {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}
                 <c:if test="${vertical eq 'car'}">
                     <jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
@@ -51,14 +51,14 @@
             {{ } }}
         </div>
 
-        {{ var hasFeatureChildren = typeof feature.children != 'undefined' && feature.children.length; }}
-        {{ var isSelectionHolder = feature.classString && feature.classString.indexOf('selectionHolder') != -1; }}
+        {{ var hasFeatureChildren = typeof ft.children != 'undefined' && ft.children.length; }}
+        {{ var isSelectionHolder = ft.classString && ft.classString.indexOf('selectionHolder') != -1; }}
         {{ if(hasFeatureChildren || isSelectionHolder) { }}
-        <div class="children" data-fid="{{= feature.id }}">
-            {{ for(var m =0; m < feature.children.length; m++) { }}
-                {{ feature.children[m].shortlistKeyParent = feature.shortlistKey; }}
+        <div class="children" data-fid="{{= ft.id }}">
+            {{ for(var m =0; m < ft.children.length; m++) { }}
+                {{ ft.children[m].shortlistKeyParent = ft.shortlistKey; }}
             {{ } }}
-            {{ obj.childFeatureDetails = feature.children; }}
+            {{ obj.childFeatureDetails = ft.children; }}
             {{= Features.cachedProcessedTemplate(obj) }}
         </div>
         {{ } else { }}

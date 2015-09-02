@@ -3,7 +3,7 @@
 {{ var parsedValue = '' }}
 
 <%-- Call insurer direct button --%>
-{{ if (feature.resultPath == 'action.callInsurer') { }}
+{{ if (ft.resultPath == 'action.callInsurer') { }}
     <%-- Default pathValue to N so we get the crosses as default. --%>
     {{ pathValue = 'N' }}
     {{ parsedValue = Features.parseFeatureValue( pathValue ) }}
@@ -15,7 +15,7 @@
 {{ } }}
 
 <%-- Get a call back button --%>
-{{ if (feature.resultPath == 'action.callBack') { }}
+{{ if (ft.resultPath == 'action.callBack') { }}
     <%-- Default pathValue to N so we get the crosses as default. --%>
     {{ pathValue = 'N' }}
     {{ parsedValue = Features.parseFeatureValue( pathValue ) }}
@@ -27,7 +27,7 @@
 {{ } }}
 
 <%-- PDS buttons --%>
-{{ if (feature.resultPath == 'action.pds') { }}
+{{ if (ft.resultPath == 'action.pds') { }}
 {{ pathValue = true }}
 
 {{ var pdsA = '' }}
@@ -60,7 +60,7 @@
 {{ } }}
 
 <%-- View more info --%>
-{{ if (feature.resultPath == 'action.moreInfo') { }}
+{{ if (ft.resultPath == 'action.moreInfo') { }}
 {{ pathValue = true }}
 {{  displayValue = '<div class="btnContainer"><a class="btn-more-info" href="javascript:;" data-productId="'+obj.productId+'">view more info</a></div>' }}
 {{ } }}
