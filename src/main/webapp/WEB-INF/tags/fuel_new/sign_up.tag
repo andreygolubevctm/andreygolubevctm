@@ -37,7 +37,7 @@
 
 			<form_new:row hideHelpIconCol="true">
 				<c:set var="brandedDisplayName"><content:get key="boldedBrandDisplayName"/></c:set>
-				<field_new:checkbox xpath="${xpath}/terms" label="true" value="Y" title="I would like to receive news and offers from ${brandedDisplayName}" required="false" />
+				<field_new:checkbox xpath="${xpath}/terms" label="true" value="Y" title="I would like to receive news and offers from ${brandedDisplayName}" required="true" />
 				<field_new:validatedHiddenField xpath="${xpath}/termsHidden" required="true" title="Please agree to receive news and offers from ${brandedDisplayName}" />
 			</form_new:row>
 
@@ -45,7 +45,7 @@
 			<%-- Using a custom checkbox because validation doesn't work on this dropdown --%>
 			<form_new:row hideHelpIconCol="true">
 				<c:set var="privacyStatementLink"><form:link_privacy_statement /></c:set>
-				<field_new:checkbox xpath="${xpath}/privacyoptin" label="true" value="Y" title="I have read the ${privacyStatementLink}" required="false" />
+				<field_new:checkbox xpath="${xpath}/privacyoptin" label="true" value="Y" title="I have read the ${privacyStatementLink}" required="true" />
 				<field_new:validatedHiddenField xpath="${xpath}/privacyoptinHidden" required="true" title="Please confirm you have read the privacy statement" />
 			</form_new:row>
 
