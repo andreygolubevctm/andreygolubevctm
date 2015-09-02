@@ -38,6 +38,7 @@ import com.disc_au.web.go.xml.XmlParser;
 import static com.ctm.services.EnvironmentService.Environment.LOCALHOST;
 import static com.ctm.services.EnvironmentService.Environment.NXI;
 import static com.ctm.services.EnvironmentService.Environment.NXS;
+import static net.logstash.logback.argument.StructuredArguments.kv;
 
 /**
  * The Class SOAPAggregatorTag with WAR compatibility.
@@ -88,6 +89,8 @@ public class SOAPAggregatorTag extends TagSupport {
 	 */
 	@Override
 	public int doEndTag() throws JspException {
+		String debugXml = null;
+		String resultXml = null;
 		try {
 			XmlParser parser = new XmlParser();
 		setUpConfiguration();
@@ -203,8 +206,9 @@ public class SOAPAggregatorTag extends TagSupport {
 			}
 
 			// Write to the debug var (if passed)
-				if (this.debugVar != null) {
-				this.pageContext.setAttribute(debugVar, resultNode.getXML(true),
+			if (this.debugVar != null) {
+				debugXml= resultNode.getXML(true);
+				this.pageContext.setAttribute(debugVar, debugXml,
 						PageContext.PAGE_SCOPE);
 			}
 
@@ -216,7 +220,8 @@ public class SOAPAggregatorTag extends TagSupport {
 			// If result var was passed - put the resulting xml in the pagecontext's
 			// variable
 			if (this.var!= null) {
-				this.pageContext.setAttribute(var, resultNode.getXML(true),
+				resultXml= resultNode.getXML(true);
+				this.pageContext.setAttribute(var, resultXml,
 						PageContext.PAGE_SCOPE);
 				// Otherwise - just splat it to the page
 			} else {
@@ -229,8 +234,9 @@ public class SOAPAggregatorTag extends TagSupport {
 		}
 			return super.doEndTag();
 		} finally {
+			logger.debug("Aggregator response returned. {},{}", kv("resultXml", resultXml), kv("debugXml", debugXml));
 			cleanUp();
-	}
+		}
 	}
 
 	private void setUpConfiguration() {

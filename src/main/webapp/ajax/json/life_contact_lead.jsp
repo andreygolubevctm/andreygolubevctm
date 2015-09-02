@@ -44,7 +44,6 @@
 				<%-- Add the results to the current session data --%>
 				<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-				${logger.debug('resultXml={} debugXml={}' , resultXml, debugXml)}
 				<%-- Save client data --%>
 				<c:set var="clientRef">${data["soap-response/results/client/reference"]}</c:set>
 				<c:if test="${not empty clientRef}">

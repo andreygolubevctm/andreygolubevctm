@@ -103,8 +103,6 @@
 
 								<%-- Record lead feed touch event --%>
 								<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "CB", "lifebroker")}</c:set>
-
-								${logger.debug('resultXml={} debugXml={}',resultXml, debugXml)}
 							</c:otherwise>
 						</c:choose>
 

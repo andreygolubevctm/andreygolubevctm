@@ -50,7 +50,6 @@
 		<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 		<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 		<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
-		${logger.debug('resultXml={} debugXml={}',resultXml, debugXml)}
 		${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 	</c:when>
 	<c:otherwise>

@@ -154,7 +154,6 @@
 						<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 						<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 						<go:setData dataVar="data" xpath="soap-response/results/selection/pds" value="*DELETE" />
-						${logger.debug('resultXml={} debugXml={}',resultXml, debugXml)}
 					</c:when>
 					<c:otherwise>
 						<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_submit_application.jsp" />

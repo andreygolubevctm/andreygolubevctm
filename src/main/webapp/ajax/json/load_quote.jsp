@@ -43,7 +43,7 @@ ${logger.debug('LOAD QUOTE: param={}',param)}
 
 <%-- Store flag as to whether Simples Operator or Other --%>
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
-${logger.info('isOperator={}',isOperator)}
+${logger.info('setting flag for whether simples. {}',log:kv('isOperator',isOperator ))}
 
 <c:choose>
 	<c:when test="${not empty param.simples and empty isOperator}">
@@ -71,7 +71,6 @@ ${logger.info('isOperator={}',isOperator)}
 				<%-- Let's assign the param.id (transactionId) to a var we can manage (at least 'I' can manage) --%>
 				<c:set var="requestedTransaction" value="${id_for_access_check}" />
 
-				<%-- Call the iSeries program to fetch the quote details --%>
 				<c:set var="parm">
 					<c:choose>
 						<%-- if Simples Operator set email to their UID otherwise use users email --%>
@@ -79,8 +78,8 @@ ${logger.info('isOperator={}',isOperator)}
 						<c:otherwise><data><email>${authenticatedData.userData.authentication.emailAddress}</email></data></c:otherwise>
 					</c:choose>
 				</c:set>
-				${logger.info('requested TranID: {}', requestedTransaction)}
-				${logger.debug('params: param: {}', param)}
+				${logger.info('About to load quote.', log:kv('requestedTransaction',requestedTransaction ), log:kv('user',parm ))}
+				${logger.debug('About to load quote params: param: {}', param)}
 
 				<sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -280,7 +279,7 @@ ${logger.info('isOperator={}',isOperator)}
 				</c:set>
 			</c:when>
 			<c:otherwise>
-				${logger.warn('Proceedinator={}',proceedinator )}
+				${logger.warn('Proceedinator did not pass. {}',log:kv('proceedinator', proceedinator) )}
 				<c:set var="reservedName" value="another user" />
 				<c:set var="result">
 					<result>
@@ -303,7 +302,7 @@ ${logger.info('isOperator={}',isOperator)}
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-${logger.debug('result={}', result)}
+${logger.debug('Quote has been loaded.{}', log:kv('result', result))}
 <%-- Log any errors --%>
 <c:if test="${fn:contains(result, '<error>')}">
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">

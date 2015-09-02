@@ -147,7 +147,6 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 						configDbKey="appService"
 						styleCodeId="${pageSettings.getBrandId()}"
 						/>
-				${logger.debug('Results returned from soapAggregator.{}',log:kv('resultXml',resultXml ))}
 		<c:choose>
 					<c:when test="${isValid || continueOnAggregatorValidationError}">
 				<c:if test="${!isValid}">

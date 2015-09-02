@@ -93,7 +93,7 @@ ${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResu
 					<%-- Decrypt the AFG response --%>
 					<c:set var="encyptedData" value='${submitResult.getString("responseData")}' />
 					<c:set var="decryptedData"><go:AESEncryptDecrypt action="decrypt" key="${secret_key}" content="${encyptedData}" /></c:set>
-					${logger.debug('decryptedData={}',decryptedData)}
+					${logger.debug('Decrypted  the AFG response. {}', log:kv('decryptedData', decryptedData))}
 
 					<%-- Parse the data --%>
 					<c:set var="xmlData" value="<data>${go:JSONtoXML(decryptedData)}</data>" />
@@ -102,7 +102,7 @@ ${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResu
 					<c:set var="flexOpportunityId"><x:out select="$parsedXml/data/flexOpportunityId" /></c:set>
 					<c:set var="opportunityFirstName"><x:out select="$parsedXml/data/firstName" /></c:set>
 					<c:set var="opportunityEmail"><x:out select="$parsedXml/data/emailAddress" /></c:set>
-					${logger.debug('OPPORTUNITY_ID={} FIRST_NAME={}',flexOpportunityId,opportunityFirstName)}
+					${logger.debug('Parsed the data.{},{}',log:kv('opportunityId', flexOpportunityId), log:kv('firstName',opportunityFirstName))}
 				</c:catch>
 
 				<c:choose>
