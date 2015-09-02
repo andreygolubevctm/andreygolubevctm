@@ -35,7 +35,17 @@
                 {{ var pathValue = Object.byString( obj, feature.resultPath ); }}
                 {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}
                 <c:if test="${vertical eq 'car'}">
-                    <features:resultsItemTemplate_car />
+                    <jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
+                    <c:set var="newWebServiceSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 40)}" />
+                    <c:set var="defaultToCarQuote"><content:get key="makeCarQuoteMainJourney" /></c:set>
+                    <c:choose>
+                        <c:when test="${newWebServiceSplitTest || defaultToCarQuote eq 'true'}">
+                            <features:resultsItemTemplate_car_ws />
+                        </c:when>
+                        <c:otherwise>
+                            <features:resultsItemTemplate_car />
+                        </c:otherwise>
+                    </c:choose>
                 </c:if> <%-- Below compressed to reduce number of whitespace nodes in DOM --%>
                 {{ if( pathValue ) { }}<div>{{= displayValue }}</div>{{ } else { }}{{= "&nbsp;" }}{{ } }}{{ } else { }}{{= "&nbsp;" }}
             {{ } }}
