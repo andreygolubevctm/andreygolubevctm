@@ -1,4 +1,4 @@
 {
-  "brandCodes": ["ctm"],
+  "brandCodes": ["ctm", "yhoo"],
   "jsDependencies": ["core"]
 }
