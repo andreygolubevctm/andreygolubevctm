@@ -1,4 +1,4 @@
-package com.ctm.xml;
+package com.ctm.logging;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
