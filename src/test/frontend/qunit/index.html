@@ -34,14 +34,7 @@
         }
 
         function setMinAgeValidation($field, ageMin, title) {
-            $field.rules('add', {
-                messages: {
-                    min_DateOfBirth: title + ' age cannot be under ' + ageMin
-                },
-                min_DateOfBirth: {
-                    ageMin: ageMin
-                }
-            });
+            $field.addRule('youngestDOB', ageMin, title + ' age cannot be under ' + ageMin);
 
         }
         $(document).ready(function() {

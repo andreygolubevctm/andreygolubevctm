@@ -108,19 +108,8 @@
 			.attr("min", stringDate(toDate_StartDateRange,true))
 			.attr("max", stringDate(toDate_EndDateRange,true));
 
-			//update (remove then add) the jqvalidation to know what the new min and max dates are.
-
-			//min toDate is handled by range validation in the tag using fromToDate rule.
-			//$toDateInput.rules("remove", "minDateEUR");
-			//$toDateInput.rules('add',
-			//	{'minDateEUR': stringDate(toDate_StartDateRange),
-			//	messages:{'minDateEUR':'The return date should be equal to or after '+toDate_StartDateRange}});
-
 			//Max needs to be handled dynamically with this validate rules command.
-			$toDateInput.rules("remove", "latestDateEUR");
-			$toDateInput.rules('add',
-				{'latestDateEUR': stringDate(toDate_EndDateRange),
-				messages:{'latestDateEUR':'The return date should be equal to or before one year after the departure date (i.e. '+ stringDate(toDate_EndDateRange)+')'}});
+			$toDateInput.addRule("latestDateEUR", stringDate(toDate_EndDateRange), 'The return date should be equal to or before one year after the departure date (i.e. '+ stringDate(toDate_EndDateRange)+')');
 		}
 	}
 

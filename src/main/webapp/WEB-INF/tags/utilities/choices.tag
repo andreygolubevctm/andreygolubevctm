@@ -637,20 +637,11 @@ utilitiesChoices = {
 
 	},
 	
-
-		
-		
 	addRemoveValidationRules: function(){
-	
-		
-			$('#${nameApplicationDetails}_mobileNumberinput').rules("add", "validateMobileField");
-			$('#${nameApplicationDetails}_mobileNumberinput').removeAttr("required" )
-			$('#${nameApplicationDetails}_otherPhoneNumberinput').removeAttr("required" )
-		
+			$('#${nameApplicationDetails}_mobileNumberinput').addRule("validateMobileField").setRequired(false);
+			$('#${nameApplicationDetails}_otherPhoneNumberinput').setRequired(false);
 	},
-	
-		
-			
+
 	updateApplyNowSlide : function(){
 
 		$(".${nameSummary}_planDetails").html( $("#aol-features > *:not(h5)").clone() );

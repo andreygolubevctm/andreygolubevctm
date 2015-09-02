@@ -275,6 +275,8 @@ var validation = false;
             return this.each(function () {
                 var $el = $(this);
                 $el[0].required = required;
+                $el.prop('required', required);
+                //$el.data('ruleRequired', required);
                 if(message) {
                     $el.data('msgRequired', message);
                 }
