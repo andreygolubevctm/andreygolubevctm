@@ -43,7 +43,7 @@
 	</appender>
 
 
-	<logger name="com.ctm.xml.XMLOutputWriter" additivity="false">
+	<logger name="com.ctm.logging.XMLOutputWriter" additivity="false">
 		<appender-ref ref="ASYNC" />
   	</logger>
 
