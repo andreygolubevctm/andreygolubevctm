@@ -142,7 +142,8 @@ Bundles.prototype.getWatchableBundlesJSFilePaths = function(bundle, fileType) {
  * @param fileType
  * @returns {*}
  */
-Bundles.prototype.getBundleFiles = function(bundle, fileType) {
+Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath) {
+    useFullPath = typeof useFullPath !== "undefined" ? useFullPath : true;
     fileType = fileType || "js";
 
     var fileListCacheKey = bundle + ":" + fileType;
@@ -151,7 +152,7 @@ Bundles.prototype.getBundleFiles = function(bundle, fileType) {
         return this.fileListCache[fileListCacheKey];
     } else {
         var filePath = path.join(this.config.bundles.dir, bundle, fileType);
-        this.fileListCache[fileListCacheKey] = fileHelper.getFilesFromFolderPath(filePath)
+        this.fileListCache[fileListCacheKey] = fileHelper.getFilesFromFolderPath(filePath, useFullPath);
         return this.fileListCache[fileListCacheKey];
     }
 };

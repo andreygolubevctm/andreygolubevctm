@@ -7,12 +7,16 @@ var FileHelper = {
      * @param path
      * @returns {*}
      */
-    getFilesFromFolderPath: function(path) {
+    getFilesFromFolderPath: function(path, useFullPath) {
+        useFullPath = typeof useFullPath !== "undefined" ? useFullPath : true;
+
         var fileList = fs.readdirSync(path);
 
-        fileList = fileList.map(function(file){
-            return path + "/" + file;
-        });
+        if(useFullPath) {
+            fileList = fileList.map(function (file) {
+                return path + "/" + file;
+            });
+        }
 
         return fileList;
     },

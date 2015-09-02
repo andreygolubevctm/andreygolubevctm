@@ -26,6 +26,8 @@ function LessTasks(gulp) {
             (function (bundle) {
                 var brandCodes = bundles.getBundleBrandCodes(bundle);
 
+                var fileList = bundles.getBundleFiles(bundle, "less", false);
+
                 for (var i = 0; i < brandCodes.length; i++) {
                     var brandCode = brandCodes[i];
 
@@ -41,11 +43,21 @@ function LessTasks(gulp) {
 
                             return gulp.src(brandCodeBundleSrcPath)
                                 // Prepend brand specific variables if file exists
-                                .pipe(gulpIf(fs.existsSync(path.join(gulp.pipelineConfig.bundles.dir, bundle, "less", brandVariablesFileName)), insert.prepend("@import '" + brandVariablesFileName + "';\r\n")))
+                                .pipe(
+                                    gulpIf(
+                                        fileList.indexOf(brandVariablesFileName) !== -1,
+                                        insert.prepend("@import '" + brandVariablesFileName + "';\r\n")
+                                    )
+                                )
                                 // Prepend generic brand build file
                                 .pipe(insert.prepend("@import '../../build/brand/" + brandCode + "/build.less';\r\n"))
                                 // Append brand specific theme less if file exists
-                                .pipe(gulpIf(fs.existsSync(path.join(gulp.pipelineConfig.bundles.dir, bundle, "less", brandThemeFileName)), insert.append("\r\n@import '" + brandThemeFileName + "';")))
+                                .pipe(
+                                    gulpIf(
+                                        fileList.indexOf(brandThemeFileName) !== -1,
+                                        insert.append("\r\n@import '" + brandThemeFileName + "';")
+                                    )
+                                )
                                 .pipe(watchLess(brandCodeBundleSrcPath, null, function(events, done){
                                     gulp.start(brandCodeTask, done);
                                 }))
