@@ -5,7 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.disc_au.web.go.bridge.messages.Message;
 
@@ -18,7 +19,7 @@ import com.disc_au.web.go.bridge.messages.Message;
 
 public class Bridge {
 
-	private static Logger logger = Logger.getLogger(Bridge.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(Bridge.class.getName());
 
 	/** The Constant CONF_LEN. */
 	static final int CONF_LEN = 12;

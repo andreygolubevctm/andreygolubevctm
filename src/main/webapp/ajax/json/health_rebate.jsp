@@ -268,7 +268,7 @@ Certified Age of Entry: Defaults to 30.
 ********
 RESPONSE
 --------
-<go:log  level="TRACE">
+<go:log  level="DEBUG">
 	rebate = ${rebate}
 	rebateChangeover = ${rebateChangeover}
 	cover = ${cover}

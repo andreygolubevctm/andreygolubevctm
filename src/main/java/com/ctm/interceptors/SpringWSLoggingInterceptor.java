@@ -3,7 +3,8 @@ package com.ctm.interceptors;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
@@ -12,7 +13,7 @@ import com.ctm.xml.XMLOutputWriter;
 
 public class SpringWSLoggingInterceptor implements ClientInterceptor {
 	
-	private Logger logger = Logger.getLogger(SpringWSLoggingInterceptor.class);
+	private static final Logger logger = LoggerFactory.getLogger(SpringWSLoggingInterceptor.class);
 	
 	XMLOutputWriter xmloutputWriter;
 
