@@ -18,7 +18,7 @@
 	<form_new:row fieldXpath="${fieldXpath}" label="Email Address">
 		<field_new:email xpath="${fieldXpath}"
 			required="${mandatoryFieldsSplitTest}"
-			title="the policy holder's email address" />
+			title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 	</form_new:row>
 
 	<%-- Marketing --%>
@@ -38,7 +38,7 @@
 	<form_new:row fieldXpath="${fieldXpath}" label="Best contact number" helpId="524">
 		<field:contact_telno xpath="${fieldXpath}"
 			required="false"
-			title="best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)"/>
+			title="best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)" validationAttribute=" data-rule-validateOkToCall='true' " />
 	</form_new:row>
 
 	<%-- OK to call --%>
@@ -57,6 +57,3 @@
 	<form_new:privacy_optin vertical="home" />
 
 </form_new:fieldset>
-<%--
-<go:validate selector="${name}_phoneinput" rule="validateOkToCall" parm="true" message="Please enter a contact number" />
-<go:validate selector="${name}_email" rule="validateOkToEmail" parm="true" message="Please enter your email address" />--%>

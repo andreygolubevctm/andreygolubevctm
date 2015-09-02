@@ -5,14 +5,15 @@
 var validation = false;
 
 ;(function ($, undefined) {
-    var meerkat = window.meerkat;
+    var meerkat = window.meerkat,
+        log = meerkat.logging.debug,
+        debug = meerkat.site.environment == "localhost" || meerkat.site.environment == "nxi";
 
-    var events = {
-        };
+    var events = {};
 
     function init() {
 
-        if(typeof $.validator !== 'function') {
+        if (typeof $.validator !== 'function') {
             return;
         }
 
@@ -28,8 +29,13 @@ var validation = false;
      */
     function initJourneyValidator() {
 
-        $('.journeyEngineSlide form').each(function(){
-            setupDefaultValidationOnForm( $(this) );
+        /**
+         * Initialise by default on journey engine forms.
+         * To initialise on other forms,  do the same thing
+         * and replace $(this) with the form element.
+         */
+        $('.journeyEngineSlide form').each(function () {
+            setupDefaultValidationOnForm($(this));
         });
 
     }
@@ -40,26 +46,26 @@ var validation = false;
      */
     function _overrideValidatorPrototypes() {
 
-        String.prototype.startsWith = function(prefix) {
+        String.prototype.startsWith = function (prefix) {
             return (this.substr(0, prefix.length) === prefix);
         };
-        String.prototype.endsWith = function(suffix) {
+        String.prototype.endsWith = function (suffix) {
             return (this.substr(this.length - suffix.length) === suffix);
         };
 
         /**
          * Not sure why we need this one. TODO: test it
          */
-        $.validator.prototype.hideErrors = function() {
-            this.addWrapper( this.toHide );
+        $.validator.prototype.hideErrors = function () {
+            this.addWrapper(this.toHide);
         };
 
         /*$.validator.prototype.customMessage = function( name, method ) {
-            console.log($.validator.messages);
-            var m = this.settings.messages[ name ] || $.validator.messages[method];
-            console.log(m);
-            return m && ( m.constructor === String ? m : m[ method ]);
-        };*/
+         console.log($.validator.messages);
+         var m = this.settings.messages[ name ] || $.validator.messages[method];
+         console.log(m);
+         return m && ( m.constructor === String ? m : m[ method ]);
+         };*/
 
         /**
          * CTM Custom Unhighlight function
@@ -69,7 +75,7 @@ var validation = false;
          * @param errorClass
          * @param validClass
          */
-        $.validator.prototype.ctm_unhighlight = function( element, errorClass, validClass ) {
+        $.validator.prototype.ctm_unhighlight = function (element, errorClass, validClass) {
             if (!element) return;
             errorClass = errorClass || this.settings.errorClass;
             validClass = validClass || this.settings.validClass;
@@ -109,21 +115,21 @@ var validation = false;
      * This one will replace core/validation.js
      * @param $formElement
      */
-    function setupDefaultValidationOnForm( $formElement ) {
+    function setupDefaultValidationOnForm($formElement) {
         $formElement.validate({
-            submitHandler: function(form) {
+            submitHandler: function (form) {
                 form.submit();
             },
-            invalidHandler: function(form, validator) {
+            invalidHandler: function (form, validator) {
 
                 if (!validator.numberOfInvalids()) return;
-                if(jQuery.validator.scrollingInProgress) return;
+                if (jQuery.validator.scrollingInProgress) return;
 
                 var $ele = $(validator.errorList[0].element),
                     $parent = $ele.closest('.row-content, .fieldrow_value');
 
 
-                if($ele.attr('data-validation-placement') !== null && $ele.attr('data-validation-placement') !== ''){
+                if ($ele.attr('data-validation-placement') !== null && $ele.attr('data-validation-placement') !== '') {
                     var $ele2 = $($ele.attr('data-validation-placement'));
                     if ($ele2.length > 0) $ele = $ele2;
                 }
@@ -131,7 +137,7 @@ var validation = false;
                 /** If the element has a row parent (where the error message gets inserted to), then scroll to that instead **/
                 if ($parent.length > 0) $ele = $parent;
                 jQuery.validator.scrollingInProgress = true;
-                meerkat.modules.utils.scrollPageTo($ele,500,-50, function(){
+                meerkat.modules.utils.scrollPageTo($ele, 500, -50, function () {
                     jQuery.validator.scrollingInProgress = false;
                 });
             },
@@ -145,12 +151,12 @@ var validation = false;
                  An error message placeholder will be injected above the form element, generally inside the parent .row-content
                  **/
                 var $referenceElement = $element;
-                if(typeof $element.attr('data-validation-placement') !== 'undefined' &&
-                    $element.attr('data-validation-placement') !== null && $element.attr('data-validation-placement') !== ''){
+                if (typeof $element.attr('data-validation-placement') !== 'undefined' &&
+                    $element.attr('data-validation-placement') !== null && $element.attr('data-validation-placement') !== '') {
                     $referenceElement = $($element.attr('data-validation-placement'));
                 }
                 var parent = $referenceElement.closest('.row-content, .fieldrow_value');
-                if(parent.length === 0) parent = $element.parent();
+                if (parent.length === 0) parent = $element.parent();
 
                 var errorContainer = parent.children('.error-field');
 
@@ -161,9 +167,9 @@ var validation = false;
                 }
                 errorContainer.append($error);
             },
-            onkeyup: function(element) {
+            onkeyup: function (element) {
                 var element_id = jQuery(element).attr('id');
-                if ( !this.settings.rules.hasOwnProperty(element_id) || !this.settings.rules[element_id].onkeyup) {
+                if (!this.settings.rules.hasOwnProperty(element_id) || !this.settings.rules[element_id].onkeyup) {
                     return;
                 }
 
@@ -171,7 +177,7 @@ var validation = false;
                     this.element(element);
                 }
             },
-            onfocusout: function(element, event) {
+            onfocusout: function (element, event) {
                 /** Autocomplete-specific rule: do not perform validation if the autocomplete menu is open.
                  This prevents the issue of focus leaving the input when clicking a menu option which triggers validation and reports an error on the input.
                  **/
@@ -186,7 +192,7 @@ var validation = false;
                 /** Call the default onfocusout **/
                 $.validator.defaults.onfocusout.call(this, element, event);
             },
-            highlight: function( element, errorClass, validClass ) {
+            highlight: function (element, errorClass, validClass) {
                 /** console.log('highlight', element); **/
 
                 /** Apply correct classes to element **/
@@ -212,26 +218,27 @@ var validation = false;
                     errorContainer.delay(10).slideDown(100);
                 }
             },
-            unhighlight: function( element, errorClass, validClass ) {
-                return this.ctm_unhighlight( element, errorClass, validClass );
+            unhighlight: function (element, errorClass, validClass) {
+                return this.ctm_unhighlight(element, errorClass, validClass);
             }
         });
     }
 
 
-    function isValid( $element, displayErrors ){
-        if( displayErrors )
+    function isValid($element, displayErrors) {
+        if (displayErrors)
             return $element.valid();
 
-        var $journeyEngineForm = $(document).find(".journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).children("form");
-        if($journeyEngineForm.length)
+        var $form,
+            $journeyEngineForm = $(document).find(".journeyEngineSlide").eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).children("form");
+        if ($journeyEngineForm.length)
             $form = $journeyEngineForm;
         else
             $form = $("#mainForm");
 
         try {
-            return $form.validate().check( $element );
-        } catch(e) {
+            return $form.validate().check($element);
+        } catch (e) {
             return true;
         }
 
@@ -245,11 +252,64 @@ var validation = false;
         setupDefaultValidationOnForm: setupDefaultValidationOnForm
     });
 
+    /**
+     * To reduce duplication of code.
+     * @param element
+     * @private
+     */
+    function _logDebug(element) {
+        log("No rule exists for this element: " + (element.attr('id') || element.attr('name')));
+    }
+
     $.fn.extend({
-        isValid: function( displayErrors ) {
-            return meerkat.modules.jqueryValidate.isValid( $(this), displayErrors );
+        isValid: function (displayErrors) {
+            return meerkat.modules.jqueryValidate.isValid($(this), displayErrors);
+        },
+        /**
+         * Required is a special case, as it is a property based rule.
+         * If there is a data-rule-required attribute, it will be duplicated on an element, and thus have to be removed in both locations e.g. via $el.data().ruleRequired=false AND $el[0].required=false. Simply remove data-rule-required attribute instead.
+         * @param required
+         */
+        setRequired: function (required) {
+            return this.each(function () {
+                $(this)[0].required = required;
+            });
+        },
+        removeRule: function (ruleName) {
+            return this.each(function () {
+                // format is e.g. ruleRequired ruleYoungestdob (instead of ruleyoungestDOB)
+                var $el = $(this),
+                    ruleString = ruleName.charAt(0).toUpperCase() + ruleName.substring(1).toLowerCase(),
+                    rule = "rule" + ruleString;
+                $el.data()[rule] = false;
+                $el.removeAttr('data-rule-' + ruleString);
+                if (debug && !$el.data()[rule]) {
+                    _logDebug($el);
+                }
+            });
+
+        },
+        /**
+         * This is instead of the jquery.validate plugins .rules("add", "rule") function.
+         * This is because the .rules() method does not support adding or removing dataAttribute rules.
+         * Rules are normalised, and e.g. if we have "required"
+         * @param {String} ruleName
+         * @param {String|Number|POJO} param
+         */
+        addRule: function (ruleName, param) {
+            return this.each(function () {
+                var $el = $(this),
+                    ruleString = ruleName.charAt(0).toUpperCase() + ruleName.substring(1).toLowerCase(),
+                    rule = "rule" + ruleString;
+                $el.data()[rule] = param || true;
+                $el.attr('data-rule-' + ruleString, (param || true));
+                if (debug && !$el.data()[rule]) {
+                    _logDebug($el);
+                }
+            });
         }
     });
+
 
 })(jQuery);
 

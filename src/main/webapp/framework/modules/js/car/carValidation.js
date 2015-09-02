@@ -138,7 +138,7 @@
             return false;
         }
         return true;
-    });
+    }, "Please enter your email address");
 
 
     $.validator.addMethod('validateOkToCall', function (value, element, param) {

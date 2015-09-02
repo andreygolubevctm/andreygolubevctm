@@ -14,6 +14,7 @@
 <%@ attribute name="labelName"				required="false" rtexprvalue="true"	 description="the label to display for validation" %>
 <%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="Placeholder text" %>
 <%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
+<%@ attribute name="validationAttribute"	required="false" rtexprvalue="true"	 description="Additional Validation Attributes" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -59,5 +60,5 @@
 <field:phone_number className="${className}" required="${required}" xpath="${xpath}"
 			placeHolder="${placeHolder}" placeHolderUnfocused="${placeHolderUnfocused}"
 			labelName="${labelName}" title="${title}" size="${size}"
-			allowMobile="${allowMobile}" allowLandline="true" additionalAttributes="${additionalAttributes}" />
+			allowMobile="${allowMobile}" allowLandline="true" additionalAttributes="${validationAttribute} ${additionalAttributes}" />
 

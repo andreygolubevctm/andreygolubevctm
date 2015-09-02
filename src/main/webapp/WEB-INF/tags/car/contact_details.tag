@@ -32,7 +32,7 @@
 	<form_new:row label="Email Address" id="contactEmailRow">
 		<c:choose>
 			<c:when test="${emailHelperSplitTest eq true}">
-				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" additionalAttributes=" data-rule-validateOkToEmail='true' "/>
+				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 			</c:when>
 			<c:otherwise>
 				<field_new:email xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
@@ -43,7 +43,7 @@
 	<form_new:row label="Contact Number" id="contactNoRow">
 		<field:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
 			className="bestNumber"
-			labelName="best number" />
+			labelName="best number" validationAttribute=" data-rule-validateOkToCall='true' " />
 	</form_new:row>
 
 

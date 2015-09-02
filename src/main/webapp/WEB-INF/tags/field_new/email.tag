@@ -47,15 +47,15 @@
 
 <%-- VALIDATION --%>
 <c:if test="${required}">
-	<c:set var="titleText">
-		<c:choose>
-			<c:when test="${not empty title}">${title}</c:when>
-			<c:otherwise>email address</c:otherwise>
-		</c:choose>
-	</c:set>
 	<c:set var="requiredAttribute" value=' required="required"' />
 </c:if>
-
+<%-- Needs to be generated regardless, as required status can change --%>
+<c:set var="titleText">
+	<c:choose>
+		<c:when test="${not empty title}">${title}</c:when>
+		<c:otherwise>email address</c:otherwise>
+	</c:choose>
+</c:set>
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
