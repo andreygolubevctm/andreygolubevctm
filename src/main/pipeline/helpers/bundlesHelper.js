@@ -90,8 +90,8 @@ Bundles.prototype.getBrandCodeBundles = function(brandCode) {
  * @param bundle
  * @returns {*}
  */
-Bundles.prototype.getDependencies = function(bundle) {
-    return (typeof this.collection[bundle].dependencies !== "undefined") ? this.collection[bundle].dependencies : [];
+Bundles.prototype.getJSDependencies = function(bundle) {
+    return (typeof this.collection[bundle].jsDependencies !== "undefined") ? this.collection[bundle].jsDependencies : [];
 };
 
 /**
@@ -103,7 +103,7 @@ Bundles.prototype.getDependencies = function(bundle) {
 Bundles.prototype.getDependencyFiles = function(bundle, fileType) {
     fileType = fileType || "js";
 
-    var dependencies = this.getDependencies(bundle),
+    var dependencies = this.getJSDependencies(bundle),
         dependenciesFiles = [];
 
     if(dependencies.length) {
@@ -126,7 +126,7 @@ Bundles.prototype.getDependencyFiles = function(bundle, fileType) {
 Bundles.prototype.getWatchableBundlesFilePaths = function(bundle, fileType) {
     fileType = fileType || "js";
 
-    var dependencies = this.getDependencies(bundle);
+    var dependencies = this.getJSDependencies(bundle);
 
     dependencies.push(bundle);
 
