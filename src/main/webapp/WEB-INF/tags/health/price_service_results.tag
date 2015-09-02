@@ -229,7 +229,7 @@
 
 			<%-- set up phio data --%>
 			<c:set var="row" value="${healthPriceDetailService.setUpPhioData(row)}" />
-			${logger.trace('Got phio data', log:kv('phioData',row.getPhioData()))}
+			${logger.trace('Got phio data. {}', log:kv('phioData',row.getPhioData()))}
 			<c:out value="${row.getPhioData()}" escapeXml="false" />
 
 			</result>

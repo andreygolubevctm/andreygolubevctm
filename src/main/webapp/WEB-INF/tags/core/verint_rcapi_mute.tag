@@ -16,7 +16,7 @@
 	response.setContentType("text/plain");
 	response.setCharacterEncoding("UTF-8");
 %>
-${logger.info('action: {}', action)}
+${logger.info('Starting tag. {}', log:kv('action',action ))}
 <%-- THIS IS THE SYSTEM to TURN ON/OFF Recording --%>
 <c:catch var="packetError">
 	<c:set var="xmlResponse" value="${phoneService.pauseResumeRecording(pageSettings, agentId, contentType, action)}" />

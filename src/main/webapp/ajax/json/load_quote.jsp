@@ -47,13 +47,13 @@ ${logger.info('setting flag for whether simples. {}',log:kv('isOperator',isOpera
 
 <c:choose>
 	<c:when test="${not empty param.simples and empty isOperator}">
-		${logger.warn('Operator not logged in - force to login screen param.simples={} isOperator={}' , param.simples , isOperator)}
+		${logger.warn('Operator not logged in - force to login screen. {},{}' , log:kv('param.simples',param.simples ) , log:kv('isOperator',isOperator ))}
 		<c:set var="result">
 			<result><error>login</error></result>
 		</c:set>
 	</c:when>
 	<c:when test="${empty isOperator and (empty authenticatedData.userData || empty authenticatedData.userData.authentication || !authenticatedData.userData.authentication.validCredentials)}">
-		${logger.warn('User not logged in - force to login screen isOperator={} authenticatedData.userData={}', isOperator, authenticatedData.userData)}
+		${logger.warn('User not logged in - force to login screen {},{}', log:kv('isOperator',isOperator ), log:kv('authenticatedData.userData',authenticatedData.userData ))}
 		<c:set var="result">
 			<result><error>login</error></result>
 		</c:set>
@@ -106,14 +106,14 @@ ${logger.info('setting flag for whether simples. {}',log:kv('isOperator',isOpera
 						</c:set>
 					</c:otherwise>
 				</c:choose>
-				${logger.info('TRAN ID NOW data.current.transactionId={} IP={}', data.current.transactionId, id_handler)}
+				${logger.info('Transaction Id has been updated. {},{},{}', log:kv('requestedTransaction',requestedTransaction ), log:kv('currentTransactionId',data.current.transactionId ), log:kv('ip',id_handler ))}
 				<%-- Now we get back to basics and load the data for the requested transaction --%>
 
 				<c:set var="xpath" value="${quoteType}"/>
 				<c:if test="${quoteType == 'car'}">
 					<c:set var="xpath" value="quote"/>
 				</c:if>
-				${logger.info('About to delete the vertical information for: quoteType={}', quoteType)}
+				${logger.info('About to delete the vertical information. {}', log:kv('quoteType',quoteType ))}
 				<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 
 						<c:catch var="error">

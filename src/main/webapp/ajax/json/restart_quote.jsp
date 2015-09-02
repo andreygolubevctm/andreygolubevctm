@@ -4,7 +4,7 @@
 <c:set var="logger" value="${log:getLogger('restart_quote_jsp')}" />
 
 <session:delete transactionId="${param.transactionId}" />
-${logger.info('RESTART QUOTE: param={}',param)}
+${logger.info('RESTART QUOTE. {}',log:kv('param',param ))}
 
 <c:set var="vertical" value="${param.quoteType}" />
 

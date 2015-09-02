@@ -14,7 +14,7 @@
 	<x:out select="$configXml/aggregator/westpacGateway/cd_supplier_business" />
 </c:set>
 
-${logger.info('health_paymentgateway_return: action={} fl_success={} tx_response={}', param.action, param.fl_success, param.tx_response)}
+${logger.info('Start health_paymentgateway_return. {},{},{}', log:kv('action',param.action ), log:kv('fl_success',param.fl_success ),log:kv('tx_response', param.tx_response ))}
 
 <c:set var="cardNumber" value="${go:jsEscape(param.cd_prerego)}" />
 <c:set var="cardScheme" value="${go:jsEscape(param.nm_card_scheme)}" />
@@ -23,28 +23,28 @@ ${logger.info('health_paymentgateway_return: action={} fl_success={} tx_response
 
 <c:choose>
 	<c:when test="${not empty param.fl_success and param.fl_success != '1'}">
-		${logger.warn('Failed (fl_success != 1) WESTPAC: cardScheme={} cardExpiry={} cardHolderName={}', cardScheme, cardExpiry, cardHolderName)}
+		${logger.warn('Failed (fl_success != 1) WESTPAC. {},{},{}', log:kv('cardScheme', cardScheme), log:kv('cardExpiry',cardExpiry ), log:kv('cardHolderName',cardHolderName ))}
 		<c:set var="success" value="false" />
 		<c:set var="message" value="Failed (fl_success != 1)" />
 	</c:when>
 	<c:when test="${not empty param.action and param.action == 'Cancelled'}">
-		${logger.info('Cancel button was pressed WESTPAC: cardScheme={} cardExpiry={} cardHolderName={}', cardScheme ,cardExpiry, cardHolderName)}
+		${logger.info('Cancel button was pressed WESTPAC: {},{},{}', log:kv('cardScheme', cardScheme) ,log:kv('cardExpiry',cardExpiry ), log:kv('cardHolderName',cardHolderName ))}
 		<c:set var="success" value="false" />
 		<c:set var="message" value="Cancel button was pressed" />
 	</c:when>
 	<c:when test="${empty param.fl_success or empty param.cd_community or param.cd_community != comm or empty param.cd_supplier_business or param.cd_supplier_business != supp}">
-		${logger.warn('Missing or unexpected parameters WESTPAC: cardScheme={} cardExpiry={} cardHolderName={}', cardScheme ,cardExpiry, cardHolderName)}
+		${logger.warn('Missing or unexpected parameters WESTPAC: {},{},{}', log:kv('cardScheme', cardScheme), log:kv('cardExpiry',cardExpiry ), log:kv('cardHolderName',cardHolderName ))}
 		<c:set var="success" value="false" />
 		<c:set var="message" value="Missing or unexpected parameters" />
 	</c:when>
 	<c:when test="${empty cardNumber or empty cardScheme or empty cardExpiry}">
-		${logger.warn('Missing parameters WESTPAC: cardScheme={} cardExpiry={} cardHolderName={}', cardScheme ,cardExpiry, cardHolderName)}
+		${logger.warn('Missing parameters WESTPAC: {},{},{}', log:kv('cardScheme', cardScheme), log:kv('cardExpiry',cardExpiry ), log:kv('cardHolderName',cardHolderName ))}
 		<c:set var="success" value="false" />
 		<c:set var="message" value="Missing parameters" />
 	</c:when>
 	<c:otherwise>
 		<%-- Capture response values into data bucket --%>
-		${logger.debug('WESTPAC: cardNumber={} cardScheme={} cardExpiry={} cardHolderName={}',cardNumber, cardScheme, cardExpiry, cardHolderName)}
+		${logger.debug('WESTPAC: cardNumber={},{},cardExpiry={} cardHolderName={}',cardNumber, log:kv('cardScheme', cardScheme) , cardExpiry, cardHolderName)}
 		<c:set var="success" value="true" />
 		<c:set var="message"><c:out value="${param.tx_response}" default="OK" escapeXml="true" /></c:set>
 	</c:otherwise>

@@ -163,7 +163,7 @@
 					<c:if test="${not empty errorPool}">
 						<c:set var="errorPool">${errorPool},</c:set>
 					</c:if>
-					${logger.error('Failed to add/update email_master emailAddress={} brand={} vertical={} source={}',emailAddress , brand, vertical, source , error)}
+					${logger.error('Failed to add/update email_master {},{},{},{}',log:kv('emailAddress',emailAddress ) , log:kv('brand',brand ), log:kv('vertical',vertical ), log:kv('source',source ) , error)}
 					<c:set var="errorPool">${errorPool}"A fatal database error occurred - we hope to resolve this soon."</c:set>
 				</c:when>
 				<c:otherwise>
@@ -171,7 +171,7 @@
 						<core:transaction touch="S" noResponse="false" writeQuoteOverride="${writeQuoteOverride}" emailAddress="${emailAddress}" comment="${source}" />
 					</c:set>
 
-					${logger.info('ct_outcome: {}',ct_outcome)}
+					${logger.info('Touch quote with S. {}',log:kv('outcome',ct_outcome ))}
 					<c:if test="${fn:contains(ct_outcome,'FAILED:')}">
 						<c:if test="${not empty errorPool}">
 							<c:set var="errorPool">${errorPool},</c:set>

@@ -36,5 +36,5 @@
 </c:if>
 
 <%-- Redirect --%>
-${logger.debug('Redirecting user {}', go:kv('redirectionUrl' , pageSettings.getBaseUrl() + "unsubscribe.jsp"))}
+${logger.debug('Redirecting user {}', log:kv('redirectionUrl' , pageSettings.getBaseUrl() + "unsubscribe.jsp"))}
 <c:redirect url="${pageSettings.getBaseUrl()}unsubscribe.jsp"/>

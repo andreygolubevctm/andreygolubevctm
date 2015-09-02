@@ -26,7 +26,7 @@
 
 <c:set var="action"><c:out value="${param.action}" escapeXml="true" /></c:set>
 
-${logger.debug('action: {}', action)}
+${logger.debug('Started verint action. {}', log:kv('action', action))}
 
 <c:choose>
 	<c:when test="${empty isOperator}">

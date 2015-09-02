@@ -56,7 +56,7 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 <c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		${logger.info('PROCEEDINATOR PASSED for quoteType={} tranId={}',quoteType,id_for_access_check)}
+		${logger.info('PROCEEDINATOR PASSED. {},{}',log:kv('quoteType', quoteType),log:kv('transactionId',id_for_access_check))}
 		<c:set var="requestedTransaction" value="${id_for_access_check}" />
 
 		<sql:setDataSource dataSource="jdbc/ctm"/>
@@ -72,7 +72,7 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 				</c:set>
 
 		<go:setData dataVar="data" xpath="previous/transactionId" value="${requestedTransaction}" />
-		${logger.info('TRAN ID NOW data.current.transactionId={}',data.current.transactionId)}
+		${logger.info('Transaction Id has been updated. {},{}', log:kv('requestedTransaction',requestedTransaction ) ,log:kv('data.current.transactionId', data.current.transactionId))}
 		<%-- Now we get back to basics and load the data for the requested transaction --%>
 		<jsp:useBean id="remoteLoadQuoteService" class="com.ctm.services.RemoteLoadQuoteService" scope="page" />
 
@@ -82,7 +82,7 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 
 				<c:choose>
 					<c:when test="${not empty error}">
-						${logger.error("Failed to get transaction details quoteType={} param.type={} param.email={} styleCodeId={}", quoteType, param.type,  param.email , styleCodeId, error)}
+						${logger.error("Failed to get transaction details. {},{},{},{}", log:kv('quoteType',quoteType ), log:kv('param.type',param.type ),  log:kv('param.email',param.email ), log:kv('styleCodeId',styleCodeId ), error)}
 						<c:set var="result"><result><error>Error loading quote data: ${error.rootCause}</error></result></c:set>
 					</c:when>
 			<c:when test="${empty details}">
@@ -205,7 +205,7 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				${logger.warn('Proceedinator={}', proceedinator)}
+				${logger.warn('Proceedinator did not pass.{}', log:kv('proceedinator',proceedinator ))}
 				<c:set var="result">
 					<result><error>This quote has been reserved by another user. Please try again later.</error></result>
 				</c:set>

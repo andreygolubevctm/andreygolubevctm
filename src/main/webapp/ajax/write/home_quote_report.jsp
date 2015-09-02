@@ -20,7 +20,7 @@ ${logger.debug('Writing Report')}
 	</c:when>
 	<c:otherwise>
 		<error:non_fatal_error origin="home_quote_report.jsp" errorMessage="ERROR: Touch type is invalid or unsupported: '${touch}'" errorCode="" />
-		${logger.warn('home_quote_report ERROR: Touch type is invalid or unsupported: "{}"', touch)}
+		${logger.warn('Touch type is invalid or unsupported. {}', log:kv('touch',touch ))}
 	</c:otherwise>
 </c:choose>
 

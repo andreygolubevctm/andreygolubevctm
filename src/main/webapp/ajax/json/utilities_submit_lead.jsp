@@ -29,14 +29,14 @@
 	lastName="${data['utilities/leadFeed/lastName']}"
 	items="marketing=Y,okToCall=Y" />
 
-${logger.info('Utilities Tran Id = {}',data['current/transactionId'])}
+${logger.debug('Utilities Tran Id. {}',log:kv('current/transactionId',data['current/transactionId'] ))}
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
 <jsp:useBean id="leadfeedService" class="com.ctm.services.utilities.UtilitiesLeadfeedService" scope="page" />
 
 <c:set var="model" value="${leadfeedService.mapParametersToModel(pageContext.getRequest())}" />
 <c:set var="submitResult" value="${leadfeedService.submit(pageContext.getRequest(), model)}" />
-${logger.debug('submitResult = {}',submitResult.toString())}
+${logger.debug('Submitted lead feed. {}',log:kv('submitResult', submitResult))}
 
 <c:choose>
 	<c:when test="${isValid || continueOnValidationError}">
@@ -46,14 +46,9 @@ ${logger.debug('submitResult = {}',submitResult.toString())}
 									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
 			</c:forEach>
 		</c:if>
-
-		<%-- //FIX: turn this back on when you are ready!!!!
-		<%-- Write to the stats database
-		<agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
-		--%>
 		<c:set var="xmlData" value="<data>${go:JSONtoXML(submitResult)}</data>" />
 		<x:parse var="parsedXml" doc="${xmlData}" />
-		${logger.debug('xmlData = {}',xmlData)}
+		${logger.debug('Parsed result to xml. {}',log:kv('xmlData',xmlData ))}
 		<c:set var="uniqueId"><x:out select="$parsedXml/data/unique_id" /></c:set>
 		<go:setData dataVar="data" xpath="utilities/leadFeed/confirmationId" value="${uniqueId}" />
 

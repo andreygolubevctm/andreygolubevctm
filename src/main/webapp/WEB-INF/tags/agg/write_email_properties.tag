@@ -56,7 +56,7 @@
 					<sql:param value="${propertyId}" />
 					<sql:param value="${brand}" />
 				</sql:query>
-				${logger.info('propertyId={} emailId={} brand={}' , propertyId, emailId, brand)}
+				${logger.info('Retrieved email properties from database. {},{},{}' , log:kv('propertyId',propertyId ), log:kv('emailId',emailId ), log:kv('brand',brand))}
 				<c:choose>
 					<c:when test="${results.rowCount > 0}">${true}</c:when>
 					<c:otherwise>${false}</c:otherwise>

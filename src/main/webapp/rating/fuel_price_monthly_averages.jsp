@@ -57,7 +57,7 @@
 				<c:forEach var="site" varStatus="status" items="${fuelsites.rows}">
 					<c:set var="siteids"><c:if test="${not empty siteids}">${siteids},</c:if>${site.SiteId}</c:set>
 				</c:forEach>
-				${logger.debug('siteids={} nowMinusSixWeeks_Date={} fuels={}',siteids,nowMinusSixWeeks_Date,fuels)}
+				${logger.debug('Got list of site ids. {},{},{}',log:kv('siteids',siteids ),log:kv('nowMinusSixWeeks_Date',nowMinusSixWeeks_Date ),log:kv('fuels',fuels ))}
 
 				<c:catch var="error">
 					<sql:query var="fuelprices">
@@ -94,7 +94,7 @@
 						</c:choose>
 					</c:when>
 					<c:otherwise>
-						${logger.error('Database error while locating historical fuel prices siteids={} fuels={}', siteids, fuels , error)}
+						${logger.error('Database error while locating historical fuel prices.{},{}', log:kv('siteids',siteids ), log:kv('fuels', fuels) , error)}
 						<error>MK-20004</error>
 					</c:otherwise>
 				</c:choose>
@@ -105,7 +105,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		${logger.error('Database error while locating historical fuel prices. postcode={}', postcode, error)}
+		${logger.error('Database error while locating historical fuel prices. {}', log:kv('postcode', postcode), error)}
 		<error>MK-20004</error>
 	</c:otherwise>
 </c:choose>

@@ -12,7 +12,7 @@
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="alt_table" value="" />
-${logger.info('provider_id={} provider_code={} provider_name={}', provider_id,provider_code,provider_name)}
+${logger.info('Starting tag. {},{},{}', log:kv('provider_id',provider_id ),log:kv('provider_code',provider_code ),log:kv('provider_name',provider_name ))}
 
 <%-- 1] First - get the ID of the provider (either an existing one or a new ID from the range) --%>
 <%-- ========================================================================================= --%>
@@ -53,12 +53,12 @@ ${logger.info('provider_id={} provider_code={} provider_name={}', provider_id,pr
 									<c:out value="${find_available.rows[0].id}" />
 								</c:when>
 								<c:otherwise>
-									${logger.info('There are no empty provider records to store ({})', provider_id)}
+									${logger.info('There are no empty provider records to store. {}', log:kv("provider_id" , provider_id))}
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							${logger.warn('Database error locating empty provider record ({})', provider_id, error)}
+							${logger.warn('Database error locating empty provider record. {}', log:kv("provider_id" , provider_id), error)}
 						</c:otherwise>
 					</c:choose>
 				</c:otherwise>
@@ -141,7 +141,7 @@ ${logger.info('provider_id={} provider_code={} provider_name={}', provider_id,pr
 		</c:if>
 	</c:when>
 	<c:otherwise>
-		${logger.warn('Database error selecting provider provider_id={}', provider_id, error)}
+		${logger.warn('Database error selecting provider. {}', log:kv("provider_id" , provider_id), error)}
 	</c:otherwise>
 </c:choose>
 ${logger.debug('completed updating provider. {}', log:kv('ctm_provider_id', ctm_provider_id))}

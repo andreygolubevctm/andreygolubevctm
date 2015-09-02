@@ -46,7 +46,7 @@
 		<go:setData dataVar="data" xpath="${vertical}/homeExcess" value="${param.building_excess}" />
 		<go:setData dataVar="data" xpath="${vertical}/contentsExcess" value="${param.contents_excess}" />
 
-		${logger.info('UPDATING EXCESS: param.building_excess={} param.contents_excess={}',param.building_excess,param.contents_excess)}
+		${logger.info('Updating excess. {},{}', log:kv('building_excess', param.building_excess),log:kv('contents_excess',param.contents_excess ))}
 
 		<c:set var="writeQuoteOverride" value="Y" />
 		<c:set var="touch" value="Q" />

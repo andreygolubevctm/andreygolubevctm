@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${go:getLogger('jsp:ajax.xml.verint_rcapi_OLD')}" />
-
 <session:getAuthenticated  />
 
 <%--
@@ -30,7 +28,6 @@ AND the extension from a Get Agent ID call.
 			</c:catch>
 			<c:if test="${not empty getExtensionError or empty authenticatedData.login.user.extension or authenticatedData.login.user.extension eq ''}">
 				<c:if test="${not empty getExtensionError}" >
-					${logger.error('getExtensionError extension={}', extension, getExtensionError)}
 				</c:if>
 				<%
 				if(!response.isCommitted()) {

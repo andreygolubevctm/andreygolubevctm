@@ -116,7 +116,7 @@
 							If this fails it is not a show stopper so log and keep calm and carry on
 							--%>
 							<c:if test="${not empty error}">
-								${logger.error('failed to send best price for result.transaction_id={} data.life.contactDetails.email={}', result.transaction_id, data.life.contactDetails.email)}
+								${logger.error('failed to send best price for result. {},{}', log:kv('transaction_id',result.transaction_id ), log:kv('email',data.life.contactDetails.email ))}
 								${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, result.transaction_id)}
 							</c:if>
 						</c:when>

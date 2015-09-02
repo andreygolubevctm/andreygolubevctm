@@ -37,7 +37,7 @@
 
 <c:choose>
 	<c:when test="${ignoreEmailSendToUnsubscribed eq true}">
-		${logger.info('Email skipped as user not subscribed param.emailAddress={}', param.emailAddress)}
+		${logger.info('Email skipped as user not subscribed. {}', log:kv('param.emailAddress',param.emailAddress ))}
 	</c:when>
 	<c:otherwise>
 
@@ -52,10 +52,10 @@
 					<c:when test="${pageSettings.hasSetting('sendQuoteMailingName') and pageSettings.hasSetting('sendQuoteTmpl')}">
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendQuoteMailingName')}" />
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendQuoteTmpl')}" />
-						${logger.info('[Email] Mode: param.mode={} MailingName={} tmpl={}', param.mode, MailingName, tmpl)}
+						${logger.info('Email Mode is quote and mode is enabled. {},{},{}', log:kv('param.mode',param.mode ), log:kv('MailingName',MailingName ), log:kv('tmpl',tmpl ))}
 					</c:when>
 					<c:otherwise>
-						${logger.info('param.mode passed but missing required page settings param.mode={}', param.mode)}
+						${logger.info('param.mode passed but missing required page settings. {}', log:kv('param.mode',param.mode ))}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -67,7 +67,7 @@
 						${logger.debug('[Email] Mode: param.mode={} MailingName={} tmpl={}', param.mode, MailingName, tmpl)}
 					</c:when>
 					<c:otherwise>
-						${logger.warn('[Email] Mode passed but missing required page settings param.mode={}', param.mode)}
+						${logger.warn('[Email] Mode passed but missing required page settings. {}', log:kv('param.mode',param.mode ))}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -76,10 +76,10 @@
 					<c:when test="${pageSettings.hasSetting('sendEdmMailingName') and pageSettings.hasSetting('sendEdmTmpl')}">
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendEdmMailingName')}" />
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendEdmTmpl')}" />
-						${logger.info('[Email] Mode: param.mode={} MailingName={} tmpl={}', param.mode, MailingName, tmpl)}
+						${logger.debug('Email Mode is edm. {},{},{}', log:kv('param.mode',param.mode ), log:kv('MailingName',MailingName ), log:kv('tmpl',tmpl ))}
 					</c:when>
 					<c:otherwise>
-						${logger.warn('Mode passed but missing required page settings param.mode={}', param.mode)}
+						${logger.warn('Mode passed but missing required page settings. {}', log:kv('param.mode',param.mode ))}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -92,13 +92,13 @@
 						${logger.debug('[Email] Mode: param.mode={} MailingName={} OptInMailingName={} tmpl={} param.emailAddress={}', param.mode , MailingName, OptInMailingName,  tmpl, param.emailAddress)}
 					</c:when>
 					<c:otherwise>
-						${logger.warn('[Email] Mode passed but missing required page settings. param.mode={}', param.mode)})}
+						${logger.warn('[Email] Mode passed but missing required page settings. {}', log:kv('param.mode',param.mode ))})}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
 			<%-- Reset password, called from forgotten_password.jsp --%>
 			<c:otherwise>
-				${logger.warn('[Email] No matching mode passed. param.mode={}', param.mode)}
+				${logger.warn('[Email] No matching mode passed. {}', log:kv('param.mode',param.mode ))}
 			</c:otherwise>
 		</c:choose>
 
@@ -122,7 +122,7 @@
 
 		<c:choose>
 			<c:when test="${empty MailingName}">
-				${logger.warn('[Email] No email found to be sent emailAddress={}', emailAddress)}
+				${logger.warn('[Email] No email found to be sent. {}', log:kv('emailAddress',emailAddress ))}
 			</c:when>
 			<c:otherwise>
 				<%-- Dial into the send script --%>

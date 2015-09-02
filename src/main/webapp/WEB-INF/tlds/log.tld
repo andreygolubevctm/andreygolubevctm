@@ -24,8 +24,8 @@
 	<function>
 		<description>Key Values</description>
 		<name>kv</name>
-		<function-class>net.logstash.logback.argument.StructuredArguments</function-class>
-		<function-signature>net.logstash.logback.argument.StructuredArgument kv(java.lang.String, Object)</function-signature>
+		<function-class>com.ctm.logging.LoggingArguments</function-class>
+		<function-signature>com.ctm.logging.LoggingArgument kv(java.lang.String, java.lang.Object)</function-signature>
 	</function>
 
 </taglib>

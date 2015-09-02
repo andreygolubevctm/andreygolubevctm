@@ -32,8 +32,7 @@
 <c:set var="optedInForCompKey">${vertical}/resultsDisplayed/competition/optin</c:set>
 <c:set var="optedInForComp" value="${data[optedInForCompKey] == 'Y' }" />
 
-${logger.debug('COMP: {}',competitionEnabledSetting)}
-${logger.debug('COMPKEY: {}', optedInForComp)}
+${logger.debug('Got settings for competition. {},{}',log:kv('competitionEnabledSetting', competitionEnabledSetting), log:kv('optedInForComp', optedInForComp))}
 
 <c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
 	<c:set var="competitionId"><content:get key="competitionId"/></c:set>

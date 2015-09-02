@@ -45,7 +45,7 @@
 				items="marketing=N" />
 		</c:catch>
 		<c:if test="${error}">
-			${logger.warn('', error)}
+			${logger.warn('Failed to write email with source QUOTE. {}', log:kv('emailAddress', email) , error)}
 		</c:if>
 	</c:forTokens>
 </c:if>
@@ -63,7 +63,7 @@
 				items="marketing=N" />
 		</c:catch>
 		<c:if test="${error}">
-			${logger.warn('', error)}
+			${logger.warn('Failed to write email with source QUOTE. {}', log:kv('emailAddress', email) , error)}
 		</c:if>
 	</c:forTokens>
 </c:if>
@@ -82,7 +82,7 @@
 			items="marketing=Y" />
 	</c:catch>
 	<c:if test="${error}">
-		${logger.warn('', error)}
+		${logger.warn('Failed to write email with source QUOTE. {}', log:kv('emailAddress', qs_emailAddressSecondary) , error)}
 	</c:if>
 </c:if>
 <c:if test="${not empty app_emailAddressSecondary}">
@@ -98,7 +98,7 @@
 			items="marketing=Y" />
 	</c:catch>
 	<c:if test="${error}">
-		${logger.warn('', error)}
+		${logger.warn('Failed to write email with source APPLICATION. {}', log:kv('emailAddress', app_emailAddressSecondary) , error)}
 	</c:if>
 </c:if>
 
@@ -116,7 +116,7 @@
 			items="marketing=${qs_optinEmailAddress},okToCall=${qs_okToCall}" />
 	</c:catch>
 	<c:if test="${error}">
-		${logger.warn('', error)}
+		${logger.warn('Failed to write email with source QUOTE. {}', log:kv('emailAddress', qs_emailAddress) , error)}
 	</c:if>
 </c:if>
 <c:if test="${not empty app_emailAddress}">
@@ -132,7 +132,7 @@
 			items="marketing=${app_optinEmailAddress},okToCall=${app_okToCall}" />
 	</c:catch>
 	<c:if test="${error}">
-		${logger.warn('', error)}
+		${logger.warn('Failed to write email. {}', log:kv('emailAddress', app_emailAddress) , error)}
 	</c:if>
 </c:if>
 
@@ -187,8 +187,11 @@
 	/>
 </c:if>
 
-${logger.debug('brand={} rootPath={} qs_emailAddress={} qs_optinEmailAddress={} qs_emailAddressSecondary={}', brand , rootPath, qs_emailAddress, qs_optinEmailAddress)}
-${logger.debug('qs_optOutEmailHistory={} qs_phoneOther={} qs_phoneMobile={} qs_okToCall={}', qs_optOutEmailHistory,qs_phoneOther,qs_phoneMobile, qs_okToCall)}
-${logger.debug('app_emailAddress={} app_optinEmailAddress={} app_emailAddressSecondary={} app_optOutEmailHistory={}', app_emailAddress, app_optinEmailAddress,app_emailAddressSecondary,app_optOutEmailHistory)}
-${logger.debug('app_phoneOther={} app_phoneMobile={} app_okToCall={}', app_phoneOther,app_phoneMobile, app_okToCall)}
-${logger.debug('firstname={} lastname={}', firstname ,lastname)}
+${logger.debug('Completed write opt ins. {},{},{},{},{},{}',
+log:kv('brand',brand ) ,log:kv('rootPath',rootPath ),
+log:kv('qs_emailAddress',qs_emailAddress ),log:kv('qs_optinEmailAddress',qs_optinEmailAddress ),
+log:kv('qs_optOutEmailHistory',qs_optOutEmailHistory ),log:kv('qs_phoneOther',qs_phoneOther ))}
+${logger.debug('Completed write opt ins. {},{},{},{},{},{}',
+log:kv('qs_phoneMobile',qs_phoneMobile ) ,log:kv('qs_okToCall',qs_okToCall ) ,
+log:kv('app_emailAddress',app_emailAddress ) ,log:kv('app_optinEmailAddress',app_optinEmailAddress ) ,
+log:kv('app_emailAddressSecondary',app_emailAddressSecondary ) ,log:kv('firstname',firstname ))}

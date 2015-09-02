@@ -37,10 +37,10 @@
 <%-- Test for DB issue and handle - otherwise move on --%>
 <c:choose>
 	<c:when test="${not empty error}">
-		${logger.error('Fatal Error Log: page={}' ,page, error)}
+		${logger.error('Fatal Error Log failed. {},{}' ,log:kv('page', page),log:kv('message', message), error)}
 	</c:when>
 	<c:otherwise>
 		<%-- Important keep this as debug as there may be credit card details in the params--%>
-		${logger.debug('Fatal Error Log:' , param)}
+		${logger.debug('Fatal Error Log complete. {}' , log:kv('param',param))}
 	</c:otherwise>
 </c:choose>

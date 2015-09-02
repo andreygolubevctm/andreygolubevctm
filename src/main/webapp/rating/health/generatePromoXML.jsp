@@ -108,7 +108,7 @@ this was made for CUA so it may not work for other provider use and your own ris
 
 						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
-							${logger.warn('cannot find {}', possiableHospitalPDF)}
+							${logger.warn('cannot find {}', log:kv('possiableHospitalPDF',possiableHospitalPDF ))}
 						</c:if>
 						<c:set var="hospitalPDF" value="${possiableHospitalPDF}" />
 					<c:set var="extrasPDF" value="health_fund_info/${providerName}/${coverNameSplit[1]}/Combined/${situation}/${fileName}.pdf" />
@@ -190,7 +190,7 @@ this was made for CUA so it may not work for other provider use and your own ris
 
 						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
-							${logger.warn('cannot find {}', possiableHospitalPDF)}
+							${logger.warn('cannot find {}', log:kv('possiableHospitalPDF',possiableHospitalPDF ))}
 						</c:if>
 						<c:set var="hospitalPDF" value="${possiableHospitalPDF}" />
 					</c:when>
@@ -257,7 +257,7 @@ this was made for CUA so it may not work for other provider use and your own ris
 
 						<c:set var="path" value="c:/Dev/web_ctm/src/main/webapp/${possiableHospitalPDF}" />
 						<c:if test="${file:exists(path) == false}">
-							${logger.warn('cannot find {}', possiableHospitalPDF)}
+							${logger.warn('cannot find path. {}', log:kv('possiableHospitalPDF',possiableHospitalPDF ))}
 						</c:if>
 						<c:set var="hospitalPDF" value="${possiableHospitalPDF}" />
 					</c:when>

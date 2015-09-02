@@ -12,7 +12,7 @@
 	</c:if>
 	<c:set var="dependentText">${dependentText} to discuss your health cover needs.</c:set>
 </c:if>
-${logger.debug('pageSettings.getSetting(\'liveChatEnabled\'): {}', pageSettings.getSetting('liveChatEnabled'))}
+${logger.debug('Application information for THF. {}', log:kv('liveChatEnabled', pageSettings.getSetting('liveChatEnabled')))}
 <c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
 <c:set var="content">
 <%--Important use JSP comments as whitespace is being removed--%>

@@ -60,9 +60,9 @@ ${logger.debug('health_paymentgateway: id={} tokenUrl={}', id, tokenUrl)}
 			</c:import>
 		</c:catch>
 		<c:if test="${gatewayError}">
-			${logger.error('Error importing url tokenUrl={} username={} id={} returnURL={}', tokenUrl, username, id, returnURL , gatewayError)}
+			${logger.error('Error importing url. {},{},{},{}', log:kv('tokenUrl',tokenUrl ), log:kv('username', username), log:kv('id',id ), log:kv('returnURL',returnURL ) , gatewayError)}
 		</c:if>
-		${logger.debug('Response: output={}', output)}
+		${logger.debug('Response from import. {}', log:kv('output',output ))}
 		<c:choose>
 			<c:when test="${fn:startsWith(output, 'token=')}">
 				<c:redirect url="${registerUrl}">

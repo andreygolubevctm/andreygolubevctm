@@ -28,9 +28,9 @@
 
 <c:choose>
 	<c:when test="${not empty error}">
-		${logger.error('agg:write_touch FAILED: touch={}',touch, error)}
+		${logger.error('agg:write_touch FAILED. {}',log:kv('touch',touch ), error)}
 	</c:when>
 	<c:otherwise>
-		${logger.debug('agg:write_touch TOUCHED: touch={}',touch)}
+		${logger.debug('agg:write_touch successful. {}',log:kv('touch',touch ))}
 	</c:otherwise>
 </c:choose>

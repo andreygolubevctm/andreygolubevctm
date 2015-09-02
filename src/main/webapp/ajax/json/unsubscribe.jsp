@@ -26,6 +26,6 @@
 </c:catch>
 <c:if test="${not empty error}">
     <% response.setStatus(500); /* Internal Server Error */ %>
-    ${logger.error('Failed to unsubscribe emailAddress={}', unsubscribe.emailDetails.emailAddress , error)}
+    ${logger.error('Failed to unsubscribe. {}', log:kv('emailAddress', unsubscribe.emailDetails.emailAddress) , error)}
 </c:if>
 <c:out value="${json}" escapeXml="false"/>

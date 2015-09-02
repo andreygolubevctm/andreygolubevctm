@@ -50,7 +50,6 @@
 		</c:if>
 
 		<c:if test="${not empty emailAddress}">
-			${logger.debug('Email: emailAddress={}', emailAddress)}
 			<%-- Add/Update the user record in email_master --%>
 			<c:catch var="error">
 				<agg:write_email
@@ -63,7 +62,7 @@
 					lastName="${lastName}"
 					items="${optinMarketing}${optinPhone}" />
 			</c:catch>
-			${logger.error('ERROR: brand={} vertical={} source={} emailAddress={}', brand, vertical, source, emailAddress, error)}
+			${logger.error('Error calling write_email. {},{},{},{}', log:kv('brand',brand ), log:kv('vertical',vertical ), log:kv('source',source ), log:kv('emailAddress',emailAddress ), error)}
 
 			<%--Update the transaction header record with the user current email address --%>
 
@@ -82,7 +81,7 @@
 			<c:if test="${not empty errorPool}">
 				<c:set var="errorPool">${errorPool},</c:set>
 			</c:if>
-			${logger.error('Failed to update transaction_header: emailAddress={}', emailAddress, error)}
+			${logger.error('Failed to update transaction_header. {}', log:kv('emailAddress',emailAddress ), error)}
 				<c:set var="errorPool">${errorPool}{"error":"A fatal database error occurred - we hope to resolve this soon."}</c:set>
 		</c:if>
 

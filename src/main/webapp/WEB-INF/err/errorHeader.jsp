@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="logger" value="${log:getLogger('jsp:err.errorHeader')}" />
-${logger.error('START... forward.request_uri:${requestScope["javax.servlet.forward.request_uri"]}', log:kv('servletPath',pageContext.request.servletPath ), log:kv('request_uri',requestScope["javax.servlet.forward.request_uri"] ))}
+${logger.error('Start error header. {},{}', log:kv('servletPath',pageContext.request.servletPath ), log:kv('request_uri',requestScope["javax.servlet.forward.request_uri"] ))}
 <c:set var="defaultTitle" value="Error Page" />
 <c:choose>
 	<c:when test="${ empty(pageTitle) }">

@@ -84,14 +84,14 @@
 </c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">
-		${logger.error('Touch type is invalid or unsupported: touch={}', touch)}
+		${logger.error('Touch type is invalid or unsupported. {}', log:kv('touch', touch))}
 		<c:set var="response" value="T" />
 		<c:set var="write_quote" value="N" />
 		<c:set var="touch" value="" /><%-- unset --%>
 	</c:when>
 
 	<c:when test="${empty vertical}">
-		${logger.error('Vertical setting can not be empty param.vertical={}', param.vertical)}
+		${logger.error('Vertical setting can not be empty. {}', log:kv('param.vertical',param.vertical ))}
 		<c:set var="response" value="V" />
 		<c:set var="write_quote" value="N" />
 		<c:set var="touch" value="" /><%-- unset --%>
@@ -144,7 +144,7 @@
 			<c:set var="ignore" value="${touchService.recordTouchWithProductCode(transactionId, touch , operator, productId)}" />
 		</c:catch>
 		<c:if test="${not empty error}">
-			${logger.error('Failed to record touch touch={} productId={} error={}', touch , productId, error)}
+			${logger.error('Failed to record touch. {},{}', log:kv('touch',touch ) , log:kv('productId',productId ), error)}
 		</c:if>
 	</c:when>
 	<c:otherwise>
@@ -160,7 +160,7 @@
 			<sql:param value="${operator}" />
 			<sql:param value="${type}" />
 		</sql:update>
-		${logger.info('Record touch: touch={}',touch)}
+		${logger.info('Recorded touch in database: {},{},{}',log:kv('touch',touch ), log:kv('transactionId',transactionId ),log:kv('type',type ))}
 		<%-- SUBMIT FAIL: add error to comments table --%>
 		<c:if test="${touch != 'H' and not empty comment}">
 			<c:catch var="error">
@@ -248,7 +248,7 @@
 
 		<%-- WRITE QUOTE ................................................................. --%>
 		<c:set var="response">${response}<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="${comment}" /></c:set>
-		${logger.info('WRITE QUOTE YES')}
+		${logger.info('Write quote has been called. {},{}', log:kv('currentTransactionId', currentTransactionId),log:kv('response',response ))}
 
 		<c:choose>
 			<c:when test="${vertical eq 'car'}">

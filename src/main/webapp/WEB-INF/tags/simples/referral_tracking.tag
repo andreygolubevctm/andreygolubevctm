@@ -23,9 +23,10 @@
 
 	<%-- If operator has an extension, get their phone call details. --%>
 	<%-- NOTE: This is not ideal, as the phone details should be available from session and not specially pinged at this point. --%>
-	<c:if test="${not empty authenticatedData['login/user/extension']}">
+	<c:set var="extension" value="${authenticatedData['login/user/extension']}" />
+	<c:if test="${not empty extension}">
 		<c:catch var="error">
-			<c:set var="callInfo" value="${phoneService.saveCallInfoForTransaction(pageSettings, authenticatedData['login/user/extension'], data.current.transactionId,xpath)}" />
+			<c:set var="callInfo" value="${phoneService.saveCallInfoForTransaction(pageSettings, extension, data.current.transactionId,xpath)}" />
 			<c:if test="${callInfo != null && callInfo.getCallId() != '0'}">
 				<c:set var="callId" value="${callInfo.getCallId()}" />
 				<c:set var="direction" value="${callInfo.getDirection()}" />
@@ -36,7 +37,7 @@
 			</c:if>
 		</c:catch>
 		<c:if test="${error}">
-			${logger.warn('', error)}
+			${logger.warn('Exception calling saveCallInfoForTransaction. {}', log:kv('extension' , extension), error)}
 		</c:if>
 
 	</c:if>

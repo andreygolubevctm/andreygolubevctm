@@ -48,10 +48,10 @@
 			brand=""
 			vertical="" />
 
-		<sql:setDataSource dataSource="jdbc/${database}"/>
+		<sql:setDataSource dataSource="jdbc/aggregator"/>
 		<sql:query var="emailId">
 			SELECT emailId
-				FROM `${database}`.email_master
+				FROM aggregator.email_master
 				WHERE emailAddress = ?
 				AND styleCodeId = ?
 				LIMIT 1;
@@ -91,11 +91,11 @@
 
 		</c:when>
 		<c:when test="${empty error and (empty emailId or emailId.rowCount == 0)}">
-			${logger.warn('Failed to locate emailId for {}', param.email)}
+			${logger.warn('Failed to locate emailId.', log:kv('email', param.email))}
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'" />
 		</c:when>
 		<c:otherwise>
-			${logger.error('Database Error2:  param.email={}', param.email, error)}
+			${logger.error('Database error in select from aggregator.email_master. {}', log:kv('email', param.email), error)}
 			<c:set var="errorPool" value="{error:'${error}'" />
 		</c:otherwise>
 	</c:choose>

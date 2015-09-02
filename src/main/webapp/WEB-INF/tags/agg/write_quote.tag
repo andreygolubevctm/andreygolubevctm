@@ -445,7 +445,7 @@
 	<c:if test="${not empty errorPool}">
 		<c:set var="errorPool">${errorPool},</c:set>
 	</c:if>
-	${logger.error('Failed to update transaction_header transactionId={}' , transactionId, error)}
+	${logger.error('Failed to update transaction_header. {}' , log:kv('transactionId',transactionId ), error)}
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 		<c:param name="transactionId" value="${transactionId}" />
 		<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -641,7 +641,7 @@
 				</c:if>
 					</c:when>
 					<c:otherwise>
-						${logger.error('WRITE_QUOTE FAILED transactionId={}',transactionId, error)}
+						${logger.error('WRITE_QUOTE FAILED.',log:kv('transactionId',transactionId ), error)}
 						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 							<c:param name="transactionId" value="${transactionId}" />
 							<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -655,7 +655,7 @@
 			</sql:transaction>
 		</c:catch>
 		<c:if test="${not empty error}">
-			${logger.error('WRITE_QUOTE FAILED transactionId={}', transactionId, error)}
+			${logger.error('Write quote failed. {}', log:kv('transactionId', transactionId), error)}
 			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 				<c:param name="transactionId" value="${transactionId}" />
 				<c:param name="page" value="${pageContext.request.servletPath}" />

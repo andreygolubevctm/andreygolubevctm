@@ -44,5 +44,5 @@ ${logger.info('core:recover START... quoteType:{} origin:{}', quoteType, origin)
 	</sql:update>
 </c:catch>
 <c:if test="${error}">
-	${logger.warn('', error)}
+	${logger.warn('Failed to insert into error log. {}', log:kv('message', message), error)}
 </c:if>

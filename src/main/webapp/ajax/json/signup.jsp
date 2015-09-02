@@ -8,13 +8,14 @@
 
 	<security:populateDataFromParams rootPath="signup" />
 
-	${logger.debug("Data: {}", data)}
+	${logger.debug("Data populated from request params. {}", log:kv('data',data))}
 
 	<c:set var="fuelSignup" value="${data['signup/fuel']}"/>
 	<c:if test="${fuelSignup == 'Y'}">
-		${logger.debug('../write/fuel_signup.jsp?fuel_signup_name_first={}&fuel_signup_name_last={}&fuel_signup_email={}&fuel_signup_terms={}',data['signup/firstname'] , data['signup/surname'] ,  data['signup/email'] , data['signup/newsoffers'])}
-		<c:import url="../write/fuel_signup.jsp?fuel_signup_name_first=${data['signup/firstname']}&fuel_signup_name_last=${data['signup/surname']}&fuel_signup_email=${data['signup/email']}&fuel_signup_terms=${data['signup/newsoffers']}" var="tmpVar"/>
-		${logger.debug("tmpVar: {}", tmpVar)}
+		<c:set var="url">../write/fuel_signup.jsp?fuel_signup_name_first=${data['signup/firstname']}&fuel_signup_name_last=${data['signup/surname']}&fuel_signup_email=${data['signup/email']}&fuel_signup_terms=${data['signup/newsoffers']}</c:set>
+		${logger.debug('calling signup url. {}', log:kv('url', url))}
+		<c:import url="${url}" var="tmpVar"/>
+		${logger.debug("Signup url called. {}", log:kv('outcome', tmpVar))}
 	</c:if>
 
 

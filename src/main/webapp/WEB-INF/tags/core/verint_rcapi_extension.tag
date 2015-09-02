@@ -29,7 +29,6 @@
 <%-- Socket Test --%>
 <c:choose>
 	<c:when test="${not empty socketError}">
-		${logger.error('SocketError', socketError)}
 		<c:set var="error" scope="request" value="${socketError}" />
 		<%  response.sendError(412, "Could not connect to the socket: " + request.getAttribute("error") ); if(true) return; %>
 	</c:when>

@@ -26,6 +26,7 @@
 <c:set var="vertical" value="COMPETITION" />
 <c:set var="source" value="OctPromo1000grubs" />
 <c:set var="errorPool" value="" />
+<c:set var="competition_email" value="${data['competition/email']}" />
 
 <%-- Param if coming from the health journey  --%>
 <c:choose>
@@ -121,7 +122,7 @@
 </c:if>
 
 <%-- STEP 1: Validate the input received before proceeding --%>
-<c:if test="${empty data['competition/email']}">
+<c:if test="${empty competition_email}">
 	<c:set var="errorPool" value="{error:'Your email address is required.'}" />
 </c:if>
 <c:if test="${empty data['competition/firstname']}">
@@ -142,7 +143,7 @@
 			source="${source}"
 			brand="${brand}"
 			vertical="${vertical}"
-			emailAddress="${data['competition/email']}"
+			emailAddress="${competition_email}"
 			firstName="${data['competition/firstname']}"
 			lastName="${data['competition/lastname']}"
 			items="marketing=Y,okToCall=Y" />
@@ -154,7 +155,7 @@
 				WHERE emailAddress = ?
 				AND styleCodeId = ?
 				LIMIT 1;
-			<sql:param value="${data['competition/email']}" />
+			<sql:param value="${competition_email}" />
 			<sql:param value="${styleCodeId}" />
 		</sql:query>
 	</c:catch>
@@ -192,11 +193,11 @@
 
 		</c:when>
 		<c:when test="${empty error and (empty emailMaster or emailMaster.rowCount == 0)}">
-			${logger.error('Failed to locate emailId for competition/email={}}', data['competition/email'])}
+			${logger.error('Failed to locate emailId. {}', log:kv('email', competition_email))}
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'}" />
 		</c:when>
 		<c:otherwise>
-			${logger.error('Database Error2: error={}', error)}
+			${logger.error('Database error querying aggregator.email_master. {},{}', log:kv('transactionId', transactionId), log:kv('email', competition_email) , error)}
 			<c:set var="errorPool" value="{error:'${error}'}" />
 		</c:otherwise>
 	</c:choose>
@@ -213,7 +214,7 @@
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="Competition error" />
 			<c:param name="description" value="${errorPool}" />
-			<c:param name="data" value="competition_id:${competition_id} email:${data['competition/email']} firstname:${data['competition/firstname']} lastname:${data['competition/lastname']} phone:${data['competition/phone']}" />
+			<c:param name="data" value="competition_id:${competition_id} email:${competition_email} firstname:${data['competition/firstname']} lastname:${data['competition/lastname']} phone:${data['competition/phone']}" />
 		</c:import>
 	</c:when>
 	<c:otherwise>

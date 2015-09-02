@@ -140,10 +140,10 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		</c:catch>
 		<c:choose>
 			<c:when test="${empty storeEmailResponse}">
-				${logger.info('Updated transaction details with record of email provider\'s confirmation code: {}', confirmationCode)}
+				${logger.info('Updated transaction details with record of email provider\'s confirmation code. {}', log:kv('confirmationCode',confirmationCode ))}
 			</c:when>
 			<c:otherwise>
-				${logger.info('Failed to Update transaction details with record of confirmation code: {}', storeEmailResponse)}
+				${logger.info('Failed to Update transaction details with record of confirmation code. {}', log:kv('storeEmailResponse',storeEmailResponse ))}
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>

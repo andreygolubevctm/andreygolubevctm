@@ -12,7 +12,7 @@
 
 <c:set var="searchPhrase" value="${fn:trim(param.search_terms)}" />
 
-${logger.info('Search Quotes: searchPhrase={}' , searchPhrase)}
+${logger.info('Beging search Quotes. {}' , log:kv('searchPhrase',searchPhrase ))}
 
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
 

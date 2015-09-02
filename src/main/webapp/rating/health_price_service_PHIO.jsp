@@ -84,7 +84,7 @@ ${healthPriceService.getHealthPriceRequest().setIsSimples(isSimples)}
 ${healthPriceService.setShowAll(showAll)}
 ${healthPriceService.setApplicationDate(applicationDate)}
 ${healthPriceService.setup()}
-${logger.debug('QuoteData={}', param.QuoteData)}
+${logger.debug('Starting results jsp. {}', log:kv('param.QuoteData ', param.QuoteData ))}
 
 			<c:choose>
 	<c:when test="${showAll}">

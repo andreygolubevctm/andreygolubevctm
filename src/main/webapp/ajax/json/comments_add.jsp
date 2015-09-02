@@ -16,7 +16,7 @@
 	</c:choose>
 </c:set>
 
-${logger.info('Add Comment TransactionId: transactionId={}', transactionId)}
+${logger.info('Add Comment TransactionId. {}', log:kv('transactionId',transactionId ))}
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -44,11 +44,11 @@ ${logger.info('Checked if authenticated user is simples user. {}', log:kv('isOpe
 		</c:if>
 	</c:catch>
 	<c:if test="${not empty error}">
-		${logger.error('Failed to get rootid transactionId={}', transactionId, error)}
+		${logger.error('Failed to get rootid.{}', log:kv('transactionId',transactionId ), error)}
 	</c:if>
 </c:if>
 
-${logger.info('Add Comment RootId: rootId={}',rootId)}
+${logger.info('Add Comment RootId.{}',log:kv('rootId', rootId))}
 
 <c:choose>
 	<c:when test="${empty rootId}">
@@ -95,7 +95,7 @@ ${logger.info('Add Comment RootId: rootId={}',rootId)}
 			<c:if test="${not empty error}">
 				<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 				<c:set var="errorPool">${errorPool}{"error":"Failed to add comment: ${error.rootCause}"}</c:set>
-				${logger.error('Failed to add comment operatorId={} comment={}', operatorId, comment , error)}"
+				${logger.error('Failed to add comment. {},{}', log:kv('operatorId', log:kv('operatorId', operatorId)), comment , error)}"
 			</c:if>
 		</c:if>
 	</c:otherwise>

@@ -182,7 +182,7 @@
 			<%-- ERROR CHECK --%>
 			<c:choose>
 				<c:when test="${not empty error}">
-					${logger.error('requestedTransaction={}', requestedTransaction, error)}
+					${logger.error('Exception when getting transaction id. {}', log:kv('requestedTransaction',requestedTransaction ), error)}
 					<c:set var="method" value="ERROR: INCREMENT" />
 
 					<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">

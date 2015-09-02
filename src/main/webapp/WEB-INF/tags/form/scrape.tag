@@ -31,7 +31,7 @@
 	</sql:query>
 </c:catch>
 <c:if test="${error}">
-	${logger.warn('', error)}
+	${logger.warn('Failed to call database. {}', log:kv('styleCodeId',styleCodeId ), error)}
 </c:if>
 
 <c:choose>

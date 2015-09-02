@@ -18,6 +18,7 @@
 <%-- Variables --%>
 <c:set var="database" value="ctm" />
 <c:set var="competition_id" value="${data['competition/competitionId']}" />
+<c:set var="competition_email" value="${data['competition/email']}" />
 <c:set var="brand" value="${styleCode}" />
 <c:set var="vertical" value="COMPETITION" />
 <c:set var="source" value="Meerkat" />
@@ -30,7 +31,7 @@
 			source="${source}"
 			brand="${brand}"
 			vertical="${vertical}"
-			emailAddress="${data['competition/email']}"
+			emailAddress="${competition_email}"
 			firstName="${data['competition/firstName']}"
 			lastName="${data['competition/lastName']}"
 			items="marketing=Y,okToCall=N" />
@@ -42,7 +43,7 @@
 				WHERE emailAddress = ?
 				AND styleCodeId = ?
 				LIMIT 1;
-			<sql:param value="${data['competition/email']}" />
+			<sql:param value="${competition_email}" />
 			<sql:param value="${styleCodeId}" />
 		</sql:query>
 	</c:catch>
@@ -84,11 +85,11 @@
 
 		</c:when>
 		<c:when test="${empty error and (empty emailMaster or emailMaster.rowCount == 0)}">
-			${logger.warn('Failed to locate emailId for competition/email={}', data['competition/email'])}
+			${logger.warn('Failed to locate emailId. {}' , log:kv('email', competition_email))}
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'}" />
 		</c:when>
 		<c:otherwise>
-			${logger.error('Database Error2', error)}
+			${logger.error('Database error querying aggregator.email_master. {},{}', log:kv('transactionId', transactionId), log:kv('email', competition_email) , error)}
 			<c:set var="errorPool" value="{error:'${error}'}" />
 		</c:otherwise>
 	</c:choose>
@@ -104,7 +105,7 @@
 			<c:param name="page" value="${pageContext.request.servletPath}" />
 			<c:param name="message" value="Competition error" />
 			<c:param name="description" value="${errorPool}" />
-			<c:param name="data" value="competition_id:${competition_id} email:${data['competition/email']} firstname:${data['competition/firstname']} lastname:${data['competition/lastname']} postcode=${data['competition/postcode']} dateofbirth=${data['competition/dob']}  promocode=${data['competition/promocode']}" />
+			<c:param name="data" value="competition_id:${competition_id} email:${competition_email} firstname:${data['competition/firstname']} lastname:${data['competition/lastname']} postcode=${data['competition/postcode']} dateofbirth=${data['competition/dob']}  promocode=${data['competition/promocode']}" />
 		</c:import>
 	</c:when>
 	<c:otherwise>

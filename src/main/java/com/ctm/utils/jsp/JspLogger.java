@@ -61,6 +61,11 @@ public class JspLogger {
         logger.debug(format, arg1, arg2, arg3, arg4, arg5);
     }
 
+    public void debug(String format, Object arg1, Object arg2, Object arg3, Object arg4, Object arg5, Object arg6) {
+        logger.debug(format, arg1, arg2, arg3, arg4, arg5, arg6);
+    }
+
+
     public void info(String msg) {
         logger.info(msg);
     }

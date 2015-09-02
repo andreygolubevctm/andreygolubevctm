@@ -45,8 +45,8 @@
 			lastName="${data['utilities/application/details/lastName']}"
 			items="marketing=${data['utilities/application/thingsToKnow/receiveInfo']}" />
 
-		${logger.info('Utilities Tran Id : current/transactionId={}', data['current/transactionId'])}
 		<c:set var="tranId" value="${data['current/transactionId']}" />
+		${logger.info('Utilities retrieved Tran Id from data object. {}', log:kv('transactionId',tranId ))}
 
 		<c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest(), data)}" scope="request"  />
 
