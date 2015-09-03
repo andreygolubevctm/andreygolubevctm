@@ -149,5 +149,5 @@ $(function () {
 	setTimeout(function(){
 		$form.remove();
 	}, 4000);
-})
+});
 
