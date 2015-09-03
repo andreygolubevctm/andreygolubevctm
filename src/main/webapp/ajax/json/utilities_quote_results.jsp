@@ -1,4 +1,3 @@
-<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 

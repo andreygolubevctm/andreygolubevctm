@@ -18,5 +18,5 @@
 	</c:if>
 </c:if>
 
-${logger.info('Got result', log:kv('key', key), log:kv('result', result))}
+${logger.info('Got result. {},{}', log:kv('key', key), log:kv('result', result))}
 <c:out value="${result}" />

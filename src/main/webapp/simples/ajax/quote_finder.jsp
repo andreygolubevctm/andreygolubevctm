@@ -1,4 +1,3 @@
-<%@ page import="org.slf4j.LoggerFactory" %>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -18,7 +17,7 @@ ${logger.info('Starting find quote: {}', log:kv('param', param))}
 <c:set var="emailResultLimit" value="${5}" />
 
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
-${logger.debug('Got is uid from session. {}', log:kv('isOperator', isOperator))}
+${logger.debug('Got uid from session. {}', log:kv('isOperator', isOperator))}
 
 <c:choose>
 	<c:when test="${empty isOperator}">

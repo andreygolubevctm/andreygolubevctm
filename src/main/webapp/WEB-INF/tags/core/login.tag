@@ -51,7 +51,7 @@
 
 				<c:set var="securityDesc" value="${securityDescGroup} ${securityDescLevel}" />
 				${logger.info('CTM Simples login success: {},{},{}',
-				 log:kv('userId', userId), log:kv('securityDesc', securityDesc), log:kv('distinguishedName',sessionScope.userDetails['distinguishedName'])}
+				 log:kv('userId', userId), log:kv('securityDesc', securityDesc), log:kv('distinguishedName',sessionScope.userDetails['distinguishedName']))}
 				<%-- Set up the user, roles and security data XML fragments --%>
 				<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
 

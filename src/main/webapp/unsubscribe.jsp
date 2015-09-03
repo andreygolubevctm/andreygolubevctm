@@ -1,4 +1,3 @@
-<%@ page import="org.slf4j.LoggerFactory" %>
 <%--
 	Unsubscribe Page
 --%>
