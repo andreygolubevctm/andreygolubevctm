@@ -10,6 +10,9 @@ import org.json.simple.JSONArray;
 
 import com.ctm.model.AbstractJsonModel;
 
+import static com.ctm.logging.LoggingArguments.array;
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class JsonUtils {
 	private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class.getName());
 
@@ -43,7 +46,7 @@ public class JsonUtils {
 			}
 		}
 		catch (JSONException e) {
-			logger.error("Failed to produce JSON object", e);
+			logger.error("Failed to produce JSON object {}, {}", kv("json", json), kv("keyName", keyName), e);
 		}
 	}
 }

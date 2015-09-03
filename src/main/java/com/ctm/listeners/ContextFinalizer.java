@@ -22,6 +22,8 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /** adding this to debug threads **/
 
 @WebListener()
@@ -30,7 +32,6 @@ public class ContextFinalizer implements ServletContextListener {
 	Logger logger = LoggerFactory.getLogger(ContextFinalizer.class.getName());
 
 	public void contextInitialized(ServletContextEvent sce) {
-
 		Properties properties = new Properties();
 		ServletContext servletContext = sce.getServletContext();
 		EnvironmentService.setContextPath(servletContext.getContextPath());
@@ -40,7 +41,7 @@ public class ContextFinalizer implements ServletContextListener {
 		try {
 			InputStream input = getClass().getClassLoader().getResourceAsStream(propertyFileName);
 			if (input == null) {
-				logger.error("Sorry, unable to find " + propertyFileName);
+				logger.error("Environment property file not found {}", kv("propertyFileName", propertyFileName));
 				return;
 			}
 			properties.load(input);
@@ -59,16 +60,18 @@ public class ContextFinalizer implements ServletContextListener {
 			AddressSearchService.init();
 		}
 		catch (Exception e) {
-			logger.error("",e);
+			logger.error("Unable initialize application", e);
 		}
 
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {
-		ILoggerFactory loggerContext = LoggerFactory.getILoggerFactory();
-		if(loggerContext != null && loggerContext instanceof LoggerContext) {
-			((LoggerContext) loggerContext).stop();
-		}
+		AddressSearchService.destroy();
+		shutdownDB();
+		shutdownLogback();
+	}
+
+	private void shutdownDB() {
 		Enumeration<Driver> drivers = DriverManager.getDrivers();
 		Driver d = null;
 		while(drivers.hasMoreElements()) {
@@ -77,18 +80,22 @@ public class ContextFinalizer implements ServletContextListener {
 				DriverManager.deregisterDriver(d);
 			}
 			catch (SQLException ex) {
-				logger.warn(String.format("Error deregistering driver %s", d), ex);
+				logger.warn("Error deregistering sql driver {}", kv("sqlDriver", d), ex);
 			}
 		}
 
-		AddressSearchService.destroy();
 		try {
 			AbandonedConnectionCleanupThread.shutdown();
 		} catch (InterruptedException e) {
-			logger.error("",e);
+			logger.error("Error shutting down mysql connection threads", e);
 		}
+	}
 
-
+	private void shutdownLogback() {
+		ILoggerFactory loggerContext = LoggerFactory.getILoggerFactory();
+		if(loggerContext != null && loggerContext instanceof LoggerContext) {
+			((LoggerContext) loggerContext).stop();
+		}
 	}
 
 }

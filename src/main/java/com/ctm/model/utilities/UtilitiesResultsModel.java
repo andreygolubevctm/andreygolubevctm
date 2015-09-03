@@ -11,6 +11,8 @@ import org.json.JSONObject;
 import com.ctm.model.AbstractJsonModel;
 import com.ctm.model.formatter.JsonUtils;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class UtilitiesResultsModel extends AbstractJsonModel {
 
@@ -59,7 +61,7 @@ public class UtilitiesResultsModel extends AbstractJsonModel {
 
 				// perform validation
 				if(provider.getAnnualNewCost() == 0 || provider.getPlanName().equals("")){
-					logger.error("Missing field from result object");
+					logger.error("Invalid utilities ThoughtWorld provider results {}", kv("provider", provider));
 					return false;
 				}
 

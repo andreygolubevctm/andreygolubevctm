@@ -60,7 +60,7 @@ public abstract class AbstractJsonModel implements JsonFormatter {
 			return json;
 		}
 		catch (JSONException e) {
-			logger.error("",e);
+			logger.error("failed to create json object", e);
 
 			// Return a blank object
 			return new JSONObject();

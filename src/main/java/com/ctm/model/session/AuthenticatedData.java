@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Extends the DATA object with some quick methods to return and set common values via xpath.
  *
@@ -44,7 +46,7 @@ public class AuthenticatedData extends Data {
 			try {
 				simplesUid = Integer.parseInt(uid);
 			} catch (NumberFormatException e) {
-				logger.error("",e);
+				logger.error("obtained invalid simples uid {}", kv("uid", uid), e);
 			}
 		}
 		return simplesUid;

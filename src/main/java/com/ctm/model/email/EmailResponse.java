@@ -103,7 +103,7 @@ public class EmailResponse extends AbstractJsonModel {
 			json.put("transactionId", transactionId);
 			json.put("message", message);
 		} catch (JSONException e) {
-			logger.error("",e);
+			logger.error("error converting email response to json", e);
 		}
 
 		return json;
