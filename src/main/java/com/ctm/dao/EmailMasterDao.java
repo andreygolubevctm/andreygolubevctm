@@ -286,7 +286,7 @@ public class EmailMasterDao {
 			writeToEmailProperties(emailDetails, conn);
 		} catch (NamingException | SQLException e) {
 			logger.error("failed to write to email properties {}" , kv("emailDetails", emailDetails), e);
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
 				dbSource.closeConnection();
@@ -338,7 +338,7 @@ public class EmailMasterDao {
 			}
 		} catch (SQLException | NamingException e) {
 			logger.error("failed to get email details {}" , kv("emailId", emailId), e);
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
 				dbSource.closeConnection();

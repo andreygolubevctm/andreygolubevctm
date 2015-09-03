@@ -120,7 +120,7 @@ public class CountryMappingDao {
 			}
 		} catch (SQLException | NamingException e) {
 			logger.error("failed getting country mapping {}", kv("selectedISOCodes", selectedISOCodes), e);
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

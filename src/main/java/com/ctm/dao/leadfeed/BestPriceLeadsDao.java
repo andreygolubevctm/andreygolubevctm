@@ -251,7 +251,7 @@ public class BestPriceLeadsDao {
 				}
 			}
 		} catch(DaoException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		return providers.toString();
 	}

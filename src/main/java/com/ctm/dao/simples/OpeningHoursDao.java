@@ -114,7 +114,7 @@ public class OpeningHoursDao {
         } catch (SQLException | NamingException e) {
             logger.error("Failed to delete Opening Hours {}, {}, {}", kv("openingHoursId", openingHoursId), kv("userName", userName), kv("ipAddress", ipAddress), e);
             rollbackTransaction(dbSource);
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             resetDefaultsAndCloseConnection(dbSource);
         }

@@ -61,7 +61,7 @@ public class CronDao {
 
 		} catch (SQLException | NamingException e) {
 			logger.error("failed to get cron jobs {}, {}", kv("rootURL", rootURL), kv("frequency", frequency), e);
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

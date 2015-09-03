@@ -100,7 +100,7 @@ public class SessionTokenDao {
 
 		} catch (SQLException | NamingException e) {
 			logger.error("Failed marking session token as consumed {}", kv("token", token));
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

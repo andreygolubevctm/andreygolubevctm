@@ -55,7 +55,7 @@ public class UserDao {
 
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -219,7 +219,7 @@ public class UserDao {
 			logger.info("loginUser(): username:" + user.getUsername() + ", extension:" + user.getExtension() + ", displayName:" + user.getDisplayName() + " > uid:" + user.getId());
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -249,7 +249,7 @@ public class UserDao {
 			stmt.close();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -276,7 +276,7 @@ public class UserDao {
 			stmt.close();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -302,7 +302,7 @@ public class UserDao {
 			stmt.close();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -324,7 +324,7 @@ public class UserDao {
 			stmt.executeUpdate();
 			stmt.close();
 		} catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -379,7 +379,7 @@ public class UserDao {
             }
             user.setRoles(userRoles);
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
 		}
 		finally {
 			try {
@@ -390,7 +390,7 @@ public class UserDao {
 					stmt.close();
 				}
 			} catch (SQLException e) {
-				throw new DaoException(e.getMessage(), e);
+				throw new DaoException(e);
 			}
 			dbSource.closeConnection();
 		}
@@ -436,7 +436,7 @@ public class UserDao {
 			user.setRules(rules);
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			try {
@@ -447,7 +447,7 @@ public class UserDao {
 					stmt.close();
 				}
 			} catch (SQLException e) {
-				throw new DaoException(e.getMessage(), e);
+				throw new DaoException(e);
 			}
 			dbSource.closeConnection();
 		}

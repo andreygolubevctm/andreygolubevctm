@@ -42,10 +42,10 @@ public class MessageOverviewDao {
 			}
 		}
 		catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();

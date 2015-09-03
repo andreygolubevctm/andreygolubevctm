@@ -253,7 +253,7 @@ public class ContentDao {
 
 		} catch (SQLException | NamingException e) {
 			logger.error("failed getting content {}", kv("contentKey", contentKey), e);
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

@@ -38,7 +38,7 @@ public class CarRegoLookupDao {
             }
         }
         catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
         finally {
             dbSource.closeConnection();
@@ -78,7 +78,7 @@ public class CarRegoLookupDao {
             stmt.executeUpdate();
         }
         catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
         finally {
             dbSource.closeConnection();

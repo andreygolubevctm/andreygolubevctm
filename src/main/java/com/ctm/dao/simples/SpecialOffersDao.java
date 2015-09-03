@@ -292,7 +292,7 @@ public class SpecialOffersDao {
             logger.error("Transaction is being rolled back");
             dbSource.getConnection().rollback();
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
     }
 
@@ -306,7 +306,7 @@ public class SpecialOffersDao {
             dbSource.getConnection().commit();
             dbSource.getConnection().setAutoCommit(autoCommit);
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
         dbSource.closeConnection();
     }

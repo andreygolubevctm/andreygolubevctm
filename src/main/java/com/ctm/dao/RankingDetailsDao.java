@@ -71,7 +71,7 @@ public class RankingDetailsDao {
 			}
 		} catch (SQLException | NamingException e) {
 			logger.error("Failed to get ranking details by property value {}, {}, {}", kv("transactionId", transactionId), kv("property", property), kv("value", value), e);
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
 				dbSource.closeConnection();
