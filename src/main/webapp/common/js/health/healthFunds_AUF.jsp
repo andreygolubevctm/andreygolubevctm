@@ -15,8 +15,7 @@ var healthFunds_AUF = {
     healthFunds._dependants('This policy provides cover for children under the age of 23 or who are aged between 23-25 years and engaged in full time study. Student dependants do not need to be living at home to be added to the policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 
     <%--fund ID's become optional--%>
-    $('#clientMemberID').find('input').setRequired(false);
-    $('#partnerMemberID').find('input').setRequired(false);
+    $('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
 
     <%--school Age--%>
     healthDependents.config.schoolMin = 23;

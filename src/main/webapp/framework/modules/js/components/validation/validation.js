@@ -283,7 +283,7 @@ var validation = false;
                 } else {
                     $el.attr('required', 'required');
                 }
-                //console.log("DEBUG", this, $(this), $(this)[0], $(this)[0].required, $el.prop("required"), $el.attr("required"));
+                console.log("DEBUG", $(this).attr('id'), $(this)[0].required, $el.prop("required"), $el.attr("required") );
                 if(message && required) {
                     $el.data('msgRequired', message);
                 }

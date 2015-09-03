@@ -32,8 +32,7 @@ var healthFunds_WFD = {
         $('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').setRequired(false);
 
         <%--fund ID's become optional--%>
-        $('#clientMemberID').find('input').setRequired(false);
-        $('#partnerMemberID').find('input').setRequired(false);
+        $('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
 
         <%--Authority--%>
         healthFunds._previousfund_authority(true);

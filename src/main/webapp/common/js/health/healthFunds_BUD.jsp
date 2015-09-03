@@ -39,8 +39,7 @@ var healthFunds_BUD = {
 		healthDependents.maxAge = 21;
 
 		<%-- fund ID's become optional --%>
-		$('#clientMemberID').find('input').setRequired(false);
-		$('#partnerMemberID').find('input').setRequired(false);
+		$('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
 
 		<%-- credit card & bank account frequency & day frequency --%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });

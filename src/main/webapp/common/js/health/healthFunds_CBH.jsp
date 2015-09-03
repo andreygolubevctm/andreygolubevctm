@@ -219,8 +219,7 @@ var healthFunds_CBH = {
 			}
 
 			<%-- Fund IDs become optional --%>
-			$('#clientMemberID').find('input').setRequired(false);
-			$('#partnerMemberID').find('input').setRequired(false);
+			$('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
 
 			<%-- Partner authority --%>
 			healthFunds._partner_authority(true);

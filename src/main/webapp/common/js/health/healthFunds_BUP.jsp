@@ -29,7 +29,7 @@ set: function () {
 		healthFunds_BUP.$_dobPartner.addRule('youngestDOB', 17, "partner's age cannot be under 17");
 
 		<%-- fund IDs become optional --%>
-		$('#clientMemberID input, #partnerMemberID input').setRequired(false);
+		$('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
 
 		<%-- Payment Options --%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
