@@ -274,7 +274,11 @@
 					}
 				});
 				}
-				meerkat.modules.resultsFeatures.fetchStructure('car_');
+				if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
+					meerkat.modules.resultsFeatures.fetchStructure('carws_');
+				} else {
+					meerkat.modules.resultsFeatures.fetchStructure('car_');
+				}
 			},
 			onAfterEnter : function (event) {
 			},
