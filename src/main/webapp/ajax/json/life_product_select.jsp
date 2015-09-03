@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('life_product_select_jsp')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.json.life_product_select')}" />
 
 <c:set var="continueOnValidationError" value="${false}" />
 <c:set var="vertical" value="${fn:toUpperCase(param.vertical)}" />

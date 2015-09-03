@@ -38,7 +38,7 @@
 	${pageSettings.getBaseUrl()}ajax/html/health_paymentgateway_return.jsp
 </c:set>
 
-${logger.debug('health_paymentgateway: id={} tokenUrl={}', id, tokenUrl)}
+${logger.debug('health_paymentgateway. {},{}', log:kv('id',id ), log:kv('tokenUrl',tokenUrl ))}
 
 <c:choose>
 	<c:when test="${empty tokenUrl or empty username or empty password or empty id or empty registerUrl or empty comm or empty supp}">

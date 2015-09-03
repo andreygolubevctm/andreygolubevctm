@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('life_contact_lead_jsp')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.json.life_contact_lead')}" />
 
 <c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
 
@@ -15,7 +15,7 @@
 <c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
 <c:choose>
 	<c:when test="${lifeService.isValid() and not empty proceedinator and proceedinator > 0}">
-		${logger.debug('PROCEEDINATOR PASSED proceedinator={}' , proceedinator)}
+		${logger.debug('PROCEEDINATOR PASSED. {}' , log:kv('proceedinator', proceedinator))}
 		<c:choose>
 			<c:when test="${param.softLead eq 'true'}">
 				<core:transaction touch="CDC" noResponse="true" />

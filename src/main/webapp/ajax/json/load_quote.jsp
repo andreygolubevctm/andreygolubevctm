@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('load_quote_jsp')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.json.load_quote')}" />
 
 <session:new verticalCode="${fn:toUpperCase(param.vertical)}" forceNew="true" authenticated="true" />
 
@@ -30,7 +30,7 @@
 
 <c:set var="styleCodeId" value="${pageSettings.getBrandId()}" />
 
-${logger.debug('LOAD QUOTE: param={}',param)}
+${logger.debug('LOAD QUOTE.',log:kv('param', param))}
 <c:set var="id_for_access_check">
 	<c:choose>
 		<c:when test="${not empty param.transaction_id}">${param.transaction_id}</c:when>
@@ -63,7 +63,7 @@ ${logger.info('setting flag for whether simples. {}',log:kv('isOperator',isOpera
 		<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
-				${logger.debug('PROCEEDINATOR PASSED proceedinator={}', proceedinator)}
+				${logger.debug('PROCEEDINATOR PASSED. {}', log:kv('proceedinator', proceedinator))}
 
 				<%-- Remove any old quote data --%>
 				<go:setData dataVar="data" value="*DELETE" xpath="${param.vertical}" />
@@ -79,7 +79,7 @@ ${logger.info('setting flag for whether simples. {}',log:kv('isOperator',isOpera
 					</c:choose>
 				</c:set>
 				${logger.info('About to load quote.', log:kv('requestedTransaction',requestedTransaction ), log:kv('user',parm ))}
-				${logger.debug('About to load quote params: param: {}', param)}
+				${logger.debug('About to load quote. {} ', log:kv('param',param ))}
 
 				<sql:setDataSource dataSource="jdbc/ctm"/>
 

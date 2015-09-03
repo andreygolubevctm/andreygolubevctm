@@ -44,7 +44,7 @@ ${logger.info('Start health_paymentgateway_return. {},{},{}', log:kv('action',pa
 	</c:when>
 	<c:otherwise>
 		<%-- Capture response values into data bucket --%>
-		${logger.debug('WESTPAC: cardNumber={},{},cardExpiry={} cardHolderName={}',cardNumber, log:kv('cardScheme', cardScheme) , cardExpiry, cardHolderName)}
+		${logger.debug('WESTPAC: {},{},{},{}', log:kv('cardNumber', cardNumber), log:kv('cardScheme', cardScheme) , log:kv('cardExpiry', cardExpiry), log:kv('cardHolderName', cardHolderName))}
 		<c:set var="success" value="true" />
 		<c:set var="message"><c:out value="${param.tx_response}" default="OK" escapeXml="true" /></c:set>
 	</c:otherwise>

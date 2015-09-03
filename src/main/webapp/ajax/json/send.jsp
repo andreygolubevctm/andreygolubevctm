@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('ajax\json\send_jsp')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.json.send')}" />
 
 <session:get settings="true" verticalCode="${fn:toUpperCase(param.vertical)}" />
 
@@ -64,7 +64,7 @@
 					<c:when test="${pageSettings.hasSetting('sendAppMailingName') and pageSettings.hasSetting('sendAppTmpl')}">
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendAppMailingName')}" />
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendAppTmpl')}" />
-						${logger.debug('[Email] Mode: param.mode={} MailingName={} tmpl={}', param.mode, MailingName, tmpl)}
+						${logger.debug('[Email] Mode. {},{},{}', log:kv('param.mode',param.mode ), log:kv('MailingName',MailingName ), log:kv('tmpl',tmpl ))}
 					</c:when>
 					<c:otherwise>
 						${logger.warn('[Email] Mode passed but missing required page settings. {}', log:kv('param.mode',param.mode ))}
@@ -89,7 +89,7 @@
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendBestPriceMailingName')}" />
 						<c:set var="OptInMailingName" value="${pageSettings.getSetting('sendBestPriceOptInMailingName')}"/>
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendBestPriceTmpl')}" />
-						${logger.debug('[Email] Mode: param.mode={} MailingName={} OptInMailingName={} tmpl={} param.emailAddress={}', param.mode , MailingName, OptInMailingName,  tmpl, param.emailAddress)}
+						${logger.debug('[Email] Mode: {},{},{},{},{}', log:kv('param.mode',param.mode ) , log:kv('MailingName',MailingName ), log:kv('OptInMailingName',OptInMailingName ),  log:kv('tmpl',tmpl ), log:kv('param.emailAddress',param.emailAddress ))}
 					</c:when>
 					<c:otherwise>
 						${logger.warn('[Email] Mode passed but missing required page settings. {}', log:kv('param.mode',param.mode ))})}

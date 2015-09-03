@@ -3,7 +3,7 @@
 
 <session:get settings="true" verticalCode="${param.vertical}" />
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
-<c:set var="logger" value="${log:getLogger('remote_load_quote_jsp')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.json.remote_load_quote')}" />
 
 <%--
 	load_quote.jsp
@@ -29,7 +29,7 @@
 - need better handling for deleting the base xpath information (and better handling for save email etc.)
 --%>
 
-${logger.debug('LOAD QUOTE: {}', param)}
+${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 <c:set var="id_for_access_check">
 	<c:choose>
 		<c:when test="${not empty param.id}">${param.id}</c:when>
@@ -89,7 +89,7 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 						<c:set var="result"><result><error>No transaction data exists for transaction [${requestedTransaction}] and hash [${emailHash}] combination.</error></result></c:set>
 			</c:when>
 			<c:otherwise>
-				${logger.debug('About to delete the vertical information for: quoteType={} requestedTransaction={}', quoteType, requestedTransaction)}
+				${logger.debug('About to delete the vertical information. {},{}', log:kv('quoteType',quoteType ), log:kv('requestedTransaction',requestedTransaction ))}
 				<%-- //FIX: need to delete the bucket of information here --%>
 				<go:setData dataVar="data" value="*DELETE" xpath="${xpathQuoteType}" />
 
@@ -100,7 +100,7 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 					<go:setData dataVar="data" xpath="${detail.getXPath()}" value="${textVal}" />
 				</c:forEach>
 				<%-- Set the current transaction id to the one passed so it is set as the prev tranId--%>
-				${logger.debug('Setting data.current.transactionId back to requestedTransaction={} data[xpathQuoteType].privacyoptin=[]', requestedTransaction,data[xpathQuoteType].privacyoptin)}
+				${logger.debug('Setting data.current.transactionId back to requestedTransaction. {},{}', log:kv('requestedTransaction', requestedTransaction), log:kv('privacyoptin',data[xpathQuoteType].privacyoptin ))}
 				<%-- Add CampaignId to the databucket if provided --%>
 				<c:if test="${not empty param.campaignId}">
 					<go:setData dataVar="data" xpath="${xpathQuoteType}/tracking/cid" value="${param.campaignId}" />
@@ -211,6 +211,6 @@ ${logger.debug('LOAD QUOTE: {}', param)}
 				</c:set>
 			</c:otherwise>
 		</c:choose>
-${logger.debug('End Load Quote result={}',result)}
+${logger.debug('End Load Quote. {}',log:kv('result',result ))}
 <%-- Return the results as json --%>
 ${go:XMLtoJSON(result)}

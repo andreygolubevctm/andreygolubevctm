@@ -855,7 +855,6 @@ body {
 							<div class="error">ERROR: Bad Data (Row ${row}, Col ${col}) with DetailID or ProductID: OMITTING ${featureName } || ${featuresMainArray[0] } [ FID: ${detailsID } | PID: ${productID } ]</div>
 						</c:when>
 						<c:otherwise>
-							<%--${logger.debug('${featureName } || ${featuresMainArray[0] } [ FID: ${detailsID } | PID: ${productID } ]')}--%>
 							${go:appendString(features_main , prefix)}
 							${go:appendString(features_main , prefixBracket)}
 							<c:set var="prefix" value="," />

@@ -38,7 +38,7 @@
 	}
 	String body = new String(baos.toByteArray());
 %><%=body %></c:set>
-${logger.debug('ContentLength: ${pageContext.request.contentLength}', log:kv('contentLength', pageContext.request.contentLength), log:kv('body',body))}
+${logger.debug('ContentLength: {}', log:kv('contentLength', pageContext.request.contentLength), log:kv('body',body))}
 <c:if test="${pageContext.request.contentLength > 0}">
 	<x:parse doc="${body}" var="applicationXml" />
 

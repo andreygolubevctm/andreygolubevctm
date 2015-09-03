@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('comments_add_jsp')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.json.comments_add')}" />
 
 <session:get authenticated="true" />
 

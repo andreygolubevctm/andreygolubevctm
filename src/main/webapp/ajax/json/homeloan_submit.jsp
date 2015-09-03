@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('homeloan_submit_jsp')}" />
+<c:set var="logger" value="${log:getLogger('jsp:homeloan_submit')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="HOMELOAN" />
 
@@ -159,7 +159,7 @@ ${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResu
 									</confirmation>
 								</c:set>
 
-								${logger.debug('WRITE CONFIRM: xmlData={}',xmlData)}
+								${logger.debug('WRITE CONFIRM. {}',log:kv('xmlData',xmlData ))}
 
 								<%-- Write confirmation and C touch --%>
 								<agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />

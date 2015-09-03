@@ -13,6 +13,6 @@
 	<c:set var="setResult" value="${applicationService.setApplicationDateOnSession(pageContext.getRequest(), param.applicationDateOverrideValue)}" />
 
 	<c:set var="retrieveDate" value="${applicationService.getApplicationDateIfSet(pageContext.getRequest())}" />
-	${logger.debug('APPLICATION DATE CHANGED: {}',retrieveDate )}
+	${logger.debug('APPLICATION DATE CHANGED. {}',log:kv('retrieveDate',retrieveDate ) )}
 	${retrieveDate}
 </c:if>

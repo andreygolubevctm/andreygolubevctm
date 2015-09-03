@@ -37,7 +37,7 @@
 		<c:set var="prodtyp" value="${quoteType} ${quoteType}" />
 
 		<%-- Ensure the current transactionID is set --%>
-		${logger.debug('write quote getTransactionId verticalCode={}', data.current.verticalCode)}
+		${logger.debug('write quote getTransactionId. {}', log:kv('verticalCode',data.current.verticalCode ))}
 		<c:set var="sandpit">
 			<core:get_transaction_id id_handler="preserve_tranId" quoteType="${quoteType}" />
 		</c:set>

@@ -4,7 +4,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
-<c:set var="logger" value="${log:getLogger('utilities_submit_lead_jsp')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.json.utilities_submit_lead')}" />
 
 <%-- Load the params into data --%>
 <security:populateDataFromParams rootPath="utilities" />

@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${log:getLogger('save_email_quote_jsp')}" />
+<c:set var="logger" value="${log:getLogger('jsp:ajax.json.save_email_quote')}" />
 
 <session:get settings="true" authenticated="true" />
 
