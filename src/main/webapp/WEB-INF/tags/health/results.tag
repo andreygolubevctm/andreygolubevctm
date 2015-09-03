@@ -145,7 +145,7 @@
 			<div class="result">
 				<div class="resultInsert">
 					<div class="compareCheckbox " data-toggle="popover" data-trigger="mouseenter" data-class="compareTooltip" data-adjust-x="5" data-content="click<br/> to compare">
-						<input type="checkbox" class="compare " data-productId="result_{{= productId }}" id="compareCheckbox_{{= productId }}" />
+						<input type="checkbox" class="compare " data-productId="result_{{= productId }}" id="compareCheckbox_{{= productId }}" name="compareCheckbox_{{= productId }}"/>
 						<label for="compareCheckbox_{{= productId }}"></label>
 			</div>
 					<div class="productSummary vertical results">
