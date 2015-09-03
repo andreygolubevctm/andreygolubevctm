@@ -23,6 +23,7 @@
     "gulp-intercept": "^0.1.0",
     "gulp-beautify": "^1.1.2",
     "gulp-plumber": "^1.0.1",
-    "gulp-notify": "^2.2.0"
+    "gulp-notify": "^2.2.0",
+    "gulp-changed": "^1.3.0"
   }
 }

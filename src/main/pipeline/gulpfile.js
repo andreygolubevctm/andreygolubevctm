@@ -7,7 +7,7 @@
 // Important!
 // The watch method used by gulp plugins doesn't seem to appreciate having so many active listeners
 // To get around it, we set the default number of listeners to be greater than the default (10)
-require('events').EventEmitter.prototype._maxListeners = 30;
+require('events').EventEmitter.prototype._maxListeners = 100;
 
 var fs = require("fs"),
     gulp = require("gulp"),

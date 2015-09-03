@@ -6,7 +6,7 @@
  *
  * @author Christopher Dingli <christopher.dingli@comparethemarket.com.au>
  */
-"use strict";
+//"use strict";
 
 var less = require("gulp-less"),
     concat = require("gulp-concat"),
@@ -33,6 +33,10 @@ function LessTasks(gulp) {
     var watchesStarted = [];
 
     var gulpAction = function(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs) {
+        var isWatched = (watchesStarted.indexOf(taskName) === -1);
+        if(isWatched)
+            watchesStarted.push(taskName);
+
         if(typeof compileAs !== "undefined" && compileAs.constructor === Array) {
             for(var i = 0; i < compileAs.length; i++) {
                 gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs[i]);
@@ -60,9 +64,8 @@ function LessTasks(gulp) {
                 )
                 .pipe(
                     gulpIf(
-                        watchesStarted.indexOf(taskName) === -1,
-                        watchLess(glob, null, function() {
-                            watchesStarted.push(taskName);
+                        !isWatched,
+                        watchLess(glob, { debounceDelay: 500, verbose: true }, function() {
                             gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs);
                         })
                     )
@@ -73,7 +76,7 @@ function LessTasks(gulp) {
                 .pipe(concat(fileName + ".css"))
                 .pipe(gulp.dest(targetDir))
                 .pipe(notify({
-                    title: taskName,
+                    title: taskName + " compiled",
                     message: fileName + " successfully compiled"
                 }))
                 .pipe(minifyCSS({
@@ -83,7 +86,7 @@ function LessTasks(gulp) {
                 .pipe(rename(fileName + ".min.css"))
                 .pipe(gulp.dest(targetDir))
                 .pipe(notify({
-                    title: taskName,
+                    title: taskName + " minified",
                     message: fileName + " successfully minified"
                 }));
         }

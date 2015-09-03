@@ -53,14 +53,14 @@ function JSTasks(gulp) {
                 .pipe(concat(fileName + ".js"))
                 .pipe(gulp.dest(targetDirectory))
                 .pipe(notify({
-                    title: taskName,
+                    title: taskName + " compiled",
                     message: fileName + " successfully compiled"
                 }))
                 .pipe(uglify())
                 .pipe(rename(fileName + ".min.js"))
                 .pipe(gulp.dest(targetDirectory))
                 .pipe(notify({
-                    title: taskName,
+                    title: taskName + " minified",
                     message: fileName + " successfully minified"
                 }));
         }
