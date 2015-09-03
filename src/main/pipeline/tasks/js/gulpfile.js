@@ -12,6 +12,7 @@ var path = require("path");
 var concat = require("gulp-concat"),
     beautify = require("gulp-beautify"),
     uglify = require("gulp-uglify"),
+    notify = require("gulp-notify"),
     plumber = require("gulp-plumber"),
     rename = require("gulp-rename");
 
@@ -30,10 +31,10 @@ function JSTasks(gulp) {
     // Generic Gulp action
     // - Combine files into single JS and write to target directory
     // - Uglify combined file and write to target directory
-    var gulpAction = function (fileArray, fileName, compileAs) {
+    var gulpAction = function (taskName, fileArray, fileName, compileAs) {
         if(typeof compileAs !== "undefined" && compileAs.constructor === Array) {
             for(var i = 0; i < compileAs.length; i++) {
-                gulpAction(fileArray, fileName, compileAs[i]);
+                gulpAction(taskName, fileArray, fileName, compileAs[i]);
             }
         } else {
             if(typeof compileAs === "string") {
@@ -51,9 +52,17 @@ function JSTasks(gulp) {
                 .pipe(beautify())
                 .pipe(concat(fileName + ".js"))
                 .pipe(gulp.dest(targetDirectory))
+                .pipe(notify({
+                    title: taskName,
+                    message: fileName + " successfully compiled"
+                }))
                 .pipe(uglify())
                 .pipe(rename(fileName + ".min.js"))
-                .pipe(gulp.dest(targetDirectory));
+                .pipe(gulp.dest(targetDirectory))
+                .pipe(notify({
+                    title: taskName,
+                    message: fileName + " successfully minified"
+                }));
         }
     };
 
@@ -82,7 +91,7 @@ function JSTasks(gulp) {
 
             // Total combined JS (ignoring before/after page load)
             gulp.task(bundleTask, function () {
-                return gulpAction(completeFileArray, bundle, compileAs);
+                return gulpAction(bundleTask, completeFileArray, bundle, compileAs);
             });
 
             bundleTasks.push(bundleTask);
@@ -102,7 +111,7 @@ function JSTasks(gulp) {
                 // JS loaded on page load
                 gulp.task(bundleTaskOnLoad, function () {
                     var fileName = bundle + ".onload";
-                    return gulpAction(onLoadFileArray, fileName, compileAs);
+                    return gulpAction(bundleTaskOnLoad, onLoadFileArray, fileName, compileAs);
                 });
 
                 bundleTasks.push(bundleTaskOnLoad);
@@ -111,7 +120,7 @@ function JSTasks(gulp) {
                 // JS loaded after page load
                 gulp.task(bundleTaskAsync, function () {
                     var fileName = bundle + ".deferred";
-                    return gulpAction(deferredFileArray, fileName, compileAs);
+                    return gulpAction(bundleTaskAsync, deferredFileArray, fileName, compileAs);
                 });
 
                 bundleTasks.push(bundleTaskAsync);

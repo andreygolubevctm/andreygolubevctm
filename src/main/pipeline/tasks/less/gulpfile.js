@@ -72,13 +72,20 @@ function LessTasks(gulp) {
                 }))
                 .pipe(concat(fileName + ".css"))
                 .pipe(gulp.dest(targetDir))
+                .pipe(notify({
+                    title: taskName,
+                    message: fileName + " successfully compiled"
+                }))
                 .pipe(minifyCSS({
                     advanced: true,
                     aggressiveMerging: true
                 }))
                 .pipe(rename(fileName + ".min.css"))
                 .pipe(gulp.dest(targetDir))
-                .pipe(notify("tetsing"));
+                .pipe(notify({
+                    title: taskName,
+                    message: fileName + " successfully minified"
+                }));
         }
     };
 
