@@ -47,8 +47,8 @@ import org.xml.sax.SAXException;
 
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
-import com.ctm.xml.XMLOutputWriter;
-import static com.ctm.xml.XMLOutputWriter.*;
+import com.ctm.logging.XMLOutputWriter;
+import static com.ctm.logging.XMLOutputWriter.*;
 
 
 /**

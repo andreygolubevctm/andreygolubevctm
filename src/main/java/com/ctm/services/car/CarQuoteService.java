@@ -18,7 +18,7 @@ import com.ctm.providers.car.carquote.model.response.CarResponse;
 import com.ctm.services.CommonQuoteService;
 import com.ctm.services.ResultsService;
 import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.xml.XMLOutputWriter;
+import com.ctm.logging.XMLOutputWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ctm.model.settings.Vertical.VerticalType.CAR;
-import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
+import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class CarQuoteService extends CommonQuoteService<CarQuote> {
 
