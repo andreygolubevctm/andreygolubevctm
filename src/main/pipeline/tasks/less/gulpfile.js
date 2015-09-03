@@ -33,10 +33,6 @@ function LessTasks(gulp) {
     var watchesStarted = [];
 
     var gulpAction = function(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs) {
-        var isWatched = (watchesStarted.indexOf(taskName) === -1);
-        if(isWatched)
-            watchesStarted.push(taskName);
-
         if(typeof compileAs !== "undefined" && compileAs.constructor === Array) {
             for(var i = 0; i < compileAs.length; i++) {
                 gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs[i]);
@@ -44,6 +40,10 @@ function LessTasks(gulp) {
         } else {
             if(typeof compileAs === "string")
                 fileName = compileAs;
+
+            var notInWatchesStarted= (watchesStarted.indexOf(taskName) === -1);
+            if(notInWatchesStarted)
+                watchesStarted.push(taskName);
 
             return gulp.src(glob)
                 // Prepend brand specific variables if file exists
@@ -64,7 +64,7 @@ function LessTasks(gulp) {
                 )
                 .pipe(
                     gulpIf(
-                        !isWatched,
+                        !notInWatchesStarted,
                         watchLess(glob, null, function() {
                             gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs);
                         })
