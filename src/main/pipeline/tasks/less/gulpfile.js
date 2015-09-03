@@ -26,14 +26,58 @@ function LessTasks(gulp) {
     var taskPrefix = "less:",
         lessTasks = [];
 
+    var gulpAction = function(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs) {
+        if(typeof compileAs !== "undefined" && compileAs.constructor === Array) {
+            for(var i = 0; i < compileAs.length; i++) {
+                gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs[i]);
+            }
+        } else {
+            if(typeof compileAs === "string")
+                fileName = compileAs;
+
+            return gulp.src(glob)
+                // Prepend brand specific variables if file exists
+                .pipe(
+                    gulpIf(
+                        fileList.indexOf(brandFileNames.variables) !== -1,
+                        insert.prepend("@import '" + brandFileNames.variables + "';\r\n")
+                    )
+                )
+                // Prepend generic brand build file
+                .pipe(insert.prepend("@import '../../build/brand/" + brandCode + "/build.less';\r\n"))
+                // Append brand specific theme less if file exists
+                .pipe(
+                    gulpIf(
+                        fileList.indexOf(brandFileNames.theme) !== -1,
+                        insert.append("\r\n@import '" + brandFileNames.theme + "';")
+                    )
+                )
+                .pipe(watchLess(glob, null, function (events, done) {
+                    gulp.start(taskName, done);
+                }))
+                .pipe(less({
+                    paths: [gulp.pipelineConfig.build.dir + "/../**"]
+                }))
+                .pipe(concat(fileName + ".css"))
+                .pipe(gulp.dest(targetDir))
+                .pipe(minifyCSS({
+                    advanced: true,
+                    aggressiveMerging: true
+                }))
+                .pipe(rename(fileName + ".min.css"))
+                .pipe(gulp.dest(targetDir));
+        }
+    };
+
     for(var bundle in bundles.collection) {
         if(bundle !== "core") {
             (function (bundle) {
                 var brandCodes = bundles.getBundleBrandCodes(bundle);
 
-                var fileList = bundles.getBundleFiles(bundle, "less", false);
-
                 var bundleLessTasks = [];
+
+                var fileList = bundles.getBundleFiles(bundle, "less", false),
+                    compileAs = bundles.collection[bundle].compileAs;
 
                 for (var i = 0; i < brandCodes.length; i++) {
                     var brandCode = brandCodes[i];
@@ -45,40 +89,12 @@ function LessTasks(gulp) {
                         var targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
 
                         gulp.task(brandCodeTask, function () {
-                            var brandVariablesFileName = "variables." + brandCode + ".less",
-                                brandThemeFileName = "theme." + brandCode + ".less";
+                            var brandFileNames = {
+                                    variables: "variables." + brandCode + ".less",
+                                    theme: "theme." + brandCode + ".less"
+                                };
 
-                            return gulp.src(brandCodeBundleSrcPath)
-                                // Prepend brand specific variables if file exists
-                                .pipe(
-                                    gulpIf(
-                                        fileList.indexOf(brandVariablesFileName) !== -1,
-                                        insert.prepend("@import '" + brandVariablesFileName + "';\r\n")
-                                    )
-                                )
-                                // Prepend generic brand build file
-                                .pipe(insert.prepend("@import '../../build/brand/" + brandCode + "/build.less';\r\n"))
-                                // Append brand specific theme less if file exists
-                                .pipe(
-                                    gulpIf(
-                                        fileList.indexOf(brandThemeFileName) !== -1,
-                                        insert.append("\r\n@import '" + brandThemeFileName + "';")
-                                    )
-                                )
-                                .pipe(watchLess(brandCodeBundleSrcPath, null, function(events, done){
-                                    gulp.start(brandCodeTask, done);
-                                }))
-                                .pipe(less({
-                                    paths: [gulp.pipelineConfig.build.dir + "/../**"]
-                                }))
-                                .pipe(concat(bundle + ".css"))
-                                .pipe(gulp.dest(targetDir))
-                                .pipe(minifyCSS({
-                                    advanced: true,
-                                    aggressiveMerging: true
-                                }))
-                                .pipe(rename(bundle + ".min.css"))
-                                .pipe(gulp.dest(targetDir));
+                            return gulpAction(brandCodeBundleSrcPath, targetDir, brandCodeTask, fileList, brandCode, brandFileNames, bundle, compileAs);
                         });
 
                         bundleLessTasks.push(brandCodeTask);

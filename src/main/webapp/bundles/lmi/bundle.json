@@ -1,0 +1,10 @@
+{
+  "brandCodes": ["ctm"],
+  "jsDependencies": [
+    "meerkat",
+    "shared/results",
+    "shared/features",
+    "core"
+  ],
+  "compileAs": ["carlmi", "homelmi"]
+}
