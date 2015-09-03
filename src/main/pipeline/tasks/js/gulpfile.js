@@ -48,7 +48,9 @@ function JSTasks(gulp) {
             }
 
             return gulp.src(fileArray)
-                .pipe(plumber())
+                .pipe(plumber({
+                    errorHandler: notify.onError("Error: <%= error.message %>")
+                }))
                 .pipe(beautify())
                 .pipe(concat(fileName + ".js"))
                 .pipe(gulp.dest(targetDirectory))

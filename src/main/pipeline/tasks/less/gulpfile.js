@@ -46,6 +46,9 @@ function LessTasks(gulp) {
                 watchesStarted.push(taskName);
 
             return gulp.src(glob)
+                .pipe(plumber({
+                    errorHandler: notify.onError("Error: <%= error.message %>")
+                }))
                 // Prepend brand specific variables if file exists
                 .pipe(
                     gulpIf(
