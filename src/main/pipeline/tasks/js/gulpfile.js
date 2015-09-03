@@ -12,10 +12,12 @@ var path = require("path");
 var concat = require("gulp-concat"),
     beautify = require("gulp-beautify"),
     uglify = require("gulp-uglify"),
+    plumber = require("gulp-plumber"),
     rename = require("gulp-rename");
 
 // TODO: Add .map files
 // TODO: Build .tpl file which includes references to <script src=""></script> for each individual file
+// TODO: Implement gulp-changed to stop it from overwriting files unnecessarily
 
 function JSTasks(gulp) {
     var bundles = gulp.bundles;
@@ -45,6 +47,7 @@ function JSTasks(gulp) {
             }
 
             return gulp.src(fileArray)
+                .pipe(plumber())
                 .pipe(beautify())
                 .pipe(concat(fileName + ".js"))
                 .pipe(gulp.dest(targetDirectory))

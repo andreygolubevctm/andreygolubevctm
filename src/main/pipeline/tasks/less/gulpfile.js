@@ -14,10 +14,14 @@ var less = require("gulp-less"),
     rename = require("gulp-rename"),
     insert = require("gulp-insert"),
     watchLess = require("gulp-watch-less"),
+    intercept = require("gulp-intercept"),
     gulpIf = require("gulp-if"),
+    plumber = require("gulp-plumber"),
+    notify = require("gulp-notify"),
     fs = require("fs"),
     path = require("path");
 
+// TODO: Implement gulp-changed to stop it from overwriting files unnecessarily
 // TODO: Add .map files
 
 function LessTasks(gulp) {
@@ -25,6 +29,8 @@ function LessTasks(gulp) {
 
     var taskPrefix = "less:",
         lessTasks = [];
+
+    var watchesStarted = [];
 
     var gulpAction = function(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs) {
         if(typeof compileAs !== "undefined" && compileAs.constructor === Array) {
@@ -52,9 +58,15 @@ function LessTasks(gulp) {
                         insert.append("\r\n@import '" + brandFileNames.theme + "';")
                     )
                 )
-                .pipe(watchLess(glob, null, function (events, done) {
-                    gulp.start(taskName, done);
-                }))
+                .pipe(
+                    gulpIf(
+                        watchesStarted.indexOf(taskName) === -1,
+                        watchLess(glob, null, function() {
+                            watchesStarted.push(taskName);
+                            gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs);
+                        })
+                    )
+                )
                 .pipe(less({
                     paths: [gulp.pipelineConfig.build.dir + "/../**"]
                 }))
@@ -65,7 +77,8 @@ function LessTasks(gulp) {
                     aggressiveMerging: true
                 }))
                 .pipe(rename(fileName + ".min.css"))
-                .pipe(gulp.dest(targetDir));
+                .pipe(gulp.dest(targetDir))
+                .pipe(notify("tetsing"));
         }
     };
 
