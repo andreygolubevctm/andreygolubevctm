@@ -9,7 +9,7 @@
 		remember to add a new class in framework\modules\less\homeloan\logos.less --%>
 
 	<c:set var="brands"
-		value="${fn:split('ADLB,AFG,AMP,ANZ,BOC,BOM,BANKSA,BANKWEST,BLUESTONE,BOQ,CBA,CITI,HERITAGE,HOMESTART,ING,KEY,LATROBE,LIBERTY,MACQ,ME,MKM,NAB,NABBROKER,PN,PEPPER,GEORGE,SUNCORP,ROCK,WESTPAC,AUSWIDE',',')}" />
+		value="${fn:split('ADLB,AFG,AMP,ANZ,BANKAUST,BOC,BOM,BANKSA,BANKWEST,BLUESTONE,BOQ,CBA,CITI,HERITAGE,HOMESTART,ING,KEY,LATROBE,LIBERTY,MACQ,ME,MKM,NAB,NABBROKER,PN,PEPPER,GEORGE,SUNCORP,ROCK,WESTPAC,AUSWIDE',',')}" />
 
 	<div class="brands-content">
 	{{ if(typeof obj !== 'undefined' && typeof obj.pretext !== 'undefined') { }}
