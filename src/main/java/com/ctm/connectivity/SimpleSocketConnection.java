@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class SimpleSocketConnection {
 
-	private static final Logger logger = LoggerFactory.getLogger(SimpleSocketConnection.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimpleSocketConnection.class);
 
 	private String address;
 	private int port;
@@ -63,7 +63,7 @@ public class SimpleSocketConnection {
 			try {
 				socket.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Failed closing socket connection", e);
 			}
 
 			logger.debug("Socket Disconnected: " + socket);

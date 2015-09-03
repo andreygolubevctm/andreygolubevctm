@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class SimplesSearchService {
 
     private String hotTransactionIdsCsv = "";
@@ -544,7 +546,8 @@ public class SimplesSearchService {
                 }
             }
         } catch (JspException | SAXException e) {
-            e.printStackTrace();
+            logger.error("Failed to write data into data bucket {}, {}, {}", kv("allowDuplicates", allowDuplicates),
+                kv("xml", xml), kv("value", value), kv("xpath", xPath));
         }
     }
 }

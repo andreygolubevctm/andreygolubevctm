@@ -10,11 +10,13 @@ import javax.naming.NamingException;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BrandsDao {
+	private static final Logger logger = LoggerFactory.getLogger(BrandsDao.class.getName());
 
 	public BrandsDao(){
-
 	}
 
 	/**
@@ -52,12 +54,9 @@ public class BrandsDao {
 
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed to retrieve brands", e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

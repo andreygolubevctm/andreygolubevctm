@@ -1,25 +1,24 @@
 package com.ctm.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.naming.NamingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.ServiceConfigurationProperty;
 import com.ctm.services.EnvironmentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Date;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 
 public class ServiceConfigurationDao {
+	private static final Logger logger = LoggerFactory.getLogger(ServiceConfigurationDao.class);
 
 	/**
 	 * Get the service configuration data and their properties from the database.
@@ -99,12 +98,9 @@ public class ServiceConfigurationDao {
 
 			}
 
-		} catch (SQLException | NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+			logger.error("Failed to retrieve service configuration data {}", kv("effectiveDateTime", effectiveDateTime));
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

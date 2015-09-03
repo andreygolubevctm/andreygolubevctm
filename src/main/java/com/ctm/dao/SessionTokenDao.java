@@ -1,18 +1,22 @@
 package com.ctm.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
-
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.session.SessionToken;
 import com.mysql.jdbc.Statement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.naming.NamingException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 
 public class SessionTokenDao {
+	private static final Logger logger = LoggerFactory.getLogger(SessionTokenDao.class);
 
 	public SessionTokenDao(){
 
@@ -61,12 +65,9 @@ public class SessionTokenDao {
 				return sessionToken;
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage());
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage());
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed to get session token {}, {}", kv("token", token), kv("identityType", identityType));
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -97,11 +98,8 @@ public class SessionTokenDao {
 			stmt.setInt(1, token.getId());
 			stmt.executeUpdate();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed marking session token as consumed {}", kv("token", token));
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();
@@ -143,12 +141,9 @@ public class SessionTokenDao {
 				return sessionToken;
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed saving session token to database {}", kv("token", sessionToken));
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

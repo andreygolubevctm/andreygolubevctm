@@ -16,7 +16,7 @@ public abstract class AbstractJsonModel implements JsonFormatter {
 
 	private static final Logger logger = LoggerFactory.getLogger(AbstractJsonModel.class.getName());
 
-	private ArrayList<Error> errors = new ArrayList<Error>();
+	private ArrayList<Error> errors = new ArrayList<>();
 
 
 	/**

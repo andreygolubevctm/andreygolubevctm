@@ -16,6 +16,8 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.SessionDataService;
 import com.disc_au.web.go.Data;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class AGISLeadFromRequest {
 
 	private static final Logger logger = LoggerFactory.getLogger(AGISLeadFromRequest.class);
@@ -40,7 +42,7 @@ public class AGISLeadFromRequest {
 			try {
 				data = sds.getDataForTransactionId(request, transactionId, false);
 			} catch (DaoException | SessionException e1) {
-				e1.printStackTrace();
+				logger.error("Failed to retrieve session {}", kv("transactionId", transactionId));
 			}
 
 			String vertical = data.get("current/verticalCode").toString().toLowerCase();

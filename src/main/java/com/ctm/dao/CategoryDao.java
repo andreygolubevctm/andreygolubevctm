@@ -10,8 +10,12 @@ import javax.naming.NamingException;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Category;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CategoryDao {
+	private static final Logger logger = LoggerFactory.getLogger(CategoryDao.class.getName());
+
 	public ArrayList<Category> getCategories(int verticalId, int styleCodeId) throws DaoException{
 
 		SimpleDatabaseConnection dbSource = null;
@@ -45,12 +49,9 @@ public class CategoryDao {
 
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed to retrieve categories", e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

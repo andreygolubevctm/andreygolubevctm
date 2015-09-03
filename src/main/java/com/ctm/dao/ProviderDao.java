@@ -1,21 +1,22 @@
 package com.ctm.dao;
 
-import java.sql.Connection;
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Provider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
 
-import javax.naming.NamingException;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.Provider;
-import com.ctm.services.ApplicationService;
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class ProviderDao {
+	private static final Logger logger = LoggerFactory.getLogger(ProviderDao.class);
 
 	public static enum GetMethod {
 		BY_CODE, BY_ID
@@ -167,12 +168,10 @@ public class ProviderDao {
 
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed to retrieve providers for vertical {}, {}, {}, {}", kv("verticalCode", verticalCode),
+				kv("styleCodeId", styleCodeId), kv("onlyActiveProviders", getOnlyActiveProviders));
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -208,12 +207,9 @@ public class ProviderDao {
 				provider.setPropertyDetail("mappingType", providerResult.getString("Text"));
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			logger.error("Failed to retrieve provider details {}, {}", kv("providerCode", providerCode), kv("propertyId", propertyId));
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

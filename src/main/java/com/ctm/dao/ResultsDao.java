@@ -3,15 +3,18 @@ package com.ctm.dao;
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.results.ResultProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ResultsDao {
+	private static final Logger logger = LoggerFactory.getLogger(ResultsDao.class);
 
 	/**
 	 * Returns an array of product properties stored against a transaction id with specific productId.
@@ -64,15 +67,9 @@ public class ResultsDao {
 
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+			logger.error("Failed to get result properties for transaction {}, {}", kv("transactionId", transactionId), kv("productId", productId));
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -114,15 +111,9 @@ public class ResultsDao {
 				age = result.getInt("age");
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+			logger.error("Failed to get age of results for transaction {}", kv("transactionId", transactionId));
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -168,12 +159,9 @@ public class ResultsDao {
 				propertyValue = result.getString("value");
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (NamingException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Failed to get single result property value {}, {}, {}", kv("transactionId", transactionId),
+				kv("productId", productId), kv("property", property));
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -202,12 +190,8 @@ public class ResultsDao {
 
             stmt.executeBatch();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (NamingException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            e.printStackTrace();
+			logger.error("Failed to save results properties {}", kv("resultProperties", resultProperties));
         }
 
     }
