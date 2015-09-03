@@ -12,13 +12,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Created by lbuchanan on 21/04/2015.
  */
 public class VerboseErrorHandler implements ErrorHandler {
 
     private final String prefixXpath;
-	private static final Logger logger = LoggerFactory.getLogger(VerboseErrorHandler.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(VerboseErrorHandler.class.getName());
 
     private XMLStreamReader reader;
     public boolean valid  = true;
@@ -58,7 +60,7 @@ public class VerboseErrorHandler implements ErrorHandler {
 
             SchemaValidationError error = new SchemaValidationError();
             if(unspecifiedField) {
-                logger.info("unspecified Field : " + element);
+                LOGGER.info("unspecified Field. {}" , kv("element", element));
                 //This is most likely intentional carry on
             } else if(notCompleteErrorMultiple) {
                 error.setMessage("ELEMENT REQUIRED");

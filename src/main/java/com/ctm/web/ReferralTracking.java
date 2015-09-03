@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ReferralTracking {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReferralTracking.class.getName());
@@ -37,7 +39,7 @@ public class ReferralTracking {
 				try {
 					value = URLDecoder.decode(value, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
-					logger.warn("",e);
+					logger.warn("Value is not in utf-8. {}", kv("value", value),e);
 				}
 				try {
 					valid = ContentService.getContentIsValid(request, key, value);
@@ -45,13 +47,13 @@ public class ReferralTracking {
 						data.put(xpath, value);
 					}
 				} catch (DaoException | ConfigSettingException e) {
-					logger.warn("",e);
+					logger.warn("Failed to validate content. {},{}", kv("key", key), kv("value", value),e);
 				}
 
 				if(valid ){
-					logger.info(key + ": '" + value + "' from " + "param");
+					logger.info("Content is valid. {},{}", kv("key", key), kv("value", value));
 				} else {
-					logger.warn(key + ": '" + value + "' from " + "invalid param - Aborting");
+					logger.warn("Content is invalid param - Aborting. {},{}", kv("key", key), kv("value", value));
 					value = "";
 				}
 			}

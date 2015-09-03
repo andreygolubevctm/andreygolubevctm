@@ -15,12 +15,13 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static java.util.Arrays.asList;
 import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
 public class ResponseUtils {
 
-	private static final Logger logger = LoggerFactory.getLogger(ResponseUtils.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseUtils.class.getName());
 
     public static ObjectNode errors(final Exception e, ObjectMapper objectMapper) {
         return jsonObjectNode("errors", asList(new Error(e.getMessage())), objectMapper);
@@ -57,7 +58,7 @@ public class ResponseUtils {
 
     public static void handleError(String uri, Exception exception, HttpServletResponse response , String message) {
         FatalErrorService fatalErrorService = new FatalErrorService();
-        logger.error(message + " " + exception.getMessage(), exception);
+        LOGGER.warn("Handling error back to the user. {}",kv("message" , message), exception);
         String sessionId = "";
         int styleCodeId = 0;
         fatalErrorService.logFatalError(exception, styleCodeId, uri , sessionId, true);
@@ -68,7 +69,7 @@ public class ResponseUtils {
         try {
             response.getWriter().print(json.toString());
         } catch (IOException e) {
-            logger.error("",e);
+            LOGGER.error("Failed to output json to response. {}",kv("json" , json), e);
         }
     }
 }

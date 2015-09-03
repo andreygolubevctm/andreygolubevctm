@@ -233,7 +233,7 @@ public class SqlDao<T> {
         } finally {
             cleanup();
         }
-        logger.debug("DB query total execution time {}ms", kv("queryTime", System.currentTimeMillis()-startTime));
+        logger.debug("DB query total execution time {}ms", kv("queryTime", System.currentTimeMillis() - startTime));
         return value;
     }
 
@@ -294,6 +294,23 @@ public class SqlDao<T> {
             }catch (Throwable throwable) {
                 throw new DaoException(throwable);
             }
+        }
+    }
+
+    public int[] executeBatch(List<DatabaseUpdateMapping> databaseMappings, String statement) throws DaoException {
+        try {
+            stmt = conn.prepareStatement(statement);
+            for (DatabaseUpdateMapping databaseMapping : databaseMappings) {
+                conn = databaseConnection.getConnection(context, true);
+                databaseMapping.handleParams(stmt);
+                stmt.addBatch();
+            }
+            return stmt.executeBatch();
+        } catch (SQLException | NamingException e) {
+                logger.error("DB batch update failed {}", kv("statement", statement), e);
+                throw new DaoException(e);
+        } finally {
+            cleanup();
         }
     }
 }
