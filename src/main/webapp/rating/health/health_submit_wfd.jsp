@@ -38,7 +38,7 @@
 	}
 	String body = new String(baos.toByteArray());
 %><%=body %></c:set>
-${logger.debug('ContentLength: {}', log:kv('contentLength', pageContext.request.contentLength), log:kv('body',body))}
+${logger.debug('Got body content: {},{}', log:kv('contentLength', pageContext.request.contentLength), log:kv('body',body))}
 <c:if test="${pageContext.request.contentLength > 0}">
 	<x:parse doc="${body}" var="applicationXml" />
 
@@ -72,7 +72,7 @@ ${logger.debug('ContentLength: {}', log:kv('contentLength', pageContext.request.
 <c:set var="zipFilenameWithPath" value="${saveLocation}wfd_${transId}_${millisecs}.zip" />
 <c:set var="zipFilename" value="wfd_${transId}_${millisecs}.zip" />
 <c:set var="internalName" value="application_${transId}.csv" />
-${logger.debug('transId: {},{},{}{}', log:kv('transId', transId), log:kv('fundProductCode', fundProductCode), log:kv('realPath', realPath), log:kv('saveLocation', saveLocation))}
+${logger.debug('transId: {},{},{},{}', log:kv('transId', transId), log:kv('fundProductCode', fundProductCode), log:kv('realPath', realPath), log:kv('saveLocation', saveLocation))}
 <?xml version="1.0" encoding="UTF-8"?>
 <result>
 	<%-- <policyNo>000001</policyNo> --%>
@@ -117,7 +117,7 @@ ${logger.debug('transId: {},{},{}{}', log:kv('transId', transId), log:kv('fundPr
 			<c:set var="writeSuccess" value="false" />
 			<c:catch var="error">
 				<c:if test="${not empty saveLocation}">
-					${logger.debug('Writing to: {}', zipFilenameWithPath)}
+					${logger.debug('Writing to saveLocation. {}', log:kv('zipFilenameWithPath',zipFilenameWithPath ))}
 					<c:set var="writeSuccess" value="${go:writeToEncZipFile(zipFilenameWithPath, output, internalName, zipPassword)}" />
 				</c:if>
 			</c:catch>
