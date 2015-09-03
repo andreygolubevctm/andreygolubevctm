@@ -31,9 +31,6 @@ var healthFunds_GMH = {
         healthFunds._schoolLabel = $('.health_dependant_details_schoolGroup').first().find('.control-label').text();
         $('.health_dependant_details_schoolGroup').find('.control-label').text('Name of school/employer/educational institution your child is attending');
 
-        <%--fund ID's become optional--%>
-        $('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
-
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });

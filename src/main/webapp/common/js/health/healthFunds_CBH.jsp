@@ -218,9 +218,6 @@ var healthFunds_CBH = {
 				$.extend(healthDependents.config, { 'school':true, 'schoolMin':18, 'schoolMax':24, 'schoolID':false });
 			}
 
-			<%-- Fund IDs become optional --%>
-			$('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
-
 			<%-- Partner authority --%>
 			healthFunds._partner_authority(true);
 

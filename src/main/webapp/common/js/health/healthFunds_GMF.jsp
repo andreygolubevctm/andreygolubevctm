@@ -39,9 +39,6 @@ var healthFunds_GMF = {
 		<%-- schoolgroups and defacto --%>
 		healthDependents.config = { 'school': false, 'defacto': true, 'defactoMin': 21, 'defactoMax': 24 };
 
-		<%-- fund ID's become optional --%>
-		$('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
-
 		<%-- medicare message - once a medicare number has been added - show the message (or if prefilled show the message) --%>
 		healthFunds_GMF.$_medicareMessage = $('#health_medicareDetails_message');
 		healthFunds_GMF.$_medicareMessage.text('GMF will send you an email shortly so that your rebate can be applied to the premium');
