@@ -34,19 +34,9 @@
 			required="true" />
 	</form_new:row>
 
-	<jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
-	<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
-
 
 	<form_new:row label="Enter the number of kilometres the car is driven per year (Australian average 15,000 Km’s per year)" helpId="14">
-		<c:choose>
-			<c:when test='${deviceType eq "MOBILE" or deviceType eq "TABLET"}'>
-				<field_new:kilometers_travelled_number xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres annual_kilometres_number" placeHolder="Example: 20000" required="true" />
-			</c:when>
-			<c:otherwise>
-				<field_new:kilometers_travelled xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres" placeHolder="Example: 20000" required="true" />
-			</c:otherwise>
-		</c:choose>
+		<field_new:kilometers_travelled xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres" placeHolder="Example: 20000" required="true" />
 	</form_new:row>
 
 	<form_new:row label="Does the car have any accident or hail damage?" id="accidentDamageRow" helpId="24">

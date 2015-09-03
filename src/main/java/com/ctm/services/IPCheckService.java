@@ -8,13 +8,14 @@ import com.ctm.model.IpAddress;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.utils.RequestUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class IPCheckService {
 
-    private static final Logger logger = Logger.getLogger(IPCheckService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(IPCheckService.class.getName());
 
     private IpAddressDao ipAddressDao;
 

@@ -13,7 +13,8 @@ import com.ctm.router.homeloan.HomeLoanRouter;
 import com.ctm.security.StringEncryption;
 import com.ctm.services.AccessTouchService;
 import com.ctm.services.FatalErrorService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -264,7 +265,7 @@ public class HomeLoanService {
 	public synchronized void scheduledLeadGenerator(HttpServletRequest request) {
 
 		JSONObject json = null;
-		Logger logger = Logger.getLogger(HomeLoanRouter.class.getName());
+		Logger logger = LoggerFactory.getLogger(HomeLoanRouter.class.getName());
 		AccessTouchService touch = new AccessTouchService();
 
 		try {

@@ -9,4 +9,6 @@ public interface Request<QUOTE> {
     void setTransactionId(Long transactionId);
 
     void setClientIpAddress(String clientIpAddress);
+
+    String getEnvironmentOverride();
 }

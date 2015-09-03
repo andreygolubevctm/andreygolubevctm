@@ -8,7 +8,8 @@ import java.util.Date;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -21,7 +22,7 @@ import com.ctm.services.EnvironmentService;
 public class ServiceConfigurationDao {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(ServiceConfigurationDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ServiceConfigurationDao.class.getName());
 
 	/**
 	 * Get the service configuration data and their properties from the database.

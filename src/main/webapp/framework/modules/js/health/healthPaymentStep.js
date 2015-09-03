@@ -286,6 +286,7 @@
 		if(disableFields === true){
 			// Disable the other premium-related inputs
 			var $paymentSection = $('#health_payment_details-selection');
+
 			$paymentSection.find(':input').prop('disabled', true);
 			$paymentSection.find('.select').addClass('disabled');
 			$paymentSection.find('.btn-group label').addClass('disabled');

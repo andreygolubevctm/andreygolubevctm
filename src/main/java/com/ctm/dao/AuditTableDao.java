@@ -1,6 +1,7 @@
 package com.ctm.dao;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class AuditTableDao {
     private String tableName;
     private String primaryColumnName ;
     private final String loggingSchema = "logging";
-    private static final Logger logger = Logger.getLogger(AuditTableDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AuditTableDao.class.getName());
 
     public AuditTableDao() {
     }

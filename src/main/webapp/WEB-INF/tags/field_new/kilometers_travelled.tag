@@ -15,10 +15,18 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="id" value="${name}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+<c:set var="maxLength" value="7" />
 <c:set var="error_message">Please enter the number of kilometres the vehicle is driven per year</c:set>
+<c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
+<c:set var="formatNum">
+    <c:choose>
+        <c:when test='${inputType eq "text"}'>false</c:when>
+        <c:otherwise>true</c:otherwise>
+    </c:choose>
+</c:set>
 
 <%-- HTML --%>
-<field_new:input type="text" xpath="${xpath}" required="${required}" className="numeric ${className}" maxlength="${7}" title="${title}" pattern="[0-9]*" placeHolder="${placeHolder}" formattedInteger="true" />
+<field_new:input type="${inputType}" xpath="${xpath}" required="${required}" className="numeric ${className}" maxlength="${maxLength}" title="${title}" pattern="[0-9]*" placeHolder="${placeHolder}" formattedInteger="${formatNum}" />
 
 <%-- VALIDATION --%>
 <go:validate selector="${name}" rule="required" parm="${required}" message="${error_message}"/>

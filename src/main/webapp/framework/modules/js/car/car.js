@@ -214,26 +214,6 @@
 			},
 			onInitialise: function() {
 				meerkat.modules.carYoungDrivers.initCarYoungDrivers();
-			},
-			onAfterEnter: function onOptionsEnter(event) {
-				// Bind the annual kilometers to format numbers.
-				$annualKilometers = $('.annual_kilometres_number');
-
-				$annualKilometers.on('keyup', function(event, input) {
-					$this = $(this);
-					formatNumberInput($this, event);
-				});
-
-				$annualKilometers.trigger('keyup');
-			},
-			onBeforeLeave : function(event) {
-				// Trim the commas out.
-				$annualKilometers = $('.annual_kilometres_number');
-
-				if ($annualKilometers.length > 0) {
-					var numberOnlyValue = trimNonNumbers($annualKilometers.val());
-					$annualKilometers.val(numberOnlyValue);
-				}
 			}
 		};
 
@@ -249,26 +229,6 @@
 				touchType:'H',
 				touchComment: 'DriverDtls',
 				includeFormData:true
-			},
-			onAfterEnter: function onDetailsEnter(event) {
-				// Bind the annual kilometers to format numbers.
-				$annualKilometersYoungest = $('.annual_kilometres_number_youngest');
-
-				$annualKilometersYoungest.on('keyup', function(event, input) {
-					$this = $(this);
-					formatNumberInput($this, event);
-				});
-
-				$annualKilometersYoungest.trigger('keyup');
-			},
-			onBeforeLeave : function(event) {
-				// Trim the commas out.
-				$annualKilometersYoungest = $('.annual_kilometres_number_youngest');
-
-				if ($annualKilometersYoungest.length > 0) {
-					var numberOnlyValue = trimNonNumbers($annualKilometersYoungest.val());
-					$annualKilometersYoungest.val(numberOnlyValue);
-				}
 			}
 		};
 
@@ -313,6 +273,11 @@
 							$driversContactEmail.valid();
 					}
 				});
+				}
+				if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
+					meerkat.modules.resultsFeatures.fetchStructure('carws_');
+				} else {
+					meerkat.modules.resultsFeatures.fetchStructure('car_');
 				}
 			},
 			onAfterEnter : function (event) {
@@ -518,37 +483,6 @@
 		}catch(e){
 			return false;
 		}
-	}
-
-	function formatNumberInput(element, event) {
-
-		// Trim all non number values
-		var currentValue = element.val(),
-			numbersOnly = trimNonNumbers(currentValue),
-			newValueLength = numbersOnly.length;
-
-		if (currentValue.length > 7) {
-			element.val(currentValue.substring(0, 7));
-
-		} else if (newValueLength > 3) {
-			var lastPart = numbersOnly.substring(newValueLength - 3, newValueLength),
-				firstPart = numbersOnly.substring(0, newValueLength - 3);
-
-			element.val(firstPart+','+lastPart);
-		} else {
-			element.val(numbersOnly);
-		}
-
-	}
-
-	function trimNonNumbers(string) {
-		return string.replace(/\D/g,'');
-	}
-
-
-	function trimNonPhoneNumbers(string) {
-		//allowing () and numbers
-		return string.replace(/[^0-9^(^)^\s]/g,'');
 	}
 
 	meerkat.modules.register("car", {
