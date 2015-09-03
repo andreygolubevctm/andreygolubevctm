@@ -135,7 +135,7 @@
 	<c:if test="${item.couldHaveChildren()}">
 		<div class="children" data-fid="${item.getId()}">
 			<c:forEach items="${item.getChildren()}" var="selectedValue" varStatus="status">
-				<car:resultsItem_ws item="${selectedValue}" labelMode="${labelMode}" index="${status.index}" parentShortlistKey="${item.getShortlistKey()}"/>
+				<car:resultsItem item="${selectedValue}" labelMode="${labelMode}" index="${status.index}" parentShortlistKey="${item.getShortlistKey()}"/>
 			</c:forEach>
 		</div>
 	</c:if>
