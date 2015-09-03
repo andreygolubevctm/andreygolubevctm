@@ -148,12 +148,16 @@ Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath) {
 
     var fileListCacheKey = bundle + ":" + fileType + ":" + useFullPath;
 
-    if(typeof this.fileListCache[fileListCacheKey] !== "undefined") {
-        return this.fileListCache[fileListCacheKey];
-    } else {
-        var filePath = path.join(this.config.bundles.dir, bundle, fileType);
-        this.fileListCache[fileListCacheKey] = fileHelper.getFilesFromFolderPath(filePath, useFullPath);
-        return this.fileListCache[fileListCacheKey];
+    try {
+        if (typeof this.fileListCache[fileListCacheKey] !== "undefined") {
+            return this.fileListCache[fileListCacheKey];
+        } else {
+            var filePath = path.join(this.config.bundles.dir, bundle, fileType);
+            this.fileListCache[fileListCacheKey] = fileHelper.getFilesFromFolderPath(filePath, useFullPath);
+            return this.fileListCache[fileListCacheKey];
+        }
+    } catch(err) {
+        return [];
     }
 };
 

@@ -33,8 +33,15 @@ function JSTasks(gulp) {
                 gulpAction(fileArray, fileName, compileAs[i]);
             }
         } else {
-            if(typeof compileAs === "string")
+            if(typeof compileAs === "string") {
+                if(fileName.match(/(\.onload)/))
+                    compileAs = compileAs + ".onload";
+
+                if(fileName.match(/(\.deferred)/))
+                    compileAs = compileAs + ".deferred";
+
                 fileName = compileAs;
+            }
 
             return gulp.src(fileArray)
                 .pipe(concat(fileName + ".js"))
@@ -57,15 +64,15 @@ function JSTasks(gulp) {
             // Tasks to be run on watch of bundle file change
             var watchTasks = [];
 
-            // Array of dependencies file paths
+                // Array of dependencies file paths
             var dependenciesFileArray = bundles.getJSDependencyFiles(bundle),
-            // Array of bundle file paths
+                // Array of bundle file paths
                 bundleFileArray = bundles.getBundleFiles(bundle, "js"),
-            // All files living together happily
+                // All files living together happily
                 completeFileArray = dependenciesFileArray.concat(bundleFileArray),
-            // Array of files to be loaded on page load
+                // Array of files to be loaded on page load
                 onLoadFileArray = [],
-            // Array of files to be loaded after page load
+                // Array of files to be loaded after page load
                 deferredFileArray = [];
 
             // Total combined JS (ignoring before/after page load)

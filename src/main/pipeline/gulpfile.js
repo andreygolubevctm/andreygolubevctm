@@ -17,6 +17,12 @@ var BundlesHelper = require("./helpers/bundlesHelper");
 
 console.log("Initialising gulp tasks... Give it a moment, yo!");
 
+// TODO: Do maven integration
+// TODO: Create task for build server? Or prevent watch on build server etc
+// TODO: Create task for creating new bundles
+// TODO: Create task for compiling plugins
+// TODO: Create task for sprites (see Mark)
+
 // Inject our config into the gulp object so that
 // we can use it easily in our bundles
 gulp.pipelineConfig = require("./config");
