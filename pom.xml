@@ -360,14 +360,7 @@
         <dependency>
             <groupId>com.ctm.webservices</groupId>
             <artifactId>motorweb</artifactId>
-            <version>1.3.0</version>
-            <!-- TODO: remove this exclusion once motorweb no longer uses log4j -->
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>1.4.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
