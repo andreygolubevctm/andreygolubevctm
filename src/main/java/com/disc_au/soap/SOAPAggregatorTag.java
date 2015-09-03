@@ -150,8 +150,6 @@ public class SOAPAggregatorTag extends TagSupport {
 
 					//Otherwise the aggregator times out before all the clients have had a chance too.
 					timeout+= 2000; // ensure the main thread lasts slightly longer than the total of all service calls.
-
-						//logger.info("will wait "+timeout+ "ms");
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
