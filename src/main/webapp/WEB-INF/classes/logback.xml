@@ -9,13 +9,6 @@
 	       <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c:%L - %m%n</pattern>
 	    </encoder>
   	</appender>
-
-	<appender name="stdoutNoLogLine" class="ch.qos.logback.core.ConsoleAppender">
-		<Target>System.out</Target>
-		<encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c - %m%n</pattern>
-		</encoder>
-	</appender>
   
 	<appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
 		<!-- in the absence of the class attribute, it is assumed that the
@@ -63,15 +56,7 @@
 		<appender-ref ref="stdout" />
 	</logger>
 
-	<logger name="jsp:">
-		<appender-ref ref="stdoutNoLogLine" />
-	</logger>
-
-	<logger name="tag:">
-		<appender-ref ref="stdoutNoLogLine" />
-	</logger>
-
-	<root level="${logLocation:-info}">
+	<root level="info">
    		<appender-ref ref="stdout" />
 	</root>
 	

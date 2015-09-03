@@ -488,7 +488,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <warSourceDirectory>src/main/webapp</warSourceDirectory>
-                    <warSourceExcludes>WEB-INF/classes/environment.properties</warSourceExcludes>
+                    <warSourceExcludes>WEB-INF/classes/logback.xml,WEB-INF/classes/environment.properties</warSourceExcludes>
                 </configuration>
                 <executions>
                     <!-- creating the artifact is done by ant -->
