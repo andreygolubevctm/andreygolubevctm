@@ -32,7 +32,7 @@
 					title="oldest person dob"
 					required="true"
 					ageMin="16"
-					ageMax="99" />
+					ageMax="99" additionalAttributes=" data-rule-oldestPersonOlderThanPolicyHolders='${name}' " />
 			</form_new:row>
 
 			<%-- Is anyone over 55? --%>
@@ -46,29 +46,7 @@
 			</form_new:row>
 		</form_new:fieldset>
 
-		<%-- JAVASCRIPT --%>
-		<go:script marker="js-head">
-			$.validator.addMethod("oldestPersonOlderThanPolicyHolders",
-			function(value, element, param) {
-
-				var dob = $("#${name}_dob").val().split("/").reverse().join("");
-				var oldestPersonDob = $("#${name}_oldestPersonDob").val().split("/").reverse().join("");
-
-				var jointDobVis = $("#${name}_jointDob");
-				if (jointDobVis.is(":visible")){
-					var jointDob = $("#${name}_jointDob").val().split("/").reverse().join("");
-				}
-
-				if( oldestPersonDob > dob || (jointDobVis.is(":visible") && oldestPersonDob > jointDob)){
-					return false;
-				}
-				return true;
-
-			},
-			"Custom message"
-		);
-		</go:script>
-		<go:validate selector="${name}_oldestPersonDob" rule="oldestPersonOlderThanPolicyHolders" parm="true" message="Please confirm that the oldest person living at the home is older than the policy holder." />
+		<%--<go:validate selector="${name}_oldestPersonDob" rule="oldestPersonOlderThanPolicyHolders" parm="true" message="" />--%>
 
 	</jsp:body>
 

@@ -17,9 +17,9 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<field_new:input type="text" xpath="${xpath}" required="${required}" className="account_name numeric ${className}" size="10" maxlength="${maxLength}" title="${title}" pattern="[0-9]*" />
-
-<go:validate selector="${accountnum}" rule="digits" parm="${required}" message="Please enter ${title}"/>
+<field_new:input type="text" xpath="${xpath}" required="${required}" className="account_name numeric ${className}" size="10" maxlength="${maxLength}" title="${title}" pattern="[0-9]*" additionalAttributes=" data-rule-digits='true' data-msg-digits='Please enter ${title}'" />
+<%--
+<go:validate selector="${accountnum}" rule="digits" parm="${required}" message="Please enter ${title}" />
 
 <c:if test="${not empty minLength}">
 	<go:validate selector="${accountnum}" rule="minlength" parm="${minLength}" message="The account number cannot have less than ${minLength} digits"/>
@@ -27,4 +27,4 @@
 
 <c:if test="${not empty maxLength}">
 	<go:validate selector="${accountnum}" rule="maxlength" parm="${maxLength}" message="The account number cannot have more than ${maxLength} digits"/>
-</c:if>
+</c:if>--%>

@@ -88,10 +88,6 @@ var healthFunds_HIF = {
 			<%-- Partner authority --%>
 			healthFunds._partner_authority(true);
 
-			<%-- Fund IDs become optional --%>
-			$('#clientMemberID').find('input').rules('remove', 'required');
-			$('#partnerMemberID').find('input').rules('remove', 'required');
-
 			<%-- Calendar for start cover --%>
 			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
 

@@ -13,51 +13,9 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<field_new:input xpath="${xpath}" className="medicare_number ${className}" title="${title}" required="false" maxlength="15" />
+<field_new:input xpath="${xpath}" className="medicare_number ${className}" title="${title}" required="false" maxlength="15" additionalAttributes=" data-rule-medicareNumber='${required}' " />
 
 <%-- VALIDATION --%>
+<%--
 <go:validate selector="${name}" rule="medicareNumber" parm="${required}" message="Please enter a valid ${title}"/>
-
-<%-- JAVASCRIPT ONREADY --%>
-<go:script marker="onready">
-
-	$.validator.addMethod("medicareNumber",
-			function(value, elem, parm) {
-
-				var cardNumber = value.replace(/\s/g, ''); //remove spaces
-
-				if (isNaN(cardNumber)){
-					return false;
-				}
-
-				<%-- Ten is the length --%>
-				if(cardNumber.length != 10){
-					return false;
-				};
-
-				<%-- Must start between 2 and 6 --%>
-				if( (cardNumber.substring(0,1) < 2) || (cardNumber.substring(0,1) > 6) ){
-					return false;
-				};
-
-				var sumTotal =
-				(cardNumber.substring(0,1) * 1)
-				+ (cardNumber.substring(1,2) * 3)
-				+ (cardNumber.substring(2,3) * 7)
-				+ (cardNumber.substring(3,4) * 9)
-				+ (cardNumber.substring(4,5) * 1)
-				+ (cardNumber.substring(5,6) * 3)
-				+ (cardNumber.substring(6,7) * 7)
-				+ (cardNumber.substring(7,8) * 9);
-
-				<%-- Remainder needs to = the 9th number --%>
-				if( sumTotal % 10 == cardNumber.substring(8,9) ){
-					return true;
-				} else {
-					return false;
-				};
-			},
-			$.validator.messages.medicareNumber = 'card number is not a valid Medicare number'
-	);
-
-</go:script>
+--%>

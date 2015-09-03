@@ -81,7 +81,7 @@ var LifeQuote = {
 			success: function(jsonResult){
 				LifeQuote.ajaxPending = false;
 				Loading.hide();
-				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+				//if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
 					Results.reviseDetails();
 					ServerSideValidation.outputValidationErrors({
 						validationErrors: jsonResult.error.errorDetails.validationErrors,
@@ -92,7 +92,7 @@ var LifeQuote = {
 					if (typeof jsonResult.error.transactionId != 'undefined') {
 						referenceNo.setTransactionId(jsonResult.error.transactionId);
 					}
-				} else if( jsonResult.results.success ) {
+				/*} else if( jsonResult.results.success ) {
 					if(!LifeQuote._contactLeadSent) {
 						Track.onContactDetailsCollected(Results._splitTestingJourney);
 					}
@@ -149,14 +149,14 @@ var LifeQuote = {
 							{
 								msg = jsonResult.results.products.error + " Please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>.";
 							}
-						} catch(e) { /* IGNORE */ }
+						} catch(e) { /* IGNORE * }
 
 						Results.showErrors([msg]);
 					}
 				} else {
 					var msg = "This service is temporarily unavailable. Please try again later.";
 					Results.showErrors([msg]);
-				}
+				}*/
 
 				return false;
 			},
@@ -956,7 +956,7 @@ var LifeQuote = {
 				LifeQuote.ajaxPending = false;
 				Loading.hide();
 
-				if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
+			//	if(typeof jsonResult.error != 'undefined' && jsonResult.error.type == "validation") {
 					Results.hideResults();
 					ServerSideValidation.outputValidationErrors({
 						validationErrors: jsonResult.error.errorDetails.validationErrors,
@@ -967,7 +967,7 @@ var LifeQuote = {
 					if (typeof jsonResult.error.transactionId != 'undefined') {
 						referenceNo.setTransactionId(jsonResult.error.transactionId);
 					}
-				} else if( jsonResult.results.success ) {
+			/*	} else if( jsonResult.results.success ) {
 					if( LifeQuote.isValidResultsResponse(jsonResult) )
 					{
 						for(var i in products) {
@@ -990,14 +990,14 @@ var LifeQuote = {
 							{
 								msg = jsonResult.results.products.error + " Please <a href='javascript:void(0);' data-revisedetails='true' title='Revise your details'>revise your details</a>.";
 							}
-						} catch(e) { /* IGNORE */ }
+						} catch(e) { /* IGNORE * }
 
 						Results.showErrors([msg]);
 					}
 				} else {
 					var msg = "This service is temporarily unavailable. Please try again later.";
 					Results.showErrors([msg]);
-				}
+				}*/
 
 				return false;
 			},

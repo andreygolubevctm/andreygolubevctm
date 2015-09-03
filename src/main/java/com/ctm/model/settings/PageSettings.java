@@ -21,6 +21,7 @@ public class PageSettings {
 	 * @param name Setting key
 	 */
 	public String getSetting(String name) throws EnvironmentException, VerticalException, ConfigSettingException {
+
 		if(vertical == null){
 			throw new VerticalException("Vertical is null, environment: ["+getBrandCode()+":"+EnvironmentService.getEnvironmentAsString()+"]");
 		}

@@ -9,18 +9,18 @@
 <%@ attribute name="id" 		required="true"  rtexprvalue="true"  description="Id attribute for panel" %>
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="false" rtexprvalue="true"  description="title of the element" %>
+<%@ attribute name="placeHolder" required="false" rtexprvalue="true"  description="placeholder of the element" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="id" value="${name}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+<c:set var="error_message">Please enter the number of kilometres the vehicle is driven per year</c:set>
 
 <%-- HTML --%>
-<input type="text" name="${name}" id="${id}" class="${className} numeric" value="${value}" maxlength="7">
-
-<%-- JAVASCRIPT --%>
-<go:script marker="onready">
-</go:script>
+<field_new:input type="tel" xpath="${xpath}" required="${required}" className="${className}" title="${title}" placeHolder="${placeHolder}" />
 
 <%-- VALIDATION --%>
-<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the number of kilometres the vehicle is driven per year?"/>
+<go:validate selector="${name}" rule="required" parm="${required}" message="${error_message}"/>
+<go:validate selector="${name}" rule="digitsIgnoreComma" parm="${required}" message="${error_message}"/>
+<go:validate selector="quote_drivers_young_annualKilometres" rule="youngRegularDriversAnnualKilometersCheck" parm="${required}" message="The annual kilometres driven by the youngest driver cannot exceed those of the regular driver."/>

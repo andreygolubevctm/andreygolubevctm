@@ -29,12 +29,10 @@ var healthFunds_WFD = {
         $('.health-payment-details_premium .row-content').append('<p class="statement" style="margin-top:1em">' + msg + '</p>');
 
         <%--fund Name's become optional--%>
-        $('#health_previousfund_primary_fundName').removeAttr("required");
-        $('#health_previousfund_partner_fundName').removeAttr("required");
+        $('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').setRequired(false);
 
         <%--fund ID's become optional--%>
-        $('#clientMemberID input').rules("remove", "required");
-        $('#partnerMemberID input').rules("remove", "required");
+        $('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
 
         <%--Authority--%>
         healthFunds._previousfund_authority(true);
@@ -47,8 +45,8 @@ var healthFunds_WFD = {
         meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
         <%--credit card options--%>
-        creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
-        creditCardDetails.render();
+        meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
+        meerkat.modules.healthCreditCard.render();
 
         <%--selections for payment date--%>
         $('#update-premium').on('click.WFD', function() {

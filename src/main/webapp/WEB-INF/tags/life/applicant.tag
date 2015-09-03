@@ -76,32 +76,7 @@ var ${name}Handler = {
 	}
 };
 
-$.validator.addMethod("validateAge",
-	function(value, element) {
-		var getAge = function(dob) {
-			var dob_pieces = dob.split("/");
-			var year = Number(dob_pieces[2]);
-			var month = Number(dob_pieces[1]) - 1;
-			var day = Number(dob_pieces[0]);
-			var today = new Date();
-			var age = today.getFullYear() - year;
-			if(today.getMonth() < month || (today.getMonth() == month && today.getDate() < day))
-			{
-				age--;
-			}
-		}
 
-		var age = getAge( value );
-
-		if( age < 18 || age > 65 )
-		{
-			return false;
-		}
-
-		return true;
-	},
-	"Replace this message with something else"
-);
 </go:script>
 
 <go:script marker="onready">

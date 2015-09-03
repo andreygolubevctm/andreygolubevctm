@@ -1,5 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
-<%@ tag description="Group for vehicle selection"%>
+<%@ tag description="Using numeric inputs for mobile and tablet so they get the proper keyboards."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <c:if test="${empty numberFieldInputType}">

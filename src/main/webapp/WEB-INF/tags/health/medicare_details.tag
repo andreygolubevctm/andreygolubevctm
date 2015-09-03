@@ -18,7 +18,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/cover" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Are all people to be included on this policy covered by a green or blue Medicare card?" id="medicareCoveredRow" helpId="291">
-			<field_new:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover"/>
+			<field_new:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes=" data-rule-isCheckedYes='true' data-msg-isCheckedYes='To proceed with this policy, you must have a blue or green medicare card' "/>
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/number" />
@@ -51,4 +51,4 @@
 
 </div>
 
-<go:validate selector="${name}_cover" rule="agree" parm="true" message="To proceed with this policy, you must have a blue or green medicare card" />
+<%--<go:validate selector="${name}_cover" rule="agree" parm="true" message="To proceed with this policy, you must have a blue or green medicare card" />--%>

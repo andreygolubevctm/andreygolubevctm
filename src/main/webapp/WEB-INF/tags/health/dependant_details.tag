@@ -28,22 +28,22 @@
 	
 		<c:set var="fieldXpath" value="${xpath}${count}/firstName" />
 		<form_new:row fieldXpath="${fieldXpath}" label="First Name" >
-			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s first name" required="true" className="sessioncamexclude" />
+			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s first name" required="true" className="sessioncamexclude" additionalAttributes=" data-rule-personName='true' " />
 		</form_new:row>
 	
 		<c:set var="fieldXpath" value="${xpath}${count}/middleName" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Middle Name" className="health_dependant_details_middleName">
-			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s middle name" required="false" className="sessioncamexclude" />
+			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s middle name" required="false" className="sessioncamexclude" additionalAttributes=" data-rule-personName='true' " />
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}${count}/lastname" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Last Name" >
-			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s last name" required="true" className="sessioncamexclude" />
+			<field_new:input xpath="${fieldXpath}" title="dependant ${count}'s last name" required="true" className="sessioncamexclude" additionalAttributes=" data-rule-personName='true' " />
 		</form_new:row>
 		
 		<c:set var="fieldXpath" value="${xpath}${count}/dob" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Date of Birth" >
-			<field_new:person_dob xpath="${fieldXpath}" title="dependant ${count}'s date of birth" required="true" ageMin="0" />
+			<field_new:person_dob xpath="${fieldXpath}" title="dependant ${count}'s date of birth" required="true" ageMin="0" additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " />
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}${count}/fulltime" />
@@ -75,7 +75,7 @@
 					  label="Is this dependant not married or living in a defacto relationship and earning less than $20,500 p/annum?"
 					  id="${name}_maritalincomestatusGroup" className="health_dependant_details_maritalincomestatus">
 			<field_new:array_radio id="${name}_maritalincomestatus" xpath="${fieldXpath}" required="true"
-								   items="Y=Yes,N=No"
+								   items="Y=Yes,N=No" additionalAttributes=" data-rule-defactoConfirmation='true' "
 								   title="if dependant ${count} is not married or living in a defacto relationship and earning less than $20,500 p/annum?"
 								   className="health-person-details"/>
 		</form_new:row>
@@ -84,12 +84,13 @@
 </div>
 
 <%-- VALIDATION --%>
-<go:validate selector="${name}_maritalincomestatus" rule="defactoConfirmation" parm="true"
-			 message='Sorry, the highlighted dependant cannot be added to this policy.  Please contact us if you require assistance.'/>
-<go:validate selector="${name}_dob" rule="limitDependentAgeToUnder25" parm="true"
-			 message='Your child cannot be added to the policy as they are aged 25 years or older. You can still arrange cover for this dependant by applying for a separate singles policy or please contact us if you require assistance.'/>
+<%--<go:validate selector="${name}_maritalincomestatus" rule="defactoConfirmation" parm="true"
+			 message='Sorry, the highlighted dependant cannot be added to this policy.  Please contact us if you require assistance.'/>--%>
+<%--<go:validate selector="${name}_dob" rule="limitDependentAgeToUnder25" parm="true"
+			 message='Your child cannot be added to the policy as they are aged 25 years or older. You can still arrange cover for this dependant by applying for a separate singles policy or please contact us if you require assistance.'/>--%>
 
 
+<%--
 <go:validate selector="${name}_firstName" rule="personName" parm="true" />
 <go:validate selector="${name}_middleName" rule="personName" parm="true" />
-<go:validate selector="${name}_lastname" rule="personName" parm="true" />
+<go:validate selector="${name}_lastname" rule="personName" parm="true" />--%>

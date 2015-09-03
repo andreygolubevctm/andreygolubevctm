@@ -4,7 +4,7 @@
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="xpath" %>
 
-<field_new:validatedHiddenField xpath="${xpath}/hidden" required="false" />
+<field_new:validatedHiddenField xpath="${xpath}/hidden" required="false" additionalAttributes=' data-rule-fuelSelected="true" data-msg-fuelSelected="Please select up to 2 fuels types" ' />
 
 <div id="checkboxes-all" class="row">
     <div id="checkboxes-petrol" class="col-sm-4">
@@ -25,16 +25,3 @@
         <field_new:checkbox xpath="${xpath}/type/lpg/LPG" label="true" value="4" title="LPG" required="false" />
     </div>
 </div>
-
-<go:script marker="onready">
-    $.validator.addMethod("fuelSelected", function(value, element) {
-        var $inputs = $("#checkboxes-all").find("input"),
-            $checked = $inputs.filter(":checked"),
-            isValid = ($checked.length > 0 && $checked.length <= 2);
-
-        $inputs.toggleClass("has-error", !isValid);
-        return isValid;
-    }, "");
-</go:script>
-
-<go:validate selector="${go:nameFromXpath(xpath)}_hidden" rule="fuelSelected" parm="true" message="Please select up to 2 fuels types" />

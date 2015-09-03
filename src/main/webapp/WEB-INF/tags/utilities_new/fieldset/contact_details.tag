@@ -24,7 +24,7 @@
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/phone"/>
-    <form_new:row label="Your phone number" fieldXpath="${fieldXPath}" className="clear">
+    <form_new:row label="Yours phone number" fieldXpath="${fieldXPath}" className="clear">
         <field:contact_telno xpath="${fieldXPath}"
                              required="${true}"
                              className="sessioncamexclude"
