@@ -9,8 +9,9 @@
 
 var path = require("path");
 
-var concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
+var concat = require("gulp-concat"),
+    beautify = require("gulp-beautify"),
+    uglify = require("gulp-uglify"),
     rename = require("gulp-rename");
 
 // TODO: Add .map files
@@ -44,6 +45,7 @@ function JSTasks(gulp) {
             }
 
             return gulp.src(fileArray)
+                .pipe(beautify())
                 .pipe(concat(fileName + ".js"))
                 .pipe(gulp.dest(targetDirectory))
                 .pipe(uglify())
