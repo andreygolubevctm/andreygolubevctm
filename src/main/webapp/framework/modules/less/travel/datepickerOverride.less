@@ -1,0 +1,89 @@
+@calendar-grey: #EBEBEB;
+@calendar-blue: #1C3F94;
+@calendar-nav: #142C67;
+@calendar-background-cell: #f1f1f1;
+
+.datepicker {
+
+  background-color: @calendar-blue;
+  border: none;
+  border-radius:0;
+  padding: 0px;
+
+  &:before {
+    display:none;
+  }
+
+
+
+  table tr td {
+
+    th {
+      color: @btn-default-color;
+      &:hover {
+        background-color:  @btn-default-color;
+      }
+    }
+
+    &.day {
+      background-color: @btn-default-color;
+      border-radius: 0;
+      border: 1px solid @calendar-grey;
+      color: @gray-dark;
+      font-weight:bold;
+    }
+
+    &.today,
+    &.today:hover,
+    &.today:hover:hover{
+      background-color: @gray-light;
+    }
+
+    &.disabled,
+    &.disabled:hover {
+      color:  @calendar-background-cell;
+    }
+
+    &.old,
+    &.old:hover,
+    &.new,
+    &.new:hover{
+      background-color:  @calendar-background-cell;
+      color:  @calendar-background-cell;
+      border: none;
+    }
+
+    &.active,
+    &.active:hover,
+    &.active.disabled,
+    &.active.disabled:hover {
+      .btn-form-inverse;
+      background-color: @calendar-blue;
+    }
+
+
+  }
+
+  th.prev, th.next {
+    background-color: @calendar-nav;
+    border-radius: 0;
+
+  }
+
+  th.datepicker-switch {
+    font-weight:bold;
+  }
+
+  .dow {
+    border-radius: 0;
+  	background-color: @gray-dark;
+    color:@calendar-grey;
+  }
+  .calSeperator {
+    border: none;
+  }
+.latest{}
+  .datepicker thead tr:first-child th {
+	color: @btn-default-color;
+  }
+}
