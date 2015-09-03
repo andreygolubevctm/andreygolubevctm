@@ -276,12 +276,12 @@ var validation = false;
 
                 var $el = $(this);
                 $el[0].required = required;
-                //$el.prop('required', required); ??
-                // For safety, lets remove or add attributes as well... (unless this is going to double up...?)
+                $el.prop('required', required);
+                // For safety, lets remove or add attributes as well...
                 if(!required) {
-                    $el.removeAttr('required');
+                    $el.removeAttr('required').removeAttr('aria-required');
                 } else {
-                    $el.attr('required', 'required');
+                    $el.attr('required', 'required').attr('aria-required','true');
                 }
                 console.log("DEBUG", $(this).attr('id'), $(this)[0].required, $el.prop("required"), $el.attr("required") );
                 if(message && required) {
@@ -314,6 +314,7 @@ var validation = false;
          * Rules are normalised, and e.g. if we have "required"
          * @param {String} ruleName
          * @param {String|Number|POJO} param
+         * @param {String} message
          */
         addRule: function (ruleName, param, message) {
             return this.each(function () {

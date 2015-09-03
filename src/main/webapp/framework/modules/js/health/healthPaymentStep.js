@@ -98,8 +98,8 @@
 			$sameBankAccountRadioGroup.find("input").on('click', toggleClaimsBankAccountQuestion);
 
 			// Moved from fields:card_expiry.tag as part of CTMIT-555
-			$("input[id$='_cardExpiryMonth']").on('change', function () {
-				var $year = $("input[id$='_cardExpiryYear']");
+			$("select[id$='_cardExpiryMonth']").on('change', function () {
+				var $year = $("select[id$='_cardExpiryYear']");
 				if ($year.hasClass('has-error') || $year.hasClass('has-success')) {
 					$year.valid();
 				}
