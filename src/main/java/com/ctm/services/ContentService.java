@@ -127,7 +127,7 @@ public class ContentService {
         ContentControlCache contentControlCache = ApplicationCacheManager.getContentControlCache();
 
         if(contentControlCache.isKeyInCache(cacheKey)) {
-            content = (Content) contentControlCache.get(cacheKey);
+            content = contentControlCache.get(cacheKey);
         }else{
             ContentDao contentDao = new ContentDao();
             content = contentDao.getByKey(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
