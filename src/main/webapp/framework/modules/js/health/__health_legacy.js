@@ -634,7 +634,6 @@ var healthFunds = {
 	},
 
 	_reset: function() {
-		alert("reset");
 		healthApplicationDetails.hideHowToSendInfo();
 		healthFunds._partner_authority(false);
 		healthFunds._memberIdRequired(true);
