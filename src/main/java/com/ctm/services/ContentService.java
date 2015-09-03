@@ -15,11 +15,9 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.content.Content;
 import com.ctm.model.settings.PageSettings;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 
 public class ContentService {
 
-    private static Logger logger = Logger.getLogger(ContentService.class.getName());
 	private static ContentService contentService = new ContentService();
 
 
