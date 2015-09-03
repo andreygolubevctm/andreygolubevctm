@@ -98,7 +98,8 @@ public class ContentService {
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 		int brandId = pageSettings.getBrandId();
 		int verticalId = pageSettings.getVertical().getId();
-		Date serverDate = ApplicationService.getApplicationDate(request);
+		Date serverDate = ApplicationService.getApplicationDateIfSet(request);
+
 		return getInstance().getContent(contentKey, brandId, verticalId, serverDate, includeSupplementary);
 
 	}
@@ -120,24 +121,36 @@ public class ContentService {
 	 */
 	public Content getContent(String contentKey, int brandId, int verticalId, Date effectiveDate, boolean includeSupplementary ) throws DaoException {
 
-        // Create a 'key' for the cache - this is based on the values used to call the DAO (excluding date)
-        String cacheKey = contentKey+"_"+brandId+"_"+verticalId+"_"+includeSupplementary;
+        boolean useCache = false;
         Content content = null;
 
-        ContentControlCache contentControlCache = ApplicationCacheManager.getContentControlCache();
+        // Only use cache when a specific date is NOT provided
+        if(effectiveDate == null){
 
-        if(contentControlCache.isKeyInCache(cacheKey)) {
-            content = contentControlCache.get(cacheKey);
+            // Create a 'key' for the cache - this is based on the values used to call the DAO (excluding date)
+            String cacheKey = contentKey+"_"+brandId+"_"+verticalId+"_"+includeSupplementary;
+
+            ContentControlCache contentControlCache = ApplicationCacheManager.getContentControlCache();
+
+            if(contentControlCache.isKeyInCache(cacheKey)) {
+                content = contentControlCache.get(cacheKey);
+            }else{
+                content = getContentFromDataSource(contentKey, brandId, verticalId, new Date(), includeSupplementary);
+                contentControlCache.put(cacheKey, content);
+            }
+
         }else{
-            ContentDao contentDao = new ContentDao();
-            content = contentDao.getByKey(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
-            contentControlCache.put(cacheKey, content);
+            content = getContentFromDataSource(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
         }
-
 
 		return content;
 
 	}
+
+    private Content getContentFromDataSource(String contentKey, int brandId, int verticalId, Date effectiveDate, boolean includeSupplementary) throws DaoException{
+        ContentDao contentDao = new ContentDao();
+        return contentDao.getByKey(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
+    }
 
 
 	/**
