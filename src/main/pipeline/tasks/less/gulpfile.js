@@ -14,14 +14,14 @@ var less = require("gulp-less"),
     rename = require("gulp-rename"),
     insert = require("gulp-insert"),
     watchLess = require("gulp-watch-less"),
-    intercept = require("gulp-intercept"),
     gulpIf = require("gulp-if"),
     plumber = require("gulp-plumber"),
     notify = require("gulp-notify"),
     fs = require("fs"),
     path = require("path");
 
-// TODO: Implement gulp-changed to stop it from overwriting files unnecessarily
+// TODO: 4095 for IE8
+// TODO: Implement gulp-changed to stop it from overwriting files unnecessarily?
 // TODO: Add .map files
 
 function LessTasks(gulp) {

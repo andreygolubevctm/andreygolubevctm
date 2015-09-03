@@ -400,7 +400,7 @@
                                     <npmVersion>1.4.12</npmVersion>
                                     <nodeDownloadRoot>${node.download.root}/</nodeDownloadRoot>
                                     <npmDownloadRoot>${node.download.root}/npm/</npmDownloadRoot>
-                                    <workingDirectory>src/main/frontend</workingDirectory>
+                                    <workingDirectory>src/main/pipeline</workingDirectory>
                                 </configuration>
                             </execution>
 
@@ -412,19 +412,19 @@
                                 </goals>
                                 <configuration>
                                     <arguments>install</arguments>
-                                    <workingDirectory>src/main/frontend</workingDirectory>
+                                    <workingDirectory>src/main/pipeline</workingDirectory>
                                 </configuration>
                             </execution>
 
                             <execution>
-                                <id>grunt build</id>
+                                <id>gulp build</id>
                                 <phase>generate-resources</phase>
                                 <goals>
-                                    <goal>grunt</goal>
+                                    <goal>gulp</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>build_all_nowatch</arguments>
-                                    <workingDirectory>src/main/frontend</workingDirectory>
+                                    <arguments>build</arguments>
+                                    <workingDirectory>src/main/pipeline</workingDirectory>
                                 </configuration>
                             </execution>
 

@@ -51,8 +51,8 @@ function JSTasks(gulp) {
                 .pipe(plumber({
                     errorHandler: notify.onError("Error: <%= error.message %>")
                 }))
-                .pipe(beautify())
                 .pipe(concat(fileName + ".js"))
+                .pipe(beautify())
                 .pipe(gulp.dest(targetDirectory))
                 .pipe(notify({
                     title: taskName + " compiled",
@@ -131,7 +131,6 @@ function JSTasks(gulp) {
 
             // Files paths to watch
             var bundleDependencies = bundles.getWatchableBundlesJSFilePaths(bundle);
-
             gulp.watch(bundleDependencies, watchTasks);
         })(bundle);
     }
