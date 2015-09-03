@@ -115,6 +115,10 @@
 		}
 	}
 
+  	.children{
+	  overflow: hidden;
+	}
+
 	.checkbox {
 		display: inline-block;
 		position: relative;
@@ -142,6 +146,9 @@
 		margin:0;
 	  	float: left;
 	  	width: 50%;
+	  	&:nth-child(2n+1){
+		  clear:left;
+		}
 	}
 
 	.btn{
