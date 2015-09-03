@@ -55,7 +55,7 @@
 							<c:set var="fieldXpath" value="save/password" />
 							<field_new:label value="Password" xpath="${fieldXpath}" className="col-lg-2 col-md-3 col-sm-4" />
 							<div class="row-content col-lg-10 col-md-9 col-sm-8">
-								<field:password xpath="${fieldXpath}" required="false" title="your password" placeHolder="" minLength="6" className="sessioncamexclude" />
+								<field:password xpath="${fieldXpath}" required="false" title="your password" placeHolder="" minLength="${6}" className="sessioncamexclude" />
 							</div>
 						</div>
 
@@ -63,7 +63,7 @@
 							<c:set var="fieldXpath" value="save/confirm" />
 							<field_new:label value="Confirm password" xpath="${fieldXpath}" className="col-lg-2 col-md-3 col-sm-4" />
 							<div class="row-content col-lg-10 col-md-9 col-sm-8">
-								<field:password xpath="${fieldXpath}" required="false" title="your password for confirmation" placeHolder="" className="sessioncamexclude" />
+								<field:password xpath="${fieldXpath}" required="false" title="your password for confirmation" placeHolder="" className="sessioncamexclude" minLength="${0}" additionalAttributes=" data-rule-equalTo='#save_password' data-msg-equalTo='Password and confirmation password must match' "/>
 							</div>
 						</div>
 
