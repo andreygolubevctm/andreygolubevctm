@@ -14,11 +14,11 @@ $(function () {
 			"class='form-horizontal' novalidate='novalidate'></form>");
 	var $marketing = $("<input type='checkbox' name='send_marketing' " +
 			"id='send_marketing' value='Y'>");
-	var $emailInput = $("<input required='true' type='email' " +
+	var $emailInput = $("<input required='required' type='email' " +
 			"name='save_email' class='form-control has-success' id='save_email' />");
 
-	var $password = $("<input required='true' type='password' name='save_password' id='save_password' />");
-	var $confirmationPassword = $("<input required='true' type='password' name='save_confirm' id='save_confirm' />");
+	var $password = $("<input required='required' type='password' name='save_password' id='save_password' data-rule-minlength='6' />");
+	var $confirmationPassword = $("<input required='required' type='password' name='save_confirm' id='save_confirm' data-rule-equalTo='#save_password' />");
 
 	var $submitButton = $("<a href='javascript:;' class='btn-save-quote' >Save Quote</a>");
 
@@ -84,6 +84,20 @@ $(function () {
 		$emailInput.change();
 		$password.val('password1');
 		$confirmationPassword.val('password2');
+		$password.change();
+		setTimeout(function(){}, 500);
+		ok($submitButton.hasClass( "disabled" ), "email button should be disabled");
+
+	});
+
+	QUnit.test( "should validate password length", function(assert) {
+		enterValidDetails();
+		ok(!$submitButton.hasClass("disabled"), "email button should not be disabled");
+
+		// don't enable submit if non matching password
+		$emailInput.change();
+		$password.val('123');
+		$confirmationPassword.val('123');
 		$password.change();
 		setTimeout(function(){}, 500);
 		ok($submitButton.hasClass( "disabled" ), "email button should be disabled");
