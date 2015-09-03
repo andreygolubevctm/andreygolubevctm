@@ -42,7 +42,10 @@
 				</c:if>
 				
 				<%-- Load the config and send quotes to the aggregator gadget --%>
-				<c:import var="config" url="/WEB-INF/aggregator/life/config_results_${vertical}.xml" />
+				<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+				<c:set var="configUrl">/WEB-INF/aggregator/life/config_results_${vertical}.xml</c:set>
+
+				<c:import var="config" url="${configResolver.getConfigUrl(configUrl)}" />
 
 				<c:set var="dataXml" value="${go:getEscapedXml(data[vertical])}" />
 				<go:soapAggregator	config = "${config}"

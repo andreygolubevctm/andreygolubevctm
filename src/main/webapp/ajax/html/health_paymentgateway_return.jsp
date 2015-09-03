@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
+<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" />
+<c:import var="config" url="${configResolver.getConfig('/WEB-INF/aggregator/health_application/ahm/config.xml')}" />
 <x:parse doc="${config}" var="configXml" />
 
 <%-- PARAMS --%>

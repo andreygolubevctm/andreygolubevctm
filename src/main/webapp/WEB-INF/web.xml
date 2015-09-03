@@ -199,11 +199,6 @@
 		<role-name>BD-HCC-MGR</role-name>
 	</security-role>
 
-	<context-param>
-		<param-name>environmentConfigLocation</param-name>
-		<param-value>environment.properties</param-value>
-	</context-param>
-
 	<!-- Ensure the locale has been set and is available everywhere -->
 	<context-param>
 		<param-name>javax.servlet.jsp.jstl.fmt.locale</param-name>

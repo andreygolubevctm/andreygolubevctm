@@ -120,23 +120,26 @@
 <%-- Get the fund's code/name (e.g. hcf) --%>
 <sql:query var="prodRes">
 			SELECT lower(prov.Text) as Text, prov.ProviderId FROM provider_properties prov
-	JOIN product_master prod on prov.providerId = prod.providerId  
+	JOIN product_master prod on prov.providerId = prod.providerId
 	where prod.productid=?
 	AND prov.propertyId = 'FundCode' LIMIT 1
 	<sql:param value="${productId}" />
 </sql:query>
 <c:if test="${prodRes.rowCount != 0 }">
-	<c:set var="fund" value="${prodRes.rows[0].Text}" />		
+	<c:set var="fund" value="${prodRes.rows[0].Text}" />
 </c:if>
 		</sql:transaction>
 
 		<go:log level="INFO" source="health_application_jsp" >transactionId : ${tranId} , Fund=${fund}</go:log>
 
-		<%-- Load the config and send quotes to the aggregator gadget --%>
-<c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />
-<go:soapAggregator config = "${config}"
-					transactionId = "${tranId}" 
-					xml = "${go:getEscapedXml(data['health'])}" 
+		<%-- This will be deleted once health application is moved to it's own service --%>
+		<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+		<c:set var="configUrl">/WEB-INF/aggregator/health_application/${fund}/config.xml</c:set>
+
+		<c:import var="config" url="${configResolver.getConfigUrl(configUrl)}" />
+		<go:soapAggregator config = "${config}"
+					transactionId = "${tranId}"
+					xml = "${go:getEscapedXml(data['health'])}"
 					var = "resultXml"
 				debugVar="debugXml"
 				validationErrorsVar="validationErrors"
@@ -155,8 +158,8 @@
 									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
 					</c:forEach>
 				</c:if>
-<%-- //FIX: turn this back on when you are ready!!!! 
-<%-- Write to the stats database 
+<%-- //FIX: turn this back on when you are ready!!!!
+<%-- Write to the stats database
 <agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
 --%>
 

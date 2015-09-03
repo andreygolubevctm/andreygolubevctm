@@ -56,7 +56,8 @@
 </c:if>
 
 <c:if test="${not empty provider}">
-	<c:import var="config" url="/WEB-INF/aggregator/health_application/${provider}/config.xml" />
+	<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+	<c:import var="config" url="${configResolver.getConfigUrl('/WEB-INF/aggregator/health_application/${provider}/config.xml')}" />
 	<x:parse doc="${config}" var="configXml" />
 
 	<%-- damn namespaces http://pro-programmers.blogspot.com.au/2008/04/jstl-xparse-not-working-for-elements.html --%>

@@ -91,7 +91,8 @@
 			debugVar="debugXml" />
 		--%>
 
-		<c:import var="config" url="/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml" />
+		<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+		<c:import var="config" url="${configResolver.getConfigUrl('/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml')}" />
 		<go:soapAggregator config="${config}" transactionId="${tranId}" xml="${xmlData}" var="resultXml" debugVar="debugXml" />
 		<c:out value="${resultXml}" escapeXml="false" />
 
