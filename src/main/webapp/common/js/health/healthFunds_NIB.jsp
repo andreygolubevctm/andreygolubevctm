@@ -24,8 +24,6 @@ var healthFunds_NIB = {
         <%--schoolgroups and defacto--%>
         healthDependents.config = { 'school':true, 'defacto':false, 'schoolMin':21, 'schoolMax':24 };
 
-        <%--fund ID's become optional--%>
-        $('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
         healthFunds._previousfund_authority(true);
 
         <%--calendar for start cover--%>
