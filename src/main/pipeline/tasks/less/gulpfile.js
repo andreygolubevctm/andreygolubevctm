@@ -65,7 +65,7 @@ function LessTasks(gulp) {
                 .pipe(
                     gulpIf(
                         !isWatched,
-                        watchLess(glob, { debounceDelay: 500, verbose: true }, function() {
+                        watchLess(glob, null, function() {
                             gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs);
                         })
                     )
