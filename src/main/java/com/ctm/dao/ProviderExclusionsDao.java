@@ -15,6 +15,8 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.ProviderExclusion;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ProviderExclusionsDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProviderExclusionsDao.class.getName());
@@ -67,7 +69,7 @@ public class ProviderExclusionsDao {
 
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to retrieve excluded providers brandId={} verticalId={} effectiveDate={}", brandId, verticalId, effectiveDate, e);
+			logger.error("Failed to retrieve excluded providers {}, {}, {}", kv("brandId", brandId), kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

@@ -14,6 +14,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.simples.MessageAudit;
 import com.ctm.services.FatalErrorService;
 
+import static net.logstash.logback.argument.StructuredArguments.v;
+
 
 public class MessageAuditDao {
 
@@ -44,7 +46,8 @@ public class MessageAuditDao {
 					"reasonStatusId = ? AND " +
 					"created > ADDTIME(NOW(), SEC_TO_TIME(-60));"
 			);
-			stmt.setInt(1, messageAudit.getMessageId());
+			final int messageId = messageAudit.getMessageId();
+			stmt.setInt(1, messageId);
 			stmt.setInt(2, messageAudit.getUserId());
 			stmt.setInt(3, messageAudit.getStatusId());
 			stmt.setInt(4, messageAudit.getReasonStatusId());
@@ -57,7 +60,7 @@ public class MessageAuditDao {
 					"VALUES (?, ?, NOW(), ?, ?, ?);"
 					, java.sql.Statement.RETURN_GENERATED_KEYS
 				);
-				stmt.setInt(1, messageAudit.getMessageId());
+				stmt.setInt(1, messageId);
 				stmt.setInt(2, messageAudit.getUserId());
 				stmt.setInt(3, messageAudit.getStatusId());
 				stmt.setInt(4, messageAudit.getReasonStatusId());
@@ -69,9 +72,9 @@ public class MessageAuditDao {
 					messageAudit.setId(rs.getInt(1));
 				}
 			} else {
-				String errorDesc = "[SIMPLES]: Duplicate audit";
-				String errorMsg = "[SIMPLES]: Duplicate audit detected for message="+messageAudit.getMessageId();
-				logger.error(errorMsg);
+				final String errorDesc = "[SIMPLES]: Duplicate audit";
+				final String errorMsg = "[SIMPLES]: Duplicate audit detected message=" + messageId;
+				logger.error(errorMsg, v("message", messageId));
 				fatalErrorService.property = "ctm";
 				fatalErrorService.logFatalError(0, "MessageAuditDao", false, errorDesc, errorMsg, 0L);
 			}

@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class GeneralDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(GeneralDao.class.getName());
@@ -36,7 +38,7 @@ public class GeneralDao {
 			}
 			rs.close();
 		} catch (SQLException | NamingException e) {
-			logger.error("failed retrieving value from general table type={}", type, e);
+			logger.error("failed retrieving value from general table {}", kv("type", type), e);
 		} finally {
 			dbSource.closeConnection();
 		}

@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class AuditTableDao {
     public final static String DELETE = "DELETE";
     public final static String CREATE = "CREATE";
@@ -46,10 +48,10 @@ public class AuditTableDao {
             PreparedStatement ps = buildSQLStatement(columnValueMapMainTable, auditTableNameWithSchema,conn);
             ps.executeUpdate();
         } catch (SQLException e) {
-            logger.error("audit action={} failed to insert into table={}", action, auditTableName, e);
+            logger.error("audit action failed to insert into table {}, {}", kv("action", action), kv("auditTableName", auditTableName), e);
             throw e;
         } finally {
-            logger.debug("audit action={} logged to table={}", action, auditTableName);
+            logger.debug("audit action logged to table {}, {}", kv("action", action), kv("auditTableName", auditTableName), auditTableName);
         }
     }
 

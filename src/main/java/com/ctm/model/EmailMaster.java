@@ -142,7 +142,7 @@ public class EmailMaster implements Cloneable {
 				", marketingOptIn=" + marketingOptIn +
 				", transactionId=" + transactionId +
 				", source='" + source + '\'' +
-				", password='" + password + '\'' +
+				", password='" + password + '\'' + // password is hashed so this is safe to print and log
 				'}';
 	}
 }

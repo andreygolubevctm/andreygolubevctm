@@ -17,6 +17,8 @@ import com.ctm.model.content.Content;
 import com.ctm.model.content.ContentProvider;
 import com.ctm.model.content.ContentSupplement;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ContentDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(ContentDao.class.getName());
@@ -101,11 +103,10 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-				logger.debug("no content found for contentkey={}", contentKey);
+				logger.debug("no content found {}", kv("contentKey", contentKey));
 			}else{
-
 				if(contents.size() > 1){
-					logger.error("more than one content value found for contentkey={}", contentKey);
+					logger.warn("more than one content value found {}", kv("contentKey", contentKey));
 				}
 
 				content = contents.get(0);
@@ -137,7 +138,7 @@ public class ContentDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed getting content for contentkey={}", contentKey, e);
+			logger.error("failed getting content {}", kv("contentKey", contentKey), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -215,7 +216,7 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-				logger.debug("no content found for contentkey={} providerid={}", contentKey, providerId);
+				logger.debug("no content found {}, {}", kv("contentKey", contentKey), kv("providerId", providerId));
 			} else {
 				if(includeSupplementary){
 
@@ -251,7 +252,7 @@ public class ContentDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed getting content for contentkey={}", contentKey, e);
+			logger.error("failed getting content {}", kv("contentKey", contentKey), e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();

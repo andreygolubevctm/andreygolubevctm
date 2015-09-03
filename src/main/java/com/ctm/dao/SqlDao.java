@@ -10,6 +10,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class SqlDao<T> {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SqlDao.class.getName());
@@ -60,7 +62,7 @@ public class SqlDao<T> {
             stmt.close();
         } catch (Exception e) {
             rollback();
-            logger.error("DB transaction update failed databaseMapping.statement={}", databaseMapping.getStatement(), e);
+            logger.error("DB transaction update failed {}", kv("statement", databaseMapping.getStatement()), e);
             throw new DaoException("Error when performing update" , e);
         }
     }
@@ -92,14 +94,15 @@ public class SqlDao<T> {
     }
 
     public int update(DatabaseUpdateMapping databaseMapping) throws DaoException {
-		try {
+        final String statement = databaseMapping.getStatement();
+        try {
 			conn = databaseConnection.getConnection(context, true);
-			stmt = conn.prepareStatement(databaseMapping.getStatement());
+			stmt = conn.prepareStatement(statement);
 			databaseMapping.handleParams(stmt);
 			return stmt.executeUpdate();
 		} catch (SQLException | NamingException e) {
-			logger.error("DB update failed databaseMapping.statement={}", databaseMapping.getStatement(), e);
-			throw new DaoException("DB update failed databaseMapping.statement=" + databaseMapping.getStatement(), e);
+			logger.error("DB update failed {}", kv("statement", statement), e);
+			throw new DaoException(e);
 		} finally {
 			cleanup();
 		}
@@ -122,12 +125,12 @@ public class SqlDao<T> {
 			}
 			rs.close();
 		} catch (SQLException  e) {
-			logger.error("DB query failed sql={}", sql, e);
-			throw new DaoException("failed to getResult " + sql, e);
+			logger.error("DB query failed {]", kv("sql", sql), e);
+			throw new DaoException(e);
 		} finally {
 			cleanup();
 		}
-		logger.debug("DB query total execution time: " + (System.currentTimeMillis()-startTime) + "ms");
+		logger.debug("DB query total execution time {}ms", kv("queryTime", System.currentTimeMillis()-startTime));
 		return value;
 	}
 
@@ -140,7 +143,7 @@ public class SqlDao<T> {
 			}
 			rs.close();
 		} catch (SQLException  e) {
-			logger.error("DB query as list failed sql={}", sql, e);
+			logger.error("DB query as list failed {}", kv("sql", sql), e);
 			throw new DaoException(e);
 		} finally {
 			cleanup();
@@ -154,7 +157,7 @@ public class SqlDao<T> {
 			stmt = conn.prepareStatement(sql);
 			stmt.executeUpdate();
 		} catch (SQLException | NamingException e) {
-			logger.error("DB update query failed sql={}", sql, e);
+			logger.error("DB update query failed {}", kv("sql", sql), e);
 			throw new DaoException(e);
 		} finally {
 			cleanup();
@@ -171,7 +174,7 @@ public class SqlDao<T> {
                 conn.setAutoCommit(autocommit);
             }
         } catch (SQLException e) {
-            logger.error("DB connection cleanup failed autocommit={}",autocommit, e);
+            logger.error("DB connection cleanup failed {}", kv("autocommit", autocommit), e);
         }
         cleanup();
     }
@@ -203,11 +206,11 @@ public class SqlDao<T> {
         boolean doCleanUp = false;
         try {
             if(conn != null && !conn.isClosed()) {
-                logger.error("DB connection was not closed! Manually closing now");
+                logger.error("DB connection was not closed. Manually closing now");
                 doCleanUp = true;
             }
             if(stmt != null && !stmt.isClosed()) {
-                logger.error("DB Statement was not closed! Manually closing now");
+                logger.error("DB Statement was not closed. Manually closing now");
                 doCleanUp = true;
             }
         } catch (SQLException e) {}
@@ -225,12 +228,12 @@ public class SqlDao<T> {
             value = databaseMapping.handleResult(rs);
             rs.close();
         } catch (SQLException  e) {
-            logger.error("DB get all query failed sql={}", sql, e);
+            logger.error("DB get all query failed {}", kv("sql", sql), e);
             throw new DaoException(e);
         } finally {
             cleanup();
         }
-        logger.debug("DB query total execution time: " + (System.currentTimeMillis() - startTime) + "ms");
+        logger.debug("DB query total execution time {}ms", kv("queryTime", System.currentTimeMillis()-startTime));
         return value;
     }
 
@@ -283,13 +286,13 @@ public class SqlDao<T> {
             return id;
         } catch (Exception e) {
             rollback();
-            logger.error("DB update and audit failed action={}", action, e);
+            logger.error("DB update and audit failed {}", kv("action", action), e);
             throw new DaoException(e);
         }finally {
             try {
                 finalize();
             }catch (Throwable throwable) {
-                throw new DaoException("DB connection reset failed sql " + sql , throwable);
+                throw new DaoException(throwable);
             }
         }
     }

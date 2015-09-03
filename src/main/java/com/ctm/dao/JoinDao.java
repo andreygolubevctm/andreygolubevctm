@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class JoinDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(JoinService.class.getName());
@@ -30,7 +32,7 @@ public class JoinDao {
 	 **/
 	public void writeJoin(long transactionId, String productId) {
 		try {
-			logger.debug("writing join transactionId={} productId={}", transactionId, productId);
+			logger.debug("writing join {}, {}", kv("transactionId", transactionId), kv("productId", productId));
 			Connection conn = dbSource.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(
 				"SELECT rootid FROM aggregator.transaction_header " +
@@ -56,7 +58,7 @@ public class JoinDao {
 		}catch (NamingException e) {
 			logger.error("failed to get db connection", e);
 		} catch (Exception e) {
-			logger.error("failed to write join transactionId={} productId={}", transactionId, productId, e);
+			logger.error("failed to write join {}, {}", kv("transactionId", transactionId), kv("productId", productId), e);
 		} finally {
 			dbSource.closeConnection();
 		}

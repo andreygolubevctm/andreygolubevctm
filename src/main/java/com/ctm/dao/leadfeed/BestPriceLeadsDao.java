@@ -23,6 +23,8 @@ import com.ctm.model.settings.Vertical;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.ContentService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class BestPriceLeadsDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(BestPriceLeadsDao.class.getName());
@@ -168,10 +170,10 @@ public class BestPriceLeadsDao {
 												searching = false;
 											}
 										} else {
-											logger.debug("[Lead info] lead skipped as no optin for call transactionId={} brandCodeId={} verticalCode={} minutes={} serverDate={}", transactionId, brandCodeId, verticalCode, minutes, serverDate);
+											logger.debug("[Lead info] lead skipped as no optin for call {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
 										}
 									} else {
-										logger.error("[Lead info] lead info has invalid number of elements transactionId={} leadConcat.length={} brandCodeId={} verticalCode={} minutes={} serverDate={}", transactionId, leadConcat.length, brandCodeId, verticalCode, minutes, serverDate);
+										logger.error("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("leadConcat.length", leadConcat.length), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
 									}
 								}
 
@@ -183,15 +185,15 @@ public class BestPriceLeadsDao {
 						}
 					}
 				} else {
-					logger.error("Failed to retrieve any active best price lead feed providers verticalCode={} brandCodeId={} minutes={} serverDate={}", verticalCode, brandCodeId, minutes, serverDate);
+					logger.error("Failed to retrieve any active best price lead feed providers {}, {}, {}, {}", kv("verticalCode", verticalCode), kv("brandCodeId", brandCodeId), kv("minutes", minutes), kv("serverDate", serverDate));
 					throw new DaoException("Failed to retrieve any active best price lead feed providers verticalCode=" + verticalCode);
 				}
 			} else {
-				logger.error("Failed to retrieve lead feed verticalCode={} brandCodeId={} minutes={} serverDate={}", verticalCode, brandCodeId, minutes, serverDate);
+				logger.error("Failed to retrieve lead feed {}, {}, {}, {}", kv("verticalCode", verticalCode), kv("brandCodeId", brandCodeId), kv("minutes", minutes), kv("serverDate", serverDate));
 				throw new DaoException("Failed to retrieve vertical data for id (" + verticalCode + ")");
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to get lead feed transactions verticalCode={} minutes={}", verticalCode, minutes);
+			logger.error("Failed to get lead feed transactions {}, {}", kv("verticalCode", verticalCode), kv("minutes", minutes));
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -204,11 +206,12 @@ public class BestPriceLeadsDao {
 		try {
 			// Either create a new root transaction object or add transaction to existing one
 			LeadFeedRootTransaction tran = getRootTransaction(set.getLong("rootId"));
+			final long transactionId = set.getLong("transactionId");
 			if(tran == null) {
-				tran = new LeadFeedRootTransaction(set.getLong("rootId"), set.getLong("transactionId"));
+				tran = new LeadFeedRootTransaction(set.getLong("rootId"), transactionId);
 				transactions.add(tran);
 			} else {
-				tran.addTransaction(set.getLong("transactionId"));
+				tran.addTransaction(transactionId);
 			}
 			tran.setStyleCode(set.getString("styleCode"));
 			tran.setIpAddress(set.getString("ipAddress"));
@@ -217,10 +220,10 @@ public class BestPriceLeadsDao {
 			if(
 				type.equalsIgnoreCase("A") || type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")) {
 				tran.setHasLeadFeed(true);
-				logger.info("[Lead info] Skipping transaction " + set.getLong("transactionId") + " as has lead already");
+				logger.info("[Lead info] Skipping existing lead feed transaction {}", kv("transactionId", transactionId));
 			}
 		} catch(SQLException e) {
-			logger.error(e.getMessage(), e);
+			logger.error("[Lead info] Failed to add best price lead feed transaction", e);
 		}
 	}
 

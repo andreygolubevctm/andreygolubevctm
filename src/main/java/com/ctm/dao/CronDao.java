@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class CronDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(CronDao.class.getName());
@@ -58,7 +60,7 @@ public class CronDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to get cron jobs for rootURL={} frequency={}", rootURL, frequency, e);
+			logger.error("failed to get cron jobs {}, {}", kv("rootURL", rootURL), kv("frequency", frequency), e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			dbSource.closeConnection();

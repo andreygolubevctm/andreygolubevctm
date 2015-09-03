@@ -106,8 +106,6 @@ public class CarTypeDao {
 			}
 			stmt.setString(counter++, fuelCode);
 
-			//logger.debug(stmt.toString());
-
 			ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {

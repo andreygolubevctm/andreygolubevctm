@@ -14,6 +14,8 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class EmailMasterDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmailMasterDao.class.getName());
@@ -81,7 +83,7 @@ public class EmailMasterDao {
 				resultSet.close();
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to get email master email={}", email, e);
+			logger.error("failed to get email master {}", kv("email", email), e);
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
@@ -124,7 +126,7 @@ public class EmailMasterDao {
 				}
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to get email master hashedEmail={}", hashedEmail, e);
+			logger.error("failed to get email master {}", kv("hashedEmail", hashedEmail), e);
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
@@ -170,7 +172,7 @@ public class EmailMasterDao {
 				}
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to get email master with optedIn emailAddress={}", emailAddress, e);
+			logger.error("failed to get email master with optedIn {}", kv("emailAddress", emailAddress), e);
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
@@ -219,7 +221,7 @@ public class EmailMasterDao {
 			}
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to write email details emailDetails={}", emailDetails, e);
+			logger.error("failed to write email details {}", kv("emailDetails", emailDetails), e);
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
@@ -269,7 +271,7 @@ public class EmailMasterDao {
 				writeToEmailProperties(emailDetails, conn);
 			}
 		} catch (NamingException | SQLException e) {
-			logger.error("failed to write to email properties for all verticals emailDetails={}" , emailDetails, e);
+			logger.error("failed to write to email properties for all verticals {}", kv("emailDetails", emailDetails), e);
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
@@ -283,7 +285,7 @@ public class EmailMasterDao {
 			Connection conn = dbSource.getConnection();
 			writeToEmailProperties(emailDetails, conn);
 		} catch (NamingException | SQLException e) {
-			logger.error("failed to write to email properties" , e);
+			logger.error("failed to write to email properties {}" , kv("emailDetails", emailDetails), e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			if(dbSource != null) {
@@ -335,7 +337,7 @@ public class EmailMasterDao {
 				resultSet.close();
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to get email details" , e);
+			logger.error("failed to get email details {}" , kv("emailId", emailId), e);
 			throw new DaoException(e.getMessage(), e);
 		} finally {
 			if(dbSource != null) {
@@ -364,7 +366,7 @@ public class EmailMasterDao {
 				result = stmt.executeUpdate();
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to update password emailAddress={}", emailMaster.getEmailAddress());
+			logger.error("failed to update password {}", kv("emailMaster", emailMaster));
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
@@ -378,7 +380,7 @@ public class EmailMasterDao {
 	private String trimTo(String value, int characterToTrim) {
 		if(value != null && value.length() > characterToTrim){
 			value = value.substring(0, characterToTrim);
-			logger.warn("email property value too long trimming to characterLimit={} value={}", characterToTrim, value);
+			logger.warn("email property value too long so trimming {}, {}", kv("characterToTrim", characterToTrim), kv("value", value));
 		}
 		return value;
 	}

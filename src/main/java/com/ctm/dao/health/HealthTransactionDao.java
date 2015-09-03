@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class HealthTransactionDao {
 
 	private static final String PRODUCT_TITLE_XPATH = "health/application/productTitle";
@@ -162,7 +164,7 @@ public class HealthTransactionDao {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					logger.error("Failed to close health transaction db connection errors={}", errors, e);
+					logger.error("Failed to close health transaction db connection {}", kv("errors", errors), e);
 				}
 			}
 			dbSource.closeConnection();

@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.model.settings.ConfigSetting.ALL_ENVIRONMENTS;
 import static com.ctm.services.EnvironmentService.getEnvironmentAsString;
 
@@ -58,7 +59,7 @@ public class ConfigSettingsDao {
 			}
 
 		} catch (Exception e) {
-			logger.error("Failed to get config settings for environment={}" + getEnvironmentAsString(), e);
+			logger.error("Failed to get config settings {}", kv("environment", getEnvironmentAsString()), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

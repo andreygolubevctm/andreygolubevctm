@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Data Access Object to interface with the transaction_details table.
  * @author bthompson
@@ -100,7 +102,7 @@ public class TransactionDetailsDao {
 					updateTransactionDetails(transactionId, transactionDetailNew);
 				}
 			} catch (DaoException e) {
-				logger.error("Transaction details for all request params insert or update failed request.parameterMap={} transactionId={}", request.getParameterMap(), e);
+				logger.error("Transaction details insert or update failed {}, {}", kv("parameterMap", request.getParameterMap()), kv("transactionId", transactionId), e);
 			}
 		}
 		return true;
@@ -380,7 +382,7 @@ public class TransactionDetailsDao {
 				updateTransactionDetails(transactionId, transactionDetailNew);
 			}
 		} catch (DaoException e) {
-			logger.error("Transaction details insert or update failed xpath={} textValue={} transactionId={}", xpath, textValue, transactionId, e);
+			logger.error("Transaction details insert or update failed {}, {}, {}", kv("xpath", xpath), kv("textValue", textValue), kv("transactionId", transactionId), e);
 		}
 	}
 

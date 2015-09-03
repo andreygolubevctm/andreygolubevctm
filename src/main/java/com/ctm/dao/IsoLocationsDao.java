@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Fetches the list of countries from ctm.country_master
  */
@@ -58,7 +60,7 @@ public class IsoLocationsDao {
             }
 
             if (countries.size() == 0) {
-                logger.debug("No countries available for searchString={}" + searchString);
+                logger.debug("No countries available {}", kv("searchString", searchString));
             }
 
         } catch (SQLException | NamingException e) {
@@ -129,7 +131,7 @@ public class IsoLocationsDao {
             }
 
             if (countries.size() == 0) {
-                logger.info("No countries available isoCodes={}", isoCodes);
+                logger.debug("No countries available {}", kv("isoCodes", isoCodes));
             }
 
         } catch (SQLException | NamingException e) {

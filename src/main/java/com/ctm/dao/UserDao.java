@@ -19,6 +19,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class UserDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserDao.class.getName());
@@ -117,7 +119,7 @@ public class UserDao {
 						}
 					}
 					catch (Exception e) {
-						logger.error("Failed to get user list settings={} onlyLoggedInUsers={}", settings, onlyLoggedInUsers, e);
+						logger.error("Failed to get user list {}, {}", kv("settings", settings), kv("onlyLoggedInUsers", onlyLoggedInUsers), e);
 					}
 				}
 

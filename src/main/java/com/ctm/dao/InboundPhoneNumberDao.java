@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class InboundPhoneNumberDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(InboundPhoneNumberDao.class.getName());
@@ -69,9 +71,9 @@ public class InboundPhoneNumberDao {
 			}
 
 			if(phoneNumbers.size() > 1){
-				logger.error("More than one phone for VDN={}", vdn);
+				logger.error("More than one inbound phone number found {}", kv("vdn", vdn));
 			}else if(phoneNumbers.size() == 0){
-				logger.error("No record for VDN={}", vdn);
+				logger.error("No inbound phone number found {}", kv("vdn", vdn));
 			}else{
 				inboundPhoneNumber = phoneNumbers.get(0);
 			}
