@@ -593,13 +593,7 @@ var healthFunds = {
 	},
 
 	_memberIdRequired: function(required){
-		if(required) {
-			$('#clientMemberID').find('input').rules('add', 'required');
-			$('#partnerMemberID').find('input').rules('add', 'required');
-		} else {
-			$('#clientMemberID').find('input').rules('remove', 'required');
-			$('#partnerMemberID').find('input').rules('remove', 'required');
-		}
+		$('#clientMemberID input, #partnerMemberID input').setRequired(required);
 	},
 
 	_dependants: function(message){
@@ -640,6 +634,7 @@ var healthFunds = {
 	},
 
 	_reset: function() {
+		alert("reset");
 		healthApplicationDetails.hideHowToSendInfo();
 		healthFunds._partner_authority(false);
 		healthFunds._memberIdRequired(true);
@@ -776,14 +771,9 @@ var healthApplicationDetails = {
 	showHowToSendInfo: function(providerName, required) {
 		var contactPointGroup = $('#health_application_contactPoint-group');
 		var contactPoint = contactPointGroup.find('.control-label span');
-		var contactPointText = contactPoint.text();
 		contactPoint.text( providerName);
-		if (required) {
-			contactPointGroup.find('input').rules('add', {required:true, messages:{required:'Please choose how you would like ' + providerName + ' to contact you'}});
-		}
-		else {
-			contactPointGroup.find('input').rules('remove', 'required');
-		}
+		contactPointGroup.find('input').setRequired(required, 'Please choose how you would like ' + providerName + ' to contact you');
+
 		contactPointGroup.removeClass('hidden');
 	},
 	hideHowToSendInfo: function() {
@@ -1007,8 +997,7 @@ var healthDependents = {
 			$('#health_application_dependants-selection').find('.health_dependant_details_fulltimeGroup').hide();
 			// reset validation of dob to original
 			//TODO: Fix this to ensure the rules are added/removed properly.
-			$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('remove', 'validateFulltime');
-			$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('add', 'limitDependentAgeToUnder25');
+			$('#health_application_dependants_dependant' + index + '_dob').removeRule('validateFulltime').addRule('limitDependentAgeToUnder25');
 			return false;
 		}
 
@@ -1020,8 +1009,7 @@ var healthDependents = {
 
 		// change validation method for dob field if fulltime is enabled
 		//TODO: Fix this to ensure the rules are added/removed properly.
-		$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('remove', 'limitDependentAgeToUnder25');
-		$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('add', 'validateFulltime');
+		$('#health_application_dependants_dependant' + index + '_dob').removeRule('limitDependentAgeToUnder25').addRule('validateFulltime');
 		
 	},
 
@@ -1039,28 +1027,14 @@ var healthDependents = {
 				$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_schoolIDGroup').hide();
 			}
 			else {
-				if (this.config.schoolIDMandatory === true) {
-					//TODO: Fix this to ensure the rules are added/removed properly.
-					$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_schoolID').rules('add', {required:true, messages:{required:'Please enter dependant '+index+'\'s student ID'}});
-				}
-				else {
-					//TODO: Fix this to ensure the rules are added/removed properly.
-					$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_schoolID').rules('remove', 'required');
-				}
+				$('#health_application_dependants_dependant' + index + '_schoolID').setRequired(this.config.schoolIDMandatory, 'Please enter dependant '+index+'\'s student ID');
 			};
 			// Show/hide date study commenced field, with optional validation
 			if (this.config.schoolDate !== true) {
 				$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_schoolDateGroup').hide();
 			}
 			else {
-				if (this.config.schoolDateMandatory === true) {
-					//TODO: Fix this to ensure the rules are added/removed properly.
-					$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_schoolDate').rules('add', {required:true, messages:{required:'Please enter date that dependant '+index+' commenced study'}});
-				}
-				else {
-					//TODO: Fix this to ensure the rules are added/removed properly.
-					$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_schoolDate').rules('remove', 'required');
-				}
+				$('#health_application_dependants_dependant' + index + '_schoolDate').setRequired(true, 'Please enter date that dependant '+index+' commenced study');
 			};
 		} else {
 			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').hide();
