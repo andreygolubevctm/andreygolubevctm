@@ -66,12 +66,12 @@
 	}
 }
 
-.highResSpriteImg(@width-1x; @height-1x; @file-1x; @posx-1x; @posy-1x; @bkg-width-1x; @bkg-height-1x; @file-2x; @posx-2x; @posy-2x; @bkg-width-2x; @bkg-height-2x; @only-screen:~"only screen and") {
-	width:@width-1x;
-	height:@height-1x;
+.highResSpriteImg(@width-1x; @height-1x; @file-1x; @posx-1x; @posy-1x; @bkg-width-1x; @bkg-height-1x; @file-2x; @posx-2x; @posy-2x; @bkg-width-2x; @bkg-height-2x; @prop-scale:1; @only-screen:~"only screen and") {
+	width:(@width-1x * @prop-scale);
+	height:(@height-1x * @prop-scale);
 	background-image: url("@{file-1x}");
-	background-size: @bkg-width-1x @bkg-height-1x;
-	background-position: @posx-1x @posy-1x;
+	background-size: (@bkg-width-1x * @prop-scale) (@bkg-height-1x * @prop-scale);
+	background-position: (@posx-1x * @prop-scale) (@posy-1x * @prop-scale);
 	@media
 	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
 	@only-screen (min--moz-device-pixel-ratio: 1.5),
@@ -80,8 +80,34 @@
 	@only-screen (min-resolution: 1.5dppx),
 	@only-screen (min-resolution: 144dpi) {
 		background-image: url("@{file-2x}");
-		background-size: @bkg-width-2x @bkg-height-2x;
-		background-position: @posx-2x @posy-2x;
+		background-size: (@bkg-width-2x * @prop-scale) (@bkg-height-2x * @prop-scale);
+		background-position: (@posx-2x * @prop-scale) (@posy-2x * @prop-scale);
+	}
+
+	& when not (@prop-scale = 1) {
+		image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+		image-rendering: -moz-crisp-edges;          /* Firefox                        */
+		image-rendering: -o-crisp-edges;            /* Opera                          */
+		image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+		image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+		-ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+	}
+}
+
+.normalSpriteImg(@width; @height; @file; @posx; @posy; @bkg-width; @bkg-height; @prop-scale:1; @only-screen:~"only screen and") {
+	width:@width * @prop-scale;
+	height:@height * @prop-scale;
+	background-image: url("@{file}");
+	background-size: (@bkg-width * @prop-scale) (@bkg-height * @prop-scale);
+	background-position: (@posx * @prop-scale) (@posy * @prop-scale);
+
+	& when not (@prop-scale = 1) {
+		image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+		image-rendering: -moz-crisp-edges;          /* Firefox                        */
+		image-rendering: -o-crisp-edges;            /* Opera                          */
+		image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+		image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+		-ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
 	}
 }
 

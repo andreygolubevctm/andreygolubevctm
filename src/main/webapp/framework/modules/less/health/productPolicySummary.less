@@ -3,13 +3,11 @@
 	.productSummary{
 		&.horizontal {
 			.companyLogo{
-				width: 90px;
+				max-width: 90px;
+				max-height: @standard-logo-height;
 				line-height: 18px;
 				float: left;
 
-				@media (@xs-only) {
-					height: 45px;
-				}
 				@media (@sm-only) {
 					text-align: left;
 				}
@@ -23,7 +21,7 @@
 		}
 
 		.price{
-			margin-top: 5px;
+			margin: 0 auto 0 auto;
 		}
 
 
@@ -135,8 +133,6 @@
 			float: none;
 
 			.ie8 &{
-				width: 90px;
-				height: 45px;
 				margin-left: 30px !important; //This is ugly... but so is IE8! There is a -10px margin-left in core logos which this needs to combat
 			}
 		}
@@ -148,52 +144,180 @@
 
 			.companyLogo{
 
-				float:left;
-				width: 26%;
-				margin-top: 10px;
-				margin-left: 3%;
+				:not(.ie8) & {
 
-				&.AHM{
-					background-position: 0px -45px;
-				}
-				&.AUF{
-					background-position: -90px -45px;
-				}
-				&.BUD{
-					background-position: -180px -45px;
-				}
-				&.BUP{
-					background-position: -270px -45px;
-				}
-				&.CBH{
-					background-position: -360px -45px;
-				}
-				&.CTM{
-					background-position: -450px -45px;
-				}
-				&.CUA{
-					background-position: -540px -45px;
-				}
-				&.FRA{
-					background-position: -630px -45px;
-				}
-				&.GMF{
-					background-position: -720px -45px;
-				}
-				&.GMH{
-					background-position: -810px -45px;
-				}
-				&.HCF{
-					background-position: -900px -45px;
-				}
-				&.HIF{
-					background-position: -990px -45px;
-				}
-				&.NIB{
-					background-position: -1080px -45px;
-				}
-				&.THF{
-					background-position: -1170px -45px;
+					position:absolute; /* Stops price colliding and being forced below */
+					margin-top: 10px;
+					margin-left: 3%;
+
+					&.AHM {
+						.normalSpriteImg(
+							@health-logo-AHM-width,
+							@health-logo-AHM-height,
+							@health-logo-AHM-image,
+							@health-logo-AHM-offset-x,
+							@health-logo-AHM-offset-y,
+							@health-logo-AHM-total-width,
+							@health-logo-AHM-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.AUF {
+						.normalSpriteImg(
+							@health-logo-AUF-width,
+							@health-logo-AUF-height,
+							@health-logo-AUF-image,
+							@health-logo-AUF-offset-x,
+							@health-logo-AUF-offset-y,
+							@health-logo-AUF-total-width,
+							@health-logo-AUF-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.BUD {
+						.normalSpriteImg(
+							@health-logo-BUD-width,
+							@health-logo-BUD-height,
+							@health-logo-BUD-image,
+							@health-logo-BUD-offset-x,
+							@health-logo-BUD-offset-y,
+							@health-logo-BUD-total-width,
+							@health-logo-BUD-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.BUP {
+						.normalSpriteImg(
+							@health-logo-BUP-width,
+							@health-logo-BUP-height,
+							@health-logo-BUP-image,
+							@health-logo-BUP-offset-x,
+							@health-logo-BUP-offset-y,
+							@health-logo-BUP-total-width,
+							@health-logo-BUP-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.CBH {
+						.normalSpriteImg(
+							@health-logo-CBH-width,
+							@health-logo-CBH-height,
+							@health-logo-CBH-image,
+							@health-logo-CBH-offset-x,
+							@health-logo-CBH-offset-y,
+							@health-logo-CBH-total-width,
+							@health-logo-CBH-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.CTM {
+						.normalSpriteImg(
+							@health-logo-CTM-width,
+							@health-logo-CTM-height,
+							@health-logo-CTM-image,
+							@health-logo-CTM-offset-x,
+							@health-logo-CTM-offset-y,
+							@health-logo-CTM-total-width,
+							@health-logo-CTM-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.CUA {
+						.normalSpriteImg(
+							@health-logo-CUA-width,
+							@health-logo-CUA-height,
+							@health-logo-CUA-image,
+							@health-logo-CUA-offset-x,
+							@health-logo-CUA-offset-y,
+							@health-logo-CUA-total-width,
+							@health-logo-CUA-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.FRA {
+						.normalSpriteImg(
+							@health-logo-FRA-width,
+							@health-logo-FRA-height,
+							@health-logo-FRA-image,
+							@health-logo-FRA-offset-x,
+							@health-logo-FRA-offset-y,
+							@health-logo-FRA-total-width,
+							@health-logo-FRA-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.GMF {
+						.normalSpriteImg(
+							@health-logo-GMF-width,
+							@health-logo-GMF-height,
+							@health-logo-GMF-image,
+							@health-logo-GMF-offset-x,
+							@health-logo-GMF-offset-y,
+							@health-logo-GMF-total-width,
+							@health-logo-GMF-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.GMH {
+						.normalSpriteImg(
+							@health-logo-GMH-width,
+							@health-logo-GMH-height,
+							@health-logo-GMH-image,
+							@health-logo-GMH-offset-x,
+							@health-logo-GMH-offset-y,
+							@health-logo-GMH-total-width,
+							@health-logo-GMH-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.HCF {
+						.normalSpriteImg(
+							@health-logo-HCF-width,
+							@health-logo-HCF-height,
+							@health-logo-HCF-image,
+							@health-logo-HCF-offset-x,
+							@health-logo-HCF-offset-y,
+							@health-logo-HCF-total-width,
+							@health-logo-HCF-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.HIF {
+						.normalSpriteImg(
+							@health-logo-HIF-width,
+							@health-logo-HIF-height,
+							@health-logo-HIF-image,
+							@health-logo-HIF-offset-x,
+							@health-logo-HIF-offset-y,
+							@health-logo-HIF-total-width,
+							@health-logo-HIF-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.NIB {
+						.normalSpriteImg(
+							@health-logo-NIB-width,
+							@health-logo-NIB-height,
+							@health-logo-NIB-image,
+							@health-logo-NIB-offset-x,
+							@health-logo-NIB-offset-y,
+							@health-logo-NIB-total-width,
+							@health-logo-NIB-total-height,
+							@logo-compressed-scale
+						);
+					}
+					&.THF {
+						.normalSpriteImg(
+							@health-logo-THF-width,
+							@health-logo-THF-height,
+							@health-logo-THF-image,
+							@health-logo-THF-offset-x,
+							@health-logo-THF-offset-y,
+							@health-logo-THF-total-width,
+							@health-logo-THF-total-height,
+							@logo-compressed-scale
+						);
+					}
 				}
 			}
 
@@ -269,6 +393,13 @@
 	}
 }
 
+.ie8 {
+	.featuresMode,
+	.policySummaryContainer {
+
+	}
+}
+
 /* Policy summary in right hand column */
 .policySummaryContainer{
 	@media (@xs-only) {
@@ -293,9 +424,8 @@
 }
 
 .companyLogo{
-	height: 45px;
-	max-height: 45px;
-	width: 90px;
+	max-height: @standard-logo-height;
+	max-width: 90px;
 
 
 	margin-left: auto;
@@ -303,52 +433,172 @@
 
 	overflow: hidden;
 
-	background-image: url('../../../common/images/logos/health/brands.png?version=20150331');
-	background-repeat: no-repeat;
-	background-size: inherit;
-
-
-
 	&.AHM{
-		background-position: 0px top;
+		.normalSpriteImg(
+			@health-logo-AHM-width,
+			@health-logo-AHM-height,
+			@health-logo-AHM-image,
+			@health-logo-AHM-offset-x,
+			@health-logo-AHM-offset-y,
+			@health-logo-AHM-total-width,
+			@health-logo-AHM-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-AHM-height)/2) auto (floor((@standard-logo-height - @health-logo-AHM-height)/2) + @logo-price-spacer) auto;
 	}
 	&.AUF{
-		background-position: -90px top;
+		.normalSpriteImg(
+			@health-logo-AUF-width,
+			@health-logo-AUF-height,
+			@health-logo-AUF-image,
+			@health-logo-AUF-offset-x,
+			@health-logo-AUF-offset-y,
+			@health-logo-AUF-total-width,
+			@health-logo-AUF-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-AUF-height)/2) auto (floor((@standard-logo-height - @health-logo-AUF-height)/2) + @logo-price-spacer) auto;
 	}
 	&.BUD{
-		background-position: -180px top;
+		.normalSpriteImg(
+			@health-logo-BUD-width,
+			@health-logo-BUD-height,
+			@health-logo-BUD-image,
+			@health-logo-BUD-offset-x,
+			@health-logo-BUD-offset-y,
+			@health-logo-BUD-total-width,
+			@health-logo-BUD-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-BUD-height)/2) auto (floor((@standard-logo-height - @health-logo-BUD-height)/2) + @logo-price-spacer) auto;
 	}
 	&.BUP{
-		background-position: -270px top;
+		.normalSpriteImg(
+			@health-logo-BUP-width,
+			@health-logo-BUP-height,
+			@health-logo-BUP-image,
+			@health-logo-BUP-offset-x,
+			@health-logo-BUP-offset-y,
+			@health-logo-BUP-total-width,
+			@health-logo-BUP-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-BUP-height)/2) auto (floor((@standard-logo-height - @health-logo-BUP-height)/2) + @logo-price-spacer) auto;
 	}
 	&.CBH{
-		background-position: -360px top;
+		.normalSpriteImg(
+			@health-logo-CBH-width,
+			@health-logo-CBH-height,
+			@health-logo-CBH-image,
+			@health-logo-CBH-offset-x,
+			@health-logo-CBH-offset-y,
+			@health-logo-CBH-total-width,
+			@health-logo-CBH-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-CBH-height)/2) auto (floor((@standard-logo-height - @health-logo-CBH-height)/2) + @logo-price-spacer) auto;
 	}
 	&.CTM{
-		background-position: -450px top;
+		.normalSpriteImg(
+			@health-logo-CTM-width,
+			@health-logo-CTM-height,
+			@health-logo-CTM-image,
+			@health-logo-CTM-offset-x,
+			@health-logo-CTM-offset-y,
+			@health-logo-CTM-total-width,
+			@health-logo-CTM-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-CTM-height)/2) auto (floor((@standard-logo-height - @health-logo-CTM-height)/2) + @logo-price-spacer) auto;
 	}
 	&.CUA{
-		background-position: -540px top;
+		.normalSpriteImg(
+			@health-logo-CUA-width,
+			@health-logo-CUA-height,
+			@health-logo-CUA-image,
+			@health-logo-CUA-offset-x,
+			@health-logo-CUA-offset-y,
+			@health-logo-CUA-total-width,
+			@health-logo-CUA-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-CUA-height)/2) auto (floor((@standard-logo-height - @health-logo-CUA-height)/2) + @logo-price-spacer) auto;
 	}
 	&.FRA{
-		background-position: -630px top;
+		.normalSpriteImg(
+			@health-logo-FRA-width,
+			@health-logo-FRA-height,
+			@health-logo-FRA-image,
+			@health-logo-FRA-offset-x,
+			@health-logo-FRA-offset-y,
+			@health-logo-FRA-total-width,
+			@health-logo-FRA-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-FRA-height)/2) auto (floor((@standard-logo-height - @health-logo-FRA-height)/2) + @logo-price-spacer) auto;
 	}
 	&.GMF{
-		background-position: -720px top;
+		.normalSpriteImg(
+			@health-logo-GMF-width,
+			@health-logo-GMF-height,
+			@health-logo-GMF-image,
+			@health-logo-GMF-offset-x,
+			@health-logo-GMF-offset-y,
+			@health-logo-GMF-total-width,
+			@health-logo-GMF-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-GMF-height)/2) auto (floor((@standard-logo-height - @health-logo-GMF-height)/2) + @logo-price-spacer) auto;
 	}
 	&.GMH{
-		background-position: -810px top;
+		.normalSpriteImg(
+			@health-logo-GMH-width,
+			@health-logo-GMH-height,
+			@health-logo-GMH-image,
+			@health-logo-GMH-offset-x,
+			@health-logo-GMH-offset-y,
+			@health-logo-GMH-total-width,
+			@health-logo-GMH-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-GMH-height)/2) auto (floor((@standard-logo-height - @health-logo-GMH-height)/2) + @logo-price-spacer) auto;
 	}
 	&.HCF{
-		background-position: -900px top;
+		.normalSpriteImg(
+			@health-logo-HCF-width,
+			@health-logo-HCF-height,
+			@health-logo-HCF-image,
+			@health-logo-HCF-offset-x,
+			@health-logo-HCF-offset-y,
+			@health-logo-HCF-total-width,
+			@health-logo-HCF-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-HCF-height)/2) auto (floor((@standard-logo-height - @health-logo-HCF-height)/2) + @logo-price-spacer) auto;
 	}
 	&.HIF{
-		background-position: -990px top;
+		.normalSpriteImg(
+			@health-logo-HIF-width,
+			@health-logo-HIF-height,
+			@health-logo-HIF-image,
+			@health-logo-HIF-offset-x,
+			@health-logo-HIF-offset-y,
+			@health-logo-HIF-total-width,
+			@health-logo-HIF-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-HIF-height)/2) auto (floor((@standard-logo-height - @health-logo-HIF-height)/2) + @logo-price-spacer) auto;
 	}
 	&.NIB{
-		background-position: -1080px top;
+		.normalSpriteImg(
+			@health-logo-NIB-width,
+			@health-logo-NIB-height,
+			@health-logo-NIB-image,
+			@health-logo-NIB-offset-x,
+			@health-logo-NIB-offset-y,
+			@health-logo-NIB-total-width,
+			@health-logo-NIB-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-NIB-height)/2) auto (floor((@standard-logo-height - @health-logo-NIB-height)/2) + @logo-price-spacer) auto;
 	}
 	&.THF{
-		background-position: -1170px top;
+		.normalSpriteImg(
+			@health-logo-THF-width,
+			@health-logo-THF-height,
+			@health-logo-THF-image,
+			@health-logo-THF-offset-x,
+			@health-logo-THF-offset-y,
+			@health-logo-THF-total-width,
+			@health-logo-THF-total-height
+		);
+		margin: ceil((@standard-logo-height - @health-logo-THF-height)/2) auto (floor((@standard-logo-height - @health-logo-THF-height)/2) + @logo-price-spacer) auto;
 	}
 }

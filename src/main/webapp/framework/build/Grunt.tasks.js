@@ -508,37 +508,53 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 // SPRITE: Grunt Notify - uses growl or snarl - toast popups for grunt events
 //-----------------------------------------------------------------------------
 
-	var getSpriteObject = function(label) {
-		var graphicsFolder = tools.getAssetsPath("graphics/logos/" + label + "/");
-		var lessFolder = tools.getFrameworkPath('modules','less/' + label);
-		return {
-			less_retina:true,
-			src: graphicsFolder + 'src/*.png',
-			dest: graphicsFolder + 'spritesheet.png',
-			imgPath: "../../../" + graphicsFolder + 'spritesheet.png',
-			retinaSrcFilter: graphicsFolder + 'src/' + ['*@2x.png'],
-			retinaDest: graphicsFolder + 'spritesheet@2x.png',
-			retinaImgPath: "../../../" + graphicsFolder + 'spritesheet@2x.png',
-			destCss: lessFolder + 'logos_sprites.less',
+	var getSpriteObject = function(options) {
+		options = options || {};
+		options.folder = options.hasOwnProperty("folder") ? options.folder : "";
+		options.srcFolder = options.hasOwnProperty("srcFolder") ? options.srcFolder : "src";
+		options.skipRetina = options.hasOwnProperty("skipRetina") ? options.skipRetina : false;
+		options.suffix = options.srcFolder == 'src' ? "" : "-" + options.srcFolder;
+
+		var graphicsFolder = tools.getAssetsPath("graphics/logos/" + options.folder + "/");
+		var lessFolder = tools.getFrameworkPath('modules','less/' + options.folder);
+		var response = {
+			less: true,
+			src: graphicsFolder + (options.srcFolder == "" ? "" : options.srcFolder + "/") + '*.png',
+			dest: graphicsFolder + 'spritesheet' + options.suffix + '.png',
+			imgPath: "../../../" + graphicsFolder + 'spritesheet' + options.suffix + '.png',
+			destCss: lessFolder + 'logosSprites' + options.suffix + '.less',
 			cssVarMap: function(sprite) {
-				sprite.name = label + '-logo-' + sprite.name;
+				sprite.name = options.folder + '-logo' + options.suffix + '-' + sprite.name;
 			},
-			cssSpritesheetName:label + '-logo',
-			cssRetinaSpritesheetName:label + '-logo-2x',
+			cssSpritesheetName:options.folder + '-logo' + options.suffix + '',
 			cssOpts: {
 				functions: false,
 				variableNameTransforms: []
-			}
+			},
+			padding:2,
+			imgOpts: {quality: 100}
 		}
+
+		if(options.skipRetina !== true) {
+			response.less_retina = true;
+			response.retinaSrcFilter = graphicsFolder + (options.srcFolder == "" ? "" : options.srcFolder + '/') + ['*@2x.png'];
+			response.retinaDest = graphicsFolder + 'spritesheet' + options.suffix + '@2x.png';
+			response.retinaImgPath = "../../../" + graphicsFolder + 'spritesheet' + options.suffix + '@2x.png';
+			response.cssRetinaSpritesheetName = options.folder + '-logo' + options.suffix + '-2x';
+		}
+
+		return response;
 	};
 
-	sprite.car = getSpriteObject('car');
+	sprite.car = getSpriteObject({folder:'car'});
 
-	sprite.home = getSpriteObject('home');
+	sprite.home = getSpriteObject({folder:'home'});
 
-	sprite.utilities = getSpriteObject('utilities');
+	sprite.utilities = getSpriteObject({folder:'utilities'});
 
-	sprite.travel = getSpriteObject('travel');
+	sprite.travel = getSpriteObject({folder:'travel'});
+
+	sprite.health = getSpriteObject({folder:'health',skipRetina:true});
 
 
 	/********************************************************************************
