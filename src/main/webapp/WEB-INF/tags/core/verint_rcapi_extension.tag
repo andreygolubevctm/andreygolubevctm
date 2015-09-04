@@ -2,7 +2,7 @@
 <%@ tag import="java.net.Socket,java.io.*" %>
 <%@ tag description="This uses the Verint RCAPI service to talk to the phone system to retrieve an extension. The function returns an http error or a #### number"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
-<c:set var="logger" value="${log:getLogger('tag:core.verint_rcapi_extension')}" />
+<c:set var="logger" value="${log:getLogger('/core/verint_rcapi_extension.tag')}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="agentId" 	required="true"		rtexprvalue="true"	description="The agent ID, typically a four digit code"%>
@@ -66,9 +66,6 @@
 				BufferedReader rd = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				String line;
 				while ((line = rd.readLine()) != null) {
-					/*
-					System.out.println("Response :"+line);
-					*/
 					%><%= line%><%
 				}
 

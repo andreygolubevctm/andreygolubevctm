@@ -2,7 +2,7 @@
 <%@ tag description="Updates Utilities provider master and properties records."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('tag:utilities.utilities_update_plan')}" />
+<c:set var="logger" value="${log:getLogger('/utilities/utilities_update_plan.tag')}" />
 
 <%@ attribute name="provider_id" 			required="true"	 rtexprvalue="true"	 description="CTM's internal ID for the provider" %>
 <%@ attribute name="product_state" 			required="true"	 rtexprvalue="true"	 description="The State this product is associated with" %>

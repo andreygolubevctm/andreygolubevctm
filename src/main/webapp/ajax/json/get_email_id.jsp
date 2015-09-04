@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('jsp:ajax.json.get_email_id')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
 

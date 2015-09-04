@@ -3,7 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('jsp:ajax.json.write_reminder')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 
 <c:choose>

@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('jsp:rating.car.car_price_service')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 

@@ -4,7 +4,7 @@
 <jsp:useBean id="simplesUserService" class="com.ctm.services.simples.SimplesUserService" scope="application" />
 <jsp:useBean id="phoneService" class="com.ctm.services.PhoneService" scope="page" />
 
-<c:set var="logger" value="${log:getLogger('tag:core.login')}" />
+<c:set var="logger" value="${log:getLogger('/core/login.tag')}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="uid" 		required="true"	rtexprvalue="true"	description="The user id" %>

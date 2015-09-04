@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('jsp:ajax.json.life_product_details')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <session:get />
 

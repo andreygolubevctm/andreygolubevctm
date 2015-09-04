@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('jsp:ajax.json.life_update_bucket')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 <c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>

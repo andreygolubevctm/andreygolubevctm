@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('jsp:ajax.write.setApplicationDate')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
 <c:set var="remoteAddr" value="${pageContext.request.remoteAddr}" />

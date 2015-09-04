@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('jsp:rating.health.health_submit_to_file_or_sftp')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <% pageContext.setAttribute("newLineChar", "\r\n"); %>
 <% pageContext.setAttribute("quote", "\""); %>

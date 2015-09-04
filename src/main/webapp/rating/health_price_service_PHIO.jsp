@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('jsp:rating.health_price_service')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <jsp:useBean id="resultsList" class="java.util.ArrayList" scope="request" />
 <jsp:useBean id="healthPriceService" class="com.ctm.services.health.HealthPriceService" scope="page" />

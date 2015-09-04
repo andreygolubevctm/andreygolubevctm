@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="HEALTH" />
-<c:set var="logger"  value="${log:getLogger('jsp:ajax.html.health_paymentgateway')}" />
+<c:set var="logger"  value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
 <x:parse doc="${config}" var="configXml" />

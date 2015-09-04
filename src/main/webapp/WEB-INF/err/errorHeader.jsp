@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('jsp:err.errorHeader')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 ${logger.error('Start error header. {},{}', log:kv('servletPath',pageContext.request.servletPath ), log:kv('request_uri',requestScope["javax.servlet.forward.request_uri"] ))}
 <c:set var="defaultTitle" value="Error Page" />
 <c:choose>

@@ -2,7 +2,7 @@
 <%@ tag description="Provides a method for external providers to test their prices only, without affecting production or future users"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('tag:health.provider_testing')}" />
+<c:set var="logger" value="${log:getLogger('/health/provider_testing.tag')}" />
 
 <%@ attribute name="xpath" required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 

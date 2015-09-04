@@ -3,7 +3,7 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('tag:agg.write_quote')}" />
+<c:set var="logger" value="${log:getLogger('/agg/write_quote.tag')}" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
 <jsp:useBean id="tranDao" class="com.ctm.dao.transaction.TransactionDetailsDao" scope="request" />

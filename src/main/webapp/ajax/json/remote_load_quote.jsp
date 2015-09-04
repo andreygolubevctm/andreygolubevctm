@@ -3,7 +3,7 @@
 
 <session:get settings="true" verticalCode="${param.vertical}" />
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
-<c:set var="logger" value="${log:getLogger('jsp:ajax.json.remote_load_quote')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <%--
 	load_quote.jsp

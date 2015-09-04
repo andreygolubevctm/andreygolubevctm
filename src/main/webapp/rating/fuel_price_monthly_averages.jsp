@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${log:getLogger('jsp:rating.fuel_price_monthly_averages')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 

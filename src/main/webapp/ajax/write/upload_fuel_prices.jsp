@@ -224,11 +224,9 @@ XML PARSE AND SQL UPDATE
 			</x:forEach>
 		</c:if>
 		<%--  / MAIN XML AND PARSE --%>
-		
-		
+
 		<%-- Send an Update to the server --%>
-		<% System.out.println( "Results for " + pageContext.getAttribute("token") + " = " + pageContext.getAttribute("sqlCount") ); %>
-		
+		${log.debug('Results for statement. {},{}',kv('token', token),kv('sqlCount', sqlCount))}
 		
 		<%--
 		=======================================

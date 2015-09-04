@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('jsp:ajax.json.life_quote_result')}" />
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:trim(fn:toUpperCase(param.vertical))}" />
 

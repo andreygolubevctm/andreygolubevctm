@@ -2,7 +2,7 @@
 <%@ tag description="Represents a single online form."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('tag:form.scrape')}" />
+<c:set var="logger" value="${log:getLogger('/form/scrape.tag')}" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 

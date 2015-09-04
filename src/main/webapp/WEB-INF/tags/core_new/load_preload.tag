@@ -2,7 +2,7 @@
 <%@ tag description="Preloading form data." %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('tag:core_new.load_preload')}" />
+<c:set var="logger" value="${log:getLogger('/core_new/load_preload.tag')}" />
 
 <c:if test="${empty param.action && not empty param.preload && not fn:contains(param.preload, '/') &&  not fn:contains(param.preload, '/\') }">
 	<c:set var="verticalCode" value="${pageSettings.verticalCode}" />
