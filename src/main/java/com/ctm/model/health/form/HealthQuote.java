@@ -26,11 +26,19 @@ public class HealthQuote {
 
     private String showAll;
 
+    private Integer searchResults;
+
     private String onResultsPage;
+
+    private Simples simples;
+
+    private String directApplication;
 
     private String excess;
 
     private Filter filter;
+
+    private Retrieve retrieve;
 
     public Application getApplication() {
         return application;
@@ -150,5 +158,37 @@ public class HealthQuote {
 
     public void setFilter(Filter filter) {
         this.filter = filter;
+    }
+
+    public Retrieve getRetrieve() {
+        return retrieve;
+    }
+
+    public void setRetrieve(Retrieve retrieve) {
+        this.retrieve = retrieve;
+    }
+
+    public Simples getSimples() {
+        return simples;
+    }
+
+    public void setSimples(Simples simples) {
+        this.simples = simples;
+    }
+
+    public String getDirectApplication() {
+        return directApplication;
+    }
+
+    public void setDirectApplication(String directApplication) {
+        this.directApplication = directApplication;
+    }
+
+    public Integer getSearchResults() {
+        return searchResults;
+    }
+
+    public void setSearchResults(Integer searchResults) {
+        this.searchResults = searchResults;
     }
 }

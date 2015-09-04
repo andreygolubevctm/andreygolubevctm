@@ -61,8 +61,6 @@ public class RequestAdapter {
             }
         }
 
-        quoteRequest.setSearchResults(12);
-
         Situation situation = quote.getSituation();
         if (situation != null) {
             if (StringUtils.equals(situation.getState(), "ACT")) {
@@ -93,10 +91,23 @@ public class RequestAdapter {
             quoteRequest.setProductType("Combined");
         }
 
-        boolean isShowAll = StringUtils.equals(quote.getShowAll(), "Y");
+        boolean isShowAll = toBoolean(quote.getShowAll());
+        boolean isSimples = quote.getSimples() != null;
+        boolean isDirectApplication = toBoolean(quote.getDirectApplication());
+        if (isSimples && !isShowAll) {
+            quoteRequest.setExcludeStatus(asList(NOT_AVAILABLE, EXPIRED));
+        } else if (isSimples) {
+            quoteRequest.setExcludeStatus(asList(ONLINE, NOT_AVAILABLE, EXPIRED));
+        } else {
+            quoteRequest.setExcludeStatus(asList(CALL_CENTRE, NOT_AVAILABLE, EXPIRED));
+        }
 
         if (isShowAll) {
-            quoteRequest.setSearchResults(12);
+            Integer searchResults = quote.getSearchResults();
+            if (searchResults == null) {
+                searchResults = 12;
+            }
+            quoteRequest.setSearchResults(searchResults);
             BoundedExcessFilter boundedExcessFilter = new BoundedExcessFilter();
             filters.setExcessFilter(boundedExcessFilter);
             if (quoteRequest.getProductType().equals("GeneralHealth")) {
@@ -134,14 +145,37 @@ public class RequestAdapter {
                 }
                 if (StringUtils.isNotBlank(application.getProductId())) {
                     ProductIdSameExcessAmountFilter excessFilter = new ProductIdSameExcessAmountFilter();
-                    String productId = application.getProductId();
-                    if (StringUtils.startsWith(application.getProductId(), "PHIO-HEALTH-")) {
-                         productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
-                    }
-                    excessFilter.setProductIdWithSameExcessAmount(Integer.parseInt(productId));
+                    excessFilter.setProductIdWithSameExcessAmount(getProductId(application));
                     filters.setExcessFilter(excessFilter);
                 }
+                ProviderFilter providerFilter = new ProviderFilter();
+                providerFilter.setProviderIds(asList(HealthFund.valueOf(application.getProvider()).getId()));
+                providerFilter.setExclude(false);
+                filters.setProviderFilter(providerFilter);
             }
+        }
+
+        if (quote.getRetrieve() != null && toBoolean(quote.getRetrieve().getSavedResults())) {
+            CompareResultsFilter compareResultsFilter = new CompareResultsFilter();
+            compareResultsFilter.setTransactionId(quote.getRetrieve().getTransactionId());
+            filters.setCompareResultsFilter(compareResultsFilter);
+        }
+
+        if (isSimples || isDirectApplication) {
+            Application application = quote.getApplication();
+            if (application != null) {
+                IncludeProductIfNotFound includeProductIfNotFound = new IncludeProductIfNotFound();
+                includeProductIfNotFound.setProductTitle(application.getProductTitle());
+                includeProductIfNotFound.setProductId(getProductId(application));
+                includeProductIfNotFound.setProviderId(HealthFund.valueOf(application.getProvider()).getId());
+                filters.setIncludeProductIfNotFound(includeProductIfNotFound);
+            }
+        }
+
+        if (toBoolean(quote.getOnResultsPage())) {
+            filters.setCappingLimitFilter(CappingLimit.SOFT);
+        } else {
+            filters.setCappingLimitFilter(CappingLimit.HARD);
         }
 
         boolean isPrHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PrHospital"), "N"));
@@ -161,7 +195,6 @@ public class RequestAdapter {
             quoteRequest.setHospitalSelection(BOTH);
         }
 
-        quoteRequest.setExcludeStatus(asList(CALL_CENTRE, NOT_AVAILABLE, EXPIRED));
 
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
         quoteRequest.setSearchDateValue(LocalDate.now());
@@ -169,6 +202,14 @@ public class RequestAdapter {
         quoteRequest.setLoading(quote.getLoading());
 
         return quoteRequest;
+    }
+
+    private static Integer getProductId(Application application) {
+        String productId = application.getProductId();
+        if (StringUtils.startsWith(application.getProductId(), "PHIO-HEALTH-")) {
+             productId = StringUtils.remove(application.getProductId(), "PHIO-HEALTH-");
+        }
+        return Integer.parseInt(productId);
     }
 
     private static boolean toBoolean(String value) {
@@ -189,4 +230,5 @@ public class RequestAdapter {
         return preferences;
 
     }
+
 }

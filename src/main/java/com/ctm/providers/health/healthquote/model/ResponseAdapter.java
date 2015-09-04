@@ -11,7 +11,9 @@ import com.ctm.model.health.results.Promo;
 import com.ctm.model.resultsData.AvailableType;
 import com.ctm.providers.QuoteResponse;
 import com.ctm.providers.health.healthquote.model.response.*;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -27,7 +29,8 @@ public class ResponseAdapter {
 
     public static final String HEALTH_BROCHURE_URL = "health_brochure.jsp?pdf=";
 
-    public static List<HealthResult> adapt(HealthRequest request, HealthResponse healthResponse) {
+    public static Pair<Boolean, List<HealthResult>> adapt(HealthRequest request, HealthResponse healthResponse) {
+        boolean hasPriceChanged = false;
         List<HealthResult> results = new ArrayList<>();
         QuoteResponse<HealthQuote> quoteResponse = healthResponse.getPayload();
         if (quoteResponse != null) {
@@ -41,23 +44,33 @@ public class ResponseAdapter {
                 result.setProductId(quote.getProductId());
 
                 result.setPromo(createPromo(quote.getPromo()));
-                result.setCustom(quote.getCustom());
+                result.setCustom(validateNode(quote.getCustom()));
 
                 result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
                 result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
 
                 result.setInfo(createInfo(quote.getInfo(), index++));
-                result.setHospital(quote.getHospital());
-                result.setExtras(quote.getExtras());
-                result.setAmbulance(quote.getAmbulance());
+                result.setHospital(validateNode(quote.getHospital()));
+                result.setExtras(validateNode(quote.getExtras()));
+                result.setAmbulance(validateNode(quote.getAmbulance()));
 
+                if (quote.isPriceChanged()) {
+                    hasPriceChanged = true;
+                }
                 results.add(result);
             }
 
         }
 
 
-        return results;
+        return Pair.of(hasPriceChanged, results);
+    }
+
+    private static JsonNode validateNode(JsonNode jsonNode) {
+        if (!jsonNode.isNull()) {
+            return jsonNode;
+        }
+        return null;
     }
 
     private static Promo createPromo(com.ctm.providers.health.healthquote.model.response.Promo quotePromo) {

@@ -11,6 +11,8 @@ import com.ctm.model.settings.Brand;
 import com.ctm.router.CommonQuoteRouter;
 import com.ctm.services.health.HealthQuoteService;
 import com.ctm.services.tracking.TrackingKeyService;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
 import javax.ws.rs.*;
@@ -43,14 +45,18 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
 //        }
 
         try {
-            PremiumRange summary = service.getSummary(brand, data);
-
-            final List<HealthResult> quotes = service.getQuotes(brand, data);
-
 
             InfoHealth info = new InfoHealth();
             info.setTransactionId(data.getTransactionId());
-            info.setPremiumRange(summary);
+
+            boolean isShowAll = StringUtils.equals(data.getQuote().getShowAll(), "Y");
+            boolean isOnResultsPage = StringUtils.equals(data.getQuote().getOnResultsPage(), "Y");
+            if (isShowAll && isOnResultsPage) {
+                PremiumRange summary = service.getSummary(brand, data);
+                info.setPremiumRange(summary);
+            }
+
+            final Pair<Boolean, List<HealthResult>> quotes = service.getQuotes(brand, data);
 
             try {
                 String trackingKey = TrackingKeyService.generate(
@@ -61,8 +67,9 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
             }
 
             PricesObj<HealthResult> results = new PricesObj<>();
-            results.setResult(quotes);
+            results.setResult(quotes.getRight());
             results.setInfo(info);
+            info.setPricesHaveChanged(quotes.getLeft());
 
             return new ResultsWrapper(results);
 

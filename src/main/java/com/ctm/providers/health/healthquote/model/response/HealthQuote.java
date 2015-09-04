@@ -23,6 +23,8 @@ public class HealthQuote {
 
     private Promo promo;
 
+    private boolean priceChanged;
+
     public boolean isAvailable() {
         return available;
     }
@@ -109,5 +111,13 @@ public class HealthQuote {
 
     public void setPromo(Promo promo) {
         this.promo = promo;
+    }
+
+    public boolean isPriceChanged() {
+        return priceChanged;
+    }
+
+    public void setPriceChanged(boolean priceChanged) {
+        this.priceChanged = priceChanged;
     }
 }

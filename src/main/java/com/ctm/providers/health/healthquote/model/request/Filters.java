@@ -20,6 +20,10 @@ public class Filters {
 
     private List<String> preferencesFilter;
 
+    private CompareResultsFilter compareResultsFilter;
+
+    private IncludeProductIfNotFound includeProductIfNotFound;
+
     public CappingLimit getCappingLimitFilter() {
         return cappingLimitFilter;
     }
@@ -82,5 +86,21 @@ public class Filters {
 
     public void setPreferencesFilter(List<String> preferencesFilter) {
         this.preferencesFilter = preferencesFilter;
+    }
+
+    public CompareResultsFilter getCompareResultsFilter() {
+        return compareResultsFilter;
+    }
+
+    public void setCompareResultsFilter(CompareResultsFilter compareResultsFilter) {
+        this.compareResultsFilter = compareResultsFilter;
+    }
+
+    public IncludeProductIfNotFound getIncludeProductIfNotFound() {
+        return includeProductIfNotFound;
+    }
+
+    public void setIncludeProductIfNotFound(IncludeProductIfNotFound includeProductIfNotFound) {
+        this.includeProductIfNotFound = includeProductIfNotFound;
     }
 }

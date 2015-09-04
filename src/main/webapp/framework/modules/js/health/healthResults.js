@@ -87,7 +87,7 @@
 		frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
 
 		var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
-		if (meerkat.modules.splitTest.isActive(40)) {
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
 			healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp"
 		}
 
@@ -856,7 +856,7 @@
 				});
 
 				var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
-				if (meerkat.modules.splitTest.isActive(40)) {
+				if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
 					healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp"
 				}
 

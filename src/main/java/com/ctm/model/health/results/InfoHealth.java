@@ -1,5 +1,8 @@
 package com.ctm.model.health.results;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class InfoHealth extends com.ctm.model.resultsData.Info {
 
     private boolean pricesHaveChanged;

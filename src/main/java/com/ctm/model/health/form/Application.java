@@ -16,6 +16,8 @@ public class Application {
 
     private String productId;
 
+    private String provider;
+
     public Address getAddress() {
         return address;
     }
@@ -70,5 +72,13 @@ public class Application {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 }

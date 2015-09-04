@@ -1,8 +1,10 @@
 package com.ctm.model.health.results;
 
 import com.ctm.model.resultsData.Result;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HealthResult extends Result {
 
     private Promo promo;
