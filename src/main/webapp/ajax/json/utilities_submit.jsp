@@ -50,7 +50,7 @@
         <c:if test="${empty rootId}">
             <c:set var="rootId" value="0"/>
         </c:if>
-        ${logger.info('Utilities Tran Id. {}', log:kv('transactionId', tranId))}
+        ${logger.debug('About to call submit from jsp. {}', log:kv('transactionId', tranId))}
 
         <%-- SUBMIT TO PARTNER --%>
         <jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request"/>

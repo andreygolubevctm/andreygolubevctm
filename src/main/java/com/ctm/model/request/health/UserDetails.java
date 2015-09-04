@@ -40,4 +40,15 @@ public class UserDetails {
     public void setRootPath(String rootPath) {
         this.rootPath = rootPath;
     }
+
+    @Override
+    public String toString() {
+        return "UserDetails{" +
+                "rootPath=" + rootPath +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", questionSet='" + questionSet + '\'' +
+                ", application='" + application + '\'' +
+                '}';
+    }
 }

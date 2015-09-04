@@ -31,7 +31,7 @@
 	<c:if test="${!validCredentials}">
 			${logger.info('have not validated credentials authenticating. {}', log:kv('email',param.login_email))}
 			<c:set var="password"><go:HmacSHA256 username="${param.login_email}" password="${param.login_password}" brand="${pageSettings.getBrandCode()}" /></c:set>
-			${logger.debug('have not validated credentials password={},{}', password, log:kv('email',param.login_email))}
+			${logger.debug('have not validated credentials password={},{}', log:kv('password',password ), log:kv('email',param.login_email))}
 			<security:authentication
 				emailAddress="${param.login_email}"
 				password="${password}"
@@ -47,7 +47,7 @@
 	<c:choose>
 		<c:when test="${validCredentials}">
 			<c:set var="emailAddress" value="${authenticatedData.userData.authentication.emailAddress}" />
-			${logger.info('login of successful loginAttempts={} emailAddress={}', loginAttempts, log:kv('email',emailAddress))}
+			${logger.info('login of successful. {},{}', log:kv('loginAttempts',loginAttempts ), log:kv('email',emailAddress))}
 			<c:set var="password"><go:HmacSHA256 username="${authenticatedData.userData.authentication.emailAddress}" password="${authenticatedData.userData.authentication.password}" brand="${pageSettings.getBrandCode()}" /></c:set>
 			<sql:setDataSource dataSource="jdbc/ctm" />
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />

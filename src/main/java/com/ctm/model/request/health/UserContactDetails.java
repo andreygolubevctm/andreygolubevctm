@@ -66,4 +66,17 @@ public class UserContactDetails {
     public void setOkToCall(String okToCall) {
         this.okToCall = okToCall;
     }
+
+    @Override
+    public String toString() {
+        return "UserContactDetails{" +
+                "emailAddress=" + emailAddress +
+                ", optinEmailAddress='" + optinEmailAddress + '\'' +
+                ", emailAddressSecondary='" + emailAddressSecondary + '\'' +
+                ", optOutEmailHistory='" + optOutEmailHistory + '\'' +
+                ", phoneOther='" + phoneOther + '\'' +
+                ", phoneMobile='" + phoneMobile + '\'' +
+                ", okToCall='" + okToCall + '\'' +
+                '}';
+    }
 }
