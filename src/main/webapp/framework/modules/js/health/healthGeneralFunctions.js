@@ -25,14 +25,6 @@
         "v": '999' // VISA
     };
 
-    function init() {
-
-        $(document).ready(function ($) {
-
-        });
-
-    }
-
     function resetCreditCardConfig() {
         config = { 'visa':true, 'mc':true, 'amex':true, 'diners':false };
     }
@@ -45,28 +37,28 @@
         var $_obj = $('#health_payment_credit_type');
         var $_icons = $('#health_payment_credit-selection .cards');
         $_icons.children().hide();
-
-        var _html = '<option id="health_payment_credit_type_" value="">Please choose...</option>';
+        var prefix = "health_payment_credit_type_";
+        var _html = '<option id="'+prefix+'" value="">Please choose...</option>';
         var _selected = $_obj.find(':selected').val();
 
 
         if( config.visa === true ){
-            _html += '<option id="health_payment_credit_type_v" value="v">Visa</option>';
+            _html += '<option id="'+prefix+'v" value="v">Visa</option>';
             $_icons.find('.visa').show();
         }
 
         if( config.mc === true ){
-            _html += '<option id="health_payment_credit_type_m" value="m">Mastercard</option>';
+            _html += '<option id="'+prefix+'m" value="m">Mastercard</option>';
             $_icons.find('.mastercard').show();
         }
 
         if( config.amex === true ){
-            _html += '<option id="health_payment_credit_type_a" value="a">AMEX</option>';
+            _html += '<option id="'+prefix+'a" value="a">AMEX</option>';
             $_icons.find('.amex').show();
         }
 
         if( config.diners === true ){
-            _html += '<option id="health_payment_credit_type_d" value="d">Diners Club</option>';
+            _html += '<option id="'+prefix+'d" value="d">Diners Club</option>';
             $_icons.find('.diners').show();
         }
 
@@ -109,7 +101,6 @@
     }
 
     meerkat.modules.register("healthCreditCard", {
-        init: init,
         events: events,
         resetConfig: resetCreditCardConfig,
         setCreditCardRules: setCreditCardRules,
