@@ -21,7 +21,6 @@ var less = require("gulp-less"),
     path = require("path");
 
 // TODO: 4095 for IE8
-// TODO: Implement gulp-changed to stop it from overwriting files unnecessarily?
 // TODO: Add .map files
 
 function LessTasks(gulp) {
@@ -45,11 +44,14 @@ function LessTasks(gulp) {
             if(notInWatchesStarted)
                 watchesStarted.push(taskName);
 
+            var hasVariablesLess = (fileList.indexOf("variables.less") !== -1);
+
             return gulp.src(glob)
                 .pipe(plumber({
                     errorHandler: notify.onError("Error: <%= error.message %>")
                 }))
                 // Prepend brand specific variables if file exists
+                .pipe(gulpIf(hasVariablesLess, insert.prepend("@import 'variables.less';")))
                 .pipe(
                     gulpIf(
                         fileList.indexOf(brandFileNames.variables) !== -1,
