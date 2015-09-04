@@ -402,24 +402,26 @@
 	</c:catch>
 		</c:when>
 		<c:when test="${hasPrivacyOptin eq true and rootPath eq 'health'}">
+			<jsp:useBean id="userDetails" class="com.ctm.model.request.health.UserDetails" scope="page" />
+			${userDetails.setFirstname(firstName)}
+			${userDetails.setlastName(lastName)}
+			${userDetails.setRootPath(rootPath)}"
+			${userDetails.questionSet.setEmailAddress(qs_emailAddress)}"
+			${userDetails.questionSet.setOptinEmailAddress(qs_optinEmailAddress)}"
+			${userDetails.questionSet.setEmailAddressSecondary(qs_emailAddressSecondary)}"
+			${userDetails.questionSet.setOptOutEmailHistory(qs_optOutEmailHistory)}"
+			${userDetails.questionSet.setPhoneOther(qs_phoneOther)}"
+			${userDetails.questionSet.setPhoneMobile(qs_phoneMobile)}"
+			${userDetails.questionSet.setOkToCall(qs_okToCall)}"
+			${userDetails.application.setEmailAddress(app_emailAddress)}"
+			${userDetails.application.setOptinEmailAddress(app_optinEmailAddress)}"
+			${userDetails.application.setEmailAddressSecondary(app_emailAddressSecondary)}"
+			${userDetails.application.setOptOutEmailHistory(app_optOutEmailHistory)}"
+			${userDetails.application.setPhoneOther(app_phoneOther)}"
+			${userDetails.application.setPhoneMobile(app_phoneMobile)}"
+			${userDetails.application.setOkToCall(app_okToCall)}"
 			<health:write_optins
-				rootPath = "${rootPath}"
-				qs_emailAddress = "${qs_emailAddress}"
-				qs_optinEmailAddress = "${qs_optinEmailAddress}"
-				qs_emailAddressSecondary = "${qs_emailAddressSecondary}"
-				qs_optOutEmailHistory = "${qs_optOutEmailHistory}"
-				qs_phoneOther = "${qs_phoneOther}"
-				qs_phoneMobile = "${qs_phoneMobile}"
-				qs_okToCall = "${qs_okToCall}"
-				app_emailAddress = "${app_emailAddress}"
-				app_optinEmailAddress = "${app_optinEmailAddress}"
-				app_emailAddressSecondary = "${app_emailAddressSecondary}"
-				app_optOutEmailHistory = "${app_optOutEmailHistory}"
-				app_phoneOther = "${app_phoneOther}"
-				app_phoneMobile = "${app_phoneMobile}"
-				app_okToCall = "${app_okToCall}"
-				firstname = "${firstName}"
-				lastname = "${lastName}"
+				userDetails = "${userDetails}"
 			/>
 		</c:when>
 		<c:otherwise><%-- ignore --%></c:otherwise>

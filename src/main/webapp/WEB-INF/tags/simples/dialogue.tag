@@ -37,7 +37,7 @@
 		<c:set var="dialogueText" value="${fn:replace(dialogueText, '%10YEARSAGO%', continuousCoverYear)}" />
 	</c:catch>
 	<c:if test="${error}">
-		${logger.warn('Exception querying database. {}',log:kv('id', id) error)}
+		${logger.warn('Exception querying database. {},{}',log:kv('id', id), log:kv('styleCodeId',styleCodeId ), error)}
 	</c:if>
 
 	<%-- OUTPUT: display and test for additional flags --%>
