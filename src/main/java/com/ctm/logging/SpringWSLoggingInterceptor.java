@@ -1,4 +1,4 @@
-package com.ctm.interceptors;
+package com.ctm.logging;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;
-
-import com.ctm.xml.XMLOutputWriter;
 
 public class SpringWSLoggingInterceptor implements ClientInterceptor {
 	
