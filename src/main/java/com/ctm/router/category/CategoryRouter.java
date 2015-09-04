@@ -58,7 +58,7 @@ public class CategoryRouter extends HttpServlet {
 
 		}catch (Exception e) {
 
-			logger.error("/Category json failed: ", e);
+			logger.error("Category fetch failed", e);
 
 			JSONObject json = null;
 			Error error = new Error();

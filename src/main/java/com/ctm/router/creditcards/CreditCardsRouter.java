@@ -40,6 +40,8 @@ import com.ctm.utils.creditcards.CreditCardsSortAlgorithms;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 @WebServlet(urlPatterns = {
 		"/creditcards/products/details.json",
@@ -73,7 +75,7 @@ public class CreditCardsRouter extends HttpServlet {
 			PageSettings settings = SettingsService.getPageSettingsByCode(ApplicationService.getBrandFromRequest(request).getCode(), VerticalType.CREDITCARD.getCode());
 
 			if(authToken == null || (authToken != null && !authToken.equals(settings.getSetting("CreditCardsApiAuthToken")))) {
-				logger.error("/creditcards AuthToken provided does not match");
+				logger.error("Credit card authToken doesn't match", kv("authToken", authToken));
 
 				JSONObject json = null;
 				Error error = new Error();
@@ -152,7 +154,7 @@ public class CreditCardsRouter extends HttpServlet {
 
 		}catch (Exception e) {
 
-			logger.error("/creditcards json failed: ", e);
+			logger.error("Credit card get request failed {}", kv("uri", request.getRequestURI()), e);
 
 			JSONObject json = null;
 			Error error = new Error();
@@ -199,7 +201,7 @@ public class CreditCardsRouter extends HttpServlet {
 
 
 			} catch (UploaderException e) {
-				logger.error("",e);
+				logger.error("Credit card post request failed {}", kv("uri", request.getRequestURI()), e);
 			}
 		}
 	}

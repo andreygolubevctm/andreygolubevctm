@@ -64,7 +64,7 @@ public class HomeLoanRouter extends HttpServlet {
 				}
 			}
 			catch (DaoException | ConfigSettingException e) {
-				logger.error("/homeloan/results/get.json failed: ", e);
+				logger.error("Failed getting homeloan results", e);
 
 				Error error = new Error();
 				error.addError(new Error("Failed to get results"));

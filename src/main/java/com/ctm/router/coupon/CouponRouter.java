@@ -26,6 +26,8 @@ import com.ctm.services.coupon.CouponService;
 import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @WebServlet(urlPatterns = {
 		"/coupon/id/get.json",
 		"/coupon/filter.json",
@@ -84,7 +86,7 @@ public class CouponRouter extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			logger.error("There was an issue producing the Coupon JSON response", e);
+			logger.error("Coupon request failed {}", kv("uri", request.getRequestURI()), e);
 			writeErrors(e, writer, response);
 		}
 	}
@@ -94,7 +96,7 @@ public class CouponRouter extends HttpServlet {
 		try {
 			writer.print(couponService.getCouponById(couponRequest).toJson());
 		} catch (DaoException e) {
-			logger.error("Could not get coupon for couponId: '"+ couponRequest.couponId +"'", e);
+			logger.error("Coupon fetch failed {}", kv("couponId", couponRequest.couponId), e);
 			writeErrors(e, writer, response);
 		}
 	}
@@ -103,7 +105,7 @@ public class CouponRouter extends HttpServlet {
 		try {
 			writer.print(couponService.filterCouponForUser(couponRequest, data).toJson());
 		} catch (DaoException e) {
-			logger.error("Could not filter coupon for user: '"+ couponRequest.transactionId +"'", e);
+			logger.error("Coupon filter for user failed {}", kv("transactionId", couponRequest.transactionId), e);
 			writeErrors(e, writer, response);
 		}
 	}
@@ -113,7 +115,7 @@ public class CouponRouter extends HttpServlet {
 		try {
 			writer.print(couponService.validateCouponCode(couponRequest, data).toJson());
 		} catch (DaoException e) {
-			logger.error("Could not validate coupon code: '"+ couponRequest.couponCode +"'", e);
+			logger.error("Coupon validation failed {}", kv("couponCode", couponRequest.couponCode), e);
 			writeErrors(e, writer, response);
 		}
 	}
@@ -123,7 +125,7 @@ public class CouponRouter extends HttpServlet {
 		try {
 			writer.print(couponService.getCouponByVdn(couponRequest).toJson());
 		} catch (DaoException e) {
-			logger.error("Could not get coupon for vdn: '"+ couponRequest.vdn +"'", e);
+			logger.error("Coupon fetch failed {}", kv("vdn", couponRequest.vdn), e);
 			writeErrors(e, writer, response);
 		}
 	}

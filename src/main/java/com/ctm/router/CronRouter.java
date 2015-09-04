@@ -19,6 +19,8 @@ import com.ctm.services.SettingsService;
 import com.ctm.services.homeloan.HomeLoanOpportunityService;
 import com.ctm.services.homeloan.HomeLoanService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Use the pattern of:
  *  cron/{period}/{vertical}/usefulName.json
@@ -65,7 +67,7 @@ public class CronRouter extends HttpServlet {
 				SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.HOMELOAN.getCode());
 				homeLoanService.scheduledLeadGenerator(request);
 			} catch(Exception e) {
-				logger.error("Homeloan_flexOutboundLead cron failed", e);
+				logger.error("Cron homeload flexOutbound Lead failed", e);
 			}
 
 		} else {
@@ -100,7 +102,7 @@ public class CronRouter extends HttpServlet {
 				try {
 					CronService.execute(request, frequency);
 				} catch(Exception e) {
-					logger.error("Error executing '" + frequency + "' cron jobs: " + e.getMessage(), e);
+					logger.error("Cron job failed {}, {}", kv("frequency", frequency), kv("uri", request.getRequestURI()), e);
 				}
 			}
 		}

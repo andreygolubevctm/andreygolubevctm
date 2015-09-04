@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.utils.ResponseUtils.writeError;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
@@ -54,8 +55,8 @@ public class AdminRouter {
                         response.sendError(SC_NOT_FOUND);
             }
         } catch (Exception e) {
-            logger.error("",e);
-            writeError(writer,response, e);
+            logger.error("Admin post request failed {}", kv("uri", uri), e);
+            writeError(writer, response, e);
         }
     }
 
@@ -80,7 +81,7 @@ public class AdminRouter {
                     response.sendError(SC_NOT_FOUND);
             }
         } catch (Exception e) {
-            logger.error("",e);
+            logger.error("Admin get request failed", kv("uri", uri), e);
             writeError(writer,response, e);
         }
     }

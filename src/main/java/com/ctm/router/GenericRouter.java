@@ -22,6 +22,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @WebServlet(urlPatterns = {
 		// GET
 		"/generic/logout_user.json",
@@ -83,7 +85,7 @@ public class GenericRouter extends HttpServlet {
 
 	private void handleError(HttpServletRequest request, String uri, Brand brand, Exception exception, HttpServletResponse response) {
 		FatalErrorService fatalErrorService = new FatalErrorService();
-		logger.error("Failed to reset password ", exception);
+		logger.error("Failed to reset password {}, {}", kv("requestUri", uri), kv("brand", brand), exception);
 		String sessionId = "";
 		int styleCodeId = 0;
 		if(request.getSession() != null){
@@ -100,7 +102,7 @@ public class GenericRouter extends HttpServlet {
 		try {
 			response.getWriter().print(json.toString());
 		} catch (IOException e) {
-			logger.error("",e);
+			logger.error("Failed creating json for reset password error",e);
 		}
 	}
 

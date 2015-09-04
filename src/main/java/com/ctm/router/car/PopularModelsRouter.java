@@ -16,6 +16,8 @@ import org.json.JSONObject;
 
 import com.ctm.services.car.PopularModelsService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 @WebServlet(urlPatterns = {
 	"/car/execute/popularModels.json"
@@ -46,7 +48,7 @@ public class PopularModelsRouter extends HttpServlet {
 		try {
 			json.append("updated", lastUpdated);
 		} catch (JSONException e) {
-			logger.error("Failed to receive a valid response from Popular Models service", e);
+			logger.error("Failed create popular models json response {}", kv("lastUpdated", lastUpdated), e);
 		}
 
 		// Write json to response
