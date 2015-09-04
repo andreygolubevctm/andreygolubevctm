@@ -17,10 +17,6 @@
 
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
-<c:if test="${required}">
-	<c:set var="requiredAttribute" value=' required="required"' />
-</c:if>
-
 <c:set var="sizeAttribute" value=' size="18"' />
 <c:if test="${not empty size}">
 	<c:set var="sizeAttribute" value=' size="${size}"' />
@@ -35,9 +31,9 @@
 </c:if>
 
 <%-- HTML --%>
-<c:set var="validationAttributes" value="" />
+<c:set var="validationAttributes" value=" data-rule-personName='true' " />
 <c:if test="${required}">
-	<c:set var="validationAttributes" value=" data-msg-required='Please enter ${title}' data-rule-personName='true' " />
+	<c:set var="validationAttributes" value=" required data-msg-required='Please enter ${title}' " />
 </c:if>
 <input type="text" name="${name}" id="${name}" class="form-control person_name sessioncamexclude ${className}"
-	   value="${value}" ${sizeAttribute}${requiredAttribute}${placeHolderAttribute} ${maxlengthAttribute} ${validationAttributes}>
+	   value="${value}" ${sizeAttribute}${placeHolderAttribute} ${maxlengthAttribute} ${validationAttributes}>

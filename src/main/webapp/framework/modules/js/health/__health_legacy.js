@@ -193,13 +193,13 @@ var healthChoices = {
 	},
 
 	setLocation : function(location) {
+
 		if( healthChoices.isValidLocation(location) ) {
 			var value = $.trim(String(location));
 			var pieces = value.split(' ');
 			var state = pieces.pop();
 			var postcode = pieces.pop();
 			var suburb = pieces.join(' ');
-
 			$('#health_situation_state').val(state);
 			$('#health_situation_postcode').val(postcode).trigger("change");
 			$('#health_situation_suburb').val(suburb);

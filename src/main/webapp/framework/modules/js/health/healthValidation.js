@@ -126,7 +126,6 @@
         "v": new RegExp('^4[0-9]{12}(?:[0-9]{3})?$')
     };
 
-    //TODO: test if we can change the data-rule init value after its been initialised, so we don't need to add/remove rules.
     $.validator.addMethod("creditCardNumber", function (value, elem, param) {
 
             /* Strip non-numeric */

@@ -67,7 +67,7 @@
 						xpath="${fieldXpath}"
 						title="Best time to call"
 						className="callmeback_timeOfDay"
-						required="false" />
+						required="false" extraDataAttributes="data-msg-required='Please select when you want us to call you back'" />
 				</div>
 			</div>
 
