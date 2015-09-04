@@ -216,13 +216,6 @@
 		<field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="callmeback/save/time" title="array_select" required="true" />
 	</form_new:row>
 
-	<form_new:row label="<del>autocomplete</del>">
-	</form_new:row>
-
-	<form_new:row label="basic_date (date picker)">
-		<field:basic_date xpath="${vertical}_date" required="true" title="basic_date" numberOfMonths="1" minDate="-1y" maxDate="11m" disableWeekends="true" disablePublicHolidays="true" />
-	</form_new:row>
-
 	<form_new:row label="birthday">
 		<field:birthday dob="22/08/1970" />
 	</form_new:row>

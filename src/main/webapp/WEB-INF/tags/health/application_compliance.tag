@@ -6,11 +6,11 @@
 <%@ attribute name="xpath" 		required="true"  	rtexprvalue="true"	 description="optional id for this slide"%>
 
 <%-- Main content --%>
-<agg:privacy xpath="${xpath}/compliance" make_private="${callCentre}" callback="health_application_compliance.callback(state);" >
+<health:privacy xpath="${xpath}/compliance" make_private="${callCentre}">
 	<health:credit_card_details xpath="${xpath}" />
 	<health:bank_details xpath="${xpath}/bank" />
 	<field:hidden xpath="${xpath}/policyDate" className="health_details-policyDate" />
-</agg:privacy>
+</health:privacy>
 
 <simples:dialogue id="29" vertical="health" mandatory="true" />
 <simples:dialogue id="40" vertical="health" mandatory="true" className="hidden new-quote-only" />
