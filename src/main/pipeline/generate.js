@@ -1,6 +1,7 @@
 var argv = require("yargs").argv,
     path = require("path"),
     fs = require("fs"),
+    beautify = require('js-beautify').js_beautify,
     mkdirp = require("mkdirp"),
     prompt = require("prompt");
 
@@ -21,13 +22,73 @@ function stringifyJSON(jsonObj) {
     return JSON.stringify(jsonObj, null, 4);
 }
 
+function capitaliseFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function beautifyJS(JS) {
+    return beautify(JS, {
+       indent_size: 4
+    });
+}
+
+function generateModuleJS(moduleName) {
+    var capitalisedModuleName = capitaliseFirstLetter(moduleName);
+
+    var baseCode = [
+        ";(function($, undefined) {",
+            "var meerkat = window.meerkat,",
+                "meerkatEvents = meerkat.modules.events,",
+                "log = meerkat.logging.info;",
+            "var events = {};",
+            "",
+            "function init" + capitalisedModuleName + " () {",
+                "// Code goes here",
+            "}",
+            "",
+            "meerkat.modules.register(\"" + moduleName + "\", {",
+                "init: init" + capitalisedModuleName + ",",
+                "events: events",
+            "});",
+        "})(jQuery);"
+    ].join("\r\n");
+
+    return beautifyJS(baseCode);
+}
+
 var generators = {
+    module: function() {
+        prompt.start();
+
+        var schema = [
+            {
+                name: "bundle",
+                description: "Bundle name",
+                type: "string",
+                required: true
+            }, {
+                name: "module",
+                description: "Module name",
+                type: "string",
+                required: true
+            }
+        ];
+
+        prompt.get(schema, function(err, result) {
+            if(err) return console.error(err);
+
+            var folderPath = path.join(config.bundles.dir, result.bundle, "js");
+            writeFile(folderPath, result.module + ".js", generateModuleJS(result.module));
+
+            console.log("Generated Module: " + result.module + " for Bundle: " + result.bundle);
+        });
+    },
     bundle: function() {
         prompt.start();
 
         var schema = [
             {
-                name: "bundlename",
+                name: "bundle",
                 description: "Bundle name",
                 type: "string",
                 required: true
@@ -35,31 +96,27 @@ var generators = {
         ];
 
         prompt.get(schema, function(err, result){
-            if(err) return;
+            if(err) return console.error(err);
 
-            var folderPath = path.join(config.bundles.dir, result.bundlename);
+            var folderPath = path.join(config.bundles.dir, result.bundle);
 
-            mkdirp(folderPath, function(err){
-                if(err) return console.error(err);
+            var paths = {
+                js: path.join(folderPath, "js"),
+                less: path.join(folderPath, "less"),
+            };
 
-                var paths = {
-                    js: path.join(folderPath, "js"),
-                    less: path.join(folderPath, "less"),
-                };
+            writeFile(paths.js, result.bundle + ".js", generateModuleJS(result.bundle));
+            writeFile(paths.less, "build.less", "// " + result.bundle + " custom LESS goes here");
+            writeFile(paths.less, "variables.less", "// " + result.bundle + " variables go here");
 
-                // TODO: Use a meerkat module generator
-                //writeFile(paths.js, result.bundlename + ".js", "hello");
-                writeFile(paths.less, "build.less", "// Custom LESS goes here");
+            var bundleJson = {
+                brandCodes: ["ctm"],
+                jsDependencies: ["meerkat", "core"]
+            };
 
-                var bundleJson = {
-                    brandCodes: ["ctm"],
-                    jsDependencies: ["meerkat", "core"]
-                };
+            writeFile(folderPath, "bundle.json", stringifyJSON(bundleJson));
 
-                writeFile(folderPath, "bundle.json", stringifyJSON(bundleJson));
-
-                console.log("Generated Bundle: " + result.bundlename);
-            });
+            console.log("Generated Bundle: " + result.bundle);
         });
     }
 };
