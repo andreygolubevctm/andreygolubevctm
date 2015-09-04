@@ -404,22 +404,22 @@
 		<c:when test="${hasPrivacyOptin eq true and rootPath eq 'health'}">
 			<jsp:useBean id="userDetails" class="com.ctm.model.request.health.UserDetails" scope="page" />
 			${userDetails.setFirstname(firstName)}
-			${userDetails.setlastName(lastName)}
-			${userDetails.setRootPath(rootPath)}"
-			${userDetails.questionSet.setEmailAddress(qs_emailAddress)}"
-			${userDetails.questionSet.setOptinEmailAddress(qs_optinEmailAddress)}"
-			${userDetails.questionSet.setEmailAddressSecondary(qs_emailAddressSecondary)}"
-			${userDetails.questionSet.setOptOutEmailHistory(qs_optOutEmailHistory)}"
-			${userDetails.questionSet.setPhoneOther(qs_phoneOther)}"
-			${userDetails.questionSet.setPhoneMobile(qs_phoneMobile)}"
-			${userDetails.questionSet.setOkToCall(qs_okToCall)}"
-			${userDetails.application.setEmailAddress(app_emailAddress)}"
-			${userDetails.application.setOptinEmailAddress(app_optinEmailAddress)}"
-			${userDetails.application.setEmailAddressSecondary(app_emailAddressSecondary)}"
-			${userDetails.application.setOptOutEmailHistory(app_optOutEmailHistory)}"
-			${userDetails.application.setPhoneOther(app_phoneOther)}"
-			${userDetails.application.setPhoneMobile(app_phoneMobile)}"
-			${userDetails.application.setOkToCall(app_okToCall)}"
+			${userDetails.setLastname(lastName)}
+			${userDetails.setRootPath(rootPath)}
+			${userDetails.questionSet.setEmailAddress(qs_emailAddress)}
+			${userDetails.questionSet.setOptinEmailAddress(qs_optinEmailAddress)}
+			${userDetails.questionSet.setEmailAddressSecondary(qs_emailAddressSecondary)}
+			${userDetails.questionSet.setOptOutEmailHistory(qs_optOutEmailHistory)}
+			${userDetails.questionSet.setPhoneOther(qs_phoneOther)}
+			${userDetails.questionSet.setPhoneMobile(qs_phoneMobile)}
+			${userDetails.questionSet.setOkToCall(qs_okToCall)}
+			${userDetails.application.setEmailAddress(app_emailAddress)}
+			${userDetails.application.setOptinEmailAddress(app_optinEmailAddress)}
+			${userDetails.application.setEmailAddressSecondary(app_emailAddressSecondary)}
+			${userDetails.application.setOptOutEmailHistory(app_optOutEmailHistory)}
+			${userDetails.application.setPhoneOther(app_phoneOther)}
+			${userDetails.application.setPhoneMobile(app_phoneMobile)}
+			${userDetails.application.setOkToCall(app_okToCall)}
 			<health:write_optins
 				userDetails = "${userDetails}"
 			/>

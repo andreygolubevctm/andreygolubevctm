@@ -3,18 +3,17 @@ package com.ctm.model.request.health;
 public class UserDetails {
 
     private String rootPath;
-    private UserContactDetails questionSet = new UserContactDetails();
     private UserContactDetails application = new UserContactDetails();
-
+    private UserContactDetails questionSet = new UserContactDetails();
     private String firstname;
     private String lastname;
 
-    public UserContactDetails getQuestionSet() {
-        return questionSet;
+    public UserContactDetails getApplication() {
+        return application;
     }
 
-    public void setQuestionSet(UserContactDetails questionSet) {
-        this.questionSet = questionSet;
+    public UserContactDetails getQuestionSet() {
+        return questionSet;
     }
 
     public String getFirstname() {
@@ -47,8 +46,8 @@ public class UserDetails {
                 "rootPath=" + rootPath +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
-                ", questionSet='" + questionSet + '\'' +
-                ", application='" + application + '\'' +
+                ", questionSet=" + questionSet  +
+                ", application=" + application  +
                 '}';
     }
 }

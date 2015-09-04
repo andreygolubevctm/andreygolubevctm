@@ -82,7 +82,7 @@
 </c:if>
 
 <%-- 4th step - Write phone optins to stamping table --%>
-<c:set var="userDetails.questionSet.okToCall_value">
+<c:set var="userDetails.questionSet.okToCall">
 	<c:choose>
 		<c:when test="${userDetails.questionSet.okToCall eq 'Y'}">on</c:when>
 		<c:otherwise>off</c:otherwise>
@@ -93,7 +93,7 @@
 		action="toggle_okToCall"
 		vertical="${fn:toLowerCase(userDetails.rootPath)}"
 		target="${userDetails.questionSet.phoneOther}"
-		value="${userDetails.questionSet.okToCall_value}"
+		value="${userDetails.questionSet.okToCall}"
 		comment="QUOTE"
 	/>
 </c:if>
@@ -102,12 +102,12 @@
 		action="toggle_okToCall"
 		vertical="${fn:toLowerCase(userDetails.rootPath)}"
 		target="${userDetails.questionSet.phoneMobile}"
-		value="${userDetails.questionSet.okToCall_value}"
+		value="${userDetails.questionSet.okToCall}"
 		comment="QUOTE"
 	/>
 </c:if>
 
-<c:set var="userDetails.application.okToCall_value">
+<c:set var="userDetails.application.okToCall">
 	<c:choose>
 		<c:when test="${userDetails.application.okToCall eq 'Y'}">on</c:when>
 		<c:otherwise>off</c:otherwise>
@@ -118,7 +118,7 @@
 		action="toggle_okToCall"
 		vertical="${fn:toLowerCase(userDetails.rootPath)}"
 		target="${userDetails.application.phoneOther}"
-		value="${userDetails.application.okToCall_value}"
+		value="${userDetails.application.okToCall}"
 		comment="APPLICATION"
 	/>
 </c:if>
@@ -127,7 +127,7 @@
 		action="toggle_okToCall"
 		vertical="${fn:toLowerCase(userDetails.rootPath)}"
 		target="${userDetails.application.phoneMobile}"
-		value="${userDetails.application.okToCall_value}"
+		value="${userDetails.application.okToCall}"
 		comment="APPLICATION"
 	/>
 </c:if>

@@ -97,7 +97,7 @@ MAIN CALL
 								<c:set var="postcodeList">${fn:substring(postcodeList, 0, fn:length(postcodeList)-1 )}</c:set>
 								
 								<%-- Print this line to your server to check it over --%>
-								${logger.info('About to insert into postcode_relations. {},{}', kv("sqlCount" , sqlCount), kv("postcode", postcode), kv("postcodeList", postcodeList))}
+								${logger.info('About to insert into postcode_relations. {},{}', log:kv("sqlCount" , sqlCount), log:kv("postcode", postcode), log:kv("postcodeList", postcodeList))}
 								<% Thread.sleep(1000); %>
 								
 								<%-- SQL Update - if duplicate, only update the results --%>		

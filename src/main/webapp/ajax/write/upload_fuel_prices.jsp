@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="java.util.Date,java.io.*,java.util.*,java.text.*,java.math.*, java.io.*"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <%--
 AUTOMATIC CRON JOB FOR MOTORMOUTH FUEL SERVICE
@@ -226,7 +225,7 @@ XML PARSE AND SQL UPDATE
 		<%--  / MAIN XML AND PARSE --%>
 
 		<%-- Send an Update to the server --%>
-		${log.debug('Results for statement. {},{}',kv('token', token),kv('sqlCount', sqlCount))}
+		${logger.debug('Results for statement. {},{}',log:kv('token', token),log:kv('sqlCount', sqlCount))}
 		
 		<%--
 		=======================================
