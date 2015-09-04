@@ -21,6 +21,10 @@
     "gulp-beautify": "^1.1.2",
     "gulp-plumber": "^1.0.1",
     "gulp-notify": "^2.2.0",
-    "gulp-cached": "^1.1.0"
+    "gulp-cached": "^1.1.0",
+    "yargs": "^3.23.0",
+    "prompt": "^0.2.14",
+    "gulp-util": "^3.0.6",
+    "mkdirp": "^0.5.1"
   }
 }
