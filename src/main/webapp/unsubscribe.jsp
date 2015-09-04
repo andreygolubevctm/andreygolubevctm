@@ -18,7 +18,7 @@
         <layout:generic_page title="Unsubscribe" outputTitle="${false}">
 
         <jsp:attribute name="head">
-            <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/components/unsubscribe.${pageSettings.getBrandCode()}.css?${revision}" media="all">
+            <link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/unsubscribe${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
         </jsp:attribute>
 
         <jsp:attribute name="head_meta">
@@ -55,8 +55,8 @@
             <jsp:attribute name="body_end"></jsp:attribute>
 
             <jsp:attribute name="additional_meerkat_scripts">
-                <script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/components/unsubscribe.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-        </jsp:attribute>
+                <script src="${assetUrl}assets/js/unsubscribe${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+            </jsp:attribute>
 
             <jsp:body>
 
