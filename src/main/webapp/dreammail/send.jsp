@@ -2,8 +2,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
-
 <c:choose>
 	<c:when test="${not empty param.transactionId}">
 		<session:get settings="true" />
@@ -54,11 +52,11 @@
 			</c:when>
 			<c:otherwise>
 <!-- 			TODO: REMOVE BELOW - CHECK THAT NOTHING ELSE USES DISC -->
-		<c:set var="dmUsername">BD_Automated</c:set>
-		<c:set var="dmPassword">Pass123</c:set>
-		<c:set var="dmUrl">https://rtm.na.epidm.net/weblet/weblet.dll</c:set>
-		<c:set var="dmServer">dm14</c:set>
-		<c:set var="dmDebug">Y</c:set>
+				<c:set var="dmUsername">BD_Automated</c:set>
+				<c:set var="dmPassword">Pass123</c:set>
+				<c:set var="dmUrl">https://rtm.na.epidm.net/weblet/weblet.dll</c:set>
+				<c:set var="dmServer">dm14</c:set>
+				<c:set var="dmDebug">Y</c:set>
 			</c:otherwise>
 		</c:choose>
 		
@@ -73,96 +71,96 @@
 		<sql:setDataSource dataSource="jdbc/ctm"/>
 		<%-- Build the xml for each row and process it. --%>
 		<%-- If we don't have xml, because we're not doing a transaction lookup with awesome data, we just pass some donkey xml, because we know the xsl doesn't check anything inside it PLEASE ENSURE YOU HAVE SOMETHING IN YOUR XML AS A BLANK VARIABLE WILL CAUSE THE EMAIL NOT TO SEND --%>
-			<c:choose>
+		<c:choose>
 			<c:when test="${not empty param.transactionId}">
-			<c:set var="rowXML">
-				<core:xmlTranIdFromSQL tranId="${param.transactionId}"></core:xmlTranIdFromSQL>
-			</c:set>
-				</c:when>
-				<c:otherwise>
-					<c:set var="rowXML">
-						<tempSQL><generic></generic></tempSQL>
-					</c:set>
-				</c:otherwise>
-			</c:choose>
+				<c:set var="rowXML">
+					<core:xmlTranIdFromSQL tranId="${param.transactionId}"></core:xmlTranIdFromSQL>
+				</c:set>
+			</c:when>
+			<c:otherwise>
+				<c:set var="rowXML">
+					<tempSQL><generic></generic></tempSQL>
+				</c:set>
+			</c:otherwise>
+		</c:choose>
 			
-			<c:if test="${extraSql == 'Y'}">
-				<c:import var="sqlStatement" url="/dreammail/${param.tmpl}.sql" />
-				<c:choose>
-					<c:when test="${param.tmpl eq 'travel_edm'}">
-						<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core:xmlForOtherQuery></c:set>
-					</c:when>
-					<c:when test="${param.tmpl eq 'health_bestprice'}">
-						<c:set var="rowXML"><health:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" ></health:xmlForOtherQuery></c:set>
-						<c:set var="rowXML"><health:xmlForCallCentreHoursQuery /></c:set>
-					</c:when>
+		<c:if test="${extraSql == 'Y'}">
+			<c:import var="sqlStatement" url="/dreammail/${param.tmpl}.sql" />
+			<c:choose>
+				<c:when test="${param.tmpl eq 'travel_edm'}">
+					<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core:xmlForOtherQuery></c:set>
+				</c:when>
+				<c:when test="${param.tmpl eq 'health_bestprice'}">
+					<c:set var="rowXML"><health:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" ></health:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><health:xmlForCallCentreHoursQuery /></c:set>
+				</c:when>
 				<c:when test="${param.tmpl eq 'home_bestprice'}">
 					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="home"></agg:xmlForOtherQuery></c:set>
 				</c:when>
 				<c:when test="${param.tmpl eq 'car_bestprice'}">
 					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="car"></agg:xmlForOtherQuery></c:set>
 				</c:when>
-					<c:otherwise>
-						<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}"></core:xmlForOtherQuery></c:set>
-					</c:otherwise>
-				</c:choose>
-			</c:if>
-			<go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
+				<c:otherwise>
+					<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}"></core:xmlForOtherQuery></c:set>
+				</c:otherwise>
+			</c:choose>
+		</c:if>
+		<go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
 
 		<c:choose>
 
 			<c:when test="${rowXML != '' }">
 
 				<c:if test="${paramSend != 'Y'}">
-		<%-- NB: There was a huge amount of stuff surrounding this jsp by way of core:head and go:html go:body - that is dying in the console regarding the applicationSettings. So i've ditched them in favor of just manually wrapping in a html skeleton, since it's a dev only page with no styling. --%>
-		<core:doctype />
-		<html class="no-js" lang="en">
-			<head>
-				<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-				<meta http-equiv="Cache-Control" content="no-cache, max-age=0" />
-				<meta http-equiv="Expires" content="-1">
-				<meta http-equiv="Pragma" content="no-cache">
-				<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-				<title>Compare the Market - Process SQL and send to dreammail</title>
-			</head>
-			<body>
-					<h3>SQL Call:</h3>
-					<pre><c:out value="${sqlStatement}"/></pre>
-				<h3>Row XML:</h3>
-				<pre><c:out value="${rowXML}" escapeXml="true"/></pre>
-			</c:if>
+					<%-- NB: There was a huge amount of stuff surrounding this jsp by way of core:head and go:html go:body - that is dying in the console regarding the applicationSettings. So i've ditched them in favor of just manually wrapping in a html skeleton, since it's a dev only page with no styling. --%>
+					<core:doctype />
+					<html class="no-js" lang="en">
+						<head>
+							<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+							<meta http-equiv="Cache-Control" content="no-cache, max-age=0" />
+							<meta http-equiv="Expires" content="-1">
+							<meta http-equiv="Pragma" content="no-cache">
+							<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+							<title>Compare the Market - Process SQL and send to dreammail</title>
+						</head>
+						<body>
+								<h3>SQL Call:</h3>
+								<pre><c:out value="${sqlStatement}"/></pre>
+							<h3>Row XML:</h3>
+							<pre><c:out value="${rowXML}" escapeXml="true"/></pre>
+				</c:if>
 			
-					<c:set var="MailingName">${param.MailingName}</c:set>
-		<c:set var="OptInMailingName">${param.OptInMailingName}</c:set>
-					<c:set var="env">${param.env}</c:set>
-					<c:set var="server">${param.server}</c:set>
-					<c:set var="SessionId">${param.SessionId}</c:set>
-		<c:set var="baseURL">${pageSettings.getBaseUrl()}</c:set>
+				<c:set var="MailingName">${param.MailingName}</c:set>
+				<c:set var="OptInMailingName">${param.OptInMailingName}</c:set>
+				<c:set var="env">${param.env}</c:set>
+				<c:set var="server">${param.server}</c:set>
+				<c:set var="SessionId">${param.SessionId}</c:set>
+				<c:set var="baseURL">${pageSettings.getBaseUrl()}</c:set>
 					
-		<c:set var="myResult">
-			<x:transform doc="${rowXML}" xslt="${myXSL}">
-					<x:param name="Brand">${pageSettings.getBrandCode()}</x:param>
-					<x:param name="ClientName">${ClientName}</x:param>
-				<x:param name="ClientId">${pageSettings.getSetting('sendClientId')}</x:param>
-					<x:param name="SiteName">${SiteName}</x:param>
-					<x:param name="CampaignName">${CampaignName}</x:param>
-					<x:param name="MailingName">${MailingName}</x:param>
-				<x:param name="OptInMailingName">${OptInMailingName}</x:param>
-					<x:param name="env">${env}</x:param>
-					<x:param name="server">${server}</x:param>
-					<x:param name="SessionId">${SessionId}</x:param>
-					<x:param name="tranId">${param.transactionId}</x:param>
-					<x:param name="InsuranceType">${param.tmpl}</x:param>
-				<x:param name="baseURL">${baseURL}</x:param>
-				<x:param name="sendToEmail">${param.emailAddress}</x:param>
-					<x:param name="hashedEmail">${param.hashedEmail}</x:param>
-				<x:param name="emailSubscribed">${param.emailSubscribed}</x:param>
-					<x:param name="contextFolder">${pageSettings.getSetting('contextFolder')}</x:param>
-					<x:param name="token">${param.token}</x:param>
+				<c:set var="myResult">
+					<x:transform doc="${rowXML}" xslt="${myXSL}">
+						<x:param name="Brand">${pageSettings.getBrandCode()}</x:param>
+						<x:param name="ClientName">${ClientName}</x:param>
+						<x:param name="ClientId">${pageSettings.getSetting('sendClientId')}</x:param>
+						<x:param name="SiteName">${SiteName}</x:param>
+						<x:param name="CampaignName">${CampaignName}</x:param>
+						<x:param name="MailingName">${MailingName}</x:param>
+						<x:param name="OptInMailingName">${OptInMailingName}</x:param>
+						<x:param name="env">${env}</x:param>
+						<x:param name="server">${server}</x:param>
+						<x:param name="SessionId">${SessionId}</x:param>
+						<x:param name="tranId">${param.transactionId}</x:param>
+						<x:param name="InsuranceType">${param.tmpl}</x:param>
+						<x:param name="baseURL">${baseURL}</x:param>
+						<x:param name="sendToEmail">${param.emailAddress}</x:param>
+						<x:param name="hashedEmail">${param.hashedEmail}</x:param>
+						<x:param name="emailSubscribed">${param.emailSubscribed}</x:param>
+						<x:param name="contextFolder">${pageSettings.getSetting('contextFolder')}</x:param>
+						<x:param name="token">${param.token}</x:param>
 						<x:param name="bccEmail">${param.bccEmail}</x:param>
 						<c:if test="${fn:contains(param.tmpl,'health_')}">
 							<x:param name="callCentrePhone"><content:get key="callCentreNumber"/></x:param>
-					</c:if>
+						</c:if>
 						<c:if test="${fn:contains(param.tmpl,'car_')}">
 							<x:param name="ImageUrlPrefix">${pageSettings.getSetting('imageUrlPrefix')}</x:param>
 							<x:param name="ImageUrlSuffix">${pageSettings.getSetting('imageUrlSuffix')}</x:param>
@@ -171,37 +169,37 @@
 							<x:param name="ImageUrlPrefix">${pageSettings.getSetting('imageUrlPrefix')}</x:param>
 							<x:param name="ImageUrlSuffix">${pageSettings.getSetting('imageUrlSuffix')}</x:param>
 						</c:if>
-				</x:transform>
-			</c:set>
+					</x:transform>
+				</c:set>
 
-			<%-- If we're outputting to the page only, just output the result. --%>	
-			<c:choose>
-				<c:when test="${paramSend != 'Y'}">
-					<h3>Result XML:</h3>
-					<pre><c:out value="${myResult}" escapeXml="true"/></pre>
-					<hr />
-				</body>
-				</html>
-				</c:when>
-				<c:otherwise>
-					<%-- Send to dreammail and output the result to the page --%>
-					<c:catch var="error">
-						<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug,isExactTarget)}</c:set>
-					</c:catch>
-					<c:if test="${not empty error}">
+				<%-- If we're outputting to the page only, just output the result. --%>
+				<c:choose>
+					<c:when test="${paramSend != 'Y'}">
+							<h3>Result XML:</h3>
+							<pre><c:out value="${myResult}" escapeXml="true"/></pre>
+							<hr />
+						</body>
+						</html>
+					</c:when>
+					<c:otherwise>
+						<%-- Send to dreammail and output the result to the page --%>
+						<c:catch var="error">
+							<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug,isExactTarget)}</c:set>
+						</c:catch>
+						<c:if test="${not empty error}">
 							<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-							<c:param name="page" value="/dreammail/send.jsp" />
-								<c:param name="message" value="Dreammail: ${error.cause.message}" />
-								<c:param name="description" value="Failed to send email" />
-							<c:param name="data" value="${myResult}" />
-						</c:import>
-					<%-- JSON result failure returned --%>
-					<json:object>
-						<json:property name="result" value="SEND_FAILURE"/>
-						<json:property name="message" value="${error.cause.message}"/>
-					</json:object>
-					</c:if>
-						
+								<c:param name="page" value="/dreammail/send.jsp" />
+									<c:param name="message" value="Dreammail: ${error.cause.message}" />
+									<c:param name="description" value="Failed to send email" />
+								<c:param name="data" value="${myResult}" />
+							</c:import>
+							<%-- JSON result failure returned --%>
+							<json:object>
+								<json:property name="result" value="SEND_FAILURE"/>
+								<json:property name="message" value="${error.cause.message}"/>
+							</json:object>
+						</c:if>
+
 						<x:parse xml="${emailResponseXML}" var="output"/>
 						<x:set var="resultNode" select="string($output//*[local-name()='CreateResponse']/*[local-name()='OverallStatus']/text())" />
 						<c:if test="${resultNode != 'OK' and isExactTarget eq true}">
@@ -211,14 +209,14 @@
 								<c:param name="description" value="Email response failure" />
 								<c:param name="data" value="PARAMS: ${param} RESPONSE:${emailResponseXML}" />
 							</c:import>
-							${logger.info('Email response failure occured. Did not send')}
+							<go:log>Email response failure occured. Did not send</go:log>
 						</c:if>
-				</c:otherwise>
-			</c:choose>
+					</c:otherwise>
+				</c:choose>
 			</c:when>
 			<c:otherwise>
-				${logger.info('No content for email - not sending.')}
-	</c:otherwise>
+				<go:log>No content for email - not sending.</go:log>
+			</c:otherwise>
 		</c:choose>
 	</c:otherwise>
 </c:choose>
