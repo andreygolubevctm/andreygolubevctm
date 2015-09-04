@@ -21,7 +21,7 @@ module.exports = {
         entryPoint: "bundle.json"
     },
     bootstrap: {
-        dir: rootDir + "/../webapp/libraries/bootstrap"
+        dir: rootDir + "/../webapp/assets/libraries/bootstrap"
     },
     target: {
         dir: rootDir + "/../webapp/assets"

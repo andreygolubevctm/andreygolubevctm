@@ -83,7 +83,7 @@
 			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}../framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
 		<!--<![endif]-->
 
-			<script src="${assetUrl}../brand/${pageSettings.getBrandCode()}/js/bootstrap.${pageSettings.getBrandCode()}.min.js?${revision}"></script>
+			<script src="${assetUrl}js/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 
 			<script src="${assetUrl}../framework/jquery/plugins/jquery.validate-1.11.1.js"></script>
 
