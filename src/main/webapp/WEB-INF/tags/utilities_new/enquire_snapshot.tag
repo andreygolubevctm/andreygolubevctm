@@ -11,10 +11,13 @@
             <div class="col-sm-9">
                 <div class="row">
                     <div class="col-sm-12 snapshot-title">
+                        <!-- SessionCam:Hide -->
                         <span data-source="#utilities_application_details_firstName"
                               data-alternate-source="#utilities_resultsDisplayed_firstName"></span>
                         <span data-source="#utilities_application_details_lastName"></span>
+                        <!-- /SessionCam:Hide -->
                     </div>
+
                     <div class="col-sm-12 snapshotSituation"></div>
                 </div>
             </div>

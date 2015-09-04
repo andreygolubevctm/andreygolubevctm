@@ -7,7 +7,8 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.SessionTokenDao;
 import com.ctm.dao.TouchDao;
@@ -22,7 +23,7 @@ import com.disc_au.web.LDAPDetails;
 
 public class AuthenticationService {
 
-	private static Logger logger = Logger.getLogger(AuthenticationService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class.getName());
 	
 	static AuthenticationService authenticationService = new AuthenticationService();
 

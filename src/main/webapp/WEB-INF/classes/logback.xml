@@ -36,7 +36,7 @@
 	</appender>
 
 
-	<logger name="com.ctm.xml.XMLOutputWriter" additivity="false">
+	<logger name="com.ctm.logging.XMLOutputWriter" additivity="false">
 		<appender-ref ref="ASYNC" />
   	</logger>
 
@@ -45,6 +45,14 @@
   	</logger>
 
 	<logger name="org.springframework.ws.client.MessageTracing.received" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<logger name="log4j.logger.org.elasticsearch" level="INFO" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<logger name="log4j.logger.org.hibernate.validator" level="INFO" additivity="false">
 		<appender-ref ref="stdout" />
 	</logger>
 

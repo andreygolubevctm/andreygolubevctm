@@ -76,6 +76,7 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		<c:param name="competition_firstname" value="${fn:trim(data['health/application/primary/firstname'])}" />
 		<c:param name="competition_lastname" value="${fn:trim(data['health/application/primary/surname'])}" />
 		<c:param name="competition_phone" value="${contactPhone}" />
+		<c:param name="transactionId" value="${tranId}" />
 	</c:import>
 </c:if>
 </c:if>

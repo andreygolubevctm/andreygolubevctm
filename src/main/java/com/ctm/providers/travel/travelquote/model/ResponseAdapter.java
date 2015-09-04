@@ -47,6 +47,8 @@ public class ResponseAdapter {
                 result.setInfoDes(travelQuote.getProduct().getDescription());
                 result.setSubTitle(travelQuote.getProduct().getPdsUrl());
 
+                result.setIsDomestic(travelQuote.getIsDomestic());
+
 
                 // Override product names based on arbitrary rules.
 
@@ -156,14 +158,14 @@ public class ResponseAdapter {
                 //Create info object for results grid
 
                 Info info = new Info();
-                info.setCxdfee(result.getBenefit("cxdfee"));
-                info.setCxdfeeValue(result.getBenefitValue("cxdfee"));
-                info.setExcess(result.getBenefit("excess"));
-                info.setExcessValue(result.getBenefitValue("excess"));
-                info.setLuggage(result.getBenefit("luggage"));
-                info.setLuggageValue(result.getBenefitValue("luggage"));
-                info.setMedical(result.getBenefit("medical"));
-                info.setMedicalValue(result.getBenefitValue("medical"));
+                info.setCxdfee(travelQuote.getBenefit("cxdfee"));
+                info.setCxdfeeValue(travelQuote.getBenefitValue("cxdfee"));
+                info.setExcess(travelQuote.getBenefit("excess"));
+                info.setExcessValue(travelQuote.getBenefitValue("excess"));
+                info.setLuggage(travelQuote.getBenefit("luggage"));
+                info.setLuggageValue(travelQuote.getBenefitValue("luggage"));
+                info.setMedical(travelQuote.getBenefit("medical"));
+                info.setMedicalValue(travelQuote.getBenefitValue("medical"));
 
                 result.setInfo(info);
 
@@ -176,15 +178,17 @@ public class ResponseAdapter {
                     result.setHandoverType("post");
                     result.setHandoverUrl(travelQuote.getQuoteUrl());
 
+                    String handoverVarString = "";
                     String handoverDataString = "";
-                    Iterator it = travelQuote.getQuoteData().entrySet().iterator();
-                    while (it.hasNext()) {
+                        Iterator it = travelQuote.getQuoteData().entrySet().iterator();
+                        while (it.hasNext()) {
                         Map.Entry pair = (Map.Entry)it.next();
-                        handoverDataString += "<handoverVar>"+pair.getKey()+"</handoverVar>";
-                        handoverDataString += "<handoverData>"+pair.getValue()+"</handoverData>";
+                        handoverVarString += (String)pair.getKey();
+                        handoverDataString += (String)pair.getValue();
                         it.remove();
                     }
 
+                    result.setHandoverVar(handoverVarString);
                     result.setHandoverData(handoverDataString);
 
                 }

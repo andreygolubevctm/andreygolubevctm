@@ -79,8 +79,9 @@
         // If the residential and postal addresses are the same on entering this page, tick the postal match checkbox
         var residentialAddressValues = _getSerializedAddressValues($(".elasticsearch_container_utilities_application_details_address")),
             postalAddressValues = _getSerializedAddressValues($(".elasticsearch_container_utilities_application_details_postal"));
-        if(residentialAddressValues == postalAddressValues)
-            $("#utilities_application_details_postalMatch").trigger("click");
+        if(residentialAddressValues == postalAddressValues) {
+            $("#utilities_application_details_postalMatch").prop("checked", true).trigger("change");
+        }
     }
 
     function _getSerializedAddressValues($el) {
@@ -115,9 +116,9 @@
         // Set the terms and conditions text
         var template = $("#terms-text-template").html(),
             product = Results.getSelectedProduct(),
-            termsHTML = _.template(template, product, { variable: "data" });
+            termsHTML = _.template(template, { variable: "data" });
 
-        $("#terms-text-container").html(termsHTML);
+        $("#terms-text-container").html(termsHTML(product));
     }
 
     meerkat.modules.register("utilitiesEnquiryFields", {

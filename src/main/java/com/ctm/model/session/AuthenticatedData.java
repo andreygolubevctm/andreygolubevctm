@@ -4,7 +4,8 @@ import com.ctm.model.MessageConfig;
 import com.ctm.model.simples.Role;
 import com.ctm.model.simples.Rule;
 import com.disc_au.web.go.Data;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class AuthenticatedData extends Data {
 
-	private static Logger logger = Logger.getLogger(AuthenticatedData.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AuthenticatedData.class.getName());
 
 	// store the roles in java instead of data bucket
 	private List<Role> simplesUserRoles;
@@ -43,7 +44,7 @@ public class AuthenticatedData extends Data {
 			try {
 				simplesUid = Integer.parseInt(uid);
 			} catch (NumberFormatException e) {
-				logger.error(e);
+				logger.error("",e);
 			}
 		}
 		return simplesUid;

@@ -82,6 +82,11 @@
                     selectedTextHTML = datum.countryName;
                     var selectedLocation = selectedTextHTML.length > 25 ? selectedTextHTML.substr(0, 20) + '...' : selectedTextHTML;
                     meerkat.modules.selectTags.appendToTagList($list, selectedLocation, datum.countryName, datum.isoCode);
+                    _.defer(function(){
+                        if(!$countrySelector.is(':focus')) {
+                            $countrySelector.focus();
+                        }
+                    });
                 }
                 showingError = false;
             })

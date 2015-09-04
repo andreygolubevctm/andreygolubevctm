@@ -18,7 +18,7 @@
 	<%-- This content will be turned on/off with the main update button --%>
 	<div id="update-content">
 		<c:choose>
-			<c:when test="${verintUpgradeSwitch == 'Y'}">
+			<c:when test="${true}">
 		<health:application_compliance xpath="${xpath}" />
 			</c:when>
 			<c:otherwise>

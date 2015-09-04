@@ -4,12 +4,14 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Transaction;
 import com.ctm.model.simples.ConfirmationOperator;
+import com.ctm.utils.common.utils.StringUtils;
 
 import javax.naming.NamingException;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class TransactionDao {
 
@@ -121,25 +123,35 @@ public class TransactionDao {
 	 * Check the transactions chained from the provided RootId and find any confirmation (sold) information.
 	 * @return Valid object or null
 	 */
-	public ConfirmationOperator getConfirmationFromTransactionChain(long rootId) throws DaoException {
+	public ConfirmationOperator getConfirmationFromTransactionChain(List<Long> rootIds) throws DaoException {
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-
+		if (rootIds == null || rootIds.isEmpty()) {
+			return null;
+		}
 		try {
 			PreparedStatement stmt;
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT th.transactionId, tc.operator_id, CONCAT(tc.`date`, ' ', tc.`time`)  AS datetime " +
-				"	FROM aggregator.transaction_header th " +
-				"	JOIN ctm.touches tc ON th.transactionID = tc.transaction_Id AND tc.`type` = 'C' " +
-				"	WHERE rootID = ? " +
-				"UNION ALL " +
-				"SELECT th.transactionId, tc.operator_id, CONCAT(tc.`date`, ' ', tc.`time`)  AS datetime " +
-				"	FROM aggregator.transaction_header2_cold th " +
-				"	JOIN ctm.touches tc ON th.transactionID = tc.transaction_Id AND tc.`type` = 'C' " +
-				"	WHERE rootID = ?;"
+					"Select transactionId, operator_id, CONCAT(date, ' ', time)  AS datetime from ( " +
+							"	SELECT th.transactionId, tc.operator_id, tc.date, tc.time " +
+							"	FROM aggregator.transaction_header th " +
+							"	JOIN ctm.touches tc ON th.transactionID = tc.transaction_Id AND tc.`type` = 'C' " +
+							"	WHERE rootID in ( " + StringUtils.sqlQuestionMarkStringBuilder(rootIds.size()) + " ) " +
+							"	UNION ALL " +
+							"	SELECT th.transactionId, tc.operator_id, tc.`date`, tc.`time` " +
+							"	FROM aggregator.transaction_header2_cold th " +
+							"	JOIN ctm.touches tc ON th.transactionID = tc.transaction_Id AND tc.`type` = 'C' " +
+							"	WHERE rootID in ( " + StringUtils.sqlQuestionMarkStringBuilder(rootIds.size()) + " )" +
+							")a ORDER  BY date DESC ,time desc;"
 			);
-			stmt.setLong(1, rootId);
-			stmt.setLong(2, rootId);
+			int i=1;
+			for (long rootId : rootIds) {
+				stmt.setLong(i++,rootId);
+			}
+			for (long rootId : rootIds) {
+				stmt.setLong(i++,rootId);
+			}
+
 			ResultSet results = stmt.executeQuery();
 
 			if (results.next()) {
@@ -149,11 +161,9 @@ public class TransactionDao {
 				confirmationOperator.setDatetime(results.getTimestamp("datetime"));
 				return confirmationOperator;
 			}
-		}
-		catch (SQLException | NamingException e) {
+		} catch (SQLException | NamingException e) {
 			throw new DaoException(e.getMessage(), e);
-		}
-		finally {
+		} finally {
 			dbSource.closeConnection();
 		}
 

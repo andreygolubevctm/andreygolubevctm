@@ -252,7 +252,7 @@
 			_html += '<option id="health_payment_details_frequency_A" value="annually">Annually</option>';
 		}
 
-		$frequencySelect.html( _html ).find('option[value='+ selectedFrequency +']').attr('selected', 'SELECTED');
+		$frequencySelect.html( _html ).find('option[value="'+ selectedFrequency +'"]').attr('selected', 'SELECTED');
 	}
 
 
@@ -286,6 +286,7 @@
 		if(disableFields === true){
 			// Disable the other premium-related inputs
 			var $paymentSection = $('#health_payment_details-selection');
+
 			$paymentSection.find(':input').prop('disabled', true);
 			$paymentSection.find('.select').addClass('disabled');
 			$paymentSection.find('.btn-group label').addClass('disabled');
@@ -307,6 +308,14 @@
 		if( meerkat.modules.journeyEngine.isCurrentStepValid() === false){
 			return false;
 		}
+		// fire the tracking call
+		var data = {
+			actionStep: ' health application premium update'
+		};
+		meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+			method:	'trackQuoteForms',
+			object:	data
+		});
 
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthPaymentStep', disableFields:true });
 

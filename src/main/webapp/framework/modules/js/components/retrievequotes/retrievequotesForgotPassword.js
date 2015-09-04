@@ -16,10 +16,10 @@
     }
 
     function _onForgotPasswordLinkClick() {
-        var forgotPasswordFormHTML = _.template($("#forgot-password-template").html())();
+        var forgotPasswordFormHTML = _.template($("#forgot-password-template").html());
 
         forgotPasswordModal = meerkat.modules.dialogs.show({
-            htmlContent: forgotPasswordFormHTML,
+            htmlContent: forgotPasswordFormHTML({}),
             hashId: "forgot-password",
             buttons: [
                 {
@@ -62,11 +62,11 @@
             var onFail = function(message) {
                 message = message || genericFailMessage;
 
-                var successHTML = _.template($("#reset-password-failure-template").html(), { message: message });
+                var successHTML = _.template($("#reset-password-failure-template").html());
 
                 meerkat.modules.dialogs.show({
                     title: "Reset Password Error",
-                    htmlContent: successHTML,
+                    htmlContent: successHTML({ message: message }),
                     hashId: "forgot-password",
                     buttons: [{
                         label: 'OK',
@@ -84,15 +84,11 @@
                         var result = data.result;
 
                         if(result === "OK") {
-                            var successHTML = _.template(
-                                $("#reset-password-success-template").html(),
-                                {email: $emailField.val()},
-                                {variable: "data"}
-                            );
+                            var successHTML = _.template($("#reset-password-success-template").html(), {variable: "data"});
 
                             meerkat.modules.dialogs.show({
                                 title: "Reset Password",
-                                htmlContent: successHTML,
+                                htmlContent: successHTML({email: $emailField.val()}),
                                 hashId: "forgot-password",
                                 buttons: [{
                                     label: 'OK',

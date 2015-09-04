@@ -205,8 +205,7 @@
 		var navigationId = '';
 		if (meerkat.modules.journeyEngine.getCurrentStep()) navigationId = meerkat.modules.journeyEngine.getCurrentStep().navigationId;
 
-		//if (navigationId === 'benefits' || navigationId === 'results') {
-		if (navigationId === 'results' || (meerkat.modules.splitTest.isActive(1) && navigationId === 'benefits')) {
+		if (navigationId === 'results') {
 			meerkat.modules.journeyEngine.loadingShow('getting your quotes', true);
 		}
 		
@@ -297,7 +296,7 @@
 	}
 	function resetBenefitsForProductTitleSearch() {
 		if (meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi' || meerkat.site.environment === 'nxs'){
-			if ($('#health_productTitleSearch').val().trim() !== ''){
+			if ($.trim($('#health_productTitleSearch').val()) !== ''){
 				resetHiddenFields();
 				$("#mainform input[name='health_benefits_benefitsExtras_Hospital'].benefit-item").val('Y');
 				$("#mainform input[name='health_benefits_benefitsExtras_GeneralHealth'].benefit-item").val('Y');

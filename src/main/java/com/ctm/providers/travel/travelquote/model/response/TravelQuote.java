@@ -24,6 +24,7 @@ public class TravelQuote {
     private boolean encodeQuoteUrl;
     private Product product;
     private List<Benefit> benefits;
+    private Boolean isDomestic;
 
     public TravelQuote(){
 
@@ -121,7 +122,30 @@ public class TravelQuote {
         return benefits;
     }
 
+    public String getBenefit(String type){
+        for(Benefit benefit : benefits){
+            if(benefit.getType().equalsIgnoreCase(type)){
+                return benefit.getText();
+            }
+        }
+        return "";
+    }
+    public BigDecimal getBenefitValue(String type){
+        for(Benefit benefit : benefits){
+            if(benefit.getType().equalsIgnoreCase(type)){
+                return benefit.getValue();
+            }
+        }
+        return new BigDecimal(0);
+    }
+
     public void setBenefits(List<Benefit> benefits) {
         this.benefits = benefits;
+    }
+
+    public Boolean getIsDomestic() { return isDomestic; }
+
+    public void setIsDomestic(Boolean isDomestic) {
+        this.isDomestic = isDomestic;
     }
 }

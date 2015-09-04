@@ -119,8 +119,8 @@
 			if (settings.form !== null && settings.form.length > 0) {
 				validEmailAddress = settings.emailInput.valid();
 			}
-			var hasCompared = settings.lastEmailChecked != settings.emailInput.val();
-			if(validEmailAddress && hasCompared) {
+			var hasChanged = settings.lastEmailChecked != settings.emailInput.val();
+			if(validEmailAddress && hasChanged) {
 				checkUserExists(settings);
 			}
 			if(settings.canEnableSubmit(settings)){
@@ -159,7 +159,7 @@
 		}
 
 		var emailAddress = instanceSettings.emailInput.val();
-		// set to last compared
+		// set to last changed
 		instanceSettings.lastEmailChecked = emailAddress;
 
 
@@ -169,6 +169,7 @@
 				type: "email",
 				value: emailAddress
 			},
+			cache: true,
 			onComplete: function(){
 				if(instanceSettings.lockoutOnCheckUserExists) {
 					meerkat.modules.loadingAnimation.hide( instanceSettings.emailInput );
@@ -203,11 +204,13 @@
 			// prepare data
 			var dat = settings.sendEmailDataFunction(settings);
 
+			dat = purgefromData('vertical', dat);
 			dat.push({
 				name:'vertical',
 				value: meerkat.site.vertical
 			});
 
+			dat = purgefromData('email', dat);
 			dat.push({
 				name:'email',
 				value: settings.emailInput.val()
@@ -241,6 +244,15 @@
 		}
 
 	}
+	function purgefromData(item, dat) {
+		var i;
+		for (i = 0; i < dat.length; i++) {
+			if (dat[i].name === item) {
+				dat.splice(i, 1);
+			}
+		}
+		return dat;
+	}
 
 	function defaultEmailResultsFail(settings){
 		enableSubmitButton(settings);
@@ -271,7 +283,8 @@
 		emailChanged : emailChanged,
 		enableSubmitButton : enableSubmitButton,
 		disableSubmitButton : disableSubmitButton,
-		checkUserExists : checkUserExists
+		checkUserExists : checkUserExists,
+		purgefromData : purgefromData
 	});
 
 })(jQuery);

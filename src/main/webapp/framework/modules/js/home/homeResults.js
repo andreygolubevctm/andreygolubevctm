@@ -47,21 +47,37 @@
 				// confirming its either features or price.
 				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
 			}
+
+			var price = {
+				annual: "price.annual.total",
+				monthly: "price.monthly.total"
+			};
+			var productAvailable = "productAvailable";
+			var productName = "headline.name";
+			var homeQuoteResultsUrl = "ajax/json/home_results.jsp";
+			if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
+				price = {
+					annual: "price.annualPremium",
+					annually: "price.annualPremium",
+					monthly: "price.annualisedMonthlyPremium"
+				};
+				productAvailable = "available";
+				productName = "productName";
+				homeQuoteResultsUrl = "ajax/json/home_results_ws.jsp"
+			}
+
 			// Init the main Results object
 			Results.init({
-				url: "ajax/json/home_results.jsp",
+				url: homeQuoteResultsUrl,
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
-					price: {
-						annual: "price.annual.total",
-						monthly: "price.monthly.total"
-					},
+					price: price,
 					availability: {
-						product: "productAvailable"
+						product: productAvailable
 					},
 					productId: "productId",
 					productBrandCode: "brandCode",
-					productName: "headline.name"
+					productName: productName
 				},
 				show: {
 					savings: false,
@@ -184,7 +200,7 @@
 				rankings: {
 					paths: {
 						rank_productId: "productId",
-						rank_premium: "price.annual.total"
+						rank_premium: price.annual
 					},
 					filterUnavailableProducts: false
 				},
@@ -294,8 +310,14 @@
 			// If no providers opted to show results, display the no results modal.
 			var availableCounts = 0;
 			$.each(Results.model.returnedProducts, function(){
-				if (this.productAvailable === 'Y' && this.productId !== 'CURR') {
-					availableCounts++;
+				if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
+					if (this.available === 'Y' && this.productId !== 'CURR') {
+						availableCounts++;
+					}
+				} else {
+					if (this.productAvailable === 'Y' && this.productId !== 'CURR') {
+						availableCounts++;
+					}
 				}
 			});
 			// Check products length in case the reason for no results is an error e.g. 500
@@ -348,12 +370,12 @@
 
 				$hoverRow.addClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
 			})
-			.on("mouseleave", function(){
-				var featureId = $(this).attr("data-featureId");
-				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+				.on("mouseleave", function(){
+					var featureId = $(this).attr("data-featureId");
+					var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
 
-				$hoverRow.removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
-			});
+					$hoverRow.removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
+				});
 		});
 	}
 
@@ -361,40 +383,81 @@
 	function massageResultsObject(products) {
 		products = products || Results.model.returnedProducts;
 
-		_.each(products, function massageJson(result, index) {
-			// Add properties
-			if (!_.isUndefined(result.price)) {
-				// Annually
-				if (!_.isUndefined(result.price.annual) && !_.isUndefined(result.price.annual.total)) {
-					result.price.annual.totalFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annual.total, {roundToDecimalPlace: 0});
+		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
+
+			_.each(products, function massageJson(result, index) {
+				// Add properties
+				if (result.price != null && !_.isUndefined(result.price)) {
+
+					// Annually
+					if (!_.isUndefined(result.price.annualPremium)) {
+						result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualPremium, {roundToDecimalPlace: 0});
+					}
+
+					//Monthly
+					if (!_.isUndefined(result.price.monthlyPremium)) {
+						if (!_.isUndefined(result.price.monthlyPremium)) {
+							result.price.monthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyPremium, {roundToDecimalPlace: 2});
+						}
+						if (!_.isUndefined(result.price.monthlyFirstMonth)) {
+							result.price.monthlyFirstMonthFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyFirstMonth, {roundToDecimalPlace: 2});
+						}
+						if (!_.isUndefined(result.price.annualisedMonthlyPremium)) {
+							result.price.annualisedMonthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualisedMonthlyPremium, {roundToDecimalPlace: 2});
+						}
+					}
 				}
 
-				//Monthly
-				if (!_.isUndefined(result.price.monthly)) {
-					if (!_.isUndefined(result.price.monthly.total)) {
-						result.price.monthly.totalFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthly.total, {roundToDecimalPlace: 2});
-					}
-					if (!_.isUndefined(result.price.monthly.amount)) {
-						result.price.monthly.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthly.amount, {roundToDecimalPlace: 2});
-					}
-					if (!_.isUndefined(result.price.monthly.firstPayment)) {
-						result.price.monthly.firstPaymentFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthly.firstPayment, {roundToDecimalPlace: 2});
+				if (result.homeExcess != null && !_.isUndefined(result.homeExcess)) {
+					if (!_.isUndefined(result.homeExcess.amount)) {
+						result.homeExcess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.homeExcess.amount, {roundToDecimalPlace: 0});
 					}
 				}
-			}
 
-			if (!_.isUndefined(result.HHB)) {
-				if (!_.isUndefined(result.HHB.excess) && !_.isUndefined(result.HHB.excess.amount)) {
-					result.HHB.excess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.HHB.excess.amount, {roundToDecimalPlace: 0});
+				if (result.contentsExcess != null && !_.isUndefined(result.contentsExcess)) {
+					if (!_.isUndefined(result.contentsExcess.amount)) {
+						result.contentsExcess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.contentsExcess.amount, {roundToDecimalPlace: 0});
+					}
 				}
-			}
+			});
 
-			if (!_.isUndefined(result.HHC)) {
-				if (!_.isUndefined(result.HHC.excess) && !_.isUndefined(result.HHC.excess.amount)) {
-					result.HHC.excess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.HHC.excess.amount, {roundToDecimalPlace: 0});
+		} else {
+
+			_.each(products, function massageJson(result, index) {
+				// Add properties
+				if (!_.isUndefined(result.price)) {
+					// Annually
+					if (!_.isUndefined(result.price.annual) && !_.isUndefined(result.price.annual.total)) {
+						result.price.annual.totalFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annual.total, {roundToDecimalPlace: 0});
+					}
+
+					//Monthly
+					if (!_.isUndefined(result.price.monthly)) {
+						if (!_.isUndefined(result.price.monthly.total)) {
+							result.price.monthly.totalFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthly.total, {roundToDecimalPlace: 2});
+						}
+						if (!_.isUndefined(result.price.monthly.amount)) {
+							result.price.monthly.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthly.amount, {roundToDecimalPlace: 2});
+						}
+						if (!_.isUndefined(result.price.monthly.firstPayment)) {
+							result.price.monthly.firstPaymentFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthly.firstPayment, {roundToDecimalPlace: 2});
+						}
+					}
 				}
-			}
-		});
+
+				if (!_.isUndefined(result.HHB)) {
+					if (!_.isUndefined(result.HHB.excess) && !_.isUndefined(result.HHB.excess.amount)) {
+						result.HHB.excess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.HHB.excess.amount, {roundToDecimalPlace: 0});
+					}
+				}
+
+				if (!_.isUndefined(result.HHC)) {
+					if (!_.isUndefined(result.HHC.excess) && !_.isUndefined(result.HHC.excess.amount)) {
+						result.HHC.excess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.HHC.excess.amount, {roundToDecimalPlace: 0});
+					}
+				}
+			});
+		}
 	}
 
 	function breakpointTracking(){
@@ -443,8 +506,15 @@
 			$component.addClass('coverTypeContents').removeClass('coverTypeHome');
 		}
 
+		var envParam = "";
+		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
+			$("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
+		}
+		var verticalToUse = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote ? 'hncamsws_' : 'hncams';
 		// Fetch results
-		Results.get();
+		meerkat.modules.resultsFeatures.fetchStructure(verticalToUse).done(function() {
+			Results.get();
+		});
 	}
 
 
@@ -481,9 +551,9 @@
 
 	function showNoResults() {
 		if (meerkat.site.tracking.brandCode == 'ctm') {
-		meerkat.modules.dialogs.show({
-			htmlContent: $('#no-results-content')[0].outerHTML
-		});
+			meerkat.modules.dialogs.show({
+				htmlContent: $('#no-results-content')[0].outerHTML
+			});
 		}
 
 		if (meerkat.modules.hasOwnProperty('homeFilters')) {
@@ -498,8 +568,8 @@
 	function publishExtraSuperTagEvents() {
 
 		var coverType = meerkat.modules.home.getCoverType(),
-		homeExcess = null,
-		contentsExcess = null;
+			homeExcess = null,
+			contentsExcess = null;
 
 		if(coverType == 'H' || coverType == 'HC') {
 			homeExcess = $('#home_homeExcess').val()  || $('#home_baseHomeExcess').val();
@@ -644,7 +714,7 @@
 			$('.filter-excess, .filter-excess a, .excess-update, .excess-update a').addClass('disabled');
 			$('.filter-featuresmode, .filter-pricemode').addClass('hidden');
 		});
-	// Elements to lock when exiting compare mode
+		// Elements to lock when exiting compare mode
 		meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function() {
 			$('.filter-excess, .filter-excess a, .excess-update, .excess-update a').removeClass('disabled');
 			$('.filter-featuresmode, .filter-pricemode').removeClass('hidden');

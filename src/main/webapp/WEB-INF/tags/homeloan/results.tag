@@ -23,7 +23,6 @@
 
 <%-- Get data to build sections/categories/features --%>
 <jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
-<c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('hmlams')}" scope="request"  />
 <c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('hmlams', 'category')}" scope="request"  />
 <c:if test="${empty jsonString}">
 	<c:set var="jsonString" value="''" />
@@ -61,11 +60,8 @@
 			</div>
 
 			<%-- Feature headers --%>
-			<div class="featuresList featuresTemplateComponent">
-				<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
-					<features:resultsItem item="${selectedValue}" labelMode="true" index="${status.index}" />
-				</c:forEach>
-			</div>
+			<features:resultsItemTemplate_labels />
+			<div class="featuresList featuresTemplateComponent"></div>
 		</div>
 
 		<div class="resultsOverflow">
@@ -179,11 +175,7 @@
 </core:js_template>
 
 <%-- FEATURE TEMPLATE --%>
-	<core:js_template id="feature-template">
-		<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
-			<features:resultsItem item="${selectedValue}" labelMode="false" index="${status.index}"/>
-		</c:forEach>
-	</core:js_template>
+<features:resultsItemTemplate />
 
 <%-- UNAVAILABLE ROW --%>
 <core:js_template id="unavailable-template">
@@ -294,10 +286,10 @@
 	{{ var img = ''; }}
 	{{ if (obj.lender === 'Adelaide Bank') img = 'ADLB'; }}
  	{{ if (obj.lender.indexOf('AFG Home Loans') === 0) img = 'AFG'; }}
-	{{ if (obj.lender === 'AFG Home Loans - Edge') img = 'AFG_GREEN'; }}
 	{{ if (obj.lender === 'AMP Bank') img = 'AMP'; }}
 	{{ if (obj.lender === 'ANZ') img = 'ANZ'; }}
 	{{ if (obj.lender === 'Auswide Bank') img = 'AUSWIDE'; }}
+	{{ if (obj.lender === 'Bank Australia') img = 'BANKAUST'; }}
 	{{ if (obj.lender === 'Bank of China') img = 'BOC'; }}
 	{{ if (obj.lender === 'Bank of Melbourne') img = 'BOM'; }}
 	{{ if (obj.lender === 'Bank of QLD') img = 'BOQ'; }}
@@ -321,6 +313,7 @@
 	{{ if (obj.lender === 'National Australia Bank') img = 'NAB'; }}
 	{{ if (obj.lender === 'P&N Bank') img = 'PN'; }}
 	{{ if (obj.lender === 'Pepper Homeloans') img = 'PEPPER'; }}
+	{{ if (obj.lender === 'QPCU') img = 'QPCU'; }}
 	{{ if (obj.lender === 'St George Bank') img = 'GEORGE'; }}
 	{{ if (obj.lender === 'Suncorp') img = 'SUNCORP'; }}
 	{{ if (obj.lender === 'The Rock Building Society Limited') img = 'ROCK'; }}

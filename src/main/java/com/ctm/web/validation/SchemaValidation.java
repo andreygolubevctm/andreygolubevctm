@@ -1,6 +1,7 @@
 package com.ctm.web.validation;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXParseException;
 
 import javax.servlet.jsp.JspException;
@@ -21,7 +22,7 @@ public class SchemaValidation {
 
 	private final SchemaFactory factory;
 	private final XMLInputFactory xmlInputFactory;
-	Logger logger = Logger.getLogger(SchemaValidation.class.getName());
+	Logger logger = LoggerFactory.getLogger(SchemaValidation.class.getName());
 
 	private boolean valid;
 
