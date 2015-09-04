@@ -21,7 +21,7 @@ import com.ctm.services.CommonQuoteService;
 import com.ctm.services.ResultsService;
 import com.ctm.services.SessionDataService;
 import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.xml.XMLOutputWriter;
+import com.ctm.logging.XMLOutputWriter;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
