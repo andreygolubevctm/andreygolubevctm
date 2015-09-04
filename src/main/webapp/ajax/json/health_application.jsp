@@ -131,7 +131,7 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 </c:if>
 		</sql:transaction>
 
-		${logger.info('Queried product properties. {},{}', log:kv('tranId', tranId), log:kv('fund', fund))}
+		${logger.debug('Queried product properties. {},{},{}', log:kv('tranId', tranId), log:kv('fund', fund), log:kv('productId', productId))}
 
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />

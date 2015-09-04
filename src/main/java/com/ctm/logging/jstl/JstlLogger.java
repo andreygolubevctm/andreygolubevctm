@@ -1,12 +1,16 @@
-package com.ctm.utils.jsp;
+package com.ctm.logging.jstl;
 
 import org.slf4j.Logger;
 
-public class JspLogger {
+/**
+ * Calling org.slf4j.Logger directly does not work in jstl this is because the method signatures can't be resolved
+ * and the wrong methods can be called. This class wraps org.slf4j.Logger to work around this.
+ */
+public class JstlLogger {
 
     private Logger logger;
 
-    public JspLogger(Logger logger) {
+    public JstlLogger(Logger logger) {
         this.logger = logger;
     }
 

@@ -24,9 +24,6 @@
 				<c:set var="product" value ="${products[0]}" />
 			</c:if>
 		</c:catch>
-		<if test="${error}">
-			${logger.warn('Exception thrown getProductsByCodeAsString. {}', log:kv('tmpProductCode' , tmpProductCode),  error)}
-		</if>
 	</c:when>
 	<c:otherwise>
 		${logger.error('Credit Cards Handover error: No Product Passed. {},{}',log:kv('tmpProductCode',tmpProductCode ), log:kv('product',product ))}

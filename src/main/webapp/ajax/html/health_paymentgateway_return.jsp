@@ -14,7 +14,7 @@
 	<x:out select="$configXml/aggregator/westpacGateway/cd_supplier_business" />
 </c:set>
 
-${logger.info('Start health_paymentgateway_return. {},{},{}', log:kv('action',param.action ), log:kv('fl_success',param.fl_success ),log:kv('tx_response', param.tx_response ))}
+${logger.debug('Start health_paymentgateway_return. {},{},{}', log:kv('action',param.action ), log:kv('fl_success',param.fl_success ),log:kv('tx_response', param.tx_response ))}
 
 <c:set var="cardNumber" value="${go:jsEscape(param.cd_prerego)}" />
 <c:set var="cardScheme" value="${go:jsEscape(param.nm_card_scheme)}" />
@@ -44,7 +44,7 @@ ${logger.info('Start health_paymentgateway_return. {},{},{}', log:kv('action',pa
 	</c:when>
 	<c:otherwise>
 		<%-- Capture response values into data bucket --%>
-		${logger.debug('WESTPAC: {},{},{},{}', log:kv('cardNumber', cardNumber), log:kv('cardScheme', cardScheme) , log:kv('cardExpiry', cardExpiry), log:kv('cardHolderName', cardHolderName))}
+		${logger.debug('Sucessful response was returned from WESTPAC payment gateway. {},{},{},{}', log:kv('cardScheme', cardScheme) , log:kv('cardExpiry', cardExpiry), log:kv('cardHolderName', cardHolderName))}
 		<c:set var="success" value="true" />
 		<c:set var="message"><c:out value="${param.tx_response}" default="OK" escapeXml="true" /></c:set>
 	</c:otherwise>

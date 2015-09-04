@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
-
 <c:set var="continueOnValidationError" value="${false}" />
 <c:set var="vertical" value="${fn:toUpperCase(param.vertical)}" />
 <session:get settings="true" authenticated="true" verticalCode="${vertical}" />

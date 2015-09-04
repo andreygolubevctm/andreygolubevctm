@@ -30,7 +30,7 @@
 
 <c:set var="styleCodeId" value="${pageSettings.getBrandId()}" />
 
-${logger.debug('LOAD QUOTE.',log:kv('param', param))}
+${logger.debug('Begin LOAD QUOTE.',log:kv('param', param))}
 <c:set var="id_for_access_check">
 	<c:choose>
 		<c:when test="${not empty param.transaction_id}">${param.transaction_id}</c:when>
@@ -43,7 +43,7 @@ ${logger.debug('LOAD QUOTE.',log:kv('param', param))}
 
 <%-- Store flag as to whether Simples Operator or Other --%>
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
-${logger.info('setting flag for whether simples. {}',log:kv('isOperator',isOperator ))}
+${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isOperator ), log:kv('login/user/uid', authenticatedData['login/user/uid']))}
 
 <c:choose>
 	<c:when test="${not empty param.simples and empty isOperator}">
@@ -91,7 +91,7 @@ ${logger.info('setting flag for whether simples. {}',log:kv('isOperator',isOpera
 
 				<c:choose>
 					<c:when test="${param.fromDisc}">
-						${logger.info('Creating new transaction id')}
+						${logger.debug('Creating new transaction id')}
 						<go:setData dataVar="data" xpath="current/transactionId" value="*DELETE" />
 						<c:set var="getTransactionID">
 							<core:get_transaction_id  quoteType="${param.vertical}" />
@@ -113,7 +113,6 @@ ${logger.info('setting flag for whether simples. {}',log:kv('isOperator',isOpera
 				<c:if test="${quoteType == 'car'}">
 					<c:set var="xpath" value="quote"/>
 				</c:if>
-				${logger.info('About to delete the vertical information. {}', log:kv('quoteType',quoteType ))}
 				<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 
 						<c:catch var="error">

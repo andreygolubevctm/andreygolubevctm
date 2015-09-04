@@ -47,7 +47,7 @@ ${logger.info('Checked if authenticated user is simples user. {}', log:kv('isOpe
 	</c:if>
 </c:if>
 
-${logger.info('Add Comment RootId.{}',log:kv('rootId', rootId))}
+${logger.debug('Add Comment RootId.{}',log:kv('rootId', rootId))}
 
 <c:choose>
 	<c:when test="${empty rootId}">
@@ -108,6 +108,5 @@ ${logger.info('Add Comment RootId.{}',log:kv('rootId', rootId))}
 	</c:when>
 	<c:otherwise>
 		{"errors":[${errorPool}]}
-		${logger.info('Returning errors to the browser. {}', log:kv('errorPool',errorPool ))}
 	</c:otherwise>
 </c:choose>

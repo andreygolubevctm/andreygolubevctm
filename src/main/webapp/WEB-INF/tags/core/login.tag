@@ -50,8 +50,8 @@
 				
 
 				<c:set var="securityDesc" value="${securityDescGroup} ${securityDescLevel}" />
-				${logger.info('CTM Simples login success: {},{},{}',
-				 log:kv('userId', userId), log:kv('securityDesc', securityDesc), log:kv('distinguishedName',sessionScope.userDetails['distinguishedName']))}
+				<c:set var="distinguishedName" value="${sessionScope.userDetails['distinguishedName']}" />
+				${logger.info('CTM Simples login success: {},{},{}',log:kv('userId', userId), log:kv('securityDesc', securityDesc), log:kv('distinguishedName',distinguishedName))}
 				<%-- Set up the user, roles and security data XML fragments --%>
 				<go:setData dataVar="authenticatedData" xpath="login" value="*DELETE" />
 
@@ -68,7 +68,7 @@
 						<displayName><c:out value="${sessionScope.userDetails['displayName']}" /></displayName>
 						<emailAddress><c:out value="${sessionScope.userDetails['mail']}" /></emailAddress>
 						<loginTimestamp><c:out value="${sessionScope.userDetails['loginTimestamp']}" /></loginTimestamp>
-						<dn><c:out value="${sessionScope.userDetails['distinguishedName']}" /></dn>
+						<dn><c:out value="${distinguishedName}" /></dn>
 						<extension><c:out value="${extension}"/></extension>
 					</user>
 				</c:set>

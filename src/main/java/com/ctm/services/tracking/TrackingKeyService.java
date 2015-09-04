@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class TrackingKeyService {
 
-	private static final Logger logger = LoggerFactory.getLogger(TrackingKeyService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TrackingKeyService.class.getName());
 
 	public TrackingKeyService(){}
 
@@ -68,7 +70,7 @@ public class TrackingKeyService {
 			throw new Exception("No TrackingKeyXpaths defined to create tracking key.");
 		}
 
-		logger.info("trackingKey={}",key);
+		LOGGER.info("Generated tracking key. {}", kv("key", key));
 		return key;
 	}
 }
