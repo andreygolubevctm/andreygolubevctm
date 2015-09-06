@@ -1,7 +1,9 @@
 package com.ctm.services.car;
 
 import com.ctm.connectivity.SimpleConnection;
+import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
+import com.ctm.exceptions.SessionException;
 import com.ctm.model.QuoteServiceProperties;
 import com.ctm.model.car.form.CarQuote;
 import com.ctm.model.car.form.CarRequest;
@@ -17,11 +19,15 @@ import com.ctm.providers.car.carquote.model.request.CarQuoteRequest;
 import com.ctm.providers.car.carquote.model.response.CarResponse;
 import com.ctm.services.CommonQuoteService;
 import com.ctm.services.ResultsService;
+import com.ctm.services.SessionDataService;
 import com.ctm.web.validation.CommencementDateValidation;
 import com.ctm.logging.XMLOutputWriter;
+import com.disc_au.web.go.Data;
+import com.disc_au.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
@@ -29,7 +35,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.ctm.model.settings.Vertical.VerticalType.CAR;
@@ -144,4 +152,40 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
         ResultsService.saveResultsProperties(resultProperties);
     }
 
+    public void writeTempResultDetails(MessageContext context, CarRequest data, List<CarResult> quotes) {
+
+        SessionDataService service = new SessionDataService();
+
+        try {
+            Data dataBucket = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
+
+            if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
+                data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
+
+                XmlNode resultDetails = new XmlNode("tempResultDetails");
+                dataBucket.addChild(resultDetails);
+                XmlNode results = new XmlNode("results");
+
+                Iterator<CarResult> quotesIterator = quotes.iterator();
+                while (quotesIterator.hasNext()) {
+                    CarResult row = quotesIterator.next();
+                    if(row.getAvailable().equals(AvailableType.Y)) {
+                        String productId = row.getProductId();
+                        BigDecimal premium = row.getPrice().getAnnualPremium();
+                        XmlNode product = new XmlNode(productId);
+                        XmlNode headline = new XmlNode("headline");
+                        XmlNode lumpSumTotal = new XmlNode("lumpSumTotal", premium.toString());
+                        headline.addChild(lumpSumTotal);
+                        product.addChild(headline);
+                        results.addChild(product);
+                    }
+                }
+                resultDetails.addChild(results);
+            }
+
+        } catch (DaoException | SessionException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 }
