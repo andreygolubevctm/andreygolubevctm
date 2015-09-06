@@ -184,32 +184,9 @@
 		</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
 			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
-				<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
+			<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
 				<agg:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
 			</c:if>
-
-			<%-- THIS IS ALL DISC STUFF AND WILL NEED REMOVING --%>
-
-		<go:setData dataVar="data" xpath="ranking/results" value="*DELETE" />
-
-		<c:set var="TemplateInfo">EX</c:set>
-		<go:setData dataVar="data" xpath="ranking/TemplateInfo/Prefix" value="${TemplateInfo}" />
-
-		<c:set var="count" >0</c:set>
-
-		<c:forEach var="position" begin="0" end="${param.rank_count-1}" varStatus="status">
-			<c:set var="paramName" value="rank_productId${position}" />
-			<c:set var="paramName2" value="rank_premium${position}" />
-			<c:set var="productId" value="${param[paramName]}"/>
-			<c:set var="premium" value="${param[paramName2]}"/>
-			<c:if test="${productId != 'CURR'}">
-				<go:setData dataVar="data" xpath="ranking/results/prodid${count}" value="${productId}" />
-				<go:setData dataVar="data" xpath="ranking/results/prm${count}" value="${premium}" />
-				<c:set var="count" value="${count + 1}" />
-			</c:if>
-
-			</c:forEach>
-
 		</c:when>
 
 		<c:otherwise><%-- ignore --%></c:otherwise>

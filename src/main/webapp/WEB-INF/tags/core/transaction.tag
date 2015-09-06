@@ -80,7 +80,7 @@
 	<core:validate_touch_type valid_touches="A,BP,C,CB,CD,CDC,E,F,H,L,LF,N,P,Q,R,S,T,X" touch="${touch}" />
 </c:set>
 <c:set var="touch_with_productId">
-	<core:validate_touch_type valid_touches="A,BP,CB,CD" touch="${touch}" />
+	<core:validate_touch_type valid_touches="A,BP,CB,CD,C,F" touch="${touch}" />
 </c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">
@@ -138,7 +138,7 @@
 <%-- TOUCH ....................................................................... --%>
 <c:choose>
 	<c:when test="${empty touch}"></c:when>
-	<c:when test="${touch_with_productId and not empty productId}">
+ 	<c:when test="${touch_with_productId and not empty productId}">
 		<jsp:useBean id="touchService" class="com.ctm.services.AccessTouchService" scope="page" />
 		<c:catch var="error">
 			<c:set var="ignore" value="${touchService.recordTouchWithProductCode(transactionId, touch , operator, productId)}" />
