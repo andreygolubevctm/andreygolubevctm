@@ -32,6 +32,29 @@ function beautifyJS(JS) {
     });
 }
 
+function generateTaskJS(task, description, author, email) {
+    var capitalisedTaskName = capitaliseFirstLetter(task);
+
+    var baseCode = [
+        "/**",
+        " * " + capitalisedTaskName + " tasks",
+        " * " + description,
+        " * @author " + author + " <" + email + ">",
+        " */",
+        "",
+        "function " + capitalisedTaskName + "Tasks(gulp) {",
+            "// Your code goes here",
+            "",
+            "// Required task name. Gets auto executed by the main gulpfile.",
+            "gulp.task(\"" + task + "\", []);",
+        "}",
+        "",
+        "module.exports = " + capitalisedTaskName + "Tasks;"
+    ].join("\r\n");
+
+    return beautifyJS(baseCode);
+};
+
 function generateModuleJS(moduleName) {
     var capitalisedModuleName = capitaliseFirstLetter(moduleName);
 
@@ -57,6 +80,42 @@ function generateModuleJS(moduleName) {
 }
 
 var generators = {
+    task: function() {
+        prompt.start();
+
+        var schema = [
+            {
+                name: "task",
+                description: "Task name",
+                type: "string",
+                required: true
+            }, {
+                name: "description",
+                description: "Task description",
+                type: "string",
+                required: false
+            }, {
+                name: "author",
+                description: "Author name",
+                type: "string",
+                required: false
+            }, {
+                name: "email",
+                description: "Email address",
+                type: "string",
+                required: false
+            }
+        ];
+
+        prompt.get(schema, function(err, result) {
+            if(err) return console.error(err);
+
+            var folderPath = path.join(__dirname, "tasks", result.task.toLowerCase());
+            writeFile(folderPath, "gulpfile.js", generateTaskJS(result.task, result.description, result.author, result.email));
+
+            console.log("Generated Gulp Task: " + result.task);
+        });
+    },
     module: function() {
         prompt.start();
 
