@@ -23,7 +23,7 @@ function JSTasks(gulp) {
     var bundles = gulp.bundles;
 
     var taskPrefix = "js:",
-        targetDirectory = path.join(gulp.pipelineConfig.target.dir, "js");
+        targetDirectory = path.join(gulp.pipelineConfig.target.dir, "js", "bundles");
 
     var bundleTasks = [];
 

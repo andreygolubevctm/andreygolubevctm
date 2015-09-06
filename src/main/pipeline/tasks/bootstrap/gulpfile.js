@@ -22,7 +22,7 @@ function BootstrapTasks(gulp) {
         });
 
         var fileName = "bootstrap",
-            targetDirectory = path.join(gulp.pipelineConfig.target.dir, "js");
+            targetDirectory = path.join(gulp.pipelineConfig.target.dir, "js", "libraries");
 
         gulp.src(bootstrapJSFiles)
             .pipe(plumber({
