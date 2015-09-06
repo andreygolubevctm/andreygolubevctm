@@ -15,15 +15,7 @@ var path = require("path"),
 
 function BootstrapTasks(gulp) {
     gulp.task("bootstrap:build", function() {
-        var bootstrapJSFiles = [
-            "transition",
-            "button",
-            "collapse",
-            "dropdown",
-            "modal",
-            "tab",
-            "affix"
-        ];
+        var bootstrapJSFiles = gulp.pipelineConfig.bootstrap.jsModules;
 
         bootstrapJSFiles = bootstrapJSFiles.map(function(file) {
             return path.join(gulp.pipelineConfig.bootstrap.dir, "js", file + ".js");
