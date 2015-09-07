@@ -1,13 +1,16 @@
 package com.disc_au.web.go.tags;
 
-import java.io.IOException;
+import com.disc_au.web.go.TokenReplaceUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-
-import com.disc_au.web.go.TokenReplaceUtils;
+import java.io.IOException;
 
 public class ArrayToTokenTemplateTag extends BaseTag {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ArrayToTokenTemplateTag.class.getName());
 
 	/**
 	 *
@@ -50,11 +53,11 @@ public class ArrayToTokenTemplateTag extends BaseTag {
 			if(endElementIndex == 0) endElementIndex = array.length;
 			xml = TokenReplaceUtils.getXML(array , template, startElementIndex, endElementIndex, false);
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			LOGGER.error("Failed to get xml", e1);
 			try {
 				pageContext.getOut().write(e1.getMessage());
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOGGER.error("Failed to output error" , e);
 			}
 			return EVAL_PAGE;
 		}
@@ -70,6 +73,7 @@ public class ArrayToTokenTemplateTag extends BaseTag {
 					pageContext.getOut().write(xml);
 			} catch (IOException e) {
 				e.printStackTrace();
+				LOGGER.error("Failed to output to page.", e);
 			}
 		}
 
