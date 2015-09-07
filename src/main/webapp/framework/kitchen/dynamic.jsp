@@ -364,7 +364,7 @@
 				minValue="1000"
 				decimal="${false}"
 				defaultValue="0"/>
-
+		<%-- Onready needed here, as there is not a dynamic.jsp module setup --%>
 		<go:script marker="onready">meerkat.modules.currencyField.initCurrency();</go:script>
 	</form_new:row>
 
