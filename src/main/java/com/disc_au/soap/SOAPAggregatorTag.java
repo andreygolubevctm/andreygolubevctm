@@ -36,6 +36,7 @@ import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
 
 import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.logging.LoggingArguments.v;
 import static com.ctm.services.EnvironmentService.Environment.LOCALHOST;
 import static com.ctm.services.EnvironmentService.Environment.NXI;
 import static com.ctm.services.EnvironmentService.Environment.NXS;
@@ -49,7 +50,7 @@ import static com.ctm.services.EnvironmentService.Environment.NXS;
 @SuppressWarnings("serial")
 public class SOAPAggregatorTag extends TagSupport {
 
-	Logger logger = LoggerFactory.getLogger(SOAPAggregatorTag.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SOAPAggregatorTag.class.getName());
 
 	private SoapAggregatorConfiguration configuration;
 	private String configDbKey;
@@ -101,7 +102,7 @@ public class SOAPAggregatorTag extends TagSupport {
 		try {
 			valid = schemaValidation.validateSchema(this.pageContext , this.xml, configuration.getValidationFile());
 		} catch (MalformedURLException e1) {
-			logger.error("failed to validate xml", e1);
+			LOGGER.error("failed to validate xml", e1);
 		}
 
 		if(isValidVar != null && !isValidVar.isEmpty()) {
@@ -122,7 +123,7 @@ public class SOAPAggregatorTag extends TagSupport {
 								|| EnvironmentService.getEnvironment() == NXS)
 								&& serviceItemConfig.getUrl().contains("/ctm/")) {
 							serviceItemConfig.setUrl(serviceItemConfig.getUrl().replaceFirst("(https?\\://[^/]+)/ctm/", "$1/" + EnvironmentService.getContextPath()));
-							logger.debug("Modified '" + serviceItemConfig.getName() + "' service URL to: " + serviceItemConfig.getUrl());
+							LOGGER.debug("Modified service URL. {} ", kv("serviceItemConfig",  serviceItemConfig));
 						}
 
 						// Give each one a meaningful name
@@ -156,7 +157,7 @@ public class SOAPAggregatorTag extends TagSupport {
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
-						logger.error("Exception joining threads. {}", kv("timeout", timeout), e);
+						LOGGER.error("Exception joining threads. {}", kv("timeout", timeout), e);
 				}
 			}
 
@@ -179,7 +180,7 @@ public class SOAPAggregatorTag extends TagSupport {
 													e.getMessage(),
 											client.getServiceName(),
 											result);
-						logError(client, "Failed to parse correctly: " + e.getMessage());
+						LOGGER.error("Failed to parse correctly. {} ", kv("client", client), e);
 					}
 				}
 				// Check if the request timed out
@@ -188,7 +189,7 @@ public class SOAPAggregatorTag extends TagSupport {
 												0,
 												"Client failed to return in time",
 												client.getServiceName());
-					logError(client, "Failed to return in time");
+					LOGGER.error("Failed to return in time. {}", kv("client",client));
 				}
 				// Unknown problem
 				else {
@@ -196,7 +197,7 @@ public class SOAPAggregatorTag extends TagSupport {
 							0,
 							"Response has no body",
 							client.getServiceName());
-					logError(client, "Response has no body");
+					LOGGER.error("Response has no body. {}", kv("client", client));
 				}
 
 				thisResult.setAttribute("responseTime", String.valueOf(client.getResponseTime()));
@@ -227,12 +228,12 @@ public class SOAPAggregatorTag extends TagSupport {
 			}
 
 		} catch (IOException e) {
-					logger.error("",e);
+					LOGGER.error("Failed to execute body.", e);
 		}
 		}
 			return super.doEndTag();
 		} finally {
-			logger.debug("Aggregator response returned. {},{}", kv("resultXml", resultXml), kv("debugXml", debugXml));
+			LOGGER.debug("Aggregator response returned. {},{}", kv("resultXml", resultXml), kv("debugXml", debugXml));
 			cleanUp();
 		}
 	}
@@ -260,16 +261,6 @@ public class SOAPAggregatorTag extends TagSupport {
 	}
 
 	/**
-	 * Log error.
-	 *
-	 * @param client the client
-	 * @param message the message
-	 */
-	private void logError(SOAPClientThread client, String message) {
-		logger.error(client.getName() + " : " + message);
-	}
-
-	/**
 	 * Log time.
 	 *
 	 * @param msg the message
@@ -286,7 +277,7 @@ public class SOAPAggregatorTag extends TagSupport {
 	 * @param timer the timer
 	 */
 	private void logTime(String msg, long timer) {
-		logger.info(msg + ": " + (System.currentTimeMillis() - timer)
+		LOGGER.info(msg + ": " + (System.currentTimeMillis() - timer)
 				+ "ms ");
 	}
 
@@ -362,7 +353,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 			return parser.parse(resultXML.toString());
 		} catch (TransformerException | SAXException e) {
-			logger.error("",e);
+			LOGGER.error("", e);
 		}
 		return resultNode;
 	}

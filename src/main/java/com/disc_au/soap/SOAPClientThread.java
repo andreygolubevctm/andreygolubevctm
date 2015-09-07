@@ -532,4 +532,13 @@ public class SOAPClientThread implements Runnable {
 	public SoapClientThreadConfiguration getConfiguration(){
 		return configuration;
 	}
+
+	public String toString(){
+		return "SOAPClientThread:{" +
+				"'tranId'='"+tranId+"'" +
+				",'name'='"+name+"'" +
+				",'configuration'='"+configuration+"'" +
+				"}";
+	}
+
 }

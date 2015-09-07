@@ -1,15 +1,14 @@
 package com.disc_au.web.go.tags;
 
+import com.disc_au.web.file.SecureFileServlet;
+import com.disc_au.web.go.xml.XmlNode;
+import com.disc_au.web.go.xml.XmlParser;
+import org.xml.sax.SAXException;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-
-import org.xml.sax.SAXException;
-
-import com.disc_au.web.file.SecureFileServlet;
-import com.disc_au.web.go.xml.XmlNode;
-import com.disc_au.web.go.xml.XmlParser;
 
 // TODO: Auto-generated Javadoc
 /**
