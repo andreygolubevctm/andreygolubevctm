@@ -7,6 +7,21 @@
  *
  * Modifications by Kevin Vanderbeken
  */
+// Success for typeahead
+.twitter-typeahead {
+	.tt-query,
+	.tt-hint {
+		.has-success & {
+			.typeahead-form-control(@state-success-text,@state-success-border);
+		}
+	}
+	.spinner {
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 5;
+	}
+}
 
 //custom mixin for .form-control-validation
 .typeahead-form-control(@color: @input-color; @border-color: @input-border; @background-color: @input-bg) {

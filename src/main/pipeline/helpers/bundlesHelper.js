@@ -155,8 +155,9 @@ Bundles.prototype.getDependencies = function(bundle) {
  * @param fileType
  * @returns {Array}
  */
-Bundles.prototype.getDependencyFiles = function(bundle, fileType) {
+Bundles.prototype.getDependencyFiles = function(bundle, fileType, useFullPath) {
     fileType = fileType || "js";
+    useFullPath = (typeof useFullPath !== "undefined") ? useFullPath: true;
 
     var dependencies = this.getDependencies(bundle),
         dependenciesFiles = [];
@@ -164,7 +165,7 @@ Bundles.prototype.getDependencyFiles = function(bundle, fileType) {
     if(dependencies.length) {
         for(var i = 0; i < dependencies.length; i++) {
             var dependency = dependencies[i],
-                dependencyFiles = this.getBundleFiles(dependency, fileType);
+                dependencyFiles = this.getBundleFiles(dependency, fileType, useFullPath);
             dependenciesFiles = dependenciesFiles.concat(dependencyFiles);
         }
     }

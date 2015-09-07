@@ -37,6 +37,13 @@ function LessTasks(gulp) {
                 gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs[i]);
             }
         } else {
+            var lessDependencies = bundles.getDependencyFiles(fileName, "less")
+                .filter(function(dep) {
+                    return dep.match(/(bundles)(\\|\/)(shared)/);
+                }).map(function(dep) {
+                    return "@import '" + dep + "';"
+                }).join("\r\n");
+
             if(typeof compileAs === "string")
                 fileName = compileAs;
 
@@ -60,6 +67,13 @@ function LessTasks(gulp) {
                 )
                 // Prepend generic brand build file
                 .pipe(insert.prepend("@import '../../build/brand/" + brandCode + "/build.less';\r\n"))
+                // Insert LESS dependencies
+                .pipe(
+                    gulpIf(
+                        lessDependencies !== "",
+                        insert.append(lessDependencies)
+                    )
+                )
                 // Append brand specific theme less if file exists
                 .pipe(
                     gulpIf(
