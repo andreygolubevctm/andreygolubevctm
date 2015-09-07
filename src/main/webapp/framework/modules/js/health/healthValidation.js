@@ -58,10 +58,17 @@
         return sumTotal % 10 == cardNumber.substring(8, 9);
     }, 'Please enter a valid Medicare card number');
 
+    function getMonth() {
+        var realMonth = meerkat.site.serverDate.getMonth()+1 ;
+        return realMonth < 10 ? "0"+realMonth:realMonth;
+    }
+
+    /**
+     * Applies to both credit cards and medicare cards.
+     */
     $.validator.addMethod("cardExpiry", function (value, elem, param) {
         if ($('#' + param.prefix + '_cardExpiryYear').val() !== '' && $('#' + param.prefix + '_cardExpiryMonth').val() !== '') {
-            // These are set in cards_expiry.tag
-            var now_ym = parseInt(get_now_year() + '' + get_now_month());
+            var now_ym = parseInt(meerkat.site.serverDate.getFullYear() + '' + getMonth());
             var sel_ym = parseInt('20' + $('#' + param.prefix + '_cardExpiryYear').val() + '' + $('#' + param.prefix + '_cardExpiryMonth').val());
             return sel_ym >= now_ym;
         }

@@ -292,11 +292,12 @@
                     </c:set>
                 </c:when>
             </c:choose>
-
+            <%-- Server date for JS to access --%>
+            <jsp:useBean id="now" class="java.util.Date" />
+            <c:set var="serverMonth"><fmt:formatDate value="${now}" type="DATE" pattern="M"/></c:set>
+            <c:set var="serverMonth" value="${serverMonth-1}" />
             <script>
-
-                ;
-                (function (meerkat) {
+                ;(function (meerkat) {
 
                     var siteConfig = {
                         title: '${title} - ${pageSettings.getSetting("windowTitle")}',
@@ -306,10 +307,10 @@
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,
                         showLogging: <c:out value="${showLogging}" />,
                         environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
+                        serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
                         revision: '<core:buildIdentifier />',
-                        <%-- could be: localhost, integration, qa, staging, prelive, pro --%>
-                        <c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId}, </c:if>
-                        <%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
+                        <c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId}, </c:if><%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
+
                         urls: {
                             base: '${pageSettings.getBaseUrl()}',
                             exit: '${exitUrl}',
@@ -319,7 +320,6 @@
                         content: {
                             brandDisplayName: '<content:get key="brandDisplayName"/>'
                         },
-                        <%-- This is just for supertag tracking module, don't use it anywhere else --%>
                         tracking: {
                             brandCode: '${pageSettings.getBrandCode()}',
                             superTagEnabled: ${superTagEnabled},
