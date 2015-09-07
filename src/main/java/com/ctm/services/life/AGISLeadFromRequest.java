@@ -77,7 +77,8 @@ public class AGISLeadFromRequest {
 				output = service.callMeBack(leadDataPack);
 			}
 		} catch (Exception e) {
-			logger.error("[lead feed] Exception thrown: " + e.getMessage(), e);
+			logger.error("[lead feed] Failed creating new lead feed {}, {}, {}", kv("pageSettings", pageSettings),
+				kv("transactionId", transactionId), kv("policySold", policySold));
 		}
 
 		if(output == LeadFeedService.LeadResponseStatus.SUCCESS) {

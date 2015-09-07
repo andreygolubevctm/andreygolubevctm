@@ -23,6 +23,8 @@ import com.ctm.services.SettingsService;
 import com.ctm.web.validation.EmailValidation;
 import com.disc_au.web.go.Data;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class EmailService {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmailService.class.getName());
@@ -58,8 +60,7 @@ public class EmailService {
 			emailResponse.setSuccessful(true);
 		} catch (SendEmailException e) {
 			fatalErrorService.logFatalError(e, "failed to send " + mode + " to " + emailAddress, true);
-			logger.error("failed to send " + mode + " to " + emailAddress, e);
-			logger.error("error description " + e.getDescription());
+			logger.error("failed to send email {}, {}", kv("mode", mode), kv("emailAddress", emailAddress), e);
 			emailResponse.setMessage(e.getMessage());
 		}
 		return emailResponse.toJsonObject();
@@ -84,13 +85,15 @@ public class EmailService {
 						try {
 							data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
 						} catch (SessionException e) {
-							logger.warn(e.getMessage());
+							logger.warn("Failed to get session data {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
+								kv("transactionId", transactionId), e);
 						}
 					}
 					if(data == null) {
 						String vertical = request.getParameter("vertical");
 						if(vertical == null || vertical.isEmpty()){
-							logger.info("defaulting to generic vertical");
+							logger.debug("Defaulting to generic vertical {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
+								kv("transactionId", transactionId));
 							vertical = VerticalType.GENERIC.getCode();
 						} else {
 							vertical = vertical.toUpperCase();

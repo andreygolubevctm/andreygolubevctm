@@ -88,7 +88,7 @@ public class RegoLookupService {
     static private Boolean getServiceAvailable(HttpServletRequest request, Boolean safeMode) throws RegoLookupException {
         Boolean isAvailable = false;
         try {
-            if (safeMode == true || transactionVerified(request)) {
+            if (safeMode || transactionVerified(request)) {
                 logger.debug("[rego lookup] transaction verified");
                 if (isSwitchedOn(request)) {
                     logger.debug("[rego lookup] is switched on");
@@ -97,22 +97,22 @@ public class RegoLookupService {
                         if (!isIPBlocked(request)) {
                             logger.info("[rego lookup] IP is not blocked");
                             isAvailable = true;
-                        } else if (safeMode == false) {
+                        } else if (!safeMode) {
                             throw new RegoLookupException(RegoLookupStatus.REQUEST_LIMIT_EXCEEDED);
                         }
-                    } else if (safeMode == false) {
+                    } else if (!safeMode) {
                         throw new RegoLookupException(RegoLookupStatus.DAILY_LIMIT_EXCEEDED);
                     }
-                } else if (safeMode == false) {
+                } else if (!safeMode) {
                     throw new RegoLookupException(RegoLookupStatus.SERVICE_TURNED_OFF);
                 }
             }
         } catch(RegoLookupException e) {
-            if (safeMode == false) {
+            if (!safeMode) {
                 throw new RegoLookupException(e.getStatus(), e);
             }
         }
-        logger.debug("[rego lookup] service " + (isAvailable == false ? "IS NOT" : "IS") + " available");
+        logger.debug("[rego lookup] service " + (!isAvailable ? "IS NOT" : "IS") + " available");
         return isAvailable;
     }
 

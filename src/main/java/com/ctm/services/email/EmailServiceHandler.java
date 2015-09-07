@@ -19,6 +19,8 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.EnvironmentService.Environment;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public abstract class EmailServiceHandler {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmailServiceHandler.class.getName());
@@ -94,7 +96,7 @@ public abstract class EmailServiceHandler {
 		try {
 			emailModel.setImageUrlPrefix(getPageSetting("imageUrlPrefix"));
 		} catch (SendEmailException e) {
-			logger.info("imageUrlPrefix not found");
+			logger.error("imageUrlPrefix not found {}", kv("emailModel", emailModel));
 		}
 		emailModel.setBrand(pageSettings.getBrandCode());
 	}

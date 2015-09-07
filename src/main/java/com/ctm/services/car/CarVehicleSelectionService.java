@@ -16,6 +16,9 @@ import org.json.JSONObject;
 
 import java.util.*;
 
+import static com.ctm.logging.LoggingArguments.kv;
+import static net.logstash.logback.argument.StructuredArguments.v;
+
 public class CarVehicleSelectionService {
 	private static final Logger logger = LoggerFactory.getLogger(CarVehicleSelectionService.class.getName());
 
@@ -38,8 +41,10 @@ public class CarVehicleSelectionService {
 				getVehicleSelectionMap(makeCode, modelCode, yearCode, bodyCode, transmissionCode, fuelCode)
 			));
 		} catch (JsonProcessingException | JSONException e) {
-			String message = "Could not get VehicleSelection for make:" + makeCode + " + model:" + modelCode + " + year:" + yearCode + " + body:" + bodyCode + " + trans:" + transmissionCode + " + fuel:" + fuelCode;
-			logger.error(message, e);
+			String message = "Could not get VehicleSelection " + makeCode + " + model=" + modelCode + ", year=" +
+					yearCode + ", body=" + bodyCode + ", transmission=" + transmissionCode + ", fuel=" + fuelCode;
+			logger.error(message, kv("makeCode", makeCode), kv("year", yearCode), kv("body", bodyCode),
+				kv("transmission", transmissionCode), kv("fuel", fuelCode), e);
 			throw new ServiceException(message, e);
 		}
 	}
@@ -138,8 +143,8 @@ public class CarVehicleSelectionService {
 
 		}
 		catch (DaoException e) {
-			String message = "Could not get models for make:" + makeCode;
-			logger.error(message, e);
+			String message = "Could not get models make=" + makeCode;
+			logger.error(message, kv("make", makeCode), e);
 			throw new ServiceException(message, e);
 		}
 
@@ -161,8 +166,8 @@ public class CarVehicleSelectionService {
 
 		}
 		catch (DaoException e) {
-			String message = "Could not get years for make:" + makeCode + " + model:" + modelCode;
-			logger.error(message, e);
+			String message = "Could not get years for make=" + makeCode + " , model=" + modelCode;
+			logger.error(message, kv("make", makeCode), kv("model", modelCode), e);
 			throw new ServiceException(message, e);
 		}
 
@@ -185,8 +190,8 @@ public class CarVehicleSelectionService {
 
 		}
 		catch (DaoException e) {
-			String message = "Could not get bodies for make:" + makeCode + " + model:" + modelCode + " + year:" + yearCode;
-			logger.error(message, e);
+			String message = "Could not get bodies for make=" + makeCode + ", model=" + modelCode + ", year=" + yearCode;
+			logger.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), e);
 			throw new ServiceException(message, e);
 		}
 
@@ -210,8 +215,8 @@ public class CarVehicleSelectionService {
 
 		}
 		catch (DaoException e) {
-			String message = "Could not get transmissions for make:" + makeCode + " + model:" + modelCode + " + year:" + yearCode + " + body:" + bodyCode;
-			logger.error(message, e);
+			String message = "Could not get transmissions make=" + makeCode + ", model=" + modelCode + ", year=" + yearCode + ", body=" + bodyCode;
+			logger.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), kv("body", bodyCode), e);
 			throw new ServiceException(message, e);
 		}
 
@@ -236,8 +241,8 @@ public class CarVehicleSelectionService {
 
 		}
 		catch (DaoException e) {
-			String message = "Could not get fuels for make:" + makeCode + " + model:" + modelCode + " + year:" + yearCode + " + body:" + bodyCode + " + trans:" + transmissionCode;
-			logger.error(message, e);
+			String message = "Could not get fuels for make=" + makeCode + ",  model=" + modelCode + ", year=" + yearCode + ", body=" + bodyCode + ", transmission=" + transmissionCode;
+			logger.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), kv("body", bodyCode), kv("transmission", transmissionCode));
 			throw new ServiceException(message, e);
 		}
 
@@ -263,8 +268,8 @@ public class CarVehicleSelectionService {
 
 		}
 		catch (DaoException e) {
-			String message = "Could not get types for make:" + makeCode + " + model:" + modelCode + " + year:" + yearCode + " + body:" + bodyCode + " + trans:" + transmissionCode + " + fuel:" + fuelCode;
-			logger.error(message, e);
+			String message = "Could not get types make=" + makeCode + ", model=" + modelCode + ", year=" + yearCode + ", body=" + bodyCode + ", transmission=" + transmissionCode + ", fuel=" + fuelCode;
+			logger.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), kv("body", bodyCode), kv("transmission", transmissionCode), kv("fuel", fuelCode), e);
 			throw new ServiceException(message, e);
 		}
 
@@ -310,8 +315,8 @@ public class CarVehicleSelectionService {
 			accessories = dao.getStandardAccessories(redBookCode);
 		}
 		catch (DaoException e) {
-			String message = "Could not get vehicle standard accessories";
-			logger.error(message, e);
+			String message = "Could not get vehicle standard accessories redBookCode=" + redBookCode;
+			logger.error(message, kv("redBookCode", redBookCode), e);
 			throw new ServiceException(message, e);
 		}
 		return accessories;
@@ -324,8 +329,8 @@ public class CarVehicleSelectionService {
 			accessories = dao.getOptionalAccessories(redBookCode);
 		}
 		catch (DaoException e) {
-			String message = "Could not get vehicle optional accessories";
-			logger.error(message, e);
+			String message = "Could not get vehicle optional accessories redBookCode=" + redBookCode;
+			logger.error(message, kv("redBookCode", redBookCode), e);
 			throw new ServiceException(message, e);
 		}
 		return accessories;
@@ -338,8 +343,8 @@ public class CarVehicleSelectionService {
 			accessories = dao.getAlarmAccessories(redBookCode);
 		}
 		catch (DaoException e) {
-			String message = "Could not get vehicle alarm accessories";
-			logger.error(message, e);
+			String message = "Could not get vehicle alarm accessories redBookCode=" + redBookCode;
+			logger.error(message,  kv("redBookCode", redBookCode), e);
 			throw new ServiceException(message, e);
 		}
 		return accessories;
@@ -352,8 +357,8 @@ public class CarVehicleSelectionService {
 			accessories = dao.getImmobiliserAccessories(redBookCode);
 		}
 		catch (DaoException e) {
-			String message = "Could not get vehicle immobiliser accessories";
-			logger.error(message, e);
+			String message = "Could not get vehicle immobiliser accessories redBookCode=" + redBookCode;
+			logger.error(message,  kv("redBookCode", redBookCode), e);
 			throw new ServiceException(message, e);
 		}
 		return accessories;
@@ -407,8 +412,8 @@ public class CarVehicleSelectionService {
 				glassesCode = dao.getGlassesCode(redbookCode);
 
 			} catch (DaoException e) {
-				String message = "Could not get vehicle non standard mappings for redbookCode:" + redbookCode;
-				logger.error(message, e);
+				String message = "Could not get vehicle non standard mappings for redBookCode=" + redbookCode + ", year=" + year;
+				logger.error(message,  kv("redBookCode", redbookCode), kv("year", year), e);
 				throw new ServiceException(message, e);
 			}
 		}
@@ -419,8 +424,8 @@ public class CarVehicleSelectionService {
 		try {
 			return dao.getGlassesCode(redbookCode, year);
 		} catch (DaoException e) {
-			String message = "Could not get vehicle non standard mappings for redbookCode:" + redbookCode + " year:" + year;
-			logger.error(message, e);
+			String message = "Could not get vehicle non standard mappings for redbookCode=" + redbookCode + ", year=" + year;
+			logger.error(message, kv("redBookCode", redbookCode), kv("year", year), e);
 			throw new ServiceException(message, e);
 		}
 	}
@@ -430,8 +435,8 @@ public class CarVehicleSelectionService {
 		try {
 			return dao.getCarProduct(date, productId, styleCodeId);
 		} catch (DaoException e) {
-			String message = "Could not get CarProduct for productId:" + productId;
-			logger.error(message, e);
+			String message = "Could not get CarProduct for productId=" + productId + " , date=" + date + ", styleCodeId" + styleCodeId;
+			logger.error(message, kv("productId", productId), kv("date", date), kv("styleCodeId", styleCodeId));
 			throw new ServiceException(message, e);
 		}
 	}

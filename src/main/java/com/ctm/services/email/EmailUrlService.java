@@ -13,6 +13,8 @@ import com.ctm.model.email.IncomingEmail;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.utils.FormDateUtils;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class EmailUrlService {
 
 	private static final Logger logger = LoggerFactory.getLogger(EmailUrlService.class.getName());
@@ -100,7 +102,7 @@ public class EmailUrlService {
 		try {
 			email= URLEncoder.encode(email , "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			logger.error("",e);
+			logger.error("Unable to encode email address to UTF-8 {}", kv("emailAddress", email), e);
 		}
 		return "email=" + email;
 	}
@@ -112,7 +114,7 @@ public class EmailUrlService {
 				// + in the url gets converted to a space an email address will never have a space see http://en.wikipedia.org/wiki/Email_address#RFC_specification
 				email = URLDecoder.decode(email, "UTF-8").replace(" ", "+");
 			} catch (UnsupportedEncodingException e) {
-				logger.error("",e);
+				logger.error("Unable to decode email address to UTF-8 {}", kv("emailAddress", email), e);
 			}
 		}
 		return email;

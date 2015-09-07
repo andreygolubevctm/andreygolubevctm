@@ -13,6 +13,8 @@ import com.ctm.logging.SpringWSLoggingInterceptor;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.logging.XMLOutputWriter;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * This class should only be used by Life/IP.
  * A more current refactor was started for AGIS leads to be used on Car.
@@ -49,7 +51,7 @@ public class AgLeadFeedService extends WebServiceGatewaySupport {
 
             return (Response) r; 
         } catch (Exception e) {
-            logger.error("a&g lead feed ws failed", e);
+            logger.error("A&G lead feed webservice failed {}, {}", kv("settings", settings), kv("transactionId", transactionId), e);
             throw new IOException(e);
         }
     }

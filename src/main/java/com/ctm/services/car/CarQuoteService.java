@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.model.settings.Vertical.VerticalType.CAR;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
@@ -102,7 +103,7 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
             return carResults;
 
         }catch(IOException e){
-            logger.error("Error parsing or connecting to car-quote", e);
+            logger.error("Error parsing or connecting to car-quote {}, {}", kv("brand", brand), kv("carRequest", data), e);
         }
 
         return null;

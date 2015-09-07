@@ -9,6 +9,8 @@ import com.ctm.model.transaction.TransactionLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class AccessCheckService {
 
@@ -53,7 +55,8 @@ public class AccessCheckService {
     public boolean handleAccessCheck(long transactionId, String operatorId, String vertical) {
         boolean isLocked = false;
         if(vertical == null || vertical.isEmpty()){
-            logger.warn("vertical must have a value default to locked");
+            logger.warn("invalid vertical value, defaulted to locked {}, {}, {}", kv("transactionId", transactionId),
+                kv("operatorId", operatorId), kv("vertical", vertical));
         } else if (vertical.equalsIgnoreCase("health")) {
             try {
                 isLocked = getIsLockedByTransactionId(transactionId, operatorId);
@@ -61,7 +64,8 @@ public class AccessCheckService {
                     createOrUpdateTransactionLock(transactionId, operatorId);
                 }
             } catch (DaoException e) {
-                logger.error("",e);
+                logger.error("failed to handle access check {}, {}, {}", kv("transactionId", transactionId),
+                    kv("operatorId", operatorId), kv("vertical", vertical), e);
             }
         }
         return isLocked;

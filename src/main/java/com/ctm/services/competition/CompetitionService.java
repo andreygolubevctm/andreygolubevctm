@@ -11,6 +11,8 @@ import com.ctm.services.ApplicationService;
 
 import java.util.Date;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class CompetitionService {
 
 	private static final Logger logger = LoggerFactory.getLogger(CompetitionService.class.getName());
@@ -23,17 +25,14 @@ public class CompetitionService {
 	 * @return
 	 */
 	public static Boolean isActive(HttpServletRequest request, Integer competitionId) {
-
 		Boolean compActive = false;
-
 		Date serverDate = ApplicationService.getApplicationDate(request);
 
 		try {
 			Brand brand = ApplicationService.getBrandFromRequest(request);
 			compActive = CompetitionDao.isActive(brand.getId(), competitionId, serverDate);
-
 		} catch (DaoException e) {
-			logger.error("",e);
+			logger.error("Failed to determine if competition is active {}, {}", kv("competitionId", competitionId), kv("serverDate", serverDate), e);
 		}
 
 		return compActive;

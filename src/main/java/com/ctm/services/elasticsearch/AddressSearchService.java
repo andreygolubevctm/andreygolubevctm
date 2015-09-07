@@ -1,12 +1,11 @@
 package com.ctm.services.elasticsearch;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ctm.exceptions.ElasticSearchConfigurationException;
 import org.elasticsearch.client.Client;
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import com.ctm.exceptions.ElasticSearchConfigurationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AddressSearchService extends ElasticSearchService {
 
@@ -19,25 +18,17 @@ public class AddressSearchService extends ElasticSearchService {
 	 * Create a connection to the ES server
 	 */
 	public static void init() {
-
-		if(initialised == false) {
-
+		if(!initialised) {
 			initialised = true;
 
 			try {
-
 				elasticClient = ElasticClientProvider.createClient();
-				logger.info("[ElasticSearch] Address Search client has been initialised");
-
+				logger.debug("[ElasticSearch] Address Search client has been initialised");
 			} catch (ElasticSearchConfigurationException e) {
-
 				initialised = false;
 				logger.error("[ElasticSearch] Could not initialise ElasticSearch client", e);
 				fatalErrorService.logFatalError(e, 0, "AddressSearchService", false, "");
-
 			}
-
-
 		}
 	}
 
@@ -50,7 +41,7 @@ public class AddressSearchService extends ElasticSearchService {
 			elasticClient.close();
 			initialised = false;
 			ElasticClientProvider.destroy();
-			logger.info("[ElasticSearch] Address Search client has been destroyed");
+			logger.debug("[ElasticSearch] Address Search client has been destroyed");
 		}
 	}
 
@@ -87,7 +78,7 @@ public class AddressSearchService extends ElasticSearchService {
 	 */
 	public JSONArray suggest(String query, String index, String field) throws JSONException {
 
-		if(initialised == false){
+		if(!initialised){
 			init();
 		}
 

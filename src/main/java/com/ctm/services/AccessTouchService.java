@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class AccessTouchService {
 
 	private static final Logger logger = LoggerFactory.getLogger(IncomingEmailRouter.class.getName());
@@ -62,8 +64,7 @@ public class AccessTouchService {
 			return true;
 		} catch(DaoException e) {
 			// Failing to write the touch shouldn't be fatal - let's just log an error
-			String message = "Failed to record touch (" + touch.getType() + ") against transaction [" + touch.getTransactionId() + "].";
-			logger.error(message, e);
+			logger.error("Failed to record touch {}", kv("touch", touch), e);
 			return false;
 		}
 	}
@@ -131,7 +132,7 @@ public class AccessTouchService {
                 isBeingSubmitted = touch.getType() == Touch.TouchType.SUBMITTED;
             }
         } catch (DaoException e) {
-            logger.error("",e);
+            logger.error("Failed to determine latest touch {}, {}", kv("transactionId", transactionId), e);
         }
         return isBeingSubmitted;
     }

@@ -23,6 +23,8 @@ import javax.servlet.jsp.JspException;
 import java.util.Date;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class HealthApplicationService {
 
 	private static final Logger logger = LoggerFactory.getLogger(HealthApplicationService.class.getName());
@@ -69,7 +71,7 @@ public class HealthApplicationService {
 				updateDataBucket(data);
 			}
 		} catch (DaoException e) {
-			logger.error("",e);
+			logger.error("Failed to calculate health premiums {}", kv("data", data), kv("changeOverDate", changeOverDate), e);
 			fatalErrorService.logFatalError(e, 0, "HealthApplicationService", true, data.getString("current.transactionId"));
 			throw new JspException(e);
 		}

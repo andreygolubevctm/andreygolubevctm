@@ -1,5 +1,6 @@
 package com.ctm.services.email;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static java.lang.Integer.parseInt;
 
 import java.security.GeneralSecurityException;
@@ -119,7 +120,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 				throw exception;
 			}
 		} catch (ConfigSettingException  e) {
-			logger.error( "failed to call exact target web service", e);
+			logger.error("Failed to call exact target web service {}", kv("emailModel", emailModel), e);
 			throw new SendEmailException( "failed to call exact target web service", e );
 		} finally {
 			destroyWebserviceClient();
@@ -231,7 +232,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 		response.setMessage(statusMessage);
 		response.setSuccessful(success);
 		response.setRequestID(requestID);
-		logger.info("exact target respone message:" + response.getMessage());
+		logger.debug("Exact target response message {}", kv("response", response.getMessage()));
 		return response;
 	}
 

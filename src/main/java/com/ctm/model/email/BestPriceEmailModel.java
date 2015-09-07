@@ -54,4 +54,17 @@ public abstract class BestPriceEmailModel extends EmailModel {
 		this.emailAddress = emailAddress;
 		setSubscriberKey(emailAddress);
 	}
+
+	@Override
+	public String toString() {
+		return "BestPriceEmailModel{" +
+				"emailAddress='" + emailAddress + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", optIn=" + optIn +
+				", premiumFrequency='" + premiumFrequency + '\'' +
+				", callcentreHours='" + callcentreHours + '\'' +
+				", phoneNumber='" + phoneNumber + '\'' +
+				'}';
+	}
 }

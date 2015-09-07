@@ -14,6 +14,8 @@ import com.ctm.services.leadfeed.car.AGIS.AGISCarLeadFeedService;
 import com.ctm.services.leadfeed.car.REIN.REINCarLeadFeedService;
 import com.ctm.services.leadfeed.car.AI.AICarLeadFeedService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class CarLeadFeedService extends LeadFeedService {
 
@@ -26,6 +28,7 @@ public class CarLeadFeedService extends LeadFeedService {
 		IProviderLeadFeedService providerLeadFeedService = null;
 
 		try {
+			logger.debug("[Lead feed] Prepare to send lead {}, {}, {}", kv("leadType", leadType), kv("leadData", leadData), kv("touchType", touchType));
 
 			switch(leadData.getPartnerBrand()) {
 
@@ -38,18 +41,14 @@ public class CarLeadFeedService extends LeadFeedService {
 				case "OZIC":
 				case "IECO":
 				case "CBCK":
-					logger.info("[Lead feed] Prepare to send lead to AGIS brand "+leadType+"; Transaction ID: "+leadData.getTransactionId());
 					providerLeadFeedService = new AGISCarLeadFeedService();
 					break;
 				case "WOOL":
-					logger.debug("[Lead feed] No lead feed set up for WOOL "+leadType+"; Transaction ID: "+leadData.getTransactionId());
 					break;
 				case "REIN":
-					logger.info("[Lead feed] Prepare to send lead to REIN "+leadType+"; Transaction ID: "+leadData.getTransactionId());
 					providerLeadFeedService = new REINCarLeadFeedService();
 					break;
 				case "AI":
-					logger.info("[Lead feed] Prepare to send lead to AI " + leadType + "; Transaction ID: " + leadData.getTransactionId());
 					providerLeadFeedService = new AICarLeadFeedService();
 					break;
 			}
@@ -59,11 +58,12 @@ public class CarLeadFeedService extends LeadFeedService {
 				if (responseStatus == LeadResponseStatus.SUCCESS) {
 					recordTouch(touchType.getCode(), leadData);
 				}
-				logger.debug("[Lead feed] Provider lead process response: " + responseStatus);
+				logger.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
 			}
 
 		} catch(LeadFeedException e) {
-			logger.error("[Lead feed] Exception adding lead feed message",e);
+			logger.error("[Lead feed] Error adding lead feed message {}, {}, {}", kv("leadType", leadType), kv("leadData", leadData),
+				kv("touchType", touchType), e);
 			responseStatus = LeadResponseStatus.FAILURE;
 		}
 

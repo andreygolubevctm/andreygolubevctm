@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.apache.taglibs.standard.tag.common.sql.ResultImpl;
 import com.ctm.model.settings.PageSettings;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class AGISLeadFromCronJob {
 
 	private static final Logger logger = LoggerFactory.getLogger(AGISLeadFromCronJob.class);
@@ -88,11 +90,11 @@ public class AGISLeadFromCronJob {
 			lead.setClientName((firstName + " " + lastName).trim());
 
 			// Call Lead Feed Service
-			LeadFeedData leadDataPack = lead;
 			LifeLeadFeedService service = new LifeLeadFeedService();
-			output = service.bestPrice(leadDataPack);
+			output = service.bestPrice(lead);
 		} catch (Exception e) {
-			logger.error("[lead feed] Exception thrown: " + e.getMessage(), e);
+			logger.error("[lead feed] Cron failed sending AGIS lead feed {}", kv("transactionId", transactionId),
+				kv("pageSettings", pageSettings), e);
 		}
 
 		if(output == LeadFeedService.LeadResponseStatus.SUCCESS) {

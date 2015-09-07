@@ -19,6 +19,8 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.SettingsService;
 import com.disc_au.web.go.Data;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class CouponService {
 	private static final Logger logger = LoggerFactory.getLogger(CouponService.class.getName());
 	private CouponDao couponDao;
@@ -84,7 +86,7 @@ public class CouponService {
 			List<Coupon> coupons = couponDao.getAvailableCoupons(styleCodeId, verticalId, CouponChannel.findByCode(couponChannelCode), effectiveDate);
 			return !coupons.isEmpty();
 		} catch (DaoException | ConfigSettingException e) {
-			logger.error("Failed to check if coupon field can be displayed.", e);
+			logger.error("Failed to check if coupon field can be displayed {}, {}", kv("couponChannelCode", couponChannelCode), e);
 		}
 		return false;
 

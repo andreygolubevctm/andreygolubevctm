@@ -16,6 +16,8 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.SettingsService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ConfirmationService {
 	private static final Logger logger = LoggerFactory.getLogger(ConfirmationService.class.getName());
 
@@ -51,7 +53,7 @@ public class ConfirmationService {
 			}
 		}
 		catch (DaoException e) {
-			logger.error(e.getMessage(), e);
+			logger.error("Unable to get confirmation record {}, {}", kv("confirmationKey", confirmationKey), kv("brandId", brandId), e);
 		}
 
 		return confirmation;
@@ -103,7 +105,7 @@ public class ConfirmationService {
 			}
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			logger.error("Unable to get confirmation url {}", kv("confirmationKey", confirmationKey), e);
 		}
 
 		return confirmationUrl.toString();

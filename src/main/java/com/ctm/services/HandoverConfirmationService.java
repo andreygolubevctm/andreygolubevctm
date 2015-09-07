@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.model.Touch.TouchType.SOLD;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
@@ -35,13 +36,13 @@ public class HandoverConfirmationService {
         if (!accessTouchService.hasTouch(handoverConfirmation.transactionId, SOLD)) {
             accessTouchService.recordTouch(handoverConfirmation.transactionId, SOLD.getCode());
         } else {
-            logger.info("existing sold touch already recorded transactionId:" + handoverConfirmation.transactionId);
+            logger.warn("Existing sold touch already recorded {}", kv("handoverConfirmation", handoverConfirmation));
         }
 
         if (!handoverConfirmationDao.hasExistingConfirmationWithPolicy(handoverConfirmation)) {
             handoverConfirmationDao.recordConfirmation(handoverConfirmation);
         } else {
-            logger.info("handover confirmation already recorded transactionId:" + handoverConfirmation.transactionId);
+            logger.info("Handover confirmation already recorded {}", kv("handoverConfirmation", handoverConfirmation));
         }
     }
 

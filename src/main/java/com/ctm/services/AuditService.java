@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import com.ctm.dao.LogAuditDao;
 import com.ctm.model.LogAudit;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Inspiration:
 	https://www.owasp.org/index.php/Logging_Cheat_Sheet
@@ -60,7 +62,8 @@ public class AuditService {
 		try {
 			encryptedSessionId = StringEncryption.encrypt(secret_key, logAudit.getSessionId());
 		} catch (GeneralSecurityException e) {
-			logger.error("",e);
+			logger.error("Failed logging audit {}, {}, {}", kv("logAudit", logAudit), kv("identity", identity),
+				kv("metadata", metadata));
 		}
 
 		/*Run the log */
