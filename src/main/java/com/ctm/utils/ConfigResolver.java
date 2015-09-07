@@ -1,6 +1,7 @@
 package com.ctm.utils;
 
 import com.ctm.services.EnvironmentService;
+import com.disc_au.web.go.FileUtils;
 
 public class ConfigResolver {
 
@@ -15,10 +16,17 @@ public class ConfigResolver {
     }
 
     public Object getConfigUrl(String base) {
+        String configUrl = base.replace(".xml", "_"+ environment.toString() + ".xml");
         if(environment.equals( EnvironmentService.Environment.PRO)) {
-            return base.replace(".xml", "_PRO.xml");
-        } else {
+            return configUrl;
+        }  else if(environment.equals( EnvironmentService.Environment.LOCALHOST)) {
             return base;
+        }else {
+            if(FileUtils.exists(configUrl)) {
+                return configUrl;
+            } else {
+                return base;
+            }
         }
     }
 }
