@@ -120,7 +120,7 @@
 									<span class="priceTitle">Price</span>
 								</div>
 								<div class="col-xs-6 excessContainer">
-									<span class="excessAmount">{{= obj.info.excess.text }}</span>
+									<span class="excessAmount">{{= obj.info.excess }}</span>
 									<span class="excessTitle">Excess</span>
 								</div>
 							</div>
