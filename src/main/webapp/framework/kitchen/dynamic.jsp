@@ -256,10 +256,6 @@
 		<field:filler_row xpath="" required="true" />
 	</form_new:row>
 
-	<form_new:row label="general_select">
-		<field:general_select xpath="${xpath}/generalSelect" type="healthSitu" title="field:general_select" required="true" initialText="initialText" />
-	</form_new:row>
-
 	<form_new:row label="new_general_select">
 		<field_new:general_select xpath="${xpath}/new/generalSelect" type="healthSitu" title="field:new_general_select" required="true" initialText="initialText" />
 	</form_new:row>
