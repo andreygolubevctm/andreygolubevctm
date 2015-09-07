@@ -208,14 +208,6 @@
 		<field:age dob="22/08/1970" />
 	</form_new:row>
 
-	<form_new:row label="<del>array_radio</del>">
-		<field:array_radio items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadio" xpath="${xpath}/arrayRadio" title="array_radio" required="true" />
-	</form_new:row>
-
-	<form_new:row label="<del>array_select</del>">
-		<field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="callmeback/save/time" title="array_select" required="true" />
-	</form_new:row>
-
 	<form_new:row label="birthday">
 		<field:birthday dob="22/08/1970" />
 	</form_new:row>
@@ -230,10 +222,6 @@
 
 	<form_new:row label="category_select" id="${categoryRow}">
 		<field:category_select xpath="${xpath}/category" title="category" type="category" required="true" />
-	</form_new:row>
-
-	<form_new:row label="<del>checkbox</del>">
-		<field:checkbox xpath="${xpath}/checkbox" value="Y" title="checkbox" required="true" label="true" errorMsg="errorMsg" theme="themeA" />
 	</form_new:row>
 
 	<form_new:row label="contact_mobile">
@@ -486,17 +474,6 @@
 		<field_new:slider xpath="${xpath}/new/sliderExcess" type="excess" value="2" range="1,5" markers="5" legend="None,$250,$500,$750,All" />
 		<field_new:slider xpath="${xpath}/new/sliderPrice" type="price" value="550" range="100,650" legend="NONE,BASIC,MEDIUM,COMPREHENSIVE" />
 	</div>
-	</form_new:row>
-
-	<form_new:row label="switch">
-		<%-- <field_new:switch xpath="${xpath}/new/switch" value="Y" className="switch-normal" /> --%>
-		<field_new:switch xpath="${xpath}/new/switch2" value="Y" required="true" />
-		<field_new:switch xpath="${xpath}/new/switch3" value="Y" />
-		<field_new:switch xpath="${xpath}/new/switch4" value="Y" />
-		<go:script marker="onready">
-			$('#${go:nameFromXpath(xpath)}_new_switch3, #${go:nameFromXpath(xpath)}_new_switch4').bootstrapSwitch('setDisabled', true); //.prop('disabled', true);
-			$('#${go:nameFromXpath(xpath)}_new_switch4').prop('checked', true).change();
-		</go:script>
 	</form_new:row>
 
 	<form_new:row>
