@@ -236,10 +236,6 @@
 		<field:checkbox xpath="${xpath}/checkbox" value="Y" title="checkbox" required="true" label="true" errorMsg="errorMsg" theme="themeA" />
 	</form_new:row>
 
-	<form_new:row label="contact_email">
-		<field:contact_email xpath="reminder/email" required="true" title="contact_email" placeHolder="Place holder text" size="17" />
-	</form_new:row>
-
 	<form_new:row label="contact_mobile">
 		<field:contact_mobile xpath="${xpath}/mobile" size="15" required="true" title="field:contact_mobile" labelName="contact mobile" placeHolderUnfocused="Unfocused placeholder text" />
 	</form_new:row>
@@ -250,11 +246,6 @@
 
 	<form_new:row label="count_select">
 		<field_new:count_select xpath="${xpath}/day" min="1" max="27" step="1" title="field:count_select" required="true" />
-	</form_new:row>
-
-	<form_new:row label="creditcard_expiry">
-		<%-- <field:creditcard_expiry xpath="quote/avea/payment" required="true" title="field:creditcard_expiry"/> --%>
-		See 'cards_expiry'
 	</form_new:row>
 
 	<form_new:row label="customisable-checkbox">

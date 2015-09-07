@@ -43,7 +43,6 @@
 			</jsp:attribute>
 
 			<jsp:body>
-						<core:loadsafe />
 						<simples:menu_bar bridgeToLive="N" />
 
 						<iframe id="simplesiframe" name="simplesiframe" width="100%" height="200" src="${assetUrl}simples/home.jsp"></iframe>
