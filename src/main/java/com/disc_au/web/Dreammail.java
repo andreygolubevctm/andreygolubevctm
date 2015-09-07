@@ -1,9 +1,6 @@
 package com.disc_au.web;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -32,15 +29,18 @@ public class Dreammail {
 			connection.setRequestProperty("SOAPAction", "Create");
 			connection.setRequestProperty("Content-Type", "text/xml");
 		} else {
-		connection.setRequestProperty("ServerName", servername);
-		connection.setRequestProperty("UserName", username);
-		connection.setRequestProperty("Password", password);
+			connection.setRequestProperty("ServerName", servername);
+			connection.setRequestProperty("UserName", username);
+			connection.setRequestProperty("Password", password);
 		}
 
 		// Write the data
-		PrintWriter out = new PrintWriter(connection.getOutputStream());
-		out.print(xml_content);
-		out.close();
+		OutputStream os = connection.getOutputStream();
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+		writer.write(xml_content);
+		writer.flush();
+		writer.close();
+		os.close();
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String inputLine;
