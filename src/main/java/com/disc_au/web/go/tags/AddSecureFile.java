@@ -1,18 +1,15 @@
 package com.disc_au.web.go.tags;
 
-import com.disc_au.web.file.SecureFileServlet;
-import com.disc_au.web.go.xml.XmlNode;
-import com.disc_au.web.go.xml.XmlParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import org.xml.sax.SAXException;
+
+import com.disc_au.web.file.SecureFileServlet;
+import com.disc_au.web.go.xml.XmlNode;
+import com.disc_au.web.go.xml.XmlParser;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -24,8 +21,6 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 @SuppressWarnings("serial")
 public class AddSecureFile extends BaseTag {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(AddSecureFile.class.getName());
 	
 	private String filename = "";
 	private String url = "";
@@ -74,7 +69,7 @@ public class AddSecureFile extends BaseTag {
 						o = (new XmlParser()).parse(url);
 						return EVAL_PAGE;
 					} catch (SAXException e) {
-						LOGGER.error("Failed to parse ur. {}", kv("url", url), e);
+						e.printStackTrace();
 					}
 					// Unknown result type
 				} else {
