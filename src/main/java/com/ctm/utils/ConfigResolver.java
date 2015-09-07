@@ -1,7 +1,11 @@
 package com.ctm.utils;
 
 import com.ctm.services.EnvironmentService;
-import com.disc_au.web.go.FileUtils;
+import org.apache.commons.io.IOUtils;
+
+import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class ConfigResolver {
 
@@ -15,15 +19,22 @@ public class ConfigResolver {
         this.environment = environment;
     }
 
-    public Object getConfigUrl(String base) {
-        String configUrl = base.replace(".xml", "_"+ environment.toString() + ".xml");
-        if(environment.equals( EnvironmentService.Environment.PRO)) {
-            return configUrl;
-        } else {
-            if(FileUtils.exists(configUrl)) {
-                return configUrl;
-            } else {
-                return base;
+    public String getConfig(ServletContext sc, String base) throws IOException {
+        InputStream resource = null;
+        try {
+            String configUrl = base.replace(".xml", "_" + environment.toString() + ".xml");
+             resource = sc.getResourceAsStream(configUrl);
+            if (sc.getResourceAsStream(configUrl) == null) {
+                resource = sc.getResourceAsStream(base);
+            }
+            String config = IOUtils.toString(
+                    resource,
+                    "UTF-8"
+            );
+            return config;
+        }  finally {
+            if (resource != null){
+                resource.close();
             }
         }
     }

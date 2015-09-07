@@ -10,7 +10,7 @@
 <c:set var="clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <c:set var="tranId" value="${data.current.transactionId}" />
 <jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
-<c:import var="config" url="${configResolver.getConfigUrl('/WEB-INF/aggregator/health_application/bup/config_token.xml')}" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/bup/config_token.xml')}" />
 
 <%--
 	There are issues with this working the first time due to security constraints

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" />
-<c:import var="config" url="${configResolver.getConfig('/WEB-INF/aggregator/health_application/ahm/config.xml')}" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/ahm/config.xml')}" />
 <x:parse doc="${config}" var="configXml" />
 
 <%-- PARAMS --%>

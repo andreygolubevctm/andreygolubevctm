@@ -116,7 +116,7 @@
 			<c:otherwise>
 
 				<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
-				<c:import var="config" url="${configResolver.getConfigUrl('/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml')}" />
+				<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml')}" />
 				<go:soapAggregator 
 					config="${config}" 
 					transactionId="${tranId}" 

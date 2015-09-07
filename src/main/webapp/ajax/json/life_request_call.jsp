@@ -84,7 +84,7 @@
 							<c:otherwise>
 								<%-- Load the config and send quotes to the aggregator gadget --%>
 								<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
-								<c:import var="config" url="${configResolver.getConfigUrl('/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
+								<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 
 								<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="call" />
 

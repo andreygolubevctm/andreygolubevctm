@@ -21,7 +21,7 @@
 <%-- TODO: move this over to the database --%>
 <c:if test="${not empty param.providerCode}">
 	<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
-	<c:import var="config" url="${configResolver.getConfigUrl('/WEB-INF/aggregator/health_application/${param.providerCode}/config.xml')}" />
+	<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/${param.providerCode}/config.xml')}" />
 	<x:parse var="configXml" doc="${config}" />
 	<c:set var="gatewayURL" scope="page" ><x:out select="$configXml//*[name()='nabGateway']/*[name()='gatewayURL']" /></c:set>
 	<c:set var="gatewayDomain" scope="page"><x:out select="$configXml//*[name()='nabGateway']/*[name()='domain']" /></c:set>

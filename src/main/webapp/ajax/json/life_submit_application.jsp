@@ -85,7 +85,7 @@
 				<c:set var="dataXml" value="${go:getEscapedXml(data[vertical])}" />
 
 				<%-- Load the config for the contact lead sender --%>
-				<c:import var="config" url="${configResolver.getConfigUrl('/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
+				<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 
 				<go:soapAggregator	config = "${config}"
 									transactionId = "${tranId}"
@@ -136,7 +136,7 @@
 				</c:set>
 		
 				<%-- Load the config and send quotes to the aggregator gadget --%>
-				<c:import var="config" url="${configResolver.getConfigUrl('/WEB-INF/aggregator/life/config_product_apply.xml')}" />
+				<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_product_apply.xml')}" />
 				<go:soapAggregator	config = "${config}"
 									transactionId = "${tranId}"
 									xml = "${requestXML}"
