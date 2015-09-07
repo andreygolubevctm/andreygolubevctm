@@ -5,6 +5,10 @@ import java.io.IOException;
 import javax.servlet.jsp.JspException;
 
 import com.disc_au.web.go.InsertMarkerCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -16,6 +20,8 @@ import com.disc_au.web.go.InsertMarkerCache;
 
 @SuppressWarnings("serial")
 public class StyleTag extends BaseTag {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(StyleTag.class.getName());
 
 	/** The Constant START_TAG. */
 	private static final String START_TAG = "<style type=\"text/css\">";
@@ -113,7 +119,7 @@ public class StyleTag extends BaseTag {
 			try {
 				pageContext.getOut().write(START_TAG);
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOGGER.error("Failed to write to page.", kv("START_TAG", START_TAG), e);
 			}
 			return EVAL_BODY_INCLUDE;
 		} else {
