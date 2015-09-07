@@ -59,4 +59,8 @@ public class LoggingArguments {
         return wrap(StructuredArguments.r(fieldName, rawJsonValue));
     }
 
+    public static LoggingArgument value(final String fieldName, final Object rawJsonValue) {
+        return wrap(StructuredArguments.value(fieldName, rawJsonValue));
+    }
+
 }

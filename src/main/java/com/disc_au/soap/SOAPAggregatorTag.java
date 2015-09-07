@@ -89,6 +89,8 @@ public class SOAPAggregatorTag extends TagSupport {
 	 */
 	@Override
 	public int doEndTag() throws JspException {
+		String debugXml = null;
+		String resultXml = null;
 		try {
 			XmlParser parser = new XmlParser();
 		setUpConfiguration();
@@ -145,16 +147,16 @@ public class SOAPAggregatorTag extends TagSupport {
 			// Join each thread for their given timeout
 
 			for (Thread thread : threads.keySet()) {
+				long timeout = threads.get(thread).getTimeoutMillis();
 				try {
 
-					long timeout = threads.get(thread).getTimeoutMillis();
 
 					//Otherwise the aggregator times out before all the clients have had a chance too.
 					timeout+= 2000; // ensure the main thread lasts slightly longer than the total of all service calls.
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
-						logger.error("",e);
+						logger.error("Exception joining threads. {}", kv("timeout", timeout), e);
 				}
 			}
 
@@ -177,7 +179,7 @@ public class SOAPAggregatorTag extends TagSupport {
 													e.getMessage(),
 											client.getServiceName(),
 											result);
-						logger.error("Failed to parse correctly. {}" , kv("client", client), e);
+						logError(client, "Failed to parse correctly: " + e.getMessage());
 					}
 				}
 				// Check if the request timed out
@@ -186,7 +188,7 @@ public class SOAPAggregatorTag extends TagSupport {
 												0,
 												"Client failed to return in time",
 												client.getServiceName());
-					logger.error("Failed to return in time. {}", kv("client", client));
+					logError(client, "Failed to return in time");
 				}
 				// Unknown problem
 				else {
@@ -194,7 +196,7 @@ public class SOAPAggregatorTag extends TagSupport {
 							0,
 							"Response has no body",
 							client.getServiceName());
-					logger.error("Response has no body. {}", kv("client", client));
+					logError(client, "Response has no body");
 				}
 
 				thisResult.setAttribute("responseTime", String.valueOf(client.getResponseTime()));
@@ -202,8 +204,9 @@ public class SOAPAggregatorTag extends TagSupport {
 			}
 
 			// Write to the debug var (if passed)
-				if (this.debugVar != null) {
-				this.pageContext.setAttribute(debugVar, resultNode.getXML(true),
+			if (this.debugVar != null) {
+				debugXml= resultNode.getXML(true);
+				this.pageContext.setAttribute(debugVar, debugXml,
 						PageContext.PAGE_SCOPE);
 			}
 
@@ -215,7 +218,8 @@ public class SOAPAggregatorTag extends TagSupport {
 			// If result var was passed - put the resulting xml in the pagecontext's
 			// variable
 			if (this.var!= null) {
-				this.pageContext.setAttribute(var, resultNode.getXML(true),
+				resultXml= resultNode.getXML(true);
+				this.pageContext.setAttribute(var, resultXml,
 						PageContext.PAGE_SCOPE);
 				// Otherwise - just splat it to the page
 			} else {
@@ -228,8 +232,9 @@ public class SOAPAggregatorTag extends TagSupport {
 		}
 			return super.doEndTag();
 		} finally {
+			logger.debug("Aggregator response returned. {},{}", kv("resultXml", resultXml), kv("debugXml", debugXml));
 			cleanUp();
-	}
+		}
 	}
 
 	private void setUpConfiguration() {
@@ -252,6 +257,16 @@ public class SOAPAggregatorTag extends TagSupport {
 		schemaValidation = new SchemaValidation();
 		isValidVar = null;
 		continueOnValidationError = false;
+	}
+
+	/**
+	 * Log error.
+	 *
+	 * @param client the client
+	 * @param message the message
+	 */
+	private void logError(SOAPClientThread client, String message) {
+		logger.error(client.getName() + " : " + message);
 	}
 
 	/**

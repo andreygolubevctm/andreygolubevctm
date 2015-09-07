@@ -31,21 +31,6 @@ import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.net.ssl.*;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.security.*;
-import java.security.cert.CertificateException;
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.ctm.logging.LoggingArguments.kv;
-import static com.ctm.logging.LoggingArguments.value;
 import static com.ctm.logging.XMLOutputWriter.*;
 
 
@@ -144,7 +129,12 @@ public class SOAPClientThread implements Runnable {
 	}
 
 	protected void logTime(String msg) {
+		logTime(msg, this.timer);
 		this.timer = System.currentTimeMillis();
+	}
+
+	private void logTime(String msg, long timer) {
+		//logger.info(this.name + ": " + msg + ": " + (System.currentTimeMillis() - timer) + "ms ");
 	}
 
 	/**
@@ -177,7 +167,7 @@ public class SOAPClientThread implements Runnable {
 				connection = (HttpsURLConnection) u.openConnection();
 
 				if (configuration.getClientCert() !=null && configuration.getClientCertPass() != null){
-					logger.debug("Using Cert: " + configuration.getClientCert());
+					logger.info("Using Cert: " + configuration.getClientCert());
 					try {
 
 						// First, try on the classpath (assume given path has no leading slash)
@@ -189,7 +179,7 @@ public class SOAPClientThread implements Runnable {
 							clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getClientCert());
 						}
 
-						logger.debug("Cert Exists: {} " , value("Exists", clientCertSourceInput != null));
+						logger.info("Cert Exists: " + ( clientCertSourceInput == null ? "NOOOO" : "Yep" ));
 
 						String pKeyPassword = configuration.getClientCertPass();
 						KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -511,7 +501,11 @@ public class SOAPClientThread implements Runnable {
 			if (nodeList != null){
 				return nodeList;
 			}
-		} catch (ParserConfigurationException | IOException | SAXException e) {
+		} catch (ParserConfigurationException e) {
+			logger.error("failed to createRequestNodeList" , e);
+		} catch (SAXException e) {
+			logger.error("failed to createRequestNodeList" , e);
+		} catch (IOException e) {
 			logger.error("failed to createRequestNodeList" , e);
 		}
 		return null;
@@ -537,10 +531,5 @@ public class SOAPClientThread implements Runnable {
 
 	public SoapClientThreadConfiguration getConfiguration(){
 		return configuration;
-	}
-
-	@Override
-	public String toString(){
-		return "Name:" + getName() + "serviceName" + getServiceName();
 	}
 }

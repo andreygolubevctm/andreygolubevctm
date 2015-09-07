@@ -11,8 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import static com.ctm.logging.LoggingArguments.kv;
-
 public class HtmlFormClientThread extends SOAPClientThread {
 
 	public HtmlFormClientThread(String tranId, String configRoot,
@@ -71,7 +69,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 
 			// Important! keep this as debug and don't enable debug logging in production
 			// data may include credit card details (this is from the nib webservice)
-			logger.debug("[HTML Response]. {}", kv("data", data));
+			logger.debug("[HTML Response] " + data);
 
 			// Send the request
 			connection.setRequestProperty("Content-Length", String.valueOf(data.length()));
@@ -144,7 +142,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 			this.responseTime = System.currentTimeMillis() - startTime;
 
 		} catch ( IOException e) {
-			logger.error("failed to processRequest", e);
+			logger.error("failed to processRequest" , e);
 			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), e.getClass().getName(), (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 
