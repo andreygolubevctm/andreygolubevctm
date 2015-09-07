@@ -1,11 +1,14 @@
 package com.ctm.providers.health.healthquote.model;
 
+import com.ctm.model.content.Content;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.Membership;
 import com.ctm.model.health.form.*;
 import com.ctm.providers.health.healthquote.model.request.*;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +18,13 @@ import static com.ctm.model.health.HospitalSelection.BOTH;
 import static com.ctm.model.health.HospitalSelection.PRIVATE_HOSPITAL;
 import static com.ctm.model.health.ProductStatus.*;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 public class RequestAdapter {
 
-    public static HealthQuoteRequest adapt(HealthRequest request) {
+    private static final DateTimeFormatter AUS_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy");
+
+    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent) {
 
         final HealthQuote quote = request.getQuote();
 
@@ -133,6 +139,18 @@ public class RequestAdapter {
                         break;
                 }
             }
+            if (StringUtils.isNotBlank(quote.getProductTitleSearch())) {
+                ProductTitleFilter productTitleFilter = new ProductTitleFilter();
+                productTitleFilter.setProductTitle(quote.getProductTitleSearch());
+                productTitleFilter.setExact(false);
+                filters.setProductTitleFilter(productTitleFilter);
+            }
+            if (situation != null && StringUtils.isNotBlank(situation.getSingleProvider())) {
+                ProviderFilter providerFilter = new ProviderFilter();
+                providerFilter.setProviderIds(singletonList(Integer.parseInt(situation.getSingleProvider())));
+                providerFilter.setExclude(false);
+                filters.setProviderFilter(providerFilter);
+            }
         } else {
             quoteRequest.setSearchResults(1);
             Application application = quote.getApplication();
@@ -197,9 +215,17 @@ public class RequestAdapter {
 
 
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
-        quoteRequest.setSearchDateValue(LocalDate.now());
+        if (StringUtils.isNotBlank(quote.getSearchDate())) {
+            quoteRequest.setSearchDateValue(AUS_FORMAT.parseLocalDate(quote.getSearchDate()));
+        } else {
+            quoteRequest.setSearchDateValue(LocalDate.now());
+        }
 
         quoteRequest.setLoading(quote.getLoading());
+
+        if (alternatePricingContent != null && toBoolean(alternatePricingContent.getContentValue())) {
+            quoteRequest.setIncludeAlternativePricing(true);
+        }
 
         return quoteRequest;
     }

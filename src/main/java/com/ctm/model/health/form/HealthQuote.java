@@ -40,6 +40,10 @@ public class HealthQuote {
 
     private Retrieve retrieve;
 
+    private String productTitleSearch;
+
+    private String searchDate;
+
     public Application getApplication() {
         return application;
     }
@@ -190,5 +194,21 @@ public class HealthQuote {
 
     public void setSearchResults(Integer searchResults) {
         this.searchResults = searchResults;
+    }
+
+    public String getProductTitleSearch() {
+        return productTitleSearch;
+    }
+
+    public void setProductTitleSearch(String productTitleSearch) {
+        this.productTitleSearch = productTitleSearch;
+    }
+
+    public String getSearchDate() {
+        return searchDate;
+    }
+
+    public void setSearchDate(String searchDate) {
+        this.searchDate = searchDate;
     }
 }

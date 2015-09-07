@@ -31,6 +31,8 @@ public class HealthQuoteRequest
 
     private int searchResults = 12;
 
+    private boolean includeAlternativePricing;
+
     public String getState() {
         return state;
     }
@@ -101,5 +103,13 @@ public class HealthQuoteRequest
 
     public void setSearchResults(int searchResults) {
         this.searchResults = searchResults;
+    }
+
+    public boolean isIncludeAlternativePricing() {
+        return includeAlternativePricing;
+    }
+
+    public void setIncludeAlternativePricing(boolean includeAlternativePricing) {
+        this.includeAlternativePricing = includeAlternativePricing;
     }
 }

@@ -91,7 +91,7 @@
 
 	<!-- Error and Security Failure Handler Pages -->
 
-	<!--<error-page>
+	<error-page>
 		<error-code>400</error-code>
 		<location>/security/simples_loginServerFail.jsp</location>
 	</error-page>
@@ -110,7 +110,7 @@
 	<error-page>
 		<error-code>500</error-code>
 		<location>/err/error500.jsp</location>
-	</error-page>-->
+	</error-page>
 
 
 

@@ -14,6 +14,8 @@ public class Situation {
 
     private String healthSitu;
 
+    private String singleProvider;
+
     public String getHealthCvr() {
         return healthCvr;
     }
@@ -60,5 +62,13 @@ public class Situation {
 
     public void setHealthSitu(String healthSitu) {
         this.healthSitu = healthSitu;
+    }
+
+    public String getSingleProvider() {
+        return singleProvider;
+    }
+
+    public void setSingleProvider(String singleProvider) {
+        this.singleProvider = singleProvider;
     }
 }

@@ -172,7 +172,8 @@
 		<health_layout:slide_results />
 		<health_layout:slide_application_details />
 		<health_layout:slide_payment_details />
-					
+
+		<field:hidden xpath="environmentOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
 
 	</jsp:body>

@@ -3,6 +3,7 @@ package com.ctm.services.health;
 import com.ctm.connectivity.SimpleConnection;
 import com.ctm.logging.XMLOutputWriter;
 import com.ctm.model.QuoteServiceProperties;
+import com.ctm.model.content.Content;
 import com.ctm.model.health.form.HealthQuote;
 import com.ctm.model.health.form.HealthRequest;
 import com.ctm.model.health.results.HealthResult;
@@ -31,13 +32,13 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote> {
 
     private static final Logger logger = Logger.getLogger(HealthQuoteService.class);
 
-    public Pair<Boolean, List<HealthResult>> getQuotes(Brand brand, HealthRequest data) {
+    public Pair<Boolean, List<HealthResult>> getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent) {
 
         Request request = new Request();
         request.setBrandCode(brand.getCode());
         request.setClientIp(data.getClientIpAddress());
         request.setTransactionId(data.getTransactionId());
-        final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data);
+        final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data, alternatePricingContent);
         request.setPayload(quoteRequest);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -66,7 +67,7 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote> {
             // Log response
             writer.lastWriteXmlToFile(response);
 
-            Pair<Boolean, List<HealthResult>> results = ResponseAdapter.adapt(data, healthResponse);
+            Pair<Boolean, List<HealthResult>> results = ResponseAdapter.adapt(data, healthResponse, alternatePricingContent);
 
             return results;
 
@@ -83,7 +84,7 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote> {
         request.setBrandCode(brand.getCode());
         request.setClientIp(data.getClientIpAddress());
         request.setTransactionId(data.getTransactionId());
-        final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data);
+        final HealthQuoteRequest quoteRequest = RequestAdapter.adapt(data, null);
         request.setPayload(quoteRequest);
 
         ObjectMapper objectMapper = new ObjectMapper();

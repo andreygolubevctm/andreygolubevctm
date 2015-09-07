@@ -1,16 +1,15 @@
 package com.ctm.providers.health.healthquote.model;
 
+import com.ctm.model.content.Content;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.PaymentType;
 import com.ctm.model.health.form.HealthRequest;
 import com.ctm.model.health.results.*;
-import com.ctm.model.health.results.Info;
-import com.ctm.model.health.results.Premium;
-import com.ctm.model.health.results.Price;
-import com.ctm.model.health.results.Promo;
 import com.ctm.model.resultsData.AvailableType;
 import com.ctm.providers.QuoteResponse;
-import com.ctm.providers.health.healthquote.model.response.*;
+import com.ctm.providers.health.healthquote.model.response.HealthQuote;
+import com.ctm.providers.health.healthquote.model.response.HealthResponse;
+import com.ctm.providers.health.healthquote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -24,15 +23,26 @@ import java.util.Map;
 
 import static com.ctm.model.health.Frequency.ANNUALLY;
 import static com.ctm.model.health.Frequency.HALF_YEARLY;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 
 public class ResponseAdapter {
 
     public static final String HEALTH_BROCHURE_URL = "health_brochure.jsp?pdf=";
 
-    public static Pair<Boolean, List<HealthResult>> adapt(HealthRequest request, HealthResponse healthResponse) {
+    public static Pair<Boolean, List<HealthResult>> adapt(HealthRequest request, HealthResponse healthResponse, Content alternatePricingContent) {
         boolean hasPriceChanged = false;
         List<HealthResult> results = new ArrayList<>();
         QuoteResponse<HealthQuote> quoteResponse = healthResponse.getPayload();
+
+        List<String> disabledFunds = emptyList();
+        if (alternatePricingContent != null) {
+            String supplementaryValueByKey = alternatePricingContent.getSupplementaryValueByKey("disabledFunds");
+            if (StringUtils.isNotBlank(supplementaryValueByKey)) {
+                disabledFunds = asList(StringUtils.split(supplementaryValueByKey, ","));
+            }
+        }
+
         if (quoteResponse != null) {
             int index = 1;
             for (HealthQuote quote : quoteResponse.getQuotes()) {
@@ -47,7 +57,16 @@ public class ResponseAdapter {
                 result.setCustom(validateNode(quote.getCustom()));
 
                 result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
-                result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
+                if (alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y")) {
+                    com.ctm.providers.health.healthquote.model.response.Premium alternativePremium = quote.getAlternativePremium();
+                    if (alternativePremium != null && !disabledFunds.contains(quote.getInfo().getFundCode())) {
+                        result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote()));
+                    } else {
+                        result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote()));
+                    }
+                } else {
+                    result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
+                }
 
                 result.setInfo(createInfo(quote.getInfo(), index++));
                 result.setHospital(validateNode(quote.getHospital()));
@@ -64,6 +83,22 @@ public class ResponseAdapter {
 
 
         return Pair.of(hasPriceChanged, results);
+    }
+
+    private static com.ctm.providers.health.healthquote.model.response.Premium createDefaultPremium() {
+        com.ctm.providers.health.healthquote.model.response.Premium premium =
+                new com.ctm.providers.health.healthquote.model.response.Premium();
+        com.ctm.providers.health.healthquote.model.response.Price defaultPrice = new com.ctm.providers.health.healthquote.model.response.Price();
+        defaultPrice.setLhc(BigDecimal.ZERO);
+        defaultPrice.setDiscountedPremium(BigDecimal.ZERO);
+        defaultPrice.setGrossPremium(BigDecimal.ZERO);
+        premium.setAnnually(defaultPrice);
+        premium.setFortnightly(defaultPrice);
+        premium.setMonthly(defaultPrice);
+        premium.setWeekly(defaultPrice);
+        premium.setHalfYearly(defaultPrice);
+        premium.setQuarterly(defaultPrice);
+        return premium;
     }
 
     private static JsonNode validateNode(JsonNode jsonNode) {

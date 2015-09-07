@@ -1,6 +1,10 @@
 package com.ctm.router.health;
 
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
+import com.ctm.exceptions.HealthAltPriceException;
 import com.ctm.exceptions.RouterException;
+import com.ctm.model.content.Content;
 import com.ctm.model.health.form.HealthRequest;
 import com.ctm.model.health.results.HealthResult;
 import com.ctm.model.health.results.InfoHealth;
@@ -8,7 +12,11 @@ import com.ctm.model.health.results.PremiumRange;
 import com.ctm.model.resultsData.PricesObj;
 import com.ctm.model.resultsData.ResultsWrapper;
 import com.ctm.model.settings.Brand;
+import com.ctm.model.settings.PageSettings;
 import com.ctm.router.CommonQuoteRouter;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.ContentService;
+import com.ctm.services.SettingsService;
 import com.ctm.services.health.HealthQuoteService;
 import com.ctm.services.tracking.TrackingKeyService;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +25,7 @@ import org.apache.cxf.jaxrs.ext.MessageContext;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import java.util.Date;
 import java.util.List;
 
 @Path("/health")
@@ -56,7 +65,18 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
                 info.setPremiumRange(summary);
             }
 
-            final Pair<Boolean, List<HealthResult>> quotes = service.getQuotes(brand, data);
+            Content alternatePricingActive = null;
+            try {
+                Date serverDate = ApplicationService.getApplicationDate(context.getHttpServletRequest());
+                PageSettings pageSettings = SettingsService.getPageSettingsForPage(context.getHttpServletRequest());
+                Integer styleCodeId = pageSettings.getBrandId();
+                Integer verticalId = pageSettings.getVertical().getId();
+                alternatePricingActive = ContentService.getInstance().getContent("alternatePricingActive", styleCodeId, verticalId, serverDate, true);
+            } catch(ConfigSettingException | DaoException e) {
+                throw new HealthAltPriceException(e.getMessage(), e);
+            }
+
+            final Pair<Boolean, List<HealthResult>> quotes = service.getQuotes(brand, data, alternatePricingActive);
 
             try {
                 String trackingKey = TrackingKeyService.generate(
