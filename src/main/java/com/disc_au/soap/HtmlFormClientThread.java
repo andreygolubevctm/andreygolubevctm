@@ -1,15 +1,21 @@
 package com.disc_au.soap;
 
-import com.ctm.model.settings.SoapAggregatorConfiguration;
-import com.ctm.model.settings.SoapClientThreadConfiguration;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import com.ctm.model.settings.SoapAggregatorConfiguration;
+import com.ctm.model.settings.SoapClientThreadConfiguration;
 
 public class HtmlFormClientThread extends SOAPClientThread {
 
@@ -141,11 +147,16 @@ public class HtmlFormClientThread extends SOAPClientThread {
 
 			this.responseTime = System.currentTimeMillis() - startTime;
 
-		} catch ( IOException e) {
+		} catch (MalformedURLException e) {
 			logger.error("failed to processRequest" , e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), e.getClass().getName(), (System.currentTimeMillis() - startTime));
+			e.printStackTrace();
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 
+		} catch (IOException e) {
+			logger.error("failed to processRequest" , e);
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), "IOException", (System.currentTimeMillis() - startTime));
+			returnData.append(err.getXMLDoc());
 		}
 
 		this.responseTime = System.currentTimeMillis() - startTime;

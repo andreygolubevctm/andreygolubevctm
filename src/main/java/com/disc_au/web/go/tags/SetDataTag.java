@@ -1,19 +1,19 @@
 package com.disc_au.web.go.tags;
 
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.jsp.JspException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.HttpRequestHandler;
 import com.disc_au.web.go.xml.SearchTerm;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.JspException;
-import java.util.ArrayList;
-
-import static com.ctm.logging.LoggingArguments.kv;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -167,7 +167,8 @@ public class SetDataTag extends BaseTag {
 				}
 
 			} catch (SAXException e) {
-				logger.error("failed to setData. {}" , kv("xml", xml), e);
+				logger.error("failed to setData xml:" + xml);
+				logger.error("",e);
 			}
 		}
 		this.init();

@@ -1,15 +1,35 @@
 package com.disc_au.web.go;
 
-import com.ctm.dao.GeneralDao;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.naming.NamingException;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.Map.Entry;
-
-import static com.ctm.logging.LoggingArguments.kv;
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.dao.ContentDao;
+import com.ctm.dao.GeneralDao;
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.OpeningHours;
+import com.ctm.model.settings.PageSettings;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.SettingsService;
+import com.ctm.utils.common.utils.DateUtils;
 
 public class CallCenterHours {
 
@@ -50,7 +70,7 @@ public class CallCenterHours {
 					hours.add(closing);
 				}
 			} catch (ParseException e) {
-				logger.error("Failed to parse date. {}", kv("times" ,times),e);
+				logger.error("",e);
 			}
 			openingHours.put(dayOfWeek, hours);
 		}

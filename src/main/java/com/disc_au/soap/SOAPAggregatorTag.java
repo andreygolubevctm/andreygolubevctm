@@ -147,16 +147,18 @@ public class SOAPAggregatorTag extends TagSupport {
 			// Join each thread for their given timeout
 
 			for (Thread thread : threads.keySet()) {
-				long timeout = threads.get(thread).getTimeoutMillis();
 				try {
 
+					long timeout = threads.get(thread).getTimeoutMillis();
 
 					//Otherwise the aggregator times out before all the clients have had a chance too.
 					timeout+= 2000; // ensure the main thread lasts slightly longer than the total of all service calls.
+
+						//logger.info("will wait "+timeout+ "ms");
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
-						logger.error("Exception joining threads. {}", kv("timeout", timeout), e);
+						logger.error("",e);
 				}
 			}
 
