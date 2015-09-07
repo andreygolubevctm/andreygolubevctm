@@ -5,13 +5,13 @@
 <%-- Replace or overwrite certain values, i.e value comes from the soap response instead of the database. --%>
 <%-- Get the annual kilometers for Pay as you drive products --%>
 {{ if (obj.productId == "WOOL-01-01" || obj.productId == "REIN-01-01") { }}
-    {{ if (feature.resultPath == 'features.annKilo.extra') { }}
+    {{ if (ft.resultPath == 'features.annKilo.extra') { }}
         {{ displayValue = obj.feature }}
     {{ } }}
 {{ } }}
 
 <%-- Additional excess rendering --%>
-{{ if (feature.resultPath == 'excess.excess.value') { }}
+{{ if (ft.resultPath == 'excess.excess.value') { }}
     <%-- Default pathValue to N so we get the crosses as default. --%>
     {{ pathValue = 'N' }}
     {{ displayValue = Features.parseFeatureValue( pathValue ) }}
@@ -20,7 +20,7 @@
     {{ } }}
 {{ } }}
 
-{{ if (feature.resultPath == 'excess.excess.extra') { }}
+{{ if (ft.resultPath == 'excess.excess.extra') { }}
     {{ pathValue = true }}
     {{ displayValue += '<ul>' }}
     <%-- Loop through the excess, put them in an li and put that in the displayValue --%>
@@ -35,7 +35,7 @@
 {{ } }}
 
 <%-- Call insurer direct button --%>
-{{ if (feature.resultPath == 'action.callInsurer') { }}
+{{ if (ft.resultPath == 'action.callInsurer') { }}
     <%-- Default pathValue to N so we get the crosses as default. --%>
     {{ pathValue = 'N' }}
     {{ parsedValue = Features.parseFeatureValue( pathValue ) }}
@@ -48,7 +48,7 @@
 {{ } }}
 
 <%-- Get a call back button --%>
-{{ if (feature.resultPath == 'action.callBack') { }}
+{{ if (ft.resultPath == 'action.callBack') { }}
     <%-- Default pathValue to N so we get the crosses as default. --%>
     {{ pathValue = 'N' }}
     {{ parsedValue = Features.parseFeatureValue( pathValue ) }}
@@ -65,7 +65,7 @@
 {{ } }}
 
 <%-- PDS buttons --%>
-{{ if (feature.resultPath == 'action.pds') { }}
+{{ if (ft.resultPath == 'action.pds') { }}
 {{ pathValue = true }}
 
 {{ var pdsA = '' }}
@@ -95,7 +95,7 @@
 {{ } }}
 
 <%-- View more info --%>
-{{ if (feature.resultPath == 'action.moreInfo') { }}
+{{ if (ft.resultPath == 'action.moreInfo') { }}
 {{ pathValue = true }}
 {{ displayValue = '<div class="btnContainer"><a class="btn-more-info" href="javascript:;" data-productId="'+obj.productId+'">view more info</a></div>' }}
 {{ } }}

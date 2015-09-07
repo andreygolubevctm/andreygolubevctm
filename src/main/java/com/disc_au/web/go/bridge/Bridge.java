@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.logging.LoggingArguments.value;
 
 /**
  * The Class Bridge.
@@ -20,7 +20,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class Bridge {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Bridge.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(Bridge.class.getName());
 
 	/** The Constant CONF_LEN. */
 	static final int CONF_LEN = 12;
@@ -88,7 +88,7 @@ public class Bridge {
 		Message resp = null;
 		Socket socket = null;
 		try {
-			LOGGER.debug("Connecting to {},{} ", kv("server", server), kv("port", port));
+			logger.debug("Connecting to {}:{}" , value("server", server) , value("port", port) );
 			socket = new Socket(server, port);
 
 			int len = req.getLength();

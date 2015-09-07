@@ -129,7 +129,12 @@ public class SOAPClientThread implements Runnable {
 	}
 
 	protected void logTime(String msg) {
+		logTime(msg, this.timer);
 		this.timer = System.currentTimeMillis();
+	}
+
+	private void logTime(String msg, long timer) {
+		//logger.info(this.name + ": " + msg + ": " + (System.currentTimeMillis() - timer) + "ms ");
 	}
 
 	/**

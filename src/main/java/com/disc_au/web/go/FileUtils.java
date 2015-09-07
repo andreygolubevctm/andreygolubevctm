@@ -1,5 +1,8 @@
 package com.disc_au.web.go;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,6 +20,8 @@ import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
 public class FileUtils {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class.getName());
 
 	/**
 	 * Retrieve the files in a directory
@@ -65,6 +70,7 @@ public class FileUtils {
 				}
 			}catch(Exception e){
 				e.printStackTrace();
+				LOGGER.error("", e);
 			}
 			return "";
 		}

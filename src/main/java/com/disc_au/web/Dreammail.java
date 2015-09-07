@@ -1,14 +1,13 @@
 package com.disc_au.web;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class Dreammail {
 
@@ -21,7 +20,7 @@ public class Dreammail {
 		if (rtm_url.indexOf("http") != 0) {
 			rtm_url = "http://" + rtm_url;
 		}
-		logger.debug("[Email] Message sent: " +xml_content.replaceAll("\\r?\\n", ""));
+		logger.debug("[Email] Message sent. {} ", kv("xml_content", xml_content));
 
 		URL url = new URL(rtm_url);
 		URLConnection connection = url.openConnection();
@@ -32,15 +31,18 @@ public class Dreammail {
 			connection.setRequestProperty("SOAPAction", "Create");
 			connection.setRequestProperty("Content-Type", "text/xml");
 		} else {
-		connection.setRequestProperty("ServerName", servername);
-		connection.setRequestProperty("UserName", username);
-		connection.setRequestProperty("Password", password);
+			connection.setRequestProperty("ServerName", servername);
+			connection.setRequestProperty("UserName", username);
+			connection.setRequestProperty("Password", password);
 		}
 
 		// Write the data
-		PrintWriter out = new PrintWriter(connection.getOutputStream());
-		out.print(xml_content);
-		out.close();
+		OutputStream os = connection.getOutputStream();
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+		writer.write(xml_content);
+		writer.flush();
+		writer.close();
+		os.close();
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String inputLine;
@@ -49,7 +51,7 @@ public class Dreammail {
 			resp.append(inputLine);
 		}
 
-		logger.debug("[Email] Message received: " +resp.toString());
+		logger.debug("[Email] Message received. {}", kv("resp", resp));
 		return resp.toString();
 	}
 }

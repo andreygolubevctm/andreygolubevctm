@@ -15,8 +15,14 @@ import au.com.bytecode.opencsv.CSVParser;
 
 import com.disc_au.web.go.FileUtils;
 import com.disc_au.web.go.TokenReplaceUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class ImportCsvToTokenTag extends BaseTag {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImportCsvToTokenTag.class.getName());
 
 	/**
 	 *
@@ -185,10 +191,10 @@ public class ImportCsvToTokenTag extends BaseTag {
 						parseLine(line + "\n" + nextLine, in, parser);
 					}
 				} catch (IOException e1) {
-					e1.printStackTrace();
+					LOGGER.error("Failed to parse line.", e1);
 				}
 			} else {
-				e.printStackTrace();
+				LOGGER.error("Failed to parse line.", e);
 			}
 		}
 		return values;

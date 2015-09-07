@@ -1,5 +1,7 @@
 package com.disc_au.web.go.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -21,6 +23,8 @@ import java.io.UnsupportedEncodingException;
  */
 
 public class XmlParser {
+
+	Logger LOGGER = LoggerFactory.getLogger(XmlParser.class.getName());
 
 	/**
 	 * The Class XmlNodeHandler.
@@ -120,15 +124,11 @@ public class XmlParser {
 	public XmlParser() {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(false);
-		;
 
 		try {
 			this.saxParser = factory.newSAXParser();
-
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
+		} catch (ParserConfigurationException | SAXException e) {
+			LOGGER.error("Failed to create new parser.", e);
 		}
 	}
 
@@ -157,7 +157,7 @@ public class XmlParser {
 		try {
 			saxParser.parse(inStream, handler);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to parse.", e);
 		}
 		return handler.node;
 	}
@@ -187,7 +187,7 @@ public class XmlParser {
 					alwaysAdd);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Failed to parse", e);
 		}
 		return null;
 	}

@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class CallCenterHours {
 
 	private static final Logger logger = LoggerFactory.getLogger(GeneralDao.class.getName());
@@ -48,7 +50,7 @@ public class CallCenterHours {
 					hours.add(closing);
 				}
 			} catch (ParseException e) {
-				logger.error("",e);
+				logger.error("Failed to parse date. {}", kv("times" ,times),e);
 			}
 			openingHours.put(dayOfWeek, hours);
 		}

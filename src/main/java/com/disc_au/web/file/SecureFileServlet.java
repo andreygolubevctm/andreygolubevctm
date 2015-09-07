@@ -1,19 +1,19 @@
 package com.disc_au.web.file;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.util.Vector;
 
- /**
+import static com.ctm.logging.LoggingArguments.kv;
+
+/**
   * This Servlet is used to allow client access to files located in a secured folder.
   * 
   * Files that are to be accessed via this servlet must first be added to a <String> 
@@ -26,14 +26,10 @@ import javax.servlet.http.HttpSession;
   */
 public class SecureFileServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
 
-	 public final static String PARAM_FILENAME = "filename";
-	 
+	 private static final Logger LOGGER = LoggerFactory.getLogger(SecureFileServlet.class.getName());
+
 	 public final static String INIT_PARAM_SECURE_FOLDER = "secure-folder";
 	 public static final String INIT_PARAM_ERROR_PAGE = "error-page";
-	 
-	 public static final int LOG_LEVEL_MINIMAL = 0;
-	 public static final int LOG_LEVEL_VERBOSE = 1;
-	
 	 private static final long serialVersionUID = 1L;
 	 private final static String ATTRIB_SECURE_FILES = "secureFiles";
 	 
@@ -86,8 +82,7 @@ public class SecureFileServlet extends javax.servlet.http.HttpServlet implements
 				 }
 				 
 			 } catch(final IOException e) {
-				 System.out.println("IOException: " + filePath);
-				 e.printStackTrace();
+				 LOGGER.error("Exception thrown. {}", kv("filePath",filePath), e);
 				 success = false;
 				 
 			 } finally {
