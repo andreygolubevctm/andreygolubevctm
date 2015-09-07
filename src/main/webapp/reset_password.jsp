@@ -46,7 +46,7 @@
 	<jsp:attribute name="body_end"></jsp:attribute>
 
 	<jsp:attribute name="additional_meerkat_scripts">
-		<script src="${assetUrl}assets/js/resetpassword${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+		<script src="${assetUrl}assets/js/bundles/resetpassword${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 	</jsp:attribute>
 
 	<jsp:body>

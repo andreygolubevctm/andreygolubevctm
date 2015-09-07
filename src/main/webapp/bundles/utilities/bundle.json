@@ -1,8 +1,18 @@
 {
   "brandCodes": ["ctm"],
-  "jsDependencies": [
-    "meerkat",
+  "dependencies": [
+    "core",
     "shared/results",
-    "core"
+    "shared/autocomplete",
+    "shared/datepicker",
+    "shared/optIn",
+    "shared/placeholder",
+    "shared/contactDetails",
+    "shared/ie8SelectMenuAutoExpand",
+    "shared/validation",
+    "shared/moreInfo",
+    "shared/showMoreQuotesPrompt",
+    "shared/resultsRankings",
+    "shared/contentPopulation"
   ]
 }

@@ -2,8 +2,7 @@
     "brandCodes": [
         "ctm"
     ],
-    "jsDependencies": [
-        "meerkat",
+    "dependencies": [
         "shared/results",
         "core"
     ]

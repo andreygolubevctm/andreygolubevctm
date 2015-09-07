@@ -1,3 +1,6 @@
 {
-  "brandCodes": ["generic"]
+  "brandCodes": ["generic"],
+  "dependencies": [
+    "meerkat"
+  ]
 }

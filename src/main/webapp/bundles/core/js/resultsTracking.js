@@ -91,7 +91,7 @@
 				// this is overridden by caller functions to "N" if we do not need to record/update omniture ranking for this tracking call.
 				recordRanking: 'Y',
 				// couponId passed from email campaign, brochureware, vdn, online offers
-				offeredCouponID: meerkat.modules.coupon.getCurrentCoupon() ? meerkat.modules.coupon.getCurrentCoupon().couponId : null
+				offeredCouponID: (typeof meerkat.modules.coupon !== 'undefined' && meerkat.modules.coupon.getCurrentCoupon() ? meerkat.modules.coupon.getCurrentCoupon().couponId : null)
 		};
 
 		// extend the data

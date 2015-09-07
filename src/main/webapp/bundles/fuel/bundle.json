@@ -1,8 +1,11 @@
 {
   "brandCodes": ["ctm"],
-  "jsDependencies": [
-    "meerkat",
+  "dependencies": [
     "shared/results",
-    "core"
+    "core",
+    "shared/addressLookup",
+    "shared/validation",
+    "shared/showMoreQuotesPrompt",
+    "shared/resultsRankings"
   ]
 }

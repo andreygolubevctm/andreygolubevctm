@@ -3,18 +3,52 @@ var fs = require("fs"),
 
 var fileHelper = require("./fileHelper");
 
+var gulpConfig;
+
+// Only used by getBundleDependenciesList()
+var bundleDependenciesCache = {};
+
+/**
+ * Returns a list of dependencies used by a bundle
+ * @param bundleName
+ * @returns {Array}
+ */
+function getBundleDependenciesList(bundleName) {
+    var originalBundleName = bundleName;
+
+    // Use the cached value if we have one
+    if(typeof bundleDependenciesCache[originalBundleName] !== "undefined")
+        return bundleDependenciesCache[originalBundleName];
+
+    if(bundleName.match(/shared\//))
+        bundleName = bundleName.replace(/(shared\/)/, "");
+
+    var sharedBundleJSONPath = path.join(gulpConfig.bundles.dir, "shared", bundleName, "bundle.json");
+
+    if(fs.existsSync(sharedBundleJSONPath)) {
+        var bundleJSON = JSON.parse(fs.readFileSync(sharedBundleJSONPath, "utf8"));
+
+        if(typeof bundleJSON.dependencies !== "undefined") {
+            var returnVal = (bundleJSON.dependencies instanceof Array) ? bundleJSON.dependencies : [bundleJSON.dependencies];
+            bundleDependenciesCache[originalBundleName] = returnVal;
+            return returnVal;
+        }
+    }
+
+    return [];
+}
+
 function Bundles(config) {
-    this.config = config;
+    gulpConfig = config;
     this.collection = {};
     this.fileListCache = {};
 
-    var instance = this,
-        config = this.config;
+    var instance = this;
 
     // Synchronously load in our bundles. This is necessary for gulp to initialise properly without race conditions.
-    fs.readdirSync(config.bundles.dir)
+    fs.readdirSync(gulpConfig.bundles.dir)
         .forEach(function(folder) {
-            var bundleJSONPath = path.join(config.bundles.dir, folder, config.bundles.entryPoint);
+            var bundleJSONPath = path.join(gulpConfig.bundles.dir, folder, gulpConfig.bundles.entryPoint);
 
             if(fs.existsSync(bundleJSONPath)) {
                 var bundleJSON = fs.readFileSync(bundleJSONPath, "utf8");
@@ -87,12 +121,32 @@ Bundles.prototype.getBrandCodeBundles = function(brandCode) {
 };
 
 /**
- * Returns the dependencies list for a specified bundle
+ * Returns the dependencies list for a specified bundle as well as the dependencies for dependencies #recursion
  * @param bundle
  * @returns {*}
  */
-Bundles.prototype.getJSDependencies = function(bundle) {
-    return (typeof this.collection[bundle].jsDependencies !== "undefined") ? this.collection[bundle].jsDependencies : [];
+Bundles.prototype.getDependencies = function(bundle) {
+    var rootDependencies = [],
+        returnDependencies = [];
+
+    if(typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].dependencies !== "undefined")
+        rootDependencies = this.collection[bundle].dependencies;
+    else
+        rootDependencies = getBundleDependenciesList(bundle);
+
+    for(var i = 0; i < rootDependencies.length; i++) {
+        var dependency = rootDependencies[i],
+            dependencies = this.getDependencies(dependency);
+
+        returnDependencies = returnDependencies.concat(dependencies);
+    }
+
+    returnDependencies = returnDependencies.concat(rootDependencies);
+
+    // Remove duplicate dependencies and return
+    return returnDependencies.filter(function(elem, index, self) {
+        return index == self.indexOf(elem);
+    });
 };
 
 /**
@@ -101,10 +155,10 @@ Bundles.prototype.getJSDependencies = function(bundle) {
  * @param fileType
  * @returns {Array}
  */
-Bundles.prototype.getJSDependencyFiles = function(bundle, fileType) {
+Bundles.prototype.getDependencyFiles = function(bundle, fileType) {
     fileType = fileType || "js";
 
-    var dependencies = this.getJSDependencies(bundle),
+    var dependencies = this.getDependencies(bundle),
         dependenciesFiles = [];
 
     if(dependencies.length) {
@@ -124,10 +178,10 @@ Bundles.prototype.getJSDependencyFiles = function(bundle, fileType) {
  * @param fileType
  * @returns {*|Array}
  */
-Bundles.prototype.getWatchableBundlesJSFilePaths = function(bundle, fileType) {
+Bundles.prototype.getWatchableBundlesFilePaths = function(bundle, fileType) {
     fileType = fileType || "js";
 
-    var dependencies = this.getJSDependencies(bundle);
+    var dependencies = this.getDependencies(bundle);
 
     dependencies.push(bundle);
 
@@ -152,7 +206,7 @@ Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath) {
         if (typeof this.fileListCache[fileListCacheKey] !== "undefined") {
             return this.fileListCache[fileListCacheKey];
         } else {
-            var filePath = path.join(this.config.bundles.dir, bundle, fileType);
+            var filePath = path.join(gulpConfig.bundles.dir, bundle, fileType);
             this.fileListCache[fileListCacheKey] = fileHelper.getFilesFromFolderPath(filePath, useFullPath);
             return this.fileListCache[fileListCacheKey];
         }

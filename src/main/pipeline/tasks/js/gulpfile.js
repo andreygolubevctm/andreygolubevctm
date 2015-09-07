@@ -80,7 +80,7 @@ function JSTasks(gulp) {
             var watchTasks = [];
 
                 // Array of dependencies file paths
-            var dependenciesFileArray = bundles.getJSDependencyFiles(bundle),
+            var dependenciesFileArray = bundles.getDependencyFiles(bundle),
                 // Array of bundle file paths
                 bundleFileArray = bundles.getBundleFiles(bundle, "js"),
                 // All files living together happily
@@ -129,7 +129,7 @@ function JSTasks(gulp) {
             }
 
             // Files paths to watch
-            var bundleDependencies = bundles.getWatchableBundlesJSFilePaths(bundle);
+            var bundleDependencies = bundles.getWatchableBundlesFilePaths(bundle);
             gulp.watch(bundleDependencies, watchTasks);
         })(bundle);
     }

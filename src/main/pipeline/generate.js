@@ -170,7 +170,7 @@ var generators = {
 
             var bundleJson = {
                 brandCodes: ["ctm"],
-                jsDependencies: ["meerkat", "core"]
+                dependencies: ["meerkat", "core"]
             };
 
             writeFile(folderPath, "bundle.json", stringifyJSON(bundleJson));

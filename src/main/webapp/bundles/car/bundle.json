@@ -1,9 +1,21 @@
 {
   "brandCodes": ["ctm", "cc", "choo"],
-  "jsDependencies": [
-    "meerkat",
+  "dependencies": [
     "shared/results",
     "shared/features",
-    "core"
+    "core",
+    "shared/addressLookup",
+    "shared/placeholder",
+    "shared/emailLoadQuote",
+    "shared/commencementDate",
+    "shared/datepicker",
+    "shared/dropdownInteractive",
+    "shared/partnerTransfer",
+    "shared/moreInfo",
+    "shared/contentPopulation",
+    "shared/regoLookup",
+    "shared/saveQuote",
+    "shared/resultsRankings",
+    "shared/leadFeed"
   ]
 }
