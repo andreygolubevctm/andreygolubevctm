@@ -23,6 +23,8 @@ import javax.xml.transform.stream.StreamSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class XsltTranslator {
 
 	Logger logger = LoggerFactory.getLogger(XsltTranslator.class.getName());
@@ -93,10 +95,8 @@ public class XsltTranslator {
 			trans.setOutputProperty(OutputKeys.ENCODING, this.encoding);
 			trans.transform(xmlSource, new StreamResult(soapRequest));
 			return soapRequest.toString();
-		} catch (TransformerConfigurationException e) {
-			logger.error("failed to translate" , e);
 		} catch (TransformerException e) {
-			logger.error("failed to translate" ,e);
+			logger.error("failed to translate" , e);
 		}
 		return "";
 	}
@@ -120,7 +120,7 @@ public class XsltTranslator {
 		if ( systemId != null ) {
 			xsltSource.setSystemId(systemId.toString());
 		} else {
-			logger.warn("No SystemID for given XSL " + xslFile);
+			logger.warn("No SystemID for given XSL. {}" , kv("xslFile",xslFile));
 		}
 		return xsltSource;
 	}

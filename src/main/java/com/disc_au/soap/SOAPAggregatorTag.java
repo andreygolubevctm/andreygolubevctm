@@ -35,6 +35,7 @@ import com.ctm.web.validation.SchemaValidation;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.services.EnvironmentService.Environment.LOCALHOST;
 import static com.ctm.services.EnvironmentService.Environment.NXI;
 import static com.ctm.services.EnvironmentService.Environment.NXS;
@@ -176,7 +177,7 @@ public class SOAPAggregatorTag extends TagSupport {
 													e.getMessage(),
 											client.getServiceName(),
 											result);
-						logError(client, "Failed to parse correctly: " + e.getMessage());
+						logger.error("Failed to parse correctly. {}" , kv("client", client), e);
 					}
 				}
 				// Check if the request timed out
@@ -185,7 +186,7 @@ public class SOAPAggregatorTag extends TagSupport {
 												0,
 												"Client failed to return in time",
 												client.getServiceName());
-					logError(client, "Failed to return in time");
+					logger.error("Failed to return in time. {}", kv("client", client));
 				}
 				// Unknown problem
 				else {
@@ -193,7 +194,7 @@ public class SOAPAggregatorTag extends TagSupport {
 							0,
 							"Response has no body",
 							client.getServiceName());
-					logError(client, "Response has no body");
+					logger.error("Response has no body. {}", kv("client", client));
 				}
 
 				thisResult.setAttribute("responseTime", String.valueOf(client.getResponseTime()));
@@ -251,16 +252,6 @@ public class SOAPAggregatorTag extends TagSupport {
 		schemaValidation = new SchemaValidation();
 		isValidVar = null;
 		continueOnValidationError = false;
-	}
-
-	/**
-	 * Log error.
-	 *
-	 * @param client the client
-	 * @param message the message
-	 */
-	private void logError(SOAPClientThread client, String message) {
-		logger.error(client.getName() + " : " + message);
 	}
 
 	/**

@@ -10,6 +10,8 @@ import java.net.URLConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class Dreammail {
 
 	private static final Logger logger = LoggerFactory.getLogger(Dreammail.class.getName());
@@ -21,7 +23,7 @@ public class Dreammail {
 		if (rtm_url.indexOf("http") != 0) {
 			rtm_url = "http://" + rtm_url;
 		}
-		logger.debug("[Email] Message sent: " +xml_content.replaceAll("\\r?\\n", ""));
+		logger.debug("[Email] Message sent. {} ", kv("xml_content", xml_content));
 
 		URL url = new URL(rtm_url);
 		URLConnection connection = url.openConnection();
@@ -49,7 +51,7 @@ public class Dreammail {
 			resp.append(inputLine);
 		}
 
-		logger.debug("[Email] Message received: " +resp.toString());
+		logger.debug("[Email] Message received. {}", kv("resp", resp));
 		return resp.toString();
 	}
 }
