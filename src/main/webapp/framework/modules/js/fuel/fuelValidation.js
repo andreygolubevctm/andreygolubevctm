@@ -5,8 +5,8 @@
         value = $.trim(String(value));
         value = value.replace("'","");
 
-        if(isFuelBrochureSiteRequest) {
-            isFuelBrochureSiteRequest = false;
+        if(meerkat.site.isFromBrochureSite) {
+            meerkat.site.isFromBrochureSite = false;
             $('#fuel_location').trigger("focus");
             return true;
         }
