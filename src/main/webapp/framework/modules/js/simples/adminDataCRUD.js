@@ -90,11 +90,11 @@
 				if($this.hasClass("table-hidden")) {
 					$container.slideDown(400, function(){
 						$this.removeClass("table-hidden");
-					});
+					}).removeClass('hidden');
 				} else {
 					$container.slideUp(400, function() {
 						$this.addClass("table-hidden");
-					});
+					}).addClass('hidden');
 				}
 			})
 			.on("click", ".crud-new-entry", function() {
@@ -144,7 +144,8 @@
 		else
 			m.modalAction = "create";
 		
-		modalHTML = _.template(this.views.modal, m, { variable: "data" });
+		var modalHTMLTemplate = _.template(this.views.modal, { variable: "data" });
+		modalHTML = modalHTMLTemplate(m);
 		this.modalId = meerkat.modules.dialogs.show({
 			htmlContent: modalHTML
 		});

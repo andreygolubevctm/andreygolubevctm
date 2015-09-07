@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.dao.ProviderDao;
 import com.ctm.model.Provider;
@@ -13,7 +14,7 @@ import com.ctm.services.SettingsService;
 
 public class ProviderService {
 
-	private static Logger logger = Logger.getLogger(ProviderService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ProviderService.class.getName());
 
 	public static ArrayList<Provider> fetchProviders(HttpServletRequest request) {
 		Boolean getOnlyActiveProviders = false;
@@ -27,7 +28,7 @@ public class ProviderService {
 			return providerDao.getProviders(pageSettings.getVertical().getCode(), pageSettings.getBrandId(), getOnlyActiveProviders);
 		}
 		catch (Exception e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 
 		return null;
@@ -51,7 +52,7 @@ public class ProviderService {
 
 		}
 		catch (Exception e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 
 		return providerDropdown.toString();

@@ -93,8 +93,8 @@
 								<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 								<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 
-								<go:log source="life_quote_results_jsp" level="TRACE">${resultXml}</go:log>
-								<go:log source="life_quote_results_jsp" level="TRACE">${debugXml}</go:log>
+								<go:log source="life_quote_results_jsp" level="DEBUG">${resultXml}</go:log>
+								<go:log source="life_quote_results_jsp" level="DEBUG">${debugXml}</go:log>
 								${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 							</x:when>
 							<x:otherwise>
@@ -128,6 +128,7 @@
 						<c:param name="competition_firstname" value="${fn:trim(data[competition_firstnameKey])}" />
 						<c:param name="competition_lastname" value="${fn:trim(data[competition_lastnameKey])}" />
 						<c:param name="competition_phone" value="${data[competition_phoneKey]}" />
+						<c:param name="transactionId" value="${tranId}" />
 					</c:import>
 				</c:if>
 				<%-- COMPETITION APPLICATION END --%>

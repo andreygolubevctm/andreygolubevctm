@@ -5,10 +5,9 @@ import com.ctm.model.formData.Request;
 public class TravelRequest implements Request<TravelQuote> {
 
     private String clientIpAddress;
-
     private TravelQuote travel;
-
     private Long transactionId;
+    private String environmentOverride;
 
     public String getClientIpAddress() {
         return clientIpAddress;
@@ -38,5 +37,13 @@ public class TravelRequest implements Request<TravelQuote> {
 
     public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public String getEnvironmentOverride() {
+        return environmentOverride;
+    }
+
+    public void setEnvironmentOverride(String environmentOverride) {
+        this.environmentOverride = environmentOverride;
     }
 }

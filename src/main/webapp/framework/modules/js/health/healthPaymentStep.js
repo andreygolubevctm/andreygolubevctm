@@ -253,7 +253,7 @@
 			_html += '<option id="health_payment_details_frequency_A" value="annually">Annually</option>';
 		}
 
-		$frequencySelect.html( _html ).find('option[value='+ selectedFrequency +']').attr('selected', 'SELECTED');
+		$frequencySelect.html( _html ).find('option[value="'+ selectedFrequency +'"]').attr('selected', 'SELECTED');
 	}
 
 
@@ -266,7 +266,7 @@
 
 		// Enable the other premium-related inputs
 		// Ignore fields that were specifically disabled by funds' rules.
-		var $paymentSection = $('#health_payment_details-selection');
+		var $paymentSection = $('#health_payment').add('#health_declaration-selection');
 		$paymentSection.find(':input').not('.disabled-by-fund').prop('disabled', false);
 		$paymentSection.find('.select').not('.disabled-by-fund').removeClass('disabled');
 		$paymentSection.find('.btn-group label').not('.disabled-by-fund').removeClass('disabled');
@@ -286,7 +286,8 @@
 
 		if(disableFields === true){
 			// Disable the other premium-related inputs
-			var $paymentSection = $('#health_payment_details-selection');
+			var $paymentSection = $('#health_payment').add('#health_declaration-selection');
+
 			$paymentSection.find(':input').prop('disabled', true);
 			$paymentSection.find('.select').addClass('disabled');
 			$paymentSection.find('.btn-group label').addClass('disabled');

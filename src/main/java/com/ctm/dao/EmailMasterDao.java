@@ -7,7 +7,8 @@ import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -15,7 +16,7 @@ import com.ctm.model.EmailMaster;
 
 public class EmailMasterDao {
 
-	private static final Logger logger = Logger.getLogger(EmailMasterDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(EmailMasterDao.class.getName());
 	private final SimpleDatabaseConnection dbSource;
 	private int brandId;
 	private String vertical;

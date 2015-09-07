@@ -11,7 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import com.ctm.model.Error;
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 })
 public class ProviderRouter extends HttpServlet {
 
-	private static Logger logger = Logger.getLogger(ProviderRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ProviderRouter.class.getName());
 	private static final long serialVersionUID = 72L;
 
 	@Override

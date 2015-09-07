@@ -4,14 +4,13 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"  	rtexprvalue="true"	 description="optional id for this slide"%>
 <%@ attribute name="className" 	required="false"  	rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="id" 		required="false"  	rtexprvalue="true"	 description="optional id for this slide"%>
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 <c:set var="verintUpgradeSwitch"><content:get key="verintUpgradeSwitch"/></c:set>
 
 <%-- HTML --%>
-<div class="health-payment ${className}" id="${id}">
+<div class="health-payment ${className}" id="${name}">
 
 	<health:payment_details xpath="${xpath}/details" />
 

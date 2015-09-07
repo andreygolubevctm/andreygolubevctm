@@ -5,7 +5,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.HandoverConfirmation;
 import com.ctm.model.settings.Vertical.VerticalType;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,7 +17,7 @@ import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 
 public class HandoverConfirmationService {
-    private final Logger logger = Logger.getLogger(HandoverConfirmationService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HandoverConfirmationService.class.getName());
     private final AccessTouchService accessTouchService;
     private final HandoverConfirmationDao handoverConfirmationDao;
 

@@ -1,9 +1,13 @@
 package com.ctm.utils.common.utils;
 
 import com.ctm.exceptions.DaoException;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -179,5 +183,18 @@ public class DateUtils {
         isoFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
         dateConverted = df.parse(isoFormat.format(date));
         return dateConverted;
+    }
+
+    public static int getAgeFromDOB(String dob) throws Exception {
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Date dobObj =  df.parse(dob);
+        return getAgeFromDOB(dobObj);
+    }
+
+    public static int getAgeFromDOB(Date dob) {
+        LocalDate birthdate = new LocalDate (dob);
+        LocalDate now = new LocalDate();
+        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+        return period.getYears();
     }
 }

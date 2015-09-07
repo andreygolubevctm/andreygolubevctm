@@ -116,6 +116,8 @@
                     for(var i =0;i< brands.length;i++) {
                         $('input[id=product'+brands[i]+'_check]').prop('checked', true);
                     }
+
+                    meerkat.modules.resultsFeatures.fetchStructure(meerkat.site.vertical);
                 }
             },
             validation:{

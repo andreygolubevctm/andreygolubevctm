@@ -24,10 +24,12 @@ public class TravelResult extends Result {
     private String encodeUrl;
     private String handoverUrl;
     private String handoverType;
+    private String handoverVar;
     private String handoverData;
     private ArrayList<Benefit> benefits;
     private ArrayList<ExemptedBenefit> exemptedBenefits;
     private Info info;
+    private Boolean isDomestic;
 
     public TravelResult(){
         benefits = new ArrayList<Benefit>();
@@ -154,6 +156,14 @@ public class TravelResult extends Result {
         this.handoverType = handoverType;
     }
 
+    public String getHandoverVar() {
+        return handoverVar;
+    }
+
+    public void setHandoverVar(String handoverVar) {
+        this.handoverVar = handoverVar;
+    }
+
     public String getHandoverData() {
         return handoverData;
     }
@@ -170,22 +180,8 @@ public class TravelResult extends Result {
         this.exemptedBenefits = exemptedBenefits;
     }
 
-    public String getBenefit(String type){
-        for(Benefit benefit : benefits){
-            if(benefit.getType().equalsIgnoreCase(type)){
-                return benefit.getText();
-            }
-        }
-        return "";
-    }
-    public BigDecimal getBenefitValue(String type){
-        for(Benefit benefit : benefits){
-            if(benefit.getType().equalsIgnoreCase(type)){
-                return benefit.getValue();
-            }
-        }
-        return new BigDecimal(0);
-    }
+    public Boolean getIsDomestic() { return isDomestic; }
+    public void setIsDomestic(Boolean isDomestic) { this.isDomestic = isDomestic; }
 
     public Info getInfo() {
         return info;

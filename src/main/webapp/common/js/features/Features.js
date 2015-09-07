@@ -5,6 +5,8 @@ Features = {
 	target: false,
 	results: false,
 	featuresIds: false,
+	pageStructure: [],
+	cachedProcessedTemplate: false,
 	emptyAdditionalInfoCategory: true,
 	moduleEvents: {
 		FEATURE_TOGGLED: 'FEATURE_TOGGLED'
@@ -37,8 +39,10 @@ Features = {
 		Features.applyExpandableEvents();
 	},
 
+	getPageStructure: function() {
+		return Features.pageStructure || [];
+	},
 	buildHtml: function( results){
-
 		// Which set of results to use
 		if (typeof results === "undefined") {
 			Features.results = Results.model.sortedProducts;
@@ -48,15 +52,17 @@ Features = {
 
 		// prep of feature template
 		Features.template = $(Results.settings.elements.templates.feature).html();
-		//var htmlTemplate = _.template(Features.template);
-		//Features.template = htmlTemplate({});
 
 		if (Features.template == "") {
 			console.log("The comparison feature template could not be found: templateSelector=", Compare.settings.elements.templates.feature, "This template is mandatory, make sure to pass the correct selector to the Compare.settings.elements.templates.feature user setting when calling Compare.init()");
 		} else {
+
+			Features.cachedProcessedTemplate = _.template(Features.template);
+
 			$(Results.settings.elements.resultsContainer).trigger("populateFeaturesStart");
-			Features.populateHeaders();
+
 			Features.populateFeatures();
+			Features.populateFeaturesHeaders();
 			Features.setExpandableRows();
 
 			_.defer(function(){
@@ -71,79 +77,17 @@ Features = {
 		}
 
 	},
-
-	populateHeaders: function(){
-
-		// Option to render the headers, set to false if the headers are static or have been rendered server side.
-		if(Results.settings.render.features.headers === true){
-
-			Features.emptyAdditionalInfoCategory = true;
-
-			// gather all the feature types we are going to compare
-			var featuresIds = new Array();
-			var html = '';
-
-			$.each(Features.results, function(index, result){
-
-				var productAvailability = null;
-				if( Results.settings.paths.availability.product && Results.settings.paths.availability.product != "" ){
-
-					var productAvailability = Object.byString(result, Results.settings.paths.availability.product);
-				}
-
-				// only for available products
-				if( productAvailability == "Y" || typeof(productAvailability) == "undefined" ) {
-
-					var features = Object.byString( result, Results.settings.paths.features );
-					if( typeof(features) != "undefined" && features.length > 0 ){
-
-						var currentCategory = "";
-						$.each( features, function( index, feature ){
-
-							if( Features.emptyAdditionalInfoCategory && feature.categoryId == 9 && feature.extra != ""){
-								Features.emptyAdditionalInfoCategory = false;
-							}
-
-							if( $.inArray( feature.featureId, featuresIds ) == -1 ){
-
-								featuresIds.push(feature.featureId);
-								if( Results.settings.show.featuresCategories && currentCategory != feature.categoryId ){
-									parsedCategory = Results.view.parseTemplate( Features.template, { value: feature.categoryName, featureId: "category-"+feature.categoryId, extra: "", cellType: "category" } );
-									html += parsedCategory;
-									currentCategory = feature.categoryId;
-								}
-
-								if( !isNaN(feature.desc) ){
-									feature.desc = "";
-								}
-
-								var parsedFeatureId = Results.view.parseTemplate( Features.template, {featureId: feature.featureId, value: feature.desc, extra: "&nbsp;", cellType: "feature"} );
-								html += parsedFeatureId;
-
-							}
-
-						});
-
-					}
-				}
-
-			});
-
-			$( Features.target + " " + Results.settings.elements.features.headers + " " + Results.settings.elements.features.list ).html( html );
-
-			Features.featuresIds = featuresIds;
-		}
-
+	populateFeaturesHeaders: function() {
+		var $targetContainer = $( ".featuresHeaders" ).find( Results.settings.elements.features.list );
+		$targetContainer.html( Results.view.parseTemplate($("#feature-template-labels").html(), {}) );
 	},
-
 	populateFeatures: function() {
-		
 		// population of features into product columns
 		$.each( Features.results, function(index, product) {
 
 			var productAvailability = null;
 			if( Results.settings.paths.availability.product && Results.settings.paths.availability.product != "" ){
-				var productAvailability = Object.byString(product, Results.settings.paths.availability.product);
+				productAvailability = Object.byString(product, Results.settings.paths.availability.product);
 			}
 
 			// only for available products and not the user's current insurer
@@ -153,20 +97,19 @@ Features = {
 			){
 
 				var productId = Object.byString( product, Results.settings.paths.productId );
-				var $targetContainer = $( Features.target + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']" ).find( Results.settings.elements.features.list );
+				var featuresContainerTarget = Features.target + " " + Results.settings.elements.rows + "[data-productId='" + productId + "']";
+				var $targetContainer = $( featuresContainerTarget ).find( Results.settings.elements.features.list );
 
 				// remove the loading spinner
 				var html = '';
 
+				html = Features.populateTemplate(product);
+				/** @deprecated in CTMIT-543
 				if(Results.settings.render.features.mode == 'populate'){
-
-					html = Features.populateTemplate(product);
-
+						html = Features.populateTemplate(product);
 				}else{
-
 					html = Features.buildAndPopulateTemplate(product);
-
-				}
+				}*/
 
 				$targetContainer.html( html );
 
@@ -176,23 +119,17 @@ Features = {
 
 		// this is a custom case/hack for the Additional Info category
 		// when none of the displayed products have any additional info
-		if( Features.emptyAdditionalInfoCategory ){
+		if( Features.emptyAdditionalInfoCategory ) {
 			$(Features.target + " [data-featureId=category-9]").next().remove().end().remove();
 		}
-
-
-
 	},
-
 	populateTemplate: function(product){
-
 		// The server has rendered a 'flat' template for a single product, therefore just populate this flat template with product values.
-
-		var currentProductTemplate = $(Results.settings.elements.templates.feature).html();
-		return Results.view.parseTemplate(currentProductTemplate, product);
+		return Results.view.parseTemplate(Features.template, product, Features.cachedProcessedTemplate);
 
 	},
 
+	/** @deprecated in CTMIT-543 - No existing verticals are using this function anymore. All use populate.
 	buildAndPopulateTemplate: function(product){
 
 		// Build the features dynamically based on the data model.
@@ -248,17 +185,17 @@ Features = {
 		});
 
 		return html;
-	},
+	},*/
 
 	parseFeatureValue: function(value, decode) {
 
 		decode = decode || false;
 
-		if (typeof value === 'undefined' || value === '') {
+		if (typeof value == 'undefined' || value === '') {
 			value = "&nbsp;";
 		} else {
 			var obj = _.findWhere(Results.settings.dictionary.valueMap, {key:value});
-			if (typeof obj !== 'undefined') {
+			if (typeof obj != 'undefined') {
 				value = obj.value;
 			}
 		}
@@ -267,9 +204,8 @@ Features = {
 	},
 
 	simpleDecodeHTML: function(input) {
-		if(typeof input === "string") {
-			input = input.replace(/&lt;/gi, "<");
-			input = input.replace(/&gt;/gi, ">");
+		if(typeof input == "string") {
+			input = input.replace(/&lt;/gi, "<").replace(/&gt;/gi, ">");
 		}
 		return input;
 	},
@@ -423,7 +359,11 @@ Features = {
 	},
 
 	hideEmptyRows: function() {
+		if(!Features.featuresIds) {
+			return;
+		}
 		var $container = $(Features.target);
+
 		// hides rows without any values (mostly for the "Additional Information" category)
 		$.each( Features.featuresIds, function( featureIdIndex, featureId ){
 			var found = false;
@@ -443,6 +383,9 @@ Features = {
 	},
 
 	removeEmptyDropdowns: function() {
+		if(!Features.featuresIds) {
+			return;
+		}
 		var $container = $(Features.target);
 		// hides rows without any values (mostly for the "Additional Information" category)
 		$.each( Features.featuresIds, function( featureIdIndex, featureId ){

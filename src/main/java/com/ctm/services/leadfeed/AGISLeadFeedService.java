@@ -7,7 +7,8 @@ import com.ctm.interceptors.SpringWSLoggingInterceptor;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.*;
 import com.ctm.xml.XMLOutputWriter;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
@@ -32,7 +33,7 @@ import com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus;
 
 public abstract class AGISLeadFeedService extends WebServiceGatewaySupport implements IProviderLeadFeedService{
 
-	private static Logger logger = Logger.getLogger(AGISLeadFeedService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(AGISLeadFeedService.class.getName());
 
 	/**
 	 * getModel() is implemented by the extended lead feed class to construct the lead feed model.

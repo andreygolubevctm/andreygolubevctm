@@ -12,7 +12,8 @@ import com.ctm.model.simples.CallInfo;
 import com.ctm.model.simples.InboundPhoneNumber;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +25,7 @@ import static com.ctm.model.simples.CallInfo.STATE_INACTIVE;
 import static java.lang.String.format;
 
 public class PhoneService {
-	private static final Logger logger = Logger.getLogger(PhoneService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(PhoneService.class.getName());
 	public static final String CTI_MAKE_CALL = "/dataservices/makeCall?accessToken=&extension=%s&numberToCall=%s";
 
 	/**
@@ -53,7 +54,7 @@ public class PhoneService {
 			XmlNode xmlNode = parser.parse(result);
 			return xmlNode;
 		} catch (SAXException e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 
 		return null;
@@ -131,7 +132,7 @@ public class PhoneService {
 			}
 		}
 		catch (JSONException e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 
 		return null;
@@ -147,7 +148,7 @@ public class PhoneService {
      * @throws EnvironmentException
      * @throws ConfigSettingException
      */
-    public static CallInfo saveCallInfoForTransaction(PageSettings settings, String extension, long transactionId, String xpath) throws ConfigSettingException {
+    public static CallInfo saveCallInfoForTransaction(PageSettings settings, String extension, Long transactionId, String xpath) throws ConfigSettingException {
         CallInfo callInfo = getCallInfoByExtension(settings, extension);
         if(callInfo.getCallId()!=null && !callInfo.getCallId().equals("") && !callInfo.getCallId().equals("0")) {
             QuoteService quoteService = new QuoteService();
@@ -157,10 +158,9 @@ public class PhoneService {
             if (!callInfo.getVdns().isEmpty() && callInfo.getVdns().get(0) != null && !callInfo.getVdns().get(0).equals("")) {
                 quoteService.writeSingle(transactionId, xpath + "/VDN", callInfo.getVdns().get(0));
             }
-        }else{
-            return null;
         }
-        return callInfo;
+
+		return callInfo;
     }
 
     /**
@@ -250,7 +250,7 @@ public class PhoneService {
 			callInfo.setCustomerPhoneNo(otherParty.getString("telephoneNumber"));
 		}
 		catch (JSONException e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 
 		return callInfo;

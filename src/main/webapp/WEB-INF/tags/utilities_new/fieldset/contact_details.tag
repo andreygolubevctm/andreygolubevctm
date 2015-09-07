@@ -6,7 +6,9 @@
 
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
 <c:set var="competitionEnabled" scope="request" value="${competitionEnabledSetting == 'Y'}"/>
-<c:if test="${competitionEnabled eq true}"><c:set var="competitionValidationText" value=" to be eligible for the competition" /></c:if>
+<c:if test="${competitionEnabled eq true}">
+    <c:set var="competitionValidationText" value=" to be eligible for the competition" />
+</c:if>
 
 <%-- The email and phone are required on load to set the proper validation rules, and on initialise, have their required attribute removed --%>
 <form_new:fieldset legend="Your Contact Details" className="contact-details">
@@ -29,7 +31,9 @@
                              labelName="phone number${competitionValidationText}" />
     </form_new:row>
 
-    <utilities_new:competition/>
+    <c:if test="${competitionEnabled}">
+        <utilities_new:competition/>
+    </c:if>
 
     <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
     <c:set var="privacyOptinText">I understand ${brandedName} compares energy plans based on a standard tariff from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide. I confirm that I have read the
