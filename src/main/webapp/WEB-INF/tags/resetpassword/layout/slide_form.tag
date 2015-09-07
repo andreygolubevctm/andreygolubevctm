@@ -22,6 +22,6 @@
 
 <core:js_template id="reset-fail-modal-template">
     <p>Your password was not changed</p>
-    <p>{{= message }}</p>
+    <p>{{= obj.message }}</p>
     <p>Please click the button below to return to the "Reset Your Password" page, to request an email with a new reset password link.</p>
 </core:js_template>

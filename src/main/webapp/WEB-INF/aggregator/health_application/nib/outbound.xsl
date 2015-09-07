@@ -234,7 +234,7 @@
 			<xsl:when test="$hopName='Mid Hospital' and $extName='Top Extras'">118</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Extras'">120</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Extras Plus'">121</xsl:when>
-			<xsl:when test="$hopName='Basic Hospital' and $extName='CoreY and Family Extras'">122</xsl:when>
+			<xsl:when test="$hopName='Basic Hospital' and $extName='Core and Family Extras'">122</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus and Family Extras'">123</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core, Family and oung at Heart Extras'">124</xsl:when>
 			<xsl:when test="$hopName='Basic Hospital' and $extName='Core Plus, Family and Young at Heart Extras'">125</xsl:when>

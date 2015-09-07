@@ -126,12 +126,8 @@
 						</div>
 
 			</div>
-			<div class="featuresList featuresTemplateComponent">
-				<%-- Note: ${resultTemplateItems} is a request scoped variable on health_quote.jsp page - as it is used in multiple places --%>
-				<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
-					<features:resultsItem item="${selectedValue}" labelMode="true" index="${status.index}" />
-				</c:forEach>
-		</div>
+			<features:resultsItemTemplate_labels />
+			<div class="featuresList featuresTemplateComponent"></div>
 			</div>
 		<div class="resultsOverflow">
 			<div class="results-table"></div>
@@ -148,7 +144,7 @@
 			<div class="result">
 				<div class="resultInsert">
 					<div class="compareCheckbox " data-toggle="popover" data-trigger="mouseenter" data-class="compareTooltip" data-adjust-x="5" data-content="click<br/> to compare">
-						<input type="checkbox" class="compare " data-productId="result_{{= productId }}" id="compareCheckbox_{{= productId }}" />
+						<input type="checkbox" class="compare " data-productId="result_{{= productId }}" id="compareCheckbox_{{= productId }}" name="compareCheckbox_{{= productId }}"/>
 						<label for="compareCheckbox_{{= productId }}"></label>
 			</div>
 					<div class="productSummary vertical results">
@@ -185,11 +181,12 @@
 			</div>
 
 <%-- FEATURE TEMPLATE --%>
-	<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
+		<features:resultsItemTemplate />
+	<%--<div id="feature-template" style="display:none;" class="featuresTemplateComponent">
 		<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
 			<features:resultsItem item="${selectedValue}" labelMode="false" index="${status.index}"/>
 		</c:forEach>
-	</div>
+	</div>--%>
 
 <%-- NO RESULTS --%>
 	<div class="noResults displayNone">

@@ -11,12 +11,13 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class UploadService {
 
-	private Logger logger = Logger.getLogger(UploadService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(UploadService.class.getName());
 	private String attachmentFilename;
 	private String effectiveDate, providerCode, jira;
 	private InputStream uploadedStream;
@@ -94,7 +95,7 @@ public class UploadService {
 
 		}
 		catch(IOException e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 
 		// close off the SQL statement

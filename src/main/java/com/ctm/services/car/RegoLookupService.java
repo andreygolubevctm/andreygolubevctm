@@ -1,9 +1,6 @@
 package com.ctm.services.car;
 
-import au.com.motorweb.schemas.soap.autoid._1.AutoIdRequest;
-import au.com.motorweb.schemas.soap.autoid._1.AutoIdResponse;
-import au.com.motorweb.schemas.soap.autoid._1.JurisdictionEnum;
-import au.com.motorweb.schemas.soap.autoid._1.PlateType;
+import au.com.motorweb.schemas.soap.autoid._1.*;
 import au.com.motorweb.schemas.soap.autoid._1_0.AutoId;
 import com.ctm.dao.car.CarRedbookDao;
 import com.ctm.dao.car.CarRegoLookupDao;
@@ -17,7 +14,8 @@ import com.ctm.services.IPCheckService;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.utils.RequestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
@@ -38,7 +36,7 @@ import static com.ctm.webservice.motorweb.MotorWebProvider.createClient;
  */
 public class RegoLookupService {
 
-    private static Logger logger = Logger.getLogger(RegoLookupService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(RegoLookupService.class.getName());
 
     // Used to cache results of availability tests in serviceAvailableSilent method
     // as it's called multiple times when rendering frontend copy
@@ -202,7 +200,7 @@ public class RegoLookupService {
                 logger.debug("[rego lookup] Exception: " + e.getMessage());
                 throw new RegoLookupException(RegoLookupStatus.SERVICE_ERROR, e);
             }
-            if (redbookCode == null) {
+            if (redbookCode == null || redbookCode.isEmpty()) {
                 throw new RegoLookupException(RegoLookupStatus.REGO_NOT_FOUND);
             } else {
                 // Step 2 - get vehicle details from dao

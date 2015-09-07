@@ -6,7 +6,8 @@ import com.ctm.dao.UserDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Comment;
 import com.ctm.model.simples.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -21,7 +22,7 @@ import java.util.regex.Pattern;
 import static com.ctm.model.simples.MessageStatus.*;
 
 public class MessageDao {
-	private static final Logger logger = Logger.getLogger(MessageDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(MessageDao.class.getName());
 
 	private final static String MESSAGE_AVAILABLE_UPDATE = "UPDATE simples.message m, (";
 	private final static String MESSAGE_AVAILABLE_UPDATE_SET = ") as t set m.userId = ? WHERE m.id = t.id ";
@@ -394,6 +395,7 @@ public class MessageDao {
 		switch (message.getStatusId()) {
 			case MessageStatus.STATUS_COMPLETED_AS_PM:
 			case MessageStatus.STATUS_CHANGED_TIME_FOR_PM:
+			case MessageStatus.STATUS_INPROGRESS_FOR_PM:
 				targetStatusId = MessageStatus.STATUS_INPROGRESS_FOR_PM;
 				break;
 		}

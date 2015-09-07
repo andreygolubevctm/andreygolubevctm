@@ -30,9 +30,7 @@
 					<td>{{= touch.datetime }}</td>
 					<td>{{= touch.operator }}</td>
 					<td>
-						{{ if ('C' === touch.type.code) { }}
-							{{= _des}}: {{= obj.selectedProductProvider }} {{= obj.selectedProductTitle }}</span>
-						{{ } else if( touch.touchProductProperty !== null) { }}
+						{{ if( touch.touchProductProperty !== null) { }}
 							{{= _des }}: {{= touch.touchProductProperty.providerName }} {{= touch.touchProductProperty.productName }}
 						{{ } else { }}
 							{{= _des }}

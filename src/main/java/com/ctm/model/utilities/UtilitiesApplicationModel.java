@@ -1,6 +1,7 @@
 package com.ctm.model.utilities;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,7 +10,7 @@ import com.ctm.model.AbstractJsonModel;
 
 public class UtilitiesApplicationModel extends AbstractJsonModel {
 
-	private static Logger logger = Logger.getLogger(UtilitiesApplicationModel.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(UtilitiesApplicationModel.class.getName());
 
 	private String uniquePurchaseId;
 
@@ -29,7 +30,7 @@ public class UtilitiesApplicationModel extends AbstractJsonModel {
 		try {
 			setUniquePurchaseId(responseJson.getString("unique_purchase_id"));
 		} catch (JSONException e) {
-			logger.debug(e);
+			logger.debug("",e);
 			return false;
 		}
 

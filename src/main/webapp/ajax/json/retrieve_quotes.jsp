@@ -318,7 +318,7 @@
 			</c:if>
 			<go:log source="retrieve_quotes_jsp">RETRIEVE QUOTES COMPILED: ${authenticatedData.tmp}</go:log>
 
-			<go:log source="retrieve_quotes_jsp" level="TRACE">XML at 2: ${go:getEscapedXml(authenticatedData['tmp/previousQuotes'])}</go:log>
+			<go:log source="retrieve_quotes_jsp" level="DEBUG">XML at 2: ${go:getEscapedXml(authenticatedData['tmp/previousQuotes'])}</go:log>
 			<%-- Return the results as json --%>
 			${go:XMLtoJSON(go:getEscapedXml(authenticatedData['tmp/previousQuotes']))}
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />

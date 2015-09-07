@@ -930,7 +930,7 @@
 
 				if(!_.isEmpty(val)) {
 					$(elements[label].radio + " input:radio").prop('checked', false).change();
-					$(elements[label].radio + " input:radio[value=" + val + "]").prop('checked', true).change();
+					$(elements[label].radio + " input:radio[value='" + val + "']").prop('checked', true).change();
 				}
 			}
 

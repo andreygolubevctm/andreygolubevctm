@@ -2,14 +2,15 @@ package com.ctm.model.settings;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
 
 public class ServiceConfiguration {
 
 	@SuppressWarnings("unused")
-	private static Logger logger = Logger.getLogger(ServiceConfiguration.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ServiceConfiguration.class.getName());
 
 	private int id;
 	private int verticalId;
@@ -87,6 +88,10 @@ public class ServiceConfiguration {
 
 	public ArrayList<ServiceConfigurationProperty> getServiceProperties(){
 		return getPropertyByScope(Scope.SERVICE);
+	}
+
+	public ArrayList<ServiceConfigurationProperty> getGatewayProperties(){
+		return getPropertyByScope(Scope.GATEWAY);
 	}
 
 	/**

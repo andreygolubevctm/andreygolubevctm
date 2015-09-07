@@ -245,6 +245,11 @@
 				// Store the text of the income question - for reports and audits.
 				var incomelabel = ($('#health_healthCover_income :selected').val().length > 0) ? $('#health_healthCover_income :selected').text() : '';
 				$('#health_healthCover_incomelabel').val( incomelabel );
+			},
+			onAfterEnter: function(event) {
+				if (event.isForward){
+					meerkat.modules.simplesCallInfo.fetchCallInfo();
+				}
 			}
 		};
 
@@ -252,7 +257,7 @@
 		var benefitsStep = {
 			title: 'Your Cover',
 			navigationId: 'benefits',
-			slideIndex: 2,
+			slideIndex: 1,
 			slideScrollTo: '#navbar-main',
 			tracking: {
 				touchType: 'H',
@@ -294,6 +299,10 @@
 				_.delay(function() {
 				meerkat.modules.healthSegment.filterSegments();
 				}, 1000);
+
+				if (event.isForward){
+					meerkat.modules.simplesCallInfo.fetchCallInfo();
+				}
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefits.getSelectedBenefits();
@@ -318,6 +327,7 @@
 					validate: true
 				},
 				onInitialise: function onContactInit(event){
+					meerkat.modules.resultsFeatures.fetchStructure('health');
 				},
 				onBeforeEnter:function enterContactStep(event) {
 				},
@@ -338,7 +348,7 @@
 		var resultsStep = {
 			title: 'Your Results',
 			navigationId: 'results',
-			slideIndex: meerkat.modules.splitTest.isActive(99) ? 3: 2,
+			slideIndex: 3,
 			validation: {
 				validate: false,
 				customValidation: function validateSelection(callback) {
@@ -398,9 +408,6 @@
 				meerkat.modules.healthResults.toggleMarketingMessage(false);
 				meerkat.modules.healthResults.toggleResultsLowNumberMessage(false);
 
-				// Close the more info and/or modal
-				meerkat.modules.healthMoreInfo.close();
-
 				meerkat.modules.resultsHeaderBar.removeEventListeners();
 			}
 		};
@@ -408,7 +415,7 @@
 		var applyStep = {
 			title: 'Your Application',
 			navigationId: 'apply',
-			slideIndex: meerkat.modules.splitTest.isActive(99) ? 4: 3,
+			slideIndex: 4,
 			tracking:{
 				touchType:'A'
 			},
@@ -539,7 +546,7 @@
 		var paymentStep = {
 			title: 'Your Payment',
 			navigationId: 'payment',
-			slideIndex: meerkat.modules.splitTest.isActive(99) ? 5: 4,
+			slideIndex: 5,
 			tracking:{
 				touchType:'H',
 				touchComment: 'HLT paymnt',
@@ -634,25 +641,27 @@
 			startStep: startStep,
 			detailsStep: detailsStep,
 			benefitsStep: benefitsStep,
+			contactStep: contactStep,
 			resultsStep: resultsStep,
 			applyStep: applyStep,
 			paymentStep: paymentStep
-		}
-		if(meerkat.modules.splitTest.isActive(99)){
-			steps.contactStep = contactStep;
-		}
+		};
 	}
 
 	function configureProgressBar(){
 		meerkat.modules.journeyProgressBar.configure([
 			{
-				label:'Your Details',
+				label:'Your Situation',
 				navigationId: steps.startStep.navigationId,
 				matchAdditionalSteps:[steps.detailsStep.navigationId]
 			},
 			{
 				label:'Your Cover',
 				navigationId: steps.benefitsStep.navigationId
+			},
+			{
+				label:'Your details',
+				navigationId: steps.contactStep.navigationId
 			},
 			{
 				label:'Your Results',
@@ -667,9 +676,6 @@
 				navigationId: steps.paymentStep.navigationId
 			}
 		]);
-		if(meerkat.modules.splitTest.isActive(99)){
-			meerkat.modules.journeyProgressBar.addAdditionalStep('Your Cover', steps.contactStep.navigationId );
-		}
 	}
 
 	function configureContactDetails(){
@@ -929,51 +935,28 @@
 		//Update 1: Looks like nobody really knows or considered which calls are required. Also, the current code is basically magical (not understood), so without further review of what they want, the original stages will be logged. Hence this mapping here is still required. The livechat stats will still report the exact journey step names instead. Eg. the below mappings could be replaced by 'start', 'details', 'benefits', 'results', 'apply', 'payment', 'confirmation'.
 		var actionStep='';
 
-		if(meerkat.modules.splitTest.isActive(99)) {
-			switch (current_step) {
-				case 0:
-					actionStep = "health situation";
-					break;
-				case 1:
-					actionStep = 'health details';
-					break;
-				case 2:
-					actionStep = 'health cover';
-					break;
-				case 3:
-					actionStep = 'health cover contact';
-					break;
-				case 5:
-					actionStep = 'health application';
-					break;
-				case 6:
-					actionStep = 'health payment';
-					break;
-				case 7:
-					actionStep = 'health confirmation';
-					break;
-			}
-		} else {
-			switch (current_step) {
-				case 0:
-					actionStep = "health situation";
-					break;
-				case 1:
-					actionStep = 'health details';
-					break;
-				case 2:
-					actionStep = 'health cover';
-					break;
-				case 4:
-					actionStep = 'health application';
-					break;
-				case 5:
-					actionStep = 'health payment';
-					break;
-				case 6:
-					actionStep = 'health confirmation';
-					break;
-			}
+		switch (current_step) {
+			case 0:
+				actionStep = "health situation";
+				break;
+			case 1:
+				actionStep = 'health details';
+				break;
+			case 2:
+				actionStep = 'health cover';
+				break;
+			case 3:
+				actionStep = 'health cover contact';
+				break;
+			case 5:
+				actionStep = 'health application';
+				break;
+			case 6:
+				actionStep = 'health payment';
+				break;
+			case 7:
+				actionStep = 'health confirmation';
+				break;
 		}
 
 		var response =  {

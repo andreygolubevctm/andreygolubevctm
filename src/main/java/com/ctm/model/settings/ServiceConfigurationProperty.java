@@ -8,13 +8,16 @@ public class ServiceConfigurationProperty {
 
 	public enum Scope {
 		GLOBAL {
-			public String toString() {
-				return "GLOBAL";
-			}
+			public String toString() { return "GLOBAL";	}
 		},
 		SERVICE{
 			public String toString() {
 				return "SERVICE";
+			}
+		},
+		GATEWAY{
+			public String toString() {
+				return "GATEWAY";
 			}
 		};
 	}
@@ -101,6 +104,8 @@ public class ServiceConfigurationProperty {
 	public void setScope(String scope){
 		if(scope.equalsIgnoreCase(Scope.GLOBAL.toString())){
 			setScope(Scope.GLOBAL);
+		}else if(scope.equalsIgnoreCase(Scope.GATEWAY.toString())){
+			setScope(Scope.GATEWAY);
 		}else if(scope.equalsIgnoreCase(Scope.SERVICE.toString())){
 			setScope(Scope.SERVICE);
 		}

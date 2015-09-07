@@ -52,7 +52,7 @@
 			</ui:bubble>
 			<layout:slide_content>
 				<%-- PROVIDER TESTING --%>
-				<agg:provider_testing xpath="${pageSettings.getVerticalCode()}" displayFullWidth="true" showNumberofResults="false" showExpectedCoverDate="false" />
+				<agg:provider_testing xpath="${pageSettings.getVerticalCode()}" displayFullWidth="true" />
 
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_new:fieldset legend="Your Cover" id="yourcoverfs">

@@ -1,69 +1,34 @@
 package com.ctm.router.travel;
 
-import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
-import com.ctm.exceptions.SessionException;
 import com.ctm.exceptions.TravelServiceException;
 import com.ctm.model.resultsData.Info;
 import com.ctm.model.resultsData.ResultsObj;
 import com.ctm.model.resultsData.ResultsWrapper;
-import com.ctm.model.settings.*;
-import com.ctm.model.travel.results.TravelResult;
+import com.ctm.model.settings.Brand;
+import com.ctm.model.settings.PageSettings;
+import com.ctm.model.settings.Vertical;
 import com.ctm.model.travel.form.TravelRequest;
-import com.ctm.services.*;
+import com.ctm.model.travel.results.TravelResult;
+import com.ctm.router.CommonQuoteRouter;
+import com.ctm.services.EnvironmentService;
+import com.ctm.services.IPCheckService;
+import com.ctm.services.SettingsService;
 import com.ctm.services.tracking.TrackingKeyService;
 import com.ctm.services.travel.TravelService;
 import com.ctm.web.validation.SchemaValidationError;
-import com.disc_au.web.go.Data;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServlet;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import java.util.List;
 
 @Path("/travel")
-public class TravelRouter extends HttpServlet {
+public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
 
-    private static Logger logger = Logger.getLogger(TravelRouter.class.getName());
-
-    private Brand initRouter(MessageContext context){
-        // - Start common -- taken from Carlos' car branch
-        ApplicationService.setVerticalCodeOnRequest(context.getHttpServletRequest(), Vertical.VerticalType.TRAVEL.getCode());
-        Brand brand = null;
-        try {
-            brand = ApplicationService.getBrandFromRequest(context.getHttpServletRequest());
-
-        } catch (DaoException e) {
-            throw new RouterException(e);
-        }
-        return brand;
-    }
-
-    private String updateClientIP(MessageContext context, TravelRequest data){
-
-        SessionDataService service = new SessionDataService();
-        String clientIpAddress = null;
-
-        try {
-            Data dataBucket = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
-
-            if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
-                data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
-                clientIpAddress = (String) dataBucket.get("quote/clientIpAddress");
-            }
-            if (StringUtils.isBlank(clientIpAddress)) {
-                clientIpAddress = context.getHttpServletRequest().getRemoteAddr();
-            }
-            data.setClientIpAddress(clientIpAddress);
-        } catch (DaoException | SessionException e) {
-            throw new RouterException(e);
-        }
-
-        return clientIpAddress;
-    }
+	private static final Logger logger = LoggerFactory.getLogger(TravelRouter.class.getName());
 
     @GET
     @Path("/countrymapping/import")

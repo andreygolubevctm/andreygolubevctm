@@ -1,7 +1,8 @@
 package com.ctm.services.leadfeed.homecontents;
 
 import com.ctm.services.leadfeed.IProviderLeadFeedService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.exceptions.LeadFeedException;
 import com.ctm.model.Touch.TouchType;
@@ -11,7 +12,7 @@ import com.ctm.services.leadfeed.homecontents.AGIS.AGISHomeContentsLeadFeedServi
 
 public class HomeContentsLeadFeedService extends LeadFeedService {
 
-	private static Logger logger = Logger.getLogger(HomeContentsLeadFeedService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(HomeContentsLeadFeedService.class.getName());
 
 	protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) {
 

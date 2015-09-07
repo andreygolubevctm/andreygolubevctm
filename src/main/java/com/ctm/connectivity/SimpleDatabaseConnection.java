@@ -1,6 +1,7 @@
 package com.ctm.connectivity;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -12,9 +13,9 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleDatabaseConnection {
+public class SimpleDatabaseConnection implements AutoCloseable {
 
-	private static Logger logger = Logger.getLogger(SimpleDatabaseConnection.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimpleDatabaseConnection.class.getName());
 
 	private Connection connection;
 	private Map<String ,DataSource> dataSources = new HashMap<>();
@@ -54,6 +55,11 @@ public class SimpleDatabaseConnection {
 			}
 			return connection;
 		}
+	}
+
+	@Override
+	public void close() throws Exception {
+		closeConnection();
 	}
 
 	public void closeConnection() {

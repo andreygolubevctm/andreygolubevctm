@@ -8,6 +8,7 @@
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled" /></c:set>
 <c:set var="optedInForComp" value="${data['creditcard/competition/optIn'] eq 'Y' }" />
 <c:set var="serviceResponse" value="{}" />
+<c:set var="tranId" value="${data['current/transactionId']}" />
 
 <c:if test="${competitionEnabledSetting eq 'Y' and optedInForComp eq true}">
 
@@ -35,6 +36,7 @@
 			<c:param name="competition_lastname" value="${lastName}" />
 			<c:param name="competition_phone" value="" />
 			<c:param name="competition_required_phone" value="N" />
+			<c:param name="transactionId" value="${tranId}" />
 		</c:import>
 	</c:if>
 </c:if>
