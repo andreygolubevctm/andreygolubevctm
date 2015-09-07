@@ -16,13 +16,3 @@
 <%-- HTML --%>
 <input type="hidden" name="${bsbnumber}" id="${bsbnumber}" class="" value="${value}">
 <field_new:input pattern="[0-9]*" xpath="${xpath}input" className="bsb_number numeric ${className}" required="${required}" size="8" maxlength="7" title="${title}" additionalAttributes=" data-rule-regex='[0-9]{3}[- ]?[0-9]{3}' data-msg-regex='BSB must be six numbers e.g. 999-999' " />
-
-<%-- JAVASCRIPT --%>
-<go:script marker="onready">
-	$("#${bsbnumber}input").on("focus blur", function(){
-		$("#${bsbnumber}").val( String($("#${bsbnumber}input").val()).replace(/[^0-9]/g, '') );
-	});
-	$("#${bsbnumber}input").blur();
-</go:script>
-
-<%--<go:validate selector="${bsbnumber}input" rule="regex" parm="'[0-9]{3}[- ]?[0-9]{3}'" message="BSB must be six numbers e.g. 999-999" />--%>
