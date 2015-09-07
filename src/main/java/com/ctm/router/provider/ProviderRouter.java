@@ -58,7 +58,7 @@ public class ProviderRouter extends HttpServlet {
 
 		}catch (Exception e) {
 
-			logger.error("/provider json failed: ", e);
+			logger.error("Provider listing failed", e);
 
 			JSONObject json = null;
 			Error error = new Error();

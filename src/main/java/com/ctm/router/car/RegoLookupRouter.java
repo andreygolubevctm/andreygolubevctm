@@ -26,6 +26,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @Path("/rego")
 public class RegoLookupRouter {
 	private static final Logger logger = LoggerFactory.getLogger(RegoLookupRouter.class.getName());
@@ -55,7 +57,8 @@ public class RegoLookupRouter {
         try {
             CarRegoLookupDao.logLookup(transactionId, plateNumber, state, request_status);
         } catch(DaoException e) {
-            logger.error("[rego lookup] Error adding request to log: " + e.getMessage());
+            logger.error("[rego lookup] Error logging car rego request", kv("transactionId", transactionId),
+                kv("plateNumber", plateNumber), kv("state", state), kv("request_status", request_status));
         }
 
         return result;

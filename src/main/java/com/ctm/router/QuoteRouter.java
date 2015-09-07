@@ -22,6 +22,8 @@ import com.ctm.services.QuoteService;
 import com.ctm.services.SessionDataService;
 import com.disc_au.web.go.Data;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * To handle writing and retrieving of quotes.
  *
@@ -52,8 +54,8 @@ public class QuoteRouter extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		long transactionId = RequestUtils.getTransactionIdFromRequest(request);
 		if (transactionId < 1) {
-			logger.error("Empty Transaction id");
-			FatalErrorService.logFatalError(0, "QuoteRouter " + uri , request.getSession().getId(), false, "Empty Transaction id", "", request.getParameter("transactionId"));
+			logger.error("Empty Transaction id {}", kv("transactionId", transactionId));
+			FatalErrorService.logFatalError(0, "QuoteRouter " + uri, request.getSession().getId(), false, "Empty Transaction id", "", request.getParameter("transactionId"));
 		} else {
 			/**
 			 * Set content-type header based on uri extension.
@@ -79,7 +81,7 @@ public class QuoteRouter extends HttpServlet {
 					writer.print(new JSONObject().toString());
 				}
 			} catch (DaoException | SessionException e) {
-				logger.error("",e);
+				logger.error("Failed handling quote request {}", kv("requestUri", request.getRequestURI()), e);
 				// Fails silently.
 
 				// Real write quote would need to throw exception

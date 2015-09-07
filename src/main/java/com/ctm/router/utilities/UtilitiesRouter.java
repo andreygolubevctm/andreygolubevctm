@@ -26,6 +26,8 @@ import com.ctm.services.utilities.UtilitiesProductService;
 import com.ctm.services.utilities.UtilitiesProviderService;
 import com.ctm.services.utilities.UtilitiesResultsService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 @WebServlet(urlPatterns = {
 		"/utilities/providers/get.json",
@@ -109,7 +111,7 @@ public class UtilitiesRouter extends HttpServlet {
 			}
 
 		}catch (Exception e) {
-			logger.error("/utilities/providers/get.json failed: ", e);
+			logger.error("Failed to retrieve utilities results {}", kv("requestUri", request.getRequestURI()), e);
 
 			JSONObject json = null;
 			Error error = new Error();

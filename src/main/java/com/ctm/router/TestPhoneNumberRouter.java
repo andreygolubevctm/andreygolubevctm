@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 import com.ctm.utils.NGram;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @WebServlet(urlPatterns = {
 		"/ngram/test.json"
 
@@ -58,7 +60,7 @@ public class TestPhoneNumberRouter extends HttpServlet {
 			response.getWriter().print(json.toString());
 
 		} catch (JSONException | IOException e) {
-			logger.error("",e);
+			logger.error("Failed to create test phone number json response {}, {}", kv("score", score), kv("list", list), e);
 		}
 	}
 }

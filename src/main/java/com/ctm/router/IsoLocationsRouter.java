@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 /**
  * The idea of this class is to provide an interface for any vertical that requires
@@ -64,8 +66,7 @@ public class IsoLocationsRouter extends HttpServlet {
                 response.setHeader("Access-Control-Allow-Origin", "*");
                 json = isoLocations.fetchSearchResults(search);
             } catch (DaoException e) {
-
-                logger.error("",e);
+                logger.error("Failed to fetch locations {}", kv("search", search),e);
                 FatalErrorService.logFatalError(e, 0, uri, request.getSession().getId(), true);
 
                 Error error = new Error();
@@ -76,16 +77,16 @@ public class IsoLocationsRouter extends HttpServlet {
 
             writer.print(json.toString());
         } else if (uri.endsWith("/isolocations/countries.json")) {
-
+            final String showTopTen = request.getParameter("showTopTen");
             JSONObject json = null;
             try {
                 RequestUtils.checkForTransactionIdInDataBucket(request);
                 json = isoLocations.fetchCountryList();
-                if(request.getParameter("showTopTen") != null && request.getParameter("showTopTen").equals("true")) {
+                if(showTopTen != null && showTopTen.equals("true")) {
                     json = isoLocations.addTopTenTravelDestinations(json);
                 }
             } catch (DaoException | SessionException e) {
-                logger.error("",e);
+                logger.error("Failed to retrieve countries {}", kv("showTopTen", showTopTen));
                 FatalErrorService.logFatalError(e, 0, uri, request.getSession().getId(), true);
 
                 Error error = new Error();

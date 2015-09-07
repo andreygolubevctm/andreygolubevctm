@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @WebServlet(urlPatterns = {
 	"/email/incoming/gateway.json"
 })
@@ -52,7 +54,7 @@ public class IncomingEmailRouter extends HttpServlet {
 			emailData.setCampaignId(request.getParameter("cid"));
 		}
 
-		logger.debug("EmailIncomingRouter: " + emailData.getEmailType() + ", " + emailData.getProductId() + ", " + emailData.getTransactionId() + ", " + emailData.getHashedEmail());
+		logger.debug("Created incoming email data model {}", kv("incomingEmail", emailData));
 
 		IncomingEmailService incomingEmailService = new IncomingEmailService();
 		String emailUrl = incomingEmailService.getRedirectionUrl(emailData);
@@ -66,7 +68,7 @@ public class IncomingEmailRouter extends HttpServlet {
 			throw new ServletException("Could not route email to a valid URL.");
 		}
 
-		logger.debug("Email Gateway Redirect URL: " + emailUrl);
+		logger.debug("Email Gateway Redirect {}", kv("emailUrl", emailUrl));
 
 		// Redirect to the appropriate brand/vertical
 		response.sendRedirect(emailUrl);

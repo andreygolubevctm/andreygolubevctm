@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @WebServlet(urlPatterns = {
 	"/cron/leadfeed/car/triggerBestPriceLeads.json",
 	"/cron/leadfeed/home/triggerBestPriceLeads.json"
@@ -29,8 +31,7 @@ public class BestPriceLeadsRouter extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-
-		logger.info("[Lead feed] Trigger cron job");
+		logger.debug("[Lead feed] Triggered cron job {}", kv("uri", request.getRequestURI()));
 
 		String uri = request.getRequestURI();
 		PrintWriter writer = response.getWriter();
@@ -78,12 +79,12 @@ public class BestPriceLeadsRouter extends HttpServlet {
 					}
 				}
 
-				if(output.equals("") == false) {
+				if(!output.isEmpty()) {
 					writer.print(output);
 				}
 
 		} catch (Exception e) {
-			logger.error("[Lead feed] Exception sending lead feed message",e);
+			logger.error("[Lead feed] Best price lead feed failed {}", request.getRequestURI(), e);
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
 		}
 	}

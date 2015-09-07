@@ -27,6 +27,8 @@ import com.disc_au.web.go.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @WebServlet(urlPatterns = {
 		"/segment/filter.json"
 })
@@ -64,7 +66,7 @@ public class SegmentRouter extends HttpServlet{
 			}
 
 		} catch (Exception e) {
-			logger.error("There was an issue producing the Segment JSON response", e);
+			logger.error("There was an issue producing the Segment JSON response {}", kv("segmentRequest", segmentRequest), e);
 			writeErrors(e, writer, response);
 		}
 	}
@@ -74,7 +76,7 @@ public class SegmentRouter extends HttpServlet{
 			final List<Segment> segments = segmentService.filterSegmentsForUser(segmentRequest, data);
 			objectMapper.writeValue(writer, jsonObjectNode("segments", segments));
 		} catch (DaoException e) {
-			logger.error("Could not filter segment for user: '"+ segmentRequest.transactionId +"'", e);
+			logger.error("Could not filter segment for user {}", kv("transactionId", segmentRequest.transactionId), e);
 			writeErrors(e, writer, response);
 		}
 	}

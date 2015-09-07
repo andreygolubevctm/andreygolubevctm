@@ -15,7 +15,6 @@ import com.ctm.web.validation.SchemaValidationError;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,15 +23,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.services.PhoneService.makeCall;
 import static java.lang.Integer.parseInt;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static javax.servlet.http.HttpServletResponse.*;
 
 @WebServlet(urlPatterns = {
@@ -107,7 +108,7 @@ public class SimplesRouter extends HttpServlet {
 		if (request.getSession() != null) {
 			authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
 		} else {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.sendError(SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 
@@ -160,12 +161,12 @@ public class SimplesRouter extends HttpServlet {
 						objectMapper.writeValue(writer,PhoneService.saveCallInfoForTransaction(settings(), ext, transactionId, xpath));
 					}
 					catch (final ConfigSettingException e) {
-						logger.error("Could not get callInfo for extension '" + ext + "'", e);
-						response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+						logger.error("Could not get callInfo {}, {}", kv("ext", ext), kv("xpath", xpath), e);
+						response.setStatus(SC_INTERNAL_SERVER_ERROR);
 						objectMapper.writeValue(writer, errors(e));
 					}
 				}else {
-					objectMapper.writeValue(writer, jsonObjectNode("errors", asList(new Error("Could not get callInfo because missing either Xpath or Extension."))));
+					objectMapper.writeValue(writer, jsonObjectNode("errors", singletonList(new Error("Could not get callInfo because missing either Xpath or Extension."))));
 				}
 			}
 		} else if (uri.endsWith("/simples/admin/openinghours/getAllRecords.json")) {
@@ -189,7 +190,7 @@ public class SimplesRouter extends HttpServlet {
 		if (request.getSession() != null) {
 			authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
 		} else {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.sendError(SC_INTERNAL_SERVER_ERROR);
 			return;
 		}
 
@@ -265,7 +266,7 @@ public class SimplesRouter extends HttpServlet {
 			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.SIMPLES.getCode());
 		} catch (DaoException | ConfigSettingException e) {
 			fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-			logger.error("",e);
+			logger.error("Failed to set vertical and settings");
 			throw new ServletException(e);
 		}
 		SimplesTickleService tickleService = new SimplesTickleService(sessionDataService);
@@ -310,7 +311,7 @@ public class SimplesRouter extends HttpServlet {
 			final SimplesMessageService simplesMessageService = new SimplesMessageService();
 			objectMapper.writeValue(writer, simplesMessageService.getMessage(request, messageId));
         } catch (final DaoException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			response.setStatus(SC_INTERNAL_SERVER_ERROR);
 			objectMapper.writeValue(writer, errors(e));
         } catch (final NumberFormatException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -326,8 +327,8 @@ public class SimplesRouter extends HttpServlet {
 			final SimplesMessageService simplesMessageService = new SimplesMessageService();
 			objectMapper.writeValue(writer, simplesMessageService.getNextMessageForUser(request, simplesUid, authenticatedData.getSimplesUserRoles(), authenticatedData.getGetNextMessageRules()));
 		} catch (final DaoException | ConfigSettingException | ParseException e) {
-			logger.error("Could not get next message for user '" + simplesUid + "'", e);
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			logger.error("Could not get next simples message {}", kv("simplesUid", simplesUid), e);
+			response.setStatus(SC_INTERNAL_SERVER_ERROR);
 			objectMapper.writeValue(writer, errors(e));
 		}
 	}
@@ -339,7 +340,7 @@ public class SimplesRouter extends HttpServlet {
 
 	private ObjectNode errors(final Exception e) {
 		final Error error = new Error(e.getMessage());
-		return jsonObjectNode("errors", asList(error));
+		return jsonObjectNode("errors", singletonList(error));
 	}
 
 	private <T> ObjectNode jsonObjectNode(final String name, final T value) {

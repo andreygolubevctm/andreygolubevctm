@@ -70,7 +70,7 @@ public class AddressSearchRouter extends HttpServlet {
 				String indexName = pageSettings.getSetting("elasticSearchAddressIndex");
 				output = searchService.suggest(request.getParameter("query"), indexName, "address");
 			} catch (JSONException | ConfigSettingException | DaoException e) {
-				logger.error("Failed to return address search results {}", kv("query", request.getParameter("query")), e);
+				logger.error("Address search failed {}", kv("query", request.getParameter("query")), e);
 			}
 
 			if(output != null)
@@ -86,7 +86,7 @@ public class AddressSearchRouter extends HttpServlet {
 					Address address = addressDao.getAddressDetails(dpId);
 					json = address.toJSONObject();
 				} catch (DaoException e) {
-					logger.error("Failed to return address details {}", kv("dpId", dpId), e);
+					logger.error("Address details failed {}", kv("dpId", dpId), e);
 				}
 			}
 
