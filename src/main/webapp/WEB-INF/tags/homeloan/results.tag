@@ -286,10 +286,10 @@
 	{{ var img = ''; }}
 	{{ if (obj.lender === 'Adelaide Bank') img = 'ADLB'; }}
  	{{ if (obj.lender.indexOf('AFG Home Loans') === 0) img = 'AFG'; }}
-	{{ if (obj.lender === 'AFG Home Loans - Edge') img = 'AFG_GREEN'; }}
 	{{ if (obj.lender === 'AMP Bank') img = 'AMP'; }}
 	{{ if (obj.lender === 'ANZ') img = 'ANZ'; }}
 	{{ if (obj.lender === 'Auswide Bank') img = 'AUSWIDE'; }}
+	{{ if (obj.lender === 'Bank Australia') img = 'BANKAUST'; }}
 	{{ if (obj.lender === 'Bank of China') img = 'BOC'; }}
 	{{ if (obj.lender === 'Bank of Melbourne') img = 'BOM'; }}
 	{{ if (obj.lender === 'Bank of QLD') img = 'BOQ'; }}
@@ -313,6 +313,7 @@
 	{{ if (obj.lender === 'National Australia Bank') img = 'NAB'; }}
 	{{ if (obj.lender === 'P&N Bank') img = 'PN'; }}
 	{{ if (obj.lender === 'Pepper Homeloans') img = 'PEPPER'; }}
+	{{ if (obj.lender === 'QPCU') img = 'QPCU'; }}
 	{{ if (obj.lender === 'St George Bank') img = 'GEORGE'; }}
 	{{ if (obj.lender === 'Suncorp') img = 'SUNCORP'; }}
 	{{ if (obj.lender === 'The Rock Building Society Limited') img = 'ROCK'; }}
