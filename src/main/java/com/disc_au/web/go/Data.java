@@ -11,6 +11,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class Data.
@@ -314,7 +316,7 @@ public class Data extends XmlNode implements Comparable<Data> {
 				value = NumberUtils.parseNumber(getString(xpath), targetClass);
 			}
 		} catch (NumberFormatException e) {
-			logger.error("",e);
+			logger.warn("Failed to parse string to number. {}", kv("xpath" , xpath) ,e);
 		}
 		return value;
 	}

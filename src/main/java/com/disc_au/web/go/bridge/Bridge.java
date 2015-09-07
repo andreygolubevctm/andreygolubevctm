@@ -1,14 +1,15 @@
 package com.disc_au.web.go.bridge;
 
+import com.disc_au.web.go.bridge.messages.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.disc_au.web.go.bridge.messages.Message;
+import static com.ctm.logging.LoggingArguments.value;
 
 /**
  * The Class Bridge.
@@ -87,7 +88,7 @@ public class Bridge {
 		Message resp = null;
 		Socket socket = null;
 		try {
-			logger.debug("Connecting to " + server + " " + port);
+			logger.debug("Connecting to {}:{}" , value("server", server) , value("port", port) );
 			socket = new Socket(server, port);
 
 			int len = req.getLength();
