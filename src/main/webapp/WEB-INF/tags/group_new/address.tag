@@ -182,7 +182,7 @@
 <field:hidden xpath="${xpath}/suburbName" />
 <c:choose>
 	<c:when test="${not empty stateValidationField}">
-		<field_new:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="${stateValidationField}" additionalAttributes=" data-rule-matchStates='true' " />
+		<field_new:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="${stateValidationField}" additionalAttributes=" required data-rule-matchStates='true' " />
 	</c:when>
 	<c:otherwise>
 		<field:hidden xpath="${xpath}/state" />

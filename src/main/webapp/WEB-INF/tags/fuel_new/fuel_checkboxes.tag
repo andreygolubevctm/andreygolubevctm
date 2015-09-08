@@ -4,7 +4,7 @@
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="xpath" %>
 
-<field_new:validatedHiddenField xpath="${xpath}/hidden" required="false" additionalAttributes=' data-rule-fuelSelected="true" data-msg-fuelSelected="Please select up to 2 fuels types" ' />
+<field_new:validatedHiddenField xpath="${xpath}/hidden" additionalAttributes=' data-rule-fuelSelected="true" data-msg-fuelSelected="Please select up to 2 fuels types" ' />
 
 <div id="checkboxes-all" class="row">
     <div id="checkboxes-petrol" class="col-sm-4">
