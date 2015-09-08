@@ -13,6 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.logging.LoggingArguments.v;
+
 public class IPCheckService {
 
 	private static final Logger logger = LoggerFactory.getLogger(IPCheckService.class.getName());
@@ -100,10 +103,10 @@ public class IPCheckService {
                     int limit = ipAddressModel.getRole().getLimit(pageSettings);
                     // If they have hit more than the limit for their role, they are NOT permitted access.
                     if (ipAddressModel.getNumberOfHits() > limit) {
-                        logger.warn("[IPCheckService] User's IP Address (" + getIPAddress(request) + ") has been blocked after exceeding " + limit + " requests on " + ipAddressModel.getService());
+                        logger.warn("[IPCheckService] User's IP Address ({}) has been blocked after exceeding limit. {},{}" , v("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
                         return IPCheckStatus.OVER;
                     } else if (ipAddressModel.getNumberOfHits() == limit) {
-                        logger.warn("[IPCheckService] User's IP Address (" + getIPAddress(request) + ") has been blocked after reaching " + limit + " requests on " + ipAddressModel.getService());
+                        logger.warn("[IPCheckService] User's IP Address ({}) has been blocked after reaching limit. {},{}" , v("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
                         return IPCheckStatus.LIMIT;
                     }
                 }
@@ -128,7 +131,7 @@ public class IPCheckService {
             PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical.getCode());
             return isWithinLimit(request, pageSettings);
         } catch(ConfigSettingException | DaoException e) {
-            logger.error("[IPCheckService] An exception was thrown getting the pageSettings object", e);
+            logger.error(" An exception was thrown getting the pageSettings object", e);
         }
         return IPCheckStatus.UNDER;
     }
@@ -154,7 +157,7 @@ public class IPCheckService {
             PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical.getCode());
             return isPermittedAccess(request, pageSettings);
         } catch(ConfigSettingException | DaoException e) {
-            logger.error("[IPCHeckService] An exception was thrown getting the pageSettings object", e);
+            logger.error("An exception was thrown getting the pageSettings object", e);
         }
         return true;
     }

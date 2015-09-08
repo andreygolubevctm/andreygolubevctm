@@ -267,7 +267,7 @@ public class ApplicationService {
 			// Update static variables
 			brands = brandsList;
 
-			logger.debug("Loaded brands and verticals from database {}, {}", kv("brandsList.size()", brandsList.size()),
+			logger.debug("Loaded brands and verticals from database {}, {}", kv("brandsListSize", brandsList.size()),
 				kv("verticalsList.size()", verticalsList.size()));
 		}
 
@@ -307,7 +307,7 @@ public class ApplicationService {
 			if (session != null) {
 				Object attribute = session.getAttribute(applicationDateSessionKey);
 				if (attribute != null) {
-					logger.debug("Application date override retrieved {}", attribute.toString());
+					logger.debug("Application date override retrieved. {}", kv("attribute", attribute));
 					return (Date) attribute;
 				}
 			}
@@ -334,7 +334,7 @@ public class ApplicationService {
 					SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					Date date = parser.parse(dateString);
 					session.setAttribute(applicationDateSessionKey, date);
-					logger.debug("Application date set on session {}", kv("date", date.toString()));
+					logger.debug("Application date set on session {}", kv("date", date));
 				}
 			}
 		}

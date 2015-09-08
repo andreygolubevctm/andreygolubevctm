@@ -82,7 +82,7 @@ public class EnvironmentService {
 			}
 		}
 		if(currentEnvironment == null) throw new Exception("Unknown environment code");
-		logger.info("Environment set {}", kv("envCode", currentEnvironment.toString()));
+		logger.info("Environment set {}", kv("envCode", currentEnvironment));
 	}
 
 	public static Environment getEnvironment() throws EnvironmentException{
