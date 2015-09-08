@@ -69,12 +69,6 @@
 
 		<p class="optinText">${okToCall}</p>
 	</form_new:row>
-<%--
-	<go:validate selector="quote_contact_oktocall" rule="validateOkToCallRadio" parm="true"
-				message="Please choose if OK to call"/>
-	<go:validate selector="quote_contact_marketing" rule="validateOkToEmailRadio" parm="true"
-				message="Please choose if OK to email"/>--%>
-
 
 	<%-- COMPETITION START --%>
 	<c:if test="${competitionEnabled == true}">

@@ -42,9 +42,3 @@
 		</c:forEach>
 	</select>
 </div>
-
-<%--
- VALIDATION
-<c:if test="${required}">
-	<go:validate selector="${name}" rule="required" parm="${required}" message=""/>
-</c:if>--%>

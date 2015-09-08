@@ -17,12 +17,12 @@ import org.json.JSONObject;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
-import com.ctm.services.simples.FundWarningService;
+import com.ctm.services.simples.ProviderContentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @WebServlet(urlPatterns = {
-		"/health/quote/dualPrising/getFundWarning.json"
+		"/health/provider/content/get.json"
 })
 public class HealthRouter extends HttpServlet {
 
@@ -30,13 +30,11 @@ public class HealthRouter extends HttpServlet {
 	private static final Logger logger = LoggerFactory.getLogger(HealthRouter.class.getName());
 	private static final long serialVersionUID = 5468545645645645644L;
 	private final ObjectMapper objectMapper = new ObjectMapper();
-	JSONObject json = new JSONObject();
-	PrintWriter writer;
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String uri = request.getRequestURI();
-		writer = response.getWriter();
+		PrintWriter writer = response.getWriter();
 
 		// Automatically set content type based on request extension ////////////////////////////////////////
 
@@ -45,16 +43,17 @@ public class HealthRouter extends HttpServlet {
 		}
 
 		// Route the requests ///////////////////////////////////////////////////////////////////////////////
-		if (uri.endsWith("/health/quote/dualPrising/getFundWarning.json")) {
-			getFundWarning(request, response);
+		if (uri.endsWith("/health/provider/content/get.json")) {
+			getProviderContent(request, response, writer);
 		}
 	}
 
 
-	private void getFundWarning(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		FundWarningService fundWarningService = new FundWarningService();
+	private void getProviderContent(HttpServletRequest request, HttpServletResponse response, PrintWriter writer) throws IOException {
+		ProviderContentService providerContentService = new ProviderContentService();
+		JSONObject json = new JSONObject();
 		try {
-			json.put("warningMessage", fundWarningService.getFundWarningMessage(request));
+			json.put("providerContentText", providerContentService.getProviderContentText(request));
 		} catch (final DaoException | JSONException | ConfigSettingException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			objectMapper.writeValue(writer, errors(e));

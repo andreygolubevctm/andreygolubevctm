@@ -6,12 +6,15 @@ import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-public class FundWarningMessage {
+public class ProviderContent {
 
-	private int messageId;
+	private int providerContentId;
 
-	@NotEmpty(message="Description can not be empty")
-	private String messageContent;
+	@NotNull(message="Content type must be provided")
+	private int providerContentTypeId;
+
+	@NotEmpty(message="Content can not be empty")
+	private String providerContentText;
 
 	@NotNull(message="Effective Start date can not be empty")
 	private Date effectiveStart;
@@ -25,22 +28,30 @@ public class FundWarningMessage {
 	@Range(min=1, message="Vertical ID must be positive Integer")
 	private int verticalId;
 
-	public FundWarningMessage(){	}
+	public ProviderContent(){	}
 
-	public int getMessageId() {
-		return messageId;
+	public int getProviderContentId() {
+		return providerContentId;
 	}
 
-	public void setMessageId(int messageId) {
-		this.messageId = messageId;
+	public void setProviderContentId(int providerContentId) {
+		this.providerContentId = providerContentId;
 	}
 
-	public String getMessageContent() {
-		return messageContent;
+	public int getProviderContentTypeId() {
+		return providerContentTypeId;
 	}
 
-	public void setMessageContent(String messageContent) {
-		this.messageContent = messageContent;
+	public void setProviderContentTypeId(int providerContentTypeId) {
+		this.providerContentTypeId = providerContentTypeId;
+	}
+
+	public String getProviderContentText() {
+		return providerContentText;
+	}
+
+	public void setProviderContentText(String providerContentText) {
+		this.providerContentText = providerContentText;
 	}
 
 	public Date getEffectiveStart() {

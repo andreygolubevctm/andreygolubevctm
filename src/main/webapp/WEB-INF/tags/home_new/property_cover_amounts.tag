@@ -97,9 +97,6 @@
 			</form_new:row>
 
 
-
-			<%--<go:validate selector="${fieldXpathName}" rule="${fieldXpathName}_percent" parm="${parms}" message="Total sum of the Specified Personal Effects must be less than the Total Contents Replacement Value"/>--%>
-			<%--<go:validate selector="${fieldXpathName}" rule="${fieldXpathName}_total" parm="''" message="Add specified personal effects amounts below or select No to the question above"/>--%>
 			<%-- Bicycles --%>
 			<c:set var="fieldXpath" value="${xpath}/specifiedPersonalEffects/bicycle" />
 			<form_new:row fieldXpath="${fieldXpath}" label="Bicycles" id="specifiedPersonalEffects_bicycleRow">
@@ -172,8 +169,6 @@
 					defaultValue="0"/>
 			</form_new:row>
 		</div>
-
-
 
 		</form_new:fieldset>
 	</jsp:body>

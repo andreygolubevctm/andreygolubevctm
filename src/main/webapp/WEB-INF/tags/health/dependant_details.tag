@@ -82,15 +82,3 @@
 
 	</div>
 </div>
-
-<%-- VALIDATION --%>
-<%--<go:validate selector="${name}_maritalincomestatus" rule="defactoConfirmation" parm="true"
-			 message='Sorry, the highlighted dependant cannot be added to this policy.  Please contact us if you require assistance.'/>--%>
-<%--<go:validate selector="${name}_dob" rule="limitDependentAgeToUnder25" parm="true"
-			 message='Your child cannot be added to the policy as they are aged 25 years or older. You can still arrange cover for this dependant by applying for a separate singles policy or please contact us if you require assistance.'/>--%>
-
-
-<%--
-<go:validate selector="${name}_firstName" rule="personName" parm="true" />
-<go:validate selector="${name}_middleName" rule="personName" parm="true" />
-<go:validate selector="${name}_lastname" rule="personName" parm="true" />--%>

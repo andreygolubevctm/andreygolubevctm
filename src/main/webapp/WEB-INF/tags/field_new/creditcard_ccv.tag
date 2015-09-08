@@ -18,5 +18,3 @@
 		<img data-defer-src="framework/images/icon_card_ccv.png" alt="CCV" class="ccv" style="margin-top:10px" />
 	</div>
 </div>
-
-<%--<go:validate selector="${name}" rule="ccv" parm="${required}" message="" />--%>
