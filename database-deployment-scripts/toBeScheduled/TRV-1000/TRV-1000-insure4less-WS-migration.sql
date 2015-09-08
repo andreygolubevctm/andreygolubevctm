@@ -88,7 +88,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-6-45','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-7-45','insure4less Travel Insurance, AMT Excel, Plus Worldwide exc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-7-45','insure4less Travel Insurance, AMT Excel Plus, Worldwide exc USA & Canada',
                  '0','45','2-3-7-45','2015-08-04', '2040-12-31');
 
 INSERT INTO ctm.travel_product
@@ -109,7 +109,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-6-62','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-7-62','insure4less Travel Insurance, AMT Excel, Plus Worldwide exc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-7-62','insure4less Travel Insurance, AMT Excel Plus, Worldwide exc USA & Canada',
                  '0','62','2-3-7-62','2015-08-04', '2040-12-31');
 
 INSERT INTO ctm.travel_product
@@ -130,7 +130,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-6-93','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-7-93','insure4less Travel Insurance, AMT Excel, Plus Worldwide exc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-7-93','insure4less Travel Insurance, AMT Excel Plus, Worldwide exc USA & Canada',
                  '0','93','2-3-7-93','2015-08-04', '2040-12-31');
 
 INSERT INTO ctm.travel_product
@@ -149,7 +149,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-6-31','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-31','insure4less Travel Insurance, AMT Excel, Plus Worldwide inc USA & Canada','0','31','2-4-7-31','2015-08-04', '2040-12-31');
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-31','insure4less Travel Insurance, AMT Excel Plus, Worldwide inc USA & Canada','0','31','2-4-7-31','2015-08-04', '2040-12-31');
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
@@ -168,7 +168,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-6-45','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-45','insure4less Travel Insurance, AMT Excel, Plus Worldwide inc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-45','insure4less Travel Insurance, AMT Excel Plus, Worldwide inc USA & Canada',
                  '0','45','2-4-7-45','2015-08-04', '2040-12-31');
 
 INSERT INTO ctm.travel_product
@@ -189,7 +189,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-6-62','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-62','insure4less Travel Insurance, AMT Excel, Plus Worldwide inc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-62','insure4less Travel Insurance, AMT Excel Plus, Worldwide inc USA & Canada',
                  '0','62','2-4-7-62','2015-08-04', '2040-12-31');
 
 INSERT INTO ctm.travel_product
@@ -210,7 +210,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-6-93','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-93','insure4less Travel Insurance, AMT Excel, Plus Worldwide inc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-93','insure4less Travel Insurance, AMT Excel Plus, Worldwide inc USA & Canada',
                  '0','93','2-4-7-93','2015-08-04', '2040-12-31');
 
 INSERT INTO ctm.travel_product
