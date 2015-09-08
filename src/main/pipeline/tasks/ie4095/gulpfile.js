@@ -51,7 +51,6 @@ function IE4095Tasks(gulp) {
 
     // Required task name. Gets auto executed by the main gulpfile.
     gulp.task("ie4095", []);
-    gulp.task("ie4095:build", taskList);
     gulp.watch(watchPaths, taskList);
 }
 
