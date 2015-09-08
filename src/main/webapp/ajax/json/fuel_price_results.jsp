@@ -29,7 +29,7 @@
         <%-- Add the results to the current session data --%>
         <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
         <go:setData dataVar="data" xpath="soap-response" xml="${resultXml}"/>
-        ${logger.debug('Invalid transaction id returning called response.{}', log:kv('resultXml',resultXml))}
+        ${logger.debug('Invalid transaction id returning called response. {}', log:kv('resultXml',resultXml))}
         ${go:XMLtoJSON(resultXml)}
     </c:when>
     <c:otherwise>

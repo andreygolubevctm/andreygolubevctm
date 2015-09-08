@@ -43,7 +43,7 @@ ${logger.info('Checked if authenticated user is simples user. {}', log:kv('isOpe
 		</c:if>
 	</c:catch>
 	<c:if test="${not empty error}">
-		${logger.error('Failed to get rootid.{}', log:kv('transactionId',transactionId ), error)}
+		${logger.error('Failed to get rootid. {}', log:kv('transactionId',transactionId ), error)}
 	</c:if>
 </c:if>
 
@@ -94,7 +94,7 @@ ${logger.debug('Add Comment RootId.{}',log:kv('rootId', rootId))}
 			<c:if test="${not empty error}">
 				<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 				<c:set var="errorPool">${errorPool}{"error":"Failed to add comment: ${error.rootCause}"}</c:set>
-				${logger.error('Failed to add comment. {},{}', log:kv('operatorId', log:kv('operatorId', operatorId)), comment , error)}"
+				${logger.error('Failed to add comment. {},{}', log:kv('operatorId', operatorId), comment, error)}"
 			</c:if>
 		</c:if>
 	</c:otherwise>

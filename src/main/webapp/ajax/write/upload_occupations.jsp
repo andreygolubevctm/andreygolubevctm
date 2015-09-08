@@ -56,7 +56,7 @@ Process:
 	<c:set var="counter" value="${counter + 1}" />
 
 	<c:if test="${not empty error}">
-		${logger.error('failed to insert into aggregator.general.{},{},{}', log:kv('value',value ), log:kv('counter',counter ), log:kv('id', id), error)}
+		${logger.error('failed to insert into aggregator.general. {},{},{}', log:kv('value',value), log:kv('counter',counter), log:kv('id',id), error)}
 	</c:if>
 </x:forEach>
 

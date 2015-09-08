@@ -9,7 +9,6 @@
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%-- Variables --%>
-<c:set var="database" value="aggregator" />
 <c:set var="competition_id" value="${1}" />
 <c:set var="brand" value="CTM" />
 <c:set var="vertical" value="COMPETITION" />
@@ -48,7 +47,7 @@
 			brand=""
 			vertical="" />
 
-		<sql:setDataSource dataSource="jdbc/aggregator"/>
+		<sql:setDataSource dataSource="jdbc/ctm"/>
 		<sql:query var="emailId">
 			SELECT emailId
 				FROM aggregator.email_master
@@ -91,7 +90,7 @@
 
 		</c:when>
 		<c:when test="${empty error and (empty emailId or emailId.rowCount == 0)}">
-			${logger.warn('Failed to locate emailId.', log:kv('email', param.email))}
+			${logger.warn('Failed to locate emailId. {}', log:kv('email', param.email))}
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'" />
 		</c:when>
 		<c:otherwise>

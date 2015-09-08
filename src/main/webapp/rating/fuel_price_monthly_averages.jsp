@@ -94,7 +94,7 @@
 						</c:choose>
 					</c:when>
 					<c:otherwise>
-						${logger.error('Database error while locating historical fuel prices.{},{}', log:kv('siteids',siteids ), log:kv('fuels', fuels) , error)}
+						${logger.error('Database error while locating historical fuel prices. {}, {}', log:kv('siteids',siteids), log:kv('fuels',fuels), error)}
 						<error>MK-20004</error>
 					</c:otherwise>
 				</c:choose>

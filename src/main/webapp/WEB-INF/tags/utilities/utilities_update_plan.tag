@@ -17,9 +17,10 @@
 <%-- VARIABLES --%>
 <c:set var="alt_table" value="" />
 
-${logger.info('Starting tag. provider_id={},{},{},{},{}',
-			log:kv('provider_id', provider_id),log:kv('product_class', product_class),log:kv('product_code',product_code ),
-			log:kv('product_short_title',product_short_title ),log:kv('product_long_title',product_long_title ))}
+${logger.info('Starting tag. {},{},{},{},{}',
+			log:kv('provider_id',provider_id), log:kv('product_class',product_class), log:kv('product_code',product_code),
+			log:kv('product_short_title',product_short_title), log:kv('product_long_title',product_long_title))}
+
 <%-- 1] First - get the ID of the product (either an existing one or a new ID from the range) --%>
 <%-- ======================================================================================== --%>
 <c:set var="ctm_product_id" value="" />
@@ -70,12 +71,12 @@ ${logger.info('Starting tag. provider_id={},{},{},{},{}',
 									<c:out value="${find_available.rows[0].id}" />
 								</c:when>
 								<c:otherwise>
-									${logger.info('There are no empty product records to store product_code={}', product_code)}
+									${logger.info('There are no empty product records to store. {}', log:kv('product_code',product_code))}
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							${logger.error('Database error locating empty product record. {}', log:kv('provider_id',provider_id ), error)}
+							${logger.error('Database error locating empty product record. {}', log:kv('provider_id',provider_id), error)}
 						</c:otherwise>
 					</c:choose>
 				</c:otherwise>
