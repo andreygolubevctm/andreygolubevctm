@@ -52,12 +52,10 @@
 			{{ } }}
 
 			<h2 class="more-info-about">About the fund</h2>
-			{{= aboutFund }}
+			<div class="about-the-fund">{{= aboutFund }}</div>
 
 			<h2 class="more-info-nextsteps">Once you press the submit button...</h2>
-			{{= whatHappensNext }}
-
-			<span class="hidden next-steps-all-funds-source">If you have a direct debit set up with your current fund we suggest that you cancel the request as soon as possible. You may be able do this through your fund&#39;s online member service area.</span>
+			<div class="next-info">{{= whatHappensNext }}</div>
 
 		</div>
 

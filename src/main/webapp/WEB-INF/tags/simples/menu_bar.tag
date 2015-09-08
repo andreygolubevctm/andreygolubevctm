@@ -47,7 +47,7 @@
 							<li><a target="simplesiframe" href="simples/edit_callcenter_hours.jsp">Opening Hours</a></li>
 							<li><a target="simplesiframe" href="simples/edit_special_offers.jsp">Special Offers</a></li>
 							<li><a target="simplesiframe" href="simples/admin/health/fund_capping_limits.jsp">Fund Capping Limits</a></li>
-							<li><a target="simplesiframe" href="simples/admin/health/fund_warning_message.jsp">Fund Warning Message</a></li>
+							<li><a target="simplesiframe" href="simples/admin/health/provider_content.jsp?contentType=ABT">Provider Content</a></li>
 							<%-- DISABLED UNTIL CAN BE WORKED ON
 							<li><a target="simplesiframe" href="simples/report_managerOpEnq.jsp">Manager - Operator enquires</a></li>
 							--%>
