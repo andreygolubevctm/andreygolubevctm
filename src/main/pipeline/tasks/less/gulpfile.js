@@ -16,7 +16,6 @@ var less = require("gulp-less"),
     watchLess = require("gulp-watch-less"),
     gulpIf = require("gulp-if"),
     plumber = require("gulp-plumber"),
-    sakugawa = require('gulp-sakugawa'),
     notify = require("gulp-notify"),
     fs = require("fs"),
     path = require("path");
@@ -96,7 +95,7 @@ function LessTasks(gulp) {
                 watchesStarted.push(taskName);
             }
 
-            stream = stream.pipe(less({
+            return stream.pipe(less({
                     paths: [gulp.pipelineConfig.build.dir + "/../**"]
                 }))
                 .pipe(concat(fileName + ".css"))
@@ -114,18 +113,7 @@ function LessTasks(gulp) {
                 .pipe(notify({
                     title: taskName + " minified",
                     message: fileName + " successfully minified"
-                }))
-                .pipe(sakugawa({
-                    maxSelectors: 4000,
-                    suffix: "."
-                }))
-                .pipe(gulp.dest(path.join(targetDir, "ie")))
-                .pipe(notify({
-                    title: taskName + " 4095 split for IE",
-                    message: fileName + " successfully split up for IE (4095)"
                 }));
-
-            return stream;
         }
     };
 
