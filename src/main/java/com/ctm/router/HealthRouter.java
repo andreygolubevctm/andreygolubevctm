@@ -17,12 +17,12 @@ import org.json.JSONObject;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
-import com.ctm.services.simples.ProviderContentService;
+import com.ctm.services.simples.FundWarningService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @WebServlet(urlPatterns = {
-		"/health/provider/content/get.json",
+		"/health/quote/dualPrising/getFundWarning.json"
 })
 public class HealthRouter extends HttpServlet {
 
@@ -44,10 +44,10 @@ public class HealthRouter extends HttpServlet {
 
 		JSONObject json = new JSONObject();
 		// Route the requests ///////////////////////////////////////////////////////////////////////////////
-		if (uri.endsWith("/health/provider/content/get.json")) {
-			ProviderContentService providerContentService = new ProviderContentService();
+		if (uri.endsWith("/health/quote/dualPrising/getFundWarning.json")) {
+			FundWarningService fundWarningService = new FundWarningService();
 			try {
-				json.put("providerContentText", providerContentService.getProviderContentText(request));
+				json.put("warningMessage", fundWarningService.getFundWarningMessage(request));
 			} catch (final DaoException | JSONException | ConfigSettingException e) {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				objectMapper.writeValue(writer, errors(e));
