@@ -122,12 +122,14 @@
 					healthChoices.setCover($(this).val());
 				});
 
-				$('.health-situation-location').on('change',function() {
+				var $healthSitLocation = $('#health_situation_location');
+				$healthSitLocation.on('blur',function() {
 					healthChoices.setLocation($(this).val());
 				});
 
-				if($('#health_situation_location').val() !== '') {
-					healthChoices.setLocation($('#health_situation_location').val());
+				// For loading in.
+				if($healthSitLocation.val() !== '') {
+					healthChoices.setLocation($healthSitLocation.val());
 				}
 
 				if($("#health_privacyoptin").val() === 'Y'){

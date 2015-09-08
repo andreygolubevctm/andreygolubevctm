@@ -170,8 +170,8 @@
 	<field:hidden xpath="${xpath}/floorNo" />
 	<field:hidden xpath="${xpath}/streetName" />
 	<field:hidden xpath="${xpath}/streetId" />
-	<field_new:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" additionalAttributes="${suburbAdditionalAttributes}"/>
-	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}" required="false" additionalAttributes="${postCodeAdditionalAttributes} data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode'" />
+	<field_new:validatedHiddenField xpath="${xpath}/suburbName" validationErrorPlacementSelector="${errorPlacementSelector}" additionalAttributes="${suburbAdditionalAttributes}"/>
+	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}"  additionalAttributes="${postCodeAdditionalAttributes} data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode'" />
 	<field:hidden xpath="${xpath}/state" />
 </div>
 

@@ -193,13 +193,13 @@ var healthChoices = {
 	},
 
 	setLocation : function(location) {
+
 		if( healthChoices.isValidLocation(location) ) {
 			var value = $.trim(String(location));
 			var pieces = value.split(' ');
 			var state = pieces.pop();
 			var postcode = pieces.pop();
 			var suburb = pieces.join(' ');
-
 			$('#health_situation_state').val(state);
 			$('#health_situation_postcode').val(postcode).trigger("change");
 			$('#health_situation_suburb').val(suburb);
@@ -593,7 +593,7 @@ var healthFunds = {
 	},
 
 	_memberIdRequired: function(required){
-		$('#clientMemberID input, #partnerMemberID input').setRequired(required);
+		$('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(required);
 	},
 
 	_dependants: function(message){
@@ -1033,7 +1033,7 @@ var healthDependents = {
 				$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_schoolDateGroup').hide();
 			}
 			else {
-				$('#health_application_dependants_dependant' + index + '_schoolDate').setRequired(true, 'Please enter date that dependant '+index+' commenced study');
+				$('#health_application_dependants_dependant' + index + '_schoolDate').setRequired(this.config.schoolDateMandatory, 'Please enter date that dependant '+index+' commenced study');
 			};
 		} else {
 			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').hide();

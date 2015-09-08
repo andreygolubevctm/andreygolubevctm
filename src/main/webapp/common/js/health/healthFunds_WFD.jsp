@@ -91,8 +91,8 @@ var healthFunds_WFD = {
         <%--partner--%>
         healthFunds_WFD.$_dobPartner = $('#health_application_partner_dob');
 
-        meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPrimary, 18 , "primary person's");
-        meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPartner, 18, "partner's");
+        healthFunds_WFD.$_dobPrimary.addRule('youngestDOB', 18, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
+        healthFunds_WFD.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
         <%-- Load join dec into label--%>
         healthFunds_WFD.joinDecLabelHtml = $('#health_declaration + label').html();
@@ -138,8 +138,8 @@ var healthFunds_WFD = {
         healthFunds._previousfund_authority(false);
 
         <%--Age requirements for applicants (back to default)--%>
-        meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPrimary, dob_health_application_primary_dob.ageMin , "primary person's");
-        meerkat.modules.validation.setMinAgeValidation(healthFunds_WFD.$_dobPartner, dob_health_application_partner_dob.ageMin, "partner's");
+        healthFunds_WFD.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
+        healthFunds_WFD.$_dobPartner.addRule('youngestDOB', dob_health_application_partner_dob.ageMin, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
         delete healthFunds_WFD.$_dobPrimary;
         delete healthFunds_WFD.$_dobPartner;
