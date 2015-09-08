@@ -3,8 +3,8 @@ if(typeof window.$ == 'undefined' && typeof window.jQuery !== 'undefined') {
 }
 
 $.validator.addMethod('regex', function(value, element, param) {
-		return value.match(new RegExp('^' + param + '$'));
-	});
+	return value.match(new RegExp('^' + param + '$'));
+});
 
 $.validator.addMethod('min_DateOfBirth', function(value, element, params) {
 	if (typeof params === 'undefined' || !params.hasOwnProperty('ageMin')) return false;
@@ -97,20 +97,20 @@ $.validator.addMethod("minDateEUR", function(value, element, param) {
 	function getDate(v) {
 		var adata = v.split('/');
 		return new Date(parseInt(adata[2], 10), parseInt(adata[1], 10) - 1,
-				parseInt(adata[0], 10));
+			parseInt(adata[0], 10));
 	}
 	return (this.optional(element) != false)
-			|| getDate(value) >= getDate(param);
+		|| getDate(value) >= getDate(param);
 }, $.validator.format("Please enter a minimum of {0}."));
 
 $.validator.addMethod("maxDateEUR", function(value, element, param) {
 	function getDate(v) {
 		var adata = v.split('/');
 		return new Date(parseInt(adata[2], 10), parseInt(adata[1], 10) - 1,
-				parseInt(adata[0], 10));
+			parseInt(adata[0], 10));
 	}
 	return (this.optional(element) != false)
-			|| getDate(value) <= getDate(param);
+		|| getDate(value) <= getDate(param);
 }, $.validator.format("Please enter a maximum of {0}."));
 
 //
@@ -132,7 +132,7 @@ $.validator.addMethod("ncdValid", function(value, element) {
 
 	var minDrivingAge = 16;
 	var rgdYrs = curYear
-			- getDateFullYear($("#quote_drivers_regular_dob").val());
+		- getDateFullYear($("#quote_drivers_regular_dob").val());
 	var ncdYears = value;
 	var yearsDriving = rgdYrs - minDrivingAge;
 	// alert("ncdYears: " + ncdYears + " yearsDriving: " + yearsDriving);
@@ -148,7 +148,7 @@ $.validator.addMethod("youngRegularDriversAgeCheck", function (value, element) {
 	function getDate(v) {
 		var adata = v.split('/');
 		return new Date(parseInt(adata[2], 10), parseInt(adata[1], 10) - 1,
-				parseInt(adata[0], 10));
+			parseInt(adata[0], 10));
 	}
 
 	var rgdDob = getDate($("#quote_drivers_regular_dob").val());
@@ -198,25 +198,25 @@ $.validator.addMethod("allowedDrivers", function (value) {
 	function getDate(v) {
 		var adata = v.split('/');
 		return new Date(parseInt(adata[2], 10), parseInt(adata[1], 10) - 1,
-				parseInt(adata[0], 10));
+			parseInt(adata[0], 10));
 	}
 
 	var minAge;
 
 	switch (value) {
-	case "H":
-		minAge = 21;
-		break;
-	case "7":
-		minAge = 25;
-		break;
-	case "A":
-		minAge = 30;
-		break;
-	case "D":
-		minAge = 40;
-		break;
-	default:
+		case "H":
+			minAge = 21;
+			break;
+		case "7":
+			minAge = 25;
+			break;
+		case "A":
+			minAge = 30;
+			break;
+		case "D":
+			minAge = 40;
+			break;
+		default:
 		// do nothing
 	}
 
@@ -262,19 +262,19 @@ $.validator.addMethod("youngestDriverMinAge", function (value, element) {
 
 	var minAge;
 	switch (value) {
-	case "H":
-		minAge = 21;
-		break;
-	case "7":
-		minAge = 25;
-		break;
-	case "A":
-		minAge = 30;
-		break;
-	case "D":
-		minAge = 40;
-		break;
-	default:
+		case "H":
+			minAge = 21;
+			break;
+		case "7":
+			minAge = 25;
+			break;
+		case "A":
+			minAge = 30;
+			break;
+		case "D":
+			minAge = 40;
+			break;
+		default:
 		// do nothing
 	}
 
@@ -320,14 +320,14 @@ $.validator.addMethod("ageLicenceObtained", function (value, element) {
 
 	var driver;
 	switch (element.name) {
-	case "quote_drivers_regular_licenceAge":
-		driver = "#quote_drivers_regular_dob";
-		break;
-	case "quote_drivers_young_licenceAge":
-		driver = "#quote_drivers_young_dob";
-		break;
-	default:
-		return false;
+		case "quote_drivers_regular_licenceAge":
+			driver = "#quote_drivers_regular_dob";
+			break;
+		case "quote_drivers_young_licenceAge":
+			driver = "#quote_drivers_young_dob";
+			break;
+		default:
+			return false;
 	}
 
 	function getDateFullYear(v) {
@@ -340,9 +340,9 @@ $.validator.addMethod("ageLicenceObtained", function (value, element) {
 	var driverAge = curYear - driverFullYear;
 	if(this.optional(element) == false) {
 		if(!isNaN(driverFullYear) ) {
-				if (isNaN(driverAge) || value < 16 || value > driverAge) {
+			if (isNaN(driverAge) || value < 16 || value > driverAge) {
 				return false;
-				}
+			}
 		} else if(value < 16) {
 			return false;
 		}
@@ -365,7 +365,7 @@ $.validator.addMethod("agree", function (value, element) {
 
 // TODO: delete this when all vertical are on the new framework
 // Name is alpha and .'\-, only with no foreign characters as providers don't support them
-	// Ensures that an email address or URL is not being entered
+// Ensures that an email address or URL is not being entered
 //
 if (typeof meerkat === 'undefined' || typeof meerkat.modules.validation === 'undefined') {
 	var validNameCharsRegex = /^([a-zA-Z .'\-,]*)$/;
@@ -406,7 +406,7 @@ $.validator.addMethod("okToCall", function() {
 //
 $.validator.addMethod("marketing", function () {
 	if ($('input[name="quote_contact_marketing"]:checked').val() == "Y"
-			&& $('input[name="quote_contact_email"]').val() == "") {
+		&& $('input[name="quote_contact_email"]').val() == "") {
 		return false;
 	} else {
 		$('input[name="quote_contact_email"]').parent().removeClass('state-right state-error');
@@ -416,12 +416,12 @@ $.validator.addMethod("marketing", function () {
 }, "");
 
 $.validator.addMethod(
-		"validAddress",
-		function(value, element, name) {
-			"use strict";
+	"validAddress",
+	function(value, element, name) {
+		"use strict";
 
 		// Default is to FAIL
-			var valid = false;
+		var valid = false;
 
 		if(typeof meerkat != 'undefined') {
 
@@ -437,19 +437,19 @@ $.validator.addMethod(
 			var houseNo = $streetNoElement.val();
 			var isNonStd = $("#" + name + "_nonStd").is(":checked");
 
-				var fldName = $ele.attr("id").substring(name.length);
+			var fldName = $ele.attr("id").substring(name.length);
 			var type = $("#" + name + "_type").val();
-;
+			;
 			var selectedAddress = window.selectedAddressObj[type];
 
-				switch (fldName) {
+			switch (fldName) {
 				case "_streetSearch":
 
 					if (isNonStd) {
 						$ele.removeClass("error has-error");
 						$ele.removeClass('has-error');
 						$ele.closest('.form-group').find('.row-content').removeClass('has-error')
-						.end().find('.error-field').remove();
+							.end().find('.error-field').remove();
 						return true;
 					}
 					var suburbName = $("#" + name + "_suburbName").val();
@@ -458,10 +458,10 @@ $.validator.addMethod(
 					if (!validSuburb) {
 						return false;
 					}
-				if(houseNo == "") {
-					houseNo = $houseNoSel.val();
-					$streetNoElement.val(houseNo);
-				}
+					if(houseNo == "") {
+						houseNo = $houseNoSel.val();
+						$streetNoElement.val(houseNo);
+					}
 					if ($streetNoElement.hasClass('canBeEmpty')) {
 						$unitShopElement.valid();
 						valid = true;
@@ -475,7 +475,7 @@ $.validator.addMethod(
 						valid = true;
 					}
 
-				if (valid && ($dpIdElement == "" || $("#" + name + "_fullAddress").val() == "")) {
+					if (valid && ($dpIdElement == "" || $("#" + name + "_fullAddress").val() == "")) {
 						var unitType = $unitTypeElement.val();
 						var unitNo = $unitSelElement.val();
 						if (unitNo == "") {
@@ -483,12 +483,12 @@ $.validator.addMethod(
 						}
 
 						valid = validateAddressAgainstServer(name,
-								$dpIdElement, {
-									streetId : $streetIdElement.val(),
-									houseNo : houseNo,
-									unitNo : unitNo,
-									unitType : unitType
-								}, $ele);
+							$dpIdElement, {
+								streetId : $streetIdElement.val(),
+								houseNo : houseNo,
+								unitNo : unitNo,
+								unitType : unitType
+							}, $ele);
 					}
 
 					/**
@@ -516,10 +516,10 @@ $.validator.addMethod(
 						valid = true;
 					} else if(!_.isEmpty(selectedAddress.dpId)) {
 						valid = true;
-					// If street found but no street number then pass for now
+						// If street found but no street number then pass for now
 					} else if(selectedAddress.streetId > 0 && (_.isEmpty(selectedAddress.houseNo) || selectedAddress.houseNo == '0')) {
 						valid = true;
-					// If house number enter but no unit info then pass for now
+						// If house number enter but no unit info then pass for now
 					} else if(!_.isEmpty(selectedAddress.houseNo) && selectedAddress.hasUnits === true) {
 						if(selectedAddress.hasEmptyUnits === false && (selectedAddress.unitNo == "" || selectedAddress.unitType == "")) {
 							valid = true;
@@ -549,15 +549,15 @@ $.validator.addMethod(
 						return false;
 					}
 					/** Residential street cannot start with GPO or PO * */
-				if (type === 'R') {
-					// AddressUtils has been removed from ElasticSearch,
-					// so this is needed to keep validation of this on the new verticals
-					if (typeof AddressUtils != 'undefined') {
+					if (type === 'R') {
+						// AddressUtils has been removed from ElasticSearch,
+						// so this is needed to keep validation of this on the new verticals
+						if (typeof AddressUtils != 'undefined') {
 							if (AddressUtils.isPostalBox(value)) {
 								return false;
 							}
 						}
-				}
+					}
 					$ele.trigger("customAddressEnteredEvent", [ name ]);
 					return true;
 				case "_nonStd":
@@ -588,18 +588,18 @@ $.validator.addMethod(
 					return !$ele.hasClass('invalidPostcode');
 				default:
 					return false;
-				}
+			}
 
-				if (valid) {
-					$ele.removeClass("error has-error");
+			if (valid) {
+				$ele.removeClass("error has-error");
 
-					// Force an unhighlight because Validator has lost its element scope due to all the sub-valid() checks.
-					if (fldName === '_streetSearch') {
-						if( typeof $ele.validate().ctm_unhighlight === "function"){
-							$ele.validate().ctm_unhighlight($('#' + name + '_streetSearch').get(0), this.settings.errorClass, this.settings.validClass);
-						}
+				// Force an unhighlight because Validator has lost its element scope due to all the sub-valid() checks.
+				if (fldName === '_streetSearch') {
+					if( typeof $ele.validate().ctm_unhighlight === "function"){
+						$ele.validate().ctm_unhighlight($('#' + name + '_streetSearch').get(0), this.settings.errorClass, this.settings.validClass);
 					}
 				}
+			}
 		} else {
 
 			/* Legacy address validation for non-meerkat verticals */
@@ -612,104 +612,104 @@ $.validator.addMethod(
 			var fldName = $ele.attr("id").substring(name.length);
 
 			switch (fldName) {
-			case "_streetSearch":
+				case "_streetSearch":
 
-				if ($("#" + name + "_nonStd").is(":checked")) {
-					$ele.removeClass("error has-error");
-					return true;
-				}
-				var suburbName = $("#" + name + "_suburbName").val();
-				var suburbSelect = $("#" + name + "_suburb").val();
-				var validSuburb =  suburbName != "" && suburbName != "Please select..." && suburbSelect != "";
-				if (!validSuburb) {
-					return false;
-				}
-				if (streetNoElement.hasClass('canBeEmpty')) {
-					unitShopElement.valid();
-					valid = true;
-				} else if (streetNoElement.val() != "" || $("#" + name + "_houseNoSel").val() != "") {
+					if ($("#" + name + "_nonStd").is(":checked")) {
+						$ele.removeClass("error has-error");
+						return true;
+					}
+					var suburbName = $("#" + name + "_suburbName").val();
+					var suburbSelect = $("#" + name + "_suburb").val();
+					var validSuburb =  suburbName != "" && suburbName != "Please select..." && suburbSelect != "";
+					if (!validSuburb) {
+						return false;
+					}
+					if (streetNoElement.hasClass('canBeEmpty')) {
+						unitShopElement.valid();
+						valid = true;
+					} else if (streetNoElement.val() != "" || $("#" + name + "_houseNoSel").val() != "") {
 
-					if(streetNoElement.is(":visible")){
-						streetNoElement.valid();
+						if(streetNoElement.is(":visible")){
+							streetNoElement.valid();
+						}
+
+						$ele.removeClass("error has-error");
+
+						valid = true;
 					}
 
-					$ele.removeClass("error has-error");
-
-					valid = true;
-				}
-
-				if (valid && (dpIdElement.val() == "" || $("#" + name + "_fullAddress").val() == "")) {
-					var unitType = $("#" + name + "_unitType").val();
-					if (unitType == 'Please choose...') {
-						unitType = "";
-					}
-					var unitNo = $("#" + name + "_unitSel").val();
-					if (unitNo == "") {
-						unitNo = unitShopElement.val();
-					}
-					houseNo = streetNoElement.val();
-					if (houseNo == "") {
-						houseNo = $("#" + name + "_houseNoSel").val();
-					}
-					valid = validateAddressAgainstServer(name,
+					if (valid && (dpIdElement.val() == "" || $("#" + name + "_fullAddress").val() == "")) {
+						var unitType = $("#" + name + "_unitType").val();
+						if (unitType == 'Please choose...') {
+							unitType = "";
+						}
+						var unitNo = $("#" + name + "_unitSel").val();
+						if (unitNo == "") {
+							unitNo = unitShopElement.val();
+						}
+						houseNo = streetNoElement.val();
+						if (houseNo == "") {
+							houseNo = $("#" + name + "_houseNoSel").val();
+						}
+						valid = validateAddressAgainstServer(name,
 							dpIdElement, {
 								streetId : $("#" + name + "_streetId").val(),
 								houseNo : houseNo,
 								unitNo : unitNo,
 								unitType : unitType
 							}, $ele);
-				}
+					}
 
-				if(unitShopElement.is(":visible") && dpIdElement.val() == "" && !unitShopElement.hasClass('canBeEmpty')) {
-					valid = valid && unitShopElement.val() != "" && unitShopElement.val() != "0";
-				}
-				break;
-			case "_streetNum":
-				return true;
-			case "_nonStdStreet":
-				if (!$ele.is(":visible")) {
+					if(unitShopElement.is(":visible") && dpIdElement.val() == "" && !unitShopElement.hasClass('canBeEmpty')) {
+						valid = valid && unitShopElement.val() != "" && unitShopElement.val() != "0";
+					}
+					break;
+				case "_streetNum":
 					return true;
-				}
+				case "_nonStdStreet":
+					if (!$ele.is(":visible")) {
+						return true;
+					}
 
-				if (value == "") {
-					return false;
-				}
-				/** Residential street cannot start with GPO or PO * */
-				if (type === 'R') {
-					if (AddressUtils.isPostalBox(value)) {
+					if (value == "") {
 						return false;
 					}
-				}
-				$ele.trigger("customAddressEnteredEvent", [ name ]);
-				return true;
-			case "_nonStd":
+					/** Residential street cannot start with GPO or PO * */
+					if (type === 'R') {
+						if (AddressUtils.isPostalBox(value)) {
+							return false;
+						}
+					}
+					$ele.trigger("customAddressEnteredEvent", [ name ]);
+					return true;
+				case "_nonStd":
 
-				if ($ele.is(":checked")) {
-					var $streetSearchEle = $("#" + name + "_streetSearch");
-					if($streetSearchEle.prop('disabled') || $streetSearchEle.is(":visible") === false){
-						return true;
-					}else{
-						$streetSearchEle.valid();
+					if ($ele.is(":checked")) {
+						var $streetSearchEle = $("#" + name + "_streetSearch");
+						if($streetSearchEle.prop('disabled') || $streetSearchEle.is(":visible") === false){
+							return true;
+						}else{
+							$streetSearchEle.valid();
+						}
+					} else {
+						var $suburbEle = $("#" + name + "_suburb");
+						if($suburbEle.prop('disabled') || $suburbEle.is(":visible")  === false){
+							return true;
+						}else{
+							$suburbEle.valid();
+						}
+						$("#" + name + "_nonStdStreet").valid();
+						if (!streetNoElement.hasClass("canBeEmpty")) {
+							streetNoElement.valid();
+						}
+						unitShopElement.valid();
 					}
-				} else {
-					var $suburbEle = $("#" + name + "_suburb");
-					if($suburbEle.prop('disabled') || $suburbEle.is(":visible")  === false){
-						return true;
-					}else{
-						$suburbEle.valid();
-					}
-					$("#" + name + "_nonStdStreet").valid();
-					if (!streetNoElement.hasClass("canBeEmpty")) {
-						streetNoElement.valid();
-					}
-					unitShopElement.valid();
-				}
 
-				return true;
-			case "_postCode":
-				return !$ele.hasClass('invalidPostcode');
-			default:
-				return false;
+					return true;
+				case "_postCode":
+					return !$ele.hasClass('invalidPostcode');
+				default:
+					return false;
 			}
 
 			if (valid) {
@@ -724,7 +724,7 @@ $.validator.addMethod(
 			}
 		}
 
-			return valid;
+		return valid;
 
 	}, "Please enter a valid address"
 );
@@ -764,25 +764,25 @@ $.validator.addMethod("validAutofilllessSearch", function(value, element, name) 
 }, "Please select a valid address" );
 
 $.validator.addMethod(
-		"validSuburb",
-		function(value, element, name) {
-			"use strict";
-			var valid = false;
+	"validSuburb",
+	function(value, element, name) {
+		"use strict";
+		var valid = false;
 
-			if ($("#" + name + "_nonStd").is(":checked")) {
-				valid = value !== null && value !== '' && value !== 'Please select...';
-			} else {
-				$(element).removeClass("error has-error");
-				valid = true;
-			}
-			return valid;
-		});
+		if ($("#" + name + "_nonStd").is(":checked")) {
+			valid = value !== null && value !== '' && value !== 'Please select...';
+		} else {
+			$(element).removeClass("error has-error");
+			valid = true;
+		}
+		return valid;
+	});
 
 validateAddressAgainstServer = function(name, dpIdElement, data, element) {
 	var passed = false;
 
 	/* If Safari on iPad running version 6 then need to turn off async
-		as it will fail fatally if longer than 10sec */
+	 as it will fail fatally if longer than 10sec */
 	var aSyncOverride = false;
 	if(typeof meerkat != 'undefined') {
 		aSyncOverride = navigator.userAgent.match(/iPad/i) != null && meerkat.modules.performanceProfiling.isIos6() && navigator.userAgent.match(/Safari/i) != null;
@@ -798,7 +798,7 @@ validateAddressAgainstServer = function(name, dpIdElement, data, element) {
 			passed = jsonResult.foundAddress;
 			if (jsonResult.foundAddress) {
 				$(element).trigger("validStreetSearchAddressEnteredEvent",
-						[ name, jsonResult ]);
+					[ name, jsonResult ]);
 			}
 		},
 		dataType : "json",
@@ -831,19 +831,19 @@ validateAddressAgainstServer = function(name, dpIdElement, data, element) {
 //
 $.validator.addMethod("validatePostcode",
 	function (value, element) {
-			var valid = false;
-			if(value.length == 4){
-				valid = validatePostcodeAgainstServer(name , element , {
-					postcode : value
-				},this.settings.baseURL );
-			}
+		var valid = false;
+		if(value.length == 4){
+			valid = validatePostcodeAgainstServer(name , element , {
+				postcode : value
+			},this.settings.baseURL );
+		}
 
-			if(valid) {
-				$(element).removeClass("error has-error");
-			}
-			return valid;
-		},
-		"Please enter a valid postcode"
+		if(valid) {
+			$(element).removeClass("error has-error");
+		}
+		return valid;
+	},
+	"Please enter a valid postcode"
 );
 
 validatePostcodeAgainstServer = function(name, dpIdElement, data, url) {
@@ -869,7 +869,7 @@ validatePostcodeAgainstServer = function(name, dpIdElement, data, url) {
 					message : "An error occurred validating the postcode: " + txt,
 					page : "ajax/json/validation/validate_postcode.jsp",
 					description : "An error occurred validating the postcode: "
-							+ txt + " " + errorThrown,
+					+ txt + " " + errorThrown,
 					data : data,
 					errorLevel: "silent"
 				});
@@ -878,7 +878,7 @@ validatePostcodeAgainstServer = function(name, dpIdElement, data, url) {
 					message : "An error occurred validating the postcode: " + txt,
 					page : "ajax/json/validation/validate_postcode.jsp",
 					description : "An error occurred validating the postcode: "
-							+ txt,
+					+ txt,
 					data : data
 				});
 			}
@@ -910,6 +910,7 @@ String.prototype.endsWith = function(suffix) {
 	return (this.substr(this.length - suffix.length) === suffix);
 };
 
+// Stand corrected. This is used in life but we also seem to have a meerkat version as well.
 var ServerSideValidation = {
 	outputValidationErrors : function(options) {
 		"use strict";
@@ -1033,63 +1034,63 @@ var ServerSideValidation = {
 			FormElements.errorContainer.find('ul').empty();
 			var firstErrorSlide = null;
 			jQuery.each(validationErrors,
-					function(key, value) {
-						var addMessage = true;
-						var partialName = value.elementXpath.replace(/\//g, "_");
-						var invalidField = $("select[name$='" + partialName
-										+ "']");
-							if (typeof invalidField == 'undefined' || invalidField.length == 0) {
-									invalidField = $("input[name$='" + partialName	+ "']");
-							}
-							if (value.message == "ELEMENT REQUIRED"	&& (typeof invalidField == 'undefined' || invalidField.length == 0)) {
-									if (value.elements != "") {
-										var elements = value.elements.split(",");
-										var field = null;
-										for(var i = 0 ; i < elements.length ; i++) {
-											var fieldName = partialName + "_" + $.trim(elements[i]);
-											field = $('input[name*="' + fieldName + '"]');
-											// can't find name try id
-											if(typeof field == 'undefined' || field.length == 0) {
-												field = $('input[id*="' + fieldName + '"]');
-											}
-											if((typeof field != 'undefined' && field.length != 0) && field.prop("required") && field.val() == "") {
-												invalidField = field;
-											}
-										}
-										if((field != null && typeof field != 'undefined' && field.length != 0) && (typeof invalidField == 'undefined' || invalidField.length == 0)) {
-											invalidField = field;
-										}
-									} else {
-										invalidField = $('input[name*="' + partialName
-												+ '"]');
-									}
-							}
-				if (typeof invalidField != 'undefined' && invalidField.length > 1) {
-					invalidField = invalidField.first();
-				}
-				if (!singleStage && typeof invalidField != 'undefined' && invalidField.length == 1) {
-					firstErrorSlide = ServerSideValidation._attemptToFindAndGoToErrorSlide(invalidField, firstErrorSlide,value, options);
-					if(invalidField.hasClass("error")) {
-						addMessage = false;
+				function(key, value) {
+					var addMessage = true;
+					var partialName = value.elementXpath.replace(/\//g, "_");
+					var invalidField = $("select[name$='" + partialName
+					+ "']");
+					if (typeof invalidField == 'undefined' || invalidField.length == 0) {
+						invalidField = $("input[name$='" + partialName	+ "']");
 					}
-				}
-
-
-				if(addMessage) {
-					if (!invalidField.hasClass("error")) {
-						invalidField.addClass("error");
-						if (invalidField.is(':radio')) {
-							invalidField.closest('.fieldrow').addClass(
-							'errorGroup');
-							if (invalidField.hasClass('first-child')) {
-								invalidField.addClass('checking');
+					if (value.message == "ELEMENT REQUIRED"	&& (typeof invalidField == 'undefined' || invalidField.length == 0)) {
+						if (value.elements != "") {
+							var elements = value.elements.split(",");
+							var field = null;
+							for(var i = 0 ; i < elements.length ; i++) {
+								var fieldName = partialName + "_" + $.trim(elements[i]);
+								field = $('input[name*="' + fieldName + '"]');
+								// can't find name try id
+								if(typeof field == 'undefined' || field.length == 0) {
+									field = $('input[id*="' + fieldName + '"]');
+								}
+								if((typeof field != 'undefined' && field.length != 0) && field.prop("required") && field.val() == "") {
+									invalidField = field;
+								}
 							}
+							if((field != null && typeof field != 'undefined' && field.length != 0) && (typeof invalidField == 'undefined' || invalidField.length == 0)) {
+								invalidField = field;
+							}
+						} else {
+							invalidField = $('input[name*="' + partialName
+							+ '"]');
 						}
 					}
-					options.genericMessageDisplayed = ServerSideValidation._addErrorMessage(value, invalidField, options.genericMessageDisplayed);
-				}
+					if (typeof invalidField != 'undefined' && invalidField.length > 1) {
+						invalidField = invalidField.first();
+					}
+					if (!singleStage && typeof invalidField != 'undefined' && invalidField.length == 1) {
+						firstErrorSlide = ServerSideValidation._attemptToFindAndGoToErrorSlide(invalidField, firstErrorSlide,value, options);
+						if(invalidField.hasClass("error")) {
+							addMessage = false;
+						}
+					}
 
-			});
+
+					if(addMessage) {
+						if (!invalidField.hasClass("error")) {
+							invalidField.addClass("error");
+							if (invalidField.is(':radio')) {
+								invalidField.closest('.fieldrow').addClass(
+									'errorGroup');
+								if (invalidField.hasClass('first-child')) {
+									invalidField.addClass('checking');
+								}
+							}
+						}
+						options.genericMessageDisplayed = ServerSideValidation._addErrorMessage(value, invalidField, options.genericMessageDisplayed);
+					}
+
+				});
 			if (!singleStage && firstErrorSlide == null) {
 				slide_callbacks.register({
 					direction:	"reverse",
@@ -1150,88 +1151,89 @@ var ServerSideValidation = {
 		}
 	},
 
-		_addErrorMessage: function(value,invalidField,genericMessageDisplayed) {
-			var displayGenericMessage = false;
-			var message = "";
-			var missingFieldText = value.elementXpath.replace("/", " ");
+	_addErrorMessage: function(value,invalidField,genericMessageDisplayed) {
+		var displayGenericMessage = false;
+		var message = "";
+		var missingFieldText = value.elementXpath.replace("/", " ");
 
-			if (value.message == "INVALID VALUE") {
-				if (UserData.callCentre) {
-					message = "Please enter a valid value for " + missingFieldText + ".";
-				} else {
-					message = "It looks like you've missed something when filling out the form. Please check that you've entered the right details into each section.";
-					displayGenericMessage = true;
-				}
-			} else if (value.message == "ELEMENT REQUIRED") {
-				if ((typeof invalidField != 'undefined' && invalidField.length != 0) && invalidField.attr("data-msg-required") != "" && invalidField.prop("data-msg-required")) {
-					message = invalidField.attr("data-msg-required");
-				} else if (UserData.callCentre) {
-					message = "Please enter the " + missingFieldText + ".";
-				} else {
-					message = "It looks like you've missed something when filling out the form. Please check that you've entered your details into each section.";
-					displayGenericMessage = true;
+		if (value.message == "INVALID VALUE") {
+			if (UserData.callCentre) {
+				message = "Please enter a valid value for " + missingFieldText + ".";
+			} else {
+				message = "It looks like you've missed something when filling out the form. Please check that you've entered the right details into each section.";
+				displayGenericMessage = true;
+			}
+		} else if (value.message == "ELEMENT REQUIRED") {
+			if ((typeof invalidField != 'undefined' && invalidField.length != 0) && invalidField.attr("data-msg-required") != "" && invalidField.prop("data-msg-required")) {
+				message = invalidField.attr("data-msg-required");
+			} else if (UserData.callCentre) {
+				message = "Please enter the " + missingFieldText + ".";
+			} else {
+				message = "It looks like you've missed something when filling out the form. Please check that you've entered your details into each section.";
+				displayGenericMessage = true;
+			}
+		} else {
+			if (typeof UserData !== 'undefined' && UserData.callCentre) {
+				message = "Please check " + missingFieldText + ".";
+			} else if(value.message != '') {
+				message = value.message;
+				var hasOmittableCopy = message.indexOf("value= '");
+				// This additional text has been removed for UTL but need
+				// to cater for other verticals
+				if(hasOmittableCopy > 0) {
+					message = message.substring(0, hasOmittableCopy);
 				}
 			} else {
-				if (typeof UserData !== 'undefined' && UserData.callCentre) {
-					message = "Please check " + missingFieldText + ".";
-				} else if(value.message != '') {
-					message = value.message;
-					var hasOmittableCopy = message.indexOf("value= '");
-					// This additional text has been removed for UTL but need
-					// to cater for other verticals
-					if(hasOmittableCopy > 0) {
-						message = message.substring(0, hasOmittableCopy);
-					}
-				} else {
-					message = "It looks like something has gone wrong when filling out the form. Please check that you've entered the right details into each section.";
-					displayGenericMessage = true;
-				}
+				message = "It looks like something has gone wrong when filling out the form. Please check that you've entered the right details into each section.";
+				displayGenericMessage = true;
 			}
-			if(!genericMessageDisplayed) {
-				// pre-AMS verticals
-				if ($('#slideErrorContainer').length > 0)
+		}
+		if(!genericMessageDisplayed) {
+			// pre-AMS verticals
+			if ($('#slideErrorContainer').length > 0)
+			{
+				$('#slideErrorContainer ul').append(
+					"<li><label class='error'>" + message + "</label></li>");
+			} else {
+				// AMS verticals
+				var field = value.elementXpath.replace("/", "_");
+				// this is done so that if an error message needs to be placed when it involves a dropdown, we need to do the insertion before the select field
+				// otherwise the dropdown arrows don't move down with the actual field. JS validation correctly hides this error field in this new position if the values are correct.
+				//
+
+				var insertTarget = invalidField.parent('.select').length == 1 ? invalidField.parent('.select') : invalidField;
+				if (typeof invalidField.attr('data-validation-placement') !== 'undefined')
 				{
-					$('#slideErrorContainer ul').append(
-						"<li><label class='error'>" + message + "</label></li>");
-				} else {
-					// AMS verticals
-					var field = value.elementXpath.replace("/", "_");
-					// this is done so that if an error message needs to be placed when it involves a dropdown, we need to do the insertion before the select field
-					// otherwise the dropdown arrows don't move down with the actual field. JS validation correctly hides this error field in this new position if the values are correct.
-					//
+					insertTarget = $(invalidField.attr('data-validation-placement'));
+				}
 
-					var insertTarget = invalidField.parent('.select').length == 1 ? invalidField.parent('.select') : invalidField;
-					if (typeof invalidField.attr('data-validation-placement') !== 'undefined')
+
+				// need to add this check so that we don't continuously add new error field divs
+				if (insertTarget.prev('.error-field').hasClass('error-field'))
+				{
+					var errorLabel = insertTarget.prev('.error-field').find('label.has-error');
+					if (errorLabel.length == 0)
 					{
-						insertTarget = $(invalidField.attr('data-validation-placement'));
-					}
+						insertTarget.addClass('has-error').prev('.error-field').html("<label for='"+field+"' class='has-error'>" + message + "</label>");
 
-
-					// need to add this check so that we don't continuously add new error field divs
-					if (insertTarget.prev('.error-field').hasClass('error-field'))
-					{
-						var errorLabel = insertTarget.prev('.error-field').find('label.has-error');
-						if (errorLabel.length == 0)
-						{
-							insertTarget.addClass('has-error').prev('.error-field').html("<label for='"+field+"' class='has-error'>" + message + "</label>");
-
-							if (insertTarget.hasClass('select')) {
-								// this step is required otherwise we'll display a green field with a red error message
-								insertTarget.children('select').removeClass('has-success').addClass('has-error');
-								insertTarget.parent('.row-content').removeClass('has-success');
-							}
-						} else {
-							errorLabel.text(message);
+						if (insertTarget.hasClass('select')) {
+							// this step is required otherwise we'll display a green field with a red error message
+							insertTarget.children('select').removeClass('has-success').addClass('has-error');
+							insertTarget.parent('.row-content').removeClass('has-success');
 						}
 					} else {
-						$("<div class='error-field' style='display: block;'><label for='"+field+"' class='has-error'>" + message + "</label></div>").insertBefore(insertTarget);
+						errorLabel.text(message);
 					}
+				} else {
+					$("<div class='error-field' style='display: block;'><label for='"+field+"' class='has-error'>" + message + "</label></div>").insertBefore(insertTarget);
 				}
 			}
-			return genericMessageDisplayed || displayGenericMessage;
 		}
-	};
+		return genericMessageDisplayed || displayGenericMessage;
+	}
+};
 
+// Seems to be unused as I can't find in codebase?
 $.validator.addMethod('checkPrefix', function (value) {
 	var tmpVal = value.replace(/[^0-9]+/g, '');
 	var phoneRegex = new RegExp("^(0[234785]{1})");
@@ -1325,4 +1327,4 @@ date_gt_date = function (date1, date2){
 	var datenum2 = parseInt(d2[2]+d2[1]+d2[0]);
 
 	return datenum2 <= datenum1;
-	};
+};

@@ -1,11 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">
+    <c:set var="requestUri" value="${requestScope['javax.servlet.forward.request_uri']}" />
     <settings:setVertical verticalCode="GENERIC"/>
     <c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
     <c:set var="pageTitle" value="500"/>
+</c:catch>
+<c:catch var="error">
+    <go:log source="jsp:err.error500" level="ERROR" error="${pageContext.exception}">Error Page Hit, requestUri=${requestUri} brandCode=${brandCode}</go:log>
 </c:catch>
 
 <c:choose>
@@ -24,9 +28,6 @@
     <c:otherwise>
         <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
         <c:catch var="error">
-
-            <go:log source="500" level="ERROR">Request URI: ${requestScope["javax.servlet.forward.request_uri"]}, servletPath: ${pageContext.request.servletPath}</go:log>
-
             <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 
                 <jsp:attribute name="head">
@@ -45,9 +46,7 @@
                     <core:whitelabeled_footer/>
                 </jsp:attribute>
 
-				<jsp:attribute name="vertical_settings">
-		{session: {firstPokeEnabled: false}}
-	</jsp:attribute>
+				<jsp:attribute name="vertical_settings">{session: {firstPokeEnabled: false}}</jsp:attribute>
 
                 <jsp:attribute name="body_end">
                 </jsp:attribute>
@@ -56,20 +55,19 @@
 
                     <div role="form" class="journeyEngineSlide active unsubscribeForm">
                         <layout:slide_center xsWidth="12" mdWidth="10">
-                            <h1 class="error_title">Whoops, sorry... </h1>
+                            <h1 class="error_title">Whoops, sorry... 500 Internal server error </h1>
 
                             <div class="error_message">
-                                <h2>looks like you're looking for something that isn't there!</h2>
+                                <h2>looks like something went wrong.</h2>
 
-                                <p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or
-                                    deleted.</p>
+                                <p>You have experienced a technical error. We apologise. </p>
 
                                 <c:choose>
                                     <c:when test="${pageSettings.getBrandCode() != 'ctm'}">
-                                        <p>Try checking the URL you used for errors, or continue browsing our comparison services below.</p>
+                                        <p>We are working to correct this issue. Please wait a few moments and try again, or continue browsing our comparison services below.</p>
                                     </c:when>
                                     <c:otherwise>
-                                        <p>Try checking the URL you used for errors, or continue browsing our range of comparison services below.</p>
+                                        <p>We are working to correct this issue. Please wait a few moments and try again, or continue browsing our range of comparison services below.</p>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
@@ -83,6 +81,5 @@
 
             </layout:generic_page>
         </c:catch>
-        <go:log>500 Error Hit: "${error}"</go:log>
     </c:otherwise>
 </c:choose>

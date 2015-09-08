@@ -17,9 +17,5 @@
 					url="/WEB-INF/option_data/ncd.html"
 					title="the regular driver's NCD or Rating Discount"
 					className="ncd"
-					required="true" />
+					required="true" additionalAttributes=" data-rule-ncdValid='true' data-rule-youngestDriverMinAge='true' " />
 </form_new:row>
-
-<%-- VALIDATION --%>
-<go:validate selector="quote_drivers_regular_ncd" rule="ncdValid" parm="true" message="Invalid NCD Rating based on number of years driving."/>
-<go:validate selector="quote_drivers_regular_ncd" rule="youngestDriverMinAge" parm="true" message="Driver age restriction invalid due to youngest driver's age."/>

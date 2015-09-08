@@ -1,6 +1,6 @@
 package com.ctm.model.content;
 
-public class ContentSupplement {
+public class ContentSupplement implements java.io.Serializable {
 
 	private int contentControlId;
 	private String supplementaryKey;

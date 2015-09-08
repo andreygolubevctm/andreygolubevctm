@@ -52,10 +52,7 @@
 	<c:set var="className">${className} placeholder</c:set>
 </c:if>
 <%-- HTML --%>
-<input class="ui-autocomplete-input ${className}" id="${name}" name="${name}" value="${value}" ${placeHolderAttribute}>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>
+<input class="ui-autocomplete-input ${className}" id="${name}" name="${name}" value="${value}" ${placeHolderAttribute}<c:if test="${required}"> required data-msg-required="Please enter the ${title}" </c:if>>
 
 <%-- JavasScript --%>
 <go:script marker="onready">

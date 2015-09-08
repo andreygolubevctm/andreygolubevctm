@@ -26,16 +26,14 @@
 		var isMobile = meerkat.modules.performanceProfiling.isMobile();
 		var isMDorLG = _.indexOf(['lg','md'], meerkat.modules.deviceMediaState.get()) !== -1;
 		if(!isMobile && isMDorLG) {
-			$(elements.marketing).rules('remove', 'validateOkToEmailRadio');
-			$(elements.marketing).rules('add', 'required');
-			$(elements.oktocall).rules('remove', 'validateOkToCallRadio');
-			$(elements.oktocall).rules('add', 'required');
+			$(elements.marketing).removeRule('validateOkToEmailRadio').setRequired(true);
+			$(elements.oktocall).removeRule('validateOkToCallRadio').setRequired(true);
 		}
 	}
 
 	function validateOptins() {
-		$mkt = $(elements.marketing);
-		$otc = $(elements.oktocall);
+		var $mkt = $(elements.marketing);
+		var $otc = $(elements.oktocall);
 		if(!$mkt.is(':checked')) {
 			$mkt.filter("input[value=N]").prop("checked",true).change();
 		}
