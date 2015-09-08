@@ -12,8 +12,10 @@ import com.ctm.model.TransactionProperties;
 import com.ctm.model.health.HealthTransaction;
 import com.ctm.model.simples.ConfirmationOperator;
 import com.ctm.model.simples.Message;
+import com.disc_au.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.util.List;
 
@@ -78,7 +80,7 @@ public class TransactionService {
 			}
 		}
 		catch (DaoException e) {
-			logger.error("",e);
+			logger.error("", e);
 			Error error = new Error(e.getMessage());
 			details.addError(error);
 		}
@@ -94,6 +96,11 @@ public class TransactionService {
 	public ConfirmationOperator findConfirmationByRootId(List<Long> rootIds) throws DaoException {
 		TransactionDao transactionDao = new TransactionDao();
 		return transactionDao.getConfirmationFromTransactionChain(rootIds);
+	}
+
+	public void setTransactionId(Data data, String transactionId){
+		data.put("current/transactionId", transactionId);
+		MDC.put("transactionId", transactionId);
 	}
 
 }

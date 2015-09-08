@@ -145,6 +145,27 @@
 	</filter-mapping>
 	-->
 
+	<filter>
+		<filter-name>mdcFilter</filter-name>
+		<filter-class>com.ctm.listeners.MDCFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>mdcFilter</filter-name>
+		<url-pattern>/ajax/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>mdcFilter</filter-name>
+		<url-pattern>/bestprice/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>mdcFilter</filter-name>
+		<url-pattern>/productBrochures/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>mdcFilter</filter-name>
+		<url-pattern>/utilities/*</url-pattern>
+	</filter-mapping>
+
 	<!-- Datasource References -->
 	<resource-ref>
 		<description>DB Connection</description>

@@ -6,7 +6,7 @@
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 	    <Target>System.out</Target>
 	    <encoder>
-	       <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c:%L - %m%n</pattern>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c:%L: T:%X{transactionId} B:%X{brandCode} - %m%n</pattern>
 	    </encoder>
   	</appender>
   
