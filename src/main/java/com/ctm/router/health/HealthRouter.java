@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @WebServlet(urlPatterns = {
-		"/health/quote/dualPrising/getFundWarning.json",
+		"/health/quote/dualPrising/getFundWarning.json"
 })
 public class HealthRouter extends HttpServlet {
 
