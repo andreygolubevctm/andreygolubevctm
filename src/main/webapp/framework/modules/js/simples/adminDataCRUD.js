@@ -210,7 +210,7 @@
 	dataCRUD.prototype.get = function(data) {
 		this.dataSet.empty();
 
-		data = (typeof data === 'undefined') ? {} : data;
+		data = data || {};
 
 		var that = this,
 			onSuccess = function(response) {
