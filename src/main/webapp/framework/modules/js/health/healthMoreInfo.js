@@ -308,9 +308,9 @@
 
         // Get the "about fund", "what happens next" and warningAlert info
         return $.when(
-            getProviderCotentByType( product, 'ABT'),
-            getProviderCotentByType( product, 'NXT'),
-            getProviderCotentByType( product, 'FWM')
+            getProviderContentByType( product, 'ABT'),
+            getProviderContentByType( product, 'NXT'),
+            getProviderContentByType( product, 'FWM')
         );
     }
 
@@ -320,7 +320,7 @@
      * @param providerContentTypeCode
      * @return promise
      */
-    function getProviderCotentByType(product, providerContentTypeCode) {
+    function getProviderContentByType(product, providerContentTypeCode) {
 
         var data = {};
         data.providerId = product.info.providerId;
