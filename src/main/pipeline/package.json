@@ -27,6 +27,8 @@
     "gulp-util": "^3.0.6",
     "mkdirp": "^0.5.1",
     "js-beautify": "^1.5.10",
-    "gulp-sakugawa": "^0.4.1"
+    "gulp-sakugawa": "^0.4.1",
+    "gulp-debug": "^2.1.0",
+    "gulp-intercept": "^0.1.0"
   }
 }

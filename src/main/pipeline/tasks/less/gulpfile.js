@@ -29,7 +29,8 @@ function LessTasks(gulp) {
     var taskPrefix = "less:",
         lessTasks = [];
 
-    var watchesStarted = [];
+    var watchesStarted = [],
+        dependenciesCache = {};
 
     var gulpAction = function(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs) {
         if(typeof compileAs !== "undefined" && compileAs.constructor === Array) {
@@ -37,23 +38,23 @@ function LessTasks(gulp) {
                 gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs[i]);
             }
         } else {
-            var lessDependencies = bundles.getDependencyFiles(fileName, "less")
-                .filter(function(dep) {
-                    return dep.match(/(bundles)(\\|\/)(shared)/);
-                }).map(function(dep) {
-                    return "@import '" + dep + "';"
-                }).join("\r\n");
+            if(typeof dependenciesCache[taskName] === "undefined") {
+                dependenciesCache[taskName] = "\r\n" + bundles.getDependencyFiles(fileName, "less")
+                    .filter(function(dep) {
+                        return dep.match(/(bundles)(\\|\/)(shared)/);
+                    }).map(function(dep) {
+                        return "@import '" + dep + "';"
+                    }).join("\r\n");
+            }
+
+            var lessDependencies = dependenciesCache[taskName];
 
             if(typeof compileAs === "string")
                 fileName = compileAs;
 
-            var notInWatchesStarted= (watchesStarted.indexOf(taskName) === -1);
-            if(notInWatchesStarted)
-                watchesStarted.push(taskName);
-
             var hasVariablesLess = (fileList.indexOf("variables.less") !== -1);
 
-            return gulp.src(glob)
+            var stream = gulp.src(glob)
                 .pipe(plumber({
                     errorHandler: notify.onError("Error: <%= error.message %>")
                 }))
@@ -80,16 +81,22 @@ function LessTasks(gulp) {
                         fileList.indexOf(brandFileNames.theme) !== -1,
                         insert.append("\r\n@import '" + brandFileNames.theme + "';")
                     )
-                )
-                .pipe(
-                    gulpIf(
-                        !notInWatchesStarted,
-                        watchLess(glob, null, function() {
-                            gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs);
-                        })
-                    )
-                )
-                .pipe(less({
+                );
+
+            var notInWatchesStarted = (watchesStarted.indexOf(taskName) === -1);
+
+            // We need to conditionally call the watchLess method this way because it seems to run regardless with gulpIf()
+            if(notInWatchesStarted) {
+                stream = stream.pipe(
+                    watchLess(glob, { name: taskName }, function() {
+                        gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs);
+                    })
+                );
+
+                watchesStarted.push(taskName);
+            }
+
+            stream = stream.pipe(less({
                     paths: [gulp.pipelineConfig.build.dir + "/../**"]
                 }))
                 .pipe(concat(fileName + ".css"))
@@ -117,6 +124,8 @@ function LessTasks(gulp) {
                     title: taskName + " 4095 split for IE",
                     message: fileName + " successfully split up for IE (4095)"
                 }));
+
+            return stream;
         }
     };
 
