@@ -28,7 +28,7 @@
 		<button data-gateway="launcher" type="button" class="btn btn-modal btn-md">Register your credit card details</button>
 	</p>
 
-	<field_new:validatedHiddenField xpath="${xpath}-registered" validationErrorPlacementSelector="button[data-gateway='launcher']:visible" />
+	<field_new:validatedHiddenField xpath="${xpath}-registered" validationErrorPlacementSelector="button[data-gateway='launcher']:visible" additionalAttributes=" required "/>
 	<health:gateway_westpac xpath="${xpath}" />
 	<health:gateway_nab xpath="${xpath}" />
 

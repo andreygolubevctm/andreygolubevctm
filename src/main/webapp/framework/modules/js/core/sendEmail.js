@@ -87,7 +87,7 @@
 			// Save form does not exist so validation will fail
 			return false;
 		}
-		meerkat.modules.validation.setupDefaultValidationOnForm( settings.form );
+		meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( settings.form );
 		return true;
 	}
 

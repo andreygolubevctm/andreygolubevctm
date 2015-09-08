@@ -97,7 +97,7 @@
 				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />
 				<field:hidden xpath="${xpath}/call" defaultValue="${val_optout}" />
 
-				<%-- form:privacy_optin --%>
+				<%-- form privacy_optin --%>
 				<c:choose>
 					<%-- Only render a hidden field when the checkbox has already been selected --%>
 					<c:when test="${data['health/privacyoptin'] eq 'Y'}">
@@ -122,7 +122,7 @@
 						xpath="${xpath}/optin"
 						value="Y"
 						className="validate"
-						required="false"
+						required="true"
 						label="${true}"
 						title="${termsAndConditions}"
 						errorMsg="Please agree to the Terms &amp; Conditions" />
@@ -192,22 +192,24 @@
 	<%-- COMPETITION START --%>
 	$('#health_contactDetails_competition_optin').on('change', function() {
 		if ($(this).is(':checked')) {
-			$('#${contactName}').rules('add', {required:true, messages:{required:'Please enter your name to be eligible for the competition'}});
-			contactEmailElement.rules('add', {required:true, messages:{required:'Please enter your email address to be eligible for the competition'}});
-
-				contactMobileElementInput.rules('add', {
-					requiredOneContactNumber:true,
-					messages:{
-						requiredOneContactNumber:'Please enter your phone number to be eligible for the competition'
-					}
-				});
+			$('#${contactName}').setRequired(true, 'Please enter your name to be eligible for the competition');
+			contactEmailElement.setRequired(true, 'Please enter your email address to be eligible for the competition');
+			contactMobileElementInput.addRule('requireOneContactNumber', true, 'Please enter your phone number to be eligible for the competition');
 		}
 		else {
-			<c:if test="${empty callCentre and required == false}">$('#${contactName}').rules('remove', 'required');</c:if>
-			<c:if test="${not empty callCentre or required}">$('#${contactName}').rules('add', {required:true, messages:{required:'Please enter name'}});</c:if>
+			<c:if test="${empty callCentre and required == false}">$('#${contactName}').setRequired(false);</c:if>
+			<%-- This rule applies to both call center and non call center users --%>
+			<c:if test="${not empty callCentre or required}">
+				$('#${contactName}').setRequired(true, 'Please enter name');
+			</c:if>
+			<%-- These rules are separate to the callCenter one above as they only apply to non simples uers --%>
+			<c:if test="${required}">
+				contactEmailElement.setRequired(true, 'Please enter your email address');
+				contactMobileElementInput.addRule('requireOneContactNumber', true, 'Please include at least one phone number');
+			</c:if>
 			<c:if test="${required == false}">
-				contactEmailElement.rules('remove', 'required');
-				contactMobileElementInput.rules('remove', 'requiredOneContactNumber');
+				contactEmailElement.setRequired(false);
+				contactMobileElementInput.removeRule('requireOneContactNumber');
 				$('#${contactName}').valid();
 				contactEmailElement.valid();
 				contactMobileElementInput.valid();
@@ -217,9 +219,3 @@
 	});
 	<%-- COMPETITION END --%>
 </go:script>
-
-
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}_optin" rule="required" parm="true" message="Please agree to the Terms &amp; Conditions" />
-<go:validate selector="${name}_name" rule="personName" parm="true" />

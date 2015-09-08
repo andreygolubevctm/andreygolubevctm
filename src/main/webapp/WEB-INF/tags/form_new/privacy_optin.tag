@@ -29,6 +29,3 @@
 		title="${label_text}"
 		errorMsg="${error_text}" />
 </form_new:row>
-
-<%-- VALIDATION --%>
-<go:validate selector="${xpath_name}" rule="required" parm="true" message="${error_text}" />

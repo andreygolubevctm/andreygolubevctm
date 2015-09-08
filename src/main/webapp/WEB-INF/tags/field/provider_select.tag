@@ -55,7 +55,7 @@
 	<span class=" input-group-addon" >
 		<i class="icon-sort"></i>
 	</span>
-	<select name="${name}" id="${name}" class="form-control ${className}">
+	<select name="${name}" id="${name}" class="form-control ${className}" <c:if test="${required}"> required data-msg-required="Please enter the ${title}"</c:if>>
 	<%-- Write the initial "please choose" option --%>
 	<option value="">Please choose&hellip;</option>
 
@@ -85,8 +85,3 @@
 	</c:forEach>
 	</select>
 </div>
-
-<%-- VALIDATION --%>
-<c:if test="${required}">
-	<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>
-</c:if>
