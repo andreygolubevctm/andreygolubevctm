@@ -50,5 +50,3 @@
 	</form_new:fieldset>
 
 </div>
-
-<%--<go:validate selector="${name}_cover" rule="agree" parm="true" message="To proceed with this policy, you must have a blue or green medicare card" />--%>

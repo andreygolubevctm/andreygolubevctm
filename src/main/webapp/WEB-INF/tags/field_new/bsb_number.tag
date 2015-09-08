@@ -24,5 +24,3 @@
 	});
 	$("#${bsbnumber}input").blur();
 </go:script>
-
-<%--<go:validate selector="${bsbnumber}input" rule="regex" parm="'[0-9]{3}[- ]?[0-9]{3}'" message="BSB must be six numbers e.g. 999-999" />--%>

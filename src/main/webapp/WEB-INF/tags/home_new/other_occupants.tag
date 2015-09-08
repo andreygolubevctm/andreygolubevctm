@@ -46,8 +46,6 @@
 			</form_new:row>
 		</form_new:fieldset>
 
-		<%--<go:validate selector="${name}_oldestPersonDob" rule="oldestPersonOlderThanPolicyHolders" parm="true" message="" />--%>
-
 	</jsp:body>
 
 </form_new:fieldset_columns>

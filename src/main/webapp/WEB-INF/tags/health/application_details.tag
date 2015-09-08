@@ -94,6 +94,3 @@
 <c:set var="contactPointValue" value="${data[contactPointPath]}" />
 
 <input type="hidden" id="contactPointValue" value="${contactPointValue}"/>
-
-<%--
-<go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="" />--%>

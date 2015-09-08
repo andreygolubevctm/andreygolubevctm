@@ -14,8 +14,3 @@
 
 <%-- HTML --%>
 <field_new:input xpath="${xpath}" className="medicare_number ${className}" title="${title}" required="false" maxlength="15" additionalAttributes=" data-rule-medicareNumber='${required}' " />
-
-<%-- VALIDATION --%>
-<%--
-<go:validate selector="${name}" rule="medicareNumber" parm="${required}" message="Please enter a valid ${title}"/>
---%>

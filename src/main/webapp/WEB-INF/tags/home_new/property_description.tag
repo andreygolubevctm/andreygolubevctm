@@ -75,7 +75,4 @@
 			items="Y=Yes,N=No" />
 	</form_new:row>
 
-
-	<%--<go:validate selector="${name}_yearBuilt" rule="yearBuiltAfterMoveInYear" parm="true" message="Please change the building year so that it is prior or equal to the year you moved in" />--%>
-
 </form_new:fieldset>
