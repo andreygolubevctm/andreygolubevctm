@@ -31,7 +31,7 @@
 
 			$.ajax({
 				url: "ajax/xml/pauseResumeCall.json?action=" + action,
-				dataType: "json",
+				dataType: "text",
 				type: "GET",
 				async: false,
 				cache: false,
@@ -43,10 +43,12 @@
 				},
 				error: function(obj, txt, errorThrown) {
 					var errorMessage = errorThrown;
+					var errorResponse = eval('(' + obj.responseText+ ')');
 
-					if (obj.responseJSON.hasOwnProperty('errors') && obj.responseJSON.errors.length > 0) {
-						errorMessage = obj.responseJSON.errors[0].message
+					if (errorResponse.hasOwnProperty('errors') && errorResponse.errors.length > 0) {
+						errorMessage = errorResponse.errors[0].message
 					}
+
 					meerkat.modules.errorHandling.error({
 						message:		"The recording could not be paused/started. Please notify your supervisor if this continues to occur: "  + errorMessage,
 						page:			"application_compliance.tag",
