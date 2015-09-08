@@ -212,7 +212,8 @@
 				touchComment: 'OptionsAccs',
 				includeFormData:true
 			},
-			onInitialise: function() {
+			onInitialise: function onInitOptionsStep() {
+				meerkat.modules.carCommencementDate.initCarCommencementDate();
 				meerkat.modules.carYoungDrivers.initCarYoungDrivers();
 			}
 		};
@@ -245,7 +246,7 @@
 				touchComment: 'AddressCon',
 				includeFormData:true
 			},
-			onInitialise : function (event) {
+			onInitialise : function onInitAddressStep(event) {
 				var $driversFirstName =  $('#quote_drivers_regular_firstname');
 				var $driversLastName =  $('#quote_drivers_regular_surname');
 				var $driversPhoneNumber =  $('#quote_contact_phoneinput');
@@ -279,10 +280,6 @@
 				} else {
 					meerkat.modules.resultsFeatures.fetchStructure('car_');
 				}
-			},
-			onAfterEnter : function (event) {
-			},
-			onBeforeLeave : function(event) {
 			}
 		};
 
@@ -297,6 +294,7 @@
 			onInitialise: function onResultsInit(event) {
 				meerkat.modules.carResults.initPage();
 				meerkat.modules.carMoreInfo.initMoreInfo();
+				meerkat.modules.carFilters.initCarFilters();
 				meerkat.modules.carEditDetails.initEditDetails();
 			},
 			onBeforeEnter: function enterResultsStep(event) {

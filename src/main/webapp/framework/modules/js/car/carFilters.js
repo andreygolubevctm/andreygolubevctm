@@ -11,6 +11,7 @@
 		},
 		moduleEvents = events.carFilters;
 
+	var initialised = false;
 	var $component;
 	var $priceMode;
 	var $featuresMode;
@@ -321,51 +322,52 @@
 		}
 	}
 
-	function init() {
-		$component = $('#navbar-filter');
-		if ($component.length === 0) return;
+	function initCarFilters() {
+		if(!initialised) {
+			initialised = true;
 
-		$priceMode = $component.find('.filter-pricemode');
-		$featuresMode = $component.find('.filter-featuresmode');
-		$filterFrequency = $component.find('.filter-frequency');
-		$filterExcess = $component.find('.filter-excess');
+			$component = $('#navbar-filter');
+			if ($component.length === 0) return;
 
-		eventSubscriptions();
+			$priceMode = $component.find('.filter-pricemode');
+			$featuresMode = $component.find('.filter-featuresmode');
+			$filterFrequency = $component.find('.filter-frequency');
+			$filterExcess = $component.find('.filter-excess');
 
-		$(document).ready(function onReady() {
+			eventSubscriptions();
 
 			// Collect options from the page
 
 			var $filterMenu;
 
 			$filterMenu = $filterExcess.find('.dropdown-menu');
-			$('#filter_excessOptions option').each(function() {
+			$('#filter_excessOptions option').each(function () {
 				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
 			});
 
 			$filterMenu = $filterFrequency.find('.dropdown-menu');
-			$('#filter_paymentType option').each(function() {
+			$('#filter_paymentType option').each(function () {
 				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
 			});
 
-			$('#navbar-main .slide-feature-filters a').on('click', function(e) {
+			$('#navbar-main .slide-feature-filters a').on('click', function (e) {
 				e.preventDefault();
-				if(!$(this).hasClass('disabled')) {
+				if (!$(this).hasClass('disabled')) {
 					onRequestModal();
 				}
 			});
 
-			meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, _.bind(setCurrentDeviceState, this, {isXS:true}));
-			meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, _.bind(setCurrentDeviceState, this, {isXS:false}));
+			meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, _.bind(setCurrentDeviceState, this, {isXS: true}));
+			meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, _.bind(setCurrentDeviceState, this, {isXS: false}));
 
 			setCurrentDeviceState();
-		});
+		}
 	}
 
 
 
 	meerkat.modules.register('carFilters', {
-		init: init,
+		initCarFilters: initCarFilters,
 		events: events,
 		updateFilters: updateFilters,
 		hide: hide,
