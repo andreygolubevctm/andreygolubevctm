@@ -24,7 +24,7 @@ import java.util.Hashtable;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class LDAPDetails {
-	private static final Logger logger = LoggerFactory.getLogger(Dreammail.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Dreammail.class.getName());
 
 	protected Hashtable<String, String> userDetails = null;
 	protected String PROVIDER_URL            = "ldap://argon.budgetdirect.com.au:389";
@@ -40,7 +40,7 @@ public class LDAPDetails {
 		if ( userName != null && !userName.isEmpty() ) {
 			this.userDetails = this.getUserBasicAttributes(userName, this.getLdapContext());
 		} else {
-			logger.warn("constructor called with no user name parameter");
+			LOGGER.warn("constructor called with no user name parameter");
 		}
 	}
 
@@ -60,7 +60,7 @@ public class LDAPDetails {
 		try {
 			ctx = new InitialLdapContext(env, null);
 		} catch (final NamingException nex) {
-			logger.error("LDAP Connection FAILED. {}", kv("env" ,env), nex);
+			LOGGER.error("LDAP Connection FAILED. {}", kv("env", env), nex);
 		}
 
 		return ctx;
@@ -89,10 +89,10 @@ public class LDAPDetails {
 						userDetails.put(attrName, attrValue);
 					}
 				} else {
-					logger.warn("Invalid User. {}", kv("userName", userName));
+					LOGGER.warn("Invalid User. {}", kv("userName", userName));
 				}
 			} catch (NamingException e) {
-				logger.error("Failed to call LDAP. {}", kv("userName", userName),e);
+				LOGGER.error("Failed to call LDAP. {}", kv("userName", userName), e);
 			}
 		}
 

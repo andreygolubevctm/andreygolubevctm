@@ -119,7 +119,7 @@ public class StyleTag extends BaseTag {
 			try {
 				pageContext.getOut().write(START_TAG);
 			} catch (IOException e) {
-				LOGGER.error("Failed to write to page.", kv("START_TAG", START_TAG), e);
+				LOGGER.error("Failed to write to page. {}", kv("START_TAG", START_TAG), e);
 			}
 			return EVAL_BODY_INCLUDE;
 		} else {

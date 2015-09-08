@@ -13,7 +13,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class CallCenterHours {
 
-	private static final Logger logger = LoggerFactory.getLogger(GeneralDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(GeneralDao.class.getName());
 
 	public static final int MORNING_HOUR = 0;
 	public static final int AFTERNOON_HOUR = 12;
@@ -50,7 +50,7 @@ public class CallCenterHours {
 					hours.add(closing);
 				}
 			} catch (ParseException e) {
-				logger.error("Failed to parse date. {}", kv("times" ,times),e);
+				LOGGER.error("Failed to parse date. {}", kv("times", times), e);
 			}
 			openingHours.put(dayOfWeek, hours);
 		}

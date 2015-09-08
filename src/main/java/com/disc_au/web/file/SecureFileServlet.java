@@ -58,7 +58,7 @@ public class SecureFileServlet extends javax.servlet.http.HttpServlet implements
 		 HttpSession session = request.getSession(true);		 
 		 Vector<String> secureFiles = getSecureFiles(session);
 		 
-		 System.out.println("Attempt to get secure file - " + filename);
+		 LOGGER.debug("Attempt to get secure file. {}" ,  kv("filename", filename));
 		 
 		 if (secureFiles != null && secureFiles.contains(filename)){
 			 
@@ -95,7 +95,7 @@ public class SecureFileServlet extends javax.servlet.http.HttpServlet implements
 			 }
 			 
 		 } else {
-			 System.out.println("ERROR: File not found " + filePath);
+			 LOGGER.error("File not found. {}", kv("filePath", filePath));
 			 success = false;
 		 }
 		 

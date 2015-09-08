@@ -1,20 +1,25 @@
 package com.disc_au.web.go.tags;
 
+import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.jsp.JspException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
-import javax.servlet.jsp.JspException;
-
-import org.apache.commons.codec.binary.Base64;
+import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.logging.LoggingArguments.v;
 
 
 @SuppressWarnings("serial")
 public class ImportTag extends BaseTag {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ImportTag.class.getName());
+
 	public static final int HTTP_OK = 200;
 
 	String url;
@@ -84,19 +89,13 @@ public class ImportTag extends BaseTag {
 					pageContext.getOut().write(data.toString());
 				}
 			} else {
-				System.err.println("HTTP Error code: ("+url+") " + String.valueOf(connection.getResponseCode()) + " : " + connection.getResponseMessage());
+				LOGGER.error("HTTP Error code: ({}) {} : {}", v("url", url), v("responseCode", connection.getResponseCode()), v("responseMessage", connection.getResponseMessage()));
 			}
 			
 			connection.disconnect();
 		
-		} catch (MalformedURLException e) {
-			System.err.println("ImportTag Failed: (" + url + ") " + e.getMessage());
-			
-		} catch (ProtocolException e) {
-			System.err.println("ImportTag Failed: (" + url + ") " + e.getMessage());
-			
 		} catch (IOException e) {
-			System.err.println("ImportTag Failed: ("+url+") " + e.getMessage());
+			LOGGER.error("ImportTag Failed. {}", kv("url", url), e);
 		}
 		
 		return SKIP_BODY;

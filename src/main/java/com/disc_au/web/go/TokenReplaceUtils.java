@@ -1,22 +1,24 @@
 package com.disc_au.web.go;
 
+import com.ctm.utils.FormDateUtils;
+import com.disc_au.web.go.xml.XmlNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.util.Collection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.ctm.utils.FormDateUtils;
-import com.disc_au.web.go.xml.XmlNode;
 
 public class TokenReplaceUtils {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(TokenReplaceUtils.class.getName());
 
 	public static final String XML = "XML";
 
@@ -92,7 +94,7 @@ public class TokenReplaceUtils {
 				value = convertToNewDate(value);
 				break;
 			case "DEBUG":
-				System.out.println("TYPE: '" + type + "'| VALUE: '" + value + "' | formatType: " + formatType);
+				LOGGER.debug("TYPE: '" + type + "'| VALUE: '" + value + "' | formatType: " + formatType);
 				break;
 			default:
 		}

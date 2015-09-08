@@ -100,7 +100,7 @@ public class ImportCsvToTokenTag extends BaseTag {
 			try {
 				for(String xml :xmls) pageContext.getOut().write(xml);
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOGGER.error("Failed to write to page. {}",kv("xmls",xmls) , e);
 			}
 		}
 
@@ -163,7 +163,7 @@ public class ImportCsvToTokenTag extends BaseTag {
 			}
 			in.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to getTokenReplacedFormat", e);
 		}
 
 		return xmls;

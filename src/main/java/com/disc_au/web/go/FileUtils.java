@@ -11,6 +11,9 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * The Class FileUtils.
  *
@@ -52,7 +55,7 @@ public class FileUtils {
 					path="/" + path;
 				}
 			} catch(Exception e){
-				System.err.println("Invalid path:" + path);
+				LOGGER.error("Invalid path. {}" , kv("path", path));
 			}
 			
 			// Very evil hack to determine the actual local path of the given
@@ -62,23 +65,23 @@ public class FileUtils {
 			try {
 				URL url = FileUtils.class.getResource("FileUtils.class");	//let javaloader find the complete class path of this class first
 				String className = url.getFile();	 //get the complete file path from URL
-			System.out.println(className);
+				LOGGER.info("get the complete file path. {}" ,  kv("className", className));
 				if(className.indexOf(CLASSPATH) == -1) {
 					return className.substring(0, className.indexOf("/build/classes/"))+ path; //get the root path portion
 				} else {
 					return className.substring(0, className.indexOf(CLASSPATH))+ path; //get the root path portion
 				}
 			}catch(Exception e){
-				e.printStackTrace();
-				LOGGER.error("", e);
+				LOGGER.error("Failed to get local path. {}", kv("path", path), e);
 			}
 			return "";
 		}
 
 
 	public static String readFile(String path) throws IOException {
-		System.out.println(localPath(path));
-		FileInputStream stream = new FileInputStream(new File(localPath(path)));
+		String localPath = localPath(path);
+		LOGGER.debug("About to read file. {}", kv("localPath", localPath));
+		FileInputStream stream = new FileInputStream(new File(localPath));
 		try {
 			FileChannel fc = stream.getChannel();
 			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0,

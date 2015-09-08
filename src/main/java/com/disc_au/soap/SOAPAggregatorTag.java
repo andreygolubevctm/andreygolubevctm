@@ -277,8 +277,7 @@ public class SOAPAggregatorTag extends TagSupport {
 	 * @param timer the timer
 	 */
 	private void logTime(String msg, long timer) {
-		LOGGER.info(msg + ": " + (System.currentTimeMillis() - timer)
-				+ "ms ");
+		LOGGER.info(msg + ": {}ms ", kv("currentTimeMillis",(System.currentTimeMillis() - timer) ));
 	}
 
 	/**
@@ -353,7 +352,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 			return parser.parse(resultXML.toString());
 		} catch (TransformerException | SAXException e) {
-			LOGGER.error("", e);
+			LOGGER.error("Failed to process xml", e);
 		}
 		return resultNode;
 	}

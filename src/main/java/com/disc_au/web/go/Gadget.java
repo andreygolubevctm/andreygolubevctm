@@ -38,6 +38,10 @@ import org.json.JSONObject;
 import org.json.XML;
 
 import com.disc_au.web.go.xml.XmlNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -49,6 +53,8 @@ import com.disc_au.web.go.xml.XmlNode;
 
 @SuppressWarnings("unchecked")
 public class Gadget {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(Gadget.class.getName());
 
 	/**
 	 * Adds the document.
@@ -227,8 +233,7 @@ public class Gadget {
 			out.flush();
 			out.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Failed to write to file");
 		}
 	}
 	public static String XMLtoJSON(String xml){
@@ -237,7 +242,7 @@ public class Gadget {
 			return json.toString();
 
 		} catch (JSONException e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to convert to json. {}", kv("xml", xml), e);
 		}
 		return "";
 	}
@@ -247,7 +252,7 @@ public class Gadget {
 			return XML.toString(json);
 
 		} catch (JSONException e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to convert to xml. {}", kv("jsonData", jsonData), e);
 		}
 		return "";
 	}
@@ -355,13 +360,13 @@ public class Gadget {
 			success = true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to encode zip file", kv("zipFilepath", zipFilepath), e);
 		} finally {
 			if (is != null) {
 				try {
 					is.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOGGER.error("Failed to close file", e);
 				}
 			}
 		}
@@ -403,12 +408,12 @@ public class Gadget {
 			ftpconfig.put("StrictHostKeyChecking", "no");
 			ftpsession.setConfig(ftpconfig);
 
-			System.out.println("writeToEncZipToSftp: Connecting...");
+			LOGGER.debug("writeToEncZipToSftp: Connecting...");
 			ftpsession.connect(TIMEOUT);
 			channel = ftpsession.openChannel("sftp");
 			channel.connect(TIMEOUT);
 
-			System.out.println("writeToEncZipToSftp: Connected");
+			LOGGER.debug("writeToEncZipToSftp: Connected");
 			channelSftp = (ChannelSftp) channel;
 			channelSftp.cd(SFTPWORKINGDIR);
 
@@ -440,23 +445,23 @@ public class Gadget {
 			zipOutputStream.finish();
 
 			//// Write to SFTP ////
-			System.out.println("writeToEncZipToSftp: Streaming data into SFTP...");
+			LOGGER.debug("writeToEncZipToSftp: Streaming data into SFTP...");
 			InputStream is = new ByteArrayInputStream(outStream.toByteArray());
 			channelSftp.put(is, zipFilename);
-			System.out.println("writeToEncZipToSftp: Streaming done");
+			LOGGER.debug("writeToEncZipToSftp: Streaming done");
 
 			//// Finished and successful ////
 			success = true;
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to connect to SFTP", e);
 		} finally {
 			// Close SFTP channel //
 			if (channelSftp != null) {
 				try {
 					channelSftp.exit();
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOGGER.error("Failed to close SFTP channel ", e);
 				}
 			}
 			// Close Jsch session //
@@ -464,7 +469,7 @@ public class Gadget {
 				try {
 					ftpsession.disconnect();
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOGGER.error("Failed to close session", e);
 				}
 			}
 		}

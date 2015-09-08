@@ -20,7 +20,7 @@ import static com.ctm.logging.LoggingArguments.value;
 
 public class Bridge {
 
-	private static final Logger logger = LoggerFactory.getLogger(Bridge.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Bridge.class.getName());
 
 	/** The Constant CONF_LEN. */
 	static final int CONF_LEN = 12;
@@ -88,7 +88,7 @@ public class Bridge {
 		Message resp = null;
 		Socket socket = null;
 		try {
-			logger.debug("Connecting to {}:{}" , value("server", server) , value("port", port) );
+			LOGGER.debug("Connecting to {}:{}", value("server", server), value("port", port));
 			socket = new Socket(server, port);
 
 			int len = req.getLength();
