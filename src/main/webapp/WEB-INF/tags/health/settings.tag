@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="fromBrochure" scope="request" value="${false}"/>
-<c:if test="${not empty param.cover || not empty param.situation || not empty param.location}">
+<c:if test="${not empty param.cover || not empty param.situation || not empty param.health_location}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
 
