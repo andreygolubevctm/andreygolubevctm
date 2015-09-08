@@ -1,7 +1,9 @@
 package com.ctm.services.home;
 
 import com.ctm.connectivity.SimpleConnection;
+import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
+import com.ctm.exceptions.SessionException;
 import com.ctm.model.QuoteServiceProperties;
 import com.ctm.model.home.form.HomeQuote;
 import com.ctm.model.home.form.HomeRequest;
@@ -19,19 +21,25 @@ import com.ctm.providers.home.homequote.model.response.HomeResponse;
 import com.ctm.providers.home.homequote.model.response.MoreInfo;
 import com.ctm.services.CommonQuoteService;
 import com.ctm.services.ResultsService;
+import com.ctm.services.SessionDataService;
 import com.ctm.utils.ObjectMapperUtil;
 import com.ctm.web.validation.CommencementDateValidation;
 import com.ctm.logging.XMLOutputWriter;
+import com.disc_au.web.go.Data;
+import com.disc_au.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -190,4 +198,43 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
         return null;
     }
 
+    public void writeTempResultDetails(MessageContext context, HomeRequest data, List<HomeResult> quotes) {
+
+        SessionDataService service = new SessionDataService();
+        String clientIpAddress = null;
+
+        try {
+            Data dataBucket = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
+
+            if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
+                data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
+
+                XmlNode resultDetails = new XmlNode("tempResultDetails");
+                dataBucket.addChild(resultDetails);
+                XmlNode results = new XmlNode("results");
+
+                Iterator<HomeResult> quotesIterator = quotes.iterator();
+                while (quotesIterator.hasNext()) {
+                    HomeResult row = quotesIterator.next();
+                    if(row.getAvailable().equals(AvailableType.Y)) {
+                        String productId = row.getProductId();
+                        BigDecimal premium = row.getPrice().getAnnualPremium();
+                        XmlNode product = new XmlNode(productId);
+                        XmlNode price = new XmlNode("price");
+                        XmlNode annual = new XmlNode("annual");
+                        XmlNode total = new XmlNode("total", premium.toString());
+                        annual.addChild(total);
+                        price.addChild(annual);
+                        product.addChild(price);
+                        results.addChild(product);
+                    }
+                }
+                resultDetails.addChild(results);
+            }
+
+        } catch (DaoException | SessionException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 }

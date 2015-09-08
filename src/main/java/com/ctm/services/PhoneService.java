@@ -29,66 +29,6 @@ public class PhoneService {
 	public static final String CTI_MAKE_CALL = "/dataservices/makeCall?accessToken=&extension=%s&numberToCall=%s";
 
 	/**
-	 * Get Response from Verint' RIS (Recorder Integration Service) from either its Master or Slave (failover) server
-	 * @param settings
-	 * @param paramUrl
-	 * @return
-	 * @throws ConfigSettingException
-	 * @throws EnvironmentException
-	 * @throws Exception
-	 */
-	public static XmlNode getVerintResponse(PageSettings settings, String paramUrl) throws EnvironmentException, ConfigSettingException {
-
-		String masterUrl = settings.getSetting("verintMaster");
-		String slaveUrl = settings.getSetting("verintSlave");
-
-		SimpleConnection simpleConn =  new SimpleConnection();
-		String result = simpleConn.get(masterUrl + paramUrl);
-
-		if (result.contains("<isMaster>false</isMaster>")) {
-			result = simpleConn.get(slaveUrl + paramUrl);
-		}
-
-		try {
-			XmlParser parser = new XmlParser();
-			XmlNode xmlNode = parser.parse(result);
-			return xmlNode;
-		} catch (SAXException e) {
-			logger.error("",e);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Uses Verint's RIS (Recorder Integration Service) to pause / resume recording of audio / video
-	 * @param settings
-	 * @param agentId
-	 * @param contentType
-	 * @param action
-	 * @return
-	 * @throws ConfigSettingException
-	 * @throws EnvironmentException
-	 * @throws Exception
-	 */
-	public static XmlNode pauseResumeRecording(PageSettings settings, String agentId, String contentType, String action) throws EnvironmentException, ConfigSettingException {
-
-		String paramUrl = "servlet/eQC6?&" +
-						"interface=IContactManagement&" +
-						"method=deliverevent&" +
-						"contactevent=" + action + "&" +
-						"agent.agent=" + agentId + "&" +
-						"responseType=XML&" +
-						"attribute.key=Contact.ContentType&" +
-						"attribute.value=" + contentType + "&" +
-						"attribute.key=Contact.Requestor&" +
-						"attribute.value=CTM";
-
-		XmlNode xmlNode = getVerintResponse(settings, paramUrl);
-		return xmlNode;
-	}
-
-	/**
 	 * Uses the CTI service from Auto&General to get the extension for the specified agentId.
 	 *
 	 * NOTE: AgentIds must be registered in DISC for this to work.
@@ -160,7 +100,7 @@ public class PhoneService {
             }
         }
 
-		return callInfo;
+        return callInfo;
     }
 
     /**
