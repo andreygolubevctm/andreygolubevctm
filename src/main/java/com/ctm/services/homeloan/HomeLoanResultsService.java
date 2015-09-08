@@ -23,6 +23,8 @@ import com.ctm.services.FatalErrorService;
 import com.ctm.services.ServiceConfigurationService;
 import com.disc_au.web.go.Data;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class HomeLoanResultsService {
 	private static final Logger logger = LoggerFactory.getLogger(HomeLoanResultsService.class.getName());
 
@@ -86,13 +88,12 @@ public class HomeLoanResultsService {
 			jsonConn.conn.setContentType("application/json");
 
 			String postBody = hlpsrModel.toJsonObject().toString();
-			logger.debug("HomeLoanResultsService.getResults TIMEOUTCONNECT:" + timeoutConnect + " TIMEOUTREAD:" + timeoutRead + " URL:" + serviceUrl);
-			logger.debug("HomeLoanResultsService.getResults POST: " + postBody); //Note: Could contain personal information
+			logger.debug("homeloan results {}, {}, {}, {}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("serviceUrl", serviceUrl), kv("postBody", postBody));
 
 			responseJson = jsonConn.post(serviceUrl, postBody);
 
 			if (responseJson != null) {
-				logger.debug("HomeLoanResultsService.getResults RESP: " + responseJson.toString());
+				logger.debug("homeloan response {}", kv("responseJson", responseJson));
 			}
 
 			//
@@ -179,7 +180,7 @@ public class HomeLoanResultsService {
 
 			FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
 
-			logger.error("HomeLoanResultsService.getResults failed: ", e);
+			logger.error("homeloan results failed {}", kv("hlpsrModel", hlpsrModel), e);
 
 			String message = (e.getMessage() != null ? e.getMessage() : "Failed to get results");
 			Error error = new Error();

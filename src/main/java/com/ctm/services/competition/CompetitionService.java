@@ -15,7 +15,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class CompetitionService {
 
-	private static final Logger logger = LoggerFactory.getLogger(CompetitionService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(CompetitionService.class);
 
 	/**
 	 * isActive - returns whether the nominated competition exists and is active
@@ -32,7 +32,8 @@ public class CompetitionService {
 			Brand brand = ApplicationService.getBrandFromRequest(request);
 			compActive = CompetitionDao.isActive(brand.getId(), competitionId, serverDate);
 		} catch (DaoException e) {
-			logger.error("Failed to determine if competition is active {}, {}", kv("competitionId", competitionId), kv("serverDate", serverDate), e);
+			logger.error("Failed to determine if competition is active competitionId={},{}", kv("competitionId", competitionId), kv("serverDate", serverDate), e);
+			// Failed to determine if competition is active competitionId=abc 2345, serverDate=
 		}
 
 		return compActive;
