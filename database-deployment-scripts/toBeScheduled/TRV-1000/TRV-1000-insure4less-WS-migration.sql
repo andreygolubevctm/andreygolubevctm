@@ -74,7 +74,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-7-31','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-15-31','insure4less Travel Insurance, AMT Excel, Worldwide exc USA & Canada','0','31','2-3-15-31','2015-08-04', '2040-12-31');
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-15-31','insure4less Travel Insurance, AMT Medical Only, Worldwide exc USA & Canada','0','31','2-3-15-31','2015-08-04', '2040-12-31');
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
@@ -93,7 +93,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-7-45','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-15-45','insure4less Travel Insurance, AMT Excel, Worldwide exc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-15-45','insure4less Travel Insurance, AMT Medical Only, Worldwide exc USA & Canada',
                  '0','45','2-3-15-45','2015-08-04', '2040-12-31');
 --
 
@@ -114,7 +114,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-7-62','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-15-62','insure4less Travel Insurance, AMT Excel, Worldwide exc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-15-62','insure4less Travel Insurance, AMT Medical Only, Worldwide exc USA & Canada',
                  '0','62','2-3-15-62','2015-08-04', '2040-12-31');
 --
 
@@ -135,7 +135,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-7-93','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-15-93','insure4less Travel Insurance, AMT Excel, Worldwide exc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-3-15-93','insure4less Travel Insurance, AMT Medical Only, Worldwide exc USA & Canada',
                  '0','93','2-3-15-93','2015-08-04', '2040-12-31');
 --
 
@@ -153,7 +153,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-31','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-15-31','insure4less Travel Insurance, AMT Excel, Worldwide inc USA & Canada','0','31','2-4-15-31','2015-08-04', '2040-12-31');
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-15-31','insure4less Travel Insurance, AMT Medical Only, Worldwide inc USA & Canada','0','31','2-4-15-31','2015-08-04', '2040-12-31');
 
 --
 INSERT INTO ctm.travel_product
@@ -173,7 +173,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-45','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-15-45','insure4less Travel Insurance, AMT Excel, Worldwide inc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-15-45','insure4less Travel Insurance, AMT Medical Only, Worldwide inc USA & Canada',
                  '0','45','2-4-15-45','2015-08-04', '2040-12-31');
 --
 
@@ -194,7 +194,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-62','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-15-62','insure4less Travel Insurance, AMT Excel, Worldwide inc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-15-62','insure4less Travel Insurance, AMT Medical Only, Worldwide inc USA & Canada',
                  '0','62','2-4-15-62','2015-08-04', '2040-12-31');
 --
 
@@ -215,7 +215,7 @@ VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-7-93','insure4less Travel Insurance, AMT Excel
 
 INSERT INTO ctm.travel_product
 (providerId,productCode, title,baseProduct,maxTripDuration,providerProductCode,effectiveStart,effectiveEnd)
-VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-15-93','insure4less Travel Insurance, AMT Excel, Worldwide inc USA & Canada',
+VALUES (@PVIDER, 'I4LS-TRAVEL-2-4-15-93','insure4less Travel Insurance, AMT Medical Only, Worldwide inc USA & Canada',
                  '0','93','2-4-15-93','2015-08-04', '2040-12-31');
 /*
 TESTs
