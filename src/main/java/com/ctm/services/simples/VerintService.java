@@ -9,7 +9,8 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.SessionDataService;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.servlet.ServletException;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class VerintService {
 
-    private static final Logger logger = Logger.getLogger(VerintService.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(VerintService.class.getName());
 
     /**
      * Get Response from Verint' RIS (Recorder Integration Service) from either its Master or Slave (failover) server
@@ -104,7 +105,4 @@ public class VerintService {
         }
         return result;
     }
-
-
-
 }
