@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ctm.cache.ApplicationCacheManager;
+import com.ctm.cache.ContentControlCache;
 import com.ctm.dao.ContentDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
@@ -16,18 +18,18 @@ import org.apache.commons.lang3.StringUtils;
 
 public class ContentService {
 
-
 	private static ContentService contentService = new ContentService();
 
-	/**
-	 * Returns the value of the content key (as a string) this is the one that should be called by the JSP page.
-	 *
-	 * @param pageContext
-	 * @param contentCode
-	 * @return
-	 * @throws DaoException
-	 * @throws ConfigSettingException
-	 */
+
+    /**
+     * Returns the value of the content key (as a string) this is the one that should be called by the JSP page.
+     *
+     * @param request
+     * @param contentKey
+     * @return
+     * @throws DaoException
+     * @throws ConfigSettingException
+     */
 	public static String getContentValue(HttpServletRequest request, String contentKey) throws DaoException, ConfigSettingException {
 
 		Content content = getContent(request, contentKey);
@@ -58,9 +60,8 @@ public class ContentService {
 	/**
 	 * Returns the Content model if you need to work with the entire model and not just get hold of the value.
 	 * Uses the pageContext to automatically detect current brand id.
-	 *
-	 * @param pageContext
-	 * @param contentCode
+	 * @param request used for get brand and vertical to match in the database
+     * @param contentKey key that will match contentKey column in database must be comma separated list of valid values
 	 * @return
 	 * @throws DaoException
 	 * @throws ConfigSettingException
@@ -73,9 +74,8 @@ public class ContentService {
 
 	/**
 	 * Returns the Content model with the supplementary data
-	 *
-	 * @param pageContext
-	 * @param contentCode
+     * @param request used for get brand and vertical to match in the database
+     * @param contentKey key that will match contentKey column in database must be comma separated list of valid values
 	 * @return
 	 * @throws DaoException
 	 * @throws ConfigSettingException
@@ -88,9 +88,8 @@ public class ContentService {
 
 	/**
 	 * Private method to get content model with or with out supplementary data
-	 *
-	 * @param pageContext
-	 * @param contentCode
+     * @param request used for get brand and vertical to match in the database
+     * @param contentKey key that will match contentKey column in database must be comma separated list of valid values
 	 * @return
 	 * @throws DaoException
 	 * @throws ConfigSettingException
@@ -99,7 +98,8 @@ public class ContentService {
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 		int brandId = pageSettings.getBrandId();
 		int verticalId = pageSettings.getVertical().getId();
-		Date serverDate = ApplicationService.getApplicationDate(request);
+		Date serverDate = ApplicationService.getApplicationDateIfSet(request);
+
 		return getInstance().getContent(contentKey, brandId, verticalId, serverDate, includeSupplementary);
 
 	}
@@ -113,6 +113,7 @@ public class ContentService {
 	 *
 	 * @param contentKey
 	 * @param brandId
+     * @param verticalId
 	 * @param effectiveDate
 	 * @param includeSupplementary
 	 * @return
@@ -120,18 +121,42 @@ public class ContentService {
 	 */
 	public Content getContent(String contentKey, int brandId, int verticalId, Date effectiveDate, boolean includeSupplementary ) throws DaoException {
 
-		ContentDao contentDao = new ContentDao();
-		Content content = contentDao.getByKey(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
+        boolean useCache = false;
+        Content content = null;
+
+        // Only use cache when a specific date is NOT provided
+        if(effectiveDate == null){
+
+            // Create a 'key' for the cache - this is based on the values used to call the DAO (excluding date)
+            String cacheKey = contentKey+"_"+brandId+"_"+verticalId+"_"+includeSupplementary;
+
+            ContentControlCache contentControlCache = ApplicationCacheManager.getContentControlCache();
+
+            if(contentControlCache.isKeyInCache(cacheKey)) {
+                content = contentControlCache.get(cacheKey);
+            }else{
+                content = getContentFromDataSource(contentKey, brandId, verticalId, new Date(), includeSupplementary);
+                contentControlCache.put(cacheKey, content);
+            }
+
+        }else{
+            content = getContentFromDataSource(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
+        }
 
 		return content;
 
 	}
 
+    private Content getContentFromDataSource(String contentKey, int brandId, int verticalId, Date effectiveDate, boolean includeSupplementary) throws DaoException{
+        ContentDao contentDao = new ContentDao();
+        return contentDao.getByKey(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
+    }
+
 
 	/**
 	 * Return a list of content items with the same key mapped to a provider id.
 	 *
-	 * @param pageContext
+     * @param request
 	 * @param contentCode
 	 * @param providerId
 	 * @return
@@ -147,7 +172,6 @@ public class ContentService {
 	 * Low level get content method for a list of content items with the same key mapped to a provider.
 	 * This method supports duplicate keys and returns a list of matching items.
 	 *
-	 * @param pageContext
 	 * @param contentCode
 	 * @param providerId
 	 * @param brandId
@@ -164,4 +188,6 @@ public class ContentService {
 		return contents;
 
 	}
+
+
 }
