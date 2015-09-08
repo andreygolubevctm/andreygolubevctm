@@ -14,20 +14,43 @@
             success = false;
 
         meerkat.modules.comms.get({
-            url: "ajax/xml/verint_rcapi.jsp?action=" + action,
-            dataType: "xml",
+            url: "ajax/xml/pauseResumeCall.json?action=" + action,
+            dataType: "text",
             async: false,
             cache: false,
+            errorLevel: 'silent',
             useDefaultErrorHandling: false,
             timeout: 20000
         }).done(function() {
             success = true;
             seize(isMuted);
-        }).fail(function() {
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+
+            var errorMessage = errorThrown;
+            var errorResponse;
+
+            // Don't parse
+            if(jqXHR.status != 404 && jqXHR.status != 500) {
+                try {
+                    errorResponse = $.parseJSON(jqXHR.responseText);
+                    throw 1;
+                } catch(e1) {
+                    try {
+                        errorResponse = $.parseXML(jqXHR.responseText);
+                    } catch(e2) {
+                        errorResponse = {};
+                    }
+                }
+                console.log(errorResponse, jqXHR.responseText);
+                if (errorResponse.hasOwnProperty('errors') && errorResponse.errors.length > 0) {
+                    errorMessage = errorResponse.errors[0].message
+                }
+            }
+
             meerkat.modules.errorHandling.error({
-                message: "The recording could not be paused/started. Please notify your supervisor if this continues to occur: " + obj.responseText + ' ' + errorThrown,
+                message: "The recording could not be paused/started. Please notify your supervisor if this continues to occur: "  + errorMessage,
                 page: "application_compliance.tag",
-                description: "health_application_compliance.callback().  AJAX Request failed: " + obj.responseText + ' ' + errorThrown,
+                description: "health_application_compliance.callback().  AJAX Request failed: " + jqXHR.responseText + ' ' + errorThrown,
                 data: "state = " + isMuted,
                 errorLevel: "warning"
             });
