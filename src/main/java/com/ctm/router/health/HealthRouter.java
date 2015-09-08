@@ -1,4 +1,4 @@
-package com.ctm.router;
+package com.ctm.router.health;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,11 +30,13 @@ public class HealthRouter extends HttpServlet {
 	private static final Logger logger = LoggerFactory.getLogger(HealthRouter.class.getName());
 	private static final long serialVersionUID = 5468545645645645644L;
 	private final ObjectMapper objectMapper = new ObjectMapper();
+	JSONObject json = new JSONObject();
+	PrintWriter writer;
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String uri = request.getRequestURI();
-		PrintWriter writer = response.getWriter();
+		writer = response.getWriter();
 
 		// Automatically set content type based on request extension ////////////////////////////////////////
 
@@ -42,18 +44,22 @@ public class HealthRouter extends HttpServlet {
 			response.setContentType("application/json");
 		}
 
-		JSONObject json = new JSONObject();
 		// Route the requests ///////////////////////////////////////////////////////////////////////////////
 		if (uri.endsWith("/health/quote/dualPrising/getFundWarning.json")) {
-			FundWarningService fundWarningService = new FundWarningService();
-			try {
-				json.put("warningMessage", fundWarningService.getFundWarningMessage(request));
-			} catch (final DaoException | JSONException | ConfigSettingException e) {
-				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				objectMapper.writeValue(writer, errors(e));
-			}
-			writer.print(json.toString());
+			getFundWarning(request, response);
 		}
+	}
+
+
+	private void getFundWarning(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		FundWarningService fundWarningService = new FundWarningService();
+		try {
+			json.put("warningMessage", fundWarningService.getFundWarningMessage(request));
+		} catch (final DaoException | JSONException | ConfigSettingException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			objectMapper.writeValue(writer, errors(e));
+		}
+		writer.print(json.toString());
 	}
 
 	private ObjectNode errors(final Exception e) {
