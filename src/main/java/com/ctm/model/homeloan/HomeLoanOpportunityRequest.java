@@ -208,4 +208,14 @@ public class HomeLoanOpportunityRequest extends AbstractJsonModel {
 		return json;
 	}
 
+	@Override
+	public String toString() {
+		return "HomeLoanOpportunityRequest{" +
+				"opportunityDescription='" + opportunityDescription + '\'' +
+				", referenceId='" + referenceId + '\'' +
+				", comments='" + comments + '\'' +
+				", model=" + model +
+				", products=" + products +
+				'}';
+	}
 }

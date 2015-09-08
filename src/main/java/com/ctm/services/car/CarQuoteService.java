@@ -183,10 +183,8 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
                 }
                 resultDetails.addChild(results);
             }
-
         } catch (DaoException | SessionException e) {
-            System.out.println(e.getMessage());
+            logger.error("Failed writing temp result details {}, {}", kv("transactionId", data.getTransactionId()), kv("carRequest", data));
         }
-
     }
 }
