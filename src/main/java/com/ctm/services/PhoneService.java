@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 
 import java.util.IllegalFormatException;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.model.simples.CallInfo.STATE_INACTIVE;
 import static java.lang.String.format;
 
@@ -51,10 +52,9 @@ public class PhoneService {
 
 		try {
 			XmlParser parser = new XmlParser();
-			XmlNode xmlNode = parser.parse(result);
-			return xmlNode;
+			return parser.parse(result);
 		} catch (SAXException e) {
-			logger.error("",e);
+			logger.error("Error parsing verint response {}", kv("result", result), e);
 		}
 
 		return null;
@@ -116,7 +116,7 @@ public class PhoneService {
 			return null;
 		}
 
-		logger.debug("AgentId " + agentId + ": " + json.toString());
+		logger.debug("Determining extension for agentId {}", kv("agentId", agentId), kv("json", json.toString()));
 
 		try {
 			JSONObject service = json.getJSONObject("service");
@@ -132,7 +132,7 @@ public class PhoneService {
 			}
 		}
 		catch (JSONException e) {
-			logger.error("",e);
+			logger.error("Error determining extension {},{},{}", kv("agentId", agentId), kv("json", json), kv("serviceUrl", serviceUrl), e);
 		}
 
 		return null;
@@ -203,7 +203,7 @@ public class PhoneService {
 			return null;
 		}
 
-		logger.debug("Extension " + extension + ": " + json.toString());
+		logger.debug("Getting call info {}", kv("extension", extension), kv("json", json));
 
 		try {
 			JSONObject service = json.getJSONObject("service");
@@ -250,7 +250,7 @@ public class PhoneService {
 			callInfo.setCustomerPhoneNo(otherParty.getString("telephoneNumber"));
 		}
 		catch (JSONException e) {
-			logger.error("",e);
+			logger.error("Error getting call info {}", kv("extension", extension), e);
 		}
 
 		return callInfo;
@@ -296,8 +296,8 @@ public class PhoneService {
 				extension = PhoneService.getExtensionByAgentId(settings, agentId);
 				if(extension != null){
 					authData.setExtension(extension);
-				}else{
-					logger.debug("Unable to get extension for agent id: "+agentId);
+				} else {
+					logger.info("Unable to get extension {}", kv("agentId", agentId));
 				}
 			}
 
@@ -309,7 +309,7 @@ public class PhoneService {
 			}
 
 		}else{
-			logger.debug("Unable to find agent id for uid: "+authData.getUid());
+			logger.debug("Unable to get call details {}", kv("uid", authData.getUid()));
 		}
 
 		return null;
@@ -333,7 +333,7 @@ public class PhoneService {
 		try {
 			final CallInfo callInfo = getCallInfoByExtension(settings, extension);
 			if (callInfo == null) {
-				logger.error("error retrieving call status");
+				logger.error("Error retrieving call status {},{}", kv("extension", extension), kv("phone", phone));
 				return false;
 			} else if (callInfo.getState() == STATE_INACTIVE) {
 				final String url = callUrl(settings, extension, phone);
@@ -343,11 +343,11 @@ public class PhoneService {
 				final String result = conn.get(url);
 				return callReturnStatus(result);
 			} else {
-				logger.info("already on phone ext: " + extension);
+				logger.info("Already on phone {}", kv("extension", extension));
 				return false;
 			}
 		} catch (Exception e) {
-			logger.error("error retrieving call status", e);
+			logger.error("Error retrieving call status", kv("extension", extension), kv("phone", phone));
 			return false;
 		}
 	}
@@ -357,7 +357,7 @@ public class PhoneService {
 			final String ctiBaseUrl = settings.getSetting("ctiMakeCallUrl");
 			return format(ctiBaseUrl + CTI_MAKE_CALL, extension, phone);
 		} catch (final IllegalFormatException e) {
-			logger.error("error retrieving cti make call server url", e);
+			logger.error("Error retrieving cti make call server url {},{}", kv("extension", extension), kv("phone", phone));
 		}
 		return null;
 	}
@@ -369,7 +369,7 @@ public class PhoneService {
 				final XmlNode node = parser.parse(xml);
 				return node.get("response/status").toString().equalsIgnoreCase("OK");
 			} catch (final SAXException e) {
-				logger.error("unable parse call status", e);
+				logger.error("Unable parse call status {}", kv("xml", xml), e);
 				return false;
 			}
 		}

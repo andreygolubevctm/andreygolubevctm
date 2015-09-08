@@ -86,7 +86,7 @@ public class SimplesSearchService {
             }
             searchTransactionHeaderDetailsAndSave();
             searchTransactionDetailsAndSave();
-        } catch (RuntimeException | DaoException e) {
+        } catch (RuntimeException e) {
             logger.error("",e);
             error = e.getMessage();
             throw e;

@@ -1,15 +1,5 @@
 package com.ctm.services.email;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.dao.ResultsDao;
 import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.ConfigSettingException;
@@ -23,6 +13,17 @@ import com.ctm.model.results.ResultProperty;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.SettingsService;
 import com.ctm.services.TransactionAccessService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class IncomingEmailService {
 
@@ -99,7 +100,7 @@ public class IncomingEmailService {
 				redirectionUrl.append(pageSettings.getSetting("exitUrl"));
 			}
 		} catch (DaoException | EnvironmentException | VerticalException | ConfigSettingException e) {
-			logger.error("",e);
+			logger.error("Failed to get redirect url {}", kv("incomingEmail", emailData), e);
 		}
 
 		return redirectionUrl.toString();
@@ -145,7 +146,7 @@ public class IncomingEmailService {
 			expiresCal.setTime(expires);
 			expired = expiresCal.compareTo(todayCal) >= 0;
 		} catch (ParseException e) {
-			logger.error("",e);
+			logger.error("Unable to parse incoming email date {}", kv("validateDate", validateDate), e);
 		}
 		return expired;
 	}

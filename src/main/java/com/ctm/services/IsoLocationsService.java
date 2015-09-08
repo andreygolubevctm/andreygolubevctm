@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class IsoLocationsService {
 
@@ -27,7 +29,7 @@ public class IsoLocationsService {
         try {
             json.put("isoLocations" , countries);
         } catch (JSONException e) {
-            logger.error("",e);
+            logger.error("Failed creating json object {}", kv("countries", countries), e);
         }
         return json;
     }
@@ -42,7 +44,7 @@ public class IsoLocationsService {
         try {
             json.put("isoLocations" , isoLocations);
         } catch (JSONException e) {
-            logger.error("",e);
+            logger.error("Failed creating json object", kv("isoLocations", isoLocations), e);
         }
         return json;
     }
@@ -72,7 +74,7 @@ public class IsoLocationsService {
         try {
             json.put("topTen" , topTen);
         } catch (JSONException e) {
-            logger.error("",e);
+            logger.error("Failed creating json object", kv("topTen", topTen), e);
         }
 
         return json;

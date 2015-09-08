@@ -38,7 +38,7 @@ public class StartQuoteService {
         PageSettings pageSettings =  SettingsService.setVerticalAndGetSettingsForPage(request, StringUtils.isEmpty(verticalCode) ? "SIMPLES" : verticalCode.toUpperCase());
         try {
             phoneDetails = CallCentreService.getInboundPhoneDetails(request);
-        } catch (DaoException | ConfigSettingException | RuntimeException e) {
+        } catch (ConfigSettingException | RuntimeException e) {
             logger.error("ERROR While get inbound phone details : "+e.getMessage());
             response.sendRedirect(pageSettings.getBaseUrl()+"simples/selectBrand.jsp?verticalCode=" + verticalCode);
 

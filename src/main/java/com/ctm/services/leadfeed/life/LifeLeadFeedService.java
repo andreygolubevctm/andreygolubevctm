@@ -11,6 +11,8 @@ import com.ctm.services.leadfeed.life.AGIS.AGISLifeLeadFeedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class LifeLeadFeedService extends LeadFeedService {
 
@@ -26,22 +28,22 @@ public class LifeLeadFeedService extends LeadFeedService {
 
 			switch(leadData.getPartnerBrand()) {
 				case "OZIC":
-					logger.info("[Lead feed] Prepare to send lead to AGIS brand "+leadType+"; Transaction ID: "+leadData.getTransactionId());
+					logger.info("[Lead feed] Prepare to send lead to AGIS brand {},{}", kv("leadType", leadType), kv("transactionId", leadData.getTransactionId()));
 					providerLeadFeedService = new AGISLifeLeadFeedService();
 					break;
 			}
 
 			if(providerLeadFeedService != null) {
-				logger.info("[Lead feed] Provider lead feed service found: " + providerLeadFeedService.getClass());
+				logger.info("[Lead feed] Provider lead feed service found {}", kv("providerLeadFeedServiceClass", providerLeadFeedService.getClass()));
 				responseStatus = providerLeadFeedService.process(leadType, leadData);
 				if (responseStatus == LeadResponseStatus.SUCCESS) {
 					recordTouch(touchType.getCode(), leadData);
 				}
-				logger.debug("[Lead feed] Provider lead process response: " + responseStatus);
+				logger.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
 			}
 
 		} catch(LeadFeedException e) {
-			logger.error("[Lead feed] Exception adding lead feed message",e);
+			logger.error("[Lead feed] Exception adding lead feed message {}", kv("leadType", leadType), kv("leadData", leadData), kv("touchType", touchType));
 			responseStatus = LeadResponseStatus.FAILURE;
 		}
 

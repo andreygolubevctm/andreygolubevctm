@@ -22,7 +22,7 @@ public class IPCheckService {
 
     private IpAddressDao ipAddressDao;
 
-    public static enum IPCheckStatus{
+    public enum IPCheckStatus{
         OVER(1),
         LIMIT(0),
         UNDER(-1);
@@ -36,7 +36,7 @@ public class IPCheckService {
         public Integer getLabel() {
             return status;
         }
-    };
+    }
 
     public IPCheckService() {
         ipAddressDao = new IpAddressDao();
@@ -71,7 +71,7 @@ public class IPCheckService {
                 }
 
             // Write to travel session when limit reached
-            if (permitted == IPCheckStatus.LIMIT && pageSettings.getVerticalCode() == "travel") {
+            if (permitted == IPCheckStatus.LIMIT && pageSettings.getVerticalCode().equals("travel")) {
                 TransactionDetailsDao transactionDetailsDao = new TransactionDetailsDao();
                 transactionDetailsDao.insertOrUpdate("travel/blockedQuote", "true", RequestUtils.getTransactionIdFromRequest(request));
             }
@@ -103,10 +103,10 @@ public class IPCheckService {
                     int limit = ipAddressModel.getRole().getLimit(pageSettings);
                     // If they have hit more than the limit for their role, they are NOT permitted access.
                     if (ipAddressModel.getNumberOfHits() > limit) {
-                        logger.warn("[IPCheckService] User's IP Address ({}) has been blocked after exceeding limit. {},{}" , v("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
+                        logger.warn("[IPCheckService] User's IP Address has been blocked after exceeding limit. {},{},{}" , kv("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
                         return IPCheckStatus.OVER;
                     } else if (ipAddressModel.getNumberOfHits() == limit) {
-                        logger.warn("[IPCheckService] User's IP Address ({}) has been blocked after reaching limit. {},{}" , v("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
+                        logger.warn("[IPCheckService] User's IP Address has been blocked after reaching limit. {},{},{}" , v("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
                         return IPCheckStatus.LIMIT;
                     }
                 }
@@ -131,17 +131,14 @@ public class IPCheckService {
             PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical.getCode());
             return isWithinLimit(request, pageSettings);
         } catch(ConfigSettingException | DaoException e) {
-            logger.error(" An exception was thrown getting the pageSettings object", e);
+            logger.error(" An exception was thrown getting the pageSettings object {}", kv("vertical", vertical.getCode()), e);
         }
         return IPCheckStatus.UNDER;
     }
 
     public Boolean isWithinLimitAsBoolean(HttpServletRequest request, PageSettings pageSettings) {
         IPCheckStatus status = isWithinLimit(request, pageSettings);
-        if(status == IPCheckStatus.LIMIT || status == IPCheckStatus.OVER) {
-            return false;
-        }
-        return true;
+        return !(status == IPCheckStatus.LIMIT || status == IPCheckStatus.OVER);
     }
 
     /**
@@ -157,7 +154,7 @@ public class IPCheckService {
             PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical.getCode());
             return isPermittedAccess(request, pageSettings);
         } catch(ConfigSettingException | DaoException e) {
-            logger.error("An exception was thrown getting the pageSettings object", e);
+            logger.error("An exception was thrown getting the pageSettings object {}", kv("vertical", vertical), e);
         }
         return true;
     }

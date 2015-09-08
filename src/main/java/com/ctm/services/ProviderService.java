@@ -9,6 +9,8 @@ import com.ctm.dao.ProviderDao;
 import com.ctm.model.Provider;
 import com.ctm.exceptions.DaoException;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ProviderService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProviderService.class.getName());
@@ -36,7 +38,7 @@ public class ProviderService {
 		} catch(DaoException e) {
 			// ignore and move on
 		}
-		logger.info("@@@@ Provider Key Exists: " + (exists == true ? "YES" : "NO"));
+		logger.debug("Provider key already exists {},{}", kv("providerKey", providerKey), kv("exists", exists));
 		return exists;
 	}
 }

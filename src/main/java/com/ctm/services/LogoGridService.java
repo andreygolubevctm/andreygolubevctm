@@ -1,6 +1,8 @@
 package com.ctm.services;
 
 import com.ctm.dao.ProviderCodesDao;
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import org.slf4j.Logger;
@@ -22,8 +24,8 @@ public class LogoGridService {
 			Vertical vertical = pageSettings.getVertical(); // grab the vertical details
 			providerCodes.setProviderCodes(vertical.getType().toString(), pageSettings.getBrandId()); // populate the
 		}
-		catch (Exception e) {
-			logger.error("",e);
+		catch (DaoException|ConfigSettingException e) {
+			logger.error("Failed initializing logo grid service",e);
 		}
 	}
 

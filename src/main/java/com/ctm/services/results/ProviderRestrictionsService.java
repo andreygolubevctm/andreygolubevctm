@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ProviderRestrictionsService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProviderRestrictionsService.class.getName());
@@ -53,9 +55,9 @@ public class ProviderRestrictionsService {
                 providerID = results.getInt("providerId");
             }
         } catch (NamingException e) {
-            logger.error("failed to get connection", e);
+            logger.error("Failed to get db connection", e);
         } catch (Exception e) {
-            logger.error(transactionId + ": failed to get filtered brands", e);
+            logger.error("Failed to get filtered brands {}", kv("transactionId", transactionId), e);
         } finally {
             if (dbSource != null) {
                 dbSource.closeConnection();
@@ -136,9 +138,9 @@ public class ProviderRestrictionsService {
                 restrictedProviders.add(results.getInt("providerId"));
             }
         } catch (NamingException e) {
-            logger.error("failed to get connection", e);
+            logger.error("Failed to get db connection", e);
         } catch (Exception e) {
-            logger.error(transactionid + ": failed to get filtered brands", e);
+            logger.error("Failed to get filtered brands {}", kv("transactionId", transactionid), e);
         } finally {
             if (dbSource != null) {
                 dbSource.closeConnection();
@@ -225,7 +227,7 @@ public class ProviderRestrictionsService {
                 restrictedProviders.add(results.getInt("providerId"));
             }
         } catch (Exception e) {
-            logger.error(transactionid + "failed to get filtered brands", e);
+            logger.error("Failed to get filtered brands {}", kv("transactionId", transactionid), e);
         } finally {
             if (dbSource != null) {
                 dbSource.closeConnection();
