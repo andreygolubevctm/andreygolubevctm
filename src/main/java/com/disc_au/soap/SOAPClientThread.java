@@ -23,7 +23,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.*;
@@ -158,19 +157,19 @@ public class SOAPClientThread implements Runnable {
 				connection = (HttpsURLConnection) u.openConnection();
 
 				if (configuration.getClientCert() !=null && configuration.getClientCertPass() != null){
-					LOGGER.info("Using Cert: " + configuration.getClientCert());
+					LOGGER.debug("Using Cert: " + configuration.getClientCert());
 					try {
 
 						// First, try on the classpath (assume given path has no leading slash)
 						InputStream clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getClientCert());
 
 						// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
+						LOGGER.debug("Checking if cert exists. {}" + kv("CertExists", clientCertSourceInput == null));
 						if ( clientCertSourceInput == null ) {
 							configuration.setClientCert("../" + configuration.getClientCert());
 							clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getClientCert());
 						}
 
-						LOGGER.info("Cert Exists: " + (clientCertSourceInput == null ? "NOOOO" : "Yep"));
 
 						String pKeyPassword = configuration.getClientCertPass();
 						KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -186,16 +185,8 @@ public class SOAPClientThread implements Runnable {
 
 						((HttpsURLConnection) connection).setSSLSocketFactory( sockFact );
 
-					} catch (NoSuchAlgorithmException e) {
-						LOGGER.error("Cert Error: 1 (No Such Algorithm)", e);
-					} catch (CertificateException e) {
-						LOGGER.error("Cert Error: 2 (Certificate exception)", e);
-					} catch (UnrecoverableKeyException e) {
-						LOGGER.error("Cert Error: 3 (Unrecoverable Key)", e);
-					} catch (KeyStoreException e) {
-						LOGGER.error("Cert Error: 4 (Key Store exception)", e);
-					} catch (KeyManagementException e) {
-						LOGGER.error("Cert Error: 5 (Key Management exception)", e);
+					} catch (NoSuchAlgorithmException | CertificateException | UnrecoverableKeyException | KeyStoreException | KeyManagementException e) {
+						LOGGER.error("Cert Error.", e);
 					}
 				}
 
@@ -265,9 +256,6 @@ public class SOAPClientThread implements Runnable {
 				}
 				// An error or some unknown condition occurred
 				default: {
-					// Important! keep this as debug and don't enable debug logging in production
-					// as this response may include credit card details (this is from the nib webservice)
-					LOGGER.debug("[SOAP Response] " + connection.getResponseMessage());
 
 					StringBuffer errorData = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(((HttpURLConnection)connection).getErrorStream()));
@@ -300,14 +288,9 @@ public class SOAPClientThread implements Runnable {
 			wout.close();
 			((HttpURLConnection)connection).disconnect();
 
-		} catch (MalformedURLException e) {
+		} catch (IOException  e) {
 			LOGGER.error("failed to process request", e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
-			returnData.append(err.getXMLDoc());
-
-		} catch (IOException e) {
-			LOGGER.error("failed to process request: " + getConfiguration().getUrl(), e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "IOException", (System.currentTimeMillis() - startTime));
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), e.getClass().getName(), (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 		}
 
@@ -328,7 +311,7 @@ public class SOAPClientThread implements Runnable {
 						"",
 						0);
 
-				LOGGER.debug("[SOAP Response] " + this.name + " MK-20004:" + soapResponse);
+				LOGGER.debug("MK-20004 Soap error found. {},{}" , kv("soapResponse", soapResponse), kv("SOAPClientThread", this));
 
 				errorData = err.getXMLDoc();
 
@@ -405,10 +388,6 @@ public class SOAPClientThread implements Runnable {
 
 			// do we need to translate it?
 			if (configuration.getInboundXSL() != null) {
-				// Important! keep this as debug and don't enable debug logging in production
-				// as this response may include credit card details (this is from the nib webservice)
-				LOGGER.debug("[SOAP Response] " + this.name + ":" + soapResponse);
-
 				// The following ugliness had to be added to get OTI working ..
 				//REVISE: oh please do - we need something better than this.... :(
 				if (configuration.getUnescapeElement() != null){

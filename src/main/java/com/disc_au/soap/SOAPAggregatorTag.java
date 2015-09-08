@@ -277,7 +277,7 @@ public class SOAPAggregatorTag extends TagSupport {
 	 * @param timer the timer
 	 */
 	private void logTime(String msg, long timer) {
-		LOGGER.info(msg + ": {}ms ", kv("currentTimeMillis",(System.currentTimeMillis() - timer) ));
+		LOGGER.info(msg + ": {}ms ", v("currentTimeMillis",(System.currentTimeMillis() - timer) ));
 	}
 
 	/**

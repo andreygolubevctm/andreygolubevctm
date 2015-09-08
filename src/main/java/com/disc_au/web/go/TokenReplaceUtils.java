@@ -93,9 +93,6 @@ public class TokenReplaceUtils {
 			case "DATE":
 				value = convertToNewDate(value);
 				break;
-			case "DEBUG":
-				LOGGER.debug("TYPE: '" + type + "'| VALUE: '" + value + "' | formatType: " + formatType);
-				break;
 			default:
 		}
 		return value;

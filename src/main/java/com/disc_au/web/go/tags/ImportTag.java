@@ -12,7 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static com.ctm.logging.LoggingArguments.kv;
-import static com.ctm.logging.LoggingArguments.v;
 
 
 @SuppressWarnings("serial")
@@ -89,7 +88,7 @@ public class ImportTag extends BaseTag {
 					pageContext.getOut().write(data.toString());
 				}
 			} else {
-				LOGGER.error("HTTP Error code: ({}) {} : {}", v("url", url), v("responseCode", connection.getResponseCode()), v("responseMessage", connection.getResponseMessage()));
+				LOGGER.error("HTTP Error. {},{},{}", kv("url", url), kv("responseCode", connection.getResponseCode()), kv("responseMessage", connection.getResponseMessage()));
 			}
 			
 			connection.disconnect();
