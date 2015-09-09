@@ -38,10 +38,6 @@ var healthFunds_BUD = {
 		healthDependents.config.school = false;
 		healthDependents.maxAge = 21;
 
-		<%-- fund ID's become optional --%>
-		$('#clientMemberID input').rules("remove", "required");
-		$('#partnerMemberID input').rules("remove", "required");
-
 		<%-- credit card & bank account frequency & day frequency --%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
 		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
@@ -50,8 +46,8 @@ var healthFunds_BUD = {
 		meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
 		<%-- credit card options --%>
-		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
+		meerkat.modules.healthCreditCard.render();
 
 		<%-- calendar for start cover --%>
 		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
@@ -74,8 +70,8 @@ var healthFunds_BUD = {
 		$('#update-premium').off('click.BUD');
 
 		<%-- credit card options --%>
-		creditCardDetails.resetConfig();
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.resetConfig();
+		meerkat.modules.healthCreditCard.render();
 
 	}
 };

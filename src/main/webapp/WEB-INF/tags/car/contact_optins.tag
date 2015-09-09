@@ -51,6 +51,3 @@
 </form_new:row>
 
 </form_new:fieldset>
-
-<go:validate selector="quote_contact_phoneinput" rule="validateOkToCall" parm="true" message="Please enter a contact number" />
-<go:validate selector="quote_contact_email" rule="validateOkToEmail" parm="true" message="Please enter your email address" />

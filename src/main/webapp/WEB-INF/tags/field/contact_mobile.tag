@@ -12,6 +12,7 @@
 <%@ attribute name="labelName"	required="false" rtexprvalue="true"	 description="the label to display for validation" %>
 <%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="HTML5 default placeholder" %>
 <%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
+<%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 description="Additional attributes to pass through" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -29,11 +30,10 @@
 	<c:set var="placeHolder" value="(0000) 000 000" />
 </c:if>
 
+<c:set var="validationAttributes" value=" data-rule-validateMobile='true' data-msg-validateMobile='Please enter the ${labelName} in the format 04xxxxxxxx' " />
+
 <field:phone_number className="${className}" required="${required}" xpath="${xpath}"
 				placeHolder="${placeHolder}" placeHolderUnfocused="${placeHolderUnfocused}"
 				title="${title}" size="${size}"
 				allowMobile="true" allowLandline="false"
-				labelName="${labelName}" />
-
-<%-- VALIDATION --%>
-<go:validate selector="${dummyname}" rule="validateMobile" parm="true" message="Please enter the ${labelName} in the format 04xxxxxxxx " />
+				labelName="${labelName}" additionalAttributes="${validationAttributes}${additionalAttributes}" />

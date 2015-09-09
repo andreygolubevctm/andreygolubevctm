@@ -24,9 +24,6 @@ var healthFunds_NIB = {
         <%--schoolgroups and defacto--%>
         healthDependents.config = { 'school':true, 'defacto':false, 'schoolMin':21, 'schoolMax':24 };
 
-        <%--fund ID's become optional--%>
-        $('#clientMemberID input').rules("remove", "required");
-        $('#partnerMemberID input').rules("remove", "required");
         healthFunds._previousfund_authority(true);
 
         <%--calendar for start cover--%>
@@ -42,8 +39,8 @@ var healthFunds_NIB = {
         meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
         <%--credit card options--%>
-        creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':true, 'diners':false };
-        creditCardDetails.render();
+        meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':true, 'diners':false });
+        meerkat.modules.healthCreditCard.render();
 
         $('#update-premium').on('click.NIB', function() {
             var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
@@ -92,10 +89,8 @@ var healthFunds_NIB = {
     unset: function(){
         $('#update-premium').off('click.NIB');
 
-        $("#health_application_email").prop('required', true);
-        $("#health_application_email").prop('disabled', false);
-        $("#health_application_contactPoint_E").prop('disabled', false);
-        $("#health_application_contactPoint_E").parents('.btn-form-inverse').attr('disabled',false);
+        $("#health_application_email").setRequired(true).prop('disabled', false);
+        $("#health_application_contactPoint_E").prop('disabled', false).parents('.btn-form-inverse').attr('disabled',false);
 
         $('#health_application_no_email').off('click.NIB');
         healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), false);
@@ -113,8 +108,8 @@ var healthFunds_NIB = {
         healthFunds._dependants(false);
 
         <%--credit card options--%>
-        creditCardDetails.resetConfig();
-        creditCardDetails.render();
+        meerkat.modules.healthCreditCard.resetConfig();
+        meerkat.modules.healthCreditCard.render();
     }
 };
 </c:set>
