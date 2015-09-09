@@ -2,7 +2,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Displays the root postcode for a given state."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<% pageContext.setAttribute("logger" , LoggerFactory.getLogger("tag:utilities.utilities_get_postcode"));%>
+
+<c:set var="logger" value="${log:getLogger('/utilities/utilities_get_postcode.tag')}" />
 
 <%@ attribute name="state" required="true" description="The state abbreviation to search."%>
 
