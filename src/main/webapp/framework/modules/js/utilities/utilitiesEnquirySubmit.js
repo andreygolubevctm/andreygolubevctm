@@ -10,14 +10,15 @@
     };
 
     var $submitButton,
-        submitXhr;
+        submitXhr,
+        initialised = false;
 
     function initUtilitiesEnquirySubmit() {
-        $(document).ready(function() {
+        if(!initialised) {
+            initialised = true;
             $submitButton = $("#submit_btn");
             applyEventListeners();
-        });
-
+        }
     }
 
     function applyEventListeners() {
