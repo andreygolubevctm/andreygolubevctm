@@ -33,16 +33,12 @@
 <c:set var="fromDate" value="${go:nameFromXpath(fromDateXpath)}" />
 <c:set var="toDate" value="${go:nameFromXpath(toDateXpath)}" />
 
+<c:set var="fromDateRule">data-rule-fromToDate='{"fromDate": "${fromDate}", "toDate":"${toDate}"}' data-msg-fromToDate='The ${titleFrom} date should be equal to, or before the ${titleTo} date.'</c:set>
+<c:set var="toDateRule">data-rule-fromToDate='{"fromDate": "${fromDate}", "toDate":"${toDate}"}' data-msg-fromToDate='The ${titleTo} date should be equal to or, ${offsetText} after the ${titleFrom} date.'</c:set>
 <%-- HTML --%>
 <form_new:row label="${labelFrom}" helpId="${helpIdFrom}" id="${fromDate}_row">
-	<field_new:calendar mode="separated" validateMinMax="true" xpath="${fromDateXpath}" required="${required}" title="${titleFrom}" minDate="${minDateFrom}" maxDate="${maxDateFrom}" startView="${startViewFrom}" />
+	<field_new:calendar mode="separated" validateMinMax="true" xpath="${fromDateXpath}" required="${required}" title="${titleFrom}" minDate="${minDateFrom}" maxDate="${maxDateFrom}" startView="${startViewFrom}" calAdditionalAttributes="${fromDateRule}" />
 </form_new:row>
 <form_new:row label="${labelTo}" helpId="${helpIdTo}" id="${toDate}_row">
-	<field_new:calendar mode="separated" validateMinMax="true" xpath="${toDateXpath}" required="${required}" title="${titleTo}" minDate="${minDateTo}" maxDate="${maxDateTo}" startView="${startViewTo}"/>
+	<field_new:calendar mode="separated" validateMinMax="true" xpath="${toDateXpath}" required="${required}" title="${titleTo}" minDate="${minDateTo}" maxDate="${maxDateTo}" startView="${startViewTo}"  calAdditionalAttributes="${toDateRule}"/>
 </form_new:row>
-
-<%-- VALIDATION --%>
-<%-- Max fromDate Validation --%>
-<go:validate selector="${fromDate}" rule="fromToDate" parm="{fromDate:'${fromDate}', toDate:'${toDate}' }" message="The ${titleFrom} date should be equal to, or before the ${titleTo} date." />
-<%-- Min toDate Validation --%>
-<go:validate selector="${toDate}" rule="fromToDate" parm="{fromDate:'${fromDate}', toDate:'${toDate}' }" message="The ${titleTo} date should be equal to or, ${offsetText} after the ${titleFrom} date." />

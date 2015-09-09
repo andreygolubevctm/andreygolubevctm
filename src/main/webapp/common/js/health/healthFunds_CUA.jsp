@@ -23,10 +23,9 @@ var healthFunds_CUA = {
 set: function () {
 	"use strict";
 		<%-- Previous fund authority --%>
-		$('#health_previousfund_primary_authority').rules('add', {required: true, messages: {required: 'CUA requires authorisation to contact your previous fund'}});
-		$('#health_previousfund_partner_authority').rules('add', {required: true, messages: {required: 'CUA requires authorisation to contact your partner\'s previous fund'}});
-		$('#health_previousfund_primary_memberID').attr('maxlength', '10');
-		$('#health_previousfund_partner_memberID').attr('maxlength', '10');
+		$('#health_previousfund_primary_authority').setRequired(true, 'CUA requires authorisation to contact your previous fund');
+		$('#health_previousfund_partner_authority').setRequired(true, 'CUA requires authorisation to contact your partner\'s previous fund');
+		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
 		healthFunds._previousfund_authority(true);
 
 		<%--dependant definition--%>
@@ -45,8 +44,8 @@ set: function () {
 		meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
 		<%--credit card options --%>
-		creditCardDetails.config = { 'visa': true, 'mc': true, 'amex':false, 'diners':false };
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa': true, 'mc': true, 'amex':false, 'diners':false });
+		meerkat.modules.healthCreditCard.render();
 
 		<c:if test="${data.health.situation.healthCvr == 'S' || data.health.situation.healthCvr == 'SM' || data.health.situation.healthCvr == 'SF'}">
 			<c:set var="htmlPrimary">
@@ -108,12 +107,7 @@ set: function () {
 				var id = $(this).find('input').attr('id');
 				$(this).append(instituteElement);
 				$(this).find('select').attr('name', name).attr('id', id + 'select');
-				$(this).find('select').rules('add', {
-						required: true,
-						messages: {
-							required: 'Please select dependant '+(i+1)+'\'s educational institute'
-							}
-						});
+				$(this).find('select').setRequired(true, 'Please select dependant '+(i+1)+'\'s educational institute');
 				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
 			});
 			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
@@ -132,8 +126,8 @@ set: function () {
 		dob_health_application_primary_dob.ageMax = 99;
 		dob_health_application_partner_dob.ageMax = 99;
 
-		$("#applicationForm_1").validate().settings.messages.health_application_primary_dob.max_DateOfBirth = "primary applicant's age cannot be over 99";
-		$("#applicationForm_1").validate().settings.messages.health_application_partner_dob.max_DateOfBirth = "applicant's partner's age cannot be over 99";
+		$('#health_application_primary_dob').addRule('oldestDOB', dob_health_application_primary_dob.ageMax, "primary applicant's age cannot be over 99");
+		$('#health_application_partner_dob').addRule('oldestDOB', dob_health_application_partner_dob.ageMax, "applicant's partner's age cannot be over 99");
 
 		healthFunds._medicareCoveredText = $('#medicareCoveredRow .control-label').text();
 		$('#medicareCoveredRow .control-label').text('Are all people to be included on this policy covered by a green Medicare card?');
@@ -166,14 +160,13 @@ set: function () {
 		healthFunds._reset();
 
 		healthFunds._previousfund_authority(false);
-		$('#health_previousfund_primary_authority').rules('remove', 'required');
-		$('#health_previousfund_partner_authority').rules('remove', 'required');
+		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
 
 		dob_health_application_primary_dob.ageMax = 120;
 		dob_health_application_partner_dob.ageMax = 120;
 
-		$("#applicationForm_1").validate().settings.messages.health_application_primary_dob.max_DateOfBirth = "primary applicant's age cannot be over 120";
-		$("#applicationForm_1").validate().settings.messages.health_application_partner_dob.max_DateOfBirth = "applicant's partner's age cannot be over 120";
+		$('#health_application_primary_dob').addRule('oldestDOB', dob_health_application_primary_dob.ageMax, "primary applicant's age cannot be over 120");
+		$('#health_application_partner_dob').addRule('oldestDOB', dob_health_application_partner_dob.ageMax, "applicant's partner's age cannot be over 120");
 
 		<c:if test="${data.health.situation.healthCvr == 'S' || data.health.situation.healthCvr == 'SM' || data.health.situation.healthCvr == 'SF'}">
 			$('#health_application_primary_genderRow .ifExpectingMessage').remove();
@@ -190,8 +183,8 @@ set: function () {
 		</c:if>
 
 		<%--credit card options--%>
-		creditCardDetails.resetConfig();
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.resetConfig();
+		meerkat.modules.healthCreditCard.render();
 		$('#medicareCoveredRow .control-label').text(healthFunds._medicareCoveredText);
 		$('#medicareCoveredRow .help_icon').attr("id",healthFunds._medicareCoveredHelpId);
 		meerkat.modules.paymentGateway.reset();

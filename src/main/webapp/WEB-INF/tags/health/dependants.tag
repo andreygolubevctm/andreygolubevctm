@@ -36,7 +36,7 @@
 				<strong>If you wish to continue, please add your dependants now.</strong>
 			</p>
 
-			<field:hidden required="true" validationRule="validateMinDependants" validationMessage="A dependant is required." defaultValue="" xpath="${xpath}/dependantrequired" />
+			<field:hidden required="true" validationRule="validateMinDependants" validationParam="{'prefix':'${name}'}" validationMessage="A dependant is required." defaultValue="" xpath="${xpath}/dependantrequired" />
 		</div>
 	
 		<health:dependant_details xpath="${xpath}/dependant" count="1" />

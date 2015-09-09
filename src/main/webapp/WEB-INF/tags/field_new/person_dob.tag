@@ -16,6 +16,7 @@
 <%@ attribute name="ageMax" 			required="false"  	rtexprvalue="true"	 description="Min Age requirement for Person, e.g. 16" %>
 <%@ attribute name="ageMin" 			required="false"  	rtexprvalue="true"	 description="Max Age requirement for Person, e.g. 99" %>
 <%@ attribute name="validateYoungest" 	required="false"  	rtexprvalue="true"	 description="Add validation for youngest person" %>
+<%@ attribute name="additionalAttributes" 	required="false"  	rtexprvalue="true"	 description="Add additional attributes" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -26,6 +27,24 @@
 <c:if test="${empty ageMax}">
 	<c:set var="ageMax" value="99" />
 </c:if>
+
+<c:set var="isRequired">
+	<c:if test="${required eq true}">
+		required data-msg-required='Please enter ${fn:escapeXml(title)} date of birth'
+	</c:if>
+</c:set>
+<c:set var="youngestDOB">
+	data-rule-youngestDOB='{"ageMin":"dob_${name}.ageMin"}' data-msg-youngestDOB='${fn:escapeXml(title)} age cannot be under ${ageMin}'
+</c:set>
+<c:set var="oldestDOB">
+	data-rule-oldestDOB='{ "ageMax":"dob_${name}.ageMax"}' data-msg-oldestDOB='${fn:escapeXml(title)} age cannot be over ${ageMax}'
+</c:set>
+
+<c:set var="youngRegularDriversAgeCheck">
+	<c:if test="${validateYoungest eq true}">
+		data-rule-youngRegularDriversAgeCheck='true' data-msg-youngRegularDriversAgeCheck='Youngest driver should not be older than the regular driver'
+	</c:if>
+</c:set>
 
 <jsp:useBean id="nowLessAgeMinYears" class="java.util.GregorianCalendar" />
 <% nowLessAgeMinYears.add(java.util.GregorianCalendar.YEAR, -Integer.parseInt(ageMin)); %>
@@ -50,7 +69,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 		<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="1895-01-01" max="${nowLessAgeMinYears}" data-msg-required="Please enter the ${title} date of birth" placeHolder="DD/MM/YYYY">
 	</div>
 
-	<field_new:validatedHiddenField xpath="${xpath}" required="${required}" className="serialise" title="Please enter ${title} date of birth" />
+	<field_new:validatedHiddenField xpath="${xpath}" className="serialise" additionalAttributes=" ${isRequired} ${additionalAttributes} data-rule-dateEUR='true'  ${youngestDOB} ${oldestDOB} ${youngRegularDriversAgeCheck}" />
 </div>
 
 <%-- JAVASCRIPT --%>
@@ -58,11 +77,3 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 <go:script marker="js-head">
 	var dob_${name} = { ageMin: ${ageMin},  ageMax: ${ageMax},  message: '' };
 </go:script>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="dateOfBirthEUR" parm="true" message="Please enter a valid date in DD/MM/YYYY format"/>
-<go:validate selector="${name}" rule="min_DateOfBirth" parm="{ ageMin:dob_${name}.ageMin }" message="${title} age cannot be under ${ageMin}" />
-<go:validate selector="${name}" rule="max_DateOfBirth" parm="{ ageMax:dob_${name}.ageMax }" message="${title} age cannot be over ${ageMax}" />
-<c:if test="${validateYoungest eq true}">
-	<go:validate selector="${name}" rule="youngRegularDriversAgeCheck" parm="true" message="Youngest driver should not be older than the regular driver"/>
-</c:if>
