@@ -1,4 +1,3 @@
-<%@ tag import="org.slf4j.LoggerFactory" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Displays the root postcode for a given state."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
