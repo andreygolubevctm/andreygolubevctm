@@ -89,7 +89,7 @@
 	 */
 	function setupCallbackForm() {
 
-		setupDefaultValidationOnForm( $('#getcallback') );
+		meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $('#getcallback') );
 		//$("#getcallback").validate();
 		var clientName = $('#quote_CrClientName');
 		// populate client name if empty

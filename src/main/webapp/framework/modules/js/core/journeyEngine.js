@@ -532,7 +532,7 @@
 
 				var isValid = true;
 				$slide.find( "form" ).each(function( index, element ) {
-					$element = $(element);
+					var $element = $(element);
 					var formValid = $element.valid();
 					if(formValid === false) isValid = false;
 				});
