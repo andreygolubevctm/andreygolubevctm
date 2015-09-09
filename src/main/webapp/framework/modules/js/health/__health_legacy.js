@@ -768,23 +768,6 @@ var healthFunds = {
 			var newPolicyDate = y + '-' + mm + '-' + dd;
 
 			return newPolicyDate;
-	},
-
-	_setPolicyDate : function (dateObj) {
-
-		var dateSplit = dateObj.split('/');
-		var dateFormated = dateSplit[2]+'-'+dateSplit[1]+'-'+dateSplit[0];
-
-		var newdate = new Date(dateFormated);
-		newdate.setDate(newdate.getDate() + 7);
-
-		var dd = ("0" + newdate.getDate()).slice(-2);
-		var mm = ("0" + (newdate.getMonth() + 1)).slice(-2);
-		var y = newdate.getFullYear();
-
-		var newPolicyDate = y + '-' + mm + '-' + dd;
-
-		return newPolicyDate;
 	}
 
 };
