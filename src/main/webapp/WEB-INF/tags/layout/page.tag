@@ -85,16 +85,13 @@
 
 			<script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 		
-			<script src="${assetUrl}framework/jquery/plugins/jquery.validate-1.11.1.js"></script>
 			<script src="${assetUrl}../framework/jquery/plugins/jquery.number-2.1.5.js?${revision}"></script>
-
 
 		<go:insertmarker format="HTML" name="js-href" />
 		<go:script>
 			<go:insertmarker format="SCRIPT" name="js-head" />
 		</go:script>
 
-		<script src="${assetUrl}common/js/jquery.validate.custom.js?${revision}"></script>
 		<go:script>
 			$(document).ready(function(){
 				<go:insertmarker format="SCRIPT" name="onready" />

@@ -634,7 +634,8 @@
 				productBrandCode: product.brandCode,
 				brand: product.providerProductName,
 				verticalFilter: meerkat.modules.home.getVerticalFilter(),
-				productID: product.trackingProductId
+				productID: product.trackingProductId,
+				noSaleLead: leadFeed
 			});
 		} else {
 			meerkat.modules.partnerTransfer.transferToPartner({
@@ -645,7 +646,8 @@
 				productBrandCode: product.brandCode,
 				brand: product.productDes,
 				verticalFilter: meerkat.modules.home.getVerticalFilter(),
-				productID: product.trackingProductId
+				productID: product.trackingProductId,
+				noSaleLead: leadFeed
 			});
 		}
 

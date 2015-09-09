@@ -16,6 +16,7 @@
     "shared/regoLookup",
     "shared/saveQuote",
     "shared/resultsRankings",
-    "shared/leadFeed"
+    "shared/leadFeed",
+    "shared/validation"
   ]
 }

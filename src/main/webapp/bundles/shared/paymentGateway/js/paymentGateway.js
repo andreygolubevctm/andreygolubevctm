@@ -137,7 +137,7 @@ Process:
 		switch (_type) {
 			case 'cc':
 				$('.' + settings.name + '-credit').slideDown();
-				$registered.rules('add', {required:true, messages:{required:'Please register your credit card details'}});
+				$registered.setRequired(true, 'Please register your credit card details');
 				break;
 			default:
 				$('.' + settings.name + '-credit').slideUp('','', function(){ $(this).hide(); });
@@ -168,7 +168,7 @@ Process:
 	}
 
 	function clearValidation() {
-		$registered.rules('remove', 'required');
+		$registered.setRequired(false);
 	}
 
 	function init() {

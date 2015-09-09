@@ -54,7 +54,7 @@
 			};
 			var productAvailable = "productAvailable";
 			var productName = "headline.name";
-			var carQuoteResultsUrl = "ajax/json/home_results.jsp";
+			var homeQuoteResultsUrl = "ajax/json/home_results.jsp";
 			if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
 				price = {
 					annual: "price.annualPremium",
@@ -63,12 +63,12 @@
 				};
 				productAvailable = "available";
 				productName = "productName";
-				carQuoteResultsUrl = "ajax/json/home_results_ws.jsp"
+				homeQuoteResultsUrl = "ajax/json/home_results_ws.jsp"
 			}
 
 			// Init the main Results object
 			Results.init({
-				url: carQuoteResultsUrl,
+				url: homeQuoteResultsUrl,
 				runShowResultsPage: false, // Don't let Results.view do it's normal thing.
 				paths: {
 					price: price,
@@ -200,7 +200,7 @@
 				rankings: {
 					paths: {
 						rank_productId: "productId",
-						rank_premium: "price.annual.total"
+						rank_premium: price.annual
 					},
 					filterUnavailableProducts: false
 				},
@@ -510,9 +510,9 @@
 		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
 			$("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
 		}
-
+		var verticalToUse = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote ? 'hncamsws_' : 'hncams';
 		// Fetch results
-		meerkat.modules.resultsFeatures.fetchStructure('hncams').done(function() {
+		meerkat.modules.resultsFeatures.fetchStructure(verticalToUse).done(function() {
 			Results.get();
 		});
 	}

@@ -60,8 +60,14 @@
 		} else {
 			dat = [];
 		}
+
+
+		dat = meerkat.modules.sendEmail.purgefromData('premiumFrequency', dat);
 		dat.push({name:'premiumFrequency',value: Results.settings.frequency});
+
+		dat = meerkat.modules.sendEmail.purgefromData('marketing', dat);
 		dat.push({name:'marketing',value: settings.marketing.val()});
+
 		return dat;
 	}
 

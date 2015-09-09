@@ -268,11 +268,11 @@
 		if(cover === 'F' || cover === 'SPF'){
 			healthSituCvr = 'FAM';
 		} else if((cover === 'S' || cover === 'SM' || cover === 'SF') && primary_dob !== '') {
-			ageAverage = returnAge(primary_dob, true);
+			ageAverage = meerkat.modules.utils.returnAge(primary_dob, true);
 			healthSituCvr = getAgeBands(ageAverage);
 		} else if(cover === 'C' && primary_dob !== '' && partner_dob !== '') {
-			primary_age = returnAge(primary_dob),
-			partner_age = returnAge(partner_dob);
+			primary_age = meerkat.modules.utils.returnAge(primary_dob),
+			partner_age = meerkat.modules.utils.returnAge(partner_dob);
 			if ( 16 <= primary_age && primary_age <= 120 && 16 <= partner_age && partner_age <= 120 ){
 				ageAverage = Math.floor( (primary_age + partner_age) / 2 );
 				healthSituCvr = getAgeBands(ageAverage);

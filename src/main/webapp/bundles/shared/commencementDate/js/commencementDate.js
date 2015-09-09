@@ -113,7 +113,7 @@
 				});
 
 				$form = $('#modal-commencement-date-form');
-				setupDefaultValidationOnForm($form);
+				meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($form);
 				$(settings.dateField + '_mobile').attr('data-msg-required', "Commencement date required");
 				$(settings.dateField + '_mobile option:first').remove();
 				$('#modal-commencement-date-get-quotes').on('click', function(event){

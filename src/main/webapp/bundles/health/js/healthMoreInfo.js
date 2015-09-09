@@ -153,9 +153,6 @@
             initialiseBrochureEmailForm(Results.getSelectedProduct(), moreInfoContainer, $('#resultsForm'));
             populateBrochureEmail();
         }
-
-        // Insert next_info_all_funds
-        $('.more-info-content .next-info-all').html($('.more-info-content .next-steps-all-funds-source').html());
     }
 
     function onAfterShowTemplate() {
@@ -180,8 +177,6 @@
         if (meerkat.site.emailBrochures.enabled) {
             initialiseBrochureEmailForm(Results.getSelectedProduct(), $('#' + dialogId), $('#' + dialogId).find('.healthMoreInfoModel'));
         }
-        // Insert next_info_all_funds
-        $('.more-info-content .next-info .next-info-all').html($('.more-info-content .next-steps-all-funds-source').html());
 
         // Move dual-pricing panel
         $('.more-info-content .moreInfoRightColumn > .dualPricing').insertAfter($('.more-info-content .moreInfoMainDetails'));
@@ -313,32 +308,45 @@
 
         // Get the "about fund", "what happens next" and warningAlert info
         return $.when(
-            meerkat.modules.comms.get({
-                url: "health_fund_info/" + product.info.provider + "/about.html",
-                cache: true,
-                errorLevel: "silent",
-                onSuccess: function aboutFundSuccess(result) {
-                    product.aboutFund = result;
-                }
-            }),
-            meerkat.modules.comms.get({
-                url: "health_fund_info/" + product.info.provider + "/next_info.html",
-                cache: true,
-                errorLevel: "silent",
-                onSuccess: function whatHappensNextSuccess(result) {
-                    product.whatHappensNext = result;
-                }
-            }),
-            meerkat.modules.comms.get({
-                url: "health/quote/dualPrising/getFundWarning.json",
-                data: {providerId: product.info.providerId},
-                cache: true,
-                errorLevel: "silent",
-                onSuccess: function warningAlertSuccess(result) {
-                    product.warningAlert = result.warningMessage;
-                }
-            })
+            getProviderContentByType( product, 'ABT'),
+            getProviderContentByType( product, 'NXT'),
+            getProviderContentByType( product, 'FWM')
         );
+    }
+
+    /**
+     *
+     * @param product
+     * @param providerContentTypeCode
+     * @return promise
+     */
+    function getProviderContentByType(product, providerContentTypeCode) {
+
+        var data = {};
+        data.providerId = product.info.providerId;
+        data.providerContentTypeCode = providerContentTypeCode;
+
+        return meerkat.modules.comms.get({
+            url: "health/provider/content/get.json",
+            data: data,
+            cache: true,
+            errorLevel: "silent",
+            onSuccess: function getProviderContentSuccess(result) {
+                if (result.hasOwnProperty('providerContentText')) {
+                    switch (providerContentTypeCode) {
+                        case 'ABT':
+                            product.aboutFund = result.providerContentText;
+                            break;
+                        case 'NXT':
+                            product.whatHappensNext = result.providerContentText;
+                            break;
+                        case 'FWM':
+                            product.warningAlert = result.providerContentText;
+                            break;
+                    }
+                }
+            }
+        });
     }
 
     function prepareCoverFeatures(searchPath, target) {

@@ -250,34 +250,16 @@
 	function setValidation(){
 
 		$forms.each(function(){
-			setupDefaultValidationOnForm($(this));
+			meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($(this));
 		});
 
 		if( $name.length > 0 ){
-			$name.add("rules", {
-				required:true,
-				messages: {
-					required: "Please enter your name"
-				}
-			});
+			$name.setRequired(true, "Please enter your name");
 		}
 
-		if( $phone.length > 0 ){
-			$phone.add("rules", {
-				validateTelNo:true,
-				messages: {
-					validateTelNo: "Please enter the contact number in the format (area code)(local number) for landline or 04xxxxxxxx for mobile"
-				}
-			});
-		}
 
 		if( $time.length > 0 ){
-			$time.add("rules", {
-				required:true,
-				messages: {
-					required: "Please select when you want us to call you back"
-				}
-			});
+			$time.setRequired(true);
 		}
 
 	}

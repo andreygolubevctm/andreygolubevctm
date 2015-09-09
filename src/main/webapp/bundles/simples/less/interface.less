@@ -119,5 +119,29 @@ body.simples {
 		border-left:2px solid #ddd;
 	}
 
+  	.side-menu-container{
+	  background-color: @theme-tertiary;
+	  position: fixed;
+	  top: 100px;
+	  left: 10px;
+	  border-radius: @border-radius-large;
+
+	  .active{
+		a {
+		  background-color: @theme-secondary;
+		  &:hover, &:focus {
+			background-color: darken(@theme-secondary, 10%);
+		  }
+		}
+	  }
+
+	  a {
+		color: #fff;
+		&:hover, &:focus {
+		  background-color: darken(@theme-tertiary, 10%);
+		}
+	  }
+	}
+
 }//body.simples
 

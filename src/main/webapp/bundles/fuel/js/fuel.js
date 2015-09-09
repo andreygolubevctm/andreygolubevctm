@@ -114,6 +114,7 @@
                 object: meerkat.modules.fuel.getTrackingFieldsObject
             },
             onInitialise: function(){
+                meerkat.modules.jqueryValidate.initJourneyValidator();
                 meerkat.modules.fuelPrefill.initFuelPrefill();
             },
             onAfterEnter: function() {

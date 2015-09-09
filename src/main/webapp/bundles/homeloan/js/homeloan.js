@@ -59,6 +59,7 @@
 				// Init the results objects required for next step
 				meerkat.modules.homeloanResults.initPage();
 				meerkat.modules.currencyField.initCurrency();
+				meerkat.modules.jqueryValidate.initJourneyValidator();
 
 				// Hook up privacy optin to Email Quote button
 				var $emailQuoteBtn = $(".slide-feature-emailquote");
