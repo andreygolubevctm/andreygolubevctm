@@ -41,7 +41,7 @@
 <c:choose>
 	<%-- PRESERVE TEST --%>
 	<c:when test="${ (hasTransId && not empty id_handler && id_handler == 'preserve_tranId' ) ||
-					(hasTransId && ((empty id_handler and not empty param.action and (param.action == 'amend' || param.action == 'latest' || param.action == 'confirmation')) ))}">		
+					(hasTransId && ((empty id_handler and not empty param.action and (param.action == 'amend' || param.action == 'latest' || param.action == 'confirmation')) ))}">
 		<c:set var="method" value="PRESERVE" />
 	</c:when>
 	<%-- INSTA FAIL --%>
@@ -82,10 +82,10 @@
 			UNION ALL
 			SELECT vm.verticalCode AS productType, em.emailAddress AS EmailAddress,th2c.`styleCodeId`,sc.styleCode,`rootId`
 			FROM aggregator.transaction_header2_cold th2c
-				JOIN ctm.vertical_master vm USING(verticalId)
-				JOIN ctm.stylecodes sc USING(styleCodeId)
-				LEFT JOIN aggregator.transaction_emails te USING(transactionId)
-				LEFT JOIN aggregator.email_master em ON em.styleCodeId = th2c.styleCodeId AND em.emailId = te.emailId
+			JOIN ctm.vertical_master vm USING(verticalId)
+			JOIN ctm.stylecodes sc USING(styleCodeId)
+			LEFT JOIN aggregator.transaction_emails te USING(transactionId)
+			LEFT JOIN aggregator.email_master em ON em.styleCodeId = th2c.styleCodeId AND em.emailId = te.emailId
 			WHERE th2c.TransactionId = ? AND th2c.styleCodeId = ?
 			LIMIT 1;
 			<sql:param value="${requestedTransaction}" />
@@ -98,23 +98,23 @@
 		<c:choose>
 			<c:when test="${not empty getTransaction and getTransaction.rowCount > 0}">
 
-			<c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}"  />
-			<c:set var="sessionId" 		value="${pageContext.session.id}" />
-			<c:set var="status" 		value="" />
+				<c:set var="ipAddress" 		value="${pageContext.request.remoteAddr}"  />
+				<c:set var="sessionId" 		value="${pageContext.session.id}" />
+				<c:set var="status" 		value="" />
 
-			${logger.info('[with id_handler] Found transactionId in db. IDs for Get TransactionID. {},{}',log:kv('ipAddress',ipAddress ),log:kv('requestedTransaction', requestedTransaction))}
+				<go:log source="core:get_transactionid" >[with id_handler] Found transactionId in db. IDs for Get TransactionID = ipAddress: ${pageContext.request.remoteAddr}, sessionID = ${pageContext.session.id}</go:log>
 
 				<c:catch var="error">
 					<%-- New Transaction Header using the older values to help populate--%>
 					<sql:update dataSource="jdbc/ctm">
-							INSERT INTO aggregator.transaction_header
-							(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId, styleCode, advertKey,sessionId,status)
-							values (
-								0,?,?,?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?
-							);
-							<sql:param value="${getTransaction.rows[0].rootId}" />
-							<sql:param value="${requestedTransaction}" />
-							<sql:param value="${getTransaction.rows[0].ProductType}" />
+						INSERT INTO aggregator.transaction_header
+						(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId, styleCode, advertKey,sessionId,status)
+						values (
+						0,?,?,?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?
+						);
+						<sql:param value="${getTransaction.rows[0].rootId}" />
+						<sql:param value="${requestedTransaction}" />
+						<sql:param value="${getTransaction.rows[0].ProductType}" />
 						<c:choose>
 							<c:when test="${not empty emailAddress}">
 								<sql:param value="${emailAddress}" />
@@ -142,64 +142,64 @@
 						<sql:param value="${rootId}" />
 					</sql:query>
 					<c:choose>
-					<c:when test="${results.rowCount == 0 || empty results.rows[0].transactionID}">
-						<c:set var="method" value="ERROR: INCREMENT" />
-						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-							<c:param name="property" value="${styleCodeId}" />
-							<c:param name="transactionId" value="${transactionId}" />
-							<c:param name="page" value="${pageContext.request.servletPath}" />
-							<c:param name="message" value="core:get_transaction_id NEW" />
-							<c:param name="description" value="${error}" />
-							<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
-						</c:import>
-						<go:setData dataVar="data" value="" xpath="current/transactionId" />
-					</c:when>
-					<c:otherwise>
-						<c:set var="tranId" value="${results.rows[0].transactionID}" />
-						<%-- Duplicate the transaction details --%>
-						<sql:update>
-							INSERT INTO aggregator.transaction_details
-							SELECT ${tranId} as transactionId, sequenceNo, xpath, textValue, numericValue, dateValue
-							FROM aggregator.transaction_details
+						<c:when test="${results.rowCount == 0 || empty results.rows[0].transactionID}">
+							<c:set var="method" value="ERROR: INCREMENT" />
+							<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+								<c:param name="property" value="${styleCodeId}" />
+								<c:param name="transactionId" value="${transactionId}" />
+								<c:param name="page" value="${pageContext.request.servletPath}" />
+								<c:param name="message" value="core:get_transaction_id NEW" />
+								<c:param name="description" value="${error}" />
+								<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
+							</c:import>
+							<go:setData dataVar="data" value="" xpath="current/transactionId" />
+						</c:when>
+						<c:otherwise>
+							<c:set var="tranId" value="${results.rows[0].transactionID}" />
+							<%-- Duplicate the transaction details --%>
+							<sql:update>
+								INSERT INTO aggregator.transaction_details
+								SELECT ${tranId} as transactionId, sequenceNo, xpath, textValue, numericValue, dateValue
+								FROM aggregator.transaction_details
 								WHERE transactionId = ?
 								UNION ALL
 								SELECT ${tranId} as transactionId, (@sequence := @sequence + 1) AS sequenceNo, tf.fieldCode AS xpath, td2c.textValue, 0.00, CURDATE()
 								FROM aggregator.transaction_details2_cold td2c
-									JOIN aggregator.transaction_fields tf USING(fieldId)
-									JOIN (SELECT @sequence := 0) AS sequencer
-							WHERE transactionId = ?;
-							<sql:param value="${requestedTransaction}" />
+								JOIN aggregator.transaction_fields tf USING(fieldId)
+								JOIN (SELECT @sequence := 0) AS sequencer
+								WHERE transactionId = ?;
 								<sql:param value="${requestedTransaction}" />
-						</sql:update>
+								<sql:param value="${requestedTransaction}" />
+							</sql:update>
 
-						<%-- Finally we'll replace the requestedTransaction var with the new ID --%>
+							<%-- Finally we'll replace the requestedTransaction var with the new ID --%>
+							<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
+						</c:otherwise>
+					</c:choose>
+				</c:catch>
+				<%-- ERROR CHECK --%>
+				<c:choose>
+					<c:when test="${not empty error}">
+						<go:log  source="core:get_transactionid" level="ERROR">${error}</go:log>
+						<c:set var="method" value="ERROR: INCREMENT" />
+
+						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+							<c:param name="transactionId" value="${transactionId}" />
+							<c:param name="page" value="${pageContext.request.servletPath}" />
+							<c:param name="message" value="core:get_transaction_id INCREMENT" />
+							<c:param name="description" value="${error}" />
+							<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
+						</c:import>
+
+						<go:setData dataVar="data" value="" xpath="current/transactionId" />
+					</c:when>
+					<c:otherwise>
 						<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
 					</c:otherwise>
 				</c:choose>
-			</c:catch>
-			<%-- ERROR CHECK --%>
-			<c:choose>
-				<c:when test="${not empty error}">
-					${logger.error('Exception when getting transaction id. {}', log:kv('requestedTransaction',requestedTransaction ), error)}
-					<c:set var="method" value="ERROR: INCREMENT" />
-
-					<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-						<c:param name="transactionId" value="${transactionId}" />
-						<c:param name="page" value="${pageContext.request.servletPath}" />
-						<c:param name="message" value="core:get_transaction_id INCREMENT" />
-						<c:param name="description" value="${error}" />
-						<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
-					</c:import>
-
-					<go:setData dataVar="data" value="" xpath="current/transactionId" />
-				</c:when>
-				<c:otherwise>
-					<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
-				</c:otherwise>
-			</c:choose>
-	</c:when>
+			</c:when>
 			<c:otherwise>
-				${logger.info('TRANSACTION ID NOT FOUND EITHER THE TRANSACTION DOES NOT EXIST, OR NOT LINKED WITH THIS BRAND. {},{}', log:kv('requestedTransaction',requestedTransaction ), log:kv('styleCodeId',styleCodeId ))}
+				<go:log source="core:get_transactionid">TRANSACTION ID NOT FOUND: '${requestedTransaction}' EITHER THE TRANSACTION DOES NOT EXIST, OR NOT LINKED WITH THIS BRAND: '${styleCodeId}'</go:log>
 				<go:setData dataVar="data" xpath="current" value="*DELETE" />
 			</c:otherwise>
 		</c:choose>
@@ -220,7 +220,7 @@
 				INSERT INTO aggregator.transaction_header
 				(TransactionId,rootId,PreviousId,ProductType,emailAddress,ipAddress,startDate,startTime,styleCodeId,styleCode,advertKey,sessionId,status,prevRootId)
 				values (
-					0,'0','0',?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?,?
+				0,'0','0',?,?,?,CURRENT_DATE,CURRENT_TIME,?,?,0,?,?,?
 				);
 				<sql:param value="${fn:toUpperCase(quoteType)}" />
 				<c:choose>
@@ -230,7 +230,7 @@
 					<c:otherwise>
 						<sql:param value=" " />
 					</c:otherwise>
-					</c:choose>
+				</c:choose>
 				<sql:param value="${ipAddress}" />
 				<sql:param value="${styleCodeId}" />
 				<sql:param value="${styleCode}" />
@@ -297,5 +297,7 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-${logger.info("Get transaction id complete. {},{},{}", log:kv('transactionId',data.current.transactionId ), log:kv('rootId', data.current.rootId), log:kv('method',method ))}
+
+<go:log source="core:get_transactionid">Transaction ID outcome: {"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}</go:log>
+
 {"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}
