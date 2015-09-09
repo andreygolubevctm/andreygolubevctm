@@ -19,7 +19,7 @@ import com.ctm.providers.travel.travelquote.model.response.TravelResponse;
 import com.ctm.services.CommonQuoteService;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.ResultsService;
-import com.ctm.xml.XMLOutputWriter;
+import com.ctm.logging.XMLOutputWriter;
 import com.disc_au.web.go.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -32,7 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
+import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class TravelService extends CommonQuoteService<TravelQuote> {
 

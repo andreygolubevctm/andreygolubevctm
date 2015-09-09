@@ -24,7 +24,7 @@ import com.ctm.services.ResultsService;
 import com.ctm.services.SessionDataService;
 import com.ctm.utils.ObjectMapperUtil;
 import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.xml.XMLOutputWriter;
+import com.ctm.logging.XMLOutputWriter;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ctm.model.settings.Vertical.VerticalType.HOME;
-import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
+import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 

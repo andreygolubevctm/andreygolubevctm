@@ -21,7 +21,7 @@ import com.ctm.services.CommonQuoteService;
 import com.ctm.services.ResultsService;
 import com.ctm.services.SessionDataService;
 import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.xml.XMLOutputWriter;
+import com.ctm.logging.XMLOutputWriter;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +41,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.ctm.model.settings.Vertical.VerticalType.CAR;
-import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
+import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class CarQuoteService extends CommonQuoteService<CarQuote> {
 
