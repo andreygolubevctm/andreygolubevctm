@@ -159,6 +159,8 @@
 					$('.follow-up-call input:checkbox, .simples-privacycheck-statement input:checkbox').on('change', function() {
 						toggleDialogueInChatCallback();
 					});
+
+					meerkat.modules.healthBenefits.initHealthBenefits();
 				}
 
 			}
@@ -182,6 +184,8 @@
 				// Set initial state.
 				healthCoverDetails.setHealthFunds(true);
 				healthCoverDetails.setIncomeBase(true);
+
+				meerkat.modules.healthTiers.initHealthTiers();
 
 				// Add event listeners.
 
@@ -272,6 +276,9 @@
 				validate: false
 			},
 			onInitialise: function onResultsInit(event){
+				if(!meerkat.site.isCallCentreUser) {
+					meerkat.modules.healthBenefits.initHealthBenefits();
+				}
 				meerkat.modules.healthResults.initPage();
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
@@ -372,9 +379,11 @@
 				}
 			},
 			onInitialise: function onInitResults(event){
-
+				meerkat.modules.healthFilters.initHealthFilters();
+				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
+				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
+				meerkat.modules.healthAltPricing.initHealthAltPricing();
 				meerkat.modules.healthMoreInfo.initMoreInfo();
-
 			},
 			onBeforeEnter:function enterResultsStep(event){
 
@@ -424,6 +433,8 @@
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
 			onInitialise: function onInitApplyStep(event){
+
+				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 
 				healthApplicationDetails.init();
 
@@ -557,6 +568,10 @@
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
 			onInitialise: function initPaymentStep(event){
+
+				meerkat.modules.healthPaymentStep.initHealthPaymentStep();
+				meerkat.modules.healthPaymentDate.initPaymentDate();
+				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP()
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();

@@ -22,12 +22,16 @@ Handling changes to the price range coming back from the ajax
 				min : 1,
 				max : 4000
 			}
-	};
+	},
+	initialised = false;
 
-	function init() {
-		// When the frequency filter is modified, update the price slider to reflect
-		$('#filter-frequency input').on('change', onUpdateFrequency);
-		$(document).on("resultsDataReady", onUpdatePriceFilterRange);
+	function initHealthPriceRangeFilter() {
+		if(!initialised) {
+			initialised = true;
+			// When the frequency filter is modified, update the price slider to reflect
+			$('#filter-frequency input').on('change', onUpdateFrequency);
+			$(document).on("resultsDataReady", onUpdatePriceFilterRange);
+		}
 	}
 
 	function setUp() {
@@ -87,7 +91,7 @@ Handling changes to the price range coming back from the ajax
 	}
 
 	meerkat.modules.register("healthPriceRangeFilter", {
-		init: init,
+		initHealthPriceRangeFilter: initHealthPriceRangeFilter,
 		setUp: setUp
 	});
 

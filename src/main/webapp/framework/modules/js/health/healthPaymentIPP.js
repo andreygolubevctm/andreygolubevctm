@@ -16,11 +16,13 @@ Process:
 		modalId,
 		modalContent = '',
 		ajaxInProgress = false,
-		launchTime = 0;
+		launchTime = 0,
+		initialised = false;
 
 
-	function init() {
-		$(document).ready(function initHealthPaymentIPP() {
+	function initHealthPaymentIPP() {
+		if(!initialised) {
+			initialised = true;
 
 			$('[data-provide="payment-ipp"]').each(function eachPaymentIPP() {
 				var $this = $(this);
@@ -37,7 +39,7 @@ Process:
 				});
 			});
 
-		});
+		}
 	}
 
 	function show() {
@@ -222,7 +224,7 @@ Process:
 
 
 	meerkat.modules.register("healthPaymentIPP", {
-		init: init,
+		initHealthPaymentIPP: initHealthPaymentIPP,
 		show: show,
 		hide: hide,
 		fail: fail,
