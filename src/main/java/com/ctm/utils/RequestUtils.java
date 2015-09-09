@@ -40,7 +40,7 @@ public class RequestUtils {
             try{
                 transactionId = Long.parseLong(requestTransactionId);
             } catch (NumberFormatException e) {
-                LOGGER.error("Failed to parse transactionId from request. {}" + kv("requestTransactionId", requestTransactionId), e);
+                LOGGER.error("Failed to parse transactionId from request. {}", kv("requestTransactionId", requestTransactionId), e);
             }
         }
         return transactionId;
