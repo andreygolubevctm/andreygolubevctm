@@ -233,7 +233,7 @@ public class Gadget {
 			out.flush();
 			out.close();
 		} catch (IOException e) {
-			LOGGER.error("Failed to write to file");
+			LOGGER.error("Failed to write to file {}", kv("filepath", filepath));
 		}
 	}
 	public static String XMLtoJSON(String xml){
