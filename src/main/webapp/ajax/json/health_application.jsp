@@ -136,7 +136,7 @@
 		<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
 		<c:set var="configUrl">/WEB-INF/aggregator/health_application/${fund}/config.xml</c:set>
 
-		<c:import var="config" url="${configResolver.getConfigUrl(configUrl)}" />
+		<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, configUrl)}" />
 		<go:soapAggregator config = "${config}"
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['health'])}"
