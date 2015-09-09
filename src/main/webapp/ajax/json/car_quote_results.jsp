@@ -148,7 +148,7 @@
 							  transactionId = "${data.text['current/transactionId']}"
 							  xml = "${go:getEscapedXml(data['quote'])}"
 							  var = "resultXml"
-							  authToken = "${param.quote_authToken}"
+							  authToken = "${param.quote_filter_authToken}"
 							  debugVar="debugXml"
 							  validationErrorsVar="validationErrors"
 							  continueOnValidationError="${continueOnValidationError}"
@@ -250,7 +250,7 @@
 						<jsp:useBean id="dateUtils" class="com.ctm.utils.common.utils.DateUtils" scope="request" />
 						<c:set var="regDob" value="${data.quote.drivers.regular.dob}" />
 						<c:set var="yngDob" value="${data.quote.drivers.young.dob}" />
-						<c:if test="${(data.quote.drivers.regular.gender eq 'M' && dateUtils.getAgeFromDOB(regDob) < 21) || (not empty yngDob && data.quote.drivers.young.gender eq 'M' && dateUtils.getAgeFromDOB(yngDob) < 21)}">
+						<c:if test="${(data.quote.drivers.regular.gender eq 'M' && dateUtils.getAgeFromDOBStr(regDob) < 21) || (not empty yngDob && data.quote.drivers.young.gender eq 'M' && dateUtils.getAgeFromDOBStr(yngDob) < 21)}">
 							<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]/available" value="N" />
 						</c:if>
 					</c:if>

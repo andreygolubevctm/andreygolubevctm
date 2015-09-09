@@ -52,12 +52,10 @@
 			{{ } }}
 
 			<h2 class="more-info-about">About the fund</h2>
-			{{= aboutFund }}
+			<div class="about-the-fund">{{= aboutFund }}</div>
 
 			<h2 class="more-info-nextsteps">Once you press the submit button...</h2>
-			{{= whatHappensNext }}
-
-			<span class="hidden next-steps-all-funds-source">If you have a direct debit set up with your current fund we suggest that you cancel the request as soon as possible. You may be able do this through your fund&#39;s online member service area.</span>
+			<div class="next-info">{{= whatHappensNext }}</div>
 
 		</div>
 
@@ -167,20 +165,20 @@
 
 			<div class="row row-content brochureButtons">
 				{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
-					<div class="col-sm-6 col-xs-12">
-						<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download col-xs-12">Download <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+				<div class="col-sm-6 col-xs-12">
+						<a href="{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download col-xs-12">Download <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
 					</div>
 				{{ } else { }}
 
 					{{ if(typeof hospitalCover !== 'undefined') { }}
 						<div class="col-sm-6 col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download col-xs-12">Download Hospital <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
+							<a href="{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download col-xs-12">Download Hospital <br class="hidden-xs hidden-lg"/> Policy Brochure</a>
 						</div>
 					{{ } }}
 
 					{{ if(typeof extrasCover !== 'undefined') { }}
 						<div class="col-sm-6 col-xs-12 ">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
+							<a href="{{= promo.extrasPDF }}" target="_blank" class="btn btn-download col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
 						</div>
 					{{ } }}
 				{{ } }}

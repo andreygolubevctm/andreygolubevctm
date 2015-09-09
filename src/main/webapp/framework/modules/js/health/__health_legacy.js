@@ -9,39 +9,6 @@
 */
 
 /* Utilities functions for health */
-
-function returnAge(_dobString, round){
-	var _now = new Date;
-		_now.setHours(0,0,0);
-	var _dob = returnDate(_dobString);
-	var _years = _now.getFullYear() - _dob.getFullYear();
-
-	if(_years < 1){
-		return (_now - _dob) / (1000 * 60 * 60 * 24 * 365);
-	};
-
-	//leap year offset
-	var _leapYears = _years - ( _now.getFullYear() % 4);
-	_leapYears = (_leapYears - ( _leapYears % 4 )) /4;
-	var _offset1 = ((_leapYears * 366) + ((_years - _leapYears) * 365)) / _years;
-	var _offset2;
-
-	//birthday offset - as it's always so close
-	if(  (_dob.getMonth() == _now.getMonth()) && (_dob.getDate() > _now.getDate()) ){
-		_offset2 = -0.005;
-	} else {
-		_offset2 = +0.005;
-	};
-
-	var _age = (_now - _dob) / (1000 * 60 * 60 * 24 * _offset1) + _offset2;
-	if (round) {
-		return Math.floor(_age);
-	}
-	else {
-		return _age;
-	}
-};
-
 function returnDate(_dateString){
 	if(_dateString === '') return null;
 	var dateComponents = _dateString.split('/');
@@ -58,7 +25,7 @@ function returnDate(_dateString){
  */
 function isLessThan31Or31AndBeforeJuly1(_dobString) {
 	if(_dobString === '') return false;
-	var age = Math.floor(returnAge(_dobString));
+	var age = Math.floor(meerkat.modules.utils.returnAge(_dobString));
 	if( age < 31 ) {
 		return false;
 	} else if( age == 31 ){
@@ -225,14 +192,14 @@ var healthChoices = {
 	},
 
 	setLocation : function(location) {
+		
+
 		if( healthChoices.isValidLocation(location) ) {
 			var value = $.trim(String(location));
 			var pieces = value.split(' ');
 			var state = pieces.pop();
 			var postcode = pieces.pop();
-			var suburb = pieces.join(' ');
-
-			$('#health_situation_state').val(state);
+			var suburb = pieces.join(' ');			$('#health_situation_state').val(state);
 			$('#health_situation_postcode').val(postcode).trigger("change");
 			$('#health_situation_suburb').val(suburb);
 
@@ -625,13 +592,7 @@ var healthFunds = {
 	},
 
 	_memberIdRequired: function(required){
-		if(required) {
-			$('#clientMemberID').find('input').rules('add', 'required');
-			$('#partnerMemberID').find('input').rules('add', 'required');
-		} else {
-			$('#clientMemberID').find('input').rules('remove', 'required');
-			$('#partnerMemberID').find('input').rules('remove', 'required');
-		}
+		$('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(required);
 	},
 
 	_dependants: function(message){
@@ -807,6 +768,23 @@ var healthFunds = {
 			var newPolicyDate = y + '-' + mm + '-' + dd;
 
 			return newPolicyDate;
+	},
+
+	_setPolicyDate : function (dateObj) {
+
+		var dateSplit = dateObj.split('/');
+		var dateFormated = dateSplit[2]+'-'+dateSplit[1]+'-'+dateSplit[0];
+
+		var newdate = new Date(dateFormated);
+		newdate.setDate(newdate.getDate() + 7);
+
+		var dd = ("0" + newdate.getDate()).slice(-2);
+		var mm = ("0" + (newdate.getMonth() + 1)).slice(-2);
+		var y = newdate.getFullYear();
+
+		var newPolicyDate = y + '-' + mm + '-' + dd;
+
+		return newPolicyDate;
 	}
 
 };
@@ -826,14 +804,9 @@ var healthApplicationDetails = {
 	showHowToSendInfo: function(providerName, required) {
 		var contactPointGroup = $('#health_application_contactPoint-group');
 		var contactPoint = contactPointGroup.find('.control-label span');
-		var contactPointText = contactPoint.text();
 		contactPoint.text( providerName);
-		if (required) {
-			contactPointGroup.find('input').rules('add', {required:true, messages:{required:'Please choose how you would like ' + providerName + ' to contact you'}});
-		}
-		else {
-			contactPointGroup.find('input').rules('remove', 'required');
-		}
+		contactPointGroup.find('input').setRequired(required, 'Please choose how you would like ' + providerName + ' to contact you');
+
 		contactPointGroup.removeClass('hidden');
 	},
 	hideHowToSendInfo: function() {
@@ -1058,8 +1031,8 @@ var healthDependents = {
 		if( healthDependents.config.fulltime !== true ){
 			$('#health_application_dependants-selection').find('.health_dependant_details_fulltimeGroup').hide();
 			// reset validation of dob to original
-			$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('remove', 'validateFulltime');
-			$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('add', 'limitDependentAgeToUnder25');
+			//TODO: Fix this to ensure the rules are added/removed properly.
+			$('#health_application_dependants_dependant' + index + '_dob').removeRule('validateFulltime').addRule('limitDependentAgeToUnder25');
 			return false;
 		}
 
@@ -1070,9 +1043,9 @@ var healthDependents = {
 		}
 
 		// change validation method for dob field if fulltime is enabled
-		$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('remove', 'limitDependentAgeToUnder25');
-		$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('add', 'validateFulltime');
-
+		//TODO: Fix this to ensure the rules are added/removed properly.
+		$('#health_application_dependants_dependant' + index + '_dob').removeRule('limitDependentAgeToUnder25').addRule('validateFulltime');
+		
 	},
 
 	addSchool: function(index, age){
@@ -1089,24 +1062,14 @@ var healthDependents = {
 				$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_schoolIDGroup').hide();
 			}
 			else {
-				if (this.config.schoolIDMandatory === true) {
-					$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_schoolID').rules('add', {required:true, messages:{required:'Please enter dependant '+index+'\'s student ID'}});
-				}
-				else {
-					$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_schoolID').rules('remove', 'required');
-				}
+				$('#health_application_dependants_dependant' + index + '_schoolID').setRequired(this.config.schoolIDMandatory, 'Please enter dependant '+index+'\'s student ID');
 			};
 			// Show/hide date study commenced field, with optional validation
 			if (this.config.schoolDate !== true) {
 				$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_schoolDateGroup').hide();
 			}
 			else {
-				if (this.config.schoolDateMandatory === true) {
-					$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_schoolDate').rules('add', {required:true, messages:{required:'Please enter date that dependant '+index+' commenced study'}});
-				}
-				else {
-					$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_schoolDate').rules('remove', 'required');
-				}
+				$('#health_application_dependants_dependant' + index + '_schoolDate').setRequired(this.config.schoolDateMandatory, 'Please enter date that dependant '+index+' commenced study');
 			};
 		} else {
 			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').hide();
@@ -1134,19 +1097,19 @@ var healthDependents = {
 	addDefacto: function(index, age){
 		if( healthDependents.config.defacto === false ){
 			return false;
-		};
+		}
 		if( (age >= healthDependents.config.defactoMin) && (age <= healthDependents.config.defactoMax) ){
 			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_maritalincomestatus').show();
 		} else {
 			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_maritalincomestatus').hide();
-		};
+		}
 	},
 
 	hasChanged: function( ){
 		var $_obj = $('#health_application_dependants-selection').find('.health-dependants-tier');
 		if(healthCoverDetails.getRebateChoice() == 'N' ) {
 			$_obj.slideUp();
-		} else if( healthDependents._dependents > 0 ){
+		} else if( healthDependents._dependents > 0 ) {
 			// Call the summary panel error message
 			//healthPolicyDetails.error();
 
@@ -1166,110 +1129,5 @@ var healthDependents = {
 	}
 };
 
-//Validation for defacto messages
-$.validator.addMethod("defactoConfirmation",
-	function(value, element) {
-
-		if( $(element).parent().find(':checked').val() == 'Y' ){
-			return true; //Passes
-		} else {
-			return false; //Fails
-		};
-
-	}
-);
-
-
-//Validation for defacto messages
-$.validator.addMethod("validateMinDependants",
-	function(value, element) {
-		return !$("#${name}_threshold").is(":visible");
-	}
-);
-
-
-//DOB validation message
-$.validator.addMethod("limitDependentAgeToUnder25",
-	function(value, element) {
-		var getAge = returnAge(value);
-		if( getAge >= healthDependents.maxAge ) {
-			// Change the element message on the fly
-			$(element).rules("add", { messages: { 'limitDependentAgeToUnder25':'Your child cannot be added to the policy as they are aged ' + healthDependents.maxAge + ' years or older. You can still arrange cover for this dependant by applying for a separate singles policy or please contact us if you require assistance.' } } );
-			return false;
-		};
-		return true;
-	}
-);
-
-//If fulltime student toggle is enabled, use this validator instead of the above one
-$.validator.addMethod("validateFulltime",
-	function(value, element) {
-		var fullTime = $(element).parents('.health_dependant_details').find('.health_dependant_details_fulltimeGroup input[type=radio]:checked').val();
-		var getAge = returnAge(value);
-		var suffix = healthDependents.config.schoolMin == 21 ? 'st' : healthDependents.config.schoolMin == 22 ? 'nd' : healthDependents.config.schoolMin == 23 ? 'rd' : 'th';
-		if (getAge >= healthDependents.maxAge){
-			$(element).rules("add", { messages: { 'validateFulltime':'Dependants over ' + healthDependents.maxAge +' are considered adult dependants and can still be covered by applying for a separate singles policy' } } );
-			return false;
-		} else if( fullTime === 'N' && getAge >= healthDependents.config.schoolMin ) {
-			$(element).rules("add", { messages: { 'validateFulltime':'This policy provides cover for children until their ' + healthDependents.config.schoolMin + suffix + ' birthday' } } );
-			return false;
-		}
-		return true;
-	}
-);
 
 // end from dependants.tag
-
-// from credit_card_details.tag
-creditCardDetails = {
-
-	resetConfig: function(){
-		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':true, 'diners':false };
-	},
-
-	render: function(){
-		var $_obj = $('#health_payment_credit_type');
-		var $_icons = $('#health_payment_credit-selection .cards');
-		$_icons.children().hide();
-
-		var _html = '<option id="health_payment_credit_type_" value="">Please choose...</option>';
-		var _selected = $_obj.find(':selected').val();
-
-
-		if( creditCardDetails.config.visa === true ){
-			_html += '<option id="health_payment_credit_type_v" value="v">Visa</option>';
-			$_icons.find('.visa').show();
-		};
-
-		if( creditCardDetails.config.mc === true ){
-			_html += '<option id="health_payment_credit_type_m" value="m">Mastercard</option>';
-			$_icons.find('.mastercard').show();
-		};
-
-		if( creditCardDetails.config.amex === true ){
-			_html += '<option id="health_payment_credit_type_a" value="a">AMEX</option>';
-			$_icons.find('.amex').show();
-		};
-
-		if( creditCardDetails.config.diners === true ){
-			_html += '<option id="health_payment_credit_type_d" value="d">Diners Club</option>';
-			$_icons.find('.diners').show();
-		};
-
-		$_obj.html( _html ).find('option[value="'+ _selected +'"]').attr('selected', 'selected');
-		return;
-	},
-
-	set: function(){
-		creditCardDetails.$_obj = $('#health_payment_credit_number');
-		creditCardDetails.$_objCCV = $('#health_payment_credit_ccv');
-		var _type = creditCardDetails._getType();
-
-		field_credit_card_validation.set(_type, creditCardDetails.$_obj, creditCardDetails.$_objCCV);
-	},
-
-	_getType: function(){
-		return $('#health_payment_credit_type').find(':selected').val();
-	}
-};
-// end from credit_card_details.tag

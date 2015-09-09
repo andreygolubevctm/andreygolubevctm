@@ -1,11 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">
+    <c:set var="requestUri" value="${requestScope['javax.servlet.forward.request_uri']}" />
     <settings:setVertical verticalCode="GENERIC"/>
     <c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
     <c:set var="pageTitle" value="500"/>
+</c:catch>
+<c:catch var="error">
+    <go:log source="jsp:err.error500" level="ERROR" error="${pageContext.exception}">Error Page Hit, requestUri=${requestUri} brandCode=${brandCode}</go:log>
 </c:catch>
 
 <c:choose>
@@ -24,9 +28,6 @@
     <c:otherwise>
         <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
         <c:catch var="error">
-
-            <go:log source="500" level="ERROR">Request URI: ${requestScope["javax.servlet.forward.request_uri"]}, servletPath: ${pageContext.request.servletPath}</go:log>
-
             <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 
                 <jsp:attribute name="head">
@@ -80,6 +81,5 @@
 
             </layout:generic_page>
         </c:catch>
-        <go:log>500 Error Hit: "${error}"</go:log>
     </c:otherwise>
 </c:choose>

@@ -29,10 +29,9 @@
 		<form_new:row fieldXpath="${fieldXpath}" label="Name on Credit Card" className="health_credit-card-details_name">
 			<field_new:input xpath="${fieldXpath}"
 						title="account name" required="true"
-						className="health-credit_card_details-name sessioncamexclude" />
+						className="health-credit_card_details-name sessioncamexclude" additionalAttributes=" data-rule-regex='[^0-9]*' data-msg-regex='For credit card name, please do not use numbers' "/>
 		</form_new:row>
 
-		<field:credit_card_validation />
 		
 		<c:set var="fieldXpath" value="${xpath}/number" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Credit Card Number" className="health_credit-card-details_number_group">
@@ -75,5 +74,3 @@
 	</form_new:fieldset>
 
 </div>
-
-<go:validate selector="${name}_name" rule="regex" parm="'[^0-9]*'" message="For credit card name, please do not use numbers" />

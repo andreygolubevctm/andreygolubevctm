@@ -31,18 +31,40 @@
 <%-- This is used to return a full list of providers, such as where a client can select their current fund so does not need to go through provider validation --%>
 <%-- Added the check to exclude expired products/providers --%>
 <sql:query var="result">
-	SELECT a.ProviderId, a.ProviderCode, a.Name FROM ctm.provider_master a
-	WHERE
-	EXISTS (
-		SELECT * FROM ctm.product_master b WHERE b.providerid = a.providerid
-		and NOW() BETWEEN b.EffectiveStart and b.EffectiveEnd
-		and b.Status NOT IN ('X','N')
-		and b.productCat IN(
+	<c:choose>
+		<c:when test="${pageSettings.getVerticalCode() eq 'car'}">
+			SELECT GROUP_CONCAT(a.ProviderCode) AS ProviderCode, (
+				CASE WHEN a.ProviderCode = 'AI' THEN 'AI'
+				WHEN a.ProviderCode IN ('WOOL','REAL') THEN 'Hollard'
+				ELSE 'Budget'
+				END
+			) AS Name
+			FROM ctm.provider_master AS a
+			JOIN ctm.provider_properties AS p USING (providerId)
+			WHERE p.PropertyId='authToken' AND EXISTS (
+				SELECT * FROM ctm.product_master b WHERE b.providerid = a.providerid
+				and NOW() BETWEEN b.EffectiveStart and b.EffectiveEnd
+				and b.Status NOT IN ('X','N')
+				and b.productCat IN('${pageSettings.getVerticalCode()}')
+			)
+			GROUP BY p.Text
+			ORDER BY Name;
+		</c:when>
+		<c:otherwise>
+			SELECT a.ProviderId, a.ProviderCode, a.Name FROM ctm.provider_master a
+			WHERE
+			EXISTS (
+			SELECT * FROM ctm.product_master b WHERE b.providerid = a.providerid
+			and NOW() BETWEEN b.EffectiveStart and b.EffectiveEnd
+			and b.Status NOT IN ('X','N')
+			and b.productCat IN(
 			<c:forTokens items="${productCategories}" delims="," var="cat" varStatus="status">
 				'${cat}' <c:if test="${!status.last}">,</c:if>
 			</c:forTokens>
-		) )
-	ORDER BY a.Name;
+			) )
+			ORDER BY a.Name;
+		</c:otherwise>
+	</c:choose>
 </sql:query>
 
 <c:if test="${value == ''}">
@@ -55,7 +77,7 @@
 	<span class=" input-group-addon" >
 		<i class="icon-sort"></i>
 	</span>
-	<select name="${name}" id="${name}" class="form-control ${className}">
+	<select name="${name}" id="${name}" class="form-control ${className}" <c:if test="${required}"> required data-msg-required="Please enter the ${title}"</c:if>>
 	<%-- Write the initial "please choose" option --%>
 	<option value="">Please choose&hellip;</option>
 
@@ -85,8 +107,3 @@
 	</c:forEach>
 	</select>
 </div>
-
-<%-- VALIDATION --%>
-<c:if test="${required}">
-	<go:validate selector="${name}" rule="required" parm="${required}" message="Please enter the ${title}"/>
-</c:if>

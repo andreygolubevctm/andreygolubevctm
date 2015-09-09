@@ -32,10 +32,10 @@
 	<form_new:row label="Email Address" id="contactEmailRow">
 		<c:choose>
 			<c:when test="${emailHelperSplitTest eq true}">
-				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" />
+				<field_new:email_assisted xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" className="sessioncamexclude" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 			</c:when>
 			<c:otherwise>
-				<field_new:email xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" />
+				<field_new:email xpath="${xpath}/email" required="${mandatoryContactFieldsSplitTest}" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 			</c:otherwise>
 		</c:choose>
 	</form_new:row>
@@ -43,7 +43,7 @@
 	<form_new:row label="Contact Number" id="contactNoRow">
 		<field:contact_telno xpath="${xpath}/phone" required="false" id="bestNumber"
 			className="bestNumber"
-			labelName="best number" />
+			labelName="best number" validationAttribute=" data-rule-validateOkToCall='true' " />
 	</form_new:row>
 
 
@@ -57,64 +57,18 @@
 		<field_new:array_radio xpath="quote/contact/marketing"
 			required="false"
 			items="Y=Yes,N=No"
-			title="if OK to email" />
-		<content:optin key="okToEmail"/>
+			title="if OK to email" additionalAttributes=" data-rule-validateOkToEmailRadio='true' " />
+		<content:optin key="okToEmail" />
 	</form_new:row>
 
 	<form_new:row label="OK to call" className="">
 		<field_new:array_radio xpath="quote/contact/oktocall"
 			required="false"
 			items="Y=Yes,N=No"
-			title="if OK to call" />
+			title="if OK to call" additionalAttributes=" data-rule-validateOkToCallRadio='true' " />
 
 		<p class="optinText">${okToCall}</p>
 	</form_new:row>
-
-<go:script marker="js-head">
-$.validator.addMethod('validateOkToCall', function(value, element) {
-	var optin = ($("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked").val() === 'Y');
-	var phone = $('#quote_contact_phone').val();
-	if(optin === true && _.isEmpty(phone)) {
-		return false;
-	}
-	return true;
-});
-
-$.validator.addMethod('validateOkToEmail', function(value, element) {
-	var optin = ($("#quote_contactFieldSet input[name='quote_contact_marketing']:checked").val() === 'Y');
-	var email = $('#quote_contact_email').val();
-	if(optin === true && _.isEmpty(email)) {
-		return false;
-	}
-	return true;
-});
-
-$.validator.addMethod('validateOkToCallRadio', function(value, element) {
-	var $optin	= $("#quote_contactFieldSet input[name='quote_contact_oktocall']:checked");
-	var noOptin = $optin.length == 0;
-	var phone = $('#quote_contact_phone').val();
-	if(!_.isEmpty(phone) && noOptin == true) {
-		return false;
-	}
-	return true;
-});
-
-$.validator.addMethod('validateOkToEmailRadio', function(value, element) {
-	var $optin = $("#quote_contactFieldSet input[name='quote_contact_marketing']:checked");
-	var noOptin = $optin.length == 0;
-	var email = $('#quote_contact_email').val();
-	if(!_.isEmpty(email) && noOptin == true) {
-		return false;
-	}
-	return true;
-});
-</go:script>
-
-	<go:validate selector="quote_contact_oktocall" rule="validateOkToCallRadio" parm="true"
-				message="Please choose if OK to call"/>
-	<go:validate selector="quote_contact_marketing" rule="validateOkToEmailRadio" parm="true"
-				message="Please choose if OK to email"/>
-
 
 	<%-- COMPETITION START --%>
 	<c:if test="${competitionEnabled == true}">
