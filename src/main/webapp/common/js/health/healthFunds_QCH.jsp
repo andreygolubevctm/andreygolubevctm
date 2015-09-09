@@ -48,14 +48,15 @@ var healthFunds_QCH = {
 
 			meerkat.modules.validation.setMinAgeValidation(healthFunds_QCH.$_dobPrimary, 18 , "primary person's");
 			meerkat.modules.validation.setMinAgeValidation(healthFunds_QCH.$_dobPartner, 18, "partner's");
+			<%-- healthFunds_QCH.$_dobPrimary.addRule('youngestDOB', 18, "primary person's age cannot be under 17");
+				 healthFunds_QCH.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under 17");--%>
 
 			<%-- How to send information. Second argument = validation required --%>
 			healthApplicationDetails.showHowToSendInfo('QCHF', true);
 
 
 			<%-- Previous funds --%>
-			$('#health_previousfund_primary_memberID').attr('maxlength', '10');
-			$('#health_previousfund_partner_memberID').attr('maxlength', '10');
+			$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
 			healthFunds._previousfund_authority(true);
 
 			<%-- Partner authority --%>
@@ -64,6 +65,7 @@ var healthFunds_QCH = {
 			<%-- Fund IDs become optional --%>
 			$('#clientMemberID').find('input').rules('remove', 'required');
 			$('#partnerMemberID').find('input').rules('remove', 'required');
+			<%-- $('#clientMemberID input, #partnerMemberID input').setRequired(false); --%>
 
 			<%-- Calendar for start cover --%>
 			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
@@ -132,6 +134,8 @@ var healthFunds_QCH = {
 			<%-- Age requirements for applicants (back to default) --%>
 			meerkat.modules.validation.setMinAgeValidation(healthFunds_QCH.$_dobPrimary, dob_health_application_primary_dob.ageMin , "primary person's");
 			meerkat.modules.validation.setMinAgeValidation(healthFunds_QCH.$_dobPartner, dob_health_application_partner_dob.ageMin, "partner's");
+			<%-- healthFunds_QCH.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
+		healthFunds_QCH.$_dobPartner.addRule('youngestDOB', dob_health_application_partner_dob.ageMin, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin); --%>
 
 			delete healthFunds_QCH.$_dobPrimary;
 			delete healthFunds_QCH.$_dobPartner;
