@@ -5,38 +5,10 @@
 
 package com.disc_au.soap;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import com.ctm.constants.ErrorCode;
+import com.ctm.logging.XMLOutputWriter;
+import com.ctm.model.settings.SoapAggregatorConfiguration;
+import com.ctm.model.settings.SoapClientThreadConfiguration;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,9 +17,21 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.ctm.model.settings.SoapAggregatorConfiguration;
-import com.ctm.model.settings.SoapClientThreadConfiguration;
-import com.ctm.logging.XMLOutputWriter;
+import javax.net.ssl.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.security.*;
+import java.security.cert.CertificateException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
 import static com.ctm.logging.XMLOutputWriter.*;
 
 
@@ -63,6 +47,8 @@ public class SOAPClientThread implements Runnable {
 
 	public static final int HTTP_OK = 200;
 	public static final int HTTP_NOT_FOUND = 404;
+	private final Function<Void, Void> beforeRun;
+	private final Function<Void, Void> afterRun;
 
 	private SoapClientThreadConfiguration configuration;
 
@@ -112,7 +98,9 @@ public class SOAPClientThread implements Runnable {
 	 * @param soapConfiguration global config
 	 */
 	public SOAPClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
-							String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration) {
+							String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration, Function<Void,Void> beforeRun, Function<Void,Void> afterRun) {
+		this.beforeRun = beforeRun;
+		this.afterRun = afterRun;
 
 		this.configuration = configuration;
 
@@ -383,6 +371,7 @@ public class SOAPClientThread implements Runnable {
 	}
 
 	public void run() {
+		beforeRun.apply(null);
 		this.timer = System.currentTimeMillis();
 		if(soapConfiguration.isWriteToFile()){
 			writer = new XMLOutputWriter(this.name , debugPath);
@@ -485,6 +474,7 @@ public class SOAPClientThread implements Runnable {
 				writer.lastWriteXmlToFile(this.resultXML);
 		}
 	}
+		afterRun.apply(null);
 	}
 
 	/**

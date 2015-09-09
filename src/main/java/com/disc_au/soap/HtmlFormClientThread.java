@@ -1,30 +1,26 @@
 package com.disc_au.soap;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-
+import com.ctm.model.settings.SoapAggregatorConfiguration;
+import com.ctm.model.settings.SoapClientThreadConfiguration;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.model.settings.SoapAggregatorConfiguration;
-import com.ctm.model.settings.SoapClientThreadConfiguration;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.function.Function;
 
 public class HtmlFormClientThread extends SOAPClientThread {
 
 	public HtmlFormClientThread(String tranId, String configRoot,
 								SoapClientThreadConfiguration configuration, String xmlData,
 								String name,
-								SoapAggregatorConfiguration soapConfiguration) {
+								SoapAggregatorConfiguration soapConfiguration, Function<Void,Void> beforeRun, Function<Void,Void> afterRun) {
 		super(tranId, configRoot, configuration, xmlData, name,
-				soapConfiguration);
+				soapConfiguration, beforeRun, afterRun);
 	}
 
 	private static final Logger logger = LoggerFactory.getLogger(HtmlFormClientThread.class.getName());

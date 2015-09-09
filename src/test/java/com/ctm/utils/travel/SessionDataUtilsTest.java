@@ -24,4 +24,12 @@ public class SessionDataUtilsTest {
         assertNull(result);
     }
 
+    @Test
+    public void shouldSetTransactionIdToDataBucket(){
+        Data data = new Data();
+        String transactionId = "10000";
+        SessionDataUtils.setTransactionIdFromTransactionSessionData(data, transactionId);
+        assertEquals(transactionId, data.get("current/transactionId"));
+    }
+
 }

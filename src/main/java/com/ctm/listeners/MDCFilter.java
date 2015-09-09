@@ -1,5 +1,6 @@
 package com.ctm.listeners;
 
+import com.ctm.logging.LoggingVariables;
 import com.ctm.model.settings.Vertical;
 import org.slf4j.MDC;
 
@@ -18,20 +19,16 @@ public class MDCFilter implements Filter {
         MDC.put("transactionId", req.getParameter("transactionId"));
         MDC.put("brandCode", req.getParameter("brandCode"));
         String vertical = req.getParameter("vertical");
+        String verticalCode= "";
         if(vertical != null) {
-            MDC.put("verticalCode", Vertical.VerticalType.findByCode(vertical).getCode());
+            verticalCode =  Vertical.VerticalType.findByCode(vertical).getCode();
         }
+        LoggingVariables.setLoggingVariables(req.getParameter("transactionId"), req.getParameter("brandCode"), verticalCode);
         try {
             chain.doFilter(req, resp);
         } finally {
-            clearMDC();
+            LoggingVariables.clearLoggingVariables();
         }
-    }
-
-    private void clearMDC() {
-        MDC.remove("transactionId");
-        MDC.remove("brandCode");
-        MDC.remove("verticalCode");
     }
 
     @Override

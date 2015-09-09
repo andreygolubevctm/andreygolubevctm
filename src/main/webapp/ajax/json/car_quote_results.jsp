@@ -190,8 +190,8 @@
 				<%-- Write to the stats database --%>
 				<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
-				<go:log source="car_quote_results_jsp" level="DEBUG" >${tranId}: RESULTS ${resultXml}</go:log>
-				<go:log source="car_quote_results_jsp" >${tranId}: TRANSFER ${stats}</go:log>
+				<go:log source="car_quote_results_jsp" level="DEBUG" >RESULTS ${resultXml}</go:log>
+				<go:log source="car_quote_results_jsp" >TRANSFER ${stats}</go:log>
 				<%-- Return the results as json --%>
 
 				<%-- Calculate the end valid date for these quotes --%>

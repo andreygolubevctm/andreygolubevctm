@@ -11,6 +11,7 @@
 <%@ attribute name="emailAddress"	required="false" rtexprvalue="true"	description="" %>
 <%@ attribute name="quoteType"		required="false" rtexprvalue="true"	description="The vertical this quote is associated with" %>
 
+<jsp:useBean id="sessionDataUtils" class="com.ctm.utils.SessionDataUtils" scope="page" />
 
 <c:set var="serverIp"><%
 	String ip = request.getLocalAddr();
@@ -27,7 +28,7 @@
 <c:choose>
 	<c:when test="${not empty transactionId}">
 		<c:set var="hasTransId" value="${true}" />
-		<go:setData dataVar="data" value="${fn:trim(transactionId)}" xpath="current/transactionId" />
+		${sessionDataUtils.setTransactionId(data,fn:trim(transactionId) )}
 	</c:when>
 	<c:when test="${not empty data.current.transactionId}">
 		<c:set var="hasTransId" value="${true}" />
@@ -63,7 +64,7 @@
 			<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType} emailAddress=${emailAddress} ipAddress=${pageContext.request.remoteAddr} serverAddress=${serverIp} dataNodes=${dataNodes} " />
 		</c:import>
 
-		<go:setData dataVar="data" value="" xpath="current/transactionId" />
+		${sessionDataUtils.setTransactionId(data, '' )}
 	</c:when>
 
 	<%-- INCREMENT TRANS ID --%>
@@ -152,7 +153,7 @@
 								<c:param name="description" value="${error}" />
 								<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
 							</c:import>
-							<go:setData dataVar="data" value="" xpath="current/transactionId" />
+							${sessionDataUtils.setTransactionId(data, '' )}
 						</c:when>
 						<c:otherwise>
 							<c:set var="tranId" value="${results.rows[0].transactionID}" />
@@ -173,7 +174,7 @@
 							</sql:update>
 
 							<%-- Finally we'll replace the requestedTransaction var with the new ID --%>
-							<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
+							${sessionDataUtils.setTransactionId(data, tranId )}
 						</c:otherwise>
 					</c:choose>
 				</c:catch>
@@ -191,10 +192,10 @@
 							<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
 						</c:import>
 
-						<go:setData dataVar="data" value="" xpath="current/transactionId" />
+						${sessionDataUtils.setTransactionId(data, '' )}
 					</c:when>
 					<c:otherwise>
-						<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
+						${sessionDataUtils.setTransactionId(data, tranId )}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -258,7 +259,7 @@
 						<c:param name="description" value="${error}" />
 						<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
 					</c:import>
-					<go:setData dataVar="data" value="" xpath="current/transactionId" />
+					${sessionDataUtils.setTransactionId(data, '' )}
 				</c:when>
 				<c:otherwise>
 					<c:set var="tranId" value="${results.rows[0].transactionID}" />
@@ -269,7 +270,7 @@
 						<sql:param value="${tranId}" />
 						<sql:param value="${tranId}" />
 					</sql:update>
-					<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
+					${sessionDataUtils.setTransactionId(data, tranId )}
 					<go:setData dataVar="data" value="${tranId}" xpath="current/rootId" />
 				</c:otherwise>
 			</c:choose>
@@ -288,11 +289,11 @@
 					<c:param name="data" value="hasTransId=${hasTransId} transactionId=${transactionId} id_handler=${id_handler} quoteType=${quoteType}" />
 				</c:import>
 
-				<go:setData dataVar="data" value="" xpath="current/transactionId" />
+				${sessionDataUtils.setTransactionId(data, '' )}
 			</c:when>
 			<c:otherwise>
 				<c:set var="method" value="NEW" />
-				<go:setData dataVar="data" value="${tranId}" xpath="current/transactionId" />
+				${sessionDataUtils.setTransactionId(data, tranId )}
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>
