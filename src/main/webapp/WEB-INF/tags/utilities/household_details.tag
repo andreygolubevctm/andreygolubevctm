@@ -187,33 +187,7 @@ var HouseholdDetailsHandler = {
 	}
 };
 
-$.validator.addMethod("validateLocation",
-	function(value, element) {
-		
-		var format = /.*\s-\s.*,.*/;
-		
-		if( format.test(value) ){
-		
-			postcode = $('#${name} #${name}_postcode');
-			suburb = $('#${name} #${name}_suburb');
-			state = $('#${name} #${name}_state');
-			
-			if( postcode.val() == ""
-				|| state.val() == "") {
-				return false;
-			}
-			
-			return true;
-			
-		} else {
-		
-			return false;
-			
-		}
-		
-	},
-	"Replace this message with something else"
-);
+
 </go:script>
 
 <go:script marker="onready">	
@@ -227,6 +201,3 @@ $.validator.addMethod("validateLocation",
 		}
 	});
 </go:script>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}_location" rule="validateLocation" parm="true" message="Please make sure that the format of the postcode/suburb field is &quotpostcode - suburb, state&quot" />

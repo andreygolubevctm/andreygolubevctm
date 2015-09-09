@@ -14,6 +14,7 @@
 <%@ attribute name="labelName"				required="false" rtexprvalue="true"	 description="the label to display for validation" %>
 <%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="Placeholder text" %>
 <%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
+<%@ attribute name="validationAttribute"	required="false" rtexprvalue="true"	 description="Additional Validation Attributes" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -45,19 +46,19 @@
 	</c:choose>
 </c:set>
 
+<%-- VALIDATION --%>
+<c:set var="additionalAttributes" value="" />
+<c:choose>
+	<c:when test="${isLandline eq true}">
+		<c:set var="additionalAttributes"> data-rule-isLandLine='true' data-msg-isLandLine='Please enter a landline number for ${labelText}' data-rule-validateTelNo='true' data-msg-validateTelNo='Please enter the ${labelText} in the format (area code)(local number)' </c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="additionalAttributes"> data-rule-validateTelNo='true' data-msg-validateTelNo='Please enter the ${labelText} in the format (area code)(local number) for landline or 04xxxxxxxx for mobile' </c:set>
+	</c:otherwise>
+</c:choose>
+
 <field:phone_number className="${className}" required="${required}" xpath="${xpath}"
 			placeHolder="${placeHolder}" placeHolderUnfocused="${placeHolderUnfocused}"
 			labelName="${labelName}" title="${title}" size="${size}"
-			allowMobile="${allowMobile}" allowLandline="true" />
-
-<%-- VALIDATION --%>
-<c:choose>
-	<c:when test="${isLandline eq true}">
-		<go:validate selector="${dummyname}" rule="confirmLandline" parm="true" message="Please enter a landline number for ${labelText}"/>
-		<go:validate selector="${dummyname}" rule="validateTelNo" parm="true" message="Please enter the ${labelText} in the format (area code)(local number)"/>
-	</c:when>
-	<c:otherwise>
-		<go:validate selector="${dummyname}" rule="validateTelNo" parm="true" message="Please enter the ${labelText} in the format (area code)(local number) for landline or 04xxxxxxxx for mobile"/>
-	</c:otherwise>
-</c:choose>
+			allowMobile="${allowMobile}" allowLandline="true" additionalAttributes="${validationAttribute} ${additionalAttributes}" />
 

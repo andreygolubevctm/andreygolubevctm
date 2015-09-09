@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.ctm.cache.ApplicationCacheManager;
 
 import com.ctm.dao.BrandsDao;
 import com.ctm.dao.ConfigSettingsDao;
@@ -348,6 +349,7 @@ public class ApplicationService {
 		ServiceConfigurationService.clearCache();
 		AddressSearchService.destroy();
 		AddressSearchService.init();
+        ApplicationCacheManager.clearAll();
 		return true;
 	}
 

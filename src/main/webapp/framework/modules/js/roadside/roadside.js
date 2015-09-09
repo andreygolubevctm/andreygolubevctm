@@ -101,7 +101,7 @@
                 object: meerkat.modules.roadside.getTrackingFieldsObject
             },
             onInitialise: function onStartInit(event) {
-
+                meerkat.modules.jqueryValidate.initJourneyValidator();
             }
         };
 
