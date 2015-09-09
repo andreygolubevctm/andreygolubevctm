@@ -187,28 +187,15 @@
 			return;
 		}
 
-		setupDefaultValidationOnForm( $form );
+		meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $form );
 
+		// We do this because its false by default, for people who already exist.
 		if ($password.length > 0) {
-			$password.rules('add', {
-				required:true,
-				minlength: 6,
-				messages:{
-					required: "Please enter a password",
-					minlength: jQuery.format("Password must be at least {0} characters")
-				}
-			});
+			$password.setRequired(true, "Please enter a password");
 		}
 
 		if ($passwordConfirm.length > 0) {
-			$passwordConfirm.rules('add', {
-				required:true,
-				equalTo: "#" + $password.attr("id"),
-				messages:{
-					required: "Please confirm your password",
-					equalTo: jQuery.format("Password and confirmation password must match")
-				}
-			});
+			$passwordConfirm.setRequired(true, "Please confirm your password");
 		}
 	}
 
@@ -231,7 +218,7 @@
 
 	}
 
-	function passwordConfirmKeyChange(event){
+	function passwordConfirmKeyChange(event) {
 
 		if( $password.valid() && $passwordConfirm.valid() ) {
 			enableSubmitButton();
@@ -245,24 +232,12 @@
 
 		var valid = $email.valid();
 		if(valid) {
-			// $('#save_marketing').prop('checked', SaveQuote.optInSelected); // @todo = necessary?
 			checkUserExists();
 		}
 
 	}
 
 	function checkUserExists(){
-
-		/* necessary?
-		if (lastEmailChecked == $email.val()) {
-			if (checkUserAjaxObject && checkUserAjaxObject.state() !== "pending") {
-				if(meerkat.site.isCallCentreUser || ($password.val() != '' && $passwordConfirm.val() != '')) {
-					enableSubmitButton();
-				}
-			}
-			return;
-		}
-		*/
 
 		var emailAddress = $email.val();
 		lastEmailChecked = emailAddress;
@@ -383,7 +358,7 @@
 			var dat = [];
 			var sendConfirm;
 			// @FIXME = the list of vertical that have a send confirmation should be a setting against each vertical, not a list stored here
-			if( $.inArray(meerkat.site.vertical, ['home','car','ip','life']) !== -1 ){
+			if( $.inArray(meerkat.site.vertical, ['home','car','ip','life']) !== -1 ) {
 				sendConfirm = "no";
 			} else {
 				sendConfirm = "yes";
@@ -435,21 +410,6 @@
 
 					},
 					onError: function saveQuoteError(){
-						/* @todo = adapt/correct/handle the error*/
-						/*
-						try {
-							var errors = eval(obj.responseText);
-							if(typeof errors == "object" && errors.length > 0 && errors[0].error == "Authentication Failed") {
-								SaveQuote.show(SaveQuote._AUTH_ERROR);
-							} else {
-								SaveQuote.updateErrorFeedback(errors);
-								SaveQuote.show(SaveQuote._ERROR);
-							}
-						} catch(e) {
-							SaveQuote.updateErrorFeedback();
-							SaveQuote.show(SaveQuote._ERROR);
-						}
-						*/
 						if ( meerkat.site.isCallCentreUser || ($password.val() !== '' && $passwordConfirm.val() !== '') ) {
 							enableSubmitButton();
 						}

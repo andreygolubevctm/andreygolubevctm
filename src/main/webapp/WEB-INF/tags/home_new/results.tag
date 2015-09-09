@@ -251,7 +251,7 @@
 					</div>
 				</div>
 				<div class="c content isMultiRow" data-featureid="10001">
-					{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('value')) ? obj.features.speFea.value : '' }}
+					{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('value')) ? Features.parseFeatureValue(obj.features.speFea.value, true) : '' }}
 				</div>
 				<div class="children" data-fid="10001">
 					<div class="cell feature collapsed">
@@ -261,7 +261,7 @@
 							</div>
 						</div>
 						<div class="c content isMultiRow" data-featureid="10002">
-							{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('extra')) ? obj.features.speFea.extra : '' }}
+							{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('extra')) ? Features.parseFeatureValue(obj.features.speFea.extra, true) : '' }}
 						</div>
 					</div>
 				</div>

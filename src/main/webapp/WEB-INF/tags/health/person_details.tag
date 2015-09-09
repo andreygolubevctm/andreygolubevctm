@@ -30,7 +30,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/title" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Title" >
-			<field_new:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title"/>
+			<field_new:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' "/>
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/firstname" />
@@ -68,6 +68,3 @@
 	</form_new:fieldset>
 
 </div>
-
-<go:validate selector="${field_firstname}" rule="personName" parm="true" />
-<go:validate selector="${field_surname}" rule="personName" parm="true" />
