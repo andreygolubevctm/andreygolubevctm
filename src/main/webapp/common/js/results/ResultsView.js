@@ -352,15 +352,9 @@ ResultsView = {
 		Results.pagination.refresh();
 	},
 
-	parseTemplate:function(template, data){
-		if( Results.settings.render.templateEngine == 'microTemplate'){
-			htmlString = parseTemplate(template, data);
-		}else{
-			htmlTemplate = _.template(template);
-			htmlString = htmlTemplate(data);
-		}
-
-		return htmlString;
+	parseTemplate:function(template, data, cachedProcessTemplate){
+		var htmlTemplate = cachedProcessTemplate || _.template(template);
+		return htmlTemplate(data);
 	},
 
 	getRowHeight: function(){

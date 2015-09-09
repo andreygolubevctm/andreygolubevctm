@@ -9,7 +9,12 @@ Now we move into an era of developing on a frontend framework diverging into our
 
 ## Documentation
 
-Documentation for framework and platform is in this readme or otherwise more extensively located on the [CTM Architecture](http://confluence:8090/display/EBUS/CtM+Architecture) confluence wiki directory.
+Documentation for framework and platform is in this readme or otherwise more extensively located on the [CTM Architecture](http://confluence:8090/display/CM/CtM+Architecture) confluence wiki directory.
+
+## Getting Started
+
+If you are a new starter, you should setup your IDE. Most of us use [IntelliJ](http://confluence:8090/display/CM/Setting+Up+IntelliJ).  To get started with a web_ctm project, checkout a branch from http://gitstash/ using cli, source tree, or intellij's built in options.
+
 
 ## Compiling CSS and JavaScript
 
@@ -43,7 +48,7 @@ This is a convenience method for watching just Less files and automatically buil
 
 ### Troubleshooting dependencies
 
-Should you encounter problems with installing dependencies or running Grunt commands, As dependencies are installed locally for the project - that's going to be located in the node_modules directory which will be built inside your `trunk`'s root directory. Deleting that, and rerunning `npm install` in that directory should solve most catastrophies. If all else fails uninstall all previous dependency versions (global and local). Then `npm install` in the root again.
+Should you encounter problems with installing dependencies or running Grunt commands, As dependencies are installed locally for the project - that's going to be located in the node_modules directory which will be built inside your branches src\main\frontend directory. Deleting that, and rerunning `npm install` in that directory should solve most catastrophies. If all else fails uninstall all previous dependency versions (global and local). Then `npm install` in the root again.
 
 ## Versioning
 
@@ -61,4 +66,4 @@ And constructed with the following guidelines:
 ## Copyright and license
 
 
-Copyright 2013 Compare The Market PTY LTD, all rights reserved. Privately owned project. No Public Licence.
+Copyright 2015 Compare The Market PTY LTD, all rights reserved. Privately owned project. No Public Licence.

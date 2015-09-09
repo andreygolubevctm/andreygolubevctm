@@ -447,7 +447,11 @@
             $("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
         }
 		meerkat.modules.carContactOptins.validateOptins();
-		Results.get();
+		var verticalToUse = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote ? 'carws_' : 'car_';
+
+		meerkat.modules.resultsFeatures.fetchStructure(verticalToUse).done(function() {
+			Results.get();
+		});
 	}
 
 	function onResultsLoaded() {

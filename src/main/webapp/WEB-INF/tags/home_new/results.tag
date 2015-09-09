@@ -43,7 +43,6 @@
 
 <%-- Get data to build sections/categories/features --%>
 <jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
-<c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('hncams')}" scope="request"  />
 <c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('hncams', 'category')}" scope="request"  />
 <script>
 	var resultLabels = ${jsonString};
@@ -77,11 +76,8 @@
 			</div>
 
 			<%-- Feature headers --%>
-			<div class="featuresList featuresTemplateComponent">
-				<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
-					<features:resultsItem item="${selectedValue}" labelMode="true" index="${status.index}"/>
-				</c:forEach>
-			</div>
+			<features:resultsItemTemplate_labels />
+			<div class="featuresList featuresTemplateComponent"></div>
 		</div>
 
 		<div class="resultsOverflow">
@@ -255,7 +251,7 @@
 					</div>
 				</div>
 				<div class="c content isMultiRow" data-featureid="10001">
-					{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('value')) ? obj.features.speFea.value : '' }}
+					{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('value')) ? Features.parseFeatureValue(obj.features.speFea.value, true) : '' }}
 				</div>
 				<div class="children" data-fid="10001">
 					<div class="cell feature collapsed">
@@ -265,7 +261,7 @@
 							</div>
 						</div>
 						<div class="c content isMultiRow" data-featureid="10002">
-							{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('extra')) ? obj.features.speFea.extra : '' }}
+							{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('extra')) ? Features.parseFeatureValue(obj.features.speFea.extra, true) : '' }}
 						</div>
 					</div>
 				</div>
@@ -288,11 +284,7 @@
 </core:js_template>
 
 <%-- FEATURE TEMPLATE --%>
-<core:js_template id="feature-template">
-	<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
-		<features:resultsItem item="${selectedValue}" labelMode="false" index="${status.index}"/>
-	</c:forEach>
-</core:js_template>
+<features:resultsItemTemplate />
 
 <%-- UNAVAILABLE ROW --%>
 <core:js_template id="unavailable-template">

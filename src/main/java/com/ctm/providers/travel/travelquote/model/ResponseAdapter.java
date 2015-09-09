@@ -47,6 +47,8 @@ public class ResponseAdapter {
                 result.setInfoDes(travelQuote.getProduct().getDescription());
                 result.setSubTitle(travelQuote.getProduct().getPdsUrl());
 
+                result.setIsDomestic(travelQuote.getIsDomestic());
+
 
                 // Override product names based on arbitrary rules.
 
@@ -176,15 +178,17 @@ public class ResponseAdapter {
                     result.setHandoverType("post");
                     result.setHandoverUrl(travelQuote.getQuoteUrl());
 
+                    String handoverVarString = "";
                     String handoverDataString = "";
                         Iterator it = travelQuote.getQuoteData().entrySet().iterator();
                         while (it.hasNext()) {
                         Map.Entry pair = (Map.Entry)it.next();
-                        handoverDataString += "<handoverVar>"+pair.getKey()+"</handoverVar>";
-                        handoverDataString += "<handoverData>"+pair.getValue()+"</handoverData>";
+                        handoverVarString += (String)pair.getKey();
+                        handoverDataString += (String)pair.getValue();
                         it.remove();
                     }
 
+                    result.setHandoverVar(handoverVarString);
                     result.setHandoverData(handoverDataString);
 
                 }

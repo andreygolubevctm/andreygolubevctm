@@ -33,7 +33,7 @@
 	</c:choose>
 
 
-	<field_new:validatedHiddenField xpath="${xpathhidden}" className="" title="${title}" validationErrorPlacementSelector=".content ${validationErrorPlacementSelector}" />
+	<field_new:validatedHiddenField xpath="${xpathhidden}" className="" title="${title}" validationErrorPlacementSelector=".content ${validationErrorPlacementSelector}" additionalAttributes=" required " />
 </form_new:row>
 
 <form_new:row label="" className="selected-tags-row clear" hideHelpIconCol="true">

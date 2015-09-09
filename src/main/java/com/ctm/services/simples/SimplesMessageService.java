@@ -10,7 +10,8 @@ import com.ctm.model.Error;
 import com.ctm.model.Transaction;
 import com.ctm.model.simples.*;
 import com.ctm.services.TransactionService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SimplesMessageService {
-	private static final Logger logger = Logger.getLogger(SimplesMessageService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimplesMessageService.class.getName());
 
 
 

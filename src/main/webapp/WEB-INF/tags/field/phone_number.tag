@@ -14,11 +14,13 @@
 <%@ attribute name="allowLandline"	required="true" rtexprvalue="true"	 description="?" %>
 <%@ attribute name="allowMobile"	required="true" rtexprvalue="true"	 description="?" %>
 <%@ attribute name="labelName"		required="false" rtexprvalue="true"	 description="the label to display for validation" %>
+<%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="nameInput" value="${name}input" />
 <c:set var="xpathInput">${xpath}input</c:set>
+<c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
 
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:set var="valueInput"><c:out value="${data[xpathInput]}" escapeXml="true"/></c:set>
@@ -27,8 +29,16 @@
 	<c:set var="valueInput" value="${value}" />
 </c:if>
 
+<c:set var="labelName">
+	<c:choose>
+		<c:when test="${not empty labelName}">${labelName}</c:when>
+		<c:when test="${not empty title}">${title}</c:when>
+		<c:otherwise>phone number</c:otherwise>
+	</c:choose>
+</c:set>
+<c:set var="requiredAttribute" value="" />
 <c:if test="${required}">
-	<c:set var="requiredAttribute" value=' required="required"' />
+	<c:set var="requiredAttribute" value=' required="required" data-msg-required="Please enter the ${labelName}" ' />
 </c:if>
 
 <c:if test="${not empty size}">
@@ -56,20 +66,12 @@
 	</c:otherwise>
 </c:choose>
 
-<c:set var="labelName">
-	<c:choose>
-		<c:when test="${not empty labelName}">${labelName}</c:when>
-		<c:when test="${not empty title}">${title}</c:when>
-		<c:otherwise>phone number</c:otherwise>
-	</c:choose>
-</c:set>
-
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" class="" value="${value}" >
-<input type="text" name="${nameInput}" id="${nameInput}" title="${title}"
+<input type="${inputType}" name="${nameInput}" id="${nameInput}" title="${title}"
 		class="sessioncamexclude form-control contact_telno phone ${className} ${phoneTypeClassName} ${name}"
 		value="${valueInput}" pattern="[0-9]*" ${sizeAttribute}${placeHolderAttribute}${requiredAttribute}
-		data-msg-required="Please enter the ${labelName}"
+		${additionalAttributes}
 		maxlength="14">
 
 

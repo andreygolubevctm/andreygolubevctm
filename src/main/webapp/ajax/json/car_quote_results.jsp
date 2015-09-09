@@ -148,7 +148,7 @@
 							  transactionId = "${data.text['current/transactionId']}"
 							  xml = "${go:getEscapedXml(data['quote'])}"
 							  var = "resultXml"
-							  authToken = "${param.quote_authToken}"
+							  authToken = "${param.quote_filter_authToken}"
 							  debugVar="debugXml"
 							  validationErrorsVar="validationErrors"
 							  continueOnValidationError="${continueOnValidationError}"
@@ -190,7 +190,7 @@
 				<%-- Write to the stats database --%>
 				<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
-				<go:log source="car_quote_results_jsp" level="TRACE" >${tranId}: RESULTS ${resultXml}</go:log>
+				<go:log source="car_quote_results_jsp" level="DEBUG" >${tranId}: RESULTS ${resultXml}</go:log>
 				<go:log source="car_quote_results_jsp" >${tranId}: TRANSFER ${stats}</go:log>
 				<%-- Return the results as json --%>
 
@@ -244,6 +244,16 @@
 							<c:otherwise>${false}</c:otherwise>
 						</c:choose>
 					</c:set>
+
+					<%-- Knockout REAL when driver is Male, under 21 and REIN-01-02 (Comprehensive) --%>
+					<c:if test="${brandCode eq 'REIN' and productId eq 'REIN-01-02'}">
+						<jsp:useBean id="dateUtils" class="com.ctm.utils.common.utils.DateUtils" scope="request" />
+						<c:set var="regDob" value="${data.quote.drivers.regular.dob}" />
+						<c:set var="yngDob" value="${data.quote.drivers.young.dob}" />
+						<c:if test="${(data.quote.drivers.regular.gender eq 'M' && dateUtils.getAgeFromDOBStr(regDob) < 21) || (not empty yngDob && data.quote.drivers.young.gender eq 'M' && dateUtils.getAgeFromDOBStr(yngDob) < 21)}">
+							<go:setData dataVar="soapdata" xpath="soap-response/results/result[${vs.index}]/available" value="N" />
+						</c:if>
+					</c:if>
 
 					<%-- Set flag to indicate this is an Auto & General product. --%>
 					<c:set var="isAutoGeneral">

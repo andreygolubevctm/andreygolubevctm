@@ -184,53 +184,11 @@
 
 	};
 	
-	$.validator.addMethod("notMobile",
-		function(value, element) {
-			if($(element).val().substring(0,2) == '04'){
-				return false;
-			} else {
-				return true;
-			};
-			
-		},
-		"Custom message"
-	);
+
 	
-	$.validator.addMethod("matchStates",
-		function(value, element) {
-			if( $(element).val() !== utilitiesChoices._state ){
-				$('#${name}_address_postCode').addClass('error');
-				return false;
-			} else {
-				return true;
-			};		
-		},
-		"Your address does not match the original state provided"
-	);	
-	
-	$.validator.addMethod("validateMobileField",
-		function(value, element) {
-			var mobileField = $('#${name}_mobileNumber');
-			var phoneField = $('#${name}_otherPhoneNumberinput');
-			
-			$("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").on("change", function(){
-				$("#${name}_mobileNumberinput, #${name}_otherPhoneNumberinput").valid();
-			});
-			
-			mobileField.val( String($(element).val()).replace(/[^0-9]/g, '') );
-			
-			var mobile = mobileField.val();
-			var phone = phoneField.val();
-			
-			if(mobile != '' && mobile.substring(0,2) == '04'){
-				return true;
-			} else {
-				return phone != '';
-			};
-			
-		},
-		"Custom message"
-	);
+
+
+
 	
 
 
@@ -241,12 +199,3 @@
 	utilitiesApplicationDetails.init();
 	
 </go:script>
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}_mobileNumberinput" rule="validateMobileField" parm="true" message="You need to provide a mobile number or a landline number." />
-<go:validate selector="${name}_address_state" rule="matchStates" parm="true" message="Your address does not match the original state provided. You can <span class='refineSearch'>refine your search</span> by changing the original state." />
-
-<jsp:useBean id="now" class="java.util.GregorianCalendar" scope="page" />
-<% now.add(java.util.GregorianCalendar.YEAR, -18); %>
-<fmt:formatDate value="${now.time}" pattern="dd/MM/yyyy" var="maxDate" />
-<go:validate selector="${name}_dob" rule="maxDateEUR" parm="'${maxDate}'" message="You need to be 18 years of age or older to switch your energy services"/>

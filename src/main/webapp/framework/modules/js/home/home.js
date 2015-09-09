@@ -138,7 +138,7 @@
 			slideIndex: 0,
 			externalTracking: externalTrackingSettings,
 			onInitialise: function onStartInit(event) {
-
+				meerkat.modules.jqueryValidate.initJourneyValidator();
 				// Hook up privacy optin to Email Quote button
 				var $emailQuoteBtn = $(".slide-feature-emailquote");
 
@@ -251,7 +251,13 @@
 				if(!isSplitTestOn()) {
 					meerkat.modules.homeResults.initPage();
 				}
+
 				meerkat.modules.homeHistory.initHomeHistory();
+				if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
+					meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
+				} else {
+					meerkat.modules.resultsFeatures.fetchStructure('hncams');
+				}
 			},
 			onAfterEnter: function onHistoryEnter(event) {
 				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(' + (isSplitTestOn() ? '3' : '4') + ') .snapshot');

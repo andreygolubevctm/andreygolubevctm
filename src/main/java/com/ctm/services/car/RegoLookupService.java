@@ -14,7 +14,8 @@ import com.ctm.services.IPCheckService;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.utils.RequestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
@@ -35,7 +36,7 @@ import static com.ctm.webservice.motorweb.MotorWebProvider.createClient;
  */
 public class RegoLookupService {
 
-    private static Logger logger = Logger.getLogger(RegoLookupService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(RegoLookupService.class.getName());
 
     // Used to cache results of availability tests in serviceAvailableSilent method
     // as it's called multiple times when rendering frontend copy

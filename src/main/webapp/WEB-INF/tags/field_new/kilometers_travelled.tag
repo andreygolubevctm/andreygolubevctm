@@ -15,12 +15,21 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="id" value="${name}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
+<c:set var="maxLength" value="7" />
 <c:set var="error_message">Please enter the number of kilometres the vehicle is driven per year</c:set>
+<c:set var="inputType"><field_new:get_numeric_input_type /></c:set>
+<c:set var="formatNum">
+    <c:choose>
+        <c:when test='${inputType eq "text"}'>false</c:when>
+        <c:otherwise>true</c:otherwise>
+    </c:choose>
+</c:set>
 
 <%-- HTML --%>
-<field_new:input type="text" xpath="${xpath}" required="${required}" className="numeric ${className}" maxlength="${7}" title="${title}" pattern="[0-9]*" placeHolder="${placeHolder}" formattedInteger="true" />
+<c:set var="additionalAttributes">
+    <c:if test="${required}"> <%-- TODO: digitsIgnore may not be required. --%>
+        data-msg-required='${error_message}' data-rule-digitsIgnoreComma='true' data-msg-digitsIgnoreComma='${error_message}' <c:if test="${name eq 'quote_drivers_young_annualKilometres'}">data-rule-youngRegularDriversAnnualKilometersCheck='true'</c:if>
+    </c:if>
+</c:set>
 
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="required" parm="${required}" message="${error_message}"/>
-<go:validate selector="${name}" rule="digits" parm="${required}" message="${error_message}"/>
-<go:validate selector="quote_drivers_young_annualKilometres" rule="youngRegularDriversAnnualKilometersCheck" parm="${required}" message="The annual kilometres driven by the youngest driver cannot exceed those of the regular driver."/>
+<field_new:input type="${inputType}" xpath="${xpath}" required="${required}" className="numeric ${className}" maxlength="${maxLength}" title="${title}" pattern="[0-9]*" placeHolder="${placeHolder}" formattedInteger="true" additionalAttributes="${additionalAttributes}" />

@@ -8,7 +8,8 @@ import java.util.Date;
 
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
@@ -18,7 +19,7 @@ import com.ctm.model.content.ContentSupplement;
 
 public class ContentDao {
 
-	private static Logger logger = Logger.getLogger(ContentDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(ContentDao.class.getName());
 	private int brandId;
 	private int verticalId;
 
@@ -100,11 +101,11 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-				logger.error("There is no record of this content key: "+contentKey);
+				logger.debug("The following content key '"+contentKey+"' not found in DB... Defaulting to empty string.");
 			}else{
 
 				if(contents.size() > 1){
-					logger.error("There is more than one content value for this content code: "+contentKey);
+					logger.warn("There is more than one content value for this content code: "+contentKey+" - Will use the first one found");
 				}
 
 				content = contents.get(0);

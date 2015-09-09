@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.ctm.dao.CountryMappingDao;
 import com.ctm.model.CountryMapping;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ctm.services.ApplicationService;
 import com.ctm.services.ContentService;
@@ -41,7 +42,7 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 	private static final String VERTICAL = VerticalType.TRAVEL.getCode();
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(TravelEmailService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(TravelEmailService.class.getName());
 
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();

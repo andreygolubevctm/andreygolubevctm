@@ -10,18 +10,23 @@ import javax.ws.rs.core.Context;
 import com.ctm.dao.car.CarRegoLookupDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RegoLookupException;
+import com.ctm.model.car.CarDetails;
+import com.ctm.model.car.CarModel;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.ApplicationService;
+import com.ctm.services.car.CarVehicleSelectionService;
 import com.ctm.services.car.RegoLookupService;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.json.JSONObject;
 
 import java.util.*;
 import java.util.stream.Stream;
 
 @Path("/rego")
 public class RegoLookupRouter {
-    private static Logger logger = Logger.getLogger(RegoLookupRouter.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(RegoLookupRouter.class.getName());
 
     private static final String COLLECTION_LABEL = "vehicle_data";
     /*
@@ -61,6 +66,4 @@ public class RegoLookupRouter {
 
         return result;
     }
-
-
 }

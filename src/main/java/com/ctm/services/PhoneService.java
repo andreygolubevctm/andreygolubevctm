@@ -12,7 +12,8 @@ import com.ctm.model.simples.CallInfo;
 import com.ctm.model.simples.InboundPhoneNumber;
 import com.disc_au.web.go.xml.XmlNode;
 import com.disc_au.web.go.xml.XmlParser;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,68 +25,8 @@ import static com.ctm.model.simples.CallInfo.STATE_INACTIVE;
 import static java.lang.String.format;
 
 public class PhoneService {
-	private static final Logger logger = Logger.getLogger(PhoneService.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(PhoneService.class.getName());
 	public static final String CTI_MAKE_CALL = "/dataservices/makeCall?accessToken=&extension=%s&numberToCall=%s";
-
-	/**
-	 * Get Response from Verint' RIS (Recorder Integration Service) from either its Master or Slave (failover) server
-	 * @param settings
-	 * @param paramUrl
-	 * @return
-	 * @throws ConfigSettingException
-	 * @throws EnvironmentException
-	 * @throws Exception
-	 */
-	public static XmlNode getVerintResponse(PageSettings settings, String paramUrl) throws EnvironmentException, ConfigSettingException {
-
-		String masterUrl = settings.getSetting("verintMaster");
-		String slaveUrl = settings.getSetting("verintSlave");
-
-		SimpleConnection simpleConn =  new SimpleConnection();
-		String result = simpleConn.get(masterUrl + paramUrl);
-
-		if (result.contains("<isMaster>false</isMaster>")) {
-			result = simpleConn.get(slaveUrl + paramUrl);
-		}
-
-		try {
-			XmlParser parser = new XmlParser();
-			XmlNode xmlNode = parser.parse(result);
-			return xmlNode;
-		} catch (SAXException e) {
-			logger.error(e);
-		}
-
-		return null;
-	}
-
-	/**
-	 * Uses Verint's RIS (Recorder Integration Service) to pause / resume recording of audio / video
-	 * @param settings
-	 * @param agentId
-	 * @param contentType
-	 * @param action
-	 * @return
-	 * @throws ConfigSettingException
-	 * @throws EnvironmentException
-	 * @throws Exception
-	 */
-	public static XmlNode pauseResumeRecording(PageSettings settings, String agentId, String contentType, String action) throws EnvironmentException, ConfigSettingException {
-
-		String paramUrl = "servlet/eQC6?&" +
-						"interface=IContactManagement&" +
-						"method=deliverevent&" +
-						"contactevent=" + action + "&" +
-						"agent.agent=" + agentId + "&" +
-						"responseType=XML&" +
-						"attribute.key=Contact.ContentType&" +
-						"attribute.value=" + contentType + "&" +
-						"attribute.key=Contact.Requestor&" +
-						"attribute.value=CTM";
-
-		XmlNode xmlNode = getVerintResponse(settings, paramUrl);
-		return xmlNode;
-	}
 
 	/**
 	 * Uses the CTI service from Auto&General to get the extension for the specified agentId.
@@ -131,7 +72,7 @@ public class PhoneService {
 			}
 		}
 		catch (JSONException e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 
 		return null;
@@ -159,7 +100,7 @@ public class PhoneService {
             }
         }
 
-		return callInfo;
+        return callInfo;
     }
 
     /**
@@ -249,7 +190,7 @@ public class PhoneService {
 			callInfo.setCustomerPhoneNo(otherParty.getString("telephoneNumber"));
 		}
 		catch (JSONException e) {
-			logger.error(e);
+			logger.error("",e);
 		}
 
 		return callInfo;
