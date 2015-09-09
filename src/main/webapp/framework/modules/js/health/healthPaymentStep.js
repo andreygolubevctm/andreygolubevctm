@@ -91,8 +91,8 @@
 			// Update premium button
 			$('#update-premium').on('click', updatePremium);
 
-			$('#health_payment_credit_type').on('change', creditCardDetails.set);
-			creditCardDetails.set();
+			$('#health_payment_credit_type').on('change', meerkat.modules.healthCreditCard.setCreditCardRules);
+			meerkat.modules.healthCreditCard.setCreditCardRules();
 
 			// show pay claims into bank account question (and supporting section).
 			$bankAccountDetailsRadioGroup.find("input").on('click', toggleClaimsBankAccountQuestion);
@@ -100,6 +100,13 @@
 			// show pay claims into bank account question (and supporting section).
 			$sameBankAccountRadioGroup.find("input").on('click', toggleClaimsBankAccountQuestion);
 
+			// Moved from fields:card_expiry.tag as part of CTMIT-555
+			$("select[id$='_cardExpiryMonth']").on('change', function () {
+				var $year = $("select[id$='_cardExpiryYear']");
+				if ($year.hasClass('has-error') || $year.hasClass('has-success')) {
+					$year.valid();
+				}
+			});
 
 			resetSettings();
 
@@ -134,7 +141,7 @@
 		settings.creditBankSupply = false;
 		settings.creditBankQuestions = false;
 
-		creditCardDetails.resetConfig();
+		meerkat.modules.healthCreditCard.resetConfig();
 
 		// Clear start date
 
@@ -148,8 +155,7 @@
 		$frequencySelect.val('');
 
 		// Clear bank account details selection
-		$("#health_payment_details_claims input").prop('checked', false).change();
-		$("#health_payment_details_claims input").find('label').removeClass('active');
+		$("#health_payment_details_claims input").prop('checked', false).change().find('label').removeClass('active');
 
 		setCoverStartRange(0, 90);
 

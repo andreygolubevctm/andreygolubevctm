@@ -14,11 +14,11 @@ $(function () {
 			"class='form-horizontal' novalidate='novalidate'></form>");
 	var $marketing = $("<input type='checkbox' name='send_marketing' " +
 			"id='send_marketing' value='Y'>");
-	var $emailInput = $("<input required='true' type='email' " +
+	var $emailInput = $("<input required='required' type='email' " +
 			"name='save_email' class='form-control has-success' id='save_email' />");
 
-	var $password = $("<input required='true' type='password' name='save_password' id='save_password' />");
-	var $confirmationPassword = $("<input required='true' type='password' name='save_confirm' id='save_confirm' />");
+	var $password = $("<input required='required' type='password' name='save_password' id='save_password' data-rule-minlength='6' />");
+	var $confirmationPassword = $("<input required='required' type='password' name='save_confirm' id='save_confirm' data-rule-equalTo='#save_password' />");
 
 	var $submitButton = $("<a href='javascript:;' class='btn-save-quote' >Save Quote</a>");
 
@@ -52,13 +52,13 @@ $(function () {
 	function enterValidDetails() {
 		$emailInput.val(email);
 		$emailInput.change();
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		$password.val(password);
 		$password.change();
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		$confirmationPassword.val(password);
 		$confirmationPassword.change();
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 	}
 
 	QUnit.test( "should validate email", function(assert) {
@@ -72,7 +72,7 @@ $(function () {
 		$password.val('password1');
 		$confirmationPassword.val('password1');
 
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		ok($submitButton.hasClass( "disabled" ), "email button should be disabled");
 	});
 
@@ -85,7 +85,21 @@ $(function () {
 		$password.val('password1');
 		$confirmationPassword.val('password2');
 		$password.change();
-		setTimeout(500);
+		setTimeout(function(){}, 500);
+		ok($submitButton.hasClass( "disabled" ), "email button should be disabled");
+
+	});
+
+	QUnit.test( "should validate password length", function(assert) {
+		enterValidDetails();
+		ok(!$submitButton.hasClass("disabled"), "email button should not be disabled");
+
+		// don't enable submit if non matching password
+		$emailInput.change();
+		$password.val('123');
+		$confirmationPassword.val('123');
+		$password.change();
+		setTimeout(function(){}, 500);
 		ok($submitButton.hasClass( "disabled" ), "email button should be disabled");
 
 	});
@@ -95,7 +109,7 @@ $(function () {
 		enterValidDetails();
 
 		// wait for event
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		// mock out send email call
 		var emailSent = false;
 		var data = null;
@@ -104,7 +118,7 @@ $(function () {
 					console.log("post recieved");
 					data = request.data;
 					var result = {
-						transactionId : 100000000,
+						transactionId : 100000000
 					};
 					request.onSuccess(result);
 					request.onComplete(result);
@@ -114,7 +128,7 @@ $(function () {
 		console.log("$submitButton.click()");
 		$submitButton.click();
 		// wait for fake email send
-		setTimeout(500);
+		setTimeout(function(){}, 500);
 		ok(emailSent, "email should have been send");
 
 		var returnedEmail = null;
@@ -149,5 +163,5 @@ $(function () {
 	setTimeout(function(){
 		$form.remove();
 	}, 4000);
-})
+});
 

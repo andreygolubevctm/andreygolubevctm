@@ -18,7 +18,7 @@
 	<form_new:row fieldXpath="${fieldXpath}" label="Email Address">
 		<field_new:email xpath="${fieldXpath}"
 			required="${mandatoryFieldsSplitTest}"
-			title="the policy holder's email address" />
+			title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 	</form_new:row>
 
 	<%-- Marketing --%>
@@ -38,7 +38,7 @@
 	<form_new:row fieldXpath="${fieldXpath}" label="Best contact number" helpId="524">
 		<field:contact_telno xpath="${fieldXpath}"
 			required="false"
-			title="best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)"/>
+			title="best number for the insurance provider to contact you on (You will only be contacted by phone if you answer 'Yes' to the 'OK to call' question on this screen)" validationAttribute=" data-rule-validateOkToCall='true' " />
 	</form_new:row>
 
 	<%-- OK to call --%>
@@ -53,29 +53,7 @@
 		<p class="optinText">I give permission for the insurance provider that presents the lowest price to call me within the next 2 business days to discuss my home &amp; contents insurance needs.</p>
 	</form_new:row>
 
-	<go:script marker="js-head">
-	$.validator.addMethod('validateOkToCall', function(value, element) {
-		var optin = ($("#${name}_FieldSet input[name='${name}_oktocall']:checked").val() === 'Y');
-		var phone = $('#${name}_phone').val();
-		if(optin === true && _.isEmpty(phone)) {
-			return false;
-		}
-		return true;
-	});
-
-	$.validator.addMethod('validateOkToEmail', function(value, element) {
-		var optin = ($("#${name}_FieldSet input[name='${name}_marketing']:checked").val() === 'Y');
-		var email = $('#${name}_email').val();
-		if(optin === true && _.isEmpty(email)) {
-			return false;
-		}
-		return true;
-	});
-	</go:script>
-
 	<%-- Mandatory agreement to privacy policy --%>
 	<form_new:privacy_optin vertical="home" />
 
 </form_new:fieldset>
-<go:validate selector="${name}_phoneinput" rule="validateOkToCall" parm="true" message="Please enter a contact number" />
-<go:validate selector="${name}_email" rule="validateOkToEmail" parm="true" message="Please enter your email address" />

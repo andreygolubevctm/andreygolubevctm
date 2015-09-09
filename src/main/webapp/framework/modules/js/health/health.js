@@ -108,18 +108,22 @@
 			},
 			onInitialise: function onStartInit(event){
 
-				// Add event listeners.
 
+				meerkat.modules.jqueryValidate.initJourneyValidator();
+
+				// Add event listeners.
 				$('.health-situation-healthCvr').on('change',function() {
 					healthChoices.setCover($(this).val());
 				});
 
-				$('.health-situation-location').on('change',function() {
+				var $healthSitLocation = $('#health_situation_location');
+				$healthSitLocation.on('blur',function() {
 					healthChoices.setLocation($(this).val());
 				});
 
-				if($('#health_situation_location').val() !== '') {
-					healthChoices.setLocation($('#health_situation_location').val());
+				// For loading in.
+				if($healthSitLocation.val() !== '') {
+					healthChoices.setLocation($healthSitLocation.val());
 				}
 
 				if($("#health_privacyoptin").val() === 'Y'){
@@ -575,9 +579,23 @@
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
-					meerkat.modules.dialogs.show({
-						title: 'Declaration',
-						url: "health_fund_info/"+selectedProduct.info.provider.toUpperCase()+"/declaration.html"
+					var data = {};
+					data.providerId = selectedProduct.info.providerId;
+					data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
+
+					meerkat.modules.comms.get({
+						url: "health/provider/content/get.json",
+						data: data,
+						cache: true,
+						errorLevel: "silent",
+						onSuccess: function getProviderContentSuccess(result) {
+							if (result.hasOwnProperty('providerContentText')) {
+								meerkat.modules.dialogs.show({
+									title: 'Declaration',
+									htmlContent : result.providerContentText
+								});
+							}
+						}
 					});
 
 					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
@@ -859,8 +877,8 @@
 		if(postData.primary_dob === '') return false;
 		if(coverTypeHasPartner && postData.partner_dob === '')  return false;
 
-		if(returnAge(postData.primary_dob) < 0) return false;
-		if(coverTypeHasPartner && returnAge(postData.partner_dob) < 0)  return false;
+		if(meerkat.modules.utils.returnAge(postData.primary_dob) < 0) return false;
+		if(coverTypeHasPartner && meerkat.modules.utils.returnAge(postData.partner_dob) < 0)  return false;
 		if(postData.rebate_choice === "Y" && postData.income === "") return false;
 
 		// check in valid date format

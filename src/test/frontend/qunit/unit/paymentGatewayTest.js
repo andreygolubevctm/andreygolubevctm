@@ -1,9 +1,3 @@
-meerkat.modules.loadingAnimation = {
-	getTemplate : function() {
-		return "";
-	}
-};
-
 $(function () {
 	QUnit.test("should launch dialog on click", function(assert) {
 		var meerkat = window.meerkat;

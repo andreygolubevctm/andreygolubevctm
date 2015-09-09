@@ -52,7 +52,7 @@
 		<field_new:import_select xpath="${fieldXpath}"
 			required="true"
 			title="what year the home was built"
-			url="/WEB-INF/option_data/property_built_year.html"/>
+			url="/WEB-INF/option_data/property_built_year.html" additionalAttributes="data-rule-yearBuiltAfterMoveInYear='true' "/>
 	</form_new:row>
 
 	<%-- Heritage Listed --%>
@@ -74,22 +74,5 @@
 			className="pretty_buttons"
 			items="Y=Yes,N=No" />
 	</form_new:row>
-
-	<%-- JAVASCRIPT HEAD --%>
-	<go:script marker="onready">
-	$.validator.addMethod("yearBuiltAfterMoveInYear",
-		function(value, element, param) {
-			var moveInField = $(".whenMovedInYear");
-			var moveInYear = moveInField.first().find(":selected").val();
-			if( !isNaN(moveInYear) && moveInYear < $(element).find(":selected").val() && moveInField.css("display") == 'block' ){
-				return false;
-			}
-			return true;
-
-		},
-		"Custom message"
-	);
-	</go:script>
-	<go:validate selector="${name}_yearBuilt" rule="yearBuiltAfterMoveInYear" parm="true" message="Please change the building year so that it is prior or equal to the year you moved in" />
 
 </form_new:fieldset>

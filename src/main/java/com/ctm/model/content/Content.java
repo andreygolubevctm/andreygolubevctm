@@ -3,7 +3,7 @@ package com.ctm.model.content;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Content {
+public class Content implements java.io.Serializable {
 
 	private int id;
 	private int styleCodeId;

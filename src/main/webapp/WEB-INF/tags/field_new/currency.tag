@@ -23,7 +23,6 @@
 <%@ attribute name="otherElementName" 	required="false"	rtexprvalue="true"	description="The other element display name. Used for Validation Message" %>
 <%@ attribute name="altTitle"		 	required="false"	rtexprvalue="true"	description="Alternative title for percentage rules" %>
 
-<go:script marker="js-href" href="common/js/jquery.formatCurrency-1.4.0.js" />
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -51,6 +50,13 @@
 	</c:otherwise>
 </c:choose>
 
+<c:set var="fieldName">${go:nameFromXpath(xpath)}_entry</c:set>
+<c:set var="loanAmountEntryRule">
+	<c:if test="${fn:contains(fieldName, '_loanAmount_entry')}">
+		data-rule-validateLoanAmount="true" data-msg-validateLoanAmount="The amount you wish to borrow exceeds the value of the property. Please review the amounts before continuing."
+	</c:if>
+</c:set>
+
 <%-- The maxlength fails validation once formatting has been added.
 	maxLength provided should be the length without so need to
 	calculate a new length to include formatting. The maxLength
@@ -66,6 +72,7 @@
 
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" value="${value}" class="currency"/>
+<c:set var="validationAttributes">data-rule-currencyrange='{<c:if test="${not empty minValue}">"min": "${minValue}",</c:if><c:if test="${not empty maxValue}">"max": "${maxValue}",</c:if><c:if test="${not empty defaultValue}">"dV": "${defaultValue}",</c:if>"t": "${title}"}' </c:set>
 
 	<field_new:input type="${inputType}"
 		xpath="${xpath}entry"
@@ -74,94 +81,5 @@
 		maxlength="${maxLength}"
 		title="${title}"
 		defaultValue="${value}"
-		pattern="${pattern}"
+		pattern="${pattern}" additionalAttributes=" data-rule-currency='${required}' data-msg-currency='${title} is not a valid amount' ${validationAttributes} ${loanAmountEntryRule}"
 		/>
-
-<%-- JAVASCRIPT HEAD --%>
-<go:script marker="js-head">
-$.validator.addMethod("validate_${name}",
-		function(value, elem, parm) {
-			try{
-				var val = $(elem).val();
-
-				if( isNaN(val) ){
-					val = val.replace(/[^\d.-]/g, '');
-				}
-
-				if( val != '' && val > 0 ){
-					return true;
-				}
-
-				return false;
-			}
-			catch(e){
-				return false;
-			}
-		},
-
-		$.validator.messages.currencyNumber = ' is not a valid number.'
-);
-
-$.validator.addMethod("${name}_minCurrency",
-	function(value, elem, parm) {
-
-		var val = $(elem).val();
-
-		if( isNaN(val) ){
-			val = val.replace(/[^\d.-]/g, '');
-		}
-
-		<c:if test="${not empty defaultValue}">
-		if( val == ${defaultValue} ){
-			return true;
-		}
-		</c:if>
-
-		if( val < parm){
-			return false;
-		}
-
-		return true;
-	},
-	"Custom message"
-);
-
-$.validator.addMethod("${name}_maxCurrency",
-	function(value, elem, parm) {
-
-		var val = $(elem).val();
-
-		if( isNaN(val) ){
-			val = val.replace(/[^\d.-]/g, '');
-		}
-
-		<c:if test="${not empty defaultValue}">
-		if( val == ${defaultValue} ){
-			return true;
-		}
-		</c:if>
-
-		if( val > parm){
-			return false;
-		}
-
-		return true;
-	},
-	"Custom message"
-);
-
-</go:script>
-
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}entry" rule="validate_${name}" parm="${required}" message="${title} is not a valid amount"/>
-
-<c:if test="${not empty minValue}">
-	<fmt:formatNumber type="number" value="${minValue}" var="formattedMinValue"/>
-	<go:validate selector="${name}entry" rule="${name}_minCurrency" parm="${minValue}" message="${title} cannot be lower than $${formattedMinValue}"/>
-</c:if>
-
-<c:if test="${not empty maxValue}">
-	<fmt:formatNumber type="number" value="${maxValue}" var="formattedMaxValue"/>
-	<go:validate selector="${name}entry" rule="${name}_maxCurrency" parm="${maxValue}" message="${title} cannot be higher than $${formattedMaxValue}"/>
-</c:if>

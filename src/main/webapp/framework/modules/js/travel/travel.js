@@ -88,6 +88,7 @@
 			if ($e.length > 0) {
 				templateMoreInfo = _.template($e.html());
 			}
+
 		});
 	}
 
@@ -103,6 +104,8 @@
 				object:meerkat.modules.travel.getTrackingFieldsObject
 			},
 			onInitialise : function onStartInit(event) {
+
+				meerkat.modules.jqueryValidate.initJourneyValidator();
 
 				// Call initialisers
 				meerkat.modules.travelCountrySelector.initTravelCountrySelector();

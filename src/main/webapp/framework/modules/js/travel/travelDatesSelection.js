@@ -4,7 +4,7 @@
  *
 */
 ;(function($, undefined) {
-	
+
 	"use strict";
 
 	//Standard platform access:
@@ -33,7 +33,7 @@
 	//min and max ranges for the rfc3339 may or may not actually want the full 2008-12-19T16:39:57.67Z format on iOS safari web.
 	function stringDate(inputFormat, rfc3339) {
 		if (typeof rfc3339 === "undefined") { rfc3339 = false; }
-		
+
 		function pad(s) { return (s < 10) ? '0' + s : s; }
 		var d = new Date(inputFormat);
 
@@ -64,7 +64,7 @@
 		//NOTE: These .datepickers are set up by the datepicker.js wrapper FIRST. Here we customise from the defaults and add custom functionality.
 
 		// We could have set up the actual date objects for fromDate_StartDateRange and toDate_StartDateRange, but on init there's a 'today' shortcut.
-		
+
 		// initialise from/leave date datepicker
 		$fromDateInput.datepicker(
 			{ startDate: fromDate_StartDateRange, endDate: fromDate_EndDateRange}
@@ -90,7 +90,6 @@
 
 		// Grab the current internal date objects
 		fromDateCurrent = $fromDateInput.datepicker("getDate"); //localized date object
-
 		//Make sure we have an actual date object in the right format before setting anything new
 		if (fromDateCurrent.toString() !== "Invalid Date") {
 			//Initialise the to be the same
@@ -113,16 +112,8 @@
 			//update (remove then add) the jqvalidation to know what the new min and max dates are.
 
 			//min toDate is handled by range validation in the tag using fromToDate rule.
-			//$toDateInput.rules("remove", "minDateEUR");
-			//$toDateInput.rules('add',
-			//	{'minDateEUR': stringDate(toDate_StartDateRange),
-			//	messages:{'minDateEUR':'The return date should be equal to or after '+toDate_StartDateRange}});
-
 			//Max needs to be handled dynamically with this validate rules command.
-			$toDateInput.rules("remove", "maxDateEUR");
-			$toDateInput.rules('add',
-				{'maxDateEUR': stringDate(toDate_EndDateRange),
-				messages:{'maxDateEUR':'The return date should be equal to or before one year after the departure date (i.e. '+ stringDate(toDate_EndDateRange)+')'}});
+			$toDateInput.removeRule('latestDateEUR').addRule('latestDateEUR', stringDate(toDate_EndDateRange), 'The return date should be equal to or before one year after the departure date (i.e. '+ stringDate(toDate_EndDateRange)+')');
 		}
 	}
 

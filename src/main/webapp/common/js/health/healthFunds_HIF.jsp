@@ -73,8 +73,8 @@ var healthFunds_HIF = {
 			healthFunds_HIF.$_dobPrimary = $('#health_application_primary_dob');
 			healthFunds_HIF.$_dobPartner = $('#health_application_partner_dob');
 
-			meerkat.modules.validation.setMinAgeValidation(healthFunds_HIF.$_dobPrimary, 18 , "primary person's");
-			meerkat.modules.validation.setMinAgeValidation(healthFunds_HIF.$_dobPartner, 18, "partner's");
+			healthFunds_HIF.$_dobPrimary.addRule('youngestDOB', 18, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
+			healthFunds_HIF.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
 			<%-- How to send information. Second argument = validation required --%>
 			healthApplicationDetails.showHowToSendInfo('HIF', true);
@@ -87,10 +87,6 @@ var healthFunds_HIF = {
 
 			<%-- Partner authority --%>
 			healthFunds._partner_authority(true);
-
-			<%-- Fund IDs become optional --%>
-			$('#clientMemberID').find('input').rules('remove', 'required');
-			$('#partnerMemberID').find('input').rules('remove', 'required');
 
 			<%-- Calendar for start cover --%>
 			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
@@ -137,8 +133,8 @@ var healthFunds_HIF = {
 			$('.health_dependant_details_schoolGroup .help-icon').show();
 
 			<%-- Age requirements for applicants (back to default) --%>
-			meerkat.modules.validation.setMinAgeValidation(healthFunds_HIF.$_dobPrimary, dob_health_application_primary_dob.ageMin , "primary person's");
-			meerkat.modules.validation.setMinAgeValidation(healthFunds_HIF.$_dobPartner, dob_health_application_partner_dob.ageMin, "partner's");
+			healthFunds_HIF.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
+			healthFunds_HIF.$_dobPartner.addRule('youngestDOB', dob_health_application_partner_dob.ageMin, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
 			delete healthFunds_HIF.$_dobPrimary;
 			delete healthFunds_HIF.$_dobPartner;

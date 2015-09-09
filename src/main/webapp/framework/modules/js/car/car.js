@@ -2,202 +2,255 @@
  * Description: External documentation:
  */
 
-(function($, undefined) {
+(function ($, undefined) {
 
-	var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events;
 
-	var moduleEvents = {
-		car : {
+    var moduleEvents = {
+        car: {},
+        WEBAPP_LOCK: 'WEBAPP_LOCK',
+        WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+    }, steps = null;
 
-		},
-		WEBAPP_LOCK : 'WEBAPP_LOCK',
-		WEBAPP_UNLOCK : 'WEBAPP_UNLOCK'
-	}, steps = null;
+    var templateAccessories;
 
-	var templateAccessories;
+    function initCar() {
 
-	function initCar() {
-
-		var self = this;
-
-		meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function(){
-			meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, _.bind(toggleManualAddressEntry,this));
-			toggleManualAddressEntry();
-		});
+        meerkat.messaging.subscribe(meerkatEvents.splitTest.SPLIT_TEST_READY, function () {
+            meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, _.bind(toggleManualAddressEntry, this));
+            toggleManualAddressEntry();
+        });
 
 
-		$(document).ready(function() {
+        $(document).ready(function () {
 
-			// Only init if car
-			if (meerkat.site.vertical !== "car")
-				return false;
+            // Only init if car
+            if (meerkat.site.vertical !== "car")
+                return false;
 
-			// Init common stuff
-			initJourneyEngine();
+            // Init common stuff
+            initJourneyEngine();
 
-			// Only continue if not confirmation page.
-			if (meerkat.site.pageAction === "confirmation") {
-				return false;
-			}
+            // Only continue if not confirmation page.
+            if (meerkat.site.pageAction === "confirmation") {
+                return false;
+            }
 
-			eventDelegates();
+            eventDelegates();
 
-			if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'latest' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
-				meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
-			}
+            if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'latest' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
+                meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
+            }
 
-			var $e = $('#quote-accessories-template');
-			if ($e.length > 0) {
-				templateAccessories = _.template($e.html());
-			}
-			$e = $('#more-info-template');
-			if ($e.length > 0) {
-				templateMoreInfo = _.template($e.html());
-			}
-			$e = $('#calldirect-template');
-			if ($e.length > 0) {
-				templateCallDirect = _.template($e.html());
-			}
-		});
+            var $e = $('#quote-accessories-template');
+            if ($e.length > 0) {
+                templateAccessories = _.template($e.html());
+            }
+            $e = $('#more-info-template');
+            if ($e.length > 0) {
+                templateMoreInfo = _.template($e.html());
+            }
+            $e = $('#calldirect-template');
+            if ($e.length > 0) {
+                templateCallDirect = _.template($e.html());
+            }
+        });
 
-	}
+    }
 
-	function toggleManualAddressEntry() {
-		var deviceType = $('#deviceType').attr('data-deviceType');
-		if(meerkat.modules.splitTest.isActive(15) && (deviceType == 'TABLET' || meerkat.modules.deviceMediaState.get() == 'xs')) {
-			$('#quote_riskAddress_nonStd_row').hide();
-			if(meerkat.modules.splitTest.isActive(32)) {
-				$('#addressForm').find('.cantFindAddressHelper').hide();
-			} else {
-				$('#addressForm').find('.cantFindAddressHelper').show();
-			}
-		} else {
-			$('#quote_riskAddress_nonStd_row').show();
-		}
-	}
+    function toggleManualAddressEntry() {
+        var deviceType = $('#deviceType').attr('data-deviceType');
+        if (meerkat.modules.splitTest.isActive(15) && (deviceType == 'TABLET' || meerkat.modules.deviceMediaState.get() == 'xs')) {
+            $('#quote_riskAddress_nonStd_row').hide();
+            if (meerkat.modules.splitTest.isActive(32)) {
+                $('#addressForm').find('.cantFindAddressHelper').hide();
+            } else {
+                $('#addressForm').find('.cantFindAddressHelper').show();
+            }
+        } else {
+            $('#quote_riskAddress_nonStd_row').show();
+        }
+    }
 
-	function eventDelegates() {
+    function eventDelegates() {
 
-	}
+    }
 
-	function initJourneyEngine() {
+    function initJourneyEngine() {
 
-		if (meerkat.site.pageAction === "confirmation") {
+        if (meerkat.site.pageAction === "confirmation") {
 
-			meerkat.modules.journeyEngine.configure(null);
+            meerkat.modules.journeyEngine.configure(null);
 
-		} else {
+        } else {
 
-			// Initialise the journey engine steps and bar
-			initProgressBar(false);
+            // Initialise the journey engine steps and bar
+            initProgressBar(false);
 
-			// Initialise the journey engine
-			var startStepId = null;
-			if (meerkat.site.isFromBrochureSite === true) {
-				startStepId = steps.startStep.navigationId;
-			}
-			// Use the stage user was on when saving their quote
-			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'latest') {
-				startStepId = steps.resultsStep.navigationId;
-			} else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
-				startStepId = steps.startStep.navigationId;
-			} else {
-				startStepId = meerkat.modules.emailLoadQuote.getStartStepOverride(startStepId);
-			}
+            // Initialise the journey engine
+            var startStepId = null;
+            if (meerkat.site.isFromBrochureSite === true) {
+                startStepId = steps.startStep.navigationId;
+            }
+            // Use the stage user was on when saving their quote
+            else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'latest') {
+                startStepId = steps.resultsStep.navigationId;
+            } else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
+                startStepId = steps.startStep.navigationId;
+            } else {
+                startStepId = meerkat.modules.emailLoadQuote.getStartStepOverride(startStepId);
+            }
 
-			// Defered to allow time for the slide modules to init e.g. vehicle selection
-			$(document).ready(function(){
+            // Defered to allow time for the slide modules to init e.g. vehicle selection
+            $(document).ready(function () {
 
-				_.defer(function(){
-				meerkat.modules.journeyEngine.configure({
-					startStepId : startStepId,
-					steps : _.toArray(steps)
-				});
+                _.defer(function () {
+                    meerkat.modules.journeyEngine.configure({
+                        startStepId: startStepId,
+                        steps: _.toArray(steps)
+                    });
 
-				// Call initial supertag call
-				var transaction_id = meerkat.modules.transactionId.get();
+                    // Call initial supertag call
+                    var transaction_id = meerkat.modules.transactionId.get();
 
-				if(meerkat.site.isNewQuote === false){
-					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-						method:'trackQuoteEvent',
-						object: {
-							action: 'Retrieve',
-							transactionID: parseInt(transaction_id, 10),
-							vertical: meerkat.site.vertical
-						}
-					});
-				} else {
-					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-						method: 'trackQuoteEvent',
-						object: {
-							action: 'Start',
-							transactionID: parseInt(transaction_id, 10),
-							vertical: meerkat.site.vertical
-						}
-					});
-				}
-			});
-			});
+                    if (meerkat.site.isNewQuote === false) {
+                        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                            method: 'trackQuoteEvent',
+                            object: {
+                                action: 'Retrieve',
+                                transactionID: parseInt(transaction_id, 10),
+                                vertical: meerkat.site.vertical
+                            }
+                        });
+                    } else {
+                        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                            method: 'trackQuoteEvent',
+                            object: {
+                                action: 'Start',
+                                transactionID: parseInt(transaction_id, 10),
+                                vertical: meerkat.site.vertical
+                            }
+                        });
+                    }
+                });
+            });
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * Initialise and configure the progress bar.
-	 *
-	 * @param {bool}
-	 *            render
-	 */
-	function initProgressBar(render) {
-		setJourneyEngineSteps();
-		configureProgressBar();
-		if (render) {
-			meerkat.modules.journeyProgressBar.render(true);
-		}
-	}
+    /**
+     * Initialise and configure the progress bar.
+     *
+     * @param {bool}
+     *            render
+     */
+    function initProgressBar(render) {
+        setJourneyEngineSteps();
+        configureProgressBar();
+        if (render) {
+            meerkat.modules.journeyProgressBar.render(true);
+        }
+    }
 
-	function setJourneyEngineSteps() {
+    function setJourneyEngineSteps() {
 
-		var startStep = {
-			title : 'Your Car',
-			navigationId : 'start',
-			slideIndex : 0,
-			externalTracking:{
-				method:'trackQuoteForms',
-				object:meerkat.modules.car.getTrackingFieldsObject
-			},
-			onInitialise : function onStartInit(event) {
+        var startStep = {
+            title: 'Your Car',
+            navigationId: 'start',
+            slideIndex: 0,
+            externalTracking: {
+                method: 'trackQuoteForms',
+                object: meerkat.modules.car.getTrackingFieldsObject
+            },
+            onInitialise: function onStartInit(event) {
+                meerkat.modules.jqueryValidate.initJourneyValidator();
+                // Hook up privacy optin to Email Quote button
+                var $emailQuoteBtn = $(".slide-feature-emailquote");
 
-				// Hook up privacy optin to Email Quote button
-				var $emailQuoteBtn = $(".slide-feature-emailquote");
+                // Initial value from preload/load quote
+                if ($("#quote_privacyoptin").is(':checked')) {
+                    $emailQuoteBtn.addClass("privacyOptinChecked");
+                }
 
-				// Initial value from preload/load quote
-				if ($("#quote_privacyoptin").is(':checked')) {
-					$emailQuoteBtn.addClass("privacyOptinChecked");
-				}
+                $("#quote_privacyoptin").on('change', function (event) {
+                    if ($(this).is(':checked')) {
+                        $emailQuoteBtn.addClass("privacyOptinChecked");
+                    } else {
+                        $emailQuoteBtn.removeClass("privacyOptinChecked");
+                    }
+                });
 
-				$("#quote_privacyoptin").on('change', function(event){
-					if ($(this).is(':checked')) {
-						$emailQuoteBtn.addClass("privacyOptinChecked");
-					} else {
-						$emailQuoteBtn.removeClass("privacyOptinChecked");
-					}
-				});
+            },
+            validation: {
+                validate: true,
+                customValidation: function (callback) {
+                    $('#quote_vehicle_selection').find('select').each(function () {
+                        if ($(this).is('[disabled]')) {
+                            callback(false);
+                            return;
+                        }
+                    });
+                    callback(true);
+                }
+            }
+        };
 
-			},
-			validation:{
-				validate:true,
-				customValidation:function(callback){
-					$('#quote_vehicle_selection').find('select').each(function(){
-						if($(this).is('[disabled]')) {
-							callback(false);
-							return;
-						}
-					});
-					callback(true);
-				}
-			}
-		};
+        var optionsStep = {
+            title: 'Car Details',
+            navigationId: 'options',
+            slideIndex: 1,
+            externalTracking: {
+                method: 'trackQuoteForms',
+                object: meerkat.modules.car.getTrackingFieldsObject
+            },
+            tracking: {
+                touchType: 'H',
+                touchComment: 'OptionsAccs',
+                includeFormData: true
+            },
+            onInitialise: function () {
+				meerkat.modules.carCommencementDate.initCarCommencementDate();
+                meerkat.modules.carYoungDrivers.initCarYoungDrivers();
+            }
+        };
+
+        var detailsStep = {
+            title: 'Driver Details',
+            navigationId: 'details',
+            slideIndex: 2,
+            externalTracking: {
+                method: 'trackQuoteForms',
+                object: meerkat.modules.car.getTrackingFieldsObject
+            },
+            tracking: {
+                touchType: 'H',
+                touchComment: 'DriverDtls',
+                includeFormData: true
+            }
+        };
+
+        var addressStep = {
+            title: 'Address & Contact',
+            navigationId: 'address',
+            slideIndex: 3,
+            externalTracking: {
+                method: 'trackQuoteForms',
+                object: meerkat.modules.car.getTrackingFieldsObject
+            },
+            tracking: {
+                touchType: 'H',
+                touchComment: 'AddressCon',
+                includeFormData: true
+            },
+            onInitialise: function (event) {
+                var verticalToUse = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote ? 'carws_' : 'car_';
+                meerkat.modules.resultsFeatures.fetchStructure(verticalToUse);
+            },
+            onAfterEnter: function (event) {
+            },
+            onBeforeLeave: function (event) {
+            }
+        };
 
 		var optionsStep = {
 			title : 'Car Details',
@@ -212,26 +265,16 @@
 				touchComment: 'OptionsAccs',
 				includeFormData:true
 			},
-			onInitialise: function onInitOptionsStep() {
-				meerkat.modules.carCommencementDate.initCarCommencementDate();
+			onInitialise: function() {
 				meerkat.modules.carYoungDrivers.initCarYoungDrivers();
 			}
 		};
 
-		var detailsStep = {
-			title : 'Driver Details',
-			navigationId : 'details',
-			slideIndex : 2,
-			externalTracking:{
-				method:'trackQuoteForms',
-				object:meerkat.modules.car.getTrackingFieldsObject
-			},
-			tracking:{
-				touchType:'H',
-				touchComment: 'DriverDtls',
-				includeFormData:true
-			}
-		};
+                // Hide the filters bar
+                meerkat.modules.carFilters.hide();
+                meerkat.modules.carEditDetails.hide();
+            }
+        };
 
 		var addressStep = {
 			title : 'Address & Contact',
@@ -246,7 +289,7 @@
 				touchComment: 'AddressCon',
 				includeFormData:true
 			},
-			onInitialise : function onInitAddressStep(event) {
+			onInitialise : function (event) {
 				var $driversFirstName =  $('#quote_drivers_regular_firstname');
 				var $driversLastName =  $('#quote_drivers_regular_surname');
 				var $driversPhoneNumber =  $('#quote_contact_phoneinput');
@@ -254,19 +297,7 @@
 				var $competitionOptin = $('#quote_contact_competition_optin');
 				var nonStdJourney = meerkat.modules.splitTest.isActive(2);
 
-				if($competitionOptin.length && nonStdJourney) {
-					$competitionOptin.on('change', function() {
-					if ($(this).is(':checked')) {
-							$driversFirstName.rules('add', {required:true, messages:{required:'Please enter your First Name to be eligible for the competition'}});
-							$driversLastName.rules('add', {required:true, messages:{required:'Please enter your Last Name to be eligible for the competition'}});
-							$driversPhoneNumber.rules('add', {required:true, messages:{required:'Please enter your Contact Number to be eligible for the competition'}});
-							$driversContactEmail.rules('add', {required:true, messages:{required:'Please enter your Email Address to be eligible for the competition'}});
-					}
-					else {
-							$driversFirstName.rules('remove', 'required');
-							$driversLastName.rules('remove', 'required');
-							$driversPhoneNumber.rules('remove', 'required');
-							$driversContactEmail.rules('remove', 'required');
+    }
 
 							$driversFirstName.valid();
 							$driversLastName.valid();
@@ -280,6 +311,10 @@
 				} else {
 					meerkat.modules.resultsFeatures.fetchStructure('car_');
 				}
+			},
+			onAfterEnter : function (event) {
+			},
+			onBeforeLeave : function(event) {
 			}
 		};
 
@@ -320,174 +355,134 @@
 			onAfterLeave: function(event) {
 				meerkat.modules.journeyProgressBar.show();
 
-				// Hide the filters bar
-				meerkat.modules.carFilters.hide();
-				meerkat.modules.carEditDetails.hide();
-			}
-		};
+            special_case = special_case || false;
 
-		steps = {
-			startStep: startStep,
-			optionsStep: optionsStep,
-			detailsStep: detailsStep,
-			addressStep: addressStep,
-			resultsStep: resultsStep
-		};
+            var yob = $('#quote_drivers_regular_dob').val();
+            if (yob.length > 4) {
+                yob = yob.substring(yob.length - 4);
+            }
 
-	}
+            var gender = null;
+            var gVal = $('input[name=quote_drivers_regular_gender]:checked').val();
+            if (!_.isUndefined(gVal)) {
+                switch (gVal) {
+                    case 'M':
+                        gender = 'Male';
+                        break;
+                    case 'F':
+                        gender = 'Female';
+                        break;
+                }
+            }
 
-	function configureProgressBar() {
-		meerkat.modules.journeyProgressBar.configure([
-			{
-				label: 'Your Car',
-				navigationId: steps.startStep.navigationId
-			},
-			{
-				label: 'Car Details',
-				navigationId: steps.optionsStep.navigationId
-			},
-			{
-				label: 'Driver Details',
-				navigationId: steps.detailsStep.navigationId
-			},
-			{
-				label: 'Address & Contact',
-				navigationId: steps.addressStep.navigationId
-			},
-			{
-				label: 'Your Quotes',
-				navigationId: steps.resultsStep.navigationId
-			}
-		]);
-	}
-	// Build an object to be sent by SuperTag tracking.
-	function getTrackingFieldsObject(special_case){
-		try{
+            var marketOptIn = null;
+            var mVal = $('input[name=quote_contact_marketing]:checked').val();
+            if (!_.isUndefined(mVal)) {
+                marketOptIn = mVal;
+            }
 
-		special_case = special_case || false;
+            var okToCall = null;
+            var oVal = $('input[name=quote_contact_oktocall]:checked').val();
+            if (!_.isUndefined(oVal)) {
+                okToCall = oVal;
+            }
 
-		var yob=$('#quote_drivers_regular_dob').val();
-		if (yob.length > 4){
-			yob = yob.substring(yob.length-4);
-		}
+            var postCode = $('#quote_riskAddress_postCode').val();
+            var stateCode = $('#quote_riskAddress_state').val();
+            var vehYear = $('#quote_vehicle_year').val();
+            var vehMake = $('#quote_vehicle_make option:selected').text();
 
-		var gender = null;
-		var gVal = $('input[name=quote_drivers_regular_gender]:checked').val();
-		if(!_.isUndefined(gVal)) {
-			switch(gVal){
-				case 'M': gender='Male'; break;
-				case 'F': gender='Female'; break;
-			}
-		}
+            var email = $('#quote_contact_email').val();
 
-		var marketOptIn = null;
-		var mVal = $('input[name=quote_contact_marketing]:checked').val();
-		if(!_.isUndefined(mVal)) {
-			marketOptIn = mVal;
-		}
+            var commencementDate = $("#quote_options_commencementDate").val();
 
-		var okToCall = null;
-		var oVal = $('input[name=quote_contact_oktocall]:checked').val();
-		if(!_.isUndefined(oVal)) {
-			okToCall = oVal;
-		}
+            var transactionId = meerkat.modules.transactionId.get();
 
-		var postCode = $('#quote_riskAddress_postCode').val();
-		var stateCode = $('#quote_riskAddress_state').val();
-		var vehYear = $('#quote_vehicle_year').val();
-		var vehMake = $('#quote_vehicle_make option:selected').text();
+            var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
+            var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
 
-		var email = $('#quote_contact_email').val();
+            var actionStep = '';
 
-		var commencementDate = $("#quote_options_commencementDate").val();
+            switch (current_step) {
+                case 0:
+                    actionStep = "your car";
+                    break;
+                case 1:
+                    actionStep = 'car details';
+                    break;
+                case 2:
+                    actionStep = 'driver details';
+                    break;
+                case 3:
+                    actionStep = 'address contact';
+                    break;
+                case 4:
+                    if (special_case === true) {
+                        actionStep = 'more info';
+                    } else {
+                        actionStep = 'car results';
+                    }
+                    break;
+            }
 
-		var transactionId = meerkat.modules.transactionId.get();
+            var response = {
+                vertical: meerkat.site.vertical,
+                actionStep: actionStep,
+                transactionID: transactionId,
+                quoteReferenceNumber: transactionId,
+                yearOfManufacture: null,
+                makeOfCar: null,
+                gender: null,
+                yearOfBirth: null,
+                postCode: null,
+                state: null,
+                email: null,
+                emailID: null,
+                marketOptIn: null,
+                okToCall: null,
+                commencementDate: null
+            };
 
-		var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
-		var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
+            // Push in values from 1st slide only when have been beyond it
+            if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
+                _.extend(response, {
+                    yearOfManufacture: vehYear,
+                    makeOfCar: vehMake
+                });
+            }
 
-		var actionStep='';
+            // Push in values from 2nd slide only when have been beyond it
+            if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('details')) {
+                _.extend(response, {
+                    yearOfBirth: yob,
+                    gender: gender
+                });
+            }
 
-		switch(current_step) {
-			case 0:
-				actionStep = "your car";
-				break;
-			case 1:
-				actionStep = 'car details';
-				break;
-			case 2:
-				actionStep = 'driver details';
-				break;
-			case 3:
-				actionStep = 'address contact';
-				break;
-			case 4:
-				if(special_case === true) {
-					actionStep = 'more info';
-				} else {
-					actionStep = 'car results';
-				}
-				break;
-		}
+            // Push in values from 2nd slide only when have been beyond it
+            if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('address')) {
+                _.extend(response, {
+                    postCode: postCode,
+                    state: stateCode,
+                    email: email,
+                    marketOptIn: marketOptIn,
+                    okToCall: okToCall,
+                    commencementDate: commencementDate
+                });
+            }
 
-		var response =  {
-				vertical:				meerkat.site.vertical,
-				actionStep:				actionStep,
-				transactionID:			transactionId,
-				quoteReferenceNumber:	transactionId,
-				yearOfManufacture:		null,
-				makeOfCar:				null,
-				gender:					null,
-				yearOfBirth:			null,
-				postCode:				null,
-				state:					null,
-				email:					null,
-				emailID:				null,
-				marketOptIn:			null,
-				okToCall:				null,
-				commencementDate:		null
-		};
+            return response;
 
-		// Push in values from 1st slide only when have been beyond it
-		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
-			_.extend(response, {
-				yearOfManufacture:		vehYear,
-				makeOfCar:				vehMake
-			});
-		}
+        } catch (e) {
+            return false;
+        }
+    }
 
-		// Push in values from 2nd slide only when have been beyond it
-		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('details')) {
-			_.extend(response, {
-				yearOfBirth:	yob,
-				gender:			gender
-			});
-		}
-
-		// Push in values from 2nd slide only when have been beyond it
-		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('address')) {
-			_.extend(response, {
-				postCode:		postCode,
-				state:			stateCode,
-				email:			email,
-				marketOptIn:	marketOptIn,
-				okToCall:			okToCall,
-				commencementDate:	commencementDate
-			});
-		}
-
-		return response;
-
-		}catch(e){
-			return false;
-		}
-	}
-
-	meerkat.modules.register("car", {
-		init: initCar,
-		events: moduleEvents,
-		initProgressBar: initProgressBar,
-		getTrackingFieldsObject: getTrackingFieldsObject
-	});
+    meerkat.modules.register("car", {
+        init: initCar,
+        events: moduleEvents,
+        initProgressBar: initProgressBar,
+        getTrackingFieldsObject: getTrackingFieldsObject
+    });
 
 })(jQuery);
