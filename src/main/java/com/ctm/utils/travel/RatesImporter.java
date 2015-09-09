@@ -113,7 +113,7 @@ public class RatesImporter {
 
     public Long getToProductPropertiesCount(ArrayList<String> productIds) throws DaoException {
         ProductPropertiesDao productPropertiesDao = new ProductPropertiesDao();
-        return productPropertiesDao.getProductPropertiesCoount(productIds);
+        return productPropertiesDao.getProductPropertiesCount(productIds);
     }
 
     public void handleCount(long newResultCount, long initialResultCount) {

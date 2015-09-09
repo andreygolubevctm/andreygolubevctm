@@ -102,7 +102,7 @@ ${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResu
 					<c:set var="flexOpportunityId"><x:out select="$parsedXml/data/flexOpportunityId" /></c:set>
 					<c:set var="opportunityFirstName"><x:out select="$parsedXml/data/firstName" /></c:set>
 					<c:set var="opportunityEmail"><x:out select="$parsedXml/data/emailAddress" /></c:set>
-					${logger.debug('Parsed the data.{},{}',log:kv('opportunityId', flexOpportunityId), log:kv('firstName',opportunityFirstName))}
+					${logger.debug('Parsed the data. {},{}', log:kv('opportunityId', flexOpportunityId), log:kv('firstName',opportunityFirstName))}
 				</c:catch>
 
 				<c:choose>

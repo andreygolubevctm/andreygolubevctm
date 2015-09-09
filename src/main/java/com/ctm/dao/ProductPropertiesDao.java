@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ProductPropertiesDao {
 
-    public Long getProductPropertiesCoount(ArrayList<String> productIds) throws DaoException {
+    public Long getProductPropertiesCount(ArrayList<String> productIds) throws DaoException {
         SqlDao<Long> dao = new SqlDao<>();
         return dao.get(new DatabaseQueryMapping<Long>(){
             @Override

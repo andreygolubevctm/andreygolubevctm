@@ -205,12 +205,12 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				${logger.warn('Proceedinator did not pass.{}', log:kv('proceedinator',proceedinator ))}
+				${logger.warn('Proceedinator did not pass. {}', log:kv('proceedinator',proceedinator))}
 				<c:set var="result">
 					<result><error>This quote has been reserved by another user. Please try again later.</error></result>
 				</c:set>
 			</c:otherwise>
 		</c:choose>
-${logger.debug('End Load Quote. {}',log:kv('result',result ))}
+${logger.debug('End Load Quote. {}', log:kv('result',result))}
 <%-- Return the results as json --%>
 ${go:XMLtoJSON(result)}

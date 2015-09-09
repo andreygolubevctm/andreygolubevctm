@@ -192,7 +192,7 @@ XML PARSE AND SQL UPDATE
 
 
 		<%-- Send an Update to the server --%>
-		${logger.info("Results for {}", log:kv("stateToken", stateToken), log:kv("fuelToken",fuelToken ), log:kv("sqlCount",sqlCount ))}
+		${logger.info("Results for {}, {}, {}", log:kv("stateToken",stateToken), log:kv("fuelToken",fuelToken), log:kv("sqlCount",sqlCount))}
 	</c:forTokens>
 	</c:if>
 	</c:forTokens>

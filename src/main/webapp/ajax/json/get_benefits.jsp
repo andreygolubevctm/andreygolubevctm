@@ -42,5 +42,5 @@
 	</c:choose>
 </c:catch>
 <c:if test="${error}">
-	${logger.warn('Exception passing results.{}',log:kv('result',result ),  error)}
+	${logger.warn('Exception passing results. {}',log:kv('result',result ), error)}
 </c:if>

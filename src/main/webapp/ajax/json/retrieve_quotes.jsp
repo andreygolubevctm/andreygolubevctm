@@ -31,7 +31,7 @@
 	<c:if test="${!validCredentials}">
 			${logger.info('have not validated credentials authenticating. {}', log:kv('email',param.login_email))}
 			<c:set var="password"><go:HmacSHA256 username="${param.login_email}" password="${param.login_password}" brand="${pageSettings.getBrandCode()}" /></c:set>
-			${logger.debug('have not validated credentials password={},{}', log:kv('password',password ), log:kv('email',param.login_email))}
+			${logger.debug('have not validated credentials. {},{}', log:kv('password',password), log:kv('email',param.login_email))}
 			<security:authentication
 				emailAddress="${param.login_email}"
 				password="${password}"
@@ -130,7 +130,7 @@
 							<c:otherwise>${fn:toLowerCase(tranIdRow.productType)}</c:otherwise>
 						</c:choose>
 					</c:set>
-					${logger.info('Retrieved transaction.{},{},{}' , log:kv('dataPrefix', 'dataPrefix'),log:kv('transactionId',tranId), log:kv('email',emailAddress))}
+					${logger.info('Retrieved transaction. {},{},{}' , log:kv('dataPrefix', 'dataPrefix'),log:kv('transactionId',tranId), log:kv('email',emailAddress))}
 					<%-- Inject base quote details the quote --%>
 					<c:if test="${not empty dataPrefix}">
 						<c:set var="quoteXml">

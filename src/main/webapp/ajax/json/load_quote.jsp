@@ -78,8 +78,8 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 						<c:otherwise><data><email>${authenticatedData.userData.authentication.emailAddress}</email></data></c:otherwise>
 					</c:choose>
 				</c:set>
-				${logger.info('About to load quote.', log:kv('requestedTransaction',requestedTransaction ), log:kv('user',parm ))}
-				${logger.debug('About to load quote. {} ', log:kv('param',param ))}
+				${logger.info('About to load quote. {}, {}', log:kv('requestedTransaction',requestedTransaction), log:kv('user',parm))}
+				${logger.debug('About to load quote. {}', log:kv('param',param))}
 
 				<sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -301,7 +301,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-${logger.debug('Quote has been loaded.{}', log:kv('result', result))}
+${logger.debug('Quote has been loaded. {}', log:kv('result', result))}
 <%-- Log any errors --%>
 <c:if test="${fn:contains(result, '<error>')}">
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
