@@ -88,7 +88,7 @@ public class EmailDetailsService {
 		emailDetails.setLastName(getLastName(emailDetailsRequest, emailDetailsDB));
 		emailDetails.setHashedEmail(emailDetailsDB.getHashedEmail());
 		emailDetails.setOptedInMarketing(getOptedIn(emailDetailsRequest, emailDetailsDB) , vertical);
-
+		emailDetails.setEmailId(emailDetailsDB.getEmailId());
 		return emailDetails;
 	}
 

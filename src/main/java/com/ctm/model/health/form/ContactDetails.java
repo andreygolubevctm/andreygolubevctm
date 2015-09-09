@@ -14,6 +14,8 @@ public class ContactDetails {
 
     private String optin;
 
+    private Competition competition;
+
     public String getName() {
         return name;
     }
@@ -60,5 +62,13 @@ public class ContactDetails {
 
     public void setOptin(String optin) {
         this.optin = optin;
+    }
+
+    public Competition getCompetition() {
+        return competition;
+    }
+
+    public void setCompetition(Competition competition) {
+        this.competition = competition;
     }
 }

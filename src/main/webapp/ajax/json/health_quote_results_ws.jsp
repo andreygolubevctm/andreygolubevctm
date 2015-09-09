@@ -5,6 +5,8 @@
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
 
+<security:populateDataFromParams rootPath="health" />
+
 <%-- Test and or Increment ID if required --%>
 <c:choose>
 	<%-- RECOVER: if things have gone pear shaped --%>

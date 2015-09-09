@@ -1,15 +1,16 @@
 package com.ctm.services.competition;
 
-import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.dao.competition.CompetitionDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.services.ApplicationService;
+import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 public class CompetitionService {
 
@@ -38,4 +39,15 @@ public class CompetitionService {
 
 		return compActive;
 	}
+
+	public static boolean addCompetitionEntry(Integer competitionId, Integer emailId, List<Pair<String, String>> items) {
+		try {
+			CompetitionDao.addCompetitionEntry(competitionId, emailId, items);
+			return true;
+		} catch (DaoException e) {
+			return false;
+		}
+	}
+
+
 }
