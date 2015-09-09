@@ -7,6 +7,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class SimpleSocketConnection {
 
@@ -53,11 +55,12 @@ public class SimpleSocketConnection {
 			}
 
 			response = lines.get(lines.size()-1);
-			logger.debug("RESPONSE:"+response);
+			logger.trace("Socket response {}", kv("response", response));
 			wr.close();
 
 		}catch(Exception e){
-			logger.error("",e);
+			logger.error("Error making socket get request {},{}", kv("address", address), kv("port", port), kv("uri", uri),
+				kv("request", request), kv("additionalHeaders", additionalHeaders));
 		}finally{
 
 			try {
@@ -66,7 +69,7 @@ public class SimpleSocketConnection {
 				logger.error("Failed closing socket connection", e);
 			}
 
-			logger.debug("Socket Disconnected: " + socket);
+			logger.debug("Socket Disconnected {}", kv("socket", socket));
 		}
 
 		return response;

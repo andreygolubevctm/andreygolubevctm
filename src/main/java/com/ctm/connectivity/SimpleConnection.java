@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class SimpleConnection {
 
 	private static final Logger logger = LoggerFactory.getLogger(SimpleConnection.class.getName());
@@ -72,17 +74,14 @@ public class SimpleConnection {
 					return sb.toString();
 				default:
 					String message = c.getResponseMessage();
-					logger.error(url + ": Status code error " + status + " " + message);
+					logger.debug("Request returned error {}", kv("status", status), kv("message", message));
 			}
 		}
 		catch (MalformedURLException e) {
-			logger.error(url+": "+e, e);
+			logger.error("Invalid URL {}", kv("url", url), e);
 		}
-		catch (IOException e) {
-			logger.error(url+": "+e, e);
-		}
-		catch (Exception e){
-			logger.error(url+": "+e, e);
+		catch (Exception e) {
+			logger.error("Error performing get request {}", kv("url", url), e);
 		}
 		return null;
 	}

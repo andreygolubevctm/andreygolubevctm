@@ -68,7 +68,7 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 				this.connection.close();
 			}
 		} catch (SQLException e) {
-			logger.error("failed to close connection", e);
+			logger.error("Failed to close db connection", e);
 		}
 	}
 
@@ -79,7 +79,7 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 				connection.close();
 			}
 		} catch (SQLException e) {
-			logger.error("failed to close connection", e);
+			logger.error("Failed to close db connection", e);
 		}
 	}
 
@@ -89,7 +89,7 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 				statement.close();
 			}
 		} catch (SQLException e) {
-			logger.error("failed to close statement", e);
+			logger.error("Failed to close statement", e);
 		}
 	}
 
