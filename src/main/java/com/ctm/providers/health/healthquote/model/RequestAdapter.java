@@ -190,11 +190,11 @@ public class RequestAdapter {
             }
         }
 
-//        if (toBoolean(quote.getOnResultsPage())) {
-//            filters.setCappingLimitFilter(CappingLimit.SOFT);
-//        } else {
-//            filters.setCappingLimitFilter(CappingLimit.HARD);
-//        }
+        if (toBoolean(quote.getOnResultsPage())) {
+            filters.setCappingLimitFilter(CappingLimit.SOFT);
+        } else {
+            filters.setCappingLimitFilter(CappingLimit.HARD);
+        }
 
         boolean isPrHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PrHospital"), "N"));
         boolean isPuHospital = toBoolean(StringUtils.defaultIfEmpty(benefitsExtras.get("PuHospital"), "N"));
