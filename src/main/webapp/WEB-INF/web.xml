@@ -155,15 +155,19 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>mdcFilter</filter-name>
-		<url-pattern>/bestprice/*</url-pattern>
+		<url-pattern>/viewConfirmation</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>mdcFilter</filter-name>
-		<url-pattern>/productBrochures/*</url-pattern>
+		<url-pattern>/handover/*</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>mdcFilter</filter-name>
-		<url-pattern>/utilities/*</url-pattern>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>mdcFilter</filter-name>
+		<url-pattern>*.json</url-pattern>
 	</filter-mapping>
 
 	<!-- Datasource References -->

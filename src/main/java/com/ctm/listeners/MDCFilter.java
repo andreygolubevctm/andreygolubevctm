@@ -15,7 +15,6 @@ public class MDCFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
             throws IOException, ServletException {
-
         MDC.put("transactionId", req.getParameter("transactionId"));
         MDC.put("brandCode", req.getParameter("brandCode"));
         String vertical = req.getParameter("vertical");
