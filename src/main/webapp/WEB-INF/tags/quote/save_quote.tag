@@ -951,7 +951,7 @@ SaveQuote = {
 				<div class="password-row" >
 					<form:row label="Set password" horizontal="false" className="credentials ">
 						<field:password xpath="save/password" required="false"
-						title="your password" minlength="6" />
+						title="your password" minLength="6" />
 			</form:row>
 			
 					<form:row label="Confirm password" horizontal="false" className="credentials required" id="save_confirm_row">

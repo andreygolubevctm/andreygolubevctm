@@ -57,6 +57,7 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
                 throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
             }
 
+            homeService.writeTempResultDetails(context,data,quotes);
             ResultsObj<HomeResult> results = new ResultsObj<>();
             results.setResult(quotes);
             results.setInfo(info);

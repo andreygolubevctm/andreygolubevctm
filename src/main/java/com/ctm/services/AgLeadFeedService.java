@@ -9,9 +9,9 @@ import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 import com.ctm.aglead.ws.Request;
 import com.ctm.aglead.ws.Response;
-import com.ctm.interceptors.SpringWSLoggingInterceptor;
+import com.ctm.logging.SpringWSLoggingInterceptor;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.xml.XMLOutputWriter;
+import com.ctm.logging.XMLOutputWriter;
 
 /**
  * This class should only be used by Life/IP.
