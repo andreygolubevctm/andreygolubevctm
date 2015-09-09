@@ -23,7 +23,8 @@
 	fromDate_PlusYear,
 	toDateCurrent,
 	toDate_StartDateRange,
-	toDate_EndDateRange;
+	toDate_EndDateRange,
+	initialised = false;
 
 	//------------------------------------------------------------------
 
@@ -176,9 +177,10 @@
 	}
 
 
-	function init(){
+	function initTravelDatesSelection(){
 		//Elements need to be in the page
-		$(document).ready(function() {
+		if(!initialised) {
+			initialised = true;
 			//Grab the elements on the page
 			$fromDateInput = $("#travel_dates_fromDate");
 			$toDateInput = $("#travel_dates_toDate");
@@ -188,12 +190,11 @@
 
 			initDatePickers();
 			initDateEvents();
-		});
-
+		}
 	}
 
 	meerkat.modules.register("datesSelection", {
-		init: init
+		initTravelDatesSelection: initTravelDatesSelection
 	});
 
 })(jQuery);

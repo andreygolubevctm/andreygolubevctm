@@ -67,6 +67,7 @@
 		}]
 	},
 	settings = {},
+	initialised = false,
 	$tabsContainer = $('.coverLevelTabs'),
 	$currentTabContainer = $('.currentTabsContainer');
 
@@ -75,17 +76,18 @@
 	 * 1. Initialise on resultsFetchFinish or resultsLoaded
 	 */
 	function initCoverLevelTabs(options) {
-		settings = $.extend(true, {}, defaults, options);
+		if(!initialised) {
+			initialised = true;
 
-		if(settings.enabled === false) {
-			return;
-		}
+			settings = $.extend(true, {}, defaults, options);
 
-		jQuery(document).ready(function($) {
+			if (settings.enabled === false) {
+				return;
+			}
+
 			applyEventListeners();
 			eventSubscriptions();
-		});
-
+		}
 	}
 
 	function applyEventListeners() {

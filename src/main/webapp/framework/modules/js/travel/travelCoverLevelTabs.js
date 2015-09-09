@@ -70,29 +70,31 @@
 				}, true);
 			}
 		}],
-		$policyType;
+		$policyType,
+		initialised = false;
 
 
 	function initTravelCoverLevelTabs() {
+		if(!initialised) {
+			initialised = true;
 
-		// Remove this after A/B test
-		if(!meerkat.modules.splitTest.isActive([2,3,4,83])) {
-			return;
-		}
+			// Remove this after A/B test
+			if (!meerkat.modules.splitTest.isActive([2, 3, 4, 83])) {
+				return;
+			}
 
-		setupABTestParameters();
-		// end AB test code
+			setupABTestParameters();
+			// end AB test code
 
-		var options = {
-			enabled: true,
-			tabCount : 3,
-			activeTabSet : getActiveTabSet(),
-			hasMultipleTabTypes: true,
-			verticalMapping : tabMapping()
-		};
-		meerkat.modules.coverLevelTabs.initCoverLevelTabs(options);
-		
-		$(document).ready(function () {
+			var options = {
+				enabled: true,
+				tabCount: 3,
+				activeTabSet: getActiveTabSet(),
+				hasMultipleTabTypes: true,
+				verticalMapping: tabMapping()
+			};
+			meerkat.modules.coverLevelTabs.initCoverLevelTabs(options);
+
 			meerkat.messaging.subscribe(meerkatEvents.coverLevelTabs.CHANGE_COVER_TAB, function onTabChange(eventObject) {
 				if (eventObject.activeTab == "D") {
 					meerkat.modules.showMoreQuotesPrompt.disableForCoverLevelTabs();
@@ -100,7 +102,7 @@
 					meerkat.modules.showMoreQuotesPrompt.resetForCoverLevelTabs();
 				}
 			});
-		});
+		}
 	}
 
 	/* This maps the shortcuts (eg C, M, B etc... ) to an actual tab */
