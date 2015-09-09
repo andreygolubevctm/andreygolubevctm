@@ -50,7 +50,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 		"/creditcards/products/import",
 })
 public class CreditCardsRouter extends HttpServlet {
-	private static final Logger logger = LoggerFactory.getLogger(CreditCardsRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CreditCardsRouter.class);
 	private static final long serialVersionUID = 70L;
 
 	@Override
@@ -75,7 +75,7 @@ public class CreditCardsRouter extends HttpServlet {
 			PageSettings settings = SettingsService.getPageSettingsByCode(ApplicationService.getBrandFromRequest(request).getCode(), VerticalType.CREDITCARD.getCode());
 
 			if(authToken == null || (authToken != null && !authToken.equals(settings.getSetting("CreditCardsApiAuthToken")))) {
-				logger.error("Credit card authToken doesn't match", kv("authToken", authToken));
+				LOGGER.error("Credit card authToken doesn't match", kv("authToken", authToken));
 
 				JSONObject json = null;
 				Error error = new Error();
@@ -154,7 +154,7 @@ public class CreditCardsRouter extends HttpServlet {
 
 		}catch (Exception e) {
 
-			logger.error("Credit card get request failed {}", kv("uri", request.getRequestURI()), e);
+			LOGGER.error("Credit card get request failed {}", kv("uri", request.getRequestURI()), e);
 
 			JSONObject json = null;
 			Error error = new Error();
@@ -201,7 +201,7 @@ public class CreditCardsRouter extends HttpServlet {
 
 
 			} catch (UploaderException e) {
-				logger.error("Credit card post request failed {}", kv("uri", request.getRequestURI()), e);
+				LOGGER.error("Credit card post request failed {}", kv("uri", request.getRequestURI()), e);
 			}
 		}
 	}

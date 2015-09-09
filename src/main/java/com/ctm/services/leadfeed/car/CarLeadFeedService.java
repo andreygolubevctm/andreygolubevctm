@@ -19,7 +19,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class CarLeadFeedService extends LeadFeedService {
 
-	private static final Logger logger = LoggerFactory.getLogger(CarLeadFeedService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CarLeadFeedService.class);
 
 	protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) {
 
@@ -28,7 +28,7 @@ public class CarLeadFeedService extends LeadFeedService {
 		IProviderLeadFeedService providerLeadFeedService = null;
 
 		try {
-			logger.debug("[Lead feed] Prepare to send lead {}, {}, {}", kv("leadType", leadType), kv("leadData", leadData), kv("touchType", touchType));
+			LOGGER.debug("[Lead feed] Prepare to send lead {}, {}, {}", kv("leadType", leadType), kv("leadData", leadData), kv("touchType", touchType));
 
 			switch(leadData.getPartnerBrand()) {
 
@@ -58,11 +58,11 @@ public class CarLeadFeedService extends LeadFeedService {
 				if (responseStatus == LeadResponseStatus.SUCCESS) {
 					recordTouch(touchType.getCode(), leadData);
 				}
-				logger.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
+				LOGGER.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
 			}
 
 		} catch(LeadFeedException e) {
-			logger.error("[Lead feed] Error adding lead feed message {}, {}, {}", kv("leadType", leadType), kv("leadData", leadData),
+			LOGGER.error("[Lead feed] Error adding lead feed message {}, {}, {}", kv("leadType", leadType), kv("leadData", leadData),
 				kv("touchType", touchType), e);
 			responseStatus = LeadResponseStatus.FAILURE;
 		}

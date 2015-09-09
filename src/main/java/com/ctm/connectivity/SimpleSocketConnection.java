@@ -12,7 +12,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class SimpleSocketConnection {
 
-	private static final Logger logger = LoggerFactory.getLogger(SimpleSocketConnection.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleSocketConnection.class);
 
 	private String address;
 	private int port;
@@ -55,21 +55,21 @@ public class SimpleSocketConnection {
 			}
 
 			response = lines.get(lines.size()-1);
-			logger.trace("Socket response {}", kv("response", response));
+			LOGGER.trace("Socket response {}", kv("response", response));
 			wr.close();
 
 		}catch(Exception e){
-			logger.error("Error making socket get request {},{}", kv("address", address), kv("port", port), kv("uri", uri),
+			LOGGER.error("Error making socket get request {},{}", kv("address", address), kv("port", port), kv("uri", uri),
 				kv("request", request), kv("additionalHeaders", additionalHeaders));
 		}finally{
 
 			try {
 				socket.close();
 			} catch (IOException e) {
-				logger.error("Failed closing socket connection", e);
+				LOGGER.error("Failed closing socket connection", e);
 			}
 
-			logger.debug("Socket Disconnected {}", kv("socket", socket));
+			LOGGER.debug("Socket Disconnected {}", kv("socket", socket));
 		}
 
 		return response;

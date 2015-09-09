@@ -24,7 +24,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class UtilitiesLeadfeedService {
 
-	private static final Logger logger = LoggerFactory.getLogger(UtilitiesLeadfeedService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesLeadfeedService.class);
 
 	public static UtilitiesLeadfeedModel mapParametersToModel(HttpServletRequest request) {
 
@@ -107,13 +107,13 @@ public class UtilitiesLeadfeedService {
 			jsonConn.conn.setContentType("application/json");
 
 			String postBody = model.toJsonObject().toString();
-			logger.debug("Lead feed submit {},{},{}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("url", serviceUrl));
-			logger.trace("Lead feed submit request {}", kv("request", postBody)); //Note: could contain personal information
+			LOGGER.debug("Lead feed submit {},{},{}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("url", serviceUrl));
+			LOGGER.trace("Lead feed submit request {}", kv("request", postBody)); //Note: could contain personal information
 
 			responseJson = jsonConn.post(serviceUrl, postBody);
 
 			if (responseJson != null) {
-				logger.trace("Lead feed submit response {}", kv("response", responseJson));
+				LOGGER.trace("Lead feed submit response {}", kv("response", responseJson));
 			}
 
 			//
@@ -154,7 +154,7 @@ public class UtilitiesLeadfeedService {
 
 			FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
 
-			logger.error("Error submitting lead feed {}", kv("utilitiesLeadfeedModel", model), e);
+			LOGGER.error("Error submitting lead feed {}", kv("utilitiesLeadfeedModel", model), e);
 
 			String message = (e.getMessage() != null ? e.getMessage() : "Failed to submit");
 			Error error = new Error();

@@ -14,7 +14,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class AccessCheckService {
 
-	private static final Logger logger = LoggerFactory.getLogger(AccessCheckService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AccessCheckService.class);
 
     private final TransactionLockDao transactionLockDao;
 
@@ -55,7 +55,7 @@ public class AccessCheckService {
     public boolean handleAccessCheck(long transactionId, String operatorId, String vertical) {
         boolean isLocked = false;
         if(vertical == null || vertical.isEmpty()){
-            logger.warn("invalid vertical value, defaulted to locked {}, {}, {}", kv("transactionId", transactionId),
+            LOGGER.warn("invalid vertical value, defaulted to locked {}, {}, {}", kv("transactionId", transactionId),
                 kv("operatorId", operatorId), kv("vertical", vertical));
         } else if (vertical.equalsIgnoreCase("health")) {
             try {
@@ -64,7 +64,7 @@ public class AccessCheckService {
                     createOrUpdateTransactionLock(transactionId, operatorId);
                 }
             } catch (DaoException e) {
-                logger.error("failed to handle access check {}, {}, {}", kv("transactionId", transactionId),
+                LOGGER.error("failed to handle access check {}, {}, {}", kv("transactionId", transactionId),
                     kv("operatorId", operatorId), kv("vertical", vertical), e);
             }
         }

@@ -37,7 +37,7 @@ public class SimplesSearchService {
     private final SimpleDatabaseConnection dbcon = new SimpleDatabaseConnection();
     private PageContext pageContext;
     private String error;
-	private static final Logger logger = LoggerFactory.getLogger(HealthPriceService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthPriceService.class);
 
     public enum SearchMode {
         TRANS, PHONE, EMAIL, OTHER
@@ -81,12 +81,12 @@ public class SimplesSearchService {
             if (hotTransactionIdsCsv.trim().equalsIgnoreCase("") && coldTransactionIdsCsv.trim().equalsIgnoreCase("")) {
                 throw new DaoException("No records found");
             } else {
-                logger.debug("Search transaction ids {},{}", kv("coldIds", coldTransactionIdsCsv), kv("hotIds", hotTransactionIdsCsv));
+                LOGGER.debug("Search transaction ids {},{}", kv("coldIds", coldTransactionIdsCsv), kv("hotIds", hotTransactionIdsCsv));
             }
             searchTransactionHeaderDetailsAndSave();
             searchTransactionDetailsAndSave();
         } catch (RuntimeException e) {
-            logger.error("Error searching transactions",e);
+            LOGGER.error("Error searching transactions",e);
             error = e.getMessage();
             throw e;
         } finally {
@@ -545,7 +545,7 @@ public class SimplesSearchService {
                 }
             }
         } catch (JspException | SAXException e) {
-            logger.error("Error writing data into data bucket {},{},{}", kv("allowDuplicates", allowDuplicates),
+            LOGGER.error("Error writing data into data bucket {},{},{}", kv("allowDuplicates", allowDuplicates),
                 kv("xml", xml), kv("value", value), kv("xpath", xPath));
         }
     }

@@ -20,7 +20,7 @@ import static com.ctm.logging.LoggingArguments.kv;
  */
 public class QuoteService {
 
-	private static final Logger logger = LoggerFactory.getLogger(QuoteService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(QuoteService.class);
 	/**
 	 * Constructor
 	 */
@@ -50,7 +50,7 @@ public class QuoteService {
 			result.put("success", isSuccessful);
 			result.put("transactionId", transactionId);
 		} catch (JSONException e) {
-			logger.error("Error creating lite quote result {},{}", kv("transactionId", transactionId),
+			LOGGER.error("Error creating lite quote result {},{}", kv("transactionId", transactionId),
 				kv("success", isSuccessful), e);
 		}
 		return json;

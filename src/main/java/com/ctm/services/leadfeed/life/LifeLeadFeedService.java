@@ -16,7 +16,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class LifeLeadFeedService extends LeadFeedService {
 
-	private static final Logger logger = LoggerFactory.getLogger(LifeLeadFeedService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(LifeLeadFeedService.class);
 
 	protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) {
 
@@ -28,22 +28,22 @@ public class LifeLeadFeedService extends LeadFeedService {
 
 			switch(leadData.getPartnerBrand()) {
 				case "OZIC":
-					logger.info("[Lead feed] Prepare to send lead to AGIS brand {},{}", kv("leadType", leadType), kv("transactionId", leadData.getTransactionId()));
+					LOGGER.info("[Lead feed] Prepare to send lead to AGIS brand {},{}", kv("leadType", leadType), kv("transactionId", leadData.getTransactionId()));
 					providerLeadFeedService = new AGISLifeLeadFeedService();
 					break;
 			}
 
 			if(providerLeadFeedService != null) {
-				logger.info("[Lead feed] Provider lead feed service found {}", kv("providerLeadFeedServiceClass", providerLeadFeedService.getClass()));
+				LOGGER.info("[Lead feed] Provider lead feed service found {}", kv("providerLeadFeedServiceClass", providerLeadFeedService.getClass()));
 				responseStatus = providerLeadFeedService.process(leadType, leadData);
 				if (responseStatus == LeadResponseStatus.SUCCESS) {
 					recordTouch(touchType.getCode(), leadData);
 				}
-				logger.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
+				LOGGER.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
 			}
 
 		} catch(LeadFeedException e) {
-			logger.error("[Lead feed] Exception adding lead feed message {}", kv("leadType", leadType), kv("leadData", leadData), kv("touchType", touchType));
+			LOGGER.error("[Lead feed] Exception adding lead feed message {}", kv("leadType", leadType), kv("leadData", leadData), kv("touchType", touchType));
 			responseStatus = LeadResponseStatus.FAILURE;
 		}
 

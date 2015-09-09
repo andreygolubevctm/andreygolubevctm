@@ -16,7 +16,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class HealthPriceResultsService {
 
-	private static final Logger logger = LoggerFactory.getLogger(HealthPriceResultsService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthPriceResultsService.class);
 
 	private HealthPriceDao healthPriceDao;
 
@@ -50,7 +50,7 @@ public class HealthPriceResultsService {
 				&& selectedProductId != null && !selectedProductId.isEmpty()
 				&& !isProductInResultsList(healthPriceResults, selectedProductId)) {
 
-			logger.info("Selected productId not contained in fetch health results {}, {}", kv("selectedProductId", selectedProductId),
+			LOGGER.info("Selected productId not contained in fetch health results {}, {}", kv("selectedProductId", selectedProductId),
 				a("healthPriceResults", healthPriceResults));
 
 			List<ProductStatus> excludeStatus = new ArrayList<ProductStatus>();

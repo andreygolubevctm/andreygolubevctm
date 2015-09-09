@@ -15,7 +15,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class FatalErrorDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(FatalErrorDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(FatalErrorDao.class);
 
 	public void add(FatalError fatalError) throws DaoException {
 		String data = getData(fatalError);
@@ -53,7 +53,7 @@ public class FatalErrorDao {
 		String data = fatalError.getData();
 		// Max length for mysql text field is 65535
 		if(data != null && data.length() > 65535) {
-			logger.warn("fatal error data too long truncating {}", kv("data", data));
+			LOGGER.warn("fatal error data too long truncating {}", kv("data", data));
 			data = data.substring(0, data.length() - 65535);
 		}
 		return data;

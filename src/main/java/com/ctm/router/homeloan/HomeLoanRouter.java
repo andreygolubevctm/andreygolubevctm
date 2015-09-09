@@ -32,7 +32,7 @@ import com.ctm.services.homeloan.HomeLoanService;
 		"/homeloan/opportunity/submit.json"
 })
 public class HomeLoanRouter extends HttpServlet {
-	private static final Logger logger = LoggerFactory.getLogger(HomeLoanRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeLoanRouter.class);
 	private static final long serialVersionUID = 70L;
 
 	@Override
@@ -64,7 +64,7 @@ public class HomeLoanRouter extends HttpServlet {
 				}
 			}
 			catch (DaoException | ConfigSettingException e) {
-				logger.error("Failed getting homeloan results", e);
+				LOGGER.error("Failed getting homeloan results", e);
 
 				Error error = new Error();
 				error.addError(new Error("Failed to get results"));
@@ -91,7 +91,7 @@ public class HomeLoanRouter extends HttpServlet {
 				}
 			}
 			catch (Exception e) {
-				logger.error("HomeLoan opportunity apply failed", e);
+				LOGGER.error("HomeLoan opportunity apply failed", e);
 
 				Error error = new Error();
 				error.addError(new Error("Failed to submit opportunity"));

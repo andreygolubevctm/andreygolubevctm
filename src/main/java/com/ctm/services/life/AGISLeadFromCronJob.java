@@ -18,7 +18,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class AGISLeadFromCronJob {
 
-	private static final Logger logger = LoggerFactory.getLogger(AGISLeadFromCronJob.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AGISLeadFromCronJob.class);
 	
 	public String newLeadFeed(String transactionId, ResultImpl transactionDetails, ResultImpl rankingDetails, PageSettings pageSettings) {
 
@@ -93,7 +93,7 @@ public class AGISLeadFromCronJob {
 			LifeLeadFeedService service = new LifeLeadFeedService();
 			output = service.bestPrice(lead);
 		} catch (Exception e) {
-			logger.error("[lead feed] Cron failed sending AGIS lead feed {}", kv("transactionId", transactionId),
+			LOGGER.error("[lead feed] Cron failed sending AGIS lead feed {}", kv("transactionId", transactionId),
 				kv("pageSettings", pageSettings), e);
 		}
 

@@ -27,7 +27,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class HealthApplicationService {
 
-	private static final Logger logger = LoggerFactory.getLogger(HealthApplicationService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplicationService.class);
 	private final FatalErrorService fatalErrorService;
 
 	private HealthApplicationRequest request = new HealthApplicationRequest();
@@ -71,7 +71,7 @@ public class HealthApplicationService {
 				updateDataBucket(data);
 			}
 		} catch (DaoException e) {
-			logger.error("Failed to calculate health premiums {}", kv("data", data), kv("changeOverDate", changeOverDate), e);
+			LOGGER.error("Failed to calculate health premiums {}", kv("data", data), kv("changeOverDate", changeOverDate), e);
 			fatalErrorService.logFatalError(e, 0, "HealthApplicationService", true, data.getString("current.transactionId"));
 			throw new JspException(e);
 		}

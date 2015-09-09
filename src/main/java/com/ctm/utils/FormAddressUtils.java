@@ -10,7 +10,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class FormAddressUtils {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FormAddressUtils.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(FormAddressUtils.class);
 
 	public static Address parseAddressFromForm(HttpServletRequest request, String xPathPrefix){
 

@@ -18,7 +18,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class ProviderService {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProviderService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderService.class);
 
 	public static ArrayList<Provider> fetchProviders(HttpServletRequest request) {
 		Boolean getOnlyActiveProviders = false;
@@ -32,7 +32,7 @@ public class ProviderService {
 			return providerDao.getProviders(pageSettings.getVertical().getCode(), pageSettings.getBrandId(), getOnlyActiveProviders);
 		}
 		catch (DaoException|ConfigSettingException e) {
-			logger.error("Error fetching providers {}", kv("getOnlyActiveProviders", getOnlyActiveProviders), e);
+			LOGGER.error("Error fetching providers {}", kv("getOnlyActiveProviders", getOnlyActiveProviders), e);
 		}
 
 		return null;
@@ -56,7 +56,7 @@ public class ProviderService {
 
 		}
 		catch (DaoException e) {
-			logger.error("Error fetching provides {},{},{}", kv("verticalId", vertical), kv("brandId", brandId),
+			LOGGER.error("Error fetching provides {},{},{}", kv("verticalId", vertical), kv("brandId", brandId),
 				kv("getOnlyActiveProviders", getOnlyActiveProviders));
 		}
 

@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class SimpleDatabaseConnection implements AutoCloseable {
 
-	private static final Logger logger = LoggerFactory.getLogger(SimpleDatabaseConnection.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleDatabaseConnection.class);
 
 	private Connection connection;
 	private Map<String ,DataSource> dataSources = new HashMap<>();
@@ -68,7 +68,7 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 				this.connection.close();
 			}
 		} catch (SQLException e) {
-			logger.error("Failed to close db connection", e);
+			LOGGER.error("Failed to close db connection", e);
 		}
 	}
 
@@ -79,7 +79,7 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 				connection.close();
 			}
 		} catch (SQLException e) {
-			logger.error("Failed to close db connection", e);
+			LOGGER.error("Failed to close db connection", e);
 		}
 	}
 
@@ -89,7 +89,7 @@ public class SimpleDatabaseConnection implements AutoCloseable {
 				statement.close();
 			}
 		} catch (SQLException e) {
-			logger.error("Failed to close statement", e);
+			LOGGER.error("Failed to close statement", e);
 		}
 	}
 

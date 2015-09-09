@@ -20,7 +20,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class RankingDetailsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(RankingDetailsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(RankingDetailsDao.class);
 
 	private SimpleDatabaseConnection dbSource;
 
@@ -70,7 +70,7 @@ public class RankingDetailsDao {
 				}
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to get ranking details by property value {}, {}, {}", kv("transactionId", transactionId), kv("property", property), kv("value", value), e);
+			LOGGER.error("Failed to get ranking details by property value {}, {}, {}", kv("transactionId", transactionId), kv("property", property), kv("value", value), e);
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
@@ -130,7 +130,7 @@ public class RankingDetailsDao {
 				}
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to get latest top ranking details {}, {}", kv("transactionId", transactionId), kv("numberOfRankingsToReturn", numberOfRankingsToReturn), e);
+			LOGGER.error("Failed to get latest top ranking details {}, {}", kv("transactionId", transactionId), kv("numberOfRankingsToReturn", numberOfRankingsToReturn), e);
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {

@@ -31,7 +31,7 @@ import com.disc_au.web.go.Data;
 		"/logging/nonfatal.json"
 })
 public class LogRouter extends HttpServlet {
-	private static final Logger logger = LoggerFactory.getLogger(LogRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(LogRouter.class);
 	private static final long serialVersionUID = 71L;
 
 	private final SessionDataService sessionDataService = new SessionDataService();
@@ -94,7 +94,7 @@ public class LogRouter extends HttpServlet {
 				writer.print(new JSONObject().toString());
 			}
 		} catch (DaoException | SessionException e) {
-			logger.error("Failed to log form validation errors", e);
+			LOGGER.error("Failed to log form validation errors", e);
 		}
 
 	}

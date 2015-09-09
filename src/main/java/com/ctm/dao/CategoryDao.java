@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CategoryDao {
-	private static final Logger logger = LoggerFactory.getLogger(CategoryDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryDao.class);
 
 	public ArrayList<Category> getCategories(int verticalId, int styleCodeId) throws DaoException{
 
@@ -50,7 +50,7 @@ public class CategoryDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to retrieve categories", e);
+			LOGGER.error("Failed to retrieve categories", e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

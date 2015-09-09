@@ -22,7 +22,7 @@ import java.util.Objects;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class OpeningHoursDao {
-	private static final Logger logger = LoggerFactory.getLogger(OpeningHoursDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(OpeningHoursDao.class);
     private final OpeningHoursHelper helper = new OpeningHoursHelper();
     private final AuditTableDao auditTableDao = new AuditTableDao();
     private static boolean autoCommit = true;
@@ -81,7 +81,7 @@ public class OpeningHoursDao {
             }
             return openingHoursList;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed to retrieve Opening Hours {}, {}", kv("isSpecial", isSpecial), kv("openingHoursId", openingHoursId), e);
+            LOGGER.error("Failed to retrieve Opening Hours {}, {}", kv("isSpecial", isSpecial), kv("openingHoursId", openingHoursId), e);
             throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
@@ -112,7 +112,7 @@ public class OpeningHoursDao {
             dbSource.getConnection().commit();
             return "success";
         } catch (SQLException | NamingException e) {
-            logger.error("Failed to delete Opening Hours {}, {}, {}", kv("openingHoursId", openingHoursId), kv("userName", userName), kv("ipAddress", ipAddress), e);
+            LOGGER.error("Failed to delete Opening Hours {}, {}, {}", kv("openingHoursId", openingHoursId), kv("userName", userName), kv("ipAddress", ipAddress), e);
             rollbackTransaction(dbSource);
             throw new DaoException(e);
         } finally {
@@ -170,7 +170,7 @@ public class OpeningHoursDao {
             dbSource.getConnection().commit();
             openingHours = fetchSingleRecOpeningHours(openingHoursId);
         } catch (SQLException | NamingException | ParseException e) {
-            logger.error("Failed to update Opening Hours {}, {}, {}", kv("openingHours", openingHoursParams), kv("userName", userName), kv("ipAddress", ipAddress), e);
+            LOGGER.error("Failed to update Opening Hours {}, {}, {}", kv("openingHours", openingHoursParams), kv("userName", userName), kv("ipAddress", ipAddress), e);
             rollbackTransaction(dbSource);
             throw new DaoException(e);
         } finally {
@@ -229,7 +229,7 @@ public class OpeningHoursDao {
             dbSource.getConnection().commit();
             openingHours = fetchSingleRecOpeningHours(openingHoursId);
         } catch (SQLException | NamingException | ParseException e) {
-            logger.error("Failed to create Opening Hours {}, {}, {}", kv("openingHours", openingHoursParams), kv("userName", userName), kv("ipAddress", ipAddress), e);
+            LOGGER.error("Failed to create Opening Hours {}, {}, {}", kv("openingHours", openingHoursParams), kv("userName", userName), kv("ipAddress", ipAddress), e);
             rollbackTransaction(dbSource);
             throw new DaoException(e);
         } finally {
@@ -291,7 +291,7 @@ public class OpeningHoursDao {
             }
             return mapOpeningHoursDetails;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed to get opening hours for display {}, {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), kv("isSpecial", isSpecial), e);
+            LOGGER.error("Failed to get opening hours for display {}, {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), kv("isSpecial", isSpecial), e);
             throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
@@ -343,7 +343,7 @@ public class OpeningHoursDao {
             }
             return openingHours;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed while getting opening hours for display {}, {}, {}", kv("dayDescription", dayDescription), kv("effectiveDate", effectiveDate), kv("verticalId", verticalId));
+            LOGGER.error("Failed while getting opening hours for display {}, {}, {}", kv("dayDescription", dayDescription), kv("effectiveDate", effectiveDate), kv("verticalId", verticalId));
             throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
@@ -436,7 +436,7 @@ public class OpeningHoursDao {
             }
             return openingHoursList;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed while executing getting current normal opening hours for email {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), e);
+            LOGGER.error("Failed while executing getting current normal opening hours for email {}, {}", kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), e);
             throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
@@ -464,7 +464,7 @@ public class OpeningHoursDao {
      */
     private void rollbackTransaction(SimpleDatabaseConnection dbSource) throws DaoException {
         try {
-            logger.debug("Transaction is being rolled back");
+            LOGGER.debug("Transaction is being rolled back");
             dbSource.getConnection().rollback();
         } catch (SQLException | NamingException e) {
             throw new DaoException(e);
@@ -543,7 +543,7 @@ public class OpeningHoursDao {
             }
             return openingHoursList;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed finding clashing hours count {}", kv("openingHours", openingHours), e);
+            LOGGER.error("Failed finding clashing hours count {}", kv("openingHours", openingHours), e);
             throw new DaoException(e);
         } finally {
             dbSource.closeConnection();

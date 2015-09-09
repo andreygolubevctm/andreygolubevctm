@@ -17,7 +17,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class SimplesTickleService {
 
-	private static final Logger logger = LoggerFactory.getLogger(SimplesTickleService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesTickleService.class);
     private final SessionDataService sessionDataService;
 
     public SimplesTickleService(SessionDataService sessionDataService) {
@@ -43,7 +43,7 @@ public class SimplesTickleService {
             }
         } catch (DaoException | SessionException e) {
             fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-            logger.error("Error performing simples tickle {}", kv("simplesUid",  authenticatedData.getSimplesUid()), e);
+            LOGGER.error("Error performing simples tickle {}", kv("simplesUid",  authenticatedData.getSimplesUid()), e);
             throw new ServletException(e);
         }
         return success;

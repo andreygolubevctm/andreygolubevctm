@@ -18,7 +18,7 @@ import java.io.StringWriter;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class ProviderFilter {
-	private static final Logger logger = LoggerFactory.getLogger(ProviderFilter.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderFilter.class);
 	private static XMLStreamWriter writer;
 	private PageSettings pageSettings;
 	private SessionDataService sessionDataService;
@@ -50,7 +50,7 @@ public class ProviderFilter {
             return code == null || code.equals("invalid") ? "" : code;
         }
         catch (DaoException e) {
-            logger.error("Error getting provider code {}", kv("vertical", vertical), e);
+            LOGGER.error("Error getting provider code {}", kv("vertical", vertical), e);
         }
 
         return "";
@@ -66,7 +66,7 @@ public class ProviderFilter {
 			config = getFilteredConfig(data, config, vertical);
 		}
 		catch (Exception e) {
-			logger.error("Error filtering config {},{}", kv("config", config), kv("vertical", vertical), e);
+			LOGGER.error("Error filtering config {},{}", kv("config", config), kv("vertical", vertical), e);
 		}
 
 		return config;
@@ -214,7 +214,7 @@ public class ProviderFilter {
 			writer.close();
 
 		} catch (XMLStreamException e) {
-			logger.error("Error filtering xml config {},{}", kv("config", config), kv("providerCode", providerCode));
+			LOGGER.error("Error filtering xml config {},{}", kv("config", config), kv("providerCode", providerCode));
 		}
 		return config;
 	}

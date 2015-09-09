@@ -18,7 +18,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class RequestUtils {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(RequestUtils.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(RequestUtils.class);
     private final SessionDataService sessionDataService = new SessionDataService();
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

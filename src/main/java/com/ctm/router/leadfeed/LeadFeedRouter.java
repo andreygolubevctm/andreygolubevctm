@@ -30,7 +30,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 })
 public class LeadFeedRouter extends HttpServlet {
 
-	private static final Logger logger = LoggerFactory.getLogger(LeadFeedRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(LeadFeedRouter.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -97,7 +97,7 @@ public class LeadFeedRouter extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			logger.error("[Lead feed] Router failed {}", kv("requestUri", request.getRequestURI()), e);
+			LOGGER.error("[Lead feed] Router failed {}", kv("requestUri", request.getRequestURI()), e);
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}

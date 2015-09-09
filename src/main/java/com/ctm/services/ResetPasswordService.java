@@ -38,7 +38,7 @@ public class ResetPasswordService {
 		this.auditService = auditService;
 	}
 	
-	private static final Logger logger = LoggerFactory.getLogger(ResetPasswordService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResetPasswordService.class);
 	
 	/**
 	 * 	Calls the mysql database with the resetId code if found invalidate the token. If not found return an error message 
@@ -60,7 +60,7 @@ public class ResetPasswordService {
 				response = missingArguments(logAudit);
 			}
 		} catch (JSONException e) {
-			logger.error("Failed to reset password {}", kv("resetId", resetId), e);
+			LOGGER.error("Failed to reset password {}", kv("resetId", resetId), e);
 		}
 		auditService.logAudit(logAudit, identity, metadata);
 		return response;
@@ -69,7 +69,7 @@ public class ResetPasswordService {
 	private JSONObject hasArguments(LogAudit logAudit, String resetId, String resetPassword) throws JSONException {
 		JSONObject response;
 		int emailMasterId = authenticationService.verifyTokenForEmail(resetId);
-		logger.info("Password Reset Called {}", kv("resetId", resetId), kv("emailMasterId", emailMasterId));
+		LOGGER.info("Password Reset Called {}", kv("resetId", resetId), kv("emailMasterId", emailMasterId));
 		if (emailMasterId > 0) {
 			try {
 				EmailMaster emailMaster  = emailMasterDao.getEmailMasterById(emailMasterId);
@@ -86,7 +86,7 @@ public class ResetPasswordService {
 				response = createResponse("ERROR", "Oops, something seems to have gone wrong! - Please try the reset proceedure again later.");
 				logAudit.setResult(LogAudit.Result.FAIL);
 				metadata = "token: " + resetId + ", emailMasterId: " + emailMasterId + ", exception was thrown " + e.getMessage();
-				logger.error("Error updating password {}", kv("resetId", resetId), e);
+				LOGGER.error("Error updating password {}", kv("resetId", resetId), e);
 			}
 		} else {
 			// JSON result failure - no email master ID was returned

@@ -21,7 +21,7 @@ import com.disc_au.web.go.Data;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class CouponRulesService {
-	private static final Logger logger = LoggerFactory.getLogger(CouponRulesService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CouponRulesService.class);
 
 	public boolean filterAllRules(Coupon coupon, Data data) {
 		return filter(coupon, coupon.getCouponRules(), data);
@@ -96,7 +96,7 @@ public class CouponRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error("Failed filtering coupon by range {}, {}, {}", kv("formValue", formValue), kv("ruleValue", ruleValue), kv("option", option));
+			LOGGER.error("Failed filtering coupon by range {}, {}, {}", kv("formValue", formValue), kv("ruleValue", ruleValue), kv("option", option));
 		}
 		return false;
 	}
@@ -116,7 +116,7 @@ public class CouponRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error("Failed filtering coupon by date range {}, {}, {}", kv("formValue", formValue), kv("ruleValue", ruleValue), kv("option", option));
+			LOGGER.error("Failed filtering coupon by date range {}, {}, {}", kv("formValue", formValue), kv("ruleValue", ruleValue), kv("option", option));
 		}
 		return false;
 	}

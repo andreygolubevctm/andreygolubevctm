@@ -21,7 +21,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 import static net.logstash.logback.argument.StructuredArguments.v;
 
 public class FundWarningDao {
-	private static final Logger logger = LoggerFactory.getLogger(FundWarningDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(FundWarningDao.class);
     private final FundWarningHelper helper = new FundWarningHelper();
     private final SqlDao sqlDao = new SqlDao();
 
@@ -115,7 +115,7 @@ public class FundWarningDao {
             //noinspection unchecked
             return (List<FundWarningMessage>) sqlDao.getAll(mapping, sql.toString());
         } catch (DaoException e) {
-            logger.error("Failed to retrieve Fund Warning Message {}", kv("messageId", messageId), e);
+            LOGGER.error("Failed to retrieve Fund Warning Message {}", kv("messageId", messageId), e);
             throw e;
         }
     }
@@ -149,7 +149,7 @@ public class FundWarningDao {
             sqlDao.executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.DELETE, "provider_warning_message", "messageId", messageId);
             return "success";
         } catch (DaoException e) {
-            logger.error("Failed to delete Fund Warning Message {}, {}, {}", kv("messageId", messageId), kv("userName", userName), kv("ipAddress", ipAddress), e);
+            LOGGER.error("Failed to delete Fund Warning Message {}, {}, {}", kv("messageId", messageId), kv("userName", userName), kv("ipAddress", ipAddress), e);
             throw new DaoException(e);
         }
     }
@@ -199,7 +199,7 @@ public class FundWarningDao {
             sqlDao.executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.UPDATE, "provider_warning_message", "messageId", messageId);
             return fetchSingleRecFundWarningMessage(messageId);
         } catch (DaoException e) {
-            logger.error("Failed to update Fund Warning Message {}, {}, {}", kv("userName", userName), kv("ipAddress", ipAddress), kv("fundWarningMessage", fundWarningMessageParam), e);
+            LOGGER.error("Failed to update Fund Warning Message {}, {}, {}", kv("userName", userName), kv("ipAddress", ipAddress), kv("fundWarningMessage", fundWarningMessageParam), e);
             throw e;
         }
     }
@@ -241,7 +241,7 @@ public class FundWarningDao {
             int id = sqlDao.executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.CREATE, "provider_warning_message", "messageId", 0);
             return fetchSingleRecFundWarningMessage(id);
         } catch (DaoException e) {
-            logger.error("Failed to create Fund Warning Message {}, {}, {}", kv("userName", userName), kv("ipAddress", ipAddress), kv("fundWarningMessage", fundWarningMessageParam), e);
+            LOGGER.error("Failed to create Fund Warning Message {}, {}, {}", kv("userName", userName), kv("ipAddress", ipAddress), kv("fundWarningMessage", fundWarningMessageParam), e);
             throw new DaoException(e);
         }
     }

@@ -13,7 +13,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class ProviderService {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProviderService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderService.class);
 
 	private static ProviderDao dao = new ProviderDao();
 
@@ -38,7 +38,7 @@ public class ProviderService {
 		} catch(DaoException e) {
 			// ignore and move on
 		}
-		logger.debug("Provider key already exists {},{}", kv("providerKey", providerKey), kv("exists", exists));
+		LOGGER.debug("Provider key already exists {},{}", kv("providerKey", providerKey), kv("exists", exists));
 		return exists;
 	}
 }

@@ -15,7 +15,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class UnsubscribeService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(UnsubscribeService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UnsubscribeService.class);
 	private HashedEmailService hashedEmailService;
 	private EmailMasterDao emailDao;
 
@@ -58,7 +58,7 @@ public class UnsubscribeService {
 			try {
 				unsubscribe.setEmailDetails(hashedEmailService.getEmailDetails(hashedEmail, email, brandId));
 			} catch (DaoException e) {
-				logger.error("Error unsubscribing {},{},{}", kv("hashedEmail", hashedEmail), kv("email", email), kv("brandId", brandId));
+				LOGGER.error("Error unsubscribing {},{},{}", kv("hashedEmail", hashedEmail), kv("email", email), kv("brandId", brandId));
 				FatalErrorService.logFatalError(e, brandId, "failed to unsubscribe", "", true);
 			}
 		}

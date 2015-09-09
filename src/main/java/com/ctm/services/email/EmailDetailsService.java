@@ -32,7 +32,7 @@ public class EmailDetailsService {
 
 	private String vertical;
 
-	private static final Logger logger = LoggerFactory.getLogger(EmailDetailsService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmailDetailsService.class);
 
 	/**
 	 * TODO used by JSP remove when jsp has been refactored
@@ -69,7 +69,7 @@ public class EmailDetailsService {
 		try {
 			emailDetailsDB = emailMasterDao.getEmailDetails(emailDetailsRequest.getEmailAddress());
 			if(emailDetailsDB == null) {
-				logger.debug("email not in database adding now {}, {}", kv("emailAddress", emailDetailsRequest.getEmailAddress()),
+				LOGGER.debug("email not in database adding now {}, {}", kv("emailAddress", emailDetailsRequest.getEmailAddress()),
 					kv("transactionId", transactionId), kv("operator", operator), kv("ipAddress", ipAddress));
 				emailDetailsDB = writeNewEmailDetails(transactionId , emailDetailsRequest);
 				// new email address write if opted in database
@@ -119,7 +119,7 @@ public class EmailDetailsService {
 			try {
 				emailMaster.setHashedEmail(StringEncryption.hash(emailAddress + SALT + brandCode.toUpperCase()));
 			} catch (GeneralSecurityException e) {
-				logger.error("Failed to hash email {}, {}", kv("emailAddress", emailAddress), kv("brandCode", brandCode), kv("transactionId", transactionId));
+				LOGGER.error("Failed to hash email {}, {}", kv("emailAddress", emailAddress), kv("brandCode", brandCode), kv("transactionId", transactionId));
 				throw new EmailDetailsException("failed to hash email", e);
 			}
 			long transId = 0L;
@@ -127,7 +127,7 @@ public class EmailDetailsService {
 				transId =  Long.parseLong(transactionId);
 			} catch (NumberFormatException e) {
 				//Session probably died recoverable
-				logger.warn("Session likely failed {}", kv("transactionId", transactionId), e);
+				LOGGER.warn("Session likely failed {}", kv("transactionId", transactionId), e);
 			}
 			emailMaster = writeNewEmailDetails(transId , emailMaster);
 		}

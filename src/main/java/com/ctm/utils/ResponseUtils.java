@@ -21,7 +21,7 @@ import static javax.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
 
 public class ResponseUtils {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseUtils.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResponseUtils.class);
 
     public static ObjectNode errors(final Exception e, ObjectMapper objectMapper) {
         return jsonObjectNode("errors", asList(new Error(e.getMessage())), objectMapper);

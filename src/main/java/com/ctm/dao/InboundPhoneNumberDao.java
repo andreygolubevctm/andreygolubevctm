@@ -18,7 +18,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class InboundPhoneNumberDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(InboundPhoneNumberDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(InboundPhoneNumberDao.class);
 
 	public InboundPhoneNumberDao(){
 
@@ -71,9 +71,9 @@ public class InboundPhoneNumberDao {
 			}
 
 			if(phoneNumbers.size() > 1){
-				logger.error("More than one inbound phone number found {}", kv("vdn", vdn));
+				LOGGER.error("More than one inbound phone number found {}", kv("vdn", vdn));
 			}else if(phoneNumbers.size() == 0){
-				logger.error("No inbound phone number found {}", kv("vdn", vdn));
+				LOGGER.error("No inbound phone number found {}", kv("vdn", vdn));
 			}else{
 				inboundPhoneNumber = phoneNumbers.get(0);
 			}

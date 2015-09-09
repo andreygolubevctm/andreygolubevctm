@@ -18,7 +18,7 @@ import com.ctm.services.StampingService;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class SimplesBlacklistService {
-	private static final Logger logger = LoggerFactory.getLogger(SimplesBlacklistService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesBlacklistService.class);
 
 
 
@@ -47,7 +47,7 @@ public class SimplesBlacklistService {
 				result="Entry "+ value +" ["+channel+"] already exists.";
 			}
 		} catch (DaoException e) {
-			logger.error("Could not add to blacklist {},{},{},{}", kv("channel", channel), kv("value", value), kv("operator", operator),
+			LOGGER.error("Could not add to blacklist {},{},{},{}", kv("channel", channel), kv("value", value), kv("operator", operator),
 				kv("comment", comment));
 			result=e.getMessage();
 		}
@@ -81,7 +81,7 @@ public class SimplesBlacklistService {
 			}
 		}
 		catch (DaoException e) {
-			logger.error("Could not delete from blacklist {},{},{},{}" , kv("channel",channel), kv("value", value),
+			LOGGER.error("Could not delete from blacklist {},{},{},{}" , kv("channel",channel), kv("value", value),
 				kv("operator",operator), kv("comment", comment), e);
 			result=e.getMessage();
 		}

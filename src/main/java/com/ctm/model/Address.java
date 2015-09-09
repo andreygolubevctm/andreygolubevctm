@@ -18,7 +18,7 @@ public class Address {
 	private String postCode;
 	private String state;
 
-	private static final Logger logger = LoggerFactory.getLogger(Address.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Address.class);
 
 	public String getDpId() {
 		return dpId;
@@ -114,7 +114,7 @@ public class Address {
 			json.put("postCode", getPostCode());
 			json.put("state", getState());
 		} catch (JSONException e) {
-			logger.error("Failed creating address json object", e);
+			LOGGER.error("Failed creating address json object", e);
 		}
 
 		return json;

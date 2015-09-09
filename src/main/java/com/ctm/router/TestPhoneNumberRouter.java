@@ -21,7 +21,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 })
 
 public class TestPhoneNumberRouter extends HttpServlet {
-	private static final Logger logger = LoggerFactory.getLogger(TestPhoneNumberRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestPhoneNumberRouter.class);
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -60,7 +60,7 @@ public class TestPhoneNumberRouter extends HttpServlet {
 			response.getWriter().print(json.toString());
 
 		} catch (JSONException | IOException e) {
-			logger.error("Failed to create test phone number json response {}, {}", kv("score", score), kv("list", list), e);
+			LOGGER.error("Failed to create test phone number json response {}, {}", kv("score", score), kv("list", list), e);
 		}
 	}
 }

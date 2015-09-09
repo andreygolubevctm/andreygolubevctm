@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class StyleCodeDao {
-	private static final Logger logger = LoggerFactory.getLogger(StyleCodeDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(StyleCodeDao.class);
 
 	public int getStyleCodeId(long transactionId) throws DaoException {
 		SimpleDatabaseConnection dbSource = null;
@@ -36,7 +36,7 @@ public class StyleCodeDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to retrieve styleCodeId {}", kv("transactionId", transactionId));
+			LOGGER.error("Failed to retrieve styleCodeId {}", kv("transactionId", transactionId));
 			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {

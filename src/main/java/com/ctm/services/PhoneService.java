@@ -26,7 +26,7 @@ import static com.ctm.model.simples.CallInfo.STATE_INACTIVE;
 import static java.lang.String.format;
 
 public class PhoneService {
-	private static final Logger logger = LoggerFactory.getLogger(PhoneService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(PhoneService.class);
 	public static final String CTI_MAKE_CALL = "/dataservices/makeCall?accessToken=&extension=%s&numberToCall=%s";
 
 	/**
@@ -54,7 +54,7 @@ public class PhoneService {
 			XmlParser parser = new XmlParser();
 			return parser.parse(result);
 		} catch (SAXException e) {
-			logger.error("Error parsing verint response {}", kv("result", result), e);
+			LOGGER.error("Error parsing verint response {}", kv("result", result), e);
 		}
 
 		return null;
@@ -116,7 +116,7 @@ public class PhoneService {
 			return null;
 		}
 
-		logger.debug("Determining extension for agentId {}", kv("agentId", agentId), kv("json", json.toString()));
+		LOGGER.debug("Determining extension for agentId {}", kv("agentId", agentId), kv("json", json.toString()));
 
 		try {
 			JSONObject service = json.getJSONObject("service");
@@ -132,7 +132,7 @@ public class PhoneService {
 			}
 		}
 		catch (JSONException e) {
-			logger.error("Error determining extension {},{},{}", kv("agentId", agentId), kv("json", json), kv("serviceUrl", serviceUrl), e);
+			LOGGER.error("Error determining extension {},{},{}", kv("agentId", agentId), kv("json", json), kv("serviceUrl", serviceUrl), e);
 		}
 
 		return null;
@@ -203,7 +203,7 @@ public class PhoneService {
 			return null;
 		}
 
-		logger.debug("Getting call info {}", kv("extension", extension), kv("json", json));
+		LOGGER.debug("Getting call info {}", kv("extension", extension), kv("json", json));
 
 		try {
 			JSONObject service = json.getJSONObject("service");
@@ -250,7 +250,7 @@ public class PhoneService {
 			callInfo.setCustomerPhoneNo(otherParty.getString("telephoneNumber"));
 		}
 		catch (JSONException e) {
-			logger.error("Error getting call info {}", kv("extension", extension), e);
+			LOGGER.error("Error getting call info {}", kv("extension", extension), e);
 		}
 
 		return callInfo;
@@ -297,7 +297,7 @@ public class PhoneService {
 				if(extension != null){
 					authData.setExtension(extension);
 				} else {
-					logger.info("Unable to get extension {}", kv("agentId", agentId));
+					LOGGER.info("Unable to get extension {}", kv("agentId", agentId));
 				}
 			}
 
@@ -309,7 +309,7 @@ public class PhoneService {
 			}
 
 		}else{
-			logger.debug("Unable to get call details {}", kv("uid", authData.getUid()));
+			LOGGER.debug("Unable to get call details {}", kv("uid", authData.getUid()));
 		}
 
 		return null;
@@ -333,7 +333,7 @@ public class PhoneService {
 		try {
 			final CallInfo callInfo = getCallInfoByExtension(settings, extension);
 			if (callInfo == null) {
-				logger.error("Error retrieving call status {},{}", kv("extension", extension), kv("phone", phone));
+				LOGGER.error("Error retrieving call status {},{}", kv("extension", extension), kv("phone", phone));
 				return false;
 			} else if (callInfo.getState() == STATE_INACTIVE) {
 				final String url = callUrl(settings, extension, phone);
@@ -343,11 +343,11 @@ public class PhoneService {
 				final String result = conn.get(url);
 				return callReturnStatus(result);
 			} else {
-				logger.info("Already on phone {}", kv("extension", extension));
+				LOGGER.info("Already on phone {}", kv("extension", extension));
 				return false;
 			}
 		} catch (Exception e) {
-			logger.error("Error retrieving call status", kv("extension", extension), kv("phone", phone));
+			LOGGER.error("Error retrieving call status", kv("extension", extension), kv("phone", phone));
 			return false;
 		}
 	}
@@ -357,7 +357,7 @@ public class PhoneService {
 			final String ctiBaseUrl = settings.getSetting("ctiMakeCallUrl");
 			return format(ctiBaseUrl + CTI_MAKE_CALL, extension, phone);
 		} catch (final IllegalFormatException e) {
-			logger.error("Error retrieving cti make call server url {},{}", kv("extension", extension), kv("phone", phone));
+			LOGGER.error("Error retrieving cti make call server url {},{}", kv("extension", extension), kv("phone", phone));
 		}
 		return null;
 	}
@@ -369,7 +369,7 @@ public class PhoneService {
 				final XmlNode node = parser.parse(xml);
 				return node.get("response/status").toString().equalsIgnoreCase("OK");
 			} catch (final SAXException e) {
-				logger.error("Unable parse call status {}", kv("xml", xml), e);
+				LOGGER.error("Unable parse call status {}", kv("xml", xml), e);
 				return false;
 			}
 		}

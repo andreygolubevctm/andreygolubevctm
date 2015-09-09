@@ -20,7 +20,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 public class VerboseErrorHandler implements ErrorHandler {
 
     private final String prefixXpath;
-	private static final Logger LOGGER = LoggerFactory.getLogger(VerboseErrorHandler.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(VerboseErrorHandler.class);
 
     private XMLStreamReader reader;
     public boolean valid  = true;

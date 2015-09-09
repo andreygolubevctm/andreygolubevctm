@@ -18,7 +18,7 @@ import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 
 public class HandoverConfirmationService {
-	private static final Logger logger = LoggerFactory.getLogger(HandoverConfirmationService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HandoverConfirmationService.class);
     private final AccessTouchService accessTouchService;
     private final HandoverConfirmationDao handoverConfirmationDao;
 
@@ -36,13 +36,13 @@ public class HandoverConfirmationService {
         if (!accessTouchService.hasTouch(handoverConfirmation.transactionId, SOLD)) {
             accessTouchService.recordTouch(handoverConfirmation.transactionId, SOLD.getCode());
         } else {
-            logger.warn("Existing sold touch already recorded {}", kv("handoverConfirmation", handoverConfirmation));
+            LOGGER.warn("Existing sold touch already recorded {}", kv("handoverConfirmation", handoverConfirmation));
         }
 
         if (!handoverConfirmationDao.hasExistingConfirmationWithPolicy(handoverConfirmation)) {
             handoverConfirmationDao.recordConfirmation(handoverConfirmation);
         } else {
-            logger.info("Handover confirmation already recorded {}", kv("handoverConfirmation", handoverConfirmation));
+            LOGGER.info("Handover confirmation already recorded {}", kv("handoverConfirmation", handoverConfirmation));
         }
     }
 

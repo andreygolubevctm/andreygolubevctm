@@ -16,7 +16,7 @@ import static com.ctm.services.EnvironmentService.getEnvironmentAsString;
 
 public class ConfigSettingsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(ConfigSettingsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigSettingsDao.class);
 
 	/**
 	 * Returns all config settings for the current environment (handled automatically inside the function)
@@ -59,7 +59,7 @@ public class ConfigSettingsDao {
 			}
 
 		} catch (Exception e) {
-			logger.error("Failed to get config settings {}", kv("environment", getEnvironmentAsString()), e);
+			LOGGER.error("Failed to get config settings {}", kv("environment", getEnvironmentAsString()), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

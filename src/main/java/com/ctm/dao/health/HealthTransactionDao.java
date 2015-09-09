@@ -17,7 +17,7 @@ public class HealthTransactionDao {
 
 	private static final String PRODUCT_TITLE_XPATH = "health/application/productTitle";
 	public static final String PROVIDER_XPATH = "health/application/provider";
-	private static final Logger logger = LoggerFactory.getLogger(HealthTransactionDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthTransactionDao.class);
 
 
 	public static class HealthTransactionSequenceNo {
@@ -164,7 +164,7 @@ public class HealthTransactionDao {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					logger.error("Failed to close health transaction db connection {}", kv("errors", errors), e);
+					LOGGER.error("Failed to close health transaction db connection {}", kv("errors", errors), e);
 				}
 			}
 			dbSource.closeConnection();

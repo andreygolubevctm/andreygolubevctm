@@ -25,13 +25,13 @@ import static com.ctm.logging.LoggingArguments.kv;
 })
 public class BestPriceLeadsRouter extends HttpServlet {
 
-	private static final Logger logger = LoggerFactory.getLogger(BestPriceLeadsRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(BestPriceLeadsRouter.class);
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		logger.debug("[Lead feed] Triggered cron job {}", kv("uri", request.getRequestURI()));
+		LOGGER.debug("[Lead feed] Triggered cron job {}", kv("uri", request.getRequestURI()));
 
 		String uri = request.getRequestURI();
 		PrintWriter writer = response.getWriter();
@@ -84,7 +84,7 @@ public class BestPriceLeadsRouter extends HttpServlet {
 				}
 
 		} catch (Exception e) {
-			logger.error("[Lead feed] Best price lead feed failed {}", request.getRequestURI(), e);
+			LOGGER.error("[Lead feed] Best price lead feed failed {}", request.getRequestURI(), e);
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
 		}
 	}

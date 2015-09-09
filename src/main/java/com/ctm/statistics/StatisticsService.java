@@ -13,7 +13,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class StatisticsService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsService.class);
 	private final StatisticsDao dao;
 
 	public StatisticsService() {

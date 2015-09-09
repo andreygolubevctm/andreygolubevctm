@@ -18,7 +18,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 
 public class ServiceConfigurationDao {
-	private static final Logger logger = LoggerFactory.getLogger(ServiceConfigurationDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceConfigurationDao.class);
 
 	/**
 	 * Get the service configuration data and their properties from the database.
@@ -99,7 +99,7 @@ public class ServiceConfigurationDao {
 			}
 
 		} catch (Exception e) {
-			logger.error("Failed to retrieve service configuration data {}", kv("effectiveDateTime", effectiveDateTime));
+			LOGGER.error("Failed to retrieve service configuration data {}", kv("effectiveDateTime", effectiveDateTime));
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

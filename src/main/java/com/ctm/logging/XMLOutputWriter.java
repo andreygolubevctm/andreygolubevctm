@@ -20,7 +20,7 @@ public class XMLOutputWriter {
 
 	private static final String NAME_KEY = "loggerName";
 	
-	private static final Logger logger = getLogger(XMLOutputWriter.class);
+	private static final Logger LOGGER = getLogger(XMLOutputWriter.class);
 	private final String name;
 
 	public XMLOutputWriter(String name, String debugPath) {
@@ -30,7 +30,7 @@ public class XMLOutputWriter {
 	}
 
 	public void writeXmlToFile(String maskXml, String type) {
-		logger.info(createLogString(maskXml, type));
+		LOGGER.info(createLogString(maskXml, type));
 	}
 	
 	/**
@@ -41,7 +41,7 @@ public class XMLOutputWriter {
 	 * @param transactionId
 	 */
 	public void lastWriteXmlToFile(String message) {
-		logger.info(FINALIZE_SESSION_MARKER, createLogString(message, RESP_OUT));
+		LOGGER.info(FINALIZE_SESSION_MARKER, createLogString(message, RESP_OUT));
 	}
 
 	private String createLogString(String maskXml, String type) {

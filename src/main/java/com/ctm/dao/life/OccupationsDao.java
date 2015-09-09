@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class OccupationsDao {
-	private static final Logger logger = LoggerFactory.getLogger(OccupationsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(OccupationsDao.class);
 
 	public Occupation getOccupation(String occupationId) {
 		Occupation occupation = new Occupation();
@@ -45,7 +45,7 @@ public class OccupationsDao {
 				}
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to retrieve occupation {}", kv("occupationId", occupationId));
+			LOGGER.error("Failed to retrieve occupation {}", kv("occupationId", occupationId));
 		} finally {
 			if(dbSource != null) {
 				dbSource.closeConnection();

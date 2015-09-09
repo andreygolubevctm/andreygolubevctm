@@ -23,7 +23,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class UserDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
 
 
 	/**
@@ -119,7 +119,7 @@ public class UserDao {
 						}
 					}
 					catch (Exception e) {
-						logger.error("Failed to get user list {}, {}", kv("settings", settings), kv("onlyLoggedInUsers", onlyLoggedInUsers), e);
+						LOGGER.error("Failed to get user list {}, {}", kv("settings", settings), kv("onlyLoggedInUsers", onlyLoggedInUsers), e);
 					}
 				}
 
@@ -216,7 +216,7 @@ public class UserDao {
 
 			setRulesForUser(user);
 
-			logger.info("loginUser(): username:" + user.getUsername() + ", extension:" + user.getExtension() + ", displayName:" + user.getDisplayName() + " > uid:" + user.getId());
+			LOGGER.info("loginUser(): username:" + user.getUsername() + ", extension:" + user.getExtension() + ", displayName:" + user.getDisplayName() + " > uid:" + user.getId());
 		}
 		catch (SQLException | NamingException e) {
 			throw new DaoException(e);

@@ -16,7 +16,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 
 public class SessionTokenDao {
-	private static final Logger logger = LoggerFactory.getLogger(SessionTokenDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SessionTokenDao.class);
 
 	public SessionTokenDao(){
 
@@ -66,7 +66,7 @@ public class SessionTokenDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to get session token {}, {}", kv("token", token), kv("identityType", identityType));
+			LOGGER.error("Failed to get session token {}, {}", kv("token", token), kv("identityType", identityType));
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -99,7 +99,7 @@ public class SessionTokenDao {
 			stmt.executeUpdate();
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed marking session token as consumed {}", kv("token", token));
+			LOGGER.error("Failed marking session token as consumed {}", kv("token", token));
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -142,7 +142,7 @@ public class SessionTokenDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed saving session token to database {}", kv("token", sessionToken));
+			LOGGER.error("Failed saving session token to database {}", kv("token", sessionToken));
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

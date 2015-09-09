@@ -20,7 +20,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public abstract class LeadFeedService {
 
-	private static final Logger logger = LoggerFactory.getLogger(LeadFeedService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(LeadFeedService.class);
 
 	protected Content ignoreBecauseOfField = null;
 	protected String ignorePhoneRule = null;
@@ -63,14 +63,14 @@ public abstract class LeadFeedService {
 			ContentService contentService = new ContentService();
 			content = contentService.getContent("noSaleLeadOn", 0, leadData.getVerticalId(), leadData.getEventDate(), false);
 		} catch(Exception e) {
-			logger.error("[Lead feed] Exception checking noSaleLead is turned on in content_control {}", kv("leadData", leadData), e);
+			LOGGER.error("[Lead feed] Exception checking noSaleLead is turned on in content_control {}", kv("leadData", leadData), e);
 			return LeadResponseStatus.SKIPPED;
 		}
 
 		if(content != null && content.getContentValue() == null || content.getContentValue().equalsIgnoreCase("Y")) {
 			return processGateway(LeadType.NOSALE_CALL, leadData, Touch.TouchType.NOSALE_CALL);
 		} else {
-			logger.info("[Lead feed] Skipped noSaleLead as feed not turned on in content_control {}", kv("content", content));
+			LOGGER.info("[Lead feed] Skipped noSaleLead as feed not turned on in content_control {}", kv("content", content));
 			return LeadResponseStatus.SKIPPED;
 		}
 	}
@@ -118,13 +118,13 @@ public abstract class LeadFeedService {
 						}
 					} catch(LeadFeedException e) {
 						failureCount++;
-						logger.error("Failed processing best price leads {},{},{},{}", kv("brandCodeId", brandCodeId),
+						LOGGER.error("Failed processing best price leads {},{},{},{}", kv("brandCodeId", brandCodeId),
 								kv("verticalCode", verticalCode), kv("frequency", frequency), kv("serverDate", serverDate));
 					}
 				}
 			}
 		} catch(DaoException e) {
-			logger.error("[Lead feed] Exception processing lead feed message {},{},{},{}", kv("brandCodeId", brandCodeId),
+			LOGGER.error("[Lead feed] Exception processing lead feed message {},{},{},{}", kv("brandCodeId", brandCodeId),
 				kv("verticalCode", verticalCode), kv("frequency", frequency), kv("serverDate", serverDate), e);
 		}
 
@@ -156,7 +156,7 @@ public abstract class LeadFeedService {
 				ignorePhoneRule = ignoreBecauseOfField.getSupplementaryValueByKey("phone");
 			}
 			if(ignorePhoneRule != null && !ignorePhoneRule.isEmpty() && ignorePhoneRule.contains(leadData.getPhoneNumber())) {
-				logger.debug("[Lead feed] Lead identified as test-only because of phone number {},{}", kv("phoneNumber", leadData.getPhoneNumber()),
+				LOGGER.debug("[Lead feed] Lead identified as test-only because of phone number {},{}", kv("phoneNumber", leadData.getPhoneNumber()),
 					kv("transactionId", leadData.getTransactionId()));
 				return true;
 			} else {

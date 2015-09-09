@@ -19,7 +19,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class UploadService {
 
-	private static final Logger logger = LoggerFactory.getLogger(UploadService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UploadService.class);
 	private String attachmentFilename;
 	private String effectiveDate, providerCode, jira;
 	private InputStream uploadedStream;
@@ -97,7 +97,7 @@ public class UploadService {
 
 		}
 		catch(IOException e) {
-			logger.error("Error importing partner mapping {},{}", kv("providerId", providerId), kv("mappingType", mappingType), e);
+			LOGGER.error("Error importing partner mapping {},{}", kv("providerId", providerId), kv("mappingType", mappingType), e);
 		}
 
 		// close off the SQL statement

@@ -51,7 +51,7 @@ import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
-    private static final Logger logger = LoggerFactory.getLogger(HomeQuoteService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomeQuoteService.class);
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 
     public List<HomeResult> getQuotes(Brand brand, HomeRequest data) {
@@ -114,7 +114,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             return homeResults;
 
         }catch(IOException e){
-            logger.error("Error parsing or connecting to home-quote {}, {}", kv("brand", brand), kv("homeQuoteRequest", homeQuoteRequest), e);
+            LOGGER.error("Error parsing or connecting to home-quote {}, {}", kv("brand", brand), kv("homeQuoteRequest", homeQuoteRequest), e);
         }
 
         return null;
@@ -193,7 +193,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
 
             return ResponseAdapter.adapt(moreInfoResponse);
         } catch (IOException e) {
-            logger.error("Error parsing or connecting to home-quote {}, {}, {}", kv("brand", brand), kv("productId", productId),
+            LOGGER.error("Error parsing or connecting to home-quote {}, {}, {}", kv("brand", brand), kv("productId", productId),
                 kv("type", type), kv("environmentOverride", environmentOverride), e);
         }
         return null;
@@ -234,7 +234,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             }
 
         } catch (DaoException | SessionException e) {
-            logger.error("Failed writing temp result details {}, {}", kv("transactionId", data.getTransactionId()), kv("homeRequest", data) );
+            LOGGER.error("Failed writing temp result details {}, {}", kv("transactionId", data.getTransactionId()), kv("homeRequest", data) );
         }
 
     }

@@ -30,7 +30,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class HomeLoanOpportunityService {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeLoanOpportunityService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeLoanOpportunityService.class);
 	public static final String SECRET_KEY = "kD0axgKXQ5HixuWsJ8-2BA";
 	private String transactionId;
 	private String sessionId;
@@ -120,7 +120,7 @@ public class HomeLoanOpportunityService {
 		catch (Exception e) {
 			String message = (e.getMessage() != null ? e.getMessage() : "Failed to submit");
 			FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
-			logger.error("Opportunity submit failed {}", kv("hlorModel", hlorModel), e);
+			LOGGER.error("Opportunity submit failed {}", kv("hlorModel", hlorModel), e);
 			responseJson = createErrorResponse(message);
 		}
 		return responseJson;
@@ -133,7 +133,7 @@ public class HomeLoanOpportunityService {
 		jsonConn.conn.setContentType("application/json");
 
 		String postBody = hlorModel.toJsonObject().toString();
-		logger.debug("Opportunity submit details {}, {}, {}, {}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("serviceUrl", serviceUrl), kv("postBody", postBody));
+		LOGGER.debug("Opportunity submit details {}, {}, {}, {}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("serviceUrl", serviceUrl), kv("postBody", postBody));
 		return jsonConn.post(serviceUrl, postBody);
 	}
 
@@ -148,7 +148,7 @@ public class HomeLoanOpportunityService {
 
 	private JSONObject handleExternalServiceResponse(JSONObject responseJson) throws JSONException {
 		if (responseJson != null) {
-			logger.debug("Opportunity response {}", kv("responseJson", responseJson));
+			LOGGER.debug("Opportunity response {}", kv("responseJson", responseJson));
 		}
 		//
 		// Check that response is ok

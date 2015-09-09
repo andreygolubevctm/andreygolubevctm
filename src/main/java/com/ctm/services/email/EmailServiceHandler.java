@@ -23,7 +23,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public abstract class EmailServiceHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(EmailServiceHandler.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceHandler.class);
 
 
 	protected static final  List<String> testEmails = new ArrayList<String>() {
@@ -96,7 +96,7 @@ public abstract class EmailServiceHandler {
 		try {
 			emailModel.setImageUrlPrefix(getPageSetting("imageUrlPrefix"));
 		} catch (SendEmailException e) {
-			logger.error("imageUrlPrefix not found {}", kv("emailModel", emailModel));
+			LOGGER.error("imageUrlPrefix not found {}", kv("emailModel", emailModel));
 		}
 		emailModel.setBrand(pageSettings.getBrandCode());
 	}

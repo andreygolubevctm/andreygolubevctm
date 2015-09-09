@@ -27,7 +27,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class IncomingEmailService {
 
-	private static final Logger logger = LoggerFactory.getLogger(IncomingEmailService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(IncomingEmailService.class);
 
 	/**
 	 * Create a URL for viewing a confirmation that is brand and vertical aware.
@@ -100,7 +100,7 @@ public class IncomingEmailService {
 				redirectionUrl.append(pageSettings.getSetting("exitUrl"));
 			}
 		} catch (DaoException | EnvironmentException | VerticalException | ConfigSettingException e) {
-			logger.error("Failed to get redirect url {}", kv("incomingEmail", emailData), e);
+			LOGGER.error("Failed to get redirect url {}", kv("incomingEmail", emailData), e);
 		}
 
 		return redirectionUrl.toString();
@@ -146,7 +146,7 @@ public class IncomingEmailService {
 			expiresCal.setTime(expires);
 			expired = expiresCal.compareTo(todayCal) >= 0;
 		} catch (ParseException e) {
-			logger.error("Unable to parse incoming email date {}", kv("validateDate", validateDate), e);
+			LOGGER.error("Unable to parse incoming email date {}", kv("validateDate", validateDate), e);
 		}
 		return expired;
 	}

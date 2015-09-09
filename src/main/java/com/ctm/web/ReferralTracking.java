@@ -15,7 +15,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class ReferralTracking {
 
-	private static final Logger logger = LoggerFactory.getLogger(ReferralTracking.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReferralTracking.class);
 
 	public String getAndSetUtmSource(HttpServletRequest request, Data data, String prefix) {
 		return getAndSetFromParam(request, data, "utm_source", prefix + "/sourceid");
@@ -39,7 +39,7 @@ public class ReferralTracking {
 				try {
 					value = URLDecoder.decode(value, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
-					logger.warn("Value is not in utf-8. {}", kv("value", value),e);
+					LOGGER.warn("Value is not in utf-8. {}", kv("value", value),e);
 				}
 				try {
 					valid = ContentService.getContentIsValid(request, key, value);
@@ -47,13 +47,13 @@ public class ReferralTracking {
 						data.put(xpath, value);
 					}
 				} catch (DaoException | ConfigSettingException e) {
-					logger.warn("Failed to validate content. {},{}", kv("key", key), kv("value", value),e);
+					LOGGER.warn("Failed to validate content. {},{}", kv("key", key), kv("value", value),e);
 				}
 
 				if(valid ){
-					logger.info("Content is valid. {},{}", kv("key", key), kv("value", value));
+					LOGGER.info("Content is valid. {},{}", kv("key", key), kv("value", value));
 				} else {
-					logger.warn("Content is invalid param - Aborting. {},{}", kv("key", key), kv("value", value));
+					LOGGER.warn("Content is invalid param - Aborting. {},{}", kv("key", key), kv("value", value));
 					value = "";
 				}
 			}

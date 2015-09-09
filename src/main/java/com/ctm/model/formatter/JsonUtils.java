@@ -14,7 +14,7 @@ import static com.ctm.logging.LoggingArguments.array;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class JsonUtils {
-	private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtils.class);
 
 	/**
 	 * Adds a list of {@link AbstractJsonModel} to a provided JSON Object.
@@ -46,7 +46,7 @@ public class JsonUtils {
 			}
 		}
 		catch (JSONException e) {
-			logger.error("Failed to produce JSON object {}, {}", kv("json", json), kv("keyName", keyName), e);
+			LOGGER.error("Failed to produce JSON object {}, {}", kv("json", json), kv("keyName", keyName), e);
 		}
 	}
 }

@@ -19,7 +19,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class AuthenticatedData extends Data {
 
-	private static final Logger logger = LoggerFactory.getLogger(AuthenticatedData.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatedData.class);
 
 	// store the roles in java instead of data bucket
 	private List<Role> simplesUserRoles;
@@ -46,7 +46,7 @@ public class AuthenticatedData extends Data {
 			try {
 				simplesUid = Integer.parseInt(uid);
 			} catch (NumberFormatException e) {
-				logger.error("obtained invalid simples uid {}", kv("uid", uid), e);
+				LOGGER.error("obtained invalid simples uid {}", kv("uid", uid), e);
 			}
 		}
 		return simplesUid;

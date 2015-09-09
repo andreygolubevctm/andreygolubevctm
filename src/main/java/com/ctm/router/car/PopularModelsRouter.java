@@ -24,7 +24,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 })
 public class PopularModelsRouter extends HttpServlet {
 	private static final long serialVersionUID = 66L;
-	private static final Logger logger = LoggerFactory.getLogger(PopularModelsRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(PopularModelsRouter.class);
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -48,7 +48,7 @@ public class PopularModelsRouter extends HttpServlet {
 		try {
 			json.append("updated", lastUpdated);
 		} catch (JSONException e) {
-			logger.error("Failed create popular models json response {}", kv("lastUpdated", lastUpdated), e);
+			LOGGER.error("Failed create popular models json response {}", kv("lastUpdated", lastUpdated), e);
 		}
 
 		// Write json to response

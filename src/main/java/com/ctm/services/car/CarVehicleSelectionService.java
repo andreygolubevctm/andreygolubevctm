@@ -20,7 +20,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 import static net.logstash.logback.argument.StructuredArguments.v;
 
 public class CarVehicleSelectionService {
-	private static final Logger logger = LoggerFactory.getLogger(CarVehicleSelectionService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CarVehicleSelectionService.class);
 
 	private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -43,7 +43,7 @@ public class CarVehicleSelectionService {
 		} catch (JsonProcessingException | JSONException e) {
 			String message = "Could not get VehicleSelection " + makeCode + " + model=" + modelCode + ", year=" +
 					yearCode + ", body=" + bodyCode + ", transmission=" + transmissionCode + ", fuel=" + fuelCode;
-			logger.error(message, kv("makeCode", makeCode), kv("year", yearCode), kv("body", bodyCode),
+			LOGGER.error(message, kv("makeCode", makeCode), kv("year", yearCode), kv("body", bodyCode),
 				kv("transmission", transmissionCode), kv("fuel", fuelCode), e);
 			throw new ServiceException(message, e);
 		}
@@ -122,7 +122,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get makes";
-			logger.error(message, e);
+			LOGGER.error(message, e);
 			throw new ServiceException(message, e);
 		}
 
@@ -144,7 +144,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get models make=" + makeCode;
-			logger.error(message, kv("make", makeCode), e);
+			LOGGER.error(message, kv("make", makeCode), e);
 			throw new ServiceException(message, e);
 		}
 
@@ -167,7 +167,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get years for make=" + makeCode + " , model=" + modelCode;
-			logger.error(message, kv("make", makeCode), kv("model", modelCode), e);
+			LOGGER.error(message, kv("make", makeCode), kv("model", modelCode), e);
 			throw new ServiceException(message, e);
 		}
 
@@ -191,7 +191,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get bodies for make=" + makeCode + ", model=" + modelCode + ", year=" + yearCode;
-			logger.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), e);
+			LOGGER.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), e);
 			throw new ServiceException(message, e);
 		}
 
@@ -216,7 +216,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get transmissions make=" + makeCode + ", model=" + modelCode + ", year=" + yearCode + ", body=" + bodyCode;
-			logger.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), kv("body", bodyCode), e);
+			LOGGER.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), kv("body", bodyCode), e);
 			throw new ServiceException(message, e);
 		}
 
@@ -242,7 +242,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get fuels for make=" + makeCode + ",  model=" + modelCode + ", year=" + yearCode + ", body=" + bodyCode + ", transmission=" + transmissionCode;
-			logger.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), kv("body", bodyCode), kv("transmission", transmissionCode));
+			LOGGER.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), kv("body", bodyCode), kv("transmission", transmissionCode));
 			throw new ServiceException(message, e);
 		}
 
@@ -269,7 +269,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get types make=" + makeCode + ", model=" + modelCode + ", year=" + yearCode + ", body=" + bodyCode + ", transmission=" + transmissionCode + ", fuel=" + fuelCode;
-			logger.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), kv("body", bodyCode), kv("transmission", transmissionCode), kv("fuel", fuelCode), e);
+			LOGGER.error(message, kv("make", makeCode), kv("model", modelCode), kv("year", yearCode), kv("body", bodyCode), kv("transmission", transmissionCode), kv("fuel", fuelCode), e);
 			throw new ServiceException(message, e);
 		}
 
@@ -284,7 +284,7 @@ public class CarVehicleSelectionService {
 		try {
 			return new JSONObject(objectMapper.writeValueAsString(result));
 		} catch (JsonProcessingException | JSONException e) {
-			logger.error("Could not get vehicle non standards json", e);
+			LOGGER.error("Could not get vehicle non standards json", e);
 		}
 		return null;
 	}
@@ -301,7 +301,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get vehicle non standards";
-			logger.error(message, e);
+			LOGGER.error(message, e);
 			throw new ServiceException(message, e);
 		}
 
@@ -316,7 +316,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get vehicle standard accessories redBookCode=" + redBookCode;
-			logger.error(message, kv("redBookCode", redBookCode), e);
+			LOGGER.error(message, kv("redBookCode", redBookCode), e);
 			throw new ServiceException(message, e);
 		}
 		return accessories;
@@ -330,7 +330,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get vehicle optional accessories redBookCode=" + redBookCode;
-			logger.error(message, kv("redBookCode", redBookCode), e);
+			LOGGER.error(message, kv("redBookCode", redBookCode), e);
 			throw new ServiceException(message, e);
 		}
 		return accessories;
@@ -344,7 +344,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get vehicle alarm accessories redBookCode=" + redBookCode;
-			logger.error(message,  kv("redBookCode", redBookCode), e);
+			LOGGER.error(message,  kv("redBookCode", redBookCode), e);
 			throw new ServiceException(message, e);
 		}
 		return accessories;
@@ -358,7 +358,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get vehicle immobiliser accessories redBookCode=" + redBookCode;
-			logger.error(message,  kv("redBookCode", redBookCode), e);
+			LOGGER.error(message,  kv("redBookCode", redBookCode), e);
 			throw new ServiceException(message, e);
 		}
 		return accessories;
@@ -375,7 +375,7 @@ public class CarVehicleSelectionService {
 		}
 		catch (DaoException e) {
 			String message = "Could not get vehicle non standard mappings";
-			logger.error(message, e);
+			LOGGER.error(message, e);
 			throw new ServiceException(message, e);
 		}
 
@@ -413,7 +413,7 @@ public class CarVehicleSelectionService {
 
 			} catch (DaoException e) {
 				String message = "Could not get vehicle non standard mappings for redBookCode=" + redbookCode + ", year=" + year;
-				logger.error(message,  kv("redBookCode", redbookCode), kv("year", year), e);
+				LOGGER.error(message,  kv("redBookCode", redbookCode), kv("year", year), e);
 				throw new ServiceException(message, e);
 			}
 		}
@@ -425,7 +425,7 @@ public class CarVehicleSelectionService {
 			return dao.getGlassesCode(redbookCode, year);
 		} catch (DaoException e) {
 			String message = "Could not get vehicle non standard mappings for redbookCode=" + redbookCode + ", year=" + year;
-			logger.error(message, kv("redBookCode", redbookCode), kv("year", year), e);
+			LOGGER.error(message, kv("redBookCode", redbookCode), kv("year", year), e);
 			throw new ServiceException(message, e);
 		}
 	}
@@ -436,7 +436,7 @@ public class CarVehicleSelectionService {
 			return dao.getCarProduct(date, productId, styleCodeId);
 		} catch (DaoException e) {
 			String message = "Could not get CarProduct for productId=" + productId + " , date=" + date + ", styleCodeId" + styleCodeId;
-			logger.error(message, kv("productId", productId), kv("date", date), kv("styleCodeId", styleCodeId));
+			LOGGER.error(message, kv("productId", productId), kv("date", date), kv("styleCodeId", styleCodeId));
 			throw new ServiceException(message, e);
 		}
 	}

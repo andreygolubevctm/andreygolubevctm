@@ -11,7 +11,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class JsonConnection {
 
-	private static final Logger logger = LoggerFactory.getLogger(JsonConnection.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(JsonConnection.class);
 	public SimpleConnection conn = null;
 
 
@@ -49,7 +49,7 @@ public class JsonConnection {
 			return json;
 		}
 		catch (Exception e){
-			logger.error("Error making json get {}", kv(url, url), e);
+			LOGGER.error("Error making json get {}", kv(url, url), e);
 		}
 
 		return null;
@@ -83,7 +83,7 @@ public class JsonConnection {
 			return json;
 		}
 		catch (Exception e){
-			logger.error("Error making json post", kv("url", url), kv("postBody", postBody), kv("sanitize", sanitize), e);
+			LOGGER.error("Error making json post", kv("url", url), kv("postBody", postBody), kv("sanitize", sanitize), e);
 		}
 
 		return null;
@@ -104,7 +104,7 @@ public class JsonConnection {
 
 			String jsonString = conn.get(url);
 
-			logger.trace("Posting json request {}", kv("request", jsonString));
+			LOGGER.trace("Posting json request {}", kv("request", jsonString));
 
 			if(jsonString == null) return null;
 
@@ -119,7 +119,7 @@ public class JsonConnection {
 			return json;
 		}
 		catch (Exception e){
-			logger.error("Error making json array post {},{},{}", kv("url", url), kv("postBody", postBody),
+			LOGGER.error("Error making json array post {},{},{}", kv("url", url), kv("postBody", postBody),
 				kv("sanitize", sanitize), e);
 		}
 
@@ -132,7 +132,7 @@ public class JsonConnection {
 		try {
 			json = new JSONObject(JsonSanitizer.sanitize(jsonString));
 		} catch(JSONException e) {
-			logger.error("Error sanitizing json object {}", kv("json", jsonString), e);
+			LOGGER.error("Error sanitizing json object {}", kv("json", jsonString), e);
 		}
 
 		return json;
@@ -144,7 +144,7 @@ public class JsonConnection {
 		try {
 			json = new JSONArray(JsonSanitizer.sanitize(jsonString));
 		} catch(JSONException e) {
-			logger.error("Error sanitizing json array {}", kv("json", jsonString), e);
+			LOGGER.error("Error sanitizing json array {}", kv("json", jsonString), e);
 		}
 
 		return json;

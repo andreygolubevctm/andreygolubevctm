@@ -16,7 +16,7 @@ import java.util.Date;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class ProviderDao {
-	private static final Logger logger = LoggerFactory.getLogger(ProviderDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderDao.class);
 
 	public static enum GetMethod {
 		BY_CODE, BY_ID
@@ -169,7 +169,7 @@ public class ProviderDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to retrieve providers for vertical {}, {}, {}, {}", kv("verticalCode", verticalCode),
+			LOGGER.error("Failed to retrieve providers for vertical {}, {}, {}, {}", kv("verticalCode", verticalCode),
 				kv("styleCodeId", styleCodeId), kv("onlyActiveProviders", getOnlyActiveProviders));
 			throw new DaoException(e);
 		} finally {
@@ -208,7 +208,7 @@ public class ProviderDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to retrieve provider details {}, {}", kv("providerCode", providerCode), kv("propertyId", propertyId));
+			LOGGER.error("Failed to retrieve provider details {}, {}", kv("providerCode", providerCode), kv("propertyId", propertyId));
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

@@ -23,7 +23,7 @@ import java.util.Locale;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class SimplesMessageService {
-	private static final Logger logger = LoggerFactory.getLogger(SimplesMessageService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesMessageService.class);
 
 
 
@@ -153,7 +153,7 @@ public class SimplesMessageService {
 
 		}
 		catch (DaoException | ParseException e) {
-			logger.error("Could not postpone message {},{},{},{},{},{},{}", kv("messageId", messageId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId),
+			LOGGER.error("Could not postpone message {},{},{},{},{},{},{}", kv("messageId", messageId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId),
 				kv("postponeDate", postponeDate), kv("postponeAMPM", postponeAMPM), kv("comment", comment), kv("assignToUser", assignToUser), e);
 
 			Error error = new Error(e.getMessage());
@@ -193,7 +193,7 @@ public class SimplesMessageService {
 
 		}
 		catch (DaoException e) {
-			logger.error("Could not set message {},{},{},{}", kv("actionIsPerformedByUserId", actionIsPerformedByUserId), kv("messageId", messageId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId), e);
+			LOGGER.error("Could not set message {},{},{},{}", kv("actionIsPerformedByUserId", actionIsPerformedByUserId), kv("messageId", messageId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId), e);
 
 			Error error = new Error(e.getMessage());
 			details.addError(error);
@@ -215,7 +215,7 @@ public class SimplesMessageService {
 
 		}
 		catch (DaoException e) {
-			logger.error("Could not set message {},{}", kv("actionIsPerformedByUserId", actionIsPerformedByUserId),
+			LOGGER.error("Could not set message {},{}", kv("actionIsPerformedByUserId", actionIsPerformedByUserId),
 				kv("messageId", messageId), e);
 
 			Error error = new Error(e.getMessage());
@@ -238,7 +238,7 @@ public class SimplesMessageService {
 
 		}
 		catch (DaoException e) {
-			logger.error("Could not set message {},{},{}", kv("actionIsPerformedByUserId", actionIsPerformedByUserId),
+			LOGGER.error("Could not set message {},{},{}", kv("actionIsPerformedByUserId", actionIsPerformedByUserId),
 				kv("messageId", messageId), kv("reasonStatusId", reasonStatusId), e);
 
 			Error error = new Error(e.getMessage());

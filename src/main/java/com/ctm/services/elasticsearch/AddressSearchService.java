@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class AddressSearchService extends ElasticSearchService {
 
-	private static final Logger logger = LoggerFactory.getLogger(AddressSearchService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AddressSearchService.class);
 
 	private static Client elasticClient = null;
 	private static boolean initialised = false;
@@ -23,10 +23,10 @@ public class AddressSearchService extends ElasticSearchService {
 
 			try {
 				elasticClient = ElasticClientProvider.createClient();
-				logger.debug("[ElasticSearch] Address Search client has been initialised");
+				LOGGER.debug("[ElasticSearch] Address Search client has been initialised");
 			} catch (ElasticSearchConfigurationException e) {
 				initialised = false;
-				logger.error("[ElasticSearch] Could not initialise ElasticSearch client", e);
+				LOGGER.error("[ElasticSearch] Could not initialise ElasticSearch client", e);
 				fatalErrorService.logFatalError(e, 0, "AddressSearchService", false, "");
 			}
 		}
@@ -41,7 +41,7 @@ public class AddressSearchService extends ElasticSearchService {
 			elasticClient.close();
 			initialised = false;
 			ElasticClientProvider.destroy();
-			logger.debug("[ElasticSearch] Address Search client has been destroyed");
+			LOGGER.debug("[ElasticSearch] Address Search client has been destroyed");
 		}
 	}
 

@@ -22,7 +22,7 @@ public class SchemaValidation {
 
 	private final SchemaFactory factory;
 	private final XMLInputFactory xmlInputFactory;
-	private static final Logger LOGGER = LoggerFactory.getLogger(SchemaValidation.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SchemaValidation.class);
 
 	private boolean valid;
 

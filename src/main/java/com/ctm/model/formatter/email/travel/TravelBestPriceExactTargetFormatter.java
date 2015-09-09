@@ -15,7 +15,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<TravelBestPriceEmailModel> {
 
-	private static final Logger logger = LoggerFactory.getLogger(TravelBestPriceExactTargetFormatter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TravelBestPriceExactTargetFormatter.class);
 
 	@Override
 	protected ExactTargetEmailModel formatXml(TravelBestPriceEmailModel model) {
@@ -73,7 +73,7 @@ public class TravelBestPriceExactTargetFormatter extends ExactTargetFormatter<Tr
 				Date returnDate  = FormDateUtils.parseDateFromForm(date);
 				returnFormattedDate = new SimpleDateFormat("EEE, d MMM yyyy").format( returnDate );
 			} catch (Exception e) {
-				logger.error("Failed to convert date for Exacttarget email {}", kv("date", date), e);
+				LOGGER.error("Failed to convert date for Exacttarget email {}", kv("date", date), e);
 			}
 		}
 

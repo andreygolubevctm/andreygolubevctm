@@ -19,7 +19,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class AccessTouchService {
 
-	private static final Logger logger = LoggerFactory.getLogger(IncomingEmailRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(IncomingEmailRouter.class);
 
 	protected final SessionDataService sessionDataService;
 
@@ -64,7 +64,7 @@ public class AccessTouchService {
 			return true;
 		} catch(DaoException e) {
 			// Failing to write the touch shouldn't be fatal - let's just log an error
-			logger.error("Failed to record touch {}", kv("touch", touch), e);
+			LOGGER.error("Failed to record touch {}", kv("touch", touch), e);
 			return false;
 		}
 	}
@@ -132,7 +132,7 @@ public class AccessTouchService {
                 isBeingSubmitted = touch.getType() == Touch.TouchType.SUBMITTED;
             }
         } catch (DaoException e) {
-            logger.error("Failed to determine latest touch {}, {}", kv("transactionId", transactionId), e);
+            LOGGER.error("Failed to determine latest touch {}, {}", kv("transactionId", transactionId), e);
         }
         return isBeingSubmitted;
     }

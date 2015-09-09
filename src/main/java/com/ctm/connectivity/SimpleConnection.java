@@ -12,7 +12,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class SimpleConnection {
 
-	private static final Logger logger = LoggerFactory.getLogger(SimpleConnection.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleConnection.class);
 
 	private int connectTimeout = 1000;
 	private int readTimeout = 1000;
@@ -74,14 +74,14 @@ public class SimpleConnection {
 					return sb.toString();
 				default:
 					String message = c.getResponseMessage();
-					logger.debug("Request returned error {}", kv("status", status), kv("message", message));
+					LOGGER.debug("Request returned error {}", kv("status", status), kv("message", message));
 			}
 		}
 		catch (MalformedURLException e) {
-			logger.error("Invalid URL {}", kv("url", url), e);
+			LOGGER.error("Invalid URL {}", kv("url", url), e);
 		}
 		catch (Exception e) {
-			logger.error("Error performing get request {}", kv("url", url), e);
+			LOGGER.error("Error performing get request {}", kv("url", url), e);
 		}
 		return null;
 	}

@@ -21,7 +21,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class TransactionService {
 
-	private static final Logger logger = LoggerFactory.getLogger(TransactionService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionService.class);
 
 	/**
 	 * Get all comments for a transaction ID and related (based on root ID).
@@ -79,7 +79,7 @@ public class TransactionService {
 			}
 		}
 		catch (DaoException e) {
-			logger.error("Error getting transaction details {}", kv("transactionId", transactionId), e);
+			LOGGER.error("Error getting transaction details {}", kv("transactionId", transactionId), e);
 			Error error = new Error(e.getMessage());
 			details.addError(error);
 		}

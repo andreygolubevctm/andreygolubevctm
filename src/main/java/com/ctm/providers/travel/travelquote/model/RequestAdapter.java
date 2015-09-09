@@ -16,7 +16,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 
 public class RequestAdapter {
-    private static final Logger logger = LoggerFactory.getLogger(RequestAdapter.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapter.class);
 
     /**
      * web_ctm to trave-quote adapter
@@ -48,7 +48,7 @@ public class RequestAdapter {
                 details.setToDate(dateFormatter.parse(quote.getDates().getToDate()));
                 details.setFromDate(dateFormatter.parse(quote.getDates().getFromDate()));
             } catch (ParseException e) {
-                logger.error("Failed to adapt front-end travel request to travel-quote request {}", kv("travelRequest", travelRequest));
+                LOGGER.error("Failed to adapt front-end travel request to travel-quote request {}", kv("travelRequest", travelRequest));
             }
 
             quoteRequest.setSingleTripDetails(details);

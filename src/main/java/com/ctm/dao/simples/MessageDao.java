@@ -23,7 +23,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.model.simples.MessageStatus.*;
 
 public class MessageDao {
-	private static final Logger logger = LoggerFactory.getLogger(MessageDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(MessageDao.class);
 
 	private final static String MESSAGE_AVAILABLE_UPDATE = "UPDATE simples.message m, (";
 	private final static String MESSAGE_AVAILABLE_UPDATE_SET = ") as t set m.userId = ? WHERE m.id = t.id ";
@@ -262,7 +262,7 @@ public class MessageDao {
 		// Perform the action
 		updateUserAndStatus(messageId, userId, MessageStatus.STATUS_ASSIGNED);
 
-		logger.debug("Assigning message to user {}, {}", kv("messageId", messageId), kv("userId", userId));
+		LOGGER.debug("Assigning message to user {}, {}", kv("messageId", messageId), kv("userId", userId));
 	}
 
 	/**
@@ -339,7 +339,7 @@ public class MessageDao {
 		// User is done with this message
 		userDao.setToAvailable(actionIsPerformedByUserId);
 
-		logger.debug("Postponing message {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId));
+		LOGGER.debug("Postponing message {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId));
 	}
 
 	/**
@@ -376,7 +376,7 @@ public class MessageDao {
 		UserDao userDao = new UserDao();
 		userDao.setToAvailable(actionIsPerformedByUserId);
 
-		logger.debug("Set message to complete {}, {}, {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId));
+		LOGGER.debug("Set message to complete {}, {}, {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId));
 
 		return message;
 	}
@@ -421,7 +421,7 @@ public class MessageDao {
 		UserDao userDao = new UserDao();
 		userDao.setToUnavailable(message.getUserId());
 
-		logger.debug("Set message to in progress {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId));
+		LOGGER.debug("Set message to in progress {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId));
 	}
 
 	/**
@@ -459,7 +459,7 @@ public class MessageDao {
 		UserDao userDao = new UserDao();
 		userDao.setToAvailable(actionIsPerformedByUserId);
 
-		logger.debug("Set message to unsuccessful {}, {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId), kv("reasonStatusId", reasonStatusId));
+		LOGGER.debug("Set message to unsuccessful {}, {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId), kv("reasonStatusId", reasonStatusId));
 	}
 
 
@@ -665,7 +665,7 @@ public class MessageDao {
 			final ResultSet results = statement.executeQuery();
 			return mapFieldsFromResultsToMessage(results);
 		} catch (SQLException | NamingException e) {
-			logger.error("unable to retrieve postponed messages {}", kv("userId", userId), e);
+			LOGGER.error("unable to retrieve postponed messages {}", kv("userId", userId), e);
 			throw new DaoException(e);
 		} finally {
 			simpleDatabaseConnection.closeConnection();

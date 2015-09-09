@@ -27,7 +27,7 @@ import static com.ctm.logging.LoggingArguments.kv;
  */
 public class UtilitiesBaseService {
 
-	private static final Logger logger = LoggerFactory.getLogger(UtilitiesBaseService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesBaseService.class);
 
 	private boolean valid = false;
 	private String vertical = Vertical.VerticalType.UTILITIES.getCode();
@@ -86,13 +86,13 @@ public class UtilitiesBaseService {
 
 		ServiceConfiguration serviceConfig = getServiceConfig(request, serviceName);
 
-		logger.debug("Utilities post {}", kv("jsonString", jsonString));
+		LOGGER.debug("Utilities post {}", kv("jsonString", jsonString));
 
 		String serviceUrl = getConfigValue(serviceConfig, "serviceUrl");
 		JsonConnection jsonConnector = getJsonConnector(request, serviceConfig);
 		responseJson = jsonConnector.post(serviceUrl, jsonString);
 
-		logger.debug("Utilities response {}", kv("responseJson", responseJson));
+		LOGGER.debug("Utilities response {}", kv("responseJson", responseJson));
 
 		if (responseJson == null) {
 			throw new UtilitiesWebServiceException("UTL postJson: JSON Object NULL from "+serviceUrl);
@@ -108,13 +108,13 @@ public class UtilitiesBaseService {
 
 		ServiceConfiguration serviceConfig = getServiceConfig(request, serviceName);
 
-		logger.trace("utilities post {}", kv("jsonString", jsonString));
+		LOGGER.trace("utilities post {}", kv("jsonString", jsonString));
 
 		String serviceUrl = getConfigValue(serviceConfig, "serviceUrl");
 		JsonConnection jsonConnector = getJsonConnector(request, serviceConfig);
 		responseJson = jsonConnector.postArray(serviceUrl, jsonString);
 
-		logger.trace("utilities response {}", kv("responseJson", responseJson));
+		LOGGER.trace("utilities response {}", kv("responseJson", responseJson));
 
 		if (responseJson == null) {
 			throw new UtilitiesWebServiceException("UTL postJson: JSON Object NULL from "+serviceUrl);
@@ -146,7 +146,7 @@ public class UtilitiesBaseService {
 
 		FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
 
-		logger.error("Error occurred with utilities http post", e);
+		LOGGER.error("Error occurred with utilities http post", e);
 
 	}
 

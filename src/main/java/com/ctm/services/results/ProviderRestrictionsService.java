@@ -17,7 +17,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class ProviderRestrictionsService {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProviderRestrictionsService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderRestrictionsService.class);
 
 
     public ProviderRestrictionsService() {
@@ -55,9 +55,9 @@ public class ProviderRestrictionsService {
                 providerID = results.getInt("providerId");
             }
         } catch (NamingException e) {
-            logger.error("Failed to get db connection", e);
+            LOGGER.error("Failed to get db connection", e);
         } catch (Exception e) {
-            logger.error("Failed to get filtered brands {}", kv("transactionId", transactionId), e);
+            LOGGER.error("Failed to get filtered brands {}", kv("transactionId", transactionId), e);
         } finally {
             if (dbSource != null) {
                 dbSource.closeConnection();
@@ -138,9 +138,9 @@ public class ProviderRestrictionsService {
                 restrictedProviders.add(results.getInt("providerId"));
             }
         } catch (NamingException e) {
-            logger.error("Failed to get db connection", e);
+            LOGGER.error("Failed to get db connection", e);
         } catch (Exception e) {
-            logger.error("Failed to get filtered brands {}", kv("transactionId", transactionid), e);
+            LOGGER.error("Failed to get filtered brands {}", kv("transactionId", transactionid), e);
         } finally {
             if (dbSource != null) {
                 dbSource.closeConnection();
@@ -227,7 +227,7 @@ public class ProviderRestrictionsService {
                 restrictedProviders.add(results.getInt("providerId"));
             }
         } catch (Exception e) {
-            logger.error("Failed to get filtered brands {}", kv("transactionId", transactionid), e);
+            LOGGER.error("Failed to get filtered brands {}", kv("transactionId", transactionid), e);
         } finally {
             if (dbSource != null) {
                 dbSource.closeConnection();

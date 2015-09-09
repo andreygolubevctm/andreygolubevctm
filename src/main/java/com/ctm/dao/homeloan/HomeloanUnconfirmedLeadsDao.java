@@ -21,7 +21,7 @@ import com.ctm.model.homeloan.HomeLoanModel.CustomerSituation;
 
 public class HomeloanUnconfirmedLeadsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeloanUnconfirmedLeadsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeloanUnconfirmedLeadsDao.class);
 
 	public HomeloanUnconfirmedLeadsDao() {
 	}
@@ -139,7 +139,7 @@ public class HomeloanUnconfirmedLeadsDao {
 					}
 
 				} catch(Exception e) {
-					logger.error("Failed retrieving homeloan unconfirmed leads ", e);
+					LOGGER.error("Failed retrieving homeloan unconfirmed leads ", e);
 				}
 			}
 		}

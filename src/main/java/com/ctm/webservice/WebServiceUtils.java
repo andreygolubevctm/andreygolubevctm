@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class WebServiceUtils {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(WebServiceUtils.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(WebServiceUtils.class);
 
 	public static void setWsSecurity(Endpoint cxfEndpoint, Map<String, Object> ctx, String username, String password) {
 		Map<String, Object> outProps = new HashMap<String, Object>();

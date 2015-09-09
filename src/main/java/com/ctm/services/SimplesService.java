@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class SimplesService {
-	private static final Logger logger = LoggerFactory.getLogger(SimplesService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesService.class);
 
 	/**
 	 * Add a comment to a transaction ID.
@@ -33,7 +33,7 @@ public class SimplesService {
 			commentDao.addComment(commentObj);
 		}
 		catch (DaoException e) {
-			logger.error("Failed to add comment to transactionId {},{},{}", kv("transactionId", transactionId),
+			LOGGER.error("Failed to add comment to transactionId {},{},{}", kv("transactionId", transactionId),
 				kv("operator", operator), kv("comment", comment));
 			return false;
 		}

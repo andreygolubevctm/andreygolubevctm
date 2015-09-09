@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
 public class StartQuoteService {
-	private static final Logger logger = LoggerFactory.getLogger(StartQuoteService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(StartQuoteService.class);
     private HttpServletRequest request;
     private HttpServletResponse response;
     private String verticalCode;
@@ -39,7 +39,7 @@ public class StartQuoteService {
         try {
             phoneDetails = CallCentreService.getInboundPhoneDetails(request);
         } catch (ConfigSettingException | RuntimeException e) {
-            logger.error("Error getting inbound phone details", e);
+            LOGGER.error("Error getting inbound phone details", e);
             response.sendRedirect(pageSettings.getBaseUrl()+"simples/selectBrand.jsp?verticalCode=" + verticalCode);
 
         }

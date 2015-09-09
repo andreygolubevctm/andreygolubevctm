@@ -21,7 +21,7 @@ public class RemoteLoadQuoteService {
 	private final TransactionDetailsDao transactionDetailsDao;
 	private final TransactionAccessService transactionAccessService;
 
-	private static final Logger logger = LoggerFactory.getLogger(RemoteLoadQuoteService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(RemoteLoadQuoteService.class);
 
 	// do not remove as used by the jsp
 	public RemoteLoadQuoteService(){
@@ -36,7 +36,7 @@ public class RemoteLoadQuoteService {
 
 	public List<TransactionDetail> getTransactionDetails(String hashedEmail, String vertical, String type, String emailAddress, long transactionId, int brandId) throws DaoException{
 		emailAddress = EmailUrlService.decodeEmailAddress(emailAddress);
-		logger.debug("Checking details vertical {},{},{},{},{}", kv("vertical", vertical), kv("type", type), kv("emailAddress", emailAddress),
+		LOGGER.debug("Checking details vertical {},{},{},{},{}", kv("vertical", vertical), kv("type", type), kv("emailAddress", emailAddress),
 			kv("transactionId", transactionId), kv("brandId", brandId));
 		EmailMode emailMode = EmailMode.findByCode(type);
 		VerticalType verticalType = VerticalType.findByCode(vertical);

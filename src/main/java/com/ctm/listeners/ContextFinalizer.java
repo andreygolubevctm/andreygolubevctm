@@ -29,7 +29,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 @WebListener()
 public class ContextFinalizer implements ServletContextListener {
 
-	Logger logger = LoggerFactory.getLogger(ContextFinalizer.class.getName());
+	Logger LOGGER = LoggerFactory.getLogger(ContextFinalizer.class);
 
 	public void contextInitialized(ServletContextEvent sce) {
 		Properties properties = new Properties();
@@ -41,7 +41,7 @@ public class ContextFinalizer implements ServletContextListener {
 		try {
 			InputStream input = getClass().getClassLoader().getResourceAsStream(propertyFileName);
 			if (input == null) {
-				logger.error("Environment property file not found {}", kv("propertyFileName", propertyFileName));
+				LOGGER.error("Environment property file not found {}", kv("propertyFileName", propertyFileName));
 				return;
 			}
 			properties.load(input);
@@ -60,7 +60,7 @@ public class ContextFinalizer implements ServletContextListener {
 			AddressSearchService.init();
 		}
 		catch (Exception e) {
-			logger.error("Unable initialize application", e);
+			LOGGER.error("Unable initialize application", e);
 		}
 
 	}
@@ -80,14 +80,14 @@ public class ContextFinalizer implements ServletContextListener {
 				DriverManager.deregisterDriver(d);
 			}
 			catch (SQLException ex) {
-				logger.warn("Error deregistering sql driver {}", kv("sqlDriver", d), ex);
+				LOGGER.warn("Error deregistering sql driver {}", kv("sqlDriver", d), ex);
 			}
 		}
 
 		try {
 			AbandonedConnectionCleanupThread.shutdown();
 		} catch (InterruptedException e) {
-			logger.error("Error shutting down mysql connection threads", e);
+			LOGGER.error("Error shutting down mysql connection threads", e);
 		}
 	}
 

@@ -70,7 +70,7 @@ import static javax.servlet.http.HttpServletResponse.*;
 })
 public class SimplesRouter extends HttpServlet {
 	private static final long serialVersionUID = 13L;
-	private static final Logger logger = LoggerFactory.getLogger(SimplesRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesRouter.class);
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final SessionDataService sessionDataService;
 
@@ -161,7 +161,7 @@ public class SimplesRouter extends HttpServlet {
 						objectMapper.writeValue(writer,PhoneService.saveCallInfoForTransaction(settings(), ext, transactionId, xpath));
 					}
 					catch (final ConfigSettingException e) {
-						logger.error("Could not get callInfo {}, {}", kv("ext", ext), kv("xpath", xpath), e);
+						LOGGER.error("Could not get callInfo {}, {}", kv("ext", ext), kv("xpath", xpath), e);
 						response.setStatus(SC_INTERNAL_SERVER_ERROR);
 						objectMapper.writeValue(writer, errors(e));
 					}
@@ -266,7 +266,7 @@ public class SimplesRouter extends HttpServlet {
 			SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.SIMPLES.getCode());
 		} catch (DaoException | ConfigSettingException e) {
 			fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-			logger.error("Failed to set vertical and settings");
+			LOGGER.error("Failed to set vertical and settings");
 			throw new ServletException(e);
 		}
 		SimplesTickleService tickleService = new SimplesTickleService(sessionDataService);
@@ -327,7 +327,7 @@ public class SimplesRouter extends HttpServlet {
 			final SimplesMessageService simplesMessageService = new SimplesMessageService();
 			objectMapper.writeValue(writer, simplesMessageService.getNextMessageForUser(request, simplesUid, authenticatedData.getSimplesUserRoles(), authenticatedData.getGetNextMessageRules()));
 		} catch (final DaoException | ConfigSettingException | ParseException e) {
-			logger.error("Could not get next simples message {}", kv("simplesUid", simplesUid), e);
+			LOGGER.error("Could not get next simples message {}", kv("simplesUid", simplesUid), e);
 			response.setStatus(SC_INTERNAL_SERVER_ERROR);
 			objectMapper.writeValue(writer, errors(e));
 		}

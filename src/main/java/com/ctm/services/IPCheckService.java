@@ -18,7 +18,7 @@ import static com.ctm.logging.LoggingArguments.v;
 
 public class IPCheckService {
 
-	private static final Logger logger = LoggerFactory.getLogger(IPCheckService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(IPCheckService.class);
 
     private IpAddressDao ipAddressDao;
 
@@ -81,7 +81,7 @@ public class IPCheckService {
                 return false;
             }
         } catch (DaoException e) {
-            logger.error("An error occurred while logging the user's IP Address", e);
+            LOGGER.error("An error occurred while logging the user's IP Address", e);
         }
         return true;
     }
@@ -103,16 +103,16 @@ public class IPCheckService {
                     int limit = ipAddressModel.getRole().getLimit(pageSettings);
                     // If they have hit more than the limit for their role, they are NOT permitted access.
                     if (ipAddressModel.getNumberOfHits() > limit) {
-                        logger.warn("[IPCheckService] User's IP Address has been blocked after exceeding limit. {},{},{}" , kv("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
+                        LOGGER.warn("[IPCheckService] User's IP Address has been blocked after exceeding limit. {},{},{}" , kv("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
                         return IPCheckStatus.OVER;
                     } else if (ipAddressModel.getNumberOfHits() == limit) {
-                        logger.warn("[IPCheckService] User's IP Address has been blocked after reaching limit. {},{},{}" , v("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
+                        LOGGER.warn("[IPCheckService] User's IP Address has been blocked after reaching limit. {},{},{}" , v("ipAddress", getIPAddress(request)), kv("limit", limit), kv("ipAddressModel", ipAddressModel));
                         return IPCheckStatus.LIMIT;
                     }
                 }
             }
         } catch (DaoException e) {
-            logger.error("[IPCheckService] An error occurred while checking the count of requests from the user's IP Address", e);
+            LOGGER.error("[IPCheckService] An error occurred while checking the count of requests from the user's IP Address", e);
         }
         return IPCheckStatus.UNDER;
     }
@@ -131,7 +131,7 @@ public class IPCheckService {
             PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical.getCode());
             return isWithinLimit(request, pageSettings);
         } catch(ConfigSettingException | DaoException e) {
-            logger.error(" An exception was thrown getting the pageSettings object {}", kv("vertical", vertical.getCode()), e);
+            LOGGER.error(" An exception was thrown getting the pageSettings object {}", kv("vertical", vertical.getCode()), e);
         }
         return IPCheckStatus.UNDER;
     }
@@ -154,7 +154,7 @@ public class IPCheckService {
             PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical.getCode());
             return isPermittedAccess(request, pageSettings);
         } catch(ConfigSettingException | DaoException e) {
-            logger.error("An exception was thrown getting the pageSettings object {}", kv("vertical", vertical), e);
+            LOGGER.error("An exception was thrown getting the pageSettings object {}", kv("vertical", vertical), e);
         }
         return true;
     }

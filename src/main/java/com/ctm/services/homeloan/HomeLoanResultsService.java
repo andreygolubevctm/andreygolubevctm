@@ -26,7 +26,7 @@ import com.disc_au.web.go.Data;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class HomeLoanResultsService {
-	private static final Logger logger = LoggerFactory.getLogger(HomeLoanResultsService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeLoanResultsService.class);
 
 	private static BigDecimal months = new BigDecimal("12");
 	private static BigDecimal fortnights = new BigDecimal("26");
@@ -88,12 +88,12 @@ public class HomeLoanResultsService {
 			jsonConn.conn.setContentType("application/json");
 
 			String postBody = hlpsrModel.toJsonObject().toString();
-			logger.debug("homeloan results {}, {}, {}, {}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("serviceUrl", serviceUrl), kv("postBody", postBody));
+			LOGGER.debug("homeloan results {}, {}, {}, {}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("serviceUrl", serviceUrl), kv("postBody", postBody));
 
 			responseJson = jsonConn.post(serviceUrl, postBody);
 
 			if (responseJson != null) {
-				logger.debug("homeloan response {}", kv("responseJson", responseJson));
+				LOGGER.debug("homeloan response {}", kv("responseJson", responseJson));
 			}
 
 			//
@@ -153,7 +153,7 @@ public class HomeLoanResultsService {
 									BigDecimal fortnightly = yearly.divide(fortnights, 0, ROUNDING_MODE);
 									BigDecimal weekly = yearly.divide(weeks, 0, ROUNDING_MODE);
 
-									//logger.debug(monthly + " : " + yearly + " : " + fortnightly + " : " + weekly);
+									//LOGGER.debug(monthly + " : " + yearly + " : " + fortnightly + " : " + weekly);
 
 									result.put("fortnightlyRepayments", fortnightly);
 									result.put("weeklyRepayments", weekly);
@@ -180,7 +180,7 @@ public class HomeLoanResultsService {
 
 			FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
 
-			logger.error("homeloan results failed {}", kv("hlpsrModel", hlpsrModel), e);
+			LOGGER.error("homeloan results failed {}", kv("hlpsrModel", hlpsrModel), e);
 
 			String message = (e.getMessage() != null ? e.getMessage() : "Failed to get results");
 			Error error = new Error();

@@ -47,7 +47,7 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
 
                 return response.getOutputStream();
             } catch (Exception e) {
-                logger.error("Error in country mapping inport", e);
+                LOGGER.error("Error in country mapping inport", e);
             }
             */
         }

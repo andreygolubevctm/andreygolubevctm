@@ -19,7 +19,7 @@ import static com.ctm.logging.LoggingArguments.kv;
         "/features/getStructure.json"
 })
 public class FeaturesRouter extends HttpServlet {
-    private static final Logger logger = LoggerFactory.getLogger(FeaturesRouter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FeaturesRouter.class);
 
     private static final long serialVersionUID = 18L;
 
@@ -43,7 +43,7 @@ public class FeaturesRouter extends HttpServlet {
                 results = resultsService.getPageStructureAsJsonString(vertical);
                 writer.print(results);
             } catch (Exception e) {
-                logger.error("Features couldn't be retrieved {}", kv("vertical", vertical), e);
+                LOGGER.error("Features couldn't be retrieved {}", kv("vertical", vertical), e);
             }
 
         }

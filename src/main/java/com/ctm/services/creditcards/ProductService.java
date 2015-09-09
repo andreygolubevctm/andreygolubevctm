@@ -25,7 +25,7 @@ public class ProductService {
 		productDao = new ProductDao();
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(ProductService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 	private ProductDao productDao;
 
 	public void setProductDao(ProductDao productDao) {
@@ -104,7 +104,7 @@ public class ProductService {
 					creditCard.importFromProduct(product);
 					creditCards.add(creditCard);
 				} else {
-					logger.warn("Creditcards product not found {}", kv("productCode", productCode));
+					LOGGER.warn("Creditcards product not found {}", kv("productCode", productCode));
 				}
 			}
 

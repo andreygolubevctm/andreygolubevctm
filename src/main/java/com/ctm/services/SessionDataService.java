@@ -32,7 +32,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class SessionDataService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SessionDataService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SessionDataService.class);
 
 	private static int MAX_DATA_OBJECTS_IN_SESSION = 10;
 

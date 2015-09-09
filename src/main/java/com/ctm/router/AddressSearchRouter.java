@@ -29,7 +29,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 		"/address/get.json"
 })
 public class AddressSearchRouter extends HttpServlet {
-	private static final Logger logger = LoggerFactory.getLogger(AddressSearchRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AddressSearchRouter.class);
 	private static final long serialVersionUID = 71L;
 
 	private AddressSearchService searchService;
@@ -70,7 +70,7 @@ public class AddressSearchRouter extends HttpServlet {
 				String indexName = pageSettings.getSetting("elasticSearchAddressIndex");
 				output = searchService.suggest(request.getParameter("query"), indexName, "address");
 			} catch (JSONException | ConfigSettingException | DaoException e) {
-				logger.error("Address search failed {}", kv("query", request.getParameter("query")), e);
+				LOGGER.error("Address search failed {}", kv("query", request.getParameter("query")), e);
 			}
 
 			if(output != null)
@@ -86,7 +86,7 @@ public class AddressSearchRouter extends HttpServlet {
 					Address address = addressDao.getAddressDetails(dpId);
 					json = address.toJSONObject();
 				} catch (DaoException e) {
-					logger.error("Address details failed {}", kv("dpId", dpId), e);
+					LOGGER.error("Address details failed {}", kv("dpId", dpId), e);
 				}
 			}
 

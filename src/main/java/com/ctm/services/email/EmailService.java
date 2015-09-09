@@ -27,7 +27,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class EmailService {
 
-	private static final Logger logger = LoggerFactory.getLogger(EmailService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
 
 	private final SessionDataService sessionDataService = new SessionDataService();
 	private final FatalErrorService fatalErrorService;
@@ -60,7 +60,7 @@ public class EmailService {
 			emailResponse.setSuccessful(true);
 		} catch (SendEmailException e) {
 			fatalErrorService.logFatalError(e, "failed to send " + mode + " to " + emailAddress, true);
-			logger.error("failed to send email {}, {}", kv("mode", mode), kv("emailAddress", emailAddress), e);
+			LOGGER.error("failed to send email {}, {}", kv("mode", mode), kv("emailAddress", emailAddress), e);
 			emailResponse.setMessage(e.getMessage());
 		}
 		return emailResponse.toJsonObject();
@@ -85,14 +85,14 @@ public class EmailService {
 						try {
 							data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
 						} catch (SessionException e) {
-							logger.warn("Failed to get session data {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
+							LOGGER.warn("Failed to get session data {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
 								kv("transactionId", transactionId), e);
 						}
 					}
 					if(data == null) {
 						String vertical = request.getParameter("vertical");
 						if(vertical == null || vertical.isEmpty()){
-							logger.debug("Defaulting to generic vertical {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
+							LOGGER.debug("Defaulting to generic vertical {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
 								kv("transactionId", transactionId));
 							vertical = VerticalType.GENERIC.getCode();
 						} else {

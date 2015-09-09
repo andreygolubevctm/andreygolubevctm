@@ -32,7 +32,7 @@ import static com.ctm.services.leadfeed.LeadFeedService.LeadType.CALL_DIRECT;
 
 public abstract class AGISLeadFeedService extends WebServiceGatewaySupport implements IProviderLeadFeedService{
 
-	private static final Logger logger = LoggerFactory.getLogger(AGISLeadFeedService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AGISLeadFeedService.class);
 
 	/**
 	 * getModel() is implemented by the extended lead feed class to construct the lead feed model.
@@ -53,7 +53,7 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 			if(leadType == CALL_DIRECT) {
 				// Return OK as we still want to record touches etc
 				feedResponse = SUCCESS;
-				logger.warn("[Lead feed] Skipped sending lead to service as flagged to be ignored");
+				LOGGER.warn("[Lead feed] Skipped sending lead to service as flagged to be ignored");
 			} else {
 				// Generate the lead feed model
 				AGISLeadFeedRequest leadModel = getModel(leadType, leadData);
@@ -67,11 +67,11 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 					feedResponse = SUCCESS;
 				}
 
-				logger.debug("[Lead feed] Response Status from AGIS {}", kv("status", responseDetails.getStatus()));
+				LOGGER.debug("[Lead feed] Response Status from AGIS {}", kv("status", responseDetails.getStatus()));
 			}
 
 		} catch (EnvironmentException | VerticalException | IOException e) {
-			logger.error("[Lead feed] Failed adding lead feed message {}", kv("leadData", leadData), e);
+			LOGGER.error("[Lead feed] Failed adding lead feed message {}", kv("leadData", leadData), e);
 			throw new LeadFeedException(e.getMessage(), e);
 		}
 
@@ -192,7 +192,7 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 			Jaxb2Marshaller marshaller = marshaller();
 			setMarshaller(marshaller);
 			setUnmarshaller(marshaller);
-			logger.debug("[Lead feed] Sending message to AGIS");
+			LOGGER.debug("[Lead feed] Sending message to AGIS");
 
 			// Log copy of XML Request/Response in Debug folders
 			String path = "";
@@ -211,7 +211,7 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 
 			return (Response) getWebServiceTemplate().marshalSendAndReceive(serviceUrl, request);
 		} catch (Exception e) {
-			logger.error("[Lead feed] Failed sending lead feed message to AGIS {}, {}, {}", kv("settings", settings),
+			LOGGER.error("[Lead feed] Failed sending lead feed message to AGIS {}, {}, {}", kv("settings", settings),
 				kv("serviceUrl", serviceUrl), kv("transactionId", transactionId), e);
 			throw new IOException(e);
 		}

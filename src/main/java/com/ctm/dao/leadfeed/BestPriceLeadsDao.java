@@ -27,7 +27,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class BestPriceLeadsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(BestPriceLeadsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(BestPriceLeadsDao.class);
 
 	private ArrayList<LeadFeedRootTransaction> transactions = null;
 	private ArrayList<LeadFeedData> leads = null;
@@ -170,10 +170,10 @@ public class BestPriceLeadsDao {
 												searching = false;
 											}
 										} else {
-											logger.debug("[Lead info] lead skipped as no optin for call {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
+											LOGGER.debug("[Lead info] lead skipped as no optin for call {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
 										}
 									} else {
-										logger.error("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("leadConcat.length", leadConcat.length), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
+										LOGGER.error("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("leadConcat.length", leadConcat.length), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
 									}
 								}
 
@@ -185,15 +185,15 @@ public class BestPriceLeadsDao {
 						}
 					}
 				} else {
-					logger.error("Failed to retrieve any active best price lead feed providers {}, {}, {}, {}", kv("verticalCode", verticalCode), kv("brandCodeId", brandCodeId), kv("minutes", minutes), kv("serverDate", serverDate));
+					LOGGER.error("Failed to retrieve any active best price lead feed providers {}, {}, {}, {}", kv("verticalCode", verticalCode), kv("brandCodeId", brandCodeId), kv("minutes", minutes), kv("serverDate", serverDate));
 					throw new DaoException("Failed to retrieve any active best price lead feed providers verticalCode=" + verticalCode);
 				}
 			} else {
-				logger.error("Failed to retrieve lead feed {}, {}, {}, {}", kv("verticalCode", verticalCode), kv("brandCodeId", brandCodeId), kv("minutes", minutes), kv("serverDate", serverDate));
+				LOGGER.error("Failed to retrieve lead feed {}, {}, {}, {}", kv("verticalCode", verticalCode), kv("brandCodeId", brandCodeId), kv("minutes", minutes), kv("serverDate", serverDate));
 				throw new DaoException("Failed to retrieve vertical data for id (" + verticalCode + ")");
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to get lead feed transactions {}, {}", kv("verticalCode", verticalCode), kv("minutes", minutes));
+			LOGGER.error("Failed to get lead feed transactions {}, {}", kv("verticalCode", verticalCode), kv("minutes", minutes));
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -220,10 +220,10 @@ public class BestPriceLeadsDao {
 			if(
 				type.equalsIgnoreCase("A") || type.equalsIgnoreCase("BP") || type.equalsIgnoreCase("CB")) {
 				tran.setHasLeadFeed(true);
-				logger.info("[Lead info] Skipping existing lead feed transaction {}", kv("transactionId", transactionId));
+				LOGGER.info("[Lead info] Skipping existing lead feed transaction {}", kv("transactionId", transactionId));
 			}
 		} catch(SQLException e) {
-			logger.error("[Lead info] Failed to add best price lead feed transaction", e);
+			LOGGER.error("[Lead info] Failed to add best price lead feed transaction", e);
 		}
 	}
 

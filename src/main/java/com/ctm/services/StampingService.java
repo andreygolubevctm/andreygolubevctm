@@ -17,7 +17,7 @@ public class StampingService {
 
 	private static final String MARKETING_ACTION = "toggle_marketing";
 
-	private static final Logger logger = LoggerFactory.getLogger(StampingService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(StampingService.class);
 	private StampingDao stampingDao;
 
 	public StampingService(StampingDao stampingDao){
@@ -44,13 +44,13 @@ public class StampingService {
 		try {
 			stampingDao.add(stamping);
 		} catch (DaoException e) {
-			logger.error("cannot write stamp {}" , kv("stamping", stamping), e);
+			LOGGER.error("cannot write stamp {}" , kv("stamping", stamping), e);
 		}
 	}
 
 
 	public Stamping writeOptInMarketing(EmailMaster emailDetailsRequest, String operator, boolean optIn, String ipAddress) throws DaoException {
-		logger.debug("Writing marketing optIn to stamping table  {},{},{}", kv("transactionId", emailDetailsRequest.getTransactionId()), kv("emailAddress", emailDetailsRequest.getEmailAddress()), kv("optIn", optIn));
+		LOGGER.debug("Writing marketing optIn to stamping table  {},{},{}", kv("transactionId", emailDetailsRequest.getTransactionId()), kv("emailAddress", emailDetailsRequest.getEmailAddress()), kv("optIn", optIn));
 		String value = optIn? "on" : "off";
 		return stampingDao.add( MARKETING_ACTION, emailDetailsRequest.getEmailAddress(), value, operator, emailDetailsRequest.getSource(), ipAddress);
 	}

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 public class LogoGridService {
-	private static final Logger logger = LoggerFactory.getLogger(LogoGridService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(LogoGridService.class);
 	private ProviderCodesDao providerCodes;
 
 	// this is done this way because the usebean call only calls a zero parameter constructor.
@@ -25,7 +25,7 @@ public class LogoGridService {
 			providerCodes.setProviderCodes(vertical.getType().toString(), pageSettings.getBrandId()); // populate the
 		}
 		catch (DaoException|ConfigSettingException e) {
-			logger.error("Failed initializing logo grid service",e);
+			LOGGER.error("Failed initializing logo grid service",e);
 		}
 	}
 

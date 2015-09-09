@@ -17,7 +17,7 @@ public class AuditTableDao {
     public final static String UPDATE = "UPDATE";
     private final String auditTablePrefix = "audit_";
     private final String loggingSchema = "logging";
-	private static final Logger logger = LoggerFactory.getLogger(AuditTableDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuditTableDao.class);
 
     public AuditTableDao() {
     }
@@ -48,10 +48,10 @@ public class AuditTableDao {
             PreparedStatement ps = buildSQLStatement(columnValueMapMainTable, auditTableNameWithSchema,conn);
             ps.executeUpdate();
         } catch (SQLException e) {
-            logger.error("audit action failed to insert into table {}, {}", kv("action", action), kv("auditTableName", auditTableName), e);
+            LOGGER.error("audit action failed to insert into table {}, {}", kv("action", action), kv("auditTableName", auditTableName), e);
             throw e;
         } finally {
-            logger.debug("audit action logged to table {}, {}", kv("action", action), kv("auditTableName", auditTableName), auditTableName);
+            LOGGER.debug("audit action logged to table {}, {}", kv("action", action), kv("auditTableName", auditTableName), auditTableName);
         }
     }
 

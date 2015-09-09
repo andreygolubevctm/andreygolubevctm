@@ -21,7 +21,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class ContentDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(ContentDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ContentDao.class);
 	private int brandId;
 	private int verticalId;
 
@@ -103,10 +103,10 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-				logger.debug("no content found {}", kv("contentKey", contentKey));
+				LOGGER.debug("no content found {}", kv("contentKey", contentKey));
 			}else{
 				if(contents.size() > 1){
-					logger.warn("more than one content value found {}", kv("contentKey", contentKey));
+					LOGGER.warn("more than one content value found {}", kv("contentKey", contentKey));
 				}
 
 				content = contents.get(0);
@@ -138,7 +138,7 @@ public class ContentDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed getting content {}", kv("contentKey", contentKey), e);
+			LOGGER.error("failed getting content {}", kv("contentKey", contentKey), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -216,7 +216,7 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-				logger.debug("no content found {}, {}", kv("contentKey", contentKey), kv("providerId", providerId));
+				LOGGER.debug("no content found {}, {}", kv("contentKey", contentKey), kv("providerId", providerId));
 			} else {
 				if(includeSupplementary){
 
@@ -252,7 +252,7 @@ public class ContentDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed getting content {}", kv("contentKey", contentKey), e);
+			LOGGER.error("failed getting content {}", kv("contentKey", contentKey), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

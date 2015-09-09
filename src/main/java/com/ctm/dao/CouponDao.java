@@ -23,7 +23,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class CouponDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(CouponDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CouponDao.class);
 
 	public Coupon getCouponForConfirmation(String transactionId) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
@@ -256,7 +256,7 @@ public class CouponDao {
 				coupon.setCouponRules(couponRules);
 			}
 			catch (SQLException | NamingException e) {
-				logger.error("unable to get coupon rules {}", kv("couponId", coupon.getCouponId()), e);
+				LOGGER.error("unable to get coupon rules {}", kv("couponId", coupon.getCouponId()), e);
 				throw new DaoException(e);
 			}
 			finally {

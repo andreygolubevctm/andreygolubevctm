@@ -36,7 +36,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 })
 
 public class CouponRouter extends HttpServlet {
-	private static final Logger logger = LoggerFactory.getLogger(CouponRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CouponRouter.class);
 	private static final long serialVersionUID = 24L;
 	private final SessionDataService sessionDataService = new SessionDataService();
 	private final CouponService couponService = new CouponService();
@@ -86,7 +86,7 @@ public class CouponRouter extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			logger.error("Coupon request failed {}", kv("uri", request.getRequestURI()), e);
+			LOGGER.error("Coupon request failed {}", kv("uri", request.getRequestURI()), e);
 			writeErrors(e, writer, response);
 		}
 	}
@@ -96,7 +96,7 @@ public class CouponRouter extends HttpServlet {
 		try {
 			writer.print(couponService.getCouponById(couponRequest).toJson());
 		} catch (DaoException e) {
-			logger.error("Coupon fetch failed {}", kv("couponId", couponRequest.couponId), e);
+			LOGGER.error("Coupon fetch failed {}", kv("couponId", couponRequest.couponId), e);
 			writeErrors(e, writer, response);
 		}
 	}
@@ -105,7 +105,7 @@ public class CouponRouter extends HttpServlet {
 		try {
 			writer.print(couponService.filterCouponForUser(couponRequest, data).toJson());
 		} catch (DaoException e) {
-			logger.error("Coupon filter for user failed {}", kv("transactionId", couponRequest.transactionId), e);
+			LOGGER.error("Coupon filter for user failed {}", kv("transactionId", couponRequest.transactionId), e);
 			writeErrors(e, writer, response);
 		}
 	}
@@ -115,7 +115,7 @@ public class CouponRouter extends HttpServlet {
 		try {
 			writer.print(couponService.validateCouponCode(couponRequest, data).toJson());
 		} catch (DaoException e) {
-			logger.error("Coupon validation failed {}", kv("couponCode", couponRequest.couponCode), e);
+			LOGGER.error("Coupon validation failed {}", kv("couponCode", couponRequest.couponCode), e);
 			writeErrors(e, writer, response);
 		}
 	}
@@ -125,7 +125,7 @@ public class CouponRouter extends HttpServlet {
 		try {
 			writer.print(couponService.getCouponByVdn(couponRequest).toJson());
 		} catch (DaoException e) {
-			logger.error("Coupon fetch failed {}", kv("vdn", couponRequest.vdn), e);
+			LOGGER.error("Coupon fetch failed {}", kv("vdn", couponRequest.vdn), e);
 			writeErrors(e, writer, response);
 		}
 	}

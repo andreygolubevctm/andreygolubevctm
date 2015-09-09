@@ -15,7 +15,7 @@ public class FormDateUtils {
 
 	static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FormDateUtils.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(FormDateUtils.class);
 
 	public static Date parseDateFromForm(String searchDate) {
 		Date searchDateValue = null;

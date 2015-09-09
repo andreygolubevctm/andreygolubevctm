@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BrandsDao {
-	private static final Logger logger = LoggerFactory.getLogger(BrandsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(BrandsDao.class);
 
 	public BrandsDao(){
 	}
@@ -55,7 +55,7 @@ public class BrandsDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to retrieve brands", e);
+			LOGGER.error("Failed to retrieve brands", e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class VerticalsDao {
-	private static final Logger logger = LoggerFactory.getLogger(VerticalsDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(VerticalsDao.class);
 
 	public VerticalsDao(){
 
@@ -59,7 +59,7 @@ public class VerticalsDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to retrieve verticals", e);
+			LOGGER.error("Failed to retrieve verticals", e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -104,7 +104,7 @@ public class VerticalsDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to get vertical {}", kv("verticalCode", verticalCode));
+			LOGGER.error("Failed to get vertical {}", kv("verticalCode", verticalCode));
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

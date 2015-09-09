@@ -36,7 +36,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 		"/quote/load.json"
 })
 public class QuoteRouter extends HttpServlet {
-	private static final Logger logger = LoggerFactory.getLogger(QuoteRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(QuoteRouter.class);
 	private static final long serialVersionUID = 69L;
 
 	private final SessionDataService sessionDataService = new SessionDataService();
@@ -54,7 +54,7 @@ public class QuoteRouter extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		long transactionId = RequestUtils.getTransactionIdFromRequest(request);
 		if (transactionId < 1) {
-			logger.error("Empty Transaction id {}", kv("transactionId", transactionId));
+			LOGGER.error("Empty Transaction id {}", kv("transactionId", transactionId));
 			FatalErrorService.logFatalError(0, "QuoteRouter " + uri, request.getSession().getId(), false, "Empty Transaction id", "", request.getParameter("transactionId"));
 		} else {
 			/**
@@ -81,7 +81,7 @@ public class QuoteRouter extends HttpServlet {
 					writer.print(new JSONObject().toString());
 				}
 			} catch (DaoException | SessionException e) {
-				logger.error("Failed handling quote request {}", kv("requestUri", request.getRequestURI()), e);
+				LOGGER.error("Failed handling quote request {}", kv("requestUri", request.getRequestURI()), e);
 				// Fails silently.
 
 				// Real write quote would need to throw exception

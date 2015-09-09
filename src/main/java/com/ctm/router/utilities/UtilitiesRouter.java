@@ -36,7 +36,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 		"/utilities/application/submit.json"
 })
 public class UtilitiesRouter extends HttpServlet {
-	private static final Logger logger = LoggerFactory.getLogger(UtilitiesRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesRouter.class);
 	private static final long serialVersionUID = 70L;
 
 	@Override
@@ -111,7 +111,7 @@ public class UtilitiesRouter extends HttpServlet {
 			}
 
 		}catch (Exception e) {
-			logger.error("Failed to retrieve utilities results {}", kv("requestUri", request.getRequestURI()), e);
+			LOGGER.error("Failed to retrieve utilities results {}", kv("requestUri", request.getRequestURI()), e);
 
 			JSONObject json = null;
 			Error error = new Error();

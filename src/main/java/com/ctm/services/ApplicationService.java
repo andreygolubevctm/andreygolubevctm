@@ -26,7 +26,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class ApplicationService {
 
-	private static final Logger logger = LoggerFactory.getLogger(ApplicationService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationService.class);
 
 	private static List<Brand> brands = new ArrayList<>(); // Note: always use the getBrands() method so the data is loaded from the DB
 	private static final String applicationDateSessionKey = "applicationDate";
@@ -267,7 +267,7 @@ public class ApplicationService {
 			// Update static variables
 			brands = brandsList;
 
-			logger.debug("Loaded brands and verticals from database {}, {}", kv("brandsListSize", brandsList.size()),
+			LOGGER.debug("Loaded brands and verticals from database {}, {}", kv("brandsListSize", brandsList.size()),
 				kv("verticalsList.size()", verticalsList.size()));
 		}
 
@@ -307,7 +307,7 @@ public class ApplicationService {
 			if (session != null) {
 				Object attribute = session.getAttribute(applicationDateSessionKey);
 				if (attribute != null) {
-					logger.debug("Application date override retrieved. {}", kv("attribute", attribute));
+					LOGGER.debug("Application date override retrieved. {}", kv("attribute", attribute));
 					return (Date) attribute;
 				}
 			}
@@ -327,14 +327,14 @@ public class ApplicationService {
 				// Remove session entry
 				if (dateString == null || dateString.length() == 0) {
 					session.removeAttribute(applicationDateSessionKey);
-					logger.debug("Removed application date from session {}", kv("date", dateString));
+					LOGGER.debug("Removed application date from session {}", kv("date", dateString));
 				}
 				// Add session entry
 				else {
 					SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					Date date = parser.parse(dateString);
 					session.setAttribute(applicationDateSessionKey, date);
-					logger.debug("Application date set on session {}", kv("date", date));
+					LOGGER.debug("Application date set on session {}", kv("date", date));
 				}
 			}
 		}

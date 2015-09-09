@@ -33,7 +33,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 })
 public class GenericRouter extends HttpServlet {
 	
-	private static final Logger logger = LoggerFactory.getLogger(GenericRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(GenericRouter.class);
 
 	private static final long serialVersionUID = 6314229727186633148L;
 
@@ -57,7 +57,7 @@ public class GenericRouter extends HttpServlet {
 				jsonResponse.put("success", true);
 				response.getWriter().print(jsonResponse.toString());
 			} catch (Exception e) {
-				logger.error("Could not log out user", e);
+				LOGGER.error("Could not log out user", e);
 				response.getWriter().print("{ \"success\": false }");
 			}
 		}
@@ -85,7 +85,7 @@ public class GenericRouter extends HttpServlet {
 
 	private void handleError(HttpServletRequest request, String uri, Brand brand, Exception exception, HttpServletResponse response) {
 		FatalErrorService fatalErrorService = new FatalErrorService();
-		logger.error("Failed to reset password {}, {}", kv("requestUri", uri), kv("brand", brand), exception);
+		LOGGER.error("Failed to reset password {}, {}", kv("requestUri", uri), kv("brand", brand), exception);
 		String sessionId = "";
 		int styleCodeId = 0;
 		if(request.getSession() != null){
@@ -102,7 +102,7 @@ public class GenericRouter extends HttpServlet {
 		try {
 			response.getWriter().print(json.toString());
 		} catch (IOException e) {
-			logger.error("Failed creating json for reset password error",e);
+			LOGGER.error("Failed creating json for reset password error",e);
 		}
 	}
 

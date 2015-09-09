@@ -14,7 +14,7 @@ import java.util.List;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class ResultsDao {
-	private static final Logger logger = LoggerFactory.getLogger(ResultsDao.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResultsDao.class);
 
 	/**
 	 * Returns an array of product properties stored against a transaction id with specific productId.
@@ -68,7 +68,7 @@ public class ResultsDao {
 			}
 
 		} catch (Exception e) {
-			logger.error("Failed to get result properties for transaction {}, {}", kv("transactionId", transactionId), kv("productId", productId));
+			LOGGER.error("Failed to get result properties for transaction {}, {}", kv("transactionId", transactionId), kv("productId", productId));
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -112,7 +112,7 @@ public class ResultsDao {
 			}
 
 		} catch (Exception e) {
-			logger.error("Failed to get age of results for transaction {}", kv("transactionId", transactionId));
+			LOGGER.error("Failed to get age of results for transaction {}", kv("transactionId", transactionId));
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -160,7 +160,7 @@ public class ResultsDao {
 			}
 
 		} catch (Exception e) {
-			logger.error("Failed to get single result property value {}, {}, {}", kv("transactionId", transactionId),
+			LOGGER.error("Failed to get single result property value {}, {}, {}", kv("transactionId", transactionId),
 				kv("productId", productId), kv("property", property));
 		} finally {
 			dbSource.closeConnection();
@@ -191,7 +191,7 @@ public class ResultsDao {
             stmt.executeBatch();
 
         } catch (Exception e) {
-			logger.error("Failed to save results properties {}", kv("resultProperties", resultProperties));
+			LOGGER.error("Failed to save results properties {}", kv("resultProperties", resultProperties));
         }
 
     }

@@ -16,7 +16,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class CronDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(CronDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CronDao.class);
 
 	public ArrayList<CronJob> getJobs(String rootURL, String frequency) throws DaoException{
 
@@ -60,7 +60,7 @@ public class CronDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to get cron jobs {}, {}", kv("rootURL", rootURL), kv("frequency", frequency), e);
+			LOGGER.error("failed to get cron jobs {}, {}", kv("rootURL", rootURL), kv("frequency", frequency), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

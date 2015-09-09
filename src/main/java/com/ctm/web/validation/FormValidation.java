@@ -18,7 +18,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class FormValidation {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FormValidation.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(FormValidation.class);
 
 	public static <T> List<SchemaValidationError> validate(T request , String vertical) {
 		return validate(request, vertical, true);

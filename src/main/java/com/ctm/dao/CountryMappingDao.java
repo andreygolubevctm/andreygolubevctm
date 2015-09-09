@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class CountryMappingDao {
-	private static final Logger logger = LoggerFactory.getLogger(CountryMappingDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CountryMappingDao.class);
 	// TODO: Add styleCodeId and isActive and combine with ProviderCodes DAO in e.g. a get query string method.
 	// add to router as well
 	public ArrayList<CountryMapping> getMapping(String selectedCountries) throws DaoException{
@@ -77,7 +77,7 @@ public class CountryMappingDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed getting country mapping for {}", kv("selectedCountries", selectedCountries), e);
+			LOGGER.error("failed getting country mapping for {}", kv("selectedCountries", selectedCountries), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -119,7 +119,7 @@ public class CountryMappingDao {
 				userSelectedCountries.setSelectedCountries(countryMappingResult.getString("selectedCountries"));
 			}
 		} catch (SQLException | NamingException e) {
-			logger.error("failed getting country mapping {}", kv("selectedISOCodes", selectedISOCodes), e);
+			LOGGER.error("failed getting country mapping {}", kv("selectedISOCodes", selectedISOCodes), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

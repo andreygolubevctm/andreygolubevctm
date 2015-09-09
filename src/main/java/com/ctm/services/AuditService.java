@@ -31,7 +31,7 @@ import static com.ctm.logging.LoggingArguments.kv;
  */
 public class AuditService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(AuditService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuditService.class);
 	private String brandCode;
 	
 	public AuditService(String brandCode) {
@@ -52,7 +52,7 @@ public class AuditService {
 		try {
 			encryptedSessionId = StringEncryption.encrypt(secret_key, logAudit.getSessionId());
 		} catch (GeneralSecurityException e) {
-			logger.error("Failed logging audit. {},{},{}", kv("logAudit", logAudit), kv("identity", identity),
+			LOGGER.error("Failed logging audit. {},{},{}", kv("logAudit", logAudit), kv("identity", identity),
 				kv("metadata", metadata));
 		}
 

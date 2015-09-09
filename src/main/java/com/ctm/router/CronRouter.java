@@ -45,7 +45,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 })
 public class CronRouter extends HttpServlet {
 
-	private static final Logger logger = LoggerFactory.getLogger(CronRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CronRouter.class);
 
 	private static final long serialVersionUID = 18L;
 
@@ -67,7 +67,7 @@ public class CronRouter extends HttpServlet {
 				SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.HOMELOAN.getCode());
 				homeLoanService.scheduledLeadGenerator(request);
 			} catch(Exception e) {
-				logger.error("Cron homeload flexOutbound Lead failed", e);
+				LOGGER.error("Cron homeload flexOutbound Lead failed", e);
 			}
 
 		} else {
@@ -102,7 +102,7 @@ public class CronRouter extends HttpServlet {
 				try {
 					CronService.execute(request, frequency);
 				} catch(Exception e) {
-					logger.error("Cron job failed {}, {}", kv("frequency", frequency), kv("uri", request.getRequestURI()), e);
+					LOGGER.error("Cron job failed {}, {}", kv("frequency", frequency), kv("uri", request.getRequestURI()), e);
 				}
 			}
 		}

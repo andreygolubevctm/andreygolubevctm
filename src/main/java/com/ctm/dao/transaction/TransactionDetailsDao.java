@@ -27,7 +27,7 @@ import static com.ctm.logging.LoggingArguments.kv;
  */
 public class TransactionDetailsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(TransactionDetailsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionDetailsDao.class);
 	private final SqlDao sqlDao;
 
 	/**
@@ -102,7 +102,7 @@ public class TransactionDetailsDao {
 					updateTransactionDetails(transactionId, transactionDetailNew);
 				}
 			} catch (DaoException e) {
-				logger.error("Transaction details insert or update failed {}, {}", kv("parameterMap", request.getParameterMap()), kv("transactionId", transactionId), e);
+				LOGGER.error("Transaction details insert or update failed {}, {}", kv("parameterMap", request.getParameterMap()), kv("transactionId", transactionId), e);
 			}
 		}
 		return true;
@@ -382,7 +382,7 @@ public class TransactionDetailsDao {
 				updateTransactionDetails(transactionId, transactionDetailNew);
 			}
 		} catch (DaoException e) {
-			logger.error("Transaction details insert or update failed {}, {}, {}", kv("xpath", xpath), kv("textValue", textValue), kv("transactionId", transactionId), e);
+			LOGGER.error("Transaction details insert or update failed {}, {}, {}", kv("xpath", xpath), kv("textValue", textValue), kv("transactionId", transactionId), e);
 		}
 	}
 

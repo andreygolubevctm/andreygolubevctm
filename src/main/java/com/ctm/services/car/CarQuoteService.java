@@ -46,7 +46,7 @@ import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class CarQuoteService extends CommonQuoteService<CarQuote> {
 
-	private static final Logger logger = LoggerFactory.getLogger(CarQuoteService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CarQuoteService.class);
 
     public List<CarResult> getQuotes(Brand brand, CarRequest data) {
 
@@ -111,7 +111,7 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
             return carResults;
 
         }catch(IOException e){
-            logger.error("Error parsing or connecting to car-quote {}, {}", kv("brand", brand), kv("carRequest", data), e);
+            LOGGER.error("Error parsing or connecting to car-quote {}, {}", kv("brand", brand), kv("carRequest", data), e);
         }
 
         return null;
@@ -184,7 +184,7 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
                 resultDetails.addChild(results);
             }
         } catch (DaoException | SessionException e) {
-            logger.error("Failed writing temp result details {}, {}", kv("transactionId", data.getTransactionId()), kv("carRequest", data));
+            LOGGER.error("Failed writing temp result details {}, {}", kv("transactionId", data.getTransactionId()), kv("carRequest", data));
         }
     }
 }

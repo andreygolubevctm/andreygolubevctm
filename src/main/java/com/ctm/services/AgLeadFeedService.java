@@ -22,7 +22,7 @@ import static com.ctm.logging.LoggingArguments.kv;
  */
 public class AgLeadFeedService extends WebServiceGatewaySupport {
 
-	private static final Logger logger = LoggerFactory.getLogger(AgLeadFeedService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AgLeadFeedService.class);
     
     private String transactionId;
     
@@ -51,7 +51,7 @@ public class AgLeadFeedService extends WebServiceGatewaySupport {
 
             return (Response) r; 
         } catch (Exception e) {
-            logger.error("A&G lead feed webservice failed {}, {}", kv("settings", settings), kv("transactionId", transactionId), e);
+            LOGGER.error("A&G lead feed webservice failed {}, {}", kv("settings", settings), kv("transactionId", transactionId), e);
             throw new IOException(e);
         }
     }

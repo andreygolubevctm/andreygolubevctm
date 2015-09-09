@@ -21,7 +21,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 public class HealthPriceDao {
 	private static final String DISC_PREFIX = "disc";
 	private static final String GROSS_PREFIX = "gross";
-	private static final Logger logger = LoggerFactory.getLogger(HealthPriceDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthPriceDao.class);
 	private SimpleDatabaseConnection dbSource;
 
 	public HealthPriceDao() {
@@ -131,7 +131,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to get health price premium range {}", kv("healthPriceRequest", healthPriceRequest), e);
+			LOGGER.error("failed to get health price premium range {}", kv("healthPriceRequest", healthPriceRequest), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -214,7 +214,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to fetch health results {}", kv("healthPriceRequest", healthPriceRequest), e);
+			LOGGER.error("failed to fetch health results {}", kv("healthPriceRequest", healthPriceRequest), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -300,7 +300,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to fetch saved health results {}", kv("healthPriceRequest", healthPriceRequest), e);
+			LOGGER.error("failed to fetch saved health results {}", kv("healthPriceRequest", healthPriceRequest), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -404,7 +404,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to fetch single health result {}", kv("healthPriceRequest", healthPriceRequest), e);
+			LOGGER.error("failed to fetch single health result {}", kv("healthPriceRequest", healthPriceRequest), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -732,7 +732,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to setup health premium and lhc {}, {}", kv("productId", productId), kv("isDiscountRates", isDiscountRates), e);
+			LOGGER.error("failed to setup health premium and lhc {}, {}", kv("productId", productId), kv("isDiscountRates", isDiscountRates), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -828,7 +828,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to setup health fundCode and name {}", kv("healthPriceResult", healthPriceResult), e);
+			LOGGER.error("failed to setup health fundCode and name {}", kv("healthPriceResult", healthPriceResult), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -889,7 +889,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to setup health alt productId {}", kv("healthPriceRequest", healthPriceRequest), e);
+			LOGGER.error("failed to setup health alt productId {}", kv("healthPriceRequest", healthPriceRequest), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -918,7 +918,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to setup health extra name {}", kv("healthPriceResult", healthPriceResult), e);
+			LOGGER.error("failed to setup health extra name {}", kv("healthPriceResult", healthPriceResult), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -947,7 +947,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to setup health hospital name {}", kv("healthPriceResult", healthPriceResult), e);
+			LOGGER.error("failed to setup health hospital name {}", kv("healthPriceResult", healthPriceResult), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -975,7 +975,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to setup health phio data {}", kv("healthPriceResult", healthPriceResult), e);
+			LOGGER.error("failed to setup health phio data {}", kv("healthPriceResult", healthPriceResult), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
@@ -1024,7 +1024,7 @@ public class HealthPriceDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("failed to get all health providers {}", kv("styleCodeId", styleCodeId), e);
+			LOGGER.error("failed to get all health providers {}", kv("styleCodeId", styleCodeId), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();

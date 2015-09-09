@@ -17,7 +17,7 @@ import java.util.List;
  * Created by voba on 18/06/2015.
  */
 public class HomeService {
-    private static final Logger logger = LoggerFactory.getLogger(HomeService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomeService.class);
     private boolean valid = false;
     private String vertical = Vertical.VerticalType.HOME.getCode();
 

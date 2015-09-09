@@ -19,7 +19,7 @@ import static com.ctm.logging.LoggingArguments.kv;
  */
 public class IsoLocationsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(IsoLocationsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(IsoLocationsDao.class);
 
     public IsoLocationsDao() {
     }
@@ -60,7 +60,7 @@ public class IsoLocationsDao {
             }
 
             if (countries.size() == 0) {
-                logger.debug("No countries available {}", kv("searchString", searchString));
+                LOGGER.debug("No countries available {}", kv("searchString", searchString));
             }
 
         } catch (SQLException | NamingException e) {
@@ -131,7 +131,7 @@ public class IsoLocationsDao {
             }
 
             if (countries.size() == 0) {
-                logger.debug("No countries available {}", kv("isoCodes", isoCodes));
+                LOGGER.debug("No countries available {}", kv("isoCodes", isoCodes));
             }
 
         } catch (SQLException | NamingException e) {

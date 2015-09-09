@@ -19,7 +19,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class ProviderExclusionsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProviderExclusionsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderExclusionsDao.class);
 
 	/**
 	 * Return a list of providers which have been disabled for a specific brand and vertical for the provided date.
@@ -69,7 +69,7 @@ public class ProviderExclusionsDao {
 
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to retrieve excluded providers {}, {}, {}", kv("brandId", brandId), kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), e);
+			LOGGER.error("Failed to retrieve excluded providers {}, {}, {}", kv("brandId", brandId), kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), e);
 			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
