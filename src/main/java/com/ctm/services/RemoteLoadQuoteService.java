@@ -14,6 +14,8 @@ import com.ctm.model.email.IncomingEmail;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.email.EmailUrlService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class RemoteLoadQuoteService {
 
 	private final TransactionDetailsDao transactionDetailsDao;
@@ -34,8 +36,8 @@ public class RemoteLoadQuoteService {
 
 	public List<TransactionDetail> getTransactionDetails(String hashedEmail, String vertical, String type, String emailAddress, long transactionId, int brandId) throws DaoException{
 		emailAddress = EmailUrlService.decodeEmailAddress(emailAddress);
-		logger.info("Checking details vertical:" + vertical + " type:" + type + " emailAddress:" + emailAddress + " transactionId:" + transactionId + " brandId:" + brandId);
-		logger.debug("hashedEmail: " + hashedEmail);
+		logger.debug("Checking details vertical {},{},{},{},{}", kv("vertical", vertical), kv("type", type), kv("emailAddress", emailAddress),
+			kv("transactionId", transactionId), kv("brandId", brandId));
 		EmailMode emailMode = EmailMode.findByCode(type);
 		VerticalType verticalType = VerticalType.findByCode(vertical);
 		IncomingEmail emailData = new IncomingEmail();

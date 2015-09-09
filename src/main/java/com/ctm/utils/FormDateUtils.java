@@ -22,7 +22,7 @@ public class FormDateUtils {
 		try {
 			searchDateValue = formatter.parse(searchDate);
 		} catch (ParseException e) {
-			LOGGER.warn("failed to parse date. {}" , kv("searchDate" , searchDate), e);
+			LOGGER.warn("Failed to parse date. {}" , kv("searchDate" , searchDate), e);
 		}
 		return searchDateValue;
 	}

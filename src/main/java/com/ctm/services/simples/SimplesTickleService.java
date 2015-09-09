@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class SimplesTickleService {
 
@@ -41,7 +43,7 @@ public class SimplesTickleService {
             }
         } catch (DaoException | SessionException e) {
             fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-            logger.error("",e);
+            logger.error("Error performing simples tickle {}", kv("simplesUid",  authenticatedData.getSimplesUid()), e);
             throw new ServletException(e);
         }
         return success;

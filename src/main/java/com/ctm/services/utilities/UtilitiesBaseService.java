@@ -20,6 +20,8 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Common functions for the Utilities Services
  */
@@ -84,13 +86,13 @@ public class UtilitiesBaseService {
 
 		ServiceConfiguration serviceConfig = getServiceConfig(request, serviceName);
 
-		logger.debug("UTL: POST: " + jsonString);
+		logger.debug("Utilities post {}", kv("jsonString", jsonString));
 
 		String serviceUrl = getConfigValue(serviceConfig, "serviceUrl");
 		JsonConnection jsonConnector = getJsonConnector(request, serviceConfig);
 		responseJson = jsonConnector.post(serviceUrl, jsonString);
 
-		logger.debug("UTL: RESP:" + responseJson);
+		logger.debug("Utilities response {}", kv("responseJson", responseJson));
 
 		if (responseJson == null) {
 			throw new UtilitiesWebServiceException("UTL postJson: JSON Object NULL from "+serviceUrl);
@@ -106,13 +108,13 @@ public class UtilitiesBaseService {
 
 		ServiceConfiguration serviceConfig = getServiceConfig(request, serviceName);
 
-		logger.debug("UTL: POST: " + jsonString);
+		logger.trace("utilities post {}", kv("jsonString", jsonString));
 
 		String serviceUrl = getConfigValue(serviceConfig, "serviceUrl");
 		JsonConnection jsonConnector = getJsonConnector(request, serviceConfig);
 		responseJson = jsonConnector.postArray(serviceUrl, jsonString);
 
-		logger.debug("UTL: RESP:" + responseJson);
+		logger.trace("utilities response {}", kv("responseJson", responseJson));
 
 		if (responseJson == null) {
 			throw new UtilitiesWebServiceException("UTL postJson: JSON Object NULL from "+serviceUrl);
@@ -144,7 +146,7 @@ public class UtilitiesBaseService {
 
 		FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
 
-		logger.error("UTL: Error: ", e);
+		logger.error("Error occurred with utilities http post", e);
 
 	}
 

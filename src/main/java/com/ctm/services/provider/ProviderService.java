@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +14,8 @@ import com.ctm.model.Provider;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.SettingsService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ProviderService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProviderService.class.getName());
@@ -19,7 +23,7 @@ public class ProviderService {
 	public static ArrayList<Provider> fetchProviders(HttpServletRequest request) {
 		Boolean getOnlyActiveProviders = false;
 
-		if(request.getParameter("getActiveProviders") == "true")
+		if(request.getParameter("getActiveProviders").equals("true"))
 			getOnlyActiveProviders = true;
 
 		ProviderDao providerDao = new ProviderDao();
@@ -27,8 +31,8 @@ public class ProviderService {
 			PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 			return providerDao.getProviders(pageSettings.getVertical().getCode(), pageSettings.getBrandId(), getOnlyActiveProviders);
 		}
-		catch (Exception e) {
-			logger.error("",e);
+		catch (DaoException|ConfigSettingException e) {
+			logger.error("Error fetching providers {}", kv("getOnlyActiveProviders", getOnlyActiveProviders), e);
 		}
 
 		return null;
@@ -47,12 +51,13 @@ public class ProviderService {
 
 			for (Provider entry : providers) {
 
-				providerDropdown.append("<option value='"+entry.getCode()+"'>"+entry.getName()+"</option>");
+				providerDropdown.append("<option value='" + entry.getCode() + "'>" + entry.getName() + "</option>");
 			}
 
 		}
-		catch (Exception e) {
-			logger.error("",e);
+		catch (DaoException e) {
+			logger.error("Error fetching provides {},{},{}", kv("verticalId", vertical), kv("brandId", brandId),
+				kv("getOnlyActiveProviders", getOnlyActiveProviders));
 		}
 
 		return providerDropdown.toString();

@@ -81,13 +81,12 @@ public class SimplesSearchService {
             if (hotTransactionIdsCsv.trim().equalsIgnoreCase("") && coldTransactionIdsCsv.trim().equalsIgnoreCase("")) {
                 throw new DaoException("No records found");
             } else {
-                logger.info("Ids from Cold table : " + coldTransactionIdsCsv);
-                logger.info("Ids from Hot table : " + hotTransactionIdsCsv);
+                logger.debug("Search transaction ids {},{}", kv("coldIds", coldTransactionIdsCsv), kv("hotIds", hotTransactionIdsCsv));
             }
             searchTransactionHeaderDetailsAndSave();
             searchTransactionDetailsAndSave();
         } catch (RuntimeException e) {
-            logger.error("",e);
+            logger.error("Error searching transactions",e);
             error = e.getMessage();
             throw e;
         } finally {
@@ -546,7 +545,7 @@ public class SimplesSearchService {
                 }
             }
         } catch (JspException | SAXException e) {
-            logger.error("Failed to write data into data bucket {}, {}, {}", kv("allowDuplicates", allowDuplicates),
+            logger.error("Error writing data into data bucket {},{},{}", kv("allowDuplicates", allowDuplicates),
                 kv("xml", xml), kv("value", value), kv("xpath", xPath));
         }
     }

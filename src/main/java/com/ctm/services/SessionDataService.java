@@ -120,7 +120,7 @@ public class SessionDataService {
 		if (verticalCode == null || verticalCode.isEmpty()) {
 			// this is to assist recovery if session is lost.
 			verticalCode = VerticalType.GENERIC.getCode();
-			LOGGER.warn("addNewTransactionDataToSession: No vertical code provided; using generic instead");
+			LOGGER.warn("No vertical code provided; using generic instead");
 		}
 
 		newSession.put("current/verticalCode", verticalCode);
@@ -219,7 +219,7 @@ public class SessionDataService {
 			String applicationBrand = ApplicationService.getBrandCodeFromRequest(request);
 
 			if (dataBucketBrand != null && dataBucketBrand.equals("") == false && applicationBrand != null && dataBucketBrand.equalsIgnoreCase(applicationBrand) == false) {
-				LOGGER.error("Transaction doesn't match brand: " + dataBucketBrand + "!=" + applicationBrand);
+				LOGGER.error("Transaction doesn't match brand {},{}", kv("dataBucketBrand", dataBucketBrand), kv("applicationBrand", applicationBrand));
 				throw new BrandException("Transaction doesn't match brand");
 			}
 		}

@@ -33,7 +33,7 @@ public class SimplesService {
 			commentDao.addComment(commentObj);
 		}
 		catch (DaoException e) {
-			logger.error("Failed to add comment to transactionId {}, {}, {}", kv("transactionId", transactionId),
+			logger.error("Failed to add comment to transactionId {},{},{}", kv("transactionId", transactionId),
 				kv("operator", operator), kv("comment", comment));
 			return false;
 		}

@@ -39,7 +39,7 @@ public class StartQuoteService {
         try {
             phoneDetails = CallCentreService.getInboundPhoneDetails(request);
         } catch (ConfigSettingException | RuntimeException e) {
-            logger.error("ERROR While get inbound phone details : "+e.getMessage());
+            logger.error("Error getting inbound phone details", e);
             response.sendRedirect(pageSettings.getBaseUrl()+"simples/selectBrand.jsp?verticalCode=" + verticalCode);
 
         }

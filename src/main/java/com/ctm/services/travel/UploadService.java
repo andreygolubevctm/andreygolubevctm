@@ -14,6 +14,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class UploadService {
 
@@ -95,7 +97,7 @@ public class UploadService {
 
 		}
 		catch(IOException e) {
-			logger.error("",e);
+			logger.error("Error importing partner mapping {},{}", kv("providerId", providerId), kv("mappingType", mappingType), e);
 		}
 
 		// close off the SQL statement

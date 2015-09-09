@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class TransactionService {
 
 	private static final Logger logger = LoggerFactory.getLogger(TransactionService.class.getName());
@@ -77,7 +79,7 @@ public class TransactionService {
 			}
 		}
 		catch (DaoException e) {
-			logger.error("",e);
+			logger.error("Error getting transaction details {}", kv("transactionId", transactionId), e);
 			Error error = new Error(e.getMessage());
 			details.addError(error);
 		}

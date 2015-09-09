@@ -7,6 +7,9 @@ import com.ctm.dao.StampingDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.Stamping;
+
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Used to write stamp to the database
  */
@@ -41,13 +44,13 @@ public class StampingService {
 		try {
 			stampingDao.add(stamping);
 		} catch (DaoException e) {
-			logger.error("cannot write stamp" , e);
+			logger.error("cannot write stamp {}" , kv("stamping", stamping), e);
 		}
 	}
 
 
 	public Stamping writeOptInMarketing(EmailMaster emailDetailsRequest, String operator, boolean optIn, String ipAddress) throws DaoException {
-		logger.info(emailDetailsRequest.getTransactionId() + ": " + emailDetailsRequest.getEmailAddress() + " writing to stamping table optIn:" + optIn);
+		logger.debug("Writing marketing optIn to stamping table  {},{},{}", kv("transactionId", emailDetailsRequest.getTransactionId()), kv("emailAddress", emailDetailsRequest.getEmailAddress()), kv("optIn", optIn));
 		String value = optIn? "on" : "off";
 		return stampingDao.add( MARKETING_ACTION, emailDetailsRequest.getEmailAddress(), value, operator, emailDetailsRequest.getSource(), ipAddress);
 	}
