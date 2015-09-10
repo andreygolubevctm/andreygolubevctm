@@ -1,12 +1,5 @@
 package com.ctm.services;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.ctm.cache.ApplicationCacheManager;
 import com.ctm.cache.ContentControlCache;
 import com.ctm.dao.ContentDao;
@@ -15,8 +8,20 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.content.Content;
 import com.ctm.model.settings.PageSettings;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class ContentService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(ContentService.class.getName());
 
 	private static ContentService contentService = new ContentService();
 
@@ -114,27 +119,25 @@ public class ContentService {
 	 * @param contentKey
 	 * @param brandId
      * @param verticalId
-	 * @param effectiveDate
+	 * @param effectiveDate if null will get from cache is available otherwise will get content from datasource
 	 * @param includeSupplementary
 	 * @return
-	 * @throws DaoException
+	 * @throws DaoException if getting from database and query fails
 	 */
 	public Content getContent(String contentKey, int brandId, int verticalId, Date effectiveDate, boolean includeSupplementary ) throws DaoException {
-
-        boolean useCache = false;
-        Content content = null;
+        Content content;
 
         // Only use cache when a specific date is NOT provided
         if(effectiveDate == null){
 
             // Create a 'key' for the cache - this is based on the values used to call the DAO (excluding date)
-            String cacheKey = contentKey+"_"+brandId+"_"+verticalId+"_"+includeSupplementary;
+            String cacheKey = contentKey + "_" + brandId + "_" + verticalId + "_" + includeSupplementary;
 
             ContentControlCache contentControlCache = ApplicationCacheManager.getContentControlCache();
 
-            if(contentControlCache.isKeyInCache(cacheKey)) {
-                content = contentControlCache.get(cacheKey);
-            }else{
+			content = contentControlCache.get(cacheKey);
+			if(content == null) {
+				LOGGER.debug("Key does not exist in cache retrieving from data source. {}", kv("contentKey", contentKey));
                 content = getContentFromDataSource(contentKey, brandId, verticalId, new Date(), includeSupplementary);
                 contentControlCache.put(cacheKey, content);
             }
