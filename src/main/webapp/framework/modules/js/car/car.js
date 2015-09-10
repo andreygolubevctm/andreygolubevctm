@@ -209,7 +209,7 @@
                 includeFormData: true
             },
             onInitialise: function () {
-				meerkat.modules.carCommencementDate.initCarCommencementDate();
+                meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();
             }
         };
@@ -252,23 +252,42 @@
             }
         };
 
-		var optionsStep = {
-			title : 'Car Details',
-			navigationId : 'options',
-			slideIndex : 1,
-			externalTracking:{
-				method:'trackQuoteForms',
-				object:meerkat.modules.car.getTrackingFieldsObject
-			},
-			tracking:{
-				touchType:'H',
-				touchComment: 'OptionsAccs',
-				includeFormData:true
-			},
-			onInitialise: function() {
-				meerkat.modules.carYoungDrivers.initCarYoungDrivers();
-			}
-		};
+        var resultsStep = {
+            title: 'Results',
+            navigationId: 'results',
+            slideIndex: 4,
+            externalTracking: {
+                method: 'trackQuoteForms',
+                object: meerkat.modules.car.getTrackingFieldsObject
+            },
+            onInitialise: function onResultsInit(event) {
+                meerkat.modules.carResults.initPage();
+                meerkat.modules.carMoreInfo.initMoreInfo();
+                meerkat.modules.carFilters.initCarFilters();
+                meerkat.modules.carEditDetails.initEditDetails();
+            },
+            onBeforeEnter: function enterResultsStep(event) {
+                meerkat.modules.journeyProgressBar.hide();
+                $('#resultsPage').addClass('hidden');
+                // show disclaimer here.
+                // Sync the filters to the results engine
+                meerkat.modules.carFilters.updateFilters();
+            },
+            onAfterEnter: function afterEnterResults(event) {
+                meerkat.modules.carResults.get();
+                // Show the filters bar
+                meerkat.modules.carFilters.show();
+                $('.header-wrap .quoteSnapshot').removeClass("hidden");
+            },
+            onBeforeLeave: function (event) {
+                // Increment the transactionId
+                if (event.isBackward === true) {
+                    meerkat.modules.transactionId.getNew(3);
+                    $('.header-wrap .quoteSnapshot').addClass("hidden");
+                }
+            },
+            onAfterLeave: function (event) {
+                meerkat.modules.journeyProgressBar.show();
 
                 // Hide the filters bar
                 meerkat.modules.carFilters.hide();
@@ -276,84 +295,44 @@
             }
         };
 
-		var addressStep = {
-			title : 'Address & Contact',
-			navigationId : 'address',
-			slideIndex : 3,
-			externalTracking:{
-				method:'trackQuoteForms',
-				object:meerkat.modules.car.getTrackingFieldsObject
-			},
-			tracking:{
-				touchType:'H',
-				touchComment: 'AddressCon',
-				includeFormData:true
-			},
-			onInitialise : function (event) {
-				var $driversFirstName =  $('#quote_drivers_regular_firstname');
-				var $driversLastName =  $('#quote_drivers_regular_surname');
-				var $driversPhoneNumber =  $('#quote_contact_phoneinput');
-				var $driversContactEmail =  $('#quote_contact_email');
-				var $competitionOptin = $('#quote_contact_competition_optin');
-				var nonStdJourney = meerkat.modules.splitTest.isActive(2);
+        steps = {
+            startStep: startStep,
+            optionsStep: optionsStep,
+            detailsStep: detailsStep,
+            addressStep: addressStep,
+            resultsStep: resultsStep
+        };
 
     }
 
-							$driversFirstName.valid();
-							$driversLastName.valid();
-							$driversPhoneNumber.valid();
-							$driversContactEmail.valid();
-					}
-				});
-				}
-				if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
-					meerkat.modules.resultsFeatures.fetchStructure('carws_');
-				} else {
-					meerkat.modules.resultsFeatures.fetchStructure('car_');
-				}
-			},
-			onAfterEnter : function (event) {
-			},
-			onBeforeLeave : function(event) {
-			}
-		};
+    function configureProgressBar() {
+        meerkat.modules.journeyProgressBar.configure([
+            {
+                label: 'Your Car',
+                navigationId: steps.startStep.navigationId
+            },
+            {
+                label: 'Car Details',
+                navigationId: steps.optionsStep.navigationId
+            },
+            {
+                label: 'Driver Details',
+                navigationId: steps.detailsStep.navigationId
+            },
+            {
+                label: 'Address & Contact',
+                navigationId: steps.addressStep.navigationId
+            },
+            {
+                label: 'Your Quotes',
+                navigationId: steps.resultsStep.navigationId
+            }
+        ]);
+    }
 
-		var resultsStep = {
-			title: 'Results',
-			navigationId: 'results',
-			slideIndex: 4,
-			externalTracking:{
-				method:'trackQuoteForms',
-				object:meerkat.modules.car.getTrackingFieldsObject
-			},
-			onInitialise: function onResultsInit(event) {
-				meerkat.modules.carResults.initPage();
-				meerkat.modules.carMoreInfo.initMoreInfo();
-				meerkat.modules.carFilters.initCarFilters();
-				meerkat.modules.carEditDetails.initEditDetails();
-			},
-			onBeforeEnter: function enterResultsStep(event) {
-				meerkat.modules.journeyProgressBar.hide();
-				$('#resultsPage').addClass('hidden');
-				// show disclaimer here.
-				// Sync the filters to the results engine
-				meerkat.modules.carFilters.updateFilters();
-			},
-			onAfterEnter: function afterEnterResults(event) {
-					meerkat.modules.carResults.get();
-				// Show the filters bar
-				meerkat.modules.carFilters.show();
-				$('.header-wrap .quoteSnapshot').removeClass("hidden");
-			},
-			onBeforeLeave: function(event) {
-				// Increment the transactionId
-				if(event.isBackward === true) {
-					meerkat.modules.transactionId.getNew(3);
-					$('.header-wrap .quoteSnapshot').addClass("hidden");
-				}
-			},
-			onAfterLeave: function(event) {
-				meerkat.modules.journeyProgressBar.show();
+    // Build an object to be sent by SuperTag tracking.
+    function getTrackingFieldsObject(special_case) {
+        try {
 
             special_case = special_case || false;
 
