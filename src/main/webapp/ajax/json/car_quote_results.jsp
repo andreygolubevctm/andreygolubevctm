@@ -148,7 +148,7 @@
 							  transactionId = "${data.text['current/transactionId']}"
 							  xml = "${go:getEscapedXml(data['quote'])}"
 							  var = "resultXml"
-							  authToken = "${param.quote_authToken}"
+							  authToken = "${param.quote_filter_authToken}"
 							  debugVar="debugXml"
 							  validationErrorsVar="validationErrors"
 							  continueOnValidationError="${continueOnValidationError}"

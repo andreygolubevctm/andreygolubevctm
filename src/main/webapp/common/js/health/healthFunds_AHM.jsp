@@ -117,8 +117,7 @@ var healthFunds_AHM = {
       var name = $(this).find('input').attr('name');
       var id = $(this).find('input').attr('id');
       $(this).append(list);
-      $(this).find('select').attr('name', name).attr('id', id+'select');
-      $(this).find('select').rules('add', {required:true, messages:{required:'Please select dependant '+(i+1)+'\'s school'}});
+      $(this).find('select').attr('name', name).attr('id', id+'select').setRequired(true, 'Please select dependant '+(i+1)+'\'s school');
     });
     $('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
     <%--$('.health_dependant_details_schoolDateGroup input').mask('99/99/9999', {placeholder: 'DD/MM/YYYY'});--%>
@@ -128,10 +127,9 @@ var healthFunds_AHM = {
     $('.health_dependant_details_schoolGroup .help_icon').hide();
 
     <%--Previous fund--%>
-    $('#health_previousfund_primary_authority').rules('add', {required:true, messages:{required:'AHM require authorisation to contact your previous fund'}});
-    $('#health_previousfund_partner_authority').rules('add', {required:true, messages:{required:'AHM require authorisation to contact your partner\'s previous fund'}});
-    $('#health_previousfund_primary_memberID').attr('maxlength', '10');
-    $('#health_previousfund_partner_memberID').attr('maxlength', '10');
+    $('#health_previousfund_primary_authority').setRequired(true, 'AHM require authorisation to contact your previous fund');
+    $('#health_previousfund_partner_authority').setRequired(true, 'AHM require authorisation to contact your partner\'s previous fund');
+    $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
 
     <%--Authority--%>
     healthFunds._previousfund_authority(true);
@@ -145,8 +143,8 @@ var healthFunds_AHM = {
     meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
     <%--credit card options--%>
-    creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
-    creditCardDetails.render();
+    meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
+    meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
     $('#update-premium').on('click.AHM', function() {
@@ -168,7 +166,7 @@ var healthFunds_AHM = {
         "bank" : false
       },
       "paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
-      "clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start ,#health_payment_details_type'),
+      "clearValidationSelectors" : $('#health_payment_details_frequency, #health_payment_details_start, #health_payment_details_type'),
       "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
     });
 
@@ -189,17 +187,15 @@ var healthFunds_AHM = {
     $('.health_dependant_details_schoolGroup .help_icon').show();
 
     <%--Previous fund--%>
-    $('#health_previousfund_primary_authority').rules('remove', 'required');
-    $('#health_previousfund_partner_authority').rules('remove', 'required');
-    $('#health_previousfund_primary_memberID').removeAttr('maxlength');
-    $('#health_previousfund_partner_memberID').removeAttr('maxlength');
+    $('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
+    $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength');
 
     <%--Authority off--%>
     healthFunds._previousfund_authority(false);
 
     <%--credit card options--%>
-    creditCardDetails.resetConfig();
-    creditCardDetails.render();
+    meerkat.modules.healthCreditCard.resetConfig();
+    meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
     healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);

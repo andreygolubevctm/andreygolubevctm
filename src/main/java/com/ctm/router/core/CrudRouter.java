@@ -41,7 +41,7 @@ public class CrudRouter {
         try{
             switch (action) {
                 case LIST:
-                    write(writer, crudService.getAll());
+                    write(writer, crudService.getAll(request));
                     break;
                 case EMPTY:
                     write(writer, crudService.get(request));

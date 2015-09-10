@@ -68,107 +68,108 @@
 
 <%-- JAVASCRIPT HEAD --%>
 <go:script marker="js-head">
-$.validator.addMethod("validate_${name}",
-		function(value, elem, parm) {
-			try{
-				var val = $(elem).val();
+	$.validator.addMethod("validate_${name}",
+	function(value, elem, parm) {
+	try{
+	var val = $(elem).val();
 
-				if( isNaN(val) )
-				{
-					val = val.replace(/[^\d.-]/g, '');
-				}
+	if( isNaN(val) )
+	{
+	val = val.replace(/[^\d.-]/g, '');
+	}
 
-				if( val != '' && val > 0 )
-				{
-					return true;
-				}
+	if( val != '' && val > 0 )
 
-				return false;
-			}
-			catch(e)
-			{
-				return false;
-			}
-		},
+	{
+	return true;
+	}
 
-		$.validator.messages.currencyNumber = ' is not a valid number.'
-);
+	return false;
+	}
+	catch(e)
+	{
+	return false;
+	}
+	},
 
-$.validator.addMethod("${name}_minCurrency",
+	$.validator.messages.currencyNumber = ' is not a valid number.'
+	);
+
+	$.validator.addMethod("${name}_minCurrency",
 	function(value, elem, parm) {
 
-		var val = $(elem).val();
+	var val = $(elem).val();
 
-		if( isNaN(val) )
-		{
-			val = val.replace(/[^\d.-]/g, '');
-		}
+	if( isNaN(val) )
+	{
+	val = val.replace(/[^\d.-]/g, '');
+	}
 
-		<c:if test="${not empty defaultValue}">
+	<c:if test="${not empty defaultValue}">
 		if( val == ${defaultValue} ){
-			return true;
-		}
-		</c:if>
-
-		if( val < parm){
-			return false;
-		}
-
 		return true;
+		}
+	</c:if>
+
+	if( val < parm){
+	return false;
+	}
+
+	return true;
 	},
 	"Custom message"
-);
+	);
 
-$.validator.addMethod("${name}_maxCurrency",
+	$.validator.addMethod("${name}_maxCurrency",
 	function(value, elem, parm) {
 
-		var val = $(elem).val();
+	var val = $(elem).val();
 
-		if( isNaN(val) )
-		{
-			val = val.replace(/[^\d.-]/g, '');
-		}
+	if( isNaN(val) )
+	{
+	val = val.replace(/[^\d.-]/g, '');
+	}
 
-		<c:if test="${not empty defaultValue}">
+	<c:if test="${not empty defaultValue}">
 		if( val == ${defaultValue} ){
-			return true;
-		}
-		</c:if>
-
-		if( val > parm){
-			return false;
-		}
-
 		return true;
+		}
+	</c:if>
+
+	if( val > parm){
+	return false;
+	}
+
+	return true;
 	},
 	"Custom message"
-);
+	);
 
-$.validator.addMethod("${name}_percent",
+	$.validator.addMethod("${name}_percent",
 	function(value, elem, parm) {
 
-		var parmsArray = parm.split(",");
-		var percentage = parmsArray[1];
-		var percentRule = parmsArray[2];
-		var val = $(elem).val();
-		var thisVal = Number(val.replace(/[^0-9\.]+/g,""));
-		var parmVal = $('#'+parmsArray[0]).val();
-		var ratio = thisVal / parmVal;
-		var percent = ratio * 100;
+	var parmsArray = parm.split(",");
+	var percentage = parmsArray[1];
+	var percentRule = parmsArray[2];
+	var val = $(elem).val();
+	var thisVal = Number(val.replace(/[^0-9\.]+/g,""));
+	var parmVal = $('#'+parmsArray[0]).val();
+	var ratio = thisVal / parmVal;
+	var percent = ratio * 100;
 
-		if (percent >= percentage && percentRule == "GT" ) {
-			return true;
-		}
-		else if (percent <= percentage && percentRule == "LT" ) {
-			return true;
-		}
-		else {
-			return false;
-		}
+	if (percent >= percentage && percentRule == "GT" ) {
+	return true;
+	}
+	else if (percent <= percentage && percentRule == "LT" ) {
+	return true;
+	}
+	else {
+	return false;
+	}
 
 	},
 	"Custom message"
-);
+	);
 </go:script>
 
 <%-- JAVASCRIPT ONREADY --%>

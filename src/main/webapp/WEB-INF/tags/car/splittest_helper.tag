@@ -29,3 +29,6 @@
         <c:otherwise>${false}</c:otherwise>
     </c:choose>
 </c:set>
+
+<%-- NEW CAR SERVICE --%>
+<c:set var="carServiceSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 40)}" />

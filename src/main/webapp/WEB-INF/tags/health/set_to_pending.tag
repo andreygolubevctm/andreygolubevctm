@@ -10,7 +10,7 @@
 <c:set var="ignore">
 	<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService" scope="page" />
 	<c:set var="errorMessage" value="Application failed: ${errorMessage}" />
-	<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
+	<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}" />
 
 	<%-- Application unsuccessful, provide PendingID --%>
 	<c:set var="pendingID">${pageContext.session.id}-${transactionId}</c:set>
