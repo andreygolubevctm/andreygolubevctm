@@ -82,6 +82,8 @@
         }
     }
 
+
+
     function validateRego(hard) {
         hard = hard || false;
 

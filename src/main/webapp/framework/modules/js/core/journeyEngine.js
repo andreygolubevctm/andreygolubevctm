@@ -532,7 +532,7 @@
 
 				var isValid = true;
 				$slide.find( "form" ).each(function( index, element ) {
-					$element = $(element);
+					var $element = $(element);
 					var formValid = $element.valid();
 					if(formValid === false) isValid = false;
 				});
@@ -635,6 +635,9 @@
 
 				// handle dynamically name
 				if(navigationId == 'next' || navigationId == 'previous'){
+
+					meerkat.modules.navMenu.close();
+
 					var currentStepIndex = getStepIndex(currentStep.navigationId);
 
 					var newStepIndex = null;

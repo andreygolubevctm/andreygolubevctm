@@ -1,5 +1,6 @@
 package com.ctm.model.car.form;
 
+import com.ctm.providers.car.carquote.model.request.Filter;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.Valid;
@@ -41,6 +42,12 @@ public class CarQuote {
     private String renderingMode;
 
     private Map<String, Acc> convertedAccs;
+
+    private Filter filter;
+
+    public CarQuote() {
+        filter = new Filter();
+    }
 
     public Map<String, String> getAccs() {
         return accs;
@@ -227,4 +234,11 @@ public class CarQuote {
         return StringUtils.trimToEmpty(regular.getFirstname() + " " + regular.getSurname());
     }
 
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
+    }
 }

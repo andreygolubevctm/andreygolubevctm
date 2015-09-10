@@ -89,31 +89,31 @@ dobHandler = {
 
 $.validator.addMethod("min_dob_${name}",
 	function(value, element) {
-		
+
 		var now = new Date();
-		var temp = value.split('/');		 
+		var temp = value.split('/');
 		var minDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- dob_${name}.ageMin) ); <%-- ("MM/DD/YYYY") x-browser --%>
-		
+
 		//min Age check for fail
 		if( minDate > now  ){
 			return false;
 		};
-	
+
 		return true;
 	}
 );
 
 $.validator.addMethod("max_dob_${name}",
 	function(value, element) {
-		
+
 		var now = new Date();
-		var temp = value.split('/');		 
-		var maxDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- dob_${name}.ageMax) ); <%-- ("MM/DD/YYYY") x-browser --%>		
-		
+		var temp = value.split('/');
+		var maxDate = new Date(temp[1] +'/'+ temp[0] +'/'+ (temp[2] -+- dob_${name}.ageMax) ); <%-- ("MM/DD/YYYY") x-browser --%>
+
 		//max Age check for fail
 		if( maxDate < now ){
 			return false;
-		};		
+		};
 
 		return true;
 	}
