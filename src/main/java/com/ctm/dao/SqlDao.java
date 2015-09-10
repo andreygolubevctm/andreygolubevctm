@@ -299,9 +299,9 @@ public class SqlDao<T> {
 
     public int[] executeBatch(List<DatabaseUpdateMapping> databaseMappings, String statement) throws DaoException {
         try {
+            conn = databaseConnection.getConnection(context, true);
             stmt = conn.prepareStatement(statement);
             for (DatabaseUpdateMapping databaseMapping : databaseMappings) {
-                conn = databaseConnection.getConnection(context, true);
                 databaseMapping.handleParams(stmt);
                 stmt.addBatch();
             }
