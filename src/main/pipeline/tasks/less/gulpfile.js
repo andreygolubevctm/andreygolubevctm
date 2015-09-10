@@ -33,14 +33,14 @@ function LessTasks(gulp) {
     var watchesStarted = [],
         dependenciesCache = {};
 
-    var gulpAction = function(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs) {
+    var gulpAction = function(glob, targetDir, taskName, fileList, brandCode, brandFileNames, bundle, compileAs) {
         if(typeof compileAs !== "undefined" && compileAs.constructor === Array) {
             for(var i = 0; i < compileAs.length; i++) {
-                gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs[i]);
+                gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, bundle, compileAs[i]);
             }
         } else {
             if(typeof dependenciesCache[taskName] === "undefined") {
-                dependenciesCache[taskName] = "\r\n" + bundles.getDependencyFiles(fileName, "less")
+                dependenciesCache[taskName] = "\r\n" + bundles.getDependencyFiles(bundle, "less")
                     .filter(function(dep) {
                         return dep.match(/(bundles)(\\|\/)(shared)/);
                     }).map(function(dep) {
@@ -50,8 +50,14 @@ function LessTasks(gulp) {
 
             var lessDependencies = dependenciesCache[taskName];
 
+            var replaceImports = [];
+            if(typeof bundles.collection[bundle] !== "undefined" && typeof bundles.collection[bundle].extends !== "undefined") {
+                glob = glob.replace("bundles\\" + bundle, "bundles\\" + bundles.collection[bundle].extends);
+                replaceImports = bundles.getBundleFiles(bundle, "less", null, false);
+            }
+
             if(typeof compileAs === "string")
-                fileName = compileAs;
+                bundle = compileAs;
 
             var hasVariablesLess = (fileList.indexOf("variables.less") !== -1);
 
@@ -90,29 +96,45 @@ function LessTasks(gulp) {
             if(notInWatchesStarted) {
                 stream = stream.pipe(
                     watchLess(glob, { name: taskName }, function() {
-                        gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, fileName, compileAs);
+                        gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, bundle, compileAs);
                     })
                 );
 
                 watchesStarted.push(taskName);
             }
 
-            return stream.pipe(less())
-                .pipe(concat(fileName + ".css"))
+            return stream.pipe(
+                    intercept(function(file) {
+                        // Check if there are imports to replace (from a bundle extending another bundle)
+                        if(replaceImports.length) {
+                            var contents = file.contents.toString();
+
+                            for (var i = 0; i < replaceImports.length; i++) {
+                                contents = contents.replace("\"" + replaceImports[i], "\"../../" + bundle + "/less/" + replaceImports[i])
+                            }
+
+                            file.contents = new Buffer(contents);
+                        }
+
+                        return file;
+                    })
+                )
+                .pipe(less(glob, { name: taskName }))
+                .pipe(concat(bundle + ".css"))
                 .pipe(gulp.dest(targetDir))
                 .pipe(notify({
                     title: taskName + " compiled",
-                    message: fileName + " successfully compiled"
+                    message: bundle + " successfully compiled"
                 }))
                 .pipe(minifyCSS({
                     advanced: true,
                     aggressiveMerging: true
                 }))
-                .pipe(rename(fileName + ".min.css"))
+                .pipe(rename(bundle + ".min.css"))
                 .pipe(gulp.dest(targetDir))
                 .pipe(notify({
                     title: taskName + " minified",
-                    message: fileName + " successfully minified"
+                    message: bundle + " successfully minified"
                 }));
         }
     };

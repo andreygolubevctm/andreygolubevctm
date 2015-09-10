@@ -76,7 +76,12 @@ Bundles.prototype.addBundle = function(bundleName, bundleInfo) {
  * @returns {*}
  */
 Bundles.prototype.getBundleBrandCodes = function(bundleName) {
-    return this.collection[bundleName].brandCodes;
+    var bundle = this.collection[bundleName];
+
+    if(this.collection[bundleName].brandCodes)
+        return bundle.brandCodes;
+    else
+        return this.collection[bundle.extends].brandCodes;
 };
 
 /**
@@ -89,11 +94,13 @@ Bundles.prototype.getBrandCodes = function() {
     for(var bundle in this.collection) {
         var bundleBrandCodes = this.collection[bundle].brandCodes;
 
-        for(var i = 0; i < bundleBrandCodes.length; i++) {
-            var brandCode = bundleBrandCodes[i];
+        if(typeof bundleBrandCodes !== "undefined") {
+            for (var i = 0; i < bundleBrandCodes.length; i++) {
+                var brandCode = bundleBrandCodes[i];
 
-            if(brandCodes.indexOf(brandCode) === -1) {
-                brandCodes.push(brandCode);
+                if (brandCodes.indexOf(brandCode) === -1) {
+                    brandCodes.push(brandCode);
+                }
             }
         }
     }
@@ -112,7 +119,7 @@ Bundles.prototype.getBrandCodeBundles = function(brandCode) {
     for(var bundle in this.collection) {
         var bundleBrandCodes = this.collection[bundle].brandCodes;
 
-        if(bundleBrandCodes.indexOf(brandCode) !== -1) {
+        if(typeof bundleBrandCodes !== "undefined" && bundleBrandCodes.indexOf(brandCode) !== -1) {
             bundles.push(bundle);
         }
     }
@@ -128,6 +135,9 @@ Bundles.prototype.getBrandCodeBundles = function(brandCode) {
 Bundles.prototype.getDependencies = function(bundle) {
     var rootDependencies = [],
         returnDependencies = [];
+
+    if(typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].extends !== "undefined")
+        bundle = this.collection[bundle].extends;
 
     if(typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].dependencies !== "undefined")
         rootDependencies = this.collection[bundle].dependencies;
@@ -197,7 +207,8 @@ Bundles.prototype.getWatchableBundlesFilePaths = function(bundle, fileType) {
  * @param fileType
  * @returns {*}
  */
-Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath) {
+Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath, getExtended) {
+    getExtended = typeof getExtended !== "undefined" ? getExtended : true;
     useFullPath = typeof useFullPath !== "undefined" ? useFullPath : true;
     fileType = fileType || "js";
 
@@ -207,8 +218,28 @@ Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath) {
         if (typeof this.fileListCache[fileListCacheKey] !== "undefined") {
             return this.fileListCache[fileListCacheKey];
         } else {
-            var filePath = path.join(gulpConfig.bundles.dir, bundle, fileType);
-            this.fileListCache[fileListCacheKey] = fileHelper.getFilesFromFolderPath(filePath, useFullPath);
+            var fileList,
+                filePath = path.join(gulpConfig.bundles.dir, bundle, fileType);
+
+            fileList = fileHelper.getFilesFromFolderPath(filePath, useFullPath);
+
+            // Get the original bundle files and replace them with the new file path
+            if(getExtended && typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].extends !== "undefined") {
+                var originalBundle = this.collection[bundle].extends,
+                    originalBundleFilePath = path.join(gulpConfig.bundles.dir, originalBundle, fileType),
+                    originalBundleFileList = fileHelper.getFilesFromFolderPath(originalBundleFilePath, useFullPath);
+
+                fileList = originalBundleFileList.map(function(file) {
+                    for(var i = 0; i < fileList.length; i++){
+                        if(file.replace("bundles\\" + originalBundle, "bundles\\" + bundle) === fileList[i])
+                            return fileList[i];
+                    }
+
+                    return file;
+                });
+            }
+
+            this.fileListCache[fileListCacheKey] = fileList;
             return this.fileListCache[fileListCacheKey];
         }
     } catch(err) {

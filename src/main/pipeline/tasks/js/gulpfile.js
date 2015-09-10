@@ -80,9 +80,9 @@ function JSTasks(gulp) {
             var watchTasks = [];
 
                 // Array of dependencies file paths
-            var dependenciesFileArray = bundles.getDependencyFiles(bundle),
+            var dependenciesFileArray = bundles.getDependencyFiles(bundle, "js", true),
                 // Array of bundle file paths
-                bundleFileArray = bundles.getBundleFiles(bundle, "js"),
+                bundleFileArray = bundles.getBundleFiles(bundle, "js", true),
                 // All files living together happily
                 completeFileArray = dependenciesFileArray.concat(bundleFileArray),
                 // Array of files to be loaded on page load
