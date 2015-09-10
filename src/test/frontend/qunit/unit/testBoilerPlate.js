@@ -1,19 +1,17 @@
-window.jQuery
-&& window.jQuery.each
-|| document
-    .write('<script src="../../../main/webapp/framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.logging.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.modules.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/core/js/comms.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/shared/numberUtils/js/numberUtils.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/core/js/utils.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/core/js/transactionId.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/core/js/tracking.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/core/js/deviceMediaState.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/core/js/dialogs.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/bundles/core/js/loadingAnimation.js">\x3C/script>');
-	document.write('<script src="../../../main/webapp/assets/js/libraries/bootstrap.min.js">\x3C/script>');
+window.jQuery && window.jQuery.each || document.write('<script src="../../../main/webapp/framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.logging.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.modules.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/comms.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/shared/numberUtils/js/numberUtils.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/utils.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/transactionId.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/tracking.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/deviceMediaState.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/dialogs.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/loadingAnimation.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/assets/js/libraries/bootstrap.min.js">\x3C/script>');
+
 ;
 (function (meerkat) {
 
@@ -56,7 +54,7 @@ window.jQuery
     meerkat != null && meerkat.init(siteConfig, options);
 
 })(window.meerkat);
-		})(window.meerkat);
+
 var validation = false;
 $(document).ready(function() {
 
