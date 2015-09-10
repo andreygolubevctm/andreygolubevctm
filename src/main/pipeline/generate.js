@@ -6,17 +6,8 @@ var argv = require("yargs").argv,
     prompt = require("prompt");
 
 var config = require("./config"),
+    fileHelper = require("./helpers/fileHelper"),
     action = argv._[0];
-
-function writeFile(folder, fileName, content) {
-    mkdirp(folder, function(err) {
-        if(err) console.error(err);
-
-        fs.writeFile(path.join(folder, fileName), content, function(err){
-            if(err) return console.error(err);
-        });
-    });
-}
 
 function stringifyJSON(jsonObj) {
     return JSON.stringify(jsonObj, null, 4);
@@ -111,7 +102,7 @@ var generators = {
             if(err) return console.error(err);
 
             var folderPath = path.join(__dirname, "tasks", result.task.toLowerCase());
-            writeFile(folderPath, "gulpfile.js", generateTaskJS(result.task, result.description, result.author, result.email));
+            fileHelper.writeFileToFolder(folderPath, "gulpfile.js", generateTaskJS(result.task, result.description, result.author, result.email));
 
             console.log("Generated Gulp Task: " + result.task);
         });
@@ -137,7 +128,7 @@ var generators = {
             if(err) return console.error(err);
 
             var folderPath = path.join(config.bundles.dir, result.bundle, "js");
-            writeFile(folderPath, result.module + ".js", generateModuleJS(result.module));
+            fileHelper.writeFileToFolder(folderPath, result.module + ".js", generateModuleJS(result.module));
 
             console.log("Generated Module: " + result.module + " for Bundle: " + result.bundle);
         });
@@ -164,16 +155,16 @@ var generators = {
                 less: path.join(folderPath, "less"),
             };
 
-            writeFile(paths.js, result.bundle + ".js", generateModuleJS(result.bundle));
-            writeFile(paths.less, "build.less", "// " + result.bundle + " custom LESS goes here");
-            writeFile(paths.less, "variables.less", "// " + result.bundle + " variables go here");
+            fileHelper.writeFileToFolder(paths.js, result.bundle + ".js", generateModuleJS(result.bundle));
+            fileHelper.writeFileToFolder(paths.less, "build.less", "// " + result.bundle + " custom LESS goes here");
+            fileHelper.writeFileToFolder(paths.less, "variables.less", "// " + result.bundle + " variables go here");
 
             var bundleJson = {
                 brandCodes: ["ctm"],
                 dependencies: ["meerkat", "core"]
             };
 
-            writeFile(folderPath, "bundle.json", stringifyJSON(bundleJson));
+            fileHelper.writeFileToFolder(folderPath, "bundle.json", stringifyJSON(bundleJson));
 
             console.log("Generated Bundle: " + result.bundle);
         });

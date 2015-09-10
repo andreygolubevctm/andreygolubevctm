@@ -33,6 +33,8 @@
 <c:set var="superTagEnabled" value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />
 <c:set var="DTMEnabled" value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />
 
+<c:set var="separateJS" value="${param.separateJS eq 'true'}"/>
+
 <%-- Whether we want to show logging or not (for use on Production) --%>
 <c:set var="showLogging" value="${isDev or (not empty param.showLogging && param.showLogging == 'true')}" />
 
@@ -247,7 +249,14 @@
 
 		<!--  Meerkat -->
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
-			<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+			<c:choose>
+				<c:when test="${separateJS}">
+					<jsp:include page="assets/js/bundles/inc/${pageSettings.getVerticalCode()}.inc" />
+				</c:when>
+				<c:otherwise>
+					<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+				</c:otherwise>
+			</c:choose>
 		</c:if>
 
 		<%-- Additional Meerkat Scripts --%>

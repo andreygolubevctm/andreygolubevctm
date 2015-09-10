@@ -16,8 +16,7 @@ var concat = require("gulp-concat"),
     plumber = require("gulp-plumber"),
     rename = require("gulp-rename");
 
-// TODO: Add .map files
-// TODO: Build .tpl file which includes references to <script src=""></script> for each individual file
+var fileHelper = require("./../../helpers/fileHelper");
 
 function JSTasks(gulp) {
     var bundles = gulp.bundles;
@@ -45,6 +44,11 @@ function JSTasks(gulp) {
 
                 fileName = compileAs;
             }
+
+            var incDir = path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "inc");
+            fileHelper.writeFileToFolder(incDir, fileName + ".inc", fileArray.map(function(file){
+                return "<script src=\"" + path.normalize(file.slice(file.indexOf("bundles"), file.length)) + "\"></script>";
+            }).join("\r\n"));
 
             return gulp.src(fileArray)
                 .pipe(plumber({

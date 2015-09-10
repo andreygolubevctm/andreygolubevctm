@@ -1,7 +1,24 @@
 var fs = require("fs"),
+    path = require("path"),
+    mkdirp = require("mkdirp"),
     config = require("./../config");
 
 var FileHelper = {
+    /**
+     * Writes file contents to the specified folder
+     * @param folderPath
+     * @param fileContents
+     */
+    writeFileToFolder: function (folder, fileName, content) {
+        mkdirp(folder, function(err) {
+            if(err) console.error(err);
+
+            fs.writeFile(path.join(folder, fileName), content, function(err){
+                if(err) return console.error(err);
+            });
+        });
+    },
+
     /**
      * Synchronously returns a list of all file paths for a given folder path
      * @param path
