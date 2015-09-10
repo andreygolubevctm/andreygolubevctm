@@ -24,9 +24,18 @@ public class ContentService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContentService.class.getName());
 
 	private static ContentService contentService = new ContentService();
+	private ContentControlCache contentControlCache;
+	private ContentDao contentDao;
 
+	public ContentService(ContentDao contentDao, ContentControlCache contentControlCache) {
+		this.contentDao = contentDao;
+		this.contentControlCache = contentControlCache;
+	}
 
-    /**
+	public ContentService() {
+	}
+
+	/**
      * Returns the value of the content key (as a string) this is the one that should be called by the JSP page.
      *
      * @param request
@@ -133,7 +142,9 @@ public class ContentService {
             // Create a 'key' for the cache - this is based on the values used to call the DAO (excluding date)
             String cacheKey = contentKey + "_" + brandId + "_" + verticalId + "_" + includeSupplementary;
 
-            ContentControlCache contentControlCache = ApplicationCacheManager.getContentControlCache();
+			if(this.contentControlCache == null) {
+				this.contentControlCache = ApplicationCacheManager.getContentControlCache();
+			}
 
 			content = contentControlCache.get(cacheKey);
 			if(content == null) {
@@ -151,7 +162,9 @@ public class ContentService {
 	}
 
     private Content getContentFromDataSource(String contentKey, int brandId, int verticalId, Date effectiveDate, boolean includeSupplementary) throws DaoException{
-        ContentDao contentDao = new ContentDao();
+        if(contentDao == null) {
+			contentDao = new ContentDao();
+		}
         return contentDao.getByKey(contentKey, brandId, verticalId, effectiveDate, includeSupplementary);
     }
 
