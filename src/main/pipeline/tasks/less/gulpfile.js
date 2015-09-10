@@ -97,11 +97,7 @@ function LessTasks(gulp) {
                 watchesStarted.push(taskName);
             }
 
-            return stream.pipe(sourcemaps.init())
-                .pipe(less({
-                    paths: [gulp.pipelineConfig.build.dir + "/../**"]
-                }))
-                .pipe(sourcemaps.write())
+            return stream.pipe(less())
                 .pipe(concat(fileName + ".css"))
                 .pipe(gulp.dest(targetDir))
                 .pipe(notify({
