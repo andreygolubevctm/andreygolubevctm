@@ -191,7 +191,7 @@ public class ResultsDao {
             stmt.executeBatch();
 
         } catch (Exception e) {
-			LOGGER.error("Failed to save results properties {}", kv("resultProperties", resultProperties));
+			LOGGER.error("Failed to save results properties {}", kv("resultProperties", resultProperties), e);
         }
 
     }
