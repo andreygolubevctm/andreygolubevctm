@@ -10,7 +10,7 @@
         _registerEventListeners();
         $(document).ready(function() {
             $signUpForm = $("#sign-up-form");
-            meerkat.modules.validation.setupDefaultValidationOnForm($signUpForm);
+            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($signUpForm);
         });
     }
 

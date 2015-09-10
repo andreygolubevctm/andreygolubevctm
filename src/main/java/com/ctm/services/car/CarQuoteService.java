@@ -1,32 +1,33 @@
 package com.ctm.services.car;
 
 import com.ctm.connectivity.SimpleConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.RouterException;
-import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.exceptions.ServiceException;
+import com.ctm.dao.ProviderFilterDao;
+import com.ctm.exceptions.*;
+import com.ctm.model.QuoteServiceProperties;
 import com.ctm.model.car.form.CarQuote;
 import com.ctm.model.car.form.CarRequest;
 import com.ctm.model.car.results.CarResult;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.resultsData.AvailableType;
-import com.ctm.model.settings.*;
+import com.ctm.model.settings.Brand;
 import com.ctm.providers.Request;
 import com.ctm.providers.ResultPropertiesBuilder;
 import com.ctm.providers.car.carquote.model.RequestAdapter;
 import com.ctm.providers.car.carquote.model.ResponseAdapter;
 import com.ctm.providers.car.carquote.model.request.CarQuoteRequest;
 import com.ctm.providers.car.carquote.model.response.CarResponse;
+import com.ctm.services.CommonQuoteService;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.ResultsService;
-import com.ctm.services.ServiceConfigurationService;
+import com.ctm.services.SessionDataService;
 import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.web.validation.FormValidation;
-import com.ctm.web.validation.SchemaValidationError;
-import com.ctm.xml.XMLOutputWriter;
+import com.ctm.logging.XMLOutputWriter;
+import com.disc_au.web.go.Data;
+import com.disc_au.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.joda.time.LocalDate;
@@ -34,25 +35,17 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import static com.ctm.xml.XMLOutputWriter.REQ_OUT;
+import static com.ctm.model.settings.Vertical.VerticalType.CAR;
+import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
-public class CarQuoteService {
+public class CarQuoteService extends CommonQuoteService<CarQuote> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CarQuoteService.class);
-
-    public static final String SERVICE_URL = "serviceUrl";
-    public static final String TIMEOUT_MILLIS = "timeoutMillis";
-    public static final String DEBUG_PATH = "debugPath";
-    private boolean valid = false;
-
-    public List<SchemaValidationError> validateRequest(CarRequest data, String vertical) {
-        List<SchemaValidationError> errors = FormValidation.validate(data.getQuote(), vertical);
-        valid = errors.isEmpty();
-        return errors;
-    }
 
     public List<CarResult> getQuotes(Brand brand, CarRequest data) {
 
@@ -80,6 +73,37 @@ public class CarQuoteService {
         request.setBrandCode(brand.getCode());
         request.setClientIp(data.getClientIpAddress());
         request.setTransactionId(data.getTransactionId());
+
+        EnvironmentService environmentService = new EnvironmentService();
+
+        if(
+            environmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST ||
+            environmentService.getEnvironment() == EnvironmentService.Environment.NXI ||
+            environmentService.getEnvironment() == EnvironmentService.Environment.NXS
+        ) {
+            // Check if AuthToken provided and use as filter if available
+            // It is acceptable to throw exceptions here as provider key is checked
+            // when page loaded so technically should not reach here otherwise.
+            String authToken = quote.getFilter().getAuthToken();
+
+            if (authToken != null) {
+                ProviderFilterDao providerFilterDAO = new ProviderFilterDao();
+                try {
+                    ArrayList<String> providerCode = providerFilterDAO.getProviderDetailsByAuthToken(authToken);
+                    if (providerCode.isEmpty()) {
+                        throw new CarServiceException("Invalid Auth Token");
+                    } else {
+                        quote.getFilter().setProviders(providerCode);
+                    }
+                } catch (DaoException e) {
+                    throw new CarServiceException("Auth Token Error", e);
+                }
+                // Provider Key is mandatory in NXS
+            } else if (EnvironmentService.getEnvironmentAsString().equalsIgnoreCase("nxs")) {
+                throw new CarServiceException("Provider Key required in '" + EnvironmentService.getEnvironmentAsString() + "' environment");
+            }
+        }
+
         final CarQuoteRequest carQuoteRequest = RequestAdapter.adapt(data);
         request.setPayload(carQuoteRequest);
 
@@ -87,42 +111,24 @@ public class CarQuoteService {
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         // Get URL of car-quote service
-        String serviceUrl = null;
-        String debugPath = null;
-        int timeout = 30;
-        try {
-            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("carQuoteServiceBER", brand.getVerticalByCode(Vertical.VerticalType.CAR.getCode()).getId(), brand.getId());
-            serviceUrl = serviceConfig.getPropertyValueByKey(SERVICE_URL, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
-            debugPath = serviceConfig.getPropertyValueByKey(DEBUG_PATH, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
-            timeout = Integer.parseInt(serviceConfig.getPropertyValueByKey(TIMEOUT_MILLIS, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE));
-        }catch (DaoException | ServiceConfigurationException e ){
-            throw new ServiceException("CarQuote config error", e);
-        }
-
-        EnvironmentService environmentService = new EnvironmentService();
-
-        if(environmentService.getEnvironment() == EnvironmentService.Environment.LOCALHOST || environmentService.getEnvironment() == EnvironmentService.Environment.NXI){
-            if(data.getEnvironmentOverride() != null && data.getEnvironmentOverride().equals("") == false) {
-                serviceUrl = data.getEnvironmentOverride();
-            }
-        }
+        QuoteServiceProperties serviceProperties = getQuoteServiceProperties("carQuoteServiceBER", brand, CAR.getCode(), data);
 
         try{
 
             String jsonRequest = objectMapper.writeValueAsString(request);
 
             // Log Request
-            XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_CAR-QUOTE" , debugPath);
+            XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_CAR-QUOTE" , serviceProperties.getDebugPath());
             writer.writeXmlToFile(jsonRequest , REQ_OUT);
 
             SimpleConnection connection = new SimpleConnection();
             connection.setRequestMethod("POST");
-            connection.setConnectTimeout(timeout);
-            connection.setReadTimeout(timeout);
+            connection.setConnectTimeout(serviceProperties.getTimeout());
+            connection.setReadTimeout(serviceProperties.getTimeout());
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
-            String response = connection.get(serviceUrl+"/quote");
+            String response = connection.get(serviceProperties.getServiceUrl()+"/quote");
             CarResponse carResponse = objectMapper.readValue(response, CarResponse.class);
 
             // Log response
@@ -177,4 +183,40 @@ public class CarQuoteService {
         ResultsService.saveResultsProperties(resultProperties);
     }
 
+    public void writeTempResultDetails(MessageContext context, CarRequest data, List<CarResult> quotes) {
+
+        SessionDataService service = new SessionDataService();
+
+        try {
+            Data dataBucket = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
+
+            if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
+                data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
+
+                XmlNode resultDetails = new XmlNode("tempResultDetails");
+                dataBucket.addChild(resultDetails);
+                XmlNode results = new XmlNode("results");
+
+                Iterator<CarResult> quotesIterator = quotes.iterator();
+                while (quotesIterator.hasNext()) {
+                    CarResult row = quotesIterator.next();
+                    if(row.getAvailable().equals(AvailableType.Y)) {
+                        String productId = row.getProductId();
+                        BigDecimal premium = row.getPrice().getAnnualPremium();
+                        XmlNode product = new XmlNode(productId);
+                        XmlNode headline = new XmlNode("headline");
+                        XmlNode lumpSumTotal = new XmlNode("lumpSumTotal", premium.toString());
+                        headline.addChild(lumpSumTotal);
+                        product.addChild(headline);
+                        results.addChild(product);
+                    }
+                }
+                resultDetails.addChild(results);
+            }
+
+        } catch (DaoException | SessionException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 }

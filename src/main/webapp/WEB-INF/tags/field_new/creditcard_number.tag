@@ -14,27 +14,4 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
-<field_new:input pattern="[0-9]*" xpath="${xpath}" className="creditcard_number ${className}" maxlength="21" required="${required}" title="${title}" />
-
-<%-- VALIDATION --%>
-<go:validate selector="${creditcardnumber}" rule="ccNumber" parm="${required}" message="Please enter a valid ${title}"/>
-
-<%-- JAVASCRIPT ONREADY --%>
-<go:script marker="onready">
-
-	$.validator.addMethod("ccNumber",
-			function(value, elem, parm) {
-
-				<%-- Strip non-numeric --%>
-				value = value.replace(/[^0-9]/g, '');
-
-				if(value.length == 16){
-					return true;
-				}else{
-					return false;
-				}
-			},
-			""
-	);
-
-</go:script>
+<field_new:input pattern="[0-9]*" xpath="${xpath}" className="creditcard_number ${className}" maxlength="21" required="${required}" title="${title}" additionalAttributes=" data-rule-creditCardNumber='${required}' " />

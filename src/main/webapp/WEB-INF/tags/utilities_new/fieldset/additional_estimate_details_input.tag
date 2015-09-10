@@ -10,6 +10,14 @@
 <%@ attribute name="inputGroupText" required="true" rtexprvalue="true" description="Input group text" %>
 <%@ attribute name="inputGroupTextPosition" required="false" rtexprvalue="true" description="Position of input group text" %>
 
+<c:set var="inputFieldType"><field_new:get_numeric_input_type /></c:set>
+<c:set var="formatNum">
+    <c:choose>
+        <c:when test='${inputType eq "text"}'>false</c:when>
+        <c:otherwise>true</c:otherwise>
+    </c:choose>
+</c:set>
+
 <c:set var="lowerCaseUtilityType" value="${fn:toLowerCase(utilityType)}" />
 
 <c:choose>
@@ -27,11 +35,34 @@
     </c:if>
 </c:set>
 
+
+<c:set var="amountValidationRules">
+    <c:choose>
+        <c:when test="${fn:contains(xpath, 'spend/electricity') || fn:contains(xpath, 'spend/gas')}">
+            data-rule-maximumSpend='true'
+        </c:when>
+        <c:when test="${fn:contains(xpath, 'usage/electricity/peak') || fn:contains(xpath, 'usage/electricity/offpeak')}">
+            data-rule-maximumUsage='true'
+        </c:when>
+        <c:when test="${fn:contains(xpath, 'usage/gas/peak') || fn:contains(xpath, 'usage/gas/offpeak')}">
+            data-rule-maximumUsageGas='true'
+        </c:when>
+    </c:choose>
+</c:set>
+
+<c:set var="periodValidationRules">
+    <c:choose>
+        <c:when test="${fn:contains(xpath, 'usage/electricity/offpeak') || fn:contains(xpath, 'usage/gas/offpeak')}">
+            data-rule-amountPeriodRequired='true' data-msg-amountPeriodRequired='Please choose the gas offpeak usage period'
+        </c:when>
+    </c:choose>
+</c:set>
+
 <div class="row clear ${lowerCaseUtilityType}">
     <div class="col-md-6 row-content">
         <h5>${utilityType} ${headingHelp}</h5>
         <div class="error-field" style="display:block;"><!-- empty --></div>
-        <field_new:input xpath="${xpath}/amount" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="true" />
+        <field_new:input type="${inputFieldType}" xpath="${xpath}/amount" required="${required}" inputGroupText="${inputGroupText}" requiredMessage="Please specify your ${lowerCaseUtilityType} usage." inputGroupTextPosition="${inputGroupTextPosition}" formattedInteger="true" additionalAttributes="${amountValidationRules}" />
     </div>
     <div class="col-md-6 row-content">
         <h5 class="structural">&nbsp;</h5>
@@ -44,6 +75,6 @@
                 <c:set var="items" value="=Period,M=Month,Q=Quarter,Y=Year" />
             </c:otherwise>
         </c:choose>
-        <field_new:array_select xpath="${xpath}/period" required="${required}" title="your ${lowerCaseUtilityType} period." items="${items}" />
+        <field_new:array_select xpath="${xpath}/period" required="${required}" title="your ${lowerCaseUtilityType} period." items="${items}" extraDataAttributes="${periodValidationRules}" />
     </div>
 </div>

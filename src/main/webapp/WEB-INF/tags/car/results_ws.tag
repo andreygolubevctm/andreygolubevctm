@@ -29,7 +29,6 @@
 
 <%-- Get data to build sections/categories/features --%>
 <jsp:useBean id="resultsService" class="com.ctm.services.results.ResultsService" scope="request" />
-<c:set var="resultTemplateItems" value="${resultsService.getResultsPageStructure('carws_')}" scope="request"  />
 <c:set var="jsonString" value="${resultsService.getResultItemsAsJsonString('carws_', 'category')}" scope="request"  />
 <script>
 	var resultLabels = ${jsonString};
@@ -68,12 +67,9 @@
 			</div>
 
 			<%-- Feature headers --%>
-			<div class="featuresList featuresTemplateComponent">
-				<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
-					<car:resultsItem_ws item="${selectedValue}" labelMode="true" index="${status.index}" />
-				</c:forEach>
+			<features:resultsItemTemplate_labels />
+			<div class="featuresList featuresTemplateComponent"></div>
 			</div>
-		</div>
 
 		<div class="resultsOverflow">
 			<div class="results-table"></div>
@@ -284,11 +280,7 @@
 </core:js_template>
 
 <%-- FEATURE TEMPLATE --%>
-	<core:js_template id="feature-template">
-		<c:forEach items="${resultTemplateItems}" var="selectedValue" varStatus="status">
-			<car:resultsItem_ws item="${selectedValue}" labelMode="false" index="${status.index}"/>
-		</c:forEach>
-	</core:js_template>
+<features:resultsItemTemplate />
 
 <%-- UNAVAILABLE COMBINED ROW --%>
 <core:js_template id="unavailable-combined-template">
@@ -425,7 +417,7 @@
 			</span>
 
 			<span class="name">
-				{{= products[i].name }}
+				{{= products[i].productName }}
 			</span>
 			<span class="price">
 				<span class="frequency annual annually {{= annualHidden }}">

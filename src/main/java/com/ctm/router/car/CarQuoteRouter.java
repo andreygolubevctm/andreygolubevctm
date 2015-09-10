@@ -64,6 +64,7 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
                 throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
             }
 
+            carService.writeTempResultDetails(context,data,quotes);
             ResultsObj<CarResult> results = new ResultsObj<>();
             results.setResult(quotes);
             results.setInfo(info);

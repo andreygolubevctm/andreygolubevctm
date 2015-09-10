@@ -116,7 +116,7 @@ public class EmailDetailsService {
 			try {
 				emailMaster.setHashedEmail(StringEncryption.hash(emailAddress + SALT + brandCode.toUpperCase()));
 			} catch (GeneralSecurityException e) {
-				logger.error("{}",e);
+				logger.error("",e);
 				throw new EmailDetailsException("failed to hash email", e);
 			}
 			long transId = 0L;
@@ -124,7 +124,7 @@ public class EmailDetailsService {
 				transId =  Long.parseLong(transactionId);
 			} catch (NumberFormatException e) {
 				//Session probably died recoverable
-				logger.warn("{}",e);
+				logger.warn("",e);
 			}
 			emailMaster = writeNewEmailDetails(transId , emailMaster);
 		}
