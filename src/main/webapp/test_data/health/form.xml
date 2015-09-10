@@ -11,6 +11,7 @@
 			<otherinput>(07) 3333 4444</otherinput>
 			<other>0733334444</other>
 		</contactNumber>
+		<flexiContactNumber>(0404) 123 123</flexiContactNumber>
 		<email>preload.testing@comparethemarket.com.au</email>
 		<optInEmail>Y</optInEmail>
 		<call>Y</call>

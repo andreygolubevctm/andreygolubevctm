@@ -4,17 +4,17 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 			required="true"	rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 		required="true" rtexprvalue="true" description="is this field required?" %>
-<%@ attribute name="className" 		required="true" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="size"			required="true" rtexprvalue="true"	 description="size of the input" %>
-<%@ attribute name="title"			required="true" rtexprvalue="true"	 description="subject of the input box" %>
-<%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="HTML5 placeholder" %>
-<%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
-<%@ attribute name="allowLandline"	required="true" rtexprvalue="true"	 description="?" %>
-<%@ attribute name="allowMobile"	required="true" rtexprvalue="true"	 description="?" %>
-<%@ attribute name="labelName"		required="false" rtexprvalue="true"	 description="the label to display for validation" %>
-<%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
+<%@ attribute name="xpath" 					required="true"	rtexprvalue="true"	 	description="variable's xpath" %>
+<%@ attribute name="required" 				required="true" rtexprvalue="true" 		description="is this field required?" %>
+<%@ attribute name="className" 				required="true" rtexprvalue="true"		description="additional css class attribute" %>
+<%@ attribute name="size"					required="true" rtexprvalue="true"		description="size of the input" %>
+<%@ attribute name="title"					required="true" rtexprvalue="true"	 	description="subject of the input box" %>
+<%@ attribute name="placeHolder"			required="false" rtexprvalue="true"	 	description="HTML5 placeholder" %>
+<%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 	description="HTML5 placeholder when input not in focus" %>
+<%@ attribute name="allowLandline"			required="true" rtexprvalue="true"	 	description="?" %>
+<%@ attribute name="allowMobile"			required="true" rtexprvalue="true"	 	description="?" %>
+<%@ attribute name="labelName"				required="false" rtexprvalue="true"	 	description="the label to display for validation" %>
+<%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 	description="Used for passing in additional attributes" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -66,6 +66,8 @@
 	</c:otherwise>
 </c:choose>
 
+<go:log>value="${value}</go:log>
+
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" class="" value="${value}" >
 <input type="${inputType}" name="${nameInput}" id="${nameInput}" title="${title}"
@@ -76,11 +78,11 @@
 
 
 <go:script marker="onready">
-		$("#${nameInput}").on("focusout", function(){
-			$("#${name}").val( $(this).val().replace(/[^0-9]+/g, '') );
-		});
-		<%-- remove fake placeholders (for IE8/9) if preloaded data --%>
-		if( typeof meerkat !== "undefined" && $("#${nameInput}").val() !== "" ){
-			meerkat.modules.placeholder.invalidatePlaceholder( $("#${nameInput}") );
-		}
+	$("#${nameInput}").on("focusout", function(){
+		$("#${name}").val( $(this).val().replace(/[^0-9]+/g, '') );
+	});
+	<%-- remove fake placeholders (for IE8/9) if preloaded data --%>
+	if( typeof meerkat !== "undefined" && $("#${nameInput}").val() !== "" ){
+		meerkat.modules.placeholder.invalidatePlaceholder( $("#${nameInput}") );
+	}
 </go:script>

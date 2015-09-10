@@ -4,7 +4,6 @@
 
 <%@ attribute name="xpath" 		required="true"		rtexprvalue="true"	 description="" %>
 <%@ attribute name="required" 	required="true" 	rtexprvalue="true"	 description="" %>
-<%@ attribute name="helptext" 	required="false"	rtexprvalue="true"	 description="" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 

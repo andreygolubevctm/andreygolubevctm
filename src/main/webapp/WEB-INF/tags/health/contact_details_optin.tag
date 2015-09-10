@@ -10,7 +10,6 @@
 <c:set var="contactName"	value="${go:nameFromXpath(xpath)}_name" />
 <c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
 <c:set var="optIn"			value="${go:nameFromXpath(xpath)}_call" />
-<c:set var="contactNumberText"	value="In case you need assistance" />
 
 <c:set var="val_optin"				value="Y" />
 <c:set var="val_optout"				value="N" />
@@ -70,7 +69,12 @@
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>
 
-				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" helptext="${contactNumberText}" />
+				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" />
+
+				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
+				<form_new:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear">
+					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}"/>
+				</form_new:row>
 
 				<%-- COMPETITION START --%>
 				<c:if test="${competitionEnabled == true}">
