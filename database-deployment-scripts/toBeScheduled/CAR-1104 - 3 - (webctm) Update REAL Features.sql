@@ -1,7 +1,7 @@
 -- UPDATER 
 UPDATE aggregator.features SET field_value='O',description='Optional cover available for the repair or replacement of the front windscreen of your car if it is accidentally broken during the insurance period. No excess will apply for the first windscreen claim made in any one period of insurance.' WHERE productId='REIN-01-02' AND code='windscreen';
 UPDATE aggregator.features SET field_value='Y',description='Covers up to $500 for loss or damage to personal items which are designed to be worn or carried.' WHERE productId='REIN-01-02' AND code='personalEf';
-UPDATE aggregator.features SET field_value='2 Years',description='newRep' WHERE productId='REIN-01-02' AND code='newRep';
+UPDATE aggregator.features SET field_value='2 Years',description='' WHERE productId='REIN-01-02' AND code='newRep';
 UPDATE aggregator.features SET field_value='Y',description='Guaranteed repairs by repairer appointed by Real Insurance.' WHERE productId='REIN-01-02' AND code='lifRep';
 
 -- CHECKER
