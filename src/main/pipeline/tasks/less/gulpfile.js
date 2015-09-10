@@ -14,7 +14,9 @@ var less = require("gulp-less"),
     rename = require("gulp-rename"),
     insert = require("gulp-insert"),
     watchLess = require("gulp-watch-less"),
+    sourcemaps = require("gulp-sourcemaps"),
     gulpIf = require("gulp-if"),
+    intercept = require("gulp-intercept"),
     plumber = require("gulp-plumber"),
     notify = require("gulp-notify"),
     fs = require("fs"),
@@ -57,23 +59,23 @@ function LessTasks(gulp) {
                 .pipe(plumber({
                     errorHandler: notify.onError("Error: <%= error.message %>")
                 }))
+                // Insert LESS dependencies
+                .pipe(
+                    gulpIf(
+                        lessDependencies !== "",
+                        insert.prepend(lessDependencies)
+                    )
+                )
                 // Prepend brand specific variables if file exists
-                .pipe(gulpIf(hasVariablesLess, insert.prepend("@import 'variables.less';")))
                 .pipe(
                     gulpIf(
                         fileList.indexOf(brandFileNames.variables) !== -1,
                         insert.prepend("@import '" + brandFileNames.variables + "';\r\n")
                     )
                 )
+                .pipe(gulpIf(hasVariablesLess, insert.prepend("@import 'variables.less';")))
                 // Prepend generic brand build file
                 .pipe(insert.prepend("@import '../../build/brand/" + brandCode + "/build.less';\r\n"))
-                // Insert LESS dependencies
-                .pipe(
-                    gulpIf(
-                        lessDependencies !== "",
-                        insert.append(lessDependencies)
-                    )
-                )
                 // Append brand specific theme less if file exists
                 .pipe(
                     gulpIf(
@@ -95,9 +97,11 @@ function LessTasks(gulp) {
                 watchesStarted.push(taskName);
             }
 
-            return stream.pipe(less({
+            return stream.pipe(sourcemaps.init())
+                .pipe(less({
                     paths: [gulp.pipelineConfig.build.dir + "/../**"]
                 }))
+                .pipe(sourcemaps.write())
                 .pipe(concat(fileName + ".css"))
                 .pipe(gulp.dest(targetDir))
                 .pipe(notify({
