@@ -225,7 +225,6 @@
 									<c:param name="policyNo"><x:out select="$resultOBJ//*[local-name()='policyNo']" /></c:param>
 									<c:param name="startDate" value="${data['health/payment/details/start']}" />
 									<c:param name="frequency" value="${data['health/payment/details/frequency']}" />
-									<c:param name="frequency" value="${data['health/payment/details/frequency']}" />
 									<c:param name="bccEmail"><x:out select="$resultOBJ//*[local-name()='bccEmail']" /></c:param>
 								</c:import>
 
