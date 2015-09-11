@@ -41,6 +41,11 @@
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
+<%-- for Health V2 A/B testing --%>
+<c:set var="isHealthV2" value="${fn:containsIgnoreCase(pageContext.request.requestURL, 'health_quote_v2')}" />
+<c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
+<c:if test="${isHealthV2}"><c:set var="fileName" value="health_v2" /></c:if>
+
 <!DOCTYPE html>
 <go:html>
 <head>
@@ -71,10 +76,10 @@
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
 				<c:when test="${userAgentSniffer.isSupportedBrowser(pageContext.getRequest(), 'minimumSupportedBrowsers') eq false}">
-					<jsp:include page="assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.min.inc" />
+					<jsp:include page="assets/brand/${pageSettings.getBrandCode()}/css/inc/${fileName}.min.inc" />
 				</c:when>
 				<c:otherwise>
-					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${fileName}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 				</c:otherwise>
 			</c:choose>
 		</c:if>
@@ -261,7 +266,7 @@
 					<jsp:include page="assets/js/bundles/inc/${pageSettings.getVerticalCode()}.inc" />
 				</c:when>
 				<c:otherwise>
-					<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+					<script src="${assetUrl}js/bundles/${fileName}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 				</c:otherwise>
 			</c:choose>
 		</c:if>
