@@ -229,6 +229,8 @@ Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath, getEx
                     originalBundleFilePath = path.join(gulpConfig.bundles.dir, originalBundle, fileType),
                     originalBundleFileList = fileHelper.getFilesFromFolderPath(originalBundleFilePath, useFullPath);
 
+                var extendedFiles = fileList;
+
                 fileList = originalBundleFileList.map(function(file) {
                     for(var i = 0; i < fileList.length; i++){
                         if(file.replace("bundles\\" + originalBundle, "bundles\\" + bundle) === fileList[i])
@@ -237,6 +239,12 @@ Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath, getEx
 
                     return file;
                 });
+
+                // Add the remaining files to the list
+                for(var j = 0; j < extendedFiles.length; j++) {
+                    if(fileList.indexOf(extendedFiles[j]) === -1)
+                        fileList.push(extendedFiles[j]);
+                }
             }
 
             this.fileListCache[fileListCacheKey] = fileList;
