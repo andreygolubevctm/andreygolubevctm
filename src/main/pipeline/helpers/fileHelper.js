@@ -19,6 +19,20 @@ var FileHelper = {
         });
     },
 
+    appendToFile: function(folder, fileName, content) {
+        mkdirp(folder, function(err) {
+            if (err) console.error(err);
+
+            fs.appendFile(path.join(folder, fileName), content + "\r\n", function (err) {
+                if (err) return console.error(err);
+            });
+        });
+    },
+
+    readFile: function(filePath){
+        return fs.readFileSync(filePath, "utf8");
+    },
+
     /**
      * Synchronously returns a list of all file paths for a given folder path
      * @param path

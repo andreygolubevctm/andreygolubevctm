@@ -69,7 +69,14 @@
 	<c:set var="sessionPop" value="${false}" />
 
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
-			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+			<c:choose>
+				<c:when test="${userAgentSniffer.isSupportedBrowser(pageContext.getRequest(), 'minimumSupportedBrowsers') eq false}">
+					<jsp:include page="assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.min.inc" />
+				</c:when>
+				<c:otherwise>
+					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+				</c:otherwise>
+			</c:choose>
 		</c:if>
 
 		<%--  Modernizr --%>
