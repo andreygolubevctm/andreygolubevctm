@@ -22,6 +22,7 @@ var less = require("gulp-less"),
     fs = require("fs"),
     path = require("path");
 
+// TODO: Abstract logic into separate files to reduce complexity here
 // TODO: Add .map files
 
 function LessTasks(gulp) {
@@ -44,16 +45,22 @@ function LessTasks(gulp) {
                     .filter(function(dep) {
                         return dep.match(/(bundles)(\\|\/)(shared)/);
                     }).map(function(dep) {
-                        return "@import '" + dep + "';"
+                        return "@import \"" + dep + "\";"
                     }).join("\r\n");
             }
 
             var lessDependencies = dependenciesCache[taskName];
 
-            var replaceImports = [];
+            var replaceImports = [],
+                useParentBundleBuild = false;
+
             if(typeof bundles.collection[bundle] !== "undefined" && typeof bundles.collection[bundle].extends !== "undefined") {
-                glob = glob.replace("bundles\\" + bundle, "bundles\\" + bundles.collection[bundle].extends);
                 replaceImports = bundles.getBundleFiles(bundle, "less", null, false);
+
+                if(replaceImports.length && replaceImports.indexOf("build.less") === -1) {
+                    glob = glob.replace("bundles\\" + bundle, "bundles\\" + bundles.collection[bundle].extends);
+                    useParentBundleBuild = true;
+                }
             }
 
             if(typeof compileAs === "string")
@@ -76,17 +83,17 @@ function LessTasks(gulp) {
                 .pipe(
                     gulpIf(
                         fileList.indexOf(brandFileNames.variables) !== -1,
-                        insert.prepend("@import '" + brandFileNames.variables + "';\r\n")
+                        insert.prepend("@import \"" + brandFileNames.variables + "\";\r\n")
                     )
                 )
-                .pipe(gulpIf(hasVariablesLess, insert.prepend("@import 'variables.less';")))
+                .pipe(gulpIf(hasVariablesLess, insert.prepend("@import \"variables.less\";\r\n")))
                 // Prepend generic brand build file
-                .pipe(insert.prepend("@import '../../build/brand/" + brandCode + "/build.less';\r\n"))
+                .pipe(insert.prepend("@import \"../../build/brand/" + brandCode + "/build.less\";\r\n"))
                 // Append brand specific theme less if file exists
                 .pipe(
                     gulpIf(
                         fileList.indexOf(brandFileNames.theme) !== -1,
-                        insert.append("\r\n@import '" + brandFileNames.theme + "';")
+                        insert.append("\r\n@import \"" + brandFileNames.theme + "\";")
                     )
                 );
 
@@ -109,8 +116,19 @@ function LessTasks(gulp) {
                         if(replaceImports.length) {
                             var contents = file.contents.toString();
 
-                            for (var i = 0; i < replaceImports.length; i++) {
-                                contents = contents.replace("\"" + replaceImports[i], "\"../../" + bundle + "/less/" + replaceImports[i])
+                            if(useParentBundleBuild) {
+                                // If using the parent build, we should update the import paths to be relative
+                                // to the parent bundle
+                                for (var i = 0; i < replaceImports.length; i++) {
+                                    contents = contents.replace("\"" + replaceImports[i], "\"../../" + bundle + "/less/" + replaceImports[i])
+                                }
+                            } else {
+                                // Use import paths relative to the extended bundle
+                                contents = contents.replace(/(\")([a-z])/g, "\"../../" + bundles.collection[bundle].extends + "/less/$2");
+
+                                for (var i = 0; i < replaceImports.length; i++) {
+                                    contents = contents.replace("\"../../" + bundles.collection[bundle].extends + "/less/" + replaceImports[i], "\"" + replaceImports[i])
+                                }
                             }
 
                             file.contents = new Buffer(contents);
