@@ -16,6 +16,7 @@
 	"shared/dropdownInteractive",
 	"shared/paymentGateway",
 	"shared/numberUtils",
+	"shared/leavePageWarning",
 	"shared/popovers",
 	"shared/moreInfo",
 	"shared/resultsHeaderBar",

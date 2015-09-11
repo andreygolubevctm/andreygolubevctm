@@ -9,6 +9,7 @@
     "shared/datepicker",
     "shared/emailLoadQuote",
     "shared/contentPopulation",
+    "shared/leavePageWarning",
     "shared/commencementDate",
     "shared/currency",
     "shared/moreInfo",

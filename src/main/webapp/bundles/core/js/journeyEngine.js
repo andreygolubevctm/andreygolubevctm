@@ -635,6 +635,9 @@
 
 				// handle dynamically name
 				if(navigationId == 'next' || navigationId == 'previous'){
+
+					meerkat.modules.navMenu.close();
+
 					var currentStepIndex = getStepIndex(currentStep.navigationId);
 
 					var newStepIndex = null;

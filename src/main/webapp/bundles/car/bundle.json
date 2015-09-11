@@ -12,6 +12,7 @@
     "shared/dropdownInteractive",
     "shared/partnerTransfer",
     "shared/moreInfo",
+    "shared/leavePageWarning",
     "shared/contentPopulation",
     "shared/regoLookup",
     "shared/saveQuote",
