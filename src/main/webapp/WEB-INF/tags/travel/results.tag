@@ -120,7 +120,7 @@
 									<span class="priceTitle">Price</span>
 								</div>
 								<div class="col-xs-6 excessContainer">
-									<span class="excessAmount">{{= obj.info.excess.text }}</span>
+									<span class="excessAmount">{{= obj.info.excess }}</span>
 									<span class="excessTitle">Excess</span>
 								</div>
 							</div>
@@ -150,13 +150,13 @@
 				</div>
 				<div class="row mainBenefitsPricing">
 					<div class="col-xs-4 medicalAmount">
-						{{= obj.info.medical.text }}
+						{{= obj.info.medical }}
 					</div>
 					<div class="col-xs-4 cdxfeeAmount">
-						{{= obj.info.cxdfee.text }}
+						{{= obj.info.cxdfee }}
 					</div>
 					<div class="col-xs-4 luggageAmount">
-						{{= obj.info.luggage.text }}
+						{{= obj.info.luggage }}
 					</div>
 				</div>
 			</div><%-- /mainBenefitsContainer --%>

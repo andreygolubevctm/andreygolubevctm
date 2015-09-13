@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CrudService<T> {
 
-    List<?> getAll() throws DaoException;
+    List<?> getAll(HttpServletRequest request) throws DaoException;
 
     T update(HttpServletRequest request) throws DaoException, CrudValidationException;
 

@@ -33,7 +33,7 @@
             ],
             onOpen: function(dialogId) {
                 // Setup validation on the forgot password form
-                meerkat.modules.validation.setupDefaultValidationOnForm($("#forgot-password-form"));
+                meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($("#forgot-password-form"));
 
                 var usedEmail = $("#login_email").val();
                 $("#login_forgotten_email").val(usedEmail);

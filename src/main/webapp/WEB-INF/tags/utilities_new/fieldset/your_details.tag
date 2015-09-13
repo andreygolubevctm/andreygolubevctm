@@ -36,7 +36,7 @@
                              className="sessioncamexclude"
                              placeHolder="04XX XXX XXX"
                              placeHolderUnfocused="04XX XXX XXX"
-                             labelName="mobile phone number." />
+                             labelName="mobile phone number." additionalAttributes=" data-rule-validateEnteredPhoneNumber='true' data-msg-validateEnteredPhoneNumber='Please enter your mobile phone number or other number.'" />
     </form_new:row>
 
     <c:set var="fieldXPath" value="${xpath}/otherPhoneNumber" />
@@ -63,7 +63,7 @@
 
     <c:set var="fieldXPath" value="${xpath}/address" />
     <h5 class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-xs-12 row-content">Residential Address</h5>
-    <group_new:elastic_address xpath="${fieldXPath}" type="R" />
+    <group_new:elastic_address xpath="${fieldXPath}" type="R" suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.'" suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.'" postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.'" postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.'" />
 
     <h5 class="col-lg-9 col-lg-offset-3 col-sm-8 col-sm-offset-4 col-xs-12 row-content">Postal Address</h5>
     <form_new:row>
@@ -82,51 +82,5 @@
 </form_new:fieldset>
 
 <go:script marker="js-head">
-    $.validator.addMethod('validateSelectedResidentialPostCode', function(value, element) {
-        var $element = $(element),
-            startPostCode = $("#utilities_householdDetails_postcode").val(),
-            enquiryPostCode = $element.val(),
-            isValid = (startPostCode === enquiryPostCode),
-            $errorFieldContainer = $("#utilities_application_details_address_error_container .error-field");
 
-        // We only need to show one error if the suburb name has already complained, so let's only show that:
-        if($errorFieldContainer.find("label[for='utilities_application_details_address_suburbName']").length)
-            isValid = true;
-
-        if(isValid)
-            $errorFieldContainer.find("label[for='" + $element.attr("name") + "']").remove();
-
-        return isValid;
-    });
-
-    $.validator.addMethod('validateSelectedResidentialSuburb', function(value, element) {
-        var $element = $(element),
-            startSuburb = $("#utilities_householdDetails_suburb").val(),
-            enquirySuburb = $element.find("option:selected").length ? $element.find("option:selected").text() : $element.val(),
-            isValid = (startSuburb === enquirySuburb),
-            $errorFieldContainer = $("#utilities_application_details_address_error_container .error-field");
-
-        if(isValid)
-            $errorFieldContainer.find("label[for='" + $element.attr("name") + "']").remove();
-
-        return isValid;
-    });
-
-    $.validator.addMethod('validateEnteredPhoneNumber', function(value, element) {
-        var mobileInput = $("#utilities_application_details_mobileNumberinput").val(),
-            otherInput = $("#utilities_application_details_otherPhoneNumberinput").val();
-
-        return !(!mobileInput && !otherInput);
-    });
 </go:script>
-
-<c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<go:validate selector="${name}_address_suburbName" rule="validateSelectedResidentialSuburb" parm="true" message="Your address does not match the original suburb provided." />
-<go:validate selector="${name}_address_suburb" rule="validateSelectedResidentialSuburb" parm="true" message="The selected suburb does not match the original suburb selected." />
-
-<go:validate selector="${name}_address_postCode" rule="validateSelectedResidentialPostCode" parm="true" message="Your address does not match the original postcode provided." />
-<go:validate selector="${name}_address_nonStdPostCode" rule="validateSelectedResidentialPostCode" parm="true" message="The entered postcode does not match the original postcode provided." />
-
-<c:set var="phoneErrorMessage" value="Please enter your mobile phone number or other number." />
-<go:validate selector="${name}_mobileNumberinput" rule="validateEnteredPhoneNumber" parm="true" message="${phoneErrorMessage}" />
-<go:validate selector="${name}_otherNumberinput" rule="validateEnteredPhoneNumber" parm="true" message="${phoneErrorMessage}" />

@@ -63,9 +63,10 @@ WHERE productId IN
 /* Disable current products product master 588 records tobe updated*/
 UPDATE `ctm`.`product_master` pm
 SET STATUS = 'X'
-WHERE pm.EffectiveStart = @EffectiveStart
-	AND NOW() BETWEEN pm.EffectiveStart and pm.EffectiveEnd
-	AND Status != 'X' 
+WHERE NOW() BETWEEN pm.EffectiveStart and pm.EffectiveEnd
+	AND Status != 'X'
+	AND pm.ProductCat = 'HEALTH'
+	AND pm.providerID = @providerID
 	AND pm.LongTitle in (	
 						'Accident Only Hospital Cover and Gold Extras',
 						'Accident Only Hospital Cover and Platinum Extras',

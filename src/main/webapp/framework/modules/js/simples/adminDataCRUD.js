@@ -90,11 +90,11 @@
 				if($this.hasClass("table-hidden")) {
 					$container.slideDown(400, function(){
 						$this.removeClass("table-hidden");
-					});
+					}).removeClass('hidden');
 				} else {
 					$container.slideUp(400, function() {
 						$this.addClass("table-hidden");
-					});
+					}).addClass('hidden');
 				}
 			})
 			.on("click", ".crud-new-entry", function() {
@@ -207,17 +207,19 @@
 	 * Fetches all records from the server and renders them to the page
 	 * @returns promise
 	 */
-	dataCRUD.prototype.get = function() {
+	dataCRUD.prototype.get = function(data) {
 		this.dataSet.empty();
-		
-		var that = this,
-			onSuccess = function(data) {
-				if(typeof data === "string")
-					data = JSON.parse(data);
 
-				if(data.length) {
-					for (var i = 0; i < data.length; i++) {
-						var datum = data[i],
+		data = data || {};
+
+		var that = this,
+			onSuccess = function(response) {
+				if(typeof response === "string")
+					response = JSON.parse(response);
+
+				if(response.length) {
+					for (var i = 0; i < response.length; i++) {
+						var datum = response[i],
 							obj = new dataSetModule.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
 						that.dataSet.push(obj);
 					}
@@ -226,7 +228,7 @@
 				that.sortRenderResults();
 			};
 		
-		return this.promise("getAllRecords", {}, onSuccess, "get");
+		return this.promise("getAllRecords", data, onSuccess, "get");
 	};
 	
 	/**

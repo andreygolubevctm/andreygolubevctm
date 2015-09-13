@@ -1,0 +1,20 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="false" monitoring="autodetect" dynamicConfig="true">
+
+    <!-- Content Control Cache
+        - No persistence - in memory only
+        - Items will expire 30 minutes of not being accessed
+        - Items will expire after 60 minutes - regardless of use
+        - The least frequently used items will be evicted first
+     -->
+
+    <cache name="contentControlCache"
+           maxEntriesLocalHeap="10000"
+           eternal="false"
+           diskSpoolBufferSizeMB="20"
+           timeToIdleSeconds="1800" timeToLiveSeconds="3600"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+        <persistence strategy="none" />
+    </cache>
+
+</ehcache>

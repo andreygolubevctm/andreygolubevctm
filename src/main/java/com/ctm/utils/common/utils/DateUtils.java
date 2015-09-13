@@ -185,7 +185,7 @@ public class DateUtils {
         return dateConverted;
     }
 
-    public static int getAgeFromDOB(String dob) throws Exception {
+    public static int getAgeFromDOBStr(String dob) throws Exception {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         Date dobObj =  df.parse(dob);
         return getAgeFromDOB(dobObj);

@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get />
+<jsp:useBean id="providerContentService" class="com.ctm.services.simples.ProviderContentService" scope="page" />
 
 <%--
 SAVING A SUCCESSFUL HEALTH APPLICATION
@@ -21,8 +22,8 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		<vertical>CTMH</vertical>
 		<startDate>${param.startDate}</startDate>
 		<frequency>${param.frequency}</frequency>
-		<about><![CDATA[ <c:import url="/health_fund_info/${data.health.application.provider}/about.html" /> ]]></about>
-		<whatsNext><![CDATA[ <c:import url="/health_fund_info/${data.health.application.provider}/next_info.html" /> ]]></whatsNext>		
+		<about><![CDATA[ ${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, "ABT")} ]]></about>
+		<whatsNext><![CDATA[ ${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, "NXT")} ]]></whatsNext>
 		<product>${data.confirmation.health}</product>
 		<policyNo>${param.policyNo}</policyNo>
 	</data>

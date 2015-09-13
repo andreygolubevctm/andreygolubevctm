@@ -163,7 +163,7 @@
 		<c:when test="${not empty tomorrow}">var minDate = '${tomorrow}';</c:when>
 		<c:otherwise>var minDate = '${minDate}';</c:otherwise>
 	</c:choose>
-	
+
 	jQuery("#${name}").datepicker({
 		firstDay: 1,
 		minDate: minDate,
@@ -208,7 +208,7 @@ try {
 	#${name} {
 		margin-right: 5px;
 	}
-	
+
 	.ui-datepicker {
 		margin-left:0px;
 		margin-top:0px;
