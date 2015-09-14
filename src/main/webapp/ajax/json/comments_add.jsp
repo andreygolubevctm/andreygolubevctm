@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <session:get authenticated="true" />
 
 <c:set var="transactionId">
@@ -13,12 +15,12 @@
 	</c:choose>
 </c:set>
 
-<go:log level="INFO" source="comments_add_jsp" >Add Comment TransactionId: ${transactionId}</go:log>
+${logger.info('Add Comment TransactionId. {}', log:kv('transactionId',transactionId ))}
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
-<go:log>isOperator: ${isOperator}</go:log>
+${logger.info('Checked if authenticated user is simples user. {}', log:kv('isOperator', isOperator))}
 
 <c:choose>
 	<c:when test="${empty isOperator and empty param.userOverride}">
@@ -40,9 +42,12 @@
 			<c:set var="rootId">${rootid.rows[0].rootId}</c:set>
 		</c:if>
 	</c:catch>
+	<c:if test="${not empty error}">
+		${logger.error('Failed to get rootid. {}', log:kv('transactionId',transactionId ), error)}
+	</c:if>
 </c:if>
 
-<go:log level="INFO" source="comments_add_jsp" >Add Comment RootId: ${rootId}</go:log>
+${logger.debug('Add Comment RootId.{}',log:kv('rootId', rootId))}
 
 <c:choose>
 	<c:when test="${empty rootId}">
@@ -89,7 +94,7 @@
 			<c:if test="${not empty error}">
 				<c:if test="${not empty errorPool}"><c:set var="errorPool">${errorPool},</c:set></c:if>
 				<c:set var="errorPool">${errorPool}{"error":"Failed to add comment: ${error.rootCause}"}</c:set>
-				<go:log source="comments_add_jsp" level="ERROR" error="${error}">Failed to add comment</go:log>
+				${logger.error('Failed to add comment. {},{}', log:kv('operatorId', operatorId), comment, error)}"
 			</c:if>
 		</c:if>
 	</c:otherwise>
@@ -103,6 +108,5 @@
 	</c:when>
 	<c:otherwise>
 		{"errors":[${errorPool}]}
-		<go:log source="comments_add_jsp" level="INFO">{[${errorPool}]}</go:log>
 	</c:otherwise>
 </c:choose>
