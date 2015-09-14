@@ -1,3 +1,4 @@
+<%-- TODO: FIX URLS FOR ALL REFERENCES TO ${assetUrl} -- They currently use ../ for scripts. We need to move scripts to the asset folder! --%>
 <%@ tag description="The Page" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -32,11 +33,18 @@
 <c:set var="superTagEnabled" value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />
 <c:set var="DTMEnabled" value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />
 
+<c:set var="separateJS" value="${param.separateJS eq 'true'}"/>
+
 <%-- Whether we want to show logging or not (for use on Production) --%>
 <c:set var="showLogging" value="${isDev or (not empty param.showLogging && param.showLogging == 'true')}" />
 
-<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
+<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+
+<%-- for Health V2 A/B testing --%>
+<c:set var="isHealthV2" value="${fn:containsIgnoreCase(pageContext.request.requestURL, 'health_quote_v2')}" />
+<c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
+<c:if test="${isHealthV2}"><c:set var="fileName" value="health_v2" /></c:if>
 
 <!DOCTYPE html>
 <go:html>
@@ -65,38 +73,33 @@
 	<%-- Disable session_pop on new journeys --%>
 	<c:set var="sessionPop" value="${false}" />
 
-	<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
-	<c:choose>
-		<c:when test="${pageSettings.getVerticalCode() == 'generic'}">
-		</c:when>
-		<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
-		<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">
-			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/lmi.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
-			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
-		</c:when>
-		<%-- END HACK FOR LMI --%>
-		<c:otherwise>
-			<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
-		</c:otherwise>
-	</c:choose>
+		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
+			<c:choose>
+				<c:when test="${userAgentSniffer.isSupportedBrowser(pageContext.getRequest(), 'minimumSupportedBrowsers') eq false}">
+					<jsp:include page="assets/brand/${pageSettings.getBrandCode()}/css/inc/${fileName}.min.inc" />
+				</c:when>
+				<c:otherwise>
+					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${fileName}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 
 		<%--  Modernizr --%>
-		<script src='${assetUrl}framework/lib/js/modernizr-2.8.3.min.js'></script>
+		<script src='${assetUrl}../framework/lib/js/modernizr-2.8.3.min.js'></script>
 
 		<!--[if lt IE 9]>
-			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
+			<script src="${assetUrl}../framework/lib/js/respond.ctm.js"></script>
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}../framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
 		<![endif]-->
 		<!--[if gte IE 9]><!-->
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}../framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
 		<!--<![endif]-->
 
-			<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/bootstrap.${pageSettings.getBrandCode()}.min.js?${revision}"></script>
+			<script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 		
-			<script src="${assetUrl}framework/jquery/plugins/jquery.number-2.1.5.js?${revision}"></script>
-
+			<script src="${assetUrl}../framework/jquery/plugins/jquery.number-2.1.5.js?${revision}"></script>
 
 		<go:insertmarker format="HTML" name="js-href" />
 		<go:script>
@@ -112,13 +115,13 @@
 	</c:when>
 	<c:otherwise>
 		<!--[if lt IE 9]>
-			<script src="${assetUrl}framework/lib/js/respond.ctm.js"></script>
+			<script src="${assetUrl}../framework/lib/js/respond.ctm.js"></script>
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}../framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
 			<![endif]-->
 			<!--[if gte IE 9]><!-->
 				<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-				<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
+				<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}../framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
 			<!--<![endif]-->
 	</c:otherwise>
 </c:choose>
@@ -250,26 +253,23 @@
 		<c:if test="${isDev eq false}">
 			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 		</c:if>
-		<script>window._ || document.write('<script src="${assetUrl}framework/lib/js/underscore-1.8.3.min.js">\x3C/script>')</script>
+		<script>window._ || document.write('<script src="${assetUrl}../framework/lib/js/underscore-1.8.3.min.js">\x3C/script>')</script>
 
 		<%-- Extras --%>
-<script type="text/javascript" src="${assetUrl}framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
-<script type="text/javascript" src="${assetUrl}framework/jquery/plugins/qtip2/jquery.qtip.min.js" async defer></script>
+<script type="text/javascript" src="${assetUrl}../framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
+<script type="text/javascript" src="${assetUrl}../framework/jquery/plugins/qtip2/jquery.qtip.min.js" async defer></script>
 
 		<!--  Meerkat -->
-		<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-	<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/components/validation.modules.${pageSettings.getBrandCode()}.js?${revision}"></script>
-		<c:choose>
-			<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
-			<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">
-				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/lmi.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-			</c:when>
-			<%-- END HACK FOR LMI --%>
-			<c:when test="${pageSettings.getVerticalCode() != 'generic'}">
-				<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/${pageSettings.getVerticalCode()}.modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-			</c:when>
-		</c:choose>
+		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
+			<c:choose>
+				<c:when test="${separateJS}">
+					<jsp:include page="assets/js/bundles/inc/${pageSettings.getVerticalCode()}.inc" />
+				</c:when>
+				<c:otherwise>
+					<script src="${assetUrl}js/bundles/${fileName}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+				</c:otherwise>
+			</c:choose>
+		</c:if>
 
 		<%-- Additional Meerkat Scripts --%>
 		<jsp:invoke fragment="additional_meerkat_scripts" />
@@ -392,7 +392,7 @@
 			<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js" async defer></script>
 		</c:when>
 		<c:otherwise>
-			<script src="${assetUrl}framework/lib/js/fastclick-1.0.6.min.js" async defer></script>
+			<script src="${assetUrl}../framework/lib/js/fastclick-1.0.6.min.js" async defer></script>
 		</c:otherwise>
 	</c:choose>
 

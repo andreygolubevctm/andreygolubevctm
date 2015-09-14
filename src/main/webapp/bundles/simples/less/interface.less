@@ -1,0 +1,147 @@
+
+body.simples {
+	header {
+		display: none;
+	}
+
+	.navbar-brand {
+		height: 40px;
+	}
+
+	.navbar-inverse {
+		background-color: #002;
+	}
+
+	.navbar-form {
+		margin-top: (@navbar-padding-vertical / 2);
+		margin-bottom: (@navbar-padding-vertical / 2);
+	}
+
+	.navbar-link {
+		text-decoration: underline;
+	}
+
+	.dropdown-header {
+		color: @theme-tertiary;
+		font-weight: normal;
+		font-family: @font-family-theme-bold;
+	}
+
+	.dropdown-menu {
+		color: @theme-dark;
+
+		> .disabled > a {
+			color: @theme-default;
+		}
+
+		> li > a:hover, .dropdown-menu > li > a:focus {
+			background-color: @theme-light;
+		}
+	}
+
+	.fieldset {
+		margin-top: 20px;
+	}
+
+	.table > tbody > tr {
+		> td, > th {
+			border-top: 0;
+		}
+	}
+
+
+
+	.simples-home {
+		padding: 20px 0;
+
+		.simples-home-buttons {
+			text-align: center;
+			padding: 20px;
+		}
+
+		.message-getnext + .message-inbound {
+			margin-left: 10px;
+		}
+	}
+
+
+
+	.messagedetail-container {
+		//Hide some elements
+		.comment-title-tranid,
+		.comment-hideshow {
+			display: none;
+		}
+
+		.comment-container,
+		.touch-container {
+			margin-top: 30px;
+		}
+
+		button ~ .messagedetail-loadbutton {
+			margin-left: 30px;
+		}
+	}
+
+
+
+	.postpone-container {
+		.row + .row {
+			margin-top: 20px;
+		}
+
+		h5 {
+			font-size: @font-size-base;
+		}
+
+		.datepicker.datepicker-inline {
+			border: none;
+		}
+
+		// Correct styles from search.less
+		table.table {
+			> * {
+				> tr {
+					> td, > th {
+						padding: 5px;
+					}
+				}
+				> tr:nth-child(odd) {
+					> td.active {
+						background-color: @theme-secondary;
+					}
+				}
+			}
+		}
+	}
+
+	.left-border{
+		border-left:2px solid #ddd;
+	}
+
+  	.side-menu-container{
+	  background-color: @theme-tertiary;
+	  position: fixed;
+	  top: 100px;
+	  left: 10px;
+	  border-radius: @border-radius-large;
+
+	  .active{
+		a {
+		  background-color: @theme-secondary;
+		  &:hover, &:focus {
+			background-color: darken(@theme-secondary, 10%);
+		  }
+		}
+	  }
+
+	  a {
+		color: #fff;
+		&:hover, &:focus {
+		  background-color: darken(@theme-tertiary, 10%);
+		}
+	  }
+	}
+
+}//body.simples
+

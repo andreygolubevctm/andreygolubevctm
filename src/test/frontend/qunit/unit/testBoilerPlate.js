@@ -1,19 +1,17 @@
-window.jQuery
-&& window.jQuery.each
-|| document
-    .write('<script src="../../../main/webapp/framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/meerkat/meerkat.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/meerkat/meerkat.logging.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/meerkat/meerkat.modules.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/comms.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/numberUtils.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/utils.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/transactionId.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/tracking.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/deviceMediaState.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/dialogs.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/loadingAnimation.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/bootstrap/js/modal.js">\x3C/script>');
+window.jQuery && window.jQuery.each || document.write('<script src="../../../main/webapp/framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.logging.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.modules.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/comms.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/shared/numberUtils/js/numberUtils.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/utils.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/transactionId.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/tracking.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/deviceMediaState.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/dialogs.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/loadingAnimation.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/assets/js/libraries/bootstrap.min.js">\x3C/script>');
+
 ;
 (function (meerkat) {
 
@@ -56,6 +54,172 @@ document.write('<script src="../../../main/webapp/framework/bootstrap/js/modal.j
     meerkat != null && meerkat.init(siteConfig, options);
 
 })(window.meerkat);
+
+var validation = false;
+$(document).ready(function() {
+
+	if (typeof jQuery.validator !== 'function') {
+		if (typeof console.log === 'function') console.log('jquery.validate library is not available.');
+		return;
+	}
+
+
+	jQuery.validator.prototype.hideErrors = function() {
+		this.addWrapper( this.toHide );
+	}
+
+
+	jQuery.validator.prototype.ctm_unhighlight = function( element, errorClass, validClass ) {
+		if (!element) return;
+		errorClass = errorClass || this.settings.errorClass;
+		validClass = validClass || this.settings.validClass;
+
+
+		if (element.type === "radio") {
+			this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+		} else {
+			$(element).removeClass(errorClass).addClass(validClass);
+		}
+
+
+		var $wrapper = $(element).closest('.row-content, .fieldrow_value');
+		var $errorContainer = $wrapper.find('.error-field');
+
+
+		$errorContainer.find('label[for="' + element.name + '"]').remove();
+
+
+		if ($wrapper.find(':input.has-error').length > 0) {
+			return;
+		}
+
+
+		$wrapper.removeClass(errorClass).addClass(validClass);
+
+
+		if ($errorContainer.find('label').length > 0) {
+			if ($errorContainer.is(':visible')) {
+				$errorContainer.stop().slideUp(100);
+
+			}
+			else {
+				$errorContainer.hide();
+			}
+		}
+	};
+
+
+	$('.journeyEngineSlide form').each(function(index, element){
+		setupDefaultValidationOnForm( $(element) );
+	});
+
+});
+
+
+function setupDefaultValidationOnForm( $formElement ){
+
+	$formElement.validate({
+		submitHandler: function(form) {
+			form.submit();
+		},
+		invalidHandler: function(form, validator) {
+
+			if (!validator.numberOfInvalids()) return;
+			if(jQuery.validator.scrollingInProgress == true) return;
+
+			var $ele = $(validator.errorList[0].element),
+				$parent = $ele.closest('.row-content, .fieldrow_value');
+
+
+			if($ele.attr('data-validation-placement') != null && $ele.attr('data-validation-placement') != ''){
+				$ele2 = $($ele.attr('data-validation-placement'));
+				if ($ele2.length > 0) $ele = $ele2;
+			}
+
+
+			if ($parent.length > 0) $ele = $parent;
+			jQuery.validator.scrollingInProgress = true;
+			meerkat.modules.utils.scrollPageTo($ele,500,-50, function(){
+				jQuery.validator.scrollingInProgress = false;
+			});
+		},
+		ignore: ':hidden,:disabled',
+		//wrapper: 'li',
+		meta: 'validate',
+		debug: true,
+		errorClass: 'has-error',
+		validClass: 'has-success',
+		errorPlacement: function ($error, $element) {
+
+
+			var $referenceElement = $element;
+			if($element.attr('data-validation-placement') != null && $element.attr('data-validation-placement') != ''){
+				$referenceElement = $($element.attr('data-validation-placement'));
+			}
+
+			var parent = $referenceElement.closest('.row-content, .fieldrow_value');
+
+			if(parent.length == 0) parent = $element.parent();
+
+			var errorContainer = parent.children('.error-field');
+
+			if (errorContainer.length == 0) {
+				parent.prepend('<div class="error-field"></div>');
+				errorContainer = parent.children('.error-field');
+				errorContainer.hide().slideDown(100);
+			}
+			errorContainer.append($error);
+		},
+		onkeyup: function(element) {
+			var element_id = jQuery(element).attr('id');
+			if ( !this.settings.rules.hasOwnProperty(element_id) || this.settings.rules[element_id].onkeyup == false) {
+				return;
+			}
+
+			if (validation && element.name != "captcha_code") {
+				this.element(element);
+			}
+		},
+		onfocusout: function(element, event) {
+
+			var $ele = $(element);
+			if ($ele.hasClass('tt-query')) {
+				var $menu = $ele.nextAll('.tt-dropdown-menu');
+				if ($menu.length > 0 && $menu.first().is(':visible')) {
+					return false;
+				}
+			}
+
+
+			$.validator.defaults.onfocusout.call(this, element, event);
+		},
+		highlight: function( element, errorClass, validClass ) {
+
+			if (element.type === "radio") {
+				this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+			} else {
+				$(element).addClass(errorClass).removeClass(validClass);
+			}
+
+
+			var $wrapper = $(element).closest('.row-content, .fieldrow_value');
+			$wrapper.addClass(errorClass).removeClass(validClass);
+
+
+			var errorContainer = $wrapper.find('.error-field');
+			if (errorContainer.find('label:visible').length === 0) {
+				if (errorContainer.is(':visible')) {
+					errorContainer.stop();
+				}
+				errorContainer.delay(10).slideDown(100);
+
+			}
+		},
+		unhighlight: function( element, errorClass, validClass ) {
+			return this.ctm_unhighlight( element, errorClass, validClass );
+		}
+	});
+}
 
 window._
 || document
@@ -118,11 +282,12 @@ $(document).ready(function () {
         }
     };
 
-    Results = {
-        settings: {
-            frequency: frequency
-        }
-    };
+	Results = {
+			settings :
+				{
+					frequency : frequency
+				}
+	};
 
 });
 
@@ -228,4 +393,109 @@ function getProduct() {
         showApply: true,
         whatHappensNext: ""
     };
+	return {
+			transactionId: 2204639,
+			ambulance:  {
+
+			},
+			promo: {
+
+			},
+			premium: {
+				annually: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				},
+				fortnightly: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				},
+				halfyearly: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				},
+				monthly: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				},
+				quarterly: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				},
+				weekly: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				}
+				},
+			service: "PHIO",
+			showAltPremium: true,
+			showApply: true,
+			whatHappensNext: ""
+	};
 }

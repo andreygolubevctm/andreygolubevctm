@@ -1,0 +1,54 @@
+.companyLogo {
+	display: block;
+	text-align: center;
+	vertical-align: middle;
+	float: left;
+	background-repeat: no-repeat;
+	padding: 0;
+	width: 60px;
+	height: 60px;
+	background-size: 60px 60px;
+	background-color: #fff; /*make the box more uniform to cope with the various logo sizes */
+	line-height: 70px; /* reduced by 2*padding*/
+
+	@media(min-width: @screen-xs){
+		width: 80px;
+		height: 80px;
+		background-size: 80px 80px;
+	}
+	&.noshrink {
+		width: 80px;
+		height: 80px;
+		background-size: 80px 80px;
+	}
+	img {
+		margin: 10px auto;
+		max-width: 100%;
+		max-height: 100%;
+		display: inline-block;
+	}
+}
+.featuresMode {
+	.productSummary {
+		.companyLogo {
+			@media 	(@sm-only),
+					(@lg-only){
+						width: 60px;
+						height: 60px;
+						line-height: 60px;
+						background-size: 60px 60px;
+			}
+		}
+	}
+}
+.ie8 {
+	.featuresMode {
+		.productSummary {
+			.companyLogo {
+				width: 80px;
+				height: 80px;
+				margin-left: -10px;
+			}
+		}
+	}
+}

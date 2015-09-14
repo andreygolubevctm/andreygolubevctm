@@ -1,0 +1,108 @@
+.hardwareAcceleration{
+	.translate3d(0, 0, 0);
+}
+.opacity1{
+	.opacity(1);
+}
+.displayNone {
+  display: none;
+}
+.displayBlock {
+  display: block;
+}
+
+/* TRANSITIONS */
+
+
+@media(@xs-only){
+	.resultsTransformTransition,
+	.transformTransition{
+		.transition-transform(~"500ms ease-in-out");
+	}
+
+	.resultsTableLeftMarginTransition{
+		.transition(~"margin-left 500ms ease-in-out");
+	}
+}
+
+@media(@sm){
+	.resultsTransformTransition,
+	.transformTransition{
+		.transition-transform(~"1000ms ease-in-out");
+	}
+
+	.resultsTableLeftMarginTransition{
+		.transition(~"margin-left 1000ms ease-in-out");
+	}
+}
+
+.leftTransition{
+	.transition(~"left 1000ms ease-in-out");
+}
+.topTransition{
+	.transition(~"top 1000ms ease-in-out");
+}
+.noTransformTransition{
+	.transition-transform(~"0ms ease-in-out");
+}
+.opacityTransition{
+	.transition(~"opacity 1000ms ease-in-out");
+}
+.opacityTransitionQuick{
+	.transition(~"opacity 500ms ease-in-out");
+}
+
+.highResImg(@file-1x; @file-2x; @width-1x; @height-1x; @only-screen:~"only screen and") {
+	background-image: url("@{file-1x}");
+	@media
+	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
+	@only-screen (min--moz-device-pixel-ratio: 1.5),
+	@only-screen (-o-min-device-pixel-ratio: 3/2),
+	@only-screen (min-device-pixel-ratio: 1.5),
+	@only-screen (min-resolution: 1.5dppx),
+	@only-screen (min-resolution: 144dpi) {
+		background-image: url("@{file-2x}");
+		background-size: @width-1x @height-1x;		
+	}
+}
+
+.highResImg(@file-1x; @file-2x; @only-screen:~"only screen and") {
+	background-image: url("@{file-1x}");
+	@media
+	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
+	@only-screen (min--moz-device-pixel-ratio: 1.5),
+	@only-screen (-o-min-device-pixel-ratio: 3/2),
+	@only-screen (min-device-pixel-ratio: 1.5),
+	@only-screen (min-resolution: 1.5dppx),
+	@only-screen (min-resolution: 144dpi) {
+		background-image: url("@{file-2x}");		
+	}
+}
+
+.highResBgSize(@OnexWidth; @OnexHeight) {
+	background-size: @OnexWidth @OnexHeight;
+	@media (-webkit-min-device-pixel-ratio: 1.5),
+		(min--moz-device-pixel-ratio: 1.5),
+		(-o-min-device-pixel-ratio: 3/2),
+		(min-device-pixel-ratio: 1.5),
+		(min-resolution: 1.5dppx),
+		(min-resolution: 144dpi) {
+		background-size: (@OnexWidth/2) (@OnexHeight/2);
+	}
+}
+
+.highResBgPosition(@OnexLeft, @OnexTop,@TwoxLeft, @TwoxTop) {
+	background-position: @OnexLeft @OnexTop;
+	@media (-webkit-min-device-pixel-ratio: 1.5),
+		(min--moz-device-pixel-ratio: 1.5),
+		(-o-min-device-pixel-ratio: 3/2),
+		(min-device-pixel-ratio: 1.5),
+		(min-resolution: 1.5dppx),
+		(min-resolution: 144dpi) {
+		background-position: @TwoxLeft @TwoxTop;
+	}
+}
+
+.noWrap{
+	white-space: nowrap;
+}

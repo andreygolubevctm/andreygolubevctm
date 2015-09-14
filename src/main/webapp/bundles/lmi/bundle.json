@@ -1,0 +1,12 @@
+{
+  "brandCodes": ["ctm"],
+  "dependencies": [
+    "shared/results",
+    "shared/features",
+    "core",
+    "shared/showMoreQuotesPrompt",
+    "shared/optIn",
+    "shared/resultsRankings"
+  ],
+  "compileAs": ["carlmi", "homelmi"]
+}

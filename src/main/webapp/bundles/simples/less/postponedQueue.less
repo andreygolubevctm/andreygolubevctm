@@ -1,0 +1,57 @@
+.simples-postpone-queue {
+	padding: 20px 0;
+}
+
+.simples-postponed-message {
+	color: @text-color;
+	border: 1px solid @well-border;
+	margin-bottom: 12px;
+	position: relative;
+
+	&.upcoming-reminder {
+		.reminder {
+			color: @state-warning-text;
+		}
+	}
+
+	&.in-the-past {
+		background-color: @btn-danger-bg;
+		border-color: @btn-danger-border;
+		color: @state-warning-text;
+	}
+
+	&:hover,
+	&.disabled {
+		text-decoration: none;
+		color: @link-color;
+		border-color: @link-color;
+	}
+
+	&.active,
+	&.active:hover {
+		background-color: @theme-secondary;
+		border-color: @theme-secondary;
+		color: #fff;
+
+		.reminder {
+			color: #fff;
+		}
+	}
+
+	&.disabled,
+	&.active {
+		cursor: default;
+	}
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.spinner {
+		position: absolute;
+		top: 0;
+		right: 8px;
+	}
+}

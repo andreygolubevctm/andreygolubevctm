@@ -1,0 +1,11 @@
+{
+  "brandCodes": ["ctm"],
+  "dependencies": [
+    "shared/results",
+    "core",
+    "shared/addressLookup",
+    "shared/validation",
+    "shared/showMoreQuotesPrompt",
+    "shared/resultsRankings"
+  ]
+}
