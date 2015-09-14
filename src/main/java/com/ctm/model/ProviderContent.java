@@ -88,9 +88,10 @@ public class ProviderContent {
 
 	@Override
 	public String toString() {
-		return "FundWarningMessage{" +
-				"messageId=" + messageId +
-				", messageContent='" + messageContent + '\'' +
+		return "ProviderContent{" +
+				"providerContentId=" + providerContentId +
+				", providerContentTypeId=" + providerContentTypeId +
+				", providerContentText='" + providerContentText + '\'' +
 				", effectiveStart=" + effectiveStart +
 				", effectiveEnd=" + effectiveEnd +
 				", providerId=" + providerId +
