@@ -10,6 +10,7 @@
 <%@ attribute name="className"				required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="id"						required="false" rtexprvalue="true"	 description="id of the surround div" %>
 <%@ attribute name="size"					required="false" rtexprvalue="true"	 description="size of the input" %>
+<%@ attribute name="maxLength"				required="true" rtexprvalue="true"		description="Input field maxLength" %>
 <%@ attribute name="labelName"				required="false" rtexprvalue="true"	 description="the label to display for validation" %>
 <%@ attribute name="placeHolder"			required="false" rtexprvalue="true"	 description="Placeholder text" %>
 <%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
@@ -36,6 +37,6 @@
 
 <field:phone_number className="${className}" required="${required}" xpath="${xpath}"
 	placeHolder="${placeHolder}" placeHolderUnfocused="${placeHolderUnfocused}"
-	labelName="${labelName}" title="${title}" size="${size}"
+	labelName="${labelName}" title="${title}" size="${size}" maxLength="${maxLength}"
 	allowMobile="true" allowLandline="true" additionalAttributes="${validationAttribute} ${additionalAttributes}" />
 

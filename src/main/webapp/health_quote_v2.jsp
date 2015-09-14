@@ -163,11 +163,11 @@
     </div>
 
     <%-- Slides --%>
-    <health_layout:slide_all_about_you />
+    <health_new_layout:slide_all_about_you />
     <health_layout:slide_your_details />
-    <health_layout:slide_your_contact />
+    <health_new_layout:slide_your_contact />
     <health_layout:slide_results />
-    <health_layout:slide_application_details />
+    <health_new_layout:slide_application_details />
     <health_layout:slide_payment_details />
 
     <input type="hidden" name="transcheck" id="transcheck" value="1" />

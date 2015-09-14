@@ -27,7 +27,9 @@
 <%@ taglib tagdir="/WEB-INF/tags/agg/results"			prefix="agg_results" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg_new/results"		prefix="agg_new_results" %>
 <%@ taglib tagdir="/WEB-INF/tags/health"				prefix="health" %>
+<%@ taglib tagdir="/WEB-INF/tags/health_new"			prefix="health_new" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/layout"			prefix="health_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/health_new/layout"		prefix="health_new_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/content"		prefix="health_content" %>
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel"				prefix="travel" %>

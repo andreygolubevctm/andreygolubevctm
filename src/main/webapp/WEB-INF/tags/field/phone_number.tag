@@ -8,6 +8,7 @@
 <%@ attribute name="required" 				required="true" rtexprvalue="true" 		description="is this field required?" %>
 <%@ attribute name="className" 				required="true" rtexprvalue="true"		description="additional css class attribute" %>
 <%@ attribute name="size"					required="true" rtexprvalue="true"		description="size of the input" %>
+<%@ attribute name="maxLength"				required="false" rtexprvalue="true"		description="Input field maxLength" %>
 <%@ attribute name="title"					required="true" rtexprvalue="true"	 	description="subject of the input box" %>
 <%@ attribute name="placeHolder"			required="false" rtexprvalue="true"	 	description="HTML5 placeholder" %>
 <%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 	description="HTML5 placeholder when input not in focus" %>
@@ -45,6 +46,10 @@
 	<c:set var="sizeAttribute" value=' size="${size}"' />
 </c:if>
 
+<c:if test="${empty maxLength}">
+	<c:set var="maxLength" value='14' />
+</c:if>
+
 <c:if test="${not empty placeHolder}">
 	<c:set var="placeHolderAttribute" value=' placeholder="${placeHolder}"' />
 	<c:set var="className" value="${className} placeholder" />
@@ -74,7 +79,7 @@
 		class="sessioncamexclude form-control contact_telno phone ${className} ${phoneTypeClassName} ${name}"
 		value="${valueInput}" pattern="[0-9]*" ${sizeAttribute}${placeHolderAttribute}${requiredAttribute}
 		${additionalAttributes}
-		maxlength="14">
+		maxlength="${maxLength}">
 
 
 <go:script marker="onready">
