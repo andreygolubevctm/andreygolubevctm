@@ -82,14 +82,14 @@
 		background-size: (@@temp-total-width * @prop-scale) (@@temp-total-height * @prop-scale);
 	}
 
-	&.logo_@{currentMember} {
-		width:(@@temp-width * @prop-scale);
-		height:(@@temp-height * @prop-scale);
+	&.@{class-prefix}@{currentMember} {
+		width:ceil(@@temp-width * @prop-scale);
+		height:ceil(@@temp-height * @prop-scale);
 		background-position: (@@temp-offset-x * @prop-scale) (@@temp-offset-y * @prop-scale);
 		margin: ceil((@standard-height - @@temp-height)/2) auto (floor((@standard-height - @@temp-height)/2) + @bottom-margin) auto;
 	}
 
-	.providersLogoImages(@providers, (@index + 1));
+	.providersLogoImagesVerticallyCentered(@providers, (@index + 1));
 }
 
 .providersLogoImages(@providers, @index: 1) when (isstring(extract(@providers, @index))) {
@@ -108,9 +108,9 @@
 		background-size: (@@temp-total-width * @prop-scale) (@@temp-total-height * @prop-scale);
 	}
 
-	&.logo_@{currentMember} {
-		width:(@@temp-width * @prop-scale);
-		height:(@@temp-height * @prop-scale);
+	&.@{class-prefix}@{currentMember} {
+		width:ceil(@@temp-width * @prop-scale);
+		height:ceil(@@temp-height * @prop-scale);
 		background-position: (@@temp-offset-x * @prop-scale) (@@temp-offset-y * @prop-scale);
 	}
 
@@ -131,14 +131,14 @@
 		background-size: (@@temp-2x-total-width * @prop-scale) (@@temp-2x-total-height * @prop-scale);
 	}
 
-	&.logo_@{currentMember} {
+	&.@{class-prefix}@{currentMember} {
 		background-position: (@@temp-2x-offset-x * @prop-scale) (@@temp-2x-offset-y * @prop-scale);
 	}
 
 	.providersRetinaLogoImages(@providers, (@index + 1));
 }
 
-.providersHighResSpriteImages(@vertical; @providers; @prop-scale:1; @only-screen:~"only screen and") {
+.providersHighResSpriteImages(@vertical; @class-prefix; @providers; @prop-scale:1; @only-screen:~"only screen and") {
 	.providersLogoImages(@providers);
 	@media
 	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
@@ -160,7 +160,7 @@
 	}
 }
 
-.providersNormalSpriteImages(@vertical; @providers; @prop-scale:1; @only-screen:~"only screen and") {
+.providersNormalSpriteImages(@vertical; @class-prefix; @providers; @prop-scale:1; @only-screen:~"only screen and") {
 	.providersLogoImages(@providers);
 
 	& when not (@prop-scale = 1) {
@@ -173,7 +173,7 @@
 	}
 }
 
-.providersNormalSpriteImagesVerticallyCentered(@vertical; @providers; @standard-height; @bottom-margin; @prop-scale:1; @only-screen:~"only screen and") {
+.providersNormalSpriteImagesVerticallyCentered(@vertical; @class-prefix; @providers; @standard-height; @bottom-margin; @prop-scale:1; @only-screen:~"only screen and") {
 	.providersLogoImagesVerticallyCentered(@providers);
 
 	& when not (@prop-scale = 1) {
