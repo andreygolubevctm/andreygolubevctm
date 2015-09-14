@@ -27,7 +27,7 @@ function JSLintTasks(gulp) {
 
     gulp.watch(globArray, ["lint:js"]);
 
-    gulp.task("jslint", ["lint:js"]);
+    gulp.task("jslint", []);
 }
 
 module.exports = JSLintTasks;
