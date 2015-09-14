@@ -56,7 +56,11 @@
 		<appender-ref ref="stdout" />
 	</logger>
 
-	<root level="info">
+	<logger name="com.ctm" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<root level="INFO">
    		<appender-ref ref="stdout" />
 	</root>
 	
