@@ -1,17 +1,20 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <session:get />
 
 	<security:populateDataFromParams rootPath="signup" />
 
-	<go:log>${data}</go:log>
+	${logger.debug("Data populated from request params. {}", log:kv('data',data))}
 
 	<c:set var="fuelSignup" value="${data['signup/fuel']}"/>
 	<c:if test="${fuelSignup == 'Y'}">
-		<go:log>../write/fuel_signup.jsp?fuel_signup_name_first=${data['signup/firstname']}&fuel_signup_name_last=${data['signup/surname']}&fuel_signup_email=${data['signup/email']}&fuel_signup_terms=${data['signup/newsoffers']}</go:log>
-		<c:import url="../write/fuel_signup.jsp?fuel_signup_name_first=${data['signup/firstname']}&fuel_signup_name_last=${data['signup/surname']}&fuel_signup_email=${data['signup/email']}&fuel_signup_terms=${data['signup/newsoffers']}" var="tmpVar"/>
-		<go:log>${tmpVar}</go:log>
+		<c:set var="url">../write/fuel_signup.jsp?fuel_signup_name_first=${data['signup/firstname']}&fuel_signup_name_last=${data['signup/surname']}&fuel_signup_email=${data['signup/email']}&fuel_signup_terms=${data['signup/newsoffers']}</c:set>
+		${logger.debug('calling signup url. {}', log:kv('url', url))}
+		<c:import url="${url}" var="tmpVar"/>
+		${logger.debug("Signup url called. {}", log:kv('outcome', tmpVar))}
 	</c:if>
 
 

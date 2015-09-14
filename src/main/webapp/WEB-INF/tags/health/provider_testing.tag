@@ -2,13 +2,14 @@
 <%@ tag description="Provides a method for external providers to test their prices only, without affecting production or future users"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('/health/provider_testing.tag')}" />
+
 <%@ attribute name="xpath" required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
 <%-- NOTE: a List of Provider Keys can be found in aggregator/health/phio_outbound --%>
 
 <%-- Make sure we're in a proper environment to test this --%>
-<go:log>ENVIRONMENT: ${environmentService.getEnvironmentAsString()}</go:log>
-<go:log>remoteaddr: ${pageContext.request.remoteAddr}</go:log>
+${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentService.getEnvironmentAsString()), log:kv('remoteaddr', pageContext.request.remoteAddr))}
 <c:if test="${environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI'  || environmentService.getEnvironmentAsString() == 'NXS'}">
 
 	<c:choose>

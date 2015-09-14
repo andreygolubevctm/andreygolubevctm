@@ -45,9 +45,10 @@ function JSTasks(gulp) {
                 fileName = compileAs;
             }
 
-            var incDir = path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "inc");
+            var incDir = path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "inc"),
+                revDate = + new Date();
             fileHelper.writeFileToFolder(incDir, fileName + ".inc", fileArray.map(function(file){
-                return "<script src=\"" + path.normalize(file.slice(file.indexOf("bundles"), file.length)) + "\"></script>";
+                return "<script src=\"" + path.normalize(file.slice(file.indexOf("bundles"), file.length)) + "?rev=" + revDate + "\"></script>";
             }).join("\r\n"));
 
             return gulp.src(fileArray)

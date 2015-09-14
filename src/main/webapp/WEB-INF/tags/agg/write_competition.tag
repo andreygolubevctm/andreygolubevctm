@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<c:set var="logger" value="${log:getLogger('/agg/email_send.tag')}" />
 
 <%--
 	write_competition inserts a new competition entry to the competition_master table and
@@ -34,14 +35,14 @@
 	</c:catch>
 	<c:choose>
 		<c:when test="${not empty error}">
-			<go:log level="ERROR" error="${error}">Error adding to competition_master: ${error}</go:log>
+			${logger.error('Error adding to competition_master', error)}
 			<c:out value="0" />
 		</c:when>
 		<c:when test="${not empty entry and entry.rowCount > 0}">
 			<c:out value="${entry.rows[0].id}" />
 		</c:when>
 		<c:otherwise>
-			<go:log  level="ERROR">Failed to retrieve the entry ID.</go:log>
+			${logger.error('Failed to retrieve the entry ID.')}
 			<c:out value="0" />
 		</c:otherwise>
 	</c:choose>

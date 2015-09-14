@@ -2,6 +2,8 @@
 <%@ tag description="Check whether is a new quote or existing and sets the isNEWQuote variable"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('/core_new/quote_check.tag')}" />
+
 <%@ attribute name="quoteType" 	required="true"		rtexprvalue="true"	description="The vertical this quote is for"%>
 
 <c:if test="${not empty quoteType}">
@@ -18,7 +20,7 @@
             <core:transaction touch="N" noResponse="true" />
         </c:when>
         <c:otherwise>
-            <go:log source="core_new:quote_check">Treated as EXISTING quote</go:log>
+            ${logger.debug('Treated as EXISTING quote')}
         </c:otherwise>
     </c:choose>
 </c:if>

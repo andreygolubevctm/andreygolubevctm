@@ -59,7 +59,8 @@ function IE4095Tasks(gulp) {
                     // Append to the list of includes
                     .pipe(intercept(function(file){
                         var tempPath = file.path,
-                            appendContent = "<link rel=\"stylesheet\" href=\"" + path.normalize(tempPath.slice(tempPath.indexOf("assets"), tempPath.length)) + "\" media=\"all\">";
+                            revDate = + new Date(),
+                            appendContent = "<link rel=\"stylesheet\" href=\"" + path.normalize(tempPath.slice(tempPath.indexOf("assets"), tempPath.length)) + "?rev=" + revDate + "\" media=\"all\">";
                         fileHelper.appendToFile(targetFolder, targetFile, appendContent);
                         return file;
                     }))
