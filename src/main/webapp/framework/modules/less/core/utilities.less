@@ -66,6 +66,36 @@
 	}
 }
 
+.providersLogoImagesVerticallyCentered(@providers, @index: 1) when (isstring(extract(@providers, @index))) {
+	@currentMember: extract(@providers, @index);
+
+	@temp-width : ~"@{vertical}-logo-@{currentMember}-width";
+	@temp-height : ~"@{vertical}-logo-@{currentMember}-height";
+	@temp-offset-x : ~"@{vertical}-logo-@{currentMember}-offset-x";
+	@temp-offset-y : ~"@{vertical}-logo-@{currentMember}-offset-y";
+
+	& when (@index = 1) {
+		@temp-image : ~"@{vertical}-logo-@{currentMember}-image";
+		@temp-total-width : ~"@{vertical}-logo-@{currentMember}-total-width";
+		@temp-total-height : ~"@{vertical}-logo-@{currentMember}-total-height";
+		background-image: url(@@temp-image);
+		background-size: (@@temp-total-width * @prop-scale) (@@temp-total-height * @prop-scale);
+	}
+
+	&.logo_@{currentMember} {
+		width:(@@temp-width * @prop-scale);
+		height:(@@temp-height * @prop-scale);
+		background-position: (@@temp-offset-x * @prop-scale) (@@temp-offset-y * @prop-scale);
+		/**************************************************************
+		It is assumed that @standard-logo-height and @logo-price-spacer
+		have been defined for the vertical.
+		***************************************************************/
+		margin: ceil((@standard-logo-height - @temp-height)/2) auto (floor((@temp-height - @health-logo-AHM-height)/2) + @logo-price-spacer) auto;
+	}
+
+	.providersLogoImages(@providers, (@index + 1));
+}
+
 .providersLogoImages(@providers, @index: 1) when (isstring(extract(@providers, @index))) {
 	@currentMember: extract(@providers, @index);
 
@@ -112,7 +142,7 @@
 	.providersRetinaLogoImages(@providers, (@index + 1));
 }
 
-.highResSpriteImages(@vertical;@providers;@prop-scale:1; @only-screen:~"only screen and") {
+.providersHighResSpriteImages(@vertical; @providers; @prop-scale:1; @only-screen:~"only screen and") {
 	.providersLogoImages(@providers);
 	@media
 	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
@@ -123,6 +153,32 @@
 	@only-screen (min-resolution: 144dpi) {
 		.providersRetinaLogoImages(@providers);
 	}
+
+	& when not (@prop-scale = 1) {
+		image-rendering: optimizeSpeed;
+		image-rendering: -moz-crisp-edges;
+		image-rendering: -o-crisp-edges;
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: optimize-contrast;
+		-ms-interpolation-mode: nearest-neighbor;
+	}
+}
+
+.providersNormalSpriteImages(@vertical; @providers; @prop-scale:1; @only-screen:~"only screen and") {
+	.providersLogoImages(@providers);
+
+	& when not (@prop-scale = 1) {
+		image-rendering: optimizeSpeed;
+		image-rendering: -moz-crisp-edges;
+		image-rendering: -o-crisp-edges;
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: optimize-contrast;
+		-ms-interpolation-mode: nearest-neighbor;
+	}
+}
+
+.providersNormalSpriteImagesVerticallyCentered(@vertical; @providers; @prop-scale:1; @only-screen:~"only screen and") {
+	.providersLogoImagesVerticallyCentered(@providers);
 
 	& when not (@prop-scale = 1) {
 		image-rendering: optimizeSpeed;
