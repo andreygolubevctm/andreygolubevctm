@@ -79,6 +79,37 @@ VALUES (@WEBJET, 'WEBJ-TRAVEL-',
 -- test expect 1
 select count(*) from ctm.travel_product where productCode = 'WEBJ-TRAVEL-';
 
+ -- ----------------------------------------------------------------------------------
+-- adding product names to the ovveriding tables for the flexibility of quickly overwriting them
+-- multi
+ INSERT INTO ctm.travel_product
+ (providerId, productCode, title, baseProduct, maxTripDuration,providerProductCode, effectiveStart, effectiveEnd,pdsUrl)
+ VALUES (@PVIDER, 'WEBJ-TRAVEL-54159','Multi-Trip','0',
+     '15','54159','2015-08-04', '2040-12-31','https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf');
+
+INSERT INTO ctm.travel_product
+ (providerId, productCode, title, baseProduct, maxTripDuration,providerProductCode, effectiveStart, effectiveEnd,pdsUrl)
+ VALUES (@PVIDER, 'WEBJ-TRAVEL-54159','Multi-Trip','0',
+     '30','54159','2015-08-04', '2040-12-31','https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf');
+
+INSERT INTO ctm.travel_product
+ (providerId, productCode, title, baseProduct, maxTripDuration,providerProductCode, effectiveStart, effectiveEnd,pdsUrl)
+ VALUES (@PVIDER, 'WEBJ-TRAVEL-54159','Multi-Trip','0',
+     '45','54159','2015-08-04', '2040-12-31','https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf');
+-- single
+INSERT INTO ctm.travel_product
+ (providerId, productCode, title, baseProduct, maxTripDuration,providerProductCode, effectiveStart, effectiveEnd,pdsUrl)
+ VALUES (@PVIDER, 'WEBJ-TRAVEL-54158','Basic','0','','54158','2015-08-04', '2040-12-31','https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf');
+INSERT INTO ctm.travel_product
+ (providerId, productCode, title, baseProduct, maxTripDuration,providerProductCode, effectiveStart, effectiveEnd,pdsUrl)
+ VALUES (@PVIDER, 'WEBJ-TRAVEL-54157','Essentials','0','','54157','2015-08-04', '2040-12-31','https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf');
+INSERT INTO ctm.travel_product
+ (providerId, productCode, title, baseProduct, maxTripDuration,providerProductCode, effectiveStart, effectiveEnd,pdsUrl)
+ VALUES (@PVIDER, 'WEBJ-TRAVEL-54156','Comprehensive','0','','54156','2015-08-04', '2040-12-31','https://api.agaassistance.com.au/content/webjet/attachments/ProductDisclosureStatement.pdf');
+
+select count(*) from ctm.travel_product where providerProductCode in ('54156','54157','54158','54159');
+-- expect 6
+
 -- rollback
 /*
 
