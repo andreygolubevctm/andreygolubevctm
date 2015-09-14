@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <session:getAuthenticated  />
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 <jsp:useBean id="searchService" class="com.ctm.services.simples.SimplesSearchService" scope="request" />
@@ -10,7 +12,7 @@
 
 <c:set var="searchPhrase" value="${fn:trim(param.search_terms)}" />
 
-<go:log level="INFO">Search Quotes: ${searchPhrase}</go:log>
+${logger.info('Begin search Quotes. {}' , log:kv('searchPhrase',searchPhrase ))}
 
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
 
