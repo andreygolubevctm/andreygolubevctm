@@ -5,6 +5,7 @@
 
 package com.disc_au.soap;
 
+import com.ctm.logging.LoggingVariables;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
@@ -33,14 +34,6 @@ import java.util.HashMap;
 
 import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
 import static com.ctm.logging.LoggingVariables.setLoggingVariables;
-import static com.ctm.services.EnvironmentService.Environment.*;
-
-import com.ctm.model.settings.SoapAggregatorConfiguration;
-import com.ctm.model.settings.SoapClientThreadConfiguration;
-import com.ctm.soap.SoapConfiguration;
-import com.ctm.web.validation.SchemaValidation;
-import com.disc_au.web.go.xml.XmlNode;
-import com.disc_au.web.go.xml.XmlParser;
 
 import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.services.EnvironmentService.Environment.LOCALHOST;
@@ -73,6 +66,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 	private boolean continueOnValidationError;
 	private Brand brand;
+	private String correlationId;
 
 	@SuppressWarnings("unused")
 	// used in go.tld
@@ -138,6 +132,7 @@ public class SOAPAggregatorTag extends TagSupport {
 						String threadName = this.transactionId + " " + serviceItemConfig.getName();
 
 				SOAPClientThread client;
+					correlationId = LoggingVariables.getCorrelationId();
 
 					if (serviceItemConfig.getType() != null && serviceItemConfig.getType().equals("url-encoded")) {
 					client = new HtmlFormClientThread(transactionId,
@@ -248,7 +243,7 @@ public class SOAPAggregatorTag extends TagSupport {
 	}
 
 	private void setupMDC() {
-		setLoggingVariables(transactionId, brand.getCode(), verticalCode);
+		setLoggingVariables(transactionId, brand.getCode(), verticalCode, correlationId);
 	}
 
 	private void setUpConfiguration() {
@@ -272,6 +267,7 @@ public class SOAPAggregatorTag extends TagSupport {
 		isValidVar = null;
 		continueOnValidationError = false;
 		brand = null;
+		correlationId = null;
 	}
 
 	/**

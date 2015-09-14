@@ -6,7 +6,7 @@
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 	    <Target>System.out</Target>
 	    <encoder>
-			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c:%L:%X{transactionId}:%X{brandCode}:%X{verticalCode} - %m%n</pattern>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c:%L:%X{transactionId}:%X{brandCode}:%X{verticalCode}:%X{correlationId} - %m%n</pattern>
 	    </encoder>
   	</appender>
   
@@ -53,6 +53,10 @@
 	</logger>
 
 	<logger name="log4j.logger.org.hibernate.validator" level="INFO" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<logger name="org.apache.cxf.phase.PhaseInterceptorChain" level="INFO" additivity="false">
 		<appender-ref ref="stdout" />
 	</logger>
 

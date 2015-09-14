@@ -1,6 +1,7 @@
 package com.ctm.utils;
 
 import com.ctm.exceptions.SessionException;
+import com.ctm.logging.LoggingVariables;
 import com.ctm.model.session.SessionData;
 import com.ctm.services.SessionDataService;
 import com.disc_au.web.go.Data;
@@ -10,17 +11,20 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class RequestUtils {
 
+    private static final Logger logger = LoggerFactory.getLogger(RequestUtils.class.getName());
+
     public static final String TRANSACTION_ID_PARAM = "transactionId";
     public static final String BRAND_CODE_PARAM = "brandCode";
-    public static final String VERTICAL_PARAM = "vertical";
 
-	private static final Logger logger = LoggerFactory.getLogger(RequestUtils.class.getName());
+    public static final String VERTICAL_PARAM = "vertical";
+    public static final String CORRELATION_ID_HEADER = "x-correlation-id";
     private final SessionDataService sessionDataService = new SessionDataService();
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -75,6 +79,14 @@ public class RequestUtils {
         message += " URI: " + uri + ", transactionId: " + transactionId;
 
         throw new SessionException(message);
+    }
+
+    public static void setCorrelationIdHeader(HttpURLConnection connection) {
+        connection.setRequestProperty(CORRELATION_ID_HEADER , LoggingVariables.getCorrelationId());
+    }
+
+    public static String getCorrelationId(HttpServletRequest request) {
+        return request.getHeader(CORRELATION_ID_HEADER);
     }
 
     /**

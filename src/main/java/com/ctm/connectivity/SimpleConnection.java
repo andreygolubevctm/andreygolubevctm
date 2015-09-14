@@ -1,5 +1,6 @@
 package com.ctm.connectivity;
 
+import com.ctm.utils.RequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,7 @@ public class SimpleConnection {
 		try {
 			URL u = new URL(url);
 			HttpURLConnection c = (HttpURLConnection) u.openConnection();
+			RequestUtils.setCorrelationIdHeader(c);
 			c.setRequestMethod(getRequestMethod());
 			c.setRequestProperty("Content-length", "0");
 			c.setUseCaches(false);
