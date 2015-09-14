@@ -20,7 +20,7 @@
 <c:set var="dummyname" value="${name}input" />
 <c:set var="id" value="${name}" />
 <c:if test="${empty placeHolder}">
-	<c:set var="placeHolder">(0X) XXXX XXXX or 04XX XXX XXX</c:set>
+	<c:set var="placeHolder">(0x) xxxx xxxx or 04xx xxx xxx</c:set>
 </c:if>
 
 <c:set var="labelText">
@@ -32,7 +32,7 @@
 </c:set>
 
 <%-- VALIDATION --%>
-<c:set var="additionalAttributes"> data-rule-validateTelNo='true' data-msg-validateTelNo='Please enter the ${labelText} in the format (0X)XXXX XXXX for landline or 04XX XXX XXX for mobile' </c:set>
+<c:set var="additionalAttributes"> data-rule-validateTelNo='true' data-msg-validateTelNo='Please enter the ${labelText} in the format (0x)xxxx xxxx for landline or 04xx xxx xxx for mobile' </c:set>
 
 <field:phone_number className="${className}" required="${required}" xpath="${xpath}"
 	placeHolder="${placeHolder}" placeHolderUnfocused="${placeHolderUnfocused}"
