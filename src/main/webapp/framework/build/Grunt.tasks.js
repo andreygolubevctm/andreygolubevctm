@@ -27,7 +27,7 @@ module.exports = function(grunt,tools,brandMapping,rootOverride){
 		clean = {},
 		watch = {},
 		notify = {},
-		sprite = {}
+		sprite = {};
 
 	var brand = brandMapping.brandcode; //string we'll get this from the main grunt task
 	var verticals = brandMapping.verticals; //Array we'll get this from the main grunt task
