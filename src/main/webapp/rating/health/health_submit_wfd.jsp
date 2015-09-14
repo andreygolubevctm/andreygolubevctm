@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <% pageContext.setAttribute("newLineChar", "\n"); %>
 <% pageContext.setAttribute("quote", "\""); %>
 <%--
@@ -35,10 +38,7 @@
 	}
 	String body = new String(baos.toByteArray());
 %><%=body %></c:set>
-
-<go:log>ContentLength: ${pageContext.request.contentLength}</go:log>
-<go:log level="DEBUG">Body: ${body}</go:log>
-
+${logger.debug('Got body content: {},{}', log:kv('contentLength', pageContext.request.contentLength), log:kv('body',body))}
 <c:if test="${pageContext.request.contentLength > 0}">
 	<x:parse doc="${body}" var="applicationXml" />
 
@@ -72,15 +72,7 @@
 <c:set var="zipFilenameWithPath" value="${saveLocation}wfd_${transId}_${millisecs}.zip" />
 <c:set var="zipFilename" value="wfd_${transId}_${millisecs}.zip" />
 <c:set var="internalName" value="application_${transId}.csv" />
-
-
-
-<go:log>transId: ${transId}</go:log>
-<go:log>fundProductCode: ${fundProductCode}</go:log>
-<go:log>realPath: ${realPath}</go:log>
-<go:log>saveLocation: ${saveLocation}</go:log>
-
-
+${logger.debug('transId: {},{},{},{}', log:kv('transId', transId), log:kv('fundProductCode', fundProductCode), log:kv('realPath', realPath), log:kv('saveLocation', saveLocation))}
 <?xml version="1.0" encoding="UTF-8"?>
 <result>
 	<%-- <policyNo>000001</policyNo> --%>
@@ -125,16 +117,9 @@
 			<c:set var="writeSuccess" value="false" />
 			<c:catch var="error">
 				<c:if test="${not empty saveLocation}">
-					<go:log>Writing to: ${zipFilenameWithPath}</go:log>
+					${logger.debug('Writing to saveLocation. {}', log:kv('zipFilenameWithPath',zipFilenameWithPath ))}
 					<c:set var="writeSuccess" value="${go:writeToEncZipFile(zipFilenameWithPath, output, internalName, zipPassword)}" />
 				</c:if>
-				<%--
-				WAITING ON PRJAGGH-599
-				<c:if test="${not empty exportHost}">
-					<go:log>Uploading ${zipFilename} to ${exportHost}</go:log>
-					<c:set var="writeSuccess" value="${go:writeToEncZipToSftp(zipFilename, output, internalName, zipPassword, exportHost, exportUsername, exportPassword)}" />
-				</c:if>
-				--%>
 			</c:catch>
 
 			<c:choose>

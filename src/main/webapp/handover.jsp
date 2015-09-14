@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <session:new verticalCode="CREDITCARD" />
 <core_new:quote_check quoteType="CREDITCARD" />
 
@@ -24,7 +26,7 @@
 		</c:catch>
 	</c:when>
 	<c:otherwise>
-		<go:log level="ERROR">Credit Cards Handover error: No Product Passed. Product Code: ${tmpProductCode}. Product Result: ${product}</go:log>
+		${logger.error('Credit Cards Handover error: No Product Passed. {},{}',log:kv('tmpProductCode',tmpProductCode ), log:kv('product',product ))}
 		<%
 		// Set error code and reason.
 		response.sendError(500, "No Product Code Passed." );
@@ -33,14 +35,14 @@
 </c:choose>
 <c:choose>
 	<c:when test="${not empty error}">
-		<go:log level="ERROR">Credit Cards Handover error: ${error}. Product Code: ${tmpProductCode}. Product Result: ${product}</go:log>
+		${logger.error('Credit Cards Handover error. {},{}', log:kv('tmpProductCode', tmpProductCode), log:kv('product', product), error)}
 		<%
 		// Set error code and reason.
 		response.sendError(500, "An error occurred." );
 		%>
 	</c:when>
 	<c:when test="${empty product}">
-		<go:log level="ERROR">Credit Cards Handover error: Product Not Found. Product Code: ${tmpProductCode}. Product Result: ${product}</go:log>
+		${logger.error('Credit Cards Handover error: Product Not Found. {},{}', log:kv('tmpProductCode',tmpProductCode ), log:kv('product',product ))}
 		<%
 		// Set error code and reason.
 		response.sendError(500, "No Product Found." );

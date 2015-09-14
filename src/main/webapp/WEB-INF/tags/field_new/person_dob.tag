@@ -2,6 +2,8 @@
 <%@ tag description="Represents a person's date of birth, where the min and max age can be dynamically changed"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('/field_new/person_dob.tag')}" />
+
 <%--
 	See corresponding module formDateInput.js
 --%>
@@ -47,7 +49,7 @@
 <jsp:useBean id="nowLessAgeMinYears" class="java.util.GregorianCalendar" />
 <% nowLessAgeMinYears.add(java.util.GregorianCalendar.YEAR, -Integer.parseInt(ageMin)); %>
 <fmt:formatDate var="nowLessAgeMinYears" pattern="yyyy-MM-dd" value="${nowLessAgeMinYears.time}" />
-<go:log level="TRACE">DOB Restricted to max: ${nowLessAgeMinYears} (${name})</go:log>
+${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', nowLessAgeMinYears), log:kv('name', name))}
 
 <%-- HTML --%>
 <div class="dateinput_container" data-provide="dateinput">

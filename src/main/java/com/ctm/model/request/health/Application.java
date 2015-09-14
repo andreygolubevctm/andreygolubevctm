@@ -1,8 +1,8 @@
 package com.ctm.model.request.health;
 
-import javax.validation.Valid;
-
 import com.ctm.model.request.Person;
+
+import javax.validation.Valid;
 
 public class Application {
 
