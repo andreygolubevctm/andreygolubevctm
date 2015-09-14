@@ -14,7 +14,6 @@ var less = require("gulp-less"),
     rename = require("gulp-rename"),
     insert = require("gulp-insert"),
     watchLess = require("gulp-watch-less"),
-    sourcemaps = require("gulp-sourcemaps"),
     gulpIf = require("gulp-if"),
     intercept = require("gulp-intercept"),
     plumber = require("gulp-plumber"),
@@ -22,7 +21,6 @@ var less = require("gulp-less"),
     fs = require("fs"),
     path = require("path");
 
-// TODO: Abstract logic into separate files to reduce complexity here
 // TODO: Add .map files
 
 function LessTasks(gulp) {
@@ -51,18 +49,22 @@ function LessTasks(gulp) {
 
             var lessDependencies = dependenciesCache[taskName];
 
+            // Functionality for "extension bundles"
+            // replaceImports builds a list of files to replace the paths of in the supplied build file
             var replaceImports = [],
                 useParentBundleBuild = false;
 
             if(typeof bundles.collection[bundle] !== "undefined" && typeof bundles.collection[bundle].extends !== "undefined") {
                 replaceImports = bundles.getBundleFiles(bundle, "less", null, false);
 
+                // Update the glob to point to the parent bundle if no build file is present
                 if(replaceImports.length && replaceImports.indexOf("build.less") === -1) {
                     glob = glob.replace("bundles\\" + bundle, "bundles\\" + bundles.collection[bundle].extends);
                     useParentBundleBuild = true;
                 }
             }
 
+            // Used when bundles specify a "compileAs" value and uses that as a bundle name
             if(typeof compileAs === "string")
                 bundle = compileAs;
 
@@ -86,6 +88,7 @@ function LessTasks(gulp) {
                         insert.prepend("@import \"" + brandFileNames.variables + "\";\r\n")
                     )
                 )
+                // Prepend variables if file exists
                 .pipe(gulpIf(hasVariablesLess, insert.prepend("@import \"variables.less\";\r\n")))
                 // Prepend generic brand build file
                 .pipe(insert.prepend("@import \"../../build/brand/" + brandCode + "/build.less\";\r\n"))
@@ -100,6 +103,7 @@ function LessTasks(gulp) {
             var notInWatchesStarted = (watchesStarted.indexOf(taskName) === -1);
 
             // We need to conditionally call the watchLess method this way because it seems to run regardless with gulpIf()
+            // Boo. :(
             if(notInWatchesStarted) {
                 stream = stream.pipe(
                     watchLess(glob, { name: taskName }, function() {
@@ -137,8 +141,9 @@ function LessTasks(gulp) {
                         return file;
                     })
                 )
+                // Parse the LESS
                 .pipe(less(glob, { name: taskName }))
-                .pipe(concat(bundle + ".css"))
+                .pipe(rename(bundle + ".css"))
                 .pipe(gulp.dest(targetDir))
                 .pipe(notify({
                     title: taskName + " compiled",
