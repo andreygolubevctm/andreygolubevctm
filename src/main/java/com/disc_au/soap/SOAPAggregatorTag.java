@@ -34,7 +34,6 @@ import java.util.HashMap;
 import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
 import static com.ctm.logging.LoggingVariables.setLoggingVariables;
 import static com.ctm.services.EnvironmentService.Environment.*;
-import static com.ctm.utils.function.Action.action;
 
 /**
  * The Class SOAPAggregatorTag with WAR compatibility.
@@ -128,10 +127,10 @@ public class SOAPAggregatorTag extends TagSupport {
 
 					if (serviceItemConfig.getType() != null && serviceItemConfig.getType().equals("url-encoded")) {
 					client = new HtmlFormClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, action(() -> setupMDC()), action(() -> clearLoggingVariables()));
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, () -> setupMDC(), () -> clearLoggingVariables());
 				} else {
 						client = new SOAPClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, action(() -> setupMDC()), action(() -> clearLoggingVariables()));
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, () -> setupMDC(), () -> clearLoggingVariables());
 					}
 
 				// Add the thread to the hash map and start it off

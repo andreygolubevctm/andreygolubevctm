@@ -9,6 +9,7 @@ import com.ctm.constants.ErrorCode;
 import com.ctm.logging.XMLOutputWriter;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.utils.function.Action;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,6 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 import static com.ctm.logging.XMLOutputWriter.*;
 
@@ -47,8 +47,8 @@ public class SOAPClientThread implements Runnable {
 
 	public static final int HTTP_OK = 200;
 	public static final int HTTP_NOT_FOUND = 404;
-	private final Function<Void, Void> beforeRun;
-	private final Function<Void, Void> afterRun;
+	private final Action beforeRun;
+	private final Action afterRun;
 
 	private SoapClientThreadConfiguration configuration;
 
@@ -98,7 +98,7 @@ public class SOAPClientThread implements Runnable {
 	 * @param soapConfiguration global config
 	 */
 	public SOAPClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
-							String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration, Function<Void,Void> beforeRun, Function<Void,Void> afterRun) {
+							String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration, Action beforeRun, Action afterRun) {
 		this.beforeRun = beforeRun;
 		this.afterRun = afterRun;
 
@@ -226,7 +226,7 @@ public class SOAPClientThread implements Runnable {
 			((HttpURLConnection)connection).setRequestMethod(this.method);
 			connection.setRequestProperty("Content-Type", configuration.getContentType());
 
-			// Set the soap action (if supplied)
+			// Set the soap apply (if supplied)
 			if (configuration.getSoapAction() != null) {
 				connection.setRequestProperty("SOAPAction", configuration.getSoapAction());
 			}
@@ -371,7 +371,7 @@ public class SOAPClientThread implements Runnable {
 	}
 
 	public void run() {
-		beforeRun.apply(null);
+		beforeRun.apply();
 		this.timer = System.currentTimeMillis();
 		if(soapConfiguration.isWriteToFile()){
 			writer = new XMLOutputWriter(this.name , debugPath);
@@ -383,7 +383,7 @@ public class SOAPClientThread implements Runnable {
 			params.put("transactionId", this.tranId);
 		}
 
-		// Set the soap action (if supplied)
+		// Set the soap apply (if supplied)
 		if (configuration.getSoapAction() != null) {
 			params.put("SoapAction", configuration.getSoapAction());
 		}
@@ -474,7 +474,7 @@ public class SOAPClientThread implements Runnable {
 				writer.lastWriteXmlToFile(this.resultXML);
 		}
 	}
-		afterRun.apply(null);
+		afterRun.apply();
 	}
 
 	/**

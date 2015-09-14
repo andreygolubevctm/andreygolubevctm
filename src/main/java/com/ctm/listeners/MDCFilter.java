@@ -1,11 +1,13 @@
 package com.ctm.listeners;
 
-import com.ctm.logging.LoggingVariables;
-import com.ctm.model.settings.Vertical;
-import org.slf4j.MDC;
-
 import javax.servlet.*;
 import java.io.IOException;
+
+import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
+import static com.ctm.logging.LoggingVariables.setLoggingVariables;
+import static com.ctm.utils.RequestUtils.TRANSACTION_ID_PARAM;
+import static com.ctm.utils.RequestUtils.BRAND_CODE_PARAM;
+import static com.ctm.utils.RequestUtils.VERTICAL_PARAM;
 
 public class MDCFilter implements Filter {
 
@@ -16,18 +18,11 @@ public class MDCFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
             throws IOException, ServletException {
-        MDC.put("transactionId", req.getParameter("transactionId"));
-        MDC.put("brandCode", req.getParameter("brandCode"));
-        String vertical = req.getParameter("vertical");
-        String verticalCode= "";
-        if(vertical != null) {
-            verticalCode =  Vertical.VerticalType.findByCode(vertical).getCode();
-        }
-        LoggingVariables.setLoggingVariables(req.getParameter("transactionId"), req.getParameter("brandCode"), verticalCode);
+        setLoggingVariables(req.getParameter(TRANSACTION_ID_PARAM), req.getParameter(BRAND_CODE_PARAM), req.getParameter(VERTICAL_PARAM));
         try {
             chain.doFilter(req, resp);
         } finally {
-            LoggingVariables.clearLoggingVariables();
+            clearLoggingVariables();
         }
     }
 

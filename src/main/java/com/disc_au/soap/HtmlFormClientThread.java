@@ -2,6 +2,7 @@ package com.disc_au.soap;
 
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.utils.function.Action;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,14 +12,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.function.Function;
 
 public class HtmlFormClientThread extends SOAPClientThread {
 
 	public HtmlFormClientThread(String tranId, String configRoot,
 								SoapClientThreadConfiguration configuration, String xmlData,
 								String name,
-								SoapAggregatorConfiguration soapConfiguration, Function<Void,Void> beforeRun, Function<Void,Void> afterRun) {
+								SoapAggregatorConfiguration soapConfiguration, Action beforeRun, Action afterRun) {
 		super(tranId, configRoot, configuration, xmlData, name,
 				soapConfiguration, beforeRun, afterRun);
 	}
