@@ -488,6 +488,8 @@
 					healthDependents.addDependent();
 				});
 
+				console.log("sdfsdfasasaadfgshealth_application_otherinput: "+$('#health_application_otherinput').val());
+
 				// initialise start date datepicker from payment step as it will be used by selected fund
 				$("#health_payment_details_start_calendar")
 					.datepicker({ clearBtn:false, format:"dd/mm/yyyy" })
@@ -757,6 +759,19 @@
 			],
 			otherPhone: [
 				// otherPhone from details step
+				{
+					$field: $("#health_contactDetails_flexiContactNumber"),
+					$fieldInput: $("#health_contactDetails_flexiContactNumberinput"),
+					$optInField: contactDetailsOptinField
+				},
+				// otherPhone from application step
+				{
+					$field: $("#health_application_other"),
+					$fieldInput: $("#health_application_otherinput")
+				}
+			],
+			flexiPhone: [
+				// flexiPhone from details step
 				{
 					$field: $("#health_contactDetails_contactNumber_other"),
 					$fieldInput: $("#health_contactDetails_contactNumber_otherinput"),

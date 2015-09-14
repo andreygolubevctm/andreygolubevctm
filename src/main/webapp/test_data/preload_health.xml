@@ -5,10 +5,7 @@
 		<firstName>Test</firstName>
 		<lastname>User</lastname>
 		<contactNumber>
-			<mobileinput>(0412) 345 678</mobileinput>
-			<mobile>0412345678</mobile>
-			<otherinput>(07) 3234 5678</otherinput>
-			<other>0732345678</other>
+
 		</contactNumber>
 		<flexiContactNumber>(0404) 123 123</flexiContactNumber>
 		<email>preload.testing@comparethemarket.com.au</email>
@@ -141,10 +138,7 @@
 			<unitShop>10</unitShop>
 			<streetSearch>1  Golding St, Toowong QLD</streetSearch>
 		</address>
-		<mobileinput>(0412) 345 678</mobileinput>
-		<mobile>0412345678</mobile>
-		<otherinput>(07) 3234 5678</otherinput>
-		<other>0732345678</other>
+
 		<email>preload.testing@comparethemarket.com.au</email>
 		<optInEmail></optInEmail>
 		<dependants>

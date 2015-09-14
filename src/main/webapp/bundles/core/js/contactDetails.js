@@ -311,7 +311,11 @@
 
 		if( typeof fieldEntity.$fieldInput !== "undefined" ){
 			$fieldElement = fieldEntity.$fieldInput;
-		} else {
+		}
+		else if( typeof fieldEntity.$otherFieldInput !== "undefined" ){
+			$fieldElement = fieldEntity.$otherFieldInput;
+		}
+		else {
 			$fieldElement = fieldEntity.$field;
 		}
 
