@@ -12,6 +12,7 @@
 	"shared/saveQuote",
 	"shared/contentPopulation",
 	"shared/resultsRankings",
+	"shared/datePicker",
 	"shared/commencementDate",
 	"shared/dropdownInteractive",
 	"shared/paymentGateway",
