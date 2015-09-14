@@ -250,6 +250,7 @@
             cache: false,
             timeout: 6000,
             dataType: "json",
+            errorLevel: "silent",
             useDefaultErrorHandling: false
         });
 
@@ -258,11 +259,11 @@
                 $(element).trigger("validStreetSearchAddressEnteredEvent",
                     [name, jsonResult]);
             }
-        }).fail(function () {
+        }).fail(function (jqXHR, textStatus, errorThrown) {
             meerkat.modules.errorHandling.error({
-                message: "An error occurred checking the address: " + txt,
+                message: "An error occurred checking the address: " + errorThrown,
                 page: "ajax/json/address/get_address.jsp",
-                description: "An error occurred checking the address: " + txt,
+                description: "An error occurred checking the address: " + textStatus + ' ' + errorThrown,
                 data: data,
                 errorLevel: "silent"
             });
