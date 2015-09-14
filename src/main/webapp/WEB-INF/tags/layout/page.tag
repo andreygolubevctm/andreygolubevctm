@@ -94,19 +94,14 @@
 		<!--<![endif]-->
 
 			<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/bootstrap.${pageSettings.getBrandCode()}.min.js?${revision}"></script>
-
-			<script src="${assetUrl}framework/jquery/plugins/jquery.validate-1.11.1.js"></script>
-
+		
 			<script src="${assetUrl}framework/jquery/plugins/jquery.number-2.1.5.js?${revision}"></script>
 
 
 		<go:insertmarker format="HTML" name="js-href" />
 		<go:script>
-			<form_new:validation />
 			<go:insertmarker format="SCRIPT" name="js-head" />
 		</go:script>
-
-		<script src="${assetUrl}common/js/jquery.validate.custom.js?${revision}"></script>
 
 		<go:script>
 			$(document).ready(function(){
@@ -263,6 +258,7 @@
 
 		<!--  Meerkat -->
 		<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/modules.${pageSettings.getBrandCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+	<script src="${assetUrl}brand/${pageSettings.getBrandCode()}/js/components/validation.modules.${pageSettings.getBrandCode()}.js?${revision}"></script>
 		<c:choose>
 			<%-- HACK FOR LMI - It needs to include a separate lmi.ctm.css file. --%>
 			<c:when test="${(pageSettings.getVerticalCode() == 'carlmi' or pageSettings.getVerticalCode() == 'homelmi') and pageSettings.getBrandCode() == 'ctm'}">

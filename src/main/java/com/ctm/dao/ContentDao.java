@@ -103,10 +103,10 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-				LOGGER.debug("no content found {}", kv("contentKey", contentKey));
+				LOGGER.debug("Content key not found. Defaulting to empty string. {}", kv("contentKey", contentKey));
 			}else{
 				if(contents.size() > 1){
-					LOGGER.warn("more than one content value found {}", kv("contentKey", contentKey));
+					LOGGER.warn("More than one content value found {}", kv("contentKey. Will use the first one found. {}", contentKey));
 				}
 
 				content = contents.get(0);

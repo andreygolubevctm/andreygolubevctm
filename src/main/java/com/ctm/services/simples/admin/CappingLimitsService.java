@@ -26,7 +26,7 @@ public class CappingLimitsService implements CrudService<CappingLimit> {
     }
 
     @Override
-    public List<CappingLimitInformation> getAll() throws DaoException {
+    public List<CappingLimitInformation> getAll(HttpServletRequest request) throws DaoException {
         return cappingLimitsDao.fetchCappingLimits();
     }
 

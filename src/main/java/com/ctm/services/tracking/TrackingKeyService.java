@@ -1,22 +1,25 @@
 package com.ctm.services.tracking;
 
-import java.util.List;
-import java.util.Arrays;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.servlet.http.HttpServletRequest;
-
-import com.ctm.security.StringEncryption;
-import com.ctm.services.ContentService;
-import com.ctm.services.SettingsService;
+import com.ctm.exceptions.SessionException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.security.StringEncryption;
+import com.ctm.services.ContentService;
 import com.ctm.services.SessionDataService;
-import com.ctm.exceptions.SessionException;
+import com.ctm.services.SettingsService;
 import com.disc_au.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class TrackingKeyService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(TrackingKeyService.class.getName());
 
 	public TrackingKeyService(){}
 
@@ -67,6 +70,7 @@ public class TrackingKeyService {
 			throw new Exception("No TrackingKeyXpaths defined to create tracking key.");
 		}
 
+		LOGGER.info("Generated tracking key. {}", kv("key", key));
 		return key;
 	}
 }

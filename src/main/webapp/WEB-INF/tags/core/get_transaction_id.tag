@@ -2,6 +2,8 @@
 <%@ tag description="Form to searching/displaying saved quotes"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('/core/get_transactionid.tag')}" />
+
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>
 
@@ -102,7 +104,7 @@
 			<c:set var="sessionId" 		value="${pageContext.session.id}" />
 			<c:set var="status" 		value="" />
 
-			<go:log source="core:get_transactionid" >[with id_handler] Found transactionId in db. IDs for Get TransactionID = ipAddress: ${pageContext.request.remoteAddr}, sessionID = ${pageContext.session.id}</go:log>
+			${logger.info('[with id_handler] Found transactionId in db. IDs for Get TransactionID. {},{}',log:kv('ipAddress',ipAddress ),log:kv('requestedTransaction', requestedTransaction))}
 
 				<c:catch var="error">
 					<%-- New Transaction Header using the older values to help populate--%>
@@ -180,7 +182,7 @@
 			<%-- ERROR CHECK --%>
 			<c:choose>
 				<c:when test="${not empty error}">
-					<go:log  source="core:get_transactionid" level="ERROR">${error}</go:log>
+					${logger.error('Exception when getting transaction id. {}', log:kv('requestedTransaction',requestedTransaction ), error)}
 					<c:set var="method" value="ERROR: INCREMENT" />
 
 					<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
@@ -199,7 +201,7 @@
 			</c:choose>
 	</c:when>
 			<c:otherwise>
-				<go:log source="core:get_transactionid">TRANSACTION ID NOT FOUND: '${requestedTransaction}' EITHER THE TRANSACTION DOES NOT EXIST, OR NOT LINKED WITH THIS BRAND: '${styleCodeId}'</go:log>
+				${logger.info('TRANSACTION ID NOT FOUND EITHER THE TRANSACTION DOES NOT EXIST, OR NOT LINKED WITH THIS BRAND. {},{}', log:kv('requestedTransaction',requestedTransaction ), log:kv('styleCodeId',styleCodeId ))}
 				<go:setData dataVar="data" xpath="current" value="*DELETE" />
 			</c:otherwise>
 		</c:choose>
@@ -297,7 +299,5 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-
-<go:log source="core:get_transactionid">Transaction ID outcome: {"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}</go:log>
-
+${logger.info("Get transaction id complete. {},{},{}", log:kv('transactionId',data.current.transactionId ), log:kv('rootId', data.current.rootId), log:kv('method',method ))}
 {"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 <session:get settings="true" />
 
 <c:set var="callCentreNumberApplication" scope="request"><content:get key="callCentreNumberApplication"/></c:set>
@@ -11,7 +12,7 @@
 	</c:if>
 	<c:set var="dependentText">${dependentText} to discuss your health cover needs.</c:set>
 </c:if>
-<go:log>pageSettings.getSetting('liveChatEnabled'): ${pageSettings.getSetting('liveChatEnabled')}</go:log>
+${logger.debug('Application information for THF. {}', log:kv('liveChatEnabled', pageSettings.getSetting('liveChatEnabled')))}
 <c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
 <c:set var="content">
 <%--Important use JSP comments as whitespace is being removed--%>
@@ -38,10 +39,9 @@ var healthFunds_THF = {
 		healthDependents.config = { 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 };
 
 		<%-- Previous fund --%>
-		$('#health_previousfund_primary_authority').rules('add', {required:true, messages:{required:'Teachers Health Fund require authorisation to contact your previous fund'}});
-		$('#health_previousfund_partner_authority').rules('add', {required:true, messages:{required:'Teachers Health Fund require authorisation to contact your partner\'s previous fund'}});
-		$('#health_previousfund_primary_memberID').attr('maxlength', '10');
-		$('#health_previousfund_partner_memberID').attr('maxlength', '10');
+		$('#health_previousfund_primary_authority').setRequired(true,'Teachers Health Fund require authorisation to contact your previous fund');
+		$('#health_previousfund_partner_authority').setRequired(true, 'Teachers Health Fund require authorisation to contact your partner\'s previous fund');
+		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
 
 		<%-- Authority --%>
 		healthFunds._previousfund_authority(true);
@@ -158,12 +158,7 @@ var healthFunds_THF = {
 				var id = $(this).find('input').attr('id');
 				$(this).append(instituteElement);
 				$(this).find('select').attr('name', name).attr('id', id + 'select');
-				$(this).find('select').rules('add', {
-						required: true,
-						messages: {
-							required: 'Please select dependant '+(i+1)+'\'s educational institute'
-							}
-						});
+				$(this).find('select').setRequired(true, 'Please select dependant '+(i+1)+'\'s educational institute');
 				$('#health_application_dependants_dependant' + (i+1) + '_school').hide();
 			});
 			$('.health_dependant_details_schoolIDGroup input').attr('maxlength', '10');
@@ -256,11 +251,11 @@ var healthFunds_THF = {
 
 		$.validator.messages.validateTHFEligibility = $('#thf_ineligible span').html();
 
-		healthFunds_THF.unionMembershipFld.rules('add', {required:true});
-		healthFunds_THF.unionMembershipFld.rules('add', {validateTHFEligibility:true});
-		healthFunds_THF.areYouRelatedFld.rules('add', {required:true});
-		healthFunds_THF.familyMemberFld.rules('add', {required:true});
-		healthFunds_THF.employmentFld.rules('add', {required:true});
+		healthFunds_THF.unionMembershipFld.setRequired(true);
+		healthFunds_THF.unionMembershipFld.addRule("validateTHFEligibility");
+		healthFunds_THF.areYouRelatedFld.setRequired(true);
+		healthFunds_THF.familyMemberFld.setRequired(true);
+		healthFunds_THF.employmentFld.setRequired(true);
 	},
 	unset: function () {
 		"use strict";
@@ -288,10 +283,8 @@ var healthFunds_THF = {
 		healthFunds_THF.areYouRelatedFld.val("");
 		healthFunds_THF.ineligibleMessage.hide();
 
-		$('#health_previousfund_primary_authority').rules('remove', 'required');
-		$('#health_previousfund_partner_authority').rules('remove', 'required');
-		$('#health_previousfund_primary_memberID').removeAttr('maxlength');
-		$('#health_previousfund_partner_memberID').removeAttr('maxlength');
+		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
+		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength');
 
 		healthFunds._previousfund_authority(false);
 	}

@@ -313,38 +313,6 @@
 			]]>
 		</example>
 	</tag>
-
-	<!-- Log To Console Tag -->
-	<tag>
-		<description>Simple logging</description>
-		<name>log</name>
-		<tag-class>com.disc_au.web.go.tags.LogTag</tag-class>
-		<body-content>JSP</body-content>
-		<attribute>
-			<description>The log level</description>
-			<name>level</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The name of the data object</description>
-			<name>source</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-		<description>caught error</description>
-			<name>error</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<example>
-			<![CDATA[
-				<go:log source="example.jsp" level="DEBUG">This is my log message.....</go:log>
-			]]>
-		</example>
-	</tag>
-
 	<!-- Set Data Tag-->
 	<tag>
 		<description>Set a value in the request's data object</description>

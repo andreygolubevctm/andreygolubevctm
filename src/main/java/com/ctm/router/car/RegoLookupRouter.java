@@ -21,10 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -33,6 +31,10 @@ public class RegoLookupRouter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RegoLookupRouter.class);
 
     private static final String COLLECTION_LABEL = "vehicle_data";
+    /*
+     allow only num 0 to 9 and all alpha chars and white space
+     */
+    private final String REG_EXP_FOR_PLATE = "[^0-9A-Za-z ]";
 
     @GET
     @Path("/lookup/list.json")
@@ -44,7 +46,11 @@ public class RegoLookupRouter {
             RegoLookupService regoLookupService = new RegoLookupService();
             HttpServletRequest request = context.getHttpServletRequest();
             ApplicationService.setVerticalCodeOnRequest(request, Vertical.VerticalType.CAR.getCode());
-            Map<String, Object> carDetails = regoLookupService.execute(context.getHttpServletRequest(), plateNumber.toUpperCase(), state);
+            Optional<String> plateOptional = Stream.of(plateNumber).map(String::toUpperCase).
+                    map(s -> s.replaceAll(REG_EXP_FOR_PLATE,"")).
+                    findFirst();
+            Map<String, Object> carDetails = regoLookupService.execute(context.getHttpServletRequest(),
+                                                                        plateOptional.orElse(""),state);
             result.put(COLLECTION_LABEL, carDetails);
         } catch(RegoLookupException e) {
             Map<String, String> error = new LinkedHashMap<>();

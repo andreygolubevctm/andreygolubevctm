@@ -22,9 +22,4 @@
 </c:choose>
 
 <%-- HTML --%>
-<textarea name="${name}" id="${name}" class="form-control ${className}">${contents}</textarea>
-
-<%-- VALIDATION --%>
-<c:if test="${required}">
-	<go:validate selector="${name}" rule="required" parm="true" message="Please enter the ${title}"/>
-</c:if>
+<textarea name="${name}" id="${name}" class="form-control ${className}"<c:if test="${required}">required data-msg-required="Please enter the ${title}"</c:if>>${contents}</textarea>

@@ -1,9 +1,8 @@
-<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/xml; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@page import="java.util.Calendar"%>
 <%@ page import="java.util.GregorianCalendar" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
@@ -58,20 +57,7 @@
 				<c:forEach var="site" varStatus="status" items="${fuelsites.rows}">
 					<c:set var="siteids"><c:if test="${not empty siteids}">${siteids},</c:if>${site.SiteId}</c:set>
 				</c:forEach>
-					<go:log level="DEBUG" source="fuel_price_monthly_averages">
-						SELECT ROUND(AVG(r.Price)) AS amount, r.FuelId AS type, CAST(CONCAT_WS('-', YEAR(u.Time), LPAD(MONTH(u.time), 2, '0'), LPAD(DAYOFMONTH(u.time), 2, '0') ) AS CHAR(10)) AS period
-						FROM `aggregator`.`fuel_results` AS r
-						LEFT JOIN `aggregator`.`fuel_updates` AS u
-							ON u.UpdateId = r.UpdateId
-						WHERE
-							u.Status = 200 AND
-							u.Type = 'M' AND
-							r.SiteId IN (${siteids}) AND
-							CAST(CONCAT(YEAR(u.Time), LPAD(MONTH(u.time), 2, '0'), LPAD(DAYOFMONTH(u.time), 2, '0')  ) AS UNSIGNED) > ${nowMinusSixWeeks_Date} AND
-							r.FuelId IN (${fuels})
-						GROUP BY period, r.FuelId
-						ORDER BY u.UpdateId DESC, FuelId DESC;
-					</go:log>
+				${logger.debug('Got list of site ids. {},{},{}',log:kv('siteids',siteids ),log:kv('nowMinusSixWeeks_Date',nowMinusSixWeeks_Date ),log:kv('fuels',fuels ))}
 
 				<c:catch var="error">
 					<sql:query var="fuelprices">
@@ -108,7 +94,7 @@
 						</c:choose>
 					</c:when>
 					<c:otherwise>
-						<go:log level="ERROR" source="fuel_price_monthly_averages_jsp" error="${error}" >Database error while locating historical fuel prices.</go:log>
+						${logger.error('Database error while locating historical fuel prices. {}, {}', log:kv('siteids',siteids), log:kv('fuels',fuels), error)}
 						<error>MK-20004</error>
 					</c:otherwise>
 				</c:choose>
@@ -119,7 +105,7 @@
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		<go:log level="ERROR" source="fuel_price_monthly_averages_jsp" error="${error}" >Database error while locating historical fuel prices.</go:log>
+		${logger.error('Database error while locating historical fuel prices. {}', log:kv('postcode', postcode), error)}
 		<error>MK-20004</error>
 	</c:otherwise>
 </c:choose>

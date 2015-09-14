@@ -2,6 +2,7 @@ package com.ctm.services;
 
 import com.ctm.dao.ProviderFilterDao;
 import com.ctm.exceptions.TravelServiceException;
+import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Date;
@@ -38,7 +39,22 @@ public class ProviderService {
 		} catch(DaoException e) {
 			// ignore and move on
 		}
-		LOGGER.debug("Provider key already exists {},{}", kv("providerKey", providerKey), kv("exists", exists));
+
+		return exists;
+	}
+
+	public static Boolean authTokenExists(String providerKey) {
+		Boolean exists = false;
+		ProviderFilterDao providerFilterDAO = new ProviderFilterDao();
+		try {
+			ArrayList<String> providerCode = providerFilterDAO.getProviderDetailsByAuthToken(providerKey);
+			if(!providerCode.isEmpty()) {
+				exists = true;
+			}
+		} catch(DaoException e) {
+			// ignore and move on
+		}
+
 		return exists;
 	}
 }

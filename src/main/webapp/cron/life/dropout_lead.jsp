@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
 <sql:setDataSource dataSource="jdbc/ctm" />
@@ -57,7 +59,7 @@
 			<c:choose>
 				<c:when test="${not empty getTransactionDataError}">
 					<c:set var="errorPool">The CTM life_lead_feed cron job could not get a transaction's details - ${getTransactionDataError.rootCause}</c:set>
-					<go:log>${errorPool}</go:log>
+					${logger.error('The CTM life_lead_feed cron job could not get a transaction\'s details. {}', log:kv('result.transaction_id',result.transaction_id ), getTransactionDataError)}
 				</c:when>
 				<%-- if there are some results --%>
 				<c:when test="${not empty transactionData and transactionData.rowCount > 0}">

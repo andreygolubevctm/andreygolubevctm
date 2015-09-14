@@ -1,5 +1,17 @@
 package com.ctm.services;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ctm.dao.BrandsDao;
 import com.ctm.dao.ConfigSettingsDao;
 import com.ctm.dao.VerticalsDao;
@@ -349,6 +361,7 @@ public class ApplicationService {
 		ServiceConfigurationService.clearCache();
 		AddressSearchService.destroy();
 		AddressSearchService.init();
+        ApplicationCacheManager.clearAll();
 		return true;
 	}
 

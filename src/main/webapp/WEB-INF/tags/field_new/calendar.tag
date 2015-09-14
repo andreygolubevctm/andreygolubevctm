@@ -10,6 +10,7 @@
 <%@ attribute name="required" 				required="true"	 rtexprvalue="true" description="is this field required?" %>
 <%@ attribute name="className" 				required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="mobileClassName" 		required="false" rtexprvalue="true"	 description="additional css class attribute for mobile" %>
+<%@ attribute name="calAdditionalAttributes" required="false" rtexprvalue="true"   description="When you want to send in additional attributes" %>
 <%@ attribute name="title" 					required="true"	 rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
 <%@ attribute name="minDate" 				required="false" rtexprvalue="true"	 description="Minimum Inclusive Date Value (rfc3339 yyyy-MM-dd) (or strings supported by the JS bootstrap-datepicker control for mode of component ONLY)"%>
 <%@ attribute name="maxDate" 				required="false" rtexprvalue="true"	 description="Maximum Inclusive Date Value (rfc3339 yyyy-MM-dd) (or strings supported by the JS bootstrap-datepicker control for mode of component ONLY)"%>
@@ -17,7 +18,6 @@
 <%@ attribute name="startView" 				required="false" rtexprvalue="true"	 description="The view either 0:Month|1:Year|2:Decade|"%>
 <%@ attribute name="mode"	 				required="false" rtexprvalue="true"	 description="Component: Display as input with a click bound calendar. Inline: embedded calendar (with hidden field). Separated: DD MM YYYY inputs with a calendar click bound button and hidden input."%>
 <%@ attribute name="nonLegacy" 				required="false" rtexprvalue="true"	 description="If the component is non legacy, format the dates as to be expected. So that Min/Max validation works."%>
-
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -73,6 +73,21 @@
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
+<c:set var="todaysDate" value="today's date" />
+<c:set var="minDateEurRule">
+	<c:if test="${not empty minDateEuro and validateMinMax == true}">
+		data-rule-earliestDateEUR='${minDateEuro}' data-msg-earliestDateEUR='Please enter a date on or after ${fn:escapeXml(todayDateEuro == minDateEuro ? todaysDate : minDateEuro)}'
+	</c:if>
+</c:set>
+<c:set var="maxDateEurRule">
+	<c:if test="${not empty maxDateEuro and validateMinMax == true}">
+		data-rule-latestDateEUR='${maxDateEuro}' data-msg-latestDateEUR='Please enter a date on or before ${fn:escapeXml(todayDateEuro == maxDateEuro ? todaysDate : maxDateEuro)}'
+	</c:if>
+</c:set>
+
+<c:set var="dateEurRule">
+	data-rule-dateEUR='${required}' data-msg-dateEUR="Please enter a valid ${title} date for DD MM YYYY"
+</c:set>
 <%--
 	Datepicker useful links for devs:
 		http://bootstrap-datepicker.readthedocs.org/
@@ -87,7 +102,7 @@
 	--%>
 	<c:when test="${mode eq 'inline'}">
 		<div id="${name}_calendar"></div>
-		<field_new:validatedHiddenField xpath="${xpath}" className="${className}" title="Please enter the ${title}" validationErrorPlacementSelector="#${name}_calendar" />
+		<field_new:validatedHiddenField xpath="${xpath}" className="${className}" title="Please enter the ${title}" validationErrorPlacementSelector="#${name}_calendar" additionalAttributes=" required ${dateEurRule} ${minDateEurRule} ${maxDateEurRule}" />
 	</c:when>
 	<%--
 		The calendar input picker's default component mode:
@@ -105,7 +120,7 @@
 				id="${name}"
 				class="form-control dateinput-date ${className}"
 				value="${value}"
-				title="${title}" ${requiredAttribute}>
+				title="${title}" ${requiredAttribute} ${dateEurRule}>
 			<span class="input-group-addon">
 				<i class="icon-calendar"></i>
 			</span>
@@ -120,13 +135,13 @@
 		<div class="dateinput_container" data-provide="dateinput">
 			<div class="row dateinput-tripleField withDatePicker">
 				<div class="col-xs-4 col-sm-3 col-md-3 ">
-					<field_new:input type="text" size="2" className="dateinput-day dontSubmit ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="${required}" requiredMessage="Please enter the day" />
+					<field_new:input type="text" size="2" className="dateinput-day dontSubmit ${className}"  xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="${required}" requiredMessage="Please enter the day" additionalAttributes=" data-rule-range='1,31' data-msg-range='Day must be between 1 and 31.'" />
 				</div>
 				<div class="col-xs-4 col-sm-3 col-md-3 row-hack"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
-					<field_new:input size="2" type="text" className="dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="${required}" requiredMessage="Please enter the month" />
+					<field_new:input size="2" type="text" className="dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="${required}" requiredMessage="Please enter the month" additionalAttributes=" data-rule-range='1,12' data-msg-range='Month must be between 1 and 12.'" />
 				</div>
 				<div class="col-xs-4 col-sm-5 col-md-4">
-					<field_new:input size="4" type="text" className="dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="${required}" requiredMessage="Please enter the year" />
+					<field_new:input size="4" type="text" className="dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="${required}" requiredMessage="Please enter the year" additionalAttributes=" data-rule-range='1000,9999' data-msg-range='Year must be four numbers e.g. 2014.'" />
 				</div>
 				<div class="hidden-xs col-sm-3 col-md-3 row-hack"> <%-- special row hack to remove margins and hence allow us to squeeze into this size parent ---%>
 					<button tabindex="-1" id="${name}_button" type="button" class="input-group-addon-button date form-control">
@@ -138,7 +153,7 @@
 				<span class="input-group-addon"><i class="icon-calendar"></i></span>
 				<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="${minDate}" max="${maxDate}" placeHolder="YYYY-MM-DD">
 			</div>
-			<field_new:validatedHiddenField attributeInjection='data-provide="datepicker" data-date-mode="${mode}" ${minDateAttribute} ${maxDateAttribute}' xpath="${xpath}" className="serialise hidden-datepicker" required="${required}" title="Please enter the ${title} date" />
+			<field_new:validatedHiddenField xpath="${xpath}" className="serialise hidden-datepicker" title="Please enter the ${title} date" additionalAttributes=" required ${calAdditionalAttributes} ${dateEurRule} ${minDateEurRule} ${maxDateEurRule} data-provide='datepicker' data-date-mode='${mode}' ${minDateAttribute} ${maxDateAttribute} " />
 		</div>
 	</c:when>
 	<%-- A fallback warning if someone typo'd the mode name --%>
@@ -146,19 +161,3 @@
 		<p style="color:red;">The mode attribute passed was not valid for the calendar tag</p>
 	</c:otherwise>
 </c:choose>
-
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}InputD" rule="range" parm="[1,31]" message="Day must be between 1 and 31" />
-<go:validate selector="${name}InputM" rule="range" parm="[1,12]" message="Month must be between 1 and 12" />
-<go:validate selector="${name}InputY" rule="range" parm="[1000,9999]" message="Year must be four numbers e.g. 2014" />
-<go:validate selector="${name}" rule="dateEUR" parm="${required}" message="Please enter a valid ${title} date for DD MM YYYY"/>
-<c:set var="todaysDate" value="today's date" />
-<c:if test="${not empty minDateEuro and validateMinMax == true}">
-	
-	<go:validate selector="${name}" rule="minDateEUR" parm="'${minDateEuro}'" message="Please enter a date on or after ${todayDateEuro == minDateEuro ? todaysDate : minDateEuro}" />
-</c:if>
-<c:if test="${not empty maxDateEuro and validateMinMax == true}">
-	
-	<go:validate selector="${name}" rule="maxDateEUR" parm="'${maxDateEuro}'" message="Please enter a date on or before ${todayDateEuro == maxDateEuro ? todaysDate : maxDateEuro}" />
-</c:if>
