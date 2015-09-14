@@ -71,11 +71,6 @@
 
 				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" />
 
-				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
-				<form_new:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear">
-					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}"/>
-				</form_new:row>
-
 				<%-- COMPETITION START --%>
 				<c:if test="${competitionEnabled == true}">
 					<c:set var="competitionPreCheckboxContainer"><content:get key="competitionPreCheckboxContainer"/></c:set>
