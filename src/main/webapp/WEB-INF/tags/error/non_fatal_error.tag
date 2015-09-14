@@ -30,7 +30,7 @@
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
-{logger.warn('About to log to error_log {},{},{},{},{}', log:kv('property', property), log:kv('origin',origin), log:kv('errorMessage',errorMessage), log:kv('errorCode',errorCode),log:kv('transactionId', transactionId))}
+{logger.warn('About to log to error_log {},{},{},{}', log:kv('property', property), log:kv('origin',origin), log:kv('errorMessage',errorMessage), log:kv('errorCode',errorCode))}
 <c:set var="currentTransactionId" value="${data.current.transactionId}" />
 <c:if test="${empty currentTransactionId}">
 	<c:set var="currentTransactionId" value="0" />
