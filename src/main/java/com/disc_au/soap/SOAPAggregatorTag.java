@@ -35,6 +35,18 @@ import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
 import static com.ctm.logging.LoggingVariables.setLoggingVariables;
 import static com.ctm.services.EnvironmentService.Environment.*;
 
+import com.ctm.model.settings.SoapAggregatorConfiguration;
+import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.soap.SoapConfiguration;
+import com.ctm.web.validation.SchemaValidation;
+import com.disc_au.web.go.xml.XmlNode;
+import com.disc_au.web.go.xml.XmlParser;
+
+import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.services.EnvironmentService.Environment.LOCALHOST;
+import static com.ctm.services.EnvironmentService.Environment.NXI;
+import static com.ctm.services.EnvironmentService.Environment.NXS;
+
 /**
  * The Class SOAPAggregatorTag with WAR compatibility.
  *
@@ -87,6 +99,8 @@ public class SOAPAggregatorTag extends TagSupport {
 	 */
 	@Override
 	public int doEndTag() throws JspException {
+		String debugXml = null;
+		String resultXml = null;
 		try {
 			XmlParser parser = new XmlParser();
 		setUpConfiguration();
@@ -149,7 +163,6 @@ public class SOAPAggregatorTag extends TagSupport {
 					//Otherwise the aggregator times out before all the clients have had a chance too.
 					timeout+= 2000; // ensure the main thread lasts slightly longer than the total of all service calls.
 
-						//LOGGER.info("will wait "+timeout+ "ms");
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
@@ -201,8 +214,9 @@ public class SOAPAggregatorTag extends TagSupport {
 			}
 
 			// Write to the debug var (if passed)
-				if (this.debugVar != null) {
-				this.pageContext.setAttribute(debugVar, resultNode.getXML(true),
+			if (this.debugVar != null) {
+				debugXml= resultNode.getXML(true);
+				this.pageContext.setAttribute(debugVar, debugXml,
 						PageContext.PAGE_SCOPE);
 			}
 
@@ -214,7 +228,8 @@ public class SOAPAggregatorTag extends TagSupport {
 			// If result var was passed - put the resulting xml in the pagecontext's
 			// variable
 			if (this.var!= null) {
-				this.pageContext.setAttribute(var, resultNode.getXML(true),
+				resultXml= resultNode.getXML(true);
+				this.pageContext.setAttribute(var, resultXml,
 						PageContext.PAGE_SCOPE);
 				// Otherwise - just splat it to the page
 			} else {
@@ -227,8 +242,9 @@ public class SOAPAggregatorTag extends TagSupport {
 		}
 			return super.doEndTag();
 		} finally {
+			LOGGER.debug("Aggregator response returned. {},{}", kv("resultXml", resultXml), kv("debugXml", debugXml));
 			cleanUp();
-	}
+		}
 	}
 
 	private void setupMDC() {

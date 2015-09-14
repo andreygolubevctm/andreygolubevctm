@@ -1,8 +1,7 @@
-<%@tag import="java.util.ArrayList"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-
+<c:set var="logger" value="${log:getLogger('/agg/email_send.tag')}" />
 <core_new:no_cache_header/>
 
 <session:get settings="true"/>
@@ -57,9 +56,9 @@
 		<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
 	</c:when>
 	<c:when test="${sendYN eq 'N'}">
-		<go:log level="WARN" source="send_jsp">[sendYN] No email sent - Emails are not sent for this brand/vertical combo</go:log>
+		${logger.warn('[sendYN] No email sent - Emails are not sent for this brand/vertical combo')}
 	</c:when>
 	<c:otherwise>
-		<go:log level="WARN" source="send_jsp">[sendYN] No email sent - Value is not defind</go:log>
+		${logger.warn('[sendYN] No email sent - Value is not defind')}
 	</c:otherwise>
 </c:choose>

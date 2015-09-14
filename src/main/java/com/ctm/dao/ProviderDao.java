@@ -18,7 +18,7 @@ import com.ctm.services.ApplicationService;
 public class ProviderDao {
 
 	public static enum GetMethod {
-		BY_CODE, BY_ID
+		BY_CODE, BY_ID, BY_NAME
 	};
 
 	public ProviderDao(){
@@ -47,10 +47,20 @@ public class ProviderDao {
 			if (method == GetMethod.BY_CODE) {
 				stmt = dbSource.getConnection().prepareStatement(
 					"SELECT ProviderId, ProviderCode, Name " +
-					"FROM ctm.provider_master " +
-					"WHERE ProviderCode = ? " +
-					"AND Status = '' " +
-					"LIMIT 1 ;"
+						"FROM ctm.provider_master " +
+						"WHERE ProviderCode = ? " +
+						"AND Status = '' " +
+						"LIMIT 1 ;"
+				);
+				stmt.setString(1, parameter);
+			}
+			else if (method == GetMethod.BY_NAME) {
+				stmt = dbSource.getConnection().prepareStatement(
+					"SELECT ProviderId, ProviderCode, Name " +
+						"FROM ctm.provider_master " +
+						"WHERE Name = ? " +
+						"AND Status = '' " +
+						"LIMIT 1 ;"
 				);
 				stmt.setString(1, parameter);
 			}
@@ -106,6 +116,18 @@ public class ProviderDao {
 	 */
 	public Provider getByCode(String providerCode, Date serverDate) throws DaoException{
 		return get(GetMethod.BY_CODE, providerCode, serverDate);
+	}
+
+	/**
+	 * Returns the provider by provider code eg BUDD.
+	 *
+	 * @param providerName
+	 * @param serverDate
+	 * @return
+	 * @throws DaoException
+	 */
+	public Provider getByName(String providerName, Date serverDate) throws DaoException{
+		return get(GetMethod.BY_NAME, providerName, serverDate);
 	}
 
 	/**

@@ -1,4 +1,5 @@
 <%@ taglib uri="/WEB-INF/tlds/go.tld" prefix="go" %>
+<%@ taglib uri="/WEB-INF/tlds/log.tld" prefix="log" %>
 <%@ taglib uri="/WEB-INF/tlds/file.tld" prefix="file" %>
 <%@ taglib uri="/WEB-INF/tlds/url.tld" prefix="url" %>
 <%@ taglib uri="/WEB-INF/tlds/miscUtils.tld" prefix="miscUtils" %>

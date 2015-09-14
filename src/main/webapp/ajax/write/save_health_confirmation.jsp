@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <session:get />
+<jsp:useBean id="providerContentService" class="com.ctm.services.simples.ProviderContentService" scope="page" />
 
 <%--
 SAVING A SUCCESSFUL HEALTH APPLICATION
@@ -21,8 +24,8 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		<vertical>CTMH</vertical>
 		<startDate>${param.startDate}</startDate>
 		<frequency>${param.frequency}</frequency>
-		<about><![CDATA[ <c:import url="/health_fund_info/${data.health.application.provider}/about.html" /> ]]></about>
-		<whatsNext><![CDATA[ <c:import url="/health_fund_info/${data.health.application.provider}/next_info.html" /> ]]></whatsNext>		
+		<about><![CDATA[ ${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, "ABT")} ]]></about>
+		<whatsNext><![CDATA[ ${providerContentService.getProviderContentText(pageContext.getRequest(), data.health.application.providerName, "NXT")} ]]></whatsNext>
 		<product>${data.confirmation.health}</product>
 		<policyNo>${param.policyNo}</policyNo>
 	</data>
@@ -138,10 +141,10 @@ Creates a historical snapshot of a confirmed health policy in XML with certain J
 		</c:catch>
 		<c:choose>
 			<c:when test="${empty storeEmailResponse}">
-				<go:log source="save_health_confirmation_jsp">Updated transaction details with record of email provider's confirmation code: ${confirmationCode}</go:log>
+				${logger.info('Updated transaction details with record of email provider\'s confirmation code. {}', log:kv('confirmationCode',confirmationCode ))}
 			</c:when>
 			<c:otherwise>
-				<go:log>Failed to Update transaction details with record of confirmation code: ${storeEmailResponse}</go:log>
+				${logger.info('Failed to Update transaction details with record of confirmation code. {}', log:kv('storeEmailResponse',storeEmailResponse ))}
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>
