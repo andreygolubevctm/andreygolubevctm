@@ -60,7 +60,7 @@ public class VerboseErrorHandler implements ErrorHandler {
 
             SchemaValidationError error = new SchemaValidationError();
             if(unspecifiedField) {
-                LOGGER.info("unspecified Field. {}" , kv("element", element));
+                LOGGER.debug("unspecified Field. {}" , kv("element", element));
                 //This is most likely intentional carry on
             } else if(notCompleteErrorMultiple) {
                 error.setMessage("ELEMENT REQUIRED");
