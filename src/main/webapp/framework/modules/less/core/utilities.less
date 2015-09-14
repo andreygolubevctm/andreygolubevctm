@@ -66,6 +66,74 @@
 	}
 }
 
+.providersLogoImages(@providers, @index: 1) when (isstring(extract(@providers, @index))) {
+	@currentMember: extract(@providers, @index);
+
+	@temp-width : ~"@{vertical}-logo-@{currentMember}-width";
+	@temp-height : ~"@{vertical}-logo-@{currentMember}-height";
+	@temp-offset-x : ~"@{vertical}-logo-@{currentMember}-offset-x";
+	@temp-offset-y : ~"@{vertical}-logo-@{currentMember}-offset-y";
+
+	& when (@index = 1) {
+		@temp-image : ~"@{vertical}-logo-@{currentMember}-image";
+		@temp-total-width : ~"@{vertical}-logo-@{currentMember}-total-width";
+		@temp-total-height : ~"@{vertical}-logo-@{currentMember}-total-height";
+		background-image: url(@@temp-image);
+		background-size: (@@temp-total-width * @prop-scale) (@@temp-total-height * @prop-scale);
+	}
+
+	&.logo_@{currentMember} {
+		width:(@@temp-width * @prop-scale);
+		height:(@@temp-height * @prop-scale);
+		background-position: (@@temp-offset-x * @prop-scale) (@@temp-offset-y * @prop-scale);
+	}
+
+	.providersLogoImages(@providers, (@index + 1));
+}
+
+.providersRetinaLogoImages(@providers, @index: 1) when (isstring(extract(@providers, @index))) {
+	@currentMember: extract(@providers, @index);
+
+	@temp-2x-offset-x : ~"@{vertical}-logo-@{currentMember}-2x-offset-x";
+	@temp-2x-offset-y : ~"@{vertical}-logo-@{currentMember}-2x-offset-y";
+
+	& when(@index = 1) {
+		@temp-2x-image : ~"@{vertical}-logo-@{currentMember}-2x-image";
+		@temp-2x-total-width : ~"@{vertical}-logo-@{currentMember}-2x-total-width";
+		@temp-2x-total-height : ~"@{vertical}-logo-@{currentMember}-2x-total-height";
+		background-image: url(@@temp-2x-image);
+		background-size: (@@temp-2x-total-width * @prop-scale) (@@temp-2x-total-height * @prop-scale);
+	}
+
+	&.logo_@{currentMember} {
+		background-position: (@@temp-2x-offset-x * @prop-scale) (@@temp-2x-offset-y * @prop-scale);
+	}
+
+	.providersRetinaLogoImages(@providers, (@index + 1));
+}
+
+.highResSpriteImages(@vertical;@providers;@prop-scale:1; @only-screen:~"only screen and") {
+	.providersLogoImages(@providers);
+	@media
+	@only-screen (-webkit-min-device-pixel-ratio: 1.5),
+	@only-screen (min--moz-device-pixel-ratio: 1.5),
+	@only-screen (-o-min-device-pixel-ratio: 3/2),
+	@only-screen (min-device-pixel-ratio: 1.5),
+	@only-screen (min-resolution: 1.5dppx),
+	@only-screen (min-resolution: 144dpi) {
+		.providersRetinaLogoImages(@providers);
+	}
+
+	& when not (@prop-scale = 1) {
+		image-rendering: optimizeSpeed;
+		image-rendering: -moz-crisp-edges;
+		image-rendering: -o-crisp-edges;
+		image-rendering: -webkit-optimize-contrast;
+		image-rendering: optimize-contrast;
+		-ms-interpolation-mode: nearest-neighbor;
+	}
+}
+
 .highResSpriteImg(@width-1x; @height-1x; @file-1x; @posx-1x; @posy-1x; @bkg-width-1x; @bkg-height-1x; @file-2x; @posx-2x; @posy-2x; @bkg-width-2x; @bkg-height-2x; @prop-scale:1; @only-screen:~"only screen and") {
 	width:(@width-1x * @prop-scale);
 	height:(@height-1x * @prop-scale);
