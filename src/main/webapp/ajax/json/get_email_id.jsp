@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
 
 <core_new:no_cache_header/>
@@ -68,7 +70,7 @@
 	</c:otherwise>
 </c:choose>
 
-<c:catch>
+<c:catch var="error">
 	<%-- Export the results, even an empty JSON --%>
 	<c:choose>
 		<c:when test="${(empty result) || (result.rowCount == 0) }">{"emailId":"-1"}</c:when>
@@ -77,3 +79,6 @@
 					value='${row.emailId}' />"}</c:forEach>${callback_end}</c:otherwise>
 	</c:choose>
 </c:catch>
+<c:if test="${error}">
+	${logger.warn('Exception passing results. {}', log:kv('result',result), error)}
+</c:if>
