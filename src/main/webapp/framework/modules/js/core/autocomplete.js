@@ -76,7 +76,7 @@
 								data: xhr
 							});
 							// Tick non-std box.
-							$('#' + addressFieldId + '_nonStd').trigger('click.elasticAddress').prop('checked', true);
+							$('#' + addressFieldId + '_nonStd').trigger('click').prop('checked', true);
 							autocompleteComplete($component);
 						}
 					},
@@ -200,7 +200,10 @@
 							addressFieldId:	addressFieldId
 						});
 						// Validate the element now the user has made a selection.
-						$element.valid();
+						// Deferred as this is now called before the elastic address binding to typeahead:selected
+						_.defer(function() {
+							$element.valid();
+						});
 					}
 				});
 			}

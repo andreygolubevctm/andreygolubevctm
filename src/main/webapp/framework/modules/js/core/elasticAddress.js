@@ -164,8 +164,8 @@
         },
         applyEventListeners: function () {
 
-            var elements = this.elements,
-                self = this;
+            var self = this,
+                elements = self.elements;
 
             /**
              * Apply events to the autofill elastic search inputs
@@ -374,6 +374,7 @@
             }
         },
         populateFullAddressStreetSearch: function (event, name, jsonAddress, context) {
+
             if (name != context.options.name) {
                 return;
             }
@@ -563,23 +564,6 @@
 
                 $errorContainer.show();
             }
-        },
-        /**
-         * The 'destroy' method is were you free the resources used by your plugin:
-         * references, unregister listeners, etc.
-         *
-         * Remember to unbind for your event:
-         *
-         * @example
-         * this.$someSubElement.off('.' + pluginName);
-         *
-         * Above example will remove any listener from your plugin for on the given
-         * element.
-         */
-        destroy: function () {
-
-            // Remove any attached data from your plugin
-            this.$el.removeData();
         }
     };
 
@@ -612,9 +596,8 @@
 
     /**
      *
-     * @param data
-     * @param textStatus
-     * @param jqXHR
+     * @param {{}} data
+     * @param {Function} callback
      */
     var getSuburbsSuccess = function (data, callback) {
 
@@ -675,13 +658,13 @@
             suffixes[14] = ["Hwy", ':HIGHWAY:HWY:HWY.:HIGH:'];
 
             for (var i = 0; i < suffixes.length; i++) {
-                var suffixmappings = suffixes[i];
-                var suffixmapping = suffixmappings[1];
-                if (suffixmapping.indexOf(":" + suffix + ":") >= 0) {
+                var suffixMappings = suffixes[i];
+                var suffixMapping = suffixMappings[1];
+                if (suffixMapping.indexOf(":" + suffix + ":") >= 0) {
                     if (convertToUppercase) {
-                        formattedStreet = street + suffixmappings[0].toUpperCase();
+                        formattedStreet = street + suffixMappings[0].toUpperCase();
                     } else {
-                        formattedStreet = street + suffixmappings[0];
+                        formattedStreet = street + suffixMappings[0];
                     }
                     break;
                 }
@@ -734,12 +717,6 @@
             }
         }
     };
-
-    /**
-     * Names of the pluguin methods that can act as a getter method.
-     * @type {Array}
-     */
-    $.fn[pluginName].getters = ['someGetterMethod'];
 
     /**
      * Default options

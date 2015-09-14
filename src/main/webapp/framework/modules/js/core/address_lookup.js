@@ -104,7 +104,7 @@
 	function setAddressDataFields(data) {
 		for (var addressItem in data) {
 			var $hiddenAddressElement = $('#' + addressFieldId + '_'+addressItem);
-			$hiddenAddressElement.val(data[addressItem]).trigger("change.elasticAddress");
+			$hiddenAddressElement.val(data[addressItem]).trigger("change").trigger("change.elasticAddress");
 		}
 	}
 
