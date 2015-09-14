@@ -68,9 +68,11 @@
 	<%-- Disable session_pop on new journeys --%>
 	<c:set var="sessionPop" value="${false}" />
 
+		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
+		<c:set var="browserVersion" value="${userAgentSniffer.getBrowserVersion(pageContext.getRequest().getHeader('user-agent'))}" />
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
-				<c:when test="${userAgentSniffer.isSupportedBrowser(pageContext.getRequest(), 'minimumSupportedBrowsers') eq false}">
+				<c:when test="${browserName eq 'IE' && (browserVersion le 9)}">
 					<jsp:include page="assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.min.inc" />
 				</c:when>
 				<c:otherwise>
