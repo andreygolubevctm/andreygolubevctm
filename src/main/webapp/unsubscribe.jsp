@@ -4,6 +4,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <session:new verticalCode="GENERIC"/>
 <%-- VARS --%>
 <c:set var="hasAlreadyLoaded" value="${not empty unsubscribe && empty param.unsubscribe_email and not empty unsubscribe.getEmailDetails()}"/>
@@ -78,6 +80,6 @@
         <unsubscribe:redirect_with_details/>
     </c:when>
     <c:otherwise>
-        <go:log level="ERROR" source="unsubscribe.jsp">Invalid Unsubscribe Parameters</go:log>
+        ${logger.warn('Invalid Unsubscribe Parameter. {},{}', log:kv('unsubscribe_email', param.unsubscribe_email), log:kv('email', param.email))}
     </c:otherwise>
 </c:choose>
