@@ -86,11 +86,7 @@
 		width:(@@temp-width * @prop-scale);
 		height:(@@temp-height * @prop-scale);
 		background-position: (@@temp-offset-x * @prop-scale) (@@temp-offset-y * @prop-scale);
-		/**************************************************************
-		It is assumed that @standard-logo-height and @logo-price-spacer
-		have been defined for the vertical.
-		***************************************************************/
-		margin: ceil((@standard-logo-height - @temp-height)/2) auto (floor((@temp-height - @health-logo-AHM-height)/2) + @logo-price-spacer) auto;
+		margin: ceil((@standard-height - @@temp-height)/2) auto (floor((@standard-height - @@temp-height)/2) + @bottom-margin) auto;
 	}
 
 	.providersLogoImages(@providers, (@index + 1));
@@ -177,7 +173,7 @@
 	}
 }
 
-.providersNormalSpriteImagesVerticallyCentered(@vertical; @providers; @prop-scale:1; @only-screen:~"only screen and") {
+.providersNormalSpriteImagesVerticallyCentered(@vertical; @providers; @standard-height; @bottom-margin; @prop-scale:1; @only-screen:~"only screen and") {
 	.providersLogoImagesVerticallyCentered(@providers);
 
 	& when not (@prop-scale = 1) {
