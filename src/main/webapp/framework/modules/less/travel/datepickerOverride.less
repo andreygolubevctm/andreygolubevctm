@@ -1,11 +1,12 @@
-@calendar-grey: #EBEBEB;
-@calendar-blue: #1C3F94;
-@calendar-nav: #142C67;
-@calendar-background-cell: #f1f1f1;
+@datepicker-grey: #EBEBEB;
+@datepicker-blue: #1C3F94;
+@datepicker-nav: #142C67;
+@datepicker-background-cell: #f1f1f1;
+@datepicker-next-prev-color: #fff;
 
 .datepicker {
 
-  background-color: @calendar-blue;
+  background-color: @datepicker-background-cell;
   border: none;
   border-radius:0;
   padding: 0px;
@@ -28,7 +29,7 @@
     &.day {
       background-color: @btn-default-color;
       border-radius: 0;
-      border: 1px solid @calendar-grey;
+      border-color: @datepicker-grey;
       color: @gray-dark;
       font-weight:bold;
     }
@@ -36,54 +37,68 @@
     &.today,
     &.today:hover,
     &.today:hover:hover{
-      background-color: @gray-light;
+      background: @datepicker-background-cell;
+      color: @gray-dark;
+      border-color: @datepicker-grey;
     }
 
     &.disabled,
     &.disabled:hover {
-      color:  @calendar-background-cell;
+      color:  @datepicker-background-cell;
     }
 
     &.old,
     &.old:hover,
     &.new,
     &.new:hover{
-      background-color:  @calendar-background-cell;
-      color:  @calendar-background-cell;
+      background-color:  @datepicker-background-cell;
+      color:  @datepicker-background-cell;
       border: none;
     }
 
     &.active,
-    &.active:hover,
-    &.active.disabled,
-    &.active.disabled:hover {
-      .btn-form-inverse;
-      background-color: @calendar-blue;
+    &.active:hover {
+      .btn-styles(@datepicker-blue, @datepicker-next-prev-color,
+      @datepicker-blue, @datepicker-next-prev-color,
+      @datepicker-blue, @datepicker-next-prev-color,
+      @btn-form-inverse-active-border-color, @datepicker-grey, @datepicker-grey, true);
     }
-
-
   }
 
-  th.prev, th.next {
-    background-color: @calendar-nav;
+  th.prev, th.next, th.next:hover {
+    background-color: @datepicker-nav;
     border-radius: 0;
-
+    color: @datepicker-next-prev-color;
   }
 
   th.datepicker-switch {
     font-weight:bold;
+    color: @datepicker-next-prev-color;
+    font-size: @font-size-base;
+    border-radius: 0;
+    background: @datepicker-blue;
+  }
+
+  th.empty, th.empty:hover {
+    background: @datepicker-blue;
+  }
+
+  thead tr:first-child th{
+    &:hover{
+      background: @datepicker-nav;
+    }
   }
 
   .dow {
     border-radius: 0;
-  	background-color: @gray-dark;
-    color:@calendar-grey;
+    background-color: @gray-dark;
+    color:@datepicker-grey;
   }
   .calSeperator {
     border: none;
   }
-.latest{}
+  .latest{}
   .datepicker thead tr:first-child th {
-	color: @btn-default-color;
+    color: @btn-default-color;
   }
 }
