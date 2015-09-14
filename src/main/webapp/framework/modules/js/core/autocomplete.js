@@ -76,7 +76,7 @@
 								data: xhr
 							});
 							// Tick non-std box.
-							$('#' + addressFieldId + '_nonStd').trigger('click').prop('checked', true);
+							$('#' + addressFieldId + '_nonStd').trigger('click.elasticAddress').prop('checked', true);
 							autocompleteComplete($component);
 						}
 					},
@@ -188,10 +188,9 @@
 				$element.bind('typeahead:selected', function catchEmptyValue(event, datum, name) {
 					if (datum.hasOwnProperty('value') && datum.value === 'Type your address...') {
 						var id = '';
-						if (!elasticSearch) {
-							if (event.target && event.target.id) {
-								id = event.target.id.replace('_streetSearch', '');
-							}
+						if (event.target && event.target.id) {
+							var replacement = elasticSearch ? '_autofilllessSearch' : '_streetSearch';
+							id = event.target.id.replace(replacement, '');
 						}
 						meerkat.messaging.publish(moduleEvents.CANT_FIND_ADDRESS, { fieldgroup: id });
 
@@ -213,7 +212,6 @@
 	function addressSearch(url, uriEncodedQuery) {
 		var $element = $('#'+url);
 		url = '';
-
 		$element.trigger('getSearchURL');
 
 		if ($element.data('source-url')) {
