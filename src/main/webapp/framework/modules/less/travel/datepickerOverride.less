@@ -3,6 +3,7 @@
 @datepicker-nav: #142C67;
 @datepicker-background-cell: #f1f1f1;
 @datepicker-next-prev-color: #fff;
+@datepicker-disabled-font-color: #999;
 
 .datepicker {
 
@@ -44,7 +45,7 @@
 
     &.disabled,
     &.disabled:hover {
-      color:  @datepicker-background-cell;
+      color:  @datepicker-disabled-font-color;
     }
 
     &.old,
@@ -81,6 +82,7 @@
 
   th.empty, th.empty:hover {
     background: @datepicker-blue;
+    cursor:default;
   }
 
   thead tr:first-child th{
