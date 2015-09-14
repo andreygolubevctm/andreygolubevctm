@@ -200,7 +200,6 @@
 						${sessionDataUtils.setTransactionId(data, tranId )}
 					</c:otherwise>
 				</c:choose>
-			</c:catch>
 			<%-- ERROR CHECK --%>
 			<c:choose>
 				<c:when test="${not empty error}">
