@@ -10,8 +10,7 @@ import com.ctm.model.health.form.*;
 import com.ctm.model.health.results.HealthResult;
 import com.ctm.model.health.results.InfoHealth;
 import com.ctm.model.health.results.PremiumRange;
-import com.ctm.model.resultsData.PricesObj;
-import com.ctm.model.resultsData.ResultsWrapper;
+import com.ctm.model.resultsData.*;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.router.CommonQuoteRouter;
@@ -28,6 +27,7 @@ import org.apache.cxf.jaxrs.ext.MessageContext;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -87,54 +87,79 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
                 throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
             }
 
-            ContactDetails contactDetails = quote.getContactDetails();
-            String firstName = StringUtils.trim(contactDetails.getName());
-            String email = StringUtils.trim(contactDetails.getEmail());
-            String phoneNumber;
-            ContactNumber contactNumber = contactDetails.getContactNumber();
-            if (StringUtils.isNotBlank(contactNumber.getMobile())) {
-                phoneNumber = StringUtils.trim(contactNumber.getMobile());
+            if (quotes.getValue().isEmpty()) {
+
+                NoResultsObj results = new NoResultsObj();
+
+                NoResults noResults = new NoResults();
+                noResults.setAvailable(AvailableType.N);
+                noResults.setProductId("PHIO-*NONE");
+                noResults.setServiceName("PHIO");
+
+                results.setInfo(info);
+                results.setResult(Collections.singletonList(noResults));
+
+                return new ResultsWrapper(results);
             } else {
-                phoneNumber = StringUtils.trim(contactNumber.getOther());
-            }
-            String concat = firstName +  "::" + email + "::" + phoneNumber;
 
-            Data dataBucket = getDataBucket(context, data.getTransactionId());
-            XmlNode health = dataBucket.getFirstChild("health");
-            XmlNode contactDetailsNode = health.getFirstChild("contactDetails");
-            XmlNode competitionNode = contactDetailsNode.getFirstChild("competition");
 
-            // Check for competition
-            if (competitionEnabled && optInCompetition(quote) && notEntered(competitionNode, concat)) {
-
-                CompetitionEntry entry = new CompetitionEntry();
-
-                entry.setFirstName(firstName);
-                entry.setEmail(email);
-                entry.setPhoneNumber(phoneNumber);
                 try {
-                    updateCompetitionEntry(context, entry);
-                    addCompetitionEntry(context, data.getTransactionId(), entry);
+                    String trackingKey = TrackingKeyService.generate(
+                            context.getHttpServletRequest(), new Long(data.getTransactionId()));
+                    info.setTrackingKey(trackingKey);
                 } catch (Exception e) {
-                    LOGGER.error("Error while adding competition entry", e);
+                    throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
                 }
 
-                // add to the data bucket competition/previous
+                ContactDetails contactDetails = quote.getContactDetails();
+                String firstName = StringUtils.trim(contactDetails.getName());
+                String email = StringUtils.trim(contactDetails.getEmail());
+                String phoneNumber;
+                ContactNumber contactNumber = contactDetails.getContactNumber();
+                if (StringUtils.isNotBlank(contactNumber.getMobile())) {
+                    phoneNumber = StringUtils.trim(contactNumber.getMobile());
+                } else {
+                    phoneNumber = StringUtils.trim(contactNumber.getOther());
+                }
+                String concat = firstName + "::" + email + "::" + phoneNumber;
 
-                if (competitionNode == null) {
-                    competitionNode = new XmlNode("competition");
-                    contactDetailsNode.addChild(competitionNode);
+                Data dataBucket = getDataBucket(context, data.getTransactionId());
+                XmlNode health = dataBucket.getFirstChild("health");
+                XmlNode contactDetailsNode = health.getFirstChild("contactDetails");
+                XmlNode competitionNode = contactDetailsNode.getFirstChild("competition");
+
+                // Check for competition
+                if (competitionEnabled && optInCompetition(quote) && notEntered(competitionNode, concat)) {
+
+                    CompetitionEntry entry = new CompetitionEntry();
+
+                    entry.setFirstName(firstName);
+                    entry.setEmail(email);
+                    entry.setPhoneNumber(phoneNumber);
+                    try {
+                        updateCompetitionEntry(context, entry);
+                        addCompetitionEntry(context, data.getTransactionId(), entry);
+                    } catch (Exception e) {
+                        LOGGER.error("Error while adding competition entry", e);
+                    }
+
+                    // add to the data bucket competition/previous
+
+                    if (competitionNode == null) {
+                        competitionNode = new XmlNode("competition");
+                        contactDetailsNode.addChild(competitionNode);
+                    }
+
+                    competitionNode.addChild(new XmlNode("previous", concat));
                 }
 
-                competitionNode.addChild(new XmlNode("previous", concat));
+                PricesObj<HealthResult> results = new PricesObj<>();
+                results.setResult(quotes.getRight());
+                results.setInfo(info);
+                info.setPricesHaveChanged(quotes.getLeft());
+
+                return new ResultsWrapper(results);
             }
-
-            PricesObj<HealthResult> results = new PricesObj<>();
-            results.setResult(quotes.getRight());
-            results.setInfo(info);
-            info.setPricesHaveChanged(quotes.getLeft());
-
-            return new ResultsWrapper(results);
 
         } catch (Exception e) {
             throw new RouterException(e);

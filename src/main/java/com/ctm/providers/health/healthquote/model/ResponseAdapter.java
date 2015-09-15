@@ -36,54 +36,64 @@ public class ResponseAdapter {
         List<HealthResult> results = new ArrayList<>();
         QuoteResponse<HealthQuote> quoteResponse = healthResponse.getPayload();
 
-        List<String> disabledFunds = emptyList();
-        if (alternatePricingContent != null) {
-            String supplementaryValueByKey = alternatePricingContent.getSupplementaryValueByKey("disabledFunds");
-            if (StringUtils.isNotBlank(supplementaryValueByKey)) {
-                disabledFunds = asList(StringUtils.split(supplementaryValueByKey, ","));
+        // Check if the response is unavailable
+        if (quoteResponse.getQuotes()
+                .stream()
+                .allMatch(q -> !q.isAvailable())) {
+
+            return Pair.of(true, emptyList());
+
+        } else {
+
+            List<String> disabledFunds = emptyList();
+            if (alternatePricingContent != null) {
+                String supplementaryValueByKey = alternatePricingContent.getSupplementaryValueByKey("disabledFunds");
+                if (StringUtils.isNotBlank(supplementaryValueByKey)) {
+                    disabledFunds = asList(StringUtils.split(supplementaryValueByKey, ","));
+                }
             }
-        }
 
-        if (quoteResponse != null) {
-            int index = 1;
-            for (HealthQuote quote : quoteResponse.getQuotes()) {
-                HealthResult result = new HealthResult();
+            if (quoteResponse != null) {
+                int index = 1;
+                for (HealthQuote quote : quoteResponse.getQuotes()) {
+                    HealthResult result = new HealthResult();
 
-                result.setAvailable(quote.isAvailable() ? AvailableType.Y : AvailableType.N);
-                result.setTransactionId(request.getTransactionId());
-                result.setServiceName("PHIO");
-                result.setProductId(quote.getProductId());
+                    result.setAvailable(quote.isAvailable() ? AvailableType.Y : AvailableType.N);
+                    result.setTransactionId(request.getTransactionId());
+                    result.setServiceName("PHIO");
+                    result.setProductId(quote.getProductId());
 
-                result.setPromo(createPromo(quote.getPromotion()));
-                result.setCustom(validateNode(quote.getCustom()));
+                    result.setPromo(createPromo(quote.getPromotion()));
+                    result.setCustom(validateNode(quote.getCustom()));
 
-                result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
-                if (alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y")) {
-                    com.ctm.providers.health.healthquote.model.response.Premium alternativePremium = quote.getAlternativePremium();
-                    if (alternativePremium != null && !disabledFunds.contains(quote.getInfo().getFundCode())) {
-                        result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote()));
+                    result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
+                    if (alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y")) {
+                        com.ctm.providers.health.healthquote.model.response.Premium alternativePremium = quote.getAlternativePremium();
+                        if (alternativePremium != null && !disabledFunds.contains(quote.getInfo().getFundCode())) {
+                            result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote()));
+                        } else {
+                            result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote()));
+                        }
                     } else {
-                        result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote()));
+                        result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
                     }
-                } else {
-                    result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
+
+                    result.setInfo(createInfo(quote.getInfo(), index++));
+                    result.setHospital(validateNode(quote.getHospital()));
+                    result.setExtras(validateNode(quote.getExtras()));
+                    result.setAmbulance(validateNode(quote.getAmbulance()));
+
+                    if (quote.isPriceChanged()) {
+                        hasPriceChanged = true;
+                    }
+                    results.add(result);
                 }
 
-                result.setInfo(createInfo(quote.getInfo(), index++));
-                result.setHospital(validateNode(quote.getHospital()));
-                result.setExtras(validateNode(quote.getExtras()));
-                result.setAmbulance(validateNode(quote.getAmbulance()));
-
-                if (quote.isPriceChanged()) {
-                    hasPriceChanged = true;
-                }
-                results.add(result);
             }
 
+
+            return Pair.of(hasPriceChanged, results);
         }
-
-
-        return Pair.of(hasPriceChanged, results);
     }
 
     private static com.ctm.providers.health.healthquote.model.response.Premium createDefaultPremium() {

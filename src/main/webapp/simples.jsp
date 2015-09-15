@@ -46,11 +46,7 @@
 						<core:loadsafe />
 						<simples:menu_bar bridgeToLive="N" />
 
-						<jsp:useBean id="splitTestService" class="com.ctm.services.tracking.SplitTestService" />
-						<c:set var="newWebServiceSplitTest" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 40)}" />
-
-
-						<iframe id="simplesiframe" name="simplesiframe" width="100%" height="200" src="${assetUrl}simples/home.jsp${newWebServiceSplitTest ? '?j=40' : ''}"></iframe>
+						<iframe id="simplesiframe" name="simplesiframe" width="100%" height="200" src="${assetUrl}simples/home.jsp"></iframe>
 
 						<simples:template_comments />
 						<simples:template_messageaudit />
