@@ -4,10 +4,10 @@
   ],
   "dependencies": [
     "shared/results",
+    "shared/validation",
     "core",
     "shared/moreInfo",
     "shared/showMoreQuotesPrompt",
-    "shared/resultsRankings",
-    "shared/validation"
+    "shared/resultsRankings"
   ]
 }

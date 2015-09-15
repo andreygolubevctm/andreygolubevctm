@@ -3,11 +3,11 @@
   "dependencies": [
     "shared/results",
     "shared/features",
+    "shared/validation",
     "core",
     "shared/placeholder",
     "shared/currency",
     "shared/addressLookup",
-    "shared/validation",
     "shared/leadFeed",
     "shared/saveQuote",
     "shared/moreInfo",
