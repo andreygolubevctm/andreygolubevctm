@@ -2,6 +2,8 @@
 <%@ tag description="Updates Utilities provider master and properties records."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('/utilities/utilities_update_plan.tag')}" />
+
 <%@ attribute name="provider_id" 			required="true"	 rtexprvalue="true"	 description="CTM's internal ID for the provider" %>
 <%@ attribute name="product_state" 			required="true"	 rtexprvalue="true"	 description="The State this product is associated with" %>
 <%@ attribute name="product_class" 			required="true"	 rtexprvalue="true"	 description="The Switchwise Product Class - Electricity or Gas" %>
@@ -15,11 +17,9 @@
 <%-- VARIABLES --%>
 <c:set var="alt_table" value="" />
 
-<go:log>PI: ${provider_id}</go:log>
-<go:log>PC: ${product_class}</go:log>
-<go:log>PC: ${product_code}</go:log>
-<go:log>PT: ${product_short_title}</go:log>
-<go:log>PD: ${product_long_title}</go:log>
+${logger.info('Starting tag. {},{},{},{},{}',
+			log:kv('provider_id',provider_id), log:kv('product_class',product_class), log:kv('product_code',product_code),
+			log:kv('product_short_title',product_short_title), log:kv('product_long_title',product_long_title))}
 
 <%-- 1] First - get the ID of the product (either an existing one or a new ID from the range) --%>
 <%-- ======================================================================================== --%>
@@ -71,12 +71,12 @@
 									<c:out value="${find_available.rows[0].id}" />
 								</c:when>
 								<c:otherwise>
-									<go:log>There are no empty product records to store (${product_code})</go:log>
+									${logger.info('There are no empty product records to store. {}', log:kv('product_code',product_code))}
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							<go:log>Database error locating empty product record (${provider_id}): ${error.rootCause}</go:log>
+							${logger.error('Database error locating empty product record. {}', log:kv('provider_id',provider_id), error)}
 						</c:otherwise>
 					</c:choose>
 				</c:otherwise>
@@ -148,8 +148,8 @@
 		</c:if>
 	</c:when>
 	<c:otherwise>
-		<go:log>DB Error searching for existing product: ${error.rootCause}</go:log>
+		${logger.error('DB Error searching for existing product. {},{}', log:kv('provider_id',provider_id ), log:kv('product_code',product_code ), error)}
 	</c:otherwise>
 </c:choose>
-<go:log>######## PRODUCT ID: ${ctm_product_id} ########</go:log>
+${logger.debug('completed updating plan. {}', log:kv('ctm_product_id', ctm_product_id))}
 <c:out value="${ctm_product_id}" />

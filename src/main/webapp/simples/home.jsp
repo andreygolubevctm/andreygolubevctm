@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <settings:setVertical verticalCode="SIMPLES" />
 <session:getAuthenticated />
 
@@ -13,7 +15,9 @@
 	<c:set var="messageQueueEnabled" value="${pageSettings.getSetting('messageQueueEnabled')}" />
 	<c:set var="messageQueueRole"    value="${pageSettings.getSetting('messageQueueRole')}" />
 </c:catch>
-<c:if test="${not empty settingError}"><go:log level="INFO" source="simples_message_queue_home">${settingError}</go:log></c:if>
+<c:if test="${not empty settingError}">
+	${logger.info('Error when getting if message queue enabled ',  settingError)}
+</c:if>
 
 <%-- Check if queue is restricted to certain active directory groups --%>
 <c:if test="${messageQueueEnabled == 'Y' and (empty messageQueueRole or (not empty messageQueueRole and pageContext.request.isUserInRole(messageQueueRole)))}">

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+
 <session:getAuthenticated />
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
@@ -8,14 +10,14 @@
 
 <go:setData dataVar="data" xpath="findQuotes" value="*DELETE" />
 
-<go:log  level="INFO" >Find Quote: ${param}</go:log>
+${logger.info('Starting find quote: {}', log:kv('param', param))}
 
 <c:set var="errorPool" value="" />
 
 <c:set var="emailResultLimit" value="${5}" />
 
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
-<go:log>isOperator: ${isOperator}</go:log>
+${logger.debug('Got uid from session. {}', log:kv('isOperator', isOperator))}
 
 <c:choose>
 	<c:when test="${empty isOperator}">
@@ -113,10 +115,7 @@
 						<jsp:useBean id="searchService" class="com.ctm.services.simples.SimplesSearchService" scope="page" />
 						${searchService.mapResults(findquote , true)}
 
-						<go:log level="INFO">
-							TRAN IDS Hot  = ${searchService.getHotTransactionIdsCsv()}
-							TRAN IDS Cold = ${searchService.getColdTransactionIdsCsv()}
-						</go:log>
+						${logger.debug('TRAN IDS found. {},{}', log:kv('transactionIdsHot', searchService.getHotTransactionIdsCsv()), log:kv('transactionIdsCold',searchService.getColdTransactionIdsCsv() ))}
 						<c:catch var="error">
 						<%-- Added extracting styleCodeId to allow setting branding off transaction --%>
 							<sql:query var="findquote">
