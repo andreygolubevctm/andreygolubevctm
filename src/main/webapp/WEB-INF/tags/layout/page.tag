@@ -81,7 +81,7 @@
 					<jsp:include page="assets/brand/${pageSettings.getBrandCode()}/css/inc/${fileName}.min.inc" />
 				</c:when>
 				<c:otherwise>
-					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${fileName}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 				</c:otherwise>
 			</c:choose>
 		</c:if>
@@ -265,10 +265,10 @@
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
 				<c:when test="${separateJS}">
-					<jsp:include page="assets/js/bundles/inc/${pageSettings.getVerticalCode()}.inc" />
+					<jsp:include page="assets/js/bundles/inc/${fileName}.inc" />
 				</c:when>
 				<c:otherwise>
-					<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+					<script src="${assetUrl}js/bundles/${fileName}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 				</c:otherwise>
 			</c:choose>
 		</c:if>
