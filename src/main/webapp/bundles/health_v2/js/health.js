@@ -488,8 +488,6 @@
 					healthDependents.addDependent();
 				});
 
-				console.log("sdfsdfasasaadfgshealth_application_otherinput: "+$('#health_application_otherinput').val());
-
 				// initialise start date datepicker from payment step as it will be used by selected fund
 				$("#health_payment_details_start_calendar")
 					.datepicker({ clearBtn:false, format:"dd/mm/yyyy" })
@@ -706,7 +704,9 @@
 		// the category names are generally arbitrary but some are used specifically and should use those types (email, name, potentially phone in the future)
 		var contactDetailsFields = {
 			name:[
-				{ $field: $("#health_contactDetails_name") },
+				{
+					$field: $("#health_contactDetails_name")
+				},
 				{
 					$field: $("#health_application_primary_firstname"),
 					$otherField: $("#health_application_primary_surname")
@@ -760,8 +760,8 @@
 			otherPhone: [
 				// otherPhone from details step
 				{
-					$field: $("#health_contactDetails_flexiContactNumber"),
-					$fieldInput: $("#health_contactDetails_flexiContactNumberinput"),
+					$field: $("#health_contactDetails_otherNumber"),
+					$fieldInput: $("#health_contactDetails_otherNumberinput"),
 					$optInField: contactDetailsOptinField
 				},
 				// otherPhone from application step
@@ -773,14 +773,15 @@
 			flexiPhone: [
 				// flexiPhone from details step
 				{
-					$field: $("#health_contactDetails_contactNumber_other"),
-					$fieldInput: $("#health_contactDetails_contactNumber_otherinput"),
-					$optInField: contactDetailsOptinField
+					$field: $("#health_contactDetails_flexiContactNumber"),
+					$fieldInput: $("#health_contactDetails_flexiContactNumberinput")
 				},
 				// otherPhone from application step
 				{
-					$field: $("#health_application_other"),
-					$fieldInput: $("#health_application_otherinput")
+					$field: $("#health_application_mobile"),
+					$fieldInput: $("#health_application_mobileinput"),
+					$otherField: $("#health_application_other"),
+					$otherFieldInput: $("#health_application_otherinput")
 				}
 			],
 			postcode: [
@@ -815,7 +816,7 @@
 
 	// Make the rebate available publicly, and handle rates property being null.
 	function getRebate() {
-		if (rates != null && rates.rebate) {
+		if (rates !== null && rates.rebate) {
 			return rates.rebate;
 		}
 		else {
@@ -893,7 +894,7 @@
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
 				setRates(data);
-				if(callback != null) callback(data);
+				if(callback !== null) callback(data);
 			}
 		});
 	}
@@ -1089,7 +1090,7 @@
 					var extraParameters = "";
 
 					if (meerkat.site.utm_source !== '' && meerkat.site.utm_medium !== '' && meerkat.site.utm_campaign !== ''){
-						extraParameters = "&utm_source=" + meerkat.site.utm_source + "&utm_medium=" + meerkat.site.utm_medium + "&utm_campaign=" + meerkat.site.utm_campaign
+						extraParameters = "&utm_source=" + meerkat.site.utm_source + "&utm_medium=" + meerkat.site.utm_medium + "&utm_campaign=" + meerkat.site.utm_campaign;
 					}
 
 				// Success

@@ -26,6 +26,10 @@
 			otherPhone:{
 				FIELD_CHANGED: "OTHERPHONE_FIELD_CHANGED",
 				OPTIN_FIELD_CHANGED: "OTHERPHONE_OPTIN_FIELD_CHANGED"
+			},
+			flexiPhone:{
+				FIELD_CHANGED: "FLEXIPHONE_FIELD_CHANGED",
+				OPTIN_FIELD_CHANGED: "FLEXIPHONE_OPTIN_FIELD_CHANGED"
 			}
 		}
 	},
@@ -85,6 +89,7 @@
 		// work out which field is the input one (for fields like mobile number which have both a hidden field for the value and an input field)
 		var $fieldElement = getInputField(fieldDetails);
 		if( typeof fieldDetails.alternateOtherField !== "undefined" && fieldDetails.alternateOtherField){
+
 			$fieldElement = fieldDetails.$otherField;
 		}
 
@@ -166,7 +171,7 @@
 				// extra ajax error handling if required
 				showOptInField( fieldDetails.$optInField );
 			}
-		}
+		};
 
 		meerkat.modules.optIn.fetch( fieldInfo );
 
@@ -198,7 +203,7 @@
 			fieldIndex: fieldDetails.fieldIndex, // used to figure out which field comes first or second when an $otherField is defined for combined fields (i.e. "first name" comes before "last name")
 			$savedField: fieldDetails.$field, // selector of the field that's going to end up into the db (i.e. )
 			$optInField: fieldDetails.$optInField // the related optIn Field (checkbox/radio) related to that field
-		}
+		};
 
 		if( typeof fieldDetails.alternateOtherField !== "undefined" && fieldDetails.alternateOtherField ){
 			eventObject.$otherField = eventObject.$field;
@@ -318,7 +323,6 @@
 		else {
 			$fieldElement = fieldEntity.$field;
 		}
-
 		return $fieldElement;
 	}
 
@@ -351,12 +355,21 @@
 					var splitName = updatedElementValue.split(" ");
 					$fieldElement.val(splitName[0]);
 					laterFieldDetails.$otherField.val( splitName.slice(1).join(" ") );
-				} else if(fieldDetails.type === "alternatePhone" && typeof laterFieldDetails.$otherField !== "undefined") {
+				} else if(fieldDetails.type === "alternatePhone"  && typeof laterFieldDetails.$otherField !== "undefined") {
 					var testableNumber = updatedElementValue.replace(/\D/g, "");
 					if(testableNumber.match(/^(04|614|6104)/g)) {
 						$fieldElement.val(updatedElementValue);
 					} else {
 						laterFieldDetails.$otherField.val(updatedElementValue);
+					}
+				} else if(fieldDetails.type === "flexiPhone" && typeof laterFieldDetails.$otherField !== "undefined") {
+					var flexiNumber = updatedElementValue.replace(/\D/g, "");
+					if (flexiNumber.match(/^(04|614|6104)/g)) {
+						$fieldElement.val(updatedElementValue);
+						laterFieldDetails.$otherFieldInput.val("");
+					} else {
+						laterFieldDetails.$otherFieldInput.val(updatedElementValue);
+						$fieldElement.val("");
 					}
 				} else  {
 					$fieldElement.val( updatedElementValue ).attr("data-previous-value", updatedElementValue);
