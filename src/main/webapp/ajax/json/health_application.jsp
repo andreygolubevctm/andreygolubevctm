@@ -257,7 +257,7 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 								</c:choose>
 			</x:otherwise>
 		</x:choose>
-		${logger.debug('Health application complete. {},{},{}', log:kv('transactionId',tranId), log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
+		${logger.trace('Health application complete. {},{},{}', log:kv('transactionId',tranId), log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
 			</c:when>
 			<c:otherwise>
 						<c:choose>

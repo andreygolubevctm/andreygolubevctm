@@ -88,12 +88,12 @@ public class HomeLoanResultsService {
 			jsonConn.conn.setContentType("application/json");
 
 			String postBody = hlpsrModel.toJsonObject().toString();
-			LOGGER.debug("homeloan results {}, {}, {}, {}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("serviceUrl", serviceUrl), kv("postBody", postBody));
+			LOGGER.trace("homeloan results {}, {}, {}, {}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("serviceUrl", serviceUrl), kv("postBody", postBody));
 
 			responseJson = jsonConn.post(serviceUrl, postBody);
 
 			if (responseJson != null) {
-				LOGGER.debug("homeloan response {}", kv("responseJson", responseJson));
+				LOGGER.trace("homeloan response {}", kv("responseJson", responseJson));
 			}
 
 			//

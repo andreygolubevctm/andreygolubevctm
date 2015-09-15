@@ -86,13 +86,13 @@ public class UtilitiesBaseService {
 
 		ServiceConfiguration serviceConfig = getServiceConfig(request, serviceName);
 
-		LOGGER.debug("Utilities post {}", kv("jsonString", jsonString));
+		LOGGER.trace("Utilities post {}", kv("jsonString", jsonString));
 
 		String serviceUrl = getConfigValue(serviceConfig, "serviceUrl");
 		JsonConnection jsonConnector = getJsonConnector(request, serviceConfig);
 		responseJson = jsonConnector.post(serviceUrl, jsonString);
 
-		LOGGER.debug("Utilities response {}", kv("responseJson", responseJson));
+		LOGGER.trace("Utilities response {}", kv("responseJson", responseJson));
 
 		if (responseJson == null) {
 			throw new UtilitiesWebServiceException("UTL postJson: JSON Object NULL from "+serviceUrl);

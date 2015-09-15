@@ -89,7 +89,7 @@
 			<c:set var="commencementDateUpdated" value="true" />
 		</c:if>
 
-		${logger.debug('About to call soap aggregator. {}', log:kv('data.home', data.home))}
+		${logger.trace('About to call soap aggregator. {}', log:kv('data.home', data.home))}
 		<%-- Save client data --%>
 		<core:transaction touch="${touch}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 
