@@ -3,6 +3,7 @@
   "dependencies": [
     "shared/results",
     "shared/features",
+    "shared/validation",
     "core",
     "shared/addressLookup",
     "shared/placeholder",
@@ -15,5 +16,6 @@
     "shared/moreInfo",
     "shared/saveQuote",
     "shared/resultsRankings"
+
   ]
 }

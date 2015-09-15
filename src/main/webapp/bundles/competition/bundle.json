@@ -4,6 +4,7 @@
     ],
     "dependencies": [
         "shared/results",
-        "core"
+        "core",
+        "shared/validation"
     ]
 }

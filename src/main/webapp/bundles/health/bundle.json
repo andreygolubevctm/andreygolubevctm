@@ -3,10 +3,10 @@
   "dependencies": [
   	"shared/results", 
   	"shared/compare", 
-  	"shared/features", 
-  	"core",
+  	"shared/features",
+	"shared/validation",
+	"core",
   	"shared/autocomplete",
-  	"shared/validation",
 	"shared/placeholder",
 	"shared/sliders",
 	"shared/saveQuote",

@@ -51,16 +51,18 @@
 				safeToLeave = false;
 			});
 
-			meerkat.messaging.subscribe(meerkatEvents.saveQuote.QUOTE_SAVED, function quoteSaved(){
-				safeToLeave = true;
-			});
+			if(meerkatEvents.saveQuote) {
+				meerkat.messaging.subscribe(meerkatEvents.saveQuote.QUOTE_SAVED, function quoteSaved() {
+					safeToLeave = true;
+				});
+			}
 
 		}
 
 	}
 
 	function fetchMessage() {
-		if(meerkat.modules.saveQuote.isAvailable() === true) {
+		if(meerkat.modules.saveQuote && meerkat.modules.saveQuote.isAvailable() === true) {
 			return meerkat.site.leavePageWarning.message;
 		} else {
 			if (typeof meerkat.site.leavePageWarning.defaultMessage !== 'undefined') {

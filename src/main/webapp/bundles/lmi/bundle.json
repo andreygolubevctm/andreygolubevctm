@@ -3,6 +3,7 @@
   "dependencies": [
     "shared/results",
     "shared/features",
+    "shared/validation",
     "core",
     "shared/showMoreQuotesPrompt",
     "shared/optIn",
