@@ -1,6 +1,6 @@
 package com.ctm.providers.health.healthquote.model.response;
 
-public class Promo {
+public class Promotion {
 
     private SpecialOffer specialOffer;
 

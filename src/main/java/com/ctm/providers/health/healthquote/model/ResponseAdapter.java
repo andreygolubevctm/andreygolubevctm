@@ -9,6 +9,7 @@ import com.ctm.model.resultsData.AvailableType;
 import com.ctm.providers.QuoteResponse;
 import com.ctm.providers.health.healthquote.model.response.HealthQuote;
 import com.ctm.providers.health.healthquote.model.response.HealthResponse;
+import com.ctm.providers.health.healthquote.model.response.Promotion;
 import com.ctm.providers.health.healthquote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
@@ -53,7 +54,7 @@ public class ResponseAdapter {
                 result.setServiceName("PHIO");
                 result.setProductId(quote.getProductId());
 
-                result.setPromo(createPromo(quote.getPromo()));
+                result.setPromo(createPromo(quote.getPromotion()));
                 result.setCustom(validateNode(quote.getCustom()));
 
                 result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
@@ -108,13 +109,13 @@ public class ResponseAdapter {
         return null;
     }
 
-    private static Promo createPromo(com.ctm.providers.health.healthquote.model.response.Promo quotePromo) {
+    private static Promo createPromo(Promotion quotePromotion) {
         Promo promo = new Promo();
-        promo.setPromoText(createPromoText(quotePromo.getSpecialOffer()));
-        promo.setProviderPhoneNumber(quotePromo.getProviderPhoneNumber());
-        promo.setDiscountText(StringUtils.trimToEmpty(quotePromo.getDiscountDescription()));
-        promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromo.getExtrasPDF());
-        promo.setHospitalPDF(HEALTH_BROCHURE_URL + quotePromo.getHospitalPDF());
+        promo.setPromoText(createPromoText(quotePromotion.getSpecialOffer()));
+        promo.setProviderPhoneNumber(quotePromotion.getProviderPhoneNumber());
+        promo.setDiscountText(StringUtils.trimToEmpty(quotePromotion.getDiscountDescription()));
+        promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromotion.getExtrasPDF());
+        promo.setHospitalPDF(HEALTH_BROCHURE_URL + quotePromotion.getHospitalPDF());
         return promo;
     }
 
@@ -342,9 +343,7 @@ public class ResponseAdapter {
         info.setTrackCode("UNKNOWN");
         info.setName(responseInfo.getName());
         info.setDes(responseInfo.getDescription());
-        // Rank is normally the benefit count so is the same across all results.
-        // FIXME: Until we have proper benefits scoring, make rank the numeric order of the results as they were returned in the SQL: 1 to 12
-        info.setRank(index);
+        info.setRank(responseInfo.getRank());
         info.setOtherProductFeatures(responseInfo.getOtherProductFeatures());
         Map<String, String> otherInfoProperties = responseInfo.getOtherInfoProperties();
         info.setCategory(otherInfoProperties.get("Category"));

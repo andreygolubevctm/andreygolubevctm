@@ -21,7 +21,7 @@ public class HealthQuote {
     private JsonNode extras;
     private JsonNode ambulance;
 
-    private Promo promo;
+    private Promotion promotion;
 
     private boolean priceChanged;
 
@@ -105,12 +105,12 @@ public class HealthQuote {
         this.ambulance = ambulance;
     }
 
-    public Promo getPromo() {
-        return promo;
+    public Promotion getPromotion() {
+        return promotion;
     }
 
-    public void setPromo(Promo promo) {
-        this.promo = promo;
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
     }
 
     public boolean isPriceChanged() {

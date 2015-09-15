@@ -51,12 +51,6 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
         }
 
         HealthQuoteService service = new HealthQuoteService();
-//        final List<SchemaValidationError> errors = service.validateRequest(data, "quote");
-
-//        if(errors.size() > 0){
-//            throw new RouterException("Invalid request"); // TODO pass validation errors to client
-//        }
-
         try {
 
             InfoHealth info = new InfoHealth();
