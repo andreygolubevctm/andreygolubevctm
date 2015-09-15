@@ -1,9 +1,11 @@
 package com.ctm.services.home;
 
 import com.ctm.connectivity.SimpleConnection;
+import com.ctm.connectivity.exception.ConnectionException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
 import com.ctm.exceptions.SessionException;
+import com.ctm.logging.XMLOutputWriter;
 import com.ctm.model.QuoteServiceProperties;
 import com.ctm.model.home.form.HomeQuote;
 import com.ctm.model.home.form.HomeRequest;
@@ -24,7 +26,6 @@ import com.ctm.services.ResultsService;
 import com.ctm.services.SessionDataService;
 import com.ctm.utils.ObjectMapperUtil;
 import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.logging.XMLOutputWriter;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,8 +44,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ctm.model.settings.Vertical.VerticalType.HOME;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
+import static com.ctm.model.settings.Vertical.VerticalType.HOME;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
@@ -101,7 +102,12 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
-            String response = connection.get(serviceProperties.getServiceUrl()+"/quote");
+            String response = null;
+            try {
+                response = connection.get(serviceProperties.getServiceUrl()+"/quote");
+            } catch (ConnectionException e) {
+                logger.error("Exception calling get quotes.", e);
+            }
             HomeResponse homeResponse = objectMapper.readValue(response, HomeResponse.class);
 
             // Log response
@@ -187,7 +193,12 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
-            final String response = connection.get(serviceProperties.getServiceUrl() + "/data/moreInfo");
+            String response = null;
+            try {
+                response = connection.get(serviceProperties.getServiceUrl() + "/data/moreInfo");
+            } catch (ConnectionException e) {
+                logger.error("Exception calling get more info.", e);
+            }
 
             MoreInfo moreInfoResponse = objectMapper.readValue(response, MoreInfo.class);
 

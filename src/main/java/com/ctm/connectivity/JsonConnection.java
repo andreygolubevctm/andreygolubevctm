@@ -1,11 +1,12 @@
 package com.ctm.connectivity;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.ctm.connectivity.exception.ConnectionException;
+import com.google.json.JsonSanitizer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.google.json.JsonSanitizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JsonConnection {
 
@@ -30,9 +31,13 @@ public class JsonConnection {
 				conn = new SimpleConnection();
 			}
 
-			String jsonString = conn.get(url);
-
-			if(jsonString == null) return null;
+			String jsonString;
+			try {
+				 jsonString = conn.get(url);
+			} catch (ConnectionException e) {
+				logger.error("Failed to call json", e);
+				return null;
+			}
 
 			//
 			// This is here to clean up A&G's web service
@@ -46,7 +51,7 @@ public class JsonConnection {
 			JSONObject json = new JSONObject(preparseString);
 			return json;
 		}
-		catch (JSONException e) {
+		catch (JSONException | ConnectionException e) {
 			logger.error(url+" json exception: "+e);
 		}
 		catch (Exception e){
@@ -69,9 +74,12 @@ public class JsonConnection {
 			conn.setRequestMethod("POST");
 			conn.setPostBody(postBody);
 
-			String jsonString = conn.get(url);
-
-			if(jsonString == null) return null;
+			String jsonString = null;
+			try {
+				jsonString = conn.get(url);
+			} catch (ConnectionException e) {
+				logger.error("Failed to call json", e);
+			}
 
 			JSONObject json;
 
@@ -106,12 +114,14 @@ public class JsonConnection {
 			conn.setRequestMethod("POST");
 			conn.setPostBody(postBody);
 
-			String jsonString = conn.get(url);
-
-			logger.debug(jsonString);
-
-			if(jsonString == null) return null;
-
+			String jsonString = null;
+			try {
+				jsonString = conn.get(url);
+				logger.debug(jsonString);
+			} catch (ConnectionException e) {
+				logger.error("Failed to call json", e);
+				return null;
+			}
 			JSONArray json;
 
 			if(sanitize) {

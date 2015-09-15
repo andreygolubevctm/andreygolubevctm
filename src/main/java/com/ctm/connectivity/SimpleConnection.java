@@ -1,12 +1,12 @@
 package com.ctm.connectivity;
 
+import com.ctm.connectivity.exception.ConnectionException;
 import com.ctm.utils.RequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SimpleConnection {
@@ -30,7 +30,7 @@ public class SimpleConnection {
 	 * @param url
 	 * @return
 	 */
-	public String get(String url) {
+	public String get(String url) throws ConnectionException {
 		try {
 			URL u = new URL(url);
 			HttpURLConnection c = (HttpURLConnection) u.openConnection();
@@ -77,14 +77,8 @@ public class SimpleConnection {
 					logger.error(url + ": Status code error " + status + " " + message);
 			}
 		}
-		catch (MalformedURLException e) {
-			logger.error(url+": "+e, e);
-		}
-		catch (IOException e) {
-			logger.error(url+": "+e, e);
-		}
-		catch (Exception e){
-			logger.error(url+": "+e, e);
+		catch (Exception e) {
+			throw new ConnectionException(url+": "+e , e);
 		}
 		return null;
 	}

@@ -1,5 +1,8 @@
 package com.disc_au.web.go.tags;
 
+import org.apache.commons.codec.binary.Base64;
+
+import javax.servlet.jsp.JspException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,10 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-
-import javax.servlet.jsp.JspException;
-
-import org.apache.commons.codec.binary.Base64;
 
 
 @SuppressWarnings("serial")
