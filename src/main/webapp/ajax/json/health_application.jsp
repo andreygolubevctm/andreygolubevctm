@@ -11,9 +11,14 @@
 
 <%-- Adjust the base rebate using multiplier - this is to ensure the rebate applicable to the
 					commencement date is sent to the provider --%>
-<health:changeover_rebates effective_date="${data.health.payment.details.start}" />
+<c:set var="effectiveDate" value="${data.health.payment.details.start}"/>
+<jsp:useBean id="changeOverRebatesService" class="com.ctm.services.health.ChangeOverRebatesService" />
+<c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(effectiveDate)}"/>
+<c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
+<c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
+
 <jsp:useBean id="healthApplicationService" class="com.ctm.services.health.HealthApplicationService" scope="page" />
-<c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request, changeover_date_2)}" />
+<c:set var="validationResponse" value="${healthApplicationService.setUpApplication(data, pageContext.request, changeOverRebates.getEffectiveStart())}" />
 
 <c:set var="tranId" value="${data.current.transactionId}" />
 <c:set var="productId" value="${fn:substringAfter(param.health_application_productId,'HEALTH-')}" />

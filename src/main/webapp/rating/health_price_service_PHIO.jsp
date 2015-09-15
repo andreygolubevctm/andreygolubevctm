@@ -48,7 +48,10 @@
 	<c:set var="selectedProductId" value="${fn:substringAfter(selectedProductId, 'PHIO-HEALTH-')}" />
 </c:if>
 
-<health:changeover_rebates />
+<jsp:useBean id="changeOverRebatesService" class="com.ctm.services.health.ChangeOverRebatesService" />
+<c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(null)}"/>
+<c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
+<c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
 
 <c:if test="${not empty providerId}">${healthPriceRequest.setProviderId(providerId)}</c:if>
 <c:if test="${not empty tierHospital}">${healthPriceRequest.setTierHospital(tierHospital)}</c:if>
@@ -76,7 +79,7 @@ ${healthPriceService.setHealthPriceRequest(healthPriceRequest)}
 
 ${healthPriceService.setMembership(cover)}
 ${healthPriceService.setSearchDate(searchDate)}
-${healthPriceService.setChangeoverDate(changeover_date_2)}
+${healthPriceService.setChangeoverDate(changeOverRebates.getEffectiveStart())}
 ${healthPriceService.setRebateCurrent(rebate)}
 ${healthPriceService.setRebateChangeover(rebateChangeover)}
 ${healthPriceService.setTransactionId(transactionId)}
