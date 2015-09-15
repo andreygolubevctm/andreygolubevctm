@@ -20,6 +20,10 @@
 
   table tr td {
 
+    &:first-child{
+      border-left: 1px solid @datepicker-background-cell;
+    }
+
     th {
       color: @btn-default-color;
       &:hover {
@@ -30,9 +34,11 @@
     &.day {
       background-color: @btn-default-color;
       border-radius: 0;
-      border-color: @datepicker-grey;
       color: @gray-dark;
       font-weight:bold;
+      border-top: 1px solid @datepicker-background-cell;
+      border-right: 1px solid @datepicker-background-cell;
+      border-bottom: 1px solid @datepicker-background-cell;
     }
 
     &.today,
@@ -40,7 +46,7 @@
     &.today:hover:hover{
       background: @datepicker-background-cell;
       color: @gray-dark;
-      border-color: @datepicker-grey;
+      border-color: @datepicker-background-cell;
     }
 
     &.disabled,
@@ -80,15 +86,15 @@
     background: @datepicker-blue;
   }
 
-  th.empty, th.empty:hover {
-    background: @datepicker-blue;
-    cursor:default;
-  }
-
   thead tr:first-child th{
     &:hover{
       background: @datepicker-nav;
     }
+  }
+
+  thead th.empty, thead th.prev.empty:hover, thead th.next.empty:hover {
+    background: @datepicker-blue;
+    cursor:default;
   }
 
   .dow {
@@ -99,7 +105,7 @@
   .calSeperator {
     border: none;
   }
-  .latest{}
+
   .datepicker thead tr:first-child th {
     color: @btn-default-color;
   }
