@@ -6,6 +6,7 @@
         "shared/results",
         "core",
         "shared/addressLookup",
-        "shared/optIn"
+        "shared/optIn",
+        "shared/validation"
     ]
 }

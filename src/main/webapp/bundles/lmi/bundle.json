@@ -6,7 +6,8 @@
     "core",
     "shared/showMoreQuotesPrompt",
     "shared/optIn",
-    "shared/resultsRankings"
+    "shared/resultsRankings",
+    "shared/validation"
   ],
   "compileAs": ["carlmi", "homelmi"]
 }
