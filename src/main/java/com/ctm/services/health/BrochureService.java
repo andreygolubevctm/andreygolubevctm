@@ -8,13 +8,16 @@ import com.ctm.model.settings.Vertical;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.SettingsService;
 import com.ctm.web.URLUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+import static com.ctm.logging.LoggingArguments.v;
+
 public class BrochureService {
-    private final static Logger logger = Logger.getLogger(BrochureService.class.getName());
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(BrochureService.class);
+
     /**
      * This function will download the brochure for health
      * @param request
@@ -30,9 +33,9 @@ public class BrochureService {
         String downloadLink = createBrochureDownloadLInk(pdfName,pageSettings);
         if(!URLUtils.exists(downloadLink) && pdfName!=null && !pdfName.isEmpty()){
             String message ="Brochure not found";
-            String description ="Brochure is missing from the server :"+pdfName +" brandID : "+brand ;
+            String description ="Brochure is missing from the server pdfName=" + pdfName + ",brandID=" + brand + ",transactionId=" + transactionId;
             FatalErrorService.logFatalError(brand, request.getRequestURI(), request.getSession().getId(), false, message, description, transactionId + "");
-            logger.error(description +" TransactionID : "+transactionId );
+            LOGGER.error(description, v("pdfName", pdfName), v("brandId", brand), v("transactionId", transactionId));
             return null;
         }else if(pdfName==null || pdfName.isEmpty()){
             return null;

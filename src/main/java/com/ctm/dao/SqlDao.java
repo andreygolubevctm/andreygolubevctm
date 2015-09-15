@@ -130,7 +130,7 @@ public class SqlDao<T> {
 		} finally {
 			cleanup();
 		}
-        LOGGER.debug("DB query total execution time {}ms", kv("queryTime", System.currentTimeMillis()-startTime));
+        LOGGER.trace("DB query total execution time {}ms", kv("queryTime", System.currentTimeMillis()-startTime), kv("sql", sql));
 		return value;
 	}
 
@@ -233,7 +233,7 @@ public class SqlDao<T> {
         } finally {
             cleanup();
         }
-        LOGGER.debug("DB query total execution time {}ms", kv("queryTime", System.currentTimeMillis() - startTime));
+        LOGGER.trace("DB query total execution time {}ms", kv("queryTime", System.currentTimeMillis() - startTime), kv("sql", sql));
         return value;
     }
 
