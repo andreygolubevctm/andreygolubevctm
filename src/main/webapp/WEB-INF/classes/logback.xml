@@ -60,6 +60,14 @@
 		<appender-ref ref="stdout" />
 	</logger>
 
+	<logger name="jsp" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<logger name="tag" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
 	<root level="INFO">
    		<appender-ref ref="stdout" />
 	</root>
