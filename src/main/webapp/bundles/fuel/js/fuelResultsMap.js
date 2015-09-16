@@ -238,7 +238,7 @@
         var marker = new google.maps.Marker({
             map: map,
             position: latLng,
-            icon: 'brand/ctm/graphics/fuel/map-pin.png',
+            icon: "assets/brand/ctm/graphics/fuel/map-pin.png",
             animation: google.maps.Animation.DROP
         });
 
