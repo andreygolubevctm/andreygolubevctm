@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.get_email_id')}" />
 
 <jsp:useBean id="emailDetailsService" class="com.ctm.services.email.EmailDetailsService" scope="page" />
 
@@ -79,6 +79,9 @@
 					value='${row.emailId}' />"}</c:forEach>${callback_end}</c:otherwise>
 	</c:choose>
 </c:catch>
+<c:if test="${error}">
+	${logger.warn('Exception passing results.{}',log:kv('result',result ),  error)}
+</c:if>
 <c:if test="${error}">
 	${logger.warn('Exception passing results. {}', log:kv('result',result), error)}
 </c:if>

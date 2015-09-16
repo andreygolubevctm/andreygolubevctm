@@ -2,7 +2,7 @@
 <%@ tag description="Form to searching/displaying saved quotes"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('/core/get_transactionid.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.core.get_transactionid')}" />
 
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 <c:set var="styleCode">${pageSettings.getBrandCode()}</c:set>

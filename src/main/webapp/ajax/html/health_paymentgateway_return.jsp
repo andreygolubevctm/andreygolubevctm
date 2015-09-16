@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.html.health_paymentgateway_return')}" />
 
 <x:parse doc="${config}" var="configXml" />
 
@@ -52,38 +52,38 @@ ${logger.debug('Start health_paymentgateway_return. {},{},{}', log:kv('action',p
 
 <core:doctype />
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta http-equiv="Cache-Control" content="no-cache, max-age=0" />
-		<meta http-equiv="Expires" content="-1">
-		<meta http-equiv="Pragma" content="no-cache">
-		<title>Registration outcome</title>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Cache-Control" content="no-cache, max-age=0" />
+	<meta http-equiv="Expires" content="-1">
+	<meta http-equiv="Pragma" content="no-cache">
+	<title>Registration outcome</title>
 
-		<script type="text/javascript" src="../../common/js/jquery-1.10.1.min.js"></script>
-		<script>
-			var success = ${success};
-			var message = "${message}";
-			var params = {
-						number:"${cardNumber}",
-						type:"${cardScheme}",
-						expiry:"${cardExpiry}",
-						name:"${cardHolderName}"
-						};
-			$(document).ready(function() {
-				var meerkat = window.parent.meerkat;
-				if (meerkat && meerkat.modules.paymentGateway) {
-					if (success) {
-						meerkat.messaging.publish(meerkat.modules.events.paymentGateway.SUCCESS,params);
-					} else {
-						meerkat.messaging.publish(meerkat.modules.events.paymentGateway.FAIL,'return.jsp: '+message);
-					}
+	<script type="text/javascript" src="../../common/js/jquery-1.10.1.min.js"></script>
+	<script>
+		var success = ${success};
+		var message = "${message}";
+		var params = {
+			number:"${cardNumber}",
+			type:"${cardScheme}",
+			expiry:"${cardExpiry}",
+			name:"${cardHolderName}"
+		};
+		$(document).ready(function() {
+			var meerkat = window.parent.meerkat;
+			if (meerkat && meerkat.modules.paymentGateway) {
+				if (success) {
+					meerkat.messaging.publish(meerkat.modules.events.paymentGateway.SUCCESS,params);
 				} else {
-					$('p').html('Oops! The registration failed. Please try again.');
+					meerkat.messaging.publish(meerkat.modules.events.paymentGateway.FAIL,'return.jsp: '+message);
 				}
-			});
-		</script>
-	</head>
-	<body>
-		<p></p>
-	</body>
+			} else {
+				$('p').html('Oops! The registration failed. Please try again.');
+			}
+		});
+	</script>
+</head>
+<body>
+<p></p>
+</body>
 </html>
