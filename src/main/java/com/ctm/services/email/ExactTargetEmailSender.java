@@ -4,7 +4,7 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.logging.LoggingVariables;
+import com.ctm.logging.CorrelationIdUtils;
 import com.ctm.model.email.EmailModel;
 import com.ctm.model.email.EmailResponse;
 import com.ctm.model.email.ExactTargetEmailModel;
@@ -141,7 +141,8 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 		List<APIObject> objects = createRequest.getObjects();
 
 		TriggeredSend triggeredSend = new TriggeredSend();
-		triggeredSend.setCorrelationID(LoggingVariables.getCorrelationId());
+		//CorrelationID Identifies correlation of objects across several requests
+		triggeredSend.setCorrelationID(CorrelationIdUtils.getCorrelationId());
 
 		ClientID client = createClient(exactTargetEmailModel);
 

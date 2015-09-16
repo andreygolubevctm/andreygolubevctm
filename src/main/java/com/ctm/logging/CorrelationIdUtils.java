@@ -14,7 +14,7 @@ public class CorrelationIdUtils {
     }
 
     /**
-     * sets correlation id ong thread local
+     * sets correlation id on thread local
      */
     public static void setCorrelationId(String correlationId) {
         threadLocalCorrelationId.set(correlationId);
