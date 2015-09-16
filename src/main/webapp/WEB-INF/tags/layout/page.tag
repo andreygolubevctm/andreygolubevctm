@@ -73,7 +73,7 @@
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
 				<c:when test="${browserName eq 'IE' && (browserVersion le 9)}">
-					<jsp:include page="assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.min.txt" />
+					<jsp:include page="assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.min.html" />
 				</c:when>
 				<c:otherwise>
 					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -260,7 +260,7 @@
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
 				<c:when test="${separateJS}">
-					<jsp:include page="assets/js/bundles/inc/${pageSettings.getVerticalCode()}.txt" />
+					<jsp:include page="assets/js/bundles/inc/${pageSettings.getVerticalCode()}.html" />
 				</c:when>
 				<c:otherwise>
 					<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
