@@ -8,6 +8,7 @@
     "shared/datepicker",
     "shared/optIn",
     "shared/placeholder",
+    "shared/popovers",
     "shared/contactDetails",
     "shared/ie8SelectMenuAutoExpand",
     "shared/moreInfo",
