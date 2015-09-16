@@ -1,18 +1,5 @@
 package com.ctm.services;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.ctm.cache.ApplicationCacheManager;
-
 import com.ctm.dao.BrandsDao;
 import com.ctm.dao.ConfigSettingsDao;
 import com.ctm.dao.VerticalsDao;
@@ -23,6 +10,17 @@ import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.elasticsearch.AddressSearchService;
 import com.disc_au.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class ApplicationService {
 
@@ -188,6 +186,7 @@ public class ApplicationService {
 	 * @param verticalCode
 	 */
 	public static void setVerticalCodeOnRequest(ServletRequest request, String verticalCode) {
+		MDC.put("verticalCode", verticalCode);
 		request.setAttribute("verticalCode", verticalCode);
 	}
 
@@ -267,7 +266,7 @@ public class ApplicationService {
 			// Update static variables
 			brands = brandsList;
 
-			logger.info("Loaded "+brandsList.size()+" brands and "+verticalsList.size()+" verticals from database");
+			logger.info("Loaded " + brandsList.size() + " brands and " + verticalsList.size() + " verticals from database");
 
 		}
 
@@ -349,7 +348,6 @@ public class ApplicationService {
 		ServiceConfigurationService.clearCache();
 		AddressSearchService.destroy();
 		AddressSearchService.init();
-        ApplicationCacheManager.clearAll();
 		return true;
 	}
 

@@ -33,7 +33,7 @@
 <%-- HTML --%>
 <c:set var="validationAttributes" value=" data-rule-personName='true' " />
 <c:if test="${required}">
-	<c:set var="validationAttributes" value=" required data-msg-required='Please enter ${title}' " />
+	<c:set var="validationAttributes" value="${validationAttributes} required data-msg-required='Please enter ${title}' " />
 </c:if>
 <input type="text" name="${name}" id="${name}" class="form-control person_name sessioncamexclude ${className}"
 	   value="${value}" ${sizeAttribute}${placeHolderAttribute} ${maxlengthAttribute} ${validationAttributes}>

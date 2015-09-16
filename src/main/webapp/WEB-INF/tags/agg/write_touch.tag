@@ -2,6 +2,8 @@
 <%@ tag description="Wrapper for all transaction touching and quote writes." %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('/agg/write_touch.tag')}" />
+
 <%-- ATTRIBUTES --%>
 <%@ attribute name="transaction_id" 	required="true"		description="The transaction to be touched" %>
 <%@ attribute name="touch"				required="true"		description="The touch type to be applied" %>
@@ -26,9 +28,9 @@
 
 <c:choose>
 	<c:when test="${not empty error}">
-		<go:log level="ERROR">agg:write_touch FAILED: ${error}</go:log>
+		${logger.error('agg:write_touch FAILED. {}',log:kv('touch',touch ), error)}
 	</c:when>
 	<c:otherwise>
-		<go:log level="DEBUG">agg:write_touch TOUCHED: ${touch}</go:log>
+		${logger.debug('agg:write_touch successful. {}',log:kv('touch',touch ))}
 	</c:otherwise>
 </c:choose>

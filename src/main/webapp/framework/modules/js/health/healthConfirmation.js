@@ -88,16 +88,7 @@
 				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
 
 				fillTemplate();
-				if(confirmationProduct.warningAlert === "" || confirmationProduct.warningAlert === undefined){
-					meerkat.modules.healthMoreInfo.retrieveExternalCopy(confirmationProduct).then(function confirmationExternalCopySuccess(){
-						// Show warning if applicable
-						if (typeof confirmationProduct.warningAlert !== 'undefined' && confirmationProduct.warningAlert !== '') {
-							$("#health_confirmation-warning").find(".fundWarning").show().html(confirmationProduct.warningAlert);
-						} else {
-							$("#health_confirmation-warning").find(".fundWarning").hide().empty();
-						}
-					});
-				}
+
 				/// TODO: Fix this -why is it needed though?
 				//meerkat.modules.healthMoreInfo.applyEventListeners();
 
@@ -132,9 +123,15 @@
 		});
 
 		// if pending, it might not have the about fund info so let's get it
-		if(confirmationProduct.about === ""){
-			meerkat.modules.healthMoreInfo.retrieveExternalCopy(confirmationProduct).then(function confirmationExternalCopySuccess(){
+		if(confirmationProduct.about === ''  || !confirmationProduct.hasOwnProperty('warningAlert') || confirmationProduct.warningAlert === '') {
+			meerkat.modules.healthMoreInfo.retrieveExternalCopy(confirmationProduct).then(function confirmationExternalCopySuccess() {
 				$(".aboutFund").append(confirmationProduct.aboutFund).parents(".displayNone").first().removeClass("displayNone");
+
+				if (confirmationProduct.hasOwnProperty('warningAlert') && confirmationProduct.warningAlert !== '') {
+					$("#health_confirmation-warning").find(".fundWarning").show().html(confirmationProduct.warningAlert);
+				} else {
+					$("#health_confirmation-warning").find(".fundWarning").hide().empty();
+				}
 			});
 		}
 

@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="HEALTH" />
+<c:set var="logger"  value="${log:getLogger(pageContext.request.servletPath)}" />
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
 <x:parse doc="${config}" var="configXml" />
@@ -36,7 +37,7 @@
 	${pageSettings.getBaseUrl()}ajax/html/health_paymentgateway_return.jsp
 </c:set>
 
-<go:log source="health_paymentgateway_jsp" >health_paymentgateway: ID=${id}, ${tokenUrl}</go:log>
+${logger.debug('Parsed request for health paymentgateway. {},{},{}', log:kv('username', username) , log:kv('id',id ), log:kv('tokenUrl',tokenUrl ))}
 
 <c:choose>
 	<c:when test="${empty tokenUrl or empty username or empty password or empty id or empty registerUrl or empty comm or empty supp}">
@@ -57,8 +58,10 @@
 				<c:param name="CP_cancelURL" value="${returnURL}" />
 			</c:import>
 		</c:catch>
-		<go:log source="health_paymentgateway_jsp" >    Response: ${output}</go:log>
-
+		<c:if test="${gatewayError}">
+			${logger.error('Error importing url. {},{},{},{}', log:kv('tokenUrl',tokenUrl ), log:kv('username', username), log:kv('id',id ), log:kv('returnURL',returnURL ) , gatewayError)}
+		</c:if>
+		${logger.debug('Response from import. {}', log:kv('output',output ))}
 		<c:choose>
 			<c:when test="${fn:startsWith(output, 'token=')}">
 				<c:redirect url="${registerUrl}">

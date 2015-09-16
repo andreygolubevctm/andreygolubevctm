@@ -16,6 +16,10 @@ import java.util.Date;
 
 public class RequestUtils {
 
+    public static final String TRANSACTION_ID_PARAM = "transactionId";
+    public static final String BRAND_CODE_PARAM = "brandCode";
+    public static final String VERTICAL_PARAM = "vertical";
+
 	private static final Logger logger = LoggerFactory.getLogger(RequestUtils.class.getName());
     private final SessionDataService sessionDataService = new SessionDataService();
 
@@ -33,7 +37,7 @@ public class RequestUtils {
      */
     public static long getTransactionIdFromRequest(HttpServletRequest request) {
         long transactionId = -1L;
-        String requestTransactionId = request.getParameter("transactionId");
+        String requestTransactionId = request.getParameter(TRANSACTION_ID_PARAM);
         if (requestTransactionId != null && !requestTransactionId.isEmpty()) {
             try{
                 transactionId = Long.parseLong(requestTransactionId);
