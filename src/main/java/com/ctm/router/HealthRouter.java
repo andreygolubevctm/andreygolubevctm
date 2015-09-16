@@ -1,4 +1,4 @@
-package com.ctm.router.health;
+package com.ctm.router;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -47,8 +47,8 @@ public class HealthRouter extends HttpServlet {
 			getProviderContent(request, response, writer);
 		}
 	}
-
-
+	
+	
 	private void getProviderContent(HttpServletRequest request, HttpServletResponse response, PrintWriter writer) throws IOException {
 		ProviderContentService providerContentService = new ProviderContentService();
 		JSONObject json = new JSONObject();
