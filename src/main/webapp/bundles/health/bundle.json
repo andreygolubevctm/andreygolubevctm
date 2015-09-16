@@ -6,7 +6,6 @@
   	"shared/features",
 	"shared/validation",
 	"core",
-	"shared/datepicker",
 	"shared/commencementDate",
   	"shared/autocomplete",
 	"shared/placeholder",
