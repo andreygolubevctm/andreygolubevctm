@@ -382,6 +382,7 @@
 				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
 				meerkat.modules.healthMoreInfo.initMoreInfo();
+				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 			},
 			onBeforeEnter:function enterResultsStep(event){
 
@@ -431,8 +432,6 @@
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
 			onInitialise: function onInitApplyStep(event){
-
-				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 
 				healthApplicationDetails.init();
 
