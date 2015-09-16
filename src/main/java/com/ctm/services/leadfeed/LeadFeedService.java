@@ -47,7 +47,8 @@ public abstract class LeadFeedService {
 	};
 
 	public LeadResponseStatus callDirect(LeadFeedData leadData) throws LeadFeedException {
-		return processGateway(LeadType.CALL_DIRECT, leadData, Touch.TouchType.CALL_DIRECT);
+		recordTouch(Touch.TouchType.CALL_DIRECT.getCode(), leadData);
+		return LeadResponseStatus.SUCCESS;
 	}
 
 	public LeadResponseStatus callMeBack(LeadFeedData leadData) throws LeadFeedException {

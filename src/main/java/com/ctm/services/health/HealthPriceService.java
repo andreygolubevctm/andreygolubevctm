@@ -3,13 +3,13 @@ package com.ctm.services.health;
 import com.ctm.dao.StyleCodeDao;
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
+import com.ctm.logging.LoggingVariables;
 import com.ctm.model.health.*;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.results.ProviderRestrictionsService;
 import com.ctm.utils.FormDateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -96,7 +96,7 @@ public class HealthPriceService {
 	}
 
 	public void setTransactionId(long transactionId) {
-		MDC.put("transactionId", String.valueOf(transactionId));
+		LoggingVariables.setTransactionId(String.valueOf(transactionId));
 		this.transactionId = transactionId;
 	}
 
@@ -154,7 +154,7 @@ public class HealthPriceService {
 	}
 
 	public void setup() throws DaoException {
-		MDC.put("verticalCode", Vertical.VerticalType.HEALTH.getCode());
+		LoggingVariables.setVerticalCode( Vertical.VerticalType.HEALTH.getCode());
 
 		int excessMax;
 		int excessMin;
