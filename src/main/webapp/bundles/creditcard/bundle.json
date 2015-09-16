@@ -8,6 +8,5 @@
         "core",
         "shared/addressLookup",
         "shared/optIn"
-
     ]
 }

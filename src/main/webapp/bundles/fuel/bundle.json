@@ -7,6 +7,7 @@
     "shared/addressLookup",
     "shared/showMoreQuotesPrompt",
     "shared/resultsRankings",
+    "shared/checkboxIE8",
     "shared/dropdownInteractive"
   ]
 }

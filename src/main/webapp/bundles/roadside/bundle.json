@@ -8,6 +8,7 @@
     "core",
     "shared/moreInfo",
     "shared/popovers",
+    "shared/checkboxIE8",
     "shared/showMoreQuotesPrompt",
     "shared/resultsRankings"
   ]
