@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.upload_fuel_prices')}" />
 
 <%--
 AUTOMATIC CRON JOB FOR MOTORMOUTH FUEL SERVICE

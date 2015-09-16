@@ -6,6 +6,7 @@
     "core",
     "shared/selectTags",
     "shared/datepicker",
+    "shared/popovers",
     "shared/moreInfo",
     "shared/leavePageWarning",
     "shared/showMoreQuotesPrompt",

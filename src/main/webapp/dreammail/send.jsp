@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.dreammail.send')}" />
 
 <c:choose>
 	<c:when test="${not empty param.transactionId}">

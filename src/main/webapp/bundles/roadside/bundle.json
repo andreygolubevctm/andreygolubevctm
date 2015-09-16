@@ -7,6 +7,7 @@
     "shared/validation",
     "core",
     "shared/moreInfo",
+    "shared/popovers",
     "shared/showMoreQuotesPrompt",
     "shared/resultsRankings"
   ]
