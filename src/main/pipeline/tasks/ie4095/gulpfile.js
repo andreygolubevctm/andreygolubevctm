@@ -44,7 +44,7 @@ function IE4095Tasks(gulp) {
                         filePath = file.path;
                         fileName = path.basename(file.path).replace(/\.[^/.]+$/, "");
                         targetFolder = path.dirname(filePath) + "\\inc";
-                        targetFile = fileName + ".inc";
+                        targetFile = fileName + ".txt";
 
                         // Wipe the original target file
                         mkdirp.sync(targetFolder);
