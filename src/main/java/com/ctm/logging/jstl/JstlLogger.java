@@ -155,8 +155,5 @@ public class JstlLogger {
         logger.error(format,arg1,arg2,arg3, arg4, arg5);
     }
 
-    // Internal reference to the logger. Used for testing
-    Logger getLogger() {
-        return logger;
-    }
+
 }
