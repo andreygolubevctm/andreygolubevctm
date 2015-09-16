@@ -41,7 +41,7 @@
 	</c:if>
 
 	<%-- OUTPUT: display and test for additional flags --%>
-	<div class="simples-dialogue-${id} simples-dialogue row-content ${className}<c:if test="${not empty mandatory && mandatory == true}"> mandatory</c:if>">
+	<div class="simples-dialogue-${id} simples-dialogue row-content ${className}<c:choose><c:when test="${not empty mandatory && mandatory == true}"> mandatory</c:when><c:otherwise> optionalDialogue</c:otherwise></c:choose>">
 		<jsp:invoke fragment="body_start" />
 
 		<c:choose>
@@ -66,15 +66,4 @@
 
 		<jsp:doBody />
 	</div>
-
-	<%-- SCRIPT --%>
-	<%-- Only allow hide/show if the dialogue is not mandatory --%>
-	<c:if test="${empty mandatory}">
-	<go:script marker="onready">
-		<%-- If dialogue text contains an <h3 class=toggle> then hook it up to a click event that will hide/show the panel contents. --%>
-		$('.simples-dialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function() {
-			$(this).find('h3 + div').slideToggle(200);
-		});
-	</go:script>
-	</c:if>
 </c:if>

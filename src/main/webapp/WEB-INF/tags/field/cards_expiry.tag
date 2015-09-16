@@ -53,20 +53,3 @@
 			required="true" extraDataAttributes="${validationAttributes}" />
 	</div>
 </div>
-
-					
-
-<go:script marker="js-head">
-	function get_now_month() {
-		var MyDate = new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <fmt:formatDate value="${now}" type="DATE" pattern="M"/>-1, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>);
-		var MyDateString = MyDate.getMonth()+1;
-		MyDateString = MyDateString < 10 ? "0"+MyDateString : MyDateString;
-		return MyDateString;
-	}
-	function get_now_year() {
-		var MyDate = new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <fmt:formatDate value="${now}" type="DATE" pattern="M"/>-1, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>);
-		var MyDateString;
-		MyDateString = MyDate.getFullYear();
-		return MyDateString;
-	}
-</go:script>

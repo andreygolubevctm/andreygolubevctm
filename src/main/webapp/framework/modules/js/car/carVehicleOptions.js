@@ -916,7 +916,7 @@
 			}
 
 			// Pull in any option/accessory preselections
-			_.extend(optionPreselections, userOptionPreselections);
+			_.extend(optionPreselections, meerkat.site.userOptionPreselections);
 
 			var list = ['factory','accessories'];
 			for(var i=0; i<list.length; i++) {

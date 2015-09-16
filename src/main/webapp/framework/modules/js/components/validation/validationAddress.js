@@ -49,7 +49,7 @@
      */
     $.validator.addMethod(
         "validAddress",
-        function(value, element, name) {
+        function (value, element, name) {
             "use strict";
 
             // Default is to FAIL
@@ -69,8 +69,12 @@
 
             var fldName = $ele.attr("id").substring(name.length);
             var type = $("#" + name + "_type").val();
-
-            var selectedAddress = window.selectedAddressObj[type];
+            var selectedAddress = {};
+            if (typeof window.selectedAddressObj != 'undefined' && typeof window.selectedAddressObj[type] != 'undefined') {
+                selectedAddress = window.selectedAddressObj[type];
+            } else if ($('[data-address-id="' + name + '"]').data('elasticAddress') != 'undefined') {
+                selectedAddress = $('[data-address-id="' + name + '"]').data('elasticAddress').address
+            }
 
             switch (fldName) {
                 case "_streetSearch":
@@ -84,11 +88,11 @@
                     }
                     var suburbName = $("#" + name + "_suburbName").val();
                     var suburbSelect = $("#" + name + "_suburb").val();
-                    var validSuburb =  suburbName !== "" && suburbSelect !== "";
+                    var validSuburb = suburbName !== "" && suburbSelect !== "";
                     if (!validSuburb) {
                         return false;
                     }
-                    if(houseNo === "") {
+                    if (houseNo === "") {
                         houseNo = $houseNoSel.val();
                         $streetNoElement.val(houseNo);
                     }
@@ -97,7 +101,7 @@
                         valid = true;
                     } else if (houseNo !== '') {
 
-                        if($streetNoElement.is(":visible")){
+                        if ($streetNoElement.is(":visible")) {
                             $streetNoElement.valid();
                         }
 
@@ -114,10 +118,10 @@
 
                         valid = validateAddressAgainstServer(name,
                             $dpIdElement, {
-                                streetId : $streetIdElement.val(),
-                                houseNo : houseNo,
-                                unitNo : unitNo,
-                                unitType : unitType
+                                streetId: $streetIdElement.val(),
+                                houseNo: houseNo,
+                                unitNo: unitNo,
+                                unitType: unitType
                             }, $ele);
                     }
 
@@ -125,13 +129,13 @@
                      * Validation overrides to prevent errors being thrown on this field
                      * while we know the user is still entering data.
                      */
-                    if(!valid && _.isEmpty(selectedAddress.dpId)) {
-                        if( _.isNumber(selectedAddress.streetId) && selectedAddress.houseNo === '0' ) {
+                    if (!valid && _.isEmpty(selectedAddress.dpId)) {
+                        if (_.isNumber(selectedAddress.streetId) && selectedAddress.houseNo === '0') {
                             // Pass if a street has been searched and located but no house number assigned yet
                             valid = true;
-                        } else if(_.isNumber(selectedAddress.streetId) && selectedAddress.hasUnits) {
+                        } else if (_.isNumber(selectedAddress.streetId) && selectedAddress.hasUnits) {
                             // Check unit fields
-                            if(selectedAddress.hasEmptyUnits) {
+                            if (selectedAddress.hasEmptyUnits) {
                                 valid = selectedAddress.unitNo === '' && selectedAddress.unitType === '';
                             } else {
                                 valid = selectedAddress.unitNo === '' || selectedAddress.unitType === '';
@@ -142,31 +146,31 @@
                     }
                     break;
                 case "_streetNum":
-                    if(isNonStd) {
+                    if (isNonStd) {
                         valid = true;
-                    } else if(!_.isEmpty(selectedAddress.dpId)) {
+                    } else if (!_.isEmpty(selectedAddress.dpId)) {
                         valid = true;
                         // If street found but no street number then pass for now
-                    } else if(selectedAddress.streetId > 0 && (_.isEmpty(selectedAddress.houseNo) || selectedAddress.houseNo === '0')) {
+                    } else if (selectedAddress.streetId > 0 && (_.isEmpty(selectedAddress.houseNo) || selectedAddress.houseNo === '0')) {
                         valid = true;
                         // If house number enter but no unit info then pass for now
-                    } else if(!_.isEmpty(selectedAddress.houseNo) && selectedAddress.hasUnits === true) {
-                        if(selectedAddress.hasEmptyUnits === false && (selectedAddress.unitNo === "" || selectedAddress.unitType === "")) {
+                    } else if (!_.isEmpty(selectedAddress.houseNo) && selectedAddress.hasUnits === true) {
+                        if (selectedAddress.hasEmptyUnits === false && (selectedAddress.unitNo === "" || selectedAddress.unitType === "")) {
                             valid = true;
                         }
                     }
                     break;
                 case "_unitShop":
-                    if(isNonStd || !_.isEmpty(selectedAddress.dpId)) {
+                    if (isNonStd || !_.isEmpty(selectedAddress.dpId)) {
                         valid = true;
-                    } else if(selectedAddress.hasEmptyUnits === false && selectedAddress.unitNo !== '' && selectedAddress.unitNo !== '0') {
+                    } else if (selectedAddress.hasEmptyUnits === false && selectedAddress.unitNo !== '' && selectedAddress.unitNo !== '0') {
                         valid = true;
                     }
                     break;
                 case "_unitType":
-                    if(isNonStd || !_.isEmpty(selectedAddress.dpId)) {
+                    if (isNonStd || !_.isEmpty(selectedAddress.dpId)) {
                         valid = true;
-                    } else if(selectedAddress.hasEmptyUnits === false && selectedAddress.unitType !== '' && selectedAddress.unitType !== '0') {
+                    } else if (selectedAddress.hasEmptyUnits === false && selectedAddress.unitType !== '' && selectedAddress.unitType !== '0') {
                         valid = true;
                     }
                     break;
@@ -188,22 +192,22 @@
                             }
                         }
                     }
-                    $ele.trigger("customAddressEnteredEvent", [ name ]);
+                    $ele.trigger("customAddressEnteredEvent", [name]);
                     return true;
                 case "_nonStd":
 
                     if (isNonStd) {
                         var $streetSearchEle = $("#" + name + "_streetSearch");
-                        if($streetSearchEle.prop('disabled') || $streetSearchEle.is(":visible") === false){
+                        if ($streetSearchEle.prop('disabled') || $streetSearchEle.is(":visible") === false) {
                             return true;
-                        }else{
+                        } else {
                             $streetSearchEle.valid();
                         }
                     } else {
                         var $suburbEle = $("#" + name + "_suburb");
-                        if($suburbEle.prop('disabled') || $suburbEle.is(":visible")  === false){
+                        if ($suburbEle.prop('disabled') || $suburbEle.is(":visible") === false) {
                             return true;
-                        }else{
+                        } else {
                             $suburbEle.valid();
                         }
                         $("#" + name + "_nonStdStreet").valid();
@@ -225,7 +229,7 @@
 
                 // Force an unhighlight because Validator has lost its element scope due to all the sub-valid() checks.
                 if (fldName === '_streetSearch') {
-                    if( typeof $ele.validate().ctm_unhighlight === "function"){
+                    if (typeof $ele.validate().ctm_unhighlight === "function") {
                         $ele.validate().ctm_unhighlight($('#' + name + '_streetSearch').get(0), this.settings.errorClass, this.settings.validClass);
                     }
                 }
