@@ -45,8 +45,8 @@
 		<c:set var="discountText" value="${item.getSupplementaryValueByKey('discountText')}" />
 		<c:set var="promoTextSummary" value="${item.getSupplementaryValueByKey('promoTextSummary')}" />
 		<c:set var="promoTextDialog" value="${item.getSupplementaryValueByKey('promoTextDialog')}" />
-		<c:set var="brochureDownloadLinkHosp" scope="request">${brochureService.downloadBrochure(pageContext.request, hospitalPDF.trim())}</c:set>
-		<c:set var="brochureDownloadLinkExtras" scope="request">${brochureService.downloadBrochure(pageContext.request, extrasPDF.trim())}</c:set>
+		<c:set var="brochureDownloadLinkHosp" scope="request">${brochureService.downloadBrochure(pageContext.request,hospitalPDF.trim(),healthPriceService.getTransactionId())}</c:set>
+		<c:set var="brochureDownloadLinkExtras" scope="request">${brochureService.downloadBrochure(pageContext.request,extrasPDF.trim(),healthPriceService.getTransactionId())}</c:set>
 		<promo <c:if test="${not empty hospitalAttr }">hospital="${fn:trim(hospitalAttr)}"</c:if><c:out value=" " /><c:if test="${not empty extrasAttr}">extras="${fn:trim(extrasAttr)}"</c:if>>
 		<c:if test="${not empty brochureDownloadLinkHosp}">
 			<hospitalPDF>
