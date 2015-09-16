@@ -51,7 +51,7 @@
 	<c:otherwise>
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
 <c:set var="ct_outcome"><core:transaction touch="P" /></c:set>
-${logger.info('Application has been set to pending. {},{}', log:kv('transactionId', tranId), log:kv('productId', productId))}
+${logger.info('Application has been set to pending. {}', log:kv('productId', productId))}
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -131,7 +131,7 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 </c:if>
 		</sql:transaction>
 
-		${logger.debug('Queried product properties. {},{},{}', log:kv('tranId', tranId), log:kv('fund', fund), log:kv('productId', productId))}
+		${logger.debug('Queried product properties. {},{}', log:kv('fund', fund), log:kv('productId', productId))}
 
 		<%-- Load the config and send quotes to the aggregator gadget --%>
 <c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />
@@ -236,7 +236,7 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 					</x:when>
 					<x:otherwise></x:otherwise>
 				</x:choose>
-				${logger.info('Transaction has been set to confirmed. {},{}', log:kv('transactionId' , tranId), log:kv('confirmationID',confirmationID ))}
+				${logger.info('Transaction has been set to confirmed. {}', log:kv('confirmationID',confirmationID ))}
 				<c:set var="confirmationID"><confirmationID><c:out value="${confirmationID}" /></confirmationID></result></c:set>
 				<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', confirmationID)}" />
 								${go:XMLtoJSON(resultXml)}
@@ -257,7 +257,7 @@ ${logger.info('Application has been set to pending. {},{}', log:kv('transactionI
 								</c:choose>
 			</x:otherwise>
 		</x:choose>
-		${logger.debug('Health application complete. {},{},{}', log:kv('transactionId',tranId), log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
+		${logger.debug('Health application complete. {},{}', log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
 			</c:when>
 			<c:otherwise>
 						<c:choose>
