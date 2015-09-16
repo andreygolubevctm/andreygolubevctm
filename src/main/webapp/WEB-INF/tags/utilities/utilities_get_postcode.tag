@@ -2,7 +2,7 @@
 <%@ tag description="Displays the root postcode for a given state."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/utilities/utilities_get_postcode.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.utilities.utilities_get_postcode')}" />
 
 <%@ attribute name="state" required="true" description="The state abbreviation to search."%>
 

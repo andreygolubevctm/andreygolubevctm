@@ -3,7 +3,7 @@
 
 <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">
-    <c:set var="logger" value="${log:getLogger('jsp:err.error404')}" />
+    <c:set var="logger" value="${log:getLogger('jsp.err.error404')}" />
     <settings:setVertical verticalCode="GENERIC"/>
     <c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
     <c:set var="pageTitle" value="404"/>
