@@ -9,7 +9,7 @@
     <c:set var="pageTitle" value="500"/>
 </c:catch>
 <c:catch var="error">
-    <go:log source="jsp:err.error500" level="ERROR" error="${pageContext.exception}">Error Page Hit, requestUri=${requestUri} brandCode=${brandCode}</go:log>
+    ${logger.error('Error Page Hit. {},{}' ,  log:kv('requestUri', requestUri) , log:kv('brandCode',brandCode ), pageContext.exception)}
 </c:catch>
 
 <c:choose>

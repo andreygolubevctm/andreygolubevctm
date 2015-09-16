@@ -125,14 +125,6 @@
             </c:if>
         </c:forEach>
     </c:forEach>
-
-
-    <c:catch var="error">
-    </c:catch>
-    <c:if test="${not empty error}">
-        <p>Could not list brand information due to server exception.</p>
-    </c:if>
-
 </c:if>
 
 </body>

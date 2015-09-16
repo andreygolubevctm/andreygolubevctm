@@ -1,5 +1,6 @@
 package com.ctm.services.simples;
 
+import com.ctm.dao.ProviderDao;
 import com.ctm.dao.simples.ProviderContentDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.CrudValidationException;
@@ -22,6 +23,21 @@ public class ProviderContentService implements CrudService{
     private final ProviderContentHelper providerContentHelper = new ProviderContentHelper();
 
     public ProviderContentService() {
+    }
+
+    /**
+     * For the usage in JSP due to we don't store providerId in transaction data
+     * @param request
+     * @param providerName
+     * @return
+     * @throws DaoException
+     * @throws ConfigSettingException
+     */
+    public String getProviderContentText(HttpServletRequest request, String providerName, String providerContentTypeCode) throws DaoException, ConfigSettingException {
+        ProviderDao providerDao = new ProviderDao();
+        Date currDate = ApplicationService.getApplicationDate(request);
+        int providerId = providerDao.getByName(providerName, currDate).getId();
+        return providerContentDao.getProviderContentText(providerId, providerContentTypeCode, "HEALTH", currDate);
     }
 
     public String getProviderContentText(HttpServletRequest request) throws DaoException, ConfigSettingException {

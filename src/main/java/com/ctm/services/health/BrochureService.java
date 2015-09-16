@@ -5,39 +5,23 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
-import com.ctm.services.FatalErrorService;
 import com.ctm.services.SettingsService;
-import com.ctm.web.URLUtils;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class BrochureService {
-    private final static Logger logger = Logger.getLogger(BrochureService.class.getName());
     /**
      * This function will download the brochure for health
      * @param request
      * @param pdfName
-     * @param transactionId
      * @throws ConfigSettingException
      * @throws DaoException
      * @throws IOException
      */
-    public String downloadBrochure(HttpServletRequest request, String pdfName, String transactionId) throws ConfigSettingException, DaoException, IOException, SessionException {
-        PageSettings pageSettings =SettingsService.setVerticalAndGetSettingsForPage(request, Vertical.VerticalType.HEALTH.getCode());
-        int brand = pageSettings.getBrandId();
-        String downloadLink = createBrochureDownloadLInk(pdfName,pageSettings);
-        if(!URLUtils.exists(downloadLink) && pdfName!=null && !pdfName.isEmpty()){
-            String message ="Brochure not found";
-            String description ="Brochure is missing from the server :"+pdfName +" brandID : "+brand ;
-            FatalErrorService.logFatalError(brand, request.getRequestURI(), request.getSession().getId(), false, message, description, transactionId + "");
-            logger.error(description +" TransactionID : "+transactionId );
-            return null;
-        }else if(pdfName==null || pdfName.isEmpty()){
-            return null;
-        }
-        return downloadLink;
+    public String downloadBrochure(HttpServletRequest request, String pdfName) throws ConfigSettingException, DaoException, IOException, SessionException {
+        PageSettings pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, Vertical.VerticalType.HEALTH.getCode());
+        return createBrochureDownloadLInk(pdfName,pageSettings);
     }
 
     /**
