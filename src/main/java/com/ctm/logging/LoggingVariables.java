@@ -10,23 +10,18 @@ public class LoggingVariables {
     public static final String VERTICAL_CODE_KEY = "verticalCode";
     public static final String CORRELATION_ID_KEY = "correlationId";
 
-    public static final ThreadLocal threadLocalCorrelationId = new ThreadLocal();
-
     public static void clearLoggingVariables() {
         MDC.remove(TRANSACTION_ID_KEY);
         MDC.remove(BRAND_CODE_KEY);
         MDC.remove(VERTICAL_CODE_KEY);
         MDC.remove(CORRELATION_ID_KEY);
-        threadLocalCorrelationId.remove();
     }
 
     /**
-     * sets correlation id off thread local
      * Sets all parameters to MDC
      */
     public static void setLoggingVariables(String transactionId, String brandCode, String vertical, String correlationId) {
-        threadLocalCorrelationId.set(correlationId);
-        setTransactionId(transactionId);
+         setTransactionId(transactionId);
         MDC.put(BRAND_CODE_KEY, brandCode);
         String verticalCode = null;
         if(vertical != null) {
@@ -45,11 +40,4 @@ public class LoggingVariables {
         MDC.put(TRANSACTION_ID_KEY, transactionId);
     }
 
-    /**
-     * gets correlation id off thread local
-     * @return correlation id
-     */
-    public static String getCorrelationId(){
-        return (String) threadLocalCorrelationId.get();
-    }
 }

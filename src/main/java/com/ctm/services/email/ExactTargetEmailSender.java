@@ -1,27 +1,10 @@
 package com.ctm.services.email;
 
-import static java.lang.Integer.parseInt;
-
-import java.security.GeneralSecurityException;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.xml.bind.JAXBElement;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.Service;
-
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.endpoint.Endpoint;
-import org.apache.cxf.frontend.ClientProxy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.DOMException;
-
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.ServiceConfigurationException;
+import com.ctm.logging.LoggingVariables;
 import com.ctm.model.email.EmailModel;
 import com.ctm.model.email.EmailResponse;
 import com.ctm.model.email.ExactTargetEmailModel;
@@ -34,20 +17,23 @@ import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
 import com.ctm.security.StringEncryption;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.webservice.WebServiceUtils;
-import com.exacttarget.wsdl.partnerapi.APIObject;
-import com.exacttarget.wsdl.partnerapi.Attribute;
-import com.exacttarget.wsdl.partnerapi.ClientID;
-import com.exacttarget.wsdl.partnerapi.CreateOptions;
-import com.exacttarget.wsdl.partnerapi.CreateRequest;
-import com.exacttarget.wsdl.partnerapi.CreateResponse;
-import com.exacttarget.wsdl.partnerapi.CreateResult;
-import com.exacttarget.wsdl.partnerapi.ObjectFactory;
-import com.exacttarget.wsdl.partnerapi.PartnerAPI;
-import com.exacttarget.wsdl.partnerapi.SendClassification;
-import com.exacttarget.wsdl.partnerapi.Soap;
-import com.exacttarget.wsdl.partnerapi.Subscriber;
-import com.exacttarget.wsdl.partnerapi.TriggeredSend;
-import com.exacttarget.wsdl.partnerapi.TriggeredSendDefinition;
+import com.exacttarget.wsdl.partnerapi.*;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.endpoint.Endpoint;
+import org.apache.cxf.frontend.ClientProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.DOMException;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.Service;
+import java.security.GeneralSecurityException;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static java.lang.Integer.parseInt;
 
 public class ExactTargetEmailSender<T extends EmailModel> {
 
@@ -155,6 +141,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 		List<APIObject> objects = createRequest.getObjects();
 
 		TriggeredSend triggeredSend = new TriggeredSend();
+		triggeredSend.setCorrelationID(LoggingVariables.getCorrelationId());
 
 		ClientID client = createClient(exactTargetEmailModel);
 

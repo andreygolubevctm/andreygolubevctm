@@ -1,7 +1,7 @@
 package com.ctm.connectivity;
 
 import com.ctm.connectivity.exception.ConnectionException;
-import com.ctm.utils.RequestUtils;
+import com.ctm.logging.CorrelationIdUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +18,7 @@ public class SimpleConnection {
 	private String requestMethod = "GET";
 	private String contentType = null;
 	private String postBody = null;
-
+	private boolean hasCorrelationId;
 
 
 	public SimpleConnection() {
@@ -34,7 +34,9 @@ public class SimpleConnection {
 		try {
 			URL u = new URL(url);
 			HttpURLConnection c = (HttpURLConnection) u.openConnection();
-			RequestUtils.setCorrelationIdHeader(c);
+			if(hasCorrelationId) {
+				CorrelationIdUtils.setCorrelationIdHeader(c);
+			}
 			c.setRequestMethod(getRequestMethod());
 			c.setRequestProperty("Content-length", "0");
 			c.setUseCaches(false);
@@ -74,13 +76,12 @@ public class SimpleConnection {
 					return sb.toString();
 				default:
 					String message = c.getResponseMessage();
-					logger.error(url + ": Status code error " + status + " " + message);
+					throw new ConnectionException(url + ": Status code error " + status + " " + message);
 			}
 		}
 		catch (Exception e) {
 			throw new ConnectionException(url+": "+e , e);
 		}
-		return null;
 	}
 
 	/**
@@ -137,5 +138,9 @@ public class SimpleConnection {
 
 	public void setPostBody(String postBody) {
 		this.postBody = postBody;
+	}
+
+	public void setHasCorrelationId(boolean hasCorrelationId) {
+		this.hasCorrelationId = hasCorrelationId;
 	}
 }

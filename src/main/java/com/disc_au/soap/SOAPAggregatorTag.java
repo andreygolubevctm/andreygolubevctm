@@ -5,7 +5,7 @@
 
 package com.disc_au.soap;
 
-import com.ctm.logging.LoggingVariables;
+import com.ctm.logging.CorrelationIdUtils;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
@@ -32,13 +32,12 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.util.HashMap;
 
+import static com.ctm.logging.CorrelationIdUtils.clearCorrelationId;
+import static com.ctm.logging.CorrelationIdUtils.setCorrelationId;
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
 import static com.ctm.logging.LoggingVariables.setLoggingVariables;
-
-import static com.ctm.logging.LoggingArguments.kv;
-import static com.ctm.services.EnvironmentService.Environment.LOCALHOST;
-import static com.ctm.services.EnvironmentService.Environment.NXI;
-import static com.ctm.services.EnvironmentService.Environment.NXS;
+import static com.ctm.services.EnvironmentService.Environment.*;
 
 /**
  * The Class SOAPAggregatorTag with WAR compatibility.
@@ -67,11 +66,17 @@ public class SOAPAggregatorTag extends TagSupport {
 	private boolean continueOnValidationError;
 	private Brand brand;
 	private String correlationId;
+	private boolean hasCorrelationId;
 
 	@SuppressWarnings("unused")
 	// used in go.tld
 	public void setContinueOnValidationError(boolean continueOnValidationError) {
 		this.continueOnValidationError = continueOnValidationError;
+	}
+	@SuppressWarnings("unused")
+	// used in go.tld
+	public void setHasCorrelationId(boolean hasCorrelationId) {
+		this.hasCorrelationId = hasCorrelationId;
 	}
 
 	@SuppressWarnings("unused")
@@ -131,15 +136,17 @@ public class SOAPAggregatorTag extends TagSupport {
 						// Give each one a meaningful name
 						String threadName = this.transactionId + " " + serviceItemConfig.getName();
 
-				SOAPClientThread client;
-					correlationId = LoggingVariables.getCorrelationId();
+					SOAPClientThread client;
+					if(hasCorrelationId) {
+						correlationId = CorrelationIdUtils.getCorrelationId();
+					}
 
 					if (serviceItemConfig.getType() != null && serviceItemConfig.getType().equals("url-encoded")) {
 					client = new HtmlFormClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, () -> setupMDC(), () -> clearLoggingVariables());
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupMDC, this::clearThreadVariables);
 				} else {
 						client = new SOAPClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, () -> setupMDC(), () -> clearLoggingVariables());
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupMDC, this::clearThreadVariables);
 					}
 
 				// Add the thread to the hash map and start it off
@@ -242,8 +249,14 @@ public class SOAPAggregatorTag extends TagSupport {
 		}
 	}
 
+	private void clearThreadVariables() {
+		clearCorrelationId();
+		clearLoggingVariables();
+	}
+
 	private void setupMDC() {
 		setLoggingVariables(transactionId, brand.getCode(), verticalCode, correlationId);
+		setCorrelationId(correlationId);
 	}
 
 	private void setUpConfiguration() {

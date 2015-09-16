@@ -41,6 +41,7 @@
 					debugVar="debugXml"
 					verticalCode="FUEL"
 					configDbKey="quoteService"
+				   	hasCorrelationId="true"
 					styleCodeId="${pageSettings.getBrandId()}" />
 
 ${go:XMLtoJSON(resultXml)}

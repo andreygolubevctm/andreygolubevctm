@@ -51,7 +51,8 @@
 					isValidVar="isValid"
 					configDbKey="quoteService"
 					styleCodeId="${pageSettings.getBrandId()}"
-					verticalCode="ROADSIDE" />
+					verticalCode="ROADSIDE"
+					hasCorrelationId="true" />
 </c:if>
 
 <c:choose>

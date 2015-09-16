@@ -306,6 +306,12 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<description>Whether to send though hasCorrelationId in header</description>
+			<name>hasCorrelationId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 
 		<example>
 			<![CDATA[

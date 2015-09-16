@@ -145,6 +145,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 						isValidVar="isValid"
 						verticalCode="HEALTH"
 						configDbKey="appService"
+				   hasCorrelationId="true"
 						styleCodeId="${pageSettings.getBrandId()}"
 						/>
 		<c:choose>
