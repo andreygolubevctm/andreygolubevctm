@@ -14,7 +14,7 @@ CREATE TABLE `ctm`.`provider_content_types` (
   `providerContentTypeCode` char(3) NOT NULL,
   `description` varchar(45) NOT NULL,
   PRIMARY KEY (`providerContentTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+);
 
 /* Update audit table to have the same structure as the provider contents */
 ALTER TABLE `logging`.`audit_provider_warning_message`
