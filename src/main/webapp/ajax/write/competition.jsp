@@ -89,7 +89,7 @@
 			<c:set var="errorPool" value="{error:'Failed to locate registered user.'}" />
 		</c:when>
 		<c:otherwise>
-			${logger.error('Database error querying aggregator.email_master. {},{}', log:kv('transactionId', transactionId), log:kv('email', competition_email) , error)}
+			${logger.error('Database error querying aggregator.email_master. {}', log:kv('email', competition_email) , error)}
 			<c:set var="errorPool" value="{error:'${error}'}" />
 		</c:otherwise>
 	</c:choose>

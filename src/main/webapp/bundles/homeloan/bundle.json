@@ -7,6 +7,7 @@
     "core",
     "shared/placeholder",
     "shared/currency",
+    "shared/dropdownInteractive",  
     "shared/addressLookup",
     "shared/leadFeed",
     "shared/saveQuote",

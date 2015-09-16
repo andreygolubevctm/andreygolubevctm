@@ -84,7 +84,7 @@ ${logger.debug('Converted raw body of request to string. {},{}', log:kv('content
 	<c:set var="zipFilename" value="${provider}_${transId}_${millisecs}.zip" />
 	<c:set var="internalName" value="application_${transId}.csv" />
 </c:if>
-${logger.debug('transId: {},{},{},{}', log:kv('transId',transId ), log:kv('fundProductCode',fundProductCode ), log:kv('realPath',realPath ), log:kv('saveLocation',saveLocation ))}
+${logger.debug('transId: {},{},{}', log:kv('fundProductCode',fundProductCode ), log:kv('realPath',realPath ), log:kv('saveLocation',saveLocation ))}
 <?xml version="1.0" encoding="UTF-8"?>
 <result>
 	<c:choose>
