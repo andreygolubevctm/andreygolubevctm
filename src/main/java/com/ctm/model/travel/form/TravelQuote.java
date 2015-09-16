@@ -1,16 +1,11 @@
 package com.ctm.model.travel.form;
 
-import com.ctm.providers.travel.travelquote.model.request.Filter;
 import com.ctm.web.validation.Destinations;
 import com.ctm.web.validation.Name;
-import com.ctm.web.validation.Numeric;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Map web_ctm front end travel quote to Java object (with validation)

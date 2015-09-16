@@ -83,7 +83,7 @@ public class ProviderFilter {
     /**
 	 * retrieve the providerCode if it's an xml based config otherwise retrieve the id
 	 */
-	private String getFilteredConfig(Data data, String config, String vertical) throws DaoException, XMLStreamException {
+	private String getFilteredConfig(Data data, String config, String vertical) throws Exception {
 		// check if the filter node is set which means either it's a partner testing on NXS or a staff member has selected a partner from the dropdown
 		if (data.get(vertical + "/filter/") != null) {
             String providerCode = providerCode(data, vertical);
@@ -100,7 +100,7 @@ public class ProviderFilter {
 		return config;
 	}
 
-    private String providerCode(Data data, String vertical) throws DaoException {
+    private String providerCode(Data data, String vertical) throws Exception {
         String providerCode = "";
         String providerKey = data.getString(vertical + "/filter/providerKey");
 
@@ -249,7 +249,7 @@ public class ProviderFilter {
 	/**
 	 * Get the provider by brand code with
 	 */
-	private String getProviderDetails(String providerKey) throws DaoException {
+	private String getProviderDetails(String providerKey) throws Exception {
 		String providerCode = "";
 
 		if (providerKey != null) {

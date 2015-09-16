@@ -1,14 +1,14 @@
 package com.ctm.services;
 
+import com.ctm.dao.ProviderDao;
 import com.ctm.dao.ProviderFilterDao;
-import com.ctm.exceptions.TravelServiceException;
-import java.util.ArrayList;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Provider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
 import java.util.Date;
-import com.ctm.dao.ProviderDao;
-import com.ctm.model.Provider;
-import com.ctm.exceptions.DaoException;
 
 public class ProviderService {
 
@@ -34,7 +34,7 @@ public class ProviderService {
 			if(providerCode != null && !providerCode.equalsIgnoreCase("invalid")) {
 				exists = true;
 			}
-		} catch(DaoException e) {
+		} catch(Exception e) {
 			// ignore and move on
 		}
 
@@ -49,7 +49,7 @@ public class ProviderService {
 			if(!providerCode.isEmpty()) {
 				exists = true;
 			}
-		} catch(DaoException e) {
+		} catch(Exception e) {
 			// ignore and move on
 		}
 

@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SimpleConnection {
@@ -74,12 +73,6 @@ public class SimpleConnection {
 					String message = c.getResponseMessage();
 					logger.error(url + ": Status code error " + status + " " + message);
 			}
-		}
-		catch (MalformedURLException e) {
-			logger.error(url+": "+e, e);
-		}
-		catch (IOException e) {
-			logger.error(url+": "+e, e);
 		}
 		catch (Exception e){
 			logger.error(url+": "+e, e);

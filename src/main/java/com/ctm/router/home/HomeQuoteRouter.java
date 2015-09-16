@@ -1,17 +1,14 @@
 package com.ctm.router.home;
 
-import com.ctm.exceptions.RouterException;
 import com.ctm.model.home.form.HomeRequest;
 import com.ctm.model.home.results.HomeMoreInfo;
 import com.ctm.model.home.results.HomeResult;
-import com.ctm.model.resultsData.Info;
 import com.ctm.model.resultsData.ResultsObj;
 import com.ctm.model.resultsData.ResultsWrapper;
 import com.ctm.model.settings.Brand;
+import com.ctm.model.settings.Vertical;
 import com.ctm.router.CommonQuoteRouter;
 import com.ctm.services.home.HomeQuoteService;
-import com.ctm.services.tracking.TrackingKeyService;
-import com.ctm.web.validation.SchemaValidationError;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 
 import javax.ws.rs.*;
@@ -26,46 +23,48 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
     @Path("/quote/get.json")
     @Consumes({"multipart/form-data", "application/x-www-form-urlencoded"})
     @Produces("application/json")
-    public ResultsWrapper getHomeQuote(@Context MessageContext context, @FormParam("") final HomeRequest data) {
+    public ResultsWrapper getHomeQuote(@Context MessageContext context, @FormParam("") final HomeRequest data) throws Exception {
+
+        Vertical.VerticalType vertical = Vertical.VerticalType.HOME;
 
         // Initialise request
-        Brand brand = initRouter(context);
-        updateClientIP(context, data); // TODO check IP Address is correct
+        Brand brand = initRouter(context, vertical);
+        updateTransactionIdAndClientIP(context, data); // TODO check IP Address is correct
 
 
-        if (data == null || data.getQuote() == null) {
-            throw new RouterException("Data quote is missing");
-        }
+//        if (data == null || data.getQuote() == null) {
+//            throw new RouterException("Data quote is missing");
+//        }
 
         HomeQuoteService homeService = new HomeQuoteService();
-        final List<SchemaValidationError> errors = homeService.validateRequest(data, "");
+        homeService.validateRequest(data, vertical.getCode());
 
-        if(errors.size() > 0){
-            throw new RouterException("Invalid request"); // TODO pass validation errors to client
-        }
+//        if(errors.size() > 0){
+//            throw new RouterException("Invalid request"); // TODO pass validation errors to client
+//        }
 
-        try {
+//        try {
             final List<HomeResult> quotes = homeService.getQuotes(brand, data);
 
-            Info info = new Info();
-            info.setTransactionId(data.getTransactionId());
-            try {
-                String trackingKey = TrackingKeyService.generate(
-                        context.getHttpServletRequest(), new Long(data.getTransactionId()));
-                info.setTrackingKey(trackingKey);
-            } catch (Exception e) {
-                throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
-            }
+//            Info info = new Info();
+//            info.setTransactionId(data.getTransactionId());
+//            try {
+//                String trackingKey = TrackingKeyService.generate(
+//                        context.getHttpServletRequest(), new Long(data.getTransactionId()));
+//                info.setTrackingKey(trackingKey);
+//            } catch (Exception e) {
+//                throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
+//            }
 
             homeService.writeTempResultDetails(context,data,quotes);
             ResultsObj<HomeResult> results = new ResultsObj<>();
             results.setResult(quotes);
-            results.setInfo(info);
+            results.setInfo(generateInfoKey(data, context));
 
             return new ResultsWrapper(results);
-        } catch (Exception e) {
-            throw new RouterException(e);
-        }
+//        } catch (Exception e) {
+//            throw new RouterException(e);
+//        }
     }
 
     @GET
@@ -73,7 +72,7 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
     @Produces("application/json")
     public HomeMoreInfo moreInfo(@Context MessageContext context, @QueryParam("code") String productId,
                                 @QueryParam("type") String type, @QueryParam(value = "environmentOverride") String environmentOverride) {
-        Brand brand = initRouter(context);
+        Brand brand = initRouter(context, Vertical.VerticalType.HOME);
         HomeQuoteService homeService = new HomeQuoteService();
         return homeService.getMoreInfo(brand, productId, type, Optional.ofNullable(environmentOverride));
     }

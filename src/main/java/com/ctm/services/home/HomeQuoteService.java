@@ -12,7 +12,7 @@ import com.ctm.model.home.results.HomeResult;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.resultsData.AvailableType;
 import com.ctm.model.settings.Brand;
-import com.ctm.providers.Request;
+import com.ctm.model.settings.Vertical;
 import com.ctm.providers.ResultPropertiesBuilder;
 import com.ctm.providers.home.homequote.model.RequestAdapter;
 import com.ctm.providers.home.homequote.model.ResponseAdapter;
@@ -24,11 +24,9 @@ import com.ctm.services.ResultsService;
 import com.ctm.services.SessionDataService;
 import com.ctm.utils.ObjectMapperUtil;
 import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.logging.XMLOutputWriter;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.apache.log4j.Logger;
@@ -44,17 +42,16 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ctm.model.settings.Vertical.VerticalType.HOME;
-import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
+public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteRequest, HomeResponse> {
 
     private static final Logger logger = Logger.getLogger(HomeQuoteService.class);
 
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 
-    public List<HomeResult> getQuotes(Brand brand, HomeRequest data) {
+    public List<HomeResult> getQuotes(Brand brand, HomeRequest data) throws Exception {
 
         HomeQuote quote = data.getQuote();
 
@@ -73,39 +70,42 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             quote.setStartDate(sanitisedCommencementDate);
         }
 
-
-        Request request = new Request();
-        request.setBrandCode(brand.getCode());
-        request.setClientIp(data.getClientIpAddress());
-        request.setTransactionId(data.getTransactionId());
         final HomeQuoteRequest homeQuoteRequest = RequestAdapter.adapt(data);
-        request.setPayload(homeQuoteRequest);
+        HomeResponse homeResponse = sendRequest(brand, Vertical.VerticalType.HOME, "homeQuoteServiceBER", "_HOME-QUOTE", data,
+                homeQuoteRequest, HomeResponse.class);
 
-        ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-        QuoteServiceProperties serviceProperties = getQuoteServiceProperties("homeQuoteServiceBER", brand, HOME.getCode(), data);
-
-        try{
-
-            String jsonRequest = objectMapper.writeValueAsString(request);
-
-            // Log Request
-            XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_HOME-QUOTE" , serviceProperties.getDebugPath());
-            writer.writeXmlToFile(jsonRequest , REQ_OUT);
-
-            SimpleConnection connection = new SimpleConnection();
-            connection.setRequestMethod("POST");
-            connection.setConnectTimeout(serviceProperties.getTimeout());
-            connection.setReadTimeout(serviceProperties.getTimeout());
-            connection.setContentType("application/json");
-            connection.setPostBody(jsonRequest);
-
-            String response = connection.get(serviceProperties.getServiceUrl()+"/quote");
-            HomeResponse homeResponse = objectMapper.readValue(response, HomeResponse.class);
-
-            // Log response
-            writer.lastWriteXmlToFile(response);
+//        Request request = new Request();
+//        request.setBrandCode(brand.getCode());
+//        request.setClientIp(data.getClientIpAddress());
+//        request.setTransactionId(data.getTransactionId());
+//        final HomeQuoteRequest homeQuoteRequest = RequestAdapter.adapt(data);
+//        request.setPayload(homeQuoteRequest);
+//
+//        ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
+//        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+//
+//        QuoteServiceProperties serviceProperties = getQuoteServiceProperties("homeQuoteServiceBER", brand, HOME.getCode(), data);
+//
+//        try{
+//
+//            String jsonRequest = objectMapper.writeValueAsString(request);
+//
+//            // Log Request
+//            XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_HOME-QUOTE" , serviceProperties.getDebugPath());
+//            writer.writeXmlToFile(jsonRequest , REQ_OUT);
+//
+//            SimpleConnection connection = new SimpleConnection();
+//            connection.setRequestMethod("POST");
+//            connection.setConnectTimeout(serviceProperties.getTimeout());
+//            connection.setReadTimeout(serviceProperties.getTimeout());
+//            connection.setContentType("application/json");
+//            connection.setPostBody(jsonRequest);
+//
+//            String response = connection.get(serviceProperties.getServiceUrl()+"/quote");
+//            HomeResponse homeResponse = objectMapper.readValue(response, HomeResponse.class);
+//
+//            // Log response
+//            writer.lastWriteXmlToFile(response);
 
             final List<HomeResult> homeResults = ResponseAdapter.adapt(homeQuoteRequest, homeResponse);
 
@@ -113,14 +113,14 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
 
             return homeResults;
 
-        }catch(IOException e){
-            logger.error("Error parsing or connecting to home-quote", e);
-        }
-
-        return null;
+//        }catch(IOException e){
+//            logger.error("Error parsing or connecting to home-quote", e);
+//        }
+//
+//        return null;
     }
 
-    private void saveResults(HomeRequest request, List<HomeResult> results) {
+    private void saveResults(HomeRequest request, List<HomeResult> results) throws Exception {
         String leadFeedInfo = request.getQuote().createLeadFeedInfo();
 
         LocalDate validUntil = LocalDate.now().plusDays(30);
@@ -198,12 +198,11 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
         return null;
     }
 
-    public void writeTempResultDetails(MessageContext context, HomeRequest data, List<HomeResult> quotes) {
+    public void writeTempResultDetails(MessageContext context, HomeRequest data, List<HomeResult> quotes) throws SessionException, DaoException {
 
         SessionDataService service = new SessionDataService();
-        String clientIpAddress = null;
 
-        try {
+//        try {
             Data dataBucket = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
 
             if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
@@ -232,9 +231,9 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
                 resultDetails.addChild(results);
             }
 
-        } catch (DaoException | SessionException e) {
-            System.out.println(e.getMessage());
-        }
+//        } catch (DaoException | SessionException e) {
+//            System.out.println(e.getMessage());
+//        }
 
     }
 }

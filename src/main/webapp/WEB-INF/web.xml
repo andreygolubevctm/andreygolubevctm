@@ -40,6 +40,7 @@
 		<init-param>
 			<param-name>jaxrs.providers</param-name>
 			<param-value>
+				com.ctm.router.ApplicationDispatchProvider,
 				com.ctm.router.RouterJacksonJsonProvider,
 				com.ctm.router.exceptionhandlers.ServiceExceptionHandler
 			</param-value>
@@ -90,7 +91,7 @@
 
 	<!-- Error and Security Failure Handler Pages -->
 
-	<error-page>
+	<!--<error-page>
 		<error-code>400</error-code>
 		<location>/security/simples_loginServerFail.jsp</location>
 	</error-page>
@@ -109,7 +110,7 @@
 	<error-page>
 		<error-code>500</error-code>
 		<location>/err/error500.jsp</location>
-	</error-page>
+	</error-page>-->
 
 
 
