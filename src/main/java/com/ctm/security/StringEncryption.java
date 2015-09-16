@@ -39,7 +39,7 @@ public class StringEncryption {
 		try {
 			output  = encryption.encrypt(theString);
 		} catch (GeneralSecurityException e) {
-			LOGGER.error("Failed to encrypt {}", e);
+			LOGGER.error("Failed to encrypt", e);
 			throw e;
 		}
 		return output;
@@ -86,7 +86,7 @@ public class StringEncryption {
 			byte[] content_as_byte_cipher_text = aes_cipher.doFinal(content_as_bytes);
 			result = Base64.encodeBase64URLSafeString(content_as_byte_cipher_text);
 		} catch (GeneralSecurityException e) {
-			LOGGER.error("Failed to encrypt {}", e);
+			LOGGER.error("Failed to encrypt", e);
 			throw e;
 		}
 		return result;
