@@ -7,8 +7,7 @@
 		$component, //Stores the jQuery object for the component group
 		mode,
 		changedByCallCentre = false,
-		isIE8,
-		initialised = false;
+		isIE8;
 
 	var events = {
 			healthBenefits: {
@@ -360,9 +359,8 @@
 	}
 
 
-	function initHealthBenefits(){
-		if(!initialised){
-			initialised = true;
+	function init(){
+		$(document).ready(function(){
 
 			if (meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
@@ -418,7 +416,7 @@
 			// On application lockdown/unlock, disable/enable the dropdown
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, lockBenefits);
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, unlockBenefits);
-		}
+		});
 	}
 
 	function isLocked() {
@@ -434,7 +432,7 @@
 	}
 
 	meerkat.modules.register('healthBenefits', {
-		initHealthBenefits: initHealthBenefits,
+		init: init,
 		events: events,
 		open: open,
 		close: close,

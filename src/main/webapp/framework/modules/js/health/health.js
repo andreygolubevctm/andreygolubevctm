@@ -163,10 +163,7 @@
 					$('.follow-up-call input:checkbox, .simples-privacycheck-statement input:checkbox').on('change', function() {
 						toggleDialogueInChatCallback();
 					});
-
-					meerkat.modules.healthBenefits.initHealthBenefits();
 				}
-
 			}
 		};
 
@@ -280,9 +277,6 @@
 				validate: false
 			},
 			onInitialise: function onResultsInit(event){
-				if(!meerkat.site.isCallCentreUser) {
-					meerkat.modules.healthBenefits.initHealthBenefits();
-				}
 				meerkat.modules.healthResults.initPage();
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
