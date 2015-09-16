@@ -31,6 +31,7 @@
 <c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI'}"/>
 <c:set var="superTagEnabled" value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />
 <c:set var="DTMEnabled" value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />
+<c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
 
 <%-- Whether we want to show logging or not (for use on Production) --%>
 <c:set var="showLogging" value="${isDev or (not empty param.showLogging && param.showLogging == 'true')}" />
@@ -315,13 +316,13 @@
 							brandCode: '${pageSettings.getBrandCode()}',
 							superTagEnabled: ${superTagEnabled},
 							DTMEnabled: ${DTMEnabled},
+							GTMEnabled: ${GTMEnabled},
 							userTrackingEnabled: ${isUserTrackingEnabled}
 						},
 						leavePageWarning: {
 							enabled: ${pageSettings.getSetting("leavePageWarningEnabled")},<c:if test="${pageSettings.hasSetting('leavePageWarningDefaultMessage')}">
 							defaultMessage: "${go:jsEscape(pageSettings.getSetting('leavePageWarningDefaultMessage'))}",</c:if>
 							message: "${go:jsEscape(pageSettings.getSetting('leavePageWarningMessage'))}"
-
 						},
 						liveChat: {
 							config: {},
