@@ -1,109 +1,33 @@
-@datepicker-grey: #EBEBEB;
-@datepicker-blue: #1C3F94;
-@datepicker-nav: #142C67;
-@datepicker-background-cell: #f1f1f1;
-@datepicker-next-prev-color: #fff;
-@datepicker-disabled-font-color: #999;
+
 
 .datepicker {
 
-  background-color: @datepicker-background-cell;
-  border: none;
-  border-radius:0;
-  padding: 0px;
-
-  &:before {
-    display:none;
-  }
 
 
 
   table tr td {
 
-    &:first-child{
-      border-left: 1px solid @datepicker-background-cell;
-    }
 
-    th {
-      color: @btn-default-color;
-      &:hover {
-        background-color:  @btn-default-color;
-      }
-    }
-
-    &.day {
-      background-color: @btn-default-color;
-      border-radius: 0;
-      color: @gray-dark;
-      font-weight:bold;
-      border-top: 1px solid @datepicker-background-cell;
-      border-right: 1px solid @datepicker-background-cell;
-      border-bottom: 1px solid @datepicker-background-cell;
-    }
 
     &.today,
     &.today:hover,
     &.today:hover:hover{
-      background: @datepicker-background-cell;
+      /*background: @datepicker-background-cell;
       color: @gray-dark;
-      border-color: @datepicker-background-cell;
+      border-color: @datepicker-background-cell;*/
     }
 
-    &.disabled,
-    &.disabled:hover {
-      color:  @datepicker-disabled-font-color;
-    }
 
-    &.old,
-    &.old:hover,
-    &.new,
-    &.new:hover{
-      background-color:  @datepicker-background-cell;
-      color:  @datepicker-background-cell;
-      border: none;
-    }
 
-    &.active,
-    &.active:hover {
-      .btn-styles(@datepicker-blue, @datepicker-next-prev-color,
-      @datepicker-blue, @datepicker-next-prev-color,
-      @datepicker-blue, @datepicker-next-prev-color,
-      @btn-form-inverse-active-border-color, @datepicker-grey, @datepicker-grey, true);
-    }
+
   }
 
-  th.prev, th.next, th.next:hover {
-    background-color: @datepicker-nav;
-    border-radius: 0;
-    color: @datepicker-next-prev-color;
-  }
 
-  th.datepicker-switch {
-    font-weight:bold;
-    color: @datepicker-next-prev-color;
-    font-size: @font-size-base;
-    border-radius: 0;
-    background: @datepicker-blue;
-  }
 
-  thead tr:first-child th{
-    &:hover{
-      background: @datepicker-nav;
-    }
-  }
 
-  thead th.empty, thead th.prev.empty:hover, thead th.next.empty:hover, thead tr:first-child th.datepicker-switch:hover {
-    background: @datepicker-blue;
-    cursor:default;
-  }
 
-  .dow {
-    border-radius: 0;
-    background-color: @gray-dark;
-    color:@datepicker-grey;
-  }
 
   .datepicker thead tr:first-child th {
-    color: @btn-default-color;
+    /*color: @btn-default-color;*/
   }
 }

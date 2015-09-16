@@ -1600,7 +1600,7 @@
 		multidate: false,
 		multidateSeparator: ',',
 		numberOfMonths: 1,
-		allowHeaderStyling : false,
+		allowHeaderStyling : true,
 		orientation: "auto",
 		rtl: false,
 		startDate: -Infinity,
