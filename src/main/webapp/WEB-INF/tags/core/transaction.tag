@@ -248,7 +248,7 @@
 
 		<%-- WRITE QUOTE ................................................................. --%>
 		<c:set var="response">${response}<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="${comment}" /></c:set>
-		${logger.info('Write quote has been called. {},{}', log:kv('currentTransactionId', currentTransactionId),log:kv('response',response ))}
+		${logger.info('Write quote has been called. {}',log:kv('response',response ))}
 
 		<c:choose>
 			<c:when test="${vertical eq 'car'}">

@@ -51,7 +51,7 @@
 			$mainForm = $('#mainform');
 
 			// Otherwise we need to validate.
-			setupDefaultValidationOnForm( $mainForm );
+			meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $mainForm );
 
 			applyEventListeners();
 		});

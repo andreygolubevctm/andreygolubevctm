@@ -46,7 +46,7 @@
 			items="marketing=${data['utilities/application/thingsToKnow/receiveInfo']}" />
 
 		<c:set var="tranId" value="${data['current/transactionId']}" />
-		${logger.info('Utilities retrieved Tran Id from data object. {}', log:kv('transactionId',tranId ))}
+		${logger.info('Utilities retrieved Tran Id from data object.')}
 
 		<c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest(), data)}" scope="request"  />
 

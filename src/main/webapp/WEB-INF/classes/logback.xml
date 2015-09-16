@@ -4,9 +4,16 @@
 	<property resource="environment.properties" />
     
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- in the absence of the class attribute, it is assumed that the
+        desired discriminator type is
+        ch.qos.logback.classic.sift.MDCBasedDiscriminator -->
+		<discriminator>
+			<key>transactionId</key>
+			<defaultValue></defaultValue>
+		</discriminator>
 	    <Target>System.out</Target>
 	    <encoder>
-	       <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c:%L - %m%n</pattern>
+	       <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c:%L:%X{transactionId}:%X{brandCode}:%X{verticalCode} - %m%n</pattern>
 	    </encoder>
   	</appender>
   
