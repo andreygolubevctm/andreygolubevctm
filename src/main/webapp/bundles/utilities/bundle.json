@@ -4,7 +4,7 @@
     "shared/validation",
     "shared/results",
     "core",
-    "shared/autocomplete",
+    "shared/addressLookup",
     "shared/datepicker",
     "shared/optIn",
     "shared/placeholder",
