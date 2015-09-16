@@ -22,6 +22,10 @@ public class LoggingVariables {
         if(vertical != null) {
             verticalCode =  Vertical.VerticalType.findByCode(vertical).getCode();
         }
+        setVerticalCode(verticalCode);
+    }
+
+    public static void setVerticalCode(String verticalCode) {
         MDC.put(VERTICAL_CODE_KEY, verticalCode);
     }
 
