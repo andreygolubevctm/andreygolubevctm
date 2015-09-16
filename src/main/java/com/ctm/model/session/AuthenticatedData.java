@@ -53,7 +53,7 @@ public class AuthenticatedData extends Data {
 	}
 
 	public List<Role> getSimplesUserRoles() {
-		if(simplesUserRoles == null) return new ArrayList<Role>();
+		if(simplesUserRoles == null) return new ArrayList<>();
 		return simplesUserRoles;
 	}
 
@@ -84,11 +84,20 @@ public class AuthenticatedData extends Data {
 
 
 	public List<Rule> getGetNextMessageRules() {
-		if(getNextMessageRules == null) return new ArrayList<Rule>();
+		if(getNextMessageRules == null) return new ArrayList<>();
 		return getNextMessageRules;
 	}
 
 	public void setGetNextMessageRules(List<Rule> getNextMessageRules) {
 		this.getNextMessageRules = getNextMessageRules;
+	}
+
+	@Override
+	public String toString() {
+		return "AuthenticatedData{" +
+				"simplesUserRoles=" + simplesUserRoles +
+				", getNextMessageRules=" + getNextMessageRules +
+				", xml=" + this.getXML() +
+				'}';
 	}
 }

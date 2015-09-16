@@ -33,7 +33,6 @@ public class CompetitionService {
 			compActive = CompetitionDao.isActive(brand.getId(), competitionId, serverDate);
 		} catch (DaoException e) {
 			LOGGER.error("Failed to determine if competition is active competitionId={},{}", kv("competitionId", competitionId), kv("serverDate", serverDate), e);
-			// Failed to determine if competition is active competitionId=abc 2345, serverDate=
 		}
 
 		return compActive;

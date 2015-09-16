@@ -43,7 +43,7 @@ public class SimplesTickleService {
             }
         } catch (DaoException | SessionException e) {
             fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-            LOGGER.error("Error performing simples tickle {}", kv("simplesUid",  authenticatedData.getSimplesUid()), e);
+            LOGGER.error("Error performing simples tickle {}", kv("simplesUid",  authenticatedData), e);
             throw new ServletException(e);
         }
         return success;

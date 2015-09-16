@@ -11,7 +11,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class Dreammail {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Dreammail.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Dreammail.class);
 
 	public static String send(String username, String password, String servername, String rtm_url, String xml_content, String debugOn, Boolean is_exact_target) throws IOException{
 		if(xml_content == null || xml_content.isEmpty()) {

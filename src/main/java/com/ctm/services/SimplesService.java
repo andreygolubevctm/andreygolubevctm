@@ -19,7 +19,7 @@ public class SimplesService {
 	 * @return Success true, otherwise false
 	 */
 	public boolean addComment(long transactionId, String operator, String comment) {
-		if (operator.isEmpty()) {
+		if (operator == null || operator.isEmpty()) {
 			operator = "ONLINE";
 		}
 

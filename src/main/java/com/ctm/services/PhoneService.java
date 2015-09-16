@@ -57,7 +57,7 @@ public class PhoneService {
 			return null;
 		}
 
-		LOGGER.debug("Determining extension for agentId {}", kv("agentId", agentId), kv("json", json.toString()));
+		LOGGER.debug("Determining extension for agentId {},{}", kv("agentId", agentId), kv("json", json));
 
 		try {
 			JSONObject service = json.getJSONObject("service");
@@ -144,7 +144,7 @@ public class PhoneService {
 			return null;
 		}
 
-		LOGGER.debug("Getting call info {}", kv("extension", extension), kv("json", json));
+		LOGGER.debug("Getting call info {},{}", kv("extension", extension), kv("json", json));
 
 		try {
 			JSONObject service = json.getJSONObject("service");
@@ -288,7 +288,7 @@ public class PhoneService {
 				return false;
 			}
 		} catch (Exception e) {
-			LOGGER.error("Error retrieving call status", kv("extension", extension), kv("phone", phone));
+			LOGGER.error("Error retrieving call status {},{}", kv("extension", extension), kv("phone", phone));
 			return false;
 		}
 	}

@@ -193,7 +193,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
 
             return ResponseAdapter.adapt(moreInfoResponse);
         } catch (IOException e) {
-            LOGGER.error("Error parsing or connecting to home-quote {}, {}, {}", kv("brand", brand), kv("productId", productId),
+            LOGGER.error("Error parsing or connecting to home-quote {},{},{},{}", kv("brand", brand), kv("productId", productId),
                 kv("type", type), kv("environmentOverride", environmentOverride), e);
         }
         return null;

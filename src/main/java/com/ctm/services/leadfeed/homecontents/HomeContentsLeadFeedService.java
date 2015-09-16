@@ -27,8 +27,7 @@ public class HomeContentsLeadFeedService extends LeadFeedService {
 					LOGGER.info("[Lead feed] Prepare to send lead to AGIS brand {}", kv("leadType", leadType), kv("transactionId", leadData.getTransactionId()));
 					providerLeadFeedService = new AGISHomeContentsLeadFeedService();
 					break;
-				case "WOOL":
-				case "REIN":
+				default:
 					LOGGER.debug("[Lead feed] No lead feed set up {}", kv("partnerBrand", leadData.getPartnerBrand()), kv("transactionId", leadData.getTransactionId()));
 					break;
 			}

@@ -26,7 +26,7 @@ import static com.ctm.logging.LoggingArguments.kv;
   */
 public class SecureFileServlet extends javax.servlet.http.HttpServlet implements javax.servlet.Servlet {
 
-	 private static final Logger LOGGER = LoggerFactory.getLogger(SecureFileServlet.class.getName());
+	 private static final Logger LOGGER = LoggerFactory.getLogger(SecureFileServlet.class);
 
 	 public final static String INIT_PARAM_SECURE_FOLDER = "secure-folder";
 	 public static final String INIT_PARAM_ERROR_PAGE = "error-page";

@@ -86,7 +86,7 @@ public class CouponService {
 			List<Coupon> coupons = couponDao.getAvailableCoupons(styleCodeId, verticalId, CouponChannel.findByCode(couponChannelCode), effectiveDate);
 			return !coupons.isEmpty();
 		} catch (DaoException | ConfigSettingException e) {
-			LOGGER.error("Failed to check if coupon field can be displayed {}, {}", kv("couponChannelCode", couponChannelCode), e);
+			LOGGER.error("Failed to check if coupon field can be displayed {}", kv("couponChannelCode", couponChannelCode), e);
 		}
 		return false;
 

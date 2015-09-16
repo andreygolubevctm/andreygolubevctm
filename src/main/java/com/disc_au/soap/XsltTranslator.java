@@ -27,7 +27,7 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class XsltTranslator {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(XsltTranslator.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(XsltTranslator.class);
 
 	/** The trans factory. */
 	protected TransformerFactory transFactory;

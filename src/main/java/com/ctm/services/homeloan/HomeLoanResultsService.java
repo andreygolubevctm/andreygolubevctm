@@ -153,8 +153,6 @@ public class HomeLoanResultsService {
 									BigDecimal fortnightly = yearly.divide(fortnights, 0, ROUNDING_MODE);
 									BigDecimal weekly = yearly.divide(weeks, 0, ROUNDING_MODE);
 
-									//LOGGER.debug(monthly + " : " + yearly + " : " + fortnightly + " : " + weekly);
-
 									result.put("fortnightlyRepayments", fortnightly);
 									result.put("weeklyRepayments", weekly);
 								}

@@ -51,7 +51,7 @@ public class AuditTableDao {
             LOGGER.error("audit action failed to insert into table {}, {}", kv("action", action), kv("auditTableName", auditTableName), e);
             throw e;
         } finally {
-            LOGGER.debug("audit action logged to table {}, {}", kv("action", action), kv("auditTableName", auditTableName), auditTableName);
+            LOGGER.debug("audit action logged to table {}, {}", kv("action", action), kv("auditTableName", auditTableName));
         }
     }
 

@@ -59,7 +59,7 @@ public class SimpleSocketConnection {
 			wr.close();
 
 		}catch(Exception e){
-			LOGGER.error("Error making socket get request {},{}", kv("address", address), kv("port", port), kv("uri", uri),
+			LOGGER.error("Error making socket get request {},{},{},{},{}", kv("address", address), kv("port", port), kv("uri", uri),
 				kv("request", request), kv("additionalHeaders", additionalHeaders));
 		}finally{
 

@@ -71,7 +71,7 @@ public class HealthApplicationService {
 				updateDataBucket(data);
 			}
 		} catch (DaoException e) {
-			LOGGER.error("Failed to calculate health premiums {}", kv("data", data), kv("changeOverDate", changeOverDate), e);
+			LOGGER.error("Failed to calculate health premiums {},{}", kv("data", data), kv("changeOverDate", changeOverDate), e);
 			fatalErrorService.logFatalError(e, 0, "HealthApplicationService", true, data.getString("current.transactionId"));
 			throw new JspException(e);
 		}

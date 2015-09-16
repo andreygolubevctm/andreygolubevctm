@@ -63,7 +63,7 @@ public class RegoLookupRouter {
         try {
             CarRegoLookupDao.logLookup(transactionId, plateNumber, state, request_status);
         } catch(DaoException e) {
-            LOGGER.error("[rego lookup] Error logging car rego request", kv("transactionId", transactionId),
+            LOGGER.error("[rego lookup] Error logging car rego request {},{},{},{}", kv("transactionId", transactionId),
                 kv("plateNumber", plateNumber), kv("state", state), kv("request_status", request_status));
         }
 

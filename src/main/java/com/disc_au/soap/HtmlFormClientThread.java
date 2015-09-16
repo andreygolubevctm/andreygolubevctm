@@ -23,7 +23,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 				soapConfiguration);
 	}
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HtmlFormClientThread.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HtmlFormClientThread.class);
 
 	/**
 	 * Process request.

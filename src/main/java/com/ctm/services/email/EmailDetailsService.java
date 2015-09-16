@@ -119,7 +119,7 @@ public class EmailDetailsService {
 			try {
 				emailMaster.setHashedEmail(StringEncryption.hash(emailAddress + SALT + brandCode.toUpperCase()));
 			} catch (GeneralSecurityException e) {
-				LOGGER.error("Failed to hash email {}, {}", kv("emailAddress", emailAddress), kv("brandCode", brandCode), kv("transactionId", transactionId));
+				LOGGER.error("Failed to hash email {}, {}, {}", kv("emailAddress", emailAddress), kv("brandCode", brandCode), kv("transactionId", transactionId));
 				throw new EmailDetailsException("failed to hash email", e);
 			}
 			long transId = 0L;

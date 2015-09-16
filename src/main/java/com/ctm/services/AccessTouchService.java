@@ -132,7 +132,7 @@ public class AccessTouchService {
                 isBeingSubmitted = touch.getType() == Touch.TouchType.SUBMITTED;
             }
         } catch (DaoException e) {
-            LOGGER.error("Failed to determine latest touch {}, {}", kv("transactionId", transactionId), e);
+            LOGGER.error("Failed to determine latest touch {}", kv("transactionId", transactionId), e);
         }
         return isBeingSubmitted;
     }

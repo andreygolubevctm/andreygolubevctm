@@ -42,7 +42,7 @@ import static com.ctm.logging.XMLOutputWriter.*;
  */
 public class SOAPClientThread implements Runnable {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SOAPClientThread.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SOAPClientThread.class);
 
 	public static final int HTTP_OK = 200;
 	public static final int HTTP_NOT_FOUND = 404;

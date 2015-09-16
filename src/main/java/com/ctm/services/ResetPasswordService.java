@@ -69,7 +69,7 @@ public class ResetPasswordService {
 	private JSONObject hasArguments(LogAudit logAudit, String resetId, String resetPassword) throws JSONException {
 		JSONObject response;
 		int emailMasterId = authenticationService.verifyTokenForEmail(resetId);
-		LOGGER.info("Password Reset Called {}", kv("resetId", resetId), kv("emailMasterId", emailMasterId));
+		LOGGER.info("Password Reset Called {},{}", kv("resetId", resetId), kv("emailMasterId", emailMasterId));
 		if (emailMasterId > 0) {
 			try {
 				EmailMaster emailMaster  = emailMasterDao.getEmailMasterById(emailMasterId);
