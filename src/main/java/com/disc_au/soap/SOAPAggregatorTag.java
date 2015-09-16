@@ -5,13 +5,19 @@
 
 package com.disc_au.soap;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.MalformedURLException;
-import java.util.HashMap;
+import com.ctm.logging.LoggingVariables;
+import com.ctm.model.settings.Brand;
+import com.ctm.model.settings.SoapAggregatorConfiguration;
+import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.EnvironmentService;
+import com.ctm.soap.SoapConfiguration;
+import com.ctm.web.validation.SchemaValidation;
+import com.disc_au.web.go.xml.XmlNode;
+import com.disc_au.web.go.xml.XmlParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -22,23 +28,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import com.ctm.services.EnvironmentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
-
-import com.ctm.model.settings.SoapAggregatorConfiguration;
-import com.ctm.model.settings.SoapClientThreadConfiguration;
-import com.ctm.soap.SoapConfiguration;
-import com.ctm.web.validation.SchemaValidation;
-import com.disc_au.web.go.xml.XmlNode;
-import com.disc_au.web.go.xml.XmlParser;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.util.HashMap;
 
 import static com.ctm.logging.LoggingArguments.kv;
-import static com.ctm.services.EnvironmentService.Environment.LOCALHOST;
-import static com.ctm.services.EnvironmentService.Environment.NXI;
-import static com.ctm.services.EnvironmentService.Environment.NXS;
+import static com.ctm.logging.LoggingVariables.setLoggingVariables;
+import static com.ctm.services.EnvironmentService.Environment.*;
 
 /**
  * The Class SOAPAggregatorTag with WAR compatibility.
@@ -49,29 +45,32 @@ import static com.ctm.services.EnvironmentService.Environment.NXS;
 @SuppressWarnings("serial")
 public class SOAPAggregatorTag extends TagSupport {
 
-	Logger logger = LoggerFactory.getLogger(SOAPAggregatorTag.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SOAPAggregatorTag.class.getName());
 
 	private SoapAggregatorConfiguration configuration;
 	private String configDbKey;
-	private int styleCodeId;
 	private String verticalCode;
 	private String manuallySetProviderIds = "";
 	private String xml;
 	/** The variable that will hold the result */
 	private String var;
 	private String transactionId;
-	private long timer; // debug timer
 	private String debugVar;
 	private SchemaValidation schemaValidation = new SchemaValidation();
 	private String isValidVar;
 	private String authToken = null;
 
 	private boolean continueOnValidationError;
+	private Brand brand;
 
+	@SuppressWarnings("unused")
+	// used in go.tld
 	public void setContinueOnValidationError(boolean continueOnValidationError) {
 		this.continueOnValidationError = continueOnValidationError;
 	}
 
+	@SuppressWarnings("unused")
+	// used in go.tld
 	public void setValidationErrorsVar(String validationErrorsVar) {
 		schemaValidation.setValidationErrorsVar(validationErrorsVar);
 	}
@@ -101,18 +100,17 @@ public class SOAPAggregatorTag extends TagSupport {
 		try {
 			valid = schemaValidation.validateSchema(this.pageContext , this.xml, configuration.getValidationFile());
 		} catch (MalformedURLException e1) {
-			logger.error("failed to validate xml", e1);
+			LOGGER.error("failed to validate xml", e1);
 		}
 
 		if(isValidVar != null && !isValidVar.isEmpty()) {
 			pageContext.setAttribute(isValidVar, valid, PageContext.PAGE_SCOPE);
 		}
 		if(valid || continueOnValidationError) {
-		timer = System.currentTimeMillis();
 
 		try {
 			// Create the client threads and launch each one
-			HashMap<Thread, SOAPClientThread> threads = new HashMap<Thread, SOAPClientThread>();
+			HashMap<Thread, SOAPClientThread> threads = new HashMap<>();
 				for (SoapClientThreadConfiguration serviceItemConfig : configuration.getServices()) {
 
 						// Replace ctm with real context path (for feature branches)
@@ -122,7 +120,7 @@ public class SOAPAggregatorTag extends TagSupport {
 								|| EnvironmentService.getEnvironment() == NXS)
 								&& serviceItemConfig.getUrl().contains("/ctm/")) {
 							serviceItemConfig.setUrl(serviceItemConfig.getUrl().replaceFirst("(https?\\://[^/]+)/ctm/", "$1/" + EnvironmentService.getContextPath()));
-							logger.debug("Modified '" + serviceItemConfig.getName() + "' service URL to: " + serviceItemConfig.getUrl());
+							LOGGER.debug("Modified '" + serviceItemConfig.getName() + "' service URL to: " + serviceItemConfig.getUrl());
 						}
 
 						// Give each one a meaningful name
@@ -132,11 +130,11 @@ public class SOAPAggregatorTag extends TagSupport {
 
 					if (serviceItemConfig.getType() != null && serviceItemConfig.getType().equals("url-encoded")) {
 					client = new HtmlFormClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration);
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupMDC, LoggingVariables::clearLoggingVariables);
 				} else {
-					client = new SOAPClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration);
-				}
+						client = new SOAPClientThread(transactionId,
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupMDC, LoggingVariables::clearLoggingVariables);
+					}
 
 				// Add the thread to the hash map and start it off
 				Thread thread = new Thread(client, threadName);
@@ -154,11 +152,10 @@ public class SOAPAggregatorTag extends TagSupport {
 					//Otherwise the aggregator times out before all the clients have had a chance too.
 					timeout+= 2000; // ensure the main thread lasts slightly longer than the total of all service calls.
 
-						//logger.info("will wait "+timeout+ "ms");
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
-						logger.error("",e);
+						LOGGER.error("", e);
 				}
 			}
 
@@ -229,14 +226,18 @@ public class SOAPAggregatorTag extends TagSupport {
 			}
 
 		} catch (IOException e) {
-					logger.error("",e);
+					LOGGER.error("", e);
 		}
 		}
 			return super.doEndTag();
 		} finally {
-			logger.debug("Aggregator response returned. {},{}", kv("resultXml", resultXml), kv("debugXml", debugXml));
+			LOGGER.debug("Aggregator response returned. {},{}", kv("resultXml", resultXml), kv("debugXml", debugXml));
 			cleanUp();
 		}
+	}
+
+	private void setupMDC() {
+		setLoggingVariables(transactionId, brand.getCode(), verticalCode);
 	}
 
 	private void setUpConfiguration() {
@@ -244,7 +245,7 @@ public class SOAPAggregatorTag extends TagSupport {
 			configuration = new SoapAggregatorConfiguration();
 		}
 		
-		SoapConfiguration.setUpConfigurationFromDatabase(configDbKey, configuration, styleCodeId, verticalCode, manuallySetProviderIds, authToken);
+		SoapConfiguration.setUpConfigurationFromDatabase(configDbKey, configuration, brand, verticalCode, manuallySetProviderIds, authToken);
 	}
 
 	private void cleanUp() {
@@ -259,6 +260,7 @@ public class SOAPAggregatorTag extends TagSupport {
 		schemaValidation = new SchemaValidation();
 		isValidVar = null;
 		continueOnValidationError = false;
+		brand = null;
 	}
 
 	/**
@@ -268,17 +270,7 @@ public class SOAPAggregatorTag extends TagSupport {
 	 * @param message the message
 	 */
 	private void logError(SOAPClientThread client, String message) {
-		logger.error(client.getName() + " : " + message);
-	}
-
-	/**
-	 * Log time.
-	 *
-	 * @param msg the message
-	 */
-	private void logTime(String msg) {
-		logTime(msg, this.timer);
-		this.timer = System.currentTimeMillis();
+		LOGGER.error(client.getName() + " : " + message);
 	}
 
 	/**
@@ -288,7 +280,7 @@ public class SOAPAggregatorTag extends TagSupport {
 	 * @param timer the timer
 	 */
 	private void logTime(String msg, long timer) {
-		logger.info(msg + ": " + (System.currentTimeMillis() - timer)
+		LOGGER.info(msg + ": " + (System.currentTimeMillis() - timer)
 				+ "ms ");
 	}
 
@@ -296,8 +288,8 @@ public class SOAPAggregatorTag extends TagSupport {
 	 * Sets the configuration xml.
 	 * TODO: remove me when xml configuration has been refactored
 	 *
-	 * @param config the new configuration xml
-	 * @throws JspException thrown as a result of an error parsing the cofnig xml
+	 * @param configXmlString the new configuration xml
+	 * @throws JspException thrown as a result of an error parsing the config xml
 	 */
 	public void setConfig(String configXmlString) throws JspException {
 		try {
@@ -331,9 +323,11 @@ public class SOAPAggregatorTag extends TagSupport {
 
 	/**
 	 * Sets the xml.
+	 *  used in go.tld
 	 *
 	 * @param xml the new xml
 	 */
+	@SuppressWarnings("unused")
 	public void setXml(String xml) {
 		this.xml = xml;
 	}
@@ -364,7 +358,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 			return parser.parse(resultXML.toString());
 		} catch (TransformerException | SAXException e) {
-			logger.error("",e);
+			LOGGER.error("", e);
 		}
 		return resultNode;
 	}
@@ -373,12 +367,8 @@ public class SOAPAggregatorTag extends TagSupport {
 		this.debugVar = debugVar;
 	}
 
-	public int getStyleCodeId() {
-		return styleCodeId;
-	}
-
 	public void setStyleCodeId(int styleCodeId) {
-		this.styleCodeId = styleCodeId;
+		 brand = ApplicationService.getBrandById(styleCodeId);
 	}
 
 	public String getVerticalCode() {
