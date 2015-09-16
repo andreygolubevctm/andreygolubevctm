@@ -3,7 +3,7 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/agg/write_quote.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.agg.write_quote')}" />
 
 <jsp:useBean id="now" class="java.util.Date" scope="request" />
 <jsp:useBean id="tranDao" class="com.ctm.dao.transaction.TransactionDetailsDao" scope="request" />
@@ -643,7 +643,7 @@
 				</c:if>
 					</c:when>
 					<c:otherwise>
-						${logger.error('WRITE_QUOTE FAILED. {}',log:kv('transactionId',transactionId ), error)}
+						${logger.error('WRITE_QUOTE FAILED.', error)}
 						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 							<c:param name="transactionId" value="${transactionId}" />
 							<c:param name="page" value="${pageContext.request.servletPath}" />
@@ -657,7 +657,7 @@
 			</sql:transaction>
 		</c:catch>
 		<c:if test="${not empty error}">
-			${logger.error('Write quote failed. {}', log:kv('transactionId', transactionId), error)}
+			${logger.error('Write quote failed. {}', error)}
 			<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 				<c:param name="transactionId" value="${transactionId}" />
 				<c:param name="page" value="${pageContext.request.servletPath}" />
