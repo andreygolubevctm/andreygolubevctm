@@ -101,11 +101,11 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-				logger.error("There is no record of this content key: "+contentKey);
+				logger.debug("The following content key '"+contentKey+"' not found in DB... Defaulting to empty string.");
 			}else{
 
 				if(contents.size() > 1){
-					logger.error("There is more than one content value for this content code: "+contentKey);
+					logger.warn("There is more than one content value for this content code: "+contentKey+" - Will use the first one found");
 				}
 
 				content = contents.get(0);

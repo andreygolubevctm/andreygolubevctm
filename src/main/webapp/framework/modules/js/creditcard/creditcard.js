@@ -51,7 +51,7 @@
 			$mainForm = $('#mainform');
 
 			// Otherwise we need to validate.
-			setupDefaultValidationOnForm( $mainForm );
+			meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $mainForm );
 
 			applyEventListeners();
 		});
@@ -106,50 +106,15 @@
 				$email = $('#creditcard_email'),
 				$location = $('#creditcard_location');
 
-			if ($(this).prop('checked')) {
-				$name.rules('add', {
-					required: true,
-					messages: {
-						required: 'Please enter your name to be eligible for the promotion'
-					}
-				});
-				$email.rules('add', {
-					required: true,
-					messages: {
-						required: 'Please enter your email address to be eligible for the promotion'
-					}
-				});
-				$location.rules('add', {
-					required: true,
-					messages: {
-						required: 'Please enter your post code and choose a location to be eligible for the promotion'
-					}
-				});
-			} else {
+			var nameMsg = $(this).prop('checked') ? 'Please enter your name to be eligible for the promotion' : 'Please enter your full name',
+				emailMsg = $(this).prop('checked') ? 'Please enter your email address to be eligible for the promotion' : 'Please enter your email address',
+				locationMsg = $(this).prop('checked') ? 'Please enter your post code and choose a location to be eligible for the promotion' : 'Please enter your Postcode/Suburb';
 
-				$name.rules('remove', 'required');
-				$name.rules('add', {
-					required: true,
-					messages: {
-						required: 'Please enter your full name'
-					}
-				});
+			$name.setRequired(true, nameMsg);
+			$email.setRequired(true, emailMsg);
+			$location.setRequired(true, locationMsg);
 
-				$email.rules('remove', 'required');
-				$email.rules('add', {
-					required: true,
-					messages: {
-						required: 'Please enter your email address'
-					}
-				});
-				$location.rules('remove', 'required');
-				$location.rules('add', {
-					required: true,
-					messages: {
-						required: 'Please enter your Postcode/Suburb'
-					}
-				});
-
+			if (!$(this).prop('checked')) {
 				$name.valid();
 				$email.valid();
 				$location.valid();

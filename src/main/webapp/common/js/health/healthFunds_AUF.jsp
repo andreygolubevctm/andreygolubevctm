@@ -14,15 +14,11 @@ var healthFunds_AUF = {
     <%--dependant definition--%>
     healthFunds._dependants('This policy provides cover for children under the age of 23 or who are aged between 23-25 years and engaged in full time study. Student dependants do not need to be living at home to be added to the policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 
-    <%--fund ID's become optional--%>
-    $('#clientMemberID').find('input').rules("remove", "required");
-    $('#partnerMemberID').find('input').rules("remove", "required");
-
     <%--school Age--%>
     healthDependents.config.schoolMin = 23;
 
     <%--credit card & bank account frequency & day frequency--%>
-    meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });
+    meerkat.modules.healthPaymentStep.overrideSettings('bank', { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });
     meerkat.modules.healthPaymentStep.overrideSettings('credit', {'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });
 
     <%--calendar for start cover--%>
@@ -37,8 +33,8 @@ var healthFunds_AUF = {
     });
 
     <%--credit card options--%>
-    creditCardDetails.config = { 'visa':true, 'mc':true, 'amex':false, 'diners':false };
-    creditCardDetails.render();
+    meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
+    meerkat.modules.healthCreditCard.render();
 
     <%--failed application--%>
     healthFunds.applicationFailed = function(){
@@ -51,8 +47,8 @@ var healthFunds_AUF = {
     healthFunds._dependants(false);
 
     <%--credit card options--%>
-    creditCardDetails.resetConfig();
-    creditCardDetails.render();
+    meerkat.modules.healthCreditCard.resetConfig();
+    meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
     healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), false);
