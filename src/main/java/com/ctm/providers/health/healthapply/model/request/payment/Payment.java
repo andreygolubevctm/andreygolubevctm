@@ -1,10 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.payment;
 
-import com.ctm.healthapply.model.request.payment.bank.Bank;
-import com.ctm.healthapply.model.request.payment.credit.CreditCard;
-import com.ctm.healthapply.model.request.payment.details.Details;
-import com.ctm.healthapply.model.request.payment.medicare.Medicare;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
+import com.ctm.providers.health.healthapply.model.request.payment.bank.Bank;
+import com.ctm.providers.health.healthapply.model.request.payment.credit.CreditCard;
+import com.ctm.providers.health.healthapply.model.request.payment.details.Details;
+import com.ctm.providers.health.healthapply.model.request.payment.medicare.Medicare;
 
 import java.util.Optional;
 
@@ -12,7 +12,6 @@ public class Payment {
 
     private Details details;
 
-    @JacksonXmlProperty(localName = "credit")
     private CreditCard creditCard;
 
     private Bank bank;

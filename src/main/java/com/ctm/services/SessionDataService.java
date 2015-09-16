@@ -10,17 +10,6 @@ package com.ctm.services;
  *
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.exceptions.BrandException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
@@ -28,6 +17,15 @@ import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.disc_au.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
 
 public class SessionDataService {
@@ -213,12 +211,12 @@ public class SessionDataService {
 		data.setLastSessionTouch(new Date());
 
 		// If localhost or NXI, the URL writing is not in place, therefore we have fall back logic...
-		if (EnvironmentService.needsManuallyAddedBrandCodeParam() == false) {
+		if (!EnvironmentService.needsManuallyAddedBrandCodeParam()) {
 			// Extra safety check, verify the brand code on the transaction object with the current brand code for this session.
 			String dataBucketBrand = (String) data.get("current/brandCode");
 			String applicationBrand = ApplicationService.getBrandCodeFromRequest(request);
 
-			if (dataBucketBrand != null && dataBucketBrand.equals("") == false && applicationBrand != null && dataBucketBrand.equalsIgnoreCase(applicationBrand) == false) {
+			if (dataBucketBrand != null && !dataBucketBrand.equals("") && applicationBrand != null && !dataBucketBrand.equalsIgnoreCase(applicationBrand)) {
 				logger.error("Transaction doesn't match brand: " + dataBucketBrand + "!=" + applicationBrand);
 				throw new BrandException("Transaction doesn't match brand");
 			}

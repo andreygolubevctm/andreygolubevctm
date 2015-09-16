@@ -22,6 +22,8 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
 
 	private static final Logger logger = LoggerFactory.getLogger(TravelRouter.class.getName());
 
+    private final TravelService travelService = new TravelService();
+
     @GET
     @Path("/countrymapping/import")
     @Produces("application/text")
@@ -68,7 +70,6 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
         checkIPAddressCount(brand, vertical, context);
         // Check IP Address Count
 
-        TravelService travelService = new TravelService();
         travelService.validateRequest(data, vertical.getCode());
 
         // Get quotes

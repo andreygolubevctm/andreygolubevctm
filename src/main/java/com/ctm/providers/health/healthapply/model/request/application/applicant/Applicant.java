@@ -1,8 +1,8 @@
 package com.ctm.providers.health.healthapply.model.request.application.applicant;
 
-import com.ctm.healthapply.model.request.application.applicant.healthCover.HealthCover;
-import com.ctm.healthapply.model.request.application.applicant.previousFund.PreviousFund;
-import com.ctm.healthapply.model.request.application.common.*;
+import com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover.HealthCover;
+import com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund.PreviousFund;
+import com.ctm.providers.health.healthapply.model.request.application.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;

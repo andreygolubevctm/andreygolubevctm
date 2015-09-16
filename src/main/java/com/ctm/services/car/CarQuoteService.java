@@ -29,15 +29,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 
 import static com.ctm.model.settings.Vertical.VerticalType.CAR;
+import static java.util.stream.Collectors.toList;
 
 public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteRequest, CarResponse> {
 
 	private static final Logger logger = LoggerFactory.getLogger(CarQuoteService.class);
+
+    private static final SessionDataService SESSION_DATA_SERVICE = new SessionDataService();
+
+    private static final DateTimeFormatter EMAIL_DATE_FORMAT = DateTimeFormat.forPattern("dd MMMMM yyyy");
+    private static final DateTimeFormatter NORMAL_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     public List<CarResult> getQuotes(Brand brand, CarRequest data) throws Exception {
 
@@ -71,60 +76,53 @@ public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteReques
         return carResults;
     }
 
-    private void saveResults(CarRequest request, List<CarResult> results) throws Exception {
+    protected void saveResults(CarRequest request, List<CarResult> results) throws Exception {
+        ResultsService.saveResultsProperties(getResultProperties(request, results));
+    }
+
+    protected List<ResultProperty> getResultProperties(CarRequest request, List<CarResult> results) {
+
         String leadFeedInfo = request.getQuote().createLeadFeedInfo();
 
         LocalDate validUntil = new LocalDate().plusDays(30);
 
-        DateTimeFormatter emailDateFormat = DateTimeFormat.forPattern("dd MMMMM yyyy");
-        DateTimeFormatter normalFormat = DateTimeFormat.forPattern("yyyy-MM-dd");
-
-        List<ResultProperty> resultProperties = new ArrayList<>();
-        for (CarResult result : results) {
-            if (AvailableType.Y.equals(result.getAvailable())) {
-                result.setLeadfeedinfo(leadFeedInfo);
-
-                ResultPropertiesBuilder builder = new ResultPropertiesBuilder(request.getTransactionId(),
-                        result.getProductId());
-
-                builder.addResult("leadfeedinfo", leadFeedInfo)
-                        .addResult("validateDate/display", emailDateFormat.print(validUntil))
-                        .addResult("validateDate/normal", normalFormat.print(validUntil))
-                        .addResult("productId", result.getProductId())
-                        .addResult("productDes", result.getProviderProductName())
-                        .addResult("excess/total", result.getExcess())
-                        .addResult("headline/name", result.getProductName())
-                        .addResult("quoteUrl", result.getQuoteUrl())
-                        .addResult("telNo", result.getContact().getPhoneNumber())
-                        .addResult("openingHours", result.getContact().getCallCentreHours())
-                        .addResult("leadNo", result.getQuoteNumber())
-                        .addResult("brandCode", result.getBrandCode());
-
-                resultProperties.addAll(builder.getResultProperties());
-            }
-        }
-
-        ResultsService.saveResultsProperties(resultProperties);
+        return results.stream()
+                    .filter(result -> AvailableType.Y.equals(result.getAvailable()))
+                    .map(result -> new ResultPropertiesBuilder(request.getTransactionId(),
+                                    result.getProductId())
+                                    .addResult("leadfeedinfo", leadFeedInfo)
+                                    .addResult("validateDate/display", EMAIL_DATE_FORMAT.print(validUntil))
+                                    .addResult("validateDate/normal", NORMAL_FORMAT.print(validUntil))
+                                    .addResult("productId", result.getProductId())
+                                    .addResult("productDes", result.getProviderProductName())
+                                    .addResult("excess/total", result.getExcess())
+                                    .addResult("headline/name", result.getProductName())
+                                    .addResult("quoteUrl", result.getQuoteUrl())
+                                    .addResult("telNo", result.getContact().getPhoneNumber())
+                                    .addResult("openingHours", result.getContact().getCallCentreHours())
+                                    .addResult("leadNo", result.getQuoteNumber())
+                                    .addResult("brandCode", result.getBrandCode())
+                                    .getResultProperties()
+                    ).flatMap(Collection::stream)
+                    .collect(toList());
     }
 
-    public void writeTempResultDetails(MessageContext context, CarRequest data, List<CarResult> quotes) {
+    public void writeTempResultDetails(MessageContext context, CarRequest data, List<CarResult> quotes) throws SessionException, DaoException {
 
-        SessionDataService service = new SessionDataService();
+        Data dataBucket = SESSION_DATA_SERVICE.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
 
-        try {
-            Data dataBucket = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
+        final String transactionId = dataBucket.getString("current/transactionId");
+        if(transactionId != null){
+            data.setTransactionId(Long.parseLong(transactionId));
 
-            if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
-                data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
+            XmlNode resultDetails = new XmlNode("tempResultDetails");
+            dataBucket.addChild(resultDetails);
+            XmlNode results = new XmlNode("results");
+            resultDetails.addChild(results);
 
-                XmlNode resultDetails = new XmlNode("tempResultDetails");
-                dataBucket.addChild(resultDetails);
-                XmlNode results = new XmlNode("results");
-
-                Iterator<CarResult> quotesIterator = quotes.iterator();
-                while (quotesIterator.hasNext()) {
-                    CarResult row = quotesIterator.next();
-                    if(row.getAvailable().equals(AvailableType.Y)) {
+            quotes.stream()
+                    .filter(row -> row.getAvailable().equals(AvailableType.Y))
+                .forEach(row -> {
                         String productId = row.getProductId();
                         BigDecimal premium = row.getPrice().getAnnualPremium();
                         XmlNode product = new XmlNode(productId);
@@ -134,12 +132,8 @@ public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteReques
                         product.addChild(headline);
                         results.addChild(product);
                     }
-                }
-                resultDetails.addChild(results);
-            }
 
-        } catch (DaoException | SessionException e) {
-            System.out.println(e.getMessage());
+                );
         }
 
     }

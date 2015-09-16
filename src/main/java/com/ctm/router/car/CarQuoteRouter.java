@@ -25,7 +25,7 @@ import java.util.List;
 @Path("/car")
 public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
 
-
+    private final CarQuoteService carService = new CarQuoteService();
 
     @POST
     @Path("/quote/get.json")
@@ -39,10 +39,8 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
         updateTransactionIdAndClientIP(context, data); // TODO check IP Address is correct
 
 
-        CarQuoteService carService = new CarQuoteService();
         carService.validateRequest(data, "quote");
 
-//        try {
         final List<CarResult> quotes = carService.getQuotes(brand, data);
 
         carService.writeTempResultDetails(context,data,quotes);
@@ -52,9 +50,6 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
 
         return new ResultsWrapper(results);
 
-//        } catch (Exception e) {
-//            throw new RouterException(e);
-//        }
     }
 
     @GET
@@ -67,12 +62,7 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
             throw new RouterException("Expecting productId");
         }
 
-//        try {
-            // Update the transactionId with the current transactionId from the session
         Brand brand = ApplicationService.getBrandFromRequest(context.getHttpServletRequest());
-//        } catch (DaoException e) {
-//            throw new RouterException(e);
-//        }
 
         Date applicationDate = ApplicationService.getApplicationDate(context.getHttpServletRequest());
         return CarVehicleSelectionService.getCarProduct(applicationDate, productId, brand.getId());
