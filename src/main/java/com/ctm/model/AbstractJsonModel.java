@@ -14,9 +14,9 @@ import com.ctm.model.formatter.JsonUtils;
 @JsonIgnoreProperties({"errors"})
 public abstract class AbstractJsonModel implements JsonFormatter {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractJsonModel.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJsonModel.class);
 
-	private ArrayList<Error> errors = new ArrayList<Error>();
+	private ArrayList<Error> errors = new ArrayList<>();
 
 
 	/**
@@ -60,7 +60,7 @@ public abstract class AbstractJsonModel implements JsonFormatter {
 			return json;
 		}
 		catch (JSONException e) {
-			logger.error("",e);
+			LOGGER.error("failed to create json object", e);
 
 			// Return a blank object
 			return new JSONObject();

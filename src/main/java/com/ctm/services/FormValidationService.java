@@ -15,10 +15,6 @@ import com.ctm.exceptions.DaoException;
 
 public class FormValidationService {
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(FormValidationService.class.getName());
-
-
 	public FormValidationService() {
 	}
 
@@ -104,10 +100,6 @@ public class FormValidationService {
 				int endIndex =  paramValue.length() / 2;
 				String stringA = paramValue.substring(0, endIndex);
 				String stringB = paramValue.substring(endIndex, paramValue.length()).replaceAll("\\w", "*");
-//				System.out.println("Value: '" + paramValue + "'");
-//				System.out.println("Unmasked Part: '" + paramValue.substring(0, endIndex ) + "'");
-//				System.out.println("Masked Part: '" + paramValue.substring(endIndex, paramValue.length()).replaceAll("\\w", "*") + "'");
-//				System.out.println("Returned Value: '" + stringA + stringB + "'");
 				return stringA + stringB ;
 			}
 		}

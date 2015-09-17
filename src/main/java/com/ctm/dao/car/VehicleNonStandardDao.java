@@ -40,7 +40,7 @@ public class VehicleNonStandardDao {
             }
         }
         catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
         finally {
             dbSource.closeConnection();
@@ -74,7 +74,7 @@ public class VehicleNonStandardDao {
             }
         }
         catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
         finally {
             dbSource.closeConnection();

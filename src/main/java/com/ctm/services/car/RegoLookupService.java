@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.webservice.motorweb.MotorWebProvider.createClient;
 
 /**
@@ -36,7 +37,7 @@ import static com.ctm.webservice.motorweb.MotorWebProvider.createClient;
  */
 public class RegoLookupService {
 
-	private static final Logger logger = LoggerFactory.getLogger(RegoLookupService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(RegoLookupService.class);
 
     // Used to cache results of availability tests in serviceAvailableSilent method
     // as it's called multiple times when rendering frontend copy
@@ -80,7 +81,7 @@ public class RegoLookupService {
         if(isServiceAvailable == null) {
             isServiceAvailable = getServiceAvailable(request, true);
         } else {
-            logger.debug("[rego lookup] cached service availability returned");
+            LOGGER.debug("[rego lookup] cached service availability returned");
         }
         return isServiceAvailable;
     }
@@ -88,31 +89,31 @@ public class RegoLookupService {
     static private Boolean getServiceAvailable(HttpServletRequest request, Boolean safeMode) throws RegoLookupException {
         Boolean isAvailable = false;
         try {
-            if (safeMode == true || transactionVerified(request)) {
-                logger.debug("[rego lookup] transaction verified");
+            if (safeMode || transactionVerified(request)) {
+                LOGGER.debug("[rego lookup] transaction verified");
                 if (isSwitchedOn(request)) {
-                    logger.debug("[rego lookup] is switched on");
+                    LOGGER.debug("[rego lookup] is switched on");
                     if (withinDailyLimit(request)) {
-                        logger.debug("[rego lookup] is within daily limit");
+                        LOGGER.debug("[rego lookup] is within daily limit");
                         if (!isIPBlocked(request)) {
-                            logger.info("[rego lookup] IP is not blocked");
+                            LOGGER.info("[rego lookup] IP is not blocked");
                             isAvailable = true;
-                        } else if (safeMode == false) {
+                        } else if (!safeMode) {
                             throw new RegoLookupException(RegoLookupStatus.REQUEST_LIMIT_EXCEEDED);
                         }
-                    } else if (safeMode == false) {
+                    } else if (!safeMode) {
                         throw new RegoLookupException(RegoLookupStatus.DAILY_LIMIT_EXCEEDED);
                     }
-                } else if (safeMode == false) {
+                } else if (!safeMode) {
                     throw new RegoLookupException(RegoLookupStatus.SERVICE_TURNED_OFF);
                 }
             }
         } catch(RegoLookupException e) {
-            if (safeMode == false) {
+            if (!safeMode) {
                 throw new RegoLookupException(e.getStatus(), e);
             }
         }
-        logger.debug("[rego lookup] service " + (isAvailable == false ? "IS NOT" : "IS") + " available");
+        LOGGER.debug("[rego lookup] rego lookup service {}", kv("isAvailable", isAvailable));
         return isAvailable;
     }
 
@@ -122,7 +123,7 @@ public class RegoLookupService {
             RequestUtils.checkForTransactionIdInDataBucket(request); // Will throw exception if fails
             verified = true;
         } catch(SessionException e) {
-            logger.debug("[rego lookup] Exception: " + e.getMessage());
+            LOGGER.debug("[rego lookup] Error occurred verifying transaction {}", e);
             throw new RegoLookupException(RegoLookupStatus.TRANSACTION_UNVERIFIED, e);
         }
         return verified;
@@ -131,13 +132,9 @@ public class RegoLookupService {
     static private Boolean isSwitchedOn(HttpServletRequest request) throws RegoLookupException {
         try {
             String available = ContentService.getContentValue(request, "regoLookupIsAvailable");
-            if(available != null && available.equalsIgnoreCase("Y")) {
-                return true;
-            } else {
-                return false;
-            }
+            return available != null && available.equalsIgnoreCase("Y");
         } catch(DaoException | ConfigSettingException e) {
-            logger.debug("[rego lookup] Exception: " + e.getMessage());
+            LOGGER.debug("[rego lookup] Error checking if rego lookup is enabled {}", e);
             throw new RegoLookupException(RegoLookupStatus.SERVICE_TOGGLE_UNDEFINED, e);
         }
     };
@@ -149,7 +146,7 @@ public class RegoLookupService {
         try {
             todaysUsage = CarRegoLookupDao.getTodaysUsage();
         } catch(DaoException e) {
-            logger.debug("[rego lookup] Exception: " + e.getMessage());
+            LOGGER.debug("[rego lookup] Error getting todays usage", e);
             throw new RegoLookupException(RegoLookupStatus.DAILY_USAGE_ERROR, e);
         }
 
@@ -161,7 +158,7 @@ public class RegoLookupService {
                 return false;
             }
         } catch(DaoException | ConfigSettingException e) {
-            logger.debug("[rego lookup] Exception: " + e.getMessage());
+            LOGGER.debug("[rego lookup] Error getting lookup daily limit", e);
             throw new RegoLookupException(RegoLookupStatus.DAILY_LIMIT_UNDEFINED, e);
         }
 
@@ -187,7 +184,7 @@ public class RegoLookupService {
             try {
                 state = JurisdictionEnum.fromValue(stateIn);
             } catch (Exception e) {
-                logger.debug("[rego lookup] Exception: " + e.getMessage());
+                LOGGER.debug("[rego lookup] Error doing rego lookup {},{}", kv("stateIn", stateIn), e);
                 throw new RegoLookupException(RegoLookupStatus.INVALID_STATE, e);
             }
 
@@ -197,7 +194,7 @@ public class RegoLookupService {
                 // Step 1 - get the redbook code from MotorWeb
                 redbookCode = getRedbookCode(plateNumber, state);
             } catch (Exception e) {
-                logger.debug("[rego lookup] Exception: " + e.getMessage());
+                LOGGER.debug("[rego lookup] Error geting redbook code {},{}", kv("plateNumber", plateNumber), kv("stateIn", stateIn), e);
                 throw new RegoLookupException(RegoLookupStatus.SERVICE_ERROR, e);
             }
             if (redbookCode == null || redbookCode.isEmpty()) {
@@ -216,7 +213,7 @@ public class RegoLookupService {
                     }
                     response = carDetails.getSimple();
                 } catch (DaoException e) {
-                    logger.debug("[rego lookup] Exception: " + e.getMessage());
+                    LOGGER.debug("[rego lookup] Error getting redbook car details {}", kv("plateNumber", plateNumber), kv("redbookCode", redbookCode), e);
                     throw new RegoLookupException(RegoLookupStatus.DAO_ERROR, e);
                 }
                 // Step 3 - get data for vehicle selection fields
@@ -240,7 +237,7 @@ public class RegoLookupService {
         try {
             serviceConfig = ServiceConfigurationService.getServiceConfiguration("motorwebRegoLookupService", 0, 0);
         } catch (DaoException | ServiceConfigurationException e) {
-            logger.debug("[rego lookup] Exception: " + e.getMessage());
+            LOGGER.debug("[rego lookup] Error getting motorweb rego serviceConfig {}", e);
             throw new RegoLookupException("Could not load the required configuration for the " + SERVICE_LABEL + " service", e);
         }
 
@@ -278,7 +275,8 @@ public class RegoLookupService {
             if(autoIdResponse.getError() == null) {
                 return autoIdResponse.getAutoreport().getVehicle().get(0).getRedbookCode();
             } else {
-                logger.debug("[rego lookup] Error in response: (" + autoIdResponse.getError().getCode() + ") " + autoIdResponse.getError().getValue());
+                LOGGER.debug("[rego lookup] Error motorweb response {},{}", kv("errorCode", autoIdResponse.getError().getCode()),
+                    kv("errorValue", autoIdResponse.getError().getValue()));
                 return null;
             }
         } catch (Exception e) {

@@ -12,12 +12,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Fetches the list of countries from ctm.country_master
  */
 public class IsoLocationsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(IsoLocationsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(IsoLocationsDao.class);
 
     public IsoLocationsDao() {
     }
@@ -58,13 +60,11 @@ public class IsoLocationsDao {
             }
 
             if (countries.size() == 0) {
-                logger.info("There are no countries available for: " + searchString);
+                LOGGER.debug("No countries available {}", kv("searchString", searchString));
             }
 
-        } catch (SQLException e) {
-            throw new DaoException(e.getMessage(), e);
-        } catch (NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+        } catch (SQLException | NamingException e) {
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }
@@ -131,13 +131,11 @@ public class IsoLocationsDao {
             }
 
             if (countries.size() == 0) {
-                logger.info("There are no countries available");
+                LOGGER.debug("No countries available {}", kv("isoCodes", isoCodes));
             }
 
-        } catch (SQLException e) {
-            throw new DaoException(e.getMessage(), e);
-        } catch (NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+        } catch (SQLException | NamingException e) {
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }

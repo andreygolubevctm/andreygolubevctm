@@ -1,11 +1,14 @@
 package com.disc_au.web.go.tags;
 
-import java.io.IOException;
-
-import javax.servlet.jsp.JspException;
-
 import com.disc_au.web.go.InsertMarker;
 import com.disc_au.web.go.InsertMarkerCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.jsp.JspException;
+import java.io.IOException;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -17,6 +20,8 @@ import com.disc_au.web.go.InsertMarkerCache;
 
 @SuppressWarnings("serial")
 public class InsertMarkerTag extends BaseTag {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(InsertMarkerTag.class.getName());
 
 	/** The format. */
 	private InsertMarker.Format format;
@@ -54,8 +59,7 @@ public class InsertMarkerTag extends BaseTag {
 
 			pageContext.getOut().write(markerComment);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Failed to write marker to page. {}" , kv("marker", marker), e);
 		}
 		return SKIP_BODY;
 	}

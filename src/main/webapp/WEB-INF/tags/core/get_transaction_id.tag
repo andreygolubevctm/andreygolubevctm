@@ -320,5 +320,5 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-${logger.info("Get transaction id complete. {},{}", log:kv('rootId', data.current.rootId), log:kv('method',method ))}
+${logger.debug("Get transaction id complete. {},{}", log:kv('rootId', data.current.rootId), log:kv('method',method ))}
 {"transactionId":"${data.current.transactionId}","rootId":"${data.current.rootId}","Method":"${method}"}

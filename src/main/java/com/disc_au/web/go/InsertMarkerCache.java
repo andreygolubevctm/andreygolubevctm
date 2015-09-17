@@ -165,7 +165,6 @@ public class InsertMarkerCache {
 
 
 			} else {
-				// System.err.println("InsertMarker Warning: Page has insert marker with name '"
 				// + markerName+"' but doesn't actually set any values to it.");
 			}
 			markerStart = markerEnd;

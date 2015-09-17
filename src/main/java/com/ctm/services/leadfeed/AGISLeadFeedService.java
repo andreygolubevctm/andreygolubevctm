@@ -1,39 +1,38 @@
 package com.ctm.services.leadfeed;
 
-import java.io.IOException;
-import java.util.List;
-
+import com.ctm.aglead.ws.*;
+import com.ctm.exceptions.*;
 import com.ctm.logging.SpringWSLoggingInterceptor;
-import com.ctm.model.settings.Vertical;
-import com.ctm.services.*;
 import com.ctm.logging.XMLOutputWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
-
-import com.ctm.aglead.ws.MessageRequestService;
-import com.ctm.aglead.ws.MessageResponseDetails;
-import com.ctm.aglead.ws.PartnerHeader;
-import com.ctm.aglead.ws.Request;
-import com.ctm.aglead.ws.Response;
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.EnvironmentException;
-import com.ctm.exceptions.LeadFeedException;
-import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.exceptions.VerticalException;
+import com.ctm.model.Provider;
 import com.ctm.model.leadfeed.AGISLeadFeedRequest;
 import com.ctm.model.leadfeed.LeadFeedData;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
-import com.ctm.model.Provider;
-import com.ctm.services.leadfeed.LeadFeedService.LeadType;
+import com.ctm.model.settings.Vertical;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.ProviderService;
+import com.ctm.services.ServiceConfigurationService;
+import com.ctm.services.SettingsService;
 import com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus;
+import com.ctm.services.leadfeed.LeadFeedService.LeadType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+
+import java.io.IOException;
+import java.util.List;
+
+import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus.FAILURE;
+import static com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus.SUCCESS;
+import static com.ctm.services.leadfeed.LeadFeedService.LeadType.CALL_DIRECT;
 
 public abstract class AGISLeadFeedService extends WebServiceGatewaySupport implements IProviderLeadFeedService{
 
-	private static final Logger logger = LoggerFactory.getLogger(AGISLeadFeedService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AGISLeadFeedService.class);
 
 	/**
 	 * getModel() is implemented by the extended lead feed class to construct the lead feed model.
@@ -48,13 +47,13 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 	 */
 	public LeadResponseStatus process(LeadType leadType, LeadFeedData leadData) throws LeadFeedException {
 
-		LeadResponseStatus feedResponse = LeadResponseStatus.FAILURE;
+		LeadResponseStatus feedResponse = FAILURE;
 		try {
 
-			if(leadType == LeadType.CALL_DIRECT) {
+			if(leadType == CALL_DIRECT) {
 				// Return OK as we still want to record touches etc
-				feedResponse = LeadResponseStatus.SUCCESS;
-				logger.info("[Lead feed] Skipped sending lead to service as flagged to be ignored");
+				feedResponse = SUCCESS;
+				LOGGER.warn("[Lead feed] Skipped sending lead to service as flagged to be ignored");
 			} else {
 				// Generate the lead feed model
 				AGISLeadFeedRequest leadModel = getModel(leadType, leadData);
@@ -65,14 +64,14 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 				MessageResponseDetails responseDetails = response.getDetails();
 
 				if(responseDetails.getStatus().equalsIgnoreCase("ok")){
-					feedResponse = LeadResponseStatus.SUCCESS;
+					feedResponse = SUCCESS;
 				}
 
-				logger.info("[Lead feed] Response Status from AGIS: " + responseDetails.getStatus());
+				LOGGER.debug("[Lead feed] Response Status from AGIS {}", kv("status", responseDetails.getStatus()));
 			}
 
 		} catch (EnvironmentException | VerticalException | IOException e) {
-			logger.error("[Lead feed] Exception adding lead feed message",e);
+			LOGGER.error("[Lead feed] Failed adding lead feed message {}", kv("leadData", leadData), e);
 			throw new LeadFeedException(e.getMessage(), e);
 		}
 
@@ -193,7 +192,7 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 			Jaxb2Marshaller marshaller = marshaller();
 			setMarshaller(marshaller);
 			setUnmarshaller(marshaller);
-			logger.info("[Lead feed] Sending message to AGIS");
+			LOGGER.debug("[Lead feed] Sending message to AGIS");
 
 			// Log copy of XML Request/Response in Debug folders
 			String path = "";
@@ -212,7 +211,8 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 
 			return (Response) getWebServiceTemplate().marshalSendAndReceive(serviceUrl, request);
 		} catch (Exception e) {
-			logger.error("[Lead feed] Exception sending lead feed message to AGIS",e);
+			LOGGER.error("[Lead feed] Failed sending lead feed message to AGIS {}, {}, {}", kv("settings", settings),
+				kv("serviceUrl", serviceUrl), kv("transactionId", transactionId), e);
 			throw new IOException(e);
 		}
 	}
