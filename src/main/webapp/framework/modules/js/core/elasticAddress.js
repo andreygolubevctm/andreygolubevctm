@@ -578,8 +578,8 @@
     }
 
     /**
-     *
-     * @param suburbs
+     * @param {{}} suburbs Response object
+     * @param {Number} suburbSeqNo The default suburb number provided in a preload/retrieve quote.
      * @returns {string}
      */
     function buildSuburbOptionList(suburbs, suburbSeqNo) {
