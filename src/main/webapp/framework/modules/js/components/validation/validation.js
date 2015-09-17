@@ -165,7 +165,7 @@ var validation = false;
                     return;
                 }
 
-                if (validation && element.name !== "captcha_code") {
+                if (validation) {
                     this.element(element);
                 }
             },

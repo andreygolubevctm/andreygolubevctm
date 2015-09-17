@@ -49,7 +49,7 @@
 	<c:if test="${empty validationParam}">
 		<c:set var="validationParam" value="true" />
 	</c:if>
-	<c:set var="validationAttributes" value=" data-rule-${validationRule}='${validationParam}' data-msg-${validationRule}='${validationMessage}'" />
+	<c:set var="validationAttributes" value=' data-rule-${validationRule}="${validationParam}" data-msg-${validationRule}="${validationMessage}"' />
 </c:if>
 
 <%-- HTML --%>
