@@ -270,7 +270,7 @@ Features = {
 
 			_.defer(function(){
 
-				Features.sameHeightRows( $extras.find(Results.settings.elements.features.values ) ); // Removed .filter(":visible") because IE couldn't handle it.
+				Features.sameHeightRows( $extras.find(Results.settings.elements.features.values +":visible" ) ); // Removed .filter(":visible") because IE couldn't handle it.
 				$parents.removeClass("expanding").addClass("expanded");
 			});
 
