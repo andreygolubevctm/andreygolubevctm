@@ -171,7 +171,7 @@ function LessTasks(gulp) {
                     filePath = file.path;
                     fileName = path.basename(file.path).replace(/\.[^/.]+$/, "");
                     targetFolder = path.dirname(filePath) + "\\inc";
-                    targetFile = fileName + ".inc";
+                    targetFile = fileName.replace(".min", "") + ".inc";
 
                     // Wipe the original target file
                     mkdirp.sync(targetFolder);
@@ -187,7 +187,8 @@ function LessTasks(gulp) {
                 .pipe(intercept(function(file){
                     var tempPath = file.path,
                         revDate = + new Date(),
-                        appendContent = "<link rel=\"stylesheet\" type=\"text\/css\" href=\"" + tempPath.slice(tempPath.indexOf("assets"), tempPath.length).replace(/\\/g, "/") + "?rev=" + revDate + "\" media=\"all\">";
+                        appendContent = "<link rel=\"stylesheet\" type=\"text\/css\" href=\"" + tempPath.slice(tempPath.indexOf("assets"), tempPath.length).replace(/\\/g, "/") + "?rev=" + revDate + "\" media=\"all\" />";
+
                     fileHelper.appendToFile(targetFolder, targetFile, appendContent);
                     return file;
                 }))
