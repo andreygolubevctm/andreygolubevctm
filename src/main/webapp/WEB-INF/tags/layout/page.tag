@@ -72,7 +72,7 @@
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
 				<%-- We don't include the separate inc files for Simples in IE because its path structure causes failures due to relative path issues --%>
-				<c:when test="${browserName eq 'IE' && browserVersion le 9}">
+				<c:when test="${browserName eq 'IE' and browserVersion le 9}">
 					<c:import url="/assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.min.inc" />
 				</c:when>
 				<c:otherwise>
