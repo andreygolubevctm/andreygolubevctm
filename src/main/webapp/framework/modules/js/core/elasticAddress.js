@@ -45,7 +45,7 @@
                 var $el = $(this);
                 $el.elasticAddress({
                     name: $el.attr('data-address-id'),
-                    suburb: $el.attr('data-suburb'),
+                    suburbSeqNo: $el.attr('data-suburbSeqNo'),
                     addressType: $el.attr('data-search-type')
                 });
             })
@@ -582,13 +582,14 @@
      * @param suburbs
      * @returns {string}
      */
-    function buildSuburbOptionList(suburbs) {
+    function buildSuburbOptionList(suburbs, suburbSeqNo) {
         var options = '';
         if (suburbs.length != 1) {
             options = '<option value="">Please select...</option>';
         }
         for (var i = 0; i < suburbs.length; i++) {
-            var sel = suburbs.length == 1 ? " selected='selected'" : "";
+            var sel = suburbs.length == 1 || (typeof suburbSeqNo !== 'undefined' && suburbSeqNo !== null && suburbs[i].id == suburbSeqNo)
+                ? " selected='selected'" : "";
             options += '<option value="' + suburbs[i].id + '"' + sel + '>' + suburbs[i].des + '</option>';
         }
         return options;
@@ -603,7 +604,7 @@
 
         var elements = this.elements;
         if (data.suburbs && data.suburbs.length > 0) {
-            elements.nonStdSuburbInput.removeAttr("disabled").html(buildSuburbOptionList(data.suburbs));
+            elements.nonStdSuburbInput.removeAttr("disabled").html(buildSuburbOptionList(data.suburbs, this.options.suburbSeqNo));
             if (typeof callback == 'function') {
                 callback(true);
             }
@@ -723,7 +724,7 @@
      */
     $.fn[pluginName].defaults = {
         name: "",
-        suburb: "",
+        suburbSeqNo: "",
         addressType: "R",
         selectedStreetFld: "",
         userStartedTyping: true,
