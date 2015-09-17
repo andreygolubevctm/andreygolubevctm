@@ -48,7 +48,7 @@ function JSTasks(gulp) {
             var incDir = path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "inc"),
                 revDate = + new Date();
             fileHelper.writeFileToFolder(incDir, fileName + ".inc", fileArray.map(function(file){
-                return "<script src=\"" + path.normalize(file.slice(file.indexOf("bundles"), file.length)) + "?rev=" + revDate + "\"></script>";
+                return "<script type=\"text/javascript\" src=\"" + file.slice(file.indexOf("bundles"), file.length).replace(/\\/g, "/") + "?rev=" + revDate + "\"></script>";
             }).join("\r\n"));
 
             return gulp.src(fileArray)

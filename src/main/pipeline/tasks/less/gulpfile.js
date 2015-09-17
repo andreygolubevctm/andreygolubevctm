@@ -151,7 +151,8 @@ function LessTasks(gulp) {
                 }))
                 .pipe(minifyCSS({
                     advanced: true,
-                    aggressiveMerging: true
+                    aggressiveMerging: true,
+                    compatibility: "ie8"
                 }))
                 .pipe(rename(bundle + ".min.css"))
                 .pipe(gulp.dest(targetDir))
