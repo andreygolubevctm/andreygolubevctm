@@ -1,18 +1,18 @@
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
-	meerkatEvents = meerkat.modules.events,
-	moduleEvents = {
+		meerkatEvents = meerkat.modules.events,
+		moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
 			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
 		},
-	hasSeenResultsScreen = false,
-	rates = null,
-	steps = null,
-	stateSubmitInProgress = false;
+		hasSeenResultsScreen = false,
+		rates = null,
+		steps = null,
+		stateSubmitInProgress = false;
 
 	function initJourneyEngine(){
 
@@ -59,15 +59,15 @@
 			});
 
 			if(meerkat.site.isNewQuote === false){
-					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-						method:'trackQuoteEvent',
-						object: {
-							action: 'Retrieve',
-							transactionID: transaction_id,
-							simplesUser: meerkat.site.isCallCentreUser
-						}
-					});
-				}
+				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+					method:'trackQuoteEvent',
+					object: {
+						action: 'Retrieve',
+						transactionID: transaction_id,
+						simplesUser: meerkat.site.isCallCentreUser
+					}
+				});
+			}
 
 		}
 
@@ -108,7 +108,14 @@
 			},
 			onInitialise: function onStartInit(event){
 
+
 				meerkat.modules.jqueryValidate.initJourneyValidator();
+
+				if(meerkat.site.choices) {
+					healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
+					healthChoices._state = meerkat.site.choices.state;
+					healthChoices._performUpdate = meerkat.site.choices.performHealthChoicesUpdate;
+				}
 
 				// Add event listeners.
 				$('.health-situation-healthCvr').on('change',function() {
@@ -135,7 +142,7 @@
 						$('.health-situation-healthSitu').change();
 					}
 				}
-				
+
 
 				// This on Start step instead of Details because Simples interacts with it
 				var emailQuoteBtn = $(".slide-feature-emailquote");
@@ -300,7 +307,7 @@
 
 				// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter segment
 				_.delay(function() {
-				meerkat.modules.healthSegment.filterSegments();
+					meerkat.modules.healthSegment.filterSegments();
 				}, 1000);
 
 				if (event.isForward){
@@ -314,39 +321,39 @@
 			}
 		};
 		var contactStep = {
-				title: 'Your Contact Details',
-				navigationId: 'contact',
-				slideIndex: 2,
-				tracking: {
-					touchType: 'H',
-					touchComment: 'HLT contac',
-					includeFormData: true
-				},
-				externalTracking:{
-					method:'trackQuoteForms',
-					object:meerkat.modules.health.getTrackingFieldsObject
-				},
-				validation:{
-					validate: true
-				},
-				onInitialise: function onContactInit(event){
-					meerkat.modules.resultsFeatures.fetchStructure('health');
-				},
-				onBeforeEnter:function enterContactStep(event) {
-				},
-				onAfterEnter: function enteredContactStep(event) {
-					meerkat.modules.navMenu.enable();
+			title: 'Your Contact Details',
+			navigationId: 'contact',
+			slideIndex: 2,
+			tracking: {
+				touchType: 'H',
+				touchComment: 'HLT contac',
+				includeFormData: true
+			},
+			externalTracking:{
+				method:'trackQuoteForms',
+				object:meerkat.modules.health.getTrackingFieldsObject
+			},
+			validation:{
+				validate: true
+			},
+			onInitialise: function onContactInit(event){
+				meerkat.modules.resultsFeatures.fetchStructure('health');
+			},
+			onBeforeEnter:function enterContactStep(event) {
+			},
+			onAfterEnter: function enteredContactStep(event) {
+				meerkat.modules.navMenu.enable();
 
-				},
-				onAfterLeave:function leaveContactStep(event){
-					/*
-					This is here because for some strange reason the benefits slide dropdown disables the tracking touch on the contact
-					slide. Manually forcing it to run so that the contact details are saved into the session and subsequently to
-					the transaction_details table.
-					 */
-					meerkat.messaging.publish(meerkat.modules.tracking.events.tracking.TOUCH, this);
-				}
-			};
+			},
+			onAfterLeave:function leaveContactStep(event){
+				/*
+				 This is here because for some strange reason the benefits slide dropdown disables the tracking touch on the contact
+				 slide. Manually forcing it to run so that the contact details are saved into the session and subsequently to
+				 the transaction_details table.
+				 */
+				meerkat.messaging.publish(meerkat.modules.tracking.events.tracking.TOUCH, this);
+			}
+		};
 
 		var resultsStep = {
 			title: 'Your Results',
@@ -370,7 +377,7 @@
 					if (meerkat.modules.healthResults.getSelectedProduct() === null) {
 						callback(false);
 					}
-					
+
 					callback(true);
 				}
 			},
@@ -384,9 +391,9 @@
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
 				} else {
-				// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
-				meerkat.modules.healthResults.resetSelectedProduct();
-					}
+					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
+					meerkat.modules.healthResults.resetSelectedProduct();
+				}
 
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
@@ -910,116 +917,116 @@
 		try{
 
 
-		var state = $("#health_situation_state").val();
-		var state2 = $("#health_application_address_state").val();
-		// Set state to application state if provided and is different
-		if( state2.length && state2 != state ) {
-			state = state2;
-		}
-
-		var gender = null;
-		var $gender = $('input[name=health_application_primary_gender]:checked');
-		if( $gender ) {
-			if( $gender.val() == "M" ) {
-				gender = "Male";
-			} else if( $gender.val() == "F" ) {
-				gender = "Female";
+			var state = $("#health_situation_state").val();
+			var state2 = $("#health_application_address_state").val();
+			// Set state to application state if provided and is different
+			if( state2.length && state2 != state ) {
+				state = state2;
 			}
-		}
 
-		var yob = "";
-		var yob_str = $("#health_healthCover_primary_dob").val();
-		if( yob_str.length ) {
-			yob = yob_str.split("/")[2];
-		}
+			var gender = null;
+			var $gender = $('input[name=health_application_primary_gender]:checked');
+			if( $gender ) {
+				if( $gender.val() == "M" ) {
+					gender = "Male";
+				} else if( $gender.val() == "F" ) {
+					gender = "Female";
+				}
+			}
 
-		var ok_to_call = $('input[name=health_contactDetails_call]', '#mainform').val() === "Y" ? "Y" : "N";
-		var mkt_opt_in = $('input[name=health_application_optInEmail]:checked', '#mainform').val() === "Y" ? "Y" : "N";
+			var yob = "";
+			var yob_str = $("#health_healthCover_primary_dob").val();
+			if( yob_str.length ) {
+				yob = yob_str.split("/")[2];
+			}
 
-		var email = $("#health_contactDetails_email").val();
-		var email2 = $("#health_application_email").val();
-		// Set email to application email if provided and is different
-		if( email2.length > 0 ) {
-			email = email2;
-		}
+			var ok_to_call = $('input[name=health_contactDetails_call]', '#mainform').val() === "Y" ? "Y" : "N";
+			var mkt_opt_in = $('input[name=health_application_optInEmail]:checked', '#mainform').val() === "Y" ? "Y" : "N";
 
-		var transactionId = meerkat.modules.transactionId.get();
+			var email = $("#health_contactDetails_email").val();
+			var email2 = $("#health_application_email").val();
+			// Set email to application email if provided and is different
+			if( email2.length > 0 ) {
+				email = email2;
+			}
 
-		var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
-		var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
+			var transactionId = meerkat.modules.transactionId.get();
 
-		//@TODO @FIXME - In the review with Rebecca, Tim, Kevin, on 24th of Feb 2014, it's likely that this lookup table wont be required anymore, and we can pass through the name of the journey engine step directly.
-		//Update 1: Looks like nobody really knows or considered which calls are required. Also, the current code is basically magical (not understood), so without further review of what they want, the original stages will be logged. Hence this mapping here is still required. The livechat stats will still report the exact journey step names instead. Eg. the below mappings could be replaced by 'start', 'details', 'benefits', 'results', 'apply', 'payment', 'confirmation'.
-		var actionStep='';
+			var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
+			var furtherest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
 
-		switch (current_step) {
-			case 0:
-				actionStep = "health situation";
-				break;
-			case 1:
-				actionStep = 'health details';
-				break;
-			case 2:
-				actionStep = 'health cover';
-				break;
-			case 3:
-				actionStep = 'health cover contact';
-				break;
-			case 5:
-				actionStep = 'health application';
-				break;
-			case 6:
-				actionStep = 'health payment';
-				break;
-			case 7:
-				actionStep = 'health confirmation';
-				break;
-		}
+			//@TODO @FIXME - In the review with Rebecca, Tim, Kevin, on 24th of Feb 2014, it's likely that this lookup table wont be required anymore, and we can pass through the name of the journey engine step directly.
+			//Update 1: Looks like nobody really knows or considered which calls are required. Also, the current code is basically magical (not understood), so without further review of what they want, the original stages will be logged. Hence this mapping here is still required. The livechat stats will still report the exact journey step names instead. Eg. the below mappings could be replaced by 'start', 'details', 'benefits', 'results', 'apply', 'payment', 'confirmation'.
+			var actionStep='';
 
-		var response =  {
-			vertical:				'Health',
-			actionStep:				actionStep,
-			transactionID:			transactionId,
-			quoteReferenceNumber:	transactionId,
-			postCode:				null,
-			state:					null,
-			healthCoverType:		null,
-			healthSituation:		null,
-			gender:					null,
-			yearOfBirth:			null,
-			email:					null,
-			emailID:				null,
-			marketOptIn:			null,
-			okToCall:				null,
-			simplesUser:			meerkat.site.isCallCentreUser
-		};
+			switch (current_step) {
+				case 0:
+					actionStep = "health situation";
+					break;
+				case 1:
+					actionStep = 'health details';
+					break;
+				case 2:
+					actionStep = 'health cover';
+					break;
+				case 3:
+					actionStep = 'health cover contact';
+					break;
+				case 5:
+					actionStep = 'health application';
+					break;
+				case 6:
+					actionStep = 'health payment';
+					break;
+				case 7:
+					actionStep = 'health confirmation';
+					break;
+			}
 
-		// Push in values from 1st slide only when have been beyond it
-		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
-			$.extend(response, {
-				postCode:				$("#health_application_address_postCode").val(),
-				state:					state,
-				healthCoverType:		$("#health_situation_healthCvr").val(),
-				healthSituation:		$("#health_situation_healthSitu").val()
-			});
-		}
+			var response =  {
+				vertical:				'Health',
+				actionStep:				actionStep,
+				transactionID:			transactionId,
+				quoteReferenceNumber:	transactionId,
+				postCode:				null,
+				state:					null,
+				healthCoverType:		null,
+				healthSituation:		null,
+				gender:					null,
+				yearOfBirth:			null,
+				email:					null,
+				emailID:				null,
+				marketOptIn:			null,
+				okToCall:				null,
+				simplesUser:			meerkat.site.isCallCentreUser
+			};
 
-		// Push in values from 2nd slide only when have been beyond it
-		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('details')) {
-			$.extend(response, {
-				yearOfBirth:	yob,
-				email:			email,
-				marketOptIn:	mkt_opt_in,
-				okToCall:		ok_to_call
-			});
-		}
+			// Push in values from 1st slide only when have been beyond it
+			if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
+				$.extend(response, {
+					postCode:				$("#health_application_address_postCode").val(),
+					state:					state,
+					healthCoverType:		$("#health_situation_healthCvr").val(),
+					healthSituation:		$("#health_situation_healthSitu").val()
+				});
+			}
 
-		// Push in values from 2nd slide only when have been beyond it
-		if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('apply')) {
-			$.extend(response, {gender:gender});
-		}
+			// Push in values from 2nd slide only when have been beyond it
+			if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('details')) {
+				$.extend(response, {
+					yearOfBirth:	yob,
+					email:			email,
+					marketOptIn:	mkt_opt_in,
+					okToCall:		ok_to_call
+				});
+			}
 
-		return response;
+			// Push in values from 2nd slide only when have been beyond it
+			if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('apply')) {
+				$.extend(response, {gender:gender});
+			}
+
+			return response;
 
 		}catch(e){
 			return false;
@@ -1054,22 +1061,22 @@
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication' });
 
 		try {
-		var postData = meerkat.modules.journeyEngine.getFormData();
+			var postData = meerkat.modules.journeyEngine.getFormData();
 
-		// Disable fields must happen after the post data has been collected.
-		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
+			// Disable fields must happen after the post data has been collected.
+			meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
 
-		meerkat.modules.comms.post({
-			url: "ajax/json/health_application.jsp",
-			data: postData,
-			cache: false,
-			useDefaultErrorHandling:false,
-			errorLevel: "silent",
-			timeout: 250000, //10secs more than SOAP timeout
-			onSuccess: function onSubmitSuccess(resultData) {
+			meerkat.modules.comms.post({
+				url: "ajax/json/health_application.jsp",
+				data: postData,
+				cache: false,
+				useDefaultErrorHandling:false,
+				errorLevel: "silent",
+				timeout: 250000, //10secs more than SOAP timeout
+				onSuccess: function onSubmitSuccess(resultData) {
 
 					meerkat.modules.leavePageWarning.disable();
-					
+
 					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+"&token=";
 					var extraParameters = "";
 
@@ -1077,28 +1084,28 @@
 						extraParameters = "&utm_source=" + meerkat.site.utm_source + "&utm_medium=" + meerkat.site.utm_medium + "&utm_campaign=" + meerkat.site.utm_campaign
 					}
 
-				// Success
-				if (resultData.result && resultData.result.success){
+					// Success
+					if (resultData.result && resultData.result.success){
 						window.location.replace( redirectURL + resultData.result.confirmationID + extraParameters );
 
-				// Pending and not a call centre user (we want them to see the errors)
-				} else if (resultData.result && resultData.result.pendingID && resultData.result.pendingID.length > 0 && (!resultData.result.callcentre || resultData.result.callcentre !== true) ) {
+						// Pending and not a call centre user (we want them to see the errors)
+					} else if (resultData.result && resultData.result.pendingID && resultData.result.pendingID.length > 0 && (!resultData.result.callcentre || resultData.result.callcentre !== true) ) {
 						window.location.replace( redirectURL + resultData.result.pendingID + extraParameters );
 
-				// Handle errors
-				} else {
-					// Normally this shouldn't be reached because it should go via the onError handler thanks to the comms module detecting the error.
-					meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
-					handleSubmittedApplicationErrors( resultData );
-				}
-			},
+						// Handle errors
+					} else {
+						// Normally this shouldn't be reached because it should go via the onError handler thanks to the comms module detecting the error.
+						meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
+						handleSubmittedApplicationErrors( resultData );
+					}
+				},
 				onError: onSubmitApplicationError,
 				onComplete: function onSubmitComplete() {
 					stateSubmitInProgress = false;
-			}
-		});
+				}
+			});
 
-	}
+		}
 		catch(e) {
 			stateSubmitInProgress = false;
 			onSubmitApplicationError();
@@ -1115,7 +1122,7 @@
 			handleSubmittedApplicationErrors( errorThrown );
 		} else {
 			handleSubmittedApplicationErrors( data );
-	}
+		}
 	}
 
 	function handleSubmittedApplicationErrors( resultData ){
@@ -1142,7 +1149,7 @@
 				if (msg === '') {
 					msg = 'An unhandled error was received.';
 				}
-			// Handle internal SOAP error
+				// Handle internal SOAP error
 			} else if (error && error.hasOwnProperty("type")) {
 				switch(error.type) {
 					case "validation":
@@ -1167,7 +1174,7 @@
 						msg ='['+error.code+'] ' + error.message + " (Please report to IT before continuing)";
 						break;
 				}
-			// Handle unhandled error
+				// Handle unhandled error
 			} else {
 				msg='An unhandled error was received.';
 			}
@@ -1179,7 +1186,7 @@
 			meerkat.modules.serverSideValidationOutput.outputValidationErrors({
 				validationErrors: error.errorDetails.validationErrors,
 				startStage: 'payment'
-				});
+			});
 			if (typeof error.transactionId != 'undefined') {
 				meerkat.modules.transactionId.set(error.transactionId);
 			}
@@ -1227,7 +1234,7 @@
 		else if ($('#health_simples_contactType_callback').is(':checked')){
 			$('.simples-privacycheck-statement, .new-quote-only, .follow-up-call').removeClass('hidden');
 			toggleDialogueInChatCallback();
-	}
+		}
 	}
 
 	// Hide/show simple Rebate dialogue when toggle rebate options in simples journey
