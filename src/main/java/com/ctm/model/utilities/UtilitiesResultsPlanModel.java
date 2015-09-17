@@ -9,10 +9,12 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 
-	private static final Logger logger = LoggerFactory.getLogger(UtilitiesResultsPlanModel.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesResultsPlanModel.class);
 
 	private String retailerId;
 	private String retailerName;
@@ -265,11 +267,37 @@ public class UtilitiesResultsPlanModel extends AbstractJsonModel {
 			if(json.isNull("annual_prev_cost") == false) setAnnualPreviousCost(json.getDouble("annual_prev_cost"));
 
 		} catch (JSONException e) {
-			logger.debug("",e);
+			LOGGER.debug("Failed to populate utilities results plan model {}", kv("json", json), e);
 			return false;
 		}
 
 		return true;
 
+	}
+
+	@Override
+	public String toString() {
+		return "UtilitiesResultsPlanModel{" +
+				"retailerId='" + retailerId + '\'' +
+				", retailerName='" + retailerName + '\'' +
+				", productId=" + productId +
+				", planName='" + planName + '\'' +
+				", offerType='" + offerType + '\'' +
+				", contractPeriod='" + contractPeriod + '\'' +
+				", cancellationFees='" + cancellationFees + '\'' +
+				", payontimeDiscounts='" + payontimeDiscounts + '\'' +
+				", ebillingDiscounts='" + ebillingDiscounts + '\'' +
+				", guaranteedDiscounts='" + guaranteedDiscounts + '\'' +
+				", otherDiscounts='" + otherDiscounts + '\'' +
+				", discountDetails='" + discountDetails + '\'' +
+				", quarterlyEnergySavings=" + quarterlyEnergySavings +
+				", quarterlyGasSavings=" + quarterlyGasSavings +
+				", percentageElectricitySavings=" + percentageElectricitySavings +
+				", percentageGasSavings=" + percentageGasSavings +
+				", yearlyElectricitySavings=" + yearlyElectricitySavings +
+				", yearlyGasSavings=" + yearlyGasSavings +
+				", annualPreviousCost=" + annualPreviousCost +
+				", annualNewCost=" + annualNewCost +
+				'}';
 	}
 }

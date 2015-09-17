@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class FormValidation {
 
-	private static final Logger logger = LoggerFactory.getLogger(FormValidation.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(FormValidation.class);
 
 	public static <T> List<SchemaValidationError> validate(T request , String vertical) {
 		return validate(request, vertical, true);
@@ -64,7 +66,7 @@ public class FormValidation {
 			}
 			errorDetails.put("validationErrors", validationErrors );
 		} catch (JSONException e) {
-			logger.error("",e);
+			LOGGER.error("Failed to output to json.", e);
 		}
 		return reponse;
 	}
@@ -78,7 +80,7 @@ public class FormValidation {
 		FatalErrorService fatalErrorService  = new FatalErrorService(sessionId);
 		for(SchemaValidationError error: errors){
 			String description = "Message: " + error.getMessage() + " xpath:" + error.getElementXpath();
-			logger.error("validation errors " + description);
+			LOGGER.error("validation errors. {}", kv("description", description));
 			fatalErrorService.logFatalError(styleCodeId, page, false, "validationError ", description, transactionId);
 		}
 	}

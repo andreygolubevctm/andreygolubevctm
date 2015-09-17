@@ -2,7 +2,7 @@
 <%@ tag description="Represents a person's date of birth, where the min and max age can be dynamically changed"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/field_new/person_dob.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.field_new.person_dob')}" />
 
 <%--
 	See corresponding module formDateInput.js

@@ -46,4 +46,14 @@ public class TravelRequest implements Request<TravelQuote> {
     public void setEnvironmentOverride(String environmentOverride) {
         this.environmentOverride = environmentOverride;
     }
+
+    @Override
+    public String toString() {
+        return "TravelRequest{" +
+                "clientIpAddress='" + clientIpAddress + '\'' +
+                ", travel=" + travel +
+                ", transactionId=" + transactionId +
+                ", environmentOverride='" + environmentOverride + '\'' +
+                '}';
+    }
 }

@@ -66,9 +66,3 @@
 
 <%-- HTML --%>
 <input type="checkbox" name="${name}" id="${name}" class="checkbox-switch ${className}" value="${value}"${checked}${requiredAttribute} data-text-label="" data-on-text="${onText}" data-off-text="${offText}">
-
-
-<%-- JS --%>
-<go:script marker="onready">
-	$('input.checkbox-switch').bootstrapSwitch().bootstrapSwitch('setOnLabel', '${onText}').bootstrapSwitch('setOffLabel', '${offText}');
-</go:script>

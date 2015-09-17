@@ -1,20 +1,14 @@
 package com.ctm.services;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.exceptions.BrandException;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
 
-public class SettingsService {
+import javax.servlet.http.HttpServletRequest;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(SettingsService.class.getName());
+public class SettingsService {
 
 	/**
 	 * Sets the vertical code for the page request scope and loads the settings object.

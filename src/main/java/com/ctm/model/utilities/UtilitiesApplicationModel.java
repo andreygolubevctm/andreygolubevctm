@@ -10,7 +10,7 @@ import com.ctm.model.AbstractJsonModel;
 
 public class UtilitiesApplicationModel extends AbstractJsonModel {
 
-	private static final Logger logger = LoggerFactory.getLogger(UtilitiesApplicationModel.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesApplicationModel.class);
 
 	private String uniquePurchaseId;
 
@@ -30,7 +30,7 @@ public class UtilitiesApplicationModel extends AbstractJsonModel {
 		try {
 			setUniquePurchaseId(responseJson.getString("unique_purchase_id"));
 		} catch (JSONException e) {
-			logger.debug("",e);
+			LOGGER.debug("",e);
 			return false;
 		}
 

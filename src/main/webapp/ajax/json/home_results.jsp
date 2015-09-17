@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.home_results')}" />
 
 <c:set var="verticalCode" value="HOME" />
 
@@ -89,7 +89,7 @@
 			<c:set var="commencementDateUpdated" value="true" />
 		</c:if>
 
-		${logger.debug('About to call soap aggregator. {}', log:kv('data.home', data.home))}
+		${logger.trace('About to call soap aggregator. {}', log:kv('data.home', data.home))}
 		<%-- Save client data --%>
 		<core:transaction touch="${touch}" noResponse="true" writeQuoteOverride="${writeQuoteOverride}" />
 

@@ -4,9 +4,6 @@
 
 <c:set var="xpath" value="quote" />
 
-<%-- Load in preselected factory options and accessories --%>
-<car:options_preselections />
-
 <layout:slide formId="optionsForm" nextLabel="Next Step">
 
     <layout:slide_content>

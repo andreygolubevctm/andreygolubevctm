@@ -39,7 +39,7 @@
     function _onAddressChange(e) {
         // Clear old error messages when toggling
         if($(e.target).attr("id") === "utilities_application_details_address_nonStd")
-            $(".elasticsearch_container_utilities_application_details_address .error-field label").remove()
+            $(".elasticsearch_container_utilities_application_details_address .error-field label").remove();
 
         if($("#utilities_application_details_postalMatch").prop('checked')) {
             $(".elasticsearch_container_utilities_application_details_postal").find("input, select").each(function() {

@@ -41,4 +41,14 @@ public class Role {
 	public void setDeveloper(boolean isDeveloper) {
 		this.isDeveloper = isDeveloper;
 	}
+
+	@Override
+	public String toString() {
+		return "Role{" +
+				"id=" + id +
+				", isAdmin=" + isAdmin +
+				", canSeeMessageQueue=" + canSeeMessageQueue +
+				", isDeveloper=" + isDeveloper +
+				'}';
+	}
 }

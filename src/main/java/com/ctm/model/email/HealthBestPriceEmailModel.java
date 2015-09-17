@@ -43,4 +43,13 @@ public class HealthBestPriceEmailModel extends BestPriceEmailModel {
 		return applyUrl;
 	}
 
+	@Override
+	public String toString() {
+		return "HealthBestPriceEmailModel{" +
+				"rankings=" + rankings +
+				", quoteReference=" + quoteReference +
+				", CoverType1='" + CoverType1 + '\'' +
+				", applyUrl='" + applyUrl + '\'' +
+				'}';
+	}
 }
