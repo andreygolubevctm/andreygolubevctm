@@ -123,7 +123,7 @@ Bundles.prototype.getBrandCodeBundles = function(brandCode) {
     for(var bundle in this.collection) {
         var bundleBrandCodes = this.collection[bundle].brandCodes;
 
-        if(typeof bundleBrandCodes !== "undefined" && bundleBrandCodes.indexOf(brandCode) !== -1) {
+        if(typeof bundleBrandCodes !== "undefined" && (bundleBrandCodes.indexOf(brandCode) !== -1 || bundleBrandCodes === "all")) {
             bundles.push(bundle);
         }
     }

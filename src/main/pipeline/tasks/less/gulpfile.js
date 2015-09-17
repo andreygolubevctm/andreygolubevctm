@@ -18,8 +18,12 @@ var less = require("gulp-less"),
     intercept = require("gulp-intercept"),
     plumber = require("gulp-plumber"),
     notify = require("gulp-notify"),
+    sakugawa = require('gulp-sakugawa'),
     fs = require("fs"),
+    mkdirp = require("mkdirp"),
     path = require("path");
+
+var fileHelper = require("./../../helpers/fileHelper");
 
 // TODO: Add .map files
 
@@ -114,6 +118,8 @@ function LessTasks(gulp) {
                 watchesStarted.push(taskName);
             }
 
+            var filePath = fileName = targetFolder = targetFile = "";
+
             return stream.pipe(
                     intercept(function(file) {
                         // Check if there are imports to replace (from a bundle extending another bundle)
@@ -159,47 +165,75 @@ function LessTasks(gulp) {
                 .pipe(notify({
                     title: taskName + " minified",
                     message: bundle + " successfully minified"
-                }));
+                }))
+                // Start IE CSS Selector fix
+                .pipe(intercept(function(file){
+                    filePath = file.path;
+                    fileName = path.basename(file.path).replace(/\.[^/.]+$/, "");
+                    targetFolder = path.dirname(filePath) + "\\inc";
+                    targetFile = fileName + ".inc";
+
+                    // Wipe the original target file
+                    mkdirp.sync(targetFolder);
+                    fs.writeFileSync(path.join(targetFolder, targetFile), "");
+
+                    return file;
+                }))
+                .pipe(sakugawa({
+                    maxSelectors: 4090,
+                    suffix: "."
+                }))
+                // Append to the list of includes
+                .pipe(intercept(function(file){
+                    var tempPath = file.path,
+                        revDate = + new Date(),
+                        appendContent = "<link rel=\"stylesheet\" type=\"text\/css\" href=\"" + tempPath.slice(tempPath.indexOf("assets"), tempPath.length).replace(/\\/g, "/") + "?rev=" + revDate + "\" media=\"all\">";
+                    fileHelper.appendToFile(targetFolder, targetFile, appendContent);
+                    return file;
+                }))
+                .pipe(gulp.dest(targetDir))
+                .pipe(notify({
+                    title: taskName + " " + brandCode + " 4095 split for IE",
+                    message: "Successfully split up for IE (4095)"
+                }));;
         }
     };
 
     for(var bundle in bundles.collection) {
-        if(bundle !== "core") {
-            (function (bundle) {
-                var brandCodes = bundles.getBundleBrandCodes(bundle);
+        (function (bundle) {
+            var brandCodes = bundles.getBundleBrandCodes(bundle);
 
-                var bundleLessTasks = [];
+            var bundleLessTasks = [];
 
-                var fileList = bundles.getBundleFiles(bundle, "less", false),
-                    compileAs = bundles.collection[bundle].compileAs;
+            var fileList = bundles.getBundleFiles(bundle, "less", false),
+                compileAs = bundles.collection[bundle].compileAs;
 
-                for (var i = 0; i < brandCodes.length; i++) {
-                    var brandCode = brandCodes[i];
+            for (var i = 0; i < brandCodes.length; i++) {
+                var brandCode = brandCodes[i];
 
-                    (function(brandCode) {
-                        var brandCodeTask = taskPrefix + bundle + ":" + brandCode,
-                            brandCodeBundleSrcPath = path.join(gulp.pipelineConfig.bundles.dir, bundle, "less", "build.less");
+                (function(brandCode) {
+                    var brandCodeTask = taskPrefix + bundle + ":" + brandCode,
+                        brandCodeBundleSrcPath = path.join(gulp.pipelineConfig.bundles.dir, bundle, "less", "build.less");
 
-                        var targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
+                    var targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
 
-                        gulp.task(brandCodeTask, function () {
-                            var brandFileNames = {
-                                    variables: "variables." + brandCode + ".less",
-                                    theme: "theme." + brandCode + ".less"
-                                };
+                    gulp.task(brandCodeTask, function () {
+                        var brandFileNames = {
+                                variables: "variables." + brandCode + ".less",
+                                theme: "theme." + brandCode + ".less"
+                            };
 
-                            return gulpAction(brandCodeBundleSrcPath, targetDir, brandCodeTask, fileList, brandCode, brandFileNames, bundle, compileAs);
-                        });
+                        return gulpAction(brandCodeBundleSrcPath, targetDir, brandCodeTask, fileList, brandCode, brandFileNames, bundle, compileAs);
+                    });
 
-                        bundleLessTasks.push(brandCodeTask);
-                    })(brandCode);
-                }
+                    bundleLessTasks.push(brandCodeTask);
+                })(brandCode);
+            }
 
-                var bundleTaskName = taskPrefix + bundle;
-                gulp.task(bundleTaskName, bundleLessTasks);
-                lessTasks.push(bundleTaskName);
-            })(bundle);
-        }
+            var bundleTaskName = taskPrefix + bundle;
+            gulp.task(bundleTaskName, bundleLessTasks);
+            lessTasks.push(bundleTaskName);
+        })(bundle);
     }
 
     gulp.task("less", lessTasks);
