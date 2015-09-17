@@ -21,7 +21,6 @@ import com.ctm.providers.travel.travelquote.model.response.TravelResponse;
 import com.ctm.services.CommonQuoteService;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.ResultsService;
-import com.disc_au.web.go.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
@@ -39,8 +38,7 @@ import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 public class TravelService extends CommonQuoteService<TravelQuote> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TravelService.class);
-	private String vertical;
-	private Data data;
+    private SimpleConnection connection;
 
     public TravelService(ServiceConfiguration serviceConfig, SimpleConnection connection) {
         super(serviceConfig);
@@ -149,8 +147,4 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
         return null;
 
     }
-
-	public Data getGetData() {
-		return data;
-	}
 }
