@@ -142,9 +142,9 @@ ResultsModel = {
 						Results.model.hasValidationErrors = typeof( Object.byString( jsonResult, Results.settings.paths.results.errors ) ) === 'object';
 
 						Results.reviseDetails();
-						ServerSideValidation.outputValidationErrors({
-								validationErrors: jsonResult.error.errorDetails.validationErrors,
-								startStage: 0
+						meerkat.modules.serverSideValidationOutput.outputValidationErrors({
+							validationErrors: jsonResult.error.errorDetails.validationErrors,
+							startStage: 'start'
 						});
 					}
 					else if( !jsonResult || typeof( Object.byString( jsonResult, Results.settings.paths.results.rootElement ) ) == "undefined" ){
