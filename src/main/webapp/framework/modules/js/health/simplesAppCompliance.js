@@ -41,7 +41,7 @@
                         errorResponse = {};
                     }
                 }
-                console.log(errorResponse, jqXHR.responseText);
+
                 if (errorResponse.hasOwnProperty('errors') && errorResponse.errors.length > 0) {
                     errorMessage = errorResponse.errors[0].message
                 }

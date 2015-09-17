@@ -69,7 +69,7 @@
             if (typeof window.selectedAddressObj != 'undefined' && typeof window.selectedAddressObj[type] != 'undefined') {
                 selectedAddress = window.selectedAddressObj[type];
             } else if ($('[data-address-id="' + name + '"]').data('elasticAddress') != 'undefined') {
-                selectedAddress = $('[data-address-id="' + name + '"]').data('elasticAddress').address
+                selectedAddress = $('[data-address-id="' + name + '"]').data('elasticAddress').address;
             }
 
             switch (fldName) {
