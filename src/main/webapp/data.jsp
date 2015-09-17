@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="java.util.*" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.data')}" />
+
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
 <c:set var="buildIdentifier"><core:buildIdentifier></core:buildIdentifier></c:set>
 <c:set var="remoteAddr" value="${pageContext.request.remoteAddr}" />
@@ -151,15 +153,20 @@
 						</div>
 
 						<c:catch var ="catchException">
-						<c:forEach items="${data['*']}" var="node">
+							<c:forEach items="${data['*']}" var="node">
 								<c:set var="tempXml" value="${go:getEscapedXml(node)}" />
 								<x:transform xml="${tempXml}" xslt="${prettyXml}"/>
 							</c:forEach>
 						</c:catch>
 
-						<c:if test = "${catchException != null}">
-							<x:transform xml="${data.getXML()}" xslt="${prettyXml}"/>
-						</c:if>
+						<c:choose>
+							<c:when test = "${catchException != null}">
+								<x:transform xml="${data.getXML()}" xslt="${prettyXml}"/>
+							</c:when>
+							<c:otherwise>
+								${logger.warn('Exception thrown transforming xml. {}', log:kv('node', node) , catchException)}
+							</c:otherwise>
+						</c:choose>
 
 					</div>
 				</c:forEach>

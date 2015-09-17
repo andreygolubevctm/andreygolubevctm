@@ -1,7 +1,9 @@
 package com.ctm.router;
 
+import com.ctm.model.AbstractJsonModel;
 import com.ctm.services.results.ResultsService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,12 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @WebServlet(urlPatterns = {
         "/features/getStructure.json"
 })
 public class FeaturesRouter extends HttpServlet {
-
-    private static Logger logger = Logger.getLogger(FeaturesRouter.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(FeaturesRouter.class);
 
     private static final long serialVersionUID = 18L;
 
@@ -35,11 +38,12 @@ public class FeaturesRouter extends HttpServlet {
 
             ResultsService resultsService = new ResultsService();
             String results = null;
+            final String vertical = request.getParameter("vertical");
             try {
-                results = resultsService.getPageStructureAsJsonString(request.getParameter("vertical"));
+                results = resultsService.getPageStructureAsJsonString(vertical);
                 writer.print(results);
             } catch (Exception e) {
-                logger.error(e);
+                LOGGER.error("Features couldn't be retrieved {}", kv("vertical", vertical), e);
             }
 
         }

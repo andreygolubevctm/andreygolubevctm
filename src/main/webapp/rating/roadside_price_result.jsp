@@ -3,8 +3,10 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.rating.roadside_price_result')}" />
+
 <x:parse var="roadside" xml="${param.QuoteData}" />
-<go:log level="DEBUG" source="roadside_price_result_jsp">QuoteData: ${param.QuoteData}</go:log>
+${logger.trace('Starting results jsp. {}', log:kv('param.QuoteData ', param.QuoteData ))}
 
 <c:set var="transactionId"><x:out select="$roadside/request/header/partnerReference" /></c:set>
 <c:set var="styleCodeId"><core:get_stylecode_id transactionId="${transactionId}" /></c:set>

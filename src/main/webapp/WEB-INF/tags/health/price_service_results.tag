@@ -1,6 +1,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('tag.health.price_service_result')}" />
+
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
 <%@ attribute name="rows" type="java.util.ArrayList" required="true" rtexprvalue="true"	 description="recordset" %>
@@ -227,7 +229,7 @@
 
 			<%-- set up phio data --%>
 			<c:set var="row" value="${healthPriceDetailService.setUpPhioData(row)}" />
-			<go:log source="health:price_service_results" level="TRACE" >${row.getPhioData()}</go:log>
+			${logger.trace('Got phio data. {}', log:kv('phioData',row.getPhioData()))}
 			<c:out value="${row.getPhioData()}" escapeXml="false" />
 
 			</result>

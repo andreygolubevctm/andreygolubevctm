@@ -17,9 +17,11 @@ import com.ctm.model.content.Content;
 import com.ctm.model.content.ContentProvider;
 import com.ctm.model.content.ContentSupplement;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ContentDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(ContentDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ContentDao.class);
 	private int brandId;
 	private int verticalId;
 
@@ -101,11 +103,10 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-				logger.debug("The following content key '"+contentKey+"' not found in DB... Defaulting to empty string.");
+				LOGGER.debug("Content key not found. Defaulting to empty string. {}", kv("contentKey", contentKey));
 			}else{
-
 				if(contents.size() > 1){
-					logger.warn("There is more than one content value for this content code: "+contentKey+" - Will use the first one found");
+					LOGGER.warn("More than one content value found. Will use the first one found. {}", kv("contentKey", contentKey));
 				}
 
 				content = contents.get(0);
@@ -121,7 +122,7 @@ public class ContentDao {
 
 					ResultSet resultSetSup = stmtSup.executeQuery();
 
-					content.setSupplementary(new ArrayList<ContentSupplement>());
+					content.setSupplementary(new ArrayList<>());
 
 					while (resultSetSup.next()) {
 
@@ -136,12 +137,9 @@ public class ContentDao {
 				}
 			}
 
-		} catch (SQLException e) {
-			logger.error("Failed to get content_supplementary for id:" + content.getId() , e);
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			logger.error("Failed to get content_supplementary for id:" + content.getId() , e);
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("failed getting content {}", kv("contentKey", contentKey), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -209,7 +207,7 @@ public class ContentDao {
 				provider.setProviderId(resultSet.getInt("providerId"));
 				contentItem.setProvider(provider);
 
-				contentItem.setSupplementary(new ArrayList<ContentSupplement>());
+				contentItem.setSupplementary(new ArrayList<>());
 
 				contentIds.add(contentItem.getId());
 
@@ -218,11 +216,8 @@ public class ContentDao {
 			}
 
 			if(contents.size() == 0){
-
-				logger.error("There is no record of this content key: "+contentKey + " and provider id: "+providerId);
-
-			}else{
-
+				LOGGER.debug("no content found {}, {}", kv("contentKey", contentKey), kv("providerId", providerId));
+			} else {
 				if(includeSupplementary){
 
 					PreparedStatement stmtSup = dbSource.getConnection().prepareStatement(
@@ -232,8 +227,6 @@ public class ContentDao {
 							"ON cs.contentControlId = p.contentControlId " +
 						"WHERE cs.contentControlId IN ("+ SimpleDatabaseConnection.createSqlArrayParams(contentIds.size()) + ") ;"
 					);
-
-					//Array array = dbSource.getConnection().createArrayOf("INT", contentIds.toArray()); //--> Would like to use this but not supported by our driver
 
 					int counter = 1;
 					for(int contentId: contentIds){
@@ -250,25 +243,17 @@ public class ContentDao {
 						contentSupItem.setSupplementaryKey(resultSetSup.getString("supplementaryKey"));
 						contentSupItem.setSupplementaryValue(resultSetSup.getString("supplementaryValue"));
 
-						for(Content contentItem : contents){
-
-							if(contentItem.getId() == contentSupItem.getContentControlId()){
-								contentItem.getSupplementary().add(contentSupItem);
-							}
-						}
-
+						contents.stream().filter(contentItem -> contentItem.getId() == contentSupItem.getContentControlId()).forEach(contentItem -> {
+							contentItem.getSupplementary().add(contentSupItem);
+						});
 					}
-
 				}
 
 			}
 
-		} catch (SQLException e) {
-			logger.error("Failed to get content_supplementary" , e);
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			logger.error("Failed to get content_supplementary" , e);
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("failed getting content {}", kv("contentKey", contentKey), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

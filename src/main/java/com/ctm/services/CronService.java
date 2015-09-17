@@ -1,22 +1,17 @@
 package com.ctm.services;
 
+import com.ctm.dao.CronDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.CronJob;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.ctm.dao.CronDao;
-import com.ctm.model.CronJob;
-import com.ctm.exceptions.DaoException;
 
 public abstract class CronService {
-
-	private static final Logger logger = LoggerFactory.getLogger(CronService.class.getName());
 
 	public static void execute(HttpServletRequest request, String frequency) throws DaoException {
 

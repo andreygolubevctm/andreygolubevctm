@@ -17,12 +17,14 @@ import org.json.JSONObject;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.SessionDataService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @WebServlet(urlPatterns = {
 		"/session_poke.json"
 })
 public class SessionPokeRouter extends HttpServlet {
 	private static final long serialVersionUID = 27L;
-	private static final Logger logger = LoggerFactory.getLogger(SessionPokeRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SessionPokeRouter.class);
 
 	private final SessionDataService sessionDataService = new SessionDataService();
 
@@ -40,8 +42,9 @@ public class SessionPokeRouter extends HttpServlet {
 		
 		// Route the requests ///////////////////////////////////////////////////////////////////////////////
 
-		if (uri.endsWith("/session_poke.json")) {	
-			if (request.getParameter("check") == null)
+		if (uri.endsWith("/session_poke.json")) {
+			final String check = request.getParameter("check");
+			if (check == null)
 				sessionDataService.touchSession(request);
 
 			JSONObject json = new JSONObject();
@@ -56,7 +59,7 @@ public class SessionPokeRouter extends HttpServlet {
 				
 				json.put("timeout",  timeout);
 			} catch (JSONException e) {
-				logger.error("Failed to produce JSON object for Session Poke", e);
+				LOGGER.error("Failed to produce JSON object for Session Poke {}", kv("check", check), e);
 			}
 
 			writer.print(json.toString());

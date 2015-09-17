@@ -2,6 +2,7 @@
 <%@ tag description="Performs a basic user security test on a security keyword and returns either true/false"%>
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<c:set var="logger" value="${log:getLogger('tag.simples.security')}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="key" 	required="true"	 rtexprvalue="true" description="The key value to check for in the security tag" %>
@@ -17,5 +18,5 @@
 	</c:if>
 </c:if>
 
-<go:log source="simples:security">key ${key} = ${result}</go:log>
+${logger.info('Got result. {},{}', log:kv('key', key), log:kv('result', result))}
 <c:out value="${result}" />

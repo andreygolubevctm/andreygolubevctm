@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 })
 public class CategoryRouter extends HttpServlet {
 
-	private static final Logger logger = LoggerFactory.getLogger(CategoryRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryRouter.class);
 	private static final long serialVersionUID = 72L;
 
 	@Override
@@ -58,7 +58,7 @@ public class CategoryRouter extends HttpServlet {
 
 		}catch (Exception e) {
 
-			logger.error("/Category json failed: ", e);
+			LOGGER.error("Category fetch failed", e);
 
 			JSONObject json = null;
 			Error error = new Error();

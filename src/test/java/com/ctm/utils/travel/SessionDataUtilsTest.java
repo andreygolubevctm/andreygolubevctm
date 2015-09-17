@@ -15,13 +15,21 @@ public class SessionDataUtilsTest {
     public void shouldGetTransactionIdFromDataBucket(){
         Data data = new Data();
         data.put("current/transactionId" , "10000");
-        Long result = SessionDataUtils.getTransactionIdFromTransactionSessionData(data);
+        Long result = SessionDataUtils.getTransactionId(data);
         assertEquals(Long.valueOf(10000L) , Long.valueOf(result));
 
         data = new Data();
         data.put("current/transactionId" , "meerkat");
-        result = SessionDataUtils.getTransactionIdFromTransactionSessionData(data);
+        result = SessionDataUtils.getTransactionId(data);
         assertNull(result);
+    }
+
+    @Test
+    public void shouldSetTransactionIdToDataBucket(){
+        Data data = new Data();
+        String transactionId = "10000";
+        SessionDataUtils.setTransactionId(data, transactionId);
+        assertEquals(transactionId, data.get("current/transactionId"));
     }
 
 }

@@ -2,7 +2,7 @@
 <%@page import="java.util.Date,java.io.*,java.util.*,java.text.*,java.math.*, java.io.*"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.upload_regional_fuel_prices')}" />
 
 <%--
 AUTOMATIC CRON JOB FOR MOTORMOUTH FUEL SERVICE - REGIONAL
@@ -192,8 +192,7 @@ XML PARSE AND SQL UPDATE
 
 
 		<%-- Send an Update to the server --%>
-		<% System.out.println( "Results for " + pageContext.getAttribute("stateToken") + " / " + pageContext.getAttribute("fuelToken") + " = " + pageContext.getAttribute("sqlCount") ); %>
-
+		${logger.info("Results for {}, {}, {}", log:kv("stateToken",stateToken), log:kv("fuelToken",fuelToken), log:kv("sqlCount",sqlCount))}
 	</c:forTokens>
 	</c:if>
 	</c:forTokens>

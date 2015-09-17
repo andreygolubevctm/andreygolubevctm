@@ -23,12 +23,24 @@ import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.elasticsearch.AddressSearchService;
 import com.disc_au.web.go.Data;
+import org.slf4j.MDC;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class ApplicationService {
 
-	private static final Logger logger = LoggerFactory.getLogger(ApplicationService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationService.class);
 
-	private static ArrayList<Brand> brands = new ArrayList<Brand>(); // Note: always use the getBrands() method so the data is loaded from the DB
+	private static List<Brand> brands = new ArrayList<>(); // Note: always use the getBrands() method so the data is loaded from the DB
 	private static final String applicationDateSessionKey = "applicationDate";
 
 
@@ -59,10 +71,10 @@ public class ApplicationService {
 	 * @return
 	 * @throws DaoException
 	 */
-	public static ArrayList<Brand> getEnabledBrandsForVertical(String verticalCode) throws DaoException{
+	public static List<Brand> getEnabledBrandsForVertical(String verticalCode) throws DaoException{
 
-		ArrayList<Brand> brands = getBrands();
-		ArrayList<Brand> enabledBrands = new ArrayList<Brand>();
+		List<Brand> brands = getBrands();
+		List<Brand> enabledBrands = new ArrayList<Brand>();
 
 		for(Brand brand : brands){
 			Vertical vertical = brand.getVerticalByCode(verticalCode);
@@ -95,7 +107,7 @@ public class ApplicationService {
 		Brand brand = null;
 
 		// Look for brand parameter (query string or form data)
-		String brandCode = (String) request.getParameter("brandCode");
+		String brandCode = request.getParameter("brandCode");
 
 		brand = getBrandByCode(brandCode);
 
@@ -188,6 +200,7 @@ public class ApplicationService {
 	 * @param verticalCode
 	 */
 	public static void setVerticalCodeOnRequest(ServletRequest request, String verticalCode) {
+		MDC.put("verticalCode", verticalCode);
 		request.setAttribute("verticalCode", verticalCode);
 	}
 
@@ -218,7 +231,7 @@ public class ApplicationService {
 	 * @throws DaoException
 	 * @throws Exception
 	 */
-	public static ArrayList<Brand> getBrands() throws DaoException {
+	public static List<Brand> getBrands() throws DaoException {
 
 		// If brands array empty -> get content from DB
 
@@ -267,7 +280,8 @@ public class ApplicationService {
 			// Update static variables
 			brands = brandsList;
 
-			logger.info("Loaded "+brandsList.size()+" brands and "+verticalsList.size()+" verticals from database");
+			LOGGER.debug("Loaded brands and verticals from database {}, {}", kv("brandsListSize", brandsList.size()),
+					kv("verticalsList.size()", verticalsList.size()));
 
 		}
 
@@ -307,7 +321,7 @@ public class ApplicationService {
 			if (session != null) {
 				Object attribute = session.getAttribute(applicationDateSessionKey);
 				if (attribute != null) {
-					logger.debug("Application date override retrieved: " + ((Date)attribute).toString());
+					LOGGER.debug("Application date override retrieved. {}", kv("attribute", attribute));
 					return (Date) attribute;
 				}
 			}
@@ -327,14 +341,14 @@ public class ApplicationService {
 				// Remove session entry
 				if (dateString == null || dateString.length() == 0) {
 					session.removeAttribute(applicationDateSessionKey);
-					logger.debug("Removed application date from session");
+					LOGGER.debug("Removed application date from session {}", kv("date", dateString));
 				}
 				// Add session entry
 				else {
 					SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					Date date = parser.parse(dateString);
 					session.setAttribute(applicationDateSessionKey, date);
-					logger.debug("Application date set on session: " + date.toString());
+					LOGGER.debug("Application date set on session {}", kv("date", date));
 				}
 			}
 		}
@@ -344,12 +358,11 @@ public class ApplicationService {
 	 * Clear the cached brands and settings and refreshes from DAO.
 	 */
 	public static boolean clearCache() throws DaoException {
-		brands = new ArrayList<Brand>();
+		brands = new ArrayList<>();
 		getBrands();
 		ServiceConfigurationService.clearCache();
 		AddressSearchService.destroy();
 		AddressSearchService.init();
-        ApplicationCacheManager.clearAll();
 		return true;
 	}
 

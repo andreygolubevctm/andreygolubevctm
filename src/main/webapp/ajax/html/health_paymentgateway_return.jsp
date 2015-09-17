@@ -2,6 +2,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.html.health_paymentgateway_return')}" />
+
 <x:parse doc="${config}" var="configXml" />
 
 <%-- PARAMS --%>
@@ -12,7 +14,7 @@
 	<x:out select="$configXml/aggregator/westpacGateway/cd_supplier_business" />
 </c:set>
 
-<go:log level="INFO" source="health_paymentgateway_return_jsp">health_paymentgateway_return: action:${param.action}, fl_success:${param.fl_success}, tx_response:${param.tx_response}</go:log>
+${logger.debug('Start health_paymentgateway_return. {},{},{}', log:kv('action',param.action ), log:kv('fl_success',param.fl_success ),log:kv('tx_response', param.tx_response ))}
 
 <c:set var="cardNumber" value="${go:jsEscape(param.cd_prerego)}" />
 <c:set var="cardScheme" value="${go:jsEscape(param.nm_card_scheme)}" />
@@ -21,28 +23,28 @@
 
 <c:choose>
 	<c:when test="${not empty param.fl_success and param.fl_success != '1'}">
-		<go:log source="health_paymentgateway_return_jsp" level="ERROR" >Failed (fl_success != 1) WESTPAC: ${cardNumber}, ${cardScheme}, ${cardExpiry}, ${cardHolderName}</go:log>
+		${logger.warn('Failed (fl_success != 1) WESTPAC. {},{},{}', log:kv('cardScheme', cardScheme), log:kv('cardExpiry',cardExpiry ), log:kv('cardHolderName',cardHolderName ))}
 		<c:set var="success" value="false" />
 		<c:set var="message" value="Failed (fl_success != 1)" />
 	</c:when>
 	<c:when test="${not empty param.action and param.action == 'Cancelled'}">
-		<go:log source="health_paymentgateway_return_jsp" level="INFO" >Cancel button was pressed WESTPAC: ${cardNumber}, ${cardScheme}, $cardExpiry}, ${cardHolderName}</go:log>
+		${logger.info('Cancel button was pressed WESTPAC: {},{},{}', log:kv('cardScheme', cardScheme) ,log:kv('cardExpiry',cardExpiry ), log:kv('cardHolderName',cardHolderName ))}
 		<c:set var="success" value="false" />
 		<c:set var="message" value="Cancel button was pressed" />
 	</c:when>
 	<c:when test="${empty param.fl_success or empty param.cd_community or param.cd_community != comm or empty param.cd_supplier_business or param.cd_supplier_business != supp}">
-		<go:log source="health_paymentgateway_return_jsp" level="ERROR" >Missing or unexpected parameters WESTPAC: ${cardNumber}, ${cardScheme}, ${cardExpiry}, ${cardHolderName}</go:log>
+		${logger.warn('Missing or unexpected parameters WESTPAC: {},{},{}', log:kv('cardScheme', cardScheme), log:kv('cardExpiry',cardExpiry ), log:kv('cardHolderName',cardHolderName ))}
 		<c:set var="success" value="false" />
 		<c:set var="message" value="Missing or unexpected parameters" />
 	</c:when>
 	<c:when test="${empty cardNumber or empty cardScheme or empty cardExpiry}">
-		<go:log source="health_paymentgateway_return_jsp" level="ERROR" >Missing parameters WESTPAC: ${cardNumber}, ${cardScheme}, ${cardExpiry}, ${cardHolderName}</go:log>
+		${logger.warn('Missing parameters WESTPAC: {},{},{}', log:kv('cardScheme', cardScheme), log:kv('cardExpiry',cardExpiry ), log:kv('cardHolderName',cardHolderName ))}
 		<c:set var="success" value="false" />
 		<c:set var="message" value="Missing parameters" />
 	</c:when>
 	<c:otherwise>
 		<%-- Capture response values into data bucket --%>
-		<go:log source="health_paymentgateway_return_jsp" level="DEBUG" >WESTPAC: ${cardNumber}, ${cardScheme}, ${cardExpiry}, ${cardHolderName}</go:log>
+		${logger.debug('Sucessful response was returned from WESTPAC payment gateway. {},{},{},{}', log:kv('cardScheme', cardScheme) , log:kv('cardExpiry', cardExpiry), log:kv('cardHolderName', cardHolderName))}
 		<c:set var="success" value="true" />
 		<c:set var="message"><c:out value="${param.tx_response}" default="OK" escapeXml="true" /></c:set>
 	</c:otherwise>

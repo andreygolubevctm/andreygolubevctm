@@ -1,13 +1,16 @@
 package com.disc_au.web.go;
 
+import com.disc_au.web.go.xml.XmlNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.disc_au.web.go.xml.XmlNode;
+import static com.ctm.logging.LoggingArguments.kv;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -18,6 +21,8 @@ import com.disc_au.web.go.xml.XmlNode;
  */
 
 public class MakeSchemaFromTag {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(MakeSchemaFromTag.class.getName());
 
 	/** The Constant TAG_SUFFIX. */
 	public static final String TAG_SUFFIX = ".tag";
@@ -70,10 +75,8 @@ public class MakeSchemaFromTag {
 				sb.append(str);
 			}
 			in.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to read file. {}", kv("file",file) , e);
 		}
 
 		// Search for <%@ attribute ... %>
