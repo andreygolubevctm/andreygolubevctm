@@ -1,7 +1,11 @@
 package com.ctm.dao.competition;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.dao.DatabaseUpdateBatchMapping;
+import com.ctm.dao.DatabaseUpdateMapping;
+import com.ctm.dao.SqlDao;
 import com.ctm.exceptions.DaoException;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
@@ -9,11 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.naming.NamingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
+import java.util.List;
 
 public class CompetitionDao {
 
