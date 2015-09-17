@@ -85,4 +85,17 @@ public class ProviderContent {
 	public void setVerticalId(int verticalId) {
 		this.verticalId = verticalId;
 	}
+
+	@Override
+	public String toString() {
+		return "ProviderContent{" +
+				"providerContentId=" + providerContentId +
+				", providerContentTypeId=" + providerContentTypeId +
+				", providerContentText='" + providerContentText + '\'' +
+				", effectiveStart=" + effectiveStart +
+				", effectiveEnd=" + effectiveEnd +
+				", providerId=" + providerId +
+				", verticalId=" + verticalId +
+				'}';
+	}
 }

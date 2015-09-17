@@ -19,11 +19,6 @@ import java.util.Collections;
 
 public class MessageDetailService {
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(MessageDetailService.class.getName());
-
-
-
 	public MessageDetail getMessageDetail(Message message) throws DaoException {
 		MessageDetail messageDetail = new MessageDetail();
 

@@ -10,17 +10,6 @@ package com.ctm.services;
  *
  */
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.exceptions.BrandException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
@@ -28,11 +17,22 @@ import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.disc_au.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 
 public class SessionDataService {
 
-	private static final Logger logger = LoggerFactory.getLogger(SessionDataService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SessionDataService.class);
 
 	private static int MAX_DATA_OBJECTS_IN_SESSION = 10;
 
@@ -120,7 +120,7 @@ public class SessionDataService {
 		if (verticalCode == null || verticalCode.isEmpty()) {
 			// this is to assist recovery if session is lost.
 			verticalCode = VerticalType.GENERIC.getCode();
-			logger.warn("addNewTransactionDataToSession: No vertical code provided; using generic instead");
+			LOGGER.warn("No vertical code provided; using generic instead");
 		}
 
 		newSession.put("current/verticalCode", verticalCode);
@@ -204,7 +204,7 @@ public class SessionDataService {
 	 */
 	private Data getProcessedDataForTransactionId(HttpServletRequest request, String transactionId, Data data) throws DaoException, SessionException {
 		if (data == null) {
-			logger.warn("Unable to find matching data object in session for "+transactionId);
+			LOGGER.warn("Unable to find matching data object in session. {}", kv("transactionId", transactionId));
 
 			// Data object not found, create a new version (this is to assist with recovery).
 			data = addNewTransactionDataToSession(request);
@@ -219,7 +219,7 @@ public class SessionDataService {
 			String applicationBrand = ApplicationService.getBrandCodeFromRequest(request);
 
 			if (dataBucketBrand != null && dataBucketBrand.equals("") == false && applicationBrand != null && dataBucketBrand.equalsIgnoreCase(applicationBrand) == false) {
-				logger.error("Transaction doesn't match brand: " + dataBucketBrand + "!=" + applicationBrand);
+				LOGGER.error("Transaction doesn't match brand {},{}", kv("dataBucketBrand", dataBucketBrand), kv("applicationBrand", applicationBrand));
 				throw new BrandException("Transaction doesn't match brand");
 			}
 		}

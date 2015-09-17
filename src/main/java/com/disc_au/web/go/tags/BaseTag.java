@@ -5,10 +5,12 @@
 
 package com.disc_au.web.go.tags;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.jsp.tagext.BodyTagSupport;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -19,6 +21,8 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
  */
 
 public class BaseTag extends BodyTagSupport {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(BodyTagSupport.class.getName());
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
@@ -59,8 +63,7 @@ public class BaseTag extends BodyTagSupport {
 			this.rootTag = (HtmlTag) findAncestorWithClass(this, HtmlTag.class);
 
 			if (this.rootTag == null) {
-				System.err
-						.println("No Root HTML Tag found. To Use the GO tools your web page must use the gadget objects html tag as the root (e.g. <go:html>)");
+				LOGGER.error("No Root HTML Tag found. To Use the GO tools your web page must use the gadget objects html tag as the root (e.g. <go:html>)");
 			}
 		}
 		return this.rootTag;

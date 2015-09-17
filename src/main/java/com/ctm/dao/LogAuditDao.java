@@ -13,9 +13,11 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.model.LogAudit;
 import com.ctm.services.confirmation.JoinService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class LogAuditDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(JoinService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(JoinService.class);
 
 	private SimpleDatabaseConnection dbSource;
 
@@ -62,7 +64,8 @@ public class LogAuditDao {
 			stmt.setString(10, logAudit.getIp());
 			stmt.executeUpdate();
 		} catch (NamingException | SQLException e) {
-			logger.error("failed to get connection" , e);
+			LOGGER.error("failed to write log audit entry {}, {}, {}, {}, {}, {}, {}", kv("logAudit", logAudit), kv("priority", priority),
+				kv("identity", identity), kv("description", description), kv("finalData", finalData), kv("appId", app_id), kv("sessionId", session_id));
 		} finally {
 			dbSource.closeConnection();
 		}

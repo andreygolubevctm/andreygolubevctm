@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.car_quote_results')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="CAR" />
 
@@ -193,7 +193,7 @@
 				<%-- Write to the stats database --%>
 				<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
-				${logger.debug('Got stats. {},{},{}', log:kv('tranId', tranId), log:kv('resultXml', resultXml), log:kv('stats', stats))}
+				${logger.trace('Got stats. {},{}', log:kv('resultXml', resultXml), log:kv('stats', stats))}
 				<%-- Return the results as json --%>
 
 				<%-- Calculate the end valid date for these quotes --%>

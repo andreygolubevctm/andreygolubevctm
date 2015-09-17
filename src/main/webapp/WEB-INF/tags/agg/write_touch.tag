@@ -2,7 +2,7 @@
 <%@ tag description="Wrapper for all transaction touching and quote writes." %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('/agg/write_touch.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.agg.write_touch')}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="transaction_id" 	required="true"		description="The transaction to be touched" %>

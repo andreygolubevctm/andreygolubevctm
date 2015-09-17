@@ -1,33 +1,31 @@
 package com.disc_au.soap;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import com.ctm.model.settings.SoapAggregatorConfiguration;
+import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.utils.function.Action;
+import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ctm.model.settings.SoapAggregatorConfiguration;
-import com.ctm.model.settings.SoapClientThreadConfiguration;
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class HtmlFormClientThread extends SOAPClientThread {
 
 	public HtmlFormClientThread(String tranId, String configRoot,
 								SoapClientThreadConfiguration configuration, String xmlData,
 								String name,
-								SoapAggregatorConfiguration soapConfiguration) {
+								SoapAggregatorConfiguration soapConfiguration, Action beforeRun, Action afterRun) {
 		super(tranId, configRoot, configuration, xmlData, name,
-				soapConfiguration);
+				soapConfiguration, beforeRun, afterRun);
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(HtmlFormClientThread.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HtmlFormClientThread.class);
 
 	/**
 	 * Process request.
@@ -75,7 +73,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 
 			// Important! keep this as debug and don't enable debug logging in production
 			// data may include credit card details (this is from the nib webservice)
-			logger.debug("[HTML Response] " + data);
+			LOGGER.debug("[HTML Response] {}", kv("data", data));
 
 			// Send the request
 			connection.setRequestProperty("Content-Length", String.valueOf(data.length()));
@@ -128,7 +126,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 					}
 					// Unhandled error, wrap it in our own XML
 					else {
-						logger.error("Error Data: " + errorData);
+						LOGGER.error("Error Data. {}", kv("errorData", errorData));
 						SOAPError err = new SOAPError(SOAPError.TYPE_HTTP,
 								connection.getResponseCode(),
 								connection.getResponseMessage(),
@@ -147,16 +145,11 @@ public class HtmlFormClientThread extends SOAPClientThread {
 
 			this.responseTime = System.currentTimeMillis() - startTime;
 
-		} catch (MalformedURLException e) {
-			logger.error("failed to processRequest" , e);
-			e.printStackTrace();
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
+		} catch ( IOException e) {
+			LOGGER.error("failed to processRequest", e);
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), e.getClass().getName(), (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 
-		} catch (IOException e) {
-			logger.error("failed to processRequest" , e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), getConfiguration().getName(), "IOException", (System.currentTimeMillis() - startTime));
-			returnData.append(err.getXMLDoc());
 		}
 
 		this.responseTime = System.currentTimeMillis() - startTime;

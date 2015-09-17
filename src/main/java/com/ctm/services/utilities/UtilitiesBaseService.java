@@ -4,28 +4,32 @@ import com.ctm.connectivity.JsonConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.UtilitiesWebServiceException;
-import com.ctm.model.request.roadside.RoadsideRequest;
 import com.ctm.model.request.utilities.UtilitiesRequest;
 import com.ctm.model.settings.*;
-import com.ctm.services.*;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.FatalErrorService;
+import com.ctm.services.RequestService;
+import com.ctm.services.ServiceConfigurationService;
 import com.ctm.utils.utilities.UtilitiesRequestParser;
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
 import com.disc_au.web.go.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 /**
  * Common functions for the Utilities Services
  */
 public class UtilitiesBaseService {
 
-	private static final Logger logger = LoggerFactory.getLogger(UtilitiesBaseService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesBaseService.class);
 
 	private boolean valid = false;
 	private String vertical = Vertical.VerticalType.UTILITIES.getCode();
@@ -41,7 +45,7 @@ public class UtilitiesBaseService {
 		String string = serviceConfig.getPropertyValueByKey(key, ConfigSetting.ALL_BRANDS, ServiceConfigurationProperty.ALL_PROVIDERS, ServiceConfigurationProperty.Scope.SERVICE);
 
 		if(string == null){
-			throw new UtilitiesWebServiceException("UTL: Unable to find service configuration for: "+key);
+			throw new UtilitiesWebServiceException("Unable to find service configuration for: "+key);
 		}
 
 		return string;
@@ -51,7 +55,7 @@ public class UtilitiesBaseService {
 		ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfigurationForContext(request, serviceName);
 
 		if (serviceConfig == null) {
-			throw new UtilitiesWebServiceException("UTL: Unable to find service: "+serviceName);
+			throw new UtilitiesWebServiceException("Unable to find service: "+serviceName);
 		}
 
 		return serviceConfig;
@@ -84,13 +88,13 @@ public class UtilitiesBaseService {
 
 		ServiceConfiguration serviceConfig = getServiceConfig(request, serviceName);
 
-		logger.debug("UTL: POST: " + jsonString);
+		LOGGER.trace("Post {}", kv("jsonString", jsonString));
 
 		String serviceUrl = getConfigValue(serviceConfig, "serviceUrl");
 		JsonConnection jsonConnector = getJsonConnector(request, serviceConfig);
 		responseJson = jsonConnector.post(serviceUrl, jsonString);
 
-		logger.debug("UTL: RESP:" + responseJson);
+		LOGGER.trace("Response {}", kv("responseJson", responseJson));
 
 		if (responseJson == null) {
 			throw new UtilitiesWebServiceException("UTL postJson: JSON Object NULL from "+serviceUrl);
@@ -106,13 +110,13 @@ public class UtilitiesBaseService {
 
 		ServiceConfiguration serviceConfig = getServiceConfig(request, serviceName);
 
-		logger.debug("UTL: POST: " + jsonString);
+		LOGGER.trace("Post {}", kv("jsonString", jsonString));
 
 		String serviceUrl = getConfigValue(serviceConfig, "serviceUrl");
 		JsonConnection jsonConnector = getJsonConnector(request, serviceConfig);
 		responseJson = jsonConnector.postArray(serviceUrl, jsonString);
 
-		logger.debug("UTL: RESP:" + responseJson);
+		LOGGER.trace("Response {}", kv("responseJson", responseJson));
 
 		if (responseJson == null) {
 			throw new UtilitiesWebServiceException("UTL postJson: JSON Object NULL from "+serviceUrl);
@@ -144,7 +148,7 @@ public class UtilitiesBaseService {
 
 		FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
 
-		logger.error("UTL: Error: ", e);
+		LOGGER.error("Error occurred with utilities http post", e);
 
 	}
 

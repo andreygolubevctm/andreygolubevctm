@@ -1,24 +1,24 @@
 package com.ctm.dao;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.simples.InboundPhoneNumber;
+import com.ctm.services.ApplicationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.naming.NamingException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.naming.NamingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.simples.InboundPhoneNumber;
-import com.ctm.services.ApplicationService;
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class InboundPhoneNumberDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(InboundPhoneNumberDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(InboundPhoneNumberDao.class);
 
 	public InboundPhoneNumberDao(){
 
@@ -71,19 +71,15 @@ public class InboundPhoneNumberDao {
 			}
 
 			if(phoneNumbers.size() > 1){
-				logger.error("There is more than one phone for this vdn code: "+vdn);
+				LOGGER.error("More than one inbound phone number found {}", kv("vdn", vdn));
 			}else if(phoneNumbers.size() == 0){
-				logger.error("There is no record of this VDN: "+vdn);
+				LOGGER.error("No inbound phone number found {}", kv("vdn", vdn));
 			}else{
 				inboundPhoneNumber = phoneNumbers.get(0);
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

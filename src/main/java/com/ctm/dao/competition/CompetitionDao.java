@@ -1,13 +1,7 @@
 package com.ctm.dao.competition;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.dao.DatabaseUpdateBatchMapping;
-import com.ctm.dao.DatabaseUpdateMapping;
-import com.ctm.dao.SqlDao;
 import com.ctm.exceptions.DaoException;
-import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.sql.PreparedStatement;
@@ -15,11 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+import javax.naming.NamingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
 
 public class CompetitionDao {
-
-	private static final Logger logger = LoggerFactory.getLogger(CompetitionDao.class.getName());
 
 	public static Boolean isActive(Integer styleCodeId, Integer competitionId, Date serverDate) throws DaoException{
 
@@ -51,7 +47,7 @@ public class CompetitionDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

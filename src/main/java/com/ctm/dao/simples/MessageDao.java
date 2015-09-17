@@ -19,10 +19,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.model.simples.MessageStatus.*;
 
 public class MessageDao {
-	private static final Logger logger = LoggerFactory.getLogger(MessageDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(MessageDao.class);
 
 	private final static String MESSAGE_AVAILABLE_UPDATE = "UPDATE simples.message m, (";
 	private final static String MESSAGE_AVAILABLE_UPDATE_SET = ") as t set m.userId = ? WHERE m.id = t.id ";
@@ -46,7 +47,7 @@ public class MessageDao {
 			return messages.get(0);
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -73,7 +74,7 @@ public class MessageDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -141,7 +142,7 @@ public class MessageDao {
 			return new Message();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			try {
@@ -155,7 +156,7 @@ public class MessageDao {
 					stmtSelect.close();
 				}
 			} catch (SQLException e) {
-				throw new DaoException(e.getMessage(), e);
+				throw new DaoException(e);
 			}
 			dbSource.closeConnection();
 		}
@@ -183,7 +184,7 @@ public class MessageDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			try {
@@ -194,7 +195,7 @@ public class MessageDao {
 					stmt.close();
 				}
 			} catch (SQLException e) {
-				throw new DaoException(e.getMessage(), e);
+				throw new DaoException(e);
 			}
 			dbSource.closeConnection();
 		}
@@ -234,7 +235,7 @@ public class MessageDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -261,7 +262,7 @@ public class MessageDao {
 		// Perform the action
 		updateUserAndStatus(messageId, userId, MessageStatus.STATUS_ASSIGNED);
 
-		logger.debug("Message " + messageId + " ASSIGNED to user " + userId);
+		LOGGER.debug("Assigning message to user {}, {}", kv("messageId", messageId), kv("userId", userId));
 	}
 
 	/**
@@ -329,7 +330,7 @@ public class MessageDao {
 			stmt.executeUpdate();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -338,7 +339,7 @@ public class MessageDao {
 		// User is done with this message
 		userDao.setToAvailable(actionIsPerformedByUserId);
 
-		logger.debug("Message " + messageId + " POSTPONED by user " + actionIsPerformedByUserId);
+		LOGGER.debug("Postponing message {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId));
 	}
 
 	/**
@@ -375,7 +376,7 @@ public class MessageDao {
 		UserDao userDao = new UserDao();
 		userDao.setToAvailable(actionIsPerformedByUserId);
 
-		logger.debug("Message " + messageId + " COMPLETED by user " + actionIsPerformedByUserId);
+		LOGGER.debug("Set message to complete {}, {}, {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId), kv("statusId", statusId), kv("reasonStatusId", reasonStatusId));
 
 		return message;
 	}
@@ -420,7 +421,7 @@ public class MessageDao {
 		UserDao userDao = new UserDao();
 		userDao.setToUnavailable(message.getUserId());
 
-		logger.debug("Message " + messageId + " IN PROGRESS by user " + actionIsPerformedByUserId);
+		LOGGER.debug("Set message to in progress {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId));
 	}
 
 	/**
@@ -458,7 +459,7 @@ public class MessageDao {
 		UserDao userDao = new UserDao();
 		userDao.setToAvailable(actionIsPerformedByUserId);
 
-		logger.debug("Message " + messageId + " UNSUCCESSFUL by user " + actionIsPerformedByUserId);
+		LOGGER.debug("Set message to unsuccessful {}, {}, {}", kv("messageId", messageId), kv("userId", actionIsPerformedByUserId), kv("reasonStatusId", reasonStatusId));
 	}
 
 
@@ -546,9 +547,9 @@ public class MessageDao {
 			try {
 				dbSource.getConnection().rollback();
 			} catch (SQLException | NamingException e1) {
-				throw new DaoException(e.getMessage(), e1);
+				throw new DaoException(e1);
 			}
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			try {
@@ -570,7 +571,7 @@ public class MessageDao {
 					resultSetSelectMessageSource.close();
 				}
 			} catch (SQLException | NamingException e) {
-				throw new DaoException(e.getMessage(), e);
+				throw new DaoException(e);
 			}
 			dbSource.closeConnection();
 		}
@@ -602,7 +603,7 @@ public class MessageDao {
 			outcome = stmt.executeUpdate();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -664,8 +665,8 @@ public class MessageDao {
 			final ResultSet results = statement.executeQuery();
 			return mapFieldsFromResultsToMessage(results);
 		} catch (SQLException | NamingException e) {
-			logger.error("unable to retrieve postponed messages for userId = " + userId, e);
-			throw new DaoException(e.getMessage(), e);
+			LOGGER.error("unable to retrieve postponed messages {}", kv("userId", userId), e);
+			throw new DaoException(e);
 		} finally {
 			simpleDatabaseConnection.closeConnection();
 		}

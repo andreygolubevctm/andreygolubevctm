@@ -17,8 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 public class CountryMappingService {
-	private static final Logger logger = LoggerFactory.getLogger(CountryMappingService.class);
-    private final SessionDataService sessionDataService = new SessionDataService();
+	private final SessionDataService sessionDataService = new SessionDataService();
     private static final long serialVersionUID = 69L;
 
 

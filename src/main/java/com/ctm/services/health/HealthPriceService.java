@@ -3,7 +3,9 @@ package com.ctm.services.health;
 import com.ctm.dao.StyleCodeDao;
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
+import com.ctm.logging.LoggingVariables;
 import com.ctm.model.health.*;
+import com.ctm.model.settings.Vertical;
 import com.ctm.services.results.ProviderRestrictionsService;
 import com.ctm.utils.FormDateUtils;
 import org.slf4j.Logger;
@@ -16,12 +18,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.model.health.Frequency.ANNUALLY;
 import static com.ctm.model.health.Frequency.HALF_YEARLY;
 
 public class HealthPriceService {
 
-	private static final Logger logger = LoggerFactory.getLogger(HealthPriceService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthPriceService.class);
 
 	private HealthPriceRequest healthPriceRequest;
 	private HealthPriceDao healthPriceDao;
@@ -94,6 +97,7 @@ public class HealthPriceService {
 	}
 
 	public void setTransactionId(long transactionId) {
+		LoggingVariables.setTransactionId(String.valueOf(transactionId));
 		this.transactionId = transactionId;
 	}
 
@@ -112,7 +116,7 @@ public class HealthPriceService {
 			try {
 				applicationDateValue = isoDateFormat.parse(dateString);
 			} catch (ParseException e) {
-				logger.warn("failed to parse " + dateString, e);
+				LOGGER.warn("Unable to parse health application date", kv("dateString", dateString), e);
 			}
 		}
 		this.applicationDate = applicationDateValue;
@@ -132,7 +136,7 @@ public class HealthPriceService {
 				try {
 					searchDateValue = isoDateFormat.parse(searchDate);
 				} catch (ParseException e) {
-					logger.warn("failed to parse" + searchDate , e);
+					LOGGER.warn("Unable to parse health search date {}", kv("searchDate", searchDate), e);
 			}
 		}
 		}
@@ -151,6 +155,7 @@ public class HealthPriceService {
 	}
 
 	public void setup() throws DaoException {
+		LoggingVariables.setVerticalCode( Vertical.VerticalType.HEALTH.getCode());
 
 		int excessMax;
 		int excessMin;
@@ -229,7 +234,7 @@ public class HealthPriceService {
 		try {
 			healthPriceRequest.setStyleCodeId(styleCodeDao.getStyleCodeId(transactionId));
 		} catch (DaoException e) {
-			logger.error("failed to get Style Code Id" , e);
+			LOGGER.error("Failed to Style Code Id", e);
 			healthPriceRequest.setStyleCodeId(0);
 		}
 	}

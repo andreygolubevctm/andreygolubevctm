@@ -43,5 +43,13 @@ public class ResultProperty {
 		this.value = value;
 	}
 
-
+	@Override
+	public String toString() {
+		return "ResultProperty{" +
+				"transactionId=" + transactionId +
+				", productId='" + productId + '\'' +
+				", property='" + property + '\'' +
+				", value='" + value + '\'' +
+				'}';
+	}
 }

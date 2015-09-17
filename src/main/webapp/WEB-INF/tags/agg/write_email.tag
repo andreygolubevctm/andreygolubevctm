@@ -138,5 +138,5 @@ ${logger.info('Write email start of tag. {},{},{}', log:kv('emailAddress',emailA
 	</c:if>
 </c:catch>
 <c:if test="${error}">
-	${logger.warn('Failed to write email. {},{}', log:kv('transactionId', transactionId),log:kv('emailAddress', app_emailAddress) , error)}
+	${logger.warn('Failed to write email. {}',log:kv('emailAddress', app_emailAddress) , error)}
 </c:if>
