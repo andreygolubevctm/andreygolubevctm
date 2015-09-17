@@ -1,4 +1,4 @@
-package com.ctm.router.health;
+package com.ctm.router;
 
 import com.ctm.dao.UserDao;
 import com.ctm.exceptions.ConfigSettingException;
@@ -8,7 +8,6 @@ import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.model.simples.Message;
-import com.ctm.router.AdminRouter;
 import com.ctm.services.*;
 import com.ctm.services.simples.*;
 import com.ctm.utils.RequestUtils;
