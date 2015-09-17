@@ -11,7 +11,7 @@ import org.springframework.ws.context.MessageContext;
 
 public class SpringWSLoggingInterceptor implements ClientInterceptor {
 	
-	private static final Logger logger = LoggerFactory.getLogger(SpringWSLoggingInterceptor.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpringWSLoggingInterceptor.class);
 	
 	XMLOutputWriter xmloutputWriter;
 
@@ -59,7 +59,7 @@ public class SpringWSLoggingInterceptor implements ClientInterceptor {
 			
 			xmloutputWriter.writeXmlToFile(str, type);
 		} catch (IOException e) {
-			logger.error("SOAP Request Logging Failed", e);
+			LOGGER.error("SOAP Request Logging Failed", e);
 		}
 	}
 

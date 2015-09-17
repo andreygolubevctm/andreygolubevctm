@@ -10,6 +10,9 @@ import org.json.JSONObject;
 import com.ctm.dao.transaction.TransactionDetailsDao;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.HttpRequestHandler;
+
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * A service to write quote data from the journey.
  * @author bthompson
@@ -17,7 +20,7 @@ import com.disc_au.web.go.xml.HttpRequestHandler;
  */
 public class QuoteService {
 
-	private static final Logger logger = LoggerFactory.getLogger(QuoteService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(QuoteService.class);
 	/**
 	 * Constructor
 	 */
@@ -47,7 +50,8 @@ public class QuoteService {
 			result.put("success", isSuccessful);
 			result.put("transactionId", transactionId);
 		} catch (JSONException e) {
-			logger.error("",e);
+			LOGGER.error("Error creating lite quote result {},{}", kv("transactionId", transactionId),
+				kv("success", isSuccessful), e);
 		}
 		return json;
 	}

@@ -32,11 +32,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class TravelService extends CommonQuoteService<TravelQuote> {
 
-	private static final Logger logger = LoggerFactory.getLogger(TravelService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TravelService.class);
 	private String vertical;
 	private Data data;
 
@@ -129,7 +130,8 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
             return travelResults;
 
         }catch(IOException e){
-            logger.error("Error parsing or connecting to travel-quote", e);
+            LOGGER.error("Error parsing or connecting to travel-quote {},{},{}", kv("brand", brand), kv("verticalCode", verticalCode),
+                kv("travelRequest", data));
         }
 
         return null;

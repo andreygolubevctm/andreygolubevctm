@@ -21,9 +21,11 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @WebServlet(asyncSupported = true, urlPatterns = {"/handover/confirm"})
 public class HandoverConfirmationRouter extends HttpServlet {
-	private static final Logger logger = LoggerFactory.getLogger(HandoverConfirmationService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HandoverConfirmationService.class);
     private final HandoverConfirmationService service = new HandoverConfirmationService();
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -42,16 +44,13 @@ public class HandoverConfirmationRouter extends HttpServlet {
     @Override
     protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         final AsyncContext asyncContext = request.startAsync(request, response);
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                response.setHeader("Access-Control-Allow-Origin", "*");
-                response.setContentType("application/json");
-                final String ip = request.getRemoteAddr();
-                final boolean status = confirm(request.getParameterMap(), ip);
-                writeResponse(response, status);
-                asyncContext.complete();
-            }
+        executor.execute(() -> {
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setContentType("application/json");
+            final String ip = request.getRemoteAddr();
+            final boolean status = confirm(request.getParameterMap(), ip);
+            writeResponse(response, status);
+            asyncContext.complete();
         });
     }
 
@@ -61,7 +60,7 @@ public class HandoverConfirmationRouter extends HttpServlet {
             final String result = "{\"success\":" + status +"}";
             writer.print(result);
         } catch (final IOException e) {
-            logger.error("unable to write server response", e);
+            LOGGER.error("Failed to write handover server response {}", kv("status", status), e);
         }
     }
 
@@ -69,16 +68,16 @@ public class HandoverConfirmationRouter extends HttpServlet {
         try {
             final HandoverConfirmation handoverConfirmation = service.createConfirmation(parameterMap, ip);
             final Set<ConstraintViolation<HandoverConfirmation>> violations = validator.validate(handoverConfirmation);
-            logger.info("handover confirmation: " + handoverConfirmation);
+            LOGGER.info("handover confirmation {}", kv("confirmation", handoverConfirmation));
             if (violations.isEmpty()) {
                 service.confirm(handoverConfirmation);
                 return true;
             } else {
-                logger.error("invalid parameters" + violations);
+                LOGGER.error("invalid parameters {}", kv("violations", violations));
                 return false;
             }
         } catch (final Exception e) {
-            logger.error("error saving handover confirmation", e);
+            LOGGER.error("error saving handover confirmation", e);
             return false;
         }
     }

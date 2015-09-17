@@ -1,22 +1,14 @@
 package com.ctm.services;
 
-import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
-
+import com.ctm.dao.LogAuditDao;
+import com.ctm.model.LogAudit;
 import com.ctm.security.StringEncryption;
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.dao.LogAuditDao;
-import com.ctm.model.LogAudit;
+import java.security.GeneralSecurityException;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 /**
  * Inspiration:
@@ -39,7 +31,7 @@ import com.ctm.model.LogAudit;
  */
 public class AuditService {
 	
-	private static final Logger logger = LoggerFactory.getLogger(AuditService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuditService.class);
 	private String brandCode;
 	
 	public AuditService(String brandCode) {
@@ -60,7 +52,8 @@ public class AuditService {
 		try {
 			encryptedSessionId = StringEncryption.encrypt(secret_key, logAudit.getSessionId());
 		} catch (GeneralSecurityException e) {
-			logger.error("",e);
+			LOGGER.error("Failed logging audit. {},{},{}", kv("logAudit", logAudit), kv("identity", identity),
+				kv("metadata", metadata));
 		}
 
 		/*Run the log */

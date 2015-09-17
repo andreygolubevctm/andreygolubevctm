@@ -1,16 +1,10 @@
 package com.ctm.model.settings;
 
-import java.util.ArrayList;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
 
-public class ServiceConfiguration {
+import java.util.ArrayList;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ServiceConfiguration.class.getName());
+public class ServiceConfiguration {
 
 	private int id;
 	private int verticalId;

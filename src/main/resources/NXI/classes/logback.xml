@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true" >
+<configuration debug="false" >
 
 	<property resource="environment.properties" />
     
@@ -56,7 +56,19 @@
 		<appender-ref ref="stdout" />
 	</logger>
 
-	<root level="debug">
+	<logger name="com.ctm" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<logger name="jsp" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<logger name="tag" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<root level="INFO">
    		<appender-ref ref="stdout" />
 	</root>
 	

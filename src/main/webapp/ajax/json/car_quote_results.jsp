@@ -193,7 +193,7 @@
 				<%-- Write to the stats database --%>
 				<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
-				${logger.debug('Got stats. {},{}', log:kv('resultXml', resultXml), log:kv('stats', stats))}
+				${logger.trace('Got stats. {},{}', log:kv('resultXml', resultXml), log:kv('stats', stats))}
 				<%-- Return the results as json --%>
 
 				<%-- Calculate the end valid date for these quotes --%>

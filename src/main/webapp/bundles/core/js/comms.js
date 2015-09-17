@@ -22,6 +22,7 @@
 		attemptCallback: null,
 		timeout: 60000,
 		cache: false,
+		async: true,
 		// errorLevel
 		//    mandatory
 		//    silent (only log in the db)
@@ -134,7 +135,8 @@
 			data: settings.data,
 			dataType: settings.dataType,
 			type: requestMethod,
-			timeout: settings.timeout
+			timeout: settings.timeout,
+			async: settings.async
 		});
 
 	}

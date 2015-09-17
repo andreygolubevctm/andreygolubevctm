@@ -34,11 +34,13 @@ import com.ctm.services.email.EmailUrlService;
 import com.ctm.services.email.ExactTargetEmailSender;
 import com.disc_au.web.go.Data;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class LifeEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
 	
 	private static final String VERTICAL = VerticalType.LIFE.getCode();
 	
-	private static final Logger logger = LoggerFactory.getLogger(LifeEmailService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(LifeEmailService.class);
 	
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();
@@ -115,7 +117,7 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 		try {
 			transactionDetails = tdDao.getTransactionDetails(transactionId);
 		} catch (DaoException e1) {
-			logger.error("Could not populate life email data object with transaction details", e1);
+			LOGGER.error("Could not populate life email data object with transaction details {}", kv("transactionId", transactionId), e1);
 		}
 		
 		for(TransactionDetail detail : transactionDetails) {
@@ -128,7 +130,7 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 		try {
 			rankingDetails = rdDao.getDetailsByPropertyValue(transactionId, "company", "ozicare");
 		} catch (DaoException e1) {
-			logger.error("Could not populate life email data object with ranking details", e1);
+			LOGGER.error("Could not populate life email data object with ranking details {}", kv("transactionId", transactionId), e1);
 		}
 		
 		RankingDetail rankingDetail = rankingDetails.get(0);
