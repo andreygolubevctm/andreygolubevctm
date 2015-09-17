@@ -4,10 +4,12 @@ SELECT * FROM ctm.configuration WHERE configCode = 'GTMEnabled';
 INSERT INTO `ctm`.`configuration` (`configCode`,`environmentCode`,`styleCodeId`,`verticalId`,`configValue`) VALUES ('GTMEnabled','0',0,0,'N');
 INSERT INTO `ctm`.`configuration` (`configCode`,`environmentCode`,`styleCodeId`,`verticalId`,`configValue`) VALUES ('GTMEnabled','LOCALHOST',0,0,'Y');
 INSERT INTO `ctm`.`configuration` (`configCode`,`environmentCode`,`styleCodeId`,`verticalId`,`configValue`) VALUES ('GTMEnabled','NXI',0,0,'Y');
+INSERT INTO `ctm`.`configuration` (`configCode`,`environmentCode`,`styleCodeId`,`verticalId`,`configValue`) VALUES ('GTMEnabled','NXS',0,0,'Y');
+INSERT INTO `ctm`.`configuration` (`configCode`,`environmentCode`,`styleCodeId`,`verticalId`,`configValue`) VALUES ('GTMEnabled','NXQ',0,0,'Y');
 INSERT INTO `ctm`.`configuration` (`configCode`,`environmentCode`,`styleCodeId`,`verticalId`,`configValue`) VALUES ('GTMEnabled','PRO',1,14,'N');
 
 SELECT * FROM ctm.configuration WHERE configCode = 'GTMEnabled';
--- Should return 4 rows;
+-- Should return 6 rows;
 
 SELECT * FROM ctm.configuration WHERE configCode = 'GTMPropertyId';
 -- Should return 0 rows;
