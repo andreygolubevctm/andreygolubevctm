@@ -3,8 +3,6 @@ package com.ctm.model;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.model.settings.PageSettings;
 
-import java.sql.Date;
-
 public class IpAddress {
 
     public enum IpCheckRole {
@@ -115,6 +113,16 @@ public class IpAddress {
 
     public void setStyleCodeId(int styleCodeId) {
         this.styleCodeId = styleCodeId;
+    }
+
+    public String toString(){
+        return "IpAddress:{" +
+                "service:'"+service+"'" +
+                ",role:'"+role+"'" +
+                ",numberOfHits:'"+numberOfHits+"'" +
+                ",ipStart:'"+ipStart+"'" +
+                ",ipEnd:'"+ipEnd+"'" +
+                "}";
     }
 
 

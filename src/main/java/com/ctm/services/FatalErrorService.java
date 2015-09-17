@@ -7,12 +7,14 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Used to log errors to the database
  */
 public class FatalErrorService {
 
-	private static final Logger logger = LoggerFactory.getLogger(FatalErrorService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(FatalErrorService.class);
 	public String sessionId;
 	public String page;
 	public int styleCodeId;
@@ -71,7 +73,7 @@ public class FatalErrorService {
 		try {
 			fatalErrorDao.add(fatalError);
 		} catch (DaoException e) {
-			logger.error("cannot log to fatal error table" , e);
+			LOGGER.error("Cannot log to fatal error table {}", kv("fatalError", fatalError), e);
 		}
 	}
 

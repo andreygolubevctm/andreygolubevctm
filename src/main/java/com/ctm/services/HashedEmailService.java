@@ -1,16 +1,11 @@
 package com.ctm.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.dao.EmailMasterDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.EmailMaster;
 
 public class HashedEmailService {
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(UnsubscribeService.class.getName());
 	private final EmailMasterDao emailDao;
 
 	/**

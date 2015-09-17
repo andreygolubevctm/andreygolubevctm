@@ -121,7 +121,7 @@
                                     </confirmation>
                                 </c:set>
 
-                                ${logger.debug('WRITE CONFIRM. {}', log:kv('xmlData', xmlData))}
+                                ${logger.trace('WRITE CONFIRM. {}', log:kv('xmlData', xmlData))}
                                 <agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}"
                                                         xml_data="${xmlData}" />
                                 <agg:write_quote productType="UTILITIES" rootPath="utilities"/>

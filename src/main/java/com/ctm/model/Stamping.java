@@ -84,4 +84,19 @@ public class Stamping {
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
 	}
+
+	@Override
+	public String toString() {
+		return "Stamping{" +
+				"styleCodeId=" + styleCodeId +
+				", action='" + action + '\'' +
+				", brand='" + brand + '\'' +
+				", vertical='" + vertical + '\'' +
+				", target='" + target + '\'' +
+				", value='" + value + '\'' +
+				", comment='" + comment + '\'' +
+				", operatorId='" + operatorId + '\'' +
+				", ipAddress='" + ipAddress + '\'' +
+				'}';
+	}
 }

@@ -50,7 +50,7 @@ public class LmiDao {
                 }
             }
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             if (dbSource != null) {
                 dbSource.closeConnection();

@@ -120,7 +120,7 @@ public class SOAPAggregatorTag extends TagSupport {
 								|| EnvironmentService.getEnvironment() == NXS)
 								&& serviceItemConfig.getUrl().contains("/ctm/")) {
 							serviceItemConfig.setUrl(serviceItemConfig.getUrl().replaceFirst("(https?\\://[^/]+)/ctm/", "$1/" + EnvironmentService.getContextPath()));
-							LOGGER.debug("Modified '" + serviceItemConfig.getName() + "' service URL to: " + serviceItemConfig.getUrl());
+							LOGGER.debug("Modified service URL. {} ", kv("serviceItemConfig",  serviceItemConfig));
 						}
 
 						// Give each one a meaningful name
@@ -145,9 +145,9 @@ public class SOAPAggregatorTag extends TagSupport {
 			// Join each thread for their given timeout
 
 			for (Thread thread : threads.keySet()) {
+				long timeout = threads.get(thread).getTimeoutMillis();
 				try {
 
-					long timeout = threads.get(thread).getTimeoutMillis();
 
 					//Otherwise the aggregator times out before all the clients have had a chance too.
 					timeout+= 2000; // ensure the main thread lasts slightly longer than the total of all service calls.
@@ -155,7 +155,7 @@ public class SOAPAggregatorTag extends TagSupport {
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
-						LOGGER.error("", e);
+						LOGGER.error("Exception joining threads. {}", kv("timeout", timeout), e);
 				}
 			}
 
@@ -178,7 +178,7 @@ public class SOAPAggregatorTag extends TagSupport {
 													e.getMessage(),
 											client.getServiceName(),
 											result);
-						logError(client, "Failed to parse correctly: " + e.getMessage());
+						LOGGER.error("Failed to parse correctly. {} ", kv("client", client), e);
 					}
 				}
 				// Check if the request timed out
@@ -187,7 +187,7 @@ public class SOAPAggregatorTag extends TagSupport {
 												0,
 												"Client failed to return in time",
 												client.getServiceName());
-					logError(client, "Failed to return in time");
+					LOGGER.error("Failed to return in time. {}", kv("client",client));
 				}
 				// Unknown problem
 				else {
@@ -195,7 +195,7 @@ public class SOAPAggregatorTag extends TagSupport {
 							0,
 							"Response has no body",
 							client.getServiceName());
-					logError(client, "Response has no body");
+					LOGGER.error("Response has no body. {}", kv("client", client));
 				}
 
 				thisResult.setAttribute("responseTime", String.valueOf(client.getResponseTime()));
@@ -226,7 +226,7 @@ public class SOAPAggregatorTag extends TagSupport {
 			}
 
 		} catch (IOException e) {
-					LOGGER.error("", e);
+			LOGGER.error("Failed to execute body.", e);
 		}
 		}
 			return super.doEndTag();
@@ -358,7 +358,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 			return parser.parse(resultXML.toString());
 		} catch (TransformerException | SAXException e) {
-			LOGGER.error("", e);
+			LOGGER.error("Failed to process xml", e);
 		}
 		return resultNode;
 	}

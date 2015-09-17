@@ -1,13 +1,18 @@
 package com.disc_au.web.go.tags;
 
-import java.io.IOException;
-import java.security.SecureRandom;
-import java.security.NoSuchAlgorithmException;
-import java.security.InvalidParameterException;
+import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.servlet.jsp.JspException;
-import org.apache.commons.codec.binary.Base64;
+import java.io.IOException;
+import java.security.InvalidParameterException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 /**
  * AESGenerateKeyTag generates an AES secret key based on the key size provided.
@@ -17,6 +22,8 @@ import org.apache.commons.codec.binary.Base64;
 
 @SuppressWarnings("serial")
 public class AESGenerateKeyTag extends BaseTag {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AESGenerateKeyTag.class.getName());
 
 	int key_size = 128;
 
@@ -41,23 +48,12 @@ public class AESGenerateKeyTag extends BaseTag {
 			SecretKey secret_key = key_gen.generateKey();
 			byte[] enc_key = secret_key.getEncoded();
 			output = Base64.encodeBase64URLSafeString(enc_key);
-			System.out.println("Key Size: " + this.key_size);
-			System.out.println("Secret Key: " + output);
-
+			LOGGER.debug("About to return key to page. {},{} ", kv("key_size", this.key_size), kv("secretKey", output));
 			pageContext.getOut().write(output);
 
 			return SKIP_BODY;
 		}
-		catch(InvalidParameterException e)
-		{
-			throw new JspException(e);
-		}
-		catch(NoSuchAlgorithmException e)
-		{
-			throw new JspException(e);
-		}
-		catch(IOException e)
-		{
+		catch(InvalidParameterException | NoSuchAlgorithmException | IOException e) {
 			throw new JspException(e);
 		}
 	}
