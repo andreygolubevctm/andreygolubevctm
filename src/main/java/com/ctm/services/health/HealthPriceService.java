@@ -154,7 +154,7 @@ public class HealthPriceService {
 	}
 
 	public void setup() throws DaoException {
-		LoggingVariables.setVerticalCode( Vertical.VerticalType.HEALTH.getCode());
+		LoggingVariables.setVerticalCode(Vertical.VerticalType.HEALTH);
 
 		int excessMax;
 		int excessMin;

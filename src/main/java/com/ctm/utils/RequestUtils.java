@@ -2,11 +2,13 @@ package com.ctm.utils;
 
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.SessionData;
+import com.ctm.model.settings.Vertical;
 import com.ctm.services.SessionDataService;
 import com.disc_au.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,8 +22,8 @@ public class RequestUtils {
 
     public static final String TRANSACTION_ID_PARAM = "transactionId";
     public static final String BRAND_CODE_PARAM = "brandCode";
-
     public static final String VERTICAL_PARAM = "vertical";
+
     private final SessionDataService sessionDataService = new SessionDataService();
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -140,5 +142,21 @@ public class RequestUtils {
         }
         return value;
     }
+
+    /**
+     * Sets all parameters to MDC
+     * Note: this only set variables on the current thread. This will need to be called on each thread
+     * call clearLoggingVariables() after thread is no longer being executed to prevent the logging from being in
+     * an invalid state when a thread is being reused.
+     */
+    public static Vertical.VerticalType getVerticalFromRequest(ServletRequest request) {
+        String verticalCode = request.getParameter(VERTICAL_PARAM);
+        Vertical.VerticalType vertical = null;
+        if(verticalCode != null) {
+            vertical =  Vertical.VerticalType.findByCode(verticalCode);
+        }
+        return vertical;
+    }
+
 
 }

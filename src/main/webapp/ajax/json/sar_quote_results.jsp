@@ -52,7 +52,7 @@
 					configDbKey="quoteService"
 					styleCodeId="${pageSettings.getBrandId()}"
 					verticalCode="ROADSIDE"
-					hasCorrelationId="true" />
+					sendCorrelationId="true" />
 </c:if>
 
 <c:choose>

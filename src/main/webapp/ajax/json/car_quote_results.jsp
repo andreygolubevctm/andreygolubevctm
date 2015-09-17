@@ -155,7 +155,8 @@
 							  debugVar="debugXml"
 							  validationErrorsVar="validationErrors"
 							  continueOnValidationError="${continueOnValidationError}"
-							  isValidVar="isValid" />
+							  isValidVar="isValid"
+							  sendCorrelationId="false" />
 
 		<c:set var="styleCodeId" value="${pageSettings.getBrandId()}" />
 		<%--<c:if test="${styleCodeId == 8}">

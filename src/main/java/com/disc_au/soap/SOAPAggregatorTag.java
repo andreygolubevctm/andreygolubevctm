@@ -9,6 +9,7 @@ import com.ctm.logging.CorrelationIdUtils;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.model.settings.Vertical;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.EnvironmentService;
 import com.ctm.soap.SoapConfiguration;
@@ -66,7 +67,7 @@ public class SOAPAggregatorTag extends TagSupport {
 	private boolean continueOnValidationError;
 	private Brand brand;
 	private String correlationId;
-	private boolean hasCorrelationId;
+	private boolean sendCorrelationId;
 
 	@SuppressWarnings("unused")
 	// used in go.tld
@@ -75,8 +76,8 @@ public class SOAPAggregatorTag extends TagSupport {
 	}
 	@SuppressWarnings("unused")
 	// used in go.tld
-	public void setHasCorrelationId(boolean hasCorrelationId) {
-		this.hasCorrelationId = hasCorrelationId;
+	public void setSendCorrelationId(boolean sendCorrelationId) {
+		this.sendCorrelationId = sendCorrelationId;
 	}
 
 	@SuppressWarnings("unused")
@@ -137,7 +138,7 @@ public class SOAPAggregatorTag extends TagSupport {
 						String threadName = this.transactionId + " " + serviceItemConfig.getName();
 
 					SOAPClientThread client;
-					if(hasCorrelationId) {
+					if(sendCorrelationId) {
 						correlationId = CorrelationIdUtils.getCorrelationId();
 					}
 
@@ -255,7 +256,7 @@ public class SOAPAggregatorTag extends TagSupport {
 	}
 
 	private void setupMDC() {
-		setLoggingVariables(transactionId, brand.getCode(), verticalCode, correlationId);
+		setLoggingVariables(transactionId, brand.getCode(), Vertical.VerticalType.findByCode(verticalCode), correlationId);
 		setCorrelationId(correlationId);
 	}
 

@@ -1,6 +1,7 @@
 package com.ctm.logging.listeners;
 
 import com.ctm.logging.CorrelationIdUtils;
+import com.ctm.utils.RequestUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class MDCFilter implements Filter {
         if(correlationId == null || correlationId.isEmpty()){
             correlationId = UUID.randomUUID().toString();
         }
-        setLoggingVariables(req.getParameter(TRANSACTION_ID_PARAM), req.getParameter(BRAND_CODE_PARAM), req.getParameter(VERTICAL_PARAM), correlationId);
+        setLoggingVariables(req.getParameter(TRANSACTION_ID_PARAM), req.getParameter(BRAND_CODE_PARAM), RequestUtils.getVerticalFromRequest(req), correlationId);
         setCorrelationId(correlationId);
         try {
             chain.doFilter(req, resp);

@@ -30,14 +30,10 @@ public class LoggingVariables {
      * call clearLoggingVariables() after thread is no longer being executed to prevent the logging from being in
      * an invalid state when a thread is being reused.
      */
-    public static void setLoggingVariables(String transactionId, String brandCode, String vertical, String correlationId) {
+    public static void setLoggingVariables(String transactionId, String brandCode, Vertical.VerticalType vertical, String correlationId) {
          setTransactionId(transactionId);
         MDC.put(BRAND_CODE_KEY, brandCode);
-        String verticalCode = null;
-        if(vertical != null) {
-            verticalCode =  Vertical.VerticalType.findByCode(vertical).getCode();
-        }
-        setVerticalCode(verticalCode);
+        setVerticalCode(vertical);
         MDC.put(CORRELATION_ID_KEY, correlationId);
     }
 
@@ -45,7 +41,11 @@ public class LoggingVariables {
      * Sets verticalCode to MDC to be picked up by the logger
      * Note: this only set verticalCode on the current thread. This will need to be called on each thread
      */
-    public static void setVerticalCode(String verticalCode) {
+    public static void setVerticalCode(Vertical.VerticalType vertical) {
+        String verticalCode = "";
+        if(vertical != null) {
+            verticalCode =  vertical.getCode();
+        }
         MDC.put(VERTICAL_CODE_KEY, verticalCode);
     }
 

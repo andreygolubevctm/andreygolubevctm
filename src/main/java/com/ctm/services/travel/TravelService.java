@@ -9,6 +9,7 @@ import com.ctm.model.QuoteServiceProperties;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.resultsData.AvailableType;
 import com.ctm.model.settings.Brand;
+import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.travel.form.TravelQuote;
 import com.ctm.model.travel.results.TravelResult;
 import com.ctm.providers.Request;
@@ -32,13 +33,22 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class TravelService extends CommonQuoteService<TravelQuote> {
 
 	private static final Logger logger = LoggerFactory.getLogger(TravelService.class.getName());
-	private String vertical;
-	private Data data;
+    private SimpleConnection connection;
+    private Data data;
+
+    public TravelService(ServiceConfiguration serviceConfig, SimpleConnection connection) {
+        super(serviceConfig);
+        this.connection = connection;
+    }
+    public TravelService() {
+        super();
+    }
 
     /**
      * Call travel-quote aggregation service.
@@ -97,7 +107,9 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
             XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_TRAVEL-QUOTE" , serviceProperties.getDebugPath());
             writer.writeXmlToFile(jsonRequest, REQ_OUT);
 
-            SimpleConnection connection = new SimpleConnection();
+            if(connection == null) {
+                connection = new SimpleConnection();
+            }
             connection.setRequestMethod("POST");
             connection.setConnectTimeout(serviceProperties.getTimeout());
             connection.setReadTimeout(serviceProperties.getTimeout());
@@ -130,7 +142,7 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
             return travelResults;
 
         } catch(IOException e){
-            logger.error("Error parsing or connecting to travel-quote", e);
+            logger.error("Error parsing or connecting to travel-quote. {}", kv("travelRequest", data), e);
         }
 
         return null;

@@ -14,7 +14,7 @@ public class LoggingVariablesTest {
         String transactionId = "transactionId";
         String transactionId2 = "transactionId2";
         String brandCode = "brandCode";
-        String vertical = "health";
+        Vertical.VerticalType vertical = Vertical.VerticalType.HEALTH;
         String correlationId = "correlationId";
         LoggingVariables.setLoggingVariables( transactionId,  brandCode,  vertical,  correlationId);
         assertEquals(transactionId, MDC.get(LoggingVariables.TRANSACTION_ID_KEY));
