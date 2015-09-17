@@ -45,9 +45,9 @@ function JSTasks(gulp) {
                 fileName = compileAs;
             }
 
-            var incDir = path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "inc"),
+            var incDir = path.join(gulp.pipelineConfig.target.dir, "includes", "js"),
                 revDate = + new Date();
-            fileHelper.writeFileToFolder(incDir, fileName + gulp.pipelineConfig.target.incExtension, fileArray.map(function(file){
+            fileHelper.writeFileToFolder(incDir, fileName + gulp.pipelineConfig.target.inc.extension, fileArray.map(function(file){
                 return "<script type\"\" src=\"" + file.slice(file.indexOf("bundles"), file.length).replace(/\\/g, "/") + "?rev=" + revDate + "\"></script>";
             }).join("\r\n"));
 

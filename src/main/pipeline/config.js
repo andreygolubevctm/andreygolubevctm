@@ -34,6 +34,8 @@ module.exports = {
     },
     target: {
         dir: rootDir + "/../webapp/assets",
-        incExtension: ".jsp"
+        inc: {
+            extension: ".html"
+        }
     }
 };
