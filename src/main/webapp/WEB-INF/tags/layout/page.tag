@@ -69,7 +69,7 @@
 			<c:choose>
 				<%-- We don't include the separate inc files for Simples in IE because its path structure causes failures due to relative path issues --%>
 				<c:when test="${browserName eq 'IE' and browserVersion le 9}">
-					<c:import url="/assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.inc" />
+					<c:import url="/assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.jsp" />
 				</c:when>
 				<c:otherwise>
 					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -254,7 +254,7 @@
 			<c:choose>
 				<%-- Load separateJS files, but don't include separateJS if Simples --%>
 				<c:when test="${separateJS}">
-					<c:import url="/assets/js/bundles/inc/${pageSettings.getVerticalCode()}.inc" />
+					<c:import url="/assets/js/bundles/inc/${pageSettings.getVerticalCode()}.jsp" />
 				</c:when>
 				<c:otherwise>
 					<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>

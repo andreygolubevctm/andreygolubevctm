@@ -171,7 +171,7 @@ function LessTasks(gulp) {
                     filePath = file.path;
                     fileName = path.basename(file.path).replace(/\.[^/.]+$/, "");
                     targetFolder = path.dirname(filePath) + "\\inc";
-                    targetFile = fileName.replace(".min", "") + ".inc";
+                    targetFile = fileName.replace(".min", "") + gulp.pipelineConfig.target.incExtension;
 
                     // Wipe the original target file
                     mkdirp.sync(targetFolder);
