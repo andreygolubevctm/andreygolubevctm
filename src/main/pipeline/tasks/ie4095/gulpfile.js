@@ -56,11 +56,14 @@ function IE4095Tasks(gulp) {
                         maxSelectors: 4090,
                         suffix: "."
                     }))
+                    .pipe(plumber({
+                        errorHandler: notify.onError("Error: <%= error.message %>")
+                    }))
                     // Append to the list of includes
                     .pipe(intercept(function(file){
                         var tempPath = file.path,
                             revDate = + new Date(),
-                            appendContent = "<link rel=\"stylesheet\" href=\"" + path.normalize(tempPath.slice(tempPath.indexOf("assets"), tempPath.length)) + "?rev=" + revDate + "\" media=\"all\">";
+                            appendContent = "<link rel=\"stylesheet\" type=\"text\/css\" href=\"" + tempPath.slice(tempPath.indexOf("assets"), tempPath.length).replace(/\\/g, "/") + "?rev=" + revDate + "\" media=\"all\">";
                         fileHelper.appendToFile(targetFolder, targetFile, appendContent);
                         return file;
                     }))
