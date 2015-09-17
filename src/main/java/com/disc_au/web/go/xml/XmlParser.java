@@ -1,22 +1,18 @@
 package com.disc_au.web.go.xml;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.disc_au.soap.SOAPAggregatorTag;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -28,7 +24,8 @@ import com.disc_au.soap.SOAPAggregatorTag;
 
 public class XmlParser {
 
-	Logger logger = LoggerFactory.getLogger(XmlParser.class.getName());
+	Logger LOGGER = LoggerFactory.getLogger(XmlParser.class.getName());
+
 	/**
 	 * The Class XmlNodeHandler.
 	 */
@@ -127,15 +124,11 @@ public class XmlParser {
 	public XmlParser() {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		factory.setValidating(false);
-		;
 
 		try {
 			this.saxParser = factory.newSAXParser();
-
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
+		} catch (ParserConfigurationException | SAXException e) {
+			LOGGER.error("Failed to create new parser.", e);
 		}
 	}
 
@@ -164,7 +157,7 @@ public class XmlParser {
 		try {
 			saxParser.parse(inStream, handler);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to parse.", e);
 		}
 		return handler.node;
 	}
@@ -194,7 +187,7 @@ public class XmlParser {
 					alwaysAdd);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Failed to parse", e);
 		}
 		return null;
 	}

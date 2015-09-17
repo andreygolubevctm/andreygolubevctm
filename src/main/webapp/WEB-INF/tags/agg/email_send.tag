@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<c:set var="logger" value="${log:getLogger('/agg/email_send.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.agg.email_send')}" />
 <core_new:no_cache_header/>
 
 <session:get settings="true"/>

@@ -16,9 +16,11 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.SessionDataService;
 import com.disc_au.web.go.Data;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class AGISLeadFromRequest {
 
-	private static final Logger logger = LoggerFactory.getLogger(AGISLeadFromRequest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(AGISLeadFromRequest.class);
 
 	public String newPolicySold(HttpServletRequest request, PageSettings pageSettings, String transactionId) {
 		return process(request, pageSettings, transactionId, true);
@@ -40,7 +42,7 @@ public class AGISLeadFromRequest {
 			try {
 				data = sds.getDataForTransactionId(request, transactionId, false);
 			} catch (DaoException | SessionException e1) {
-				e1.printStackTrace();
+				LOGGER.error("Failed to retrieve session {}", kv("transactionId", transactionId));
 			}
 
 			String vertical = data.get("current/verticalCode").toString().toLowerCase();
@@ -75,7 +77,8 @@ public class AGISLeadFromRequest {
 				output = service.callMeBack(leadDataPack);
 			}
 		} catch (Exception e) {
-			logger.error("[lead feed] Exception thrown: " + e.getMessage(), e);
+			LOGGER.error("[lead feed] Failed creating new lead feed {}, {}, {}", kv("pageSettings", pageSettings),
+				kv("transactionId", transactionId), kv("policySold", policySold));
 		}
 
 		if(output == LeadFeedService.LeadResponseStatus.SUCCESS) {

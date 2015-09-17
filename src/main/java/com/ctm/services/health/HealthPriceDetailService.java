@@ -12,18 +12,14 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.ContentService;
 import com.ctm.services.SettingsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.json.JSONException;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.ArrayList;
 import java.util.Date;
 
 public class HealthPriceDetailService {
 
-	private static final Logger logger = LoggerFactory.getLogger(HealthPriceDetailService.class.getName());
 	private final ContentService contentService;
 
 	private HealthPriceDao healthPriceDao;

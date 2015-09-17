@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.save_health_confirmation')}" />
 
 <session:get />
 <jsp:useBean id="providerContentService" class="com.ctm.services.simples.ProviderContentService" scope="page" />

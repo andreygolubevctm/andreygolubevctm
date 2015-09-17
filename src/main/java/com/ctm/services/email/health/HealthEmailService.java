@@ -21,8 +21,6 @@ import com.ctm.services.AccessTouchService;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.email.*;
 import com.ctm.services.simples.OpeningHoursService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -32,8 +30,6 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 	private static final String VERTICAL = VerticalType.HEALTH.getCode();
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(HealthEmailService.class.getName());
 	private final AccessTouchService accessTouchService;
 
 	EmailDetailsService emailDetailsService;
@@ -185,9 +181,10 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		emailModel.setProvider(emailBrochureRequest.provider);
 		emailModel.setSmallLogo(emailBrochureRequest.provider.toLowerCase() + ".png");
 		try {
-			emailModel.setHospitalPDSUrl(request.getParameter("hospitalPDSUrl"));
-			emailModel.setExtrasPDSUrl(request.getParameter("extrasPDSUrl"));
-		} catch (EnvironmentException | VerticalException e) {
+			emailModel.setHospitalPDSUrl( pageSettings.getBaseUrl() + request.getParameter("hospitalPDSUrl"));
+			emailModel.setExtrasPDSUrl(pageSettings.getBaseUrl() + request.getParameter("extrasPDSUrl"));
+		} catch (EnvironmentException | VerticalException
+				| ConfigSettingException e) {
 			throw new SendEmailException("failed to get base url", e);
 		}
 		return emailModel;

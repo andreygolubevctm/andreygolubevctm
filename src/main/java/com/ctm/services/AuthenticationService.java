@@ -21,9 +21,11 @@ import com.ctm.security.StringEncryption;
 import com.ctm.services.email.EmailUrlService;
 import com.disc_au.web.LDAPDetails;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class AuthenticationService {
 
-	private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
 	
 	static AuthenticationService authenticationService = new AuthenticationService();
 
@@ -210,9 +212,8 @@ public class AuthenticationService {
 		try {
 			emailDetails = hashedEmailService.getEmailDetails(hashedEmail, emailAddress, styleCodeId);
 		} catch (DaoException e) {
-			logger.error("database exception thrown when attempting to authenicate user emailAddress:" + emailAddress + 
-					" hashedEmail:" + hashedEmail + 
-					" brandcode:" +  styleCodeId );
+			LOGGER.error("failed attempting to authenticate user {}, {}, {}", kv("emailAddress", emailAddress),
+				kv("hashedEmail", hashedEmail), kv("brandCode", styleCodeId));
 			emailDetails = new EmailMaster();
 			emailDetails.setValid(false);
 		}

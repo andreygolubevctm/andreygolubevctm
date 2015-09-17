@@ -69,7 +69,7 @@ public class IpAddressDao {
 
             }
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             if (dbSource != null) {
                 dbSource.closeConnection();
@@ -115,7 +115,7 @@ public class IpAddressDao {
                 stmt.executeUpdate();
             }
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }

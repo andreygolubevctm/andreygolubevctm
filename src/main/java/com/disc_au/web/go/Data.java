@@ -11,6 +11,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 // TODO: Auto-generated Javadoc
 /**
  * The Class Data.
@@ -21,7 +23,7 @@ import java.util.Date;
 
 public class Data extends XmlNode implements Comparable<Data> {
 
-	private static final Logger logger = LoggerFactory.getLogger(Data.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Data.class.getName());
 
 	/** The NODE. */
 	public static String NODE = "node";
@@ -314,7 +316,7 @@ public class Data extends XmlNode implements Comparable<Data> {
 				value = NumberUtils.parseNumber(getString(xpath), targetClass);
 			}
 		} catch (NumberFormatException e) {
-			logger.error("",e);
+			LOGGER.info("Failed to convert value to number. {}", kv("xpath", xpath), e);
 		}
 		return value;
 	}

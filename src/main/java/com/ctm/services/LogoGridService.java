@@ -1,6 +1,8 @@
 package com.ctm.services;
 
 import com.ctm.dao.ProviderCodesDao;
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import org.slf4j.Logger;
@@ -10,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 
 public class LogoGridService {
-	private static final Logger logger = LoggerFactory.getLogger(LogoGridService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(LogoGridService.class);
 	private ProviderCodesDao providerCodes;
 
 	// this is done this way because the usebean call only calls a zero parameter constructor.
@@ -22,8 +24,8 @@ public class LogoGridService {
 			Vertical vertical = pageSettings.getVertical(); // grab the vertical details
 			providerCodes.setProviderCodes(vertical.getType().toString(), pageSettings.getBrandId()); // populate the
 		}
-		catch (Exception e) {
-			logger.error("",e);
+		catch (DaoException|ConfigSettingException e) {
+			LOGGER.error("Failed initializing logo grid service",e);
 		}
 	}
 
