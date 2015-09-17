@@ -1,15 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.fundData;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class Provider {
 
-public class Provider extends ValueType<String> {
+    private final String provider;
 
-    private Provider(final String value) {
-        super(value);
+    public Provider(final String provider) {
+        this.provider = provider;
     }
-
-    public static Provider instanceOf(final String value) {
-        return new Provider(value);
-    }
-
 }

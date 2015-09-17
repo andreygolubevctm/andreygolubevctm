@@ -1,23 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.contactDetails;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class MobileNumber {
 
-public class MobileNumber extends ValueType<String> {
+    private final String mobileNumber;
 
-    public static final MobileNumber NONE = new MobileNumber("");
-
-    private MobileNumber(final String value) {
-        super(value);
+    public MobileNumber(final String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
-
-    public static MobileNumber instanceOf(final String value) {
-        if(value != null) {
-            final String validNumber = value.replaceAll(" ", "").replaceAll("\\(", "").replaceAll("\\)", "");
-            if(validNumber.matches("0[4,5]\\d{8}")) {
-                return new MobileNumber(validNumber);
-            }
-        }
-        throw new IllegalArgumentException("Invalid moble phone number: " + value);
-    }
-
 }

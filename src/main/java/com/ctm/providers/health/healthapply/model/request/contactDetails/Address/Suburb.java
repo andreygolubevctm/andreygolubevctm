@@ -1,15 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.contactDetails.Address;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class Suburb {
 
-public class Suburb extends ValueType<String> {
+    private final String suburb;
 
-    private Suburb(final String value) {
-        super(value);
+    public Suburb(final String suburb) {
+        this.suburb = suburb;
     }
-
-    public static Suburb instanceOf(final String value) {
-        return new Suburb(value);
-    }
-
 }

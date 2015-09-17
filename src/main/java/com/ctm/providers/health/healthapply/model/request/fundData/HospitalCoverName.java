@@ -1,16 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.fundData;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class HospitalCoverName {
 
-public class HospitalCoverName extends ValueType<String> {
+    private final String hospitalCoverName;
 
-    private HospitalCoverName(final String value) {
-        super(value);
+    public HospitalCoverName(final String hospitalCoverName) {
+        this.hospitalCoverName = hospitalCoverName;
     }
-
-    public static HospitalCoverName instanceOf(final String value) {
-        return new HospitalCoverName(value);
-    }
-
-
 }

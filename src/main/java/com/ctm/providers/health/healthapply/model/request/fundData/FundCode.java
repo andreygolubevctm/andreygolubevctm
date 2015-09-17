@@ -1,16 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.fundData;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class FundCode {
 
-public class FundCode extends ValueType<String> {
+    private final String fundCode;
 
-    private FundCode(final String value) {
-        super(value);
+    public FundCode(final String fundCode) {
+        this.fundCode = fundCode;
     }
-
-    public static FundCode instanceOf(final String value) {
-        return new FundCode(value);
-    }
-
-
 }

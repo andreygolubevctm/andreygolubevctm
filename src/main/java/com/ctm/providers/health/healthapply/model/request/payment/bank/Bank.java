@@ -1,26 +1,18 @@
 package com.ctm.providers.health.healthapply.model.request.payment.bank;
 
-import com.ctm.healthapply.model.request.payment.bank.account.Account;
-
-import java.util.Optional;
+import com.ctm.providers.health.healthapply.model.request.payment.bank.account.Account;
 
 public class Bank {
 
-    private Account paymentAccount;
+    private final Account paymentAccount;
 
-    private Account refundAccount;
+    private final Account refundAccount;
 
-    private Claims claims;
+    private final Claims claims;
 
-    public Optional<Account> getPaymentAccount() {
-        return Optional.ofNullable(paymentAccount);
-    }
-
-    public Optional<Account> getRefundAccount() {
-        return Optional.ofNullable(refundAccount);
-    }
-
-    public Optional<Claims> getClaims() {
-        return Optional.ofNullable(claims);
+    public Bank(final Account paymentAccount, final Account refundAccount, final Claims claims) {
+        this.paymentAccount = paymentAccount;
+        this.refundAccount = refundAccount;
+        this.claims = claims;
     }
 }

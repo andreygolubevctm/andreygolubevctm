@@ -1,9 +1,5 @@
 package com.ctm.providers.health.healthapply.model.response;
 
-import com.ctm.healthapply.adapters.util.ErrorCode;
-import com.ctm.healthapply.adapters.util.ErrorMessage;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class PartnerError {
 
     private ErrorType type;
@@ -28,13 +24,4 @@ public class PartnerError {
         return message;
     }
 
-    @JsonProperty("code")
-    private String code() {
-        return code.get().orElse(null);
-    }
-
-    @JsonProperty("message")
-    private String message() {
-        return message.get().orElse(null);
-    }
 }

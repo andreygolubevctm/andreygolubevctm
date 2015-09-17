@@ -1,15 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.payment.bank.account;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class AccountNumber {
 
-public class AccountNumber extends ValueType<String> {
+    private final String accountNumber;
 
-    private AccountNumber(final String value) {
-        super(value);
+    public AccountNumber(final String accountNumber) {
+        this.accountNumber = accountNumber;
     }
-
-    public static AccountNumber instanceOf(final String value) {
-        return new AccountNumber(value);
-    }
-
 }

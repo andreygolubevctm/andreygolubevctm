@@ -1,15 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.payment.credit;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class Type {
 
-public class Type extends ValueType<String> {
+    private final String type;
 
-    private Type(final String value) {
-        super(value);
+    public Type(final String type) {
+        this.type = type;
     }
-
-    public static Type instanceOf(final String value) {
-        return new Type(value);
-    }
-
 }

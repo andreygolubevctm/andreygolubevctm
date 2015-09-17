@@ -1,15 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.fundData;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class ExtrasCoverName {
 
-public class ExtrasCoverName extends ValueType<String> {
+    private final String extrasCoverName;
 
-    private ExtrasCoverName(final String value) {
-        super(value);
+    public ExtrasCoverName(final String extrasCoverName) {
+        this.extrasCoverName = extrasCoverName;
     }
-
-    public static ExtrasCoverName instanceOf(final String value) {
-        return new ExtrasCoverName(value);
-    }
-
 }

@@ -2,49 +2,26 @@ package com.ctm.providers.health.healthapply.model.request.payment.details;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Optional;
-
 public class Details {
 
     @JsonProperty("start")
-    private StartDate startDate;
+    private final StartDate startDate;
 
     @JsonProperty("type")
-    private PaymentType paymentType;
+    private final PaymentType paymentType;
 
-    private Frequency frequency;
+    private final Frequency frequency;
 
-    private Rebate rebate;
+    private final Rebate rebate;
 
-    private Income income;
+    private final Income income;
 
-    public Optional<Frequency> getFrequency() {
-        return Optional.ofNullable(frequency);
-    }
-
-    public Rebate getRebate() {
-        return rebate == null ? Rebate.N : rebate;
-    }
-
-    public Optional<StartDate> getStartDate() {
-        return Optional.ofNullable(startDate);
-    }
-
-    public Optional<PaymentType> getPaymentType() {
-        return Optional.ofNullable(paymentType);
-    }
-
-    public Optional<Income> getIncome() {
-        return Optional.ofNullable(income);
-    }
-
-    @JsonProperty("income")
-    private Long income() {
-        return income.get();
-    }
-
-    @JsonProperty("start")
-    private String startDate() {
-        return startDate.get().toString();
+    public Details(final StartDate startDate, final PaymentType paymentType, final Frequency frequency,
+                   final Rebate rebate, final Income income) {
+        this.startDate = startDate;
+        this.paymentType = paymentType;
+        this.frequency = frequency;
+        this.rebate = rebate;
+        this.income = income;
     }
 }

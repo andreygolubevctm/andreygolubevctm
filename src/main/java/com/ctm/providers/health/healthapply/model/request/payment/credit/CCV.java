@@ -1,19 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.payment.credit;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class CCV {
 
-public class CCV extends ValueType<Integer> {
+    private final String ccv;
 
-    private CCV(final Integer value) {
-        super(value);
+    public CCV(final String ccv) {
+        this.ccv = ccv;
     }
-
-    private CCV(final String value) {
-        super(Integer.parseInt(value));
-    }
-
-    public static CCV instanceOf(final Integer value) {
-        return new CCV(value);
-    }
-
 }

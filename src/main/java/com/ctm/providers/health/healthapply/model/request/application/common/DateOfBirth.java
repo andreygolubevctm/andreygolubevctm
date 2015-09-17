@@ -1,22 +1,12 @@
 package com.ctm.providers.health.healthapply.model.request.application.common;
 
-import com.ctm.interfaces.common.types.ValueType;
-
 import java.time.LocalDate;
 
-public class DateOfBirth extends ValueType<LocalDate> {
+public class DateOfBirth {
 
-    private DateOfBirth(final LocalDate value) {
-        super(value);
+    private final LocalDate dateOfBirth;
+
+    public DateOfBirth(final LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
-
-    //Used by Jackson to deserialize
-    private DateOfBirth(final String value) {
-        super(LocalDate.parse(value));
-    }
-
-    public static DateOfBirth instanceOf(final LocalDate value) {
-        return new DateOfBirth(value);
-    }
-
 }

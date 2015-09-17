@@ -6,31 +6,20 @@ import com.ctm.providers.health.healthapply.model.request.payment.credit.CreditC
 import com.ctm.providers.health.healthapply.model.request.payment.details.Details;
 import com.ctm.providers.health.healthapply.model.request.payment.medicare.Medicare;
 
-import java.util.Optional;
-
 public class Payment {
 
-    private Details details;
+    private final Details details;
 
-    private CreditCard creditCard;
+    private final CreditCard creditCard;
 
-    private Bank bank;
+    private final Bank bank;
 
-    private Medicare medicare;
+    private final Medicare medicare;
 
-    public Optional<Details> getDetails() {
-        return Optional.ofNullable(details);
-    }
-
-    public Optional<CreditCard> getCreditCard() {
-        return Optional.ofNullable(creditCard);
-    }
-
-    public Optional<Bank> getBank() {
-        return Optional.ofNullable(bank);
-    }
-
-    public Optional<Medicare> getMedicare() {
-        return Optional.ofNullable(medicare);
+    public Payment(final Details details, final CreditCard creditCard, final Bank bank, final Medicare medicare) {
+        this.details = details;
+        this.creditCard = creditCard;
+        this.bank = bank;
+        this.medicare = medicare;
     }
 }

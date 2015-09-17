@@ -1,15 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.application.common;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class LastName {
 
-public class LastName extends ValueType<String> {
+    private final String lastName;
 
-    private LastName(final String value) {
-        super(value);
+    public LastName(final String lastName) {
+        this.lastName = lastName;
     }
-
-    public static LastName instanceOf(final String value) {
-        return new LastName(value);
-    }
-
 }

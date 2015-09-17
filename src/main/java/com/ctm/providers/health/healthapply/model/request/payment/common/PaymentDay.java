@@ -1,19 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.payment.common;
 
-import com.ctm.healthapply.exception.InvalidApplicationException;
-import com.ctm.interfaces.common.types.ValueType;
+public class PaymentDay {
 
-public class PaymentDay extends ValueType<Integer> {
+    private final String paymentDay;
 
-    private PaymentDay(final Integer value) {
-        super(value);
+    public PaymentDay(final String paymentDay) {
+        this.paymentDay = paymentDay;
     }
-
-    public static PaymentDay instanceOf(final Integer value) {
-        if(value == null || value < 1 || value > 28) {
-            throw new InvalidApplicationException("Invalid payment day: " + value);
-        }
-        return new PaymentDay(value);
-    }
-
 }

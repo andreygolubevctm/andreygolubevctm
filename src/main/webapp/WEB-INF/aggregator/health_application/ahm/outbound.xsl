@@ -210,10 +210,15 @@
 							<b:CustGivenName><xsl:value-of select="application/primary/firstname" /></b:CustGivenName>
 
 							<b:CustMedicare>
-								<xsl:if test="healthCover/rebate = 'Y'"><xsl:value-of select="translate(payment/medicare/number,' ','')" /></xsl:if>
+								<xsl:if test="healthCover/rebate = 'Y'">
+									<xsl:value-of select="translate(payment/medicare/number,' ','')" />
+								</xsl:if>
 							</b:CustMedicare>
 							<b:CustMedicareExpiry>
-								<xsl:if test="healthCover/rebate = 'Y'"><xsl:value-of select="format-number(payment/medicare/expiry/cardExpiryMonth, '00')" /><xsl:value-of select="payment/medicare/expiry/cardExpiryYear" /></xsl:if>
+								<xsl:if test="healthCover/rebate = 'Y'">
+									<xsl:value-of select="format-number(payment/medicare/expiry/cardExpiryMonth, '00')" />
+									<xsl:value-of select="payment/medicare/expiry/cardExpiryYear" />
+								</xsl:if>
 							</b:CustMedicareExpiry>
 
 							<!-- E - Email, H - Home Phone, M - Mobile Phone, P - Mail to Postal Address, W - Work Phone -->
@@ -419,7 +424,9 @@
 
 					<!-- If rebate is selected = Y -->
 					<b:EFGRInd>
-						<xsl:choose><xsl:when test="healthCover/rebate = 'Y'">Y</xsl:when><xsl:otherwise>N</xsl:otherwise></xsl:choose>
+						<xsl:choose>
+							<xsl:when test="healthCover/rebate = 'Y'">Y</xsl:when>
+							<xsl:otherwise>N</xsl:otherwise></xsl:choose>
 					</b:EFGRInd>
 
 					<!-- Optional. Email address. Data type: A string that represents String (255). -->

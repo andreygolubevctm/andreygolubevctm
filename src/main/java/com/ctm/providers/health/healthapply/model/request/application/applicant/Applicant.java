@@ -2,69 +2,37 @@ package com.ctm.providers.health.healthapply.model.request.application.applicant
 
 import com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover.HealthCover;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund.PreviousFund;
-import com.ctm.providers.health.healthapply.model.request.application.common.*;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.time.LocalDate;
-import java.util.Optional;
+import com.ctm.providers.health.healthapply.model.request.application.common.DateOfBirth;
+import com.ctm.providers.health.healthapply.model.request.application.common.FirstName;
+import com.ctm.providers.health.healthapply.model.request.application.common.Gender;
+import com.ctm.providers.health.healthapply.model.request.application.common.LastName;
+import com.ctm.providers.health.healthapply.model.request.application.common.Title;
 
 public class Applicant {
 
-    private Title title;
+    private final Title title;
 
-    private FirstName firstName;
+    private final FirstName firstName;
 
-    private LastName lastName;
+    private final LastName lastName;
 
-    private Gender gender;
+    private final Gender gender;
 
-    private DateOfBirth dateOfBirth;
+    private final DateOfBirth dateOfBirth;
 
-    private HealthCover healthCover;
+    private final HealthCover healthCover;
 
-    private PreviousFund previousFund;
+    private final PreviousFund previousFund;
 
-    public Optional<Title> getTitle() {
-        return Optional.ofNullable(title);
+    public Applicant(final Title title, final FirstName firstName, final LastName lastName, final Gender gender,
+                     final DateOfBirth dateOfBirth, final HealthCover healthCover, final PreviousFund previousFund) {
+        this.title = title;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.dateOfBirth = dateOfBirth;
+        this.healthCover = healthCover;
+        this.previousFund = previousFund;
     }
 
-    public Optional<FirstName> getFirstName() {
-        return Optional.ofNullable(firstName);
-    }
-
-    public Optional<LastName> getLastName() {
-        return Optional.ofNullable(lastName);
-    }
-
-    public Optional<Gender> getGender() {
-        return Optional.ofNullable(gender);
-    }
-
-    public Optional<DateOfBirth> getDateOfBirth() {
-        return Optional.ofNullable(dateOfBirth);
-    }
-
-    public Optional<HealthCover> getHealthCover() {
-        return Optional.ofNullable(healthCover);
-    }
-
-    public Optional<PreviousFund> getPreviousFund() {
-        return Optional.ofNullable(previousFund);
-    }
-
-    //For making readable output for testing
-    @JsonProperty("firstName")
-    private String getFirstNameSer() {
-        return firstName == null ? null : firstName.get();
-    }
-
-    @JsonProperty("lastName")
-    private String getLastNameSer() {
-        return lastName == null ? null : lastName.get();
-    }
-
-    @JsonProperty("dateOfBirth")
-    private LocalDate dateOfBirth() {
-        return dateOfBirth == null ? null : dateOfBirth.get();
-    }
 }

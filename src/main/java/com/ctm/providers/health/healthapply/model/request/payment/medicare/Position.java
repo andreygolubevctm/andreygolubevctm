@@ -1,15 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.payment.medicare;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class Position {
 
-public class Position extends ValueType<Integer> {
+    private final int position;
 
-    private Position(final Integer value) {
-        super(value);
+    public Position(final int position) {
+        this.position = position;
     }
-
-    public static Position instanceOf(final Integer value) {
-        return new Position(value);
-    }
-
 }

@@ -1,12 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.application;
 
-import com.ctm.healthapply.model.request.application.applicant.Applicant;
-import com.ctm.healthapply.model.request.application.dependant.Dependant;
-import com.ctm.healthapply.model.request.application.situation.Situation;
+import com.ctm.providers.health.healthapply.model.request.application.applicant.Applicant;
+import com.ctm.providers.health.healthapply.model.request.application.dependant.Dependant;
+import com.ctm.providers.health.healthapply.model.request.application.situation.Situation;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public class ApplicationGroup {
 
@@ -18,19 +16,10 @@ public class ApplicationGroup {
 
     private Situation situation;
 
-    public Optional<Applicant> getPrimary() {
-        return Optional.ofNullable(primary);
-    }
-
-    public Optional<Applicant> getPartner() {
-        return Optional.ofNullable(partner);
-    }
-
-    public List<Dependant> getDependants() {
-        return dependants == null ? Collections.emptyList() : dependants;
-    }
-
-    public Optional<Situation> getSituation() {
-        return Optional.ofNullable(situation);
+    public ApplicationGroup(final Applicant primary, final Applicant partner, final List<Dependant> dependants, final Situation situation) {
+        this.primary = primary;
+        this.partner = partner;
+        this.dependants = dependants;
+        this.situation = situation;
     }
 }

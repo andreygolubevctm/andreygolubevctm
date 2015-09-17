@@ -1,15 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.payment.bank.account;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class BSB {
 
-public class BSB extends ValueType<String> {
+    private final String bsb;
 
-    private BSB(final String value) {
-        super(value);
+    public BSB(final String bsb) {
+        this.bsb = bsb;
     }
-
-    public static BSB instanceOf(final String value) {
-        return new BSB(value);
-    }
-
 }
