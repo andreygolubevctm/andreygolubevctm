@@ -1,7 +1,6 @@
 package com.ctm.services.home;
 
 import com.ctm.connectivity.SimpleConnection;
-import com.ctm.connectivity.exception.ConnectionException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
 import com.ctm.exceptions.SessionException;
@@ -32,10 +31,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -44,15 +44,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 import static com.ctm.model.settings.Vertical.VerticalType.HOME;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
-
-    private static final Logger logger = Logger.getLogger(HomeQuoteService.class);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomeQuoteService.class);
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 
     public List<HomeResult> getQuotes(Brand brand, HomeRequest data) {
@@ -102,12 +101,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
-            String response = null;
-            try {
-                response = connection.get(serviceProperties.getServiceUrl()+"/quote");
-            } catch (ConnectionException e) {
-                logger.error("Exception calling get quotes.", e);
-            }
+            String response = connection.get(serviceProperties.getServiceUrl()+"/quote");
             HomeResponse homeResponse = objectMapper.readValue(response, HomeResponse.class);
 
             // Log response
@@ -120,7 +114,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             return homeResults;
 
         }catch(IOException e){
-            logger.error("Error parsing or connecting to home-quote", e);
+            LOGGER.error("Error parsing or connecting to home-quote {}, {}", kv("brand", brand), kv("homeQuoteRequest", homeQuoteRequest), e);
         }
 
         return null;
@@ -193,18 +187,14 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
 
-            String response = null;
-            try {
-                response = connection.get(serviceProperties.getServiceUrl() + "/data/moreInfo");
-            } catch (ConnectionException e) {
-                logger.error("Exception calling get more info.", e);
-            }
+            final String response = connection.get(serviceProperties.getServiceUrl() + "/data/moreInfo");
 
             MoreInfo moreInfoResponse = objectMapper.readValue(response, MoreInfo.class);
 
             return ResponseAdapter.adapt(moreInfoResponse);
         } catch (IOException e) {
-            logger.error("Error parsing or connecting to home-quote", e);
+            LOGGER.error("Error parsing or connecting to home-quote {},{},{},{}", kv("brand", brand), kv("productId", productId),
+                kv("type", type), kv("environmentOverride", environmentOverride), e);
         }
         return null;
     }
@@ -244,7 +234,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             }
 
         } catch (DaoException | SessionException e) {
-            System.out.println(e.getMessage());
+            LOGGER.error("Failed writing temp result details {}, {}", kv("transactionId", data.getTransactionId()), kv("homeRequest", data) );
         }
 
     }

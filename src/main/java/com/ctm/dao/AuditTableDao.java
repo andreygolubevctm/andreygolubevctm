@@ -9,15 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class AuditTableDao {
     public final static String DELETE = "DELETE";
     public final static String CREATE = "CREATE";
     public final static String UPDATE = "UPDATE";
     private final String auditTablePrefix = "audit_";
-    private String tableName;
-    private String primaryColumnName ;
     private final String loggingSchema = "logging";
-	private static final Logger logger = LoggerFactory.getLogger(AuditTableDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuditTableDao.class);
 
     public AuditTableDao() {
     }
@@ -48,10 +48,10 @@ public class AuditTableDao {
             PreparedStatement ps = buildSQLStatement(columnValueMapMainTable, auditTableNameWithSchema,conn);
             ps.executeUpdate();
         } catch (SQLException e) {
-            logger.error("failed while ", e);
+            LOGGER.error("audit action failed to insert into table {}, {}", kv("action", action), kv("auditTableName", auditTableName), e);
             throw e;
         } finally {
-            logger.info("Event '" + action + "' has been logged into table '" + auditTableName + "'");
+            LOGGER.debug("audit action logged to table {}, {}", kv("action", action), kv("auditTableName", auditTableName));
         }
     }
 

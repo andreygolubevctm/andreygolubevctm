@@ -16,14 +16,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class RequestUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestUtils.class.getName());
-
+   
     public static final String TRANSACTION_ID_PARAM = "transactionId";
     public static final String BRAND_CODE_PARAM = "brandCode";
     public static final String VERTICAL_PARAM = "vertical";
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(RequestUtils.class);
     private final SessionDataService sessionDataService = new SessionDataService();
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -45,7 +47,7 @@ public class RequestUtils {
             try{
                 transactionId = Long.parseLong(requestTransactionId);
             } catch (NumberFormatException e) {
-                logger.error("Failed to parse requestTransactionId:"+ requestTransactionId, e);
+                LOGGER.error("Failed to parse transactionId from request. {}", kv("requestTransactionId", requestTransactionId), e);
             }
         }
         return transactionId;

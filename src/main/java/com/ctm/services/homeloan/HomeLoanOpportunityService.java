@@ -1,7 +1,6 @@
 package com.ctm.services.homeloan;
 
 import com.ctm.connectivity.JsonConnection;
-import com.ctm.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.homeloan.HomeLoanModel;
@@ -27,9 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class HomeLoanOpportunityService {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeLoanOpportunityService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeLoanOpportunityService.class);
 	public static final String SECRET_KEY = "kD0axgKXQ5HixuWsJ8-2BA";
 	private String transactionId;
 	private String sessionId;
@@ -119,25 +120,21 @@ public class HomeLoanOpportunityService {
 		catch (Exception e) {
 			String message = (e.getMessage() != null ? e.getMessage() : "Failed to submit");
 			FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
-			logger.error("HomeLoanOpportunityService.submit failed: ", e);
+			LOGGER.error("Opportunity submit failed {}", kv("hlorModel", hlorModel), e);
 			responseJson = createErrorResponse(message);
 		}
 		return responseJson;
 	}
 
 	private JSONObject executeFetch(HomeLoanOpportunityRequest hlorModel, String serviceUrl, String timeoutConnect, String timeoutRead) {
-		SimpleConnection conn = new SimpleConnection();
-		JSONObject responseJson;JsonConnection jsonConn = new JsonConnection(conn);
-		conn.setConnectTimeout(Integer.parseInt(timeoutConnect));
-		conn.setReadTimeout(Integer.parseInt(timeoutRead));
-		conn.setContentType("application/json");
+		JsonConnection jsonConn = new JsonConnection();
+		jsonConn.conn.setConnectTimeout(Integer.parseInt(timeoutConnect));
+		jsonConn.conn.setReadTimeout(Integer.parseInt(timeoutRead));
+		jsonConn.conn.setContentType("application/json");
 
 		String postBody = hlorModel.toJsonObject().toString();
-		logger.debug("HomeLoanOpportunityService.submit TIMEOUTCONNECT:" + timeoutConnect + " TIMEOUTREAD:" + timeoutRead + " URL:" + serviceUrl);
-		logger.debug("HomeLoanOpportunityService.submit POST: " + postBody); //Note: could contain personal information
-
-		responseJson = jsonConn.post(serviceUrl, postBody);
-		return responseJson;
+		LOGGER.debug("Opportunity submit details {}, {}, {}, {}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("serviceUrl", serviceUrl), kv("postBody", postBody));
+		return jsonConn.post(serviceUrl, postBody);
 	}
 
 
@@ -151,7 +148,7 @@ public class HomeLoanOpportunityService {
 
 	private JSONObject handleExternalServiceResponse(JSONObject responseJson) throws JSONException {
 		if (responseJson != null) {
-			logger.debug("HomeLoanOpportunityService.submit RESP: " + responseJson.toString());
+			LOGGER.debug("Opportunity response {}", kv("responseJson", responseJson));
 		}
 		//
 		// Check that response is ok

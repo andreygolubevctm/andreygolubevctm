@@ -8,10 +8,12 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class JsonConnection {
 
-	private static final Logger logger = LoggerFactory.getLogger(JsonConnection.class.getName());
-	private final SimpleConnection conn;
+	private static final Logger LOGGER = LoggerFactory.getLogger(JsonConnection.class);
+	public SimpleConnection conn;
 
 	public JsonConnection() {
 		this.conn = new SimpleConnection();
@@ -48,11 +50,8 @@ public class JsonConnection {
 			JSONObject json = new JSONObject(preparseString);
 			return json;
 		}
-		catch (JSONException  e) {
-			logger.error(url+" json exception: "+e);
-		}
 		catch (Exception e){
-			logger.error(url+": "+e);
+			LOGGER.error("Error making json get {}", kv(url, url), e);
 		}
 
 		return null;
@@ -67,12 +66,7 @@ public class JsonConnection {
 			conn.setRequestMethod("POST");
 			conn.setPostBody(postBody);
 
-			String jsonString = null;
-			try {
-				jsonString = conn.get(url);
-			} catch (ConnectionException e) {
-				logger.error("Failed to call json", e);
-			}
+			String jsonString = conn.get(url);
 
 			JSONObject json;
 
@@ -84,11 +78,8 @@ public class JsonConnection {
 
 			return json;
 		}
-		catch (JSONException e) {
-			logger.error(url + ": json exception: " + e);
-		}
-		catch (Exception e){
-			logger.error(url + ": " + e);
+catch (Exception e){
+			LOGGER.error("Error making json post", kv("url", url), kv("postBody", postBody), kv("sanitize", sanitize), e);
 		}
 
 		return null;
@@ -106,11 +97,15 @@ public class JsonConnection {
 			String jsonString = null;
 			try {
 				jsonString = conn.get(url);
-				logger.debug(jsonString);
 			} catch (ConnectionException e) {
-				logger.error("Failed to call json", e);
+				LOGGER.error("Failed to call json", e);
 				return null;
 			}
+
+			LOGGER.trace("Posting json request {}", kv("request", jsonString));
+
+			if(jsonString == null) return null;
+
 			JSONArray json;
 
 			if(sanitize) {
@@ -121,11 +116,9 @@ public class JsonConnection {
 
 			return json;
 		}
-		catch (JSONException e) {
-			logger.error(url + ": json array exception: " + e);
-		}
 		catch (Exception e){
-			logger.error(url + ": " + e);
+			LOGGER.error("Error making json array post {},{},{}", kv("url", url), kv("postBody", postBody),
+				kv("sanitize", sanitize), e);
 		}
 
 		return null;
@@ -137,7 +130,7 @@ public class JsonConnection {
 		try {
 			json = new JSONObject(JsonSanitizer.sanitize(jsonString));
 		} catch(JSONException e) {
-			logger.error(": json exception: " + e);
+			LOGGER.error("Error sanitizing json object {}", kv("json", jsonString), e);
 		}
 
 		return json;
@@ -149,7 +142,7 @@ public class JsonConnection {
 		try {
 			json = new JSONArray(JsonSanitizer.sanitize(jsonString));
 		} catch(JSONException e) {
-			logger.error(": json exception: " + e);
+			LOGGER.error("Error sanitizing json array {}", kv("json", jsonString), e);
 		}
 
 		return json;

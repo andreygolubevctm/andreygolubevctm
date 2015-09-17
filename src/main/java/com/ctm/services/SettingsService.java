@@ -10,10 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class SettingsService {
+import javax.servlet.http.HttpServletRequest;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(SettingsService.class.getName());
+public class SettingsService {
 
 	/**
 	 * Sets the vertical code for the page request scope and loads the settings object.

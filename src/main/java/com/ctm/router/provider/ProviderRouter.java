@@ -27,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 })
 public class ProviderRouter extends HttpServlet {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProviderRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderRouter.class);
 	private static final long serialVersionUID = 72L;
 
 	@Override
@@ -58,7 +58,7 @@ public class ProviderRouter extends HttpServlet {
 
 		}catch (Exception e) {
 
-			logger.error("/provider json failed: ", e);
+			LOGGER.error("Provider listing failed", e);
 
 			JSONObject json = null;
 			Error error = new Error();

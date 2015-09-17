@@ -2,7 +2,7 @@
 <%@ tag description="Redirects back to unsubscribe.jsp with details"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('/unsubcribe/redirect_with_details.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.unsubcribe.redirect_with_details')}" />
 
 <jsp:useBean id="unsubscribeService" class="com.ctm.services.UnsubscribeService" scope="request"/>
 

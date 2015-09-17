@@ -1,14 +1,5 @@
 package com.ctm.services;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.dao.ProviderExclusionsDao;
 import com.ctm.dao.ServiceConfigurationDao;
 import com.ctm.exceptions.DaoException;
@@ -19,15 +10,15 @@ import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.Vertical;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 public class ServiceConfigurationService {
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ServiceConfigurationService.class.getName());
-
 	private static ArrayList<ServiceConfiguration> services = new ArrayList<ServiceConfiguration>();
-	//private static ArrayList<ProviderExclusion> excludedProviders = null;
 	private static Date servicesLastAccessed;
-	//private static Date excludedProvidersLastAccessed;
 
 	/**
 	 * Get the all the service configuration objects

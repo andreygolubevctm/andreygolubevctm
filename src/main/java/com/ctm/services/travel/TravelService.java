@@ -38,9 +38,9 @@ import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class TravelService extends CommonQuoteService<TravelQuote> {
 
-	private static final Logger logger = LoggerFactory.getLogger(TravelService.class.getName());
-    private SimpleConnection connection;
-    private Data data;
+	private static final Logger LOGGER = LoggerFactory.getLogger(TravelService.class);
+	private String vertical;
+	private Data data;
 
     public TravelService(ServiceConfiguration serviceConfig, SimpleConnection connection) {
         super(serviceConfig);
@@ -141,8 +141,9 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
 
             return travelResults;
 
-        } catch(IOException e){
-            logger.error("Error parsing or connecting to travel-quote. {}", kv("travelRequest", data), e);
+        }catch(IOException e){
+            LOGGER.error("Error parsing or connecting to travel-quote {},{},{}", kv("brand", brand), kv("verticalCode", verticalCode),
+                kv("travelRequest", data));
         }
 
         return null;

@@ -2,7 +2,7 @@
 <%@ tag description="Updates Utilities provider master and properties records."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/utilities/utilities_update_provider.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.utilities.utilities_update_provider')}" />
 
 <%@ attribute name="provider_id" 	required="true"	 rtexprvalue="true"	 description="The Switchwise Provider ID" %>
 <%@ attribute name="provider_code" 	required="true"	 rtexprvalue="true"	 description="The Switchwise Provider Code" %>

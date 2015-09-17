@@ -18,12 +18,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.model.health.Frequency.ANNUALLY;
 import static com.ctm.model.health.Frequency.HALF_YEARLY;
 
 public class HealthPriceService {
 
-	private static final Logger logger = LoggerFactory.getLogger(HealthPriceService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthPriceService.class);
 
 	private HealthPriceRequest healthPriceRequest;
 	private HealthPriceDao healthPriceDao;
@@ -115,7 +116,7 @@ public class HealthPriceService {
 			try {
 				applicationDateValue = isoDateFormat.parse(dateString);
 			} catch (ParseException e) {
-				logger.warn("failed to parse " + dateString, e);
+				LOGGER.warn("Unable to parse health application date", kv("dateString", dateString), e);
 			}
 		}
 		this.applicationDate = applicationDateValue;
@@ -135,7 +136,7 @@ public class HealthPriceService {
 				try {
 					searchDateValue = isoDateFormat.parse(searchDate);
 				} catch (ParseException e) {
-					logger.warn("failed to parse" + searchDate , e);
+					LOGGER.warn("Unable to parse health search date {}", kv("searchDate", searchDate), e);
 			}
 		}
 		}
@@ -233,7 +234,7 @@ public class HealthPriceService {
 		try {
 			healthPriceRequest.setStyleCodeId(styleCodeDao.getStyleCodeId(transactionId));
 		} catch (DaoException e) {
-			logger.error("failed to get Style Code Id" , e);
+			LOGGER.error("Failed to Style Code Id", e);
 			healthPriceRequest.setStyleCodeId(0);
 		}
 	}

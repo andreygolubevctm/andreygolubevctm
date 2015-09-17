@@ -23,12 +23,14 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Common functions for the Utilities Services
  */
 public class UtilitiesBaseService {
 
-	private static final Logger logger = LoggerFactory.getLogger(UtilitiesBaseService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesBaseService.class);
 
 	private boolean valid = false;
 	private String vertical = Vertical.VerticalType.UTILITIES.getCode();
@@ -88,13 +90,13 @@ public class UtilitiesBaseService {
 
 		ServiceConfiguration serviceConfig = getServiceConfig(request, serviceName);
 
-		logger.debug("POST: " + jsonString);
+		LOGGER.trace("Post {}", kv("jsonString", jsonString));
 
 		String serviceUrl = getConfigValue(serviceConfig, "serviceUrl");
 		JsonConnection jsonConnector = getJsonConnector(request, serviceConfig);
 		responseJson = jsonConnector.post(serviceUrl, jsonString);
 
-		logger.debug("RESP:" + responseJson);
+		LOGGER.trace("Response {}", kv("responseJson", responseJson));
 
 		if (responseJson == null) {
 			throw new UtilitiesWebServiceException("UTL postJson: JSON Object NULL from "+serviceUrl);
@@ -110,13 +112,13 @@ public class UtilitiesBaseService {
 
 		ServiceConfiguration serviceConfig = getServiceConfig(request, serviceName);
 
-		logger.debug("POST: " + jsonString);
+		LOGGER.trace("Post {}", kv("jsonString", jsonString));
 
 		String serviceUrl = getConfigValue(serviceConfig, "serviceUrl");
 		JsonConnection jsonConnector = getJsonConnector(request, serviceConfig);
 		responseJson = jsonConnector.postArray(serviceUrl, jsonString);
 
-		logger.debug("RESP:" + responseJson);
+		LOGGER.trace("Response {}", kv("responseJson", responseJson));
 
 		if (responseJson == null) {
 			throw new UtilitiesWebServiceException("UTL postJson: JSON Object NULL from "+serviceUrl);
@@ -148,7 +150,7 @@ public class UtilitiesBaseService {
 
 		FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
 
-		logger.error("Error: ", e);
+		LOGGER.error("Error occurred with utilities http post", e);
 
 	}
 

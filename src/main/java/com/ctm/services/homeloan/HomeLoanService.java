@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class HomeLoanService {
 
 	private TransactionDetailsDao transactionDetailsDao;
@@ -265,7 +267,7 @@ public class HomeLoanService {
 	public synchronized void scheduledLeadGenerator(HttpServletRequest request) {
 
 		JSONObject json = null;
-		Logger logger = LoggerFactory.getLogger(HomeLoanRouter.class.getName());
+		Logger LOGGER = LoggerFactory.getLogger(HomeLoanRouter.class);
 		AccessTouchService touch = new AccessTouchService();
 
 		try {
@@ -298,14 +300,14 @@ public class HomeLoanService {
 							transactionDetailsDao.addTransactionDetails(lead.getTransactionId(), transactionDetailNew);
 						}
 					} catch (JSONException | GeneralSecurityException e) {
-						logger.error("Failed to decrypt opportunity id for " + lead.getTransactionId(), e);
-						FatalErrorService.logFatalError(e, 0, "/cron/hourly/homeloan/flexOutboundLead.json" , "ctm", true, lead.getTransactionId());
+						LOGGER.error("Failed to decrypt opportunity id {}, {}", kv("transactionId", lead.getTransactionId()), e);
+						FatalErrorService.logFatalError(e, 0, "/cron/hourly/homeloan/flexOutboundLead.json", "ctm", true, lead.getTransactionId());
 					}
 				}
 			}
 
 		} catch(DaoException e) {
-			logger.error("HomeLoan opportunity cron failed", e);
+			LOGGER.error("HomeLoan opportunity cron failed", e);
 			FatalErrorService.logFatalError(e, 0, "/cron/hourly/homeloan/flexOutboundLead.json" , "ctm", true);
 		}
 

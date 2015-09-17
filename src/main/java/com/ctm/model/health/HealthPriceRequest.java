@@ -331,4 +331,44 @@ public class HealthPriceRequest {
 	public void setProductTitleSearch(String productTitleSearch) {
 		this.productTitleSearch = productTitleSearch;
 	}
+
+	@Override
+	public String toString() {
+		return "HealthPriceRequest{" +
+				"searchDate='" + searchDate + '\'' +
+				", state='" + state + '\'' +
+				", membership=" + membership +
+				", productType='" + productType + '\'' +
+				", loading=" + loading +
+				", loadingPerc=" + loadingPerc +
+				", excessMax=" + excessMax +
+				", excessMin=" + excessMin +
+				", hospitalSelection=" + hospitalSelection +
+				", excludeStatus=" + excludeStatus +
+				", tierHospital=" + tierHospital +
+				", tierExtras=" + tierExtras +
+				", providerId=" + providerId +
+				", priceMinimum=" + priceMinimum +
+				", styleCodeId=" + styleCodeId +
+				", searchDateValue=" + searchDateValue +
+				", excludedProviders=" + excludedProviders +
+				", preferences=" + preferences +
+				", paymentFrequency=" + paymentFrequency +
+				", searchResults=" + searchResults +
+				", retrieveSavedResults=" + retrieveSavedResults +
+				", savedTransactionId=" + savedTransactionId +
+				", selectedProductId='" + selectedProductId + '\'' +
+				", productTitle='" + productTitle + '\'' +
+				", onResultsPage=" + onResultsPage +
+				", productTitleSearch='" + productTitleSearch + '\'' +
+				", directApplication=" + directApplication +
+				", simples=" + simples +
+				", pricesHaveChanged=" + pricesHaveChanged +
+				", privateHospital=" + privateHospital +
+				", publicHospital=" + publicHospital +
+				", excessSel='" + excessSel + '\'' +
+				", brandFilter='" + brandFilter + '\'' +
+				", providersThatHaveExceededLimit=" + providersThatHaveExceededLimit +
+				'}';
+	}
 }

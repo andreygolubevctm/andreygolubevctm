@@ -12,4 +12,10 @@ public class TouchCommentProperty extends AbstractTouchProperty {
         this.comment = comment;
     }
 
+    @Override
+    public String toString() {
+        return "TouchCommentProperty{" +
+                "comment='" + comment + '\'' +
+                '}';
+    }
 }

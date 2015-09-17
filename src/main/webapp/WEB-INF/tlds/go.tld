@@ -534,51 +534,6 @@
 	</tag>
 
 	<tag>
-		<description>Convert a single array to the format of the template</description>
-		<name>arrayToTokenTemplate</name>
-		<tag-class>com.disc_au.web.go.tags.ArrayToTokenTemplate</tag-class>
-		<body-content>tagdependent</body-content>
-		<attribute>
-			<description>The output from token replacing</description>
-			<name>var</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The array to be used</description>
-			<name>array</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The template string to be used</description>
-			<name>templateVar</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The index to start, defaults to 0</description>
-			<name>startElementIndex</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The index in the array to end, defaults to last element</description>
-			<name>endElementIndex</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<example>
-			<![CDATA[
-				<go:arrayToTokenTemplate value="xmlOutput"
-								templateVar="${stringVar}" startElementIndex="0" endElementIndex="10" />
-				<go:arrayToTokenTemplate value="xmlOutput"
-								templateVar="${stringVar}" />
-			]]>
-		</example>
-	</tag>
-
-	<tag>
 		<description>get the next available call back date and time</description>
 		<name>callCenterHours</name>
 		<tag-class>com.disc_au.web.go.tags.CallCenterHoursTag</tag-class>
