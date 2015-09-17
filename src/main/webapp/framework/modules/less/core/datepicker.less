@@ -8,14 +8,7 @@
  *
  */
 
-@datepicker-blue: #1C3F94;
-@datepicker-nav: #142C67;
-@datepicker-background-cell: #f1f1f1;
-@datepicker-next-prev-color: #fff;
-@datepicker-disabled-font-color: #999;
-
 .datepicker {
-  	margin-left: -15px;
 	background-color: @datepicker-background-cell;
 	border: none;
 	border-radius:0;
@@ -193,9 +186,9 @@
 
 		&.active,
 		&.active:hover {
-			.btn-styles(@datepicker-blue, @datepicker-next-prev-color,
-			@datepicker-blue, @datepicker-next-prev-color,
-			@datepicker-blue, @datepicker-next-prev-color,
+			.btn-styles(@datepicker-switch-bg-color, @datepicker-switch-prev-color,
+			@datepicker-switch-bg-color, @datepicker-switch-next-color,
+			@datepicker-switch-bg-color, @datepicker-switch-next-color,
 			@btn-form-inverse-active-border-color, @datepicker-dow-text-color, @datepicker-dow-text-color, true);
 		}
 		//Year and Month items are spans
@@ -238,26 +231,18 @@
 		color: @datepicker-switch-color;
 		font-family: @datepicker-switch-font-family;
 		border-radius: 0;
-		background: @datepicker-blue;
+		background: @datepicker-switch-bg-color;
 	  	font-weight: bold;
 	}
-	th.prev {
-		color: @datepicker-switch-color;
-		font-size: @datepicker-switch-prev-font-size;
-		font-family: @datepicker-switch-prev-font-family;
-		font-weight: @datepicker-switch-prev-font-weight;
-		background-color: @datepicker-nav;
-		border-radius: 0;
-	  	cursor:default;
-	}
-	th.next, th.next:hover {
+
+  	th.prev, th.next, th.next:hover {
 		color: @datepicker-switch-color;
 		font-size: @datepicker-switch-next-font-size;
 		font-family: @datepicker-switch-next-font-family;
 		font-weight: @datepicker-switch-next-font-weight;
-		background-color: @datepicker-nav;
+		background-color: @datepicker-switch-nextprev-bg-color;
 		border-radius: 0;
-	  	cursor:default;
+	  	cursor:pointer;
 	}
 
 	tfoot tr th {
@@ -269,12 +254,12 @@
 
 	thead tr:first-child th{
 	  &:hover{
-		background: @datepicker-nav;
+		background: @datepicker-switch-nextprev-bg-color;
 	  }
 	}
 
 	thead th.empty, thead th.prev.empty:hover, thead th.next.empty:hover, thead tr:first-child th.datepicker-switch:hover {
-	  background: @datepicker-blue;
+	  background: @datepicker-switch-bg-color;
 	  cursor:default;
 	}
 
