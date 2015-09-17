@@ -236,7 +236,7 @@
             <core_new:kampyle formId="112902"/>
         </c:if>
 
-        <c:if test="${empty ''}">
+        <c:if test="${empty skipJSCSS}">
 
             <%-- User Tracking --%>
             <c:set var="isUserTrackingEnabled"><core_new:userTrackingEnabled/></c:set>
