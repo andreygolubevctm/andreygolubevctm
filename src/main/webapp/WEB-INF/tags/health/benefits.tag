@@ -43,7 +43,7 @@
 		<div class=" footer">
 			<button type="button" class="btn btn-cancel popover-mode">Cancel</button>
 			<button type="button" class="btn btn-save popover-mode">Save changes</button>
-			<a type="button" class="btn btn-save journey-mode" href="javascript:;">Continue <span class="icon icon-arrow-right"></span></a>
+			<a class="btn btn-save journey-mode" href="javascript:;">Continue <span class="icon icon-arrow-right"></span></a>
 		</div>
 
 	</form>

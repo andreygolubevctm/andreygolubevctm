@@ -47,16 +47,12 @@
      * Old uses streetSearch fldName, new uses validAutofilllessSearch instead.
      * However, both use the same for non standard lookups.
      */
-    $.validator.addMethod(
-        "validAddress",
-        function (value, element, name) {
-            "use strict";
+    $.validator.addMethod("validAddress", function (value, element, name) {
 
             // Default is to FAIL
             var valid = false;
 
             var $ele = $(element);
-            var $streetSearch = $("#" + name + "_streetSearch");
             var $streetNoElement = $("#" + name + "_streetNum");
             var $unitShopElement = $("#" + name + "_unitShop");
             var $unitSelElement = $("#" + name + "_unitSel");
@@ -229,8 +225,8 @@
 
                 // Force an unhighlight because Validator has lost its element scope due to all the sub-valid() checks.
                 if (fldName === '_streetSearch') {
-                    if (typeof $ele.validate().ctm_unhighlight === "function") {
-                        $ele.validate().ctm_unhighlight($('#' + name + '_streetSearch').get(0), this.settings.errorClass, this.settings.validClass);
+                    if (typeof $.validator.prototype.ctm_unhighlight === "function") {
+                        $.validator.prototype.ctm_unhighlight($('#' + name + '_streetSearch').get(0), this.settings.errorClass, this.settings.validClass);
                     }
                 }
             }

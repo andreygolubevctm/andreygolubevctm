@@ -105,12 +105,6 @@
                     <go:insertmarker format="SCRIPT" name="js-head"/>
                 </go:script>
 
-                <go:script>
-                    $(document).ready(function(){
-                    <go:insertmarker format="SCRIPT" name="onready"/>
-                    });
-                </go:script>
-
             </c:when>
             <c:otherwise>
                 <!--[if lt IE 9]>
@@ -242,7 +236,7 @@
             <core_new:kampyle formId="112902"/>
         </c:if>
 
-        <c:if test="${empty ''}">
+        <c:if test="${empty skipJSCSS}">
 
             <%-- User Tracking --%>
             <c:set var="isUserTrackingEnabled"><core_new:userTrackingEnabled/></c:set>
@@ -412,6 +406,10 @@
             }</script>
         </c:if>
     </c:if>
-
+    <go:script>
+        $(document).ready(function(){
+        <go:insertmarker format="SCRIPT" name="onready"/>
+        });
+    </go:script>
     </body>
 </go:html>

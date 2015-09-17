@@ -15,7 +15,7 @@
 						items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
 
 						<div class="row day_row">
-							<div class="day-description col-md-6 col-xs-6""> ${hoursOfDay.description}</div>
+							<div class="day-description col-md-6 col-xs-6"> ${hoursOfDay.description}</div>
 							<div class="col-md-6 col-xs-6">
 								<c:choose>
 									<c:when test="${empty hoursOfDay.startTime}">
