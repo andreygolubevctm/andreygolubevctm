@@ -9,6 +9,7 @@ import com.ctm.constants.ErrorCode;
 import com.ctm.logging.XMLOutputWriter;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.utils.function.Action;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.*;
@@ -46,6 +48,8 @@ public class SOAPClientThread implements Runnable {
 
 	public static final int HTTP_OK = 200;
 	public static final int HTTP_NOT_FOUND = 404;
+	private final Action beforeRun;
+	private final Action afterRun;
 
 	private SoapClientThreadConfiguration configuration;
 
@@ -60,6 +64,9 @@ public class SOAPClientThread implements Runnable {
 
 	/** The result xml. */
 	protected String resultXML = "";
+
+	/** The timer. */
+	protected long timer; // debug timer
 
 	public String method = "POST";
 
@@ -92,7 +99,9 @@ public class SOAPClientThread implements Runnable {
 	 * @param soapConfiguration global config
 	 */
 	public SOAPClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
-							String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration) {
+							String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration, Action beforeRun, Action afterRun) {
+		this.beforeRun = beforeRun;
+		this.afterRun = afterRun;
 
 		this.configuration = configuration;
 
@@ -125,7 +134,14 @@ public class SOAPClientThread implements Runnable {
 		return resultXML;
 	}
 
+	protected void logTime(String msg) {
+		logTime(msg, this.timer);
+		this.timer = System.currentTimeMillis();
+	}
 
+	private void logTime(String msg, long timer) {
+		//logger.info(this.name + ": " + msg + ": " + (System.currentTimeMillis() - timer) + "ms ");
+	}
 
 	/**
 	 * Process request.
@@ -164,12 +180,12 @@ public class SOAPClientThread implements Runnable {
 						InputStream clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getClientCert());
 
 						// If that fails, do a folder hierarchy dance to support looking more locally (non-packed-WAR environment)
-						LOGGER.debug("Checking if cert exists. {}" + kv("CertExists", clientCertSourceInput == null));
 						if ( clientCertSourceInput == null ) {
 							configuration.setClientCert("../" + configuration.getClientCert());
 							clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getClientCert());
 						}
 
+						LOGGER.debug("Checking if cert exists. {}" + kv("CertExists", clientCertSourceInput == null));
 
 						String pKeyPassword = configuration.getClientCertPass();
 						KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -185,8 +201,16 @@ public class SOAPClientThread implements Runnable {
 
 						((HttpsURLConnection) connection).setSSLSocketFactory( sockFact );
 
-					} catch (NoSuchAlgorithmException | CertificateException | UnrecoverableKeyException | KeyStoreException | KeyManagementException e) {
-						LOGGER.error("Cert Error.", e);
+					} catch (NoSuchAlgorithmException e) {
+						LOGGER.error("Cert Error: 1 (No Such Algorithm)", e);
+					} catch (CertificateException e) {
+						LOGGER.error("Cert Error: 2 (Certificate exception)", e);
+					} catch (UnrecoverableKeyException e) {
+						LOGGER.error("Cert Error: 3 (Unrecoverable Key)", e);
+					} catch (KeyStoreException e) {
+						LOGGER.error("Cert Error: 4 (Key Store exception)", e);
+					} catch (KeyManagementException e) {
+						LOGGER.error("Cert Error: 5 (Key Management exception)", e);
 					}
 				}
 
@@ -203,7 +227,7 @@ public class SOAPClientThread implements Runnable {
 			((HttpURLConnection)connection).setRequestMethod(this.method);
 			connection.setRequestProperty("Content-Type", configuration.getContentType());
 
-			// Set the soap action (if supplied)
+			// Set the soap apply (if supplied)
 			if (configuration.getSoapAction() != null) {
 				connection.setRequestProperty("SOAPAction", configuration.getSoapAction());
 			}
@@ -256,6 +280,9 @@ public class SOAPClientThread implements Runnable {
 				}
 				// An error or some unknown condition occurred
 				default: {
+					// Important! keep this as debug and don't enable debug logging in production
+					// as this response may include credit card details (this is from the nib webservice)
+					LOGGER.debug("[SOAP Response] {}", kv("response", connection.getResponseMessage()));
 
 					StringBuffer errorData = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(((HttpURLConnection)connection).getErrorStream()));
@@ -282,15 +309,22 @@ public class SOAPClientThread implements Runnable {
 
 					returnData.append(err.getXMLDoc());
 					}
+
+					logTime("Receive from service");
 				}
 			}
 
 			wout.close();
 			((HttpURLConnection)connection).disconnect();
 
-		} catch (IOException  e) {
-			LOGGER.error("failed to process request", e);
-			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), e.getClass().getName(), (System.currentTimeMillis() - startTime));
+		} catch (MalformedURLException e) {
+			LOGGER.error("failed to process request" , e);
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
+			returnData.append(err.getXMLDoc());
+
+		} catch (IOException e) {
+			LOGGER.error("failed to process request: "+getConfiguration().getUrl() , e);
+			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "IOException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 		}
 
@@ -311,7 +345,7 @@ public class SOAPClientThread implements Runnable {
 						"",
 						0);
 
-				LOGGER.debug("MK-20004 Soap error found. {},{}" , kv("soapResponse", soapResponse), kv("SOAPClientThread", this));
+				LOGGER.debug("MK-20004 Soap error found. {},{}" , kv("soapResponse", soapResponse), kv("name", this.name));
 
 				errorData = err.getXMLDoc();
 
@@ -338,6 +372,8 @@ public class SOAPClientThread implements Runnable {
 	}
 
 	public void run() {
+		beforeRun.apply();
+		this.timer = System.currentTimeMillis();
 		if(soapConfiguration.isWriteToFile()){
 			writer = new XMLOutputWriter(this.name , debugPath);
 			writer.writeXmlToFile(maskXml(this.xml , configuration.getMaskReqInXSL()) , REQ_IN);
@@ -348,7 +384,7 @@ public class SOAPClientThread implements Runnable {
 			params.put("transactionId", this.tranId);
 		}
 
-		// Set the soap action (if supplied)
+		// Set the soap apply (if supplied)
 		if (configuration.getSoapAction() != null) {
 			params.put("SoapAction", configuration.getSoapAction());
 		}
@@ -388,6 +424,10 @@ public class SOAPClientThread implements Runnable {
 
 			// do we need to translate it?
 			if (configuration.getInboundXSL() != null) {
+				// Important! keep this as debug and don't enable debug logging in production
+				// as this response may include credit card details (this is from the nib webservice)
+				LOGGER.debug("[SOAP Response] {},{}", kv("name", this.name), kv("response", soapResponse));
+
 				// The following ugliness had to be added to get OTI working ..
 				//REVISE: oh please do - we need something better than this.... :(
 				if (configuration.getUnescapeElement() != null){
@@ -435,6 +475,7 @@ public class SOAPClientThread implements Runnable {
 				writer.lastWriteXmlToFile(this.resultXML);
 		}
 	}
+		afterRun.apply();
 	}
 
 	/**
@@ -447,6 +488,8 @@ public class SOAPClientThread implements Runnable {
 	}
 
 	// SETTERS AND GETTERS..
+
+
 
 	private NodeList createRequestNodeList(String requestXml){
 		try {
@@ -466,8 +509,12 @@ public class SOAPClientThread implements Runnable {
 			if (nodeList != null){
 				return nodeList;
 			}
-		} catch (IOException | ParserConfigurationException| SAXException e) {
-			LOGGER.error("failed to createRequestNodeList", e);
+		} catch (ParserConfigurationException e) {
+			LOGGER.error("failed to createRequestNodeList" , e);
+		} catch (SAXException e) {
+			LOGGER.error("failed to createRequestNodeList" , e);
+		} catch (IOException e) {
+			LOGGER.error("failed to createRequestNodeList" , e);
 		}
 		return null;
 	}

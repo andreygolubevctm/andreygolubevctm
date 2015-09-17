@@ -181,10 +181,9 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		emailModel.setProvider(emailBrochureRequest.provider);
 		emailModel.setSmallLogo(emailBrochureRequest.provider.toLowerCase() + ".png");
 		try {
-			emailModel.setHospitalPDSUrl( pageSettings.getBaseUrl() + request.getParameter("hospitalPDSUrl"));
-			emailModel.setExtrasPDSUrl(pageSettings.getBaseUrl() + request.getParameter("extrasPDSUrl"));
-		} catch (EnvironmentException | VerticalException
-				| ConfigSettingException e) {
+			emailModel.setHospitalPDSUrl(request.getParameter("hospitalPDSUrl"));
+			emailModel.setExtrasPDSUrl(request.getParameter("extrasPDSUrl"));
+		} catch (EnvironmentException | VerticalException e) {
 			throw new SendEmailException("failed to get base url", e);
 		}
 		return emailModel;

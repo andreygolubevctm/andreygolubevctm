@@ -2,7 +2,7 @@
 <%@ tag description="Wrapper for all transaction touching and quote writes." %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger('/core/transaction.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.core.transaction')}" />
 
 <core_new:no_cache_header/>
 
@@ -248,7 +248,7 @@
 
 		<%-- WRITE QUOTE ................................................................. --%>
 		<c:set var="response">${response}<agg:write_quote productType="${fn:toUpperCase(vertical)}" rootPath="${vertical}" source="${comment}" /></c:set>
-		${logger.debug('Write quote has been called. {},{}', log:kv('currentTransactionId', currentTransactionId),log:kv('response',response ))}
+		${logger.debug('Write quote has been called. {}',log:kv('response',response ))}
 
 		<c:choose>
 			<c:when test="${vertical eq 'car'}">

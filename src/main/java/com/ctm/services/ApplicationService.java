@@ -9,9 +9,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.ctm.cache.ApplicationCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.ctm.cache.ApplicationCacheManager;
 
 import com.ctm.dao.BrandsDao;
 import com.ctm.dao.ConfigSettingsDao;
@@ -23,8 +23,7 @@ import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.elasticsearch.AddressSearchService;
 import com.disc_au.web.go.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -201,6 +200,7 @@ public class ApplicationService {
 	 * @param verticalCode
 	 */
 	public static void setVerticalCodeOnRequest(ServletRequest request, String verticalCode) {
+		MDC.put("verticalCode", verticalCode);
 		request.setAttribute("verticalCode", verticalCode);
 	}
 
@@ -281,7 +281,8 @@ public class ApplicationService {
 			brands = brandsList;
 
 			LOGGER.debug("Loaded brands and verticals from database {}, {}", kv("brandsListSize", brandsList.size()),
-				kv("verticalsList.size()", verticalsList.size()));
+					kv("verticalsList.size()", verticalsList.size()));
+
 		}
 
 		return brands;
@@ -362,7 +363,6 @@ public class ApplicationService {
 		ServiceConfigurationService.clearCache();
 		AddressSearchService.destroy();
 		AddressSearchService.init();
-        ApplicationCacheManager.clearAll();
 		return true;
 	}
 
