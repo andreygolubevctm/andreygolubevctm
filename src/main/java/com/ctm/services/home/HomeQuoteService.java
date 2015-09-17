@@ -4,6 +4,7 @@ import com.ctm.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.RouterException;
 import com.ctm.exceptions.SessionException;
+import com.ctm.logging.XMLOutputWriter;
 import com.ctm.model.QuoteServiceProperties;
 import com.ctm.model.home.form.HomeQuote;
 import com.ctm.model.home.form.HomeRequest;
@@ -24,17 +25,17 @@ import com.ctm.services.ResultsService;
 import com.ctm.services.SessionDataService;
 import com.ctm.utils.ObjectMapperUtil;
 import com.ctm.web.validation.CommencementDateValidation;
-import com.ctm.logging.XMLOutputWriter;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -43,15 +44,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ctm.model.settings.Vertical.VerticalType.HOME;
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
+import static com.ctm.model.settings.Vertical.VerticalType.HOME;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
-
-    private static final Logger logger = Logger.getLogger(HomeQuoteService.class);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomeQuoteService.class);
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 
     public List<HomeResult> getQuotes(Brand brand, HomeRequest data) {
@@ -114,7 +114,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             return homeResults;
 
         }catch(IOException e){
-            logger.error("Error parsing or connecting to home-quote", e);
+            LOGGER.error("Error parsing or connecting to home-quote {}, {}", kv("brand", brand), kv("homeQuoteRequest", homeQuoteRequest), e);
         }
 
         return null;
@@ -193,7 +193,8 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
 
             return ResponseAdapter.adapt(moreInfoResponse);
         } catch (IOException e) {
-            logger.error("Error parsing or connecting to home-quote", e);
+            LOGGER.error("Error parsing or connecting to home-quote {},{},{},{}", kv("brand", brand), kv("productId", productId),
+                kv("type", type), kv("environmentOverride", environmentOverride), e);
         }
         return null;
     }
@@ -233,7 +234,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
             }
 
         } catch (DaoException | SessionException e) {
-            System.out.println(e.getMessage());
+            LOGGER.error("Failed writing temp result details {}, {}", kv("transactionId", data.getTransactionId()), kv("homeRequest", data) );
         }
 
     }

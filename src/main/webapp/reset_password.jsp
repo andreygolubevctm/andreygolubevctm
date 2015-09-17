@@ -7,7 +7,7 @@
 <%-- Set authenticatedData to scope of request --%>
 <session:new verticalCode="GENERIC" authenticated="${true}"/>
 
-<layout:journey_engine_page title="Reset Password" sessionPop="false">
+<layout:journey_engine_page title="Reset Password">
 
 	<jsp:attribute name="head">
 		<link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/resetpassword${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">

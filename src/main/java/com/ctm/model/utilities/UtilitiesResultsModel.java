@@ -11,10 +11,12 @@ import org.json.JSONObject;
 import com.ctm.model.AbstractJsonModel;
 import com.ctm.model.formatter.JsonUtils;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class UtilitiesResultsModel extends AbstractJsonModel {
 
-	private static final Logger logger = LoggerFactory.getLogger(UtilitiesResultsModel.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesResultsModel.class);
 
 	private ArrayList<UtilitiesResultsPlanModel> plans = new ArrayList<UtilitiesResultsPlanModel>();
 	private String uniqueCustomerId;
@@ -59,7 +61,7 @@ public class UtilitiesResultsModel extends AbstractJsonModel {
 
 				// perform validation
 				if(provider.getAnnualNewCost() == 0 || provider.getPlanName().equals("")){
-					logger.error("Missing field from result object");
+					LOGGER.error("Invalid utilities ThoughtWorld provider results {}", kv("provider", provider));
 					return false;
 				}
 

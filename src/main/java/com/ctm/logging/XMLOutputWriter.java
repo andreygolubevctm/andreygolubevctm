@@ -1,5 +1,6 @@
 package com.ctm.logging;
 
+import static com.ctm.logging.LoggingArguments.v;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.text.SimpleDateFormat;
@@ -20,7 +21,7 @@ public class XMLOutputWriter {
 
 	private static final String NAME_KEY = "loggerName";
 	
-	private static final Logger logger = getLogger(XMLOutputWriter.class);
+	private static final Logger LOGGER = getLogger(XMLOutputWriter.class);
 	private final String name;
 
 	public XMLOutputWriter(String name, String debugPath) {
@@ -30,24 +31,22 @@ public class XMLOutputWriter {
 	}
 
 	public void writeXmlToFile(String maskXml, String type) {
-		logger.info(createLogString(maskXml, type));
+		LOGGER.info("{} {} {}", v("name", name), v("type", type), v("message", removeLineEndings(maskXml)));
 	}
 	
 	/**
 	 * This is important this will release appenders after a few seconds always call 
 	 * this when you have finished logging.
 	 * @param message
-	 * @param type
-	 * @param transactionId
 	 */
 	public void lastWriteXmlToFile(String message) {
-		logger.info(FINALIZE_SESSION_MARKER, createLogString(message, RESP_OUT));
+		LOGGER.info(FINALIZE_SESSION_MARKER, "{} {} {}", v("name", name), v("type", RESP_OUT), v("message", removeLineEndings(message)));
 	}
 
-	private String createLogString(String maskXml, String type) {
-		return name + " "+ type + " " + maskXml.replace("\n", "").replace("\r", "");
+	private String removeLineEndings(String maskXml) {
+		return maskXml.replace("\n", "").replace("\r", "");
 	}
-	
+
 	private String getDebugPath(String debugPathLocal) {
 			SimpleDateFormat sdf  = new SimpleDateFormat("yyyyMMdd-HH");
 			String debugDateFolder = sdf.format(new Date());

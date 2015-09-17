@@ -40,12 +40,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.model.settings.Vertical.VerticalType.CAR;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class CarQuoteService extends CommonQuoteService<CarQuote> {
 
-	private static final Logger logger = LoggerFactory.getLogger(CarQuoteService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CarQuoteService.class);
 
     public List<CarResult> getQuotes(Brand brand, CarRequest data) {
 
@@ -141,7 +142,7 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
             return carResults;
 
         }catch(IOException e){
-            logger.error("Error parsing or connecting to car-quote", e);
+            LOGGER.error("Error parsing or connecting to car-quote {}, {}", kv("brand", brand), kv("carRequest", data), e);
         }
 
         return null;
@@ -213,10 +214,8 @@ public class CarQuoteService extends CommonQuoteService<CarQuote> {
                 }
                 resultDetails.addChild(results);
             }
-
         } catch (DaoException | SessionException e) {
-            System.out.println(e.getMessage());
+            LOGGER.error("Failed writing temp result details {}, {}", kv("transactionId", data.getTransactionId()), kv("carRequest", data));
         }
-
     }
 }

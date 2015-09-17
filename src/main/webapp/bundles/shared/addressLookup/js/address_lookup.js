@@ -24,7 +24,7 @@
 
 	function getAddressData(addressFieldData) {
 		addressFieldId = addressFieldData.addressFieldId;
-		dpId = addressFieldData.dpid;
+		var dpId = addressFieldData.dpid;
 
 		// If a get details request takes too long and the user reselects cached address data, it will load in the ajax's
 		// response instead of the cached data.
@@ -86,7 +86,7 @@
 							if (meerkat.site.vertical == 'home') {
 								meerkat.modules.journeyEngine.gotoPath("start");
 							}
-							$('#' + addressFieldId + '_nonStd').trigger('click').prop('checked', true);
+							$('#' + addressFieldId + '_nonStd').trigger('click.elasticAddress').prop('checked', true);
 						}
 					},
 					onComplete: function ajaxGetTypeaheadAddressDataComplete() {
@@ -104,7 +104,7 @@
 	function setAddressDataFields(data) {
 		for (var addressItem in data) {
 			var $hiddenAddressElement = $('#' + addressFieldId + '_'+addressItem);
-			$hiddenAddressElement.val(data[addressItem]).trigger("change");
+			$hiddenAddressElement.val(data[addressItem]).trigger("change").trigger("change.elasticAddress");
 		}
 	}
 

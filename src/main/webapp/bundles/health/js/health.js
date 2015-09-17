@@ -111,6 +111,12 @@
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 
+				if(meerkat.site.choices) {
+					healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
+					healthChoices._state = meerkat.site.choices.state;
+					healthChoices._performUpdate = meerkat.site.choices.performHealthChoicesUpdate;
+				}
+
 				// Add event listeners.
 				$('.health-situation-healthCvr').on('change',function() {
 					healthChoices.setCover($(this).val());

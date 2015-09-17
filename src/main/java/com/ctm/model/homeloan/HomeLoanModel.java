@@ -423,4 +423,6 @@ public class HomeLoanModel {
 	public void setAdditionalInformation(String additionalInformation) {
 		this.additionalInformation = additionalInformation;
 	}
+
+
 }

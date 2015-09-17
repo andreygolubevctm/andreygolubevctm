@@ -1,20 +1,16 @@
 package com.ctm.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.segment.Segment;
 import com.ctm.model.segment.SegmentRequest;
 import com.ctm.model.segment.SegmentRule;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.List;
+
 public class SegmentDao {
-	private static final Logger logger = LoggerFactory.getLogger(SegmentDao.class.getName());
 
 	public List<Segment> getAvailableSegments(SegmentRequest segmentRequest) throws DaoException {
 		return getAvailableSegments(segmentRequest.styleCodeId, segmentRequest.verticalId, segmentRequest.effectiveDate);

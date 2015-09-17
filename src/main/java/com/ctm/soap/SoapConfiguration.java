@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class SoapConfiguration {
 
-	private static final Logger logger = LoggerFactory.getLogger(SoapConfiguration.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SoapConfiguration.class);
 
 	public static void setUpConfigurationFromDatabase(String configDbKey , SoapAggregatorConfiguration configuration, Brand brand,
 			String verticalCode, String manuallySetProviderIds, String authToken) {
@@ -26,7 +26,7 @@ public class SoapConfiguration {
 			try {
 				Vertical vertical = brand.getVerticalByCode(verticalCode);
 				if(vertical == null){
-					logger.error("vertical is not set");
+					LOGGER.error("vertical is not set");
 					return;
 				}
 
@@ -69,7 +69,7 @@ public class SoapConfiguration {
 
 
 			} catch (DaoException | ServiceConfigurationException e) {
-				logger.error("Unable to load Database configuration or ServiceConfiguration exception", e);
+				LOGGER.error("Unable to load Database configuration or ServiceConfiguration exception", e);
 			}
 		}
 	}

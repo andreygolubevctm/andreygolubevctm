@@ -150,4 +150,17 @@ public class Touch extends AbstractJsonModel {
 //		json.put("description", description);
 		return json;
 	}
+
+	@Override
+	public String toString() {
+		return "Touch{" +
+				"id=" + id +
+				", transactionId=" + transactionId +
+				", datetime=" + datetime +
+				", operator='" + operator + '\'' +
+				", type=" + type +
+				", touchProductProperty=" + touchProductProperty +
+				", touchCommentProperty=" + touchCommentProperty +
+				'}';
+	}
 }

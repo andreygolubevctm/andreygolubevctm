@@ -158,4 +158,26 @@ public class Coupon extends AbstractJsonModel {
 		return json;
 	}
 
+	@Override
+	public String toString() {
+		return "Coupon{" +
+				"couponId=" + couponId +
+				", styleCodeId=" + styleCodeId +
+				", verticalId=" + verticalId +
+				", couponCode='" + couponCode + '\'' +
+				", isExclusive=" + isExclusive +
+				", showPopup=" + showPopup +
+				", canPrePopulate=" + canPrePopulate +
+				", contentBanner='" + contentBanner + '\'' +
+				", contentSuccess='" + contentSuccess + '\'' +
+				", contentCheckbox='" + contentCheckbox + '\'' +
+				", contentConfirmation='" + contentConfirmation + '\'' +
+				", effectiveStart=" + effectiveStart +
+				", effectiveEnd=" + effectiveEnd +
+				", couponChannel=" + couponChannel +
+				", removeFromLeads=" + removeFromLeads +
+				", vdn=" + vdn +
+				", couponRules=" + couponRules +
+				'}';
+	}
 }

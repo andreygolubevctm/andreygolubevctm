@@ -7,7 +7,8 @@ import com.ctm.utils.home.HomeRequestParser;
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
 import com.disc_au.web.go.Data;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -16,9 +17,7 @@ import java.util.List;
  * Created by voba on 18/06/2015.
  */
 public class HomeService {
-
-    private static Logger logger = Logger.getLogger(HomeService.class);
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(HomeService.class);
     private boolean valid = false;
     private String vertical = Vertical.VerticalType.HOME.getCode();
 

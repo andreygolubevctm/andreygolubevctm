@@ -196,10 +196,14 @@
 <go:script marker="onready">
 	<c:choose>
 		<c:when test="${not empty address.suburb}">
-			init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress}, ${address.suburb});
+			_.defer(function() {
+                init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress}, ${address.suburb});
+            });
 		</c:when>
 		<c:otherwise>
-	init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress});
+            _.defer(function() {
+	            init_address("${name}" , ${isResidentialAddress} , ${isPostalAddress});
+            });
 		</c:otherwise>
 	</c:choose>
 		$("#${name}_streetNum").val("${address.streetNum}");

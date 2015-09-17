@@ -29,12 +29,11 @@
 			</appender>
 		</sift>
 	</appender>
-	
+
 	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
 		<queueSize>500</queueSize>
 		<appender-ref ref="SIFT" />
 	</appender>
-
 
 	<logger name="com.ctm.logging.XMLOutputWriter" additivity="false">
 		<appender-ref ref="ASYNC" />
@@ -56,7 +55,19 @@
 		<appender-ref ref="stdout" />
 	</logger>
 
-	<root level="debug">
+	<logger name="com.ctm" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<logger name="jsp" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<logger name="tag" level="DEBUG" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
+	<root level="INFO">
    		<appender-ref ref="stdout" />
 	</root>
 	

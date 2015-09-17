@@ -19,13 +19,15 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Data Access Object to interface with the transaction_details table.
  * @author bthompson
  */
 public class TransactionDetailsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(TransactionDetailsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionDetailsDao.class);
 	private final SqlDao sqlDao;
 
 	/**
@@ -100,7 +102,7 @@ public class TransactionDetailsDao {
 					updateTransactionDetails(transactionId, transactionDetailNew);
 				}
 			} catch (DaoException e) {
-				logger.error("",e);
+				LOGGER.error("Transaction details insert or update failed {}, {}", kv("parameterMap", request.getParameterMap()), kv("transactionId", transactionId), e);
 			}
 		}
 		return true;
@@ -194,7 +196,7 @@ public class TransactionDetailsDao {
 
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -238,7 +240,7 @@ public class TransactionDetailsDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -258,8 +260,8 @@ public class TransactionDetailsDao {
 		SimpleDatabaseConnection dbSource = null;
 		Integer maxSequenceNo = 1;
 		try {
-			PreparedStatement stmt;
 			dbSource = new SimpleDatabaseConnection();
+			PreparedStatement stmt;
 
 			stmt = dbSource.getConnection().prepareStatement(
 					"SELECT MAX(sequenceNo) AS `maxSequenceNo`"
@@ -277,7 +279,7 @@ public class TransactionDetailsDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -351,14 +353,10 @@ public class TransactionDetailsDao {
 					transactionDetails.add(transactionDetail);
 					transactionDetails.add(transactionDetail);
 				}
-		} catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			throw new DaoException(e);
 		} finally {
-			if(dbSource != null) {
-				dbSource.closeConnection();
-			}
+			dbSource.closeConnection();
 		}
 		return transactionDetails;
 	}
@@ -384,7 +382,7 @@ public class TransactionDetailsDao {
 				updateTransactionDetails(transactionId, transactionDetailNew);
 			}
 		} catch (DaoException e) {
-			logger.error("failed to write transaction details for transactionId: " + transactionId, e);
+			LOGGER.error("Transaction details insert or update failed {}, {}, {}", kv("xpath", xpath), kv("textValue", textValue), kv("transactionId", transactionId), e);
 		}
 	}
 
