@@ -39,7 +39,8 @@ public class TravelService extends CommonQuoteService<TravelQuote, TravelQuoteRe
         // Convert post data from form into a Travel-quote request
         final TravelQuoteRequest travelQuoteRequest = RequestAdapter.adapt(data);
 
-        TravelResponse travelResponse = sendRequest(brand, Vertical.VerticalType.TRAVEL, "travelQuoteService", "_TRAVEL-QUOTE", data, travelQuoteRequest, TravelResponse.class);
+        TravelResponse travelResponse = sendRequest(brand, Vertical.VerticalType.TRAVEL, "travelQuoteService", "TRAVEL-QUOTE", "quote",
+                data, travelQuoteRequest, TravelResponse.class);
 
         // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
         final List<TravelResult> travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);

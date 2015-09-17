@@ -10,7 +10,7 @@ public class Application {
 
     private Address address;
 
-    private Postal postal;
+    private Address postal;
 
     private String mobile;
 
@@ -18,11 +18,15 @@ public class Application {
 
     private String optInEmail;
 
+    private String productName;
+
     private String productTitle;
 
     private String productId;
 
     private String provider;
+
+    private String postalMatch;
 
     public Address getAddress() {
         return address;
@@ -32,11 +36,11 @@ public class Application {
         this.address = address;
     }
 
-    public Postal getPostal() {
+    public Address getPostal() {
         return postal;
     }
 
-    public void setPostal(Postal postal) {
+    public void setPostal(Address postal) {
         this.postal = postal;
     }
 
@@ -112,4 +116,19 @@ public class Application {
         this.dependants = dependants;
     }
 
+    public String getPostalMatch() {
+        return postalMatch;
+    }
+
+    public void setPostalMatch(String postalMatch) {
+        this.postalMatch = postalMatch;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 }

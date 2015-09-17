@@ -16,8 +16,12 @@ import javax.ws.rs.core.Context;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ctm.model.settings.Vertical.VerticalType.HOME;
+
 @Path("/home")
 public class HomeQuoteRouter extends CommonQuoteRouter {
+
+    private final HomeQuoteService homeService = new HomeQuoteService();
 
     @POST
     @Path("/quote/get.json")
@@ -25,54 +29,30 @@ public class HomeQuoteRouter extends CommonQuoteRouter {
     @Produces("application/json")
     public ResultsWrapper getHomeQuote(@Context MessageContext context, @FormParam("") final HomeRequest data) throws Exception {
 
-        Vertical.VerticalType vertical = Vertical.VerticalType.HOME;
+        Vertical.VerticalType vertical = HOME;
 
         // Initialise request
         Brand brand = initRouter(context, vertical);
         updateTransactionIdAndClientIP(context, data); // TODO check IP Address is correct
 
-
-//        if (data == null || data.getQuote() == null) {
-//            throw new RouterException("Data quote is missing");
-//        }
-
-        HomeQuoteService homeService = new HomeQuoteService();
         homeService.validateRequest(data, vertical.getCode());
 
-//        if(errors.size() > 0){
-//            throw new RouterException("Invalid request"); // TODO pass validation errors to client
-//        }
+        final List<HomeResult> quotes = homeService.getQuotes(brand, data);
 
-//        try {
-            final List<HomeResult> quotes = homeService.getQuotes(brand, data);
+        homeService.writeTempResultDetails(context, data, quotes);
+        ResultsObj<HomeResult> results = new ResultsObj<>();
+        results.setResult(quotes);
+        results.setInfo(generateInfoKey(data, context));
 
-//            Info info = new Info();
-//            info.setTransactionId(data.getTransactionId());
-//            try {
-//                String trackingKey = TrackingKeyService.generate(
-//                        context.getHttpServletRequest(), new Long(data.getTransactionId()));
-//                info.setTrackingKey(trackingKey);
-//            } catch (Exception e) {
-//                throw new RouterException("Unable to generate the trackingKey for transactionId:" + data.getTransactionId(), e);
-//            }
-
-            homeService.writeTempResultDetails(context,data,quotes);
-            ResultsObj<HomeResult> results = new ResultsObj<>();
-            results.setResult(quotes);
-            results.setInfo(generateInfoKey(data, context));
-
-            return new ResultsWrapper(results);
-//        } catch (Exception e) {
-//            throw new RouterException(e);
-//        }
+        return new ResultsWrapper(results);
     }
 
     @GET
     @Path("/more_info/get.json")
     @Produces("application/json")
     public HomeMoreInfo moreInfo(@Context MessageContext context, @QueryParam("code") String productId,
-                                @QueryParam("type") String type, @QueryParam(value = "environmentOverride") String environmentOverride) {
-        Brand brand = initRouter(context, Vertical.VerticalType.HOME);
+                                @QueryParam("type") String type, @QueryParam(value = "environmentOverride") String environmentOverride) throws Exception {
+        Brand brand = initRouter(context, HOME);
         HomeQuoteService homeService = new HomeQuoteService();
         return homeService.getMoreInfo(brand, productId, type, Optional.ofNullable(environmentOverride));
     }

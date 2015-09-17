@@ -22,6 +22,8 @@ import javax.ws.rs.core.Context;
 import java.util.Date;
 import java.util.List;
 
+import static com.ctm.model.settings.Vertical.VerticalType.CAR;
+
 @Path("/car")
 public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
 
@@ -34,16 +36,15 @@ public class CarQuoteRouter extends CommonQuoteRouter<CarRequest> {
     public ResultsWrapper getCarQuote(@Context MessageContext context, @FormParam("") final CarRequest data) throws Exception {
 
         // Initialise request
-        final Vertical.VerticalType vertical = Vertical.VerticalType.CAR;
+        final Vertical.VerticalType vertical = CAR;
         Brand brand = initRouter(context, vertical);
         updateTransactionIdAndClientIP(context, data); // TODO check IP Address is correct
-
 
         carService.validateRequest(data, "quote");
 
         final List<CarResult> quotes = carService.getQuotes(brand, data);
 
-        carService.writeTempResultDetails(context,data,quotes);
+        carService.writeTempResultDetails(context, data, quotes);
         ResultsObj<CarResult> results = new ResultsObj<>();
         results.setResult(quotes);
         results.setInfo(generateInfoKey(data, context));

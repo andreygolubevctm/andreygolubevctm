@@ -12,7 +12,6 @@ public class HealthApplicationResponse {
 
     public List<PartnerError> errorList;
 
-
     public String getFundId() {
         return fundId;
     }

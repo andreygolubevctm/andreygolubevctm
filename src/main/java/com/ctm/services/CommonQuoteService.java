@@ -15,6 +15,8 @@ import com.ctm.web.validation.SchemaValidationError;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +35,12 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommonQuoteService.class);
 
-    public static final String SERVICE_URL = "serviceUrl";
-    public static final String TIMEOUT_MILLIS = "timeoutMillis";
-    public static final String DEBUG_PATH = "debugPath";
+    private static final String SERVICE_URL = "serviceUrl";
+    private static final String TIMEOUT_MILLIS = "timeoutMillis";
+    private static final String DEBUG_PATH = "debugPath";
+
+    protected static final DateTimeFormatter EMAIL_DATE_FORMAT = DateTimeFormat.forPattern("dd MMMMM yyyy");
+    protected static final DateTimeFormatter NORMAL_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     public boolean validateRequest(Request<QUOTE> data, String verticalCode) {
         // Validate request
@@ -53,10 +58,6 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
             throw new RouterException("Invalid request"); // TODO pass validation errors to client
         }
         return true;
-    }
-
-    public QuoteServiceProperties getQuoteServiceProperties(String service, Brand brand, String verticalCode, Request<QUOTE> request) {
-        return getQuoteServiceProperties(service, brand, verticalCode, Optional.ofNullable(request.getEnvironmentOverride()));
     }
 
     protected void setFilter(com.ctm.model.common.ProviderFilter providerFilter) throws Exception {
@@ -89,7 +90,7 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
         }
     }
 
-    protected RESPONSE sendRequest(Brand brand, Vertical.VerticalType vertical, String serviceName, String logTarget, Request data, PAYLOAD payload, Class<RESPONSE> responseClass) throws IOException {
+    protected RESPONSE sendRequest(Brand brand, Vertical.VerticalType vertical, String serviceName, String logTarget, String endpoint, Request data, PAYLOAD payload, Class<RESPONSE> responseClass) throws IOException, DaoException, ServiceConfigurationException {
         com.ctm.providers.Request request = new com.ctm.providers.Request();
         request.setBrandCode(brand.getCode());
         request.setClientIp(data.getClientIpAddress());
@@ -103,12 +104,12 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         objectMapper.setDateFormat(df);
 
-        QuoteServiceProperties serviceProperties = getQuoteServiceProperties(serviceName, brand, vertical.getCode(), data);
+        QuoteServiceProperties serviceProperties = getQuoteServiceProperties(serviceName, brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
         String jsonRequest = objectMapper.writeValueAsString(request);
 
         // Log Request
-        XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+logTarget , serviceProperties.getDebugPath());
+        XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId() + "_" +logTarget , serviceProperties.getDebugPath());
         writer.writeXmlToFile(jsonRequest , REQ_OUT);
 
         SimpleConnection connection = new SimpleConnection();
@@ -118,7 +119,7 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
         connection.setContentType("application/json");
         connection.setPostBody(jsonRequest);
 
-        String response = connection.get(serviceProperties.getServiceUrl() + "/quote");
+        String response = connection.get(serviceProperties.getServiceUrl() + "/" +endpoint);
         if (response == null) {
             throw new RouterException("Connection failed");
         }
@@ -127,19 +128,15 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
         return objectMapper.readValue(response, objectMapper.constructType(responseClass));
     }
 
-    public QuoteServiceProperties getQuoteServiceProperties(String service, Brand brand, String verticalCode, Optional<String> environmentOverride) {
+    public QuoteServiceProperties getQuoteServiceProperties(String service, Brand brand, String verticalCode, Optional<String> environmentOverride) throws ServiceConfigurationException, DaoException {
         // Get URL of home-quote service
         final QuoteServiceProperties properties = new QuoteServiceProperties();
-        try {
-            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId(), brand.getId());
-            properties.setServiceUrl(serviceConfig.getPropertyValueByKey(SERVICE_URL, ALL_BRANDS, ALL_PROVIDERS, SERVICE));
-            properties.setDebugPath(serviceConfig.getPropertyValueByKey(DEBUG_PATH, ALL_BRANDS, ALL_PROVIDERS, SERVICE));
-            String timeoutValue = serviceConfig.getPropertyValueByKey(TIMEOUT_MILLIS, ALL_BRANDS, ALL_PROVIDERS, SERVICE);
-            if (timeoutValue != null) {
-                properties.setTimeout(Integer.parseInt(timeoutValue));
-            }
-        }catch (DaoException | ServiceConfigurationException e ){
-            throw new ServiceException("QuoteServiceProperties config error", e);
+        ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId(), brand.getId());
+        properties.setServiceUrl(serviceConfig.getPropertyValueByKey(SERVICE_URL, ALL_BRANDS, ALL_PROVIDERS, SERVICE));
+        properties.setDebugPath(serviceConfig.getPropertyValueByKey(DEBUG_PATH, ALL_BRANDS, ALL_PROVIDERS, SERVICE));
+        String timeoutValue = serviceConfig.getPropertyValueByKey(TIMEOUT_MILLIS, ALL_BRANDS, ALL_PROVIDERS, SERVICE);
+        if (timeoutValue != null) {
+            properties.setTimeout(Integer.parseInt(timeoutValue));
         }
 
         environmentOverride.ifPresent(data -> {

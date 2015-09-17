@@ -23,8 +23,6 @@ import com.disc_au.web.go.xml.XmlNode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +38,6 @@ public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteReques
 	private static final Logger logger = LoggerFactory.getLogger(CarQuoteService.class);
 
     private static final SessionDataService SESSION_DATA_SERVICE = new SessionDataService();
-
-    private static final DateTimeFormatter EMAIL_DATE_FORMAT = DateTimeFormat.forPattern("dd MMMMM yyyy");
-    private static final DateTimeFormatter NORMAL_FORMAT = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     public List<CarResult> getQuotes(Brand brand, CarRequest data) throws Exception {
 
@@ -67,7 +62,7 @@ public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteReques
 
         final CarQuoteRequest carQuoteRequest = RequestAdapter.adapt(data);
 
-        CarResponse carResponse = sendRequest(brand, CAR, "carQuoteServiceBER", "_CAR-QUOTE", data, carQuoteRequest, CarResponse.class);
+        CarResponse carResponse = sendRequest(brand, CAR, "carQuoteServiceBER", "CAR-QUOTE", "quote", data, carQuoteRequest, CarResponse.class);
 
         final List<CarResult> carResults = ResponseAdapter.adapt(carResponse);
 
@@ -121,7 +116,7 @@ public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteReques
             resultDetails.addChild(results);
 
             quotes.stream()
-                    .filter(row -> row.getAvailable().equals(AvailableType.Y))
+                .filter(row -> row.getAvailable().equals(AvailableType.Y))
                 .forEach(row -> {
                         String productId = row.getProductId();
                         BigDecimal premium = row.getPrice().getAnnualPremium();

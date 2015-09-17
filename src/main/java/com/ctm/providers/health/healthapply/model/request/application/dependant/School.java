@@ -1,15 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.application.dependant;
 
-import com.ctm.interfaces.common.types.ValueType;
+public class School {
 
-public class School extends ValueType<String> {
+    private final String school;
 
-    private School(final String value) {
-        super(value);
+    public School(String school) {
+        this.school = school;
     }
-
-    public static School instanceOf(final String value) {
-        return new School(value);
-    }
-
 }

@@ -8,6 +8,8 @@ public class Payment {
 
     private Credit credit;
 
+    private Medicare medicare;
+
     public PaymentDetails getDetails() {
         return details;
     }
@@ -30,5 +32,13 @@ public class Payment {
 
     public void setCredit(Credit credit) {
         this.credit = credit;
+    }
+
+    public Medicare getMedicare() {
+        return medicare;
+    }
+
+    public void setMedicare(Medicare medicare) {
+        this.medicare = medicare;
     }
 }

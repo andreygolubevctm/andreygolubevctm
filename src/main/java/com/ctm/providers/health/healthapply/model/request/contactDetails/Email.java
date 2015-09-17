@@ -1,19 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.contactDetails;
 
+public class Email {
 
-import com.ctm.interfaces.common.types.ValueType;
+    private final String email;
 
-public class Email extends ValueType<String> {
-
-    public static final Email NONE = new Email("");
-
-    private Email(final String value) {
-        super(value);
+    public Email(String email) {
+        this.email = email;
     }
-
-    @org.hibernate.validator.constraints.Email
-    public static Email instanceOf(final String value) {
-        return new Email(value);
-    }
-
 }
