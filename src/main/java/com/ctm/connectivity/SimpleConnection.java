@@ -2,16 +2,12 @@ package com.ctm.connectivity;
 
 import com.ctm.connectivity.exception.ConnectionException;
 import com.ctm.logging.CorrelationIdUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class SimpleConnection {
-
-	private static final Logger logger = LoggerFactory.getLogger(SimpleConnection.class.getName());
 
 	private int connectTimeout = 1000;
 	private int readTimeout = 1000;
@@ -23,7 +19,6 @@ public class SimpleConnection {
 
 	public SimpleConnection() {
 	}
-
 	/**
 	 * Returns the content from the specified url as a string - A null value is returned if any failures occur whilst trying to return the value.
 	 *

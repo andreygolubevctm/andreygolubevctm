@@ -1,6 +1,7 @@
 package com.ctm.services.utilities;
 
 import com.ctm.connectivity.JsonConnection;
+import com.ctm.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.exceptions.UtilitiesWebServiceException;
@@ -64,10 +65,11 @@ public class UtilitiesBaseService {
 		String timeoutConnect = getConfigValue(serviceConfig, "timeoutConnect");
 		String timeoutRead = getConfigValue(serviceConfig, "timeoutRead");
 
-		JsonConnection jsonConnector = new JsonConnection();
-		jsonConnector.conn.setConnectTimeout(Integer.parseInt(timeoutConnect));
-		jsonConnector.conn.setReadTimeout(Integer.parseInt(timeoutRead));
-		jsonConnector.conn.setContentType("application/json");
+		SimpleConnection conn = new SimpleConnection();
+		JsonConnection jsonConnector = new JsonConnection(conn);
+		conn.setConnectTimeout(Integer.parseInt(timeoutConnect));
+		conn.setReadTimeout(Integer.parseInt(timeoutRead));
+		conn.setContentType("application/json");
 
 		return jsonConnector;
 	}

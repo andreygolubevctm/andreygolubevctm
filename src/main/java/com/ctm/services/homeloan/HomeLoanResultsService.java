@@ -1,15 +1,7 @@
 package com.ctm.services.homeloan;
 
-import java.math.BigDecimal;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.ctm.connectivity.JsonConnection;
+import com.ctm.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.homeloan.HomeLoanProductSearchRequest;
@@ -22,6 +14,13 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.ServiceConfigurationService;
 import com.disc_au.web.go.Data;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 
 public class HomeLoanResultsService {
 	private static final Logger logger = LoggerFactory.getLogger(HomeLoanResultsService.class.getName());
@@ -80,10 +79,11 @@ public class HomeLoanResultsService {
 			//
 			// Execute the fetch
 			//
-			JsonConnection jsonConn = new JsonConnection();
-			jsonConn.conn.setConnectTimeout(Integer.parseInt(timeoutConnect));
-			jsonConn.conn.setReadTimeout(Integer.parseInt(timeoutRead));
-			jsonConn.conn.setContentType("application/json");
+			SimpleConnection conn = new SimpleConnection();
+			JsonConnection jsonConn = new JsonConnection(conn);
+			conn.setConnectTimeout(Integer.parseInt(timeoutConnect));
+			conn.setReadTimeout(Integer.parseInt(timeoutRead));
+			conn.setContentType("application/json");
 
 			String postBody = hlpsrModel.toJsonObject().toString();
 			logger.debug("HomeLoanResultsService.getResults TIMEOUTCONNECT:" + timeoutConnect + " TIMEOUTREAD:" + timeoutRead + " URL:" + serviceUrl);

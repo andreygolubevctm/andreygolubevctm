@@ -11,12 +11,18 @@ import org.slf4j.LoggerFactory;
 public class JsonConnection {
 
 	private static final Logger logger = LoggerFactory.getLogger(JsonConnection.class.getName());
-	public SimpleConnection conn = null;
-
-
+	private final SimpleConnection conn;
 
 	public JsonConnection() {
-		conn = new SimpleConnection();
+		this.conn = new SimpleConnection();
+	}
+
+	public JsonConnection(SimpleConnection conn) {
+		this.conn = conn;
+	}
+
+	public void setHasCorrelationId(boolean hasCorrelationId) {
+		conn.setHasCorrelationId(hasCorrelationId);
 	}
 
 	/**
@@ -27,17 +33,8 @@ public class JsonConnection {
 	 */
 	public JSONObject get(String url) {
 		try {
-			if (conn == null) {
-				conn = new SimpleConnection();
-			}
-
-			String jsonString;
-			try {
-				 jsonString = conn.get(url);
-			} catch (ConnectionException e) {
-				logger.error("Failed to call json", e);
-				return null;
-			}
+			String jsonString = conn.get(url);
+			if(jsonString == null) return null;
 
 			//
 			// This is here to clean up A&G's web service
@@ -51,7 +48,7 @@ public class JsonConnection {
 			JSONObject json = new JSONObject(preparseString);
 			return json;
 		}
-		catch (JSONException | ConnectionException e) {
+		catch (JSONException  e) {
 			logger.error(url+" json exception: "+e);
 		}
 		catch (Exception e){
@@ -67,10 +64,6 @@ public class JsonConnection {
 
 	public JSONObject post(String url, String postBody, Boolean sanitize) {
 		try {
-			if (conn == null) {
-				conn = new SimpleConnection();
-			}
-
 			conn.setRequestMethod("POST");
 			conn.setPostBody(postBody);
 
@@ -107,10 +100,6 @@ public class JsonConnection {
 
 	public JSONArray postArray(String url, String postBody, Boolean sanitize) {
 		try {
-			if (conn == null) {
-				conn = new SimpleConnection();
-			}
-
 			conn.setRequestMethod("POST");
 			conn.setPostBody(postBody);
 

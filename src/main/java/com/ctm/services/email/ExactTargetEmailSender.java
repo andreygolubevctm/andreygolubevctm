@@ -4,7 +4,6 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SendEmailException;
 import com.ctm.exceptions.ServiceConfigurationException;
-import com.ctm.logging.CorrelationIdUtils;
 import com.ctm.model.email.EmailModel;
 import com.ctm.model.email.EmailResponse;
 import com.ctm.model.email.ExactTargetEmailModel;
@@ -25,13 +24,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
 import java.security.GeneralSecurityException;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import static java.lang.Integer.parseInt;
 
@@ -95,7 +91,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 			Soap stub = initWebserviceClient();
 			CreateRequest createRequest = new CreateRequest();
 
-			createPayload(exactTargetEmailModel, createRequest);
+			ExactTargetEmailBuilder.createPayload(exactTargetEmailModel, createRequest);
 
 			CreateResponse createResponse = stub.create(createRequest);
 			EmailResponse response = parseResponse(createResponse);
@@ -130,72 +126,6 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 			client.destroy();
 		}
 		client = null;
-	}
-
-
-	private void createPayload(ExactTargetEmailModel exactTargetEmailModel, CreateRequest createRequest) {
-		ObjectFactory  objectFactory = new com.exacttarget.wsdl.partnerapi.ObjectFactory();
-
-		CreateOptions options = new CreateOptions();
-		createRequest.setOptions(options );
-		List<APIObject> objects = createRequest.getObjects();
-
-		TriggeredSend triggeredSend = new TriggeredSend();
-		//CorrelationID Identifies correlation of objects across several requests
-		triggeredSend.setCorrelationID(CorrelationIdUtils.getCorrelationId());
-
-		ClientID client = createClient(exactTargetEmailModel);
-
-		triggeredSend.setClient(client);
-
-		TriggeredSendDefinition triggeredSendDefinition = createTriggeredSendDefinition(
-				exactTargetEmailModel, objectFactory);
-
-		triggeredSend.setTriggeredSendDefinition(triggeredSendDefinition);
-
-		Subscriber subscriber = createSubscriber(exactTargetEmailModel);
-		triggeredSend.getSubscribers().add(subscriber);
-
-		objects.add(triggeredSend);
-	}
-
-	private ClientID createClient(ExactTargetEmailModel exactTargetEmailModel) {
-		ClientID clientId = new ClientID();
-		clientId.setClientID(exactTargetEmailModel.getClientId());
-		return clientId;
-	}
-
-	private Subscriber createSubscriber(ExactTargetEmailModel exactTargetEmailModel) {
-		Subscriber subscriber = new Subscriber();
-		subscriber.setEmailAddress(exactTargetEmailModel.getEmailAddress()); // updating to new email address.
-		subscriber.setSubscriberKey(subscriber.getEmailAddress()); //subscriber unique, cannot update
-
-		for(Entry<String, String> attribute: exactTargetEmailModel.getAttributes().entrySet()) {
-			String value = attribute.getValue();
-			String normalisedValue = value == null ? "" : value;
-			Attribute attributeElement = new Attribute();
-			attributeElement.setName(attribute.getKey());
-			attributeElement.setValue(normalisedValue);
-			subscriber.getAttributes().add(attributeElement);
-		}
-		return subscriber;
-	}
-
-
-	private TriggeredSendDefinition createTriggeredSendDefinition(
-			ExactTargetEmailModel exactTargetEmailModel,
-			ObjectFactory objectFactory) {
-		TriggeredSendDefinition triggeredSendDefinition = new TriggeredSendDefinition();
-		JAXBElement<String> partnerKey = objectFactory.createAPIObjectPartnerKey(null);
-		partnerKey.setNil(true);
-		triggeredSendDefinition.setPartnerKey(partnerKey);
-		JAXBElement<String> objectID = objectFactory.createAPIObjectObjectID(null);
-		objectID.setNil(true);
-		triggeredSendDefinition.setObjectID(objectID);
-		triggeredSendDefinition.setCustomerKey(exactTargetEmailModel.getCustomerKey());
-		SendClassification sendClassification = new SendClassification();
-		triggeredSendDefinition.setSendClassification(sendClassification );
-		return triggeredSendDefinition;
 	}
 
 	private EmailResponse parseResponse(CreateResponse createResponse) throws DOMException, SendEmailException {
