@@ -66,13 +66,14 @@
 	<c:when test="${empty skipJSCSS}">
 		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
 		<c:set var="browserVersion" value="${userAgentSniffer.getBrowserVersion(pageContext.getRequest().getHeader('user-agent'))}" />
-		${logger.info('Browser Information {},{}', log:kv('browserName', browserName), log:kv('browserVersion', browserVersion), catchException)}
+		<c:set var="filePath" value="/assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.min.inc" />
+		${logger.info('Browser Information {},{},{}', log:kv('browserName', browserName), log:kv('browserVersion', browserVersion), log:kv('filePath', filePath), catchException)}
 
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
 				<%-- We don't include the separate inc files for Simples in IE because its path structure causes failures due to relative path issues --%>
 				<c:when test="${browserName eq 'IE' and browserVersion le 9}">
-					${logger.warn('Browser Information {},{}', log:kv('browserName', browserName), log:kv('browserVersion', browserVersion), catchException)}
+					${logger.warn('Browser Information {},{},{}', log:kv('browserName', browserName), log:kv('browserVersion', browserVersion), log:kv('filePath', filePath), catchException)}
 					<c:import url="/assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.min.inc" />
 				</c:when>
 				<c:otherwise>
