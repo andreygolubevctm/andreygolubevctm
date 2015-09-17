@@ -5,6 +5,8 @@
 <jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 <jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
 
+<c:set var="logger" value="${log:getLogger('tag.page')}" />
+
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
 <%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
 
@@ -64,10 +66,13 @@
 	<c:when test="${empty skipJSCSS}">
 		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
 		<c:set var="browserVersion" value="${userAgentSniffer.getBrowserVersion(pageContext.getRequest().getHeader('user-agent'))}" />
+		${logger.info('Browser Information {},{}', log:kv('browserName', browserName), log:kv('browserVersion', browserVersion), catchException)}
+
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
 				<%-- We don't include the separate inc files for Simples in IE because its path structure causes failures due to relative path issues --%>
 				<c:when test="${browserName eq 'IE' and browserVersion le 9}">
+					${logger.warn('Browser Information {},{}', log:kv('browserName', browserName), log:kv('browserVersion', browserVersion), catchException)}
 					<c:import url="/assets/brand/${pageSettings.getBrandCode()}/css/inc/${pageSettings.getVerticalCode()}.min.inc" />
 				</c:when>
 				<c:otherwise>
