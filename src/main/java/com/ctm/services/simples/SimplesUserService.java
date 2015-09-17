@@ -13,8 +13,10 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.model.simples.User;
 import com.ctm.model.simples.UserStats;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class SimplesUserService {
-	private static final Logger logger = LoggerFactory.getLogger(SimplesUserService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesUserService.class);
 
 
 
@@ -29,7 +31,7 @@ public class SimplesUserService {
 			userStats = userStatsDao.getUserStats(userId);
 		}
 		catch (DaoException e) {
-			logger.error("Failed to getUserStatsForToday", e);
+			LOGGER.error("Failed to getUserStatsForToday", kv("userId", userId), e);
 		}
 		return userStats;
 	}
@@ -52,10 +54,10 @@ public class SimplesUserService {
 			json.put("users", array);
 		}
 		catch (DaoException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error("Error getting logged in users", e);
 		}
 		catch (JSONException e) {
-			logger.error("Failed to produce JSON object", e);
+			LOGGER.error("Failed to produce JSON object", e);
 		}
 
 		return json.toString();
@@ -99,7 +101,7 @@ public class SimplesUserService {
 			userdao.logoutUser(userId);
 		}
 		catch (DaoException e) {
-			logger.error("Failed to logout user '"+userId+"'", e);
+			LOGGER.error("Failed to logout user {}", kv("userId", userId), e);
 		}
 	}
 
@@ -113,7 +115,7 @@ public class SimplesUserService {
 			userdao.tickleUser(userId);
 		}
 		catch (DaoException e) {
-			logger.error("Failed to tickle user '"+userId+"'", e);
+			LOGGER.error("Failed to tickle user {}", kv("userId", userId), e);
 		}
 	}
 

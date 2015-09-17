@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import java.security.GeneralSecurityException;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class EmailDetailsService {
 
 	private static final String SALT =  "++:A6Q6RC;ZXDHL50|e^f;L3?PU^/o#<K;brkE8J@7~4JFr.}U)qmS1yt N|E2qg";
@@ -30,7 +32,7 @@ public class EmailDetailsService {
 
 	private String vertical;
 
-	private static final Logger logger = LoggerFactory.getLogger(EmailDetailsService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmailDetailsService.class);
 
 	/**
 	 * TODO used by JSP remove when jsp has been refactored
@@ -67,7 +69,8 @@ public class EmailDetailsService {
 		try {
 			emailDetailsDB = emailMasterDao.getEmailDetails(emailDetailsRequest.getEmailAddress());
 			if(emailDetailsDB == null) {
-				logger.info(transactionId + ": " + emailDetailsRequest.getEmailAddress() + " email not in database adding now");
+				LOGGER.debug("email not in database adding now {}, {}", kv("emailAddress", emailDetailsRequest.getEmailAddress()),
+					kv("transactionId", transactionId), kv("operator", operator), kv("ipAddress", ipAddress));
 				emailDetailsDB = writeNewEmailDetails(transactionId , emailDetailsRequest);
 				// new email address write if opted in database
 				stampingService.writeOptInMarketing(emailDetails, operator, emailDetailsRequest.getOptedInMarketing(vertical), ipAddress);
@@ -82,7 +85,7 @@ public class EmailDetailsService {
 			transaction.setEmailAddress(emailDetailsRequest.getEmailAddress());
 			transactionDao.writeEmailAddress(transaction);
 		} catch (DaoException e) {
-			throw new EmailDetailsException("failed to write to database",e);
+			throw new EmailDetailsException("failed to write email details to database",e);
 		}
 		emailDetails.setFirstName(getFirstName(emailDetailsRequest, emailDetailsDB));
 		emailDetails.setLastName(getLastName(emailDetailsRequest, emailDetailsDB));
@@ -116,7 +119,7 @@ public class EmailDetailsService {
 			try {
 				emailMaster.setHashedEmail(StringEncryption.hash(emailAddress + SALT + brandCode.toUpperCase()));
 			} catch (GeneralSecurityException e) {
-				logger.error("",e);
+				LOGGER.error("Failed to hash email {}, {}, {}", kv("emailAddress", emailAddress), kv("brandCode", brandCode), kv("transactionId", transactionId));
 				throw new EmailDetailsException("failed to hash email", e);
 			}
 			long transId = 0L;
@@ -124,7 +127,7 @@ public class EmailDetailsService {
 				transId =  Long.parseLong(transactionId);
 			} catch (NumberFormatException e) {
 				//Session probably died recoverable
-				logger.warn("",e);
+				LOGGER.warn("Session likely failed {}", kv("transactionId", transactionId), e);
 			}
 			emailMaster = writeNewEmailDetails(transId , emailMaster);
 		}

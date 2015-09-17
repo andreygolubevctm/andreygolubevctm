@@ -6,12 +6,8 @@ import com.ctm.model.leadfeed.LeadFeedData;
 import com.ctm.model.leadfeed.life.AGISLifeLeadFeedRequest;
 import com.ctm.services.leadfeed.AGISLeadFeedService;
 import com.ctm.services.leadfeed.LeadFeedService.LeadType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AGISLifeLeadFeedService extends AGISLeadFeedService {
-
-	private static final Logger logger = LoggerFactory.getLogger(AGISLifeLeadFeedService.class.getName());
 
 	public AGISLifeLeadFeedService(){
 		super();

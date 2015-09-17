@@ -102,5 +102,18 @@ public class Content implements java.io.Serializable {
 		return null;
 	}
 
-
+	@Override
+	public String toString() {
+		return "Content{" +
+				"id=" + id +
+				", styleCodeId=" + styleCodeId +
+				", contentCode='" + contentCode + '\'' +
+				", contentKey='" + contentKey + '\'' +
+				", effectiveStart=" + effectiveStart +
+				", effectiveEnd=" + effectiveEnd +
+				", contentValue='" + contentValue + '\'' +
+				", supplementary=" + supplementary +
+				", provider=" + provider +
+				'}';
+	}
 }

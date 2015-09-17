@@ -14,9 +14,11 @@ import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class StringEncryption {
 
-	private static final Logger logger = LoggerFactory.getLogger(StringEncryption.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(StringEncryption.class);
 
 	// TODO: Should we be using a Keystore for this? Unsure why it was first implemented like this?
 	// FYI There is duplicate use of the salt + key in another tag - maybe why it was implemented like this.
@@ -37,7 +39,7 @@ public class StringEncryption {
 		try {
 			output  = encryption.encrypt(theString);
 		} catch (GeneralSecurityException e) {
-			logger.error("",e);
+			LOGGER.error("Failed to encrypt", e);
 			throw e;
 		}
 		return output;
@@ -84,7 +86,7 @@ public class StringEncryption {
 			byte[] content_as_byte_cipher_text = aes_cipher.doFinal(content_as_bytes);
 			result = Base64.encodeBase64URLSafeString(content_as_byte_cipher_text);
 		} catch (GeneralSecurityException e) {
-			logger.error("Failed to encrypt " + content , e);
+			LOGGER.error("Failed to encrypt", e);
 			throw e;
 		}
 		return result;
@@ -107,7 +109,7 @@ public class StringEncryption {
 		output = new String(decrypted_text_as_bytes);
 		// Important! keep this as debug and don't enable debug logging in production
 		// as this may include credit card details (this is from the nib webservice)
-		logger.debug("Decrypted content: " + output);
+		LOGGER.debug("Decrypted content {}", kv("output", output));
 		return output;
 }
 }

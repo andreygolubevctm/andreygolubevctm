@@ -41,4 +41,14 @@ public class TouchProductProperty extends AbstractTouchProperty {
     public void setProviderName(String providerName) {
         this.providerName = providerName;
     }
+
+    @Override
+    public String toString() {
+        return "TouchProductProperty{" +
+                "productCode='" + productCode + '\'' +
+                ", productName='" + productName + '\'' +
+                ", providerCode='" + providerCode + '\'' +
+                ", providerName='" + providerName + '\'' +
+                '}';
+    }
 }

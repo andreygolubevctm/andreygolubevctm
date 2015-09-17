@@ -1,17 +1,10 @@
 package com.disc_au.web.go.tags;
 
+import com.ctm.security.StringEncryption;
+
+import javax.servlet.jsp.JspException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.jsp.JspException;
-
-import org.apache.commons.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ctm.security.StringEncryption;
 
 /**
  * AESEncryptDecryptTag uses the secret key and content provided to either
@@ -22,8 +15,6 @@ import com.ctm.security.StringEncryption;
 
 @SuppressWarnings("serial")
 public class AESEncryptDecryptTag extends BaseTag {
-
-	Logger logger = LoggerFactory.getLogger(AESEncryptDecryptTag.class.getName());
 
 	String action = "";
 	String key = "";
