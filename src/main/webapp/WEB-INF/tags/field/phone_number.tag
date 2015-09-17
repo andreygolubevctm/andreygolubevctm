@@ -71,8 +71,6 @@
 	</c:otherwise>
 </c:choose>
 
-<go:log>value="${value}</go:log>
-
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" class="" value="${value}" >
 <input type="${inputType}" name="${nameInput}" id="${nameInput}" title="${title}"
