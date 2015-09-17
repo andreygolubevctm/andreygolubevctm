@@ -188,10 +188,9 @@
 				$element.bind('typeahead:selected', function catchEmptyValue(event, datum, name) {
 					if (datum.hasOwnProperty('value') && datum.value === 'Type your address...') {
 						var id = '';
-						if (!elasticSearch) {
-							if (event.target && event.target.id) {
-								id = event.target.id.replace('_streetSearch', '');
-							}
+						if (event.target && event.target.id) {
+							var replacement = elasticSearch ? '_autofilllessSearch' : '_streetSearch';
+							id = event.target.id.replace(replacement, '');
 						}
 						meerkat.messaging.publish(moduleEvents.CANT_FIND_ADDRESS, { fieldgroup: id });
 
@@ -201,7 +200,10 @@
 							addressFieldId:	addressFieldId
 						});
 						// Validate the element now the user has made a selection.
-						$element.valid();
+						// Deferred as this is now called before the elastic address binding to typeahead:selected
+						_.defer(function() {
+							$element.valid();
+						});
 					}
 				});
 			}
@@ -213,7 +215,6 @@
 	function addressSearch(url, uriEncodedQuery) {
 		var $element = $('#'+url);
 		url = '';
-
 		$element.trigger('getSearchURL');
 
 		if ($element.data('source-url')) {
