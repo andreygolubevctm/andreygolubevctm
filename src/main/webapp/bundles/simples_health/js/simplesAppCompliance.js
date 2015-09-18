@@ -21,25 +21,20 @@
             errorLevel: 'silent',
             useDefaultErrorHandling: false,
             timeout: 20000
-        }).done(function() {
+        }).done(function () {
             success = true;
             seize(isMuted);
-        }).fail(function(jqXHR, textStatus, errorThrown) {
+        }).fail(function (jqXHR, textStatus, errorThrown) {
 
             var errorMessage = errorThrown;
             var errorResponse;
 
             // Don't parse
-            if(jqXHR.status != 404 && jqXHR.status != 500) {
+            if (jqXHR.status != 404 && jqXHR.status != 500) {
                 try {
                     errorResponse = $.parseJSON(jqXHR.responseText);
-                    throw 1;
-                } catch(e1) {
-                    try {
-                        errorResponse = $.parseXML(jqXHR.responseText);
-                    } catch(e2) {
-                        errorResponse = {};
-                    }
+                } catch (e1) {
+                    errorResponse = {};
                 }
 
                 if (errorResponse.hasOwnProperty('errors') && errorResponse.errors.length > 0) {
@@ -48,7 +43,7 @@
             }
 
             meerkat.modules.errorHandling.error({
-                message: "The recording could not be paused/started. Please notify your supervisor if this continues to occur: "  + errorMessage,
+                message: "The recording could not be paused/started. Please notify your supervisor if this continues to occur: " + errorMessage,
                 page: "application_compliance.tag",
                 description: "health_application_compliance.callback().  AJAX Request failed: " + jqXHR.responseText + ' ' + errorThrown,
                 data: "state = " + isMuted,
