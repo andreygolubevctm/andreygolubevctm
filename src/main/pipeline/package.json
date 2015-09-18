@@ -34,6 +34,7 @@
     "gulp-combine-media-queries": "^0.2.0",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-jshint": "^1.11.2",
-    "jshint-stylish": "^2.0.1"
+    "jshint-stylish": "^2.0.1",
+    "fs-extra": "^0.24.0"
   }
 }
