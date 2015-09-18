@@ -4,16 +4,14 @@
 SET @EffectiveStart = '2015-05-25';
 SET @EffectiveEnd = '2016-03-31';
 SET @providerID = 3;
--- TEST  count=1344
+-- TEST  count=3556
  SELECT count(productId) FROM `ctm`.`product_master` pm 
  WHERE Status != 'X' 
  AND providerID = @providerID 
  AND productId > 0 
  AND ProductCat = 'HEALTH' 
- AND EffectiveStart = @EffectiveStart 
+ AND EffectiveStart IN (@EffectiveStart, '2015-10-01')
  AND EffectiveEnd = @EffectiveEnd
- AND (pm.LongTitle LIKE 'Advantage Hospital%'
- 	 OR pm.LongTitle LIKE 'Standard Hospital%')
 LIMIT 9999
 ;
 
@@ -22,7 +20,65 @@ TRUNCATE `ctm`.`export_product_master`;
 TRUNCATE `ctm`.`export_product_properties_ext`; 
 TRUNCATE `ctm`.`export_product_properties`; 
 TRUNCATE `ctm`.`export_product_properties_search`; 
-TRUNCATE `ctm`.`export_product_capping_exclusions`; 
+TRUNCATE `ctm`.`export_product_capping_exclusions`;
+
+/* We need the Advantage and Standard Products to ONLY be available from the 01/10/2015 so need to set the effectiveStart for these now */
+/* Disable current products product master update count = 3556*/
+UPDATE `ctm`.`product_master` pm
+ SET effectiveStart = '2015-10-01'
+ WHERE providerID = @providerID
+ AND Status != 'X'
+ AND pm.ProductCat = 'HEALTH'
+ AND LongTitle IN ('Advantage Hospital $250 Excess',
+	'Advantage Hospital $250 Excess with Core and Family Extras',
+	'Advantage Hospital $250 Excess with Core and Wellbeing Extras',
+	'Advantage Hospital $250 Excess with Core and Young at Heart Extras',
+	'Advantage Hospital $250 Excess with Core Extras',
+	'Advantage Hospital $250 Excess with Core Extras Plus',
+	'Advantage Hospital $250 Excess with Core Plus and Family Extras',
+	'Advantage Hospital $250 Excess with Core Plus and Wellbeing Extras',
+	'Advantage Hospital $250 Excess with Core Plus and Young at Heart Extras',
+	'Advantage Hospital $250 Excess with Core Plus, Family and Wellbeing Extras',
+	'Advantage Hospital $250 Excess with Core Plus, Family and Young at Heart Extras',
+	'Advantage Hospital $250 Excess with Core Plus, Wellbeing and Young at Heart Extras',
+	'Advantage Hospital $250 Excess with Core, Family and Wellbeing Extras',
+	'Advantage Hospital $250 Excess with Core, Family and Young at Heart Extras',
+	'Advantage Hospital $250 Excess with Core, Wellbeing and Young at Heart Extras',
+	'Advantage Hospital $250 Excess with Top Extras',
+	'Advantage Hospital $500 Excess',
+	'Advantage Hospital $500 Excess with Core and Family Extras',
+	'Advantage Hospital $500 Excess with Core and Wellbeing Extras',
+	'Advantage Hospital $500 Excess with Core and Young at Heart Extras',
+	'Advantage Hospital $500 Excess with Core Extras',
+	'Advantage Hospital $500 Excess with Core Extras Plus',
+	'Advantage Hospital $500 Excess with Core Plus and Family Extras',
+	'Advantage Hospital $500 Excess with Core Plus and Wellbeing Extras',
+	'Advantage Hospital $500 Excess with Core Plus and Young at Heart Extras',
+	'Advantage Hospital $500 Excess with Core Plus, Family and Wellbeing Extras',
+	'Advantage Hospital $500 Excess with Core Plus, Family and Young at Heart Extras',
+	'Advantage Hospital $500 Excess with Core Plus, Wellbeing and Young at Heart Extras',
+	'Advantage Hospital $500 Excess with Core, Family and Wellbeing Extras',
+	'Advantage Hospital $500 Excess with Core, Family and Young at Heart Extras',
+	'Advantage Hospital $500 Excess with Core, Wellbeing and Young at Heart Extras',
+	'Advantage Hospital $500 Excess with Top Extras',
+	'Standard Hospital $500 Excess',
+	'Standard Hospital $500 Excess with Core and Family Extras',
+	'Standard Hospital $500 Excess with Core and Wellbeing Extras',
+	'Standard Hospital $500 Excess with Core and Young at Heart Extras',
+	'Standard Hospital $500 Excess with Core Extras',
+	'Standard Hospital $500 Excess with Core Extras Plus',
+	'Standard Hospital $500 Excess with Core Plus and Family Extras',
+	'Standard Hospital $500 Excess with Core Plus and Wellbeing Extras',
+	'Standard Hospital $500 Excess with Core Plus and Young at Heart Extras',
+	'Standard Hospital $500 Excess with Core Plus, Family and Wellbeing Extras',
+	'Standard Hospital $500 Excess with Core Plus, Family and Young at Heart Extras',
+	'Standard Hospital $500 Excess with Core Plus, Wellbeing and Young at Heart Extras',
+	'Standard Hospital $500 Excess with Core, Family and Wellbeing Extras',
+	'Standard Hospital $500 Excess with Core, Family and Young at Heart Extras',
+	'Standard Hospital $500 Excess with Core, Wellbeing and Young at Heart Extras',
+	'Standard Hospital $500 Excess with Top Extras');
+
+
 /* Run 4 insert/update queries to populate export tables */ 
 /* 1. Copy product master  */ 
 INSERT INTO `ctm`.`export_product_master` 
@@ -31,10 +87,9 @@ WHERE Status != 'X'
 AND providerID = @providerID 
 AND productId > 0 
 AND ProductCat = 'HEALTH' 
-AND EffectiveStart = @EffectiveStart 
-AND EffectiveEnd = @EffectiveEnd
-AND (pm.LongTitle LIKE 'Advantage Hospital%'
- 	OR pm.LongTitle LIKE 'Standard Hospital%');
+AND EffectiveStart IN (@EffectiveStart, '2015-10-01')
+AND EffectiveEnd = @EffectiveEnd;
+
 
 /* 2. Copy product properties ext */ 
 INSERT INTO `ctm`.`export_product_properties_ext` 
@@ -44,10 +99,8 @@ SELECT productId FROM `ctm`.`product_master` pm
 	 WHERE Status != 'X' 
 	 AND providerID = @providerID 
 	 AND ProductCat = 'HEALTH' 
-	 AND EffectiveStart = @EffectiveStart 
-	 AND EffectiveEnd = @EffectiveEnd 
-	 AND (pm.LongTitle LIKE 'Advantage Hospital%'
- 	   OR pm.LongTitle LIKE 'Standard Hospital%'))
+	 AND EffectiveStart IN (@EffectiveStart, '2015-10-01')
+	 AND EffectiveEnd = @EffectiveEnd)
  AND productId > 0;
 /* 3. Copy product properties */ 
 INSERT INTO `ctm`.`export_product_properties` 
@@ -57,10 +110,8 @@ SELECT productId FROM `ctm`.`product_master` pm
 	 WHERE Status != 'X' 
 	 AND providerID = @providerID 
 	 AND ProductCat = 'HEALTH' 
-	 AND EffectiveStart = @EffectiveStart 
-	 AND EffectiveEnd = @EffectiveEnd 
-	 AND (pm.LongTitle LIKE 'Advantage Hospital%'
- 	   OR pm.LongTitle LIKE 'Standard Hospital%'))
+	 AND EffectiveStart IN (@EffectiveStart, '2015-10-01')
+	 AND EffectiveEnd = @EffectiveEnd)
  AND productId > 0; 
 /* 4. Copy product search (this is the main index) */ 
 INSERT INTO `ctm`.`export_product_properties_search` 
@@ -70,10 +121,8 @@ SELECT productId FROM `ctm`.`product_master` pm
 	 WHERE Status != 'X' 
 	 AND providerID = @providerID 
 	 AND ProductCat = 'HEALTH' 
-	 AND EffectiveStart = @EffectiveStart 
-	 AND EffectiveEnd = @EffectiveEnd 
-	 AND (pm.LongTitle LIKE 'Advantage Hospital%'
- 	   OR pm.LongTitle LIKE 'Standard Hospital%'))
+	 AND EffectiveStart IN (@EffectiveStart, '2015-10-01')
+	 AND EffectiveEnd = @EffectiveEnd)
  AND productId > 0;
 /* 5. Copy product capping exclusion (this is the main index) */ 
 INSERT INTO `ctm`.`export_product_capping_exclusions` 
@@ -83,8 +132,6 @@ SELECT productId FROM `ctm`.`product_master` pm
 	 WHERE Status != 'X' 
 	 AND providerID = @providerID 
 	 AND ProductCat = 'HEALTH' 
-	 AND EffectiveStart = @EffectiveStart 
-	 AND EffectiveEnd = @EffectiveEnd 
-	 AND (pm.LongTitle LIKE 'Advantage Hospital%'
- 	   OR pm.LongTitle LIKE 'Standard Hospital%'))
+	 AND EffectiveStart IN (@EffectiveStart, '2015-10-01')
+	 AND EffectiveEnd = @EffectiveEnd)
  AND productId > 0;

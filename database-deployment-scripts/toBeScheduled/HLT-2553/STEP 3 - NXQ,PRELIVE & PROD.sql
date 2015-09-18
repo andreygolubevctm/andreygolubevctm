@@ -5,6 +5,7 @@ SET @EffectiveEnd = '2016-03-31';
 SET @providerID = 3;
 
 /* -- BEGIN TEST -- */
+/* End result is 3556 products. 1344 are new products*/
 
 /* Test the products count matches expected */
 SELECT 'Export', count(epm.productId) AS 'Total'
@@ -19,8 +20,6 @@ UNION ALL
 	AND pm.providerID = @providerID
 	AND NOW() BETWEEN pm.EffectiveStart and pm.EffectiveEnd
 	AND pm.ProductCat = 'HEALTH'
-  AND (pm.LongTitle LIKE 'Advantage Hospital%'
- 		OR pm.LongTitle LIKE 'Standard Hospital%')
 LIMIT 9999;
 
 /* -- END TEST -- */
@@ -41,15 +40,13 @@ SELECT * FROM `ctm`.`product_master`
 WHERE productId IN
 (SELECT product.productId FROM `ctm`.`export_product_master` product);
 
-/* Disable current products product master update count = 70*/
+/* Disable current products product master update count = 3556*/
 UPDATE `ctm`.`product_master` pm
  SET STATUS = 'X'
  WHERE now() between pm.EffectiveStart AND pm.EffectiveEnd 
  AND providerID = @providerID
  AND Status != 'X'
- AND pm.ProductCat = 'HEALTH'
- AND (pm.LongTitle LIKE 'Advantage Hospital%'
- 	 OR pm.LongTitle LIKE 'Standard Hospital%');
+ AND pm.ProductCat = 'HEALTH';
 
 /* INSERT product properties */
 INSERT INTO `ctm`.`product_properties`
@@ -70,7 +67,7 @@ SELECT * FROM `ctm`.`export_product_capping_exclusions`;
 INSERT INTO `ctm`.`product_master`
 SELECT * FROM `ctm`.`export_product_master`;
 
-/* Test import has worked there should be 1344 products */
+/* Test import has worked there should be 3556 products */
 
 SELECT pm.* FROM `ctm`.`product_master` pm
 INNER JOIN ctm.product_properties_search pps
@@ -79,7 +76,5 @@ WHERE pm.Status != 'X'
 AND pm.providerID =  @providerID 
 AND now() between pm.EffectiveStart AND pm.EffectiveEnd 
 AND pm.ProductCat = 'HEALTH'
-AND (pm.LongTitle LIKE 'Advantage Hospital%'
- 	OR pm.LongTitle LIKE 'Standard Hospital%')
 limit 99999999;
 
