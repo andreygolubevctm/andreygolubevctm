@@ -90,7 +90,7 @@
             if (typeof window.dataLayer === 'undefined') {
                 throw "Google Data Layer is undefined";
             }
-            var data = {};
+            var data = {"event": method};
             var values = _.keys(value);
             for (var i = 0; i < values.length; i++) {
                 var key = values[i];
@@ -98,7 +98,6 @@
                     data[key] = typeof value[key] === 'string' ? value[key].toLowerCase() : value[key];
                 }
             }
-
             meerkat.logging.info("Google", method, value);
             window.dataLayer.push(data);
 
