@@ -335,6 +335,7 @@
                             brandCode: '${pageSettings.getBrandCode()}',
                             superTagEnabled: ${superTagEnabled},
                             DTMEnabled: ${DTMEnabled},
+                            GTMEnabled: ${GTMEnabled},
                             userTrackingEnabled: ${isUserTrackingEnabled}
                         },
                         leavePageWarning: {
