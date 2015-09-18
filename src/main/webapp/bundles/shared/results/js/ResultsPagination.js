@@ -207,7 +207,7 @@ ResultsPagination = {
 
 		var info = Results.pagination.getPageMeasurements();
 		var scrollPosition = 0;
-		if(pageNumber !== 1){
+		if(pageNumber !== 1 && info !== null){
 			var pageWidth = info.pageWidth;
 			if(pageNumber > info.numberOfPages) pageNumber = info.numberOfPages;
 			var pageNumberMultiplier = pageNumber-1;

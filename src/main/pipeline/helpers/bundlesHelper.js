@@ -78,10 +78,14 @@ Bundles.prototype.addBundle = function(bundleName, bundleInfo) {
 Bundles.prototype.getBundleBrandCodes = function(bundleName) {
     var bundle = this.collection[bundleName];
 
-    if(this.collection[bundleName].brandCodes)
-        return bundle.brandCodes;
-    else
+    if(this.collection[bundleName].brandCodes) {
+        if(this.collection[bundleName].brandCodes == "all")
+            return this.getBrandCodes();
+        else
+            return bundle.brandCodes;
+    } else {
         return this.collection[bundle.extends].brandCodes;
+    }
 };
 
 /**
@@ -94,11 +98,11 @@ Bundles.prototype.getBrandCodes = function() {
     for(var bundle in this.collection) {
         var bundleBrandCodes = this.collection[bundle].brandCodes;
 
-        if(typeof bundleBrandCodes !== "undefined") {
+        if(typeof bundleBrandCodes !== "undefined" && typeof bundleBrandCodes !== "string") {
             for (var i = 0; i < bundleBrandCodes.length; i++) {
                 var brandCode = bundleBrandCodes[i];
 
-                if (brandCodes.indexOf(brandCode) === -1) {
+                if (brandCode !== "all" && brandCodes.indexOf(brandCode) === -1) {
                     brandCodes.push(brandCode);
                 }
             }
@@ -119,7 +123,7 @@ Bundles.prototype.getBrandCodeBundles = function(brandCode) {
     for(var bundle in this.collection) {
         var bundleBrandCodes = this.collection[bundle].brandCodes;
 
-        if(typeof bundleBrandCodes !== "undefined" && bundleBrandCodes.indexOf(brandCode) !== -1) {
+        if(typeof bundleBrandCodes !== "undefined" && (bundleBrandCodes.indexOf(brandCode) !== -1 || bundleBrandCodes === "all")) {
             bundles.push(bundle);
         }
     }

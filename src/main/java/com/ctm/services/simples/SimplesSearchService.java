@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class SimplesSearchService {
 
     private String hotTransactionIdsCsv = "";
@@ -35,7 +37,7 @@ public class SimplesSearchService {
     private final SimpleDatabaseConnection dbcon = new SimpleDatabaseConnection();
     private PageContext pageContext;
     private String error;
-	private static final Logger logger = LoggerFactory.getLogger(HealthPriceService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthPriceService.class);
 
     public enum SearchMode {
         TRANS, PHONE, EMAIL, OTHER
@@ -79,13 +81,12 @@ public class SimplesSearchService {
             if (hotTransactionIdsCsv.trim().equalsIgnoreCase("") && coldTransactionIdsCsv.trim().equalsIgnoreCase("")) {
                 throw new DaoException("No records found");
             } else {
-                logger.info("Ids from Cold table : " + coldTransactionIdsCsv);
-                logger.info("Ids from Hot table : " + hotTransactionIdsCsv);
+                LOGGER.debug("Search transaction ids {},{}", kv("coldIds", coldTransactionIdsCsv), kv("hotIds", hotTransactionIdsCsv));
             }
             searchTransactionHeaderDetailsAndSave();
             searchTransactionDetailsAndSave();
-        } catch (RuntimeException | DaoException e) {
-            logger.error("",e);
+        } catch (RuntimeException e) {
+            LOGGER.error("Error searching transactions",e);
             error = e.getMessage();
             throw e;
         } finally {
@@ -544,7 +545,8 @@ public class SimplesSearchService {
                 }
             }
         } catch (JspException | SAXException e) {
-            e.printStackTrace();
+            LOGGER.error("Error writing data into data bucket {},{},{}", kv("allowDuplicates", allowDuplicates),
+                kv("xml", xml), kv("value", value), kv("xpath", xPath));
         }
     }
 }

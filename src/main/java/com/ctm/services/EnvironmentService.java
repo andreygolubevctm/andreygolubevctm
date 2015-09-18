@@ -9,8 +9,10 @@ import java.io.InputStream;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class EnvironmentService {
-	private static final Logger logger = LoggerFactory.getLogger(EnvironmentService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(EnvironmentService.class);
 
 	private static Environment currentEnvironment;
 	private static String buildIdentifier = "";
@@ -80,7 +82,7 @@ public class EnvironmentService {
 			}
 		}
 		if(currentEnvironment == null) throw new Exception("Unknown environment code");
-		logger.info("Environment set to "+currentEnvironment.toString());
+		LOGGER.info("Environment set {}", kv("envCode", currentEnvironment));
 	}
 
 	public static Environment getEnvironment() throws EnvironmentException{
@@ -126,11 +128,13 @@ public class EnvironmentService {
 			Attributes attr = manifest.getAttributes("AGH-Build");
 
 			if (attr != null) {
+				StringBuffer sb = new StringBuffer();
 				for (Object o : attr.keySet()) {
 					Attributes.Name attrName = (Attributes.Name) o;
 					String attrValue = attr.getValue(attrName);
-					logger.debug("    " + attrName + ": " + attrValue);
+					sb.append(attrName + "=" + attrValue + ",");
 				}
+				LOGGER.debug("manifest details {}", kv("properties", sb));
 
 				if (attr.getValue("Identifier") != null) {
 					buildIdentifier = attr.getValue("Identifier");
@@ -141,7 +145,7 @@ public class EnvironmentService {
 			}
 		}
 		catch (IOException e) {
-			logger.error("",e);
+			LOGGER.error("Unable to get details from manifest", e);
 		}
 		finally {
 			if (inputStream != null) inputStream.close();
@@ -152,7 +156,7 @@ public class EnvironmentService {
 			buildIdentifier = "dev";
 		}
 
-		logger.debug("buildIdentifier: " + buildIdentifier + ", revision: " + buildRevision);
+		LOGGER.debug("build details {}, {}", kv("buildIdentifier", buildIdentifier), kv("revision", buildRevision));
 
 		return buildIdentifier;
 	}
@@ -183,7 +187,7 @@ public class EnvironmentService {
 		// Move a prefix slash to the end to conform with legacy "contextFolder" configuration
 		contextPath = contextPath.replaceAll("/(.+)", "$1/");
 
-		logger.info("Context Path set to " + contextPath);
+		LOGGER.debug("Context Path set {}", kv("contextPath", contextPath));
 		EnvironmentService.contextPath = contextPath;
 	}
 }

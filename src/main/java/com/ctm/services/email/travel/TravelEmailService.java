@@ -1,26 +1,10 @@
 package com.ctm.services.email.travel;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.ctm.dao.CountryMappingDao;
-import com.ctm.model.CountryMapping;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ctm.services.ApplicationService;
-import com.ctm.services.ContentService;
 import com.ctm.dao.RankingDetailsDao;
 import com.ctm.dao.transaction.TransactionDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.EmailDetailsException;
-import com.ctm.exceptions.EnvironmentException;
-import com.ctm.exceptions.SendEmailException;
-import com.ctm.exceptions.VerticalException;
+import com.ctm.exceptions.*;
+import com.ctm.model.CountryMapping;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.content.Content;
@@ -30,19 +14,19 @@ import com.ctm.model.email.TravelBestPriceRanking;
 import com.ctm.model.formatter.email.travel.TravelBestPriceExactTargetFormatter;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.services.email.BestPriceEmailHandler;
-import com.ctm.services.email.EmailDetailsService;
-import com.ctm.services.email.EmailServiceHandler;
-import com.ctm.services.email.EmailUrlService;
-import com.ctm.services.email.ExactTargetEmailSender;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.ContentService;
+import com.ctm.services.email.*;
 import com.disc_au.web.go.Data;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class TravelEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
 
 	private static final String VERTICAL = VerticalType.TRAVEL.getCode();
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(TravelEmailService.class.getName());
 
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();

@@ -22,13 +22,15 @@ import com.ctm.services.leadfeed.car.CarLeadFeedService;
 import com.ctm.services.leadfeed.homecontents.HomeContentsLeadFeedService;
 import com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @WebServlet(urlPatterns = {
 	"/leadfeed/car/getacall.json",
 	"/leadfeed/homecontents/getacall.json"
 })
 public class LeadFeedRouter extends HttpServlet {
 
-	private static final Logger logger = LoggerFactory.getLogger(LeadFeedRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(LeadFeedRouter.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -95,8 +97,8 @@ public class LeadFeedRouter extends HttpServlet {
 			}
 
 		} catch (Exception e) {
-			logger.error("[Lead feed] Router caught exception", e);
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
+			LOGGER.error("[Lead feed] Router failed {}", kv("requestUri", request.getRequestURI()), e);
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 	}
 

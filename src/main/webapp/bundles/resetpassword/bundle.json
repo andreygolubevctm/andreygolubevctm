@@ -1,9 +1,8 @@
 {
-    "brandCodes": [
-        "ctm"
-    ],
+    "brandCodes": "all",
     "dependencies": [
         "shared/results",
+        "shared/validation",
         "core"
     ]
 }

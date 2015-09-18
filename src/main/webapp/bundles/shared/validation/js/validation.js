@@ -6,8 +6,7 @@ var validation = false;
 
 ;(function ($, undefined) {
     var meerkat = window.meerkat,
-        log = meerkat.logging.info,
-        debug = meerkat.site.environment == "localhost" || meerkat.site.environment == "nxi";
+        log = meerkat.logging.info;
 
     var events = {};
 
@@ -59,13 +58,6 @@ var validation = false;
         $.validator.prototype.hideErrors = function () {
             this.addWrapper(this.toHide);
         };
-
-        /*$.validator.prototype.customMessage = function( name, method ) {
-         console.log($.validator.messages);
-         var m = this.settings.messages[ name ] || $.validator.messages[method];
-         console.log(m);
-         return m && ( m.constructor === String ? m : m[ method ]);
-         };*/
 
         /**
          * CTM Custom Unhighlight function
@@ -173,7 +165,7 @@ var validation = false;
                     return;
                 }
 
-                if (validation && element.name !== "captcha_code") {
+                if (validation) {
                     this.element(element);
                 }
             },
@@ -193,7 +185,6 @@ var validation = false;
                 $.validator.defaults.onfocusout.call(this, element, event);
             },
             highlight: function (element, errorClass, validClass) {
-                /** console.log('highlight', element); **/
 
                 /** Apply correct classes to element **/
                 if (element.type === "radio") {
@@ -258,6 +249,9 @@ var validation = false;
      * @private
      */
     function _logDebug(element) {
+        if(!element) {
+            return;
+        }
         log("[Validator] Modifying Rule on Element: " + (element.attr('id') || element.attr('name')));
     }
 
@@ -283,7 +277,6 @@ var validation = false;
                 } else {
                     $el.attr('required', 'required').attr('aria-required','true');
                 }
-                console.log("DEBUG", $(this).attr('id'), $(this)[0].required, $el.prop("required"), $el.attr("required") );
                 if(message && required) {
                     $el.data('msgRequired', message);
                 }
@@ -302,9 +295,7 @@ var validation = false;
                     rule = "rule" + ruleString;
                 $el.data()[rule] = false;
                 $el.removeAttr('data-rule-' + ruleString);
-                if (debug/* && !$el.data()[rule]*/) {
-                    _logDebug($el);
-                }
+                //_logDebug($el);
             });
 
         },
@@ -329,10 +320,7 @@ var validation = false;
                     $el.attr('data-msg-' + ruleString, message);
                     $.validator.messages[ruleName] = message;
                 }
-
-                if (debug/* && !$el.data()[rule]*/) {
-                    _logDebug($el);
-                }
+                //_logDebug($el);
             });
         }
     });

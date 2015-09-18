@@ -2,10 +2,12 @@
   "brandCodes": ["ctm"],
   "dependencies": [
     "shared/results",
+    "shared/validation",
     "core",
     "shared/addressLookup",
-    "shared/validation",
     "shared/showMoreQuotesPrompt",
-    "shared/resultsRankings"
+    "shared/resultsRankings",
+    "shared/checkboxIE8",
+    "shared/dropdownInteractive"
   ]
 }

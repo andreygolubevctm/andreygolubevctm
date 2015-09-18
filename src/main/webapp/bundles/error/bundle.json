@@ -1,9 +1,4 @@
 {
-    "brandCodes": [
-        "ctm",
-        "yhoo",
-        "choo",
-        "cc"
-    ],
+    "brandCodes": "all",
     "dependencies": []
 }

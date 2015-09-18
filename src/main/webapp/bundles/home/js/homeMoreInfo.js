@@ -168,7 +168,7 @@
 	 * Also bind validation rules.
 	 */
 	function setupCallbackForm() {
-		setupDefaultValidationOnForm( $('#getcallback') );
+		meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $('#getcallback') );
 
 		// populate client name if empty
 		var $clientName = $("#home_CrClientName");

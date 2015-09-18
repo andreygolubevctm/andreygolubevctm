@@ -1,18 +1,15 @@
 package com.ctm.services.tracking;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import javax.servlet.http.HttpServletRequest;
-import com.ctm.services.SettingsService;
+import com.ctm.exceptions.SessionException;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.SessionDataService;
-import com.ctm.exceptions.SessionException;
+import com.ctm.services.SettingsService;
 import com.disc_au.web.go.Data;
 
-public class SplitTestService {
+import javax.servlet.http.HttpServletRequest;
 
-	private static final Logger logger = LoggerFactory.getLogger(SplitTestService.class.getName());
+public class SplitTestService {
 
 	static final String FIELD_LABEL = "currentJourney";
 

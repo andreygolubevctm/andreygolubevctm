@@ -3,6 +3,7 @@
   "dependencies": [
     "shared/results",
     "shared/features",
+    "shared/validation",
     "core",
     "shared/addressLookup",
     "shared/placeholder",
@@ -12,12 +13,12 @@
     "shared/dropdownInteractive",
     "shared/partnerTransfer",
     "shared/moreInfo",
+    "shared/popovers",
     "shared/leavePageWarning",
     "shared/contentPopulation",
     "shared/regoLookup",
     "shared/saveQuote",
     "shared/resultsRankings",
-    "shared/leadFeed",
-    "shared/validation"
+    "shared/leadFeed"
   ]
 }

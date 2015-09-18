@@ -6,8 +6,6 @@
 <jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
 
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
-<%@ attribute name="kampyle"			required="false"  rtexprvalue="true"	 description="Whether to display Kampyle or not" %>
-<%@ attribute name="sessionPop"			required="false"  rtexprvalue="true"	 description="Whether to load the session pop" %>
 <%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
@@ -69,16 +67,12 @@
 	</c:if>
 <c:choose>
 	<c:when test="${empty skipJSCSS}">
-
-	<%-- Disable session_pop on new journeys --%>
-	<c:set var="sessionPop" value="${false}" />
-
 		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
 		<c:set var="browserVersion" value="${userAgentSniffer.getBrowserVersion(pageContext.getRequest().getHeader('user-agent'))}" />
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
-				<c:when test="${browserName eq 'IE' && (browserVersion le 9)}">
-					<jsp:include page="assets/brand/${pageSettings.getBrandCode()}/css/inc/${fileName}.min.inc" />
+				<c:when test="${browserName eq 'IE' and browserVersion le 9}">
+					<c:import url="/assets/brand/${pageSettings.getBrandCode()}/css/inc/${fileName}.min.inc" />
 				</c:when>
 				<c:otherwise>
 					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${fileName}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -106,12 +100,6 @@
 		<go:insertmarker format="HTML" name="js-href" />
 		<go:script>
 			<go:insertmarker format="SCRIPT" name="js-head" />
-		</go:script>
-
-		<go:script>
-			$(document).ready(function(){
-				<go:insertmarker format="SCRIPT" name="onready" />
-			});
 		</go:script>
 
 	</c:when>
@@ -228,16 +216,19 @@
 
 		</header>
 
-		<%--  Supertag --%>
-		<c:if test="${superTagEnabled eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
-				<agg:supertag_top type="${go:TitleCase(pageSettings.getVerticalCode())}" initialPageName="${pageSettings.getSetting('supertagInitialPageName')}" useCustomJs="false"/>
+			<%--  Supertag --%>
+			<c:if test="${superTagEnabled eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
+				<agg_new:supertag />
 			</c:if>
 
-		<!--  content -->
+			<!--  content -->
 			<jsp:doBody />
 
-		<!--  Includes -->
-		<agg:includes kampyle="${kampyle}" newKampyle="${true}" supertag="${superTagEnabled}" sessionPop="${sessionPop}" loading="false" fatalError="false"/>
+		<%-- Kampyle Feedback --%>
+        <%-- Check whether Kampyle is enabled for this brand/vertical --%>
+        <c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">
+            <core_new:kampyle formId="112902"/>
+        </c:if>
 
 <c:if test="${empty skipJSCSS}">
 
@@ -265,7 +256,7 @@
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
 				<c:when test="${separateJS}">
-					<jsp:include page="assets/js/bundles/inc/${fileName}.inc" />
+					<c:import url="/assets/js/bundles/inc/${fileName}.inc" />
 				</c:when>
 				<c:otherwise>
 					<script src="${assetUrl}js/bundles/${fileName}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
@@ -287,6 +278,11 @@
 			</c:when>
 		</c:choose>
 
+			<%-- Server date for JS to access --%>
+            <jsp:useBean id="now" class="java.util.Date" />
+            <c:set var="serverMonth"><fmt:formatDate value="${now}" type="DATE" pattern="M"/></c:set>
+            <c:set var="serverMonth" value="${serverMonth-1}" />
+
 			<script>
 
 				;(function (meerkat) {
@@ -299,10 +295,9 @@
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
+						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
                         revision: '<core:buildIdentifier />',
-						<%-- could be: localhost, integration, qa, staging, prelive, pro --%>
-						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId},</c:if>
-						<%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
+						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId}, </c:if><%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
 						urls:{
 							base: '${pageSettings.getBaseUrl()}',
 							exit: '${exitUrl}',
@@ -312,7 +307,6 @@
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'
 						},
-						<%-- This is just for supertag tracking module, don't use it anywhere else --%>
 						tracking:{
 							brandCode: '${pageSettings.getBrandCode()}',
 							superTagEnabled: ${superTagEnabled},
@@ -404,5 +398,10 @@
 		</c:if>
 	</c:if>
 
+	<go:script>
+		$(document).ready(function(){
+			<go:insertmarker format="SCRIPT" name="onready" />
+		});
+	</go:script>
 </body>
 </go:html>

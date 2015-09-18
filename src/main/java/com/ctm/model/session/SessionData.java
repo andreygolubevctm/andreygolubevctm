@@ -18,7 +18,7 @@ import com.disc_au.web.go.Data;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.ctm.utils.SessionDataUtils.getTransactionIdFromTransactionSessionData;
+import static com.ctm.utils.SessionDataUtils.getTransactionId;
 
 public class SessionData {
 
@@ -53,7 +53,7 @@ public class SessionData {
 		ArrayList<Data> sessions = getTransactionSessionData();
 
 		for (Data session : sessions) {
-			Long sessionTransactionId = getTransactionIdFromTransactionSessionData(session);
+			Long sessionTransactionId = getTransactionId(session);
 			if(sessionTransactionId != null && sessionTransactionId > 0 && sessionTransactionId == transactionId){
 				return session;
 			}

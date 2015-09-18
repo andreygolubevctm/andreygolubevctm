@@ -93,7 +93,7 @@ public class MessageDetailDao {
 			properties.put("Benefits", benefitsValue.toString());
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();

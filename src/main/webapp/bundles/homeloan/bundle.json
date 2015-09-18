@@ -3,14 +3,16 @@
   "dependencies": [
     "shared/results",
     "shared/features",
+    "shared/validation",
     "core",
     "shared/placeholder",
     "shared/currency",
+    "shared/dropdownInteractive",  
     "shared/addressLookup",
-    "shared/validation",
     "shared/leadFeed",
     "shared/saveQuote",
     "shared/moreInfo",
+    "shared/popovers",
     "shared/resultsRankings",
     "shared/contentPopulation",
     "shared/leavePageWarning"

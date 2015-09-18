@@ -652,7 +652,7 @@ Results = {
 
 								var completeLogoMove = function() {
 									var size = "83x53";//"44x25";
-									elements.finish.css({backgroundImage:"url(common/images/logos/life/" + size + "/" + product.thumb + ")"});
+									elements.finish.css({backgroundImage:"url(assets/graphics/logos/life/" + size + "/" + product.thumb + ")"});
 									$("#results-mast-wrapper ." + type).find('.client').first().removeClass("adding");
 									$("#results-rows-" + type).find(".results-row.selected").removeClass('selected');
 									$('#result_' + type + '_' + product_id).addClass('selected');
@@ -2584,7 +2584,7 @@ var highlightMeTextObj = new HighlightMeText();
 				<a href="javascript:void(0)" class="close-button"></a>
 				<div class="col mid">
 					<div class="product company">
-						<div class="logo" title="[#= company #]" style="background-image:url('common/images/logos/life/83x53/[#= thumb #]');"><!-- logo --></div>
+						<div class="logo" title="[#= company #]" style="background-image:url('assets/graphics/logos/life/83x53/[#= thumb #]');"><!-- logo --></div>
 						<div class="seltocompare">
 							<div class="col mid">
 								<a id="toggle-compare-[#= client_type #]-[#= product_id #]" href="javascript:void(0);" data-toggleInCompareList="true" data-client_type="[#= client_type #]" data-id="[#= product_id #]" class="selector"><!-- empty --></a>

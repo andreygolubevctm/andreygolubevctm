@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.homeloan_submit')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="HOMELOAN" />
 
@@ -167,7 +167,7 @@ ${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResu
 								<c:if test="${tranId ne rootId}">
 									<agg:write_touch transaction_id="${rootId}" touch="C" />
 								</c:if>
-								${logger.info('Confirmation has been written. {},{}',log:kv('transactionId',tranId ),log:kv('opportunityId',flexOpportunityId ))}
+								${logger.info('Confirmation has been written. {}',log:kv('opportunityId',flexOpportunityId ))}
 								<%-- crappy hack to inject properties --%>
 								<c:set var="json" value="${fn:substringAfter(submitResult.toString(), '{')}" />
 								<c:set var="json" value='{"confirmationkey":"${confirmationkey}",${json}' />

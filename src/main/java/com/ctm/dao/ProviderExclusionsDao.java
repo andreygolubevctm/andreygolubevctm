@@ -15,9 +15,11 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.ProviderExclusion;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ProviderExclusionsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProviderExclusionsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderExclusionsDao.class);
 
 	/**
 	 * Return a list of providers which have been disabled for a specific brand and vertical for the provided date.
@@ -66,12 +68,9 @@ public class ProviderExclusionsDao {
 			}
 
 
-		} catch (SQLException e) {
-			logger.error("Failed to get ctm.stylecode_provider_exclusions for:" + brandId+":"+verticalId , e);
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			logger.error("Failed to get ctm.stylecode_provider_exclusions for:" + brandId+":"+verticalId , e);
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("Failed to retrieve excluded providers {}, {}, {}", kv("brandId", brandId), kv("verticalId", verticalId), kv("effectiveDate", effectiveDate), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
