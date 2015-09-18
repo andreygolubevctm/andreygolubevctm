@@ -226,7 +226,7 @@
 					meerkat.modules.healthSegment.filterSegments();
 				}, 1000);
 
-				if (event.isForward){
+				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
 			},
