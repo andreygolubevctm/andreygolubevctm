@@ -30,6 +30,7 @@
 <c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI'}"/>
 <c:set var="superTagEnabled" value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />
 <c:set var="DTMEnabled" value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />
+<c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
 
 <c:set var="separateJS" value="${param.separateJS eq 'true'}"/>
 
@@ -128,6 +129,16 @@
 </head>
 
 	<body class="jeinit ${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''}">
+
+    <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
+        <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
+        </c:if>
+    </c:if>
 
 	<div class="navMenu-row">
 
@@ -314,6 +325,7 @@
 							brandCode: '${pageSettings.getBrandCode()}',
 							superTagEnabled: ${superTagEnabled},
 							DTMEnabled: ${DTMEnabled},
+                            			GTMEnabled: ${GTMEnabled},
 							userTrackingEnabled: ${isUserTrackingEnabled}
 						},
 						leavePageWarning: {
