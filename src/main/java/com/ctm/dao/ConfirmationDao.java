@@ -12,6 +12,12 @@ import com.ctm.model.Confirmation;
 
 public class ConfirmationDao {
 
+	private final SqlDao sqlDao;
+
+	public ConfirmationDao() {
+		this.sqlDao = new SqlDao();
+	}
+
 	/**
 	 * Get a confirmation using the confirmation key (token)
 	 * @param confirmationKey
@@ -52,5 +58,23 @@ public class ConfirmationDao {
 		}
 
 		return confirmation;
+	}
+
+	public void addConfirmation(Confirmation confirmation) throws DaoException {
+		DatabaseUpdateMapping databaseMapping = new DatabaseUpdateMapping(){
+			@Override
+			public void mapParams() throws SQLException {
+				set(confirmation.getTransactionId());
+				set(confirmation.getKey());
+				set(confirmation.getXmlData());
+			}
+
+			@Override
+			public String getStatement() {
+				return "INSERT INTO ctm.`confirmations` " +
+						"(TransID, KeyId, Time, XMLdata) VALUES (?, ?, NOW(), ?);";
+			}
+		};
+		sqlDao.update(databaseMapping);
 	}
 }

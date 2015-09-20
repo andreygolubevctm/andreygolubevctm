@@ -77,4 +77,12 @@ public class TransactionAccessService {
 		return valid;
 	}
 
+	public void addTransactionDetail(long transactionId, int sequenceNo, String xpath, String textValue) throws DaoException {
+		final TransactionDetail transactionDetail = new TransactionDetail();
+		transactionDetail.setSequenceNo(sequenceNo);
+		transactionDetail.setXPath(xpath);
+		transactionDetail.setTextValue(textValue);
+		transactionDetailsDao.addTransactionDetails(transactionId, transactionDetail);
+	}
+
 }

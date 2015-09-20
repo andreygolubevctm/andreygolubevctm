@@ -50,45 +50,6 @@
     <c:when test="${result.success eq 'Success'}">
         <core:transaction touch="C" noResponse="true" productId="${result.productId}"/>
 
-        <%--<c:set var="ignore">--%>
-            <%--<jsp:useBean id="joinService" class="com.ctm.services.confirmation.JoinService"--%>
-                         <%--scope="page"/>--%>
-            <%--${joinService.writeJoin(tranId,productId)}--%>
-        <%--</c:set>--%>
-
-
-        <%--
-
-        FIXME: Needs to be done in health apply service
-
-        <c:set var="allowedErrors" value=""/>
-        <c:catch var="writeAllowableErrorsException">
-            &lt;%&ndash; Check any allowable errors and save to the database &ndash;%&gt;
-            <c:set var="allowAbleErrorCount"
-                   value="${results.allowedErrors.size()}"/>
-            <c:if test="${allowAbleErrorCount > 0}">
-                <c:forEach items="${results.allowedErrors}"
-                           var="error" varStatus="pos">
-                    <c:set var="allowedErrors">${allowedErrors}${error.code}</c:set>
-                    <c:if test="${status.count < allowAbleErrorCount - 1}">
-                        <c:set var="allowedErrors">${allowedErrors},</c:set>
-                    </c:if>
-                </c:forEach>
-                <jsp:useBean id="healthTransactionDao"
-                             class="com.ctm.dao.health.HealthTransactionDao" scope="page"/>
-                ${healthTransactionDao.writeAllowableErrors(tranId , allowedErrors)}
-            </c:if>
-        </c:catch>
-        <c:if test="${not empty writeAllowableErrorsException}">
-            ${logger.warn('Exception thrown writing allowable errors. {}', log:kv('results', $results), writeAllowableErrorsException)}
-            <error:non_fatal_error origin="health_application.jsp"
-                                   errorMessage="failed to writeAllowableErrors tranId:${tranId} allowedErrors:${allowedErrors}"
-                                   errorCode="DATABASE"/>
-        </c:if>--%>
-
-        <jsp:useBean id="serviceConfigurationService" class="com.ctm.services.ServiceConfigurationService" scope="session"/>
-
-
         <%-- Save confirmation record/snapshot --%>
         <%--<c:import var="saveConfirmation" url="/ajax/write/save_health_confirmation.jsp">
             <c:param name="policyNo" value="${result.productId}"/>
@@ -97,25 +58,57 @@
             <c:param name="bccEmail" value="${serviceConfigurationService.getServiceConfiguration('')}"/>
         </c:import>--%>
 
-        <%-- Check outcome was ok --%>
-        <x:parse doc="${saveConfirmation}" var="saveConfirmationXml"/>
-        <x:choose>
-            <x:when select="$saveConfirmationXml/response/status = 'OK'">
-                <c:set var="confirmationID">
-                    <x:out select="$saveConfirmationXml/response/confirmationID"/>
-                </c:set>
-            </x:when>
-            <x:otherwise></x:otherwise>
-        </x:choose>
-        ${logger.info('Transaction has been set to confirmed. {},{}', log:kv('transactionId' , tranId), log:kv('confirmationID',confirmationID ))}
-        <c:set var="confirmationID">
-            <confirmationID>
-                <c:out value="${confirmationID}"/>
-            </confirmationID>
-            </result>
+        <!-- Sends the email -->
+        <c:set var="emailResponse">
+            <c:import url="/ajax/json/send.jsp">
+                <c:param name="vertical" value="HEALTH" />
+                <c:param name="mode" value="app" />
+                <c:param name="emailAddress" value="${applyServiceResponse.email}" />
+                <c:param name="bccEmail" value="${applyServiceResponse.bccEmail}" />
+            </c:import>
         </c:set>
-        <c:set var="resultXml" value="${fn:replace(resultXml, '</result>', confirmationID)}"/>
-        ${go:XMLtoJSON(resultXml)}
+
+        <%-- Store the emailResponse's ID against the transaction to know it was emailed --%>
+        <%-- emailResponseXML is created as a session variable inside send.jsp and send.jsp under dreammail (one imports the other) --%>
+        <c:catch var="storeEmailResponse">
+            <c:if test="${not empty emailResponseXML}">
+
+                <x:parse xml="${emailResponseXML}" var="confirmationXML" />
+
+                <%-- //FIX: handle the error and force it into the --%>
+                <c:set var="confirmationCode">
+                    <x:choose>
+                        <%-- For ExactTarget style responses: --%>
+                        <x:when select="$confirmationXML//*[local-name()='Body']/*[name()='CreateResponse']/*[name()='RequestID']"><x:out select="$confirmationXML//*[local-name()='Body']/*[name()='CreateResponse']/*[name()='RequestID']" /></x:when>
+                        <%-- For old (Permission???) based responses: --%>
+                        <%--
+                        <x:when select="$confirmationXML/DMResponse/ResultData/TransactionID"><x:out select="$confirmationXML/DMResponse/ResultData/TransactionID" /></x:when>
+                        --%>
+                        <x:otherwise>0</x:otherwise>
+                    </x:choose>
+                </c:set>
+
+                <sql:setDataSource dataSource="jdbc/ctm"/>
+                <sql:update>
+                    INSERT INTO aggregator.transaction_details
+                    (transactionId,sequenceNo,xpath,textValue,numericValue,dateValue)
+                    values (?, ?, ?, ?,	default, now());
+                    <sql:param value="${applyServiceResponse.transactionId}" />
+                    <sql:param value="${-1}" />
+                    <sql:param value="health/confirmationEmailCode" />
+                    <sql:param value="${confirmationCode}" />
+                </sql:update>
+            </c:if>
+        </c:catch>
+        <c:choose>
+            <c:when test="${empty storeEmailResponse}">
+                ${logger.info('Updated transaction details with record of email provider\'s confirmation code. {}', log:kv('confirmationCode',confirmationCode ))}
+            </c:when>
+            <c:otherwise>
+                ${logger.info('Failed to Update transaction details with record of confirmation code. {}', log:kv('storeEmailResponse',storeEmailResponse ))}
+            </c:otherwise>
+        </c:choose>
+
     </c:when>
     <%-- Was not successful --%>
     <%-- If no fail has been recorded yet --%>
@@ -124,7 +117,7 @@
             <%-- if online user record a join --%>
             <c:when test="${empty callCentre && empty errorMessage}">
                 <health:set_to_pending errorMessage="${errorMessage}" resultXml="${resultXml}"
-                                       transactionId="${tranId}" productId="${productId}"/>
+                                       transactionId="${applyServiceResponse.transactionId}" productId="${result.productId}"/>
             </c:when>
             <%-- else just record a failure --%>
             <c:when test="${empty errorMessage}">
@@ -135,4 +128,4 @@
         </c:choose>
     </x:otherwise>
 </c:choose>
-${logger.debug('Health application complete. {},{},{}', log:kv('transactionId',tranId), log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
+

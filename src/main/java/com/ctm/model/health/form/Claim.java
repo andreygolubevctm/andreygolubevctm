@@ -1,6 +1,6 @@
 package com.ctm.model.health.form;
 
-public class Bank {
+public class Claim {
 
     private String name;
 
@@ -9,12 +9,6 @@ public class Bank {
     private String bsb;
 
     private String number;
-
-    private String day;
-
-    private String claims;
-
-    private Claim claim;
 
     public String getName() {
         return name;
@@ -46,29 +40,5 @@ public class Bank {
 
     public void setNumber(String number) {
         this.number = number;
-    }
-
-    public String getDay() {
-        return day;
-    }
-
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public String getClaims() {
-        return claims;
-    }
-
-    public void setClaims(String claims) {
-        this.claims = claims;
-    }
-
-    public Claim getClaim() {
-        return claim;
-    }
-
-    public void setClaim(Claim claim) {
-        this.claim = claim;
     }
 }

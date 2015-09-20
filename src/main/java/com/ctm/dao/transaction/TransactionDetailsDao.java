@@ -293,7 +293,7 @@ public class TransactionDetailsDao {
 	 */
 	// Should pass in ArrayList<TransactionDetails> so can batch insert.
 	public void addTransactionDetails(final long transactionId, final TransactionDetail transactionDetail) throws DaoException {
-		final Integer nextSequenceNo = getMaxSequenceNo(transactionId) + 1;
+		final Integer nextSequenceNo = transactionDetail.getSequenceNo() == null ? getMaxSequenceNo(transactionId) + 1 : transactionDetail.getSequenceNo();
 		DatabaseUpdateMapping databaseMapping = new DatabaseUpdateMapping(){
 			@Override
 			public void mapParams() throws SQLException {
@@ -314,7 +314,6 @@ public class TransactionDetailsDao {
 		sqlDao.update(databaseMapping);
 		
 	}
-
 
 	/** returns transaction details based off transactionId.
 	 * @param vertical

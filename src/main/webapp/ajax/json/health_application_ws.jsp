@@ -153,3 +153,5 @@
         </c:choose>
     </c:otherwise>
 </c:choose>
+
+<jsp:forward page="/rest/health/apply/get.json"/>

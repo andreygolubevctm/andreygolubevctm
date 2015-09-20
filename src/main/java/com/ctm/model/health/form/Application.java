@@ -16,6 +16,8 @@ public class Application {
 
     private String other;
 
+    private String email;
+
     private String optInEmail;
 
     private String productName;
@@ -25,6 +27,8 @@ public class Application {
     private String productId;
 
     private String provider;
+
+    private String providerName;
 
     private String postalMatch;
 
@@ -130,5 +134,21 @@ public class Application {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -24,7 +24,7 @@ public class HealthApplyService extends CommonQuoteService<HealthQuote, HealthAp
 
         final HealthApplicationRequest request = RequestAdapter.adapt(data);
 
-        return sendRequest(brand, HEALTH, "", "HEALTH-APPLY", "apply", data, request, HealthApplyResponse.class);
+        return sendRequest(brand, HEALTH, "healthApplyService", "HEALTH-APPLY", "apply", data, request, HealthApplyResponse.class);
     }
 
 

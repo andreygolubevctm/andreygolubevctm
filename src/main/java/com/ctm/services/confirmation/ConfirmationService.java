@@ -1,10 +1,5 @@
 package com.ctm.services.confirmation;
 
-import java.net.URLEncoder;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.dao.ConfirmationDao;
 import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.exceptions.DaoException;
@@ -15,9 +10,19 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.SettingsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URLEncoder;
 
 public class ConfirmationService {
 	private static final Logger logger = LoggerFactory.getLogger(ConfirmationService.class.getName());
+
+	private ConfirmationDao confirmationDao;
+
+	public ConfirmationService() {
+		this.confirmationDao = new ConfirmationDao();
+	}
 
 	/**
 	 * Get confirmation record by the key with strict validation that the transaction is associated with the specified brand.
@@ -29,7 +34,7 @@ public class ConfirmationService {
 		Confirmation confirmation = null;
 
 		try {
-			ConfirmationDao confirmationDao = new ConfirmationDao();
+
 			confirmation = confirmationDao.getByKey(confirmationKey);
 
 			if (confirmation.getTransactionId() > 0) {
@@ -107,5 +112,10 @@ public class ConfirmationService {
 		}
 
 		return confirmationUrl.toString();
+	}
+
+	public boolean addConfirmation(final Confirmation confirmation) throws DaoException {
+		confirmationDao.addConfirmation(confirmation);
+		return true;
 	}
 }
