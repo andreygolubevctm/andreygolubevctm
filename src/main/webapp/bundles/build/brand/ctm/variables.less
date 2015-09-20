@@ -785,32 +785,38 @@
 //## bootstrap-datepicker component
 
 //Top row = the switcher
-@datepicker-switch-color: @fieldset-heading-colour;
-@datepicker-switch-font-size: 18px;
-@datepicker-switch-font-family: @font-family-theme-light;
-@datepicker-switch-font-weight: normal;
+@datepicker-background-cell: #f1f1f1;
 
-@datepicker-switch-prev-color: @text-color;
+@datepicker-switch-color: @theme-light;
+@datepicker-switch-font-size: @font-size-base;
+@datepicker-switch-font-family: @font-family-theme-light;
+@datepicker-switch-font-weight: bold;
+@datepicker-switch-bg-color: #1C3F94;
+
+@datepicker-switch-prev-color: #fff;
 @datepicker-switch-prev-font-size: 18px;
 @datepicker-switch-prev-font-family: @font-family-theme-light;
 @datepicker-switch-prev-font-weight: normal;
 
-@datepicker-switch-next-color: @text-color;
+@datepicker-switch-next-color: #fff;
 @datepicker-switch-next-font-size: 18px;
 @datepicker-switch-next-font-family: @font-family-theme-light;
 @datepicker-switch-next-font-weight: normal;
+@datepicker-switch-nextprev-bg-color: #142C67;
 
 //All cells in the two top rows (th)
 @datepicker-header-font-family: @font-family-theme-bold;
 @datepicker-header-font-weight: normal;
 @datepicker-header-color: @text-color;
 @datepicker-header-hover-bg: @theme-light;
+@datepicker-header-bg-color: @theme-light;
 
 //All cells in the lower portion (td)
 @datepicker-cells-font-family: @font-family-theme-light;
 @datepicker-cells-font-weight: normal;
 @datepicker-cells-disabled-color: @theme-light;
-@datepicker-cells-oldnew-color: @fieldset-heading-colour;
+@datepicker-disabled-background-color: #999;
+@datepicker-cells-oldnew-color: @theme-dark;
 
 @datepicker-days-hover-bg: @theme-light;
 
@@ -819,6 +825,8 @@
 @datepicker-today-disabled-bg: @theme-light;
 @datepicker-today-range-bg: mix(@datepicker-today-mixedcolor, @gray-lighter, 50%);
 @datepicker-today-active-color: #fff;
+
+@datepicker-dow-text-color: #EBEBEB;
 
 //Months and years after using the switcher
 @datepicker-monthyear-hover-bg: @theme-light;
