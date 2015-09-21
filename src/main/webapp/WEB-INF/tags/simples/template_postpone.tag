@@ -43,6 +43,7 @@
 							<field_new:array_radio items="AM=AM,PM=PM" required="true" title="AM/PM" xpath="postponeampm" className="postponeampmgroup" />
 						</div>
 					</div>
+					<div class="error-field">Enter time above in Qld time and account for customer's time difference (e.g. due to daylight saving time, WA timezone)</div>
 				</div>
 			</div>
 
