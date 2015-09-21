@@ -1,26 +1,27 @@
-Import: SCTI_UPD_20150918
+/* Update Bali */
+UPDATE `ctm`.`country_provider_mapping` SET `regionValue`='R2', `priority`='2' WHERE `isoCode`='BAL' AND `regionValue`='R1' LIMIT 1;
+
+/* Update the url for NXI & NXQ */
+UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = 304 AND environmentCode = 'NXI';
+UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = 304 AND environmentCode = 'NXQ';
 
 
 /* Rename product */
-UPDATE ctm.product_master SET longTitle = 'Southern Cross Travel Insurance TravelCare' WHERE ProductId = 193;
-UPDATE ctm.product_master SET shortTitle = 'Southern Cross Travel Insurance TravelCare' WHERE ProductId = 193;
+UPDATE ctm.product_master SET longTitle = 'Southern Cross Travel Insurance TravelCare', shortTitle = 'Southern Cross Travel Insurance TravelCare' WHERE ProductId = 193;
 
 /* Rename product */
-UPDATE ctm.product_master SET longTitle = 'Southern Cross Travel Insurance TravelCare AMT NZ/South Pacific (90 days)' WHERE ProductId = 194;
-UPDATE ctm.product_master SET shortTitle = 'Southern Cross Travel Insurance TravelCare AMT NZ/South Pacific (90 days)' WHERE ProductId = 194;
+UPDATE ctm.product_master SET `LongTitle`='Southern Cross Travel Insurance TravelCare AMT &lt;br /&gt;NZ/South Pacific &lt;span class=&quot;daysPerTrip&quot;&gt;(90 days)&lt;/span&gt;', shortTitle = 'Southern Cross Travel Insurance TravelCare AMT NZ/South Pacific (90 days)' WHERE ProductId = 194;
 
 /* Rename product */
-UPDATE ctm.product_master SET longTitle = 'Southern Cross Travel Insurance TravelCare AMT Limited World Excl. USA/Canada (90 days)' WHERE ProductId = 195;
-UPDATE ctm.product_master SET shortTitle = 'Southern Cross Travel Insurance TravelCare AMT Limited World Excl. USA/Canada (90 days)' WHERE ProductId = 195;
+UPDATE ctm.product_master SET `LongTitle`='Southern Cross Travel Insurance TravelCare AMT &lt;br /&gt;Limited World Excl. USA/Canada &lt;span class=&quot;daysPerTrip&quot;&gt;(90 days)&lt;/span&gt;', shortTitle = 'Southern Cross Travel Insurance TravelCare AMT Limited World Excl. USA/Canada (90 days)' WHERE ProductId = 195;
 
 /* Rename product */
-UPDATE ctm.product_master SET longTitle = 'Southern Cross Travel Insurance TravelCare AMT World Inc. USA/Canada (90 days)' WHERE ProductId = 196;
-UPDATE ctm.product_master SET shortTitle = 'Southern Cross Travel Insurance TravelCare AMT World Inc. USA/Canada (90 days)' WHERE ProductId = 196;
+UPDATE ctm.product_master SET `LongTitle`='Southern Cross Travel Insurance TravelCare AMT &lt;br /&gt;World Inc. USA/Canada &lt;span class=&quot;daysPerTrip&quot;&gt;(90 days)&lt;/span&gt;', shortTitle = 'Southern Cross Travel Insurance TravelCare AMT World Inc. USA/Canada (90 days)' WHERE ProductId = 196;
 
 -- ================ TESTS =====================
 -- ========= BEFORE INSERT TESTS ==============
 -- When this is run before anything else on the ctm.product_properties table, query should return 33362 rows
-SELECT * FROM ctm.product_properties WHERE ProductId IN(193,194,195,196) AND SequenceNo > 0 LIMIT 999999;
+-- SELECT * FROM ctm.product_properties WHERE ProductId IN(193,194,195,196) AND SequenceNo > 0 LIMIT 999999;
 
 /* Delete existing prices in product properties */
 DELETE FROM ctm.product_properties WHERE ProductId IN(193,194,195,196) AND SequenceNo > 0 LIMIT 33362;
@@ -33387,11 +33388,10 @@ INSERT INTO ctm.product_properties VALUES ( 193, 'R2-SIN', 1, 38, '$38.00', NULL
 ( 196, 'ageMin', 7, 80, '80', NULL, CURDATE(), '2040-12-31', '', 0 ) ,
 ( 196, 'R1-SIN', 7, 1931, '$1,931.00', NULL, CURDATE(), '2040-12-31', '', 0 ) ,
 ( 196, 'durMin', 7, 365, '365', NULL, CURDATE(), '2040-12-31', '', 0 ) ,
-( 196, 'R1-FAM', 7, 3840, '$3,840.00', NULL, CURDATE(), '2040-12-31', '', 0 ) ,
+( 196, 'R1-FAM', 7, 3840, '$3,840.00', NULL, CURDATE(), '2040-12-31', '', 0 );
 
 
 -- ========= AFTER INSERT TESTS ==============
 -- When this is run after the insert statements on the ctm.product_properties table, query should return 33362 rows
-SELECT * FROM ctm.product_properties WHERE ProductId IN(193,194,195,196) AND SequenceNo > 0 LIMIT 999999;
+-- SELECT * FROM ctm.product_properties WHERE ProductId IN(193,194,195,196) AND SequenceNo > 0 LIMIT 999999;
 -- ================ =====================
-
