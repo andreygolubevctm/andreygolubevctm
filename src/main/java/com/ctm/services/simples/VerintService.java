@@ -1,7 +1,6 @@
 package com.ctm.services.simples;
 
 import com.ctm.connectivity.SimpleConnection;
-import com.ctm.connectivity.exception.ConnectionException;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.ServiceException;
@@ -18,8 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.ctm.logging.LoggingArguments.kv;
-
 public class VerintService {
 
     private static final Logger logger = LoggerFactory.getLogger(VerintService.class.getName());
@@ -33,23 +30,15 @@ public class VerintService {
      * @throws ConfigSettingException
      */
     private static String getVerintResponse(PageSettings settings, String paramUrl) throws EnvironmentException, ConfigSettingException {
-        String resultMaster = null,resultSlave = null, result;
+        String resultMaster,resultSlave, result;
         String masterUrl = settings.getSetting("verintMaster");
         String slaveUrl = settings.getSetting("verintSlave");
         SimpleConnection simpleConn = new SimpleConnection();
-        try {
-            resultMaster = simpleConn.get(masterUrl + paramUrl);
-        } catch (ConnectionException e) {
-            logger.error("Exception calling Verint API. {},{} ",  kv("masterUrl",masterUrl) , kv("paramUrl", paramUrl) , e);
-        }
+        resultMaster = simpleConn.get(masterUrl + paramUrl);
         logger.info("Verint API call : Read master URL : "+ masterUrl + paramUrl);
         logger.info("Verint API call : Read master Response : "+ resultMaster);
         if (resultMaster == null || resultMaster.contains("<isMaster>false</isMaster>")) {
-            try {
-                resultSlave = simpleConn.get(slaveUrl + paramUrl);
-            } catch (ConnectionException e) {
-                logger.error("Exception calling read slave. {},{} ",  kv("slaveUrl",slaveUrl) , kv("paramUrl", paramUrl) , e);
-            }
+            resultSlave = simpleConn.get(slaveUrl + paramUrl);
             logger.info("Read slave URL : "+ slaveUrl + paramUrl);
             logger.info("Read slave Response : "+ resultSlave);
             if ( resultSlave  != null) {

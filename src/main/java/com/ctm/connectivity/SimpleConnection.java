@@ -1,13 +1,20 @@
 package com.ctm.connectivity;
 
-import com.ctm.connectivity.exception.ConnectionException;
+
 import com.ctm.logging.CorrelationIdUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class SimpleConnection {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleConnection.class);
 
 	private int connectTimeout = 1000;
 	private int readTimeout = 1000;
@@ -20,13 +27,12 @@ public class SimpleConnection {
 	}
 
 	/**
-	 * Returns the content from the specified url as a string
+	 * Returns the content from the specified url as a string. Return null if any failures occur whilst trying to return the value.
 	 *
 	 * @param url to call
-	 * @throws  ConnectionException is thrown if any failures occur whilst trying to return the value.
 	 * @return outcome of url call
 	 */
-	public String get(String url) throws ConnectionException {
+	public String get(String url) {
 		try {
 			URL u = new URL(url);
 			HttpURLConnection c = (HttpURLConnection) u.openConnection();
@@ -44,12 +50,12 @@ public class SimpleConnection {
 				c.setRequestProperty("Content-Type", getContentType());
 			}
 
-			if (this.postBody != null) {
+			if (postBody != null) {
 				c.setDoOutput(true);
 
 				OutputStream os = c.getOutputStream();
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-				writer.write(this.postBody);
+				writer.write(postBody);
 				writer.flush();
 				writer.close();
 				os.close();
@@ -66,18 +72,22 @@ public class SimpleConnection {
 					StringBuilder sb = new StringBuilder();
 					String line;
 					while ((line = br.readLine()) != null) {
-						sb.append(line).append("\n");
+						sb.append(line+"\n");
 					}
 					br.close();
 					return sb.toString();
 				default:
 					String message = c.getResponseMessage();
-					throw new ConnectionException(url + ": Status code error " + status + " " + message);
+					LOGGER.debug("Request returned error {}", kv("status", status), kv("message", message));
 			}
 		}
-		catch (Exception e) {
-			throw new ConnectionException(url+": "+e , e);
+		catch (MalformedURLException e) {
+			LOGGER.error("Invalid URL {}", kv("url", url), e);
 		}
+		catch (Exception e) {
+			LOGGER.error("Error performing get request {}", kv("url", url), e);
+		}
+		return null;
 	}
 
 	/**

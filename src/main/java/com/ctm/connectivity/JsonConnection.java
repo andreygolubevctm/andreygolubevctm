@@ -1,6 +1,5 @@
 package com.ctm.connectivity;
 
-import com.ctm.connectivity.exception.ConnectionException;
 import com.google.json.JsonSanitizer;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,16 +90,14 @@ catch (Exception e){
 
 	public JSONArray postArray(String url, String postBody, Boolean sanitize) {
 		try {
+			if (conn == null) {
+				conn = new SimpleConnection();
+			}
+
 			conn.setRequestMethod("POST");
 			conn.setPostBody(postBody);
 
-			String jsonString = null;
-			try {
-				jsonString = conn.get(url);
-			} catch (ConnectionException e) {
-				LOGGER.error("Failed to call json", e);
-				return null;
-			}
+			String jsonString = conn.get(url);
 
 			LOGGER.trace("Posting json request {}", kv("request", jsonString));
 
@@ -118,7 +115,7 @@ catch (Exception e){
 		}
 		catch (Exception e){
 			LOGGER.error("Error making json array post {},{},{}", kv("url", url), kv("postBody", postBody),
-				kv("sanitize", sanitize), e);
+					kv("sanitize", sanitize), e);
 		}
 
 		return null;
