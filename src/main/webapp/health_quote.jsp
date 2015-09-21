@@ -129,6 +129,9 @@
 		<script src="framework/jquery/plugins/jquery.scrollTo.min.js"></script>
 		<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 		<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
+		<script src="common/js/compare/Compare.js?${revision}"></script>
+		<script src="common/js/compare/CompareView.js?${revision}"></script>
+		<script src="common/js/compare/CompareModel.js?${revision}"></script>
 	</jsp:attribute>
 
 	<jsp:body>
