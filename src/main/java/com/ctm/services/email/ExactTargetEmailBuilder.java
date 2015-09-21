@@ -20,7 +20,9 @@ public class ExactTargetEmailBuilder {
 
         TriggeredSend triggeredSend = new TriggeredSend();
         //CorrelationID Identifies correlation of objects across several requests
-        triggeredSend.setCorrelationID(CorrelationIdUtils.getCorrelationId());
+        CorrelationIdUtils.getCorrelationId().ifPresent(correlationId -> {
+            triggeredSend.setCorrelationID(correlationId);
+        });
 
         ClientID client = createClient(exactTargetEmailModel);
 

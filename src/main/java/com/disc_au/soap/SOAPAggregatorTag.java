@@ -32,6 +32,7 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.util.HashMap;
+import java.util.Optional;
 
 import static com.ctm.logging.CorrelationIdUtils.clearCorrelationId;
 import static com.ctm.logging.CorrelationIdUtils.setCorrelationId;
@@ -66,7 +67,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 	private boolean continueOnValidationError;
 	private Brand brand;
-	private String correlationId;
+	private Optional<String> correlationId = Optional.ofNullable(null);
 	private boolean sendCorrelationId;
 
 	@SuppressWarnings("unused")
@@ -144,10 +145,10 @@ public class SOAPAggregatorTag extends TagSupport {
 
 					if (serviceItemConfig.getType() != null && serviceItemConfig.getType().equals("url-encoded")) {
 					client = new HtmlFormClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupMDC, this::clearThreadVariables);
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupThreadVariable, this::clearThreadVariables);
 				} else {
 						client = new SOAPClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupMDC, this::clearThreadVariables);
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupThreadVariable, this::clearThreadVariables);
 					}
 
 				// Add the thread to the hash map and start it off
@@ -255,7 +256,7 @@ public class SOAPAggregatorTag extends TagSupport {
 		clearLoggingVariables();
 	}
 
-	private void setupMDC() {
+	private void setupThreadVariable() {
 		setLoggingVariables(transactionId, brand.getCode(), Vertical.VerticalType.findByCode(verticalCode), correlationId);
 		setCorrelationId(correlationId);
 	}

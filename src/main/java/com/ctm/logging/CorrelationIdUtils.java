@@ -2,15 +2,23 @@ package com.ctm.logging;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.HttpURLConnection;
+import java.util.Optional;
 
 public class CorrelationIdUtils {
 
-    public static final ThreadLocal threadLocalCorrelationId = new ThreadLocal();
+    private static final ThreadLocal<String> threadLocalCorrelationId = new ThreadLocal<>();
 
-    public static final String CORRELATION_ID_HEADER = "x-correlation-id";
+    private static final String CORRELATION_ID_HEADER = "x-correlation-id";
 
     public static void clearCorrelationId() {
         threadLocalCorrelationId.remove();
+    }
+
+    /**
+     * sets correlation id on thread local
+     */
+    public static void setCorrelationId(Optional<String> correlationIdMaybe) {
+        correlationIdMaybe.ifPresent(threadLocalCorrelationId::set);
     }
 
     /**
@@ -21,18 +29,18 @@ public class CorrelationIdUtils {
     }
 
     public static void setCorrelationIdHeader(HttpURLConnection connection) {
-        connection.setRequestProperty(CORRELATION_ID_HEADER , getCorrelationId());
+        getCorrelationId().ifPresent(correlationId -> connection.setRequestProperty(CORRELATION_ID_HEADER, correlationId));
     }
 
-    public static String getCorrelationId(HttpServletRequest request) {
-        return request.getHeader(CORRELATION_ID_HEADER);
+    public static Optional<String> getCorrelationId(HttpServletRequest request) {
+        return Optional.ofNullable(request.getHeader(CORRELATION_ID_HEADER));
     }
 
     /**
      * gets correlation id off thread local
      * @return correlation id
      */
-    public static String getCorrelationId(){
-        return (String) threadLocalCorrelationId.get();
+    public static Optional<String> getCorrelationId(){
+        return Optional.ofNullable(threadLocalCorrelationId.get());
     }
 }

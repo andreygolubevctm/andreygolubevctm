@@ -6,13 +6,15 @@ import com.ctm.utils.RequestUtils;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.ctm.logging.CorrelationIdUtils.clearCorrelationId;
 import static com.ctm.logging.CorrelationIdUtils.setCorrelationId;
 import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
 import static com.ctm.logging.LoggingVariables.setLoggingVariables;
-import static com.ctm.utils.RequestUtils.*;
+import static com.ctm.utils.RequestUtils.BRAND_CODE_PARAM;
+import static com.ctm.utils.RequestUtils.TRANSACTION_ID_PARAM;
 
 public class MDCFilter implements Filter {
 
@@ -23,11 +25,11 @@ public class MDCFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
             throws IOException, ServletException {
-        String correlationId = null;
+        String correlationId;
         if(req instanceof HttpServletRequest){
-             correlationId = CorrelationIdUtils.getCorrelationId((HttpServletRequest) req);
-        }
-        if(correlationId == null || correlationId.isEmpty()){
+            Optional<String> maybeCorrId = CorrelationIdUtils.getCorrelationId((HttpServletRequest) req);
+            correlationId = maybeCorrId.isPresent() ? maybeCorrId.get() : UUID.randomUUID().toString();
+        } else {
             correlationId = UUID.randomUUID().toString();
         }
         setLoggingVariables(req.getParameter(TRANSACTION_ID_PARAM), req.getParameter(BRAND_CODE_PARAM), RequestUtils.getVerticalFromRequest(req), correlationId);

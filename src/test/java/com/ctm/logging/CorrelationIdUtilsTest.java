@@ -14,17 +14,17 @@ public class CorrelationIdUtilsTest {
         String corrId3 = "test3";
         final boolean[] testThreadOutcome = {false,false};
         CorrelationIdUtils.setCorrelationId(corrId);
-        assertEquals(corrId, CorrelationIdUtils.getCorrelationId());
+        assertEquals(corrId, CorrelationIdUtils.getCorrelationId().get());
         Thread thread = new Thread(() -> {
-            assertEquals(null, CorrelationIdUtils.getCorrelationId());
+            assertEquals(null, CorrelationIdUtils.getCorrelationId().get());
             CorrelationIdUtils.setCorrelationId(corrId2);
-            assertEquals(corrId2, CorrelationIdUtils.getCorrelationId());
+            assertEquals(corrId2, CorrelationIdUtils.getCorrelationId().get());
             testThreadOutcome[0] = true;
         });
         Thread thread2 = new Thread(() -> {
-            assertEquals(null, CorrelationIdUtils.getCorrelationId());
+            assertEquals(null, CorrelationIdUtils.getCorrelationId().get());
             CorrelationIdUtils.setCorrelationId(corrId3);
-            assertEquals(corrId3, CorrelationIdUtils.getCorrelationId());
+            assertEquals(corrId3, CorrelationIdUtils.getCorrelationId().get());
             testThreadOutcome[1] = true;
         });
         thread.start();
@@ -32,7 +32,7 @@ public class CorrelationIdUtilsTest {
 
         thread.join();
         thread2.join();
-        assertEquals(corrId, CorrelationIdUtils.getCorrelationId());
+        assertEquals(corrId, CorrelationIdUtils.getCorrelationId().get());
         assertTrue(testThreadOutcome[0]);
         assertTrue(testThreadOutcome[1]);
 

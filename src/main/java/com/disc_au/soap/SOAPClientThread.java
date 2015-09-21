@@ -6,6 +6,7 @@
 package com.disc_au.soap;
 
 import com.ctm.constants.ErrorCode;
+import com.ctm.logging.CorrelationIdUtils;
 import com.ctm.logging.XMLOutputWriter;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
@@ -161,16 +162,13 @@ public class SOAPClientThread implements Runnable {
 
 				if (configuration.getSslNoHostVerify() != null && configuration.getSslNoHostVerify().equalsIgnoreCase("Y")) {
 					HttpsURLConnection.setDefaultHostnameVerifier(
-							new HostnameVerifier() {
-								public boolean verify(String hostname,SSLSession session) {
-									return true;
-								}
-
-							});
+							(hostname, session) -> true);
 				}
 
 				u = new URL(configuration.getUrl());
 				connection = (HttpsURLConnection) u.openConnection();
+
+				CorrelationIdUtils.setCorrelationIdHeader(connection);
 
 				if (configuration.getClientCert() !=null && configuration.getClientCertPass() != null){
 					LOGGER.debug("Using Cert: " + configuration.getClientCert());
