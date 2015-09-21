@@ -67,7 +67,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 	private boolean continueOnValidationError;
 	private Brand brand;
-	private Optional<String> correlationId = Optional.ofNullable(null);
+	private Optional<String> correlationId = Optional.empty();
 	private boolean sendCorrelationId;
 
 	@SuppressWarnings("unused")

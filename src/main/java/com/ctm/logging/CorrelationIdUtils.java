@@ -1,5 +1,6 @@
 package com.ctm.logging;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.net.HttpURLConnection;
 import java.util.Optional;
@@ -32,8 +33,12 @@ public class CorrelationIdUtils {
         getCorrelationId().ifPresent(correlationId -> connection.setRequestProperty(CORRELATION_ID_HEADER, correlationId));
     }
 
-    public static Optional<String> getCorrelationId(HttpServletRequest request) {
-        return Optional.ofNullable(request.getHeader(CORRELATION_ID_HEADER));
+    public static Optional<String> getCorrelationId(ServletRequest request) {
+        if(request instanceof HttpServletRequest) {
+            return Optional.ofNullable(((HttpServletRequest) request).getHeader(CORRELATION_ID_HEADER));
+        } else {
+            return Optional.empty();
+        }
     }
 
     /**
