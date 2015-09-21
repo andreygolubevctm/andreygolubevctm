@@ -69,10 +69,12 @@
 	<c:when test="${empty skipJSCSS}">
 		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
 		<c:set var="browserVersion" value="${userAgentSniffer.getBrowserVersion(pageContext.getRequest().getHeader('user-agent'))}" />
+
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
+				<%-- We don't include the separate inc files for Simples in IE because its path structure causes failures due to relative path issues --%>
 				<c:when test="${browserName eq 'IE' and browserVersion le 9}">
-					<c:import url="/assets/brand/${pageSettings.getBrandCode()}/css/inc/${fileName}.min.inc" />
+					<c:import url="/assets/includes/styles/${pageSettings.getBrandCode()}/${fileName}.html" />
 				</c:when>
 				<c:otherwise>
 					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${fileName}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -255,8 +257,9 @@
 		<!--  Meerkat -->
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
+				<%-- Load separateJS files, but don't include separateJS if Simples --%>
 				<c:when test="${separateJS}">
-					<c:import url="/assets/js/bundles/inc/${fileName}.inc" />
+					<c:import url="/assets/includes/js/${fileName}.html" />
 				</c:when>
 				<c:otherwise>
 					<script src="${assetUrl}js/bundles/${fileName}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
