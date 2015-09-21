@@ -1,0 +1,127 @@
+.featuresMode {
+	.compare-basket	{
+		padding-top: 0px;
+		h3 {
+			font-family: @font-family-theme-light;
+			margin-top: 0;
+			margin-bottom: 2px;
+			color: #999;
+			font-size: 22px;
+		}
+		p {
+			padding-top: 0.5em;
+			position: relative;
+			font-family: @font-family-theme-bold;
+			color: #999;
+			line-height: 1.2em;
+			@media (@sm) {
+				font-size: 1.3em;
+			}
+			@media (@md) {
+				font-size: 1.15em;
+			}
+			@media (@lg) {
+				font-size: 1.3em;
+			}
+
+			.compare-tick + label {
+				margin-right:0;
+			}
+
+			.compare-tick + label:before,
+			.compare-tick + label:after{
+				opacity:1;
+			}
+		}
+		.compare-max-count-label,
+		.products-returned-count {
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
+		}
+		.products-returned-count {
+			font-size: 1.4em;
+			/*@media (@md) {
+				font-size: 1.2em
+			}*/
+			@media (@sm) {
+				font-size: 1.2em
+			}
+		}
+		.compared-products-list {
+			margin-bottom: 6px;
+			.name, .price {
+				line-height:22px;
+				height: 20px;
+			}
+			.name {
+				font-size: 14px;
+				width: 35px;
+			}
+			.price {
+				float:right;
+				font-size: 16px;
+				width: 70px;
+				line-height:26px;
+			}
+			.compare-placeholder {
+				.name {
+					width: 88px;
+					text-overflow: clip;
+				}
+			}
+		}
+		.btn-features-compare.enter-compare-mode {
+			background: @theme-secondary;
+			border: 1px solid @theme-secondary;
+			color: #ffffff;
+			&:hover {
+				background:#097833;
+			}
+		}
+	}
+}
+
+.featuresMode.affixed-compact {
+	.compare-basket {
+		padding-top: 5px;
+		h3 {
+			display:none;
+		}
+		p {
+			line-height: 1.2em;
+			@media (@sm) {
+				font-size: 1em;
+			}
+			@media (@md) {
+				font-size: 1em;
+			}
+			@media (@lg) {
+				font-size: 1em;
+			}
+		}
+		.products-returned-count {
+			font-size: 1.4em;
+			@media (@sm) {
+				font-size: 1.2em
+			}
+		}
+		.compared-products-list {
+			margin-bottom: 6px;
+			li {
+				line-height: 22px;
+				height:20px;
+			}
+			.name, .price {
+				line-height: 18px;
+				height: 16px;
+			}
+			.price {
+				line-height: 20px;
+				height: 20px;
+			}
+		}
+		.btn-features-compare {
+			padding: 5px;
+		}
+	}
+}
