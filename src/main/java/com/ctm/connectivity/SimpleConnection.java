@@ -20,9 +20,10 @@ public class SimpleConnection {
 	}
 
 	/**
-	 * Returns the content from the specified url as a string - A null value is returned if any failures occur whilst trying to return the value.
+	 * Returns the content from the specified url as a string
 	 *
 	 * @param url to call
+	 * @throws  ConnectionException is thrown if any failures occur whilst trying to return the value.
 	 * @return outcome of url call
 	 */
 	public String get(String url) throws ConnectionException {
