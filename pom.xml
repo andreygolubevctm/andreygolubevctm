@@ -476,17 +476,8 @@
                 <configuration>
                     <warSourceDirectory>src/main/webapp</warSourceDirectory>
                     <warSourceExcludes>WEB-INF/classes/logback.xml,WEB-INF/classes/environment.properties</warSourceExcludes>
-                    <classifier>${branch.classifier}</classifier>
                 </configuration>
                 <executions>
-                    <!-- creating the artifact is done by ant -->
-                    <execution>
-                        <id>default-war</id>
-                        <phase>none</phase>
-                        <goals>
-                            <goal>war</goal>
-                        </goals>
-                    </execution>
                     <!-- create as exploded war that ant will do the rest of the build will be completed in ant -->
                     <execution>
                         <id>war-exploded</id>
@@ -494,6 +485,18 @@
                         <goals>
                             <goal>exploded</goal>
                         </goals>
+                    </execution>
+                    <!-- creating the artifact is done by ant -->
+                    <execution>
+                        <id>default-war</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>war</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>${branch.classifier}</classifier>
+                            <packagingExcludes>**/**</packagingExcludes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -664,7 +667,7 @@
                         <configuration>
                             <arguments>--phantomPath=${phantomjs.binary}</arguments>
                             <workingDirectory>src/test/frontend</workingDirectory>
-                            <skip>true</skip>
+                            <skip>${maven.test.skip}</skip>
                         </configuration>
                     </execution>
                 </executions>
