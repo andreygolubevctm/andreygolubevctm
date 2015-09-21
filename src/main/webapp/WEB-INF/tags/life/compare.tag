@@ -230,7 +230,7 @@ var Compare = function( _config ) {
 		};
 
 		elements.finish.addClass('active');
-		elements.finish.css({backgroundImage:"url(common/images/logos/life/44x25/" + list[type][product_id].thumb + ")"});
+		elements.finish.css({backgroundImage:"url(assets/graphics/logos/life/44x25/" + list[type][product_id].thumb + ")"});
 		elements.finish.prop("id", "comparebox-" + type + "-" + product_id);
 
 		<%--Add event to the product close button --%>
@@ -639,7 +639,7 @@ var Compare = function( _config ) {
 			var info = {
 				id :	data[j].id,
 				type :	prod.client_type,
-				logo :	"common/images/logos/life/83x53/" + prod.thumb,
+				logo :	"assets/graphics/logos/life/83x53/" + prod.thumb,
 				price :	prod.priceHTML,
 				freq :	prod.priceFrequency,
 				pds :	prod.pds,

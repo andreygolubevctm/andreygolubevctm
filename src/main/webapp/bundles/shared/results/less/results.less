@@ -1,0 +1,742 @@
+/* MIXINS */
+.resultsOverflowWidth(@columnWidth, @columnsNumber, @columnGutterWidth, @containerBorderWidth){
+	width: ( ( @columnWidth * @columnsNumber ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @columnGutterWidth - @containerBorderWidth);
+}
+
+.resultsSectionFakeRow(@columnWidth, @columnsNumber, @columnGutterWidth, @containerBorderWidth){
+	width: ( ( @columnWidth * ( @columnsNumber + 1 ) ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @containerBorderWidth );
+	padding-right: ( ( @columnWidth * @columnsNumber ) + ( (@columnGutterWidth * 2) * @columnsNumber ) - @containerBorderWidth + @results-section-fake-row-padding);
+}
+
+.resultsSectionExtraTextLeftPos(@columnWidth, @columnGutterWidth){
+	left: (@columnWidth + (@columnGutterWidth * 2) );
+}
+
+.compareBackgroundColor(){
+	> .content{
+		background-color: @compare-color ;
+	}
+	&:nth-child(odd) > .content{
+		background-color: @compare-odd-color;
+	}
+}
+
+/*
+	Produce a sequence of classes for use in features row height.
+	.height20 {
+		height: 20px;
+	}
+*/
+.generate-result-cell-heights();
+.generate-result-cell-heights(@i: 5) when (@i =< 270) {
+	.height@{i} {
+		height: (1px*@i);
+	}
+
+	.generate-result-cell-heights((@i + 5));
+}
+
+/*
+	Produces the default results/features column widths for each breakpoint.
+*/
+.generate-default-result-column-widths() {
+	@media (@sm) {
+		.generate-result-column-widths(sm);
+	}
+	@media (@md) {
+		.generate-result-column-widths(md);
+	}
+	@media (@lg) {
+		.generate-result-column-widths(lg);
+	}
+}
+/*
+	Purpose of this mixin is to produce Bootstrap-like classes that can be applied to the .resultsContainer e.g.:
+		<div class="resultsContainer results-columns-sm-2 results-columns-md-5 results-columns-lg-3">
+
+	The most basic way to call the mixin is with the only mandatory argument:
+		.generate-result-column-widths(sm);
+
+	@featuresColumnWidth: Total width of the features headers column. If not provided, its width will match evenly with the results columns.
+	@resultsContainerWidth: The total container width in which features headers and results columns will fit. By default this is the breakpoint's container width.
+	@from: The minimum number of columns to calculate widths for. Defaults to 2.
+	@to: The maximum number of columns to calculate widths for. Defaults to 5.
+*/
+.generate-result-column-widths(@breakpoint; @featuresColumnWidth:-1; @resultsContainerWidth:-1; @from:2; @to:5) when (@from =< @to) {
+
+	// If container width is not provided, use the container variables.
+	.setContainerWidth(@w) when (@w = -1) {
+		@containerVar: ~"container-@{breakpoint}";
+		@actualResultsContainerWidth: (@@containerVar - @grid-gutter-width);
+	}
+	.setContainerWidth(@w) when (@w > -1) {
+		@actualResultsContainerWidth: @w;
+	}
+	.setContainerWidth(@resultsContainerWidth);
+
+	// If feature width is not provided, default it to evenly match width of results columns.
+	.setFeaturesWidth(@w) when (@w = -1) {
+		@actualFeaturesColumnWidth: (@actualResultsContainerWidth / (@from + 1));
+	}
+	.setFeaturesWidth(@w) when (@w > -1) {
+		@actualFeaturesColumnWidth: @w;
+	}
+	.setFeaturesWidth(@featuresColumnWidth);
+
+	// Width available for results
+	@availableWidth: (@actualResultsContainerWidth - @actualFeaturesColumnWidth);
+
+	// Fit the number of columns into the available space. Left over pixels will be added to the feature headers column.
+	@column-width: ( floor(@availableWidth / @from) );
+
+	// Set the overflow to exactly fit X number of columns
+	@overflowWidth: (@column-width * @from);
+
+	// Recalculate the feature headers column to consume any left over pixels due to rounding down.
+	@finalFeaturesColumnWidth: (@actualResultsContainerWidth - @overflowWidth);
+
+	// The styles
+	&.results-columns-@{breakpoint}-@{from} {
+		.featuresHeaders {
+			width: @finalFeaturesColumnWidth;
+		}
+
+		.resultsOverflow {
+			width: @overflowWidth;
+		}
+
+		.result-row {
+			width: @column-width;
+		}
+	}
+
+	// Increment the counter and run next loop
+	.generate-result-column-widths(@breakpoint; @featuresColumnWidth; @resultsContainerWidth; (@from + 1); @to);
+}
+
+//-- NEW CORE -------------------------------------------------------------------------------------------
+
+#resultsPage {
+	position: relative;
+
+	.clearfix();
+
+	// Hide results initially so we don't see the scaffolding after #benefits
+	// We show again in healthResults.onResultsFetchFinish
+	display: none;
+
+	// Removes the container padding/margins on XS
+	@media(@xs-only) {
+		margin: 0 (-@grid-gutter-width / 2);
+	}
+}
+
+.resultsContainer{
+	padding: 0;
+	margin: 0;
+	position: relative;
+
+	// On XS the results scrolling area can go right to the edges (if it's not already)
+	@media (@xs-only) {
+		.resultsOverflow {
+			margin: 0;
+		}
+	}
+}
+
+.result-row {
+	opacity: 1;
+
+	.result{
+		position: relative;
+	}
+
+	// If the result is filtered out, hide it
+	&.filtered {
+		opacity: 0;
+	}
+}
+
+// Hide all the features headers/content; Results code will unhide.
+.featuresElements {
+	display: none;
+}
+
+/* NEW DESIGN */
+.resultsContainer.v2 {
+	h2 {
+		margin: 0 0 0.2em;
+	}
+}
+
+/* PRICE COMPARISON (horizontal) */
+.priceMode {
+	.result-row {
+		padding: @results-price-row-padding;
+		width: 100%;
+
+		@media (@xs-only) {
+			border-bottom: 1px solid @results-border-color;
+
+			// Product is available
+			&[data-available="Y"] {
+				// Turn the whole row into a pointer
+				cursor: pointer;
+
+				.resultInsert.priceMode {
+					position: relative;
+					padding-right: 40px;
+
+					&:after {
+						font-family: 'framework_font';
+						content: "\e910"; //icon-angle-right
+						position: absolute;
+						right: 0;
+						top: 20px;
+						font-size: 300%;
+						color: @results-border-color;
+					}
+				}
+			}
+		}
+	}
+
+	@media (@sm) {
+		.resultsContainer& {
+			// Padding at the top to match margin in between rows
+			padding-top: (@results-price-row-padding * 2);
+		}
+
+		.result-row {
+			border: 1px solid @results-border-color;
+			}
+		}
+
+	// Hide any features content while in price mode
+	.featuresMode {
+		display: none;
+	}
+}//.priceMode
+
+/* FEATURES COMPARISON */
+.featuresMode {
+
+	// Layout
+	&.resultsContainer,
+	.results-table {
+		float: left;
+	}
+
+	.resultsOverflow {
+		overflow: hidden;
+		float: left;
+		width: 100%;
+		.touch & {
+			overflow-x: scroll !important;
+			-webkit-overflow-scrolling: touch; //elastic scroll on.
+		}
+	}
+
+	// Hide any price content while in features mode
+	.priceMode {
+		display: none;
+	}
+
+	/* Columns properties */
+	.featuresHeaders {
+		@media (@xs-only) {
+		    display: none !important;
+		}
+	}
+
+	.featuresHeaders,
+	.result-row {
+		float: left;
+		margin: 0;
+		width: @xs-results-column-width;
+		background: @feature-bg-color;
+	}
+
+	/* xs feature labels */
+	.labelInColumn {
+		display: none;
+
+		@media (@xs-only) {
+			display: block;
+
+			&.noLabel {
+				display: none;
+			}
+		}
+
+		.content {
+			height: auto !important;
+		}
+	}
+
+	.productSummary {
+		padding: @results-feature-cell-padding;
+	}
+
+	.featuresList {
+		font-size: @results-font-size;
+		vertical-align: middle;
+	}
+
+	// Content is internals of .feature/.category/.section
+	.content {
+		padding: @results-feature-cell-padding;
+		text-align: center;
+
+		// Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
+		position: relative;
+	}
+	.featuresHeaders .content {
+		text-align: right;
+	}
+	.children .content {
+		font-size: 85%;
+	}
+
+	.extraText {
+		display: block;
+	}
+
+	// If a .category or .section is collapsed, hide the children.
+	.collapsed > .children {
+		display: none;
+	}
+
+	// .expanding is a temporary class applied while row height balancing is being performed
+	.expanding > .children {
+		display: block;
+		> .cell {
+			visibility: hidden;
+			height:30px;
+			overflow: hidden;
+		}
+	}
+
+	// Show children when .category or .section is expanded
+	.expanded > .children {
+		display: block;
+	}
+
+	.expandable {
+		// Make the cell look clickable
+		> .content {
+			cursor: pointer;
+		}
+
+		// Make space for the expander icon
+		> .h {
+			padding-right: (@results-feature-cell-padding + 18px);
+		}
+	}
+
+	.expander {
+		.icon-arrow-right;
+		right: @results-feature-cell-padding;
+		top: @results-feature-cell-padding + floor(@line-height-computed / 4);
+		position: absolute;
+		font-size: 12px;
+	}
+	.expanded .labelInColumn > .content .expander,
+	.expanding .labelInColumn > .content .expander,
+	.expanded > .content .expander,
+	.expanding > .content .expander{
+		.icon-arrow-down;
+	}
+
+}//.featuresMode
+
+/* FEATURES COMPARISON V2 */
+.featuresMode.v2 {
+
+	&.resultsContainer {
+		border-bottom: 1px solid @results-border-color;
+		background: #FFF;
+	}
+
+	.featuresHeaders,
+	.result-row {
+		// All columns get a side border
+		border-right: 1px solid @results-border-color;
+	}
+	.featuresTemplateComponent {
+		// Matching left border
+		border-left: 1px solid @results-border-color;
+	}
+
+	.content {
+		border-top: 1px solid @results-border-color;
+	}
+
+	.children .content {
+		// Unset some default .content styles which are doubling up
+		border-top: 0;
+		padding-top: 0;
+	}
+
+	// Small and up
+	@media(@sm) {
+		// Content is internals of .feature/.category/.section
+		.content {
+			background: @feature-bg-color;
+			.transition(background-color 0.5s);
+		}
+
+		// Zebra striping applied only to the top-most rows
+		.featuresList {
+			> .category:nth-child(odd),
+			> .feature:nth-child(odd) {
+				.content {
+					background: @feature-odd-bg-color;
+				}
+			}
+		}
+
+		// Colourise expanded row
+		&.resultsContainer .featuresList { //This selector is only to increase specificity equal to the zebra striping.
+			.content.expandableHover,
+			.content.expandableHover + .children .content {
+				color: @category-expanded-color;
+				background: @category-expanded-bg-color;
+
+				.icon {
+					color: @category-expanded-color;
+				}
+			}
+		}
+
+		// Special feature row with "inverse" colouring. Note this should be same specificity or less as expanded row.
+		.inverseRow,
+		.featuresList > .inverseRow:nth-child(odd) {
+			.content {
+				color: @feature-inverse-color;
+				background: @feature-inverse-bg-color;
+			}
+
+			.content.expandableHover {
+				color: @category-expanded-color;
+				background: @category-expanded-bg-color;
+			}
+
+			a {
+				color: @feature-inverse-color;
+				text-decoration: underline;
+			}
+		}
+	}//media sm+
+
+}//.featuresMode.v2
+
+//
+// Result when 'not available'
+//
+.result-row[data-available="N"],
+.result-row[data-available="E"] {
+	background-color: @theme-light;
+	color: @results-no-quote-text;
+
+	.featuresMode.v2 & {
+		// Remove features border
+		border-right: none !important;
+	}
+
+	h2 {
+		color: @results-no-quote-text;
+	}
+
+}
+
+
+
+
+
+
+
+// features rows
+.resultsFeaturesSections(@bgColor, @bgColorOdd, @extraSpecificity: ~''){
+	.featuresMode @{extraSpecificity}{
+		.section{
+			> .content {
+				padding: 9px 5px;
+				@media (@xs-only){
+					display: none;
+				}
+			}
+
+			&.labelInColumn > .content{
+				padding: 10px;
+			}
+
+			&.collapsed {
+				border-top:1px solid #fff;
+				> .content {
+					padding-top: 8px;
+				}
+			}
+
+			&.expanding{
+				> .children{
+					background-color: @expanding-bg-color;
+				}
+			}
+		}
+		.featuresHeaders .section{
+
+			> .content {
+
+				background-color: @bgColor;
+
+				.resultsSectionFakeRow(@xs-results-column-width, @xs-results-column-number, @xs-results-column-gutter-width, @results-page-border-width);
+				@media (@sm) {
+					.resultsSectionFakeRow(@sm-results-column-width, @sm-results-column-number, @sm-results-column-gutter-width, @results-page-border-width);
+				}
+				@media (@md) {
+					.resultsSectionFakeRow(@md-results-column-width, @md-results-column-number, @md-results-column-gutter-width, @results-page-border-width);
+				}
+				@media (@lg) {
+					.resultsSectionFakeRow(@lg-results-column-width, @lg-results-column-number, @lg-results-column-gutter-width, @results-page-border-width);
+				}
+
+				.extraText{
+					position: absolute;
+					top: 0;
+					//Having the results texts higher in stack order here conflicts with the floating header :(
+					//FIXME
+					//TODO
+
+					z-index: 1;
+
+					.resultsSectionExtraTextLeftPos(@xs-results-column-width, @xs-results-column-gutter-width);
+					@media (@sm) {
+						.resultsSectionExtraTextLeftPos(@sm-results-column-width, @sm-results-column-gutter-width);
+					}
+					@media (@md) {
+						.resultsSectionExtraTextLeftPos(@md-results-column-width, @md-results-column-gutter-width);
+					}
+					@media (@lg) {
+						.resultsSectionExtraTextLeftPos(@lg-results-column-width, @lg-results-column-gutter-width);
+					}
+				}
+			}
+
+			/*
+			@media (@sm){
+				&:nth-child(odd) > .content{
+					background-color: @bgColorOdd;
+				}
+			}
+			*/
+		}
+		.result-row {
+			.labelInColumn.section > .content{
+				display: block;
+				margin-left: 0;
+				width: 100%;
+			}
+		}
+
+		.compared  {
+			.section {
+				&.expanded > .content,
+				&.expanding > .content{
+					background-color: @compare-section-bg-color;
+				}
+			}
+		}
+	}
+}
+.resultsFeaturesCategories(@bgColor, @bgColorOdd, @childRowBgColor, @extraSpecificity: ~''){
+	.featuresMode @{extraSpecificity}{
+		.category{
+			> .content{
+				background-color: @bgColor;
+			}
+
+			&.expanding{
+				>.children{
+					background-color: @childRowBgColor;
+				}
+			}
+
+
+			@media (@sm){
+				&:nth-child(odd) > .content{
+					background-color: @bgColorOdd;
+				}
+			}
+		}
+		.featuresHeaders .category > .content{
+			padding: 6px 10px;
+			padding-right: 20px;
+		}
+
+		.result-row .category > .content{
+			font-family: @font-family-theme-bold;
+			text-align: center;
+			padding: 5px 10px;
+		}
+		.result-row .labelInColumn.category > .content{
+			text-align: left;
+			font-family: @font-family-theme-light;
+			font-size: 16px;
+		}
+
+		.compared  {
+			.category{
+				.compareBackgroundColor;
+			}
+		}
+	}
+}
+.resultsFeaturesRows(@bgColor, @bgColorOdd, @extraSpecificity: ~''){
+	.featuresMode @{extraSpecificity}{
+		.feature{
+			> .content{
+				background-color: @bgColor;
+			}
+			@media (@sm){
+				&:nth-child(odd) > .content{
+					background-color: @bgColorOdd;
+				}
+			}
+		}
+		.result-row .feature{
+			> .content{
+				text-align: center;
+			}
+			@media (@sm){
+				> .content,
+				&:nth-child(odd) > .content{
+					text-align: left;
+				}
+			}
+			.labelInColumn > .content{
+				text-align: left;
+			}
+		}
+		.result-row .section .feature{
+			.labelInColumn > .content{
+				font-weight: normal;
+				font-family: @font-family-theme-bold;
+			}
+		}
+		.compared  {
+			.category{
+				.compareBackgroundColor;
+			}
+		}
+	}
+	// xs specific feature styling
+	@media(@xs-only){
+		.featuresMode{
+
+			.feature .labelInColumn{
+				> .content{
+					border-top: 1px solid darken(@feature-color, 20%);
+					border-bottom: 1px solid darken(@feature-color, 20%);
+
+				}
+			}
+			.result-row{
+				.feature >.content.c{
+					background-color: #fff;
+
+
+				}
+					.content.c{
+					border-right:1px solid darken(@feature-color, 20%);
+					}
+				&:nth-child(odd){
+					.expanded > .content{
+						border-right:1px solid lighten(@feature-color, 20%);
+					}
+				}
+			}
+
+		}
+
+	}
+}
+
+
+.xsSection(@categoryTextColor, @categoryBgColor, @categoryExpandedTextColor, @categoryExpandedBgColor){
+
+	> .labelInColumn{
+		> .content{
+			color: @categoryTextColor;
+			border-top: 1px solid darken(@categoryBgColor, 10%);
+			border-bottom: 1px solid darken(@categoryBgColor, 10%);
+		}
+	}
+	> .content.c{
+		background-color: @category-xs-color;
+	}
+	&.expanded,
+	&.expanding{
+		> .labelInColumn .content{
+			background-color: lighten(@categoryExpandedBgColor, 10%);
+			border-top: 1px solid darken(@categoryExpandedBgColor, 10%);
+			border-bottom: 0px solid darken(@categoryExpandedBgColor, 10%);
+			color: @categoryExpandedTextColor;
+			.help-icon{
+				color: @categoryExpandedTextColor;
+			}
+		}
+		> .content{
+			background-color: @categoryExpandedBgColor;
+			border-color: darken(@categoryExpandedBgColor, 10%);
+			color: @categoryExpandedTextColor;
+			.icon-tick,
+			.icon-cross{
+				color: @categoryExpandedTextColor;
+			}
+		}
+		> .children > :first-child .labelInColumn > .content{
+			border-top: 1px solid darken(@categoryExpandedBgColor, 10%);
+		}
+	}
+
+}
+
+
+
+.result {
+
+	.restrictedFund{
+		text-transform: uppercase;
+		text-align: center;
+		font-size: 10px;
+		background-color: #FFEFEF;
+		color: #FF5F5F;
+		padding: 8px 0 1px 0;
+		margin-top: -4px;
+		&:hover{
+			background-color: #FF5F5F;
+			color: white;
+				}
+			}
+	&.faded {
+		.opacity(0.2);
+		// see hover state below.
+		}
+		}
+
+.no-touch{
+	.result.faded {
+		// sorry people with touch and mouse.
+		&:hover{
+			opacity: 1;
+			//Strangely, redefining the hover here was stuffing up white label.
+		}
+	}
+}
+.right {
+	float: right;
+}
+.left {
+	float: left;
+}
