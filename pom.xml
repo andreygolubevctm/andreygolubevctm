@@ -474,8 +474,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <!-- Branch classifier is set by th uber-pom -->
-                    <classifier>${branch.classifier}</classifier>
                     <warSourceDirectory>src/main/webapp</warSourceDirectory>
                     <warSourceExcludes>WEB-INF/classes/logback.xml,WEB-INF/classes/environment.properties</warSourceExcludes>
                 </configuration>
@@ -487,6 +485,10 @@
                         <goals>
                             <goal>war</goal>
                         </goals>
+                        <configuration>
+                            <!-- Branch classifier is set by the uber-pom -->
+                            <classifier>${branch.classifier}</classifier>
+                        </configuration>
                     </execution>
                     <!-- create as exploded war that ant will do the rest of the build will be completed in ant -->
                     <execution>
@@ -507,12 +509,26 @@
                         <phase>package</phase>
                         <configuration>
                             <target>
+                                <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath"/>
+                                <!-- prefix the branch.classifier with '-' -->
+                                <if>
+                                    <equals arg1="${branch.classifier}" arg2="" />
+                                    <then>
+                                        <echo message="branch.classifier is not set" />
+                                        <property name="branch.classifier.war" value=""/>
+                                    </then>
+                                    <else>
+                                        <property name="branch.classifier.war" value="-${branch.classifier}"/>
+                                        <echoproperties/>
+                                    </else>
+                                </if>
+
                                 <ant antfile="build_environment.xml" target="build.${build.environment}">
                                     <property name="classes.output.dir" value="${project.build.outputDirectory}"/>
                                     <property name="svn.revision" value="${bamboo_repository_revision_number}"/>
                                     <property name="web.dir" value="${project.build.directory}/${project.build.finalName}"/>
                                     <property name="war.dir" value="${project.build.directory}"/>
-                                    <property name="war.filename" value="${project.build.finalName}.war"/>
+                                    <property name="war.filename" value="${project.build.finalName}${branch.classifier.war}.war"/>
                                 </ant>
                             </target>
                         </configuration>
@@ -521,6 +537,26 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>ant-contrib</groupId>
+                        <artifactId>ant-contrib</artifactId>
+                        <version>1.0b3</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>ant</groupId>
+                                <artifactId>ant</artifactId>
+                            </exclusion>
+                        </exclusions>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant-nodeps</artifactId>
+                        <version>1.8.0</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.jvnet.jax-ws-commons</groupId>
