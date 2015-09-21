@@ -481,7 +481,7 @@
                 <executions>
                     <!-- creating the artifact is done by ant -->
                     <execution>
-                        <id>skip-war</id>
+                        <id>default-war</id>
                         <phase>none</phase>
                         <goals>
                             <goal>war</goal>
