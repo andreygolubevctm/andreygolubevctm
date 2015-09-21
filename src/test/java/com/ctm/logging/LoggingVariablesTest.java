@@ -1,8 +1,8 @@
 package com.ctm.logging;
 
 import com.ctm.model.settings.Vertical;
-import org.apache.log4j.MDC;
 import org.junit.Test;
+import org.slf4j.MDC;
 
 import static org.junit.Assert.assertEquals;
 

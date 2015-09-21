@@ -1,8 +1,8 @@
 package com.ctm.logging.listeners;
 
 import com.ctm.logging.LoggingVariables;
-import org.apache.log4j.MDC;
 import org.junit.Test;
+import org.slf4j.MDC;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletRequest;

@@ -2,6 +2,7 @@ package com.ctm.logging;
 
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -16,13 +17,13 @@ public class CorrelationIdUtilsTest {
         CorrelationIdUtils.setCorrelationId(corrId);
         assertEquals(corrId, CorrelationIdUtils.getCorrelationId().get());
         Thread thread = new Thread(() -> {
-            assertEquals(null, CorrelationIdUtils.getCorrelationId().get());
+            assertFalse(CorrelationIdUtils.getCorrelationId().isPresent());
             CorrelationIdUtils.setCorrelationId(corrId2);
             assertEquals(corrId2, CorrelationIdUtils.getCorrelationId().get());
             testThreadOutcome[0] = true;
         });
         Thread thread2 = new Thread(() -> {
-            assertEquals(null, CorrelationIdUtils.getCorrelationId().get());
+            assertFalse(CorrelationIdUtils.getCorrelationId().isPresent());
             CorrelationIdUtils.setCorrelationId(corrId3);
             assertEquals(corrId3, CorrelationIdUtils.getCorrelationId().get());
             testThreadOutcome[1] = true;
