@@ -632,7 +632,7 @@
                         <configuration>
                             <arguments>--phantomPath=${phantomjs.binary}</arguments>
                             <workingDirectory>src/test/frontend</workingDirectory>
-                            <skip>${maven.test.skip}</skip>
+                            <skip>true</skip>
                         </configuration>
                     </execution>
                 </executions>
