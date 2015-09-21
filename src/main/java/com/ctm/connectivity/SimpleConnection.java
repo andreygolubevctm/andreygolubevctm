@@ -14,7 +14,7 @@ public class SimpleConnection {
 	private String requestMethod = "GET";
 	private String contentType = null;
 	private String postBody = null;
-	private boolean hasCorrelationId;
+	private boolean hasCorrelationId = false;
 
 	public SimpleConnection() {
 	}
@@ -43,12 +43,12 @@ public class SimpleConnection {
 				c.setRequestProperty("Content-Type", getContentType());
 			}
 
-			if (getPostBody() != null) {
+			if (this.postBody != null) {
 				c.setDoOutput(true);
 
 				OutputStream os = c.getOutputStream();
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-				writer.write(getPostBody());
+				writer.write(this.postBody);
 				writer.flush();
 				writer.close();
 				os.close();
@@ -65,7 +65,7 @@ public class SimpleConnection {
 					StringBuilder sb = new StringBuilder();
 					String line;
 					while ((line = br.readLine()) != null) {
-						sb.append(line+"\n");
+						sb.append(line).append("\n");
 					}
 					br.close();
 					return sb.toString();
@@ -83,7 +83,7 @@ public class SimpleConnection {
 	 * Get the timeout value for the connection.
 	 * @return Timeout in milliseconds
 	 */
-	public int getConnectTimeout() {
+	private int getConnectTimeout() {
 		return connectTimeout;
 	}
 
@@ -99,7 +99,7 @@ public class SimpleConnection {
 	 * Get the timeout value for the request read.
 	 * @return Timeout in milliseconds
 	 */
-	public int getReadTimeout() {
+	private int getReadTimeout() {
 		return readTimeout;
 	}
 
@@ -111,7 +111,7 @@ public class SimpleConnection {
 		this.readTimeout = timeout;
 	}
 
-	public String getRequestMethod() {
+	private String getRequestMethod() {
 		return requestMethod;
 	}
 
@@ -119,7 +119,7 @@ public class SimpleConnection {
 		this.requestMethod = requestMethod;
 	}
 
-	public String getContentType() {
+	private String getContentType() {
 		return contentType;
 	}
 
@@ -127,9 +127,6 @@ public class SimpleConnection {
 		this.contentType = contentType;
 	}
 
-	public String getPostBody() {
-		return postBody;
-	}
 
 	public void setPostBody(String postBody) {
 		this.postBody = postBody;

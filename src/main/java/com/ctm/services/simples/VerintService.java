@@ -40,7 +40,7 @@ public class VerintService {
         try {
             resultMaster = simpleConn.get(masterUrl + paramUrl);
         } catch (ConnectionException e) {
-            logger.error("Exception calling Verint API. {},{} ",  kv("masterUrl",masterUrl) , kv("masterUrl", paramUrl) , e);
+            logger.error("Exception calling Verint API. {},{} ",  kv("masterUrl",masterUrl) , kv("paramUrl", paramUrl) , e);
         }
         logger.info("Verint API call : Read master URL : "+ masterUrl + paramUrl);
         logger.info("Verint API call : Read master Response : "+ resultMaster);
