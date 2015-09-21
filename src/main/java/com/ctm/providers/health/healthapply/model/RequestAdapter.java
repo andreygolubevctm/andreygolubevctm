@@ -14,11 +14,13 @@ import com.ctm.providers.health.healthapply.model.request.application.applicant.
 import com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund.ConfirmCover;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund.MemberId;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund.PreviousFund;
-import com.ctm.providers.health.healthapply.model.request.application.common.*;
+import com.ctm.providers.health.healthapply.model.request.application.common.FirstName;
+import com.ctm.providers.health.healthapply.model.request.application.common.Gender;
+import com.ctm.providers.health.healthapply.model.request.application.common.LastName;
+import com.ctm.providers.health.healthapply.model.request.application.common.Title;
 import com.ctm.providers.health.healthapply.model.request.application.dependant.Dependant;
 import com.ctm.providers.health.healthapply.model.request.application.dependant.School;
 import com.ctm.providers.health.healthapply.model.request.application.dependant.SchoolId;
-import com.ctm.providers.health.healthapply.model.request.application.dependant.SchoolStartDate;
 import com.ctm.providers.health.healthapply.model.request.application.situation.HealthCoverCategory;
 import com.ctm.providers.health.healthapply.model.request.application.situation.HealthSituation;
 import com.ctm.providers.health.healthapply.model.request.application.situation.Situation;
@@ -36,6 +38,7 @@ import com.ctm.providers.health.healthapply.model.request.payment.common.ExpiryY
 import com.ctm.providers.health.healthapply.model.request.payment.credit.*;
 import com.ctm.providers.health.healthapply.model.request.payment.credit.Number;
 import com.ctm.providers.health.healthapply.model.request.payment.details.*;
+import com.ctm.providers.health.healthapply.model.request.payment.details.Frequency;
 import com.ctm.providers.health.healthapply.model.request.payment.medicare.Medicare;
 import com.ctm.providers.health.healthapply.model.request.payment.medicare.MedicareNumber;
 import com.ctm.providers.health.healthapply.model.request.payment.medicare.Position;
@@ -67,15 +70,15 @@ public class RequestAdapter {
                 postalMatch,
                 new Address(
                         new Postcode(quoteAddress.getPostCode()),
-                        new FullAddressOneLine(quoteAddress.getFullAddress()),
+                        new FullAddressOneLine(quoteAddress.getFullAddressLineOne()),
                         new Suburb(quoteAddress.getSuburbName()),
                         new StreetNumber(quoteAddress.getStreetNum()),
                         new DPID(quoteAddress.getDpId()),
                         State.valueOf(quoteAddress.getState())),
-                PostalMatch.Y .equals(postalMatch) ?
+                !PostalMatch.Y.equals(postalMatch) ?
                 new Address(
                         new Postcode(quotePostal.getPostCode()),
-                        new FullAddressOneLine(quotePostal.getFullAddress()),
+                        new FullAddressOneLine(quotePostal.getFullAddressLineOne()),
                         new Suburb(quotePostal.getSuburbName()),
                         new StreetNumber(quotePostal.getStreetNum()),
                         new DPID(quotePostal.getDpId()),
@@ -83,23 +86,22 @@ public class RequestAdapter {
 
         final Payment payment = new Payment(
                 new Details(
-                        new StartDate(paymentStartDate(quote.getPayment())),
+                        paymentStartDate(quote.getPayment()),
                         PaymentType.findByCode(quote.getPayment().getDetails().getType()),
                         Frequency.fromCode(quote.getPayment().getDetails().getFrequency()),
                         Rebate.valueOf(quote.getHealthCover() != null ? quote.getHealthCover().getRebate() : null),
                         quote.getHealthCover() != null && quote.getHealthCover().getIncome() != null ?
-                                new Income(quote.getHealthCover().getIncome()) : null),
+                                new Income(quote.getHealthCover().getIncome()) : null,
+                        quote.getLoading() != null ? new LifetimeHealthCoverLoading(quote.getLoading().doubleValue()) : null),
                 createCreditCard(quote),
                 createBank(quote),
                 createMedicare(quote));
         final FundData fundData = new FundData(
-                new FundCode(quote.getApplication().getProductName()),
-                new HospitalCoverName(""),
-                new ExtrasCoverName(""),
                 new Provider(quote.getApplication().getProvider()),
-                new ProductId(quote.getApplication().getProductId()),
+                new ProductId(quote.getApplication().getProductId()
+                        .substring(quote.getApplication().getProductId().indexOf("HEALTH-") + 7)),
                 Declaration.Y,
-                new StartDate(LocalDate.parse(quote.getPayment().getDetails().getStart(), AUS_FORMAT)),
+                LocalDate.parse(quote.getPayment().getDetails().getStart(), AUS_FORMAT),
                 new Benefits(
                         HealthSituation.valueOf(quote.getSituation().getHealthSitu())));
 
@@ -109,7 +111,7 @@ public class RequestAdapter {
                         new FirstName(quote.getApplication().getPrimary().getFirstname()),
                         new LastName(quote.getApplication().getPrimary().getSurname()),
                         Gender.valueOf(quote.getApplication().getPrimary().getGender()),
-                        new DateOfBirth(LocalDate.parse(quote.getApplication().getPrimary().getDob(), AUS_FORMAT)),
+                        LocalDate.parse(quote.getApplication().getPrimary().getDob(), AUS_FORMAT),
                         new HealthCover(
                                 quote.getApplication().getPrimary().getCover() != null ? Cover.valueOf(quote.getApplication().getPrimary().getCover()) : null,
                                 quote.getApplication().getPrimary().getHealthCoverLoading() != null ?
@@ -125,7 +127,7 @@ public class RequestAdapter {
                         new FirstName(quote.getApplication().getPartner().getFirstname()),
                         new LastName(quote.getApplication().getPartner().getSurname()),
                         Gender.valueOf(quote.getApplication().getPartner().getGender()),
-                        new DateOfBirth(LocalDate.parse(quote.getApplication().getPartner().getDob(), AUS_FORMAT)),
+                        LocalDate.parse(quote.getApplication().getPartner().getDob(), AUS_FORMAT),
                         new HealthCover(
                                 quote.getApplication().getPartner().getCover() != null ? Cover.valueOf(quote.getApplication().getPartner().getCover()) : null,
                                 quote.getApplication().getPartner().getHealthCoverLoading() != null ? HealthCoverLoading.valueOf(quote.getApplication().getPartner().getHealthCoverLoading()): null),
@@ -176,7 +178,7 @@ public class RequestAdapter {
                             new BSB(bank.getClaim().getBsb()),
                             new AccountName(bank.getClaim().getAccount()),
                             new AccountNumber(bank.getClaim().getNumber())) : null,
-                    Claims.valueOf(bank.getClaims()));
+                    bank.getClaims() != null ? Claims.valueOf(bank.getClaims()) : null);
         } else if ("cc".equals(payment.getDetails().getType())) {
             final com.ctm.model.health.form.Bank bank = payment.getBank();
             return new Bank(
@@ -267,10 +269,10 @@ public class RequestAdapter {
             return new Dependant(
                     Title.valueOf(formDependant.getTitle()),
                     new FirstName(formDependant.getFirstname()),
-                    new LastName(formDependant.getSurname()),
-                    new DateOfBirth(LocalDate.parse(formDependant.getDob(), AUS_FORMAT)),
+                    new LastName(formDependant.getLastname()),
+                    LocalDate.parse(formDependant.getDob(), AUS_FORMAT),
                     new School(formDependant.getSchool()),
-                    StringUtils.isNotBlank(formDependant.getSchoolDate()) ? new SchoolStartDate(LocalDate.parse(formDependant.getSchoolDate(), AUS_FORMAT)) : null,
+                    StringUtils.isNotBlank(formDependant.getSchoolDate()) ? LocalDate.parse(formDependant.getSchoolDate(), AUS_FORMAT) : null,
                     new SchoolId(formDependant.getSchoolID()),
                     Title.MR.equals(Title.valueOf(formDependant.getTitle())) ? Gender.M : Gender.F);
         } else {

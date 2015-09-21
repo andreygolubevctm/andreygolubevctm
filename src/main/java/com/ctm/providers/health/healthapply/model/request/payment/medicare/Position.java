@@ -1,10 +1,17 @@
 package com.ctm.providers.health.healthapply.model.request.payment.medicare;
 
-public class Position {
+import java.util.function.Supplier;
+
+public class Position implements Supplier<Integer> {
 
     private final int position;
 
     public Position(final int position) {
         this.position = position;
+    }
+
+    @Override
+    public Integer get() {
+        return position;
     }
 }

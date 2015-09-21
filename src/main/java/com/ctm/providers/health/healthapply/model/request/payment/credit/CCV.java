@@ -1,10 +1,17 @@
 package com.ctm.providers.health.healthapply.model.request.payment.credit;
 
-public class CCV {
+import java.util.function.Supplier;
+
+public class CCV implements Supplier<String> {
 
     private final String ccv;
 
     public CCV(final String ccv) {
         this.ccv = ccv;
+    }
+
+    @Override
+    public String get() {
+        return ccv;
     }
 }

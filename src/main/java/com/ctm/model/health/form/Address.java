@@ -12,7 +12,7 @@ public class Address {
 
     private String suburbName;
 
-    private String fullAddress;
+    private String fullAddressLineOne;
 
     private String postCode;
 
@@ -60,12 +60,12 @@ public class Address {
         this.suburbName = suburbName;
     }
 
-    public String getFullAddress() {
-        return fullAddress;
+    public String getFullAddressLineOne() {
+        return fullAddressLineOne;
     }
 
-    public void setFullAddress(String fullAddress) {
-        this.fullAddress = fullAddress;
+    public void setFullAddressLineOne(String fullAddressLineOne) {
+        this.fullAddressLineOne = fullAddressLineOne;
     }
 
     public String getPostCode() {

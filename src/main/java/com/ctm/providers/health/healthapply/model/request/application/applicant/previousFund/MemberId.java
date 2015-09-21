@@ -1,7 +1,9 @@
 package com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund;
 
 
-public class MemberId {
+import java.util.function.Supplier;
+
+public class MemberId implements Supplier<String> {
 
     private final String memberId;
 
@@ -9,4 +11,8 @@ public class MemberId {
         this.memberId = memberId;
     }
 
+    @Override
+    public String get() {
+        return memberId;
+    }
 }

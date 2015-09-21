@@ -1,32 +1,29 @@
 package com.ctm.providers.health.healthapply.model.request.fundData;
 
+import com.ctm.providers.health.healthapply.model.helper.TypeSerializer;
 import com.ctm.providers.health.healthapply.model.request.fundData.benefits.Benefits;
-import com.ctm.providers.health.healthapply.model.request.payment.details.StartDate;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
+import java.time.LocalDate;
 
 public class FundData {
 
-    private final FundCode fundCode;
-
-    private final HospitalCoverName hospitalCoverName;
-
-    private final ExtrasCoverName extrasCoverName;
-
+    @JsonSerialize(using = TypeSerializer.class)
     private final Provider provider;
 
+    @JsonSerialize(using = TypeSerializer.class)
     private final ProductId product;
 
     private final Declaration declaration;
 
-    private final StartDate startDate;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private final LocalDate startDate;
 
     private final Benefits benefits;
 
-    public FundData(final FundCode fundCode, final HospitalCoverName hospitalCoverName,
-                    final ExtrasCoverName extrasCoverName, final Provider provider, final ProductId product,
-                    final Declaration declaration, final StartDate startDate, final Benefits benefits) {
-        this.fundCode = fundCode;
-        this.hospitalCoverName = hospitalCoverName;
-        this.extrasCoverName = extrasCoverName;
+    public FundData(final Provider provider, final ProductId product,
+                    final Declaration declaration, final LocalDate startDate, final Benefits benefits) {
         this.provider = provider;
         this.product = product;
         this.declaration = declaration;

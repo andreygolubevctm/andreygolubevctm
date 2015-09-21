@@ -1,11 +1,18 @@
 package com.ctm.providers.health.healthapply.model.request.payment.medicare;
 
-public class MedicareNumber {
+import java.util.function.Supplier;
+
+public class MedicareNumber implements Supplier<String> {
 
     private final String medicareNumber;
 
     public MedicareNumber(final String medicareNumber) {
         this.medicareNumber = medicareNumber;
+    }
+
+    @Override
+    public String get() {
+        return medicareNumber;
     }
 
 //    public static String validateMedicare(final String medicareNumber){

@@ -1,16 +1,21 @@
 package com.ctm.providers.health.healthapply.model.request.contactDetails;
 
 
+import com.ctm.providers.health.healthapply.model.helper.TypeSerializer;
 import com.ctm.providers.health.healthapply.model.request.contactDetails.Address.Address;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class ContactDetails {
 
+    @JsonSerialize(using = TypeSerializer.class)
     private Email email;
 
     private OptInEmail optInEmail;
 
+    @JsonSerialize(using = TypeSerializer.class)
     private MobileNumber mobileNumber;
 
+    @JsonSerialize(using = TypeSerializer.class)
     private OtherNumber otherNumber;
 
     private Call call;

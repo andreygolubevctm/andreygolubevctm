@@ -1,10 +1,17 @@
 package com.ctm.providers.health.healthapply.model.request.contactDetails.Address;
 
-public class StreetNumber {
+import java.util.function.Supplier;
+
+public class StreetNumber implements Supplier<String> {
 
     private final String streetNumber;
 
     public StreetNumber(final String streetNumber) {
         this.streetNumber = streetNumber;
+    }
+
+    @Override
+    public String get() {
+        return streetNumber;
     }
 }

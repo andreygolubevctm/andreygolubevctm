@@ -1,31 +1,41 @@
 package com.ctm.providers.health.healthapply.model.request.application.dependant;
 
-import com.ctm.providers.health.healthapply.model.request.application.common.DateOfBirth;
+import com.ctm.providers.health.healthapply.model.helper.TypeSerializer;
 import com.ctm.providers.health.healthapply.model.request.application.common.FirstName;
 import com.ctm.providers.health.healthapply.model.request.application.common.Gender;
 import com.ctm.providers.health.healthapply.model.request.application.common.LastName;
 import com.ctm.providers.health.healthapply.model.request.application.common.Title;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
+import java.time.LocalDate;
 
 public class Dependant {
 
     private Title title;
 
+    @JsonSerialize(using = TypeSerializer.class)
     private FirstName firstName;
 
+    @JsonSerialize(using = TypeSerializer.class)
     private LastName lastName;
 
-    private DateOfBirth dateOfBirth;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate dateOfBirth;
 
+    @JsonSerialize(using = TypeSerializer.class)
     private School school;
 
-    private SchoolStartDate schoolDate;
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate schoolDate;
 
+    @JsonSerialize(using = TypeSerializer.class)
     private SchoolId schoolID;
 
     private Gender gender;
 
     public Dependant(final Title title, final FirstName firstName, final LastName lastName,
-                     final DateOfBirth dateOfBirth, final School school, final SchoolStartDate schoolDate,
+                     final LocalDate dateOfBirth, final School school, final LocalDate schoolDate,
                      final SchoolId schoolID, final Gender gender) {
         this.title = title;
         this.firstName = firstName;

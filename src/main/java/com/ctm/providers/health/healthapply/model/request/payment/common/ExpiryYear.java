@@ -1,6 +1,8 @@
 package com.ctm.providers.health.healthapply.model.request.payment.common;
 
-public class ExpiryYear {
+import java.util.function.Supplier;
+
+public class ExpiryYear implements Supplier<String> {
 
     private final String cardExpiryYear;
 
@@ -9,4 +11,8 @@ public class ExpiryYear {
 
     }
 
+    @Override
+    public String get() {
+        return cardExpiryYear;
+    }
 }

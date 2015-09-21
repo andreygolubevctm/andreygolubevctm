@@ -1,6 +1,8 @@
 package com.ctm.providers.health.healthapply.model.request.contactDetails;
 
-public class OtherNumber {
+import java.util.function.Supplier;
+
+public class OtherNumber implements Supplier<String> {
 
     public OtherNumber(final String otherNumber) {
         this.otherNumber = otherNumber;
@@ -8,4 +10,8 @@ public class OtherNumber {
 
     private final String otherNumber;
 
+    @Override
+    public String get() {
+        return otherNumber;
+    }
 }

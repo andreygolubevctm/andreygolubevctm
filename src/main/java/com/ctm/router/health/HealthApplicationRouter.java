@@ -106,7 +106,8 @@ public class HealthApplicationRouter extends CommonQuoteRouter<HealthRequest> {
                 LOGGER.warn("Failed to add transactionDetail {} because {}", data.getTransactionId(), e);
             }
 
-            applyResponse.setCallcentre((Boolean)context.getHttpServletRequest().getSession().getAttribute("callCentre"));
+            final Boolean callCentre = (Boolean)context.getHttpServletRequest().getSession().getAttribute("callCentre");
+            applyResponse.setCallcentre(callCentre == null ? false : callCentre);
 
             final ConfirmationData confirmationData = new ConfirmationData(data.getTransactionId().toString(),
                     LocalDate.parse(data.getQuote().getPayment().getDetails().getStart(), AUS_FORMAT),

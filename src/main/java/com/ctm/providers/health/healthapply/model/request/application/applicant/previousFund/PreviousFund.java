@@ -1,11 +1,14 @@
 package com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund;
 
+import com.ctm.providers.health.healthapply.model.helper.TypeSerializer;
 import com.ctm.providers.health.healthapply.model.request.fundData.HealthFund;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class PreviousFund {
 
     private final HealthFund fundName;
 
+    @JsonSerialize(using = TypeSerializer.class)
     private final MemberId memberID;
 
     private final ConfirmCover confirmCover;

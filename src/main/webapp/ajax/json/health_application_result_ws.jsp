@@ -14,7 +14,7 @@
 
 <c:set var="result" value="${applyServiceResponse.payload.quotes.get(0)}"/>
 
-<jsp:useBean id="result" scope="request"
+<jsp:useBean id="result" scope="page"
              type="com.ctm.providers.health.healthapply.model.response.HealthApplicationResponse"/>
 
 
@@ -58,7 +58,6 @@
             <c:param name="bccEmail" value="${serviceConfigurationService.getServiceConfiguration('')}"/>
         </c:import>--%>
 
-        <!-- Sends the email -->
         <c:set var="emailResponse">
             <c:import url="/ajax/json/send.jsp">
                 <c:param name="vertical" value="HEALTH" />
@@ -109,10 +108,14 @@
             </c:otherwise>
         </c:choose>
 
+        <c:set var="resultXml"><result responseTime="10"><success>true</success><confirmationID>${applyServiceResponse.confirmationID}</confirmationID></result></c:set>
+
+        ${go:XMLtoJSON(resultXml)}
+
     </c:when>
     <%-- Was not successful --%>
     <%-- If no fail has been recorded yet --%>
-    <x:otherwise>
+    <c:otherwise>
         <c:choose>
             <%-- if online user record a join --%>
             <c:when test="${empty callCentre && empty errorMessage}">
@@ -126,6 +129,6 @@
                 ${go:XMLtoJSON(resultXml)}
             </c:when>
         </c:choose>
-    </x:otherwise>
+    </c:otherwise>
 </c:choose>
 

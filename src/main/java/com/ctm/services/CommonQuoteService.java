@@ -2,7 +2,9 @@ package com.ctm.services;
 
 import com.ctm.connectivity.SimpleConnection;
 import com.ctm.dao.ProviderFilterDao;
-import com.ctm.exceptions.*;
+import com.ctm.exceptions.DaoException;
+import com.ctm.exceptions.RouterException;
+import com.ctm.exceptions.ServiceConfigurationException;
 import com.ctm.logging.XMLOutputWriter;
 import com.ctm.model.QuoteServiceProperties;
 import com.ctm.model.formData.Request;
@@ -21,8 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,8 +101,8 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
         // Prepare objectmapper to map java model to JSON
         ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        objectMapper.setDateFormat(df);
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        objectMapper.setDateFormat(df);
 
         QuoteServiceProperties serviceProperties = getQuoteServiceProperties(serviceName, brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 

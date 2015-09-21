@@ -1,10 +1,17 @@
 package com.ctm.providers.health.healthapply.model.request.application.dependant;
 
-public class School {
+import java.util.function.Supplier;
+
+public class School implements Supplier<String> {
 
     private final String school;
 
     public School(String school) {
         this.school = school;
+    }
+
+    @Override
+    public String get() {
+        return school;
     }
 }

@@ -1,7 +1,10 @@
 package com.ctm.router.health;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.LocalDate;
 
+@JacksonXmlRootElement(localName = "data")
 public class ConfirmationData {
 
     private final String transID;
@@ -30,5 +33,41 @@ public class ConfirmationData {
         this.whatsNext = whatsNext;
         this.product = product;
         this.policyNo = policyNo;
+    }
+
+    public String getTransID() {
+        return transID;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getVertical() {
+        return vertical;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public String getFrequency() {
+        return frequency;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public String getWhatsNext() {
+        return whatsNext;
+    }
+
+    public String getProduct() {
+        return product;
+    }
+
+    public String getPolicyNo() {
+        return policyNo;
     }
 }
