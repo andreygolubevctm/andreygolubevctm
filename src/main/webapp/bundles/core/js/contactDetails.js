@@ -366,9 +366,9 @@
 					var flexiNumber = updatedElementValue.replace(/\D/g, "");
 					if (flexiNumber.match(/^(04|614|6104)/g)) {
 						$fieldElement.val(updatedElementValue);
-						laterFieldDetails.$otherFieldInput.val("");
+						laterFieldDetails.$otherFieldInput.val("").blur();
 					} else {
-						laterFieldDetails.$otherFieldInput.val(updatedElementValue);
+						laterFieldDetails.$otherField.add(laterFieldDetails.$otherFieldInput).val(updatedElementValue).blur();
 						$fieldElement.val("");
 					}
 				} else  {
