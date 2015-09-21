@@ -30,7 +30,7 @@
 	<c:otherwise></c:otherwise>
 </c:choose>
 
-<div class="elasticSearchTypeaheadComponent elasticsearch_container_${name}" data-address-id="${name}" data-suburb="${address.suburb}" data-search-type="${type}">
+<div class="elasticSearchTypeaheadComponent elasticsearch_container_${name}" data-address-id="${name}" data-suburbSeqNo="${address.suburb}" data-search-type="${type}">
 	<form_new:row id="${name}_error_container">
 		<div class="error-field"></div>
 	</form_new:row>

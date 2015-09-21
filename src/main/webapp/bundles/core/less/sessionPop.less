@@ -1,0 +1,49 @@
+.sessionModalContainer {
+	@media (min-width: @screen-sm-min) {
+		width: 400px;
+		height: auto !important;
+		
+		.modal-content {
+			height: auto !important;
+		}
+	}
+	
+	.modal-content {
+		background: #fff;
+	}
+	
+	.modal-body {
+		padding-top: 0;
+		
+		@media (min-width: @screen-sm-min) {
+			height: auto !important;
+		}
+		
+		@media (max-width: @screen-sm-min) {
+			padding-top: 55px;	
+		}
+	}
+	
+	.modal-footer {
+		border-top: 0;
+		text-align: center;
+		
+		@media (min-width: @screen-sm-min) {
+			padding-bottom: 20px;
+			padding-top: 0;
+		}
+		
+		button {
+			display: inline-block;
+		}
+	}
+}
+
+#sessionModalCountDown {
+	text-align: center;
+	font-weight: normal;
+	font-family: @font-family-theme-bold;
+	margin: 0 0 14px 0;
+	font-size: 32px;
+	color: @theme-tertiary;
+}

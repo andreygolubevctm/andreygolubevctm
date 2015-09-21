@@ -348,7 +348,7 @@
 			<div class="resultInsert priceMode">
 				<div class="row">
 					<div class="col-xs-2 col-sm-8 col-md-6">
-						<div class="companyLogo"><img src="common/images/logos/results/{{= obj.productId }}_w.png" /></div>
+						<div class="companyLogo"><img src="assets/graphics/logos/results/{{= obj.productId }}_w.png" /></div>
 
 						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
 

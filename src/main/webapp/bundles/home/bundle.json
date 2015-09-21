@@ -1,0 +1,22 @@
+{
+  "brandCodes": ["ctm", "choo"],
+  "dependencies": [
+    "shared/results",
+    "shared/features",
+    "shared/validation",
+    "core",
+    "shared/addressLookup",
+    "shared/placeholder",
+    "shared/datepicker",
+    "shared/emailLoadQuote",
+    "shared/contentPopulation",
+    "shared/popovers",
+    "shared/leavePageWarning",
+    "shared/commencementDate",
+    "shared/currency",
+    "shared/moreInfo",
+    "shared/saveQuote",
+    "shared/resultsRankings",
+    "shared/dropdownInteractive"
+  ]
+}
