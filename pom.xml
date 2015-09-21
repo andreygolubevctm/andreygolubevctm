@@ -374,12 +374,6 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.7</version>
         </dependency>
-        <!-- TODO: current log4j is used by motorweb. remove this once there is no code using log4j -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-            <version>1.7.7</version>
-        </dependency>
 
     </dependencies>
     <profiles>
