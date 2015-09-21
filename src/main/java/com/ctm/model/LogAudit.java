@@ -90,4 +90,15 @@ public class LogAudit {
 		return userAgent;
 	}
 
+	@Override
+	public String toString() {
+		return "LogAudit{" +
+				"sessionId='" + sessionId + '\'' +
+				", result=" + result +
+				", ip='" + ip + '\'' +
+				", action=" + action +
+				", requestUri='" + requestUri + '\'' +
+				", userAgent='" + userAgent + '\'' +
+				'}';
+	}
 }

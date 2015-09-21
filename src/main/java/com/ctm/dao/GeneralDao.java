@@ -12,13 +12,15 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class GeneralDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(GeneralDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(GeneralDao.class);
 
 	public Map<String, String> getValues(String type){
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-		Map<String, String> values = new HashMap<String, String>();
+		Map<String, String> values = new HashMap<>();
 		Connection conn;
 		try {
 			// Allocate and use a connection from the pool
@@ -36,7 +38,7 @@ public class GeneralDao {
 			}
 			rs.close();
 		} catch (SQLException | NamingException e) {
-			logger.error("",e);
+			LOGGER.error("failed retrieving value from general table {}", kv("type", type), e);
 		} finally {
 			dbSource.closeConnection();
 		}

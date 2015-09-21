@@ -72,6 +72,10 @@
 		securityOption:		'${data.quote.vehicle.securityOption}',
 		data:				${json}
 	},
+	userOptionPreselections: {
+		factory : ${go:XMLtoJSON(go:getEscapedXml(data.quote.opts))},
+		accessories : ${go:XMLtoJSON(go:getEscapedXml(data.quote.accs))}
+	},
 	nonStandardAccessoriesList : ${nonStandardAccessories},
 	resultOptions: {
 		displayMode: "<c:out value="${priceDisplayMode}" />"

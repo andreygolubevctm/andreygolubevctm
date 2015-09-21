@@ -8,8 +8,13 @@ import javax.naming.NamingException;
 
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class StyleCodeDao {
+	private static final Logger LOGGER = LoggerFactory.getLogger(StyleCodeDao.class);
 
 	public int getStyleCodeId(long transactionId) throws DaoException {
 		SimpleDatabaseConnection dbSource = null;
@@ -30,12 +35,9 @@ public class StyleCodeDao {
 				styleCodeId = resultSet.getInt("styleCodeID");
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("Failed to retrieve styleCodeId {}", kv("transactionId", transactionId));
+			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
 				dbSource.closeConnection();

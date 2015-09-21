@@ -1,10 +1,12 @@
 package com.ctm.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.ctm.logging.LoggingArguments.kv;
 
 /**
  * The Class URLUtils.
@@ -15,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class URLUtils {
 
-	private static final Logger logger = LoggerFactory.getLogger(URLUtils.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(URLUtils.class);
 
 	public static boolean exists(String URLName){
 		try {
@@ -25,7 +27,7 @@ public class URLUtils {
 			return (con.getResponseCode() == HttpURLConnection.HTTP_OK);
 		}
 		catch (Exception e) {
-			logger.error("",e);
+			LOGGER.error("Failed to check url. {}",kv("URLName",URLName),e);
 			return false;
 		}
 	}

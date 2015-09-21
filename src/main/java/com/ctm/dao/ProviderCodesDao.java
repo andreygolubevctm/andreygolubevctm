@@ -1,19 +1,13 @@
 package com.ctm.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 
+import javax.naming.NamingException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -29,9 +23,6 @@ public class ProviderCodesDao {
 		dbSource = new SimpleDatabaseConnection();
 		providerCodes = new ArrayList<String>();
 	}
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(ProviderCodesDao.class.getName());
 
 	public void setProviderCodes(String verticalType, int styleCodeId) throws DaoException {
 		try {
@@ -59,9 +50,9 @@ public class ProviderCodesDao {
 				providerCodesSize = providerCodes.size();
 			}
 		} catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

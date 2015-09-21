@@ -131,6 +131,12 @@
 		<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 	</jsp:attribute>
 
+	<jsp:attribute name="additional_meerkat_scripts">
+		<c:if test="${callCentre}">
+			<script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+		</c:if>
+	</jsp:attribute>
+
 	<jsp:body>
 		<health:product_title_search />
 		<core:application_date />
@@ -171,7 +177,5 @@
 		<health_layout:slide_payment_details />
 					
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
-
 	</jsp:body>
-		
 </layout:journey_engine_page>

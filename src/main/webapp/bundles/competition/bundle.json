@@ -1,0 +1,10 @@
+{
+    "brandCodes": [
+        "ctm"
+    ],
+    "dependencies": [
+        "shared/results",
+        "core",
+        "shared/validation"
+    ]
+}

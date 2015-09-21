@@ -30,9 +30,7 @@
 	<c:otherwise></c:otherwise>
 </c:choose>
 
-<go:script href="common/javascript/elastic_address.js" marker="js-href"/>
-
-<div class="elasticSearchTypeaheadComponent elasticsearch_container_${name}">
+<div class="elasticSearchTypeaheadComponent elasticsearch_container_${name}" data-address-id="${name}" data-suburbSeqNo="${address.suburb}" data-search-type="${type}">
 	<form_new:row id="${name}_error_container">
 		<div class="error-field"></div>
 	</form_new:row>
@@ -174,16 +172,3 @@
 	<field_new:validatedHiddenField xpath="${xpath}/postCode" validationErrorPlacementSelector="${errorPlacementSelector}"  additionalAttributes="${postCodeAdditionalAttributes} data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode'" />
 	<field:hidden xpath="${xpath}/state" />
 </div>
-
-<go:script marker="onready">
-	<c:choose>
-		<c:when test="${not empty address.suburb}">
-			init_address("${name}", ${address.suburb});
-		</c:when>
-		<c:otherwise>
-			init_address("${name}");
-		</c:otherwise>
-	</c:choose>
-	$("#${name}_streetNum").val("${address.streetNum}");
-	$("#${name}_unitShop").val("${address.unitShop}");
-</go:script>

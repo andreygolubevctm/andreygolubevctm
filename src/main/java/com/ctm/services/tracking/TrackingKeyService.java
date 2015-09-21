@@ -70,7 +70,7 @@ public class TrackingKeyService {
 			throw new Exception("No TrackingKeyXpaths defined to create tracking key.");
 		}
 
-		LOGGER.info("Generated tracking key. {}", kv("key", key));
+		LOGGER.debug("Generated tracking key. {}", kv("key", key));
 		return key;
 	}
 }

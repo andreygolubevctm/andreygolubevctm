@@ -73,14 +73,3 @@
 		value="${valueInput}" pattern="[0-9]*" ${sizeAttribute}${placeHolderAttribute}${requiredAttribute}
 		${additionalAttributes}
 		maxlength="14">
-
-
-<go:script marker="onready">
-		$("#${nameInput}").on("focusout", function(){
-			$("#${name}").val( $(this).val().replace(/[^0-9]+/g, '') );
-		});
-		<%-- remove fake placeholders (for IE8/9) if preloaded data --%>
-		if( typeof meerkat !== "undefined" && $("#${nameInput}").val() !== "" ){
-			meerkat.modules.placeholder.invalidatePlaceholder( $("#${nameInput}") );
-		}
-</go:script>

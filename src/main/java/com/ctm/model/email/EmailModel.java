@@ -92,5 +92,22 @@ public abstract class EmailModel {
 		this.imageUrlPrefix = imageUrlPrefix;
 	}
 
-
+	@Override
+	public String toString() {
+		return "EmailModel{" +
+				"emailAddress='" + emailAddress + '\'' +
+				", customerKey='" + customerKey + '\'' +
+				", clientName='" + clientName + '\'' +
+				", clientId=" + clientId +
+				", env='" + env + '\'' +
+				", mailingName='" + mailingName + '\'' +
+				", siteName='" + siteName + '\'' +
+				", campaignName='" + campaignName + '\'' +
+				", brand='" + brand + '\'' +
+				", baseURL='" + baseURL + '\'' +
+				", subscriberKey='" + subscriberKey + '\'' +
+				", unsubscribeURL='" + unsubscribeURL + '\'' +
+				", imageUrlPrefix='" + imageUrlPrefix + '\'' +
+				'}';
+	}
 }

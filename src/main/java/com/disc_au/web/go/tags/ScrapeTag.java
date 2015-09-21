@@ -153,7 +153,6 @@ public class ScrapeTag extends BaseTag {
 			}
 			
 		} catch (IOException e) {
-			 //e.printStackTrace();
 			 return e.toString();
 		}
 		return scrape.replaceAll("[\\u2018|\\u2019]", "'").replaceAll("[\\u201C|\\u201D]", "\"").replaceAll("\\n", "");

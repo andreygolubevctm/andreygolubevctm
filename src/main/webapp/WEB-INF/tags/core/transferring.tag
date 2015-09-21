@@ -82,10 +82,6 @@ Transferring = {
 }
 </go:script>
 
-<go:script marker="onready">
-
-</go:script>
-
 <!-- HTML -->
 <div id="transferring-overlay" class="ui-widget-overlay"></div>
 <div id="transferring-popup">
