@@ -16,7 +16,7 @@
     "shared/currency",
     "shared/moreInfo",
     "shared/saveQuote",
-    "shared/resultsRankings"
-
+    "shared/resultsRankings",
+    "shared/dropdownInteractive"
   ]
 }
