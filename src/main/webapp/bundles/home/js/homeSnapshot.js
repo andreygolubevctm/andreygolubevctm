@@ -18,7 +18,11 @@
 	function initHomeSnapshot() {
 
 		// Initial render
-		renderSnapshot(getIcon());
+		meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.READY, function renderSnapshotOnJourneyReadySubscription() {
+			_.defer(function() {
+				renderSnapshot(getIcon());
+			});
+		});
 
 		// On change
 		$coverType.on('change', function changeHomeCoverDetails() {
@@ -46,13 +50,29 @@
 	 * Which icon to render depending on what the cover type is.
 	 */
 	function renderSnapshot(icon) {
-		if ($coverType.val() !== '') {
-			$quoteSnapshot.removeClass('hidden');
-			if(typeof icon !== 'undefined') {
+		var firstSnapshotSlide = 0;
+		var coverType = $coverType.val();
+		var $snapshotBox = $(".quoteSnapshot");
+		var limit = meerkat.modules.journeyEngine.getStepsTotalNum();
+
+		if (!_.isEmpty(coverType)) {
+			$snapshotBox.removeClass('hidden');
+			if(!_.isEmpty(icon)) {
 				$quoteSnapshot.find('.icon:first').attr('class','icon').addClass(icon);
 			}
+		} else {
+			$snapshotBox.addClass('hidden');
 		}
-		meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(0) .snapshot');
+
+		for(var i = firstSnapshotSlide; i < limit; i++) {
+			var selector = '';
+			if(i == 4) {
+				selector = '.header-wrap';
+			} else {
+				selector = '.journeyEngineSlide:eq(' + i + ')';
+			}
+			meerkat.modules.contentPopulation.render(selector + ' .snapshot');
+		}
 	}
 
 	/**
