@@ -5,6 +5,7 @@
     "shared/features",
     "shared/validation",
     "core",
+    "shared/currency",
     "shared/addressLookup",
     "shared/placeholder",
     "shared/emailLoadQuote",
