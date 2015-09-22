@@ -12,7 +12,13 @@ public class Address {
 
     private String suburbName;
 
-    private String fullAddress;
+    private String fullAddressLineOne;
+
+    private String postCode;
+
+    private String dpId;
+
+    private String state;
 
     public String getType() {
         return type;
@@ -54,11 +60,35 @@ public class Address {
         this.suburbName = suburbName;
     }
 
-    public String getFullAddress() {
-        return fullAddress;
+    public String getFullAddressLineOne() {
+        return fullAddressLineOne;
     }
 
-    public void setFullAddress(String fullAddress) {
-        this.fullAddress = fullAddress;
+    public void setFullAddressLineOne(String fullAddressLineOne) {
+        this.fullAddressLineOne = fullAddressLineOne;
+    }
+
+    public String getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
+
+    public String getDpId() {
+        return dpId;
+    }
+
+    public void setDpId(String dpId) {
+        this.dpId = dpId;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

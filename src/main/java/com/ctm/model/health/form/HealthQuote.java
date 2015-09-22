@@ -44,6 +44,10 @@ public class HealthQuote {
 
     private String searchDate;
 
+    private PreviousFund previousFund;
+
+    private Payment payment;
+
     public Application getApplication() {
         return application;
     }
@@ -210,5 +214,21 @@ public class HealthQuote {
 
     public void setSearchDate(String searchDate) {
         this.searchDate = searchDate;
+    }
+
+    public PreviousFund getPreviousFund() {
+        return previousFund;
+    }
+
+    public void setPreviousFund(PreviousFund previousFund) {
+        this.previousFund = previousFund;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

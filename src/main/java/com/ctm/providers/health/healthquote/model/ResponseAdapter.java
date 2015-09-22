@@ -4,6 +4,8 @@ import com.ctm.model.content.Content;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.PaymentType;
 import com.ctm.model.health.form.HealthRequest;
+import com.ctm.model.health.form.Payment;
+import com.ctm.model.health.form.PaymentDetails;
 import com.ctm.model.health.results.*;
 import com.ctm.model.resultsData.AvailableType;
 import com.ctm.providers.QuoteResponse;
@@ -12,6 +14,7 @@ import com.ctm.providers.health.healthquote.model.response.HealthResponse;
 import com.ctm.providers.health.healthquote.model.response.Promotion;
 import com.ctm.providers.health.healthquote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -21,6 +24,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ctm.model.health.Frequency.ANNUALLY;
 import static com.ctm.model.health.Frequency.HALF_YEARLY;
@@ -116,7 +120,7 @@ public class ResponseAdapter {
         if (!jsonNode.isNull()) {
             return jsonNode;
         }
-        return null;
+        return new TextNode("");
     }
 
     private static Promo createPromo(Promotion quotePromotion) {
@@ -151,7 +155,14 @@ public class ResponseAdapter {
         Price price = new Price();
 
 
-        boolean hasDiscountRates = hasDiscountRates(Frequency.findByCode(healthQuote.getFilter().getFrequency()), info.getFundCode(), null,
+        final Optional<PaymentType> type = Optional.ofNullable(healthQuote)
+                                .map(com.ctm.model.health.form.HealthQuote::getPayment)
+                                .map(Payment::getDetails)
+                                .map(PaymentDetails::getType)
+                                .map(PaymentType::findByCode);
+        boolean hasDiscountRates = hasDiscountRates(
+                Frequency.findByCode(healthQuote.getFilter().getFrequency()), info.getFundCode(),
+                type,
                 StringUtils.equalsIgnoreCase(healthQuote.getOnResultsPage(), "Y"));
 
         price.setDiscounted(hasDiscountRates ? "Y" : "N");
@@ -222,8 +233,10 @@ public class ResponseAdapter {
 
      1=AUF, 3=NIB, 5=GMHBA, 6=GMF, 54=BUD, 11=HIF
      **/
-    public static boolean hasDiscountRates(Frequency frequency, String provider, PaymentType paymentType, boolean onResultsPage) {
-        boolean isBankAccount = paymentType != null && paymentType == PaymentType.BANK;
+    public static boolean hasDiscountRates(Frequency frequency, String provider, Optional<PaymentType> paymentType, boolean onResultsPage) {
+        boolean isBankAccount = paymentType
+                .filter(v -> v == PaymentType.BANK)
+                .isPresent();
         boolean isDiscountRates ;
         switch(provider){
             case "NIB":

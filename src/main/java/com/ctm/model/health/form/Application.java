@@ -2,21 +2,35 @@ package com.ctm.model.health.form;
 
 public class Application {
 
+    private Person primary;
+
+    private Person partner;
+
+    private Dependants dependants;
+
     private Address address;
 
-    private Postal postal;
+    private Address postal;
 
     private String mobile;
 
     private String other;
 
+    private String email;
+
     private String optInEmail;
+
+    private String productName;
 
     private String productTitle;
 
     private String productId;
 
     private String provider;
+
+    private String providerName;
+
+    private String postalMatch;
 
     public Address getAddress() {
         return address;
@@ -26,11 +40,11 @@ public class Application {
         this.address = address;
     }
 
-    public Postal getPostal() {
+    public Address getPostal() {
         return postal;
     }
 
-    public void setPostal(Postal postal) {
+    public void setPostal(Address postal) {
         this.postal = postal;
     }
 
@@ -80,5 +94,61 @@ public class Application {
 
     public void setProvider(String provider) {
         this.provider = provider;
+    }
+
+    public Person getPrimary() {
+        return primary;
+    }
+
+    public void setPrimary(Person primary) {
+        this.primary = primary;
+    }
+
+    public Person getPartner() {
+        return partner;
+    }
+
+    public void setPartner(Person partner) {
+        this.partner = partner;
+    }
+
+    public Dependants getDependants() {
+        return dependants;
+    }
+
+    public void setDependants(Dependants dependants) {
+        this.dependants = dependants;
+    }
+
+    public String getPostalMatch() {
+        return postalMatch;
+    }
+
+    public void setPostalMatch(String postalMatch) {
+        this.postalMatch = postalMatch;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
