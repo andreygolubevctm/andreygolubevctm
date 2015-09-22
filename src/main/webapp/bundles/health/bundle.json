@@ -1,0 +1,32 @@
+{
+  "brandCodes": ["ctm", "yhoo"],
+  "dependencies": [
+  	"shared/results", 
+  	"shared/compare", 
+  	"shared/features",
+	"shared/validation",
+	"core",
+	"shared/currency",
+	"shared/datepicker",
+	"shared/commencementDate",
+  	"shared/autocomplete",
+	"shared/placeholder",
+	"shared/sliders",
+	"shared/saveQuote",
+	"shared/contentPopulation",
+	"shared/resultsRankings",
+	"shared/dropdownInteractive",
+	"shared/paymentGateway",
+	"shared/numberUtils",
+	"shared/bootstrapSwitch",
+	"shared/leavePageWarning",
+	"shared/popovers",
+	"shared/moreInfo",
+	"shared/resultsHeaderBar",
+	"shared/coupon",
+	"shared/sendEmail",
+	"shared/emailBrochures",
+	"shared/serverSideValidationOutput",
+	"shared/selectTags"
+  ]
+}
