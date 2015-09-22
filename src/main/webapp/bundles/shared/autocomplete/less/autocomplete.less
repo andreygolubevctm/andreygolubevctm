@@ -54,9 +54,11 @@
 
 		//validation states
 		.has-warning &{
+			.typeahead-form-control(@state-warning-text,@state-warning-border,@state-warning-bg);
 			.placeholder(@state-warning-text);
 		}
 		.has-error &{
+			.typeahead-form-control(@state-danger-text,@state-danger-border,@state-danger-bg);
 			.placeholder(@state-danger-text);
 		}
 		.has-success &{
