@@ -19,6 +19,7 @@ import com.ctm.services.ContentService;
 import com.ctm.services.SettingsService;
 import com.ctm.services.health.HealthQuoteService;
 import com.ctm.services.tracking.TrackingKeyService;
+import com.ctm.utils.ObjectMapperUtil;
 import com.disc_au.web.go.Data;
 import com.disc_au.web.go.xml.XmlNode;
 import org.apache.commons.lang3.StringUtils;
@@ -158,7 +159,24 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
                 results.setInfo(info);
                 info.setPricesHaveChanged(quotes.getLeft());
 
-                return new ResultsWrapper(results);
+                final ResultsWrapper resultsWrapper = new ResultsWrapper(results);
+
+                if (!"Y".equals(data.getQuote().getShowAll())) {
+
+                    if (dataBucket.hasChild("confirmation")) {
+                        dataBucket.removeChild("confirmation");
+                    }
+
+                    XmlNode confirmation = new XmlNode("confirmation");
+                    dataBucket.addChild(confirmation);
+                    XmlNode details = new XmlNode("health");
+                    confirmation.addChild(details);
+
+                    details.setText("<![CDATA[" + ObjectMapperUtil.getObjectMapper().writeValueAsString(results) + "]]>");
+                }
+
+                return resultsWrapper;
+
             }
 
         } catch (Exception e) {
