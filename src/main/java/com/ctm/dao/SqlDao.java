@@ -115,6 +115,7 @@ public class SqlDao<T> {
      * @throws DaoException
      */
     public Long insert(DatabaseUpdateMapping databaseMapping) throws DaoException {
+        final String statement = databaseMapping.getStatement();
         try {
             conn = databaseConnection.getConnection(context, true);
             stmt = conn.prepareStatement(databaseMapping.getStatement(), Statement.RETURN_GENERATED_KEYS);
@@ -128,7 +129,7 @@ public class SqlDao<T> {
             }
             return 0L;
         } catch (SQLException | NamingException e) {
-            logger.error("",e);
+            LOGGER.error("DB insert failed {}", kv("statement", statement), e);
             throw new DaoException("failed to executeUpdate " + databaseMapping.getStatement(), e);
         } finally {
             cleanup();
@@ -136,13 +137,14 @@ public class SqlDao<T> {
     }
 
     public int[] updateBatch(DatabaseUpdateBatchMapping databaseMapping) throws DaoException {
+        final String statement = databaseMapping.getStatement();
         try {
             conn = databaseConnection.getConnection(context, true);
             stmt = conn.prepareStatement(databaseMapping.getStatement());
             databaseMapping.handleParams(stmt);
             return stmt.executeBatch();
         } catch (SQLException | NamingException e) {
-            logger.error("",e);
+            LOGGER.error("DB update batch failed {}", kv("statement", statement), e);
             throw new DaoException("failed to executeUpdate " + databaseMapping.getStatement(), e);
         } finally {
             cleanup();
