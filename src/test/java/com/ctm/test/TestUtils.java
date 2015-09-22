@@ -1,13 +1,22 @@
 package com.ctm.test;
 
-import java.util.ArrayList;
-
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.EnvironmentService.Environment;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TestUtils {
 
@@ -33,8 +42,18 @@ public class TestUtils {
 		EnvironmentService.setEnvironment(Environment.LOCALHOST.toString());
 		PageSettings pageSettings = new PageSettings();
 		pageSettings.setBrandCode("TEST");
-		pageSettings.setVertical(TestUtils.getHealthVertical() );
+		pageSettings.setVertical(TestUtils.getHealthVertical());
 		return pageSettings;
+	}
+
+	public static HttpURLConnection createFakeConnection() throws IOException {
+		HttpURLConnection connection= mock(HttpURLConnection.class);
+		InputStream stream = new ByteArrayInputStream("respone".getBytes(StandardCharsets.UTF_8));
+		when(connection.getInputStream()).thenReturn(stream);
+		OutputStream outputStream = mock(OutputStream.class);
+		when(connection.getOutputStream()).thenReturn(outputStream);
+		when(connection.getResponseCode()).thenReturn(200);
+		return connection;
 	}
 
 
