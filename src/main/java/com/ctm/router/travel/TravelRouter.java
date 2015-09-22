@@ -111,11 +111,9 @@ public class TravelRouter extends CommonQuoteRouter<TravelRequest> {
 
             return new ResultsWrapper(results);
 
-        }catch (TravelServiceException e){
+        } catch (TravelServiceException e){
             throw new RouterException(e);
         }
-
-
     }
 
 

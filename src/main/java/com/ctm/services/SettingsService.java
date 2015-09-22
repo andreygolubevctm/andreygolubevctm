@@ -5,6 +5,10 @@ import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.PageSettings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +19,7 @@ public class SettingsService {
 	 * This method also checks to see if the vertical is enabled for the brand. (and by extension that the brand code is set)
 	 * Call this on vertical start pages like health_quote.jsp
 	 *
-	 * @param pageContext
+	 * @param request
 	 * @param verticalCode this value is not case sensitive
 	 * @return
 	 * @throws DaoException
