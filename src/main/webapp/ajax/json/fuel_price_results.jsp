@@ -70,6 +70,7 @@
             isValidVar="isValid"
             verticalCode="FUEL"
             configDbKey="quoteService"
+                           sendCorrelationId="true"
             styleCodeId="${pageSettings.getBrandId()}"
              />
 
