@@ -18,7 +18,8 @@
         $unknownDestinations,
         selectedCountryObj = {},
         selectedTextHTML,
-        showingError = false;
+        showingError = false,
+        initialised = false;
 
     function findCountryNameByIsoCode(isoCode) {
         var countryList = window.countrySelectionList.isoLocations;
@@ -31,16 +32,13 @@
     }
 
     function initTravelCountrySelector() {
-
-        $(document).ready(function () {
-
+        if(!initialised) {
+            initialised = true;
             $countrySelector = $('#travel_destinations');
             $unknownDestinations = $('#travel_unknownDestinations');
             applyEventListeners();
-
             setDefaultsFromDataBucket();
-        });
-
+        }
     }
 
     function setDefaultsFromDataBucket() {
@@ -208,7 +206,7 @@
     }
 
     meerkat.modules.register('travelCountrySelector', {
-        init: initTravelCountrySelector,
+        initTravelCountrySelector: initTravelCountrySelector,
         events: events,
         getCountrySelectorParams: getCountrySelectorParams
     });

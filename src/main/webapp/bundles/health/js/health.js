@@ -111,12 +111,6 @@
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 
-				if(meerkat.site.choices) {
-					healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
-					healthChoices._state = meerkat.site.choices.state;
-					healthChoices._performUpdate = meerkat.site.choices.performHealthChoicesUpdate;
-				}
-
 				// Add event listeners.
 				$('.health-situation-healthCvr').on('change',function() {
 					healthChoices.setCover($(this).val());
@@ -170,7 +164,6 @@
 						toggleDialogueInChatCallback();
 					});
 				}
-
 			}
 		};
 
@@ -192,6 +185,8 @@
 				// Set initial state.
 				healthCoverDetails.setHealthFunds(true);
 				healthCoverDetails.setIncomeBase(true);
+
+				meerkat.modules.healthTiers.initHealthTiers();
 
 				// Add event listeners.
 
@@ -257,7 +252,7 @@
 				$('#health_healthCover_incomelabel').val( incomelabel );
 			},
 			onAfterEnter: function(event) {
-				if (event.isForward && meerkat.site.isCallCentreUser === true){
+				if (event.isForward){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
 			}
@@ -310,7 +305,7 @@
 				meerkat.modules.healthSegment.filterSegments();
 				}, 1000);
 
-				if (event.isForward && meerkat.site.isCallCentreUser === true){
+				if (event.isForward){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
 			},
@@ -382,9 +377,12 @@
 				}
 			},
 			onInitialise: function onInitResults(event){
-
+				meerkat.modules.healthFilters.initHealthFilters();
+				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
+				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
+				meerkat.modules.healthAltPricing.initHealthAltPricing();
 				meerkat.modules.healthMoreInfo.initMoreInfo();
-
+				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 			},
 			onBeforeEnter:function enterResultsStep(event){
 
@@ -567,6 +565,10 @@
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
 			onInitialise: function initPaymentStep(event){
+
+				meerkat.modules.healthPaymentStep.initHealthPaymentStep();
+				meerkat.modules.healthPaymentDate.initPaymentDate();
+				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP()
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();

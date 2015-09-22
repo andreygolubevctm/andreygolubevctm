@@ -20,6 +20,8 @@
 	var $frequncyCell;
 	var $lhcCell;
 
+	var initialised = false;
+
 	var settings = {
 		bank: [],
 		credit: [],
@@ -32,9 +34,10 @@
 		maxStartDate: ''
 	};
 
-	function init() {
+	function initHealthPaymentStep() {
 
-		$(document).ready(function(){
+		if(!initialised){
+			initialised = true;
 
 			if(meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
@@ -104,15 +107,6 @@
 					$year.valid();
 				}
 			});
-			// Moved from field_new:bsb_number
-			$(".bsb_number").on("focus blur", function(){
-				var $self = $(this), id = $self.attr('id'),
-					hiddenInput = id.substring(0,id.length - 5);
-				$("#"+hiddenInput).val( String($self.val()).replace(/[^0-9]/g, '') );
-			}).each(function() {
-				// blur both on load.
-				$(this).blur();
-			});
 
 			resetSettings();
 
@@ -121,7 +115,7 @@
 			$updatePremiumButtonContainer.show();
 			$paymentContainer.hide();
 
-		});
+		}
 	}
 
 	// Reset the step
@@ -486,7 +480,7 @@
 
 
 	meerkat.modules.register("healthPaymentStep", {
-		init: init,
+		initHealthPaymentStep: initHealthPaymentStep,
 		events: moduleEvents,
 		getSetting: getSetting,
 		overrideSettings: overrideSettings,

@@ -360,7 +360,6 @@
 
 
 	function init(){
-
 		$(document).ready(function(){
 
 			if (meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
@@ -370,11 +369,6 @@
 			$component = $('.benefits-component');
 
 			isIE8 = meerkat.modules.performanceProfiling.isIE8();
-
-			meerkat.modules.bootstrapSwitch.initBootstrapSwitch({
-				"on": "&nbsp;YES",
-				"off": "NO"
-			});
 
 			$dropdown.on('show.bs.dropdown', function () {
 				if(mode === null) mode = MODE_POPOVER;
@@ -422,7 +416,6 @@
 			// On application lockdown/unlock, disable/enable the dropdown
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, lockBenefits);
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, unlockBenefits);
-
 		});
 	}
 

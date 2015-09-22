@@ -23,7 +23,8 @@
 	fromDate_PlusYear,
 	toDateCurrent,
 	toDate_StartDateRange,
-	toDate_EndDateRange;
+	toDate_EndDateRange,
+	initialised = false;
 
 	//------------------------------------------------------------------
 
@@ -167,24 +168,24 @@
 	}
 
 
-	function init(){
+	function initTravelDatesSelection(){
 		//Elements need to be in the page
-		$(document).ready(function() {
+		if(!initialised) {
+			initialised = true;
 			//Grab the elements on the page
 			$fromDateInput = $("#travel_dates_fromDate");
 			$toDateInput = $("#travel_dates_toDate");
 
-			$fromDateInput.datepicker({ orientation: "top left", numberOfMonths: 2, allowHeaderStyling: true});
-			$toDateInput.datepicker({ orientation: "top left", numberOfMonths: 2, allowHeaderStyling: true });
+			$fromDateInput.datepicker({ orientation: "top right", numberOfMonths: 2});
+			$toDateInput.datepicker({ orientation: "top right", numberOfMonths: 2 });
 
 			initDatePickers();
 			initDateEvents();
-		});
-
+		}
 	}
 
 	meerkat.modules.register("datesSelection", {
-		init: init
+		initTravelDatesSelection: initTravelDatesSelection
 	});
 
 })(jQuery);

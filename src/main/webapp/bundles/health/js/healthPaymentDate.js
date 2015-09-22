@@ -6,18 +6,19 @@
 		POLICY_DATE_CHANGE: 'POLICY_DATE_CHANGE'
 	};
 	var $paymentDay,
-	$policyDateHiddenField;
+		$policyDateHiddenField,
+		initialised = false;
 
-	function init() {
+	function initPaymentDate() {
 
-		$(document).ready(function(){
+		if(!initialised){
+			initialised = true;
 			$paymentDay = $('.health_payment_day');
 			$policyDateHiddenField = $('.health_details-policyDate');
 			$paymentDay.on('change', function paymentDayChange() {
 				meerkat.messaging.publish(moduleEvents.POLICY_DATE_CHANGE,$(this).val());
 			});
-
-		});
+		}
 	}
 
 	// Reset the step
@@ -103,7 +104,7 @@
 	}
 
 	meerkat.modules.register("healthPaymentDate", {
-		init: init,
+		initPaymentDate: initPaymentDate,
 		events: moduleEvents,
 		paymentDaysRenderEarliestDay: paymentDaysRenderEarliestDay,
 		populateFuturePaymentDays: populateFuturePaymentDays
