@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.utils.ResponseUtils.writeError;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
@@ -20,7 +21,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
  * This class will only be used by CMS stuff in simples for update/create/delete and fetch records from database
  */
 public class AdminRouter {
-	private static final Logger logger = LoggerFactory.getLogger(AdminRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdminRouter.class);
     private final HttpServletResponse response;
     private final CrudRouter crudRouter;
     CrudService crudService = null;
@@ -54,8 +55,8 @@ public class AdminRouter {
                         response.sendError(SC_NOT_FOUND);
             }
         } catch (Exception e) {
-            logger.error("",e);
-            writeError(writer,response, e);
+            LOGGER.error("Admin post request failed {}", kv("uri", uri), e);
+            writeError(writer, response, e);
         }
     }
 
@@ -80,7 +81,7 @@ public class AdminRouter {
                     response.sendError(SC_NOT_FOUND);
             }
         } catch (Exception e) {
-            logger.error("",e);
+            LOGGER.error("Admin get request failed", kv("uri", uri), e);
             writeError(writer,response, e);
         }
     }

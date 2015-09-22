@@ -79,7 +79,7 @@ public class VerintService {
                     "agent.agent=" + agentId + "&" +
                     "responseType=XML&" +
                     "attribute.key=Contact.ContentType&" +
-                    "attribute.value=audio&" +
+                    "attribute.value=Audio&" +
                     "attribute.key=Contact.Requestor&" +
                     "attribute.value=CTM";
             result  = getVerintResponse(settings, paramUrl);

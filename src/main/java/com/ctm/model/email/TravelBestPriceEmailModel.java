@@ -189,4 +189,29 @@ public class TravelBestPriceEmailModel extends BestPriceEmailModel {
 		this.coverLevelTabsDesc = coverLevelTabsDesc;
 	}
 
+	@Override
+	public String toString() {
+		return "TravelBestPriceEmailModel{" +
+				"brand='" + brand + '\'' +
+				", quoteReference=" + quoteReference +
+				", coverType='" + coverType + '\'' +
+				", applyUrl='" + applyUrl + '\'' +
+				", productLabel='" + productLabel + '\'' +
+				", destinations='" + destinations + '\'' +
+				", startDate='" + startDate + '\'' +
+				", endDate='" + endDate + '\'' +
+				", adults='" + adults + '\'' +
+				", children='" + children + '\'' +
+				", oldestAge='" + oldestAge + '\'' +
+				", OME='" + OME + '\'' +
+				", LPE='" + LPE + '\'' +
+				", excess='" + excess + '\'' +
+				", policyType='" + policyType + '\'' +
+				", duration='" + duration + '\'' +
+				", pricePresentationUrl='" + pricePresentationUrl + '\'' +
+				", coverLevelTabsType='" + coverLevelTabsType + '\'' +
+				", coverLevelTabsDesc='" + coverLevelTabsDesc + '\'' +
+				", rankings=" + rankings +
+				'}';
+	}
 }

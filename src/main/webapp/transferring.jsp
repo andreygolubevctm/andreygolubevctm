@@ -18,34 +18,8 @@
 <layout:generic_page title="Transferring you...">
 
 	<jsp:attribute name="head">
-	<%-- Must be in here, as we don't know which vertical, and there's no way to target it based on the page. --%>
-	<script type="text/javascript" src="common/js/transferring.js?${revision}"></script>
-	<style type="text/css">
-		#copyright,#footer,header,#page>h2 {
-			display: none;
-		}
-
-		#logo {
-			margin: 0 auto;
-		}
-
-		.journeyEngineLoader {
-			width: 100%;
-		}
-		.spinner {
-			white-space: nowrap;
-		}
-		#journeyEngineContainer {
-			height: 300px;
-			width: 100%;
-			margin: auto;
-			position: absolute;
-			left: 0;
-			top: 0;
-			right: 0;
-			bottom: 0;
-		}
-		</style>
+		<link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/transferring${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+		<script src="${assetUrl}assets/js/bundles/transferring${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 	</jsp:attribute>
 
 	<jsp:attribute name="head_meta">

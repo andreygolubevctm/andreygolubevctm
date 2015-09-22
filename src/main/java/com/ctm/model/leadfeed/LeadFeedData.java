@@ -178,4 +178,25 @@ public class LeadFeedData {
 	public void setProductId(String productId) {
 		this.productId = productId;
 	}
+
+	@Override
+	public String toString() {
+		return "LeadFeedData{" +
+				"callType=" + callType +
+				", eventDate=" + eventDate +
+				", brandId=" + brandId +
+				", brandCode='" + brandCode + '\'' +
+				", verticalId=" + verticalId +
+				", verticalCode='" + verticalCode + '\'' +
+				", clientName='" + clientName + '\'' +
+				", transactionId=" + transactionId +
+				", phoneNumber='" + phoneNumber + '\'' +
+				", partnerReference='" + partnerReference + '\'' +
+				", partnerBrand='" + partnerBrand + '\'' +
+				", state='" + state + '\'' +
+				", vdn='" + vdn + '\'' +
+				", clientIpAddress='" + clientIpAddress + '\'' +
+				", productId='" + productId + '\'' +
+				'}';
+	}
 }

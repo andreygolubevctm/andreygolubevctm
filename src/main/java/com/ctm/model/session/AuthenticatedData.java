@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /**
  * Extends the DATA object with some quick methods to return and set common values via xpath.
  *
@@ -17,7 +19,7 @@ import java.util.List;
 
 public class AuthenticatedData extends Data {
 
-	private static final Logger logger = LoggerFactory.getLogger(AuthenticatedData.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatedData.class);
 
 	// store the roles in java instead of data bucket
 	private List<Role> simplesUserRoles;
@@ -44,14 +46,14 @@ public class AuthenticatedData extends Data {
 			try {
 				simplesUid = Integer.parseInt(uid);
 			} catch (NumberFormatException e) {
-				logger.error("",e);
+				LOGGER.error("obtained invalid simples uid {}", kv("uid", uid), e);
 			}
 		}
 		return simplesUid;
 	}
 
 	public List<Role> getSimplesUserRoles() {
-		if(simplesUserRoles == null) return new ArrayList<Role>();
+		if(simplesUserRoles == null) return new ArrayList<>();
 		return simplesUserRoles;
 	}
 
@@ -82,11 +84,20 @@ public class AuthenticatedData extends Data {
 
 
 	public List<Rule> getGetNextMessageRules() {
-		if(getNextMessageRules == null) return new ArrayList<Rule>();
+		if(getNextMessageRules == null) return new ArrayList<>();
 		return getNextMessageRules;
 	}
 
 	public void setGetNextMessageRules(List<Rule> getNextMessageRules) {
 		this.getNextMessageRules = getNextMessageRules;
+	}
+
+	@Override
+	public String toString() {
+		return "AuthenticatedData{" +
+				"simplesUserRoles=" + simplesUserRoles +
+				", getNextMessageRules=" + getNextMessageRules +
+				", xml=" + this.getXML() +
+				'}';
 	}
 }

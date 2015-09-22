@@ -1,23 +1,22 @@
 package com.ctm.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.naming.NamingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.settings.ConfigSetting;
-import com.ctm.services.EnvironmentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.model.settings.ConfigSetting.ALL_ENVIRONMENTS;
+import static com.ctm.services.EnvironmentService.getEnvironmentAsString;
 
 public class ConfigSettingsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(ConfigSettingsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigSettingsDao.class);
 
 	/**
 	 * Returns all config settings for the current environment (handled automatically inside the function)
@@ -42,8 +41,8 @@ public class ConfigSettingsDao {
 				"WHERE c.environmentCode = ? or c.environmentCode = ? " +
 				"ORDER BY c.configCode;"
 			);
-			stmt.setString(1, ConfigSetting.ALL_ENVIRONMENTS);
-			stmt.setString(2, EnvironmentService.getEnvironmentAsString());
+			stmt.setString(1, ALL_ENVIRONMENTS);
+			stmt.setString(2, getEnvironmentAsString());
 
 			ResultSet result = stmt.executeQuery();
 
@@ -59,12 +58,9 @@ public class ConfigSettingsDao {
 
 			}
 
-		} catch (SQLException | NamingException e) {
-			logger.error("Failed to get configuration for environment:" + EnvironmentService.getEnvironmentAsString() , e);
-			throw new DaoException(e.getMessage(), e);
 		} catch (Exception e) {
-			logger.error("Failed to get configuration for environment:" + EnvironmentService.getEnvironmentAsString() , e);
-			throw new DaoException(e.getMessage(), e);
+			LOGGER.error("Failed to get config settings {}", kv("environment", getEnvironmentAsString()), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

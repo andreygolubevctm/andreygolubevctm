@@ -2,7 +2,7 @@
 <%@ tag description="Record non fatal error in database."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/error/non_fatal_error.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.error.non_fatal_error')}" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="transactionId" required="false" rtexprvalue="true"  %>
@@ -30,7 +30,7 @@
 
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
-{logger.warn('About to log to error_log {},{},{},{}', log:kv('property', property), log:kv('origin',origin), log:kv('errorMessage',errorMessage), log:kv('errorCode',errorCode))}
+${logger.warn('About to log to error_log {},{},{},{}', log:kv('property', property), log:kv('origin',origin), log:kv('errorMessage',errorMessage), log:kv('errorCode',errorCode))}
 <c:set var="currentTransactionId" value="${data.current.transactionId}" />
 <c:if test="${empty currentTransactionId}">
 	<c:set var="currentTransactionId" value="0" />

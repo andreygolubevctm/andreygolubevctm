@@ -59,4 +59,15 @@ public class IncomingEmail {
 	public EmailMaster getEmailMaster(){
 		return emailMaster;
 	}
+
+	@Override
+	public String toString() {
+		return "IncomingEmail{" +
+				"emailType=" + emailType +
+				", productId='" + productId + '\'' +
+				", transactionId=" + transactionId +
+				", campaignId='" + campaignId + '\'' +
+				", emailMaster=" + emailMaster +
+				'}';
+	}
 }

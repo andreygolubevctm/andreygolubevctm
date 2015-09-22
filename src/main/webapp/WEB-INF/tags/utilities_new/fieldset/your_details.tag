@@ -80,7 +80,3 @@
                               title="moving in date" />
     </form_new:row>
 </form_new:fieldset>
-
-<go:script marker="js-head">
-
-</go:script>

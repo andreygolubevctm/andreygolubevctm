@@ -7,4 +7,8 @@ public class CreditCardServiceException extends RuntimeException {
 	public CreditCardServiceException(String message){
 		super(message);
 	}
+
+	public CreditCardServiceException(Exception e) {
+		super(e);
+	}
 }

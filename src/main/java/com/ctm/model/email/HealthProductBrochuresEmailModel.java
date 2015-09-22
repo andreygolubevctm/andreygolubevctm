@@ -154,5 +154,25 @@ public class HealthProductBrochuresEmailModel extends EmailModel {
 		setSubscriberKey(emailAddress);
 	}
 
-
+	@Override
+	public String toString() {
+		return "HealthProductBrochuresEmailModel{" +
+				"brand='" + brand + '\'' +
+				", transactionId=" + transactionId +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", callcentreHours='" + callcentreHours + '\'' +
+				", productName='" + productName + '\'' +
+				", optIn=" + optIn +
+				", phoneNumber='" + phoneNumber + '\'' +
+				", premium='" + premium + '\'' +
+				", premiumFrequency='" + premiumFrequency + '\'' +
+				", premiumText='" + premiumText + '\'' +
+				", provider='" + provider + '\'' +
+				", smallLogo='" + smallLogo + '\'' +
+				", hospitalPDSUrl='" + hospitalPDSUrl + '\'' +
+				", extrasPDSUrl='" + extrasPDSUrl + '\'' +
+				", applyUrl='" + applyUrl + '\'' +
+				'}';
+	}
 }

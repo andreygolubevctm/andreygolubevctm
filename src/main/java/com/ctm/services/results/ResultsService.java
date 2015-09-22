@@ -30,7 +30,7 @@ public class ResultsService {
 
     private DataSource ds;
     private ArrayList<ResultsTemplateItem> unorganisedList;
-    private static Logger logger = LoggerFactory.getLogger(ResultsService.class.getName());
+    private static Logger LOGGER = LoggerFactory.getLogger(ResultsService.class);
 
     public ResultsService() {
         Context initCtx;
@@ -40,7 +40,7 @@ public class ResultsService {
             // Look up our data source
             ds = (DataSource) envCtx.lookup("jdbc/ctm");
         } catch (NamingException e) {
-            logger.error("Failed to get InitialContext for jdbc/ctm" , e);
+            LOGGER.error("Failed to get InitialContext for jdbc/ctm" , e);
         }
     }
 

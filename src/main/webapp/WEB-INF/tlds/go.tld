@@ -306,6 +306,12 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<description>Whether to send though hasCorrelationId in header</description>
+			<name>sendCorrelationId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 
 		<example>
 			<![CDATA[
@@ -523,51 +529,6 @@
 								csvFilePath="file.csv" startRow="2" startColumn="0" endColumn="10" />
 				<go:importCsvToToken value="xmlOutput" templateVar="${stringVar}"
 								csvFilePath="file.csv" />
-			]]>
-		</example>
-	</tag>
-
-	<tag>
-		<description>Convert a single array to the format of the template</description>
-		<name>arrayToTokenTemplate</name>
-		<tag-class>com.disc_au.web.go.tags.ArrayToTokenTemplate</tag-class>
-		<body-content>tagdependent</body-content>
-		<attribute>
-			<description>The output from token replacing</description>
-			<name>var</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The array to be used</description>
-			<name>array</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The template string to be used</description>
-			<name>templateVar</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The index to start, defaults to 0</description>
-			<name>startElementIndex</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>The index in the array to end, defaults to last element</description>
-			<name>endElementIndex</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<example>
-			<![CDATA[
-				<go:arrayToTokenTemplate value="xmlOutput"
-								templateVar="${stringVar}" startElementIndex="0" endElementIndex="10" />
-				<go:arrayToTokenTemplate value="xmlOutput"
-								templateVar="${stringVar}" />
 			]]>
 		</example>
 	</tag>

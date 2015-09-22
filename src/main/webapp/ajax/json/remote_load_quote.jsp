@@ -1,9 +1,9 @@
-<<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <session:get settings="true" verticalCode="${param.vertical}" />
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.remote_load_quote')}" />
 
 <%--
 	load_quote.jsp

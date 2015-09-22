@@ -17,13 +17,15 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.SettingsService;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ProductService {
 
 	public ProductService(){
 		productDao = new ProductDao();
 	}
 
-	private static final Logger logger = LoggerFactory.getLogger(ProductService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 	private ProductDao productDao;
 
 	public void setProductDao(ProductDao productDao) {
@@ -102,14 +104,14 @@ public class ProductService {
 					creditCard.importFromProduct(product);
 					creditCards.add(creditCard);
 				} else {
-					logger.warn("/creditcards could not find product '" + productCode + "'");
+					LOGGER.warn("Creditcards product not found {}", kv("productCode", productCode));
 				}
 			}
 
 			return creditCards;
 
 		} catch (DaoException e) {
-			throw new CreditCardServiceException(e.getMessage());
+			throw new CreditCardServiceException(e);
 		}
 
 	}

@@ -21,8 +21,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class SpecialOffersDao {
-	private static final Logger logger = LoggerFactory.getLogger(SpecialOffersDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SpecialOffersDao.class);
     private final SpecialOffersHelper helper = new SpecialOffersHelper();
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private final AuditTableDao auditTableDao = new AuditTableDao();
@@ -85,8 +87,8 @@ public class SpecialOffersDao {
             }
             return specialOffersList;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed to retrieve Special Offers", e);
-            throw new DaoException(e.getMessage(), e);
+            LOGGER.error("Failed to retrieve Special Offers {}", kv("offerId", offerId), e);
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }
@@ -122,8 +124,9 @@ public class SpecialOffersDao {
             }
             return specialOffersList;
         } catch (SQLException | NamingException e) {
-            logger.error("Failed to retrieve Special Offers", e);
-            throw new DaoException(e.getMessage(), e);
+            LOGGER.error("Failed to retrieve Special Offers {}, {}, {}, {}, {}", kv("providerId", providerId), kv("styleCodeId",
+                styleCodeId), kv("applicationDate", applicationDate), kv("state", state), kv("verticalId", verticalId), e);
+            throw new DaoException(e);
         } finally {
             dbSource.closeConnection();
         }
@@ -162,9 +165,9 @@ public class SpecialOffersDao {
             dbSource.getConnection().commit();
             return "success";
         } catch (SQLException | NamingException | ParseException e) {
-            logger.error("Failed to delete Special Offers", e);
+            LOGGER.error("Failed to delete Special Offers {}, {}, {}, {}", kv("offerId", offerId), kv("serverDate", serverDate), kv("userName", userName), kv("ipAddress", ipAddress), e);
             rollbackTransaction(dbSource);
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             resetDefaultsAndCloseConnection(dbSource);
         }
@@ -214,9 +217,9 @@ public class SpecialOffersDao {
             dbSource.getConnection().commit();
             specialOffers = fetchSingleRecSpecialOffers(offerId);
         } catch (SQLException | NamingException | ParseException e) {
-            logger.error("Failed to update Special Offers", e);
+            LOGGER.error("Failed to update Special Offers {}, {}, {}", kv("specialOffersParams", specialOffersParams), kv("userName", userName), kv("ipAddress", ipAddress), e);
             rollbackTransaction(dbSource);
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             resetDefaultsAndCloseConnection(dbSource);
         }
@@ -271,9 +274,9 @@ public class SpecialOffersDao {
             dbSource.getConnection().commit();
             specialOffers = fetchSingleRecSpecialOffers(offerId);
         } catch (SQLException | NamingException | ParseException e) {
-            logger.error("Failed to create Special Offers", e);
+            LOGGER.error("Failed to create Special Offers {}, {}, {}", kv("specialOffersParams", specialOffersParams), kv("userName", userName), kv("ipAddress", ipAddress), e);
             rollbackTransaction(dbSource);
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             resetDefaultsAndCloseConnection(dbSource);
         }
@@ -286,10 +289,10 @@ public class SpecialOffersDao {
      */
     private void rollbackTransaction(SimpleDatabaseConnection dbSource) throws DaoException {
         try {
-            logger.error("Transaction is being rolled back");
+            LOGGER.error("Transaction is being rolled back");
             dbSource.getConnection().rollback();
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
     }
 
@@ -303,7 +306,7 @@ public class SpecialOffersDao {
             dbSource.getConnection().commit();
             dbSource.getConnection().setAutoCommit(autoCommit);
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
         dbSource.closeConnection();
     }

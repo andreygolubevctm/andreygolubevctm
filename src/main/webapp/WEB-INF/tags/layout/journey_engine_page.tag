@@ -4,7 +4,6 @@
 <jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="Page title" %>
-<%@ attribute name="sessionPop"		required="false"  rtexprvalue="true"	 description="Set to 'false' to disable session pop" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -33,7 +32,7 @@
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
-<layout:page sessionPop="${sessionPop}" kampyle="true" title="${title}">
+<layout:page title="${title}">
 
 	<jsp:attribute name="head">
 		<link rel="stylesheet" href="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.css">

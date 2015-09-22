@@ -24,9 +24,11 @@ import org.json.JSONObject;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 @Path("/rego")
 public class RegoLookupRouter {
-	private static final Logger logger = LoggerFactory.getLogger(RegoLookupRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(RegoLookupRouter.class);
 
     private static final String COLLECTION_LABEL = "vehicle_data";
     /*
@@ -61,7 +63,8 @@ public class RegoLookupRouter {
         try {
             CarRegoLookupDao.logLookup(transactionId, plateNumber, state, request_status);
         } catch(DaoException e) {
-            logger.error("[rego lookup] Error adding request to log: " + e.getMessage());
+            LOGGER.error("[rego lookup] Error logging car rego request {},{},{},{}", kv("transactionId", transactionId),
+                kv("plateNumber", plateNumber), kv("state", state), kv("request_status", request_status));
         }
 
         return result;

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.rating.health_price_service_PHIO')}" />
 
 <jsp:useBean id="resultsList" class="java.util.ArrayList" scope="request" />
 <jsp:useBean id="healthPriceService" class="com.ctm.services.health.HealthPriceService" scope="page" />
@@ -84,7 +84,7 @@ ${healthPriceService.getHealthPriceRequest().setIsSimples(isSimples)}
 ${healthPriceService.setShowAll(showAll)}
 ${healthPriceService.setApplicationDate(applicationDate)}
 ${healthPriceService.setup()}
-${logger.debug('Starting results jsp. {}', log:kv('param.QuoteData ', param.QuoteData ))}
+${logger.trace('Starting results jsp. {}', log:kv('param.QuoteData ', param.QuoteData ))}
 
 			<c:choose>
 	<c:when test="${showAll}">
