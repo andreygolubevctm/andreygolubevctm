@@ -175,6 +175,8 @@
     <health_layout:slide_application_details />
     <health_layout:slide_payment_details />
 
+    <health_new:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
+
     <input type="hidden" name="transcheck" id="transcheck" value="1" />
   </jsp:body>
 </layout:journey_engine_page>

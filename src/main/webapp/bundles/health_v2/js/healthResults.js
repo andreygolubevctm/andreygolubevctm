@@ -782,7 +782,7 @@
         }
     }
 
-    function setSelectedProduct(product, premiumChangeEvent) {
+    function setSelectedProduct(product, premiumChangeEvent, showIncPrice) {
 
         selectedProduct = product;
 
@@ -802,7 +802,7 @@
             $_main.find('.health_application_details_providerName').val(selectedProduct.info.providerName);
 
             if (premiumChangeEvent === true) {
-                meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct);
+                meerkat.messaging.publish(moduleEvents.healthResults.PREMIUM_UPDATED, selectedProduct, showIncPrice);
             } else {
                 meerkat.messaging.publish(moduleEvents.healthResults.SELECTED_PRODUCT_CHANGED, selectedProduct);
                 $(Results.settings.elements.rows).removeClass("active");
@@ -811,16 +811,15 @@
                 var targetPosition = $targetProduct.data('position') + 1;
                 $targetProduct.addClass("active");
                 Results.pagination.gotoPosition(targetPosition, true, false);
+
+                // update transaction details otherwise we will have to wait until people get to payment page
+                meerkat.modules.writeQuote.write({
+                    health_application_provider: selectedProduct.info.provider,
+                    health_application_productId: selectedProduct.productId,
+                    health_application_productName: selectedProduct.info.productCode,
+                    health_application_productTitle: selectedProduct.info.productTitle
+                }, false);
             }
-
-            // update transaction details otherwise we will have to wait until people get to payment page
-            meerkat.modules.writeQuote.write({
-                health_application_provider: selectedProduct.info.provider,
-                health_application_productId: selectedProduct.productId,
-                health_application_productName: selectedProduct.info.productCode,
-                health_application_productTitle: selectedProduct.info.productTitle
-            }, false);
-
         }
 
     }

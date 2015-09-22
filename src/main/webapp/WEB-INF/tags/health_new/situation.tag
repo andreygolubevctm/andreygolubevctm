@@ -75,7 +75,10 @@
 					<field_new:general_select xpath="${fieldXpath}" type="healthSitu" className="health-situation-healthSitu" required="true" title="situation type" />
 				</form_new:row>
 
+				<%-- Moved from details page. To keep the same xpath we have to manually setup them again --%>
 				<c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
+				<c:set var="name" value="${go:nameFromXpath(xpath)}" />
+
 				<c:set var="fieldXpath" value="${xpath}/primary/dob" />
 				<form_new:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
 					<field_new:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
@@ -83,7 +86,7 @@
 
 				<c:set var="fieldXpath" value="${xpath}/primary/cover" />
 				<form_new:row label="Do you currently hold private health insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
-					<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
+					<field_new:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" id="${name}_health_cover"/>
 				</form_new:row>
 
 				<%-- Medicare card question --%>

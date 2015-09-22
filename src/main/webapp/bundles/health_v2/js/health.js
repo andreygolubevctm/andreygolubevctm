@@ -319,6 +319,9 @@
 
 				if(event.isBackward === true){
 					meerkat.modules.healthResults.onReturnToPage();
+					if(meerkat.modules.healthCoverDetails.hasRatesChanged()) {
+						meerkat.modules.healthResults.get();
+					}
 				}
 
 				if(event.isForward === true){
@@ -464,6 +467,9 @@
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
+				if(event.isForward === true) {
+					meerkat.modules.healthCoverDetails.showModal('journey-mode');
+				}
 				// Need to call this after the form is visible because of the show/hiding of buttons based on visibility.
 				healthDependents.updateDependentOptionsDOM();
 			}
@@ -643,8 +649,8 @@
 			],
 			dob_secondary:[
 				{
-					$field: $("#health_healthCover_partner_dob"), // this is a hidden field
-					$fieldInput: $("#health_healthCover_partner_dob") // pointing at the same field as a trick to force change event on itself when forward populated
+					$field: $('.healthDetailsHiddenFields').find("input[name='health_healthCover_partner_dob']"), // this is a hidden field
+					$fieldInput: $('.healthDetailsHiddenFields').find("input[name='health_healthCover_partner_dob']") // pointing at the same field as a trick to force change event on itself when forward populated
 				},
 				{
 					$field: $("#health_application_partner_dob"), // this is a hidden field
@@ -743,44 +749,49 @@
 
 	function loadRatesBeforeResultsPage(callback) {
 
+		var $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
+
 		var postData = {
-			income: '0',
-			rebate_choice: 'Y',
+			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val() || '0',
+			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() || 'Y',
 			primary_current: $(':input[name="health_healthCover_primary_cover"]:checked').val(),
-			primary_loading: '',
+			primary_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_healthCoverLoading"]').val(),
 			primary_loading_manual:$('#health_healthCover_primary_lhc').val(),
 			primary_dob:$('#health_healthCover_primary_dob').val(),
 			cover:$('#health_situation_healthCvr').val()
 		};
 
 		// If the customer answers Yes for current health insurance, assume 0% LHC
-		if (postData.primary_current === 'Y') {
+		if (postData.primary_current === 'Y' && postData.primary_loading !=='N') {
 			postData.primary_loading = 'Y';
 		}
 
 		// If has a partner, use the same data as the primary to calculate the LHC
 		if (hasPartner()) {
-			postData.partner_dob = postData.primary_dob;
-			postData.partner_current = postData.primary_current;
-			postData.partner_loading = postData.primary_loading;
+			postData.partner_dob = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_dob"]').val() || postData.primary_dob;
+			postData.partner_current = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_cover"]').val() || postData.primary_current;
+			postData.partner_loading = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_healthCoverLoading"]').val() || postData.primary_loading;
+			postData.partner_loading_manual = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_lhc"]').val();
 		}
 
-		fetchRates(postData, callback);
+		fetchRates(postData, true, callback);
 	}
 
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
 	function loadRates(callback){
 
+		var $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
+
 		var postData = {
 			dependants: $('#health_healthCover_dependants').val(),
-			income:$('#health_healthCover_income').val(),
-			rebate_choice:$(':input[name="health_healthCover_rebate"]:checked').val(),
-			primary_loading:$(':input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
+			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val(),
+			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val(),
+			primary_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_healthCoverLoading"]').val(),
 			primary_current: $(':input[name="health_healthCover_primary_cover"]:checked').val(),
-			primary_loading_manual:$('#health_healthCover_primary_lhc').val(),
-			partner_loading:$(':input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
-			partner_current:$(':input[name="health_healthCover_partner_cover"]:checked').val(),
-			partner_loading_manual:$('#health_healthCover_partner_lhc').val(),
+			primary_loading_manual: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_lhc"]').val(),
+			partner_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_healthCoverLoading"]').val(),
+			partner_current: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_cover"]').val(),
+			partner_loading_manual: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_lhc"]').val(),
 			cover:$('#health_situation_healthCvr').val()
 		};
 
@@ -788,7 +799,7 @@
 
 			// before application stage
 			postData.primary_dob = $('#health_healthCover_primary_dob').val();
-			postData.partner_dob = $('#health_healthCover_partner_dob').val();
+			postData.partner_dob = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_dob"]').val();
 
 		} else {
 
@@ -800,10 +811,10 @@
 
 		}
 
-		fetchRates(postData, callback);
+		fetchRates(postData, true, callback);
 	}
 
-	function fetchRates(postData, callback) {
+	function fetchRates(postData, canSetRates, callback) {
 		// Check if there is enough data to ask the server.
 		var coverTypeHasPartner = hasPartner();
 		if(postData.cover === '') return false;
@@ -827,7 +838,7 @@
 			cache:true,
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
-				setRates(data);
+				if(canSetRates === true) setRates(data);
 				if(callback != null) callback(data);
 			}
 		});
@@ -1177,18 +1188,6 @@
 		}
 	}
 
-	// Hide/show simple Rebate dialogue when toggle rebate options in simples journey
-	function toggleRebateDialogue() {
-		// apply rebate
-		if ($('#health_healthCover_rebate_Y').is(':checked')) {
-			$('.simples-dialogue-37').removeClass('hidden');
-		}
-		// no rebate
-		else if ($('#health_healthCover_rebate_N').is(':checked')){
-			$('.simples-dialogue-37').addClass('hidden');
-		}
-	}
-
 	// Disable/enable follow up/New quote dialogue when the other checkbox ticked in Chat Callback sesction in simples
 	function toggleDialogueInChatCallback() {
 		var $followUpCallField = $('.follow-up-call input:checkbox');
@@ -1283,7 +1282,9 @@
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
 		getRates: getRates,
+		setRates: setRates,
 		getRebate: getRebate,
+		fetchRates: fetchRates,
 		loadRates: loadRates,
 		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage
 	});
