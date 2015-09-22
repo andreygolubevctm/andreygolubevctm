@@ -282,7 +282,7 @@ public class SOAPAggregatorTag extends TagSupport {
 		isValidVar = null;
 		continueOnValidationError = false;
 		brand = null;
-		correlationId = null;
+		correlationId = Optional.empty();
 	}
 
 	/**
