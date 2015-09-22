@@ -2,7 +2,7 @@ package com.ctm.logging;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
-import java.net.HttpURLConnection;
+import java.net.URLConnection;
 import java.util.Optional;
 
 public class CorrelationIdUtils {
@@ -29,7 +29,7 @@ public class CorrelationIdUtils {
         threadLocalCorrelationId.set(correlationId);
     }
 
-    public static void setCorrelationIdHeader(HttpURLConnection connection) {
+    public static void setCorrelationIdHeader(URLConnection connection) {
         getCorrelationId().ifPresent(correlationId -> connection.setRequestProperty(CORRELATION_ID_HEADER, correlationId));
     }
 

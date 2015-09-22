@@ -67,7 +67,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 	private boolean continueOnValidationError;
 	private Brand brand;
-	private Optional<String> correlationId = Optional.empty();
+	private Optional<String> correlationIdMaybe = Optional.empty();
 	private boolean sendCorrelationId;
 
 	@SuppressWarnings("unused")
@@ -103,30 +103,32 @@ public class SOAPAggregatorTag extends TagSupport {
 		String debugXml = null;
 		String resultXml = null;
 		try {
+			correlationIdMaybe = CorrelationIdUtils.getCorrelationId();
+			configuration.setSendCorrelationId(sendCorrelationId);
 			XmlParser parser = new XmlParser();
-		setUpConfiguration();
+			setUpConfiguration();
 
 		/* validate the xml if a xsd has been specified in the config */
-		boolean valid = true;
+			boolean valid = true;
 
-		try {
+			try {
 			valid = schemaValidation.validateSchema(this.pageContext , this.xml, configuration.getValidationFile());
 		} catch (MalformedURLException e1) {
 			LOGGER.error("failed to validate xml", e1);
 		}
 
-		if(isValidVar != null && !isValidVar.isEmpty()) {
+			if(isValidVar != null && !isValidVar.isEmpty()) {
 			pageContext.setAttribute(isValidVar, valid, PageContext.PAGE_SCOPE);
 		}
-		if(valid || continueOnValidationError) {
+			if(valid || continueOnValidationError) {
 
-		try {
+			try {
 			// Create the client threads and launch each one
 			HashMap<Thread, SOAPClientThread> threads = new HashMap<>();
-				for (SoapClientThreadConfiguration serviceItemConfig : configuration.getServices()) {
+			for (SoapClientThreadConfiguration serviceItemConfig : configuration.getServices()) {
 
-						// Replace ctm with real context path (for feature branches)
-						if (!"ctm/".equals(EnvironmentService.getContextPath())
+					// Replace ctm with real context path (for feature branches)
+					if (!"ctm/".equals(EnvironmentService.getContextPath())
 								&& (EnvironmentService.getEnvironment() == LOCALHOST
 								|| EnvironmentService.getEnvironment() == NXI
 								|| EnvironmentService.getEnvironment() == NXS)
@@ -135,13 +137,10 @@ public class SOAPAggregatorTag extends TagSupport {
 							LOGGER.debug("Modified service URL. {} ", kv("serviceItemConfig",  serviceItemConfig));
 						}
 
-						// Give each one a meaningful name
-						String threadName = this.transactionId + " " + serviceItemConfig.getName();
+					// Give each one a meaningful name
+					String threadName = this.transactionId + " " + serviceItemConfig.getName();
 
 					SOAPClientThread client;
-					if(sendCorrelationId) {
-						correlationId = CorrelationIdUtils.getCorrelationId();
-					}
 
 					if (serviceItemConfig.getType() != null && serviceItemConfig.getType().equals("url-encoded")) {
 					client = new HtmlFormClientThread(transactionId,
@@ -257,8 +256,8 @@ public class SOAPAggregatorTag extends TagSupport {
 	}
 
 	private void setupThreadVariable() {
-		setLoggingVariables(transactionId, brand.getCode(), Vertical.VerticalType.findByCode(verticalCode), correlationId);
-		setCorrelationId(correlationId);
+		setLoggingVariables(transactionId, brand.getCode(), Vertical.VerticalType.findByCode(verticalCode), correlationIdMaybe);
+		setCorrelationId(correlationIdMaybe);
 	}
 
 	private void setUpConfiguration() {
@@ -282,7 +281,7 @@ public class SOAPAggregatorTag extends TagSupport {
 		isValidVar = null;
 		continueOnValidationError = false;
 		brand = null;
-		correlationId = Optional.empty();
+		correlationIdMaybe = Optional.empty();
 	}
 
 	/**

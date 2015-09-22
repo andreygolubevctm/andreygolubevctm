@@ -27,6 +27,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.security.*;
 import java.security.cert.CertificateException;
@@ -78,7 +79,7 @@ public class SOAPClientThread implements Runnable {
 
 	private String debugPath;
 
-	private SoapAggregatorConfiguration soapConfiguration;
+	private SoapAggregatorConfiguration aggregatorConfiguration;
 
 	private XMLOutputWriter writer;
 
@@ -109,7 +110,7 @@ public class SOAPClientThread implements Runnable {
 		this.name = threadName;
 		this.xml = xmlData;
 		this.tranId = tranId;
-		this.soapConfiguration = soapConfiguration;
+		this.aggregatorConfiguration = soapConfiguration;
 
 		if (configuration.getContentType() == null || configuration.getContentType().trim().length()==0){
 			configuration.setContentType(DEFAULT_CONTENT_TYPE);
@@ -168,7 +169,6 @@ public class SOAPClientThread implements Runnable {
 				u = new URL(configuration.getUrl());
 				connection = (HttpsURLConnection) u.openConnection();
 
-				CorrelationIdUtils.setCorrelationIdHeader(connection);
 
 				if (configuration.getClientCert() !=null && configuration.getClientCertPass() != null){
 					LOGGER.debug("Using Cert: " + configuration.getClientCert());
@@ -217,6 +217,8 @@ public class SOAPClientThread implements Runnable {
 				connection = (HttpURLConnection) u.openConnection();
 
 			}
+
+			setCorrelationIdHeader(connection);
 
 			connection.setReadTimeout(configuration.getTimeoutMillis());
 			connection.setDoOutput(true);
@@ -332,6 +334,13 @@ public class SOAPClientThread implements Runnable {
 		return returnData.toString();
 	}
 
+
+	protected void setCorrelationIdHeader(URLConnection connection) {
+		if(aggregatorConfiguration.isSendCorrelationId()) {
+			CorrelationIdUtils.setCorrelationIdHeader(connection);
+		}
+	}
+
 	private String matchKeywords(String soapResponse) {
 		String errorData = "";
 		for(String keyword : keywords) {
@@ -372,7 +381,7 @@ public class SOAPClientThread implements Runnable {
 	public void run() {
 		beforeRun.apply();
 		this.timer = System.currentTimeMillis();
-		if(soapConfiguration.isWriteToFile()){
+		if(aggregatorConfiguration.isWriteToFile()){
 			writer = new XMLOutputWriter(this.name , debugPath);
 			writer.writeXmlToFile(maskXml(this.xml , configuration.getMaskReqInXSL()) , REQ_IN);
 		}
@@ -393,7 +402,7 @@ public class SOAPClientThread implements Runnable {
 		// Translate the page xml to be suitable for the client
 		String soapRequest = translator.translate(configuration.getOutboundXsl(), this.xml, configuration.getOutboundParms(), params, true);
 
-		if(soapConfiguration.isWriteToFile()){
+		if(aggregatorConfiguration.isWriteToFile()){
 			writer.writeXmlToFile(maskXml(soapRequest , configuration.getMaskReqInXSL()), REQ_OUT);
 		}
 
@@ -414,7 +423,7 @@ public class SOAPClientThread implements Runnable {
 				}
 			}
 
-			if(soapConfiguration.isWriteToFile()){
+			if(aggregatorConfiguration.isWriteToFile()){
 				writer.writeXmlToFile(maskXml(soapResponse , configuration.getMaskReqInXSL()), RESP_IN);
 			}
 
@@ -469,7 +478,7 @@ public class SOAPClientThread implements Runnable {
 				this.setResultXML(soapResponse);
 			}
 
-			if(soapConfiguration.isWriteToFile()){
+			if(aggregatorConfiguration.isWriteToFile()){
 				writer.lastWriteXmlToFile(this.resultXML);
 		}
 	}
