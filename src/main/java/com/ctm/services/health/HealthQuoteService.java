@@ -20,7 +20,8 @@ import com.ctm.services.CommonQuoteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +31,7 @@ import static com.ctm.model.settings.Vertical.VerticalType.HEALTH;
 
 public class HealthQuoteService extends CommonQuoteService<HealthQuote> {
 
-    private static final Logger logger = Logger.getLogger(HealthQuoteService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HealthQuoteService.class);
 
     public Pair<Boolean, List<HealthResult>> getQuotes(Brand brand, HealthRequest data, Content alternatePricingContent) {
 
@@ -72,7 +73,7 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote> {
             return results;
 
         }catch(IOException e){
-            logger.error("Error parsing or connecting to car-quote", e);
+            LOGGER.error("Error parsing or connecting to car-quote", e);
         }
 
         return null;
@@ -116,7 +117,7 @@ public class HealthQuoteService extends CommonQuoteService<HealthQuote> {
             return SummaryResponseAdapter.adapt(data, healthResponse);
 
         }catch(IOException e){
-            logger.error("Error parsing or connecting to car-quote", e);
+            LOGGER.error("Error parsing or connecting to car-quote", e);
         }
 
         return null;
