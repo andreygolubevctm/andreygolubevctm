@@ -807,7 +807,7 @@
 
 	// Make the rebate available publicly, and handle rates property being null.
 	function getRebate() {
-		if (rates != null && rates.rebate) {
+		if (rates !== null && rates.rebate) {
 			return rates.rebate;
 		}
 		else {
@@ -885,7 +885,7 @@
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
 				setRates(data);
-				if(callback != null) callback(data);
+				if(callback !== null) callback(data);
 			}
 		});
 	}
@@ -1081,7 +1081,7 @@
 					var extraParameters = "";
 
 					if (meerkat.site.utm_source !== '' && meerkat.site.utm_medium !== '' && meerkat.site.utm_campaign !== ''){
-						extraParameters = "&utm_source=" + meerkat.site.utm_source + "&utm_medium=" + meerkat.site.utm_medium + "&utm_campaign=" + meerkat.site.utm_campaign
+						extraParameters = "&utm_source=" + meerkat.site.utm_source + "&utm_medium=" + meerkat.site.utm_medium + "&utm_campaign=" + meerkat.site.utm_campaign;
 					}
 
 				// Success

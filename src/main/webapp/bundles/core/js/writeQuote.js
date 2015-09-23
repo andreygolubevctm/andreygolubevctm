@@ -31,8 +31,7 @@
 
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function() {
 
-			if(typeof meerkat.site.watchedFields == 'undefined'
-				|| meerkat.site.watchedFields === '') {
+			if(typeof meerkat.site.watchedFields == 'undefined' || meerkat.site.watchedFields === '') {
 				return false;
 			}
 

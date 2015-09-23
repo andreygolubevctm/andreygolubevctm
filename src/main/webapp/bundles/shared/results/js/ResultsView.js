@@ -1,5 +1,4 @@
-var ResultsView = new Object();
-ResultsView = {
+var ResultsView = {
 
 	rowHeight: false,
 	rowWidth: false,
@@ -23,12 +22,6 @@ ResultsView = {
 	/* Displays the results */
 	show: function() {
 
-		try{
-			// TODO REMOVE
-			$.address.parameter("stage", "results", false );
-		}catch(e){
-
-		}
 		// show filters bar if exists
 		if( typeof(Filters) != "undefined" && $(Filters.settings.elements.filtersBar).length > 0 ){
 			Results.view.toggleFilters('show');
@@ -239,25 +232,25 @@ ResultsView = {
 		var results;
 		var resultRow = "";
 		var resultsHtml = "";
-
+		var unavailableCombinedTemplate = "";
 		// result template
 		var resultTemplate = $(Results.settings.elements.templates.result).html();
-		if( resultTemplate == "" ){
+		if( resultTemplate === "" ){
 			console.log("The result template could not be found: templateSelector=",Results.settings.elements.templates.result,"This template is mandatory, make sure to pass the correct selector to the Results.settings.elements.templates.result user setting when calling Results.init()");
 		}
 
 		// unavailable template
 		if(Results.settings.elements.templates.unavailable){
 			var unavailableTemplate = $(Results.settings.elements.templates.unavailable).html();
-			if( unavailableTemplate == "" ){
+			if( unavailableTemplate === "" ){
 				console.log("The unavailable template could not be found: templateSelector=",Results.settings.elements.templates.unavailable,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailable user setting when calling Results.init()");
 			}
 		}
 
 		// unavailable combined template
 		if (Results.settings.elements.templates.unavailableCombined) {
-			var unavailableCombinedTemplate = $(Results.settings.elements.templates.unavailableCombined).html();
-			if (unavailableCombinedTemplate == "") {
+			unavailableCombinedTemplate = $(Results.settings.elements.templates.unavailableCombined).html();
+			if (unavailableCombinedTemplate === "") {
 				console.log("The unavailable combined template could not be found: templateSelector=",Results.settings.elements.templates.unavailableCombinedTemplate, "If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailableCombinedTemplate user setting when calling Results.init()");
 			}
 		}
@@ -265,7 +258,7 @@ ResultsView = {
 		// error template
 		if(Results.settings.elements.templates.error){
 			var errorTemplate = $(Results.settings.elements.templates.error).html();
-			if( errorTemplate == "" ){
+			if( errorTemplate === "" ){
 				console.log("The error template could not be found: templateSelector=",Results.settings.elements.templates.error,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.error user setting when calling Results.init()");
 			}
 		}
@@ -273,7 +266,7 @@ ResultsView = {
 		// current product template
 		if(Results.settings.elements.templates.currentProduct){
 			var currentProductTemplate = $(Results.settings.elements.templates.currentProduct).html();
-			if( currentProductTemplate == "" ){
+			if( currentProductTemplate === "" ){
 				console.log("The current Product template could not be found: templateSelector=",Results.settings.elements.templates.currentProduct,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.currentProduct user setting when calling Results.init()");
 			}
 		}
@@ -289,8 +282,8 @@ ResultsView = {
 		$.each(results, function(index, result){
 
 			var productAvailability = null;
-			if( Results.settings.paths.availability.product && Results.settings.paths.availability.product != "" ){
-				var productAvailability = Object.byString(result, Results.settings.paths.availability.product);
+			if( Results.settings.paths.availability.product && Results.settings.paths.availability.product !== "" ){
+				productAvailability = Object.byString(result, Results.settings.paths.availability.product);
 			}
 
 			if( typeof productAvailability !== "undefined" && productAvailability !== "Y" && !unavailableTemplate ){
@@ -336,7 +329,7 @@ ResultsView = {
 
 		});
 
-		if (Results.settings.show.hasOwnProperty('unavailableCombined') && Results.settings.show.unavailableCombined === true && countUnavailable > 0) {
+		if (Results.settings.show.hasOwnProperty('unavailableCombined') && Results.settings.show.unavailableCombined === true && countUnavailable > 0 && unavailableCombinedTemplate !== "") {
 			resultRow = $( Results.view.parseTemplate(unavailableCombinedTemplate, results) );
 			resultsHtml += $(resultRow)[0].outerHTML;
 		}
@@ -526,7 +519,7 @@ ResultsView = {
 
 			});
 			
-			var animationDuration = Results.view.shuffleTransitionDuration != 0 ? Results.view.shuffleTransitionDuration : Results.settings.animation.shuffle.options.duration + 50;
+			var animationDuration = Results.view.shuffleTransitionDuration !== 0 ? Results.view.shuffleTransitionDuration : Results.settings.animation.shuffle.options.duration + 50;
 
 			// launch the animations (this is for jQuery animations)
 			$(Results.settings.elements.rows).clearQueue( Results.settings.animation.filter.queue ).dequeue( Results.settings.animation.shuffle.options.queue );
@@ -648,28 +641,29 @@ ResultsView = {
 			Results.view.setDisplayMode( Results.settings.displayMode, "partial" );
 		}, 0);
 
+		var animationDuration = 0;
 		if(Results.settings.animation.filter.active === true){
 
 			// launch the animations (jquery)
 			$(Results.settings.elements.rows).clearQueue( Results.settings.animation.shuffle.options.queue ).dequeue( Results.settings.animation.filter.queue );
 
 			// determine when to trigger the end of the animations
-			var animationDuration = 0;
+			animationDuration = 0;
 			// no need to wait if nothing is animated
-			if( countMoved == 0 && countFadedIn == 0 && countFadedOut == 0 ){
+			if( countMoved === 0 && countFadedIn === 0 && countFadedOut === 0 ){
 				animationDuration = 1;
 			// if css transition are handled by the browsers, use the determined longest animation duration
-			} else if( Results.view.filterTransitionDuration != 0 ){
+			} else if( Results.view.filterTransitionDuration !== 0 ){
 				animationDuration = Results.view.filterTransitionDuration;
 				animationDuration += 200;
 			// if no css transitions, determine longest duration out of jquery animate option objects
 			} else {
 
-				var durations = new Array();
+				var durations = [];
 
-				if( countMoved != 0 ) 		durations.push( Results.settings.animation.filter.reposition.options.duration );
-				if( countFadedIn != 0 ) 	durations.push( Results.settings.animation.filter.appear.options.duration );
-				if( countFadedOut != 0 ) 	durations.push( Results.settings.animation.filter.disappear.options.duration );
+				if( countMoved !== 0 ) 		durations.push( Results.settings.animation.filter.reposition.options.duration );
+				if( countFadedIn !== 0 ) 	durations.push( Results.settings.animation.filter.appear.options.duration );
+				if( countFadedOut !== 0 ) 	durations.push( Results.settings.animation.filter.disappear.options.duration );
 
 				$.each( durations, function(index, duration) {
 					if( duration > animationDuration ){
@@ -680,8 +674,6 @@ ResultsView = {
 				animationDuration += 50; // add 50ms security otherwise the afterAnimation() sometimes runs before animation is finished
 
 			}
-		}else{
-			animationDuration = 0;
 		}
 
 		// end of animations
@@ -826,7 +818,7 @@ ResultsView = {
 
 			// jquery animate
 			} else {
-				var animatedProperty = new Object();
+				var animatedProperty = {};
 
 				if( Results.view.orientation == 'horizontal' ){
 					animatedProperty = { top: top };
@@ -949,13 +941,11 @@ ResultsView = {
 
 			$("body, html").animate({scrollTop: 0}, 500);
 
-			Results.view.toggleReferenceNo(); // will hide the reference No
-
 			$(Results.settings.formSelector).find(':input').removeAttr("data-visible");
 			$(Results.settings.formSelector).find(':input:visible, .ui-dialog :input, .force-invisible-select :input').attr("data-visible", "true");
-
-			if( $('#page').length > 0 ){
-				$('#page').slideUp('fast', function() {
+			var $page = $('#page');
+			if( $page.length > 0 ){
+				$page.slideUp('fast', function() {
 					$(Results.settings.elements.page).show();
 					Results.view.toggleHeaderSize(); // will narrow the height of the header
 					Results.view.toggleProgressBar(); // will hide the progress bar
@@ -978,7 +968,6 @@ ResultsView = {
 
 			Results.view.toggleHeaderSize(); // will set the header back to its normal height
 			Results.view.toggleProgressBar(); // will show the progress bar
-			Results.view.toggleReferenceNo(); // will show the reference No
 			Results.view.toggleFilters('hide'); // will hide the filters
 			Results.view.toggleCompare('hide'); // will hide the compare bar
 			Results.view.toggleResultsSummary(); // will hide the results summary
@@ -1010,12 +999,6 @@ ResultsView = {
 		$('#steps').toggle(0);
 	},
 
-	toggleReferenceNo: function(){
-		if( typeof referenceNo != 'undefined' && referenceNo.showReferenceNumber ){
-			$(referenceNo.elements.root).slideToggle(200);
-		}
-	},
-
 	toggleCompare: function( action ){
 		if( typeof(Compare) != "undefined" ){
 			if(action && action == "hide"){
@@ -1044,24 +1027,22 @@ ResultsView = {
 	},
 
 	toggleHeaderSize: function(){
-		if( $('#header').hasClass("normal-header") ){
-			$('#header').removeClass("normal-header");
-			$('#header').addClass("narrow-header");
+		var $header = $('#header');
+		if( $header.hasClass("normal-header") ){
+			$header.removeClass("normal-header").addClass("narrow-header");
 		} else {
-			$('#header').removeClass("narrow-header");
-			$('#header').addClass("normal-header");
+			$header.removeClass("narrow-header").addClass("normal-header");
 		}
 	},
 
 	toggleResultsSummary: function(){
 		$("#resultsDes").hide();
-
-		if( $('#navContainer #summary-header').length === 0 ) {
-			$('#summary-header').prependTo('#navContainer');
-			$('#summary-header').show();
+		var $summaryHeader = $('#navContainer #summary-header');
+		if( $summaryHeader.length === 0 ) {
+			$summaryHeader.prependTo('#navContainer').show();
 		} else {
-			$('#summary-header').toggle();
-		};
+			$summaryHeader.toggle();
+		}
 	},
 
 

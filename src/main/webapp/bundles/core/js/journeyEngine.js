@@ -157,7 +157,7 @@
 
 			var stepToShow = settings.steps[0]; // default...
 			processStep(0, function(step, validated){
-				if(step == null) step = stepToShow;
+				if(step === null) step = stepToShow;
 				settings.startStepId = step.navigationId;
 
 				if(validated){
@@ -203,7 +203,7 @@
 				try{
 
 					onStepEnter(step, eventObject);
-					if(step.onAfterEnter != null) step.onAfterEnter(eventObject);
+					if(step.onAfterEnter !== null) step.onAfterEnter(eventObject);
 
 					currentStep = step;
 
@@ -212,8 +212,8 @@
 					validateStep(step, function successCallback(){
 
 
-						if(currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
-						if(currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
+						if(currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
+						if(currentStep.onAfterLeave !== null) currentStep.onAfterLeave(eventObject);
 
 						// continue to next step...
 						_.defer(function(){
@@ -233,10 +233,10 @@
 
 	// tries to run onInitialise() of the step being accessed if not done already, and runs the onBeforeEnter()
 	function onStepEnter(step, eventObject){
-		if(step.initialised === false && step.onInitialise != null) step.onInitialise(eventObject);
+		if(step.initialised === false && step.onInitialise !== null) step.onInitialise(eventObject);
 		step.initialised = true;
 		updateCurrentStepHiddenField(step);
-		if(step.onBeforeEnter != null) step.onBeforeEnter(eventObject);
+		if(step.onBeforeEnter !== null) step.onBeforeEnter(eventObject);
 	}
 
 	/* Navigation change - do not call directly, update window hash to trigger this event */
@@ -320,7 +320,7 @@
 		// home loans update the transaction details before the STEP_CHANGED event is fired.
 		meerkat.messaging.publish(moduleEvents.BEFORE_STEP_CHANGED);
 
-		if(currentStep !== null && currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
+		if(currentStep !== null && currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
 
 		onStepEnter(step, eventObject);
 
@@ -368,7 +368,7 @@
 		}
 
 		function onHidePreviousStep(){
-			if(currentStep != null && currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
+			if(currentStep !== null && currentStep.onAfterLeave !== null) currentStep.onAfterLeave(eventObject);
 		}
 	}
 
@@ -382,7 +382,7 @@
 
 		// Change the browser title
 		var title = meerkat.site.title;
-		if(currentStep.title != null) title = currentStep.title+' - '+title;
+		if(currentStep.title !== null) title = currentStep.title+' - '+title;
 		window.document.title = title;
 
 		// If defined, scroll to an element
@@ -392,7 +392,7 @@
 
 		// Run callbacks
 		if(triggerEnterMethod === true){
-			if(currentStep.onAfterEnter != null) currentStep.onAfterEnter(eventObject);
+			if(currentStep.onAfterEnter !== null) currentStep.onAfterEnter(eventObject);
 		}
 
 		unlock();
@@ -411,14 +411,14 @@
 
 		meerkat.messaging.publish(eventType, eventObject);
 
-		if(currentStep.tracking != null){
+		if(currentStep.tracking !== null){
 			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, currentStep.tracking);
 			$('.journeyNavButton').removeClass('poke');
 		} else {
 			$('.journeyNavButton').addClass('poke');
 		}
 
-		if(currentStep.externalTracking != null){
+		if(currentStep.externalTracking !== null){
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, currentStep.externalTracking);
 		}
 
@@ -434,12 +434,12 @@
 
 			$slide.fadeIn(250,function onShow(){
 				$slide.removeClass('hiddenSlide').addClass('active');
-				if(callback != null) callback();
+				if(callback !== null) callback();
 			});
 
 		}else{
 			$slide.removeClass('hiddenSlide').addClass("active");
-			if(callback != null) callback();
+			if(callback !== null) callback();
 		}
 	}
 
@@ -466,7 +466,7 @@
 	/* Iterate over array and return step item */
 	function getStep(navigationId){
 		var index = getStepIndex(navigationId);
-		if(index == null) return null;
+		if(index === null) return null;
 		return settings.steps[index];
 	}
 
@@ -513,7 +513,7 @@
 
 		var waitForCallback = false;
 
-		if(step.validation != null){
+		if(step.validation !== null){
 
 			if(step.validation.validate === true){
 
@@ -547,7 +547,7 @@
 				}
 			}
 
-			if(step.validation.customValidation != null){
+			if(step.validation.customValidation !== null){
 				waitForCallback = true;
 				step.validation.customValidation(function(valid){
 					if(valid){

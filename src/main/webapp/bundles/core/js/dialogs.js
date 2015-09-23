@@ -121,7 +121,7 @@ USAGE EXAMPLE: Call directly
 			onOpen: function(dialogId) {},
 			onClose: function(dialogId) {},
 			onLoad: function(dialogId) {}
-		}
+		};
 
 	function show(instanceSettings){
 
@@ -138,14 +138,14 @@ USAGE EXAMPLE: Call directly
 			windowCounter++;
 		}
 
-		if(settings.hashId != null){
+		if(settings.hashId !== null){
 			// append the dialogs hash id to the window hash.
 			meerkat.modules.address.appendToHash(settings.hashId);
 		}
 
 		var htmlTemplate = _.template(settings.templates.dialogWindow);
 
-		if(settings.url != null || settings.externalUrl != null) {
+		if(settings.url !== null || settings.externalUrl !== null) {
 			// Load content from dynamic source, insert loading icon until content loads
 			settings.htmlContent = meerkat.modules.loadingAnimation.getTemplate();
 		}
@@ -203,7 +203,7 @@ USAGE EXAMPLE: Call directly
 				button.callback(eventObject);
 		});
 
-		if (settings.url != null) {
+		if (settings.url !== null) {
 			meerkat.modules.comms.get({
 				url: settings.url,
 				cache: settings.cacheUrl,
@@ -217,7 +217,7 @@ USAGE EXAMPLE: Call directly
 			});
 		}
 
-		if(settings.externalUrl != null) {
+		if(settings.externalUrl !== null) {
 			var iframe = '<iframe class="displayNone" id="' + settings.id + '_iframe" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true" src="' + settings.externalUrl + '"></iframe>';
 			appendContent(settings.id, iframe);
 
@@ -379,12 +379,12 @@ USAGE EXAMPLE: Call directly
 
 		var settings = getSettings(dialogId);
 
-		if (settings != null) {
-			if (settings.hashId != null) {
-				meerkat.modules.address.removeFromHash(settings.hashId)
+		if (settings !== null) {
+			if (settings.hashId !== null) {
+				meerkat.modules.address.removeFromHash(settings.hashId);
 
 				var previousInstance = _.findWhere(dialogHistory, {hashId:settings.hashId});
-				if(previousInstance == null) dialogHistory.push(settings);
+				if(previousInstance === null) dialogHistory.push(settings);
 			}
 
 			openedDialogs.splice(settings.index, 1);
@@ -499,9 +499,9 @@ USAGE EXAMPLE: Call directly
 			// find windows which need to be opened.
 			for(var j=0; j<event.hashArray.length;j++){
 				var windowOpen = _.findWhere(openedDialogs, {hashId:event.hashArray[j]});
-				if(windowOpen == null){
+				if(windowOpen === null){
 					var previousInstance = _.findWhere(dialogHistory, {hashId:event.hashArray[j]});
-					if(previousInstance != null) {
+					if(previousInstance !== null) {
 						if(previousInstance.openOnHashChange === true) {
 							meerkat.modules.dialogs.show(previousInstance);
 				}

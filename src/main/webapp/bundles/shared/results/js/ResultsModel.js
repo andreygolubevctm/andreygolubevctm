@@ -1,5 +1,4 @@
-var ResultsModel = new Object();
-ResultsModel = {
+var ResultsModel = {
 	ajaxRequest: false,
 
 	returnedGeneral: false,
@@ -10,7 +9,7 @@ ResultsModel = {
 	hasValidationErrors : false,
 	currentProduct: false,
 	selectedProduct: false,
-	filters: new Array(),
+	filters: [],
 
 	resultsLoadedOnce: false,
 
@@ -45,40 +44,29 @@ ResultsModel = {
 			}catch(e){
 				// ok
 			}
-			if( typeof(url) == "undefined" ){
+			if( typeof url == "undefined" ){
 				url = Results.settings.url;
 			}
 
-			if( typeof(data) == "undefined" ){
-				var data;
-				if( typeof meerkat !== "undefined" ){
-					data = meerkat.modules.form.getData( $(Results.settings.formSelector) );
-					data.push({
-						name: 'transactionId',
-						value: meerkat.modules.transactionId.get()
-					});
+			if( typeof data == "undefined" ){
+				data = meerkat.modules.form.getData( $(Results.settings.formSelector) );
+				data.push({
+					name: 'transactionId',
+					value: meerkat.modules.transactionId.get()
+				});
 
-					if(meerkat.site.isCallCentreUser) {
-						data.push({
-							name: meerkat.modules.comms.getCheckAuthenticatedLabel(),
-							value: true
-						});
-					}
-				} else {
-					data = Results.model.getFormData( $(Results.settings.formSelector) );
+				if(meerkat.site.isCallCentreUser) {
 					data.push({
-						name: 'transactionId',
-						value: referenceNo.getTransactionID()
+						name: meerkat.modules.comms.getCheckAuthenticatedLabel(),
+						value: true
 					});
 				}
-
-				
 			}
 		}catch(e){
 			Results.onError('Sorry, an error occurred fetching results', 'Results.js', 'Results.model.fetch(); '+e.message, e);
 		}
 
-		if(Results.model.resultsLoadedOnce == true){
+		if(Results.model.resultsLoadedOnce === true){
 			var hasIncTranIdSetting = Results.settings.hasOwnProperty('incrementTransactionId');
 			if(!hasIncTranIdSetting || (hasIncTranIdSetting && Results.settings.incrementTransactionId === true)) {
 				url += (url.indexOf('?') == -1 ? '?' : '&') + 'id_handler=increment_tranId';
@@ -209,11 +197,7 @@ ResultsModel = {
 			}
 		}
 		if (newTranID !== 0) {
-			if (typeof meerkat !== 'undefined') {
-				meerkat.modules.transactionId.set(newTranID);
-			} else if (typeof referenceNo !== 'undefined') {
-				referenceNo.setTransactionId(newTranID);
-			}
+			meerkat.modules.transactionId.set(newTranID);
 		}
 	},
 
@@ -262,7 +246,7 @@ ResultsModel = {
 
 	getFormData: function(form){
 		return form.find(":input:visible, input[type=hidden], :input[data-visible=true]").filter(function(){
-			return $(this).val() != "" && $(this).val() != "Please choose...";
+			return $(this).val() !== "" && $(this).val() != "Please choose...";
 		}).serializeArray();
 	},
 
@@ -271,13 +255,13 @@ ResultsModel = {
 		try{
 
 			if(
-				Object.byString( jsonResult, Results.settings.paths.results.rootElement ) != "" &&
+				Object.byString( jsonResult, Results.settings.paths.results.rootElement ) !== "" &&
 				Object.byString( jsonResult, Results.settings.paths.results.list ) &&
 				( Object.byString( jsonResult, Results.settings.paths.results.list ).length > 0 || typeof( Object.byString( jsonResult, Results.settings.paths.results.list ) ) == "object" )
 			) {
 
 				if( Object.byString( jsonResult, Results.settings.paths.results.general ) &&
-					Object.byString( jsonResult, Results.settings.paths.results.general ) != "" 
+					Object.byString( jsonResult, Results.settings.paths.results.general ) !== ""
 				) {
 					Results.model.returnedGeneral = Object.byString( jsonResult, Results.settings.paths.results.general );
 					$(Results.settings.elements.resultsContainer).trigger("generalReturned");
@@ -295,9 +279,7 @@ ResultsModel = {
 				}
 
 				// Publish event
-				if (typeof meerkat !== 'undefined') {
-					meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
-				}
+				meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
 
 				$(Results.settings.elements.resultsContainer).trigger("resultsReturned");
 
@@ -356,7 +338,7 @@ ResultsModel = {
 							if (!priceMatch) priceMatch = true;
 
 							// set the startIndex once
-							if (startIndex == 0) {
+							if (startIndex === 0) {
 								startIndex = index - 1;
 								tempProductOrder.push(previousProduct);
 							}
@@ -423,12 +405,10 @@ ResultsModel = {
 		Results.model.sort(renderView);
 		Results.model.filter(renderView);
 		$(Results.settings.elements.resultsContainer).trigger("resultsDataReady");
-		if (typeof meerkat !== 'undefined') {
 			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_BEFORE_DATA_READY);
 			_.defer(function() {
-			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
+				meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
 			});
-		}
 	},
 
 	sort: function(renderView) {
@@ -436,9 +416,9 @@ ResultsModel = {
 		if (Results.settings.sort.sortBy === false) return false;
 
 		if( Results.model.returnedProducts.length > 0 ){
-
+			var previousSortedResults;
 			if( Results.model.sortedProducts.length > 0 ){
-				var previousSortedResults = Results.model.sortedProducts.slice(); // slice forces the copy instead of referencing it
+				previousSortedResults = Results.model.sortedProducts.slice(); // slice forces the copy instead of referencing it
 			}
 
 			var results = Results.model.returnedProducts.slice(); // slice forces the copy instead of referencing it
@@ -446,7 +426,7 @@ ResultsModel = {
 
 			Results.model.sortedProducts = results.sort(sortByMethod);
 
-			if( typeof(previousSortedResults) != "undefined" && renderView !== false){
+			if( typeof previousSortedResults != "undefined" && renderView !== false){
 				Results.view.shuffle( previousSortedResults );
 			}
 
@@ -461,6 +441,7 @@ ResultsModel = {
 
 		var valueA = Object.byString(resultA, Object.byString( Results.settings.paths, Results.settings.sort.sortBy) ) ;
 		var valueB = Object.byString(resultB, Object.byString( Results.settings.paths, Results.settings.sort.sortBy) ) ;
+		var returnValue;
 
 		if(isNaN(valueA) || isNaN(valueB)){
 			valueA = String(valueA).toLowerCase();
@@ -469,16 +450,16 @@ ResultsModel = {
 
 		// if availability needs to be checked during sorting
 		var frequencyPriceAvailability = Results.settings.paths.availability.price[ Results.settings.frequency ];
-		if( frequencyPriceAvailability && frequencyPriceAvailability != '' ) {
+		if( frequencyPriceAvailability && frequencyPriceAvailability !== '' ) {
 
 			var availabilityA = Object.byString( resultA, frequencyPriceAvailability );
 			var availabilityB = Object.byString( resultB, frequencyPriceAvailability );
 
-			if( availabilityB == 'N' || !valueB || valueB == "" ){
+			if( availabilityB == 'N' || !valueB || valueB === "" ){
 				return -1;
 			}
 
-			if( availabilityA == 'N' || !valueA || valueA == "" ){
+			if( availabilityA == 'N' || !valueA || valueA === "" ){
 				return 1;
 			}
 		}
@@ -495,7 +476,7 @@ ResultsModel = {
 			valueA = Object.byString(resultA, currentFrequencyPricePath );
 			valueB = Object.byString(resultB, currentFrequencyPricePath );
 
-			if(valueA == null || valueB == null){
+			if(valueA === null || valueB === null){
 				return 0;
 			}
 			return valueA - valueB; // return early to avoid the sort direction impact, we sort by asc price by default
@@ -586,7 +567,7 @@ ResultsModel = {
 	filter: function( renderView ){
 
 		var initialProducts = Results.model.sortedProducts.slice();
-		var finalProducts = new Array();
+		var finalProducts = [];
 
 		var valid, value;
 
@@ -690,7 +671,6 @@ ResultsModel = {
 				product: product
 			});
 		} else {
-			Results.model.currentProduct = new Object();
 			Results.model.currentProduct = { product: product };
 		}
 
@@ -704,7 +684,6 @@ ResultsModel = {
 				value: currentProduct
 			});
 		} else {
-			Results.model.currentProduct = new Object();
 			Results.model.currentProduct = {
 				path: Object.byString( Results.settings.paths, identifierPathName ),
 				value: currentProduct
@@ -759,24 +738,20 @@ ResultsModel = {
 	startResultsFetch: function() {
 		if(typeof meerkat != 'undefined') {
 			meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_LOCK, { source: 'resultsModel' });
-	}
+		}
 		$(Results.settings.elements.resultsContainer).trigger("resultsFetchStart");
 	},
 
 	finishResultsFetch: function() {
 		if (typeof Loading !== "undefined") Loading.hide();
-		if(typeof meerkat != 'undefined') {
-			_.defer(function() {
-				meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_UNLOCK, { source: 'resultsModel' });
-			});
-		}
+		_.defer(function() {
+			meerkat.messaging.publish(Results.model.moduleEvents.WEBAPP_UNLOCK, { source: 'resultsModel' });
+		});
 		$(Results.settings.elements.resultsContainer).trigger("resultsFetchFinish");
 	},
 
 	publishResultsDataReady: function() {
-		if(typeof meerkat !== 'undefined') {
-			$(Results.settings.elements.resultsContainer).trigger("resultsReturned");
-			meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
-		}
+		$(Results.settings.elements.resultsContainer).trigger("resultsReturned");
+		meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_DATA_READY);
 	}
 };

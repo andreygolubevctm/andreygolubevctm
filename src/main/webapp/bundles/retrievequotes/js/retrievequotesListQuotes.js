@@ -86,7 +86,7 @@
             })
             .fail(function() {
                 onFail();
-            })
+            });
     }
 
     function noResults() {

@@ -994,7 +994,7 @@
         var freeColumns;
         if (show) {
             var pageMeasurements = Results.pagination.calculatePageMeasurements();
-            if (pageMeasurements == null) {
+            if (pageMeasurements === null) {
                 show = false;
             } else {
                 var items = Results.getFilteredResults().length;

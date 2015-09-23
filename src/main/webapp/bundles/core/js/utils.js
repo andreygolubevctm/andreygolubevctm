@@ -59,24 +59,6 @@
 		}
 	}
 
-	jQuery.fn.animateAuto = function(prop, speed, callback){
-		var elem, height, width;
-		return this.each(function(i, el){
-			el = jQuery(el), elem = el.clone().css({"height":"auto","width":"auto"}).appendTo("body");
-			height = elem.css("height"),
-			width = elem.css("width"),
-			elem.remove();
-
-			if(prop === "height")
-				el.animate({"height":height}, speed, callback);
-			else if(prop === "width")
-				el.animate({"width":width}, speed, callback);
-			else if(prop === "both")
-				el.animate({"width":width,"height":height}, speed, callback);
-		});
-	};
-
-
 	//
 	// Return the current date as UTC. Includes the hours.
 	//
@@ -157,7 +139,7 @@
 		var safeList = [8,35,37,39];
 		// backspace, left/right arrow, end and number pad
 
-		if ((key==null) || (key===0) || (key==9) || (key==12) || (key==13) || (key==27) ) {
+		if ((key===null) || (key===0) || (key==9) || (key==12) || (key==13) || (key==27) ) {
 			return true;
 		} else if (_.indexOf(safeList, key) !== -1 || (("0123456789").indexOf(keychar) > -1)) {
 			return true;

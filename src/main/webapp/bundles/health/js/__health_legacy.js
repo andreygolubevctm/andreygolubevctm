@@ -55,7 +55,7 @@ function resetRadio($_obj, value){
 		$_obj.find('input').prop('checked', false);
 		$_obj.find('label').removeClass('active');
 
-		if(value != null){
+		if(value !== null){
 			$_obj.find('input[value='+ value +']').prop('checked', 'checked');
 			$_obj.find('input[value='+ value +']').parent().addClass("active");
 		}
@@ -91,7 +91,7 @@ var FatalErrorDialog = {
 		meerkat.modules.errorHandling.error(params);
 
 	}
-}
+};
 
 
 // Used in split_test.tag
@@ -102,7 +102,7 @@ var Track = {
 			splitTestName: supertagName
 		});
 	}
-}
+};
 
 // from choices.tag
 var healthChoices = {
@@ -282,7 +282,7 @@ var healthChoices = {
 		$('#health_rebates_group').hide();
 	}
 
-}
+};
 
 
 var healthCoverDetails = {
@@ -646,8 +646,8 @@ var healthFunds = {
 		// main check for real value
 		if( effectiveDateString == ''){
 			return false;
-		};
-		var effectiveDate = returnDate(effectiveDateString)
+		}
+		var effectiveDate = returnDate(effectiveDateString);
 		var today = new Date();
 
 		var _baseDate = null;
@@ -915,7 +915,7 @@ var healthDependents = {
 			healthDependents.hasChanged();
 
 			if(healthDependents._dependents > 0){
-				$_obj = $('#health_application_dependants_dependant' + healthDependents._dependents)
+				$_obj = $('#health_application_dependants_dependant' + healthDependents._dependents);
 			}else{
 				$_obj = $('#health_application_dependants-selection');
 			}
