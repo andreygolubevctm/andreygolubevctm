@@ -181,7 +181,7 @@ public class RequestAdapter {
 
         if (isSimples || isDirectApplication) {
             Application application = quote.getApplication();
-            if (application != null) {
+            if (application != null && StringUtils.isNotBlank(application.getProductId())) {
                 IncludeProductIfNotFound includeProductIfNotFound = new IncludeProductIfNotFound();
                 includeProductIfNotFound.setProductTitle(application.getProductTitle());
                 includeProductIfNotFound.setProductId(getProductId(application));
