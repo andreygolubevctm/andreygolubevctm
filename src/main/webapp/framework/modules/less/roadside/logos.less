@@ -4,10 +4,14 @@
 	Hence we need to add these extra styles.
 */
 .companyLogo {
-  display:inline-block;
-  float: none;
-  width: 100%;
-  background-position: center;
+	display:inline-block;
+	float: none;
+	width: 100%;
+	background-position: center;
+	height:60px;
+	@media (min-width: @screen-sm) {
+		height: 80px;
+	}
 
   .unavailable & {
 	float:left;
