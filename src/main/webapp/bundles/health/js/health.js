@@ -830,7 +830,7 @@
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
 	function loadRates(callback){
 
-		$healthCoverDetails = $('.health-cover_details');
+		var $healthCoverDetails = $('.health-cover_details');
 
 		var postData = {
 			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
@@ -885,7 +885,9 @@
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
 				setRates(data);
-				if(callback !== null) callback(data);
+				if(callback !== null && typeof callback !== 'undefined') {
+					callback(data);
+				}
 			}
 		});
 	}

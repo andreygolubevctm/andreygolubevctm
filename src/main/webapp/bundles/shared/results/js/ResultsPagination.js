@@ -283,7 +283,9 @@ var ResultsPagination = {
 		var $container = Results.view.$containerElement;
 		var viewableArea = $container.parent().width();
 		var $rows = $container.find(Results.settings.elements.rows+'.notfiltered');
-		if($rows.length === 0) return null; // called too early.
+		if($rows.length === 0) {
+			return null; // called too early.
+		}
 		var numberOfColumns = $rows.length;
 		// As the column widths are defined in the LESS let's save time interrogating the DOM
 		// objects and simply check the applicable class defined in the .resultsContainer
