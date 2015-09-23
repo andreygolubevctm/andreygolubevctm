@@ -13,13 +13,13 @@ UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='quoteUrl=http://pp
 UPDATE ctm.product_master SET longTitle = 'TravelCare', shortTitle = 'TravelCare' WHERE ProductId = 193;
 
 /* Rename product */
-UPDATE ctm.product_master SET `LongTitle`='Southern Cross TravelCare AMT &lt;br /&gt;NZ/South Pacific &lt;span class=&quot;daysPerTrip&quot;&gt;(90 days)&lt;/span&gt;', shortTitle = 'Southern Cross TravelCare AMT NZ/South Pacific (90 days)' WHERE ProductId = 194;
+UPDATE ctm.product_master SET `LongTitle`='TravelCare AMT &lt;br /&gt;NZ/South Pacific &lt;span class=&quot;daysPerTrip&quot;&gt;(90 days)&lt;/span&gt;', shortTitle = 'TravelCare AMT NZ/South Pacific (90 days)' WHERE ProductId = 194;
 
 /* Rename product */
-UPDATE ctm.product_master SET `LongTitle`='Southern Cross TravelCare AMT &lt;br /&gt;Limited World Excl. USA/Canada &lt;span class=&quot;daysPerTrip&quot;&gt;(90 days)&lt;/span&gt;', shortTitle = 'Southern Cross TravelCare AMT Limited World Excl. USA/Canada (90 days)' WHERE ProductId = 195;
+UPDATE ctm.product_master SET `LongTitle`='TravelCare AMT &lt;br /&gt;Limited World Excl. USA/Canada &lt;span class=&quot;daysPerTrip&quot;&gt;(90 days)&lt;/span&gt;', shortTitle = 'TravelCare AMT Limited World Excl. USA/Canada (90 days)' WHERE ProductId = 195;
 
 /* Rename product */
-UPDATE ctm.product_master SET `LongTitle`='Southern Cross TravelCare AMT &lt;br /&gt;World Inc. USA/Canada &lt;span class=&quot;daysPerTrip&quot;&gt;(90 days)&lt;/span&gt;', shortTitle = 'Southern Cross TravelCare AMT World Inc. USA/Canada (90 days)' WHERE ProductId = 196;
+UPDATE ctm.product_master SET `LongTitle`='TravelCare AMT &lt;br /&gt;World Inc. USA/Canada &lt;span class=&quot;daysPerTrip&quot;&gt;(90 days)&lt;/span&gt;', shortTitle = 'TravelCare AMT World Inc. USA/Canada (90 days)' WHERE ProductId = 196;
 
 -- ================ TESTS =====================
 -- ========= BEFORE INSERT TESTS ==============
