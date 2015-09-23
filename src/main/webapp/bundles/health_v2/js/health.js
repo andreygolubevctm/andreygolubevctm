@@ -363,7 +363,7 @@
 
 				// Show/hide membership number and authorisation checkbox questions for previous funds.
 				$('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').on('change', function(){
-					healthCoverDetails.displayHealthFunds();
+					meerkat.modules.healthCoverDetails.displayHealthFunds();
 				});
 
 				// Show/Hide simples messaging based on fund selection

@@ -298,7 +298,7 @@
             //}
 
             // Add rebate message dynamically
-            if ($healthCoverDetailsContainer.valid()) {
+            if ($this.valid()) {
                 loadRates(true, function (rates) {
                     $healthCoverTier.find('#health_healthCover_tier_row_legend').html('');
                     if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
@@ -484,7 +484,8 @@
         init: initHealthCoverDetails,
         showModal: showModal,
         isRebateApplied: isRebateApplied,
-        hasRatesChanged: hasRatesChanged
+        hasRatesChanged: hasRatesChanged,
+        displayHealthFunds: displayHealthFunds
     });
 
 })(jQuery);

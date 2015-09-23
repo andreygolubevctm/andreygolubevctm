@@ -830,7 +830,7 @@ var healthDependents = {
 
 	hasChanged: function( ){
 		var $_obj = $('#health_application_dependants-selection').find('.health-dependants-tier');
-		if(healthCoverDetails.getRebateChoice() == 'N' ) {
+		if(meerkat.modules.healthCoverDetails.isRebateApplied()!== true ) {
 			$_obj.slideUp();
 		} else if( healthDependents._dependents > 0 ) {
 			// Call the summary panel error message
