@@ -30,6 +30,8 @@
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 
+<c:set var="isHealthV2" value="${true}" scope="request" />
+
 <%-- HTML --%>
 <layout:journey_engine_page title="Health Quote">
 

@@ -41,9 +41,8 @@
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
 <%-- for Health V2 A/B testing --%>
-<c:set var="isHealthV2" value="${fn:containsIgnoreCase(pageContext.request.requestURL, 'health_quote_v2')}" />
 <c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
-<c:if test="${isHealthV2}"><c:set var="fileName" value="health_v2" /></c:if>
+<c:if test="${isHealthV2 eq true}"><c:set var="fileName" value="health_v2" /></c:if>
 
 <!DOCTYPE html>
 <go:html>
