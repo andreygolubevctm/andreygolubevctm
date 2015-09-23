@@ -20,7 +20,7 @@
 		// Initial render
 		meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.READY, function renderSnapshotOnJourneyReadySubscription() {
 			_.defer(function() {
-		renderSnapshot(getIcon());
+				renderSnapshot(getIcon());
 			});
 		});
 
