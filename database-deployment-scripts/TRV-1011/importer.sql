@@ -1,13 +1,16 @@
-/* Update Bali */
-UPDATE `ctm`.`country_provider_mapping` SET `regionValue`='R2', `priority`='2' WHERE `isoCode`='BAL' AND `regionValue`='R1' LIMIT 1;
+SET @providerId = (SELECT providerId FROM ctm.provider_master WHERE providercode = 'scti');
+
+/* Update Bali & Indonesia */
+UPDATE `ctm`.`country_provider_mapping` SET `regionValue`='R2', `priority`='2',  `handoverValue`='WW1' WHERE `isoCode` IN ('BAL', 'IDN') AND providerId = @providerId LIMIT 2;
+
 
 /* Update the url for local, NXI, NXS & NXQ */
-UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = 304 AND environmentCode = '0' and servicePropertyKey='url';
-UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = 304 AND environmentCode = '0' and servicePropertyKey='url';
-UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = 304 AND environmentCode = 'NXI' and servicePropertyKey='url';
-UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = 304 AND environmentCode = 'NXQ' and servicePropertyKey='url';
-UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = 304 AND environmentCode = 'NXS' and servicePropertyKey='url';
-UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='quoteUrl=http://pp1.scti.com.au/quote' WHERE providerId = 304 AND servicePropertyKey = 'inboundParams' AND environmentCode IN ('0', 'NXI', 'NXS', 'NXQ') LIMIT 4;
+UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = @providerId AND environmentCode = '0' and servicePropertyKey='url';
+UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = @providerId AND environmentCode = '0' and servicePropertyKey='url';
+UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = @providerId AND environmentCode = 'NXI' and servicePropertyKey='url';
+UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = @providerId AND environmentCode = 'NXQ' and servicePropertyKey='url';
+UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='http://pp1.scti.com.au/quote' WHERE providerId = @providerId AND environmentCode = 'NXS' and servicePropertyKey='url';
+UPDATE `ctm`.`service_properties` SET `servicePropertyValue`='quoteUrl=http://pp1.scti.com.au/quote' WHERE providerId = @providerId AND servicePropertyKey = 'inboundParams' AND environmentCode IN ('0', 'NXI', 'NXS', 'NXQ') LIMIT 4;
 
 /* Rename product */
 UPDATE ctm.product_master SET longTitle = 'TravelCare', shortTitle = 'TravelCare' WHERE ProductId = 193;
