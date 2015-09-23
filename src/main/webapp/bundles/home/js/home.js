@@ -179,9 +179,6 @@
 			onInitialise: function() {
 				meerkat.modules.homeOccupancy.initHomeOccupancy();
 				meerkat.modules.homeBusiness.initHomeBusiness();
-			},
-			onAfterEnter: function onOccupancyEnter(event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(1) .snapshot');
 			}
 		};
 
@@ -205,9 +202,6 @@
 				meerkat.modules.homePropertyFeatures.toggleSecurityFeatures(0);
 				meerkat.modules.homeCoverAmounts.toggleCoverAmountsFields(0);
 				meerkat.modules.homePropertyDetails.validateYearBuilt();
-			},
-			onAfterEnter: function onPropertyEnter(event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(2) .snapshot');
 			}
 		};
 
@@ -230,9 +224,6 @@
 			},
 			onBeforeEnter: function onBeforeEnterPolicyHolder(event) {
 				meerkat.modules.homePolicyHolder.togglePolicyHolderFields();
-			},
-			onAfterEnter: function onPolicyHolderEnter(event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(' + (isSplitTestOn() ? '4' : '3') + ') .snapshot');
 			}
 		};
 
@@ -258,9 +249,6 @@
 				} else {
 					meerkat.modules.resultsFeatures.fetchStructure('hncams');
 				}
-			},
-			onAfterEnter: function onHistoryEnter(event) {
-				meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(' + (isSplitTestOn() ? '3' : '4') + ') .snapshot');
 			}
 		};
 
