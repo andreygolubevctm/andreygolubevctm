@@ -11,11 +11,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class HealthTransactionDao {
 
 	private static final String PRODUCT_TITLE_XPATH = "health/application/productTitle";
 	public static final String PROVIDER_XPATH = "health/application/provider";
-	private static final Logger logger = LoggerFactory.getLogger(HealthTransactionDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthTransactionDao.class);
 
 
 	public static class HealthTransactionSequenceNo {
@@ -64,7 +66,7 @@ public class HealthTransactionDao {
 			stmt.close();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -115,7 +117,7 @@ public class HealthTransactionDao {
 			stmt.close();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -155,16 +157,14 @@ public class HealthTransactionDao {
 			stmt.setString(4, errors);
 
 			stmt.executeUpdate();
-		} catch (NamingException e) {
-			throw new DaoException("Failed to write allowable errors. Errors: " + errors , e);
-		} catch (SQLException e) {
-			throw new DaoException("Failed to write allowable errors. Errors: " + errors , e);
+		} catch (NamingException | SQLException e) {
+			throw new DaoException(e);
 		} finally {
 			if(stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					logger.error("",e);
+					LOGGER.error("Failed to close health transaction db connection {}", kv("errors", errors), e);
 				}
 			}
 			dbSource.closeConnection();

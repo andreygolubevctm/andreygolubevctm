@@ -5,38 +5,12 @@
 
 package com.disc_au.soap;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import com.ctm.constants.ErrorCode;
+import com.ctm.logging.CorrelationIdUtils;
+import com.ctm.logging.XMLOutputWriter;
+import com.ctm.model.settings.SoapAggregatorConfiguration;
+import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.utils.function.Action;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,9 +19,22 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.ctm.model.settings.SoapAggregatorConfiguration;
-import com.ctm.model.settings.SoapClientThreadConfiguration;
-import com.ctm.logging.XMLOutputWriter;
+import javax.net.ssl.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.security.*;
+import java.security.cert.CertificateException;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.logging.XMLOutputWriter.*;
 
 
@@ -59,10 +46,12 @@ import static com.ctm.logging.XMLOutputWriter.*;
  */
 public class SOAPClientThread implements Runnable {
 
-	private static final Logger logger = LoggerFactory.getLogger(SOAPClientThread.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SOAPClientThread.class);
 
 	public static final int HTTP_OK = 200;
 	public static final int HTTP_NOT_FOUND = 404;
+	private final Action beforeRun;
+	private final Action afterRun;
 
 	private SoapClientThreadConfiguration configuration;
 
@@ -90,7 +79,7 @@ public class SOAPClientThread implements Runnable {
 
 	private String debugPath;
 
-	private SoapAggregatorConfiguration soapConfiguration;
+	private SoapAggregatorConfiguration aggregatorConfiguration;
 
 	private XMLOutputWriter writer;
 
@@ -112,14 +101,16 @@ public class SOAPClientThread implements Runnable {
 	 * @param soapConfiguration global config
 	 */
 	public SOAPClientThread(String tranId, String configRoot, SoapClientThreadConfiguration configuration,
-							String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration) {
+							String xmlData, String threadName, SoapAggregatorConfiguration soapConfiguration, Action beforeRun, Action afterRun) {
+		this.beforeRun = beforeRun;
+		this.afterRun = afterRun;
 
 		this.configuration = configuration;
 
 		this.name = threadName;
 		this.xml = xmlData;
 		this.tranId = tranId;
-		this.soapConfiguration = soapConfiguration;
+		this.aggregatorConfiguration = soapConfiguration;
 
 		if (configuration.getContentType() == null || configuration.getContentType().trim().length()==0){
 			configuration.setContentType(DEFAULT_CONTENT_TYPE);
@@ -172,19 +163,15 @@ public class SOAPClientThread implements Runnable {
 
 				if (configuration.getSslNoHostVerify() != null && configuration.getSslNoHostVerify().equalsIgnoreCase("Y")) {
 					HttpsURLConnection.setDefaultHostnameVerifier(
-							new HostnameVerifier() {
-								public boolean verify(String hostname,SSLSession session) {
-									return true;
-								}
-
-							});
+							(hostname, session) -> true);
 				}
 
 				u = new URL(configuration.getUrl());
 				connection = (HttpsURLConnection) u.openConnection();
 
+
 				if (configuration.getClientCert() !=null && configuration.getClientCertPass() != null){
-					logger.info("Using Cert: " + configuration.getClientCert());
+					LOGGER.debug("Using Cert: " + configuration.getClientCert());
 					try {
 
 						// First, try on the classpath (assume given path has no leading slash)
@@ -196,7 +183,7 @@ public class SOAPClientThread implements Runnable {
 							clientCertSourceInput = this.getClass().getClassLoader().getResourceAsStream(configuration.getClientCert());
 						}
 
-						logger.info("Cert Exists: " + ( clientCertSourceInput == null ? "NOOOO" : "Yep" ));
+						LOGGER.debug("Checking if cert exists. {}" + kv("CertExists", clientCertSourceInput == null));
 
 						String pKeyPassword = configuration.getClientCertPass();
 						KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -213,15 +200,15 @@ public class SOAPClientThread implements Runnable {
 						((HttpsURLConnection) connection).setSSLSocketFactory( sockFact );
 
 					} catch (NoSuchAlgorithmException e) {
-						logger.error("Cert Error: 1 (No Such Algorithm)", e);
+						LOGGER.error("Cert Error: 1 (No Such Algorithm)", e);
 					} catch (CertificateException e) {
-						logger.error("Cert Error: 2 (Certificate exception)", e);
+						LOGGER.error("Cert Error: 2 (Certificate exception)", e);
 					} catch (UnrecoverableKeyException e) {
-						logger.error("Cert Error: 3 (Unrecoverable Key)", e);
+						LOGGER.error("Cert Error: 3 (Unrecoverable Key)", e);
 					} catch (KeyStoreException e) {
-						logger.error("Cert Error: 4 (Key Store exception)", e);
+						LOGGER.error("Cert Error: 4 (Key Store exception)", e);
 					} catch (KeyManagementException e) {
-						logger.error("Cert Error: 5 (Key Management exception)", e);
+						LOGGER.error("Cert Error: 5 (Key Management exception)", e);
 					}
 				}
 
@@ -231,6 +218,8 @@ public class SOAPClientThread implements Runnable {
 
 			}
 
+			setCorrelationIdHeader(connection);
+
 			connection.setReadTimeout(configuration.getTimeoutMillis());
 			connection.setDoOutput(true);
 			connection.setDoInput(true);
@@ -238,7 +227,7 @@ public class SOAPClientThread implements Runnable {
 			((HttpURLConnection)connection).setRequestMethod(this.method);
 			connection.setRequestProperty("Content-Type", configuration.getContentType());
 
-			// Set the soap action (if supplied)
+			// Set the soap apply (if supplied)
 			if (configuration.getSoapAction() != null) {
 				connection.setRequestProperty("SOAPAction", configuration.getSoapAction());
 			}
@@ -293,7 +282,7 @@ public class SOAPClientThread implements Runnable {
 				default: {
 					// Important! keep this as debug and don't enable debug logging in production
 					// as this response may include credit card details (this is from the nib webservice)
-					logger.debug("[SOAP Response] "+connection.getResponseMessage());
+					LOGGER.debug("[SOAP Response] {}", kv("response", connection.getResponseMessage()));
 
 					StringBuffer errorData = new StringBuffer();
 					BufferedReader reader = new BufferedReader(new InputStreamReader(((HttpURLConnection)connection).getErrorStream()));
@@ -329,12 +318,12 @@ public class SOAPClientThread implements Runnable {
 			((HttpURLConnection)connection).disconnect();
 
 		} catch (MalformedURLException e) {
-			logger.error("failed to process request" , e);
+			LOGGER.error("failed to process request" , e);
 			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "MalformedURLException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 
 		} catch (IOException e) {
-			logger.error("failed to process request: "+getConfiguration().getUrl() , e);
+			LOGGER.error("failed to process request: "+getConfiguration().getUrl() , e);
 			SOAPError err = new SOAPError(SOAPError.TYPE_HTTP, 0, e.getMessage(), configuration.getName(), "IOException", (System.currentTimeMillis() - startTime));
 			returnData.append(err.getXMLDoc());
 		}
@@ -343,6 +332,13 @@ public class SOAPClientThread implements Runnable {
 		
 		// Return the result
 		return returnData.toString();
+	}
+
+
+	protected void setCorrelationIdHeader(URLConnection connection) {
+		if(aggregatorConfiguration.isSendCorrelationId()) {
+			CorrelationIdUtils.setCorrelationIdHeader(connection);
+		}
 	}
 
 	private String matchKeywords(String soapResponse) {
@@ -356,7 +352,7 @@ public class SOAPClientThread implements Runnable {
 						"",
 						0);
 
-				logger.debug("[SOAP Response] "+this.name + " MK-20004:" + soapResponse);
+				LOGGER.debug("MK-20004 Soap error found. {},{}" , kv("soapResponse", soapResponse), kv("name", this.name));
 
 				errorData = err.getXMLDoc();
 
@@ -376,15 +372,16 @@ public class SOAPClientThread implements Runnable {
 			if (this.tranId!=null){
 				params.put("transactionId",this.tranId);
 			}
-			logger.debug("masking file content " + maskingXslt);
+			LOGGER.debug("masking file content. {}" + kv("maskingXslt", maskingXslt));
 			xml = translator.translate(maskingXslt, xml, null,  params , false);
 		}
 		return xml;
 	}
 
 	public void run() {
+		beforeRun.apply();
 		this.timer = System.currentTimeMillis();
-		if(soapConfiguration.isWriteToFile()){
+		if(aggregatorConfiguration.isWriteToFile()){
 			writer = new XMLOutputWriter(this.name , debugPath);
 			writer.writeXmlToFile(maskXml(this.xml , configuration.getMaskReqInXSL()) , REQ_IN);
 		}
@@ -394,7 +391,7 @@ public class SOAPClientThread implements Runnable {
 			params.put("transactionId", this.tranId);
 		}
 
-		// Set the soap action (if supplied)
+		// Set the soap apply (if supplied)
 		if (configuration.getSoapAction() != null) {
 			params.put("SoapAction", configuration.getSoapAction());
 		}
@@ -405,7 +402,7 @@ public class SOAPClientThread implements Runnable {
 		// Translate the page xml to be suitable for the client
 		String soapRequest = translator.translate(configuration.getOutboundXsl(), this.xml, configuration.getOutboundParms(), params, true);
 
-		if(soapConfiguration.isWriteToFile()){
+		if(aggregatorConfiguration.isWriteToFile()){
 			writer.writeXmlToFile(maskXml(soapRequest , configuration.getMaskReqInXSL()), REQ_OUT);
 		}
 
@@ -426,7 +423,7 @@ public class SOAPClientThread implements Runnable {
 				}
 			}
 
-			if(soapConfiguration.isWriteToFile()){
+			if(aggregatorConfiguration.isWriteToFile()){
 				writer.writeXmlToFile(maskXml(soapResponse , configuration.getMaskReqInXSL()), RESP_IN);
 			}
 
@@ -436,7 +433,7 @@ public class SOAPClientThread implements Runnable {
 			if (configuration.getInboundXSL() != null) {
 				// Important! keep this as debug and don't enable debug logging in production
 				// as this response may include credit card details (this is from the nib webservice)
-				logger.debug("[SOAP Response] "+this.name + ":" + soapResponse);
+				LOGGER.debug("[SOAP Response] {},{}", kv("name", this.name), kv("response", soapResponse));
 
 				// The following ugliness had to be added to get OTI working ..
 				//REVISE: oh please do - we need something better than this.... :(
@@ -481,10 +478,11 @@ public class SOAPClientThread implements Runnable {
 				this.setResultXML(soapResponse);
 			}
 
-			if(soapConfiguration.isWriteToFile()){
+			if(aggregatorConfiguration.isWriteToFile()){
 				writer.lastWriteXmlToFile(this.resultXML);
 		}
 	}
+		afterRun.apply();
 	}
 
 	/**
@@ -519,11 +517,11 @@ public class SOAPClientThread implements Runnable {
 				return nodeList;
 			}
 		} catch (ParserConfigurationException e) {
-			logger.error("failed to createRequestNodeList" , e);
+			LOGGER.error("failed to createRequestNodeList" , e);
 		} catch (SAXException e) {
-			logger.error("failed to createRequestNodeList" , e);
+			LOGGER.error("failed to createRequestNodeList" , e);
 		} catch (IOException e) {
-			logger.error("failed to createRequestNodeList" , e);
+			LOGGER.error("failed to createRequestNodeList" , e);
 		}
 		return null;
 	}
@@ -549,4 +547,13 @@ public class SOAPClientThread implements Runnable {
 	public SoapClientThreadConfiguration getConfiguration(){
 		return configuration;
 	}
+
+	public String toString(){
+		return "SOAPClientThread:{" +
+				"'tranId'='"+tranId+"'" +
+				",'name'='"+name+"'" +
+				",'configuration'='"+configuration+"'" +
+				"}";
+	}
+
 }

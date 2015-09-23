@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-	import="java.io.*,java.util.*,java.text.*,java.math.*,au.com.bytecode.opencsv.CSVParser,com.disc_au.web.go.xml.*"%>
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+<c:set var="logger" value="${log:getLogger('jsp.data.upload')}" />
 <fmt:parseDate var="startDate" value="${param.startDate}" type="DATE" pattern="dd/MM/yyyy"/>
 <fmt:parseDate var="endDate" value="${param.endDate}" type="DATE" pattern="dd/MM/yyyy"/>
 
@@ -17,7 +17,7 @@
 <%-- -------------------- --%>
 <%-- TODO: This would be CARLMI/HOMELMI in new version --%>
 <c:set var="vertical" value="Homelmi" /> <%-- 'Carlmi', 'Homelmi' --%>
-<c:set var="date" value="2015-08-17" /> <%-- Date in the file name --%>
+<c:set var="date" value="2015-09-07" /> <%-- Date in the file name --%>
 <c:set var="debug" value="false"/> <%-- This will stop all Mysql transactions when true --%>
 <c:set var="restart" value="false"/> <%-- Doesn't do much anymore. Used to TRUNCATE TABLE, but was removed... --%>
 <c:set var="step_1" value="true"/>
@@ -141,7 +141,7 @@ body {
 			<c:set var="dimensionsList" value="${fn:split(dimensionsValues, ':')}"/>
 			<c:set var="columnz" value="${dimensionsList[0] - 1}"/> <%-- -1 for index starting at 0 in the data sheet shit --%>
 			<c:set var="rowz" value="${dimensionsList[1] - 1}"/> <%-- -1 for index starting at 0 in the data sheet shit --%>
-			<go:log>DIMENSIONS: ${columnz } (+1) x ${rowz } (+1)</go:log>
+			${logger.debug('DIMENSIONS: ${columnz } (+1) x ${rowz } (+1)')}
 			<p>Columnz: ${columnz } (+1)</p>
 			<p>Rowz: ${rowz } (+1)</p>
 
@@ -154,13 +154,13 @@ body {
 				</c:if>
 			</c:forEach>
 			<p>Default Policy Type: ${defaultPolicyTypeName}</p>
-			<go:log>Default Policy Type: ${defaultPolicyTypeName}</go:log>
+			${logger.debug('Default Policy Type: ${defaultPolicyTypeName}')}
 
 			<%-- Initial database counts for use later... --%>
 			<sql:query var="categoriesInitialData">
 				SELECT * FROM aggregator.features_category WHERE vertical = ${insertQuotedVertical};
 			</sql:query>
-			<go:log>categoriesInitialData: SELECT * FROM aggregator.features_category WHERE vertical = ${insertQuotedVertical};</go:log>
+			${logger.debug('categoriesInitialData: SELECT * FROM aggregator.features_category WHERE vertical = ${insertQuotedVertical};')}
 
 
 			<%-- -------------- --%>
@@ -193,9 +193,9 @@ body {
 				<c:set var="prefix" value="," />
 			</c:forEach>
 			<p>productIdList: '${productIdList}' </p>
-			<go:log>productIdList: '${productIdList}' </go:log>
+			${logger.debug('productIdList: '${productIdList}' ')}
 			<p>brandIdList: '${brandIdList }'</p>
-			<go:log>brandIdList: '${brandIdList }'</go:log>
+			${logger.debug('brandIdList: '${brandIdList }'')}
 
 			<%-- -------------- FEATURES MAIN DATA ------------- --%>
 			<c:if test="${not empty productIdList}">
@@ -220,7 +220,7 @@ body {
 				</c:forEach>
 			</c:if>
 			<p>featureIdList: '${featureIdList }'</p>
-			<go:log>featureIdList: '${featureIdList }'</go:log>
+			${logger.debug('featureIdList: '${featureIdList }'')}
 
 				<%-- THIS SHOULDN'T BE NEEDED - AMS framework doesn't use feature_category to display categories of data on the page.
 				It uses a fake feature row. --%>
@@ -247,7 +247,7 @@ body {
 				</c:forEach>
 			</c:if>
 			<p>categoryIdList: '${categoryIdList }'</p>
-			<go:log>categoryIdList: '${categoryIdList }'</go:log>
+			${logger.debug('categoryIdList: '${categoryIdList }'')}
 
 			</c:if>
 
@@ -305,7 +305,7 @@ body {
 			<%-- FEATURES BRANDS	       --%>
 			<%-- ------------------------- --%>
 			<c:if test="${step_1 eq true }">
-			<go:log>STARTING FEATURES BRANDS</go:log>
+			${logger.debug('STARTING FEATURES BRANDS')}
 
 			<h2>Step 1. features_Brands</h2>
 
@@ -388,7 +388,7 @@ body {
 			<%-- FEATURES PRODUCTS	       --%>
 			<%-- ------------------------- --%>
 			<c:if test="${step_2 eq true }">
-			<go:log>STARTING FEATURES PRODUCTS</go:log>
+			${logger.debug('STARTING FEATURES PRODUCTS')}
 
 			<h2>Step 2. features_Products</h2>
 
@@ -513,7 +513,7 @@ body {
 			<%-- FEATURES CATEGORIES       --%>
 			<%-- ------------------------- --%>
 			<c:if test="${step_3 eq true }">
-			<go:log>STARTING FEATURES CATEGORIES</go:log>
+			${logger.debug('STARTING FEATURES CATEGORIES')}
 
 			<h2>Step 3. features_category</h2>
 			<c:set var="features_category" value="${go:getStringBuilder()}" />
@@ -608,7 +608,7 @@ body {
 			<%-- FEATURES DETAILS	       --%>
 			<%-- ------------------------- --%>
 			<c:if test="${step_4 eq true }">
-			<go:log>STARTING FEATURES DETAILS</go:log>
+			${logger.debug('STARTING FEATURES DETAILS')}
 
 			<h2>Step 4. features_details</h2>
 			<c:set var="features_details" value="${go:getStringBuilder()}" />
@@ -707,7 +707,7 @@ body {
 			<%-- FEATURES MAIN		       --%>
 			<%-- ------------------------- --%>
 			<c:if test="${step_5 eq true }">
-			<go:log>STARTING FEATURES MAIN</go:log>
+			${logger.debug('STARTING FEATURES MAIN')}
 
 			<h2>Step 5. features_main</h2>
 			<c:set var="features_main" value="${go:getStringBuilder()}" />
@@ -838,24 +838,23 @@ body {
 					<%-- Temporary Truncation of data due to database size - Pending feedback 		--%>
 					<%-- -------------------------------------------------------------------------- --%>
 					<c:if test="${(fn:length(featureValue)) > 45 }">
-						<go:log>VALUE: ${fn:length(featureValue)} : ${featureValue}</go:log>
+						${logger.debug('VALUE: ${fn:length(featureValue)} : ${featureValue}')}
 						<c:set var="featureValue" value="${fn:substring(featureValue, 0, 43)}'"/>
 					</c:if>
 
 					<c:if test="${(fn:length(featureExtraValue)) > 999 }">
-						<go:log>DESCRIPTION: ${fn:length(featureExtraValue)} : ${featureExtraValue}</go:log>
+						${logger.debug('DESCRIPTION: ${fn:length(featureExtraValue)} : ${featureExtraValue}')}
 						<c:set var="featureExtraValue" value="${fn:substring(featureExtraValue, 0, 997)}'"/>
 					</c:if>
-					<go:log>Done </go:log>
+					${logger.debug('Done ')}
 					<%-- -------------------------------------------------------------------------- --%>
 
 					<c:choose>
 						<c:when test="${detailsID eq badData || productID eq badData}">
-							<go:log>ERROR: Bad Data with DetailID or ProductID: OMITTING ${featureName} || ${featuresMainArray[0]} [ FID: ${detailsID} | PID: ${productID } ]</go:log>
+							${logger.debug('ERROR: Bad Data with DetailID or ProductID: OMITTING ${featureName} || ${featuresMainArray[0]} [ FID: ${detailsID} | PID: ${productID } ]')}
 							<div class="error">ERROR: Bad Data (Row ${row}, Col ${col}) with DetailID or ProductID: OMITTING ${featureName } || ${featuresMainArray[0] } [ FID: ${detailsID } | PID: ${productID } ]</div>
 						</c:when>
 						<c:otherwise>
-							<%--<go:log>${featureName } || ${featuresMainArray[0] } [ FID: ${detailsID } | PID: ${productID } ]</go:log>--%>
 							${go:appendString(features_main , prefix)}
 							${go:appendString(features_main , prefixBracket)}
 							<c:set var="prefix" value="," />
@@ -870,12 +869,12 @@ body {
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
-				<go:log>Done Col: ${featureName}</go:log>
+				${logger.debug('Done Col: ${featureName}')}
 			</c:forEach>
-			<go:log>Done here</go:log>
+			${logger.debug('Done here')}
 			${go:appendString(features_main ,';')}
 			<p>${features_main.toString()}</p>
-				<go:log>Done here2</go:log>
+				${logger.debug('Done here2')}
 			<c:set var="features_main_replace">
 				<sql:transaction>
 					<c:if test="${debug == 'true' }">
@@ -900,14 +899,14 @@ body {
 					</c:if>
 				</sql:transaction>
 			</c:set>
-				<go:log>Done here3</go:log>
+				${logger.debug('Done here3')}
 			<h3>UPDATING features_main: ${features_main_replace }</h3>
 			</c:if>
 			<%-- ------------------------- --%>
 			<%-- FEATURES RESULTS		       --%>
 			<%-- ------------------------- --%>
 			<c:if test="${debug != 'true' }">
-				<go:log>PRINTING RESULTS</go:log>
+				${logger.debug('PRINTING RESULTS')}
 				<h1>RESULTS</h1>
 
 				<sql:query var="brands">

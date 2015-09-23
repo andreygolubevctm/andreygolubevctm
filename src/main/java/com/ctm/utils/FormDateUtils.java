@@ -1,26 +1,28 @@
 package com.ctm.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class FormDateUtils {
 
 	static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
 
-	private static final Logger logger = LoggerFactory.getLogger(FormDateUtils.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(FormDateUtils.class);
 
 	public static Date parseDateFromForm(String searchDate) {
 		Date searchDateValue = null;
 		try {
 			searchDateValue = formatter.parse(searchDate);
 		} catch (ParseException e) {
-			logger.warn("failed to parse " + searchDate, e);
+			LOGGER.warn("Failed to parse date. {}" , kv("searchDate" , searchDate), e);
 		}
 		return searchDateValue;
 	}

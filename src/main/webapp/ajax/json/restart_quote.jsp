@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<session:delete transactionId="${param.transactionId}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.restart_quote')}" />
 
-<go:log  level="INFO" >RESTART QUOTE: ${param}</go:log>
+<session:delete transactionId="${param.transactionId}" />
+${logger.debug('RESTART QUOTE. {}',log:kv('param',param ))}
 
 <c:set var="vertical" value="${param.quoteType}" />
 

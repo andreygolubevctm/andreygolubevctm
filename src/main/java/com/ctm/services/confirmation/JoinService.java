@@ -1,16 +1,10 @@
 package com.ctm.services.confirmation;
 
-import java.sql.SQLException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.dao.JoinDao;
 
-public class JoinService {
+import java.sql.SQLException;
 
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(JoinService.class.getName());
+public class JoinService {
 
 	private JoinDao joinDao;
 

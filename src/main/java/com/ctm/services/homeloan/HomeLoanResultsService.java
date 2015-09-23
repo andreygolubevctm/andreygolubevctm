@@ -1,15 +1,7 @@
 package com.ctm.services.homeloan;
 
-import java.math.BigDecimal;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.ctm.connectivity.JsonConnection;
+import com.ctm.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
 import com.ctm.model.homeloan.HomeLoanProductSearchRequest;
@@ -22,9 +14,18 @@ import com.ctm.services.ApplicationService;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.ServiceConfigurationService;
 import com.disc_au.web.go.Data;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class HomeLoanResultsService {
-	private static final Logger logger = LoggerFactory.getLogger(HomeLoanResultsService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HomeLoanResultsService.class);
 
 	private static BigDecimal months = new BigDecimal("12");
 	private static BigDecimal fortnights = new BigDecimal("26");
@@ -80,19 +81,19 @@ public class HomeLoanResultsService {
 			//
 			// Execute the fetch
 			//
-			JsonConnection jsonConn = new JsonConnection();
-			jsonConn.conn.setConnectTimeout(Integer.parseInt(timeoutConnect));
-			jsonConn.conn.setReadTimeout(Integer.parseInt(timeoutRead));
-			jsonConn.conn.setContentType("application/json");
+			SimpleConnection conn = new SimpleConnection();
+			JsonConnection jsonConn = new JsonConnection(conn);
+			conn.setConnectTimeout(Integer.parseInt(timeoutConnect));
+			conn.setReadTimeout(Integer.parseInt(timeoutRead));
+			conn.setContentType("application/json");
 
 			String postBody = hlpsrModel.toJsonObject().toString();
-			logger.debug("HomeLoanResultsService.getResults TIMEOUTCONNECT:" + timeoutConnect + " TIMEOUTREAD:" + timeoutRead + " URL:" + serviceUrl);
-			logger.debug("HomeLoanResultsService.getResults POST: " + postBody); //Note: Could contain personal information
+			LOGGER.trace("homeloan results {}, {}, {}, {}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("serviceUrl", serviceUrl), kv("postBody", postBody));
 
 			responseJson = jsonConn.post(serviceUrl, postBody);
 
 			if (responseJson != null) {
-				logger.debug("HomeLoanResultsService.getResults RESP: " + responseJson.toString());
+				LOGGER.trace("homeloan response {}", kv("responseJson", responseJson));
 			}
 
 			//
@@ -152,8 +153,6 @@ public class HomeLoanResultsService {
 									BigDecimal fortnightly = yearly.divide(fortnights, 0, ROUNDING_MODE);
 									BigDecimal weekly = yearly.divide(weeks, 0, ROUNDING_MODE);
 
-									//logger.debug(monthly + " : " + yearly + " : " + fortnightly + " : " + weekly);
-
 									result.put("fortnightlyRepayments", fortnightly);
 									result.put("weeklyRepayments", weekly);
 								}
@@ -179,7 +178,7 @@ public class HomeLoanResultsService {
 
 			FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
 
-			logger.error("HomeLoanResultsService.getResults failed: ", e);
+			LOGGER.error("homeloan results failed {}", kv("hlpsrModel", hlpsrModel), e);
 
 			String message = (e.getMessage() != null ? e.getMessage() : "Failed to get results");
 			Error error = new Error();

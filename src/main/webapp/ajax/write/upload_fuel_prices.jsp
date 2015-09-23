@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/xml; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="java.util.Date,java.io.*,java.util.*,java.text.*,java.math.*, java.io.*"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.upload_fuel_prices')}" />
 
 <%--
 AUTOMATIC CRON JOB FOR MOTORMOUTH FUEL SERVICE
@@ -224,11 +223,9 @@ XML PARSE AND SQL UPDATE
 			</x:forEach>
 		</c:if>
 		<%--  / MAIN XML AND PARSE --%>
-		
-		
+
 		<%-- Send an Update to the server --%>
-		<% System.out.println( "Results for " + pageContext.getAttribute("token") + " = " + pageContext.getAttribute("sqlCount") ); %>
-		
+		${logger.debug('Results for statement. {},{}',log:kv('token', token),log:kv('sqlCount', sqlCount))}
 		
 		<%--
 		=======================================

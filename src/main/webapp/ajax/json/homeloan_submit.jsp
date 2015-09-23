@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.homeloan_submit')}" />
+
 <session:get settings="true" authenticated="true" verticalCode="HOMELOAN" />
 
 <%-- VARIABLES --%>
@@ -54,9 +56,8 @@
 <c:set var="secret_key" value="${appService.getSecretKey()}" />
 <c:set var="model" value="${homeloanService.mapParametersToModel(pageContext.getRequest())}" />
 <c:set var="submitResult" value="${appService.submitOpportunity(pageContext.getRequest(), model)}" />
-<c:if test="${not empty submitResult}"><go:log level="DEBUG" source="homeloan_submit">${submitResult.toString()}</go:log></c:if>
 
-
+${logger.debug('Submit opportunity called. {}', log:kv('submitResult',submitResult ))}
 
 <c:choose>
 	<c:when test="${empty submitResult}">
@@ -92,7 +93,7 @@
 					<%-- Decrypt the AFG response --%>
 					<c:set var="encyptedData" value='${submitResult.getString("responseData")}' />
 					<c:set var="decryptedData"><go:AESEncryptDecrypt action="decrypt" key="${secret_key}" content="${encyptedData}" /></c:set>
-					<go:log level="DEBUG" source="homeloan_submit">DECRYPTED DATA: ${decryptedData}</go:log>
+					${logger.debug('Decrypted  the AFG response. {}', log:kv('decryptedData', decryptedData))}
 
 					<%-- Parse the data --%>
 					<c:set var="xmlData" value="<data>${go:JSONtoXML(decryptedData)}</data>" />
@@ -101,8 +102,7 @@
 					<c:set var="flexOpportunityId"><x:out select="$parsedXml/data/flexOpportunityId" /></c:set>
 					<c:set var="opportunityFirstName"><x:out select="$parsedXml/data/firstName" /></c:set>
 					<c:set var="opportunityEmail"><x:out select="$parsedXml/data/emailAddress" /></c:set>
-
-					<go:log level="DEBUG" source="homeloan_submit">OPPORTUNITY ID: ${flexOpportunityId}, FIRST NAME: ${opportunityFirstName}</go:log>
+					${logger.debug('Parsed the data. {},{}', log:kv('opportunityId', flexOpportunityId), log:kv('firstName',opportunityFirstName))}
 				</c:catch>
 
 				<c:choose>
@@ -159,7 +159,7 @@
 									</confirmation>
 								</c:set>
 
-								<go:log level="DEBUG" source="homeloan_submit">WRITE CONFIRM: ${xmlData}</go:log>
+								${logger.debug('WRITE CONFIRM. {}',log:kv('xmlData',xmlData ))}
 
 								<%-- Write confirmation and C touch --%>
 								<agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}" xml_data="${xmlData}" />
@@ -167,8 +167,7 @@
 								<c:if test="${tranId ne rootId}">
 									<agg:write_touch transaction_id="${rootId}" touch="C" />
 								</c:if>
-								<go:log level="INFO" source="homeloan_submit">CONFIRMATION: transactionId:${tranId}, opportunityId:${flexOpportunityId}</go:log>
-
+								${logger.info('Confirmation has been written. {}',log:kv('opportunityId',flexOpportunityId ))}
 								<%-- crappy hack to inject properties --%>
 								<c:set var="json" value="${fn:substringAfter(submitResult.toString(), '{')}" />
 								<c:set var="json" value='{"confirmationkey":"${confirmationkey}",${json}' />

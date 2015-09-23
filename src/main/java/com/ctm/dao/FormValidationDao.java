@@ -51,9 +51,9 @@ public class FormValidationDao {
 				stmt.executeUpdate();
 			}
 		} catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
 				dbSource.closeConnection();

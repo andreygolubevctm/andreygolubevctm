@@ -12,10 +12,12 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class SimplesTickleService {
 
-	private static final Logger logger = LoggerFactory.getLogger(SimplesTickleService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesTickleService.class);
     private final SessionDataService sessionDataService;
 
     public SimplesTickleService(SessionDataService sessionDataService) {
@@ -41,7 +43,7 @@ public class SimplesTickleService {
             }
         } catch (DaoException | SessionException e) {
             fatalErrorService.logFatalError(e, 0, "simplesTickle", false, transactionId);
-            logger.error("",e);
+            LOGGER.error("Error performing simples tickle {}", kv("simplesUid",  authenticatedData), e);
             throw new ServletException(e);
         }
         return success;

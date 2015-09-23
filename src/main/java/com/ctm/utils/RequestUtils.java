@@ -2,11 +2,13 @@ package com.ctm.utils;
 
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.SessionData;
+import com.ctm.model.settings.Vertical;
 import com.ctm.services.SessionDataService;
 import com.disc_au.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,9 +16,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class RequestUtils {
 
-	private static final Logger logger = LoggerFactory.getLogger(RequestUtils.class.getName());
+   
+    public static final String TRANSACTION_ID_PARAM = "transactionId";
+    public static final String BRAND_CODE_PARAM = "brandCode";
+    public static final String VERTICAL_PARAM = "vertical";
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(RequestUtils.class);
     private final SessionDataService sessionDataService = new SessionDataService();
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -33,12 +42,12 @@ public class RequestUtils {
      */
     public static long getTransactionIdFromRequest(HttpServletRequest request) {
         long transactionId = -1L;
-        String requestTransactionId = request.getParameter("transactionId");
+        String requestTransactionId = request.getParameter(TRANSACTION_ID_PARAM);
         if (requestTransactionId != null && !requestTransactionId.isEmpty()) {
             try{
                 transactionId = Long.parseLong(requestTransactionId);
             } catch (NumberFormatException e) {
-                logger.error("Failed to parse requestTransactionId:"+ requestTransactionId, e);
+                LOGGER.error("Failed to parse transactionId from request. {}", kv("requestTransactionId", requestTransactionId), e);
             }
         }
         return transactionId;
@@ -135,5 +144,21 @@ public class RequestUtils {
         }
         return value;
     }
+
+    /**
+     * Sets all parameters to MDC
+     * Note: this only set variables on the current thread. This will need to be called on each thread
+     * call clearLoggingVariables() after thread is no longer being executed to prevent the logging from being in
+     * an invalid state when a thread is being reused.
+     */
+    public static Vertical.VerticalType getVerticalFromRequest(ServletRequest request) {
+        String verticalCode = request.getParameter(VERTICAL_PARAM);
+        Vertical.VerticalType vertical = null;
+        if(verticalCode != null) {
+            vertical =  Vertical.VerticalType.findByCode(verticalCode);
+        }
+        return vertical;
+    }
+
 
 }

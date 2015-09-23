@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_submit_application')}" />
+
 <session:get settings="true" authenticated="true" />
 <go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 
@@ -12,7 +14,7 @@
 <c:set var="proceedinator"><core:access_check quoteType="life" /></c:set>
 <c:choose>
 	<c:when test="${not empty proceedinator and proceedinator > 0}">
-		<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
+		${logger.debug('PROCEEDINATOR PASSED. {}' , log:kv('proceedinator',proceedinator ))}
 
 		<%-- Processing --%>
 		<core:transaction touch="P" noResponse="true" />
@@ -152,9 +154,6 @@
 						<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 						<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
 						<go:setData dataVar="data" xpath="soap-response/results/selection/pds" value="*DELETE" />
-				
-						<go:log level="DEBUG" source="life_submit_application">${resultXml}</go:log>
-						<go:log level="DEBUG" source="life_submit_application">${debugXml}</go:log>
 					</c:when>
 					<c:otherwise>
 						<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_submit_application.jsp" />

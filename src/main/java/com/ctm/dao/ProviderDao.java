@@ -1,24 +1,25 @@
 package com.ctm.dao;
 
-import java.sql.Connection;
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.Provider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
 
-import javax.naming.NamingException;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.Provider;
-import com.ctm.services.ApplicationService;
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class ProviderDao {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderDao.class);
 
 	public static enum GetMethod {
-		BY_CODE, BY_ID
+		BY_CODE, BY_ID, BY_NAME
 	};
 
 	public ProviderDao(){
@@ -47,10 +48,20 @@ public class ProviderDao {
 			if (method == GetMethod.BY_CODE) {
 				stmt = dbSource.getConnection().prepareStatement(
 					"SELECT ProviderId, ProviderCode, Name " +
-					"FROM ctm.provider_master " +
-					"WHERE ProviderCode = ? " +
-					"AND Status = '' " +
-					"LIMIT 1 ;"
+						"FROM ctm.provider_master " +
+						"WHERE ProviderCode = ? " +
+						"AND Status = '' " +
+						"LIMIT 1 ;"
+				);
+				stmt.setString(1, parameter);
+			}
+			else if (method == GetMethod.BY_NAME) {
+				stmt = dbSource.getConnection().prepareStatement(
+					"SELECT ProviderId, ProviderCode, Name " +
+						"FROM ctm.provider_master " +
+						"WHERE Name = ? " +
+						"AND Status = '' " +
+						"LIMIT 1 ;"
 				);
 				stmt.setString(1, parameter);
 			}
@@ -72,10 +83,10 @@ public class ProviderDao {
 			}
 		}
 		catch (SQLException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		catch (NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -106,6 +117,18 @@ public class ProviderDao {
 	 */
 	public Provider getByCode(String providerCode, Date serverDate) throws DaoException{
 		return get(GetMethod.BY_CODE, providerCode, serverDate);
+	}
+
+	/**
+	 * Returns the provider by provider code eg BUDD.
+	 *
+	 * @param providerName
+	 * @param serverDate
+	 * @return
+	 * @throws DaoException
+	 */
+	public Provider getByName(String providerName, Date serverDate) throws DaoException{
+		return get(GetMethod.BY_NAME, providerName, serverDate);
 	}
 
 	/**
@@ -167,12 +190,10 @@ public class ProviderDao {
 
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("Failed to retrieve providers for vertical {}, {}, {}, {}", kv("verticalCode", verticalCode),
+				kv("styleCodeId", styleCodeId), kv("onlyActiveProviders", getOnlyActiveProviders));
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -208,12 +229,9 @@ public class ProviderDao {
 				provider.setPropertyDetail("mappingType", providerResult.getString("Text"));
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("Failed to retrieve provider details {}, {}", kv("providerCode", providerCode), kv("propertyId", propertyId));
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}

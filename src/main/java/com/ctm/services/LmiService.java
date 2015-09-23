@@ -3,13 +3,18 @@ package com.ctm.services;
 import com.ctm.dao.LmiDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.LmiModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 /**
  * Created by bthompson on 26/06/2015.
  */
 public class LmiService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LmiService.class);
 
     LmiDao lmiDao;
 
@@ -26,7 +31,7 @@ public class LmiService {
         try {
             lmiModels = this.lmiDao.fetchProviders(verticalType);
         } catch (DaoException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to retrieve LMI {}", kv("verticalType", verticalType), e);
         }
         return lmiModels;
     }

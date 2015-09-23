@@ -1,0 +1,134 @@
+.health {
+	.jeepPromotion {
+		margin: 25px auto 0px auto;
+		a {
+			outline: none;
+			border: none;
+			color: #333;
+			display:block;
+		}
+		div {
+			.highResImg('../competition/health/jeep-promo/jeep-entry-xs.jpg'; '../competition/health/jeep-promo/jeep-entry-xs@2x.jpg'; 268px; 89px; ~"");
+			background-position: center center;
+			background-size: contain;
+			background-repeat: no-repeat;
+			margin: 0 auto;
+			width: 268px;
+			height: 89px;
+		}
+		span {
+			float: none;
+			display: block;
+			margin: 3px auto 0 auto;
+			font-size: 10px;
+			text-align: center;
+		}
+		@media(@sm) {
+			span {
+				float: right;
+				font-size:10px;
+				margin-top: 3px;
+			}
+		}
+	}
+}
+
+body[data-step="payment"].health,
+.health #confirmationForm {
+	.jeepPromotion {
+		margin-top: 40px;
+		@media(@sm) {
+			div {
+				.highResImg('../competition/health/jeep-promo/jeep-entry-sidebar.jpg'; '../competition/health/jeep-promo/jeep-entry-sidebar@2x.jpg'; 374px; 124px; ~"");
+				width: 100%;
+				height: 73px;
+				background-size: contain !important;
+			}
+		}
+		@media (@md) {
+			div {
+				width: 100%;
+				height: 97px;
+			}
+		}
+		@media (@lg) {
+			div {
+				width: 100%;
+				height: 124px;
+			}
+		}
+	}
+}
+
+body[data-step="apply"].health {
+	.jeepPromotion {
+		margin-top: 0;
+		margin-bottom: 25px;
+		@media(@sm) {
+			div {
+				.highResImg('../competition/health/jeep-promo/jeep-entry-form.jpg'; '../competition/health/jeep-promo/jeep-entry-form@2x.jpg'; 768px; 255px; ~"");
+				width: 468px;
+				height: 155px;
+				background-size: contain !important;
+			}
+		}
+		@media(@md) {
+			div {
+				width: 100%;
+				height: 204px;
+			}
+		}
+		@media(@lg) {
+			div {
+				width: 100%;
+				height: 249px;
+			}
+		}
+	}
+}
+
+body[data-step="results"].health,
+body[data-step="apply"].health .healthMoreInfoModel,
+body[data-step="payment"].health .healthMoreInfoModel {
+	.jeepPromotion {
+		@media(@sm) {
+			div {
+				.highResImg('../competition/health/jeep-promo/jeep-entry-form.jpg'; '../competition/health/jeep-promo/jeep-entry-form@2x.jpg'; 768px; 255px; ~"");
+				width: 100%;
+				height: 109px;
+				background-size: contain !important;
+			}
+		}
+		@media(@md) {
+			div {
+				width: 100%;
+				height: 146px;
+			}
+		}
+		@media(@lg) {
+			div {
+				width: 100%;
+				height: 180px;
+			}
+		}
+	}
+}
+
+body[data-step="apply"].health .healthMoreInfoModel,
+body[data-step="payment"].health .healthMoreInfoModel {
+	.jeepPromotion {
+		margin-top: 25px;
+	}
+}
+
+.health {
+	#confirmationForm {
+		.jeepPromotion {
+			@media(@xs) {
+				div {
+					.highResImg('../competition/health/jeep-promo/jeep-confirm-sidebar.jpg'; '../competition/health/jeep-promo/jeep-confirm-sidebar@2x.jpg'; 374px; 124px; ~"");
+				}
+			}
+		}
+	}
+}
