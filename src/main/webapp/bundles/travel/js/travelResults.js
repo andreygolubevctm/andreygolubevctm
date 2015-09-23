@@ -312,7 +312,7 @@
 	function rankingCallback(product, position) {
 		var data = {};
 
-		// If the is the first time sorting, send the prm as well
+		// If the is the first time sorting, send the prm as well.
 		data["rank_premium" + position] = product.price;
 		data["rank_productId" + position] = product.productId;
 		data["best_price" + position] = 1;
