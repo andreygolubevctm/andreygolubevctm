@@ -470,6 +470,10 @@
 				if(event.isForward === true) {
 					meerkat.modules.healthCoverDetails.showModal('journey-mode');
 				}
+
+				// show edit button in policy summary side bar
+				$(".policySummaryContainer").find('.footer').removeClass('hidden');
+
 				// Need to call this after the form is visible because of the show/hiding of buttons based on visibility.
 				healthDependents.updateDependentOptionsDOM();
 			}

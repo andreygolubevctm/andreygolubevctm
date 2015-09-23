@@ -7,8 +7,8 @@
         exception = meerkat.logging.exception;
 
     var modalId = false,
-        mode,
         ratesChanged = false,
+        mode,
         $modal,
         $healthCoverDetailsContainer,
         $primaryDob,
@@ -24,8 +24,7 @@
         $healthCoverIncomeMessage,
         $healthCoverIncomeBasedOn,
         $healthCoverRebate,
-        $healthDetailsHiddenFields,
-        $policySummaryContainer;
+        $healthDetailsHiddenFields;
 
     var MODE_POPOVER = 'popover-mode'; // Triggered as pop over
     var MODE_JOURNEY = 'journey-mode'; // Triggered by journey engine step. Different buttons are shown and different events are triggered.
@@ -36,10 +35,6 @@
             $primaryDob = $('#health_healthCover_primary_dob');
             $primaryCurrentCover = $('#health_healthCover_primaryCover');
             $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
-            $policySummaryContainer = $(".policySummaryContainer");
-
-            // show edit button in policy summary side bar
-            $policySummaryContainer.find('.footer').removeClass('hidden');
         });
     }
 
@@ -200,13 +195,14 @@
     }
 
     function resetRebateForm () {
-        $healthCoverRebate.find(':checked').prop('checked', false);
-        resetRadio($healthCoverRebate);
         $healthCoverDependants.find('option:selected').prop("selected", false);
         $healthCoverDependants.find('option').first().prop("selected", true);
         $healthCoverIncome.find('option:selected').prop("selected", false);
         $healthCoverIncome.find('option').first().prop("selected", true);
         $healthCoverIncomeLabel.val('');
+        $healthCoverRebate.find(':checked').prop('checked', false);
+        resetRadio($healthCoverRebate);
+        $healthCoverRebate.hide();
     }
 
     function setDependants(initMode) {
@@ -236,14 +232,15 @@
 
     function setup() {
         setFormAndValidation();
-        eventSubscriptions();
         resetRebateForm();
+        populateVisibleFields();
+        eventSubscriptions();
         setPartner();
         setHealthFunds(true);
         setIncomeBase(true);
         setDependants(true);
         meerkat.modules.healthTiers.setTiers(true);
-        populateVisibleFields();
+        setRebate(true);
     }
 
     function eventSubscriptions() {
@@ -297,14 +294,9 @@
             //    });
             //}
 
-            // Add rebate message dynamically
+            // update rebate
             if ($this.valid()) {
-                loadRates(true, function (rates) {
-                    $healthCoverTier.find('#health_healthCover_tier_row_legend').html('');
-                    if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
-                        $healthCoverTier.find('#health_healthCover_tier_row_legend').html('You are eligible for a ' + rates.rebate + '% rebate.');
-                    }
-                });
+                setRebate();
             }
         });
 
@@ -331,7 +323,19 @@
             populateHiddenFields();
             saveHealthCoverDetails();
         });
+    }
 
+    function setRebate(initMode){
+        loadRates(true, function (rates) {
+            if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
+                $healthCoverTier.find('#health_healthCover_tier_row_legend').html('You are eligible for a ' + rates.rebate + '% rebate.');
+                initMode ? $healthCoverRebate.show() : $healthCoverRebate.slideDown();
+            } else {
+                $healthCoverTier.find('#health_healthCover_tier_row_legend').html('');
+                $healthCoverRebate.find('input[value="N"]').prop('checked', true);
+                initMode ? $healthCoverRebate.hide() : $healthCoverRebate.slideUp();
+            }
+        });
     }
 
     function saveHealthCoverDetails() {
