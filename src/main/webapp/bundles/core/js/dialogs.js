@@ -41,6 +41,7 @@ USAGE EXAMPLE: Call directly
 			title: '',
 			htmlContent: null,
 			url: null,
+			externalUrl: null,
 			cacheUrl: false,
 			buttons: [],
 			className: '',
@@ -138,14 +139,14 @@ USAGE EXAMPLE: Call directly
 			windowCounter++;
 		}
 
-		if(settings.hashId !== null){
+		if(settings.hashId != null){
 			// append the dialogs hash id to the window hash.
 			meerkat.modules.address.appendToHash(settings.hashId);
 		}
 
 		var htmlTemplate = _.template(settings.templates.dialogWindow);
 
-		if(settings.url !== null || settings.externalUrl !== null) {
+		if(settings.url != null || settings.externalUrl != null) {
 			// Load content from dynamic source, insert loading icon until content loads
 			settings.htmlContent = meerkat.modules.loadingAnimation.getTemplate();
 		}
@@ -217,7 +218,7 @@ USAGE EXAMPLE: Call directly
 			});
 		}
 
-		if(settings.externalUrl !== null) {
+		if(settings.externalUrl != null) {
 			var iframe = '<iframe class="displayNone" id="' + settings.id + '_iframe" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency="true" src="' + settings.externalUrl + '"></iframe>';
 			appendContent(settings.id, iframe);
 
@@ -274,7 +275,9 @@ USAGE EXAMPLE: Call directly
 
 		// Run the callback
 		var settings = getSettings(dialogId);
-		if (settings !== null && typeof settings.onClose === 'function') settings.onClose( dialogId );
+		if(settings !== null && typeof settings.onClose === 'function') {
+			settings.onClose( dialogId );
+		}
 		if(settings.destroyOnClose === true) {
 			destroyDialog(dialogId);
 		} else {
@@ -379,8 +382,8 @@ USAGE EXAMPLE: Call directly
 
 		var settings = getSettings(dialogId);
 
-		if (settings !== null) {
-			if (settings.hashId !== null) {
+		if (settings != null) {
+			if (settings.hashId != null) {
 				meerkat.modules.address.removeFromHash(settings.hashId);
 
 				var previousInstance = _.findWhere(dialogHistory, {hashId:settings.hashId});

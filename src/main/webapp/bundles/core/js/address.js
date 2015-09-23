@@ -75,7 +75,8 @@
 	/* Get the hash from the browser's window */
 	function getWindowHash(){
 		var hash = window.location.hash;
-		return hash !== "" ? hash.replace('#', '') : "";
+		if(hash != null) return hash.replace('#', '');
+		return '';
 	}
 
 	meerkat.modules.register('address', {

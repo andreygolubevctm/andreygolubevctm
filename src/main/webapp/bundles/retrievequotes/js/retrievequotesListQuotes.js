@@ -239,7 +239,7 @@
     }
 
     function renderTemplate(vertical, data) {
-        if(!vertical) {
+        if(!vertical || vertical == "generic") {
             return "";
         }
         try {
