@@ -55,7 +55,7 @@ function resetRadio($_obj, value){
 		$_obj.find('input').prop('checked', false);
 		$_obj.find('label').removeClass('active');
 
-		if(value !== null){
+		if(typeof value !== "undefined"){
 			$_obj.find('input[value='+ value +']').prop('checked', 'checked');
 			$_obj.find('input[value='+ value +']').parent().addClass("active");
 		}

@@ -157,7 +157,9 @@
 
 			var stepToShow = settings.steps[0]; // default...
 			processStep(0, function(step, validated){
-				if(step === null) step = stepToShow;
+				if(step == null) {
+					step = stepToShow;
+				}
 				settings.startStepId = step.navigationId;
 
 				if(validated){
@@ -233,10 +235,10 @@
 
 	// tries to run onInitialise() of the step being accessed if not done already, and runs the onBeforeEnter()
 	function onStepEnter(step, eventObject){
-		if(step.initialised === false && step.onInitialise !== null) step.onInitialise(eventObject);
+		if(step.initialised === false && step.onInitialise != null) step.onInitialise(eventObject);
 		step.initialised = true;
 		updateCurrentStepHiddenField(step);
-		if(step.onBeforeEnter !== null) step.onBeforeEnter(eventObject);
+		if(step.onBeforeEnter != null) step.onBeforeEnter(eventObject);
 	}
 
 	/* Navigation change - do not call directly, update window hash to trigger this event */
@@ -336,7 +338,7 @@
 			// No change in slide, no transitions required, therefore call the step after/before callbacks directly.
 			onHidePreviousStep();
 
-			if(currentStep === null) showSlide(step, false); // Force show the first step on the initial call of the journey engine.
+			if(currentStep === null) showSlide(step, false, null); // Force show the first step on the initial call of the journey engine.
 
 			currentStep = step;
 
@@ -392,7 +394,7 @@
 
 		// Run callbacks
 		if(triggerEnterMethod === true){
-			if(currentStep.onAfterEnter !== null) currentStep.onAfterEnter(eventObject);
+			if(currentStep.onAfterEnter != null) currentStep.onAfterEnter(eventObject);
 		}
 
 		unlock();
@@ -428,18 +430,23 @@
 
 	function showSlide(step, animate, callback){
 
-		$slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+step.slideIndex+')');
+		var $slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+step.slideIndex+')');
 
 		if(animate === true){
 
 			$slide.fadeIn(250,function onShow(){
-				$slide.removeClass('hiddenSlide').addClass('active');
-				if(callback !== null) callback();
+				_onShow($slide, callback);
 			});
 
 		}else{
-			$slide.removeClass('hiddenSlide').addClass("active");
-			if(callback !== null) callback();
+			_onShow($slide, callback);
+		}
+	}
+
+	function _onShow($slide, callback) {
+		$slide.removeClass('hiddenSlide').addClass('active');
+		if(callback !== null) {
+			callback();
 		}
 	}
 
@@ -456,6 +463,7 @@
 				return i;
 			}
 		}
+		return null;
 	}
 
 	/* Return length of the step array */
@@ -466,7 +474,9 @@
 	/* Iterate over array and return step item */
 	function getStep(navigationId){
 		var index = getStepIndex(navigationId);
-		if(index === null) return null;
+		if(index === null) {
+			return null;
+		}
 		return settings.steps[index];
 	}
 

@@ -384,7 +384,7 @@ USAGE EXAMPLE: Call directly
 				meerkat.modules.address.removeFromHash(settings.hashId);
 
 				var previousInstance = _.findWhere(dialogHistory, {hashId:settings.hashId});
-				if(previousInstance === null) dialogHistory.push(settings);
+				if(previousInstance == null) dialogHistory.push(settings);
 			}
 
 			openedDialogs.splice(settings.index, 1);
@@ -499,9 +499,9 @@ USAGE EXAMPLE: Call directly
 			// find windows which need to be opened.
 			for(var j=0; j<event.hashArray.length;j++){
 				var windowOpen = _.findWhere(openedDialogs, {hashId:event.hashArray[j]});
-				if(windowOpen === null){
+				if(windowOpen == null){
 					var previousInstance = _.findWhere(dialogHistory, {hashId:event.hashArray[j]});
-					if(previousInstance !== null) {
+					if(previousInstance != null) {
 						if(previousInstance.openOnHashChange === true) {
 							meerkat.modules.dialogs.show(previousInstance);
 				}

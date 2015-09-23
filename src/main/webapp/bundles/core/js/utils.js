@@ -139,7 +139,7 @@
 		var safeList = [8,35,37,39];
 		// backspace, left/right arrow, end and number pad
 
-		if ((key===null) || (key===0) || (key==9) || (key==12) || (key==13) || (key==27) ) {
+		if ((key==null) || (key===0) || (key==9) || (key==12) || (key==13) || (key==27) ) {
 			return true;
 		} else if (_.indexOf(safeList, key) !== -1 || (("0123456789").indexOf(keychar) > -1)) {
 			return true;
