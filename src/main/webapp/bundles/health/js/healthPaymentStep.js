@@ -107,6 +107,15 @@
 					$year.valid();
 				}
 			});
+			// Moved from field_new:bsb_number
+			$(".bsb_number").on("focus blur", function(){
+				var $self = $(this), id = $self.attr('id'),
+					hiddenInput = id.substring(0,id.length - 5);
+				$("#"+hiddenInput).val( String($self.val()).replace(/[^0-9]/g, '') );
+			}).each(function() {
+				// blur both on load.
+				$(this).blur();
+			});
 
 			resetSettings();
 

@@ -111,6 +111,12 @@
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 
+				if(meerkat.site.choices) {
+					healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
+					healthChoices._state = meerkat.site.choices.state;
+					healthChoices._performUpdate = meerkat.site.choices.performHealthChoicesUpdate;
+				}
+
 				// Add event listeners.
 				$('.health-situation-healthCvr').on('change',function() {
 					healthChoices.setCover($(this).val());
@@ -252,7 +258,7 @@
 				$('#health_healthCover_incomelabel').val( incomelabel );
 			},
 			onAfterEnter: function(event) {
-				if (event.isForward){
+				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
 			}
@@ -305,7 +311,7 @@
 				meerkat.modules.healthSegment.filterSegments();
 				}, 1000);
 
-				if (event.isForward){
+				if (event.isForward && meerkat.site.isCallCentreUser === true){
 					meerkat.modules.simplesCallInfo.fetchCallInfo();
 				}
 			},
