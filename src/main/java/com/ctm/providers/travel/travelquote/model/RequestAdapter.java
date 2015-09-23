@@ -62,7 +62,7 @@ public class RequestAdapter {
             quoteRequest.getProviderFilter().add(quote.getFilter().getSingleProvider());
         }
 
-        if(quote.getRenderingMode().equalsIgnoreCase("XS")){
+        if(quote.getRenderingMode() != null && quote.getRenderingMode().equalsIgnoreCase("XS")){
             quoteRequest.setMobileUrls(true);
         }
 

@@ -4,7 +4,7 @@ SET @fundCode = '9';
 SET @productName = 'black+white starter';
 SET @startDate = '2015-04-01 00:00:01';
 SET @endDate = '2016-03-31 00:00:00';
-SET @pdfLocation = '/AHM/black_+_white_starter.pdf';
+SET @pdfLocation = '/AHM/BlackAndWhiteStarter.pdf';
 
 /* don't forget to replace 'REPLACE ME' with real values  */
 INSERT INTO `content_control` (`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`)
@@ -26,7 +26,7 @@ SET @fundCode = '9';
 SET @productName = 'black+white lite';
 SET @startDate = '2015-04-01 00:00:01';
 SET @endDate = '2016-03-31 00:00:00';
-SET @pdfLocation = '/AHM/black_+_white_lite.pdf';
+SET @pdfLocation = '/AHM/BlackAndWhiteLite.pdf';
 
 /* don't forget to replace 'REPLACE ME' with real values  */
 INSERT INTO `content_control` (`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`)
@@ -49,7 +49,7 @@ SET @fundCode = '9';
 SET @productName = 'black+white classic';
 SET @startDate = '2015-04-01 00:00:01';
 SET @endDate = '2016-03-31 00:00:00';
-SET @pdfLocation = '/AHM/black_+_white_classic.pdf';
+SET @pdfLocation = '/AHM/BlackAndWhiteClassic.pdf';
 
 /* don't forget to replace 'REPLACE ME' with real values  */
 INSERT INTO `content_control` (`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`)
@@ -72,7 +72,7 @@ SET @fundCode = '9';
 SET @productName = 'black+white deluxe';
 SET @startDate = '2015-04-01 00:00:01';
 SET @endDate = '2016-03-31 00:00:00';
-SET @pdfLocation = '/AHM/black_+_white_deluxe.pdf';
+SET @pdfLocation = '/AHM/BlackAndWhiteDeluxe.pdf';
 
 /* don't forget to replace 'REPLACE ME' with real values  */
 INSERT INTO `content_control` (`styleCodeId`,`verticalId`,`contentCode`,`contentKey`,`contentStatus`,`effectiveStart`,`effectiveEnd`,`contentValue`)
