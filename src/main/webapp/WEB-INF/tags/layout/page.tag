@@ -116,10 +116,24 @@
 
 <jsp:invoke fragment="head" />
 
+<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
+	<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
+		<script src="${pageSettings.getSetting('DTMSourceUrl')}"></script>
+	</c:if>
+</c:if>
 </head>
 
 	<body class="jeinit ${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''}">
 
+    <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
+        <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
+            <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
+        </c:if>
+    </c:if>
 
 	<div class="navMenu-row">
 
@@ -388,7 +402,11 @@
 		</c:otherwise>
 	</c:choose>
 
-
+	<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
+		<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
+			<script type="text/javascript">if(typeof _satellite !== 'undefined') {_satellite.pageBottom();}</script>
+		</c:if>
+	</c:if>
 
 	<go:script>
 		$(document).ready(function(){
