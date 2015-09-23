@@ -24,16 +24,23 @@
         $healthCoverIncomeMessage,
         $healthCoverIncomeBasedOn,
         $healthCoverRebate,
-        $healthDetailsHiddenFields;
+        $healthDetailsHiddenFields,
+        $policySummaryContainer;
 
     var MODE_POPOVER = 'popover-mode'; // Triggered as pop over
     var MODE_JOURNEY = 'journey-mode'; // Triggered by journey engine step. Different buttons are shown and different events are triggered.
 
     function initHealthCoverDetails(){
-        // Setup jQuery objects already available
-        $primaryDob = $('#health_healthCover_primary_dob');
-        $primaryCurrentCover = $('#health_healthCover_primaryCover');
-        $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
+        $(document).ready(function () {
+            // Setup jQuery objects already available
+            $primaryDob = $('#health_healthCover_primary_dob');
+            $primaryCurrentCover = $('#health_healthCover_primaryCover');
+            $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
+            $policySummaryContainer = $(".policySummaryContainer");
+
+            // show edit button in policy summary side bar
+            $policySummaryContainer.find('.footer').removeClass('hidden');
+        });
     }
 
     function setFormAndValidation(){
@@ -66,11 +73,18 @@
     function populateHiddenFields() {
         $healthDetailsHiddenFields.find('input').each(function(index, element){
             var $visibleElement = $healthCoverDetailsContainer.find(':input[name="' + $(element).attr('name') + '"]');
-            if ($visibleElement.attr('type') === 'radio') {
-                $(element).val($($visibleElement.selector + ':checked').val()).change();
-            } else {
-                $(element).val($visibleElement.val()).change();
+            if ($visibleElement.length && $visibleElement.valid()) {
+                if ($visibleElement.attr('type') === 'radio') {
+                    $(element).val($($visibleElement.selector + ':checked').val()).change();
+                } else {
+                    $(element).val($visibleElement.val()).change();
+                }
             }
+        });
+
+        // bind change event will trigger the warning but we don't want it at this stage.
+        _.defer(function() {
+            $(".policySummaryContainer").find(".policyPriceWarning").hide();
         });
     }
 
@@ -284,12 +298,14 @@
             //}
 
             // Add rebate message dynamically
-            loadRates(true, function(rates){
-                $healthCoverTier.find('#health_healthCover_tier_row_legend').html('');
-                if(!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
-                    $healthCoverTier.find('#health_healthCover_tier_row_legend').html('You are eligible for a ' + rates.rebate + '% rebate.');
-                }
-            });
+            if ($healthCoverDetailsContainer.valid()) {
+                loadRates(true, function (rates) {
+                    $healthCoverTier.find('#health_healthCover_tier_row_legend').html('');
+                    if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
+                        $healthCoverTier.find('#health_healthCover_tier_row_legend').html('You are eligible for a ' + rates.rebate + '% rebate.');
+                    }
+                });
+            }
         });
 
         if(meerkat.site.isCallCentreUser === true){
@@ -302,9 +318,9 @@
         }
 
         // Hook up modal buttons
-        $modal.find('.btn-cancel').on('click', function cancelClick() {
+        $modal.find('.btn-cancel, .btn-close-dialog').on('click', function cancelClick() {
             populateHiddenFields();
-            meerkat.modules.dialogs.close(modalId);
+            closeModal();
 
             if (mode === MODE_JOURNEY){
                 meerkat.modules.journeyEngine.gotoPath('previous');
@@ -314,15 +330,13 @@
         $modal.find('.btn-healthCoverDetails-save').on('click', function saveClick() {
             populateHiddenFields();
             saveHealthCoverDetails();
-            meerkat.modules.dialogs.close(modalId);
-
         });
 
     }
 
     function saveHealthCoverDetails() {
         var selectedProduct = Results.getSelectedProduct();
-        if (selectedProduct) {
+        if (selectedProduct && $healthCoverDetailsContainer.valid()) {
             lockForm();
 
             loadRates(false, function (rates) {
@@ -330,9 +344,9 @@
                // If the values are same, don't fetch result again.
                // TODO: premiumCalculator could be done in frontEnd to avoid the price fetch
                 var oriRates = meerkat.modules.health.getRates();
-                if (typeof oriRates === 'undefined' || oriRates === null) return;
-                if (typeof rates === 'undefined' || rates === null) return;
-                if (rates.rebate === oriRates.rebate && rates.loading === oriRates.loading) return;
+                if (typeof oriRates === 'undefined' || oriRates === null) { unlockAndClose(); return; }
+                if (typeof rates === 'undefined' || rates === null) { unlockAndClose(); return; }
+                if (rates.rebate === oriRates.rebate && rates.loading === oriRates.loading) { unlockAndClose(); return; }
 
                 // Now set the rates back to hidden fields so we can fetch the prices
                 meerkat.modules.health.setRates(rates);
@@ -357,15 +371,23 @@
                             var product = _.isArray(data.results.price) ? data.results.price[0] : data.results.price;
 
                             // Update selected product
-                            meerkat.modules.healthResults.setSelectedProduct(product, true, false);
+                            meerkat.modules.healthResults.setSelectedProduct(product, true, true);
                         }
                     },
                     onComplete: function(){
-                        unlockForm();
+                        unlockAndClose();
                     }
                 });
             });
         }
+    }
+
+    function closeModal(){
+        meerkat.modules.dialogs.close(modalId);
+    }
+    function unlockAndClose() {
+        unlockForm();
+        closeModal();
     }
 
     function unlockForm() {
