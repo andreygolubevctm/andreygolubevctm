@@ -332,8 +332,8 @@
 
             var suburb = elements.nonStdSuburbInput.val();
             var postcode = elements.nonStdPostCodeInput.val();
-            address.suburbSequence = typeof suburb == 'undefined' || suburb === null ? "" : suburb.toUpperCase();
-            address.postCode = typeof postcode == 'undefined' || postcode === null ? "" : postcode.toUpperCase();
+            address.suburbSequence = typeof suburb == 'undefined' ? "" : suburb.toUpperCase();
+            address.postCode = typeof postcode == 'undefined' ? "" : postcode.toUpperCase();
             if (address.suburbSequence !== "" && address.streetName !== "") {
                 meerkat.modules.comms.post({
                     url: "ajax/json/address/get_address.jsp",

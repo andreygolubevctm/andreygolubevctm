@@ -476,7 +476,7 @@ var ResultsModel = {
 			valueA = Object.byString(resultA, currentFrequencyPricePath );
 			valueB = Object.byString(resultB, currentFrequencyPricePath );
 
-			if(valueA === null || valueB === null){
+			if(typeof valueA =="undefined" || typeof valueB == "undefined"){
 				return 0;
 			}
 			return valueA - valueB; // return early to avoid the sort direction impact, we sort by asc price by default
