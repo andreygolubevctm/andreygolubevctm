@@ -10,7 +10,6 @@
 
 var less = require("gulp-less"),
     concat = require("gulp-concat"),
-    minifyCSS = require("gulp-minify-css"),
     rename = require("gulp-rename"),
     insert = require("gulp-insert"),
     watchLess = require("gulp-watch-less"),
@@ -18,14 +17,8 @@ var less = require("gulp-less"),
     intercept = require("gulp-intercept"),
     plumber = require("gulp-plumber"),
     notify = require("gulp-notify"),
-    sakugawa = require('gulp-sakugawa'),
     fs = require("fs"),
-    mkdirp = require("mkdirp"),
     path = require("path");
-
-var fileHelper = require("./../../helpers/fileHelper");
-
-// TODO: Add .map files
 
 function LessTasks(gulp) {
     var bundles = gulp.bundles;
@@ -118,8 +111,6 @@ function LessTasks(gulp) {
                 watchesStarted.push(taskName);
             }
 
-            var filePath = fileName = targetFolder = targetFile = "";
-
             return stream.pipe(
                     intercept(function(file) {
                         // Check if there are imports to replace (from a bundle extending another bundle)
@@ -154,49 +145,7 @@ function LessTasks(gulp) {
                 .pipe(notify({
                     title: taskName + " compiled",
                     message: bundle + " successfully compiled"
-                }))
-                .pipe(minifyCSS({
-                    advanced: true,
-                    aggressiveMerging: true,
-                    compatibility: "ie8"
-                }))
-                .pipe(rename(bundle + ".min.css"))
-                .pipe(gulp.dest(targetDir))
-                .pipe(notify({
-                    title: taskName + " minified",
-                    message: bundle + " successfully minified"
-                }))
-                // Start IE CSS Selector fix
-                .pipe(intercept(function(file){
-                    filePath = file.path;
-                    fileName = path.basename(file.path).replace(/\.[^/.]+$/, "");
-                    targetFolder = path.join(gulp.pipelineConfig.target.dir, "includes", "styles", brandCode);
-                    targetFile = fileName.replace(".min", "") + gulp.pipelineConfig.target.inc.extension;
-
-                    // Wipe the original target file
-                    mkdirp.sync(targetFolder);
-                    fs.writeFileSync(path.join(targetFolder, targetFile), "");
-
-                    return file;
-                }))
-                .pipe(sakugawa({
-                    maxSelectors: 4090,
-                    suffix: "."
-                }))
-                // Append to the list of includes
-                .pipe(intercept(function(file){
-                    var tempPath = file.path,
-                        revDate = + new Date(),
-                        appendContent = "<link rel=\"stylesheet\" type=\"text\/css\" href=\"" + tempPath.slice(tempPath.indexOf("assets"), tempPath.length).replace(/\\/g, "/") + "?rev=" + revDate + "\" media=\"all\" />";
-
-                    fileHelper.appendToFile(targetFolder, targetFile, appendContent);
-                    return file;
-                }))
-                .pipe(gulp.dest(targetDir))
-                .pipe(notify({
-                    title: taskName + " " + brandCode + " 4095 split for IE",
-                    message: "Successfully split up for IE (4095)"
-                }));;
+                }));
         }
     };
 
