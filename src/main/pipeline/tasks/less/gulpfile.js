@@ -15,6 +15,7 @@ var less = require("gulp-less"),
     watchLess = require("gulp-watch-less"),
     gulpIf = require("gulp-if"),
     intercept = require("gulp-intercept"),
+    sourcemaps = require("gulp-sourcemaps"),
     plumber = require("gulp-plumber"),
     notify = require("gulp-notify"),
     fs = require("fs"),
@@ -139,8 +140,10 @@ function LessTasks(gulp) {
                     })
                 )
                 // Parse the LESS
+                .pipe(sourcemaps.init())
                 .pipe(less(glob, { name: taskName }))
                 .pipe(rename(bundle + ".css"))
+                .pipe(sourcemaps.write("./maps"))
                 .pipe(gulp.dest(targetDir))
                 .pipe(notify({
                     title: taskName + " compiled",
