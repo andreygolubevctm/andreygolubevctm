@@ -81,8 +81,8 @@ var healthFunds_QCH = {
 				$('.health_bank-details_policyDay-message').html('');
 				$('.health_credit-card-details_policyDay-message').html('');
 
-				$('#health_payment_bank_policyDay').attr('type','hidden');
-				$('#health_payment_credit_policyDay').attr('type','hidden');
+
+
 
 				var startDate = $('#health_payment_details_start').val();
 				var policyStart = healthFunds._setPolicyDate(startDate);
@@ -92,9 +92,11 @@ var healthFunds_QCH = {
 
 				if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
 					$('.health_bank-details_policyDay-message').html('Your payment will be deducted 7 days after your policy start date');
+					$('#health_payment_bank_policyDay').attr('type','hidden').attr('data-attach', 'true');
 				}
 				else if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
 					$('.health_credit-card-details_policyDay-message').html('Your payment will be deducted 7 days after your policy start date');
+					$('#health_payment_credit_policyDay').attr('type','hidden').attr('data-attach', 'true');
 				}
 			});
 			/*$('#health_payment_medicare_cover').rules('add', {required:true});*/
@@ -148,8 +150,8 @@ var healthFunds_QCH = {
 			$('#health_payment_details_type_ba').prop('disabled', false);
 			$('#health_payment_details_type_ba').parent('label').removeClass('disabled').removeClass('disabled-by-fund');
 
-			$('#health_payment_bank_policyDay').attr('type','');
-			$('#health_payment_credit_policyDay').attr('type','');
+			$('#health_payment_bank_policyDay').attr('type','').attr('data-attach', '');
+			$('#health_payment_credit_policyDay').attr('type','').attr('data-attach', '');
 
 			$('#update-premium').off('click.QCH');
 			meerkat.modules.paymentGateway.reset();
