@@ -19,7 +19,7 @@
             'price.premium': null, // will default to Results.model.defaultSortMethod. Cannot specify here as Results.model is undefined when this file is parsed.
             'info.roadCall': null,
             'info.keyService': null
-        }
+        };
 
 
     //Sorting is a kind of filtering for now in the events

@@ -42,7 +42,7 @@
 
 	function tearDown(instanceSettings) {
 		var existingSettings = emailBrochuresSettings[instanceSettings.identifier];
-		if (typeof existingSettings !== 'undefined' && existingSettings != null) {
+		if (typeof existingSettings !== 'undefined' && existingSettings !== null) {
 			emailBrochuresSettings[existingSettings.identifier] = null;
 			meerkat.modules.sendEmail.tearDown(existingSettings);
 			existingSettings.submitButton.off("click", existingSettings.emailBrochuresOnClickFunction);

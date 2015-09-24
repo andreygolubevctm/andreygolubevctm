@@ -183,7 +183,7 @@
 						highlight: 'Can\'t find your address? <u>Click here.</u>'
 					});
 					return parsedResponse;
-				}
+				};
 
 				$element.bind('typeahead:selected', function catchEmptyValue(event, datum, name) {
 					if (datum.hasOwnProperty('value') && datum.value === 'Type your address...') {

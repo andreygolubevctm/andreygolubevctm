@@ -2,6 +2,7 @@
     "brandCodes": "all",
     "dependencies": [
         "shared/results",
-        "core"
+        "core",
+        "shared/datepicker"
     ]
 }
