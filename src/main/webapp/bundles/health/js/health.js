@@ -807,7 +807,7 @@
 
 	// Make the rebate available publicly, and handle rates property being null.
 	function getRebate() {
-		if (rates !== null && rates.rebate) {
+		if (!_.isNull(rates) && rates.rebate) {
 			return rates.rebate;
 		}
 		else {
@@ -885,7 +885,7 @@
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
 				setRates(data);
-				if(callback !== null && typeof callback !== 'undefined') {
+				if(!_.isNull(callback) && typeof callback !== 'undefined') {
 					callback(data);
 				}
 			}

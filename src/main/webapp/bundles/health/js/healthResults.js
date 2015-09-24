@@ -535,7 +535,9 @@
         $(document).on("resultPageChange", function (event) {
 
             var pageData = event.pageData;
-            if (pageData.measurements === null) return false;
+            if (_.isNull(pageData.measurements)) {
+                return false;
+            }
 
             var numberOfPages = pageData.measurements.numberOfPages;
             var items = Results.getFilteredResults().length;

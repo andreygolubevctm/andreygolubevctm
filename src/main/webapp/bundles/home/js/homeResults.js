@@ -395,7 +395,7 @@
 
 			_.each(products, function massageJson(result, index) {
 				// Add properties
-				if (result.price !== null && !_.isUndefined(result.price)) {
+				if (!_.isNull(result.price) && !_.isUndefined(result.price)) {
 
 					// Annually
 					if (!_.isUndefined(result.price.annualPremium)) {
@@ -416,13 +416,13 @@
 					}
 				}
 
-				if (result.homeExcess !== null && !_.isUndefined(result.homeExcess)) {
+				if (!_.isNull(result.homeExcess) && !_.isUndefined(result.homeExcess)) {
 					if (!_.isUndefined(result.homeExcess.amount)) {
 						result.homeExcess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.homeExcess.amount, {roundToDecimalPlace: 0});
 					}
 				}
 
-				if (result.contentsExcess !== null && !_.isUndefined(result.contentsExcess)) {
+				if (!_.isNull(result.contentsExcess) && !_.isUndefined(result.contentsExcess)) {
 					if (!_.isUndefined(result.contentsExcess.amount)) {
 						result.contentsExcess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.contentsExcess.amount, {roundToDecimalPlace: 0});
 					}
