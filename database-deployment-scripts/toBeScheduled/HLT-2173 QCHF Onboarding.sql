@@ -110,6 +110,25 @@ INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supp
 INSERT INTO `content_supplementary` (`contentControlId`,`supplementaryKey`,`supplementaryValue`) VALUES (@newid ,'extrasPDF',@ExtraPDFYoung);
 
 
+/* Add field details for new fields */
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2472', '0', '6', 'health/contactAuthority', '4', '1', '0', '0', '0', '0', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2473', '0', '7', 'health/payment/medicare/cardPosition', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2474', '2457', '6', 'health/application/dependants/dependant1/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2475', '2457', '6', 'health/application/dependants/dependant2/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2476', '2457', '6', 'health/application/dependants/dependant3/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2477', '2457', '6', 'health/application/dependants/dependant4/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2478', '2457', '6', 'health/application/dependants/dependant5/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2479', '2457', '6', 'health/application/dependants/dependant6/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2480', '2457', '6', 'health/application/dependants/dependant7/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2481', '2457', '6', 'health/application/dependants/dependant8/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2482', '2457', '6', 'health/application/dependants/dependant9/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2483', '2457', '6', 'health/application/dependants/dependant10/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2484', '2457', '6', 'health/application/dependants/dependant11/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+INSERT INTO `aggregator`.`transaction_fields` (`fieldId`, `fieldMaster`, `fieldCategory`, `fieldCode`, `verticalId`, `fieldPriority`, `fieldProfile`, `fieldPrivate`, `fieldHidden`, `isMaster`, `effectiveEnd`) VALUES ('2485', '2457', '6', 'health/application/dependants/dependant12/apprentice', '0', '1', '0', '0', '0', '1', '2014-12-31 00:00:00');
+
+
+
+
 -- TESTS
 
 -- Should be 10 Rows
