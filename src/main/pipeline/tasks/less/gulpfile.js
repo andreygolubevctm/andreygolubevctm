@@ -141,10 +141,22 @@ function LessTasks(gulp) {
                 )
                 // Parse the LESS
                 .pipe(sourcemaps.init())
-                .pipe(less(glob, { name: taskName }))
+                .pipe(less(glob, {
+                    name: taskName,
+                    paths: [
+                        path.join(gulp.pipelineConfig.bundles.dir),
+                        path.join(gulp.pipelineConfig.bootstrap.dir, "less")
+                    ]
+                }))
                 .pipe(rename(bundle + ".css"))
                 .pipe(sourcemaps.write("./maps"))
                 .pipe(gulp.dest(targetDir))
+                .pipe(intercept(function(file){
+                    var filePath = file.path.replace(".map", "");
+                    require("./minify")(gulp, filePath, brandCode, bundle);
+                    require("./bless")(gulp, filePath, brandCode, bundle);
+                    return file;
+                }))
                 .pipe(notify({
                     title: taskName + " compiled",
                     message: bundle + " successfully compiled"

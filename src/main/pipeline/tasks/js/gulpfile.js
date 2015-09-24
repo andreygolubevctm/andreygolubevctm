@@ -13,6 +13,7 @@ var concat = require("gulp-concat"),
     beautify = require("gulp-beautify"),
     uglify = require("gulp-uglify"),
     notify = require("gulp-notify"),
+    intercept = require("gulp-intercept"),
     plumber = require("gulp-plumber"),
     rename = require("gulp-rename");
 
@@ -47,6 +48,7 @@ function JSTasks(gulp) {
 
             var incDir = path.join(gulp.pipelineConfig.target.dir, "includes", "js"),
                 revDate = + new Date();
+
             fileHelper.writeFileToFolder(incDir, fileName + gulp.pipelineConfig.target.inc.extension, fileArray.map(function(file){
                 return "<script type\"\" src=\"" + file.slice(file.indexOf("bundles"), file.length).replace(/\\/g, "/") + "?rev=" + revDate + "\"></script>";
             }).join("\r\n"));
@@ -65,6 +67,10 @@ function JSTasks(gulp) {
                 .pipe(uglify())
                 .pipe(rename(fileName + ".min.js"))
                 .pipe(gulp.dest(targetDirectory))
+                .pipe(intercept(function(file){
+                    require("./lint")(gulp, fileArray);
+                    return file;
+                }))
                 .pipe(notify({
                     title: taskName + " minified",
                     message: fileName + " successfully minified"

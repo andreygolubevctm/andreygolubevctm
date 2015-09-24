@@ -4,22 +4,22 @@
  */
 "use strict";
 
+// Sometimes we hit our open file limit on our OS... So we use this library to calm gulp down
+var realFs = require('fs'),
+    gracefulFs = require('graceful-fs');
+gracefulFs.gracefulify(realFs);
+
 // Important!
 // The watch method used by gulp plugins doesn't seem to appreciate having so many active listeners
 // To get around it, we set the default number of listeners to be greater than the default (10)
-require('events').EventEmitter.prototype._maxListeners = 100;
+require('events').EventEmitter.prototype._maxListeners = 200;
 
-// TODO: Create task for creating new bundles
 // TODO: Create task for compiling plugins
 // TODO: Create task for sprites (see Mark)
 
 var gulp = require("gulp"),
     fs = require("fs-extra"),
     path = require("path");
-
-// Sometimes we hit our open file limit on our OS... So we use this library to calm gulp down
-var gracefulFs = require('graceful-fs');
-gracefulFs.gracefulify(fs);
 
 var tasks = {};
 
@@ -37,9 +37,11 @@ console.log("\r\n                                                               
 console.log("Initialising gulp tasks... Give it a moment, yo!\r\n");
 
 gulp.task("clean:noexit", function() {
-    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js"));
-    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css"));
-    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "includes"));
+    // We delete file contents instead of folders in case gulp tries writing to a folder and permissions haven't been set yet by the OS
+    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "*.*"));
+    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css", "*.*"));
+    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css", "maps", "*.*"));
+    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "includes", "js", "*.*"));
 });
 
 gulp.task("clean", ["clean:noexit"], function() {
@@ -47,7 +49,7 @@ gulp.task("clean", ["clean:noexit"], function() {
 });
 
 // Load in our tasks
-fs.readdirSync(gulp.pipelineConfig.tasks.dir)
+gracefulFs.readdirSync(gulp.pipelineConfig.tasks.dir)
     .forEach(function (folder) {
         var entryPoint = path.join(gulp.pipelineConfig.tasks.dir, folder, gulp.pipelineConfig.tasks.entryPoint);
         tasks[folder] = require(entryPoint)(gulp);
