@@ -43,6 +43,7 @@
 							<field_new:array_radio items="AM=AM,PM=PM" required="true" title="AM/PM" xpath="postponeampm" className="postponeampmgroup" />
 						</div>
 					</div>
+					<div class="timeWarning">Enter time above in Qld local time and allow for customer's local time difference (e.g. daylight saving time)</div>
 				</div>
 			</div>
 
