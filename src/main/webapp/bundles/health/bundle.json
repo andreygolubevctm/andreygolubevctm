@@ -6,6 +6,7 @@
   	"shared/features",
 	"shared/validation",
 	"core",
+	"shared/currency",
 	"shared/datepicker",
 	"shared/commencementDate",
   	"shared/autocomplete",

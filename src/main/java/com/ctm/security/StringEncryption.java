@@ -109,7 +109,6 @@ public class StringEncryption {
 		output = new String(decrypted_text_as_bytes);
 		// Important! keep this as debug and don't enable debug logging in production
 		// as this may include credit card details (this is from the nib webservice)
-		LOGGER.debug("Decrypted content {}", kv("output", output));
 		return output;
 }
 }

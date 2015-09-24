@@ -30,6 +30,8 @@
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 
+<c:set var="isHealthV2" value="${true}" scope="request" />
+
 <%-- HTML --%>
 <layout:journey_engine_page title="Health Quote">
 
@@ -170,11 +172,12 @@
 
     <%-- Slides --%>
     <health_new_layout:slide_all_about_you />
-    <health_layout:slide_your_details />
     <health_new_layout:slide_your_contact />
     <health_layout:slide_results />
     <health_layout:slide_application_details />
     <health_layout:slide_payment_details />
+
+    <health_new:health_cover_details xpath="${pageSettings.getVerticalCode()}/healthCover" />
 
     <input type="hidden" name="transcheck" id="transcheck" value="1" />
   </jsp:body>

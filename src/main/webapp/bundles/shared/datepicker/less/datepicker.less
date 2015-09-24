@@ -9,8 +9,10 @@
  */
 
 .datepicker {
-	padding: 4px;
-	border-radius: 4px;
+	background-color: @datepicker-background-cell;
+	border: none;
+	border-radius:0;
+	padding: 0px;
 	&-inline {
 		width: 220px;
 	}
@@ -24,25 +26,6 @@
 	&-dropdown {
 		top: 0;
 		left: 0;
-		&:before {
-			content: '';
-			display: inline-block;
-			border-left:   7px solid transparent;
-			border-right:  7px solid transparent;
-			border-bottom: 7px solid #ccc;
-			border-top:    0;
-			border-bottom-color: rgba(0,0,0,.2);
-			position: absolute;
-		}
-		&:after {
-			content: '';
-			display: inline-block;
-			border-left:   6px solid transparent;
-			border-right:  6px solid transparent;
-			border-bottom: 6px solid #fff;
-			border-top:    0;
-			position: absolute;
-		}
 		&.datepicker-orient-left:before   { left: 6px; }
 		&.datepicker-orient-left:after    { left: 7px; }
 		&.datepicker-orient-right:before  { right: 6px; }
@@ -74,7 +57,7 @@
 	}
 
 	div.datepicker-days.calSeperator {
- 		border-left: 1px solid #333;
+ 		padding-left: 5px;
 	}
 
 	table{
@@ -112,23 +95,55 @@
 
 
 	table tr td {
+		&:first-child{
+		  border-left: 1px solid @datepicker-background-cell;
+		}
+
+		th {
+			color: @btn-default-color;
+			&:hover {
+				background-color:  @btn-default-color;
+			}
+		}
+
+
+		&.day {
+			background-color: @btn-default-color;
+			border-radius: 0;
+			color: @gray-dark;
+			font-weight:bold;
+			border-top: 1px solid @datepicker-background-cell;
+			border-right: 1px solid @datepicker-background-cell;
+			border-bottom: 1px solid @datepicker-background-cell;
+		}
 		&.day:hover, &.day.focused {
 			background: @datepicker-days-hover-bg;
 			cursor: pointer;
 		}
 		&.old,
-		&.new {
+		&.old:hover,
+		&.new,
+		&.new:hover {
 			color: @datepicker-cells-oldnew-color;
 		}
 		&.disabled,
 		&.disabled:hover {
-			background: none;
-			color: @datepicker-cells-disabled-color;
+			background-color: #fff;
+		  	color: @datepicker-disabled-background-color;
 			cursor: default;
+		}
+
+		&.new.disabled,
+		&.new.disabled:hover {
+			background: none;
+		  	color: @datepicker-cells-disabled-color;
 		}
 		&.today,
 		&.today:hover {
 			.button-variant(contrast(@datepicker-today-bg, #333), @datepicker-today-bg, darken(@datepicker-today-bg, 20%));
+			background: @datepicker-background-cell;
+			color: @gray-dark;
+			border-color: @datepicker-background-cell;
 		}
 		&.today.disabled,
 		&.today.disabled:hover {
@@ -168,6 +183,14 @@
 			//.button-variant(@btn-primary-color, @btn-primary-bg, @btn-primary-border);
 			text-shadow: 0 -1px 0 rgba(0,0,0,.25);
 		}
+
+		&.active,
+		&.active:hover {
+			.btn-styles(@datepicker-switch-bg-color, @datepicker-switch-prev-color,
+			@datepicker-switch-bg-color, @datepicker-switch-next-color,
+			@datepicker-switch-bg-color, @datepicker-switch-next-color,
+			@btn-form-inverse-active-border-color, @datepicker-dow-text-color, @datepicker-dow-text-color, true);
+		}
 		//Year and Month items are spans
 		span {
 			display: block;
@@ -206,33 +229,45 @@
 	th.datepicker-switch {
 		width: 145px;
 		color: @datepicker-switch-color;
-		font-size: @datepicker-switch-font-size;
 		font-family: @datepicker-switch-font-family;
-		font-weight: @datepicker-switch-font-weight;
+		border-radius: 0;
+		background: @datepicker-switch-bg-color;
+	  	font-weight: bold;
 	}
-	th.prev {
-		color: @datepicker-switch-prev-color;
-		font-size: @datepicker-switch-prev-font-size;
-		font-family: @datepicker-switch-prev-font-family;
-		font-weight: @datepicker-switch-prev-font-weight;
-	}
-	th.next {
-		color: @datepicker-switch-next-color;
+
+  	th.prev, th.next, th.next:hover {
+		color: @datepicker-switch-color;
 		font-size: @datepicker-switch-next-font-size;
 		font-family: @datepicker-switch-next-font-family;
 		font-weight: @datepicker-switch-next-font-weight;
+		background-color: @datepicker-switch-nextprev-bg-color;
+		border-radius: 0;
+	  	cursor:pointer;
 	}
 
-	thead tr:first-child th,
 	tfoot tr th {
 		cursor: pointer;
 		&:hover{
 			background: @datepicker-header-hover-bg;
 		}
 	}
-	/*.dow {
-		border-top: 1px solid #ddd !important;
-	}*/
+
+	thead tr:first-child th{
+	  &:hover{
+		background: @datepicker-switch-nextprev-bg-color;
+	  }
+	}
+
+	thead th.empty, thead th.prev.empty:hover, thead th.next.empty:hover, thead tr:first-child th.datepicker-switch:hover {
+	  background: @datepicker-switch-bg-color;
+	  cursor:default;
+	}
+
+	.dow {
+		border-radius: 0;
+		background-color: @gray-dark;
+		color:@datepicker-dow-text-color;
+	}
 
 	// Basic styling for calendar-week cells
 	.cw {

@@ -1,5 +1,7 @@
 "use strict";
 
+var path = require("path");
+
 var rootDir = __dirname;
 
 module.exports = {
@@ -7,21 +9,21 @@ module.exports = {
         dir: rootDir
     },
     tasks: {
-        dir: rootDir + "/tasks",
+        dir: path.normalize(rootDir + "/tasks"),
         entryPoint: "gulpfile.js"
     },
     build: {
-        dir: rootDir + "/../webapp/bundles/build"
+        dir: path.normalize(rootDir + "/../webapp/bundles/build")
     },
     brand: {
-        dir: rootDir + "/../webapp/brand"
+        dir: path.normalize(rootDir + "/../webapp/brand")
     },
     bundles: {
-        dir: rootDir + "/../webapp/bundles",
+        dir: path.normalize(rootDir + "/../webapp/bundles"),
         entryPoint: "bundle.json"
     },
     bootstrap: {
-        dir: rootDir + "/../webapp/assets/libraries/bootstrap",
+        dir: path.normalize(rootDir + "/../webapp/assets/libraries/bootstrap"),
         jsModules: [
             "transition",
             "button",
@@ -33,7 +35,7 @@ module.exports = {
         ]
     },
     target: {
-        dir: rootDir + "/../webapp/assets",
+        dir: path.normalize(rootDir + "/../webapp/assets"),
         inc: {
             extension: ".html"
         }

@@ -27,11 +27,9 @@
 
 			// Initialise the journey engine
 			var startStepId = null;
-			if (meerkat.site.isFromBrochureSite === true) {
-				startStepId = steps.detailsStep.navigationId;
-			}
+
 			// Use the stage user was on when saving their quote
-			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
+			if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
 				// Do not allow the user to go past the results page on amend.
 				if(meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment'){
 					startStepId = 'results';
@@ -117,12 +115,15 @@
 					healthChoices._performUpdate = meerkat.site.choices.performHealthChoicesUpdate;
 				}
 
+				var $healthSitLocation = $('#health_situation_location'),
+					$healthSitHealthCvr = $('#health_situation_healthCvr'),
+					$healthSitHealthSitu = $('#health_situation_healthSitu');
+
 				// Add event listeners.
-				$('.health-situation-healthCvr').on('change',function() {
+				$healthSitHealthCvr.on('change',function() {
 					healthChoices.setCover($(this).val());
 				});
 
-				var $healthSitLocation = $('#health_situation_location');
 				$healthSitLocation.on('blur',function() {
 					healthChoices.setLocation($(this).val());
 				});
@@ -132,14 +133,19 @@
 					healthChoices.setLocation($healthSitLocation.val());
 				}
 
+				// if coming from brochure site and all prefilled data are valid, let's hide the fields
+				if (meerkat.site.isFromBrochureSite === true && $healthSitHealthCvr.isValid() && $healthSitLocation.isValid() && $healthSitHealthSitu.isValid()) {
+					$healthSitHealthCvr.add($healthSitLocation).add($healthSitHealthSitu).attr('data-attach', 'true').parents('.fieldrow').hide();
+				}
+
 				if($("#health_privacyoptin").val() === 'Y'){
 					$(".slide-feature-emailquote").addClass("privacyOptinChecked");
 				}
 
 				// Don't fire the change event by default if amend mode and the user has selected items.
 				if (meerkat.site.pageAction !== 'amend' && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefits.getSelectedBenefits().length === 0) {
-					if($('.health-situation-healthSitu').val() !== ''){
-						$('.health-situation-healthSitu').change();
+					if($healthSitHealthSitu.val() !== ''){
+						$healthSitHealthSitu.change();
 					}
 				}
 
@@ -156,7 +162,7 @@
 				});
 
 				if(meerkat.site.isCallCentreUser === true){
-					// Handle pre-filled 
+					// Handle pre-filled
 					toggleInboundOutbound();
 					toggleDialogueInChatCallback();
 					meerkat.modules.provider_testing.setApplicationDateCalendar();
@@ -174,100 +180,10 @@
 			}
 		};
 
-		var detailsStep = {
-			title: 'Your Details',
-			navigationId: 'details',
-			slideIndex:1,
-			tracking:{
-				touchType:'H',
-				touchComment: 'HLT detail',
-				includeFormData:true
-			},
-			externalTracking:{
-				method:'trackQuoteForms',
-				object:meerkat.modules.health.getTrackingFieldsObject
-			},
-			onInitialise:function onDetailsInit(event){
-
-				// Set initial state.
-				healthCoverDetails.setHealthFunds(true);
-				healthCoverDetails.setIncomeBase(true);
-
-				// Add event listeners.
-
-				$('#health_healthCover_dependants').on('change', function(){
-					meerkat.modules.healthTiers.setTiers();
-				});
-
-				$('#health_healthCover-selection').find('.health_cover_details_rebate').on('change', function(){
-					healthCoverDetails.setIncomeBase();
-					healthChoices.dependants();
-					meerkat.modules.healthTiers.setTiers();
-				});
-
-				if(meerkat.site.isCallCentreUser === true){
-					$('#health_healthCover_incomeBase').find('input').on('change', function(){
-						$('#health_healthCover_income').prop('selectedIndex',0);
-						meerkat.modules.healthTiers.setTiers();
-					});
-				}
-
-				$('#health_healthCover-selection').find(':input').on('change', function(event) {
-					var $this = $(this);
-
-					// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
-					if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year')) return;
-
-					healthCoverDetails.setHealthFunds();
-
-					if(meerkat.site.isCallCentreUser === true){
-
-						// Get rates and show LHC inline.
-						loadRates(function(rates){
-
-							$('.health_cover_details_rebate .fieldrow_legend').html('Overall LHC ' + rates.loading + '%');
-
-							if(hasPartner()){
-								$('#health_healthCover_primaryCover .fieldrow_legend').html('Individual LHC ' + rates.primaryLoading + '%, overall  LHC ' + rates.loading + '%');
-								$('#health_healthCover_partnerCover .fieldrow_legend').html('Individual LHC ' + rates.partnerLoading + '%, overall  LHC ' + rates.loading + '%');
-							} else {
-								$('#health_healthCover_primaryCover .fieldrow_legend').html('Overall  LHC ' + rates.loading + '%');
-							}
-
-							meerkat.modules.healthTiers.setTiers();
-
-						});
-					}
-
-				});
-
-				if(meerkat.site.isCallCentreUser === true){
-					// Handle pre-filled 
-					toggleRebateDialogue();
-					// Handle toggle rebate options
-					$('input[name=health_healthCover_rebate]').on('change', function() {
-						toggleRebateDialogue();
-					});
-				}
-
-			},
-			onBeforeLeave: function(event) {
-				// Store the text of the income question - for reports and audits.
-				var incomelabel = ($('#health_healthCover_income :selected').val().length > 0) ? $('#health_healthCover_income :selected').text() : '';
-				$('#health_healthCover_incomelabel').val( incomelabel );
-			},
-			onAfterEnter: function(event) {
-				if (event.isForward && meerkat.site.isCallCentreUser === true){
-					meerkat.modules.simplesCallInfo.fetchCallInfo();
-				}
-			}
-		};
-
-
 		var benefitsStep = {
 			title: 'Your Cover',
 			navigationId: 'benefits',
-			slideIndex: 1,
+			slideIndex: 0,
 			slideScrollTo: '#navbar-main',
 			tracking: {
 				touchType: 'H',
@@ -323,7 +239,7 @@
 		var contactStep = {
 			title: 'Your Contact Details',
 			navigationId: 'contact',
-			slideIndex: 2,
+			slideIndex: 1,
 			tracking: {
 				touchType: 'H',
 				touchComment: 'HLT contac',
@@ -358,7 +274,7 @@
 		var resultsStep = {
 			title: 'Your Results',
 			navigationId: 'results',
-			slideIndex: 3,
+			slideIndex: 2,
 			validation: {
 				validate: false,
 				customValidation: function validateSelection(callback) {
@@ -403,10 +319,13 @@
 
 				if(event.isBackward === true){
 					meerkat.modules.healthResults.onReturnToPage();
+					if(meerkat.modules.healthCoverDetails.hasRatesChanged()) {
+						meerkat.modules.healthResults.get();
+					}
 				}
 
 				if(event.isForward === true){
-					meerkat.modules.healthResults.get();
+					meerkat.modules.healthResults.getBeforeResultsPage();
 				}
 
 				meerkat.modules.resultsHeaderBar.registerEventListeners();
@@ -425,7 +344,7 @@
 		var applyStep = {
 			title: 'Your Application',
 			navigationId: 'apply',
-			slideIndex: 4,
+			slideIndex: 3,
 			tracking:{
 				touchType:'A'
 			},
@@ -444,7 +363,7 @@
 
 				// Show/hide membership number and authorisation checkbox questions for previous funds.
 				$('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').on('change', function(){
-					healthCoverDetails.displayHealthFunds();
+					meerkat.modules.healthCoverDetails.displayHealthFunds();
 				});
 
 				// Show/Hide simples messaging based on fund selection
@@ -548,6 +467,13 @@
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
+				if(event.isForward === true) {
+					meerkat.modules.healthCoverDetails.showModal('journey-mode');
+				}
+
+				// show edit button in policy summary side bar
+				$(".policySummaryContainer").find('.footer').removeClass('hidden');
+
 				// Need to call this after the form is visible because of the show/hiding of buttons based on visibility.
 				healthDependents.updateDependentOptionsDOM();
 			}
@@ -556,7 +482,7 @@
 		var paymentStep = {
 			title: 'Your Payment',
 			navigationId: 'payment',
-			slideIndex: 5,
+			slideIndex: 4,
 			tracking:{
 				touchType:'H',
 				touchComment: 'HLT paymnt',
@@ -663,7 +589,6 @@
 
 		steps = {
 			startStep: startStep,
-			detailsStep: detailsStep,
 			benefitsStep: benefitsStep,
 			contactStep: contactStep,
 			resultsStep: resultsStep,
@@ -676,8 +601,7 @@
 		meerkat.modules.journeyProgressBar.configure([
 			{
 				label:'Your Situation',
-				navigationId: steps.startStep.navigationId,
-				matchAdditionalSteps:[steps.detailsStep.navigationId]
+				navigationId: steps.startStep.navigationId
 			},
 			{
 				label:'Your Cover',
@@ -731,8 +655,8 @@
 			],
 			dob_secondary:[
 				{
-					$field: $("#health_healthCover_partner_dob"), // this is a hidden field
-					$fieldInput: $("#health_healthCover_partner_dob") // pointing at the same field as a trick to force change event on itself when forward populated
+					$field: $('.healthDetailsHiddenFields').find("input[name='health_healthCover_partner_dob']"), // this is a hidden field
+					$fieldInput: $('.healthDetailsHiddenFields').find("input[name='health_healthCover_partner_dob']") // pointing at the same field as a trick to force change event on itself when forward populated
 				},
 				{
 					$field: $("#health_application_partner_dob"), // this is a hidden field
@@ -843,29 +767,59 @@
 		meerkat.modules.healthResults.setLhcApplicable(rates.loading);
 	}
 
+	function loadRatesBeforeResultsPage(callback) {
+
+		var $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
+
+		var postData = {
+			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val() || '0',
+			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() || 'Y',
+			primary_current: $(':input[name="health_healthCover_primary_cover"]:checked').val(),
+			primary_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_healthCoverLoading"]').val(),
+			primary_loading_manual:$('#health_healthCover_primary_lhc').val(),
+			primary_dob:$('#health_healthCover_primary_dob').val(),
+			cover:$('#health_situation_healthCvr').val()
+		};
+
+		// If the customer answers Yes for current health insurance, assume 0% LHC
+		if (postData.primary_current === 'Y' && postData.primary_loading !=='N') {
+			postData.primary_loading = 'Y';
+		}
+
+		// If has a partner, use the same data as the primary to calculate the LHC
+		if (hasPartner()) {
+			postData.partner_dob = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_dob"]').val() || postData.primary_dob;
+			postData.partner_current = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_cover"]').val() || postData.primary_current;
+			postData.partner_loading = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_healthCoverLoading"]').val() || postData.primary_loading;
+			postData.partner_loading_manual = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_lhc"]').val();
+		}
+
+		fetchRates(postData, true, callback);
+	}
+
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
 	function loadRates(callback){
 
-		$healthCoverDetails = $('.health-cover_details');
+		var $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
 
 		var postData = {
-			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
-			income:$healthCoverDetails.find(':input[name="health_healthCover_income"]').val(),
-			rebate_choice:$healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val(),
-			primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
-			primary_current: $healthCoverDetails.find('input[name="health_healthCover_primary_cover"]:checked').val(),
-			primary_loading_manual:$healthCoverDetails.find('.primary-lhc').val(),
-			partner_loading:$healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
-			partner_current:$healthCoverDetails.find('input[name="health_healthCover_partner_cover"]:checked').val(),
-			partner_loading_manual:$healthCoverDetails.find('.partner-lhc').val(),
-			cover:$(':input[name="health_situation_healthCvr"]').val()
+			dependants: $('#health_healthCover_dependants').val(),
+			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val(),
+			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val(),
+			primary_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_healthCoverLoading"]').val(),
+			primary_current: $(':input[name="health_healthCover_primary_cover"]:checked').val(),
+			primary_loading_manual: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_lhc"]').val(),
+			partner_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_healthCoverLoading"]').val(),
+			partner_current: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_cover"]').val(),
+			partner_loading_manual: $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_lhc"]').val(),
+			cover:$('#health_situation_healthCvr').val()
 		};
 
 		if( $('#health_application_provider, #health_application_productId').val() === '' ) {
 
 			// before application stage
-			postData.primary_dob = $healthCoverDetails.find('input[name="health_healthCover_primary_dob"]').val();
-			postData.partner_dob = $healthCoverDetails.find('input[name="health_healthCover_partner_dob"]').val();
+			postData.primary_dob = $('#health_healthCover_primary_dob').val();
+			postData.partner_dob = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_dob"]').val();
 
 		} else {
 
@@ -877,6 +831,10 @@
 
 		}
 
+		fetchRates(postData, true, callback);
+	}
+
+	function fetchRates(postData, canSetRates, callback) {
 		// Check if there is enough data to ask the server.
 		var coverTypeHasPartner = hasPartner();
 		if(postData.cover === '') return false;
@@ -900,7 +858,7 @@
 			cache:true,
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
-				setRates(data);
+				if(canSetRates === true) setRates(data);
 				if(callback !== null) callback(data);
 			}
 		});
@@ -980,21 +938,18 @@
 					actionStep = "health situation";
 					break;
 				case 1:
-					actionStep = 'health details';
-					break;
-				case 2:
 					actionStep = 'health cover';
 					break;
-				case 3:
+				case 2:
 					actionStep = 'health cover contact';
 					break;
-				case 5:
+				case 4:
 					actionStep = 'health application';
 					break;
-				case 6:
+				case 5:
 					actionStep = 'health payment';
 					break;
-				case 7:
+				case 6:
 					actionStep = 'health confirmation';
 					break;
 			}
@@ -1253,18 +1208,6 @@
 		}
 	}
 
-	// Hide/show simple Rebate dialogue when toggle rebate options in simples journey
-	function toggleRebateDialogue() {
-		// apply rebate
-		if ($('#health_healthCover_rebate_Y').is(':checked')) {
-			$('.simples-dialogue-37').removeClass('hidden');
-		}
-		// no rebate
-		else if ($('#health_healthCover_rebate_N').is(':checked')){
-			$('.simples-dialogue-37').addClass('hidden');
-		}
-	}
-
 	// Disable/enable follow up/New quote dialogue when the other checkbox ticked in Chat Callback sesction in simples
 	function toggleDialogueInChatCallback() {
 		var $followUpCallField = $('.follow-up-call input:checkbox');
@@ -1359,8 +1302,11 @@
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
 		getRates: getRates,
+		setRates: setRates,
 		getRebate: getRebate,
-		loadRates: loadRates
+		fetchRates: fetchRates,
+		loadRates: loadRates,
+		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage
 	});
 
 })(jQuery);

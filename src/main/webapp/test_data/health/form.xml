@@ -33,7 +33,7 @@
 		<healthSitu>FK</healthSitu>
 	</benefits>
 	<healthCover>
-		<income>1150000</income>
+		<income>0</income>
 		<dependants>12</dependants>
 		<rebate>N</rebate>
 		<primary>

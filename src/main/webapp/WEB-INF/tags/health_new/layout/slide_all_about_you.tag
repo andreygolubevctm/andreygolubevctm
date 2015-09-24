@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
+<layout:slide_new formId="startForm" firstSlide="true" nextLabel="Next Step">
 
 	<layout:slide_content >
 
@@ -11,9 +11,9 @@
 
 		<%-- COVER TYPE / SITUATION --%>
 		<div id="${pageSettings.getVerticalCode()}_situation">
-			<health:situation xpath="${pageSettings.getVerticalCode()}/situation" />
+			<health_new:situation xpath="${pageSettings.getVerticalCode()}/situation" />
 		</div>
 
 	</layout:slide_content>
 
-</layout:slide>
+</layout:slide_new>
