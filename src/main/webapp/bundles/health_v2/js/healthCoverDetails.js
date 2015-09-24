@@ -114,7 +114,7 @@
         var $_primaryFund = $('#clientFund').find('select');
         var $_partnerFund = $('#partnerFund').find('select');
 
-        if( $_primaryFund.val() != 'NONE' && $_primaryFund.val() != ''){
+        if( $_primaryFund.val() !== 'NONE' && $_primaryFund.val() !== ''){
             $_previousFund.find('#clientMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onA');
         } else {
@@ -122,7 +122,7 @@
             $_previousFund.find('.membership').removeClass('onA');
         }
 
-        if( healthChoices.hasSpouse() && $_partnerFund.val() != 'NONE' && $_partnerFund.val() != ''){
+        if( healthChoices.hasSpouse() && $_partnerFund.val() !== 'NONE' && $_partnerFund.val() !== ''){
             $_previousFund.find('#partnerMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onB');
         } else {
@@ -429,7 +429,7 @@
             rebate_choice: forceRebate === true ? 'Y' : $healthCoverRebate.find(':checked').val(),
             primary_dob: $primaryDob.val(),
             primary_loading:$healthCoverDetailsContainer.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
-            primary_current: $healthCoverDetailsContainer.find('input[name="health_healthCover_primary_cover"]:checked').val(),
+            primary_current: $primaryCurrentCover.find(':checked').val(),
             primary_loading_manual: $healthCoverDetailsContainer.find('.primary-lhc').val(),
             partner_dob: $partnerDob.val(),
             partner_loading: $healthCoverDetailsContainer.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),

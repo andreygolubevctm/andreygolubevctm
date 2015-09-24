@@ -899,7 +899,7 @@
 
         // If on the results step, reload the results data. Can this be more generic?
         if (typeof callback === 'undefined') {
-            if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 4) {
+            if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 3) {
                 get();
             }
         } else {
