@@ -1,5 +1,7 @@
 package com.ctm.router.health;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlCData;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.LocalDate;
@@ -13,14 +15,18 @@ public class ConfirmationData {
 
     private final String vertical = "CTMH";
 
+    @JsonSerialize(using = AUSLocalDateSerializer.class)
     private final LocalDate startDate;
 
     private final String frequency;
 
+    @JacksonXmlCData
     private final String about;
 
+    @JacksonXmlCData
     private final String whatsNext;
 
+    @JacksonXmlCData
     private final String product;
 
     private final String policyNo;

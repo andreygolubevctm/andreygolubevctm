@@ -8,6 +8,8 @@ public class PaymentDetails {
 
     private String frequency;
 
+    private String claims;
+
     public String getStart() {
         return start;
     }
@@ -30,5 +32,13 @@ public class PaymentDetails {
 
     public void setFrequency(String frequency) {
         this.frequency = frequency;
+    }
+
+    public String getClaims() {
+        return claims;
+    }
+
+    public void setClaims(String claims) {
+        this.claims = claims;
     }
 }

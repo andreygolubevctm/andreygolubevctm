@@ -30,9 +30,9 @@ public class TouchService {
         return INSTANCE;
     }
 
-    public boolean recordTouchWithProductId(final HttpServletRequest request, final Touch touch, String productId){
+    public boolean recordTouchWithProductCode(final HttpServletRequest request, final Touch touch, String productCode){
         final TouchProductProperty touchProductProperty = new TouchProductProperty();
-        touchProductProperty.setProductCode(productId);
+        touchProductProperty.setProductCode(productCode);
         touch.setTouchProductProperty(touchProductProperty);
         return recordTouch(request, touch);
     }
@@ -50,7 +50,6 @@ public class TouchService {
                 touch.setOperator(authenticatedData.getUid());
             }
         }
-
         try {
             touchDao.record(touch);
             return true;

@@ -41,7 +41,6 @@
 		<init-param>
 			<param-name>jaxrs.providers</param-name>
 			<param-value>
-				com.ctm.router.ApplicationDispatchProvider,
 				com.ctm.router.RouterJacksonJsonProvider,
 				com.ctm.router.exceptionhandlers.ServiceExceptionHandler
 			</param-value>

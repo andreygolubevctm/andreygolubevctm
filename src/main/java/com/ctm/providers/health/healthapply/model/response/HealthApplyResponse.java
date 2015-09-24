@@ -1,36 +1,18 @@
 package com.ctm.providers.health.healthapply.model.response;
 
 import com.ctm.providers.Response;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class HealthApplyResponse extends Response<HealthApplicationResponse> {
 
     private boolean success;
 
-    private String bccEmail;
-
-    private String email;
-
     private String confirmationID;
 
-    private boolean callcentre;
+    private Boolean callcentre;
 
     private String pendingID;
-
-    public String getBccEmail() {
-        return bccEmail;
-    }
-
-    public void setBccEmail(String bccEmail) {
-        this.bccEmail = bccEmail;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getConfirmationID() {
         return confirmationID;
@@ -48,11 +30,11 @@ public class HealthApplyResponse extends Response<HealthApplicationResponse> {
         this.success = success;
     }
 
-    public boolean isCallcentre() {
+    public Boolean getCallcentre() {
         return callcentre;
     }
 
-    public void setCallcentre(boolean callcentre) {
+    public void setCallcentre(Boolean callcentre) {
         this.callcentre = callcentre;
     }
 

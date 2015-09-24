@@ -12,6 +12,8 @@ public class HealthApplicationResponse {
 
     public List<PartnerError> errorList;
 
+    public String bccEmail;
+
     public String getFundId() {
         return fundId;
     }
@@ -26,5 +28,9 @@ public class HealthApplicationResponse {
 
     public List<PartnerError> getErrorList() {
         return errorList;
+    }
+
+    public String getBccEmail() {
+        return bccEmail;
     }
 }

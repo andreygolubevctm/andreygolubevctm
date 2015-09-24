@@ -24,8 +24,9 @@ public class EmailServiceHandlerTest {
 		}
 
 		@Override
-		public void send(HttpServletRequest request, String emailAddress,
+		public String send(HttpServletRequest request, String emailAddress,
 						 long transactionId) {
+			return "";
 		}
 
 		public boolean protectedIsTestEmailAddress(String emailAddress) {

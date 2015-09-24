@@ -10,6 +10,8 @@ public class Medicare {
 
     private String firstName;
 
+    private String middleInitial;
+
     private String lastName;
 
     public String getCover() {
@@ -42,6 +44,14 @@ public class Medicare {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getMiddleInitial() {
+        return middleInitial;
+    }
+
+    public void setMiddleInitial(String middleInitial) {
+        this.middleInitial = middleInitial;
     }
 
     public String getLastName() {

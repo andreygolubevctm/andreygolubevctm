@@ -315,6 +315,30 @@ public class TransactionDetailsDao {
 		
 	}
 
+	public void addTransactionDetailsWithDuplicateKeyUpdate(final long transactionId, final TransactionDetail transactionDetail) throws DaoException {
+		final Integer nextSequenceNo = transactionDetail.getSequenceNo() == null ? getMaxSequenceNo(transactionId) + 1 : transactionDetail.getSequenceNo();
+		DatabaseUpdateMapping databaseMapping = new DatabaseUpdateMapping(){
+			@Override
+			public void mapParams() throws SQLException {
+				set(transactionId);
+				set(nextSequenceNo);
+				set(transactionDetail.getXPath());
+				set(transactionDetail.getTextValue());
+			}
+
+			@Override
+			public String getStatement() {
+				return "INSERT INTO aggregator.transaction_details " +
+						"(transactionId, sequenceNo, xpath, textValue, dateValue) " +
+						"VALUES " +
+						"(?,?,?,?,CURDATE()) " +
+						"ON DUPLICATE KEY UPDATE xpath = VALUES(xpath), textValue = VALUES(textValue), dateValue=VALUES(dateValue);";
+			}
+		};
+		sqlDao.update(databaseMapping);
+
+	}
+
 	/** returns transaction details based off transactionId.
 	 * @param vertical
 	 * @param type

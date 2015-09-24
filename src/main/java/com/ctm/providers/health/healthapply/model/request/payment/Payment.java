@@ -16,10 +16,13 @@ public class Payment {
 
     private final Medicare medicare;
 
-    public Payment(final Details details, final CreditCard creditCard, final Bank bank, final Medicare medicare) {
+    private final Claims claims;
+
+    public Payment(final Details details, final CreditCard creditCard, final Bank bank, final Medicare medicare, final Claims claims) {
         this.details = details;
         this.creditCard = creditCard;
         this.bank = bank;
         this.medicare = medicare;
+        this.claims = claims;
     }
 }

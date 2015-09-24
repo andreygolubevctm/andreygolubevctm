@@ -48,6 +48,10 @@ public class HealthQuote {
 
     private Payment payment;
 
+    private Save save;
+
+    private FundData fundData;
+
     public Application getApplication() {
         return application;
     }
@@ -230,5 +234,21 @@ public class HealthQuote {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public Save getSave() {
+        return save;
+    }
+
+    public void setSave(Save save) {
+        this.save = save;
+    }
+
+    public FundData getFundData() {
+        return fundData;
+    }
+
+    public void setFundData(FundData fundData) {
+        this.fundData = fundData;
     }
 }

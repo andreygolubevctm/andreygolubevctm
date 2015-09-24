@@ -15,7 +15,6 @@ import com.ctm.utils.ObjectMapperUtil;
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -100,9 +99,6 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
 
         // Prepare objectmapper to map java model to JSON
         ObjectMapper objectMapper = ObjectMapperUtil.getObjectMapper();
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//        objectMapper.setDateFormat(df);
 
         QuoteServiceProperties serviceProperties = getQuoteServiceProperties(serviceName, brand, vertical.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 

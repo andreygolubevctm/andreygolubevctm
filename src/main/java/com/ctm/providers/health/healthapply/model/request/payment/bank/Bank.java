@@ -1,5 +1,6 @@
 package com.ctm.providers.health.healthapply.model.request.payment.bank;
 
+import com.ctm.providers.health.healthapply.model.request.payment.Claims;
 import com.ctm.providers.health.healthapply.model.request.payment.bank.account.Account;
 
 public class Bank {

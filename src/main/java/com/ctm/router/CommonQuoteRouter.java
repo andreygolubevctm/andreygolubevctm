@@ -36,26 +36,28 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
     }
 
-    protected String updateTransactionIdAndClientIP(MessageContext context, REQUEST data){
-
+    protected Data getDataBucket(MessageContext context, Long transactionId) {
         SessionDataService service = new SessionDataService();
-        final String clientIpAddress;
-
         try {
-            Data dataBucket = service.getDataForTransactionId(context.getHttpServletRequest(), data.getTransactionId().toString(), true);
-
-            if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
-                data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
-            }
-            if (StringUtils.isBlank((String) dataBucket.get("quote/clientIpAddress"))) {
-                clientIpAddress = context.getHttpServletRequest().getRemoteAddr();
-            } else {
-                clientIpAddress = (String) dataBucket.get("quote/clientIpAddress");
-            }
-            data.setClientIpAddress(clientIpAddress);
+            return service.getDataForTransactionId(context.getHttpServletRequest(), transactionId.toString(), true);
         } catch (DaoException | SessionException e) {
             throw new RouterException(e);
         }
+    }
+
+    protected String updateTransactionIdAndClientIP(MessageContext context, REQUEST data){
+        final String clientIpAddress;
+        Data dataBucket = getDataBucket(context, data.getTransactionId());
+
+        if(dataBucket != null && dataBucket.getString("current/transactionId") != null){
+            data.setTransactionId(Long.parseLong(dataBucket.getString("current/transactionId")));
+        }
+        if (StringUtils.isBlank((String) dataBucket.get("quote/clientIpAddress"))) {
+            clientIpAddress = context.getHttpServletRequest().getRemoteAddr();
+        } else {
+            clientIpAddress = (String) dataBucket.get("quote/clientIpAddress");
+        }
+        data.setClientIpAddress(clientIpAddress);
 
         return clientIpAddress;
     }
@@ -76,10 +78,16 @@ public abstract class CommonQuoteRouter<REQUEST extends Request> {
 
     protected void checkIPAddressCount(Brand brand, Vertical.VerticalType vertical, MessageContext context) {
         IPCheckService ipCheckService = new IPCheckService();
-        PageSettings pageSettings = SettingsService.getPageSettingsByCode(brand.getCode(), vertical.getCode());
+        PageSettings pageSettings = getPageSettingsByCode(brand, vertical);
         if(!ipCheckService.isPermittedAccess(context.getHttpServletRequest(), pageSettings)) {
             LOGGER.error("Access attempts exceeded for IP {} in {}", context.getHttpServletRequest().getRemoteAddr(), vertical.getCode());
             throw new RouterException("Access attempts exceeded");
         }
     }
+
+    protected PageSettings getPageSettingsByCode(Brand brand, Vertical.VerticalType vertical) {
+        return SettingsService.getPageSettingsByCode(brand.getCode(), vertical.getCode());
+    }
+
+
 }

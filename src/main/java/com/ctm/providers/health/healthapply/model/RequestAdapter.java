@@ -30,7 +30,7 @@ import com.ctm.providers.health.healthapply.model.request.fundData.*;
 import com.ctm.providers.health.healthapply.model.request.fundData.benefits.Benefits;
 import com.ctm.providers.health.healthapply.model.request.payment.Payment;
 import com.ctm.providers.health.healthapply.model.request.payment.bank.Bank;
-import com.ctm.providers.health.healthapply.model.request.payment.bank.Claims;
+import com.ctm.providers.health.healthapply.model.request.payment.Claims;
 import com.ctm.providers.health.healthapply.model.request.payment.bank.account.*;
 import com.ctm.providers.health.healthapply.model.request.payment.common.Expiry;
 import com.ctm.providers.health.healthapply.model.request.payment.common.ExpiryMonth;
@@ -95,7 +95,8 @@ public class RequestAdapter {
                         quote.getLoading() != null ? new LifetimeHealthCoverLoading(quote.getLoading().doubleValue()) : null),
                 createCreditCard(quote),
                 createBank(quote),
-                createMedicare(quote));
+                createMedicare(quote),
+                quote.getPayment().getDetails().getClaims() != null ? Claims.valueOf(quote.getPayment().getDetails().getClaims()) : null);
         final FundData fundData = new FundData(
                 new Provider(quote.getApplication().getProvider()),
                 new ProductId(quote.getApplication().getProductId()
@@ -178,7 +179,7 @@ public class RequestAdapter {
                             new BSB(bank.getClaim().getBsb()),
                             new AccountName(bank.getClaim().getAccount()),
                             new AccountNumber(bank.getClaim().getNumber())) : null,
-                    bank.getClaims() != null ? Claims.valueOf(bank.getClaims()) : null);
+                    bank.getClaims() != null ? Claims.valueOf(bank.getClaims()) : Claims.N);
         } else if ("cc".equals(payment.getDetails().getType())) {
             final com.ctm.model.health.form.Bank bank = payment.getBank();
             return new Bank(

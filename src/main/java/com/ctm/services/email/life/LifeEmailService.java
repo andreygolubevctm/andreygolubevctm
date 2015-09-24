@@ -1,22 +1,10 @@
 package com.ctm.services.email.life;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.dao.RankingDetailsDao;
+import com.ctm.dao.life.OccupationsDao;
 import com.ctm.dao.transaction.TransactionDao;
 import com.ctm.dao.transaction.TransactionDetailsDao;
-import com.ctm.dao.life.OccupationsDao;
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.EmailDetailsException;
-import com.ctm.exceptions.EnvironmentException;
-import com.ctm.exceptions.SendEmailException;
-import com.ctm.exceptions.VerticalException;
+import com.ctm.exceptions.*;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.TransactionDetail;
@@ -27,12 +15,15 @@ import com.ctm.model.life.Occupation;
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.services.email.BestPriceEmailHandler;
-import com.ctm.services.email.EmailDetailsService;
-import com.ctm.services.email.EmailServiceHandler;
-import com.ctm.services.email.EmailUrlService;
-import com.ctm.services.email.ExactTargetEmailSender;
+import com.ctm.services.email.*;
 import com.disc_au.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class LifeEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
 	
@@ -49,7 +40,7 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 	}
 
 	@Override
-	public void sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
+	public String sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(BestPriceEmailHandler.MAILING_NAME_KEY);
 		optInMailingName = getPageSetting(BestPriceEmailHandler.OPT_IN_MAILING_NAME);
@@ -65,7 +56,9 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 		}
 		
 		if(!isTestEmailAddress) {
-			emailSender.sendToExactTarget(new LifeBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));
+			return emailSender.sendToExactTarget(new LifeBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));
+		} else {
+			return "";
 		}
 	}
 	
@@ -148,14 +141,14 @@ public class LifeEmailService extends EmailServiceHandler implements BestPriceEm
 	}
 
 	@Override
-	public void send(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
+	public String send(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
 		switch(emailMode) {
 			case BEST_PRICE:
-				sendBestPriceEmail(request, emailAddress, transactionId);
-				break;
+				return sendBestPriceEmail(request, emailAddress, transactionId);
 			default:
 				break;
 		}
+		return "";
 	}
 	
 }

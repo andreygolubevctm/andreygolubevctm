@@ -1,26 +1,10 @@
 package com.ctm.services.email.travel;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.ctm.dao.CountryMappingDao;
-import com.ctm.model.CountryMapping;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ctm.services.ApplicationService;
-import com.ctm.services.ContentService;
 import com.ctm.dao.RankingDetailsDao;
 import com.ctm.dao.transaction.TransactionDao;
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.EmailDetailsException;
-import com.ctm.exceptions.EnvironmentException;
-import com.ctm.exceptions.SendEmailException;
-import com.ctm.exceptions.VerticalException;
+import com.ctm.exceptions.*;
+import com.ctm.model.CountryMapping;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.RankingDetail;
 import com.ctm.model.content.Content;
@@ -30,12 +14,17 @@ import com.ctm.model.email.TravelBestPriceRanking;
 import com.ctm.model.formatter.email.travel.TravelBestPriceExactTargetFormatter;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.services.email.BestPriceEmailHandler;
-import com.ctm.services.email.EmailDetailsService;
-import com.ctm.services.email.EmailServiceHandler;
-import com.ctm.services.email.EmailUrlService;
-import com.ctm.services.email.ExactTargetEmailSender;
+import com.ctm.services.ApplicationService;
+import com.ctm.services.ContentService;
+import com.ctm.services.email.*;
 import com.disc_au.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class TravelEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
 
@@ -57,19 +46,19 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 	@Override
-	public void send(HttpServletRequest request, String emailAddress,
+	public String send(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException {
 		switch (emailMode) {
 			case BEST_PRICE:
-				sendBestPriceEmail(request, emailAddress,transactionId);
-				break;
+				return sendBestPriceEmail(request, emailAddress,transactionId);
 			default:
 				break;
 		}
+		return "";
 	}
 
 	@Override
-	public void sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
+	public String sendBestPriceEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 
 		splitTestEnabledKey = BestPriceEmailHandler.SPLIT_TESTING_ENABLED;
@@ -83,9 +72,10 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, "ONLINE",  request.getRemoteAddr());
 
 			if(!isTestEmailAddress) {
-				emailSender.sendToExactTarget(new TravelBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));
+				return emailSender.sendToExactTarget(new TravelBestPriceExactTargetFormatter(), buildBestPriceEmailModel(emailDetails, transactionId));
+			} else {
+				return "";
 			}
-
 		} catch (EmailDetailsException e) {
 			throw new SendEmailException("failed to handleReadAndWriteEmailDetails emailAddress:" + emailAddress +
 						" transactionId:" +  transactionId  ,  e);

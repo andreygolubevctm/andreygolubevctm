@@ -1,13 +1,5 @@
 package com.ctm.services.email;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.EnvironmentException;
 import com.ctm.exceptions.SendEmailException;
@@ -18,6 +10,12 @@ import com.ctm.model.email.EmailModel;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.EnvironmentService.Environment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class EmailServiceHandler {
 
@@ -44,7 +42,7 @@ public abstract class EmailServiceHandler {
 		this.emailMode = emailMode;
 	}
 
-	public abstract void send(HttpServletRequest request, String emailAddress,
+	public abstract String send(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException;
 
 	protected boolean isTestEmailAddress(String emailAddress){

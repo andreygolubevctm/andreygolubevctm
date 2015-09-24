@@ -406,20 +406,20 @@
 						</b:DirectDRStart>
 					</xsl:if>
 					<xsl:if test="payment/details/claims='Y'">
-					<xsl:choose>
+						<xsl:choose>
 							<xsl:when test="payment/details/type='cc' or payment/bank/claims='N' ">
-							<b:DirectCRAccount><xsl:value-of select="translate(payment/bank/claim/number,' ','')" /></b:DirectCRAccount>
-							<b:DirectCRAccountName><xsl:value-of select="payment/bank/claim/account" /></b:DirectCRAccountName>
-							<b:DirectCRBSB><xsl:value-of select="concat(substring(payment/bank/claim/bsb,1,3),'-',substring(payment/bank/claim/bsb,4,3))" /></b:DirectCRBSB>
-							<b:DirectCRInstitution><xsl:value-of select="payment/bank/claim/name" /></b:DirectCRInstitution>
-						</xsl:when>
-						<xsl:otherwise>
-							<b:DirectCRAccount><xsl:value-of select="translate(payment/bank/number,' ','')" /></b:DirectCRAccount>
-							<b:DirectCRAccountName><xsl:value-of select="payment/bank/account" /></b:DirectCRAccountName>
-							<b:DirectCRBSB><xsl:value-of select="concat(substring(payment/bank/bsb,1,3),'-',substring(payment/bank/bsb,4,3))" /></b:DirectCRBSB>
-							<b:DirectCRInstitution><xsl:value-of select="payment/bank/name" /></b:DirectCRInstitution>
-						</xsl:otherwise>
-					</xsl:choose>
+								<b:DirectCRAccount><xsl:value-of select="translate(payment/bank/claim/number,' ','')" /></b:DirectCRAccount>
+								<b:DirectCRAccountName><xsl:value-of select="payment/bank/claim/account" /></b:DirectCRAccountName>
+								<b:DirectCRBSB><xsl:value-of select="concat(substring(payment/bank/claim/bsb,1,3),'-',substring(payment/bank/claim/bsb,4,3))" /></b:DirectCRBSB>
+								<b:DirectCRInstitution><xsl:value-of select="payment/bank/claim/name" /></b:DirectCRInstitution>
+							</xsl:when>
+							<xsl:otherwise>
+								<b:DirectCRAccount><xsl:value-of select="translate(payment/bank/number,' ','')" /></b:DirectCRAccount>
+								<b:DirectCRAccountName><xsl:value-of select="payment/bank/account" /></b:DirectCRAccountName>
+								<b:DirectCRBSB><xsl:value-of select="concat(substring(payment/bank/bsb,1,3),'-',substring(payment/bank/bsb,4,3))" /></b:DirectCRBSB>
+								<b:DirectCRInstitution><xsl:value-of select="payment/bank/name" /></b:DirectCRInstitution>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 
 					<!-- If rebate is selected = Y -->
