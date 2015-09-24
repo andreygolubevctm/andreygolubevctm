@@ -157,7 +157,9 @@
 
 			var stepToShow = settings.steps[0]; // default...
 			processStep(0, function(step, validated){
-				if(step == null) step = stepToShow;
+				if(step == null) {
+					step = stepToShow;
+				}
 				settings.startStepId = step.navigationId;
 
 				if(validated){
@@ -203,7 +205,7 @@
 				try{
 
 					onStepEnter(step, eventObject);
-					if(step.onAfterEnter != null) step.onAfterEnter(eventObject);
+					if(step.onAfterEnter !== null) step.onAfterEnter(eventObject);
 
 					currentStep = step;
 
@@ -212,8 +214,8 @@
 					validateStep(step, function successCallback(){
 
 
-						if(currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
-						if(currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
+						if(currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
+						if(currentStep.onAfterLeave !== null) currentStep.onAfterLeave(eventObject);
 
 						// continue to next step...
 						_.defer(function(){
@@ -320,7 +322,7 @@
 		// home loans update the transaction details before the STEP_CHANGED event is fired.
 		meerkat.messaging.publish(moduleEvents.BEFORE_STEP_CHANGED);
 
-		if(currentStep !== null && currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
+		if(currentStep !== null && currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
 
 		onStepEnter(step, eventObject);
 
@@ -336,7 +338,7 @@
 			// No change in slide, no transitions required, therefore call the step after/before callbacks directly.
 			onHidePreviousStep();
 
-			if(currentStep === null) showSlide(step, false); // Force show the first step on the initial call of the journey engine.
+			if(currentStep === null) showSlide(step, false, null); // Force show the first step on the initial call of the journey engine.
 
 			currentStep = step;
 
@@ -368,7 +370,7 @@
 		}
 
 		function onHidePreviousStep(){
-			if(currentStep != null && currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
+			if(currentStep !== null && currentStep.onAfterLeave !== null) currentStep.onAfterLeave(eventObject);
 		}
 	}
 
@@ -382,7 +384,7 @@
 
 		// Change the browser title
 		var title = meerkat.site.title;
-		if(currentStep.title != null) title = currentStep.title+' - '+title;
+		if(currentStep.title !== null) title = currentStep.title+' - '+title;
 		window.document.title = title;
 
 		// If defined, scroll to an element
@@ -411,14 +413,14 @@
 
 		meerkat.messaging.publish(eventType, eventObject);
 
-		if(currentStep.tracking != null){
+		if(currentStep.tracking !== null){
 			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, currentStep.tracking);
 			$('.journeyNavButton').removeClass('poke');
 		} else {
 			$('.journeyNavButton').addClass('poke');
 		}
 
-		if(currentStep.externalTracking != null){
+		if(currentStep.externalTracking !== null){
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, currentStep.externalTracking);
 		}
 
@@ -428,18 +430,23 @@
 
 	function showSlide(step, animate, callback){
 
-		$slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+step.slideIndex+')');
+		var $slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+step.slideIndex+')');
 
 		if(animate === true){
 
 			$slide.fadeIn(250,function onShow(){
-				$slide.removeClass('hiddenSlide').addClass('active');
-				if(callback != null) callback();
+				_onShow($slide, callback);
 			});
 
 		}else{
-			$slide.removeClass('hiddenSlide').addClass("active");
-			if(callback != null) callback();
+			_onShow($slide, callback);
+		}
+	}
+
+	function _onShow($slide, callback) {
+		$slide.removeClass('hiddenSlide').addClass('active');
+		if(callback !== null) {
+			callback();
 		}
 	}
 
@@ -456,6 +463,7 @@
 				return i;
 			}
 		}
+		return null;
 	}
 
 	/* Return length of the step array */
@@ -466,7 +474,9 @@
 	/* Iterate over array and return step item */
 	function getStep(navigationId){
 		var index = getStepIndex(navigationId);
-		if(index == null) return null;
+		if(index === null) {
+			return null;
+		}
 		return settings.steps[index];
 	}
 
@@ -513,7 +523,7 @@
 
 		var waitForCallback = false;
 
-		if(step.validation != null){
+		if(step.validation !== null){
 
 			if(step.validation.validate === true){
 
@@ -547,7 +557,7 @@
 				}
 			}
 
-			if(step.validation.customValidation != null){
+			if(step.validation.customValidation !== null){
 				waitForCallback = true;
 				step.validation.customValidation(function(valid){
 					if(valid){

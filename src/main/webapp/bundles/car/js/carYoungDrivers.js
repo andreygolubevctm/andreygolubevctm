@@ -92,7 +92,7 @@
 		var $e = $(elements.labels).find("input:checked");
 
 		if(!_.isEmpty($e)) {
-			return $e.val() === 'Y'
+			return $e.val() === 'Y';
 		}
 
 		return false;
@@ -179,7 +179,7 @@
 	}
 
 	function getSessionCamStep() {
-		if(sessionCamStep == null) {
+		if(sessionCamStep === null) {
 			sessionCamStep = meerkat.modules.journeyEngine.getCurrentStep();
 		}
 		return _.extend({}, sessionCamStep); // prevent external override

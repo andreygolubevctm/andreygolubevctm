@@ -807,7 +807,7 @@
 
 	// Make the rebate available publicly, and handle rates property being null.
 	function getRebate() {
-		if (rates != null && rates.rebate) {
+		if (!_.isNull(rates) && rates.rebate) {
 			return rates.rebate;
 		}
 		else {
@@ -830,7 +830,7 @@
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
 	function loadRates(callback){
 
-		$healthCoverDetails = $('.health-cover_details');
+		var $healthCoverDetails = $('.health-cover_details');
 
 		var postData = {
 			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
@@ -885,7 +885,9 @@
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
 				setRates(data);
-				if(callback != null) callback(data);
+				if(!_.isNull(callback) && typeof callback !== 'undefined') {
+					callback(data);
+				}
 			}
 		});
 	}
@@ -1081,7 +1083,7 @@
 					var extraParameters = "";
 
 					if (meerkat.site.utm_source !== '' && meerkat.site.utm_medium !== '' && meerkat.site.utm_campaign !== ''){
-						extraParameters = "&utm_source=" + meerkat.site.utm_source + "&utm_medium=" + meerkat.site.utm_medium + "&utm_campaign=" + meerkat.site.utm_campaign
+						extraParameters = "&utm_source=" + meerkat.site.utm_source + "&utm_medium=" + meerkat.site.utm_medium + "&utm_campaign=" + meerkat.site.utm_campaign;
 					}
 
 				// Success

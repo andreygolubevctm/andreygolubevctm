@@ -112,7 +112,7 @@
 			B: 'Basic',
 			I: 'International',
 			D: 'Domestic'
-		}
+		};
 	}
 
 	/**

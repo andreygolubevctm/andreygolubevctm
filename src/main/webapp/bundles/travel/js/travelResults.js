@@ -147,7 +147,7 @@
 			var obj = result.info;
 			// TRV-667: replace any non digit words with $0 e.g. Optional Extra
 			if(typeof obj.luggage !== 'undefined' && obj.luggageValue  <= 0 ) {
-				obj.luggage = "$0"
+				obj.luggage = "$0";
 			}
 			// TRV-769 Set value and text to $0 for quotes for JUST Australia.
 			if(destinations == 'AUS') {

@@ -30,7 +30,7 @@
                     "@-ms-viewport{width:auto!important}"
                 )
             );
-            document.getElementsByTagName("head")[0].appendChild(msViewportStyle)
+            document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
         }
 
         //This just fixes ie's stupid lack of button type=submit support (instead of input type submit)

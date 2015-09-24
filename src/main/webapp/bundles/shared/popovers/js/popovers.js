@@ -26,7 +26,7 @@
 		onLoad:function(){ // @todo
 
 		}
-	}
+	};
 
 	function create(instanceSettings){
 
