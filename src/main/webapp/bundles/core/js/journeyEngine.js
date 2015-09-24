@@ -76,24 +76,24 @@
 
 	/* example objects
 
-	validation:{
-		validate:true,
-		customValidation:function(callback){
-			callback(true);
-		}
-	}
+	 validation:{
+	 validate:true,
+	 customValidation:function(callback){
+	 callback(true);
+	 }
+	 }
 
-	tracking:{
-		touchType:'H',
-		touchComment: 'HLT detail',
-	}
+	 tracking:{
+	 touchType:'H',
+	 touchComment: 'HLT detail',
+	 }
 
-	externalTracking:{
-		method:'trackQuoteForms',
-		object:meerkat.modules.health.getTrackingFieldsObject
-	}
+	 externalTracking:{
+	 method:'trackQuoteForms',
+	 object:meerkat.modules.health.getTrackingFieldsObject
+	 }
 
-	*/
+	 */
 
 	/* Configure and start the journey engine */
 	function configure(instanceSettings){
@@ -305,7 +305,7 @@
 
 			}
 
-			
+
 		}catch(e){
 			unlock();
 			meerkat.modules.address.setHash(currentStep.navigationId);
@@ -374,9 +374,9 @@
 		}
 	}
 
-		function sessionCamRecorder(step) {
+	function sessionCamRecorder(step) {
 		meerkat.modules.sessionCamHelper.updateVirtualPageFromJourneyEngine(step);
-			}
+	}
 
 	function onShowNextStep(eventObject, previousStep, triggerEnterMethod){
 
@@ -384,7 +384,7 @@
 
 		// Change the browser title
 		var title = meerkat.site.title;
-		if(currentStep.title !== null) title = currentStep.title+' - '+title;
+		if(currentStep.title != null) title = currentStep.title+' - '+title;
 		window.document.title = title;
 
 		// If defined, scroll to an element
@@ -413,14 +413,14 @@
 
 		meerkat.messaging.publish(eventType, eventObject);
 
-		if(currentStep.tracking !== null){
+		if(currentStep.tracking != null){
 			meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, currentStep.tracking);
 			$('.journeyNavButton').removeClass('poke');
 		} else {
 			$('.journeyNavButton').addClass('poke');
 		}
 
-		if(currentStep.externalTracking !== null){
+		if(currentStep.externalTracking != null){
 			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, currentStep.externalTracking);
 		}
 
@@ -485,7 +485,7 @@
 		var navId = 0;
 		if(currentStep !== null) {
 			navId = currentStep.navigationId;
-	}
+		}
 		return getStepIndex(navId);
 	}
 
@@ -523,7 +523,7 @@
 
 		var waitForCallback = false;
 
-		if(step.validation !== null){
+		if(!_.isNull(step.validation) && !_.isUndefined(step.validation)) {
 
 			if(step.validation.validate === true){
 
@@ -551,13 +551,13 @@
 				if(isValid === false) {
 					if(typeof failureCallback === 'function') {
 						failureCallback();
-			}
+					}
 					meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
 					throw "Validation failed on "+step.navigationId;
 				}
 			}
 
-			if(step.validation.customValidation !== null){
+			if(!_.isNull(step.validation.customValidation) && !_.isUndefined(step.validation.customValidation)) {
 				waitForCallback = true;
 				step.validation.customValidation(function(valid){
 					if(valid){
@@ -722,7 +722,7 @@
 
 		$('.error-field:visible', '.journeyEngineSlide.active').each(function() {
 			var $label = $(this).find('label'),
-			xpath = $label.attr('for');
+				xpath = $label.attr('for');
 			if(typeof xpath === 'undefined') {
 				return;
 			}
@@ -738,13 +738,13 @@
 		}
 
 		return meerkat.modules.comms.post({
-				url: "logging/validation.json",
-				data: data,
-				dataType: 'json',
-				cache: true,
-				errorLevel: "silent",
-				useDefaultErrorHandling: false
-			});
+			url: "logging/validation.json",
+			data: data,
+			dataType: 'json',
+			cache: true,
+			errorLevel: "silent",
+			useDefaultErrorHandling: false
+		});
 	}
 
 	function initJourneyEngine() {
@@ -837,8 +837,8 @@
 
 		_.delay(function(){
 			if($ele.attr('data-active') !== '1'){
-			$ele.removeClass('displayBlock');
-			$ele.find('.message').text( $ele.find('.message').attr('data-oldtext') );
+				$ele.removeClass('displayBlock');
+				$ele.find('.message').text( $ele.find('.message').attr('data-oldtext') );
 			}
 		},speed);
 	}
