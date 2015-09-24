@@ -154,7 +154,6 @@ function LessTasks(gulp) {
                 .pipe(intercept(function(file){
                     var filePath = file.path.replace(".map", "");
                     require("./minify")(gulp, filePath, brandCode, bundle);
-                    require("./bless")(gulp, filePath, brandCode, bundle);
                     return file;
                 }))
                 .pipe(notify({
