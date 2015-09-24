@@ -22,6 +22,7 @@ import java.util.List;
 public class TravelService extends CommonQuoteService<TravelQuote, TravelQuoteRequest, TravelResponse> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TravelService.class);
+
     /**
      * Call travel-quote aggregation service.
      *

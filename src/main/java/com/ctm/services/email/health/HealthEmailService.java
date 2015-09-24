@@ -37,6 +37,8 @@ import static com.ctm.logging.LoggingArguments.kv;
 
 public class HealthEmailService extends EmailServiceHandler implements BestPriceEmailHandler, ProductBrochuresEmailHandler, ApplicationEmailHandler {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthEmailService.class);
+
 	private static final String VERTICAL = VerticalType.HEALTH.getCode();
 
 	private final AccessTouchService accessTouchService;

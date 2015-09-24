@@ -89,8 +89,8 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
         }
     }
 
-    protected RESPONSE sendRequest(Brand brand, Vertical.VerticalType vertical, String serviceName, String logTarget, String endpoint, Request data, PAYLOAD payload, Class<RESPONSE> responseClass) throws IOException, DaoException, ServiceConfigurationException {
-        com.ctm.providers.Request request = new com.ctm.providers.Request();
+    protected RESPONSE sendRequest(Brand brand, Vertical.VerticalType vertical, String serviceName, String logTarget, String endpoint, Request<QUOTE> data, PAYLOAD payload, Class<RESPONSE> responseClass) throws IOException, DaoException, ServiceConfigurationException {
+        com.ctm.providers.Request<PAYLOAD> request = new com.ctm.providers.Request();
         request.setBrandCode(brand.getCode());
         request.setClientIp(data.getClientIpAddress());
         request.setTransactionId(data.getTransactionId());
@@ -114,6 +114,7 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
         connection.setReadTimeout(serviceProperties.getTimeout());
         connection.setContentType("application/json");
         connection.setPostBody(jsonRequest);
+        connection.setHasCorrelationId(true);
 
         String response = connection.get(serviceProperties.getServiceUrl() + "/" +endpoint);
         if (response == null) {

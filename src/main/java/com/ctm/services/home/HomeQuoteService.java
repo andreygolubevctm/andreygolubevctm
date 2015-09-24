@@ -29,7 +29,6 @@ import com.disc_au.web.go.xml.XmlNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
-import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 
 import java.math.BigDecimal;
@@ -43,8 +42,6 @@ import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 public class HomeQuoteService extends CommonQuoteService<HomeQuote, HomeQuoteRequest, HomeResponse> {
-
-    private static final Logger logger = Logger.getLogger(HomeQuoteService.class);
 
     public static final List<String> HOLLARD_PROVIDERS = asList("REIN", "WOOL");
 

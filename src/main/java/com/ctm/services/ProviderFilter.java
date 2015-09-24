@@ -49,7 +49,7 @@ public class ProviderFilter {
             final String code = providerCode(data, vertical);
             return code == null || code.equals("invalid") ? "" : code;
         }
-        catch (DaoException e) {
+        catch (Exception e) {
             LOGGER.error("Error getting provider code {}", kv("vertical", vertical), e);
         }
 

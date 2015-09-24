@@ -19,7 +19,7 @@ public class TypeSerializer extends JsonSerializer<Supplier> {
     }
 
     @Override
-    public boolean isEmpty(Supplier value) {
+    public boolean isEmpty(SerializerProvider provider, Supplier value) {
         if (value != null) {
             if (value.get() instanceof Optional) {
                 return !((Optional)value.get()).isPresent();
