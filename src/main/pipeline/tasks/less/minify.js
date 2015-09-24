@@ -27,9 +27,9 @@ module.exports = function(gulp, filePath, brandCode, bundle) {
         .pipe(gulp.dest(function(file){
             return file.targetDir;
         }))
+        .pipe(notify("Minified: " + brandCode + " " + bundle + " CSS"))
         .pipe(intercept(function(file) {
             require("./bless")(gulp, file.path, brandCode, bundle);
             return file;
-        }))
-        .pipe(notify("Minified: " + brandCode + " " + bundle + " CSS"));
+        }));
 };

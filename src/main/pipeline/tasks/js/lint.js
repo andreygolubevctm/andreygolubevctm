@@ -10,7 +10,6 @@ module.exports = function(gulp, filePath) {
         .pipe(plumber({
             errorHandler: notify.onError("Error: <%= error.message %>")
         }))
-        .pipe(cached())
         .pipe(jshint())
         .pipe(jshint.reporter(stylish))
         .pipe(jshint.reporter("fail"));

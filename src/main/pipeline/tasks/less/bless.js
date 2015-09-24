@@ -34,7 +34,6 @@ module.exports = function(gulp, filePath, brandCode, bundle) {
         .pipe(plumber({
             errorHandler: notify.onError("Error: <%= error.message %>")
         }))
-        .pipe(cached("splitcss"))
         .pipe(intercept(function(file) {
             var file = addExtraFileInfo(file);
 
@@ -69,8 +68,8 @@ module.exports = function(gulp, filePath, brandCode, bundle) {
             aggressiveMerging: true,
             compatibility: "ie8"
         }))
+        .pipe(notify("Blessed: " + brandCode + " " + bundle + " CSS"))
         .pipe(gulp.dest(function(file){
             return file.targetDir;
-        }))
-        .pipe(notify("Blessed: " + brandCode + " " + bundle + " CSS"));
+        }));
 };

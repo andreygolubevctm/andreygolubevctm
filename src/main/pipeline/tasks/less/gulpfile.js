@@ -151,14 +151,14 @@ function LessTasks(gulp) {
                 .pipe(rename(bundle + ".css"))
                 .pipe(sourcemaps.write("./maps"))
                 .pipe(gulp.dest(targetDir))
+                .pipe(notify({
+                    title: taskName + " compiled",
+                    message: bundle + " successfully compiled"
+                }))
                 .pipe(intercept(function(file){
                     var filePath = file.path.replace(".map", "");
                     require("./minify")(gulp, filePath, brandCode, bundle);
                     return file;
-                }))
-                .pipe(notify({
-                    title: taskName + " compiled",
-                    message: bundle + " successfully compiled"
                 }));
         }
     };

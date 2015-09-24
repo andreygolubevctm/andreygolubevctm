@@ -14,6 +14,7 @@ var concat = require("gulp-concat"),
     uglify = require("gulp-uglify"),
     notify = require("gulp-notify"),
     intercept = require("gulp-intercept"),
+    sourcemaps = require("gulp-sourcemaps"),
     plumber = require("gulp-plumber"),
     rename = require("gulp-rename");
 
@@ -57,8 +58,10 @@ function JSTasks(gulp) {
                 .pipe(plumber({
                     errorHandler: notify.onError("Error: <%= error.message %>")
                 }))
+                .pipe(sourcemaps.init())
                 .pipe(concat(fileName + ".js"))
                 .pipe(beautify())
+                .pipe(sourcemaps.write("./maps"))
                 .pipe(gulp.dest(targetDirectory))
                 .pipe(notify({
                     title: taskName + " compiled",
@@ -67,13 +70,13 @@ function JSTasks(gulp) {
                 .pipe(uglify())
                 .pipe(rename(fileName + ".min.js"))
                 .pipe(gulp.dest(targetDirectory))
-                .pipe(intercept(function(file){
-                    require("./lint")(gulp, fileArray);
-                    return file;
-                }))
                 .pipe(notify({
                     title: taskName + " minified",
                     message: fileName + " successfully minified"
+                }))
+                .pipe(intercept(function(file){
+                    require("./lint")(gulp, fileArray);
+                    return file;
                 }));
         }
     };
