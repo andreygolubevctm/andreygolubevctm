@@ -9,6 +9,6 @@
 
 	<c:set var="applicationDate" value="${applicationService.getApplicationDateIfSet(pageContext.getRequest())}" />
 
-	<span class="applicationDateContainer"><strong style="color:red">Application Date: <span class="applicationDate">${applicationDate}</span></strong></span>
+	<span class="applicationDateContainer error-field"><strong>Application Date: <span class="applicationDate">${applicationDate}</span></strong></span>
 
 </c:if>

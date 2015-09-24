@@ -122,8 +122,8 @@
 			var cachedResult = findInCache(settings);
 			return $.Deferred(function(dfd) {
 				// Deferring the callbacks brings their behaviour more inline with a normal .ajax object
-				if(settings.onSuccess != null) settings.onSuccess(cachedResult.result);
-				if(settings.onComplete != null) settings.onComplete();
+				if(settings.onSuccess !== null) settings.onSuccess(cachedResult.result);
+				if(settings.onComplete !== null) settings.onComplete();
 				return dfd.resolveWith(this, [cachedResult.result]).promise();
 			});
 		}
@@ -146,7 +146,7 @@
 		var tranId = meerkat.modules.transactionId.get();
 
 		try{
-			if(ajaxProperties.data == null) {
+			if(ajaxProperties.data === null) {
 				ajaxProperties.data = {};
 			}
 
@@ -202,8 +202,8 @@
 					handleError(jqXHR, "Server generated error", getServerGeneratedError(result), settings, data, ajaxProperties);
 				} else {
 							if(settings.cache === true)	addToCache(settings.url, data, result);
-							if(settings.onSuccess != null) settings.onSuccess(result);
-							if(settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
+							if(settings.onSuccess !== null) settings.onSuccess(result);
+							if(settings.onComplete !== null) settings.onComplete(jqXHR, textStatus);
 
 					if(typeof result.timeout != "undefined" && result.timeout) meerkat.modules.session.update(result.timeout);
 						}
@@ -213,7 +213,7 @@
 
 					handleError(jqXHR, textStatus, errorThrown, settings, data, ajaxProperties);
 
-						if(settings.onComplete != null) settings.onComplete(jqXHR, textStatus);
+						if(settings.onComplete !== null) settings.onComplete(jqXHR, textStatus);
 					}
 				);
 
@@ -332,7 +332,7 @@
 					settings.onErrorDefaultHandling(jqXHR, textStatus, errorThrown, settings, data);
 				}
 
-				if (settings.onError != null) {
+				if (settings.onError !== null) {
 					settings.onError(jqXHR, textStatus, errorThrown, settings, data);
 				}
 			}

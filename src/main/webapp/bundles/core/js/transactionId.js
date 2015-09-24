@@ -120,7 +120,7 @@
 			if( typeof callback == "function" ) {
 				callback(transactionId);
 			}
-		})
+		});
 	}
 
 	function updateSimples() {

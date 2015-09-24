@@ -31,7 +31,7 @@
 			useDefaultErrorHandling: false,
 			numberOfAttempts: 3,
 			errorLevel: "silent"
-		}
+		};
 		if(!_.isObject(settings) && !_.isEmpty(settings)) {
 			request_obj = $.extend(request_obj, settings);
 		}

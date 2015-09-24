@@ -83,7 +83,7 @@
     var getFuelLabel = function (fuelid) {
         var labels = ['Unknown', 'Unknown', 'Unleaded', 'Diesel', 'LPG', 'Premium Unleaded 95', 'E10', 'Premium Unleaded 98', 'Bio-Diesel 20', 'Premium Diesel'];
         return labels[fuelid];
-    }
+    };
 
     function drawChart() {
 
@@ -218,5 +218,4 @@
         getChart: getChart
     });
 
-})
-(jQuery);
+})(jQuery);

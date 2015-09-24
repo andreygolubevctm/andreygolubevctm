@@ -25,7 +25,7 @@
 
         if (fromDateVal !== '' && toDateVal !== '')
         {
-            return date_gt_date(toDateVal, fromDateVal)
+            return date_gt_date(toDateVal, fromDateVal);
         }
 
         return true;

@@ -276,7 +276,7 @@
             if (typeof settings.onBeforeShowModal == 'function') {
                 options.onOpen = function (dialogId) {
                     settings.onBeforeShowModal(jsonResult, dialogId);
-                }
+                };
             }
 
             if (typeof settings.modalOptions == 'object') {

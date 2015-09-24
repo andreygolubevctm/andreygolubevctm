@@ -11,7 +11,20 @@ module.exports = function(gulp, filePath) {
             errorHandler: notify.onError("Error: <%= error.message %>")
         }))
         .pipe(cached())
-        .pipe(jshint())
+        .pipe(jshint({
+                "boss"     : true,
+                "browser"  : true,
+                "curly"    : false,
+                "debug"    : true,
+                "devel"    : true,
+                "eqeqeq"   : false,
+                "eqnull"   : true,
+                "expr"     : true,
+                "validthis": true,
+                "laxbreak" : true,
+                "sub"      : true
+            }
+        ))
         .pipe(jshint.reporter(stylish))
         .pipe(jshint.reporter("fail"));
 };

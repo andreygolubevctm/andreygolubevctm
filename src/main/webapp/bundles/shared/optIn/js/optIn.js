@@ -77,7 +77,7 @@
 			onError: function(){
 				// handle ajax error
 			}
-		}
+		};
 
 		fetch( emailInfo );
 
