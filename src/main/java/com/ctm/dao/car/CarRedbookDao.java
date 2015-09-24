@@ -16,8 +16,6 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 
 public class CarRedbookDao {
-    @SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(CarTypeDao.class.getName());
 
     public CarRedbookDao() {
     }
@@ -107,7 +105,7 @@ public class CarRedbookDao {
             }
         }
         catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
         finally {
             dbSource.closeConnection();

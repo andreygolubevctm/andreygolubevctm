@@ -5,10 +5,11 @@
 
 package com.disc_au.soap;
 
-import com.ctm.logging.LoggingVariables;
+import com.ctm.logging.CorrelationIdUtils;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.SoapAggregatorConfiguration;
 import com.ctm.model.settings.SoapClientThreadConfiguration;
+import com.ctm.model.settings.Vertical;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.EnvironmentService;
 import com.ctm.soap.SoapConfiguration;
@@ -31,8 +32,12 @@ import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.util.HashMap;
+import java.util.Optional;
 
+import static com.ctm.logging.CorrelationIdUtils.clearCorrelationId;
+import static com.ctm.logging.CorrelationIdUtils.setCorrelationId;
 import static com.ctm.logging.LoggingArguments.kv;
+import static com.ctm.logging.LoggingVariables.clearLoggingVariables;
 import static com.ctm.logging.LoggingVariables.setLoggingVariables;
 import static com.ctm.services.EnvironmentService.Environment.*;
 
@@ -62,11 +67,18 @@ public class SOAPAggregatorTag extends TagSupport {
 
 	private boolean continueOnValidationError;
 	private Brand brand;
+	private Optional<String> correlationIdMaybe = Optional.empty();
+	private boolean sendCorrelationId;
 
 	@SuppressWarnings("unused")
 	// used in go.tld
 	public void setContinueOnValidationError(boolean continueOnValidationError) {
 		this.continueOnValidationError = continueOnValidationError;
+	}
+	@SuppressWarnings("unused")
+	// used in go.tld
+	public void setSendCorrelationId(boolean sendCorrelationId) {
+		this.sendCorrelationId = sendCorrelationId;
 	}
 
 	@SuppressWarnings("unused")
@@ -91,49 +103,51 @@ public class SOAPAggregatorTag extends TagSupport {
 		String debugXml = null;
 		String resultXml = null;
 		try {
+			correlationIdMaybe = CorrelationIdUtils.getCorrelationId();
+			configuration.setSendCorrelationId(sendCorrelationId);
 			XmlParser parser = new XmlParser();
-		setUpConfiguration();
+			setUpConfiguration();
 
 		/* validate the xml if a xsd has been specified in the config */
-		boolean valid = true;
+			boolean valid = true;
 
-		try {
+			try {
 			valid = schemaValidation.validateSchema(this.pageContext , this.xml, configuration.getValidationFile());
 		} catch (MalformedURLException e1) {
 			LOGGER.error("failed to validate xml", e1);
 		}
 
-		if(isValidVar != null && !isValidVar.isEmpty()) {
+			if(isValidVar != null && !isValidVar.isEmpty()) {
 			pageContext.setAttribute(isValidVar, valid, PageContext.PAGE_SCOPE);
 		}
-		if(valid || continueOnValidationError) {
+			if(valid || continueOnValidationError) {
 
-		try {
+			try {
 			// Create the client threads and launch each one
 			HashMap<Thread, SOAPClientThread> threads = new HashMap<>();
-				for (SoapClientThreadConfiguration serviceItemConfig : configuration.getServices()) {
+			for (SoapClientThreadConfiguration serviceItemConfig : configuration.getServices()) {
 
-						// Replace ctm with real context path (for feature branches)
-						if (!"ctm/".equals(EnvironmentService.getContextPath())
+					// Replace ctm with real context path (for feature branches)
+					if (!"ctm/".equals(EnvironmentService.getContextPath())
 								&& (EnvironmentService.getEnvironment() == LOCALHOST
 								|| EnvironmentService.getEnvironment() == NXI
 								|| EnvironmentService.getEnvironment() == NXS)
 								&& serviceItemConfig.getUrl().contains("/ctm/")) {
 							serviceItemConfig.setUrl(serviceItemConfig.getUrl().replaceFirst("(https?\\://[^/]+)/ctm/", "$1/" + EnvironmentService.getContextPath()));
-							LOGGER.debug("Modified '" + serviceItemConfig.getName() + "' service URL to: " + serviceItemConfig.getUrl());
+							LOGGER.debug("Modified service URL. {} ", kv("serviceItemConfig",  serviceItemConfig));
 						}
 
-						// Give each one a meaningful name
-						String threadName = this.transactionId + " " + serviceItemConfig.getName();
+					// Give each one a meaningful name
+					String threadName = this.transactionId + " " + serviceItemConfig.getName();
 
-				SOAPClientThread client;
+					SOAPClientThread client;
 
 					if (serviceItemConfig.getType() != null && serviceItemConfig.getType().equals("url-encoded")) {
 					client = new HtmlFormClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupMDC, LoggingVariables::clearLoggingVariables);
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupThreadVariable, this::clearThreadVariables);
 				} else {
 						client = new SOAPClientThread(transactionId,
-								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupMDC, LoggingVariables::clearLoggingVariables);
+								configuration.getRootPath(), serviceItemConfig, xml, threadName, configuration, this::setupThreadVariable, this::clearThreadVariables);
 					}
 
 				// Add the thread to the hash map and start it off
@@ -145,9 +159,9 @@ public class SOAPAggregatorTag extends TagSupport {
 			// Join each thread for their given timeout
 
 			for (Thread thread : threads.keySet()) {
+				long timeout = threads.get(thread).getTimeoutMillis();
 				try {
 
-					long timeout = threads.get(thread).getTimeoutMillis();
 
 					//Otherwise the aggregator times out before all the clients have had a chance too.
 					timeout+= 2000; // ensure the main thread lasts slightly longer than the total of all service calls.
@@ -155,7 +169,7 @@ public class SOAPAggregatorTag extends TagSupport {
 					thread.join(timeout);
 
 				} catch (InterruptedException e) {
-						LOGGER.error("", e);
+						LOGGER.error("Exception joining threads. {}", kv("timeout", timeout), e);
 				}
 			}
 
@@ -178,7 +192,7 @@ public class SOAPAggregatorTag extends TagSupport {
 													e.getMessage(),
 											client.getServiceName(),
 											result);
-						logError(client, "Failed to parse correctly: " + e.getMessage());
+						LOGGER.error("Failed to parse correctly. {} ", kv("client", client), e);
 					}
 				}
 				// Check if the request timed out
@@ -187,7 +201,7 @@ public class SOAPAggregatorTag extends TagSupport {
 												0,
 												"Client failed to return in time",
 												client.getServiceName());
-					logError(client, "Failed to return in time");
+					LOGGER.error("Failed to return in time. {}", kv("client",client));
 				}
 				// Unknown problem
 				else {
@@ -195,7 +209,7 @@ public class SOAPAggregatorTag extends TagSupport {
 							0,
 							"Response has no body",
 							client.getServiceName());
-					logError(client, "Response has no body");
+					LOGGER.error("Response has no body. {}", kv("client", client));
 				}
 
 				thisResult.setAttribute("responseTime", String.valueOf(client.getResponseTime()));
@@ -226,7 +240,7 @@ public class SOAPAggregatorTag extends TagSupport {
 			}
 
 		} catch (IOException e) {
-					LOGGER.error("", e);
+			LOGGER.error("Failed to execute body.", e);
 		}
 		}
 			return super.doEndTag();
@@ -236,8 +250,14 @@ public class SOAPAggregatorTag extends TagSupport {
 		}
 	}
 
-	private void setupMDC() {
-		setLoggingVariables(transactionId, brand.getCode(), verticalCode);
+	private void clearThreadVariables() {
+		clearCorrelationId();
+		clearLoggingVariables();
+	}
+
+	private void setupThreadVariable() {
+		setLoggingVariables(transactionId, brand.getCode(), Vertical.VerticalType.findByCode(verticalCode), correlationIdMaybe);
+		setCorrelationId(correlationIdMaybe);
 	}
 
 	private void setUpConfiguration() {
@@ -261,6 +281,7 @@ public class SOAPAggregatorTag extends TagSupport {
 		isValidVar = null;
 		continueOnValidationError = false;
 		brand = null;
+		correlationIdMaybe = Optional.empty();
 	}
 
 	/**
@@ -358,7 +379,7 @@ public class SOAPAggregatorTag extends TagSupport {
 
 			return parser.parse(resultXML.toString());
 		} catch (TransformerException | SAXException e) {
-			LOGGER.error("", e);
+			LOGGER.error("Failed to process xml", e);
 		}
 		return resultNode;
 	}

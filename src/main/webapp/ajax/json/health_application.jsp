@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="logger" value="${log:getLogger(pageContext.request.servletPath)}" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.health_application')}" />
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true"/>
 
@@ -145,6 +145,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 						isValidVar="isValid"
 						verticalCode="HEALTH"
 						configDbKey="appService"
+				   sendCorrelationId="true"
 						styleCodeId="${pageSettings.getBrandId()}"
 						/>
 		<c:choose>
@@ -257,7 +258,7 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 								</c:choose>
 			</x:otherwise>
 		</x:choose>
-		${logger.debug('Health application complete. {},{}', log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
+		${logger.trace('Health application complete. {},{}', log:kv('resultXml', resultXml),log:kv( 'debugXml', debugXml))}
 			</c:when>
 			<c:otherwise>
 						<c:choose>

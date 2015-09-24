@@ -15,8 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URLEncoder;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ConfirmationService {
-	private static final Logger logger = LoggerFactory.getLogger(ConfirmationService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ConfirmationService.class);
 
 	private ConfirmationDao confirmationDao;
 
@@ -56,7 +58,7 @@ public class ConfirmationService {
 			}
 		}
 		catch (DaoException e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error("Unable to get confirmation record {}, {}", kv("confirmationKey", confirmationKey), kv("brandId", brandId), e);
 		}
 
 		return confirmation;
@@ -108,7 +110,7 @@ public class ConfirmationService {
 			}
 		}
 		catch (Exception e) {
-			logger.error(e.getMessage(), e);
+			LOGGER.error("Unable to get confirmation url {}", kv("confirmationKey", confirmationKey), e);
 		}
 
 		return confirmationUrl.toString();

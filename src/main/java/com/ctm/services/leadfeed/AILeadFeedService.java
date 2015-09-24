@@ -7,9 +7,11 @@ import com.ctm.services.leadfeed.LeadFeedService.LeadResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public abstract class AILeadFeedService implements IProviderLeadFeedService {
 
-	private static final Logger logger = LoggerFactory.getLogger(AILeadFeedService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AILeadFeedService.class);
 
 	/**
 	 * isQualifiedLead() tests valid lead data exists according to the lead type
@@ -28,11 +30,11 @@ public abstract class AILeadFeedService implements IProviderLeadFeedService {
 			) {
 				return LeadResponseStatus.SUCCESS;
 			} else {
-				logger.debug("[Lead feed] Lead failed custom validation and has been skipped");
+				LOGGER.debug("[Lead feed] Lead failed custom validation and has been skipped {}, {}", kv("leadType", leadType), kv("leadData", leadData));
 				return LeadResponseStatus.SKIPPED;
 			}
 		} else {
-			logger.debug("[Lead feed] No " + leadType + " lead exists for AI");
+			LOGGER.debug("[Lead feed] No lead type exists for AI {}, {}", kv("leadType", leadType), kv("leadData", leadData));
 			return LeadResponseStatus.SKIPPED;
 		}
 	}

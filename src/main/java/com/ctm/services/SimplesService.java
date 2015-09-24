@@ -1,14 +1,15 @@
 package com.ctm.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.dao.CommentDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Comment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class SimplesService {
-	private static final Logger logger = LoggerFactory.getLogger(SimplesService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimplesService.class);
 
 	/**
 	 * Add a comment to a transaction ID.
@@ -18,7 +19,7 @@ public class SimplesService {
 	 * @return Success true, otherwise false
 	 */
 	public boolean addComment(long transactionId, String operator, String comment) {
-		if (operator == "") {
+		if (operator == null || operator.isEmpty()) {
 			operator = "ONLINE";
 		}
 
@@ -32,7 +33,8 @@ public class SimplesService {
 			commentDao.addComment(commentObj);
 		}
 		catch (DaoException e) {
-			e.printStackTrace();
+			LOGGER.error("Failed to add comment to transactionId {},{},{}", kv("transactionId", transactionId),
+				kv("operator", operator), kv("comment", comment));
 			return false;
 		}
 

@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class ProviderService {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProviderService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderService.class);
 
 	private static ProviderDao dao = new ProviderDao();
 

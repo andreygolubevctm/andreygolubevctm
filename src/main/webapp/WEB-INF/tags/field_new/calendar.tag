@@ -151,7 +151,7 @@
 			</div>
 			<div class="hidden select dateinput-nativePicker">
 				<span class="input-group-addon"><i class="icon-calendar"></i></span>
-				<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" min="${minDate}" max="${maxDate}" placeHolder="YYYY-MM-DD">
+				<input type="date" name="${name}Input" id="${name}Input" class="form-control dontSubmit" value="${value}" <c:if test="${not empty minDate}">min="${minDate}"</c:if> <c:if test="${not empty maxDate}">max="${maxDate}"</c:if> placeHolder="YYYY-MM-DD">
 			</div>
 			<field_new:validatedHiddenField xpath="${xpath}" className="serialise hidden-datepicker" title="Please enter the ${title} date" additionalAttributes=" required ${calAdditionalAttributes} ${dateEurRule} ${minDateEurRule} ${maxDateEurRule} data-provide='datepicker' data-date-mode='${mode}' ${minDateAttribute} ${maxDateAttribute} " />
 		</div>

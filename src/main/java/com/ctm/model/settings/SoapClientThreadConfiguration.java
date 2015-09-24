@@ -329,6 +329,14 @@ public class SoapClientThreadConfiguration {
 
 	}
 
+	@Override
+	public String toString() {
+		return "SoapClientThreadConfiguration{" +
+				"name='" + name + '\'' +
+				", url='" + url + '\'' +
+				'}';
+	}
+
 
 
 }

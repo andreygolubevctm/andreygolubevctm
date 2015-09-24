@@ -1,34 +1,35 @@
 package com.ctm.router;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.ctm.services.SettingsService;
-import com.ctm.services.elasticsearch.AddressSearchService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.ctm.dao.AddressDao;
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Address;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.services.SettingsService;
+import com.ctm.services.elasticsearch.AddressSearchService;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 @WebServlet(urlPatterns = {
 		"/address/search.json",
 		"/address/get.json"
 })
 public class AddressSearchRouter extends HttpServlet {
-	private static final Logger logger = LoggerFactory.getLogger(AddressSearchRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AddressSearchRouter.class);
 	private static final long serialVersionUID = 71L;
 
 	private AddressSearchService searchService;
@@ -69,7 +70,7 @@ public class AddressSearchRouter extends HttpServlet {
 				String indexName = pageSettings.getSetting("elasticSearchAddressIndex");
 				output = searchService.suggest(request.getParameter("query"), indexName, "address");
 			} catch (JSONException | ConfigSettingException | DaoException e) {
-				logger.error("There was an issue producing the JSON response", e);
+				LOGGER.error("Address search failed {}", kv("query", request.getParameter("query")), e);
 			}
 
 			if(output != null)
@@ -77,7 +78,7 @@ public class AddressSearchRouter extends HttpServlet {
 		} else if (uri.endsWith("/address/get.json")) {
 			JSONObject json = new JSONObject();
 
-			if(request.getParameter("dpId") != null && request.getParameter("dpId") != "") {
+			if(request.getParameter("dpId") != null && !request.getParameter("dpId").isEmpty()) {
 				AddressDao addressDao = new AddressDao();
 				String dpId = request.getParameter("dpId");
 
@@ -85,7 +86,7 @@ public class AddressSearchRouter extends HttpServlet {
 					Address address = addressDao.getAddressDetails(dpId);
 					json = address.toJSONObject();
 				} catch (DaoException e) {
-					e.printStackTrace();
+					LOGGER.error("Address details failed {}", kv("dpId", dpId), e);
 				}
 			}
 

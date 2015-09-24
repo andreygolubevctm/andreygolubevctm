@@ -5,7 +5,7 @@
 
 <core_new:quote_check quoteType="homeloan" />
 
-<layout:journey_engine_page title="Homeloan Confirmation" sessionPop="false">
+<layout:journey_engine_page title="Homeloan Confirmation">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>

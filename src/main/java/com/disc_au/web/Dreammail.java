@@ -7,9 +7,11 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class Dreammail {
 
-	private static final Logger logger = LoggerFactory.getLogger(Dreammail.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Dreammail.class);
 
 	public static String send(String username, String password, String servername, String rtm_url, String xml_content, String debugOn, Boolean is_exact_target) throws IOException{
 		if(xml_content == null || xml_content.isEmpty()) {
@@ -18,7 +20,7 @@ public class Dreammail {
 		if (rtm_url.indexOf("http") != 0) {
 			rtm_url = "http://" + rtm_url;
 		}
-		logger.debug("[Email] Message sent: " +xml_content.replaceAll("\\r?\\n", ""));
+		LOGGER.debug("[Email] Message sent. {} ", kv("xml_content", xml_content));
 
 		URL url = new URL(rtm_url);
 		URLConnection connection = url.openConnection();
@@ -49,7 +51,7 @@ public class Dreammail {
 			resp.append(inputLine);
 		}
 
-		logger.debug("[Email] Message received: " +resp.toString());
+		LOGGER.debug("[Email] Message received. {}", kv("resp", resp));
 		return resp.toString();
 	}
 }

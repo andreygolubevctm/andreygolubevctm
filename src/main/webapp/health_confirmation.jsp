@@ -14,7 +14,7 @@
 
 <core:quote_check quoteType="health" />
 
-<layout:journey_engine_page title="Health Confirmation" sessionPop="false">
+<layout:journey_engine_page title="Health Confirmation">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>

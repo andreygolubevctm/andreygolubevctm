@@ -7,7 +7,7 @@ import com.ctm.dao.car.CarModelDao;
 
 public class PopularModelsService {
 
-	private static final Logger logger = LoggerFactory.getLogger(PopularModelsService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(PopularModelsService.class);
 
 	/**
 	 * execute() calls the CarModelDao to execute the method which updates
@@ -26,8 +26,7 @@ public class PopularModelsService {
 			return lastUpdate;
 
 		} catch (DaoException e) {
-			logger.error("",e);
-
+			LOGGER.error("Error updating popular models", e);
 			return e.getMessage();
 		}
 	}

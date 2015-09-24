@@ -25,7 +25,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/quote"					prefix="quote" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg"					prefix="agg" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg_new"				prefix="agg_new" %>
-<%@ taglib tagdir="/WEB-INF/tags/agg/results"			prefix="agg_results" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg_new/results"		prefix="agg_new_results" %>
 <%@ taglib tagdir="/WEB-INF/tags/health"				prefix="health" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/layout"			prefix="health_layout" %>

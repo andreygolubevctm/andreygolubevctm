@@ -148,7 +148,7 @@ public class ContentService {
 
 			content = contentControlCache.get(cacheKey);
 			if(content == null) {
-				LOGGER.debug("Key does not exist in cache retrieving from data source. {}", kv("contentKey", contentKey));
+				LOGGER.debug("Key does not exist in cache retrieving from data source. {}", kv("cacheKey", cacheKey));
                 content = getContentFromDataSource(contentKey, brandId, verticalId, new Date(), includeSupplementary);
                 contentControlCache.put(cacheKey, content);
             }

@@ -113,7 +113,7 @@
 									{{ if(promo.hospitalPDF) { }}
 										<div class="brochureLinks">
 											<p>
-												<a href="{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download">Download Hospital Brochure</a>
+												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-download">Download Hospital Brochure</a>
 											</p>
 										</div>
 									{{ } }}
@@ -147,7 +147,7 @@
 									{{ if(promo.extrasPDF) { }}
 										<div class="brochureLinks">
 											<p>
-												<a href="{{= promo.extrasPDF }}" target="_blank" class="btn btn-download">Download Extras Brochure</a>
+												<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download">Download Extras Brochure</a>
 											</p>
 										</div>
 									{{ } }}

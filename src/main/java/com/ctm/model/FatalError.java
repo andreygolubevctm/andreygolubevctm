@@ -84,4 +84,18 @@ public class FatalError {
 		return fatal;
 	}
 
+	@Override
+	public String toString() {
+		return "FatalError{" +
+				"styleCodeId=" + styleCodeId +
+				", message='" + message + '\'' +
+				", fatal='" + fatal + '\'' +
+				", transactionId='" + transactionId + '\'' +
+				", sessionId='" + sessionId + '\'' +
+				", data='" + data + '\'' +
+				", description='" + description + '\'' +
+				", page='" + page + '\'' +
+				", property='" + property + '\'' +
+				'}';
+	}
 }

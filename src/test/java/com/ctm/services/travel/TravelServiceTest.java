@@ -1,14 +1,22 @@
 package com.ctm.services.travel;
 
+import com.ctm.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
+import com.ctm.exceptions.TravelServiceException;
+import com.ctm.model.settings.Brand;
+import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.travel.form.TravelQuote;
 import com.ctm.model.travel.form.TravelRequest;
+import com.ctm.services.EnvironmentService;
+import com.ctm.web.validation.SchemaValidationError;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.SQLException;
 import java.util.function.Supplier;
 
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -18,14 +26,35 @@ public class TravelServiceTest {
 	private TravelService travelService;
 	private TravelRequest travelRequest;
     private TravelQuote travelQuote;
+	private SimpleConnection connection;
 
 	@Before
-	public void setup() throws SQLException, DaoException {
-		travelService = new TravelService();
+	public void setup() throws Exception {
+		EnvironmentService.setEnvironment("localhost");
+		ServiceConfiguration serviceConfig = new ServiceConfiguration();
+		connection = mock(SimpleConnection.class);
+		travelService = new TravelService(serviceConfig, connection);
 		travelRequest = new TravelRequest();
         travelQuote = new TravelQuote();
+		travelQuote.setOldest(80);
+		travelQuote.setAdults(2);
+		travelQuote.setChildren(1);
+		travelQuote.setPolicyType("M");
+		travelQuote.setRenderingMode("S");
         travelRequest.setTravel(travelQuote);
 	}
+
+	@Test
+	public void testShouldSetCorrelationId() throws TravelServiceException {
+		String verticalCode = "travel";
+		Brand brand = new Brand();
+		travelRequest.setTransactionId(1000L);
+		travelRequest.setTravel(travelQuote);
+		when(connection.get(null + "/quote")).thenReturn("result");
+		travelService.getQuotes(brand, verticalCode, travelRequest);
+		verify(connection, times(1)).setHasCorrelationId(true);
+	}
+
 
 	@Test
 	public void testShouldValidateName() throws SQLException, DaoException {
@@ -138,6 +167,11 @@ public class TravelServiceTest {
 	@Test
 	public void testShouldCheckForMandatoryValues() throws SQLException, DaoException {
 
+		travelQuote.setAdults(null);
+		travelQuote.setChildren(null);
+		travelQuote.setOldest(null);
+		validationErrors = travelService.validateRequest(travelRequest, vertical);
+		assertFalse(travelService.isValid());
 		isInvalid(() -> travelService.validateRequest(travelRequest, vertical));
 
 		// Set defaults

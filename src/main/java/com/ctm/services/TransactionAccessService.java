@@ -13,9 +13,11 @@ import com.ctm.model.email.EmailMode;
 import com.ctm.model.email.IncomingEmail;
 import com.ctm.model.settings.Vertical.VerticalType;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class TransactionAccessService {
 
-	private static final Logger logger = LoggerFactory.getLogger(TransactionAccessService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionAccessService.class);
 
 	public static final String HEALTH_BEST_PRICE_EMAIL_XPATH = "health/contactDetails/email";
 
@@ -50,7 +52,7 @@ public class TransactionAccessService {
 					emailData.setEmailAddress(result.getEmailAddress());
 			}
 		} catch (DaoException e) {
-			logger.error("",e);
+			LOGGER.error("Error checking transaction access {},{},{}", kv("emailData", emailData), kv("verticalType", verticalType), kv("brandId", brandId), e);
 		}
 		return valid;
 	}

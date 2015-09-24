@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="logger" value="${log:getLogger('/health/price_service_result.tag')}" />
+<c:set var="logger" value="${log:getLogger('tag.health.price_service_result')}" />
 
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 

@@ -17,9 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public abstract class EmailServiceHandler {
 
-	private static final Logger logger = LoggerFactory.getLogger(EmailServiceHandler.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceHandler.class);
 
 
 	protected static final  List<String> testEmails = new ArrayList<String>() {
@@ -92,7 +94,7 @@ public abstract class EmailServiceHandler {
 		try {
 			emailModel.setImageUrlPrefix(getPageSetting("imageUrlPrefix"));
 		} catch (SendEmailException e) {
-			logger.info("imageUrlPrefix not found");
+			LOGGER.error("imageUrlPrefix not found {}", kv("emailModel", emailModel));
 		}
 		emailModel.setBrand(pageSettings.getBrandCode());
 	}

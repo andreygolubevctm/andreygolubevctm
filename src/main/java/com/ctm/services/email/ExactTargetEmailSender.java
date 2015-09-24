@@ -1,5 +1,24 @@
 package com.ctm.services.email;
 
+import static com.ctm.logging.LoggingArguments.kv;
+import static java.lang.Integer.parseInt;
+
+import java.security.GeneralSecurityException;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.Service;
+
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.endpoint.Endpoint;
+import org.apache.cxf.frontend.ClientProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.DOMException;
+
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SendEmailException;
@@ -24,13 +43,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
 
-import javax.xml.bind.JAXBElement;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Service;
 import java.security.GeneralSecurityException;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import static java.lang.Integer.parseInt;
 
@@ -44,7 +60,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 	private String WEBSERVICE_USER;
 	private String WEBSERVICE_PASSWORD;
 
-	private static final Logger logger = LoggerFactory.getLogger(ExactTargetEmailSender.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ExactTargetEmailSender.class);
 
 	public ExactTargetEmailSender(PageSettings pageSettings) throws SendEmailException {
 		this.pageSettings = pageSettings;
@@ -94,7 +110,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 			Soap stub = initWebserviceClient();
 			CreateRequest createRequest = new CreateRequest();
 
-			createPayload(exactTargetEmailModel, createRequest);
+			ExactTargetEmailBuilder.createPayload(exactTargetEmailModel, createRequest);
 
 			CreateResponse createResponse = stub.create(createRequest);
 			EmailResponse response = parseResponse(createResponse);
@@ -105,7 +121,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 			}
 			return response.getRequestID();
 		} catch (ConfigSettingException  e) {
-			logger.error( "failed to call exact target web service", e);
+			LOGGER.error("Failed to call exact target web service {}", kv("emailModel", emailModel), e);
 			throw new SendEmailException( "failed to call exact target web service", e );
 		} finally {
 			destroyWebserviceClient();
@@ -132,70 +148,6 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 		client = null;
 	}
 
-
-	private void createPayload(ExactTargetEmailModel exactTargetEmailModel, CreateRequest createRequest) {
-		ObjectFactory  objectFactory = new com.exacttarget.wsdl.partnerapi.ObjectFactory();
-
-		CreateOptions options = new CreateOptions();
-		createRequest.setOptions(options );
-		List<APIObject> objects = createRequest.getObjects();
-
-		TriggeredSend triggeredSend = new TriggeredSend();
-
-		ClientID client = createClient(exactTargetEmailModel);
-
-		triggeredSend.setClient(client);
-
-		TriggeredSendDefinition triggeredSendDefinition = createTriggeredSendDefinition(
-				exactTargetEmailModel, objectFactory);
-
-		triggeredSend.setTriggeredSendDefinition(triggeredSendDefinition);
-
-		Subscriber subscriber = createSubscriber(exactTargetEmailModel);
-		triggeredSend.getSubscribers().add(subscriber);
-
-		objects.add(triggeredSend);
-	}
-
-	private ClientID createClient(ExactTargetEmailModel exactTargetEmailModel) {
-		ClientID clientId = new ClientID();
-		clientId.setClientID(exactTargetEmailModel.getClientId());
-		return clientId;
-	}
-
-	private Subscriber createSubscriber(ExactTargetEmailModel exactTargetEmailModel) {
-		Subscriber subscriber = new Subscriber();
-		subscriber.setEmailAddress(exactTargetEmailModel.getEmailAddress()); // updating to new email address.
-		subscriber.setSubscriberKey(subscriber.getEmailAddress()); //subscriber unique, cannot update
-
-		for(Entry<String, String> attribute: exactTargetEmailModel.getAttributes().entrySet()) {
-			String value = attribute.getValue();
-			String normalisedValue = value == null ? "" : value;
-			Attribute attributeElement = new Attribute();
-			attributeElement.setName(attribute.getKey());
-			attributeElement.setValue(normalisedValue);
-			subscriber.getAttributes().add(attributeElement);
-		}
-		return subscriber;
-	}
-
-
-	private TriggeredSendDefinition createTriggeredSendDefinition(
-			ExactTargetEmailModel exactTargetEmailModel,
-			ObjectFactory objectFactory) {
-		TriggeredSendDefinition triggeredSendDefinition = new TriggeredSendDefinition();
-		JAXBElement<String> partnerKey = objectFactory.createAPIObjectPartnerKey(null);
-		partnerKey.setNil(true);
-		triggeredSendDefinition.setPartnerKey(partnerKey);
-		JAXBElement<String> objectID = objectFactory.createAPIObjectObjectID(null);
-		objectID.setNil(true);
-		triggeredSendDefinition.setObjectID(objectID);
-		triggeredSendDefinition.setCustomerKey(exactTargetEmailModel.getCustomerKey());
-		SendClassification sendClassification = new SendClassification();
-		triggeredSendDefinition.setSendClassification(sendClassification );
-		return triggeredSendDefinition;
-	}
-
 	private EmailResponse parseResponse(CreateResponse createResponse) throws DOMException, SendEmailException {
 		boolean success = false;
 		String statusMessage = "";
@@ -217,7 +169,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 		response.setMessage(statusMessage);
 		response.setSuccessful(success);
 		response.setRequestID(requestID);
-		logger.info("exact target respone message:" + response.getMessage());
+		LOGGER.debug("Exact target response message {}", kv("response", response.getMessage()));
 		return response;
 	}
 

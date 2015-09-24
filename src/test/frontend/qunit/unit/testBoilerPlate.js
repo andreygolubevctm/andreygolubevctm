@@ -1,21 +1,17 @@
-window.jQuery
-&& window.jQuery.each
-|| document
-    .write('<script src="../../../main/webapp/framework/jquery/lib/jquery-2.0.3.min.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/meerkat/meerkat.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/meerkat/meerkat.logging.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/meerkat/meerkat.modules.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/comms.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/numberUtils.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/utils.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/transactionId.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/tracking.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/deviceMediaState.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/dialogs.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/modules/js/core/loadingAnimation.js">\x3C/script>');
-document.write('<script src="../../../main/webapp/framework/bootstrap/js/modal.js">\x3C/script>');
-;
-(function (meerkat) {
+document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.logging.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/meerkat/js/meerkat.modules.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/comms.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/shared/numberUtils/js/numberUtils.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/utils.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/transactionId.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/tracking.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/deviceMediaState.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/dialogs.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/bundles/core/js/loadingAnimation.js">\x3C/script>');
+document.write('<script src="../../../main/webapp/assets/js/libraries/bootstrap.min.js">\x3C/script>');
+
+;(function (meerkat) {
 
     var siteConfig = {
         title: 'Kitchen sink: Current &amp; new - Compare The Market',
@@ -56,10 +52,6 @@ document.write('<script src="../../../main/webapp/framework/bootstrap/js/modal.j
     meerkat != null && meerkat.init(siteConfig, options);
 
 })(window.meerkat);
-
-window._
-|| document
-    .write('<script src="../../../main/webapp/framework/lib/js/underscore-1.5.2.min.js">\x3C/script>')
 
 $(document).ready(function () {
     var vertical = "health";
@@ -118,11 +110,12 @@ $(document).ready(function () {
         }
     };
 
-    Results = {
-        settings: {
-            frequency: frequency
-        }
-    };
+	Results = {
+			settings :
+				{
+					frequency : frequency
+				}
+	};
 
 });
 
@@ -228,4 +221,109 @@ function getProduct() {
         showApply: true,
         whatHappensNext: ""
     };
+	return {
+			transactionId: 2204639,
+			ambulance:  {
+
+			},
+			promo: {
+
+			},
+			premium: {
+				annually: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				},
+				fortnightly: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				},
+				halfyearly: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				},
+				monthly: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				},
+				quarterly: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				},
+				weekly: {
+					base: "$2,351.44",
+					baseAndLHC: "$2,669.24",
+					discounted: "N",
+					hospitalValue: 2187.2,
+					lhc: 317.8,
+					lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+					lhcfreetext: "$2,351.44",
+					lhcfreevalue: 2351.44,
+					pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+					rebate: "",
+					rebateValue: "$0.00",
+					text: "$2,669.24",
+					value: 2669.24
+				}
+				},
+			service: "PHIO",
+			showAltPremium: true,
+			showApply: true,
+			whatHappensNext: ""
+	};
 }

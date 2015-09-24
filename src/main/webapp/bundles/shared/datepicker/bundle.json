@@ -1,0 +1,6 @@
+{
+    "dependencies": [
+        "shared/placeholder",
+        "shared/formDateInput"
+    ]
+}

@@ -26,12 +26,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class TravelEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
 
 	private static final String VERTICAL = VerticalType.TRAVEL.getCode();
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(TravelEmailService.class.getName());
 
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();

@@ -1,37 +1,44 @@
 package com.ctm.connectivity;
 
+
+import com.ctm.logging.CorrelationIdUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class SimpleConnection {
 
-	private static final Logger logger = LoggerFactory.getLogger(SimpleConnection.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleConnection.class);
 
 	private int connectTimeout = 1000;
 	private int readTimeout = 1000;
 	private String requestMethod = "GET";
 	private String contentType = null;
 	private String postBody = null;
-
-
+	private boolean hasCorrelationId = false;
 
 	public SimpleConnection() {
 	}
 
 	/**
-	 * Returns the content from the specified url as a string - A null value is returned if any failures occur whilst trying to return the value.
+	 * Returns the content from the specified url as a string. Return null if any failures occur whilst trying to return the value.
 	 *
-	 * @param url
-	 * @return
+	 * @param url to call
+	 * @return outcome of url call
 	 */
 	public String get(String url) {
 		try {
 			URL u = new URL(url);
 			HttpURLConnection c = (HttpURLConnection) u.openConnection();
+			if(hasCorrelationId) {
+				CorrelationIdUtils.setCorrelationIdHeader(c);
+			}
 			c.setRequestMethod(getRequestMethod());
 			c.setRequestProperty("Content-length", "0");
 			c.setUseCaches(false);
@@ -43,12 +50,12 @@ public class SimpleConnection {
 				c.setRequestProperty("Content-Type", getContentType());
 			}
 
-			if (getPostBody() != null) {
+			if (postBody != null) {
 				c.setDoOutput(true);
 
 				OutputStream os = c.getOutputStream();
 				BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-				writer.write(getPostBody());
+				writer.write(postBody);
 				writer.flush();
 				writer.close();
 				os.close();
@@ -71,11 +78,14 @@ public class SimpleConnection {
 					return sb.toString();
 				default:
 					String message = c.getResponseMessage();
-					logger.error(url + ": Status code error " + status + " " + message);
+					LOGGER.debug("Request returned error {}", kv("status", status), kv("message", message));
 			}
 		}
-		catch (Exception e){
-			logger.error(url+": "+e, e);
+		catch (MalformedURLException e) {
+			LOGGER.error("Invalid URL {}", kv("url", url), e);
+		}
+		catch (Exception e) {
+			LOGGER.error("Error performing get request {}", kv("url", url), e);
 		}
 		return null;
 	}
@@ -84,7 +94,7 @@ public class SimpleConnection {
 	 * Get the timeout value for the connection.
 	 * @return Timeout in milliseconds
 	 */
-	public int getConnectTimeout() {
+	private int getConnectTimeout() {
 		return connectTimeout;
 	}
 
@@ -100,7 +110,7 @@ public class SimpleConnection {
 	 * Get the timeout value for the request read.
 	 * @return Timeout in milliseconds
 	 */
-	public int getReadTimeout() {
+	private int getReadTimeout() {
 		return readTimeout;
 	}
 
@@ -112,7 +122,7 @@ public class SimpleConnection {
 		this.readTimeout = timeout;
 	}
 
-	public String getRequestMethod() {
+	private String getRequestMethod() {
 		return requestMethod;
 	}
 
@@ -120,7 +130,7 @@ public class SimpleConnection {
 		this.requestMethod = requestMethod;
 	}
 
-	public String getContentType() {
+	private String getContentType() {
 		return contentType;
 	}
 
@@ -128,11 +138,12 @@ public class SimpleConnection {
 		this.contentType = contentType;
 	}
 
-	public String getPostBody() {
-		return postBody;
-	}
 
 	public void setPostBody(String postBody) {
 		this.postBody = postBody;
+	}
+
+	public void setHasCorrelationId(boolean hasCorrelationId) {
+		this.hasCorrelationId = hasCorrelationId;
 	}
 }
