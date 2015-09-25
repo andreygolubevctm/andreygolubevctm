@@ -20,38 +20,43 @@
     // included in Meerkat.logging - IE9/IEx Console patch.
 
     function initPolyfills() {
-        // Internet Explorer 10 in Windows 8 and Windows Phone 8
-        // Internet Explorer 10 doesn't differentiate device width from viewport width, and thus doesn't properly apply the media queries in Bootstrap's CSS.
-        // For more information and usage guidelines, read Windows Phone 8 and Device-Width.
-        if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-            var msViewportStyle = document.createElement("style");
-            msViewportStyle.appendChild(
-                document.createTextNode(
-                    "@-ms-viewport{width:auto!important}"
-                )
-            );
-            document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
-        }
 
-        //This just fixes ie's stupid lack of button type=submit support (instead of input type submit)
-        if (noButtons) {
-            $(document).on('click', 'form button[type="submit"]', function (event) {
-                event.preventDefault();
-                $(this).closest('form').submit();
-            }).on('keypress', 'form input', function (event) {
-                if (event.which === 13) {
+        $(document).ready(function () {
+
+            // Internet Explorer 10 in Windows 8 and Windows Phone 8
+            // Internet Explorer 10 doesn't differentiate device width from viewport width, and thus doesn't properly apply the media queries in Bootstrap's CSS.
+            // For more information and usage guidelines, read Windows Phone 8 and Device-Width.
+            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement("style");
+                msViewportStyle.appendChild(
+                    document.createTextNode(
+                        "@-ms-viewport{width:auto!important}"
+                    )
+                );
+                document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+            }
+
+            //This just fixes ie's stupid lack of button type=submit support (instead of input type submit)
+            if (noButtons) {
+                $(document).on('click', 'form button[type="submit"]', function (event) {
+                    event.preventDefault();
                     $(this).closest('form').submit();
-                }
-            });
-        }
+                }).on('keypress', 'form input', function (event) {
+                    if (event.which === 13) {
+                        $(this).closest('form').submit();
+                    }
+                });
+            }
 
-        //Fastclick instantiated here on the body - see page.tag for fastclick from cdn or lib/js/fastclick-x.x.x.min.js
-        //Add the needsclick class to an element to prevent the behaviour. Possibly required with bootstrap dropdowns. TODO: Check this possibility!
-        if(Modernizr.touch) {
-            meerkat.modules.utils.pluginReady("FastClick").done(function () {
-                FastClick.attach(document.body);
-            });
-        }
+            //Fastclick instantiated here on the body - see page.tag for fastclick from cdn or lib/js/fastclick-x.x.x.min.js
+            //Add the needsclick class to an element to prevent the behaviour.
+            //yepnope(true, meerkat.site.urls.base + 'assets/libraries/fastclick/fastclick-1.0.6.min.js');
+            if (Modernizr.touch) {
+                $.getScript(meerkat.site.urls.base + 'assets/libraries/fastclick/fastclick-1.0.6.min.js', function () {
+                    FastClick.attach(document.body);
+                });
+            }
+        });
     }
 
     meerkat.modules.register("polyfills", {
