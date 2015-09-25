@@ -85,7 +85,7 @@ var healthFunds_QCH = {
 
 
 				var startDate = $('#health_payment_details_start').val();
-				var policyStart = healthFunds._setPolicyDate(startDate);
+				var policyStart = healthFunds._setPolicyDate(startDate, 0);
 
 				$('#health_payment_credit_policyDay option[value='+policyStart+']').attr('selected','selected');
 				$('#health_payment_bank_policyDay option[value='+policyStart+']').attr('selected','selected');
