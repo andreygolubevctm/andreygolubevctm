@@ -73,7 +73,7 @@ var healthFunds_QCH = {
 			<%--selections for payment date --%>
 			$('#update-premium').on('click.QCH', function() {
 				var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-				healthFunds._payments = { 'min':3, 'max':17, 'weekends':true };
+				healthFunds._payments = { 'min':0, 'max':1, 'weekends':true };
 				var _html = healthFunds._paymentDays( $('#health_payment_details_start').val() );
 				healthFunds._paymentDaysRender( $('.health-bank_details-policyDay'), _html);
 				healthFunds._paymentDaysRender( $('.health-credit-card_details-policyDay'), _html);
@@ -85,17 +85,17 @@ var healthFunds_QCH = {
 
 
 				var startDate = $('#health_payment_details_start').val();
-				var policyStart = healthFunds._setPolicyDate(startDate);
+				var policyStart = healthFunds._setPolicyDate(startDate, 0);
 
 				$('#health_payment_credit_policyDay option[value='+policyStart+']').attr('selected','selected');
 				$('#health_payment_bank_policyDay option[value='+policyStart+']').attr('selected','selected');
 
 				if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
-					$('.health_bank-details_policyDay-message').html('Your payment will be deducted 7 days after your policy start date');
+					$('.health_bank-details_policyDay-message').html('Your first premium payment will be deducted from your nominated bank account on receipt of your application by us, or from the actual start date of your policy');
 					$('#health_payment_bank_policyDay').attr('type','hidden').attr('data-attach', 'true');
 				}
 				else if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc') {
-					$('.health_credit-card-details_policyDay-message').html('Your payment will be deducted 7 days after your policy start date');
+					$('.health_credit-card-details_policyDay-message').html('Your first premium payment will be deducted from your credit card on receipt of your application by us, or from the actual start date of your policy');
 					$('#health_payment_credit_policyDay').attr('type','hidden').attr('data-attach', 'true');
 				}
 			});
