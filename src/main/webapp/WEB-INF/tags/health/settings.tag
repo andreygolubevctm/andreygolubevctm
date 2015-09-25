@@ -3,8 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="fromBrochure" scope="request" value="${false}"/>
-<c:set var="param_situation"><c:out value="${param.situation}" escapeXml="true" /></c:set>
-<c:if test="${not empty param.cover || not empty param.situation || not empty param_situation || not empty param.health_location}">
+<c:if test="${not empty param.cover || not empty param.situation  || not empty param.health_location}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
 <%-- Moved from choices.tag --%>
@@ -16,7 +15,7 @@
 
 <%-- Only ajax-fetch and update benefits if situation is defined in a param (e.g. from brochureware). No need to update if new quote or load quote etc. --%>
 <c:set var="performHealthChoicesUpdate" value="false" />
-<c:if test="${not empty param_situation or (not empty param.preload and empty data[xpathBenefitsExtras])}">
+<c:if test="${not empty param.situation or (not empty param.preload and empty data[xpathBenefitsExtras])}">
 	<c:set var="performHealthChoicesUpdate" value="true" />
 </c:if>
 <%-- Force this to be confirmation because it is set by a param value and might change. This is a safety decision because if it is something else, bad things happen. --%>

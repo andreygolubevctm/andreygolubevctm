@@ -16,7 +16,7 @@
 	<c:choose>
 		<c:when test="${not empty param.postcode_suburb_location}"><c:out value="${param.postcode_suburb_location}" escapeXml="true" /></c:when>
 		<c:when test="${not empty param.postcode_suburb_mobile_location}"><c:out value="${param.postcode_suburb_mobile_location}" escapeXml="true" /></c:when>
-		<c:when test="${not empty param.health_location}"><c:out value="${param.health_location}" escapeXml="true" /></c:when>
+		<c:when test="${not empty param.health_location}"><c:out value="${param.health_location}" escapeXml="false" /></c:when>
 	</c:choose>
 </c:set>
 <c:set var="param_situation"><c:out value="${param.situation}" escapeXml="true" /></c:set>
