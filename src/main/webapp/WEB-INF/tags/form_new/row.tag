@@ -20,7 +20,6 @@
 	<c:set var="labelAbove" value="${false}" />
 </c:if>
 
-<!-- Default to true. -->
 <c:if test="${empty addForAttr}">
 	<c:set var="addForAttr" value="${true}" />
 </c:if>

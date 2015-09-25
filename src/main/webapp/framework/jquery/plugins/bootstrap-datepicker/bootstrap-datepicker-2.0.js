@@ -23,7 +23,9 @@
 
 (function($, undefined){
 
-	var $window = $(window);
+	var $window = $(window),
+		prevNav = "&laquo;",
+		nextNav = "&raquo;";
 
 	function UTCDate(){
 		return new Date(Date.UTC.apply(Date, arguments));
@@ -115,7 +117,7 @@
 			// cleanup
 			delete tempPicker;
 		}
-		
+
 		this._buildEvents();
 		this._attachEvents();
 
@@ -134,9 +136,9 @@
 
 		if (this.o.calendarWeeks)
 			this.picker.find('tfoot th.today')
-						.attr('colspan', function(i, val){
-							return parseInt(val) + 1;
-						});
+				.attr('colspan', function(i, val){
+					return parseInt(val) + 1;
+				});
 
 		this._allow_update = false;
 
@@ -379,7 +381,7 @@
 							this.element.find(e.target).length ||
 							this.picker.is(e.target) ||
 							this.picker.find(e.target).length
-						)){
+							)){
 							this.hide();
 						}
 					}, this)
@@ -448,8 +450,8 @@
 			if (
 				this.o.forceParse &&
 				(
-					this.isInput && this.element.val() ||
-					this.hasInput && this.element.find('input').val()
+				this.isInput && this.element.val() ||
+				this.hasInput && this.element.find('input').val()
 				)
 			)
 				this.setValue();
@@ -643,8 +645,8 @@
 			}
 			else {
 				dates = this.isInput
-						? this.element.val()
-						: this.element.data('date') || this.element.find('input').val();
+					? this.element.val()
+					: this.element.data('date') || this.element.find('input').val();
 				if (dates && this.o.multidate)
 					dates = dates.split(this.o.multidateSeparator);
 				else
@@ -657,9 +659,9 @@
 			}, this));
 			dates = $.grep(dates, $.proxy(function(date){
 				return (
-					date < this.o.startDate ||
-					date > this.o.endDate ||
-					!date
+				date < this.o.startDate ||
+				date > this.o.endDate ||
+				!date
 				);
 			}, this), true);
 			this.dates.replace(dates);
@@ -703,11 +705,11 @@
 
 		fillMonths: function(){
 			var html = '',
-			i = 0;
+				i = 0;
 			while (i < 12){
 				html += '<span class="month">'+dates[this.o.language].monthsShort[i++]+'</span>';
 			}
-			
+
 			this.picker.find('.datepicker-months td').html(html);
 		},
 
@@ -745,9 +747,9 @@
 			// only add the active class if the numberOfMonths is set to 1 and the dates array does not contain the passed in date 
 			// OR 
 			// if the numberOfMonths is greater than 1 and the dates array does not contain the passed in date and the new class doesn't exist and the old class doesn't exist
-			if ((this.o.numberOfMonths == 1 && this.dates.contains(date) !== -1) || (this.o.numberOfMonths > 1 && this.dates.contains(date) !== -1) && $.inArray('new', cls) == -1 && $.inArray('old', cls) == -1) 
+			if ((this.o.numberOfMonths == 1 && this.dates.contains(date) !== -1) || (this.o.numberOfMonths > 1 && this.dates.contains(date) !== -1) && $.inArray('new', cls) == -1 && $.inArray('old', cls) == -1)
 				cls.push('active');
-			
+
 			// disable the extra dates if the date is less than the start date or greater than the end date or the day of week value is not found
 			// OR
 			// numberOfMonths is greater than 1 and the old or new class has been added to the cls array
@@ -763,7 +765,7 @@
 					cls.push('selected');
 				}
 			}
-			
+
 			return cls;
 		},
 
@@ -781,11 +783,11 @@
 				origEndDate = this.o.endDate;
 
 			this.picker.find('tfoot th.today')
-						.text(todaytxt)
-						.toggle(this.o.todayBtn !== false);
+				.text(todaytxt)
+				.toggle(this.o.todayBtn !== false);
 			this.picker.find('tfoot th.clear')
-						.text(cleartxt)
-						.toggle(this.o.clearBtn !== false);
+				.text(cleartxt)
+				.toggle(this.o.clearBtn !== false);
 			this.updateNavArrows();
 
 			if (endMonth == month && endYear == year) {
@@ -797,18 +799,18 @@
 			for (i = 0; i < this.o.numberOfMonths; i++)
 			{
 				this.picker.find('.datepicker-days.month'+i+' thead th.datepicker-switch').text(dates[this.o.language].months[month]+' '+year);
-				
+
 				var prevMonth = UTCDate(year, month-1, 28),
-				day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
+					day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
 				prevMonth.setUTCDate(day);
 				prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.o.weekStart + 7)%7);
-				
+
 				var nextMonth = new Date(prevMonth);
 				nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
 				var nextMonth = nextMonth.valueOf();
 				var html = [];
 				var clsName;
-				
+
 				while (prevMonth.valueOf() < nextMonth){
 					if (prevMonth.getUTCDay() === this.o.weekStart){
 						html.push('<tr>');
@@ -816,13 +818,13 @@
 							// ISO 8601: First week contains first thursday.
 							// ISO also states week starts on Monday, but we can be more abstract here.
 							var
-								// Start of current week: based on weekstart/current date
+							// Start of current week: based on weekstart/current date
 								ws = new Date(+prevMonth + (this.o.weekStart - prevMonth.getUTCDay() - 7) % 7 * 864e5),
-								// Thursday of this week
+							// Thursday of this week
 								th = new Date(Number(ws) + (7 + 4 - ws.getUTCDay()) % 7 * 864e5),
-								// First Thursday of year, year from thursday
+							// First Thursday of year, year from thursday
 								yth = new Date(Number(yth = UTCDate(th.getUTCFullYear(), 0, 1)) + (7 + 4 - yth.getUTCDay())%7*864e5),
-								// Calendar week: ms between thursdays, div ms per day, div 7 days
+							// Calendar week: ms between thursdays, div ms per day, div 7 days
 								calWeek =  (th - yth) / 864e5 / 7 + 1;
 							html.push('<td class="cw">'+ calWeek +'</td>');
 
@@ -836,7 +838,7 @@
 					{
 						clsName.push('disabled');
 					}
-					
+
 					clsName.push('day');
 
 					if (this.o.beforeShowDay !== $.noop){
@@ -874,7 +876,7 @@
 					// update the current view date.
 					this.viewDate = this.moveMonth(this.viewDate, 1);
 
-					
+
 					// update the current month & year we're wanting to render
 					year = this.viewDate.getUTCFullYear();
 					month = this.viewDate.getUTCMonth();
@@ -887,14 +889,14 @@
 			if (this.o.numberOfMonths > 1)
 			{
 				// reset the view date to the current date
-				 this.viewDate = this.moveMonth(this.viewDate, (-1 * this.o.numberOfMonths));
+				this.viewDate = this.moveMonth(this.viewDate, (-1 * this.o.numberOfMonths));
 			}
 
 			var months = this.picker.find('.datepicker-months')
-						.find('th:eq(1)')
-							.text(year)
-							.end()
-						.find('span').removeClass('active');
+				.find('th:eq(1)')
+				.text(year)
+				.end()
+				.find('span').removeClass('active');
 
 			$.each(this.dates, function(i, d){
 				if (d.getUTCFullYear() === year)
@@ -914,10 +916,10 @@
 			html = '';
 			year = parseInt(year/10, 10) * 10;
 			var yearCont = this.picker.find('.datepicker-years')
-								.find('th:eq(1)')
-									.text(year + '-' + (year + 9))
-									.end()
-								.find('td');
+				.find('th:eq(1)')
+				.text(year + '-' + (year + 9))
+				.end()
+				.find('td');
 			year -= 1;
 			var years = $.map(this.dates, function(d){
 					return d.getUTCFullYear();
@@ -945,10 +947,11 @@
 
 			var d = new Date(this.viewDate),
 				year = d.getUTCFullYear(),
-				month = d.getUTCMonth();
+				month = d.getUTCMonth(),
+				$prevBtn, $nextBtn;
 
-				var tempEndDate = new Date(this.o.endDate);
-				var endMonth = tempEndDate.getUTCMonth(),
+			var tempEndDate = new Date(this.o.endDate);
+			var endMonth = tempEndDate.getUTCMonth(),
 				endYear =  tempEndDate.getUTCFullYear();
 
 			switch (this.viewMode){
@@ -963,8 +966,8 @@
 						switch (this.o.endDate.getUTCMonth())
 						{
 							case 0:
-									// this.o.numberofMonths - 1 because we've manually moved to december by one
-									monthEnd = 11 - (this.o.numberOfMonths - 1);
+								// this.o.numberofMonths - 1 because we've manually moved to december by one
+								monthEnd = 11 - (this.o.numberOfMonths - 1);
 								break;
 							case 1:
 								// this.o.numberofMonths - 2 because we've manually moved to december by two
@@ -977,38 +980,73 @@
 					}
 
 					for (var i = 0; i < this.o.numberOfMonths; i++) {
-
+						$prevBtn = this.picker.find('.month'+i+' .prev');
+						$nextBtn = this.picker.find('.month'+i+' .next');
 						if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear() && month <= this.o.startDate.getUTCMonth() || (this.o.numberOfMonths > 1 && i != 0)){
-							this.picker.find('.month'+i+' .prev').css({visibility: 'hidden'});
+							if (this.o.allowHeaderStyling === true) {
+								$prevBtn.html("&nbsp;").addClass('empty');
+							} else {
+								$prevBtn.css({visibility: 'hidden'});
+							}
 						}
 						else {
-							this.picker.find('.month'+i+' .prev').css({visibility: 'visible'});
+							if (this.o.allowHeaderStyling === true) {
+								$prevBtn.html(prevNav).removeClass('empty');
+							} else {
+								$prevBtn.css({visibility: 'visible'});
+							}
 						}
 
 						// || (this.o.numberOfMonths > 1 && (i != endMonthId) || (this.o.endDate !== Infinity && (viewDateEndMonth == monthEnd)))
 						// the additional code will shorten the month by the number of months in numberOfMonths - 1 since we'll always have at least 1 calendar showing
 						if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear() && month >= this.o.endDate.getUTCMonth()
-						|| (endMonth == month && endYear == year) || (i  != this.o.numberOfMonths - 1)){
-							this.picker.find('.month'+i+' .next').css({visibility: 'hidden'});
+							|| (endMonth == month && endYear == year) || (i  != this.o.numberOfMonths - 1)){
+							if (this.o.allowHeaderStyling === true) {
+								$nextBtn.html("&nbsp;").addClass('empty');
+							} else {
+								$nextBtn.css({visibility: 'hidden'});
+							}
 						}
 						else {
-							this.picker.find('.month'+i+' .next').css({visibility: 'visible'});
+							if (this.o.allowHeaderStyling === true) {
+								$nextBtn.html(nextNav).removeClass('empty');
+							} else {
+								$nextBtn.css({visibility: 'visible'});
+							}
 						}
 					}
 					break;
 				case 1:
 				case 2:
+					$nextBtn = this.picker.find('.next');
+					$prevBtn = this.picker.find('.prev');
 					if (this.o.startDate !== -Infinity && year <= this.o.startDate.getUTCFullYear()){
-						this.picker.find('.prev').css({visibility: 'hidden'});
+						if (this.o.allowHeaderStyling === true) {
+							$prevBtn.html("&nbsp;").addClass('empty');
+						} else {
+							$prevBtn.css({visibility: 'hidden'});
+						}
 					}
 					else {
-						this.picker.find('.prev').css({visibility: 'visible'});
+						if (this.o.allowHeaderStyling === true) {
+							$prevBtn.html(prevNav).removeClass('empty');
+						} else {
+							$prevBtn.css({visibility: 'visible'});
+						}
 					}
 					if (this.o.endDate !== Infinity && year >= this.o.endDate.getUTCFullYear()){
-						this.picker.find('.next').css({visibility: 'hidden'});
+						if (this.o.allowHeaderStyling === true) {
+							$nextBtn.html("&nbsp;").addClass('empty');
+						} else {
+							$nextBtn.css({visibility: 'hidden'});
+						}
 					}
 					else {
-						this.picker.find('.next').css({visibility: 'visible'});
+						if (this.o.allowHeaderStyling === true) {
+							$nextBtn.html(nextNav).removeClass('empty');
+						} else {
+							$nextBtn.css({visibility: 'visible'});
+						}
 					}
 					break;
 			}
@@ -1116,8 +1154,8 @@
 							// grab the month index so we know how far ahead we need to set the viewDate object
 							var matches = (" " + target.closest('.datepicker-days').attr('class') + " ").match(/\smonth(\d+)\s/);
 							if (matches) {
-							    var monthIndex = parseInt(matches[1], 10);
-							    this.viewDate = this.moveMonth(this.viewDate, monthIndex);
+								var monthIndex = parseInt(matches[1], 10);
+								this.viewDate = this.moveMonth(this.viewDate, monthIndex);
 							}
 
 							year = this.viewDate.getUTCFullYear();
@@ -1178,12 +1216,12 @@
 			// this seems to be the only solid place where I can update the view correctly when using multiple calendars
 			if (this.o.numberOfMonths > 1) {
 				var selectedDate = this.viewDate,
-					// http://stackoverflow.com/questions/4312825/javascript-month-difference
-					// getMonth minus getMonth gives you the month difference between the dates two months.
-					// We then multiply 12 by the number of years difference and add this to the result giving us the full month span.
-				monthDiff = this.o.endDate.getMonth() - selectedDate.getMonth() + (12 * (this.o.endDate.getFullYear() - selectedDate.getFullYear())),
-				displayOffset = monthDiff == 0 && this.o.numberOfMonths > 2 ? (this.o.numberOfMonths - 1) : 1,
-				displayOffset = monthDiff == 12 ? 0 : displayOffset; // if it's the first month within the 12 month range, just display as per normal
+				// http://stackoverflow.com/questions/4312825/javascript-month-difference
+				// getMonth minus getMonth gives you the month difference between the dates two months.
+				// We then multiply 12 by the number of years difference and add this to the result giving us the full month span.
+					monthDiff = this.o.endDate.getMonth() - selectedDate.getMonth() + (12 * (this.o.endDate.getFullYear() - selectedDate.getFullYear())),
+					displayOffset = monthDiff == 0 && this.o.numberOfMonths > 2 ? (this.o.numberOfMonths - 1) : 1,
+					displayOffset = monthDiff == 12 ? 0 : displayOffset; // if it's the first month within the 12 month range, just display as per normal
 
 				// reset the view date so if a date is selected in the last month, the calendar will correctly display the selectable months
 				this.viewDate.setMonth(this.viewDate.getMonth()- displayOffset);
@@ -1226,13 +1264,13 @@
 					// If going back one month, make sure month is not current month
 					// (eg, Mar 31 -> Feb 31 == Feb 28, not Mar 02)
 					? function(){
-						return new_date.getUTCMonth() === month;
-					}
+					return new_date.getUTCMonth() === month;
+				}
 					// If going forward one month, make sure month is as expected
 					// (eg, Jan 31 -> Feb 31 == Feb 28, not Mar 02)
 					: function(){
-						return new_date.getUTCMonth() !== new_month;
-					};
+					return new_date.getUTCMonth() !== new_month;
+				};
 				new_month = month + dir;
 				new_date.setUTCMonth(new_month);
 				// Dec -> Jan (12) or Jan -> Dec (-1) -- limit expected date to 0-11
@@ -1396,7 +1434,7 @@
 				.find('>div')
 				.hide()
 				.filter('.datepicker-'+DPGlobal.modes[this.viewMode].clsName)
-					.css('display', 'inline-block');
+				.css('display', 'inline-block');
 			this.updateNavArrows();
 		}
 	};
@@ -1520,10 +1558,10 @@
 				options = typeof option === 'object' && option;
 			if (!data){
 				var elopts = opts_from_el(this, 'date'),
-					// Preliminary otions
+				// Preliminary otions
 					xopts = $.extend({}, defaults, elopts, options),
 					locopts = opts_from_locale(xopts.language),
-					// Options priority: js args, data-attrs, locales, defaults
+				// Options priority: js args, data-attrs, locales, defaults
 					opts = $.extend({}, defaults, locopts, elopts, options);
 				if ($this.is('.input-daterange') || opts.inputs){
 					var ropts = {
@@ -1562,6 +1600,7 @@
 		multidate: false,
 		multidateSeparator: ',',
 		numberOfMonths: 1,
+		allowHeaderStyling : true,
 		orientation: "auto",
 		rtl: false,
 		startDate: -Infinity,
@@ -1604,7 +1643,7 @@
 				clsName: 'years',
 				navFnc: 'FullYear',
 				navStep: 10
-		}],
+			}],
 		isLeapYear: function(year){
 			return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0));
 		},
@@ -1757,51 +1796,51 @@
 			return date.join('');
 		},
 		headTemplate: '<thead>'+
-							'<tr>'+
-								'<th class="prev">&laquo;</th>'+
-								'<th colspan="5" class="datepicker-switch"></th>'+
-								'<th class="next">&raquo;</th>'+
-							'</tr>'+
-						'</thead>',
+		'<tr>'+
+		'<th class="prev">"+prevNav+"</th>'+
+		'<th colspan="5" class="datepicker-switch"></th>'+
+		'<th class="next">"+nextNav+"</th>'+
+		'</tr>'+
+		'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
 		footTemplate: '<tfoot>'+
-							'<tr>'+
-								'<th colspan="7" class="today"></th>'+
-							'</tr>'+
-							'<tr>'+
-								'<th colspan="7" class="clear"></th>'+
-							'</tr>'+
-						'</tfoot>'
+		'<tr>'+
+		'<th colspan="7" class="today"></th>'+
+		'</tr>'+
+		'<tr>'+
+		'<th colspan="7" class="clear"></th>'+
+		'</tr>'+
+		'</tfoot>'
 	};
 	DPGlobal.template = '<div class="datepicker">'+
-							'<div class="datepicker-days month0">'+
-								'<table class=" table-condensed">'+
-									DPGlobal.headTemplate+
-									'<tbody></tbody>'+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-							'<div class="datepicker-months">'+
-								'<table class="table-condensed">'+
-									DPGlobal.headTemplate+
-									DPGlobal.contTemplate+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-							'<div class="datepicker-years">'+
-								'<table class="table-condensed">'+
-									DPGlobal.headTemplate+
-									DPGlobal.contTemplate+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-						'</div>';
+	'<div class="datepicker-days month0">'+
+	'<table class=" table-condensed">'+
+	DPGlobal.headTemplate+
+	'<tbody></tbody>'+
+	DPGlobal.footTemplate+
+	'</table>'+
+	'</div>'+
+	'<div class="datepicker-months">'+
+	'<table class="table-condensed">'+
+	DPGlobal.headTemplate+
+	DPGlobal.contTemplate+
+	DPGlobal.footTemplate+
+	'</table>'+
+	'</div>'+
+	'<div class="datepicker-years">'+
+	'<table class="table-condensed">'+
+	DPGlobal.headTemplate+
+	DPGlobal.contTemplate+
+	DPGlobal.footTemplate+
+	'</table>'+
+	'</div>'+
+	'</div>';
 
 	$.fn.datepicker.DPGlobal = DPGlobal;
 
 
 	/* DATEPICKER NO CONFLICT
-	* =================== */
+	 * =================== */
 
 	$.fn.datepicker.noConflict = function(){
 		$.fn.datepicker = old;
@@ -1810,7 +1849,7 @@
 
 
 	/* DATEPICKER DATA-API
-	* ================== */
+	 * ================== */
 
 	$(document).on(
 		'focus.datepicker.data-api click.datepicker.data-api',

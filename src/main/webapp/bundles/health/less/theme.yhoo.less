@@ -1,0 +1,18 @@
+//
+// yhoo.theme.health.less file:
+//
+
+//More info results page fixes health/moreInfo.less
+.btn-more-info {
+	.btn-styles(
+		@theme-tertiary,
+		contrast(@theme-tertiary),
+		@theme-primary,
+		contrast(@theme-primary),
+		@theme-primary
+	);
+}
+
+.btn-close-more-info {
+	.btn-styles(@theme-primary, contrast(@theme-primary), @theme-tertiary);
+}
