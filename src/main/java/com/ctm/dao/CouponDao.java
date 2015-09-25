@@ -19,9 +19,11 @@ import com.ctm.model.coupon.CouponChannel;
 import com.ctm.model.coupon.CouponRule;
 import com.ctm.model.request.coupon.CouponRequest;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class CouponDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(CouponDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CouponDao.class);
 
 	public Coupon getCouponForConfirmation(String transactionId) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
@@ -54,7 +56,7 @@ public class CouponDao {
 
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -95,7 +97,7 @@ public class CouponDao {
 
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -138,7 +140,7 @@ public class CouponDao {
 
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -181,7 +183,7 @@ public class CouponDao {
 
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -214,7 +216,7 @@ public class CouponDao {
 			return mapFieldsFromResultsToCoupon(stmt.executeQuery());
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -254,8 +256,8 @@ public class CouponDao {
 				coupon.setCouponRules(couponRules);
 			}
 			catch (SQLException | NamingException e) {
-				logger.error("unable to get rules for couponId = " + coupon.getCouponId(), e);
-				throw new DaoException(e.getMessage(), e);
+				LOGGER.error("unable to get coupon rules {}", kv("couponId", coupon.getCouponId()), e);
+				throw new DaoException(e);
 			}
 			finally {
 				dbSource.closeConnection();

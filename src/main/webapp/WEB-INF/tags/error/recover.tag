@@ -2,12 +2,14 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('tag.error.recover')}" />
+
 <c:set var="styleCodeId">${pageSettings.getBrandId()}</c:set>
 
 <%@ attribute name="quoteType" 	required="true" rtexprvalue="true" description="The vertical (Required: will attempt to load the settings file)" %>
 <%@ attribute name="origin"		required="true" rtexprvalue="true" description="Page/Tag where the recovery has been called" %>
 
-<go:log source="error:recover">core:recover START... quoteType:${quoteType} origin:${origin}</go:log>
+${logger.info('core:recover START. {},{}', log:kv('quoteType',quoteType ), log:kv('origin',origin ))}
 
 <c:set var="serverIp"><%
 	String ip = request.getLocalAddr();
@@ -41,3 +43,6 @@
 		<sql:param value="${code}" />
 	</sql:update>
 </c:catch>
+<c:if test="${error}">
+	${logger.warn('Failed to insert into error log. {}', log:kv('message', message), error)}
+</c:if>

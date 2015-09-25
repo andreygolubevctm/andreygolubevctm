@@ -27,6 +27,14 @@ public class LoggingArguments {
         return wrap(StructuredArguments.kv(key, value));
     }
 
+    public static LoggingArgument value(final String key, final Object value) {
+        return wrap(StructuredArguments.value(key, value));
+    }
+
+    public static LoggingArgument v(final String key, final Object value) {
+        return wrap(StructuredArguments.v(key, value));
+    }
+
     public static LoggingArgument entries(final Map<?, ?> map) {
         return wrap(StructuredArguments.entries(map));
     }
@@ -57,6 +65,10 @@ public class LoggingArguments {
 
     public static LoggingArgument r(final String fieldName, final String rawJsonValue) {
         return wrap(StructuredArguments.r(fieldName, rawJsonValue));
+    }
+
+    public static String toString(final Object arg) {
+        return StructuredArguments.toString(arg);
     }
 
 }

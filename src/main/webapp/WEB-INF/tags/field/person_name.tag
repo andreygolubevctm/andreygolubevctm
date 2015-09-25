@@ -9,18 +9,13 @@
 <%@ attribute name="className"   required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		 required="true"  rtexprvalue="true"	 description="The subject of the field (e.g. 'regular driver')"%>
 <%@ attribute name="size" 		 required="false" rtexprvalue="true"	 description="the size attribute of this input"%>
-<%@ attribute name="placeholder" required="false" rtexprvalue="true"  description="HTML5 placeholder" %>
-<%@ attribute name="maxlength" required="false" rtexprvalue="true"
-			  description="The maximum length for the input field" %>
+<%@ attribute name="placeholder" required="false" rtexprvalue="true"  	 description="HTML5 placeholder" %>
+<%@ attribute name="maxlength" required="false" rtexprvalue="true"    	 description="The maximum length for the input field" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
-
-<c:if test="${required}">
-	<c:set var="requiredAttribute" value=' required="required"' />
-</c:if>
 
 <c:set var="sizeAttribute" value=' size="18"' />
 <c:if test="${not empty size}">
@@ -36,10 +31,9 @@
 </c:if>
 
 <%-- HTML --%>
+<c:set var="validationAttributes" value=" data-rule-personName='true'" />
+<c:if test="${required}">
+	<c:set var="validationAttributes">${validationAttributes} required data-msg-required='Please enter ${fn:replace(title, '\'', "&#39;")}' </c:set>
+</c:if>
 <input type="text" name="${name}" id="${name}" class="form-control person_name sessioncamexclude ${className}"
-	   value="${value}" ${sizeAttribute}${requiredAttribute}${placeHolderAttribute} ${maxlengthAttribute}
-					data-msg-required="Please enter ${title}">
-
-<%-- VALIDATION --%>
-<go:validate selector="${name}" rule="personName" parm="true" />
-
+	   value="${value}" ${validationAttributes} ${sizeAttribute}${placeHolderAttribute}${maxlengthAttribute}>

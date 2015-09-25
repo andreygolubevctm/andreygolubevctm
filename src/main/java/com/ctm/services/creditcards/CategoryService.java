@@ -14,7 +14,7 @@ import com.ctm.services.SettingsService;
 
 public class CategoryService {
 
-	private static final Logger logger = LoggerFactory.getLogger(CategoryService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryService.class);
 
 	public static ArrayList<Category> getCategories(HttpServletRequest request) {
 		CategoryDao categoryDao = new CategoryDao();
@@ -23,7 +23,7 @@ public class CategoryService {
 			return categoryDao.getCategories(pageSettings.getVertical().getId(), pageSettings.getBrandId());
 		}
 		catch (Exception e) {
-			logger.error("",e);
+			LOGGER.error("Failed to retrieve categories", e);
 		}
 
 		return null;

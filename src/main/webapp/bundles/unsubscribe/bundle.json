@@ -1,0 +1,7 @@
+{
+    "brandCodes": "all",
+    "dependencies": [
+        "shared/results",
+        "core"
+    ]
+}

@@ -3,6 +3,7 @@
 
 <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
 <c:catch var="error">
+    <c:set var="logger" value="${log:getLogger('jsp.err.error404')}" />
     <settings:setVertical verticalCode="GENERIC"/>
     <c:set var="brandCode" value="${applicationService.getBrandCodeFromRequest(pageContext.getRequest())}"/>
     <c:set var="pageTitle" value="404"/>
@@ -19,14 +20,13 @@
     <c:otherwise>
         <%--IMPORTANT keep this catch as we don't want to disclose a stacktrace to the user --%>
         <c:catch var="error">
-
-            <go:log source="404" level="INFO">Request URI: ${requestScope["javax.servlet.forward.request_uri"]}, servletPath: ${pageContext.request.servletPath}</go:log>
+            ${logger.info('Page not found. {},{}', log:kv('request_uri', requestScope["javax.servlet.forward.request_uri"]), log:kv('servletPath',pageContext.request.servletPath ))}
 
             <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 
                 <jsp:attribute name="head">
-					<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}"/>
-                    <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/components/unsubscribe.${pageSettings.getBrandCode()}.css?${revision}" media="all">
+					<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/"/>
+                    <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/error.css?${revision}" media="all">
                 </jsp:attribute>
 
                 <jsp:attribute name="head_meta"></jsp:attribute>

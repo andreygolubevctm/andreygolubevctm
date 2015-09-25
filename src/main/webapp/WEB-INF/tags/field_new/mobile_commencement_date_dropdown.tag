@@ -19,7 +19,7 @@
 	<span class="input-group-addon">
 		<i class="icon-sort"></i>
 	</span>
-	<select name="${name}_mobile" id="${name}_mobile" class="form-control ${mobileClassName}">
+	<select name="${name}_mobile" id="${name}_mobile" class="form-control ${mobileClassName}" data-rule-commencementDateMobileDropdownCheck="${required}" data-msg-commencementDateMobileDropdownCheck="""Please select a commencement date.">
 		<%-- Write the initial "please choose" option --%>
 		<option value="">Please choose...</option>
 
@@ -40,5 +40,3 @@
 		<% } %>
 	</select>
 </div>
-
-<go:validate selector="${name}_mobile" rule="commencementDateMobileDropdownCheck" parm="${required}" message="Please select a commencement date."/>

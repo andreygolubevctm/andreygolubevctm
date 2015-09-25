@@ -17,6 +17,9 @@
 		<c:if test="${empty error && locationToken != ''}">
 			<go:setData dataVar="data" xpath="fuel/postcode" value="${locationToken}" />
 		</c:if>
+			<c:if test="${error}">
+				${logger.warn('Exception formatting locationToken to number. {}', log:kv('locationToken',locationToken), error)}
+			</c:if>
 </c:forTokens>
 
 <%-- RECOVER: if things have gone pear shaped --%>
@@ -38,6 +41,7 @@
 					debugVar="debugXml"
 					verticalCode="FUEL"
 					configDbKey="quoteService"
+				   	sendCorrelationId="true"
 					styleCodeId="${pageSettings.getBrandId()}" />
 
 ${go:XMLtoJSON(resultXml)}

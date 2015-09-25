@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.load_quote')}" />
+
 <session:new verticalCode="${fn:toUpperCase(param.vertical)}" forceNew="true" authenticated="true" />
 
 <%--
@@ -28,7 +30,7 @@
 
 <c:set var="styleCodeId" value="${pageSettings.getBrandId()}" />
 
-<go:log source="load_quote_jsp" level="INFO" >LOAD QUOTE: ${param}</go:log>
+${logger.debug('Begin LOAD QUOTE.',log:kv('param', param))}
 <c:set var="id_for_access_check">
 	<c:choose>
 		<c:when test="${not empty param.transaction_id}">${param.transaction_id}</c:when>
@@ -41,17 +43,17 @@
 
 <%-- Store flag as to whether Simples Operator or Other --%>
 <c:set var="isOperator"><c:if test="${not empty authenticatedData['login/user/uid']}">${authenticatedData['login/user/uid']}</c:if></c:set>
-<go:log  level="INFO" >isOperator: ${isOperator}</go:log>
+${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isOperator ), log:kv('login/user/uid', authenticatedData['login/user/uid']))}
 
 <c:choose>
 	<c:when test="${not empty param.simples and empty isOperator}">
-		<go:log  level="WARN" >Operator not logged in - force to login screen</go:log>
+		${logger.warn('Operator not logged in - force to login screen. {},{}' , log:kv('param.simples',param.simples ) , log:kv('isOperator',isOperator ))}
 		<c:set var="result">
 			<result><error>login</error></result>
 		</c:set>
 	</c:when>
 	<c:when test="${empty isOperator and (empty authenticatedData.userData || empty authenticatedData.userData.authentication || !authenticatedData.userData.authentication.validCredentials)}">
-		<go:log  level="WARN" >User not logged in - force to login screen</go:log>
+		${logger.warn('User not logged in - force to login screen {},{}', log:kv('isOperator',isOperator ), log:kv('authenticatedData.userData',authenticatedData.userData ))}
 		<c:set var="result">
 			<result><error>login</error></result>
 		</c:set>
@@ -61,7 +63,7 @@
 		<c:set var="proceedinator"><core:access_check quoteType="${quoteType}" tranid="${id_for_access_check}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
-				<go:log  level="INFO" source="load_quote_jsp" >PROCEEDINATOR PASSED</go:log>
+				${logger.debug('PROCEEDINATOR PASSED. {}', log:kv('proceedinator', proceedinator))}
 
 				<%-- Remove any old quote data --%>
 				<go:setData dataVar="data" value="*DELETE" xpath="${param.vertical}" />
@@ -69,7 +71,6 @@
 				<%-- Let's assign the param.id (transactionId) to a var we can manage (at least 'I' can manage) --%>
 				<c:set var="requestedTransaction" value="${id_for_access_check}" />
 
-				<%-- Call the iSeries program to fetch the quote details --%>
 				<c:set var="parm">
 					<c:choose>
 						<%-- if Simples Operator set email to their UID otherwise use users email --%>
@@ -77,8 +78,8 @@
 						<c:otherwise><data><email>${authenticatedData.userData.authentication.emailAddress}</email></data></c:otherwise>
 					</c:choose>
 				</c:set>
-				<go:log level="INFO" source="load_quote">requested TranID: ${requestedTransaction}</go:log>
-				<go:log level="DEBUG" source="load_quote">params: ${param}</go:log>
+				${logger.info('About to load quote. {}, {}', log:kv('requestedTransaction',requestedTransaction), log:kv('user',parm))}
+				${logger.debug('About to load quote. {}', log:kv('param',param))}
 
 				<sql:setDataSource dataSource="jdbc/ctm"/>
 
@@ -90,7 +91,7 @@
 
 				<c:choose>
 					<c:when test="${param.fromDisc}">
-						<go:log  level="INFO" >Creating new transaction id</go:log>
+						${logger.debug('Creating new transaction id')}
 						<go:setData dataVar="data" xpath="current/transactionId" value="*DELETE" />
 						<c:set var="getTransactionID">
 							<core:get_transaction_id  quoteType="${param.vertical}" />
@@ -105,14 +106,13 @@
 						</c:set>
 					</c:otherwise>
 				</c:choose>
-				<go:log  level="INFO" >TRAN ID NOW (data.current.transactionId): ${data.current.transactionId} IP: ${id_handler}</go:log>
+				${logger.info('Transaction Id has been updated. {},{},{}', log:kv('requestedTransaction',requestedTransaction ), log:kv('currentTransactionId',data.current.transactionId ), log:kv('ip',id_handler ))}
 				<%-- Now we get back to basics and load the data for the requested transaction --%>
 
 				<c:set var="xpath" value="${quoteType}"/>
 				<c:if test="${quoteType == 'car'}">
 					<c:set var="xpath" value="quote"/>
 				</c:if>
-				<go:log level="INFO" >About to delete the vertical information for: ${quoteType}</go:log>
 				<go:setData dataVar="data" value="*DELETE" xpath="${xpath}" />
 
 						<c:catch var="error">
@@ -278,7 +278,7 @@
 				</c:set>
 			</c:when>
 			<c:otherwise>
-				<go:log  level="WARN" >Proceedinator:${proceedinator}</go:log>
+				${logger.warn('Proceedinator did not pass. {}',log:kv('proceedinator', proceedinator) )}
 				<c:set var="reservedName" value="another user" />
 				<c:set var="result">
 					<result>
@@ -301,7 +301,7 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
-<go:log level="DEBUG" source="load_quote">### ${result}</go:log>
+${logger.debug('Quote has been loaded. {}', log:kv('result', result))}
 <%-- Log any errors --%>
 <c:if test="${fn:contains(result, '<error>')}">
 	<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
@@ -316,9 +316,7 @@
 		<c:set var="result"><result><error>An error occurred.</error></result></c:set>
 	</c:if>
 </c:if>
-<%--
-<go:log source="load_quote_jsp" >LOAD RESULT: ${result}</go:log>
---%>
+
 <%-- Return the results as json --%>
 <c:choose>
 	<c:when test="${param.dataFormat == 'xml'}">

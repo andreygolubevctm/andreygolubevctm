@@ -1,23 +1,17 @@
 package com.ctm.dao.car;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
-import javax.naming.NamingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.car.CarTransmission;
 import com.ctm.model.car.CarType;
 
+import javax.naming.NamingException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 public class CarTypeDao {
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(CarTypeDao.class.getName());
 
 	public CarTypeDao() {
 	}
@@ -112,8 +106,6 @@ public class CarTypeDao {
 			}
 			stmt.setString(counter++, fuelCode);
 
-			//logger.debug(stmt.toString());
-
 			ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
@@ -127,7 +119,7 @@ public class CarTypeDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();

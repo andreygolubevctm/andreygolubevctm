@@ -33,7 +33,7 @@ public class HandoverConfirmationDao {
             statement.setBoolean(13, handoverConfirmation.test);
             statement.execute();
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             simpleDatabaseConnection.closeConnection();
         }
@@ -56,7 +56,7 @@ public class HandoverConfirmationDao {
             resultSet.first();
             return resultSet.getInt(1) == 1;
         } catch (SQLException | NamingException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         } finally {
             simpleDatabaseConnection.closeConnection();
         }

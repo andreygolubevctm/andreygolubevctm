@@ -22,7 +22,7 @@ public class SchemaValidation {
 
 	private final SchemaFactory factory;
 	private final XMLInputFactory xmlInputFactory;
-	Logger logger = LoggerFactory.getLogger(SchemaValidation.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SchemaValidation.class);
 
 	private boolean valid;
 
@@ -99,14 +99,14 @@ public class SchemaValidation {
 						this.validationErrors = errorHandler.validationErrors;
 						this.valid = errorHandler.valid;
 					} catch (SAXParseException ex) {
-						logger.error("[SchemaValidationError]", ex);
+						LOGGER.error("Parsing error", ex);
 						this.valid = false;
 					}
 				if(validationErrorsVar != null) {
 					pageContext.setAttribute(validationErrorsVar, errorHandler.validationErrors, PageContext.PAGE_SCOPE);
 				}
 			} catch (Exception e) {
-				logger.error("[SchemaValidationError]", e);
+				LOGGER.error("Schema validation error.", e);
 				throw new JspException(e);
 			}
 		return valid;

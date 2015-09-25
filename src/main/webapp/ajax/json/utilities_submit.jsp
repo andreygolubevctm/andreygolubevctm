@@ -2,6 +2,8 @@
          pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.utilities_submit')}" />
+
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES"/>
 
 <%-- VARIABLES --%>
@@ -48,8 +50,7 @@
         <c:if test="${empty rootId}">
             <c:set var="rootId" value="0"/>
         </c:if>
-
-        <go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${tranId}</go:log>
+        ${logger.debug('About to call submit from jsp.')}
 
         <%-- SUBMIT TO PARTNER --%>
         <jsp:useBean id="utilitiesApplicationService" class="com.ctm.services.utilities.UtilitiesApplicationService" scope="request"/>
@@ -120,7 +121,7 @@
                                     </confirmation>
                                 </c:set>
 
-                                <go:log level="DEBUG" source="utilities_submit">WRITE CONFIRM: ${xmlData}</go:log>
+                                ${logger.trace('WRITE CONFIRM. {}', log:kv('xmlData', xmlData))}
                                 <agg:write_confirmation transaction_id="${tranId}" confirmation_key="${confirmationkey}" vertical="${vertical}"
                                                         xml_data="${xmlData}" />
                                 <agg:write_quote productType="UTILITIES" rootPath="utilities"/>

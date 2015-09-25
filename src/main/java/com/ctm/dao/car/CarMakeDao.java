@@ -1,23 +1,16 @@
 package com.ctm.dao.car;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.car.CarMake;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.naming.NamingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.car.CarMake;
-
 public class CarMakeDao {
-
-	@SuppressWarnings("unused")
-	private static final Logger logger = LoggerFactory.getLogger(CarMakeDao.class.getName());
 
 	public CarMakeDao() {
 	}
@@ -51,7 +44,7 @@ public class CarMakeDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();

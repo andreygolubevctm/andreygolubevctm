@@ -1,7 +1,7 @@
-<%@tag import="java.util.ArrayList"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Write client details to the client database"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<c:set var="logger" value="${log:getLogger('tag.agg.write_rank')}" />
 
 <core_new:no_cache_header/>
 
@@ -151,7 +151,7 @@
 				If this fails it is not a show stopper so log and keep calm and carry on
 				--%>
 				<c:if test="${not empty error}">
-					<go:log level="ERROR" error="${error}">${transactionId}: failed to send best price for ${data.travel.email}</go:log>
+					${logger.error('Failed to send best price for {}', log:kv('data.travel.email',data.travel.email ), error)}
 					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
 				</c:if>
 				</c:if>
@@ -171,9 +171,8 @@
 				If this fails it is not a show stopper so log and keep calm and carry on
 				--%>
 				<c:if test="${not empty error}">
-					<go:log level="ERROR" error="${error}">${transactionId}: failed to send best price for ${data.health.contactDetails.email}</go:log>
 					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
-			</c:if>
+				</c:if>
 			</c:if>
 		</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'home'}">

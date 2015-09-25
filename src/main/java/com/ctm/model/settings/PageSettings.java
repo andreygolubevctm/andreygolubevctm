@@ -117,4 +117,12 @@ public class PageSettings {
 		this.brandCode = brand.getCode();
 	}
 
+	@Override
+	public String toString() {
+		return "PageSettings{" +
+				"brandCode='" + brandCode + '\'' +
+				", brandId=" + brandId +
+				", vertical=" + vertical +
+				'}';
+	}
 }

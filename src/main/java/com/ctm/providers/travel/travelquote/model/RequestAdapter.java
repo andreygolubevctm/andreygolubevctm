@@ -5,16 +5,18 @@ import com.ctm.model.travel.form.TravelRequest;
 import com.ctm.providers.travel.travelquote.model.request.PolicyType;
 import com.ctm.providers.travel.travelquote.model.request.SingleTripDetails;
 import com.ctm.providers.travel.travelquote.model.request.TravelQuoteRequest;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 
 public class RequestAdapter {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapter.class);
 
     /**
      * web_ctm to trave-quote adapter
@@ -46,7 +48,7 @@ public class RequestAdapter {
                 details.setToDate(dateFormatter.parse(quote.getDates().getToDate()));
                 details.setFromDate(dateFormatter.parse(quote.getDates().getFromDate()));
             } catch (ParseException e) {
-                e.printStackTrace();
+                LOGGER.error("Failed to adapt front-end travel request to travel-quote request {}", kv("travelRequest", travelRequest));
             }
 
             quoteRequest.setSingleTripDetails(details);
@@ -56,11 +58,11 @@ public class RequestAdapter {
         }
 
         if(quote.getFilter().getSingleProvider() != null && quote.getFilter().getSingleProvider().equals("") == false){
-            quoteRequest.setProviderFilter(new ArrayList<String>());
+            quoteRequest.setProviderFilter(new ArrayList<>());
             quoteRequest.getProviderFilter().add(quote.getFilter().getSingleProvider());
         }
 
-        if(quote.getRenderingMode().equalsIgnoreCase("XS")){
+        if(quote.getRenderingMode() != null && quote.getRenderingMode().equalsIgnoreCase("XS")){
             quoteRequest.setMobileUrls(true);
         }
 

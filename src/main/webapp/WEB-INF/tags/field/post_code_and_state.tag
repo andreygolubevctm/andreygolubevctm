@@ -56,6 +56,8 @@ var ${name}__PostCodeStateHandler = {
 	current_state : '',
 	state_html : '${stateHtml}'
 };
+
+
 </go:script>
 
 <go:script marker="onready">
@@ -106,17 +108,17 @@ var ${name}__PostCodeStateHandler = {
 									$("#${parentName}_state").val($(this).val()).trigger('change');
 								});
 								passed = true;
-								break;
+							break;
 							case 1:
 								$("#${parentName}_state").val( state );
 								$("#${parentName}_stateRefine").parents(".fieldrow").hide();
 								passed = true;
-								break;
+							break;
 							default:
 								$("#${parentName}_state").val("");
 								$("#${parentName}_stateRefine").parents(".fieldrow").hide();
 								passed = false;
-								break;
+							break;
 						}
 						$("#${parentName}_state").trigger('change');
 					},

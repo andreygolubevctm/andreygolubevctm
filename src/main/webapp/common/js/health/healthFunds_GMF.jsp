@@ -39,10 +39,6 @@ var healthFunds_GMF = {
 		<%-- schoolgroups and defacto --%>
 		healthDependents.config = { 'school': false, 'defacto': true, 'defactoMin': 21, 'defactoMax': 24 };
 
-		<%-- fund ID's become optional --%>
-		$('#clientMemberID input').rules("remove", "required");
-		$('#partnerMemberID input').rules("remove", "required");
-
 		<%-- medicare message - once a medicare number has been added - show the message (or if prefilled show the message) --%>
 		healthFunds_GMF.$_medicareMessage = $('#health_medicareDetails_message');
 		healthFunds_GMF.$_medicareMessage.text('GMF will send you an email shortly so that your rebate can be applied to the premium');
@@ -68,8 +64,8 @@ var healthFunds_GMF = {
 		meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
 		<%-- credit card options --%>
-		creditCardDetails.config = { 'visa':true, 'mc':true, 'amex': false, 'diners': false };
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex': false, 'diners': false });
+		meerkat.modules.healthCreditCard.render();
 
 		$('.health-credit_card_details .fieldrow').hide();
 		meerkat.modules.paymentGateway.setup({
@@ -101,8 +97,8 @@ var healthFunds_GMF = {
 		delete healthFunds_GMF.$_medicareMessage;
 
 		<%-- credit card options --%>
-		creditCardDetails.resetConfig();
-		creditCardDetails.render();
+		meerkat.modules.healthCreditCard.resetConfig();
+		meerkat.modules.healthCreditCard.render();
 
 		meerkat.modules.paymentGateway.reset();
 	}

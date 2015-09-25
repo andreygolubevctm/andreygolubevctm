@@ -2,7 +2,7 @@ package com.ctm.router;
 
 import com.ctm.dao.simples.CappingLimitsDao;
 import com.ctm.router.core.CrudRouter;
-import com.ctm.services.simples.FundWarningService;
+import com.ctm.services.simples.ProviderContentService;
 import com.ctm.services.simples.admin.CappingLimitsService;
 import com.ctm.services.simples.admin.CrudService;
 import org.slf4j.Logger;
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.utils.ResponseUtils.writeError;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
@@ -20,13 +21,13 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
  * This class will only be used by CMS stuff in simples for update/create/delete and fetch records from database
  */
 public class AdminRouter {
-	private static final Logger logger = LoggerFactory.getLogger(AdminRouter.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(AdminRouter.class);
     private final HttpServletResponse response;
     private final CrudRouter crudRouter;
     CrudService crudService = null;
     //mention your Interface name here that has been used in CMS URL
     private static final String CAPPING_LIMIT = "cappingLimits";
-    private static final String FUND_WARNING = "fundwarning";
+    private static final String PROVIDER_CONTENT = "providerContent";
 
     public AdminRouter(HttpServletRequest request , HttpServletResponse response) {
         this.response= response;
@@ -46,16 +47,16 @@ public class AdminRouter {
                         crudService = new CappingLimitsService(new CappingLimitsDao());
                         crudRouter.routePostRequest(writer, getAction(uri), crudService);
                         break;
-                case FUND_WARNING :
-                        crudService = new FundWarningService();
+                case PROVIDER_CONTENT:
+                        crudService = new ProviderContentService();
                         crudRouter.routePostRequest(writer, getAction(uri), crudService);
                         break;
                 default:
                         response.sendError(SC_NOT_FOUND);
             }
         } catch (Exception e) {
-            logger.error("",e);
-            writeError(writer,response, e);
+            LOGGER.error("Admin post request failed {}", kv("uri", uri), e);
+            writeError(writer, response, e);
         }
     }
 
@@ -72,15 +73,15 @@ public class AdminRouter {
                     crudService = new CappingLimitsService(new CappingLimitsDao());
                     crudRouter.routGetRequest(writer, getAction(uri), crudService);
                     break;
-                case FUND_WARNING :
-                    crudService = new FundWarningService();
+                case PROVIDER_CONTENT:
+                    crudService = new ProviderContentService();
                     crudRouter.routGetRequest(writer, getAction(uri), crudService);
                     break;
                 default:
                     response.sendError(SC_NOT_FOUND);
             }
         } catch (Exception e) {
-            logger.error("",e);
+            LOGGER.error("Admin get request failed", kv("uri", uri), e);
             writeError(writer,response, e);
         }
     }

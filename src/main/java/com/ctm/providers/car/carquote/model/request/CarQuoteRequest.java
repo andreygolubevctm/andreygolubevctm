@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
 import org.joda.time.LocalDate;
 
+import java.util.ArrayList;
+
 public class CarQuoteRequest {
 
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -20,6 +22,8 @@ public class CarQuoteRequest {
     private RiskAddress riskAddress;
 
     private Vehicle vehicle;
+
+    private ArrayList<String> providerFilter = new ArrayList<String>();
 
     public LocalDate getCommencementDate() {
         return commencementDate;
@@ -75,5 +79,13 @@ public class CarQuoteRequest {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public ArrayList<String> getProviderFilter() {
+        return providerFilter;
+    }
+
+    public void setProviderFilter(ArrayList<String> providerFilter) {
+        this.providerFilter = providerFilter;
     }
 }

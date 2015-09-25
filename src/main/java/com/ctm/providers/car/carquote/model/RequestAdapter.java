@@ -37,6 +37,10 @@ public class RequestAdapter {
         quoteRequest.setRiskAddress(createRiskAddress(carQuote));
         quoteRequest.setVehicle(createVehicle(carQuote));
 
+        if(carQuote.getFilter().getProviders() != null && carQuote.getFilter().getProviders().isEmpty() == false){
+            quoteRequest.setProviderFilter(carQuote.getFilter().getProviders());
+        }
+
         return quoteRequest;
     }
 

@@ -14,11 +14,12 @@
 
 	<simples:dialogue id="30" vertical="health" mandatory="true" />
 
-	<form_new:fieldset legend="Medicare Details" >
+	<form_new:fieldset legend="Medicare Details" id="medicare_details" className="medicare_details">
 
 		<c:set var="fieldXpath" value="${xpath}/cover" />
 		<form_new:row fieldXpath="${fieldXpath}" label="Are all people to be included on this policy covered by a green or blue Medicare card?" id="medicareCoveredRow" helpId="291">
-			<field_new:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover"/>
+			<p id="health_medicareDetails_coverMessage"></p>
+			<field_new:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes=" data-rule-isCheckedYes='true' data-msg-isCheckedYes='To proceed with this policy, you must have a blue or green medicare card' "/>
 		</form_new:row>
 
 		<c:set var="fieldXpath" value="${xpath}/number" />
@@ -47,8 +48,11 @@
 			<field_new:input xpath="${fieldXpath}" title="last name on the Medicare card" required="true" className="health-medicare_details-surname sessioncamexclude" />
 		</form_new:row>
 
+		<c:set var="fieldXpath" value="${xpath}/cardPosition" />
+		<form_new:row fieldXpath="${fieldXpath}" label="Position you appear on your medicare card"  className="health_payment_medicare_cardPosition-group">
+			<field_new:count_select xpath="${fieldXpath}" min="1" max="5" step="1" title="your medicare card position" required="true" className="health_payment_medicare_cardPosition"/>
+		</form_new:row>
+
 	</form_new:fieldset>
 
 </div>
-
-<go:validate selector="${name}_cover" rule="agree" parm="true" message="To proceed with this policy, you must have a blue or green medicare card" />

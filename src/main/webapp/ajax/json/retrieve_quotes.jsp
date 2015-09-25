@@ -4,6 +4,7 @@
 <%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.retrieve_quotes')}" />
 <settings:setVertical verticalCode="GENERIC" />
 <session:getAuthenticated />
 
@@ -28,9 +29,9 @@
 	<c:otherwise>
 
 	<c:if test="${!validCredentials}">
-			<go:log source="retrieve_quotes_jsp" level="INFO">Authenticating for: ${param.login_email}</go:log>
+			${logger.info('have not validated credentials authenticating. {}', log:kv('email',param.login_email))}
 			<c:set var="password"><go:HmacSHA256 username="${param.login_email}" password="${param.login_password}" brand="${pageSettings.getBrandCode()}" /></c:set>
-			<go:log source="retrieve_quotes_jsp" level="INFO">password: ${password}</go:log>
+			${logger.debug('have not validated credentials. {},{}', log:kv('password',password), log:kv('email',param.login_email))}
 			<security:authentication
 				emailAddress="${param.login_email}"
 				password="${password}"
@@ -42,13 +43,11 @@
 			
 			<c:set var="validCredentials" value="${userData.validCredentials}" />
 	</c:if>
-
-	<go:log source="retrieve_quotes_jsp">validCredentials: ${validCredentials}</go:log>
-
+	${logger.info('About to retrieve quote {},{}', log:kv('validCredentials',validCredentials), log:kv('email',param.login_email))}
 	<c:choose>
 		<c:when test="${validCredentials}">
 			<c:set var="emailAddress" value="${authenticatedData.userData.authentication.emailAddress}" />
-			<go:log source="retrieve_quotes_jsp" level="INFO">After ${loginAttempts} login attempts, login of ${emailAddress} successful</go:log>
+			${logger.info('login of successful. {},{}', log:kv('loginAttempts',loginAttempts ), log:kv('email',emailAddress))}
 			<c:set var="password"><go:HmacSHA256 username="${authenticatedData.userData.authentication.emailAddress}" password="${authenticatedData.userData.authentication.password}" brand="${pageSettings.getBrandCode()}" /></c:set>
 			<sql:setDataSource dataSource="jdbc/ctm" />
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />
@@ -116,7 +115,7 @@
 
 			<%-- Test for DB issue and handle - otherwise move on --%>
 			<c:if test="${(not empty transactions) || (transactions.rowCount > 0) || (not empty transactions.rows[0].id)}">
-				<go:log source="retrieve_quotes_jsp">>mysql transactions: ${transactions.rowCount}</go:log>
+				${logger.info('mysql transactions. {},{}', log:kv('transactions.rowCount', transactions.rowCount), log:kv('email',emailAddress))}
 				<%--Store the transactionIds found in comma delimetered list --%>
 				<c:set var="tranIds" value="" />
 				<c:forEach var="tranIdRow" items="${transactions.rows}">
@@ -131,11 +130,7 @@
 							<c:otherwise>${fn:toLowerCase(tranIdRow.productType)}</c:otherwise>
 						</c:choose>
 					</c:set>
-
-					<c:if test="${empty dataPrefix}">
-						<go:log source="retrieve_quotes_jsp">UNKNOWN VERTICAL FOR SAVED QUOTE #### ${tranId}</go:log>
-					</c:if>
-
+					${logger.info('Retrieved transaction. {},{},{}' , log:kv('dataPrefix', 'dataPrefix'),log:kv('transactionId',tranId), log:kv('email',emailAddress))}
 					<%-- Inject base quote details the quote --%>
 					<c:if test="${not empty dataPrefix}">
 						<c:set var="quoteXml">
@@ -153,8 +148,7 @@
 						<go:setData dataVar="authenticatedData" xpath="tmp/previousQuotes/result[@id=${tranId}]" xml="${quoteXml}" />
 					</c:if>
 				</c:forEach>
-
-				<go:log source="retrieve_quotes_jsp">TranIDs: ${tranIds}</go:log>
+				${logger.debug('Parsed retrieved transaction ids. {},{}' , log:kv('transactionIds',tranIds), log:kv('email',emailAddress))}
 
 				<%-- Get the details for each transaction found --%>
 				<c:catch var="error">
@@ -316,9 +310,7 @@
 					<%-- TODO: Do some xsl magic to order the quotes by date --%>
 				</c:if>
 			</c:if>
-			<go:log source="retrieve_quotes_jsp">RETRIEVE QUOTES COMPILED: ${authenticatedData.tmp}</go:log>
-
-			<go:log source="retrieve_quotes_jsp" level="DEBUG">XML at 2: ${go:getEscapedXml(authenticatedData['tmp/previousQuotes'])}</go:log>
+			${logger.debug('RETRIEVE QUOTES COMPILED. {},{},{}', log:kv('authenticatedData.tmp',authenticatedData.tmp ), log:kv('tmp/previousQuotes',authenticatedData['tmp/previousQuotes'] ), log:kv('email',emailAddress))}
 			<%-- Return the results as json --%>
 			${go:XMLtoJSON(go:getEscapedXml(authenticatedData['tmp/previousQuotes']))}
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />

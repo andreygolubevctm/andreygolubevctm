@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.utilities_quote_results')}" />
 
 <%-- VARIABLES --%>
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
@@ -30,8 +31,7 @@
 <c:set var="optedInForCompKey">${vertical}/resultsDisplayed/competition/optin</c:set>
 <c:set var="optedInForComp" value="${data[optedInForCompKey] == 'Y' }" />
 
-<go:log>COMP: ${competitionEnabledSetting}</go:log>
-<go:log>COMPKEY: ${optedInForComp}</go:log>
+${logger.debug('Got settings for competition. {},{}',log:kv('competitionEnabledSetting', competitionEnabledSetting), log:kv('optedInForComp', optedInForComp))}
 
 <c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
 	<c:set var="competitionId"><content:get key="competitionId"/></c:set>

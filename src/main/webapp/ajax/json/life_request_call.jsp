@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_request_call')}" />
+
 <c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true" /></c:set>
 
 <session:get settings="true" authenticated="true" verticalCode="${fn:toUpperCase(vertical)}" />
@@ -21,7 +23,7 @@
 		<c:set var="proceedinator"><core:access_check quoteType="${fn:toLowerCase(vertical)}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
-				<go:log  level="INFO" >PROCEEDINATOR PASSED</go:log>
+				${logger.debug('PROCEEDINATOR PASSED. {}' , log:kv('proceedinator',proceedinator ))}
 
 				<c:set var="tranId" value="${data.current.transactionId}" />
 
@@ -101,9 +103,6 @@
 
 								<%-- Record lead feed touch event --%>
 								<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(tranId, "CB", "lifebroker")}</c:set>
-
-								<go:log level="DEBUG" source="life_request_call">${resultXml}</go:log>
-								<go:log level="DEBUG" source="life_request_call">${debugXml}</go:log>
 							</c:otherwise>
 						</c:choose>
 

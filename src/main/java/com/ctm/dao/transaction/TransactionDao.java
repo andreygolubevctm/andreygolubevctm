@@ -68,7 +68,7 @@ public class TransactionDao {
 			stmt.close();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -105,7 +105,7 @@ public class TransactionDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -162,7 +162,7 @@ public class TransactionDao {
 				return confirmationOperator;
 			}
 		} catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -192,7 +192,7 @@ public class TransactionDao {
 			stmt.executeUpdate();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -223,7 +223,7 @@ public class TransactionDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();

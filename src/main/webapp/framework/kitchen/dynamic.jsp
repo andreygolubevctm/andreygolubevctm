@@ -199,47 +199,17 @@
 
 
 <form_new:fieldset legend="'field' tags" className="">
-	<form_new:row label="<del>account_number</del>">
-		<field:account_number xpath="${xpath}/accountNumber" title="account number" minLength="5" maxLength="9" required="true" />
-	</form_new:row>
 
 	<form_new:row label="additional_excess">
-		<field:additional_excess increment="100" minVal="500" xpath="quote/excess" maxCount="16" title="additional excess" required="true" omitPleaseChoose="Y" />
+		<field:additional_excess increment="100" minVal="500" xpath="quote/excess" maxCount="16" title="additional excess" required="" omitPleaseChoose="Y" />
 	</form_new:row>
 
 	<form_new:row label="age">
 		<field:age dob="22/08/1970" />
 	</form_new:row>
 
-	<form_new:row label="age_licence">
-		<field:age_licence xpath="quote/drivers/regular/licenceAge" required="true" helpId="25" title="age_licence" />
-	</form_new:row>
-
-	<form_new:row label="<del>array_radio</del>">
-		<field:array_radio items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadio" xpath="${xpath}/arrayRadio" title="array_radio" required="true" />
-	</form_new:row>
-
-	<form_new:row label="<del>array_select</del>">
-		<field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="callmeback/save/time" title="array_select" required="true" />
-	</form_new:row>
-
-	<form_new:row label="array_select_with_headings">
-		<field:array_select_with_headings items="=Please choose...,Wanting to avoid taxes and penalties[ATP=Wanting to avoid taxes and penalties],Lifestage[YS=Young single,YC=Young couple,M=Mature Couple]" xpath="${xpath}/arraySelWithHeadings" title="array_select_with_headings" required="true" />
-	</form_new:row>
-
-	<form_new:row label="<del>autocomplete</del>">
-	</form_new:row>
-
-	<form_new:row label="basic_date (date picker)">
-		<field:basic_date xpath="${vertical}_date" required="true" title="basic_date" numberOfMonths="1" minDate="-1y" maxDate="11m" disableWeekends="true" disablePublicHolidays="true" />
-	</form_new:row>
-
 	<form_new:row label="birthday">
 		<field:birthday dob="22/08/1970" />
-	</form_new:row>
-
-	<form_new:row label="<del>bsb_number</del>">
-		<field:bsb_number xpath="${xpath}/bsb" title="bsb number" required="true" />
 	</form_new:row>
 
 	<form_new:row label="button">
@@ -254,18 +224,6 @@
 		<field:category_select xpath="${xpath}/category" title="category" type="category" required="true" />
 	</form_new:row>
 
-	<form_new:row label="<del>checkbox</del>">
-		<field:checkbox xpath="${xpath}/checkbox" value="Y" title="checkbox" required="true" label="true" errorMsg="errorMsg" theme="themeA" />
-	</form_new:row>
-
-	<form_new:row label="commencement_date">
-		<field:commencement_date xpath="${xpath}/startDate" required="true"/>
-	</form_new:row>
-
-	<form_new:row label="contact_email">
-		<field:contact_email xpath="reminder/email" required="true" title="contact_email" placeHolder="Place holder text" size="17" />
-	</form_new:row>
-
 	<form_new:row label="contact_mobile">
 		<field:contact_mobile xpath="${xpath}/mobile" size="15" required="true" title="field:contact_mobile" labelName="contact mobile" placeHolderUnfocused="Unfocused placeholder text" />
 	</form_new:row>
@@ -278,63 +236,22 @@
 		<field_new:count_select xpath="${xpath}/day" min="1" max="27" step="1" title="field:count_select" required="true" />
 	</form_new:row>
 
-	<form_new:row label="credit_card_validation">
-		<field:credit_card_validation />
-	</form_new:row>
-
-	<form_new:row label="creditcard_expiry">
-		<%-- <field:creditcard_expiry xpath="quote/avea/payment" required="true" title="field:creditcard_expiry"/> --%>
-		See 'cards_expiry'
-	</form_new:row>
-
-	<form_new:row label="<del>creditcard_number</del>">
-		<field:creditcard_number xpath="quote/avea/payment/cardNumber" title="field:creditcard_number" required="true" />
-	</form_new:row>
-
-	<form_new:row label="currency" helpId="411">
-		<field:currency xpath="${xpath}/income" symbol="$" decimal="${true}" maxLength="10" title="field:currency" required="true" />
-	</form_new:row>
-
 	<form_new:row label="customisable-checkbox">
 		<field:customisable-checkbox xpath="${xpath}/optin" theme="replicaLarge" value="Y" required="true" label="true" title="field:customisable-checkbox" errorMsg="field:customisable-checkbox errorMsg" />
-	</form_new:row>
-
-	<form_new:row label="date_text_entry">
-		<field:date_text_entry xpath="${xpath}/date" title="field:date_text_entry" required="true" />
 	</form_new:row>
 
 	<form_new:row label="filler_row (not used?)">
 		<field:filler_row xpath="" required="true" />
 	</form_new:row>
 
-	<form_new:row label="general_select">
-		<field:general_select xpath="${xpath}/generalSelect" type="healthSitu" title="field:general_select" required="true" initialText="initialText" />
+	<form_new:row label="new_general_select">
+		<field_new:general_select xpath="${xpath}/new/generalSelect" type="healthSitu" title="field:new_general_select" required="true" initialText="initialText" />
 	</form_new:row>
 
 	<form_new:row label="hidden">
 		(two hidden inputs here)
 		<field:hidden xpath="${xpath}/frequency" defaultValue="M" constantValue="M" />
 		<field:hidden required="true" validationRule="validateMinDependants" validationMessage="field:hidden" defaultValue="" xpath="${xpath}/dependantrequired" />
-	</form_new:row>
-
-	<form_new:row label="import_select" >
-		<field:import_select xpath="import_select" required="true" url="/WEB-INF/option_data/employment_status.html" title="field:import_select" />
-	</form_new:row>
-
-	<form_new:row label="<del>input</del>">
-		<field:input xpath="${xpath}/input" title="input" required="true" maxlength="20" />
-	</form_new:row>
-
-	<form_new:row label="<del>input_age</del>">
-		<field_new:input_age validationNoun="traveller" maxlength="2" xpath="travel/oldest" title="field_news:input_age" required="true" />
-	</form_new:row>
-
-	<form_new:row label="input_numeric">
-		TODO java.lang.NullPointerException
-		<%--
-		at com.disc_au.web.go.jQuery.ValidationRules.buildJavascript(ValidationRules.java:100)
-		<field:input_numeric xpath="${xpath}/primary/lhc" id="input_numeric" minValue="0" maxValue="70" title="field:input_numeric" required="true" maxLength="2" />
-		--%>
 	</form_new:row>
 
 	<form_new:row label="ip_address (not used?)">
@@ -345,29 +262,13 @@
 		<field:ip_number ip="127.0.0.1" />
 	</form_new:row>
 
-	<form_new:row label="kilometers_travelled" legend="Example: 20000">
-		<field:kilometers_travelled xpath="quote/vehicle/annualKilometres" id="annual_kilometres" required="true" />
-	</form_new:row>
-
 	<form_new:row label="make_select">
 		<field:make_select xpath="${xpath}/make" title="field:make_select" type="make" required="true" />
 	</form_new:row>
 
-	<form_new:row label="<del>name_on_card</del>">
-		<field:name_on_card xpath="quote/avea/payment/cardName" title="field:name_on_card" required="true" />
-	</form_new:row>
-
 	<form_new:row label="password">
-		<field:password xpath="save/password" required="true" title="field:password" minlength="6" onKeyUp="getElementById(\"field_password_test\").innerText=this.value;" />
+		<field:password xpath="save/password" required="true" title="field:password" minLength="6" onKeyUp="getElementById(\"field_password_test\").innerText=this.value;" />
 		<span id="field_password_test" class="help-block">Type password; will appear here</span>
-	</form_new:row>
-
-	<form_new:row label="<del>payment_type</del>">
-		<field:payment_type xpath="field/paymentType" title="field:payment_type" />
-	</form_new:row>
-
-	<form_new:row label="<del>person_dob</del>">
-		<field:person_dob xpath="${xpath}/dob" required="true" title="field:person_dob" ageMax="85" ageMin="16" />
 	</form_new:row>
 
 	<form_new:row label="person_name">
@@ -380,10 +281,6 @@
 
 	<form_new:row label="post_code">
 		<field:post_code xpath="${xpath}/postcode" title="field:post_code" required="true" />
-	</form_new:row>
-
-	<form_new:row label="post_code_and_state" legend="type 2611">
-		<field:post_code_and_state xpath="${xpath}/postcodeState" title="field:post_code_and_state" required="true" className="" />
 	</form_new:row>
 
 	<form_new:row label="provider_select">
@@ -450,20 +347,9 @@
 		</go:script>
 	</form_new:row>
 
-	<form_new:row label="creditcard type">
-		<field:array_select xpath="${xpath}/cardType" required="true" delims="||" title="type of credit card" items="=Please choose...||v=Visa||m=Mastercard||a=AMEX||d=Diners Club" />
-		<go:script marker="onready">
-			$('#_cardType').on('change', function() {
-				var _type = this.value;
-				if (typeof field_credit_card_validation !== 'undefined') {
-					field_credit_card_validation.set(_type, $('#_new_cardNumber'), $('#_new_cardCCV'));
-				}
-			});
-		</go:script>
-	</form_new:row>
 
 	<form_new:row label="creditcard_number" legend="This is a legend">
-		<field_new:creditcard_number xpath="${xpath}/new/cardNumber" title="field:creditcard_number" required="true" />
+		<field_new:creditcard_number xpath="${xpath}/new/cardNumber" title="field_new:creditcard_number" required="true" />
 	</form_new:row>
 
 	<form_new:row label="creditcard_ccv">
@@ -478,7 +364,7 @@
 				minValue="1000"
 				decimal="${false}"
 				defaultValue="0"/>
-
+		<%-- Onready needed here, as there is not a dynamic.jsp module setup --%>
 		<go:script marker="onready">meerkat.modules.currencyField.initCurrency();</go:script>
 	</form_new:row>
 
@@ -588,17 +474,6 @@
 		<field_new:slider xpath="${xpath}/new/sliderExcess" type="excess" value="2" range="1,5" markers="5" legend="None,$250,$500,$750,All" />
 		<field_new:slider xpath="${xpath}/new/sliderPrice" type="price" value="550" range="100,650" legend="NONE,BASIC,MEDIUM,COMPREHENSIVE" />
 	</div>
-	</form_new:row>
-
-	<form_new:row label="switch">
-		<%-- <field_new:switch xpath="${xpath}/new/switch" value="Y" className="switch-normal" /> --%>
-		<field_new:switch xpath="${xpath}/new/switch2" value="Y" required="true" />
-		<field_new:switch xpath="${xpath}/new/switch3" value="Y" />
-		<field_new:switch xpath="${xpath}/new/switch4" value="Y" />
-		<go:script marker="onready">
-			$('#${go:nameFromXpath(xpath)}_new_switch3, #${go:nameFromXpath(xpath)}_new_switch4').bootstrapSwitch('setDisabled', true); //.prop('disabled', true);
-			$('#${go:nameFromXpath(xpath)}_new_switch4').prop('checked', true).change();
-		</go:script>
 	</form_new:row>
 
 	<form_new:row>

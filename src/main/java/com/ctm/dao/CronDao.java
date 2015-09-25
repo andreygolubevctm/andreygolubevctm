@@ -1,29 +1,28 @@
 package com.ctm.dao;
 
+import com.ctm.connectivity.SimpleDatabaseConnection;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.CronJob;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 
-import javax.naming.NamingException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.ctm.connectivity.SimpleDatabaseConnection;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.CronJob;
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class CronDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(CronDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(CronDao.class);
 
 	public ArrayList<CronJob> getJobs(String rootURL, String frequency) throws DaoException{
 
 		SimpleDatabaseConnection dbSource = null;
 
-		ArrayList<CronJob> cron_jobs = new ArrayList<CronJob>();
+		ArrayList<CronJob> cron_jobs = new ArrayList<>();
 
 		try{
 			dbSource = new SimpleDatabaseConnection();
@@ -61,8 +60,8 @@ public class CronDao {
 			}
 
 		} catch (SQLException | NamingException e) {
-			logger.error("Failed to get cron jobs for frequency:" + frequency , e);
-			throw new DaoException(e.getMessage(), e);
+			LOGGER.error("failed to get cron jobs {}, {}", kv("rootURL", rootURL), kv("frequency", frequency), e);
+			throw new DaoException(e);
 		} finally {
 			dbSource.closeConnection();
 		}
@@ -71,9 +70,8 @@ public class CronDao {
 	}
 
 	public void writeLog(int cronID , String response) throws DaoException {
-
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
-		PreparedStatement stmt = null;
+		PreparedStatement stmt;
 
 		try {
 			stmt = dbSource.getConnection().prepareStatement(

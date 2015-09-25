@@ -2,6 +2,8 @@ package com.ctm.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Address {
 
@@ -15,6 +17,8 @@ public class Address {
 	private String suburb;
 	private String postCode;
 	private String state;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(Address.class);
 
 	public String getDpId() {
 		return dpId;
@@ -110,7 +114,7 @@ public class Address {
 			json.put("postCode", getPostCode());
 			json.put("state", getState());
 		} catch (JSONException e) {
-			e.printStackTrace();
+			LOGGER.error("Failed creating address json object", e);
 		}
 
 		return json;

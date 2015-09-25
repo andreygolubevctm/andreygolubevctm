@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.utilities_submit_application')}" />
+
 <session:get settings="true" authenticated="true" verticalCode="UTILITIES" />
 
 <%-- Load the params into data --%>
@@ -43,8 +45,8 @@
 			lastName="${data['utilities/application/details/lastName']}"
 			items="marketing=${data['utilities/application/thingsToKnow/receiveInfo']}" />
 
-		<go:log level="INFO" source="utilities_submit_application">Utilities Tran Id = ${data['current/transactionId']}</go:log>
 		<c:set var="tranId" value="${data['current/transactionId']}" />
+		${logger.info('Utilities retrieved Tran Id from data object.')}
 
 		<c:set var="results" value="${utilitiesApplicationService.submitFromJsp(pageContext.getRequest(), data)}" scope="request"  />
 

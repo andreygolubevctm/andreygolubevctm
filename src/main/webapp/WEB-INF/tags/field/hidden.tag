@@ -7,6 +7,7 @@
 <%@ attribute name="xpath" 				required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
 <%@ attribute name="required" 			required="false" rtexprvalue="true"  description="is this field required?" %>
 <%@ attribute name="validationRule" 	required="false" rtexprvalue="true"  description="Custom validation method if available" %>
+<%@ attribute name="validationParam" 	required="false" rtexprvalue="true"  description="Custom validation param if available" %>
 <%@ attribute name="validationMessage" 	required="false" rtexprvalue="true"  description="Custom validation message if available" %>
 <%@ attribute name="className" 			required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="defaultValue" 		required="false" rtexprvalue="true"	 description="default value" %>
@@ -42,9 +43,14 @@
 	</c:choose>
 </c:set>
 
-<%-- HTML --%>
-<input type="hidden" name="${name}" id="${name}" class="${fieldClasses}" value="${fieldValue}">
 
+<c:set var="validationAttributes" value="" />
 <c:if test="${required}">
-	<go:validate selector="${name}" rule="${validationRule}" parm="true" message='${validationMessage}' />
+	<c:if test="${empty validationParam}">
+		<c:set var="validationParam" value="true" />
+	</c:if>
+	<c:set var="validationAttributes" value=' data-rule-${validationRule}="${validationParam}" data-msg-${validationRule}="${validationMessage}"' />
 </c:if>
+
+<%-- HTML --%>
+<input type="hidden" name="${name}" id="${name}" class="${fieldClasses}" value="${fieldValue}" ${validationAttributes} />

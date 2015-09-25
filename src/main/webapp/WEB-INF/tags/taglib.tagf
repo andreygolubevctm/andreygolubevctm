@@ -1,4 +1,5 @@
 <%@ taglib uri="/WEB-INF/tlds/go.tld" prefix="go" %>
+<%@ taglib uri="/WEB-INF/tlds/log.tld" prefix="log" %>
 <%@ taglib uri="/WEB-INF/tlds/file.tld" prefix="file" %>
 <%@ taglib uri="/WEB-INF/tlds/url.tld" prefix="url" %>
 <%@ taglib uri="/WEB-INF/tlds/miscUtils.tld" prefix="miscUtils" %>
@@ -24,7 +25,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/quote"					prefix="quote" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg"					prefix="agg" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg_new"				prefix="agg_new" %>
-<%@ taglib tagdir="/WEB-INF/tags/agg/results"			prefix="agg_results" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg_new/results"		prefix="agg_new_results" %>
 <%@ taglib tagdir="/WEB-INF/tags/health"				prefix="health" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/layout"			prefix="health_layout" %>

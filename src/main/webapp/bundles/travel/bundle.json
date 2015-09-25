@@ -1,0 +1,16 @@
+{
+  "brandCodes": ["ctm"],
+  "dependencies": [
+    "shared/results",
+    "shared/validation",
+    "core",
+    "shared/selectTags",
+    "shared/datepicker",
+    "shared/popovers",
+    "shared/moreInfo",
+    "shared/checkboxIE8",
+    "shared/leavePageWarning",
+    "shared/showMoreQuotesPrompt",
+    "shared/resultsRankings"
+  ]
+}

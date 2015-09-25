@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.upload_occupations')}" />
+
 <sql:setDataSource dataSource="jdbc/ctm"/>
 
 <%--
@@ -36,7 +38,7 @@ Process:
 <x:forEach select="$data//*[local-name()='occupation' and namespace-uri()='urn:Lifebroker.EnterpriseAPI']" var="x">
 	<c:set var="id"><x:out select="$x/*[local-name()='id' and namespace-uri()='urn:Lifebroker.EnterpriseAPI']" /></c:set>
 	<c:set var="value"><x:out select="$x/*[local-name()='value' and namespace-uri()='urn:Lifebroker.EnterpriseAPI']" /></c:set>
-	<go:log>line: ${id} : ${value}</go:log>
+	${logger.info('Retrieved lifebroker occupation. {},{}', log:kv('id',id), log:kv('value',value))}
 	<c:catch var="error">
 		<sql:update var="update">
 			INSERT INTO aggregator.general (type, code, description, orderSeq)
@@ -53,7 +55,8 @@ Process:
 	</c:catch>
 	<c:set var="counter" value="${counter + 1}" />
 
-	<c:if test="${not empty error}"><go:log>${error.rootCause}</go:log>
+	<c:if test="${not empty error}">
+		${logger.error('failed to insert into aggregator.general. {},{},{}', log:kv('value',value), log:kv('counter',counter), log:kv('id',id), error)}
 	</c:if>
 </x:forEach>
 

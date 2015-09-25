@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.car_quote_results')}" />
+
 <session:get settings="true" authenticated="true" verticalCode="CAR" />
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
@@ -111,6 +113,7 @@
 
 <%-- If single accessory failed above then simply parse the object rather than iterating over it --%>
 <c:if test="${not empty error}">
+	${logger.warn('Failed to get accessory list. {}', log:kv('accsList', accsList), error)}
 	<c:set var="accs" value="${accsList}" />
 	<c:set var="accDesc" value=""/>
 	<x:parse doc="${go:getEscapedXml(accs)}" var="accsXML" />
@@ -148,11 +151,12 @@
 							  transactionId = "${data.text['current/transactionId']}"
 							  xml = "${go:getEscapedXml(data['quote'])}"
 							  var = "resultXml"
-							  authToken = "${param.quote_authToken}"
+							  authToken = "${param.quote_filter_authToken}"
 							  debugVar="debugXml"
 							  validationErrorsVar="validationErrors"
 							  continueOnValidationError="${continueOnValidationError}"
-							  isValidVar="isValid" />
+							  isValidVar="isValid"
+							  sendCorrelationId="false" />
 
 		<c:set var="styleCodeId" value="${pageSettings.getBrandId()}" />
 		<%--<c:if test="${styleCodeId == 8}">
@@ -190,8 +194,7 @@
 				<%-- Write to the stats database --%>
 				<agg:write_stats rootPath="quote" tranId="${tranId}" debugXml="${stats}" />
 
-				<go:log source="car_quote_results_jsp" level="DEBUG" >${tranId}: RESULTS ${resultXml}</go:log>
-				<go:log source="car_quote_results_jsp" >${tranId}: TRANSFER ${stats}</go:log>
+				${logger.trace('Got stats. {},{}', log:kv('resultXml', resultXml), log:kv('stats', stats))}
 				<%-- Return the results as json --%>
 
 				<%-- Calculate the end valid date for these quotes --%>
