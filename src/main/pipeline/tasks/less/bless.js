@@ -13,7 +13,7 @@ var fileHelper = require("./../../helpers/fileHelper");
 
 var revDate = + new Date();
 
-module.exports = function(gulp, filePath, brandCode, bundle) {
+module.exports = function(gulp, filePath, brandCode, bundle, done) {
     var addExtraFileInfo = function(file) {
         var replaceDir = path.normalize(path.join(gulp.pipelineConfig.target.dir, "brand")),
             reducedFilePath = file.path.replace(replaceDir, ""),
@@ -68,8 +68,12 @@ module.exports = function(gulp, filePath, brandCode, bundle) {
             aggressiveMerging: true,
             compatibility: "ie8"
         }))
-        .pipe(notify("Blessed: " + brandCode + " " + bundle + " CSS"))
         .pipe(gulp.dest(function(file){
             return file.targetDir;
+        }))
+        .pipe(notify("Blessed: " + brandCode + " " + bundle + " CSS"))
+        // We do this to ensure that the file object is sent back
+        .pipe(intercept(function(file) {
+            return file;
         }));
 };

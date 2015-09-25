@@ -21,6 +21,9 @@ var less = require("gulp-less"),
     fs = require("fs"),
     path = require("path");
 
+var EventEmitter = require("events").EventEmitter,
+    eventEmitter = new EventEmitter();
+
 function LessTasks(gulp) {
     var bundles = gulp.bundles;
 
@@ -30,164 +33,173 @@ function LessTasks(gulp) {
     var watchesStarted = [],
         dependenciesCache = {};
 
-    var gulpAction = function(glob, targetDir, taskName, fileList, brandCode, brandFileNames, bundle, compileAs) {
-        if(typeof compileAs !== "undefined" && compileAs.constructor === Array) {
-            for(var i = 0; i < compileAs.length; i++) {
-                gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, bundle, compileAs[i]);
-            }
-        } else {
-            if(typeof dependenciesCache[taskName] === "undefined") {
-                dependenciesCache[taskName] = "\r\n" + bundles.getDependencyFiles(bundle, "less")
-                    .filter(function(dep) {
+    var gulpAction = function (glob, targetDir, taskName, fileList, brandCode, brandFileNames, bundle, done) {
+        if (typeof dependenciesCache[taskName] === "undefined") {
+            dependenciesCache[taskName] = "\r\n" + bundles.getDependencyFiles(bundle, "less")
+                    .filter(function (dep) {
                         return dep.match(/(bundles)(\\|\/)(shared)/);
-                    }).map(function(dep) {
+                    }).map(function (dep) {
                         return "@import \"" + dep + "\";"
                     }).join("\r\n");
+        }
+
+        var lessDependencies = dependenciesCache[taskName];
+
+        // Functionality for "extension bundles"
+        // replaceImports builds a list of files to replace the paths of in the supplied build file
+        var replaceImports = [],
+            useParentBundleBuild = false;
+
+        if (typeof bundles.collection[bundle] !== "undefined" && typeof bundles.collection[bundle].extends !== "undefined") {
+            replaceImports = bundles.getBundleFiles(bundle, "less", null, false);
+
+            // Update the glob to point to the parent bundle if no build file is present
+            if (replaceImports.length && replaceImports.indexOf("build.less") === -1) {
+                glob = glob.replace("bundles\\" + bundle, "bundles\\" + bundles.collection[bundle].extends);
+                useParentBundleBuild = true;
             }
+        }
 
-            var lessDependencies = dependenciesCache[taskName];
+        var hasVariablesLess = (fileList.indexOf("variables.less") !== -1);
 
-            // Functionality for "extension bundles"
-            // replaceImports builds a list of files to replace the paths of in the supplied build file
-            var replaceImports = [],
-                useParentBundleBuild = false;
-
-            if(typeof bundles.collection[bundle] !== "undefined" && typeof bundles.collection[bundle].extends !== "undefined") {
-                replaceImports = bundles.getBundleFiles(bundle, "less", null, false);
-
-                // Update the glob to point to the parent bundle if no build file is present
-                if(replaceImports.length && replaceImports.indexOf("build.less") === -1) {
-                    glob = glob.replace("bundles\\" + bundle, "bundles\\" + bundles.collection[bundle].extends);
-                    useParentBundleBuild = true;
-                }
-            }
-
-            // Used when bundles specify a "compileAs" value and uses that as a bundle name
-            if(typeof compileAs === "string")
-                bundle = compileAs;
-
-            var hasVariablesLess = (fileList.indexOf("variables.less") !== -1);
-
-            var stream = gulp.src(glob)
-                .pipe(plumber({
-                    errorHandler: notify.onError("Error: <%= error.message %>")
-                }))
-                // Insert LESS dependencies
-                .pipe(
-                    gulpIf(
-                        lessDependencies !== "",
-                        insert.prepend(lessDependencies)
-                    )
+        var stream = gulp.src(glob)
+            .pipe(plumber({
+                errorHandler: notify.onError("Error: <%= error.message %>")
+            }))
+            // Insert LESS dependencies
+            .pipe(
+            gulpIf(
+                    lessDependencies !== "",
+                    insert.prepend(lessDependencies)
                 )
-                // Prepend brand specific variables if file exists
-                .pipe(
-                    gulpIf(
-                        fileList.indexOf(brandFileNames.variables) !== -1,
-                        insert.prepend("@import \"" + brandFileNames.variables + "\";\r\n")
-                    )
+            )
+            // Prepend brand specific variables if file exists
+            .pipe(
+                gulpIf(
+                    fileList.indexOf(brandFileNames.variables) !== -1,
+                    insert.prepend("@import \"" + brandFileNames.variables + "\";\r\n")
                 )
-                // Prepend variables if file exists
-                .pipe(gulpIf(hasVariablesLess, insert.prepend("@import \"variables.less\";\r\n")))
-                // Prepend generic brand build file
-                .pipe(insert.prepend("@import \"../../build/brand/" + brandCode + "/build.less\";\r\n"))
-                // Append brand specific theme less if file exists
-                .pipe(
-                    gulpIf(
-                        fileList.indexOf(brandFileNames.theme) !== -1,
-                        insert.append("\r\n@import \"" + brandFileNames.theme + "\";")
-                    )
-                );
+            )
+            // Prepend variables if file exists
+            .pipe(gulpIf(hasVariablesLess, insert.prepend("@import \"variables.less\";\r\n")))
+            // Prepend generic brand build file
+            .pipe(insert.prepend("@import \"../../build/brand/" + brandCode + "/build.less\";\r\n"))
+            // Append brand specific theme less if file exists
+            .pipe(
+            gulpIf(
+                fileList.indexOf(brandFileNames.theme) !== -1,
+                insert.append("\r\n@import \"" + brandFileNames.theme + "\";")
+            )
+        );
 
-            var notInWatchesStarted = (watchesStarted.indexOf(taskName) === -1);
+        var notInWatchesStarted = (watchesStarted.indexOf(taskName) === -1);
 
-            // We need to conditionally call the watchLess method this way because it seems to run regardless with gulpIf()
-            // Boo. :(
-            if(notInWatchesStarted) {
-                stream = stream.pipe(
-                    watchLess(glob, { name: taskName }, function() {
-                        gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, bundle, compileAs);
-                    })
-                );
+        // We need to conditionally call the watchLess method this way because it seems to run regardless with gulpIf()
+        // Boo. :(
+        if (notInWatchesStarted) {
+            stream = stream.pipe(
+                watchLess(glob, {name: taskName}, function () {
+                    gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, bundle);
+                })
+            );
 
-                watchesStarted.push(taskName);
-            }
+            watchesStarted.push(taskName);
+        }
 
-            return stream.pipe(
-                    intercept(function(file) {
-                        // Check if there are imports to replace (from a bundle extending another bundle)
-                        if(replaceImports.length) {
-                            var contents = file.contents.toString();
+        stream.pipe(
+                intercept(function (file) {
+                    // Check if there are imports to replace (from a bundle extending another bundle)
+                    if (replaceImports.length) {
+                        var contents = file.contents.toString();
 
-                            if(useParentBundleBuild) {
-                                // If using the parent build, we should update the import paths to be relative
-                                // to the parent bundle
-                                for (var i = 0; i < replaceImports.length; i++) {
-                                    contents = contents.replace("\"" + replaceImports[i], "\"../../" + bundle + "/less/" + replaceImports[i])
-                                }
-                            } else {
-                                // Use import paths relative to the extended bundle
-                                contents = contents.replace(/(\")([a-z])/g, "\"../../" + bundles.collection[bundle].extends + "/less/$2");
-
-                                for (var i = 0; i < replaceImports.length; i++) {
-                                    contents = contents.replace("\"../../" + bundles.collection[bundle].extends + "/less/" + replaceImports[i], "\"" + replaceImports[i])
-                                }
+                        if (useParentBundleBuild) {
+                            // If using the parent build, we should update the import paths to be relative
+                            // to the parent bundle
+                            for (var i = 0; i < replaceImports.length; i++) {
+                                contents = contents.replace("\"" + replaceImports[i], "\"../../" + bundle + "/less/" + replaceImports[i])
                             }
+                        } else {
+                            // Use import paths relative to the extended bundle
+                            contents = contents.replace(/(\")([a-z])/g, "\"../../" + bundles.collection[bundle].extends + "/less/$2");
 
-                            file.contents = new Buffer(contents);
+                            for (var i = 0; i < replaceImports.length; i++) {
+                                contents = contents.replace("\"../../" + bundles.collection[bundle].extends + "/less/" + replaceImports[i], "\"" + replaceImports[i])
+                            }
                         }
 
-                        return file;
-                    })
-                )
-                // Parse the LESS
-                .pipe(sourcemaps.init())
-                .pipe(less(glob, {
-                    name: taskName,
-                    paths: [
-                        path.join(gulp.pipelineConfig.bundles.dir),
-                        path.join(gulp.pipelineConfig.bootstrap.dir, "less")
-                    ]
-                }))
-                .pipe(rename(bundle + ".css"))
-                .pipe(sourcemaps.write("./maps"))
-                .pipe(gulp.dest(targetDir))
-                .pipe(notify({
-                    title: taskName + " compiled",
-                    message: bundle + " successfully compiled"
-                }))
-                .pipe(intercept(function(file){
-                    var filePath = file.path.replace(".map", "");
-                    require("./minify")(gulp, filePath, brandCode, bundle);
+                        file.contents = new Buffer(contents);
+                    }
+
                     return file;
-                }));
-        }
+                })
+            )
+            // Parse the LESS
+            .pipe(sourcemaps.init())
+            .pipe(less(glob, {
+                name: taskName,
+                paths: [
+                    path.join(gulp.pipelineConfig.bundles.dir),
+                    path.join(gulp.pipelineConfig.bootstrap.dir, "less")
+                ]
+            }))
+            .pipe(rename(bundle + ".css"))
+            .pipe(sourcemaps.write("./maps"))
+            .pipe(gulp.dest(targetDir))
+            .pipe(notify({
+                title: taskName + " compiled",
+                message: bundle + " successfully compiled"
+            }))
+            .pipe(intercept(function(file){
+                return file;
+            }))
+            .on("end", function () {
+                var filePath = path.join(targetDir, bundle + ".css"),
+                    eventName = "less:" + (+ new Date()),
+                    taskList = [
+                        require("./minify")(gulp, filePath, brandCode, bundle),
+                        require("./bless")(gulp, filePath, brandCode, bundle)
+                    ],
+                    counter = 0;
+
+                eventEmitter.on(eventName, function(){
+                    counter++;
+
+                    if(counter === taskList.length && done)
+                        done();
+                });
+
+                taskList.forEach(function(task) {
+                    task.on("end", function(){
+                        eventEmitter.emit(eventName);
+                    });
+                });
+            });
     };
 
-    for(var bundle in bundles.collection) {
+    for (var bundle in bundles.collection) {
         (function (bundle) {
             var brandCodes = bundles.getBundleBrandCodes(bundle);
 
             var bundleLessTasks = [];
 
-            var fileList = bundles.getBundleFiles(bundle, "less", false),
-                compileAs = bundles.collection[bundle].compileAs;
+            var fileList = bundles.getBundleFiles(bundle, "less", false);
 
             for (var i = 0; i < brandCodes.length; i++) {
                 var brandCode = brandCodes[i];
 
-                (function(brandCode) {
+                (function (brandCode) {
                     var brandCodeTask = taskPrefix + bundle + ":" + brandCode,
                         brandCodeBundleSrcPath = path.join(gulp.pipelineConfig.bundles.dir, bundle, "less", "build.less");
 
                     var targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
 
-                    gulp.task(brandCodeTask, function () {
+                    gulp.task(brandCodeTask, function (done) {
                         var brandFileNames = {
-                                variables: "variables." + brandCode + ".less",
-                                theme: "theme." + brandCode + ".less"
-                            };
+                            variables: "variables." + brandCode + ".less",
+                            theme: "theme." + brandCode + ".less"
+                        };
 
-                        return gulpAction(brandCodeBundleSrcPath, targetDir, brandCodeTask, fileList, brandCode, brandFileNames, bundle, compileAs);
+                        gulpAction(brandCodeBundleSrcPath, targetDir, brandCodeTask, fileList, brandCode, brandFileNames, bundle, done);
                     });
 
                     bundleLessTasks.push(brandCodeTask);

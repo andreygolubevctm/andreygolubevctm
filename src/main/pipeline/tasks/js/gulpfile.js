@@ -31,54 +31,46 @@ function JSTasks(gulp) {
     // Generic Gulp action
     // - Combine files into single JS and write to target directory
     // - Uglify combined file and write to target directory
-    var gulpAction = function (taskName, fileArray, fileName, compileAs) {
-        if(typeof compileAs !== "undefined" && compileAs.constructor === Array) {
-            for(var i = 0; i < compileAs.length; i++) {
-                gulpAction(taskName, fileArray, fileName, compileAs[i]);
-            }
-        } else {
-            if(typeof compileAs === "string") {
-                if(fileName.match(/(\.onload)/))
-                    compileAs = compileAs + ".onload";
+    var gulpAction = function (taskName, fileArray, fileName, done) {
+        var incDir = path.join(gulp.pipelineConfig.target.dir, "includes", "js"),
+            revDate = + new Date();
 
-                if(fileName.match(/(\.deferred)/))
-                    compileAs = compileAs + ".deferred";
+        fileHelper.writeFileToFolder(incDir, fileName + gulp.pipelineConfig.target.inc.extension, fileArray.map(function(file){
+            return "<script type=\"text\/javascript\" src=\"" + file.slice(file.indexOf("bundles"), file.length).replace(/\\/g, "/") + "?rev=" + revDate + "\"></script>";
+        }).join("\r\n"));
 
-                fileName = compileAs;
-            }
+        gulp.src(fileArray)
+            .pipe(plumber({
+                errorHandler: notify.onError("Error: <%= error.message %>")
+            }))
+            .pipe(concat(fileName + ".js"))
+            .pipe(beautify())
+            .pipe(gulp.dest(targetDirectory))
+            .pipe(notify({
+                title: taskName + " compiled",
+                message: fileName + " successfully compiled"
+            }))
+            .pipe(uglify())
+            .pipe(rename(fileName + ".min.js"))
+            .pipe(gulp.dest(targetDirectory))
+            .pipe(notify({
+                title: taskName + " minified",
+                message: fileName + " successfully minified"
+            }))
+            .pipe(intercept(function(file){
+                return file;
+            }))
+            .on("end", function() {
+                var lint = require("./lint")(gulp, fileArray);
 
-            var incDir = path.join(gulp.pipelineConfig.target.dir, "includes", "js"),
-                revDate = + new Date();
-
-            fileHelper.writeFileToFolder(incDir, fileName + gulp.pipelineConfig.target.inc.extension, fileArray.map(function(file){
-                return "<script type\"\" src=\"" + file.slice(file.indexOf("bundles"), file.length).replace(/\\/g, "/") + "?rev=" + revDate + "\"></script>";
-            }).join("\r\n"));
-
-            return gulp.src(fileArray)
-                .pipe(plumber({
-                    errorHandler: notify.onError("Error: <%= error.message %>")
-                }))
-                .pipe(sourcemaps.init())
-                .pipe(concat(fileName + ".js"))
-                .pipe(beautify())
-                .pipe(sourcemaps.write("./maps"))
-                .pipe(gulp.dest(targetDirectory))
-                .pipe(notify({
-                    title: taskName + " compiled",
-                    message: fileName + " successfully compiled"
-                }))
-                .pipe(uglify())
-                .pipe(rename(fileName + ".min.js"))
-                .pipe(gulp.dest(targetDirectory))
-                .pipe(notify({
-                    title: taskName + " minified",
-                    message: fileName + " successfully minified"
-                }))
-                .pipe(intercept(function(file){
-                    require("./lint")(gulp, fileArray);
-                    return file;
-                }));
-        }
+                if(lint.hasOwnProperty("on")) {
+                    lint.on("end", function(){
+                        done();
+                    });
+                } else {
+                    done();
+                }
+            });
     };
 
     // Iterate through provided bundles and create build JS tasks for each loaded bundle
@@ -87,8 +79,6 @@ function JSTasks(gulp) {
             var bundleTask = taskPrefix + bundle,
                 bundleTaskOnLoad = bundleTask + ":onload",
                 bundleTaskAsync = bundleTask + ":async";
-
-            var compileAs = bundles.collection[bundle].compileAs;
 
             // Tasks to be run on watch of bundle file change
             var watchTasks = [];
@@ -105,8 +95,8 @@ function JSTasks(gulp) {
                 deferredFileArray = [];
 
             // Total combined JS (ignoring before/after page load)
-            gulp.task(bundleTask, function () {
-                return gulpAction(bundleTask, completeFileArray, bundle, compileAs);
+            gulp.task(bundleTask, function (done) {
+                return gulpAction(bundleTask, completeFileArray, bundle, done);
             });
 
             bundleTasks.push(bundleTask);
@@ -124,18 +114,18 @@ function JSTasks(gulp) {
 
             if (onLoadFileArray.length) {
                 // JS loaded on page load
-                gulp.task(bundleTaskOnLoad, function () {
+                gulp.task(bundleTaskOnLoad, function (done) {
                     var fileName = bundle + ".onload";
-                    return gulpAction(bundleTaskOnLoad, onLoadFileArray, fileName, compileAs);
+                    return gulpAction(bundleTaskOnLoad, onLoadFileArray, fileName, done);
                 });
 
                 bundleTasks.push(bundleTaskOnLoad);
                 watchTasks.push(bundleTaskOnLoad);
 
                 // JS loaded after page load
-                gulp.task(bundleTaskAsync, function () {
+                gulp.task(bundleTaskAsync, function (done) {
                     var fileName = bundle + ".deferred";
-                    return gulpAction(bundleTaskAsync, deferredFileArray, fileName, compileAs);
+                    return gulpAction(bundleTaskAsync, deferredFileArray, fileName, done);
                 });
 
                 bundleTasks.push(bundleTaskAsync);

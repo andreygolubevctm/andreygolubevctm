@@ -51,8 +51,15 @@ function Bundles(config) {
             var bundleJSONPath = path.join(gulpConfig.bundles.dir, folder, gulpConfig.bundles.entryPoint);
 
             if(fs.existsSync(bundleJSONPath)) {
-                var bundleJSON = fs.readFileSync(bundleJSONPath, "utf8");
-                instance.addBundle(folder, bundleJSON);
+                var bundleJSON = JSON.parse(fs.readFileSync(bundleJSONPath, "utf8"));
+
+                if(typeof bundleJSON.compileAs !== "undefined" && bundleJSON.compileAs.constructor === Array) {
+                    for (var i = 0; i < bundleJSON.compileAs.length; i++) {
+                        instance.addBundle(bundleJSON.compileAs[i], bundleJSON);
+                    }
+                } else {
+                    instance.addBundle(folder, bundleJSON);
+                }
             }
         });
 }

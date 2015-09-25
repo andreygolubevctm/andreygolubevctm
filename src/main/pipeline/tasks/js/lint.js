@@ -3,6 +3,7 @@ var path = require("path"),
     notify = require("gulp-notify"),
     cached = require("gulp-cached"),
     stylish = require("jshint-stylish"),
+    intercept = require("gulp-intercept"),
     jshint = require("gulp-jshint");
 
 module.exports = function(gulp, filePath) {

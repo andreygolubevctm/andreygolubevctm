@@ -6,7 +6,7 @@ var minifyCSS = require("gulp-minify-css"),
     rename = require("gulp-rename"),
     path = require("path");
 
-module.exports = function(gulp, filePath, brandCode, bundle) {
+module.exports = function(gulp, filePath, brandCode, bundle, done) {
     return gulp.src(filePath)
         .pipe(plumber({
             errorHandler: notify.onError("Error: <%= error.message %>")
@@ -28,8 +28,8 @@ module.exports = function(gulp, filePath, brandCode, bundle) {
             return file.targetDir;
         }))
         .pipe(notify("Minified: " + brandCode + " " + bundle + " CSS"))
-        .pipe(intercept(function(file) {
-            require("./bless")(gulp, file.path, brandCode, bundle);
+        // We do this to ensure that the file object is sent back
+        .pipe(intercept(function(file){
             return file;
         }));
 };
