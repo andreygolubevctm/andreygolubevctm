@@ -5,8 +5,12 @@ import com.ctm.providers.health.healthapply.model.request.application.applicant.
 import com.ctm.providers.health.healthapply.model.request.application.common.FirstName;
 import com.ctm.providers.health.healthapply.model.request.application.common.LastName;
 import com.ctm.providers.health.healthapply.model.request.payment.common.Expiry;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+@JsonInclude(NON_EMPTY)
 public class Medicare {
 
     private final Cover cover;

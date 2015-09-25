@@ -2,7 +2,11 @@ package com.ctm.providers.health.healthapply.model.request.payment.bank;
 
 import com.ctm.providers.health.healthapply.model.request.payment.Claims;
 import com.ctm.providers.health.healthapply.model.request.payment.bank.account.Account;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+@JsonInclude(NON_EMPTY)
 public class Bank {
 
     private final Account paymentAccount;

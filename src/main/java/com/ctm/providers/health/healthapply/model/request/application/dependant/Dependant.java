@@ -5,11 +5,15 @@ import com.ctm.providers.health.healthapply.model.request.application.common.Fir
 import com.ctm.providers.health.healthapply.model.request.application.common.Gender;
 import com.ctm.providers.health.healthapply.model.request.application.common.LastName;
 import com.ctm.providers.health.healthapply.model.request.application.common.Title;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.time.LocalDate;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+@JsonInclude(NON_EMPTY)
 public class Dependant {
 
     private Title title;

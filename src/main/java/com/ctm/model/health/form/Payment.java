@@ -8,6 +8,8 @@ public class Payment {
 
     private Credit credit;
 
+    private Gateway gateway;
+
     private Medicare medicare;
 
     public PaymentDetails getDetails() {
@@ -40,5 +42,13 @@ public class Payment {
 
     public void setMedicare(Medicare medicare) {
         this.medicare = medicare;
+    }
+
+    public Gateway getGateway() {
+        return gateway;
+    }
+
+    public void setGateway(Gateway gateway) {
+        this.gateway = gateway;
     }
 }

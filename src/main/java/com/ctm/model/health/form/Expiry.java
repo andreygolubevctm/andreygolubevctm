@@ -2,16 +2,9 @@ package com.ctm.model.health.form;
 
 public class Expiry {
 
-    public static final Expiry NONE = new Expiry("", "");
-
     private String cardExpiryMonth;
 
     private String cardExpiryYear;
-
-    public Expiry(String cardExpiryMonth, String cardExpiryYear) {
-        this.cardExpiryMonth = cardExpiryMonth;
-        this.cardExpiryYear = cardExpiryYear;
-    }
 
     public String getCardExpiryMonth() {
         return cardExpiryMonth;

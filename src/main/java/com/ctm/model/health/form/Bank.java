@@ -1,52 +1,20 @@
 package com.ctm.model.health.form;
 
-public class Bank {
-
-    private String name;
-
-    private String account;
-
-    private String bsb;
-
-    private String number;
+public class Bank extends BankDetails {
 
     private String day;
 
+    // Provider Use: AUF
+    // Format yyyy-MM-dd
+    private String policyDay;
+
+    // Provider Use: AHM
+    // Format yyyy-MM-dd
+    private String paymentDay;
+
     private String claims;
 
-    private Claim claim;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getBsb() {
-        return bsb;
-    }
-
-    public void setBsb(String bsb) {
-        this.bsb = bsb;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
+    private BankDetails claim;
 
     public String getDay() {
         return day;
@@ -54,6 +22,22 @@ public class Bank {
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public String getPaymentDay() {
+        return paymentDay;
+    }
+
+    public void setPaymentDay(String paymentDay) {
+        this.paymentDay = paymentDay;
+    }
+
+    public String getPolicyDay() {
+        return policyDay;
+    }
+
+    public void setPolicyDay(String policyDay) {
+        this.policyDay = policyDay;
     }
 
     public String getClaims() {
@@ -64,11 +48,11 @@ public class Bank {
         this.claims = claims;
     }
 
-    public Claim getClaim() {
+    public BankDetails getClaim() {
         return claim;
     }
 
-    public void setClaim(Claim claim) {
+    public void setClaim(BankDetails claim) {
         this.claim = claim;
     }
 }

@@ -46,6 +46,13 @@
         return false;
     }
 
+    function hasApplicationService(){
+        if(meerkat.site.vertical === 'health'){
+            return true;
+        }
+        return false;
+    }
+
     function initEnvironmentMonitor(){
 
         // Build information bar
@@ -55,6 +62,7 @@
             '<li>Revision #: <span class="devRevisionId"></span></li>' +
             '<li class="devService"><a href="data.jsp" target="_blank">View data bucket</a></li>' +
             '<li class="devService aggEngine"></li>' +
+            '<li class="devService applyEngine"></li>' +
             '</ul></div>');
 
         // Populate information bar
@@ -118,6 +126,58 @@
 
                 }
             });
+
+        }
+
+        // Add application service switcher (
+        if(hasApplicationService() === true){
+
+            var $applicationEngineContainer = $('.applyEngine');
+            $applicationEngineContainer.html('Loading application services...');
+
+            var applicationBaseUrl = "http://taws01_ass3:8080"; // for NXI
+
+
+            meerkat.modules.comms.get({
+                url: applicationBaseUrl+"/launcher/wars",
+                cache: false,
+                useDefaultErrorHandling: false,
+                errorLevel: "fatal",
+                onSuccess: function onSubmitSuccess(resultData) {
+
+                    var select = '<label>Application service: <select id="developmentApplicationEnvironment"><option value="">'+meerkat.site.environment.toUpperCase()+'</option>';
+
+                    for(var i = 0; i<resultData.NXI.length; i++){
+                        var obj = resultData.NXI[i];
+
+                        // Add any travel-quote branch to the list (except for the default if viewing this on NXI)
+
+                        var vertical = meerkat.site.vertical;
+
+                        var verticalQuoteAppPath = "/"+ vertical +"-apply";
+                        if(obj.context.indexOf(verticalQuoteAppPath) !== -1 && (obj.context === verticalQuoteAppPath && meerkat.site.environment === 'nxi') === false){
+
+                            var val = applicationBaseUrl+obj.context;
+                            var selected = '';
+                            if(val === localStorage.getItem("applicationService_"+meerkat.site.vertical)){
+                                selected = 'selected="true" ';
+                            }
+
+                            select += '<option value="'+val+'" '+selected+'>NXI'+obj.context.toUpperCase()+'</option>';
+                        }
+                    }
+
+                    select += '</select></label>';
+                    $applicationEngineContainer.html(select);
+
+                    $("#developmentApplicationEnvironment").change(function onDevEnvChange(eventObject){
+                        localStorage.setItem("applicationService_"+meerkat.site.vertical, $("#developmentApplicationEnvironment").val());
+                    });
+
+
+                }
+            });
+
         }
 
         meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateDevTransId(eventObject) {

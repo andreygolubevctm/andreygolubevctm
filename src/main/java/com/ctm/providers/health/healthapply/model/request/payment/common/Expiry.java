@@ -1,9 +1,13 @@
 package com.ctm.providers.health.healthapply.model.request.payment.common;
 
 import com.ctm.providers.health.healthapply.model.helper.TypeSerializer;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+@JsonInclude(NON_EMPTY)
 public class Expiry {
 
     @JsonProperty("cardExpiryMonth")

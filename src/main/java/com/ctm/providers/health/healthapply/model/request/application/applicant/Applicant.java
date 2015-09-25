@@ -4,11 +4,15 @@ import com.ctm.providers.health.healthapply.model.helper.TypeSerializer;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover.HealthCover;
 import com.ctm.providers.health.healthapply.model.request.application.applicant.previousFund.PreviousFund;
 import com.ctm.providers.health.healthapply.model.request.application.common.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.time.LocalDate;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+@JsonInclude(NON_EMPTY)
 public class Applicant {
 
     private final Title title;

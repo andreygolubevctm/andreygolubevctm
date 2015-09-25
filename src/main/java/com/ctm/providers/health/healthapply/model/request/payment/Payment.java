@@ -5,7 +5,11 @@ import com.ctm.providers.health.healthapply.model.request.payment.bank.Bank;
 import com.ctm.providers.health.healthapply.model.request.payment.credit.CreditCard;
 import com.ctm.providers.health.healthapply.model.request.payment.details.Details;
 import com.ctm.providers.health.healthapply.model.request.payment.medicare.Medicare;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+@JsonInclude(NON_EMPTY)
 public class Payment {
 
     private final Details details;

@@ -1,6 +1,6 @@
 package com.ctm.model.health.form;
 
-public class Claim {
+public class BankDetails {
 
     private String name;
 

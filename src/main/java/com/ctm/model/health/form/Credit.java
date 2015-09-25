@@ -2,8 +2,6 @@ package com.ctm.model.health.form;
 
 public class Credit {
 
-    public static final Credit NONE = new Credit("", "", "", Expiry.NONE, "", null);
-
     private String type;
 
     private String name;
@@ -16,14 +14,13 @@ public class Credit {
 
     private Integer day;
 
-    public Credit(String type, String name, String number, Expiry expiry, String ccv, Integer day) {
-        this.type = type;
-        this.name = name;
-        this.number = number;
-        this.expiry = expiry;
-        this.ccv = ccv;
-        this.day = day;
-    }
+    // Provider Use: AUF
+    // Format yyyy-MM-dd
+    private String policyDay;
+
+    // Provider Use: AHM
+    // Format yyyy-MM-dd
+    private String paymentDay;
 
     public String getType() {
         return type;
@@ -71,5 +68,21 @@ public class Credit {
 
     public void setDay(Integer day) {
         this.day = day;
+    }
+
+    public String getPaymentDay() {
+        return paymentDay;
+    }
+
+    public void setPaymentDay(String paymentDay) {
+        this.paymentDay = paymentDay;
+    }
+
+    public String getPolicyDay() {
+        return policyDay;
+    }
+
+    public void setPolicyDay(String policyDay) {
+        this.policyDay = policyDay;
     }
 }

@@ -1,5 +1,10 @@
 package com.ctm.providers.health.healthapply.model.request.application.applicant.healthCover;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
+
+@JsonInclude(NON_EMPTY)
 public class HealthCover {
 
     private Cover healthCover;

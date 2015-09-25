@@ -1063,6 +1063,11 @@
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication' });
 
 		try {
+
+		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
+			$("#environmentOverride").val($("#developmentApplicationEnvironment").val());
+		}
+
 		var postData = meerkat.modules.journeyEngine.getFormData();
 
 		// Disable fields must happen after the post data has been collected.
