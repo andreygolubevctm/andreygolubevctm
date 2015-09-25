@@ -1,19 +1,17 @@
-.companyLogo.logo_BUDD {
-	.highResImg('../../../graphics/logos/home/budget.png'; '../../../graphics/logos/home/budget@2x.png'; 60px; 60px);
+.companyLogo {
+	.providersHighResSpriteImages(~"home"; ~"logo_"; ~"BUDD", ~"VIRG", ~"REIN", ~"EXDD", ~"WOOL";);
 }
 
-.companyLogo.logo_VIRG {
-	.highResImg('../../../graphics/logos/home/virgin.png'; '../../../graphics/logos/home/virgin@2x.png'; 60px; 60px);
+@media (@sm-only) {
+	.featuresMode {
+		.companyLogo {
+			.providersHighResSpriteImages(~"home"; ~"logo_"; ~"BUDD", ~"VIRG", ~"REIN", ~"EXDD", ~"WOOL"; @logo-xs-scale; ~"");
+}
+}
 }
 
-.companyLogo.logo_REIN {
-	.highResImg('../../../graphics/logos/home/real.png'; '../../../graphics/logos/home/real@2x.png'; 60px; 60px);
+@media (max-width: 480px) {
+	.companyLogo {
+		.providersHighResSpriteImages(~"home"; ~"logo_"; ~"BUDD", ~"VIRG", ~"REIN", ~"EXDD", ~"WOOL"; @logo-xs-scale; ~"");
 }
-
-.companyLogo.logo_EXDD {
-	.highResImg('../../../graphics/logos/home/dodo.png'; '../../../graphics/logos/home/dodo@2x.png'; 60px; 60px);
-}
-
-.companyLogo.logo_WOOL {
-	.highResImg('../../../graphics/logos/home/woolworths.png'; '../../../graphics/logos/home/woolworths@2x.png'; 60px; 60px);
 }
