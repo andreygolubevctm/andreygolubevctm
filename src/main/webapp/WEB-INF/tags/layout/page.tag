@@ -84,11 +84,11 @@
 		<!--[if lt IE 9]>
 			<script src="${assetUrl}../framework/lib/js/respond.ctm.js"></script>
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}../framework/jquery/lib/jquery-1.11.3.min.js"><\/script>')</script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}/libraries/jquery/js/jquery-1.11.3.${pageSettings.getSetting('minifiedFileString')}js">\x3C/script>')</script>
 		<![endif]-->
 		<!--[if gte IE 9]><!-->
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}../framework/jquery/lib/jquery-2.1.4.js">\x3C/script>')</script>
+			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}/libraries/jquery/js/jquery-2.1.4.${pageSettings.getSetting('minifiedFileString')}js">\x3C/script>')</script>
 		<!--<![endif]-->
 
 			<script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
@@ -256,10 +256,6 @@
 		</c:if>
 		<script>window._ || document.write('<script src="${assetUrl}../framework/lib/js/underscore-1.8.3.min.js">\x3C/script>')</script>
 
-		<%-- Extras --%>
-<script type="text/javascript" src="${assetUrl}../framework/jquery/plugins/typeahead-0.9.3_custom.js"></script>
-<script type="text/javascript" src="${assetUrl}../framework/jquery/plugins/qtip2/jquery.qtip.min.js" async defer></script>
-
 		<!--  Meerkat -->
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
 			<c:choose>
@@ -268,7 +264,7 @@
 					<c:import url="/assets/includes/js/${pageSettings.getVerticalCode()}.html" />
 				</c:when>
 				<c:otherwise>
-					<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+					<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.onload.js?${revision}"></script>
 				</c:otherwise>
 			</c:choose>
 		</c:if>
@@ -365,42 +361,18 @@
 					meerkat != null && meerkat.init(siteConfig, options);
 
 				})(window.meerkat);
-
-			_.templateSettings = {
-				evaluate:    /\{\{(.+?)\}\}/g, <%-- {{= console.log("blah") }} --%>
-				interpolate: /\{\{=(.+?)\}\}/g, <%-- {{ title }} --%>
-				escape:      /\{\{-(.+?)\}\}/g <%-- {{{ title }}} --%>
-			};
-
 			</script>
 
 </c:if>
 
 		<%-- Body End Fragment --%>
 		<jsp:invoke fragment="body_end" />
-		<%-- Generally VerticalSettings should be declared in a <vertical>/settings.tag file placed in the body_end fragment space. --%>
-		<script>
-
-		if(typeof VerticalSettings !== 'undefined'){
-			_.extend(meerkat.site, VerticalSettings);
-		}
-
-		</script>
+		<%-- Generally vertical specific settings should be declared in a <vertical>/settings.tag file placed in the body_end fragment space. --%>
 
 		<div id="dynamic_dom"></div>
 		</div>
 
 	<jsp:invoke fragment="before_close_body" />
-
-		<%-- Fastclick --%>
-	<c:choose>
-		<c:when test="${isDev eq false}">
-			<script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js" async defer></script>
-		</c:when>
-		<c:otherwise>
-			<script src="${assetUrl}../framework/lib/js/fastclick-1.0.6.min.js" async defer></script>
-		</c:otherwise>
-	</c:choose>
 
 	<c:if test="${DTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('DTMSourceUrl')}">
 		<c:if test="${fn:length(pageSettings.getSetting('DTMSourceUrl')) > 0}">
@@ -413,5 +385,6 @@
 			<go:insertmarker format="SCRIPT" name="onready" />
 		});
 	</go:script>
+	<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.deferred.js?${revision}" async defer></script>
 </body>
 </go:html>
