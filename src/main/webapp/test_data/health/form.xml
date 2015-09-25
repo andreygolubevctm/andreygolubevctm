@@ -289,4 +289,5 @@
 		<dialogue-checkbox-28>Y</dialogue-checkbox-28>
 		<contactType>outbound</contactType>
 	</simples>
+	<contactAuthority>Y</contactAuthority>
 </health>
