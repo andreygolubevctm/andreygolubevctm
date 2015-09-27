@@ -178,20 +178,18 @@ function LessTasks(gulp) {
 
     for (var bundle in bundles.collection) {
         (function (bundle) {
-            var brandCodes = bundles.getBundleBrandCodes(bundle);
-
-            var bundleLessTasks = [];
-
-            var fileList = bundles.getBundleFiles(bundle, "less", false);
+            var sourceFolder = (typeof bundles.collection[bundle].originalBundle !== "undefined") ? bundles.collection[bundle].originalBundle : bundle,
+                brandCodes = bundles.getBundleBrandCodes(bundle),
+                bundleLessTasks = [],
+                fileList = bundles.getBundleFiles(bundle, "less", false);
 
             for (var i = 0; i < brandCodes.length; i++) {
                 var brandCode = brandCodes[i];
 
                 (function (brandCode) {
                     var brandCodeTask = taskPrefix + bundle + ":" + brandCode,
-                        brandCodeBundleSrcPath = path.join(gulp.pipelineConfig.bundles.dir, bundle, "less", "build.less");
-
-                    var targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
+                        brandCodeBundleSrcPath = path.join(gulp.pipelineConfig.bundles.dir, sourceFolder, "less", "build.less"),
+                        targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
 
                     gulp.task(brandCodeTask, function (done) {
                         var brandFileNames = {
