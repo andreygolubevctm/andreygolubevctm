@@ -55,6 +55,7 @@ function Bundles(config) {
 
                 if(typeof bundleJSON.compileAs !== "undefined" && bundleJSON.compileAs.constructor === Array) {
                     for (var i = 0; i < bundleJSON.compileAs.length; i++) {
+                        bundleJSON.originalBundle = folder;
                         instance.addBundle(bundleJSON.compileAs[i], bundleJSON);
                     }
                 } else {
@@ -224,6 +225,9 @@ Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath, getEx
     fileType = fileType || "js";
 
     var fileListCacheKey = bundle + ":" + fileType + ":" + useFullPath;
+
+    if(typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].originalBundle !== "undefined")
+        bundle = this.collection[bundle].originalBundle;
 
     try {
         if (typeof this.fileListCache[fileListCacheKey] !== "undefined") {
