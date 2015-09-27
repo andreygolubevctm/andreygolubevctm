@@ -858,7 +858,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'extended-warranty',0,1,'Y
 INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,21.99,'21.99%',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points',0,50000.0,'50000',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-No foreign transaction fees on online and overseas purchases
--Complimentary Credit Car International travel insurance for you and your family
+-Complimentary Credit Card International travel insurance for you and your family
 - International travel insurance for you and your family
 -Up to 12 months extra warranty on top of the manufacturer''s warranty
 -Purchase security cover. 3 months of free insurance against loss, theft or accidental damage on personal goods purchased anywhere in the world','2015-09-28','2040-12-31','');
