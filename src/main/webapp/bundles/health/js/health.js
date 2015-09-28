@@ -641,6 +641,8 @@
 
 					// Insert fund into checkbox label
 					$('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
+					// Insert fund into Contact Authority
+					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
 					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
 					var $firstnameField = $("#health_payment_medicare_firstName");
@@ -649,7 +651,7 @@
 					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF"];
 
 					if( $('input[name=health_healthCover_rebate]:checked').val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
