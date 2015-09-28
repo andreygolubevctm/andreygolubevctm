@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Import Travel Partner Regions</title>
-<link rel="stylesheet" href="/ctm/brand/ctm/css/ctm.css" media="all">
+<link rel="stylesheet" href="/ctm/assets/brand/ctm/css/internal.css" media="all">
 <script type="text/javascript" src="../../common/js/jquery-1.10.1.min.js?rev="></script>
 </head>
 <body>
