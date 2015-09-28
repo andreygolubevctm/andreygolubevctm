@@ -36,6 +36,23 @@ public class CreditCard {
         this.ccv = ccv;
     }
 
+    public Type getCreditCardType() {
+        return creditCardType;
+    }
 
+    public Name getCreditCardName() {
+        return creditCardName;
+    }
 
+    public Number getCreditCardNumber() {
+        return creditCardNumber;
+    }
+
+    public Expiry getExpiry() {
+        return expiry;
+    }
+
+    public CCV getCcv() {
+        return ccv;
+    }
 }

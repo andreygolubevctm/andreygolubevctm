@@ -69,7 +69,7 @@ public class RequestAdapter {
                         .orElse(emptyList()));
     }
 
-    private static ApplicationGroup createApplicationGroup(Optional<HealthQuote> quote) {
+    protected static ApplicationGroup createApplicationGroup(Optional<HealthQuote> quote) {
         return new ApplicationGroup(
                 createApplicant(
                         quote.map(HealthQuote::getApplication)
@@ -86,53 +86,71 @@ public class RequestAdapter {
                                 .map(com.ctm.model.health.form.PreviousFund::getPartner)) : null,
                 createDependants(quote.map(HealthQuote::getApplication)
                         .map(Application::getDependants)),
-                new Situation(
-                        quote.map(HealthQuote::getSituation)
-                                .map(com.ctm.model.health.form.Situation::getHealthSitu)
-                                .map(HealthSituation::valueOf)
-                                .orElse(null),
-                        quote.map(HealthQuote::getSituation)
-                                .map(com.ctm.model.health.form.Situation::getHealthCvr)
-                                .map(HealthCoverCategory::valueOf)
-                                .orElse(null)));
+
+                createSituation(quote.map(HealthQuote::getSituation)));
     }
 
-    private static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund) {
-        return new Applicant(
-                person.map(Person::getTitle)
-                        .map(Title::valueOf)
-                        .orElse(null),
-                person.map(Person::getFirstname)
-                        .map(FirstName::new)
-                        .orElse(null),
-                person.map(Person::getSurname)
-                        .map(LastName::new)
-                        .orElse(null),
-                person.map(Person::getGender)
-                        .map(Gender::valueOf)
-                        .orElse(null),
-                person.map(Person::getDob)
-                        .map(v -> LocalDate.parse(v, AUS_FORMAT))
-                        .orElse(null),
-                new HealthCover(
-                        person.map(Person::getCover)
-                            .map(Cover::valueOf)
+    protected static Situation createSituation(Optional<com.ctm.model.health.form.Situation> situation) {
+        if (situation.isPresent()) {
+            return new Situation(
+                    situation.map(com.ctm.model.health.form.Situation::getHealthSitu)
+                            .map(HealthSituation::valueOf)
                             .orElse(null),
-                        person.map(Person::getHealthCoverLoading)
-                                .map(HealthCoverLoading::valueOf)
-                                .orElse(null)),
-                new PreviousFund(
-                        previousFund.map(Fund::getFundName)
+                    situation.map(com.ctm.model.health.form.Situation::getHealthCvr)
+                            .map(HealthCoverCategory::valueOf)
+                            .orElse(null));
+        } else {
+            return null;
+        }
+    }
+
+    protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund) {
+        if (person.isPresent()) {
+            return new Applicant(
+                    person.map(Person::getTitle)
+                            .map(Title::valueOf)
+                            .orElse(null),
+                    person.map(Person::getFirstname)
+                            .map(FirstName::new)
+                            .orElse(null),
+                    person.map(Person::getSurname)
+                            .map(LastName::new)
+                            .orElse(null),
+                    person.map(Person::getGender)
+                            .map(Gender::valueOf)
+                            .orElse(null),
+                    person.map(Person::getDob)
+                            .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                            .orElse(null),
+                    new HealthCover(
+                            person.map(Person::getCover)
+                                    .map(Cover::valueOf)
+                                    .orElse(null),
+                            person.map(Person::getHealthCoverLoading)
+                                    .map(HealthCoverLoading::valueOf)
+                                    .orElse(null)),
+                    createPreviousFund(previousFund));
+        }
+        return null;
+    }
+
+    protected static PreviousFund createPreviousFund(Optional<Fund> previousFund) {
+        if (previousFund.isPresent()) {
+            return new PreviousFund(
+                    previousFund.map(Fund::getFundName)
                             .map(HealthFund::valueOf)
                             .orElse(null),
-                        previousFund.map(Fund::getMemberId)
+                    previousFund.map(Fund::getMemberId)
                             .map(MemberId::new)
                             .orElse(null),
-                        ConfirmCover.Y,
-                        Authority.Y));
+                    ConfirmCover.Y,
+                    Authority.Y);
+        } else {
+            return null;
+        }
     }
 
-    private static FundData createFundData(Optional<HealthQuote> quote) {
+    protected static FundData createFundData(Optional<HealthQuote> quote) {
         return new FundData(
                 quote.map(HealthQuote::getApplication)
                     .map(Application::getProvider)
@@ -155,21 +173,25 @@ public class RequestAdapter {
                     .orElse(null));
     }
 
-    private static Payment createPayment(Optional<HealthQuote> quote) {
+    protected static Payment createPayment(Optional<HealthQuote> quote) {
         final Optional<com.ctm.model.health.form.Payment> payment = quote.map(HealthQuote::getPayment);
-        return new Payment(
-                createPaymentDetails(quote, payment),
-                createCreditCard(quote.map(HealthQuote::getPayment)),
-                createBank(quote.map(HealthQuote::getPayment)),
-                createMedicare(quote.map(HealthQuote::getPayment)
-                        .map(com.ctm.model.health.form.Payment::getMedicare)),
-                payment.map(com.ctm.model.health.form.Payment::getDetails)
-                        .map(PaymentDetails::getClaims)
-                        .map(Claims::valueOf)
-                        .orElse(null));
+        if (payment.isPresent()) {
+            return new Payment(
+                    createPaymentDetails(quote, payment),
+                    createCreditCard(quote.map(HealthQuote::getPayment)),
+                    createBank(quote.map(HealthQuote::getPayment)),
+                    createMedicare(quote.map(HealthQuote::getPayment)
+                            .map(com.ctm.model.health.form.Payment::getMedicare)),
+                    payment.map(com.ctm.model.health.form.Payment::getDetails)
+                            .map(PaymentDetails::getClaims)
+                            .map(Claims::valueOf)
+                            .orElse(null));
+        } else {
+            return null;
+        }
     }
 
-    private static Details createPaymentDetails(Optional<HealthQuote> quote, Optional<com.ctm.model.health.form.Payment> payment) {
+    protected static Details createPaymentDetails(Optional<HealthQuote> quote, Optional<com.ctm.model.health.form.Payment> payment) {
         return new Details(
                 paymentStartDate(payment),
                 payment.map(com.ctm.model.health.form.Payment::getDetails)
@@ -194,88 +216,101 @@ public class RequestAdapter {
                         .orElse(null));
     }
 
-    private static ContactDetails createContactDetails(Optional<HealthQuote> quote) {
+    protected static ContactDetails createContactDetails(Optional<HealthQuote> quote) {
         final Optional<com.ctm.model.health.form.ContactDetails> contactDetails = quote.map(HealthQuote::getContactDetails);
         PostalMatch postalMatch = quote.map(HealthQuote::getApplication)
                                         .map(Application::getPostalMatch)
                                         .map(PostalMatch::valueOf)
                                         .orElse(PostalMatch.N);
-        return new ContactDetails(
-                contactDetails.map(com.ctm.model.health.form.ContactDetails::getEmail)
-                        .map(Email::new)
-                        .orElse(null),
-                contactDetails.map(com.ctm.model.health.form.ContactDetails::getOptin)
-                        .map(OptInEmail::valueOf)
-                        .orElse(null),
-                contactDetails.map(com.ctm.model.health.form.ContactDetails::getContactNumber)
-                        .map(ContactNumber::getMobile)
-                        .map(MobileNumber::new)
-                        .orElse(null),
-                contactDetails.map(com.ctm.model.health.form.ContactDetails::getContactNumber)
-                        .map(ContactNumber::getOther)
-                        .map(OtherNumber::new)
-                        .orElse(null),
-                contactDetails.map(com.ctm.model.health.form.ContactDetails::getCall)
-                        .map(Call::valueOf)
-                        .orElse(null),
-                postalMatch,
-                createAddress(quote.map(HealthQuote::getApplication)
-                        .map(Application::getAddress)),
-                !PostalMatch.Y.equals(postalMatch) ?
-                        createAddress(quote.map(HealthQuote::getApplication)
-                                .map(Application::getPostal)) : null);
+        if (contactDetails.isPresent()) {
+            return new ContactDetails(
+                    contactDetails.map(com.ctm.model.health.form.ContactDetails::getEmail)
+                            .map(Email::new)
+                            .orElse(null),
+                    contactDetails.map(com.ctm.model.health.form.ContactDetails::getOptin)
+                            .map(OptInEmail::valueOf)
+                            .orElse(null),
+                    contactDetails.map(com.ctm.model.health.form.ContactDetails::getContactNumber)
+                            .map(ContactNumber::getMobile)
+                            .map(MobileNumber::new)
+                            .orElse(null),
+                    contactDetails.map(com.ctm.model.health.form.ContactDetails::getContactNumber)
+                            .map(ContactNumber::getOther)
+                            .map(OtherNumber::new)
+                            .orElse(null),
+                    contactDetails.map(com.ctm.model.health.form.ContactDetails::getCall)
+                            .map(Call::valueOf)
+                            .orElse(null),
+                    postalMatch,
+                    createAddress(quote.map(HealthQuote::getApplication)
+                            .map(Application::getAddress)),
+                    !PostalMatch.Y.equals(postalMatch) ?
+                            createAddress(quote.map(HealthQuote::getApplication)
+                                    .map(Application::getPostal)) : null);
+        } else {
+            return null;
+        }
     }
 
-    private static Address createAddress(Optional<com.ctm.model.health.form.Address> address) {
-        return new Address(
-                address.map(com.ctm.model.health.form.Address::getPostCode)
-                        .map(Postcode::new)
-                        .orElse(null),
-                address.map(com.ctm.model.health.form.Address::getFullAddressLineOne)
-                        .map(FullAddressOneLine::new)
-                        .orElse(null),
-                address.map(com.ctm.model.health.form.Address::getSuburbName)
-                        .map(Suburb::new)
-                        .orElse(null),
-                address.map(com.ctm.model.health.form.Address::getStreetNum)
-                        .map(StreetNumber::new)
-                        .orElse(null),
-                address.map(com.ctm.model.health.form.Address::getDpId)
-                        .map(DPID::new)
-                        .orElse(null),
-                address.map(com.ctm.model.health.form.Address::getState)
-                        .map(State::valueOf)
-                        .orElse(null));
+    protected static Address createAddress(Optional<com.ctm.model.health.form.Address> address) {
+        if (address.isPresent()) {
+            return new Address(
+                    address.map(com.ctm.model.health.form.Address::getPostCode)
+                            .map(Postcode::new)
+                            .orElse(null),
+                    address.map(com.ctm.model.health.form.Address::getFullAddressLineOne)
+                            .map(FullAddressOneLine::new)
+                            .orElse(null),
+                    address.map(com.ctm.model.health.form.Address::getSuburbName)
+                            .map(Suburb::new)
+                            .orElse(null),
+                    address.map(com.ctm.model.health.form.Address::getStreetNum)
+                            .map(StreetNumber::new)
+                            .orElse(null),
+                    address.map(com.ctm.model.health.form.Address::getDpId)
+                            .map(DPID::new)
+                            .orElse(null),
+                    address.map(com.ctm.model.health.form.Address::getState)
+                            .map(State::valueOf)
+                            .orElse(null));
+        } else {
+            return null;
+        }
     }
 
-    private static Medicare createMedicare(Optional<com.ctm.model.health.form.Medicare> medicare) {
-        return new Medicare(
-                medicare.map(com.ctm.model.health.form.Medicare::getCover)
-                        .map(Cover::valueOf)
-                        .orElse(null),
-                medicare.map(com.ctm.model.health.form.Medicare::getNumber)
-                        .map(MedicareNumber::new)
-                        .orElse(null),
-                medicare.map(com.ctm.model.health.form.Medicare::getFirstName)
-                        .map(FirstName::new)
-                        .orElse(null),
-                medicare.map(com.ctm.model.health.form.Medicare::getLastName)
-                        .map(LastName::new)
-                        .orElse(null),
-                new Position(1),
-                medicare.map(com.ctm.model.health.form.Medicare::getExpiry)
-                        .map(e -> {
-                            Optional<com.ctm.model.health.form.Expiry> expiry = Optional.ofNullable(e);
-                            return new Expiry(
-                                    expiry.map(com.ctm.model.health.form.Expiry::getCardExpiryMonth)
-                                            .map(ExpiryMonth::new).orElse(null),
-                                    expiry.map(com.ctm.model.health.form.Expiry::getCardExpiryYear)
-                                            .map(ExpiryYear::new).orElse(null)
-                            );})
-                        .orElse(null));
+    protected static Medicare createMedicare(Optional<com.ctm.model.health.form.Medicare> medicare) {
+        if (medicare.isPresent()) {
+            return new Medicare(
+                    medicare.map(com.ctm.model.health.form.Medicare::getCover)
+                            .map(Cover::valueOf)
+                            .orElse(null),
+                    medicare.map(com.ctm.model.health.form.Medicare::getNumber)
+                            .map(MedicareNumber::new)
+                            .orElse(null),
+                    medicare.map(com.ctm.model.health.form.Medicare::getFirstName)
+                            .map(FirstName::new)
+                            .orElse(null),
+                    medicare.map(com.ctm.model.health.form.Medicare::getLastName)
+                            .map(LastName::new)
+                            .orElse(null),
+                    new Position(1),
+                    medicare.map(com.ctm.model.health.form.Medicare::getExpiry)
+                            .map(e -> {
+                                Optional<com.ctm.model.health.form.Expiry> expiry = Optional.ofNullable(e);
+                                return new Expiry(
+                                        expiry.map(com.ctm.model.health.form.Expiry::getCardExpiryMonth)
+                                                .map(ExpiryMonth::new).orElse(null),
+                                        expiry.map(com.ctm.model.health.form.Expiry::getCardExpiryYear)
+                                                .map(ExpiryYear::new).orElse(null)
+                                );
+                            })
+                            .orElse(null));
+        } else {
+            return null;
+        }
     }
 
-    private static Bank createBank(Optional<com.ctm.model.health.form.Payment> payment) {
+    protected static Bank createBank(Optional<com.ctm.model.health.form.Payment> payment) {
         final String paymentType = payment.map(com.ctm.model.health.form.Payment::getDetails)
                                         .map(PaymentDetails::getType)
                                         .orElse(null);
@@ -283,13 +318,17 @@ public class RequestAdapter {
         final Claims claimsSameBankAccount = bank.map(com.ctm.model.health.form.Bank::getClaims)
                 .map(Claims::valueOf)
                 .orElse(Claims.N);
+        final Claims withRefund = payment.map(com.ctm.model.health.form.Payment::getDetails)
+                .map(PaymentDetails::getClaims)
+                .map(Claims::valueOf)
+                .orElse(Claims.N);
         if ("ba".equals(paymentType)) {
             return new Bank(
                     createAccount(bank),
-                    Claims.N.equals(claimsSameBankAccount) && bank.map(com.ctm.model.health.form.Bank::getClaim).isPresent() ?
+                    Claims.Y.equals(withRefund) && Claims.N.equals(claimsSameBankAccount) ?
                             createAccount(bank.map(com.ctm.model.health.form.Bank::getClaim)) : null,
                     claimsSameBankAccount);
-        } else if ("cc".equals(paymentType)) {
+        } else if ("cc".equals(paymentType) && Claims.Y.equals(withRefund)) {
             return new Bank(
                     null,
                     Claims.N.equals(claimsSameBankAccount) ?
@@ -300,23 +339,27 @@ public class RequestAdapter {
         }
     }
 
-    private static Account createAccount(Optional<? extends BankDetails> bank) {
-        return new Account(
-                bank.map(BankDetails::getName)
-                    .map(BankName::new)
-                    .orElse(null),
-                bank.map(BankDetails::getBsb)
-                        .map(BSB::new)
-                        .orElse(null),
-                bank.map(BankDetails::getAccount)
-                        .map(AccountName::new)
-                        .orElse(null),
-                bank.map(BankDetails::getNumber)
-                        .map(AccountNumber::new)
-                        .orElse(null));
+    protected static Account createAccount(Optional<? extends BankDetails> bank) {
+        if (bank.isPresent()) {
+            return new Account(
+                    bank.map(BankDetails::getName)
+                            .map(BankName::new)
+                            .orElse(null),
+                    bank.map(BankDetails::getBsb)
+                            .map(BSB::new)
+                            .orElse(null),
+                    bank.map(BankDetails::getAccount)
+                            .map(AccountName::new)
+                            .orElse(null),
+                    bank.map(BankDetails::getNumber)
+                            .map(AccountNumber::new)
+                            .orElse(null));
+        } else {
+            return null;
+        }
     }
 
-    private static CreditCard createCreditCard(Optional<com.ctm.model.health.form.Payment> payment) {
+    protected static CreditCard createCreditCard(Optional<com.ctm.model.health.form.Payment> payment) {
         if (payment.map(com.ctm.model.health.form.Payment::getDetails)
                 .map(PaymentDetails::getType).filter(t -> "cc".equals(t)).isPresent()) {
             // check if gateway is available first
@@ -375,7 +418,7 @@ public class RequestAdapter {
         }
     }
 
-    private static LocalDate paymentStartDate(Optional<com.ctm.model.health.form.Payment> payment) {
+    protected static LocalDate paymentStartDate(Optional<com.ctm.model.health.form.Payment> payment) {
         PaymentType paymentType = payment.map(com.ctm.model.health.form.Payment::getDetails)
                 .map(com.ctm.model.health.form.PaymentDetails::getType)
                 .map(PaymentType::findByCode)
@@ -413,77 +456,70 @@ public class RequestAdapter {
         }
     }
 
-    private static List<Dependant> createDependants(Optional<Dependants> dependants) {
-        final List<Dependant> dependantList = new ArrayList<>();
-        dependants.map(Dependants::getDependant1)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant2)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant3)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant4)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant5)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant6)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant7)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant8)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant9)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant10)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant11)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        dependants.map(Dependants::getDependant12)
-                .ifPresent(d -> {
-                    dependantList.add(createDependant(d));
-                });
-        return dependantList;
+    protected static List<Dependant> createDependants(Optional<Dependants> dependants) {
+        if (dependants.isPresent()) {
+            final List<Dependant> dependantList = new ArrayList<>();
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant1)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant2)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant3)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant4)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant5)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant6)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant7)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant8)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant9)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant10)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant11)))
+                    .ifPresent(dependantList::add);
+            Optional.ofNullable(createDependant(dependants.map(Dependants::getDependant12)))
+                    .ifPresent(dependantList::add);
+            return dependantList;
+        } else {
+            return null;
+        }
     }
 
-    private static Dependant createDependant(com.ctm.model.health.form.Dependant formDependant) {
-        Optional<com.ctm.model.health.form.Dependant> dependant = Optional.ofNullable(formDependant);
-        return dependant
-                .filter(d -> d.getTitle() != null)
-                .map(d -> new Dependant(
-                        Title.valueOf(d.getTitle()),
-                        new FirstName(d.getFirstname()),
-                        new LastName(d.getLastname()),
-                        Optional.ofNullable(d.getDob())
-                                .map(v -> LocalDate.parse(v, AUS_FORMAT)).orElse(null),
-                        new School(d.getSchool()),
-                        Optional.ofNullable(d.getSchoolDate())
-                                .map(v -> LocalDate.parse(v, AUS_FORMAT)).orElse(null),
-                        new SchoolId(d.getSchoolID()),
-                        Optional.ofNullable(d.getTitle())
-                                .map(Title::valueOf)
-                                .filter(t -> Title.MR.equals(t))
-                                .map(v -> Gender.M)
-                                .orElse(Gender.F))).orElse(null);
+    protected static Dependant createDependant(Optional<com.ctm.model.health.form.Dependant> dependant) {
+        if (dependant.isPresent()) {
+            return new Dependant(
+                    dependant.map(com.ctm.model.health.form.Dependant::getTitle)
+                        .map(Title::valueOf)
+                        .orElse(null),
+                    dependant.map(com.ctm.model.health.form.Dependant::getFirstname)
+                        .map(FirstName::new)
+                        .orElse(null),
+                    dependant.map(com.ctm.model.health.form.Dependant::getLastname)
+                        .map(LastName::new)
+                        .orElse(null),
+                    dependant.map(com.ctm.model.health.form.Dependant::getDob)
+                        .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                        .orElse(null),
+                    dependant.map(com.ctm.model.health.form.Dependant::getSchool)
+                        .map(School::new)
+                        .orElse(null),
+                    dependant.map(com.ctm.model.health.form.Dependant::getSchoolDate)
+                        .map(v -> LocalDate.parse(v, AUS_FORMAT))
+                        .orElse(null),
+                    dependant.map(com.ctm.model.health.form.Dependant::getSchoolID)
+                        .map(SchoolId::new)
+                        .orElse(null),
+                    dependant.map(com.ctm.model.health.form.Dependant::getTitle)
+                        .map(Title::valueOf)
+                        .filter(t -> Title.MR.equals(t))
+                        .map(v -> Gender.M)
+                        .orElse(Gender.F));
+        } else {
+            return null;
+        }
     }
 }

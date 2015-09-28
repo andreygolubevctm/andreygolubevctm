@@ -26,4 +26,20 @@ public class ApplicationGroup {
         this.dependants = dependants;
         this.situation = situation;
     }
+
+    public Applicant getPrimary() {
+        return primary;
+    }
+
+    public Applicant getPartner() {
+        return partner;
+    }
+
+    public List<Dependant> getDependants() {
+        return dependants;
+    }
+
+    public Situation getSituation() {
+        return situation;
+    }
 }

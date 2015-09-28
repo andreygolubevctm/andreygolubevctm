@@ -14,6 +14,9 @@
 <c:set var="state" value="${data[xpathSituation].state}" />
 <c:set var="healthSitu" value="${data[xpathSituation].healthSitu}" />
 
+<c:set var="healthApplicationExcludeProviders"><content:get key="healthApplicationExcludeProvidersMainJourney" /></c:set>
+
+
 <%-- Only ajax-fetch and update benefits if situation is defined in a param (e.g. from brochureware). No need to update if new quote or load quote etc. --%>
 <c:set var="performHealthChoicesUpdate" value="false" />
 <c:if test="${not empty param_situation or (not empty param.preload and empty data[xpathBenefitsExtras])}">
@@ -75,6 +78,7 @@
 	utm_source: '<c:out value="${utm_source}" />',
 	utm_medium: '<c:out value="${utm_medium}" />',
 	utm_campaign: '<c:out value="${utm_campaign}" />',
+	healthApplicationExcludeProviders: '<c:out value="${healthApplicationExcludeProviders}" />',
 	liveChat: {
 		config: {
 			lpServer			: "server.lon.liveperson.net",

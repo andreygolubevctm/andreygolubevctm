@@ -34,4 +34,24 @@ public class FundData {
         this.startDate = startDate;
         this.benefits = benefits;
     }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public ProductId getProduct() {
+        return product;
+    }
+
+    public Declaration getDeclaration() {
+        return declaration;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public Benefits getBenefits() {
+        return benefits;
+    }
 }

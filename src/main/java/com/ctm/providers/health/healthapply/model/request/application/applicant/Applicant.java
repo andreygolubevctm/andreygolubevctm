@@ -43,4 +43,31 @@ public class Applicant {
         this.previousFund = previousFund;
     }
 
+    public Title getTitle() {
+        return title;
+    }
+
+    public FirstName getFirstName() {
+        return firstName;
+    }
+
+    public LastName getLastName() {
+        return lastName;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public HealthCover getHealthCover() {
+        return healthCover;
+    }
+
+    public PreviousFund getPreviousFund() {
+        return previousFund;
+    }
 }
