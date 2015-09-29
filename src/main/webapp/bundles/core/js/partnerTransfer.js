@@ -132,7 +132,7 @@
 
 		url = buildURL(settings);
 
-		if (url != null)
+		if (url !== null)
 		{
 			// close the modal if it's open
 			if (settings.closeBridgingModalDialog === true && (meerkat.modules.moreInfo.isBridgingPageOpen() || meerkat.modules.moreInfo.isModalOpen())) {

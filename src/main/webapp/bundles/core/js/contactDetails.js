@@ -166,7 +166,7 @@
 				// extra ajax error handling if required
 				showOptInField( fieldDetails.$optInField );
 			}
-		}
+		};
 
 		meerkat.modules.optIn.fetch( fieldInfo );
 
@@ -198,7 +198,7 @@
 			fieldIndex: fieldDetails.fieldIndex, // used to figure out which field comes first or second when an $otherField is defined for combined fields (i.e. "first name" comes before "last name")
 			$savedField: fieldDetails.$field, // selector of the field that's going to end up into the db (i.e. )
 			$optInField: fieldDetails.$optInField // the related optIn Field (checkbox/radio) related to that field
-		}
+		};
 
 		if( typeof fieldDetails.alternateOtherField !== "undefined" && fieldDetails.alternateOtherField ){
 			eventObject.$otherField = eventObject.$field;

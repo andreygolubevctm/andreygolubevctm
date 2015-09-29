@@ -77,7 +77,7 @@
 				value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, ''),
 				channel: $targetForm.find('select[name="channel"]').val().trim(),
 				comment: $targetForm.find('textarea[name="comment"]').val().trim()
-			}
+			};
 
 			meerkat.modules.comms.post({
 				url: 'simples/ajax/blacklist_action.jsp',

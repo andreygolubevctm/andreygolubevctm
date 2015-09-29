@@ -15,6 +15,7 @@
 ////////////////////////////////////////////////////////////////
 
 //JSHINT IGNORES DEFINED HERE:
+/*jshint -W033 */ //Ignore semi-colon warnings
 /*jshint -W061 */ //Ignore warning about the use of eval()
 /*jshint -W058 */ //Missing the optional () on constructor invokation
 /*jshint -W079 */ //Overrides console, and that's okay.

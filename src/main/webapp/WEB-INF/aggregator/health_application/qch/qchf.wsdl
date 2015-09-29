@@ -1,0 +1,683 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="http://tempuri.org/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:i0="http://HSL.OMS.Public.API.Service" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" name="Service" targetNamespace="http://tempuri.org/">
+<wsp:Policy wsu:Id="WSHttp_policy">
+<wsp:ExactlyOne>
+<wsp:All>
+<sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+<wsp:Policy>
+<sp:TransportToken>
+<wsp:Policy>
+<sp:HttpsToken RequireClientCertificate="false"/>
+</wsp:Policy>
+</sp:TransportToken>
+<sp:AlgorithmSuite>
+<wsp:Policy>
+<sp:Basic256/>
+</wsp:Policy>
+</sp:AlgorithmSuite>
+<sp:Layout>
+<wsp:Policy>
+<sp:Strict/>
+</wsp:Policy>
+</sp:Layout>
+<sp:IncludeTimestamp/>
+</wsp:Policy>
+</sp:TransportBinding>
+<sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+<wsp:Policy>
+<sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+<wsp:Policy>
+<sp:WssUsernameToken10/>
+</wsp:Policy>
+</sp:UsernameToken>
+</wsp:Policy>
+</sp:SignedSupportingTokens>
+<sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+<wsp:Policy/>
+</sp:Wss11>
+<sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+<wsp:Policy>
+<sp:MustSupportIssuedTokens/>
+<sp:RequireClientEntropy/>
+<sp:RequireServerEntropy/>
+</wsp:Policy>
+</sp:Trust10>
+<wsaw:UsingAddressing/>
+</wsp:All>
+</wsp:ExactlyOne>
+</wsp:Policy>
+<wsdl:import namespace="http://HSL.OMS.Public.API.Service" location="https://testservices.qchfund.com.au/Service.svc?wsdl=wsdl0"/>
+<wsdl:types/>
+<wsdl:binding name="WSHttp" type="i0:IService">
+<wsp:PolicyReference URI="#WSHttp_policy"/>
+<soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="AgencyById">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/AgencyById" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AgencyMemberships">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/AgencyMemberships" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AgencyCommissions">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/AgencyCommissions" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SubmitMembership">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/SubmitMembership" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SubmitMembershipSTP">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/SubmitMembershipSTP" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ConvertProspectiveMembershipTransaction">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ConvertProspectiveMembershipTransaction" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ConvertProspectiveMembershipTransactionUsingSTP">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ConvertProspectiveMembershipTransactionUsingSTP" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="SubmitIncomingClearanceCertificateUsingSTP">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/SubmitIncomingClearanceCertificateUsingSTP" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="InboundCommunicationTransaction">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/InboundCommunicationTransaction" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="InboundCommunicationTransactionUsingSTP">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/InboundCommunicationTransactionUsingSTP" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="RequestClearanceCertificateForMember">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/RequestClearanceCertificateForMember" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListRanks">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListRanks" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListTitles">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListTitles" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListHealthFunds">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListHealthFunds" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListRelationships">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListRelationships" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListCommunicationTypes">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListCommunicationTypes" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="BankBranchById">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/BankBranchById" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListUserDefinedProperties">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListUserDefinedProperties" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListBadges">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListBadges" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListDirectDebitCreditClasses">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListDirectDebitCreditClasses" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListHomeSupportServicesPersons">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListHomeSupportServicesPersons" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListRateScales">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListRateScales" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GenerateFingerprintForCardStorage">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/GenerateFingerprintForCardStorage" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="GenerateFingerprintForImmediatePayment">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/GenerateFingerprintForImmediatePayment" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CalculateTemporaryCRN">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CalculateTemporaryCRN" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipAddresses">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipAddresses" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipContacts">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipContacts" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipPersons">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipPersons" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipCover">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipCover" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipDebitAccount">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipDebitAccount" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipCreditAccount">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipCreditAccount" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipPreviousCover">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipPreviousCover" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipRebate">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipRebate" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipContribution">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipContribution" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipContributionDates">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipContributionDates" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipAdvanceArrears">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipAdvanceArrears" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipNextPayment">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipNextPayment" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CheckEligibilityByCustomer">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CheckEligibilityByCustomer" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CheckEligibilityByMembershipNumber">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CheckEligibilityByMembershipNumber" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CheckEligibilityByPersonalDetails">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CheckEligibilityByPersonalDetails" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="IsOMSAvailable">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/IsOMSAvailable" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListAgencies">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListAgencies" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListEligibilityReasons">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListEligibilityReasons" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListEligibilitySubReasons">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListEligibilitySubReasons" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListDefenceEligibilityDeclarationFields">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListDefenceEligibilityDeclarationFields" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListBranches">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListBranches" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListSites">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListSites" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ListLocations">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ListLocations" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="RatesQuoteWithGroup">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/RatesQuoteWithGroup" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="RatesQuote">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/RatesQuote" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ContributionFrequencies">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ContributionFrequencies" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CalculateLHCLoadingSingle">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CalculateLHCLoadingSingle" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CalculateLHCLoading">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CalculateLHCLoading" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CalculateRebateSingle">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CalculateRebateSingle" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CalculateRebateSingleWithTier">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CalculateRebateSingleWithTier" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CalculateRebate">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CalculateRebate" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CalculateRebateWithTier">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CalculateRebateWithTier" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="CalculateRebateRate">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/CalculateRebateRate" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="HospitalProductSets">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/HospitalProductSets" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="HospitalProductSetsWithConditions">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/HospitalProductSetsWithConditions" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AncillaryProductSets">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/AncillaryProductSets" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="AncillaryProductSetsWithConditions">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/AncillaryProductSetsWithConditions" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="Products">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/Products" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="ProductsWithConditions">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/ProductsWithConditions" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="States">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/States" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipClasses">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipClasses" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="MembershipClassesWithConditions">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/MembershipClassesWithConditions" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="Groups">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/Groups" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="Agencies">
+<soap12:operation soapAction="http://HSL.OMS.Public.API.Service/IService/Agencies" style="document"/>
+<wsdl:input>
+<soap12:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap12:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="Service">
+<wsdl:port name="WSHttp" binding="tns:WSHttp">
+<soap12:address location="https://testservices.qchfund.com.au/Service.svc"/>
+<wsa10:EndpointReference>
+<wsa10:Address>https://testservices.qchfund.com.au/Service.svc</wsa10:Address>
+</wsa10:EndpointReference>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>

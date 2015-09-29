@@ -18,7 +18,7 @@
             'contractPeriodValue': sortContracts, // custom defined function as callback
             'totalDiscountValue': sortDiscounts, // custom defined function as callback
             'yearlySavingsValue': null // will default to Results.model.defaultSortMethod. Cannot specify here as Results.model is undefined when this file is parsed.
-        }
+        };
 
 
     //Sorting is a kind of filtering for now in the events

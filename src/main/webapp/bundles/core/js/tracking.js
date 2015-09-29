@@ -61,8 +61,7 @@
             }
 
             for (var key in value) {
-                if (value.hasOwnProperty(key)
-                    && typeof value[key] !== 'function') {
+                if (value.hasOwnProperty(key) && typeof value[key] !== 'function') {
                     if (value[key] !== null) {
                         var setVarValue = typeof value[key] === 'string' ? value[key].toLowerCase() : value[key];
                         _satellite.setVar(key, setVarValue);
@@ -205,8 +204,7 @@
         $(document).ready(function () {
 
             initLastFieldTracking();
-            if (typeof meerkat !== 'undefined' && typeof meerkat.site !== 'undefined' && typeof meerkat.site.tracking !== 'undefined'
-                && meerkat.site.tracking.userTrackingEnabled === true) {
+            if (typeof meerkat !== 'undefined' && typeof meerkat.site !== 'undefined' && typeof meerkat.site.tracking !== 'undefined' && meerkat.site.tracking.userTrackingEnabled === true) {
                 meerkat.modules.utils.pluginReady('sessionCamRecorder').done(function () {
                     initUserTracking();
                 });

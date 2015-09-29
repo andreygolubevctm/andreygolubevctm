@@ -271,7 +271,7 @@
 			ageAverage = meerkat.modules.utils.returnAge(primary_dob, true);
 			healthSituCvr = getAgeBands(ageAverage);
 		} else if(cover === 'C' && primary_dob !== '' && partner_dob !== '') {
-			primary_age = meerkat.modules.utils.returnAge(primary_dob),
+			primary_age = meerkat.modules.utils.returnAge(primary_dob);
 			partner_age = meerkat.modules.utils.returnAge(partner_dob);
 			if ( 16 <= primary_age && primary_age <= 120 && 16 <= partner_age && partner_age <= 120 ){
 				ageAverage = Math.floor( (primary_age + partner_age) / 2 );
