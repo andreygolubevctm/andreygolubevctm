@@ -21,7 +21,6 @@
     "shared/regoLookup",
     "shared/saveQuote",
     "shared/resultsRankings",
-    "shared/leadFeed",
-    "shared/formNumberFormatInputs"
+    "shared/leadFeed"
   ]
 }

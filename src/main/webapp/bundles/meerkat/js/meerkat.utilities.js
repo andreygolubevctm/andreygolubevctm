@@ -75,3 +75,23 @@ if (!Array.prototype.filter) {
         return res;
     };
 }
+
+/**
+ * Load in JavaScript files
+ * @param condition
+ * @param script
+ * @param async
+ */
+var yepnope = function (condition, script, async) {
+    async = typeof async == 'undefined' ? true : async;
+    if (!condition) {
+        return;
+    }
+    (function (d, t) {
+        var e = d.createElement(t);
+        if (async)
+            e.async = true;
+        e.src = script;
+        d.getElementsByTagName("head")[0].appendChild(e);
+    }(document, 'script'));
+};

@@ -1,13 +1,16 @@
-/**
- * This module is currently loaded in: health/bundle.json and car/bundle.json
- */
 ;(function($, undefined){
 
-	var meerkat = window.meerkat;
+	var meerkat = window.meerkat,
+		meerkatEvents = meerkat.modules.events,
+		log = meerkat.logging.info,
+		msg = meerkat.messaging;
+
+	var events = {},
+	moduleEvents = events;
 
 	function init(){
 
-		$(document).ready(function($) {
+		jQuery(document).ready(function($) {
 			if($.hasOwnProperty("number") && _.isFunction($.number)) {
 				$('input.liveFormatNumber').each(function(){
 					var $that = $(this);
@@ -32,7 +35,8 @@
 	}
 
 	meerkat.modules.register("formNumberFormatInputs", {
-		init: init
+		init: init,
+		events: events
 	});
 
 })(jQuery);

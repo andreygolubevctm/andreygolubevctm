@@ -3,13 +3,19 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%--
+
 	See associated kampyle.js module and kampyle.less
+
 --%>
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="formId" 	required="true"	 rtexprvalue="true"	 description="Kampyle Form Id" %>
 
+
+
 <%-- HTML --%>
 <div id="kampyle" data-kampyle-formid="${formId}"><a href="https://www.kampyle.com/feedback_form/ff-feedback-form.php?site_code=7343362&amp;lang=en&amp;form_id=${formId}"  target="kampyleWindow" id="kampylink" class="k_static btn btn-cta"><span class="visible-xs">Feedback</span></a></div>
 
-<script src="assets/js/bundles/kampyle.min.js" type="text/javascript"></script>
+<go:style marker="css-href" href="assets/libraries/kampyle/css/k_button.css" />
+<script src="assets/libraries/kampyle/js/k_button.js" type="text/javascript"></script>
+<script src="assets/libraries/kampyle/js/k_push.js" type="text/javascript"></script>

@@ -1,5 +1,4 @@
-;
-(function ($, undefined) {
+;(function ($, undefined) {
 
     var meerkat = window.meerkat,
         noButtons = document.createElement('button').type === 'button';
@@ -42,16 +41,18 @@
                 $(document).on('click', 'form button[type="submit"]', function (event) {
                     event.preventDefault();
                     $(this).closest('form').submit();
-                })/*.on('keypress', 'form input', function (event) {
-                 if (event.which === 13) {
-                 $(this).closest('form').submit();
-                 }
-                 })*/;
+                }).on('keypress', 'form input', function (event) {
+                    if (event.which === 13) {
+                        $(this).closest('form').submit();
+                    }
+                });
             }
 
+            //Fastclick instantiated here on the body - see page.tag for fastclick from cdn or lib/js/fastclick-x.x.x.min.js
             //Add the needsclick class to an element to prevent the behaviour.
+            //yepnope(true, meerkat.site.urls.base + 'assets/libraries/fastclick/fastclick-1.0.6.min.js');
             if (Modernizr.touch) {
-                yepnope.injectJs(meerkat.site.urls.base + 'assets/libraries/fastclick/fastclick.js', function initFastClick() {
+                $.getScript(meerkat.site.urls.base + 'assets/libraries/fastclick/fastclick-1.0.6.min.js', function () {
                     FastClick.attach(document.body);
                 });
             }

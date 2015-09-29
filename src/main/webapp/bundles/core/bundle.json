@@ -1,7 +1,8 @@
 {
   "brandCodes": "all",
   "dependencies": [
-    "plugins/yepnope",
+    "plugins/qtip2",
+    "plugins/typeahead",
     "meerkat"
   ]
 }
