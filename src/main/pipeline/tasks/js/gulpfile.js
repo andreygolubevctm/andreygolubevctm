@@ -48,7 +48,7 @@ function JSTasks(gulp) {
             var incDir = path.join(gulp.pipelineConfig.target.dir, "includes", "js"),
                 revDate = + new Date();
             fileHelper.writeFileToFolder(incDir, fileName + gulp.pipelineConfig.target.inc.extension, fileArray.map(function(file){
-                return "<script type\"\" src=\"" + file.slice(file.indexOf("bundles"), file.length).replace(/\\/g, "/") + "?rev=" + revDate + "\"></script>";
+                return "<script src=\"" + file.slice(file.indexOf("bundles"), file.length).replace(/\\/g, "/") + "?rev=" + revDate + "\"></script>";
             }).join("\r\n"));
 
             return gulp.src(fileArray)
@@ -106,10 +106,10 @@ function JSTasks(gulp) {
             // Look for files that should be included on load and put their paths in the appropriate array
             for (var i = 0; i < completeFileArray.length; i++) {
                 var filePath = completeFileArray[i];
-                if (filePath.match(/(\.onload\.js)/)) {
-                    onLoadFileArray.push(filePath);
-                } else {
+                if (filePath.match(/(\.deferred\.js)/)) {
                     deferredFileArray.push(filePath);
+                } else {
+                    onLoadFileArray.push(filePath);
                 }
             }
 
@@ -135,7 +135,7 @@ function JSTasks(gulp) {
 
             // Files paths to watch
             var bundleDependencies = bundles.getWatchableBundlesFilePaths(bundle);
-            gulp.watch(bundleDependencies, watchTasks);
+            gulp.watch(bundleDependencies, { interval: 500 }, watchTasks);
         })(bundle);
     }
 
