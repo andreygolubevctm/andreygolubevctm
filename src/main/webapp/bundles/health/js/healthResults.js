@@ -389,9 +389,15 @@
             if (freeColumns > 1 && numberOfPages === 1) {
                 toggleResultsLowNumberMessage(true);
                 toggleMarketingMessage(false);
-
             } else {
                 toggleResultsLowNumberMessage(false);
+                if (!meerkat.modules.compare.isCompareOpen()) {
+                    if (pageNumber === pageData.measurements.numberOfPages && freeColumns > 2) {
+                        toggleMarketingMessage(true, freeColumns);
+                    } else {
+                        toggleMarketingMessage(false);
+                    }
+                }
             }
 
         });
@@ -788,7 +794,7 @@
         var freeColumns;
         if (show) {
             var pageMeasurements = Results.pagination.calculatePageMeasurements();
-            if (pageMeasurements === null) {
+            if (pageMeasurements === null || meerkat.modules.compare.isCompareOpen()) {
                 show = false;
             } else {
                 var items = Results.getFilteredResults().length;
