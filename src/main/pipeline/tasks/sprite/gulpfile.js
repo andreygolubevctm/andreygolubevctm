@@ -19,15 +19,23 @@ function SpriteTasks(gulp) {
     for(var bundle in gulp.bundles.collection) {
         (function (bundle) {
             // Check if bundle has a sprites folder
-            if(fs.existsSync(path.join(spriteConfig.source.dir, bundle))) {
+            if(fs.existsSync(path.join(spriteConfig.source.dir, bundle, "src"))) {
                 var taskName = "sprite:" + bundle;
 
                 gulp.task(taskName, function() {
-                    var spriteData = gulp.src(path.join(spriteConfig.source.dir, bundle, "*.png"))
+                    var spriteData = gulp.src(path.join(spriteConfig.source.dir, bundle, "src", "*.png"))
                         .pipe(spritesmith({
                             imgName: bundle + ".png",
-                            imgPath: path.join("..", "..", "..", "graphics", "logos", "sprites", bundle + ".png"),
-                            cssName: "logosSprites.less"
+                            imgPath: "../../../graphics/logos/sprites/" + bundle + ".png",
+                            cssName: "logosSprites.less",
+                            padding: 2,
+                            cssVarMap: function(sprite) {
+                                sprite.name = bundle + "-logo-" + sprite.name;
+                            },
+                            cssOpts: {
+                                functions: false,
+                                variableNameTransforms: []
+                            }
                         }));
 
                     var imgStream = spriteData.img
@@ -44,7 +52,9 @@ function SpriteTasks(gulp) {
         })(bundle);
     }
 
-    gulp.task("sprite", bundleTasks);
+    gulp.task("sprite:build", bundleTasks);
+
+    gulp.task("sprite", []);
 }
 
 module.exports = SpriteTasks;
