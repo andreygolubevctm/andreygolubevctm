@@ -11,8 +11,9 @@ var path = require("path"),
     jshint = require("gulp-jshint");
 
 function JSLintTasks(gulp) {
-    var glob = path.join(gulp.pipelineConfig.bundles.dir, "**", "js"),
-        globArray = [glob + "/*.js", "!" + glob + "/*.min.js"];
+    var bundleDir = gulp.pipelineConfig.bundles.dir;
+    var glob = path.join(bundleDir, "**", "js"),
+        globArray = [glob + "/*.js", "!" + glob + "/*.min.js", "!" + path.join(bundleDir, "plugins", "**", "*.js")];
 
     /**
      * JsHint options: http://jshint.com/docs/options/#jquery
