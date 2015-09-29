@@ -23,20 +23,27 @@ function SpriteTasks(gulp) {
                 var taskName = "sprite:" + bundle;
 
                 gulp.task(taskName, function() {
+                    var spriteConfig = {
+                        imgName: bundle + ".png",
+                        imgPath: "../../../graphics/logos/sprites/" + bundle + ".png",
+                        cssName: "logosSprites.less",
+                        padding: 2,
+                        cssVarMap: function(sprite) {
+                            sprite.name = bundle + "-logo-" + sprite.name;
+                        },
+                        cssOpts: {
+                            functions: false,
+                            variableNameTransforms: []
+                        }
+                    };
+
+                    // Not sure why, but health shouldn't have retina images
+                    //if(bundle !== "health") {
+                    //    spriteConfig.retinaSrcFilter: ["images"]
+                    //}
+
                     var spriteData = gulp.src(path.join(spriteConfig.source.dir, bundle, "src", "*.png"))
-                        .pipe(spritesmith({
-                            imgName: bundle + ".png",
-                            imgPath: "../../../graphics/logos/sprites/" + bundle + ".png",
-                            cssName: "logosSprites.less",
-                            padding: 2,
-                            cssVarMap: function(sprite) {
-                                sprite.name = bundle + "-logo-" + sprite.name;
-                            },
-                            cssOpts: {
-                                functions: false,
-                                variableNameTransforms: []
-                            }
-                        }));
+                        .pipe(spritesmith(spriteConfig));
 
                     var imgStream = spriteData.img
                         .pipe(gulp.dest(path.join(spriteConfig.source.dir, "sprites")));
