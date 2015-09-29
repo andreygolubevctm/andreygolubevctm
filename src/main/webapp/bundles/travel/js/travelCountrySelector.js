@@ -72,7 +72,7 @@
             }
         }).on('typeahead:opened', function () {
             selectedCountryObj = {};
-            $countrySelector.val("")
+            $countrySelector.val("");
         })
             .on('typeahead:selected', function typeAheadSelected(obj, datum, name) {
                 selectedCountryObj = datum;
@@ -141,7 +141,7 @@
             template: function (data) {
                 var isSelected = meerkat.modules.selectTags.isAlreadySelected($list, data.isoCode);
                 if (isSelected && data.isoCode != "0000") {
-                    return "<del class='selected'>" + data.countryName + "</del>"
+                    return "<del class='selected'>" + data.countryName + "</del>";
                 }
                 // Log if isoCode is 0000, meaning no results were returned.
                 if(data.isoCode == "0000") {

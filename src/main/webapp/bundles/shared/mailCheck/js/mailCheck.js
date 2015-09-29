@@ -69,7 +69,7 @@
 
 		// Return the strings' distance
 		return d[m][n];
-	}
+	};
 
 	var addListener = function() {
 		$emailField.on('blur', function(event) {

@@ -104,10 +104,8 @@ Process:
 		}
 
 		// Create dialog content
-		var _url = data.result.url + '?SessionId=' + data.result.refId + '&sst=' + data.result.sst
-				+ '&cardType=' + cardType()
-				+ '&registerError=false'
-				+ '&resultPage=0';
+		var _url = data.result.url + '?SessionId=' + data.result.refId + '&sst=' + data.result.sst;
+		_url += '&cardType=' + cardType() + '&registerError=false' + '&resultPage=0';
 
 		var _message = '<p class="message"></p>';
 
@@ -205,7 +203,7 @@ Process:
 			onSuccess: function onRegisterSuccess(data) {
 				if (!data || !data.result || data.result.success !== true) {
 					fail('IPP Token Log false');
-					return
+					return;
 				}
 
 				$token.val(jsonData.sessionid);

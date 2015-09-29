@@ -76,24 +76,24 @@
 
 	/* example objects
 
-	validation:{
-		validate:true,
-		customValidation:function(callback){
-			callback(true);
-		}
-	}
+	 validation:{
+	 validate:true,
+	 customValidation:function(callback){
+	 callback(true);
+	 }
+	 }
 
-	tracking:{
-		touchType:'H',
-		touchComment: 'HLT detail',
-	}
+	 tracking:{
+	 touchType:'H',
+	 touchComment: 'HLT detail',
+	 }
 
-	externalTracking:{
-		method:'trackQuoteForms',
-		object:meerkat.modules.health.getTrackingFieldsObject
-	}
+	 externalTracking:{
+	 method:'trackQuoteForms',
+	 object:meerkat.modules.health.getTrackingFieldsObject
+	 }
 
-	*/
+	 */
 
 	/* Configure and start the journey engine */
 	function configure(instanceSettings){
@@ -157,7 +157,9 @@
 
 			var stepToShow = settings.steps[0]; // default...
 			processStep(0, function(step, validated){
-				if(step == null) step = stepToShow;
+				if(step == null) {
+					step = stepToShow;
+				}
 				settings.startStepId = step.navigationId;
 
 				if(validated){
@@ -203,7 +205,7 @@
 				try{
 
 					onStepEnter(step, eventObject);
-					if(step.onAfterEnter != null) step.onAfterEnter(eventObject);
+					if(step.onAfterEnter !== null) step.onAfterEnter(eventObject);
 
 					currentStep = step;
 
@@ -212,8 +214,8 @@
 					validateStep(step, function successCallback(){
 
 
-						if(currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
-						if(currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
+						if(currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
+						if(currentStep.onAfterLeave !== null) currentStep.onAfterLeave(eventObject);
 
 						// continue to next step...
 						_.defer(function(){
@@ -303,7 +305,7 @@
 
 			}
 
-			
+
 		}catch(e){
 			unlock();
 			meerkat.modules.address.setHash(currentStep.navigationId);
@@ -320,7 +322,7 @@
 		// home loans update the transaction details before the STEP_CHANGED event is fired.
 		meerkat.messaging.publish(moduleEvents.BEFORE_STEP_CHANGED);
 
-		if(currentStep !== null && currentStep.onBeforeLeave != null) currentStep.onBeforeLeave(eventObject);
+		if(currentStep !== null && currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
 
 		onStepEnter(step, eventObject);
 
@@ -336,7 +338,7 @@
 			// No change in slide, no transitions required, therefore call the step after/before callbacks directly.
 			onHidePreviousStep();
 
-			if(currentStep === null) showSlide(step, false); // Force show the first step on the initial call of the journey engine.
+			if(currentStep === null) showSlide(step, false, null); // Force show the first step on the initial call of the journey engine.
 
 			currentStep = step;
 
@@ -368,13 +370,13 @@
 		}
 
 		function onHidePreviousStep(){
-			if(currentStep != null && currentStep.onAfterLeave != null) currentStep.onAfterLeave(eventObject);
+			if(currentStep !== null && currentStep.onAfterLeave !== null) currentStep.onAfterLeave(eventObject);
 		}
 	}
 
-		function sessionCamRecorder(step) {
+	function sessionCamRecorder(step) {
 		meerkat.modules.sessionCamHelper.updateVirtualPageFromJourneyEngine(step);
-			}
+	}
 
 	function onShowNextStep(eventObject, previousStep, triggerEnterMethod){
 
@@ -428,18 +430,23 @@
 
 	function showSlide(step, animate, callback){
 
-		$slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+step.slideIndex+')');
+		var $slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+step.slideIndex+')');
 
 		if(animate === true){
 
 			$slide.fadeIn(250,function onShow(){
-				$slide.removeClass('hiddenSlide').addClass('active');
-				if(callback != null) callback();
+				_onShow($slide, callback);
 			});
 
 		}else{
-			$slide.removeClass('hiddenSlide').addClass("active");
-			if(callback != null) callback();
+			_onShow($slide, callback);
+		}
+	}
+
+	function _onShow($slide, callback) {
+		$slide.removeClass('hiddenSlide').addClass('active');
+		if(callback !== null) {
+			callback();
 		}
 	}
 
@@ -456,6 +463,7 @@
 				return i;
 			}
 		}
+		return null;
 	}
 
 	/* Return length of the step array */
@@ -466,7 +474,9 @@
 	/* Iterate over array and return step item */
 	function getStep(navigationId){
 		var index = getStepIndex(navigationId);
-		if(index == null) return null;
+		if(index === null) {
+			return null;
+		}
 		return settings.steps[index];
 	}
 
@@ -475,7 +485,7 @@
 		var navId = 0;
 		if(currentStep !== null) {
 			navId = currentStep.navigationId;
-	}
+		}
 		return getStepIndex(navId);
 	}
 
@@ -513,7 +523,7 @@
 
 		var waitForCallback = false;
 
-		if(step.validation != null){
+		if(!_.isNull(step.validation) && !_.isUndefined(step.validation)) {
 
 			if(step.validation.validate === true){
 
@@ -541,13 +551,13 @@
 				if(isValid === false) {
 					if(typeof failureCallback === 'function') {
 						failureCallback();
-			}
+					}
 					meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
 					throw "Validation failed on "+step.navigationId;
 				}
 			}
 
-			if(step.validation.customValidation != null){
+			if(!_.isNull(step.validation.customValidation) && !_.isUndefined(step.validation.customValidation)) {
 				waitForCallback = true;
 				step.validation.customValidation(function(valid){
 					if(valid){
@@ -712,7 +722,7 @@
 
 		$('.error-field:visible', '.journeyEngineSlide.active').each(function() {
 			var $label = $(this).find('label'),
-			xpath = $label.attr('for');
+				xpath = $label.attr('for');
 			if(typeof xpath === 'undefined') {
 				return;
 			}
@@ -728,13 +738,13 @@
 		}
 
 		return meerkat.modules.comms.post({
-				url: "logging/validation.json",
-				data: data,
-				dataType: 'json',
-				cache: true,
-				errorLevel: "silent",
-				useDefaultErrorHandling: false
-			});
+			url: "logging/validation.json",
+			data: data,
+			dataType: 'json',
+			cache: true,
+			errorLevel: "silent",
+			useDefaultErrorHandling: false
+		});
 	}
 
 	function initJourneyEngine() {
@@ -827,8 +837,8 @@
 
 		_.delay(function(){
 			if($ele.attr('data-active') !== '1'){
-			$ele.removeClass('displayBlock');
-			$ele.find('.message').text( $ele.find('.message').attr('data-oldtext') );
+				$ele.removeClass('displayBlock');
+				$ele.find('.message').text( $ele.find('.message').attr('data-oldtext') );
 			}
 		},speed);
 	}

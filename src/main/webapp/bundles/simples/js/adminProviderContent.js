@@ -29,7 +29,7 @@
                                         return providerContentTypeInfo.length ? providerContentTypeInfo[0].code : "";
                                     }
                                 }
-                            }
+                            };
                         }
                     }
                 });

@@ -535,7 +535,9 @@
         $(document).on("resultPageChange", function (event) {
 
             var pageData = event.pageData;
-            if (pageData.measurements === null) return false;
+            if (_.isNull(pageData.measurements)) {
+                return false;
+            }
 
             var numberOfPages = pageData.measurements.numberOfPages;
             var items = Results.getFilteredResults().length;
@@ -994,7 +996,7 @@
         var freeColumns;
         if (show) {
             var pageMeasurements = Results.pagination.calculatePageMeasurements();
-            if (pageMeasurements == null) {
+            if (pageMeasurements === null) {
                 show = false;
             } else {
                 var items = Results.getFilteredResults().length;

@@ -23,7 +23,7 @@
                                         return providerInfo.length ? providerInfo[0].text : "";
                                     }
                                 }
-                            }
+                            };
                         }
                     }
                 });
