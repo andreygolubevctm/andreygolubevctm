@@ -2,13 +2,15 @@ package com.ctm.providers.health.healthquote.model.response;
 
 import java.math.BigDecimal;
 
-public class Price {
-
-    private BigDecimal discountedPremium;
+public class Price extends PriceInfo {
 
     private BigDecimal lhc;
 
     private BigDecimal grossPremium;
+
+    private BigDecimal loadingAmount;
+
+    private DiscountedPrice discountedPrice;
 
     public BigDecimal getLhc() {
         return lhc;
@@ -26,11 +28,19 @@ public class Price {
         this.grossPremium = grossPremium;
     }
 
-    public BigDecimal getDiscountedPremium() {
-        return discountedPremium;
+    public BigDecimal getLoadingAmount() {
+        return loadingAmount;
     }
 
-    public void setDiscountedPremium(BigDecimal discountedPremium) {
-        this.discountedPremium = discountedPremium;
+    public void setLoadingAmount(BigDecimal loadingAmount) {
+        this.loadingAmount = loadingAmount;
+    }
+
+    public DiscountedPrice getDiscountedPrice() {
+        return discountedPrice;
+    }
+
+    public void setDiscountedPrice(DiscountedPrice discountedPrice) {
+        this.discountedPrice = discountedPrice;
     }
 }

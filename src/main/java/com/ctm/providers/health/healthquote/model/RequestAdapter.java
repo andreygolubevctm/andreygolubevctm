@@ -10,6 +10,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -225,6 +226,10 @@ public class RequestAdapter {
 
         if (alternatePricingContent != null && toBoolean(alternatePricingContent.getContentValue())) {
             quoteRequest.setIncludeAlternativePricing(true);
+        }
+
+        if (quote.getRebate() != null) {
+            quoteRequest.setRebate(new BigDecimal(quote.getRebate()));
         }
 
         return quoteRequest;

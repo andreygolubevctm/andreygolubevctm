@@ -7,12 +7,12 @@ import com.ctm.model.health.form.HealthRequest;
 import com.ctm.model.health.form.Payment;
 import com.ctm.model.health.form.PaymentDetails;
 import com.ctm.model.health.results.*;
+import com.ctm.model.health.results.Info;
+import com.ctm.model.health.results.Premium;
+import com.ctm.model.health.results.Price;
 import com.ctm.model.resultsData.AvailableType;
 import com.ctm.providers.QuoteResponse;
-import com.ctm.providers.health.healthquote.model.response.HealthQuote;
-import com.ctm.providers.health.healthquote.model.response.HealthResponse;
-import com.ctm.providers.health.healthquote.model.response.Promotion;
-import com.ctm.providers.health.healthquote.model.response.SpecialOffer;
+import com.ctm.providers.health.healthquote.model.response.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.commons.lang3.StringUtils;
@@ -105,8 +105,9 @@ public class ResponseAdapter {
                 new com.ctm.providers.health.healthquote.model.response.Premium();
         com.ctm.providers.health.healthquote.model.response.Price defaultPrice = new com.ctm.providers.health.healthquote.model.response.Price();
         defaultPrice.setLhc(BigDecimal.ZERO);
-        defaultPrice.setDiscountedPremium(BigDecimal.ZERO);
+        defaultPrice.setLoadingAmount(BigDecimal.ZERO);
         defaultPrice.setGrossPremium(BigDecimal.ZERO);
+        defaultPrice.setDiscountedPrice(null);
         premium.setAnnually(defaultPrice);
         premium.setFortnightly(defaultPrice);
         premium.setMonthly(defaultPrice);
@@ -166,43 +167,54 @@ public class ResponseAdapter {
                 StringUtils.equalsIgnoreCase(healthQuote.getOnResultsPage(), "Y"));
 
         price.setDiscounted(hasDiscountRates ? "Y" : "N");
-        String star = "";
-        BigDecimal premium = quotePrice.getGrossPremium();
-        if (hasDiscountRates) {
-            premium = quotePrice.getDiscountedPremium();
-            BigDecimal discount = quotePrice.getGrossPremium().subtract(quotePrice.getDiscountedPremium())
-                .setScale(2, BigDecimal.ROUND_HALF_UP);
-            BigDecimal discountPercentage = BigDecimal.ZERO;
-            if (discount.doubleValue() > 0.0) {
-                discountPercentage = discount.divide(quotePrice.getGrossPremium(), 2, BigDecimal.ROUND_HALF_UP)
-                        .multiply(BigDecimal.valueOf(100));
-            }
-            star = "*";
-            price.setDiscountAmount(formatCurrency(discount, true, true));
-            price.setDiscountPercentage(discountPercentage);
+        final BigDecimal loadingAmount = quotePrice.getLoadingAmount();
+        if (hasDiscountRates && quotePrice.getDiscountedPrice() != null) {
+            final DiscountedPrice discountedPrice = quotePrice.getDiscountedPrice();
+            price.setDiscountAmount(formatCurrency(discountedPrice.getDiscountAmount(), true, true));
+            price.setDiscountPercentage(discountedPrice.getDiscountPercentage());
+            final BigDecimal lhcFreeAmount = discountedPrice.getLhcFreeAmount();
+            BigDecimal premiumWithRebateAndLHCDecimal = loadingAmount
+                    .add(lhcFreeAmount).setScale(2, BigDecimal.ROUND_HALF_UP);
+            price.setText("*" + formatCurrency(premiumWithRebateAndLHCDecimal, true, true));
+            price.setValue(premiumWithRebateAndLHCDecimal);
+
+            final BigDecimal rebateAmount = discountedPrice.getRebateAmount();
+            price.setPricing("Includes rebate of " + formatCurrency(rebateAmount, true, true) + " & LHC loading of " +
+                    formatCurrency(loadingAmount, true, true));
+            price.setLhcfreetext("*" + formatCurrency(lhcFreeAmount, true, true));
+            price.setLhcfreevalue(lhcFreeAmount);
+            price.setLhcfreepricing("+ " + formatCurrency(loadingAmount, true, true) + " LHC inc " +
+                    formatCurrency(rebateAmount, true, true) + " Government Rebate");
+            price.setRebateValue(formatCurrency(rebateAmount, true, true));
+            price.setBase(formatCurrency(discountedPrice.getDiscountedPremium(), true, true));
+            price.setBaseAndLHC(formatCurrency(loadingAmount.add(discountedPrice.getDiscountedPremium()), true, true));
+
+
         } else {
             price.setDiscountAmount(formatCurrency(BigDecimal.ZERO, true, true));
             price.setDiscountPercentage(BigDecimal.ZERO);
+
+            BigDecimal premiumWithRebateAndLHCDecimal = loadingAmount
+                    .add(quotePrice.getLhcFreeAmount()).setScale(2, BigDecimal.ROUND_HALF_UP);
+            price.setText(formatCurrency(premiumWithRebateAndLHCDecimal, true, true));
+            price.setValue(premiumWithRebateAndLHCDecimal);
+
+            price.setPricing("Includes rebate of " + formatCurrency(quotePrice.getRebateAmount(), true, true) + " & LHC loading of " +
+                    formatCurrency(loadingAmount, true, true));
+            price.setLhcfreetext(formatCurrency(quotePrice.getLhcFreeAmount(), true, true));
+            price.setLhcfreevalue(quotePrice.getLhcFreeAmount());
+            price.setLhcfreepricing("+ " + formatCurrency(loadingAmount, true, true) + " LHC inc " +
+                    formatCurrency(quotePrice.getRebateAmount(), true, true) + " Government Rebate");
+            price.setRebateValue(formatCurrency(quotePrice.getRebateAmount(), true, true));
+            price.setBase(formatCurrency(quotePrice.getGrossPremium(), true, true));
+            price.setBaseAndLHC(formatCurrency(loadingAmount.add(quotePrice.getGrossPremium()), true, true));
         }
-        BigDecimal premiumWithRebateAndLHCDecimal = getPremiumWithRebateAndLHCDecimal(quotePrice.getLhc(), premium, healthQuote);
-        price.setText(star + formatCurrency(premiumWithRebateAndLHCDecimal, true, true));
-        price.setValue(premiumWithRebateAndLHCDecimal);
 
-        BigDecimal loadingAmount = getLoadingAmountDecimal(quotePrice.getLhc(), healthQuote);
-        BigDecimal rebateAmount = getRebateAmountDecimal(healthQuote, premium);
-        BigDecimal lhcFreeValue = getLHCFreeValueDecimal(healthQuote, premium);
 
-        price.setPricing("Includes rebate of " + formatCurrency(rebateAmount, true, true) + " & LHC loading of " + formatCurrency(loadingAmount, true, true));
-        price.setLhcfreetext(star + formatCurrency(lhcFreeValue, true, true));
-        price.setLhcfreevalue(lhcFreeValue);
-        price.setLhcfreepricing("+ " + formatCurrency(loadingAmount, true, true) + " LHC inc " + formatCurrency(rebateAmount, true, true) + " Government Rebate");
         price.setHospitalValue(quotePrice.getLhc());
         price.setRebate(healthQuote.getRebate().intValue());
-        price.setRebateValue(formatCurrency(rebateAmount, true, true));
         price.setLhcPercentage(healthQuote.getLoading());
         price.setLhc(formatCurrency(loadingAmount, true, true));
-        price.setBase(formatCurrency(premium, true, true));
-        price.setBaseAndLHC(formatCurrency(getBaseAndLHC(healthQuote, quotePrice.getLhc(), premium), true, true));
         price.setGrossPremium(formatCurrency(quotePrice.getGrossPremium(), true, true));
         return price;
     }
@@ -259,69 +271,6 @@ public class ResponseAdapter {
                 isDiscountRates = false;
         }
         return isDiscountRates;
-    }
-
-    public static BigDecimal getPremiumWithRebateAndLHCDecimal(BigDecimal lhc, BigDecimal premium,
-                                                               com.ctm.model.health.form.HealthQuote healthQuote) {
-        BigDecimal calculatedLhc = getLoadingAmountDecimal(lhc, healthQuote);
-        BigDecimal calculatedPremiumWithRebate =getLHCFreeValueDecimal(healthQuote, premium);
-        return calculatedPremiumWithRebate.add(calculatedLhc).setScale(2, BigDecimal.ROUND_HALF_UP);
-    }
-
-    private static BigDecimal getLoadingAmountDecimal(BigDecimal lhc,
-                                                      com.ctm.model.health.form.HealthQuote healthQuote) {
-        BigDecimal loading = BigDecimal.valueOf(healthQuote.getLoading());
-        String membership = healthQuote.getSituation().getHealthCvr();
-
-        if(lhc.equals(new BigDecimal(0)) || loading.equals(new BigDecimal(0))) {
-            return new BigDecimal(0);
-        } else if(membership.equals("F") || membership.equals("C")) {
-            BigDecimal halfPremium = lhc.divide(new BigDecimal(2));
-            BigDecimal precentageLoading = loading.divide(new BigDecimal(100));
-            // Round to the nearest cent using half up
-            BigDecimal individualLoading = halfPremium.multiply(precentageLoading).setScale(2, BigDecimal.ROUND_HALF_UP);
-            BigDecimal calculatedPremium = individualLoading.multiply(new BigDecimal(2));
-            return calculatedPremium;
-        } else {
-            BigDecimal precentageLoading = loading.divide(new BigDecimal(100));
-            // Round to the nearest cent using half up
-            BigDecimal calculatedPremium = lhc.multiply(precentageLoading).setScale(2, BigDecimal.ROUND_HALF_UP);
-            return calculatedPremium;
-        }
-    }
-
-    private static BigDecimal getLHCFreeValueDecimal(com.ctm.model.health.form.HealthQuote healthQuote,
-                                                     BigDecimal premium) {
-        BigDecimal calculatedPremium;
-        Double rebate = healthQuote.getRebate();
-        if (rebate != 100.0) {
-            //e.g. 0.7096 = (100 - 29.04) / 100
-            BigDecimal rebateCalc = new BigDecimal(100).subtract(BigDecimal.valueOf(rebate)).divide(new BigDecimal(100));
-            calculatedPremium = premium.multiply(rebateCalc).setScale(2, BigDecimal.ROUND_HALF_UP);
-        } else {
-            calculatedPremium = premium;
-        }
-        return calculatedPremium;
-    }
-
-    public static BigDecimal getRebateAmountDecimal(com.ctm.model.health.form.HealthQuote healthQuote,
-                                                    BigDecimal premium) {
-        BigDecimal rebate = BigDecimal.valueOf(healthQuote.getRebate());
-        BigDecimal rebateAmount;
-        if(rebate.doubleValue() != 100.0) {
-            BigDecimal rebateCalcReal = rebate.divide(new BigDecimal(100));
-            rebateAmount =  premium.multiply(rebateCalcReal).setScale(2, BigDecimal.ROUND_HALF_UP);
-        }else{
-            rebateAmount = new BigDecimal(0.0);
-        }
-        return rebateAmount;
-    }
-
-    public static BigDecimal getBaseAndLHC(com.ctm.model.health.form.HealthQuote healthQuote,
-                                           BigDecimal lhc,
-                                           BigDecimal premium) {
-        BigDecimal loadingAmount= getLoadingAmountDecimal(lhc, healthQuote);
-        return loadingAmount.add(premium);
     }
 
     public static String formatCurrency(BigDecimal value, boolean showSymbol, boolean groupingUsed) {

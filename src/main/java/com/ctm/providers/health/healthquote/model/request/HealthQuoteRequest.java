@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
 import org.joda.time.LocalDate;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class HealthQuoteRequest
@@ -32,6 +33,8 @@ public class HealthQuoteRequest
     private int searchResults = 12;
 
     private boolean includeAlternativePricing;
+
+    private BigDecimal rebate;
 
     public String getState() {
         return state;
@@ -111,5 +114,13 @@ public class HealthQuoteRequest
 
     public void setIncludeAlternativePricing(boolean includeAlternativePricing) {
         this.includeAlternativePricing = includeAlternativePricing;
+    }
+
+    public BigDecimal getRebate() {
+        return rebate;
+    }
+
+    public void setRebate(BigDecimal rebate) {
+        this.rebate = rebate;
     }
 }
