@@ -11,6 +11,7 @@
     "shared/emailLoadQuote",
     "shared/commencementDate",
     "shared/datepicker",
+    "shared/sliders",
     "shared/dropdownInteractive",
     "shared/partnerTransfer",
     "shared/moreInfo",

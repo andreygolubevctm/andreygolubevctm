@@ -41,6 +41,7 @@ USAGE EXAMPLE: Call directly
 			title: '',
 			htmlContent: null,
 			url: null,
+			externalUrl: null,
 			cacheUrl: false,
 			buttons: [],
 			className: '',
@@ -121,7 +122,7 @@ USAGE EXAMPLE: Call directly
 			onOpen: function(dialogId) {},
 			onClose: function(dialogId) {},
 			onLoad: function(dialogId) {}
-		}
+		};
 
 	function show(instanceSettings){
 
@@ -203,7 +204,7 @@ USAGE EXAMPLE: Call directly
 				button.callback(eventObject);
 		});
 
-		if (settings.url != null) {
+		if (settings.url !== null) {
 			meerkat.modules.comms.get({
 				url: settings.url,
 				cache: settings.cacheUrl,
@@ -274,7 +275,9 @@ USAGE EXAMPLE: Call directly
 
 		// Run the callback
 		var settings = getSettings(dialogId);
-		if (settings !== null && typeof settings.onClose === 'function') settings.onClose( dialogId );
+		if(settings !== null && typeof settings.onClose === 'function') {
+			settings.onClose( dialogId );
+		}
 		if(settings.destroyOnClose === true) {
 			destroyDialog(dialogId);
 		} else {
@@ -381,7 +384,7 @@ USAGE EXAMPLE: Call directly
 
 		if (settings != null) {
 			if (settings.hashId != null) {
-				meerkat.modules.address.removeFromHash(settings.hashId)
+				meerkat.modules.address.removeFromHash(settings.hashId);
 
 				var previousInstance = _.findWhere(dialogHistory, {hashId:settings.hashId});
 				if(previousInstance == null) dialogHistory.push(settings);

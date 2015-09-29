@@ -348,7 +348,7 @@
 
 			var time = meerkat.modules.performanceProfiling.endTest('results');
 
-			var score
+			var score;
 			if(time < 800){
 				score = meerkat.modules.performanceProfiling.PERFORMANCE.HIGH;
 			}else if (time < 8000 && meerkat.modules.performanceProfiling.isIE8() === false){
@@ -475,7 +475,7 @@
 
 		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
 			_.each(products, function massageJson(result, index) {
-				if (result.excess != null && !_.isUndefined(result.excess)) {
+				if (result.excess !== null && !_.isUndefined(result.excess)) {
 					result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
 				}
 			});

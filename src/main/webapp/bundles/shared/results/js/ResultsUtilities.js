@@ -1,5 +1,4 @@
-var ResultsUtilities = new Object();
-ResultsUtilities = {
+var ResultsUtilities = {
 
 	setContainerWidth: function( elements, container ){
 		var width = $( elements ).first().outerWidth(true) * $( elements ).length;
@@ -31,7 +30,7 @@ ResultsUtilities = {
 						} else {
 							element.removeClass( extraClass );
 							// refresh the element as removeClass alone doesn't seem to update the display in IE8
-							if ( $.browser.version == 8 && element.is(':visible') && scrollTop == 0) {
+							if ( $.browser.version == 8 && element.is(':visible') && scrollTop === 0) {
 								element.delay(5).hide(0).show(0);
 						}
 
@@ -166,7 +165,7 @@ ResultsUtilities = {
 		}
 	}
 
-}
+};
 
 var deBouncer = function($,cf,of, interval){
 	// deBouncer by hnldesign.nl

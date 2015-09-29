@@ -1,3 +1,4 @@
+
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
@@ -292,7 +293,7 @@
 				}
 
 			}
-		}
+		};
 
 		checkUserAjaxObject = meerkat.modules.optIn.fetch( emailInfo );
 	}

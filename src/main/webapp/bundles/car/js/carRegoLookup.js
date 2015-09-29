@@ -30,7 +30,7 @@
         rego :      null,
         regoRow :   null,
         feedback :  null
-    }
+    };
 
 
     function init(){
@@ -163,8 +163,8 @@
                     case "service_turned_off":
                     case "service_toggle_undefined":
                     case "transaction_unverified":
-                        renderError("Sorry, this service is presently unavailable. Please locate your vehicle using the options below.")
-                        break
+                        renderError("Sorry, this service is presently unavailable. Please locate your vehicle using the options below.");
+                        break;
                 }
             } else {
                 meerkat.messaging.publish(
