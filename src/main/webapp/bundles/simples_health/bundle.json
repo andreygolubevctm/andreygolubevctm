@@ -1,6 +1,3 @@
 {
-  "brandCodes": "all",
-  "dependencies": [
-    "shared/datepicker"
-  ]
+  "brandCodes": "all"
 }
