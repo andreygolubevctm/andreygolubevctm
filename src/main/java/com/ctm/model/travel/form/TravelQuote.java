@@ -3,14 +3,10 @@ package com.ctm.model.travel.form;
 import com.ctm.providers.travel.travelquote.model.request.Filter;
 import com.ctm.web.validation.Destinations;
 import com.ctm.web.validation.Name;
-import com.ctm.web.validation.Numeric;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Map web_ctm front end travel quote to Java object (with validation)
@@ -49,8 +45,10 @@ public class TravelQuote {
     @NotNull(message = "Please choose how many children")
     private Integer children;
 
-    @NotNull(message = "Please enter a valid number")
-    private Integer oldest;
+    @NotNull(message = "Please enter a valid date of birth")
+    private String adult1_dob;
+
+    private String adult2_dob;
 
     private ArrayList<String> destinations;
 
@@ -86,12 +84,20 @@ public class TravelQuote {
         this.adults = adults;
     }
 
-    public Integer getOldest() {
-        return oldest;
+    public String getAdult1DOB() {
+        return adult1_dob;
     }
 
-    public void setOldest(Integer oldest) {
-        this.oldest = oldest;
+    public void setAdult1DOB(String adult1_dob) {
+        this.adult1_dob = adult1_dob;
+    }
+
+    public String getAdult2DOB() {
+        return adult2_dob;
+    }
+
+    public void setAdult2DOB(String adult2_dob) {
+        this.adult2_dob = adult2_dob;
     }
 
     public String getCurrentJourney() {

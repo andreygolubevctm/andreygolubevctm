@@ -14,7 +14,8 @@ public class TravelBestPriceEmailModel extends BestPriceEmailModel {
 	private String endDate;
 	private String adults;
 	private String children;
-	private String oldestAge;
+	private String adult1_dob;
+	private String adult2_dob;
 	private String OME;
 	private String LPE;
 	private String excess;
@@ -113,12 +114,20 @@ public class TravelBestPriceEmailModel extends BestPriceEmailModel {
 		this.children = children;
 	}
 
-	public String getOldestAge() {
-		return oldestAge;
+	public String getAdult1DOB() {
+		return adult1_dob;
 	}
 
-	public void setOldestAge(String oldestAge) {
-		this.oldestAge = oldestAge;
+	public void setAdult1DOB(String adult1_dob) {
+		this.adult1_dob = adult1_dob;
+	}
+
+	public String getAdult2DOB() {
+		return adult2_dob;
+	}
+
+	public void setAdult2DOB(String adult2_dob) {
+		this.adult2_dob = adult2_dob;
 	}
 
 	public String getOME() {
@@ -202,7 +211,8 @@ public class TravelBestPriceEmailModel extends BestPriceEmailModel {
 				", endDate='" + endDate + '\'' +
 				", adults='" + adults + '\'' +
 				", children='" + children + '\'' +
-				", oldestAge='" + oldestAge + '\'' +
+				", adult1_dob='" + adult1_dob + '\'' +
+				", adult2_dob='" + adult2_dob + '\'' +
 				", OME='" + OME + '\'' +
 				", LPE='" + LPE + '\'' +
 				", excess='" + excess + '\'' +

@@ -34,7 +34,8 @@ public class TravelServiceTest {
 		travelService = new TravelService(serviceConfig, connection);
 		travelRequest = new TravelRequest();
         travelQuote = new TravelQuote();
-		travelQuote.setOldest(80);
+		travelQuote.setAdult1DOB("01/01/1935");
+		travelQuote.setAdult2DOB("01/01/1965");
 		travelQuote.setAdults(2);
 		travelQuote.setChildren(1);
 		travelQuote.setPolicyType("M");
@@ -60,7 +61,7 @@ public class TravelServiceTest {
 		// Set defaults for mandatory fields
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-        travelQuote.setOldest(30);
+        travelQuote.setAdult1DOB("01/01/1985");
 
 
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
@@ -113,7 +114,7 @@ public class TravelServiceTest {
 		// Set defaults
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-        travelQuote.setOldest(30);
+		travelQuote.setAdult1DOB("01/01/1985");
 
 		// Destination field only accepts 3 letter characters
         travelRequest.getQuote().setDestination("BOB");
@@ -165,7 +166,7 @@ public class TravelServiceTest {
 		// Set defaults
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-        travelQuote.setOldest(30);
+		travelQuote.setAdult1DOB("01/01/1985");
 
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
@@ -197,14 +198,14 @@ public class TravelServiceTest {
 
 		travelQuote.setAdults(null);
 		travelQuote.setChildren(null);
-		travelQuote.setOldest(null);
+		travelQuote.setAdult1DOB(null);
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
 		assertFalse(travelService.isValid());
 
 		// Set defaults
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-        travelQuote.setOldest(30);
+		travelQuote.setAdult1DOB("01/01/1985");
 
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
 		assertTrue(travelService.isValid());

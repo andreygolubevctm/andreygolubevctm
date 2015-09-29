@@ -14,7 +14,8 @@ public class TravelQuoteRequest {
     private boolean mobileUrls = false;
     private int numberOfAdults;
     private int numberOfChildren;
-    private int oldestPerson;
+    private String adult1DOB;
+    private String adult2DOB;
     private ArrayList<String> providerFilter = new ArrayList<String>();
     private SingleTripDetails singleTripDetails;
 
@@ -53,12 +54,20 @@ public class TravelQuoteRequest {
         this.numberOfChildren = numberOfChildren;
     }
 
-    public int getOldestPerson() {
-        return oldestPerson;
+    public String getAdult1DOB() {
+        return adult1DOB;
     }
 
-    public void setOldestPerson(int oldestPerson) {
-        this.oldestPerson = oldestPerson;
+    public void setAdult1DOB(String adult1DOB) {
+        this.adult1DOB = adult1DOB;
+    }
+
+    public String getAdult2DOB() {
+        return adult2DOB;
+    }
+
+    public void setAdult2DOB(String adult2DOB) {
+        this.adult2DOB = adult2DOB;
     }
 
     public ArrayList<String> getProviderFilter() {
