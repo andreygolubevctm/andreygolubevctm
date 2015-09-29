@@ -10,11 +10,10 @@
 /////////////////////////////////////////////////
 // Results Code
 /////////////////////////////////////////////////
-var Results = new Object();
-Results = {
+var Results = {
 
-	view: new Object(),
-	model: new Object(),
+	view: {},
+	model: {},
 
 	moduleEvents: {
 		RESULTS_INITIALISED: 'RESULTS_INITIALISED',

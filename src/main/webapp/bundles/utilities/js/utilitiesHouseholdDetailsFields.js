@@ -14,7 +14,7 @@
         if(meerkat.site.pageAction === "confirmation") {
             return;
         }
-        if(meerkat.site.providerResults != null &&  (
+        if(meerkat.site.providerResults !== null &&  (
                 ( typeof meerkat.site.providerResults.gasProviders !== "undefined"
                      && meerkat.site.providerResults.gasProviders.length )
             || ( typeof meerkat.site.providerResults.electricityProviders !== "undefined"

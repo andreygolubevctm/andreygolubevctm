@@ -17,7 +17,7 @@
         moduleEvents = events.retrievequotesLogin,
         failModalId,
         $loginFailureTemplate,
-        htmlTemplate = function() { return "" };
+        htmlTemplate = function() { return ""; };
 
     function initLogin(){
 

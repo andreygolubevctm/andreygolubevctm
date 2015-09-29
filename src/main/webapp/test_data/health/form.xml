@@ -82,6 +82,7 @@
 				<cardExpiryMonth>10</cardExpiryMonth>
 				<cardExpiryYear>18</cardExpiryYear>
 			</expiry>
+			<cardPosition>1</cardPosition>
 		</medicare>
 	</payment>
 	<previousfund>
@@ -282,4 +283,5 @@
 		<dialogue-checkbox-28>Y</dialogue-checkbox-28>
 		<contactType>outbound</contactType>
 	</simples>
+	<contactAuthority>Y</contactAuthority>
 </health>

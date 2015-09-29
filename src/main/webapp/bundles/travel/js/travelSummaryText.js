@@ -2,7 +2,7 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info
+		log = meerkat.logging.info;
 
 		//Stores the jQuery object for the component group
 	var $resultsSummaryPlaceholder,

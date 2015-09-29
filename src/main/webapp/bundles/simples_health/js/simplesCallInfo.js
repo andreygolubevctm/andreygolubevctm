@@ -29,7 +29,7 @@
                 toggleVdnInput();
             });
             // toggle for first time page load
-            toggleVdnInput()
+            toggleVdnInput();
         });
     }
 

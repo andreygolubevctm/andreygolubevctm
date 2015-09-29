@@ -83,7 +83,9 @@
 		$submitButton = $(".call-me-back-submit");
 		$forms = $(".call-me-back-form");
 
-		$submitButton.off("click").on("click", function(){ submitCallMeBack( $(this).parents("form").first() ) } );
+		$submitButton.off("click").on("click", function(){
+			submitCallMeBack( $(this).parents("form").first() );
+		});
 
 		setValidation();
 	}
@@ -135,8 +137,8 @@
 
 		var dat = [];
 
-		var quoteForm = meerkat.modules.form.getData( $currentForm )
-		var jeForm =  meerkat.modules.journeyEngine.getFormData()
+		var quoteForm = meerkat.modules.form.getData( $currentForm );
+		var jeForm =  meerkat.modules.journeyEngine.getFormData();
 		dat = quoteForm.concat(jeForm);
 		dat.push({
 			name:'quoteType',

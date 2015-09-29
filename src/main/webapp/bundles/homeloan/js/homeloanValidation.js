@@ -14,7 +14,7 @@
 
             return false;
         }
-    }
+    };
 
     /* To proceed a user must select either a valid postcode or enter a suburb and
      select a valid suburb/postcode/state value from the autocomplete. This is to

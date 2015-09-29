@@ -144,7 +144,7 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
                 kv("travelRequest", data));
         }
 
-        return null;
+        return new ArrayList<>();
 
     }
 }
