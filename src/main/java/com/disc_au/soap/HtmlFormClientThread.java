@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -33,6 +32,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 	 * @param soapRequest the soap request
 	 * @return the string
 	 */
+	@Override
 	protected String processRequest(String soapRequest) {
 
 		StringBuffer returnData = new StringBuffer();
@@ -44,6 +44,7 @@ public class HtmlFormClientThread extends SOAPClientThread {
 
 			HttpURLConnection connection = (HttpURLConnection) u
 					.openConnection();
+			setCorrelationIdHeader(connection);
 			connection.setReadTimeout(getConfiguration().getTimeoutMillis());
 			connection.setDoOutput(true);
 			connection.setDoInput(true);

@@ -35,20 +35,20 @@ import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
 import com.ctm.security.StringEncryption;
 import com.ctm.services.ServiceConfigurationService;
 import com.ctm.webservice.WebServiceUtils;
-import com.exacttarget.wsdl.partnerapi.APIObject;
-import com.exacttarget.wsdl.partnerapi.Attribute;
-import com.exacttarget.wsdl.partnerapi.ClientID;
-import com.exacttarget.wsdl.partnerapi.CreateOptions;
-import com.exacttarget.wsdl.partnerapi.CreateRequest;
-import com.exacttarget.wsdl.partnerapi.CreateResponse;
-import com.exacttarget.wsdl.partnerapi.CreateResult;
-import com.exacttarget.wsdl.partnerapi.ObjectFactory;
-import com.exacttarget.wsdl.partnerapi.PartnerAPI;
-import com.exacttarget.wsdl.partnerapi.SendClassification;
-import com.exacttarget.wsdl.partnerapi.Soap;
-import com.exacttarget.wsdl.partnerapi.Subscriber;
-import com.exacttarget.wsdl.partnerapi.TriggeredSend;
-import com.exacttarget.wsdl.partnerapi.TriggeredSendDefinition;
+import com.exacttarget.wsdl.partnerapi.*;
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.endpoint.Endpoint;
+import org.apache.cxf.frontend.ClientProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.DOMException;
+
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.Service;
+import java.security.GeneralSecurityException;
+import java.util.Map;
+
+import static java.lang.Integer.parseInt;
 
 public class ExactTargetEmailSender<T extends EmailModel> {
 
@@ -110,7 +110,7 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 			Soap stub = initWebserviceClient();
 			CreateRequest createRequest = new CreateRequest();
 
-			createPayload(exactTargetEmailModel, createRequest);
+			ExactTargetEmailBuilder.createPayload(exactTargetEmailModel, createRequest);
 
 			CreateResponse createResponse = stub.create(createRequest);
 			EmailResponse response = parseResponse(createResponse);
@@ -145,70 +145,6 @@ public class ExactTargetEmailSender<T extends EmailModel> {
 			client.destroy();
 		}
 		client = null;
-	}
-
-
-	private void createPayload(ExactTargetEmailModel exactTargetEmailModel, CreateRequest createRequest) {
-		ObjectFactory  objectFactory = new com.exacttarget.wsdl.partnerapi.ObjectFactory();
-
-		CreateOptions options = new CreateOptions();
-		createRequest.setOptions(options );
-		List<APIObject> objects = createRequest.getObjects();
-
-		TriggeredSend triggeredSend = new TriggeredSend();
-
-		ClientID client = createClient(exactTargetEmailModel);
-
-		triggeredSend.setClient(client);
-
-		TriggeredSendDefinition triggeredSendDefinition = createTriggeredSendDefinition(
-				exactTargetEmailModel, objectFactory);
-
-		triggeredSend.setTriggeredSendDefinition(triggeredSendDefinition);
-
-		Subscriber subscriber = createSubscriber(exactTargetEmailModel);
-		triggeredSend.getSubscribers().add(subscriber);
-
-		objects.add(triggeredSend);
-	}
-
-	private ClientID createClient(ExactTargetEmailModel exactTargetEmailModel) {
-		ClientID clientId = new ClientID();
-		clientId.setClientID(exactTargetEmailModel.getClientId());
-		return clientId;
-	}
-
-	private Subscriber createSubscriber(ExactTargetEmailModel exactTargetEmailModel) {
-		Subscriber subscriber = new Subscriber();
-		subscriber.setEmailAddress(exactTargetEmailModel.getEmailAddress()); // updating to new email address.
-		subscriber.setSubscriberKey(subscriber.getEmailAddress()); //subscriber unique, cannot update
-
-		for(Entry<String, String> attribute: exactTargetEmailModel.getAttributes().entrySet()) {
-			String value = attribute.getValue();
-			String normalisedValue = value == null ? "" : value;
-			Attribute attributeElement = new Attribute();
-			attributeElement.setName(attribute.getKey());
-			attributeElement.setValue(normalisedValue);
-			subscriber.getAttributes().add(attributeElement);
-		}
-		return subscriber;
-	}
-
-
-	private TriggeredSendDefinition createTriggeredSendDefinition(
-			ExactTargetEmailModel exactTargetEmailModel,
-			ObjectFactory objectFactory) {
-		TriggeredSendDefinition triggeredSendDefinition = new TriggeredSendDefinition();
-		JAXBElement<String> partnerKey = objectFactory.createAPIObjectPartnerKey(null);
-		partnerKey.setNil(true);
-		triggeredSendDefinition.setPartnerKey(partnerKey);
-		JAXBElement<String> objectID = objectFactory.createAPIObjectObjectID(null);
-		objectID.setNil(true);
-		triggeredSendDefinition.setObjectID(objectID);
-		triggeredSendDefinition.setCustomerKey(exactTargetEmailModel.getCustomerKey());
-		SendClassification sendClassification = new SendClassification();
-		triggeredSendDefinition.setSendClassification(sendClassification );
-		return triggeredSendDefinition;
 	}
 
 	private EmailResponse parseResponse(CreateResponse createResponse) throws DOMException, SendEmailException {

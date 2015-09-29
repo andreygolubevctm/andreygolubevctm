@@ -37,64 +37,47 @@ body.simples {
 
 .modal {
 	h2 {
-		margin-top: 0;
+	  margin-top: 0;
 	}
 
 	.search-quotes-result-row {
-		margin-bottom: 2px;
+	  margin-bottom: 2px;
 
-		&.bg-success {
-			background-color: @theme-light;
+	  &.bg-success {
+		background-color: @theme-light;
+	  }
+
+	  > div {
+		padding: (@padding / 2);
+
+		.moreinfo-container & {
+		  padding: (@padding / 4);
 		}
-
-		> div {
-			padding: (@padding / 2);
-
-			.moreinfo-container & {
-				padding: (@padding / 4);
-			}
-		}
+	  }
 	}
 
 	.search-quotes-results {
-		.label.pull-left {
-			margin-right: (@padding / 2);
-		}
+	  .label.pull-left {
+		margin-right: (@padding / 2);
+	  }
 
-		h2, h3 {
-			font-size: 18px;
-		}
+	  h2, h3 {
+		font-size: 18px;
+	  }
 
-		h3, h5, h6 {
-			margin-top: 0;
-			margin-bottom: 0;
-		}
+	  h3, h5, h6 {
+		margin-top: 0;
+		margin-bottom: 0;
+	  }
 
-		.btn {
-			margin-bottom: (@padding / 4);
-		}
+	  .btn {
+		margin-bottom: (@padding / 4);
+	  }
 	}
 
 	.moreinfo-container {
-		clear: both;
-		margin: 0 @padding @padding;
-	}
-
-	// Overrides of CTM theme...
-	table.table {
-		> * {
-			> tr {
-				> td, > th {
-					border: none;
-					padding: 1px 0;
-				}
-			}
-			> tr:nth-child(odd) {
-				> td, > th {
-					background-color: transparent;
-				}
-			}
-		}
+	  clear: both;
+	  margin: 0 @padding @padding;
 	}
 
 }//.modal

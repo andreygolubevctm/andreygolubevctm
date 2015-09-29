@@ -43,12 +43,17 @@
 
             $('.elasticSearchTypeaheadComponent').each(function () {
                 var $el = $(this);
-                $el.elasticAddress({
+                var options = {
                     name: $el.attr('data-address-id'),
-                    suburbSeqNo: $el.attr('data-suburbSeqNo'),
-                    addressType: $el.attr('data-search-type')
-                });
-            })
+                    addressType: $el.attr('data-search-type'),
+                    streetNum: $el.attr('data-address-streetNum'),
+                    unitShop: $el.attr('data-address-unitShop')
+                };
+                if($el.attr('data-suburbSeqNo') !== "" && typeof $el.attr('data-suburbSeqNo') != "undefined") {
+                    options.suburbSeqNo = $el.attr('data-suburbSeqNo');
+                }
+                $el.elasticAddress(options);
+            });
 
         });
 
@@ -113,6 +118,7 @@
             this.initAddressFields();
             this.applyEventListeners();
             this.eventSubscriptions();
+
         },
 
         initAddressFields: function () {
@@ -129,10 +135,13 @@
 
             this.updateSuburb(elements.nonStdPostCodeInput.val());
 
-            if (elements.nonStdCheckbox.prop('checked')) {
+            if (this.isNonStdAddress()) {
                 elements.autofilllessSearchFieldRow.hide();
                 elements.allNonStdFieldRows.show();
             }
+
+            elements.nonStdStreetNumInput.val(this.options.streetNum);
+            elements.nonStdUnitShopInput.val(this.options.unitShop);
 
         },
 
@@ -301,7 +310,7 @@
 
         populateFullAddress: function (event, name, context) {
 
-            if(name != context.options.name) {
+            if (name != context.options.name) {
                 return;
             }
 
@@ -323,8 +332,8 @@
 
             var suburb = elements.nonStdSuburbInput.val();
             var postcode = elements.nonStdPostCodeInput.val();
-            address.suburbSequence = typeof suburb == 'undefined' || suburb == null ? "" : suburb.toUpperCase();
-            address.postCode = typeof postcode == 'undefined' || postcode == null ? "" : postcode.toUpperCase();
+            address.suburbSequence = typeof suburb == 'undefined' ? "" : suburb.toUpperCase();
+            address.postCode = typeof postcode == 'undefined' ? "" : postcode.toUpperCase();
             if (address.suburbSequence !== "" && address.streetName !== "") {
                 meerkat.modules.comms.post({
                     url: "ajax/json/address/get_address.jsp",
@@ -724,7 +733,9 @@
      */
     $.fn[pluginName].defaults = {
         name: "",
-        suburbSeqNo: "",
+        suburbSeqNo: null,
+        streetNum: "",
+        unitShop: "",
         addressType: "R",
         selectedStreetFld: "",
         userStartedTyping: true,

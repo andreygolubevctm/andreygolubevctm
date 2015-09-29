@@ -22,8 +22,16 @@ public abstract class CommonQuoteService<T> {
     public static final String SERVICE_URL = "serviceUrl";
     public static final String TIMEOUT_MILLIS = "timeoutMillis";
     public static final String DEBUG_PATH = "debugPath";
+    private ServiceConfiguration serviceConfig;
 
     private boolean valid = false;
+
+    public CommonQuoteService(ServiceConfiguration serviceConfig) {
+        this.serviceConfig = serviceConfig;
+    }
+
+    public CommonQuoteService() {
+    }
 
     public List<SchemaValidationError> validateRequest(Request<T> data, String vertical) {
         List<SchemaValidationError> errors = FormValidation.validate(data.getQuote(), vertical);
@@ -39,8 +47,10 @@ public abstract class CommonQuoteService<T> {
         // Get URL of home-quote service
         final QuoteServiceProperties properties = new QuoteServiceProperties();
         try {
-            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId(), brand.getId());
-            properties.setServiceUrl(serviceConfig.getPropertyValueByKey(SERVICE_URL, ALL_BRANDS, ALL_PROVIDERS, SERVICE));
+            if(serviceConfig == null) {
+                this.serviceConfig = ServiceConfigurationService.getServiceConfiguration(service, brand.getVerticalByCode(verticalCode).getId(), brand.getId());
+            }
+                properties.setServiceUrl(serviceConfig.getPropertyValueByKey(SERVICE_URL, ALL_BRANDS, ALL_PROVIDERS, SERVICE));
             properties.setDebugPath(serviceConfig.getPropertyValueByKey(DEBUG_PATH, ALL_BRANDS, ALL_PROVIDERS, SERVICE));
             String timeoutValue = serviceConfig.getPropertyValueByKey(TIMEOUT_MILLIS, ALL_BRANDS, ALL_PROVIDERS, SERVICE);
             if (timeoutValue != null) {

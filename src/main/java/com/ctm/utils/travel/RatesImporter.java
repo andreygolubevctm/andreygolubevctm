@@ -19,23 +19,32 @@ public class RatesImporter {
 
     private String fileName;
     private int sequenceNo = 1;
+    private String webCtmHomeDir;
+
+    public String processWebCTMHomeDir() {
+        if(webCtmHomeDir == null) {
+            return "C:/dev/web_ctm/";
+        }
+        else {
+            return webCtmHomeDir;
+        }
+    }
 
     public BufferedReader getReader() throws FileNotFoundException {
-        String fileLocation = "C:/dev/web_ctm/src/main/webapp/rating/travel_rates_generator/travel_rates_"+ fileName+".csv";
-        String fileLocation2 = "C:/Dev/web_ctm/src/main/webapp/rating/travel_rates_generator/travel_rates_"+ fileName +".csv";
-        FileReader freader;
+        String fileLocation = processWebCTMHomeDir()+"src/main/webapp/rating/travel_rates_generator/travel_rates_"+ fileName +".csv";
+        FileReader freader = null;
         try {
             freader = new FileReader(fileLocation);
         } catch(FileNotFoundException fe) {
             fe.printStackTrace();
-            LOGGER.debug("exception " + fe.getMessage() + " lets try again");
-            freader = new FileReader(fileLocation2);
+            LOGGER.debug("exception " + fe.getMessage());
         }
         return  new BufferedReader(freader);
     }
 
     public void init(HttpServletRequest request) {
         fileName = request.getParameter("file");
+        webCtmHomeDir = request.getParameter("web_home");
         LOGGER.debug("the fileName is:" + fileName);
     }
 
@@ -89,18 +98,18 @@ public class RatesImporter {
 
     public BufferedReader getMetaDoc() throws IOException {
         // Get data from meta file
-        String metaFileLocation = "C:/dev/web_ctm/src/main/webapp/rating/travel_rates_generator/travel_rates_" + fileName + "_meta.csv";
-        String metaFileLocation2 = "C:/Dev/web_ctm/src/main/webapp/rating/travel_rates_generator/travel_rates_" + fileName + "_meta.csv";
 
-        LOGGER.debug("the metaFileLocation is:" + metaFileLocation);
+        String fileLocation = processWebCTMHomeDir()+"src/main/webapp/rating/travel_rates_generator/travel_rates_"+ fileName +"_meta.csv";
+
+        LOGGER.debug("the metaFileLocation is:" + fileLocation);
         BufferedReader metaDoc = null;
         FileReader fr = null;
         try {
-            fr = new FileReader(metaFileLocation);
+            fr = new FileReader(fileLocation);
         } catch (FileNotFoundException fe) {
             fe.printStackTrace();
             LOGGER.debug("exception.. " + fe.getMessage() + " lets try again ");
-            fr = new FileReader(metaFileLocation2);
+
         }
         try {
             metaDoc = new BufferedReader(fr);
