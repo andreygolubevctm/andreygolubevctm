@@ -956,6 +956,7 @@
                     frequency: Results.getFrequency()
                 });
 
+
                 meerkat.modules.popovers.create({
                     element: $this,
                     contentValue: text,

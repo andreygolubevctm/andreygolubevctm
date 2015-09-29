@@ -1,4 +1,3 @@
-
 var k_button_js_revision='$Rev: 20280 $';var k_button={"ff_link":document.getElementById("kampylink"),"host_server":document.getElementById("k_host_server"),"help_button":document.getElementById("k_help_button"),"k_slogan":document.getElementById("k_slogan"),"close_button":document.getElementById("k_close_button"),"extra_params":null,"use_colorbox":false,"newwindow":'',"popitup":function(url,longUrl){if(!this.newwindow.closed&&this.newwindow.location)
     this.newwindow.location.href=url;else
 {if(!this.window_width)

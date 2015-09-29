@@ -92,8 +92,6 @@
 		<!--<![endif]-->
 
 			<script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-		
-			<script src="${assetUrl}../framework/jquery/plugins/jquery.number-2.1.5.js?${revision}"></script>
 
 		<go:insertmarker format="HTML" name="js-href" />
 		<go:script>
@@ -231,12 +229,6 @@
 
 			<!--  content -->
 			<jsp:doBody />
-
-		<%-- Kampyle Feedback --%>
-        <%-- Check whether Kampyle is enabled for this brand/vertical --%>
-        <c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">
-            <core_new:kampyle formId="112902"/>
-        </c:if>
 
 <c:if test="${empty skipJSCSS}">
 
@@ -385,6 +377,11 @@
 			<go:insertmarker format="SCRIPT" name="onready" />
 		});
 	</go:script>
-	<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.deferred.js?${revision}" async defer></script>
+	<%--<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.deferred.js?${revision}" async defer></script>--%>
+		<%-- Kampyle Feedback --%>
+		<%-- Check whether Kampyle is enabled for this brand/vertical --%>
+	<c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">
+		<core_new:kampyle formId="112902"/>
+	</c:if>
 </body>
 </go:html>
