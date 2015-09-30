@@ -43,6 +43,9 @@
             title: 'Login',
             navigationId: 'login',
             slideIndex: 0,
+            onInitialise: function onInitialise() {
+                meerkat.modules.jqueryValidate.initJourneyValidator();
+            },
             onAfterEnter: function onStartAfterEnter() {
                 if(meerkat.site.loggedIn)
                     meerkat.modules.journeyEngine.gotoPath("next");

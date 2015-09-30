@@ -5,6 +5,7 @@
 <c:set var="logger" value="${log:getLogger('tag.unsubcribe.redirect_with_details')}" />
 
 <jsp:useBean id="unsubscribeService" class="com.ctm.services.UnsubscribeService" scope="request"/>
+<c:set var="brandId" value="0"/>
 
 <c:catch var="error">
     <%-- #WHITELABEL: support meerkat brand--%>
@@ -13,7 +14,7 @@
     </c:if>
 
     <c:set var="unsubscribe"
-           value="${unsubscribeService.getUnsubscribeDetails(param.vertical , brandId, fn:substring(param.unsubscribe_email, 0, 256),param.email, false, pageSettings, pageContext.getRequest())}"
+           value="${unsubscribeService.getUnsubscribeDetails(param.vertical, brandId, fn:substring(param.unsubscribe_email, 0, 256), param.email, false, pageSettings, pageContext.getRequest())}"
            scope="session"/>
 
     <%-- #WHITELABEL TODO: support meerkat brand--%>
@@ -36,5 +37,6 @@
 </c:if>
 
 <%-- Redirect --%>
-${logger.debug('Redirecting user {}', log:kv('redirectionUrl' , pageSettings.getBaseUrl() + "unsubscribe.jsp"))}
-<c:redirect url="${pageSettings.getBaseUrl()}unsubscribe.jsp"/>
+<c:set var="redirectUrl" value='${pageSettings.getBaseUrl()}unsubscribe.jsp' />
+${logger.debug('Redirecting user {}', log:kv('redirectionUrl', redirectUrl))}
+<c:redirect url="${redirectUrl}" />

@@ -71,10 +71,10 @@
 			callActions(event, $el);
 		}).on('click', '.call-modal .btn-call-actions', function (event) {
 			var $el = $(this);
-			modalCallActions(event, $el)
+			modalCallActions(event, $el);
 
 		}).on('click', '.btn-submit-callback', function (event) {
-			var $el = $(this)
+			var $el = $(this);
 			submitCallback(event, $el);
 		});
 

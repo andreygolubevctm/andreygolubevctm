@@ -1,4 +1,3 @@
-Features = new Object();
 Features = {
 
 	template: false,
@@ -53,7 +52,7 @@ Features = {
 		// prep of feature template
 		Features.template = $(Results.settings.elements.templates.feature).html();
 
-		if (Features.template == "") {
+		if (Features.template === "") {
 			console.log("The comparison feature template could not be found: templateSelector=", Compare.settings.elements.templates.feature, "This template is mandatory, make sure to pass the correct selector to the Compare.settings.elements.templates.feature user setting when calling Compare.init()");
 		} else {
 
@@ -86,7 +85,7 @@ Features = {
 		$.each( Features.results, function(index, product) {
 
 			var productAvailability = null;
-			if( Results.settings.paths.availability.product && Results.settings.paths.availability.product != "" ){
+			if( Results.settings.paths.availability.product && Results.settings.paths.availability.product !== "" ){
 				productAvailability = Object.byString(product, Results.settings.paths.availability.product);
 			}
 
@@ -154,10 +153,10 @@ Features = {
 					foundFeature = feature;
 
 					feature.value = Features.parseFeatureValue( feature.value );
-					if( feature.extra == "" ){
+					if( feature.extra === "" ){
 						feature.extra = "&nbsp;";
 					}
-					if (feature.value == "" && feature.extra != "") {
+					if (feature.value === "" && feature.extra !== "") {
 						feature.value = feature.extra;
 						feature.extra = "&nbsp;";
 					}
@@ -212,10 +211,10 @@ Features = {
 
 	setExpandableRows: function(){
 
-		if( $(Features.target + " .expandable").length == 0 ){
+		if( $(Features.target + " .expandable").length === 0 ){
 
 			$( Features.target + " " + Results.settings.elements.rows + ".notfiltered " + Results.settings.elements.features.extras + " " + Results.settings.elements.features.values )
-				.filter( function(){ return $(this).html() != "&nbsp;" && $(this).html() != "" } )
+				.filter( function(){ return $(this).html() != "&nbsp;" && $(this).html() !== ""; } )
 				.parent().parent().addClass( Results.settings.elements.features.expandable.replace(/[#\.]/g, '') );
 		}
 
@@ -370,7 +369,7 @@ Features = {
 			var $currentRow = $('[data-featureId="' + featureId + '"]', $container);
 			$currentRow.each(function(){
 					var value = $.trim($(this).text());
-					if( !found && value != '' && value != "&nbsp;" ){
+					if( !found && value !== '' && value != "&nbsp;" ){
 						found = true;
 						return false; //break out
 					}
@@ -393,7 +392,7 @@ Features = {
 			var $currentRow = $('.children[data-fid="' + featureId + '"]', $container);
 			$currentRow.each(function(){
 					var value = $.trim($(this).text());
-					if( !found && value != '' && value != "&nbsp;" ){
+					if( !found && value !== '' && value != "&nbsp;" ){
 						found = true;
 						return false; //break out
 					}
@@ -409,4 +408,4 @@ Features = {
 		$( Features.target ).find( Results.settings.elements.features.list ).html('');
 	}
 
-}
+};

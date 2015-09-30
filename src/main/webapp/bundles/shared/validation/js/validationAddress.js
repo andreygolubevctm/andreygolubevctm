@@ -3,11 +3,6 @@
     var fullAddressRegex = /^((\s)*[\w\-]+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/;
     var getAddressXHR;
 
-    // If Safari on iPad running version 6 then need to turn off async
-    //  as it will fail fatally if longer than 10sec.
-    // Moved out of the validate function as only needs to run once
-    var aSyncOverride = navigator.userAgent.match(/iPad/i) !== null && meerkat.modules.performanceProfiling.isIos6() && navigator.userAgent.match(/Safari/i) !== null;
-
     $.validator.addMethod("validSuburb", function (value, element, name) {
         var valid = false;
 
@@ -242,7 +237,9 @@
         if (getAddressXHR && typeof getAddressXHR.state == 'function' && getAddressXHR.state() == 'pending') {
             return;
         }
-
+        // If Safari on iPad running version 6 then need to turn off async
+        //  as it will fail fatally if longer than 10sec.
+        var aSyncOverride = navigator.userAgent.match(/iPad/i) !== null && meerkat.modules.performanceProfiling.isIos6() && navigator.userAgent.match(/Safari/i) !== null;
         getAddressXHR = meerkat.modules.comms.post({
             url: "ajax/json/address/get_address.jsp",
             data: data,
