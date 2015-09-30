@@ -8,6 +8,7 @@ var path = require("path"),
     fs = require("fs-extra");
 
 var spritesmith = require("gulp.spritesmith"),
+    imageop = require("gulp-image-optimization"),
     merge = require("merge-stream");
 
 function SpriteTasks(gulp) {
@@ -49,6 +50,9 @@ function SpriteTasks(gulp) {
                         .pipe(spritesmith(spriteSmithConfig));
 
                     var imgStream = spriteData.img
+                        .pipe(imageop({
+                            optimizationLevel: 7
+                        }))
                         .pipe(gulp.dest(path.join(spriteConfig.source.dir, "sprites")));
 
                     var cssStream = spriteData.css

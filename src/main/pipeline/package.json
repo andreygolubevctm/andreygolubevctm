@@ -38,6 +38,7 @@
     "fs-extra": "^0.24.0",
     "graceful-fs": "^4.1.2",
     "gulp.spritesmith": "^4.1.1",
-    "merge-stream": "^1.0.0"
+    "merge-stream": "^1.0.0",
+    "gulp-image-optimization": "^0.1.3"
   }
 }
