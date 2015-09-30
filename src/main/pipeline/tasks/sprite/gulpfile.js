@@ -23,12 +23,13 @@ function SpriteTasks(gulp) {
 
             // Check if bundle has a sprites folder
             if(fs.existsSync(srcPath)) {
-                var taskName = "sprite:" + bundle;
+                var taskName = "sprite:" + bundle,
+                    imgPathPrefix = "../../../graphics/logos/sprites/";
 
                 gulp.task(taskName, function() {
                     var spriteSmithConfig = {
                         imgName: bundle + ".png",
-                        imgPath: "../../../graphics/logos/sprites/" + bundle + ".png",
+                        imgPath: imgPathPrefix + bundle + ".png",
                         cssName: "logosSprites.less",
                         padding: 2,
                         cssVarMap: function(sprite) {
@@ -44,6 +45,7 @@ function SpriteTasks(gulp) {
                     if(bundle !== "health") {
                         spriteSmithConfig.retinaSrcFilter = [path.join(srcPath, "*@2x.png")];
                         spriteSmithConfig.retinaImgName = bundle + "@2x.png";
+                        spriteSmithConfig.retinaImgPath = imgPathPrefix + bundle + "@2x.png";
                     }
 
                     var spriteData = gulp.src(path.join(srcPath, "*.png"))
