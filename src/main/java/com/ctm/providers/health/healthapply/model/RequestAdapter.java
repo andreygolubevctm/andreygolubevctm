@@ -40,6 +40,7 @@ import com.ctm.providers.health.healthapply.model.request.payment.credit.Number;
 import com.ctm.providers.health.healthapply.model.request.payment.details.*;
 import com.ctm.providers.health.healthapply.model.request.payment.medicare.Medicare;
 import com.ctm.providers.health.healthapply.model.request.payment.medicare.MedicareNumber;
+import com.ctm.providers.health.healthapply.model.request.payment.medicare.MiddleInitial;
 import com.ctm.providers.health.healthapply.model.request.payment.medicare.Position;
 import org.apache.commons.lang3.StringUtils;
 
@@ -55,6 +56,7 @@ import static java.util.Collections.emptyList;
 public class RequestAdapter {
 
     private static final DateTimeFormatter AUS_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter ISO_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static HealthApplicationRequest adapt(HealthRequest healthRequest) {
         final Optional<HealthQuote> quote = Optional.ofNullable(healthRequest.getQuote());
@@ -290,6 +292,9 @@ public class RequestAdapter {
                     medicare.map(com.ctm.model.health.form.Medicare::getFirstName)
                             .map(FirstName::new)
                             .orElse(null),
+                    medicare.map(com.ctm.model.health.form.Medicare::getMiddleInitial)
+                            .map(MiddleInitial::new)
+                            .orElse(null),
                     medicare.map(com.ctm.model.health.form.Medicare::getLastName)
                             .map(LastName::new)
                             .orElse(null),
@@ -326,9 +331,17 @@ public class RequestAdapter {
             return new Bank(
                     createAccount(bank),
                     Claims.Y.equals(withRefund) && Claims.N.equals(claimsSameBankAccount) ?
-                            createAccount(bank.map(com.ctm.model.health.form.Bank::getClaim)) : null,
+                            createAccount(bank.map(com.ctm.model.health.form.Bank::getClaim)) :
+                                Claims.N.equals(withRefund) && Claims.N.equals(claimsSameBankAccount) ?
+                                    createAccount(bank.map(com.ctm.model.health.form.Bank::getClaim)) : null,
                     claimsSameBankAccount);
         } else if ("cc".equals(paymentType) && Claims.Y.equals(withRefund)) {
+            return new Bank(
+                    null,
+                    Claims.N.equals(claimsSameBankAccount) ?
+                            createAccount(bank.map(com.ctm.model.health.form.Bank::getClaim)) : null,
+                    claimsSameBankAccount);
+        } else if ("cc".equals(paymentType) && Claims.N.equals(withRefund)) {
             return new Bank(
                     null,
                     Claims.N.equals(claimsSameBankAccount) ?
@@ -434,6 +447,10 @@ public class RequestAdapter {
                 return credit.map(Credit::getPolicyDay)
                         .map(LocalDate::parse)
                         .orElse(null);
+            } else if(payment.map(com.ctm.model.health.form.Payment::getPolicyDate).isPresent()) { // For BUD, GMB and Frank
+                return payment.map(com.ctm.model.health.form.Payment::getPolicyDate)
+                        .map(v -> LocalDate.parse(v, ISO_FORMAT))
+                        .orElse(null);
             } else {
                 return null;
             }
@@ -446,6 +463,11 @@ public class RequestAdapter {
             } else if (bank.map(com.ctm.model.health.form.Bank::getPolicyDay).isPresent()) {
                 return bank.map(com.ctm.model.health.form.Bank::getPolicyDay)
                         .map(LocalDate::parse)
+                        .orElse(null);
+            } else if (payment.map(com.ctm.model.health.form.Payment::getPolicyDate).isPresent()) { // For BUD, GMB and Frank
+                // For BUD, GMB and Frank
+                return payment.map(com.ctm.model.health.form.Payment::getPolicyDate)
+                        .map(v -> LocalDate.parse(v, ISO_FORMAT))
                         .orElse(null);
             } else {
                 return null;

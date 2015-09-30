@@ -12,6 +12,8 @@ public class Payment {
 
     private Medicare medicare;
 
+    private String policyDate;
+
     public PaymentDetails getDetails() {
         return details;
     }
@@ -50,5 +52,13 @@ public class Payment {
 
     public void setGateway(Gateway gateway) {
         this.gateway = gateway;
+    }
+
+    public String getPolicyDate() {
+        return policyDate;
+    }
+
+    public void setPolicyDate(String policyDate) {
+        this.policyDate = policyDate;
     }
 }

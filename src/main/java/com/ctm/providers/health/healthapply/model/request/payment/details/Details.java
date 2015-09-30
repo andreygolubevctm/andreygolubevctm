@@ -21,6 +21,7 @@ public class Details {
 
     private final Rebate rebate;
 
+    @JsonSerialize(using = TypeSerializer.class)
     private final Income income;
 
     @JsonSerialize(using = TypeSerializer.class)
