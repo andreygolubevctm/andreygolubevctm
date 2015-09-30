@@ -18,12 +18,14 @@ function SpriteTasks(gulp) {
 
     for(var bundle in gulp.bundles.collection) {
         (function (bundle) {
+            var srcPath = path.join(spriteConfig.source.dir, bundle, "src");
+
             // Check if bundle has a sprites folder
-            if(fs.existsSync(path.join(spriteConfig.source.dir, bundle, "src"))) {
+            if(fs.existsSync(srcPath)) {
                 var taskName = "sprite:" + bundle;
 
                 gulp.task(taskName, function() {
-                    var spriteConfig = {
+                    var spriteSmithConfig = {
                         imgName: bundle + ".png",
                         imgPath: "../../../graphics/logos/sprites/" + bundle + ".png",
                         cssName: "logosSprites.less",
@@ -38,12 +40,13 @@ function SpriteTasks(gulp) {
                     };
 
                     // Not sure why, but health shouldn't have retina images
-                    //if(bundle !== "health") {
-                    //    spriteConfig.retinaSrcFilter: ["images"]
-                    //}
+                    if(bundle !== "health") {
+                        spriteSmithConfig.retinaSrcFilter = [path.join(srcPath, "*@2x.png")];
+                        spriteSmithConfig.retinaImgName = bundle + "@2x.png";
+                    }
 
-                    var spriteData = gulp.src(path.join(spriteConfig.source.dir, bundle, "src", "*.png"))
-                        .pipe(spritesmith(spriteConfig));
+                    var spriteData = gulp.src(path.join(srcPath, "*.png"))
+                        .pipe(spritesmith(spriteSmithConfig));
 
                     var imgStream = spriteData.img
                         .pipe(gulp.dest(path.join(spriteConfig.source.dir, "sprites")));
