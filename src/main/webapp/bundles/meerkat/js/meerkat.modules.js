@@ -30,7 +30,6 @@
 	///////////////////////////////////////////////////////////////////
 
 	function register(moduleName, module) {
-		console.log("registering", moduleName, module);
 		if (modules[moduleName]) {
 			throw "A module is already defined with the key: "+moduleName;
 		}
