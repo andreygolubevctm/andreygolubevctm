@@ -363,7 +363,9 @@
 
 <%-- NO RESULTS --%>
 <div class="hidden">
-	<agg_new_results:results_none />
+	<c:set var="heading"><content:get key="noCarQuoteTitle"/></c:set>
+	<c:set var="blur"><content:get key="noCarQuote"/></c:set>
+	<confirmation:other_products heading="${heading}" copy="${blur}" id="no-results-content"/>
 </div>
 
 <%-- FETCH ERROR --%>

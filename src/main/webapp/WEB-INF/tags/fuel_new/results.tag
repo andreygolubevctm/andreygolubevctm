@@ -110,9 +110,11 @@
     <div class="hidden">
         <c:set var="heading"><content:get key="blockedIPHeading" /></c:set>
         <c:set var="copy"><content:get key="blockedIPCopy" /></c:set>
+        <c:set var="heading2"><content:get key="noQuoteTitle"/></c:set>
+        <c:set var="blur"><content:get key="noQuoteText"/></c:set>
         <confirmation:other_products heading="${heading}" copy="${copy}" id="blocked-ip-address" />
 
-        <agg_new_results:results_none />
+        <confirmation:other_products heading="${heading2}" copy="${blur}" id="no-results-content"/>
     </div>
 
     <%-- FETCH ERROR --%>
