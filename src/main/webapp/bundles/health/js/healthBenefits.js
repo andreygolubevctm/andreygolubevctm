@@ -360,7 +360,6 @@
 
 
 	function init(){
-
 		$(document).ready(function(){
 
 			if (meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
@@ -422,7 +421,6 @@
 			// On application lockdown/unlock, disable/enable the dropdown
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, lockBenefits);
 			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, unlockBenefits);
-
 		});
 	}
 

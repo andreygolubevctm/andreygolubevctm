@@ -21,11 +21,12 @@
 	var $displayedFrequency;
 	var $startDateInput;
 
+	var initialised = false;
 
+	function initHealthPriceComponent(){
 
-	function init(){
-
-		jQuery(document).ready(function($) {
+		if(!initialised) {
+			initialised = true;
 
 			if(meerkat.site.vertical !== "health") return false;
 
@@ -61,7 +62,7 @@
 
 			meerkat.messaging.publish(moduleEvents.INIT);
 
-		});
+		}
 	}
 
 	function onProductPremiumChange(selectedProduct, showIncPrice){
@@ -160,7 +161,7 @@
 	}
 
 	meerkat.modules.register('healthPriceComponent', {
-		init: init,
+		initHealthPriceComponent: initHealthPriceComponent,
 		events: events,
 		updateProductSummaryHeader: updateProductSummaryHeader,
 		updateProductSummaryDetails: updateProductSummaryDetails
