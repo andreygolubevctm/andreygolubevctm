@@ -81,10 +81,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="body_end">
-		<script src="framework/jquery/plugins/bootstrap-datepicker/bootstrap-datepicker-2.0.js"></script>
-
 		<jsp:invoke fragment="body_end" />
-
 	</jsp:attribute>
 
 	<jsp:attribute name="additional_meerkat_scripts">

@@ -79,7 +79,7 @@
 		</c:if>
 
 		<%--  Modernizr --%>
-		<script src='${assetUrl}../framework/lib/js/modernizr-2.8.3.min.js'></script>
+		<script src='${assetUrl}../assets/js/bundles/plugins/modernizr.min.js'></script>
 
 		<!--[if lt IE 9]>
 			<script src="${assetUrl}../framework/lib/js/respond.ctm.js"></script>
