@@ -1,5 +1,4 @@
-var ResultsPagination = new Object();
-ResultsPagination = {
+var ResultsPagination = {
 
 	NEXT:"next",
 	PREVIOUS:"previous",
@@ -104,7 +103,8 @@ ResultsPagination = {
 
 		if(Results.pagination.isPageMode()){
 
-			var pageMeasurements = Results.pagination.getPageMeasurements();
+			var pageMeasurements = Results.pagination.getPageMeasurements(),
+			htmlString;
 			if(pageMeasurements === null) return false;
 
 
@@ -120,7 +120,7 @@ ResultsPagination = {
 				if (pageMeasurements.numberOfPages > 1 && pageMeasurements.numberOfPages != Number.POSITIVE_INFINITY) {
 					for (var i=0; i<pageMeasurements.numberOfPages; i++) {
 						var num = i+1;
-						var htmlString = pageItemTemplate({pageNumber:num, label:num});
+						htmlString = pageItemTemplate({pageNumber:num, label:num});
 						Results.pagination.$pagesContainer.append(htmlString);
 					}
 				}
@@ -128,9 +128,9 @@ ResultsPagination = {
 			}
 
 			//
-			if (Results.pagination.$pageText != null && Results.pagination.$pageText.length > 0) {
+			if (Results.pagination.$pageText !== null && Results.pagination.$pageText.length > 0) {
 				var pageTextTemplate = _.template(Results.settings.templates.pagination.pageText);
-				var htmlString = pageTextTemplate({
+				htmlString = pageTextTemplate({
 					currentPage: Results.pagination.getCurrentPageNumber(),
 					totalPages: pageMeasurements.numberOfPages
 				});
@@ -216,7 +216,7 @@ ResultsPagination = {
 
 		var previousPageNumber = Results.pagination.getCurrentPageNumber();
 
-		if(pageNumber === previousPageNumber && forceReposition == false){
+		if(pageNumber === previousPageNumber && forceReposition === false){
 			// do nothing...
 			return false;
 		}
@@ -283,7 +283,9 @@ ResultsPagination = {
 		var $container = Results.view.$containerElement;
 		var viewableArea = $container.parent().width();
 		var $rows = $container.find(Results.settings.elements.rows+'.notfiltered');
-		if($rows.length == 0) return null; // called too early.
+		if($rows.length === 0) {
+			return null; // called too early.
+		}
 		var numberOfColumns = $rows.length;
 		// As the column widths are defined in the LESS let's save time interrogating the DOM
 		// objects and simply check the applicable class defined in the .resultsContainer
@@ -361,7 +363,7 @@ ResultsPagination = {
 		// If we have enabled native scrolling pagination
 		if (Results.settings.pagination.touchEnabled === true) {
 			Results.pagination.scrollMode = "scrollto";
-		} else if( Modernizr.csstransforms3d && isIos6 == false){
+		} else if( Modernizr.csstransforms3d && isIos6 === false){
 			Results.pagination.scrollMode = "csstransforms3d";
 		} else if(Modernizr.csstransitions) {
 			Results.pagination.scrollMode = "csstransitions";
@@ -394,7 +396,7 @@ ResultsPagination = {
 					var rowEq = (Results.pagination.getCurrentPageNumber() - 1) * Results.pagination.currentPageMeasurements.columnsPerPage;
 					$(Results.settings.elements.resultsOverflow).scrollTo($(Results.settings.elements.rows).not(".filtered").eq(rowEq), 500, {
 						onAfter: function () {
-							Results.pagination._afterPaginationMotion(true)
+							Results.pagination._afterPaginationMotion(true);
 						}
 					});
 				break;
@@ -522,7 +524,7 @@ ResultsPagination = {
 
 	scrollResults: function( clickedButton ){
 
-		if(clickedButton.hasClass("inactive") == false){
+		if(clickedButton.hasClass("inactive") === false){
 			if( Results.pagination.isLocked === false ){ //Only run if its not currently sliding
 
 				Results.pagination.lock();
@@ -566,7 +568,9 @@ ResultsPagination = {
 		var currentHorizontalPosition =  ResultsUtilities.getScroll( 'x', Results.view.$containerElement );
 
 		if(expectedHorizontalPosition != currentHorizontalPosition){
-			window.setTimeout( function(){ Results.pagination.toggleScrollButtons(expectedHorizontalPosition,leftStatus, rightStatus) }, 100 );
+			window.setTimeout( function(){
+				Results.pagination.toggleScrollButtons(expectedHorizontalPosition,leftStatus, rightStatus);
+			}, 100 );
 		}else{
 
 			var viewableWidth = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.resultsOverflow ).width();
@@ -737,7 +741,7 @@ ResultsPagination = {
 
 		// The page number we've swiped into is:
 		var pageNumber = Math.floor(pxFromLeft / Results.pagination.currentPageMeasurements.pageWidth) + 1;
-		var isMidPage = $(event.target).scrollLeft() % Results.pagination.currentPageMeasurements.pageWidth != 0;
+		var isMidPage = $(event.target).scrollLeft() % Results.pagination.currentPageMeasurements.pageWidth !== 0;
 		var isNewPage = Results.pagination.getCurrentPageNumber() != pageNumber;
 
 		// If we're not swiping to the same page, and it's not trying to scroll higher than the number of pages:

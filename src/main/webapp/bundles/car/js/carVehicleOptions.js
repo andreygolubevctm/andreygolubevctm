@@ -386,9 +386,9 @@
 		$('.nonStandardAccessorySelect').on('change', function() {
 			var selectBox = $(this);
 			if (selectBox.val() === '') {
-				selectBox.parent().addClass('has-error')
+				selectBox.parent().addClass('has-error');
 			} else {
-				selectBox.parent().removeClass('has-error')
+				selectBox.parent().removeClass('has-error');
 			}
 			});
 
@@ -613,7 +613,7 @@
 							price: aItem.hasOwnProperty("prc") ? String(aItem.prc) : '0',
 							code: aItem.sel,
 							label: itemInfo.label
-					}
+					};
 					savedSelections.accessories.push(obj);
 					addSavedAccessoryHTML(obj);
 				}
@@ -737,7 +737,7 @@
 				// We need to use this element as a jQuery object.
 				var checkedBox = $(this);
 				var itemIndex = checkedBox.attr('itemIndex');
-				var labelText = checkedBox.siblings().text()
+				var labelText = checkedBox.siblings().text();
 				var $relatedPriceSelect = $('select[itemIndex="' + itemIndex + '"]');
 				var itemPrice = $relatedPriceSelect.val();
 
@@ -756,7 +756,7 @@
 					code: checkedBox.val(),
 					included: $relatedPriceSelect.val() == '0' ? true : false,
 					price: itemPrice
-				}
+				};
 				// Add them to an array to save all at once, once we know that they all validate.
 				accessoriesToSave.push(accessory);
 			});
@@ -952,7 +952,7 @@
 	}
 
 	function getSessionCamStep() {
-		if(sessionCamStep == null) {
+		if(sessionCamStep === null) {
 			sessionCamStep = meerkat.modules.journeyEngine.getCurrentStep();
 		}
 		return _.extend({}, sessionCamStep); // prevent external override

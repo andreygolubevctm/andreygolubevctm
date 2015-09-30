@@ -49,7 +49,7 @@
 
 				meerkat.messaging.subscribe(meerkatEvents.healthResults.PREMIUM_UPDATED, function(selectedProduct){
 					// This should be called when the user updates their premium on the payment step.
-					onProductPremiumChange(selectedProduct, true)
+					onProductPremiumChange(selectedProduct, true);
 				});
 
 				meerkat.messaging.subscribe(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM, function(selectedProduct){

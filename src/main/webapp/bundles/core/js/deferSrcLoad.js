@@ -11,9 +11,9 @@
 		jQuery(document).ready(function($) {
 			$(window).load(function() {
 				$("[data-defer-src]").each(function allDeferSrcLoadLoop(){
-					$this = $(this);
+					var $this = $(this);
 					$this.attr('src', $this.attr('data-defer-src')).removeAttr('data-defer-src');
-				})
+				});
 			}); 
 		});
 

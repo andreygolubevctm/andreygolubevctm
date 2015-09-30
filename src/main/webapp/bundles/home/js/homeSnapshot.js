@@ -65,13 +65,7 @@
 		}
 
 		for(var i = firstSnapshotSlide; i < limit; i++) {
-			var selector = '';
-			if(i == 4) {
-				selector = '.header-wrap';
-			} else {
-				selector = '.journeyEngineSlide:eq(' + i + ')';
-			}
-			meerkat.modules.contentPopulation.render(selector + ' .snapshot');
+			meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(' + i + ') .snapshot');
 		}
 	}
 

@@ -134,6 +134,7 @@
 		$updatePremiumButtonContainer.show();
 		$paymentContainer.hide();
 		$("#health_declaration-selection").hide();
+		$("#health_contactAuthority-selection").hide();
 		$("#confirm-step").hide();
 		$(".simples-dialogue-31").hide();
 
@@ -383,6 +384,9 @@
 
 					// Show declaration checkbox
 					$("#health_declaration-selection").slideDown();
+
+					// Show Contact Authority
+					$("#health_contactAuthority-selection").slideDown();
 
 					toggleClaimsBankAccountQuestion();
 

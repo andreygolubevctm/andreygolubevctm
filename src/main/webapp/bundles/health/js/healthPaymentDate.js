@@ -97,7 +97,7 @@
 	function compareAndAddMonth(oldDate, minDate) {
 		if (oldDate < minDate){
 			var newDate = new Date(oldDate.setMonth(oldDate.getMonth() +  1 ));
-			return compareAndAddMonth(newDate, minDate)
+			return compareAndAddMonth(newDate, minDate);
 		}else{
 			return oldDate;
 		}

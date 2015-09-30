@@ -481,8 +481,7 @@
 		if(data.field === 'types') {
 			var $element = $(elements.types);
 			if(
-				(isSplitTest() && $element.find('input:checked'))
-				||
+				(isSplitTest() && $element.find('input:checked')) ||
 				(!isSplitTest() && !_.isEmpty($element.val()))
 			) {
 				addValidationStyles($element);

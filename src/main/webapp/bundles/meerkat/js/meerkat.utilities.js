@@ -68,7 +68,7 @@ Object.byString = function(o, s) {
     } catch (e){
         return false;
     }
-}
+};
 
 function showDoc(url,title){
     if (title) {

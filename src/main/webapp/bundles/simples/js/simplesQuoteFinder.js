@@ -172,7 +172,7 @@
 				// Error message has been specified elsewhere
 			}
 			else if (data.keywords === '') {
-				data.errorMessage = 'Please enter something to search for.'
+				data.errorMessage = 'Please enter something to search for.';
 			}
 			else if (data.results === '') {
 				data.results = meerkat.modules.loadingAnimation.getTemplate();
