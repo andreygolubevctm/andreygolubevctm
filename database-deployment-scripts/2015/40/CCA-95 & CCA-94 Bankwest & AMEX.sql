@@ -130,7 +130,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-bonus-points-type
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-annual-fee-period',0,NULL,'',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate',0,0.99,'0.99%',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'*Get the rewards you deserve faster*
--Receive 50,000 bonus Velocity Points when you apply by 31 October 2015, are approved and spend $500 on your new Card within the first 3 months1. Card Members who currently hold or who have previously held any other Card product offered by American Express Australia Limited in the preceding 12 month period are ineligible for this offer.',NULL,'2015-09-28','2040-12-31','',0);
+-Receive 50,000 bonus Velocity Points when you apply by 9th November 2015, are approved and spend $500 on your new Card within the first 3 months1. Card Members who currently hold or who have previously held any other Card product offered by American Express Australia Limited in the preceding 12 month period are ineligible for this offer.',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties_text VALUES(@product_id,'rewards-desc',0,'-3 Velocity Points per dollar spent on Virgin Australia and restaurants Australia-wide
 -2 Velocity Points per dollar spent on airlines, accommodation and in foreign currency
 -1 Velocity Point per dollar spent on everything else, except those listed in 0.5 points
@@ -142,7 +142,7 @@ INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,3
 INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'american-express-velocity-platinum',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,NULL,'',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'*Get the rewards you deserve faster*
--Receive 50,000 bonus Velocity Points when you apply by 31 October 2015, are approved and spend $500 on your new Card within the first 3 months1. Card Members who currently hold or who have previously held any other Card product offered by American Express Australia Limited in the preceding 12 month period are ineligible for this offer.',NULL,'2015-09-28','2040-12-31','',0);
+-Receive 50,000 bonus Velocity Points when you apply by 9th November 2015, are approved and spend $500 on your new Card within the first 3 months1. Card Members who currently hold or who have previously held any other Card product offered by American Express Australia Limited in the preceding 12 month period are ineligible for this offer.',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'interest-free-days',0,55.0,'55',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'product-type',0,0,'Platinum',NULL,'2015-09-28','2040-12-31','',0);
 INSERT INTO ctm.product_properties VALUES(@product_id,'foreign-exchange-fees',0,1,'Yes',NULL,'2015-09-28','2040-12-31','',0);
