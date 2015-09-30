@@ -101,10 +101,10 @@ AGE ADJUSTMENT - if rebate not 0 (Take the OLDEST person and use their age)
 
 <c:choose>
 	<c:when test="${partnerAge+0 >= primaryAge+0}">
-		<fmt:formatNumber var="age" value="${partnerAge}" maxFractionDigits="0" />
+		<fmt:parseNumber var="age" value="${partnerAge}"/>
 	</c:when>
 	<c:otherwise>
-		<fmt:formatNumber var="age" value="${primaryAge}" maxFractionDigits="0" />
+		<fmt:parseNumber var="age" value="${primaryAge}"/>
 	</c:otherwise>
 </c:choose>
 

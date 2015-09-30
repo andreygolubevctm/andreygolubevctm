@@ -208,6 +208,10 @@ public class RequestAdapter {
                         .map(com.ctm.model.health.form.HealthCover::getRebate)
                         .map(Rebate::valueOf)
                         .orElse(null),
+                quote.map(HealthQuote::getRebate)
+                        .map(Double::new)
+                        .map(RebatePercentage::new)
+                        .orElse(null),
                 quote.map(HealthQuote::getHealthCover)
                         .map(com.ctm.model.health.form.HealthCover::getIncome)
                         .map(Income::new)

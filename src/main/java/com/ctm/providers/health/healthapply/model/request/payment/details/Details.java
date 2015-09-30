@@ -22,13 +22,17 @@ public class Details {
     private final Rebate rebate;
 
     @JsonSerialize(using = TypeSerializer.class)
+    private final RebatePercentage rebatePercentage;
+
+    @JsonSerialize(using = TypeSerializer.class)
     private final Income income;
 
     @JsonSerialize(using = TypeSerializer.class)
     private final LifetimeHealthCoverLoading lifetimeHealthCoverLoading;
 
     public Details(final LocalDate startDate, final PaymentType paymentType, final Frequency frequency,
-                   final Rebate rebate, final Income income, final LifetimeHealthCoverLoading lifetimeHealthCoverLoading) {
+                   final Rebate rebate, final RebatePercentage rebatePercentage,
+                   final Income income, final LifetimeHealthCoverLoading lifetimeHealthCoverLoading) {
         this.startDate = startDate;
         this.paymentType = paymentType;
         this.frequency = frequency;

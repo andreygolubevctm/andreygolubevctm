@@ -1,0 +1,734 @@
+<xs:schema xmlns="http://www.hambs.com.au/MemberServices/MemberServices.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.hambs.com.au/MemberServices/MemberServices.xsd">
+<xs:element name="MembershipApplication">
+<xs:annotation>
+<xs:documentation>Membership Application. Used standalone.</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="SubmittedBy" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:enumeration value="Agent"/>
+<xs:enumeration value="Membr"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element ref="Communications" minOccurs="0"/>
+<xs:element ref="Persons"/>
+<xs:element ref="Contacts"/>
+<xs:element ref="Cover"/>
+<xs:element ref="Contributions"/>
+<xs:element ref="Membership" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Registration">
+<xs:annotation>
+<xs:documentation>MemberServices Registration. Used standalone.</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="MemberNo" type="xs:int"/>
+<xs:element name="Firstname">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Surname">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Birthdate">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="EmailAddress" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Password">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="IsSendEmail" type="xs:boolean" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="MembershipCard">
+<xs:annotation>
+<xs:documentation>Membership Card. Used standalone.</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="PersonID">
+<xs:simpleType>
+<xs:restriction base="xs:int">
+<xs:minExclusive value="0"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="RequestType" type="TypeMembershipCardRequest"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Payment">
+<xs:annotation>
+<xs:documentation>Payment Details. Used standalone.</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="ReceiptDate" type="xs:date"/>
+<xs:element name="Amount" type="xs:decimal"/>
+<xs:element name="AutoDirectDebit" type="xs:boolean"/>
+<xs:element name="Branch" type="xs:string" minOccurs="0"/>
+<xs:element name="Till" type="xs:string" minOccurs="0"/>
+<xs:element name="OldPaidToDate" type="xs:date" minOccurs="0"/>
+<xs:element name="NewPaidToDate" type="xs:date" minOccurs="0"/>
+<xs:element name="SettlementDate" type="xs:date" minOccurs="0"/>
+<xs:element name="ExternalReceiptNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="ExternalPaymentID" type="xs:string" minOccurs="0"/>
+<xs:element name="PaidPayment" type="xs:boolean"/>
+<xs:element ref="Account" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="RebateRegistration">
+<xs:annotation>
+<xs:documentation>Rebate registration. Used standalone.</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="CommencementDate" type="xs:date"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Communications">
+<xs:annotation>
+<xs:documentation>
+Communications. Used as part of MembershipApplication.
+</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="MembershipCommunications" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="MembershipCommunication" minOccurs="1" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="CommType" minOccurs="1" maxOccurs="1">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Persons">
+<xs:annotation>
+<xs:documentation>
+Persons. Used standalone and as part of MembershipApplication.
+</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Person" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="PersonID" type="xs:int"/>
+<xs:element name="EffDate" type="xs:date" minOccurs="0"/>
+<xs:element name="Relationship" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Rank" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Title" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="FirstName">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="SecondName" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Surname">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Postnominals" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Gender" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+<xs:maxLength value="6"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="IsAutoGeneratePIN" minOccurs="0" type="xs:boolean"/>
+<xs:element name="PIN" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="4"/>
+<xs:maxLength value="20"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Birthdate" type="xs:date"/>
+<xs:element name="MediCardNo" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="MediCardSubnumerate" type="xs:int" minOccurs="0"/>
+<xs:element name="MediCardExpDate" type="xs:date" minOccurs="0"/>
+<xs:element name="MediCardFirstName" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="MediCardSecondName" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="MediCardSurname" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="IsRebateApplicant" minOccurs="0" type="xs:boolean"/>
+<xs:element name="FullTimeStudent" type="xs:boolean" minOccurs="0"/>
+<xs:element name="EDInstitutionName" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="EmailAddress" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="PreexistingConditions" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Transferring" type="xs:boolean" minOccurs="0"/>
+<xs:element name="PreviousFund" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="PreviousFundMemberNo" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="PreviousFundCover" type="xs:string" minOccurs="0"/>
+<xs:element name="PreviousFundDateJoined" type="xs:date" minOccurs="0"/>
+<xs:element name="PreviousFundDateCeased" type="xs:date" minOccurs="0"/>
+<xs:element name="IsMember" type="xs:boolean" minOccurs="0"/>
+<xs:element name="IsDeclaringDefenceEligibility" type="xs:boolean" minOccurs="0"/>
+<xs:element name="HasCoverVariation" type="xs:boolean" minOccurs="0"/>
+<xs:element name="JoinDate" type="xs:date" minOccurs="0"/>
+<xs:element name="LifetimeHealthCoverLoading" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="EntryAge" minOccurs="1">
+<xs:simpleType>
+<xs:restriction base="xs:token">
+<xs:pattern value="[3-9]{1}[0-9]{1}"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="AbsenceDays" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:token">
+<xs:pattern value="^\d+$"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Override" type="xs:boolean" minOccurs="0"/>
+<xs:element name="EntryAgeExempt" type="xs:boolean" minOccurs="0"/>
+<xs:element name="PreviousFundPaidHospitalDays" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:token">
+<xs:pattern value="^\d+$"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Properties" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Property" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Name">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Value">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="MorePersonsThenIncluded" type="xs:boolean" minOccurs="0" default="false"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Contacts">
+<xs:annotation>
+<xs:documentation>
+Address, Phone and Email Contacts. Used standalone and as part of MembershipApplication.
+</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Addresses" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Address" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Code">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:length value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="EffDate" type="xs:date"/>
+<xs:element name="Overseas" type="xs:boolean"/>
+<xs:element name="Line1">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Line2" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:choice>
+<xs:sequence>
+<xs:element name="Locality">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="State">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="2"/>
+<xs:maxLength value="3"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Postcode">
+<xs:simpleType>
+<xs:restriction base="xs:positiveInteger">
+<xs:maxInclusive value="9999"/>
+<xs:minInclusive value="200"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+<xs:sequence>
+<xs:element name="Line3">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:choice>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Phones" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Phone" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Code">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:length value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Number">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="8"/>
+<xs:maxLength value="15"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="EmailAddress" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="CorrMethID">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="IsSendEmail" type="xs:boolean" minOccurs="0"/>
+<xs:element name="IsReceiveMarketing" type="xs:boolean" minOccurs="0"/>
+<xs:element name="CommunicationPreferences" minOccurs="0">
+<xs:complexType>
+<xs:choice minOccurs="0" maxOccurs="unbounded">
+<xs:element name="CommunicationPreference">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="CommGroup" type="xs:integer" minOccurs="1"/>
+<xs:element name="CommMedium" type="xs:integer" minOccurs="0"/>
+<xs:element name="IsUsed" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:choice>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="BenefitPayment">
+<xs:annotation>
+<xs:documentation>Benefit Payment Details. Used standalone only</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="PaymentMethod">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="AccountIgnored" type="xs:string" minOccurs="0"/>
+<xs:element ref="Account" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Cover">
+<xs:annotation>
+<xs:documentation>
+Cover and Benefit Payment Details. Used standalone and as part of MembershipApplication.
+</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="EffDate" type="xs:date" minOccurs="0"/>
+<xs:element name="Class" type="TypeCoverClass" minOccurs="0"/>
+<xs:element name="CoverType">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="ProductSelection">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+<xs:maxLength value="10"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="AccountIgnored" type="xs:string" minOccurs="0"/>
+<xs:element name="BenefitPaymentMethod" type="TypeBenefitPaymentMethod" minOccurs="0"/>
+<xs:element name="CoverRateSelection" type="xs:string" minOccurs="0"/>
+<xs:element ref="Account" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Contributions">
+<xs:annotation>
+<xs:documentation>
+Contribution and Payment Details. Used standalone and as part of MembershipApplication.
+</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="DirectDebitContribPayments" type="xs:boolean"/>
+<xs:element name="EffDate" type="xs:date" minOccurs="0"/>
+<xs:element name="ContribFreq" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="ContribRateSelection" minOccurs="0">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="1"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="Rebate" type="xs:boolean" minOccurs="0"/>
+<xs:element name="RebateTier" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="EffDate" type="xs:date" minOccurs="1"/>
+<xs:element name="Tier" minOccurs="1">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:enumeration value="0"/>
+<xs:enumeration value="1"/>
+<xs:enumeration value="2"/>
+<xs:enumeration value="3"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="EligibleMedicare" type="xs:boolean" minOccurs="0"/>
+<xs:element name="DebitOnDate" type="xs:date" minOccurs="0"/>
+<xs:element ref="Account" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Membership">
+<xs:annotation>
+<xs:documentation>
+Membership. Used only as part of MembershipApplication
+</xs:documentation>
+</xs:annotation>
+<xs:complexType>
+<xs:sequence>
+<xs:element name="IsProspective" type="xs:boolean" minOccurs="0"/>
+<xs:element name="Group" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="EffDate" type="xs:date"/>
+<xs:element name="GroupID">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="0"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="PayrollNo">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="0"/>
+<xs:maxLength value="10"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Branch" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="EffDate" type="xs:date"/>
+<xs:element name="BranchID">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="0"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Agency" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="EffDate" type="xs:date"/>
+<xs:element name="AgencyID">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="0"/>
+<xs:maxLength value="8"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="Site" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="EffDate" type="xs:date"/>
+<xs:element name="LocationID">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="0"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="SiteID">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="0"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="EligibilityReason" minOccurs="0">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="EligibilityReasonID">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="0"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="EligibilitySubReasonID">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:minLength value="0"/>
+<xs:maxLength value="5"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="EffDate" type="xs:date"/>
+<xs:element name="Comment">
+<xs:simpleType>
+<xs:restriction base="xs:string">
+<xs:maxLength value="100"/>
+</xs:restriction>
+</xs:simpleType>
+</xs:element>
+<xs:element name="DefenceDeclaration" type="TypeDefenceEligibilityDeclarationBase" minOccurs="0">
+<xs:annotation>
+<xs:documentation>
+Defence Eligibility Declaration used in the Membership Application api.
+</xs:documentation>
+</xs:annotation>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema>
