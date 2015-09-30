@@ -126,7 +126,6 @@
 
 	<jsp:attribute name="body_end">
 
-		<script src="framework/jquery/plugins/jquery.scrollTo.min.js"></script>
 		<jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 		<c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 	</jsp:attribute>

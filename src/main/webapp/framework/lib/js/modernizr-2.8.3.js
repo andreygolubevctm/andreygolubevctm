@@ -2,9 +2,6 @@
  * Build: http://modernizr.com/download/#-cssanimations-csstransforms-csstransforms3d-csstransitions-input-inputtypes-localstorage-touch-shiv-cssclasses-prefixed-teststyles-testprop-testallprops-prefixes-domprefixes
  */
 ;
-
-
-
 window.Modernizr = (function( window, document, undefined ) {
 
     var version = '2.8.3',

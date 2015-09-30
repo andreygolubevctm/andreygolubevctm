@@ -70,7 +70,6 @@
 				}
 
 		}
-
 	}
 
 	function eventSubscriptions() {
@@ -574,7 +573,7 @@
 
 				meerkat.modules.healthPaymentStep.initHealthPaymentStep();
 				meerkat.modules.healthPaymentDate.initPaymentDate();
-				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP()
+				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
