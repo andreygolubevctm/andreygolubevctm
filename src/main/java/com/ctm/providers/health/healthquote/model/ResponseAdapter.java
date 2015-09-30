@@ -26,8 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.ctm.model.health.Frequency.ANNUALLY;
-import static com.ctm.model.health.Frequency.HALF_YEARLY;
+import static com.ctm.model.health.Frequency.*;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 
@@ -138,18 +137,18 @@ public class ResponseAdapter {
                                          com.ctm.providers.health.healthquote.model.response.Info info,
                                          com.ctm.model.health.form.HealthQuote healthQuote) {
         Premium premium = new Premium();
-        premium.setAnnually(createPrice(quotePremium.getAnnually(), info, healthQuote));
-        premium.setMonthly(createPrice(quotePremium.getMonthly(), info, healthQuote));
-        premium.setFortnightly(createPrice(quotePremium.getFortnightly(), info, healthQuote));
-        premium.setWeekly(createPrice(quotePremium.getWeekly(), info, healthQuote));
-        premium.setHalfyearly(createPrice(quotePremium.getHalfYearly(), info, healthQuote));
-        premium.setQuarterly(createPrice(quotePremium.getQuarterly(), info, healthQuote));
+        premium.setAnnually(createPrice(quotePremium.getAnnually(), info, healthQuote, ANNUALLY));
+        premium.setMonthly(createPrice(quotePremium.getMonthly(), info, healthQuote, MONTHLY));
+        premium.setFortnightly(createPrice(quotePremium.getFortnightly(), info, healthQuote, FORTNIGHTLY));
+        premium.setWeekly(createPrice(quotePremium.getWeekly(), info, healthQuote, WEEKLY));
+        premium.setHalfyearly(createPrice(quotePremium.getHalfYearly(), info, healthQuote, HALF_YEARLY));
+        premium.setQuarterly(createPrice(quotePremium.getQuarterly(), info, healthQuote, QUARTERLY));
         return premium;
     }
 
     private static Price createPrice(com.ctm.providers.health.healthquote.model.response.Price quotePrice,
                                      com.ctm.providers.health.healthquote.model.response.Info info,
-                                     com.ctm.model.health.form.HealthQuote healthQuote) {
+                                     com.ctm.model.health.form.HealthQuote healthQuote, Frequency frequency) {
 
 
 
@@ -161,9 +160,7 @@ public class ResponseAdapter {
                                 .map(Payment::getDetails)
                                 .map(PaymentDetails::getType)
                                 .map(PaymentType::findByCode);
-        boolean hasDiscountRates = hasDiscountRates(
-                Frequency.findByCode(healthQuote.getFilter().getFrequency()), info.getFundCode(),
-                type,
+        boolean hasDiscountRates = hasDiscountRates(frequency, info.getFundCode(), type,
                 StringUtils.equalsIgnoreCase(healthQuote.getOnResultsPage(), "Y"));
 
         price.setDiscounted(hasDiscountRates ? "Y" : "N");
