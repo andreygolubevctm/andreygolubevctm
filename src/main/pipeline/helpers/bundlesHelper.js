@@ -217,7 +217,11 @@ Bundles.prototype.getWatchableBundlesFilePaths = function(bundle, fileType) {
 
     var dependencies = this.getDependencies(bundle);
 
-    dependencies.push(bundle);
+    if(typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].originalBundle !== "undefined") {
+        dependencies.push(this.collection[bundle].originalBundle);
+    } else {
+        dependencies.push(bundle);
+    }
 
     return dependencies.map(function(dependency){
         return fileHelper.prefixFolderWithPath(dependency) + "/" + fileType + "/*." + fileType;
