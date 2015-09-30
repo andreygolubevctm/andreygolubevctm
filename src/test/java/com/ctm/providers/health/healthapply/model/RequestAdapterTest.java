@@ -165,6 +165,7 @@ public class RequestAdapterTest {
         verify(paymentDetails, times(2)).getType();
         verify(paymentDetails, times(1)).getFrequency();
         verify(healthCover, times(1)).getRebate();
+        verify(healthQuote, times(1)).getRebate();
         verify(healthCover, times(1)).getIncome();
         verify(healthQuote, times(1)).getLoading();
     }
