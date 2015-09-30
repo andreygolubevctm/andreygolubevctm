@@ -22,6 +22,9 @@ public class Medicare {
     private final FirstName firstName;
 
     @JsonSerialize(using = TypeSerializer.class)
+    private final MiddleInitial middleInitial;
+
+    @JsonSerialize(using = TypeSerializer.class)
     private final LastName lastName;
 
     @JsonSerialize(using = TypeSerializer.class)
@@ -30,7 +33,7 @@ public class Medicare {
     private final Expiry expiry;
 
 
-    public Medicare(final Cover cover, final MedicareNumber numberumber, final FirstName firstName, final MiddleInitial middleInitial,
+    public Medicare(final Cover cover, final MedicareNumber number, final FirstName firstName, final MiddleInitial middleInitial,
                     final LastName lastName, final Position position, final Expiry expiry) {
         this.cover = cover;
         this.number = number;

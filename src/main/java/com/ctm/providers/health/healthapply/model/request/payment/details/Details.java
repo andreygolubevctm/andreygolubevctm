@@ -37,6 +37,7 @@ public class Details {
         this.paymentType = paymentType;
         this.frequency = frequency;
         this.rebate = rebate;
+        this.rebatePercentage = rebatePercentage;
         this.income = income;
         this.lifetimeHealthCoverLoading = lifetimeHealthCoverLoading;
     }
