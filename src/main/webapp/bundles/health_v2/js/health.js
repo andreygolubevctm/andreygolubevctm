@@ -846,7 +846,6 @@
 			cache:true,
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
-				feature/HLT-2568-tracking
 				if(!_.isNull(callback) && typeof callback !== 'undefined') {
 					callback(data);
 				}
