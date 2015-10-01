@@ -942,22 +942,22 @@
 
 			switch (current_step) {
 				case 0:
-					actionStep = "health situation";
+					actionStep = "health situation 2";
 					break;
 				case 1:
-					actionStep = 'health cover';
+					actionStep = 'health cover 2';
 					break;
 				case 2:
-					actionStep = 'health cover contact';
+					actionStep = 'health cover contact 2';
 					break;
 				case 4:
-					actionStep = 'health application';
+					actionStep = 'health application 2';
 					break;
 				case 5:
-					actionStep = 'health payment';
+					actionStep = 'health payment 2';
 					break;
 				case 6:
-					actionStep = 'health confirmation';
+					actionStep = 'health confirmation 2';
 					break;
 			}
 
