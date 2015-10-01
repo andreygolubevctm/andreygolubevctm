@@ -24,6 +24,9 @@ Usage: to confirm whether split test 2 is applicable
 	<c:if test="${not empty journeyIn}">${journeyIn}</c:if>
 </c:set>
 
+<%-- for Health V2 A/B testing --%>
+<c:if test="${isHealthV2 eq true}"><c:set var="journey" value="2" /></c:if>
+
 <%-- Get reference to current journey xpath root --%>
 <c:set var="journeyVertical" value="${pageSettings.getVerticalCode()}" />
 <c:if test="${journeyVertical eq 'car'}">
