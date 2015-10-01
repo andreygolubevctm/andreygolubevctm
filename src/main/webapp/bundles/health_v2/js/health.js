@@ -870,6 +870,7 @@
 		});
 	}
 
+
 	function changeStateAndQuote(event) {
 		event.preventDefault();
 
