@@ -244,11 +244,7 @@
 				}
 
 				meerkat.modules.homeHistory.initHomeHistory();
-				if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
-					meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
-				} else {
-					meerkat.modules.resultsFeatures.fetchStructure('hncams');
-				}
+				meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
 			}
 		};
 
