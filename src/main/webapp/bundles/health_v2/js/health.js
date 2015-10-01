@@ -639,7 +639,9 @@
 		// the category names are generally arbitrary but some are used specifically and should use those types (email, name, potentially phone in the future)
 		var contactDetailsFields = {
 			name:[
-				{ $field: $("#health_contactDetails_name") },
+				{
+					$field: $("#health_contactDetails_name")
+				},
 				{
 					$field: $("#health_application_primary_firstname"),
 					$otherField: $("#health_application_primary_surname")
@@ -693,14 +695,28 @@
 			otherPhone: [
 				// otherPhone from details step
 				{
-					$field: $("#health_contactDetails_contactNumber_other"),
-					$fieldInput: $("#health_contactDetails_contactNumber_otherinput"),
+					$field: $("#health_contactDetails_otherNumber"),
+					$fieldInput: $("#health_contactDetails_otherNumberinput"),
 					$optInField: contactDetailsOptinField
 				},
 				// otherPhone from application step
 				{
 					$field: $("#health_application_other"),
 					$fieldInput: $("#health_application_otherinput")
+				}
+			],
+			flexiPhone: [
+				// flexiPhone from details step
+				{
+					$field: $("#health_contactDetails_flexiContactNumber"),
+					$fieldInput: $("#health_contactDetails_flexiContactNumberinput")
+				},
+				// otherPhone from application step
+				{
+					$field: $("#health_application_mobile"),
+					$fieldInput: $("#health_application_mobileinput"),
+					$otherField: $("#health_application_other"),
+					$otherFieldInput: $("#health_application_otherinput")
 				}
 			],
 			postcode: [
@@ -846,12 +862,14 @@
 			cache:true,
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
+				if(canSetRates === true) setRates(data);
 				if(!_.isNull(callback) && typeof callback !== 'undefined') {
 					callback(data);
 				}
 			}
 		});
 	}
+
 
 	function changeStateAndQuote(event) {
 		event.preventDefault();
