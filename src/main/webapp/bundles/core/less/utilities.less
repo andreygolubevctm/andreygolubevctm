@@ -128,11 +128,11 @@
 		@temp-2x-total-width : ~"@{vertical}-logo-@{currentMember}-2x-total-width";
 		@temp-2x-total-height : ~"@{vertical}-logo-@{currentMember}-2x-total-height";
 		background-image: url(@@temp-2x-image);
-		background-size: (@@temp-2x-total-width / 2) (@@temp-2x-total-height / 2);
+		background-size: (@@temp-2x-total-width * @prop-scale) (@@temp-2x-total-height * @prop-scale);
 	}
 
 	&.@{class-prefix}@{currentMember} {
-		background-position: (@@temp-2x-offset-x / 2) (@@temp-2x-offset-y / 2);
+		background-position: (@@temp-2x-offset-x * @prop-scale) (@@temp-2x-offset-y * @prop-scale);
 	}
 
 	.providersRetinaLogoImages(@providers, (@index + 1));
