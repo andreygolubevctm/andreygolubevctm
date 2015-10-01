@@ -24,8 +24,7 @@
 		$component, //Stores the jQuery object for the component group
 		$providerFilter, //Stores the jQuery object for the provider group
 		filterValues = {},
-		joinDelimiter = ',',
-		initialised = false;
+		joinDelimiter = ',';
 
 	var events = {
 			healthFilters: {
@@ -412,10 +411,9 @@
 	}
 
 
-	function initHealthFilters() {
+	function initModule() {
 
-		if(!initialised) {
-			initialised = true;
+		$(document).ready(function() {
 
 			if (meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
@@ -451,11 +449,11 @@
 				$dropdown.children('.activator').removeClass('inactive').removeClass('disabled');
 			});
 
-		}
+		});
 	}
 
 	meerkat.modules.register('healthFilters', {
-		initHealthFilters: initHealthFilters,
+		init: initModule,
 		events: events,
 		open: open,
 		close: close

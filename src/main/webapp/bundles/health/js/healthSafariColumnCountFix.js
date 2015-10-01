@@ -5,19 +5,18 @@
 
 ;(function($, undefined){
 
-	var initialised = false;
+	function init(){
 
-	function initHealthSafariColumnCountFix(){
-		if(!initialised) {
-			initialised = true;
+		jQuery(document).ready(function($) {
 			if(meerkat.modules.performanceProfiling.isSafariAffectedByColumnCountBug()) {
 				$('.benefits-component .benefits-list .children').css('-webkit-column-count', '1');
 			}
-		}
+		});
+
 	}
 
 	meerkat.modules.register("healthSafariColumnCountFix", {
-		initHealthSafariColumnCountFix: initHealthSafariColumnCountFix
+		init: init
 	});
 
 })(jQuery);

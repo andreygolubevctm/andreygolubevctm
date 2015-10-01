@@ -146,32 +146,35 @@
 			}
 		});
 
-		// Only init if CAR... obviously...
-		if (meerkat.site.vertical !== "car")
-			return false;
+		$(document).ready(function() {
 
-		$(elements.labels + " label input").on("click", function(e){
-			// Allow for input value to be updated
-			_.defer(_.bind(toggleVisibleContent, this, true));
-		});
+			// Only init if CAR... obviously...
+			if (meerkat.site.vertical !== "car")
+				return false;
 
-		$(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
+			$(elements.labels + " label input").on("click", function(e){
+				// Allow for input value to be updated
+				_.defer(_.bind(toggleVisibleContent, this, true));
+			});
 
-		captureOptions();
+			$(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
 
-		toggleVisibleContent();
-		// Need to allow time for the currentStep to be populated
-		setTimeout(function(){
-			if(meerkat.modules.journeyEngine.getCurrentStep().navigationId == "details") {
-				var sessionCamStep = getSessionCamStep();
-				if(isYoungDriverSelected()) {
-					sessionCamStep.navigationId += "-youngdriver";
+			captureOptions();
+
+			toggleVisibleContent();
+			// Need to allow time for the currentStep to be populated
+			setTimeout(function(){
+				if(meerkat.modules.journeyEngine.getCurrentStep().navigationId == "details") {
+					var sessionCamStep = getSessionCamStep();
+					if(isYoungDriverSelected()) {
+						sessionCamStep.navigationId += "-youngdriver";
+					}
+					meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
 				}
-				meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
-			}
-		},250);
+			},250);
 
-		updateRestrictAgeSelector();
+			updateRestrictAgeSelector();
+		});
 
 	}
 
