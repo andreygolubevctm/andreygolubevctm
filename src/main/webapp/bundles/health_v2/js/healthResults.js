@@ -371,7 +371,6 @@
             if (_.isNull(pageData.measurements)) {
                 return false;
             }
-
             var pageNumber = pageData.pageNumber;
             var numberOfPages = pageData.measurements.numberOfPages;
             var items = Results.getFilteredResults().length;
@@ -383,7 +382,7 @@
                     pageNumber: pageNumber,
                     numberOfPages: numberOfPages
                 },
-                onAfterEventMode: 'Load'
+                onAfterEventMode: 'Pagination'
             });
 
             if (freeColumns > 1 && numberOfPages === 1) {
