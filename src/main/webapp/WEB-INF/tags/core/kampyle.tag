@@ -6,7 +6,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="formId" 	required="true"	 rtexprvalue="true"	 description="Kampyle Form Id" %>
 
-<go:style marker="css-href" href="common/kampyle/css/k_button.css" />
+<go:style marker="css-href" href="assets/libraries/kampyle/css/k_button.css" />
 <go:style marker="css-head">
 #kampyle {
 	bottom: 0;
@@ -18,7 +18,7 @@
 #kampyle a{
 	width:89px;
 	height:89px;
-	background-image: url(common/kampyle/images/feedback2.png);
+	background-image: url(assets/libraries/kampyle/images/feedback2.png);
 	display:block;
 }
 
@@ -118,5 +118,5 @@ Kampyle = {
 <div id="kampyle"><a href='https://www.kampyle.com/feedback_form/ff-feedback-form.php?site_code=7343362&amp;lang=en&amp;form_id=${formId}'  target='kampyleWindow' id='kampylink' class='k_static' onclick="javascript:Kampyle.updateTransId();k_button.open_ff('site_code=7343362&amp;lang=en&amp;form_id=${formId}');write_quote_ajax.write({triggeredsave:'kampyle'});return false;" title="Feedback"></a></div>
 <input type="hidden" name="k_host_server" id="k_host_server" value="www.kampyle.com" />
 
-<script src="common/kampyle/js/k_button.js" type="text/javascript"></script>
-<script src="common/kampyle/js/k_push.js" type="text/javascript"></script>
+<script src="assets/libraries/kampyle/js/k_button.js" type="text/javascript"></script>
+<script src="assets/libraries/kampyle/js/k_push.js" type="text/javascript"></script>

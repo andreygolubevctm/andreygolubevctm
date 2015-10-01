@@ -15,6 +15,6 @@
 		<field_new:input xpath="${xpath}" required="${required}" title="CCV number on card" maxlength="4" pattern="[0-9]*" className="sessioncamexclude" additionalAttributes=" data-rule-ccv='${required}' " />
 	</div>
 	<div class="col-xs-2">
-		<img data-defer-src="framework/images/icon_card_ccv.png" alt="CCV" class="ccv" style="margin-top:10px" />
+		<img data-defer-src="assets/graphics/icon_card_ccv.png" alt="CCV" class="ccv" style="margin-top:10px" />
 	</div>
 </div>

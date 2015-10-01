@@ -1,23 +1,29 @@
 package com.ctm.connectivity;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.json.JsonSanitizer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.google.json.JsonSanitizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class JsonConnection {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JsonConnection.class);
-	public SimpleConnection conn = null;
-
-
+	public SimpleConnection conn;
 
 	public JsonConnection() {
-		conn = new SimpleConnection();
+		this.conn = new SimpleConnection();
+	}
+
+	public JsonConnection(SimpleConnection conn) {
+		this.conn = conn;
+	}
+
+	public void setHasCorrelationId(boolean hasCorrelationId) {
+		conn.setHasCorrelationId(hasCorrelationId);
 	}
 
 	/**
@@ -28,12 +34,7 @@ public class JsonConnection {
 	 */
 	public JSONObject get(String url) {
 		try {
-			if (conn == null) {
-				conn = new SimpleConnection();
-			}
-
 			String jsonString = conn.get(url);
-
 			if(jsonString == null) return null;
 
 			//
@@ -61,16 +62,10 @@ public class JsonConnection {
 
 	public JSONObject post(String url, String postBody, Boolean sanitize) {
 		try {
-			if (conn == null) {
-				conn = new SimpleConnection();
-			}
-
 			conn.setRequestMethod("POST");
 			conn.setPostBody(postBody);
 
 			String jsonString = conn.get(url);
-
-			if(jsonString == null) return null;
 
 			JSONObject json;
 
@@ -82,7 +77,7 @@ public class JsonConnection {
 
 			return json;
 		}
-		catch (Exception e){
+catch (Exception e){
 			LOGGER.error("Error making json post", kv("url", url), kv("postBody", postBody), kv("sanitize", sanitize), e);
 		}
 
@@ -120,7 +115,7 @@ public class JsonConnection {
 		}
 		catch (Exception e){
 			LOGGER.error("Error making json array post {},{},{}", kv("url", url), kv("postBody", postBody),
-				kv("sanitize", sanitize), e);
+					kv("sanitize", sanitize), e);
 		}
 
 		return null;
