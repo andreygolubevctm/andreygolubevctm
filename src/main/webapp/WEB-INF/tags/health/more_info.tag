@@ -178,7 +178,7 @@
 
 					{{ if(typeof extrasCover !== 'undefined') { }}
 						<div class="col-sm-6 col-xs-12 ">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download download-extras-brochure col-xs-12">Download Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
+							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn btn-download download-extras-brochure col-xs-12">Download  Extras <br class="hidden-xs hidden-lg"/>Policy Brochure</a>
 						</div>
 					{{ } }}
 				{{ } }}
