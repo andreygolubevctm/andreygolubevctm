@@ -1,0 +1,9 @@
+{
+  "tests" :  [
+            "shared/emailBrochures/js/emailBrochures",
+            "shared/saveQuote/js/saveQuote",
+            "shared/validation/js/validation",
+            "core/js/verificationToken",
+            "shared/results/js/ResultsModel"
+        ]
+}

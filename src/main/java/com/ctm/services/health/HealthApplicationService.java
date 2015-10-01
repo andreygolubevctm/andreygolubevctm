@@ -6,17 +6,21 @@ import com.ctm.model.Provider;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.HealthPricePremium;
 import com.ctm.model.request.health.HealthApplicationRequest;
+import com.ctm.model.settings.Vertical;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.RequestService;
+import com.ctm.services.SessionDataService;
 import com.ctm.utils.health.HealthApplicationParser;
+import com.ctm.utils.health.HealthRequestParser;
 import com.ctm.web.validation.FormValidation;
 import com.ctm.web.validation.SchemaValidationError;
+import com.ctm.web.validation.health.HealthApplicationTokenValidation;
 import com.ctm.web.validation.health.HealthApplicationValidation;
 import com.disc_au.price.health.PremiumCalculator;
 import com.disc_au.web.go.Data;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
@@ -26,6 +30,8 @@ import java.util.List;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class HealthApplicationService {
+
+	private static final Vertical.VerticalType VERTICAL = Vertical.VerticalType.HEALTH;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplicationService.class);
 	private final FatalErrorService fatalErrorService;
@@ -41,6 +47,9 @@ public class HealthApplicationService {
 	public static final String LOADING_XPATH = PREFIX + "/loading";
 	private boolean valid;
 	private RequestService requestService;
+	private HealthApplicationTokenValidation tokenService;
+	private boolean validToken;
+	private boolean isCallCentre;
 
 	/**
 	 * used by health_application.jsp
@@ -51,16 +60,20 @@ public class HealthApplicationService {
 		this.fatalErrorService = new FatalErrorService();
 	}
 
-	public HealthApplicationService(HealthPriceDao healthPriceDao) {
+	public HealthApplicationService(HealthPriceDao healthPriceDao, FatalErrorService fatalErrorService) {
 		this.healthPriceDao = healthPriceDao;
-		this.fatalErrorService = new FatalErrorService();
+		this.fatalErrorService = fatalErrorService;
 	}
 
 	public JSONObject setUpApplication(Data data, HttpServletRequest httpRequest, Date changeOverDate) throws JspException {
 		// TODO: refactor this when are away from jsp
 		if(requestService == null) {
-			requestService = new RequestService(httpRequest, "HEALTH", data);
+			requestService = new RequestService(httpRequest, VERTICAL);
 		}
+		SessionDataService sessionDataService = new SessionDataService();
+		tokenService = new HealthApplicationTokenValidation(sessionDataService);
+		isCallCentre = HealthRequestParser.isCallCentre(httpRequest);
+		validToken = tokenService.validateToken(HealthRequestParser.getHealthRequestToken(httpRequest, requestService));
 		List<SchemaValidationError> validationErrors;
 		try {
 			request = HealthApplicationParser.parseRequest(data, changeOverDate);
@@ -177,5 +190,33 @@ public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
 
 	public void setRequestService(RequestService requestService) {
 		this.requestService = requestService;
+	}
+
+	/**
+	 * used by health_application.jsp
+	 */
+	@SuppressWarnings("unused")
+	public boolean validToken() {
+		return validToken;
+	}
+
+	public String createErrorResponse(Long transactionId, String errorMessage, HttpServletRequest request) {
+		return tokenService.createErrorResponse( transactionId,  errorMessage,  request);
+	}
+
+	public String createTokenResponse() {
+		String response =  "{" +
+					"success:false," +
+					"errors { " +
+					"error : {" +
+					"code:Token Validation," +
+					"original:Token Validation" +
+					"}" +
+					"}";
+					if(isCallCentre) {
+						response += "callcentre:true";
+					}
+		response += "}";
+		return response;
 	}
 }

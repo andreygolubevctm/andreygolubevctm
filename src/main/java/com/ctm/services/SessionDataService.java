@@ -16,6 +16,8 @@ import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
 import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.security.TransactionVerifier;
+import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +36,16 @@ public class SessionDataService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SessionDataService.class);
 
-	private static int MAX_DATA_OBJECTS_IN_SESSION = 10;
-
 	private static final int SESSION_EXPIRY_DIFFERENCE = 5;
+	private final TransactionVerifier transactionVerifier;
+
+	public SessionDataService(TransactionVerifier transactionVerifier) {
+		this.transactionVerifier = transactionVerifier;
+	}
+
+	public SessionDataService() {
+		this.transactionVerifier = new TransactionVerifier();
+	}
 
 	/**
 	 * Return the authenticated session from the session object.
@@ -111,9 +120,9 @@ public class SessionDataService {
 			sessionData = getSessionDataFromSession(request);
 		}
 		if(sessionData != null){
-		sessionData.setShouldEndSession(false);
-		String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
-		String brandCode =  ApplicationService.getBrandCodeFromRequest(request);
+			sessionData.setShouldEndSession(false);
+			String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
+			String brandCode =  ApplicationService.getBrandCodeFromRequest(request);
 
 			cleanUpSessions(sessionData);
 			newSession = sessionData.addTransactionDataInstance();
@@ -123,8 +132,8 @@ public class SessionDataService {
 			LOGGER.warn("No vertical code provided; using generic instead");
 		}
 
-		newSession.put("current/verticalCode", verticalCode);
-		newSession.put("current/brandCode", brandCode);
+			newSession.put("current/verticalCode", verticalCode);
+			newSession.put("current/brandCode", brandCode);
 		}
 
 		return newSession;
@@ -148,7 +157,7 @@ public class SessionDataService {
 			data = sessionData.getSessionDataForPreviousTransactionId(Long.parseLong(transactionId));
 		}
 
-		if (data == null && searchPreviousIds == true) {
+		if (data == null && searchPreviousIds) {
 			// Check for previous id as the transaction might have been incremented (should only be true when called from get_transaction_id.jsp)
 			data = sessionData.getSessionDataForPreviousTransactionId(Long.parseLong(transactionId));
 		}
@@ -213,12 +222,12 @@ public class SessionDataService {
 		data.setLastSessionTouch(new Date());
 
 		// If localhost or NXI, the URL writing is not in place, therefore we have fall back logic...
-		if (EnvironmentService.needsManuallyAddedBrandCodeParam() == false) {
+		if (!EnvironmentService.needsManuallyAddedBrandCodeParam()) {
 			// Extra safety check, verify the brand code on the transaction object with the current brand code for this session.
 			String dataBucketBrand = (String) data.get("current/brandCode");
 			String applicationBrand = ApplicationService.getBrandCodeFromRequest(request);
 
-			if (dataBucketBrand != null && dataBucketBrand.equals("") == false && applicationBrand != null && dataBucketBrand.equalsIgnoreCase(applicationBrand) == false) {
+			if (dataBucketBrand != null && !dataBucketBrand.equals("") && applicationBrand != null && !dataBucketBrand.equalsIgnoreCase(applicationBrand)) {
 				LOGGER.error("Transaction doesn't match brand {},{}", kv("dataBucketBrand", dataBucketBrand), kv("applicationBrand", applicationBrand));
 				throw new BrandException("Transaction doesn't match brand");
 			}
@@ -268,10 +277,11 @@ public class SessionDataService {
 		transactionSessions.removeAll(itemsToDelete);
 
 		// Remove old sessions (will make 10 sessions the max number... could be anything, just worried about the size of the session object and server)
+		int MAX_DATA_OBJECTS_IN_SESSION = 10;
 		if(transactionSessions.size() >= MAX_DATA_OBJECTS_IN_SESSION){
 			// Trim the oldest data objects.
 			itemsToDelete = new ArrayList<>();
-			itemsToDelete.addAll(transactionSessions.subList(0, transactionSessions.size()-MAX_DATA_OBJECTS_IN_SESSION));
+			itemsToDelete.addAll(transactionSessions.subList(0, transactionSessions.size()- MAX_DATA_OBJECTS_IN_SESSION));
 			transactionSessions.removeAll(itemsToDelete);
 		}
 	}
@@ -360,6 +370,15 @@ public class SessionDataService {
 	public void setShouldEndSession(HttpServletRequest request, boolean shouldEnd) {
 		SessionData sessionData = getSessionDataFromSession(request, false);
 		sessionData.setShouldEndSession(shouldEnd);
+	}
+
+	public String updateToken(HttpServletRequest request, long timeoutSeconds) {
+		String verificationToken  = RequestUtils.getTokenFromRequest(request);
+
+		if(verificationToken != null && !verificationToken.isEmpty()){
+			verificationToken = transactionVerifier.refreshToken(verificationToken, timeoutSeconds);
+		}
+		return verificationToken;
 	}
 
 }

@@ -115,7 +115,6 @@ $(function () {
 		var data = null;
 		meerkat.modules.comms = {
 				post : function(request){
-					console.log("post recieved");
 					data = request.data;
 					var result = {
 						transactionId : 100000000
@@ -125,7 +124,6 @@ $(function () {
 					emailSent = true;
 				}
 		};
-		console.log("$submitButton.click()");
 		$submitButton.click();
 		// wait for fake email send
 		setTimeout(function(){}, 500);
@@ -135,7 +133,6 @@ $(function () {
 		var returnedpassword =  null;
 		var returnedpasswordConfirm =  null;
 
-		console.log("data" , data);
 		ok(data != null, "data should have been sent");
 		if(data != null){
 			for(var i = 0 ; i < data.length ; i++){

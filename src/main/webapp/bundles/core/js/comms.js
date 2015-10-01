@@ -144,7 +144,6 @@
 	function ajax(settings, ajaxProperties){
 
 		var tranId = meerkat.modules.transactionId.get();
-
 		try{
 			if(ajaxProperties.data === null) {
 				ajaxProperties.data = {};
@@ -190,12 +189,16 @@
 				}
 			}
 
+			meerkat.modules.verificationToken.addTokenToRequest(ajaxProperties);
 		}catch(e){
 		}
 
 		var jqXHR = $.ajax(ajaxProperties);
 		var deferred = jqXHR.then(
 					function onAjaxSuccess(result, textStatus, jqXHR){
+						if(typeof result.verificationToken !== 'undefined' && result.verificationToken !== ''){
+							meerkat.modules.verificationToken.set(result.verificationToken);
+						}
 					var data = (typeof settings.data !== "undefined") ? settings.data : null;
 
 						if(containsServerGeneratedError(result) === true) {

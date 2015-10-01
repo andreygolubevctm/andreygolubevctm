@@ -55,6 +55,11 @@ var ResultsModel = {
 					value: meerkat.modules.transactionId.get()
 				});
 
+				data.push({
+					name: 'verificationToken',
+					value: meerkat.modules.verificationToken.get()
+				});
+
 				if(meerkat.site.isCallCentreUser) {
 					data.push({
 						name: meerkat.modules.comms.getCheckAuthenticatedLabel(),
@@ -73,7 +78,7 @@ var ResultsModel = {
 			}
 		}
 
-		Results.model.ajaxRequest = $.ajax({
+		var request = {
 			url: url,
 			data: data,
 			type: "POST",
@@ -83,6 +88,7 @@ var ResultsModel = {
 			success: function(jsonResult){
 
 				Results.model.updateTransactionIdFromResult(jsonResult);
+				Results.model.updateVerificationTokenFromResult(jsonResult);
 
 				if( typeof meerkat != 'undefined') {
 					if (jsonResult.hasOwnProperty('results')) {
@@ -148,7 +154,7 @@ var ResultsModel = {
 					Results.model.handleFetchError( data, "Try/Catch fail on success: "+e.message );
 				}
 
-				
+
 			},
 			error: function(jqXHR, txt, errorThrown) {
 				Results.model.ajaxRequest = false;
@@ -163,7 +169,9 @@ var ResultsModel = {
 				Results.model.ajaxRequest = false;
 				Results.model.finishResultsFetch();
 			}
-					});
+		};
+		meerkat.modules.verificationToken.addTokenToRequest(request);
+		Results.model.ajaxRequest = $.ajax(request);
 
 	},
 
@@ -198,6 +206,16 @@ var ResultsModel = {
 		}
 		if (newTranID !== 0) {
 			meerkat.modules.transactionId.set(newTranID);
+		}
+	},
+
+	updateVerificationTokenFromResult: function( jsonResult ){
+		var verificationToken = "";
+		if (jsonResult.hasOwnProperty('verificationToken')) {
+			verificationToken = jsonResult.verificationToken;
+		}
+		if (verificationToken !== "") {
+			meerkat.modules.verificationToken.set(verificationToken);
 		}
 	},
 

@@ -5,6 +5,7 @@
 		var showReferenceNo= showReferenceNoIn;
 		var quoteType = quoteTypeIn;
 		var transaction_id = 0;
+		var verificationToken = '';
 		var elements = {};
 		var speed = 300;
 		var id  = idIn;
@@ -23,6 +24,10 @@
 			updateSimples();
 		};
 
+		this.setVerificationToken = function( _verificationToken ) {
+			verificationToken = _verificationToken;
+		};
+
 		/**
 			setting fetchFromServer to true will make a synchronous ajax call to
 			get the transaction. Try to do this bundled up in another call if you can eg touch quote.
@@ -33,6 +38,15 @@
 				callGetTransactionIdAJAX(false, 'preserve_tranId', 3, callback);
 			}
 			return transaction_id;
+		};
+
+		/**
+		 setting fetchFromServer to true will make a synchronous ajax call to
+		 get the transaction. Try to do this bundled up in another call if you can eg touch quote.
+		 If you can't call this method.
+		 **/
+		this.getVerificationToken = function() {
+			return verificationToken;
 		};
 
 		/**

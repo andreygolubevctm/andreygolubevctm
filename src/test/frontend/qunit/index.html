@@ -3,127 +3,34 @@
 <head>
     <title>CTM Test Suite</title>
 
-    <!-- THESE ARE ALL VERY MESSY NOW, PLEASE REFACTOR THE BOILERPLATE IF YOU MAKE NEW TESTS -->
-    <script src="../../../main/webapp/common/js/ipp/jquery.min.js"></script>
     <!-- qunit -->
     <link rel="stylesheet" href="vendor/qunit.css" media="screen">
     <script src="vendor/qunit.js"></script>
 
-    <script>
-        // See https://github.com/axemclion/grunt-saucelabs#test-result-details-with-qunit
-        QUnit.done(function (results) {
-            window.global_test_results = results
-        })
-    </script>
-
     <!--  plugin sources -->
-    <script>$.support.transition = false</script>
-    <!-- default site config -->
-    <script src="../../../main/webapp/framework/jquery/lib/jquery-2.1.4.min.js"></script>
-    <script>
-        document.write('<script src="../../../main/webapp/framework/lib/js/modernizr-2.8.3.min.js">\x3C/script>');
-        document.write('<script src="../../../main/webapp/framework/lib/js/underscore-1.8.3.min.js">\x3C/script>');
-    </script>
+    <script src="../../../main/webapp//common/js/ipp/jquery.min.js"></script>
     <script src="unit/testBoilerPlate.js"></script>
-    <script src="../../../main/webapp/bundles/shared/validation/js/jquery.validate.js"></script>
-	<script src="../../../main/webapp/bundles/shared/validation/js/validation.js"></script>
-    <script src="../../../main/webapp/bundles/shared/validation/js/validationAddress.js"></script>
-    <script src="../../../main/webapp/bundles/shared/validation/js/validationBaseRules.js"></script>
-    <script src="../../../main/webapp/bundles/shared/validation/js/validationCurrency.js"></script>
-    <script src="../../../main/webapp/bundles/shared/validation/js/validationDateRangeRules.js"></script>
-    <script src="../../../main/webapp/bundles/shared/validation/js/validationNameRules.js"></script>
-    <script src="../../../main/webapp/bundles/shared/validation/js/validationPhoneNumberRules.js"></script>
+    <script>setupBoilerplate('../../../main/webapp/')</script>
 
-	<script src="../../../main/webapp/bundles/core/js/contactDetails.js"></script>
-	<script src="../../../main/webapp/bundles/shared/sendEmail/js/sendEmail.js"></script>
-	<script src="../../../main/webapp/bundles/shared/emailBrochures/js/emailBrochures.js"></script>
-	<script src="../../../main/webapp/bundles/core/js/journeyEngine.js"></script>
-	<script src="../../../main/webapp/bundles/core/js/form.js"></script>
-	<script src="../../../main/webapp/bundles/shared/saveQuote/js/saveQuote.js"></script>
-
-    <script>
-        var validNameCharsRegex = /^([a-zA-Z .'\-,]*)$/;
-        var isUrlRegex = /(?:[^\s])\.(com|co|net|org|asn|ws|us|mobi)(\.[a-z][a-z])?/;
-
-        // Name is alpha and .'\-, only with no foreign characters as providers don't support them
-        // Ensures that an email address or URL is not being entered
-        //
-        function validatePersonName(value) {
-            var isURL = value.match(isUrlRegex) !== null;
-            return !isURL && validNameCharsRegex.test(value);
-        }
-
-        function setMinAgeValidation($field, ageMin, title) {
-            $field.addRule('youngestDOB', ageMin, title + ' age cannot be under ' + ageMin);
-
-        }
-        $(document).ready(function() {
-            /**
-             * CTM Custom Unhighlight function
-             * We define this as a prototype, so that the function only needs to be in memory once.
-             * Without this, it would be cloned on every init of the validator.
-             * @param element
-             * @param errorClass
-             * @param validClass
-             */
-            $.validator.prototype.ctm_unhighlight = function( element, errorClass, validClass ) {
-                if (!element) return;
-                errorClass = errorClass || this.settings.errorClass;
-                validClass = validClass || this.settings.validClass;
-
-
-                if (element.type === "radio") {
-                    this.findByName(element.name).removeClass(errorClass).addClass(validClass);
-                } else {
-                    $(element).removeClass(errorClass).addClass(validClass);
-                }
-
-                var $wrapper = $(element).closest('.row-content, .fieldrow_value');
-                var $errorContainer = $wrapper.find('.error-field');
-
-
-                $errorContainer.find('label[for="' + element.name + '"]').remove();
-
-                if ($wrapper.find(':input.has-error').length > 0) {
-                    return;
-                }
-
-                $wrapper.removeClass(errorClass).addClass(validClass);
-
-                if ($errorContainer.find('label').length > 0) {
-                    if ($errorContainer.is(':visible')) {
-                        $errorContainer.stop().slideUp(100);
-                    }
-                    else {
-                        $errorContainer.hide();
-                    }
-                }
-            };
-
-            meerkat.modules.jqueryValidate.initJourneyValidator();
-
-            $.validator.addMethod(
-                    "personName", validatePersonName, "Please enter alphabetic characters only. " +
-                    "Unfortunately, international alphabetic characters, numbers and symbols are not " +
-                    "supported by many of our partners at this time."
-            );
-
-        });
-    </script>
-
-
+    <!-- modules under test -->
+    <script src="../../../main/webapp/bundles/shared/emailBrochures/js/emailBrochures.js"></script>
+<script src="../../../main/webapp/bundles/shared/saveQuote/js/saveQuote.js"></script>
+<script src="../../../main/webapp/bundles/shared/validation/js/validation.js"></script>
+<script src="../../../main/webapp/bundles/core/js/verificationToken.js"></script>
+<script src="../../../main/webapp/bundles/shared/results/js/ResultsModel.js"></script>
     <!-- unit tests -->
-    <script src="unit/emailBrochuresTest.js"></script>
-    <script src="unit/saveQuote.js"></script>
-    <script src="unit/validation.js"></script>
+    <script src="unit/shared/emailBrochures/js/emailBrochuresTest.js"></script>
+<script src="unit/shared/saveQuote/js/saveQuoteTest.js"></script>
+<script src="unit/shared/validation/js/validationTest.js"></script>
+<script src="unit/core/js/verificationTokenTest.js"></script>
+<script src="unit/shared/results/js/ResultsModelTest.js"></script>
 
 </head>
-<body>
-<div>
-    <div id="qunit"></div>
-    <div id="qunit-fixture"></div>
-    <div id="testBody">
-    </div>
-</div>
-</body>
+    <body>
+        <div>
+            <div id="qunit"></div>
+            <div id="qunit-fixture"></div>
+            <div id="testBody"></div>
+        </div>
+    </body>
 </html>

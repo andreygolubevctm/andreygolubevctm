@@ -78,3 +78,208 @@
 	});
 
 })(jQuery);
+
+function getProduct() {
+	return {
+		transactionId: 2204639,
+		ambulance: {},
+		promo: {},
+		premium: {
+			annually: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			},
+			fortnightly: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			},
+			halfyearly: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			},
+			monthly: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			},
+			quarterly: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			},
+			weekly: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			}
+		},
+		service: "PHIO",
+		showAltPremium: true,
+		showApply: true,
+		whatHappensNext: ""
+	};
+	return {
+		transactionId: 2204639,
+		ambulance: {},
+		promo: {},
+		premium: {
+			annually: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			},
+			fortnightly: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			},
+			halfyearly: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			},
+			monthly: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			},
+			quarterly: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			},
+			weekly: {
+				base: "$2,351.44",
+				baseAndLHC: "$2,669.24",
+				discounted: "N",
+				hospitalValue: 2187.2,
+				lhc: 317.8,
+				lhcfreepricing: "+ $317.80 LHC inc $0.00 Government Rebate",
+				lhcfreetext: "$2,351.44",
+				lhcfreevalue: 2351.44,
+				pricing: "Includes rebate of $0.00 & LHC loading of $317.80",
+				rebate: "",
+				rebateValue: "$0.00",
+				text: "$2,669.24",
+				value: 2669.24
+			}
+		},
+		service: "PHIO",
+		showAltPremium: true,
+		showApply: true,
+		whatHappensNext: ""
+	};
+}

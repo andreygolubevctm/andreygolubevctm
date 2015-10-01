@@ -24,8 +24,10 @@ public class RequestUtils {
     public static final String TRANSACTION_ID_PARAM = "transactionId";
     public static final String BRAND_CODE_PARAM = "brandCode";
     public static final String VERTICAL_PARAM = "vertical";
+    public static final String VERIFICATION_TOKEN_PARAM = "verificationToken";
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(RequestUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestUtils.class);
+
     private final SessionDataService sessionDataService = new SessionDataService();
 
     static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -160,5 +162,8 @@ public class RequestUtils {
         return vertical;
     }
 
+    public static String getTokenFromRequest(HttpServletRequest request) {
+        return request.getParameter(VERIFICATION_TOKEN_PARAM);
+    }
 
 }

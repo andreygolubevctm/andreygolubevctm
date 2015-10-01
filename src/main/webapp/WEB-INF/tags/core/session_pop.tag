@@ -201,7 +201,7 @@
 			}
 			
 			return $.ajax({
-				type: "GET",
+				type: "POST",
 				url: ajaxURL,
 				dataType: 'json',
 				timeout: 60000,

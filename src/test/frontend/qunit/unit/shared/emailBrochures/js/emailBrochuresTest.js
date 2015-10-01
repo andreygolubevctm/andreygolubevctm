@@ -15,6 +15,7 @@ $(function () {
 
 	//Setup the test data
 	var vertical = "health";
+	meerkat.site.vertical = vertical;
 	var hospitalPDSUrl="hospitalPDSUrl";
 	var extrasPDSUrl="extrasPDSUrl";
 	var frequency="Monthly";
@@ -61,6 +62,9 @@ $(function () {
 	});
 
 	QUnit.test( "should send email", function(assert) {
+		Results.init({
+			frequency: frequency
+		});
 		meerkat.modules.emailBrochures.setup(settings);
 		var coverType="";
 		var marketing="Y";

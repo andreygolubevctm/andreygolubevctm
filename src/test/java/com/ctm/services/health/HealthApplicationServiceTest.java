@@ -1,27 +1,25 @@
 package com.ctm.services.health;
 
-import java.sql.SQLException;
-import java.util.Date;
+import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.exceptions.DaoException;
+import com.ctm.model.health.Frequency;
+import com.ctm.model.health.HealthPricePremium;
+import com.ctm.services.FatalErrorService;
+import com.ctm.services.RequestService;
+import com.ctm.utils.FormDateUtils;
+import com.disc_au.web.go.Data;
+import org.junit.Before;
+import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
+import java.sql.SQLException;
+import java.util.Date;
 
-import com.ctm.model.health.Frequency;
-import com.ctm.services.RequestService;
-import com.ctm.utils.FormDateUtils;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.ctm.dao.health.HealthPriceDao;
-import com.ctm.exceptions.DaoException;
-import com.ctm.model.health.HealthPricePremium;
-import com.ctm.model.health.Frequency;
-import com.disc_au.web.go.Data;
-
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class HealthApplicationServiceTest {
@@ -32,9 +30,11 @@ public class HealthApplicationServiceTest {
 	private HealthPriceDao healthPriceDao;
 	private HttpServletRequest request = mock(HttpServletRequest.class);
 	private Date changeOverDate;
+	private HttpSession session= mock(HttpSession.class);
 
 	@Before
 	public void setup() throws Exception {
+		when(request.getSession()).thenReturn(session);
 		RequestService requestService = mock(RequestService.class);
 		healthPriceDao = mock(HealthPriceDao.class);
 		data.put(PREFIX + "/application/productId", "PHIO-HEALTH-545038");
@@ -50,10 +50,10 @@ public class HealthApplicationServiceTest {
 		discPremiums.setMonthlyLhc(86.15);
 		discPremiums.setMonthlyPremium(142.3);
 
-		when(healthPriceDao.getPremiumAndLhc("545038", false)).thenReturn(premiums );
-		when(healthPriceDao.getPremiumAndLhc("545038", true)).thenReturn(discPremiums );
-
-		healthApplicationService = new HealthApplicationService(healthPriceDao);
+		when(healthPriceDao.getPremiumAndLhc("545038", false)).thenReturn(premiums);
+		when(healthPriceDao.getPremiumAndLhc("545038", true)).thenReturn(discPremiums);
+		FatalErrorService fatalErrorService = mock(FatalErrorService.class);
+		healthApplicationService = new HealthApplicationService(healthPriceDao, fatalErrorService);
 		healthApplicationService.setRequestService(requestService);
 
 		setChangeOverDate();

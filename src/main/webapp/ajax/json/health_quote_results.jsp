@@ -6,6 +6,10 @@
 <core_new:no_cache_header/>
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
+<jsp:useBean id="healthQuoteResults" class="com.ctm.services.health.HealthQuoteService" />
+${healthQuoteResults.init(pageContext.request)}
+<%-- Only continue if token is valid --%>
+<c:if test="${healthQuoteResults.validToken()}">
 
 <jsp:useBean id="soapdata" class="com.disc_au.web.go.Data" scope="request" />
 
@@ -23,16 +27,6 @@
 	<c:when test="${empty data.current.transactionId}">
 		<error:recover origin="ajax/json/health_quote_results.jsp" quoteType="health" />
 	</c:when>
-	<%--
-	This is now getting triggered by the new Results.js code which adds the querystring params.
-	Increment is already done in core:transaction below.
-
-	<c:when test="${param.health_incrementTransactionId}">
-		<c:set var="id_return">
-			<core:get_transaction_id quoteType="health" id_handler="increment_tranId" />
-		</c:set>
-	</c:when>
-	--%>
 	<c:otherwise>
 		<%-- All is good --%>
 	</c:otherwise>
@@ -115,7 +109,7 @@
 			${go:getEscapedXml(soapdata['soap-response/results'])}
 			<timeout>${sessionDataService.getClientSessionTimeout(pageContext.getRequest())}</timeout>
 		</c:set>
-		${go:XMLtoJSON(outputXml)}
+		<c:set var="baseJsonResponse">${go:XMLtoJSON(outputXml)}</c:set>
 		<%-- COMPETITION APPLICATION START --%>
 		<c:choose>
 			<c:when test="${not empty data['health/contactDetails/contactNumber/mobile']}">
@@ -152,8 +146,10 @@
 			<go:setData dataVar="data" xpath="health/contactDetails/competition/previous" value="${concat}" />
 		</c:if>
 		<%-- COMPETITION APPLICATION END --%>
+		${healthQuoteResults.createResponse(data.text['current/transactionId'], baseJsonResponse)}
 	</c:when>
 	<c:otherwise>
 		<agg:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="health_quote_results.jsp"/>
 	</c:otherwise>
 </c:choose>
+</c:if>
