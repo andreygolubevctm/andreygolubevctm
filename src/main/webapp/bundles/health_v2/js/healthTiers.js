@@ -36,7 +36,7 @@ Handling of the rebate tiers based off situation
 		$dependants,
 		$incomeMessage,
 		$incomeBase,
-		$income
+		$income;
 
 	initHealthTiers =  function(){
 		$dependants = $('#health_healthCover_dependants');
