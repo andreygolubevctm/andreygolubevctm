@@ -64,8 +64,6 @@
 
 	/**
 	* Gets the DOM elements for the loading animation
-	*
-	* @param NIL
 	* @return String of DOM elements
 	*/
 	function getTemplate() {

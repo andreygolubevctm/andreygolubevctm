@@ -63,8 +63,7 @@
         var $revisionHolder = $(".devRevisionId");
 
         $transactionIdHolder.text(meerkat.modules.transactionId.get());
-        $environmentHolder.text(meerkat.site.environment);
-        $environmentHolder.addClass(meerkat.site.environment);
+        $environmentHolder.text(meerkat.site.environment).addClass(meerkat.site.environment);
         $revisionHolder.text(meerkat.site.revision);
 
         // Add aggregation service switcher (
@@ -132,7 +131,7 @@
 
             initRefreshCSS();
 
-            jQuery(document).ready(function($) {
+            $(document).ready(function($) {
                 initEnvironmentMonitor();
             });
         }

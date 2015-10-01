@@ -7,7 +7,7 @@
 
 	function init(){
 
-		jQuery(document).ready(function($) {
+		$(document).ready(function($) {
 			if(meerkat.modules.performanceProfiling.isFFAffectedByDropdownMenuBug()) {
 				$('html').addClass('ff-no-custom-menu');
 			}

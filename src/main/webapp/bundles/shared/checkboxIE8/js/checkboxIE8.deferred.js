@@ -16,7 +16,7 @@
 
     function support() {
         // Limit selection to forms and modals
-        $forms = $('html.lt-ie9 form, html.lt-ie9 #dynamic_dom');
+        var $forms = $('html.lt-ie9 form, html.lt-ie9 #dynamic_dom');
 
         if($forms.length) {
             // Add listener to checkboxes

@@ -3,9 +3,7 @@
  */
 (function ($, undefined) {
 
-	var meerkat = window.meerkat,
-		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info;
+	var meerkat = window.meerkat;
 
 	function showTermsDocument(event) {
 		event.preventDefault();
@@ -24,7 +22,7 @@
 	}
 
 	function initShowDoc(options) {
-		jQuery(document).ready(function ($) {
+		$(document).ready(function ($) {
 			$(document.body).on('click', '.showDoc', showTermsDocument);
 		});
 	}
