@@ -27,9 +27,11 @@
 
 			// Initialise the journey engine
 			var startStepId = null;
-
+			if (meerkat.site.isFromBrochureSite === true) {
+				startStepId = steps.detailsStep.navigationId;
+			}
 			// Use the stage user was on when saving their quote
-			if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
+			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
 				// Do not allow the user to go past the results page on amend.
 				if(meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment'){
 					startStepId = 'results';
@@ -861,10 +863,13 @@
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
 				if(canSetRates === true) setRates(data);
-				if(!_.isNull(callback) && typeof callback !== 'undefined') callback(data);
+				if(!_.isNull(callback) && typeof callback !== 'undefined') {
+					callback(data);
+				}
 			}
 		});
 	}
+
 
 	function changeStateAndQuote(event) {
 		event.preventDefault();

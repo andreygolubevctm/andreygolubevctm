@@ -6,6 +6,8 @@
 	<contactDetails>
 		<name>Guybrush</name>
 		<contactNumber>
+			<mobile>0412341234</mobile>
+			<other>0798765432</other>
 		</contactNumber>
 		<flexiContactNumber>(0404) 123 123</flexiContactNumber>
 		<email>preload.testing@comparethemarket.com.au</email>
