@@ -8,7 +8,6 @@
 		log = meerkat.logging.info;
 
 	/* Variables */
-	var initialised = false;
 	var elements = {
 			name:					"home_disclosures",
 			atCurrentAddress:		".atCurrentAddress",
@@ -36,12 +35,12 @@
 
 	/* main entrypoint for the module to run first */
 	function initHomeHistory() {
-		if(!initialised) {
-			initialised = true;
-			log("[HomeHistory] Initialised"); //purely informational
+		log("[HomeHistory] Initialised"); //purely informational
+
+		$(document).ready(function initDomReady() {
 			applyEventListeners();
 			toggleHistoryFields(0);
-		}
+		});
 	}
 
 	meerkat.modules.register('homeHistory', {
