@@ -41,7 +41,7 @@
 
 		<form_new:fieldset legend="Lifetime Health Cover (LHC) Loading" className="lhc-group">
 
-			<p>The Federal Government may apply a LHC loading to your premium if you have not held continuous private hospital cover since turning 31. Please answer the questions below to work out if LHC applies to you. <a href="http://www.privatehealth.gov.au/healthinsurance/incentivessurcharges/lifetimehealthcover.htm" target="_blank">Find out more</a></p>
+			<p>The Federal Government may apply a LHC loading to your premium if you have not held continuous private hospital cover since turning 31. <span class="lhc-question">Please answer the questions below to work out if LHC applies to you.</span> <a href="http://www.privatehealth.gov.au/healthinsurance/incentivessurcharges/lifetimehealthcover.htm" target="_blank">Find out more</a></p>
 
 			<c:set var="fieldXpath" value="${xpath}/primary/healthCoverLoading" />
 			<form_new:row label="Have you had continuous hospital cover since 1 July ${continuousCoverYear} or 1 July following your 31st birthday?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group" helpId="239">
