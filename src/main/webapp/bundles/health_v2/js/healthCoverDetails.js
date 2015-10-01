@@ -29,8 +29,8 @@
         $healthCoverRebate,
         $healthDetailsHiddenFields;
 
-    var MODE_POPOVER = 'popover-mode'; // Triggered as pop over
-    var MODE_JOURNEY = 'journey-mode'; // Triggered by journey engine step. Different buttons are shown and different events are triggered.
+    var MODE_POPOVER = 'popover-mode', // Triggered as pop over
+        MODE_JOURNEY = 'journey-mode'; // Triggered by journey engine step. Different buttons are shown and different events are triggered.
 
     function initHealthCoverDetails() {
         $(document).ready(function () {
@@ -68,7 +68,6 @@
 
             meerkat.modules.formDateInput.init();
             meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($healthCoverDetailsContainer);
-
             meerkat.modules.healthTiers.initHealthTiers();
         }
     }
@@ -381,6 +380,10 @@
                 _.findWhere(postData, {name: "health_showAll"}).value = "N";
                 _.findWhere(postData, {name: "health_onResultsPage"}).value = "N";
                 _.findWhere(postData, {name: "health_incrementTransactionId"}).value = "N";
+                postData.push({
+                    name: "health_payment_details_type",
+                    value: 'ba'
+                });
 
                 meerkat.modules.comms.post({
                     url: "ajax/json/health_quote_results.jsp",
