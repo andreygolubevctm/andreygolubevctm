@@ -12,6 +12,7 @@
         $modal,
         $healthCoverDetailsContainer,
         $healthCoverlhcGroup,
+        $healthCoverlhcQuestion,
         $healthCoversituation,
         $primaryDob,
         $primaryCurrentCover,
@@ -47,6 +48,7 @@
             $healthCoverDetailsContainer = $modal.find('#health_healthCover-selection');
 
             $healthCoverlhcGroup = $healthCoverDetailsContainer.find('.lhc-group');
+            $healthCoverlhcQuestion = $healthCoverlhcGroup.find('.lhc-question');
 
             $primaryContinuousCover = $healthCoverDetailsContainer.find('#health-continuous-cover-primary');
 
@@ -190,11 +192,10 @@
     }
 
     function toggleLHCApplicability(){
-        if (isLessThan31Or31AndBeforeJuly1($primaryDob.val()) && isSinglePolicy()){
-            $healthCoverlhcGroup.hide();
-        } else {
-            $healthCoverlhcGroup.show();
-        }
+        var _primary = $primaryCurrentCover.find(':checked').val();
+
+        isLessThan31Or31AndBeforeJuly1($primaryDob.val()) && isSinglePolicy() ? $healthCoverlhcGroup.hide() : $healthCoverlhcGroup.show();
+        !isLessThan31Or31AndBeforeJuly1($primaryDob.val()) && isSinglePolicy() && _primary === 'N'  ? $healthCoverlhcQuestion.hide() : $healthCoverlhcQuestion.show();
     }
     function isSinglePolicy(){
         var legitTypes = ['S','SF','SM','SPF'];
