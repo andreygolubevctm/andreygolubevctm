@@ -32,6 +32,7 @@ function SpriteTasks(gulp) {
                         imgPath: imgPathPrefix + bundle + ".png",
                         cssName: "logosSprites.less",
                         padding: 2,
+                        cssSpritesheetName: bundle + "-logo",
                         cssVarMap: function(sprite) {
                             sprite.name = bundle + "-logo-" + sprite.name;
                         },
@@ -46,6 +47,7 @@ function SpriteTasks(gulp) {
                         spriteSmithConfig.retinaSrcFilter = [path.join(srcPath, "*@2x.png")];
                         spriteSmithConfig.retinaImgName = bundle + "@2x.png";
                         spriteSmithConfig.retinaImgPath = imgPathPrefix + bundle + "@2x.png";
+                        spriteSmithConfig.cssRetinaSpritesheetName = bundle + "-logo-2x";
                     }
 
                     var spriteData = gulp.src(path.join(srcPath, "*.png"))
