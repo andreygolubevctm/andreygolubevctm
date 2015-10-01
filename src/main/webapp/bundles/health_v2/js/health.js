@@ -27,9 +27,11 @@
 
 			// Initialise the journey engine
 			var startStepId = null;
-
+			if (meerkat.site.isFromBrochureSite === true) {
+				startStepId = steps.detailsStep.navigationId;
+			}
 			// Use the stage user was on when saving their quote
-			if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
+			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
 				// Do not allow the user to go past the results page on amend.
 				if(meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment'){
 					startStepId = 'results';
@@ -567,6 +569,8 @@
 
 					// Insert fund into checkbox label
 					$('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
+					// Insert fund into Contact Authority
+					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
 					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
 					var $firstnameField = $("#health_payment_medicare_firstName");
@@ -575,7 +579,7 @@
 					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF"];
 
 					if( $('input[name=health_healthCover_rebate]:checked').val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
@@ -731,7 +735,7 @@
 
 	// Make the rebate available publicly, and handle rates property being null.
 	function getRebate() {
-		if (rates != null && rates.rebate) {
+		if (!_.isNull(rates) && rates.rebate) {
 			return rates.rebate;
 		}
 		else {
@@ -842,8 +846,10 @@
 			cache:true,
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
-				if(canSetRates === true) setRates(data);
-				if(callback != null) callback(data);
+				feature/HLT-2568-tracking
+				if(!_.isNull(callback) && typeof callback !== 'undefined') {
+					callback(data);
+				}
 			}
 		});
 	}
