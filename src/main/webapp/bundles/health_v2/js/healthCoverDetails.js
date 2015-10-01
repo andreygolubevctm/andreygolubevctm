@@ -64,8 +64,9 @@
 
             $healthCoverRebate = $healthCoverDetailsContainer.find('.health_cover_details_rebate');
 
-            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($healthCoverDetailsContainer);
             meerkat.modules.formDateInput.init();
+            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($healthCoverDetailsContainer);
+
             meerkat.modules.healthTiers.initHealthTiers();
         }
     }
@@ -288,7 +289,7 @@
             var $this = $(this);
 
             // Don't action on the DOB input fields; wait until it's serialised to the hidden field.
-            if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year')) return;
+            if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year') || ($this.attr('name').indexOf('partner_dob') >= 0 && $this.val() === "")) return;
 
            setHealthFunds();
 
