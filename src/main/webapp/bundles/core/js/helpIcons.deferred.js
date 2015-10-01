@@ -9,7 +9,6 @@
 	}
 
 	meerkat.modules.register("helpIcons", {
-		init: init,
-		events: events
+		init: init
 	});
 })(jQuery);
