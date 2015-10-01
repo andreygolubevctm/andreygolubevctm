@@ -60,6 +60,8 @@ gracefulFs.readdirSync(gulp.pipelineConfig.tasks.dir)
 
 gulp.task("default", Object.keys(tasks));
 
+gulp.task("watch", []);
+
 gulp.task("build", ["clean:noexit", "default"], function () {
     // We don't need watchers so we can just exit here.
     // Don't delete the beautiful Sergei.
