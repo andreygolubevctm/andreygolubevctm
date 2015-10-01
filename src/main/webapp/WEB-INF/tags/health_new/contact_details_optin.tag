@@ -73,7 +73,7 @@
 
 				<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
 				<form_new:row label="Phone Number" fieldXpath="${fieldXpath}" className="clear">
-					<field:flexi_contact_number xpath="${fieldXpath}" required="required" maxLength="20"/>
+					<field:flexi_contact_number xpath="${fieldXpath}" required="${required}" maxLength="20"/>
 				</form_new:row>
 
 				<%-- COMPETITION START --%>
