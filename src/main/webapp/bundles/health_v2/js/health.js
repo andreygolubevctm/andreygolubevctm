@@ -641,6 +641,8 @@
 
 					// Insert fund into checkbox label
 					$('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
+					// Insert fund into Contact Authority
+					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
 					// Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
 					var $firstnameField = $("#health_payment_medicare_firstName");
@@ -649,7 +651,7 @@
 					if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF"];
 
 					if( $('input[name=health_healthCover_rebate]:checked').val() == "N" && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
@@ -807,7 +809,7 @@
 
 	// Make the rebate available publicly, and handle rates property being null.
 	function getRebate() {
-		if (rates != null && rates.rebate) {
+		if (!_.isNull(rates) && rates.rebate) {
 			return rates.rebate;
 		}
 		else {
@@ -830,7 +832,7 @@
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
 	function loadRates(callback){
 
-		$healthCoverDetails = $('.health-cover_details');
+		var $healthCoverDetails = $('.health-cover_details');
 
 		var postData = {
 			dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
@@ -885,7 +887,9 @@
 			errorLevel: "warning",
 			onSuccess:function onRatesSuccess(data){
 				setRates(data);
-				if(callback != null) callback(data);
+				if(!_.isNull(callback) && typeof callback !== 'undefined') {
+					callback(data);
+				}
 			}
 		});
 	}
@@ -1081,7 +1085,7 @@
 					var extraParameters = "";
 
 					if (meerkat.site.utm_source !== '' && meerkat.site.utm_medium !== '' && meerkat.site.utm_campaign !== ''){
-						extraParameters = "&utm_source=" + meerkat.site.utm_source + "&utm_medium=" + meerkat.site.utm_medium + "&utm_campaign=" + meerkat.site.utm_campaign
+						extraParameters = "&utm_source=" + meerkat.site.utm_source + "&utm_medium=" + meerkat.site.utm_medium + "&utm_campaign=" + meerkat.site.utm_campaign;
 					}
 
 					// Success
