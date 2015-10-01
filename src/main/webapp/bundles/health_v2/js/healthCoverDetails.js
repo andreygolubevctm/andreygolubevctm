@@ -502,6 +502,13 @@
             onOpen: function(id) {
                 modalId = id;
                 setup();
+                var data = {
+                    actionStep: 'Health LHC modal'
+                };
+                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                    method:	'trackQuoteForms',
+                    object:	data
+                });
             }
         });
     }

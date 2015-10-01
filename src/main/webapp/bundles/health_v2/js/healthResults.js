@@ -371,19 +371,18 @@
             if (_.isNull(pageData.measurements)) {
                 return false;
             }
-
+            var pageNumber = pageData.pageNumber;
             var numberOfPages = pageData.measurements.numberOfPages;
             var items = Results.getFilteredResults().length;
             var columnsPerPage = pageData.measurements.columnsPerPage;
             var freeColumns = (columnsPerPage * numberOfPages) - items;
-            var pageNumber = pageData.pageNumber;
 
             meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
                 additionalData: {
                     pageNumber: pageNumber,
                     numberOfPages: numberOfPages
                 },
-                onAfterEventMode: 'Load'
+                onAfterEventMode: 'Pagination'
             });
 
             if (freeColumns > 1 && numberOfPages === 1) {
