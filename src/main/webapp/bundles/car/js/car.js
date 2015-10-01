@@ -243,8 +243,7 @@
                 includeFormData: true
             },
             onInitialise: function (event) {
-                var verticalToUse = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote ? 'carws_' : 'car_';
-                meerkat.modules.resultsFeatures.fetchStructure(verticalToUse);
+                meerkat.modules.resultsFeatures.fetchStructure('carws_');
             },
             onAfterEnter: function (event) {
             },

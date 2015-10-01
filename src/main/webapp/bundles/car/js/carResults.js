@@ -54,24 +54,12 @@
 			}
 
 			var price = {
-				annually: "headline.lumpSumTotal",
-				/* The annual property is here as a hack because Payment Type (#quote_paymentType) is configured incorrectly.
-					When upgrading Car, someone should reconfigure the sort to be 'annually'. We haven't done so due to potential impact on reporting etc.
-				 */
-				annual: "headline.lumpSumTotal",
-				monthly: "headline.instalmentTotal"
+				annually: "price.annualPremium",
+				annual: "price.annualPremium",
+				monthly: "price.annualisedMonthlyPremium"
 			};
-			var rank_premium = "headline.lumpSumTotal";
-			var carQuoteResultsUrl = "ajax/json/car_quote_results.jsp";
-			if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
-				price = {
-					annually: "price.annualPremium",
-					annual: "price.annualPremium",
-					monthly: "price.annualisedMonthlyPremium"
-				};
-				rank_premium = "price.annualPremium";
-				carQuoteResultsUrl = "ajax/json/car_quote_results_ws.jsp";
-			}
+			var rank_premium = "price.annualPremium";
+			var carQuoteResultsUrl = "ajax/json/car_quote_results_ws.jsp";
 
 			// Init the main Results object
 			Results.init({
@@ -449,9 +437,7 @@
             $("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
         }
 		meerkat.modules.carContactOptins.validateOptins();
-		var verticalToUse = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote ? 'carws_' : 'car_';
-
-		meerkat.modules.resultsFeatures.fetchStructure(verticalToUse).done(function() {
+		meerkat.modules.resultsFeatures.fetchStructure('carws_').done(function() {
 			Results.get();
 		});
 	}
@@ -475,13 +461,11 @@
 	function massageResultsObject(products) {
 		products = products || Results.model.returnedProducts;
 
-		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToCarQuote) {
-			_.each(products, function massageJson(result, index) {
-				if (result.excess !== null && !_.isUndefined(result.excess)) {
-					result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
-				}
-			});
-		}
+		_.each(products, function massageJson(result, index) {
+			if (result.excess !== null && !_.isUndefined(result.excess)) {
+				result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
+			}
+		});
 	}
 
 	function showNoResults() {
