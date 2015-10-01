@@ -28,7 +28,6 @@ public class ContextFinalizer implements ServletContextListener {
 	Logger LOGGER = LoggerFactory.getLogger(ContextFinalizer.class);
 
 	public void contextInitialized(ServletContextEvent sce) {
-		Properties properties = new Properties();
 		ServletContext servletContext = sce.getServletContext();
 		EnvironmentService.setContextPath(servletContext.getContextPath());
 		
