@@ -23,8 +23,8 @@ public class ConfigResolver {
         InputStream resource = null;
         try {
             String configUrl = base.replace(".xml", "_" + environment.toString() + ".xml");
-             resource = sc.getResourceAsStream(configUrl);
-            if (sc.getResourceAsStream(configUrl) == null) {
+            resource = sc.getResourceAsStream(configUrl);
+            if (resource == null) {
                 resource = sc.getResourceAsStream(base);
             }
             String config = IOUtils.toString(
