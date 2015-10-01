@@ -1,4 +1,4 @@
-;(function($, undefined){
+;(function($, undefined) {
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
@@ -11,6 +11,8 @@
         mode,
         $modal,
         $healthCoverDetailsContainer,
+        $healthCoverlhcGroup,
+        $healthCoversituation,
         $primaryDob,
         $primaryCurrentCover,
         $primaryContinuousCover,
@@ -29,19 +31,22 @@
     var MODE_POPOVER = 'popover-mode'; // Triggered as pop over
     var MODE_JOURNEY = 'journey-mode'; // Triggered by journey engine step. Different buttons are shown and different events are triggered.
 
-    function initHealthCoverDetails(){
+    function initHealthCoverDetails() {
         $(document).ready(function () {
             // Setup jQuery objects already available
-            $primaryDob = $('#health_healthCover_primary_dob');
+            $primaryDob = $('#health_application_primary_dob');
             $primaryCurrentCover = $('#health_healthCover_primaryCover');
             $healthDetailsHiddenFields = $('.healthDetailsHiddenFields');
+            $healthCoversituation = $('#health_situation_healthCvr');
         });
     }
 
-    function setFormAndValidation(){
+    function setFormAndValidation() {
         if (modalId) {
-            $modal = $('#'+modalId);
+            $modal = $('#' + modalId);
             $healthCoverDetailsContainer = $modal.find('#health_healthCover-selection');
+
+            $healthCoverlhcGroup = $healthCoverDetailsContainer.find('.lhc-group');
 
             $primaryContinuousCover = $healthCoverDetailsContainer.find('#health-continuous-cover-primary');
 
@@ -66,7 +71,7 @@
     }
 
     function populateHiddenFields() {
-        $healthDetailsHiddenFields.find('input').each(function(index, element){
+        $healthDetailsHiddenFields.find('input').each(function (index, element) {
             var $visibleElement = $healthCoverDetailsContainer.find(':input[name="' + $(element).attr('name') + '"]');
             if ($visibleElement.length && $visibleElement.valid()) {
                 if ($visibleElement.attr('type') === 'radio') {
@@ -78,13 +83,13 @@
         });
 
         // bind change event will trigger the warning but we don't want it at this stage.
-        _.defer(function() {
+        _.defer(function () {
             $(".policySummaryContainer").find(".policyPriceWarning").hide();
         });
     }
 
     function populateVisibleFields() {
-        $healthDetailsHiddenFields.find('input').each(function(index, element){
+        $healthDetailsHiddenFields.find('input').each(function (index, element) {
             var $visibleElement = $healthCoverDetailsContainer.find(':input[name="' + $(element).attr('name') + '"]');
             if ($visibleElement.attr('type') === 'radio') {
                 $($visibleElement.selector + '[value="' + $(element).val() + '"]').prop('checked', true).change();
@@ -98,10 +103,10 @@
         return meerkat.modules.dialogs.isDialogOpen(modalId) === true ? $healthCoverRebate.find(':checked').val() === 'Y' : $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() === 'Y';
     }
 
-    function setIncomeBase(initMode){
+    function setIncomeBase(initMode) {
         if (meerkat.site.isCallCentreUser !== true) return;
-        
-        if ((healthChoices._cover == 'S' || healthChoices._cover == 'SM' || healthChoices._cover == 'SF')) {
+
+        if (isSinglePolicy()) {
             initMode ? $healthCoverIncomeBasedOn.show() : $healthCoverIncomeBasedOn.slideDown();
         } else {
             initMode ? $healthCoverIncomeBasedOn.hide() : $healthCoverIncomeBasedOn.slideUp();
@@ -114,7 +119,7 @@
         var $_primaryFund = $('#clientFund').find('select');
         var $_partnerFund = $('#partnerFund').find('select');
 
-        if( $_primaryFund.val() !== 'NONE' && $_primaryFund.val() !== ''){
+        if ($_primaryFund.val() !== 'NONE' && $_primaryFund.val() !== '') {
             $_previousFund.find('#clientMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onA');
         } else {
@@ -122,7 +127,7 @@
             $_previousFund.find('.membership').removeClass('onA');
         }
 
-        if( healthChoices.hasSpouse() && $_partnerFund.val() !== 'NONE' && $_partnerFund.val() !== ''){
+        if (healthChoices.hasSpouse() && $_partnerFund.val() !== 'NONE' && $_partnerFund.val() !== '') {
             $_previousFund.find('#partnerMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onB');
         } else {
@@ -131,7 +136,7 @@
         }
     }
 
-    function setHealthFunds(initMode){
+    function setHealthFunds(initMode) {
         //// Quick variables
         var _primary = $primaryCurrentCover.find(':checked').val();
         var _partner = $partnerCurrentCover.find(':checked').val();
@@ -139,45 +144,43 @@
         var $_partnerFund = $('#partnerFund').find('select');
 
         //// Primary Specific
-        if( _primary == 'Y' ) {
-
-            if( isLessThan31Or31AndBeforeJuly1($primaryDob.val()) ) {
-                initMode ? $primaryContinuousCover.show() : $primaryContinuousCover.slideDown();
-            }else{
+        if (_primary == 'Y') {
+            if (isLessThan31Or31AndBeforeJuly1($primaryDob.val())) {
                 initMode ? $primaryContinuousCover.hide() : $primaryContinuousCover.slideUp();
+            } else {
+                initMode ? $primaryContinuousCover.show() : $primaryContinuousCover.slideDown();
             }
-
         } else {
-            if( _primary == 'N'){
-                resetRadio($primaryContinuousCover,'N');
+            if (_primary == 'N') {
+                resetRadio($primaryContinuousCover, 'N');
             }
             initMode ? $primaryContinuousCover.hide() : $primaryContinuousCover.slideUp();
         }
 
-        if( _primary == 'Y' && $_primaryFund.val() == 'NONE'){
+        if (_primary == 'Y' && $_primaryFund.val() == 'NONE') {
             $_primaryFund.val('');
-        } else if(_primary == 'N'){
+        } else if (_primary == 'N') {
             $_primaryFund.val('NONE');
         }
 
         //// Partner Specific
-        if( _partner == 'Y' ) {
+        if (_partner == 'Y') {
 
-            if( isLessThan31Or31AndBeforeJuly1($partnerDob.val()) ) {
-                initMode ? $partnerContinuousCover.show() : $partnerContinuousCover.slideDown();
-            }else{
+            if (isLessThan31Or31AndBeforeJuly1($partnerDob.val())) {
                 initMode ? $partnerContinuousCover.hide() : $partnerContinuousCover.slideUp();
+            } else {
+                initMode ? $partnerContinuousCover.show() : $partnerContinuousCover.slideDown();
             }
         } else {
-            if( _partner == 'N'){
-                resetRadio($partnerContinuousCover,'N');
+            if (_partner == 'N') {
+                resetRadio($partnerContinuousCover, 'N');
             }
             initMode ? $partnerContinuousCover.hide() : $partnerContinuousCover.slideUp();
         }
 
-        if( _partner == 'Y' && $_partnerFund.val() == 'NONE'){
+        if (_partner == 'Y' && $_partnerFund.val() == 'NONE') {
             $_partnerFund.val('');
-        } else if(_partner == 'N'){
+        } else if (_partner == 'N') {
             $_partnerFund.val('NONE');
         }
 
@@ -185,6 +188,17 @@
         displayHealthFunds();
     }
 
+    function toggleLHCApplicability(){
+        if (isLessThan31Or31AndBeforeJuly1($primaryDob.val()) && isSinglePolicy()){
+            $healthCoverlhcGroup.hide();
+        } else {
+            $healthCoverlhcGroup.show();
+        }
+    }
+    function isSinglePolicy(){
+        var legitTypes = ['S','SF','SM','SPF'];
+        return legitTypes.indexOf(healthChoices._cover) >= 0 ? true: false ;
+    }
 
     function flushPartnerDetails () {
         $partnerDob.val('').change();
@@ -203,6 +217,7 @@
         $healthCoverRebate.find(':checked').prop('checked', false);
         resetRadio($healthCoverRebate);
         $healthCoverRebate.hide();
+        $healthCoverlhcGroup.show();
     }
 
     function setDependants(initMode) {
@@ -235,12 +250,14 @@
         resetRebateForm();
         populateVisibleFields();
         eventSubscriptions();
+        toggleLHCApplicability();
         setPartner();
         setHealthFunds(true);
         setIncomeBase(true);
         setDependants(true);
         meerkat.modules.healthTiers.setTiers(true);
         setRebate(true);
+
     }
 
     function eventSubscriptions() {
