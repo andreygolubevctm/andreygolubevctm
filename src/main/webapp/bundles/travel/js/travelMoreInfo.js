@@ -9,47 +9,43 @@
 				// travel specific events
 			}
 		},
-		moduleEvents = events.travelMoreInfo,
-		initialised = false;
+		moduleEvents = events.travelMoreInfo;
 	/**
 	 * Specify the options within here to pass to meerkat.modules.moreInfo.
 	 */
 	function initMoreInfo() {
-		if(!initialised) {
-			initialised = true;
 
-			var options = {
-				container: $bridgingContainer,
-				modalOptions: {
-					className: 'modal-breakpoint-wide modal-tight bridgingContainer',
-					openOnHashChange: false,
-					leftBtn: {
-						label: 'All Products',
-						icon: '<span class="icon icon-arrow-left"></span>',
-						callback: function (eventObject) {
-							$(eventObject.currentTarget).closest('.modal').modal('hide');
-						}
+		var options = {
+			container: $bridgingContainer,
+			modalOptions: {
+				className: 'modal-breakpoint-wide modal-tight bridgingContainer',
+				openOnHashChange: false,
+				leftBtn: {
+					label: 'All Products',
+					icon: '<span class="icon icon-arrow-left"></span>',
+					callback: function (eventObject) {
+						$(eventObject.currentTarget).closest('.modal').modal('hide');
 					}
-				},
-				runDisplayMethod: runDisplayMethod,
-				onBeforeShowBridgingPage: null,
-				onBeforeShowTemplate: null,
-				onBeforeShowModal: onBeforeShowModal,
-				onAfterShowModal: trackProductView,
-				onAfterShowTemplate: null,
-				onBeforeHideTemplate: null,
-				onAfterHideTemplate: null,
-				onClickApplyNow: onClickApplyNow,
-				onBeforeApply: null,
-				onApplySuccess: null,
-				retrieveExternalCopy: retrieveExternalCopy
-			};
+				}
+			},
+			runDisplayMethod: runDisplayMethod,
+			onBeforeShowBridgingPage: null,
+			onBeforeShowTemplate: null,
+			onBeforeShowModal: onBeforeShowModal,
+			onAfterShowModal: trackProductView,
+			onAfterShowTemplate: null,
+			onBeforeHideTemplate: null,
+			onAfterHideTemplate: null,
+			onClickApplyNow: onClickApplyNow,
+			onBeforeApply: null,
+			onApplySuccess: null,
+			retrieveExternalCopy: retrieveExternalCopy
+		};
 
-			meerkat.modules.moreInfo.initMoreInfo(options);
+		meerkat.modules.moreInfo.initMoreInfo(options);
 
-			eventSubscriptions();
-			applyEventListeners();
-		}
+		eventSubscriptions();
+		applyEventListeners();
 	}
 
 	function applyEventListeners() {
