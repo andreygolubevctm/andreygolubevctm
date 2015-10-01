@@ -16,9 +16,11 @@ import com.ctm.connectivity.SimpleDatabaseConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.RankingDetail;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class RankingDetailsDao {
 
-	private static final Logger logger = LoggerFactory.getLogger(RankingDetailsDao.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(RankingDetailsDao.class);
 
 	private SimpleDatabaseConnection dbSource;
 
@@ -67,12 +69,9 @@ public class RankingDetailsDao {
 					rankingDetail.addProperty(resultSet.getString("Property") , resultSet.getString("Value"));
 				}
 			}
-		} catch (SQLException e) {
-			logger.error("failed to get ranking details" , e);
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			logger.error("failed to get ranking details" , e);
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("Failed to get ranking details by property value {}, {}, {}", kv("transactionId", transactionId), kv("property", property), kv("value", value), e);
+			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
 				dbSource.closeConnection();
@@ -130,12 +129,9 @@ public class RankingDetailsDao {
 					rankingDetail.addProperty(resultSet.getString("Property") , resultSet.getString("Value"));
 				}
 			}
-		} catch (SQLException e) {
-			logger.error("failed to get ranking details" , e);
-			throw new DaoException(e.getMessage(), e);
-		} catch (NamingException e) {
-			logger.error("failed to get ranking details" , e);
-			throw new DaoException(e.getMessage(), e);
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("Failed to get latest top ranking details {}, {}", kv("transactionId", transactionId), kv("numberOfRankingsToReturn", numberOfRankingsToReturn), e);
+			throw new DaoException(e);
 		} finally {
 			if(dbSource != null) {
 				dbSource.closeConnection();

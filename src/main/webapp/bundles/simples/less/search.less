@@ -1,0 +1,83 @@
+
+@padding: 15px;
+
+body.simples {
+
+	@media (min-width: @screen-sm-min) {
+
+		.modal-header {
+			padding: @padding @padding (floor(@padding / 2));
+		}
+
+		.modal-title {
+			padding: 0;
+		}
+
+		.modal-body {
+			padding: 0 @padding @padding;
+		}
+
+		.simples-search,
+		.simples-search-quotedetails {
+			input {
+				width: 200px;
+			}
+		}
+	}
+
+	table.table {
+		td {
+			// Make sure giant strings don't break layout
+			word-break: break-word;
+		}
+	}
+
+}//body.simples
+
+
+.modal {
+	h2 {
+	  margin-top: 0;
+	}
+
+	.search-quotes-result-row {
+	  margin-bottom: 2px;
+
+	  &.bg-success {
+		background-color: @theme-light;
+	  }
+
+	  > div {
+		padding: (@padding / 2);
+
+		.moreinfo-container & {
+		  padding: (@padding / 4);
+		}
+	  }
+	}
+
+	.search-quotes-results {
+	  .label.pull-left {
+		margin-right: (@padding / 2);
+	  }
+
+	  h2, h3 {
+		font-size: 18px;
+	  }
+
+	  h3, h5, h6 {
+		margin-top: 0;
+		margin-bottom: 0;
+	  }
+
+	  .btn {
+		margin-bottom: (@padding / 4);
+	  }
+	}
+
+	.moreinfo-container {
+	  clear: both;
+	  margin: 0 @padding @padding;
+	}
+
+}//.modal

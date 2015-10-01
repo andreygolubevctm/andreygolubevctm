@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.ajax.json.get_benefits')}" />
+
 <sql:setDataSource dataSource="jdbc/ctm" />
 
 <c:set var="type">${fn:trim(param.type)}</c:set>
@@ -31,7 +33,7 @@
 
 </c:choose>
 
-<c:catch>
+<c:catch var="error">
 	<%-- Export the results, even an empty JSON --%>
 	<c:choose>
 		<c:when test="${(empty result) || (result.rowCount == 0) }">[{"label":"Error display benefits","value":""}]</c:when>
@@ -39,3 +41,6 @@
 		<c:otherwise>${callback_start}[ <c:forEach var="row" varStatus="status" items="${result.rows}">{key:"<c:out value='${row.code}' />",value:"<c:out value='${row.description}' />"}<c:if test="${!status.last}">, </c:if></c:forEach> ]${callback_end}</c:otherwise>
 	</c:choose>
 </c:catch>
+<c:if test="${error}">
+	${logger.warn('Exception passing results. {}',log:kv('result',result ), error)}
+</c:if>

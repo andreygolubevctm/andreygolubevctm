@@ -202,7 +202,7 @@ public class TouchDao {
 			stmt.close();
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();
@@ -224,7 +224,7 @@ public class TouchDao {
 			resultSet.first();
 			return resultSet.getInt(1) == 1;
 		} catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		} finally {
 			simpleDatabaseConnection.closeConnection();
 		}
@@ -332,7 +332,7 @@ public class TouchDao {
 			}
 		}
 		catch (SQLException | NamingException e) {
-			throw new DaoException(e.getMessage(), e);
+			throw new DaoException(e);
 		}
 		finally {
 			dbSource.closeConnection();

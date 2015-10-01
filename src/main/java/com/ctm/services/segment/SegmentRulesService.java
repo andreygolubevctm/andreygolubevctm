@@ -19,8 +19,10 @@ import com.ctm.model.segment.SegmentRule.Option;
 import com.ctm.utils.FormDateUtils;
 import com.disc_au.web.go.Data;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class SegmentRulesService {
-	private static final Logger logger = LoggerFactory.getLogger(SegmentRulesService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(SegmentRulesService.class);
 
 	public boolean filter(Segment segment, List<SegmentRule> segmentRules, Data data) {
 		if(segmentRules != null && !segmentRules.isEmpty()){
@@ -81,7 +83,8 @@ public class SegmentRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error("",e);
+			LOGGER.error("Error filtering by range {},{},{}", kv("formValue", formValue), kv("ruleValue", ruleValue),
+				kv("option", option));
 		}
 		return false;
 	}
@@ -101,7 +104,8 @@ public class SegmentRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error("",e);
+			LOGGER.error("Error filtering by date range {},{},{}", kv("formValue", formValue), kv("ruleValue", ruleValue),
+				kv("option", option));
 		}
 		return false;
 	}
@@ -123,7 +127,8 @@ public class SegmentRulesService {
 			}
 		}
 		catch (Exception e) {
-			logger.error("",e);
+			LOGGER.error("Error filtering by age {},{},{}", kv("formvalue", formValue), kv("ruleValue", ruleValue),
+				kv("option", option));
 		}
 		return false;
 	}

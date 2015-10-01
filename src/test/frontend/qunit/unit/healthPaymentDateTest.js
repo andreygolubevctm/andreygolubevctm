@@ -7,7 +7,7 @@ $(document).ready( function(){
 	};
 
 	test( "should set to second day of month", function() {
-		meerkat.modules.healthPaymentDate.init();
+		meerkat.modules.healthPaymentDate.initPaymentDate();
 		var $policyDateHiddenField = $('.health_details-policyDate');
 		var $messageField = $( ".health_credit-card-details_policyDay-message" );
 		meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay($messageField, "10/08/2014", [2], 1);
@@ -17,7 +17,7 @@ $(document).ready( function(){
 	});
 
 	test( "should set to 15th day of month", function() {
-		meerkat.modules.healthPaymentDate.init();
+		meerkat.modules.healthPaymentDate.initPaymentDate();
 		var $policyDateHiddenField = $('.health_details-policyDate');
 		var $messageField = $( ".health_credit-card-details_policyDay-message" );
 		meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay($messageField, "10/08/2014", [2,20], 1);
@@ -27,7 +27,7 @@ $(document).ready( function(){
 	});
 
 	test( "should default day of month", function() {
-		meerkat.modules.healthPaymentDate.init();
+		meerkat.modules.healthPaymentDate.initPaymentDate();
 		var $policyDateHiddenField = $('.health_details-policyDate');
 		var $messageField = $( ".health_credit-card-details_policyDay-message" );
 		meerkat.modules.healthPaymentDate.paymentDaysRenderEarliestDay($messageField, "10/08/2014");

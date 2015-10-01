@@ -67,6 +67,7 @@
 							isValidVar="isValid"
 							verticalCode="HEALTH"
 							configDbKey="quoteService"
+						   sendCorrelationId="true"
 							styleCodeId="${pageSettings.getBrandId()}" />
 
 		<c:if test="${isValid || continueOnValidationError}">

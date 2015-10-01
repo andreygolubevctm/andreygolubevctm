@@ -9,7 +9,7 @@
     <c:set var="pageTitle" value="500"/>
 </c:catch>
 <c:catch var="error">
-    <go:log source="jsp:err.error500" level="ERROR" error="${pageContext.exception}">Error Page Hit, requestUri=${requestUri} brandCode=${brandCode}</go:log>
+    ${logger.error('Error Page Hit. {},{}' ,  log:kv('requestUri', requestUri) , log:kv('brandCode',brandCode ), pageContext.exception)}
 </c:catch>
 
 <c:choose>
@@ -31,8 +31,8 @@
             <layout:generic_page title="${pageTitle} - Error Page" outputTitle="${false}">
 
                 <jsp:attribute name="head">
-                    <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
-                    <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/components/unsubscribe.${pageSettings.getBrandCode()}.css?${revision}" media="all">
+                    <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/"/>
+                    <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/error.css?${revision}" media="all">
                 </jsp:attribute>
 
                 <jsp:attribute name="head_meta"></jsp:attribute>

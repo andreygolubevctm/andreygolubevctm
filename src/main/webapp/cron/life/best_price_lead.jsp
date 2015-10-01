@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="logger" value="${log:getLogger('jsp.cron.life.best_price_lead')}" />
+
 <jsp:useBean id="data" class="com.disc_au.web.go.Data" scope="request" />
 
 <sql:setDataSource dataSource="jdbc/ctm" />
@@ -114,7 +116,7 @@
 							If this fails it is not a show stopper so log and keep calm and carry on
 							--%>
 							<c:if test="${not empty error}">
-								<go:log level="ERROR" error="${error}">${result.transaction_id}: failed to send best price for ${data.life.contactDetails.email}</go:log>
+								${logger.error('failed to send best price for result. {},{}', log:kv('transaction_id',result.transaction_id ), log:kv('email',data.life.contactDetails.email ))}
 								${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, result.transaction_id)}
 							</c:if>
 						</c:when>

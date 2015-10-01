@@ -101,10 +101,10 @@ AGE ADJUSTMENT - if rebate not 0 (Take the OLDEST person and use their age)
 
 <c:choose>
 	<c:when test="${partnerAge+0 >= primaryAge+0}">
-		<fmt:formatNumber var="age" value="${partnerAge}" maxFractionDigits="0" />
+		<fmt:parseNumber var="age" value="${partnerAge}"/>
 	</c:when>
 	<c:otherwise>
-		<fmt:formatNumber var="age" value="${primaryAge}" maxFractionDigits="0" />
+		<fmt:parseNumber var="age" value="${primaryAge}"/>
 	</c:otherwise>
 </c:choose>
 
@@ -262,27 +262,6 @@ Certified Age of Entry: Defaults to 30.
 --%>
 <c:set var="primaryCAE"><fmt:formatNumber value="${30 + (primary_loading_cae / 2)}" maxFractionDigits="0" /></c:set>
 <c:set var="partnerCAE"><fmt:formatNumber value="${30 + (partner_loading_cae / 2)}" maxFractionDigits="0" /></c:set>
-
-
-<%--
-********
-RESPONSE
---------
-<go:log  level="DEBUG">
-	rebate = ${rebate}
-	rebateChangeover = ${rebateChangeover}
-	cover = ${cover}
-	income = ${income}
-	primaryAge = ${primaryAge}
-	partnerAge = ${partnerAge}
-	loading = ${loading}
-	"partnerLoading":"${partner_loading_rate}"
-	"primaryLoading":"${primary_loading_rate}"
-	"ageBonus":"${rebateBonus}"
-	"health_primaryCAE":"${primaryCAE}"
-	"health_partnerCAE":"${partnerCAE}"
-</go:log>
---%>
 
 <c:choose>
 	<c:when test="${not empty cover && empty income && not empty primaryAge}">

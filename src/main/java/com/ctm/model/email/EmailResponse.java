@@ -9,7 +9,7 @@ import com.ctm.model.AbstractJsonModel;
 
 public class EmailResponse extends AbstractJsonModel {
 
-	private static final Logger logger = LoggerFactory.getLogger(EmailResponse.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(EmailResponse.class);
 
 	private String requestID;
 	private String overallStatus;
@@ -103,7 +103,7 @@ public class EmailResponse extends AbstractJsonModel {
 			json.put("transactionId", transactionId);
 			json.put("message", message);
 		} catch (JSONException e) {
-			logger.error("",e);
+			LOGGER.error("error converting email response to json", e);
 		}
 
 		return json;

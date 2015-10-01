@@ -182,4 +182,27 @@ public class HealthPriceResult {
 		return this.productId.hashCode();
 	}
 
+	@Override
+	public String toString() {
+		return "HealthPriceResult{" +
+				"productId='" + productId + '\'' +
+				", longTitle='" + longTitle + '\'' +
+				", shortTitle='" + shortTitle + '\'' +
+				", providerId=" + providerId +
+				", productCat='" + productCat + '\'' +
+				", productCode='" + productCode + '\'' +
+				", excessAmount=" + excessAmount +
+				", rank=" + rank +
+				", isValid=" + isValid +
+				", healthPricePremium=" + healthPricePremium +
+				", altHealthPricePremium=" + altHealthPricePremium +
+				", isDiscountRates=" + isDiscountRates +
+				", altProductId='" + altProductId + '\'' +
+				", fundCode='" + fundCode + '\'' +
+				", fundName='" + fundName + '\'' +
+				", extrasName='" + extrasName + '\'' +
+				", hospitalName='" + hospitalName + '\'' +
+				", phioData='" + phioData + '\'' +
+				'}';
+	}
 }

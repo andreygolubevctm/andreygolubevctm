@@ -208,21 +208,6 @@
 		<field:age dob="22/08/1970" />
 	</form_new:row>
 
-	<form_new:row label="<del>array_radio</del>">
-		<field:array_radio items="E=Electricity,G=Gas,EG=Electricity and Gas" id="${name}_arrayRadio" xpath="${xpath}/arrayRadio" title="array_radio" required="true" />
-	</form_new:row>
-
-	<form_new:row label="<del>array_select</del>">
-		<field:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening (excludes WA)" xpath="callmeback/save/time" title="array_select" required="true" />
-	</form_new:row>
-
-	<form_new:row label="<del>autocomplete</del>">
-	</form_new:row>
-
-	<form_new:row label="basic_date (date picker)">
-		<field:basic_date xpath="${vertical}_date" required="true" title="basic_date" numberOfMonths="1" minDate="-1y" maxDate="11m" disableWeekends="true" disablePublicHolidays="true" />
-	</form_new:row>
-
 	<form_new:row label="birthday">
 		<field:birthday dob="22/08/1970" />
 	</form_new:row>
@@ -239,14 +224,6 @@
 		<field:category_select xpath="${xpath}/category" title="category" type="category" required="true" />
 	</form_new:row>
 
-	<form_new:row label="<del>checkbox</del>">
-		<field:checkbox xpath="${xpath}/checkbox" value="Y" title="checkbox" required="true" label="true" errorMsg="errorMsg" theme="themeA" />
-	</form_new:row>
-
-	<form_new:row label="contact_email">
-		<field:contact_email xpath="reminder/email" required="true" title="contact_email" placeHolder="Place holder text" size="17" />
-	</form_new:row>
-
 	<form_new:row label="contact_mobile">
 		<field:contact_mobile xpath="${xpath}/mobile" size="15" required="true" title="field:contact_mobile" labelName="contact mobile" placeHolderUnfocused="Unfocused placeholder text" />
 	</form_new:row>
@@ -259,21 +236,12 @@
 		<field_new:count_select xpath="${xpath}/day" min="1" max="27" step="1" title="field:count_select" required="true" />
 	</form_new:row>
 
-	<form_new:row label="creditcard_expiry">
-		<%-- <field:creditcard_expiry xpath="quote/avea/payment" required="true" title="field:creditcard_expiry"/> --%>
-		See 'cards_expiry'
-	</form_new:row>
-
 	<form_new:row label="customisable-checkbox">
 		<field:customisable-checkbox xpath="${xpath}/optin" theme="replicaLarge" value="Y" required="true" label="true" title="field:customisable-checkbox" errorMsg="field:customisable-checkbox errorMsg" />
 	</form_new:row>
 
 	<form_new:row label="filler_row (not used?)">
 		<field:filler_row xpath="" required="true" />
-	</form_new:row>
-
-	<form_new:row label="general_select">
-		<field:general_select xpath="${xpath}/generalSelect" type="healthSitu" title="field:general_select" required="true" initialText="initialText" />
 	</form_new:row>
 
 	<form_new:row label="new_general_select">
@@ -396,7 +364,7 @@
 				minValue="1000"
 				decimal="${false}"
 				defaultValue="0"/>
-
+		<%-- Onready needed here, as there is not a dynamic.jsp module setup --%>
 		<go:script marker="onready">meerkat.modules.currencyField.initCurrency();</go:script>
 	</form_new:row>
 
@@ -506,17 +474,6 @@
 		<field_new:slider xpath="${xpath}/new/sliderExcess" type="excess" value="2" range="1,5" markers="5" legend="None,$250,$500,$750,All" />
 		<field_new:slider xpath="${xpath}/new/sliderPrice" type="price" value="550" range="100,650" legend="NONE,BASIC,MEDIUM,COMPREHENSIVE" />
 	</div>
-	</form_new:row>
-
-	<form_new:row label="switch">
-		<%-- <field_new:switch xpath="${xpath}/new/switch" value="Y" className="switch-normal" /> --%>
-		<field_new:switch xpath="${xpath}/new/switch2" value="Y" required="true" />
-		<field_new:switch xpath="${xpath}/new/switch3" value="Y" />
-		<field_new:switch xpath="${xpath}/new/switch4" value="Y" />
-		<go:script marker="onready">
-			$('#${go:nameFromXpath(xpath)}_new_switch3, #${go:nameFromXpath(xpath)}_new_switch4').bootstrapSwitch('setDisabled', true); //.prop('disabled', true);
-			$('#${go:nameFromXpath(xpath)}_new_switch4').prop('checked', true).change();
-		</go:script>
 	</form_new:row>
 
 	<form_new:row>

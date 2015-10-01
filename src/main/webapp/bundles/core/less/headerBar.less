@@ -1,0 +1,299 @@
+//
+// Headers, Headerbars and all the special conditions for breakpoints.
+// ---------------------------------------------------------------------------------
+body > div > header {
+
+	//Whitelabeled brands colour the header
+	> .header-top { background-color: @header-bg; }
+
+	//The header needs to take up space, lest the content be hidden underneath by accident once the header is position fixed or docking.
+	min-height: @navbar-height; //XS
+	@media all and (min-width: @screen-sm) {
+		min-height: @header-min-height-sm; //SM
+	}
+	@media all and (min-width: @screen-md) {
+		min-height: @header-min-height-md; //MD and LG
+	}
+
+	//This alters a default for things in the header.
+	a {
+		color: @header-link-color;
+		&:hover{ color: @header-link-hover-color }
+	}
+	.well-chatty {
+		a {
+			color: white;
+			&:hover{ color: white }
+		}
+	}
+
+
+	//but the buttons are getting overriden by accident due to their lower specificity.
+	a.btn-form {
+		color: @btn-form-color;
+		&:hover{ color: @btn-form-hover-color; }
+	}
+	a.btn-success {
+		color: @btn-success-color;
+	}
+}
+
+//Design Attributes of the header's contact us and in xs dropdown
+.header-collapse-contact {
+	background-color: @theme-secondary;
+	@media (max-width: @screen-xs-max) {
+		&,a { color: #fff; }
+	}
+	> ul li {
+		white-space: nowrap;
+		.hidden-xs > * { margin: 0; }
+		p,small { color: #fff; }
+		h4,h1 {
+			line-height: 40px;
+			display: inline-block;
+			color: @theme-dark;
+			font-size: @font-size-h5;
+			font-family: @font-family-sans-serif;
+			@media (@xs-only) {
+				a:hover {
+					color: #ffffff;
+				}
+			}
+			span {
+				//This one dynamically fades based on highest contrast.
+				//color: contrast(@header-bg, @contact-headings-color, lighten(@header-bg, 35%));
+				//This one picks white based on highest contrast
+				color: contrast(@header-bg, @contact-headings-color, #fff);
+				font-size: 38px;
+				@media (@xs-only) {
+					&.callCentreNumber {
+						color: #ffffff;
+					}
+				}
+			}
+		}
+
+		.opening-hours{
+			color: @theme-tertiary;
+			font-size: 91%;
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
+			margin-top:-20px;
+
+		  	@media(@sm-only) {
+			  margin-top: -13px;
+			}
+
+			.tomorrow-hours {
+				color: @opening-hours-grey-colour;
+				@media (max-width: 767px){
+					color: #fff;
+				}
+			}
+			@media (max-width: 767px){
+					a{
+						color: @theme-tertiary !important;
+					}
+				}
+		}
+
+		[data-livechat="button"] {
+			vertical-align: super;
+			margin-left: 20px;
+			margin-top: -4px;
+		}
+		@media (min-width: @screen-md-min) {
+			.hidden-xs {
+				h4,h1 { line-height: 67px; }
+				h1 { font-size: 210%; }
+			}
+		}
+
+	}
+}
+
+//On XS we should dock the headerbars.
+@media (@xs-only) {
+	//Push the page down to make some space
+	body[data-step="results"] {
+		padding-top: @navbar-height;
+
+		&.priceMode {
+			// No padding in price/horizontal mode
+			padding-top: 0;
+
+			// Hide the pagination page
+			header > .xs-results-pagination {
+				display: none !important;
+			}
+		}
+	}
+	.xs-results-pagination {
+		.fixedInPlace;
+		top: 0;
+		z-index: (@zindex-dropdown-interactive-base - 110);
+
+		display: none !important;
+		body[data-step="results"] & {
+			display: block !important;
+			top: @navbar-height + @page-offset-xs;
+		}
+		.modal-dialog & {
+			display: block !important; // Always show the bar in modals
+			top: 0 !important; // Override results slide
+		}
+	}
+	.productSummary-parent.visible-xs {
+		padding-top: @page-offset-xs;
+		min-height: 67px;
+		//Only visible on the results step
+		display: none !important;
+		body[data-step="apply"] & {
+			display: block !important;
+		}
+	}
+
+}
+
+//This allows multiple collapsing rows to sit on the same navbar row.
+.header-top {
+	background-color: @body-bg;
+	z-index: @zindex-dropdown-interactive-base;
+	position: relative;
+
+	.row > .navbar-collapse {
+		//FIXME: These padding items reset internal padding that navbars have so they sit against the container sides but this idea breaks on mobile breakpoint. Needs work.
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.navbar-collapse {
+		max-height: none;
+		&:before,
+		&:after {
+			display:inline;
+			content:"";
+		}
+		.container { position: relative; }
+	}
+
+	.navbar-toggle {
+		border-radius: 0;
+		width: 40px;
+		height: 40px;
+		line-height: 21px; //Needs to match the bumped up font size as specified below
+		background-color: @navbar-default-toggle-hover-bg;
+		margin: 0;
+		color: @navbar-default-toggle-icon-bar-bg;
+
+		.icon-bar {
+			width: auto;
+			background-color: @navbar-default-toggle-icon-bar-bg;
+		}
+		.icon {
+			display: none;
+			color: @navbar-default-toggle-icon-bar-bg;
+		}
+		.icon-cross {
+			display: block;
+			font-size: 18px;
+		}
+		&.collapsed { //Actually the default state
+			background-color: @navbar-default-toggle-bg;
+			.icon { display: block; font-size: 21px; }
+			.icon-cross { display: none; }
+		}
+		&.disabled{
+			display: none;
+		}
+	}
+
+	//We now have a "header" option on the off canvas area
+	.navbar-default .navbar-text-block {
+		display: block;
+		color: @navbar-default-color;
+		padding: @navbar-padding-vertical @navbar-padding-horizontal;
+	}
+
+	//Mobile doesn't have any top or bottom margins, they stack perfectly.
+	.navbar-nav {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	> .container {
+		padding: 0;
+
+		//
+		// This is a hack which makes the elements on mobile go to the side.
+		//
+		@media (max-width: @grid-float-breakpoint-max) {
+			margin: 0;
+		}
+	}
+
+	//
+	// This is a hack which makes the desktop elements come back in from the sides
+	//
+	@media (@xs-only) {
+		.header-collapse-contact,
+		.header-buttons-logos {
+			margin-left: -15px;
+			margin-right: -15px;
+			min-height: 40px; //in case there's no buttons available to provide this
+		}
+		.header-collapse-contact > .navbar-nav {
+			margin-left: 0;
+			margin-right: 0;
+		}
+
+		.fixedInPlace;
+		top: 0; //Overlap the padding top on the body with this.
+		z-index: (@zindex-dropdown-interactive-base - 100);
+		outline-width: 1px;
+		outline-style: solid;
+		outline-color: @theme-light;
+		outline-color: rgba(0, 0, 0, 0.1);
+
+		.benefits-component {
+			.scrollable {
+				//Max height gets set dynamically to the remaining height of the viewport.
+				-webkit-overflow-scrolling: touch; //could be screwing up z-index stacking contexts.
+				z-index: (@zindex-dropdown-interactive-base + 10);
+			}
+		}
+
+		//Design Attributes of the mobile xs headers contact us dropdown
+		.header-collapse-contact {
+			background-color: @theme-secondary;
+			color: #fff;
+			> ul li {
+				p, small, h1, h4 { color: #fff; display: block; }
+				h1 {
+					font-size: 220%;
+					margin-top: 0;
+					font-weight: normal;
+				}
+				min-height: 600px;
+			}
+		}
+		.header-buttons-logos {
+			.contact {
+				box-shadow: none;
+				&.collapsed {
+					background-color: @theme-secondary;
+				}
+			}
+		}
+	}
+	@media (@sm-only) {
+		.header-collapse-contact, .header-buttons-logos {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
+
+	@media print {
+		outline: none;
+	}
+
+}

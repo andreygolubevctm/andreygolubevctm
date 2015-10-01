@@ -10,9 +10,13 @@ import org.slf4j.LoggerFactory;
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.health.HealthPriceResult;import com.ctm.model.health.ProductStatus;
+
+import static com.ctm.logging.LoggingArguments.a;
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class HealthPriceResultsService {
 
-	private static final Logger logger = LoggerFactory.getLogger(HealthPriceResultsService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(HealthPriceResultsService.class);
 
 	private HealthPriceDao healthPriceDao;
 
@@ -46,7 +50,8 @@ public class HealthPriceResultsService {
 				&& selectedProductId != null && !selectedProductId.isEmpty()
 				&& !isProductInResultsList(healthPriceResults, selectedProductId)) {
 
-			logger.info("selectedProductId '" + selectedProductId + "' not found in results, need to fetch");
+			LOGGER.info("Selected productId not contained in fetch health results {}, {}", kv("selectedProductId", selectedProductId),
+				a("healthPriceResults", healthPriceResults));
 
 			List<ProductStatus> excludeStatus = new ArrayList<ProductStatus>();
 			excludeStatus.add(ProductStatus.NOT_AVAILABLE);

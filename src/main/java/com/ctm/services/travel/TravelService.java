@@ -4,10 +4,12 @@ import com.ctm.connectivity.SimpleConnection;
 import com.ctm.dao.ProviderFilterDao;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.TravelServiceException;
+import com.ctm.logging.XMLOutputWriter;
 import com.ctm.model.QuoteServiceProperties;
 import com.ctm.model.results.ResultProperty;
 import com.ctm.model.resultsData.AvailableType;
 import com.ctm.model.settings.Brand;
+import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.travel.form.TravelQuote;
 import com.ctm.model.travel.results.TravelResult;
 import com.ctm.providers.Request;
@@ -19,8 +21,6 @@ import com.ctm.providers.travel.travelquote.model.response.TravelResponse;
 import com.ctm.services.CommonQuoteService;
 import com.ctm.services.EnvironmentService;
 import com.ctm.services.ResultsService;
-import com.ctm.logging.XMLOutputWriter;
-import com.disc_au.web.go.Data;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
@@ -32,13 +32,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ctm.logging.LoggingArguments.kv;
 import static com.ctm.logging.XMLOutputWriter.REQ_OUT;
 
 public class TravelService extends CommonQuoteService<TravelQuote> {
 
-	private static final Logger logger = LoggerFactory.getLogger(TravelService.class.getName());
-	private String vertical;
-	private Data data;
+	private static final Logger LOGGER = LoggerFactory.getLogger(TravelService.class);
+    private SimpleConnection connection;
+
+    public TravelService(ServiceConfiguration serviceConfig, SimpleConnection connection) {
+        super(serviceConfig);
+        this.connection = connection;
+    }
+    public TravelService() {
+        super();
+    }
 
     /**
      * Call travel-quote aggregation service.
@@ -95,48 +103,48 @@ public class TravelService extends CommonQuoteService<TravelQuote> {
 
             // Log Request
             XMLOutputWriter writer = new XMLOutputWriter(data.getTransactionId()+"_TRAVEL-QUOTE" , serviceProperties.getDebugPath());
-            writer.writeXmlToFile(jsonRequest , REQ_OUT);
+            writer.writeXmlToFile(jsonRequest, REQ_OUT);
 
-            SimpleConnection connection = new SimpleConnection();
+            if(connection == null) {
+                connection = new SimpleConnection();
+            }
             connection.setRequestMethod("POST");
             connection.setConnectTimeout(serviceProperties.getTimeout());
             connection.setReadTimeout(serviceProperties.getTimeout());
             connection.setContentType("application/json");
             connection.setPostBody(jsonRequest);
+            connection.setHasCorrelationId(true);
 
-            String response = connection.get(serviceProperties.getServiceUrl()+"/quote");
+            String response = connection.get(serviceProperties.getServiceUrl() + "/quote");
             TravelResponse travelResponse = objectMapper.readValue(response, TravelResponse.class);
 
-            // Log response
-            writer.lastWriteXmlToFile(response);
+                // Log response
+                writer.lastWriteXmlToFile(response);
 
-            // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
-            final List<TravelResult> travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);
+                // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
+                final List<TravelResult> travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);
 
-            List<ResultProperty> resultProperties = new ArrayList<>();
-            for (TravelResult result : travelResults) {
-                if (AvailableType.Y.equals(result.getAvailable())) {
+                List<ResultProperty> resultProperties = new ArrayList<>();
+                for (TravelResult result : travelResults) {
+                    if (AvailableType.Y.equals(result.getAvailable())) {
 
-                    ResultPropertiesBuilder builder = new ResultPropertiesBuilder(request.getTransactionId(), result.getProductId());
-                    builder.addResult("quoteUrl", result.getQuoteUrl());
-                    resultProperties.addAll(builder.getResultProperties());
+                        ResultPropertiesBuilder builder = new ResultPropertiesBuilder(request.getTransactionId(), result.getProductId());
+                        builder.addResult("quoteUrl", result.getQuoteUrl());
+                        resultProperties.addAll(builder.getResultProperties());
 
+                    }
                 }
-            }
 
-            ResultsService.saveResultsProperties(resultProperties);
+                ResultsService.saveResultsProperties(resultProperties);
 
             return travelResults;
 
         }catch(IOException e){
-            logger.error("Error parsing or connecting to travel-quote", e);
+            LOGGER.error("Error parsing or connecting to travel-quote {},{},{}", kv("brand", brand), kv("verticalCode", verticalCode),
+                kv("travelRequest", data));
         }
 
-        return null;
+        return new ArrayList<>();
 
     }
-
-	public Data getGetData() {
-		return data;
-	}
 }

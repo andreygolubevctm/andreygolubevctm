@@ -1,28 +1,30 @@
 package com.ctm.services.utilities;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.ctm.connectivity.JsonConnection;
+import com.ctm.connectivity.SimpleConnection;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Error;
-import com.ctm.model.utilities.UtilitiesLeadfeedModel;
 import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.settings.ServiceConfigurationProperty;
 import com.ctm.model.settings.ServiceConfigurationProperty.Scope;
+import com.ctm.model.utilities.UtilitiesLeadfeedModel;
 import com.ctm.services.ApplicationService;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.ServiceConfigurationService;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+
+import static com.ctm.logging.LoggingArguments.kv;
 
 public class UtilitiesLeadfeedService {
 
-	private static final Logger logger = LoggerFactory.getLogger(UtilitiesLeadfeedService.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(UtilitiesLeadfeedService.class);
 
 	public static UtilitiesLeadfeedModel mapParametersToModel(HttpServletRequest request) {
 
@@ -99,19 +101,20 @@ public class UtilitiesLeadfeedService {
 			//
 			// Execute the fetch
 			//
-			JsonConnection jsonConn = new JsonConnection();
-			jsonConn.conn.setConnectTimeout(Integer.parseInt(timeoutConnect));
-			jsonConn.conn.setReadTimeout(Integer.parseInt(timeoutRead));
-			jsonConn.conn.setContentType("application/json");
+			SimpleConnection conn = new SimpleConnection();
+			JsonConnection jsonConn = new JsonConnection(conn);
+			conn.setConnectTimeout(Integer.parseInt(timeoutConnect));
+			conn.setReadTimeout(Integer.parseInt(timeoutRead));
+			conn.setContentType("application/json");
 
 			String postBody = model.toJsonObject().toString();
-			logger.debug("UtilitiesLeadfeedService.submit TIMEOUTCONNECT:" + timeoutConnect + " TIMEOUTREAD:" + timeoutRead + " URL:" + serviceUrl);
-			logger.debug("UtilitiesLeadfeedService.submit POST: " + postBody); //Note: could contain personal information
+			LOGGER.debug("Lead feed submit {},{},{}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("url", serviceUrl));
+			LOGGER.trace("Lead feed submit request {}", kv("request", postBody)); //Note: could contain personal information
 
 			responseJson = jsonConn.post(serviceUrl, postBody);
 
 			if (responseJson != null) {
-				logger.debug("UtilitiesLeadfeedService.submit RESP: " + responseJson.toString());
+				LOGGER.trace("Lead feed submit response {}", kv("response", responseJson));
 			}
 
 			//
@@ -152,7 +155,7 @@ public class UtilitiesLeadfeedService {
 
 			FatalErrorService.logFatalError(e, styleCodeId, request.getRequestURI(), sessionId, false, transactionId);
 
-			logger.error("UtilitiesLeadfeedService.submit failed: ", e);
+			LOGGER.error("Error submitting lead feed {}", kv("utilitiesLeadfeedModel", model), e);
 
 			String message = (e.getMessage() != null ? e.getMessage() : "Failed to submit");
 			Error error = new Error();

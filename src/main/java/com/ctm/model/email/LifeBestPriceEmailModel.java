@@ -92,5 +92,20 @@ public class LifeBestPriceEmailModel extends BestPriceEmailModel {
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "LifeBestPriceEmailModel{" +
+				"premium='" + premium + '\'' +
+				", LifeCover='" + LifeCover + '\'' +
+				", TPDCover='" + TPDCover + '\'' +
+				", smoker='" + smoker + '\'' +
+				", traumaCover='" + traumaCover + '\'' +
+				", gender='" + gender + '\'' +
+				", age='" + age + '\'' +
+				", leadNumber='" + leadNumber + '\'' +
+				", occupation='" + occupation + '\'' +
+				", coverType='" + coverType + '\'' +
+				'}';
+	}
 }

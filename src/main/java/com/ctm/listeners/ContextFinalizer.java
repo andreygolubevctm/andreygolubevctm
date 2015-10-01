@@ -18,18 +18,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 /** adding this to debug threads **/
 
 @WebListener()
 public class ContextFinalizer implements ServletContextListener {
 
-	Logger logger = LoggerFactory.getLogger(ContextFinalizer.class.getName());
+	Logger LOGGER = LoggerFactory.getLogger(ContextFinalizer.class);
 
 	public void contextInitialized(ServletContextEvent sce) {
+		Properties properties = new Properties();
 		ServletContext servletContext = sce.getServletContext();
 		EnvironmentService.setContextPath(servletContext.getContextPath());
-
-
+		
 		try {
 			// Initialise the CTM environment and application objects
 			String envVariable =  System.getProperty("spring.profiles.active", "localhost");
@@ -42,16 +44,18 @@ public class ContextFinalizer implements ServletContextListener {
 			AddressSearchService.init();
 		}
 		catch (Exception e) {
-			logger.error("",e);
+			LOGGER.error("Unable initialize application", e);
 		}
 
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {
-		ILoggerFactory loggerContext = LoggerFactory.getILoggerFactory();
-		if(loggerContext != null && loggerContext instanceof LoggerContext) {
-			((LoggerContext) loggerContext).stop();
-		}
+		AddressSearchService.destroy();
+		shutdownDB();
+		shutdownLogback();
+	}
+
+	private void shutdownDB() {
 		Enumeration<Driver> drivers = DriverManager.getDrivers();
 		Driver d = null;
 		while(drivers.hasMoreElements()) {
@@ -60,18 +64,22 @@ public class ContextFinalizer implements ServletContextListener {
 				DriverManager.deregisterDriver(d);
 			}
 			catch (SQLException ex) {
-				logger.warn(String.format("Error deregistering driver %s", d), ex);
+				LOGGER.warn("Error deregistering sql driver {}", kv("sqlDriver", d), ex);
 			}
 		}
 
-		AddressSearchService.destroy();
 		try {
 			AbandonedConnectionCleanupThread.shutdown();
 		} catch (InterruptedException e) {
-			logger.error("",e);
+			LOGGER.error("Error shutting down mysql connection threads", e);
 		}
+	}
 
-
+	private void shutdownLogback() {
+		ILoggerFactory loggerContext = LoggerFactory.getILoggerFactory();
+		if(loggerContext != null && loggerContext instanceof LoggerContext) {
+			((LoggerContext) loggerContext).stop();
+		}
 	}
 
 }

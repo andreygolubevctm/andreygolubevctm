@@ -1,0 +1,351 @@
+//More Info Panels
+
+.more-info-promotion	{ color: @more-info-promotion-color;	}
+.more-info-about 		{ color: @more-info-about-color;		}
+.more-info-nextsteps	{ color: @more-info-nextsteps-color;	}
+
+
+/* product headers buttons */
+.btn-more-info{
+	position: relative;
+	span{
+		@media (@xs-only) {
+			display: none;
+		}
+	}
+}
+
+.btn-close-more-info,
+.btn-more-info{
+	@media (@md-only) {
+		padding-left:0;
+		padding-right:0;
+		font-size: 13px;
+		line-height: 14px;
+	}
+}
+
+.btn-more-info .close-text,
+.btn-close-more-info .more-info-text{
+	display: none;
+}
+
+// Bridging page
+.moreInfoDropdown{
+	position: absolute;
+	top: 170px;
+	z-index: 20;
+	margin-left:-15px;
+	margin-right: -15px;
+	padding-bottom: 170px;
+	font-size: 12px;
+	display: none;
+
+	.email-brochure-component {
+		height:40px;
+	}
+
+	@media(@xs-only){
+		background-color: @theme-light;
+	}
+	@media(@sm-only){
+		h2 {
+			font-size: 20px;
+		}
+	}
+
+	.paragraphedContent{
+		font-size: 1.15em;
+		line-height: 1.37em;
+
+	}
+
+}
+
+#resultsPage .moreInfoDropdown{
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+#resultsPage .more-info-content{
+	border-top:2px solid #F7F7F7;
+}
+#confirmation.more-info-content {
+	background-color: #fff;
+	.moreInfoMainDetails {
+		border-bottom: 0;
+	}
+}
+
+.more-info-content {
+	padding-bottom:10px;
+	h2,
+	.btn-download {
+		font-family: @font-family-theme-bold;
+	}
+	@media (max-width: @screen-xs-max) {
+
+		.moreInfoRightColumn{
+
+			h2{
+				font-size: 17px;
+			}
+
+			h5{
+				font-size:15px;
+			}
+
+			.btn{
+				font-size: 12px;
+			}
+		}
+
+		background-color: @theme-light;
+	}
+	background-color: #fff;
+	position: relative;
+
+	.clearfix();
+
+	li {
+		padding-bottom: 5px;
+	}
+
+
+	.moreInfoMainDetails {
+
+		@media(@xs-only) {
+			background-color: white;
+			border-bottom: 1px solid @theme-default;
+			margin: 0 (-@grid-gutter-width / 2) (@grid-gutter-width / 2) (-@grid-gutter-width / 2);
+			padding: 10px (@grid-gutter-width / 2) (@grid-gutter-width / 2) (@grid-gutter-width / 2);
+
+			.productName {
+				font-family: @font-family-theme-light;
+			}
+
+			.phone {
+				color: white;
+				&:hover {
+					background-color: @theme-secondary;
+				}
+			}
+
+		}
+
+	}//.moreInfoMainDetails
+
+	.transactionID{
+		.h2;
+	}
+	.productName{
+		color: @more-info-health-product-color;
+	}
+	ul{
+		.list-unstyled;
+	}
+	ul.indent{
+		padding-left: 15px;
+	}
+	ul.exclusions{
+		.content-columns(2, @grid-gutter-width);
+		li{
+			padding-left: 20px;
+			position: relative;
+		}
+		.icon-cross{
+			position: absolute;
+			color: @cross-color;
+			margin-left: -20px;
+			font-size: 12px;
+		}
+	}
+
+	.productSummaryDetails{
+		margin-bottom: 0;
+	}
+	.brochureLinks{
+		max-width: 230px;
+	}
+	.moreInfoBubble{
+		background-color: @more-info-bubble-bg-color;
+		color: @more-info-bubble-text-color;
+		padding: 20px;
+
+		h5.moreInfoCallUs{
+			color:#fff;
+			margin: 0;
+		}
+
+		.moreInfoReferenceNoText{
+			font-family: @font-family-theme-light;
+			font-size: 13px;
+		}
+
+		.btn-more-info-apply:active {
+			background-color: darken(@theme-primary, 20%)
+		}
+
+		.moreInfoOr{
+			margin-top: 10px;
+			.h5;
+			padding-left: 0;
+			color:#fff;
+		}
+	}
+	.moreInfoCallUsContainer {
+		padding-bottom: 30px;
+	}
+	h5.moreInfoCallUs{
+		@media (@sm){
+			color:@theme-tertiary;
+		}
+		@media(@xs-only){
+			color:#fff;
+		}
+		margin: 0;
+	}
+
+	.moreInfoReferenceNoText{
+		font-family: @font-family-theme-bold;
+		font-size: 14px;
+	}
+
+	.moreInfoReferenceNo{
+		//font-family: @font-family-theme-bold;
+	}
+
+	.moreInfoRightColumn,
+	.row.moreInfoExcesses,
+	.row.moreInfoExclusions,
+	.moreInfoEmailBrochures {
+		margin-top: 20px;
+		.btn-save {
+			&:extend(.btn-clear all);
+		}
+	}
+
+	.moreInfoEmailBrochures {
+		.optInMarketingRow {
+			margin-top: 10px;
+		}
+		.checkbox input+label {
+			font-size: 12px;
+			color: @gray-light;
+		}
+		display : none;
+		min-height: 80px;
+		@media(@xs-only){
+			font-size: inherit;
+			min-height: 150px;
+			.optInMarketingRow {
+				margin-top: 0px;
+			}
+			.sendBrochureEmailAddress {
+				margin-bottom: 0px;
+			}
+			.emailBrochureButtonRow {
+				margin-top: 10px;
+			}
+		}
+		@media(@sm-only){
+			min-height: 100px;
+		}
+	}
+
+	.moreInfoEmailBrochuresSuccess {
+		display : none;
+	}
+	.brochureButtons {
+		margin-top: 25px;
+	}
+
+	.btn-hospital, .sendBrochureEmailAddress {
+		@media(@xs-only){
+			margin-bottom: 10px;
+		}
+	}
+
+	.row.moreInfoExcesses p{
+		margin-bottom: 5px;
+	}
+
+	.pricepromise {
+		margin-left:0;
+		margin-right:0;
+		h2 {
+			margin: 0;
+		}
+		strong {
+			.text-tertiary;
+			font-weight: normal;
+			font-family: @font-family-theme-bold;
+		}
+		a {
+			color: @text-color;
+			text-decoration: underline;
+		}
+		.pricePromiseLogo{
+			.highResImg('../graphics/health/Price-Promise-Blue.png'; '../graphics/health/Price-Promise-Blue@2x.png'; 135px 97px; ~"");
+			width: 90px;
+			height: 65px;
+			background-size: contain;
+		}
+		@media(@sm) {
+			h2 {
+				font-size: 16px;
+			}
+			.pricePromiseLogo {
+				width: 105px;
+				height: 76px;
+				background-size: contain !important;
+			}
+		}
+		@media(@md) {
+			.pricePromiseLogo {
+				width: 135px;
+				height: 97px;
+			}
+		}
+	}
+
+	@media(@sm-only) {
+		.btn-download {
+			font-size: 12px;
+		}
+	}
+}//.more-info-content
+
+#confirmation {
+	.btn-download{
+		font-family: @font-family-theme-bold;
+		@media(@sm-only){
+			font-size: inherit;
+		}
+	}
+}
+
+
+// Old CTA buttons variables for A/B testing
+@old-btn-cta-bg-color: @theme-primary;
+@old-btn-cta-color: contrast(@old-btn-cta-bg-color);
+@old-btn-cta-border-color: @old-btn-cta-bg-color;
+
+@old-btn-cta-hover-bg-color: darken(@old-btn-cta-bg-color, 12%);
+@old-btn-cta-hover-color: contrast(@old-btn-cta-hover-bg-color);
+@old-btn-cta-hover-border-color: @old-btn-cta-hover-bg-color;
+
+@old-btn-cta-active-bg-color: @theme-secondary;
+@old-btn-cta-active-color: contrast(@old-btn-cta-active-bg-color);
+@old-btn-cta-active-border-color: @old-btn-cta-active-bg-color;
+
+// A/B testing for old organge color buttons
+.old-cta{
+	&.btn-cta {
+		.btn-styles(@old-btn-cta-bg-color, @old-btn-cta-color,
+		@old-btn-cta-active-bg-color, @old-btn-cta-active-color,
+		@old-btn-cta-hover-bg-color, @old-btn-cta-hover-color,
+		@old-btn-cta-border-color, @old-btn-cta-active-border-color, @old-btn-cta-hover-border-color, true); 
+	}
+}

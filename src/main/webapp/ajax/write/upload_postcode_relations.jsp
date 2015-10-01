@@ -2,7 +2,7 @@
 <%@page import="java.util.Date,java.io.*,java.util.*,java.text.*,java.math.*, java.io.*"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-
+<c:set var="logger" value="${log:getLogger('jsp.ajax.write.upload_postcode_relations')}" />
 
 <%--
 SERVICE PAGE THAT CAN BE RUN FROM MOTORMOUTH TO POPULATE POSTCODES
@@ -97,7 +97,8 @@ MAIN CALL
 								<c:set var="postcodeList">${fn:substring(postcodeList, 0, fn:length(postcodeList)-1 )}</c:set>
 								
 								<%-- Print this line to your server to check it over --%>
-								<% System.out.println( pageContext.getAttribute("sqlCount") + ": " + pageContext.getAttribute("postcode") + " = " + pageContext.getAttribute("postcodeList") ); Thread.sleep(1000); %>
+								${logger.info('About to insert into postcode_relations. {},{}', log:kv("sqlCount" , sqlCount), log:kv("postcode", postcode), log:kv("postcodeList", postcodeList))}
+								<% Thread.sleep(1000); %>
 								
 								<%-- SQL Update - if duplicate, only update the results --%>		
 								<sql:update var="result">

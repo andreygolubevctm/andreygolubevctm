@@ -15,6 +15,7 @@ public class SoapAggregatorConfiguration {
 
 	private ArrayList<SoapClientThreadConfiguration> services;
 	private boolean isWriteToFile = true;
+	private boolean sendCorrelationId;
 
 	public SoapAggregatorConfiguration(){
 		services = new ArrayList<SoapClientThreadConfiguration>();
@@ -116,4 +117,11 @@ public class SoapAggregatorConfiguration {
 		}
 	}
 
+	public void setSendCorrelationId(boolean sendCorrelationId) {
+		this.sendCorrelationId = sendCorrelationId;
+	}
+
+	public boolean isSendCorrelationId() {
+		return sendCorrelationId;
+	}
 }

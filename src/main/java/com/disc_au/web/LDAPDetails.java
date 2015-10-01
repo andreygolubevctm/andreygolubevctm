@@ -17,13 +17,14 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 
+import static com.ctm.logging.LoggingArguments.kv;
+
 public class LDAPDetails {
-	private static final Logger logger = LoggerFactory.getLogger(Dreammail.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Dreammail.class.getName());
 
 	protected Hashtable<String, String> userDetails = null;
 	protected String PROVIDER_URL            = "ldap://argon.budgetdirect.com.au:389";
@@ -39,8 +40,7 @@ public class LDAPDetails {
 		if ( userName != null && !userName.isEmpty() ) {
 			this.userDetails = this.getUserBasicAttributes(userName, this.getLdapContext());
 		} else {
-			logger.error(DateFormat.getInstance().format(new Date()));
-			logger.error(":\tcom.disc_au.web.LDAPDetails constructor called with no user name parameter");
+			LOGGER.warn("constructor called with no user name parameter");
 		}
 	}
 
@@ -51,17 +51,16 @@ public class LDAPDetails {
 	public LdapContext getLdapContext(){
 		LdapContext ctx = null;
 
+		final Hashtable<String, String> env = new Hashtable<>();
+		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+		env.put(Context.PROVIDER_URL,            this.PROVIDER_URL);
+		env.put(Context.SECURITY_AUTHENTICATION, this.SECURITY_AUTHENTICATION);
+		env.put(Context.SECURITY_PRINCIPAL,      this.SECURITY_PRINCIPAL);
+		env.put(Context.SECURITY_CREDENTIALS,    this.SECURITY_CREDENTIALS);
 		try {
-			final Hashtable<String, String> env = new Hashtable<>();
-			env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-			env.put(Context.PROVIDER_URL,            this.PROVIDER_URL);
-			env.put(Context.SECURITY_AUTHENTICATION, this.SECURITY_AUTHENTICATION);
-			env.put(Context.SECURITY_PRINCIPAL,      this.SECURITY_PRINCIPAL);
-			env.put(Context.SECURITY_CREDENTIALS,    this.SECURITY_CREDENTIALS);
 			ctx = new InitialLdapContext(env, null);
 		} catch (final NamingException nex) {
-			logger.error(DateFormat.getInstance().format(new Date()));
-			logger.error(":\tLDAP Connection FAILED");
+			LOGGER.error("LDAP Connection FAILED. {}", kv("env", env), nex);
 		}
 
 		return ctx;
@@ -71,14 +70,14 @@ public class LDAPDetails {
 		Hashtable<String, String> userDetails = null;
 
 		if ( ctx != null ) {
-			try {
 				final SearchControls constraints = new SearchControls();
 				constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
 				final String[] attrIDs = { "postalCode", "displayName", "givenname", "sn", "mail", "userPrincipalName", "distinguishedName", "memberOf" };
 				constraints.setReturningAttributes(attrIDs);
-				final NamingEnumeration<SearchResult> answer = ctx.search("OU=AIH Users,DC=budgetdirect,DC=com,DC=au", "sAMAccountName=" + userName, constraints);
-
+			final NamingEnumeration<SearchResult> answer;
+			try {
+				answer = ctx.search("OU=AIH Users,DC=budgetdirect,DC=com,DC=au", "sAMAccountName=" + userName, constraints);
 				if (answer.hasMore()) {
 					final Attributes attrs = answer.next().getAttributes();
 					userDetails = new Hashtable<>();
@@ -90,10 +89,10 @@ public class LDAPDetails {
 						userDetails.put(attrName, attrValue);
 					}
 				} else {
-					throw new Exception("Invalid User");
+					LOGGER.warn("Invalid User. {}", kv("userName", userName));
 				}
-			} catch (final Exception e) {
-				logger.error("",e);
+			} catch (NamingException e) {
+				LOGGER.error("Failed to call LDAP. {}", kv("userName", userName), e);
 			}
 		}
 

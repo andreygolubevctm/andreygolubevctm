@@ -7,7 +7,7 @@
 <c:set var="callCentreNumber" scope="request"><content:get key="genericCallCentreNumber"/></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="genericCallCentreHelpNumber"/></c:set>
 
-<layout:journey_engine_page title="Energy Confirmation" sessionPop="false">
+<layout:journey_engine_page title="Energy Confirmation">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
