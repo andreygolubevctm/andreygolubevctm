@@ -14,7 +14,7 @@ update ctm.travel_product set description = @OLD_DESCRIPTION where providerId = 
 update ctm.travel_product set description = @OLD_DESCRIPTION2 where providerId = @PVIDER and baseProduct = 0
    and productCode in ('FAST-TRAVEL-40','FAST-TRAVEL-47') and description = @NEW_DESCRIPTION2 limit 2;
 
-delete from ctm.travel_product where productCode in ('FAST-TRAVEL-41,FAST-TRAVEL-46,FAST-TRAVEL-42,FAST-TRAVEL-48') and providerId = @PVIDER limit 4;
+delete from ctm.travel_product where productCode in ('FAST-TRAVEL-41','FAST-TRAVEL-46','FAST-TRAVEL-42','FAST-TRAVEL-48') and providerId = @PVIDER limit 4;
 
 -- test expect 2
 select count(*) from ctm.travel_product where providerId = @PVIDER and description = @OLD_DESCRIPTION;
