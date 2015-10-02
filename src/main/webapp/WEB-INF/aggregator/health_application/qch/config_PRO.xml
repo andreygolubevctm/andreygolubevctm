@@ -16,7 +16,7 @@
 	<validation-file>WEB-INF/xsd/health/HIF/healthApplication.xsd</validation-file>
 
 	<service name="QCH" type="soap">
-		<soap-url>https://members.qchfund.com.au/Service.svc</soap-url>
+		<soap-url>https://members.qldcountryhealth.com.au/Service.svc</soap-url>
 		<soap-action>http://HSL.OMS.Public.API.Service/IService/SubmitMembershipSTP</soap-action>
 		<outbound-xsl>qch/outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>keyname=CTM,keycode=CTMtest</outbound-xsl-parms>
