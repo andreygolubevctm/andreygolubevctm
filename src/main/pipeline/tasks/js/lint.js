@@ -7,6 +7,7 @@ var path = require("path"),
     jshint = require("gulp-jshint");
 
 module.exports = function(gulp, filePath) {
+
     if(filePath.length == 1 && filePath[0].indexOf('plugins') != -1) {
         return false;
     }

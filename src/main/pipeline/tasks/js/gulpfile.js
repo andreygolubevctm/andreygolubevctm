@@ -95,12 +95,12 @@ function JSTasks(gulp) {
                 deferredFileArray = [];
 
             // Total combined JS (ignoring before/after page load)
-            gulp.task(bundleTask, function (done) {
+            /*gulp.task(bundleTask, function (done) {
                 return gulpAction(bundleTask, completeFileArray, bundle, done);
             });
 
             bundleTasks.push(bundleTask);
-            watchTasks.push(bundleTask);
+            watchTasks.push(bundleTask);*/
 
             // Look for files that should be included on load and put their paths in the appropriate array
             for (var i = 0; i < completeFileArray.length; i++) {
@@ -112,10 +112,10 @@ function JSTasks(gulp) {
                 }
             }
 
-            if (onLoadFileArray.length) {
+            //if (onLoadFileArray.length) {
                 // JS loaded on page load
                 gulp.task(bundleTaskOnLoad, function (done) {
-                    var fileName = bundle + ".onload";
+                    var fileName = bundle;
                     return gulpAction(bundleTaskOnLoad, onLoadFileArray, fileName, done);
                 });
 
@@ -130,7 +130,7 @@ function JSTasks(gulp) {
 
                 bundleTasks.push(bundleTaskAsync);
                 watchTasks.push(bundleTaskAsync);
-            }
+            //}
 
             // Files paths to watch
             var bundleDependencies = bundles.getWatchableBundlesFilePaths(bundle);

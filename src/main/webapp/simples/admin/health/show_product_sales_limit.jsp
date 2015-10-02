@@ -133,7 +133,6 @@
 	<layout:generic_page title="Daily and monthly sales limits">
 
 		<jsp:attribute name="head">
-			<link rel="stylesheet" href="framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.css">
 			<style>
 				td, th {
 					padding:0.5em;

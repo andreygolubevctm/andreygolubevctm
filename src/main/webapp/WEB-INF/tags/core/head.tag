@@ -150,7 +150,7 @@
 		<go:script href="common/js/jquery.address-1.3.2.min.js" marker="js-href" />
 		<go:script href="common/js/jquery.corner-2.11.js" marker="js-href" />
 		<go:script href="common/js/jquery.numeric.pack.js" marker="js-href" />
-		<go:script href="framework/jquery/plugins/jquery.scrollTo.min.js" marker="js-href" />
+		<go:script href="common/js/jquery.scrollTo.min.js" marker="js-href" />
 		<go:script href="common/js/jquery.maxlength.js" marker="js-href" />
 		<go:script href="common/js/jquery.number.format.js" marker="js-href" />
 		<go:script href="common/js/jquery.aihcustom.js" marker="js-href" />
@@ -161,8 +161,8 @@
 		<go:script href="common/js/jquery-ui-1.8.22.custom.min.js" marker="js-href" />
 	</c:if>
 
-	<go:script href="framework/lib/js/modernizr-2.7.1.min.js" marker="js-href" />
-	<go:script href="framework/lib/js/underscore-1.5.2.min.js" marker="js-href" />
+	<go:script href="common/js/modernizr-2.7.1.min.js" marker="js-href" />
+	<go:script href="common/js/underscore-1.5.2.min.js" marker="js-href" />
 	<c:if test="${empty nonQuotePage or nonQuotePage eq false}">
 	<go:script href="common/js/quote-engine.js" marker="js-href" />
 	<go:script href="common/js/scrollable.js" marker="js-href" />
