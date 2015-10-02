@@ -1,9 +1,9 @@
 USE `simples`;
-DROP procedure IF EXISTS `fetch_ctm_hlt_single_male_under30`;
+DROP procedure IF EXISTS `fetch_ctm_hlt_noresults`;
 
 DELIMITER $$
 USE `simples`$$
-CREATE DEFINER=`server`@`%` PROCEDURE `fetch_ctm_hlt_single_male_under30`(_sourceId INT)
+CREATE DEFINER=`events_sp_mgr`@`localhost` PROCEDURE `fetch_ctm_hlt_noresults`(_sourceId INT)
 BEGIN
 -- -----------------------------
 -- NOTE: Please ensure that any changes to this procedure are recorded via SVN.
@@ -47,19 +47,23 @@ SELECT
 	detailsName.textValue AS contactName,
 	detailsState.textValue AS state
 
-FROM 
-	(	
+FROM
+	(
 		SELECT
 			MAX(header.transactionId) AS transactionId,
 			header.rootId
- 
+
 		FROM aggregator.transaction_header AS header
-	 		LEFT JOIN ctm.touches AS touchInclude ON touchInclude.transaction_id = header.TransactionId
-	 		AND touchInclude.operator_id = 'ONLINE'
+
+			-- Transactions will be INCLUDED if they have these touches
+			-- ONLINE restriction is used to knock out call centre transactions.
+			LEFT JOIN ctm.touches AS touchInclude ON touchInclude.transaction_id = header.TransactionId
+			AND touchInclude.type IN ('HLT detail', 'HLT contac', 'HLT benefi')
+			AND touchInclude.operator_id = 'ONLINE'
 
 			-- Transactions will be EXCLUDED if they have these touches
-	 		LEFT JOIN ctm.touches AS touchExclude ON touchExclude.transaction_id = header.TransactionId
-	 		AND touchExclude.type IN ('C')
+			LEFT JOIN ctm.touches AS touchExclude ON touchExclude.transaction_id = header.TransactionId
+			AND touchExclude.type IN ('R', 'C')
 
 		WHERE
 			-- limit to current date and 1 hour of previous day to avoid leads missing due to the time interval between fetches
@@ -74,10 +78,11 @@ FROM
 
 		HAVING
 			-- Run the touches rules from above
-			COUNT(touchExclude.id) = 0
+			COUNT(touchInclude.id) > 0 AND COUNT(touchExclude.id) = 0
 
 			-- Minimum and maximum time since the relevant touch
-			AND TIMESTAMPDIFF(MINUTE, MAX(TIMESTAMP(touchInclude.date, touchInclude.time)), CURRENT_TIMESTAMP()) BETWEEN 0 AND 1440
+			AND TIMESTAMPDIFF(MINUTE, MAX(TIMESTAMP(touchInclude.date, touchInclude.time)), CURRENT_TIMESTAMP()) BETWEEN 20 AND 1440
+
 	) H
 
 	-- Has customer opted in?
@@ -86,15 +91,13 @@ FROM
 		AND okToCall.xpath = 'health/contactDetails/call'
 		AND okToCall.textValue = 'Y'
 
-	-- Singles and Male
+	-- Why is this one needed?
+	/*
 	LEFT JOIN aggregator.transaction_details AS situation
 		ON H.TransactionId = situation.transactionId
 		AND situation.xpath = 'health/situation/healthCvr'
-
-	-- Under 30s
-	LEFT JOIN aggregator.transaction_details AS age
-		ON H.TransactionId = age.transactionId
-		AND age.xpath = 'health/healthCover/primary/dob'
+		AND situation.textValue IN ('S', 'C', 'F', 'SPF')
+	*/
 
 	-- Contact phone numbers
 	LEFT JOIN aggregator.transaction_details detailsPhoneMobile
@@ -122,17 +125,17 @@ FROM
 		ON H.TransactionId = callMeBack.transactionId
 		AND callMeBack.xpath = 'health/callmeback/phone'
 
+	-- Get the tracking CID
+	LEFT JOIN aggregator.transaction_details AS trackingCID
+		ON H.TransactionId = trackingCID.transactionId
+		AND trackingCID.xpath = 'health/tracking/cid'
+
 WHERE
 	-- Exclude this if the customer requested a call back
 	(callMeBack.textValue IS NULL OR callMeBack.textValue = '')
 
-	-- Restrict by cover type: Singles and Male
-	AND situation.textValue = 'SM'
-
-	-- Restrict by age
-	AND age.textValue IS NOT NULL
-	AND age.textValue != ''
- 	AND TIMESTAMPDIFF(YEAR, STR_TO_DATE(age.textValue, '%d/%m/%Y'), CURDATE()) <= 30
+	-- Exclude this if the customer came from a particular offer (is this still relevant?)
+	AND (trackingCID.textValue IS NULL OR trackingCID.textValue != 'em:cm:offer')
 
 -- -----------------------------
 -- END QUERY

@@ -3,7 +3,7 @@ DROP procedure IF EXISTS `fetch_ctm_hlt_app_not_sold`;
 
 DELIMITER $$
 USE `simples`$$
-CREATE DEFINER=`server`@`%` PROCEDURE `fetch_ctm_hlt_app_not_sold`(_sourceId INT)
+CREATE DEFINER=`events_sp_mgr`@`localhost` PROCEDURE `fetch_ctm_hlt_app_not_sold`(_sourceId INT)
 BEGIN
 -- -----------------------------
 -- NOTE: Please ensure that any changes to this procedure are recorded via SVN.

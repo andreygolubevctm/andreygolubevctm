@@ -1,9 +1,9 @@
 USE `simples`;
-DROP procedure IF EXISTS `fetch_ctm_hlt_singlecouple_under30`;
+DROP procedure IF EXISTS `fetch_ctm_hlt_state_sa`;
 
 DELIMITER $$
 USE `simples`$$
-CREATE DEFINER=`server`@`%` PROCEDURE `fetch_ctm_hlt_singlecouple_under30`(_sourceId INT)
+CREATE DEFINER=`events_sp_mgr`@`localhost` PROCEDURE `fetch_ctm_hlt_state_sa`(_sourceId INT)
 BEGIN
 -- -----------------------------
 -- NOTE: Please ensure that any changes to this procedure are recorded via SVN.
@@ -60,7 +60,7 @@ FROM
 
 			-- Transactions will be EXCLUDED if they have these touches
 	 		LEFT JOIN ctm.touches AS touchExclude ON touchExclude.transaction_id = header.TransactionId
-	 		AND touchExclude.type IN ('A', 'C')
+			AND touchExclude.type IN ('C')
 
 		WHERE
 			-- limit to current date and 1 hour of previous day to avoid leads missing due to the time interval between fetches
@@ -87,15 +87,13 @@ FROM
 		AND okToCall.xpath = 'health/contactDetails/call'
 		AND okToCall.textValue = 'Y'
 
-	-- Singles and couples
+	-- Why is this one needed?
+	/*
 	LEFT JOIN aggregator.transaction_details AS situation
 		ON H.TransactionId = situation.transactionId
 		AND situation.xpath = 'health/situation/healthCvr'
-
-	-- Under 30s
-	LEFT JOIN aggregator.transaction_details AS age
-		ON H.TransactionId = age.transactionId
-		AND age.xpath = 'health/healthCover/primary/dob'
+		AND situation.textValue IN ('S', 'C', 'F', 'SPF')
+	*/
 
 	-- Contact phone numbers
 	LEFT JOIN aggregator.transaction_details detailsPhoneMobile
@@ -123,17 +121,20 @@ FROM
 		ON H.TransactionId = callMeBack.transactionId
 		AND callMeBack.xpath = 'health/callmeback/phone'
 
+	-- Get the tracking CID
+	LEFT JOIN aggregator.transaction_details AS trackingCID
+		ON H.TransactionId = trackingCID.transactionId
+		AND trackingCID.xpath = 'health/tracking/cid'
+
 WHERE
+	-- SA visitors only
+	detailsState.textValue = 'SA'
+
 	-- Exclude this if the customer requested a call back
-	(callMeBack.textValue IS NULL OR callMeBack.textValue = '')
+	AND (callMeBack.textValue IS NULL OR callMeBack.textValue = '')
 
-	-- Restrict by cover type: Singles and couples
-	AND situation.textValue IN ('S', 'SM', 'SF', 'C')
-
-	-- Restrict by age
-	AND age.textValue IS NOT NULL
-	AND age.textValue != ''
- 	AND TIMESTAMPDIFF(YEAR, STR_TO_DATE(age.textValue, '%d/%m/%Y'), CURDATE()) <= 30
+	-- Exclude this if the customer came from a particular offer (is this still relevant?)
+	AND (trackingCID.textValue IS NULL OR trackingCID.textValue != 'em:cm:offer')
 
 -- -----------------------------
 -- END QUERY
