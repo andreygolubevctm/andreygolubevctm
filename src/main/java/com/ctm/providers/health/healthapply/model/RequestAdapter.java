@@ -299,7 +299,7 @@ public class RequestAdapter {
                     medicare.map(com.ctm.model.health.form.Medicare::getMiddleInitial)
                             .map(MiddleInitial::new)
                             .orElse(null),
-                    medicare.map(com.ctm.model.health.form.Medicare::getLastName)
+                    medicare.map(com.ctm.model.health.form.Medicare::getSurname)
                             .map(LastName::new)
                             .orElse(null),
                     new Position(1),

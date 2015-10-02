@@ -12,7 +12,7 @@ public class Medicare {
 
     private String middleInitial;
 
-    private String lastName;
+    private String surname;
 
     public String getCover() {
         return cover;
@@ -54,11 +54,11 @@ public class Medicare {
         this.middleInitial = middleInitial;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 }

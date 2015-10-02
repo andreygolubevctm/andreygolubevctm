@@ -240,7 +240,7 @@ public class RequestAdapterTest {
         verify(medicare, times(1)).getCover();
         verify(medicare, times(1)).getNumber();
         verify(medicare, times(1)).getFirstName();
-        verify(medicare, times(1)).getLastName();
+        verify(medicare, times(1)).getSurname();
         verify(medicare, times(1)).getExpiry();
         verify(expiry, times(1)).getCardExpiryMonth();
         verify(expiry, times(1)).getCardExpiryYear();
