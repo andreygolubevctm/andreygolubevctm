@@ -221,6 +221,7 @@
 		Settings.brand = '${pageSettings.getBrandCode()}';
 		Settings.superTagEnabled = <c:out value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />;
 		Settings.DTMEnabled = <c:out value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />;
+		Settings.GTMEnabled = <c:out value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />;
 		<c:choose><c:when test="${env eq 'localhost' or env eq 'NXI'}">Settings.environment = '<c:out value="${env}" />';</c:when><c:otherwise>Settings.environment = null;</c:otherwise></c:choose>
 
 		var UserData =  new Object();

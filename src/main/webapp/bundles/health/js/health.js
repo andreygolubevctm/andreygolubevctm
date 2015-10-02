@@ -713,7 +713,9 @@
 		// the category names are generally arbitrary but some are used specifically and should use those types (email, name, potentially phone in the future)
 		var contactDetailsFields = {
 			name:[
-				{ $field: $("#health_contactDetails_name") },
+				{
+					$field: $("#health_contactDetails_name")
+				},
 				{
 					$field: $("#health_application_primary_firstname"),
 					$otherField: $("#health_application_primary_surname")
@@ -863,6 +865,10 @@
 
 		}
 
+		fetchRates(postData, true, callback);
+	}
+
+	function fetchRates(postData, canSetRates, callback) {
 		// Check if there is enough data to ask the server.
 		var coverTypeHasPartner = hasPartner();
 		if(postData.cover === '') return false;

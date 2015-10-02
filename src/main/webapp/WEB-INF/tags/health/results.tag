@@ -100,31 +100,7 @@
 		<div class="featuresHeaders featuresElements  ">
 			<div class="result headers">
 
-				<div class="resultInsert">
-					<div class="compareBar">
-
-						<div class="comparisonInactive">
-							Click the <div class="compareCheckbox compareCloseIcon"><input type="checkbox" class="compare compareCloseIcon" checked disabled /><label ></label></div> to add up to <strong>3 products</strong> to your shortlist. We've found <span class="productCount"></span> <span class="smaller">matching your needs.</span>
-			</div>
-
-						<div class="comparisonActive">
-
-							<div class="comparisonSummary">
-								<h3>Your shortlist</h3>
-
-								<ul class="comparedProductsList">
-
-								</ul>
-					</div>
-
-							<a class="btn  compareBtn">Compare Now <span class="icon icon-arrow-right"></span></a>
-
-						</div>
-					</div>
-
-
-
-						</div>
+				<div class="resultInsert controlContainer"></div>
 
 			</div>
 			<features:resultsItemTemplate_labels />
@@ -144,10 +120,10 @@
 		<div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
 			<div class="result">
 				<div class="resultInsert">
-					<div class="compareCheckbox " data-toggle="popover" data-trigger="mouseenter" data-class="compareTooltip" data-adjust-x="5" data-content="click<br/> to compare">
-						<input type="checkbox" class="compare " data-productId="result_{{= productId }}" id="compareCheckbox_{{= productId }}" name="compareCheckbox_{{= productId }}"/>
-						<label for="compareCheckbox_{{= productId }}"></label>
-			</div>
+					<div class="compareCheckbox compare-toggle-wrapper" data-toggle="popover" data-trigger="mouseenter" data-class="compareTooltip" data-adjust-x="5" data-content="click<br/> to compare">
+						<input type="checkbox" class="compare-tick" data-productId="{{= productId }}" id="features_compareTick_{{= productId }}" />
+						<label for="features_compareTick_{{= productId }}"></label>
+					</div>
 					<div class="productSummary vertical results">
 
 					{{ var logoPriceTemplate = $("#logo-price-template").html(); }}
@@ -156,7 +132,7 @@
 					{{ obj.showAltPremium = false; obj.htmlString = htmlTemplatePrice(obj); }}
 					{{= htmlString }}
 
-		</div>
+					</div>
 
 					<a class="btn btn-cta btn-block btn-more-info more-info-showapply ${oldCtaClass}" href="javascript:;" data-productId="{{= productId }}">
 						<div class="more-info-text">More Info & Apply<span class="icon icon-arrow-right" /></div>
@@ -165,14 +141,14 @@
 					{{ if( info.restrictedFund === 'Y' ) { }}
 						<div class="restrictedFund" data-title="This is a Restricted Fund" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center" data-at="bottom center" data-content="#restrictedFundText" data-class="restrictedTooltips">RESTRICTED FUND</div>
 					{{ } }}
+				</div>
 			</div>
-		</div>
 
 			<div class="featuresList featuresElements">
 				<img src="brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/> <%-- #WHITELABEL CX --%>
-		</div>
+			</div>
 
-				</div>
+		</div>
 	</script>
 
 <%-- FEATURE TEMPLATE --%>
@@ -201,49 +177,100 @@
 		Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later.</a>
 			</div>
 
-<%-- COMPARE BAR ITEM --%>
-	<script id="compareBar-compareBox" type="text/html">
-		<li class="compareBox">
+	<!-- COMPARE PANEL -->
+	<core:js_template id="compare-basket-features-template">
+		<div class="compare-basket compareCheckbox">
+			{{ if(comparedResultsCount === 0) { }}
+			<p>
+				Click the <input type="checkbox" class="compare-tick" checked disabled><label></label> to add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist.
+				We've found <span class="products-returned-count">{{= resultsCount }} products</span> <span class="smaller">matching your needs.</span>
+			</p>
+			{{ }  else { }}
 
-			<div class="compareCheckbox compareCloseIcon" data-productId="{{= id }}">
-				<input type="checkbox" class="compare compareCloseIcon checked"  id="listBucket_{{= id }}"  checked="checked" />
-				<label for="listBucket_{{= id }}"></label>
+			{{ var template = $("#compare-basket-features-item-template").html(); }}
+			{{ var htmlTemplate = _.template(template); }}
+			{{ var comparedItems = htmlTemplate(obj); }}
+
+			<h3>Your shortlist</h3>
+			<ul class="compareCheckbox compared-products-list">
+
+				{{= comparedItems }}
+
+				{{ if(comparedResultsCount < maxAllowable && isCompareOpen === false) { }}
+					{{ template = $("#compare-basket-features-placeholder-template").html(); }}
+					{{ htmlTemplate = _.template(template); }}
+					{{ var placeholderItem = htmlTemplate(); }}
+					{{ for(var m = 0; m < maxAllowable-comparedResultsCount; m++) { }}
+						{{= placeholderItem }}
+					{{ } }}
+				{{ } }}
+			</ul>
+			{{ if (comparedResultsCount > 1) { }}
+			<div class="compareButtonsContainer">
+				{{ if(meerkat.modules.compare.isCompareOpen() === true) { }}
+				<a class="btn btn-features-compare clear-compare btn-block" href="javascript:;">Clear Shortlist<span class="icon icon-arrow-right"></span></a>
+				{{ } else { }}
+				<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;">Compare<span class="icon icon-arrow-right"></span></a>
+				{{ } }}
+			</div>
+			{{ } }}
+			{{ } }}
 		</div>
+	</core:js_template>
 
-			<span class="name">{{= object.info.providerName }}</span>
-			<div class="price">
-				<div class="frequency annually {{= Results.getFrequency() != 'annually' ? 'displayNone' : '' }}" >
-					{{= object.premium.annually.lhcfreetext }}
-			</div>
-				<div class="frequency halfyearly {{= Results.getFrequency() != 'halfyearly' ? 'displayNone' : '' }}" >
-					{{= object.premium.halfyearly.lhcfreetext }}
-			</div>
-				<div class="frequency quarterly {{= Results.getFrequency() != 'quarterly' ? 'displayNone' : '' }}">
-					{{= object.premium.quarterly.lhcfreetext }}
-			</div>
-				<div class="frequency monthly {{= Results.getFrequency() != 'monthly' ? 'displayNone' : '' }}" >
-					{{= object.premium.monthly.lhcfreetext }}
-			</div>
-				<div class="frequency fortnightly {{= Results.getFrequency() != 'fortnightly' ? 'displayNone' : '' }}" >
-					{{= object.premium.fortnightly.lhcfreetext }}
-			</div>
-				<div class="frequency weekly {{= Results.getFrequency() != 'weekly' ? 'displayNone' : '' }}" >
-					{{= object.premium.weekly.lhcfreetext }}
-			</div>
-			</div>
+	<%-- COMPARE BAR ITEM --%>
+	<script id="compare-basket-features-item-template" type="text/html">
+		{{ var tFrequency = Results.getFrequency(); }}
+		{{ var displayNone = 'displayNone'; }}
+		{{ var weeklyHidden = tFrequency == 'weekly' ? '' : displayNone; }}
+		{{ var fortnightlyHidden = tFrequency == 'fortnightly' ? '' : displayNone; }}
+		{{ var monthlyHidden = tFrequency == 'monthly' ? '' : displayNone; }}
+		{{ var quarterlyHidden = tFrequency == 'quarterly' ? '' : displayNone; }}
+		{{ var halfyearlyHidden = tFrequency == 'halfyearly' ? '' : displayNone; }}
+		{{ var annuallyHidden = tFrequency == 'annually' ? '' : displayNone; }}
+
+		{{ for(var i = 0; i < obj.products.length; i++) { }}
+			{{var prod = products[i]; }}
+		<li>
+
+			<span class="active-product">
+				<input type="checkbox" class="compare-tick checked" data-productId="{{= prod.productId }}" id="features_compareTick_{{= prod.productId }}" checked />
+				<label for="features_compareTick_{{= prod.productId }}"></label>
+			</span>
+
+			<span class="name">{{= prod.info.providerName }}</span>
+			<span class="price">
+				<span class="frequency annual annually {{= annuallyHidden }}" >
+					{{= prod.premium.annually.lhcfreetext }}
+				</span>
+				<span class="frequency halfyearly {{= halfyearlyHidden }}" >
+					{{= prod.premium.halfyearly.lhcfreetext }}
+				</span>
+				<span class="frequency quarterly {{= quarterlyHidden }}">
+					{{= prod.premium.quarterly.lhcfreetext }}
+				</span>
+				<span class="frequency monthly {{= monthlyHidden }}" >
+					{{= prod.premium.monthly.lhcfreetext }}
+				</span>
+				<span class="frequency fortnightly {{= fortnightlyHidden }}" >
+					{{= prod.premium.fortnightly.lhcfreetext }}
+				</span>
+				<span class="frequency weekly {{= weeklyHidden }}" >
+					{{= prod.premium.weekly.lhcfreetext }}
+				</span>
+			</span>
 		</li>
+		{{ } }}
 	</script>
 
-	<script id="compareBar-compareBoxPlaceholder" type="text/html">
-		<li class="compareBox">
-			<div class="compareCheckbox compareCloseIcon">
-				<input type="checkbox" class="compare compareCloseIcon" disabled />
-				<label ></label>
-			</div>
-			<span class="placeholderLabel">select another product</span>
+	<script id="compare-basket-features-placeholder-template" type="text/html">
+		<li class="compare-placeholder">
+			<span class="active-product">
+				<input type="checkbox" class="compare-tick" disabled />
+				<label></label>
+			</span>
+			<span class="name">select another product</span>
 		</li>
 	</script>
-
-
 
 </agg_new_results:results>
