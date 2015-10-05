@@ -21,6 +21,17 @@
 	<fmt:formatDate var="preloadToDate" pattern="dd/MM/yyyy" value="${preloadToDate.time}" />
 	<go:setData dataVar="data" xpath="travel/dates/fromDate" value="${preloadFromDate}" />
 	<go:setData dataVar="data" xpath="travel/dates/toDate" value="${preloadToDate}" />
+
+	<jsp:useBean id="traveller1DOB" class="java.util.GregorianCalendar" />
+	<jsp:useBean id="traveller2DOB" class="java.util.GregorianCalendar" />
+	<% traveller1DOB.add(java.util.GregorianCalendar.YEAR, -23); %>
+	<% traveller2DOB.add(java.util.GregorianCalendar.YEAR, -35); %>
+
+	<fmt:formatDate var="preloadTraveller1DOB" pattern="dd/MM/yyyy" value="${traveller1DOB.time}" />
+	<fmt:formatDate var="preloadTraveller2DOB" pattern="dd/MM/yyyy" value="${traveller2DOB.time}" />
+
+	<go:setData dataVar="data" xpath="travel/travellers/traveller1DOB" value="${preloadTraveller1DOB}" />
+	<go:setData dataVar="data" xpath="travel/travellers/traveller2DOB" value="${preloadTraveller2DOB}" />
 </c:if>
 
 
