@@ -103,21 +103,18 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
 
             String response = connection.get(serviceProperties.getServiceUrl()+"/quote");
             HomeResponse homeResponse = objectMapper.readValue(response, HomeResponse.class);
-
-            // Log response
-            writer.lastWriteXmlToFile(response);
-
-            final List<HomeResult> homeResults = ResponseAdapter.adapt(homeQuoteRequest, homeResponse);
-
-            saveResults(data, homeResults);
-
-            return homeResults;
+            if(homeResponse != null && !(homeResponse.getPayload().getQuotes().isEmpty())) {
+                writer.lastWriteXmlToFile(response);
+                final List<HomeResult> homeResults = ResponseAdapter.adapt(homeQuoteRequest, homeResponse);
+                saveResults(data, homeResults);
+                return homeResults;
+            }
 
         }catch(IOException e){
             LOGGER.error("Error parsing or connecting to home-quote {}, {}", kv("brand", brand), kv("homeQuoteRequest", homeQuoteRequest), e);
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     private void saveResults(HomeRequest request, List<HomeResult> results) {
@@ -213,11 +210,8 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
                 XmlNode resultDetails = new XmlNode("tempResultDetails");
                 dataBucket.addChild(resultDetails);
                 XmlNode results = new XmlNode("results");
-
-                Iterator<HomeResult> quotesIterator = quotes.iterator();
-                while (quotesIterator.hasNext()) {
-                    HomeResult row = quotesIterator.next();
-                    if(row.getAvailable().equals(AvailableType.Y)) {
+                quotes.forEach(row -> {
+                    if (row.getAvailable().equals(AvailableType.Y)) {
                         String productId = row.getProductId();
                         BigDecimal premium = row.getPrice().getAnnualPremium();
                         XmlNode product = new XmlNode(productId);
@@ -229,7 +223,7 @@ public class HomeQuoteService extends CommonQuoteService<HomeQuote> {
                         product.addChild(price);
                         results.addChild(product);
                     }
-                }
+                });
                 resultDetails.addChild(results);
             }
 

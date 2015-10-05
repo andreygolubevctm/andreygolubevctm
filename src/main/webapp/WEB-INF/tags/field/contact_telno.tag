@@ -12,7 +12,7 @@
 <%@ attribute name="size"					required="false" rtexprvalue="true"	 description="size of the input" %>
 <%@ attribute name="isLandline"				required="false" rtexprvalue="true"	 description="Flag to require number to be landline" %>
 <%@ attribute name="labelName"				required="false" rtexprvalue="true"	 description="the label to display for validation" %>
-<%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="Placeholder text" %>
+<%@ attribute name="placeHolder"			required="false" rtexprvalue="true"	 description="Placeholder text" %>
 <%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
 <%@ attribute name="validationAttribute"	required="false" rtexprvalue="true"	 description="Additional Validation Attributes" %>
 

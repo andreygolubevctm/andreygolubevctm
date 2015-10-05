@@ -248,8 +248,8 @@ Bundles.prototype.getBundleFiles = function(bundle, fileType, useFullPath, getEx
 
                 fileList = originalBundleFileList.map(function(file) {
                     for(var i = 0; i < fileList.length; i++){
-                        if(file.replace("bundles\\" + originalBundle, "bundles\\" + bundle) === fileList[i])
-                            return fileList[i];
+                        if(file.replace("bundles\\" + originalBundle, "bundles\\" + bundle) === fileList[i] || file.replace("bundles\/" + originalBundle, "bundles\/" + bundle) === fileList[i])
+                            return path.normalize(fileList[i]);
                     }
 
                     return file;

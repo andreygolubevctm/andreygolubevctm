@@ -12,6 +12,7 @@
 <%@ attribute name="className" 			required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="defaultValue" 		required="false" rtexprvalue="true"	 description="default value" %>
 <%@ attribute name="constantValue" 		required="false" rtexprvalue="true"	 description="constant value" %>
+<%@ attribute name="noId" 				required="false" rtexprvalue="true"	 description="remove Id attribute if true" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -52,5 +53,9 @@
 	<c:set var="validationAttributes" value=' data-rule-${validationRule}="${validationParam}" data-msg-${validationRule}="${validationMessage}"' />
 </c:if>
 
+<c:set var="fieldId">
+	<c:if test="${not noId}"> id="${name}"</c:if>
+</c:set>
+
 <%-- HTML --%>
-<input type="hidden" name="${name}" id="${name}" class="${fieldClasses}" value="${fieldValue}" ${validationAttributes} />
+<input type="hidden" name="${name}" ${fieldId} class="${fieldClasses}" value="${fieldValue}" ${validationAttributes} />
