@@ -8,6 +8,8 @@ public class ContactDetails {
 
     private ContactNumber contactNumber;
 
+    private String flexiContactNumberinput;
+
     private String optInEmail;
 
     private String call;
@@ -38,6 +40,14 @@ public class ContactDetails {
 
     public void setContactNumber(ContactNumber contactNumber) {
         this.contactNumber = contactNumber;
+    }
+
+    public String getFlexiContactNumberinput() {
+        return flexiContactNumberinput;
+    }
+
+    public void setFlexiContactNumberinput(String flexiContactNumberinput) {
+        this.flexiContactNumberinput = flexiContactNumberinput;
     }
 
     public String getOptInEmail() {

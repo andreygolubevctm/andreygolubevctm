@@ -116,11 +116,15 @@ public class HealthQuoteRouter extends CommonQuoteRouter<HealthRequest> {
                 String firstName = StringUtils.trim(contactDetails.getName());
                 String email = StringUtils.trim(contactDetails.getEmail());
                 String phoneNumber;
-                ContactNumber contactNumber = contactDetails.getContactNumber();
-                if (StringUtils.isNotBlank(contactNumber.getMobile())) {
-                    phoneNumber = StringUtils.trim(contactNumber.getMobile());
+                if (contactDetails.getContactNumber() != null) {
+                    ContactNumber contactNumber = contactDetails.getContactNumber();
+                    if (StringUtils.isNotBlank(contactNumber.getMobile())) {
+                        phoneNumber = StringUtils.trim(contactNumber.getMobile());
+                    } else {
+                        phoneNumber = StringUtils.trim(contactNumber.getOther());
+                    }
                 } else {
-                    phoneNumber = StringUtils.trim(contactNumber.getOther());
+                    phoneNumber = contactDetails.getFlexiContactNumberinput();
                 }
                 String concat = firstName + "::" + email + "::" + phoneNumber;
 
