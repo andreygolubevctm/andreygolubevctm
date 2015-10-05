@@ -7,8 +7,7 @@
 
 	var isActive		=	false,
 		fromMonth		=	null,
-		disabledFunds	=	[],
-		initialised		=	false;
+		disabledFunds	=	[];
 
 	function getIsActive() {
 		return isActive;
@@ -22,9 +21,12 @@
 		return _.indexOf(disabledFunds, fund) >= 0;
 	}
 
-	function initHealthAltPricing() {
-		if(!initialised) {
-			initialised = true;
+	function init() {
+
+		var self = this;
+
+		$(document).ready(function() {
+
 			var json = meerkat.site.alternatePricing;
 			if(!_.isNull(json) && _.isObject(json) && !_.isEmpty(json)) {
 				// A little sanity check
@@ -35,11 +37,11 @@
 				}
 			}
 
-		}
+		});
 	}
 
 	meerkat.modules.register("healthAltPricing", {
-		initHealthAltPricing: initHealthAltPricing,
+		init: init,
 		events: moduleEvents,
 		getIsActive: getIsActive,
 		getFromMonth: getFromMonth,

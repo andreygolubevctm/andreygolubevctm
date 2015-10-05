@@ -11,7 +11,6 @@
 	var moduleEvents = {}, steps = null;
 
 	/* Variables */
-	var initialised = false;
 	var elements = {
 			name:					"home_property",
 			propertyType:			"home_property_propertyType",
@@ -55,13 +54,12 @@
 	}
 	/* main entrypoint for the module to run first */
 	function initHomePropertyDetails() {
-		if(!initialised) {
-			initialised = true;
-			log("[HomeProperties] Initialised"); //purely informational
-			applyEventListeners();
+		log("[HomeProperties] Initialised"); //purely informational
+		applyEventListeners();
+		$(document).ready(function() {
 			toggleBestDescribesHome(0);
 			toggleHeritage(0);
-		}
+		});
 	}
 
 	meerkat.modules.register('homePropertyDetails', {

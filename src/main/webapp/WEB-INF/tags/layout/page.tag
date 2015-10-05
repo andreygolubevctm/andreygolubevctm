@@ -40,6 +40,10 @@
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
+<%-- for Health V2 A/B testing --%>
+<c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
+<c:if test="${isHealthV2 eq true}"><c:set var="fileName" value="health_v2" /></c:if>
+
 <!DOCTYPE html>
 <go:html>
 <head>
@@ -70,10 +74,10 @@
 			<c:choose>
 				<%-- We don't include the separate inc files for Simples in IE because its path structure causes failures due to relative path issues --%>
 				<c:when test="${browserName eq 'IE' and browserVersion le 9}">
-					<c:import url="/assets/includes/styles/${pageSettings.getBrandCode()}/${pageSettings.getVerticalCode()}.html" />
+					<c:import url="/assets/includes/styles/${pageSettings.getBrandCode()}/${fileName}.html" />
 				</c:when>
 				<c:otherwise>
-					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+					<link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/${fileName}${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 				</c:otherwise>
 			</c:choose>
 		</c:if>
@@ -253,10 +257,10 @@
 			<c:choose>
 				<%-- Load separateJS files, but don't include separateJS if Simples --%>
 				<c:when test="${separateJS}">
-					<c:import url="/assets/includes/js/${pageSettings.getVerticalCode()}.html" />
+					<c:import url="/assets/includes/js/${fileName}.html" />
 				</c:when>
 				<c:otherwise>
-					<script src="${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+					<script src="${assetUrl}js/bundles/${fileName}${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 				</c:otherwise>
 			</c:choose>
 		</c:if>

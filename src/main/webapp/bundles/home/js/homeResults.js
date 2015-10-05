@@ -19,8 +19,6 @@
 
 		$component = $('#resultsPage');
 
-		initCompare();
-
 		initResults();
 
 		Features.init();
@@ -50,23 +48,16 @@
 				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
 			}
 
+
 			var price = {
-				annual: "price.annual.total",
-				monthly: "price.monthly.total"
+				annual: "price.annualPremium",
+				annually: "price.annualPremium",
+				monthly: "price.annualisedMonthlyPremium"
 			};
-			var productAvailable = "productAvailable";
-			var productName = "headline.name";
-			var homeQuoteResultsUrl = "ajax/json/home_results.jsp";
-			if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
-				price = {
-					annual: "price.annualPremium",
-					annually: "price.annualPremium",
-					monthly: "price.annualisedMonthlyPremium"
-				};
-				productAvailable = "available";
-				productName = "productName";
-				homeQuoteResultsUrl = "ajax/json/home_results_ws.jsp";
-			}
+			var productAvailable = "available";
+			var productName = "productName";
+			var homeQuoteResultsUrl = "ajax/json/home_results_ws.jsp";
+
 
 			// Init the main Results object
 			Results.init({
@@ -312,14 +303,8 @@
 			// If no providers opted to show results, display the no results modal.
 			var availableCounts = 0;
 			$.each(Results.model.returnedProducts, function(){
-				if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
-					if (this.available === 'Y' && this.productId !== 'CURR') {
-						availableCounts++;
-					}
-				} else {
-					if (this.productAvailable === 'Y' && this.productId !== 'CURR') {
-						availableCounts++;
-					}
+				if (this.available === 'Y' && this.productId !== 'CURR') {
+					availableCounts++;
 				}
 			});
 			// Check products length in case the reason for no results is an error e.g. 500
@@ -393,81 +378,41 @@
 	function massageResultsObject(products) {
 		products = products || Results.model.returnedProducts;
 
-		if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote) {
+		_.each(products, function massageJson(result, index) {
+			// Add properties
+			if (!_.isNull(result.price) && !_.isUndefined(result.price)) {
 
-			_.each(products, function massageJson(result, index) {
-				// Add properties
-				if (!_.isNull(result.price) && !_.isUndefined(result.price)) {
+				// Annually
+				if (!_.isUndefined(result.price.annualPremium)) {
+					result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualPremium, {roundToDecimalPlace: 0});
+				}
 
-					// Annually
-					if (!_.isUndefined(result.price.annualPremium)) {
-						result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualPremium, {roundToDecimalPlace: 0});
-					}
-
-					//Monthly
+				//Monthly
+				if (!_.isUndefined(result.price.monthlyPremium)) {
 					if (!_.isUndefined(result.price.monthlyPremium)) {
-						if (!_.isUndefined(result.price.monthlyPremium)) {
-							result.price.monthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyPremium, {roundToDecimalPlace: 2});
-						}
-						if (!_.isUndefined(result.price.monthlyFirstMonth)) {
-							result.price.monthlyFirstMonthFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyFirstMonth, {roundToDecimalPlace: 2});
-						}
-						if (!_.isUndefined(result.price.annualisedMonthlyPremium)) {
-							result.price.annualisedMonthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualisedMonthlyPremium, {roundToDecimalPlace: 2});
-						}
+						result.price.monthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyPremium, {roundToDecimalPlace: 2});
+					}
+					if (!_.isUndefined(result.price.monthlyFirstMonth)) {
+						result.price.monthlyFirstMonthFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyFirstMonth, {roundToDecimalPlace: 2});
+					}
+					if (!_.isUndefined(result.price.annualisedMonthlyPremium)) {
+						result.price.annualisedMonthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualisedMonthlyPremium, {roundToDecimalPlace: 2});
 					}
 				}
+			}
 
-				if (!_.isNull(result.homeExcess) && !_.isUndefined(result.homeExcess)) {
-					if (!_.isUndefined(result.homeExcess.amount)) {
-						result.homeExcess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.homeExcess.amount, {roundToDecimalPlace: 0});
-					}
+			if (!_.isNull(result.homeExcess) && !_.isUndefined(result.homeExcess)) {
+				if (!_.isUndefined(result.homeExcess.amount)) {
+					result.homeExcess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.homeExcess.amount, {roundToDecimalPlace: 0});
 				}
+			}
 
-				if (!_.isNull(result.contentsExcess) && !_.isUndefined(result.contentsExcess)) {
-					if (!_.isUndefined(result.contentsExcess.amount)) {
-						result.contentsExcess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.contentsExcess.amount, {roundToDecimalPlace: 0});
-					}
+			if (!_.isNull(result.contentsExcess) && !_.isUndefined(result.contentsExcess)) {
+				if (!_.isUndefined(result.contentsExcess.amount)) {
+					result.contentsExcess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.contentsExcess.amount, {roundToDecimalPlace: 0});
 				}
-			});
-
-		} else {
-
-			_.each(products, function massageJson(result, index) {
-				// Add properties
-				if (!_.isUndefined(result.price)) {
-					// Annually
-					if (!_.isUndefined(result.price.annual) && !_.isUndefined(result.price.annual.total)) {
-						result.price.annual.totalFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annual.total, {roundToDecimalPlace: 0});
-					}
-
-					//Monthly
-					if (!_.isUndefined(result.price.monthly)) {
-						if (!_.isUndefined(result.price.monthly.total)) {
-							result.price.monthly.totalFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthly.total, {roundToDecimalPlace: 2});
-						}
-						if (!_.isUndefined(result.price.monthly.amount)) {
-							result.price.monthly.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthly.amount, {roundToDecimalPlace: 2});
-						}
-						if (!_.isUndefined(result.price.monthly.firstPayment)) {
-							result.price.monthly.firstPaymentFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthly.firstPayment, {roundToDecimalPlace: 2});
-						}
-					}
-				}
-
-				if (!_.isUndefined(result.HHB)) {
-					if (!_.isUndefined(result.HHB.excess) && !_.isUndefined(result.HHB.excess.amount)) {
-						result.HHB.excess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.HHB.excess.amount, {roundToDecimalPlace: 0});
-					}
-				}
-
-				if (!_.isUndefined(result.HHC)) {
-					if (!_.isUndefined(result.HHC.excess) && !_.isUndefined(result.HHC.excess.amount)) {
-						result.HHC.excess.amountFormatted = meerkat.modules.currencyField.formatCurrency(result.HHC.excess.amount, {roundToDecimalPlace: 0});
-					}
-				}
-			});
-		}
+			}
+		});
 	}
 
 	function breakpointTracking(){
@@ -520,9 +465,9 @@
 		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
 			$("#environmentOverride").val($("#developmentAggregatorEnvironment").val());
 		}
-		var verticalToUse = meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHomeQuote ? 'hncamsws_' : 'hncams';
+
 		// Fetch results
-		meerkat.modules.resultsFeatures.fetchStructure(verticalToUse).done(function() {
+		meerkat.modules.resultsFeatures.fetchStructure('hncamsws_').done(function() {
 			Results.get();
 		});
 	}
@@ -715,7 +660,7 @@
 		meerkat.modules.homeMoreInfo.runDisplayMethod();
 	}
 
-	function initCompare(){
+	function init(){
 		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
 
 		// Elements to lock when entering compare mode
@@ -733,6 +678,7 @@
 	}
 
 	meerkat.modules.register('homeResults', {
+		init: init,
 		initPage: initPage,
 		onReturnToPage: onReturnToPage,
 		get: get,
