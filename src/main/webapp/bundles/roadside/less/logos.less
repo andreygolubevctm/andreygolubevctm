@@ -3,51 +3,33 @@
 	In other journeys (car, home etc), the logo is floated beside the product detail, instead of in its own row.
 	Hence we need to add these extra styles.
 */
+.lg-logo {
+  text-align: center;
+}
+
 .companyLogo {
-	display:inline-block;
-	float: none;
-	width: 100%;
-	background-position: center;
-	height:60px;
-	@media (min-width: @screen-sm) {
-		height: 80px;
-	}
+  .providersHighResSpriteImages(~"roadside"; ~"logo_"; ~"24-7", ~"1FOW", ~"365R", ~"AGAR", ~"BUDD", ~"M247", ~"RACW";);
+  display:inline-block;
+  float: none;
 
   .unavailable & {
-	float:left;
-	background-color: transparent;
-	margin-right: 20px;
-	margin-bottom: 20px;
-	width: 60px;
-	@media (min-width: @screen-sm) {
-	  width: 80px;
+  	float:left;
+  	background-color: transparent;
+  	margin-right: 20px;
+  	margin-bottom: 20px;
+  }
+}
+
+@media (@sm-only) {
+  .featuresMode {
+	.companyLogo {
+	  .providersHighResSpriteImages(~"roadside"; ~"logo_"; ~"24-7", ~"1FOW", ~"365R", ~"AGAR", ~"BUDD", ~"M247", ~"RACW"; @logo-xs-scale; ~"");
 	}
   }
 }
-.logo_1FOW {
-	.highResImg('../../../common/images/logos/roadside/1FOW.png'; '../../../common/images/logos/roadside/1FOW@2x.png'; 60px; 60px);
-}
 
-.logo_24-7 {
-	.highResImg('../../../common/images/logos/roadside/24-7.png'; '../../../common/images/logos/roadside/24-7@2x.png'; 60px; 60px);
-}
-
-.logo_365R {
-	.highResImg('../../../common/images/logos/roadside/365R.png'; '../../../common/images/logos/roadside/365R@2x.png'; 60px; 60px);
-}
-
-.logo_AGAR {
-	.highResImg('../../../common/images/logos/roadside/AGAR.png'; '../../../common/images/logos/roadside/AGAR@2x.png'; 60px; 60px);
-}
-
-.logo_BUDD {
-	.highResImg('../../../common/images/logos/roadside/BUDD.png'; '../../../common/images/logos/roadside/BUDD@2x.png'; 60px; 60px);
-}
-
-.logo_M247 {
-	.highResImg('../../../common/images/logos/roadside/M247.png'; '../../../common/images/logos/roadside/M247@2x.png'; 60px; 60px);
-}
-
-.logo_RACW {
-	.highResImg('../../../common/images/logos/roadside/RACW.png'; '../../../common/images/logos/roadside/RACW@2x.png'; 60px; 60px);
+@media (max-width: 480px) {
+  .companyLogo {
+	.providersHighResSpriteImages(~"roadside"; ~"logo_"; ~"24-7", ~"1FOW", ~"365R", ~"AGAR", ~"BUDD", ~"M247", ~"RACW"; @logo-xs-scale; ~"");
+  }
 }

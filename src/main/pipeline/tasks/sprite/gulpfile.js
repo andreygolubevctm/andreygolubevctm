@@ -24,12 +24,12 @@ function SpriteTasks(gulp) {
             // Check if bundle has a sprites folder
             if(fs.existsSync(srcPath)) {
                 var taskName = "sprite:" + bundle,
-                    imgPathPrefix = "../../../graphics/logos/sprites/";
+                    imgPathPrefix = "../../../graphics/logos/" + bundle;
 
                 gulp.task(taskName, function() {
                     var spriteSmithConfig = {
-                        imgName: bundle + ".png",
-                        imgPath: imgPathPrefix + bundle + ".png",
+                        imgName: "spritesheet.png",
+                        imgPath: imgPathPrefix + "/spritesheet.png",
                         cssName: "logosSprites.less",
                         padding: 2,
                         cssSpritesheetName: bundle + "-logo",
@@ -45,8 +45,8 @@ function SpriteTasks(gulp) {
                     // Not sure why, but health shouldn't have retina images
                     if(bundle !== "health") {
                         spriteSmithConfig.retinaSrcFilter = [path.join(srcPath, "*@2x.png")];
-                        spriteSmithConfig.retinaImgName = bundle + "@2x.png";
-                        spriteSmithConfig.retinaImgPath = imgPathPrefix + bundle + "@2x.png";
+                        spriteSmithConfig.retinaImgName = "spritesheet@2x.png";
+                        spriteSmithConfig.retinaImgPath = imgPathPrefix + "/spritesheet@2x.png";
                         spriteSmithConfig.cssRetinaSpritesheetName = bundle + "-logo-2x";
                     }
 
@@ -57,7 +57,7 @@ function SpriteTasks(gulp) {
                         .pipe(imageop({
                             optimizationLevel: 7
                         }))
-                        .pipe(gulp.dest(path.join(spriteConfig.source.dir, "sprites")));
+                        .pipe(gulp.dest(path.join(spriteConfig.source.dir, bundle)));
 
                     var cssStream = spriteData.css
                         .pipe(gulp.dest(path.join(config.bundles.dir, bundle, "less")));
