@@ -7,6 +7,7 @@ import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.ServiceConfiguration;
 import com.ctm.model.travel.form.TravelQuote;
 import com.ctm.model.travel.form.TravelRequest;
+import com.ctm.model.travel.form.Travellers;
 import com.ctm.services.EnvironmentService;
 import com.ctm.web.validation.SchemaValidationError;
 import org.junit.Before;
@@ -25,6 +26,7 @@ public class TravelServiceTest {
 	private TravelRequest travelRequest;
     private TravelQuote travelQuote;
 	private SimpleConnection connection;
+	private Travellers travellers;
 
 	@Before
 	public void setup() throws Exception {
@@ -34,8 +36,12 @@ public class TravelServiceTest {
 		travelService = new TravelService(serviceConfig, connection);
 		travelRequest = new TravelRequest();
         travelQuote = new TravelQuote();
-		travelQuote.setAdult1DOB("01/01/1935");
-		travelQuote.setAdult2DOB("01/01/1965");
+
+		travellers = new Travellers();
+		travellers.setTraveller1DOB("01/01/1935");
+		travellers.setTraveller2DOB("01/01/1965");
+
+		travelQuote.setTravellers(travellers);
 		travelQuote.setAdults(2);
 		travelQuote.setChildren(1);
 		travelQuote.setPolicyType("M");
@@ -61,8 +67,10 @@ public class TravelServiceTest {
 		// Set defaults for mandatory fields
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-        travelQuote.setAdult1DOB("01/01/1985");
 
+		travellers = new Travellers();
+		travellers.setTraveller1DOB("01/01/1985");
+		travelQuote.setTravellers(travellers);
 
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
 		boolean valid = travelService.isValid();
@@ -114,7 +122,10 @@ public class TravelServiceTest {
 		// Set defaults
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-		travelQuote.setAdult1DOB("01/01/1985");
+
+		travellers = new Travellers();
+		travellers.setTraveller1DOB("01/01/1985");
+		travelQuote.setTravellers(travellers);
 
 		// Destination field only accepts 3 letter characters
         travelRequest.getQuote().setDestination("BOB");
@@ -166,7 +177,10 @@ public class TravelServiceTest {
 		// Set defaults
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-		travelQuote.setAdult1DOB("01/01/1985");
+
+		travellers = new Travellers();
+		travellers.setTraveller1DOB("01/01/1985");
+		travelQuote.setTravellers(travellers);
 
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
@@ -198,14 +212,18 @@ public class TravelServiceTest {
 
 		travelQuote.setAdults(null);
 		travelQuote.setChildren(null);
-		travelQuote.setAdult1DOB(null);
+
+		travelQuote.setTravellers(null);
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
 		assertFalse(travelService.isValid());
 
 		// Set defaults
         travelQuote.setAdults(1);
         travelQuote.setChildren(1);
-		travelQuote.setAdult1DOB("01/01/1985");
+
+		travellers = new Travellers();
+		travellers.setTraveller1DOB("01/01/1985");
+		travelQuote.setTravellers(travellers);
 
 		validationErrors = travelService.validateRequest(travelRequest, vertical);
 		assertTrue(travelService.isValid());

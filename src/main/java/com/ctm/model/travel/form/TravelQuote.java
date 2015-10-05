@@ -45,20 +45,14 @@ public class TravelQuote {
     @NotNull(message = "Please choose how many children")
     private Integer children;
 
-    @NotNull(message = "Please enter a valid date of birth")
-    private String adult1_dob;
-
-    private String adult2_dob;
+    private Travellers travellers;
 
     private ArrayList<String> destinations;
-
-
 
 
     public TravelQuote(){
         filter = new Filter();
     }
-
 
     public Dates getDates() {
         return dates;
@@ -84,20 +78,12 @@ public class TravelQuote {
         this.adults = adults;
     }
 
-    public String getAdult1DOB() {
-        return adult1_dob;
+    public Travellers getTravellers() {
+        return travellers;
     }
 
-    public void setAdult1DOB(String adult1_dob) {
-        this.adult1_dob = adult1_dob;
-    }
-
-    public String getAdult2DOB() {
-        return adult2_dob;
-    }
-
-    public void setAdult2DOB(String adult2_dob) {
-        this.adult2_dob = adult2_dob;
+    public void setTravellers(Travellers travellers) {
+        this.travellers = travellers;
     }
 
     public String getCurrentJourney() {

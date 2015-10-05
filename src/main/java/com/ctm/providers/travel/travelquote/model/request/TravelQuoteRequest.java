@@ -1,6 +1,7 @@
 package com.ctm.providers.travel.travelquote.model.request;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The request model for calling CtM's travel-quote application.
@@ -14,8 +15,7 @@ public class TravelQuoteRequest {
     private boolean mobileUrls = false;
     private int numberOfAdults;
     private int numberOfChildren;
-    private String adult1DOB;
-    private String adult2DOB;
+    private List<String> travellersDOBs;
     private ArrayList<String> providerFilter = new ArrayList<String>();
     private SingleTripDetails singleTripDetails;
 
@@ -54,20 +54,12 @@ public class TravelQuoteRequest {
         this.numberOfChildren = numberOfChildren;
     }
 
-    public String getAdult1DOB() {
-        return adult1DOB;
+    public List<String> getTravellersDOBs() {
+        return travellersDOBs;
     }
 
-    public void setAdult1DOB(String adult1DOB) {
-        this.adult1DOB = adult1DOB;
-    }
-
-    public String getAdult2DOB() {
-        return adult2DOB;
-    }
-
-    public void setAdult2DOB(String adult2DOB) {
-        this.adult2DOB = adult2DOB;
+    public void setTravellersDOBs(List<String> travellersDOBs) {
+        this.travellersDOBs = travellersDOBs;
     }
 
     public ArrayList<String> getProviderFilter() {

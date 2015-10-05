@@ -4,11 +4,9 @@
 		<fromDate>20/02/2015</fromDate>
 		<toDate>18/03/2015</toDate>
 	</dates>
-	<adults>
-		<dob>
-			<adult1>01/01/1992</adult1>
-		</dob>
-	</adults>
+	<travellers>
+		<traveller1DOB>01/01/1992</traveller1DOB>
+	</travellers>
 	<surname>User</surname>
 	<policyType>S</policyType>
 	<firstName>Test</firstName>
