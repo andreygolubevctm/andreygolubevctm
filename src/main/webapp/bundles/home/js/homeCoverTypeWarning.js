@@ -11,16 +11,18 @@
 		$coverType,
 		$ownsProperty = $("input[name=home_occupancy_ownProperty]"),
 		$chosenCoverTypeOption,
-		warningDialogId;
+		warningDialogId,
+		initialised = false;
 
 	function initHomeCoverTypeWarning() {
-		jQuery(document).ready(function($) {
+		if(!initialised) {
+			initialised = true;
 			$coverType = $('#home_coverType');
 			$chosenCoverTypeOption = $('#home_occupancy_coverTypeWarning_chosenOption');
 			$ownsProperty.on("change.ownHome", function checkOwnership() {
 				_.defer(validateSelections);
 			});
-		});
+		}
 	}
 
 	function validateSelections() {
@@ -80,7 +82,7 @@
 
 
 	meerkat.modules.register('homeCoverTypeWarning', {
-		init: initHomeCoverTypeWarning,
+		initHomeCoverTypeWarning: initHomeCoverTypeWarning,
 		validateSelections: validateSelections
 	});
 
