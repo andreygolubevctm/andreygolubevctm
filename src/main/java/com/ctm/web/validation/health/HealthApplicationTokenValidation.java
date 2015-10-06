@@ -38,12 +38,12 @@ public class HealthApplicationTokenValidation extends HealthTokenValidationServi
         return CURRENT_TOUCH;
     }
 
-    public String createErrorResponse(Long transactionId, String errorMessage, HttpServletRequest request) {
+    public String createErrorResponse(Long transactionId, String errorMessage, HttpServletRequest request , String type) {
         String responseString = "";
         try {
             JSONObject response = new JSONObject();
             JSONObject error = new JSONObject();
-            error.put("type", "submission");
+            error.put("type", type);
             error.put("message", errorMessage);
             response.put("error", error);
             if(isValidToken()){

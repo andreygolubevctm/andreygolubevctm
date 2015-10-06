@@ -200,8 +200,8 @@ public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
 		return validToken;
 	}
 
-	public String createErrorResponse(Long transactionId, String errorMessage, HttpServletRequest request) {
-		return tokenService.createErrorResponse( transactionId,  errorMessage,  request);
+	public String createErrorResponse(Long transactionId, String errorMessage, HttpServletRequest request, String type) {
+		return tokenService.createErrorResponse( transactionId,  errorMessage,  request, type);
 	}
 
 	public String createTokenResponse() {

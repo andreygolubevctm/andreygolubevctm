@@ -78,14 +78,14 @@ public class TransactionVerifier {
     private void validateTouch(List<Touch.TouchType> validTouches, Claims decodedPayload) throws InvalidTokenException {
         Touch.TouchType touch = Touch.TouchType.findByCode((String) decodedPayload.get("touch"));
         if(!validTouches.contains(touch)) {
-            throw new InvalidTokenException("Touch doesn't match recieved " + touch + " expected one of " + validTouches);
+            throw new InvalidTokenException("Touch doesn't match received " + touch + " expected one of " + validTouches);
         }
     }
 
     private void validateMatchesTransactionId(Long expectedTransactionId, Claims decodedPayload) throws InvalidTokenException {
         Long transactionId = getTransactionId(decodedPayload);
         if(!expectedTransactionId.equals(transactionId)) {
-            throw new InvalidTokenException("transaction id doesn't match recieved " + transactionId + " expected " + expectedTransactionId);
+            throw new InvalidTokenException("transaction id doesn't match received " + transactionId + " expected " + expectedTransactionId);
         }
     }
 

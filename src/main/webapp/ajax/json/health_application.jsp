@@ -48,14 +48,14 @@
 	<c:when test="${empty callCentre and not empty touch_count and touch_count > 5}">
 		<c:set var="errorMessage" value="You have attempted to submit this join more than 5 times." />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
-		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request)}
+		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "submission")}
 
 	</c:when>
 	<%-- check the latest touch, to make sure a join is not already actively in progress [HLT-1092] --%>
 	<c:when test="${accessTouchService.isBeingSubmitted(tranId)}">
 		<c:set var="errorMessage" value="Your application is still being submitted. Please wait." />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" productId="${productId}"/>
-		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request)}
+		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "submission")}
 </c:when>
 	<c:otherwise>
 <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
@@ -68,19 +68,19 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 	<c:when test="${ct_outcome == 'C'}">
 		<c:set var="errorMessage" value="Quote has already been submitted and confirmed." />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
-		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request)}
+		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "confirmed")}
 	</c:when>
 
 	<c:when test="${ct_outcome == 'V' or ct_outcome == 'I'}">
 		<c:set var="errorMessage" value="Important details are missing from your session. Your session may have expired." />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
-		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request)}
+		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "transaction")}
 	</c:when>
 
 	<c:when test="${not empty ct_outcome}">
 		<c:set var="errorMessage" value="Application submit error. Code=${ct_outcome}" />
 		<core:transaction touch="F" comment="${errorMessage}" noResponse="true" />
-		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request)}
+		${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage, pageContext.request, "")}
 	</c:when>
 
 	<c:otherwise>
