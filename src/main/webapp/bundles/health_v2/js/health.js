@@ -28,7 +28,7 @@
 			// Initialise the journey engine
 			var startStepId = null;
 			if (meerkat.site.isFromBrochureSite === true) {
-				startStepId = steps.detailsStep.navigationId;
+				startStepId = steps.startStep.navigationId;
 			}
 			// Use the stage user was on when saving their quote
 			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
