@@ -3,8 +3,8 @@ SET @providerId = (SELECT ProviderId FROM ctm.provider_master WHERE providerCode
 ALTER TABLE ctm.travel_product ALTER `productCode` DROP DEFAULT;
 ALTER TABLE ctm.travel_product CHANGE COLUMN `productCode` `productCode` VARCHAR(64) NOT NULL AFTER `providerId`;
 
-ALTER TABLE ctm.results_properties ALTER `productId` DROP DEFAULT;
-ALTER TABLE ctm.results_properties CHANGE COLUMN `productId` `productId` VARCHAR(64) NOT NULL AFTER `transactionId`;
+ALTER TABLE aggregator.results_properties ALTER `productId` DROP DEFAULT;
+ALTER TABLE aggregator.results_properties CHANGE COLUMN `productId` `productId` VARCHAR(64) NOT NULL AFTER `transactionId`;
 
 
 INSERT INTO ctm.product_master (`ProductCat`, `providerId`, `productCode`, `ShortTitle`, `LongTitle`, `effectiveStart`, `effectiveEnd`) VALUES ('TRAVEL', @providerId, 'GOIN-TRAVEL-st-go-base-region-1-excess-200', 'GO Insurance - Go Base', 'GO Insurance - Go Base', '2015-09-20 00:00:00', '2040-12-31 00:00:00');
