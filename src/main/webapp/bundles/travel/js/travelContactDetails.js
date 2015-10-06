@@ -14,7 +14,8 @@
 		$postcodeDetails,
 		$productDetailsField,
 		$marketing,
-		currentJourney;
+		currentJourney,
+		initialised = false;
 
 
 
@@ -78,11 +79,11 @@
 		return false;
 	}
 
-	function init(){
-		
-		//Elements need to be in the page
-		$(document).ready(function() {
-			$email = $('#travel_email'); 
+	function initContactDetails(){
+		if(!initialised) {
+			initialised = true;
+			//Elements need to be in the page
+			$email = $('#travel_email');
 			$marketing = $('#travel_marketing');
 			$postcodeDetails = $('.postcodeDetails');
 			$productDetailsField = $postcodeDetails.find('#travel_location');
@@ -90,11 +91,11 @@
 				$email.removeAttr('required');
 			}
 			applyEventListeners();
-		});
+		}
 	}
 
 	meerkat.modules.register("travelContactDetails", {
-		init: init,
+		initContactDetails: initContactDetails,
 		setLocation: setLocation
 	});
 
