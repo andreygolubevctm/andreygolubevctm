@@ -889,7 +889,7 @@
 		if(!postData.primary_dob.match(dateRegex)) return false;
 		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
-		meerkat.modules.comms.post({
+		return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",
 			data: postData,
 			cache:true,
