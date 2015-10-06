@@ -11,7 +11,8 @@
 
 	var events = {
 			healthBenefits: {
-				CHANGED: 'HEALTH_BENEFITS_CHANGED'
+				CHANGED: 'HEALTH_BENEFITS_CHANGED',
+				RESET_SWITCH_STATE: 'RESET_SWITCH_STATE' // reset bootstrap switch state.
 			}
 		},
 		moduleEvents = events.healthBenefits;
@@ -104,8 +105,9 @@
 			}
 		});
 
-		// Redraw bootstrap switches.
-		$component.find('input.checkbox-switch').bootstrapSwitch('setState');
+		meerkat.messaging.publish(moduleEvents.RESET_SWITCH_STATE, {
+			element: $component.find('input.checkbox-switch')
+		}); // Redraw bootstrap switches.
 
 		// Set disabled/enabled states on checkboxes
 		$component.find('input.hasChildren').each(function( index, element ) {
@@ -116,7 +118,7 @@
 
 	// Control the enabled/disabled state of checkboxes from the top level on/off switches
 	function onSectionChange(event) {
-		
+
 		// At least one top level checkbox must be selected:
 		if($component.find(':input.hasChildren:checked').length === 0){
 			$component.find('.btn-save').prop('disabled', true);
@@ -150,9 +152,9 @@
 
 	// Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
 	function getSelectedBenefits(){
-		
+
 		var benefits = [];
-		
+
 		$( "#mainform input.benefit-item" ).each(function( index, element ) {
 			var $element = $(element);
 			if($element.val() == 'Y'){
@@ -208,9 +210,9 @@
 		if (navigationId === 'results') {
 			meerkat.modules.journeyEngine.loadingShow('getting your quotes', true);
 		}
-		
+
 		close();
-		
+
 		// Defers are here for performance reasons on tablet/mobile.
 		_.defer(function(){
 
@@ -231,11 +233,13 @@
 	}
 
 	// Enable parent switch when disabled child checkbox is clicked.
-	function enableParent(event){
-		$target = $(event.currentTarget);
+	function enableParent(event) {
+		var $target = $(event.currentTarget);
 		if($target.find('input').prop('disabled') === true){
 			$target.parents('.hasShortlistableChildren').first().find(".title").first().find(':input').prop('checked', true);
-			$component.find('input.checkbox-switch').bootstrapSwitch('setState'); // Redraw bootstrap switches.
+			meerkat.messaging.publish(moduleEvents.RESET_SWITCH_STATE, {
+				element: $component.find('input.checkbox-switch')
+			}); // Redraw bootstrap switches.
 		}
 	}
 
@@ -257,7 +261,7 @@
 	// YOU = Young [16-30] Single/Couple
 	// MID = Middle [31-55] Single/Couple
 	// MAT = Mature [56-120] Single/Couple
-	// FAM = Family and SP Family (all ages) 
+	// FAM = Family and SP Family (all ages)
 	function getHealthSituCvr() {
 		var cover = $('#health_situation_healthCvr').val(),
 			primary_dob = $('#health_healthCover_primary_dob').val(),
@@ -370,11 +374,6 @@
 			$component = $('.benefits-component');
 
 			isIE8 = meerkat.modules.performanceProfiling.isIE8();
-
-			meerkat.modules.bootstrapSwitch.initBootstrapSwitch({
-				"on": "&nbsp;YES",
-				"off": "NO"
-			});
 
 			$dropdown.on('show.bs.dropdown', function () {
 				if(mode === null) mode = MODE_POPOVER;

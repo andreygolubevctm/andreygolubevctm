@@ -95,8 +95,6 @@
 		log("[navMenu] Initialised"); //purely informational
 
 		$(document).ready(function domready() {
-			//The VerticalSettings overrides doesn't exist otherwise on meerkat.site
-
 			$toggleElement = $('[data-toggle=navMenu]');
 			$contentPane = $('.navMenu-contents');
 			$navMenuRow = $('.navMenu-row');
