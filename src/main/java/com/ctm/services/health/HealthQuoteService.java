@@ -35,7 +35,7 @@ public class HealthQuoteService {
 
     public void init(HttpServletRequest httpRequest) throws JspException {
         requestService.setRequest(httpRequest);
-        HealthRequest request = HealthRequestParser.getHealthRequestToken(httpRequest, requestService);
+        HealthRequest request = HealthRequestParser.getHealthRequestToken(requestService, HealthRequestParser.isCallCentre(httpRequest));
         tokenService.validateToken(request);
     }
 

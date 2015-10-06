@@ -24,7 +24,7 @@ public class RequestService {
     public int styleCodeId = 0;
     public String sessionId;
     public Long transactionId;
-    public String token;
+    private String token;
     private String ipAddress;
 
     public RequestService(HttpServletRequest request, String vertical){
@@ -93,6 +93,13 @@ public class RequestService {
     public void parseCommonValues(PageRequest request) {
         request.setTransactionId(transactionId);
         request.setToken(token);
-        request.setIpAddress(getIpAddress());
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public Long getTransactionId() {
+        return transactionId;
     }
 }

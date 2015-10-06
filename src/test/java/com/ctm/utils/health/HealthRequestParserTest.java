@@ -29,7 +29,7 @@ public class HealthRequestParserTest {
         String vertical = "health";
         Data data = new Data();
         RequestService requestService = new RequestService( httpRequest,  vertical,  data);
-        healthRequestParser.getHealthRequestToken( httpRequest,  requestService);
+        healthRequestParser.getHealthRequestToken(requestService, false);
 
     }
 

@@ -15,8 +15,6 @@
 
 	<%-- Application unsuccessful, provide PendingID --%>
 	<c:set var="pendingID">${pageContext.session.id}-${transactionId}</c:set>
-	<c:set var="pendingXml"><pendingID>${pendingID}</pendingID></result></c:set>
-	<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', pendingXml)}" />
 	<go:setData dataVar="data" xpath="health/pendingID" value="${pendingID}" />
 
 	<%-- Save to store error and pendingID --%>
@@ -30,6 +28,8 @@
 		${resultJson}
 	</c:when>
 	<c:otherwise>
+		<c:set var="pendingXml"><pendingID>${pendingID}</pendingID></result></c:set>
+		<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', pendingXml)}" />
 		<c:if test="${not empty callCentre}">
 			<c:set var="resultXml" value="${fn:replace(resultXml, '</result>', '<callcentre>true</callcentre></result>')}" />
 		</c:if>

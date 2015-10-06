@@ -6,7 +6,6 @@ import com.ctm.model.request.TokenRequest;
 public class PageRequest implements TokenRequest {
     private String token;
     private Long transactionId;
-    private String ipAddress;
 
     public String getToken(){
         return token;
@@ -21,15 +20,6 @@ public class PageRequest implements TokenRequest {
 
     public void setTransactionId(Long transactionId){
         this.transactionId = transactionId;
-    }
-
-    @Override
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
     }
 
 

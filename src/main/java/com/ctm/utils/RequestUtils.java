@@ -14,12 +14,23 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class RequestUtils {
 
+    protected static final List<String> testIPAddresses = new ArrayList<String>() {
+        private static final long serialVersionUID = 1L;
+
+        {
+            add("192.168.");
+            add("202.177.206.");
+            add("114.111.151.");
+            add("202.189.67.");
+        }};
    
     public static final String TRANSACTION_ID_PARAM = "transactionId";
     public static final String BRAND_CODE_PARAM = "brandCode";
@@ -164,6 +175,10 @@ public class RequestUtils {
 
     public static String getTokenFromRequest(HttpServletRequest request) {
         return request.getParameter(VERIFICATION_TOKEN_PARAM);
+    }
+
+    public static boolean isTestIp(HttpServletRequest request) {
+        return testIPAddresses.stream().anyMatch(testIPAddress -> request.getLocalAddr().startsWith(testIPAddress));
     }
 
 }

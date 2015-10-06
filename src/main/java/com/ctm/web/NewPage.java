@@ -3,6 +3,7 @@ package com.ctm.web;
 import com.ctm.model.Touch;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.security.TransactionVerifier;
+import com.ctm.utils.RequestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,15 +12,13 @@ public class NewPage {
     public String createTokenForNewPage(HttpServletRequest request, Long transactionId, PageSettings pageSettings){
         TransactionVerifier transactionVerifier = new TransactionVerifier();
         int secondsUntilNextToken;
-        // no leeway if preload or loading a quote
-        String preload = request.getParameter("preload");
-        String action = request.getParameter("action");
-        if(preload != null && preload.equals("true") || (action != null && !action.isEmpty())) {
-            secondsUntilNextToken = 0;
+        // no minimum seconds until next token if preload or loading a quote
+        if(RequestUtils.isTestIp(request) || isPreload(request) || isAction(request)) {
+            secondsUntilNextToken =0;
         } else {
             switch (pageSettings.getVertical().getType()) {
                 case HEALTH:
-                    secondsUntilNextToken = 25;
+                    secondsUntilNextToken = 20;
                     break;
                 case FUEL:
                     secondsUntilNextToken = getSecondsUntilNextTokenFuel(request);
@@ -28,7 +27,17 @@ public class NewPage {
                     secondsUntilNextToken = 0;
             }
         }
-        return transactionVerifier.createToken(request.getServletPath(), transactionId, Touch.TouchType.NEW , secondsUntilNextToken);
+        return transactionVerifier.createToken(request.getServletPath(), transactionId, Touch.TouchType.NEW, secondsUntilNextToken);
+    }
+
+    private boolean isAction(HttpServletRequest request) {
+        String action = request.getParameter("action");
+        return action != null && !action.isEmpty();
+    }
+
+    private boolean isPreload(HttpServletRequest request) {
+        String preLoad = request.getParameter("preload");
+        return preLoad != null && preLoad.equals("true");
     }
 
     public int getSecondsUntilNextTokenFuel(HttpServletRequest request) {
@@ -40,4 +49,5 @@ public class NewPage {
             return 5;
         }
     }
+
 }

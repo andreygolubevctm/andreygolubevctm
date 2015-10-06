@@ -60,15 +60,5 @@ public class HealthTokenValidationServiceTest {
         assertTrue(healthQuoteResultsService.validateToken(healthRequest));
         healthRequest.setToken(tokenWrongStep);
         assertTrue(healthQuoteResultsService.validateToken(healthRequest));
-
-    }
-
-    @Test
-    public void testShouldReturnTrueIfGomez() {
-        healthRequest.setToken(validToken);
-        assertTrue(healthQuoteResultsService.validateToken(healthRequest));
-        healthRequest.setToken(expiredToken);
-        healthRequest.setIpAddress("202.177.206.11");
-        assertTrue(healthQuoteResultsService.validateToken(healthRequest));
     }
 }

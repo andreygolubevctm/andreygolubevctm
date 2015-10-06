@@ -58,7 +58,7 @@ public class TransactionVerifier {
             }
             validateMatchesTransactionId(request.getTransactionId(), decodedPayload.getBody());
             validateTouch(validTouches, decodedPayload.getBody());
-        } catch (ClaimJwtException e) {
+        } catch (ClaimJwtException | MalformedJwtException e) {
             throw new InvalidTokenException(e);
         }
     }

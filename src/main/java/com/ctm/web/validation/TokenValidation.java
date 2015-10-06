@@ -5,29 +5,19 @@ import com.ctm.model.request.TokenRequest;
 import com.ctm.security.InvalidTokenException;
 import com.ctm.security.TransactionVerifier;
 import com.ctm.services.SessionDataService;
+import com.ctm.utils.RequestUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
 public abstract class TokenValidation<T extends TokenRequest> {
 
-
-    protected static final  List<String> testIPAddresses = new ArrayList<String>() {
-        private static final long serialVersionUID = 1L;
-
-        {
-            add("192.168.");
-            add("202.177.206.");
-            add("114.111.151.");
-            add("202.189.67.");
-        }};
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenValidation.class.getName());
 
@@ -50,13 +40,8 @@ public abstract class TokenValidation<T extends TokenRequest> {
     public boolean validateToken(T request) {
         validToken = false;
         try {
-            // if in local or gomez range then always return true
-            if(request.getIpAddress() != null && testIPAddresses.stream().anyMatch(testIPAddress -> request.getIpAddress().startsWith(testIPAddress))) {
-                validToken = true;
-            }  else {
-                tokenValidation.validateToken(request, getValidTouchTypes());
-                validToken = true;
-            }
+            tokenValidation.validateToken(request, getValidTouchTypes());
+            validToken = true;
         } catch (InvalidTokenException exception) {
             LOGGER.warn("Token is invalid. ", exception);
         }
@@ -69,25 +54,27 @@ public abstract class TokenValidation<T extends TokenRequest> {
     protected abstract List<Touch.TouchType> getValidTouchTypes();
 
     /**
+     * Return list of touches that validateToken will count as valid
+     * @param request
+     */
+    protected abstract int getMinimumSeconds(HttpServletRequest request);
+
+    /**
      * Return what TouchType created tokens will be
      */
     protected abstract Touch.TouchType getCurrentTouch();
 
-    public String createNewToken(String servletPath, Long transactionId) {
-        return tokenValidation.createToken(servletPath, transactionId , getCurrentTouch(), 2 , 3300);
-    }
-
-    public String createNewToken(String servletPath, Long transactionId, long timeout) {
-        return tokenValidation.createToken(servletPath, transactionId , getCurrentTouch(), 2 , timeout);
-    }
-
     public void setNewToken(JSONObject response, Long transactionId, HttpServletRequest request) {
+        int minimumSeconds = 0;
+        if(!RequestUtils.isTestIp(request)) {
+             minimumSeconds = getMinimumSeconds(request);
+        }
         long timeout = sessionDataService.getClientSessionTimeout(request);
         long timeoutSec = timeout / 1000;
         if(timeout == -1){
             timeoutSec = sessionDataService.getClientDefaultExpiryTimeout(request) / 1000;
         }
-        String token = tokenValidation.createToken(request.getServletPath(), transactionId , getCurrentTouch(), 2 , timeoutSec);
+        String token = tokenValidation.createToken(request.getServletPath(), transactionId , getCurrentTouch(), minimumSeconds , timeoutSec);
         try {
             response.put("verificationToken", token);
             response.put("timeout", timeout);

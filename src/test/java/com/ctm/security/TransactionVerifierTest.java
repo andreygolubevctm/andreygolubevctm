@@ -47,10 +47,6 @@ public class TransactionVerifierTest {
 
             }
 
-            @Override
-            public String getIpAddress() {
-                return "1000";
-            }
         };
         tokenRequest.setTransactionId(transactionId);
     }

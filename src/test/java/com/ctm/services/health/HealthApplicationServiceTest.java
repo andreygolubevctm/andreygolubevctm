@@ -2,8 +2,10 @@ package com.ctm.services.health;
 
 import com.ctm.dao.health.HealthPriceDao;
 import com.ctm.exceptions.DaoException;
+import com.ctm.model.Touch;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.HealthPricePremium;
+import com.ctm.security.TransactionVerifier;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.RequestService;
 import com.ctm.utils.FormDateUtils;
@@ -17,7 +19,7 @@ import javax.servlet.jsp.JspException;
 import java.sql.SQLException;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,22 +28,21 @@ public class HealthApplicationServiceTest {
 
 	private static final String PREFIX = "health";
 	private HealthApplicationService healthApplicationService;
-	private Data data = new Data();
+	private Data data;
 	private HealthPriceDao healthPriceDao;
 	private HttpServletRequest request = mock(HttpServletRequest.class);
 	private Date changeOverDate;
 	private HttpSession session= mock(HttpSession.class);
+	private RequestService requestService;
+	private String sessionId = "sessionId";
+	private Long transactionId= 1000L;
 
 	@Before
 	public void setup() throws Exception {
 		when(request.getSession()).thenReturn(session);
-		RequestService requestService = mock(RequestService.class);
+		 requestService = mock(RequestService.class);
 		healthPriceDao = mock(HealthPriceDao.class);
-		data.put(PREFIX + "/application/productId", "PHIO-HEALTH-545038");
-		data.put(PREFIX + "/payment/details/frequency", Frequency.MONTHLY.getDescription());
-		data.put(PREFIX + "/situation/healthCvr", "SM");
-		data.put(PREFIX + "/payment/details/start", "27/11/2014");
-		data.put(PREFIX + "/application/provider", "AUF");
+		data = setupData();
 		HealthPricePremium premiums = new HealthPricePremium();
 		premiums.setMonthlyLhc(86.15);
 		premiums.setMonthlyPremium(148.2);
@@ -59,8 +60,53 @@ public class HealthApplicationServiceTest {
 		setChangeOverDate();
 	}
 
+	public Data setupData() {
+		Data data = new Data();
+		data.put("health/loading", "0");
+		data.put("health/rebate", "0");
+		data.put(PREFIX + "/application/productId", "PHIO-HEALTH-545038");
+		data.put(PREFIX + "/payment/details/frequency", Frequency.MONTHLY.getDescription());
+		data.put(PREFIX + "/situation/healthCvr", "SM");
+		data.put(PREFIX + "/payment/details/start", "27/11/2014");
+		data.put(PREFIX + "/application/provider", "AUF");
+		return data;
+	}
+
+
 	@Test
-	public void testShouldGetAmount() throws SQLException, Exception {
+	public void testShouldRespondWithValidationResponse() throws  Exception {
+		assertEquals("{\"success\":false,\"pendingID\":\""+ sessionId + "-" + transactionId + "\",\"error\":{\"code\":\"Token Validation\",\"original\":\"Token Validation\"}}" ,healthApplicationService.createTokenValidationFailedResponse(transactionId, sessionId));
+	}
+
+
+	@Test
+	public void testShouldGetIsValidToken() throws  Exception {
+		when(session.getAttribute("callCentre")).thenReturn(false);
+
+		Long transactionId= 1000L;
+		TransactionVerifier transactionVerifier = new TransactionVerifier();
+		when(requestService.getTransactionId()).thenReturn(transactionId);
+		when(requestService.getToken()).thenReturn(transactionVerifier.createToken("test", transactionId, Touch.TouchType.PRICE_PRESENTATION));
+		healthApplicationService.setUpApplication(setupData(), request, changeOverDate);
+		assertTrue(healthApplicationService.isValidToken());
+
+		when(requestService.getToken()).thenReturn("invalidToken");
+		healthApplicationService.setUpApplication(setupData(), request, changeOverDate);
+		assertFalse(healthApplicationService.isValidToken());
+	}
+
+	@Test
+	public void testShouldCreateErrorResponse() throws  Exception {
+		Long transactionId= 1000L;
+		String errorMessage = "failed to test";
+		String type = "test";
+		healthApplicationService.setUpApplication(data, request, changeOverDate);
+		String expectedResult = "{\"error\":{\"type\":\"" + type + "\",\"message\":\"" + errorMessage + "\"}}";
+		assertEquals(expectedResult ,healthApplicationService.createErrorResponse( transactionId,  errorMessage,  request,  type));
+	}
+
+	@Test
+	public void testShouldGetAmount() throws Exception {
 		data.put("health/loading", "0");
 		data.put("health/rebate", "0");
 		Date changeOverDate = new Date();
@@ -72,7 +118,7 @@ public class HealthApplicationServiceTest {
 	}
 
 	@Test
-	public void testShouldGetAmountWithRebate() throws SQLException, Exception, JspException {
+	public void testShouldGetAmountWithRebate() throws SQLException, Exception {
 		data.put("health/loading", "0");
 		data.put("health/rebate", "29.04");
 
@@ -96,7 +142,7 @@ public class HealthApplicationServiceTest {
 
 
 	@Test
-	public void testShouldGetAmountWithLHCandRebate() throws SQLException, Exception {
+	public void testShouldGetAmountWithLHCandRebate() throws Exception {
 		data.put("health/loading", "34");
 		data.put("health/rebate", "29.04");
 		healthApplicationService.setUpApplication(data, request, changeOverDate);
@@ -131,7 +177,6 @@ public class HealthApplicationServiceTest {
 		String paymentFreqResult = (String) data.get("health/application/paymentFreq");
 		assertEquals("1459.92" ,paymentAmtResult);
 		assertEquals("121.66" ,paymentFreqResult);
-
 	}
 
 	private void setupNib() throws DaoException, JspException {

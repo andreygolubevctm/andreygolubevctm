@@ -18,6 +18,7 @@ import com.ctm.web.validation.health.HealthApplicationTokenValidation;
 import com.ctm.web.validation.health.HealthApplicationValidation;
 import com.disc_au.price.health.PremiumCalculator;
 import com.disc_au.web.go.Data;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,6 @@ import java.util.List;
 import static com.ctm.logging.LoggingArguments.kv;
 
 public class HealthApplicationService {
-
-	private static final Vertical.VerticalType VERTICAL = Vertical.VerticalType.HEALTH;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplicationService.class);
 	private final FatalErrorService fatalErrorService;
@@ -67,13 +66,15 @@ public class HealthApplicationService {
 
 	public JSONObject setUpApplication(Data data, HttpServletRequest httpRequest, Date changeOverDate) throws JspException {
 		// TODO: refactor this when are away from jsp
-		if(requestService == null) {
-			requestService = new RequestService(httpRequest, VERTICAL);
+		if (requestService == null) {
+			requestService = new RequestService(httpRequest, Vertical.VerticalType.HEALTH);
+		} else {
+			requestService.setRequest(httpRequest);
 		}
 		SessionDataService sessionDataService = new SessionDataService();
 		tokenService = new HealthApplicationTokenValidation(sessionDataService);
 		isCallCentre = HealthRequestParser.isCallCentre(httpRequest);
-		validToken = tokenService.validateToken(HealthRequestParser.getHealthRequestToken(httpRequest, requestService));
+		validToken = tokenService.validateToken(HealthRequestParser.getHealthRequestToken(requestService, isCallCentre));
 		List<SchemaValidationError> validationErrors;
 		try {
 			request = HealthApplicationParser.parseRequest(data, changeOverDate);
@@ -90,9 +91,11 @@ public class HealthApplicationService {
 		}
 		return handleValidationResult(requestService, validationErrors);
 	}
-public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
-	return healthPriceDao.getAllProviders(styleCodeId);
-}
+
+	public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
+		return healthPriceDao.getAllProviders(styleCodeId);
+	}
+
 	private void calculatePremiums() throws DaoException {
 		Frequency frequency = request.payment.details.frequency;
 		HealthPricePremium premium = fetchHealthResult();
@@ -180,10 +183,6 @@ public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
 		}
 	}
 
-	/**
-	 * used by health_application.jsp
-	 */
-	@SuppressWarnings("unused")
 	public boolean isValid(){
 		return valid;
 	}
@@ -192,11 +191,8 @@ public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
 		this.requestService = requestService;
 	}
 
-	/**
-	 * used by health_application.jsp
-	 */
-	@SuppressWarnings("unused")
-	public boolean validToken() {
+
+	public boolean isValidToken() {
 		return validToken;
 	}
 
@@ -204,19 +200,25 @@ public List<Provider> getAllProviders(int styleCodeId) throws DaoException {
 		return tokenService.createErrorResponse( transactionId,  errorMessage,  request, type);
 	}
 
-	public String createTokenResponse() {
-		String response =  "{" +
-					"success:false," +
-					"errors { " +
-					"error : {" +
-					"code:Token Validation," +
-					"original:Token Validation" +
-					"}" +
-					"}";
-					if(isCallCentre) {
-						response += "callcentre:true";
-					}
-		response += "}";
-		return response;
+
+	public String createTokenValidationFailedResponse(Long transactionId, String sessionId) {
+		String responseString = "";
+		try {
+			JSONObject response = new JSONObject();
+			response.put("success", false);
+			JSONObject error = new JSONObject();
+			response.put("error", error);
+			error.put("code", "Token Validation");
+			error.put("original", "Token Validation");
+			String pendingId = sessionId + "-" + transactionId;
+			response.put("pendingID", pendingId);
+			if(isCallCentre) {
+				response.put("callcentre", true);
+			}
+			responseString = response.toString();
+		} catch (JSONException e) {
+			LOGGER.warn("Failed to create response. ", e);
+		}
+		return responseString;
 	}
 }

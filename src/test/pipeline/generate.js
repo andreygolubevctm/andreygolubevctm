@@ -1,9 +1,5 @@
 var argv = require("yargs").argv,
-    path = require("path"),
-    fs = require("fs"),
-    beautify = require('js-beautify').js_beautify,
-    mkdirp = require("mkdirp"),
-    prompt = require("prompt");
+    fs = require("fs");
 
 var config = require("./config"),
     fileHelper = require("../../main/pipeline/helpers/fileHelper");

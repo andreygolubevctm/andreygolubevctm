@@ -26,7 +26,7 @@ public class RequestServiceTest {
         RequestService requestService = new RequestService(Vertical.VerticalType.HEALTH, pageSettings);
         requestService.setRequest(request);
 
-        assertEquals(expectedToken , requestService.token);
+        assertEquals(expectedToken , requestService.getToken());
 
     }
 }

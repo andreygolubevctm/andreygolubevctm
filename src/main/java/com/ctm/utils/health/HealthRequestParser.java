@@ -9,10 +9,12 @@ import javax.validation.constraints.NotNull;
 public class HealthRequestParser {
 
     @NotNull
-    public static HealthRequest getHealthRequestToken(HttpServletRequest httpRequest, RequestService requestService) {
+    public static HealthRequest getHealthRequestToken( RequestService requestService, boolean isCallCentre) {
         HealthRequest healthRequest = new HealthRequest();
         requestService.parseCommonValues(healthRequest);
-        healthRequest.setIsCallCentre(HealthRequestParser.isCallCentre(httpRequest));
+        healthRequest.setIsCallCentre(isCallCentre);
+        healthRequest.setToken(requestService.getToken());
+        healthRequest.setTransactionId(requestService.getTransactionId());
         return healthRequest;
     }
 

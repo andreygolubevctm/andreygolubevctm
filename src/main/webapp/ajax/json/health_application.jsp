@@ -28,15 +28,15 @@
 	If invalid send the user to the pending page and let the call centre sort out
 	TODO: move this over to HealthApplicationService
 	--%>
-	<c:when test="${!healthApplicationService.validToken()}">
-		<health:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenResponse()}"  transactionId="${resultXml}" productId="${productId}" />
+	<c:when test="${!healthApplicationService.validToken}">
+		<health:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenValidationFailedResponse(data.current.transactionId,pageContext.session.id)}"  transactionId="${resultXml}" productId="${productId}" />
 	</c:when>
 	<%-- only output validation errors if call centre --%>
-	<c:when test="${!healthApplicationService.isValid() && callCentre}">
+	<c:when test="${!healthApplicationService.valid && callCentre}">
 		${validationResponse}
 	</c:when>
 	<%-- set to pending if online and validation fails --%>
-	<c:when test="${!healthApplicationService.isValid() && !callCentre}">
+	<c:when test="${!healthApplicationService.valid && !callCentre}">
 		<c:set var="resultXml"><result><success>false</success><errors></c:set>
 		<c:forEach var="validationError"  items="${healthApplicationService.getValidationErrors()}">
 			<c:set var="resultXml">${resultXml}<error><code>${validationError.message}</code><original>${validationError.elementXpath}</original></error></c:set>
