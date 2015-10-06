@@ -8,10 +8,10 @@ import java.util.List;
  */
 public class Travellers {
 
-    private List<String> travellersDOBs;
+    private List<String> travellersDOB;
 
     public String getTraveller1DOB() {
-        return travellersDOBs != null && !travellersDOBs.isEmpty() ? travellersDOBs.get(0) : "";
+        return travellersDOB != null && !travellersDOB.isEmpty() ? travellersDOB.get(0) : "";
     }
 
     public void setTraveller1DOB(String traveller1DOB) {
@@ -19,7 +19,7 @@ public class Travellers {
     }
 
     public String getTraveller2DOB() {
-        return travellersDOBs != null && !travellersDOBs.isEmpty() ? travellersDOBs.get(1) : "";
+        return travellersDOB != null && !travellersDOB.isEmpty() ? travellersDOB.get(1) : "";
     }
 
     public void setTraveller2DOB(String traveller2DOB) {
@@ -27,14 +27,14 @@ public class Travellers {
     }
 
     public void setTravellersDOB(String dob) {
-        if (travellersDOBs == null) {
-            travellersDOBs = new ArrayList<String>();
+        if (travellersDOB == null) {
+            travellersDOB = new ArrayList<String>();
         }
 
-        travellersDOBs.add(dob);
+        travellersDOB.add(dob);
     }
 
-    public List<String> getTravellersDOBs() {
-        return this.travellersDOBs;
+    public List<String> getTravellersDOB() {
+        return this.travellersDOB;
     }
 }
