@@ -5,7 +5,6 @@
 
 	<merge-root>soap-response</merge-root>
 	<config-dir>aggregator/car</config-dir>
-	<error-dir>aggregator/get_prices/app-logs-errors</error-dir>
 	<debug-dir>get_prices/app-logs-debug-rein</debug-dir>
 
 	<service name="REINQUOTE" type="soap">

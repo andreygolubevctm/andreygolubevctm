@@ -74,7 +74,8 @@
 					</c:forEach>
 
 					<%-- Load the config for the contact lead sender --%>
-					<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
+					<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+					<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 
 					<c:set var="touchResponse">${accessTouchService.recordTouchWithComment(result.transaction_id, "LF", "lifebroker")}</c:set>
 
