@@ -10,12 +10,8 @@ var FileHelper = {
      * @param fileContents
      */
     writeFileToFolder: function (folder, fileName, content) {
-        mkdirp(folder, function(err) {
-            if(err) console.error(err);
-
-            fs.writeFile(path.join(folder, fileName), content, function(err){
-                if(err) return console.error(err);
-            });
+        fs.outputFile(path.join(folder, fileName), content, function(err){
+            if(err) return console.error(err);
         });
     },
 
