@@ -11,7 +11,6 @@
 	var moduleEvents = {}, steps = null;
 
 	/* Variables */
-	var initialised = false;
 	var elements = {
 			name:				'#home_property',
 			coverType:			'#home_coverType'
@@ -33,11 +32,11 @@
 	}
 	/* main entrypoint for the module to run first */
 	function initHomePropertyFeatures() {
-		if(!initialised) {
-			initialised = true;
-			log("[HomePropertiesFeatures] Initialised"); //purely informational
+		log("[HomePropertiesFeatures] Initialised"); //purely informational
+
+		$(document).ready(function() {
 			toggleSecurityFeatures(0);
-		}
+		});
 	}
 
 	meerkat.modules.register('homePropertyFeatures', {

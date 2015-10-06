@@ -51,7 +51,7 @@
 		<go:setData dataVar="data" xpath="health/transactionId" value="${data.current.transactionId}" />
 		<c:set var="tranId" value="${data.current.transactionId}" />
 
-		<%-- Set custom appilcation date from data.jsp --%>
+		<%-- Set custom application date from data.jsp --%>
 		<go:setData dataVar="data" xpath="health/applicationDate" value="${applicationService.getApplicationDate(pageContext.getRequest())}" />
 		<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
 		<%-- Removed specific email writing operations from here as they're handled in core:transaction above --%>
@@ -67,7 +67,7 @@
 							isValidVar="isValid"
 							verticalCode="HEALTH"
 							configDbKey="quoteService"
-						   sendCorrelationId="true"
+						   	sendCorrelationId="true"
 							styleCodeId="${pageSettings.getBrandId()}" />
 
 		<c:if test="${isValid || continueOnValidationError}">
@@ -119,8 +119,8 @@
 		<c:choose>
 			<c:when test="${not empty data['health/contactDetails/contactNumber/mobile']}">
 				<c:set var="contactPhone" value="${data['health/contactDetails/contactNumber/mobile']}"/>
-	</c:when>
-	<c:otherwise>
+			</c:when>
+			<c:otherwise>
 				<c:set var="contactPhone" value="${data['health/contactDetails/contactNumber/other']}"/>
 			</c:otherwise>
 		</c:choose>

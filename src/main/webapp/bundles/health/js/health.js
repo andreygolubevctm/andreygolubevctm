@@ -170,6 +170,7 @@
 						toggleDialogueInChatCallback();
 					});
 				}
+
 			}
 		};
 
@@ -191,8 +192,6 @@
 				// Set initial state.
 				healthCoverDetails.setHealthFunds(true);
 				healthCoverDetails.setIncomeBase(true);
-
-				meerkat.modules.healthTiers.initHealthTiers();
 
 				// Add event listeners.
 
@@ -383,12 +382,9 @@
 				}
 			},
 			onInitialise: function onInitResults(event){
-				meerkat.modules.healthFilters.initHealthFilters();
-				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
-				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
-				meerkat.modules.healthAltPricing.initHealthAltPricing();
+
 				meerkat.modules.healthMoreInfo.initMoreInfo();
-				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
+
 			},
 			onBeforeEnter:function enterResultsStep(event){
 
@@ -572,10 +568,6 @@
 			},
 			onInitialise: function initPaymentStep(event){
 
-				meerkat.modules.healthPaymentStep.initHealthPaymentStep();
-				meerkat.modules.healthPaymentDate.initPaymentDate();
-				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP()
-
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 					var data = {};
@@ -721,7 +713,9 @@
 		// the category names are generally arbitrary but some are used specifically and should use those types (email, name, potentially phone in the future)
 		var contactDetailsFields = {
 			name:[
-				{ $field: $("#health_contactDetails_name") },
+				{
+					$field: $("#health_contactDetails_name")
+				},
 				{
 					$field: $("#health_application_primary_firstname"),
 					$otherField: $("#health_application_primary_surname")
@@ -871,6 +865,10 @@
 
 		}
 
+		fetchRates(postData, true, callback);
+	}
+
+	function fetchRates(postData, canSetRates, callback) {
 		// Check if there is enough data to ask the server.
 		var coverTypeHasPartner = hasPartner();
 		if(postData.cover === '') return false;

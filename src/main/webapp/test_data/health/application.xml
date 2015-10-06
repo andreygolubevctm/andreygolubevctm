@@ -4,11 +4,9 @@
 		<firstName>Test</firstName>
 		<lastname>User</lastname>
 		<contactNumber>
-			<mobileinput>(0412) 345 678</mobileinput>
-			<mobile>0412345678</mobile>
-			<otherinput>(07) 3234 5678</otherinput>
-			<other>0732345678</other>
+
 		</contactNumber>
+		<flexiContactNumber>(0404) 123 123</flexiContactNumber>
 		<email>e@fake.org</email>
 		<call>N</call>
 	</contactDetails>
@@ -119,10 +117,7 @@
 			<nonStdStreet>PO Box</nonStdStreet>
 			<streetNum>0000</streetNum>
 		</postal>
-		<mobileinput>(0412) 345 678</mobileinput>
-		<mobile>0412345678</mobile>
-		<otherinput></otherinput>
-		<other></other>
+
 		<email>e@fake.org</email>
 		<optInEmail></optInEmail>
 		<dependants>
