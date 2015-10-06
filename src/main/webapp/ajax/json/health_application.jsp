@@ -29,18 +29,7 @@
 	TODO: move this over to HealthApplicationService
 	--%>
 	<c:when test="${!healthApplicationService.validToken()}">
-		<c:set var="resultXml">
-			<result>
-				<success>false</success>
-				<errors>
-					<error>
-						<code>Token Validation</code>
-						<original>Token Validation</original>
-					</error>
-				</errors>
-			</result>
-		</c:set>
-		<health:set_to_pending errorMessage="Token is not valid." resultXml="${resultXml}" transactionId="${resultXml}" productId="${productId}" />
+		<health:set_to_pending errorMessage="Token is not valid." resultJson="${healthApplicationService.createTokenResponse()}"  transactionId="${resultXml}" productId="${productId}" />
 	</c:when>
 	<%-- only output validation errors if call centre --%>
 	<c:when test="${!healthApplicationService.isValid() && callCentre}">
