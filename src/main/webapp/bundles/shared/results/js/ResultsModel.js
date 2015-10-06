@@ -88,7 +88,7 @@ var ResultsModel = {
 			success: function(jsonResult){
 
 				Results.model.updateTransactionIdFromResult(jsonResult);
-				Results.model.updateVerificationTokenFromResult(jsonResult);
+				meerkat.modules.verificationToken.readTokenFromResponse(jsonResult);
 
 				if( typeof meerkat != 'undefined') {
 					if (jsonResult.hasOwnProperty('results')) {
@@ -206,16 +206,6 @@ var ResultsModel = {
 		}
 		if (newTranID !== 0) {
 			meerkat.modules.transactionId.set(newTranID);
-		}
-	},
-
-	updateVerificationTokenFromResult: function( jsonResult ){
-		var verificationToken = "";
-		if (jsonResult.hasOwnProperty('verificationToken')) {
-			verificationToken = jsonResult.verificationToken;
-		}
-		if (verificationToken !== "") {
-			meerkat.modules.verificationToken.set(verificationToken);
 		}
 	},
 

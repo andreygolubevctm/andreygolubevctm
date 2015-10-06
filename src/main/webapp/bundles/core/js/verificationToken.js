@@ -5,15 +5,15 @@
         log = meerkat.logging.info;
     var events = {};
     var REQUEST_PARAM = "verificationToken";
-    var verificationToken = "";
+    var verificationToken;
 
     function initVerificationToken() {
-        jQuery(document).ready(function($) {
-            setTokenFromPage();
-        });
     }
 
     function get() {
+        if(typeof verificationToken === 'undefined' || verificationToken === '' ){
+            setTokenFromPage();
+        }
         return verificationToken;
     }
 
@@ -42,11 +42,18 @@
         }
     }
 
+    function readTokenFromResponse(response){
+        if(typeof response.verificationToken !== 'undefined' && response.verificationToken !== ''){
+            set(response.verificationToken);
+        }
+    }
+
     meerkat.modules.register("verificationToken", {
         init: initVerificationToken,
         events: events,
         get: get,
         set: set,
-        addTokenToRequest : addTokenToRequest
+        addTokenToRequest : addTokenToRequest,
+        readTokenFromResponse : readTokenFromResponse
     });
 })(jQuery);

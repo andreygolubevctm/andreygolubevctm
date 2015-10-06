@@ -196,10 +196,8 @@
 		var jqXHR = $.ajax(ajaxProperties);
 		var deferred = jqXHR.then(
 					function onAjaxSuccess(result, textStatus, jqXHR){
-						if(typeof result.verificationToken !== 'undefined' && result.verificationToken !== ''){
-							meerkat.modules.verificationToken.set(result.verificationToken);
-						}
-					var data = (typeof settings.data !== "undefined") ? settings.data : null;
+						meerkat.modules.readTokenFromResponse(result);
+						var data = (typeof settings.data !== "undefined") ? settings.data : null;
 
 						if(containsServerGeneratedError(result) === true) {
 					handleError(jqXHR, "Server generated error", getServerGeneratedError(result), settings, data, ajaxProperties);

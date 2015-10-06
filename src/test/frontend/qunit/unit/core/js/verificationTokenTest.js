@@ -4,7 +4,12 @@ $(function () {
 
     module( "meerkat.modules.verificationToken" );
 
+    function setup(){
+        meerkat.modules.verificationToken.set();
+    }
+
     QUnit.test("should set token on request", function (assert) {
+        setup();
         var testToken = "testToken";
         meerkat.modules.verificationToken.set(testToken );
         var ajaxProperties = {
@@ -18,11 +23,28 @@ $(function () {
 
     });
 
+    QUnit.test("should read token from response", function (assert) {
+        setup();
+        var testToken = "testTokenResponse";
+        var response = {
+            verificationToken : testToken
+        };
+        meerkat.modules.verificationToken.readTokenFromResponse(response);
+
+        assert.equal(testToken, meerkat.modules.verificationToken.get());
+
+    });
+
     QUnit.test("should set token from page", function (assert) {
-        var testToken = "testToken2";
+        setup();
+        var testToken = "testTokenFromPage";
         meerkat.site.verificationToken = testToken;
         meerkat.modules.verificationToken.init();
         assert.equal(testToken, meerkat.modules.verificationToken.get());
+
+        var testToken2 = "testToken2";
+        meerkat.modules.verificationToken.set(testToken2)
+        assert.equal(testToken2, meerkat.modules.verificationToken.get());
     });
 
 });
