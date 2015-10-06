@@ -6,12 +6,13 @@ var path = require("path"),
     intercept = require("gulp-intercept"),
     jshint = require("gulp-jshint");
 
-module.exports = function(gulp, filePath) {
+module.exports = function(gulp, fileArray) {
+    // Remove plugins from lintable fileArray
+    fileArray = fileArray.filter(function(file) {
+        return file.indexOf("plugins") === -1;
+    });
 
-    if(filePath.length == 1 && filePath[0].indexOf('plugins') != -1) {
-        return false;
-    }
-    return gulp.src(filePath)
+    return gulp.src(fileArray)
         .pipe(plumber({
             errorHandler: notify.onError("Error: <%= error.message %>")
         }))
