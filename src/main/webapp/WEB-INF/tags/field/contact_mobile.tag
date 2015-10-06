@@ -4,13 +4,13 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 	required="true"	 rtexprvalue="false" description="is this field required?" %>
-<%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="size"		required="false" rtexprvalue="true"	 description="size of the input" %>
-<%@ attribute name="title" 		required="false" rtexprvalue="true"	 description="subject of the input box" %>
-<%@ attribute name="labelName"	required="false" rtexprvalue="true"	 description="the label to display for validation" %>
-<%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="HTML5 default placeholder" %>
+<%@ attribute name="xpath" 					required="true"	 rtexprvalue="true"	 description="variable's xpath" %>
+<%@ attribute name="required" 				required="true"	 rtexprvalue="false" description="is this field required?" %>
+<%@ attribute name="className" 				required="false" rtexprvalue="true"	 description="additional css class attribute" %>
+<%@ attribute name="size"					required="false" rtexprvalue="true"	 description="size of the input" %>
+<%@ attribute name="title" 					required="false" rtexprvalue="true"	 description="subject of the input box" %>
+<%@ attribute name="labelName"				required="false" rtexprvalue="true"	 description="the label to display for validation" %>
+<%@ attribute name="placeHolder"			required="false" rtexprvalue="true"	 description="HTML5 default placeholder" %>
 <%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
 <%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 description="Additional attributes to pass through" %>
 
