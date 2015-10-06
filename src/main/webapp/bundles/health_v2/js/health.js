@@ -2,6 +2,7 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
+		exception = meerkat.logging.exception,
 		moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
@@ -28,7 +29,7 @@
 			// Initialise the journey engine
 			var startStepId = null;
 			if (meerkat.site.isFromBrochureSite === true) {
-				startStepId = steps.detailsStep.navigationId;
+				startStepId = steps.startStep.navigationId;
 			}
 			// Use the stage user was on when saving their quote
 			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
@@ -798,7 +799,9 @@
 			postData.partner_loading_manual = $healthDetailsHiddenFields.find('input[name="health_healthCover_partner_lhc"]').val();
 		}
 
-		fetchRates(postData, true, callback);
+		if(!fetchRates(postData, true, callback)) {
+			exception("Failed to fetch rates");
+		}
 	}
 
 	// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
@@ -808,8 +811,8 @@
 
 		var postData = {
 			dependants: $('#health_healthCover_dependants').val(),
-			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val(),
-			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val(),
+			income: $healthDetailsHiddenFields.find('input[name="health_healthCover_income"]').val() || '0',
+			rebate_choice: $healthDetailsHiddenFields.find('input[name="health_healthCover_rebate"]').val() || 'Y',
 			primary_loading: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_healthCoverLoading"]').val(),
 			primary_current: $(':input[name="health_healthCover_primary_cover"]:checked').val(),
 			primary_loading_manual: $healthDetailsHiddenFields.find('input[name="health_healthCover_primary_lhc"]').val(),
@@ -835,7 +838,9 @@
 
 		}
 
-		fetchRates(postData, true, callback);
+		if(!fetchRates(postData, true, callback)) {
+			exception("Failed to fetch rates");
+		}
 	}
 
 	function fetchRates(postData, canSetRates, callback) {
@@ -856,7 +861,7 @@
 		if(!postData.primary_dob.match(dateRegex)) return false;
 		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
-		meerkat.modules.comms.post({
+		return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",
 			data: postData,
 			cache:true,
