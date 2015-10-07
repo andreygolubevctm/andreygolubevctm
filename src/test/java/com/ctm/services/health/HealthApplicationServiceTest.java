@@ -130,7 +130,7 @@ public class HealthApplicationServiceTest {
 	}
 
 	@Test
-	public void testShouldGetAmountWithLHC() throws SQLException, Exception, JspException {
+	public void testShouldGetAmountWithLHC() throws Exception {
 		data.put("health/loading", "34");
 		data.put("health/rebate", "0");
 		healthApplicationService.setUpApplication(data, request, changeOverDate);

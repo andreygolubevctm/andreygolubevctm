@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -23,7 +24,7 @@ public class HealthQuoteServiceTest {
 
     @Test
     public void shouldValidateToken() throws Exception {
-        Vertical vertical = new Vertical();
+        Vertical vertical = mock(Vertical.class);
         PageSettings pageSettings = new PageSettings();
         pageSettings.setVertical(vertical);
 
@@ -32,14 +33,14 @@ public class HealthQuoteServiceTest {
         HealthTokenValidationService tokenService = mock(HealthTokenValidationService.class);
         HealthQuoteService healthQuoteService = new HealthQuoteService(tokenService, requestService);
 
-        when(tokenService.isValidToken()).thenReturn(true);
+        when(tokenService.validateToken(anyObject())).thenReturn(true);
         healthQuoteService.init(request, pageSettings);
         assertTrue(healthQuoteService.validToken());
 
-        when(tokenService.isValidToken()).thenReturn(false);
+        when(tokenService.validateToken(anyObject())).thenReturn(false);
         healthQuoteService.init(request, pageSettings);
         assertFalse(healthQuoteService.validToken());
-        when(tokenService.isValidToken()).thenReturn(false);
+        when(tokenService.validateToken(anyObject())).thenReturn(false);
 
     }
 }

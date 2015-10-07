@@ -80,7 +80,8 @@ public class HealthApplicationService {
 		isCallCentre = SessionUtils.isCallCentre(httpRequest.getSession());
 		List<SchemaValidationError> validationErrors;
 		try {
-			if(tokenService == null) {
+
+			if (tokenService == null) {
 				PageSettings pageSettings = SettingsService.getPageSettingsForPage(httpRequest);
 				tokenService = new HealthApplicationTokenValidation(sessionDataService, pageSettings.getVertical());
 			}

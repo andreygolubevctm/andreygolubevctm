@@ -27,18 +27,20 @@
 
     /* Adds verificationToken as a param to ajaxProperties.data
      only send verificationToken if ajaxProperties.type is POST */
-    function addTokenToRequest(ajaxProperties){
-        var verificationToken = get();
-        if(ajaxProperties.type === 'POST'){
-            if (_.isString(ajaxProperties.data)) {
-                ajaxProperties.data += '&' + REQUEST_PARAM + '=' + verificationToken;
-            }else if (_.isArray(ajaxProperties.data)) {
-                ajaxProperties.data.push({
-                    name: REQUEST_PARAM,
-                    value: verificationToken
-                });
-            } else if (_.isObject(ajaxProperties.data)) {
-                ajaxProperties.data[REQUEST_PARAM] = verificationToken;
+    function addTokenToRequest(ajaxProperties) {
+        if (meerkat.site.tokenEnabled === 'true') {
+            var verificationToken = get();
+            if (ajaxProperties.type === 'POST') {
+                if (_.isString(ajaxProperties.data)) {
+                    ajaxProperties.data += '&' + REQUEST_PARAM + '=' + verificationToken;
+                } else if (_.isArray(ajaxProperties.data)) {
+                    ajaxProperties.data.push({
+                        name: REQUEST_PARAM,
+                        value: verificationToken
+                    });
+                } else if (_.isObject(ajaxProperties.data)) {
+                    ajaxProperties.data[REQUEST_PARAM] = verificationToken;
+                }
             }
         }
     }

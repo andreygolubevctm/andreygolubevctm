@@ -6,6 +6,7 @@ $(function () {
 
     function setup(){
         meerkat.modules.verificationToken.set();
+        meerkat.site.tokenEnabled = 'true';
     }
 
     QUnit.test("should set token on request", function (assert) {

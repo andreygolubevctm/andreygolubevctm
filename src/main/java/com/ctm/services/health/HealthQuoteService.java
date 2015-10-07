@@ -20,6 +20,8 @@ public class HealthQuoteService {
     private final RequestService requestService;
     private final SessionDataService sessionDataService;
     private HealthTokenValidationService tokenService;
+    private boolean tokenValidationEnabled;
+    private boolean valid;
 
     /**
      * used by health_quote_results.jsp
@@ -38,11 +40,11 @@ public class HealthQuoteService {
 
     public void init(HttpServletRequest httpRequest, PageSettings pageSettings) throws JspException {
         requestService.setRequest(httpRequest);
-        if(tokenService == null) {
+        HealthRequest request = HealthRequestParser.getHealthRequestToken(requestService, SessionUtils.isCallCentre(httpRequest.getSession()));
+        if (tokenService == null) {
             this.tokenService = new HealthTokenValidationService(sessionDataService, pageSettings.getVertical());
         }
-        HealthRequest request = HealthRequestParser.getHealthRequestToken(requestService, SessionUtils.isCallCentre(httpRequest.getSession()));
-        tokenService.validateToken(request);
+        valid = tokenService.validateToken(request);
     }
 
 
@@ -51,7 +53,7 @@ public class HealthQuoteService {
      */
     @SuppressWarnings("unused")
     public boolean validToken() {
-        return tokenService.isValidToken();
+        return valid;
     }
 
     /**

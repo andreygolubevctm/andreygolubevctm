@@ -28,6 +28,7 @@ public class HealthApplicationTokenValidationTest {
         SessionDataService sessionDataService = mock(SessionDataService.class);
         Vertical vertical = mock(Vertical.class);
         when(vertical.getSettingValueForName("jwtSecretKey")).thenReturn(secretKey);
+        when(vertical.getSettingValueForName("jwtEnabled")).thenReturn("true");
          healthApplicationTokenValidation = new HealthApplicationTokenValidation(sessionDataService, vertical);
     }
     @Test

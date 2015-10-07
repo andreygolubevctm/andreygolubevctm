@@ -29,6 +29,7 @@ public class HealthTokenValidationServiceTest {
     @Before
     public void setup() {
         Vertical vertical = mock(Vertical.class);
+        when(vertical.getSettingValueForName("jwtEnabled")).thenReturn("true");
         ConfigSetting secretKeySetting = new ConfigSetting();
         secretKeySetting.setName(secretKey);
         when(vertical.getSettingValueForName("jwtSecretKey")).thenReturn(secretKey);

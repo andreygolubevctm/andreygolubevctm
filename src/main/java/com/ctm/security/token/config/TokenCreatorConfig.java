@@ -9,19 +9,10 @@ public class TokenCreatorConfig {
     public static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
     private Long secondsUntilToken = 0L;
-    boolean enabled;
     private Touch.TouchType touchType;
 
     public Long getSecondsUntilNextToken() {
         return secondsUntilToken;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public boolean getEnabled() {
-        return enabled;
     }
 
     public Touch.TouchType getTouchType() {

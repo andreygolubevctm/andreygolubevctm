@@ -5,6 +5,7 @@
 <jsp:useBean id="webUtils" class="com.ctm.web.Utils" scope="request" />
 <jsp:useBean id="userAgentSniffer" class="com.ctm.services.UserAgentSniffer" />
 <jsp:useBean id="newPage" class="com.ctm.web.NewPage" />
+${newPage.init(pageSettings)}
 
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
 <%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
@@ -311,6 +312,7 @@
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
 						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
                         revision: '<core:buildIdentifier />',
+						tokenEnabled: '${newPage.tokenEnabled()}',
 						verificationToken: '${newPage.createTokenForNewPage(pageContext.request , data.current.transactionId ,pageSettings)}',
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId}, </c:if><%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
 						urls:{

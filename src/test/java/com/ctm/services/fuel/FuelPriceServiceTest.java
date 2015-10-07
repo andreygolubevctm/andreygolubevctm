@@ -34,7 +34,7 @@ public class FuelPriceServiceTest {
         when(tokenService.validateToken(anyObject())).thenReturn(false);
         fuelPriceService.init(request, pageSettings);
         assertFalse(fuelPriceService.validToken());
-        when(tokenService.isValidToken()).thenReturn(false);
+        when(tokenService.validateToken(anyObject())).thenReturn(false);
 
     }
 }

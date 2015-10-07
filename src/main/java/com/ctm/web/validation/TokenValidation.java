@@ -36,9 +36,7 @@ public abstract class TokenValidation<T extends TokenRequest> {
         setVertical(vertical);
         this.vertical = vertical;
     }
-
-
-
+    
 
     /**
      * Checks if the token is valid right step, not expired and valid transaction id
@@ -46,12 +44,16 @@ public abstract class TokenValidation<T extends TokenRequest> {
      * @return boolean to state if token is valid
      */
     public boolean validateToken(T request) {
-        validToken = false;
-        try {
-            tokenValidation.validateToken(request, getValidTouchTypes());
+        if(TokenConfigFactory.getEnabled(vertical)) {
+            validToken = false;
+            try {
+                tokenValidation.validateToken(request, getValidTouchTypes());
+                validToken = true;
+            } catch (InvalidTokenException exception) {
+                LOGGER.warn("Token is invalid. ", exception);
+            }
+        } else {
             validToken = true;
-        } catch (InvalidTokenException exception) {
-            LOGGER.warn("Token is invalid. ", exception);
         }
         return validToken;
     }

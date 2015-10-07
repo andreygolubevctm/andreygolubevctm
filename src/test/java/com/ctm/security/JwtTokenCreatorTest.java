@@ -29,7 +29,6 @@ public class JwtTokenCreatorTest {
     public void setup() {
         config = new TokenCreatorConfig();
         config.setSecondsUntilNextToken(0L);
-        config.setEnabled(true);
         config.setTouchType(Touch.TouchType.NEW);
         jwtTokenCreator = new JwtTokenCreator( config,  secretKey);
         transactionVerifier = new JwtTokenValidator( secretKey);
