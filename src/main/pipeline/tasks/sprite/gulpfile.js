@@ -5,7 +5,7 @@
  * @author Christopher Dingli <christopher.dingli@comparethemarket.com.au>
  */
 var path = require("path"),
-    fs = require("fs-extra");
+    fs = require("graceful-fs-extra");
 
 var spritesmith = require("gulp.spritesmith"),
     imageop = require("gulp-image-optimization"),

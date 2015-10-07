@@ -18,7 +18,8 @@ var less = require("gulp-less"),
     sourcemaps = require("gulp-sourcemaps"),
     plumber = require("gulp-plumber"),
     notify = require("gulp-notify"),
-    fs = require("fs"),
+    fs = require("graceful-fs-extra"),
+    runSequence = require('run-sequence'),
     path = require("path");
 
 var EventEmitter = require("events").EventEmitter,
@@ -216,7 +217,18 @@ function LessTasks(gulp) {
         })(bundle);
     }
 
-    gulp.task("less", lessTasks);
+    // Because there are so damn many LESS tasks, we split them up and only run a few concurrently at a time
+    gulp.task("less", function(callback){
+        var tasksArray = [],
+            chunkSize = 5;
+
+        while(lessTasks.length > 0)
+            tasksArray.push(lessTasks.splice(0, chunkSize));
+
+        tasksArray.push(callback);
+
+        runSequence.apply(this, tasksArray);
+    });
 };
 
 module.exports = LessTasks;

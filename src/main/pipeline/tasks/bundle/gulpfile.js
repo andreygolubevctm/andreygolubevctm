@@ -11,12 +11,12 @@ function BundleTasks(gulp) {
 
     for(var bundle in bundlesCollection) {
         (function(bundle) {
-            var lessFiles = bundles.getBundleFiles(bundle, "less", false),
+            var lessFiles = bundles.getBundleFiles(bundle, "less", false, true),
                 jsFiles = bundles.getBundleFiles(bundle, "js", false);
 
             var bundleTasks = [];
 
-            if(lessFiles.length)
+            if(lessFiles.length || typeof bundlesCollection[bundle].extends !== "undefined")
                 bundleTasks.push("less:" + bundle);
 
             if(jsFiles.length)

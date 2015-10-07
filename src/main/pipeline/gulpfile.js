@@ -4,18 +4,14 @@
  */
 "use strict";
 
-// Sometimes we hit our open file limit on our OS... So we use this library to calm gulp down
-var realFs = require('fs'),
-    gracefulFs = require('graceful-fs');
-gracefulFs.gracefulify(realFs);
+var fs = require("graceful-fs-extra");
 
 // Important!
 // The watch method used by gulp plugins doesn't seem to appreciate having so many active listeners
 // To get around it, we set the default number of listeners to be greater than the default (10)
-require('events').EventEmitter.prototype._maxListeners = 100;
+require('events').EventEmitter.prototype._maxListeners = 200;
 
 var gulp = require("gulp"),
-    fs = require("fs-extra"),
     path = require("path");
 
 var tasks = {};
@@ -49,7 +45,7 @@ gulp.task("clean", ["clean:noexit"], function() {
 });
 
 // Load in our tasks
-gracefulFs.readdirSync(gulp.pipelineConfig.tasks.dir)
+fs.readdirSync(gulp.pipelineConfig.tasks.dir)
     .forEach(function (folder) {
         var entryPoint = path.join(gulp.pipelineConfig.tasks.dir, folder, gulp.pipelineConfig.tasks.entryPoint);
         tasks[folder] = require(entryPoint)(gulp);

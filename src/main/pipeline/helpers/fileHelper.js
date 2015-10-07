@@ -1,4 +1,4 @@
-var fs = require("fs-extra"),
+var fs = require("graceful-fs-extra"),
     path = require("path"),
     mkdirp = require("mkdirp"),
     config = require("./../config");
