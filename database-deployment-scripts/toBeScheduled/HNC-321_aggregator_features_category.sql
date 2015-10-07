@@ -1,7 +1,6 @@
-
 -- Dumping structure for table aggregator.features_category
-DROP TABLE IF EXISTS `features_category`;
-CREATE TABLE IF NOT EXISTS `features_category` (
+DROP TABLE IF EXISTS aggregator.features_category;
+CREATE TABLE IF NOT EXISTS aggregator.features_category (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `sequence` int(3) DEFAULT NULL,
@@ -11,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `features_category` (
 
 -- Dumping data for table aggregator.features_category: ~60 rows (approximately)
 /*!40000 ALTER TABLE `features_category` DISABLE KEYS */;
-INSERT INTO `features_category` (`id`, `name`, `sequence`, `vertical`) VALUES
+INSERT INTO aggregator.features_category (`id`, `name`, `sequence`, `vertical`) VALUES
 	(599, 'Type of Policy', 1, 'CAR'),
 	(600, 'Part of Vehicle Definition', 3, 'CAR'),
 	(601, 'Features and Benefits - Comprehensive Policies', 2, 'CAR'),

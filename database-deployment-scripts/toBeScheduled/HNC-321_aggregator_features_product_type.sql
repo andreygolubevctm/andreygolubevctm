@@ -1,6 +1,6 @@
 -- Dumping structure for table aggregator.features_product_type
-DROP TABLE IF EXISTS `features_product_type`;
-CREATE TABLE IF NOT EXISTS `features_product_type` (
+DROP TABLE IF EXISTS aggregator.features_product_type;
+CREATE TABLE IF NOT EXISTS aggregator.features_product_type (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `code` varchar(45) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `features_product_type` (
 
 -- Dumping data for table aggregator.features_product_type: ~9 rows (approximately)
 /*!40000 ALTER TABLE `features_product_type` DISABLE KEYS */;
-INSERT INTO `features_product_type` (`id`, `name`, `code`, `Vertical`) VALUES
+INSERT INTO aggregator.features_product_type (`id`, `name`, `code`, `Vertical`) VALUES
 	(1, 'Comprehensive', 'COMP', 'CAR'),
 	(2, 'Third Party Fire & Theft', 'TPFT', 'CAR'),
 	(3, 'Third Party Property', 'TPP', 'CAR'),
