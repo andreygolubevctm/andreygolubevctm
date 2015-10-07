@@ -63,7 +63,8 @@ public class HealthApplicationService {
 		this.fatalErrorService = new FatalErrorService();
 	}
 
-	public HealthApplicationService(HealthPriceDao healthPriceDao, FatalErrorService fatalErrorService) {
+	public HealthApplicationService(HealthPriceDao healthPriceDao, FatalErrorService fatalErrorService, HealthApplicationTokenValidation tokenService) {
+		this.tokenService = tokenService;
 		this.healthPriceDao = healthPriceDao;
 		this.fatalErrorService = fatalErrorService;
 	}
@@ -81,7 +82,7 @@ public class HealthApplicationService {
 		try {
 			if(tokenService == null) {
 				PageSettings pageSettings = SettingsService.getPageSettingsForPage(httpRequest);
-				tokenService = new HealthApplicationTokenValidation(sessionDataService, pageSettings);
+				tokenService = new HealthApplicationTokenValidation(sessionDataService, pageSettings.getVertical());
 			}
 			validToken = tokenService.validateToken(HealthRequestParser.getHealthRequestToken(requestService, isCallCentre));
 			request = HealthApplicationParser.parseRequest(data, changeOverDate);

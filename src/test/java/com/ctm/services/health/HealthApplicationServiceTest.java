@@ -5,11 +5,12 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.HealthPricePremium;
-import com.ctm.model.settings.Vertical;
-import com.ctm.security.JwtTokenCreator;
+import com.ctm.security.token.JwtTokenCreator;
+import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.RequestService;
 import com.ctm.utils.FormDateUtils;
+import com.ctm.web.validation.health.HealthApplicationTokenValidation;
 import com.disc_au.web.go.Data;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,9 +39,12 @@ public class HealthApplicationServiceTest {
 	private RequestService requestService;
 	private String sessionId = "sessionId";
 	private Long transactionId= 1000L;
+	private String secretKey = "secretKey";
+	private HealthApplicationTokenValidation tokenService = mock(HealthApplicationTokenValidation.class);
 
 	@Before
 	public void setup() throws Exception {
+		when(tokenService.validateToken(anyObject())).thenReturn(true);
 		when(request.getSession()).thenReturn(session);
 		 requestService = mock(RequestService.class);
 		healthPriceDao = mock(HealthPriceDao.class);
@@ -55,7 +60,7 @@ public class HealthApplicationServiceTest {
 		when(healthPriceDao.getPremiumAndLhc("545038", false)).thenReturn(premiums);
 		when(healthPriceDao.getPremiumAndLhc("545038", true)).thenReturn(discPremiums);
 		FatalErrorService fatalErrorService = mock(FatalErrorService.class);
-		healthApplicationService = new HealthApplicationService(healthPriceDao, fatalErrorService);
+		healthApplicationService = new HealthApplicationService(healthPriceDao, fatalErrorService, tokenService);
 		healthApplicationService.setRequestService(requestService);
 
 		setChangeOverDate();
@@ -85,26 +90,19 @@ public class HealthApplicationServiceTest {
 		when(session.getAttribute("callCentre")).thenReturn(false);
 
 		Long transactionId= 1000L;
-        Vertical vertical = new Vertical();
-        JwtTokenCreator transactionVerifier = new JwtTokenCreator(vertical);
+		TokenCreatorConfig config = new TokenCreatorConfig();
+		config.setTouchType(Touch.TouchType.NEW);
+        JwtTokenCreator jwtTokenCreator = new JwtTokenCreator(config,  secretKey);
 		when(requestService.getTransactionId()).thenReturn(transactionId);
-		when(requestService.getToken()).thenReturn(transactionVerifier.createToken("test", transactionId, Touch.TouchType.PRICE_PRESENTATION));
+		when(requestService.getToken()).thenReturn(jwtTokenCreator.createToken("test", transactionId));
+		when(tokenService.validateToken(anyObject())).thenReturn(true);
 		healthApplicationService.setUpApplication(setupData(), request, changeOverDate);
 		assertTrue(healthApplicationService.isValidToken());
 
 		when(requestService.getToken()).thenReturn("invalidToken");
+		when(tokenService.validateToken(anyObject())).thenReturn(false);
 		healthApplicationService.setUpApplication(setupData(), request, changeOverDate);
 		assertFalse(healthApplicationService.isValidToken());
-	}
-
-	@Test
-	public void testShouldCreateErrorResponse() throws  Exception {
-		Long transactionId= 1000L;
-		String errorMessage = "failed to test";
-		String type = "test";
-		healthApplicationService.setUpApplication(data, request, changeOverDate);
-		String expectedResult = "{\"error\":{\"type\":\"" + type + "\",\"message\":\"" + errorMessage + "\"}}";
-		assertEquals(expectedResult ,healthApplicationService.createErrorResponse( transactionId,  errorMessage,  request,  type));
 	}
 
 	@Test

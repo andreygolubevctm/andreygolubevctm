@@ -3,9 +3,11 @@ package com.ctm.web.validation;
 import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
 import com.ctm.model.settings.Vertical;
-import com.ctm.security.JwtTokenCreator;
-import com.ctm.security.JwtTokenValidator;
-import com.ctm.security.exception.InvalidTokenException;
+import com.ctm.security.token.JwtTokenCreator;
+import com.ctm.security.token.JwtTokenValidator;
+import com.ctm.security.token.config.TokenConfigFactory;
+import com.ctm.security.token.config.TokenCreatorConfig;
+import com.ctm.security.token.exception.InvalidTokenException;
 import com.ctm.services.SessionDataService;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,15 +26,18 @@ public abstract class TokenValidation<T extends TokenRequest> {
 
     private final JwtTokenValidator tokenValidation;
     private final SessionDataService sessionDataService;
-    private final Vertical vertical;
+    private Vertical vertical;
 
     private boolean validToken;
 
     public TokenValidation(SessionDataService sessionDataService, Vertical vertical) {
         this.sessionDataService = sessionDataService;
-        tokenValidation = new JwtTokenValidator(vertical);
+        tokenValidation = new JwtTokenValidator(TokenConfigFactory.getJwtSecretKey(vertical));
+        setVertical(vertical);
         this.vertical = vertical;
     }
+
+
 
 
     /**
@@ -57,30 +62,29 @@ public abstract class TokenValidation<T extends TokenRequest> {
     protected abstract List<Touch.TouchType> getValidTouchTypes();
 
     /**
-     * Return list of touches that validateToken will count as valid
-     * @param request
-     */
-    protected abstract int getMinimumSeconds(HttpServletRequest request);
-
-    /**
      * Return what TouchType created tokens will be
      */
     protected abstract Touch.TouchType getCurrentTouch();
 
     public void setNewToken(JSONObject response, Long transactionId, HttpServletRequest request) {
-        JwtTokenCreator jwtTokenCreator = new JwtTokenCreator(vertical, getCurrentTouch() , request);
-        long timeout = sessionDataService.getClientSessionTimeout(request);
+        long timeout = sessionDataService.getClientSessionTimeoutSeconds(request);
         long timeoutSec = timeout / 1000;
         if(timeout == -1){
-            timeoutSec = sessionDataService.getClientDefaultExpiryTimeout(request) / 1000;
+            timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request);
         }
-        String token = jwtTokenCreator.createToken(request.getServletPath(), transactionId, timeoutSec);
+        String token = TokenValidation.createToken(request,transactionId, vertical, getCurrentTouch(), timeoutSec);
         try {
             response.put("verificationToken", token);
             response.put("timeout", timeout);
         } catch (JSONException e) {
             LOGGER.error("Failed to set new Token. {}", kv("transactionId" , transactionId),  e);
         }
+    }
+
+    public static String createToken(HttpServletRequest request, Long transactionId, Vertical vertical, Touch.TouchType touchType, long timeoutSec) {
+        TokenCreatorConfig config = TokenConfigFactory.getInstance(vertical, touchType, request);
+        JwtTokenCreator creator = new JwtTokenCreator(config, TokenConfigFactory.getJwtSecretKey(vertical));
+        return creator.createToken(request.getServletPath(), transactionId, timeoutSec);
     }
 
     public String createResponse(Long transactionId, String baseJsonResponse , HttpServletRequest request) {
@@ -128,5 +132,9 @@ public abstract class TokenValidation<T extends TokenRequest> {
 
     public boolean isValidToken() {
         return validToken;
+    }
+
+    public void setVertical(Vertical vertical) {
+        this.vertical = vertical;
     }
 }

@@ -2,8 +2,8 @@ package com.ctm.web;
 
 import com.ctm.model.Touch;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.security.JwtTokenCreator;
 import com.ctm.services.SessionDataService;
+import com.ctm.web.validation.TokenValidation;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,13 +12,14 @@ public class NewPage {
     private final SessionDataService sessionDataService = new SessionDataService();
 
     public String createTokenForNewPage(HttpServletRequest request, Long transactionId, PageSettings pageSettings) {
-        JwtTokenCreator transactionVerifier = new JwtTokenCreator(pageSettings.getVertical(), Touch.TouchType.NEW, request);
-        return transactionVerifier.createToken(request.getServletPath(), transactionId, sessionDataService.getClientSessionTimeoutSeconds(request));
+        Touch.TouchType touchType = Touch.TouchType.NEW;
+        long timeoutSec = sessionDataService.getClientSessionTimeoutSeconds(request);
+        if(timeoutSec == -1){
+            timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request);
+        }
+
+        return TokenValidation.createToken(request, transactionId, pageSettings.getVertical(), touchType, timeoutSec);
     }
 
-    public String createTokenForResults(HttpServletRequest request, Long transactionId, PageSettings pageSettings) {
-        JwtTokenCreator transactionVerifier = new JwtTokenCreator(pageSettings.getVertical(), Touch.TouchType.PRICE_PRESENTATION, request);
-        return transactionVerifier.createToken(request.getServletPath(), transactionId, sessionDataService.getClientSessionTimeoutSeconds(request));
-    }
 
 }

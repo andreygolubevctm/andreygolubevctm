@@ -10,12 +10,17 @@ package com.ctm.services;
  *
  */
 
-import com.ctm.exceptions.*;
+import com.ctm.exceptions.BrandException;
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
+import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
 import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.security.JwtTokenCreator;
+import com.ctm.security.token.JwtTokenCreator;
+import com.ctm.security.token.config.TokenConfigFactory;
+import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
 import org.slf4j.Logger;
@@ -340,7 +345,12 @@ public class SessionDataService {
 	 * @param request
 	 */
 	public long getClientSessionTimeoutSeconds(HttpServletRequest request) {
-		return getClientSessionTimeout(request) /1000;
+		long timeout = getClientSessionTimeout(request);
+		if(timeout == -1){
+			return -1;
+		} else {
+			return timeout /1000;
+		}
 	}
 
 
@@ -374,6 +384,16 @@ public class SessionDataService {
 		return ((request.getSession(false).getMaxInactiveInterval() / 60) - SESSION_EXPIRY_DIFFERENCE) * 60 * 1000;
 	}
 
+	/**
+	 * Get the default session timeout period (for JS timeout)
+	 * used in session_pop.tag
+	 * page.tag
+	 * @param request
+	 */
+	public long getClientDefaultExpiryTimeoutSeconds(HttpServletRequest request) {
+		return getClientDefaultExpiryTimeout(request) / 1000;
+	}
+
 	public void setShouldEndSession(HttpServletRequest request, boolean shouldEnd) {
 		SessionData sessionData = getSessionDataFromSession(request, false);
 		sessionData.setShouldEndSession(shouldEnd);
@@ -384,7 +404,8 @@ public class SessionDataService {
 		if(this.transactionVerifier == null) {
 			try {
 				PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-				this.transactionVerifier = new JwtTokenCreator(pageSettings.getVertical(), null , request);
+				TokenCreatorConfig  tokenCreatorConfig = new TokenCreatorConfig();
+				this.transactionVerifier = new JwtTokenCreator(tokenCreatorConfig , TokenConfigFactory.getJwtSecretKey(pageSettings.getVertical()));
 			} catch (DaoException | ConfigSettingException e) {
 				throw new RuntimeException(e);
 			}

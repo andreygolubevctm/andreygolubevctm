@@ -1,12 +1,10 @@
 package com.ctm.services.fuel;
 
-import com.ctm.exceptions.ConfigSettingException;
-import com.ctm.exceptions.DaoException;
 import com.ctm.model.PageRequest;
+import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.RequestService;
 import com.ctm.services.SessionDataService;
-import com.ctm.services.SettingsService;
 import com.ctm.web.validation.ResultsTokenValidation;
 import com.ctm.web.validation.TokenValidation;
 
@@ -34,14 +32,10 @@ public class FuelPriceService {
         this.sessionDataService = new SessionDataService();
     }
 
-    public void init(HttpServletRequest httpRequest) {
+    public void init(HttpServletRequest httpRequest,  PageSettings pageSettings) {
         if(tokenService == null) {
-            try {
-                Vertical vertical = SettingsService.getPageSettingsForPage(httpRequest).getVertical();
-                this.tokenService = new ResultsTokenValidation<>(sessionDataService, vertical);
-            } catch (DaoException | ConfigSettingException e) {
-                throw new RuntimeException(e);
-            }
+            Vertical vertical = pageSettings.getVertical();
+            this.tokenService = new ResultsTokenValidation<>(sessionDataService, vertical);
         }
         PageRequest request = parseRequest(httpRequest);
         validToken = tokenService.validateToken(request);

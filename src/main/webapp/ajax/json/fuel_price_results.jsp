@@ -8,7 +8,7 @@
 <%-- Check IP address to see if its permitted. --%>
 <jsp:useBean id="ipCheckService" class="com.ctm.services.IPCheckService" />
 <jsp:useBean id="quoteResults" class="com.ctm.services.fuel.FuelPriceService" />
-${quoteResults.init(pageContext.request)}
+${quoteResults.init(pageContext.request, pageSettings)}
 <c:choose>
     <%-- Check and increment counter for IP address --%>
     <c:when test="${!ipCheckService.isPermittedAccess(pageContext.request, pageSettings)}">

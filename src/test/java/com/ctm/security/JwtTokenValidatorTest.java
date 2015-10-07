@@ -2,32 +2,35 @@ package com.ctm.security;
 
 import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
-import com.ctm.model.settings.Vertical;
-import com.ctm.security.exception.InvalidTokenException;
+import com.ctm.security.token.exception.InvalidTokenException;
+import com.ctm.security.token.config.TokenCreatorConfig;
+import com.ctm.security.token.JwtTokenCreator;
+import com.ctm.security.token.JwtTokenValidator;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
-import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
-public class TransactionVerifierTest {
+public class JwtTokenValidatorTest {
 
-    private JwtTokenCreator transactionVerifier;
+    private JwtTokenValidator transactionVerifier;
     private Long transactionId = 1000L;
     private String source = "test";
     private TokenRequest tokenRequest;
+    private String secretKey = "secretKey";
+    private HttpServletRequest request;
 
     @Before
     public void setup() {
-        Vertical vertical = new Vertical();
-        Touch.TouchType touchType = Touch.TouchType.NEW;
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        transactionVerifier = new JwtTokenCreator( vertical,  touchType, request);
+        request = mock(HttpServletRequest.class);
+        when(request.getLocalAddr()).thenReturn("10.0.0.10000");
+        transactionVerifier = new JwtTokenValidator( secretKey);
         tokenRequest  = new TokenRequest(){
 
             public Long transactionId;
@@ -61,7 +64,9 @@ public class TransactionVerifierTest {
 
     @Test
     public void testValidateToken() throws InvalidTokenException {
-        String token = transactionVerifier.createToken(source, transactionId, Touch.TouchType.BROCHURE);
+        TokenCreatorConfig config = new TokenCreatorConfig();
+        config.setTouchType(Touch.TouchType.BROCHURE);
+        String token = new JwtTokenCreator(config, secretKey).createToken(source, transactionId);
         tokenRequest.setToken(token);
         // throws exception if invalid
         transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.BROCHURE));
@@ -82,17 +87,4 @@ public class TransactionVerifierTest {
         }
     }
 
-
-    @Test
-    public void testValidateTokenNotBefore() throws InvalidTokenException {
-        String token = transactionVerifier.createToken(source, transactionId, Touch.TouchType.BROCHURE);
-        tokenRequest.setToken(token);
-        // throws exception if invalid
-        try {
-            transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.BROCHURE));
-            fail("Exception expected");
-        } catch (InvalidTokenException e) {
-            // expected
-        }
-    }
 }

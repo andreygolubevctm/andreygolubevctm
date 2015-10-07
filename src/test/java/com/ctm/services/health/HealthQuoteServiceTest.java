@@ -1,5 +1,7 @@
 package com.ctm.services.health;
 
+import com.ctm.model.settings.PageSettings;
+import com.ctm.model.settings.Vertical;
 import com.ctm.services.RequestService;
 import com.ctm.web.validation.health.HealthTokenValidationService;
 import org.junit.Test;
@@ -21,6 +23,9 @@ public class HealthQuoteServiceTest {
 
     @Test
     public void shouldValidateToken() throws Exception {
+        Vertical vertical = new Vertical();
+        PageSettings pageSettings = new PageSettings();
+        pageSettings.setVertical(vertical);
 
         when(request.getSession()).thenReturn(session);
 
@@ -28,11 +33,11 @@ public class HealthQuoteServiceTest {
         HealthQuoteService healthQuoteService = new HealthQuoteService(tokenService, requestService);
 
         when(tokenService.isValidToken()).thenReturn(true);
-        healthQuoteService.init(request);
+        healthQuoteService.init(request, pageSettings);
         assertTrue(healthQuoteService.validToken());
 
         when(tokenService.isValidToken()).thenReturn(false);
-        healthQuoteService.init(request);
+        healthQuoteService.init(request, pageSettings);
         assertFalse(healthQuoteService.validToken());
         when(tokenService.isValidToken()).thenReturn(false);
 

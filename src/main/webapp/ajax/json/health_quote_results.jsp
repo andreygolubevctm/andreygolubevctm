@@ -7,7 +7,7 @@
 
 <session:get settings="true" authenticated="true" verticalCode="HEALTH" throwCheckAuthenticatedError="true" />
 <jsp:useBean id="healthQuoteResults" class="com.ctm.services.health.HealthQuoteService" />
-${healthQuoteResults.init(pageContext.request)}
+${healthQuoteResults.init(pageContext.request, pageSettings)}
 <%-- Only continue if token is valid --%>
 <c:if test="${healthQuoteResults.validToken()}">
 

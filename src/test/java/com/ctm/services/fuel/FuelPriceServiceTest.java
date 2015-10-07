@@ -1,6 +1,7 @@
 package com.ctm.services.fuel;
 
 import com.ctm.model.PageRequest;
+import com.ctm.model.settings.PageSettings;
 import com.ctm.web.validation.TokenValidation;
 import org.junit.Test;
 
@@ -17,6 +18,7 @@ import static org.mockito.Mockito.when;
 public class FuelPriceServiceTest {
 
     private HttpServletRequest request = mock(HttpServletRequest.class);
+    private PageSettings pageSettings = new PageSettings();
 
     @Test
     public void shouldValidateToken() throws Exception {
@@ -26,11 +28,11 @@ public class FuelPriceServiceTest {
         FuelPriceService fuelPriceService = new FuelPriceService(tokenService);
 
         when(tokenService.validateToken(anyObject())).thenReturn(true);
-        fuelPriceService.init(request);
+        fuelPriceService.init(request, pageSettings);
         assertTrue(fuelPriceService.validToken());
 
         when(tokenService.validateToken(anyObject())).thenReturn(false);
-        fuelPriceService.init(request);
+        fuelPriceService.init(request, pageSettings);
         assertFalse(fuelPriceService.validToken());
         when(tokenService.isValidToken()).thenReturn(false);
 

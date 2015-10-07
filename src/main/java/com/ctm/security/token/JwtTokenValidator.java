@@ -1,25 +1,22 @@
-package com.ctm.security;
+package com.ctm.security.token;
 
 import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
-import com.ctm.model.settings.Vertical;
-import com.ctm.security.exception.InvalidTokenException;
-import com.ctm.security.model.TransactionVerifierConfig;
+import com.ctm.security.token.exception.InvalidTokenException;
 import io.jsonwebtoken.*;
 
 import java.util.List;
 
-import static com.ctm.security.model.TransactionVerifierConfig.SIGNATURE_ALGORITHM;
-import static com.ctm.security.model.TransactionVerifierConfig.TRANSACTION_ID_CLAIM;
+import static com.ctm.security.token.config.TokenCreatorConfig.SIGNATURE_ALGORITHM;
+import static com.ctm.security.token.config.TokenCreatorConfig.TRANSACTION_ID_CLAIM;
 
 
 public class JwtTokenValidator {
 
     private final String secretKey;
 
-    public JwtTokenValidator(Vertical vertical){
-        this.secretKey = TransactionVerifierConfig.getJwtSecretKey(vertical);
-        
+    public JwtTokenValidator(String secretKey){
+        this.secretKey = secretKey;
     }
 
     public void validateToken(TokenRequest request , List<Touch.TouchType> validTouches) throws InvalidTokenException {
