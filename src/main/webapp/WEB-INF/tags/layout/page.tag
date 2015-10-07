@@ -382,7 +382,7 @@
 		$(document).ready(function() {
 			<go:insertmarker format="SCRIPT" name="onready" />
             yepnope.injectJs({
-                src: '${assetUrl}js/bundles/${pageSettings.getVerticalCode()}${pageSettings.getSetting('minifiedFileString')}.deferred.js?${revision}',
+                src: '${assetUrl}js/bundles/${fileName}.deferred${pageSettings.getSetting('minifiedFileString')}.js?${revision}',
                 attrs: {
                     async: true
                 } <%-- We need to now initialise the deferred modules --%>
