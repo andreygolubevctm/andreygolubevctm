@@ -76,7 +76,7 @@
         </layout:generic_page>
 
     </c:when>
-    <c:when test="${getAuthenticatedUnsubscribeDetails eq true}">
+    <c:when test="${getAuthenticatedUnsubscribeDetails eq true or not empty param.token}">
         <unsubscribe:redirect_with_details/>
     </c:when>
     <c:otherwise>

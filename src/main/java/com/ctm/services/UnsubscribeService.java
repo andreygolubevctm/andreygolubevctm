@@ -2,6 +2,7 @@ package com.ctm.services;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ctm.model.EmailMaster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,20 +47,33 @@ public class UnsubscribeService {
 	 * @return
 	 */
 	public Unsubscribe getUnsubscribeDetails(String vertical, int  brandId,
-			String hashedEmail, String email, boolean isDisc, PageSettings pageSettings, HttpServletRequest request) {
-		email = EmailUrlService.decodeEmailAddress(email);
+			String hashedEmail, String email, boolean isDisc, PageSettings pageSettings, HttpServletRequest request, String token) {
 		Unsubscribe unsubscribe = new Unsubscribe();
-		unsubscribe.setVertical(vertical);
-		if (!isDisc) {
-			if(brandId == 0) {
-				brandId = pageSettings.getBrandId();
+
+		if(token != null && !token.isEmpty()) {
+			TokenService tokenService = new TokenService();
+			EmailMaster emailMaster = tokenService.getEmailAddressDetails(token);
+
+			if(emailMaster != null) {
+				unsubscribe.setVertical(emailMaster.getVertical());
+				unsubscribe.setEmailDetails(emailMaster);
 			}
 
-			try {
-				unsubscribe.setEmailDetails(hashedEmailService.getEmailDetails(hashedEmail, email, brandId));
-			} catch (DaoException e) {
-				LOGGER.error("Error unsubscribing {},{},{}", kv("hashedEmail", hashedEmail), kv("email", email), kv("brandId", brandId));
-				FatalErrorService.logFatalError(e, brandId, "failed to unsubscribe", "", true);
+		} else {
+			email = EmailUrlService.decodeEmailAddress(email);
+
+			unsubscribe.setVertical(vertical);
+			if (!isDisc) {
+				if(brandId == 0) {
+					brandId = pageSettings.getBrandId();
+				}
+
+				try {
+					unsubscribe.setEmailDetails(hashedEmailService.getEmailDetails(hashedEmail, email, brandId));
+				} catch (DaoException e) {
+					LOGGER.error("Error unsubscribing {},{},{}", kv("hashedEmail", hashedEmail), kv("email", email), kv("brandId", brandId));
+					FatalErrorService.logFatalError(e, brandId, "failed to unsubscribe", "", true);
+				}
 			}
 		}
 		return unsubscribe;

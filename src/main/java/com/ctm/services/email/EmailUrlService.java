@@ -1,17 +1,18 @@
 package com.ctm.services.email;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.model.EmailMaster;
 import com.ctm.model.email.IncomingEmail;
 import com.ctm.model.settings.Vertical.VerticalType;
+import com.ctm.services.TokenService;
 import com.ctm.utils.FormDateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.Map;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -22,6 +23,19 @@ public class EmailUrlService {
 	private VerticalType vertical;
 	private String baseUrl;
 
+	public static final String TRANSACTION_ID = "transactionId";
+	public static final String EMAIL_ID = "emailId";
+	public static final String EMAIL_TOKEN_TYPE = "emailTokenType";
+	public static final String EMAIL_TOKEN_ACTION = "action";
+	public static final String PRODUCT_ID = "productId";
+	public static final String CAMPAIGN_ID = "campaignId";
+	public static final String VERTICAL = "vertical";
+	public static final String PRODUCT_NAME = "productName";
+	public static final String TRAVEL_POLICY_TYPE = "travelPolicyType";
+	public static final String HASHED_EMAIL = "hashedEmail";
+	public static final String STYLE_CODE_ID = "styleCodeId";
+	public static final String EMAIL_ADDRESS = "emailAddress";
+
 	public EmailUrlService(VerticalType vertical, String baseUrl) {
 		this.vertical = vertical;
 		this.baseUrl = baseUrl;
@@ -30,36 +44,26 @@ public class EmailUrlService {
 	/**
 	 * Returns the unsubscribe link
 	 *
-	 * @param emailDetails
+	 * @param params
 	 */
-	public String getUnsubscribeUrl(EmailMaster emailDetails) {
-		return baseUrl + "unsubscribe.jsp?unsubscribe_email=" + emailDetails.getHashedEmail() + "&" + createVericalParam() + "&" + createEmailParam(emailDetails);
+	public String getUnsubscribeUrl(Map<String, String> params) {
+		TokenService tokenService = new TokenService();
+		String token = tokenService.generateToken(params);
+		return baseUrl + "unsubscribe.jsp?token=" + token;
 	}
 
 	/**
 	 * Returns the load from link
 	 *
-	 * @param emailDetails
-	 * @param productId
-	 * @param productTitle
+	 * @param params
 	 */
-	public String getApplyUrl(EmailMaster emailDetails, long transactionId,  String type)
-			throws ConfigSettingException {
-		return baseUrl + "load_from_email.jsp?action=load&type=" + type + "&id=" + transactionId + "&hash=" +
-			emailDetails.getHashedEmail() + "&" + createVericalParam() + "&" + createEmailParam(emailDetails);
-	}
+	public String getApplyUrl(EmailMaster emailDetails, Map<String, String> params) throws ConfigSettingException {
+		params.put(EmailUrlService.EMAIL_ADDRESS, createEmailParam(emailDetails));
 
-	/**
-	 * Returns the load from link
-	 *
-	 * @param emailDetails
-	 * @param productId
-	 * @param productTitle
-	 * @throws UnsupportedEncodingException
-	 */
-	public String getApplyUrl(EmailMaster emailDetails, long transactionId,  String type, String productId, String productTitle)
-			throws ConfigSettingException {
-		return getApplyUrl(emailDetails, transactionId,  type) +"&productId=" + productId + "&productTitle=" + productTitle;
+		TokenService tokenService = new TokenService();
+		String token = tokenService.generateToken(params);
+
+		return baseUrl + "load_from_email.jsp?token=" + token;
 	}
 
 	private String createVericalParam()  {
@@ -70,8 +74,6 @@ public class EmailUrlService {
 	 * updateWithLoadQuoteUrl provides a common method to update the redirection URL to load the quote
 	 *
 	 * @param redirectionUrl
-	 * @param baseUrl
-	 * @param vertical
 	 * @param emailData
 	 */
 	public void updateWithLoadQuoteUrl(StringBuilder redirectionUrl, IncomingEmail emailData) {
@@ -104,7 +106,7 @@ public class EmailUrlService {
 		} catch (UnsupportedEncodingException e) {
 			LOGGER.error("Unable to encode email address to UTF-8 {}", kv("emailAddress", email), e);
 		}
-		return "email=" + email;
+		return email;
 	}
 
 

@@ -91,23 +91,36 @@
 			<c:choose>
 				<c:when test="${param.tmpl eq 'travel_edm'}">
 					<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core:xmlForOtherQuery></c:set>
+					<c:set var="emailTokenType" value="edm" />
+					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'health_bestprice'}">
 					<c:set var="rowXML"><health:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" ></health:xmlForOtherQuery></c:set>
 					<c:set var="rowXML"><health:xmlForCallCentreHoursQuery /></c:set>
+					<c:set var="emailTokenType" value="bestprice" />
+					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'home_bestprice'}">
-					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="home"></agg:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="home" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}"></agg:xmlForOtherQuery></c:set>
+					<c:set var="emailTokenType" value="bestprice" />
+					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:when test="${param.tmpl eq 'car_bestprice'}">
-					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="car"></agg:xmlForOtherQuery></c:set>
+					<c:set var="rowXML"><agg:xmlForOtherQuery tranId="${param.transactionId}" vertical="car" emailAction="load" emailTokenType="bestprice" hashedEmail="${param.hashedEmail}"></agg:xmlForOtherQuery></c:set>
+					<c:set var="emailTokenType" value="bestprice" />
+					<c:set var="emailTokenTypeAction" value="load" />
 				</c:when>
 				<c:otherwise>
 					<c:set var="rowXML"><core:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}"></core:xmlForOtherQuery></c:set>
+					<c:set var="emailTokenType" value="bestprice" />
+					<c:set var="emailTokenTypeAction" value="load" />
 				</c:otherwise>
 			</c:choose>
 		</c:if>
 		<go:setData dataVar="data" value="*DELETE" xpath="tempSQL" />
+
+		<jsp:useBean id="tokenService" class="com.ctm.services.TokenService"/>
+		<c:set var="unsubscribeToken" value="${tokenService.generateToken(param.transactionId, param.hashedEmail, pageSettings.getBrandId(), emailTokenType, 'unsubscribe', null, null, 'car', null, true)}" />
 
 		<c:choose>
 
@@ -171,8 +184,9 @@
 							<x:param name="ImageUrlPrefix">${pageSettings.getSetting('imageUrlPrefix')}</x:param>
 							<x:param name="ImageUrlSuffix">${pageSettings.getSetting('imageUrlSuffix')}</x:param>
 						</c:if>
-					</x:transform>
-				</c:set>
+						<x:param name="unsubscribeToken">${unsubscribeToken}</x:param>
+				</x:transform>
+			</c:set>
 
 				<%-- If we're outputting to the page only, just output the result. --%>
 				<c:choose>

@@ -30,6 +30,7 @@
 	<xsl:param name="callCentrePhone"></xsl:param>
 	<xsl:param name="ClientId"></xsl:param>
 	<xsl:param name="baseURL"></xsl:param>
+	<xsl:param name="unsubscribeToken"></xsl:param>
 	
 	<xsl:template match="/">
 			<xsl:apply-templates select="/tempSQL"/>
@@ -80,7 +81,7 @@
 </xsl:variable>
 
 <xsl:variable name="unsubscribeURL">
-	<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?unsubscribe_email=',$hashedEmail,'&amp;vertical=health&amp;email=',$EmailAddress,']]&gt;')" />
+	<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'unsubscribe.jsp?token=',$unsubscribeToken,']]&gt;')" />
 </xsl:variable>
 
 	<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"

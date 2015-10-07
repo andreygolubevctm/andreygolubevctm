@@ -20,9 +20,7 @@ import com.ctm.services.email.*;
 import com.disc_au.web.go.Data;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class TravelEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
 
@@ -102,9 +100,17 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 
 			emailModel.setOptIn((boolean) (data.get("travel/marketing") != null && data.get("travel/marketing").equals("Y")));
 
-			String price_presentation_url = pageSettings.getBaseUrl() + "travel_quote.jsp?action=load&type=bestprice&id=" + transactionId + "&hash=" + emailDetails.getHashedEmail() + "&vertical=travel&type="+(String) data.get("travel/policyType");
-			emailModel.setCompareResultsURL(price_presentation_url);
+			Map<String, String> emailParameters = new HashMap<>();
+			emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(transactionId));
+			emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
+			emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
+			emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "bestprice");
+			emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
+			emailParameters.put(EmailUrlService.VERTICAL, "travel");
+			emailParameters.put(EmailUrlService.TRAVEL_POLICY_TYPE, (String) data.get("travel/policyType"));
 
+			String price_presentation_url = urlService.getApplyUrl(emailDetails, emailParameters);
+			emailModel.setCompareResultsURL(price_presentation_url);
 
 			String pt = (String) data.get("travel/policyType");
 			emailModel.setPolicyType(pt.equals("S") ? "ST" : "AMT");
@@ -114,7 +120,9 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 
 			setupRankingDetails(emailModel, transactionId);
 			emailModel.setTransactionId(transactionId);
-			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
+
+			emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
+			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
 			emailModel.setApplyUrl(price_presentation_url);
 			} catch (DaoException|EnvironmentException | VerticalException
 				| ConfigSettingException e) {

@@ -1,14 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true"/></c:set>
-<c:set var="id"><c:out value="${param.id}" escapeXml="true"/></c:set>
-<c:set var="hash"><c:out value="${param.hash}" escapeXml="true"/></c:set>
-<c:set var="productId"><c:out value="${param.productId}" escapeXml="true"/></c:set>
-<c:set var="email"><c:out value="${param.email}" escapeXml="true"/></c:set>
-<c:set var="type"><c:out value="${param.type}" escapeXml="true"/></c:set>
-<c:set var="expired"><c:out value="${param.expired}" escapeXml="true"/></c:set>
-<c:set var="campaignId"><c:out value="${param.cid}" escapeXml="true"/></c:set>
+<c:choose>
+	<c:when test="${not empty param.token}">
+		<jsp:useBean id="tokenService" class="com.ctm.services.TokenService"/>
+		<c:set var="parametersMap" value="${tokenService.decryptToken(param.token)}"/>
+
+		<c:set var="vertical"><c:out value="${parametersMap.vertical}" escapeXml="true"/></c:set>
+		<c:set var="id"><c:out value="${parametersMap.transactionId}" escapeXml="true"/></c:set>
+		<c:set var="hash"><c:out value="${parametersMap.hashedEmail}" escapeXml="true"/></c:set>
+		<c:set var="productId"><c:out value="${parametersMap.productId}" escapeXml="true"/></c:set>
+		<c:set var="email"><c:out value="${parametersMap.emailAddress}" escapeXml="true"/></c:set>
+		<c:set var="type"><c:out value="${parametersMap.emailTokenType}" escapeXml="true"/></c:set>
+
+		<c:set var="expired"><c:out value="${parametersMap.expired}" escapeXml="true"/></c:set>
+		<c:set var="campaignId"><c:out value="${parametersMap.cid}" escapeXml="true"/></c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="vertical"><c:out value="${param.vertical}" escapeXml="true"/></c:set>
+		<c:set var="id"><c:out value="${param.id}" escapeXml="true"/></c:set>
+		<c:set var="hash"><c:out value="${param.hash}" escapeXml="true"/></c:set>
+		<c:set var="productId"><c:out value="${param.productId}" escapeXml="true"/></c:set>
+		<c:set var="email"><c:out value="${param.email}" escapeXml="true"/></c:set>
+		<c:set var="type"><c:out value="${param.type}" escapeXml="true"/></c:set>
+		<c:set var="expired"><c:out value="${param.expired}" escapeXml="true"/></c:set>
+		<c:set var="campaignId"><c:out value="${param.cid}" escapeXml="true"/></c:set>
+	</c:otherwise>
+</c:choose>
 
 <settings:setVertical verticalCode="${fn:toUpperCase(vertical)}" />
 

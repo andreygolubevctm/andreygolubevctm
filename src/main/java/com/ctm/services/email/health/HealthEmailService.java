@@ -24,7 +24,9 @@ import com.ctm.services.simples.OpeningHoursService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HealthEmailService extends EmailServiceHandler implements BestPriceEmailHandler, ProductBrochuresEmailHandler {
 
@@ -133,10 +135,21 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setFirstName(emailDetails.getFirstName());
 			emailModel.setOptIn(optedIn);
 			emailModel.setPhoneNumber(getCallCentreNumber());
-			setupRankingDetails(emailModel , transactionId);
+			setupRankingDetails(emailModel, transactionId);
 			emailModel.setTransactionId(transactionId);
-			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
-			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, transactionId, "bestprice"));
+
+			Map<String, String> emailParameters = new HashMap<>();
+			emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(transactionId));
+			emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
+			emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
+			emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "bestprice");
+			emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
+			emailParameters.put(EmailUrlService.VERTICAL, "health");
+
+			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
+
+			emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
+			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters));
 		} catch (DaoException|EnvironmentException | VerticalException
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
@@ -160,13 +173,27 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 		try {
 			emailModel.setPhoneNumber(getCallCentreNumber());
-			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailBrochureRequest.transactionId, "bestprice", productId, emailBrochureRequest.productName));
+
+			Map<String, String> emailParameters = new HashMap<>();
+			emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(emailBrochureRequest.transactionId));
+			emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
+			emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
+			emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "bestprice");
+			emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
+			emailParameters.put(EmailUrlService.VERTICAL, "health");
+			emailParameters.put(EmailUrlService.PRODUCT_ID, productId);
+			emailParameters.put(EmailUrlService.PRODUCT_NAME, emailBrochureRequest.productName);
+			emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters));
+
 			emailModel.setCallcentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
 			emailModel.setTransactionId(emailBrochureRequest.transactionId);
 			emailModel.setFirstName(emailDetails.getFirstName());
 			emailModel.setLastName(emailDetails.getLastName());
 			emailModel.setOptIn(optedIn);
-			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailDetails));
+
+			emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
+			emailParameters.remove(EmailUrlService.PRODUCT_ID);
+			emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
 		} catch (DaoException|EnvironmentException | VerticalException
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +

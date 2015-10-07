@@ -16,6 +16,7 @@ public class EmailMaster implements Cloneable {
 	private long transactionId;
 	private String source;
 	private String password;
+	private String vertical;
 
 	public void setMarketingOptIn(Map<String, Boolean> marketingOptIn) {
 		this.marketingOptIn = marketingOptIn;
@@ -113,7 +114,15 @@ public class EmailMaster implements Cloneable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	public String getVertical() {
+		return vertical;
+	}
+
+	public void setVertical(String vertical) {
+		this.vertical = vertical;
+	}
+
 	@Override
 	public EmailMaster clone() {
 		EmailMaster emailDetails = new EmailMaster();
@@ -127,6 +136,8 @@ public class EmailMaster implements Cloneable {
 		emailDetails.setTransactionId(transactionId);
 		emailDetails.setValid(valid);
 		emailDetails.setPassword(password);
+		emailDetails.setVertical(vertical);
+
 		return emailDetails;
 	}
 
