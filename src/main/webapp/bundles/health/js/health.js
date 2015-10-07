@@ -1,7 +1,8 @@
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
-	meerkatEvents = meerkat.modules.events,
+		meerkatEvents = meerkat.modules.events,
+		exception = meerkat.logging.exception,
 	moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
@@ -872,7 +873,9 @@
 
 		}
 
-		fetchRates(postData, true, callback);
+		if(!fetchRates(postData, true, callback)) {
+			exception("Failed to fetch rates");
+		}
 	}
 
 	function fetchRates(postData, canSetRates, callback) {
@@ -893,7 +896,7 @@
 		if(!postData.primary_dob.match(dateRegex)) return false;
 		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
-		meerkat.modules.comms.post({
+		return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",
 			data: postData,
 			cache:true,

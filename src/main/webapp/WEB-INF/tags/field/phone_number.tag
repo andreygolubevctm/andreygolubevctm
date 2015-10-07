@@ -77,4 +77,4 @@
 		class="sessioncamexclude form-control contact_telno phone ${className} ${phoneTypeClassName} ${name}"
 		value="${valueInput}" pattern="[0-9]*" ${sizeAttribute}${placeHolderAttribute}${requiredAttribute}
 		${additionalAttributes}
-		maxlength="$maxLength">
+		maxlength="${maxLength}">
