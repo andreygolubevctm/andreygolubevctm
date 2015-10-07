@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -47,7 +48,14 @@ public class SessionPokeRouter extends HttpServlet {
 			try {
 				if (!justCheck) {
 					sessionDataService.touchSession(request);
-					json.put("verificationToken",  sessionDataService.updateToken(request));
+					Optional<String> tokenMaybe = sessionDataService.updateToken(request);
+					tokenMaybe.ifPresent(token -> {
+						try {
+							json.put("verificationToken",  token);
+						} catch (JSONException e) {
+							LOGGER.error("Failed to token for JSON object for Session Poke {}", kv("token", token), e);
+						}
+					});
 				}
 				long timeout = sessionDataService.getClientSessionTimeout(request);
 

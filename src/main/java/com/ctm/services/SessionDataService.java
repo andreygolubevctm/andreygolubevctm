@@ -17,6 +17,7 @@ import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
 import com.ctm.model.settings.PageSettings;
+import com.ctm.model.settings.Vertical;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.security.token.JwtTokenCreator;
 import com.ctm.security.token.config.TokenConfigFactory;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Optional;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -399,23 +401,27 @@ public class SessionDataService {
 		sessionData.setShouldEndSession(shouldEnd);
 	}
 
-	public String updateToken(HttpServletRequest request)  {
-		long timeoutSeconds = getClientSessionTimeoutSeconds(request);
-		if(this.transactionVerifier == null) {
-			try {
-				PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-				TokenCreatorConfig  tokenCreatorConfig = new TokenCreatorConfig();
-				this.transactionVerifier = new JwtTokenCreator(tokenCreatorConfig , TokenConfigFactory.getJwtSecretKey(pageSettings.getVertical()));
-			} catch (DaoException | ConfigSettingException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		String verificationToken  = RequestUtils.getTokenFromRequest(request);
+	public Optional<String> updateToken(HttpServletRequest request)  {
+		Optional<String> verificationTokenMaybe = Optional.empty();
+		try {
+			PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
+			Vertical vertical = pageSettings.getVertical();
+			if(TokenConfigFactory.getEnabled(vertical)) {
+				TokenCreatorConfig tokenCreatorConfig = new TokenCreatorConfig();
+				if (this.transactionVerifier == null) {
+					this.transactionVerifier = new JwtTokenCreator(tokenCreatorConfig, TokenConfigFactory.getJwtSecretKey(vertical));
+				}
+				long timeoutSeconds = getClientSessionTimeoutSeconds(request);
+				String currentVerificationToken = RequestUtils.getTokenFromRequest(request);
 
-		if(verificationToken != null && !verificationToken.isEmpty()){
-			verificationToken = transactionVerifier.refreshToken(verificationToken, timeoutSeconds);
+				if (currentVerificationToken != null && !currentVerificationToken.isEmpty()) {
+					verificationTokenMaybe = Optional.of(transactionVerifier.refreshToken(currentVerificationToken, timeoutSeconds));
+				}
+			}
+		} catch (DaoException | ConfigSettingException e) {
+			throw new RuntimeException(e);
 		}
-		return verificationToken;
+		return verificationTokenMaybe;
 	}
 
 }

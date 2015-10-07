@@ -2,7 +2,6 @@ package com.ctm.services.health;
 
 import com.ctm.model.Touch;
 import com.ctm.model.request.health.HealthRequest;
-import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.Vertical;
 import com.ctm.security.token.JwtTokenCreator;
 import com.ctm.security.token.config.TokenCreatorConfig;
@@ -30,8 +29,6 @@ public class HealthTokenValidationServiceTest {
     public void setup() {
         Vertical vertical = mock(Vertical.class);
         when(vertical.getSettingValueForName("jwtEnabled")).thenReturn("true");
-        ConfigSetting secretKeySetting = new ConfigSetting();
-        secretKeySetting.setName(secretKey);
         when(vertical.getSettingValueForName("jwtSecretKey")).thenReturn(secretKey);
         TokenCreatorConfig config = new TokenCreatorConfig();
         config.setTouchType(Touch.TouchType.NEW);

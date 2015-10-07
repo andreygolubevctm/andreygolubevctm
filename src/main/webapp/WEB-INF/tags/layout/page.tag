@@ -312,7 +312,7 @@ ${newPage.init(pageSettings)}
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
 						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
                         revision: '<core:buildIdentifier />',
-						tokenEnabled: '${newPage.tokenEnabled()}',
+						tokenEnabled: '${newPage.tokenEnabled}',
 						verificationToken: '${newPage.createTokenForNewPage(pageContext.request , data.current.transactionId ,pageSettings)}',
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId}, </c:if><%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
 						urls:{
