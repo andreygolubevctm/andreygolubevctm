@@ -46,22 +46,33 @@ function Bundles(config) {
     var instance = this;
 
     // Synchronously load in our bundles. This is necessary for gulp to initialise properly without race conditions.
-    fs.readdirSync(gulpConfig.bundles.dir)
-        .forEach(function(folder) {
-            var bundleJSONPath = path.join(gulpConfig.bundles.dir, folder, gulpConfig.bundles.entryPoint);
+    var bundleLoader = function(root, folder) {
+        if(root) folder = path.join(root, folder);
 
-            if(fs.existsSync(bundleJSONPath)) {
-                var bundleJSON = JSON.parse(fs.readFileSync(bundleJSONPath, "utf8"));
+        var bundleJSONPath = path.join(gulpConfig.bundles.dir, folder, gulpConfig.bundles.entryPoint);
 
-                if(typeof bundleJSON.compileAs !== "undefined" && bundleJSON.compileAs.constructor === Array) {
-                    for (var i = 0; i < bundleJSON.compileAs.length; i++) {
-                        bundleJSON.originalBundle = folder;
-                        instance.addBundle(bundleJSON.compileAs[i], bundleJSON);
-                    }
-                } else {
-                    instance.addBundle(folder, bundleJSON);
+        if(fs.existsSync(bundleJSONPath)) {
+            var bundleJSON = JSON.parse(fs.readFileSync(bundleJSONPath, "utf8"));
+
+            if(typeof bundleJSON.compileAs !== "undefined" && bundleJSON.compileAs.constructor === Array) {
+                for (var i = 0; i < bundleJSON.compileAs.length; i++) {
+                    bundleJSON.originalBundle = folder;
+                    instance.addBundle(bundleJSON.compileAs[i], bundleJSON);
                 }
+            } else {
+                instance.addBundle(folder, bundleJSON);
             }
+        }
+    };
+
+    fs.readdirSync(gulpConfig.bundles.dir)
+        .forEach(function(folder){
+            bundleLoader(null, folder);
+        });
+
+    fs.readdirSync(path.join(gulpConfig.bundles.dir, "plugins"))
+        .forEach(function(folder){
+            bundleLoader("plugins", folder);
         });
 }
 
@@ -206,7 +217,11 @@ Bundles.prototype.getWatchableBundlesFilePaths = function(bundle, fileType) {
 
     var dependencies = this.getDependencies(bundle);
 
-    dependencies.push(bundle);
+    if(typeof this.collection[bundle] !== "undefined" && typeof this.collection[bundle].originalBundle !== "undefined") {
+        dependencies.push(this.collection[bundle].originalBundle);
+    } else {
+        dependencies.push(bundle);
+    }
 
     return dependencies.map(function(dependency){
         return fileHelper.prefixFolderWithPath(dependency) + "/" + fileType + "/*." + fileType;

@@ -70,7 +70,6 @@
 				}
 
 		}
-
 	}
 
 	function eventSubscriptions() {
@@ -170,7 +169,6 @@
 						toggleDialogueInChatCallback();
 					});
 				}
-
 			}
 		};
 
@@ -192,6 +190,8 @@
 				// Set initial state.
 				healthCoverDetails.setHealthFunds(true);
 				healthCoverDetails.setIncomeBase(true);
+
+				meerkat.modules.healthTiers.initHealthTiers();
 
 				// Add event listeners.
 
@@ -382,9 +382,12 @@
 				}
 			},
 			onInitialise: function onInitResults(event){
-
+				meerkat.modules.healthFilters.initHealthFilters();
+				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
+				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
+				meerkat.modules.healthAltPricing.initHealthAltPricing();
 				meerkat.modules.healthMoreInfo.initMoreInfo();
-
+				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 			},
 			onBeforeEnter:function enterResultsStep(event){
 
@@ -519,6 +522,7 @@
 					this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
 
 					// Load the selected product details.
+					meerkat.modules.healthPaymentStep.initHealthPaymentStep();
 					healthFunds.load(selectedProduct.info.provider);
 
 					// Clear any previous validation errors on Apply or Payment
@@ -567,6 +571,9 @@
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
 			onInitialise: function initPaymentStep(event){
+
+				meerkat.modules.healthPaymentDate.initPaymentDate();
+				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();

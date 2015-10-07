@@ -15,7 +15,8 @@
 			'benefits.cxdfee' : 'desc',
 			'benefits.luggage' : 'desc',
 			'price.premium' : 'asc'
-		};
+		},
+		initialised = false;
 
 
 	//Sorting is a kind of filtering for now in the events
@@ -76,53 +77,56 @@
 
 
 	function initSorting() {
+		if(!initialised) {
+			initialised = true;
 
-		//debug('[travelSorting]','initSorting now');
+			//debug('[travelSorting]','initSorting now');
 
-		//Results.view.moduleEvents.RESULTS_SORTED
-		meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, function sortedCallback(obj) {
-			meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK);
-		});
+			//Results.view.moduleEvents.RESULTS_SORTED
+			meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, function sortedCallback(obj) {
+				meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK);
+			});
 
-		$sortElements.on('click', function sortingClickHandler(event){
+			$sortElements.on('click', function sortingClickHandler(event) {
 
-			//console.time('processing click');
-			//console.profile('processing click');
-			//We clicked this
-			//console.time('setting event target');
-			$clicked = $(event.target);
-			if (!($clicked.is('a'))) {
-				$clicked = $clicked.closest('a');
-			}
-			//console.timeEnd('setting event target');
+				//console.time('processing click');
+				//console.profile('processing click');
+				//We clicked this
+				//console.time('setting event target');
+				$clicked = $(event.target);
+				if (!($clicked.is('a'))) {
+					$clicked = $clicked.closest('a');
+				}
+				//console.timeEnd('setting event target');
 
-			//console.time('check disabled and run actions');
-			if (!($clicked.hasClass('disabled'))) {
-				//Lock Sorting.
-				meerkat.messaging.publish(meerkatEvents.WEBAPP_LOCK);
+				//console.time('check disabled and run actions');
+				if (!($clicked.hasClass('disabled'))) {
+					//Lock Sorting.
+					meerkat.messaging.publish(meerkatEvents.WEBAPP_LOCK);
 
-				//defer here allows it to be as responsive as possible to the click, since this is an expensive operation to actually sort animate things.
-				_.defer(function deferredSortClickWrapper(){
-					// check if resetState is enabled and that the clicked item isn't the currently clicked item
-					if (!$clicked.parent().hasClass('active')) {
-						resetSortDir($clicked);
-					}
-					setSortFromTarget($clicked);
-				});
-			}
-			//console.profileEnd();
-			//console.timeEnd('check disabled and run actions');
-			//console.timeEnd('processing click');
-		});
+					//defer here allows it to be as responsive as possible to the click, since this is an expensive operation to actually sort animate things.
+					_.defer(function deferredSortClickWrapper() {
+						// check if resetState is enabled and that the clicked item isn't the currently clicked item
+						if (!$clicked.parent().hasClass('active')) {
+							resetSortDir($clicked);
+						}
+						setSortFromTarget($clicked);
+					});
+				}
+				//console.profileEnd();
+				//console.timeEnd('check disabled and run actions');
+				//console.timeEnd('processing click');
+			});
 
-		// On application lockdown/unlock, disable/enable the dropdown
-		meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockSorting(obj) {
-			$sortElements.addClass('inactive').addClass('disabled');
-		});
+			// On application lockdown/unlock, disable/enable the dropdown
+			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockSorting(obj) {
+				$sortElements.addClass('inactive').addClass('disabled');
+			});
 
-		meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockSorting(obj) {
-			$sortElements.removeClass('inactive').removeClass('disabled');
-		});
+			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockSorting(obj) {
+				$sortElements.removeClass('inactive').removeClass('disabled');
+			});
+		}
 	}
 
 	// Reset the sort dir everytime we click on a sortable column header

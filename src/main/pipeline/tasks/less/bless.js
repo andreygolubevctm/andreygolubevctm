@@ -63,7 +63,10 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
             renameFile.extname = ".css";
         }))
         // Sakugawa beautifies the CSS for some reason so we do this to keep file sizes down
+        // Options are listed at https://github.com/jakubpawlowicz/clean-css
         .pipe(minifyCSS({
+            keepSpecialComments: 0,
+            mediaMerging: true, //(default is true, just for clarity)
             advanced: true,
             aggressiveMerging: true,
             compatibility: "ie8"

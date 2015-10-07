@@ -730,7 +730,8 @@
             startColumnWidthTracking();
         }
         if (meerkat.site.isCallCentreUser) {
-            createPremiumsPopOver();
+            // Not too sure how else to check if popovers exist without loading them separately.
+            meerkat.modules.utils.pluginReady("popovers").done(createPremiumsPopOver);
         }
     }
 
@@ -752,6 +753,7 @@
                     product: product,
                     frequency: Results.getFrequency()
                 });
+
 
                 meerkat.modules.popovers.create({
                     element: $this,

@@ -13,7 +13,8 @@
 		$children,
 		$policytype,
 		$summaryHeader,
-		$selectedTags;
+		$selectedTags,
+		initialised = false;
 
 	function updateSummaryText() {
 		// let it fire in all modes if in the event xs is displayed but a different orientation displays something greater
@@ -67,17 +68,21 @@
 	}
 
 	function initSummaryText() {
-		$resultsSummaryPlaceholder = $(".resultsSummaryPlaceholder"),
-		$fromDate = $("#travel_dates_fromDate"),
-		$toDate = $("#travel_dates_toDate"),
-		$worldwide = $('#travel_destinations_do_do'),
-		$adults = $('#travel_adults'),
-		$children = $('#travel_children'),
-		$policytype = $('#travel_policyType');
-		$summaryHeader = $('.resultsSummaryContainer h5');
-		$selectedTags = $('.selected-tags');
+		if(!initialised) {
+			initialised = true;
 
-		applyEventListeners();
+			$resultsSummaryPlaceholder = $(".resultsSummaryPlaceholder"),
+			$fromDate = $("#travel_dates_fromDate"),
+			$toDate = $("#travel_dates_toDate"),
+			$worldwide = $('#travel_destinations_do_do'),
+			$adults = $('#travel_adults'),
+			$children = $('#travel_children'),
+			$policytype = $('#travel_policyType');
+			$summaryHeader = $('.resultsSummaryContainer h5');
+			$selectedTags = $('.selected-tags');
+
+			applyEventListeners();
+		}
 	}
 
 	function applyEventListeners() {

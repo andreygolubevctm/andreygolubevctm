@@ -1,6 +1,7 @@
 {
   "brandCodes": ["ctm", "yhoo"],
   "dependencies": [
+  	"plugins/scrollTo",
   	"shared/results", 
   	"shared/features",
 	"shared/validation",

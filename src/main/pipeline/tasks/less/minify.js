@@ -11,7 +11,10 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
         .pipe(plumber({
             errorHandler: notify.onError("Error: <%= error.message %>")
         }))
+        // Options are listed at https://github.com/jakubpawlowicz/clean-css
         .pipe(minifyCSS({
+            keepSpecialComments: 0,
+            mediaMerging: true, //(default is true, just for clarity)
             advanced: true,
             aggressiveMerging: true,
             compatibility: "ie8"
