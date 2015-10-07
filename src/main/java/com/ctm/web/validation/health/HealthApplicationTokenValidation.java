@@ -1,6 +1,7 @@
 package com.ctm.web.validation.health;
 
 import com.ctm.model.Touch;
+import com.ctm.model.settings.PageSettings;
 import com.ctm.services.SessionDataService;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,8 +21,8 @@ public class HealthApplicationTokenValidation extends HealthTokenValidationServi
 
     private static final Touch.TouchType CURRENT_TOUCH = Touch.TouchType.APPLY;
 
-    public HealthApplicationTokenValidation(SessionDataService sessionDataService) {
-        super(sessionDataService);
+    public HealthApplicationTokenValidation(SessionDataService sessionDataService, PageSettings pageSettings) {
+        super(sessionDataService, pageSettings.getVertical());
     }
 
 

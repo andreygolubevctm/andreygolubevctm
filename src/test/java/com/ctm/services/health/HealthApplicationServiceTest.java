@@ -5,7 +5,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.HealthPricePremium;
-import com.ctm.security.TransactionVerifier;
+import com.ctm.model.settings.Vertical;
+import com.ctm.security.JwtTokenCreator;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.RequestService;
 import com.ctm.utils.FormDateUtils;
@@ -80,11 +81,12 @@ public class HealthApplicationServiceTest {
 
 
 	@Test
-	public void testShouldGetIsValidToken() throws  Exception {
+	public void testShouldGetIsValidToken() throws JspException {
 		when(session.getAttribute("callCentre")).thenReturn(false);
 
 		Long transactionId= 1000L;
-		TransactionVerifier transactionVerifier = new TransactionVerifier();
+        Vertical vertical = new Vertical();
+        JwtTokenCreator transactionVerifier = new JwtTokenCreator(vertical);
 		when(requestService.getTransactionId()).thenReturn(transactionId);
 		when(requestService.getToken()).thenReturn(transactionVerifier.createToken("test", transactionId, Touch.TouchType.PRICE_PRESENTATION));
 		healthApplicationService.setUpApplication(setupData(), request, changeOverDate);

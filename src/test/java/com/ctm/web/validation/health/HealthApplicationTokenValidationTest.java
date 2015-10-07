@@ -2,7 +2,8 @@ package com.ctm.web.validation.health;
 
 import com.ctm.model.Touch;
 import com.ctm.model.request.health.HealthRequest;
-import com.ctm.security.TransactionVerifier;
+import com.ctm.model.settings.Vertical;
+import com.ctm.security.JwtTokenCreator;
 import com.ctm.services.SessionDataService;
 import org.junit.Test;
 
@@ -17,7 +18,8 @@ public class HealthApplicationTokenValidationTest {
 
     @Test
     public void shouldValidateToken() throws Exception {
-        TransactionVerifier  transactionVerifier= new TransactionVerifier();
+        Vertical vertical = new Vertical();
+        JwtTokenCreator transactionVerifier= new JwtTokenCreator(vertical);
         HealthRequest request = new HealthRequest();
         request.setIsCallCentre(false);
         String token = transactionVerifier.createToken("test", transactionId, Touch.TouchType.PRICE_PRESENTATION);

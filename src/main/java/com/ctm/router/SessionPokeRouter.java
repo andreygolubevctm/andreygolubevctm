@@ -44,18 +44,16 @@ public class SessionPokeRouter extends HttpServlet {
 			JSONObject json = new JSONObject();
 			final String check = request.getParameter("check");
 			boolean justCheck = check != null;
-			if (!justCheck) {
-				sessionDataService.touchSession(request);
-			}	
-			try{
+			try {
+				if (!justCheck) {
+					sessionDataService.touchSession(request);
+					json.put("verificationToken",  sessionDataService.updateToken(request));
+				}
 				long timeout = sessionDataService.getClientSessionTimeout(request);
 
 				if(timeout == -1) {
 					String bigIPCookieValue = sessionDataService.getCookieByName(request, EnvironmentService.getBIGIPCookieId());
 					json.put("bigIP", bigIPCookieValue);
-				} else if (!justCheck) {
-					String verificationToken = sessionDataService.updateToken(request, timeout / 1000);
-					json.put("verificationToken",  verificationToken);
 				}
 
 				json.put("timeout",  timeout);

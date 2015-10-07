@@ -7,7 +7,6 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
-import com.disc_au.web.go.xml.HttpRequestHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,42 +26,41 @@ public class RequestService {
     private String token;
     private String ipAddress;
 
-    public RequestService(HttpServletRequest request, String vertical){
-        transactionId = RequestUtils.getTransactionIdFromRequest(request);
-        this.request = request;
-        init(request, vertical);
-    }
-
     public RequestService(HttpServletRequest request, Vertical.VerticalType vertical){
         transactionId = RequestUtils.getTransactionIdFromRequest(request);
         this.request = request;
-        init(request, vertical.getCode());
+        this.vertical = vertical;
+        init(request);
+    }
+
+    public RequestService(HttpServletRequest request, String vertical, Data data){
+        this.request = request;
+        this.vertical = Vertical.VerticalType.findByCode(vertical);
+        transactionId = data.getLong("current/transactionId");
+        init(request);
     }
 
     public RequestService(Vertical.VerticalType vertical, PageSettings pageSettings){
         this.vertical = vertical;
         this.pageSettings = pageSettings;
     }
-    
+
+    public RequestService(Vertical.VerticalType vertical) {
+        this.vertical = vertical;
+    }
+
     public void setRequest(HttpServletRequest request) {
         transactionId = RequestUtils.getTransactionIdFromRequest(request);
         IPCheckService ipCheckService= new IPCheckService();
         this.ipAddress = ipCheckService.getIPAddress(request);
         this.request = request;
-        init(request, vertical.getCode());
+        init(request);
     }
 
-
-    public RequestService(HttpServletRequest request, String vertical, Data data){
-        this.request = request;
-        transactionId = data.getLong("current/transactionId");
-        init(request, vertical);
-    }
-
-    private void init(HttpServletRequest request, String vertical) {
+    private void init(HttpServletRequest request) {
         this.token = RequestUtils.getTokenFromRequest(request);
         sessionId = request.getSession().getId();
-        ApplicationService.setVerticalCodeOnRequest(request, vertical);
+        ApplicationService.setVerticalCodeOnRequest(request, vertical.getCode());
         try {
             if(pageSettings == null) {
                 pageSettings = SettingsService.getPageSettingsForPage(request);
@@ -71,15 +69,6 @@ public class RequestService {
         } catch (DaoException | ConfigSettingException e) {
            LOGGER.error("Error getting page settings",e);
         }
-    }
-
-    /*
-	* TODO: once we are away from the jsp this should be
-	* elsewhere and Service should not be aware of HttpServletRequest */
-    public Data getRequestData() {
-        Data data = new Data();
-        HttpRequestHandler.updateXmlNode(data, request, false);
-        return data;
     }
 
     public HttpServletRequest getRequest() {

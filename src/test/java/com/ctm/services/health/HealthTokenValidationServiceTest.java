@@ -2,7 +2,8 @@ package com.ctm.services.health;
 
 import com.ctm.model.Touch;
 import com.ctm.model.request.health.HealthRequest;
-import com.ctm.security.TransactionVerifier;
+import com.ctm.model.settings.Vertical;
+import com.ctm.security.JwtTokenCreator;
 import com.ctm.services.SessionDataService;
 import com.ctm.web.validation.health.HealthTokenValidationService;
 import org.junit.Before;
@@ -23,7 +24,8 @@ public class HealthTokenValidationServiceTest {
 
     @Before
     public void setup() {
-        TransactionVerifier transactionVerifier = new TransactionVerifier();
+        Vertical vertical = new Vertical();
+        JwtTokenCreator transactionVerifier = new JwtTokenCreator(vertical);
         long transactionId = 2313151L;
         expiredToken =  transactionVerifier.createToken("test" , transactionId, Touch.TouchType.NEW, 0, -1000);
         validToken = transactionVerifier.createToken("test" , transactionId, Touch.TouchType.NEW, 0, 300000000);

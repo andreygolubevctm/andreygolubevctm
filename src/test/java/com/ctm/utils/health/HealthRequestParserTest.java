@@ -26,15 +26,10 @@ public class HealthRequestParserTest {
     @Test
     public void testGetHealthRequestToken() throws Exception {
         HealthRequestParser healthRequestParser = new HealthRequestParser();
-        String vertical = "health";
         Data data = new Data();
-        RequestService requestService = new RequestService( httpRequest,  vertical,  data);
+        RequestService requestService = new RequestService( httpRequest,  "",  data);
         healthRequestParser.getHealthRequestToken(requestService, false);
 
     }
 
-    @Test
-    public void testIsCallCentre() throws Exception {
-        HealthRequestParser.isCallCentre(httpRequest);
-    }
 }

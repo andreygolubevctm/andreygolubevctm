@@ -2,10 +2,11 @@ package com.ctm.web.validation;
 
 import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
-import com.ctm.security.InvalidTokenException;
-import com.ctm.security.TransactionVerifier;
+import com.ctm.model.settings.Vertical;
+import com.ctm.security.JwtTokenCreator;
+import com.ctm.security.JwtTokenValidator;
+import com.ctm.security.exception.InvalidTokenException;
 import com.ctm.services.SessionDataService;
-import com.ctm.utils.RequestUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -21,14 +22,16 @@ public abstract class TokenValidation<T extends TokenRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenValidation.class.getName());
 
-    private final TransactionVerifier tokenValidation;
+    private final JwtTokenValidator tokenValidation;
     private final SessionDataService sessionDataService;
+    private final Vertical vertical;
 
     private boolean validToken;
 
-    public TokenValidation(SessionDataService sessionDataService) {
+    public TokenValidation(SessionDataService sessionDataService, Vertical vertical) {
         this.sessionDataService = sessionDataService;
-        tokenValidation = new TransactionVerifier();
+        tokenValidation = new JwtTokenValidator(vertical);
+        this.vertical = vertical;
     }
 
 
@@ -65,16 +68,13 @@ public abstract class TokenValidation<T extends TokenRequest> {
     protected abstract Touch.TouchType getCurrentTouch();
 
     public void setNewToken(JSONObject response, Long transactionId, HttpServletRequest request) {
-        int minimumSeconds = 0;
-        if(!RequestUtils.isTestIp(request)) {
-             minimumSeconds = getMinimumSeconds(request);
-        }
+        JwtTokenCreator jwtTokenCreator = new JwtTokenCreator(vertical, getCurrentTouch() , request);
         long timeout = sessionDataService.getClientSessionTimeout(request);
         long timeoutSec = timeout / 1000;
         if(timeout == -1){
             timeoutSec = sessionDataService.getClientDefaultExpiryTimeout(request) / 1000;
         }
-        String token = tokenValidation.createToken(request.getServletPath(), transactionId , getCurrentTouch(), minimumSeconds , timeoutSec);
+        String token = jwtTokenCreator.createToken(request.getServletPath(), transactionId, timeoutSec);
         try {
             response.put("verificationToken", token);
             response.put("timeout", timeout);

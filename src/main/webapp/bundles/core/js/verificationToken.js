@@ -25,9 +25,10 @@
         set(meerkat.site.verificationToken );
     }
 
+    /* Adds verificationToken as a param to ajaxProperties.data
+     only send verificationToken if ajaxProperties.type is POST */
     function addTokenToRequest(ajaxProperties){
         var verificationToken = get();
-        // only send verificationToken if using post
         if(ajaxProperties.type === 'POST'){
             if (_.isString(ajaxProperties.data)) {
                 ajaxProperties.data += '&' + REQUEST_PARAM + '=' + verificationToken;

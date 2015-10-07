@@ -1,6 +1,6 @@
 package com.ctm.services;
 
-import com.ctm.security.TransactionVerifier;
+import com.ctm.security.JwtTokenCreator;
 import com.ctm.utils.RequestUtils;
 import org.junit.Test;
 
@@ -16,7 +16,7 @@ public class SessionDataServiceTest {
     @Test
     public void testUpdateToken() throws Exception {
         long timeoutSeconds = 1000;
-        TransactionVerifier transactionVerifier = mock(TransactionVerifier.class);
+        JwtTokenCreator transactionVerifier = mock(JwtTokenCreator.class);
 
         String refreshedToken = "refreshedToken";
         when(transactionVerifier.refreshToken("test", 1000)).thenReturn(refreshedToken);

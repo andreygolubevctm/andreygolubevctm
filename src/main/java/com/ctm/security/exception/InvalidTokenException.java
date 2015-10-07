@@ -1,4 +1,4 @@
-package com.ctm.security;
+package com.ctm.security.exception;
 
 
 public class InvalidTokenException extends Exception {

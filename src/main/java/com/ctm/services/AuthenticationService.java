@@ -1,15 +1,5 @@
 package com.ctm.services;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ctm.dao.SessionTokenDao;
 import com.ctm.dao.TouchDao;
 import com.ctm.exceptions.DaoException;
@@ -19,7 +9,16 @@ import com.ctm.model.Touch;
 import com.ctm.model.session.SessionToken;
 import com.ctm.security.StringEncryption;
 import com.ctm.services.email.EmailUrlService;
+import com.ctm.utils.SessionUtils;
 import com.disc_au.web.LDAPDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -61,13 +60,15 @@ public class AuthenticationService {
 			getUserDetailsFromLdap(session, uid);
 			// These would have been set in the login tag but because we are not using proper JSESSION log in they are not.
 			session.setAttribute("isLoggedIn", true);
-			session.setAttribute("callCentre", true);
+			SessionUtils.setIsCallCentre(session, true);
 			return true;
 		}
 		else {
 			throw new TokenSecurityException("Token mismatch");
 		}
 	}
+
+
 
 	/**
 	 * Generate a token using the most recent transaction id for a record the email master table.

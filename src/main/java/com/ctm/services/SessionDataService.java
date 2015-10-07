@@ -10,13 +10,12 @@ package com.ctm.services;
  *
  */
 
-import com.ctm.exceptions.BrandException;
-import com.ctm.exceptions.DaoException;
-import com.ctm.exceptions.SessionException;
+import com.ctm.exceptions.*;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
+import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
-import com.ctm.security.TransactionVerifier;
+import com.ctm.security.JwtTokenCreator;
 import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
 import org.slf4j.Logger;
@@ -37,14 +36,13 @@ public class SessionDataService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SessionDataService.class);
 
 	private static final int SESSION_EXPIRY_DIFFERENCE = 5;
-	private final TransactionVerifier transactionVerifier;
+	private JwtTokenCreator transactionVerifier;
 
-	public SessionDataService(TransactionVerifier transactionVerifier) {
+	public SessionDataService(JwtTokenCreator transactionVerifier) {
 		this.transactionVerifier = transactionVerifier;
 	}
 
 	public SessionDataService() {
-		this.transactionVerifier = new TransactionVerifier();
 	}
 
 	/**
@@ -338,6 +336,15 @@ public class SessionDataService {
 	}
 
 	/**
+	 * Get the client's next expected timeout (for JS timeout)
+	 * @param request
+	 */
+	public long getClientSessionTimeoutSeconds(HttpServletRequest request) {
+		return getClientSessionTimeout(request) /1000;
+	}
+
+
+	/**
 	 * Get a cookie's value by name
 	 * used by write_quote.jsp
 	 * @param request
@@ -372,7 +379,16 @@ public class SessionDataService {
 		sessionData.setShouldEndSession(shouldEnd);
 	}
 
-	public String updateToken(HttpServletRequest request, long timeoutSeconds) {
+	public String updateToken(HttpServletRequest request)  {
+		long timeoutSeconds = getClientSessionTimeoutSeconds(request);
+		if(this.transactionVerifier == null) {
+			try {
+				PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
+				this.transactionVerifier = new JwtTokenCreator(pageSettings.getVertical(), null , request);
+			} catch (DaoException | ConfigSettingException e) {
+				throw new RuntimeException(e);
+			}
+		}
 		String verificationToken  = RequestUtils.getTokenFromRequest(request);
 
 		if(verificationToken != null && !verificationToken.isEmpty()){

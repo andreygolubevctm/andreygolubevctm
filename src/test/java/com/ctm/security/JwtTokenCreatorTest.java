@@ -1,9 +1,9 @@
 package com.ctm.security;
 
+
 import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
 import com.ctm.model.settings.Vertical;
-import com.ctm.security.exception.InvalidTokenException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,11 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
-
-public class TransactionVerifierTest {
+public class JwtTokenCreatorTest {
 
     private JwtTokenCreator transactionVerifier;
     private Long transactionId = 1000L;
@@ -58,41 +56,26 @@ public class TransactionVerifierTest {
         tokenRequest.setTransactionId(transactionId);
     }
 
-
     @Test
-    public void testValidateToken() throws InvalidTokenException {
-        String token = transactionVerifier.createToken(source, transactionId, Touch.TouchType.BROCHURE);
+    public void shouldCreateValidToken() throws Exception {
+        String token = transactionVerifier.createToken(source ,  transactionId , 10);
+        assertFalse(token.isEmpty());
+        tokenRequest.setToken(token);
+
+        // throws exception if invalid
+        transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.NEW));
+
+        token = transactionVerifier.createToken(source, transactionId , Touch.TouchType.LEAD_FEED);
         tokenRequest.setToken(token);
         // throws exception if invalid
-        transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.BROCHURE));
-
-        try {
-            transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.CALL_FEED));
-            fail("Exception expected");
-        } catch (InvalidTokenException e) {
-            // expected
-        }
-
-        tokenRequest.setTransactionId(3000L);
-        try {
-            transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.BROCHURE));
-            fail("Exception expected");
-        } catch (InvalidTokenException e) {
-            // expected
-        }
-    }
+        transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.LEAD_FEED));
 
 
-    @Test
-    public void testValidateTokenNotBefore() throws InvalidTokenException {
-        String token = transactionVerifier.createToken(source, transactionId, Touch.TouchType.BROCHURE);
+        token = transactionVerifier.createToken(source, transactionId, Touch.TouchType.APPLY);
         tokenRequest.setToken(token);
         // throws exception if invalid
-        try {
-            transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.BROCHURE));
-            fail("Exception expected");
-        } catch (InvalidTokenException e) {
-            // expected
-        }
+        transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.APPLY));
+
     }
+
 }

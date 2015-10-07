@@ -1,9 +1,12 @@
 package com.ctm.services.fuel;
 
+import com.ctm.exceptions.ConfigSettingException;
+import com.ctm.exceptions.DaoException;
 import com.ctm.model.PageRequest;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.RequestService;
 import com.ctm.services.SessionDataService;
+import com.ctm.services.SettingsService;
 import com.ctm.web.validation.ResultsTokenValidation;
 import com.ctm.web.validation.TokenValidation;
 
@@ -33,7 +36,12 @@ public class FuelPriceService {
 
     public void init(HttpServletRequest httpRequest) {
         if(tokenService == null) {
-            this.tokenService = new ResultsTokenValidation<>(sessionDataService);
+            try {
+                Vertical vertical = SettingsService.getPageSettingsForPage(httpRequest).getVertical();
+                this.tokenService = new ResultsTokenValidation<>(sessionDataService, vertical);
+            } catch (DaoException | ConfigSettingException e) {
+                throw new RuntimeException(e);
+            }
         }
         PageRequest request = parseRequest(httpRequest);
         validToken = tokenService.validateToken(request);
@@ -60,6 +68,5 @@ public class FuelPriceService {
     @SuppressWarnings("unused")
     public String createResponse(Long transactionId, String baseJsonResponse , HttpServletRequest request) {
         return tokenService.createResponse(transactionId,  baseJsonResponse ,  request);
-
     }
 }

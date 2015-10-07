@@ -1,9 +1,11 @@
 package com.ctm.services.health;
 
 import com.ctm.model.request.health.HealthRequest;
+import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.RequestService;
 import com.ctm.services.SessionDataService;
+import com.ctm.utils.SessionUtils;
 import com.ctm.utils.health.HealthRequestParser;
 import com.ctm.web.validation.health.HealthTokenValidationService;
 
@@ -16,6 +18,7 @@ import javax.servlet.jsp.JspException;
 public class HealthQuoteService {
 
     private final RequestService requestService;
+    private final SessionDataService sessionDataService;
     private HealthTokenValidationService tokenService;
 
     /**
@@ -23,19 +26,20 @@ public class HealthQuoteService {
      */
     @SuppressWarnings("unused")
     public HealthQuoteService() {
-        SessionDataService sessionDataService = new SessionDataService();
-        this.tokenService = new HealthTokenValidationService(sessionDataService);
-        this.requestService = new RequestService(Vertical.VerticalType.HEALTH , null);
+        sessionDataService = new SessionDataService();
+        this.requestService = new RequestService(Vertical.VerticalType.HEALTH );
     }
 
     public HealthQuoteService(HealthTokenValidationService tokenService , RequestService requestService) {
+        sessionDataService = new SessionDataService();
         this.tokenService = tokenService;
         this.requestService = requestService;
     }
 
-    public void init(HttpServletRequest httpRequest) throws JspException {
+    public void init(HttpServletRequest httpRequest, PageSettings pageSettings) throws JspException {
         requestService.setRequest(httpRequest);
-        HealthRequest request = HealthRequestParser.getHealthRequestToken(requestService, HealthRequestParser.isCallCentre(httpRequest));
+        this.tokenService = new HealthTokenValidationService(sessionDataService, pageSettings.getVertical());
+        HealthRequest request = HealthRequestParser.getHealthRequestToken(requestService, SessionUtils.isCallCentre(httpRequest.getSession()));
         tokenService.validateToken(request);
     }
 

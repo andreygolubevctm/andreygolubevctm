@@ -1,15 +1,19 @@
 package com.ctm.services.health;
 
 import com.ctm.dao.health.HealthPriceDao;
+import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.model.Provider;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.HealthPricePremium;
 import com.ctm.model.request.health.HealthApplicationRequest;
+import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.RequestService;
 import com.ctm.services.SessionDataService;
+import com.ctm.services.SettingsService;
+import com.ctm.utils.SessionUtils;
 import com.ctm.utils.health.HealthApplicationParser;
 import com.ctm.utils.health.HealthRequestParser;
 import com.ctm.web.validation.FormValidation;
@@ -72,11 +76,14 @@ public class HealthApplicationService {
 			requestService.setRequest(httpRequest);
 		}
 		SessionDataService sessionDataService = new SessionDataService();
-		tokenService = new HealthApplicationTokenValidation(sessionDataService);
-		isCallCentre = HealthRequestParser.isCallCentre(httpRequest);
-		validToken = tokenService.validateToken(HealthRequestParser.getHealthRequestToken(requestService, isCallCentre));
+		isCallCentre = SessionUtils.isCallCentre(httpRequest.getSession());
 		List<SchemaValidationError> validationErrors;
 		try {
+			if(tokenService == null) {
+				PageSettings pageSettings = SettingsService.getPageSettingsForPage(httpRequest);
+				tokenService = new HealthApplicationTokenValidation(sessionDataService, pageSettings);
+			}
+			validToken = tokenService.validateToken(HealthRequestParser.getHealthRequestToken(requestService, isCallCentre));
 			request = HealthApplicationParser.parseRequest(data, changeOverDate);
 			HealthApplicationValidation validationService = new HealthApplicationValidation();
 			validationErrors = validationService.validate(request);
@@ -84,7 +91,7 @@ public class HealthApplicationService {
 				calculatePremiums();
 				updateDataBucket(data);
 			}
-		} catch (DaoException e) {
+		} catch (DaoException | ConfigSettingException e) {
 			LOGGER.error("Failed to calculate health premiums {},{}", kv("data", data), kv("changeOverDate", changeOverDate), e);
 			fatalErrorService.logFatalError(e, 0, "HealthApplicationService", true, data.getString("current.transactionId"));
 			throw new JspException(e);

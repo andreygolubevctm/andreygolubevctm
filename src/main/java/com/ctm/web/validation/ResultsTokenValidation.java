@@ -2,6 +2,7 @@ package com.ctm.web.validation;
 
 import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
+import com.ctm.model.settings.Vertical;
 import com.ctm.services.SessionDataService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +11,8 @@ import java.util.List;
 
 public class ResultsTokenValidation<T extends TokenRequest> extends TokenValidation<T> {
 
-    public ResultsTokenValidation(SessionDataService sessionDataService) {
-        super(sessionDataService );
+    public ResultsTokenValidation(SessionDataService sessionDataService, Vertical vertical) {
+        super(sessionDataService , vertical);
     }
 
 
