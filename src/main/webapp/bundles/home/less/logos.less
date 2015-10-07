@@ -1,17 +1,19 @@
+@providers-list: ~"BUDD", ~"VIRG", ~"REIN", ~"EXDD", ~"WOOL";
+
 .companyLogo {
-	.providersHighResSpriteImages(~"home"; ~"logo_"; ~"BUDD", ~"VIRG", ~"REIN", ~"EXDD", ~"WOOL";);
+	.providersHighResSpriteImages(~"home"; ~"logo_"; @providers-list;);
 }
 
 @media (@sm-only) {
 	.featuresMode {
 		.companyLogo {
-			.providersHighResSpriteImages(~"home"; ~"logo_"; ~"BUDD", ~"VIRG", ~"REIN", ~"EXDD", ~"WOOL"; @logo-xs-scale; ~"");
+			.providersHighResSpriteImages(~"home"; ~"logo_"; @providers-list; @logo-xs-scale; ~"");
 		}
 	}
 }
 
 @media (max-width: 480px) {
 	.companyLogo {
-		.providersHighResSpriteImages(~"home"; ~"logo_"; ~"BUDD", ~"VIRG", ~"REIN", ~"EXDD", ~"WOOL"; @logo-xs-scale; ~"");
+		.providersHighResSpriteImages(~"home"; ~"logo_"; @providers-list; @logo-xs-scale; ~"");
 	}
 }

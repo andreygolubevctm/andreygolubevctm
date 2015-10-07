@@ -3,6 +3,8 @@
 	In other journeys (car, home etc), the logo is floated beside the product detail, instead of in its own row.
 	Hence we need to add these extra styles.
 */
+@providers-list: ~"ACTEWAGL", ~"ALINTA_ENERGY", ~"CLICK_ENERGY", ~"ENERGYAUSTRALIA", ~"ONLINE_POWER_AND_GAS", ~"ORIGIN", ~"PEOPLE_ENERGY", ~"POWERSHOP", ~"SIMPLY_ENERGY", ~"SUMO_POWER";
+
 .companyLogo {
   display:block;
   float: none;
@@ -10,11 +12,11 @@
 }
 
 .companyLogo {
-	 .providersHighResSpriteImages(~"utilities"; ~"logo_"; ~"ACTEWAGL", ~"ALINTA_ENERGY", ~"CLICK_ENERGY", ~"ENERGYAUSTRALIA", ~"ONLINE_POWER_AND_GAS", ~"ORIGIN", ~"PEOPLE_ENERGY", ~"POWERSHOP", ~"SIMPLY_ENERGY", ~"SUMO_POWER"; @logo-xs-scale; ~"");
+	 .providersHighResSpriteImages(~"utilities"; ~"logo_"; @providers-list; @logo-xs-scale; ~"");
 }
 
 @media (@sm) {
 	.companyLogo {
-		.providersHighResSpriteImages(~"utilities"; ~"logo_"; ~"ACTEWAGL", ~"ALINTA_ENERGY", ~"CLICK_ENERGY", ~"ENERGYAUSTRALIA", ~"ONLINE_POWER_AND_GAS", ~"ORIGIN", ~"PEOPLE_ENERGY", ~"POWERSHOP", ~"SIMPLY_ENERGY", ~"SUMO_POWER"; 1; ~"");
+		.providersHighResSpriteImages(~"utilities"; ~"logo_"; @providers-list; @logo-xs-scale; ~"");
 	}
 }
