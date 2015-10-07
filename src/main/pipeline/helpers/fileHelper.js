@@ -38,14 +38,14 @@ var FileHelper = {
      * @param path
      * @returns {*}
      */
-    getFilesFromFolderPath: function(path, useFullPath) {
+    getFilesFromFolderPath: function(filePath, useFullPath) {
         useFullPath = typeof useFullPath !== "undefined" ? useFullPath : true;
 
-        var fileList = fs.readdirSync(path);
+        var fileList = fs.readdirSync(filePath);
 
         if(useFullPath) {
             fileList = fileList.map(function (file) {
-                return path + "/" + file;
+                return path.normalize(filePath + "/" + file);
             });
         }
 
@@ -58,9 +58,9 @@ var FileHelper = {
      * @param path
      * @returns {string}
      */
-    prefixFolderWithPath: function(folder, path) {
-        path = path || config.bundles.dir;
-        return path + "/" + folder;
+    prefixFolderWithPath: function(folder, folderPath) {
+        folderPath = folderPath || config.bundles.dir;
+        return path.normalize(folderPath + "/" + folder);
     }
 };
 

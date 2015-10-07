@@ -10,7 +10,6 @@
 <c:set var="contactName"	value="${go:nameFromXpath(xpath)}_name" />
 <c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
 <c:set var="optIn"			value="${go:nameFromXpath(xpath)}_call" />
-<c:set var="contactNumberText"	value="In case you need assistance" />
 
 <c:set var="val_optin"				value="Y" />
 <c:set var="val_optout"				value="N" />
@@ -69,7 +68,7 @@
 					<field:hidden xpath="${xpath}/emailhistory" />
 				</form_new:row>
 
-				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" helptext="${contactNumberText}" />
+				<group_new:contact_numbers xpath="${xpath}/contactNumber" required="${required}" />
 
 				<%-- Optin fields (hidden) for email and phone --%>
 				<field:hidden xpath="${xpath}/optInEmail" defaultValue="${val_optout}" />

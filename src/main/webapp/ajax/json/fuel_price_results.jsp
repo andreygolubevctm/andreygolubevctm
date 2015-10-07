@@ -61,7 +61,8 @@ ${quoteResults.init(pageContext.request)}
         <c:set var="tranId" value="${data['current/transactionId']}" />
 
         <%-- Load the config and send quotes to the aggregator gadget --%>
-        <c:import var="config" url="/WEB-INF/aggregator/fuel/config.xml" />
+        <jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+        <c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/fuel/config.xml')}" />
         <go:soapAggregator config = "${config}"
             transactionId = "${tranId}"
             xml = "${go:getEscapedXml(data['fuel'])}"

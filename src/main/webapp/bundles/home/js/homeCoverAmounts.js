@@ -11,7 +11,6 @@
 	var moduleEvents = {}, steps = null;
 
 	/* Variables */
-	var initialised = false;
 	var elements = {
 			abovePolicyLimitsElement:		"home_coverAmounts_abovePolicyLimits",
 			abovePolicyLimitsAmount:		".abovePolicyLimitsAmount",
@@ -168,14 +167,13 @@
 	}
 	/* main entrypoint for the module to run first */
 	function initHomeCoverAmounts() {
-		if(!initialised) {
-			initialised = true;
-			log("[HomeCoverAmounts] Initialised"); //purely informational
-			applyEventListeners();
+		log("[HomeCoverAmounts] Initialised"); //purely informational
+		applyEventListeners();
+		$(document).ready(function() {
 			toggleAbovePolicyLimitsAmount(0);
 			togglePersonalEffectsFields(0);
 			updateTotalPersonalEffects();
-		}
+		});
 	}
 
 	meerkat.modules.register('homeCoverAmounts', {

@@ -130,23 +130,26 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 <%-- Get the fund's code/name (e.g. hcf) --%>
 <sql:query var="prodRes">
 			SELECT lower(prov.Text) as Text, prov.ProviderId FROM provider_properties prov
-	JOIN product_master prod on prov.providerId = prod.providerId  
+	JOIN product_master prod on prov.providerId = prod.providerId
 	where prod.productid=?
 	AND prov.propertyId = 'FundCode' LIMIT 1
 	<sql:param value="${productId}" />
 </sql:query>
 <c:if test="${prodRes.rowCount != 0 }">
-	<c:set var="fund" value="${prodRes.rows[0].Text}" />		
+	<c:set var="fund" value="${prodRes.rows[0].Text}" />
 </c:if>
 		</sql:transaction>
 
 		${logger.debug('Queried product properties. {},{}', log:kv('fund', fund), log:kv('productId', productId))}
 
-		<%-- Load the config and send quotes to the aggregator gadget --%>
-<c:import var="config" url="/WEB-INF/aggregator/health_application/${fund}/config.xml" />
-<go:soapAggregator config = "${config}"
-					transactionId = "${tranId}" 
-					xml = "${go:getEscapedXml(data['health'])}" 
+		<%-- This will be deleted once health application is moved to it's own service --%>
+		<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+		<c:set var="configUrl">/WEB-INF/aggregator/health_application/${fund}/config.xml</c:set>
+
+		<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, configUrl)}" />
+		<go:soapAggregator config = "${config}"
+					transactionId = "${tranId}"
+					xml = "${go:getEscapedXml(data['health'])}"
 					var = "resultXml"
 				debugVar="debugXml"
 				validationErrorsVar="validationErrors"
@@ -165,8 +168,8 @@ ${logger.info('Application has been set to pending. {}', log:kv('productId', pro
 									errorMessage="${validationError.message} ${validationError.elementXpath}" errorCode="VALIDATION" />
 					</c:forEach>
 				</c:if>
-<%-- //FIX: turn this back on when you are ready!!!! 
-<%-- Write to the stats database 
+<%-- //FIX: turn this back on when you are ready!!!!
+<%-- Write to the stats database
 <agg:write_stats tranId="${tranId}" debugXml="${debugXml}" />
 --%>
 

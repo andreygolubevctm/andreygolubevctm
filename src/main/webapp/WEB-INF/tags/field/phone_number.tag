@@ -4,17 +4,18 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 			required="true"	rtexprvalue="true"	 description="variable's xpath" %>
-<%@ attribute name="required" 		required="true" rtexprvalue="true" description="is this field required?" %>
-<%@ attribute name="className" 		required="true" rtexprvalue="true"	 description="additional css class attribute" %>
-<%@ attribute name="size"			required="true" rtexprvalue="true"	 description="size of the input" %>
-<%@ attribute name="title"			required="true" rtexprvalue="true"	 description="subject of the input box" %>
-<%@ attribute name="placeHolder"	required="false" rtexprvalue="true"	 description="HTML5 placeholder" %>
-<%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 description="HTML5 placeholder when input not in focus" %>
-<%@ attribute name="allowLandline"	required="true" rtexprvalue="true"	 description="?" %>
-<%@ attribute name="allowMobile"	required="true" rtexprvalue="true"	 description="?" %>
-<%@ attribute name="labelName"		required="false" rtexprvalue="true"	 description="the label to display for validation" %>
-<%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
+<%@ attribute name="xpath" 					required="true"	rtexprvalue="true"	 	description="variable's xpath" %>
+<%@ attribute name="required" 				required="true" rtexprvalue="true" 		description="is this field required?" %>
+<%@ attribute name="className" 				required="true" rtexprvalue="true"		description="additional css class attribute" %>
+<%@ attribute name="size"					required="true" rtexprvalue="true"		description="size of the input" %>
+<%@ attribute name="maxLength"				required="false" rtexprvalue="true"		description="Input field maxLength" %>
+<%@ attribute name="title"					required="true" rtexprvalue="true"	 	description="subject of the input box" %>
+<%@ attribute name="placeHolder"			required="false" rtexprvalue="true"	 	description="HTML5 placeholder" %>
+<%@ attribute name="placeHolderUnfocused"	required="false" rtexprvalue="true"	 	description="HTML5 placeholder when input not in focus" %>
+<%@ attribute name="allowLandline"			required="true" rtexprvalue="true"	 	description="?" %>
+<%@ attribute name="allowMobile"			required="true" rtexprvalue="true"	 	description="?" %>
+<%@ attribute name="labelName"				required="false" rtexprvalue="true"	 	description="the label to display for validation" %>
+<%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 	description="Used for passing in additional attributes" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -45,6 +46,10 @@
 	<c:set var="sizeAttribute" value=' size="${size}"' />
 </c:if>
 
+<c:if test="${empty maxLength}">
+	<c:set var="maxLength" value='14' />
+</c:if>
+
 <c:if test="${not empty placeHolder}">
 	<c:set var="placeHolderAttribute" value=' placeholder="${placeHolder}"' />
 	<c:set var="className" value="${className} placeholder" />
@@ -72,4 +77,4 @@
 		class="sessioncamexclude form-control contact_telno phone ${className} ${phoneTypeClassName} ${name}"
 		value="${valueInput}" pattern="[0-9]*" ${sizeAttribute}${placeHolderAttribute}${requiredAttribute}
 		${additionalAttributes}
-		maxlength="14">
+		maxlength="$maxLength">
