@@ -180,7 +180,8 @@
 				// if coming from brochure site and all prefilled data are valid, let's hide the fields
 				if (meerkat.site.isFromBrochureSite === true) {
 
-					var $healthSitHealthCvr = $('#health_situation_healthCvr'),
+					var $healthSitLocation = $('#health_situation_location'),
+						$healthSitHealthCvr = $('#health_situation_healthCvr'),
 						$healthSitHealthSitu = $('#health_situation_healthSitu');
 
 					if($healthSitHealthCvr.isValid()) {
@@ -189,9 +190,8 @@
 					if($healthSitHealthSitu.isValid()) {
 						$healthSitHealthSitu.attr('data-attach', 'true').parents('.fieldrow').hide();
 					}
-
-					if($('#health_situation_location').isValid(true)) {
-						$('#health_situation_location').attr('data-attach', 'true').parents('.fieldrow').hide();
+					if($healthSitLocation.isValid(true)) {
+						$healthSitLocation.attr('data-attach', 'true').parents('.fieldrow').hide();
 					}
 				}
 			}
