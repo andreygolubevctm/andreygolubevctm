@@ -26,6 +26,10 @@
 			otherPhone:{
 				FIELD_CHANGED: "OTHERPHONE_FIELD_CHANGED",
 				OPTIN_FIELD_CHANGED: "OTHERPHONE_OPTIN_FIELD_CHANGED"
+			},
+			flexiPhone:{
+				FIELD_CHANGED: "FLEXIPHONE_FIELD_CHANGED",
+				OPTIN_FIELD_CHANGED: "FLEXIPHONE_OPTIN_FIELD_CHANGED"
 			}
 		}
 	},
@@ -85,6 +89,7 @@
 		// work out which field is the input one (for fields like mobile number which have both a hidden field for the value and an input field)
 		var $fieldElement = getInputField(fieldDetails);
 		if( typeof fieldDetails.alternateOtherField !== "undefined" && fieldDetails.alternateOtherField){
+
 			$fieldElement = fieldDetails.$otherField;
 		}
 
@@ -311,10 +316,13 @@
 
 		if( typeof fieldEntity.$fieldInput !== "undefined" ){
 			$fieldElement = fieldEntity.$fieldInput;
-		} else {
+		}
+		else if( typeof fieldEntity.$otherFieldInput !== "undefined" ){
+			$fieldElement = fieldEntity.$otherFieldInput;
+		}
+		else {
 			$fieldElement = fieldEntity.$field;
 		}
-
 		return $fieldElement;
 	}
 
@@ -347,12 +355,21 @@
 					var splitName = updatedElementValue.split(" ");
 					$fieldElement.val(splitName[0]);
 					laterFieldDetails.$otherField.val( splitName.slice(1).join(" ") );
-				} else if(fieldDetails.type === "alternatePhone" && typeof laterFieldDetails.$otherField !== "undefined") {
+				} else if(fieldDetails.type === "alternatePhone"  && typeof laterFieldDetails.$otherField !== "undefined") {
 					var testableNumber = updatedElementValue.replace(/\D/g, "");
 					if(testableNumber.match(/^(04|614|6104)/g)) {
 						$fieldElement.val(updatedElementValue);
 					} else {
 						laterFieldDetails.$otherField.val(updatedElementValue);
+					}
+				} else if(fieldDetails.type === "flexiPhone" && typeof laterFieldDetails.$otherField !== "undefined") {
+					var flexiNumber = updatedElementValue.replace(/\D/g, "");
+					if (flexiNumber.match(/^(04|614|6104)/g)) {
+						$fieldElement.val(updatedElementValue);
+						laterFieldDetails.$otherFieldInput.val("").blur();
+					} else {
+						laterFieldDetails.$otherField.add(laterFieldDetails.$otherFieldInput).val(updatedElementValue).blur();
+						$fieldElement.val("");
 					}
 				} else  {
 					$fieldElement.val( updatedElementValue ).attr("data-previous-value", updatedElementValue);

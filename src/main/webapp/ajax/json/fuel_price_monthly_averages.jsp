@@ -8,19 +8,18 @@
 
 <security:populateDataFromParams rootPath="fuel" />
 
-
 <%-- Add the postcode to the databucket --%>
 <c:forTokens items="${data.fuel.location}" delims=" " var="locationToken">
-		<c:catch var="error">
-			<c:set var="temp"><fmt:formatNumber value="${locationToken}" type="number" /></c:set>
-		</c:catch>
-		<c:if test="${empty error && locationToken != ''}">
-			<go:setData dataVar="data" xpath="fuel/postcode" value="${locationToken}" />
-		</c:if>
-			<c:if test="${error}">
-				${logger.warn('Exception formatting locationToken to number. {}', log:kv('locationToken',locationToken), error)}
-			</c:if>
+	<c:if test="${locationToken != '' && locationToken.matches('[0-9]+')}">
+		<go:setData dataVar="data" xpath="fuel/postcode" value="${locationToken}" />
+	</c:if>
 </c:forTokens>
+
+<%-- Log a warning if the postcode couldn't be set --%>
+<c:if test="${empty data.fuel.postcode}">
+	<c:set var="error"><fmt:formatNumber value="${data.fuel.location}" type="number" /></c:set>
+	${logger.warn('Exception formatting locationToken to number. {}', log:kv('locationToken',data.fuel.location), error)}
+</c:if>
 
 <%-- RECOVER: if things have gone pear shaped --%>
 <c:if test="${empty data.current.transactionId}">
@@ -33,7 +32,8 @@
 <c:set var="tranId" value="${data['current/transactionId']}" />
 
 <%-- Load the config and send quotes to the aggregator gadget --%>
-<c:import var="config" url="/WEB-INF/aggregator/fuel/config_averages.xml" />
+<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/fuel/config_averages.xml')}" />
 <go:soapAggregator config = "${config}"
 					transactionId = "${tranId}"
 					xml = "${go:getEscapedXml(data['fuel'])}"

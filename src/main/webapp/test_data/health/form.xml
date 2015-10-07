@@ -11,6 +11,7 @@
 			<otherinput>(07) 3333 4444</otherinput>
 			<other>0733334444</other>
 		</contactNumber>
+		<flexiContactNumber>(0404) 123 123</flexiContactNumber>
 		<email>preload.testing@comparethemarket.com.au</email>
 		<optInEmail>Y</optInEmail>
 		<call>Y</call>
@@ -36,7 +37,7 @@
 		<healthSitu>FK</healthSitu>
 	</benefits>
 	<healthCover>
-		<income>1150000</income>
+		<income>0</income>
 		<dependants>12</dependants>
 		<rebate>N</rebate>
 		<primary>
@@ -151,10 +152,7 @@
 			<fullAddress>10 Golding St.,Toowong QLD 4066</fullAddress>
 			<fullAddressLineOne>10 Golding St</fullAddressLineOne>
 		</address>
-		<mobileinput>(0412) 345 678</mobileinput>
-		<mobile>0412345678</mobile>
-		<otherinput>(07) 3234 5678</otherinput>
-		<other>0732345678</other>
+
 		<email>preload.testing@comparethemarket.com.au</email>
 		<optInEmail></optInEmail>
 		<dependants>

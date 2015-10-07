@@ -1,7 +1,8 @@
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
-	meerkatEvents = meerkat.modules.events,
+		meerkatEvents = meerkat.modules.events,
+		exception = meerkat.logging.exception,
 	moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
@@ -713,7 +714,9 @@
 		// the category names are generally arbitrary but some are used specifically and should use those types (email, name, potentially phone in the future)
 		var contactDetailsFields = {
 			name:[
-				{ $field: $("#health_contactDetails_name") },
+				{
+					$field: $("#health_contactDetails_name")
+				},
 				{
 					$field: $("#health_application_primary_firstname"),
 					$otherField: $("#health_application_primary_surname")
@@ -863,6 +866,12 @@
 
 		}
 
+		if(!fetchRates(postData, true, callback)) {
+			exception("Failed to fetch rates");
+		}
+	}
+
+	function fetchRates(postData, canSetRates, callback) {
 		// Check if there is enough data to ask the server.
 		var coverTypeHasPartner = hasPartner();
 		if(postData.cover === '') return false;
@@ -880,7 +889,7 @@
 		if(!postData.primary_dob.match(dateRegex)) return false;
 		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
-		meerkat.modules.comms.post({
+		return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",
 			data: postData,
 			cache:true,

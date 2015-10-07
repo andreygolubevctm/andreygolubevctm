@@ -151,7 +151,6 @@ public class ProviderFilter {
 								case "merge-root":
 								case "merge-xsl":
 								case "config-dir":
-								case "error-dir":
 								case "debug-dir":
 								case "validation-file":
 										writer.writeStartElement(xmlReader.getLocalName());
@@ -178,7 +177,6 @@ public class ProviderFilter {
 								case "merge-root":
 								case "merge-xsl":
 								case "config-dir":
-								case "error-dir":
 								case "debug-dir":
 								case "validation-file":
 									setNodeDetails(xmlReader, xmlValue, attrCount);

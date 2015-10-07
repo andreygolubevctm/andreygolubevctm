@@ -17,6 +17,7 @@
     "shared/moreInfo",
     "shared/saveQuote",
     "shared/resultsRankings",
-    "shared/dropdownInteractive"
+    "shared/dropdownInteractive",
+    "shared/leadFeed"
   ]
 }
