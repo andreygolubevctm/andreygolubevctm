@@ -12,10 +12,7 @@ gracefulFs.gracefulify(realFs);
 // Important!
 // The watch method used by gulp plugins doesn't seem to appreciate having so many active listeners
 // To get around it, we set the default number of listeners to be greater than the default (10)
-require('events').EventEmitter.prototype._maxListeners = 200;
-
-// TODO: Create task for compiling plugins
-// TODO: Create task for sprites (see Mark)
+require('events').EventEmitter.prototype._maxListeners = 100;
 
 var gulp = require("gulp"),
     fs = require("fs-extra"),
