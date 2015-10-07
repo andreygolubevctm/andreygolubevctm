@@ -16,7 +16,7 @@ function BundleTasks(gulp) {
 
             var bundleTasks = [];
 
-            if(lessFiles.length || typeof bundlesCollection[bundle].extends !== "undefined")
+            if(lessFiles.length)
                 bundleTasks.push("less:" + bundle);
 
             if(jsFiles.length)
