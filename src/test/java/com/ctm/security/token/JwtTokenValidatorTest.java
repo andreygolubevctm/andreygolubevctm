@@ -1,20 +1,16 @@
-package com.ctm.security;
+package com.ctm.security.token;
 
 import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
-import com.ctm.security.token.exception.InvalidTokenException;
 import com.ctm.security.token.config.TokenCreatorConfig;
-import com.ctm.security.token.JwtTokenCreator;
-import com.ctm.security.token.JwtTokenValidator;
+import com.ctm.security.token.exception.InvalidTokenException;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 
 public class JwtTokenValidatorTest {
@@ -28,8 +24,8 @@ public class JwtTokenValidatorTest {
 
     @Before
     public void setup() {
-        request = mock(HttpServletRequest.class);
-        when(request.getLocalAddr()).thenReturn("10.0.0.10000");
+        request = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(request.getLocalAddr()).thenReturn("10.0.0.10000");
         transactionVerifier = new JwtTokenValidator( secretKey);
         tokenRequest  = new TokenRequest(){
 
@@ -73,7 +69,7 @@ public class JwtTokenValidatorTest {
 
         try {
             transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.CALL_FEED));
-            fail("Exception expected");
+            Assert.fail("Exception expected");
         } catch (InvalidTokenException e) {
             // expected
         }
@@ -81,7 +77,7 @@ public class JwtTokenValidatorTest {
         tokenRequest.setTransactionId(3000L);
         try {
             transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.BROCHURE));
-            fail("Exception expected");
+            Assert.fail("Exception expected");
         } catch (InvalidTokenException e) {
             // expected
         }

@@ -1,12 +1,10 @@
-package com.ctm.security;
+package com.ctm.security.token;
 
 
 import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
-import com.ctm.security.token.exception.InvalidTokenException;
 import com.ctm.security.token.config.TokenCreatorConfig;
-import com.ctm.security.token.JwtTokenCreator;
-import com.ctm.security.token.JwtTokenValidator;
+import com.ctm.security.token.exception.InvalidTokenException;
 import org.junit.Before;
 import org.junit.Test;
 
