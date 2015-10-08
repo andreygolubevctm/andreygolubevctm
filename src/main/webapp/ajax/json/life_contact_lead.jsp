@@ -30,7 +30,8 @@
 				<go:setData dataVar="data" xpath="${vertical}/quoteAction" value="start" />
 
 				<%-- Load the config and send quotes to the aggregator gadget --%>
-				<c:import var="config" url="/WEB-INF/aggregator/life/config_contact_lead.xml" />
+				<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+				<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/life/config_contact_lead.xml')}" />
 				<go:soapAggregator 	config = "${config}"
 									transactionId = "${tranId}"
 									xml = "${go:getEscapedXml(data[fn:toLowerCase(vertical)])}"
