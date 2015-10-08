@@ -4,12 +4,13 @@
 -- Server OS:                    Linux
 -- HeidiSQL Version:             9.1.0.4867
 -- --------------------------------------------------------
-use ctm;
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+USE ctm;
 
 -- Dumping structure for table ctm.export_product_capping_exclusions
 DROP TABLE IF EXISTS `export_product_capping_exclusions`;
