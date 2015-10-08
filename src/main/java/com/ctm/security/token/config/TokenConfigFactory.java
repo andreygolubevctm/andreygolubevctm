@@ -16,17 +16,13 @@ public class TokenConfigFactory {
             if (!RequestUtils.isTestIp(request)) {
                 switch (touchType) {
                     case NEW:
+                        // no minimum seconds until next token if preload or loading a quote
                         if (!isPreload(request) && !isAction(request)) {
-                            // no minimum seconds until next token if preload or loading a quote
-                            switch (vertical.getType()) {
-                                case HEALTH:
-                                    secondsUntilToken = secondsUtilNextTokenConfig;
-                                    break;
-                                case FUEL:
-                                    secondsUntilToken = getSecondsUntilNextTokenFuel(secondsUtilNextTokenConfig, request);
-                                    break;
-                            }
+                            secondsUntilToken = secondsUtilNextTokenConfig;
                         }
+                        break;
+                    default:
+                        secondsUntilToken = secondsUtilNextTokenConfig;
                         break;
                 }
             }
@@ -42,16 +38,6 @@ public class TokenConfigFactory {
     private static boolean isPreload(HttpServletRequest request) {
         String preLoad = request.getParameter("preload");
         return preLoad != null && preLoad.equals("true");
-    }
-
-    public static Long getSecondsUntilNextTokenFuel(Long secondsUtilNextTokenConfig, HttpServletRequest request) {
-        String fuelLocation = request.getParameter("fuel_location");
-        String fuelType = request.getParameter("fueltype");
-        if(  (fuelLocation != null && !fuelLocation.isEmpty()) && (fuelType != null && !fuelType.isEmpty())) {
-            return 0L;
-        } else {
-            return secondsUtilNextTokenConfig;
-        }
     }
 
     public static String getJwtSecretKey(Vertical vertical) {
