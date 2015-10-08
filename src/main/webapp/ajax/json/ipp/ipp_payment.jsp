@@ -9,7 +9,8 @@
 <%-- add external testing ip address checking and loading correct config and send quotes --%>
 <c:set var="clientIpAddress" value="${pageContext.request.remoteAddr}" />
 <c:set var="tranId" value="${data.current.transactionId}" />
-<c:import var="config" url="/WEB-INF/aggregator/health_application/bup/config_token.xml" />
+<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/bup/config_token.xml')}" />
 
 <%--
 	There are issues with this working the first time due to security constraints

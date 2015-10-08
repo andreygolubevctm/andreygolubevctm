@@ -45,7 +45,6 @@ public class ProviderFilterTest {
 			"\t<merge-root>soap-response</merge-root>\n" +
 			"\t<merge-xsl>somemergesxlfile</merge-xsl>\n" +
 			"\t<config-dir>someconfigdir</config-dir>\n" +
-			"\t<error-dir>someerrordir</error-dir>\n" +
 			"\t<debug-dir>somedebuglocation</debug-dir>\n" +
 			"\t<validation-file>somevalidationlocation</validation-file>\n" +
 			"\t<service name='AGIS' type='url-encoded'>\n" +
@@ -111,7 +110,6 @@ public class ProviderFilterTest {
 				"\t<merge-root>soap-response</merge-root>\n" +
 				"\t<merge-xsl>somemergesxlfile</merge-xsl>\n" +
 				"\t<config-dir>someconfigdir</config-dir>\n" +
-				"\t<error-dir>someerrordir</error-dir>\n" +
 				"\t<debug-dir>somedebuglocation</debug-dir>\n" +
 				"\t<validation-file>somevalidationlocation</validation-file>\n" +
 				"\t<service name='VIRG' type='url-encoded'>\n" +
@@ -145,7 +143,6 @@ public class ProviderFilterTest {
 				"\t<merge-root>soap-response</merge-root>\n" +
 				"\t<merge-xsl>somemergesxlfile</merge-xsl>\n" +
 				"\t<config-dir>someconfigdir</config-dir>\n" +
-				"\t<error-dir>someerrordir</error-dir>\n" +
 				"\t<debug-dir>somedebuglocation</debug-dir>\n" +
 				"\t<validation-file>somevalidationlocation</validation-file>\n" +
 				"\t<service name='VIRG' type='url-encoded'>\n" +

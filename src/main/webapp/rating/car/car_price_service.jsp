@@ -81,7 +81,8 @@
 
 		<c:set var="xmlData" value="${go:getEscapedXml(data['temp/quote'])}" />
 
-		<c:import var="config" url="/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml" />
+		<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+		<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/car/Hollard/config_${service}_quote.xml')}" />
 		<go:soapAggregator config="${config}" transactionId="${tranId}" xml="${xmlData}" var="resultXml" debugVar="debugXml" />
 		<c:out value="${resultXml}" escapeXml="false" />
 
