@@ -159,16 +159,16 @@
 
 		var pluginDef = $.Deferred();
 		// save if already exists with cache.
-		if (!!jQuery.fn[plugin] || !!window[plugin] || !!window.meerkat.modules[plugin]) {
+		if (!!jQuery.fn[plugin] || !!window[plugin]) {
 			pluginDef.resolve();
 			return pluginDef.promise();
 		}
 		var pluginInterval = setInterval(function() {
-			if (!!jQuery.fn[plugin] || !!window[plugin] || !!window.meerkat.modules[plugin])
+			if (!!jQuery.fn[plugin] || !!window[plugin])
 				pluginDef.resolve();
 		}, 300);
 
-		// give up after 15 seconds
+		// give up after 10 seconds
 		setTimeout(function() {
 			clearInterval(pluginInterval);
 		}, 15000);

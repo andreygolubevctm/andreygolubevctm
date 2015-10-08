@@ -1,7 +1,6 @@
 {
   "brandCodes": ["ctm", "cc", "choo"],
   "dependencies": [
-    "plugins/scrollTo",
     "shared/results",
     "shared/features",
     "shared/validation",
@@ -22,7 +21,6 @@
     "shared/regoLookup",
     "shared/saveQuote",
     "shared/resultsRankings",
-    "shared/leadFeed",
-    "shared/formNumberFormatInputs"
+    "shared/leadFeed"
   ]
 }

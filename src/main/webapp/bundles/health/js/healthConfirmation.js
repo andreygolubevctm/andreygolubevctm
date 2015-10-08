@@ -88,7 +88,6 @@
 				confirmationProduct._selectedFrequency = confirmationProduct.frequency;
 
 				fillTemplate();
-				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 
 				/// TODO: Fix this -why is it needed though?
 				//meerkat.modules.healthMoreInfo.applyEventListeners();

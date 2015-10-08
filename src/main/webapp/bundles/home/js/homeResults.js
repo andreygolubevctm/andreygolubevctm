@@ -19,8 +19,6 @@
 
 		$component = $('#resultsPage');
 
-		initCompare();
-
 		initResults();
 
 		Features.init();
@@ -662,7 +660,7 @@
 		meerkat.modules.homeMoreInfo.runDisplayMethod();
 	}
 
-	function initCompare(){
+	function init(){
 		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
 
 		// Elements to lock when entering compare mode
@@ -680,6 +678,7 @@
 	}
 
 	meerkat.modules.register('homeResults', {
+		init: init,
 		initPage: initPage,
 		onReturnToPage: onReturnToPage,
 		get: get,

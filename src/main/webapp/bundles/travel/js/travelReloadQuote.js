@@ -3,6 +3,10 @@
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events;
 
+	function initReloadQuote() {
+
+	}
+
 	function loadQuote() {
 
 		var params = getURLVars(window.location.search),
@@ -52,6 +56,7 @@
 	}
 
 	meerkat.modules.register("travelReloadQuote", {
+		init: initReloadQuote,
 		loadQuote: loadQuote
 	});
 

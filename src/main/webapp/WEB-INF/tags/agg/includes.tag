@@ -29,7 +29,14 @@
 <c:if test="${kampyle eq true}">
 	<%-- Check whether Kampyle is enabled for this brand/vertical --%>
 	<c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">
-		<core:kampyle formId="112902" />
+	<c:choose>
+			<c:when test="${newKampyle eq true}">
+				<core_new:kampyle formId="112902" />
+		</c:when>
+		<c:otherwise>
+				<core:kampyle formId="112902" />
+		</c:otherwise>
+	</c:choose>
 	</c:if>
 </c:if>
 

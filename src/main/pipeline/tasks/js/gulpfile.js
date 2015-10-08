@@ -80,6 +80,9 @@ function JSTasks(gulp) {
                 bundleTaskOnLoad = bundleTask + ":onload",
                 bundleTaskAsync = bundleTask + ":async";
 
+            // Tasks to be run on watch of bundle file change
+            var watchTasks = [];
+
                 // Array of dependencies file paths
             var dependenciesFileArray = bundles.getDependencyFiles(bundle, "js", true),
                 // Array of bundle file paths
@@ -91,34 +94,47 @@ function JSTasks(gulp) {
                 // Array of files to be loaded after page load
                 deferredFileArray = [];
 
+            // Total combined JS (ignoring before/after page load)
+            gulp.task(bundleTask, function (done) {
+                return gulpAction(bundleTask, completeFileArray, bundle, done);
+            });
+
+            bundleTasks.push(bundleTask);
+            watchTasks.push(bundleTask);
+
             // Look for files that should be included on load and put their paths in the appropriate array
             for (var i = 0; i < completeFileArray.length; i++) {
                 var filePath = completeFileArray[i];
-                if (filePath.match(/(\.deferred\.js)/)) {
-                    deferredFileArray.push(filePath);
-                } else {
+                if (filePath.match(/(\.onload\.js)/)) {
                     onLoadFileArray.push(filePath);
+                } else {
+                    deferredFileArray.push(filePath);
                 }
             }
 
-            // JS loaded on page load
-            gulp.task(bundleTaskOnLoad, function (done) {
-                var fileName = bundle;
-                return gulpAction(bundleTaskOnLoad, onLoadFileArray, fileName, done);
-            });
+            if (onLoadFileArray.length) {
+                // JS loaded on page load
+                gulp.task(bundleTaskOnLoad, function (done) {
+                    var fileName = bundle + ".onload";
+                    return gulpAction(bundleTaskOnLoad, onLoadFileArray, fileName, done);
+                });
 
-            // JS loaded after page load
-            gulp.task(bundleTaskAsync, function (done) {
-                var fileName = bundle + ".deferred";
-                return gulpAction(bundleTaskAsync, deferredFileArray, fileName, done);
-            });
+                bundleTasks.push(bundleTaskOnLoad);
+                watchTasks.push(bundleTaskOnLoad);
 
-            gulp.task(bundleTask, [bundleTaskOnLoad, bundleTaskAsync]);
-            bundleTasks.push(bundleTask);
+                // JS loaded after page load
+                gulp.task(bundleTaskAsync, function (done) {
+                    var fileName = bundle + ".deferred";
+                    return gulpAction(bundleTaskAsync, deferredFileArray, fileName, done);
+                });
+
+                bundleTasks.push(bundleTaskAsync);
+                watchTasks.push(bundleTaskAsync);
+            }
 
             // Files paths to watch
             var bundleDependencies = bundles.getWatchableBundlesFilePaths(bundle);
-            gulp.watch(bundleDependencies, [bundleTask]);
+            gulp.watch(bundleDependencies, watchTasks);
         })(bundle);
     }
 

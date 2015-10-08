@@ -12,7 +12,6 @@
 	var moduleEvents = {}, steps = null;
 
 	/* Variables */
-	var initialised = false;
 	var elements = {
 			name:				"home_businessActivity",
 			businessRooms:		".businessRooms",
@@ -79,14 +78,13 @@
 	}
 	/* main entrypoint for the module to run first */
 	function initHomeBusiness() {
-		if(!initialised) {
-			initialised = true;
-			log("[HomeBusiness] Initialised"); //purely informational
-			applyEventListeners();
+		log("[HomeBusiness] Initialised"); //purely informational
+		applyEventListeners();
+		$(document).ready(function() {
 			toggleBusinessFields(0);
 			toggleEmployeeAmount(0);
 			toggleBusinessType(0);
-		}
+		});
 	}
 
 	meerkat.modules.register('homeBusiness', {
