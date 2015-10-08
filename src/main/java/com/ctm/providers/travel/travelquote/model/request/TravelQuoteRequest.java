@@ -15,7 +15,7 @@ public class TravelQuoteRequest {
     private boolean mobileUrls = false;
     private int numberOfAdults;
     private int numberOfChildren;
-    private List<String> travellersDOBs;
+    private List<String> travellersDOB;
     private ArrayList<String> providerFilter = new ArrayList<String>();
     private SingleTripDetails singleTripDetails;
 
@@ -54,12 +54,12 @@ public class TravelQuoteRequest {
         this.numberOfChildren = numberOfChildren;
     }
 
-    public List<String> getTravellersDOBs() {
-        return travellersDOBs;
+    public List<String> getTravellersDOB() {
+        return travellersDOB;
     }
 
-    public void setTravellersDOBs(List<String> travellersDOBs) {
-        this.travellersDOBs = travellersDOBs;
+    public void setTravellersDOB(List<String> travellersDOBs) {
+        this.travellersDOB = travellersDOBs;
     }
 
     public ArrayList<String> getProviderFilter() {
