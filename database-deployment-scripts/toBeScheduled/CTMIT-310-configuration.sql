@@ -31,7 +31,7 @@ VALUES
 set @vertical = '9';
 INSERT INTO `ctm`.`configuration`
 (`configCode`,`environmentCode`,`styleCodeId`,`verticalId`,`configValue`)
-VALUES('jwtSecondsUntilNextTokenN','0','0',@vertical,'5');
+VALUES('jwtSecondsUntilNextTokenN','0','0',@vertical,'0');
 INSERT INTO `ctm`.`configuration`
 (`configCode`,`environmentCode`,`styleCodeId`,`verticalId`,`configValue`)
 VALUES('jwtSecondsUntilNextTokenR','0','0',@vertical,'5');

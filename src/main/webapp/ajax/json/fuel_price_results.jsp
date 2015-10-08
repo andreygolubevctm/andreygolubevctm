@@ -90,7 +90,8 @@ ${quoteResults.init(pageContext.request, pageSettings)}
 
                 <%-- Add the results to the current session data --%>
                 <go:setData dataVar="data" xpath="soap-response" value="*DELETE"/>
-                ${go:XMLtoJSON(resultXml)}
+                <c:set var="resultJson">${go:XMLtoJSON(resultXml)}</c:set>
+                ${quoteResults.createResponse(data.text['current/transactionId'], resultJson,pageContext.request)}
             </c:when>
             <c:otherwise>
                 <agg:outputValidationFailureJSON validationErrors="${validationErrors}" origin="fuel_price_results.jsp"/>

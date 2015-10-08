@@ -56,7 +56,7 @@ public class JwtTokenCreator {
         Claims decodedPayload = null;
         try {
              decodedPayload = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-        } catch (PrematureJwtException e) {
+        } catch (PrematureJwtException | SignatureException e) {
             // ignore as this is most likely to do with session poke calling before token is valid
         } catch (ClaimJwtException  e) {
             LOGGER.warn("Failed to update token. {},{}", kv("originalToken", token), kv("timeoutSeconds", timeoutSeconds), e);
