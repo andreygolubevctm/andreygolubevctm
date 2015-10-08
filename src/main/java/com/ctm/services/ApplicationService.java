@@ -1,18 +1,5 @@
 package com.ctm.services;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.ctm.cache.ApplicationCacheManager;
-
 import com.ctm.dao.BrandsDao;
 import com.ctm.dao.ConfigSettingsDao;
 import com.ctm.dao.VerticalsDao;
@@ -22,7 +9,10 @@ import com.ctm.model.settings.Brand;
 import com.ctm.model.settings.ConfigSetting;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.elasticsearch.AddressSearchService;
+import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import javax.servlet.ServletRequest;
@@ -33,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -191,7 +182,13 @@ public class ApplicationService {
 	 * @return Vertical code
 	 */
 	public static String getVerticalCodeFromRequest(ServletRequest request) {
-		return (String) request.getAttribute("verticalCode");
+		final String[] verticalCode = {(String) request.getAttribute("verticalCode")};
+		if(verticalCode[0] == null || verticalCode[0].isEmpty()){
+			Optional<Vertical.VerticalType> verticalFromRequest = RequestUtils.getVerticalFromRequest(request);
+			verticalFromRequest.ifPresent(vertical -> verticalCode[0] = vertical.getCode());
+		}
+
+		return verticalCode[0];
 	}
 
 	/**

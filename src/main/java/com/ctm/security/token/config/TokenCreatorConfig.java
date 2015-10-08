@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class TokenCreatorConfig {
 
     public static final String TRANSACTION_ID_CLAIM = "transactionId";
+    public static final String TOUCH_CLAIM = "touch";
     public static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 
     private Long secondsUntilToken = 0L;

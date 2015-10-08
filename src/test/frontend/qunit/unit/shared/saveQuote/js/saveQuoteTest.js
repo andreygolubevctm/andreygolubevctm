@@ -113,6 +113,7 @@ $(function () {
 		// mock out send email call
 		var emailSent = false;
 		var data = null;
+		var commsCurrent =  meerkat.modules.comms;
 		meerkat.modules.comms = {
 				post : function(request){
 					data = request.data;
@@ -153,6 +154,7 @@ $(function () {
 			assert.equal(returnedpassword, password, "checking password");
 			assert.equal(returnedpasswordConfirm, password, "checking password");
 		}
+		meerkat.modules.comms = commsCurrent;
 	});
 
 

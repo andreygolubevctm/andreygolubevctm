@@ -1,4 +1,5 @@
 $(function () {
+	var commsCurrent = meerkat.modules.comms;
 // to test open the following in your browser
 // file:///C:/Dev/web_ctm/main/webapp/framework/modules/js/tests/index.html?notrycatch=true
 
@@ -60,7 +61,6 @@ $(function () {
 		$emailInput.change();
 
 	});
-
 	QUnit.test( "should send email", function(assert) {
 		Results.init({
 			frequency: frequency
@@ -68,6 +68,7 @@ $(function () {
 		meerkat.modules.emailBrochures.setup(settings);
 		var coverType="";
 		var marketing="Y";
+
 		var email = 'preload.testing@comparethemarket.com.au';
 
 		// mock out server call
@@ -79,7 +80,6 @@ $(function () {
 				settings.onSuccess(result);
 			}
 		};
-
 		// enter email address
 		$emailInput.val(email);
 		$emailInput.change();
@@ -89,13 +89,20 @@ $(function () {
 		var emailSent = false;
 		var data = null;
 		meerkat.modules.comms = {
-				post : function(request){
-					data = request.data;
-					var result = {
-						transactionId : 100000000
-					};
+				post : function(request)
+		{
+			data = request.data;
+			var result = {
+				transactionId: 100000000
+			};
+			if (typeof request !== 'undefined' ) {
+				if (typeof request.onSuccess !== 'undefined' ) {
 					request.onSuccess(result);
+				}
+				if (typeof request.onComplete !== 'undefined' ) {
 					request.onComplete(result);
+				}
+			}
 					emailSent = true;
 				}
 		};
@@ -149,6 +156,7 @@ $(function () {
 	setTimeout(1000);
 	// test clean up
 	$form.remove();
+	meerkat.modules.comms = commsCurrent;
 });
 
 

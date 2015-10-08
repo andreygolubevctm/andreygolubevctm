@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.logging.LoggingArguments.kv;
 
@@ -158,19 +159,13 @@ public class RequestUtils {
         return value;
     }
 
-    /**
-     * Sets all parameters to MDC
-     * Note: this only set variables on the current thread. This will need to be called on each thread
-     * call clearLoggingVariables() after thread is no longer being executed to prevent the logging from being in
-     * an invalid state when a thread is being reused.
-     */
-    public static Vertical.VerticalType getVerticalFromRequest(ServletRequest request) {
+    public static Optional<Vertical.VerticalType> getVerticalFromRequest(ServletRequest request) {
         String verticalCode = request.getParameter(VERTICAL_PARAM);
-        Vertical.VerticalType vertical = null;
+        Optional<Vertical.VerticalType> verticalMaybe = Optional.empty();
         if(verticalCode != null) {
-            vertical =  Vertical.VerticalType.findByCode(verticalCode);
+            verticalMaybe =  Optional.ofNullable(Vertical.VerticalType.findByCode(verticalCode));
         }
-        return vertical;
+        return verticalMaybe;
     }
 
     public static String getTokenFromRequest(HttpServletRequest request) {

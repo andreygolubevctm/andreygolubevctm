@@ -14,13 +14,16 @@ public class NewPage {
     private boolean enabled;
 
     public String createTokenForNewPage(HttpServletRequest request, Long transactionId, PageSettings pageSettings) {
-        Touch.TouchType touchType = Touch.TouchType.NEW;
-        long timeoutSec = sessionDataService.getClientSessionTimeoutSeconds(request);
-        if(timeoutSec == -1){
-            timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request);
-        }
+        if(enabled) {
+            Touch.TouchType touchType = Touch.TouchType.NEW;
+            long timeoutSec = sessionDataService.getClientSessionTimeoutSeconds(request);
+            if (timeoutSec == -1) {
+                timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request);
+            }
 
-        return TokenValidation.createToken(request, transactionId, pageSettings.getVertical(), touchType, timeoutSec);
+            return TokenValidation.createToken(request, transactionId, pageSettings.getVertical(), touchType, timeoutSec);
+        }
+        return "";
     }
 
     public void init(PageSettings pageSettings){

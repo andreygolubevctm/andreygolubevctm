@@ -44,9 +44,11 @@ public class SessionDataService {
 
 	private static final int SESSION_EXPIRY_DIFFERENCE = 5;
 	private JwtTokenCreator transactionVerifier;
+	private PageSettings pageSettings;
 
-	public SessionDataService(JwtTokenCreator transactionVerifier) {
+	public SessionDataService(JwtTokenCreator transactionVerifier, PageSettings pageSettings) {
 		this.transactionVerifier = transactionVerifier;
+		this.pageSettings = pageSettings;
 	}
 
 	public SessionDataService() {
@@ -404,7 +406,9 @@ public class SessionDataService {
 	public Optional<String> updateToken(HttpServletRequest request)  {
 		Optional<String> verificationTokenMaybe = Optional.empty();
 		try {
-			PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
+			if(pageSettings == null) {
+				 pageSettings = SettingsService.getPageSettingsForPage(request);
+			}
 			Vertical vertical = pageSettings.getVertical();
 			if(TokenConfigFactory.getEnabled(vertical)) {
 				TokenCreatorConfig tokenCreatorConfig = new TokenCreatorConfig();
@@ -415,7 +419,7 @@ public class SessionDataService {
 				String currentVerificationToken = RequestUtils.getTokenFromRequest(request);
 
 				if (currentVerificationToken != null && !currentVerificationToken.isEmpty()) {
-					verificationTokenMaybe = Optional.of(transactionVerifier.refreshToken(currentVerificationToken, timeoutSeconds));
+					verificationTokenMaybe = Optional.ofNullable(transactionVerifier.refreshToken(currentVerificationToken, timeoutSeconds));
 				}
 			}
 		} catch (DaoException | ConfigSettingException e) {

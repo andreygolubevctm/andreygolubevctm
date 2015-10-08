@@ -211,7 +211,7 @@
 		var jqXHR = $.ajax(ajaxProperties);
 		var deferred = jqXHR.then(
 					function onAjaxSuccess(result, textStatus, jqXHR){
-						meerkat.modules.readTokenFromResponse(result);
+						meerkat.modules.verificationToken.readTokenFromResponse(result);
 						var data = (typeof settings.data !== "undefined") ? settings.data : null;
 
 						if(containsServerGeneratedError(result) === true) {

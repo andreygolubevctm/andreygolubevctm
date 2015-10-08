@@ -4,6 +4,7 @@
             "shared/saveQuote/js/saveQuote",
             "shared/validation/js/validation",
             "core/js/verificationToken",
+            "core/js/comms",
             "shared/results/js/ResultsModel"
         ]
 }
