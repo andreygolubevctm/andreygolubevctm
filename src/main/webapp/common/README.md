@@ -1,1 +1,0 @@
-PLEASE NOTE: The files in this directory are only used on Life/IP. All plugins have been copied and integrated into the Gulp build process for journeys on the AMS framework.

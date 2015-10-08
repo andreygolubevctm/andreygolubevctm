@@ -6,7 +6,8 @@
      * image which fills defined the space.
      **/
 
-    var meerkat = window.meerkat;
+    var meerkat = window.meerkat,
+        meerkatEvents =  meerkat.modules.events;
 
 
     function init(){
@@ -15,7 +16,7 @@
 
     function support() {
         // Only proceed if IE8 or less
-        var $logo = $('html.lt-ie9 #logo');
+        $logo = $('html.lt-ie9 #logo');
         if($logo.length) {
             var url = $logo.css("background-image").slice(5,-2);
             var brand = $logo.text();

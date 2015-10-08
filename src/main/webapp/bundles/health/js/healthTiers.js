@@ -8,7 +8,6 @@ Handling of the rebate tiers based off situation
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
-		initialised = false,
 		rebateTiers = {
 			single:{
 				incomeBaseTier:90000,
@@ -41,23 +40,18 @@ Handling of the rebate tiers based off situation
 		$tier,
 		$medicare;
 
-	initHealthTiers =  function(){
-		if(!initialised) {
-			initialised = true;
-			$dependants = $('#health_healthCover_dependants');
-			$incomeMessage = $('#health_healthCover_incomeMessage');
-			$incomeBase = $('#health_healthCover_incomeBase');
-			$income = $('#health_healthCover_income');
-			$tier = $('#health_healthCover_tier');
-			$medicare = $('.health-medicare_details');
-		}
+	init =  function(){
+		$dependants = $('#health_healthCover_dependants');
+		$incomeMessage = $('#health_healthCover_incomeMessage');
+		$incomeBase = $('#health_healthCover_incomeBase');
+		$income = $('#health_healthCover_income');
+		$tier = $('#health_healthCover_tier');
+		$medicare = $('.health-medicare_details');
 	};
 
 	// Manages the descriptive titles of the tier drop-down
 	setTiers =  function(initMode){
-		if(!initialised) {
-			initHealthTiers();
-		}
+
 		// Set the dependants allowance and income message
 		var _allowance = ($dependants.val() - 1);
 
@@ -156,7 +150,7 @@ Handling of the rebate tiers based off situation
 	};
 
 	meerkat.modules.register("healthTiers", {
-		initHealthTiers: initHealthTiers,
+		init: init,
 		setTiers: setTiers
 	});
 

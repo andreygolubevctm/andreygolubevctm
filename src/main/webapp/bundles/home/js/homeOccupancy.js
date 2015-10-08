@@ -11,7 +11,6 @@
 	var moduleEvents = {}, steps = null;
 
 	/* Variables */
-	var initialised = false;
 	var currentTime = new Date();
 	var currentYear = currentTime.getFullYear();
 	var currentMonth = currentTime.getMonth() + 1;
@@ -97,12 +96,11 @@
 	}
 	/* main entrypoint for the module to run first */
 	function initHomeOccupancy() {
-		if(!initialised) {
-			initialised = true;
-			log("[HomeOccupancy] Initialised"); //purely informational
-			applyEventListeners();
+		log("[HomeOccupancy] Initialised"); //purely informational
+		applyEventListeners();
+		$(document).ready(function() {
 			togglePropertyOccupancyFields(0);
-		}
+		});
 	}
 
 	meerkat.modules.register('homeOccupancy', {
