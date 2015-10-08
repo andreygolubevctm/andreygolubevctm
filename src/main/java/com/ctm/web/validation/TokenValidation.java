@@ -69,12 +69,12 @@ public abstract class TokenValidation<T extends TokenRequest> {
     protected abstract Touch.TouchType getCurrentTouch();
 
     public void setNewToken(JSONObject response, Long transactionId, HttpServletRequest request) {
-        long timeout = sessionDataService.getClientSessionTimeoutSeconds(request);
-        long timeoutSec = timeout / 1000;
+        long timeout = sessionDataService.getClientSessionTimeout(request);
+        long timeoutSec = sessionDataService.getClientSessionTimeoutSeconds(request);
         if(timeout == -1){
             timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request);
         }
-        String token = TokenValidation.createToken(request,transactionId, vertical, getCurrentTouch(), timeoutSec);
+        String token = TokenValidation.createToken(request, transactionId, vertical, getCurrentTouch(), timeoutSec);
         try {
             response.put("verificationToken", token);
             response.put("timeout", timeout);
