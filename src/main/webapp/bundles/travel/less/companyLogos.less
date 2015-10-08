@@ -8,7 +8,15 @@
 
 .travelCompanyLogo {
 	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
 	padding: 0;
+	width: 100%;
+	height: 60px;
+	@media (min-width: @screen-sm) {
+		width: 100%;
+		height: 80px;
+	}
 }
 
 .logogrid .travelCompanyLogo,
@@ -20,14 +28,129 @@
 .resultsContainer.v2 .unavailable .travelCompanyLogo {
 	float:left;
 	margin-right:20px;
+	width: 60px;
+	@media (min-width: @screen-sm) {
+		width: 80px;
+	}
 }
 
-.travelCompanyLogo {
-	 .providersHighResSpriteImages(~"travel"; ~"logo_"; ~"BUDD", ~"1COV", ~"1FOW", ~"30UN", ~"ACET", ~"AMEX", ~"CLBS", ~"DUIN", ~"EASY", ~"FAST", ~"GOIN", ~"I4LS", ~"ITRK", ~"INGO", ~"KANG", ~"OTIS", ~"PPTI", ~"REAL", ~"SKII", ~"SCTI", ~"STIN", ~"TSAV", ~"TICK", ~"TINZ", ~"VIRG", ~"WEBJ", ~"WOOL", ~"WLDC", ~"ZUJI"; @logo-xs-scale; ~"");
- }
+.logo_BUDD {
+	.highResImg('../../../graphics/logos/car/budget.png'; '../../../graphics/logos/car/budget@2x.png';);
+}
 
-@media (@sm) {
-	.travelCompanyLogo {
-		.providersHighResSpriteImages(~"travel"; ~"logo_"; ~"BUDD", ~"1COV", ~"1FOW", ~"30UN", ~"ACET", ~"AMEX", ~"CLBS", ~"DUIN", ~"EASY", ~"FAST", ~"GOIN", ~"I4LS", ~"ITRK", ~"INGO", ~"KANG", ~"OTIS", ~"PPTI", ~"REAL", ~"SKII", ~"SCTI", ~"STIN", ~"TSAV", ~"TICK", ~"TINZ", ~"VIRG", ~"WEBJ", ~"WOOL", ~"WLDC", ~"ZUJI"; 1; ~"");
-	}
+.logo_1COV {
+	.highResImg('../../../graphics/logos/travel/1cover.png'; '../../../graphics/logos/travel/1cover@2x.png';);
+}
+
+.logo_1FOW {
+	.highResImg('../../../graphics/logos/travel/1stforwomen.png'; '../../../graphics/logos/travel/1stforwomen@2x.png';);
+}
+
+.logo_30UN {
+	.highResImg('../../../graphics/logos/travel/under30.png'; '../../../graphics/logos/travel/under30@2x.png';);
+}
+
+.logo_AGIS {
+
+	.highResImg('../../../graphics/logos/travel/budget.png'; '../../../graphics/logos/travel/budget@2x.png';);
+}
+
+.logo_ACET {
+	.highResImg('../../../graphics/logos/travel/acet.png'; '../../../graphics/logos/travel/acet@2x.png';);
+}
+
+.logo_AMEX {
+	.highResImg('../../../graphics/logos/travel/amex.png'; '../../../graphics/logos/travel/amex@2x.png';);
+}
+
+.logo_CLBS
+{	.highResImg('../../../graphics/logos/travel/columbus.png?20141208'; '../../../graphics/logos/travel/columbus@2x.png?20141208';);
+}
+
+.logo_DUIN {
+	.highResImg('../../../graphics/logos/travel/downunder.png'; '../../../graphics/logos/travel/downunder@2x.png';);
+}
+
+.logo_EASY {
+	.highResImg('../../../graphics/logos/travel/easytravelinsurance.png'; '../../../graphics/logos/travel/easytravelinsurance@2x.png';);
+}
+
+.logo_FAST {
+	.highResImg('../../../graphics/logos/travel/fastcover.png'; '../../../graphics/logos/travel/fastcover@2x.png';);
+}
+
+.logo_GOIN {
+  .highResImg('../../../graphics/logos/travel/goin.png'; '../../../graphics/logos/travel/goin@2x.png';);
+}
+
+.logo_I4LS {
+	.highResImg('../../../graphics/logos/travel/insure4less.png'; '../../../graphics/logos/travel/insure4less@2x.png';);
+}
+
+.logo_ITRK {
+	.highResImg('../../../graphics/logos/travel/itrek.png'; '../../../graphics/logos/travel/itrek@2x.png';);
+}
+
+.logo_INGO {
+	.highResImg('../../../graphics/logos/travel/insureandgo.png'; '../../../graphics/logos/travel/insureandgo@2x.png';);
+}
+
+.logo_KANG {
+	.highResImg('../../../graphics/logos/travel/kango.png'; '../../../graphics/logos/travel/kango@2x.png';);
+}
+
+.logo_OTIS {
+	.highResImg('../../../graphics/logos/travel/onlinetravelinsurance.png'; '../../../graphics/logos/travel/onlinetravelinsurance@2x.png';);
+}
+
+.logo_PPTI {
+	.highResImg('../../../graphics/logos/travel/priceline.png'; '../../../graphics/logos/travel/priceline@2x.png';);
+}
+
+.logo_REAL {
+	.highResImg('../../../graphics/logos/travel/real.png'; '../../../graphics/logos/travel/real@2x.png';);
+}
+
+.logo_SKII {
+	.highResImg('../../../graphics/logos/travel/skiinsurance.png'; '../../../graphics/logos/travel/skiinsurance@2x.png';);
+}
+
+.logo_SCTI {
+	.highResImg('../../../graphics/logos/travel/southerncross.png'; '../../../graphics/logos/travel/southerncross@2x.png';);
+}
+
+.logo_STIN {
+	.highResImg('../../../graphics/logos/travel/simplytravelinsurance.png'; '../../../graphics/logos/travel/simplytravelinsurance@2x.png';);
+}
+
+.logo_TSAV {
+	.highResImg('../../../graphics/logos/travel/travelinsurancesaver.png'; '../../../graphics/logos/travel/travelinsurancesaver@2x.png';);
+}
+
+.logo_TICK {
+	.highResImg('../../../graphics/logos/travel/ticktravelinsurance.png'; '../../../graphics/logos/travel/ticktravelinsurance@2x.png';);
+}
+
+.logo_TINZ {
+	.highResImg('../../../graphics/logos/travel/travelinsuranz.png'; '../../../graphics/logos/travel/travelinsuranz@2x.png';);
+}
+
+.logo_VIRG {
+	.highResImg('../../../graphics/logos/travel/virgin.png'; '../../../graphics/logos/travel/virgin@2x.png';);
+}
+
+.logo_WEBJ {
+	.highResImg('../../../graphics/logos/travel/Webjet.png'; '../../../graphics/logos/travel/Webjet@2x.png';);
+}
+
+.logo_WOOL {
+	.highResImg('../../../graphics/logos/travel/Woolworths.png'; '../../../graphics/logos/travel/Woolworths@2x.png';);
+}
+
+.logo_WLDC {
+	.highResImg('../../../graphics/logos/travel/Worldcare.png'; '../../../graphics/logos/travel/Worldcare@2x.png';);
+}
+
+.logo_ZUJI {
+	.highResImg('../../../graphics/logos/travel/zuji.png'; '../../../graphics/logos/travel/zuji@2x.png';);
 }

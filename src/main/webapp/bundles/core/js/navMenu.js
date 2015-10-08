@@ -95,6 +95,8 @@
 		log("[navMenu] Initialised"); //purely informational
 
 		$(document).ready(function domready() {
+			//The VerticalSettings overrides doesn't exist otherwise on meerkat.site
+
 			$toggleElement = $('[data-toggle=navMenu]');
 			$contentPane = $('.navMenu-contents');
 			$navMenuRow = $('.navMenu-row');
@@ -128,17 +130,17 @@
 			toggleNavMenu();
 
 		});
-		log("[navMenu] Initialised 1");
+
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function jeStepChange(){
 			//When going into the benefits step on health it should override this event and not close the menu when changing steps.
 			meerkat.modules.navMenu.close();
 			toggleNavMenu();
 		});
-		log("[navMenu] Initialised 2");
+
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function closeXsMenus() {
 			meerkat.modules.navMenu.close();
 		});
-		log("[navMenu] Initialised 3");
+
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function openXsMenus() {
 			//Having one of the sub items open when entering small triggers the menu system to open in order to see that currently open menu.
 			if($(".navbar-nav .open").length > 0){
@@ -146,15 +148,13 @@
 			}
 			toggleNavMenu();
 		});
-		log("[navMenu] Initialised 4");
+
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function jeStepInit(){
 			toggleNavMenu();
 		});
-		log("[navMenu] Initialised 5");
+
 		/* NAVMENU_READY event message being published for others to listen to: */
 		meerkat.messaging.publish(moduleEvents.READY, this);
-
-		log("[navMenu] Initialised Compweted");
 
 	}
 

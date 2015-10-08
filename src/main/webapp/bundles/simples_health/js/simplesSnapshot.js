@@ -1,3 +1,8 @@
+/**
+ * Brief explanation of the module and what it achieves. <example: Example pattern code for a meerkat module.>
+ * Link to any applicable confluence docs: <example: http://confluence:8090/display/EBUS/Meerkat+Modules>
+ */
+
 ;(function($, undefined){
 
 	var meerkat = window.meerkat;
@@ -40,6 +45,9 @@
 	}
 
 	function initSimplesSnapshot() {
+
+		console.log("[Simples Snapshot] Initiated.");
+
 		applyEventListeners();
 	}
 

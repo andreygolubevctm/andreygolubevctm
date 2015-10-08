@@ -1,7 +1,6 @@
 {
   "brandCodes": "all",
   "dependencies": [
-    "plugins/yepnope",
     "meerkat"
   ]
 }

@@ -19,12 +19,9 @@
 		$detailsForm,
 		$resultsContainer,
 		$countrySelector,
-		modalId = null,
-		initialised = false;
+		modalId = null;
 
 	function init() {
-		if(!initialised) {
-			initialised = true;
 
 			$(document.body).on('click', '.btn-view-brands', displayBrandsModal);
 
@@ -52,7 +49,6 @@
 			meerkat.messaging.subscribe(meerkatEvents.traveldetails.COVER_TYPE_CHANGE, toggleDetailsFields);
 
 			applyEventListeners();
-		}
 	}
 
 

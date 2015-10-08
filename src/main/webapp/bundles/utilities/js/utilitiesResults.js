@@ -9,17 +9,12 @@
         RESULTS_ERROR: 'RESULTS_ERROR'
     };
     var $component, //Stores the jQuery object for the component group
-        thoughtWorldCustomerRef = '',
-        initialised = false;
+        thoughtWorldCustomerRef = '';
 
     function initPage(){
-        if(!initialised) {
-            initialised = true;
-            $component = $("#resultsPage");
-            meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
-            initResults();
-            eventSubscriptions();
-        }
+
+        initResults();
+        eventSubscriptions();
     }
 
     function initResults(){
@@ -318,6 +313,13 @@
         });
     }
 
+    function init(){
+        $(document).ready(function() {
+            $component = $("#resultsPage");
+            meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, publishExtraSuperTagEvents);
+        });
+    }
+
     /**
      * Yearly savings are only shown if you already live in the home.
      * @returns {*}
@@ -331,6 +333,7 @@
     }
 
     meerkat.modules.register('utilitiesResults', {
+        init: init,
         initPage: initPage,
         get: get,
         showNoResults: showNoResults,

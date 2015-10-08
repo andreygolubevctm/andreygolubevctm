@@ -179,7 +179,6 @@
 			onInitialise: function() {
 				meerkat.modules.homeOccupancy.initHomeOccupancy();
 				meerkat.modules.homeBusiness.initHomeBusiness();
-				meerkat.modules.homeCoverTypeWarning.initHomeCoverTypeWarning();
 			}
 		};
 

@@ -1,7 +1,6 @@
 {
   "brandCodes": ["ctm", "choo"],
   "dependencies": [
-    "plugins/scrollTo",
     "shared/results",
     "shared/features",
     "shared/validation",

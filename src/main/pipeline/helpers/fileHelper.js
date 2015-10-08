@@ -1,4 +1,4 @@
-var fs = require("graceful-fs-extra"),
+var fs = require("fs-extra"),
     path = require("path"),
     mkdirp = require("mkdirp"),
     config = require("./../config");
@@ -10,8 +10,12 @@ var FileHelper = {
      * @param fileContents
      */
     writeFileToFolder: function (folder, fileName, content) {
-        fs.outputFile(path.join(folder, fileName), content, function(err){
-            if(err) return console.error(err);
+        mkdirp(folder, function(err) {
+            if(err) console.error(err);
+
+            fs.writeFile(path.join(folder, fileName), content, function(err){
+                if(err) return console.error(err);
+            });
         });
     },
 
