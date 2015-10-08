@@ -137,6 +137,8 @@
 					$travel_dates_toDate.datepicker('hide');
 				});
 
+				meerkat.modules.travelAdultAges.initAdultAges();
+
 			},
 			onBeforeEnter: function(event) {
 			},

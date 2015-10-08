@@ -8,7 +8,7 @@
 		$travel_adults,
 		$adult_dob_2;
 
-	function init() {
+	function initAdultAges() {
 		$(document).ready(function travelSortingInitDomready() {
 			$travel_adults = $('#travel_adults'),
 			$adult_dob_2 = $('.second_traveller_age_row');
@@ -30,7 +30,7 @@
 	}
 
 	meerkat.modules.register('travelAdultAges', {
-		init: init
+		initAdultAges: initAdultAges
 	});
 
 })(jQuery);
