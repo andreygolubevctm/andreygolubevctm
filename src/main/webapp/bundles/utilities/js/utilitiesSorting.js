@@ -18,7 +18,8 @@
             'contractPeriodValue': sortContracts, // custom defined function as callback
             'totalDiscountValue': sortDiscounts, // custom defined function as callback
             'yearlySavingsValue': null // will default to Results.model.defaultSortMethod. Cannot specify here as Results.model is undefined when this file is parsed.
-        };
+        },
+        initialised = false;
 
 
     //Sorting is a kind of filtering for now in the events
@@ -71,74 +72,72 @@
 
 
     function initSorting() {
-
-        meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, function sortedCallback(obj) {
-            meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK);
-
-            var time = meerkat.modules.performanceProfiling.endTest('utilitiesSorting');
-            var score;
-            if (time < 1200) { //~1050 animation time
-                score = meerkat.modules.performanceProfiling.PERFORMANCE.HIGH;
-            } else if (time < 1500 && meerkat.modules.performanceProfiling.isIE8() === false) {
-                score = meerkat.modules.performanceProfiling.PERFORMANCE.MEDIUM;
-            } else {
-                score = meerkat.modules.performanceProfiling.PERFORMANCE.LOW;
-            }
-            // We only want to lower the score, not increase it, as its unlikely a good browser will get a time < 1200.
-            if(performanceScore !== meerkat.modules.performanceProfiling.PERFORMANCE.HIGH) {
-                Results.setPerformanceMode(score);
-            }
-            performanceScore = score;
-        });
-
-        $sortElements.on('click', function sortingClickHandler(event) {
-
-            //We clicked this
-            var $clicked = $(event.target);
-            if (!($clicked.is('a'))) {
-                $clicked = $clicked.closest('a');
-            }
-
-            if (!($clicked.hasClass('disabled'))) {
-                //Lock Sorting.
-                meerkat.messaging.publish(meerkatEvents.WEBAPP_LOCK);
-
-                //defer here allows it to be as responsive as possible to the click, since this is an expensive operation to actually sort animate things.
-                _.defer(function deferredSortClickWrapper() {
-                    // check if resetState is enabled and that the clicked item isn't the currently clicked item
-                    if (!$clicked.parent().hasClass('active')) {
-                        resetSortDir($clicked);
-                    }
-                    setSortFromTarget($clicked);
-                });
-            }
-        });
-
-        // On application lockdown/unlock, disable/enable the dropdown
-        meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockSorting(obj) {
-            $sortElements.addClass('inactive disabled');
-        });
-
-        meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockSorting(obj) {
-            $sortElements.removeClass('inactive disabled');
-        });
-    }
-
-    // Reset the sort dir everytime we click on a sortable column header
-    function resetSortDir($elem) {
-        var sortType = $elem.attr('data-sort-type'); // grab the currently clicked sort type
-        $elem.attr('data-sort-dir', defaultSortStates[sortType]); // reset this element's default sort state
-    }
-
-    function init() {
-        $(document).ready(function utilitiesSortingInitDomready() {
+        if(!initialised) {
+            initialised = true;
             $sortElements = $('[data-sort-type]');
 
             //Just a test for the obvious
             if (typeof Results === 'undefined') {
                 meerkat.logging.exception('[utilitiesSorting]', 'No Results Object Found!');
             }
-        });
+
+            meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, function sortedCallback(obj) {
+                meerkat.messaging.publish(meerkatEvents.WEBAPP_UNLOCK);
+
+                var time = meerkat.modules.performanceProfiling.endTest('utilitiesSorting');
+                var score;
+                if (time < 1200) { //~1050 animation time
+                    score = meerkat.modules.performanceProfiling.PERFORMANCE.HIGH;
+                } else if (time < 1500 && meerkat.modules.performanceProfiling.isIE8() === false) {
+                    score = meerkat.modules.performanceProfiling.PERFORMANCE.MEDIUM;
+                } else {
+                    score = meerkat.modules.performanceProfiling.PERFORMANCE.LOW;
+                }
+                // We only want to lower the score, not increase it, as its unlikely a good browser will get a time < 1200.
+                if(performanceScore !== meerkat.modules.performanceProfiling.PERFORMANCE.HIGH) {
+                    Results.setPerformanceMode(score);
+                }
+                performanceScore = score;
+            });
+
+            $sortElements.on('click', function sortingClickHandler(event) {
+
+                //We clicked this
+                var $clicked = $(event.target);
+                if (!($clicked.is('a'))) {
+                    $clicked = $clicked.closest('a');
+                }
+
+                if (!($clicked.hasClass('disabled'))) {
+                    //Lock Sorting.
+                    meerkat.messaging.publish(meerkatEvents.WEBAPP_LOCK);
+
+                    //defer here allows it to be as responsive as possible to the click, since this is an expensive operation to actually sort animate things.
+                    _.defer(function deferredSortClickWrapper() {
+                        // check if resetState is enabled and that the clicked item isn't the currently clicked item
+                        if (!$clicked.parent().hasClass('active')) {
+                            resetSortDir($clicked);
+                        }
+                        setSortFromTarget($clicked);
+                    });
+                }
+            });
+
+            // On application lockdown/unlock, disable/enable the dropdown
+            meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockSorting(obj) {
+                $sortElements.addClass('inactive disabled');
+            });
+
+            meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockSorting(obj) {
+                $sortElements.removeClass('inactive disabled');
+            });
+        }
+    }
+
+    // Reset the sort dir everytime we click on a sortable column header
+    function resetSortDir($elem) {
+        var sortType = $elem.attr('data-sort-type'); // grab the currently clicked sort type
+        $elem.attr('data-sort-dir', defaultSortStates[sortType]); // reset this element's default sort state
     }
 
     function resetToDefaultSort() {
@@ -265,7 +264,6 @@
     }
 
     meerkat.modules.register('utilitiesSorting', {
-        init: init,
         initSorting: initSorting,
         events: events,
         resetToDefaultSort: resetToDefaultSort,
