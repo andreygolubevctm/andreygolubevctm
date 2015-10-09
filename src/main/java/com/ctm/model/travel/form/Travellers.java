@@ -1,12 +1,17 @@
 package com.ctm.model.travel.form;
 
+
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by adiente on 05/10/2015.
  */
-public class Travellers {
+    public class Travellers {
 
     private List<String> travellersDOB;
 
@@ -31,7 +36,10 @@ public class Travellers {
             travellersDOB = new ArrayList<String>();
         }
 
-        travellersDOB.add(dob);
+        // convert to yyyy-MM-dd format
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
+        LocalDate dt = dtf.parseLocalDate(dob);
+        travellersDOB.add(dt.toString());
     }
 
     public List<String> getTravellersDOB() {
