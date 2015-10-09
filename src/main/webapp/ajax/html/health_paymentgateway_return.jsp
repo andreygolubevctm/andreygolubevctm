@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<c:import var="config" url="/WEB-INF/aggregator/health_application/ahm/config.xml" />
 <c:set var="logger" value="${log:getLogger('jsp.ajax.html.health_paymentgateway_return')}" />
 
+<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/ahm/config.xml')}" />
 <x:parse doc="${config}" var="configXml" />
 
 <%-- PARAMS --%>

@@ -53,10 +53,9 @@
 
 		<%-- Set custom application date from data.jsp --%>
 		<go:setData dataVar="data" xpath="health/applicationDate" value="${applicationService.getApplicationDate(pageContext.getRequest())}" />
-
+		<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
 		<%-- Removed specific email writing operations from here as they're handled in core:transaction above --%>
-
-		<c:import var="config" url="/WEB-INF/aggregator/health/config_ALL.xml" />
+		<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health/config_ALL.xml')}" />
 		 <%--Load the config and send quotes to the aggregator gadget--%>
 		<go:soapAggregator config = "${config}"
 			transactionId = "${tranId}"
