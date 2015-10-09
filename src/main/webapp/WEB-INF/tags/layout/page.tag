@@ -348,7 +348,7 @@
 							type: 'default',
 							direction: 'right'
 						},
-						useNewLogging: ${pageSettings.getSetting("useNewLogging")},
+						useNewLogging: ${pageSettings.getSetting("useNewLogging") and not param['automated-test']},
 						couponId: '<c:out value="${couponId}"/>',
 						vdn: '<c:out value="${go:decodeUrl(param.vdn)}" escapeXml="true" />'
 					};
