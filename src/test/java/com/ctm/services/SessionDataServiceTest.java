@@ -35,7 +35,7 @@ public class SessionDataServiceTest {
         Vertical vertical = mock(Vertical.class);
         when(pageSettings.getVertical()).thenReturn(vertical);
         when(vertical.getSettingValueForName("jwtEnabled")).thenReturn("true");
-        SessionDataService sessionDataService = new SessionDataService(jwtTokenCreator,  pageSettings);
+        SessionDataService sessionDataService = new SessionDataService(jwtTokenCreator);
 
         when(request.getParameter(RequestUtils.VERIFICATION_TOKEN_PARAM)).thenReturn("");
         Optional<String> updatedToken = sessionDataService.updateToken(request);

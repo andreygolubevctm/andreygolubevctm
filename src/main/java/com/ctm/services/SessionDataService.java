@@ -15,10 +15,8 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
-import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.security.token.JwtTokenCreator;
-import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
 import org.slf4j.Logger;
@@ -41,11 +39,9 @@ public class SessionDataService {
 
 	private static final int SESSION_EXPIRY_DIFFERENCE = 5;
 	private JwtTokenCreator transactionVerifier;
-	private PageSettings pageSettings;
 
-	public SessionDataService(JwtTokenCreator transactionVerifier, PageSettings pageSettings) {
+	public SessionDataService(JwtTokenCreator transactionVerifier) {
 		this.transactionVerifier = transactionVerifier;
-		this.pageSettings = pageSettings;
 	}
 
 	public SessionDataService() {
@@ -404,14 +400,8 @@ public class SessionDataService {
 		Optional<String> verificationTokenMaybe = Optional.empty();
 			String currentVerificationToken = RequestUtils.getTokenFromRequest(request);
 			if(currentVerificationToken != null && !currentVerificationToken.isEmpty()) {
-				TokenCreatorConfig tokenCreatorConfig = new TokenCreatorConfig();
-				if (this.transactionVerifier == null) {
-					SettingsService settingsService = new SettingsService(request);
-					this.transactionVerifier = new JwtTokenCreator(settingsService, tokenCreatorConfig);
-				}
 				long timeoutSeconds = getClientSessionTimeoutSeconds(request);
-
-					verificationTokenMaybe = Optional.ofNullable(transactionVerifier.refreshToken(currentVerificationToken, timeoutSeconds));
+                verificationTokenMaybe = Optional.ofNullable(transactionVerifier.refreshToken(currentVerificationToken, timeoutSeconds));
 			}
 		return verificationTokenMaybe;
 	}
