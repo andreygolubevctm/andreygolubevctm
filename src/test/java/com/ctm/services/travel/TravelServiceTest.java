@@ -38,8 +38,7 @@ public class TravelServiceTest {
         travelQuote = new TravelQuote();
 
 		travellers = new Travellers();
-		travellers.setTraveller1DOB("01/01/1935");
-		travellers.setTraveller2DOB("01/01/1965");
+		travellers.setTravellersDOB("01/01/1935,01/01/1965");
 
 		travelQuote.setTravellers(travellers);
 		travelQuote.setAdults(2);
@@ -69,7 +68,7 @@ public class TravelServiceTest {
         travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTraveller1DOB("01/01/1985");
+		travellers.setTravellersDOB("01/01/1985");
 		travelQuote.setTravellers(travellers);
 
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
@@ -124,7 +123,7 @@ public class TravelServiceTest {
         travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTraveller1DOB("01/01/1985");
+		travellers.setTravellersDOB("01/01/1985");
 		travelQuote.setTravellers(travellers);
 
 		// Destination field only accepts 3 letter characters
@@ -179,7 +178,7 @@ public class TravelServiceTest {
         travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTraveller1DOB("01/01/1985");
+		travellers.setTravellersDOB("01/01/1985");
 		travelQuote.setTravellers(travellers);
 
 		List<SchemaValidationError> validationErrors = travelService.validateRequest(travelRequest, vertical);
@@ -222,7 +221,7 @@ public class TravelServiceTest {
         travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTraveller1DOB("01/01/1985");
+		travellers.setTravellersDOB("01/01/1985");
 		travelQuote.setTravellers(travellers);
 
 		validationErrors = travelService.validateRequest(travelRequest, vertical);

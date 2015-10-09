@@ -29,8 +29,20 @@
 		});
 	}
 
+	function updateHiddenField() {
+		var numAdults = $('#travel_adults').val(),
+			adultDOBs = new Array(numAdults);
+
+		for (var i = 0; i < numAdults; i++) {
+			adultDOBs[i] = $('#travel_travellers_traveller'+(i+1)+'DOB').val();
+		}
+
+		$('#travel_travellers_travellersDOB').val(adultDOBs.join(','));
+	}
+
 	meerkat.modules.register('travelAdultAges', {
-		initAdultAges: initAdultAges
+		initAdultAges: initAdultAges,
+		updateHiddenField: updateHiddenField
 	});
 
 })(jQuery);

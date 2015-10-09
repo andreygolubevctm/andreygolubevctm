@@ -101,6 +101,7 @@
 					<form_new:row label="Second traveller's date of birth" className="second_traveller_age_row">
 						<field_new:person_dob xpath="travel/travellers/traveller2DOB" title="the second traveller's" required="false" ageMin="16" ageMax="99" />
 					</form_new:row>
+					<field:hidden xpath="travel/travellers/travellersDOB" />
 					<form_new:row label="How many children?"  className="smallWidth" helpId="217">
 						<field_new:array_select items="0=0,1=1,2=2,3=3,4=4,5=5,6=6,7=7,8=8,9=9,10=10" xpath="travel/children" title="how many children" required="true" className="thinner_input" />
 					</form_new:row>
