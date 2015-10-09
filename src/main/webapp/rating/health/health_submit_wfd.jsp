@@ -49,8 +49,8 @@ ${logger.debug('Got body content: {},{}', log:kv('contentLength', pageContext.re
 		<x:out select="$applicationXml/xml/data/FundProductCode" />
 	</c:set>
 </c:if>
-
-<c:import var="config" url="/WEB-INF/aggregator/health_application/wfd/config.xml" />
+<jsp:useBean id="configResolver" class="com.ctm.utils.ConfigResolver" scope="application" />
+<c:set var="config" value="${configResolver.getConfig(pageContext.request.servletContext, '/WEB-INF/aggregator/health_application/wfd/config.xml')}" />
 <x:parse doc="${config}" var="configXml" />
 
 <%-- damn namespaces http://pro-programmers.blogspot.com.au/2008/04/jstl-xparse-not-working-for-elements.html --%>
