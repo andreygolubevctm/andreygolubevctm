@@ -10,5 +10,7 @@ public interface Request<QUOTE> {
 
     void setClientIpAddress(String clientIpAddress);
 
+    String getClientIpAddress();
+
     String getEnvironmentOverride();
 }

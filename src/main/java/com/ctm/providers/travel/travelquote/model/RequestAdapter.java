@@ -8,14 +8,15 @@ import com.ctm.providers.travel.travelquote.model.request.TravelQuoteRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-import static com.ctm.logging.LoggingArguments.kv;
 
 
 public class RequestAdapter {
+
+    private static final DateTimeFormatter AUS_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapter.class);
 
     /**
@@ -42,14 +43,8 @@ public class RequestAdapter {
             SingleTripDetails details = new SingleTripDetails();
             details.setDestinations(quote.getDestinations());
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
-
-            try {
-                details.setToDate(dateFormatter.parse(quote.getDates().getToDate()));
-                details.setFromDate(dateFormatter.parse(quote.getDates().getFromDate()));
-            } catch (ParseException e) {
-                LOGGER.error("Failed to adapt front-end travel request to travel-quote request {}", kv("travelRequest", travelRequest));
-            }
+            details.setToDate(LocalDate.parse(quote.getDates().getToDate(), AUS_FORMAT));
+            details.setFromDate(LocalDate.parse(quote.getDates().getFromDate(), AUS_FORMAT));
 
             quoteRequest.setSingleTripDetails(details);
 

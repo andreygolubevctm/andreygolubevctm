@@ -9,10 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProviderFilterDao {
 
-	public ArrayList<String> getProviderDetailsByAuthToken(String key) throws DaoException {
+	public List<String> getProviderDetailsByAuthToken(String key) throws DaoException {
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		ArrayList<String> code = new ArrayList<String>();
 

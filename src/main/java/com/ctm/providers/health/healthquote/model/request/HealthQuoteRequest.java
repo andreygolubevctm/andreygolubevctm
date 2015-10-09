@@ -4,10 +4,10 @@ import com.ctm.model.health.HospitalSelection;
 import com.ctm.model.health.Membership;
 import com.ctm.model.health.ProductStatus;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
-import org.joda.time.LocalDate;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 public class HealthQuoteRequest

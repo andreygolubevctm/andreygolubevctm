@@ -59,6 +59,11 @@
 		<appender-ref ref="stdout" />
 	</logger>
 
+	<!-- set the level to DEBUG to log CommonQuoteService request and response to console -->
+	<logger name="com.ctm.services.CommonQuoteService" level="INFO" additivity="false">
+		<appender-ref ref="stdout" />
+	</logger>
+
 	<logger name="jsp" level="DEBUG" additivity="false">
 		<appender-ref ref="stdout" />
 	</logger>
