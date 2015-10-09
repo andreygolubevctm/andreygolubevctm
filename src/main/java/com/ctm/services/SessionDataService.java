@@ -11,16 +11,13 @@ package com.ctm.services;
  */
 
 import com.ctm.exceptions.BrandException;
-import com.ctm.exceptions.ConfigSettingException;
 import com.ctm.exceptions.DaoException;
 import com.ctm.exceptions.SessionException;
 import com.ctm.model.session.AuthenticatedData;
 import com.ctm.model.session.SessionData;
 import com.ctm.model.settings.PageSettings;
-import com.ctm.model.settings.Vertical;
 import com.ctm.model.settings.Vertical.VerticalType;
 import com.ctm.security.token.JwtTokenCreator;
-import com.ctm.security.token.config.TokenConfigFactory;
 import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.utils.RequestUtils;
 import com.disc_au.web.go.Data;
@@ -405,27 +402,17 @@ public class SessionDataService {
 
 	public Optional<String> updateToken(HttpServletRequest request)  {
 		Optional<String> verificationTokenMaybe = Optional.empty();
-		try {
-			if(pageSettings == null) {
-				 pageSettings = SettingsService.getPageSettingsForPage(request);
-			}
-			Vertical vertical = pageSettings.getVertical();
-			if(TokenConfigFactory.getEnabled(vertical)) {
+			String currentVerificationToken = RequestUtils.getTokenFromRequest(request);
+			if(currentVerificationToken != null && !currentVerificationToken.isEmpty()) {
 				TokenCreatorConfig tokenCreatorConfig = new TokenCreatorConfig();
 				if (this.transactionVerifier == null) {
 					SettingsService settingsService = new SettingsService(request);
 					this.transactionVerifier = new JwtTokenCreator(settingsService, tokenCreatorConfig);
 				}
 				long timeoutSeconds = getClientSessionTimeoutSeconds(request);
-				String currentVerificationToken = RequestUtils.getTokenFromRequest(request);
 
-				if (currentVerificationToken != null && !currentVerificationToken.isEmpty()) {
 					verificationTokenMaybe = Optional.ofNullable(transactionVerifier.refreshToken(currentVerificationToken, timeoutSeconds));
-				}
 			}
-		} catch (DaoException | ConfigSettingException e) {
-			throw new RuntimeException(e);
-		}
 		return verificationTokenMaybe;
 	}
 
