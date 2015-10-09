@@ -533,7 +533,13 @@
 							<xsl:when test="situation/healthCvr = 'SM'">S</xsl:when>
 							<xsl:when test="situation/healthCvr = 'SF'">S</xsl:when>
 							<xsl:when test="situation/healthCvr = 'S'">S</xsl:when>
-							<xsl:when test="situation/healthCvr = 'F'">F</xsl:when>
+							<xsl:when test="situation/healthCvr = 'F'">
+								<!-- Black + White are Single/Couple only products -->
+								<xsl:choose>
+									<xsl:when test="fundData/hospitalCoverName = 'black+white starter' or fundData/extrasCoverName = 'black+white starter'">D</xsl:when>
+									<xsl:otherwise>F</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
 							<xsl:when test="situation/healthCvr = 'C'">
 								<!-- Condition to avoid error "No Rate record found in database [code F11]" -->
 								<xsl:choose>
