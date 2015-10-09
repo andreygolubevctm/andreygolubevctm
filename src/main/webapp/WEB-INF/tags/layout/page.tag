@@ -380,7 +380,7 @@
 
 	<go:script>
 		$(document).ready(function() {
-			<go:insertmarker format="SCRIPT" name="onready" />
+			<go:insertmarker format="SCRIPT" name="onready" /><c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
             yepnope.injectJs({
                 src: '${assetUrl}js/bundles/${fileName}.deferred${pageSettings.getSetting('minifiedFileString')}.js?${revision}',
                 attrs: {
@@ -389,7 +389,7 @@
             }, function initDeferredModules() {
 				meerkat.modules.init();
 			});
-		});
+			</c:if>});
 	</go:script>
 </body>
 </go:html>
