@@ -1,11 +1,13 @@
 package com.ctm.services.health;
 
+import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.request.health.HealthRequest;
 import com.ctm.model.settings.Vertical;
 import com.ctm.security.token.JwtTokenCreator;
 import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.services.SessionDataService;
+import com.ctm.services.SettingsService;
 import com.ctm.web.validation.health.HealthTokenValidationService;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,26 +26,33 @@ public class HealthTokenValidationServiceTest {
     private HealthRequest healthRequest;
     private HealthTokenValidationService healthQuoteResultsService;
     private String secretKey = "secretKey";
+    private String verticalCode = Vertical.VerticalType.HEALTH.getCode();
+    private SettingsService settingsService = mock(SettingsService.class);
 
     @Before
-    public void setup() {
+    public void setup() throws DaoException {
         Vertical vertical = mock(Vertical.class);
         when(vertical.getSettingValueForName("jwtEnabled")).thenReturn("true");
         when(vertical.getSettingValueForName("jwtSecretKey")).thenReturn(secretKey);
+
+        when(settingsService.getVertical(verticalCode)).thenReturn(vertical);
         TokenCreatorConfig config = new TokenCreatorConfig();
         config.setTouchType(Touch.TouchType.NEW);
-        JwtTokenCreator transactionVerifier = new JwtTokenCreator(config, secretKey);
+        config.setVertical(verticalCode);
+
+        JwtTokenCreator transactionVerifier = new JwtTokenCreator(settingsService, config);
         long transactionId = 2313151L;
         expiredToken =  transactionVerifier.createToken("test" , transactionId,  -1000);
         validToken = transactionVerifier.createToken("test" , transactionId,  300000000);
-        transactionVerifier = new JwtTokenCreator(config, secretKey);
+        transactionVerifier = new JwtTokenCreator(settingsService, config);
         config.setTouchType(Touch.TouchType.CALL_DIRECT);
         tokenWrongStep = transactionVerifier.createToken("test" , transactionId, 300000000);
         healthRequest = new HealthRequest();
         healthRequest.setToken(validToken);
         healthRequest.setTransactionId(transactionId);
         healthRequest.setIsCallCentre(false);
-        healthQuoteResultsService = new HealthTokenValidationService(sessionDataService, vertical);
+
+        healthQuoteResultsService = new HealthTokenValidationService( settingsService,sessionDataService, vertical);
     }
 
     @Test

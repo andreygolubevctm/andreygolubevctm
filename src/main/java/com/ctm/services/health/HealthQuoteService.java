@@ -5,6 +5,7 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.RequestService;
 import com.ctm.services.SessionDataService;
+import com.ctm.services.SettingsService;
 import com.ctm.utils.SessionUtils;
 import com.ctm.utils.health.HealthRequestParser;
 import com.ctm.web.validation.health.HealthTokenValidationService;
@@ -42,7 +43,8 @@ public class HealthQuoteService {
         requestService.setRequest(httpRequest);
         HealthRequest request = HealthRequestParser.getHealthRequestToken(requestService, SessionUtils.isCallCentre(httpRequest.getSession()));
         if (tokenService == null) {
-            this.tokenService = new HealthTokenValidationService(sessionDataService, pageSettings.getVertical());
+            SettingsService settingsService = new SettingsService(httpRequest);
+            this.tokenService = new HealthTokenValidationService(settingsService , sessionDataService, pageSettings.getVertical());
         }
         valid = tokenService.validateToken(request);
     }

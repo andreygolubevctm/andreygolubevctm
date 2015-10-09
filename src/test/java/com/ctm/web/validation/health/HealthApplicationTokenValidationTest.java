@@ -1,11 +1,13 @@
 package com.ctm.web.validation.health;
 
+import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.request.health.HealthRequest;
 import com.ctm.model.settings.Vertical;
 import com.ctm.security.token.JwtTokenCreator;
 import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.services.SessionDataService;
+import com.ctm.services.SettingsService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,26 +23,35 @@ public class HealthApplicationTokenValidationTest {
     private Long transactionId = 1000L;
     private HttpServletRequest httpServletRequest = mock(HttpServletRequest.class);
     private HealthApplicationTokenValidation healthApplicationTokenValidation;
+    private SettingsService settingsService = mock(SettingsService.class);
     String secretKey = "secretKey";
+    private TokenCreatorConfig config;
+    private String verticalCode = Vertical.VerticalType.HEALTH.getCode();
 
     @Before
-    public void setup() {
-        SessionDataService sessionDataService = mock(SessionDataService.class);
+    public void setup() throws DaoException {
+
         Vertical vertical = mock(Vertical.class);
-        when(vertical.getSettingValueForName("jwtSecretKey")).thenReturn(secretKey);
         when(vertical.getSettingValueForName("jwtEnabled")).thenReturn("true");
-         healthApplicationTokenValidation = new HealthApplicationTokenValidation(sessionDataService, vertical);
+        when(vertical.getSettingValueForName("jwtSecretKey")).thenReturn(secretKey);
+
+        when(settingsService.getVertical(verticalCode)).thenReturn(vertical);
+        config = new TokenCreatorConfig();
+        config.setTouchType(Touch.TouchType.NEW);
+        config.setVertical(verticalCode);
+
+        SessionDataService sessionDataService = mock(SessionDataService.class);
+        SettingsService settingsService = mock(SettingsService.class);
+        healthApplicationTokenValidation = new HealthApplicationTokenValidation(settingsService, sessionDataService, vertical);
     }
     @Test
     public void shouldValidateToken() throws Exception {
-
-        TokenCreatorConfig config = new TokenCreatorConfig();
         config.setTouchType(Touch.TouchType.PRICE_PRESENTATION);
-        JwtTokenCreator jwtTokenCreator= new JwtTokenCreator(config, secretKey);
+        JwtTokenCreator jwtTokenCreator= new JwtTokenCreator(settingsService, config);
 
         HealthRequest request = new HealthRequest();
         request.setIsCallCentre(false);
-        String token = jwtTokenCreator.createToken("test", transactionId);
+        String token = jwtTokenCreator.createToken("test", transactionId, 1000);
         request.setToken(token);
         request.setTransactionId(transactionId);
 
@@ -50,8 +61,8 @@ public class HealthApplicationTokenValidationTest {
 
 
         config.setTouchType(Touch.TouchType.NEW);
-         jwtTokenCreator= new JwtTokenCreator(config, secretKey);
-        token = jwtTokenCreator.createToken("test", transactionId);
+         jwtTokenCreator= new JwtTokenCreator(settingsService, config);
+        token = jwtTokenCreator.createToken("test", transactionId, 1000);
         request.setToken(token);
 
         result = healthApplicationTokenValidation.validateToken(request);

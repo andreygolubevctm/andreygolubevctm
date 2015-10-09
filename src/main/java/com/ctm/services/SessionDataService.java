@@ -413,7 +413,8 @@ public class SessionDataService {
 			if(TokenConfigFactory.getEnabled(vertical)) {
 				TokenCreatorConfig tokenCreatorConfig = new TokenCreatorConfig();
 				if (this.transactionVerifier == null) {
-					this.transactionVerifier = new JwtTokenCreator(tokenCreatorConfig, TokenConfigFactory.getJwtSecretKey(vertical));
+					SettingsService settingsService = new SettingsService(request);
+					this.transactionVerifier = new JwtTokenCreator(settingsService, tokenCreatorConfig);
 				}
 				long timeoutSeconds = getClientSessionTimeoutSeconds(request);
 				String currentVerificationToken = RequestUtils.getTokenFromRequest(request);

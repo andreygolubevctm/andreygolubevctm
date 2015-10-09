@@ -9,6 +9,7 @@ import com.ctm.security.token.config.TokenConfigFactory;
 import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.security.token.exception.InvalidTokenException;
 import com.ctm.services.SessionDataService;
+import com.ctm.services.SettingsService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -26,12 +27,14 @@ public abstract class TokenValidation<T extends TokenRequest> {
 
     private final JwtTokenValidator tokenValidation;
     private final SessionDataService sessionDataService;
+    private final SettingsService settingsService;
     private Vertical vertical;
 
     private boolean validToken;
 
-    public TokenValidation(SessionDataService sessionDataService, Vertical vertical) {
+    public TokenValidation(SettingsService settingsService, SessionDataService sessionDataService, Vertical vertical) {
         this.sessionDataService = sessionDataService;
+        this.settingsService = settingsService;
         tokenValidation = new JwtTokenValidator(TokenConfigFactory.getJwtSecretKey(vertical));
         setVertical(vertical);
         this.vertical = vertical;
@@ -69,7 +72,8 @@ public abstract class TokenValidation<T extends TokenRequest> {
     protected abstract Touch.TouchType getCurrentTouch();
 
     public void setNewToken(JSONObject response, Long transactionId, HttpServletRequest request) {
-        String token = TokenValidation.createToken(request, transactionId, vertical, getCurrentTouch(), sessionDataService);
+        TokenCreatorConfig config = TokenConfigFactory.getInstance(vertical, getCurrentTouch(), request);
+        String token = TokenValidation.createToken(transactionId, sessionDataService, settingsService, config , request.getServletPath(), request);
         try {
             response.put("verificationToken", token);
             response.put("timeout", sessionDataService.getClientSessionTimeout(request));
@@ -78,14 +82,13 @@ public abstract class TokenValidation<T extends TokenRequest> {
         }
     }
 
-    public static String createToken(HttpServletRequest request, Long transactionId, Vertical vertical, Touch.TouchType touchType, SessionDataService sessionDataService) {
+    public static String createToken(Long transactionId, SessionDataService sessionDataService, SettingsService settingsService, TokenCreatorConfig config, String servletPath, HttpServletRequest request) {
         long timeoutSec = sessionDataService.getClientSessionTimeoutSeconds(request);
         if(timeoutSec == -1){
             timeoutSec = sessionDataService.getClientDefaultExpiryTimeoutSeconds(request);
         }
-        TokenCreatorConfig config = TokenConfigFactory.getInstance(vertical, touchType, request);
-        JwtTokenCreator creator = new JwtTokenCreator(config, TokenConfigFactory.getJwtSecretKey(vertical));
-        return creator.createToken(request.getServletPath(), transactionId, timeoutSec);
+        JwtTokenCreator creator = new JwtTokenCreator(settingsService, config);
+        return creator.createToken(servletPath, transactionId, timeoutSec);
     }
 
     public String createResponse(Long transactionId, String baseJsonResponse , HttpServletRequest request) {

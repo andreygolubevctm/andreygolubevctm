@@ -11,6 +11,7 @@ public class TokenCreatorConfig {
 
     private Long secondsUntilToken = 0L;
     private Touch.TouchType touchType;
+    private String vertical;
 
     public Long getSecondsUntilNextToken() {
         return secondsUntilToken;
@@ -30,5 +31,13 @@ public class TokenCreatorConfig {
 
     public void setSecondsUntilToken(Long secondsUntilToken) {
         this.secondsUntilToken = secondsUntilToken;
+    }
+
+    public String getVertical() {
+        return vertical;
+    }
+
+    public void setVertical(String vertical) {
+        this.vertical = vertical;
     }
 }

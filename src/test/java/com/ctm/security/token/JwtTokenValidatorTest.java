@@ -1,9 +1,12 @@
 package com.ctm.security.token;
 
+import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
+import com.ctm.model.settings.Vertical;
 import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.security.token.exception.InvalidTokenException;
+import com.ctm.services.SettingsService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +14,9 @@ import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class JwtTokenValidatorTest {
@@ -21,11 +27,20 @@ public class JwtTokenValidatorTest {
     private TokenRequest tokenRequest;
     private String secretKey = "secretKey";
     private HttpServletRequest request;
+    private SettingsService settingsService;
+    private String verticalCode = Vertical.VerticalType.HEALTH.getCode();
+    private TokenCreatorConfig config;
 
     @Before
-    public void setup() {
+    public void setup() throws DaoException {
+        settingsService = mock(SettingsService.class);
+        Vertical vertical = mock(Vertical.class);
+        when(vertical.getSettingValueForName("jwtSecretKey")).thenReturn(secretKey);
+        when(settingsService.getVertical(verticalCode)).thenReturn(vertical);
+        config = new TokenCreatorConfig();
+        config.setVertical(verticalCode);
         request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getLocalAddr()).thenReturn("10.0.0.10000");
+        when(request.getLocalAddr()).thenReturn("10.0.0.10000");
         transactionVerifier = new JwtTokenValidator( secretKey);
         tokenRequest  = new TokenRequest(){
 
@@ -60,9 +75,8 @@ public class JwtTokenValidatorTest {
 
     @Test
     public void testValidateToken() throws InvalidTokenException {
-        TokenCreatorConfig config = new TokenCreatorConfig();
         config.setTouchType(Touch.TouchType.BROCHURE);
-        String token = new JwtTokenCreator(config, secretKey).createToken(source, transactionId);
+        String token = new JwtTokenCreator(settingsService, config).createToken(source, transactionId, 1000);
         tokenRequest.setToken(token);
         // throws exception if invalid
         transactionVerifier.validateToken(tokenRequest, Arrays.asList(Touch.TouchType.BROCHURE));

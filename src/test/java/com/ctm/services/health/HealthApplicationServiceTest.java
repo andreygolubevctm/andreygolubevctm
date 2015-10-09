@@ -5,10 +5,12 @@ import com.ctm.exceptions.DaoException;
 import com.ctm.model.Touch;
 import com.ctm.model.health.Frequency;
 import com.ctm.model.health.HealthPricePremium;
+import com.ctm.model.settings.Vertical;
 import com.ctm.security.token.JwtTokenCreator;
 import com.ctm.security.token.config.TokenCreatorConfig;
 import com.ctm.services.FatalErrorService;
 import com.ctm.services.RequestService;
+import com.ctm.services.SettingsService;
 import com.ctm.utils.FormDateUtils;
 import com.ctm.web.validation.health.HealthApplicationTokenValidation;
 import com.disc_au.web.go.Data;
@@ -36,17 +38,26 @@ public class HealthApplicationServiceTest {
 	private HttpServletRequest request = mock(HttpServletRequest.class);
 	private Date changeOverDate;
 	private HttpSession session= mock(HttpSession.class);
-	private RequestService requestService;
+	private RequestService requestService  = mock(RequestService.class);;
 	private String sessionId = "sessionId";
 	private Long transactionId= 1000L;
 	private String secretKey = "secretKey";
+	private String verticalCode = Vertical.VerticalType.HEALTH.getCode();
 	private HealthApplicationTokenValidation tokenService = mock(HealthApplicationTokenValidation.class);
+	private SettingsService settingsService;
+	private TokenCreatorConfig config;
 
 	@Before
 	public void setup() throws Exception {
+		settingsService = mock(SettingsService.class);
+		Vertical vertical = mock(Vertical.class);
+		when(vertical.getSettingValueForName("jwtSecretKey")).thenReturn(secretKey);
+		when(settingsService.getVertical(verticalCode)).thenReturn(vertical);
+		config = new TokenCreatorConfig();
+		config.setVertical(verticalCode);
+
 		when(tokenService.validateToken(anyObject())).thenReturn(true);
 		when(request.getSession()).thenReturn(session);
-		 requestService = mock(RequestService.class);
 		healthPriceDao = mock(HealthPriceDao.class);
 		data = setupData();
 		HealthPricePremium premiums = new HealthPricePremium();
@@ -90,11 +101,11 @@ public class HealthApplicationServiceTest {
 		when(session.getAttribute("callCentre")).thenReturn(false);
 
 		Long transactionId= 1000L;
-		TokenCreatorConfig config = new TokenCreatorConfig();
 		config.setTouchType(Touch.TouchType.NEW);
-        JwtTokenCreator jwtTokenCreator = new JwtTokenCreator(config,  secretKey);
+		JwtTokenCreator jwtTokenCreator = new JwtTokenCreator(settingsService, config);
+		String token = jwtTokenCreator.createToken("test", transactionId, 1000);
 		when(requestService.getTransactionId()).thenReturn(transactionId);
-		when(requestService.getToken()).thenReturn(jwtTokenCreator.createToken("test", transactionId));
+		when(requestService.getToken()).thenReturn(token);
 		when(tokenService.validateToken(anyObject())).thenReturn(true);
 		healthApplicationService.setUpApplication(setupData(), request, changeOverDate);
 		assertTrue(healthApplicationService.isValidToken());

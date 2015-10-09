@@ -24,7 +24,7 @@ public class JwtTokenValidator {
             throw new InvalidTokenException("Token cannot be null");
         }
         try {
-            Jws<Claims> decodedPayload = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(request.getToken());
+            Jws<Claims> decodedPayload = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(request.getToken());
             if(!decodedPayload.getHeader().getAlgorithm().equals(SIGNATURE_ALGORITHM.getValue())){
                 throw new  InvalidTokenException("invalid algorithm");
             }

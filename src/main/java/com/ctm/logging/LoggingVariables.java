@@ -37,7 +37,7 @@ public class LoggingVariables {
         MDC.put(BRAND_CODE_KEY, brandCode);
         setVerticalCode(vertical);
         correlationIdMaybe.ifPresent(correlationId -> {
-             MDC.put(CORRELATION_ID_KEY, correlationId);
+            MDC.put(CORRELATION_ID_KEY, correlationId);
         });
     }
 
@@ -47,12 +47,10 @@ public class LoggingVariables {
      * call clearLoggingVariables() after thread is no longer being executed to prevent the logging from being in
      * an invalid state when a thread is being reused.
      */
-    public static void setLoggingVariables(String transactionId, String brandCode, Optional<Vertical.VerticalType>  verticalMaybe, String correlationId) {
+    public static void setLoggingVariables(String transactionId, String brandCode, Vertical.VerticalType vertical, String correlationId) {
         setTransactionId(transactionId);
         MDC.put(BRAND_CODE_KEY, brandCode);
-        verticalMaybe.ifPresent(vertical -> {
-            setVerticalCode(vertical);
-        });
+        setVerticalCode(vertical);
         MDC.put(CORRELATION_ID_KEY, correlationId);
     }
 

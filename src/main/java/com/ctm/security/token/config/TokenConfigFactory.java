@@ -12,6 +12,7 @@ public class TokenConfigFactory {
         Long secondsUntilToken = 0L;
         TokenCreatorConfig tokenCreatorConfig = new TokenCreatorConfig();
         tokenCreatorConfig.setTouchType(touchType);
+        tokenCreatorConfig.setVertical(vertical.getCode());
             Long secondsUtilNextTokenConfig = Long.parseLong(vertical.getSettingValueForName("jwtSecondsUntilNextToken" + touchType.getCode()));
             if (!RequestUtils.isTestIp(request)) {
                 switch (touchType) {

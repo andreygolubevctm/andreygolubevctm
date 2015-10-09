@@ -4,8 +4,6 @@ import com.ctm.model.settings.Vertical;
 import org.junit.Test;
 import org.slf4j.MDC;
 
-import java.util.Optional;
-
 import static org.junit.Assert.assertEquals;
 
 
@@ -18,7 +16,7 @@ public class LoggingVariablesTest {
         String brandCode = "brandCode";
         Vertical.VerticalType vertical = Vertical.VerticalType.HEALTH;
         String correlationId = "correlationId";
-        LoggingVariables.setLoggingVariables( transactionId,  brandCode, Optional.ofNullable(vertical),  correlationId);
+        LoggingVariables.setLoggingVariables( transactionId,  brandCode,  vertical,  correlationId);
         assertEquals(transactionId, MDC.get(LoggingVariables.TRANSACTION_ID_KEY));
         assertEquals(brandCode, MDC.get(LoggingVariables.BRAND_CODE_KEY));
         assertEquals(Vertical.VerticalType.HEALTH.getCode(), MDC.get(LoggingVariables.VERTICAL_CODE_KEY));

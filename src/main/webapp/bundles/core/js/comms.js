@@ -151,9 +151,6 @@
 
 			if (_.isString(ajaxProperties.data)) {
 				ajaxProperties.data += '&transactionId=' + tranId;
-				if(meerkat.site.vertical !== '') {
-					ajaxProperties.data += '&vertical=' + meerkat.site.vertical;
-				}
 
 				if(meerkat.site.isCallCentreUser) {
 					ajaxProperties.data += "&" + CHECK_AUTHENTICATED_LABEL + "=true";
@@ -170,12 +167,6 @@
 						value: tranId
 					});
 
-					if(meerkat.site.vertical !== '') {
-						ajaxProperties.data.push({
-							name: 'vertical',
-							value: meerkat.site.vertical
-						});
-					}
 				}
 
 				if(meerkat.site.isCallCentreUser) {
@@ -192,11 +183,6 @@
 				// Add the transaction ID to the data payload if it's not already set
 				if (ajaxProperties.data.hasOwnProperty('transactionId') === false) {
 					ajaxProperties.data.transactionId = tranId;
-				}
-
-				// Add the transaction ID to the data payload if it's not already set
-				if (ajaxProperties.data.hasOwnProperty('vertical') === false) {
-					ajaxProperties.data.vertical =  meerkat.site.vertical;
 				}
 
 				if(meerkat.site.isCallCentreUser) {

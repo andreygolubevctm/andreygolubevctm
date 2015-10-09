@@ -83,7 +83,8 @@ public class HealthApplicationService {
 
 			if (tokenService == null) {
 				PageSettings pageSettings = SettingsService.getPageSettingsForPage(httpRequest);
-				tokenService = new HealthApplicationTokenValidation(sessionDataService, pageSettings.getVertical());
+				SettingsService  settingsService = new SettingsService(httpRequest);
+				tokenService = new HealthApplicationTokenValidation(settingsService, sessionDataService, pageSettings.getVertical());
 			}
 			validToken = tokenService.validateToken(HealthRequestParser.getHealthRequestToken(requestService, isCallCentre));
 			request = HealthApplicationParser.parseRequest(data, changeOverDate);

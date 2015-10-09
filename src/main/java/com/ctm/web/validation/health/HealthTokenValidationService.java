@@ -3,13 +3,14 @@ package com.ctm.web.validation.health;
 import com.ctm.model.request.health.HealthRequest;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.SessionDataService;
+import com.ctm.services.SettingsService;
 import com.ctm.web.validation.ResultsTokenValidation;
 
 
 public class HealthTokenValidationService extends ResultsTokenValidation<HealthRequest> {
 
-    public HealthTokenValidationService(SessionDataService sessionDataService, Vertical vertical) {
-       super(sessionDataService, vertical);
+    public HealthTokenValidationService(SettingsService settingsService, SessionDataService sessionDataService, Vertical vertical) {
+       super( settingsService, sessionDataService, vertical);
     }
 
     /**

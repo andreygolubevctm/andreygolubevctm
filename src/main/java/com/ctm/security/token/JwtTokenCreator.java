@@ -1,6 +1,9 @@
 package com.ctm.security.token;
 
+import com.ctm.exceptions.DaoException;
+import com.ctm.security.token.config.TokenConfigFactory;
 import com.ctm.security.token.config.TokenCreatorConfig;
+import com.ctm.services.SettingsService;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +24,11 @@ public class JwtTokenCreator {
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenCreator.class);
 
     private final TokenCreatorConfig config;
-    private final String secretKey;
+    private SettingsService settingsService;
 
-    public JwtTokenCreator(TokenCreatorConfig config, String secretKey) {
-        this.secretKey = secretKey;
+    public JwtTokenCreator(SettingsService settingsService , TokenCreatorConfig config) {
         this.config = config;
+        this.settingsService = settingsService;
     }
 
     public String createToken(String source , Long transactionId, long expiresSec) {
@@ -33,16 +36,14 @@ public class JwtTokenCreator {
         return createToken(source, transactionId, notBefore, expiresSec, config.getTouchType().getCode());
     }
 
-    private String createToken(String source , Object transactionId , Date notBefore, long expiresSec , Object touchType) {
+    private String createToken(String source, Object transactionId, Date notBefore, long expiresSec, Object touchType) {
         JwtBuilder builder = createBuilder(source, transactionId, touchType);
         Date notAfter = Date.from(LocalDateTime.now().plusSeconds(expiresSec).atZone(ZoneId.systemDefault()).toInstant());
         builder =builder.setNotBefore(notBefore).setExpiration(notAfter);
-        return builder.signWith(SIGNATURE_ALGORITHM, secretKey).compact();
+        builder.setHeaderParam("kid", config.getVertical());
+        return builder.signWith(SIGNATURE_ALGORITHM, getSigningKey(config.getVertical())).compact();
     }
 
-    public String createToken(String source , Long transactionId) {
-        return createBuilder(source, transactionId, config.getTouchType().getCode()).signWith(SIGNATURE_ALGORITHM, secretKey).compact();
-    }
 
     private JwtBuilder createBuilder(String source, Object transactionId, Object touchType) {
         Map<String,Object> claims = new HashMap<>();
@@ -53,18 +54,37 @@ public class JwtTokenCreator {
 
     public String refreshToken(String token, long timeoutSeconds) {
         String tokenToReturn = token;
-        Claims decodedPayload = null;
+        Jws<Claims> decodedPayloadFull = null;
         try {
-             decodedPayload = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-        } catch (PrematureJwtException | SignatureException e) {
+            JwtParser parser = Jwts.parser();
+            decodedPayloadFull = parser.setSigningKeyResolver(new SigningKeyResolverAdapter() {
+                @Override
+                public byte[] resolveSigningKeyBytes(JwsHeader header, Claims claims) {
+                    //inspect the header or claims, lookup and return the signing key
+                    String keyId = header.getKeyId();
+                    return getSigningKey(keyId);
+                }}).parseClaimsJws(token);
+
+        } catch (PrematureJwtException e) {
             // ignore as this is most likely to do with session poke calling before token is valid
         } catch (ClaimJwtException  e) {
             LOGGER.warn("Failed to update token. {},{}", kv("originalToken", token), kv("timeoutSeconds", timeoutSeconds), e);
         }
-        if(decodedPayload != null) {
+        if(decodedPayloadFull != null) {
+            Claims decodedPayload = decodedPayloadFull.getBody();
             tokenToReturn = createToken((String) decodedPayload.get("source"), decodedPayload.get(TRANSACTION_ID_CLAIM), decodedPayload.getNotBefore(), timeoutSeconds, decodedPayload.get(TOUCH_CLAIM));
         }
         return tokenToReturn;
+    }
+
+
+    private byte[] getSigningKey(String keyId) {
+        try {
+            config.setVertical(keyId);
+            return TokenConfigFactory.getJwtSecretKey(settingsService.getVertical(keyId)).getBytes();
+        } catch (DaoException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

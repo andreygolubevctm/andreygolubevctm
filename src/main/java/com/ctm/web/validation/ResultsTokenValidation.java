@@ -4,14 +4,15 @@ import com.ctm.model.Touch;
 import com.ctm.model.request.TokenRequest;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.SessionDataService;
+import com.ctm.services.SettingsService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ResultsTokenValidation<T extends TokenRequest> extends TokenValidation<T> {
 
-    public ResultsTokenValidation(SessionDataService sessionDataService, Vertical vertical) {
-        super(sessionDataService , vertical);
+    public ResultsTokenValidation(SettingsService settingsService,  SessionDataService sessionDataService, Vertical vertical) {
+        super(settingsService, sessionDataService , vertical);
     }
 
 

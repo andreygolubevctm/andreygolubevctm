@@ -5,6 +5,7 @@ import com.ctm.model.settings.PageSettings;
 import com.ctm.model.settings.Vertical;
 import com.ctm.services.RequestService;
 import com.ctm.services.SessionDataService;
+import com.ctm.services.SettingsService;
 import com.ctm.web.validation.ResultsTokenValidation;
 import com.ctm.web.validation.TokenValidation;
 
@@ -35,7 +36,8 @@ public class FuelPriceService {
     public void init(HttpServletRequest httpRequest,  PageSettings pageSettings) {
         if(tokenService == null) {
             Vertical vertical = pageSettings.getVertical();
-            this.tokenService = new ResultsTokenValidation<>(sessionDataService, vertical);
+            SettingsService settingsService = new SettingsService(httpRequest);
+            this.tokenService = new ResultsTokenValidation<>(settingsService, sessionDataService, vertical);
         }
         PageRequest request = parseRequest(httpRequest);
         validToken = tokenService.validateToken(request);
