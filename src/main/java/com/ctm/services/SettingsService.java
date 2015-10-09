@@ -12,10 +12,18 @@ import javax.servlet.http.HttpServletRequest;
 public class SettingsService {
 
 
-	private final HttpServletRequest request;
+	private HttpServletRequest request;
 
 	public SettingsService(HttpServletRequest request){
 		this.request = request;
+	}
+
+	/**
+	 * Used by jsp
+	 */
+	@SuppressWarnings("unused")
+	public SettingsService(){
+
 	}
 
 	/**
