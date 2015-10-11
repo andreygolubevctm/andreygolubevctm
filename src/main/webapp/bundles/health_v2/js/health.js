@@ -1044,13 +1044,26 @@
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication' });
 
 		try {
-			var postData = meerkat.modules.journeyEngine.getFormData();
 
-			// Disable fields must happen after the post data has been collected.
-			meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
+		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
+			$("#environmentOverride").val($("#developmentApplicationEnvironment").val());
+		}
+
+        var postData = meerkat.modules.journeyEngine.getFormData();
+
+		// Disable fields must happen after the post data has been collected.
+		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
+
+
+			var useHealthApplicationWebService = meerkat.site.healthApplicationExcludeProviders.split(',').indexOf($("#health_application_provider").val()) == -1;
+
+			var healthApplicationUrl = "ajax/json/health_application.jsp";
+			if (meerkat.modules.splitTest.isActive(401) && useHealthApplicationWebService) {
+				healthApplicationUrl = "ajax/json/health_application_ws.jsp";
+			}
 
 			meerkat.modules.comms.post({
-				url: "ajax/json/health_application.jsp",
+				url: healthApplicationUrl,
 				data: postData,
 				cache: false,
 				useDefaultErrorHandling:false,

@@ -2,7 +2,9 @@ package com.ctm.model.health.form;
 
 public class Bank extends BankDetails {
 
-    private String day;
+    // Provider Use: HCF
+    // integer
+    private Integer day;
 
     // Provider Use: AUF
     // Format yyyy-MM-dd
@@ -16,11 +18,11 @@ public class Bank extends BankDetails {
 
     private BankDetails claim;
 
-    public String getDay() {
+    public Integer getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(Integer day) {
         this.day = day;
     }
 
