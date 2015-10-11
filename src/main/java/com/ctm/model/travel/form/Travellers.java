@@ -1,7 +1,6 @@
 package com.ctm.model.travel.form;
 
 
-import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -22,12 +21,11 @@ import java.util.List;
         }
 
         String[] parts = dobs.split(",");
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
 
         // convert to yyyy-MM-dd format
         Arrays.stream(parts).forEach(age -> {
-            DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
-            LocalDate dt = dtf.parseLocalDate(age);
-            travellersDOB.add(dt.toString());
+            travellersDOB.add(dtf.parseLocalDate(age).toString());
         });
     }
 
