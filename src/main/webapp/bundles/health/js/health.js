@@ -1,7 +1,8 @@
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
-	meerkatEvents = meerkat.modules.events,
+		meerkatEvents = meerkat.modules.events,
+		exception = meerkat.logging.exception,
 	moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM'
@@ -713,7 +714,9 @@
 		// the category names are generally arbitrary but some are used specifically and should use those types (email, name, potentially phone in the future)
 		var contactDetailsFields = {
 			name:[
-				{ $field: $("#health_contactDetails_name") },
+				{
+					$field: $("#health_contactDetails_name")
+				},
 				{
 					$field: $("#health_application_primary_firstname"),
 					$otherField: $("#health_application_primary_surname")
@@ -863,6 +866,12 @@
 
 		}
 
+		if(!fetchRates(postData, true, callback)) {
+			exception("Failed to fetch rates");
+		}
+	}
+
+	function fetchRates(postData, canSetRates, callback) {
 		// Check if there is enough data to ask the server.
 		var coverTypeHasPartner = hasPartner();
 		if(postData.cover === '') return false;
@@ -880,7 +889,7 @@
 		if(!postData.primary_dob.match(dateRegex)) return false;
 		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
-		meerkat.modules.comms.post({
+		return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",
 			data: postData,
 			cache:true,
@@ -1070,7 +1079,7 @@
 			$("#environmentOverride").val($("#developmentApplicationEnvironment").val());
 		}
 
-		var postData = meerkat.modules.journeyEngine.getFormData();
+        var postData = meerkat.modules.journeyEngine.getFormData();
 
 		// Disable fields must happen after the post data has been collected.
 		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
@@ -1079,7 +1088,7 @@
 			var useHealthApplicationWebService = meerkat.site.healthApplicationExcludeProviders.split(',').indexOf($("#health_application_provider").val()) == -1;
 
 			var healthApplicationUrl = "ajax/json/health_application.jsp";
-			if (meerkat.modules.splitTest.isActive(401) || useHealthApplicationWebService) {
+			if (meerkat.modules.splitTest.isActive(401) && useHealthApplicationWebService) {
 				healthApplicationUrl = "ajax/json/health_application_ws.jsp";
 			}
 

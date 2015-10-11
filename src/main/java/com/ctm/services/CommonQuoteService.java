@@ -90,7 +90,7 @@ public abstract class CommonQuoteService<QUOTE, PAYLOAD, RESPONSE> {
     }
 
     protected RESPONSE sendRequest(Brand brand, Vertical.VerticalType vertical, String serviceName, String logTarget, String endpoint, Request<QUOTE> data, PAYLOAD payload, Class<RESPONSE> responseClass) throws IOException, DaoException, ServiceConfigurationException {
-        com.ctm.providers.Request<PAYLOAD> request = new com.ctm.providers.Request();
+        com.ctm.providers.Request<PAYLOAD> request = new com.ctm.providers.Request<PAYLOAD>();
         request.setBrandCode(brand.getCode());
         request.setClientIp(data.getClientIpAddress());
         request.setTransactionId(data.getTransactionId());

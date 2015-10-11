@@ -66,15 +66,15 @@ public enum HealthFund {
     QTUHS ("TUH - Teachers Union Health (QLD)"),
     WDHF ("Westfund Limited");
 
-    private final String code;
+    private final String description;
 
-    HealthFund(final String code) {
-        this.code = code;
+    HealthFund(final String description) {
+        this.description = description;
     }
 
     @JsonValue
-    public String getCode() {
-        return code;
+    public String getDescription() {
+        return description;
     }
 
     @JsonCreator
@@ -83,7 +83,7 @@ public enum HealthFund {
             return NONE;
         }
         for (final HealthFund t : HealthFund.values()) {
-            if (code.equalsIgnoreCase(t.getCode())) {
+            if (code.equalsIgnoreCase(t.name())) {
                 return t;
             }
         }

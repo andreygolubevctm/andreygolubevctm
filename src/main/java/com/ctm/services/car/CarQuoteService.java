@@ -23,8 +23,6 @@ import com.disc_au.web.go.xml.XmlNode;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.jaxrs.ext.MessageContext;
 import org.joda.time.LocalDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -34,8 +32,6 @@ import static com.ctm.model.settings.Vertical.VerticalType.CAR;
 import static java.util.stream.Collectors.toList;
 
 public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteRequest, CarResponse> {
-
-	private static final Logger logger = LoggerFactory.getLogger(CarQuoteService.class);
 
     private static final SessionDataService SESSION_DATA_SERVICE = new SessionDataService();
 

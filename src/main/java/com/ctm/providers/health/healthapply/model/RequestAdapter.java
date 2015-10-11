@@ -140,7 +140,7 @@ public class RequestAdapter {
         if (previousFund.isPresent()) {
             return new PreviousFund(
                     previousFund.map(Fund::getFundName)
-                            .map(HealthFund::valueOf)
+                            .map(HealthFund::findByCode)
                             .orElse(null),
                     previousFund.map(Fund::getMemberId)
                             .map(MemberId::new)
@@ -455,6 +455,8 @@ public class RequestAdapter {
                 return payment.map(com.ctm.model.health.form.Payment::getPolicyDate)
                         .map(v -> LocalDate.parse(v, ISO_FORMAT))
                         .orElse(null);
+            } else if (credit.map(Credit::getDay).isPresent()) {
+                return LocalDate.now().withDayOfMonth(credit.map(Credit::getDay).get());
             } else {
                 return null;
             }
@@ -473,6 +475,8 @@ public class RequestAdapter {
                 return payment.map(com.ctm.model.health.form.Payment::getPolicyDate)
                         .map(v -> LocalDate.parse(v, ISO_FORMAT))
                         .orElse(null);
+            } else if (bank.map(com.ctm.model.health.form.Bank::getDay).isPresent()) {
+                return LocalDate.now().withDayOfMonth(bank.map(com.ctm.model.health.form.Bank::getDay).get());
             } else {
                 return null;
             }
