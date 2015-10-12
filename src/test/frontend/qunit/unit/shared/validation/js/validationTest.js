@@ -21,3 +21,20 @@ $(function () {
 
 });
 
+var validNameCharsRegex = /^([a-zA-Z .'\-,]*)$/;
+var isUrlRegex = /(?:[^\s])\.(com|co|net|org|asn|ws|us|mobi)(\.[a-z][a-z])?/;
+
+// Name is alpha and .'\-, only with no foreign characters as providers don't support them
+// Ensures that an email address or URL is not being entered
+//
+function validatePersonName(value) {
+    var isURL = value.match(isUrlRegex) !== null;
+    return !isURL && validNameCharsRegex.test(value);
+}
+
+$.validator.addMethod(
+    "personName", validatePersonName, "Please enter alphabetic characters only. " +
+    "Unfortunately, international alphabetic characters, numbers and symbols are not " +
+    "supported by many of our partners at this time."
+);
+

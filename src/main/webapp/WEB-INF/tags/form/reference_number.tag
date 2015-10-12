@@ -112,9 +112,6 @@
 			}
 	});
 
-
-
-
 	if(typeof SaveQuote !== 'undefined') {
 		$(document).on(SaveQuote.confirmedEvent, function(event) {
 			$('#header-save-your-quote span').text(SaveQuote.resaveText);

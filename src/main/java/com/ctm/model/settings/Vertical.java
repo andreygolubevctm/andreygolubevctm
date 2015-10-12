@@ -129,6 +129,11 @@ public class Vertical {
 		return null;
 	}
 
+	public String getSettingValueForName(String name){
+		ConfigSetting config = getSettingForName(name);
+		return config != null ? config.getValue() : "";
+	}
+
 	public boolean isEnabled(){
 		String verticalEnabledSetting = getSettingForName("status").getValue();
 
