@@ -1,5 +1,7 @@
 package com.ctm.providers.travel.travelquote.model.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
 import org.joda.time.LocalDate;
 
 import java.util.ArrayList;
@@ -17,7 +19,9 @@ public class TravelQuoteRequest {
     private boolean mobileUrls = false;
     private int numberOfAdults;
     private int numberOfChildren;
-    private List<String> travellersDOB =  new ArrayList<String>();
+
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private List<LocalDate> travellersDOB;
     private ArrayList<String> providerFilter = new ArrayList<String>();
     private SingleTripDetails singleTripDetails;
 
@@ -56,16 +60,12 @@ public class TravelQuoteRequest {
         this.numberOfChildren = numberOfChildren;
     }
 
-    public List<String> getTravellersDOB() {
+    public List<LocalDate> getTravellersDOB() {
         return travellersDOB;
     }
 
     public void setTravellersDOB(List<LocalDate> travellersDOBs) {
-        travellersDOB.clear();
-
-        travellersDOBs.stream().forEach(age -> {
-            this.travellersDOB.add(age.toString());
-        });
+        this.travellersDOB = travellersDOBs;
     }
 
     public ArrayList<String> getProviderFilter() {
