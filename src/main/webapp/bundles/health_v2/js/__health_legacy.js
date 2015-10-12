@@ -836,7 +836,6 @@ var healthDependents = {
 	},
 
 	addApprentice: function(index, age){
-		console.log("addapprentice");
 		if( healthDependents.config.apprentice !== true ){
 			$('#health_application_dependants-selection').find('.health_dependant_details_apprenticeGroup').hide();
 			return false;
