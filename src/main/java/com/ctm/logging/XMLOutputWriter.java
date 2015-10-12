@@ -23,10 +23,11 @@ public class XMLOutputWriter {
 	
 	private static final Logger LOGGER = getLogger(XMLOutputWriter.class);
 	private final String name;
+	private final String loggerName;
 
 	public XMLOutputWriter(String name, String debugPath) {
 		this.name = name;
-		String loggerName =  getDebugPath(debugPath) + "/" + name.replaceAll(" ", "_") + "_xml";
+		this.loggerName = getDebugPath(debugPath) + "/" + name.replaceAll(" ", "_") + "_xml";
 		MDC.put(NAME_KEY, loggerName);
 	}
 
@@ -53,5 +54,7 @@ public class XMLOutputWriter {
 			return debugPathLocal + "/" + debugDateFolder;
 	}
 	
-
+	public String getLoggerName() {
+		return loggerName;
+	}
 }
