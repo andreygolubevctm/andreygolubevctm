@@ -1,5 +1,7 @@
 package com.ctm.providers.travel.travelquote.model.request;
 
+import org.joda.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class TravelQuoteRequest {
     private boolean mobileUrls = false;
     private int numberOfAdults;
     private int numberOfChildren;
-    private List<String> travellersDOB;
+    private List<String> travellersDOB =  new ArrayList<String>();
     private ArrayList<String> providerFilter = new ArrayList<String>();
     private SingleTripDetails singleTripDetails;
 
@@ -58,8 +60,12 @@ public class TravelQuoteRequest {
         return travellersDOB;
     }
 
-    public void setTravellersDOB(List<String> travellersDOBs) {
-        this.travellersDOB = travellersDOBs;
+    public void setTravellersDOB(List<LocalDate> travellersDOBs) {
+        travellersDOB.clear();
+
+        travellersDOBs.stream().forEach(age -> {
+            this.travellersDOB.add(age.toString());
+        });
     }
 
     public ArrayList<String> getProviderFilter() {
