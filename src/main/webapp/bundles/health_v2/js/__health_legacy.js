@@ -9,7 +9,6 @@
 */
 
 /* Utilities functions for health */
-
 function returnDate(_dateString){
 	if(_dateString === '') return null;
 	var dateComponents = _dateString.split('/');
@@ -55,7 +54,7 @@ function resetRadio($_obj, value){
 		$_obj.find('input').prop('checked', false);
 		$_obj.find('label').removeClass('active');
 
-		if(value != null){
+		if(typeof value !== "undefined"){
 			$_obj.find('input[value='+ value +']').prop('checked', 'checked');
 			$_obj.find('input[value='+ value +']').parent().addClass("active");
 		}
@@ -423,7 +422,7 @@ var healthFunds = {
 		// main check for real value
 		if( effectiveDateString == ''){
 			return false;
-		};
+		}
 		var effectiveDate = returnDate(effectiveDateString);
 		var today = new Date();
 
@@ -529,6 +528,23 @@ var healthFunds = {
 		var day = dateObj.getDate();
 		var year = dateObj.getFullYear();
 		return healthFunds._getDayOfWeek(dateObj) + ", " + day + " " + healthFunds._getMonth(dateObj) + " " + year;
+	},
+
+	_setPolicyDate : function (dateObj, addDays) {
+
+			var dateSplit = dateObj.split('/');
+			var dateFormated = dateSplit[2]+'-'+dateSplit[1]+'-'+dateSplit[0];
+
+			var newdate = new Date(dateFormated);
+			newdate.setDate(newdate.getDate() + addDays);
+
+			var dd = ("0" + newdate.getDate()).slice(-2);
+			var mm = ("0" + (newdate.getMonth() + 1)).slice(-2);
+			var y = newdate.getFullYear();
+
+			var newPolicyDate = y + '-' + mm + '-' + dd;
+
+			return newPolicyDate;
 	}
 };
 
@@ -611,7 +627,8 @@ var healthDependents = {
 			'schoolDateMandatory':false,
 			'defacto':false,
 			'defactoMin':21,
-			'defactoMax':24
+			'defactoMax':24,
+			'apprentice':false
 		};
 
 		healthDependents.maxAge = 25;
@@ -750,6 +767,7 @@ var healthDependents = {
 		healthDependents.addFulltime(index, age);
 		healthDependents.addSchool(index, age);
 		healthDependents.addDefacto(index, age);
+		healthDependents.addApprentice(index, age);
 	},
 
 	getAge: function( dob )
@@ -815,6 +833,25 @@ var healthDependents = {
 		} else {
 			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_schoolGroup, .health_dependant_details_schoolIDGroup, .health_dependant_details_schoolDateGroup').hide();
 		};
+	},
+
+	addApprentice: function(index, age){
+		console.log("addapprentice");
+		if( healthDependents.config.apprentice !== true ){
+			$('#health_application_dependants-selection').find('.health_dependant_details_apprenticeGroup').hide();
+			return false;
+		}
+
+		if( (age >= healthDependents.config.schoolMin) && (age <= healthDependents.config.schoolMax) ){
+			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_apprenticeGroup').show();
+		} else {
+			$('#health_application_dependants-selection').find('.dependant'+ index).find('.health_dependant_details_apprenticeGroup').hide();
+		}
+
+		// change validation method for dob field if fulltime is enabled
+		//$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('remove', 'limitDependentAgeToUnder25');
+		//$('#health_application_dependants-selection').find('#health_application_dependants_dependant' + index + '_dob').rules('add', 'validateFulltime');
+
 	},
 
 	addDefacto: function(index, age){
