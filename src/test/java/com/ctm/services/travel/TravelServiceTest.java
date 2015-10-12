@@ -14,6 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -37,8 +39,7 @@ public class TravelServiceTest {
 		travelRequest = new TravelRequest();
         travelQuote = new TravelQuote();
 
-		travellers = new Travellers();
-		travellers.setTravellersDOB("01/01/1935,01/01/1965");
+		travellers = Travellers.of(Arrays.asList(LocalDate.of(1935, 1, 1), LocalDate.of(1965, 1, 1)));
 
 		travelQuote.setTravellers(travellers);
 		travelQuote.setAdults(2);
@@ -56,7 +57,7 @@ public class TravelServiceTest {
 		travelRequest.setTravel(travelQuote);
 		when(connection.get(null + "/quote")).thenReturn("result");
 		travelService.getQuotes(brand, verticalCode, travelRequest);
-		verify(connection, times(1)).setHasCorrelationId(true);
+
 	}
 
 

@@ -2,8 +2,9 @@ package com.ctm.providers.travel.travelquote.model.request;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
-import org.joda.time.LocalDate;
 
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
