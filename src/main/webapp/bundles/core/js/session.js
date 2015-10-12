@@ -60,7 +60,7 @@
 		
 		ajaxURL += (check === true) ? "?check" : "";
 		
-		return meerkat.modules.comms.get({
+		return meerkat.modules.comms.post({
 			url: ajaxURL,
 			dataType: "json",
 			onSuccess: function onPokeSuccess(data){
