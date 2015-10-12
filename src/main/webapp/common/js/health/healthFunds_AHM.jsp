@@ -26,9 +26,9 @@ var healthFunds_AHM = {
 
     healthFunds._dependants(dependantsString);
     <%--change age of dependants and school--%>
-    healthDependents.maxAge = 25;
+    meerkat.modules.healthDependants.setMaxAge(25);
     <%--schoolgroups and defacto--%>
-    $.extend(healthDependents.config, { 'school':true, 'schoolMin':21, 'schoolMax':24, 'schoolID':true, 'schoolIDMandatory':true, 'schoolDate':true, 'schoolDateMandatory':true });
+    meerkat.modules.healthDependants.updateConfig({ 'school':true, 'schoolMin':21, 'schoolMax':24, 'schoolID':true, 'schoolIDMandatory':true, 'schoolDate':true, 'schoolDateMandatory':true });
 
     <%--School list--%>
     var list = '<select class="form-control"><option value="">Please choose...</option>';

@@ -357,6 +357,8 @@
 			},
 			onInitialise: function onInitApplyStep(event){
 
+				meerkat.modules.healthDependants.initHealthDependants();
+
 				healthApplicationDetails.init();
 
 				// Listen to any input field which could change the premium. (on step 4 and 5)
@@ -392,30 +394,6 @@
 					healthApplicationDetails.testStatesParity();
 				});
 
-				// Sync income tier value (which can be changed if you change the number of dependants you have).
-				$('#health_application_dependants_income').on('change', function(){
-					$('#mainform').find('.health_cover_details_income').val( $(this).val() );
-				});
-
-				// Perform checks and show/hide questions when the dependant's DOB changes
-				$('.health_dependant_details .dateinput_container input.serialise').on('change', function(event){
-					healthDependents.checkDependent( $(this).closest('.health_dependant_details').attr('data-id') );
-					$(this).valid();
-				});
-
-				// Perform checks and show/hide questions when the fulltime radio button changes
-				$('.health_dependant_details_fulltimeGroup input').on('change', function(event){
-					healthDependents.checkDependent( $(this).closest('.health_dependant_details').attr('data-id') );
-					$(this).parents('.health_dependant_details').find('.dateinput_container input.serialise').valid();
-				});
-
-				// Add/Remove dependants
-				$('#health_application_dependants-selection').find(".remove-last-dependent").on("click", function(){
-					healthDependents.dropDependent();
-				});
-				$('#health_application_dependants-selection').find(".add-new-dependent").on("click", function(){
-					healthDependents.addDependent();
-				});
 
 				// initialise start date datepicker from payment step as it will be used by selected fund
 				$("#health_payment_details_start_calendar")
@@ -452,7 +430,7 @@
 					$('#health_declaration input:checked').prop('checked', false).change();
 
 					// Update the state of the dependants object.
-					healthDependents.setDependants();
+					meerkat.modules.healthDependants.setDependants();
 
 					// Check okToCall optin - show if no phone numbers in questionset and NOT Simples
 					if($('#health_contactDetails_contactNumber_mobile').val() === '' &&	$('#health_contactDetails_contactNumber_other').val() === '' &&	meerkat.site.isCallCentreUser === false) {
@@ -478,7 +456,7 @@
 				$(".policySummaryContainer").find('.footer').removeClass('hidden');
 
 				// Need to call this after the form is visible because of the show/hiding of buttons based on visibility.
-				healthDependents.updateDependentOptionsDOM();
+				meerkat.modules.healthDependants.updateDependantOptionsDOM();
 			}
 		};
 
@@ -1296,8 +1274,6 @@
 				$('#health_application_productId').val( meerkat.site.loadProductId );
 				$('#health_application_productTitle').val( meerkat.site.loadProductTitle );
 			}
-
-			healthDependents.init();
 
 			if(meerkat.site.isCallCentreUser === true){
 				meerkat.modules.simplesSnapshot.initSimplesSnapshot();

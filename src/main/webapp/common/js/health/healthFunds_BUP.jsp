@@ -70,7 +70,7 @@ set: function () {
 
 		<%-- Dependant's Age and message --%>
 		healthFunds._dependants('Dependent child means a person who does not have a partner and is \(i\) aged under 21 or \(ii\) is receiving a full time education at a school, college or university recognised by the company and who is not aged 25 or over.');
-		healthDependents.maxAge = 25;
+	meerkat.modules.healthDependants.setMaxAge(25);
 
 	},
 	unset: function () {

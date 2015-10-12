@@ -24,8 +24,9 @@ var healthFunds_GMH = {
         <%--dependant definition--%>
         healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 
-        <%--schoolgroups and defacto--%>
-        healthDependents.config = { 'school':true, 'defacto':false, 'schoolMin':21, 'schoolMax':24 };
+        <%--schoolgroups and defacto
+        TODO: TEST THIS --%>
+        meerkat.modules.healthDependants.updateConfig({ 'school':true, 'defacto':false, 'schoolMin':21, 'schoolMax':24 });
 
         <%--school labels--%>
         healthFunds._schoolLabel = $('.health_dependant_details_schoolGroup').first().find('.control-label').text();

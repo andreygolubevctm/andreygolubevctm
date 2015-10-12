@@ -36,7 +36,7 @@ var healthFunds_THF = {
 		healthFunds_THF.healthCvr = $('#health_situation_healthCvr').val();
 
 		<%--schoolgroups and defacto--%>
-		healthDependents.config = { 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 };
+		meerkat.modules.healthDependants.updateConfig({ 'school': true, 'defacto':false, 'schoolMin': 21, 'schoolMax': 24 });
 
 		<%-- Previous fund --%>
 		$('#health_previousfund_primary_authority').setRequired(true,'Teachers Health Fund require authorisation to contact your previous fund');
@@ -144,9 +144,9 @@ var healthFunds_THF = {
 			<%--dependant definition--%>
 			healthFunds._dependants('<c:out value="${dependentText}" escapeXml="true"/>');
 			<%--change age of dependants and school --%>
-			healthDependents.maxAge = 25;
+			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
-			$.extend(healthDependents.config, { 'school': true, 'schoolMin': 23, 'schoolMax': 24, 'schoolID': false, 'schoolIDMandatory': false, 'schoolDate': false, 'schoolDateMandatory': false });
+			meerkat.modules.healthDependants.updateConfig({ 'school': true, 'schoolMin': 23, 'schoolMax': 24, 'schoolID': false, 'schoolIDMandatory': false, 'schoolDate': false, 'schoolDateMandatory': false });
 
 			<%--School list--%>
 			var instituteElement =  '<select>
@@ -167,9 +167,7 @@ var healthFunds_THF = {
 			healthFunds.$_tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
 			$('.health_dependant_details_schoolGroup .control-label').html('Educational institute this dependant is attending');
 			$('.health_dependant_details_schoolGroup .help_icon').hide();
-
-			healthDependents.config.schoolID = false;
-			healthDependents.config.schoolDate = false;
+			meerkat.modules.healthDependants.updateConfig({schoolID: false, schoolDate: false});
 		}
 
 		<%--calendar for start cover--%>
