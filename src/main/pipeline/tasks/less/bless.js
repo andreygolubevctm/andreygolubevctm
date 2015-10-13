@@ -52,14 +52,14 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
             file.targetDir = path.join(gulp.pipelineConfig.target.dir, "brand", brandCode, "css");
 
             var tempPath = file.path,
-                appendContent = "<link rel=\"stylesheet\" type=\"text\/css\" href=\"" + tempPath.slice(tempPath.indexOf("assets"), tempPath.length).replace(/\\/g, "/") + "?rev=" + revDate + "\" media=\"all\" />";
+                appendContent = "<link rel=\"stylesheet\" type=\"text\/css\" href=\"" + tempPath.slice(tempPath.indexOf("assets"), tempPath.length).replace(/\\/g, "/").replace(".css", ".min.css") + "?rev=" + revDate + "\" media=\"all\" />";
 
             fileHelper.appendToFile(file.includesFolder, file.bundle.split(".")[0] + gulp.pipelineConfig.target.inc.extension, appendContent);
 
             return file;
         }))
         .pipe(rename(function(renameFile) {
-            renameFile.extname = ".css";
+            renameFile.extname = ".min.css";
         }))
         // Sakugawa beautifies the CSS for some reason so we do this to keep file sizes down
         // Options are listed at https://github.com/jakubpawlowicz/clean-css
