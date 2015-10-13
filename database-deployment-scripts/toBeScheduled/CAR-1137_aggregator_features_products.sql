@@ -1,6 +1,6 @@
 -- Dumping structure for table aggregator.features_products
-DROP TABLE IF EXISTS `features_products`;
-CREATE TABLE IF NOT EXISTS `features_products` (
+DROP TABLE IF EXISTS aggregator.features_products;
+CREATE TABLE IF NOT EXISTS aggregator.features_products (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `date` date NOT NULL,
@@ -13,9 +13,8 @@ CREATE TABLE IF NOT EXISTS `features_products` (
 ) ENGINE=InnoDB AUTO_INCREMENT=8840 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table aggregator.features_products: ~242 rows (approximately)
-DELETE FROM `features_products`;
 /*!40000 ALTER TABLE `features_products` DISABLE KEYS */;
-INSERT INTO `features_products` (`id`, `name`, `date`, `ref`, `vertical`, `brandId`, `product_type`) VALUES
+INSERT INTO aggregator.features_products (`id`, `name`, `date`, `ref`, `vertical`, `brandId`, `product_type`) VALUES
 	(3199, 'Lady Driver Standard Car Insurance', '2015-06-22', '1st-Car_0514_18137', 'CAR', '1991', 1),
 	(3200, 'Comprehensive Car Insurance', '2015-06-22', 'A01641_0214C_22780', 'CAR', '1992', 1),
 	(3201, 'Comprehensive Car Insurance', '2015-06-22', 'CompCar_V4_0615_20434', 'CAR', '1993', 1),

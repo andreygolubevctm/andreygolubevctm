@@ -1,6 +1,6 @@
 -- Dumping structure for table aggregator.features_short_codes
-DROP TABLE IF EXISTS `features_short_codes`;
-CREATE TABLE IF NOT EXISTS `features_short_codes` (
+DROP TABLE IF EXISTS aggregator.features_short_codes;
+CREATE TABLE IF NOT EXISTS aggregator.features_short_codes (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(3) NOT NULL,
   `desc` varchar(45) NOT NULL,
@@ -10,9 +10,8 @@ CREATE TABLE IF NOT EXISTS `features_short_codes` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table aggregator.features_short_codes: ~12 rows (approximately)
-DELETE FROM `features_short_codes`;
 /*!40000 ALTER TABLE `features_short_codes` DISABLE KEYS */;
-INSERT INTO `features_short_codes` (`id`, `code`, `desc`, `score`, `vertical`) VALUES
+INSERT INTO aggregator.features_short_codes (`id`, `code`, `desc`, `score`, `vertical`) VALUES
 	(1, 'AI', 'Additional Information', 0.0, 'CAR'),
 	(2, 'Y', 'Yes', 1.0, 'CAR'),
 	(3, 'N', 'No', 0.0, 'CAR'),

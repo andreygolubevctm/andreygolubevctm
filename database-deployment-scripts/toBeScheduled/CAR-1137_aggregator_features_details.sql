@@ -1,6 +1,6 @@
 -- Dumping structure for table aggregator.features_details
-DROP TABLE IF EXISTS `features_details`;
-CREATE TABLE IF NOT EXISTS `features_details` (
+DROP TABLE IF EXISTS aggregator.features_details;
+CREATE TABLE IF NOT EXISTS aggregator.features_details (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `type` varchar(30) DEFAULT NULL,
@@ -21,9 +21,8 @@ CREATE TABLE IF NOT EXISTS `features_details` (
 ) ENGINE=InnoDB AUTO_INCREMENT=29220 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table aggregator.features_details: ~1,152 rows (approximately)
-DELETE FROM `features_details`;
 /*!40000 ALTER TABLE `features_details` DISABLE KEYS */;
-INSERT INTO `features_details` (`id`, `name`, `type`, `status`, `categoryId`, `sequence`, `parentId`, `resultPath`, `vertical`, `expanded`, `multiRow`, `className`, `extraText`, `helpId`, `shortlistKey`) VALUES
+INSERT INTO aggregator.features_details (`id`, `name`, `type`, `status`, `categoryId`, `sequence`, `parentId`, `resultPath`, `vertical`, `expanded`, `multiRow`, `className`, `extraText`, `helpId`, `shortlistKey`) VALUES
 	(901, 'text', NULL, 1, 0, 0, 0, NULL, NULL, 0, 0, NULL, NULL, 0, NULL),
 	(902, 'text', NULL, 1, 0, 0, 0, NULL, NULL, 0, 0, NULL, NULL, 0, NULL),
 	(903, 'text', NULL, 1, 0, 0, 902, NULL, NULL, 0, 0, NULL, NULL, 0, NULL),

@@ -1,6 +1,6 @@
 -- Dumping structure for table aggregator.features_product_mapping
-DROP TABLE IF EXISTS `features_product_mapping`;
-CREATE TABLE IF NOT EXISTS `features_product_mapping` (
+DROP TABLE IF EXISTS aggregator.features_product_mapping;
+CREATE TABLE IF NOT EXISTS aggregator.features_product_mapping (
   `lmi_Ref` varchar(45) NOT NULL,
   `ctm_ProductId` varchar(45) NOT NULL,
   PRIMARY KEY (`lmi_Ref`),
@@ -8,9 +8,8 @@ CREATE TABLE IF NOT EXISTS `features_product_mapping` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table aggregator.features_product_mapping: ~23 rows (approximately)
-DELETE FROM `features_product_mapping`;
 /*!40000 ALTER TABLE `features_product_mapping` DISABLE KEYS */;
-INSERT INTO `features_product_mapping` (`lmi_Ref`, `ctm_ProductId`) VALUES
+INSERT INTO aggregator.features_product_mapping (`lmi_Ref`, `ctm_ProductId`) VALUES
 	('1st-Car_0514_18137', '1FOW-05-02'),
 	('ClassicPlusCar_0914_19544', 'AI-01-01'),
 	('ComprehensiveCar_0615_23185', 'AI-01-02'),

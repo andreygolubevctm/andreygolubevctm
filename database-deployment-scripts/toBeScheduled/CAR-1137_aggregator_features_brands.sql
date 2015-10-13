@@ -11,8 +11,8 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table aggregator.features_brands
-DROP TABLE IF EXISTS `features_brands`;
-CREATE TABLE IF NOT EXISTS `features_brands` (
+DROP TABLE IF EXISTS aggregator.features_brands;
+CREATE TABLE IF NOT EXISTS aggregator.features_brands (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `displayName` varchar(150) NOT NULL,
   `realName` varchar(150) NOT NULL,
@@ -22,9 +22,8 @@ CREATE TABLE IF NOT EXISTS `features_brands` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5046 DEFAULT CHARSET=latin1 COMMENT='Set to InnoDB for transactional use.';
 
 -- Dumping data for table aggregator.features_brands: ~318 rows (approximately)
-DELETE FROM `features_brands`;
 /*!40000 ALTER TABLE `features_brands` DISABLE KEYS */;
-INSERT INTO `features_brands` (`id`, `displayName`, `realName`, `status`) VALUES
+INSERT INTO aggregator.features_brands (`id`, `displayName`, `realName`, `status`) VALUES
 	(1472, '1st For Women', '1st For Women', 'Y'),
 	(1473, 'AAMI', 'AAMI', 'Y'),
 	(1474, 'AI Insurance', 'AI Insurance', 'Y'),
