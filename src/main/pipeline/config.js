@@ -7,7 +7,7 @@ var rootDir = __dirname;
 var fs = require("graceful-fs-extra"),
     parseXML = require("xml2js").parseString;
 
-var JavaConfigXML = fs.readFileSync(rootDir + "../../../../pom.xml").toString(),
+var JavaConfigXML = fs.readFileSync(rootDir + "/../../../../pom.xml").toString(),
     JavaConfig;
 parseXML(JavaConfigXML, function(err, result) {
    JavaConfig = result;
