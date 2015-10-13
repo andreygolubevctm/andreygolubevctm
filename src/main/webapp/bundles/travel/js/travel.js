@@ -107,6 +107,11 @@
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 
+				// Call initialisers
+				meerkat.modules.travelCountrySelector.initTravelCountrySelector();
+				meerkat.modules.datesSelection.initTravelDatesSelection();
+				meerkat.modules.travelContactDetails.initContactDetails();
+
 				if (meerkat.modules.splitTest.isActive([5,6])) {
 					$('#travel_location').on('blur',function() {
 						meerkat.modules.travelContactDetails.setLocation($(this).val());
@@ -136,7 +141,6 @@
 				$travel_adults.focus(function hideCalendar() {
 					$travel_dates_toDate.datepicker('hide');
 				});
-
 			},
 			onBeforeEnter: function(event) {
 			},

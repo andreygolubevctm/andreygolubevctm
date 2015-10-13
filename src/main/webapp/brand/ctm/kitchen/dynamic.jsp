@@ -18,8 +18,6 @@
 <layout:generic_page title="Kitchen sink: Current &amp; new">
 
 	<jsp:attribute name="head">
-		<link rel="stylesheet" href="${assetUrl}brand/ctm/css/kitchensink.css">
-		<%--<link rel="stylesheet" href="${assetUrl}framework/jquery/plugins/jquery.nouislider/jquery.nouislider-6.2.0.css">--%>
 		<go:script>
 			<go:insertmarker format="SCRIPT" name="js-head"/>
 		</go:script>

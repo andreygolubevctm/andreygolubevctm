@@ -3,45 +3,20 @@
 	In other journeys (car, home etc), the logo is floated beside the product detail, instead of in its own row.
 	Hence we need to add these extra styles.
 */
+@providers-list: ~"ACTEWAGL", ~"ALINTA_ENERGY", ~"CLICK_ENERGY", ~"ENERGYAUSTRALIA", ~"ONLINE_POWER_AND_GAS", ~"ORIGIN", ~"PEOPLE_ENERGY", ~"POWERSHOP", ~"SIMPLY_ENERGY", ~"SUMO_POWER";
+
 .companyLogo {
-  display:inline-block;
+  display:block;
   float: none;
-  width: 100%;
-  background-position: center;
+  margin: 0 auto;
 }
 
-.logo_ALINTA_ENERGY {
-	.highResImg('../../../graphics/logos/utilities/ALINTA_ENERGY.png'; '../../../graphics/logos/utilities/ALINTA_ENERGY@2x.png'; 60px; 60px);
+.companyLogo {
+	 .providersHighResSpriteImages(~"utilities"; ~"logo_"; @providers-list; @logo-xs-scale; ~"");
 }
 
-.logo_CLICK_ENERGY {
-	.highResImg('../../../graphics/logos/utilities/CLICK_ENERGY.png'; '../../../graphics/logos/utilities/CLICK_ENERGY@2x.png'; 60px; 60px);
-}
-
-.logo_ENERGYAUSTRALIA {
-	.highResImg('../../../graphics/logos/utilities/ENERGYAUSTRALIA.png'; '../../../graphics/logos/utilities/ENERGYAUSTRALIA@2x.png'; 60px; 60px);
-}
-
-.logo_ONLINE_POWER_AND_GAS {
-	.highResImg('../../../graphics/logos/utilities/ONLINE_POWER_AND_GAS.png'; '../../../graphics/logos/utilities/ONLINE_POWER_AND_GAS@2x.png'; 60px; 60px);
-}
-
-.logo_ORIGIN {
-	.highResImg('../../../graphics/logos/utilities/ORIGIN.png'; '../../../graphics/logos/utilities/ORIGIN@2x.png'; 60px; 60px);
-}
-
-.logo_PEOPLE_ENERGY {
-	.highResImg('../../../graphics/logos/utilities/PEOPLE_ENERGY.png'; '../../../graphics/logos/utilities/PEOPLE_ENERGY@2x.png'; 60px; 60px);
-}
-
-.logo_POWERSHOP {
-	.highResImg('../../../graphics/logos/utilities/POWERSHOP.png'; '../../../graphics/logos/utilities/POWERSHOP@2x.png'; 60px; 60px);
-}
-
-.logo_SIMPLY_ENERGY {
-  .highResImg('../../../graphics/logos/utilities/SIMPLY_ENERGY.png'; '../../../graphics/logos/utilities/SIMPLY_ENERGY@2x.png'; 60px; 60px);
-}
-
-.logo_SUMO_POWER {
-	.highResImg('../../../graphics/logos/utilities/SUMO_POWER.png'; '../../../graphics/logos/utilities/SUMO_POWER@2x.png'; 60px; 60px);
+@media (@sm) {
+	.companyLogo {
+		.providersHighResSpriteImages(~"utilities"; ~"logo_"; @providers-list; @logo-xs-scale; ~"");
+	}
 }
